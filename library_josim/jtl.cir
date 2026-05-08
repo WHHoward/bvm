@@ -1,0 +1,18 @@
+.subckt jtl IN OUT VBIAS
+
+B0 5 7 jjr area=2.5
+RS0 5 7 2.7
+B1 6 8 jjr area=2.5
+RS1 6 8 2.7
+
+LP0 7 0 .1pH
+LP1 8 0 .1pH
+
+LT0 IN 5 2.1pH
+LT1 5 4 2.1pH
+LT2 4 6 2.1pH
+LT3 6 OUT 2.1pH
+
+R0 VBIAS 4 29
+
+.ends jtl

@@ -1,0 +1,117 @@
+* 4 BVM Array + BQ Readout Testbench
+* Architecture: 4 BVM cells (write verify) →
+*   simulated SL currents (based on stored state) →
+*   current summing → BQ → SFQ pulse output
+*
+* Test pattern: BVMs [1,0,1,1] → 3 active cells → expect 3 BQ output pulses
+
+.include ../../circuits/bvm/bvm_cell.cir
+.include ../../circuits/qb/bq_cell.cir
+
+* === 4 BVM cells (for write verification) ===
+XBVM1 WL BL1 SE SL1 BVM
+XBVM2 WL BL2 SE SL2 BVM
+XBVM3 WL BL3 SE SL3 BVM
+XBVM4 WL BL4 SE SL4 BVM
+
+* SL loads (JJ-based, like original BVM test)
+B_LD1 SL1 0 jj320 area=12
+B_LD2 SL2 0 jj320 area=12
+B_LD3 SL3 0 jj320 area=12
+B_LD4 SL4 0 jj320 area=12
+
+* === BQ cell with simulated BVM SL inputs ===
+* 4 current sources representing each BVM's SL output during read
+* Read-1 current = 150uA (above BQ JS IC=133uA)
+* Read-0 current = 0
+* Pattern [1,0,1,1] → 3 sources active during read
+
+XBQ BQ_IN BQ_OUT BQ_IBIAS BQ
+R_BQ_LOAD BQ_OUT 0 12.0
+
+* BQ bias — pulls current OUT of N_MID
+I_BQBIAS BQ_IBIAS 0 DC 100U
+
+* Simulated SL currents from 4 BVMs (Read-1=150uA, Read-0=0)
+* Read-1 window: t=60-70ps, Read-0 window: t=200-210ps
+I_SL1 0 BQ_IN pwl(0 0
++ 55p 0    60p 150U 70p 150U 75p 0
++ 195p 0   200p 150U 210p 150U 215p 0
++ 220p 0)
+I_SL2 0 BQ_IN pwl(0 0
++ 55p 0    70p 0    75p 0
++ 195p 0   210p 0   215p 0
++ 220p 0)
+I_SL3 0 BQ_IN pwl(0 0
++ 55p 0    60p 150U 70p 150U 75p 0
++ 195p 0   200p 150U 210p 150U 215p 0
++ 220p 0)
+I_SL4 0 BQ_IN pwl(0 0
++ 55p 0    60p 150U 70p 150U 75p 0
++ 195p 0   200p 150U 210p 150U 215p 0
++ 220p 0)
+
+* === Write/Read control signals ===
+.param IW=200U
+.param IR=200U
+.param PRD=67U
+
+* WL
+I_WL 0 WL pwl(0 0 5p 0
++ 10p  IW   30p  IW   35p  0
++ 55p  PRD  65p  PRD  70p  0
++ 150p -IW  170p -IW  175p  0
++ 195p PRD 205p PRD 210p 0
++ 220p 0)
+
+* BL1: W1 (cell1 = 1)
+I_BL1 0 BL1 pwl(0 0 5p 0
++ 10p  IW   30p  IW   35p  0
++ 55p  0    70p  0
++ 150p -IW  170p -IW  175p  0
++ 195p 0    210p 0
++ 220p 0)
+
+* BL2: W0 — never activated (cell2 stays at 0)
+I_BL2 0 BL2 pwl(0 0 5p 0
++ 10p  0    30p  0    35p  0
++ 55p  0    70p  0
++ 150p 0    170p 0    175p  0
++ 195p 0    210p 0
++ 220p 0)
+
+* BL3: W1 (cell3 = 1)
+I_BL3 0 BL3 pwl(0 0 5p 0
++ 10p  IW   30p  IW   35p  0
++ 55p  0    70p  0
++ 150p -IW  170p -IW  175p  0
++ 195p 0    210p 0
++ 220p 0)
+
+* BL4: W1 (cell4 = 1)
+I_BL4 0 BL4 pwl(0 0 5p 0
++ 10p  IW   30p  IW   35p  0
++ 55p  0    70p  0
++ 150p -IW  170p -IW  175p  0
++ 195p 0    210p 0
++ 220p 0)
+
+* SE
+I_SE 0 SE pwl(0 0
++ 55p  0    60p  IR   70p  IR   75p  0
++ 195p 0    200p IR   210p IR   215p 0
++ 220p 0)
+
+.tran 0.5p 220p 0 1p 0 DST
+
+* Drive signals
+.print I(I_WL) I(I_BL1) I(I_BL2) I(I_BL3) I(I_BL4) I(I_SE)
+* BVM internal states (write verify)
+.print P(B_JM1|XBVM1) P(B_JM1|XBVM2) P(B_JM1|XBVM3) P(B_JM1|XBVM4)
+* BVM SL currents
+.print I(B_LD1) I(B_LD2) I(B_LD3) I(B_LD4)
+* BQ input/output
+.print V(BQ_IN) V(BQ_OUT)
+.print V(B_JS|XBQ) P(B_JS|XBQ)
+.print I(R_BQ_LOAD)
+.end

@@ -1,0 +1,45 @@
+* BVM Test @ 50GHz (10ps pulse, 50% duty, matching paper)
+.include ../../circuits/bvm/bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+B_SLload1 SL1 0 jj320 area=12
+
+.param IW=100U
+.param ISE=200U
+.param PRD=67U
+
+* WL: 50GHz timing — 10ps active, 5ps rise/fall
+* W1: 10-20ps, Half-WL: 50-60ps, Read bias, W0: 150-160ps
+I_WL1 0 WL1 pwl(0 0 5p 0
++ 10p IW  20p IW  25p 0
++ 50p IW  60p IW  65p 0
++ 90p PRD 100p PRD 105p 0
++ 130p PRD 140p PRD 145p 0
++ 150p -IW 160p -IW 165p 0
++ 190p PRD 200p PRD 205p 0
++ 230p PRD 240p PRD 245p 0
++ 250p 0)
+
+* BL: W1, BL-only half-sel, W0
+I_BL1 0 BL1 pwl(0 0 5p 0
++ 10p IW  20p IW  25p 0
++ 50p 0   65p 0
++ 70p IW  80p IW  85p 0
++ 90p 0   145p 0
++ 150p -IW 160p -IW 165p 0
++ 200p 0   250p 0)
+
+* SE: Read pulses — 10ps wide
+I_SE1 0 SE1 pwl(0 0
++ 90p 0  95p ISE 105p ISE 110p 0
++ 130p 0 135p ISE 145p ISE 150p 0
++ 190p 0 195p ISE 205p ISE 210p 0
++ 230p 0 235p ISE 245p ISE 250p 0)
+
+.tran 0.25p 250p 0 0.5p 0 DST
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print V(B_JM1|XBVM1) P(B_JM1|XBVM1)
+.print I(L_M1|XBVM1)
+.print P(B_JS1|XBVM1) P(B_JS2|XBVM1)
+.print I(B_SLload1)
+.end

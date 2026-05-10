@@ -1,0 +1,49 @@
+* BQ (Buffer/Quantizer) Cell Subcircuit
+* Reference: Karamuftuoglu et al., Fig.4 BQ circuit
+* Function: Digital SQUID-like flux quantizer
+*   Sums negative/positive fluxes applied to its loop,
+*   produces quantized SFQ pulses based on flux change.
+*
+* Topology:
+*   In -> Lin(0.8pH) -> JS(133uA) -> L1(3.91pH) -> L2(3.91pH) -> L0(1.323pH) -> Out
+*                            |                       |                  |
+*                           JL1(112uA)           RB(8.5) ← IBias    JL2(189uA)
+*                            |                 (bleed path)            |
+*                           GND                current flows           GND
+*                                              N_MID → IBias
+*
+* IMPORTANT: IBias must be configured to PULL current FROM N_MID
+*   I_IBIAS IBIAS 0 DC <value>  — NOT "0 IBIAS"
+*   This bleed path allows the quantization loop to reset after each SFQ event.
+*
+* Nodes: N_js_out (JS→L1→JL1), N_mid (L1→L2→RB), N_pre_out (L2→L0→JL2)
+
+.include ../../circuits/models/mitll_models.cir
+
+.subckt BQ IN OUT IBIAS
+
+* Input inductor
+L_IN    IN      N_JS_IN 0.8P
+
+* Series junction JS
+B_JS    N_JS_IN N_JS_OUT jj133 area=1
+
+* Left shunt junction JL1
+B_JL1   N_JS_OUT 0 jj112 area=1
+
+* Series inductor L1
+L_L1    N_JS_OUT N_MID 3.91P
+
+* Bias resistor RB
+R_RB    IBIAS   N_MID 8.5
+
+* Series inductor L2
+L_L2    N_MID   N_PRE_OUT 3.91P
+
+* Right shunt junction JL2
+B_JL2   N_PRE_OUT 0 jj189 area=1
+
+* Output inductor L0
+L_L0    N_PRE_OUT OUT 1.323P
+
+.ends BQ

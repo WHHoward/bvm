@@ -1,0 +1,24 @@
+* BQ Test — I_IN=150uA current step
+.include ../../circuits/qb/bq_cell.cir
+
+XBQ1 IN1 OUT1 IBIAS1 BQ
+R_LOAD  OUT1 0 12.0
+
+.param IIN=150U
+.param IBIAS=100U
+
+I_IBIAS IBIAS1 0 DC IBIAS
+
+I_IN    0 IN1 pwl(0 0 20p 0
++ 25p  IIN 50p IIN 55p 0
++ 80p  0
++ 85p -IIN 110p -IIN 115p 0
++ 150p 0)
+
+.tran 0.25p 150p 0 0.5p 0 DST
+.print I(I_IN) V(OUT1)
+.print V(B_JS|XBQ1) P(B_JS|XBQ1)
+.print V(B_JL1|XBQ1) V(B_JL2|XBQ1)
+.print P(B_JL1|XBQ1) P(B_JL2|XBQ1)
+.print I(R_LOAD)
+.end

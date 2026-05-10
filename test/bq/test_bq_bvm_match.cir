@@ -1,0 +1,32 @@
+* BQ Test — BVM-matched input (I_SL ≈ 22μA read-1, 6μA read-0)
+* 50GHz timing, 10ps pulse width
+.include ../../circuits/qb/bq_cell.cir
+
+XBQ1 IN1 OUT1 IBIAS1 BQ
+R_LOAD  OUT1 0 12.0
+
+.param IBQBIAS=100U
+
+* Bias — pulls current OUT of N_MID
+I_IBIAS IBIAS1 0 DC IBQBIAS
+
+* Input: simulates BVM SL output during read
+* Single BVM: 22μA pulse (Read-1), 6μA pulse (Read-0)
+* 4 BVM (all active): 4×22=88μA pulse
+I_IN    0 IN1 pwl(0 0 10p 0
++ 15p 22U  25p 22U  30p 0
++ 50p 0
++ 55p 6U   65p 6U   70p 0
++ 90p 0
++ 95p 44U 105p 44U 110p 0
++ 130p 0
++ 135p 88U 145p 88U 150p 0
++ 170p 0)
+
+.tran 0.25p 170p 0 0.5p 0 DST
+.print I(I_IN) V(OUT1)
+.print V(B_JS|XBQ1) P(B_JS|XBQ1)
+.print V(B_JL1|XBQ1) P(B_JL1|XBQ1)
+.print V(B_JL2|XBQ1) P(B_JL2|XBQ1)
+.print I(R_LOAD)
+.end

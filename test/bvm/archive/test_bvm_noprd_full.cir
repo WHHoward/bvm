@@ -1,0 +1,42 @@
+* BVM Full Truth Table — 50GHz, WL=100μA for write AND read, no PRD
+.include ../../circuits/bvm/bvm_cell.cir
+XBVM1 WL1 BL1 SE1 SL1 BVM
+B_SLload1 SL1 0 jj320 area=12
+
+* WL: W1(10-20), HS-WL(50-60), Read1(90-100), Read1v(130-140)
+*     W0(170-180), Read0(210-220), Read0v(250-260)
+* Same 100μA used for write and read row selection
+I_WL1 0 WL1 pwl(0 0 5p 0
++ 10p 100U  20p 100U  25p 0
++ 50p 100U  60p 100U  65p 0
++ 90p 100U 100p 100U 105p 0
++ 130p 100U 140p 100U 145p 0
++ 170p -100U 180p -100U 185p 0
++ 210p 100U 220p 100U 225p 0
++ 250p 100U 260p 100U 265p 0
++ 280p 0)
+
+* BL: W1(10-20), BL-only HS(70-80), W0(170-180)
+I_BL1 0 BL1 pwl(0 0 5p 0
++ 10p 100U  20p 100U  25p 0
++ 50p 0     65p 0
++ 70p 100U  80p 100U  85p 0
++ 90p 0    145p 0
++ 170p -100U 180p -100U 185p 0
++ 210p 0    280p 0)
+
+* SE: Read pulses — 200μA, 10ps wide
+I_SE1 0 SE1 pwl(0 0
++ 90p 0  95p 200U 105p 200U 110p 0
++ 130p 0 135p 200U 145p 200U 150p 0
++ 210p 0 215p 200U 225p 200U 230p 0
++ 250p 0 255p 200U 265p 200U 270p 0
++ 280p 0)
+
+.tran 0.25p 280p 0 0.5p 0 DST
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print V(B_JM1|XBVM1) P(B_JM1|XBVM1)
+.print I(L_M1|XBVM1)
+.print P(B_JS1|XBVM1) P(B_JS2|XBVM1)
+.print I(B_SLload1)
+.end

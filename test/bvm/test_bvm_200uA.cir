@@ -1,0 +1,37 @@
+* BVM Test: WL=BL=SE=0.2mA (200uA)
+.include ../../circuits/bvm/bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+B_SLload1 SL1 0 jj320 area=12
+
+.param IW=200U
+.param IR=200U
+.param PRD=67U
+
+I_WL1 0 WL1 pwl(0 0 5p 0
++ 10p  IW   30p  IW   35p  0
++ 55p  PRD  65p  PRD  70p  0
++ 150p -IW  170p -IW  175p  0
++ 195p PRD 205p PRD 210p 0
++ 220p 0)
+
+I_BL1 0 BL1 pwl(0 0 5p 0
++ 10p  IW   30p  IW   35p  0
++ 55p  0    70p  0
++ 150p -IW  170p -IW  175p  0
++ 195p 0    210p 0
++ 220p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 55p  0    60p  IR   70p  IR   75p  0
++ 195p 0    200p IR   210p IR   215p 0
++ 220p 0)
+
+.tran 0.5p 200p 0 1p 0 DST
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print V(B_JM1|XBVM1) P(B_JM1|XBVM1)
+.print V(B_JM2|XBVM1)
+.print I(B_JM1|XBVM1)
+.print P(B_JS1|XBVM1) P(B_JS2|XBVM1)
+.print I(B_SLload1)
+.end

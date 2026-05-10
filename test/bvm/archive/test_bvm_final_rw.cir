@@ -1,0 +1,46 @@
+* BVM Final — Read/Write Test
+* Config: 50GHz, 10ps pulse, WL=100μA (same for write & read), ISE=100μA
+.include ../../circuits/bvm/bvm_cell.cir
+XBVM1 WL1 BL1 SE1 SL1 BVM
+* SL load: 12 series 320μA non-switching JJs (matching paper)
+B_LD1  SL1 nld1  jj320 area=1
+B_LD2  nld1 nld2 jj320 area=1
+B_LD3  nld2 nld3 jj320 area=1
+B_LD4  nld3 nld4 jj320 area=1
+B_LD5  nld4 nld5 jj320 area=1
+B_LD6  nld5 nld6 jj320 area=1
+B_LD7  nld6 nld7 jj320 area=1
+B_LD8  nld7 nld8 jj320 area=1
+B_LD9  nld8 nld9 jj320 area=1
+B_LD10 nld9 nld10 jj320 area=1
+B_LD11 nld10 nld11 jj320 area=1
+B_LD12 nld11 0 jj320 area=1
+
+* WL: W1(10-20) R1(70-80) W0(130-140) R0(190-200) — all 100μA
+I_WL1 0 WL1 pwl(0 0 5p 0
++ 10p 100U 20p 100U 25p 0
++ 70p 100U 80p 100U 85p 0
++ 130p -100U 140p -100U 145p 0
++ 190p 100U 200p 100U 205p 0
++ 220p 0)
+
+* BL: W1(10-20) W0(130-140)
+I_BL1 0 BL1 pwl(0 0 5p 0
++ 10p 100U 20p 100U 25p 0
++ 70p 0 85p 0
++ 130p -100U 140p -100U 145p 0
++ 190p 0 220p 0)
+
+* SE: R1(70-80) R0(190-200) — 100μA
+I_SE1 0 SE1 pwl(0 0
++ 70p 0 75p 100U 85p 100U 90p 0
++ 190p 0 195p 100U 205p 100U 210p 0
++ 220p 0)
+
+.tran 0.25p 220p 0 0.5p 0 DST
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print V(B_JM1|XBVM1) P(B_JM1|XBVM1)
+.print I(L_M1|XBVM1)
+.print P(B_JS1|XBVM1) P(B_JS2|XBVM1)
+.print I(B_LD1)
+.end

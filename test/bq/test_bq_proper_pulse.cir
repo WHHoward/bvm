@@ -1,0 +1,30 @@
+* BQ Proper SFQ Pulse Test — true zero gaps between pulses
+* Each pulse: 180μA × 3ps, 10ps TRUE zero platform between pulses
+.include ../../circuits/qb/bq_cell.cir
+
+XBQ1 IN1 OUT1 IBIAS1 BQ
+R_LOAD  OUT1 0 12.0
+
+.param IBQBIAS=100U
+
+I_IBIAS IBIAS1 0 DC IBQBIAS
+
+* 4 SFQ pulses, 3ps wide, 10ps TRUE ZERO gap between pulses
+* Each pulse: 2ps rise → 3ps hold → 2ps fall → 10ps zero platform
+I_IN    0 IN1 pwl(0 0 8p 0
++ 10p 180U 13p 180U 15p 0
++ 25p 0
++ 27p 180U 30p 180U 32p 0
++ 42p 0
++ 44p 180U 47p 180U 49p 0
++ 59p 0
++ 61p 180U 64p 180U 66p 0
++ 80p 0)
+
+.tran 0.2p 80p 0 0.4p 0 DST
+.print I(I_IN) V(OUT1)
+.print V(B_JS|XBQ1) P(B_JS|XBQ1)
+.print V(B_JL1|XBQ1) P(B_JL1|XBQ1)
+.print V(B_JL2|XBQ1) P(B_JL2|XBQ1)
+.print I(R_LOAD)
+.end

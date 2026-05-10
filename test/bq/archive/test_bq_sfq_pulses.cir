@@ -1,0 +1,31 @@
+* BQ Proper Functionality Test — SFQ pulse train input
+* Each input pulse: 180uA x 3ps (above JS IC=133uA), 12ps gap for reset
+* Tests: 1, 2, 3, 4 pulse trains → observe P_JS 2π steps
+
+.include ../../circuits/qb/bq_cell.cir
+
+XBQ1 IN1 OUT1 IBIAS1 BQ
+R_LOAD  OUT1 0 12.0
+
+.param IPULSE=180U
+.param IBIAS=100U
+
+* Bias — pulls current OUT of N_MID
+I_IBIAS IBIAS1 0 DC IBIAS
+
+* Input: 4 SFQ pulses, 3ps wide, ~12ps spacing
+* Pulse at ~22ps, 35ps, 48ps, 61ps
+I_IN    0 IN1 pwl(0 0 10p 0
++ 12p  IPULSE 15p IPULSE 18p 0
++ 30p  IPULSE 33p IPULSE 36p 0
++ 48p  IPULSE 51p IPULSE 54p 0
++ 66p  IPULSE 69p IPULSE 72p 0
++ 100p 0)
+
+.tran 0.2p 100p 0 0.4p 0 DST
+.print I(I_IN) V(OUT1)
+.print V(B_JS|XBQ1) P(B_JS|XBQ1)
+.print V(B_JL1|XBQ1) P(B_JL1|XBQ1)
+.print V(B_JL2|XBQ1) P(B_JL2|XBQ1)
+.print I(R_LOAD)
+.end

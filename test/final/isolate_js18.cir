@@ -1,0 +1,37 @@
+* Isolation Test: Single BVM + 1xjj320 + QB (JS=18uA)
+* Measures pure load effect without multi-BVM leakage
+.include ../../circuits/bvm/bvm_cell.cir
+.model jj18 jj(RTYPE=1, IC=18U, RN=13.9, R0=41.7, CAP=0.10P, VG=2.8M, DELV=0.1M)
+
+XBVM0 WL0 BL0 SE0 SL_NODE BVM
+
+* SERIES: SL -> jj320 -> QB
+B_LD1 SL_NODE QB_IN jj320 area=1
+L_IN_Q  QB_IN N_JS_IN_Q   0.8P
+B_JS_Q  N_JS_IN_Q N_JS_OUT_Q  jj18 area=1
+R_SH_Q  N_JS_IN_Q N_JS_OUT_Q  10
+B_JL1_Q N_JS_OUT_Q 0           jj112 area=1
+L_L1_Q  N_JS_OUT_Q N_MID_Q     3.91P
+R_RB_Q  N_MID_Q   IBIAS_Q     8.5
+L_L2_Q  N_MID_Q   N_PRE_OUT_Q  3.91P
+B_JL2_Q N_PRE_OUT_Q 0          jj189 area=1
+L_L0_Q  N_PRE_OUT_Q OUT_Q      1.323P
+R_LOAD_Q OUT_Q 0 12.0
+I_IBIAS_Q IBIAS_Q 0 DC 40U
+
+* W1(10-20ps), R1(90-100ps)
+I_WL0 0 WL0 pwl(0 0 9p 0
++ 10p 100U 20p 100U 21p 0
++ 90p 0 91p 100U 100p 100U 101p 0
++ 110p 0)
+I_BL0 0 BL0 pwl(0 0 9p 0
++ 10p 100U 20p 100U 21p 0
++ 90p 0 110p 0)
+I_SE0 0 SE0 pwl(0 0
++ 90p 0 91p 100U 100p 100U 101p 0
++ 110p 0)
+
+.tran 0.2p 110p 0 0.4p 0 DST
+.print P(B_JM1|XBVM0)
+.print I(B_LD1) V(B_JS_Q) P(B_JS_Q) I(B_JS_Q) V(OUT_Q)
+.end

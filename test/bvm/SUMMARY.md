@@ -96,25 +96,126 @@ MVM论文用JoSIM仿真同一QB电路并得到了0-4脉冲输出(Fig.2b)。论�
 3. 我们未做这个"调整"步骤
 
 ### 2.6 下一步 (BQ)
-1. 找出MVM论文中QB的"调整"参数 — 可能是JS IC、IBias或负载
-2. 用BVM最终输出(I_SL≈22μA)反推QB需要的输入阈值
+1. 找出MVM论文中QB的"调整"参数 — JS IC、IBias
+2. 用BVM最终输出(I_SL≈32μA)反推QB需要的输入阈值
 3. 调整QB参数使其对单个BVM输出产生1个SFQ脉冲
 4. 验证多BVM→多脉冲的对应关系
 
 ---
 
-## 三、文件结构
+## 三、BVM 输出优化实验 (2026-05-16)
+
+### 3.1 论文分析关键发现
+
+| 发现 | 来源 | 影响 |
+|------|------|------|
+| BVM 输出电流同时到达 QB（同列多行同时读）| MVM + BVM 论文 | QB 接收模拟累加电流 |
+| QB 按电流幅度→脉冲数转换（1x→1脉冲）| MVM 论文 §2.2 | QB 需匹配 BVM 单位输出 |
+| QB 参数需"调整"以检测单 BVM 输出 | BVM 论文 §3.2 | 我们未做此调整 |
+| JSL（JJ 堆叠替换 LSL）推荐 | BVM 论文 §2.5 | 面积优化，非性能提升 |
+| JS1/JS2 IC 可调但需与存储磁通同步 | BVM 论文 §2.5 | IC × L > Φ₀ 约束 |
+| 论文未给 I_SL 数值目标 | — | 目标是 QB 可检测即可 |
+
+### 3.2 Phase 1: 提高 JS1/JS2 IC (74→90μA) — ✗ 失败
+
+**假设**: 更高的 JS IC → 更强的开关 → 更大的 I_SL
+
+**结果**: R1/R0 从 2.5x 骤降至 **1.0x**（无法区分 0/1）
+
+| ISE | I_SL R1 | I_SL R0 | R1/R0 |
+|-----|---------|---------|-------|
+| 100~180μA | 9.1μA | 9.1μA | 1.0x |
+| 200μA | 16.0μA | 16.0μA | 1.0x |
+
+**根因**: S-Loop 存储磁通固定(由 JM1=120μA 决定)，无法调制更高 IC 的 JS1/JS2。
+JS IC 和 JM1 IC 必须同步调整。
+
+**详细记录**: [phase1_js_ic/CHANGELOG.md](phase1_js_ic/CHANGELOG.md)
+
+### 3.3 Phase 2A: JSL 替换 LSL — ✓ 可行但不提升 I_SL
+
+**假设**: 非线性 JJ 阻抗替换线性电感 LSL 可改善输出
+
+**结果**: 所有配置保持功能，但 I_SL 无显著提升
+
+| 配置 | I_SL R1 | R1/R0 | vs 基线 |
+|------|---------|-------|---------|
+| **基线 LSL=0.4pH** | **32.1 μA** | 2.5x | — |
+| JSL 1×jj320 | 31.6 μA | 2.6x | −1.6% |
+| JSL 4×jj320 | 30.3 μA | 2.6x | −5.6% |
+| JSL 8×jj320 | 28.7 μA | 2.7x | −10.6% |
+| JSL 4×jj74 | 25.4 μA | **2.8x** | −20.9% |
+
+**结论**: JSL 是面积优化方案（无分流电阻），可改善 R1/R0 但降低绝对 I_SL。
+
+**详细记录**: [phase2a_jsl/CHANGELOG.md](phase2a_jsl/CHANGELOG.md)
+
+### 3.4 优化实验 v2: 信号扫描 + 同步提升
+
+#### Plan A: ISE × IWL(read) 联合优化
+
+| ISE | IWL | I_SL R1 | I_SL R0 | R1/R0 |
+|-----|-----|---------|---------|-------|
+| 100 | 80 | 31.0 | 12.1 | **2.6x** |
+| 130 | 80 | **36.9** | 15.0 | 2.5x |
+| 120 | 100 | 35.4 | 14.6 | 2.4x |
+| 140 | 100 | 38.5 | 26.8 | 1.4x ✗ |
+| 180 | 100 | 50.4 | 46.2 | 1.1x ✗ |
+
+**发现**: ISE ≥ 140μA 时 R0 暴涨（过驱动两个状态）。最优: ISE=130, IWL=80, R1=36.9μA (+15%)。
+
+#### Plan B: JM1 + JS 同步提升
+
+| JM1 | JS | P_JM1 W1 | I_SL R1 | R1/R0 |
+|-----|-----|----------|---------|-------|
+| 140 | 85 | 8.3 rad | 21.1 | 1.8x |
+| 150 | 90 | 6.9 rad | 15.7 | 1.3x |
+| 160 | 100 | 1.8 rad | 12.0 | 1.0x |
+
+**发现**: 写电流(IWL+IBL=200μA)不足以驱动更高 IC 的 JM1，存储磁通反而减弱。
+
+#### 全部实验总结
+
+```
+BVM 输出优化 — 四条路径全部走完:
+  ├── Phase 1:  JS IC 74→90           → R1/R0崩溃 ✗
+  ├── Phase 2A: JSL 替换 LSL           → I_SL不升 △
+  ├── Plan A:   ISE+IWL优化           → 最高37.7μA △ (+17%)
+  └── Plan B:   JM1+JS同步            → 全面恶化 ✗
+
+最终 BVM 配置 (保留):
+  JM1=120μA, JS1=JS2=74μA (论文原值不变)
+  ISE=100μA, IWL(read)=100μA (稳健方案)
+  I_SL R1=32.1μA, R1/R0=2.5x
+```
+
+**结论: 32-37μA 是论文参数下 BVM 的物理极限。正确方向是调整 QB 匹配 BVM。**
+
+**详细记录**: [phase1_js_ic](phase1_js_ic/CHANGELOG.md) | [phase2a_jsl](phase2a_jsl/CHANGELOG.md) | [optimization_v2](optimization_v2/CHANGELOG.md)
+
+---
+
+## 四、文件结构
 ```
 test/bvm/
-├── BVM_FINAL_RW.html / FULL.html    ← 最终可视化
-├── test_bvm_final_rw/full.{cir,csv}  ← 最终测试 (12-series SL load)
-├── test_bvm_100/150/200uA.{cir,csv}  ← 历史参考
-├── archive/                          ← 旧结果
-└── SUMMARY.md
+├── BVM_FINAL_RW.html / FULL.html       ← 最终可视化
+├── test_bvm_final_rw/full.{cir,csv}     ← 最终测试 (1ps edges, 50GHz)
+├── plot_bvm_final.py                    ← 最终绘图脚本
+├── phase1_js_ic/                        ← Phase 1 实验 (JS IC↑, 失败)
+│   ├── CHANGELOG.md                     ← 详细记录
+│   └── backup/                          ← 基线备份
+├── phase2a_jsl/                         ← Phase 2A 实验 (JSL, 可行)
+│   ├── CHANGELOG.md                     ← 详细记录
+│   └── backup/                          ← 基线备份
+├── archive/                             ← 历史结果
+└── SUMMARY.md                           ← 本文
 
 test/bq/
-├── PLOT_bq_compare.html / PLOT_bq_pulses.html
-├── test_bq_80~200uA.{cir,csv}        ← 5级DC测试
-├── test_bq_sfq_pulses.{cir,csv}      ← SFQ脉冲测试
-└── SUMMARY.md
+├── BQ_PROPER_PULSE.html                 ← BQ 脉冲测试可视化
+├── BQ_BVM_MATCH.html                    ← BQ-BVM 匹配测试可视化
+├── test_bq_proper_pulse.{cir,csv}       ← 最优配置 (IBias泄放+3ps)
+├── test_bq_bvm_match.{cir,csv}          ← BVM 电流匹配测试
+├── plot_bq_final.py                     ← 最终绘图脚本
+├── archive/                             ← 历史结果
+└── SUMMARY.md                           ← BQ 详细分析
 ```

@@ -1,0 +1,50 @@
+* QB Final Functional Test
+* JS=25μA + R_shunt=10Ω + 10ps BVM-matched pulses
+* Tests: 0/1/2/3/4 BVM-equivalent levels
+*
+* === JJ Models (self-contained) ===
+.model jj25  jj(RTYPE=1, IC=25U,  RN=10.0, R0=30.0, CAP=0.15P, VG=2.8M, DELV=0.1M)
+.model jj112 jj(RTYPE=1, IC=112U, RN=2.2,  R0=6.6,  CAP=0.55P, VG=2.8M, DELV=0.1M)
+.model jj189 jj(RTYPE=1, IC=189U, RN=1.3,  R0=3.9,  CAP=1.0P,  VG=2.8M, DELV=0.1M)
+.model jj320 jj(RTYPE=1, IC=320U, RN=0.8,  R0=2.4,  CAP=1.5P,  VG=2.8M, DELV=0.1M)
+
+* === BQ Circuit (JS=25μA, R_shunt=10Ω) ===
+L_IN1  IN1     N_JS_IN   0.8P
+B_JS1  N_JS_IN N_JS_OUT  jj25 area=1
+R_SH1  N_JS_IN N_JS_OUT  10
+B_JL11 N_JS_OUT 0         jj112 area=1
+L_L11  N_JS_OUT N_MID     3.91P
+R_RB1  N_MID   IBIAS1    8.5
+L_L21  N_MID   N_PRE_OUT  3.91P
+B_JL21 N_PRE_OUT 0        jj189 area=1
+L_L01  N_PRE_OUT OUT1     1.323P
+
+* === Load and Bias ===
+R_LOAD OUT1 0 12.0
+I_IBIAS IBIAS1 0 DC 40U
+
+* === 5 BVM-equivalent levels: 0, 1, 2, 3, 4 × 32μA ===
+* 0 BVM: 0μA (no input)
+* 1 BVM: 32μA × 10ps
+* 2 BVM: 64μA × 10ps
+* 3 BVM: 96μA × 10ps
+* 4 BVM: 128μA × 10ps
+* 10ps zero gaps between pulses
+I_IN 0 IN1 pwl(0 0 8p 0
++ 10p 0U   20p 0U   22p 0
++ 30p 0
++ 32p 32U  42p 32U  44p 0
++ 52p 0
++ 54p 64U  64p 64U  66p 0
++ 74p 0
++ 76p 96U  86p 96U  88p 0
++ 98p 0
++ 100p 128U 110p 128U 112p 0
++ 130p 0)
+
+.tran 0.2p 130p 0 0.4p 0 DST
+.print I(I_IN) V(OUT1)
+.print V(B_JS1) P(B_JS1)
+.print V(B_JL11) V(B_JL21)
+.print I(R_LOAD)
+.end

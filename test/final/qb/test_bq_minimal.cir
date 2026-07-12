@@ -1,0 +1,25 @@
+* Minimal BQ Test — self-contained, no external includes
+.model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)
+
+* Inline BQ subcircuit
+.subckt BQ IN OUT IB
+Lin IN 1 0.8p
+L0 4 OUT 1.323p
+L1 2 3 3.91p
+L2 3 4 3.91p
+BJs 1 2 jjmit area=1.33
+BJL1 2 0 jjmit area=0.8
+RJ1 2 0 12
+BJL2 4 0 jjmit area=1.2
+RJ2 2 0 10
+RB IB 3 6
+.ends BQ
+
+XBQ IN1 OUT1 IBIAS BQ
+R_LOAD OUT1 0 3
+I_IBIAS 0 IBIAS pwl(0 0 1p 180u)
+I_IN 0 IN1 pulse(0 200u 10p 1p 1p 5p 50p)
+
+.tran 0.1p 250p
+.print V(OUT1) P(BJs|XBQ) P(BJL1|XBQ) P(BJL2|XBQ)
+.end

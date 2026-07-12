@@ -1,0 +1,83 @@
+* 2x2 BVM Array — 8 Lines, 4-Cycle Cell-by-Cell Write
+* WL/SE per row, BL/SL per col. All drives 200μA (100μA/cell).
+* C1 (10-20): Write cell00=0 — WL0=-200, BL0=-200
+* C2 (30-40): Write cell01=1 — WL0=+200, BL1=+200
+* C3 (50-60): Write cell10=1 — WL1=+200, BL0=+200
+* C4 (70-80): Write cell11=1 — WL1=+200, BL1=+200
+* C5 (100-110): Read Row0 — WL0=+200, SE0=+200
+* C6 (130-140): Read Row1 — WL1=+200, SE1=+200
+.include ../../circuits/models/mitll_models.cir
+.include ../../circuits/bvm/bvm_cell.cir
+
+XBVM00 WL0 BL0 SE0 SL0 BVM
+XBVM01 WL0 BL1 SE0 SL1 BVM
+XBVM10 WL1 BL0 SE1 SL0 BVM
+XBVM11 WL1 BL1 SE1 SL1 BVM
+
+* 12 jj320 series load per SL (paper spec)
+B_LD0  SL0  nld0_1  jj320 area=1
+B_LD1  nld0_1 nld0_2 jj320 area=1
+B_LD2  nld0_2 nld0_3 jj320 area=1
+B_LD3  nld0_3 nld0_4 jj320 area=1
+B_LD4  nld0_4 nld0_5 jj320 area=1
+B_LD5  nld0_5 nld0_6 jj320 area=1
+B_LD6  nld0_6 nld0_7 jj320 area=1
+B_LD7  nld0_7 nld0_8 jj320 area=1
+B_LD8  nld0_8 nld0_9 jj320 area=1
+B_LD9  nld0_9 nld0_10 jj320 area=1
+B_LD10 nld0_10 nld0_11 jj320 area=1
+B_LD11 nld0_11 0 jj320 area=1
+B_LD12 SL1  nld1_1  jj320 area=1
+B_LD13 nld1_1 nld1_2 jj320 area=1
+B_LD14 nld1_2 nld1_3 jj320 area=1
+B_LD15 nld1_3 nld1_4 jj320 area=1
+B_LD16 nld1_4 nld1_5 jj320 area=1
+B_LD17 nld1_5 nld1_6 jj320 area=1
+B_LD18 nld1_6 nld1_7 jj320 area=1
+B_LD19 nld1_7 nld1_8 jj320 area=1
+B_LD20 nld1_8 nld1_9 jj320 area=1
+B_LD21 nld1_9 nld1_10 jj320 area=1
+B_LD22 nld1_10 nld1_11 jj320 area=1
+B_LD23 nld1_11 0 jj320 area=1
+
+* --- WL0 (Row 0) ---
+I_WL0 0 WL0 pwl(0 0 9p 0
++ 10p -200U 20p -200U 21p 0
++ 29p 0 30p 200U 40p 200U 41p 0
++ 99p 0 100p 200U 110p 200U 111p 0
++ 140p 0)
+
+* --- WL1 (Row 1) ---
+I_WL1 0 WL1 pwl(0 0 49p 0
++ 50p 200U 60p 200U 61p 0
++ 69p 0 70p 200U 80p 200U 81p 0
++ 129p 0 130p 200U 140p 200U 141p 0
++ 170p 0)
+
+* --- BL0 (Col 0) ---
+I_BL0 0 BL0 pwl(0 0 9p 0
++ 10p -200U 20p -200U 21p 0
++ 49p 0 50p 200U 60p 200U 61p 0
++ 140p 0)
+
+* --- BL1 (Col 1) ---
+I_BL1 0 BL1 pwl(0 0 29p 0
++ 30p 200U 40p 200U 41p 0
++ 69p 0 70p 200U 80p 200U 81p 0
++ 140p 0)
+
+* --- SE0 (Row 0) ---
+I_SE0 0 SE0 pwl(0 0 99p 0
++ 100p 200U 110p 200U 111p 0
++ 170p 0)
+
+* --- SE1 (Row 1) ---
+I_SE1 0 SE1 pwl(0 0 129p 0
++ 130p 200U 140p 200U 141p 0
++ 170p 0)
+
+.tran 0.2p 170p 0 0.4p 0 DST
+.print P(B_JM1|XBVM00) P(B_JM1|XBVM01) P(B_JM1|XBVM10) P(B_JM1|XBVM11)
++       I(B_LD0) I(B_LD12)
++       I(I_WL0) I(I_WL1) I(I_BL0) I(I_BL1) I(I_SE0) I(I_SE1)
+.end

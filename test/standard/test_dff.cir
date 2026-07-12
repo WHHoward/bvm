@@ -1,0 +1,82 @@
+* DFF Comprehensive Test — ColdFlux Standard Cell (7 JJs)
+* Probes every junction (phase/voltage/current) and every inductor current
+*
+* DFF Topology:
+*   Data:   a--L1--1--B1--2--LP1--GND
+*                  |  RB1/LRB1--GND
+*                  L2
+*                  |
+*                  4--B2--5--B3--6--LP3--GND
+*                  |  RB2/LRB2  |  RB3/LRB3--GND
+*                  |       L3 (8.64pH storage loop!)
+*                  |       |
+*                  8--B4--9--LP4--GND
+*                  |  RB4/LRB4--GND
+*                  L6
+*                  |
+*   Clock:  clk--L4--10--B5--11--LP5--GND
+*                  |   RB5/LRB5--GND
+*                  L5
+*                  |
+*                  13--B6--8  (B6: 13->8, feedback)
+*                  |   RB6/LRB6
+*   Output: 14--B7--15--LP7--GND
+*                  |  RB7/LRB7--GND
+*                  L7--q
+*
+* Operation: Data stores flux in L3 loop. Clock reads it out to q.
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/DFF.cir
+.include ../../circuits/standard/JTL.cir
+
+* ============================================================
+* Data input (a): SFQ at 15ps — write "1"
+* ============================================================
+V_IN IN 0 pwl(0 0 10p 0 15p 0 16p 1.5m 18p 1.5m 19p 0 100p 0)
+R_IN IN N1 3
+L_IN N1 SFQ_D 0.5p
+
+* ============================================================
+* Clock input (clk): SFQ at 35ps — sample & read
+* ============================================================
+V_CLK CLK 0 pwl(0 0 10p 0 35p 0 36p 1.5m 38p 1.5m 39p 0 100p 0)
+R_CLK CLK N2 3
+L_CLK N2 SFQ_CLK 0.5p
+
+* ============================================================
+* DUT: DFF
+* ============================================================
+XDFF SFQ_D SFQ_CLK SFQ_Q THmitll_DFF
+
+* ============================================================
+* Load JTL
+* ============================================================
+XLOAD SFQ_Q SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+* ============================================================
+* Simulation
+* ============================================================
+.tran 0.1p 70p
+
+* --- Junction Phases ---
+.print P(B1|XDFF) P(B2|XDFF) P(B3|XDFF) P(B4|XDFF) P(B5|XDFF) P(B6|XDFF) P(B7|XDFF)
+
+* --- Junction Voltages (node pairs) ---
+.print V(1|XDFF) V(2|XDFF) V(4|XDFF) V(5|XDFF) V(6|XDFF) V(8|XDFF) V(9|XDFF)
+.print V(10|XDFF) V(11|XDFF) V(13|XDFF) V(14|XDFF) V(15|XDFF)
+
+* --- Inductor Currents ---
+.print I(L1|XDFF) I(L2|XDFF) I(L3|XDFF) I(L4|XDFF) I(L5|XDFF) I(L6|XDFF) I(L7|XDFF)
+.print I(LP1|XDFF) I(LP3|XDFF) I(LP4|XDFF) I(LP5|XDFF) I(LP7|XDFF)
+
+* --- Bias Resistor Currents ---
+.print I(RB1|XDFF) I(RB2|XDFF) I(RB3|XDFF) I(RB4|XDFF) I(RB5|XDFF) I(RB6|XDFF) I(RB7|XDFF)
+
+* --- Input/Output Voltages ---
+.print V(SFQ_D) V(SFQ_CLK) V(SFQ_Q)
+
+* --- Load JTL Phases ---
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

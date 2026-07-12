@@ -1,0 +1,72 @@
+* JTL Comprehensive Test — ColdFlux Standard Cell
+* Probes every junction (phase/current/voltage) and every inductor current
+*
+* JTL Internal Structure (THmitll_JTL):
+*   a--L1--1--B1--2--LP1--GND
+*          |  RB1--LRB1--GND (bias tee)
+*          L2
+*          |
+*          3--L3--5--B2--6--LP2--GND
+*          |       |  RB2--LRB2--GND (bias tee)
+*         LB1      L4
+*          |       |
+*          4       q (output)
+*          |
+*         IB1 (bias current source, 0->350uA at 5ps)
+*          |
+*         GND
+*
+* Parameters (computed at runtime):
+*   B1=B2=IC=2.5 -> IC=250uA each
+*   IB1=(B1+B2)*Ic0*BiasCoef=5*100uA*0.7=350uA
+*   L1~L4=Phi0/(4*IC*Ic0)~2.07pH
+*   RB1=RB2=B0Rs/IC~2.74ohm (for 2.6mV equivalent bias)
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/JTL.cir
+
+* ============================================================
+* SFQ Input Pulse Generation
+* V_IN = 1.5mV through R_IN=3ohm -> I_peak ~ 500uA
+* This exceeds the JTL IC=250uA, triggering SFQ switching
+* ============================================================
+V_IN IN 0 pwl(0 0 10p 0 11p 1.5m 13p 1.5m 14p 0 100p 0)
+R_IN IN N1 3
+L_IN N1 SFQ_IN 0.5p
+
+* ============================================================
+* DUT: JTL under test
+* ============================================================
+XDUT SFQ_IN SFQ_MID THmitll_JTL
+
+* ============================================================
+* Load: second JTL for proper SFQ termination
+* ============================================================
+XLOAD SFQ_MID SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+* ============================================================
+* Simulation
+* ============================================================
+.tran 0.1p 50p
+
+* --- JTL DUT: Junction phases ---
+.print P(B1|XDUT) P(B2|XDUT)
+
+* --- JTL DUT: Junction voltages (node pairs) ---
+* V_B1 = V(1)-V(2), V_B2 = V(5)-V(6)
+.print V(1|XDUT) V(2|XDUT) V(5|XDUT) V(6|XDUT)
+
+* --- JTL DUT: Inductor currents ---
+.print I(L1|XDUT) I(L2|XDUT) I(L3|XDUT) I(L4|XDUT)
+.print I(LP1|XDUT) I(LP2|XDUT) I(LB1|XDUT)
+
+* --- JTL DUT: Bias resistor currents ---
+.print I(RB1|XDUT) I(RB2|XDUT)
+
+* --- JTL DUT: Input/output node voltages ---
+.print V(SFQ_IN) V(SFQ_MID)
+
+* --- Load JTL: Phases (verify propagation) ---
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

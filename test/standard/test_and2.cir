@@ -1,0 +1,62 @@
+* AND2 Comprehensive Test — ColdFlux Standard Cell (15 JJs, a+b+clk->q)
+* RSFQ clocked AND: data must arrive BEFORE clock
+*
+* Test plan:
+*   Cycle 1: A@15ps, B@25ps → CLK@35ps → A∧B=1 → Q=1 ✓
+*   Cycle 2: A@55ps, no B     → CLK@70ps → A∧B=0 → Q=0 ✓
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/AND2.cir
+.include ../../circuits/standard/JTL.cir
+
+* Input A: SFQ @15ps (cycle1), @55ps (cycle2)
+V_IA INA 0 pwl(0 0 10p 0 15p 0 16p 1.5m 18p 1.5m 19p 0 55p 0 56p 1.5m 58p 1.5m 59p 0 100p 0)
+R_IA INA N1 3
+L_IA N1 SFQ_A 0.5p
+
+* Input B: SFQ @25ps (cycle1 only)
+V_IB INB 0 pwl(0 0 10p 0 25p 0 26p 1.5m 28p 1.5m 29p 0 100p 0)
+R_IB INB N2 3
+L_IB N2 SFQ_B 0.5p
+
+* Clock: SFQ @35ps (cycle1: A∧B=1), @70ps (cycle2: A∧0=0)
+V_CLK CLK 0 pwl(0 0 10p 0 35p 0 36p 1.5m 38p 1.5m 39p 0 70p 0 71p 1.5m 73p 1.5m 74p 0 100p 0)
+R_CLK CLK N3 3
+L_CLK N3 SFQ_CLK 0.5p
+
+* DUT: AND2
+XAND2 SFQ_A SFQ_B SFQ_CLK SFQ_Q THmitll_AND2
+
+* Load JTL
+XLOAD SFQ_Q SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+.tran 0.1p 100p
+
+* All 15 junction phases
+.print P(B1|XAND2) P(B2|XAND2) P(B3|XAND2) P(B4|XAND2) P(B5|XAND2)
+.print P(B6|XAND2) P(B7|XAND2) P(B8|XAND2) P(B9|XAND2) P(B10|XAND2)
+.print P(B11|XAND2) P(B12|XAND2) P(B13|XAND2) P(B14|XAND2) P(B15|XAND2)
+
+* All 15 junction node voltages
+.print V(1|XAND2) V(2|XAND2) V(4|XAND2) V(5|XAND2) V(6|XAND2) V(7|XAND2) V(8|XAND2)
+.print V(9|XAND2) V(10|XAND2) V(11|XAND2) V(12|XAND2) V(13|XAND2) V(14|XAND2) V(15|XAND2)
+.print V(16|XAND2) V(17|XAND2) V(18|XAND2) V(19|XAND2) V(20|XAND2) V(21|XAND2) V(22|XAND2)
+.print V(23|XAND2) V(24|XAND2) V(25|XAND2) V(26|XAND2) V(27|XAND2) V(28|XAND2) V(29|XAND2)
+.print V(30|XAND2) V(31|XAND2)
+
+* All inductor currents (L1-L20 + LP1-LP15)
+.print I(L1|XAND2) I(L2|XAND2) I(L3|XAND2) I(L4|XAND2) I(L5|XAND2)
+.print I(L6|XAND2) I(L7|XAND2) I(L8|XAND2) I(L9|XAND2) I(L10|XAND2)
+.print I(L11|XAND2) I(L12|XAND2) I(L13|XAND2) I(L14|XAND2) I(L15|XAND2)
+.print I(L16|XAND2) I(L17|XAND2) I(L18|XAND2) I(L19|XAND2) I(L20|XAND2)
+
+* Bias resistor currents
+.print I(RB1|XAND2) I(RB2|XAND2) I(RB3|XAND2) I(RB4|XAND2) I(RB5|XAND2)
+.print I(RB6|XAND2) I(RB7|XAND2) I(RB8|XAND2) I(RB9|XAND2) I(RB10|XAND2)
+.print I(RB11|XAND2) I(RB12|XAND2) I(RB13|XAND2) I(RB14|XAND2) I(RB15|XAND2)
+
+* I/O voltages + Load phases
+.print V(SFQ_A) V(SFQ_B) V(SFQ_CLK) V(SFQ_Q)
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

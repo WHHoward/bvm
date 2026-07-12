@@ -68,3 +68,29 @@ Phase analysis is the standard mode (voltage was deprecated as of v2.5). Only tr
 - Headers are in `include/JoSIM/`, implementation in `src/`
 - Error messages are centralized in `Errors.cpp` with `Errors::<category>_messages()` functions, keyed by error enum
 - Deep copy is typical; components and vectors are passed by value/reference depending on ownership
+
+## Skills — 每个任务开始前必须检查
+
+**本项目安装了完整的 ECC + Superpowers 技能套件。每次响应前检查是否有适用的 skill，不要跳过。**
+
+### 触发规则
+
+**每次任务的第一件事：调用 `skill-router` 分析用户请求，确定需要哪些 skill。不要凭直觉跳过。**
+
+| 当你在做…… | 必须先调用…… | 说明 |
+|------------|-------------|------|
+| **任何任务开始时** | `skill-router` | 决策路由，确定需要哪些 skill |
+| 写多步骤代码变更 | `superpowers:writing-plans` | 先出计划再动手 |
+| 实现功能或修 bug | `superpowers:test-driven-development` | 先写测试，再写代码 |
+| **测试失败或结果不对** | `superpowers:systematic-debugging` | 系统性排查，不要猜 |
+| **声称"完成了/修好了/通过了"** | `superpowers:verification-before-completion` | 先验证，再说话 |
+| 创建任何图表/可视化 | `dataviz` | 标准配色和交互 |
+| **生成仿真结果可视化** | `josim-viz` | JoSIM 可视化（本项目 skill） |
+| 修改 C++ 源码 | `ecc:cpp-review` | C++ 代码审查 |
+| 从 PDF 提取内容 | `document-skills:pdf` | PDF 处理 |
+
+### 本项目自定义 Skill
+
+- **`skill-router`** — 任务开始时决策路由，分析用户请求确定需要哪些 skill
+- **`josim-viz`** — 仿真结果可视化。触发词：可视化、画图、看图、出图、plot、波形
+- 位于 `.claude/skills/josim-viz.md`

@@ -1,0 +1,43 @@
+* SPLIT Comprehensive Test — ColdFlux Standard Cell (3 JJs, a->q0+q1)
+* Verifies single SFQ pulse splits to both outputs
+* Full probing of all junctions, inductors, and bias resistors
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/SPLIT.cir
+.include ../../circuits/standard/JTL.cir
+
+* SFQ input pulse @12ps
+V_IN IN 0 pwl(0 0 10p 0 12p 0 13p 1.5m 15p 1.5m 16p 0 100p 0)
+R_IN IN N1 3
+L_IN N1 SFQ_IN 0.5p
+
+* DUT: SPLIT
+XSPLIT SFQ_IN Q0 Q1 THmitll_SPLIT
+
+* Load JTLs on both outputs
+XJTL0 Q0 Q0_OUT THmitll_JTL
+XJTL1 Q1 Q1_OUT THmitll_JTL
+R_T0 Q0_OUT 0 1
+R_T1 Q1_OUT 0 1
+
+.tran 0.1p 60p
+
+* All 3 junction phases
+.print P(B1|XSPLIT) P(B2|XSPLIT) P(B3|XSPLIT)
+
+* Junction node voltages
+.print V(1|XSPLIT) V(2|XSPLIT) V(4|XSPLIT) V(5|XSPLIT) V(6|XSPLIT) V(7|XSPLIT)
+.print V(8|XSPLIT) V(9|XSPLIT)
+
+* Inductor currents
+.print I(L1|XSPLIT) I(L2|XSPLIT) I(L3|XSPLIT) I(L4|XSPLIT)
+.print I(LP1|XSPLIT) I(LP2|XSPLIT) I(LP3|XSPLIT)
+.print I(LB1|XSPLIT) I(LB2|XSPLIT) I(LB3|XSPLIT)
+
+* Bias resistor currents
+.print I(RB1|XSPLIT) I(RB2|XSPLIT) I(RB3|XSPLIT)
+
+* I/O and Load phases
+.print V(SFQ_IN) V(Q0) V(Q1)
+.print P(B1|XJTL0) P(B2|XJTL0) P(B1|XJTL1) P(B2|XJTL1)
+.end

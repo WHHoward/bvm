@@ -1,0 +1,29 @@
+* T1 R_TRIG Drive — Voltage pulse + series 5Ω resistor
+* Semi-correct approach: R_TRIG ≈ RN provides some self-reset
+.include ../../../circuits/t1/t1_cell.cir
+
+.include ../../../circuits/models/jjmit.cir
+XT1 I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1
+V_BIAS1 N_BIAS1 0 DC 1.67m
+V_BIAS2 N_BIAS2 0 DC 1.67m
+I_BIAS3 N_BIAS3 0 DC 35U
+R_S S 0 12.0
+R_C C 0 12.0
+
+* CLK: 1.2mV pulse + 5Ω series. 20GHz, first at 15ps
+V_TRIG_CLK CLK_RAW 0 pulse(0 1.2m 15p 1p 1p 2p 50p)
+R_TRIG_CLK CLK_RAW CLK 5
+
+* I: 1.2mV PWL + 5Ω series. Each pulse arrives 20ps after CLK
+V_TRIG_I I_RAW 0 pwl(0 0
++ 35p 0 36p 1.2m 38p 1.2m 39p 0
++ 85p 0 86p 1.2m 88p 1.2m 89p 0  95p 0 96p 1.2m 98p 1.2m 99p 0
++ 135p 0 136p 1.2m 138p 1.2m 139p 0  145p 0 146p 1.2m 148p 1.2m 149p 0  155p 0 156p 1.2m 158p 1.2m 159p 0
++ 185p 0 186p 1.2m 188p 1.2m 189p 0  195p 0 196p 1.2m 198p 1.2m 199p 0  205p 0 206p 1.2m 208p 1.2m 209p 0  215p 0 216p 1.2m 218p 1.2m 219p 0
++ 230p 0)
+R_TRIG_I I_RAW I 5
+
+.tran 0.2p 230p 0 0.4p 0 DST
+.print V(I) V(CLK) V(S) V(C)
+.print P(B_J1|XT1) P(B_J2|XT1) P(B_J9|XT1)
+.end

@@ -1,0 +1,27 @@
+* T1 Direct Drive — Voltage/Current pulse sources (no sfq_gen)
+* Original approach: V_TRIG directly to T1 pins
+.include ../../../circuits/t1/t1_cell.cir
+
+.include ../../../circuits/models/jjmit.cir
+XT1 I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1
+V_BIAS1 N_BIAS1 0 DC 1.67m
+V_BIAS2 N_BIAS2 0 DC 1.67m
+I_BIAS3 N_BIAS3 0 DC 35U
+R_S S 0 12.0
+R_C C 0 12.0
+
+* CLK: voltage pulse (1mV, 2ps wide)
+V_CLK CLK 0 pulse(0 1m 10p 1p 1p 2p 50p)
+
+* I: voltage PWL (1mV, 2ps wide, 1→2→3→4 pulses/cycle)
+V_I I 0 pwl(0 0
++ 32p 0 33p 1m 35p 1m 36p 0
++ 82p 0 83p 1m 85p 1m 86p 0  89p 0 90p 1m 92p 1m 93p 0
++ 132p 0 133p 1m 135p 1m 136p 0  139p 0 140p 1m 142p 1m 143p 0  146p 0 147p 1m 149p 1m 150p 0
++ 182p 0 183p 1m 185p 1m 186p 0  189p 0 190p 1m 192p 1m 193p 0  196p 0 197p 1m 199p 1m 200p 0  203p 0 204p 1m 206p 1m 207p 0
++ 220p 0)
+
+.tran 0.2p 230p 0 0.4p 0 DST
+.print V(I) V(CLK) V(S) V(C)
+.print P(B_J1|XT1) P(B_J2|XT1) P(B_J9|XT1)
+.end

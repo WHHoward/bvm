@@ -1,0 +1,16 @@
+* Single BVM → QB — Simplest Link Test
+* Original from circuits/ref/spice/
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+.include ../../../circuits/qb/bq_cell.cir
+
+XBQ    QB_IN OUT_Q IBIAS_Q BQ
+R_LOAD_Q OUT_Q 0 3
+I_IBIAS_Q 0 IBIAS_Q pwl(0 0 1p 180u)
+
+I1 0 QB_IN pulse(0 200u 10p 1p 1p 5p 50p)
+
+
+.tran 0.1p 500p
+.print I(RB|XBQ) I(Lin|XBQ) v(2|XBQ) v(4|XBQ) p(BJs|XBQ) p(BJL1|XBQ) p(BJL2|XBQ) V(OUT_Q) I(R_LOAD_Q)
+.end

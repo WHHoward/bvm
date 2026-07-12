@@ -1,0 +1,115 @@
+* 4×1 BVM Array + QB — Mixed Model, 20GHz, Shared BL
+* Topology: 4 rows × 1 column
+*   WL0-3 per row, BL shared (1 column), SE0-3 per row, SL shared
+* Write: all 4 BVMs to "1", WL=75μA + BL=300μA (75μA/cell) = 150μA/cell
+*   Adjusted for 20GHz: longer pulse needs lower current for single-vortex lock
+* Read: simultaneous WL+SE on N rows → SL current sum → QB
+* 20GHz: 50ps period, 25ps pulse, 1ps edges
+* SL load: 12×jj320 (paper spec)
+.include ../../../circuits/models/jjmit.cir
+.include ../../circuits/bvm/bvm_cell.cir
+.include ../../circuits/qb/bq_cell_rshunt.cir
+
+* jjmit: V0 params for SL load (paper Fig.9: 12×jjmit on each SL)
+.model jjmit jj(RTYPE=1, IC=500U, RN=0.5, R0=1.5, CAP=2.5P, VG=2.8M, DELV=0.1M)
+
+* 4×1 array: shared BL, distributed SL column (paper Fig.2a)
+* SL column: BVM3(top) → BVM2 → BVM1 → BVM0(bottom, closest to load)
+* Each BVM has internal LSL=0.4p → series chain = ΣLSL per paper §2.5
+XBVM0 WL0 BL SE0 SL_BOT  BVM
+XBVM1 WL1 BL SE1 n_sl1   BVM
+XBVM2 WL2 BL SE2 n_sl2   BVM
+XBVM3 WL3 BL SE3 SL_TOP  BVM
+
+* JJ stack replaces LSL — distributed along column, 3×jjmit between rows
+B_SL2  SL_TOP n_sl2  jjmit area=1
+B_SL2b n_sl2  n_sl2b jjmit area=1
+B_SL2c n_sl2b n_sl1  jjmit area=1
+B_SL1  n_sl1  n_sl1b jjmit area=1
+B_SL1b n_sl1b n_sl1c jjmit area=1
+B_SL1c n_sl1c SL_BOT jjmit area=1
+B_SL0  SL_BOT n_sl0  jjmit area=1
+B_SL0b n_sl0  n_sl0b jjmit area=1
+B_SL0c n_sl0b n_sl0c jjmit area=1
+B_SL0d n_sl0c n_sl0d jjmit area=1
+B_SL0e n_sl0d n_sl0e jjmit area=1
+B_SL0f n_sl0e QB_IN  jjmit area=1
+
+XBQ    QB_IN OUT_Q IBIAS_Q BQ_RS
+R_LOAD_Q OUT_Q 0 12.0
+I_IBIAS_Q IBIAS_Q 0 DC 40U
+
+* === 20GHz: 50ps period, 25ps pulse, 1ps edges ===
+* Write: WL=75μA + BL_shared=300μA (75μA×4cells) = 150μA/cell
+* W0(10-35) W1(60-85) W2(110-135) W3(160-185)
+* Read: WL=SE=100μA (standard read)
+* R1(210-235,1BVM) R2(260-285,2BVM) R3(310-335,3BVM) R4(360-385,4BVM)
+
+* --- WL0 (Row 0) ---
+I_WL0 0 WL0 pwl(0 0 9p 0
++ 10p 100U 35p 100U 36p 0
++ 210p 0 211p 100U 235p 100U 236p 0
++ 260p 0 261p 100U 285p 100U 286p 0
++ 310p 0 311p 100U 335p 100U 336p 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+* --- WL1 (Row 1) ---
+I_WL1 0 WL1 pwl(0 0 59p 0
++ 60p 100U 85p 100U 86p 0
++ 260p 0 261p 100U 285p 100U 286p 0
++ 310p 0 311p 100U 335p 100U 336p 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+* --- WL2 (Row 2) ---
+I_WL2 0 WL2 pwl(0 0 109p 0
++ 110p 100U 135p 100U 136p 0
++ 310p 0 311p 100U 335p 100U 336p 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+* --- WL3 (Row 3) ---
+I_WL3 0 WL3 pwl(0 0 159p 0
++ 160p 100U 185p 100U 186p 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+* --- BL (shared, 1 column, 300μA = 4×75μA) ---
+I_BL 0 BL pwl(0 0 9p 0
++ 10p 400U 35p 400U 36p 0
++ 59p 0 60p 400U 85p 400U 86p 0
++ 109p 0 110p 400U 135p 400U 136p 0
++ 159p 0 160p 400U 185p 400U 186p 0
++ 400p 0)
+
+* --- SE0 (Row 0) ---
+I_SE0 0 SE0 pwl(0 0
++ 210p 0 211p 100U 235p 100U 236p 0
++ 260p 0 261p 100U 285p 100U 286p 0
++ 310p 0 311p 100U 335p 100U 336p 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+* --- SE1 (Row 1) ---
+I_SE1 0 SE1 pwl(0 0
++ 260p 0 261p 100U 285p 100U 286p 0
++ 310p 0 311p 100U 335p 100U 336p 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+* --- SE2 (Row 2) ---
+I_SE2 0 SE2 pwl(0 0
++ 310p 0 311p 100U 335p 100U 336p 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+* --- SE3 (Row 3) ---
+I_SE3 0 SE3 pwl(0 0
++ 360p 0 361p 100U 385p 100U 386p 0
++ 400p 0)
+
+.tran 0.5p 400p 0 0.5p 0 DST
+.print P(B_JM1|XBVM0) P(B_JM1|XBVM1) P(B_JM1|XBVM2) P(B_JM1|XBVM3)
+.print I(B_SL0) V(B_JS|XBQ) P(B_JS|XBQ) I(B_JS|XBQ) V(OUT_Q) I(R_LOAD_Q)
+.end

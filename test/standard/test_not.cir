@@ -1,0 +1,100 @@
+* NOT Comprehensive Test — ColdFlux Standard Cell (8 JJs)
+*
+* NOT Topology (clocked inverter, 8 JJs):
+*   Data:   a--L1--1--B1(1-2)--LP1--GND
+*                  |  RB1/LRB1--GND
+*                  L2
+*                  |
+*                  4--B2(4-5)--[L3(5-7) + L4(5-9)]
+*                  |  RB2/LRB2
+*                  L3           L4
+*                  |            |
+*                  7--B3(7-8)   9--B4(9-10)
+*                  |  RB3       |  RB4
+*                  L7           L6
+*                  |            |
+*                  8--B7(8-15)  10--B6(10-14)
+*                  |  RB7       |  RB6
+*                  LP7--GND     |
+*                  L8           14
+*                  |            |
+*   Clock:  clk--L5--11--B5(11-12)--LP5--GND
+*                  |   RB5/LRB5--GND
+*                  L6
+*                  |
+*                  10--B6 connects data+clk paths
+*
+*   Output: 16--B8(16-17)--LP8--GND
+*                  |  RB8/LRB8--GND
+*                  L9--q
+*
+*   Clock+data interaction at node 10: B6 carries combined signal
+*   Output B8 at node 16: fires only when clock arrives WITHOUT prior data
+*
+* Mealy FSM (2 states):
+*   State 0: a→state1 (store)  |  clk→output SFQ (NOT(0)=1)
+*   State 1: a→error           |  clk→state0 (NOT(1)=0, no output)
+*
+* Truth table (RSFQ clocked NOT):
+*   NOT(0)=1   NOT(1)=0
+*
+* Data MUST arrive BEFORE clock for proper sampling.
+* Test:
+*   Cycle 1: CLK@15ps (A=0) → Q=1 (should fire — NOT(0)=1)
+*   Cycle 2: A@35ps → CLK@55ps (A=1) → Q=0 (should NOT fire — NOT(1)=0)
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/NOT.cir
+.include ../../circuits/standard/JTL.cir
+
+* ============================================================
+* Data input (a): SFQ at 35ps (Cycle 2 — A=1 case)
+* ============================================================
+V_IN IN 0 pwl(0 0 10p 0 35p 0 36p 1.5m 38p 1.5m 39p 0 100p 0)
+R_IN IN N1 3
+L_IN N1 SFQ_A 0.5p
+
+* ============================================================
+* Clock input (clk): SFQ at 15ps (Cycle 1, A=0) AND 55ps (Cycle 2, A=1)
+* ============================================================
+V_CLK CLK 0 pwl(0 0 10p 0 15p 0 16p 1.5m 18p 1.5m 19p 0 55p 0 56p 1.5m 58p 1.5m 59p 0 100p 0)
+R_CLK CLK N2 3
+L_CLK N2 SFQ_CLK 0.5p
+
+* ============================================================
+* DUT: NOT
+* ============================================================
+XNOT SFQ_A SFQ_CLK SFQ_Q THmitll_NOT
+
+* ============================================================
+* Load JTL
+* ============================================================
+XLOAD SFQ_Q SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+* ============================================================
+* Simulation
+* ============================================================
+.tran 0.1p 100p
+
+* --- Junction Phases (8 JJs) ---
+.print P(B1|XNOT) P(B2|XNOT) P(B3|XNOT) P(B4|XNOT) P(B5|XNOT) P(B6|XNOT) P(B7|XNOT) P(B8|XNOT)
+
+* --- Junction Voltages (node pairs) ---
+.print V(1|XNOT) V(2|XNOT) V(4|XNOT) V(5|XNOT) V(7|XNOT) V(8|XNOT) V(9|XNOT) V(10|XNOT)
+.print V(11|XNOT) V(12|XNOT) V(14|XNOT) V(15|XNOT) V(16|XNOT) V(17|XNOT)
+
+* --- Inductor Currents ---
+.print I(L1|XNOT) I(L2|XNOT) I(L3|XNOT) I(L4|XNOT) I(L5|XNOT)
+.print I(L6|XNOT) I(L7|XNOT) I(L8|XNOT) I(L9|XNOT)
+.print I(LP1|XNOT) I(LP5|XNOT) I(LP7|XNOT) I(LP8|XNOT)
+
+* --- Bias Resistor Currents ---
+.print I(RB1|XNOT) I(RB2|XNOT) I(RB3|XNOT) I(RB4|XNOT) I(RB5|XNOT) I(RB6|XNOT) I(RB7|XNOT) I(RB8|XNOT)
+
+* --- Input/Output Voltages ---
+.print V(SFQ_A) V(SFQ_CLK) V(SFQ_Q)
+
+* --- Load JTL Phases ---
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

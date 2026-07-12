@@ -1,0 +1,15 @@
+* Standalone Validation: sfq_gen_clk (L_OUT=0.3pH)
+* Tests 5 triggers → 5 clean SFQ pulses with 12Ω load
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/sfq_gen_clk.cir
+
+
+XSFQ CLK_RAW SFQ_OUT V_BIAS sfq_gen_clk
+V_BIAS V_BIAS 0 DC 1.67m
+V_TRIG CLK_RAW 0 pulse(0 0.75m 20p 1p 1p 5p 50p)
+R_LOAD SFQ_OUT 0 12
+
+.tran 0.2p 220p 0 0.4p 0 DST
+.print V(CLK_RAW) V(SFQ_OUT)
+.print P(B0|XSFQ)
+.end

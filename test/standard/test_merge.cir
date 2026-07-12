@@ -1,0 +1,48 @@
+* MERGE Comprehensive Test — ColdFlux Standard Cell (7 JJs, a+b->q)
+* Verifies two staggered SFQ inputs merge to a single output stream
+* Full probing of all junctions, inductors, and bias resistors
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/MERGE.cir
+.include ../../circuits/standard/JTL.cir
+
+* SFQ pulse on input A @12ps
+V_INA INA 0 pwl(0 0 10p 0 12p 0 13p 1.5m 15p 1.5m 16p 0 100p 0)
+R_INA INA N1 3
+L_INA N1 SFQ_A 0.5p
+
+* SFQ pulse on input B @30ps
+V_INB INB 0 pwl(0 0 10p 0 30p 0 31p 1.5m 33p 1.5m 34p 0 100p 0)
+R_INB INB N2 3
+L_INB N2 SFQ_B 0.5p
+
+* DUT: MERGE
+XMERGE SFQ_A SFQ_B SFQ_Q THmitll_MERGE
+
+* Load JTL
+XLOAD SFQ_Q SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+.tran 0.1p 70p
+
+* All 7 junction phases
+.print P(B1|XMERGE) P(B2|XMERGE) P(B3|XMERGE) P(B4|XMERGE) P(B5|XMERGE) P(B6|XMERGE) P(B7|XMERGE)
+
+* Junction node voltages
+.print V(1|XMERGE) V(2|XMERGE) V(3|XMERGE) V(4|XMERGE) V(5|XMERGE) V(6|XMERGE) V(7|XMERGE)
+.print V(8|XMERGE) V(9|XMERGE) V(10|XMERGE) V(11|XMERGE) V(12|XMERGE) V(13|XMERGE) V(14|XMERGE)
+.print V(15|XMERGE) V(16|XMERGE) V(17|XMERGE) V(18|XMERGE)
+
+* Inductor currents
+.print I(L1|XMERGE) I(L2|XMERGE) I(L3|XMERGE) I(L4|XMERGE) I(L5|XMERGE)
+.print I(L6|XMERGE) I(L7|XMERGE) I(L8|XMERGE) I(L9|XMERGE) I(L10|XMERGE)
+.print I(LP1|XMERGE) I(LP2|XMERGE) I(LP3|XMERGE) I(LP4|XMERGE) I(LP5|XMERGE)
+.print I(LP6|XMERGE) I(LP7|XMERGE) I(LB1|XMERGE) I(LB2|XMERGE) I(LB3|XMERGE)
+
+* Bias resistor currents
+.print I(RB1|XMERGE) I(RB2|XMERGE) I(RB3|XMERGE) I(RB4|XMERGE) I(RB5|XMERGE) I(RB6|XMERGE) I(RB7|XMERGE)
+
+* I/O and Load phases
+.print V(SFQ_A) V(SFQ_B) V(SFQ_Q) V(SFQ_OUT)
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

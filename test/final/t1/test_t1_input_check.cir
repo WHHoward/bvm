@@ -1,0 +1,39 @@
+* T1 Input Check — Verify correct SFQ pulses arrive at T1 inputs
+* Measure V(I) and V(CLK) at T1 input pins
+* Goal: CLK=5/5, I=10/10 SFQ at T1 input terminals
+.include ../../../circuits/t1/t1_cell.cir
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/sfq_gen_clk.cir
+.include ../../../circuits/sfq_gen_i.cir
+
+
+* ============ CLK SFQ Generator ============
+XSFQ_CLK CLK_RAW CLK_SFQ V_BIAS_CLK sfq_gen_clk
+V_BIAS_CLK V_BIAS_CLK 0 DC 1.67m
+V_TRIG_CLK CLK_RAW 0 pulse(0 1.1m 20p 1p 1p 5p 50p)
+R_SER_CLK CLK_SFQ CLK_IN 2
+
+* ============ I SFQ Generator ============
+XSFQ_I I_RAW I_SFQ V_BIAS_I sfq_gen_i
+V_BIAS_I V_BIAS_I 0 DC 1.67m
+V_TRIG_I I_RAW 0 pwl(0 0
++ 25p 0 26p 0.90m 31p 0.90m 32p 0
++ 75p 0 76p 0.90m 81p 0.90m 82p 0  85p 0 86p 0.90m 91p 0.90m 92p 0
++ 125p 0 126p 0.90m 131p 0.90m 132p 0  135p 0 136p 0.90m 141p 0.90m 142p 0  145p 0 146p 0.90m 151p 0.90m 152p 0
++ 175p 0 176p 0.90m 181p 0.90m 182p 0  185p 0 186p 0.90m 191p 0.90m 192p 0  195p 0 196p 0.90m 201p 0.90m 202p 0  205p 0 206p 0.90m 211p 0.90m 212p 0
++ 230p 0)
+R_SER_I I_SFQ I_IN 2
+
+* ============ T1 ============
+XT1 I_IN CLK_IN S C N_BIAS1 N_BIAS2 N_BIAS3 T1
+V_BIAS1 N_BIAS1 0 DC 1.67m
+V_BIAS2 N_BIAS2 0 DC 1.67m
+I_BIAS3 N_BIAS3 0 DC 35U
+R_S S 0 12.0
+R_C C 0 12.0
+
+.tran 0.2p 230p 0 0.4p 0 DST
+.print V(I_IN) V(CLK_IN) V(S) V(C)
+.print V(CLK_RAW) V(I_RAW)
+.print P(B0|XSFQ_CLK) P(B0|XSFQ_I) P(B_J1|XT1) P(B_J2|XT1)
+.end

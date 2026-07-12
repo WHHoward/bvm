@@ -1,0 +1,20 @@
+* Standalone Validation: sfq_gen_i (L_OUT=0.3pH)
+* Tests 10 triggers (1+2+3+4) → 10 clean SFQ pulses with 12Ω load
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/sfq_gen_i.cir
+
+
+XSFQ I_RAW SFQ_OUT V_BIAS sfq_gen_i
+V_BIAS V_BIAS 0 DC 1.67m
+V_TRIG I_RAW 0 pwl(0 0
++ 25p 0 26p 0.75m 31p 0.75m 32p 0
++ 75p 0 76p 0.75m 81p 0.75m 82p 0  85p 0 86p 0.75m 91p 0.75m 92p 0
++ 125p 0 126p 0.75m 131p 0.75m 132p 0  135p 0 136p 0.75m 141p 0.75m 142p 0  145p 0 146p 0.75m 151p 0.75m 152p 0
++ 175p 0 176p 0.75m 181p 0.75m 182p 0  185p 0 186p 0.75m 191p 0.75m 192p 0  195p 0 196p 0.75m 201p 0.75m 202p 0  205p 0 206p 0.75m 211p 0.75m 212p 0
++ 230p 0)
+R_LOAD SFQ_OUT 0 12
+
+.tran 0.2p 240p 0 0.4p 0 DST
+.print V(I_RAW) V(SFQ_OUT)
+.print P(B0|XSFQ)
+.end

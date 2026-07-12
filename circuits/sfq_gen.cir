@@ -1,0 +1,13 @@
+* SFQ Pulse Generator — single junction + series-R trigger
+* Model: jjmit area=3.5 (IC=350μA, Ic×RN=1.6mV)
+*   .include ../../circuits/models/jjmit.cir
+
+.subckt sfq_gen TRIG OUT V_BIAS
+
+B0 N_J 0 jjmit area=3.5
+
+R_BIAS V_BIAS N_J 6.8
+R_TRIG TRIG N_J 5
+L_OUT N_J OUT 0.5pH
+
+.ends sfq_gen

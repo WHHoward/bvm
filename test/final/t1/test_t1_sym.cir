@@ -1,0 +1,22 @@
+* Symmetric test: I and CLK with identical drive circuits
+* If CLK works here but not in full test, the PWL source is the culprit
+.include ../../../circuits/t1/t1_cell.cir
+
+.include ../../../circuits/models/jjmit.cir
+XT1 I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1
+V_BIAS1 N_BIAS1 0 DC 1.67m
+V_BIAS2 N_BIAS2 0 DC 1.67m
+I_BIAS3 N_BIAS3 0 DC 35U
+R_S S 0 12.0
+R_C C 0 12.0
+
+* Both I and CLK: identical pulse() drives
+V_TRIG_CLK CLK_RAW 0 pulse(0 1.2m 20p 1p 1p 2p 50p)
+R_TRIG_CLK CLK_RAW CLK 5
+V_TRIG_I I_RAW 0 pulse(0 1.2m 20p 1p 1p 2p 50p)
+R_TRIG_I I_RAW I 5
+
+.tran 0.2p 150p 0 0.4p 0 DST
+.print V(I) V(CLK) V(S) V(C)
+.print P(B_J1|XT1) P(B_J2|XT1) P(B_J9|XT1)
+.end

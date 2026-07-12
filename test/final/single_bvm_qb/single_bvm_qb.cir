@@ -1,0 +1,49 @@
+* Single BVM -> BQ Chain Test
+* BVM storage + readout through BQ buffer (tuned: BJs area=0.5 IC=50uA)
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+.include ../../../circuits/qb/bq_cell.cir
+
+* BVM cell
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* SL JTL chain: 8xjjmit(area=5) -> IC=500uA per junction
+B_LD1  SL1   nld1  jjmit area=5
+B_LD2  nld1  nld2  jjmit area=5
+B_LD3  nld2  nld3  jjmit area=5
+B_LD4  nld3  nld4  jjmit area=5
+B_LD5  nld4  nld5  jjmit area=5
+B_LD6  nld5  nld6  jjmit area=5
+B_LD7  nld6  nld7  jjmit area=5
+B_LD8  nld7  IN_BQ jjmit area=5
+
+* BQ buffer (tuned: BJs IC=50uA, RJ1=33, RJ2=22, IBias=35u)
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+XBQ IN_BQ OUT_Q IBIAS BQ
+R_LOAD OUT_Q 0 10
+
+* W1(10-20): Write "1" | R1(30-40): Read | W0(60-70): Write "0" | R0(80-90): Read
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 91p 0
++ 110p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+.tran 0.1p 120p 0 0.2p 0 DST
+.print V(B_JM1|XBVM1) P(B_JM1|XBVM1)
+.print V(OUT_Q) P(BJs|XBQ) P(BJL1|XBQ) P(BJL2|XBQ)
+.print V(IN_BQ) V(SL1)
+.end

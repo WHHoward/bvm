@@ -1,0 +1,84 @@
+* TFF with Direct Output
+* Original from circuits/ref/tff/
+.include ../../../library_josim/dcsfq_ptl.cir
+.include ../../../library_josim/jtlt.cir
+
+.param Phi0=2.0678e-15
+.param cic=0.3
+.param IC=175u
+.param P_B1=IC
+.param P_B2=IC
+.param P_B3=IC
+.param P_B6=IC
+.param P_B7=IC
+.param cib=0.7
+.param IB1=cib*IC
+.param IB2=cib*IC
+.param IB3=cib*IC
+.param IB4=cib*IC
+.param LP=0.4p
+.param P_R=2
+
+IB1 0 p1 pwl(0 0 5p 140e-6)
+IB4 0 p4 pwl(0 0 5p 175e-6)
+IB5 0 p5 pwl(0 0 5p 175e-6)
+IB6 0 p6 pwl(0 0 5p 175e-6)
+
+B1  1   g1  jmit area=1.6
+B4  4   g4  jmit area=2.0
+B5  7   9   jmit area=3.0
+B6  8   10  jmit area=1.8
+B7  9   g7  jmit area=2.5
+B8  10  g8  jmit area=2.3
+B9  11  g9  jmit area=2.5
+RB1  1  gb1  7.8
+RB4  4  gb4  5.8
+RB7  9  gb7  5.8
+RB8  10 gb8  6.2
+RB9  11 gb9  5.8
+
+LT1  A   1   2.80e-12
+LT2  1   4   3.77e-12
+LT6  4   6   1.70e-12
+LT7  6   7   1.15e-12
+LT8  6   8   1.15e-12
+LT9  9   11  3.55e-12
+LT10 11  12  2.250e-12
+
+LS  9  10  8.25e-12
+
+LP1   g1    0   0.4e-12
+LP4   g4    0   0.4e-12
+LP7   g7    0   0.4e-12
+LP8   g8    0   0.4e-12
+LP9   g9    0   0.4e-12
+
+LRB1  gb1   0   2.1e-12
+LRB4  gb4   0   2.1e-12
+LRB7  gb7   0   2.1e-12
+LRB8  gb8   0   2.1e-12
+LRB9  gb9   0   2.1e-12
+
+LB1 p1 1  1.20e-12
+LB4 p4 4  2.00e-12
+LB5 p5 9 2.00e-12
+LB6 p6 11 2.00e-12
+
+RD1 12 Q0 1.36
+
+.model jmit jj(rtype=1, vg =2.8mV, cap =0.07pF, r0 =160, rn =16, icrit =0.1mA)
+
+.param t_per = 100p
+
+VIN     CLK   0     pulse(0 24m 0.1n 5p 5p 5p t_per)
+R1_sfq  CLK   88   20
+X0      88   IN00  dcsfq
+Xjtl00  IN00  T     jtlt
+Xjtl01  T     A     jtlt
+
+RD11 Q0 0 2.2
+Xjtl02 Q0 Q01 jtlt
+
+.tran 0.01p 1n
+.print v(A) p(B1) p(B9) i(LS) v(Q0)
+.end

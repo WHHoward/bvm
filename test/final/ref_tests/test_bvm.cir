@@ -1,0 +1,52 @@
+* BVM Mixed Model Verification — BVM junctions use V0 params only
+* Original from circuits/ref/spice/
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+.include ../../../circuits/qb/bq_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+B_LD01  SL1   nld11 jjmit area=3.2
+B_LD02  nld11 nld12 jjmit area=3.2
+B_LD03  nld12 nld13 jjmit area=3.2
+B_LD04  nld13 nld14 jjmit area=3.2
+B_LD05  nld14 nld15 jjmit area=3.2
+B_LD06  nld15 nld16 jjmit area=3.2
+B_LD07  nld16 nld17 jjmit area=3.2
+B_LD08  nld17 nld18 jjmit area=3.2
+B_LD09  nld18 nld19 jjmit area=3.2
+B_LD10  nld19 nld20 jjmit area=3.2
+B_LD11  nld20 nld21 jjmit area=3.2
+B_LD12  nld21 0 jjmit area=3.2
+
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 50p 0 51p 100U  60p 100U  61p 0
++ 90p 0 91p 100U 100p 100U 101p 0
++ 130p 0 131p -100U 140p -100U 141p 0
++ 170p 0 171p 100U 180p 100U 181p 0
++ 210p 0 211p 100U 220p 100U 221p 0
++ 250p 0 280p 0)
+
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 50p 0 61p 0
++ 70p 0 71p 100U  80p 100U  81p 0
++ 90p 0 141p 0
++ 170p 0 171p -100U 180p -100U 181p 0
++ 210p 0 280p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 50p 0 51p 100U  60p 100U  61p 0
++ 130p 0 131p 100U 140p 100U 141p 0
++ 170p 0 171p 100U 180p 100U 181p 0
++ 210p 0 211p 100U 220p 100U 221p 0
++ 250p 0 280p 0)
+
+.tran 0.1p 250p 45p
+.print I(I_WL1) I(I_BL1) I(I_SE1) I(L_M1|XBVM1)
+.print V(B_JM1|XBVM1) P(B_JM1|XBVM1) v(N1|XBVM1)
+.print I(R_0) I(L_SL|XBVM1) v(OUT_Q)
+.print p(BJL1|XBQ) v(2|XBQ) p(BJL2|XBQ) v(4|XBQ)
+.print I(LM1|XBVM1) I(LM2|XBVM1) I(LM3|XBVM1)
+.end

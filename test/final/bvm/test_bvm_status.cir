@@ -1,12 +1,9 @@
-* BVM Functional Test — jjmit model with JM1 damping (6Ω)
-* W1→NDRO→W0→R0→HS_WL→HS_BL sequence, 10ps pulses
-* Reference: ref_tests/test_bvm.cir + our original sequence
+* BVM Complete Status Test — Clear sequence for accurate metrics
+* Sequence: W1→R1→NDRO→W0→R0→HS_WL→HS_BL
+* All 10ps pulses, 1ps edges, 10ps spacing between operations
 .include ../../../circuits/models/jjmit.cir
 .include ../../../circuits/bvm/bvm_cell.cir
-
 XBVM1 WL1 BL1 SE1 SL1 BVM
-
-* SL load: 12×jjmit(area=3.2) stack → IC=320μA per junction
 B_LD1  SL1 nld1  jjmit area=3.2
 B_LD2  nld1 nld2 jjmit area=3.2
 B_LD3  nld2 nld3 jjmit area=3.2
@@ -20,16 +17,18 @@ B_LD10 nld9 nld10 jjmit area=3.2
 B_LD11 nld10 nld11 jjmit area=3.2
 B_LD12 nld11 0 jjmit area=3.2
 
-* WL: W1(10-20) | R1(30-40) | W0(60-70) | R0(80-90) | HS_WL(110-120)
+* --- WL ---
+* W1(10-20) | R1(30-40) | W0(60-70) | R0(80-90) | HS_WL(110-120) | HS_BL(140-150)
 I_WL1 0 WL1 pwl(0 0 9p 0
 + 10p 100U  20p 100U  21p 0
 + 30p 0 31p 100U  40p 100U  41p 0
 + 60p 0 61p -100U 70p -100U 71p 0
 + 80p 0 81p 100U  90p 100U  91p 0
 + 110p 0 111p 100U 120p 100U 121p 0
-+ 140p 0)
++ 140p 0 160p 0)
 
-* BL: W1(10-20) | W0(60-70, BL=-100) | HS_BL(140-150)
+* --- BL ---
+* W1(10-20) | R1(off) | W0(60-70) BL=-100 | R0(off) | HS_BL(140-150)
 I_BL1 0 BL1 pwl(0 0 9p 0
 + 10p 100U  20p 100U  21p 0
 + 30p 0 41p 0
@@ -38,16 +37,17 @@ I_BL1 0 BL1 pwl(0 0 9p 0
 + 140p 0 141p 100U 150p 100U 151p 0
 + 160p 0)
 
-* SE: R1(30-40) | R0(80-90) | HS_WL(110-120)
+* --- SE ---
+* R1(30-40) | R0(80-90) | HS_WL(110-120, WL also on) | HS_BL(140-150, BL only)
 I_SE1 0 SE1 pwl(0 0
 + 30p 0 31p 100U  40p 100U  41p 0
 + 80p 0 81p 100U  90p 100U  91p 0
 + 110p 0 111p 100U 120p 100U 121p 0
 + 160p 0)
 
-.tran 0.25p 160p 0 0.5p 0 DST
+.tran 0.2p 160p 0 0.4p 0 DST
 .print I(I_WL1) I(I_BL1) I(I_SE1)
-.print I(L_SL|XBVM1) I(L_M1|XBVM1)
 .print V(B_JM1|XBVM1) P(B_JM1|XBVM1)
+.print I(B_LD1)
 .print P(B_JS1|XBVM1) P(B_JS2|XBVM1)
 .end

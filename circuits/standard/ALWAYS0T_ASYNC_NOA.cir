@@ -1,0 +1,17 @@
+* ALWAYS0T_ASYNC_NOA — ColdFlux RSFQ Standard Cell
+* Source: IARPA SuperTools/ColdFlux Cell Library v3.0
+* MIT-LL SFQ Process | JoSIM-compatible
+* Ports: a q
+* Junctions: 0 total
+*
+* Bias: 2.6mV DC bias line (resistors calculated per ColdFlux methodology)
+* Usage: .include circuits/standard/ALWAYS0T_ASYNC_NOA.cir
+*        .model jjmit jj(rtype=1, vg=2.8m, cap=0.07p, r0=160, rn=16, icrit=0.1m)
+*
+.subckt THmitll_ALWAYS0T_ASYNC_NOA a q
+.param Lptl=2p
+.param L1=Lptl
+.param RQ=2
+L1 1 q 1.67E-012
+R1 1 0 R1
+.ends

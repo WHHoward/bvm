@@ -1,0 +1,19 @@
+* DC bias check: both inputs connected, no triggers
+.include ../../../circuits/t1/t1_cell.cir
+
+XT1 I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1
+.include ../../../circuits/models/jjmit.cir
+V_BIAS1 N_BIAS1 0 DC 1.67m
+V_BIAS2 N_BIAS2 0 DC 1.67m
+I_BIAS3 N_BIAS3 0 DC 35U
+R_S S 0 12.0
+R_C C 0 12.0
+
+* Both inputs through R_trig to ground (0V DC, no triggers)
+R_TRIG_I I 0 5
+R_TRIG_CLK CLK 0 5
+
+.tran 0.2p 30p 0 0.4p 0 DST
+.print V(I) V(CLK) V(S) V(C)
+.print P(B_J1|XT1) P(B_J2|XT1) P(B_J9|XT1) P(B_J3|XT1) P(B_J4|XT1) P(B_J7|XT1)
+.end

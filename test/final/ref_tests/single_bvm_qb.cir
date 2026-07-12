@@ -1,0 +1,69 @@
+* 2×BVM → QB — Full Link Test
+* Original from circuits/ref/spice/
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+.include ../../../circuits/qb/bq_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+XBVM2 WL2 BL2 SE2 SL2 BVM
+
+B_LD11  SL1   nld11 jjmit area=5
+B_LD12  nld11 nld12 jjmit area=5
+B_LD13  nld12 nld13 jjmit area=5
+B_LD14  nld13 nld14 jjmit area=5
+B_LD15  nld14 nld15 jjmit area=5
+B_LD16  nld15 nld16 jjmit area=5
+B_LD17  nld16 nld17 jjmit area=5
+B_LD18  nld17 SL2   jjmit area=5
+
+B_LD21  SL2   nld21 jjmit area=5
+B_LD22  nld21 nld22 jjmit area=5
+B_LD23  nld22 nld23 jjmit area=5
+B_LD24  nld23 nld24 jjmit area=5
+B_LD25  nld24 nld25 jjmit area=5
+B_LD26  nld25 nld26 jjmit area=5
+B_LD27  nld26 nld27 jjmit area=5
+B_LD28  nld27 IN_BQ jjmit area=5
+
+I_IBIAS_Q 0 IBIAS_Q pwl(0 0 1p 180u)
+XBQ IN_BQ OUT_Q IBIAS_Q BQ
+R_LOAD_Q OUT_Q 0 2
+
+I_WL1 0 WL1 pwl(0 0
++ 50p  0 51p -100U  60p  -100U  61p  0
++ 70p  0 71p  100U  80p   100U  81p  0
++ 90p  0 91p  100U  100p  100U  101p 0
++ 110p 0 111p 100U  120p  100U  121p 0
++ 210p 0 211p 100U  220p  100U  221p 0)
+
+I_BL1 0 BL1 pwl(0 0
++ 50p  0 51p -100U  60p  -100U  61p  0
++ 90p  0 91p  100U  100p  100U  101p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 70p  0 71p  100U  80p   100U  81p  0
++ 110p 0 111p 100U  120p  100U  121p 0
++ 210p 0 211p 100U  220p  100U  221p 0)
+
+I_WL2 0 WL2 pwl(0 0
++ 50p  0 51p -100U  60p  -100U  61p  0
++ 70p  0 71p  100U  80p   100U  81p  0
++ 90p  0 91p  100U  100p  100U  101p 0
++ 110p 0 111p 100U  120p  100U  121p 0
++ 210p 0 211p 100U  220p  100U  221p 0)
+
+I_BL2 0 BL2 pwl(0 0
++ 50p  0 51p -100U  60p  -100U  61p  0
++ 90p  0 91p  100U  100p  100U  101p 0)
+
+I_SE2 0 SE2 pwl(0 0
++ 70p  0 71p  100U  80p   100U  81p  0
++ 110p 0 111p 100U  120p  100U  121p 0
++ 210p 0 211p 100U  220p  100U  221p 0)
+
+.tran 0.1p 300p 45p
+.print I(I_WL1) I(I_BL1) I(I_SE1) I(L_M1|XBVM1)
+.print V(B_JM1|XBVM1) P(B_JM1|XBVM1) v(N1|XBVM1)
+.print I(R_0) I(L_SL|XBVM1) v(OUT_Q)
+.print p(BJL1|XBQ) v(2|XBQ) p(BJL2|XBQ) v(4|XBQ)
+.end

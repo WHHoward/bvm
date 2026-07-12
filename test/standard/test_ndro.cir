@@ -1,0 +1,63 @@
+* NDRO Comprehensive Test — ColdFlux Standard Cell (11 JJs, a=data, b=reset, clk=read, q=out)
+* Tests: Write 1 → Read → Reset → Read (non-destructive readout)
+* Full probing of all junctions, inductors, and bias resistors
+*
+* NDRO Operation:
+*   - Data (a) writes flux into storage loop
+*   - Clock (clk) reads non-destructively (outputs if data=1)
+*   - Reset (b) clears the storage loop
+*   - NDRO = Non-Destructive Read-Out
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/NDRO.cir
+.include ../../circuits/standard/JTL.cir
+
+* Data (a): SFQ at 15ps — write "1"
+V_DA DA 0 pwl(0 0 10p 0 15p 0 16p 1.5m 18p 1.5m 19p 0 100p 0)
+R_DA DA N1 3
+L_DA N1 SFQ_D 0.5p
+
+* Reset (b): SFQ at 55ps — reset to "0"
+V_RST RST 0 pwl(0 0 10p 0 55p 0 56p 1.5m 58p 1.5m 59p 0 100p 0)
+R_RST RST N2 3
+L_RST N2 SFQ_R 0.5p
+
+* Clock (clk): Read pulses — data arrives BEFORE clock
+*   Read1@30ps: reads "1" stored at 15ps → Q=1
+*   Read2@75ps: reads "0" (was reset at 55ps) → Q=0
+V_CLK CLK 0 pwl(0 0 10p 0 30p 0 31p 1.5m 33p 1.5m 34p 0 75p 0 76p 1.5m 78p 1.5m 79p 0 100p 0)
+R_CLK CLK N3 3
+L_CLK N3 SFQ_CLK 0.5p
+
+* DUT: NDRO (a=data, b=reset, clk=read, q=output)
+XNDRO SFQ_D SFQ_R SFQ_CLK SFQ_Q THmitll_NDRO
+
+* Load JTL
+XLOAD SFQ_Q SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+.tran 0.1p 100p
+
+* All 11 junction phases
+.print P(B1|XNDRO) P(B2|XNDRO) P(B3|XNDRO) P(B4|XNDRO) P(B5|XNDRO) P(B6|XNDRO)
+.print P(B7|XNDRO) P(B8|XNDRO) P(B9|XNDRO) P(B10|XNDRO) P(B11|XNDRO)
+
+* Junction node voltages
+.print V(1|XNDRO) V(2|XNDRO) V(4|XNDRO) V(5|XNDRO) V(6|XNDRO) V(7|XNDRO) V(8|XNDRO)
+.print V(9|XNDRO) V(10|XNDRO) V(11|XNDRO) V(12|XNDRO) V(13|XNDRO) V(14|XNDRO) V(15|XNDRO)
+.print V(16|XNDRO) V(17|XNDRO) V(18|XNDRO) V(19|XNDRO) V(20|XNDRO) V(21|XNDRO) V(22|XNDRO)
+.print V(23|XNDRO) V(27|XNDRO) V(28|XNDRO)
+
+* Inductor currents
+.print I(L1|XNDRO) I(L2|XNDRO) I(L3|XNDRO) I(L4|XNDRO) I(L5|XNDRO)
+.print I(L6|XNDRO) I(L7|XNDRO) I(L8|XNDRO) I(L9|XNDRO) I(L10|XNDRO)
+.print I(L11|XNDRO) I(L12|XNDRO) I(L13|XNDRO)
+
+* Bias resistor currents
+.print I(RB1|XNDRO) I(RB2|XNDRO) I(RB3|XNDRO) I(RB4|XNDRO) I(RB5|XNDRO)
+.print I(RB6|XNDRO) I(RB7|XNDRO) I(RB8|XNDRO) I(RB9|XNDRO) I(RB10|XNDRO) I(RB11|XNDRO)
+
+* I/O and Load phases
+.print V(SFQ_D) V(SFQ_R) V(SFQ_CLK) V(SFQ_Q)
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

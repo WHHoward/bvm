@@ -4,6 +4,28 @@
 
 ---
 
+## 2026-07-12 — NOT 元件仿真测试 + skill-router 决策技能
+
+### 做了什么
+- **NOT 元件（8 结钟控反相器）完整仿真测试**：创建 `test/standard/test_not.cir`，验证真值表 NOT(0)=1、NOT(1)=0，生成 `test/standard/not.html` 可视化
+- **PDF 与电路对比验证**：逐行比对 `circuits/standard/NOT.cir` 与 PDF Listing 2.25，确认 8 个 JJ 面积、4 路偏置电流、全部电感/电阻/寄生参数完全一致
+- **创建 `skill-router` 项目 Skill**：`.claude/skills/skill-router.md`，决策路由工具——分析用户请求的任务组件，输出需要的 skill 列表及调用顺序，阻止"凭直觉跳过 skill"的行为
+- **更新 CLAUDE.md**：skill-router 加入触发规则表首位（任何任务开始时首先调用），josim-viz 信号表添加 NOT 条目
+- **创建项目 memory**：`coldflux-library.md`、`sfq-physics.md`、`test-methodology.md`、`jj-model-parameters.md`、`bvm-bq-coupling.md`、`t1-full-adder.md`、`project-structure.md`、`skill-usage.md`、`project-summary.md`
+
+### 为什么
+- NOT 是 7 个已验证元件之后的第 8 个标准元件测试，扩展了 ColdFlux 逻辑门覆盖范围
+- 上次 NOT 任务中漏掉了 3 个 skill（test-driven-development、dataviz、verification-before-completion），skill-router 的决策树可以在任务开始前捕获这些漏调
+- NOT 的 Mealy FSM 有两个状态：State 0（无数据存储）→ CLK 触发输出；State 1（收到数据）→ CLK 回到 State 0 无输出
+
+### 影响
+- NOT 成为第 8 个通过验证的 ColdFlux 标准元件
+- skill-router 作为元技能（meta-skill），强制任务开始前的 skill 决策检查
+- 项目 memory 系统（10 个 .md 文件）覆盖所有关键技术领域，新会话通过 MEMORY.md 自动加载
+- 已追踪的漏调案例作为 skill-router 的 Red Flags 表素材
+
+---
+
 ## 2026-07-12 — 项目整理与技能体系建立
 
 ### 做了什么

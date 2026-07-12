@@ -1,0 +1,9 @@
+- [项目综合总结](project-summary.md) — 2026-07-12 完整状态快照，成果+问题+下一步
+- [Skill 使用规范](skill-usage.md) — 所有任务开始前必须检查并使用适用 skill
+- [ColdFlux 标准元件库](coldflux-library.md) — 35 个元件，7 个已验证，jjmit 模型参数
+- [SFQ 脉冲物理](sfq-physics.md) — 2ps 脉冲、数据先于时钟时序规则、相位分析
+- [测试方法论](test-methodology.md) — 测试文件结构、I/O 信号命名、验证标准
+- [BVM→BQ 耦合问题](bvm-bq-coupling.md) — 阻抗不匹配 ~25% 电流传递，尚未解决
+- [JJ 模型参数演变](jj-model-parameters.md) — V0 (0.25mV) vs ColdFlux (1.6mV)，混合模型方案
+- [T1 全加器](t1-full-adder.md) — 18 节点 11 结，相位累积量化单元
+- [项目结构](project-structure.md) — 目录布局、关键文件位置

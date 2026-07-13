@@ -93,4 +93,5 @@ Phase analysis is the standard mode (voltage was deprecated as of v2.5). Only tr
 
 - **`skill-router`** — 任务开始时决策路由，分析用户请求确定需要哪些 skill
 - **`josim-viz`** — 仿真结果可视化。触发词：可视化、画图、看图、出图、plot、波形
+- **`todo-manager`** — 会话开始/结束时检查/更新主任务清单。触发词：进度、接下来做什么、任务做完了
 - 位于 `.claude/skills/josim-viz.md`

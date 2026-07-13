@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-07-13 — 论文方向确立 + PIM 路线图 + ARS 学术技能体系
+
+### 做了什么
+- **确立论文 A 方向：BVM→BQ 接口设计** — 基于论文 2507.04648v1 (Karamuftuoglu et al., 2025) 的空白点，经 ARS deep-research 验证为确认的文献空白
+- **编写 PIM 路线图设计文档** (`memory/pim-roadmap-design.md`)：PoC→PIM 渐进 5 阶段路线，BVM→BQ 双路线耦合方案（低 IC 检测结 + K 元件变压器），85% 综合成功率
+- **编写论文方向分析** (`memory/paper-directions-analysis.md`)：四个方向创新性/可行性评估 + 竞争格局 + ARS 可行性验证 + 目标期刊推荐
+- **编写 Phase 1 详细执行计划** (`memory/phase1-bvm-bq-coupling-plan.md`)：8 任务拆解 + 弹性 2 周时间线 + 实验可靠性规范
+- **安装 ARS 学术技能套件** (academic-research-skills v3.16.0)：deep-research, academic-paper, academic-paper-reviewer, academic-pipeline 可用
+- **创建主任务清单** (`memory/project-todo.md`)：6 大类 30+ 任务，状态追踪 + 依赖关系
+- **创建 todo-manager skill** — 会话开始/结束时自动检查/更新任务进度
+- **更新 skill-router** — 新增 4 种技能使用模式、ARS 注册表、调用频率统计
+- **阅读 ChatGPT 项目建议** (`docs/suggestions.md`)：与我们的 PIM 路线图高度一致
+- **简化 CHANGELOG** — 合并 2026-07-12 的三条记录为一条
+
+### 为什么
+- BVM→BQ 接口是 BVM PIM 架构的系统瓶颈，文献中完全空白，有明确的发表窗口
+- ARS agent 确认：问题真实存在、双路线方案有足够新颖性投稿 SUST (IF~4.2)、主要风险是纯仿真无流片
+- 整个 BVM 领域目前都是纯仿真阶段——我们的方法不是弱点而是领域现状
+- ChatGPT 建议与我们的独立分析高度一致（BVM→BQ 优先、T1 三层验证、回归测试），增强了方向信心
+
+### 影响
+- 项目从"探索阶段"进入"目标导向阶段"：有明确论文目标、时间线和验收标准
+- ARS 技能体系使论文撰写可自动化（文献调研→写作→审稿→修改）
+- 主任务清单 + todo-manager 确保每次会话有明确起点和终点
+- 实验可靠性规范为所有后续仿真工作建立了质量标准
+
+---
+
 ## 2026-07-12 — NOT 元件仿真测试 + skill-router 决策技能
 
 ### 做了什么

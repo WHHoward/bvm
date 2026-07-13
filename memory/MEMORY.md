@@ -7,3 +7,7 @@
 - [JJ 模型参数演变](jj-model-parameters.md) — V0 (0.25mV) vs ColdFlux (1.6mV)，混合模型方案
 - [T1 全加器](t1-full-adder.md) — 18 节点 11 结，相位累积量化单元
 - [项目结构](project-structure.md) — 目录布局、关键文件位置
+- [PIM 路线图设计](pim-roadmap-design.md) — PoC→PIM 渐进路线，BVM→BQ 双路线耦合方案，Phase 1-5 规划
+- [论文方向分析](paper-directions-analysis.md) — 四个论文方向创新性/可行性评估，竞争格局，推荐策略
+- [Phase 1 执行计划](phase1-bvm-bq-coupling-plan.md) — Paper A BVM→BQ 耦合实验 8 任务拆解 + 2 周弹性时间规划
+- [项目主任务清单](project-todo.md) — 所有工作项状态追踪，每次会话更新

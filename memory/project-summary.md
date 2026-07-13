@@ -1,6 +1,6 @@
 ---
 name: project-summary
-description: JoSIM 项目最终综合总结 — 2026-07-12 状态快照，包含全部已验证成果、已知问题和下一步方向
+description: JoSIM 项目最终综合总结 — 2026-07-13 状态快照，论文A Phase1准备就绪
 metadata: 
   node_type: memory
   type: project
@@ -123,14 +123,27 @@ JoSIM/
 
 | Skill | 文件 | 功能 |
 |-------|------|------|
+| `skill-router` | `.claude/skills/skill-router.md` | 任务决策路由 + 技能使用模式 |
 | `josim-viz` | `.claude/skills/josim-viz.md` | 仿真结果可视化 |
 | `project-summary` | `.claude/skills/project-summary.md` | 项目总结与整理 |
+| `todo-manager` | `.claude/skills/todo-manager.md` | 主任务清单管理 |
+| ARS skills | `academic-research-skills` | 文献调研/论文写作/审稿 |
 
-## 七、下一步方向
+## 七、当前阶段：论文 A Phase 1
 
-1. **解决 BVM→BQ 级联** — 最高优先级
-2. **完成 T1 全加器验证** — 打通存储→逻辑→运算全链路
-3. **构建 BVM 阵列仿真** — 4×1、4×4 存储阵列
-4. **扩展标准元件测试** — PTL 版本元件 (T-suffix)、NOT、OR2、XNOR
+**方向**: BVM→BQ 接口设计与阻抗匹配（投稿 Supercond. Sci. Technol.）
+**目标**: 双路线实验 → arXiv 预印本
+**时间**: 8 工作日 (~2 周, 25-35h)
+**详细计划**: [[phase1-bvm-bq-coupling-plan]]
+**主任务清单**: [[project-todo]]
+**路线图**: [[pim-roadmap-design]]
+**论文分析**: [[paper-directions-analysis]]
+
+## 八、下一步方向
+
+1. **Phase 1 Task 1: BVM→BQ 基线测试** — 立即开始
+2. **Phase 1 Task 2-7: 双路线实验** — Week 1
+3. **Phase 1 Task 8: 论文撰写** — Week 2
+4. **标准元件库扩展** — 搁置（等 Phase 1 完成后统一注册 ctest）
 
 [[coldflux-library]] [[sfq-physics]] [[test-methodology]] [[jj-model-parameters]] [[bvm-bq-coupling]] [[t1-full-adder]] [[project-structure]] [[skill-usage]]

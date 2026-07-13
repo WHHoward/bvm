@@ -104,3 +104,86 @@ If you think any of these, you are about to skip a required skill:
 4. Run simulation
 5. `josim-viz` + `dataviz` → proper visualization
 6. `verification-before-completion` → verify truth table before declaring pass
+
+---
+
+## Skill Usage Patterns (from 2026-07-12/13 sessions)
+
+### 模式 A：新元件仿真测试
+
+```
+用户: "仿真并可视化 XXX 元件"
+
+触发链路:
+  skill-router (决策) → writing-plans (规划) → test-driven-development (先写预期)
+  → josim-viz (项目可视化) → dataviz (配色标准) → verification-before-completion (验证)
+
+实际案例: NOT 元件 — 前3个正确，后3个漏了
+```
+
+### 模式 B：项目规划/设计讨论
+
+```
+用户: "未来方向/设计方案"
+
+触发链路:
+  skill-router (决策) → brainstorming (结构化讨论)
+  → writing-plans (出计划) → project-summary (更新记忆)
+
+实际案例: PIM 路线图设计, 论文方向分析
+```
+
+### 模式 C：文献调研 + 论文准备
+
+```
+用户: "读论文 + 分析创新方向"
+
+触发链路:
+  skill-router (决策) → document-skills:pdf (读论文)
+  → academic-research-skills:deep-research (文献调研)
+  → brainstorming (方向讨论) → writing-plans (实验计划)
+
+实际案例: 2507.04648v1 论文分析, 论文方向评估
+```
+
+### 模式 D：项目收尾
+
+```
+用户: "总结 + 提交"
+
+触发链路:
+  project-summary (更新CHANGELOG+memory)
+  → todo-manager (更新任务状态)
+  → verification-before-completion (验证)
+  → git commit
+
+实际案例: 每次会话结束
+```
+
+### 新增 Skill 注册表
+
+| Skill | 类型 | 触发场景 |
+|-------|------|---------|
+| `todo-manager` | 项目 | 会话开始/结束, 进度查询, 任务完成 |
+| `academic-research-skills:deep-research` | ARS | 文献调研, 可行性验证 |
+| `academic-research-skills:academic-paper` | ARS | 论文写作 |
+| `academic-research-skills:academic-paper-reviewer` | ARS | 论文审稿 |
+| `academic-research-skills:ars-plan` | ARS | 论文大纲规划 |
+| `academic-research-skills:ars-lit-review` | ARS | 文献回顾 |
+| `academic-research-skills:ars-3w` | ARS | WHY/HOW/WHAT 论文比较 |
+
+### 调用频率统计 (本会话)
+
+| Skill | 调用次数 | 场景 |
+|-------|---------|------|
+| `skill-router` | 3+ | 每次任务开始 |
+| `superpowers:brainstorming` | 2 | PIM路线图, 论文方向 |
+| `superpowers:writing-plans` | 2 | Phase 1计划, NOT测试 |
+| `document-skills:pdf` | 2 | ColdFlux PDF, 2507论文 |
+| `josim-viz` | 1 | NOT 可视化 |
+| `academic-research-skills:deep-research` | 1 | BVM→BQ 文献验证 |
+| `academic-research-skills:research_architect_agent` | 1 | ARS 可行性评估 |
+| `superpowers:writing-skills` | 2 | skill-router, todo-manager |
+| `superpowers:verification-before-completion` | 2 | NOT验证, git提交前 |
+| `project-summary` | 1 | memory更新 |
+| `WebSearch` | 4+ | 竞争格局, 接口匹配, BVM生态 |

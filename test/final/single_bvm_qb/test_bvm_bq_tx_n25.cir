@@ -1,0 +1,61 @@
+* ============================================================
+* Experiment 5: BVM→K-Transformer→BQ Cascade Test
+* Date: 2026-07-13
+* TX: n=2 (L_PRI=2pH, L_SEC=8pH), K=0.9, series injection
+* L_SEC in series between nld8 and IN_BQ — induced current flows into BQ
+* ============================================================
+
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+.include ../../../circuits/qb/bq_cell.cir
+
+* ============ BVM Cell ============
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* ============ SL Load + Transformer ============
+* 8×jjmit load stack → nld8
+* Primary: nld8 → L_PRI → GND
+* Secondary: nld8 → L_SEC → IN_BQ (series injection)
+B_LD1  SL1   nld1  jjmit area=3.2
+B_LD2  nld1  nld2  jjmit area=3.2
+B_LD3  nld2  nld3  jjmit area=3.2
+B_LD4  nld3  nld4  jjmit area=3.2
+B_LD5  nld4  nld5  jjmit area=3.2
+B_LD6  nld5  nld6  jjmit area=3.2
+B_LD7  nld6  nld7  jjmit area=3.2
+B_LD8  nld7  nld8  jjmit area=3.2
+L_PRI  nld8  0      2p
+L_SEC  nld8  IN_BQ 12.5p
+K_TX   L_PRI L_SEC  0.9
+
+* ============ BQ Buffer (standard, BJs IC=50uA) ============
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+XBQ IN_BQ OUT_Q IBIAS BQ
+R_LOAD OUT_Q 0 10
+
+* ============ BVM Write/Read Sequence ============
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 91p 0
++ 110p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+.tran 0.1p 110p
+
+.print P(B_JM1|XBVM1)
+.print I(L_SL|XBVM1) I(L_PRI) I(L_SEC) V(IN_BQ)
+.print P(BJS|XBQ) P(BJL1|XBQ) P(BJL2|XBQ) V(OUT_Q)
+.end

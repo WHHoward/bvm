@@ -1,0 +1,19 @@
+* Low-IC BQ Standalone Test — verify SFQ generation
+* Date: 2026-07-13
+* BJs IC=20uA, IBias=14uA. Expected: triggers at lower Iin than standard BQ
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/qb/bq_cell_lowic.cir
+
+XBQ IN1 OUT1 IBIAS BQ_LOWIC
+R_LOAD OUT1 0 10
+
+* Bias: 14uA (70% of BJs IC=20uA)
+I_IBIAS 0 IBIAS pwl(0 0 1p 14u)
+
+* Sweep: test with 30uA, 45uA, 60uA input pulses
+* Starting with 45uA (should be sufficient: 14uA bias + 45uA > 20uA IC)
+I_IN 0 IN1 pulse(0 45u 10p 1p 1p 5p 50p)
+
+.tran 0.1p 100p
+.print V(OUT1) P(BJs|XBQ) P(BJL1|XBQ) P(BJL2|XBQ) V(IN1)
+.end

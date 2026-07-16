@@ -1,0 +1,65 @@
+* ============================================================
+* Experiment 6: BVM → Custom SFQ Generator (single-JJ, IC tuned to BVM output)
+* Date: 2026-07-17
+* Strategy: Trim sfq_gen JJ IC to ~70uA (area=0.70), bias at 70% (49uA)
+* BVM SL drives trigger. Expected: at least 1 SFQ per read operation
+* ============================================================
+
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+
+* ============ BVM Cell ============
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* ============ SL Load (8×jjmit, area=5 for higher current) ============
+B_LD1  SL1   nld1  jjmit area=5
+B_LD2  nld1  nld2  jjmit area=5
+B_LD3  nld2  nld3  jjmit area=5
+B_LD4  nld3  nld4  jjmit area=5
+B_LD5  nld4  nld5  jjmit area=5
+B_LD6  nld5  nld6  jjmit area=5
+B_LD7  nld6  nld7  jjmit area=5
+B_LD8  nld7  nld8  jjmit area=5
+
+* ============ Custom Single-JJ SFQ Generator ============
+* JJ tuned to BVM output: IC=70uA (area=0.70)
+* Bias: 49uA (70% of IC) via 6.8Ω resistor: V=49u*6.8=0.33mV
+* BVM SL output connected to trigger through 5Ω
+B_SFQ  N_J    0      jjmit area=0.50
+R_BIAS V_BIAS N_J   6.8
+R_TRIG nld8    N_J   5
+L_OUT  N_J    SFQ_OUT 0.3p
+V_BIAS V_BIAS 0     DC 0.32m
+
+* ============ Output Load JTL ============
+.include ../../../circuits/standard/JTL.cir
+XLOAD SFQ_OUT SFQ_FINAL THmitll_JTL
+R_TERM SFQ_FINAL 0 1
+
+* ============ BVM Write/Read Sequence ============
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 91p 0
++ 110p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+.tran 0.1p 110p
+
+.print P(B_JM1|XBVM1)
+.print I(L_SL|XBVM1) V(SL1) V(nld8)
+.print P(B_SFQ) V(SFQ_OUT)
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

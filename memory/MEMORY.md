@@ -11,3 +11,5 @@
 - [论文方向分析](paper-directions-analysis.md) — 四个论文方向创新性/可行性评估，竞争格局，推荐策略
 - [Phase 1 执行计划](phase1-bvm-bq-coupling-plan.md) — Paper A BVM→BQ 耦合实验 8 任务拆解 + 2 周弹性时间规划
 - [项目主任务清单](project-todo.md) — 所有工作项状态追踪，每次会话更新
+- [BVM→BQ 耦合实验记录](bvm-bq-coupling-experiments.md) — 基线/低IC/变压器/论文BQ 全记录
+- [K 元件变压器分析](k-element-transformer-analysis.md) — K 元件原理、失效原因、适用范围

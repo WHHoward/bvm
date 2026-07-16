@@ -4,6 +4,33 @@
 
 ---
 
+## 2026-07-17 — BVM→BQ 耦合实验 + BQ 量化测试 + 元件参考手册
+
+### 做了什么
+- **BVM→BQ 耦合实验 7 轮**：基线(标准BQ)、低IC×3(阻尼/拓扑/v3仅BJs)、K元件变压器(n=2/2.5/3)、论文原始BQ(JS=133µA)、电阻负载。全部失败——根因是 BVM 慢信号(~30ps)与 SFQ 快脉冲(~2ps)的不匹配
+- **发现 BQ 参数来源**：阅读 SUST 2024 论文，确认我们的 BQ(bq_cell.cir, BJs=50µA)是从论文 BQ(JS=133µA)缩小~3×的自定义版本
+- **BQ 量化能力测试**：70-170µA 扫参，BQ 内部产生 48→66 SFQ，但 Load JTL 仅捕获恒定 3.1 SFQ（不满足"电流→可变SFQ数"要求）
+- **K 元件变压器完整分析**：`memory/k-element-transformer-analysis.md` — 物理原理、4 配置实验、在 SFQ 时间尺度的失效原因
+- **元件参考手册**：`memory/component-reference.md` — 8 ColdFlux 元件 + BVM + BQ 的 I/O 参数、测试数据、可视化索引
+- **生成 18 个可视化 HTML**：标准元件(8)、BVM(3)、BQ(5)、级联(2)
+- **skill-router 重写**：190→50 行，Quick Self-Check + 强制输出格式。修复"应该用 Read 而非 Skill()"的 bug
+- **CLAUDE.md 重构**：Skill 调用方式明确分为"插件 Skill (Skill())"和"项目 Skill (Read)"
+- **SFQ 脉冲物理规则澄清**：区分 2ps(逻辑) vs 10ps(BVM 存储)，明确"数据先于时钟"= setup time 约束
+- **T1 测试文件审查**：发现 5 个问题（include 顺序、电压源驱动、时序错误、无真值表、无 CSV）
+
+### 为什么
+- BVM→BQ 耦合是项目唯一硬阻塞。7 轮实验证明不是 BQ 参数问题，是 BVM 输出特性(slow oscillatory current)与 SFQ 接收器(need sharp 2ps edge)的根本失配
+- 论文 BQ 也失败说明问题不在 IC 值大小——论文通过多 cell 同时读取累加电流来达到触发阈值
+- skill-router 失效的根因是"项目 skill ≠ 注册 Skill 工具"，必须用 Read 不是 Skill()
+
+### 影响
+- 确认单 BVM cell 无法直接驱动任何 IC>50µA 的接收器产生干净 SFQ
+- 量化器需要重新设计：方向为 SQUID 积累型或极低 IC 检测器 + 多级脉冲压缩
+- skill 调用机制修正后，后续会话不再出现 "Unknown skill" → 跳过的错误
+- 元件参考手册 + 18 个可视化为所有验证过的元件建立了可查询的 I/O 数据库
+
+---
+
 ## 2026-07-13 — 论文方向确立 + PIM 路线图 + ARS 学术技能体系
 
 ### 做了什么

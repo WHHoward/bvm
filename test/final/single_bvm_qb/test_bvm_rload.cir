@@ -1,0 +1,46 @@
+* ============================================================
+* Experiment 7: BVM → Resistive Load → BQ
+* Date: 2026-07-17
+* Replace 8×jjmit load stack with simple 12Ω resistor (matches R_SL in BVM)
+* Theory: fewer JJs in signal path → less signal attenuation
+* ============================================================
+
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+.include ../../../circuits/qb/bq_cell.cir
+
+* ============ BVM Cell ============
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* ============ SL Resistive Load (12Ω, matches R_SL in BVM) ============
+R_SL_LOAD SL1 0 12
+
+* ============ BQ Buffer ============
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+XBQ SL1 OUT_Q IBIAS BQ
+R_LOAD OUT_Q 0 10
+
+* ============ BVM Write/Read ============
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 91p 0
++ 110p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+.tran 0.1p 110p
+.print P(B_JM1|XBVM1) I(L_SL|XBVM1) V(SL1)
+.print P(BJS|XBQ) P(BJL1|XBQ) P(BJL2|XBQ) V(OUT_Q)
+.end

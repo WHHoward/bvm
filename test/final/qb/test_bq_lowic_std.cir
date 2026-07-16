@@ -1,0 +1,21 @@
+* Low-IC BQ Standalone Test v2 — proper SFQ injection (voltage pulse + 3Ω)
+* Date: 2026-07-13
+* BJs IC=20uA, IBias=14uA
+* Input: V_IN pulse + 3Ω series → generates SFQ-like current pulse
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/qb/bq_cell_lowic.cir
+
+XBQ IN1 OUT1 IBIAS BQ_LOWIC
+R_LOAD OUT1 0 10
+
+* Bias: 14uA (70% of BJs IC=20uA)
+I_IBIAS 0 IBIAS pwl(0 0 1p 14u)
+
+* Proper SFQ injection: voltage pulse + 3Ω series resistor
+* V=1.0mV, 2ps width + 3Ω → I_peak≈333uA × brief SFQ event
+V_IN IN_RAW 0 pwl(0 0 10p 0 12p 0 13p 1.0m 15p 1.0m 16p 0 100p 0)
+R_IN IN_RAW IN1 3
+
+.tran 0.1p 100p
+.print V(OUT1) P(BJS|XBQ) P(BJL1|XBQ) P(BJL2|XBQ) V(IN1)
+.end

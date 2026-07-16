@@ -1,0 +1,21 @@
+* BQ Buffer Cell — Low-IC Variant v3
+* Strategy: Only reduce BJs IC (50→20uA). Keep BJL1/BJL2 at original IC.
+* BJL1 keeps IC=36uA → maintains current steering away from ground
+* BJL2 keeps IC=54uA → maintains output drive capability
+* BJs IC=20uA (area 0.5→0.2) → triggers at lower input current → faster dφ/dt
+* IBias reduced: 35→14uA (70% of new BJs IC)
+
+.subckt BQ_LOWIC IN OUT IB
+
+Lin IN 1 0.8p
+L0 4 OUT 1.323p
+L1 2 3 3.91p
+L2 3 4 3.91p
+BJs 1 2 jjmit area=0.20
+BJL1 2 0 jjmit area=0.36
+RJ1 2 0 33
+BJL2 4 0 jjmit area=0.54
+RJ2 4 0 22
+RB IB 3 6
+
+.ends BQ_LOWIC

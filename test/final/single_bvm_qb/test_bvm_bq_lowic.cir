@@ -1,0 +1,56 @@
+* ============================================================
+* Experiment 2: BVM→Low-IC_BQ Cascade Test
+* Date: 2026-07-13
+* BJs IC=20uA (area=0.20), IBias=14uA
+* Hypothesis: Lower IC → higher overdrive ratio → faster dφ/dt → clean SFQ
+* ============================================================
+
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+.include ../../../circuits/qb/bq_cell_lowic.cir
+
+* ============ BVM Cell ============
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* ============ SL Load (8× non-switching JJ stack) ============
+B_LD1  SL1   nld1  jjmit area=3.2
+B_LD2  nld1  nld2  jjmit area=3.2
+B_LD3  nld2  nld3  jjmit area=3.2
+B_LD4  nld3  nld4  jjmit area=3.2
+B_LD5  nld4  nld5  jjmit area=3.2
+B_LD6  nld5  nld6  jjmit area=3.2
+B_LD7  nld6  nld7  jjmit area=3.2
+B_LD8  nld7  IN_BQ jjmit area=3.2
+
+* ============ Low-IC BQ (BJs IC=20uA, IBias=14uA) ============
+I_IBIAS 0 IBIAS pwl(0 0 1p 14u)
+XBQ IN_BQ OUT_Q IBIAS BQ_LOWIC
+R_LOAD OUT_Q 0 10
+
+* ============ BVM Write/Read Sequence (same as baseline) ============
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 91p 0
++ 110p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+.tran 0.1p 110p
+
+* ============ Measurements ============
+.print P(B_JM1|XBVM1) P(B_JM2|XBVM1)
+.print I(L_SL|XBVM1) V(SL1) V(IN_BQ)
+.print P(BJS|XBQ) P(BJL1|XBQ) P(BJL2|XBQ) V(OUT_Q)
+.end

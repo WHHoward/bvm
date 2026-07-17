@@ -27,7 +27,18 @@ metadata:
 
 **当前状态**: 单 BVM cell 无法驱动任何 IC>50µA 接收器。等待量化器重设计。
 
-**下一步**: 重新设计电流→SFQ 转换器 (SQUID积累型 / 极低IC检测器 / BVM侧优化)
+**下一步**: 实现并测试 BQ v4 (BJL1 IC反转方案, 见 [[bq-v4-modification-plan]])
+
+---
+
+## 七、BQ 量化器重设计
+
+| # | 任务 | 状态 | 说明 |
+|---|------|------|------|
+| Q1 | BQ v4 方案设计 | 🟢 | 已完成 → memory/bq-v4-modification-plan.md |
+| Q2 | 创建 bq_cell_v4.cir | 🔴 | BJL1 IC 36→90µA, BJL2 54→70µA |
+| Q3 | BQ v4 独立测试 (SFQ注入+电流扫参) | 🔴 | 验证线性量化 |
+| Q4 | BQ v4 + BVM 级联测试 | 🔴 | 验证单cell可触发 |
 
 ---
 

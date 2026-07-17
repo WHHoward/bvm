@@ -13,3 +13,4 @@
 - [项目主任务清单](project-todo.md) — 所有工作项状态追踪，每次会话更新
 - [BVM→BQ 耦合实验记录](bvm-bq-coupling-experiments.md) — 基线/低IC/变压器/论文BQ 全记录
 - [K 元件变压器分析](k-element-transformer-analysis.md) — K 元件原理、失效原因、适用范围
+- [BQ v4 修改方案](bq-v4-modification-plan.md) — IC 顺序反转 + 输出级增强，根因 BJL1 IC 过低吞噬信号

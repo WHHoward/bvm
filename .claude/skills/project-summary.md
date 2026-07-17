@@ -94,7 +94,18 @@ find test/ -type d | sort
 - 在 body 中记录 **Why** 和 **How to apply**
 - 用 `[[other-memory]]` 链接相关知识
 
-### 第五步：更新 MEMORY.md 索引
+### 第五步：更新 project-todo.md ⚠️ 不可跳过
+
+扫描 `memory/project-todo.md`，逐项检查状态：
+
+- 本次会话完成的任务：🔴→🟢，写完成日期和产出
+- 放弃/暂停的路线：🔴→⏸️，写原因
+- 新增的待办任务：添加新行，标注 🔴
+- 更新 metadata 中的 `last_updated` 日期
+
+**同时更新 `memory/MEMORY.md` 索引**（如有新增 memory 文件）。
+
+### 第六步：更新 MEMORY.md 索引
 
 `memory/MEMORY.md` 是索引文件。每行一条：
 
@@ -104,29 +115,25 @@ find test/ -type d | sort
 
 新增的 memory 文件必须添加索引条目。
 
-### 第六步：清理
+### 第七步：清理
 
-删除所有可重新生成或已归档的文件：
-- 旧 HTML 可视化（可用 josim-plot2 重新生成）
-- 旧 CSV 仿真结果（可用 josim-cli 重新生成）
-- 重复的 .md 文档（已提取到 memory/）
+删除所有可重新生成或已归档的文件。
 
-### 第七步：报告
+### 第八步：报告
 
 ```
 总结完成：
-- CHANGELOG.md 已更新（新增 X 条记录）
-- memory/ 已更新 Y 个文件
-- 删除 Z 个冗余文件
+- CHANGELOG.md 已更新
+- project-todo.md 已更新 (N 个任务状态变化)
+- memory/ 已更新
 - 项目状态：<一句话>
 ```
 
-## CHANGELOG vs memory 分工
+## 三大追踪文件
 
-| | CHANGELOG.md | memory/*.md |
-|------|-------------|-------------|
-| **内容** | 变更历史（时间线） | 知识库（事实） |
-| **读者** | 人类 | AI + 人类 |
-| **格式** | 日期→做了什么→为什么→影响 | frontmatter + 正文 |
-| **更新** | 每次会话追加 | 知识变化时编辑 |
-| **位置** | 项目根目录 | 项目 memory/ 目录 |
+| | CHANGELOG.md | project-todo.md | memory/*.md |
+|------|-------------|-----------------|-------------|
+| **内容** | 变更历史 | 任务状态 | 知识库 |
+| **读者** | 人类 | AI+人类 | AI+人类 |
+| **更新** | 每次会话追加 | **每次总结必更新** | 知识变化时编辑 |
+| **位置** | 项目根目录 | memory/ | memory/ |

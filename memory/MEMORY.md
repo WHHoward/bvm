@@ -10,7 +10,8 @@
 - [PIM 路线图设计](pim-roadmap-design.md) — PoC→PIM 渐进路线，BVM→BQ 双路线耦合方案，Phase 1-5 规划
 - [论文方向分析](paper-directions-analysis.md) — 四个论文方向创新性/可行性评估，竞争格局，推荐策略
 - [Phase 1 执行计划](phase1-bvm-bq-coupling-plan.md) — Paper A BVM→BQ 耦合实验 8 任务拆解 + 2 周弹性时间规划
-- [项目主任务清单](project-todo.md) — 所有工作项状态追踪，每次会话更新
+- [项目主任务清单](project-todo.md) — GPT 审计后重构，Step 0-4 框架
 - [BVM→BQ 耦合实验记录](bvm-bq-coupling-experiments.md) — 基线/低IC/变压器/论文BQ 全记录
 - [K 元件变压器分析](k-element-transformer-analysis.md) — K 元件原理、失效原因、适用范围
-- [BQ v4 修改方案](bq-v4-modification-plan.md) — IC 顺序反转 + 输出级增强，根因 BJL1 IC 过低吞噬信号
+- [BQ v4 修改方案](bq-v4-modification-plan.md) — IC 顺序反转 + 输出级增强
+- [GPT 项目审计](GuidanceFromGpt.md) — 外部审计: 基线矛盾、执行顺序、决策门、基建修复，根因 BJL1 IC 过低吞噬信号

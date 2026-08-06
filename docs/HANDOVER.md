@@ -39,11 +39,12 @@ build/josim-cli --version     # 必须是 v2.7.2837d13（冻结二进制，见 �
 | Step 1 BQ v4 独立验证 | ❌ **Gate 未通过**（commit 95b70f6） |
 | Step 2 BVM→BQ v4 级联 | 🔴 阻塞（Step 1 未过） |
 | Step 3 路线决策（用户选 D: 先整理论文证据链） | 🟢 完成（commit ea87445） |
-| Step 4 备用接口方案 H6-H10 | 🔴 未开始 |
+| Step 4 备用接口方案 H6-H10 | 🟡 保留为后备（H7 已转 Step 5） |
+| **Step 5 DCSFQ_BVM 新元件（H7 主路线）** | 🟡 **Phase 0 完成**（P0.0-P0.3）→ Phase 1（V1-V4b） |
 | 标准元件库（8 个核心元件） | 🟢 全部验证通过 |
-| 论文写作 | 🔴 待 H6/H7 任一正结果后动笔（推荐） |
+| 论文写作 | 🔴 待 DCSFQ_BVM 正结果后动笔（推荐） |
 
-**一句话**: BVM→BQ 直接耦合路线经 8 轮实验系统性排除；根因已冻结（BJs 欠阻尼滑移）；下一步是 H6（最低成本验证）。
+**一句话**: BVM→BQ 直接耦合路线经 8 轮实验系统性排除；H7/DCSFQ_BVM 新元件 Phase 0 完成——接口规格实测（I_peak 43.9-97.8µA、Zth≈40Ω、FWHM ~10ps）、现有 DCSFQ 边沿触发、分流 0.285（需调输入网络）；下一步是 Phase 1（V1-V4b 验证链，含 L2/L3 调整与极性验证）。Phase 0 数据与决策门见 `test/final/interface/P0_LOG.md`。
 
 ---
 
@@ -90,23 +91,18 @@ build/josim-cli --version     # 必须是 v2.7.2837d13（冻结二进制，见 �
 
 ---
 
-## 5. 下一步：H6（推荐，最低成本）
+## 5. 下一步：Phase 1（V1-V4b 验证链，DCSFQ_BVM 主路线）
 
-**假设（证据链 §5.2 的直接推论）**: BJs 无外部阻尼 → 欠阻尼 → 滑移。若给 BJs 加上 JTL 式 RB+LRB 阻尼网络 + 预偏置，BJs 可能产生**单次干净翻转**。若成功，BQ 拓扑可救。
+**Phase 0 已完成**（2026-08-06，实现经双审查）: 接口规格实测、边沿触发确认、分流标定、确定性 5/5。完整决策门 G1-G5 与数据见 `test/final/interface/P0_LOG.md`（分册 P0_LOG_P00-P03）。
 
-**做法**:
-1. 复制 `circuits/qb/bq_cell_v4.cir` → 新文件（如 `bq_cell_v5.cir`），在 BJs 支路加 RB（~2.74Ω）串联 LRB（~2.05pH）——参数参考 `circuits/standard/JTL.cir` 的 THmitll_JTL
-2. IBias 给 BJs 预偏置到 ~70% IC（35µA → ~35µA 或按 v4 现有偏置调）
-3. 复用 `test/final/qb/test_bq_v4_*.cir` 测试台（记得相对 include 路径 4 级 `../../../../`）
+**Phase 1 要点（spec 修订 2 + P0_LOG.md §3-4）**:
+1. V1 偏置稳定 → **V2 阈值判别扫描（含 L2/L3 输入网络调整变体 + B1/B2 下调候选，阈值目标 45-55µA）** → V3 JTL 接收 → V4 BVM 级联（**极性验证**）→ V4b 去负载链对照
+2. 起点元件: `circuits/interface/DCSFQ_BVM.cir`（B1/B2=0.8, IB1=100µA）；测试台: `test/final/interface/test_dcsfq_bvm_div.cir` 模式（相对 include 3 级 `../../../`，data/ 下 4 级）
+3. **最终 Gate**（GPT §十.5）: 读1 → 恰好 1 个被 JTL 接收的 SFQ；读0 → 0 且无误触发
 
-**验证标准（Gate）**:
-- S1.3 注入 → BJs 单次 +1 SFQ（fast_events=1，net≈1，非 12.57）
-- S1.4 扫参 70-150µA → 输出级 BJL2 触发、JTL 收到 ≥1 离散 SFQ
-- 全部用 `scripts/sfq_metrics.py` 口径 + 原始 CSV 保存到 `test/final/qb/data/`
+**如果 Phase 1 失败**: 按 spec 决策表——V2 扫描设 bound，失败升格方案二（IB1 读窗口门控）或转 H6 后备——**不要擅自改参数无限迭代**（GPT 审计教训：决策表而非"试到成功"）。
 
-**如果 H6 也失败**: 按证据链 §4 转向 H7（DC-SFQ / 过阻尼阈值 JJ）或 H8（重设计 BVM 输出级直接出快脉冲）——**不要擅自改参数无限迭代**（GPT 审计教训：决策表而非"试到成功"）。
-
-**并行可做**（1 次仿真）: 滑移机制诊断——跑 V(BJs) 波形，确认"电流源通量泵" vs "振铃累积"（等效 V≈40mV 远超 Vg=2.8mV 的机制），论文 §5 需要这个定量。
+**并行可做**（独立项，GPT §十.6）: BVM 多涡旋读写一致性验证；论文 §3-§6 草稿（数据已齐，不阻塞）。
 
 ---
 

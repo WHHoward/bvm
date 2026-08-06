@@ -129,6 +129,20 @@ find test/ -type d | sort
 - 项目状态：<一句话>
 ```
 
+## 时间标注规则（2026-08-06 起强制）
+
+**任何对 `CHANGELOG.md`、`memory/project-todo.md`、`memory/project-summary.md`、`memory/*.md` 的修改，必须在修改处标注修改时间。**
+
+| 文件 | 标注方式 |
+|------|---------|
+| project-todo.md | 任务行状态/说明变化 → 行内标注 `(YYYY-MM-DD)`；更新日志表每次追加带日期行 |
+| project-summary.md | 头部"最后更新"日期必改；修改的章节标题或内容处标注 `(YYYY-MM-DD)` |
+| memory/*.md | frontmatter `last_updated` 必改；正文修改处行内标注 |
+| CHANGELOG.md | 已有规则：每次会话追加带日期条目 |
+
+**Why**: 项目由人类/GPT/Claude 多会话交替修改，无时间标注的修改会造成文档状态混乱（2026-07 基线矛盾教训）。
+**How to apply**: 修改任何上述文件时，先确认或添加修改日期，再落笔。
+
 ## 三大追踪文件
 
 | | CHANGELOG.md | project-todo.md | memory/*.md |

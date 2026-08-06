@@ -36,6 +36,7 @@ When a task is completed:
 1. Update status from 🟡 → 🟢
 2. Add date + brief note to 更新日志
 3. If the task unblocks downstream tasks, flag them
+4. 标注修改时间 (YYYY-MM-DD) 到该任务行（时间标注规则，2026-08-06 起强制，见 project-summary skill）
 ```
 
 When a new task emerges:

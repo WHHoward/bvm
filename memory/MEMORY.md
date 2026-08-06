@@ -15,3 +15,4 @@
 - [K 元件变压器分析](k-element-transformer-analysis.md) — K 元件原理、失效原因、适用范围
 - [BQ v4 修改方案](bq-v4-modification-plan.md) — IC 顺序反转 + 输出级增强
 - [GPT 项目审计](GuidanceFromGpt.md) — 外部审计: 基线矛盾、执行顺序、决策门、基建修复，根因 BJL1 IC 过低吞噬信号
+- [DCSFQ_BVM 设计](dcsfq-bvm-design.md) — H7 主路线新元件，DCSFQ 骨架缩放，2026-08-06 设计批准

@@ -45,5 +45,5 @@
 - 命令: build/josim-cli -o test/final/interface/data/dcsfq_bvm_div.csv test/final/interface/test_dcsfq_bvm_div.cir
 - 指标: python3 scripts/sfq_metrics.py test/final/interface/data/dcsfq_bvm_div.csv "P(B1|XDCSFQ),P(B2|XDCSFQ),P(B3|XDCSFQ)" --peaks "I(L1|XDCSFQ),I(L2|XDCSFQ),I(L3|XDCSFQ),V(OUT1)" > test/final/interface/data/dcsfq_bvm_div.json
 - 仿真器: build/josim-cli v2.7.2837d13（非 /usr/local/bin 旧版）
-- 提交: （本任务完成后回填 SHA）
+- 提交: `b2c8dac`（feat(P0.2) 本体；本行 SHA 由后续 docs 回填提交写入）
 - 确定性: CSV sha256 = f305488caaeebdbf20b5f38a4b30b530e1f4b0536e60e4ef3718209aee4fb579 已入 JSON，待 P0.3 全量验证

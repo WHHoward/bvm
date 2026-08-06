@@ -1,0 +1,12 @@
+* BQ v4 S1.2 — 无输入偏置稳定性: IBias=35uA 单独施加, 300ps 窗口
+* PASS 标准: BJs/BJL1/BJL2 net≈0, fast_events=0, V(OUT) 无脉冲
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/qb/bq_cell_v4.cir
+
+XBQ IN1 OUT1 IBIAS BQ
+R_LOAD OUT1 0 10
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+
+.tran 0.1p 300p
+.print V(OUT1) P(BJs|XBQ) P(BJL1|XBQ) P(BJL2|XBQ)
+.end

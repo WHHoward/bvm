@@ -1,0 +1,13 @@
+* BQ v4 90uA 无 JTL 负载对照 (纯 10Ω) — 诊断: JTL 负载对输出级的影响
+.include ../../../../circuits/models/jjmit.cir
+.include ../../../../circuits/qb/bq_cell_v4.cir
+
+.param IIN=90u
+XBQ IN1 OUT1 IBIAS BQ
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+I_IN 0 IN1 pulse(0 IIN 10p 1p 1p 5p 50p)
+R_LOAD OUT1 0 10
+
+.tran 0.1p 300p
+.print V(OUT1) P(BJS|XBQ) P(BJL1|XBQ) P(BJL2|XBQ)
+.end

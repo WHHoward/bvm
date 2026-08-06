@@ -1,0 +1,13 @@
+* BQ v4 S1.6 — 支路诊断: 确认 BJL1 是否仍吞噬信号
+* PASS 标准: BJL2 触发先于/多于 BJL1; BJL1 fast_events=0
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/qb/bq_cell_v4.cir
+
+XBQ IN1 OUT1 IBIAS BQ
+R_LOAD OUT1 0 10
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+I_IN 0 IN1 pulse(0 90u 10p 1p 1p 5p 50p)
+
+.tran 0.1p 300p
+.print V(OUT1) P(BJS|XBQ) P(BJL1|XBQ) P(BJL2|XBQ) I(RJ1|XBQ) I(RJ2|XBQ)
+.end

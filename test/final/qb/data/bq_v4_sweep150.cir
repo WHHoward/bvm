@@ -1,0 +1,17 @@
+* BQ v4 S1.4 — 电流脉冲扫参 70/90/110/130/150uA (模板 IIN=150u)
+* S1.5 — Load JTL B1 计数 = 输出 SFQ 数
+* PASS 标准: JTL B1 与 Iin 正相关; 70uA ≥1, 90uA ≥2, 130uA ≥3 (计划 §4.1)
+.include ../../../../circuits/models/jjmit.cir
+.include ../../../../circuits/qb/bq_cell_v4.cir
+.include ../../../../circuits/standard/JTL.cir
+
+.param IIN=150u
+XBQ IN1 OUT1 IBIAS BQ
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+I_IN 0 IN1 pulse(0 IIN 10p 1p 1p 5p 50p)
+XJTL OUT1 JTLQ THmitll_JTL
+R_JTLQ JTLQ 0 10
+
+.tran 0.1p 300p
+.print V(OUT1) V(JTLQ) P(BJS|XBQ) P(BJL1|XBQ) P(BJL2|XBQ) P(B1|XJTL) P(B2|XJTL)
+.end

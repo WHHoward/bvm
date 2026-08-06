@@ -8,6 +8,8 @@ metadata:
 
 # Paper A Phase 1: BVM→BQ 接口耦合实验 — 详细执行计划
 
+> **🕰 历史计划 (2026-08-06 标注)**: 本计划的双路线（低 IC + K 元件变压器）均已失败，已被 GPT 审计 Step 0-5 框架与 H7/DCSFQ_BVM 主路线替代。**当前任务权威 = [[project-todo]]**；当前设计 = [[dcsfq-bvm-design]]。保留仅作历史参考。
+
 > **目标论文**: "Interface Design and Impedance Matching for BVM-to-QB Coupling in Superconducting In-Memory Computing"
 > **Phase 1 目标**: 完成双路线实验，收集全部数据，投 arXiv 预印本
 > **日期**: 2026-07-13 | **计划版本**: v1.0

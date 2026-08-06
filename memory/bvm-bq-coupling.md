@@ -7,6 +7,8 @@ metadata:
   originSessionId: c5521155-33ba-4655-a787-c46e6bb6b2b1
 ---
 
+> **🕰 历史记忆 (2026-08-06 标注)**: 本文档为早期（7/12）阻抗匹配分析。其建议的两条路线（低 IC 检测结、变压器耦合）均已被 8 轮实验系统性排除（证据链 §4）。**完整实验记录见 [[bvm-bq-coupling-experiments]]，结论见 `docs/paper/bvm-bq-interface-evidence-chain.md`**。保留仅作历史参考。
+
 ## BVM → BQ 耦合问题
 
 ### 问题

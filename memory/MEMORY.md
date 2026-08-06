@@ -1,18 +1,20 @@
-- [项目综合总结](project-summary.md) — 2026-07-12 完整状态快照，成果+问题+下一步
-- [Skill 使用规范](skill-usage.md) — 所有任务开始前必须检查并使用适用 skill
-- [ColdFlux 标准元件库](coldflux-library.md) — 35 个元件，7 个已验证，jjmit 模型参数
-- [SFQ 脉冲物理](sfq-physics.md) — 2ps 脉冲、数据先于时钟时序规则、相位分析
-- [测试方法论](test-methodology.md) — 测试文件结构、I/O 信号命名、验证标准
-- [BVM→BQ 耦合问题](bvm-bq-coupling.md) — 阻抗不匹配 ~25% 电流传递，尚未解决
-- [JJ 模型参数演变](jj-model-parameters.md) — V0 (0.25mV) vs ColdFlux (1.6mV)，混合模型方案
-- [T1 全加器](t1-full-adder.md) — 18 节点 11 结，相位累积量化单元
-- [项目结构](project-structure.md) — 目录布局、关键文件位置
-- [PIM 路线图设计](pim-roadmap-design.md) — PoC→PIM 渐进路线，BVM→BQ 双路线耦合方案，Phase 1-5 规划
-- [论文方向分析](paper-directions-analysis.md) — 四个论文方向创新性/可行性评估，竞争格局，推荐策略
-- [Phase 1 执行计划](phase1-bvm-bq-coupling-plan.md) — Paper A BVM→BQ 耦合实验 8 任务拆解 + 2 周弹性时间规划
-- [项目主任务清单](project-todo.md) — GPT 审计后重构，Step 0-4 框架
-- [BVM→BQ 耦合实验记录](bvm-bq-coupling-experiments.md) — 基线/低IC/变压器/论文BQ 全记录
-- [K 元件变压器分析](k-element-transformer-analysis.md) — K 元件原理、失效原因、适用范围
-- [BQ v4 修改方案](bq-v4-modification-plan.md) — IC 顺序反转 + 输出级增强
-- [GPT 项目审计](GuidanceFromGpt.md) — 外部审计: 基线矛盾、执行顺序、决策门、基建修复，根因 BJL1 IC 过低吞噬信号
-- [DCSFQ_BVM 设计](dcsfq-bvm-design.md) — H7 主路线新元件，DCSFQ 骨架缩放，2026-08-06 设计批准
+- **状态图例**: 🟢 当前有效 | 🕰 历史/被替代（保留参考）| 📚 参考/工具
+- 🟢 [项目主任务清单](project-todo.md) — GPT 审计后重构，Step 0-5 框架（状态追踪唯一权威）
+- 🟢 [GPT 项目审计](GuidanceFromGpt.md) — 外部审计: 基线矛盾、执行顺序、决策门、§十 冻结证据链再校准
+- 🟢 [DCSFQ_BVM 设计](dcsfq-bvm-design.md) — H7 主路线新元件，DCSFQ 骨架缩放，Phase 0 实测完成
+- 🟢 [项目综合总结](project-summary.md) — 状态快照（会话结束更新），Phase 0 完成 → Phase 1
+- 🕰 [Phase 1 执行计划](phase1-bvm-bq-coupling-plan.md) — 旧 BVM→BQ 双路线计划，**已被 Step 0-4 + H7 替代** (2026-08-06 标)
+- 🕰 [BVM→BQ 耦合问题](bvm-bq-coupling.md) — 早期阻抗匹配分析（~25% 传递），**已被实验记录+证据链替代** (2026-08-06 标)
+- 🟢 [BVM→BQ 耦合实验记录](bvm-bq-coupling-experiments.md) — 基线/低IC/变压器/论文BQ 全记录（事实层）
+- 🕰 [PIM 路线图设计](pim-roadmap-design.md) — PoC→PIM 顶层方向仍有效；**Phase 1 双路线细节过时** (2026-08-06 标)
+- 🕰 [BQ v4 修改方案](bq-v4-modification-plan.md) — IC 顺序反转，**Gate 未通过**，BQ 路线已排除
+- 📚 [K 元件变压器分析](k-element-transformer-analysis.md) — 失败根因：ps 时间尺度互感耦合不足
+- 🟢 [ColdFlux 标准元件库](coldflux-library.md) — 35 个元件，8 个核心已验证，jjmit 模型参数
+- 🟢 [SFQ 脉冲物理](sfq-physics.md) — 2ps 脉冲、数据先于时钟时序规则、相位分析
+- 🟢 [测试方法论](test-methodology.md) — 测试文件结构、I/O 信号命名、验证标准
+- 🟢 [JJ 模型参数演变](jj-model-parameters.md) — V0 (0.25mV) vs ColdFlux (1.6mV)，模型时代边界
+- 🟢 [T1 全加器](t1-full-adder.md) — 18 节点 11 结，相位累积量化单元
+- 🟢 [项目结构](project-structure.md) — 目录布局、关键文件位置（2026-08-06 更新）
+- 📚 [论文方向分析](paper-directions-analysis.md) — 四个论文方向创新性/可行性评估，竞争格局
+- 🟢 [Skill 使用规范](skill-usage.md) — 所有任务开始前必须检查并使用适用 skill
+- 📚 [元件参考](component-reference.md) — 元件参数速查

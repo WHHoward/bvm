@@ -1,0 +1,13 @@
+* P0.1 — DCSFQ behavior: sustained current (150ps hold) — edge vs level trigger
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/standard/DCSFQ.cir
+
+.param IIN=68.4u
+
+XDCSFQ IN1 OUT1 THmitll_DCSFQ
+R_LOAD OUT1 0 10
+I_IN 0 IN1 pwl(0 0 10p 0 12p IIN 160p IIN 165p 0)
+
+.tran 0.1p 250p
+.print V(OUT1) P(B1|XDCSFQ) P(B2|XDCSFQ) P(B3|XDCSFQ)
+.end

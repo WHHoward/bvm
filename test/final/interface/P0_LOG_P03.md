@@ -19,4 +19,4 @@
 ## 复现信息
 - 命令: build/josim-cli -o <out> <netlist>（重跑文件在 /tmp 对比后已删除，md5 表即记录）
 - 仿真器: build/josim-cli v2.7.2837d13
-- 提交: （本行 SHA 由后续 docs 回填提交写入）
+- 提交: `35ca928`（test(P0.3) 本体；本行 SHA 由后续 docs 回填提交写入）

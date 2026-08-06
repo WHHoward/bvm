@@ -1,0 +1,15 @@
+* P0.2 — DCSFQ_BVM input current division: I(L3)/I(L1) at port a
+* 68.4µA bump (read-1 level); ratio = current reaching B1/B2 branch
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/interface/DCSFQ_BVM.cir
+
+.param IIN=68.4u
+
+XDCSFQ IN1 OUT1 THmitll_DCSFQ_BVM
+R_LOAD OUT1 0 10
+I_IN 0 IN1 pwl(0 0 10p 0 12p IIN 40p IIN 45p 0)
+
+.tran 0.1p 200p
+.print V(OUT1) P(B1|XDCSFQ) P(B2|XDCSFQ) P(B3|XDCSFQ)
+.print I(L1|XDCSFQ) I(L2|XDCSFQ) I(L3|XDCSFQ)
+.end

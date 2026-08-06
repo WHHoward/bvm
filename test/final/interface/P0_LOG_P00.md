@@ -43,3 +43,5 @@
 - 网表: `test/final/interface/test_bvm_load_{short,1ohm,12ohm,50ohm,8jj}.cir`
 - 数据: `test/final/interface/data/bvm_load_{short,1ohm,12ohm,50ohm,8jj}.{csv,json}`
 - 验证产物（已删除，不入库）: `data/_verify_frozen_baseline.csv`（冻结基线复现用）
+
+注: 本文件与 5 个 `.cir`、5 个 CSV 入库于 175e70f（并行提交竞态，控制器提交顺带带走已暂存文件），指标 JSON 以 commit 524c180 提交

@@ -1,0 +1,38 @@
+* P0.0 — BVM output behavior: LOAD=1Ω (low-Z to GND)
+* Same W1/R1/W0/R0 drive as frozen baseline; only SL load changes
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* ==== SL LOAD VARIANT ====
+R_LD SL1 0 1
+
+* ============ BVM Write/Read Sequence (frozen, BASELINE.md) ============
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 91p 0
++ 110p 0)
+
+I_SE1 0 SE1 pwl(0 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 110p 0)
+
+.tran 0.1p 110p
+
+* BVM state (storage disturbance check)
+.print P(B_JM1|XBVM1) P(B_JM2|XBVM1)
+* SL output
+.print I(L_SL|XBVM1) V(SL1)
+.print V(WL1) V(BL1) V(SE1)
+.end

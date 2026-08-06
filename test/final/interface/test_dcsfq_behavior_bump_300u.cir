@@ -1,0 +1,14 @@
+* P0.1 — DCSFQ behavior: bump waveform (edge vs level + threshold)
+* Bump: rise 2ps, hold 28ps, fall 5ps (idealized BVM read envelope)
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/standard/DCSFQ.cir
+
+.param IIN=300u
+
+XDCSFQ IN1 OUT1 THmitll_DCSFQ
+R_LOAD OUT1 0 10
+I_IN 0 IN1 pwl(0 0 10p 0 12p IIN 40p IIN 45p 0)
+
+.tran 0.1p 200p
+.print V(OUT1) P(B1|XDCSFQ) P(B2|XDCSFQ) P(B3|XDCSFQ)
+.end

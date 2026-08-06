@@ -144,6 +144,7 @@ metadata:
 
 | 日期 | 变更 |
 |------|------|
+| 2026-08-06 | **会话交接**: 创建 `docs/HANDOVER.md`（零上下文交接文档）+ 更新 project-summary 至最新；新会话从 HANDOVER §0 开始 |
 | 2026-08-06 | **Step 3 决策 D: 论文证据链完成** — `docs/paper/bvm-bq-interface-evidence-chain.md` (8 轮实验+排除链+论文映射); 新任务 H6-H10; 论文叙事重构 |
 | 2026-08-06 | **Step 1 BQ v4 验证完成: Gate 未通过** — S1.2 ✅, S1.3-1.6 ❌; v4 输出比 v2 差 5.5×; 根因冻结 (BJs 欠阻尼无分流 + 输出传递死亡 + 无法驱动 JTL); 进入 Step 3 决策 |
 | 2026-08-06 | Step 0 完成: 矛盾解决 + 基线冻结 + sfq_metrics.py + 全部重跑确定 |

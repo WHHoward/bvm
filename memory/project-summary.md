@@ -1,17 +1,18 @@
 ---
 name: project-summary
-description: JoSIM 项目最终综合总结 — 2026-07-13 状态快照，论文A Phase1准备就绪
+description: JoSIM 项目综合总结 — 2026-08-06 状态，GPT 审计后 Step 0-4 框架，BVM→BQ 耦合待解决
 metadata: 
   node_type: memory
   type: project
-  originSessionId: c5521155-33ba-4655-a787-c46e6bb6b2b1
+  last_updated: 2026-08-06
 ---
 
 # JoSIM 项目综合总结
 
-**最后更新**: 2026-07-12
+**最后更新**: 2026-08-06
 **分支**: master
 **构建**: 正常 (`build/josim-cli` 可用)
+**当前阶段**: Step 0（基线校准）— BVM→BQ 接口阻塞中
 
 ---
 
@@ -21,129 +22,86 @@ JoSIM 是一个超导电子学 SPICE 语法电路仿真器。我们使用它来�
 
 ## 二、已完成工作
 
-### 2.1 ColdFlux 标准元件库（✅ 7/7 验证通过）
+### 2.1 ColdFlux 标准元件库（✅ 8/8 验证通过）
 
-从 PDF 提取了 35 个 MIT-LL SFQ5ee 标准元件，对其中 7 个核心元件进行了完整测试验证：
+从 PDF 提取了 35 个 MIT-LL SFQ5ee 标准元件，对其中 8 个核心元件进行了完整测试验证：
 
-| 元件 | JJ | 类型 | 验证结果 | 关键发现 |
-|------|-----|------|---------|---------|
-| **JTL** | 2 | 异步 | ✅ SFQ 传输 | B1→B2 顺序翻转 |
-| **SPLIT** | 3 | 异步 | ✅ 1→2 扇出 | 双输出各 1 SFQ |
-| **MERGE** | 7 | 异步 | ✅ 2→1 汇聚 | 两路独立工作 |
-| **DFF** | 7 | 钟控 | ✅ 写→存→读 | 存储环 B3+L3+B4 |
-| **XOR** | 11 | 钟控 | ✅ 真值表全对 | 0⊕0=0, 1⊕0=1, 1⊕1=0, 0⊕1=1 |
-| **AND2** | 15 | 钟控 | ✅ 1∧1=1, 1∧0=0 | 双级并行输入 |
-| **NDRO** | 11 | 钟控 | ✅ 非破坏读出 | 写→读→复位→读0 |
+| 元件 | JJ | 类型 | 验证结果 |
+|------|-----|------|---------|
+| JTL | 2 | 异步 | ✅ SFQ 传输 |
+| SPLIT | 3 | 异步 | ✅ 1→2 扇出 |
+| MERGE | 7 | 异步 | ✅ 2→1 汇聚 |
+| DFF | 7 | 钟控 | ✅ 写→存→读 |
+| XOR | 11 | 钟控 | ✅ 真值表 4/4 |
+| AND2 | 15 | 钟控 | ✅ 1∧1=1, 1∧0=0 |
+| NDRO | 11 | 钟控 | ✅ 非破坏读出 |
+| NOT | 8 | 钟控 | ✅ NOT(0)=1, NOT(1)=0 |
 
 ### 2.2 BVM 磁通涡旋存储器（✅ 独立工作）
 
-- 写入操作正常：WL+BL 脉冲驱动 JM1/JM2 翻转
-- 存储状态稳定：P(JM1)=±0.94×2π（"1"和"0"状态）
-- 读取操作正常：涡旋状态调制输出电流方向
-- 半选测试通过
+- JM1 = |0.94| SFQ，写入/读取/存储/半选均正常
+- 使用 jjmit 模型（area 参数调谐）
 
-### 2.3 BQ 量化缓冲器（✅ 独立工作）
+### 2.3 BQ 量化缓冲器（⚠️ 独立工作但功能有限）
 
-- 90µA 输入触发 1.035mV SFQ 输出
-- 使用 jjmit 模型（Ic×RN=1.6mV）
+- 90µA 矩形电流脉冲 → 1035µV 输出
+- **局限**：需要 ≥110µA 才能通过 JTL 传播；输出饱和在 ~3 SFQ，不随输入线性增长
+- **根因**：BJL1 IC(36µA) < BJs IC(50µA)，BJL1 先触发吞噬 BJs 输出能量
 
-### 2.4 SFQ 发生器（✅ 验证）
+### 2.4 T1 全加器（🔴 未测试）
 
-- sfq_gen_clk (4/4 通过)
-- sfq_gen_i (10/10 通过)
+- CLK 隔离测试曾通过 (5/5)，但完整功能验证未完成
+- 存在 include 顺序、电压源驱动等已知问题
 
-### 2.5 T1 全加器（🔄 进行中）
+## 三、BVM→BQ 耦合实验总结
 
-- CLK 隔离测试通过 (5/5)
-- 完整功能验证待完成
+**7 轮实验全部失败**。详见 [[bvm-bq-coupling-experiments]]。
 
-## 三、关键技术发现
+| 路线 | 方法 | 结果 |
+|------|------|------|
+| 基线 | BVM→标准 BQ 直接级联 | ❌ BJs ~0-1 SFQ（矛盾待解） |
+| 低 IC v1-v3 | BJs IC 20-50µA | ❌ L_J 内在矛盾 |
+| K 元件变压器 | n=2.0/2.5/3.0 | ❌ SFQ 时间尺度耦合太弱 |
+| 论文 BQ | JS=133µA 原始参数 | ❌ 阈值不匹配 |
+| 电阻负载 | 12Ω | ❌ 不如 JJ 负载 |
+| 单结 sfq_gen | IC 调谐 | ❌ 触发电阻分压 |
 
-### 3.1 脉冲宽度规则
+**根因分析**：BVM 输出是 ~30ps 慢振荡电流，BQ 需要 ~2ps 快边缘触发。BJL1 低 IC 进一步恶化。
 
-**5ps 脉冲过宽** → 多次触发。**必须用 2ps** 确保每脉冲精确 1 SFQ。
+## 四、当前执行框架：GPT 审计 Step 0-4
 
-```spice
-* 正确模板
-V_IN IN 0 pwl(0 0 10p 0 12p 0 13p 1.5m 15p 1.5m 16p 0 100p 0)
-```
+详见 [[project-todo]] 和 [[GuidanceFromGpt]]。
 
-### 3.2 钟控逻辑时序规则
+| Step | 内容 | 状态 |
+|------|------|------|
+| Step 0 | 冻结基线、解决相位计数矛盾 | 🔴 最高优先级 |
+| Step 1 | BQ v4 独立验证 (BJL1 36→90µA) | 🔴 阻塞于 Step 0 |
+| Step 2 | BVM→BQ v4 级联 | 🔴 阻塞于 Step 1 |
+| Step 3 | 根据结果做路线决策 | 🔴 阻塞于 Step 2 |
+| Step 4 | 备用接口方案 | 🔴 仅 v4 失败后启动 |
 
-**数据 SFQ 必须先于时钟 SFQ 到达。** ColdFlux 钟控单元（XOR/AND2/DFF/NDRO）内部超导环先存储数据，时钟到达时读取。
+### BQ v4 修改方案
 
-| 正确 | 错误 |
+详见 [[bq-v4-modification-plan]]。核心改动：IC 顺序反转 BJs(50) < BJL2(70) < BJL1(90)，确保 BJL1 不再先触发吞噬信号。
+
+## 五、基础设施状态
+
+| 项目 | 状态 |
 |------|------|
-| 数据@15ps → 时钟@35ps | 时钟@12ps → 数据@18ps |
+| 构建 | ✅ `build/josim-cli` 可用 |
+| CTest | ⚠️ BVM/BQ/级联测试未接入 |
+| 硬编码路径 | ⚠️ 1 处 (`test_bvm_paper_bq.cir`) |
+| SFQ 计数 | ⚠️ 人工读图，无自动化脚本 |
+| HTML 可视化 | ✅ 21 个，已加入 .gitignore |
+| 项目记忆 | ✅ 18 个 memory 文件 |
+| Skills | ✅ skill-router/josim-viz/project-summary/todo-manager |
 
-### 3.3 JJ 模型参数兼容性
+## 六、下一步方向
 
-| 电路 | 需要 Ic×RN | 模型 |
-|------|-----------|------|
-| BVM | 0.25mV | V0（低电压驱动） |
-| ColdFlux/BQ | 1.6mV | jjmit（ColdFlux 标准） |
-| **混合方案** | BVM=V0 + BQ=jjmit | ✅ 可行 |
+1. **Step 0.1（最优先）**：解决基线相位计数矛盾（BJs ~1 vs ~0 SFQ）
+2. **Step 0.2-0.5**：冻结基线 + 自动化脚本 + 修复路径
+3. **Step 1**：BQ v4 独立验证（仅 Step 0 通过后）
+4. **Step 2**：BVM→BQ v4 级联（仅 Step 1 通过后）
+5. **备用**：如果 v4 失败，转向专用慢电流→SFQ 接口设计
 
-## 四、已知问题
-
-### 4.1 BVM → BQ 级联（❌ 未解决）
-
-BVM SL 输出阻抗 ~130Ω vs BQ 输入阻抗 ~350Ω → 仅 ~25% 电流传递（~15µA 到达，需要 50µA）。
-
-**可能方案**：低 IC 检测结、变压器耦合、重设计 BVM 输出级。
-
-### 4.2 T1 全加器完整验证（🔄 待完成）
-
-## 五、项目文件布局（清理后）
-
-```
-JoSIM/
-├── CLAUDE.md              ← 项目指南 + Skill 触发规则
-├── README.md              ← 上游项目文档
-├── src/ + include/        ← C++ 源码
-├── build/                 ← josim-cli
-├── scripts/               ← josim-plot2.py (可视化)
-├── circuits/
-│   ├── standard/          ← 35 ColdFlux 元件 + INDEX.md
-│   ├── models/jjmit.cir   ← 统一 JJ 模型
-│   ├── bvm/bvm_cell.cir   ← BVM 子电路
-│   ├── qb/bq_cell.cir     ← BQ 子电路
-│   └── t1/t1_cell.cir     ← T1 全加器
-├── test/
-│   ├── standard/          ← 7 个已验证测试 + HTML 可视化
-│   ├── comp/              ← 基础元件测试 (12个)
-│   ├── final/             ← BVM/BQ/T1 综合测试 (.cir only)
-│   └── param/, syntax/    ← 框架测试
-├── arti/                  ← 参考论文 PDF + T1 文档
-├── .claude/               ← Skills + Settings
-└── memory/                ← 项目记忆（本文件所在）
-```
-
-## 六、Skill 清单
-
-| Skill | 文件 | 功能 |
-|-------|------|------|
-| `skill-router` | `.claude/skills/skill-router.md` | 任务决策路由 + 技能使用模式 |
-| `josim-viz` | `.claude/skills/josim-viz.md` | 仿真结果可视化 |
-| `project-summary` | `.claude/skills/project-summary.md` | 项目总结与整理 |
-| `todo-manager` | `.claude/skills/todo-manager.md` | 主任务清单管理 |
-| ARS skills | `academic-research-skills` | 文献调研/论文写作/审稿 |
-
-## 七、当前阶段：论文 A Phase 1
-
-**方向**: BVM→BQ 接口设计与阻抗匹配（投稿 Supercond. Sci. Technol.）
-**目标**: 双路线实验 → arXiv 预印本
-**时间**: 8 工作日 (~2 周, 25-35h)
-**详细计划**: [[phase1-bvm-bq-coupling-plan]]
-**主任务清单**: [[project-todo]]
-**路线图**: [[pim-roadmap-design]]
-**论文分析**: [[paper-directions-analysis]]
-
-## 八、下一步方向
-
-1. **Phase 1 Task 1: BVM→BQ 基线测试** — 立即开始
-2. **Phase 1 Task 2-7: 双路线实验** — Week 1
-3. **Phase 1 Task 8: 论文撰写** — Week 2
-4. **标准元件库扩展** — 搁置（等 Phase 1 完成后统一注册 ctest）
-
-[[coldflux-library]] [[sfq-physics]] [[test-methodology]] [[jj-model-parameters]] [[bvm-bq-coupling]] [[t1-full-adder]] [[project-structure]] [[skill-usage]]
+论文方向暂不锁定——等 BQ v4 出结果后根据实际情况定位（问题表征 / 候选方案 / 解决方案）。

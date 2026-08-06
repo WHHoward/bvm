@@ -4,7 +4,7 @@ description: JoSIM 项目主任务清单 — GPT 审计后重构，Step 0-4 框�
 metadata:
   type: project
   node_type: memory
-  last_updated: 2026-07-17
+  last_updated: 2026-08-06
 ---
 
 # JoSIM 项目主任务清单
@@ -24,7 +24,7 @@ metadata:
 | S0.2 | 选定冻结基线 netlist + commit | 🔴 | 锁定 `test_bvm_bq_baseline.cir` 及相关文件 |
 | S0.3 | 编写可重复指标提取脚本 | 🔴 | ΔP/(2π) 自动计算, 不依赖人工读图 |
 | S0.4 | 重跑独立 BVM/BQ/基线 各 ≥2 次 | 🔴 | 验证重复性 |
-| S0.5 | 修复硬编码绝对 include 路径 | 🔴 | `/home/howard/...` → 相对路径 |
+| S0.5 | 修复硬编码绝对 include 路径 | 🟡 | 已定位 1 处: `test_bvm_paper_bq.cir` |
 
 ---
 
@@ -87,7 +87,7 @@ metadata:
 | I1 | 修复硬编码绝对路径 (全局搜索 `/home/howard`) | 🔴 | 高 |
 | I2 | BVM/BQ/BVM→BQ 测试接入 CTest | 🔴 | 高 |
 | I3 | SFQ 计数自动化脚本 (CSV/JSON 输出) | 🔴 | 高 |
-| I4 | HTML 可视化加入 `.gitignore` | 🔴 | 中 |
+| I4 | HTML 可视化加入 `.gitignore` | 🟢 | 2026-08-06: `test/**/*.html` 已添加 |
 | I5 | `test/final` 分目录 (参考/历史/当前/候选) | 🔴 | 中 |
 | I6 | 实验记录标注"观察/机理/假设" | 🔴 | 中 |
 
@@ -133,5 +133,6 @@ metadata:
 
 | 日期 | 变更 |
 |------|------|
+| 2026-08-06 | 项目清理: library_josim/ 删除, HTML .gitignore, S0.5 定位 1 处硬编码路径, I4 完成 |
 | 2026-07-17 | GPT 审计后重构：Step 0-4 框架 + 基建修复 + 模型矩阵 |
 | 2026-07-13 | 初始创建 |

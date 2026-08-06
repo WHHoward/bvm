@@ -4,6 +4,29 @@
 
 ---
 
+## 2026-08-06 — 项目清理与状态同步
+
+### 做了什么
+- **删除 `library_josim/`**：14 个文件（12 .cir + 2 CSV, ~2.8MB），所有电路已正式提取到 `circuits/standard/`
+- **删除重复 HTML**：`test/standard/{dff,xor}.html`，保留 `_viz` 版本
+- **`.gitignore` 添加 `test/**/*.html`**：仿真可视化输出可随时重新生成，不再进入版本控制
+- **提交积压更改**：`memory/GuidanceFromGpt.md` Section 九（GPT 7/19 接口重定义建议）、`mkdocs.yml` nav 更新
+- **更新 project-summary.md**：同步至 2026-08 状态（GPT 审计、Step 0-4、BQ v4 方案）
+- **扫描并确认硬编码路径**：仅 `test_bvm_paper_bq.cir` 有 1 处 `/home/howard/...`（S0.5 待修复）
+
+### 为什么
+- Session 恢复后发现多个积压项：library_josim 与 circuits/standard/ 内容重叠、GuidanceFromGpt.md 有内容未提交
+- GPT 审计后项目已转向 Step 0-4 框架，但 project-summary.md 仍停留在 7/12 旧状态
+- HTML 可视化已积累到 21 个文件，不应进入 git 历史
+
+### 影响
+- 项目目录更简洁：根目录不再有 `library_josim/` 混淆
+- 新 HTML 不会再显示为 untracked
+- project-summary + project-todo 同步至当前实际状态
+- 下一步明确：Step 0（基线校准）→ Step 1（BQ v4）→ Step 2（级联）
+
+---
+
 ## 2026-07-17 — GPT 审计 + 项目重构
 
 ### 做了什么

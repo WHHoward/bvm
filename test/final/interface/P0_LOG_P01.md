@@ -48,7 +48,7 @@ B2 最大相位偏移时刻: 150u 运行在 t=18.9ps（输入窗口内，12-40ps
 
 ## 扩展扫描 300µA（控制器批准的有界扩展，2026-08-06）
 
-网表: `test_dcsfq_behavior_bump_300u.cir` / `test_dcsfq_behavior_sustained_300u.cir`（模板复制，仅 `.param IIN=300u`）。300µA 已触发 → 按 bound 停止（500µA 不运行）。
+网表: `test_dcsfq_behavior_bump_300u.cir` / `test_dcsfq_behavior_sustained_300u.cir`（模板复制，仅 `.param IIN=300u`）。300µA 已触发 → 按 bound 停止（500µA 不运行）。提交信息中 "300-500uA" 为计划的有界扫描范围，实际因 300µA 已触发按 bound 停止，500µA 未运行。
 
 | 变体 | IIN | B1 net | B1 fast_events | B2 net | B3 net | V(OUT1) pk | B2 excursion |
 |---|---|---|---|---|---|---|---|
@@ -59,7 +59,7 @@ B2 最大相位偏移时刻: 150u 运行在 t=18.9ps（输入窗口内，12-40ps
 
 - **B3**: 8 次 fast events @ 18.5-19.2ps（上升沿之后，两运行完全一致）
 - **B1**: 7 次 fast events @ 45.4-46.0ps（bump 下降沿）/ 165.4-166.0ps（sustained 下降沿，160-165ps 输入回落）——B1 在**下降沿**反向滑移
-- **B2**: 慢滑移（fast_events=0, max_dPdt≈2.7 SFQ/ps < 3 阈值），相位 1.54→6.99 Φ0 @12-20ps；**sustained 中 12-160ps 全程保持 ~6.76 Φ0 平坦（148ps 无任何累积）**，下降沿后回弹至终值 7.177
+- **B2**: 慢滑移（fast_events=0, max_dPdt≈2.7 SFQ/ps < 3 阈值），相位 1.54→6.99 Φ0 @12-20ps；**sustained 中 ~20-160ps 保持平坦（12-20ps 是滑移上升沿，平台 ~30ps 起恒定；148ps 无任何累积）**，下降沿后回弹至终值 7.177
 
 ### 判定（扩展扫描后更新）
 
@@ -77,4 +77,8 @@ B2 最大相位偏移时刻: 150u 运行在 t=18.9ps（输入窗口内，12-40ps
 - 仿真器: `build/josim-cli` v2.7.2837d13（非 /usr/local/bin 旧版）
 - 模型: jjmit (Ic×RN=1.6mV)；DCSFQ.cir (THmitll_DCSFQ): B1/B2 IC=225µA (area 2.25), B3 IC=250µA (area IC=2.5), 偏置 IB1=275µA/IB2=175µA
 - 网表: `test/final/interface/test_dcsfq_behavior_*.cir` (11 个)；CSV/JSON: `test/final/interface/data/`
+- bump_68u / sustained_68u 数据由模板网表直接运行生成（模板 `.param IIN=68.4u`），无独立 *_68u.cir 文件
+- 命令模板: `build/josim-cli -o test/final/interface/data/<name>.csv test/final/interface/<netlist>.cir`；`python3 scripts/sfq_metrics.py <csv> "P(B1|XDCSFQ),P(B2|XDCSFQ),P(B3|XDCSFQ)" --peaks "V(OUT1)" > <json>`
+- 提交: `1b909a4`（初轮 9 组）、`09cd962`（300µA 扩展）
+- 确定性: CSV sha256 已入 JSON，重跑应逐位一致（固定步长仿真确定性，待 P0.3 全量验证）
 - 指标: `scripts/sfq_metrics.py` (fast 阈值 0.3 SFQ/sample)

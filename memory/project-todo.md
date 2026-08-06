@@ -120,8 +120,11 @@ metadata:
 | I2 | BVM/BQ/BVM→BQ 测试接入 CTest | 🔴 | 高 |
 | I3 | SFQ 计数自动化脚本 (CSV/JSON 输出) | 🟢 | 已由 S0.3 `scripts/sfq_metrics.py` 覆盖 (GPT §十.7, 2026-08-06) |
 | I4 | HTML 可视化加入 `.gitignore` | 🟢 | 2026-08-06: `test/**/*.html` 已添加 |
-| I5 | `test/final` 分目录 (参考/历史/当前/候选) | 🔴 | 中 |
-| I6 | 实验记录标注"观察/机理/假设" | 🔴 | 中 |
+| I5 | `test/final` 分目录 (参考/历史/当前/候选) | 🟢 (2026-08-06) | 改为轻量方案: `test/final/README.md` 索引标注状态，不重排路径 |
+| I6 | 实验记录标注"观察/机理/假设" | 🟢 (2026-08-06) | P0_LOG_P00-P03 已全部执行；规则在 project-summary skill |
+| I7 | 一键实验脚本 `scripts/run_exp.sh` | 🟢 (2026-08-06) | 仿真→指标→md5 一步完成，已实测 (md5 与已提交 CSV 一致) |
+| I8 | 文档分层规则 (事实/状态/快照/历史) | 🟢 (2026-08-06) | 已写入 project-summary skill，强制 |
+| I9 | 目录索引 (test/final README / circuits INDEX / scripts README) | 🟢 (2026-08-06) | 含 MC_conclu.py 归位 scripts/ |
 
 ---
 
@@ -165,6 +168,7 @@ metadata:
 
 | 日期 | 变更 |
 |------|------|
+| 2026-08-06 | **工作流建议落实** (I5-I9): run_exp.sh 一键实验 + 文档分层规则入 skill + 三个目录索引 + MC_conclu.py 归位; 其余建议: CTest 接入 (I2) 留 Phase 1 末, 论文并行草稿待启动 |
 | 2026-08-06 | **Phase 0 完成** (P0.0-P0.3 全 🟢): 接口规格实测 + 边沿触发确认 + 分流 0.285 + 确定性 5/5; 决策门 G1-G5 判定见 test/final/interface/P0_LOG.md; spec 修订 2 (阈值目标 45-55µA); 下一步 Phase 1 (V1-V4b, 含输入网络调整) |
 | 2026-08-06 | **Phase 0 计划提交** (b0a23cb): 执行方式确定 subagent-driven，Task 2/3 并行派发; skill-router 新增 subagent 分发规则 |
 | 2026-08-06 | **Step 5 修订**: 缩放起点改为以 BVM 实测输出行为为准 → 新增 P0.0 输出表征 (负载扫描)，执行顺序 P0.0→P0.1→P0.2→P0.3 (P0.0/P0.1 可并行) |

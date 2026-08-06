@@ -129,6 +129,20 @@ find test/ -type d | sort
 - 项目状态：<一句话>
 ```
 
+## 文档分层规则（2026-08-06 起强制）
+
+**避免"每次实验同步 5 个文档"的重复开销——各层只写自己的内容，上层只引用不复制数据。**
+
+| 层 | 文档 | 更新时机 |
+|----|------|---------|
+| 事实层 | 实验日志（EXPERIMENT_LOG / P0_LOG 等） | **实验后立即写**（数据唯一来源） |
+| 状态层 | `memory/project-todo.md` | 只改状态行 + 更新日志一行 |
+| 快照层 | `memory/project-summary.md` | **会话结束才碰** |
+| 历史层 | `CHANGELOG.md` | 每次会话一条 |
+
+**Why**: 多会话交替修改时，事实层是唯一数据源；上层重复数据必然漂移（基线矛盾教训）。
+**How to apply**: 实验完成 → 先写事实层日志 → 改 todo 状态行 → 会话末更新 summary；批量实验用 `scripts/run_exp.sh`（仿真+指标+md5 一步完成）。
+
 ## 时间标注规则（2026-08-06 起强制）
 
 **任何对 `CHANGELOG.md`、`memory/project-todo.md`、`memory/project-summary.md`、`memory/*.md` 的修改，必须在修改处标注修改时间。**

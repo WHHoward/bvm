@@ -30,6 +30,7 @@ description: Use when starting any task in the JoSIM project — before Bash, Wr
 | 会话开始/查进度 | `todo-manager` |
 | 论文/文献 | `academic-research-skills:deep-research` |
 | **多任务/批量实验/可并行** | **优先 subagent 分发**（`superpowers:dispatching-parallel-agents`），主会话保持审阅与决策 |
+| 跑实验/仿真/指标 | `scripts/run_exp.sh`（仿真→指标→md5 一步完成，Phase 1+ 标准动作） |
 
 ## Subagent 使用原则（2026-08-06 起，用户要求）
 

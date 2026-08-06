@@ -95,6 +95,7 @@ metadata:
 
 > **目标** (GPT §十.5 冻结口径): 读1 → 恰好 1 个被 JTL 接收的 SFQ；读0 → 0 且无误触发。
 > **设计**: `docs/superpowers/specs/2026-08-06-dcsfq-bvm-cell-design.md` (commit 8faa4f3)
+> **计划**: `docs/superpowers/plans/2026-08-06-dcsfq-bvm-phase0.md` (commit b0a23cb)；执行方式: subagent-driven (2026-08-06 用户选择)
 > **决策**: 新元件 + 方案一最小缩放 (B1/B2→80µA, B3=250µA 冻结)；P0.1 若电平触发滑移则升格方案二 (门控偏置)
 
 | # | 任务 | 状态 | 说明 |
@@ -164,6 +165,7 @@ metadata:
 
 | 日期 | 变更 |
 |------|------|
+| 2026-08-06 | **Phase 0 计划提交** (b0a23cb): 执行方式确定 subagent-driven，Task 2/3 并行派发; skill-router 新增 subagent 分发规则 |
 | 2026-08-06 | **Step 5 修订**: 缩放起点改为以 BVM 实测输出行为为准 → 新增 P0.0 输出表征 (负载扫描)，执行顺序 P0.0→P0.1→P0.2→P0.3 (P0.0/P0.1 可并行) |
 | 2026-08-06 | **DCSFQ_BVM 设计批准（H7 主路线启动）**: 用户决策 新元件+方案一; spec 提交 8faa4f3; H6/方案二三保留为后备; 新增 Step 5 (P0.1-P0.3, V1-V4b); I3 标记为已由 S0.3 覆盖 |
 | 2026-08-06 | **会话交接**: 创建 `docs/HANDOVER.md`（零上下文交接文档）+ 更新 project-summary 至最新；新会话从 HANDOVER §0 开始 |

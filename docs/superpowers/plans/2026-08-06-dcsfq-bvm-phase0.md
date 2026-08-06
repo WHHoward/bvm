@@ -10,6 +10,8 @@
 
 **Spec 依据:** `docs/superpowers/specs/2026-08-06-dcsfq-bvm-cell-design.md`（§2 决策门 / §4 Phase 0 / §6 工程规范）
 
+**执行方式:** subagent-driven（2026-08-06 用户选择）——Task 2 (P0.1) 与 Task 3 (P0.0) 派发并行 subagent，文件前缀隔离（`test_dcsfq_*` vs `test_bvm_*`），各自日志写入 `P0_LOG_P01.md` / `P0_LOG_P00.md`（Task 6 合并进 `P0_LOG.md`），提交时只 add 自己的文件。
+
 **执行纪律:**
 - 所有变体 .cir 用 Write 工具直接创建，**禁止 sed 生成**（HANDOVER 坑：sed 会删含 `P()` 的 .print 行）
 - 全部用单次 `pwl` 脉冲，禁周期 `pulse()`

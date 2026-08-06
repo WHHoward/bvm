@@ -4,6 +4,31 @@
 
 ---
 
+## 2026-08-06 — Step 0 完成：基线矛盾解决 + 基线冻结
+
+### 做了什么
+- **S0.1 解决基线相位计数矛盾**：根因 = 旧记录混用两套模型时代 + 滑移计数误读
+  - `JM1=0.94 SFQ` 来自 V0 模型时代（jj120/jj140/jj74），7/12 18:37 (commit 916ac09) 转换为 jjmit 后不可复现；当前 jjmit 配置写入**多翻转**（settle +5.93 SFQ，仅瞬态穿过 0.94）
+  - `BJs=1.00 SFQ` 为计数误读；冻结口径下实际 = +6.27（电压态滑移）
+  - GPT 的 `BJs=−0.00001 SFQ` 无法由任何变体重现（当前网表/旧 area=5 网表/电压模式/早期窗口全部产出 +6.2~6.3）
+  - `190/96/603 SFQ`（BQ 独立）全是电压态滑移的窗口依赖计数；Vpk=1035µV 三份记录一致
+- **S0.2 冻结基线**：`test/final/single_bvm_qb/BASELINE.md` — commit hash + 文件 SHA-256 + 指标定义
+- **S0.3 指标脚本**：`scripts/sfq_metrics.py` — net_delta / max_excursion / total_variation / fast_events / max_dPdt，JSON 输出
+- **S0.4 重复性验证**：基线×3、BVM×2、BQ×2 全部 md5 一致（确定性确认）
+- **S0.5 修复硬编码路径**：`test_bvm_paper_bq.cir` 绝对路径 → 相对路径，重跑验证通过
+
+### 为什么
+- GPT 审计发现的基线矛盾（BJs ~1 vs ~0 SFQ）必须解决才能继续 BQ v4
+- 旧记录不可复现的根因是 7/12 的模型转换（jj120→jjmit）与滑移计数口径不一
+
+### 影响
+- **Step 0 全部 5 项完成，Gate 通过** → Step 1 (BQ v4) 解锁
+- 关键物理结论（证据增强）：BVM→BQ 级联无离散 SFQ 输出；BJs 是电压态滑移不是 SFQ 翻转
+- 新发现：BVM jjmit 配置写入是多涡旋态（±~6 SFQ），非单涡旋——影响 Step 2 设计
+- 所有后续实验必须以 `sfq_metrics.py` 口径产出指标并保存原始 CSV
+
+---
+
 ## 2026-08-06 — 项目清理与状态同步
 
 ### 做了什么

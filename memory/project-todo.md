@@ -20,11 +20,11 @@ metadata:
 
 | # | 任务 | 状态 | 说明 |
 |---|------|------|------|
-| S0.1 | 解决基线相位计数矛盾 | 🔴 | GPT 测得 BJs~0 SFQ, 之前记录~1 SFQ。必须排查。 |
-| S0.2 | 选定冻结基线 netlist + commit | 🔴 | 锁定 `test_bvm_bq_baseline.cir` 及相关文件 |
-| S0.3 | 编写可重复指标提取脚本 | 🔴 | ΔP/(2π) 自动计算, 不依赖人工读图 |
-| S0.4 | 重跑独立 BVM/BQ/基线 各 ≥2 次 | 🔴 | 验证重复性 |
-| S0.5 | 修复硬编码绝对 include 路径 | 🟡 | 已定位 1 处: `test_bvm_paper_bq.cir` |
+| S0.1 | 解决基线相位计数矛盾 | 🟢 | 2026-08-06: 根因=两套模型时代混合(jj120/V0 vs jjmit) + 滑移计数误读。详见 BASELINE.md |
+| S0.2 | 选定冻结基线 netlist + commit | 🟢 | 2026-08-06: `test_bvm_bq_baseline.cir` 已冻结, commit 6a9363c, 见 BASELINE.md |
+| S0.3 | 编写可重复指标提取脚本 | 🟢 | 2026-08-06: `scripts/sfq_metrics.py` (net/TV/fast_events/dPdt) |
+| S0.4 | 重跑独立 BVM/BQ/基线 各 ≥2 次 | 🟢 | 2026-08-06: 基线×3 + BVM×2 + BQ×2, 全部 md5 一致 |
+| S0.5 | 修复硬编码绝对 include 路径 | 🟢 | 2026-08-06: `test_bvm_paper_bq.cir` → 相对路径, 验证通过 |
 
 ---
 
@@ -133,6 +133,6 @@ metadata:
 
 | 日期 | 变更 |
 |------|------|
-| 2026-08-06 | 项目清理: library_josim/ 删除, HTML .gitignore, S0.5 定位 1 处硬编码路径, I4 完成 |
+| 2026-08-06 | Step 0 完成: 矛盾解决 + 基线冻结 + sfq_metrics.py + 全部重跑确定 |
 | 2026-07-17 | GPT 审计后重构：Step 0-4 框架 + 基建修复 + 模型矩阵 |
 | 2026-07-13 | 初始创建 |

@@ -11,6 +11,9 @@ metadata:
 
 # JoSIM 项目状态审计与后续执行指南
 
+> [!CAUTION]
+> **2026-08-09：本文属于旧审计框架，不能继续作为冻结证据。** 其中基于 `sfq_metrics.py` 的 SFQ 数、`fast_events` Gate、用 JM1 原始 rad 值证明 BVM 多涡旋的口径、BQ 系统排除和 45–55 µA 目标已失效。当前口径见 `docs/guide/project-guide.md`、`docs/HANDOVER.md` 和 `memory/project-todo.md`。
+
 > **用途**：本文件是后续模型进入项目时的优先上下文。它区分了已经验证的事实、尚待验证的假设和已被否定的路线，避免将设计计划或旧实验结论误当作已完成成果。
 >
 > **审计依据**：完整阅读 `memory/`、`.remember/`，并在 2026-07-17 对当前仓库重新运行 BVM、BQ、BVM→BQ 基线仿真及 `ctest`。

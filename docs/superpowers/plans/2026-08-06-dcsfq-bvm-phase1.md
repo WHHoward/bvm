@@ -1,5 +1,8 @@
 # DCSFQ_BVM Phase 1 实施计划（V1-V4b 验证链）
 
+> [!CAUTION]
+> **状态：BLOCKED / SUPERSEDED（2026-08-09）。不得按本文执行。** 本计划依赖的 `sfq_metrics.py` 把 raw rad 当 SFQ，V1 又混入偏置启动，V2 的 `fast_events` 不是事件数；45–55 µA 目标来自已被推翻的 300 µA 多滑移解释；V4 的 a/q 对调也不构成极性反转。先完成 `docs/HANDOVER.md` 的 Phase −1 计量修复和基线重建，再另写修订计划。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 完成 V1-V4b 验证链，找到 45-55µA 工作点的**干净单 SFQ 窗口**并冻结 DCSFQ_BVM 最终参数，打通 BVM 级联（读1 → 恰好 1 个被 JTL 接收的 SFQ，读0 → 0）。

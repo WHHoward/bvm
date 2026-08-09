@@ -1,20 +1,23 @@
+- **2026-08-09 审计警告**：JoSIM `P()` 是 raw rad；旧 `sfq_metrics.py` 的 SFQ/`fast_events` 口径失效。除本索引明确标为当前有效的 `project-todo.md`、`project-summary.md` 和 `docs/guide/project-guide.md` 外，所有 2026-08-06 及更早的接口结论先按历史材料处理。
 - **状态图例**: 🟢 当前有效 | 🕰 历史/被替代（保留参考）| 📚 参考/工具
-- 🟢 [项目主任务清单](project-todo.md) — GPT 审计后重构，Step 0-5 框架（状态追踪唯一权威）
-- 🟢 [GPT 项目审计](GuidanceFromGpt.md) — 外部审计: 基线矛盾、执行顺序、决策门、§十 冻结证据链再校准
-- 🟢 [DCSFQ_BVM 设计](dcsfq-bvm-design.md) — H7 主路线新元件，DCSFQ 骨架缩放，Phase 0 实测完成
-- 🟢 [项目综合总结](project-summary.md) — 状态快照（会话结束更新），Phase 0 完成 → Phase 1
+- 🟢 [项目完全理解指南](../docs/guide/project-guide.md) — 当前物理、源码、实验和路线口径
+- 🟢 [审计后交接](../docs/HANDOVER.md) — 当前执行状态与下一步
+- 🟢 [项目主任务清单](project-todo.md) — Phase −1 计量修复与两条候选路线（状态追踪唯一权威）
+- 🕰 [GPT 项目审计](GuidanceFromGpt.md) — 旧 Step 0-5 框架；相位/事件与路线结论已被 08-09 审计取代
+- 🕰 [DCSFQ_BVM 设计](dcsfq-bvm-design.md) — 起点网表仍存在；45–55µA 目标和 Phase 1 判据已失效
+- 🟢 [项目综合总结](project-summary.md) — Phase −1 状态快照
 - 🕰 [Phase 1 执行计划](phase1-bvm-bq-coupling-plan.md) — 旧 BVM→BQ 双路线计划，**已被 Step 0-4 + H7 替代** (2026-08-06 标)
 - 🕰 [BVM→BQ 耦合问题](bvm-bq-coupling.md) — 早期阻抗匹配分析（~25% 传递），**已被实验记录+证据链替代** (2026-08-06 标)
-- 🟢 [BVM→BQ 耦合实验记录](bvm-bq-coupling-experiments.md) — 基线/低IC/变压器/论文BQ 全记录（事实层）
+- 🕰 [BVM→BQ 耦合实验记录](bvm-bq-coupling-experiments.md) — 原始实验索引可追溯；SFQ 数、v4 和排除结论待重算
 - 🕰 [PIM 路线图设计](pim-roadmap-design.md) — PoC→PIM 顶层方向仍有效；**Phase 1 双路线细节过时** (2026-08-06 标)
-- 🕰 [BQ v4 修改方案](bq-v4-modification-plan.md) — IC 顺序反转，**Gate 未通过**，BQ 路线已排除
-- 📚 [K 元件变压器分析](k-element-transformer-analysis.md) — 失败根因：ps 时间尺度互感耦合不足
-- 🟢 [ColdFlux 标准元件库](coldflux-library.md) — 35 个元件，8 个核心已验证，jjmit 模型参数
-- 🟢 [SFQ 脉冲物理](sfq-physics.md) — 2ps 脉冲、数据先于时钟时序规则、相位分析
-- 🟢 [测试方法论](test-methodology.md) — 测试文件结构、I/O 信号命名、验证标准
-- 🟢 [JJ 模型参数演变](jj-model-parameters.md) — V0 (0.25mV) vs ColdFlux (1.6mV)，模型时代边界
-- 🟢 [T1 全加器](t1-full-adder.md) — 18 节点 11 结，相位累积量化单元
-- 🟢 [项目结构](project-structure.md) — 目录布局、关键文件位置（2026-08-06 更新）
+- 🕰 [BQ v4 修改方案](bq-v4-modification-plan.md) — 旧判定已失效；110/130/150µA 已测理想周期输入下出现与约 1:1 相容的 JTL 相位平台，完整 Gate 待重验
+- 📚 [K 元件变压器分析](k-element-transformer-analysis.md) — 历史参数分析；“根因”机制未经当前口径的单变量对照冻结
+- 📚 [ColdFlux 标准元件库](coldflux-library.md) — 35 个网表与 jjmit 参数索引；旧“已验证”级别待数值断言和负载回归
+- 📚 [SFQ 脉冲物理](sfq-physics.md) — 背景参考；固定脉宽/旧相位计数口径不得代替审计后指南
+- 📚 [测试方法论](test-methodology.md) — 测试结构参考；事件指标以 Phase −1 新规格为准
+- 📚 [JJ 模型参数演变](jj-model-parameters.md) — V0 (0.25mV) vs ColdFlux (1.6mV) 的模型时代索引
+- 📚 [T1 全加器](t1-full-adder.md) — 11 结网表参考；实现映射和完整时序功能待验证
+- 📚 [项目结构](project-structure.md) — Phase −1 目录、证据层级与工作流入口（2026-08-09）
 - 📚 [论文方向分析](paper-directions-analysis.md) — 四个论文方向创新性/可行性评估，竞争格局
-- 🟢 [Skill 使用规范](skill-usage.md) — 所有任务开始前必须检查并使用适用 skill
+- 🟢 [Skill 使用规范](skill-usage.md) — `.agents/skills` canonical 结构、最小触发与 Claude 兼容规则
 - 📚 [元件参考](component-reference.md) — 元件参数速查

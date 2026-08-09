@@ -1,0 +1,509 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "JoSIM × BVM 项目完全理解指南（证据审计修订版）",
+    "description": "面向有计算机基础、但电路与超导知识有限的研究生；以源码、论文、网表和原始实验数据为依据的审计修订版完整项目指南。含一张由已提交基线 CSV 直接换算的相位图，所有未完成验证均显式标注。",
+    "generatedAt": "2026-08-09T00:00:00+08:00",
+    "sources": [
+      {
+        "id": "josim_phase",
+        "label": "JoSIM phase output implementation and documentation",
+        "path": "src/Output.cpp"
+      },
+      {
+        "id": "josim_theory",
+        "label": "JoSIM technical discussion",
+        "path": "docs/tech_disc.md"
+      },
+      {
+        "id": "metrics_script",
+        "label": "Legacy SFQ metrics script under audit",
+        "path": "scripts/sfq_metrics.py"
+      },
+      {
+        "id": "bvm_paper",
+        "label": "BVM 2025 SST paper",
+        "path": "arti/Karamuftuoglu_2025_Supercond._Sci._Technol._38_015020.pdf"
+      },
+      {
+        "id": "mvm_paper",
+        "label": "BVM MVM arXiv paper",
+        "path": "arti/2507.04648v1.pdf"
+      },
+      {
+        "id": "baseline",
+        "label": "BVM to BQ baseline data and historical definition",
+        "path": "test/final/single_bvm_qb/BASELINE.md"
+      },
+      {
+        "id": "phase0",
+        "label": "DCSFQ_BVM Phase 0 experiment records",
+        "path": "test/final/interface/P0_LOG.md"
+      },
+      {
+        "id": "p2",
+        "label": "BVM P2 experiment records",
+        "path": "test/final/bvm/P2_LOG.md"
+      },
+      {
+        "id": "handover",
+        "label": "Audited project handover",
+        "path": "docs/HANDOVER.md"
+      },
+      {
+        "id": "baseline_csv",
+        "label": "BVM to BQ baseline raw phase CSV",
+        "path": "test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv",
+        "description": "Committed raw CSV; chart transformation is (last phase - first phase)/(2*pi), with P() interpreted as radians.",
+        "query": {
+          "engine": "sqlite3",
+          "language": "sql",
+          "sql": "WITH endpoints AS (\n  SELECT\n    (SELECT jm1 FROM baseline_raw ORDER BY time ASC LIMIT 1) AS jm1_first,\n    (SELECT jm1 FROM baseline_raw ORDER BY time DESC LIMIT 1) AS jm1_last,\n    (SELECT bjs FROM baseline_raw ORDER BY time ASC LIMIT 1) AS bjs_first,\n    (SELECT bjs FROM baseline_raw ORDER BY time DESC LIMIT 1) AS bjs_last,\n    (SELECT bjl1 FROM baseline_raw ORDER BY time ASC LIMIT 1) AS bjl1_first,\n    (SELECT bjl1 FROM baseline_raw ORDER BY time DESC LIMIT 1) AS bjl1_last,\n    (SELECT bjl2 FROM baseline_raw ORDER BY time ASC LIMIT 1) AS bjl2_first,\n    (SELECT bjl2 FROM baseline_raw ORDER BY time DESC LIMIT 1) AS bjl2_last\n)\nSELECT 'BVM JM1' AS signal, jm1_last-jm1_first AS raw_rad,\n       (jm1_last-jm1_first)/6.283185307179586 AS phase_turns,\n       'BVM state junction' AS role FROM endpoints\nUNION ALL\nSELECT 'BQ BJs', bjs_last-bjs_first,\n       (bjs_last-bjs_first)/6.283185307179586,\n       'BQ input junction' FROM endpoints\nUNION ALL\nSELECT 'BQ BJL1', bjl1_last-bjl1_first,\n       (bjl1_last-bjl1_first)/6.283185307179586,\n       'BQ intermediate/output path' FROM endpoints\nUNION ALL\nSELECT 'BQ BJL2', bjl2_last-bjl2_first,\n       (bjl2_last-bjl2_first)/6.283185307179586,\n       'BQ output junction' FROM endpoints",
+          "description": "The committed CSV was imported unchanged into an in-memory baseline_raw table with explicit numeric columns; this executed query takes first/last samples and divides raw radians by 2*pi.",
+          "tables_used": [
+            "test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv"
+          ],
+          "filters": [
+            "full committed baseline simulation window"
+          ],
+          "metric_definitions": {
+            "phase_turns": "(last phase in radians - first phase in radians) / 6.283185307179586"
+          }
+        }
+      },
+      {
+        "id": "bq_paper",
+        "label": "Buffer/Quantizer paper",
+        "path": "arti/Hybrid synaptic structure for spiking.pdf"
+      },
+      {
+        "id": "coldflux",
+        "label": "ColdFlux RSFQ Logic Cell Library v3.0",
+        "path": "arti/ColdFlux_RSFQ_Logic_Cell_Library_for_MIT_LL_SFQ_Process_v3p0.pdf"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "layout": "full",
+        "body": "# JoSIM × BVM 项目完全理解指南（证据审计修订版）"
+      },
+      {
+        "id": "section_01",
+        "type": "markdown",
+        "layout": "full",
+        "body": "> 读者：有计算机基础，但电路知识主要停留在高中、尚未系统学习超导电子学的研究生。\n>\n> 审计日期：2026-08-09。\n>\n> 证据范围：本仓库的 JoSIM 源码、网表、已提交 CSV/JSON、实验日志，以及 `arti/` 中的论文和 ColdFlux 手册；本次没有把联网检索结果当作证据。\n>\n> 当前最重要的状态：旧交接材料中的相位单位存在系统性错误。本指南以源码和原始数据复核后的口径为准。\n>\n> 离线阅读版：`docs/guide/project-report.html`（由本文件生成的自包含技术报告）。"
+      },
+      {
+        "id": "section_02",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 先读这一页：我们究竟在做什么\n\n一句话概括：\n\n> 本项目正在验证并设计一个接口，把 BVM 在“读 1”时产生的、随负载变化的几十微安电流波形，转换成**恰好一个能被标准 JTL/RSFQ 逻辑接收的 SFQ 事件**；转换后的脉冲才交给 T1 等数字单元计数、求和与产生进位。\n\n系统数据流是：\n\n```text\n存储                         模拟/量子接口              数字传输与计算\n\nBVM ──状态相关电流──▶ BQ 或 DCSFQ_BVM ──SFQ──▶ JTL ──▶ T1 / RSFQ 逻辑\n │                         │                         │\n │ 保存双稳态环流          │ 当前研究的主要缺口        │ 接收已量化的事件\n └─不是普通 CMOS RAM       └─不是普通电压 ADC          └─不是慢电流量化器\n```\n\n项目不是在修改 JoSIM 求解器本身。对 Git 树的核验显示，研究工作没有改动 `src/`、`include/`、`cmake/`、根 `CMakeLists.txt` 或上游 CTest；项目增加的是电路网表、实验、分析脚本、论文材料和文档。可以把它理解为：\n\n- JoSIM 是“解释器 + 数值运行时”；\n- `.cir` 网表是“程序”；\n- CSV 是“程序运行轨迹”；\n- 本项目的研究对象是这些网表能否实现所需物理行为。\n\n### 一个会改变研究路线的审计发现\n\nJoSIM 的 `P(...)` 默认输出是相位 \\(\\phi\\)，单位为 **rad（弧度）**，不是 \\(\\phi/(2\\pi)\\)，也不是“SFQ 个数”。旧脚本 `scripts/sfq_metrics.py` 直接把原始弧度标成了 `SFQ`，同时把超过阈值的**采样间隔数**叫作 `fast_events`。这造成了两层错误：\n\n1. 所有相位派生数值放大了 \\(2\\pi\\) 倍；\n2. 一个持续多个采样点的物理脉冲会被重复计数，`fast_events` 不是事件数。\n\n正确换算是：\n\n\\[\nN_{\\Phi_0}=\\frac{\\Delta\\phi_{\\mathrm{rad}}}{2\\pi}\n           =\\frac{1}{\\Phi_0}\\int V(t)\\,dt\n\\]\n\n这里得到的是**同一个 JJ 的净相位绕转数**，右侧的 \\(V(t)\\) 也必须是这个 JJ 同一对端点之间的电压。它等价于该结电压面积的 \\(\\Phi_0\\) 倍数，但不等于闭合环的 fluxoid 数或材料中的微观涡旋数。\n\n这项错误直接推翻了旧文档中的几项核心判断：\n\n- 旧文档依据 `P(JM1)≈±5.9` 直接推出“约 \\(\\pm6\\) 个涡旋”的**证据链已被推翻**；正确换算只能说 JM1 的稳定相位约为 \\(\\pm0.94\\) 圈。这与论文的单磁通子双稳态模型相容，但不能只凭一个结的相位断言完整环的 fluxoid 数，因而本次审计也没有独立证明真实 fluxoid 一定不是 6。\n- 基线 BQ 输入结 BJs 不是“前进 6.27 个量子”，而是约前进 0.998 圈。\n- 标准 DCSFQ 的 300 µA 响应不是“7–8 次爆发”；减去零输入的偏置启动背景后，B1、B2、B3 各自恰好改变约一圈。\n- BQ v4 的下游 JTL 不是收到“38 个失控事件”；38 rad 约等于六圈，而测试恰好有六个输入周期。在当前周期 PULSE、偏置、负载和步长下，110–150 µA 的下游相位平台表现与约 1:1 传播相容；完整 SFQ Gate 尚未通过。\n\n因此，2026-08-06 旧版 `HANDOVER.md` 中所谓“冻结口径”、BQ 已被系统排除、以及直接执行 Phase 1 的计划都不能继续原样使用。当前的 `docs/HANDOVER.md` 已按本次审计重写。当前合理阶段是**Phase −1：先修复测量定义和重建基线**。\n\n---"
+      },
+      {
+        "id": "section_03",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 如何判断本文中的一句话有多可信\n\n为了避免把解释写成事实，本文使用六类证据标签：\n\n| 标签 | 含义 | 例子 |\n|---|---|---|\n| 【基本定律】 | 教科书级关系，适用条件会同时写出 | Josephson 方程、KCL/KVL |\n| 【源码事实】 | 当前 JoSIM 或网表直接写明 | `P()` 未除以 \\(2\\pi\\) |\n| 【论文表述】 | 指定论文/手册明确声称 | ColdFlux 称 DCSFQ 为电压脉冲到 SFQ 的转换器 |\n| 【项目实测】 | 当前已提交原始 CSV/网表可直接复核 | BVM 特定负载下峰值电流 68.4 µA |\n| 【解释性推断】 | 与拓扑和数据相容，但没有受控实验唯一确定 | 某个振铃主要来自哪条回路 |\n| 【待验证】 | 数据不足或旧指标失效 | BVM 完整环的严格 fluxoid 数 |\n\n论文中的 JoSIM/JSIM 波形仍然是**仿真证据**，不能写成芯片实测；重复得到相同 CSV 只是数值可重复，不等于模型一定物理正确。\n\n---"
+      },
+      {
+        "id": "section_04",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第一篇：先补齐电路与超导基础"
+      },
+      {
+        "id": "section_05",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 1. 电流、电压和功率不是同一件事\n\n如果把电路类比成水路：\n\n- 电流 \\(I\\)：单位时间通过多少电荷，类似流量，单位 A；\n- 电压 \\(V\\)：推动电荷运动的能量差，类似压差，单位 V；\n- 电阻 \\(R\\)：对运动的耗散性阻碍，满足 \\(V=IR\\)；\n- 功率 \\(P=VI\\)：单位时间转移或耗散的能量。\n\n“某节点有 68 µA”不等于“有一个 SFQ”。SFQ 的定义涉及**电压对时间的积分**，而 68 µA 是某条支路在某个负载和某个时刻的电流。整个项目的接口困难，本质上就是不能把这两个量直接画等号。\n\n### 1.1 地、节点和支路\n\n网表里的 `0` 是参考节点（ground）。节点电压都相对它定义；支路电流有方向，交换元件两端会改变输出符号。负号通常表示“实际方向与网表定义的正方向相反”，不等于仿真错误。\n\n【基本定律】两个守恒关系贯穿所有电路：\n\n\\[\n\\text{KCL：节点流入电流之和}=\\text{流出电流之和}\n\\]\n\n\\[\n\\text{KVL：沿闭合回路的电压升降代数和}=0\n\\]\n\n它们解释了为什么输入电流会分流、为什么增加负载会改变 BVM 的输出、以及为什么不能只用电流源标称幅度判断某个 JJ 是否达到临界电流。"
+      },
+      {
+        "id": "section_06",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 2. 电阻、电容和电感在瞬态里做什么\n\n| 元件 | 关系 | 直觉 | 在项目中的作用 |\n|---|---|---|---|\n| 电阻 | \\(V=IR\\) | 把电能耗散成热 | 限流、建立偏置、抑制振铃 |\n| 电容 | \\(I=C\\,dV/dt\\) | 电压不能无代价瞬变 | JJ 的“惯性”，影响开关和振铃 |\n| 电感 | \\(V=L\\,dI/dt\\) | 电流不能无代价瞬变 | 保存磁场能量、耦合与延迟、形成环流 |\n\n高中稳态电路里常把电感看成短路、电容看成开路；在本项目的皮秒瞬态中，这种简化通常不够。电感的频域阻抗为 \\(j\\omega L\\)，电容为 \\(1/(j\\omega C)\\)，但 SFQ 是宽带瞬态，不应只挑一个“代表频率”就把完整非线性网络当成两个线性阻抗分流。\n\n### 2.1 偏置为什么必要\n\n偏置是在没有输入事件时先把结放到某个工作点。一个典型 RSFQ 结会被偏置到临界电流以下；输入只需补足剩余裕度便可触发。触发后的电流重新分配，结应回到零电压态。\n\n这并不意味着“70% \\(I_c\\)”是所有电路的普遍常数。它是许多标准单元的设计选择，真正可用范围要由拓扑、阻尼、工艺参数和负载共同验证。\n\n### 2.2 源和负载为什么不能分开看\n\n理想电流源会强制指定电流；真实 BVM 输出不是理想源。项目的负载扫描得到一个局部经验拟合：\n\n\\[\nI_{\\mathrm{load}}\\approx\\frac{V_{\\mathrm{th}}}{Z_{\\mathrm{th}}+R_{\\mathrm{load}}}\n\\]\n\n其中峰值拟合约为 \\(Z_{\\mathrm{th}}\\sim40\\ \\Omega\\)、\\(V_{\\mathrm{th}}\\sim4\\ \\mathrm{mV}\\)。【项目实测】这只描述已测波形和负载范围中的**有效峰值关系**，不是频率无关、幅度无关的固有电阻。BVM 是非线性瞬态源，换拓扑或时间窗后，这两个拟合量可能改变。\n\n### 知识检查 1\n\n如果你能回答下面三问，就足以继续：\n\n1. 为什么“电流峰值够大”仍不能证明输出是一个 SFQ？\n2. 为什么给 BVM 换负载后，输出电流会改变？\n3. 为什么电感在直流和皮秒边沿下不能总被当成同一个“短路”？"
+      },
+      {
+        "id": "section_07",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 3. 超导：需要的不是“零电阻”一句话\n\n【基本定律】在温度、磁场和电流都处于材料允许范围内时，超导态具有宏观相干的复序参量，可写成：\n\n\\[\n\\Psi=|\\Psi|e^{i\\theta}\n\\]\n\n这里的 \\(\\theta\\) 是相位。超导体的直流电阻消失只是现象之一；本项目真正使用的是**宏观相位、Josephson 效应和闭合环的量子化约束**。\n\n需要避免三个常见误解：\n\n- \\(\\Phi_0\\) 是磁通量子，不是“最小磁场单位”。磁场 \\(B\\) 的单位是 T，磁通 \\(\\Phi=\\int B\\,dA\\) 的单位才是 Wb。\n- 不是任意空间里的磁通或磁场都只能取 \\(n\\Phi_0\\)。严格约束涉及闭合超导路径中的相位绕数/fluxoid 条件。\n- “非易失”在 BVM 论文中指超导状态持续维持时无需保持偏置保存环流，不代表升温到正常态或室温断电后仍保存。\n\n磁通量子为：\n\n\\[\n\\Phi_0=\\frac{h}{2e}\n      \\approx2.067833848\\times10^{-15}\\ \\mathrm{Wb}\n      \\approx2.0678\\ \\mathrm{mV\\cdot ps}\n\\]\n\n含 JJ 的闭合环中，相位差、电感电流造成的磁通和外加磁通共同满足量子化条件。示意写法是：\n\n\\[\n\\sum_j\\phi_j+\\frac{2\\pi}{\\Phi_0}\\Phi_{\\mathrm{loop}}=2\\pi n\n\\]\n\n具体符号取决于环方向和定义。这个公式也说明：**单独读取一个 JJ 的相位，并不足以直接得到完整环的整数 \\(n\\)**。"
+      },
+      {
+        "id": "section_08",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 4. Josephson 结：不是“超过阈值就变成普通电阻”\n\nJosephson 结是两个超导电极之间的弱连接。两个核心关系是：\n\n\\[\nI_s=I_c\\sin\\phi\n\\]\n\n\\[\nV=\\frac{\\Phi_0}{2\\pi}\\frac{d\\phi}{dt}\n\\]\n\n【基本定律】第一式说明零电压超电流依赖规范不变相位差；第二式说明电压与相位转动速度成正比。\n\n由第二式积分可得：\n\n\\[\n\\Delta\\phi=2\\pi\n\\quad\\Longleftrightarrow\\quad\n\\int V(t)\\,dt=\\Phi_0\n\\]\n\n这才是 SFQ 测量的核心。\n\n“电流小于 \\(I_c\\) 时 JJ 像不存在，大于 \\(I_c\\) 时突然成为电阻”只能作为第一遍直觉。更准确地说：\n\n- 零电压态仍有相位依赖的 Josephson 电感；\n- 支路电流由整个网络决定，不等于输入源标称值；\n- 达到动力学失稳后，相位可能越过一个或多个势阱；\n- 是否停住、回摆或持续运行由电容、耗散、偏置和外部网络共同决定。\n\n### 4.1 RCSJ 模型：一个带惯性和摩擦的非线性系统\n\n常用 RCSJ 近似把结写成理想 Josephson 元件、电阻和电容的并联：\n\n\\[\nI=I_c\\sin\\phi+\\frac{V}{R}+C\\frac{dV}{dt}\n\\]\n\n代入 Josephson 电压关系：\n\n\\[\n\\frac{\\Phi_0C}{2\\pi}\\ddot\\phi\n+\\frac{\\Phi_0}{2\\pi R}\\dot\\phi\n+I_c\\sin\\phi=I\n\\]\n\n可以把相位想成周期势阱里的小球：\n\n- \\(C\\) 提供惯性；\n- \\(R\\) 提供耗散；\n- \\(I_c\\sin\\phi\\) 形成周期恢复力；\n- 外部电流让势能“倾斜”。\n\nMcCumber 参数常写为：\n\n\\[\n\\beta_c=\\frac{2\\pi I_cR^2C}{\\Phi_0}\n\\]\n\n大 \\(\\beta_c\\) 通常意味着更欠阻尼和更强滞回，但应使用工作状态下的有效阻尼。项目的 `jjmit` 使用 `RTYPE=1`，有 `r0`、`rn` 和能隙相关的分段电导；外部 RB/LRB 和完整拓扑也会改变阻尼。因此“用 `rn` 算出约 5.4，所以所有结必然失控”是不充分的。\n\n### 4.2 Josephson 电感的正确用法\n\n零相位附近的小信号近似是：\n\n\\[\nL_J(0)=\\frac{\\Phi_0}{2\\pi I_c}\n\\]\n\n更一般地：\n\n\\[\nL_J(\\phi_0)=\\frac{\\Phi_0}{2\\pi I_c\\cos\\phi_0}\n\\]\n\n降低 \\(I_c\\) 会在同一工作相位下增大 \\(L_J\\)，这是可靠的局部趋势；但它不是证明“任何低 \\(I_c\\) 接口都数学无解”的普遍定理。旧文档所谓 BQ 的“\\(L_J\\) 矛盾”只能保留为对某些已测拓扑的设计风险。\n\n### 4.3 `area` 参数为什么能缩放结\n\n项目模型 `circuits/models/jjmit.cir` 的基准参数是：\n\n```spice\n.model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p,\n+ r0=160, rn=16, icrit=0.1m)\n```\n\nJoSIM 对实例 `area=A` 的缩放是：【源码事实，`src/JJ.cpp`】\n\n- \\(I_c\\propto A\\)；\n- \\(C\\propto A\\)；\n- \\(R_n,R_0\\propto1/A\\)。\n\n所以把 `area=2.25` 改成 `0.8` 会把基准临界电流从 225 µA 改成 80 µA，同时还改变电容、电阻和动态。它不是只移动一个理想比较器阈值。"
+      },
+      {
+        "id": "section_09",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 5. SFQ：量子化的是面积，不是峰值、宽度或能量\n\nSFQ 事件的定义性关系是：\n\n\\[\n\\int Vdt=\\pm\\Phi_0\n\\]\n\n因此可以说“一次净 \\(2\\pi\\) 相位滑移具有一个磁通量子的电压面积”。不能据此说：\n\n- 所有 SFQ 峰值相同；\n- 所有 SFQ 都严格宽 2 ps；\n- 每个事件的总能量完全相同；\n- 任意结的一圈相位变化都表示环里永久增加一个涡旋。\n\n若粗略把脉冲当成 2 ps 矩形，平均电压约为 1.03 mV；真实波形由偏置、\\(I_cR\\)、电容、阻尼和负载决定。能量尺度常与 \\(I_b\\Phi_0\\) 有关，也会随工作点变化。量子化的是相位绕转和电压时间积分，不是总耗散能量。\n\n### 5.1 JTL 为什么能够传输数字事件\n\nJosephson Transmission Line（JTL）不是无源导线，而是带偏置和阻尼的一串 JJ：\n\n1. 输入事件触发第一级；\n2. 电感中的电流重分配推动下一级；\n3. 每一级利用本地偏置重新产生约一圈相位事件。\n\n所以严谨说法是：“JTL 在设计裕度内再生并传播量子化事件。”波形细节仍会改变，负载、偏置或时序不合适时也会丢失、多触发或无法传播。ColdFlux 手册 PDF p17 §2.1.1 将 JTL 描述为重新建立并传播 SFQ；PDF p14 明确要求 DUT 成功驱动其输出负载，才算功能验证。【论文表述】\n\n### 知识检查 2\n\n1. 为什么 \\(P(J)=6.28\\) rad 更接近一个事件，而不是 6.28 个事件？\n2. 为什么一个结净转一圈，还不能自动证明下游逻辑收到一个脉冲？\n3. 为什么“脉冲面积量子化”不推出“脉冲能量固定”？\n\n---"
+      },
+      {
+        "id": "section_10",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第二篇：JoSIM 在计算什么"
+      },
+      {
+        "id": "section_11",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 6. 从网表到 CSV 的完整流水线\n\n`src/josim.cpp` 展示的主流程可以类比编译器：\n\n```text\n文本读取\n  → 参数与 JJ 模型解析\n  → 子电路递归展开、层次名称重写\n  → 解析 .tran\n  → 元件 stamp 装入稀疏 MNA/MNPA 矩阵\n  → 解析 .print/.plot/.save 并映射需要保存的 trace\n  → BDF2/Gear 时间推进\n  → 每步构造右端项并用 KLU 求解\n  → 按 .print/.save 写 CSV\n```\n\n关键源码位置：\n\n| 阶段 | 位置 | 作用 |\n|---|---|---|\n| 主入口 | `src/josim.cpp:20-57` | 串起整个流程 |\n| 文本与 include | `src/Input.cpp` | 读网表、续行、参数与模型分类 |\n| 子电路展平 | `src/Netlist.cpp` | 端口映射和 `器件|实例` 层次名 |\n| 元件矩阵 stamp | `src/Matrix.cpp` | 建立稀疏线性系统 |\n| trace 选择 | `src/RelevantTrace.cpp` | 映射 `.print/.save` 请求，避免保存无关未知量 |\n| JJ 动态 | `src/JJ.cpp`, `src/Simulation.cpp` | 相位预测、分段电导和 \\(I_c\\sin\\phi\\) |\n| 输出 | `src/Output.cpp` | 从内部未知量构造 V/I/P trace |\n\n### 6.1 MNA/MNPA 的直觉\n\n每个时间步，JoSIM 都在解一个稀疏方程组：\n\n\\[\nA_nx_n=b_n\n\\]\n\n- \\(x_n\\)：节点相位/电压、某些支路电流和辅助未知量；\n- \\(A_n\\)：电路拓扑和当前线性化电导；\n- \\(b_n\\)：源、历史项和 JJ 的非线性电流贡献。\n\n电阻、电感、电容、JJ、源和受控源分别把小块系数“盖章”到大矩阵里，这就是 stamping。子电路必须先展平，因为求解器最终只看一个大网络。\n\n### 6.2 为什么要离散时间\n\n电感、电容和 JJ 方程含导数，计算机只能在 \\(t_0,t_1,\\dots\\) 上求近似。当前 JoSIM 使用二阶 Gear/BDF2 系数来近似导数。BDF2 往往比简单显式方法更适合刚性电路，但仍不是“步长无关”。\n\n项目常用 `.tran 0.1p ...`；这是请求的名义步长，JoSIM 在传输线约束或 JJ 相位预测过大等情况下可以缩小步长并重建仿真，不应把它理解为永远严格固定 0.1 ps。任何关键结论仍应用 0.05 ps、0.025 ps 等更细的请求步长检查收敛，而不能只靠同一设置重复三次。\n\n### 6.3 KLU 做什么\n\n电路矩阵大而稀疏；本次冻结二进制使用 KLU 做稀疏 LU 分解，比把矩阵当成普通稠密数组高效。JoSIM 源码也保留了 SuperLU 条件分支，所以这不是所有构建唯一可能的后端。线性求解器解决的是每步的代数方程，不替我们判断电路设计是否物理合理。"
+      },
+      {
+        "id": "section_12",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 7. 如何读 `.cir` 网表\n\n常见写法：\n\n| 语法 | 含义 | 编程类比 |\n|---|---|---|\n| `.include file.cir` | 包含模型或子电路 | import/include |\n| `.subckt NAME a b ...` | 定义带端口的模块 | 函数/类定义 |\n| `X1 ... NAME` | 实例化子电路 | 创建对象/调用模块 |\n| `.param X=...` | 参数 | 常量/配置 |\n| `B1 n+ n- jjmit area=...` | JJ 实例 | 参数化组件 |\n| `L1 n+ n- 2p` | 2 pH 电感 | 元件实例 |\n| `I1 0 a pwl(...)` | 分段线性电流激励 | 测试输入 |\n| `.tran 0.1p 100p` | 瞬态时间步与终点 | 仿真循环配置 |\n| `.print P(B1\\|XU)` | 保存层次实例中的结相位 | 选择 trace |\n\nJoSIM 展平子电路后把内部名称写成 `B1|XU`。表格中的反斜杠只是 Markdown 为避免把 `|` 当成分列符而做的转义；实际 `.cir` 网表应写 `.print P(B1|XU)`，CSV 层次名也不含这个反斜杠。"
+      },
+      {
+        "id": "section_13",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 8. `P()`、`V()` 和 `I()` 应如何解释\n\n- `P(B...)`：默认 phase 模式下的相位差，单位 rad；\n- `V(node)` 或相应电压 trace：单位 V；\n- `I(element)`：按网表端点定义方向的支路电流，单位 A。\n\n源码证据非常直接：`src/Output.cpp` 的 phase 分支输出内部相位差，没有除以 \\(2\\pi\\)；`scripts/josim-plot2.py` 也默认标为 `Phase (rad)`，只有 `-j 2pi` 才做归一化。JoSIM 自带 JTL 示例输入两个事件后，相位约为 13 rad，接近 \\(4\\pi\\)，进一步验证这一点。\n\n### 8.1 为什么“从 t=0 到末尾”常常数错\n\n偏置源在仿真开始时建立工作点，本身会造成非整数静态相位偏移。例如标准 DCSFQ 零输入结束时 B3 约为 0.809 rad。300 µA 运行结束时约为 7.093 rad；直接除以 \\(2\\pi\\) 得 1.129 圈仍混入启动背景。\n\n同参数的零输入对照相减后：\n\n\\[\n7.092557-0.809372=6.283185\\ \\mathrm{rad}\\approx2\\pi\n\\]\n\n所以输入诱导响应才是约一圈。更好的做法是比较事件前后的稳定窗口，或减去完全匹配的零输入控制。\n\n### 8.2 一个严谨的“收到一个 SFQ”判据\n\n至少应同时满足：\n\n1. 明确原始相位单位为 rad；\n2. 在事件前后稳定窗计算 \\(\\Delta\\phi/(2\\pi)\\approx\\pm1\\)；\n3. 对产生该 `P(JJ)` 的**同一个 JJ、同一对端点**检查 \\(\\int V_{JJ}dt/\\Phi_0\\approx\\pm1\\)；节点对地的 `V(OUT_Q)` 不能直接拿来核对 BJs 相位；\n4. 把连续的快速采样点聚成一个事件，不能逐点计数；\n5. 检查事件之间存在稳定平台，而不是持续电压态；\n6. 检查下游 JTL/load 也发生相应一圈变化；\n7. 读 0 时不得产生事件，重复读时不得多出或丢失；\n8. 用零输入对照和更细时间步复核。\n\n---"
+      },
+      {
+        "id": "section_14",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第三篇：项目中每个模块为什么存在"
+      },
+      {
+        "id": "section_15",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 9. BVM：保存状态并给出读电流\n\n主要论文是 `arti/Karamuftuoglu_2025_Supercond._Sci._Technol._38_015020.pdf`。作者在 PDF p4 §2.1/Fig. 1 给出双环概念，p5 Fig. 2 给出电路参数，p6 §§2.3–2.4 描述写读，p7 §2.5 讨论存储条件和鲁棒性。论文把 BVM 描述为两个相连的 SQUID 环：【论文表述】\n\n- Storage Loop：保存两个相反的环流/磁通子状态；\n- Readout Loop：在读使能到来时把状态转成 SL 输出电流；\n- WL、BL：共同选择并写入；\n- SE：读使能；\n- SL：读出端。\n\n论文模型用 \\(M=-1\\) 和 \\(M=+1\\) 表示两种状态。JoSIM 不解析材料内部的涡旋芯，所以本文更谨慎地称它们为“两个双稳态环流/磁通子状态”。\n\n### 9.1 仓库网表的结构\n\n`circuits/bvm/bvm_cell.cir` 中：\n\n- WL、BL 经电阻和小电感汇入写入节点；\n- JM1、JM2 与 LM1/LM2/LM3/LPM 构成存储相关闭环；\n- JS1、JS2、RS 和 LS 支路构成读出环；\n- RSL/LSL 构成 SL 输出路径。\n\n论文明确给出的设计意图包括：【论文表述】\n\n- WL 与 BL 的半选机制：单独一条线不应写入，两者叠加才越过写入条件；\n- JM1 是主要写入开关；\n- JM2 提高稳定与裕度；\n- 读环把保存状态和输出过程分开；\n- SE 不宜强到破坏存储状态；\n- 论文使用 \\(I_cL>\\Phi_0\\) 作为存储能力的粗略设计准则。\n\n最后一条不是完整充分条件。实际双稳态性由整个非线性环、总电感、相位约束和工作点共同决定。\n\n### 9.2 当前数据对 BVM 说明了什么\n\n【项目实测】经正确单位换算：\n\n- WL=100 µA 的测试中，W1 稳定相位约 `+5.891 rad = +0.938` 圈；\n- W0 稳定相位约 `−5.886 rad = −0.937` 圈；\n- 两态切换约 `−11.832 rad = −1.883` 圈；\n- WL=80 µA 未写入，WL=100/120 µA 能进入近一圈的稳定状态；\n- 100 µA 读操作后的相位漂移约为 0.004–0.009 圈；\n- 120 µA 的 R0 测试会把负态擦回接近零；\n- 两轮读电流峰值可重复，正负状态的输出明显不同。\n\n这些数据支持“存在稳定、可区分、100 µA 读近似非破坏的两个状态”。它们推翻了旧文档用单个 JM1 原始 rad 值证明“\\(\\pm6\\) 多涡旋”和“不存在单涡旋工作点”的论证；完整环 fluxoid 数仍待计算。\n\n【待验证】严格声称环内 fluxoid 数为 \\(\\pm1\\)，还应把环中各 JJ 相位、外加磁通和 \\(LI\\) 项按统一方向代入完整量子化条件；不能把 `P(JM1)` 一列直接当作环的 vortex 计数器。\n\n### 9.3 为什么输出随负载变化\n\nP0.0 负载扫描得到：【项目实测】\n\n- 峰值电流约 43.9–97.8 µA；\n- FWHM 约 6.8–11.2 ps；\n- BQ 基线负载下约 68.4 µA；\n- 读 0 稳态电流很小，但开关边沿可出现数十微安瞬态。\n\n原因的确定部分是 KCL 和动态阻抗：负载改变输出节点条件，电流会在 BVM 内部支路与负载之间重新分配。【解释性推断】具体正负回铃来自哪些读环模态，需要通过去元件/改阻尼对照或小信号模态分析才能唯一归因，不能只凭波形形状说“就是某个 LC”。"
+      },
+      {
+        "id": "section_16",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 10. BQ：把累积磁通变化量化的候选单元\n\n原始 BQ 来源于 `arti/Hybrid synaptic structure for spiking.pdf`。论文 PDF p5 Fig. 4 把它描述为类似数字 SQUID 的 Buffer/Quantizer：汇总正负磁通变化并给出量化脉冲；PDF p6 Fig. 7 明确把相位除以 \\(2\\pi\\) 后才数脉冲。【论文表述】\n\n需要区分名称：2024 Hybrid Synaptic 论文使用 **BQ（Buffer/Quantizer）**；2025 BVM/MVM 论文使用 **QB（Quantizer Buffer）**，声称其阈值适配单个 BVM 输出，但没有公开完整参数。仓库 `bq_cell.cir` 是从 2024 BQ 拓扑缩放并增加分流的项目派生版，不能默认等同于 2025 论文仿真中的 QB。\n\n仓库的 `circuits/qb/bq_cell.cir` 不是论文原始参数，而是为 BVM 电流量级缩放并增加分流后的派生版本。其核心支路包括：\n\n- BJs：输入感测结；\n- BJL1/RJ1：回流/偏置相关支路；\n- BJL2/RJ2：输出支路；\n- RB 与 L1/L2：建立偏置和动态耦合。\n\n只看“BJs 没有一个显式并联外部 shunt”不能证明它完全无阻尼或无偏置；电流可经完整回路建立，内部 `r0/rn` 也参与耗散。要确认因果，必须做只改变一个网络的受控实验。\n\n### 10.1 直接 BVM→BQ 基线真正发生了什么\n\n基线原始 CSV 的净相位为：\n\n| 位置 | 原始相位变化 | 正确归一化 | 可下的结论 |\n|---|---:|---:|---|\n| BVM JM1 | −5.909806 rad | −0.940575 圈 | 与切换到另一稳定相位平台相容 |\n| BQ BJs | +6.272743 rad | +0.998338 圈 | 净绕转接近 +1；完整轨迹与一次净变化相容 |\n| BJL1 | +0.443319 rad | +0.070556 圈 | 净值远小于一圈；完整轨迹未跨完整 \\(2\\pi\\) |\n| BJL2 | +0.375836 rad | +0.059816 圈 | 净值远小于一圈；完整轨迹未跨完整 \\(2\\pi\\) |\n\n同时 `V(OUT_Q)` 峰值约为 157 µV。但该基线网表的 `OUT_Q` 只接了 10 Ω 电阻负载，**没有下游 JTL**；因此它能检查 BQ 输出支路，不能回答“JTL 是否接收”。【网表事实/项目实测】\n\n所以最稳妥的结论是：\n\n> BJs 的稳定窗轨迹与约一次净 \\(2\\pi\\) 相位变化相容；BJL1/BJL2 的完整轨迹没有相应完整绕转，因此当前基线没有证明 BQ 完成可用的 SFQ 转换。该网表未接 JTL，传播能力并未被测试。仅凭全窗口净值本身不能证明事件数，也不能排除正反滑移互相抵消；还需稳定窗、完整轨迹和同一 JJ 两端电压面积共同判定。\n\n旧文档把 `fast_events=0` 解释为“不是离散翻转”，也不可靠：BJs 的最大单步变化约 0.291 rad，恰好低于脚本任意设置的 0.3 rad/sample；这只说明波形在当前采样率下没有跨过该导数阈值，不能决定它是不是一个积分为 \\(\\Phi_0\\) 的事件。\n\n### 10.2 BQ v4 不是被排除，而是重新成为候选\n\nv4 同时改了 L0、BJL1/BJL2 面积以及 RJ1/RJ2，所以单次 v3/v4 对照无法隔离某一个根因。\n\n更重要的是，`test/final/qb/test_bq_v4_sweep.cir` 在 300 ps 内输入六个周期脉冲。正确归一化后：【项目实测】\n\n| 理想电流脉冲幅度 | 下游 JTL 行为 |\n|---:|---|\n| 70、90 µA | 已测点只有启动偏移，没有逐周期累积 |\n| 110、130、150 µA | 以首脉冲前稳定点为参考，六个输入对应下游约六个 \\(2\\pi\\) 平台增量，与约 1:1 相容 |\n\n110 µA 时，以 9.9 ps 的首脉冲前点为参考，JTL B1 在 49.9、99.9、…、299.9 ps 约为 1.0015、2.0015、…、6.0017 圈。BJL1、BJL2 和 JTL B2 也显示逐周期近整数递增。这是对原始 CSV 的只读审计计算；稳定窗尚待 Phase −1 工具化定义。\n\n这反证了旧结论“v4 输出级死亡、JTL 收到 38 个失控事件”。正确状态是：\n\n- 在当前理想周期 PULSE 测试台的离散扫点中，90 µA 未见逐周期累积，110 µA 已出现与量子化下游响应相容的平台；在尚未验证单调性且未细扫前，不把边界称为已确定阈值；\n- 110–150 µA 时下游相位平台与每输入一个事件相容，但单脉冲、电压面积、事件聚类和步长收敛尚未完成；\n- 在产生下游平台的 110–150 µA 已测点，输入 BJs 本身每周期净运行约 18–22 圈（完整 70–150 µA 扫描范围为约 16–22 圈）；【项目实测】由此产生的耗散和鲁棒性风险仍是【解释性推断】，需要进一步测量；\n- 68.4 µA 是旧 BQ-v2 输入加载基线下的 BVM 峰值；BQ v4 会改变所见输入阻抗，所以真实 v4 级联时的电流波形尚不知，不能把 68.4 µA 当成与负载无关的固定源幅度。\n\n所以“BQ v4 已解决接口”和“BQ 拓扑已系统排除”都不成立。它现在是一个需要用**单次真实波形、细阈值和鲁棒性**重新测试的候选。"
+      },
+      {
+        "id": "baseline_phase_chart_note",
+        "type": "markdown",
+        "layout": "full",
+        "sourceId": "baseline_csv",
+        "body": "## 基线相位纠错：BJs 净变化近一圈，输出支路净值远小于一圈\n\n横条统一采用 \\(\\Delta\\phi/(2\\pi)\\)。BVM JM1 的负号表示网表定义下的相位方向；BQ BJs 的全窗口净变化接近 +1，而 BJL1/BJL2 的净值仅约 0.06–0.07。净值本身不能排除正反过程抵消，也不能单独计数事件。该基线输出端只接 10 Ω 电阻、没有 JTL，因此图支持的是“BQ 输出量化尚未被证明”，并未测试 JTL 接收，也不等同于完整环 fluxoid 计数。"
+      },
+      {
+        "id": "baseline_phase_chart_block",
+        "type": "chart",
+        "layout": "full",
+        "chartId": "baseline_phase_chart"
+      },
+      {
+        "id": "section_17",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 11. DCSFQ 与 DCSFQ_BVM：另一个接口候选\n\nColdFlux 手册 PDF p123 §2.4.1 对标准 DCSFQ 的明确描述是“输入电压脉冲转换成 SFQ 脉冲”；p125 Listing 2.35 给出网表，p126 Fig. 2.74 给出输出与负载相位仿真。它不是“任意慢 DC 电流 ADC”。本项目把它改造成 BVM 电流接口，是新的用法，必须独立验证。【论文表述】\n\n### 11.1 标准 DCSFQ 为什么有三个结\n\n`circuits/standard/DCSFQ.cir` 包含 B1、B2、B3、输入耦合电感、两个偏置源，以及每个结的 RB+LRB 分流支路。可以按功能理解为：\n\n- B1/B2 与输入网络共同完成敏感和状态转移；\n- B3 是标准量级的输出结；\n- 偏置把结放到可触发但静态稳定的工作点；\n- 外部分流网络提供频率相关的耗散和动态整形。\n\n最后一点不应简化为“RB 的数值恰好证明整个非线性电路处于临界阻尼”。RB 消耗能量是确定的；LRB、内部分段电阻和其他结共同决定瞬态，精确阻尼状态仍需分析。\n\n### 11.2 项目到底改了什么\n\n`circuits/interface/DCSFQ_BVM.cir` 相对标准单元的主要功能变化只有：\n\n- B1/B2：`area 2.25 → 0.8`，即 225 µA → 80 µA；\n- IB1：275 µA → 100 µA；\n- 与面积相关的 RB/LRB 随公式缩放；\n- B3、IB2 和标准输出级保持不变。\n\n设计意图是降低输入级所需信号，同时保留标准输出驱动力。由于 `area` 同时改变 \\(I_c,C,R\\)，这仍是一种动力学重设计，不是简单改比较阈值。\n\n### 11.3 Phase 0 数据经纠正后说了什么\n\n在当前标准 DCSFQ 测试台和指定 bump 波形下：【项目实测】\n\n- 0–150 µA 范围内的已测点没有输入诱导的完整 \\(2\\pi\\) 内部响应；\n- 300 µA 与零输入对照相减后，B1 为 −1 圈、B2/B3 各为 +1 圈；\n- 短 bump 和长 sustained 的最终状态逐位相同，保持平台没有继续累积。\n\n这支持“该测试拓扑在 300 µA 下给出单量子**净相位响应**；保持时间没有造成持续泵浦”。它尚未证明已经生成合格 SFQ 脉冲：还需对同一 JJ 的端电压积分，并补下游 JTL、单次输入和步长验证。当前离散扫点中，150 µA 未见完整内部绕转，300 µA 出现净绕转；在尚未验证响应对幅度单调且未细扫前，只能说转变边界未定位，不能把 `(150, 300] µA` 写成已确定的输出或 JTL 阈值。\n\n缩放版 DCSFQ_BVM：【项目实测】\n\n- 68.4 µA 测试输入没有观察到完整输出相位绕转；\n- 输入增量进入 L3/结支路的比例约 0.285；\n- 因而当前起点参数未完成 BVM 电流到 SFQ 的转换。\n\n旧计划把目标阈值定为 45–55 µA，理由之一是误以为 300 µA 已发生 7–8 次多滑移。这个依据已经失效；阈值应由正确事件定义下的扫描重新确定。\n\n### 11.4 “极性”怎样才算真正测试\n\n交换子电路输入端 `a` 和输出端 `q` 不是反转极性，而是倒用一个有方向的电路。正确的极性实验应：\n\n- 反转输入源电流方向；或\n- 构建拓扑明确、端口方向有文档的 signed-input 变体；\n- 同时保持其余参数、偏置和负载不变。"
+      },
+      {
+        "id": "section_18",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 12. ColdFlux 标准单元、JTL 与测试成熟度\n\n`circuits/standard/` 中有 35 个 ColdFlux 单元网表。仓库还存在 JTL、SPLIT、MERGE、DFF、XOR、AND2、NDRO、NOT 的人工测试网表。\n\n但当前 `test/CMakeLists.txt` 只注册上游 23 项 JoSIM 测试，研究单元测试没有程序化接入 CTest；一些“验证通过”只是人工看波形，AND2 也未覆盖完整四行真值表。因此准确说法是：\n\n> 标准库已导入，若干代表单元有人工/单点测试，但尚未形成带数值断言、完整真值表和裕度扫描的自动回归库。"
+      },
+      {
+        "id": "section_19",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 13. T1：处理已经数字化的脉冲\n\n`arti/2507.04648v1.pdf` PDF p3 §2.3、p4 Fig. 3 把 T1 描述为具有同步 sum 和异步 carry 的 SFQ 计数/加法单元，并说明每对输入产生 carry、奇数余量在 clock 后产生 sum。【论文表述】据此，若时钟前收到 \\(n\\) 个输入脉冲，本文可作如下简洁代数归纳：【本文推导】\n\n\\[\nC=\\left\\lfloor\\frac n2\\right\\rfloor,\n\\qquad S=n\\bmod2\n\\]\n\n每对脉冲可异步产生一个 carry；奇数余量在时钟到来时产生 sum。对最多三个输入，这与全加器的奇偶和/多数进位相容；对更多输入，它还可连续产生多个 carry。仓库没有该论文引用的 DAC 2024 原始 T1 全文，因此任意 \\(n\\) 的边界、恢复和全部时序条件仍未从原始 T1 来源独立核验。\n\n仓库 `circuits/t1/t1_cell.cir` 已转录 11 个 JJ 的七端口网表，并对论文图中的一个重复编号采用了一种**实现映射假设**；仓库尚没有独立证据证明该映射唯一或正确。当前也缺少完整、可自动裁决的脉冲计数和时序验证，所以只能说“网表已转录、局部测试存在，完整功能待验证”。\n\n系统分工必须写成：\n\n```text\nBVM 电流 → BQ/DCSFQ_BVM 量化 → JTL 再生/传输 → T1 计数和进位\n```\n\n不能让 T1 直接承担慢模拟电流量化；论文也不是这样描述的。\n\n---"
+      },
+      {
+        "id": "section_20",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第四篇：项目历史、实验与结论重审"
+      },
+      {
+        "id": "section_21",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 14. 研究提交改变了什么\n\n从项目提交历史看，工作大致经历了：\n\n1. 加入 BVM/BQ 网表与初始实验；\n2. 统一 `jjmit` 模型并导入 ColdFlux 标准单元；\n3. 创建 BVM→BQ 基线和指标脚本；\n4. 多轮 BQ 参数/拓扑探索与 v4；\n5. 转向 DCSFQ_BVM，完成 Phase 0 负载、行为、分流与确定性测试；\n6. 编写 Phase 1 计划；\n7. 增加 P2 BVM 存储态实验与教学文档；\n8. 本次审计发现相位单位错误，重新打开 BQ v4 和总体路线判断。\n\n这些更改全部位于研究层；JoSIM 核心求解代码没有为 BVM 特别修改。这很重要：若仿真与论文不同，应先检查模型、网表、激励、负载和指标，而不是默认“我们改坏了求解器”。"
+      },
+      {
+        "id": "section_22",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 15. 哪些实验结论仍然成立\n\n相位缩放不会影响以下直接测量：\n\n- BVM 负载扫描中的电流峰值和 FWHM；\n- BQ 基线的电压峰值；\n- DCSFQ_BVM 的 0.285 增量分流；\n- P2 的读电流对比、重复性和 120 µA R0 擦除现象；\n- 固定输入下 CSV 的字节级哈希一致。\n\n经原始相位重算后仍可保留：\n\n- 当前直接 BVM→BQ 基线中，BJL1/BJL2 没有完整相位绕转，尚未证明 BQ 完成有效量化；该网表未接 JTL，不能判定下游传播；\n- BVM 在已测条件下有两个接近正负一圈的稳定相位态；\n- 标准 DCSFQ 在当前已测 bump 点中，150 µA 未见完整内部绕转，300 µA 相对零输入控制出现约一圈；实际边界、合格输出和 JTL 接收尚未定位；\n- DCSFQ_BVM 起点参数在 68.4 µA 测试输入下未见完整输出；\n- BQ v4 在 70/90 µA 已测点没有逐周期下游响应；在 110/130/150 µA 的当前理想周期测试下，下游相位平台与约 1:1 传播相容。"
+      },
+      {
+        "id": "section_23",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 16. 哪些旧结论已经被推翻\n\n| 旧结论 | 审计后状态 | 原因 |\n|---|---|---|\n| `P()` 已是 \\(\\phi/2\\pi\\) | 错误 | 源码、绘图脚本和官方 JTL 示例都表明它是 rad |\n| 用 `P(JM1)≈±5.9` 证明 BVM 为 \\(\\pm6\\) 多涡旋 | 证据链被推翻 | 约 \\(\\pm5.9\\) rad = \\(\\pm0.94\\) 个 JJ 相位圈；完整环 fluxoid 待算 |\n| BJs 一次读出滑移 6.27 个量子 | 被推翻 | 6.27 rad = 0.998 圈 |\n| DCSFQ 300 µA 爆发 7–8 次 | 被推翻 | 7/8 是过阈值采样数；控制相减为一圈 |\n| BQ v4 输出 JTL 有 38 个失控事件 | 被推翻 | 38 rad 约六圈，且输入恰有六周期 |\n| BQ 输出级推不动 JTL，拓扑已排除 | 被现有数据反证 | v4 在当前 ≥110 µA 周期测试中显示与 1:1 相容的相位平台 |\n| 45–55 µA 是已证实目标阈值 | 依据失效 | 来自错误的“300 µA 多脉冲”解释 |\n| `fast_events` 是 SFQ 脉冲数 | 错误 | 它只是相邻样本跨阈值的数量 |"
+      },
+      {
+        "id": "section_24",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 17. 哪些解释仍只是候选假设\n\n以下说法有物理合理性，但当前不能当成已证明根因：\n\n- BQ 基线失败主要由 BJs 欠阻尼造成；\n- BQ 的理想电流源一定充当不可控“通量泵”；\n- BQ 的峰值电流小于某个 JJ 的 \\(I_c\\)，所以必然不能驱动 JTL；\n- RB+LRB 恰好把整个 ColdFlux 非线性单元调到临界阻尼；\n- BVM 读出回铃由某一个特定 LC 模态主导；\n- DCSFQ 的平台不累积完全由 L2 的“边沿耦合”造成；\n- 互感 K 元件只适合 MHz–GHz，不适合皮秒事件；\n- 所有低 \\(I_c\\) BQ 设计都被 \\(L_J\\) 数学上排除。\n\n正确做法是为这些假设设计单变量对照，而不是从一组综合改动中反推唯一因果。"
+      },
+      {
+        "id": "section_25",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 18. 确定性、准确性和鲁棒性是三件不同的事\n\n- 确定性：相同输入重复运行得到相同字节；项目已有若干哈希证据。\n- 数值准确性：步长变细后关键量收敛；当前研究实验普遍缺少系统检查。\n- 物理有效性：模型、寄生参数、激励和判据足以代表目标硬件；仍需要论文参数核对、裕度和最终硬件证据。\n\n哈希只证明第一项。一个单位写错的分析也可以百分之百可重复。\n\n---"
+      },
+      {
+        "id": "section_26",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第五篇：测量管线为什么失效，以及怎样修"
+      },
+      {
+        "id": "section_27",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 19. `sfq_metrics.py` 的两个独立问题\n\n### 问题 A：单位错了 \\(2\\pi\\)\n\n旧脚本直接计算：\n\n```text\nnet_delta = p[-1] - p[0]\n```\n\n但 `p` 是 rad。正确的归一化量应除以 \\(2\\pi\\)。`max_excursion`、`total_variation`、`max_dPdt` 的标签和单位也必须相应重定义。\n\n### 问题 B：采样点数不是事件数\n\n旧脚本把满足：\n\n```text\nabs(p[i] - p[i-1]) > 0.3\n```\n\n的相邻样本逐个累加。一个时间局域的物理事件可以跨越多个采样间隔，因而被这种方法重复计数。把阈值简单改成 `0.3×2π` 也不解决问题：真实事件可能在每个 0.1 ps 步长内都小于该阈值。\n\n导数阈值可以用来定位“候选活动区”，但之后必须聚类、积分和检查平台。"
+      },
+      {
+        "id": "section_28",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 20. 新指标应该怎样定义\n\n建议每次运行生成以下互不混淆的量：\n\n| 指标 | 定义 | 用途 |\n|---|---|---|\n| `phase_delta_rad` | 稳定窗相位差 | 保留原始单位 |\n| `phase_delta_phi0` | `phase_delta_rad/(2π)` | 归一化净绕转 |\n| `voltage_area_phi0` | 对同一 JJ 两端计算 `∫V_JJ dt/Φ0` | 与该 JJ 的相位交叉校验 |\n| `activity_clusters` | 连续导数超阈值样本聚类 | 候选事件区，不直接等同 SFQ |\n| `settling_error` | 事件后平台偏离整数的量 | 判断是否停稳 |\n| `reverse_excursion` | 反向显著回摆 | 检测 backfire/ringing |\n| `downstream_delta` | JTL 各级逐事件平台变化 | 系统级接收结果 |\n\n每个激励都应有明确事件窗口、事件前参考窗、事件后稳定窗。若有偏置启动，使用相同参数的零输入对照，或在启动完成后再取参考。"
+      },
+      {
+        "id": "section_29",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 21. 修复脚本前后的最小回归测试\n\n测量工具至少要通过：\n\n1. 合成 `0 → 2π` 相位台阶，必须得到 1 圈而不是 6.283；\n2. 合成同一台阶跨 10 个采样点，事件聚类仍只得到 1；\n3. JoSIM 官方两脉冲 JTL 示例，扣除启动偏移后得到 2 个下游事件；\n4. 标准 DCSFQ 300 µA 减零输入对照得到 B1/B2/B3 的 `−1/+1/+1`；\n5. BQ v4 110 µA 六周期测试得到下游约六个整数相位平台增量，而不是约 38 个事件；\n6. 同一个 JJ 的相位法与其同端电压积分法在数值容差内一致；\n7. 0.1、0.05、0.025 ps 的事件结论一致，误差随步长缩小。\n\n只有这些通过后，才应在各实验目录的 `data/metrics_v2/` 中生成新版 JSON、改写 BASELINE/P0/P2 和解冻 Phase 1。旧 JSON 保留为审计记录，不覆盖。\n\n### 21.1 Gate 的数值容差必须先校准、后冻结\n\n“约等于一圈”不是可执行的验收规格，但本次审计也不应在没有校准的情况下凭空写出百分比。在任何 BQ v4 或 DCSFQ_BVM 候选参数测试之前，应新建并冻结 `METRIC_SPEC_V2.md`，用零输入噪声、官方 JTL 例子、DCSFQ 对照和步长收敛数据校准至少下列容差：\n\n- 事件前后稳定窗的精确边界，以及整数相位平台残差；\n- **同一 JJ、同一对端点、同一方向和同一时间窗**下，`phase_delta_phi0` 与 `voltage_area_phi0` 的允许误差；\n- BVM 读取前后允许的状态漂移；\n- 0.1/0.05/0.025 ps 间相位、电压面积和事件结论的允许差异；\n- 输入幅度、时序抖动、偏置和负载扫描所需的通过范围。\n\n容差的来源、校准网表、JoSIM 版本和选定理由都必须写入该规格；规格冻结后再跑候选设计，防止看到结果后移动 Gate。\n\n---"
+      },
+      {
+        "id": "section_30",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第六篇：现在应该怎样继续项目"
+      },
+      {
+        "id": "section_31",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 22. 当前状态不是“Phase 1 待执行”，而是“Phase −1 待修复”\n\n旧 Phase 1 计划的 V1/V2 Gate 直接使用错误脚本：真正的一圈相位约为 6.283 rad，却被要求落在 `[0.7,1.3]`；零输入又从 t=0 计算，混入偏置启动；`--peaks` 的调用方式还与脚本接口不符。因此不能照表运行。\n\nPhase −1 是因审计事故插入到已完成 Phase 0 和旧 Phase 1 之间的修复阶段；后面仍保留 Phase 2/3 名称，只是为了延续仓库原有路线图，不表示 Phase 1 可以跳过。\n\n建议新的有界顺序如下。\n\n### Phase −1A：修复计量和基线\n\n1. 明确 CSV `P()` 为 rad，并在指标层显式转换；\n2. 删除或重命名 `fast_events`，实现事件窗口和聚类；\n3. 加入零输入控制/稳定窗比较；\n4. 用 JTL、DCSFQ、BQ v4 的已知案例做单元测试；\n5. 重跑 BASELINE、P0、P2、BQ v4，把新 JSON 写入各自的 `data/metrics_v2/`，不覆盖旧结果；\n6. 把所有旧相位结论标成 superseded，不覆盖原始 CSV。\n\n退出条件：新建的 `METRIC_SPEC_V2.md` 已用校准数据冻结数值容差；同一 JJ 同端点、同方向、同时窗的相位和电压积分交叉一致；已知 JTL 事件数正确；步长收敛通过。\n\n### Phase −1B：重新建立两条候选路线\n\n不要先宣布胜者：\n\n**BQ v4 路线**\n\n- 用单次 PWL 电流脉冲代替六周期 PULSE，避免因果混淆；\n- 在 90–110 µA 之间细扫阈值；\n- 记录 BJS 内部滑移、BJL1/BJL2 和 JTL 的逐窗响应；\n- 用保存下来的真实 BVM 电流波形驱动，而不只用理想矩形源；\n- 测读 0、读 1、重复读、正负回铃和负载；\n- 对 v4 的五项改动做单变量或小型因子实验，避免把相关性当根因。\n\n**DCSFQ_BVM 路线**\n\n- 撤回未经证实的 45–55 µA 固定目标；\n- 先测标准/缩放单元在正确口径下的阈值曲线；\n- 用反转源方向而不是交换 a/q 测极性；\n- 再有限度扫描 B1/B2 area、IB1 和 L2/L3；\n- 每个候选先过无输入稳定和单理想脉冲，再接 JTL；\n- 最后使用真实 BVM 波形和加载条件。\n\n### Phase 2：系统级验收\n\n一个接口只有同时满足下列条件才算成功：\n\n- 读 0：下游 0 个事件；\n- 读 1：下游恰好 1 个事件；\n- 多次重复：不丢失、不重复、不 backfire；\n- BVM 状态：读取前后仍处于允许漂移范围；\n- 负载和偏置：在预先声明的裕度范围内仍成立；\n- 时间步：细化后结论不变；\n- 参数扰动：对关键 \\(I_c,L,R,C\\) 有可接受裕度；\n- 输出：至少驱动标准 JTL 的两个级，而非只在本结看到相位变化。\n\n### Phase 3：再验证 T1 和论文系统叙事\n\n接口通过后，再做 T1 的自动化验证：\n\n- \\(n=0,1,2,3,\\dots\\) 的输入计数；\n- sum/carry 的时序和恢复；\n- 时钟前建立/保持要求；\n- 输出 JTL 负载；\n- 完整真值/计数表和步长/参数裕度。\n\n在此之前，论文不能把接口和 T1 写成已经在本仓库端到端完成。"
+      },
+      {
+        "id": "section_32",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 23. 论文目前能严谨写什么\n\n可以写：\n\n- 论文报告的 BVM 使用双稳态环流保存状态，并通过读环产生状态相关电流；\n- 当前仓库复现了接近正负一圈的稳定 JM1 相位状态以及可区分读电流；\n- BVM 输出对负载敏感，已测峰值约 43.9–97.8 µA、FWHM 约 6.8–11.2 ps；\n- 当前直接 BVM→项目版 BQ 基线的输出支路没有完整相位绕转，未证明有效量化；该网表没有下游 JTL，因而没有测传播；\n- BQ v4 在当前理想周期电流的 110、130、150 µA 已测点中，下游相位平台与约 1:1 传播相容，但完整 SFQ 判据和真实 BVM 级联尚未通过；\n- 标准 DCSFQ 在当前 bump 测试台的 300 µA 相对控制下给出单量子净相位响应，尚未完成同端电压面积和 JTL 验证；缩放版在 68.4 µA 测试输入下未见完整输出；\n- 这些结果共同说明接口必须联合考虑源波形、负载、阈值、内部动力学和下游接收。\n\n暂时不能写：\n\n- “首次/全世界尚无人研究”——本地论文不足以证明完整文献空白；\n- “八轮已经证明 BQ 拓扑无解”；\n- “DCSFQ_BVM 已解决接口”；\n- “BVM 是六涡旋”或“论文单涡旋模型被证伪”；\n- “固定步长重复运行证明物理正确”；\n- 任何依赖旧 `fast_events` 的脉冲数。\n\n---"
+      },
+      {
+        "id": "section_33",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第七篇：如何自己复现和审阅"
+      },
+      {
+        "id": "section_34",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 24. 推荐阅读顺序\n\n1. 本文：先建立统一概念和当前状态。\n2. `docs/HANDOVER.md`：当前审计后的执行摘要和下一步入口；旧版口径只在带审计警告的历史日志中保留。\n3. BVM 论文：`arti/Karamuftuoglu_2025_Supercond._Sci._Technol._38_015020.pdf`，重点看 Fig. 1–7。\n4. BQ 论文：`arti/` 中 Hybrid synaptic structure 论文，重点看 BQ 图和相位除 \\(2\\pi\\) 的图。\n5. MVM 论文：`arti/2507.04648v1.pdf`，看 BVM→QB→T1 的系统分工。\n6. ColdFlux 手册：看 JTL、DCSFQ 和“必须驱动 LOAD”的验证要求。\n7. 网表：按 `jjmit → BVM → BQ/v4 → DCSFQ → DCSFQ_BVM → JTL → T1` 阅读。\n8. 原始实验日志和 CSV：以新单位重算，旧 JSON 只作审计对象。"
+      },
+      {
+        "id": "section_35",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 25. 最小可复现流程\n\n先记录仓库和二进制：\n\n```bash\ngit rev-parse HEAD\nbuild/josim-cli --version\n```\n\n运行一个网表：\n\n```bash\nbuild/josim-cli -o result.csv path/to/test.cir\n```\n\n检查相位时，先确认列名并牢记其单位是 rad：\n\n```text\nphase_phi0 = (phase_after_rad - phase_before_rad) / (2*pi)\n```\n\n当前 `scripts/sfq_metrics.py` 在修复前不能作为冻结物理判据；`scripts/josim-plot2.py -j 2pi` 的绘图选项会做归一化，但仍需正确选择参考窗。\n\n每次实验应保存：\n\n- 网表和所有 include 文件的版本/哈希；\n- JoSIM 版本与构建选项；\n- 时间步和终止时间；\n- 原始 CSV；\n- 零输入对照；\n- 指标版本；\n- 事件窗定义；\n- 结论、替代解释和失败条件。"
+      },
+      {
+        "id": "section_36",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 26. 读实验图时按这个顺序问\n\n1. 横轴和纵轴单位是什么？\n2. 这是节点量、支路量还是结相位？正方向如何定义？\n3. t=0 到事件前是否有偏置启动？\n4. 输入是单次 PWL，还是会重复的 PULSE？\n5. 所谓“一个事件”是相位平台差、电压积分，还是过阈值样本数？\n6. 下游负载是否也收到事件？\n7. 读 0 对照是什么？\n8. 更细步长和参数扰动是否仍成立？\n9. 结论是观察，还是对机制的推断？\n\n---"
+      },
+      {
+        "id": "section_37",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 第八篇：证据索引与术语表"
+      },
+      {
+        "id": "section_38",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 27. 关键证据在哪里\n\n| 结论 | 主要证据 |\n|---|---|\n| `P()` 是 rad | `src/Output.cpp`、`docs/tech_disc.md`、`scripts/josim-plot2.py`、`docs/ex_usage.md` |\n| JoSIM 核心未被研究层修改 | Git 对 `src/ include/ cmake/ CMakeLists.txt` 的树/差异核验 |\n| BVM 论文结构和双稳态 | 2025 SST BVM 论文 PDF p4–9 |\n| BQ 原始作用和除 \\(2\\pi\\) | Hybrid synaptic 论文 PDF p5–6 |\n| DCSFQ 原始用途 | `arti/ColdFlux_RSFQ_Logic_Cell_Library_for_MIT_LL_SFQ_Process_v3p0.pdf` p123–126 |\n| T1 的 sum/carry | `arti/2507.04648v1.pdf` p3–5 |\n| BVM 负载范围 | `test/final/interface/P0_LOG_P00.md` 及 CSV |\n| 直接 BVM→BQ 基线 | `test/final/single_bvm_qb/test_bvm_bq_baseline.cir` 与 `data/test_bvm_bq_baseline.csv` |\n| DCSFQ 300 µA 对照 | `test/final/interface/data/test_dcsfq_behavior_bump_0.csv` 与 `test_dcsfq_behavior_bump_300u.csv` |\n| BVM 近 \\(\\pm0.94\\) 圈状态 | `test/final/bvm/data/` 的 P2 CSV |\n| BQ v4 与 1:1 相容的 JTL 相位平台 | `test/final/qb/test_bq_v4_sweep.cir` 及 `data/bq_v4_sweep110.csv`、`bq_v4_sweep130.csv`、`bq_v4_sweep150.csv` |"
+      },
+      {
+        "id": "section_39",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 28. 术语速查\n\n| 术语 | 准确定义/项目含义 |\n|---|---|\n| JJ | Josephson junction，具有相位依赖超电流和电压—相位关系的弱连接 |\n| \\(I_c\\) | 临界电流参数；实际动态触发还取决于偏置和网络 |\n| \\(\\phi\\) | JJ 两端规范不变相位差；JoSIM `P()` 默认以 rad 输出 |\n| \\(\\Phi_0\\) | 磁通量子，约 2.0678 mV·ps；不是磁场单位 |\n| 相位滑移 | 相位跨越一个或多个 \\(2\\pi\\) 周期；是否成为逻辑事件还需看时间局域性和下游 |\n| SFQ 事件 | 电压面积约为 \\(\\pm\\Phi_0\\) 的相位事件 |\n| RSFQ | 用 SFQ 事件表示和处理数字信息的快速单磁通量子逻辑 |\n| JTL | 用带偏置 JJ 逐级再生/传播 SFQ 的传输线 |\n| RCSJ | JJ 的理想超电流、耗散和电容动力学模型 |\n| fluxoid | 闭合超导路径中受量子化约束的相位—磁通组合 |\n| BVM | 双稳态涡旋/环流存储单元，读出为状态相关电流 |\n| BQ | 2024 Hybrid Synaptic 论文的 Buffer/Quantizer；仓库版本是其拓扑的参数化派生 |\n| QB | 2025 BVM/MVM 论文的 Quantizer Buffer；论文未公开完整参数，不能默认等同仓库 BQ |\n| DCSFQ | ColdFlux 中的电压脉冲到 SFQ 转换单元；本项目尝试改成 BVM 电流接口 |\n| DCSFQ_BVM | 缩放输入结和偏置、保留标准输出级的候选接口 |\n| T1 | 对已数字化 SFQ 脉冲做奇偶 sum 和成对 carry 的单元 |\n| `fast_events` | 旧脚本的过阈值采样间隔数；不是物理事件数，应废弃/重命名 |"
+      },
+      {
+        "id": "section_40",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 29. 读完后你应能回答的十个问题\n\n1. 为什么本项目的核心不是“把 68 µA 直接叫作 1”？\n2. 为什么 \\(\\Delta\\phi=2\\pi\\) 和 \\(\\int Vdt=\\Phi_0\\) 是同一件事的两种测量？\n3. 为什么 BVM 的 `P(JM1)` 不能单独证明完整环里有几个 fluxoid？\n4. 为什么 BVM 输出会随负载从约 44 µA 变到约 98 µA？\n5. 为什么直接 BVM→BQ 基线仍判失败，尽管 BJs 已转约一圈？\n6. 为什么 BQ v4 既不能称为“已失败”，也不能称为“接口已成功”？\n7. 为什么标准 DCSFQ 的 300 µA 结果必须减去零输入控制？\n8. 为什么 `fast_events=8` 不等于八个 SFQ？\n9. 为什么哈希相同不能证明数值收敛或物理正确？\n10. 下一步为什么必须先修测量工具，再比较 BQ v4 和 DCSFQ_BVM？\n\n如果其中任何一问仍不清楚，最有效的方式不是继续背术语，而是选对应小节和网表逐节点画电流路径；后续文档或讨论也应围绕具体问题补图、补控制实验。\n\n---"
+      },
+      {
+        "id": "section_41",
+        "type": "markdown",
+        "layout": "full",
+        "body": "## 最终结论\n\n本项目的科学问题是成立的：BVM 给出的状态相关电流不能被默认当成 RSFQ 数字事件，接口必须在真实源阻抗、波形、偏置和负载下完成量化与再生。BVM 的两个 JM1 相位平台和状态相关读电流已有可重复的电路级仿真证据；完整环 fluxoid 数、参数裕度和硬件行为尚未验证。直接 BVM→当前 BQ 基线未证明输出支路完成量化，且网表未接 JTL；BQ v4 在当前理想高幅周期电流下显示与 1:1 传播相容的下游相位平台，但尚未通过完整 SFQ Gate；DCSFQ_BVM 仍是尚未完成真实级联验证的候选。\n\n当前第一优先级不是继续扫参数，而是修复相位单位和事件定义、用校准数据事先冻结数值容差并重建基线，然后用同一套可审计判据公平比较两条接口路线。只有下游 JTL 在读 1 时恰好接收一次、读 0 时不接收、BVM 状态不被破坏，并通过步长与参数裕度检查，才可以说接口完成。"
+      }
+    ],
+    "charts": [
+      {
+        "id": "baseline_phase_chart",
+        "title": "BVM→BQ 基线的归一化净相位变化",
+        "subtitle": "整段已提交基线；原始 P() 为 rad，图中统一显示 Δφ/(2π)；基线未接 JTL",
+        "type": "bar",
+        "dataset": "baseline_phase",
+        "sourceId": "baseline_csv",
+        "valueFormat": "number",
+        "encodings": {
+          "x": {
+            "field": "signal",
+            "type": "nominal",
+            "label": "结"
+          },
+          "y": {
+            "field": "phase_turns",
+            "type": "quantitative",
+            "label": "净相位变化（圈）"
+          },
+          "tooltip": [
+            {
+              "field": "raw_rad",
+              "type": "quantitative",
+              "label": "原始净相位（rad）",
+              "format": "number"
+            },
+            {
+              "field": "phase_turns",
+              "type": "quantitative",
+              "label": "归一化净相位（圈）",
+              "format": "number"
+            },
+            {
+              "field": "role",
+              "type": "nominal",
+              "label": "电路角色"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-09T00:00:00+08:00",
+    "status": "ready",
+    "datasets": {
+      "baseline_phase": [
+        {
+          "signal": "BVM JM1",
+          "raw_rad": -5.909806,
+          "phase_turns": -0.940575,
+          "role": "BVM state junction"
+        },
+        {
+          "signal": "BQ BJs",
+          "raw_rad": 6.272743,
+          "phase_turns": 0.998338,
+          "role": "BQ input junction"
+        },
+        {
+          "signal": "BQ BJL1",
+          "raw_rad": 0.443319,
+          "phase_turns": 0.070556,
+          "role": "BQ intermediate/output path"
+        },
+        {
+          "signal": "BQ BJL2",
+          "raw_rad": 0.375836,
+          "phase_turns": 0.059816,
+          "role": "BQ output junction"
+        }
+      ]
+    },
+    "accessIssues": []
+  },
+  "sources": [
+    {
+      "id": "josim_phase",
+      "label": "JoSIM phase output implementation and documentation",
+      "path": "src/Output.cpp"
+    },
+    {
+      "id": "josim_theory",
+      "label": "JoSIM technical discussion",
+      "path": "docs/tech_disc.md"
+    },
+    {
+      "id": "metrics_script",
+      "label": "Legacy SFQ metrics script under audit",
+      "path": "scripts/sfq_metrics.py"
+    },
+    {
+      "id": "bvm_paper",
+      "label": "BVM 2025 SST paper",
+      "path": "arti/Karamuftuoglu_2025_Supercond._Sci._Technol._38_015020.pdf"
+    },
+    {
+      "id": "mvm_paper",
+      "label": "BVM MVM arXiv paper",
+      "path": "arti/2507.04648v1.pdf"
+    },
+    {
+      "id": "baseline",
+      "label": "BVM to BQ baseline data and historical definition",
+      "path": "test/final/single_bvm_qb/BASELINE.md"
+    },
+    {
+      "id": "phase0",
+      "label": "DCSFQ_BVM Phase 0 experiment records",
+      "path": "test/final/interface/P0_LOG.md"
+    },
+    {
+      "id": "p2",
+      "label": "BVM P2 experiment records",
+      "path": "test/final/bvm/P2_LOG.md"
+    },
+    {
+      "id": "handover",
+      "label": "Audited project handover",
+      "path": "docs/HANDOVER.md"
+    },
+    {
+      "id": "baseline_csv",
+      "label": "BVM to BQ baseline raw phase CSV",
+      "path": "test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv",
+      "description": "Committed raw CSV; chart transformation is (last phase - first phase)/(2*pi), with P() interpreted as radians.",
+      "query": {
+        "engine": "sqlite3",
+        "language": "sql",
+        "sql": "WITH endpoints AS (\n  SELECT\n    (SELECT jm1 FROM baseline_raw ORDER BY time ASC LIMIT 1) AS jm1_first,\n    (SELECT jm1 FROM baseline_raw ORDER BY time DESC LIMIT 1) AS jm1_last,\n    (SELECT bjs FROM baseline_raw ORDER BY time ASC LIMIT 1) AS bjs_first,\n    (SELECT bjs FROM baseline_raw ORDER BY time DESC LIMIT 1) AS bjs_last,\n    (SELECT bjl1 FROM baseline_raw ORDER BY time ASC LIMIT 1) AS bjl1_first,\n    (SELECT bjl1 FROM baseline_raw ORDER BY time DESC LIMIT 1) AS bjl1_last,\n    (SELECT bjl2 FROM baseline_raw ORDER BY time ASC LIMIT 1) AS bjl2_first,\n    (SELECT bjl2 FROM baseline_raw ORDER BY time DESC LIMIT 1) AS bjl2_last\n)\nSELECT 'BVM JM1' AS signal, jm1_last-jm1_first AS raw_rad,\n       (jm1_last-jm1_first)/6.283185307179586 AS phase_turns,\n       'BVM state junction' AS role FROM endpoints\nUNION ALL\nSELECT 'BQ BJs', bjs_last-bjs_first,\n       (bjs_last-bjs_first)/6.283185307179586,\n       'BQ input junction' FROM endpoints\nUNION ALL\nSELECT 'BQ BJL1', bjl1_last-bjl1_first,\n       (bjl1_last-bjl1_first)/6.283185307179586,\n       'BQ intermediate/output path' FROM endpoints\nUNION ALL\nSELECT 'BQ BJL2', bjl2_last-bjl2_first,\n       (bjl2_last-bjl2_first)/6.283185307179586,\n       'BQ output junction' FROM endpoints",
+        "description": "The committed CSV was imported unchanged into an in-memory baseline_raw table with explicit numeric columns; this executed query takes first/last samples and divides raw radians by 2*pi.",
+        "tables_used": [
+          "test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv"
+        ],
+        "filters": [
+          "full committed baseline simulation window"
+        ],
+        "metric_definitions": {
+          "phase_turns": "(last phase in radians - first phase in radians) / 6.283185307179586"
+        }
+      }
+    },
+    {
+      "id": "bq_paper",
+      "label": "Buffer/Quantizer paper",
+      "path": "arti/Hybrid synaptic structure for spiking.pdf"
+    },
+    {
+      "id": "coldflux",
+      "label": "ColdFlux RSFQ Logic Cell Library v3.0",
+      "path": "arti/ColdFlux_RSFQ_Logic_Cell_Library_for_MIT_LL_SFQ_Process_v3p0.pdf"
+    }
+  ]
+}

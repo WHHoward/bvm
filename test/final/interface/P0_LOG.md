@@ -1,7 +1,10 @@
 # P0_LOG — Phase 0 汇总（DCSFQ_BVM 接口规格与决策门）
 
-> **状态**: Phase 0 完成 (2026-08-06) | 原始数据: P0_LOG_P00 (BVM 负载扫描) / P0_LOG_P01 (DCSFQ 行为) / P0_LOG_P02 (分流标定) / P0_LOG_P03 (确定性)
-> **口径**: scripts/sfq_metrics.py 冻结定义 | 仿真: build/josim-cli v2.7.2837d13, jjmit
+> [!CAUTION]
+> **2026-08-09 计量审计：Phase 0 的电流/FWHM/负载/分流/哈希数据仍有效，但所有相位计数、`fast_events` 和“300 µA 多滑移爆发”结论失效。** 300 µA 减去零输入偏置背景后，标准 DCSFQ 的 B1/B2/B3 分别约为 `−1/+1/+1` 圈。由旧解释推导的 45–55 µA 目标撤回；Phase 1 暂停，先修指标。详见 `docs/HANDOVER.md`。
+
+> **状态**: Phase 0 原始数据采集完成 (2026-08-06)；相位 Gate/物理结论已 superseded | 原始数据: P0_LOG_P00 / P0_LOG_P01 / P0_LOG_P02 / P0_LOG_P03
+> **历史口径**: `scripts/sfq_metrics.py` 冻结定义已失效 | 仿真: build/josim-cli v2.7.2837d13, jjmit
 > **确定性**: 5/5 md5 双算法一致 (P0_LOG_P03.md, commits 35ca928/918bd68)
 
 ---

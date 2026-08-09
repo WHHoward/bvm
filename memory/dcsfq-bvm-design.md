@@ -7,6 +7,9 @@ metadata:
 
 # DCSFQ_BVM 元件设计（H7 主路线）
 
+> [!CAUTION]
+> **2026-08-09：起点网表和电流/分流观察保留，但本文的相位计数、300 µA 多滑移解释、45–55 µA 目标及 Phase 1 Gate 已被单位审计取代。** 当前计划见 `memory/project-todo.md`，原理见 `docs/guide/project-guide.md`。
+
 **Why**: BQ 8 轮失败根因三件套（BJs 裸结欠阻尼 βc≈5.4 / 电流源通量泵 / 输出级 ~100µA 推不动 250µA JTL）。DCSFQ 骨架每个结都有 RB+LRB 阻尼、输出 B3=250µA 天然 JTL 兼容、输入是阈值判别器——三个根因全部在结构上解决。
 
 **How to apply**:

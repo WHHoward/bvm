@@ -1,0 +1,68 @@
+schema_version: 1
+run_id: null
+created_at: null
+mode: null  # calibration | exploratory | candidate | reproduction
+research_question: null
+
+hypotheses:
+  primary: null
+  alternatives: []
+
+predeclared_outcomes:
+  pass: null
+  fail: null
+  inconclusive: null
+  invalid: null
+
+provenance:
+  git_head: null
+  git_dirty: null
+  git_status_path: null
+  josim_binary: null
+  josim_version: null
+  josim_sha256: null
+  netlist_path: null
+  netlist_sha256: null
+  include_closure: []
+  model_files: []
+
+simulation:
+  input_kind: null  # single_pwl | periodic_regression | replay | full_cascade
+  cases: []
+  requested_timesteps_s: []
+  stop_time_s: null
+  repetitions: 1
+  output_load: null
+
+metric_contract:
+  spec_path: null
+  spec_sha256: null
+  status: unfrozen
+
+signals:
+  junctions: []
+  downstream_stages: []
+  state_signals: []
+
+windows:
+  pre: null
+  activity: null
+  post: null
+  read_state: null
+
+controls:
+  zero_input: null
+  read0: null
+  positive: null
+  reverse_polarity: null
+
+artifacts:
+  raw_files: []
+  log_files: []
+  hashes_path: null
+
+outcome:
+  artifact_status: pending
+  verdict: pending
+  highest_evidence_level: none
+  failed_requirements: []

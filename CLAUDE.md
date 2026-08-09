@@ -69,37 +69,17 @@ Phase analysis is the standard mode (voltage was deprecated as of v2.5). Only tr
 - Error messages are centralized in `Errors.cpp` with `Errors::<category>_messages()` functions, keyed by error enum
 - Deep copy is typical; components and vectors are passed by value/reference depending on ownership
 
-## Skills — 强制执行（每次响应前必读）
+## Repository skills
 
-**🚨 IRON RULE: 在任何 Bash/Write/Edit 调用之前，你必须先阅读 `.claude/skills/skill-router.md` 并输出 `[skill-router] Task: ... Skills: ...` 行。不读 skill-router = 违规。**
+Project skills use the standard `SKILL.md` layout. The canonical source is `.agents/skills/`; `.claude/skills/` contains directory links for Claude Code compatibility. Let each skill's description trigger it, or invoke it explicitly by name. Do not force a router before every tool call.
 
-> 项目 skills 不是 Skill 工具——用 `Read(.claude/skills/skill-router.md)` 读取，不是 `Skill("skill-router")`。
+| Skill | Use for |
+|---|---|
+| `josim-experiment` | Create/run/sweep/reproduce `.cir` experiments with immutable evidence |
+| `josim-evidence-audit` | Interpret phase, voltage area, SFQ claims, JTL reception and Gate verdicts |
+| `josim-viz` | Plot CSV/DAT waveforms without upgrading plots into physical proof |
+| `josim-todo-manager` | Read or update evidence-backed task status and dependencies |
+| `josim-project-summary` | Persist summaries, handovers, memory and material history |
+| `josim-skill-router` | Route broad tasks that span several of the workflows above |
 
-### 触发规则
-
-### 📋 插件 Skills — 用 `Skill("name")` 调用
-
-| 当你在做…… | 必须调用 | 说明 |
-|------------|---------|------|
-| 写多步骤代码变更 | `Skill("superpowers:writing-plans")` | 先出计划再动手 |
-| 实现功能或修 bug | `Skill("superpowers:test-driven-development")` | 先写测试，再写代码 |
-| 测试失败或结果不对 | `Skill("superpowers:systematic-debugging")` | 系统性排查 |
-| 声称完成/修好/通过 | `Skill("superpowers:verification-before-completion")` | 先验证再说话 |
-| 创建图表/可视化 | `Skill("dataviz")` | 标准配色和交互 |
-| 修改 C++ 源码 | `Skill("ecc:cpp-review")` | C++ 代码审查 |
-| 从 PDF 提取内容 | `Skill("document-skills:pdf")` | PDF 处理 |
-| 设计/架构讨论 | `Skill("superpowers:brainstorming")` | 结构化讨论 |
-
-### 📁 项目 Skills — 用 `Read(.claude/skills/<name>.md)` 读取
-
-> 这些是本地 `.md` 文件，不是注册的 Skill 工具。**必须用 Read 读取，不能用 Skill() 调用。**
-
-| Skill | 文件 | 触发场景 |
-|-------|------|---------|
-| **skill-router** | `.claude/skills/skill-router.md` | ⚠️ **任何任务开始前必读** |
-| **josim-viz** | `.claude/skills/josim-viz.md` | 仿真结果可视化 (plot/画图/波形) |
-| **project-summary** | `.claude/skills/project-summary.md` | 总结整理/更新CHANGELOG/memory |
-| **todo-manager** | `.claude/skills/todo-manager.md` | 会话开始/结束, 进度查询
-- **`josim-viz`** — 仿真结果可视化。触发词：可视化、画图、看图、出图、plot、波形
-- **`todo-manager`** — 会话开始/结束时检查/更新主任务清单。触发词：进度、接下来做什么、任务做完了
-- 位于 `.claude/skills/josim-viz.md`
+The repository-wide invariants are in `AGENTS.md`. Do not require external plugin skills unless they are actually available in the current runtime.

@@ -4,6 +4,54 @@
 
 ---
 
+## 2026-08-09 — 项目 skills 标准化与研究证据护栏
+
+### 做了什么
+
+- 将旧 `.claude/skills/*.md` 迁移为 `.agents/skills/<name>/SKILL.md` 标准包，并用 Claude 目录链接共享同一 canonical source
+- 重写 `josim-viz`、任务管理、项目总结和工作流路由，移除过时优先级、失效插件依赖、自动删除和旧 v1 指标调用
+- 新增 `josim-experiment` 与 `josim-evidence-audit`，提供不可覆盖实验协议、manifest/分析模板和相位—电压面积证据合同
+- 新增仓库级 `AGENTS.md`，同步 `CLAUDE.md`、skill 记忆、SFQ 物理约定、脚本索引和最终实验目录入口
+- 发现 `josim-plot2.py` 的 `grid/stacked/square` 在 `-j 2pi` 下只改标签未缩放；新增 M12，并在修复前由 `josim-viz` 限制布局
+
+### 为什么
+
+- 旧 skills 仍会调用 raw rad 误标 SFQ 的脚本，并可能把过阈值采样数、归一化图轴或内部结活动升级成物理事件
+- 旧总结 skill 在普通归档任务中包含过宽删除规则；旧 todo 优先级也与当前 Phase −1 冲突
+- Codex 的仓库级标准发现目录是 `.agents/skills`，单一规范源可避免 Claude/Codex 双份正文漂移
+
+### 影响
+
+- 实验执行、波形可视化和物理 Gate 判定被明确分离
+- 新代理会自动获得 raw phase rad、同 JJ 双证据、不可覆盖原始数据和三态判定护栏
+- 在 M4–M11 完成前，旧 `run_exp.sh`/`sfq_metrics.py` 被明确限制为历史追溯，不能形成新物理结论
+
+## 2026-08-09 — 相位单位审计：撤销旧冻结口径并重开接口路线
+
+### 做了什么
+
+- 由 JoSIM `src/Output.cpp`、`docs/tech_disc.md`、绘图脚本和官方 JTL 示例交叉确认：`P()` 输出是 raw phase rad，不是 \(\phi/(2\pi)\)
+- 复核 `scripts/sfq_metrics.py`：相位派生量缺少 `/2π`；`fast_events` 是过阈值采样间隔数，不是物理事件数
+- 从已提交 CSV 独立重算 BVM→BQ 基线、BVM P2、DCSFQ Phase 0 和 BQ v4
+- 重写 `docs/guide/project-guide.md` 与 `docs/HANDOVER.md`，更新 todo/summary，并给旧 BASELINE、P0/P2、论文证据链、深讲和 Phase 1 计划增加 superseded 警告
+- 生成自包含离线报告及 A4 PDF 阅读版；PDF 由当前 Markdown 经 Pandoc HTML5/MathML 和 Edge 无头打印生成，保留可搜索中文与排版公式
+
+### 主要纠正
+
+- BVM JM1 约 `±5.9 rad = ±0.94` 个 JJ 相位圈；用它直接证明“±6 多涡旋”的旧证据链失效，完整环 fluxoid 数仍待计算
+- 基线 BQ BJs `6.2727 rad = 0.9983` 圈，不是 6.27 个量子；BJL1/BJL2 未完成整圈，而基线网表未接 JTL，因而只能判定输出量化未证明、传播未测
+- 标准 DCSFQ 300 µA 减零输入控制后，B1/B2/B3 约为 `−1/+1/+1` 圈，不是 7–8 次爆发
+- BQ v4 的六周期测试在 110–150 µA 已测点时，下游 JTL 相位平台约每输入 +1 圈，与约 1:1 传播相容；“输出级死亡/整个 BQ 拓扑排除”被反证，但完整 SFQ Gate 尚未通过
+
+### 影响
+
+- Step 0 冻结基线、旧 `fast_events` Gate、45–55 µA 目标和原 Phase 1 计划失效
+- 项目转入 Phase −1：先修复指标，加入控制/事件窗/同 JJ 电压积分/时间步收敛，冻结经校准的数值容差，再重建版本化基线
+- BQ v4 与 DCSFQ_BVM 并列为待公平复核的候选，暂不宣称任一路线成功
+- 电流峰值、FWHM、负载扫描、0.285 分流、电压峰值和字节级重复性不受相位缩放影响
+
+---
+
 ## 2026-08-06 — Phase 0 完成：接口规格实测 + 边沿触发确认 + 设计参数修订
 
 ### 做了什么

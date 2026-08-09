@@ -1,0 +1,33 @@
+# JoSIM × BVM repository instructions
+
+These rules apply to the whole repository.
+
+## Project context
+
+- For BVM/BQ/DCSFQ/JTL/T1 research, read `docs/HANDOVER.md` before changing experiments or making physical claims.
+- Treat `memory/project-todo.md` as the task authority and its completion criteria as binding.
+- Use repository-local skills from `.agents/skills/`; choose the smallest skill set that covers the request.
+
+## Measurement invariants
+
+- JoSIM `P(...)` output is raw phase in radians. Convert a declared phase difference with `phase_delta_turns = phase_delta_rad / (2*pi)`.
+- A local junction phase turn is not automatically an SFQ received downstream and is not a closed-loop fluxoid count.
+- Cross-check phase and voltage area only for the same junction, endpoints, direction, run, and time window.
+- Derivative thresholds and over-threshold samples identify activity only; they are not event counts.
+- Until Phase −1 M4–M11 are complete, do not use `scripts/sfq_metrics.py`, its old JSON, or `scripts/run_exp.sh` as a physical Gate.
+- Separate artifact validity, activity, local junction evidence, loaded downstream reception, and system logic evidence.
+- Use `PASS`, `FAIL`, `INCONCLUSIVE`, and artifact `INVALID` distinctly.
+
+## Experiment integrity
+
+- Use the recorded `build/josim-cli`; record its version and binary hash for conclusion-grade runs.
+- Preserve raw netlists, include/model provenance, CSVs, controls, logs, directions, windows, and metric-spec version.
+- Never overwrite or silently delete raw or failed experiments. Create a new run ID and supersede conclusions explicitly.
+- A repeated file hash proves deterministic replay only, not physical correctness or timestep convergence.
+- Do not write a simulation result as hardware measurement or a bounded negative result as universal impossibility.
+
+## Read/write boundary
+
+- Status, review, explanation, and diagnosis requests are read-only unless the user also requests changes.
+- Do not update every summary file mechanically. Update the lowest evidence layer first and only the higher layers affected by the change.
+- Cleanup or deletion requires an explicit, exact target; ordinary project summarization never authorizes deletion.

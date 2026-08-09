@@ -1,5 +1,8 @@
 # BVM→BQ 接口证据链（Paper A 素材）
 
+> [!CAUTION]
+> **本证据链的“八轮系统排除”叙事已被 2026-08-09 单位审计否定，正文仅作历史记录。** `P()` 是 rad；旧脚本把它误作 SFQ，并把过阈值样本数当事件数。尤其 BQ v4 在 110/130/150 µA 已测点的六周期测试中，现有 CSV 实际显示下游 JTL 约每周期前进一圈，与约 1:1 传播相容，足以反证“输出级死亡”；完整 SFQ Gate 仍待重测。论文结论必须在新指标和真实 BVM 波形重测后重写。当前口径见 `docs/guide/project-guide.md`。
+
 > **目的**: 整理 2026-07-13 ~ 08-06 全部 BVM→BQ 耦合实验，形成论文 §3 (Problem Characterization) 与负结果章节的完整证据链。
 > **口径**: 全部指标使用 `scripts/sfq_metrics.py` 冻结定义（BASELINE.md §2），禁止人工读图计数。
 > **仿真**: josim-cli v2.7.2837d13 (build/josim-cli), jjmit 模型 (Ic×RN=1.6mV), `.tran 0.1p` 固定步长。

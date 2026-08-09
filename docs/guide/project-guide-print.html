@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2026-08-09" />
+  <title>JoSIM × BVM 项目完全理解指南（证据审计修订版）</title>
+  <style>
+
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">:root {
+color-scheme: light;
+font-family: "Microsoft YaHei", "Noto Sans CJK SC", "PingFang SC", sans-serif;
+font-size: 11pt;
+line-height: 1.65;
+color: #18202a;
+background: #ffffff;
+}
+html {
+background: #eef1f4;
+}
+body {
+box-sizing: border-box;
+max-width: 920px;
+margin: 24px auto;
+padding: 48px 58px;
+background: #ffffff;
+box-shadow: 0 4px 24px rgba(16, 32, 48, 0.12);
+}
+h1,
+h2,
+h3 {
+color: #12395a;
+line-height: 1.28;
+break-after: avoid-page;
+}
+h1 {
+margin: 1.8em 0 0.7em;
+padding-bottom: 0.22em;
+border-bottom: 2px solid #2b6f9e;
+font-size: 22pt;
+}
+h2 {
+margin: 1.55em 0 0.55em;
+padding-bottom: 0.18em;
+border-bottom: 1px solid #b9cbd8;
+font-size: 16pt;
+}
+h3 {
+margin: 1.25em 0 0.4em;
+font-size: 12.5pt;
+}
+p,
+li {
+orphans: 3;
+widows: 3;
+}
+blockquote {
+margin: 1em 0;
+padding: 0.65em 1em;
+border-left: 4px solid #2b6f9e;
+background: #f2f7fa;
+color: #243746;
+}
+code {
+font-family: "Cascadia Mono", "Consolas", monospace;
+font-size: 0.9em;
+}
+pre {
+overflow-wrap: anywhere;
+white-space: pre-wrap;
+margin: 0.9em 0;
+padding: 0.8em 1em;
+border: 1px solid #d7e0e7;
+border-radius: 5px;
+background: #f6f8fa;
+font-size: 9pt;
+line-height: 1.45;
+break-inside: avoid-page;
+}
+table {
+width: 100%;
+margin: 0.9em 0 1.15em;
+border-collapse: collapse;
+font-size: 9.2pt;
+line-height: 1.42;
+}
+thead {
+display: table-header-group;
+background: #eaf2f7;
+}
+tr {
+break-inside: avoid-page;
+}
+th,
+td {
+padding: 0.45em 0.55em;
+border: 1px solid #bdcbd5;
+text-align: left;
+vertical-align: top;
+}
+math {
+font-family: "Cambria Math", "STIX Two Math", serif;
+font-size: 1em;
+}
+math[display="block"] {
+margin: 0.75em auto;
+break-inside: avoid-page;
+}
+hr {
+margin: 1.5em 0;
+border: 0;
+border-top: 1px solid #bdcbd5;
+}
+a {
+color: #165d8c;
+text-decoration: none;
+}
+#title-block-header {
+margin-bottom: 1.4em;
+text-align: center;
+}
+#title-block-header .title {
+margin: 0;
+padding: 0;
+border: 0;
+color: #0f3553;
+font-size: 26pt;
+}
+#TOC {
+margin: 1.2em 0 2em;
+padding: 1em 1.2em;
+border: 1px solid #bdcbd5;
+border-radius: 6px;
+background: #f8fafb;
+}
+#TOC::before {
+display: block;
+margin-bottom: 0.45em;
+color: #12395a;
+font-size: 16pt;
+font-weight: 700;
+content: "目录";
+}
+#TOC ul {
+margin: 0.2em 0;
+padding-left: 1.35em;
+}
+@page {
+size: A4;
+margin: 16mm 15mm 18mm;
+}
+@media print {
+:root {
+font-size: 10.5pt;
+}
+html,
+body {
+max-width: none;
+margin: 0;
+padding: 0;
+background: #ffffff;
+box-shadow: none;
+}
+#title-block-header {
+margin-top: 28mm;
+margin-bottom: 14mm;
+}
+#TOC {
+break-after: page;
+}
+body > h1 {
+break-before: page;
+}
+a {
+color: inherit;
+}
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">JoSIM × BVM 项目完全理解指南（证据审计修订版）</h1>
+<p class="date">2026-08-09</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#先读这一页我们究竟在做什么" id="toc-先读这一页我们究竟在做什么">先读这一页：我们究竟在做什么</a></li>
+<li><a href="#如何判断本文中的一句话有多可信" id="toc-如何判断本文中的一句话有多可信">如何判断本文中的一句话有多可信</a></li>
+<li><a href="#第一篇先补齐电路与超导基础" id="toc-第一篇先补齐电路与超导基础">第一篇：先补齐电路与超导基础</a>
+<ul>
+<li><a href="#电流电压和功率不是同一件事" id="toc-电流电压和功率不是同一件事">1.
+电流、电压和功率不是同一件事</a></li>
+<li><a href="#电阻电容和电感在瞬态里做什么" id="toc-电阻电容和电感在瞬态里做什么">2.
+电阻、电容和电感在瞬态里做什么</a></li>
+<li><a href="#超导需要的不是零电阻一句话" id="toc-超导需要的不是零电阻一句话">3.
+超导：需要的不是“零电阻”一句话</a></li>
+<li><a href="#josephson-结不是超过阈值就变成普通电阻" id="toc-josephson-结不是超过阈值就变成普通电阻">4. Josephson
+结：不是“超过阈值就变成普通电阻”</a></li>
+<li><a href="#sfq量子化的是面积不是峰值宽度或能量" id="toc-sfq量子化的是面积不是峰值宽度或能量">5.
+SFQ：量子化的是面积，不是峰值、宽度或能量</a></li>
+</ul></li>
+<li><a href="#第二篇josim-在计算什么" id="toc-第二篇josim-在计算什么">第二篇：JoSIM 在计算什么</a>
+<ul>
+<li><a href="#从网表到-csv-的完整流水线" id="toc-从网表到-csv-的完整流水线">6. 从网表到 CSV 的完整流水线</a></li>
+<li><a href="#如何读-.cir-网表" id="toc-如何读-.cir-网表">7. 如何读
+<code>.cir</code> 网表</a></li>
+<li><a href="#pv-和-i-应如何解释" id="toc-pv-和-i-应如何解释">8.
+<code>P()</code>、<code>V()</code> 和 <code>I()</code>
+应如何解释</a></li>
+</ul></li>
+<li><a href="#第三篇项目中每个模块为什么存在" id="toc-第三篇项目中每个模块为什么存在">第三篇：项目中每个模块为什么存在</a>
+<ul>
+<li><a href="#bvm保存状态并给出读电流" id="toc-bvm保存状态并给出读电流">9. BVM：保存状态并给出读电流</a></li>
+<li><a href="#bq把累积磁通变化量化的候选单元" id="toc-bq把累积磁通变化量化的候选单元">10.
+BQ：把累积磁通变化量化的候选单元</a></li>
+<li><a href="#dcsfq-与-dcsfq_bvm另一个接口候选" id="toc-dcsfq-与-dcsfq_bvm另一个接口候选">11. DCSFQ 与
+DCSFQ_BVM：另一个接口候选</a></li>
+<li><a href="#coldflux-标准单元jtl-与测试成熟度" id="toc-coldflux-标准单元jtl-与测试成熟度">12. ColdFlux 标准单元、JTL
+与测试成熟度</a></li>
+<li><a href="#t1处理已经数字化的脉冲" id="toc-t1处理已经数字化的脉冲">13. T1：处理已经数字化的脉冲</a></li>
+</ul></li>
+<li><a href="#第四篇项目历史实验与结论重审" id="toc-第四篇项目历史实验与结论重审">第四篇：项目历史、实验与结论重审</a>
+<ul>
+<li><a href="#研究提交改变了什么" id="toc-研究提交改变了什么">14.
+研究提交改变了什么</a></li>
+<li><a href="#哪些实验结论仍然成立" id="toc-哪些实验结论仍然成立">15.
+哪些实验结论仍然成立</a></li>
+<li><a href="#哪些旧结论已经被推翻" id="toc-哪些旧结论已经被推翻">16.
+哪些旧结论已经被推翻</a></li>
+<li><a href="#哪些解释仍只是候选假设" id="toc-哪些解释仍只是候选假设">17. 哪些解释仍只是候选假设</a></li>
+<li><a href="#确定性准确性和鲁棒性是三件不同的事" id="toc-确定性准确性和鲁棒性是三件不同的事">18.
+确定性、准确性和鲁棒性是三件不同的事</a></li>
+</ul></li>
+<li><a href="#第五篇测量管线为什么失效以及怎样修" id="toc-第五篇测量管线为什么失效以及怎样修">第五篇：测量管线为什么失效，以及怎样修</a>
+<ul>
+<li><a href="#sfq_metrics.py-的两个独立问题" id="toc-sfq_metrics.py-的两个独立问题">19. <code>sfq_metrics.py</code>
+的两个独立问题</a></li>
+<li><a href="#新指标应该怎样定义" id="toc-新指标应该怎样定义">20.
+新指标应该怎样定义</a></li>
+<li><a href="#修复脚本前后的最小回归测试" id="toc-修复脚本前后的最小回归测试">21.
+修复脚本前后的最小回归测试</a></li>
+</ul></li>
+<li><a href="#第六篇现在应该怎样继续项目" id="toc-第六篇现在应该怎样继续项目">第六篇：现在应该怎样继续项目</a>
+<ul>
+<li><a href="#当前状态不是phase-1-待执行而是phase-1-待修复" id="toc-当前状态不是phase-1-待执行而是phase-1-待修复">22.
+当前状态不是“Phase 1 待执行”，而是“Phase −1 待修复”</a></li>
+<li><a href="#论文目前能严谨写什么" id="toc-论文目前能严谨写什么">23.
+论文目前能严谨写什么</a></li>
+</ul></li>
+<li><a href="#第七篇如何自己复现和审阅" id="toc-第七篇如何自己复现和审阅">第七篇：如何自己复现和审阅</a>
+<ul>
+<li><a href="#推荐阅读顺序" id="toc-推荐阅读顺序">24.
+推荐阅读顺序</a></li>
+<li><a href="#最小可复现流程" id="toc-最小可复现流程">25.
+最小可复现流程</a></li>
+<li><a href="#读实验图时按这个顺序问" id="toc-读实验图时按这个顺序问">26. 读实验图时按这个顺序问</a></li>
+</ul></li>
+<li><a href="#第八篇证据索引与术语表" id="toc-第八篇证据索引与术语表">第八篇：证据索引与术语表</a>
+<ul>
+<li><a href="#关键证据在哪里" id="toc-关键证据在哪里">27.
+关键证据在哪里</a></li>
+<li><a href="#术语速查" id="toc-术语速查">28. 术语速查</a></li>
+<li><a href="#读完后你应能回答的十个问题" id="toc-读完后你应能回答的十个问题">29.
+读完后你应能回答的十个问题</a></li>
+<li><a href="#最终结论" id="toc-最终结论">最终结论</a></li>
+</ul></li>
+</ul>
+</nav>
+<blockquote>
+<p>读者：有计算机基础，但电路知识主要停留在高中、尚未系统学习超导电子学的研究生。</p>
+<p>审计日期：2026-08-09。</p>
+<p>证据范围：本仓库的 JoSIM 源码、网表、已提交 CSV/JSON、实验日志，以及
+<code>arti/</code> 中的论文和 ColdFlux
+手册；本次没有把联网检索结果当作证据。</p>
+<p>当前最重要的状态：旧交接材料中的相位单位存在系统性错误。本指南以源码和原始数据复核后的口径为准。</p>
+<p>离线阅读版：<code>docs/guide/project-report.html</code>（由本文件生成的自包含技术报告）。</p>
+</blockquote>
+<h2 id="先读这一页我们究竟在做什么">先读这一页：我们究竟在做什么</h2>
+<p>一句话概括：</p>
+<blockquote>
+<p>本项目正在验证并设计一个接口，把 BVM 在“读
+1”时产生的、随负载变化的几十微安电流波形，转换成<strong>恰好一个能被标准
+JTL/RSFQ 逻辑接收的 SFQ 事件</strong>；转换后的脉冲才交给 T1
+等数字单元计数、求和与产生进位。</p>
+</blockquote>
+<p>系统数据流是：</p>
+<pre class="text"><code>存储                         模拟/量子接口              数字传输与计算
+
+BVM ──状态相关电流──▶ BQ 或 DCSFQ_BVM ──SFQ──▶ JTL ──▶ T1 / RSFQ 逻辑
+ │                         │                         │
+ │ 保存双稳态环流          │ 当前研究的主要缺口        │ 接收已量化的事件
+ └─不是普通 CMOS RAM       └─不是普通电压 ADC          └─不是慢电流量化器</code></pre>
+<p>项目不是在修改 JoSIM 求解器本身。对 Git
+树的核验显示，研究工作没有改动
+<code>src/</code>、<code>include/</code>、<code>cmake/</code>、根
+<code>CMakeLists.txt</code> 或上游
+CTest；项目增加的是电路网表、实验、分析脚本、论文材料和文档。可以把它理解为：</p>
+<ul>
+<li>JoSIM 是“解释器 + 数值运行时”；</li>
+<li><code>.cir</code> 网表是“程序”；</li>
+<li>CSV 是“程序运行轨迹”；</li>
+<li>本项目的研究对象是这些网表能否实现所需物理行为。</li>
+</ul>
+<h3 id="一个会改变研究路线的审计发现">一个会改变研究路线的审计发现</h3>
+<p>JoSIM 的 <code>P(...)</code> 默认输出是相位
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>，单位为
+<strong>rad（弧度）</strong>，不是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>π</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\phi/(2\pi)</annotation></semantics></math>，也不是“SFQ
+个数”。旧脚本 <code>scripts/sfq_metrics.py</code> 直接把原始弧度标成了
+<code>SFQ</code>，同时把超过阈值的<strong>采样间隔数</strong>叫作
+<code>fast_events</code>。这造成了两层错误：</p>
+<ol type="1">
+<li>所有相位派生数值放大了
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+倍；</li>
+<li>一个持续多个采样点的物理脉冲会被重复计数，<code>fast_events</code>
+不是事件数。</li>
+</ol>
+<p>正确换算是：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></msub><mo>=</mo><mfrac><mrow><mi mathvariant="normal">Δ</mi><msub><mi>ϕ</mi><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">d</mi></mrow></msub></mrow><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mfrac><mo>∫</mo><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">
+N_{\Phi_0}=\frac{\Delta\phi_{\mathrm{rad}}}{2\pi}
+           =\frac{1}{\Phi_0}\int V(t)\,dt
+</annotation></semantics></math></p>
+<p>这里得到的是<strong>同一个 JJ 的净相位绕转数</strong>，右侧的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>
+也必须是这个 JJ 同一对端点之间的电压。它等价于该结电压面积的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\Phi_0</annotation></semantics></math>
+倍数，但不等于闭合环的 fluxoid 数或材料中的微观涡旋数。</p>
+<p>这项错误直接推翻了旧文档中的几项核心判断：</p>
+<ul>
+<li>旧文档依据 <code>P(JM1)≈±5.9</code> 直接推出“约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>6</mn></mrow><annotation encoding="application/x-tex">\pm6</annotation></semantics></math>
+个涡旋”的<strong>证据链已被推翻</strong>；正确换算只能说 JM1
+的稳定相位约为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>0.94</mn></mrow><annotation encoding="application/x-tex">\pm0.94</annotation></semantics></math>
+圈。这与论文的单磁通子双稳态模型相容，但不能只凭一个结的相位断言完整环的
+fluxoid 数，因而本次审计也没有独立证明真实 fluxoid 一定不是 6。</li>
+<li>基线 BQ 输入结 BJs 不是“前进 6.27 个量子”，而是约前进 0.998
+圈。</li>
+<li>标准 DCSFQ 的 300 µA 响应不是“7–8
+次爆发”；减去零输入的偏置启动背景后，B1、B2、B3
+各自恰好改变约一圈。</li>
+<li>BQ v4 的下游 JTL 不是收到“38 个失控事件”；38 rad
+约等于六圈，而测试恰好有六个输入周期。在当前周期
+PULSE、偏置、负载和步长下，110–150 µA 的下游相位平台表现与约 1:1
+传播相容；完整 SFQ Gate 尚未通过。</li>
+</ul>
+<p>因此，2026-08-06 旧版 <code>HANDOVER.md</code> 中所谓“冻结口径”、BQ
+已被系统排除、以及直接执行 Phase 1 的计划都不能继续原样使用。当前的
+<code>docs/HANDOVER.md</code>
+已按本次审计重写。当前合理阶段是<strong>Phase
+−1：先修复测量定义和重建基线</strong>。</p>
+<hr />
+<h2 id="如何判断本文中的一句话有多可信">如何判断本文中的一句话有多可信</h2>
+<p>为了避免把解释写成事实，本文使用六类证据标签：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>标签</th>
+<th>含义</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>【基本定律】</td>
+<td>教科书级关系，适用条件会同时写出</td>
+<td>Josephson 方程、KCL/KVL</td>
+</tr>
+<tr>
+<td>【源码事实】</td>
+<td>当前 JoSIM 或网表直接写明</td>
+<td><code>P()</code> 未除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>【论文表述】</td>
+<td>指定论文/手册明确声称</td>
+<td>ColdFlux 称 DCSFQ 为电压脉冲到 SFQ 的转换器</td>
+</tr>
+<tr>
+<td>【项目实测】</td>
+<td>当前已提交原始 CSV/网表可直接复核</td>
+<td>BVM 特定负载下峰值电流 68.4 µA</td>
+</tr>
+<tr>
+<td>【解释性推断】</td>
+<td>与拓扑和数据相容，但没有受控实验唯一确定</td>
+<td>某个振铃主要来自哪条回路</td>
+</tr>
+<tr>
+<td>【待验证】</td>
+<td>数据不足或旧指标失效</td>
+<td>BVM 完整环的严格 fluxoid 数</td>
+</tr>
+</tbody>
+</table>
+<p>论文中的 JoSIM/JSIM
+波形仍然是<strong>仿真证据</strong>，不能写成芯片实测；重复得到相同 CSV
+只是数值可重复，不等于模型一定物理正确。</p>
+<hr />
+<h1 id="第一篇先补齐电路与超导基础">第一篇：先补齐电路与超导基础</h1>
+<h2 id="电流电压和功率不是同一件事">1. 电流、电压和功率不是同一件事</h2>
+<p>如果把电路类比成水路：</p>
+<ul>
+<li>电流
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math>：单位时间通过多少电荷，类似流量，单位
+A；</li>
+<li>电压
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>：推动电荷运动的能量差，类似压差，单位
+V；</li>
+<li>电阻
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>：对运动的耗散性阻碍，满足
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>I</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">V=IR</annotation></semantics></math>；</li>
+<li>功率
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mi>V</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">P=VI</annotation></semantics></math>：单位时间转移或耗散的能量。</li>
+</ul>
+<p>“某节点有 68 µA”不等于“有一个 SFQ”。SFQ
+的定义涉及<strong>电压对时间的积分</strong>，而 68 µA
+是某条支路在某个负载和某个时刻的电流。整个项目的接口困难，本质上就是不能把这两个量直接画等号。</p>
+<h3 id="地节点和支路">1.1 地、节点和支路</h3>
+<p>网表里的 <code>0</code>
+是参考节点（ground）。节点电压都相对它定义；支路电流有方向，交换元件两端会改变输出符号。负号通常表示“实际方向与网表定义的正方向相反”，不等于仿真错误。</p>
+<p>【基本定律】两个守恒关系贯穿所有电路：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">KCL：节点流入电流之和</mtext><mo>=</mo><mtext mathvariant="normal">流出电流之和</mtext></mrow><annotation encoding="application/x-tex">
+\text{KCL：节点流入电流之和}=\text{流出电流之和}
+</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">KVL：沿闭合回路的电压升降代数和</mtext><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">
+\text{KVL：沿闭合回路的电压升降代数和}=0
+</annotation></semantics></math></p>
+<p>它们解释了为什么输入电流会分流、为什么增加负载会改变 BVM
+的输出、以及为什么不能只用电流源标称幅度判断某个 JJ
+是否达到临界电流。</p>
+<h2 id="电阻电容和电感在瞬态里做什么">2.
+电阻、电容和电感在瞬态里做什么</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>元件</th>
+<th>关系</th>
+<th>直觉</th>
+<th>在项目中的作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电阻</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>I</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">V=IR</annotation></semantics></math></td>
+<td>把电能耗散成热</td>
+<td>限流、建立偏置、抑制振铃</td>
+</tr>
+<tr>
+<td>电容</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mi>C</mi><mspace width="0.167em"></mspace><mi>d</mi><mi>V</mi><mi>/</mi><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">I=C\,dV/dt</annotation></semantics></math></td>
+<td>电压不能无代价瞬变</td>
+<td>JJ 的“惯性”，影响开关和振铃</td>
+</tr>
+<tr>
+<td>电感</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>L</mi><mspace width="0.167em"></mspace><mi>d</mi><mi>I</mi><mi>/</mi><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">V=L\,dI/dt</annotation></semantics></math></td>
+<td>电流不能无代价瞬变</td>
+<td>保存磁场能量、耦合与延迟、形成环流</td>
+</tr>
+</tbody>
+</table>
+<p>高中稳态电路里常把电感看成短路、电容看成开路；在本项目的皮秒瞬态中，这种简化通常不够。电感的频域阻抗为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mi>ω</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">j\omega L</annotation></semantics></math>，电容为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mi>ω</mi><mi>C</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">1/(j\omega C)</annotation></semantics></math>，但
+SFQ
+是宽带瞬态，不应只挑一个“代表频率”就把完整非线性网络当成两个线性阻抗分流。</p>
+<h3 id="偏置为什么必要">2.1 偏置为什么必要</h3>
+<p>偏置是在没有输入事件时先把结放到某个工作点。一个典型 RSFQ
+结会被偏置到临界电流以下；输入只需补足剩余裕度便可触发。触发后的电流重新分配，结应回到零电压态。</p>
+<p>这并不意味着“70%
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math>”是所有电路的普遍常数。它是许多标准单元的设计选择，真正可用范围要由拓扑、阻尼、工艺参数和负载共同验证。</p>
+<h3 id="源和负载为什么不能分开看">2.2 源和负载为什么不能分开看</h3>
+<p>理想电流源会强制指定电流；真实 BVM
+输出不是理想源。项目的负载扫描得到一个局部经验拟合：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi mathvariant="normal">l</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">d</mi></mrow></msub><mo>≈</mo><mfrac><msub><mi>V</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">h</mi></mrow></msub><mrow><msub><mi>Z</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">h</mi></mrow></msub><mo>+</mo><msub><mi>R</mi><mrow><mi mathvariant="normal">l</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">d</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+I_{\mathrm{load}}\approx\frac{V_{\mathrm{th}}}{Z_{\mathrm{th}}+R_{\mathrm{load}}}
+</annotation></semantics></math></p>
+<p>其中峰值拟合约为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Z</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">h</mi></mrow></msub><mo>∼</mo><mn>40</mn><mspace width="0.222em"></mspace><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">Z_{\mathrm{th}}\sim40\ \Omega</annotation></semantics></math>、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">h</mi></mrow></msub><mo>∼</mo><mn>4</mn><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">V</mi></mrow></mrow><annotation encoding="application/x-tex">V_{\mathrm{th}}\sim4\ \mathrm{mV}</annotation></semantics></math>。【项目实测】这只描述已测波形和负载范围中的<strong>有效峰值关系</strong>，不是频率无关、幅度无关的固有电阻。BVM
+是非线性瞬态源，换拓扑或时间窗后，这两个拟合量可能改变。</p>
+<h3 id="知识检查-1">知识检查 1</h3>
+<p>如果你能回答下面三问，就足以继续：</p>
+<ol type="1">
+<li>为什么“电流峰值够大”仍不能证明输出是一个 SFQ？</li>
+<li>为什么给 BVM 换负载后，输出电流会改变？</li>
+<li>为什么电感在直流和皮秒边沿下不能总被当成同一个“短路”？</li>
+</ol>
+<h2 id="超导需要的不是零电阻一句话">3.
+超导：需要的不是“零电阻”一句话</h2>
+<p>【基本定律】在温度、磁场和电流都处于材料允许范围内时，超导态具有宏观相干的复序参量，可写成：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ψ</mi><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi mathvariant="normal">Ψ</mi><mo stretchy="false" form="prefix">|</mo><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup></mrow><annotation encoding="application/x-tex">
+\Psi=|\Psi|e^{i\theta}
+</annotation></semantics></math></p>
+<p>这里的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
+是相位。超导体的直流电阻消失只是现象之一；本项目真正使用的是<strong>宏观相位、Josephson
+效应和闭合环的量子化约束</strong>。</p>
+<p>需要避免三个常见误解：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\Phi_0</annotation></semantics></math>
+是磁通量子，不是“最小磁场单位”。磁场
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+的单位是 T，磁通
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>=</mo><mo>∫</mo><mi>B</mi><mspace width="0.167em"></mspace><mi>d</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">\Phi=\int B\,dA</annotation></semantics></math>
+的单位才是 Wb。</li>
+<li>不是任意空间里的磁通或磁场都只能取
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">n\Phi_0</annotation></semantics></math>。严格约束涉及闭合超导路径中的相位绕数/fluxoid
+条件。</li>
+<li>“非易失”在 BVM
+论文中指超导状态持续维持时无需保持偏置保存环流，不代表升温到正常态或室温断电后仍保存。</li>
+</ul>
+<p>磁通量子为：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><mo>=</mo><mfrac><mi>h</mi><mrow><mn>2</mn><mi>e</mi></mrow></mfrac><mo>≈</mo><mn>2.067833848</mn><mo>×</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>15</mn></mrow></msup><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">W</mi><mi mathvariant="normal">b</mi></mrow><mo>≈</mo><mn>2.0678</mn><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">V</mi><mo mathvariant="normal">⋅</mo><mi mathvariant="normal">p</mi><mi mathvariant="normal">s</mi></mrow></mrow><annotation encoding="application/x-tex">
+\Phi_0=\frac{h}{2e}
+      \approx2.067833848\times10^{-15}\ \mathrm{Wb}
+      \approx2.0678\ \mathrm{mV\cdot ps}
+</annotation></semantics></math></p>
+<p>含 JJ
+的闭合环中，相位差、电感电流造成的磁通和外加磁通共同满足量子化条件。示意写法是：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>ϕ</mi><mi>j</mi></msub><mo>+</mo><mfrac><mrow><mn>2</mn><mi>π</mi></mrow><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mfrac><msub><mi mathvariant="normal">Φ</mi><mrow><mi mathvariant="normal">l</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">p</mi></mrow></msub><mo>=</mo><mn>2</mn><mi>π</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">
+\sum_j\phi_j+\frac{2\pi}{\Phi_0}\Phi_{\mathrm{loop}}=2\pi n
+</annotation></semantics></math></p>
+<p>具体符号取决于环方向和定义。这个公式也说明：<strong>单独读取一个 JJ
+的相位，并不足以直接得到完整环的整数
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math></strong>。</p>
+<h2 id="josephson-结不是超过阈值就变成普通电阻">4. Josephson
+结：不是“超过阈值就变成普通电阻”</h2>
+<p>Josephson 结是两个超导电极之间的弱连接。两个核心关系是：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>s</mi></msub><mo>=</mo><msub><mi>I</mi><mi>c</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>⁡</mo></mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">
+I_s=I_c\sin\phi
+</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mfrac><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><mfrac><mrow><mi>d</mi><mi>ϕ</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+V=\frac{\Phi_0}{2\pi}\frac{d\phi}{dt}
+</annotation></semantics></math></p>
+<p>【基本定律】第一式说明零电压超电流依赖规范不变相位差；第二式说明电压与相位转动速度成正比。</p>
+<p>由第二式积分可得：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>ϕ</mi><mo>=</mo><mn>2</mn><mi>π</mi><mspace width="1.0em"></mspace><mo>⇔</mo><mspace width="1.0em"></mspace><mo>∫</mo><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>d</mi><mi>t</mi><mo>=</mo><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">
+\Delta\phi=2\pi
+\quad\Longleftrightarrow\quad
+\int V(t)\,dt=\Phi_0
+</annotation></semantics></math></p>
+<p>这才是 SFQ 测量的核心。</p>
+<p>“电流小于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math>
+时 JJ 像不存在，大于
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math>
+时突然成为电阻”只能作为第一遍直觉。更准确地说：</p>
+<ul>
+<li>零电压态仍有相位依赖的 Josephson 电感；</li>
+<li>支路电流由整个网络决定，不等于输入源标称值；</li>
+<li>达到动力学失稳后，相位可能越过一个或多个势阱；</li>
+<li>是否停住、回摆或持续运行由电容、耗散、偏置和外部网络共同决定。</li>
+</ul>
+<h3 id="rcsj-模型一个带惯性和摩擦的非线性系统">4.1 RCSJ
+模型：一个带惯性和摩擦的非线性系统</h3>
+<p>常用 RCSJ 近似把结写成理想 Josephson 元件、电阻和电容的并联：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><msub><mi>I</mi><mi>c</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>⁡</mo></mrow><mi>ϕ</mi><mo>+</mo><mfrac><mi>V</mi><mi>R</mi></mfrac><mo>+</mo><mi>C</mi><mfrac><mrow><mi>d</mi><mi>V</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+I=I_c\sin\phi+\frac{V}{R}+C\frac{dV}{dt}
+</annotation></semantics></math></p>
+<p>代入 Josephson 电压关系：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><mi>C</mi></mrow><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><mover><mi>ϕ</mi><mo accent="true">̈</mo></mover><mo>+</mo><mfrac><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><mrow><mn>2</mn><mi>π</mi><mi>R</mi></mrow></mfrac><mover><mi>ϕ</mi><mo accent="true">̇</mo></mover><mo>+</mo><msub><mi>I</mi><mi>c</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>⁡</mo></mrow><mi>ϕ</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">
+\frac{\Phi_0C}{2\pi}\ddot\phi
++\frac{\Phi_0}{2\pi R}\dot\phi
++I_c\sin\phi=I
+</annotation></semantics></math></p>
+<p>可以把相位想成周期势阱里的小球：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+提供惯性；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+提供耗散；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>c</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>⁡</mo></mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">I_c\sin\phi</annotation></semantics></math>
+形成周期恢复力；</li>
+<li>外部电流让势能“倾斜”。</li>
+</ul>
+<p>McCumber 参数常写为：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mi>c</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi><msub><mi>I</mi><mi>c</mi></msub><msup><mi>R</mi><mn>2</mn></msup><mi>C</mi></mrow><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">
+\beta_c=\frac{2\pi I_cR^2C}{\Phi_0}
+</annotation></semantics></math></p>
+<p>大
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>c</mi></msub><annotation encoding="application/x-tex">\beta_c</annotation></semantics></math>
+通常意味着更欠阻尼和更强滞回，但应使用工作状态下的有效阻尼。项目的
+<code>jjmit</code> 使用 <code>RTYPE=1</code>，有
+<code>r0</code>、<code>rn</code> 和能隙相关的分段电导；外部 RB/LRB
+和完整拓扑也会改变阻尼。因此“用 <code>rn</code> 算出约
+5.4，所以所有结必然失控”是不充分的。</p>
+<h3 id="josephson-电感的正确用法">4.2 Josephson 电感的正确用法</h3>
+<p>零相位附近的小信号近似是：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>J</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><mrow><mn>2</mn><mi>π</mi><msub><mi>I</mi><mi>c</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+L_J(0)=\frac{\Phi_0}{2\pi I_c}
+</annotation></semantics></math></p>
+<p>更一般地：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>J</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>ϕ</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><mrow><mn>2</mn><mi>π</mi><msub><mi>I</mi><mi>c</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>⁡</mo></mrow><msub><mi>ϕ</mi><mn>0</mn></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+L_J(\phi_0)=\frac{\Phi_0}{2\pi I_c\cos\phi_0}
+</annotation></semantics></math></p>
+<p>降低
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math>
+会在同一工作相位下增大
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>J</mi></msub><annotation encoding="application/x-tex">L_J</annotation></semantics></math>，这是可靠的局部趋势；但它不是证明“任何低
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math>
+接口都数学无解”的普遍定理。旧文档所谓 BQ
+的“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>J</mi></msub><annotation encoding="application/x-tex">L_J</annotation></semantics></math>
+矛盾”只能保留为对某些已测拓扑的设计风险。</p>
+<h3 id="area-参数为什么能缩放结">4.3 <code>area</code>
+参数为什么能缩放结</h3>
+<p>项目模型 <code>circuits/models/jjmit.cir</code> 的基准参数是：</p>
+<pre class="spice"><code>.model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p,
++ r0=160, rn=16, icrit=0.1m)</code></pre>
+<p>JoSIM 对实例 <code>area=A</code>
+的缩放是：【源码事实，<code>src/JJ.cpp</code>】</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>c</mi></msub><mo>∝</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">I_c\propto A</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>∝</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">C\propto A</annotation></semantics></math>；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>n</mi></msub><mo>,</mo><msub><mi>R</mi><mn>0</mn></msub><mo>∝</mo><mn>1</mn><mi>/</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">R_n,R_0\propto1/A</annotation></semantics></math>。</li>
+</ul>
+<p>所以把 <code>area=2.25</code> 改成 <code>0.8</code>
+会把基准临界电流从 225 µA 改成 80
+µA，同时还改变电容、电阻和动态。它不是只移动一个理想比较器阈值。</p>
+<h2 id="sfq量子化的是面积不是峰值宽度或能量">5.
+SFQ：量子化的是面积，不是峰值、宽度或能量</h2>
+<p>SFQ 事件的定义性关系是：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mi>V</mi><mi>d</mi><mi>t</mi><mo>=</mo><mi>±</mi><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">
+\int Vdt=\pm\Phi_0
+</annotation></semantics></math></p>
+<p>因此可以说“一次净
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+相位滑移具有一个磁通量子的电压面积”。不能据此说：</p>
+<ul>
+<li>所有 SFQ 峰值相同；</li>
+<li>所有 SFQ 都严格宽 2 ps；</li>
+<li>每个事件的总能量完全相同；</li>
+<li>任意结的一圈相位变化都表示环里永久增加一个涡旋。</li>
+</ul>
+<p>若粗略把脉冲当成 2 ps 矩形，平均电压约为 1.03
+mV；真实波形由偏置、<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>c</mi></msub><mi>R</mi></mrow><annotation encoding="application/x-tex">I_cR</annotation></semantics></math>、电容、阻尼和负载决定。能量尺度常与
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>b</mi></msub><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">I_b\Phi_0</annotation></semantics></math>
+有关，也会随工作点变化。量子化的是相位绕转和电压时间积分，不是总耗散能量。</p>
+<h3 id="jtl-为什么能够传输数字事件">5.1 JTL 为什么能够传输数字事件</h3>
+<p>Josephson Transmission
+Line（JTL）不是无源导线，而是带偏置和阻尼的一串 JJ：</p>
+<ol type="1">
+<li>输入事件触发第一级；</li>
+<li>电感中的电流重分配推动下一级；</li>
+<li>每一级利用本地偏置重新产生约一圈相位事件。</li>
+</ol>
+<p>所以严谨说法是：“JTL
+在设计裕度内再生并传播量子化事件。”波形细节仍会改变，负载、偏置或时序不合适时也会丢失、多触发或无法传播。ColdFlux
+手册 PDF p17 §2.1.1 将 JTL 描述为重新建立并传播 SFQ；PDF p14 明确要求
+DUT 成功驱动其输出负载，才算功能验证。【论文表述】</p>
+<h3 id="知识检查-2">知识检查 2</h3>
+<ol type="1">
+<li>为什么
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>J</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>6.28</mn></mrow><annotation encoding="application/x-tex">P(J)=6.28</annotation></semantics></math>
+rad 更接近一个事件，而不是 6.28 个事件？</li>
+<li>为什么一个结净转一圈，还不能自动证明下游逻辑收到一个脉冲？</li>
+<li>为什么“脉冲面积量子化”不推出“脉冲能量固定”？</li>
+</ol>
+<hr />
+<h1 id="第二篇josim-在计算什么">第二篇：JoSIM 在计算什么</h1>
+<h2 id="从网表到-csv-的完整流水线">6. 从网表到 CSV 的完整流水线</h2>
+<p><code>src/josim.cpp</code> 展示的主流程可以类比编译器：</p>
+<pre class="text"><code>文本读取
+  → 参数与 JJ 模型解析
+  → 子电路递归展开、层次名称重写
+  → 解析 .tran
+  → 元件 stamp 装入稀疏 MNA/MNPA 矩阵
+  → 解析 .print/.plot/.save 并映射需要保存的 trace
+  → BDF2/Gear 时间推进
+  → 每步构造右端项并用 KLU 求解
+  → 按 .print/.save 写 CSV</code></pre>
+<p>关键源码位置：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>阶段</th>
+<th>位置</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主入口</td>
+<td><code>src/josim.cpp:20-57</code></td>
+<td>串起整个流程</td>
+</tr>
+<tr>
+<td>文本与 include</td>
+<td><code>src/Input.cpp</code></td>
+<td>读网表、续行、参数与模型分类</td>
+</tr>
+<tr>
+<td>子电路展平</td>
+<td><code>src/Netlist.cpp</code></td>
+<td>端口映射和 <code>器件|实例</code> 层次名</td>
+</tr>
+<tr>
+<td>元件矩阵 stamp</td>
+<td><code>src/Matrix.cpp</code></td>
+<td>建立稀疏线性系统</td>
+</tr>
+<tr>
+<td>trace 选择</td>
+<td><code>src/RelevantTrace.cpp</code></td>
+<td>映射 <code>.print/.save</code> 请求，避免保存无关未知量</td>
+</tr>
+<tr>
+<td>JJ 动态</td>
+<td><code>src/JJ.cpp</code>, <code>src/Simulation.cpp</code></td>
+<td>相位预测、分段电导和
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>c</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>⁡</mo></mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">I_c\sin\phi</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>输出</td>
+<td><code>src/Output.cpp</code></td>
+<td>从内部未知量构造 V/I/P trace</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mnamnpa-的直觉">6.1 MNA/MNPA 的直觉</h3>
+<p>每个时间步，JoSIM 都在解一个稀疏方程组：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>n</mi></msub><msub><mi>x</mi><mi>n</mi></msub><mo>=</mo><msub><mi>b</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">
+A_nx_n=b_n
+</annotation></semantics></math></p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>n</mi></msub><annotation encoding="application/x-tex">x_n</annotation></semantics></math>：节点相位/电压、某些支路电流和辅助未知量；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mi>n</mi></msub><annotation encoding="application/x-tex">A_n</annotation></semantics></math>：电路拓扑和当前线性化电导；</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>n</mi></msub><annotation encoding="application/x-tex">b_n</annotation></semantics></math>：源、历史项和
+JJ 的非线性电流贡献。</li>
+</ul>
+<p>电阻、电感、电容、JJ、源和受控源分别把小块系数“盖章”到大矩阵里，这就是
+stamping。子电路必须先展平，因为求解器最终只看一个大网络。</p>
+<h3 id="为什么要离散时间">6.2 为什么要离散时间</h3>
+<p>电感、电容和 JJ 方程含导数，计算机只能在
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">t_0,t_1,\dots</annotation></semantics></math>
+上求近似。当前 JoSIM 使用二阶 Gear/BDF2 系数来近似导数。BDF2
+往往比简单显式方法更适合刚性电路，但仍不是“步长无关”。</p>
+<p>项目常用 <code>.tran 0.1p ...</code>；这是请求的名义步长，JoSIM
+在传输线约束或 JJ
+相位预测过大等情况下可以缩小步长并重建仿真，不应把它理解为永远严格固定
+0.1 ps。任何关键结论仍应用 0.05 ps、0.025 ps
+等更细的请求步长检查收敛，而不能只靠同一设置重复三次。</p>
+<h3 id="klu-做什么">6.3 KLU 做什么</h3>
+<p>电路矩阵大而稀疏；本次冻结二进制使用 KLU 做稀疏 LU
+分解，比把矩阵当成普通稠密数组高效。JoSIM 源码也保留了 SuperLU
+条件分支，所以这不是所有构建唯一可能的后端。线性求解器解决的是每步的代数方程，不替我们判断电路设计是否物理合理。</p>
+<h2 id="如何读-.cir-网表">7. 如何读 <code>.cir</code> 网表</h2>
+<p>常见写法：</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+<th>编程类比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.include file.cir</code></td>
+<td>包含模型或子电路</td>
+<td>import/include</td>
+</tr>
+<tr>
+<td><code>.subckt NAME a b ...</code></td>
+<td>定义带端口的模块</td>
+<td>函数/类定义</td>
+</tr>
+<tr>
+<td><code>X1 ... NAME</code></td>
+<td>实例化子电路</td>
+<td>创建对象/调用模块</td>
+</tr>
+<tr>
+<td><code>.param X=...</code></td>
+<td>参数</td>
+<td>常量/配置</td>
+</tr>
+<tr>
+<td><code>B1 n+ n- jjmit area=...</code></td>
+<td>JJ 实例</td>
+<td>参数化组件</td>
+</tr>
+<tr>
+<td><code>L1 n+ n- 2p</code></td>
+<td>2 pH 电感</td>
+<td>元件实例</td>
+</tr>
+<tr>
+<td><code>I1 0 a pwl(...)</code></td>
+<td>分段线性电流激励</td>
+<td>测试输入</td>
+</tr>
+<tr>
+<td><code>.tran 0.1p 100p</code></td>
+<td>瞬态时间步与终点</td>
+<td>仿真循环配置</td>
+</tr>
+<tr>
+<td><code>.print P(B1\|XU)</code></td>
+<td>保存层次实例中的结相位</td>
+<td>选择 trace</td>
+</tr>
+</tbody>
+</table>
+<p>JoSIM 展平子电路后把内部名称写成
+<code>B1|XU</code>。表格中的反斜杠只是 Markdown 为避免把 <code>|</code>
+当成分列符而做的转义；实际 <code>.cir</code> 网表应写
+<code>.print P(B1|XU)</code>，CSV 层次名也不含这个反斜杠。</p>
+<h2 id="pv-和-i-应如何解释">8. <code>P()</code>、<code>V()</code> 和
+<code>I()</code> 应如何解释</h2>
+<ul>
+<li><code>P(B...)</code>：默认 phase 模式下的相位差，单位 rad；</li>
+<li><code>V(node)</code> 或相应电压 trace：单位 V；</li>
+<li><code>I(element)</code>：按网表端点定义方向的支路电流，单位 A。</li>
+</ul>
+<p>源码证据非常直接：<code>src/Output.cpp</code> 的 phase
+分支输出内部相位差，没有除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>；<code>scripts/josim-plot2.py</code>
+也默认标为 <code>Phase (rad)</code>，只有 <code>-j 2pi</code>
+才做归一化。JoSIM 自带 JTL 示例输入两个事件后，相位约为 13 rad，接近
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">4\pi</annotation></semantics></math>，进一步验证这一点。</p>
+<h3 id="为什么从-t0-到末尾常常数错">8.1 为什么“从 t=0
+到末尾”常常数错</h3>
+<p>偏置源在仿真开始时建立工作点，本身会造成非整数静态相位偏移。例如标准
+DCSFQ 零输入结束时 B3 约为 0.809 rad。300 µA 运行结束时约为 7.093
+rad；直接除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+得 1.129 圈仍混入启动背景。</p>
+<p>同参数的零输入对照相减后：</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7.092557</mn><mo>−</mo><mn>0.809372</mn><mo>=</mo><mn>6.283185</mn><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">d</mi></mrow><mo>≈</mo><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">
+7.092557-0.809372=6.283185\ \mathrm{rad}\approx2\pi
+</annotation></semantics></math></p>
+<p>所以输入诱导响应才是约一圈。更好的做法是比较事件前后的稳定窗口，或减去完全匹配的零输入控制。</p>
+<h3 id="一个严谨的收到一个-sfq判据">8.2 一个严谨的“收到一个
+SFQ”判据</h3>
+<p>至少应同时满足：</p>
+<ol type="1">
+<li>明确原始相位单位为 rad；</li>
+<li>在事件前后稳定窗计算
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>ϕ</mi><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mi>±</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\Delta\phi/(2\pi)\approx\pm1</annotation></semantics></math>；</li>
+<li>对产生该 <code>P(JJ)</code> 的<strong>同一个
+JJ、同一对端点</strong>检查
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><msub><mi>V</mi><mrow><mi>J</mi><mi>J</mi></mrow></msub><mi>d</mi><mi>t</mi><mi>/</mi><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><mo>≈</mo><mi>±</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\int V_{JJ}dt/\Phi_0\approx\pm1</annotation></semantics></math>；节点对地的
+<code>V(OUT_Q)</code> 不能直接拿来核对 BJs 相位；</li>
+<li>把连续的快速采样点聚成一个事件，不能逐点计数；</li>
+<li>检查事件之间存在稳定平台，而不是持续电压态；</li>
+<li>检查下游 JTL/load 也发生相应一圈变化；</li>
+<li>读 0 时不得产生事件，重复读时不得多出或丢失；</li>
+<li>用零输入对照和更细时间步复核。</li>
+</ol>
+<hr />
+<h1 id="第三篇项目中每个模块为什么存在">第三篇：项目中每个模块为什么存在</h1>
+<h2 id="bvm保存状态并给出读电流">9. BVM：保存状态并给出读电流</h2>
+<p>主要论文是
+<code>arti/Karamuftuoglu_2025_Supercond._Sci._Technol._38_015020.pdf</code>。作者在
+PDF p4 §2.1/Fig. 1 给出双环概念，p5 Fig. 2 给出电路参数，p6 §§2.3–2.4
+描述写读，p7 §2.5 讨论存储条件和鲁棒性。论文把 BVM 描述为两个相连的
+SQUID 环：【论文表述】</p>
+<ul>
+<li>Storage Loop：保存两个相反的环流/磁通子状态；</li>
+<li>Readout Loop：在读使能到来时把状态转成 SL 输出电流；</li>
+<li>WL、BL：共同选择并写入；</li>
+<li>SE：读使能；</li>
+<li>SL：读出端。</li>
+</ul>
+<p>论文模型用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">M=-1</annotation></semantics></math>
+和
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>+</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">M=+1</annotation></semantics></math>
+表示两种状态。JoSIM
+不解析材料内部的涡旋芯，所以本文更谨慎地称它们为“两个双稳态环流/磁通子状态”。</p>
+<h3 id="仓库网表的结构">9.1 仓库网表的结构</h3>
+<p><code>circuits/bvm/bvm_cell.cir</code> 中：</p>
+<ul>
+<li>WL、BL 经电阻和小电感汇入写入节点；</li>
+<li>JM1、JM2 与 LM1/LM2/LM3/LPM 构成存储相关闭环；</li>
+<li>JS1、JS2、RS 和 LS 支路构成读出环；</li>
+<li>RSL/LSL 构成 SL 输出路径。</li>
+</ul>
+<p>论文明确给出的设计意图包括：【论文表述】</p>
+<ul>
+<li>WL 与 BL
+的半选机制：单独一条线不应写入，两者叠加才越过写入条件；</li>
+<li>JM1 是主要写入开关；</li>
+<li>JM2 提高稳定与裕度；</li>
+<li>读环把保存状态和输出过程分开；</li>
+<li>SE 不宜强到破坏存储状态；</li>
+<li>论文使用
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>c</mi></msub><mi>L</mi><mo>&gt;</mo><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">I_cL&gt;\Phi_0</annotation></semantics></math>
+作为存储能力的粗略设计准则。</li>
+</ul>
+<p>最后一条不是完整充分条件。实际双稳态性由整个非线性环、总电感、相位约束和工作点共同决定。</p>
+<h3 id="当前数据对-bvm-说明了什么">9.2 当前数据对 BVM 说明了什么</h3>
+<p>【项目实测】经正确单位换算：</p>
+<ul>
+<li>WL=100 µA 的测试中，W1 稳定相位约 <code>+5.891 rad = +0.938</code>
+圈；</li>
+<li>W0 稳定相位约 <code>−5.886 rad = −0.937</code> 圈；</li>
+<li>两态切换约 <code>−11.832 rad = −1.883</code> 圈；</li>
+<li>WL=80 µA 未写入，WL=100/120 µA 能进入近一圈的稳定状态；</li>
+<li>100 µA 读操作后的相位漂移约为 0.004–0.009 圈；</li>
+<li>120 µA 的 R0 测试会把负态擦回接近零；</li>
+<li>两轮读电流峰值可重复，正负状态的输出明显不同。</li>
+</ul>
+<p>这些数据支持“存在稳定、可区分、100 µA
+读近似非破坏的两个状态”。它们推翻了旧文档用单个 JM1 原始 rad
+值证明“<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>6</mn></mrow><annotation encoding="application/x-tex">\pm6</annotation></semantics></math>
+多涡旋”和“不存在单涡旋工作点”的论证；完整环 fluxoid 数仍待计算。</p>
+<p>【待验证】严格声称环内 fluxoid 数为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\pm1</annotation></semantics></math>，还应把环中各
+JJ 相位、外加磁通和
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">LI</annotation></semantics></math>
+项按统一方向代入完整量子化条件；不能把 <code>P(JM1)</code>
+一列直接当作环的 vortex 计数器。</p>
+<h3 id="为什么输出随负载变化">9.3 为什么输出随负载变化</h3>
+<p>P0.0 负载扫描得到：【项目实测】</p>
+<ul>
+<li>峰值电流约 43.9–97.8 µA；</li>
+<li>FWHM 约 6.8–11.2 ps；</li>
+<li>BQ 基线负载下约 68.4 µA；</li>
+<li>读 0 稳态电流很小，但开关边沿可出现数十微安瞬态。</li>
+</ul>
+<p>原因的确定部分是 KCL 和动态阻抗：负载改变输出节点条件，电流会在 BVM
+内部支路与负载之间重新分配。【解释性推断】具体正负回铃来自哪些读环模态，需要通过去元件/改阻尼对照或小信号模态分析才能唯一归因，不能只凭波形形状说“就是某个
+LC”。</p>
+<h2 id="bq把累积磁通变化量化的候选单元">10.
+BQ：把累积磁通变化量化的候选单元</h2>
+<p>原始 BQ 来源于
+<code>arti/Hybrid synaptic structure for spiking.pdf</code>。论文 PDF p5
+Fig. 4 把它描述为类似数字 SQUID 的
+Buffer/Quantizer：汇总正负磁通变化并给出量化脉冲；PDF p6 Fig. 7
+明确把相位除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+后才数脉冲。【论文表述】</p>
+<p>需要区分名称：2024 Hybrid Synaptic 论文使用
+<strong>BQ（Buffer/Quantizer）</strong>；2025 BVM/MVM 论文使用
+<strong>QB（Quantizer Buffer）</strong>，声称其阈值适配单个 BVM
+输出，但没有公开完整参数。仓库 <code>bq_cell.cir</code> 是从 2024 BQ
+拓扑缩放并增加分流的项目派生版，不能默认等同于 2025 论文仿真中的
+QB。</p>
+<p>仓库的 <code>circuits/qb/bq_cell.cir</code> 不是论文原始参数，而是为
+BVM 电流量级缩放并增加分流后的派生版本。其核心支路包括：</p>
+<ul>
+<li>BJs：输入感测结；</li>
+<li>BJL1/RJ1：回流/偏置相关支路；</li>
+<li>BJL2/RJ2：输出支路；</li>
+<li>RB 与 L1/L2：建立偏置和动态耦合。</li>
+</ul>
+<p>只看“BJs 没有一个显式并联外部
+shunt”不能证明它完全无阻尼或无偏置；电流可经完整回路建立，内部
+<code>r0/rn</code>
+也参与耗散。要确认因果，必须做只改变一个网络的受控实验。</p>
+<h3 id="直接-bvmbq-基线真正发生了什么">10.1 直接 BVM→BQ
+基线真正发生了什么</h3>
+<p>基线原始 CSV 的净相位为：</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 28%" />
+<col style="width: 28%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>位置</th>
+<th style="text-align: right;">原始相位变化</th>
+<th style="text-align: right;">正确归一化</th>
+<th>可下的结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BVM JM1</td>
+<td style="text-align: right;">−5.909806 rad</td>
+<td style="text-align: right;">−0.940575 圈</td>
+<td>与切换到另一稳定相位平台相容</td>
+</tr>
+<tr>
+<td>BQ BJs</td>
+<td style="text-align: right;">+6.272743 rad</td>
+<td style="text-align: right;">+0.998338 圈</td>
+<td>净绕转接近 +1；完整轨迹与一次净变化相容</td>
+</tr>
+<tr>
+<td>BJL1</td>
+<td style="text-align: right;">+0.443319 rad</td>
+<td style="text-align: right;">+0.070556 圈</td>
+<td>净值远小于一圈；完整轨迹未跨完整
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math></td>
+</tr>
+<tr>
+<td>BJL2</td>
+<td style="text-align: right;">+0.375836 rad</td>
+<td style="text-align: right;">+0.059816 圈</td>
+<td>净值远小于一圈；完整轨迹未跨完整
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table>
+<p>同时 <code>V(OUT_Q)</code> 峰值约为 157 µV。但该基线网表的
+<code>OUT_Q</code> 只接了 10 Ω 电阻负载，<strong>没有下游
+JTL</strong>；因此它能检查 BQ 输出支路，不能回答“JTL
+是否接收”。【网表事实/项目实测】</p>
+<p>所以最稳妥的结论是：</p>
+<blockquote>
+<p>BJs 的稳定窗轨迹与约一次净
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+相位变化相容；BJL1/BJL2 的完整轨迹没有相应完整绕转，因此当前基线没有证明
+BQ 完成可用的 SFQ 转换。该网表未接
+JTL，传播能力并未被测试。仅凭全窗口净值本身不能证明事件数，也不能排除正反滑移互相抵消；还需稳定窗、完整轨迹和同一
+JJ 两端电压面积共同判定。</p>
+</blockquote>
+<p>旧文档把 <code>fast_events=0</code>
+解释为“不是离散翻转”，也不可靠：BJs 的最大单步变化约 0.291
+rad，恰好低于脚本任意设置的 0.3
+rad/sample；这只说明波形在当前采样率下没有跨过该导数阈值，不能决定它是不是一个积分为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\Phi_0</annotation></semantics></math>
+的事件。</p>
+<h3 id="bq-v4-不是被排除而是重新成为候选">10.2 BQ v4
+不是被排除，而是重新成为候选</h3>
+<p>v4 同时改了 L0、BJL1/BJL2 面积以及 RJ1/RJ2，所以单次 v3/v4
+对照无法隔离某一个根因。</p>
+<p>更重要的是，<code>test/final/qb/test_bq_v4_sweep.cir</code> 在 300 ps
+内输入六个周期脉冲。正确归一化后：【项目实测】</p>
+<table>
+<colgroup>
+<col style="width: 57%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: right;">理想电流脉冲幅度</th>
+<th>下游 JTL 行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">70、90 µA</td>
+<td>已测点只有启动偏移，没有逐周期累积</td>
+</tr>
+<tr>
+<td style="text-align: right;">110、130、150 µA</td>
+<td>以首脉冲前稳定点为参考，六个输入对应下游约六个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+平台增量，与约 1:1 相容</td>
+</tr>
+</tbody>
+</table>
+<p>110 µA 时，以 9.9 ps 的首脉冲前点为参考，JTL B1 在
+49.9、99.9、…、299.9 ps 约为 1.0015、2.0015、…、6.0017 圈。BJL1、BJL2 和
+JTL B2 也显示逐周期近整数递增。这是对原始 CSV 的只读审计计算；稳定窗尚待
+Phase −1 工具化定义。</p>
+<p>这反证了旧结论“v4 输出级死亡、JTL 收到 38
+个失控事件”。正确状态是：</p>
+<ul>
+<li>在当前理想周期 PULSE 测试台的离散扫点中，90 µA 未见逐周期累积，110
+µA
+已出现与量子化下游响应相容的平台；在尚未验证单调性且未细扫前，不把边界称为已确定阈值；</li>
+<li>110–150 µA
+时下游相位平台与每输入一个事件相容，但单脉冲、电压面积、事件聚类和步长收敛尚未完成；</li>
+<li>在产生下游平台的 110–150 µA 已测点，输入 BJs 本身每周期净运行约
+18–22 圈（完整 70–150 µA 扫描范围为约 16–22
+圈）；【项目实测】由此产生的耗散和鲁棒性风险仍是【解释性推断】，需要进一步测量；</li>
+<li>68.4 µA 是旧 BQ-v2 输入加载基线下的 BVM 峰值；BQ v4
+会改变所见输入阻抗，所以真实 v4 级联时的电流波形尚不知，不能把 68.4 µA
+当成与负载无关的固定源幅度。</li>
+</ul>
+<p>所以“BQ v4 已解决接口”和“BQ
+拓扑已系统排除”都不成立。它现在是一个需要用<strong>单次真实波形、细阈值和鲁棒性</strong>重新测试的候选。</p>
+<h2 id="dcsfq-与-dcsfq_bvm另一个接口候选">11. DCSFQ 与
+DCSFQ_BVM：另一个接口候选</h2>
+<p>ColdFlux 手册 PDF p123 §2.4.1 对标准 DCSFQ
+的明确描述是“输入电压脉冲转换成 SFQ 脉冲”；p125 Listing 2.35
+给出网表，p126 Fig. 2.74 给出输出与负载相位仿真。它不是“任意慢 DC 电流
+ADC”。本项目把它改造成 BVM
+电流接口，是新的用法，必须独立验证。【论文表述】</p>
+<h3 id="标准-dcsfq-为什么有三个结">11.1 标准 DCSFQ 为什么有三个结</h3>
+<p><code>circuits/standard/DCSFQ.cir</code> 包含
+B1、B2、B3、输入耦合电感、两个偏置源，以及每个结的 RB+LRB
+分流支路。可以按功能理解为：</p>
+<ul>
+<li>B1/B2 与输入网络共同完成敏感和状态转移；</li>
+<li>B3 是标准量级的输出结；</li>
+<li>偏置把结放到可触发但静态稳定的工作点；</li>
+<li>外部分流网络提供频率相关的耗散和动态整形。</li>
+</ul>
+<p>最后一点不应简化为“RB 的数值恰好证明整个非线性电路处于临界阻尼”。RB
+消耗能量是确定的；LRB、内部分段电阻和其他结共同决定瞬态，精确阻尼状态仍需分析。</p>
+<h3 id="项目到底改了什么">11.2 项目到底改了什么</h3>
+<p><code>circuits/interface/DCSFQ_BVM.cir</code>
+相对标准单元的主要功能变化只有：</p>
+<ul>
+<li>B1/B2：<code>area 2.25 → 0.8</code>，即 225 µA → 80 µA；</li>
+<li>IB1：275 µA → 100 µA；</li>
+<li>与面积相关的 RB/LRB 随公式缩放；</li>
+<li>B3、IB2 和标准输出级保持不变。</li>
+</ul>
+<p>设计意图是降低输入级所需信号，同时保留标准输出驱动力。由于
+<code>area</code> 同时改变
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>c</mi></msub><mo>,</mo><mi>C</mi><mo>,</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">I_c,C,R</annotation></semantics></math>，这仍是一种动力学重设计，不是简单改比较阈值。</p>
+<h3 id="phase-0-数据经纠正后说了什么">11.3 Phase 0
+数据经纠正后说了什么</h3>
+<p>在当前标准 DCSFQ 测试台和指定 bump 波形下：【项目实测】</p>
+<ul>
+<li>0–150 µA 范围内的已测点没有输入诱导的完整
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+内部响应；</li>
+<li>300 µA 与零输入对照相减后，B1 为 −1 圈、B2/B3 各为 +1 圈；</li>
+<li>短 bump 和长 sustained
+的最终状态逐位相同，保持平台没有继续累积。</li>
+</ul>
+<p>这支持“该测试拓扑在 300 µA
+下给出单量子<strong>净相位响应</strong>；保持时间没有造成持续泵浦”。它尚未证明已经生成合格
+SFQ 脉冲：还需对同一 JJ 的端电压积分，并补下游
+JTL、单次输入和步长验证。当前离散扫点中，150 µA 未见完整内部绕转，300 µA
+出现净绕转；在尚未验证响应对幅度单调且未细扫前，只能说转变边界未定位，不能把
+<code>(150, 300] µA</code> 写成已确定的输出或 JTL 阈值。</p>
+<p>缩放版 DCSFQ_BVM：【项目实测】</p>
+<ul>
+<li>68.4 µA 测试输入没有观察到完整输出相位绕转；</li>
+<li>输入增量进入 L3/结支路的比例约 0.285；</li>
+<li>因而当前起点参数未完成 BVM 电流到 SFQ 的转换。</li>
+</ul>
+<p>旧计划把目标阈值定为 45–55 µA，理由之一是误以为 300 µA 已发生 7–8
+次多滑移。这个依据已经失效；阈值应由正确事件定义下的扫描重新确定。</p>
+<h3 id="极性怎样才算真正测试">11.4 “极性”怎样才算真正测试</h3>
+<p>交换子电路输入端 <code>a</code> 和输出端 <code>q</code>
+不是反转极性，而是倒用一个有方向的电路。正确的极性实验应：</p>
+<ul>
+<li>反转输入源电流方向；或</li>
+<li>构建拓扑明确、端口方向有文档的 signed-input 变体；</li>
+<li>同时保持其余参数、偏置和负载不变。</li>
+</ul>
+<h2 id="coldflux-标准单元jtl-与测试成熟度">12. ColdFlux 标准单元、JTL
+与测试成熟度</h2>
+<p><code>circuits/standard/</code> 中有 35 个 ColdFlux
+单元网表。仓库还存在 JTL、SPLIT、MERGE、DFF、XOR、AND2、NDRO、NOT
+的人工测试网表。</p>
+<p>但当前 <code>test/CMakeLists.txt</code> 只注册上游 23 项 JoSIM
+测试，研究单元测试没有程序化接入
+CTest；一些“验证通过”只是人工看波形，AND2
+也未覆盖完整四行真值表。因此准确说法是：</p>
+<blockquote>
+<p>标准库已导入，若干代表单元有人工/单点测试，但尚未形成带数值断言、完整真值表和裕度扫描的自动回归库。</p>
+</blockquote>
+<h2 id="t1处理已经数字化的脉冲">13. T1：处理已经数字化的脉冲</h2>
+<p><code>arti/2507.04648v1.pdf</code> PDF p3 §2.3、p4 Fig. 3 把 T1
+描述为具有同步 sum 和异步 carry 的 SFQ 计数/加法单元，并说明每对输入产生
+carry、奇数余量在 clock 后产生 sum。【论文表述】据此，若时钟前收到
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+个输入脉冲，本文可作如下简洁代数归纳：【本文推导】</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">⌊</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">⌋</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>S</mi><mo>=</mo><mi>n</mi><mrow><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">mod</mi><mo>⁡</mo></mrow><mspace width="0.222em"></mspace><mn>2</mn></mrow></mrow><annotation encoding="application/x-tex">
+C=\left\lfloor\frac n2\right\rfloor,
+\qquad S=n\bmod2
+</annotation></semantics></math></p>
+<p>每对脉冲可异步产生一个 carry；奇数余量在时钟到来时产生
+sum。对最多三个输入，这与全加器的奇偶和/多数进位相容；对更多输入，它还可连续产生多个
+carry。仓库没有该论文引用的 DAC 2024 原始 T1 全文，因此任意
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+的边界、恢复和全部时序条件仍未从原始 T1 来源独立核验。</p>
+<p>仓库 <code>circuits/t1/t1_cell.cir</code> 已转录 11 个 JJ
+的七端口网表，并对论文图中的一个重复编号采用了一种<strong>实现映射假设</strong>；仓库尚没有独立证据证明该映射唯一或正确。当前也缺少完整、可自动裁决的脉冲计数和时序验证，所以只能说“网表已转录、局部测试存在，完整功能待验证”。</p>
+<p>系统分工必须写成：</p>
+<pre class="text"><code>BVM 电流 → BQ/DCSFQ_BVM 量化 → JTL 再生/传输 → T1 计数和进位</code></pre>
+<p>不能让 T1 直接承担慢模拟电流量化；论文也不是这样描述的。</p>
+<hr />
+<h1 id="第四篇项目历史实验与结论重审">第四篇：项目历史、实验与结论重审</h1>
+<h2 id="研究提交改变了什么">14. 研究提交改变了什么</h2>
+<p>从项目提交历史看，工作大致经历了：</p>
+<ol type="1">
+<li>加入 BVM/BQ 网表与初始实验；</li>
+<li>统一 <code>jjmit</code> 模型并导入 ColdFlux 标准单元；</li>
+<li>创建 BVM→BQ 基线和指标脚本；</li>
+<li>多轮 BQ 参数/拓扑探索与 v4；</li>
+<li>转向 DCSFQ_BVM，完成 Phase 0 负载、行为、分流与确定性测试；</li>
+<li>编写 Phase 1 计划；</li>
+<li>增加 P2 BVM 存储态实验与教学文档；</li>
+<li>本次审计发现相位单位错误，重新打开 BQ v4 和总体路线判断。</li>
+</ol>
+<p>这些更改全部位于研究层；JoSIM 核心求解代码没有为 BVM
+特别修改。这很重要：若仿真与论文不同，应先检查模型、网表、激励、负载和指标，而不是默认“我们改坏了求解器”。</p>
+<h2 id="哪些实验结论仍然成立">15. 哪些实验结论仍然成立</h2>
+<p>相位缩放不会影响以下直接测量：</p>
+<ul>
+<li>BVM 负载扫描中的电流峰值和 FWHM；</li>
+<li>BQ 基线的电压峰值；</li>
+<li>DCSFQ_BVM 的 0.285 增量分流；</li>
+<li>P2 的读电流对比、重复性和 120 µA R0 擦除现象；</li>
+<li>固定输入下 CSV 的字节级哈希一致。</li>
+</ul>
+<p>经原始相位重算后仍可保留：</p>
+<ul>
+<li>当前直接 BVM→BQ 基线中，BJL1/BJL2 没有完整相位绕转，尚未证明 BQ
+完成有效量化；该网表未接 JTL，不能判定下游传播；</li>
+<li>BVM 在已测条件下有两个接近正负一圈的稳定相位态；</li>
+<li>标准 DCSFQ 在当前已测 bump 点中，150 µA 未见完整内部绕转，300 µA
+相对零输入控制出现约一圈；实际边界、合格输出和 JTL 接收尚未定位；</li>
+<li>DCSFQ_BVM 起点参数在 68.4 µA 测试输入下未见完整输出；</li>
+<li>BQ v4 在 70/90 µA 已测点没有逐周期下游响应；在 110/130/150 µA
+的当前理想周期测试下，下游相位平台与约 1:1 传播相容。</li>
+</ul>
+<h2 id="哪些旧结论已经被推翻">16. 哪些旧结论已经被推翻</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>旧结论</th>
+<th>审计后状态</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>P()</code> 已是
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mi>/</mi><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">\phi/2\pi</annotation></semantics></math></td>
+<td>错误</td>
+<td>源码、绘图脚本和官方 JTL 示例都表明它是 rad</td>
+</tr>
+<tr>
+<td>用 <code>P(JM1)≈±5.9</code> 证明 BVM 为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>6</mn></mrow><annotation encoding="application/x-tex">\pm6</annotation></semantics></math>
+多涡旋</td>
+<td>证据链被推翻</td>
+<td>约
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>5.9</mn></mrow><annotation encoding="application/x-tex">\pm5.9</annotation></semantics></math>
+rad =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>0.94</mn></mrow><annotation encoding="application/x-tex">\pm0.94</annotation></semantics></math>
+个 JJ 相位圈；完整环 fluxoid 待算</td>
+</tr>
+<tr>
+<td>BJs 一次读出滑移 6.27 个量子</td>
+<td>被推翻</td>
+<td>6.27 rad = 0.998 圈</td>
+</tr>
+<tr>
+<td>DCSFQ 300 µA 爆发 7–8 次</td>
+<td>被推翻</td>
+<td>7/8 是过阈值采样数；控制相减为一圈</td>
+</tr>
+<tr>
+<td>BQ v4 输出 JTL 有 38 个失控事件</td>
+<td>被推翻</td>
+<td>38 rad 约六圈，且输入恰有六周期</td>
+</tr>
+<tr>
+<td>BQ 输出级推不动 JTL，拓扑已排除</td>
+<td>被现有数据反证</td>
+<td>v4 在当前 ≥110 µA 周期测试中显示与 1:1 相容的相位平台</td>
+</tr>
+<tr>
+<td>45–55 µA 是已证实目标阈值</td>
+<td>依据失效</td>
+<td>来自错误的“300 µA 多脉冲”解释</td>
+</tr>
+<tr>
+<td><code>fast_events</code> 是 SFQ 脉冲数</td>
+<td>错误</td>
+<td>它只是相邻样本跨阈值的数量</td>
+</tr>
+</tbody>
+</table>
+<h2 id="哪些解释仍只是候选假设">17. 哪些解释仍只是候选假设</h2>
+<p>以下说法有物理合理性，但当前不能当成已证明根因：</p>
+<ul>
+<li>BQ 基线失败主要由 BJs 欠阻尼造成；</li>
+<li>BQ 的理想电流源一定充当不可控“通量泵”；</li>
+<li>BQ 的峰值电流小于某个 JJ 的
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math>，所以必然不能驱动
+JTL；</li>
+<li>RB+LRB 恰好把整个 ColdFlux 非线性单元调到临界阻尼；</li>
+<li>BVM 读出回铃由某一个特定 LC 模态主导；</li>
+<li>DCSFQ 的平台不累积完全由 L2 的“边沿耦合”造成；</li>
+<li>互感 K 元件只适合 MHz–GHz，不适合皮秒事件；</li>
+<li>所有低
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math>
+BQ 设计都被
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>J</mi></msub><annotation encoding="application/x-tex">L_J</annotation></semantics></math>
+数学上排除。</li>
+</ul>
+<p>正确做法是为这些假设设计单变量对照，而不是从一组综合改动中反推唯一因果。</p>
+<h2 id="确定性准确性和鲁棒性是三件不同的事">18.
+确定性、准确性和鲁棒性是三件不同的事</h2>
+<ul>
+<li>确定性：相同输入重复运行得到相同字节；项目已有若干哈希证据。</li>
+<li>数值准确性：步长变细后关键量收敛；当前研究实验普遍缺少系统检查。</li>
+<li>物理有效性：模型、寄生参数、激励和判据足以代表目标硬件；仍需要论文参数核对、裕度和最终硬件证据。</li>
+</ul>
+<p>哈希只证明第一项。一个单位写错的分析也可以百分之百可重复。</p>
+<hr />
+<h1 id="第五篇测量管线为什么失效以及怎样修">第五篇：测量管线为什么失效，以及怎样修</h1>
+<h2 id="sfq_metrics.py-的两个独立问题">19. <code>sfq_metrics.py</code>
+的两个独立问题</h2>
+<h3 id="问题-a单位错了-2pi">问题 A：单位错了
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math></h3>
+<p>旧脚本直接计算：</p>
+<pre class="text"><code>net_delta = p[-1] - p[0]</code></pre>
+<p>但 <code>p</code> 是 rad。正确的归一化量应除以
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>。<code>max_excursion</code>、<code>total_variation</code>、<code>max_dPdt</code>
+的标签和单位也必须相应重定义。</p>
+<h3 id="问题-b采样点数不是事件数">问题 B：采样点数不是事件数</h3>
+<p>旧脚本把满足：</p>
+<pre class="text"><code>abs(p[i] - p[i-1]) &gt; 0.3</code></pre>
+<p>的相邻样本逐个累加。一个时间局域的物理事件可以跨越多个采样间隔，因而被这种方法重复计数。把阈值简单改成
+<code>0.3×2π</code> 也不解决问题：真实事件可能在每个 0.1 ps
+步长内都小于该阈值。</p>
+<p>导数阈值可以用来定位“候选活动区”，但之后必须聚类、积分和检查平台。</p>
+<h2 id="新指标应该怎样定义">20. 新指标应该怎样定义</h2>
+<p>建议每次运行生成以下互不混淆的量：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>指标</th>
+<th>定义</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>phase_delta_rad</code></td>
+<td>稳定窗相位差</td>
+<td>保留原始单位</td>
+</tr>
+<tr>
+<td><code>phase_delta_phi0</code></td>
+<td><code>phase_delta_rad/(2π)</code></td>
+<td>归一化净绕转</td>
+</tr>
+<tr>
+<td><code>voltage_area_phi0</code></td>
+<td>对同一 JJ 两端计算 <code>∫V_JJ dt/Φ0</code></td>
+<td>与该 JJ 的相位交叉校验</td>
+</tr>
+<tr>
+<td><code>activity_clusters</code></td>
+<td>连续导数超阈值样本聚类</td>
+<td>候选事件区，不直接等同 SFQ</td>
+</tr>
+<tr>
+<td><code>settling_error</code></td>
+<td>事件后平台偏离整数的量</td>
+<td>判断是否停稳</td>
+</tr>
+<tr>
+<td><code>reverse_excursion</code></td>
+<td>反向显著回摆</td>
+<td>检测 backfire/ringing</td>
+</tr>
+<tr>
+<td><code>downstream_delta</code></td>
+<td>JTL 各级逐事件平台变化</td>
+<td>系统级接收结果</td>
+</tr>
+</tbody>
+</table>
+<p>每个激励都应有明确事件窗口、事件前参考窗、事件后稳定窗。若有偏置启动，使用相同参数的零输入对照，或在启动完成后再取参考。</p>
+<h2 id="修复脚本前后的最小回归测试">21. 修复脚本前后的最小回归测试</h2>
+<p>测量工具至少要通过：</p>
+<ol type="1">
+<li>合成 <code>0 → 2π</code> 相位台阶，必须得到 1 圈而不是 6.283；</li>
+<li>合成同一台阶跨 10 个采样点，事件聚类仍只得到 1；</li>
+<li>JoSIM 官方两脉冲 JTL 示例，扣除启动偏移后得到 2 个下游事件；</li>
+<li>标准 DCSFQ 300 µA 减零输入对照得到 B1/B2/B3 的
+<code>−1/+1/+1</code>；</li>
+<li>BQ v4 110 µA 六周期测试得到下游约六个整数相位平台增量，而不是约 38
+个事件；</li>
+<li>同一个 JJ 的相位法与其同端电压积分法在数值容差内一致；</li>
+<li>0.1、0.05、0.025 ps 的事件结论一致，误差随步长缩小。</li>
+</ol>
+<p>只有这些通过后，才应在各实验目录的 <code>data/metrics_v2/</code>
+中生成新版 JSON、改写 BASELINE/P0/P2 和解冻 Phase 1。旧 JSON
+保留为审计记录，不覆盖。</p>
+<h3 id="gate-的数值容差必须先校准后冻结">21.1 Gate
+的数值容差必须先校准、后冻结</h3>
+<p>“约等于一圈”不是可执行的验收规格，但本次审计也不应在没有校准的情况下凭空写出百分比。在任何
+BQ v4 或 DCSFQ_BVM 候选参数测试之前，应新建并冻结
+<code>METRIC_SPEC_V2.md</code>，用零输入噪声、官方 JTL 例子、DCSFQ
+对照和步长收敛数据校准至少下列容差：</p>
+<ul>
+<li>事件前后稳定窗的精确边界，以及整数相位平台残差；</li>
+<li><strong>同一
+JJ、同一对端点、同一方向和同一时间窗</strong>下，<code>phase_delta_phi0</code>
+与 <code>voltage_area_phi0</code> 的允许误差；</li>
+<li>BVM 读取前后允许的状态漂移；</li>
+<li>0.1/0.05/0.025 ps 间相位、电压面积和事件结论的允许差异；</li>
+<li>输入幅度、时序抖动、偏置和负载扫描所需的通过范围。</li>
+</ul>
+<p>容差的来源、校准网表、JoSIM
+版本和选定理由都必须写入该规格；规格冻结后再跑候选设计，防止看到结果后移动
+Gate。</p>
+<hr />
+<h1 id="第六篇现在应该怎样继续项目">第六篇：现在应该怎样继续项目</h1>
+<h2 id="当前状态不是phase-1-待执行而是phase-1-待修复">22.
+当前状态不是“Phase 1 待执行”，而是“Phase −1 待修复”</h2>
+<p>旧 Phase 1 计划的 V1/V2 Gate 直接使用错误脚本：真正的一圈相位约为
+6.283 rad，却被要求落在 <code>[0.7,1.3]</code>；零输入又从 t=0
+计算，混入偏置启动；<code>--peaks</code>
+的调用方式还与脚本接口不符。因此不能照表运行。</p>
+<p>Phase −1 是因审计事故插入到已完成 Phase 0 和旧 Phase 1
+之间的修复阶段；后面仍保留 Phase 2/3
+名称，只是为了延续仓库原有路线图，不表示 Phase 1 可以跳过。</p>
+<p>建议新的有界顺序如下。</p>
+<h3 id="phase-1a修复计量和基线">Phase −1A：修复计量和基线</h3>
+<ol type="1">
+<li>明确 CSV <code>P()</code> 为 rad，并在指标层显式转换；</li>
+<li>删除或重命名 <code>fast_events</code>，实现事件窗口和聚类；</li>
+<li>加入零输入控制/稳定窗比较；</li>
+<li>用 JTL、DCSFQ、BQ v4 的已知案例做单元测试；</li>
+<li>重跑 BASELINE、P0、P2、BQ v4，把新 JSON 写入各自的
+<code>data/metrics_v2/</code>，不覆盖旧结果；</li>
+<li>把所有旧相位结论标成 superseded，不覆盖原始 CSV。</li>
+</ol>
+<p>退出条件：新建的 <code>METRIC_SPEC_V2.md</code>
+已用校准数据冻结数值容差；同一 JJ
+同端点、同方向、同时窗的相位和电压积分交叉一致；已知 JTL
+事件数正确；步长收敛通过。</p>
+<h3 id="phase-1b重新建立两条候选路线">Phase
+−1B：重新建立两条候选路线</h3>
+<p>不要先宣布胜者：</p>
+<p><strong>BQ v4 路线</strong></p>
+<ul>
+<li>用单次 PWL 电流脉冲代替六周期 PULSE，避免因果混淆；</li>
+<li>在 90–110 µA 之间细扫阈值；</li>
+<li>记录 BJS 内部滑移、BJL1/BJL2 和 JTL 的逐窗响应；</li>
+<li>用保存下来的真实 BVM 电流波形驱动，而不只用理想矩形源；</li>
+<li>测读 0、读 1、重复读、正负回铃和负载；</li>
+<li>对 v4 的五项改动做单变量或小型因子实验，避免把相关性当根因。</li>
+</ul>
+<p><strong>DCSFQ_BVM 路线</strong></p>
+<ul>
+<li>撤回未经证实的 45–55 µA 固定目标；</li>
+<li>先测标准/缩放单元在正确口径下的阈值曲线；</li>
+<li>用反转源方向而不是交换 a/q 测极性；</li>
+<li>再有限度扫描 B1/B2 area、IB1 和 L2/L3；</li>
+<li>每个候选先过无输入稳定和单理想脉冲，再接 JTL；</li>
+<li>最后使用真实 BVM 波形和加载条件。</li>
+</ul>
+<h3 id="phase-2系统级验收">Phase 2：系统级验收</h3>
+<p>一个接口只有同时满足下列条件才算成功：</p>
+<ul>
+<li>读 0：下游 0 个事件；</li>
+<li>读 1：下游恰好 1 个事件；</li>
+<li>多次重复：不丢失、不重复、不 backfire；</li>
+<li>BVM 状态：读取前后仍处于允许漂移范围；</li>
+<li>负载和偏置：在预先声明的裕度范围内仍成立；</li>
+<li>时间步：细化后结论不变；</li>
+<li>参数扰动：对关键
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>c</mi></msub><mo>,</mo><mi>L</mi><mo>,</mo><mi>R</mi><mo>,</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">I_c,L,R,C</annotation></semantics></math>
+有可接受裕度；</li>
+<li>输出：至少驱动标准 JTL 的两个级，而非只在本结看到相位变化。</li>
+</ul>
+<h3 id="phase-3再验证-t1-和论文系统叙事">Phase 3：再验证 T1
+和论文系统叙事</h3>
+<p>接口通过后，再做 T1 的自动化验证：</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">n=0,1,2,3,\dots</annotation></semantics></math>
+的输入计数；</li>
+<li>sum/carry 的时序和恢复；</li>
+<li>时钟前建立/保持要求；</li>
+<li>输出 JTL 负载；</li>
+<li>完整真值/计数表和步长/参数裕度。</li>
+</ul>
+<p>在此之前，论文不能把接口和 T1 写成已经在本仓库端到端完成。</p>
+<h2 id="论文目前能严谨写什么">23. 论文目前能严谨写什么</h2>
+<p>可以写：</p>
+<ul>
+<li>论文报告的 BVM
+使用双稳态环流保存状态，并通过读环产生状态相关电流；</li>
+<li>当前仓库复现了接近正负一圈的稳定 JM1 相位状态以及可区分读电流；</li>
+<li>BVM 输出对负载敏感，已测峰值约 43.9–97.8 µA、FWHM 约 6.8–11.2
+ps；</li>
+<li>当前直接 BVM→项目版 BQ
+基线的输出支路没有完整相位绕转，未证明有效量化；该网表没有下游
+JTL，因而没有测传播；</li>
+<li>BQ v4 在当前理想周期电流的 110、130、150 µA
+已测点中，下游相位平台与约 1:1 传播相容，但完整 SFQ 判据和真实 BVM
+级联尚未通过；</li>
+<li>标准 DCSFQ 在当前 bump 测试台的 300 µA
+相对控制下给出单量子净相位响应，尚未完成同端电压面积和 JTL
+验证；缩放版在 68.4 µA 测试输入下未见完整输出；</li>
+<li>这些结果共同说明接口必须联合考虑源波形、负载、阈值、内部动力学和下游接收。</li>
+</ul>
+<p>暂时不能写：</p>
+<ul>
+<li>“首次/全世界尚无人研究”——本地论文不足以证明完整文献空白；</li>
+<li>“八轮已经证明 BQ 拓扑无解”；</li>
+<li>“DCSFQ_BVM 已解决接口”；</li>
+<li>“BVM 是六涡旋”或“论文单涡旋模型被证伪”；</li>
+<li>“固定步长重复运行证明物理正确”；</li>
+<li>任何依赖旧 <code>fast_events</code> 的脉冲数。</li>
+</ul>
+<hr />
+<h1 id="第七篇如何自己复现和审阅">第七篇：如何自己复现和审阅</h1>
+<h2 id="推荐阅读顺序">24. 推荐阅读顺序</h2>
+<ol type="1">
+<li>本文：先建立统一概念和当前状态。</li>
+<li><code>docs/HANDOVER.md</code>：当前审计后的执行摘要和下一步入口；旧版口径只在带审计警告的历史日志中保留。</li>
+<li>BVM
+论文：<code>arti/Karamuftuoglu_2025_Supercond._Sci._Technol._38_015020.pdf</code>，重点看
+Fig. 1–7。</li>
+<li>BQ 论文：<code>arti/</code> 中 Hybrid synaptic structure
+论文，重点看 BQ 图和相位除
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+的图。</li>
+<li>MVM 论文：<code>arti/2507.04648v1.pdf</code>，看 BVM→QB→T1
+的系统分工。</li>
+<li>ColdFlux 手册：看 JTL、DCSFQ 和“必须驱动 LOAD”的验证要求。</li>
+<li>网表：按
+<code>jjmit → BVM → BQ/v4 → DCSFQ → DCSFQ_BVM → JTL → T1</code>
+阅读。</li>
+<li>原始实验日志和 CSV：以新单位重算，旧 JSON 只作审计对象。</li>
+</ol>
+<h2 id="最小可复现流程">25. 最小可复现流程</h2>
+<p>先记录仓库和二进制：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> rev-parse HEAD</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">build/josim-cli</span> <span class="at">--version</span></span></code></pre></div>
+<p>运行一个网表：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">build/josim-cli</span> <span class="at">-o</span> result.csv path/to/test.cir</span></code></pre></div>
+<p>检查相位时，先确认列名并牢记其单位是 rad：</p>
+<pre class="text"><code>phase_phi0 = (phase_after_rad - phase_before_rad) / (2*pi)</code></pre>
+<p>当前 <code>scripts/sfq_metrics.py</code>
+在修复前不能作为冻结物理判据；<code>scripts/josim-plot2.py -j 2pi</code>
+的绘图选项会做归一化，但仍需正确选择参考窗。</p>
+<p>每次实验应保存：</p>
+<ul>
+<li>网表和所有 include 文件的版本/哈希；</li>
+<li>JoSIM 版本与构建选项；</li>
+<li>时间步和终止时间；</li>
+<li>原始 CSV；</li>
+<li>零输入对照；</li>
+<li>指标版本；</li>
+<li>事件窗定义；</li>
+<li>结论、替代解释和失败条件。</li>
+</ul>
+<h2 id="读实验图时按这个顺序问">26. 读实验图时按这个顺序问</h2>
+<ol type="1">
+<li>横轴和纵轴单位是什么？</li>
+<li>这是节点量、支路量还是结相位？正方向如何定义？</li>
+<li>t=0 到事件前是否有偏置启动？</li>
+<li>输入是单次 PWL，还是会重复的 PULSE？</li>
+<li>所谓“一个事件”是相位平台差、电压积分，还是过阈值样本数？</li>
+<li>下游负载是否也收到事件？</li>
+<li>读 0 对照是什么？</li>
+<li>更细步长和参数扰动是否仍成立？</li>
+<li>结论是观察，还是对机制的推断？</li>
+</ol>
+<hr />
+<h1 id="第八篇证据索引与术语表">第八篇：证据索引与术语表</h1>
+<h2 id="关键证据在哪里">27. 关键证据在哪里</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>结论</th>
+<th>主要证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>P()</code> 是 rad</td>
+<td><code>src/Output.cpp</code>、<code>docs/tech_disc.md</code>、<code>scripts/josim-plot2.py</code>、<code>docs/ex_usage.md</code></td>
+</tr>
+<tr>
+<td>JoSIM 核心未被研究层修改</td>
+<td>Git 对 <code>src/ include/ cmake/ CMakeLists.txt</code>
+的树/差异核验</td>
+</tr>
+<tr>
+<td>BVM 论文结构和双稳态</td>
+<td>2025 SST BVM 论文 PDF p4–9</td>
+</tr>
+<tr>
+<td>BQ 原始作用和除
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math></td>
+<td>Hybrid synaptic 论文 PDF p5–6</td>
+</tr>
+<tr>
+<td>DCSFQ 原始用途</td>
+<td><code>arti/ColdFlux_RSFQ_Logic_Cell_Library_for_MIT_LL_SFQ_Process_v3p0.pdf</code>
+p123–126</td>
+</tr>
+<tr>
+<td>T1 的 sum/carry</td>
+<td><code>arti/2507.04648v1.pdf</code> p3–5</td>
+</tr>
+<tr>
+<td>BVM 负载范围</td>
+<td><code>test/final/interface/P0_LOG_P00.md</code> 及 CSV</td>
+</tr>
+<tr>
+<td>直接 BVM→BQ 基线</td>
+<td><code>test/final/single_bvm_qb/test_bvm_bq_baseline.cir</code> 与
+<code>data/test_bvm_bq_baseline.csv</code></td>
+</tr>
+<tr>
+<td>DCSFQ 300 µA 对照</td>
+<td><code>test/final/interface/data/test_dcsfq_behavior_bump_0.csv</code>
+与 <code>test_dcsfq_behavior_bump_300u.csv</code></td>
+</tr>
+<tr>
+<td>BVM 近
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>0.94</mn></mrow><annotation encoding="application/x-tex">\pm0.94</annotation></semantics></math>
+圈状态</td>
+<td><code>test/final/bvm/data/</code> 的 P2 CSV</td>
+</tr>
+<tr>
+<td>BQ v4 与 1:1 相容的 JTL 相位平台</td>
+<td><code>test/final/qb/test_bq_v4_sweep.cir</code> 及
+<code>data/bq_v4_sweep110.csv</code>、<code>bq_v4_sweep130.csv</code>、<code>bq_v4_sweep150.csv</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="术语速查">28. 术语速查</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>术语</th>
+<th>准确定义/项目含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JJ</td>
+<td>Josephson junction，具有相位依赖超电流和电压—相位关系的弱连接</td>
+</tr>
+<tr>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>c</mi></msub><annotation encoding="application/x-tex">I_c</annotation></semantics></math></td>
+<td>临界电流参数；实际动态触发还取决于偏置和网络</td>
+</tr>
+<tr>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math></td>
+<td>JJ 两端规范不变相位差；JoSIM <code>P()</code> 默认以 rad 输出</td>
+</tr>
+<tr>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\Phi_0</annotation></semantics></math></td>
+<td>磁通量子，约 2.0678 mV·ps；不是磁场单位</td>
+</tr>
+<tr>
+<td>相位滑移</td>
+<td>相位跨越一个或多个
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+周期；是否成为逻辑事件还需看时间局域性和下游</td>
+</tr>
+<tr>
+<td>SFQ 事件</td>
+<td>电压面积约为
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\pm\Phi_0</annotation></semantics></math>
+的相位事件</td>
+</tr>
+<tr>
+<td>RSFQ</td>
+<td>用 SFQ 事件表示和处理数字信息的快速单磁通量子逻辑</td>
+</tr>
+<tr>
+<td>JTL</td>
+<td>用带偏置 JJ 逐级再生/传播 SFQ 的传输线</td>
+</tr>
+<tr>
+<td>RCSJ</td>
+<td>JJ 的理想超电流、耗散和电容动力学模型</td>
+</tr>
+<tr>
+<td>fluxoid</td>
+<td>闭合超导路径中受量子化约束的相位—磁通组合</td>
+</tr>
+<tr>
+<td>BVM</td>
+<td>双稳态涡旋/环流存储单元，读出为状态相关电流</td>
+</tr>
+<tr>
+<td>BQ</td>
+<td>2024 Hybrid Synaptic 论文的
+Buffer/Quantizer；仓库版本是其拓扑的参数化派生</td>
+</tr>
+<tr>
+<td>QB</td>
+<td>2025 BVM/MVM 论文的 Quantizer
+Buffer；论文未公开完整参数，不能默认等同仓库 BQ</td>
+</tr>
+<tr>
+<td>DCSFQ</td>
+<td>ColdFlux 中的电压脉冲到 SFQ 转换单元；本项目尝试改成 BVM
+电流接口</td>
+</tr>
+<tr>
+<td>DCSFQ_BVM</td>
+<td>缩放输入结和偏置、保留标准输出级的候选接口</td>
+</tr>
+<tr>
+<td>T1</td>
+<td>对已数字化 SFQ 脉冲做奇偶 sum 和成对 carry 的单元</td>
+</tr>
+<tr>
+<td><code>fast_events</code></td>
+<td>旧脚本的过阈值采样间隔数；不是物理事件数，应废弃/重命名</td>
+</tr>
+</tbody>
+</table>
+<h2 id="读完后你应能回答的十个问题">29. 读完后你应能回答的十个问题</h2>
+<ol type="1">
+<li>为什么本项目的核心不是“把 68 µA 直接叫作 1”？</li>
+<li>为什么
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>ϕ</mi><mo>=</mo><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">\Delta\phi=2\pi</annotation></semantics></math>
+和
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mi>V</mi><mi>d</mi><mi>t</mi><mo>=</mo><msub><mi mathvariant="normal">Φ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\int Vdt=\Phi_0</annotation></semantics></math>
+是同一件事的两种测量？</li>
+<li>为什么 BVM 的 <code>P(JM1)</code> 不能单独证明完整环里有几个
+fluxoid？</li>
+<li>为什么 BVM 输出会随负载从约 44 µA 变到约 98 µA？</li>
+<li>为什么直接 BVM→BQ 基线仍判失败，尽管 BJs 已转约一圈？</li>
+<li>为什么 BQ v4 既不能称为“已失败”，也不能称为“接口已成功”？</li>
+<li>为什么标准 DCSFQ 的 300 µA 结果必须减去零输入控制？</li>
+<li>为什么 <code>fast_events=8</code> 不等于八个 SFQ？</li>
+<li>为什么哈希相同不能证明数值收敛或物理正确？</li>
+<li>下一步为什么必须先修测量工具，再比较 BQ v4 和 DCSFQ_BVM？</li>
+</ol>
+<p>如果其中任何一问仍不清楚，最有效的方式不是继续背术语，而是选对应小节和网表逐节点画电流路径；后续文档或讨论也应围绕具体问题补图、补控制实验。</p>
+<hr />
+<h2 id="最终结论">最终结论</h2>
+<p>本项目的科学问题是成立的：BVM 给出的状态相关电流不能被默认当成 RSFQ
+数字事件，接口必须在真实源阻抗、波形、偏置和负载下完成量化与再生。BVM
+的两个 JM1 相位平台和状态相关读电流已有可重复的电路级仿真证据；完整环
+fluxoid 数、参数裕度和硬件行为尚未验证。直接 BVM→当前 BQ
+基线未证明输出支路完成量化，且网表未接 JTL；BQ v4
+在当前理想高幅周期电流下显示与 1:1
+传播相容的下游相位平台，但尚未通过完整 SFQ Gate；DCSFQ_BVM
+仍是尚未完成真实级联验证的候选。</p>
+<p>当前第一优先级不是继续扫参数，而是修复相位单位和事件定义、用校准数据事先冻结数值容差并重建基线，然后用同一套可审计判据公平比较两条接口路线。只有下游
+JTL 在读 1 时恰好接收一次、读 0 时不接收、BVM
+状态不被破坏，并通过步长与参数裕度检查，才可以说接口完成。</p>
+</body>
+</html>

@@ -1,0 +1,198 @@
+:root {
+  color-scheme: light;
+  font-family: "Microsoft YaHei", "Noto Sans CJK SC", "PingFang SC", sans-serif;
+  font-size: 11pt;
+  line-height: 1.65;
+  color: #18202a;
+  background: #ffffff;
+}
+
+html {
+  background: #eef1f4;
+}
+
+body {
+  box-sizing: border-box;
+  max-width: 920px;
+  margin: 24px auto;
+  padding: 48px 58px;
+  background: #ffffff;
+  box-shadow: 0 4px 24px rgba(16, 32, 48, 0.12);
+}
+
+h1,
+h2,
+h3 {
+  color: #12395a;
+  line-height: 1.28;
+  break-after: avoid-page;
+}
+
+h1 {
+  margin: 1.8em 0 0.7em;
+  padding-bottom: 0.22em;
+  border-bottom: 2px solid #2b6f9e;
+  font-size: 22pt;
+}
+
+h2 {
+  margin: 1.55em 0 0.55em;
+  padding-bottom: 0.18em;
+  border-bottom: 1px solid #b9cbd8;
+  font-size: 16pt;
+}
+
+h3 {
+  margin: 1.25em 0 0.4em;
+  font-size: 12.5pt;
+}
+
+p,
+li {
+  orphans: 3;
+  widows: 3;
+}
+
+blockquote {
+  margin: 1em 0;
+  padding: 0.65em 1em;
+  border-left: 4px solid #2b6f9e;
+  background: #f2f7fa;
+  color: #243746;
+}
+
+code {
+  font-family: "Cascadia Mono", "Consolas", monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  margin: 0.9em 0;
+  padding: 0.8em 1em;
+  border: 1px solid #d7e0e7;
+  border-radius: 5px;
+  background: #f6f8fa;
+  font-size: 9pt;
+  line-height: 1.45;
+  break-inside: avoid-page;
+}
+
+table {
+  width: 100%;
+  margin: 0.9em 0 1.15em;
+  border-collapse: collapse;
+  font-size: 9.2pt;
+  line-height: 1.42;
+}
+
+thead {
+  display: table-header-group;
+  background: #eaf2f7;
+}
+
+tr {
+  break-inside: avoid-page;
+}
+
+th,
+td {
+  padding: 0.45em 0.55em;
+  border: 1px solid #bdcbd5;
+  text-align: left;
+  vertical-align: top;
+}
+
+math {
+  font-family: "Cambria Math", "STIX Two Math", serif;
+  font-size: 1em;
+}
+
+math[display="block"] {
+  margin: 0.75em auto;
+  break-inside: avoid-page;
+}
+
+hr {
+  margin: 1.5em 0;
+  border: 0;
+  border-top: 1px solid #bdcbd5;
+}
+
+a {
+  color: #165d8c;
+  text-decoration: none;
+}
+
+#title-block-header {
+  margin-bottom: 1.4em;
+  text-align: center;
+}
+
+#title-block-header .title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #0f3553;
+  font-size: 26pt;
+}
+
+#TOC {
+  margin: 1.2em 0 2em;
+  padding: 1em 1.2em;
+  border: 1px solid #bdcbd5;
+  border-radius: 6px;
+  background: #f8fafb;
+}
+
+#TOC::before {
+  display: block;
+  margin-bottom: 0.45em;
+  color: #12395a;
+  font-size: 16pt;
+  font-weight: 700;
+  content: "目录";
+}
+
+#TOC ul {
+  margin: 0.2em 0;
+  padding-left: 1.35em;
+}
+
+@page {
+  size: A4;
+  margin: 16mm 15mm 18mm;
+}
+
+@media print {
+  :root {
+    font-size: 10.5pt;
+  }
+
+  html,
+  body {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    box-shadow: none;
+  }
+
+  #title-block-header {
+    margin-top: 28mm;
+    margin-bottom: 14mm;
+  }
+
+  #TOC {
+    break-after: page;
+  }
+
+  body > h1 {
+    break-before: page;
+  }
+
+  a {
+    color: inherit;
+  }
+}

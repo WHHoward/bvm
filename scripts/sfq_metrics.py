@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
-"""Step 0 (GPT audit): reproducible SFQ metric extraction for JoSIM CSVs.
+"""SUPERSEDED v1 metric extractor; do not use for physical Gate decisions.
 
-Usage:
+This historical script assumes JoSIM P() is already normalized by 2*pi, but
+P() is raw phase in radians. It also counts over-threshold sample intervals as
+``fast_events``. Both assumptions are invalid. Preserve this file only to
+reproduce old JSON; implement M4-M9 before generating current conclusions.
+
+Historical usage:
     python3 scripts/sfq_metrics.py <sim.csv> [<phase_col>,...] [--peaks I(L_SL|XBVM1),V(OUT_Q)]
 
 Output (stdout, JSON):
@@ -11,8 +16,8 @@ Output (stdout, JSON):
                   max_dPdt_sfq_per_ps
     peaks: {column: (peak_abs_value, t_peak)}
 
-Metric definitions (freeze):
-    - SFQ units: JoSIM prints P() as accumulated phase / (2*pi)  [Φ0 units]
+Metric definitions below are historical and invalid as SFQ definitions:
+    - FALSE ASSUMPTION: P() was treated as accumulated phase / (2*pi)
     - net_delta_sfq   = P(t_end) - P(t_start)
     - max_excursion  = max|P(t) - P(t_start)|
     - total_variation = sum|P(i+1) - P(i)|
@@ -23,7 +28,7 @@ Metric definitions (freeze):
 """
 import csv, json, sys, hashlib, subprocess
 
-FAST_EVENT_THRESHOLD = 0.3   # SFQ per sample (0.1 ps)
+FAST_EVENT_THRESHOLD = 0.3   # raw rad/sample; historical code mislabeled this SFQ
 
 def file_sha256(path):
     h = hashlib.sha256()

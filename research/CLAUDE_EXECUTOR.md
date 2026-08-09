@@ -114,6 +114,12 @@ JoSIM `P(...)` 是 raw phase，单位 rad；派生圈数为 `phase_delta_rad/(2*
 
 **worktree 同步策略（2026-08-09 实战总结）**：stand-in 准备执行环境时，把协议/合同文件同步进 worktree 后，**不得再同步 `scope.read_paths` 覆盖的文件的最新版**——它们的哈希被 request 的 scope manifest 绑定，换新版会破坏 `verify-task`。只同步非 read_paths 内容（mailbox、memory、docs、CHANGELOG、CLAUDE.md 等），并在 worktree 根放 `WORKTREE_NOTES.md` 说明哪些文件是合同快照版及原因。
 
+**worktree 生命周期（2026-08-09 起强制，防积累）**：
+- 命名与位置统一：分支 `claude/<task-id>`，目录 `<repo> 相邻的 /home/howard/JoSIM-<task-id>`；
+- **清理时点**：审计 `ACCEPTED` 且产物已并入 master 后，由 Codex（或用户授权的 stand-in）执行 `git worktree remove`；被拒/失败任务的产物先按失败证据原则归档进 master 再清理；
+- **查询**：`git worktree list` 随时可查全部 worktree；执行新任务前先查，确认无遗留活跃 worktree；
+- 串行任务（如 M4→M5→M6）不并行开 worktree；只有 write paths 完全独立的任务（如 M12）才允许并行 worktree。
+
 ## 6. 何时可以并行
 
 只有 write paths、run/output 目录、build 目录和 locks 全部不相交，且任务之间没有未审计依赖时才能并行。共享同一个计量实现、规范、公共基线、todo 或 HANDOVER 的任务必须串行。

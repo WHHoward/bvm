@@ -75,4 +75,4 @@
   - base 初跑 `92a956c71f20c391126cc547a15bcc3b` = 重跑 `92a956c71f20c391126cc547a15bcc3b` ✅（HANDOVER IRON RULE 5）
   - wl80 `af183f35aa0ebc97483d7215f3e83a98` / wl120 `f579b0deea12744a6a4cb676ede69ce8`
 - 数据: test/final/bvm/data/{test_bvm_multivortex,test_bvm_multivortex_wl80,test_bvm_multivortex_wl120}.{csv,json}（JSON 内嵌 sha256 + git_head 交叉核对）
-- 提交: （回填）
+- 提交: `317fa81`（feat(P2) 本体；本行 SHA 由回填提交写入）

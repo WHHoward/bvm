@@ -31,6 +31,11 @@ actions:
     previous_sha256: "349ff637c8c50be13ba84eaf30d44f425bc9e3fa506459dccb77453b27e28208"
     new_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
     notes: "重签（2026-08-09 19:12-19:13，Claude stand-in）：仅更新 baseline.git_status/scope_hashes 绑定哈希以匹配重采后的 manifest，未改变合同目标、权限、验收或 stop 条件；使用 sign-request --force，旧签名 349ff637 已在命令输出中留痕。"
+  - action: OTHER
+    target_path: research/tasks/JH-20260809-M4-001/request.yaml
+    previous_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
+    new_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
+    notes: "执行环境准备（2026-08-09，用户选 A 授权）：从 baseline.git_head 384d753 创建独立 worktree /home/howard/JoSIM-m4（分支 claude/JH-20260809-M4-001），并把本任务最新合同与协议文件（request.yaml/request.sha256/baseline/standin/S01/record.yaml + handoff 工具与 §15 文档）同步进 worktree，使执行者在 384d753 基线上以 ISSUED+签名有效状态预检。不改变任何合同内容。"
 bindings:
   request_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
 declaration: "PROVISIONAL。本记录及其覆盖的动作在 Codex 审查（standin/S01/review.yaml）前不生效；不得据此更新 todo/HANDOVER 或宣布物理 Gate。"

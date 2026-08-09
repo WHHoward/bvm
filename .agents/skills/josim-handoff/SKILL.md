@@ -80,3 +80,11 @@ python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tas
 ```bash
 python3 .agents/skills/josim-handoff/scripts/test_handoff.py
 ```
+
+## Stand-in 代理（Codex 不可用时，2026-08-09）
+
+Codex 因额度/停机不可用时，用户可明确授权 Claude 临时代理签发、取代或状态同步等 Codex 角色动作。完整规则见 `research/WORKFLOW.md` §15。要点：
+
+- 每会话单独获得用户授权，在 `research/tasks/<id>/standin/<Sxx>/record.yaml` 记录（模板 `assets/standin-record.yaml`，schema `standin-record.schema.json`）；
+- 产物 `PROVISIONAL`，Codex `review.yaml`（`standin-review.schema.json`）确认前不生效，不得上推 todo/HANDOVER；
+- stand-in 不得审计自身执行；`verify-task` 输出 `STAND-IN PROVISIONAL` 警告标记未审查的 record。

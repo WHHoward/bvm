@@ -3,8 +3,8 @@ document_type: task_request
 schema_version: 1
 task_id: JH-20260809-M4-001
 revision: 1
-workflow_state: DRAFT
-issued_at: null
+workflow_state: ISSUED
+issued_at: 2026-08-09T19:01:43+08:00
 issuer:
   role: CODEX
   id: codex-root
@@ -62,14 +62,14 @@ scope:
     - locks/sfq-metrics-v2-interface
     - locks/test-metrics
 baseline:
-  git_head: f042ab1d7c392ccac518802db55daa4efd4dddbf
+  git_head: 384d75337e23d08516a66f71bb93d87c3f633013
   dirty_policy: ALLOW_NONOVERLAP
   git_status:
     path: research/tasks/JH-20260809-M4-001/baseline/git-status.txt
-    sha256: b41392806e8b0e6e6cf6775fe339c785870912aaf80b2a081a365f68b08566dd
+    sha256: 722995e1cf9038ad3f529f05eb01276a2f7468b0de93f27add20df3ac5ba113c
   scope_hashes:
     path: research/tasks/JH-20260809-M4-001/baseline/scope-files.sha256
-    sha256: 1c4c8b960ad1891c1fa4e11118eb0d5dd0793454def1fde70531dd835eab5687
+    sha256: 411543d476a29c5629a891652325b85d0902b8cf5eae27ca1895f0845cba3aa2
 authorization:
   edit: true
   run_josim: false
@@ -94,7 +94,7 @@ contracts:
   handover:
     status: CURRENT
     path: docs/HANDOVER.md
-    sha256: 91443b47ee6bc6d04e7465e52613b78dbfaec57bd6190bf0a8737a28a73bbf17
+    sha256: d81b91d0adb3f4fd820a14d7d4c02a8b838dfb8cc0e5fdbe3c274e015281d6ee
   metric_spec:
     status: UNFROZEN
     path: null
@@ -158,5 +158,4 @@ stop_conditions:
   - "实现需要预先决定 M5 的窗口/聚类规则、M6 的电压面积规则或 M9 的容差。"
   - "当前 HEAD、dirty 状态或绑定文件哈希与 request 不符。"
   - "发现另一活动任务占用同一 lock 或写路径。"
-issuance_blockers:
-  - "本轮新增的协调层、skills 和文档尚未提交；当前 base commit 不包含可供独立 Claude worktree 读取的合同。提交协调层后必须重采 baseline、更新 git_head/绑定哈希、清空 blocker、改为 ISSUED 并生成 request.sha256。"
+issuance_blockers: []

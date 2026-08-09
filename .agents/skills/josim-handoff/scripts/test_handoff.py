@@ -361,5 +361,171 @@ class HandoffTests(unittest.TestCase):
                 HANDOFF.verify_task(task_dir, SCHEMA_DIR, REPO_ROOT)
 
 
+
+
+class StandinTests(unittest.TestCase):
+    """User-authorized Claude stand-in records: PROVISIONAL until Codex review."""
+
+    def _make_request(self, relative: str) -> tuple[Path, dict]:
+        baseline_dir = Path(relative) / "baseline"
+        baseline_dir.mkdir(parents=True)
+        git_status = baseline_dir / "git-status.txt"
+        scope_hashes = baseline_dir / "scope-files.sha256"
+        git_status.write_text("", encoding="utf-8")
+        agents_hash = sha256(REPO_ROOT / "AGENTS.md")
+        scope_hashes.write_text(f"{agents_hash}  AGENTS.md\n", encoding="utf-8")
+        request = {
+            "protocol": "josim-handoff/v1",
+            "document_type": "task_request",
+            "schema_version": 1,
+            "task_id": "JH-20260809-SELFTEST-998",
+            "revision": 1,
+            "workflow_state": "ISSUED",
+            "issued_at": "2026-08-09T00:00:00+08:00",
+            "issuer": {"role": "CODEX", "id": "selftest"},
+            "parent_todo_id": "SELFTEST",
+            "depends_on": [],
+            "supersedes": None,
+            "task": {
+                "kind": "IMPLEMENTATION",
+                "objective": "exercise stand-in detection",
+                "research_question": "does the chain verify?",
+                "non_goals": ["no JoSIM run"],
+                "claim_ceiling": "implementation_only",
+            },
+            "scope": {
+                "read_paths": ["AGENTS.md"],
+                "write_paths": [f"{relative}/out.txt"],
+                "frozen_paths": [f"{relative}/request.yaml"],
+                "locks": ["locks/handoff-standin-selftest"],
+            },
+            "baseline": {
+                "git_head": "f042ab1d7c392ccac518802db55daa4efd4dddbf",
+                "dirty_policy": "ALLOW_NONOVERLAP",
+                "git_status": {
+                    "path": f"{relative}/baseline/git-status.txt",
+                    "sha256": sha256(git_status),
+                },
+                "scope_hashes": {
+                    "path": f"{relative}/baseline/scope-files.sha256",
+                    "sha256": sha256(scope_hashes),
+                },
+            },
+            "authorization": {
+                "edit": True,
+                "run_josim": False,
+                "network": False,
+                "install_dependencies": False,
+                "create_worktree": False,
+                "commit": False,
+                "delete_or_overwrite": False,
+            },
+            "contracts": {
+                "required_skills": ["josim-handoff"],
+                "read_first": ["AGENTS.md"],
+                "handover": {"status": "NOT_APPLICABLE", "path": None, "sha256": None},
+                "metric_spec": {"status": "NOT_APPLICABLE", "path": None, "sha256": None},
+            },
+            "deliverables": [
+                {
+                    "id": "D1",
+                    "path": f"{relative}/out.txt",
+                    "role": "IMPLEMENTATION",
+                    "required": True,
+                }
+            ],
+            "acceptance": [
+                {
+                    "id": "AC1",
+                    "condition": "output is preserved and hashed",
+                    "evidence": ["receipt artifact and log"],
+                }
+            ],
+            "invalid_conditions": ["hash mismatch"],
+            "inconclusive_conditions": [],
+            "stop_conditions": ["scope expansion"],
+            "issuance_blockers": [],
+        }
+        return request, scope_hashes
+
+    def test_standin_record_is_provisional_until_review(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix=".handoff-standin-", dir=REPO_ROOT
+        ) as temporary:
+            task_dir = Path(temporary)
+            relative = task_dir.relative_to(REPO_ROOT).as_posix()
+            request, _ = self._make_request(relative)
+            request_path = task_dir / "request.yaml"
+            write_yaml(request_path, request)
+            request_digest = sha256(request_path)
+            (task_dir / "request.sha256").write_text(
+                f"{request_digest}  request.yaml\n", encoding="utf-8"
+            )
+
+            record_dir = task_dir / "standin" / "S01"
+            record_dir.mkdir(parents=True)
+            record = {
+                "protocol": "josim-handoff/v1",
+                "document_type": "standin_record",
+                "schema_version": 1,
+                "task_id": request["task_id"],
+                "revision": 1,
+                "standin_id": "S01",
+                "created_at": "2026-08-09T00:00:03+08:00",
+                "reason": "Codex unavailable (selftest)",
+                "user_authorization": {
+                    "authorized_at": "2026-08-09T00:00:03+08:00",
+                    "scope": "issue request in selftest",
+                },
+                "proxy_agent": {"role": "CLAUDE_CODE", "id": "selftest"},
+                "status": "PROVISIONAL",
+                "actions": [
+                    {
+                        "action": "ISSUE_REQUEST",
+                        "target_path": f"{relative}/request.yaml",
+                        "previous_sha256": None,
+                        "new_sha256": request_digest,
+                        "notes": "stand-in issue in selftest",
+                    }
+                ],
+                "bindings": {"request_sha256": request_digest},
+                "declaration": "PROVISIONAL; awaits Codex review",
+            }
+            record_path = record_dir / "record.yaml"
+            write_yaml(record_path, record)
+
+            errors, warnings = HANDOFF.verify_task(task_dir, SCHEMA_DIR, REPO_ROOT)
+            self.assertEqual(errors, [])
+            self.assertTrue(
+                any("STAND-IN PROVISIONAL" in item for item in warnings),
+                f"expected STAND-IN PROVISIONAL warning, got: {warnings}",
+            )
+
+            review = {
+                "protocol": "josim-handoff/v1",
+                "document_type": "standin_review",
+                "schema_version": 1,
+                "task_id": request["task_id"],
+                "revision": 1,
+                "standin_id": "S01",
+                "created_at": "2026-08-09T00:00:04+08:00",
+                "reviewer": {"role": "CODEX", "id": "selftest"},
+                "verdict": "CONFIRMED",
+                "bindings": {"record_sha256": sha256(record_path)},
+                "notes": "selftest confirmed",
+            }
+            write_yaml(record_dir / "review.yaml", review)
+
+            errors, warnings = HANDOFF.verify_task(task_dir, SCHEMA_DIR, REPO_ROOT)
+            self.assertEqual(errors, [])
+            self.assertFalse(
+                any("STAND-IN PROVISIONAL" in item for item in warnings),
+                f"PROVISIONAL warning must clear after CONFIRMED: {warnings}",
+            )
+            self.assertTrue(
+                any("CONFIRMED" in item for item in warnings),
+                f"expected CONFIRMED warning, got: {warnings}",
+            )
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

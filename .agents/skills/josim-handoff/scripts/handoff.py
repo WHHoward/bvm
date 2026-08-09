@@ -22,6 +22,8 @@ SCHEMA_FILES = {
     "execution_ack": "execution-ack.schema.json",
     "execution_receipt": "execution-receipt.schema.json",
     "audit_verdict": "audit-verdict.schema.json",
+    "standin_record": "standin-record.schema.json",
+    "standin_review": "standin-review.schema.json",
 }
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 MANIFEST_LINE_RE = re.compile(r"^([0-9a-f]{64})  (.+)$")
@@ -153,6 +155,9 @@ def _semantic_path_checks(document: dict[str, Any]) -> None:
     elif document_type == "execution_ack":
         add_many(document.get("preflight", {}).get("dirty_paths"), "preflight.dirty_paths")
         add_many(document.get("expected_changed_paths"), "expected_changed_paths")
+    elif document_type == "standin_record":
+        for index, item in enumerate(document.get("actions", [])):
+            add(item.get("target_path"), f"actions[{index}].target_path")
     elif document_type == "execution_receipt":
         for index, item in enumerate(document.get("changes", [])):
             add(item.get("path"), f"changes[{index}].path")
@@ -756,6 +761,53 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
         "records: "
         f"{len(acknowledgements)} ACK, {len(receipts)} receipt, {len(audits)} audit"
     )
+
+    standin_dir = task_dir / "standin"
+    if standin_dir.is_dir():
+        if state == "DRAFT":
+            errors.append("DRAFT request must not carry stand-in records")
+        for record_path in sorted(standin_dir.rglob("record.yaml")):
+            try:
+                record = validate_document(record_path, schema_dir, repo_root)
+            except HandoffError as exc:
+                errors.append(f"invalid stand-in record {record_path}: {exc}")
+                continue
+            if record["task_id"] != request["task_id"]:
+                errors.append(f"{record_path}: task_id does not match request")
+            if record["revision"] != request["revision"]:
+                errors.append(f"{record_path}: revision does not match request")
+            if record["status"] != "PROVISIONAL":
+                errors.append(f"{record_path}: status must be PROVISIONAL")
+            if record["bindings"]["request_sha256"] != request_digest:
+                errors.append(
+                    f"{record_path}: request_sha256 does not bind current request"
+                )
+            review_path = record_path.with_name("review.yaml")
+            if review_path.is_file():
+                try:
+                    review = validate_document(review_path, schema_dir, repo_root)
+                except HandoffError as exc:
+                    errors.append(f"invalid stand-in review {review_path}: {exc}")
+                else:
+                    if review["bindings"]["record_sha256"] != _sha256(record_path):
+                        errors.append(
+                            f"{review_path}: record_sha256 does not bind {record_path}"
+                        )
+                    if review["verdict"] == "CONFIRMED":
+                        warnings.append(
+                            f"stand-in {record['standin_id']}: CONFIRMED by "
+                            f"{review['reviewer']['id']}"
+                        )
+                    else:
+                        warnings.append(
+                            f"stand-in {record['standin_id']}: review verdict "
+                            f"{review['verdict']} ({review_path})"
+                        )
+            else:
+                warnings.append(
+                    f"STAND-IN PROVISIONAL {record['standin_id']}: {record_path} "
+                    "awaits Codex review"
+                )
     return errors, warnings
 
 
@@ -794,9 +846,15 @@ def _cmd_sign_request(args: argparse.Namespace) -> int:
     if signature_path.exists():
         existing = _parse_signature(signature_path, request_path.name)
         if existing != digest:
-            raise HandoffError(
-                f"refusing to overwrite different signature in {signature_path}"
-            )
+            if not args.force:
+                raise HandoffError(
+                    f"refusing to overwrite different signature in {signature_path}"
+                )
+            # Explicit stand-in re-issue only: the old digest is printed for the
+            # audit trail and must be recorded in the stand-in record.
+            signature_path.write_text(f"{digest}  {request_path.name}\n", encoding="utf-8")
+            print(f"RESIGNED {signature_path} {digest} (was {existing})")
+            return 0
         print(f"UNCHANGED {signature_path} {digest}")
         return 0
     try:
@@ -840,6 +898,11 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     sign_parser.add_argument("request")
     sign_parser.add_argument("--schema-dir")
+    sign_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="overwrite a different signature (stand-in re-issue; old digest is printed)",
+    )
     sign_parser.set_defaults(handler=_cmd_sign_request)
 
     verify_parser = subparsers.add_parser(

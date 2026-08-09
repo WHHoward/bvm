@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-08-09 — Codex 不可用时的 Claude stand-in 代理机制（⚠️ stand-in 代理，待 Codex 审查）
+
+> **标注**：Codex 额度暂时耗尽，用户在 2026-08-09 明确授权 Claude 临时代理本条目与相关签发动作（stand-in 会话 S01）。本条目及该会话的产物为 **PROVISIONAL**，须由 Codex 在 `research/tasks/<id>/standin/<Sxx>/review.yaml` 中审查确认后才生效。协议见 `research/WORKFLOW.md` §15。
+
+### 做了什么
+
+- 新增 `standin-record` / `standin-review` 两类协议文档：JSON Schema（`research/schemas/standin-record.schema.json`、`standin-review.schema.json`）、模板（`josim-handoff/assets/standin-record.yaml`）
+- `handoff.py` 注册两类 schema，`verify-task` 对未审查的 stand-in record 输出 `STAND-IN PROVISIONAL` 警告；`DRAFT` 任务携带 stand-in record 报错
+- `research/WORKFLOW.md` 新增 §15（stand-in 不变量、可代理/不可代理、审查转正流程）；`research/CLAUDE_EXECUTOR.md` 新增 §1.1；`josim-handoff` skill 增加对应规则
+- 试点合同 `JH-20260809-M4-001` 已签发为 `ISSUED`（2026-08-09 19:01-19:03，用户侧完成：重采 baseline 至 HEAD `384d753`、DRAFT→ISSUED、生成 `request.sha256`）；stand-in 机制落地后 Claude 按 §15 补写 `standin/S01/record.yaml` 标注该签发为 PROVISIONAL，并因机制文件属于 M4 read_paths 而重采 manifest 后重签（`sign-request --force`，旧签名 349ff637 留痕）
+
+### 为什么
+
+- Codex 暂时不可用时，研究工作不应停顿；同时“临时可用”不能变成“绕过审计”——所有代理动作必须标注、可校验，且最终由 Codex 审查后才生效
+
+### 影响
+
+- Codex 恢复后需审查 stand-in S01（见任务目录 `standin/`）并写入 review verdict；审查前 M4 合同为 PROVISIONAL，执行与验收照常进行，但 todo/HANDOVER 不因 stand-in 签发而更新
+- 四维结果与既有 schema 语义不变；stand-in 只覆盖 Codex 的机械动作，不取代审计
+
 ## 2026-08-09 — Codex–Claude 可审计任务交接层
 
 ### 做了什么

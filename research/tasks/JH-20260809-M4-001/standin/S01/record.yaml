@@ -1,0 +1,36 @@
+# Stand-in 会话 S01：Codex 不可用时 M4 合同的签发与重签（PROVISIONAL）
+# 审查前本记录覆盖的动作不生效：不得据此上推 todo/HANDOVER 或作为物理 Gate。
+protocol: josim-handoff/v1
+document_type: standin_record
+schema_version: 1
+task_id: JH-20260809-M4-001
+revision: 1
+standin_id: S01
+created_at: "2026-08-09T19:13:00+08:00"
+reason: "Codex 额度耗尽暂不可用（2026-08-09）；用户要求 Claude 临时代理 Codex 角色动作并标注，最终仍由 Codex 审查"
+user_authorization:
+  authorized_at: "2026-08-09T19:06:00+08:00"
+  scope: "用户明确授权：代理完成 M4 任务派发（签发），并建立 stand-in 机制；所有代理产物须标注且由 Codex 审查后才生效"
+proxy_agent:
+  role: CLAUDE_CODE
+  id: claude-code
+status: PROVISIONAL
+actions:
+  - action: ISSUE_REQUEST
+    target_path: research/tasks/JH-20260809-M4-001/request.yaml
+    previous_sha256: "4511a276e4ac02bf77850d44ccd0dd21397919a5880e165801f141f4ebf4c855"
+    new_sha256: "349ff637c8c50be13ba84eaf30d44f425bc9e3fa506459dccb77453b27e28208"
+    notes: "初始签发（2026-08-09 19:01-19:03，用户侧完成）：重采 baseline 至 HEAD 384d753、DRAFT→ISSUED、清空 issuance_blockers、更新 HANDOVER 状态行、生成 request.sha256（349ff637）。"
+  - action: OTHER
+    target_path: research/tasks/JH-20260809-M4-001/baseline/scope-files.sha256
+    previous_sha256: "0d5a2d7d2585f0a3a27a0c277d09f0f0bb76e720a6720fcbd3816e86caa3c44d"
+    new_sha256: "411543d476a29c5629a891652325b85d0902b8cf5eae27ca1895f0845cba3aa2"
+    notes: "stand-in 机制落地新增/修改了 M4 read_paths 覆盖的文件（standin schema×2、模板、handoff.py、WORKFLOW、CLAUDE_EXECUTOR、SKILL.md），重采 scope manifest（22→25 项）与 git-status 快照。"
+  - action: ISSUE_REQUEST
+    target_path: research/tasks/JH-20260809-M4-001/request.yaml
+    previous_sha256: "349ff637c8c50be13ba84eaf30d44f425bc9e3fa506459dccb77453b27e28208"
+    new_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
+    notes: "重签（2026-08-09 19:12-19:13，Claude stand-in）：仅更新 baseline.git_status/scope_hashes 绑定哈希以匹配重采后的 manifest，未改变合同目标、权限、验收或 stop 条件；使用 sign-request --force，旧签名 349ff637 已在命令输出中留痕。"
+bindings:
+  request_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
+declaration: "PROVISIONAL。本记录及其覆盖的动作在 Codex 审查（standin/S01/review.yaml）前不生效；不得据此更新 todo/HANDOVER 或宣布物理 Gate。"

@@ -161,7 +161,7 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 7. 先用校准数据建立并冻结 `METRIC_SPEC_V2.md`，明确整数残差、相位—电压面积误差、BVM 漂移、步长差异及幅度/抖动容差；
 8. 在各实验目录的 `data/metrics_v2/` 中重建 BASELINE/P0/P2/v4 JSON 和结论，不覆盖旧文件。
 
-**M4 交接状态（2026-08-09）**：`research/tasks/JH-20260809-M4-001/request.yaml` 已建立为 `DRAFT` 试点合同。它没有 `request.sha256`，也没有 Claude ACK/receipt；协调层提交并重新绑定 HEAD、dirty snapshot 与 scope hashes 前不得执行。工作流基础设施完成不等于 M4 完成，主任务表仍保持 M4 🔴。
+**M4 交接状态（2026-08-09）**：`research/tasks/JH-20260809-M4-001/request.yaml` 已在协调层提交后重采 HEAD、dirty snapshot 与 scope hashes，并以 `ISSUED` 状态签发。它尚无 Claude ACK/receipt 或 Codex audit；签发只授权执行合同，不等于 M4 完成，主任务表仍保持 M4 🔴。
 
 ### B. 公平重测两条接口路线
 

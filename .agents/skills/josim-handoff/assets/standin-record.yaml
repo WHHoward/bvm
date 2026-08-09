@@ -1,0 +1,28 @@
+# Codex 不可用时，经用户明确授权的 Claude stand-in 代理记录（PROVISIONAL）
+# 每个 stand-in 会话写在 research/tasks/<task-id>/standin/<Sxx>/record.yaml；
+# Codex 恢复后在同一目录写 review.yaml（CONFIRMED / REWORK_REQUIRED / REJECTED）。
+# 审查前本记录覆盖的动作不生效：不得据此上推 todo/HANDOVER 或作为物理 Gate。
+protocol: josim-handoff/v1
+document_type: standin_record
+schema_version: 1
+task_id: JH-20260809-EXAMPLE-001
+revision: 1
+standin_id: S01
+created_at: "2026-08-09T00:00:00+08:00"
+reason: "Codex 暂不可用（例如额度耗尽），用户要求 Claude 临时代理签发/审计等 Codex 角色动作"
+user_authorization:
+  authorized_at: "2026-08-09T00:00:00+08:00"
+  scope: "用户明确允许的 stand-in 动作及范围（每会话单独授权，不沿用历史授权）"
+proxy_agent:
+  role: CLAUDE_CODE
+  id: claude-code
+status: PROVISIONAL
+actions:
+  - action: ISSUE_REQUEST
+    target_path: research/tasks/JH-20260809-EXAMPLE-001/request.yaml
+    previous_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    new_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    notes: "描述本次动作做了什么（例如：重采 baseline、DRAFT→ISSUED、生成 request.sha256）"
+bindings:
+  request_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+declaration: "PROVISIONAL。本记录及其覆盖的动作在 Codex 审查（review.yaml）前不生效；不得据此更新 todo/HANDOVER 或宣布物理 Gate。"

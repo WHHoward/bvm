@@ -381,3 +381,39 @@ Codex 在接受一份交付前至少确认：
 - [ ] `INVALID`、`FAIL`、`INCONCLUSIVE` 和执行阻塞没有混用；
 - [ ] 结论不超过 `claim_ceiling`；
 - [ ] 只有审计接受后才同步 todo/HANDOVER，并保留未知项。
+
+## 15. Codex 不可用时的 Claude stand-in 代理（PROVISIONAL）
+
+**（2026-08-09，stand-in 机制 v1，待 Codex 审查）**：当 Codex 因额度、停机等原因暂时不可用时，用户可明确授权 Claude Code 临时代理部分 Codex 角色动作（签发/取代 request、上层状态同步、审计非自身执行的交付）。本机制不改变四维结果、状态机或 schema；它只允许在受限条件下由不同身份执行 Codex 的机械动作，并把“动作完成”与“Codex 背书”分开。
+
+### 15.1 不变量
+
+1. **每次 stand-in 会话都必须有用户明确授权**，且授权范围记录在 stand-in record 中；一次授权不构成永久授权。
+2. 所有代理动作写入 `research/tasks/<task-id>/standin/<Sxx>/record.yaml`（schema：`standin-record.schema.json`），**不覆盖** request/audit 等既有协议文件。
+3. stand-in 产物一律 `status: PROVISIONAL`。在 Codex 写入 `standin/<Sxx>/review.yaml` 且 verdict 为 `CONFIRMED` 之前，**不生效**：不得据此上推 todo/HANDOVER、不得作为物理 Gate、不得视为已签发审计。
+4. **stand-in 不得审计自身执行**。stand-in 期间的执行审计仍由 Codex（或明确指定的 `THIRD_PARTY`）在恢复后完成。
+5. schema 不因 stand-in 放宽：`issuer.role` 仍为 `CODEX`，request 原文与签名规则不变；stand-in 身份由 record 声明。
+
+### 15.2 可代理与不可代理
+
+| 可代理（用户授权后） | 不可代理 |
+|---|---|
+| 签发 request（重采 baseline、DRAFT→ISSUED、生成 `request.sha256`） | 审计自身的执行并出最终裁决 |
+| 以 `supersedes` 签发取代合同 | 修改 schema 以放宽校验 |
+| 同步上层状态（todo/HANDOVER/CHANGELOG，仍须标注） | 决定路线切换、指标冻结、论文主张（用户保留） |
+
+### 15.3 审查与转正
+
+Codex 恢复后按固定顺序审查：先读 `standin/<Sxx>/record.yaml` 与受影响的 request/产物，再写 `standin/<Sxx>/review.yaml`（schema：`standin-review.schema.json`）：
+
+- `CONFIRMED`：Codex 背书该 stand-in 动作，视为与 Codex 自行执行等价；
+- `REWORK_REQUIRED`：动作不完整或绑定失效，Codex 在 notes 中列出最小修正，修正后重签新 `Sxx` 或由 Codex 直接重做；
+- `REJECTED`：动作不成立，Codex 以新 request（`supersedes`）或审计处置纠正，旧 record 保留。
+
+`verify-task` 对存在 record 但无 review 的任务输出 `STAND-IN PROVISIONAL` 警告；review 写入后警告消失或转为裁决信息。机械校验始终不能替代 Codex 对工作树和产物的独立复核。
+
+### 15.4 与其它流程的关系
+
+- stand-in 签发后的任务仍走标准 `ISSUED → ACK → RECEIPT → AUDIT` 生命周期；ACK/receipt 的作者仍是执行者，审计仍由 Codex/THIRD_PARTY 出具。
+- 若 Codex 在不可用期间恢复并发现 stand-in 改动有误，可按 §9 处置（新 attempt、`supersede` 或拒绝），不改写旧 record。
+- 本机制的协议文件（record/review）不属于四维结果，不改变 §6 的四个维度语义。

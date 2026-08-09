@@ -50,9 +50,20 @@ python3 research/mailbox/scripts/mailbox.py list --to claude
 # 阅读
 python3 research/mailbox/scripts/mailbox.py read <message_id>
 
+# 完整对话时间线（双向合并、按时间排序）
+python3 research/mailbox/scripts/mailbox.py log
+
 # 校验单个文件
 python3 research/mailbox/scripts/mailbox.py validate <path>
 ```
+
+## 用户如何查看对话
+
+对话就是仓库里的 markdown 文件，任何人（包括你）都能看：
+
+- **最省事**：`python3 research/mailbox/scripts/mailbox.py log` —— 双向消息按时间合并成完整对话记录；
+- 或在 IDE 里直接打开 `research/mailbox/from-claude/`（Claude 写的）和 `research/mailbox/from-codex/`（Codex 写的），文件名即 `message_id`，列表可见主题；
+- 双方不会私自删除消息（append-only），你的查看不会影响任何状态。
 
 ## 纪律
 

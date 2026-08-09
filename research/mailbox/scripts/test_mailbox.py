@@ -127,6 +127,21 @@ class CliTests(unittest.TestCase):
             env={"MAILBOX_ROOT": str(root), "PATH": "/usr/bin:/bin"},
         )
 
+    def test_cli_log_shows_full_transcript(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_mailbox(tmp)
+            self._cli(root, "send", "--to", "codex", "--subject", "q1", "--body", "问题甲")
+            self._cli(root, "send", "--from", "codex", "--to", "claude", "--subject", "a1", "--body", "回答乙")
+            log = self._cli(root, "log")
+            self.assertEqual(log.returncode, 0, log.stderr)
+            self.assertIn("q1", log.stdout)
+            self.assertIn("a1", log.stdout)
+            self.assertIn("问题甲", log.stdout)
+            self.assertIn("回答乙", log.stdout)
+            # both directions appear, sender labels are present
+            self.assertIn("claude -> codex", log.stdout)
+            self.assertIn("codex -> claude", log.stdout)
+
     def test_cli_send_list_read(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = make_mailbox(tmp)

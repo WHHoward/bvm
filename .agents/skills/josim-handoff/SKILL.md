@@ -5,6 +5,18 @@ description: Issue, execute, verify, and audit file-backed Codex–Claude task c
 
 # JoSIM Codex–Claude 任务交接
 
+## 会话开始先查信箱（2026-08-09，用户要求）
+
+双方（Claude、Codex）在**每次会话开始**和**处理任何委派任务前**，先检查对方来信：
+
+```bash
+python3 research/mailbox/scripts/mailbox.py list          # 新消息一览
+python3 research/mailbox/scripts/mailbox.py log           # 完整对话时间线
+python3 research/mailbox/scripts/mailbox.py read <id>     # 读全文
+```
+
+mailbox 是对话渠道（`research/mailbox/README.md`）；正式动作仍走本 skill 的协议文件。收到消息后按内容决定是否进入对应流程（audit、rework、supersede、stand-in review 等）。
+
 ## 先确定角色
 
 1. 把用户视为路线、指标冻结和论文主张的最终批准者。

@@ -214,6 +214,26 @@ def _cmd_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_log(args: argparse.Namespace) -> int:
+    """Chronological transcript of the whole conversation (for the user too)."""
+    root = mailbox_root()
+    items: list[tuple[str, dict[str, str], str]] = []
+    for party in PARTIES:
+        for path in sorted((root / f"from-{party}").glob("*.md")):
+            head, body = parse_message(path.read_text(encoding="utf-8"))
+            items.append((head.get("created_at", ""), head, body))
+    items.sort(key=lambda item: item[0])
+    for _, head, body in items:
+        print(
+            f"=== {head['message_id']}  {head['from']} -> {head['to']}  "
+            f"{head['subject']} ==="
+        )
+        if body:
+            print(body)
+        print()
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -245,6 +265,10 @@ def main(argv: list[str] | None = None) -> int:
     p_val = sub.add_parser("validate", help="validate a message file")
     p_val.add_argument("file")
     p_val.set_defaults(handler=_cmd_validate)
+
+    sub.add_parser("log", help="chronological transcript of all messages").set_defaults(
+        handler=_cmd_log
+    )
 
     args = parser.parse_args(argv)
     return args.handler(args)

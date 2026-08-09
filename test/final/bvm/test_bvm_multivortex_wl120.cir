@@ -1,0 +1,55 @@
+* BVM Multi-Vortex Write/Read Consistency — P2 (GPT audit §十.6) — WL=±120µA variant
+* Sequence: W1(10-20) R1(30-40) W0(60-70) R0(80-90) W1#2(110-120) R1#2(130-140)
+* Only WL pwl amplitudes differ from base (100µA → 120µA); BL/SE unchanged
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/bvm/bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* SL load: 12×jjmit(area=3.2) stack → IC=320μA per junction
+B_LD1  SL1 nld1  jjmit area=3.2
+B_LD2  nld1 nld2 jjmit area=3.2
+B_LD3  nld2 nld3 jjmit area=3.2
+B_LD4  nld3 nld4 jjmit area=3.2
+B_LD5  nld4 nld5 jjmit area=3.2
+B_LD6  nld5 nld6 jjmit area=3.2
+B_LD7  nld6 nld7 jjmit area=3.2
+B_LD8  nld7 nld8 jjmit area=3.2
+B_LD9  nld8 nld9 jjmit area=3.2
+B_LD10 nld9 nld10 jjmit area=3.2
+B_LD11 nld10 nld11 jjmit area=3.2
+B_LD12 nld11 0 jjmit area=3.2
+
+* WL: W1(10-20) | R1(30-40) | W0(60-70) | R0(80-90) | W1#2(110-120) | R1#2(130-140)
+I_WL1 0 WL1 pwl(0 0 9p 0
++ 10p 120U  20p 120U  21p 0
++ 30p 0 31p 120U  40p 120U  41p 0
++ 60p 0 61p -120U 70p -120U 71p 0
++ 80p 0 81p 120U  90p 120U  91p 0
++ 110p 0 111p 120U 120p 120U 121p 0
++ 130p 0 131p 120U 140p 120U 141p 0
++ 160p 0)
+
+* BL: W1(10-20) | W0(60-70, BL=-100) | W1#2(110-120)
+I_BL1 0 BL1 pwl(0 0 9p 0
++ 10p 100U  20p 100U  21p 0
++ 30p 0 41p 0
++ 60p 0 61p -100U 70p -100U 71p 0
++ 80p 0 91p 0
++ 110p 0 111p 100U 120p 100U 121p 0
++ 130p 0 141p 0
++ 160p 0)
+
+* SE: R1(30-40) | R0(80-90) | R1#2(130-140)
+I_SE1 0 SE1 pwl(0 0
++ 30p 0 31p 100U  40p 100U  41p 0
++ 80p 0 81p 100U  90p 100U  91p 0
++ 130p 0 131p 100U 140p 100U 141p 0
++ 160p 0)
+
+.tran 0.1p 160p
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print I(L_SL|XBVM1)
+.print V(SL1) V(WL1) V(BL1) V(SE1)
+.print P(B_JM1|XBVM1) P(B_JM2|XBVM1)
+.end

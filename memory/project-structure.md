@@ -43,7 +43,8 @@ JoSIM/
 │   ├── WORKFLOW.md     ← 完整角色、状态与生命周期说明（含 §15 stand-in 代理）
 │   ├── CLAUDE_EXECUTOR.md ← Claude Code 执行入口
 │   ├── schemas/        ← request/ACK/receipt/audit/standin 机器约束
-│   └── tasks/          ← 每项任务的冻结合同、尝试、审计与 stand-in 记录（不复制 raw）
+│   ├── tasks/          ← 每项任务的冻结合同、尝试、审计与 stand-in 记录（不复制 raw）
+│   └── mailbox/        ← Claude↔Codex 异步对话模块（2026-08-09；对话≠合同，正式动作仍走 tasks/）
 ├── memory/             ← 项目知识库（MEMORY.md 索引带状态标注）
 ├── arti/               ← 参考论文/PDF
 ├── .agents/skills/     ← 项目 Skills 唯一规范源

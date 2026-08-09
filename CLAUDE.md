@@ -97,3 +97,7 @@ Project skills use the standard `SKILL.md` layout. The canonical source is `.age
 | `josim-skill-router` | Route broad tasks that span several of the workflows above |
 
 The repository-wide invariants are in `AGENTS.md`; the full delegation protocol is in `research/WORKFLOW.md`. Do not require external plugin skills unless they are actually available in the current runtime.
+
+## Claude ↔ Codex mailbox
+
+For informal async messages between Claude and Codex (questions, clarifications, status sync, reminders), use `research/mailbox/` — see its `README.md`. Run `python3 research/mailbox/scripts/mailbox.py list` at session start to check for Codex messages. Formal contract actions still go through `josim-handoff` protocol files under `research/tasks/<task-id>/`; mailbox messages carry no contract authority.

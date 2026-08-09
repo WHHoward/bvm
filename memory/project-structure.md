@@ -40,10 +40,10 @@ JoSIM/
 │   ├── paper/          ← 论文证据链 + 素材
 │   └── superpowers/    ← specs/（设计）+ plans/（实施计划）
 ├── research/           ← Codex–Claude 任务合同与审计控制层
-│   ├── WORKFLOW.md     ← 完整角色、状态与生命周期说明
+│   ├── WORKFLOW.md     ← 完整角色、状态与生命周期说明（含 §15 stand-in 代理）
 │   ├── CLAUDE_EXECUTOR.md ← Claude Code 执行入口
-│   ├── schemas/        ← request/ACK/receipt/audit 机器约束
-│   └── tasks/          ← 每项任务的冻结合同、尝试和审计（不复制 raw）
+│   ├── schemas/        ← request/ACK/receipt/audit/standin 机器约束
+│   └── tasks/          ← 每项任务的冻结合同、尝试、审计与 stand-in 记录（不复制 raw）
 ├── memory/             ← 项目知识库（MEMORY.md 索引带状态标注）
 ├── arti/               ← 参考论文/PDF
 ├── .agents/skills/     ← 项目 Skills 唯一规范源

@@ -38,6 +38,7 @@ metadata:
 5. `scripts/sfq_metrics.py` 和 `scripts/run_exp.sh` 在 Phase −1 M4–M11 完成前不得作为物理结论流水线。
 6. 使用 skill 后仍必须验证实际产物；skill 规范不能替代测试和原始证据。
 7. 委派任务以签名 request 为授权边界；receipt 的“已完成”不等于 artifact 有效或物理 Gate 通过，只有接受的 audit 才能上推项目状态。
+8. Codex 不可用时的 stand-in 动作（2026-08-09）：必须经用户明确授权，写入 `research/tasks/<id>/standin/<Sxx>/record.yaml`（PROVISIONAL），Codex review 确认前不生效；stand-in 不得审计自身执行。
 
 ## 显式调用示例
 

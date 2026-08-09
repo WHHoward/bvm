@@ -13,6 +13,8 @@ When the user or Codex points to `research/tasks/<task-id>/request.yaml`, treat 
 
 If the task is `DRAFT`, unsealed, has issuance blockers, or needs broader authority, stop and report the blocker. Do not silently repair the contract.
 
+If Codex is unavailable (e.g. quota exhausted), the user may explicitly authorize Claude to stand in for Codex-level actions (issue/supersede requests, state sync). Such actions must be recorded in `research/tasks/<id>/standin/<Sxx>/record.yaml` as `PROVISIONAL` and are not effective until Codex writes a review (`CONFIRMED`). See `research/WORKFLOW.md` §15. Stand-in must never audit its own execution.
+
 ## Build
 
 ```bash

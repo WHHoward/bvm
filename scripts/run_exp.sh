@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # run_exp.sh — 一键实验运行器（Phase 1+ 标准动作）
-# 用法: scripts/run_exp.sh <netlist.cir> <out_name> "<phase_cols>" [--peaks "<cols>"]
+# 用法: scripts/run_exp.sh <netlist.cir> <out_name> "<phase_cols>" ["<peak_cols>"]
+#   第 4 个参数直接传峰值列名列表（不要带 --peaks 字样），如 "I(L_SL|XBVM1),V(OUT1)"
 #   netlist 用仓库相对路径（如 test/final/interface/test_x.cir，include 基于 .cir 位置解析）
 #   产出: <netlist_dir>/data/<out>.csv + <out>.json，并自动做 md5 确定性重跑验证
 # 冻结口径: build/josim-cli (v2.7.2837d13) / scripts/sfq_metrics.py / md5 ×2

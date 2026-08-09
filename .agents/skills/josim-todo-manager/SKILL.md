@@ -27,9 +27,10 @@ description: Inspect or update the JoSIM/BVM master task list using current evid
 
 1. 对照该任务的“完成标准”，逐项核验可追溯产物。
 2. 只有全部满足时标为完成；计划、讨论、只读审计和 `INCONCLUSIVE` 结果都不算完成。
-3. 进行中的工作标为进行中；外部依赖或被取代路线才标为暂停，并写明原因。
-4. 使用当前日期更新任务行和 `last_updated`；按现有格式追加一条简短更新记录（若文件有该区域）。
-5. 不重排或重写无关任务，不虚构工时、截止日期或依赖。
+3. 若工作由 `research/tasks/` 交接执行，只有对应 audit disposition 为 `ACCEPTED` 且完成标准确实满足，才上推任务状态；receipt 中的 `COMPLETED` 本身不够。
+4. 进行中的工作标为进行中；外部依赖或被取代路线才标为暂停，并写明原因。
+5. 使用当前日期更新任务行和 `last_updated`；按现有格式追加一条简短更新记录（若文件有该区域）。
+6. 不重排或重写无关任务，不虚构工时、截止日期或依赖。
 
 ## 完成证据最低要求
 

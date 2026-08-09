@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://josim-bvm.local/schemas/task-request.schema.json",
+  "title": "JoSIM handoff task request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "document_type",
+    "schema_version",
+    "task_id",
+    "revision",
+    "workflow_state",
+    "issued_at",
+    "issuer",
+    "parent_todo_id",
+    "depends_on",
+    "task",
+    "scope",
+    "baseline",
+    "authorization",
+    "contracts",
+    "deliverables",
+    "acceptance",
+    "invalid_conditions",
+    "inconclusive_conditions",
+    "stop_conditions",
+    "issuance_blockers"
+  ],
+  "properties": {
+    "protocol": { "const": "josim-handoff/v1" },
+    "document_type": { "const": "task_request" },
+    "schema_version": { "const": 1 },
+    "task_id": { "$ref": "#/$defs/task_id" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "workflow_state": { "enum": ["DRAFT", "ISSUED"] },
+    "issued_at": {
+      "oneOf": [
+        { "type": "string", "format": "date-time" },
+        { "type": "null" }
+      ]
+    },
+    "issuer": { "$ref": "#/$defs/actor" },
+    "parent_todo_id": { "type": "string", "minLength": 1 },
+    "depends_on": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "objective",
+        "research_question",
+        "non_goals",
+        "claim_ceiling"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "IMPLEMENTATION",
+            "EXPERIMENT",
+            "ANALYSIS",
+            "DOCUMENTATION",
+            "REPRODUCTION",
+            "REVIEW"
+          ]
+        },
+        "objective": { "type": "string", "minLength": 1 },
+        "research_question": { "type": "string", "minLength": 1 },
+        "non_goals": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "claim_ceiling": { "type": "string", "minLength": 1 }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["read_paths", "write_paths", "frozen_paths", "locks"],
+      "properties": {
+        "read_paths": { "$ref": "#/$defs/path_list" },
+        "write_paths": {
+          "$ref": "#/$defs/nonempty_path_list"
+        },
+        "frozen_paths": { "$ref": "#/$defs/path_list" },
+        "locks": { "$ref": "#/$defs/path_list" }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["git_head", "dirty_policy", "git_status", "scope_hashes"],
+      "properties": {
+        "git_head": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+        "dirty_policy": {
+          "enum": ["REQUIRE_CLEAN", "ALLOW_NONOVERLAP"]
+        },
+        "git_status": { "$ref": "#/$defs/bound_file" },
+        "scope_hashes": { "$ref": "#/$defs/bound_file" }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edit",
+        "run_josim",
+        "network",
+        "install_dependencies",
+        "create_worktree",
+        "commit",
+        "delete_or_overwrite"
+      ],
+      "properties": {
+        "edit": { "type": "boolean" },
+        "run_josim": { "type": "boolean" },
+        "network": { "type": "boolean" },
+        "install_dependencies": { "type": "boolean" },
+        "create_worktree": { "type": "boolean" },
+        "commit": { "type": "boolean" },
+        "delete_or_overwrite": { "type": "boolean" }
+      }
+    },
+    "contracts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_skills", "read_first", "handover", "metric_spec"],
+      "properties": {
+        "required_skills": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "read_first": { "$ref": "#/$defs/nonempty_path_list" },
+        "handover": { "$ref": "#/$defs/contract_file" },
+        "metric_spec": { "$ref": "#/$defs/contract_file" }
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path", "role", "required"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$" },
+          "path": { "$ref": "#/$defs/repo_path" },
+          "role": {
+            "enum": [
+              "IMPLEMENTATION",
+              "TEST",
+              "EXPERIMENT_ARTIFACT",
+              "DOCUMENTATION",
+              "RECEIPT"
+            ]
+          },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "acceptance": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "condition", "evidence"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$" },
+          "condition": { "type": "string", "minLength": 1 },
+          "evidence": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "invalid_conditions": { "$ref": "#/$defs/nonempty_string_list" },
+    "inconclusive_conditions": { "$ref": "#/$defs/string_list" },
+    "stop_conditions": { "$ref": "#/$defs/nonempty_string_list" },
+    "issuance_blockers": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "supersedes": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["task_id", "revision"],
+          "properties": {
+            "task_id": { "$ref": "#/$defs/task_id" },
+            "revision": { "type": "integer", "minimum": 1 }
+          }
+        },
+        { "type": "null" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "workflow_state": { "const": "ISSUED" } },
+        "required": ["workflow_state"]
+      },
+      "then": {
+        "properties": {
+          "issued_at": { "type": "string", "format": "date-time" },
+          "issuance_blockers": { "maxItems": 0 },
+          "baseline": {
+            "properties": {
+              "git_status": {
+                "properties": { "sha256": { "$ref": "#/$defs/sha256" } }
+              },
+              "scope_hashes": {
+                "properties": { "sha256": { "$ref": "#/$defs/sha256" } }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^JH-[0-9]{8}-[A-Z0-9][A-Z0-9-]*-[0-9]{3}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!\\./)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+    },
+    "path_list": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/repo_path" },
+      "uniqueItems": true
+    },
+    "nonempty_path_list": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/repo_path" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "nonempty_string_list": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "string_list": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "id"],
+      "properties": {
+        "role": { "const": "CODEX" },
+        "id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "bound_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/repo_path" },
+        "sha256": {
+          "oneOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "contract_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "path", "sha256"],
+      "properties": {
+        "status": { "enum": ["FROZEN", "CURRENT", "UNFROZEN", "NOT_APPLICABLE"] },
+        "path": {
+          "oneOf": [
+            { "$ref": "#/$defs/repo_path" },
+            { "type": "null" }
+          ]
+        },
+        "sha256": {
+          "oneOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "enum": ["FROZEN", "CURRENT"] } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "path": { "$ref": "#/$defs/repo_path" },
+              "sha256": { "$ref": "#/$defs/sha256" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "status": { "const": "NOT_APPLICABLE" } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "path": { "type": "null" },
+              "sha256": { "type": "null" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

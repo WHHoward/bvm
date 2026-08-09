@@ -1,0 +1,32 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260809-EXAMPLE-001
+revision: 1
+attempt_id: A01
+workflow_state: BLOCKED
+created_at: "2026-08-09T00:00:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+decision: BLOCKED
+preflight:
+  observed_git_head: "0000000000000000000000000000000000000000"
+  dirty_paths: []
+  scope_accepted: false
+  required_skills_available: true
+understanding:
+  objective: "复述 request 的目标"
+  non_goals:
+    - "复述非目标"
+  stop_conditions:
+    - "复述停止条件"
+planned_commands:
+  - "列出预期命令，不执行模板"
+expected_changed_paths:
+  - path/to/new-output.py
+blockers:
+  - "模板 ACK 不可直接执行"
+deviations: []

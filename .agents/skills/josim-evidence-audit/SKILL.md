@@ -9,6 +9,8 @@ description: Audit JoSIM phase, voltage-area, SFQ counting, JTL propagation, sta
 
 凡涉及相位、SFQ、事件数或传播结论，先完整阅读 [phase-evidence-contract.md](references/phase-evidence-contract.md)。数值容差只从当前版本化 `METRIC_SPEC_V2` 读取；skill 本身不得发明或复制临时阈值。
 
+若审计来自 `research/tasks/<task-id>/`，同时使用 `josim-handoff`：先验证 request/ACK/receipt 的哈希与路径范围，再进行物理证据审计。机械合同通过不代表科学证据通过。
+
 ## 审计流程
 
 1. **确认主张**：把待审计句子改写成可检验对象，例如“JTL 末级在 read1 后增加一个稳定相位平台”。
@@ -41,3 +43,5 @@ description: Audit JoSIM phase, voltage-area, SFQ counting, JTL propagation, sta
 ## 输出格式
 
 以紧凑表格报告：待审计主张、所需层级、原始证据、计算量、缺失项、判定和允许的最强措辞。每个数字附单位、窗口/控制、信号方向和数据路径；列出替代解释及下一项最小判别实验。
+
+有 handoff task 时，把最终判定写入 audit verdict，并分别填写 artifact status、physical verdict 和 audit disposition。执行者的 proposal 只是待核验输入，不得直接复制为裁决。

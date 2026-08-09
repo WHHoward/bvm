@@ -1,0 +1,77 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260809-EXAMPLE-001
+revision: 1
+workflow_state: DRAFT
+issued_at: null
+issuer:
+  role: CODEX
+  id: codex
+parent_todo_id: M4
+depends_on: []
+supersedes: null
+task:
+  kind: IMPLEMENTATION
+  objective: "用一句可验收的话描述目标"
+  research_question: "实现是否满足预注册的接口和测试？"
+  non_goals:
+    - "列出本任务明确不做的事情"
+  claim_ceiling: implementation_only
+scope:
+  read_paths:
+    - AGENTS.md
+  write_paths:
+    - path/to/new-output.py
+    - research/tasks/JH-20260809-EXAMPLE-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260809-EXAMPLE-001/request.yaml
+  locks:
+    - locks/example-output
+baseline:
+  git_head: "0000000000000000000000000000000000000000"
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status:
+    path: research/tasks/JH-20260809-EXAMPLE-001/baseline/git-status.txt
+    sha256: null
+  scope_hashes:
+    path: research/tasks/JH-20260809-EXAMPLE-001/baseline/scope-files.sha256
+    sha256: null
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills:
+    - josim-handoff
+  read_first:
+    - AGENTS.md
+  handover:
+    status: CURRENT
+    path: docs/HANDOVER.md
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  metric_spec:
+    status: UNFROZEN
+    path: null
+    sha256: null
+deliverables:
+  - id: D1
+    path: path/to/new-output.py
+    role: IMPLEMENTATION
+    required: true
+acceptance:
+  - id: AC1
+    condition: "描述可机械或人工核验的条件"
+    evidence:
+      - "指定测试日志或文件哈希"
+invalid_conditions:
+  - "输入哈希或授权范围不匹配"
+inconclusive_conditions: []
+stop_conditions:
+  - "需要修改 scope.write_paths 以外的文件"
+issuance_blockers:
+  - "模板任务不可直接执行"

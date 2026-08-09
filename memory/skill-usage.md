@@ -21,6 +21,7 @@ metadata:
 
 | Skill | 用途 |
 |---|---|
+| `josim-handoff` | 签发/ACK/执行/审计 Codex–Claude 文件化任务合同 |
 | `josim-experiment` | 设计、运行、扫描和记录不可覆盖的 JoSIM 实验 |
 | `josim-evidence-audit` | 审计 raw phase、同 JJ 电压面积、JTL 接收、收敛和物理结论 |
 | `josim-viz` | 安全绘图；可视化不替代物理 Gate |
@@ -36,10 +37,12 @@ metadata:
 4. 相位/SFQ/Gate 解释使用 `josim-evidence-audit`；`.cir` 运行使用 `josim-experiment`。
 5. `scripts/sfq_metrics.py` 和 `scripts/run_exp.sh` 在 Phase −1 M4–M11 完成前不得作为物理结论流水线。
 6. 使用 skill 后仍必须验证实际产物；skill 规范不能替代测试和原始证据。
+7. 委派任务以签名 request 为授权边界；receipt 的“已完成”不等于 artifact 有效或物理 Gate 通过，只有接受的 audit 才能上推项目状态。
 
 ## 显式调用示例
 
 ```text
+$josim-handoff：为 M4 创建可由 Claude ACK 的实现任务包，完成后独立审计回执。
 $josim-experiment：给 BQ v4 设计一次不可覆盖的单 PWL 对照实验。
 $josim-evidence-audit：审计这个 CSV 能支持到哪一级证据。
 $josim-viz：把相位以 raw rad 绘图并标出 pre/post 窗口。
@@ -49,3 +52,5 @@ $josim-todo-manager：只读告诉我当前下一项未阻塞任务。
 **Why（2026-08-09）**：旧平铺技能引用了失效的 v1 指标、过时 Phase 1 优先级和自动删除规则；新版结构将实验执行、可视化和物理判定分离，并以单一 canonical source 防止 Claude/Codex 两套说明漂移。
 
 **How to apply**：新增或修改 skill 时使用标准 `<name>/SKILL.md` 结构，运行 `skill-creator` 的 `quick_validate.py`，检查 `agents/openai.yaml`，再用独立任务做前向测试。
+
+**Handoff 扩展（2026-08-09）**：新增 `josim-handoff` 与 `research/` 控制层，将 Codex 的计划/审计和 Claude Code 的实现/实验分开；完整协议见 `research/WORKFLOW.md`，Claude 的最小执行入口见 `research/CLAUDE_EXECUTOR.md`。

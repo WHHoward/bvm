@@ -7,10 +7,11 @@ description: Design, create, run, sweep, reproduce, or document JoSIM/BVM `.cir`
 
 ## 开始前
 
-1. 阅读 `docs/HANDOVER.md` 的当前事故边界和执行顺序。
-2. 对结论级实验，完整阅读 [run-protocol.md](references/run-protocol.md)。
-3. 使用 [run-manifest.yaml](assets/run-manifest.yaml) 和 [analysis-template.md](assets/analysis-template.md) 建立唯一 run 记录。
-4. 先写一个主要研究问题、主假设、替代解释以及 `PASS/FAIL/INCONCLUSIVE` 的预期观察，再编辑网表。
+1. 若存在 `research/tasks/<task-id>/request.yaml`，先使用 `josim-handoff` 校验并 ACK；该 request 的写路径、权限和停止条件优先于一般实验流程。
+2. 阅读 `docs/HANDOVER.md` 的当前事故边界和执行顺序。
+3. 对结论级实验，完整阅读 [run-protocol.md](references/run-protocol.md)。
+4. 使用 [run-manifest.yaml](assets/run-manifest.yaml) 和 [analysis-template.md](assets/analysis-template.md) 建立唯一 run 记录。
+5. 先写一个主要研究问题、主假设、替代解释以及 `PASS/FAIL/INCONCLUSIVE` 的预期观察，再编辑网表。
 
 ## 当前硬停止条件
 
@@ -32,6 +33,7 @@ description: Design, create, run, sweep, reproduce, or document JoSIM/BVM `.cir`
 7. **分析**：使用 `josim-evidence-audit`；将观察、推断和未知分开。
 8. **收敛**：对名义通过、边界和失败代表点比较至少三个预先声明的步长。分类随步长变化时判 `INCONCLUSIVE`。
 9. **记录**：填写分析模板，保留失败运行，并把上层文档链接到 run ID，而非复制整份数据。
+10. **交付**：若由 task request 发起，把 run 路径、哈希、命令、测试和偏离写入 execution receipt；只提出物理判定建议，不代替 Codex 审计。
 
 ## 扫描纪律
 

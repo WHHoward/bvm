@@ -1,0 +1,60 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260809-EXAMPLE-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-09T00:00:01+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  ack_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+execution_status: COMPLETED
+baseline_git_head: "0000000000000000000000000000000000000000"
+result_git_head: null
+changes:
+  - path: path/to/new-output.py
+    action: CREATED
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  - path: research/tasks/JH-20260809-EXAMPLE-001/attempts/A01/logs/pytest.txt
+    action: CREATED
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+artifacts:
+  - id: implementation
+    path: path/to/new-output.py
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    role: IMPLEMENTATION
+  - id: pytest-log
+    path: research/tasks/JH-20260809-EXAMPLE-001/attempts/A01/logs/pytest.txt
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    role: LOG
+commands:
+  - command: "python3 -m pytest path/to/tests"
+    exit_code: 0
+    log_path: research/tasks/JH-20260809-EXAMPLE-001/attempts/A01/logs/pytest.txt
+    log_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+tests:
+  - id: unit-tests
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260809-EXAMPLE-001/attempts/A01/logs/pytest.txt
+    notes:
+      - "测试按 request 声明的命令完成"
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260809-EXAMPLE-001/attempts/A01/logs/pytest.txt
+    notes:
+      - "说明证据如何满足条件"
+observations:
+  - "记录直接观察"
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations: []
+deviations: []
+blockers: []

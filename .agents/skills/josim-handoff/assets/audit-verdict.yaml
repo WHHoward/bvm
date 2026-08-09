@@ -1,0 +1,37 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260809-EXAMPLE-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-09T00:00:02+08:00"
+auditor:
+  role: CODEX
+  id: codex
+bindings:
+  request_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  ack_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  receipt_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex
+checks:
+  - id: contract-and-scope
+    status: PASS
+    evidence:
+      - "记录独立核验的路径、命令或哈希"
+findings: []
+accepted_claims:
+  - "仅记录经独立核验后允许的主张"
+rejected_claims: []
+required_rework: []
+next_actions:
+  - "由 Codex 决定是否更新任务表或签发后续任务"
+claim_ceiling: implementation_only

@@ -20,7 +20,14 @@ build/josim-cli --version
 1. `docs/guide/project-guide.md`：审计后的完整教学、证据边界和计划；
 2. 本文件：当前执行状态；
 3. `memory/project-todo.md`：任务清单；
-4. 原始网表和 CSV；旧 BASELINE/P0/P2/证据链仅作历史记录，先看其顶部审计警告。
+4. 若执行 Codex 委派任务，读 `research/CLAUDE_EXECUTOR.md` 和指定 `research/tasks/<task-id>/request.yaml`；
+5. 原始网表和 CSV；旧 BASELINE/P0/P2/证据链仅作历史记录，先看其顶部审计警告。
+
+### 0.1 Codex–Claude 分工（2026-08-09）
+
+本仓库采用文件化任务合同：Codex 负责计划、签发 request 和独立审计；Claude Code 只在 ACK 后执行授权路径并提交 receipt；用户批准路线变化、指标冻结和论文主张。完整状态机、所有权和命令见 `research/WORKFLOW.md`。
+
+`execution_status=COMPLETED` 只表示执行结束，不代表证据有效或物理成功。必须分别记录 artifact `VALID/INVALID`、physical `PASS/FAIL/INCONCLUSIVE` 和 audit `ACCEPTED/REWORK_REQUIRED/REJECTED`；只有接受的审计才能更新本文件或主任务表。
 
 ## 1. 项目定义
 
@@ -154,6 +161,8 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 7. 先用校准数据建立并冻结 `METRIC_SPEC_V2.md`，明确整数残差、相位—电压面积误差、BVM 漂移、步长差异及幅度/抖动容差；
 8. 在各实验目录的 `data/metrics_v2/` 中重建 BASELINE/P0/P2/v4 JSON 和结论，不覆盖旧文件。
 
+**M4 交接状态（2026-08-09）**：`research/tasks/JH-20260809-M4-001/request.yaml` 已建立为 `DRAFT` 试点合同。它没有 `request.sha256`，也没有 Claude ACK/receipt；协调层提交并重新绑定 HEAD、dirty snapshot 与 scope hashes 前不得执行。工作流基础设施完成不等于 M4 完成，主任务表仍保持 M4 🔴。
+
 ### B. 公平重测两条接口路线
 
 **BQ v4**（等待 Phase −1 指标与容差冻结）：单次 PWL、90–110 µA 细扫、真实 BVM 波形、读 0/1、下游 JTL、参数单变量与鲁棒性。
@@ -190,6 +199,9 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 | P2 | `test/final/bvm/` |
 | 论文 | `arti/` |
 | 项目工作流 skills | `.agents/skills/`（canonical），`.claude/skills/`（兼容链接） |
+| Codex–Claude 完整工作流 | `research/WORKFLOW.md` |
+| Claude Code 执行入口 | `research/CLAUDE_EXECUTOR.md` |
+| 文件化任务包 | `research/tasks/<task-id>/` |
 
 ## 8. 实验纪律
 
@@ -204,6 +216,7 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 9. 研究单元目前未接入 CTest，不能把人工波形测试称为正式回归；
 10. 不覆盖旧原始数据；用审计警告和新版本结果保留可追溯性。
 11. `josim-plot2.py -j 2pi` 当前仅 `combined`/`sep_comb` 真正缩放相位；`grid`/`stacked`/`square` 只改标签。修复 M12 前遵循 `josim-viz` 的布局限制。
+12. 委派执行必须先验证签名 request 并 ACK；执行者不得修改 request、审计、todo、HANDOVER、CHANGELOG 或冻结 raw。合同完成与物理 Gate 分开裁决。
 
 ## 9. 当前一句话状态
 

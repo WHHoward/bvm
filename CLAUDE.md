@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Executor mode for delegated research tasks
+
+When the user or Codex points to `research/tasks/<task-id>/request.yaml`, treat that issued, SHA-256-sealed request as the execution contract. The hash seal detects changes; it is not identity authentication:
+
+1. Read `AGENTS.md`, [research/CLAUDE_EXECUTOR.md](research/CLAUDE_EXECUTOR.md), and the request's `contracts.read_first` files.
+2. Invoke `josim-handoff`, verify the request/hash seal, and write an ACK before the first edit or run.
+3. Change only `scope.write_paths`; do not edit the request, audits, `memory/project-todo.md`, `docs/HANDOVER.md`, `CHANGELOG.md`, frozen specs, or historical raw evidence.
+4. Write a receipt with exact paths, commands, hashes, tests, deviations, and blockers. Propose interpretations, but leave the final evidence/Gate verdict to Codex audit.
+
+If the task is `DRAFT`, unsealed, has issuance blockers, or needs broader authority, stop and report the blocker. Do not silently repair the contract.
+
 ## Build
 
 ```bash
@@ -75,6 +86,7 @@ Project skills use the standard `SKILL.md` layout. The canonical source is `.age
 
 | Skill | Use for |
 |---|---|
+| `josim-handoff` | Work with hash-sealed task contracts: Claude writes ACK/receipts; Codex writes audits |
 | `josim-experiment` | Create/run/sweep/reproduce `.cir` experiments with immutable evidence |
 | `josim-evidence-audit` | Interpret phase, voltage area, SFQ claims, JTL reception and Gate verdicts |
 | `josim-viz` | Plot CSV/DAT waveforms without upgrading plots into physical proof |
@@ -82,4 +94,4 @@ Project skills use the standard `SKILL.md` layout. The canonical source is `.age
 | `josim-project-summary` | Persist summaries, handovers, memory and material history |
 | `josim-skill-router` | Route broad tasks that span several of the workflows above |
 
-The repository-wide invariants are in `AGENTS.md`. Do not require external plugin skills unless they are actually available in the current runtime.
+The repository-wide invariants are in `AGENTS.md`; the full delegation protocol is in `research/WORKFLOW.md`. Do not require external plugin skills unless they are actually available in the current runtime.

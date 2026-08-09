@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://josim-bvm.local/schemas/execution-ack.schema.json",
+  "title": "JoSIM handoff execution acknowledgement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "document_type",
+    "schema_version",
+    "task_id",
+    "revision",
+    "attempt_id",
+    "workflow_state",
+    "created_at",
+    "executor",
+    "bindings",
+    "decision",
+    "preflight",
+    "understanding",
+    "planned_commands",
+    "expected_changed_paths",
+    "blockers",
+    "deviations"
+  ],
+  "properties": {
+    "protocol": { "const": "josim-handoff/v1" },
+    "document_type": { "const": "execution_ack" },
+    "schema_version": { "const": 1 },
+    "task_id": { "$ref": "#/$defs/task_id" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "attempt_id": { "$ref": "#/$defs/attempt_id" },
+    "workflow_state": { "enum": ["ACKED", "BLOCKED"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "executor": { "$ref": "#/$defs/actor" },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request_sha256"],
+      "properties": {
+        "request_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "decision": { "enum": ["ACCEPTED", "BLOCKED"] },
+    "preflight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed_git_head",
+        "dirty_paths",
+        "scope_accepted",
+        "required_skills_available"
+      ],
+      "properties": {
+        "observed_git_head": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+        "dirty_paths": { "$ref": "#/$defs/path_list" },
+        "scope_accepted": { "type": "boolean" },
+        "required_skills_available": { "type": "boolean" }
+      }
+    },
+    "understanding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["objective", "non_goals", "stop_conditions"],
+      "properties": {
+        "objective": { "type": "string", "minLength": 1 },
+        "non_goals": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "stop_conditions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "planned_commands": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "expected_changed_paths": { "$ref": "#/$defs/path_list" },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "deviations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision": { "const": "ACCEPTED" } },
+        "required": ["decision"]
+      },
+      "then": {
+        "properties": {
+          "workflow_state": { "const": "ACKED" },
+          "blockers": { "maxItems": 0 },
+          "preflight": {
+            "properties": {
+              "scope_accepted": { "const": true },
+              "required_skills_available": { "const": true }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "decision": { "const": "BLOCKED" } },
+        "required": ["decision"]
+      },
+      "then": {
+        "properties": {
+          "workflow_state": { "const": "BLOCKED" },
+          "blockers": { "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^JH-[0-9]{8}-[A-Z0-9][A-Z0-9-]*-[0-9]{3}$"
+    },
+    "attempt_id": { "type": "string", "pattern": "^A[0-9]{2,}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!\\./)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"
+    },
+    "path_list": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/repo_path" },
+      "uniqueItems": true
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "id"],
+      "properties": {
+        "role": { "const": "CLAUDE_CODE" },
+        "id": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

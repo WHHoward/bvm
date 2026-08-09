@@ -39,6 +39,11 @@ JoSIM/
 │   ├── HANDOVER.md     ← 会话交接（新会话第一读）★
 │   ├── paper/          ← 论文证据链 + 素材
 │   └── superpowers/    ← specs/（设计）+ plans/（实施计划）
+├── research/           ← Codex–Claude 任务合同与审计控制层
+│   ├── WORKFLOW.md     ← 完整角色、状态与生命周期说明
+│   ├── CLAUDE_EXECUTOR.md ← Claude Code 执行入口
+│   ├── schemas/        ← request/ACK/receipt/audit 机器约束
+│   └── tasks/          ← 每项任务的冻结合同、尝试和审计（不复制 raw）
 ├── memory/             ← 项目知识库（MEMORY.md 索引带状态标注）
 ├── arti/               ← 参考论文/PDF
 ├── .agents/skills/     ← 项目 Skills 唯一规范源
@@ -57,6 +62,8 @@ JoSIM/
 | 失效 v1 指标（禁作 Gate） | `scripts/sfq_metrics.py` |
 | 实验工作流 | `.agents/skills/josim-experiment/` |
 | 证据审计 | `.agents/skills/josim-evidence-audit/` |
+| Codex–Claude 任务交接 | `research/WORKFLOW.md` + `.agents/skills/josim-handoff/` |
+| Claude 执行入口 | `research/CLAUDE_EXECUTOR.md` |
 | JJ 模型 | `circuits/models/jjmit.cir` |
 | 元件库索引 | `circuits/standard/INDEX.md` + `circuits/INDEX.md` |
 | 历史基线入口 | `test/final/single_bvm_qb/BASELINE.md` |
@@ -75,6 +82,7 @@ cd build && cmake .. && make -j$(nproc)
 ### 当前实验入口
 
 ```bash
+# 若由 Codex 委派，先校验 research/tasks/<task-id>/request.yaml 并 ACK；
 # 按 .agents/skills/josim-experiment/SKILL.md 创建唯一 run 目录，
 # 使用已记录的 build/josim-cli 生成不可覆盖的 raw CSV。
 # 物理判定按 .agents/skills/josim-evidence-audit/SKILL.md；

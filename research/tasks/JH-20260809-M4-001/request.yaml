@@ -1,0 +1,162 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260809-M4-001
+revision: 1
+workflow_state: DRAFT
+issued_at: null
+issuer:
+  role: CODEX
+  id: codex-root
+parent_todo_id: M4
+depends_on:
+  - M1
+  - M2
+  - M3
+supersedes: null
+task:
+  kind: IMPLEMENTATION
+  objective: "建立 v2 相位计量的最小可信基础：保留 JoSIM P() 原始 rad，显式派生 turns，并停止把过阈值采样区间命名为 SFQ/事件数。"
+  research_question: "一个独立的 v2 指标实现能否在不引入 M5 窗口/聚类和 M6 电压面积规则的前提下，正确、可测试地完成 raw rad 到 phase turns 的单位层？"
+  non_goals:
+    - "不冻结 METRIC_SPEC_V2 容差。"
+    - "不实现 M5 的稳定窗、零输入控制或事件聚类。"
+    - "不实现 M6 的同一 JJ 电压面积交叉校验。"
+    - "不重算或覆盖 BASELINE、P0、P2、BQ v4 的历史 JSON/CSV。"
+    - "不判定 BQ、DCSFQ、JTL 或系统物理 Gate。"
+    - "不修改或删除失效的 v1 scripts/sfq_metrics.py；它保留为历史证据。"
+  claim_ceiling: implementation_foundation_only_no_physical_gate
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - scripts/sfq_metrics.py
+    - src/Output.cpp
+    - docs/tech_disc.md
+    - docs/ex_usage.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/assets/**
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - research/WORKFLOW.md
+    - research/schemas/**
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  write_paths:
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/**
+    - research/tasks/JH-20260809-M4-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260809-M4-001/request.yaml
+    - research/tasks/JH-20260809-M4-001/baseline/**
+    - research/tasks/JH-20260809-M4-001/audits/**
+    - scripts/sfq_metrics.py
+    - test/final/**
+    - research/schemas/**
+    - memory/project-todo.md
+    - docs/HANDOVER.md
+    - CHANGELOG.md
+  locks:
+    - locks/sfq-metrics-v2-interface
+    - locks/test-metrics
+baseline:
+  git_head: f042ab1d7c392ccac518802db55daa4efd4dddbf
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status:
+    path: research/tasks/JH-20260809-M4-001/baseline/git-status.txt
+    sha256: b41392806e8b0e6e6cf6775fe339c785870912aaf80b2a081a365f68b08566dd
+  scope_hashes:
+    path: research/tasks/JH-20260809-M4-001/baseline/scope-files.sha256
+    sha256: 1c4c8b960ad1891c1fa4e11118eb0d5dd0793454def1fde70531dd835eab5687
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills:
+    - josim-handoff
+    - josim-evidence-audit
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover:
+    status: CURRENT
+    path: docs/HANDOVER.md
+    sha256: 91443b47ee6bc6d04e7465e52613b78dbfaec57bd6190bf0a8737a28a73bbf17
+  metric_spec:
+    status: UNFROZEN
+    path: null
+    sha256: null
+deliverables:
+  - id: D1
+    path: scripts/sfq_metrics_v2.py
+    role: IMPLEMENTATION
+    required: true
+  - id: D2
+    path: test/metrics/test_sfq_metrics_v2.py
+    role: TEST
+    required: true
+  - id: D3
+    path: research/tasks/JH-20260809-M4-001/attempts/**/receipt.yaml
+    role: RECEIPT
+    required: true
+acceptance:
+  - id: AC1
+    condition: "输出同时保留 phase_delta_rad，并以 phase_delta_turns = phase_delta_rad/(2*pi) 显式派生圈数；字段名和帮助文本写明单位。"
+    evidence:
+      - "实现代码审查"
+      - "合成输入单元测试日志"
+  - id: AC2
+    condition: "独立常数断言覆盖 0、+2*pi、-2*pi、+4*pi 和非整数圈，不从被测实现反向生成期望值。"
+    evidence:
+      - "test/metrics/test_sfq_metrics_v2.py"
+      - "测试日志"
+  - id: AC3
+    condition: "任何逐采样阈值统计都只命名为 activity/over-threshold intervals 或 samples；不得输出 fast_events、pulse_count、sfq_count 等事件语义。"
+    evidence:
+      - "输出 key 与 CLI help 审查"
+      - "防回归测试"
+  - id: AC4
+    condition: "实现明确标注 full-trace endpoint delta 只是 M4 单位基础，不能替代 M5 稳定窗/零输入控制或 M6 电压面积，也不能形成物理 Gate。"
+    evidence:
+      - "模块/CLI 文档字符串审查"
+      - "JSON 元数据审查"
+  - id: AC5
+    condition: "v1 scripts/sfq_metrics.py 与 test/final/** 的内容保持不变，所有新增测试可在不运行 JoSIM、不联网和不安装依赖时通过。"
+    evidence:
+      - "基线哈希与最终 diff"
+      - "测试命令、退出码和日志"
+  - id: AC6
+    condition: "execution receipt 完整映射 AC1–AC6，列出所有实际改动、文件哈希、测试、限制、未知与偏离。"
+    evidence:
+      - "当前 attempt 的 receipt.yaml"
+      - "josim-handoff verify-task 输出"
+invalid_conditions:
+  - "任一冻结文件或历史 raw 文件被修改、覆盖、重命名或删除。"
+  - "把 raw P() 数值直接标为 SFQ/flux-quantum count，或省略 rad 到 turns 的 2*pi 换算。"
+  - "把过阈值采样区间/样本数命名或解释成脉冲数、结翻转数或下游 SFQ 接收数。"
+  - "测试期望值由被测换算函数本身生成，形成循环验证。"
+  - "缺少实际改动/日志/产物的哈希或超出授权写路径。"
+inconclusive_conditions:
+  - "若 JoSIM CSV 列语义无法由绑定源码和文档确定，停止推断并报告需要补充的最小证据。"
+stop_conditions:
+  - "需要修改 scope.write_paths 之外的任何路径。"
+  - "需要联网、安装依赖、运行 JoSIM、提交 Git 或删除/覆盖文件。"
+  - "执行环境尚未由 Codex/用户准备好，因而需要 Claude 自行创建或改动 Git worktree。"
+  - "实现需要预先决定 M5 的窗口/聚类规则、M6 的电压面积规则或 M9 的容差。"
+  - "当前 HEAD、dirty 状态或绑定文件哈希与 request 不符。"
+  - "发现另一活动任务占用同一 lock 或写路径。"
+issuance_blockers:
+  - "本轮新增的协调层、skills 和文档尚未提交；当前 base commit 不包含可供独立 Claude worktree 读取的合同。提交协调层后必须重采 baseline、更新 git_head/绑定哈希、清空 blocker、改为 ISSUED 并生成 request.sha256。"

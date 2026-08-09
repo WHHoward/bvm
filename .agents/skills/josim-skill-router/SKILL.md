@@ -1,6 +1,6 @@
 ---
 name: josim-skill-router
-description: Route broad, ambiguous, or multi-part JoSIM/BVM repository work to the smallest applicable project skills. Use when deciding how to handle a task spanning experiments, phase/SFQ evidence, visualization, project status, or handover; do not use for a single obvious action already covered by one named skill.
+description: Route broad, ambiguous, or multi-part JoSIM/BVM repository work to the smallest applicable project skills. Use when deciding how to handle a task spanning delegated handoffs, experiments, phase/SFQ evidence, visualization, project status, or summaries; do not use for a single obvious action already covered by one named skill.
 ---
 
 # JoSIM 工作流路由
@@ -14,6 +14,7 @@ description: Route broad, ambiguous, or multi-part JoSIM/BVM repository work to 
 
 | 任务 | 使用的项目 skill |
 |---|---|
+| Codex 与 Claude 之间签发、ACK、执行回执或审计任务合同 | `josim-handoff`；涉及实验或物理结论时再组合下面对应 skill |
 | 创建、修改、运行或扫描 `.cir` 实验 | `josim-experiment` |
 | 解释 `P()`、SFQ 数、相位、电压面积、JTL 接收或 Gate | `josim-evidence-audit` |
 | 绘制 CSV/DAT 波形 | `josim-viz`；若还要物理判定，再加 `josim-evidence-audit` |
@@ -26,6 +27,7 @@ description: Route broad, ambiguous, or multi-part JoSIM/BVM repository work to 
 - 在 Phase −1 的 M4–M11 完成前，不得把 `scripts/sfq_metrics.py` 或 `scripts/run_exp.sh` 的旧 JSON 当作物理 Gate。
 - 仅在当前运行时确实可用时调用外部 skill；不得把不存在的插件或命令写成强制依赖。
 - 独立且文件不冲突的重任务可以并行；主代理负责证据审阅和最终判定。
+- 已签发 handoff 的 request 是授权边界；执行代理不得自行扩大写路径、权限或结论层级。
 - **并行 subagent 必须文件隔离（2026-08-06 起，用户要求）**：各 agent 只写自己前缀的文件，提交时只 `git add` 自己的文件（防止并行提交竞态）；派发上下文配方：HANDOVER → 相关 skill/契约 → 任务全文 → 冻结口径（相对路径、不可覆盖、禁 sed 生成变体）。
 - 完成声明必须附验证结果；未知、缺证据或步长不收敛时使用“不确定”，不得挑选有利结果。
 

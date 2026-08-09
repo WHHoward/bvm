@@ -31,3 +31,11 @@ These rules apply to the whole repository.
 - Status, review, explanation, and diagnosis requests are read-only unless the user also requests changes.
 - Do not update every summary file mechanically. Update the lowest evidence layer first and only the higher layers affected by the change.
 - Cleanup or deletion requires an explicit, exact target; ordinary project summarization never authorizes deletion.
+
+## Codex–Claude handoff
+
+- Use `research/WORKFLOW.md` and `.agents/skills/josim-handoff/` when Codex delegates implementation or experiment execution to Claude Code.
+- Codex owns SHA-256-sealed task requests and audit verdicts; Claude owns preflight ACKs, in-scope implementation/run artifacts, and execution receipts. The hash seal detects content changes but is not identity authentication. The user retains final approval for route changes, metric freezes, and paper claims.
+- An `ISSUED` request is immutable. Claude must ACK before editing, remain inside `scope.write_paths`, and stop when authorization or scope must expand.
+- Keep execution, artifact validity, physical verdict, and audit disposition separate. A correctly executed experiment may validly return physical `FAIL`; an invalid artifact is not a physical failure.
+- Update `memory/project-todo.md`, `docs/HANDOVER.md`, or paper-level claims only after an accepted audit. If Codex changes core task outputs, record it as co-execution and require another independent review.

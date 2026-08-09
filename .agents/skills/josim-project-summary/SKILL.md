@@ -31,12 +31,13 @@ description: Produce or persist evidence-backed JoSIM/BVM project summaries, han
 用户要求记录、归档或交接，或者当前实现确实产生了需要保存的重大变化时：
 
 1. 先核验产物、测试和工作树，保留用户的既有修改。
-2. 先更新对应实验事实层；不要从上层摘要反向生成原始事实。
-3. 按完成标准更新 `memory/project-todo.md`，不得把不确定结果标为完成。
-4. 仅在项目状态或路线确有变化时更新 `memory/project-summary.md` 和 `docs/HANDOVER.md`。
-5. 新增知识文件时才更新 `memory/MEMORY.md`；不要批量触碰无关 memory 文件。
-6. 在 `CHANGELOG.md` 顶部追加一个带当前日期的材料性变更条目；避免为同一工作重复追加。
-7. 运行文档/脚本的相关验证和 `git diff --check`。
+2. 对 `research/tasks/` 交付，先核验 request/ACK/receipt/audit 绑定；只有 `ACCEPTED` 审计才能上推为项目事实。
+3. 先更新对应实验事实层；不要从上层摘要反向生成原始事实。
+4. 按完成标准更新 `memory/project-todo.md`，不得把不确定结果标为完成。
+5. 仅在项目状态或路线确有变化时更新 `memory/project-summary.md` 和 `docs/HANDOVER.md`。
+6. 新增知识文件时才更新 `memory/MEMORY.md`；不要批量触碰无关 memory 文件。
+7. 在 `CHANGELOG.md` 顶部追加一个带当前日期的材料性变更条目；避免为同一工作重复追加。
+8. 运行文档/脚本的相关验证和 `git diff --check`。
 
 ## 写作规则
 

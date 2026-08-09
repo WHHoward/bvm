@@ -1,0 +1,383 @@
+---
+title: JoSIM × BVM 双代理研究工作流
+document_type: workflow
+protocol: josim-handoff/v1
+status: active
+last_updated: 2026-08-09
+---
+
+# JoSIM × BVM 双代理研究工作流
+
+本文定义项目中“用户作最终裁决、Codex 负责任务设计与独立审计、Claude Code 负责受约束执行”的协作协议。目标不是让代理彼此转述结论，而是让每一步都有冻结输入、明确权限、不可变回执和可复核的原始证据。
+
+这是一份**协作与溯源规范**，不是物理计量规范。它不定义 SFQ 阈值、相位容差或系统 Gate。当前 `memory/project-todo.md` 中 M4–M11 尚未完成；`METRIC_SPEC_V2.md` 尚未冻结时，不得借本工作流宣布相关物理 Gate 已通过。
+
+## 1. 一句话模型
+
+```text
+用户给出研究方向和最终授权
+        ↓
+Codex 把下一项工作冻结成带哈希的任务合同
+        ↓
+Claude 先 ACK，再在限定路径内实现/运行并交付 receipt
+        ↓
+Codex 从合同、diff、原始数据开始独立审计
+        ↓
+用户对路线改变、指标冻结和论文主张作最终裁决
+```
+
+核心原则是：**执行完成不等于数据有效，数据有效不等于物理通过，物理失败也不等于执行失败。**
+
+## 2. 权威来源与冲突处理
+
+每次任务都必须绑定以下来源，而不是只依赖聊天上下文：
+
+1. `AGENTS.md`：全仓库不可违反的计量、实验和读写边界；
+2. `memory/project-todo.md`：研究阶段、依赖关系和完成标准的任务权威；
+3. `docs/HANDOVER.md`：当前可信状态、已知事故和行动顺序；
+4. 已签名的 `research/tasks/<task-id>/request.yaml`：本次执行的目标、权限和交付物；
+5. 任务列出的相关 skill：具体实验、证据审计或文档流程。
+
+任务合同只能在上述边界内缩小本次范围，不能放宽 `AGENTS.md`，也不能把 todo 中未完成的 Gate 写成已完成。发现冲突时，Claude 必须停止并以 `BLOCKED` 回执；只有用户或 Codex 重新签发合同后才能继续。
+
+聊天指令若改变已签名合同，不视为口头修订。必须签发新的 task request，并用新 request 的 `supersedes: {task_id, revision}` 指向旧合同。旧 `request.yaml` 和签名保持字节级不变；它的逻辑状态由替代合同推导为 `SUPERSEDED`。
+
+## 3. 角色、职责与独立性
+
+| 角色 | 主要职责 | 不应自行做的事 |
+|---|---|---|
+| 用户（研究负责人） | 决定研究方向；批准路线切换、指标冻结、论文级主张和重大范围扩展 | 不需要手工核对每个 CSV 样本或每条命令 |
+| Codex（指挥/审计者） | 拆解 todo、设计可证伪任务、冻结合同、安排依赖与并行、独立复算、出审计裁决、同步上层状态 | 在未披露的情况下替 Claude 修改核心实现或原始实验产物 |
+| Claude Code（执行者） | 做预检与 ACK；严格按合同改代码/网表、运行实验和测试；保存原始证据；提交 execution receipt | 修改合同或审计结论；自行扩大权限；把自己的解释写成最终 Gate |
+| CI/脚本（机械判定器） | 校验 schema、哈希、路径范围、测试和确定性规则 | 代替物理审计或因果解释 |
+
+### 3.1 独立审计边界
+
+Codex 应保持“未实现、只审计”的角色分离。如果 Codex 为解除阻塞而修改了本次任务的核心代码、网表或原始产物，必须在审计中记录：
+
+```yaml
+independence:
+  mode: CO_EXECUTOR
+  codex_modified_execution_artifacts: true
+  reviewer: <后续独立复核者>
+```
+
+这时不能再把同一轮 Codex 审计称为独立复核，应由 Claude 反向复核，或安排第三方/后续独立审计。只运行只读校验、独立计算或新增审计文件，不算参与实现。
+
+## 4. 文件所有权
+
+默认所有权如下。合同可以进一步缩小 Claude 的写入范围，但不能由 Claude 自行扩大。
+
+| 文件或目录 | 写入者 | 规则 |
+|---|---|---|
+| `research/tasks/<id>/request.yaml`、`request.sha256` | Codex | 签发后不可原地修改 |
+| `research/tasks/<id>/baseline/` | Codex | 发行时冻结 HEAD、dirty 快照和范围哈希 |
+| `research/tasks/<id>/attempts/<attempt>/ack.yaml` | Claude | 任何实现或实验前写；写后不可覆盖 |
+| `research/tasks/<id>/attempts/<attempt>/receipt.yaml` | Claude | 记录实际动作和产物；需要修正时使用新 attempt |
+| 任务授权的代码、网表和测试路径 | Claude | 只可写 `scope.write_paths` |
+| `test/final/<route>/runs/<run-id>/` 等运行目录 | Claude | 每次新建唯一 run ID；原始数据 append-only |
+| `research/tasks/<id>/audits/<audit>/verdict.yaml` | Codex | 基于原始证据独立生成；不覆盖旧审计 |
+| `memory/project-todo.md`、`docs/HANDOVER.md`、`CHANGELOG.md` | Codex | 仅在审计接受并确有状态变化后更新 |
+| `AGENTS.md`、冻结指标规范、论文主张 | 用户批准，Codex维护 | Claude 在普通执行任务中不得修改 |
+
+Claude 不得修改 request、baseline、audit、todo、HANDOVER 或 CHANGELOG 来让任务“看起来通过”。需要更改这些文件时，只能在 receipt 中提出建议。
+
+## 5. 目录与不可变记录
+
+协调层使用下列结构：
+
+```text
+research/
+├── WORKFLOW.md
+├── CLAUDE_EXECUTOR.md
+├── schemas/
+│   ├── task-request.schema.json
+│   ├── execution-ack.schema.json
+│   ├── execution-receipt.schema.json
+│   └── audit-verdict.schema.json
+└── tasks/
+    └── <task-id>/
+        ├── request.yaml
+        ├── request.sha256
+        ├── baseline/
+        │   ├── git-status.txt
+        │   └── scope-files.sha256
+        ├── attempts/
+        │   └── A01/
+        │       ├── ack.yaml
+        │       ├── receipt.yaml
+        │       └── ...任务要求的实现日志或索引
+        └── audits/
+            └── C01/
+                └── verdict.yaml
+```
+
+协调层只保存合同、状态、索引和审计。大体积实验事实仍按 `josim-experiment` 保存到唯一 run 目录；receipt 引用路径与 SHA-256，不把 CSV 内容复制进协调层。
+
+任务、attempt 和 audit 都是追加式记录：
+
+- 合同未签发前可以处于 `DRAFT`；
+- `ISSUED` 后必须有匹配的 `request.sha256`；
+- 同一合同重跑使用 `A02`、`A03`，不得覆盖 `A01`；
+- 合同目标、权限、验收条件或 claim ceiling 改变时，签发带新 task ID 的 request，并用 `supersedes` 指向旧 task/revision；旧合同原文和签名永不改写；
+- 重审使用 `C02`，不得改写 `C01`；
+- 原始或失败实验不得因结论不理想而删除、覆盖或“整理掉”。
+
+## 6. 四个互不替代的结果维度
+
+不要用一个 `status: pass` 混合表示不同事情。完整交接链必须分别回答四个问题：
+
+| 维度 | 允许值 | 回答的问题 |
+|---|---|---|
+| `execution_status` | `COMPLETED` / `BLOCKED` / `DEVIATED` | Claude 是否完成了合同约定的动作？ |
+| `artifact_status` | `VALID` / `INVALID` / `NOT_AUDITED` | 产物是否完整、可追溯并适合用来判断？ |
+| `physical_verdict` | `PASS` / `FAIL` / `INCONCLUSIVE` / `NOT_APPLICABLE` | 有效证据对预注册物理主张说明什么？ |
+| `audit_disposition` | `ACCEPTED` / `REWORK_REQUIRED` / `REJECTED` | Codex 是否接受这次交付，以及下一步是什么？ |
+
+典型组合：
+
+- `COMPLETED + VALID + PASS + ACCEPTED`：执行和证据均支持预注册主张；仍只能声称到合同的 `claim_ceiling`。
+- `COMPLETED + VALID + FAIL + ACCEPTED`：实验正确完成，可信地得到负面结果。这是有效研究成果，不应要求 Claude “调到通过”。
+- `COMPLETED + VALID + INCONCLUSIVE + ACCEPTED`：执行正确，但在已测条件下证据天然不足以区分解释；接受这次结果，并设计下一项最小判别实验。
+- `COMPLETED + INVALID + NOT_APPLICABLE + REWORK_REQUIRED`：文件缺失、方向错误、哈希不符或数据损坏，不能据此判电路失败。
+- `DEVIATED + VALID + INCONCLUSIVE + REWORK_REQUIRED`：可能保留探索价值，但偏离合同的结果不能直接完成原任务。
+
+其中 `execution_status` 固化在 receipt；audit verdict 绑定该 receipt，并填写 `artifact_status`、`physical_verdict` 和 `audit_disposition`。四者可以位于不同的不可变文件中，但必须能沿 SHA-256 绑定链同时读出。
+
+### 6.1 `FAIL`、`INCONCLUSIVE` 与 `INVALID`
+
+- `FAIL` 要求数据本身有效，并且至少一个预先声明的必要条件明确不满足。
+- `INCONCLUSIVE` 表示有效证据不能决定主张，例如无冻结容差、步长改变分类或结果落在事先定义的不可判区间。
+- `INVALID` 描述证据载体有问题，例如缺关键列、NaN、时间轴损坏、方向/网表不匹配、输出被覆盖或来源无法追溯。它不是物理判定。
+
+若 Claude 漏做合同明确要求的控制或测试，通常是 `REWORK_REQUIRED`，而不是把遗漏包装成已完成的 `INCONCLUSIVE`。若合同完整执行后，物理上仍存在预先允许的歧义，则可以 `ACCEPTED + INCONCLUSIVE`。
+
+## 7. 工作流状态机
+
+工作流状态描述记录走到哪里；它不同于上节的四维结果：
+
+```text
+BACKLOG
+  → DRAFT
+  → ISSUED
+  → ACKED
+  → RUNNING
+  → DELIVERED ─→ AUDITED ─→ CLOSED
+       │             ├─→ REWORK → 新 attempt
+       │             └─→ REJECTED
+       ├─→ BLOCKED
+       └─→ DEVIATED
+
+任一已发行合同 ─→ 新 request 的 supersedes 指针 → 逻辑 SUPERSEDED
+```
+
+状态由不可变文件推导，不维护一个容易被并发覆盖的共享 `status.yaml`。`SUPERSEDED` 也由新 request 的 `supersedes` 指针推导，绝不靠修改旧 request：
+
+- 有已签名 request：`ISSUED`；
+- 有接受任务的 ack：`ACKED`；
+- 执行中但无 receipt：`RUNNING`；
+- 有 receipt：`DELIVERED`、`BLOCKED` 或 `DEVIATED`；
+- 有 verdict：`AUDITED`；
+- verdict 为 `ACCEPTED` 且上层状态已按需同步：`CLOSED`。
+
+## 8. 从请求到关闭的标准流程
+
+### 8.1 Codex：从 todo 生成可证伪请求
+
+Codex 先读取 todo 的依赖和完成标准，再把一个任务缩小为一次可以审计的合同。request 至少声明：
+
+- 唯一 `task_id`、revision、父 todo ID 和依赖；
+- 一个研究问题、目标、非目标和允许的最强主张 `claim_ceiling`；
+- `read_paths`、`write_paths`、`frozen_paths` 和互斥锁；
+- 基线 Git HEAD、dirty 策略、状态快照和范围文件哈希；
+- 是否允许编辑、运行 JoSIM、联网、安装依赖、创建 worktree、提交、删除或覆盖；
+- 必读文件、所需 skills，以及绑定规范/交接文档的路径与哈希；
+- 交付物、逐条验收条件、无效条件、不可判条件和停止条件。
+
+研究问题应能被结果反驳。例如“实现指标 v2 的单位基础，并证明合成相位台阶按 rad→圈转换”可审计；“把项目做正确”不可审计。
+
+request 必须明确 `claim_ceiling`。实现型 M4 任务即使测试通过，也只能支持“计量代码基础满足这些单元测试”，不能提前支持 JTL 接收、系统 Gate 或论文结论。
+
+### 8.2 Codex：签发并冻结请求
+
+签发前：
+
+1. 校验 request schema；
+2. 捕获 HEAD、dirty 列表和本次作用域文件哈希；
+3. 检查写路径与其他活动任务无冲突；
+4. 把 `workflow_state` 设为 `ISSUED`；
+5. 生成 `request.sha256`。
+
+只有 `ISSUED` 且哈希匹配的请求可以执行。`DRAFT`、缺少签名或签名不符都不具备执行授权，也不得生成协议 ACK。
+
+这里和工具命令中的“签名”指 SHA-256 内容封存与链式篡改检测，不是带私钥的数字签名，不能单独证明文件由 Codex 创建。身份与授权信任仍依赖仓库文件所有权、独立 worktree 和 Git diff/审查。
+
+仓库工具入口为：
+
+```bash
+python3 .agents/skills/josim-handoff/scripts/handoff.py validate \
+  research/tasks/<task-id>/request.yaml
+python3 .agents/skills/josim-handoff/scripts/handoff.py sign-request \
+  research/tasks/<task-id>/request.yaml
+python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task \
+  research/tasks/<task-id>
+```
+
+以脚本 `--help` 和 schema 为机械事实；文档示例不能替代校验结果。
+
+当前 `verify-task` 机械检查 schema、request 签名、已绑定合同文件、ACK/receipt/verdict 哈希链、receipt 自报 changed paths 的范围、验收项映射，以及当前仓库中自报 change/artifact/log 文件的 SHA-256。它不读取实时 HEAD/dirty 状态，不调度 locks/依赖，也不能发现 receipt 遗漏的实际 Git diff 或证明某个命令确实按记录执行。Claude 必须完成实时预检，Codex 必须从工作树和产物独立复核；命令返回 `VERIFIED` 不能单独证明执行合规或证据有效。`DRAFT` 会以非零退出码报错，而不是执行授权。
+
+### 8.3 Claude：ACK 预检
+
+Claude 只有在 request 已是 `ISSUED` 且签名有效后，才进入 ACK 阶段。`DRAFT` 没有授权执行，也不得生成 ACK，只需在会话中报告等待签发。对于已有效签发的请求，Claude 在任何写入实现路径或运行实验之前：
+
+1. 读取 `AGENTS.md`、request 的 `read_first`、相关 skill；
+2. 校验 request schema、签名和基线绑定；
+3. 检查当前 HEAD、预存 dirty 文件、依赖、工具版本和路径权限；
+4. 检查 write paths、locks 是否与其他活动任务冲突；
+5. 将目标、非目标和停止条件写入 `understanding`，将命令和路径分别写入 `planned_commands` 与 `expected_changed_paths`；发现的风险或不一致写入 `blockers`/`deviations`。
+
+预检全部满足时写 `decision: ACCEPTED`；有效合同在 HEAD、dirty、依赖、工具、scope 或 lock 预检中失败时，写 `decision: BLOCKED` 和精确原因，然后停止。ACK 是 Claude 对冻结合同的确认，不是对物理结论的认可。
+
+ACK 后发现误解不能覆盖原文件；应新增 attempt，或请求 Codex supersede 合同。
+
+### 8.4 Claude：受约束执行
+
+执行期间：
+
+- 只修改 `scope.write_paths`，只读取允许的路径；
+- 遵守 authorization 布尔值；未明确允许即视为禁止；
+- 不使用 `git add -A`、`git reset --hard`、`git clean` 或隐式 stash；
+- 不覆盖已存在的 raw CSV、netlist snapshot、manifest、日志或失败运行；
+- 实验使用唯一 run ID，并按 `josim-experiment` 保存 JoSIM 版本/二进制哈希、include 闭包、时间步、方向、窗口、控制和原始输出；
+- 不以图像、导数过阈值样本或旧 `scripts/sfq_metrics.py` 作为物理 Gate；
+- 触发停止条件、需要新权限或必须改变合同假设时，立即停止并回执，不可自行“合理扩大范围”。
+
+合同允许探索性诊断时，探索产物必须单独标记，不得混入验收证据。
+
+Codex 签发任务时必须把 Claude 要写入的 attempt 目录、命令日志和 receipt 路径纳入 `scope.write_paths`；若遗漏，Claude 不得把协议文件当作隐含例外，应返回 `BLOCKED`。
+
+### 8.5 Claude：提交 execution receipt
+
+receipt 记录**实际发生了什么**，而不是计划发生什么。至少包括：
+
+- request 与 ACK 的哈希、attempt ID 和 receipt 创建时间；
+- `execution_status` 及阻塞/偏离原因；
+- 实际执行的命令、退出码和重要 stderr/warning；
+- 所有执行产物的 changed paths、新增 run ID、产物路径和 SHA-256；ACK 已由 `ack_sha256` 绑定，当前 receipt 不能自哈希，所以这两个协议封装文件不列入 `changes[]`；
+- 测试名称、结果、未运行项及原因；
+- 逐条 acceptance evidence 映射；
+- Claude 的 `observations`、`interpretations`、`unknowns` 和**提议的**物理判定；
+- 尚未解决的风险，记录在 `limitations`、`deviations` 或 `blockers`。
+
+Claude 可以提议 `PASS/FAIL/INCONCLUSIVE`，但不能给出最终审计裁决，也不能更新 todo/HANDOVER 证明自己已完成。
+
+### 8.6 Codex：按固定顺序独立审计
+
+为避免被执行者叙事锚定，Codex 应按下列顺序审计：
+
+1. **合同和溯源**：request/ACK/receipt schema、哈希链、HEAD、依赖和权限；
+2. **范围和实现**：changed paths、diff、网表连接、端点、方向、参数和测试代码；
+3. **原始产物有效性**：退出码、solver warning、CSV 表头、NaN、时间轴、终点、manifest、二进制/输入哈希；
+4. **独立计算**：从 raw CSV 重算关键量，运行独立测试，检查控制和步长；
+5. **科学证据**：调用 `josim-evidence-audit`，区分 Artifact/Activity/Local/Downstream/System 层级；
+6. **最后才读 Claude 的解释**：核对其中哪些是观察、推断或超出 claim ceiling 的主张。
+
+verdict 必须绑定包含 `execution_status` 的 receipt，填写其余三个结果维度，逐条裁决 acceptance，并分别记录 `accepted_claims`、`rejected_claims` 和 `next_actions`。额外的 `scope_status` 只表示合同范围合规性，不替代产物或物理判定。`REWORK_REQUIRED` 要在 `required_rework` 中指出缺少的最小动作；`REJECTED` 要指出无法通过重跑修复的合同或诚信问题。每次重审使用新的 `audit_id`（例如 `C02`），不覆盖已有 verdict。
+
+### 8.7 Codex 与用户：关闭和同步
+
+只有审计为 `ACCEPTED` 后，Codex 才根据真实影响更新上层状态：
+
+- 达到 todo 完成标准时才更新 `memory/project-todo.md`；
+- 当前可信状态或行动顺序变化时才更新 `docs/HANDOVER.md`；
+- 材料性变化按项目规则写入 CHANGELOG；
+- 路线切换、指标规范冻结和论文主张交由用户最终批准。
+
+有效的 `FAIL` 或 `INCONCLUSIVE` 也可以关闭一次任务，但不一定完成其父 todo；Codex 应把它转化为明确的下一项判别任务，而不是篡改完成标准。
+
+## 9. 重试、阻塞与偏离
+
+| 情况 | 应采取的动作 |
+|---|---|
+| 同一合同因瞬时问题重跑 | 新建 `A02`，保留 `A01` |
+| 合同目标、范围、权限或验收条件变化 | 签发新 task request，以 `supersedes` 指向旧 task/revision；旧文件保持不变 |
+| 开始前缺依赖、基线不符或路径冲突 | ACK=`BLOCKED`，不执行 |
+| 执行中发现需修改冻结路径或联网 | 停止，receipt=`BLOCKED` 或 `DEVIATED` |
+| 已产生有用结果但偏离预注册条件 | 保留产物，receipt=`DEVIATED`，不得冒充原任务完成 |
+| 电路在有效实验中未达到 Gate | `COMPLETED + VALID + FAIL`，不是阻塞 |
+| 有效结果无法区分两种解释 | `INCONCLUSIVE`，设计下一项单变量判别任务 |
+
+“遇到困难”本身不是扩大扫描、修改多个参数或改变阈值的授权。停止条件应在 request 中预注册，包括最大运行数、时间/资源预算、solver 异常、越界写入风险和分类对步长不稳定等。
+
+## 10. Git、worktree 与 dirty 工作树
+
+### 10.1 默认使用独立分支/worktree
+
+执行任务优先由 Codex/用户从 `baseline.git_head` 创建约定分支 `claude/<task-id>` 和独立 worktree，再交给 Claude，使协调文档、实现和其他实验不会混在同一 diff 中。Claude 只有在 `authorization.create_worktree: true` 时才能自行创建。独立 build/output 目录必须列入该任务的 write paths/deliverables/locks；它们不是 request schema 之外的隐式字段。
+
+创建 worktree 前，request 必须绑定可访问的 base commit。若协调层尚未提交，Codex 应先把任务保留为 `DRAFT`，或用明确的只读传递方式把已签名 request 交给 worktree；不能假装未提交文件属于 base commit。
+
+是否允许 commit 由 request 的 authorization 决定。允许 commit 不等于允许 push、merge 或修改未授权路径。
+
+### 10.2 dirty 工作树策略
+
+Claude 不得用 stash/reset/clean 消除用户或其他代理的修改。request 必须选择一种策略：
+
+- `REQUIRE_CLEAN`：任何预存改动都阻塞执行；
+- `ALLOW_NONOVERLAP`：允许预存改动，但它们不得与 read/write/frozen 作用域冲突；
+在 `ALLOW_NONOVERLAP` 下，Claude 必须把发行时的 `baseline/git-status.txt` 与当前状态比较；新出现的非本任务改动、作用域重叠或无法归属的文件都应阻塞。审计 diff 应相对冻结基线和 scope hashes，而不是假定 `git diff` 中所有内容都来自 Claude。
+
+## 11. 并行执行规则
+
+只有同时满足以下条件的任务才可并行：
+
+1. 写路径不相交；
+2. raw output/run ID 不相交；
+3. build 目录不共享；
+4. request 的 `locks` 不相交；
+5. 两者不修改同一规范、todo、HANDOVER 或公共基线；
+6. 一项任务的验收不依赖另一项尚未审计的结果。
+
+只读相同文件通常可以并行，但双方必须绑定相同哈希。若一个任务会改变另一个任务的输入，就必须串行并重新签发后者基线。
+
+当前 Phase −1 中，M4、M5、M6 都触及同一计量接口和语义，应串行审计；M12 若写路径、测试和 build 目录完全独立，可以与 M4 的实现并行。是否真正并行仍以各 request 的 scope 和 locks 为准。
+
+`locks` 是签发者检查的声明式冲突键，不是操作系统锁或租约。v1 不维护可并发覆盖的中央锁文件；Codex 在签发时检查已知活动 request，Claude 检查仓库中可见合同。无法确认是否冲突时按 `BLOCKED` 处理。
+
+## 12. 与现有项目 skills 和文档的集成
+
+| 能力 | 负责什么 | 不负责什么 |
+|---|---|---|
+| `josim-handoff` | request/ACK/receipt/verdict 生命周期、schema、哈希链、路径权限和交接 | 不发明物理阈值，不替代实验和证据审计 |
+| `josim-experiment` | 预注册实验、匹配控制、唯一 run、JoSIM provenance、不可变 raw 和步长检查 | 不签发任务合同，不给最终系统 Gate |
+| `josim-evidence-audit` | 从原始 CSV/网表审计相位、同 JJ 电压面积、JTL 传播、状态保持和三态物理结论 | 不把可视化或执行回执当作原始证据 |
+| `josim-todo-manager` | 读取依赖、完成标准和下一项未阻塞工作；审计接受后更新状态 | 不因 receipt=`COMPLETED` 自动勾选任务 |
+| `josim-project-summary` | 在材料性变化后同步摘要、HANDOVER 和历史 | 不反向生成原始实验事实 |
+| `docs/HANDOVER.md` | 告诉新会话当前可信事实、事故边界和优先顺序 | 不替代具体 request 或 raw run |
+
+一次物理实验通常同时使用 `josim-handoff` 和 `josim-experiment`；Codex 审计物理主张时再使用 `josim-evidence-audit`。纯实现任务若不运行或解释 JoSIM 数据，可以只使用 handoff 与相应代码测试。
+
+## 13. 当前落地顺序
+
+1. 先用 schema 和校验脚本验证一个 M4 任务包的合同链；
+2. M4 仍按 `memory/project-todo.md` 的完成标准执行和审计，不预设其完成；
+3. 经过 2–3 个真实任务后，再评估是否需要自动生成全局任务台账；
+4. 在此之前不搬迁历史实验目录，不重写旧 raw，不制造一个可并发覆盖的中央状态文件。
+
+M4 任务若仍处于 `DRAFT` 或缺少有效签名，Claude 必须等待 Codex 正式签发。工作流基础设施完成不代表 M4、`METRIC_SPEC_V2` 或任何 BQ/DCSFQ Gate 已完成。
+
+## 14. 快速审计清单
+
+Codex 在接受一份交付前至少确认：
+
+- [ ] request 为 `ISSUED`，哈希链完整，未原地修改；
+- [ ] ACK 发生在首次实现写入/实验运行之前；
+- [ ] changed paths、权限、locks 和 dirty 策略均合规；
+- [ ] 原始/失败数据没有被覆盖或删除；
+- [ ] 命令、退出码、JoSIM provenance、输入闭包和产物哈希可复核；
+- [ ] acceptance 每一项都有 raw evidence，不只是一段解释；
+- [ ] Artifact/Activity/Local/Downstream/System 没有跨层升级；
+- [ ] `INVALID`、`FAIL`、`INCONCLUSIVE` 和执行阻塞没有混用；
+- [ ] 结论不超过 `claim_ceiling`；
+- [ ] 只有审计接受后才同步 todo/HANDOVER，并保留未知项。

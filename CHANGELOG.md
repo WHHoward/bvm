@@ -4,6 +4,27 @@
 
 ---
 
+## 2026-08-09 — Codex–Claude 可审计任务交接层
+
+### 做了什么
+
+- 新增 `josim-handoff` 项目 skill，并通过 Claude 兼容目录共享同一规范源
+- 新增 `research/WORKFLOW.md` 与 `research/CLAUDE_EXECUTOR.md`，明确用户、Codex、Claude Code 和机械校验器的权限与文件所有权
+- 新增 task request、execution ACK、execution receipt、audit verdict 四类 JSON Schema、YAML 模板和哈希/范围校验工具
+- 将交接规则接入 `AGENTS.md`、`CLAUDE.md`、实验/证据/任务/总结 skills、HANDOVER 和项目结构记忆
+- 创建 Phase −1 M4 的试点任务草案；协调层提交并重绑定基线前保持不可执行，不虚构 Claude ACK 或实验结果
+
+### 为什么
+
+- 将“做完代码”“产物可用”“物理假设通过”和“审计接受”分成不同状态，避免负面实验、无效数据和执行故障混为一谈
+- 用 SHA-256 封存的 request、逐级哈希、路径白名单和不可覆盖证据，让 Codex 的计划/审计与 Claude 的具体执行可以复核和重放
+
+### 影响
+
+- 后续委派任务遵循 request → ACK → receipt → audit；只有接受的 audit 才能上推 todo、HANDOVER 或论文主张
+- Claude Code 获得短入口和明确停止条件；Codex 若参与核心执行必须声明 co-executor，并安排独立复审
+- 现有历史实验目录与原始 CSV 未移动、未覆盖；新控制层只引用其路径和哈希
+
 ## 2026-08-09 — 项目 skills 标准化与研究证据护栏
 
 ### 做了什么

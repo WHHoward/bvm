@@ -366,3 +366,28 @@ Step 0 冻结口径的落地工具：CSV → JSON 指标（每结 net_delta / ma
 
 **Q3: 为什么 BQ/DCSFQ 都暂停了？**
 旧判据建立在错误单位上（45–55µA 目标、多涡旋判据）。在冻结的 `METRIC_SPEC_V2` 容差下重测之前，任何"这个路线行不行"的结论都不可信。暂停是保护工作质量，不是放弃路线。
+
+## 16. 工作流落地实录：M4 的 worktree 执行（2026-08-09 20:57 补充）
+
+双代理协议第一次真实运转的细节——这是研究质量控制制度化的样板，组会可讲"协议如何保护结论可信"。
+
+### 16.1 为什么在 worktree 里执行
+
+M4 合同绑定基线 `384d753`（签订时刻的代码快照）。执行者（Claude）的预检要求"看到的 HEAD == 合同绑定的 HEAD"，而 master 持续演进（协议、工具、文档都在提交）——所以从基线单独检出 `claude/JH-20260809-M4-001` worktree（`/home/howard/JoSIM-m4`）作为隔离执行环境。
+
+### 16.2 commit 权限设计：执行者不提交
+
+- M4 合同授权 `commit: false`：执行者写完产物**一行 commit 都不执行**，产物以原始工作树状态留给 Codex
+- 意义：执行者的职责是"干活 + 如实交回执"，不是"宣布完成"；审计者看到的是未经执行者整理的原始状态，防止"自己提交 = 自己盖章"
+
+### 16.3 完整工作环境 vs 合同快照（一次实战发现）
+
+把 master 新机制（mailbox、记忆整理、文档）同步进 worktree 时发现：**3 个协议文件**（handoff SKILL、CLAUDE_EXECUTOR、HANDOVER）**不能换新版**——它们在合同 `read_paths` 内、哈希被 scope manifest 绑定，换版会破坏机械校验（`verify-task`）。处理：只同步非 read_paths 内容 + worktree 根放 `WORKTREE_NOTES.md` 说明快照版本与审计指引。**验证：同步后 verify-task 仍 VERIFIED。**
+
+### 16.4 生命周期防积累
+
+每个任务一个 worktree（命名 `claude/<task-id>` + `JoSIM-<task-id>` 目录）；审计 ACCEPTED + 产物并入 master 后清理；串行任务（M4→M5→M6）不并行开 worktree；新任务前先 `git worktree list` 查遗留。当前活跃：仅 1 个（M4）。
+
+### 16.5 意义（组会口径）
+
+双代理协议不是"流程负担"，而是**把这次单位事故暴露的薄弱环节制度化**：执行、产物、物理、审计四维分离；哈希封存防篡改；worktree 隔离保证审计者看到的执行环境与合同一致；执行者无权自我盖章。M4 是这套机制的第一个完整用例（ISSUED → ACK → 执行 → receipt → 待审计）。

@@ -32,3 +32,4 @@
 - 🟢 [项目完全理解指南](../docs/guide/project-guide.md) — 当前物理、源码、实验和路线口径
 - 🟢 [审计后交接](../docs/HANDOVER.md) — 当前执行状态与下一步（新会话第一读）
 - 🕰 [原理深讲（deep-dive）](../docs/guide/deep-dive.md) — 已被证据审计取代，正文仅历史草稿（顶部有警告）
+- **信任与建议（2026-08-10）**：用户信任我并欢迎主动建议；保持"大胆推进 + 严谨标准"平衡，物理结论仍等审计。[详情](feedback-trust-and-advice.md)

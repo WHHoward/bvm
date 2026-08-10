@@ -89,6 +89,7 @@ Project skills use the standard `SKILL.md` layout. The canonical source is `.age
 | Skill | Use for |
 |---|---|
 | `josim-handoff` | Work with hash-sealed task contracts: Claude writes ACK/receipts; Codex writes audits |
+| `josim-checkin` | One-screen status reminder at session start (mailbox, open contracts, todo head, worktrees, dirty tree) — run `python3 scripts/checkin.py` |
 | `josim-experiment` | Create/run/sweep/reproduce `.cir` experiments with immutable evidence |
 | `josim-evidence-audit` | Interpret phase, voltage area, SFQ claims, JTL reception and Gate verdicts |
 | `josim-viz` | Plot CSV/DAT waveforms without upgrading plots into physical proof |

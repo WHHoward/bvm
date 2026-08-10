@@ -18,7 +18,7 @@ last_updated: 2026-08-09
 
 假设任务目录为 `research/tasks/<task-id>/`：
 
-0. **先查信箱**（2026-08-09，用户要求）：运行 `python3 research/mailbox/scripts/mailbox.py list`，阅读 Codex 来信（澄清、审计要求、stand-in review 等）后再进入任务；收到消息指向本任务时，先按其内容行动；
+0. **先 checkin + 查信箱**（2026-08-09/10，用户要求）：运行 `python3 scripts/checkin.py` 一键查看 mailbox、未审计合同、todo 头、worktree 与未提交改动；再按需 `mailbox.py read <id>` 处理 Codex 来信（澄清、审计要求、stand-in review 等）；收到消息指向本任务时，先按其内容行动；
 1. 读取 `AGENTS.md`；
 2. 读取 `request.yaml` 及其中的 `read_first`；
 3. 按 request 调用 `$josim-handoff`，研究实验再调用 `$josim-experiment`；

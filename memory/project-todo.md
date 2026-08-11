@@ -28,7 +28,7 @@ metadata:
 | M9 | 冻结 `METRIC_SPEC_V2.md` | 🔴 | 用校准数据事先定义整数残差、相位—面积误差、BVM 漂移、步长差和幅度/抖动容差 |
 | M10 | 重生 JSON 和审计表 | 🔴 | BASELINE/P0/P2/v4 写入各实验 `data/metrics_v2/`，保留旧文件 |
 | M11 | 新基线冻结 | 🔴 | 定义、代码测试、版本、原始数据、对照、容差和收敛全部齐全 |
-| M12 | 修复 `josim-plot2.py -j` 布局缩放 | 🔴 | grid/stacked/square/combined/sep_comb 对 phase 使用一致缩放和轴标签，并有自动回归测试；修复前 skill 禁止错误组合（2026-08-09） |
+| M12 | 修复 `josim-plot2.py -j` 布局缩放 | 🟢（2026-08-11） | `M12-LITE-PILOT-001` 经 Copilot 独立复核与 Codex 接受：五种布局对 phase 一致缩放、标签为 turns、回归测试覆盖旧“只改标签”错误；无物理结论 |
 
 ## B. 已重算、当前可用的事实
 

@@ -1,6 +1,6 @@
-# Claude ↔ Codex Mailbox（异步对话模块）
+# Claude ↔ Codex ↔ Copilot Mailbox（异步对话模块）
 
-Claude Code 与 Codex 之间的**非正式异步消息渠道**：提问、澄清、状态同步、提醒、讨论。消息通过仓库文件传递，双方（以及用户）随时可读。
+Claude、Codex 与 Copilot（2026-08-11 加入）之间的**非正式异步消息渠道**：提问、澄清、状态同步、提醒、讨论。消息通过仓库文件传递，各方（以及用户）随时可读。
 
 > **边界（重要）**：mailbox 是**对话**渠道，不是**合同**渠道。任何正式动作（签发/取代 request、ACK、execution receipt、audit verdict、stand-in record、todo/HANDOVER 上推）都必须在 `research/tasks/<task-id>/` 走 `josim-handoff` 协议文件。mailbox 消息不携带合同授权；mailbox 里达成的意向，正式落地仍以协议文件为准。
 
@@ -9,11 +9,12 @@ Claude Code 与 Codex 之间的**非正式异步消息渠道**：提问、澄清
 ```text
 research/mailbox/
 ├── README.md
-├── from-claude/     ← Claude 写的消息（Codex 读这里）
-├── from-codex/      ← Codex 写的消息（Claude 读这里）
+├── from-claude/     ← Claude 写的消息（Codex/Copilot 读这里）
+├── from-codex/      ← Codex 写的消息（Claude/Copilot 读这里）
+├── from-copilot/    ← Copilot 写的消息（Claude/Codex 读这里）
 └── scripts/
-    ├── mailbox.py        ← CLI：send / list / read / validate
-    └── test_mailbox.py   ← 11 个单元测试（stdlib only）
+    ├── mailbox.py        ← CLI：send / list / read / validate / log
+    └── test_mailbox.py   ← 13 个单元测试（stdlib only）
 ```
 
 每则消息是一个 markdown 文件，带 frontmatter：

@@ -36,7 +36,7 @@ from pathlib import Path
 import re
 import sys
 
-PARTIES = ("claude", "codex")
+PARTIES = ("claude", "codex", "copilot")
 REQUIRED_FIELDS = ("message_id", "from", "to", "created_at", "in_reply_to",
                    "related_task", "subject")
 
@@ -149,7 +149,9 @@ def validate_message(path: Path) -> dict[str, str]:
         raise MailboxError(f"{path.name}: unknown party in from/to")
     if head["from"] == head["to"]:
         raise MailboxError(f"{path.name}: cannot message yourself")
-    if not re.fullmatch(r"(claude|codex)-[0-9]{8}-[0-9]{6}(-[0-9]+)?", head["message_id"]):
+    if not re.fullmatch(
+        r"(claude|codex|copilot)-[0-9]{8}-[0-9]{6}(-[0-9]+)?", head["message_id"]
+    ):
         raise MailboxError(f"{path.name}: malformed message_id {head['message_id']!r}")
     if path.stem != head["message_id"]:
         raise MailboxError(f"{path.name}: filename stem does not match message_id")

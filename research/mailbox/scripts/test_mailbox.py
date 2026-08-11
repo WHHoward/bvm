@@ -118,6 +118,24 @@ class ValidateTests(unittest.TestCase):
                 mb.validate_message(msg)
 
 
+class CopilotPartyTests(unittest.TestCase):
+    """mailbox supports copilot as a third party (2026-08-11, user request)."""
+
+    def test_copilot_can_send_and_receive(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_mailbox(tmp)
+            (root / "from-copilot").mkdir()
+            msg = mb.new_message(root, "copilot", "claude", "review done", body="Pilot 0 ok")
+            self.assertEqual(msg.parent.name, "from-copilot")
+            head, body = mb.parse_message(msg.read_text(encoding="utf-8"))
+            self.assertEqual(head["from"], "copilot")
+            self.assertEqual(head["to"], "claude")
+            self.assertIn("Pilot 0 ok", body)
+            mb.validate_message(msg)  # must not raise
+            to_claude = mb.list_messages(root, recipient="claude")
+            self.assertEqual([m[1]["subject"] for m in to_claude], ["review done"])
+
+
 class CliTests(unittest.TestCase):
     def _cli(self, root: Path, *args: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(

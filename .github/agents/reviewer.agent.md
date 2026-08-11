@@ -118,7 +118,7 @@ This repository also contains specialized review skills under:
 
 Use relevant skills when their description matches the current task.
 
-The initial protocol core contains only:
+The minimum required protocol core is:
 
 ```text
 adversarial-review
@@ -126,10 +126,10 @@ numerical-science-review
 superconducting-simulation-review
 ```
 
-The other wrappers (`semantic-diff-review`, `test-gap-analysis`,
-`evidence-provenance-review`, `reproducibility-review`) are experimental
-helpers. Do not treat them as protocol-required or load them by default;
-Codex may promote them after Pilot evidence shows concrete value.
+All seven existing wrappers are retained. The other wrappers
+(`semantic-diff-review`, `test-gap-analysis`, `evidence-provenance-review`,
+`reproducibility-review`) are optional task-specific helpers, not parallel
+scientific rule sources. Load only the relevant set.
 
 Typical routing:
 
@@ -154,9 +154,8 @@ JoSIM / Josephson / SFQ / JTL / phase / voltage-area / event detection
 → superconducting-simulation-review
 ```
 
-For `CRITICAL` work, always use the applicable core skills. Use an
-experimental helper only when its task-specific value outweighs added review
-cost, and record that choice in REVIEW.md.
+For `CRITICAL` work, always use the applicable core skills and add any
+relevant optional helper. Record the chosen review set in REVIEW.md.
 
 ---
 

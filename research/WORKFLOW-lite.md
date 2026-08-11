@@ -120,7 +120,7 @@ Pilot 期间每任务记录 §43 指标（Reviewer 是否发现新问题、findi
 ## 11. 其他
 
 - **mailbox / josim-experiment / josim-evidence-audit 等正交工具继续适用**——Lite 只改协作层协议；
-- Reviewer 的协议核心只包含 `adversarial-review`、`numerical-science-review`、`superconducting-simulation-review`：它们分别复用 `.agents/skills/reviewer-adversarial/`、`.agents/skills/reviewer-numerical/` 与 `.agents/skills/josim-evidence-audit/`。`.github/skills/` 只能是 Copilot wrapper/adapter，不得建立平行物理规则；其余 review helpers 仅在 Pilot 证明价值后再提升为协议核心；
+- Reviewer 的**最低核心**为 `adversarial-review`、`numerical-science-review`、`superconducting-simulation-review`：它们分别复用 `.agents/skills/reviewer-adversarial/`、`.agents/skills/reviewer-numerical/` 与 `.agents/skills/josim-evidence-audit/`。现有 7 个 `.github/skills/` wrapper 全部保留，可按任务相关性使用；它们不得建立平行物理规则；
 - todo/HANDOVER 更新仅限 Codex ACCEPT 之后；
 - 连续两个 attempt 同根因失败 → 停止并升级 Codex/User；
 - `verify-task` 语义拆分：execution snapshot verification（当时是否在正确 snapshot 上执行）与 current drift check（ACCEPT 后仓库又发生了什么）不得混淆；正常更新 HANDOVER/todo 不得让历史 ACCEPTED 任务误判无效。

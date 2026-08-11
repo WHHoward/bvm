@@ -1,0 +1,311 @@
+{
+  "metric_version": "v2",
+  "mode": "windowed",
+  "units": {
+    "phase": "rad",
+    "turns": "phase_delta_rad / (2*pi)",
+    "time": "s"
+  },
+  "disclaimer": "M4 unit foundation only: full-trace endpoint deltas do NOT replace the M5 stable-window/zero-input controls or the M6 same-junction voltage-area cross-check, and do NOT constitute a physical Gate. Metric tolerances are not frozen until M9 (METRIC_SPEC_V2). M5 windowed semantics: windows/direction/threshold are explicit plan inputs; activity clusters and over-threshold samples are activity, never events/pulses/SFQs/fluxoids. The M5 threshold is descriptive and unfrozen (metric tolerance freeze is M9). No physical Gate.",
+  "threshold_status": "descriptive_unfrozen",
+  "windows_s": {
+    "pre": [
+      6e-12,
+      9e-12
+    ],
+    "activity": [
+      9e-12,
+      5e-11
+    ],
+    "post": [
+      1e-10,
+      1.9e-10
+    ]
+  },
+  "activity_threshold_rad": 0.3,
+  "control_applied": true,
+  "signal": {
+    "P(B1|XDCSFQ)": {
+      "direction": -1,
+      "pre": {
+        "requested_start_s": 6e-12,
+        "requested_end_s": 9e-12,
+        "selected_first_time_s": 6e-12,
+        "selected_last_time_s": 8.9e-12,
+        "sample_count": 30,
+        "mean_rad": -0.41756686333333337,
+        "min_rad": -0.4305017,
+        "max_rad": -0.4101383,
+        "p2p_rad": 0.020363399999999976
+      },
+      "activity": {
+        "requested_start_s": 9e-12,
+        "requested_end_s": 5e-11,
+        "selected_first_time_s": 9e-12,
+        "selected_last_time_s": 4.99e-11,
+        "sample_count": 409,
+        "mean_rad": -1.496473537807824,
+        "min_rad": -7.126337,
+        "max_rad": 0.1489306,
+        "p2p_rad": 7.2752676
+      },
+      "post": {
+        "requested_start_s": 1e-10,
+        "requested_end_s": 1.9e-10,
+        "selected_first_time_s": 1e-10,
+        "selected_last_time_s": 1.899e-10,
+        "sample_count": 900,
+        "mean_rad": -6.712532,
+        "min_rad": -6.712532,
+        "max_rad": -6.712532,
+        "p2p_rad": 0.0
+      },
+      "activity_clusters": [
+        {
+          "start_index": 453,
+          "end_index": 460,
+          "start_time_s": 4.54e-11,
+          "end_time_s": 4.61e-11,
+          "n_increments": 7
+        }
+      ],
+      "over_threshold_sample_count": 7,
+      "delta_rad": -6.294965136666667
+    },
+    "P(B2|XDCSFQ)": {
+      "direction": 1,
+      "pre": {
+        "requested_start_s": 6e-12,
+        "requested_end_s": 9e-12,
+        "selected_first_time_s": 6e-12,
+        "selected_last_time_s": 8.9e-12,
+        "sample_count": 30,
+        "mean_rad": 0.8687735033333334,
+        "min_rad": 0.8438967,
+        "max_rad": 0.8979431,
+        "p2p_rad": 0.05404639999999994
+      },
+      "activity": {
+        "requested_start_s": 9e-12,
+        "requested_end_s": 5e-11,
+        "selected_first_time_s": 9e-12,
+        "selected_last_time_s": 4.99e-11,
+        "sample_count": 409,
+        "mean_rad": 5.745693116625916,
+        "min_rad": 0.8798182,
+        "max_rad": 7.424072,
+        "p2p_rad": 6.5442538
+      },
+      "post": {
+        "requested_start_s": 1e-10,
+        "requested_end_s": 1.9e-10,
+        "selected_first_time_s": 1e-10,
+        "selected_last_time_s": 1.899e-10,
+        "sample_count": 900,
+        "mean_rad": 7.176959,
+        "min_rad": 7.176959,
+        "max_rad": 7.176959,
+        "p2p_rad": 0.0
+      },
+      "activity_clusters": [],
+      "over_threshold_sample_count": 0,
+      "delta_rad": 6.308185496666667
+    },
+    "P(B3|XDCSFQ)": {
+      "direction": 1,
+      "pre": {
+        "requested_start_s": 6e-12,
+        "requested_end_s": 9e-12,
+        "selected_first_time_s": 6e-12,
+        "selected_last_time_s": 8.9e-12,
+        "sample_count": 30,
+        "mean_rad": 0.7775461633333334,
+        "min_rad": 0.758125,
+        "max_rad": 0.8059141,
+        "p2p_rad": 0.04778909999999992
+      },
+      "activity": {
+        "requested_start_s": 9e-12,
+        "requested_end_s": 5e-11,
+        "selected_first_time_s": 9e-12,
+        "selected_last_time_s": 4.99e-11,
+        "sample_count": 409,
+        "mean_rad": 5.5840961403422975,
+        "min_rad": 0.7990047,
+        "max_rad": 7.303881,
+        "p2p_rad": 6.504876299999999
+      },
+      "post": {
+        "requested_start_s": 1e-10,
+        "requested_end_s": 1.9e-10,
+        "selected_first_time_s": 1e-10,
+        "selected_last_time_s": 1.899e-10,
+        "sample_count": 900,
+        "mean_rad": 7.092557,
+        "min_rad": 7.092557,
+        "max_rad": 7.092557,
+        "p2p_rad": 0.0
+      },
+      "activity_clusters": [
+        {
+          "start_index": 184,
+          "end_index": 192,
+          "start_time_s": 1.85e-11,
+          "end_time_s": 1.93e-11,
+          "n_increments": 8
+        }
+      ],
+      "over_threshold_sample_count": 8,
+      "delta_rad": 6.315010836666667
+    }
+  },
+  "control_corrected": {
+    "P(B1|XDCSFQ)": {
+      "direction": -1,
+      "signal_delta_rad": -6.294965136666667,
+      "control_delta_rad": -0.011779936666666602,
+      "corrected_delta_rad": 6.2831852,
+      "corrected_delta_turns": 0.9999999829418391
+    },
+    "P(B2|XDCSFQ)": {
+      "direction": 1,
+      "signal_delta_rad": 6.308185496666667,
+      "control_delta_rad": 0.02499979666666663,
+      "corrected_delta_rad": 6.283185700000001,
+      "corrected_delta_turns": 1.0000000625193106
+    },
+    "P(B3|XDCSFQ)": {
+      "direction": 1,
+      "signal_delta_rad": 6.315010836666667,
+      "control_delta_rad": 0.031825436666666596,
+      "corrected_delta_rad": 6.2831854,
+      "corrected_delta_turns": 1.0000000147728276
+    }
+  },
+  "provenance": {
+    "signal_csv": "test/final/interface/data/test_dcsfq_behavior_bump_300u.csv",
+    "signal_sha256": "dfe20406ee1bc54be483b3bc5935cac87ab545af06c47082720523569b90549d",
+    "control_csv": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+    "control_sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3",
+    "alignment_note": "CSV alignment cannot prove the netlist control relationship."
+  },
+  "zero_input_control": {
+    "P(B1|XDCSFQ)": {
+      "direction": -1,
+      "pre": {
+        "requested_start_s": 6e-12,
+        "requested_end_s": 9e-12,
+        "selected_first_time_s": 6e-12,
+        "selected_last_time_s": 8.9e-12,
+        "sample_count": 30,
+        "mean_rad": -0.41756686333333337,
+        "min_rad": -0.4305017,
+        "max_rad": -0.4101383,
+        "p2p_rad": 0.020363399999999976
+      },
+      "activity": {
+        "requested_start_s": 9e-12,
+        "requested_end_s": 5e-11,
+        "selected_first_time_s": 9e-12,
+        "selected_last_time_s": 4.99e-11,
+        "sample_count": 409,
+        "mean_rad": -0.42921850293398534,
+        "min_rad": -0.4316485,
+        "max_rad": -0.423971,
+        "p2p_rad": 0.007677500000000004
+      },
+      "post": {
+        "requested_start_s": 1e-10,
+        "requested_end_s": 1.9e-10,
+        "selected_first_time_s": 1e-10,
+        "selected_last_time_s": 1.899e-10,
+        "sample_count": 900,
+        "mean_rad": -0.4293468,
+        "min_rad": -0.4293468,
+        "max_rad": -0.4293468,
+        "p2p_rad": 0.0
+      },
+      "activity_clusters": [],
+      "over_threshold_sample_count": 0,
+      "delta_rad": -0.011779936666666602
+    },
+    "P(B2|XDCSFQ)": {
+      "direction": 1,
+      "pre": {
+        "requested_start_s": 6e-12,
+        "requested_end_s": 9e-12,
+        "selected_first_time_s": 6e-12,
+        "selected_last_time_s": 8.9e-12,
+        "sample_count": 30,
+        "mean_rad": 0.8687735033333334,
+        "min_rad": 0.8438967,
+        "max_rad": 0.8979431,
+        "p2p_rad": 0.05404639999999994
+      },
+      "activity": {
+        "requested_start_s": 9e-12,
+        "requested_end_s": 5e-11,
+        "selected_first_time_s": 9e-12,
+        "selected_last_time_s": 4.99e-11,
+        "sample_count": 409,
+        "mean_rad": 0.8933928085574573,
+        "min_rad": 0.8798182,
+        "max_rad": 0.8977561,
+        "p2p_rad": 0.01793789999999995
+      },
+      "post": {
+        "requested_start_s": 1e-10,
+        "requested_end_s": 1.9e-10,
+        "selected_first_time_s": 1e-10,
+        "selected_last_time_s": 1.899e-10,
+        "sample_count": 900,
+        "mean_rad": 0.8937733,
+        "min_rad": 0.8937733,
+        "max_rad": 0.8937733,
+        "p2p_rad": 0.0
+      },
+      "activity_clusters": [],
+      "over_threshold_sample_count": 0,
+      "delta_rad": 0.02499979666666663
+    },
+    "P(B3|XDCSFQ)": {
+      "direction": 1,
+      "pre": {
+        "requested_start_s": 6e-12,
+        "requested_end_s": 9e-12,
+        "selected_first_time_s": 6e-12,
+        "selected_last_time_s": 8.9e-12,
+        "sample_count": 30,
+        "mean_rad": 0.7775461633333334,
+        "min_rad": 0.758125,
+        "max_rad": 0.8059141,
+        "p2p_rad": 0.04778909999999992
+      },
+      "activity": {
+        "requested_start_s": 9e-12,
+        "requested_end_s": 5e-11,
+        "selected_first_time_s": 9e-12,
+        "selected_last_time_s": 4.99e-11,
+        "sample_count": 409,
+        "mean_rad": 0.8089616266503667,
+        "min_rad": 0.7990047,
+        "max_rad": 0.8112919,
+        "p2p_rad": 0.012287199999999943
+      },
+      "post": {
+        "requested_start_s": 1e-10,
+        "requested_end_s": 1.9e-10,
+        "selected_first_time_s": 1e-10,
+        "selected_last_time_s": 1.899e-10,
+        "sample_count": 900,
+        "mean_rad": 0.8093716,
+        "min_rad": 0.8093716,
+        "max_rad": 0.8093716,
+        "p2p_rad": 0.0
+      },
+      "activity_clusters": [],
+      "over_threshold_sample_count": 0,
+      "delta_rad": 0.031825436666666596
+    }
+  }
+}

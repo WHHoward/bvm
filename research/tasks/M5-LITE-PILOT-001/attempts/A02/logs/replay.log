@@ -1,0 +1,14 @@
+## M5 A02 frozen CSV replay
+date: 2026-08-11T17:15:07+08:00
+signal: test/final/interface/data/test_dcsfq_behavior_bump_300u.csv
+control: test/final/interface/data/test_dcsfq_behavior_bump_0.csv
+plan: research/tasks/M5-LITE-PILOT-001/attempts/A01/plan.json
+
+command:
+  python3 scripts/sfq_metrics_v2.py test/final/interface/data/test_dcsfq_behavior_bump_300u.csv --measurement-plan research/tasks/M5-LITE-PILOT-001/attempts/A01/plan.json --control-csv test/final/interface/data/test_dcsfq_behavior_bump_0.csv --json research/tasks/M5-LITE-PILOT-001/attempts/A02/output.json
+exit_code: 0
+
+P(B1|XDCSFQ): turns=0.9999999829418391 err_rad=6.98e-16 pre/act/post=30/409/900 clusters sig/ctl=1/0 OK
+P(B2|XDCSFQ): turns=1.0000000625193106 err_rad=4.19e-15 pre/act/post=30/409/900 clusters sig/ctl=0/0 OK
+P(B3|XDCSFQ): turns=1.0000000147728276 err_rad=1.53e-14 pre/act/post=30/409/900 clusters sig/ctl=1/0 OK
+A02 REPLAY ALL OK

@@ -11,7 +11,6 @@ related:
   - research/mailbox/from-codex/codex-20260811-142613.md（Codex 协议建议）
   - research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml（M4 审计实录）
 ---
-
 # Claude 对 WORKFLOW-lite 的审阅意见
 
 > 本文是执行者视角的审阅意见，供用户 + Codex 决策参考；不修改任何协议条款。
@@ -22,14 +21,14 @@ related:
 
 ## 二、值得保留的设计
 
-| 设计 | 评价 |
-|---|---|
-| 两级风险（NORMAL/CRITICAL）+ CRITICAL 深度复核 | ✅ 把审计预算花在科学风险上 |
-| claim ceiling | ✅ 成本最低、价值最高的安全边界 |
-| Formal Freeze 按需升级 | ✅ 重型协议变"按需模式" |
-| 防共识幻觉（每层最小独立证据） | ✅ 回应 Reviewer 独立性担忧 |
-| 八条底线 | ✅ 可作任何协议的公约数 |
-| Reviewer 抽样检查 + token 预算 | ✅ 务实 |
+| 设计                                           | 评价                            |
+| ---------------------------------------------- | ------------------------------- |
+| 两级风险（NORMAL/CRITICAL）+ CRITICAL 深度复核 | ✅ 把审计预算花在科学风险上     |
+| claim ceiling                                  | ✅ 成本最低、价值最高的安全边界 |
+| Formal Freeze 按需升级                         | ✅ 重型协议变"按需模式"         |
+| 防共识幻觉（每层最小独立证据）                 | ✅ 回应 Reviewer 独立性担忧     |
+| 八条底线                                       | ✅ 可作任何协议的公约数         |
+| Reviewer 抽样检查 + token 预算                 | ✅ 务实                         |
 
 ## 三、五个必须补强的问题
 
@@ -44,6 +43,7 @@ lite §10 说「主要威胁不是恶意篡改」——对，我们的威胁模�
 lite 版无签名、无不可变 request，同类错误会滑到物理结论阶段才爆发，代价大得多。
 
 **建议**：NORMAL 可以不要完整哈希链，但以下三项必须保留：
+
 - TASK 的 Baseline commit + **执行前 HEAD 核对**（直接对应 M4-002 教训）；
 - 对冻结/历史证据路径的只读保护（禁止覆盖）；
 - 涉及 Formal Freeze 的任务恢复完整哈希链（复用现成 handoff.py/schema）。
@@ -53,11 +53,13 @@ lite 版无签名、无不可变 request，同类错误会滑到物理结论阶�
 M4-002 的 BLOCKED 恰恰发生在 ACK 预检阶段（发现基线不符，省了一整轮执行）。lite 无 ACK，基线/scope 问题要等 RESULT 才暴露。
 
 **建议**：不强制独立 ACK 文件，但 RESULT.md 开头固定 3 行「预检确认」：
+
 ```text
 Preflight: baseline HEAD 核对（= TASK Baseline ？）
 Preflight: allowed paths 核对（无越界意图）
 Preflight: 歧义说明（若有）
 ```
+
 零成本，守住 M4-002 的教训。
 
 ### 3. 风险定级是最大决策点——「看着简单」的任务可能误标 NORMAL
@@ -65,6 +67,7 @@ Preflight: 歧义说明（若有）
 M4 是纯实现任务，看着就是 NORMAL——但它暴露了最多的协议问题。分级制最大的风险是**定级本身不可靠**。
 
 **建议**：
+
 - 定级规则保守：拿不准 → CRITICAL；
 - 用户可强制升级任何任务；
 - 补两条自动 CRITICAL 触发：① 协议流程首次执行 / 新协作方参与；② 任务与已冻结证据或历史基线有任何交互。
@@ -74,6 +77,7 @@ M4 是纯实现任务，看着就是 NORMAL——但它暴露了最多的协议�
 lite 说 supersede 重型流程，但 v1 的工具链（handoff.py、schema、哈希链、stand-in、mailbox）刚在 M4-003 上完整验证。两套协议并存会混乱：M5 走哪套？Formal Freeze 时还兼容 v1 工具吗？
 
 **建议**：表述为**「一套协议、两种模式」**：
+
 - lite = 默认模式（TASK/RESULT/REVIEW，NORMAL 走 light）；
 - Formal Freeze = v1 重型模式（request/ACK/receipt/verdict + 哈希链，复用现有工具与 schema，已验证可用）。
 
@@ -88,6 +92,7 @@ lite 用 TASK.md/RESULT.md/REVIEW.md，现有目录是 request.yaml/ack.yaml/rec
 ## 四、与 Codex 建议的共识点
 
 读 codex-20260811-142613 后，双方一致：
+
 1. M4 已完成，不能作 DRAFT 试点（试点候选：M12 纯工程 / M5 纯计量实现部分）；
 2. 新增 review 记录需要 schema 与机械校验（Codex 建议独立 evidence-review 记录 R01，绑定 request/ACK/receipt 哈希）；
 3. 路线、物理 Gate、指标冻结、论文主张、证据冲突、单位/窗口/收敛争议，Codex 必须亲自从 raw 复核，不能只读 review 摘要；
@@ -97,11 +102,11 @@ lite 用 TASK.md/RESULT.md/REVIEW.md，现有目录是 request.yaml/ack.yaml/rec
 
 ## 五、试点建议
 
-| 任务 | 类型 | 建议模式 | 验证点 |
-|---|---|---|---|
-| M12（josim-plot2 绘图修复） | 纯工程、无物理语义 | lite NORMAL | 轻量流程全链 |
-| M5（事件窗口）的纯计量实现部分 | 实现层 | lite NORMAL | 与后续 CRITICAL 复用 |
-| M5 的物理判定部分 | 物理语义 | CRITICAL（或 Formal Freeze） | 升级路径 + Codex 深度复核 |
+| 任务                           | 类型               | 建议模式                     | 验证点                    |
+| ------------------------------ | ------------------ | ---------------------------- | ------------------------- |
+| M12（josim-plot2 绘图修复）    | 纯工程、无物理语义 | lite NORMAL                  | 轻量流程全链              |
+| M5（事件窗口）的纯计量实现部分 | 实现层             | lite NORMAL                  | 与后续 CRITICAL 复用      |
+| M5 的物理判定部分              | 物理语义           | CRITICAL（或 Formal Freeze） | 升级路径 + Codex 深度复核 |
 
 一次并行验证「一套协议两种模式」的切换，成本最低。
 

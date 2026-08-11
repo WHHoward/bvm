@@ -89,6 +89,6 @@ REWORK 要求全部满足：pre/activity/post 三窗完整未舍入统计在 sig
 
 ## Delivery snapshot（RESULT 完成后由授权 owner 追加）
 
-Delivery snapshot commit: <commit>
-Snapshot owner: <role>
+Delivery snapshot commit: 4c4975ac0f982dc7488fe1975d20109fdd0f38ab
+Snapshot owner: CODEX
 Snapshot scope check: PASS

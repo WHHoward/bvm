@@ -78,7 +78,7 @@ independence:
 | **Terra High** | 复杂工程 review、debugging、相互矛盾的执行证据与根因分析 |
 | **Claude Code** | 长时间、受合同约束的实现、重构、测试与实验执行 |
 
-当前会话的子代理接口仅暴露 Sol 和 Terra；Luna 未暴露时，先使用确定性工具，必要的低风险只读检查可回退到 Terra Low/Medium，但不得把这类回退当作最终物理审计。
+当前编排接口不接受直接 `spawn_agent(model="gpt-5.6-luna")`，但项目级 `.codex/agents/*.toml` 的**命名 custom agent** 可以固定路由到 Luna；调用时选择 `josim_scout`、`josim_explorer`、`josim_docs_researcher`、`josim_tester` 或 `josim_verifier` 等角色。若某环境未注册这些命名角色，先使用确定性工具，必要的低风险只读检查可回退到 Terra Low/Medium，但不得把这类回退当作最终物理审计。
 
 | 层级 | 可承担的工作 | 不可承担的工作 |
 |---|---|---|

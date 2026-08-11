@@ -6,9 +6,9 @@
 > Primary Orchestrator: Codex  
 > Primary Implementation Agent: Claude Code
 
-> **JoSIM × BVM 项目适配（2026-08-11）**：本文提供通用的成本与角色分工建议；本仓库中任务授权、物理计量和研究结论的权威顺序是 `AGENTS.md` → `memory/project-todo.md` → `docs/HANDOVER.md` → 已签发的 `research/tasks/<task-id>/request.yaml` → `research/WORKFLOW.md`。因此不使用本文建议的 `.ai/tasks/` 目录，也不以“测试通过”替代 JoSIM 原始证据、收敛检查或 Codex 审计。**质量优先于 token 优化：上下文分层是为了避免无关重复，不是硬性上限；一旦存在计量、因果、跨模块或审计歧义，必须读取完整且原始的必要证据。**运行环境未提供文中某个模型时，按职责层级选择可用的较低成本模型或确定性工具，不虚构模型能力。
+> **JoSIM × BVM 项目适配（2026-08-11）**：本文提供通用的成本与角色分工建议；本仓库中任务授权、物理计量和研究结论的权威顺序是 `AGENTS.md` → `memory/project-todo.md` → `docs/HANDOVER.md` → 已签发的 `research/tasks/<task-id>/request.yaml` → `research/WORKFLOW.md`。因此不使用本文建议的 `.ai/tasks/` 目录，也不以“测试通过”替代 JoSIM 原始证据、收敛检查或 Codex 审计。**质量优先于 token 优化：上下文分层是为了避免无关重复，不是硬性上限；一旦存在计量、因果、跨模块或审计歧义，必须读取完整且原始的必要证据。**本项目通过命名 `.codex/agents/*.toml` custom agent 使用 Luna；不要直接传 `spawn_agent(model="gpt-5.6-luna")`。未注册命名角色的环境按职责层级选择可用的较低成本模型或确定性工具，不虚构模型能力。
 
-> **项目默认路由（2026-08-11）**：**Sol XHigh → 架构与最终裁决；Terra Medium → Codex 日常总控/调度器；Luna Medium/High → 大量低风险子任务；Terra High → 复杂 review / debugging；Claude Code → 长时间实现。**当前会话只验证到 Sol 与 Terra 可作为子代理调用；Luna 未暴露时，低风险工作优先交给确定性工具，其次才回退到 Terra Low/Medium。
+> **项目默认路由（2026-08-11）**：**Sol XHigh → 架构与最终裁决；Terra Medium → Codex 日常总控/调度器；Luna Medium/High → 大量低风险子任务；Terra High → 复杂 review / debugging；Claude Code → 长时间实现。**已实测 Luna 可经命名 custom agent 调用；直接模型 override 不可用。角色文件、重启要求和回退规则见 `.codex/agents/README.md`。
 
 ---
 

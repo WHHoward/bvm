@@ -1,0 +1,11 @@
+# JoSIM project-local Codex routing defaults.
+# Named agents in .codex/agents/ pin their own model/effort where needed.
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+
+[agents]
+enabled = true
+default_subagent_model = "gpt-5.6-terra"
+default_subagent_reasoning_effort = "medium"
+max_concurrent_threads_per_session = 4
+interrupt_message = true

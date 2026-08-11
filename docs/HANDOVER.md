@@ -161,7 +161,7 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 7. 先用校准数据建立并冻结 `METRIC_SPEC_V2.md`，明确整数残差、相位—电压面积误差、BVM 漂移、步长差异及幅度/抖动容差；
 8. 在各实验目录的 `data/metrics_v2/` 中重建 BASELINE/P0/P2/v4 JSON 和结论，不覆盖旧文件。
 
-**M4 交接状态（2026-08-11）**：M4-001 仍是被拒绝的历史候选（stand-in `S01` 重签已封存 request，且 A01 receipt 披露未授权删除日志），不得引用为完成证据。其后续合同 `JH-20260811-M4-003` 已在干净 worktree 中完成，并经独立审计 `C01` 以 `ACCEPTED` 验收：`scripts/sfq_metrics_v2.py` 明确把 raw rad 转为圈数，且仅报告活动样本/区间、绝不称为事件。该验收只覆盖 M4 的实现基础；M5 的窗口/零输入控制、M6 的同 JJ 电压面积交叉校验和后续 M7–M11 均仍未完成，不能据此形成任何物理 Gate。证据：`research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml`。
+**M4–M5 交接状态（2026-08-11）**：M4-001 仍是被拒绝的历史候选（stand-in `S01` 重签已封存 request，且 A01 receipt 披露未授权删除日志），不得引用为完成证据。其后续合同 `JH-20260811-M4-003` 已在干净 worktree 中验收：`scripts/sfq_metrics_v2.py` 明确把 raw rad 转为圈数，且活动样本/区间绝不称为事件。其后的 `M5-LITE-PILOT-001` 经 A01 REWORK、A02 Copilot 独立复审和 Codex `ACCEPT` 后，已实现并回归验证 pre/activity/post 半开稳定窗、显式 ±方向、匹配零输入控制、严格阈值活动聚类及 activity 窗不足两样本拒绝。M5 的 DCSFQ 0/300 µA CSV 重放只验证算术（B1/B2/B3 约一圈；活动簇不是事件），不构成任何物理 Gate。M6 的同 JJ 电压面积交叉校验和 M7–M11 仍未完成。证据：`research/tasks/M5-LITE-PILOT-001/attempts/A02/CODEX-AUDIT.md`。
 
 ### B. 公平重测两条接口路线
 

@@ -57,7 +57,7 @@ N_{\Phi_0}=\Delta\phi_{\rm rad}/(2\pi)=\int Vdt/\Phi_0
 
 先修指标、控制、事件窗口、同 JJ 电压积分和时间步收敛；再用校准数据冻结 `METRIC_SPEC_V2.md`，新 JSON 写入各实验 `data/metrics_v2/`。之后才公平并行复核：
 
-**2026-08-11 进展**：M4 已由合同 `JH-20260811-M4-003` 的独立审计 `C01` 接受。版本化脚本 `scripts/sfq_metrics_v2.py` 将 `P()` 的 raw rad 显式换算为圈数，并把阈值结果限定为活动样本和活动区间；它尚不计数物理事件，也不构成 Gate。下一项是 M5（统一事件窗口、零输入控制、启动偏移和方向定义），随后为 M6 的同 JJ 电压面积交叉校验。
+**2026-08-11 进展**：M4 已建立 raw rad→圈与活动命名基础；M5 已由 `M5-LITE-PILOT-001` 的 A02 Copilot 复审和 Codex 审计接受。`scripts/sfq_metrics_v2.py` 现在实现 pre/activity/post 半开窗口、显式方向、匹配零输入控制与活动聚类；历史 DCSFQ 0/300 µA CSV 的一圈重放只是算术回归，活动簇不计作物理事件，也不构成 Gate。下一项是 M6 的同 JJ 电压面积交叉校验。
 
 1. BQ v4：单 PWL、90–110 µA 细扫、真实 BVM 波形、0/1、JTL 与鲁棒性；
 2. DCSFQ_BVM：撤回固定阈值，正确极性、有界参数矩阵、JTL 与真实级联。

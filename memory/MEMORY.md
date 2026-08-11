@@ -3,7 +3,7 @@
 - **目录结构（2026-08-09 整理）**：根目录 = 活跃文件；`history/` = 研究历程；`archives/` = 归档研究记录（不常用，保留参考）。跨模型交接先读 `docs/HANDOVER.md` + `history/research-history.md`。
 
 ## 活跃（根目录）
-- 🟢 [项目主任务清单](project-todo.md) — Phase −1 M4-M12 与两条候选路线（状态追踪唯一权威）
+- 🟢 [项目主任务清单](project-todo.md) — Phase −1（M4、M5、M12 已验收；M6–M11 待完成）与两条候选路线（状态追踪唯一权威）
 - 🟢 [项目综合总结](project-summary.md) — Phase −1 状态快照
 - 🟢 [项目结构](project-structure.md) — 目录、证据层级与工作流入口（2026-08-09）
 - 🟢 [Skill 使用规范](skill-usage.md) — `.agents/skills` canonical 结构、最小触发与 Claude 兼容规则

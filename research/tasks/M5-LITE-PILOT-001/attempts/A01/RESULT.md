@@ -93,6 +93,6 @@ M5 窗口/方向/零输入控制/活动聚类实现与确定性回归行为已�
 
 ## Delivery snapshot（RESULT 完成后由授权 owner 追加）
 
-Delivery snapshot commit: <commit>
-Snapshot owner: <role>
+Delivery snapshot commit: abcc91714f01c7c2eb7bc94e3379fb5c4af904a2
+Snapshot owner: CODEX
 Snapshot scope check: PASS

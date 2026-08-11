@@ -4,7 +4,7 @@ description: JoSIM × BVM 项目主任务清单 — 2026-08-09 相位单位审�
 metadata:
   type: project
   node_type: memory
-  last_updated: 2026-08-09
+  last_updated: 2026-08-11
 ---
 
 # JoSIM × BVM 项目主任务清单
@@ -20,7 +20,7 @@ metadata:
 | M1 | 明确 `P()` 原始单位为 rad | 🟢 | 源码、JoSIM 文档、绘图脚本和 JTL 示例四重核验 |
 | M2 | 审计旧指标影响范围 | 🟢 | BASELINE、P0、P2、v4、证据链和 Phase 1 已定位 |
 | M3 | 为旧权威文档加 superseded 警告 | 🟢 | HANDOVER、BASELINE、P0、P2、证据链、计划均有入口警告 |
-| M4 | 修复/替换 `scripts/sfq_metrics.py` | 🔴 | rad→圈显式转换；不再把样本数叫事件数 |
+| M4 | 修复/替换 `scripts/sfq_metrics.py` | 🟢（2026-08-11） | `scripts/sfq_metrics_v2.py` 明确 rad→圈转换；活动只报告样本/区间，不叫事件；合同 `JH-20260811-M4-003` 的独立审计为 `ACCEPTED` |
 | M5 | 实现事件窗口和零输入控制 | 🔴 | 前/后稳定窗、启动偏移、事件聚类和信号方向有统一定义 |
 | M6 | 加电压面积交叉校验 | 🔴 | 同一 JJ、同端点、同方向、同窗口的 `∫Vdt/Φ0` 与 `Δφ/2π` 在校准容差内一致 |
 | M7 | 指标单元/回归测试 | 🔴 | 合成台阶、两脉冲 JTL、DCSFQ 300 µA、BQ v4 六周期全部通过 |
@@ -42,6 +42,8 @@ metadata:
 | DCSFQ_BVM 分流 | 🟢 | 68.4 µA 测试输入下未见完整输出；增量耦合约 0.285 |
 
 人工重算用于纠正路线判断，但在 M4–M11 完成前不能称为新的自动冻结基线。
+
+**2026-08-11 更新**：M4 仅完成计量脚本的实现基础与回归测试；它没有实现 M5 的事件窗口/零输入控制，亦没有实现 M6 的同 JJ 电压面积交叉校验。因此不能单独用于物理 Gate 或 SFQ 事件计数。验收证据：`research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml`。
 
 ## C. ⏸️ 候选路线 1：BQ v4（等待 Phase −1）
 

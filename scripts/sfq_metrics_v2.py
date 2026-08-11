@@ -279,13 +279,15 @@ def _activity_clusters(
     times: list[float],
     activity_window: tuple[float, float],
     threshold_rad: float,
-) -> dict[str, Any]:
+) -> tuple[list[dict[str, Any]], int]:
     """Contiguous activity clusters inside the activity window (never events).
 
-    An increment from sample i to i+1 qualifies only when both endpoints lie
-    inside the half-open activity window and
-    ``abs(delta_rad) > threshold_rad`` (strict; equality is inactive). Only
-    consecutive qualifying increments form a cluster; gaps are never bridged.
+    Returns ``(clusters, over_threshold_sample_count)``. An increment from
+    sample i to i+1 qualifies only when both endpoints lie inside the
+    half-open activity window and ``abs(delta_rad) > threshold_rad`` (strict;
+    equality is inactive). Only consecutive qualifying increments form a
+    cluster; gaps are never bridged. Clustering is kept separate from the
+    activity-window statistics so clusters retain no event semantics.
     """
     start_s, end_s = activity_window
     clusters: list[dict[str, Any]] = []
@@ -320,10 +322,7 @@ def _activity_clusters(
                 "n_increments": run[1] - run[0],
             }
         )
-    return {
-        "activity_clusters": clusters,
-        "over_threshold_sample_count": over,
-    }
+    return clusters, over
 
 
 def windowed_analyze(
@@ -334,10 +333,16 @@ def windowed_analyze(
     Semantics (TASK M5-LITE-PILOT-001): half-open windows in seconds; explicit
     per-column direction; ``corrected_delta_rad = direction *
     (signal_delta_rad - control_delta_rad)`` derived BEFORE ``/(2*pi)``;
-    contiguous activity clustering with a strict threshold. Output keeps
-    distinct ``signal``, ``zero_input_control`` and ``control_corrected``
-    namespaces. No interpolation/resampling: the control must have identical
-    parsed headers and identical time arrays.
+    contiguous activity clustering with a strict threshold. Each of the pre,
+    activity and post windows carries the full unrounded statistics block
+    (requested bounds, selected first/last time, sample count, mean, min,
+    max, peak-to-peak), and every window must contain at least two finite
+    samples or the analysis fails. Clustering is reported separately
+    (``activity_clusters`` + ``over_threshold_sample_count``) and never
+    carries event semantics. Output keeps distinct ``signal``,
+    ``zero_input_control`` and ``control_corrected`` namespaces. No
+    interpolation/resampling: the control must have identical parsed headers
+    and identical time arrays.
     """
     plan = validate_plan(plan)
     s_header, s_times, s_phases = _read_phase_csv(signal_csv)
@@ -370,20 +375,29 @@ def windowed_analyze(
         out: dict[str, Any] = {}
         for col, direction in directions.items():
             phase = phases[col]
-            pre = _window_stats(
+            pre_stats = _window_stats(
                 phase, times, _window_indices(times, *windows["pre"]), windows["pre"]
             )
-            post = _window_stats(
+            act_stats = _window_stats(
+                phase,
+                times,
+                _window_indices(times, *windows["activity"]),
+                windows["activity"],
+            )
+            post_stats = _window_stats(
                 phase, times, _window_indices(times, *windows["post"]), windows["post"]
+            )
+            clusters, over = _activity_clusters(
+                phase, times, windows["activity"], threshold
             )
             out[col] = {
                 "direction": direction,
-                "pre": pre,
-                "post": post,
-                "delta_rad": post["mean_rad"] - pre["mean_rad"],
-                "activity": _activity_clusters(
-                    phase, times, windows["activity"], threshold
-                ),
+                "pre": pre_stats,
+                "activity": act_stats,
+                "post": post_stats,
+                "activity_clusters": clusters,
+                "over_threshold_sample_count": over,
+                "delta_rad": post_stats["mean_rad"] - pre_stats["mean_rad"],
             }
         return out
 

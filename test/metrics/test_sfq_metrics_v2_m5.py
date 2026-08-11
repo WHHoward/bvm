@@ -129,6 +129,45 @@ class PlanValidationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 sfq_metrics_v2.windowed_analyze(str(csv), plan)
 
+    def test_activity_window_zero_samples_rejected(self) -> None:
+        # Activity window beyond the data (0 samples) must fail, not silently
+        # produce an empty activity structure (REWORK finding).
+        with tempfile.TemporaryDirectory() as td:
+            csv = Path(td) / "sig.csv"
+            _write_csv(csv, [0.0] * N_SAMPLES)
+            plan = {
+                "schema_version": 1,
+                "windows_s": {
+                    "pre": [90.0, 95.0],  # valid, inside the data
+                    "activity": [100.0, 102.0],  # 0 samples
+                    "post": [105.0, 110.0],
+                },
+                "phase_directions": {"P(X)": 1},
+                "activity_threshold_rad": 0.3,
+            }
+            with self.assertRaises(ValueError):
+                sfq_metrics_v2.windowed_analyze(str(csv), plan)
+
+    def test_activity_window_one_sample_rejected(self) -> None:
+        # Activity window with exactly 1 finite sample must fail (AC2:
+        # undersampled windows). 2.0625 = 2 + 1/16 is exactly representable,
+        # so on the 0.1 grid only t=2.0 (i=20) lies inside [2.0, 2.0625).
+        with tempfile.TemporaryDirectory() as td:
+            csv = Path(td) / "sig.csv"
+            _write_csv(csv, [0.0] * N_SAMPLES)
+            plan = {
+                "schema_version": 1,
+                "windows_s": {
+                    "pre": [PRE_LO, PRE_HI],
+                    "activity": [2.0, 2.0625],
+                    "post": [POST_LO, POST_HI],
+                },
+                "phase_directions": {"P(X)": 1},
+                "activity_threshold_rad": 0.3,
+            }
+            with self.assertRaises(ValueError):
+                sfq_metrics_v2.windowed_analyze(str(csv), plan)
+
 
 class ControlAlignmentTests(unittest.TestCase):
     """AC2/AC5: malformed or misaligned controls fail."""
@@ -184,10 +223,10 @@ class ClusteringTests(unittest.TestCase):
         for i in range(30, N_SAMPLES):
             phase[i] = 5.0
         result = self._analyze(phase)
-        act = result["signal"]["P(X)"]["activity"]
-        self.assertEqual(act["over_threshold_sample_count"], 10)
-        self.assertEqual(len(act["activity_clusters"]), 1)
-        cluster = act["activity_clusters"][0]
+        col = result["signal"]["P(X)"]
+        self.assertEqual(col["over_threshold_sample_count"], 10)
+        self.assertEqual(len(col["activity_clusters"]), 1)
+        cluster = col["activity_clusters"][0]
         self.assertEqual(cluster["n_increments"], 10)
         self.assertEqual(cluster["start_index"], 20)
         self.assertEqual(cluster["end_index"], 30)
@@ -208,11 +247,11 @@ class ClusteringTests(unittest.TestCase):
         for i in range(45, N_SAMPLES):
             phase[i] = 5.0
         result = self._analyze(phase)
-        act = result["signal"]["P(X)"]["activity"]
-        self.assertEqual(act["over_threshold_sample_count"], 10)
-        self.assertEqual(len(act["activity_clusters"]), 2)
-        self.assertEqual(act["activity_clusters"][0]["start_index"], 20)
-        self.assertEqual(act["activity_clusters"][1]["start_index"], 40)
+        col = result["signal"]["P(X)"]
+        self.assertEqual(col["over_threshold_sample_count"], 10)
+        self.assertEqual(len(col["activity_clusters"]), 2)
+        self.assertEqual(col["activity_clusters"][0]["start_index"], 20)
+        self.assertEqual(col["activity_clusters"][1]["start_index"], 40)
 
     def test_equality_at_threshold_inactive(self) -> None:
         # Increments exactly 0.25 rad (exactly representable in binary, so the
@@ -226,9 +265,9 @@ class ClusteringTests(unittest.TestCase):
         # post flat at 2.5 -> delta 2.5 rad (exact).
         phase = [0.0] * 20 + [0.25 * k for k in range(0, 11)] + [2.5] * (N_SAMPLES - 31)
         result = self._analyze(phase, plan=plan)
-        act = result["signal"]["P(X)"]["activity"]
-        self.assertEqual(act["over_threshold_sample_count"], 0)
-        self.assertEqual(act["activity_clusters"], [])
+        col = result["signal"]["P(X)"]
+        self.assertEqual(col["over_threshold_sample_count"], 0)
+        self.assertEqual(col["activity_clusters"], [])
         self.assertAlmostEqual(
             result["control_corrected"]["P(X)"]["corrected_delta_rad"], 2.5, places=12
         )
@@ -243,9 +282,9 @@ class ClusteringTests(unittest.TestCase):
         for i in range(100, 106):
             phase[i + 1] = phase[i] + 1.0
         result = self._analyze(phase)
-        act = result["signal"]["P(X)"]["activity"]
-        self.assertEqual(act["over_threshold_sample_count"], 0)
-        self.assertEqual(act["activity_clusters"], [])
+        col = result["signal"]["P(X)"]
+        self.assertEqual(col["over_threshold_sample_count"], 0)
+        self.assertEqual(col["activity_clusters"], [])
 
 
 class ControlCorrectionTests(unittest.TestCase):
@@ -314,8 +353,12 @@ class ControlCorrectionTests(unittest.TestCase):
             minus["control_corrected"]["P(X)"]["corrected_delta_rad"], -5.0, places=12
         )
         self.assertEqual(
-            plus["signal"]["P(X)"]["activity"],
-            minus["signal"]["P(X)"]["activity"],
+            plus["signal"]["P(X)"]["activity_clusters"],
+            minus["signal"]["P(X)"]["activity_clusters"],
+        )
+        self.assertEqual(
+            plus["signal"]["P(X)"]["over_threshold_sample_count"],
+            minus["signal"]["P(X)"]["over_threshold_sample_count"],
         )
 
     def test_constant_offsets_do_not_alter_deltas(self) -> None:
@@ -358,7 +401,67 @@ class WindowSelectionTests(unittest.TestCase):
         self.assertEqual(col["pre"]["selected_last_time_s"], 1.9)
         self.assertEqual(col["post"]["selected_last_time_s"], 11.9)
         # Boundaries are half-open: t=2.0 belongs to activity, t=8.0 to neither.
-        self.assertEqual(col["activity"]["over_threshold_sample_count"], 0)
+        self.assertEqual(col["activity"]["sample_count"], 60)  # i=20..79
+        self.assertEqual(col["activity"]["selected_first_time_s"], 2.0)
+        self.assertEqual(col["activity"]["selected_last_time_s"], 7.9)
+        self.assertEqual(col["over_threshold_sample_count"], 0)
+
+
+class ActivityStatsTests(unittest.TestCase):
+    """REWORK: the activity window carries the full unrounded statistics
+    block, with first-principles constants on the fixed 0.1 s grid."""
+
+    def _ramp_signal(self) -> list[float]:
+        phase = [0.0] * N_SAMPLES
+        for i in range(20, 30):
+            phase[i + 1] = phase[i] + 0.5
+        for i in range(30, N_SAMPLES):
+            phase[i] = 5.0
+        return phase
+
+    def test_activity_window_stats_complete(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            sig = Path(td) / "sig.csv"
+            _write_csv(sig, self._ramp_signal())
+            result = sfq_metrics_v2.windowed_analyze(str(sig), PLAN)
+        col = result["signal"]["P(X)"]
+        act = col["activity"]
+        for key in (
+            "requested_start_s",
+            "requested_end_s",
+            "selected_first_time_s",
+            "selected_last_time_s",
+            "sample_count",
+            "mean_rad",
+            "min_rad",
+            "max_rad",
+            "p2p_rad",
+        ):
+            self.assertIn(key, act)
+        # First-principles on the 0.1 s grid: activity = i=20..79 (60 samples).
+        self.assertEqual(act["sample_count"], 60)
+        self.assertEqual(act["requested_start_s"], ACT_LO)
+        self.assertEqual(act["requested_end_s"], ACT_HI)
+        self.assertEqual(act["selected_first_time_s"], 2.0)
+        self.assertEqual(act["selected_last_time_s"], 7.9)
+        # Values: 0.0, 0.5, ..., 4.5 (i=20..29, sum 22.5) then 5.0 x 50
+        # (i=30..79). Mean = 272.5/60 = 4.541666666666667 (exact decimal).
+        self.assertEqual(act["min_rad"], 0.0)
+        self.assertEqual(act["max_rad"], 5.0)
+        self.assertEqual(act["p2p_rad"], 5.0)
+        self.assertAlmostEqual(act["mean_rad"], 272.5 / 60.0, places=12)
+
+    def test_activity_stats_separate_from_clustering(self) -> None:
+        # Clustering fields must not be merged into the window stats block.
+        with tempfile.TemporaryDirectory() as td:
+            sig = Path(td) / "sig.csv"
+            _write_csv(sig, self._ramp_signal())
+            result = sfq_metrics_v2.windowed_analyze(str(sig), PLAN)
+        col = result["signal"]["P(X)"]
+        self.assertNotIn("activity_clusters", col["activity"])
+        self.assertNotIn("over_threshold_sample_count", col["activity"])
+        self.assertIsInstance(col["activity_clusters"], list)
+        self.assertEqual(col["over_threshold_sample_count"], 10)
 
 
 class FrozenReplayTests(unittest.TestCase):
@@ -415,7 +518,21 @@ class FrozenReplayTests(unittest.TestCase):
         for col in self.EXPECTED_TURNS:
             s = result["signal"][col]
             self.assertEqual(s["pre"]["sample_count"], 30)
+            self.assertEqual(s["activity"]["sample_count"], 409)
             self.assertEqual(s["post"]["sample_count"], 900)
+            # REWORK: activity window carries the full unrounded stats block.
+            for key in (
+                "requested_start_s",
+                "requested_end_s",
+                "selected_first_time_s",
+                "selected_last_time_s",
+                "sample_count",
+                "mean_rad",
+                "min_rad",
+                "max_rad",
+                "p2p_rad",
+            ):
+                self.assertIn(key, s["activity"])
             corrected = result["control_corrected"][col]
             turns = corrected["corrected_delta_turns"]
             # TASK AC6: within 1e-9 rad computational precision.
@@ -424,11 +541,12 @@ class FrozenReplayTests(unittest.TestCase):
                 abs(turns * TAU - self.EXPECTED_PRINTED_RAD[col]), 1e-7
             )
             self.assertEqual(
-                len(s["activity"]["activity_clusters"]),
+                len(s["activity_clusters"]),
                 self.EXPECTED_CLUSTERS[col],
             )
-            ctl_act = result["zero_input_control"][col]["activity"]
-            self.assertEqual(ctl_act["activity_clusters"], [])
+            ctl = result["zero_input_control"][col]
+            self.assertEqual(ctl["activity_clusters"], [])
+            self.assertEqual(ctl["activity"]["sample_count"], 409)
 
 
 class TerminologyTests(unittest.TestCase):

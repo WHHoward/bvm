@@ -136,7 +136,7 @@ def y_axis_title(figLabel, args):
     elif args.jump == 'pi':
       y_label_P = "Phase jumps (rad/pi)"
     elif args.jump == '2pi':
-      y_label_P = "Phase jumps (rad/2pi)"
+      y_label_P = "Phase (turns) [rad/2pi]"
     else:
       y_label_P = "Phase (rad)"
     return y_label_P
@@ -171,7 +171,8 @@ def grid_layout(df, args):
     col = 1 if (i%2 == 0) else 2
     row = int(math.floor(i / 2)) + 1
     fig.add_trace(go.Scatter(
-      x=df.iloc[:,0], y=df.loc[:,plots[i]],
+      x=df.iloc[:,0],
+      y=(df.loc[:,plots[i]]*pfact(args.jump) if plots[i][0] == 'P' else df.loc[:,plots[i]]),
       mode='lines',
       name=plots[i]),
       row=row,
@@ -207,7 +208,8 @@ def square_layout(df, args):
     col = col_counter
     row = row_counter
     fig.add_trace(go.Scatter(
-      x=df.iloc[:,0], y=df.loc[:,plots[i]],
+      x=df.iloc[:,0],
+      y=(df.loc[:,plots[i]]*pfact(args.jump) if plots[i][0] == 'P' else df.loc[:,plots[i]]),
       mode='lines',
       name=plots[i]),
       row=row,
@@ -236,7 +238,8 @@ def stacked_layout(df, args):
   # Add the traces
   for i in range(0, len(plots)):
     fig.add_trace(go.Scatter(
-      x=df.iloc[:,0], y=df.loc[:,plots[i]],
+      x=df.iloc[:,0],
+      y=(df.loc[:,plots[i]]*pfact(args.jump) if plots[i][0] == 'P' else df.loc[:,plots[i]]),
       mode='lines',
       name=plots[i]),
       row=i + 1,

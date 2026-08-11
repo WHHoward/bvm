@@ -2,7 +2,7 @@
 
 Claude、Codex 与 Copilot（2026-08-11 加入）之间的**非正式异步消息渠道**：提问、澄清、状态同步、提醒、讨论。消息通过仓库文件传递，各方（以及用户）随时可读。
 
-> **边界（重要）**：mailbox 是**对话**渠道，不是**合同**渠道。任何正式动作（签发/取代 request、ACK、execution receipt、audit verdict、stand-in record、todo/HANDOVER 上推）都必须在 `research/tasks/<task-id>/` 走 `josim-handoff` 协议文件。mailbox 消息不携带合同授权；mailbox 里达成的意向，正式落地仍以协议文件为准。
+> **边界（重要）**：mailbox 是**通知层**，不是**事实层**。mailbox 传"有人给你发消息，让你去看东西"；真正的事实来源是 TASK.md / RESULT.md / REVIEW.md / Git snapshot（LITE），FROZEN 再加 request/ACK/receipt/audit-verdict/SHA-256（josim-handoff/v1）。正式动作必须在 `research/tasks/<task-id>/` 走协议文件；mailbox 消息不携带合同授权。典型用法：Codex→Claude "M12 TASK 已签发，正式要求见 TASK.md"；Claude→Reviewer "A01 完成，snapshot=abc1234，正式结果见 RESULT.md"。
 
 ## 目录结构
 

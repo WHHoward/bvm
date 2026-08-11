@@ -56,6 +56,6 @@ josim-plot2.py 五种布局的 -j 相位缩放与回归测试验证完成。
 ---
 
 ## Delivery snapshot（由授权 owner 追加）
-Delivery snapshot commit: <由 Codex 创建>
+Delivery snapshot commit: caa55e4d5ce862b95c6378e1a6a6894be29ee165
 Snapshot owner: CODEX
-Snapshot scope check: <待 Codex>
+Snapshot scope check: PASS (allowed paths only)

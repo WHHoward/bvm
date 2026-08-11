@@ -2,6 +2,7 @@
 title: WORKFLOW-lite 2.0 — 三方科研协作协议（Pilot）
 document_type: protocol
 protocol_status: PILOT
+design_status: FINAL
 date: 2026-08-11
 authority_note: 经用户批准的 Pilot 协作界面；正式权威仍为 research/WORKFLOW.md + josim-handoff/v1（FROZEN 后端）。Pilot 通过前不修改权威文件。
 implementation_ref: workflowdiscuss/WORKFLOW-lite-2.0-FINAL-IMPLEMENTATION.md
@@ -52,6 +53,11 @@ implementation_ref: workflowdiscuss/WORKFLOW-lite-2.0-FINAL-IMPLEMENTATION.md
 | Codex | Planner（TASK）+ Final Auditor（NORMAL light / CRITICAL deep）；唯一 ACCEPT/REWORK/BLOCKED | Reviewer PASS 不等于 ACCEPT |
 | Claude | Preflight → 实现 → RESULT；遵守 allowed paths / stop conditions / claim ceiling | 不改 TASK；不自证完成；不宣布最终 Gate |
 | Copilot Reviewer | 证据层 peer review（contradiction-first）；写 REVIEW.md；可建议风险/模式升级 | 不改实现/TASK/RESULT/raw；不 ACCEPT；不给最终物理 verdict |
+
+### 3.1 最终协作纪律（2026-08-11）
+
+- Codex 是 Planner + Final Auditor，唯一给出 `ACCEPT / REWORK / BLOCKED`；Claude 是 Executor，只产出 Preflight、实现/证据与 `RESULT.md`；Copilot 是 Evidence Reviewer / Peer Reviewer，只写 attempt-local `REVIEW.md`；用户保留路线、metric freeze、physical Gate 与论文主张的最终决定权。
+- mailbox 只传通知与索引；LITE 的正式事实是 `TASK.md`、`RESULT.md`、`REVIEW.md` 和 delivery snapshot。FROZEN 的正式事实另为 v1 的 request/ACK/receipt/audit 与 SHA-256。
 
 ## 4. 任务文件
 
@@ -114,6 +120,7 @@ Pilot 期间每任务记录 §43 指标（Reviewer 是否发现新问题、findi
 ## 11. 其他
 
 - **mailbox / josim-experiment / josim-evidence-audit 等正交工具继续适用**——Lite 只改协作层协议；
+- Reviewer 的协议核心只包含 `adversarial-review`、`numerical-science-review`、`superconducting-simulation-review`：它们分别复用 `.agents/skills/reviewer-adversarial/`、`.agents/skills/reviewer-numerical/` 与 `.agents/skills/josim-evidence-audit/`。`.github/skills/` 只能是 Copilot wrapper/adapter，不得建立平行物理规则；其余 review helpers 仅在 Pilot 证明价值后再提升为协议核心；
 - todo/HANDOVER 更新仅限 Codex ACCEPT 之后；
 - 连续两个 attempt 同根因失败 → 停止并升级 Codex/User；
 - `verify-task` 语义拆分：execution snapshot verification（当时是否在正确 snapshot 上执行）与 current drift check（ACCEPT 后仓库又发生了什么）不得混淆；正常更新 HANDOVER/todo 不得让历史 ACCEPTED 任务误判无效。

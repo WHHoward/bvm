@@ -1,0 +1,63 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260811-M4-003
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-11T14:06:07+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "5550906d781c67ebbf2444c140ec428bddb4aa701284aca2f318225cbf8b5b47"
+  ack_sha256: "65f4de7c8916b811948695896b4d92cabaebaa5627750439356413e485042f73"
+  receipt_sha256: "68494a373b3f20c9efeabb125b2757db5e18261287a751f1e32d9e2f2dec684c"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-scope
+    status: PASS
+    evidence:
+      - "在 /home/howard/JoSIM-m4-003 运行 handoff.py verify-task，记录为 VERIFIED；request→ACK→receipt 哈希链、改动/日志哈希和 acceptance 映射均通过。"
+      - "相对 baseline 5eb9dd3 的实际状态只含签发包、A01 协议/日志及 scripts/sfq_metrics_v2.py、test/metrics/test_sfq_metrics_v2.py；无 scope 外改动。"
+  - id: phase-unit-foundation
+    status: PASS
+    evidence:
+      - "scripts/sfq_metrics_v2.py: rad_to_turns 明确使用 phase_delta_rad/(2*pi)，并输出 phase_delta_rad 与 phase_delta_turns。"
+      - "test/metrics/test_sfq_metrics_v2.py 独立断言 0、±2*pi、+4*pi、1.5*pi 与 1 rad；审计者独立复跑 15/15 通过。"
+      - "src/Output.cpp、docs/tech_disc.md 和 docs/ex_usage.md 是合同绑定的 P() raw-rad 依据；本任务未以旧 v1 指标作物理 Gate。"
+  - id: activity-naming-and-boundary
+    status: PASS
+    evidence:
+      - "实现仅输出 over_threshold_sample_count 与 activity_intervals；测试递归检查结构化 JSON 无 fast_events/pulse_count/sfq_count/event_count 字段。"
+      - "模块 docstring、JSON disclaimer 和 CLI help 明示 M4 不能替代 M5 稳定窗/零输入、M6 同 JJ 电压面积或物理 Gate。"
+  - id: frozen-inputs-and-evidence
+    status: PASS
+    evidence:
+      - "scripts/sfq_metrics.py SHA-256=84600d3e5c80374ae30c77cf2ad000964416729a3f07f4b7e53dec13e03c6264，与 M4-003 scope manifest 相符。"
+      - "receipt 中实现、测试及三份日志的 SHA-256 由审计者重算，全部匹配；保留的日志显示 15/15 测试与 CLI 单位说明。"
+  - id: physical-claim-boundary
+    status: NOT_APPLICABLE
+    evidence:
+      - "合同 claim_ceiling=implementation_foundation_only_no_physical_gate，authorization.run_josim=false，且未生成或解释物理运行数据。"
+findings: []
+accepted_claims:
+  - "M4 v2 单位层正确保留 JoSIM P() 的 endpoint phase_delta_rad，并显式派生 phase_delta_turns=phase_delta_rad/(2*pi)。"
+  - "逐采样阈值结果仅表示 over-threshold samples/activity intervals，不被命名或审计为事件、脉冲或 SFQ 数。"
+  - "该实现与测试可作为 M5-M11 后续工作的版本化基础，但本身不冻结容差。"
+rejected_claims:
+  - "本审计不支持由 full-trace endpoint delta 推断局部 JJ 事件、下游 SFQ 接收、闭环 fluxoid 改变、JTL 传播或系统 Gate。"
+  - "本审计不支持将 0.3 rad 逐样本 activity 阈值解释为 0.3 SFQ 或事件计数。"
+required_rework: []
+next_actions:
+  - "将已接受的 M4-003 实现、测试、签发包、A01 与 C01 归档入 master；随后才把 M4 在 master todo 中标为完成。"
+  - "按 memory/project-todo.md 的顺序继续 M5（稳定窗与零输入控制）和 M6（同 JJ 电压面积交叉校验）；在 M4-M11 完成前不得更新物理 Gate。"
+claim_ceiling: implementation_foundation_only_no_physical_gate

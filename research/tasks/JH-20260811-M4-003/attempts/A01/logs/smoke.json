@@ -1,0 +1,78 @@
+{
+  "metric_version": "v2",
+  "units": {
+    "phase": "rad",
+    "turns": "phase_delta_rad / (2*pi)",
+    "time": "s"
+  },
+  "disclaimer": "M4 unit foundation only: full-trace endpoint deltas do NOT replace the M5 stable-window/zero-input controls or the M6 same-junction voltage-area cross-check, and do NOT constitute a physical Gate. Metric tolerances are not frozen until M9 (METRIC_SPEC_V2).",
+  "csv": "/tmp/m4-003-smoke-z53h4f6q/synth.csv",
+  "sha256": "fd82adb1d29706fe742da84e1a1d585be7ee2aaf5a7a6ff3b39779bdf6328fea",
+  "n_samples": 201,
+  "t_start_s": 0.0,
+  "t_end_s": 20.0,
+  "dt_s": 0.1,
+  "threshold_rad": 0.3,
+  "phases": {
+    "P(A)": {
+      "phase_delta_rad": 6.28318530718,
+      "phase_delta_turns": 1.0,
+      "max_excursion_rad": 6.28318530718,
+      "total_variation_rad": 6.28318530718,
+      "over_threshold_sample_count": 1,
+      "activity_intervals": [
+        {
+          "start_index": 150,
+          "end_index": 150,
+          "start_time_s": 15.0,
+          "end_time_s": 15.100000000000001
+        }
+      ]
+    },
+    "P(B)": {
+      "phase_delta_rad": -6.28318530718,
+      "phase_delta_turns": -1.0,
+      "max_excursion_rad": 6.28318530718,
+      "total_variation_rad": 6.28318530718,
+      "over_threshold_sample_count": 1,
+      "activity_intervals": [
+        {
+          "start_index": 150,
+          "end_index": 150,
+          "start_time_s": 15.0,
+          "end_time_s": 15.100000000000001
+        }
+      ]
+    },
+    "P(C)": {
+      "phase_delta_rad": 12.566370614359,
+      "phase_delta_turns": 2.0,
+      "max_excursion_rad": 12.566370614359,
+      "total_variation_rad": 12.566370614359,
+      "over_threshold_sample_count": 1,
+      "activity_intervals": [
+        {
+          "start_index": 150,
+          "end_index": 150,
+          "start_time_s": 15.0,
+          "end_time_s": 15.100000000000001
+        }
+      ]
+    },
+    "P(D)": {
+      "phase_delta_rad": 4.712388980385,
+      "phase_delta_turns": 0.75,
+      "max_excursion_rad": 4.712388980385,
+      "total_variation_rad": 4.712388980385,
+      "over_threshold_sample_count": 1,
+      "activity_intervals": [
+        {
+          "start_index": 100,
+          "end_index": 100,
+          "start_time_s": 10.0,
+          "end_time_s": 10.100000000000001
+        }
+      ]
+    }
+  }
+}

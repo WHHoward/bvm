@@ -3,8 +3,8 @@ document_type: task_request
 schema_version: 1
 task_id: JH-20260811-M4-003
 revision: 1
-workflow_state: DRAFT
-issued_at: null
+workflow_state: ISSUED
+issued_at: 2026-08-11T13:56:27+08:00
 issuer:
   role: CODEX
   id: codex-root
@@ -67,14 +67,14 @@ scope:
     - locks/sfq-metrics-v2-interface
     - locks/test-metrics
 baseline:
-  git_head: 0195f0d028fcbb4c93125c654e2e08e09e78faa4
+  git_head: 5eb9dd33f25c4b0d20b330f5fd5b0b5873e7a4ff
   dirty_policy: ALLOW_NONOVERLAP
   git_status:
     path: research/tasks/JH-20260811-M4-003/baseline/git-status.txt
-    sha256: null
+    sha256: d03bd49667af3dce3adbc8ee136c10d5260e4a072a496fd9abf59bdbed21acb8
   scope_hashes:
     path: research/tasks/JH-20260811-M4-003/baseline/scope-files.sha256
-    sha256: null
+    sha256: b97a8c20ada7d29ff1e1e2991d1611b4660b4c7b478aced0ea904d8c2102e7e2
 authorization:
   edit: true
   run_josim: false
@@ -162,5 +162,4 @@ stop_conditions:
   - "执行环境并非本合同指定的独立 worktree，或当前 HEAD、dirty 状态、锁或绑定文件哈希不符。"
   - "实现需要预先决定 M5 的窗口/聚类规则、M6 的电压面积规则或 M9 的容差。"
   - "发现另一活动任务占用同一 lock 或写路径。"
-issuance_blockers:
-  - "DRAFT：须从包含本 request 的提交创建独立 worktree，在该 worktree 重采 git_head、git-status 与 scope 哈希、更新签发时间并清空本项后再签名。"
+issuance_blockers: []

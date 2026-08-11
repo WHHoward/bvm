@@ -1,0 +1,138 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260811-M4-003
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-11T14:00:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "5550906d781c67ebbf2444c140ec428bddb4aa701284aca2f318225cbf8b5b47"
+  ack_sha256: "65f4de7c8916b811948695896b4d92cabaebaa5627750439356413e485042f73"
+execution_status: COMPLETED
+baseline_git_head: "5eb9dd33f25c4b0d20b330f5fd5b0b5873e7a4ff"
+result_git_head: null
+changes:
+  - path: scripts/sfq_metrics_v2.py
+    action: CREATED
+    sha256: "b654205a4408bb394d9bc5b69f197d348e4c386b7d17aed2cd2f8d3688c2d02e"
+  - path: test/metrics/test_sfq_metrics_v2.py
+    action: CREATED
+    sha256: "7f0898e965de32e04ca70a6d15b88c15e02c9aee9af01e9de367eb67cef8d597"
+  - path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+    action: CREATED
+    sha256: "1df2f25dfd8d3dd433edd543978b917d049860ab3561611f3c6f9c8f7765b680"
+  - path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/help.txt
+    action: CREATED
+    sha256: "7da826bd3cb6b052e46cc60f3bc848a610c6c4eded07e437a583e1311c8af00f"
+  - path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/smoke.json
+    action: CREATED
+    sha256: "119af7b88a0da0c7b0e0334004e481e5ece8ea44b5c0f579eab704fe1b4f0cfd"
+artifacts:
+  - id: implementation
+    path: scripts/sfq_metrics_v2.py
+    sha256: "b654205a4408bb394d9bc5b69f197d348e4c386b7d17aed2cd2f8d3688c2d02e"
+    role: IMPLEMENTATION
+  - id: test-suite
+    path: test/metrics/test_sfq_metrics_v2.py
+    sha256: "7f0898e965de32e04ca70a6d15b88c15e02c9aee9af01e9de367eb67cef8d597"
+    role: TEST
+  - id: unit-tests-log
+    path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+    sha256: "1df2f25dfd8d3dd433edd543978b917d049860ab3561611f3c6f9c8f7765b680"
+    role: LOG
+  - id: cli-help-log
+    path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/help.txt
+    sha256: "7da826bd3cb6b052e46cc60f3bc848a610c6c4eded07e437a583e1311c8af00f"
+    role: LOG
+  - id: smoke-json
+    path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/smoke.json
+    sha256: "119af7b88a0da0c7b0e0334004e481e5ece8ea44b5c0f579eab704fe1b4f0cfd"
+    role: LOG
+commands:
+  - command: "python3 test/metrics/test_sfq_metrics_v2.py"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+    log_sha256: "1df2f25dfd8d3dd433edd543978b917d049860ab3561611f3c6f9c8f7765b680"
+  - command: "python3 scripts/sfq_metrics_v2.py --help"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/help.txt
+    log_sha256: "7da826bd3cb6b052e46cc60f3bc848a610c6c4eded07e437a583e1311c8af00f"
+  - command: "合成 CSV CLI 冒烟（0/+2pi/-2pi/+4pi/1.5pi）：python3 scripts/sfq_metrics_v2.py --json logs/smoke.json <synth.csv>"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M4-003/attempts/A01/logs/smoke.json
+    log_sha256: "119af7b88a0da0c7b0e0334004e481e5ece8ea44b5c0f579eab704fe1b4f0cfd"
+tests:
+  - id: unit-tests
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+    notes:
+      - "15 个用例全过；stdlib-only，无 JoSIM/网络/依赖安装"
+  - id: cli-smoke
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/smoke.json
+    notes:
+      - "合成输入：+2pi→turns=1.0、-2pi→-1.0、+4pi→2.0、1.5pi→0.75，断言全部通过"
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - scripts/sfq_metrics_v2.py
+      - test/metrics/test_sfq_metrics_v2.py
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+    notes:
+      - "输出同时保留 phase_delta_rad（原始 rad）并显式派生 phase_delta_turns=phase_delta_rad/(2*pi)；UNITS 常量、字段名与 CLI help 均写明单位（rad / turns）"
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - test/metrics/test_sfq_metrics_v2.py
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+    notes:
+      - "独立常数断言覆盖 0、+2pi(1.0)、-2pi(-1.0)、+4pi(2.0) 与非整数圈(1.5pi→0.75、1rad→0.1591549430918953)；期望值手写，非从被测实现反推"
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - scripts/sfq_metrics_v2.py
+      - test/metrics/test_sfq_metrics_v2.py
+    notes:
+      - "逐采样阈值统计仅命名 over_threshold_sample_count 与 activity_intervals；防回归测试断言全 JSON（递归收集所有键）无 fast_events/pulse_count/sfq_count/event_count"
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - scripts/sfq_metrics_v2.py
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/smoke.json
+    notes:
+      - "模块 docstring、DISCLAIMER 常量（写入每个 JSON）与 CLI help 均标注：full-trace endpoint delta 仅为 M4 单位基础，不替代 M5 稳定窗/零输入控制或 M6 电压面积，不构成物理 Gate"
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - test/metrics/test_sfq_metrics_v2.py
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+    notes:
+      - "v1 scripts/sfq_metrics.py 哈希 84600d3e...（与 M4-003 基线 manifest 一致）在测试中断言未变；本 worktree git status 确认 v1 脚本、test/final/** 与 M4-001/M4-002 任务证据零改动；测试仅用 stdlib"
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/unit-tests.log
+      - research/tasks/JH-20260811-M4-003/attempts/A01/logs/smoke.json
+    notes:
+      - "本 receipt 逐条映射 AC1-AC6，列出全部实际改动（5 文件：实现/测试/3 日志）、哈希、命令/退出码、测试、限制、未知与偏离；执行期间未创建后删除任何文件；receipt/ACK 哈希链完整性由审计者复跑 verify-task 独立校验"
+observations:
+  - "15/15 单元测试通过；CLI --help 显示 rad/turns 单位说明；合成冒烟 +2pi/-2pi/+4pi/1.5pi 分别输出 turns 1.0/-1.0/2.0/0.75 且断言通过"
+  - "P() 列语义依据：src/Output.cpp 相位模式生成 P(<name>) 列、docs/tech_disc.md MNPA（phase 为直接求解量，rad）、docs/ex_usage.md 示例列 time,\"V(VIN)\",\"I(ROUT)\",\"P(B01)\",\"P(B02)\""
+  - "实现为从零编写（未复用 M4-001/M4-002 的任何代码文件，仅以同一验收标准为准）"
+interpretations:
+  - "M4 单位层按合同完成；自动发现 P( 前缀列与 JoSIM 实际输出命名一致"
+unknowns:
+  - "无（纯实现任务；未运行 JoSIM，未触碰物理数据）"
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "activity_intervals 仅基于相邻样本差；不进行任何窗口/聚类（属 M5），不做电压面积校验（属 M6）"
+  - "阈值统计语义为 samples/intervals，不是事件数"
+deviations: []
+blockers: []

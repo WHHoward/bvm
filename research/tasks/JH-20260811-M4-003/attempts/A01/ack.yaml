@@ -1,0 +1,52 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260811-M4-003
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-11T13:58:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "5550906d781c67ebbf2444c140ec428bddb4aa701284aca2f318225cbf8b5b47"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "5eb9dd33f25c4b0d20b330f5fd5b0b5873e7a4ff"
+  dirty_paths:
+    - "research/tasks/JH-20260811-M4-003/request.yaml"
+    - "research/tasks/JH-20260811-M4-003/baseline/git-status.txt"
+    - "research/tasks/JH-20260811-M4-003/baseline/scope-files.sha256"
+    - "research/tasks/JH-20260811-M4-003/request.sha256"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "在基线匹配的独立 worktree 中重新交付 M4 的最小 v2 相位计量实现：保留 JoSIM P() 原始 rad，显式派生 turns，并把逐采样阈值结果限定为 activity。"
+  non_goals:
+    - "不冻结 METRIC_SPEC_V2 容差。"
+    - "不实现 M5 的稳定窗、零输入控制或事件聚类。"
+    - "不实现 M6 的同一 JJ 电压面积交叉校验。"
+    - "不重算、覆盖或删除历史 JSON/CSV。"
+    - "不判定物理 Gate。"
+    - "不修改或删除 v1 scripts/sfq_metrics.py。"
+    - "不改写 JH-20260811-M4-002 的 request、签名、baseline 或 A01 BLOCKED 证据。"
+    - "不把 M4-001/M4-002 的候选实现或 receipt 当作本任务交付或证据。"
+  stop_conditions:
+    - "需要修改 scope.write_paths 之外的任何路径。"
+    - "需要联网、安装依赖、运行 JoSIM、提交 Git 或删除/覆盖文件。"
+    - "执行环境并非本合同指定的独立 worktree，或当前 HEAD、dirty 状态、锁或绑定文件哈希不符。"
+    - "实现需要预先决定 M5/M6/M9 的规则。"
+    - "发现另一活动任务占用同一 lock 或写路径。"
+planned_commands:
+  - "先写 test/metrics/test_sfq_metrics_v2.py（unittest，独立常数断言，不跑 JoSIM/不联网/不装依赖）"
+  - "实现 scripts/sfq_metrics_v2.py（rad→turns 显式换算；activity 字段仅用 sample/interval 命名）"
+  - "python3 test/metrics/test_sfq_metrics_v2.py 运行全部测试并保存日志"
+  - "python3 scripts/sfq_metrics_v2.py --help 验证单位说明并保存日志"
+  - "合成 CSV CLI 冒烟（0/+2pi/-2pi/+4pi/非整数圈）并保存 JSON"
+expected_changed_paths:
+  - "scripts/sfq_metrics_v2.py"
+  - "test/metrics/test_sfq_metrics_v2.py"
+  - "research/tasks/JH-20260811-M4-003/attempts/A01/logs/*"
+blockers: []
+deviations: []

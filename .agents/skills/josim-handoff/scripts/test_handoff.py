@@ -495,10 +495,9 @@ class StandinTests(unittest.TestCase):
             write_yaml(record_path, record)
 
             errors, warnings = HANDOFF.verify_task(task_dir, SCHEMA_DIR, REPO_ROOT)
-            self.assertEqual(errors, [])
             self.assertTrue(
-                any("STAND-IN PROVISIONAL" in item for item in warnings),
-                f"expected STAND-IN PROVISIONAL warning, got: {warnings}",
+                any("STAND-IN PROVISIONAL" in item for item in errors),
+                f"unconfirmed stand-in must block, got: {errors}",
             )
 
             review = {
@@ -511,7 +510,11 @@ class StandinTests(unittest.TestCase):
                 "created_at": "2026-08-09T00:00:04+08:00",
                 "reviewer": {"role": "CODEX", "id": "selftest"},
                 "verdict": "CONFIRMED",
-                "bindings": {"record_sha256": sha256(record_path)},
+                "bindings": {
+                    "record_sha256": sha256(record_path),
+                    "request_sha256": request_digest,
+                    "request_signature_sha256": sha256(task_dir / "request.sha256"),
+                },
                 "notes": "selftest confirmed",
             }
             write_yaml(record_dir / "review.yaml", review)

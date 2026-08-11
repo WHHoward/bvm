@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-09
+  last_updated: 2026-08-11
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -25,7 +25,7 @@ metadata:
 | 1. 路线设计 | 7/13-7/17 | PIM 路线图、BVM→BQ 双路线、论文策略 | ✅ 路线冻结 |
 | 2. BQ 尝试 | 7/17-8/6 | BVM→BQ 耦合 7 轮实验 + BQ v4 | ❌ 8 轮全败（结构不匹配） |
 | 3. 路线转向 | 8/6 | DCSFQ_BVM 新元件 + Phase 0 表征 | ✅ Phase 0 完成（G1-G5） |
-| 4. 计量审计 | 8/9 | **P() 单位事故**发现 + Phase −1 修复 | 🔄 进行中（M4 已交付） |
+| 4. 计量审计 | 8/9 | **P() 单位事故**发现 + Phase −1 修复 | 🔄 进行中（M4-001 候选实现待按新合同重做） |
 | 5. 工作流升级 | 8/9 | Codex–Claude 双代理 + stand-in + mailbox | ✅ 基础设施就绪 |
 
 ## 三、详细时间线
@@ -109,9 +109,9 @@ metadata:
 - Codex–Claude 双代理协议（`research/WORKFLOW.md`）：Codex 签发合同 + 独立审计；Claude 受约束执行；四维结果分离（execution/artifact/physical/audit）
 - Stand-in 机制（§15）：Codex 额度耗尽时经用户授权 Claude 临时代理，PROVISIONAL 待 Codex 审查
 - Mailbox（`research/mailbox/`）：Claude↔Codex 异步对话渠道
-- **M4 合同化交付**：`scripts/sfq_metrics_v2.py`（rad→圈显式换算 + 禁事件语义）+ 16 测试全过，在独立 worktree `/home/howard/JoSIM-m4` 执行，`verify-task` VERIFIED
+- **M4-001 候选实现**：`scripts/sfq_metrics_v2.py`（rad→圈显式换算 + 禁事件语义）+ 16 测试全过，在独立 worktree `/home/howard/JoSIM-m4` 执行；其合同链在 2026-08-11 被拒绝，产物仅保留为重做参考
 
-**认知**：✅ M4 交付等待 Codex 审计（stand-in 不能审自己）；todo 中 M4 仍 🔴（审计接受前不上推）。
+**认知（2026-08-11 修正）**：⚠️ M4-001 的候选代码与测试保留，但 stand-in 重签已封存 request、且 receipt 披露未授权删除日志，Codex 已拒绝 S01；M4 仍 🔴，必须用新的 superseding 合同在干净 worktree 重做。
 
 ## 四、关键转折点速查
 
@@ -121,7 +121,7 @@ metadata:
 | 缩放起点改为实测 | 8/6 | 用户拍板：以 BVM 实测输出为设计依据（P0.0） |
 | **P() 单位事故** | 8/9 | 所有相位结论除以 2π 重算；建立"事件数必须离散平台"纪律 |
 | 双代理协议 | 8/9 | 执行/产物/物理/审计四维分离，独立复核制度化 |
-| M4 交付 | 8/9 | Phase −1 第一块砖落地，等 Codex 审计 |
+| M4-001 候选实现 | 8/9–8/11 | 代码测试通过但合同链被拒绝；保留证据并以新合同重做 |
 
 ## 五、当前认知状态速查（2026-08-09）
 
@@ -134,4 +134,4 @@ metadata:
 | 基线 BJs +0.998 圈 / JM1 −0.94 圈 | ✅ 新事实（重算后） |
 | 45-55µA 目标、多涡旋、爆发计数 | ⚠️ 已撤回/修正 |
 | BQ v4 "系统排除" 结论 | ⚠️ 待新规格下重测 |
-| M4 计量修复 | 🔄 已交付待审计 |
+| M4 计量修复 | 🔄 M4-001 候选实现待按新合同重做 |

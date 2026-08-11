@@ -3,7 +3,7 @@ title: JoSIM × BVM 双代理研究工作流
 document_type: workflow
 protocol: josim-handoff/v1
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-11
 ---
 
 # JoSIM × BVM 双代理研究工作流
@@ -63,6 +63,18 @@ independence:
 ```
 
 这时不能再把同一轮 Codex 审计称为独立复核，应由 Claude 反向复核，或安排第三方/后续独立审计。只运行只读校验、独立计算或新增审计文件，不算参与实现。
+
+### 3.2 模型路由与升级（2026-08-11）
+
+按**角色层级**分派工作，不把某个特定模型名称写入合同；运行环境决定核心、工程审阅和机械检查层各自映射到的模型。
+
+| 层级 | 可承担的工作 | 不可承担的工作 |
+|---|---|---|
+| 核心审阅层 | 路线与电路设计、任务合同、指标/容差冻结、物理解释、audit disposition、论文主张 | — |
+| 工程审阅层 | 代码/网表预审、独立重算、测试设计、风险清单 | 最终物理 Gate、合同签发或审计接受 |
+| 机械检查层 | schema/哈希/路径、lint、单元测试、CSV 完整性、日志索引和链接检查 | 用自然语言总结替代原始证据，或作任何路线/物理判断 |
+
+机械检查层每次必须返回输入版本、命令、退出码、产物路径、哈希和未知项；核心审阅层只在发现失败、单位/端点歧义、权限扩张、冻结输入漂移、收敛问题或物理含义时升级处理。高推理预算只用于这些不可机械化的判断。
 
 ## 4. 文件所有权
 
@@ -229,7 +241,7 @@ python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task \
 
 ### 8.3 Claude：ACK 预检
 
-Claude 只有在 request 已是 `ISSUED` 且签名有效后，才进入 ACK 阶段。`DRAFT` 没有授权执行，也不得生成 ACK，只需在会话中报告等待签发。对于已有效签发的请求，Claude 在任何写入实现路径或运行实验之前：
+Claude 只有在 request 已是 `ISSUED`、签名有效、且没有未确认 stand-in record 后，才进入 ACK 阶段。`DRAFT` 或 `PROVISIONAL` 都没有授权执行，也不得生成 ACK，只需在会话中报告等待 Codex 签发/确认。对于已有效签发的请求，Claude 在任何写入实现路径或运行实验之前：
 
 1. 读取 `AGENTS.md`、request 的 `read_first`、相关 skill；
 2. 校验 request schema、签名和基线绑定；
@@ -384,13 +396,13 @@ Codex 在接受一份交付前至少确认：
 
 ## 15. Codex 不可用时的 Claude stand-in 代理（PROVISIONAL）
 
-**（2026-08-09，stand-in 机制 v1，待 Codex 审查）**：当 Codex 因额度、停机等原因暂时不可用时，用户可明确授权 Claude Code 临时代理部分 Codex 角色动作（签发/取代 request、上层状态同步、审计非自身执行的交付）。本机制不改变四维结果、状态机或 schema；它只允许在受限条件下由不同身份执行 Codex 的机械动作，并把“动作完成”与“Codex 背书”分开。
+**（2026-08-11，stand-in 机制 v2）**：当 Codex 因额度、停机等原因暂时不可用时，用户可明确授权 Claude Code 临时准备 DRAFT 合同、候选 baseline 与 stand-in record。签发/取代 request、上层状态同步及审计仍由 Codex（或明确指定的独立第三方）完成。本机制不改变四维结果、状态机或 schema；它只把候选准备与 Codex 背书分开，绝不把候选准备变成执行授权。
 
 ### 15.1 不变量
 
 1. **每次 stand-in 会话都必须有用户明确授权**，且授权范围记录在 stand-in record 中；一次授权不构成永久授权。
-2. 所有代理动作写入 `research/tasks/<task-id>/standin/<Sxx>/record.yaml`（schema：`standin-record.schema.json`），**不覆盖** request/audit 等既有协议文件。
-3. stand-in 产物一律 `status: PROVISIONAL`。在 Codex 写入 `standin/<Sxx>/review.yaml` 且 verdict 为 `CONFIRMED` 之前，**不生效**：不得据此上推 todo/HANDOVER、不得作为物理 Gate、不得视为已签发审计。
+2. 所有代理动作写入 `research/tasks/<task-id>/standin/<Sxx>/record.yaml`（schema：`standin-record.schema.json`），**不覆盖** request/audit 等既有协议文件；任何已签名 request 的合同变化一律创建新 request，并用 `supersedes` 指向旧合同。
+3. stand-in 产物一律 `status: PROVISIONAL`。在 Codex 写入 `standin/<Sxx>/review.yaml` 且 verdict 为 `CONFIRMED` 之前，**不生效**：`verify-task` 必须失败，Claude 不得 ACK 或执行，也不得据此上推 todo/HANDOVER、作为物理 Gate 或视为已签发审计。
 4. **stand-in 不得审计自身执行**。stand-in 期间的执行审计仍由 Codex（或明确指定的 `THIRD_PARTY`）在恢复后完成。
 5. schema 不因 stand-in 放宽：`issuer.role` 仍为 `CODEX`，request 原文与签名规则不变；stand-in 身份由 record 声明。
 
@@ -398,19 +410,19 @@ Codex 在接受一份交付前至少确认：
 
 | 可代理（用户授权后） | 不可代理 |
 |---|---|
-| 签发 request（重采 baseline、DRAFT→ISSUED、生成 `request.sha256`） | 审计自身的执行并出最终裁决 |
-| 以 `supersedes` 签发取代合同 | 修改 schema 以放宽校验 |
-| 同步上层状态（todo/HANDOVER/CHANGELOG，仍须标注） | 决定路线切换、指标冻结、论文主张（用户保留） |
+| 准备 DRAFT request、baseline 清单和待 Codex 审查的 record | 审计自身的执行并出最终裁决 |
+| 整理不改变事实层级的候选状态文本 | 重签、覆盖或 `--force` 修改任何 ISSUED request |
+| 记录用户授权与阻断原因 | 修改 schema 以放宽校验、决定路线切换、指标冻结、论文主张 |
 
 ### 15.3 审查与转正
 
 Codex 恢复后按固定顺序审查：先读 `standin/<Sxx>/record.yaml` 与受影响的 request/产物，再写 `standin/<Sxx>/review.yaml`（schema：`standin-review.schema.json`）：
 
 - `CONFIRMED`：Codex 背书该 stand-in 动作，视为与 Codex 自行执行等价；
-- `REWORK_REQUIRED`：动作不完整或绑定失效，Codex 在 notes 中列出最小修正，修正后重签新 `Sxx` 或由 Codex 直接重做；
+- `REWORK_REQUIRED`：动作不完整或绑定失效，Codex 在 notes 中列出最小修正；如需合同变更，创建新的 superseding request，绝不重签旧 request；
 - `REJECTED`：动作不成立，Codex 以新 request（`supersedes`）或审计处置纠正，旧 record 保留。
 
-`verify-task` 对存在 record 但无 review 的任务输出 `STAND-IN PROVISIONAL` 警告；review 写入后警告消失或转为裁决信息。机械校验始终不能替代 Codex 对工作树和产物的独立复核。
+`verify-task` 对存在未确认 record 的任务以非零退出，并报告 `STAND-IN PROVISIONAL`；只有绑定完整的 `CONFIRMED` review 才解除该阻断。机械校验始终不能替代 Codex 对工作树和产物的独立复核。
 
 ### 15.4 与其它流程的关系
 

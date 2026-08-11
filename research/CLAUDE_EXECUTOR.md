@@ -3,7 +3,7 @@ title: Claude Code 执行入口
 document_type: executor-guide
 protocol: josim-handoff/v1
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-11
 ---
 
 # Claude Code 执行入口
@@ -35,18 +35,18 @@ python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task \
   research/tasks/<task-id>
 ```
 
-也可先运行 `python3 .agents/skills/josim-handoff/scripts/handoff.py --help`。若 request 是 `DRAFT`、缺 `request.sha256`、签名不符或 schema 失败，不要生成协议 ACK，只在会话中报告“等待有效签发”。request 已有效签发、但 base commit、dirty、依赖、scope、工具或 lock 预检失败时，才写阻塞 ACK。
+也可先运行 `python3 .agents/skills/josim-handoff/scripts/handoff.py --help`。若 request 是 `DRAFT`、缺 `request.sha256`、签名不符、schema 失败，或 `verify-task` 报告未确认 stand-in，不要生成协议 ACK，只在会话中报告“等待 Codex 有效签发/确认”。request 已有效签发、且无 provisional stand-in 阻断、但 base commit、dirty、依赖、scope、工具或 lock 预检失败时，才写阻塞 ACK。
 
 注意：`verify-task` 校验 schema、签名、协议文件绑定、自报路径范围、验收映射和当前自报 change/artifact/log 文件哈希；它**不会**替你检查实时 HEAD/dirty、依赖、locks，也不能发现 receipt 遗漏的实际 Git diff 或证明命令历史。你仍须人工完成这些预检并如实记录；`VERIFIED` 不等于证据有效。`DRAFT` 会非零退出，不能执行。
 
 ## 1.1 Codex 不可用时的 stand-in 代理（2026-08-09，PROVISIONAL）
 
-当 Codex 暂时不可用（额度耗尽、停机）时，**经用户明确授权**，你可以临时代理部分 Codex 角色动作（签发 request、重采 baseline、同步上层状态），但必须：
+当 Codex 暂时不可用（额度耗尽、停机）时，**经用户明确授权**，你只能临时准备 DRAFT 合同、收集候选 baseline 并记录 stand-in 信息；签发、取代 request 与同步上层状态仍由 Codex 恢复后完成。你必须：
 
 1. 每次 stand-in 会话单独获得用户授权；在 `research/tasks/<task-id>/standin/<Sxx>/record.yaml` 记录原因、授权、代理动作与哈希（模板见 `josim-handoff/assets/standin-record.yaml`，schema 为 `research/schemas/standin-record.schema.json`）；
-2. 产物一律 `status: PROVISIONAL`。**Codex 写 `review.yaml`（CONFIRMED）之前，stand-in 签发/同步不生效**：不得据此上推 todo/HANDOVER，不得宣布物理 Gate；
+2. 产物一律 `status: PROVISIONAL`。**Codex 写 `review.yaml`（CONFIRMED）之前，stand-in 签发/同步不生效，`verify-task` 会失败**：不得 ACK、执行、上推 todo/HANDOVER 或宣布物理 Gate；
 3. 永远不要 stand-in 审计自己的执行；执行审计留给 Codex/THIRD_PARTY；
-4. 不修改 request 原文或 schema 以绕过校验；`verify-task` 会对未审查的 stand-in record 输出 `STAND-IN PROVISIONAL` 警告。
+4. 只能准备 DRAFT 合同和 stand-in record；不得重签、覆盖或用 `--force` 改写任何既有 `ISSUED` request。合同变化一律交给 Codex 创建新的 `supersedes` request。
 
 ## 2. ACK 必须确认的内容
 
@@ -112,7 +112,7 @@ JoSIM `P(...)` 是 raw phase，单位 rad；派生圈数为 `phase_delta_rad/(2*
 
 不要 stash、reset 或 clean 用户/其他代理的修改。基线无法明确归属、scope 重叠或出现发行后未知改动时，停止并回执。
 
-**worktree 同步策略（2026-08-09 实战总结）**：stand-in 准备执行环境时，把协议/合同文件同步进 worktree 后，**不得再同步 `scope.read_paths` 覆盖的文件的最新版**——它们的哈希被 request 的 scope manifest 绑定，换新版会破坏 `verify-task`。只同步非 read_paths 内容（mailbox、memory、docs、CHANGELOG、CLAUDE.md 等），并在 worktree 根放 `WORKTREE_NOTES.md` 说明哪些文件是合同快照版及原因。
+**worktree 冻结策略（2026-08-11）**：ACK 后执行 worktree 是合同快照，不得再从 master 同步任何文件（包括 mailbox、memory、docs、CHANGELOG 或 `CLAUDE.md`）。需要读取新消息时在源仓库读取，不复制进执行 worktree；执行环境的任何新 dirty path 都会破坏可审计性。协议基础设施升级必须在另一个 worktree/分支完成。
 
 **worktree 生命周期（2026-08-09 起强制，防积累）**：
 - 命名与位置统一：分支 `claude/<task-id>`，目录 `<repo> 相邻的 /home/howard/JoSIM-<task-id>`；

@@ -48,12 +48,40 @@ def _worktree_paths() -> list[Path]:
     return [Path(root) for root in roots if Path(root) != REPO]
 
 
-def open_tasks() -> list[str]:
-    """Tasks with a signed request but no audit verdict yet.
+def _standin_is_provisional(task_dir: Path) -> bool:
+    """Return whether a task has any stand-in record lacking CONFIRMED review."""
+    records = sorted(task_dir.glob("standin/*/record.yaml"))
+    for record in records:
+        review = record.with_name("review.yaml")
+        if not review.is_file():
+            return True
+        text = review.read_text(encoding="utf-8")
+        if not re.search(r"^verdict:\s*CONFIRMED\s*$", text, re.M):
+            return True
+    return False
 
-    Execution artifacts may live in the task's worktree (commit: false), so
-    receipts/audits are also looked up there.
-    """
+
+def _verify_task(task_dir: Path) -> bool:
+    """Use the task worktree's frozen validator, not master’s evolving copy."""
+    repo_root = task_dir.parents[2]
+    validator = repo_root / ".agents" / "skills" / "josim-handoff" / "scripts" / "handoff.py"
+    if not validator.is_file():
+        return False
+    try:
+        completed = subprocess.run(
+            [sys.executable, str(validator), "verify-task", str(task_dir)],
+            capture_output=True,
+            text=True,
+            cwd=repo_root,
+            check=False,
+        )
+    except OSError:
+        return False
+    return completed.returncode == 0
+
+
+def open_tasks() -> list[str]:
+    """Report verified task state without treating a receipt as an acceptance."""
     lines: list[str] = []
     tasks_dir = REPO / "research" / "tasks"
     worktrees = _worktree_paths()
@@ -68,14 +96,27 @@ def open_tasks() -> list[str]:
         if not (task_dir / "request.sha256").is_file():
             continue
         candidates = [task_dir] + [wt / "research" / "tasks" / task_dir.name for wt in worktrees]
-        receipts: list[Path] = []
-        audits: list[Path] = []
+        states: list[tuple[bool, bool, bool, bool]] = []
         for cand in candidates:
-            receipts.extend(cand.glob("attempts/*/receipt.yaml")) if (cand / "attempts").is_dir() else None
-            audits.extend(cand.glob("audits/*/verdict.yaml")) if (cand / "audits").is_dir() else None
+            if not cand.is_dir():
+                continue
+            provisional = _standin_is_provisional(cand)
+            verified = _verify_task(cand)
+            receipt_exists = any(cand.glob("attempts/*/receipt.yaml"))
+            audit_exists = any(cand.glob("audits/*/verdict.yaml"))
+            states.append((provisional, verified, receipt_exists, audit_exists))
         subject = re.search(r"^subject:\s*(.+)$", request, re.M)
         objective = re.search(r"objective:\s*\"(.+?)\"", request, re.S)
-        state = "ISSUED" if not receipts else ("DELIVERED(等审计)" if not audits else f"AUDITED({len(audits)})")
+        if any(provisional for provisional, _, _, _ in states):
+            state = "PROVISIONAL（阻断执行）"
+        elif any(verified and audit for _, verified, _, audit in states):
+            state = "AUDITED（已验证）"
+        elif any(verified and receipt for _, verified, receipt, _ in states):
+            state = "DELIVERED（已验证，等审计）"
+        elif any(verified for _, verified, _, _ in states):
+            state = "ISSUED（已验证）"
+        else:
+            state = "INVALID（合同校验失败）"
         lines.append(f"  {task_dir.name}: {state} — {objective.group(1)[:60] if objective else subject.group(1) if subject else ''}")
     return lines
 

@@ -11,9 +11,9 @@ When the user or Codex points to `research/tasks/<task-id>/request.yaml`, treat 
 3. Change only `scope.write_paths`; do not edit the request, audits, `memory/project-todo.md`, `docs/HANDOVER.md`, `CHANGELOG.md`, frozen specs, or historical raw evidence.
 4. Write a receipt with exact paths, commands, hashes, tests, deviations, and blockers. Propose interpretations, but leave the final evidence/Gate verdict to Codex audit.
 
-If the task is `DRAFT`, unsealed, has issuance blockers, or needs broader authority, stop and report the blocker. Do not silently repair the contract.
+If the task is `DRAFT`, unsealed, has issuance blockers, has an unconfirmed stand-in record, or needs broader authority, stop and report the blocker. Do not silently repair the contract.
 
-If Codex is unavailable (e.g. quota exhausted), the user may explicitly authorize Claude to stand in for Codex-level actions (issue/supersede requests, state sync). Such actions must be recorded in `research/tasks/<id>/standin/<Sxx>/record.yaml` as `PROVISIONAL` and are not effective until Codex writes a review (`CONFIRMED`). See `research/WORKFLOW.md` §15. Stand-in must never audit its own execution.
+If Codex is unavailable, Claude may only prepare a DRAFT contract and a `PROVISIONAL` stand-in record after explicit user authorization. It must never re-sign or overwrite an `ISSUED` request, ACK or execute a provisional contract, or audit its own execution. Codex must review (`CONFIRMED`) the record before the standard contract flow can resume; see `research/WORKFLOW.md` §15.
 
 ## Build
 

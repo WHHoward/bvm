@@ -95,8 +95,9 @@ python3 .agents/skills/josim-handoff/scripts/test_handoff.py
 
 ## Stand-in 代理（Codex 不可用时，2026-08-09）
 
-Codex 因额度/停机不可用时，用户可明确授权 Claude 临时代理签发、取代或状态同步等 Codex 角色动作。完整规则见 `research/WORKFLOW.md` §15。要点：
+Codex 因额度/停机不可用时，用户可明确授权 Claude 临时准备 DRAFT 合同、候选 baseline 与 stand-in 记录；签发、取代或状态同步仍等待 Codex。完整规则见 `research/WORKFLOW.md` §15。要点：
 
 - 每会话单独获得用户授权，在 `research/tasks/<id>/standin/<Sxx>/record.yaml` 记录（模板 `assets/standin-record.yaml`，schema `standin-record.schema.json`）；
-- 产物 `PROVISIONAL`，Codex `review.yaml`（`standin-review.schema.json`）确认前不生效，不得上推 todo/HANDOVER；
-- stand-in 不得审计自身执行；`verify-task` 输出 `STAND-IN PROVISIONAL` 警告标记未审查的 record。
+- 产物 `PROVISIONAL`，Codex `review.yaml`（`standin-review.schema.json`）确认前不生效；`verify-task` 非零退出，Claude 不得 ACK、执行或上推 todo/HANDOVER；
+- 不得重签或覆盖既有 `ISSUED` request；合同变化创建带 `supersedes` 的新 request。用 [standin-review.yaml](assets/standin-review.yaml) 绑定 record、request 与 request 签名；
+- stand-in 不得审计自身执行。

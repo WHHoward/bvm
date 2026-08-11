@@ -353,6 +353,24 @@ def _scope_manifest_errors(
     return errors
 
 
+def _standin_action_errors(record: dict[str, Any], repo_root: Path) -> list[str]:
+    """Bind each stand-in action's latest claimed target to a real file."""
+    latest_actions: dict[str, dict[str, Any]] = {}
+    for action in record["actions"]:
+        latest_actions[action["target_path"]] = action
+    errors: list[str] = []
+    for target_path, action in latest_actions.items():
+        error = _repo_file_hash_error(
+            repo_root,
+            target_path,
+            action["new_sha256"],
+            f"stand-in {record['standin_id']} action target {target_path}",
+        )
+        if error:
+            errors.append(error)
+    return errors
+
+
 def _parse_signature(path: Path, expected_filename: str) -> str:
     try:
         content = path.read_text(encoding="utf-8").strip()
@@ -782,6 +800,10 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
                 errors.append(
                     f"{record_path}: request_sha256 does not bind current request"
                 )
+            errors.extend(
+                f"{record_path}: {error}"
+                for error in _standin_action_errors(record, repo_root)
+            )
             review_path = record_path.with_name("review.yaml")
             if review_path.is_file():
                 try:
@@ -789,9 +811,28 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
                 except HandoffError as exc:
                     errors.append(f"invalid stand-in review {review_path}: {exc}")
                 else:
+                    if review["task_id"] != request["task_id"]:
+                        errors.append(f"{review_path}: task_id does not match request")
+                    if review["revision"] != request["revision"]:
+                        errors.append(f"{review_path}: revision does not match request")
+                    if review["standin_id"] != record["standin_id"]:
+                        errors.append(f"{review_path}: standin_id does not match record")
                     if review["bindings"]["record_sha256"] != _sha256(record_path):
                         errors.append(
                             f"{review_path}: record_sha256 does not bind {record_path}"
+                        )
+                    if review["bindings"]["request_sha256"] != request_digest:
+                        errors.append(
+                            f"{review_path}: request_sha256 does not bind current request"
+                        )
+                    signature_path = request_path.with_name("request.sha256")
+                    if signature_path.is_file() and (
+                        review["bindings"]["request_signature_sha256"]
+                        != _sha256(signature_path)
+                    ):
+                        errors.append(
+                            f"{review_path}: request_signature_sha256 does not bind "
+                            f"{signature_path}"
                         )
                     if review["verdict"] == "CONFIRMED":
                         warnings.append(
@@ -799,14 +840,14 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
                             f"{review['reviewer']['id']}"
                         )
                     else:
-                        warnings.append(
-                            f"stand-in {record['standin_id']}: review verdict "
-                            f"{review['verdict']} ({review_path})"
+                        errors.append(
+                            f"stand-in {record['standin_id']} review is "
+                            f"{review['verdict']}; task is not executable ({review_path})"
                         )
             else:
-                warnings.append(
+                errors.append(
                     f"STAND-IN PROVISIONAL {record['standin_id']}: {record_path} "
-                    "awaits Codex review"
+                    "blocks execution until Codex review is CONFIRMED"
                 )
     return errors, warnings
 
@@ -846,15 +887,10 @@ def _cmd_sign_request(args: argparse.Namespace) -> int:
     if signature_path.exists():
         existing = _parse_signature(signature_path, request_path.name)
         if existing != digest:
-            if not args.force:
-                raise HandoffError(
-                    f"refusing to overwrite different signature in {signature_path}"
-                )
-            # Explicit stand-in re-issue only: the old digest is printed for the
-            # audit trail and must be recorded in the stand-in record.
-            signature_path.write_text(f"{digest}  {request_path.name}\n", encoding="utf-8")
-            print(f"RESIGNED {signature_path} {digest} (was {existing})")
-            return 0
+            raise HandoffError(
+                f"refusing to overwrite different signature in {signature_path}; "
+                "ISSUED requests are immutable, so create a new superseding request"
+            )
         print(f"UNCHANGED {signature_path} {digest}")
         return 0
     try:
@@ -898,11 +934,6 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     sign_parser.add_argument("request")
     sign_parser.add_argument("--schema-dir")
-    sign_parser.add_argument(
-        "--force",
-        action="store_true",
-        help="overwrite a different signature (stand-in re-issue; old digest is printed)",
-    )
     sign_parser.set_defaults(handler=_cmd_sign_request)
 
     verify_parser = subparsers.add_parser(

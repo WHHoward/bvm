@@ -39,9 +39,15 @@
     "bindings": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["record_sha256"],
+      "required": [
+        "record_sha256",
+        "request_sha256",
+        "request_signature_sha256"
+      ],
       "properties": {
-        "record_sha256": { "$ref": "#/$defs/sha256" }
+        "record_sha256": { "$ref": "#/$defs/sha256" },
+        "request_sha256": { "$ref": "#/$defs/sha256" },
+        "request_signature_sha256": { "$ref": "#/$defs/sha256" }
       }
     },
     "notes": { "type": "string", "minLength": 1 }

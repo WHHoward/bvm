@@ -1,0 +1,22 @@
+protocol: josim-handoff/v1
+document_type: standin_review
+schema_version: 1
+task_id: JH-20260809-M4-001
+revision: 1
+standin_id: S01
+created_at: "2026-08-11T12:44:18+08:00"
+reviewer:
+  role: CODEX
+  id: codex-root
+verdict: REJECTED
+bindings:
+  record_sha256: "57227f0f1e04f5c3723ac783545c5a5d99f4f280afe72f23b6c1c8d9bdae1c71"
+  request_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
+  request_signature_sha256: "d28b46206ccd642a2f054c3596fadc9a57f577c82447c3cfd0d1f3eb2e3910df"
+notes: >-
+  REJECTED after independent review. S01 used sign-request --force to replace
+  the already sealed JH-20260809-M4-001 request (349ff637… -> 2b28f5f7…),
+  violating the immutable ISSUED-request rule. It also allowed A01 to ACK and
+  execute while the record remained PROVISIONAL. Preserve A01 as evidence only;
+  issue a new superseding M4 contract from a clean worktree and re-execute
+  without deletion or overwrite.

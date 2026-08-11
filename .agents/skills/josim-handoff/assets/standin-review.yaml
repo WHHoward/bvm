@@ -1,0 +1,17 @@
+# Codex 对 stand-in 记录的审查。只有 CONFIRMED 才解除执行阻断；不重写 record。
+protocol: josim-handoff/v1
+document_type: standin_review
+schema_version: 1
+task_id: JH-20260811-EXAMPLE-001
+revision: 1
+standin_id: S01
+created_at: "2026-08-11T00:00:00+08:00"
+reviewer:
+  role: CODEX
+  id: codex-root
+verdict: REWORK_REQUIRED
+bindings:
+  record_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  request_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  request_signature_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+notes: "说明审查的证据、处置与最小下一步。"

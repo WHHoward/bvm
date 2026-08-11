@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-08-11 — 工作流完整性加固与 M4-001 stand-in 审查
+
+### 做了什么
+
+- Codex 审查 `JH-20260809-M4-001/standin/S01` 并写入 `REJECTED` review：已签 request 被 `--force` 重签，且其 `PROVISIONAL` 状态下发生 ACK/执行；A01 receipt 另披露未授权删除调试日志
+- 移除 `sign-request --force`；未确认或非 `CONFIRMED` stand-in 现在使 `verify-task` 非零退出；review 绑定 record、request 和签名文件，record 的最新 action target 必须匹配实际哈希
+- 为 checkin 增加 `PROVISIONAL / INVALID / VERIFIED DELIVERED` 区分与单元测试；新增 stand-in review 模板
+- 在 `WORKFLOW.md` 固化核心审阅、工程审阅、机械检查三层模型路由；执行 worktree 在 ACK 后冻结，禁止再从 master 同步文件
+
+### 影响
+
+- M4-001 的候选实现和日志保留为历史证据，但不能合并、上推 todo/HANDOVER 或作为 M4 完成；后续用新的 superseding request 在干净 worktree 重做
+- stand-in 只能准备 DRAFT 和记录；不能重签既有 ISSUED request，也不能让未确认合同进入 ACK/执行
+
+---
+
 ## 2026-08-09 — Codex 不可用时的 Claude stand-in 代理机制（⚠️ stand-in 代理，待 Codex 审查）
 
 > **标注**：Codex 额度暂时耗尽，用户在 2026-08-09 明确授权 Claude 临时代理本条目与相关签发动作（stand-in 会话 S01）。本条目及该会话的产物为 **PROVISIONAL**，须由 Codex 在 `research/tasks/<id>/standin/<Sxx>/review.yaml` 中审查确认后才生效。协议见 `research/WORKFLOW.md` §15。

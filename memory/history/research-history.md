@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-11
+  last_updated: 2026-08-12
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -25,10 +25,18 @@ metadata:
 | 1. 路线设计 | 7/13-7/17 | PIM 路线图、BVM→BQ 双路线、论文策略 | ✅ 路线冻结 |
 | 2. BQ 尝试 | 7/17-8/6 | BVM→BQ 耦合 7 轮实验 + BQ v4 | ❌ 8 轮全败（结构不匹配） |
 | 3. 路线转向 | 8/6 | DCSFQ_BVM 新元件 + Phase 0 表征 | ✅ Phase 0 完成（G1-G5） |
-| 4. 计量审计 | 8/9 起 | **P() 单位事故**发现 + Phase −1 修复 | 🔄 进行中（M4、M5、M12 已验收；M6–M11 未完成） |
+| 4. 计量审计 | 8/9 起 | **P() 单位事故**发现 + Phase −1 修复 | 🔄 进行中（M4–M7、M12 已验收；M8–M11 未完成） |
 | 5. 工作流升级 | 8/9 | Codex–Claude 双代理 + stand-in + mailbox | ✅ 基础设施就绪 |
 
 ## 三、详细时间线
+
+### 2026-08-12：M7 校准测试与历史回归接受
+
+**做了什么**：完成 `M7-LITE-001` 的 M7A（合成 ground truth）、M7B（直接同 JJ V/P 的 canonical JTL 测量管线重放）与 M7C（DCSFQ 0/300 µA 控制重放、BQ v4 六周期平台常量）校准。A01 的数值检查通过但因缺少独立 analysis 和完整 scope evidence 被 `REWORK_REQUIRED`；A02 保留 A01 原始证据并补齐绑定 analysis、范围日志与独立 Copilot 复审。
+
+**结果/产物**：`research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md` 为 `ACCEPTED`。83 项 M4–M7 测试通过；canonical JTL 相位—面积残差仅记录，未设接受容差。
+
+**认知**：✅ 计量实现、canonical transient 管线和指定历史 raw 算术具备接受的校准/回归证据；⚠️ 这不是物理事件、JTL Gate、路线、容差或收敛结论，M8–M11 仍未完成。
 
 ### 阶段 0：基础建设（7/12）
 

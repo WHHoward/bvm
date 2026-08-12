@@ -23,10 +23,10 @@ metadata:
 | M4 | 修复/替换 `scripts/sfq_metrics.py` | 🟢（2026-08-11） | `scripts/sfq_metrics_v2.py` 明确 rad→圈转换；活动只报告样本/区间，不叫事件；合同 `JH-20260811-M4-003` 的独立审计为 `ACCEPTED` |
 | M5 | 实现事件窗口和零输入控制 | 🟢（2026-08-11） | `M5-LITE-PILOT-001` A02 经 Copilot 复审与 Codex 接受：pre/activity/post 稳定窗、显式方向、匹配零输入控制和活动聚类有统一实现；不构成物理 Gate |
 | M6 | 加电压面积交叉校验 | 🟢（2026-08-12） | `JH-20260812-M6-002` 的 FROZEN 复现已用同一 JJ、同方向、同一实际采样端点窗口的直接 `V(B...)`/`P(B...)` 报告 `∫Vdt/Φ0` 与 `Δφ/2π` 的带符号残差；M9 才冻结其接受容差 |
-| M7 | 指标单元/回归测试（拆三子项） | 🔴 | 见 M7A/B/C；三者都通过 M7 才完成 |
-| M7A | Mathematical unit tests | 🔴 | 合成 ground truth（zero trace、±2π 阶跃、双转换、已知电压面积脉冲、sign 反转、窗口边界）：验证公式/单位/sign/window/cluster/integration 正确；不证明任何 BQ/DCSFQ/BVM candidate 物理正确 |
-| M7B | Canonical circuit validation | 🔴 | 独立、已充分理解的 canonical Josephson/SFQ 电路（如标准 JTL）：验证 measurement pipeline 在真实 transient 上正确；不证明 BQ v4/DCSFQ_BVM 成功 |
-| M7C | Historical regression | 🔴 | DCSFQ 300 µA、BQ v4 六周期等 preserved raw：expected 值必须来自独立人工/raw 重算预注册 frozen constants；禁止 production analyzer 自证（生成 expected 再验证 expected）；只证明新 pipeline 未重新误读旧数据 |
+| M7 | 指标单元/回归测试（拆三子项） | 🟢（2026-08-12） | `M7-LITE-001` A02 经 Copilot 复审与 Codex 接受：M7A/B/C 均通过；仅建立校准实现与确定性回归，不构成物理 Gate |
+| M7A | Mathematical unit tests | 🟢（2026-08-12） | 合成 ground truth（zero trace、±2π 阶跃、双转换、已知电压面积脉冲、sign 反转、窗口边界）：验证公式/单位/sign/window/cluster/integration；不证明任何 BQ/DCSFQ/BVM candidate 物理正确 |
+| M7B | Canonical circuit validation | 🟢（2026-08-12） | 直接同 JJ V/P 探针的 canonical JTL 运行与独立实际时间轴算术一致；残差只报告，M9 才冻结接受容差；不证明 BQ v4/DCSFQ_BVM 成功 |
+| M7C | Historical regression | 🟢（2026-08-12） | DCSFQ 300 µA 控制重放和 BQ v4 六周期平台常量以预注册独立值通过；只证明新 pipeline 未重新误读历史 raw，不把周期平台称为物理事件或 Gate |
 | M8 | 有界时间步收敛（预注册 procedure） | 🔴 | 运行前预注册 initial_dt=0.1 ps、refinement_ratio、max_refinement_levels（≥3：0.1/0.05/0.025 ps）、observables（phase turns、voltage-area turns、phase-area residual、event timing、pulse width、downstream count 若适用）、comparison_windows、stability_tolerance、stop_rule；相邻 refinement 关键量进入稳定带宽=PASS；到最大深度仍不稳定=INCONCLUSIVE；禁止无限 refinement |
 | M9 | 只冻结 `METRIC_SPEC_V2.md`（怎么测） | 🔴 | phase normalization、P/V same-JJ mapping、direction/sign、windows、zero-input control、activity clustering、voltage-area integration、numerical tolerance、convergence rule、output schema；**不定义**接口成功标准（后者为独立 `INTERFACE_GATE_V1`，在 Reference/Source/Receiver 事实层建立后单独冻结） |
 | M10 | 重生 JSON 和审计表 | 🔴 | BASELINE/P0/P2/v4 写入各实验 `data/metrics_v2/`，保留旧文件；历史文档原文保留 + SUPERSEDED banner + central correction table，不机械改写历史 narrative |
@@ -46,7 +46,7 @@ metadata:
 
 人工重算用于纠正路线判断，但在 M4–M11 完成前不能称为新的自动冻结基线。
 
-**2026-08-12 更新**：M4 建立 raw rad→圈与活动命名基础；M5 已接受 pre/activity/post 窗口、显式方向、匹配零输入对照与连续活动聚类的实现和确定性回归。M6 已接受 FROZEN 同 JJ 相位—电压面积测量管线复现：它使用直接 `V(B...)`、相同方向/端点窗口和 CSV 实际时间轴梯形积分，报告残差但不冻结接受容差。M5/M6 都不构成物理 Gate 或 SFQ 事件计数；M7–M11 仍未完成。M6 验收证据：`research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml`。
+**2026-08-12 更新**：M4 建立 raw rad→圈与活动命名基础；M5 已接受 pre/activity/post 窗口、显式方向、匹配零输入对照与连续活动聚类的实现和确定性回归。M6 已接受 FROZEN 同 JJ 相位—电压面积测量管线复现：它使用直接 `V(B...)`、相同方向/端点窗口和 CSV 实际时间轴梯形积分，报告残差但不冻结接受容差。M7 已接受 M7A 合成 ground truth、M7B canonical JTL 同 JJ V/P 校准与 M7C 历史回归；三者均只构成 CALIBRATION LITE 证据。M4–M7 都不构成物理 Gate 或 SFQ 事件计数；M8–M11 仍未完成。M7 验收证据：`research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md`；M6 验收证据：`research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml`。
 
 ## C. ⏸️ 候选路线 1：BQ v4（等待 Phase −1）
 

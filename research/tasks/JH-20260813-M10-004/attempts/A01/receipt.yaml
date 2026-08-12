@@ -1,0 +1,95 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M10-004
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-13T03:50:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: d3e0e7c8f585eaf2a3a571e5e630769edab119fc6329ed056ef0e17e6585e912
+  ack_sha256: 9fa8f72f0d5d8af578f6630b159b1d8231cf643589887ee83631731268a4cccf
+execution_status: COMPLETED
+baseline_git_head: 6bb0790
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260813-M10-004/attempts/A01/ack.yaml
+  action: CREATED
+  sha256: 9fa8f72f0d5d8af578f6630b159b1d8231cf643589887ee83631731268a4cccf
+- path: research/tasks/JH-20260813-M10-004/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: 448c03db6260651ccc5e99b73ba48631a3b8b864e0b6b384e75762489b8773cc
+- path: research/tasks/JH-20260813-M10-004/attempts/A01/logs/hash-check.log
+  action: CREATED
+  sha256: 46b6dac75aeaf60b1407e41b3db885e671df66be59bde69af36907340ab5f675
+artifacts:
+- id: ack
+  path: research/tasks/JH-20260813-M10-004/attempts/A01/ack.yaml
+  sha256: 9fa8f72f0d5d8af578f6630b159b1d8231cf643589887ee83631731268a4cccf
+  role: DOCUMENTATION
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M10-004/attempts/A01/logs/preflight.log
+  sha256: 448c03db6260651ccc5e99b73ba48631a3b8b864e0b6b384e75762489b8773cc
+  role: LOG
+- id: log-hash-check.log
+  path: research/tasks/JH-20260813-M10-004/attempts/A01/logs/hash-check.log
+  sha256: 46b6dac75aeaf60b1407e41b3db885e671df66be59bde69af36907340ab5f675
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M10-004 (ACK 后)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-004/attempts/A01/logs/preflight.log
+  log_sha256: 448c03db6260651ccc5e99b73ba48631a3b8b864e0b6b384e75762489b8773cc
+- command: sha256sum 11 preserved artifacts vs M10-003 A01 receipt (hash-check.log)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-004/attempts/A01/logs/hash-check.log
+  log_sha256: 46b6dac75aeaf60b1407e41b3db885e671df66be59bde69af36907340ab5f675
+tests:
+- id: hash-reconciliation
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-004/attempts/A01/logs/hash-check.log
+  notes:
+  - 11/11 preserved artifacts byte-match M10-003 A01 receipt recorded hashes（generator、test、correction table、四 JSON、四 banner 文档）
+- id: vocabulary-boundary
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-004/attempts/A01/logs/hash-check.log
+  notes:
+  - 四 JSON + correction table 无 sfq_count/event_count/pulse_count/fast_events/activity_clusters/platform_delta/area_turns/converged/INTERFACE_GATE/pass/fail 词汇
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-004/attempts/A01/ack.yaml
+  - research/tasks/JH-20260813-M10-004/attempts/A01/logs/preflight.log
+  notes:
+  - M9 authority 状态核验（HANDOVER 记录用户已授权 M10、M9 ACCEPTED、spec measurement-only）；全部 scope hashes OK；无 frozen path 被编辑
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-004/attempts/A01/logs/hash-check.log
+  notes:
+  - 11 个 preserved artifacts 独立哈希与 M10-003 A01 receipt 记录逐一相等；输出文本 endpoint-arithmetic-only，无物理 Gate 词汇
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-004/attempts/A01/logs/preflight.log
+  notes:
+  - receipt 记录 fresh 成功 verify-task（ACK 后 receipt 前 VERIFIED；final verify 由 Codex 执行）；无 JoSIM/重建执行；未声称被取代 A01 合同有效
+observations:
+- M10-003 A01 的 generator、四个 metrics_v2 JSON、correction table、四个已 banner 历史文档共 11 个 preserved artifacts 全部字节级复现。
+- 未运行 JoSIM、未重跑生成器、未编辑任何科学/历史 artifact；可变路径仅本 attempt 目录。
+interpretations:
+- M10 端点算术重建现以 scope-correct 的 fresh FROZEN 链完成重封存，证据可独立复核。
+unknowns:
+- BVM→BQ 与 BQ/BVM same-JJ P/V mappings 仍 UNKNOWN；全局容差仍 UNFROZEN。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot 未由执行者创建（Codex-owned）；result_git_head null。
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+deviations: []
+blockers: []

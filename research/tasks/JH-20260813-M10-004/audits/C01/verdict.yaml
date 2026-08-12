@@ -1,0 +1,42 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M10-004
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-13T04:00:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "d3e0e7c8f585eaf2a3a571e5e630769edab119fc6329ed056ef0e17e6585e912"
+  ack_sha256: "9fa8f72f0d5d8af578f6630b159b1d8231cf643589887ee83631731268a4cccf"
+  receipt_sha256: "184c9c2cd04b51a860b28751504ae7e74f494edbe4244a75636a14040c3bf8b4"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-and-scope
+    status: PASS
+    evidence: ["final verify-task VERIFIED in /home/howard/JoSIM-m10-004"]
+  - id: preserved-artifact-hashes
+    status: PASS
+    evidence: ["A01 hash-check log: all 11 preserved artifacts match the M10-003 A01 receipt", "independent Codex SHA-256 check"]
+  - id: claim-boundary
+    status: PASS
+    evidence: ["four V2 JSON and correction table remain endpoint-arithmetic/provenance only; no physical Gate claim"]
+findings: []
+accepted_claims:
+  - "BASELINE, P0, P2, and BQ-v4 V2 artifacts are preserved, hash-bound endpoint-arithmetic/provenance reconstructions."
+  - "Legacy data/narrative preservation and V2 correction-table links are accepted within M10's non-physical claim ceiling."
+rejected_claims:
+  - "M10 does not establish an SFQ, fluxoid, voltage-area, downstream, candidate, Interface Gate, route, or system result."
+required_rework: []
+next_actions:
+  - "Codex may update authority state to mark M10 accepted; M11 remains pending."
+claim_ceiling: historical_endpoint_arithmetic_and_artifact_provenance_only_no_physical_gate

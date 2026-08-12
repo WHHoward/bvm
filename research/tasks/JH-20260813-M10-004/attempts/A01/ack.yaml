@@ -1,0 +1,37 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M10-004
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T03:45:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "d3e0e7c8f585eaf2a3a571e5e630769edab119fc6329ed056ef0e17e6585e912"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "6bb0790"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M10-004/request.yaml / request.sha256 / baseline/** / design/**（issue 自带，与 baseline/git-status.txt 一致）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "对 M10 A01 端点算术重建做 scope-correct 重封存：仅核验已保存的 M10-003 A01 产物（generator、四个 metrics_v2 JSON、correction table、四个已 banner 历史文档）的哈希与 M10-003 A01 receipt 记录一致、且输出文本保持 endpoint-arithmetic-only 无物理 Gate 词汇；创建 fresh ACK/receipt 链（可变路径仅本 attempt 目录）；运行 final verify-task 必须成功。不重跑生成器/JoSIM，不编辑任何科学/历史 artifact，不声称被取代的 A01 合同有效。"
+  non_goals:
+    - "不运行 JoSIM/重建/raw 编辑/candidate tuning/Interface Gate/route/paper claim/physical verdict。"
+    - "不修改 M10-003、其 A01、其 C01 audit 或任何 preserved output。"
+  stop_conditions:
+    - "HEAD/dirty/scope/metric-spec/authority hash 不符。"
+    - "需要编辑 attempts 目录以外任何路径或运行 JoSIM/重建。"
+    - "final verify-task 失败——保留 attempt 并报告 BLOCKED/DEVIATED。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M10-004（ACK 后与交付前）"
+  - "sha256sum 全部 11 个 preserved artifacts 并与 M10-003 A01 receipt 记录逐一比对"
+  - "grep 输出文本禁词检查（endpoint-arithmetic-only）"
+expected_changed_paths:
+  - "research/tasks/JH-20260813-M10-004/attempts/**"
+blockers: []
+deviations: []

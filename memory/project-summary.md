@@ -4,7 +4,7 @@ description: JoSIM × BVM 项目综合快照 — 2026-08-09 相位单位审计�
 metadata:
   node_type: memory
   type: project
-  last_updated: 2026-08-11
+  last_updated: 2026-08-12
 ---
 
 # JoSIM × BVM 项目综合总结
@@ -16,6 +16,8 @@ metadata:
 **会话交接**：`docs/HANDOVER.md`。
 
 **任务权威**：`memory/project-todo.md`。
+
+**2026-08-12 状态**：M4–M8 已接受；M8 的接受范围仅为 loaded canonical JTL 校准 fixture 在预注册 0.1/0.05/0.025 ps procedure 下的有界数值收敛（证据：`research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml`）。这不冻结 `METRIC_SPEC_V2` 容差，也不构成 SFQ、下游接收、系统 Gate 或路线结论。M9–M11 仍待用户授权。
 
 ## 一句话目标
 

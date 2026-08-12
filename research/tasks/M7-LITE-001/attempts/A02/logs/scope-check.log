@@ -1,0 +1,22 @@
+## A02 final complete scope check (after ALL A02 files exist)
+date: 2026-08-12T20:11:00+08:00
+baseline: df5027e3c0809a6a8ba958dc853409976adb02a7 (A02 execution baseline)
+command: git status --porcelain=v1 --untracked-files=all
+
+--- git status output ---
+?? research/tasks/M7-LITE-001/attempts/A02/RESULT.md
+?? research/tasks/M7-LITE-001/attempts/A02/analysis-m7b.md
+
+--- all changed paths (git-tracked view) ---
+research/tasks/M7-LITE-001/attempts/A02/RESULT.md
+research/tasks/M7-LITE-001/attempts/A02/analysis-m7b.md
+
+--- note: repo .gitignore:68 ignores *.log; the A02 log evidence files below are part of this attempt's delivery and are listed explicitly (they are force-included into snapshots by the snapshot owner, same as A01): ---
+a320124b55a6f16ec0d62c3888154aa1167681c881467bf6443bc68a2fbf723e  research/tasks/M7-LITE-001/attempts/A02/logs/analysis-generation.log
+92b3e3fa0a33c4868d8b6a5ea3ca723ccf8c96ba1a4e225eb7c0c0c6148a4394  research/tasks/M7-LITE-001/attempts/A02/logs/scope-check.log
+
+--- out-of-scope check (must be none outside attempts/**) ---
+PASS: all git-visible changes within research/tasks/M7-LITE-001/attempts/**; the only additional files are the explicitly listed *.log evidence (gitignored by repo rule, same delivery class as A01 logs)
+
+--- implementation/test files unchanged vs snapshot ---
+(empty = unchanged)

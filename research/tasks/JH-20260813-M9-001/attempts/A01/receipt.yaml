@@ -1,0 +1,187 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M9-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-13T00:40:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 7060180c7ec38c5cf31811668629dbe935aa51fb99f897b967b6094407424f21
+  ack_sha256: 252f0437aaa44ee0187c18706f85df947977cceb26409809976c291e628f9cb9
+execution_status: COMPLETED
+baseline_git_head: b637bf29a6bbcb477be5befd641f472acbc69405
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260813-M9-001/attempts/A01/ack.yaml
+  action: CREATED
+  sha256: 252f0437aaa44ee0187c18706f85df947977cceb26409809976c291e628f9cb9
+- path: docs/research/METRIC_SPEC_V2.md
+  action: CREATED
+  sha256: ce792845e59e09c00c4473f830aacc5c4a9712c5fcad63858b1acdaf8e5dce59
+- path: test/metrics/test_metric_spec_v2.py
+  action: CREATED
+  sha256: ea4e6aebe3fd73e8d1c55719178f49764e4d9e54e789823bff8ebeefe8052a64
+- path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: 9883a0c5ba6097747cff2d0c33a5538edc4022d364dac998ee5dfe017eb2e591
+- path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/test-metric-spec.log
+  action: CREATED
+  sha256: e68a952e34c25da3d781c3013bf76e65de3f1aadd80b492e602be3882496534e
+- path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  action: CREATED
+  sha256: 2637af704c20db35643d0c0729950bee0bb39f08fd81dc79a727acedfc794f37
+- path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  action: CREATED
+  sha256: a065af0f62f80d01ec1cea4c90e12631ab2c9fe35b1f174d1d1026ffdfbc2d84
+- path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  action: CREATED
+  sha256: 2e3e13b057343241ba518cd1f21229bc5fedbe82a9a48538bf1751d4bc1155a7
+- path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  action: CREATED
+  sha256: 6b3fee76272de745077375d35ee3b4820d603486e9f8c4e8614f9690ae99f251
+artifacts:
+- id: metric-spec
+  path: docs/research/METRIC_SPEC_V2.md
+  sha256: ce792845e59e09c00c4473f830aacc5c4a9712c5fcad63858b1acdaf8e5dce59
+  role: DOCUMENTATION
+- id: metric-spec-tests
+  path: test/metrics/test_metric_spec_v2.py
+  sha256: ea4e6aebe3fd73e8d1c55719178f49764e4d9e54e789823bff8ebeefe8052a64
+  role: TEST
+- id: ack
+  path: research/tasks/JH-20260813-M9-001/attempts/A01/ack.yaml
+  sha256: 252f0437aaa44ee0187c18706f85df947977cceb26409809976c291e628f9cb9
+  role: DOCUMENTATION
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/preflight.log
+  sha256: 9883a0c5ba6097747cff2d0c33a5538edc4022d364dac998ee5dfe017eb2e591
+  role: LOG
+- id: log-test-metric-spec.log
+  path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/test-metric-spec.log
+  sha256: e68a952e34c25da3d781c3013bf76e65de3f1aadd80b492e602be3882496534e
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2.log
+  path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  sha256: 2637af704c20db35643d0c0729950bee0bb39f08fd81dc79a727acedfc794f37
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2_m5.log
+  path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  sha256: a065af0f62f80d01ec1cea4c90e12631ab2c9fe35b1f174d1d1026ffdfbc2d84
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2_m6.log
+  path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  sha256: 2e3e13b057343241ba518cd1f21229bc5fedbe82a9a48538bf1751d4bc1155a7
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2_m7.log
+  path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  sha256: 6b3fee76272de745077375d35ee3b4820d603486e9f8c4e8614f9690ae99f251
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M9-001 (ACK 后 receipt 前；final verify 由 Codex 交付后执行)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/preflight.log
+  log_sha256: 9883a0c5ba6097747cff2d0c33a5538edc4022d364dac998ee5dfe017eb2e591
+- command: sha256sum -c research/tasks/JH-20260813-M9-001/baseline/scope-files.sha256
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/preflight.log
+  log_sha256: 9883a0c5ba6097747cff2d0c33a5538edc4022d364dac998ee5dfe017eb2e591
+- command: python3 test/metrics/test_metric_spec_v2.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/test-metric-spec.log
+  log_sha256: e68a952e34c25da3d781c3013bf76e65de3f1aadd80b492e602be3882496534e
+- command: python3 test/metrics/test_sfq_metrics_v2.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  log_sha256: 2637af704c20db35643d0c0729950bee0bb39f08fd81dc79a727acedfc794f37
+- command: python3 test/metrics/test_sfq_metrics_v2_m5.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  log_sha256: a065af0f62f80d01ec1cea4c90e12631ab2c9fe35b1f174d1d1026ffdfbc2d84
+- command: python3 test/metrics/test_sfq_metrics_v2_m6.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  log_sha256: 2e3e13b057343241ba518cd1f21229bc5fedbe82a9a48538bf1751d4bc1155a7
+- command: python3 test/metrics/test_sfq_metrics_v2_m7.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  log_sha256: 6b3fee76272de745077375d35ee3b4820d603486e9f8c4e8614f9690ae99f251
+tests:
+- id: metric-spec-v2
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M9-001/attempts/A01/logs/test-metric-spec.log
+  notes:
+  - 34 tests OK（确定性校验：canonicality/version/hash procedure/semantics/no-global-tolerance/output-schema/exclusions）
+- id: M4-M7 regression
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  - research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  - research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  - research/tasks/JH-20260813-M9-001/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  notes:
+  - M4/M5/M6/M7 测试未改动，全部 OK
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/METRIC_SPEC_V2.md
+  - test/metrics/test_metric_spec_v2.py
+  notes:
+  - METRIC_SPEC_V2.md 位于 canonical 路径；metric_spec_version 2.0.0；§0.1 定义内容 SHA-256 记录规程；§0 引用 M4/M5/M6/M8 四条已接受证据；claim_ceiling 限测量/报告语义
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/METRIC_SPEC_V2.md
+  - test/metrics/test_metric_spec_v2.py
+  notes:
+  - §1 raw rad 保留与 turns 转换；§2 platform vs endpoint 分离；§3 同 JJ P/V 映射 + 两个独立符号字段；§4 半开窗；§5 匹配控制/netlist closure；§6 activity 聚类；§7 实际时间电压面积；§10 QA/INVALID/INCONCLUSIVE；§9 收敛预注册；§11 版本化输出 schema
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/METRIC_SPEC_V2.md
+  - test/metrics/test_metric_spec_v2.py
+  notes:
+  - §6.3/§8.1 明确不冻结通用 activity 阈值或全局接受容差；§8.3 M8 bands 仅 m8_loaded_canonical_jtl_v1 fixture-local；§8.4 缺容差→INCONCLUSIVE；测试断言 6 个容差全部 UNFROZEN、§8.1 拒绝语句存在
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/METRIC_SPEC_V2.md
+  - test/metrics/test_metric_spec_v2.py
+  notes:
+  - §11.1 schema 含 provenance/windows/mappings/namespaces/raw rad+turns/activity diagnostics/P-V residual/convergence/UNKNOWN+NOT_APPLICABLE reasons；§11.2 拒绝 NaN/Inf、禁止 event/SFQ/pulse/fluxoid count 字段；测试逐项断言
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/METRIC_SPEC_V2.md
+  - test/metrics/test_metric_spec_v2.py
+  notes:
+  - §12 显式排除 INTERFACE_GATE_V1、candidate success criteria、read1/read0、repeatability、state preservation、route selection、paper/hardware claims；测试 TestExclusions 覆盖
+- id: AC6
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M9-001/attempts/A01/ack.yaml
+  - research/tasks/JH-20260813-M9-001/attempts/A01/logs/preflight.log
+  - research/tasks/JH-20260813-M9-001/attempts/A01/logs/test-metric-spec.log
+  notes:
+  - Preflight/ACK/证据链完整；测试 34/34 + M4–M7 回归全过；receipt 不登记自引用 final verify log（preflight.log 在 receipt 之前生成，无自引用）；FROZEN delivery snapshot 由 Codex 控制，执行者未 commit
+observations:
+- METRIC_SPEC_V2.md 34 条确定性校验通过（canonicality、version 2.0.0、hash procedure、12 条语义、无全局容差、output schema 禁令、12 条排除）。
+- M4–M7 回归测试全部 OK，未被修改。
+- spec 的 §13 UNFROZEN registry 列出 6 项：universal activity threshold、integer residual、phase-area residual、platform stability、BVM drift、amplitude/jitter。
+- 未运行 JoSIM（authorization.run_josim=false 遵守）；未修改任何 frozen/read 输入。
+interpretations:
+- 该 spec 只冻结测量/报告语义，与 design/sol-xhigh-measurement-review.md 的 12 条可冻结决策一致；M8 bands 只作为 fixture-local 校准数据保留。
+unknowns:
+- 全局容差（integer residual、phase-area residual、platform stability、BVM drift、amplitude、jitter）仍 UNFROZEN，需后续校准证据。
+- BQ/BVM P/V mappings 仍 UNKNOWN，需单独演示。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot 未由执行者创建（Codex-owned）；receipt 中 result_git_head 为 null，待 Codex snapshot。
+- log 文件被仓库 .gitignore 忽略（*.log），已在此 receipt 显式登记全部 log 路径与 SHA-256。
+deviations: []
+blockers: []

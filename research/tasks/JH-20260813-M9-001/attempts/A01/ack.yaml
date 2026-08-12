@@ -1,0 +1,41 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M9-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T00:30:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "7060180c7ec38c5cf31811668629dbe935aa51fb99f897b967b6094407424f21"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "b637bf29a6bbcb477be5befd641f472acbc69405"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M9-001/request.yaml / request.sha256 / baseline/git-status.txt / baseline/scope-files.sha256 / design/sol-xhigh-measurement-review.md（issue 自带 5 条合同包路径，与 baseline/git-status.txt 一致，ALLOW_NONOVERLAP 允许）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "在 docs/research/METRIC_SPEC_V2.md 冻结 canonical 测量契约（metric_spec_version 2.0.0，内容 SHA-256 记录规程，引用已接受 M4–M8 证据，claim 仅限测量/报告语义），并写 test/metrics/test_metric_spec_v2.py 确定性校验防 scope/语义回归；按 design/sol-xhigh-measurement-review.md 的 12 条可冻结决策与 6 类不得发明的值执行。"
+  non_goals:
+    - "不定义 INTERFACE_GATE_V1、候选成功阈值、BQ/DCSFQ/BVM 成功标准、read1/read0、可重复性、状态保持、路线决策或论文主张。"
+    - "不运行 JoSIM、不改网表/raw 数据、不重建基线（M10）、不冻结新基线/Gate 结论（M11）。"
+    - "不修改 scripts/sfq_metrics_v2.py 或超出现有 claim ceiling 重释 M4–M8 证据。"
+  stop_conditions:
+    - "baseline、scope hash、必需任务/证据状态、lock 或 preflight 不符。"
+    - "需要修改 frozen path、运行 JoSIM、创建/修改接口 Gate、改历史数据、定义候选成功或写 scope 外路径。"
+    - "需要覆盖/删除/重命名既有产物、扩 write scope、联网/装依赖或 amend/rebase snapshot。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M9-001（ACK 前后；final verify 由 Codex 交付后执行，FROZEN snapshot Codex-owned）"
+  - "sha256sum -c research/tasks/JH-20260813-M9-001/baseline/scope-files.sha256"
+  - "python3 test/metrics/test_metric_spec_v2.py（新测试，确定性，不运行 JoSIM）"
+  - "python3 test/metrics/test_sfq_metrics_v2.py && test_sfq_metrics_v2_m5.py && test_sfq_metrics_v2_m6.py && test_sfq_metrics_v2_m7.py（只读回归，M4–M7 未改动）"
+expected_changed_paths:
+  - "docs/research/METRIC_SPEC_V2.md"
+  - "test/metrics/test_metric_spec_v2.py"
+  - "research/tasks/JH-20260813-M9-001/attempts/**"
+blockers: []
+deviations: []

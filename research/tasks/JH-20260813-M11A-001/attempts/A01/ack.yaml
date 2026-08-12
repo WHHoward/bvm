@@ -1,0 +1,38 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M11A-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T04:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "8d9f4a5"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M11A-001/** 与 JH-20260813-M11B-001/**（issue 自带 task packets，与 baseline/git-status.txt 一致）"
+    - "research/mailbox/from-codex/codex-20260813-044137*.md（mailbox 通知）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "从 M4–M10 唯一已接受证据冻结 attempt-local、hash-verified Measurement Calibration Baseline：记录每层最终接受 verdict、当前 SHA-256、artifact validity、audit disposition、study phase、contribution 与 applicability limit；REWORK_REQUIRED/rejected 前身仅列 lineage 不作 acceptance evidence。绑定 METRIC_SPEC_V2 path/version/hash；盘点 M4–M9 确定性测试、M6 same-JJ raw/control、M7 oracle/raw、M8 six-run manifests/raw、M10 四家族十一 artifact 重建 provenance 并给显式验证结果。写确定性 attempt-local validator（拒绝缺 accepted-layer 字段、用非接受前身作证据、缺 provenance hash、全局容差声明、禁词），并声明 7 类容差 UNFROZEN 与容差依赖分类 INCONCLUSIVE。不运行 JoSIM，不改 frozen/read 输入。"
+  non_goals:
+    - "不运行 JoSIM/改 netlist/model/code/test；不调参；不做 BQ/DCSFQ/BVM route/INTERFACE_GATE_V1/T1/全局容差/physical PASS-FAIL/paper claim。"
+    - "不编辑历史 attempts、raw data、accepted audits、METRIC_SPEC_V2、todo、HANDOVER。"
+  stop_conditions:
+    - "scope/HEAD/dirty/HANDOVER/metric-spec/frozen-input mismatch。"
+    - "需要编辑 attempts/** 以外路径、运行 JoSIM、改 test/netlist/raw，或定义/验证 candidate/Gate。"
+    - "任何 acceptance 需要新 circuit run：停止并报告 exact missing discriminator。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11A-001（ACK 前后）"
+  - "sha256sum 全部 accepted inputs 与 baseline scope-files 比对"
+  - "python3 research/tasks/JH-20260813-M11A-001/attempts/A01/validate_measurement_calibration_baseline.py"
+expected_changed_paths:
+  - "research/tasks/JH-20260813-M11A-001/attempts/**"
+blockers: []
+deviations: []

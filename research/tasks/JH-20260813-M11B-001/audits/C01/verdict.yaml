@@ -1,0 +1,50 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M11B-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-13T05:20:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: 583e11a65e1dffd367aa608685dc9a2540dadabf6577560acd20d2e7031238cf
+  ack_sha256: 65688a620126916727ac3459fae1990dcb0c1026f55915d8f4cbd8d04cf2a2aa
+  receipt_sha256: 64660722c4a54bc93ae341b19b0f18860e02947ad6503ab1d65bd00def493886
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root; Terra High independent material review
+checks:
+  - id: mechanical-chain
+    status: PASS
+    evidence: ["handoff.py verify-task research/tasks/JH-20260813-M11B-001: VERIFIED; request/ACK/receipt hashes bind"]
+  - id: required-object-structure
+    status: PASS
+    evidence: ["scientific-reconstruction-baseline-v1.yaml contains the seven required object names and the requested top-level fields"]
+  - id: corpus-and-scope-provenance
+    status: FAIL
+    evidence: ["baseline.yaml:23,41,47,77 says relevant paper full text is absent despite local arti/ PDFs; baseline.yaml:64 cites circuits/qb/bq_cell.cir, which is not in request scope.read_paths"]
+  - id: validator-oracle-strength
+    status: FAIL
+    evidence: ["validate_scientific_reconstruction_baseline.py:124-134 accepts arbitrary reproduction levels such as R4; laundering guard only compares exact field strings; PASS claim guard is phrase-based and bypassable; it does not verify sources/evidence or their hashes"]
+  - id: receipt-protocol-recording
+    status: FAIL
+    evidence: ["receipt.yaml:19-21 incorrectly lists ack.yaml in changes[]; handoff protocol section 7 excludes ACK/receipt from changes[]"]
+findings:
+  - "A01 correctly expresses the intended low-claim semantics, but its factual corpus statement and executable guard are not sufficient for an honest FROZEN reconstruction/provenance baseline."
+  - "This is not a request to raise any object reproduction or characterization status; it is a request to correctly freeze the current state and its reviewed source boundary."
+accepted_claims: ["A01 did not run JoSIM, tune a circuit, contact authors, or assert candidate/interface/physical success.", "UNKNOWN, INFERRED, R0, PARTIAL_R1, LEGACY_ONLY, and CALIBRATION_FIXTURE_ONLY remain permissible outcomes."]
+rejected_claims: ["That M11B A01 completely and honestly freezes the knowledge state using an adequately bounded local source corpus.", "That its validator prevents unsupported reproduction/status upgrades or provenance laundering."]
+required_rework:
+  - "Create A02 without modifying A01. Correct the corpus boundary after inventorying the local arti/ documents; distinguish unreviewed available sources from unavailable sources and do not claim their contents without a documented read/audit."
+  - "Remove or explicitly authorize and hash-bind every source reference (including circuits/qb/bq_cell.cir); each evidence/source path used by an object must be within A02 read scope and be existence/hash verified."
+  - "Strengthen validator with explicit allowed reproduction-status enum, exact object uniqueness, required evidence/source verification, structured PASS-negation fields, and robust per-field provenance conflict checking; add adversarial tests for R4, synonym/alias laundering, source absence, and PASS semantic bypass."
+  - "In A02 receipt omit ack.yaml from changes[]; retain ACK only via bindings/artifacts as protocol requires."
+next_actions: ["Notify Claude to create A02 in authorized attempts/** only. No JoSIM, network, author inquiry, source/netlist edit, status upgrade, candidate, INTERFACE_GATE_V1, or T1 work.", "M11 remains red; an M11B acceptance alone cannot compensate for M11A REWORK_REQUIRED."]
+claim_ceiling: reconstruction_and_provenance_knowledge_state_freeze_only_not_physical_knowledge_completeness_published_reproduction_or_candidate_validation

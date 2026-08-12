@@ -1,0 +1,35 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M11A-001
+revision: 1
+attempt_id: A02
+workflow_state: ACKED
+created_at: "2026-08-13T05:25:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "8d9f4a5"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M11A-001/attempts/A01/**（前次 attempt，REWORK 后保留不动）"
+    - "research/tasks/JH-20260813-M11A-001/audits/C01/verdict.yaml（Codex 裁决，只读）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "按 M11A C01 REWORK 修复：(1) M10 完整 11 项 hash inventory（generator、rebuild test、四 V2 JSON、correction table、四 bannered 历史文档），validator 要求精确集合；(2) 强制精确 M4–M10 层集合与非空完整 M6/M8/reconstruction inventories，负向测试删除每类必选项；(3) 真实运行并记录 M4–M10 回归命令日志；(4) receipt changes[] 不列 ACK（协议 §7，ACK 仅经 bindings/artifacts）。不运行 JoSIM，不改冻结输入，A01 保留。"
+  non_goals:
+    - "不运行 JoSIM/改 netlist/model/code/test；不调参；不做 route/Gate/paper claim。"
+  stop_conditions:
+    - "scope/HEAD/dirty/frozen-input mismatch；需要 attempts/** 外编辑。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11A-001"
+  - "python3 research/tasks/JH-20260813-M11A-001/attempts/A02/validate_measurement_calibration_baseline.py"
+  - "python3 test/metrics/test_sfq_metrics_v2*.py && test_metric_spec_v2.py && test_rebuild_historical_metrics_v2.py（真实回归日志）"
+expected_changed_paths:
+  - "research/tasks/JH-20260813-M11A-001/attempts/A02/**"
+blockers: []
+deviations: []

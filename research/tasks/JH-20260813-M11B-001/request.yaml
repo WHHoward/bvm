@@ -1,0 +1,48 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M11B-001
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-13T04:40:35+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M11B
+depends_on: [M4, M5, M6, M7, M8, M9, M10]
+supersedes: null
+task:
+  kind: DOCUMENTATION
+  objective: "Freeze a structured, current-fact Scientific Reconstruction Baseline that records provenance, per-object reproduction and characterization status, and UNKNOWN/INFERRED gaps without raising any status."
+  research_question: "Can the current repository knowledge state for BVM, published/reference BQ, canonical receiver fixtures, source, and receiver characterization be completely and honestly frozen with every unsupported field explicit?"
+  non_goals: ["No JoSIM run, circuit/model/netlist/test edit, candidate tuning, reference reconstruction run, INTERFACE_GATE_V1, T1, route decision, paper novelty claim, or physical verdict.", "No automatic upgrade of reproduction or characterization status, and no edit to REFERENCE_PROVENANCE.md, todo, HANDOVER, historical raw, or accepted task artifacts."]
+  claim_ceiling: reconstruction_and_provenance_knowledge_state_freeze_only_not_physical_knowledge_completeness_published_reproduction_or_candidate_validation
+scope:
+  read_paths: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, docs/research/REFERENCE_PROVENANCE.md, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-evidence-audit/SKILL.md, research/tasks/JH-20260813-M11B-001/design/preflight.md, research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml, research/tasks/M5-LITE-PILOT-001/attempts/A02/CODEX-AUDIT.md, research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml, research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md, research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml, research/tasks/JH-20260813-M9-004/audits/C01/verdict.yaml, research/tasks/JH-20260813-M10-004/audits/C01/verdict.yaml, circuits/bvm/bvm_cell.cir, circuits/qb/bq_cell_paper.cir, circuits/qb/bq_cell_v4.cir, circuits/standard/DCSFQ.cir, circuits/standard/JTL.cir, circuits/models/jjmit.cir, circuits/interface/DCSFQ_BVM.cir, test/final/single_bvm_qb/test_bvm_bq_baseline.cir, test/metrics/m7_canonical_jtl.cir, research/tasks/JH-20260812-M6-002/attempts/A01/runs/**, research/tasks/JH-20260812-M8-001/attempts/A01/runs/**, test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json, test/final/interface/data/metrics_v2/p0-v2.json, test/final/bvm/data/metrics_v2/p2-v2.json, test/final/qb/data/metrics_v2/bq-v4-v2.json]
+  write_paths: [research/tasks/JH-20260813-M11B-001/attempts/**]
+  frozen_paths: [research/tasks/JH-20260811-M4-003/**, research/tasks/M5-LITE-PILOT-001/**, research/tasks/JH-20260812-M6-002/**, research/tasks/M7-LITE-001/**, research/tasks/JH-20260812-M8-001/**, research/tasks/JH-20260812-M8-002/**, research/tasks/JH-20260813-M9-001/**, research/tasks/JH-20260813-M9-002/**, research/tasks/JH-20260813-M9-003/**, research/tasks/JH-20260813-M9-004/**, research/tasks/JH-20260813-M10-001/**, research/tasks/JH-20260813-M10-002/**, research/tasks/JH-20260813-M10-003/**, research/tasks/JH-20260813-M10-004/**, research/tasks/JH-20260813-M11A-001/**, research/tasks/JH-20260813-M11B-001/request.yaml, research/tasks/JH-20260813-M11B-001/request.sha256, research/tasks/JH-20260813-M11B-001/baseline/**, research/tasks/JH-20260813-M11B-001/design/**, research/tasks/JH-20260813-M11B-001/audits/**, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, docs/research/REFERENCE_PROVENANCE.md, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, circuits/**, scripts/**, test/**]
+  locks: [locks/m11b-scientific-reconstruction-baseline]
+baseline:
+  git_head: 8d9f4a5
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M11B-001/baseline/git-status.txt, sha256: 9a3ce1076ad797b035abd6b7ddc320f668a57d1ef2ce78ce9754cb76fe36381e}
+  scope_hashes: {path: research/tasks/JH-20260813-M11B-001/baseline/scope-files.sha256, sha256: a8626b2c39ddf018ccc313a617cdb0a59ac0c2b362cdfb18d93411e26ad4cbd7}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-evidence-audit]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/REFERENCE_PROVENANCE.md, research/tasks/JH-20260813-M11B-001/design/preflight.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: d9227348c7ef1feb8ae3063f5c6008f3e28089324849d542f9722016b041fe1f}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260813-M11B-001/attempts/**/scientific-reconstruction-baseline-v1.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260813-M11B-001/attempts/**/validate_scientific_reconstruction_baseline.py, role: TEST, required: true}
+  - {id: D3, path: research/tasks/JH-20260813-M11B-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "The structured baseline contains at least BVM, published modified-QB, original/reference BQ, canonical JTL receiver, canonical DCSFQ reference fixture, BVM source characterization, and receiver characterization objects; each has source_reference, parameter_provenance, reproduction_status, characterization_status, unknown_inferred_items, evidence, claim_limitation, and upgrade_discriminator fields.", evidence: [scientific-reconstruction-baseline-v1.yaml, validator-test-log]}
+  - {id: AC2, condition: "Every UNKNOWN or INFERRED item names the exact field, reference value/status, project value when present, provenance tag, reviewed source set/date/search boundary, impact, and required discriminator. No UNKNOWN is represented by a guessed/default numerical value, and [INFERRED]/[DESIGNED]/[TUNED] is never labeled [PUBLISHED].", evidence: [scientific-reconstruction-baseline-v1.yaml, validator-test-log]}
+  - {id: AC3, condition: "Reproduction status is per-object and cumulative: R0/R1/R2/R3 or PARTIAL_R1/NOT_ATTEMPTED has an achieved/not-achieved rationale. Any nonpublished-parameter behavioral similarity is labeled behavioral_analogue_with_nonpublished_parameters, not published R2. Characterization status is independent and one of NOT_ATTEMPTED/LEGACY_ONLY/CALIBRATION_FIXTURE_ONLY/CHARACTERIZED with evidence and limitation.", evidence: [scientific-reconstruction-baseline-v1.yaml]}
+  - {id: AC4, condition: "A deterministic attempt-local validator rejects absent required structured fields, invalid provenance tags, a bare UNKNOWN, an unjustified reproduction upgrade, characterization inferred from reproduction, candidate/Gate success text, or a claim that PASS means physical knowledge completeness/published reproduction/candidate validation; it passes the delivered baseline.", evidence: [validate_scientific_reconstruction_baseline.py, validator-test-log]}
+  - {id: AC5, condition: "The baseline explicitly declares PASS means reconstruction/provenance knowledge state is completely and honestly frozen as of its cutoff; UNKNOWN, INFERRED, R0, PARTIAL_R1 and uncharacterized states are legal. It makes no physical-completeness, published-reproduction, candidate, interface, system, T1, or paper novelty conclusion.", evidence: [scientific-reconstruction-baseline-v1.yaml]}
+  - {id: AC6, condition: "Receipt records no JoSIM run, no automatic status upgrade, no frozen-path edit, and a final successful handoff verification.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions: ["Any new circuit run, parameter tuning, status upgrade not supported by a listed accepted/current artifact, or edit outside attempts/**.", "Any bare/free-text-only object record, guessed UNKNOWN/default reference value, provenance laundering, or reproduction/characterization claim beyond recorded evidence.", "Any physical Gate, candidate success, route, T1, interface, hardware, or paper novelty conclusion."]
+inconclusive_conditions: ["A required object cannot be identified or its source/reference boundary cannot be recorded from the allowed local corpus; preserve the gap and report BLOCKED.", "A desired status requires an unregistered new circuit run or external source: report the exact discriminator and do not start it under this task."]
+stop_conditions: ["Any scope, HEAD, dirty snapshot, HANDOVER, metric-spec, or frozen-input mismatch.", "Need network, external contact, JoSIM, an edit outside attempts/**, or a new reconstruction/characterization run.", "Any acceptance condition requires raising a reproduction or characterization status rather than honestly freezing the current state."]
+issuance_blockers: []

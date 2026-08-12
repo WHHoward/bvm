@@ -1,0 +1,128 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M11B-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-13T05:10:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 583e11a65e1dffd367aa608685dc9a2540dadabf6577560acd20d2e7031238cf
+  ack_sha256: 65688a620126916727ac3459fae1990dcb0c1026f55915d8f4cbd8d04cf2a2aa
+execution_status: COMPLETED
+baseline_git_head: 8d9f4a5
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260813-M11B-001/attempts/A01/ack.yaml
+  action: CREATED
+  sha256: 65688a620126916727ac3459fae1990dcb0c1026f55915d8f4cbd8d04cf2a2aa
+- path: research/tasks/JH-20260813-M11B-001/attempts/A01/scientific-reconstruction-baseline-v1.yaml
+  action: CREATED
+  sha256: 4d9655c0a597fb888fe30522e4028f81e0765a77f5b775bfa24f4da2108b3891
+- path: research/tasks/JH-20260813-M11B-001/attempts/A01/validate_scientific_reconstruction_baseline.py
+  action: CREATED
+  sha256: 36b5ef9cfa8b624f0f027491f7907aaa64f5642ab8529dffd82566fe3751f302
+- path: research/tasks/JH-20260813-M11B-001/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: e18666166e194602d01cce47baa28b6dd68a4e7a89fbed1e8881a8bdad5c2d9b
+- path: research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  action: CREATED
+  sha256: 0170743dc8f947411705cb861a695979e6013a3e8e06aa8ec9e6f55a03b16c5a
+artifacts:
+- id: ack
+  path: research/tasks/JH-20260813-M11B-001/attempts/A01/ack.yaml
+  sha256: 65688a620126916727ac3459fae1990dcb0c1026f55915d8f4cbd8d04cf2a2aa
+  role: DOCUMENTATION
+- id: baseline
+  path: research/tasks/JH-20260813-M11B-001/attempts/A01/scientific-reconstruction-baseline-v1.yaml
+  sha256: 4d9655c0a597fb888fe30522e4028f81e0765a77f5b775bfa24f4da2108b3891
+  role: DOCUMENTATION
+- id: validator
+  path: research/tasks/JH-20260813-M11B-001/attempts/A01/validate_scientific_reconstruction_baseline.py
+  sha256: 36b5ef9cfa8b624f0f027491f7907aaa64f5642ab8529dffd82566fe3751f302
+  role: TEST
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M11B-001/attempts/A01/logs/preflight.log
+  sha256: e18666166e194602d01cce47baa28b6dd68a4e7a89fbed1e8881a8bdad5c2d9b
+  role: LOG
+- id: log-validator.log
+  path: research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  sha256: 0170743dc8f947411705cb861a695979e6013a3e8e06aa8ec9e6f55a03b16c5a
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-001 (ACK 后 receipt 前)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11B-001/attempts/A01/logs/preflight.log
+  log_sha256: e18666166e194602d01cce47baa28b6dd68a4e7a89fbed1e8881a8bdad5c2d9b
+- command: python3 research/tasks/JH-20260813-M11B-001/attempts/A01/validate_scientific_reconstruction_baseline.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  log_sha256: 0170743dc8f947411705cb861a695979e6013a3e8e06aa8ec9e6f55a03b16c5a
+tests:
+- id: baseline-validator
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  notes:
+  - M11B baseline validator 通过；负向毒化（bare UNKNOWN/非法 char/laundering/PASS-物理/缺对象）5/5 拒绝
+- id: negative-guards
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  notes:
+  - poisoned inputs rejected (executable oracle)
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/scientific-reconstruction-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  notes:
+  - 7 个必需对象（BVM/published modified-QB/original BQ/canonical JTL receiver/canonical DCSFQ fixture/BVM source char/receiver char）全部含 8 个必需字段
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/scientific-reconstruction-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  notes:
+  - 每个 UNKNOWN/INFERRED 项含 field/reference status/project value/tag/source set/date/impact/discriminator；无猜测数值；laundering guard（PUBLISHED 与 UNKNOWN 同字段）拒绝
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/scientific-reconstruction-baseline-v1.yaml
+  notes:
+  - reproduction 按对象 R0/PARTIAL_R1 带 rationale；非发表参数行为只标 behavioral_analogue_with_nonpublished_parameters；characterization 独立枚举 CALIBRATION_FIXTURE_ONLY/LEGACY_ONLY/NOT_ATTEMPTED
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/validate_scientific_reconstruction_baseline.py
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/logs/validator.log
+  notes:
+  - validator 拒绝缺字段/非法 tag/bare UNKNOWN/无据升级/laundering/char 从 repro 推断/PASS 即物理完备；负向毒化 5 例全拒；交付 baseline 通过
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/scientific-reconstruction-baseline-v1.yaml
+  notes:
+  - PASS 语义显式=knowledge state 完整诚实冻结；UNKNOWN/INFERRED/R0/PARTIAL_R1/uncharacterized 合法；无物理完备/published reproduction/candidate/interface/system/T1/paper novelty 结论
+- id: AC6
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A01/logs/preflight.log
+  notes:
+  - 无 JoSIM/联网/状态升级/frozen-path 编辑；receipt 前 verify-task VERIFIED；final verify 由 Codex 执行
+observations:
+- 7 个对象 knowledge state 完整冻结：BVM R0、published modified-QB R0/UNKNOWN、original BQ R0、JTL receiver PARTIAL_R1、DCSFQ fixture R1、source char LEGACY_ONLY、receiver char CALIBRATION_FIXTURE_ONLY。
+interpretations:
+- Scientific Reconstruction Baseline v1 诚实冻结当前 reconstruction/provenance knowledge state，无状态升级。
+unknowns:
+- published modified-QB 参数、BVM JM1 shunt、original BQ 文献参数、receiver 阈值——全部记录 exact discriminator 待 W5A/W5C/预注册任务。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot Codex-owned; result_git_head null.
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+deviations: []
+blockers: []

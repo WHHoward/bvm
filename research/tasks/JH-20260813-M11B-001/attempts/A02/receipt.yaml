@@ -1,0 +1,121 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M11B-001
+revision: 1
+attempt_id: A02
+workflow_state: DELIVERED
+created_at: '2026-08-13T05:40:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 583e11a65e1dffd367aa608685dc9a2540dadabf6577560acd20d2e7031238cf
+  ack_sha256: b1670239d2d898d97baad8e68efe94d9bd216d99ed692c0f6409c989330eb948
+execution_status: COMPLETED
+baseline_git_head: 8d9f4a5
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260813-M11B-001/attempts/A02/scientific-reconstruction-baseline-v1.yaml
+  action: CREATED
+  sha256: 06a04e1b8d60ff3c9257ec70bcd0890a1784c678898223d45902dedc0663d75c
+- path: research/tasks/JH-20260813-M11B-001/attempts/A02/validate_scientific_reconstruction_baseline.py
+  action: CREATED
+  sha256: 431ea27dfae2926729adcf4239f5d99205958f11e9adacc1f084a801cece6613
+- path: research/tasks/JH-20260813-M11B-001/attempts/A02/logs/preflight.log
+  action: CREATED
+  sha256: 00f7554e24da1400bacb08b604ea9dcbd8560b2950e8fd078a7c3eb8e76f43bc
+- path: research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  action: CREATED
+  sha256: 0170743dc8f947411705cb861a695979e6013a3e8e06aa8ec9e6f55a03b16c5a
+artifacts:
+- id: baseline
+  path: research/tasks/JH-20260813-M11B-001/attempts/A02/scientific-reconstruction-baseline-v1.yaml
+  sha256: 06a04e1b8d60ff3c9257ec70bcd0890a1784c678898223d45902dedc0663d75c
+  role: DOCUMENTATION
+- id: validator
+  path: research/tasks/JH-20260813-M11B-001/attempts/A02/validate_scientific_reconstruction_baseline.py
+  sha256: 431ea27dfae2926729adcf4239f5d99205958f11e9adacc1f084a801cece6613
+  role: TEST
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M11B-001/attempts/A02/logs/preflight.log
+  sha256: 00f7554e24da1400bacb08b604ea9dcbd8560b2950e8fd078a7c3eb8e76f43bc
+  role: LOG
+- id: log-validator.log
+  path: research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  sha256: 0170743dc8f947411705cb861a695979e6013a3e8e06aa8ec9e6f55a03b16c5a
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-001 (ACK 后 receipt 前)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11B-001/attempts/A02/logs/preflight.log
+  log_sha256: 00f7554e24da1400bacb08b604ea9dcbd8560b2950e8fd078a7c3eb8e76f43bc
+- command: python3 research/tasks/JH-20260813-M11B-001/attempts/A02/validate_scientific_reconstruction_baseline.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  log_sha256: 0170743dc8f947411705cb861a695979e6013a3e8e06aa8ec9e6f55a03b16c5a
+tests:
+- id: baseline-validator
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  notes:
+  - M11B A02 validator 通过；对抗测试 7/7 拒绝（R4/alias laundering/source absence/PASS bypass/重复/缺对象/bare UNKNOWN）
+- id: negative-guards
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  notes:
+  - poisoned inputs rejected (executable oracle)
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/scientific-reconstruction-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  notes:
+  - 7 个必需对象全部含 8 必需字段；对象唯一性由 validator 强制
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/scientific-reconstruction-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  notes:
+  - UNKNOWN/INFERRED 项全字段齐备；无猜测数值；alias-aware laundering guard（Topology (partial) 与 topology 冲突检测）
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/scientific-reconstruction-baseline-v1.yaml
+  notes:
+  - reproduction 枚举 R0/R1/R2/R3/PARTIAL_R1/NOT_ATTEMPTED；非发表参数行为只标 behavioral_analogue_with_nonpublished_parameters；characterization 独立枚举
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/validate_scientific_reconstruction_baseline.py
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/logs/validator.log
+  notes:
+  - validator 拒绝 R4/非法 tag/bare UNKNOWN/无据升级/laundering（含 alias）/source absence/重复对象/缺对象/PASS bypass；对抗测试 7/7 拒绝；交付 baseline 通过
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/scientific-reconstruction-baseline-v1.yaml
+  notes:
+  - pass_meaning=knowledge state 完整诚实冻结；pass_does_not_mean 结构化列表；UNKNOWN/INFERRED/R0/PARTIAL_R1/uncharacterized 合法
+- id: AC6
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-001/attempts/A02/logs/preflight.log
+  notes:
+  - 无 JoSIM/联网/状态升级/frozen-path 编辑；corpus boundary 声明 arti/ 8 PDF 为 INVENTORIED_UNREVIEWED 不声称内容；receipt 前 verify-task VERIFIED
+observations:
+- arti/ corpus 清点：8 PDF + 5 辅助文件全部 hash 登记、状态 INVENTORIED_UNREVIEWED、内容未声称；scope 外 bq_cell.cir 引用已移除，全部 evidence 路径在 A02 read scope 内且 existence+hash 验证。
+interpretations:
+- Scientific Reconstruction Baseline v1 (A02) 以诚实 corpus 边界 + 强 validator 冻结当前 knowledge state。
+unknowns:
+- published modified-QB 参数、BVM JM1 shunt、original BQ 文献参数、receiver 阈值——discriminator 记录待 W5A（本地 arti/ 审读）/W5C/预注册任务。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot Codex-owned; result_git_head null.
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+deviations: []
+blockers: []

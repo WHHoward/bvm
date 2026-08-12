@@ -1,0 +1,53 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M11A-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-13T05:20:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: 6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786
+  ack_sha256: 89aca5ba4d2f7c8bf078e6144f86b6b7b59cf8efb426324d178c28af08a991f3
+  receipt_sha256: 9957240e48b6c74af0e50cea932298a50b4662bfdc8eb6b0da863a5fab8834c1
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root; Terra High independent material review
+checks:
+  - id: mechanical-chain
+    status: PASS
+    evidence: ["handoff.py verify-task research/tasks/JH-20260813-M11A-001: VERIFIED; request/ACK/receipt hashes bind"]
+  - id: accepted-lineage
+    status: PASS
+    evidence: ["measurement-calibration-baseline-v1.yaml: M4--M10 points to the sole accepted/superseding verdict paths; predecessors are lineage_only"]
+  - id: m10-inventory-completeness
+    status: FAIL
+    evidence: ["measurement-calibration-baseline-v1.yaml:150-165 lists only generator, four JSON outputs, and correction table; it omits the rebuild test and four bannered historical documents required by request AC2"]
+  - id: validator-oracle-strength
+    status: FAIL
+    evidence: ["validate_measurement_calibration_baseline.py: accepted layers are not checked for exact M4--M10 set; provenance loops validate only present entries, so required sections can be deleted without rejection"]
+  - id: regression-evidence
+    status: FAIL
+    evidence: ["receipt.yaml records only baseline validator tests; it provides no command logs for the M4--M10 regression inventory asserted in AC2"]
+  - id: receipt-protocol-recording
+    status: FAIL
+    evidence: ["receipt.yaml:19-21 incorrectly lists ack.yaml in changes[]; handoff protocol section 7 excludes ACK/receipt from changes[]"]
+findings:
+  - "A01 has a valid mechanical hash chain but does not satisfy M11A AC2/AC3, so its baseline artifact cannot be accepted."
+  - "The existing M4--M10 implementations remain unchanged and their independently rerun tests passed; this verdict rejects only the new M11A baseline closure."
+accepted_claims: ["A01 did not run JoSIM or edit frozen source/raw inputs.", "A01 preserves the intended no-global-tolerance/no-physical-Gate boundary."]
+rejected_claims: ["That the M11A baseline completely inventories and validates the M10 eleven-artifact evidence set.", "That its validator is a sufficient executable oracle for all requested baseline completeness conditions."]
+required_rework:
+  - "Create A02 without modifying A01. Add a complete, hash-verified M10 inventory: generator, rebuild test, four V2 JSON, correction table, and four bannered historical documents; record every path/hash and require the exact set in the validator."
+  - "Require exact M4--M10 layer set and nonempty, complete M6/M8/reconstruction inventories; add negative tests deleting each mandatory class."
+  - "Actually run and log the declared M4--M10 regression commands or narrow the baseline to only commands actually executed; preserve command logs as task artifacts."
+  - "In A02 receipt omit ack.yaml from changes[]; retain ACK only via bindings/artifacts as protocol requires."
+next_actions: ["Notify Claude to create A02 in the authorized attempts path only; no JoSIM, no source/raw edit, no tolerance or physical claim.", "M11 remains red regardless of any later M11B disposition until both sub-gates are independently ACCEPTED."]
+claim_ceiling: measurement_implementation_reporting_semantics_fixture_bounded_convergence_and_historical_endpoint_provenance_only_no_physical_gate

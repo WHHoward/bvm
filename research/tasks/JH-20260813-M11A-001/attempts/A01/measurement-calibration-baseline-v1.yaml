@@ -1,0 +1,178 @@
+baseline_id: measurement-calibration-baseline-v1
+parent_todo_id: M11A
+freeze_task: JH-20260813-M11A-001
+claim_ceiling: measurement_implementation_reporting_semantics_fixture_bounded_convergence_and_historical_endpoint_provenance_only_no_physical_gate
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+accepted_layers:
+- layer: M4
+  accepted_evidence: research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml
+  audit_disposition: ACCEPTED
+  study_phase: CALIBRATION
+  contribution: raw-radian-to-turns conversion and activity naming
+  applicability_limit: activity is not an event
+  sha256: 3b7a469415e7ca927a8e18dd14d039edf548742c6fa51a9803d08b277b06bc4c
+- layer: M5
+  accepted_evidence: research/tasks/M5-LITE-PILOT-001/attempts/A02/CODEX-AUDIT.md
+  audit_disposition: ACCEPTED
+  study_phase: CALIBRATION
+  contribution: windows, direction, matched control, activity clustering
+  applicability_limit: no physical Gate
+  sha256: 62d5d843384ee585a56600962447a9098d32afd70f86360a979e6b0f46692a89
+- layer: M6
+  accepted_evidence: research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml
+  audit_disposition: ACCEPTED
+  study_phase: CALIBRATION
+  contribution: DCSFQ direct same-JJ P/V and actual-time voltage area
+  applicability_limit: residual reported, not globally accepted
+  sha256: a8a5638fd48cee2f2bc9a8c29d6faaaf43b58ef5f3657824124d64630416adee
+- layer: M7
+  accepted_evidence: research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md
+  audit_disposition: ACCEPTED
+  study_phase: CALIBRATION
+  contribution: synthetic oracle, canonical JTL fixture, historical regression
+  applicability_limit: fixture is not a receiver Gate
+  sha256: bd291c89a4e92e225d083f1e7e75b51ea3e40c199b8a08e7d3881ba31154d329
+- layer: M8
+  accepted_evidence: research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml
+  audit_disposition: ACCEPTED
+  study_phase: CALIBRATION
+  contribution: bounded 0.1/0.05/0.025 ps convergence
+  applicability_limit: loaded canonical-JTL fixture only
+  sha256: a45bb0a38919d978eab7e56a026f837f29e29ee4afd29b013a88623d795aeded
+- layer: M9
+  accepted_evidence: research/tasks/JH-20260813-M9-004/audits/C01/verdict.yaml
+  audit_disposition: ACCEPTED
+  study_phase: CALIBRATION
+  contribution: frozen measurement/reporting semantics (METRIC_SPEC_V2)
+  applicability_limit: no universal tolerance or Gate
+  sha256: 4699bdeae66437962e4136c93fdaa82b0cc88ce8fbc58c4ecc57f71564f17590
+- layer: M10
+  accepted_evidence: research/tasks/JH-20260813-M10-004/audits/C01/verdict.yaml
+  audit_disposition: ACCEPTED
+  study_phase: CALIBRATION
+  contribution: historical endpoint arithmetic and provenance reconstruction
+  applicability_limit: no same-JJ/physical inference
+  sha256: ddf0cceb666c5c7e88ee68c03999dabdafff362249f80ec96285c87939b2b14e
+lineage_only:
+- research/tasks/JH-20260809-M4-001 (REWORK/stand-in history)
+- research/tasks/JH-20260811-M4-002 (superseded)
+- research/tasks/JH-20260811-M6-001 (REWORK_REQUIRED)
+- research/tasks/JH-20260812-M8-001 (superseded by M8-002)
+- research/tasks/JH-20260813-M9-001/002/003 (superseded by M9-004)
+- research/tasks/JH-20260813-M10-001/002/003 (superseded by M10-004)
+test_inventory:
+  M4:
+    tests:
+    - test/metrics/test_sfq_metrics_v2.py
+    count: 21
+    status: PASS
+  M5:
+    tests:
+    - test/metrics/test_sfq_metrics_v2_m5.py
+    count: 18
+    status: PASS
+  M6:
+    tests:
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    count: 15
+    status: PASS
+  M7:
+    tests:
+    - test/metrics/test_sfq_metrics_v2_m7.py
+    count: 29
+    status: PASS
+  M9:
+    tests:
+    - test/metrics/test_metric_spec_v2.py
+    count: 59
+    status: PASS
+  M10:
+    tests:
+    - test/metrics/test_rebuild_historical_metrics_v2.py
+    count: 13
+    status: PASS
+raw_control_inventory:
+  M6_same_jj:
+    runs:
+    - run_id: m6-002-dcsfq-va-0u-20260812-01
+      manifest: research/tasks/JH-20260812-M6-002/attempts/A01/runs/m6-002-dcsfq-va-0u-20260812-01/manifest.yaml
+      sha256: ea85eda2dac24a0c61bda14cdb0366ddd9b8fa6cb561e70b08b23b6ae1e672be
+      raw: research/tasks/JH-20260812-M6-002/attempts/A01/runs/m6-002-dcsfq-va-0u-20260812-01/raw/m6-002-dcsfq-va-0u-20260812-01.csv
+      raw_sha256: 0a21742e047eeef5663dfa5b9868517391a6566eb55f91b4a0949960d5d39933
+    - run_id: m6-002-dcsfq-va-300u-20260812-01
+      manifest: research/tasks/JH-20260812-M6-002/attempts/A01/runs/m6-002-dcsfq-va-300u-20260812-01/manifest.yaml
+      sha256: 61ee16fdc2466a1a953a4664e74b0de19906d6aeb731713780d8c3d9b047fee9
+      raw: research/tasks/JH-20260812-M6-002/attempts/A01/runs/m6-002-dcsfq-va-300u-20260812-01/raw/m6-002-dcsfq-va-300u-20260812-01.csv
+      raw_sha256: 0cfc8209f83d8a2f2d574185c8323733db3e2529fd7acc2b98c7a34dfd3e94a1
+    note: matched 0/300 uA zero-input control pair, direct same-JJ V/P probes
+  M8_convergence:
+    runs:
+    - run_id: m8-jtl-conv-single-0.025ps-20260812-01
+      manifest: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-single-0.025ps-20260812-01/manifest.yaml
+      sha256: 0ecfb995798ac0e76a8cd158021ebbbb73a2bcfd899ff1ff249b0357e3d7b02d
+      raw: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-single-0.025ps-20260812-01/raw/m8-jtl-conv-single-0.025ps-20260812-01.csv
+      raw_sha256: d9114f501edd3e5eb8ce38b62ac47d5c8b5168be597bea50069df6f9cba64b12
+    - run_id: m8-jtl-conv-single-0.05ps-20260812-01
+      manifest: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-single-0.05ps-20260812-01/manifest.yaml
+      sha256: 8686237a8d6e0fc09f5a99447bbbb1bfddf95d06c1559457e687da473d4e622e
+      raw: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-single-0.05ps-20260812-01/raw/m8-jtl-conv-single-0.05ps-20260812-01.csv
+      raw_sha256: cd57a1dbd79f69047807c74b467755d6c1e638f7810e485342c3bdf1429e2c29
+    - run_id: m8-jtl-conv-single-0.1ps-20260812-01
+      manifest: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-single-0.1ps-20260812-01/manifest.yaml
+      sha256: aa7b9b4602d2a5fde7ed5759b8149fd9f64029cc317938df74e63cec875ae862
+      raw: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-single-0.1ps-20260812-01/raw/m8-jtl-conv-single-0.1ps-20260812-01.csv
+      raw_sha256: e8f731dc3b674d1e4eecf67ec84322dace36251ea6737acf105075fc17b09baa
+    - run_id: m8-jtl-conv-zero-0.025ps-20260812-01
+      manifest: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.025ps-20260812-01/manifest.yaml
+      sha256: 0a0a44c57bc149341f6e2c239f658a4e77f7ed1767fb3532c7bdabb6185fc878
+      raw: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.025ps-20260812-01/raw/m8-jtl-conv-zero-0.025ps-20260812-01.csv
+      raw_sha256: 088ee2af6c8cf494c7c19b23273281e79e0ff6401efc2ec92901f2024b7ff9e1
+    - run_id: m8-jtl-conv-zero-0.05ps-20260812-01
+      manifest: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.05ps-20260812-01/manifest.yaml
+      sha256: fd4633929b9641796fc9c2e289e6c2a7dab15f1c9f861f3e60fe755ffde02680
+      raw: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.05ps-20260812-01/raw/m8-jtl-conv-zero-0.05ps-20260812-01.csv
+      raw_sha256: d822df0a6c5869370cd73e5fd129fe57d1ea6c0249c1e39979912d730efb2442
+    - run_id: m8-jtl-conv-zero-0.1ps-20260812-01
+      manifest: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.1ps-20260812-01/manifest.yaml
+      sha256: 4773b6ba96f94e014838cd55346092bdcd748db4e3d4ce79a2263873b00cadb5
+      raw: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.1ps-20260812-01/raw/m8-jtl-conv-zero-0.1ps-20260812-01.csv
+      raw_sha256: a2a3e9b50f2739037cbc6b9d56fa5973e237d7bf82a2837ed35bf44e642f6e28
+    note: 'six unique runs: zero/single x 0.1/0.05/0.025 ps'
+reconstruction_provenance:
+  family:
+  - BASELINE
+  - P0
+  - P2
+  - BQ v4
+  outputs:
+  - path: test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json
+    sha256: 8a22b9a3fb619b44eb3925e749b4d17094ffd205ff5e7ab4627382c356870a6e
+  - path: test/final/interface/data/metrics_v2/p0-v2.json
+    sha256: 2f1d9ec52e2525e69d16e9b5aa4790b0b7cec2b76ffe34c8ececd200e31a4790
+  - path: test/final/bvm/data/metrics_v2/p2-v2.json
+    sha256: 71d97eca95a3ff778ea36c443ebc9f80b919291470e8552e5e0486c90fed5b35
+  - path: test/final/qb/data/metrics_v2/bq-v4-v2.json
+    sha256: 684ba5fa235dbc0e73fcbfd166a22cc4321b8aff8882b6ade68e4e9f13e947e4
+  correction_table:
+    path: docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md
+    sha256: 750d1092585e0d6940c3b5708311a5ee054051d19be1b8d11fc557661d6a371f
+  generator:
+    path: scripts/rebuild_historical_metrics_v2.py
+    sha256: 1f70083a28b8f88ca4cbc4c005801048f57224137d15abe04618931a7649f6f8
+  documented_limits: endpoint arithmetic only; no same-JJ/physical inference; no Gate
+tolerance_status:
+  universal_activity_threshold: UNFROZEN
+  integer_residual: UNFROZEN
+  phase_area_residual: UNFROZEN
+  platform_stability: UNFROZEN
+  bvm_drift: UNFROZEN
+  amplitude: UNFROZEN
+  jitter: UNFROZEN
+  classification_rule: tolerance-dependent physical classifications remain INCONCLUSIVE
+prohibited_conclusions:
+- no SFQ/fluxoid/downstream/candidate/interface/system/paper conclusion
+- no universal tolerance claim
+- no physical Gate claim

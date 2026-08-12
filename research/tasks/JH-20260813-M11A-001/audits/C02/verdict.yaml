@@ -1,0 +1,41 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M11A-001
+revision: 1
+attempt_id: A02
+audit_id: C02
+workflow_state: CLOSED
+created_at: "2026-08-13T05:32:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: 6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786
+  ack_sha256: fdb10c28af6b7c6338794781ece2cf4db100251eb7a171cb6d026d1673ff67f6
+  receipt_sha256: 048d88e3c2e2ea2ef55430a2ade867153bc9df071eb995418db74e4e95dd765c
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: mechanical-chain
+    status: PASS
+    evidence: ["handoff.py verify-task research/tasks/JH-20260813-M11A-001: VERIFIED with A01/C01/A02 retained"]
+  - id: c01-rework-closure
+    status: PASS
+    evidence: ["A02 validator requires exact M4--M10 set, exact M10 11-artifact inventory, two M6 and six M8 runs; independent deletion probes reject each required class"]
+  - id: regression-replay
+    status: PASS
+    evidence: ["independent rerun: M4 15/15, M5 29/29, M6 21/21, M7 18/18, M9 59/59, M10 13/13; A02 retains corresponding immutable command logs"]
+  - id: claim-boundary
+    status: PASS
+    evidence: ["A02 baseline retains seven universal tolerances as UNFROZEN and explicitly excludes physical/Gate conclusions"]
+findings: ["A01 remains REWORK_REQUIRED as immutable history; A02 corrects its missing inventory, weak-completeness guard, absent regression logs, and ACK-in-changes recording."]
+accepted_claims: ["M11A Measurement Calibration Baseline v1 is a hash-verified index of accepted M4--M10 calibration/provenance evidence.", "Its conclusion is limited to measurement implementation/reporting semantics, fixture-bounded convergence, and historical endpoint arithmetic/provenance."]
+rejected_claims: ["Any universal tolerance freeze, SFQ/fluxoid/downstream reception claim, candidate/interface/system Gate, or paper/hardware conclusion."]
+required_rework: []
+next_actions: ["M11A is accepted and closed.", "M11 remains red until the separately superseding M11B object-matrix baseline is independently accepted; do not start candidate or Gate work."]
+claim_ceiling: measurement_implementation_reporting_semantics_fixture_bounded_convergence_and_historical_endpoint_provenance_only_no_physical_gate

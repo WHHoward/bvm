@@ -1,0 +1,38 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M11B-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T04:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "583e11a65e1dffd367aa608685dc9a2540dadabf6577560acd20d2e7031238cf"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "8d9f4a5"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M11A-001/** 与 JH-20260813-M11B-001/**（issue 自带 task packets，与 baseline/git-status.txt 一致）"
+    - "research/mailbox/from-codex/codex-20260813-044137*.md（mailbox 通知）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "冻结 structured、current-fact Scientific Reconstruction Baseline：记录 BVM、published modified-QB、original/reference BQ、canonical JTL receiver、canonical DCSFQ reference fixture、BVM source characterization、receiver characterization 各对象，每个含 source_reference/parameter_provenance/reproduction_status/characterization_status/unknown_inferred_items/evidence/claim_limitation/upgrade_discriminator 字段；UNKNOWN/INFERRED 项逐项命名 exact field/reference value/project value/provenance tag/source set/date/impact/discriminator，不用猜测数值填充，[INFERRED]/[DESIGNED]/[TUNED] 不标 [PUBLISHED]。reproduction 按对象累计 R0–R3/PARTIAL_R1/NOT_ATTEMPTED 带 rationale，非发表参数行为相似只标 behavioral_analogue_with_nonpublished_parameters；characterization 独立为 NOT_ATTEMPTED/LEGACY_ONLY/CALIBRATION_FIXTURE_ONLY/CHARACTERIZED。写确定性 validator 拒绝缺字段/非法 provenance tag/bare UNKNOWN/无据升级/从 reproduction 推 characterization/candidate-Gate 文本/PASS 即物理完备声明。PASS 仅表示当前 reconstruction/provenance knowledge state 完整诚实冻结。不运行 JoSIM/联网/外联，不自动升级任何状态。"
+  non_goals:
+    - "不运行 JoSIM/改 circuit/model/netlist/test；不调参；不做 reference reconstruction run/INTERFACE_GATE_V1/T1/route/paper novelty/physical verdict。"
+    - "不自动升级 reproduction/characterization status；不编辑 REFERENCE_PROVENANCE.md、todo、HANDOVER、historical raw 或 accepted task artifacts。"
+  stop_conditions:
+    - "scope/HEAD/dirty/HANDOVER/metric-spec/frozen-input mismatch。"
+    - "需要 network/external contact/JoSIM/attempts/** 外编辑或新 reconstruction/characterization run。"
+    - "任何 acceptance 需要提升 reproduction/characterization status 而非诚实冻结现状。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-001（ACK 前后）"
+  - "sha256sum 全部 accepted inputs 与 baseline scope-files 比对"
+  - "python3 research/tasks/JH-20260813-M11B-001/attempts/A01/validate_scientific_reconstruction_baseline.py"
+expected_changed_paths:
+  - "research/tasks/JH-20260813-M11B-001/attempts/**"
+blockers: []
+deviations: []

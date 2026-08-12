@@ -1,0 +1,122 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M11A-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-13T05:10:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786
+  ack_sha256: 89aca5ba4d2f7c8bf078e6144f86b6b7b59cf8efb426324d178c28af08a991f3
+execution_status: COMPLETED
+baseline_git_head: 8d9f4a5
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260813-M11A-001/attempts/A01/ack.yaml
+  action: CREATED
+  sha256: 89aca5ba4d2f7c8bf078e6144f86b6b7b59cf8efb426324d178c28af08a991f3
+- path: research/tasks/JH-20260813-M11A-001/attempts/A01/measurement-calibration-baseline-v1.yaml
+  action: CREATED
+  sha256: 14782e2bca96e5bff7140b0317f88e51d2f5d3bc82ae725e77d5a5a0b25b8cdf
+- path: research/tasks/JH-20260813-M11A-001/attempts/A01/validate_measurement_calibration_baseline.py
+  action: CREATED
+  sha256: 9b630062d576fe978fa2bebf2e4550e55ee7eb3694c747f56f80c8431d4ff9b4
+- path: research/tasks/JH-20260813-M11A-001/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: c02190a0aedd730fa12ee2f89f55ee6648aacfe8c49c0324337247a6cb22faaa
+- path: research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  action: CREATED
+  sha256: 249192e533964e43e5ef60858e8b904279dacacd485964333172586c2bac693c
+artifacts:
+- id: ack
+  path: research/tasks/JH-20260813-M11A-001/attempts/A01/ack.yaml
+  sha256: 89aca5ba4d2f7c8bf078e6144f86b6b7b59cf8efb426324d178c28af08a991f3
+  role: DOCUMENTATION
+- id: baseline
+  path: research/tasks/JH-20260813-M11A-001/attempts/A01/measurement-calibration-baseline-v1.yaml
+  sha256: 14782e2bca96e5bff7140b0317f88e51d2f5d3bc82ae725e77d5a5a0b25b8cdf
+  role: DOCUMENTATION
+- id: validator
+  path: research/tasks/JH-20260813-M11A-001/attempts/A01/validate_measurement_calibration_baseline.py
+  sha256: 9b630062d576fe978fa2bebf2e4550e55ee7eb3694c747f56f80c8431d4ff9b4
+  role: TEST
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A01/logs/preflight.log
+  sha256: c02190a0aedd730fa12ee2f89f55ee6648aacfe8c49c0324337247a6cb22faaa
+  role: LOG
+- id: log-validator.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  sha256: 249192e533964e43e5ef60858e8b904279dacacd485964333172586c2bac693c
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11A-001 (ACK 后 receipt 前)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11A-001/attempts/A01/logs/preflight.log
+  log_sha256: c02190a0aedd730fa12ee2f89f55ee6648aacfe8c49c0324337247a6cb22faaa
+- command: python3 research/tasks/JH-20260813-M11A-001/attempts/A01/validate_measurement_calibration_baseline.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  log_sha256: 249192e533964e43e5ef60858e8b904279dacacd485964333172586c2bac693c
+tests:
+- id: baseline-validator
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  notes:
+  - M11A baseline validator 通过；负向毒化（predecessor 证据/冻结容差/缺 hash/禁词）4/4 拒绝
+- id: negative-guards
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  notes:
+  - poisoned inputs rejected (executable oracle)
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/measurement-calibration-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  notes:
+  - M4–M10 七层唯一接受证据（含 SHA-256 与 live 文件核对）；REWORK/rejected 前身仅列 lineage_only
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/measurement-calibration-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  notes:
+  - METRIC_SPEC_V2 2.0.0 绑定；M4–M9 测试 155 项 + M10 13 项盘点；M6 2 runs same-JJ raw/control；M8 6 runs manifests/raw；M10 四家族 11 artifact + correction table
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/validate_measurement_calibration_baseline.py
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/logs/validator.log
+  notes:
+  - validator 拒绝缺字段/非接受前身作证据/缺 hash/全局容差/禁词；负向毒化 4 例全拒；交付 baseline 通过
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/measurement-calibration-baseline-v1.yaml
+  notes:
+  - 7 类容差全部 UNFROZEN；容差依赖分类 INCONCLUSIVE；无 SFQ/fluxoid/downstream/candidate/interface/system/paper 结论
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A01/logs/preflight.log
+  notes:
+  - 无 JoSIM 运行、无 frozen-path 编辑；receipt 前 verify-task VERIFIED；final verify 由 Codex 执行
+observations:
+- 七层接受证据哈希全部与 live 文件一致；M8 六 run + M6 二 run manifests/raw 哈希核对通过；M10 十一 artifact 哈希一致。
+interpretations:
+- Measurement Calibration Baseline v1 现为可重放的 hash-verified 证据索引，保留全部适用性限制。
+unknowns:
+- 全局容差仍 UNFROZEN；BVM→BQ/BQ/BVM same-JJ mapping 仍 UNKNOWN。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot Codex-owned; result_git_head null.
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+deviations: []
+blockers: []

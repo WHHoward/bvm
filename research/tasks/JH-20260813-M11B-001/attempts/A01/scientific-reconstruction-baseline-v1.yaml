@@ -1,0 +1,188 @@
+baseline_id: scientific-reconstruction-baseline-v1
+parent_todo_id: M11B
+freeze_task: JH-20260813-M11B-001
+cutoff: '2026-08-13'
+claim_ceiling: reconstruction_and_provenance_knowledge_state_freeze_only_not_physical_knowledge_completeness_published_reproduction_or_candidate_validation
+pass_meaning: PASS means the current reconstruction/provenance knowledge state is completely and honestly frozen as of its cutoff; UNKNOWN/INFERRED/R0/PARTIAL_R1/uncharacterized states are legal.
+objects:
+- object: BVM
+  source_reference: circuits/bvm/bvm_cell.cir; docs/HANDOVER.md §3.1 (audit 2026-08-09); P2 recomputation
+  parameter_provenance:
+    topology: '[PUBLISHED] (partial)'
+    JM1 Ic/shunt/area: '[INFERRED]-[UNKNOWN]'
+    read currents 100/120 uA: '[DERIVED] (manual recomputation, not frozen baseline)'
+  reproduction_status:
+    level: R0
+    rationale: topology reconstructed from project netlist; published nominal parameter reconciliation not completed
+  characterization_status: NOT_ATTEMPTED
+  unknown_inferred_items:
+  - field: JM1 shunt / Ic
+    reference_value_status: UNKNOWN
+    project_value: present in bvm_cell.cir (unverified vs paper)
+    provenance_tag: '[INFERRED]'
+    source_set: bvm_cell.cir; HANDOVER audit; no paper full-text in local corpus
+    review_date: 2026-08-09 audit
+    impact: BVM baseline parameters cannot be claimed published
+    required_discriminator: paper parameter table (W5A search or W5C author inquiry, user-authorized)
+  - field: read-current thresholds
+    reference_value_status: UNKNOWN
+    project_value: 100 uA approx non-destructive / 120 uA R0 erase (manual recomputation)
+    provenance_tag: '[DERIVED]'
+    source_set: P2 recomputation 2026-08-09
+    review_date: '2026-08-09'
+    impact: measurement behavior not a frozen baseline
+    required_discriminator: frozen metric spec + full read test matrix (M11A/M12-era)
+  evidence:
+  - docs/HANDOVER.md §3.1
+  - test/final/bvm/data/metrics_v2/p2-v2.json
+  claim_limitation: topology-level knowledge only; no published reproduction claim
+  upgrade_discriminator: paper full-text with BVM parameters (W5A) or author-provided netlist (W5C)
+- object: published modified-QB
+  source_reference: paper/BVM interface literature (not in local corpus full-text); HANDOVER §3.3; REFERENCE_PROVENANCE.md
+  parameter_provenance:
+    topology: '[UNKNOWN]'
+    Ic/L/R/bias/load: '[UNKNOWN]'
+  reproduction_status:
+    level: R0
+    rationale: published nominal parameters insufficient per audit; no full-text in local corpus
+  characterization_status: NOT_ATTEMPTED
+  unknown_inferred_items:
+  - field: exact modified-QB netlist/parameters
+    reference_value_status: UNKNOWN
+    project_value: none (not reconstructed)
+    provenance_tag: '[UNKNOWN]'
+    source_set: HANDOVER audit conclusion; W5A not yet run
+    review_date: 2026-08-09 audit
+    impact: cannot claim published QB reconstruction
+    required_discriminator: W5A literature retrieval with database/query/date, or W5C author inquiry (user-authorized, time-boxed)
+  evidence:
+  - docs/HANDOVER.md §3.3
+  - docs/research/REFERENCE_PROVENANCE.md
+  claim_limitation: R0/partial-R1 only; project QB is not paper QB
+  upgrade_discriminator: W5A retrieval record or W5C author response with [AUTHOR_PROVIDED] tag
+- object: original/reference BQ
+  source_reference: circuits/qb/bq_cell.cir (legacy); HANDOVER §3.3; REFERENCE_PROVENANCE.md
+  parameter_provenance:
+    parameters: '[UNKNOWN]-[PARTIAL]'
+    project v4 L0/Ic/RJ: '[DERIVED]/[TUNED] (project design)'
+  reproduction_status:
+    level: R0
+    rationale: original BQ parameters not reconciled with literature; v4 modifications are project design values
+  characterization_status: NOT_ATTEMPTED
+  unknown_inferred_items:
+  - field: original BQ published parameters
+    reference_value_status: UNKNOWN
+    project_value: v4 design values in bq_cell_v4.cir (project [TUNED])
+    provenance_tag: '[UNKNOWN]'
+    source_set: REFERENCE_PROVENANCE.md; no paper full-text
+    review_date: 2026-08-12 W5B snapshot
+    impact: project BQ cannot be labeled published reproduction
+    required_discriminator: literature parameter table or author response
+  evidence:
+  - docs/research/REFERENCE_PROVENANCE.md
+  - circuits/qb/bq_cell_v4.cir
+  - test/final/qb/data/metrics_v2/bq-v4-v2.json
+  claim_limitation: behavioral analogue with non-published parameters at most; no published R2
+  upgrade_discriminator: W5A literature retrieval or W5C author inquiry
+- object: canonical JTL receiver
+  source_reference: circuits/standard/JTL.cir (ColdFlux v3.0); M7/M8 accepted calibration evidence
+  parameter_provenance:
+    B1/B2/IB1/L1-L4/RB: '[PUBLISHED] (ColdFlux library netlist)'
+    mapping orientation: '[DERIVED] (M7B direct same-JJ, accepted)'
+  reproduction_status:
+    level: PARTIAL_R1
+    rationale: ColdFlux nominal netlist present and M7B/M8 calibrated; independent published-parameter reproduction not completed
+  characterization_status: CALIBRATION_FIXTURE_ONLY
+  unknown_inferred_items:
+  - field: R2/R3 behavioral criteria for receiver
+    reference_value_status: NOT_ATTEMPTED
+    project_value: M8 CONVERGED on loaded canonical JTL fixture only
+    provenance_tag: '[DERIVED]'
+    source_set: M8-002 C01
+    review_date: '2026-08-12'
+    impact: receiver Gate cannot be claimed from calibration fixture
+    required_discriminator: INTERFACE_GATE_V1 preregistration (M11-era, not this task)
+  evidence:
+  - research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml
+  - research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md
+  claim_limitation: calibration fixture only; not a receiver Gate
+  upgrade_discriminator: preregistered receiver test matrix under INTERFACE_GATE_V1
+- object: canonical DCSFQ reference fixture
+  source_reference: circuits/standard/DCSFQ.cir (IARPA SuperTools/ColdFlux v3.0); M6 accepted evidence
+  parameter_provenance:
+    B1/B2/B3 area, IB1/IB2, L1-L6: '[PUBLISHED] (ColdFlux library netlist)'
+    0/300 uA control pair: '[DERIVED] (M6-002 accepted)'
+  reproduction_status:
+    level: R1
+    rationale: ColdFlux published netlist nominal parameters present; direct same-JJ P/V mapping accepted in M6
+  characterization_status: CALIBRATION_FIXTURE_ONLY
+  unknown_inferred_items:
+  - field: external DCSFQ behavior comparison
+    reference_value_status: UNKNOWN
+    project_value: M6 same-JJ residual reported only
+    provenance_tag: '[DERIVED]'
+    source_set: M6-002 C01
+    review_date: '2026-08-12'
+    impact: no published behavioral reproduction claim
+    required_discriminator: predeclared behavioral criteria + external data
+  evidence:
+  - research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml
+  - test/final/interface/data/metrics_v2/p0-v2.json
+  claim_limitation: reference fixture calibration; not a physical Gate
+  upgrade_discriminator: predeclared DCSFQ behavioral criteria
+- object: BVM source characterization
+  source_reference: HANDOVER §4; P2 recomputation; bvm load scan
+  parameter_provenance:
+    load current 43.9-97.8 uA, FWHM 6.8-11.2 ps: '[DERIVED] (measured range, not universal)'
+    Thevenin 40 ohm/4 mV: '[DERIVED] (empirical fit)'
+  reproduction_status:
+    level: NOT_ATTEMPTED
+    rationale: source characterization requires frozen METRIC_SPEC_V2 measurement semantics (now available) and a preregistered characterization plan
+  characterization_status: LEGACY_ONLY
+  unknown_inferred_items:
+  - field: full source characterization matrix
+    reference_value_status: NOT_ATTEMPTED
+    project_value: legacy load scan values only
+    provenance_tag: '[DERIVED]'
+    source_set: HANDOVER §4 (audit 2026-08-09)
+    review_date: '2026-08-09'
+    impact: no source Gate
+    required_discriminator: preregistered source characterization task under METRIC_SPEC_V2
+  evidence:
+  - docs/HANDOVER.md §4
+  claim_limitation: legacy measured ranges; not frozen characterization
+  upgrade_discriminator: preregistered source characterization run (separate task)
+- object: receiver characterization
+  source_reference: M8 convergence; M7 canonical JTL
+  parameter_provenance:
+    B1/B2 junction response: '[DERIVED] (M7B/M8 accepted)'
+    receiver thresholds: '[UNKNOWN]'
+  reproduction_status:
+    level: PARTIAL_R1
+    rationale: canonical JTL fixture calibrated; full receiver characterization not attempted
+  characterization_status: CALIBRATION_FIXTURE_ONLY
+  unknown_inferred_items:
+  - field: receiver input thresholds/margins
+    reference_value_status: UNKNOWN
+    project_value: none
+    provenance_tag: '[UNKNOWN]'
+    source_set: no preregistered receiver characterization
+    review_date: 2026-08-13 cutoff
+    impact: no receiver Gate
+    required_discriminator: preregistered receiver characterization under INTERFACE_GATE_V1
+  evidence:
+  - research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml
+  claim_limitation: calibration fixture knowledge only
+  upgrade_discriminator: preregistered receiver characterization run
+reproduction_semantics:
+  levels: R0 topology / R1 published nominal / R2 behavioral (predeclared criteria) / R3 independent full
+  rule: behavioral_analogue_with_nonpublished_parameters, never published R2, for non-published project parameters
+  legal_final_states:
+  - R0
+  - PARTIAL_R1
+  - UNKNOWN
+  - NOT_CHARACTERIZED
+explicit_non_conclusions:
+- no physical knowledge completeness claim
+- no published reproduction claim
+- no candidate/interface/system/T1/paper-novelty conclusion

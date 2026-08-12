@@ -1,0 +1,34 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M11B-001
+revision: 1
+attempt_id: A02
+workflow_state: ACKED
+created_at: "2026-08-13T05:30:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "583e11a65e1dffd367aa608685dc9a2540dadabf6577560acd20d2e7031238cf"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "8d9f4a5"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M11B-001/attempts/A01/**（前次 attempt，REWORK 后保留不动）"
+    - "research/tasks/JH-20260813-M11B-001/audits/C01/verdict.yaml（Codex 裁决，只读）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "按 M11B C01 REWORK 修复：(1) 本地 arti/ corpus 边界——清点 8 个 PDF + 辅助文件并 hash，区分 UNREVIEWED-available 与 unavailable，不声称未审读内容；(2) 每个 evidence/source 路径限 A02 read scope 内并 existence+hash 绑定（移除 scope 外的 circuits/qb/bq_cell.cir 引用）；(3) 强化 validator：显式 reproduction-status 枚举（拒 R4）、对象唯一性、evidence/source 存在+hash 校验、结构化 PASS 否定字段（pass_does_not_mean）、字段级 alias-aware provenance laundering 检查；(4) 对抗测试：R4/alias laundering/source absence/PASS bypass/重复对象/缺对象/bare UNKNOWN；(5) receipt changes[] 不列 ACK（协议 §7）。不运行 JoSIM/联网/外联，不提高任何状态。"
+  non_goals:
+    - "不运行 JoSIM/改 circuit/model/netlist/test；不调参；不自动升级 reproduction/characterization status；不编辑 REFERENCE_PROVENANCE.md/todo/HANDOVER/raw/accepted artifacts。"
+  stop_conditions:
+    - "scope/HEAD/dirty/frozen-input mismatch；需要网络/外联/attempts/** 外编辑或新 reconstruction run。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-001"
+  - "python3 research/tasks/JH-20260813-M11B-001/attempts/A02/validate_scientific_reconstruction_baseline.py"
+expected_changed_paths:
+  - "research/tasks/JH-20260813-M11B-001/attempts/A02/**"
+blockers: []
+deviations: []

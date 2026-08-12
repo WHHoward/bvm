@@ -1,0 +1,158 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M11A-001
+revision: 1
+attempt_id: A02
+workflow_state: DELIVERED
+created_at: '2026-08-13T05:40:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786
+  ack_sha256: fdb10c28af6b7c6338794781ece2cf4db100251eb7a171cb6d026d1673ff67f6
+execution_status: COMPLETED
+baseline_git_head: 8d9f4a5
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/measurement-calibration-baseline-v1.yaml
+  action: CREATED
+  sha256: 881d1d83286ca0ee7e6567204822dc1a2397d8cb3ebf00ada7e3349138c01308
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/validate_measurement_calibration_baseline.py
+  action: CREATED
+  sha256: 0e0f487d9f3c61b633ad453edcbff0e82432d298c350b3292912a73e52524033
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/preflight.log
+  action: CREATED
+  sha256: ca5cbf873ce6a80db93f063a4e79e4b41e61f12edf41bca16bbd4a665383e650
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  action: CREATED
+  sha256: 249192e533964e43e5ef60858e8b904279dacacd485964333172586c2bac693c
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2.log
+  action: CREATED
+  sha256: 59794b32b778d6f1c351d8ec2145432ced6f789bfe0a5ed5d0106612852d2779
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2_m5.log
+  action: CREATED
+  sha256: f0afaebe0c642d7d02c1e049ea75dfaed678e0b7be59e3aad81b469607953de2
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2_m6.log
+  action: CREATED
+  sha256: 4643f44fd4cf6550a2566603d52bf5b55aa88c890de7d7043c919f22d781d9bc
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2_m7.log
+  action: CREATED
+  sha256: 282cbc467b5daab07b0e35f17165314f907356993f7dfbbdd908f4fedb4f94cc
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_metric_spec_v2.log
+  action: CREATED
+  sha256: fef634355882f0bc5b925e0c1f254f2077a3a5dc6d1c5ac4fb54c7e4683c2f8b
+- path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_rebuild_historical_metrics_v2.log
+  action: CREATED
+  sha256: 3cc25e989b108018a8eb9dc0e58fa4d95bd93b0e26e80d803e12f39491aafaea
+artifacts:
+- id: baseline
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/measurement-calibration-baseline-v1.yaml
+  sha256: 881d1d83286ca0ee7e6567204822dc1a2397d8cb3ebf00ada7e3349138c01308
+  role: DOCUMENTATION
+- id: validator
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/validate_measurement_calibration_baseline.py
+  sha256: 0e0f487d9f3c61b633ad453edcbff0e82432d298c350b3292912a73e52524033
+  role: TEST
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/preflight.log
+  sha256: ca5cbf873ce6a80db93f063a4e79e4b41e61f12edf41bca16bbd4a665383e650
+  role: LOG
+- id: log-validator.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  sha256: 249192e533964e43e5ef60858e8b904279dacacd485964333172586c2bac693c
+  role: LOG
+- id: log-regression-test_sfq_metrics_v2.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2.log
+  sha256: 59794b32b778d6f1c351d8ec2145432ced6f789bfe0a5ed5d0106612852d2779
+  role: LOG
+- id: log-regression-test_sfq_metrics_v2_m5.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2_m5.log
+  sha256: f0afaebe0c642d7d02c1e049ea75dfaed678e0b7be59e3aad81b469607953de2
+  role: LOG
+- id: log-regression-test_sfq_metrics_v2_m6.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2_m6.log
+  sha256: 4643f44fd4cf6550a2566603d52bf5b55aa88c890de7d7043c919f22d781d9bc
+  role: LOG
+- id: log-regression-test_sfq_metrics_v2_m7.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2_m7.log
+  sha256: 282cbc467b5daab07b0e35f17165314f907356993f7dfbbdd908f4fedb4f94cc
+  role: LOG
+- id: log-regression-test_metric_spec_v2.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_metric_spec_v2.log
+  sha256: fef634355882f0bc5b925e0c1f254f2077a3a5dc6d1c5ac4fb54c7e4683c2f8b
+  role: LOG
+- id: log-regression-test_rebuild_historical_metrics_v2.log
+  path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_rebuild_historical_metrics_v2.log
+  sha256: 3cc25e989b108018a8eb9dc0e58fa4d95bd93b0e26e80d803e12f39491aafaea
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11A-001 (ACK 后 receipt 前)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/preflight.log
+  log_sha256: ca5cbf873ce6a80db93f063a4e79e4b41e61f12edf41bca16bbd4a665383e650
+- command: python3 research/tasks/JH-20260813-M11A-001/attempts/A02/validate_measurement_calibration_baseline.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  log_sha256: 249192e533964e43e5ef60858e8b904279dacacd485964333172586c2bac693c
+tests:
+- id: baseline-validator
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  notes:
+  - M11A A02 validator 通过；负向毒化 7/7 拒绝；真实回归 6 命令日志齐备
+- id: negative-guards
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  notes:
+  - poisoned inputs rejected (executable oracle)
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/measurement-calibration-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  notes:
+  - M4–M10 精确七层集合（validator 强制 exact set，含 SHA-256 与 live 核对）；REWORK/rejected 前身仅 lineage_only
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/measurement-calibration-baseline-v1.yaml
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/logs/regression-test_sfq_metrics_v2.log
+  notes:
+  - METRIC_SPEC_V2 2.0.0 绑定；M10 精确 11 项 artifact inventory（generator/rebuild test/四 JSON/correction table/四 bannered 文档）全部 hash 验证；M6 2 runs + M8 6 runs 非空完整；真实回归命令日志 6 份
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/validate_measurement_calibration_baseline.py
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/logs/validator.log
+  notes:
+  - validator 强制精确层集合/精确 11 项 M10 集合/非空 M6(2)+M8(6)/缺 hash/全局容差/禁词；负向毒化 7/7 拒绝
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/measurement-calibration-baseline-v1.yaml
+  notes:
+  - 7 类容差全部 UNFROZEN；容差依赖分类 INCONCLUSIVE；无 SFQ/fluxoid/downstream/candidate/interface/system/paper 结论
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11A-001/attempts/A02/logs/preflight.log
+  notes:
+  - 无 JoSIM 运行、无 frozen-path 编辑；receipt 前 verify-task VERIFIED；final verify 由 Codex 执行
+observations:
+- M10 11 项 artifact 全部 hash 与 live 一致；真实回归：M4 21 + M5 18 + M6 15 + M7 29 + M9 59 + M10 13 = 155 项全过。
+interpretations:
+- Measurement Calibration Baseline v1 (A02) 现为精确集合强制的可重放 hash-verified 证据索引。
+unknowns:
+- 全局容差仍 UNFROZEN；BVM→BQ/BQ/BVM same-JJ mapping 仍 UNKNOWN。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot Codex-owned; result_git_head null.
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+deviations: []
+blockers: []

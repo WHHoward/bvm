@@ -1,0 +1,108 @@
+## M7 A01 full test suite
+date: 2026-08-12T19:42:40+08:00
+
+test_activity_counts_and_intervals (__main__.AnalyzeTests.test_activity_counts_and_intervals) ... ok
+test_endpoint_delta_rad_preserved_and_turns_derived (__main__.AnalyzeTests.test_endpoint_delta_rad_preserved_and_turns_derived) ... ok
+test_negative_and_quadruple (__main__.AnalyzeTests.test_negative_and_quadruple) ... ok
+test_no_event_semantics_keys_anywhere (__main__.AnalyzeTests.test_no_event_semantics_keys_anywhere) ... ok
+test_units_and_m4_boundary_metadata (__main__.AnalyzeTests.test_units_and_m4_boundary_metadata) ... ok
+test_auto_discovers_phase_columns_only (__main__.CliTests.test_auto_discovers_phase_columns_only) ... ok
+test_cli_json_output (__main__.CliTests.test_cli_json_output) ... ok
+test_help_lists_rad_and_turns (__main__.CliTests.test_help_lists_rad_and_turns) ... ok
+test_module_docstring_carries_units_and_m4_boundary (__main__.FrozenFilesTests.test_module_docstring_carries_units_and_m4_boundary) ... ok
+test_v1_metrics_script_unchanged (__main__.FrozenFilesTests.test_v1_metrics_script_unchanged) ... ok
+test_minus_two_pi (__main__.RadToTurnsTests.test_minus_two_pi) ... ok
+test_non_integer (__main__.RadToTurnsTests.test_non_integer) ... ok
+test_plus_four_pi (__main__.RadToTurnsTests.test_plus_four_pi) ... ok
+test_plus_two_pi (__main__.RadToTurnsTests.test_plus_two_pi) ... ok
+test_zero (__main__.RadToTurnsTests.test_zero) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.166s
+
+OK
+test_activity_stats_separate_from_clustering (__main__.ActivityStatsTests.test_activity_stats_separate_from_clustering) ... ok
+test_activity_window_stats_complete (__main__.ActivityStatsTests.test_activity_window_stats_complete) ... ok
+test_invalid_plan_cli_failure (__main__.CliTests.test_invalid_plan_cli_failure) ... ok
+test_plan_mode_cli_success (__main__.CliTests.test_plan_mode_cli_success) ... ok
+test_activity_outside_window_ignored (__main__.ClusteringTests.test_activity_outside_window_ignored) ... ok
+test_equality_at_threshold_inactive (__main__.ClusteringTests.test_equality_at_threshold_inactive) ... ok
+test_ten_contiguous_active_increments_one_cluster (__main__.ClusteringTests.test_ten_contiguous_active_increments_one_cluster) ... ok
+test_two_separated_ramps_two_clusters (__main__.ClusteringTests.test_two_separated_ramps_two_clusters) ... ok
+test_control_missing_phase_column_fails (__main__.ControlAlignmentTests.test_control_missing_phase_column_fails) ... ok
+test_control_shifted_time_array_fails (__main__.ControlAlignmentTests.test_control_shifted_time_array_fails) ... ok
+test_control_time_array_mismatch_fails (__main__.ControlAlignmentTests.test_control_time_array_mismatch_fails) ... ok
+test_common_startup_background_cancellation (__main__.ControlCorrectionTests.test_common_startup_background_cancellation) ... ok
+test_constant_offsets_do_not_alter_deltas (__main__.ControlCorrectionTests.test_constant_offsets_do_not_alter_deltas) ... ok
+test_direction_reversal_flips_deltas_not_activity (__main__.ControlCorrectionTests.test_direction_reversal_flips_deltas_not_activity) ... ok
+test_identical_signal_control_zero_corrected_delta (__main__.ControlCorrectionTests.test_identical_signal_control_zero_corrected_delta) ... ok
+test_frozen_input_hashes (__main__.FrozenReplayTests.test_frozen_input_hashes) ... ok
+test_frozen_replay_values (__main__.FrozenReplayTests.test_frozen_replay_values) ... ok
+test_activity_window_one_sample_rejected (__main__.PlanValidationTests.test_activity_window_one_sample_rejected) ... ok
+test_activity_window_zero_samples_rejected (__main__.PlanValidationTests.test_activity_window_zero_samples_rejected) ... ok
+test_bad_schema_version (__main__.PlanValidationTests.test_bad_schema_version) ... ok
+test_invalid_direction_rejected (__main__.PlanValidationTests.test_invalid_direction_rejected) ... ok
+test_missing_phase_column_rejected (__main__.PlanValidationTests.test_missing_phase_column_rejected) ... ok
+test_missing_threshold_rejected (__main__.PlanValidationTests.test_missing_threshold_rejected) ... ok
+test_nonfinite_phase_rejected (__main__.PlanValidationTests.test_nonfinite_phase_rejected) ... ok
+test_nonmonotonic_time_rejected (__main__.PlanValidationTests.test_nonmonotonic_time_rejected) ... ok
+test_overlapping_windows_rejected (__main__.PlanValidationTests.test_overlapping_windows_rejected) ... ok
+test_undersampled_window_rejected (__main__.PlanValidationTests.test_undersampled_window_rejected) ... ok
+test_no_event_semantics_keys_anywhere (__main__.TerminologyTests.test_no_event_semantics_keys_anywhere) ... ok
+test_half_open_window_sample_counts (__main__.WindowSelectionTests.test_half_open_window_sample_counts) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.160s
+
+OK
+test_voltage_area_cli_bad_plan_fails (__main__.CliTests.test_voltage_area_cli_bad_plan_fails) ... ok
+test_voltage_area_cli_success (__main__.CliTests.test_voltage_area_cli_success) ... ok
+test_identical_signal_control_zero_corrected_residual (__main__.ControlCorrectionTests.test_identical_signal_control_zero_corrected_residual) ... ok
+test_phase_and_area_agree_on_consistent_synthetic_run (__main__.EndpointConsistencyTests.test_phase_and_area_agree_on_consistent_synthetic_run) ... ok
+test_window_cut_through_trace_uses_selected_samples (__main__.EndpointConsistencyTests.test_window_cut_through_trace_uses_selected_samples) ... ok
+test_orientation_flips_area_sign (__main__.OrientationTests.test_orientation_flips_area_sign) ... ok
+test_constant_one_volt_for_phi0_seconds_is_one_turn (__main__.Phi0ConversionTests.test_constant_one_volt_for_phi0_seconds_is_one_turn) ... ok
+test_half_volt_for_phi0_seconds_is_half_turn (__main__.Phi0ConversionTests.test_half_volt_for_phi0_seconds_is_half_turn) ... ok
+test_no_event_semantics_keys_anywhere (__main__.TerminologyTests.test_no_event_semantics_keys_anywhere) ... ok
+test_nonuniform_time_first_principles (__main__.TrapezoidTests.test_nonuniform_time_first_principles) ... ok
+test_rejects_length_mismatch (__main__.TrapezoidTests.test_rejects_length_mismatch) ... ok
+test_rejects_single_sample (__main__.TrapezoidTests.test_rejects_single_sample) ... ok
+test_varying_values (__main__.TrapezoidTests.test_varying_values) ... ok
+test_invalid_orientation_rejected (__main__.ValidationTests.test_invalid_orientation_rejected) ... ok
+test_misaligned_control_rejected (__main__.ValidationTests.test_misaligned_control_rejected) ... ok
+test_missing_phase_column_rejected (__main__.ValidationTests.test_missing_phase_column_rejected) ... ok
+test_missing_voltage_column_rejected (__main__.ValidationTests.test_missing_voltage_column_rejected) ... ok
+test_nonfinite_voltage_rejected (__main__.ValidationTests.test_nonfinite_voltage_rejected) ... ok
+test_nonmonotonic_time_rejected (__main__.ValidationTests.test_nonmonotonic_time_rejected) ... ok
+test_unknown_endpoint_window_rejected (__main__.ValidationTests.test_unknown_endpoint_window_rejected) ... ok
+test_window_fewer_than_two_samples_rejected (__main__.ValidationTests.test_window_fewer_than_two_samples_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.111s
+
+OK
+test_independent_arithmetic_matches_production (__main__.CanonicalJtlCalibrationTests.test_independent_arithmetic_matches_production) ... ok
+test_phase_increments_at_actual_samples (__main__.HistoricalBqV4RegressionTests.test_phase_increments_at_actual_samples) ... ok
+test_frozen_replay_constants (__main__.HistoricalDcsfqReplayTests.test_frozen_replay_constants) ... ok
+test_orientation_flips_area_sign (__main__.OrientationSignTests.test_orientation_flips_area_sign) ... ok
+test_residual_zero_for_exact_synthetic (__main__.OrientationSignTests.test_residual_zero_for_exact_synthetic) ... ok
+test_minus_pi_is_minus_half_turn (__main__.RadToTurnsSignTests.test_minus_pi_is_minus_half_turn) ... ok
+test_minus_two_pi_is_minus_one_turn (__main__.RadToTurnsSignTests.test_minus_two_pi_is_minus_one_turn) ... ok
+test_plus_one_rad_is_one_over_two_pi (__main__.RadToTurnsSignTests.test_plus_one_rad_is_one_over_two_pi) ... ok
+test_plus_two_pi_is_one_turn (__main__.RadToTurnsSignTests.test_plus_two_pi_is_one_turn) ... ok
+test_constant_one_over_irregular_times (__main__.TrapezoidNonUniformTests.test_constant_one_over_irregular_times) ... ok
+test_rejects_length_mismatch (__main__.TrapezoidNonUniformTests.test_rejects_length_mismatch) ... ok
+test_rejects_short_input (__main__.TrapezoidNonUniformTests.test_rejects_short_input) ... ok
+test_varying_values (__main__.TrapezoidNonUniformTests.test_varying_values) ... ok
+test_half_open_window_excludes_end (__main__.WindowAndClusteringTests.test_half_open_window_excludes_end) ... ok
+test_malformed_input_rejected (__main__.WindowAndClusteringTests.test_malformed_input_rejected) ... ok
+test_matched_control_subtraction (__main__.WindowAndClusteringTests.test_matched_control_subtraction) ... ok
+test_separated_clusters_not_bridged (__main__.WindowAndClusteringTests.test_separated_clusters_not_bridged) ... ok
+test_strict_threshold_equality_inactive (__main__.WindowAndClusteringTests.test_strict_threshold_equality_inactive) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.043s
+
+OK
+M7B B1 raw signed residual (turns): -1.412755e-04
+M7B B2 raw signed residual (turns): 1.412931e-03

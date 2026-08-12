@@ -1,0 +1,60 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M9-001
+revision: 1
+attempt_id: A02
+audit_id: C02
+workflow_state: AUDITED
+created_at: "2026-08-13T01:20:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "7060180c7ec38c5cf31811668629dbe935aa51fb99f897b967b6094407424f21"
+  ack_sha256: "d3dfa784f0c28422a797c122e36e10f2160aa17188ba230fb18afcf825285575"
+  receipt_sha256: "3663bd918359444481ee501ce8e2fedd7644a7d2043d140a28a3a7cc0483db1d"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-core-semantic-rework
+    status: PASS
+    evidence:
+      - "A02 explicitly binds M7 XDUT evidence, gives the rd/vts formula and legacy orientation-only boundary, and makes convergence operate on applicable registered observables with preregistered NOT_APPLICABLE reasons."
+  - id: C02-regression-and-boundary
+    status: PASS
+    evidence:
+      - "A02's 50 deterministic checks and unchanged M4/M5/M6/M7 suites pass; no JoSIM run or Gate/candidate conclusion occurred."
+  - id: C03-frozen-closure
+    status: FAIL
+    evidence:
+      - "verify-task scans all receipts in M9-001 and fails because A02's permitted shared-output changes invalidate A01's sealed output hashes. A01 and A02 are preserved; their receipts must not be rewritten."
+  - id: C04-mapping-lineage
+    status: FAIL
+    evidence:
+      - "A02 labels canonical JTL XLOAD P/V mappings verified by M6/M7, but M7's direct P/V probe/audit supports XDUT only and M6 is a DCSFQ run."
+  - id: C05-negative-oracle
+    status: FAIL
+    evidence:
+      - "A02's mutation checks create strings with prohibited semantics or missing fields but do not invoke a guard that rejects them; deleting the live guard would leave those tests green."
+  - id: C06-independent-material-review
+    status: PASS
+    evidence:
+      - "Fresh Terra High review confirms C03–C05 and finds the rd/vts and N/A convergence corrections otherwise consistent."
+findings:
+  - "A02 is preserved in Codex-controlled candidate snapshot b4fbfeb1ad61f35c775c7cdf145f159b3448e936; it is not an accepted frozen specification."
+  - "The existing request cannot attain a final successful verify-task after a later attempt changes shared deliverables, so acceptance would violate the file-hash evidence protocol."
+accepted_claims:
+  - "The core C01 semantic defects have a plausible, tested A02 correction candidate."
+rejected_claims:
+  - "M9-001 cannot be accepted or used to freeze METRIC_SPEC_V2."
+required_rework:
+  - "Create a new superseding FROZEN task rather than changing M9-001 receipts or hashes."
+  - "In the successor, remove or properly source the XLOAD mapping, implement executable negative guard functions/tests, and use a receipt set whose final verify-task can succeed."
+next_actions:
+  - "Codex may issue the M9 successor under the user's existing M9 authorization; do not start M10/M11."
+claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate

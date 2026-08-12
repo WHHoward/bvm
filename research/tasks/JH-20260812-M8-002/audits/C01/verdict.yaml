@@ -1,0 +1,60 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260812-M8-002
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: CLOSED
+created_at: "2026-08-12T23:55:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "6e23aae1cb577079085f1437d3aa0e360e6ea2dcf02df93324e4b566352d49ba"
+  ack_sha256: "9ca9d461aebc10a759dd04bf58451c6422de553e779a6f46c7f30c499c04046a"
+  receipt_sha256: "58c60d555b0b0b7ac343b18477d79992fefe1db13ec6595a9e3601d539c4e09a"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-contract-and-procedure-lineage
+    status: PASS
+    evidence:
+      - "M8-001 preregistered the 0.1/0.05/0.025 ps ladder, six-run budget, controls, windows, observables, task-local bands, and no-fourth-level stop rule before its six runs were produced."
+      - "M8-002 supersedes only the mechanically invalid closure package; it freezes and reuses those preserved raw inputs without altering the procedure or running JoSIM."
+  - id: C02-mechanical-closure-and-provenance
+    status: PASS
+    evidence:
+      - "Final handoff verify-task succeeds for M8-002: request/ACK/receipt bindings, scope manifest, paths, artifact hashes, acceptance mappings, and revised deliverable patterns verify."
+      - "All six source raw CSV SHA-256 values match their preserved M8-001 manifests and the M8-002 frozen scope manifest; six manifests record exit_code 0, model/input snapshots, and loaded XLOAD plus R_TERM fixture."
+  - id: C03-independent-raw-arithmetic
+    status: PASS
+    evidence:
+      - "Codex independently read the six CSVs, checked finite strictly increasing actual times and required direct V/P columns, and recalculated matched-control DUT B1/B2 pre/post phase platforms plus same-JJ [6,50) ps actual-time trapezoid areas and signed residuals."
+      - "Independent values reproduce A01: at 0.1 ps B1/B2 platform=0.999988816843/0.999889519862 turns, area=1.000160951820/0.998732497057 turns, residual=-0.000194852965/+0.001360464203 turns; corresponding 0.05 and 0.025 ps values also reproduce the delivered table."
+  - id: C04-bounded-convergence-decision
+    status: PASS
+    evidence:
+      - "For both adjacent pairs, every preregistered applicable observable is within its predeclared task-local band: DUT phase and area <=0.01 turns, residual <=0.005 turns, activity peak/FWHM <=0.25 ps, and loaded downstream phase platform <=0.01 turns."
+      - "The task ends at its registered 0.025 ps maximum depth; no extra timestep, window change, netlist change, or candidate tuning was used. downstream_count remains NOT_APPLICABLE."
+  - id: C05-regression-and-evidence-boundary
+    status: PASS
+    evidence:
+      - "Codex reran unchanged M4/M5/M6/M7 suites: 15/29/21/18 tests passed (83 total)."
+      - "Accepted result is a CALIBRATION numerical-convergence classification for this loaded canonical JTL fixture only; it does not freeze M9 tolerances or establish a physical event, JTL reception, system Gate, route result, or hardware claim."
+findings:
+  - "M8-001 A01 remains preserved and REWORK_REQUIRED because its signed deliverable patterns and self-referential log hash made the original FROZEN closure invalid. M8-002 is the valid evidence-closure successor and does not rewrite A01."
+  - "Selected upper window endpoints differ by timestep (49.9/49.95/49.975 ps) because the preregistered half-open [6,50) ps window uses each CSV's actual sampled times; this was declared rather than interpolated."
+accepted_claims:
+  - "The preregistered, bounded 0.1/0.05/0.025 ps procedure is CONVERGED for the registered matched-control observables of this loaded canonical JTL calibration fixture."
+rejected_claims:
+  - "This result does not constitute a global metric tolerance freeze; M9 alone may freeze METRIC_SPEC_V2."
+  - "It does not demonstrate an SFQ count, fluxoid count, downstream received event, interface/system Gate, BQ/DCSFQ candidate result, route decision, or hardware behavior."
+required_rework: []
+next_actions:
+  - "M8 may be marked complete in the task authority with links to M8-002 C01; M9 remains the next Phase -1 task but must not start without explicit user authorization."
+claim_ceiling: bounded_numerical_convergence_for_this_calibration_fixture_only_no_physical_gate

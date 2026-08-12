@@ -4,6 +4,21 @@
 
 ---
 
+## 2026-08-12 — M8 预注册有界时间步收敛接受
+
+### 做了什么
+
+- 运行前注册 loaded canonical JTL 的六次匹配控制运行、0.1/0.05/0.025 ps 阶梯、比较窗口、观测量、任务局部带宽和最大深度停止规则
+- 保留原 A01 六份 raw；交付物模式与 verify-log 自引用哈希缺陷使其为 `REWORK_REQUIRED`，不删除或重跑
+- `JH-20260812-M8-002` 对冻结 raw 独立重算并完成 FROZEN 机械闭环；两个相邻 refinement 比较均在预注册带宽内，Codex C01 审计接受
+
+### 影响
+
+- M8 完成：接受范围仅为该 loaded canonical JTL 校准 fixture 的有界数值收敛
+- 未冻结全局计量容差，未建立 SFQ/下游接收/系统 Gate 或路线结论；M9–M11 与 candidate tuning 继续等待用户授权
+
+---
+
 ## 2026-08-12 — M7 计量单元、canonical JTL 与历史回归接受
 
 ### 做了什么

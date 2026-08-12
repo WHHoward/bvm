@@ -27,7 +27,7 @@ metadata:
 | M7A | Mathematical unit tests | 🟢（2026-08-12） | 合成 ground truth（zero trace、±2π 阶跃、双转换、已知电压面积脉冲、sign 反转、窗口边界）：验证公式/单位/sign/window/cluster/integration；不证明任何 BQ/DCSFQ/BVM candidate 物理正确 |
 | M7B | Canonical circuit validation | 🟢（2026-08-12） | 直接同 JJ V/P 探针的 canonical JTL 运行与独立实际时间轴算术一致；残差只报告，M9 才冻结接受容差；不证明 BQ v4/DCSFQ_BVM 成功 |
 | M7C | Historical regression | 🟢（2026-08-12） | DCSFQ 300 µA 控制重放和 BQ v4 六周期平台常量以预注册独立值通过；只证明新 pipeline 未重新误读历史 raw，不把周期平台称为物理事件或 Gate |
-| M8 | 有界时间步收敛（预注册 procedure） | 🔴 | 运行前预注册 initial_dt=0.1 ps、refinement_ratio、max_refinement_levels（≥3：0.1/0.05/0.025 ps）、observables（phase turns、voltage-area turns、phase-area residual、event timing、pulse width、downstream count 若适用）、comparison_windows、stability_tolerance、stop_rule；相邻 refinement 关键量进入稳定带宽=PASS；到最大深度仍不稳定=INCONCLUSIVE；禁止无限 refinement |
+| M8 | 有界时间步收敛（预注册 procedure） | 🟢（2026-08-12） | `JH-20260812-M8-001` 在运行前固定 0.1/0.05/0.025 ps、六次匹配控制运行、窗口、观测量、任务局部稳定带宽与最大深度停止规则；其闭环合同缺陷被保留为 REWORK 历史，`JH-20260812-M8-002` 以冻结原始 CSV 完成独立重算和审计接受。仅证明 loaded canonical JTL 校准 fixture 的有界数值收敛，不冻结 M9 容差或任何物理 Gate |
 | M9 | 只冻结 `METRIC_SPEC_V2.md`（怎么测） | 🔴 | phase normalization、P/V same-JJ mapping、direction/sign、windows、zero-input control、activity clustering、voltage-area integration、numerical tolerance、convergence rule、output schema；**不定义**接口成功标准（后者为独立 `INTERFACE_GATE_V1`，在 Reference/Source/Receiver 事实层建立后单独冻结） |
 | M10 | 重生 JSON 和审计表 | 🔴 | BASELINE/P0/P2/v4 写入各实验 `data/metrics_v2/`，保留旧文件；历史文档原文保留 + SUPERSEDED banner + central correction table，不机械改写历史 narrative |
 | M11 | 新基线冻结（双子门） | 🔴 | **M11A** Measurement Calibration Baseline（M4–M10 完整、MetricSpec 冻结、tests/raw/controls/convergence/historical recomputation/provenance 齐全）+ **M11B** Scientific Reconstruction Baseline（reference provenance、reproduction level、BVM/published-QB reconstruction 状态、canonical receiver baselines、source/receiver characterization 状态、UNKNOWN/INFERRED 参数明确）；两个子门都通过 M11 才标绿 |
@@ -46,7 +46,7 @@ metadata:
 
 人工重算用于纠正路线判断，但在 M4–M11 完成前不能称为新的自动冻结基线。
 
-**2026-08-12 更新**：M4 建立 raw rad→圈与活动命名基础；M5 已接受 pre/activity/post 窗口、显式方向、匹配零输入对照与连续活动聚类的实现和确定性回归。M6 已接受 FROZEN 同 JJ 相位—电压面积测量管线复现：它使用直接 `V(B...)`、相同方向/端点窗口和 CSV 实际时间轴梯形积分，报告残差但不冻结接受容差。M7 已接受 M7A 合成 ground truth、M7B canonical JTL 同 JJ V/P 校准与 M7C 历史回归；三者均只构成 CALIBRATION LITE 证据。M4–M7 都不构成物理 Gate 或 SFQ 事件计数；M8–M11 仍未完成。M7 验收证据：`research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md`；M6 验收证据：`research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml`。
+**2026-08-12 更新**：M4 建立 raw rad→圈与活动命名基础；M5 已接受 pre/activity/post 窗口、显式方向、匹配零输入对照与连续活动聚类的实现和确定性回归。M6 已接受 FROZEN 同 JJ 相位—电压面积测量管线复现：它使用直接 `V(B...)`、相同方向/端点窗口和 CSV 实际时间轴梯形积分，报告残差但不冻结接受容差。M7 已接受 M7A 合成 ground truth、M7B canonical JTL 同 JJ V/P 校准与 M7C 历史回归；三者均只构成 CALIBRATION LITE 证据。M8 已接受预注册的 0.1/0.05/0.025 ps 有界收敛 procedure：六份 loaded canonical JTL 匹配控制 raw 的注册量均在两个相邻 refinement 带宽内；结论仅限该校准 fixture 的数值收敛。M4–M8 都不构成物理 Gate 或 SFQ 事件计数；M9–M11 仍未完成且等待用户授权。M8 验收证据：`research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml`；M7 验收证据：`research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md`；M6 验收证据：`research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml`。
 
 ## C. ⏸️ 候选路线 1：BQ v4（等待 Phase −1）
 

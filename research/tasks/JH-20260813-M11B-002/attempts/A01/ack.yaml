@@ -1,0 +1,37 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M11B-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T05:35:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "21b12d7a66f111330d94bbac70404e19e4d928257e1fa323692cb28d34abbb2c"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "3c264e0"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M11B-002/**（issue 自带 task packet，与 baseline/git-status.txt 一致）"
+    - "research/tasks/JH-20260813-M11A-001/attempts/**（已接受历史）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "冻结唯一 canonical M11B/W5B object matrix：七对象 exact set（bvm_storage/bvm_source_output/published_qb/bq_v4/standard_dcsfq/dcsfq_bvm/canonical_jtl），每对象含 current_evidence/observable/parameter_provenance/characterization_status/reproduction_status/unknowns/claim_limitation/next_discriminator 字段；evidence/source 全部 in-scope + SHA-256 + role + review state + locator；INVENTORIED_UNREVIEWED 不能支撑 [PUBLISHED]；[PUBLISHED] 需 reviewed 本地源 + locator；UNKNOWN 结构化记录；status 仅用允许枚举；新 run 只记 next_discriminator 不执行。REFERENCE_PROVENANCE.md 缩减为指针（不建第二 register），W5B 仅在 audit ACCEPTED 后可关闭，W5A/W5C 独立开放。写确定性 validator 拒绝 AC6 所列全部缺陷。不运行 JoSIM/网络/外联。"
+  non_goals:
+    - "不运行 JoSIM/改 netlist/model/test/raw；不调参；不做 candidate route/INTERFACE_GATE_V1/T1/W5A 检索/W5C 联系/physical/paper novelty claim。"
+    - "不自动升级 reproduction/characterization status；不建第二 provenance register。"
+  stop_conditions:
+    - "scope/HEAD/dirty/HANDOVER/metric-spec/frozen-input mismatch；需要 write_paths 外编辑、JoSIM/网络/外联、改 circuits/raw/tests 或定义/验证 candidate/Gate。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-002（ACK 前后）"
+  - "python3 research/tasks/JH-20260813-M11B-002/attempts/A01/validate_scientific_reconstruction_object_matrix.py"
+expected_changed_paths:
+  - "docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml"
+  - "docs/research/REFERENCE_PROVENANCE.md"
+  - "research/tasks/JH-20260813-M11B-002/attempts/**"
+blockers: []
+deviations: []

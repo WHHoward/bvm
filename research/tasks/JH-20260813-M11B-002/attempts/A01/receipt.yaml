@@ -1,0 +1,133 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M11B-002
+revision: 1
+attempt_id: A01
+workflow_state: BLOCKED
+created_at: '2026-08-13T05:55:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 21b12d7a66f111330d94bbac70404e19e4d928257e1fa323692cb28d34abbb2c
+  ack_sha256: 0c972327168d1046c8909054a9adee5e1d965c8ed2bdc7ccf7351ff24917e576
+execution_status: BLOCKED
+baseline_git_head: 3c264e0
+result_git_head: null
+changes:
+- path: docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  action: CREATED
+  sha256: 06ea667a2bcec8f9d1d011babc536f329c5e37a24044e235a37e14126ae9afff
+- path: docs/research/REFERENCE_PROVENANCE.md
+  action: MODIFIED
+  sha256: b5533ac700551ba4007dca8fbaa0e70ecdb770a78db100b03ede28d99a5ce067
+- path: research/tasks/JH-20260813-M11B-002/attempts/A01/validate_scientific_reconstruction_object_matrix.py
+  action: CREATED
+  sha256: 91b59005d3428f01f0823ed175ccaffab0daa0c9c1793a3ed66bb046ecb43378
+- path: research/tasks/JH-20260813-M11B-002/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: 59fc79e651a832194913c776400ca9b7e09e3a5c6d94a5cb648735a129c398a1
+- path: research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  action: CREATED
+  sha256: 7cda1a9598b5cd32a943b309d2b5eab52798bfe95213e9fb4becd4ba1487315e
+artifacts:
+- id: matrix
+  path: docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  sha256: 06ea667a2bcec8f9d1d011babc536f329c5e37a24044e235a37e14126ae9afff
+  role: DOCUMENTATION
+- id: rprovenance
+  path: docs/research/REFERENCE_PROVENANCE.md
+  sha256: b5533ac700551ba4007dca8fbaa0e70ecdb770a78db100b03ede28d99a5ce067
+  role: DOCUMENTATION
+- id: validator
+  path: research/tasks/JH-20260813-M11B-002/attempts/A01/validate_scientific_reconstruction_object_matrix.py
+  sha256: 91b59005d3428f01f0823ed175ccaffab0daa0c9c1793a3ed66bb046ecb43378
+  role: TEST
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M11B-002/attempts/A01/logs/preflight.log
+  sha256: 59fc79e651a832194913c776400ca9b7e09e3a5c6d94a5cb648735a129c398a1
+  role: LOG
+- id: log-validator.log
+  path: research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  sha256: 7cda1a9598b5cd32a943b309d2b5eab52798bfe95213e9fb4becd4ba1487315e
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-002 (ACK 后 receipt 前)
+  exit_code: 1
+  log_path: research/tasks/JH-20260813-M11B-002/attempts/A01/logs/preflight.log
+  log_sha256: 59fc79e651a832194913c776400ca9b7e09e3a5c6d94a5cb648735a129c398a1
+- command: python3 research/tasks/JH-20260813-M11B-002/attempts/A01/validate_scientific_reconstruction_object_matrix.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  log_sha256: 7cda1a9598b5cd32a943b309d2b5eab52798bfe95213e9fb4becd4ba1487315e
+tests:
+- id: matrix-validator
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  notes:
+  - 七对象 exact set/字段/evidence scope+hash+review/PUBLISHED 需 reviewed/status 枚举/laundering/PASS 语义/W5 边界全部通过；对抗测试 10/10 拒绝
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  - research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  notes:
+  - 恰好七唯一 object_id；每对象 9 字段齐备
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  - research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  notes:
+  - evidence in-scope + SHA-256 + role + review_state + locator；arti/ 8 PDF INVENTORIED_UNREVIEWED；[PUBLISHED] 均 reviewed；UNKNOWN 全字段
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  - research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  notes:
+  - reproduction/characterization 枚举合规；无 project-tuned 冒充 published；新 run 只记 next_discriminator
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  notes:
+  - PASS=knowledge-state 完整诚实冻结；pass_exclusions 7 项
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/REFERENCE_PROVENANCE.md
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  notes:
+  - REFERENCE_PROVENANCE.md 已缩减为指针；无第二参数登记表；W5B closure 仅 audit ACCEPTED 后可标记，W5A/W5C 独立开放
+- id: AC6
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-002/attempts/A01/validate_scientific_reconstruction_object_matrix.py
+  - research/tasks/JH-20260813-M11B-002/attempts/A01/logs/validator.log
+  notes:
+  - validator 拒绝 AC6 全部 10 类缺陷（对抗 10/10）；交付 matrix 通过
+- id: AC7
+  status: NOT_SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-002/attempts/A01/logs/preflight.log
+  notes:
+  - BLOCKER：REFERENCE_PROVENANCE.md 同时在 scope.read_paths（scope-files.sha256 冻结其 pointer 前哈希 116c2af0…）与 scope.write_paths（AC5 授权缩减为指针）。指针缩减后 final verify-task 对该文件报 hash mismatch，AC7（final handoff verification
+    succeeds）机械不可满足——与 M10-003 C01 判定为 BLOCKER 的结构完全相同。执行者不能修改 request（frozen）或 scope manifest（baseline/** frozen），亦不能放弃 AC5 指针缩减。
+observations:
+- 七对象 matrix 完整冻结（AC1–AC6 全部满足）；REFERENCE_PROVENANCE.md 指针缩减已完成；validator 对抗测试 10/10。
+- 唯一未满足项是 AC7：scope manifest 与 write_paths 对 REFERENCE_PROVENANCE.md 的结构性冲突导致 final verify-task 必败。
+interpretations:
+- 科学产物（matrix + validator + 指针缩减）已完成且自洽；阻塞纯属合同 scope 结构问题，非执行缺陷。
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot Codex-owned；result_git_head null。
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+- 如 M10-003→M10-004 先例，需 superseding 合同将 REFERENCE_PROVENANCE.md 移出 scope manifest（或移出 read_paths 仅留 write_paths）后方可闭环。
+deviations: []
+blockers:
+- REFERENCE_PROVENANCE.md 同时被 scope manifest（frozen 哈希）与 write_paths（AC5 授权修改）约束；final verify-task 机械不可满足（M10-003 C01 同类 BLOCKER）。请签发 superseding 合同修正 scope 结构（如移出 read_paths/scope manifest）。

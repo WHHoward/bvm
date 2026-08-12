@@ -1,0 +1,59 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M11B-002
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: '2026-08-13T06:10:00+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: 21b12d7a66f111330d94bbac70404e19e4d928257e1fa323692cb28d34abbb2c
+  ack_sha256: 0c972327168d1046c8909054a9adee5e1d965c8ed2bdc7ccf7351ff24917e576
+  receipt_sha256: aca96f7ecdad637aa7e971e327b4f605f59378c3357691d162ded3fcd93f7f03
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: mechanical-contract-closure
+    status: FAIL
+    evidence:
+      - 'handoff.py verify-task research/tasks/JH-20260813-M11B-002: REFERENCE_PROVENANCE.md scope-manifest hash mismatch'
+      - 'request.yaml puts docs/research/REFERENCE_PROVENANCE.md in both read_paths/scope-files.sha256 and write_paths; AC5 requires modifying it'
+  - id: matrix-structure-and-validator
+    status: PASS
+    evidence:
+      - 'python3 attempts/A01/validate_scientific_reconstruction_object_matrix.py: VALIDATION PASSED on the delivered matrix'
+      - 'matrix declares the exact seven requested object ids and the required structured fields'
+  - id: pointer-integrity
+    status: FAIL
+    evidence:
+      - 'REFERENCE_PROVENANCE.md names docs/research/REFERENCE_PROVENANCE.legacy-20260813.md as a historical index, but that file is absent'
+  - id: execution-boundary
+    status: PASS
+    evidence:
+      - 'receipt records no JoSIM, network, external contact, circuit/raw/test edit, or status elevation'
+findings:
+  - 'A01 correctly stopped rather than altering the immutable request or its scope manifest. The request made AC5 and final verification jointly impossible.'
+  - 'The delivered matrix is useful preserved draft evidence, but cannot be accepted as a FROZEN M11B/W5B baseline under this task because the mechanical seal is broken.'
+  - 'The replacement pointer additionally contains a broken legacy-file reference, so the documentation output requires a content correction as well as a scope-correct superseding contract.'
+accepted_claims:
+  - 'The matrix draft records the requested seven-object current-state categories without claiming physical completeness, candidate validation, or a Gate.'
+  - 'No new circuit characterization or reconstruction run was performed.'
+rejected_claims:
+  - 'That JH-20260813-M11B-002 A01 provides an accepted FROZEN M11B or W5B closure.'
+  - 'That REFERENCE_PROVENANCE.md is presently a complete valid pointer/index, because its legacy target does not exist.'
+required_rework:
+  - 'Do not modify the ISSUED JH-20260813-M11B-002 request or its baseline. Issue a superseding M11B contract that does not hash-bind a document it authorizes Claude to rewrite.'
+  - 'Correct the legacy-pointer assertion: either create an explicitly authorized immutable historical copy with hash-bound provenance, or remove the nonexistent legacy-file reference. Do not invent a history file.'
+  - 'Re-run the attempt-local validator and final handoff verification under the superseding contract. Preserve M11B-002 A01 and this verdict as lineage only.'
+next_actions:
+  - 'Codex may issue JH-20260813-M11B-003 as a narrow documentation-only rework; it must not start JoSIM, candidate tuning, INTERFACE_GATE_V1, T1, W5A, or W5C work.'
+  - 'M11 remains incomplete until M11A and a scope-correct M11B are independently ACCEPTED; W5B remains open until that M11B acceptance.'
+claim_ceiling: reconstruction_provenance_and_current_characterization_knowledge_state_freeze_only_not_physical_completeness_published_reproduction_candidate_validation_or_literature_boundary

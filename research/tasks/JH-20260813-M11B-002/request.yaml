@@ -1,0 +1,50 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M11B-002
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-13T05:19:37+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M11B
+depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A]
+supersedes: {task_id: JH-20260813-M11B-001, revision: 1}
+task:
+  kind: DOCUMENTATION
+  objective: "Freeze one canonical, structured M11B/W5B object matrix for the current evidence and provenance state of BVM storage/source-output, QB/BQ, DCSFQ, DCSFQ_BVM, and canonical JTL without raising scientific status or running circuits."
+  research_question: "Can the current evidence, observables, provenance, reproduction/characterization state, UNKNOWNs, and next discriminator for the exact seven-object set be completely and honestly frozen as one provenance registry?"
+  non_goals: ["No JoSIM run, netlist/model/test/raw edit, circuit tuning, source/receiver characterization run, candidate route decision, INTERFACE_GATE_V1, T1, W5A literature-boundary claim, W5C author contact, physical verdict, or paper novelty claim.", "No automatic upgrade of reproduction/characterization status; new circuit runs are only recorded as future discriminators.", "No parallel second provenance register: the delivered matrix is the sole M11B/W5B fact layer, while the legacy index may only become a pointer after audit acceptance."]
+  claim_ceiling: reconstruction_provenance_and_current_characterization_knowledge_state_freeze_only_not_physical_completeness_published_reproduction_candidate_validation_or_literature_boundary
+scope:
+  read_paths: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, docs/research/REFERENCE_PROVENANCE.md, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-evidence-audit/SKILL.md, .agents/skills/josim-project-summary/SKILL.md, research/tasks/JH-20260813-M11B-002/design/object-matrix-boundary.md, research/tasks/JH-20260813-M11A-001/audits/C02/verdict.yaml, research/tasks/JH-20260813-M11B-001/**, research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml, research/tasks/M5-LITE-PILOT-001/attempts/A02/CODEX-AUDIT.md, research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml, research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md, research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml, research/tasks/JH-20260813-M9-004/audits/C01/verdict.yaml, research/tasks/JH-20260813-M10-004/audits/C01/verdict.yaml, circuits/bvm/bvm_cell.cir, circuits/qb/bq_cell.cir, circuits/qb/bq_cell_paper.cir, circuits/qb/bq_cell_v4.cir, circuits/standard/DCSFQ.cir, circuits/standard/JTL.cir, circuits/models/jjmit.cir, circuits/interface/DCSFQ_BVM.cir, test/final/single_bvm_qb/test_bvm_bq_baseline.cir, test/metrics/m7_canonical_jtl.cir, test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json, test/final/interface/data/metrics_v2/p0-v2.json, test/final/bvm/data/metrics_v2/p2-v2.json, test/final/qb/data/metrics_v2/bq-v4-v2.json, arti/*.pdf]
+  write_paths: [docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, docs/research/REFERENCE_PROVENANCE.md, research/tasks/JH-20260813-M11B-002/attempts/**]
+  frozen_paths: [research/tasks/JH-20260813-M11B-001/**, research/tasks/JH-20260813-M11B-002/request.yaml, research/tasks/JH-20260813-M11B-002/request.sha256, research/tasks/JH-20260813-M11B-002/baseline/**, research/tasks/JH-20260813-M11B-002/design/**, research/tasks/JH-20260813-M11B-002/audits/**, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, circuits/**, scripts/**, test/**]
+  locks: [locks/m11b-w5b-unified-object-matrix, locks/reference-provenance]
+baseline:
+  git_head: 3c264e0
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M11B-002/baseline/git-status.txt, sha256: aaf37d645969792fedc8d923ba73c31db3fb923ba0090e4954f1eb98a04a13e5}
+  scope_hashes: {path: research/tasks/JH-20260813-M11B-002/baseline/scope-files.sha256, sha256: af44ff03302f28145623890a27bebabdc70fb0543f9579634ba3a346da55bedf}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-evidence-audit, josim-project-summary]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, docs/research/REFERENCE_PROVENANCE.md, research/tasks/JH-20260813-M11B-002/design/object-matrix-boundary.md, research/tasks/JH-20260813-M11A-001/audits/C02/verdict.yaml]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: e3c7ea5142fdc5ef9458a29f84ff67423f35edf59baae229ab0a7f4fd7153324}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: docs/research/REFERENCE_PROVENANCE.md, role: DOCUMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260813-M11B-002/attempts/**/validate_scientific_reconstruction_object_matrix.py, role: TEST, required: true}
+  - {id: D4, path: research/tasks/JH-20260813-M11B-002/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "The canonical matrix has exactly the seven unique object_ids bvm_storage, bvm_source_output, published_qb, bq_v4, standard_dcsfq, dcsfq_bvm, canonical_jtl. Every object has structured current_evidence, observable, parameter_provenance, characterization_status, reproduction_status, unknowns, claim_limitation, and next_discriminator fields.", evidence: [SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, validator-log]}
+  - {id: AC2, condition: "Every evidence/source entry is within authorized read scope, exists, carries SHA-256, source role, review state, and locator. INVENTORIED_UNREVIEWED is distinct from unavailable and cannot support [PUBLISHED]. Every [PUBLISHED] parameter has a reviewed local source plus locator; all UNKNOWN/INFERRED items identify field, reference status, project value when present, provenance tag, reviewed source boundary, impact, and next discriminator.", evidence: [SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, validator-log]}
+  - {id: AC3, condition: "Each object declares only allowed per-object reproduction and independent characterization status, with evidence-grounded rationale and observable semantics. No project-tuned/inferred behavior is presented as published reproduction; a new run needed to upgrade status is only a next_discriminator, not executed.", evidence: [SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, validator-log]}
+  - {id: AC4, condition: "The matrix explicitly states its PASS object is complete and honest reconstruction/provenance knowledge-state freeze. It explicitly excludes physical completeness, published reproduction completeness, candidate validation, interface/system Gate, T1, hardware and paper-novelty claims. UNKNOWN/INFERRED/R0/PARTIAL_R1 and uncharacterized statuses are legal.", evidence: [SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml]}
+  - {id: AC5, condition: "REFERENCE_PROVENANCE.md is reduced to a clear pointer/index to the canonical matrix without duplicating a second parameter register; the matrix declares W5B provenance closure eligible only upon this task audit acceptance, while W5A/W5C remain independent and open.", evidence: [REFERENCE_PROVENANCE.md, SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml]}
+  - {id: AC6, condition: "An attempt-local deterministic validator rejects missing/duplicate object IDs, out-of-scope/missing/hash-mismatched evidence, PUBLISHED from unreviewed evidence, bare UNKNOWN, undeclared status, provenance laundering by canonical field id, physical/PASS semantic bypass, and W5B/W5A/W5C conflation; it passes the delivered matrix.", evidence: [validate_scientific_reconstruction_object_matrix.py, validator-log]}
+  - {id: AC7, condition: "Receipt records no JoSIM/network/external-contact activity, no unregistered status upgrade, no frozen-path edit, and final handoff verification succeeds.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions: ["Any circuit run, tuning, external contact, network use, unregistered status upgrade, or frozen-path edit.", "Any second competing provenance register, unscoped or unhashed evidence source, provenance laundering, or claim beyond the knowledge-state ceiling.", "Any candidate/physical/interface/system/T1/paper-novelty conclusion."]
+inconclusive_conditions: ["An object/source cannot be bounded with the authorized local corpus; record it as UNKNOWN with an exact discriminator, unless even object identity cannot be recorded, then BLOCKED.", "A desired status requires a new circuit run, external source retrieval, or author contact; record the discriminator and do not perform it."]
+stop_conditions: ["Any scope, HEAD, dirty snapshot, HANDOVER, metric-spec, or frozen-input mismatch.", "Need to edit outside authorized write paths, run JoSIM, use network/external contact, change circuits/raw/tests, or define/validate a candidate or Gate.", "Need a second provenance register, or any status elevation not supported by a hash-bound reviewed source/evidence entry."]
+issuance_blockers: []

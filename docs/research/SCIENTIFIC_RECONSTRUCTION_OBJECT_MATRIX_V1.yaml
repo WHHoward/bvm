@@ -1,0 +1,272 @@
+matrix_id: scientific-reconstruction-object-matrix-v1
+parent_todo_ids:
+- M11B
+- W5B
+freeze_task: JH-20260813-M11B-002
+attempt: A01
+cutoff: '2026-08-13'
+claim_ceiling: reconstruction_provenance_and_current_characterization_knowledge_state_freeze_only_not_physical_completeness_published_reproduction_candidate_validation_or_literature_boundary
+pass_object: complete and honest reconstruction/provenance knowledge-state freeze
+pass_exclusions:
+- physical completeness
+- published reproduction completeness
+- candidate validation
+- interface/system Gate
+- T1
+- hardware claims
+- paper-novelty claims
+legal_statuses:
+  reproduction:
+  - NOT_ATTEMPTED
+  - R0
+  - PARTIAL_R1
+  - R1
+  - R2
+  - R3
+  characterization:
+  - NOT_ATTEMPTED
+  - LEGACY_ONLY
+  - CALIBRATION_FIXTURE_ONLY
+  - CHARACTERIZED
+w5b_boundary:
+  closure_eligible: only upon this task audit acceptance
+  w5a: independent and open (literature-boundary)
+  w5c: independent and open (author inquiry, user-authorized)
+objects:
+- object_id: bvm_storage
+  current_evidence:
+  - path: circuits/bvm/bvm_cell.cir
+    sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+    source_role: netlist
+    review_state: REVIEWED
+    locator: full file
+  - &id001
+    path: docs/HANDOVER.md
+    sha256: e3c7ea5142fdc5ef9458a29f84ff67423f35edf59baae229ab0a7f4fd7153324
+    source_role: authority_audit
+    review_state: REVIEWED
+    locator: §3.1/§3.3/§4
+  - &id002
+    path: test/final/bvm/data/metrics_v2/p2-v2.json
+    sha256: 71d97eca95a3ff778ea36c443ebc9f80b919291470e8552e5e0486c90fed5b35
+    source_role: reconstruction
+    review_state: REVIEWED
+    locator: full file
+  - path: research/tasks/JH-20260813-M11A-001/audits/C02/verdict.yaml
+    sha256: 26f8957461b9945a12521a073b7007c528c6af1bec5b04debcc9b428e2db4ac0
+    source_role: accepted_audit
+    review_state: REVIEWED
+    locator: full file
+  observable: JM1/JM2 phase state, WL/BL/SE read currents (P2 recomputation)
+  parameter_provenance:
+    topology: '[PUBLISHED] via reviewed bvm_cell.cir + HANDOVER audit'
+    JM1 Ic/shunt/area: '[INFERRED]-[UNKNOWN]'
+    read current 100uA non-destructive / 120uA R0 erase: '[DERIVED] (P2 manual recomputation)'
+  characterization_status: LEGACY_ONLY
+  reproduction_status:
+    level: R0
+    rationale: topology from project netlist; nominal-parameter reconciliation not completed
+  unknowns:
+  - field: JM1 shunt / Ic
+    reference_status: UNKNOWN
+    project_value: present in bvm_cell.cir (unverified vs paper)
+    provenance_tag: '[INFERRED]'
+    reviewed_source_boundary: bvm_cell.cir + HANDOVER audit; arti/ BVM paper UNREVIEWED
+    impact: cannot claim published BVM parameters
+    next_discriminator: W5A review of arti/ BVM paper, or W5C author inquiry
+  claim_limitation: storage state knowledge only; no published reproduction claim
+  next_discriminator: W5A review of local BVM PDF or W5C author-provided netlist (user-authorized)
+- object_id: bvm_source_output
+  current_evidence:
+  - *id001
+  - *id002
+  - path: test/final/single_bvm_qb/test_bvm_bq_baseline.cir
+    sha256: 9b04ac6faa89f07d955fbdc612b3310dc09cfd83b76872cef06d4cf93337dbbc
+    source_role: testbench
+    review_state: REVIEWED
+    locator: full file
+  observable: load current 43.9-97.8 uA, FWHM 6.8-11.2 ps; Thevenin 40 ohm/4 mV (legacy fit)
+  parameter_provenance:
+    load scan values: '[DERIVED] (measured range, HANDOVER §4)'
+    Thevenin fit: '[DERIVED] (empirical fit, not universal)'
+  characterization_status: LEGACY_ONLY
+  reproduction_status:
+    level: NOT_ATTEMPTED
+    rationale: source characterization requires preregistered plan under METRIC_SPEC_V2
+  unknowns:
+  - field: full source characterization matrix
+    reference_status: NOT_ATTEMPTED
+    project_value: legacy load scan only
+    provenance_tag: '[DERIVED]'
+    reviewed_source_boundary: HANDOVER §4 (audit 2026-08-09)
+    impact: no source Gate possible
+    next_discriminator: preregistered source characterization task under METRIC_SPEC_V2
+  claim_limitation: legacy measured ranges; not frozen characterization
+  next_discriminator: preregistered source characterization run (separate task)
+- object_id: published_qb
+  current_evidence:
+  - *id001
+  - path: docs/research/REFERENCE_PROVENANCE.md
+    sha256: b5533ac700551ba4007dca8fbaa0e70ecdb770a78db100b03ede28d99a5ce067
+    source_role: provenance_index
+    review_state: REVIEWED
+    locator: pointer/index (2026-08-13)
+  - path: circuits/qb/bq_cell_paper.cir
+    sha256: a3accfd49ea7bd1dab46f79f4856a0e0a6c781185c4671a78c863b2217bdb880
+    source_role: netlist
+    review_state: REVIEWED
+    locator: full file
+  observable: published modified-QB topology and parameters (not reconstructed)
+  parameter_provenance:
+    topology: '[UNKNOWN]'
+    Ic/L/R/bias/load: '[UNKNOWN]'
+  characterization_status: NOT_ATTEMPTED
+  reproduction_status:
+    level: R0
+    rationale: published nominal parameters insufficient; local arti/ PDFs UNREVIEWED
+  unknowns:
+  - field: exact modified-QB netlist/parameters
+    reference_status: UNKNOWN
+    project_value: none
+    provenance_tag: '[UNKNOWN]'
+    reviewed_source_boundary: HANDOVER audit; arti/ corpus INVENTORIED_UNREVIEWED
+    impact: cannot claim published QB reconstruction
+    next_discriminator: W5A retrieval with database/query/date, or W5C author inquiry
+  claim_limitation: R0/partial-R1 only; project QB is not paper QB
+  next_discriminator: W5A retrieval record or W5C author response ([AUTHOR_PROVIDED])
+- object_id: bq_v4
+  current_evidence:
+  - path: circuits/qb/bq_cell_v4.cir
+    sha256: 7e0752acffb721c7491999a449c69a422ccfeb2c6fe66507b8a80ffc44a765a0
+    source_role: netlist
+    review_state: REVIEWED
+    locator: full file
+  - path: test/final/qb/data/metrics_v2/bq-v4-v2.json
+    sha256: 684ba5fa235dbc0e73fcbfd166a22cc4321b8aff8882b6ade68e4e9f13e947e4
+    source_role: reconstruction
+    review_state: REVIEWED
+    locator: full file
+  - path: research/tasks/JH-20260813-M10-004/audits/C01/verdict.yaml
+    sha256: ddf0cceb666c5c7e88ee68c03999dabdafff362249f80ec96285c87939b2b14e
+    source_role: accepted_audit
+    review_state: REVIEWED
+    locator: full file
+  observable: six periodic-sweep phase platforms (110-150 uA ~1:1 compatible); endpoint arithmetic in bq-v4-v2.json
+  parameter_provenance:
+    v4 L0/Ic/RJ design values: '[TUNED] (project design)'
+    paper parameters: '[UNKNOWN]'
+  characterization_status: CALIBRATION_FIXTURE_ONLY
+  reproduction_status:
+    level: R0
+    rationale: project design values; not published-parameter reproduction
+  unknowns:
+  - field: original BQ published parameters
+    reference_status: UNKNOWN
+    project_value: v4 design values (project [TUNED])
+    provenance_tag: '[UNKNOWN]'
+    reviewed_source_boundary: REFERENCE_PROVENANCE.md; arti/ corpus UNREVIEWED
+    impact: project BQ cannot be labeled published reproduction
+    next_discriminator: W5A literature table or W5C author inquiry
+  claim_limitation: behavioral analogue with non-published parameters at most; no published R2; periodic sweep is not a single-event causal test
+  next_discriminator: single-pulse causal test + full read matrix under INTERFACE_GATE_V1 (separate task)
+- object_id: standard_dcsfq
+  current_evidence:
+  - path: circuits/standard/DCSFQ.cir
+    sha256: 3452106b9a72de20e712c49f002b5dfddf9fba3337f8ca5b809336cd97f42337
+    source_role: netlist
+    review_state: REVIEWED
+    locator: full file
+  - path: research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml
+    sha256: a8a5638fd48cee2f2bc9a8c29d6faaaf43b58ef5f3657824124d64630416adee
+    source_role: accepted_audit
+    review_state: REVIEWED
+    locator: full file
+  - path: test/final/interface/data/metrics_v2/p0-v2.json
+    sha256: 2f1d9ec52e2525e69d16e9b5aa4790b0b7cec2b76ffe34c8ececd200e31a4790
+    source_role: reconstruction
+    review_state: REVIEWED
+    locator: full file
+  observable: B1/B2/B3 direct same-JJ P/V (M6-002 accepted); 0/300 uA matched control pair
+  parameter_provenance:
+    B1/B2/B3 area, IB1/IB2, L1-L6: '[PUBLISHED] via reviewed ColdFlux v3.0 netlist (IARPA SuperTools)'
+    0/300 uA control pair: '[DERIVED] (M6-002 accepted)'
+  characterization_status: CALIBRATION_FIXTURE_ONLY
+  reproduction_status:
+    level: R1
+    rationale: ColdFlux published netlist nominal parameters present; same-JJ P/V accepted in M6
+  unknowns:
+  - field: external DCSFQ behavior comparison
+    reference_status: UNKNOWN
+    project_value: M6 same-JJ residual reported only
+    provenance_tag: '[DERIVED]'
+    reviewed_source_boundary: M6-002 C01
+    impact: no published behavioral reproduction claim
+    next_discriminator: predeclared DCSFQ behavioral criteria + external data
+  claim_limitation: reference fixture calibration; not a physical Gate
+  next_discriminator: predeclared DCSFQ behavioral criteria
+- object_id: dcsfq_bvm
+  current_evidence:
+  - path: circuits/interface/DCSFQ_BVM.cir
+    sha256: 398e9c656f4e6e7b8a866800f019cc8fef3def30da8d508322bb89183d144d95
+    source_role: netlist
+    review_state: REVIEWED
+    locator: full file
+  - *id001
+  observable: scaled interface (225->80 uA B1/B2, IB1 275->100 uA); 68.4 uA test input no full output; incremental coupling ~0.285
+  parameter_provenance:
+    scaling values: '[DESIGNED]/[TUNED] (project design)'
+    paper parameters: '[UNKNOWN]'
+  characterization_status: NOT_ATTEMPTED
+  reproduction_status:
+    level: R0
+    rationale: project-designed scaled cell; no published-parameter basis
+  unknowns:
+  - field: DCSFQ_BVM response threshold
+    reference_status: UNKNOWN
+    project_value: 68.4 uA test point only (no full output)
+    provenance_tag: '[DESIGNED]'
+    reviewed_source_boundary: HANDOVER §3.4; DCSFQ_BVM.cir
+    impact: no interface Gate
+    next_discriminator: preregistered response-curve characterization under METRIC_SPEC_V2
+  claim_limitation: project design state only; not a route verdict
+  next_discriminator: preregistered DCSFQ_BVM characterization run (separate task)
+- object_id: canonical_jtl
+  current_evidence:
+  - path: circuits/standard/JTL.cir
+    sha256: ac02fc931742bb857723f9fbb57ac97a179beb6a6466d5a1184e7cf937f599aa
+    source_role: netlist
+    review_state: REVIEWED
+    locator: full file
+  - path: research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md
+    sha256: bd291c89a4e92e225d083f1e7e75b51ea3e40c199b8a08e7d3881ba31154d329
+    source_role: accepted_audit
+    review_state: REVIEWED
+    locator: full file
+  - path: research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml
+    sha256: a45bb0a38919d978eab7e56a026f837f29e29ee4afd29b013a88623d795aeded
+    source_role: accepted_audit
+    review_state: REVIEWED
+    locator: full file
+  - path: test/metrics/m7_canonical_jtl.cir
+    sha256: d1c7e3cb923eb51400a739ce036e8187c2c2e06ea4d7119a501133e50da4ef8b
+    source_role: fixture
+    review_state: REVIEWED
+    locator: full file
+  observable: B1/B2 XDUT direct same-JJ P/V (M7B); bounded 0.1/0.05/0.025 ps convergence (M8)
+  parameter_provenance:
+    B1/B2/IB1/L1-L4/RB: '[PUBLISHED] via reviewed ColdFlux v3.0 netlist'
+    mapping orientation: '[DERIVED] (M7B direct same-JJ, accepted)'
+  characterization_status: CALIBRATION_FIXTURE_ONLY
+  reproduction_status:
+    level: PARTIAL_R1
+    rationale: ColdFlux nominal netlist calibrated (M7B/M8); independent published-parameter reproduction not completed
+  unknowns:
+  - field: R2/R3 behavioral criteria
+    reference_status: NOT_ATTEMPTED
+    project_value: M8 CONVERGED on loaded canonical JTL fixture only
+    provenance_tag: '[DERIVED]'
+    reviewed_source_boundary: M8-002 C01
+    impact: receiver Gate cannot be claimed from calibration fixture
+    next_discriminator: INTERFACE_GATE_V1 preregistration (M11-era)
+  claim_limitation: calibration fixture only; not a receiver Gate; XLOAD P/V UNVERIFIED
+  next_discriminator: preregistered receiver test matrix under INTERFACE_GATE_V1

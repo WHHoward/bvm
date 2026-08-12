@@ -1,0 +1,139 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M9-001
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-13T00:24:28+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M9
+depends_on: [M4, M5, M6, M7, M8]
+task:
+  kind: DOCUMENTATION
+  objective: >-
+    Freeze the canonical docs/research/METRIC_SPEC_V2.md measurement contract
+    from accepted M4–M8 calibration evidence, plus deterministic checks that
+    prevent scope/semantic regression.  The specification defines how to
+    measure and report; it does not define interface or candidate success.
+  research_question: >-
+    Can the repository state one reproducible, evidence-bounded measurement
+    semantic for phase, controls, activity, same-JJ voltage area, tolerance,
+    convergence, and output reporting without turning calibration facts into a
+    BQ/DCSFQ/BVM or INTERFACE_GATE success criterion?
+  non_goals:
+    - No INTERFACE_GATE_V1, candidate success threshold, BQ/DCSFQ/BVM tuning, route decision, or paper claim.
+    - No JoSIM execution, netlist/raw-data edit, baseline regeneration (M10), or new baseline/Gate conclusion (M11).
+    - Do not alter scripts/sfq_metrics_v2.py or reinterpret accepted M4–M8 evidence beyond its stated claim ceiling.
+  claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - research/WORKFLOW.md
+    - research/WORKFLOW-lite.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m5.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/metrics/test_sfq_metrics_v2_m7.py
+    - research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml
+    - research/tasks/M5-LITE-PILOT-001/attempts/A02/CODEX-AUDIT.md
+    - research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml
+    - research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md
+    - research/tasks/JH-20260812-M8-001/preregistration.yaml
+    - research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml
+    - research/tasks/JH-20260813-M9-001/design/sol-xhigh-measurement-review.md
+  write_paths:
+    - docs/research/METRIC_SPEC_V2.md
+    - test/metrics/test_metric_spec_v2.py
+    - research/tasks/JH-20260813-M9-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260813-M9-001/request.yaml
+    - research/tasks/JH-20260813-M9-001/request.sha256
+    - research/tasks/JH-20260813-M9-001/baseline/**
+    - research/tasks/JH-20260813-M9-001/design/**
+    - research/tasks/JH-20260813-M9-001/audits/**
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m5.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/metrics/test_sfq_metrics_v2_m7.py
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - research/schemas/**
+  locks: [locks/metric-spec-v2-m9, locks/test-metrics]
+baseline:
+  git_head: b637bf29a6bbcb477be5befd641f472acbc69405
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M9-001/baseline/git-status.txt, sha256: 07ecb44652330497b537c6be832ea020fb571ddd2c5b106c15559ba4b9d1b169}
+  scope_hashes: {path: research/tasks/JH-20260813-M9-001/baseline/scope-files.sha256, sha256: bdc81ad336280079b65fed45cd9a70061430dbda74218e974cbd53dc4e48b73d}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: true, commit: true, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - research/tasks/JH-20260813-M9-001/design/sol-xhigh-measurement-review.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: e48cb038e87a3c85a10175add569e7fe1498ceda4ac53bffeda74c551260d6fb}
+  metric_spec: {status: UNFROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: null}
+deliverables:
+  - {id: D1, path: docs/research/METRIC_SPEC_V2.md, role: DOCUMENTATION, required: true}
+  - {id: D2, path: test/metrics/test_metric_spec_v2.py, role: TEST, required: true}
+  - {id: D3, path: research/tasks/JH-20260813-M9-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - id: AC1
+    condition: >-
+      METRIC_SPEC_V2 is canonical at the contracted path, states metric_spec_version 2.0.0,
+      binds its own content hash procedure, cites accepted M4–M8 evidence, and explicitly limits
+      its claim to measurement/reporting semantics.
+    evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]
+  - id: AC2
+    condition: >-
+      The specification precisely defines raw-radian preservation, turns conversion, separate
+      platform and endpoint deltas, same-JJ P/V mapping and distinct signs, half-open windows,
+      matched controls, activity clusters, actual-time voltage area, QA/INVALID/INCONCLUSIVE,
+      convergence preregistration, and a versioned output schema.
+    evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]
+  - id: AC3
+    condition: >-
+      The spec does not freeze a universal activity threshold or global integer/residual/platform/
+      BVM-drift/amplitude/jitter acceptance tolerance.  It records M8 bands only as fixture-local
+      calibration data and requires missing classification tolerance to yield INCONCLUSIVE.
+    evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]
+  - id: AC4
+    condition: >-
+      The output schema prohibits NaN/Inf and event/SFQ/pulse/fluxoid count fields, requires
+      provenance, windows, mappings, signal/control/corrected namespaces, raw rad and turns,
+      activity diagnostics, P/V residuals, convergence, and UNKNOWN/NOT_APPLICABLE reasons.
+    evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]
+  - id: AC5
+    condition: >-
+      The document and tests explicitly exclude INTERFACE_GATE_V1, candidate success criteria,
+      read1/read0, repeatability, state preservation, route selection, and paper/hardware claims.
+    evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]
+  - id: AC6
+    condition: >-
+      Claude records an immutable FROZEN attempt with complete preflight, changes, command logs,
+      test evidence, limitations, and AC mapping; the permitted Python tests and final handoff
+      verify-task succeed.  The delivery snapshot is Codex-owned.
+    evidence: [receipt.yaml, test-log, verify-task-log]
+invalid_conditions:
+  - Any modification to M4–M8 implementation/evidence, historical raw/netlists, task authority, or the frozen scope.
+  - Any M9 text/test that defines an interface/candidate success threshold or labels activity as event/SFQ/pulse/fluxoid counting.
+  - A spec that silently promotes a fixture-local M8 band or current 0.3 rad regression setting into a universal physical acceptance threshold.
+inconclusive_conditions:
+  - Accepted evidence cannot support a required semantic, mapping, or tolerance; preserve the gap as UNKNOWN/UNFROZEN rather than inventing it.
+  - A required test or provenance check cannot be completed without out-of-scope change.
+stop_conditions:
+  - Baseline, scope hash, required task/evidence status, lock, or preflight mismatch.
+  - Need to change a frozen path, run JoSIM, create/alter an interface Gate, alter historical data, or define candidate success.
+  - Need to overwrite/delete/rename an existing artifact, expand write scope, use network/install dependencies, or amend/rebase a snapshot.
+issuance_blockers: []

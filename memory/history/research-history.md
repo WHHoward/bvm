@@ -25,10 +25,18 @@ metadata:
 | 1. 路线设计 | 7/13-7/17 | PIM 路线图、BVM→BQ 双路线、论文策略 | ✅ 路线冻结 |
 | 2. BQ 尝试 | 7/17-8/6 | BVM→BQ 耦合 7 轮实验 + BQ v4 | ❌ 8 轮全败（结构不匹配） |
 | 3. 路线转向 | 8/6 | DCSFQ_BVM 新元件 + Phase 0 表征 | ✅ Phase 0 完成（G1-G5） |
-| 4. 计量审计 | 8/9 起 | **P() 单位事故**发现 + Phase −1 修复 | 🔄 进行中（M4–M8、M12 已验收；M9–M11 未完成） |
+| 4. 计量审计 | 8/9 起 | **P() 单位事故**发现 + Phase −1 修复 | ✅ 计量与双基线闭环（M4–M11、M12 已验收；物理 Gate 未启动） |
 | 5. 工作流升级 | 8/9 | Codex–Claude 双代理 + stand-in + mailbox | ✅ 基础设施就绪 |
 
 ## 三、详细时间线
+
+### 2026-08-13：M11 双子门与 W5B 当前知识状态接受
+
+**做了什么**：接受 M11A 的 Measurement Calibration Baseline（`JH-20260813-M11A-001` C02）及 scope-correct 的 M11B Scientific Reconstruction Baseline（`JH-20260813-M11B-003` C01）。M11B 固定七对象 matrix：BVM storage/source-output、published QB、BQ v4、standard DCSFQ、DCSFQ_BVM、canonical JTL；每项都有结构化 evidence、observable、provenance、reproduction/characterization status、UNKNOWN 与下一判别器。M11B-001/002 的合同/指针问题保留为 rework 历史。
+
+**结果/产物**：`docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml` 成为 W5B 唯一 canonical registry，`docs/research/REFERENCE_PROVENANCE.md` 仅作指针；`research/tasks/JH-20260813-M11B-003/audits/C01/verdict.yaml` 为 `ACCEPTED`。
+
+**认知**：✅ 当前 reconstruction/provenance knowledge state 已诚实冻结，M11 两子门均已闭环；⚠️ 这不补全电路物理知识、论文参数、行为复现、characterization 或 candidate Gate，W5A/W5C 仍独立开放，任何后续运行须单独预注册。
 
 ### 2026-08-12：M8 预注册有界时间步收敛接受
 

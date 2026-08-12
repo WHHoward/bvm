@@ -17,7 +17,7 @@ metadata:
 
 **任务权威**：`memory/project-todo.md`。
 
-**2026-08-13 状态**：M4–M10 已接受。M9 冻结 `METRIC_SPEC_V2` 的测量/报告语义（全局数值容差仍 UNFROZEN）；M10 以 `JH-20260813-M10-004/audits/C01/verdict.yaml` 接受 BASELINE/P0/P2/BQ v4 的 hash-bound V2 endpoint-arithmetic/provenance 重建。两者都不构成 SFQ、下游接收、系统 Gate 或路线结论；M11 仍待用户授权。
+**2026-08-13 状态**：M4–M11 已接受。M9 冻结 `METRIC_SPEC_V2` 的测量/报告语义（全局数值容差仍 UNFROZEN）；M10 接受历史 endpoint-arithmetic/provenance 重建；M11A/M11B 以两个独立审计冻结 measurement calibration 与 seven-object reconstruction/provenance knowledge state。它们均不构成 SFQ、下游接收、系统 Gate、候选路线或 published full-reproduction 结论；后续 characterization 与 `INTERFACE_GATE_V1` 需独立授权。
 
 ## 一句话目标
 

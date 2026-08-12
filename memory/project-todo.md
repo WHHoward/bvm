@@ -30,7 +30,7 @@ metadata:
 | M8 | 有界时间步收敛（预注册 procedure） | 🟢（2026-08-12） | `JH-20260812-M8-001` 在运行前固定 0.1/0.05/0.025 ps、六次匹配控制运行、窗口、观测量、任务局部稳定带宽与最大深度停止规则；其闭环合同缺陷被保留为 REWORK 历史，`JH-20260812-M8-002` 以冻结原始 CSV 完成独立重算和审计接受。仅证明 loaded canonical JTL 校准 fixture 的有界数值收敛，不冻结 M9 容差或任何物理 Gate |
 | M9 | 只冻结 `METRIC_SPEC_V2.md`（怎么测） | 🟢（2026-08-13） | `docs/research/METRIC_SPEC_V2.md` v2.0.0 由 `JH-20260813-M9-004` 接受：冻结 phase normalization、same-JJ P/V mapping、双符号、窗口/控制、activity、实际时间面积、收敛和输出契约；全局数值容差仍 UNFROZEN；**不定义**接口成功标准（独立 `INTERFACE_GATE_V1`） |
 | M10 | 重生 JSON 和审计表 | 🟢（2026-08-13） | `JH-20260813-M10-004` 已接受：BASELINE/P0/P2/v4 的 `data/metrics_v2/` 重建产物、central correction table 和历史文档 SUPERSEDED banner 均已 hash-bound；旧文件/原文保留，结论限 endpoint arithmetic/provenance，不构成物理 Gate |
-| M11 | 新基线冻结（双子门） | 🟡（M11A 已接受；M11B 重签中） | **M11A** Measurement Calibration Baseline 已由 `JH-20260813-M11A-001` A02/C02 接受：M4–M10 accepted evidence、MetricSpec、tests/raw/controls、fixture-local convergence 与 M10 historical provenance 已 hash-bound，全球容差仍 UNFROZEN。**M11B** 将以 superseding FROZEN 合同冻结统一 object matrix：BVM storage、BVM source/output、published QB、BQ v4、standard DCSFQ、DCSFQ_BVM、canonical JTL 的 current evidence / observable / characterization / reproduction / UNKNOWN / discriminator；矩阵满足 W5B provenance 纪律后与 M11B 一并闭环。两个子门都通过才标绿 |
+| M11 | 新基线冻结（双子门） | 🟢（2026-08-13） | **M11A** Measurement Calibration Baseline 由 `JH-20260813-M11A-001` A02/C02 接受；**M11B** Scientific Reconstruction Baseline 由 `JH-20260813-M11B-003` A01/C01 接受。后者冻结 BVM storage、BVM source/output、published QB、BQ v4、standard DCSFQ、DCSFQ_BVM、canonical JTL 的 structured current evidence / observable / characterization / reproduction / UNKNOWN / discriminator，并成为 W5B 唯一事实层。M11 的完成仅表示两个基线子门闭环；全局容差、物理/接口 Gate、候选验证与 T1 仍未完成 |
 | M12 | 修复 `josim-plot2.py -j` 布局缩放 | 🟢（2026-08-11） | `M12-LITE-PILOT-001` 经 Copilot 独立复核与 Codex 接受：五种布局对 phase 一致缩放、标签为 turns、回归测试覆盖旧“只改标签”错误；无物理结论 |
 
 ## B. 已重算、当前可用的事实
@@ -103,7 +103,7 @@ ColdFlux 原 DCSFQ 是电压脉冲→SFQ 单元；将其用于 BVM 电流接口�
 | W4 | 重写论文证据链 | 🔴 | 撤销“八轮系统排除”和未验证根因 |
 | W5 | 文献/来源/作者（拆三子项） | 🔴 | 见 W5A/B/C |
 | W5A | Literature boundary | 🔴 | 记录 database/query/date/closest prior art/already does/does not report/allowed novelty wording；W5A 未完成前禁止 first/no prior work/literature blank confirmed |
-| W5B | Reference provenance | 🟡（由 M11B 统一闭环） | M11B object matrix 是唯一 canonical provenance/reproduction/characterization 事实层；完成时必须统一标记 [PUBLISHED]/[AUTHOR_PROVIDED]/[DERIVED]/[INFERRED]/[DESIGNED]/[TUNED]/[UNKNOWN]，并禁止将 [INFERRED]/[DESIGNED]/[TUNED] 逐渐写成 paper parameter。审计接受 M11B 前不得标绿，也不得另建重复 provenance 记录 |
+| W5B | Reference provenance | 🟢（2026-08-13） | `JH-20260813-M11B-003` C01 已接受 `docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml` 作为唯一 canonical provenance/reproduction/characterization 事实层，统一记录 [PUBLISHED]/[AUTHOR_PROVIDED]/[DERIVED]/[INFERRED]/[DESIGNED]/[TUNED]/[UNKNOWN]。W5B 完成表示当前 knowledge state 已诚实冻结；不表示 W5A 文献边界、W5C 作者询问、published reproduction 或物理 characterization 已完成 |
 | W5C | Author inquiry | 🔴（可选） | 联系 BVM 作者询问 modified-QB netlist/参数/JM1 shunt/`.model`/testbench/bias-timestep；发送前需用户明确授权；收到信息标 [AUTHOR_PROVIDED] 不等同 [PUBLISHED]；time-box（发送→一次 follow-up→预设期限无充分回复→继续项目，回退 R0/partial-R1 + UNKNOWN list） |
 | W6 | 论文接口章节 | 🔴 | 至少一条路线通过系统 Gate 后定稿 |
 

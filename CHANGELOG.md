@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-08-13 — M11 双子门与 W5B 当前知识状态接受
+
+### 做了什么
+
+- 接受 `JH-20260813-M11A-001` C02 和 `JH-20260813-M11B-003` C01
+- 将七对象的 structured reconstruction/provenance matrix 设为 W5B 唯一 canonical registry；旧 provenance 文档降为指针
+
+### 影响
+
+- M4–M11 的计量与双基线阶段完成；M11B 的 PASS 仅代表当前 knowledge state 完整、诚实且可追溯
+- 不建立物理/接口 Gate，不验证候选路线，不提升 published reproduction；W5A/W5C 仍开放
+
+---
+
 ## 2026-08-13 — M9 规格冻结与 M10 历史指标重建接受
 
 ### 做了什么

@@ -1,0 +1,43 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M10-004
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-13T03:37:36+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M10
+depends_on: [M4, M5, M6, M7, M8, M9]
+supersedes: {task_id: JH-20260813-M10-003, revision: 1}
+task:
+  kind: REPRODUCTION
+  objective: "Re-seal the preserved M10 A01 endpoint-only reconstruction in a scope-correct FROZEN attempt without modifying any scientific or historical artifact."
+  research_question: "Do the preserved M10 A01 generator, four V2 JSON outputs, correction table, and bannered historical documents exactly match their recorded hashes and retain the measurement-only claim boundary?"
+  non_goals: ["No JoSIM run, reconstruction rerun, raw/netlist/model/legacy JSON edit, candidate tuning, Interface Gate, route/paper claim, or physical verdict.", "No modification to M10-003, its A01, its C01 audit, or any preserved output."]
+  claim_ceiling: historical_endpoint_arithmetic_and_artifact_provenance_only_no_physical_gate
+scope:
+  read_paths: [AGENTS.md, research/CLAUDE_EXECUTOR.md, research/WORKFLOW.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, research/tasks/JH-20260813-M10-004/design/reseal-boundary.md, research/tasks/JH-20260813-M10-003/audits/C01/verdict.yaml, research/tasks/JH-20260813-M10-003/attempts/A01/receipt.yaml, scripts/rebuild_historical_metrics_v2.py, test/metrics/test_rebuild_historical_metrics_v2.py, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json, test/final/interface/data/metrics_v2/p0-v2.json, test/final/bvm/data/metrics_v2/p2-v2.json, test/final/qb/data/metrics_v2/bq-v4-v2.json, test/final/single_bvm_qb/BASELINE.md, test/final/interface/P0_LOG.md, test/final/bvm/P2_LOG.md, test/final/single_bvm_qb/EXPERIMENT_LOG.md]
+  write_paths: [research/tasks/JH-20260813-M10-004/attempts/**]
+  frozen_paths: [research/tasks/JH-20260813-M10-003/**, research/tasks/JH-20260813-M10-004/request.yaml, research/tasks/JH-20260813-M10-004/request.sha256, research/tasks/JH-20260813-M10-004/baseline/**, research/tasks/JH-20260813-M10-004/design/**, research/tasks/JH-20260813-M10-004/audits/**, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, scripts/rebuild_historical_metrics_v2.py, test/metrics/test_rebuild_historical_metrics_v2.py, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json, test/final/interface/data/metrics_v2/p0-v2.json, test/final/bvm/data/metrics_v2/p2-v2.json, test/final/qb/data/metrics_v2/bq-v4-v2.json, test/final/single_bvm_qb/BASELINE.md, test/final/interface/P0_LOG.md, test/final/bvm/P2_LOG.md, test/final/single_bvm_qb/EXPERIMENT_LOG.md]
+  locks: [locks/historical-metrics-v2-m10]
+baseline:
+  git_head: 6bb0790
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M10-004/baseline/git-status.txt, sha256: a169244241d1f4b6be26301e9e4b49ca2ae9a29c6b5d8e54e86646207ce3b158}
+  scope_hashes: {path: research/tasks/JH-20260813-M10-004/baseline/scope-files.sha256, sha256: ee4adcb37d681f84c2f466f8b86a29df6d8274428318c50b8820d91c7de7373d}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: true, commit: true, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, research/tasks/JH-20260813-M10-004/design/reseal-boundary.md, research/tasks/JH-20260813-M10-003/audits/C01/verdict.yaml]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: 22b2d2dad95a885a5256c5ef9bc7587131efaefdd2b021df41fe44ef84e02762}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260813-M10-004/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Preflight verifies M9 authority state and that all preserved M10-003 sources match their sealed M10-004 scope hashes; no frozen path is edited.", evidence: ["ack.yaml", "preflight log"]}
+  - {id: AC2, condition: "Independently hash the generator, test, correction table, four V2 JSON outputs, and four bannered overview documents; each equals the recorded M10-003 A01 receipt hash where recorded, and the output text remains endpoint-arithmetic-only with no physical Gate vocabulary.", evidence: ["hash-check log"]}
+  - {id: AC3, condition: "Receipt records a fresh successful final verify-task and no JoSIM/reconstruction execution; it does not claim the superseded A01 contract was valid.", evidence: ["receipt.yaml", "verify-task log"]}
+invalid_conditions: ["Any preserved path changes or hash mismatch.", "Any physical Gate, event/SFQ/fluxoid, voltage-area, or candidate conclusion."]
+inconclusive_conditions: ["A preserved source hash cannot be reconciled with A01 receipt; report BLOCKED rather than reconstructing it."]
+stop_conditions: ["HEAD/dirty/scope/metric-spec/authority hash mismatch.", "Need to edit any path outside this task attempts directory or run JoSIM/reconstruction.", "Final verify-task fails: preserve attempt and report BLOCKED/DEVIATED."]
+issuance_blockers: []

@@ -99,6 +99,6 @@ M7A/M7B/M7C 校准实现与确定性回归行为已验证：AC1–AC5 全部满�
 
 ## Delivery snapshot（RESULT 完成后由授权 owner 追加）
 
-Delivery snapshot commit: <commit>
-Snapshot owner: <role>
+Delivery snapshot commit: 936df75af73ddaa1625e29dd65411ee50efa11b9
+Snapshot owner: CODEX
 Snapshot scope check: PASS

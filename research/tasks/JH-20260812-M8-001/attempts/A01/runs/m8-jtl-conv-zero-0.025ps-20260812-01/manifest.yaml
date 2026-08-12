@@ -1,0 +1,37 @@
+schema_version: 1
+run_id: m8-jtl-conv-zero-0.025ps-20260812-01
+created_at: "2026-08-12T23:02:00+08:00"
+mode: calibration  # M8 bounded timestep-convergence ladder (CALIBRATION, FROZEN preregistered)
+research_question: "在加载的 canonical JTL 校准 fixture 上，预注册标量观测在 0.1 -> 0.05 -> 0.025 ps 有界细化阶梯的两组相邻层间是否稳定（匹配零输入控制、固定窗口）？"
+provenance:
+  git_head: a99f01d03b9500dcde4a784f6b915e1e76a80091
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: "v2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  netlist_path: test/metrics/m8_jtl_convergence_zero_0.025ps.cir
+  netlist_sha256: 96dbe142e93364b189ea2bb01027b5471a93d7f39ddafd51b56c1a329072e53d
+  include_closure:
+    - {path: circuits/standard/JTL.cir, sha256: ac02fc931742bb857723f9fbb57ac97a179beb6a6466d5a1184e7cf937f599aa}
+    - {path: circuits/models/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  source_netlist: test/metrics/m7_canonical_jtl.cir
+  source_netlist_sha256: d1c7e3cb923eb51400a739ce036e8187c2c2e06ea4d7119a501133e50da4ef8b
+simulation:
+  input_kind: zero_control_pwl  # same M7 knot times, all voltages 0 V
+  cases: [zero]
+  requested_timestep_s: 2e-14
+  stop_time_s: 5e-11
+  repetitions: 1
+  output_load: "XLOAD (second JTL) + R_TERM 1 ohm"
+  print_list: "V(B1|XDUT) V(B2|XDUT) V(B1|XLOAD) V(B2|XLOAD) P(B1|XDUT) P(B2|XDUT) P(B1|XLOAD) P(B2|XLOAD)"
+signals:
+  junctions:
+    - {label: "B1|XDUT", phase_column: "P(B1|XDUT)", voltage_column: "V(B1|XDUT)", orientation: 1}
+    - {label: "B2|XDUT", phase_column: "P(B2|XDUT)", voltage_column: "V(B2|XDUT)", orientation: 1}
+    - {label: "B1|XLOAD", phase_column: "P(B1|XLOAD)", voltage_column: "V(B1|XLOAD)", orientation: 1}
+    - {label: "B2|XLOAD", phase_column: "P(B2|XLOAD)", voltage_column: "V(B2|XLOAD)", orientation: 1}
+windows:
+  predeclared: "pre [6e-12,9e-12) | activity [9e-12,30e-12) | post [35e-12,50e-12) | phase_area_crosscheck [6e-12,50e-12)  (preregistration.yaml, fixed before execution)"
+raw_output: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.025ps-20260812-01/raw/m8-jtl-conv-zero-0.025ps-20260812-01.csv
+raw_sha256: 088ee2af6c8cf494c7c19b23273281e79e0ff6401efc2ec92901f2024b7ff9e1
+log_path: research/tasks/JH-20260812-M8-001/attempts/A01/runs/m8-jtl-conv-zero-0.025ps-20260812-01/logs/run.log
+exit_code: 0

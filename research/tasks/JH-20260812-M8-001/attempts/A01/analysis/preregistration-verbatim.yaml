@@ -1,0 +1,113 @@
+protocol: josim-handoff/v1
+document_type: m8_timestep_convergence_preregistration
+schema_version: 1
+task_id: JH-20260812-M8-001
+parent_todo_id: M8
+study_phase: CALIBRATION
+risk: CRITICAL
+evidence_mode: FROZEN
+status: PREREGISTERED_BEFORE_EXECUTION
+
+research_question: >-
+  For the loaded canonical JTL calibration fixture, are the registered scalar
+  measurement outputs stable across the bounded 0.1 ps -> 0.05 ps -> 0.025 ps
+  refinement ladder when evaluated with matched zero-input controls and fixed
+  windows?
+
+scope_and_claim_boundary:
+  fixture: "Loaded canonical JTL derived from test/metrics/m7_canonical_jtl.cir."
+  allowed_conclusion: >-
+    A bounded numerical-convergence classification for this calibration fixture
+    and these registered observables only.
+  prohibited_conclusions:
+    - "No SFQ, fluxoid, JTL-reception, BVM/BQ/DCSFQ route, interface-Gate, or hardware claim."
+    - "No global METRIC_SPEC_V2 tolerance freeze; M9 owns that specification."
+    - "No candidate tuning, parameter sweep, or M9 work."
+
+procedure:
+  initial_dt_ps: 0.1
+  refinement_ratio: 2
+  max_refinement_levels: 3
+  dt_ladder_ps: [0.1, 0.05, 0.025]
+  run_budget: 6
+  cases:
+    - case_id: zero_input_control
+      input: "The M7 one-input PWL knot times with every voltage value fixed to 0 V."
+    - case_id: single_input
+      input: "The M7 one-input PWL, including its 1.5 mV plateau from 11 ps to 13 ps."
+  fixed_conditions:
+    - "For a given dt, the two netlists differ only in the registered input voltage amplitude."
+    - "Topology, includes, model closure, bias, load, final time (50 ps), output probes, and windows are identical between the matched pair."
+    - "Each netlist prints direct V(B1|XDUT), V(B2|XDUT), V(B1|XLOAD), V(B2|XLOAD), P(B1|XDUT), P(B2|XDUT), P(B1|XLOAD), and P(B2|XLOAD)."
+    - "Phase direction and direct voltage direction are +1 for every registered junction."
+    - "Use only /home/howard/JoSIM/build/josim-cli, with the contract-recorded version and SHA-256."
+
+comparison_windows:
+  pre: {start_s: 6.0e-12, end_s: 9.0e-12, interval: "[start,end)"}
+  activity: {start_s: 9.0e-12, end_s: 30.0e-12, interval: "[start,end)"}
+  post: {start_s: 35.0e-12, end_s: 50.0e-12, interval: "[start,end)"}
+  phase_area_crosscheck: {start_s: 6.0e-12, end_s: 50.0e-12, interval: "[start,end)"}
+  rationale: "All windows are fixed before execution from the 10–14 ps stimulus and 50 ps M7 fixture duration; they must not be moved after inspecting outputs."
+
+observables:
+  - id: dut_platform_phase_turns
+    definition: "For XDUT B1 and B2 separately: (mean(P_post)-mean(P_pre))/(2*pi) in single_input minus the matched zero_input_control value."
+    units: turns
+  - id: dut_voltage_area_turns
+    definition: "For XDUT B1 and B2 separately: trapezoidal integral of direct V(Bn|XDUT) over actual CSV times in phase_area_crosscheck divided by Phi0, single_input minus matched control."
+    units: turns
+  - id: dut_phase_area_residual_turns
+    definition: "For XDUT B1 and B2 separately: phase-area delta over the identical crosscheck endpoints, using direct P(Bn|XDUT) and V(Bn|XDUT), then single_input minus matched control."
+    units: turns
+  - id: activity_peak_time_ps
+    definition: "For direct V(B1|XDUT) in the single_input run: actual CSV time of the earliest maximum absolute voltage inside activity. This is an activity-timing proxy, not an event time."
+    units: ps
+  - id: activity_fwhm_ps
+    definition: "For direct V(B1|XDUT) in the single_input run: width from first to last actual sampled time at or above one half of the maximum absolute voltage inside activity, without interpolation. This is a waveform diagnostic, not a pulse/event count."
+    units: ps
+  - id: downstream_platform_phase_turns
+    definition: "For XLOAD B1 and B2 separately: the matched-control pre/post phase-platform delta in turns. It is a loaded downstream platform diagnostic only."
+    units: turns
+  - id: downstream_count
+    applicability: NOT_APPLICABLE
+    rationale: "M9 has not frozen a physical downstream event-counting semantic; this task must not invent one."
+
+stability_tolerance:
+  status: M8_TASK_LOCAL_PREREGISTERED
+  meaning: >-
+    These are convergence decision bands for this fixture only. They are not
+    a physical acceptance threshold, an event criterion, or a frozen global
+    METRIC_SPEC_V2 tolerance.
+  adjacent_refinement_absolute_difference:
+    dut_platform_phase_turns: 0.01
+    dut_voltage_area_turns: 0.01
+    dut_phase_area_residual_turns: 0.005
+    activity_peak_time_ps: 0.25
+    activity_fwhm_ps: 0.25
+    downstream_platform_phase_turns: 0.01
+
+decision_rule:
+  PASS: >-
+    All six runs pass data QA, every registered scalar is computable, and for
+    both adjacent pairs (0.1,0.05) ps and (0.05,0.025) ps every applicable
+    scalar's absolute difference is within its preregistered decision band.
+  INCONCLUSIVE: >-
+    Any valid required scalar is missing, ambiguous, or outside its decision
+    band at the maximum registered refinement depth. Preserve all evidence;
+    do not extend the ladder under this task.
+  INVALID: >-
+    Any required direct column/mapping/control/input closure is missing, a CSV
+    has NaN/Inf/non-increasing time/incorrect endpoint, a solver run fails, or
+    provenance/hash closure cannot be established.
+  stop_rule: >-
+    Run exactly the six preregistered case-by-dt combinations. Do not add a
+    fourth refinement level, alter windows, tune circuit parameters, rerun an
+    existing run ID, or search for a favorable window. If a required condition
+    fails, stop and record BLOCKED, DEVIATED, INVALID, or INCONCLUSIVE as
+    appropriate.
+
+required_reporting:
+  - "Per-run data QA and binary/netlist/include provenance."
+  - "All raw scalar values with units, control correction, direction, windows, and actual selected endpoint times."
+  - "A two-row adjacent-refinement comparison table and the bounded convergence classification."
+  - "Observed / inferred / unknown separation, with no physical Gate proposal beyond NOT_APPLICABLE."

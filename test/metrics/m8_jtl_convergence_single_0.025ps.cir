@@ -1,0 +1,58 @@
+* M8 derivative of test/metrics/m7_canonical_jtl.cir (JH-20260812-M8-001)
+* run: m8_jtl_convergence_single_0.025ps.cir  dt=0.025ps  input=single
+* JTL Comprehensive Test — ColdFlux Standard Cell
+* Probes every junction (phase/current/voltage) and every inductor current
+*
+* JTL Internal Structure (THmitll_JTL):
+*   a--L1--1--B1--2--LP1--GND
+*          |  RB1--LRB1--GND (bias tee)
+*          L2
+*          |
+*          3--L3--5--B2--6--LP2--GND
+*          |       |  RB2--LRB2--GND (bias tee)
+*         LB1      L4
+*          |       |
+*          4       q (output)
+*          |
+*         IB1 (bias current source, 0->350uA at 5ps)
+*          |
+*         GND
+*
+* Parameters (computed at runtime):
+*   B1=B2=IC=2.5 -> IC=250uA each
+*   IB1=(B1+B2)*Ic0*BiasCoef=5*100uA*0.7=350uA
+*   L1~L4=Phi0/(4*IC*Ic0)~2.07pH
+*   RB1=RB2=B0Rs/IC~2.74ohm (for 2.6mV equivalent bias)
+
+.include ../../circuits/models/jjmit.cir
+.include ../../circuits/standard/JTL.cir
+
+* ============================================================
+* SFQ Input Pulse Generation
+* V_IN = 1.5mV through R_IN=3ohm -> I_peak ~ 500uA
+* This exceeds the JTL IC=250uA, triggering SFQ switching
+* ============================================================
+V_IN IN 0 pwl(0 0 10p 0 11p 1.5m 13p 1.5m 14p 0 100p 0)
+R_IN IN N1 3
+L_IN N1 SFQ_IN 0.5p
+
+* ============================================================
+* DUT: JTL under test
+* ============================================================
+XDUT SFQ_IN SFQ_MID THmitll_JTL
+
+* ============================================================
+* Load: second JTL for proper SFQ termination
+* ============================================================
+XLOAD SFQ_MID SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+* ============================================================
+* Simulation
+* ============================================================
+.tran 0.025p 50p
+
+* --- JTL DUT: Junction phases ---
+* --- M7B: direct same-JJ V/P probes (pipeline calibration) ---
+.print V(B1|XDUT) V(B2|XDUT) V(B1|XLOAD) V(B2|XLOAD) P(B1|XDUT) P(B2|XDUT) P(B1|XLOAD) P(B2|XLOAD)
+.end

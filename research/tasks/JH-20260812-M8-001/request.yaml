@@ -1,0 +1,179 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260812-M8-001
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-12T21:25:00+08:00
+issuer:
+  role: CODEX
+  id: codex-root
+parent_todo_id: M8
+depends_on: [M4, M5, M6, M7]
+task:
+  kind: EXPERIMENT
+  objective: >-
+    Execute exactly the preregistered bounded timestep-convergence procedure in
+    preregistration.yaml for the loaded canonical JTL calibration fixture, and
+    produce a FROZEN, auditable convergence evidence package without changing
+    any global metric specification or candidate circuit.
+  research_question: >-
+    Are the preregistered control-corrected phase, same-JJ voltage-area,
+    residual, activity-timing, waveform-width, and loaded downstream-platform
+    observables stable at both adjacent levels of the fixed 0.1/0.05/0.025 ps
+    ladder?
+  non_goals:
+    - "Do not start M9 or write/freeze METRIC_SPEC_V2."
+    - "Do not alter or tune BQ, DCSFQ, BVM, T1, or any candidate circuit."
+    - "Do not call a local phase change, activity proxy, or platform an SFQ, fluxoid, received event, physical Gate, route verdict, or hardware result."
+    - "Do not extend the timestep ladder, move windows, alter stability bands, or rerun an existing run ID after inspecting results."
+    - "Do not modify scripts/sfq_metrics_v2.py, M4–M7 tests, M7 canonical fixture, historical data, workflow/skills, todo, HANDOVER, or existing task records."
+  claim_ceiling: "bounded_numerical_convergence_for_this_calibration_fixture_only_no_physical_gate"
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m5.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/metrics/test_sfq_metrics_v2_m7.py
+    - test/metrics/m7_canonical_jtl.cir
+    - test/standard/test_jtl.cir
+    - circuits/standard/JTL.cir
+    - circuits/models/jjmit.cir
+    - research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md
+    - research/tasks/JH-20260812-M8-001/preregistration.yaml
+  write_paths:
+    - test/metrics/m8_jtl_convergence_*.cir
+    - research/tasks/JH-20260812-M8-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260812-M8-001/request.yaml
+    - research/tasks/JH-20260812-M8-001/request.sha256
+    - research/tasks/JH-20260812-M8-001/preregistration.yaml
+    - research/tasks/JH-20260812-M8-001/baseline/**
+    - research/tasks/JH-20260812-M8-001/audits/**
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m5.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/metrics/test_sfq_metrics_v2_m7.py
+    - test/metrics/m7_canonical_jtl.cir
+    - test/standard/test_jtl.cir
+    - circuits/standard/JTL.cir
+    - circuits/models/jjmit.cir
+    - research/tasks/M7-LITE-001/**
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - research/schemas/**
+  locks:
+    - locks/sfq-metrics-v2-interface
+    - locks/jtl-convergence-m8
+    - locks/test-metrics
+baseline:
+  git_head: a99f01d03b9500dcde4a784f6b915e1e76a80091
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status:
+    path: research/tasks/JH-20260812-M8-001/baseline/git-status.txt
+    sha256: 1f4c76f2f113ffb68f68f5c30b5ad013557bb3fdd978a41debe4520614e10d03
+  scope_hashes:
+    path: research/tasks/JH-20260812-M8-001/baseline/scope-files.sha256
+    sha256: 9e1d8c7600087e408b6d4f3cdd2ea3f41e471b88e0243c1d56bfe23caa0fc85c
+authorization:
+  edit: true
+  run_josim: true
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - research/tasks/JH-20260812-M8-001/preregistration.yaml
+  handover:
+    status: CURRENT
+    path: docs/HANDOVER.md
+    sha256: f4e980f7fc6425371b45fbc286c86f6ca1944de339e7bb21b6d6f328af85de37
+  metric_spec:
+    status: UNFROZEN
+    path: null
+    sha256: null
+deliverables:
+  - id: D1
+    path: research/tasks/JH-20260812-M8-001/attempts/**/ack.yaml
+    role: RECEIPT
+    required: true
+  - id: D2
+    path: research/tasks/JH-20260812-M8-001/attempts/**/receipt.yaml
+    role: RECEIPT
+    required: true
+  - id: D3
+    path: test/metrics/m8_jtl_convergence_*.cir
+    role: IMPLEMENTATION
+    required: true
+  - id: D4
+    path: research/tasks/JH-20260812-M8-001/attempts/**/runs/**/manifest.yaml
+    role: EXPERIMENT_ARTIFACT
+    required: true
+  - id: D5
+    path: research/tasks/JH-20260812-M8-001/attempts/**/runs/**/raw/*.csv
+    role: EXPERIMENT_ARTIFACT
+    required: true
+  - id: D6
+    path: research/tasks/JH-20260812-M8-001/attempts/**/analysis/**
+    role: DOCUMENTATION
+    required: true
+acceptance:
+  - id: AC1
+    condition: "Before any edit/run, A01 ACK verifies request seal, base HEAD a99f01d, the five issuer-owned baseline dirty paths, all frozen scope hashes, available locks, and /home/howard/JoSIM/build/josim-cli version/hash 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2."
+    evidence: ["ack.yaml", "preflight log", "scope-hash and binary-provenance record"]
+  - id: AC2
+    condition: "Before the first JoSIM execution, copy the immutable preregistration verbatim into A01 analysis evidence and create exactly six unique run plans: zero_input_control and single_input at 0.1/0.05/0.025 ps. Each generated netlist is a constrained M7 canonical derivative: only input amplitude, .tran timestep, extended direct V/P print list, and comments/run name may differ."
+    evidence: ["preregistration copy/hash", "six netlists", "six run manifests"]
+  - id: AC3
+    condition: "Each of the six fresh runs saves netlist and include/model closure snapshots/hashes, binary path/version/hash, command, stdout, stderr, raw CSV, and manifest. QA requires zero exit status, direct V/P columns for XDUT and XLOAD B1/B2, finite values, strictly increasing actual time, and endpoint coverage through the fixed post window. No raw or failed run is overwritten/deleted."
+    evidence: ["six run manifests", "raw CSVs", "logs", "hash inventory"]
+  - id: AC4
+    condition: "Analyze only the preregistered half-open windows and actual CSV times. Report every registered applicable observable with units, signals, orientation, selected endpoints, control correction, and raw values. activity_peak_time_ps and activity_fwhm_ps must retain their preregistered activity-proxy wording; downstream_count remains NOT_APPLICABLE."
+    evidence: ["machine-readable convergence table", "analysis markdown", "analysis command/log"]
+  - id: AC5
+    condition: "Compare both adjacent pairs (0.1,0.05) and (0.05,0.025) ps against every preregistered task-local band. Classify only CONVERGED, INCONCLUSIVE, or INVALID under preregistration.yaml; reaching 0.025 ps ends the task whether or not it converges. Do not add a fourth level or alter the procedure."
+    evidence: ["adjacent-refinement table", "bounded decision record"]
+  - id: AC6
+    condition: "Run unchanged M4–M7 tests plus any task-local analysis self-check; all required outputs, changed paths, commands, hashes, AC mappings, limitations, observations, interpretations, and unknowns are complete in receipt. final verify-task succeeds. The proposed physical verdict is NOT_APPLICABLE."
+    evidence: ["test logs", "receipt.yaml", "verify-task log"]
+invalid_conditions:
+  - "Any direct P/V mapping, sign, control match, required column, actual-time QA, source/model closure, or provenance requirement is absent or unverifiable."
+  - "Any raw/failed run is overwritten, deleted, renamed, or an existing run ID is reused."
+  - "Any edit crosses write scope or any M9/candidate-tuning/physical Gate claim is made."
+  - "Any window, band, input shape, dt ladder, or run budget differs from preregistration.yaml without a new request."
+inconclusive_conditions:
+  - "At the fixed maximum depth, any valid applicable observable differs beyond its preregistered adjacent-refinement band."
+  - "A required waveform diagnostic is genuinely absent/ambiguous despite otherwise valid data; preserve evidence and classify INCONCLUSIVE rather than extending the plan."
+stop_conditions:
+  - "Observed HEAD, issuer dirty snapshot, request seal, scope hashes, binary hash, tool availability, or locks differ from this request."
+  - "Execution needs any write outside the two write paths, network, installation, worktree creation, commit, deletion, overwrite, rename, a fourth refinement, changed window/band/input, M9 work, or candidate tuning."
+  - "A run directory/run ID already exists, a required QA condition fails, or final verify-task cannot succeed: preserve evidence and deliver BLOCKED/DEVIATED/INVALID as applicable."
+issuance_blockers: []

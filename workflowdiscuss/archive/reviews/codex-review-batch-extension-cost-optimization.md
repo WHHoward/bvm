@@ -3,7 +3,7 @@ title: Codex review — WORKFLOW-lite 2.0 Batch Extension and Cost Optimization
 document_type: discussion_review
 status: CONDITIONAL_SUPPORT
 date: 2026-08-11
-reviews: workflowdiscuss/WORKFLOW-lite-2.0-batch-extension-and-cost-optimization.md
+reviews: workflowdiscuss/archive/proposals/WORKFLOW-lite-2.0-batch-extension-and-cost-optimization.md
 authority: advisory_only
 ---
 

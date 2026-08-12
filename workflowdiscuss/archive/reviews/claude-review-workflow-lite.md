@@ -6,8 +6,8 @@ date: 2026-08-11
 reviewed: WORKFLOW-lite.md（用户方案，2026-08-11）
 related:
   - research/WORKFLOW.md
-  - research/WORKFLOW-copilot-review-proposal.md（Copilot 提案）
-  - research/WORKFLOW-v2-three-party-discussion-summary.md（三方讨论总结）
+  - workflowdiscuss/archive/proposals/WORKFLOW-copilot-review-proposal.md（Copilot 提案）
+  - workflowdiscuss/archive/proposals/WORKFLOW-v2-three-party-discussion-summary.md（三方讨论总结）
   - research/mailbox/from-codex/codex-20260811-142613.md（Codex 协议建议）
   - research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml（M4 审计实录）
 ---

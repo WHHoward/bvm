@@ -4,8 +4,8 @@ document_type: discussion_note
 status: FOR_USER_REVIEW
 date: 2026-08-11
 related:
-  - workflowdiscuss/WORKFLOW-lite-2.0-rc1.md
-  - discussion/workflow-lite-codex-review.md
+  - workflowdiscuss/archive/old-versions/WORKFLOW-lite-2.0-rc1.md
+  - workflow-lite-codex-review.md（同目录）
   - research/WORKFLOW.md
   - AGENTS.md
 ---

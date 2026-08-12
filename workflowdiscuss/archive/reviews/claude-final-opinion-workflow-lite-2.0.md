@@ -3,12 +3,12 @@ title: Claude 对 WORKFLOW-lite 2.0-rc1 的最终意见
 document_type: review
 status: FOR_DISCUSSION
 date: 2026-08-11
-reviewed: workflowdiscuss/WORKFLOW-lite-2.0-rc1.md（用户方案，2026-08-11）
-supersedes: discussion/claude-review-workflow-lite.md（1.0 审阅意见）
+reviewed: workflowdiscuss/archive/old-versions/WORKFLOW-lite-2.0-rc1.md（用户方案，2026-08-11）
+supersedes: claude-review-workflow-lite.md（1.0 审阅意见，同目录）
 related:
   - research/WORKFLOW.md
-  - research/WORKFLOW-copilot-review-proposal.md
-  - research/WORKFLOW-v2-three-party-discussion-summary.md
+  - workflowdiscuss/archive/proposals/WORKFLOW-copilot-review-proposal.md
+  - workflowdiscuss/archive/proposals/WORKFLOW-v2-three-party-discussion-summary.md
   - research/mailbox/from-codex/codex-20260811-142613.md
   - research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml
 ---

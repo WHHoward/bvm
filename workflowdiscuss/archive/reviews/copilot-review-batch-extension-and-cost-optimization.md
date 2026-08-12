@@ -1,7 +1,7 @@
 # Copilot 对 WORKFLOW-lite 2.0 Batch Extension / 成本优化综合文档的审阅意见
 
 > 审阅人：Copilot（Reviewer 角色）
-> 审阅对象：`workflowdiscuss/WORKFLOW-lite-2.0-batch-extension-and-cost-optimization.md`
+> 审阅对象：`workflowdiscuss/archive/proposals/WORKFLOW-lite-2.0-batch-extension-and-cost-optimization.md`
 > 日期：2026-08-11
 > 状态：三方审阅意见之一；不修改协议、不授权任务
 

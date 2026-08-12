@@ -1,7 +1,7 @@
 # Copilot 对 WORKFLOW-lite 2.0-rc1 的最终审阅意见
 
 > 审阅人：Copilot（Reviewer 角色）
-> 审阅对象：`workflowdiscuss/WORKFLOW-lite-2.0-rc1.md`（v2.0-rc1，PILOT）
+> 审阅对象：`workflowdiscuss/archive/old-versions/WORKFLOW-lite-2.0-rc1.md`（v2.0-rc1，PILOT）
 > 日期：2026-08-11
 > 状态：供用户/Codex 参考，非协议文件，不修改任何协议条款
 

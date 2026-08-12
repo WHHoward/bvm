@@ -1,7 +1,7 @@
 # Copilot 对 WORKFLOW-lite 2.0 Batch Acceleration 提案的审阅意见
 
 > 审阅人：Copilot（Reviewer 角色）
-> 审阅对象：`workflowdiscuss/WORKFLOW-lite-2.0-batch-acceleration-proposal.md`
+> 审阅对象：`workflowdiscuss/archive/proposals/WORKFLOW-lite-2.0-batch-acceleration-proposal.md`
 > 日期：2026-08-11
 > 状态：三方审阅意见之一；不修改协议、不授权任务
 

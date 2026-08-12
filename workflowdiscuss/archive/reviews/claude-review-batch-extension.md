@@ -2,7 +2,7 @@
 
 审阅人：Claude（执行者视角）
 日期：2026-08-11
-对象：`workflowdiscuss/WORKFLOW-lite-2.0-batch-extension-and-cost-optimization.md`
+对象：`workflowdiscuss/archive/proposals/WORKFLOW-lite-2.0-batch-extension-and-cost-optimization.md`
 状态：对三方审阅的建议；不修改现行协议
 
 ## 总体判断

@@ -9,6 +9,9 @@ protocol_ref: research/WORKFLOW-lite.md（Pilot 协议本体）
 
 # WORKFLOW-lite 2.0 三方协作共识
 
+> **Historical / Decision Record（2026-08-11 共识）— 非执行权威。**
+> 本文件是三方共识的历史决策记录，不单独构成执行规则；协议正文与唯一执行界面为 `research/WORKFLOW.md`（FROZEN 后端）与 `research/WORKFLOW-lite.md`（轻量 Pilot 接口）。判断执行要求时以这两个文件为准。
+
 > 用户于 2026-08-11 统一最终协作方式。本文件是三方共识的正式记录；协议细节以 `research/WORKFLOW-lite.md` 为准。
 
 ## 角色分工

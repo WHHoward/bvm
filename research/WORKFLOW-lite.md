@@ -5,7 +5,7 @@ protocol_status: PILOT
 design_status: FINAL
 date: 2026-08-11
 authority_note: 经用户批准的 Pilot 协作界面；正式权威仍为 research/WORKFLOW.md + josim-handoff/v1（FROZEN 后端）。Pilot 通过前不修改权威文件。
-implementation_ref: workflowdiscuss/WORKFLOW-lite-2.0-FINAL-IMPLEMENTATION.md
+implementation_ref: workflowdiscuss/current-reference/WORKFLOW-lite-2.0-FINAL-IMPLEMENTATION.md
 ---
 
 # WORKFLOW-lite 2.0

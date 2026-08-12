@@ -9,7 +9,7 @@ metadata:
 
 # JoSIM × BVM 项目综合总结
 
-**当前阶段**：Phase −1——修复相位/事件计量并重建基线。
+**当前阶段**：Reference / Source / Receiver Characterization（2026-08-13）。
 
 **完整说明**：`docs/guide/project-guide.md`。
 
@@ -18,6 +18,8 @@ metadata:
 **任务权威**：`memory/project-todo.md`。
 
 **2026-08-13 状态**：M4–M11 已接受。M9 冻结 `METRIC_SPEC_V2` 的测量/报告语义（全局数值容差仍 UNFROZEN）；M10 接受历史 endpoint-arithmetic/provenance 重建；M11A/M11B 以两个独立审计冻结 measurement calibration 与 seven-object reconstruction/provenance knowledge state。它们均不构成 SFQ、下游接收、系统 Gate、候选路线或 published full-reproduction 结论；后续 characterization 与 `INTERFACE_GATE_V1` 需独立授权。
+
+**下一步**：只准备 BVM source characterization 的正式 preflight，见 `docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md`；尚未签发、运行或调优任何候选路线。
 
 ## 一句话目标
 

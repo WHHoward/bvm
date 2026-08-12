@@ -1,0 +1,43 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M11A-001
+revision: 1
+attempt_id: A02
+audit_id: C03
+workflow_state: CLOSED
+created_at: '2026-08-13T07:12:00+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: 6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786
+  ack_sha256: fdb10c28af6b7c6338794781ece2cf4db100251eb7a171cb6d026d1673ff67f6
+  receipt_sha256: 048d88e3c2e2ea2ef55430a2ade867153bc9df071eb995418db74e4e95dd765c
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: regression-count-errata
+    status: PASS
+    evidence:
+      - 'A02 immutable logs report: M4 test_sfq_metrics_v2.py 15/15; M5 test_sfq_metrics_v2_m5.py 29/29; M6 test_sfq_metrics_v2_m6.py 21/21; M7 test_sfq_metrics_v2_m7.py 18/18.'
+      - 'C02 regression-replay wording is correct for M4--M7; A02 receipt observations and baseline test_inventory contain a misassigned 21/18/15/29 sequence and are superseded for count metadata only.'
+  - id: chronology-errata
+    status: PASS
+    evidence:
+      - 'errata/chronology.yaml binds the immutable request, A02 ACK, A02 receipt, and C02 exact hashes and permits only C02 recorded before the receipt.'
+findings:
+  - 'This successor audit corrects count metadata without editing the immutable A02 receipt, baseline, or C02 verdict.'
+  - 'The corrected regression vector is M4=15, M5=29, M6=21, M7=18, M9=59, M10=13; total 155.'
+accepted_claims:
+  - 'M11A C02 remains ACCEPTED; its calibration/provenance claim ceiling and all scientific limitations remain unchanged.'
+rejected_claims:
+  - 'Any inference that the metadata correction reruns JoSIM, rebuilds M11A, freezes global tolerances, or establishes a physical/interface/candidate Gate.'
+required_rework: []
+next_actions:
+  - 'Use this C03 count errata and chronology E01 alongside C02 when auditing M11A metadata.'
+claim_ceiling: measurement_implementation_reporting_semantics_fixture_bounded_convergence_and_historical_endpoint_provenance_only_no_physical_gate

@@ -6,6 +6,7 @@
 
 - request 是唯一授权源；聊天中的补充不能静默扩大其范围。
 - `ISSUED` request 必须有 `request.sha256`，ACK/receipt/audit 必须逐级绑定前序文件的原始字节 SHA-256。这里的“签名”是哈希封存，不是带私钥的身份认证；信任仍依赖文件权限与 Git 审查。
+- 时间戳也必须单调：`request.issued_at ≤ ACK.created_at ≤ receipt.created_at ≤ audit.created_at`（同一 attempt）。`verify-task` 强制检查这一顺序；已接受的历史记录若发现纯 metadata 时间错误，只能以 hash-bound `errata/chronology.yaml` 精确列出异常对，不能回写 request、receipt 或 audit，也不能豁免任何新的时间错误。
 - request 一经 ACK 不得原地修改。合同变化创建新 revision；同一合同重跑创建新 attempt。
 - raw 输入与运行产物不可覆盖；失败运行也是证据。
 - task 执行完成不等于物理成功，物理失败不等于执行失败。
@@ -79,6 +80,8 @@ JoSIM 实验的大文件和不可变 raw 仍放在 `test/final/<route>/runs/<run
 ## 6. ACK 规则
 
 ACK 必须发生在第一次编辑或运行前，并包含：request hash、观察到的 Git/dirty/scope 状态、读取完成情况、工具/依赖、预计修改路径、假设与 blocker。`decision: BLOCKED` 时不允许继续实施。
+
+ACK 的 `created_at` 不得早于 request 的 `issued_at`；receipt 不得早于同 attempt 的 ACK；audit 不得早于同 attempt 的 receipt。写文件或补写元数据时使用当前带时区的 ISO-8601 时间，不得为了“看起来连续”回填旧时间。
 
 如果执行中才发现 request 与仓库冲突，不修改 ACK 掩盖历史；在 receipt 记 `DEVIATED` 或 `BLOCKED`。新的尝试使用新的 attempt ID。
 

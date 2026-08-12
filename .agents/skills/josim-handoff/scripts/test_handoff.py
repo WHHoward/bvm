@@ -74,6 +74,28 @@ class HandoffTests(unittest.TestCase):
         receipt["acceptance_results"][0]["evidence_paths"] = []
         self.assertTrue(list(Draft202012Validator(receipt_schema).iter_errors(receipt)))
 
+    def test_chronology_guard_detects_nonmonotonic_chain(self) -> None:
+        request = {"issued_at": "2026-08-09T00:00:02+08:00"}
+        acknowledgements = {
+            "A01": (Path("ack.yaml"), {"created_at": "2026-08-09T00:00:01+08:00"})
+        }
+        receipts = {
+            "A01": (Path("receipt.yaml"), {"created_at": "2026-08-09T00:00:03+08:00"})
+        }
+        audits = {
+            ("A01", "C01"): (
+                Path("verdict.yaml"),
+                {"created_at": "2026-08-09T00:00:00+08:00"},
+            )
+        }
+        self.assertEqual(
+            HANDOFF._chronology_errors(request, acknowledgements, receipts, audits),
+            [
+                ("request.issued_at", "ack:A01.created_at"),
+                ("receipt:A01.created_at", "audit:A01:C01.created_at"),
+            ],
+        )
+
     def test_end_to_end_chain_and_tamper_detection(self) -> None:
         with tempfile.TemporaryDirectory(
             prefix=".handoff-selftest-", dir=REPO_ROOT

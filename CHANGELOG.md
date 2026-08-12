@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-08-13 — M11 metadata errata 与 characterization preflight
+
+### 做了什么
+
+- 为 M11A/M11B 的历史非单调 protocol timestamps 写入 hash-bound errata，并让 handoff validator 强制新链路的时间顺序
+- 以 M11A C03 澄清 six-suite regression count metadata；新增 BVM source characterization preflight
+
+### 影响
+
+- M11A/M11B baseline 保持 ACCEPTED，不重跑 JoSIM、不重建 baseline
+- active phase 转为 Reference / Source / Receiver Characterization；尚未签发或运行新科学任务
+
+---
+
 ## 2026-08-13 — M11 双子门与 W5B 当前知识状态接受
 
 ### 做了什么

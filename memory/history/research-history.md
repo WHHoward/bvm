@@ -30,6 +30,14 @@ metadata:
 
 ## 三、详细时间线
 
+### 2026-08-13：M11 metadata errata 与下一阶段切换
+
+**做了什么**：为 M11A/M11B 的 immutable protocol records 记录最小、hash-bound 的时间戳 errata；`handoff.py` 新增默认 chronology guard（request ≤ ACK ≤ receipt ≤ audit）。M11A C03 以 immutable A02 log 核对并更正 M4/M5/M6/M7 regression metadata 为 15/29/21/18，M9/M10 为 59/13。
+
+**结果/产物**：M11A/M11B 的 ACCEPTED scientific baseline 不变；`docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md` 成为下一阶段的未签发 source-side preparation。
+
+**认知**：✅ Phase −1 measurement repair 与双基线已闭环，项目进入 Reference/Source/Receiver characterization；⚠️ 仍未运行新实验、未升级 `published_qb` R0/UNKNOWN，未定义任何 interface/candidate Gate。
+
 ### 2026-08-13：M11 双子门与 W5B 当前知识状态接受
 
 **做了什么**：接受 M11A 的 Measurement Calibration Baseline（`JH-20260813-M11A-001` C02）及 scope-correct 的 M11B Scientific Reconstruction Baseline（`JH-20260813-M11B-003` C01）。M11B 固定七对象 matrix：BVM storage/source-output、published QB、BQ v4、standard DCSFQ、DCSFQ_BVM、canonical JTL；每项都有结构化 evidence、observable、provenance、reproduction/characterization status、UNKNOWN 与下一判别器。M11B-001/002 的合同/指针问题保留为 rework 历史。

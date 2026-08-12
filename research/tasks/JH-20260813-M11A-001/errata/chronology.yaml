@@ -1,0 +1,22 @@
+protocol: josim-handoff/v1
+document_type: chronology_errata
+task_id: JH-20260813-M11A-001
+revision: 1
+errata_id: E01
+created_at: '2026-08-13T07:10:00+08:00'
+classification: metadata_only_legacy_timestamp_exception
+scientific_disposition_unchanged: true
+bindings:
+  request_sha256: 6fdc0dbe6671ffef0330dc4cae330d81483286f432c0107918c12ce7501a8786
+  documents:
+    ack:A02: fdb10c28af6b7c6338794781ece2cf4db100251eb7a171cb6d026d1673ff67f6
+    receipt:A02: 048d88e3c2e2ea2ef55430a2ade867153bc9df071eb995418db74e4e95dd765c
+    audit:A02:C02: 26f8957461b9945a12521a073b7007c528c6af1bec5b04debcc9b428e2db4ac0
+exceptions:
+  - before: receipt:A02.created_at
+    after: audit:A02:C02.created_at
+    recorded_values: ['2026-08-13T05:40:00+08:00', '2026-08-13T05:32:00+08:00']
+    reason: 'C02 recorded an earlier wall-clock value than the immutable A02 receipt; the audit content, hashes, scope, and disposition are unchanged.'
+correction_boundary:
+  - 'This errata permits only the listed non-monotonic pair for the exact bound file hashes.'
+  - 'M11A C02 remains ACCEPTED; no JoSIM run, baseline rebuild, artifact edit, metric change, or physical conclusion is authorized.'

@@ -148,9 +148,9 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 
 这些可以作为假设设计对照实验，不能作为冻结物理结论。
 
-## 6. 当前任务：Phase −1
+## 6. 当前任务：Reference / Source / Receiver Characterization
 
-### A. 修复测量管线
+### A. 已完成的 Phase −1 计量修复（历史入口）
 
 1. `P()` 明确为 rad，派生相位统一除以 \(2\pi\)；
 2. 用事件前后稳定窗或匹配的零输入控制；
@@ -170,6 +170,10 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 **M10 接受更新（2026-08-13）**：`JH-20260813-M10-004` 已由 `audits/C01/verdict.yaml` `ACCEPTED`。它将保留的 BASELINE/P0/P2/BQ v4 历史 CSV 重建为 hash-bound `metrics_v2/` endpoint-arithmetic/provenance 产物，并以 central correction table 和 superseded banner 保留旧叙述。M10-003 的 scope-hash 冲突被保留为 REWORK 历史；M10-004 在不重跑 JoSIM、不修改 raw/legacy JSON、且逐项核验 11 个保存产物哈希的前提下完成重封存。该接受不构成 SFQ、fluxoid、同 JJ 面积、下游、candidate 或系统 Gate 结论；M11 仍未启动。
 
 **M11 双子门接受更新（2026-08-13）**：`JH-20260813-M11A-001` A02/C02 与 `JH-20260813-M11B-003` A01/C01 均为 `ACCEPTED`，故 M11 基线冻结闭环。M11A 封存 M4--M10 的唯一 accepted/superseding 计量证据、M6 同 JJ 控制 raw、M8 fixture-local convergence 与回归；全局容差仍为 `UNFROZEN`，不构成物理或接口 Gate。M11B 的唯一 canonical facts 是 `docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml`：它以 structured evidence/observable/provenance/reproduction/characterization/UNKNOWN/discriminator 冻结七对象的**当前 knowledge state**，并由 `docs/research/REFERENCE_PROVENANCE.md` 指向。M11B/W5B 的接受不表示 circuit physical knowledge complete、published reproduction complete、characterization complete、candidate validated，亦不完成 W5A/W5C。M11B-001/002 的历史 rework 仍保留。候选路线、`INTERFACE_GATE_V1` 与 T1 仍须单独授权和预注册。
+
+**M11 metadata errata（2026-08-13）**：M11A/M11B 的科学 baseline 保持 `ACCEPTED`；`errata/chronology.yaml` 只为各自 hash-bound 的历史非单调时间戳建立最小例外，新的 `handoff.py` 则强制 `request ≤ ACK ≤ receipt ≤ audit`。M11A `C03` 更正 metadata：M4/M5/M6/M7 的 immutable A02 logs 分别为 15/29/21/18，M9/M10 为 59/13，总计 155；不修改冻结 receipt、baseline 或 C02，也不重跑 JoSIM。
+
+**当前 active phase（2026-08-13）**：进入 **Reference / Source / Receiver Characterization**。下一项仅准备 BVM source characterization preflight：`docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md`。它先建立 source-side facts，不定义 candidate Gate、`INTERFACE_GATE_V1`、下游接收或路线选择。
 
 **研究计划同步（2026-08-12，用户采纳最终研究流程与协作方案）**：M7 保持单编号下设 `M7A`（数学 ground truth 单元测试）/ `M7B`（canonical JTL 电路验证）/ `M7C`（历史回归，expected 必须来自独立人工/raw 重算预注册 frozen constants，禁止 production analyzer 自证）；M8 为预注册 stopping rule 的有界收敛 procedure（0.1/0.05/0.025 ps 起点，稳定带宽=PASS，最大深度仍不稳=INCONCLUSIVE）；M9 只冻结 `METRIC_SPEC_V2.md`（怎么测），接口成功标准由独立的 `INTERFACE_GATE_V1` 在 Reference/Source/Receiver 事实层建立后冻结；M11 单编号双子门（M11A Measurement Calibration Baseline + M11B Scientific Reconstruction Baseline，都通过才标绿）；W5 拆 W5A 文献边界 / W5B Reference Provenance（可与 M7 并行）/ W5C 作者询问（需用户授权、time-box）。所有科研任务声明 `EXPLORATORY | CALIBRATION | CONFIRMATORY` 阶段语义；参数 provenance 标记与 R0–R3 reproduction 原则见 `memory/project-todo.md` §I 与 `docs/research/REFERENCE_PROVENANCE.md`（W5B）。
 
@@ -230,4 +234,4 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 
 ## 9. 当前一句话状态
 
-> BVM 的稳定相位状态和状态相关电流已有仿真支持；直接 BVM→当前 BQ 基线的输出支路未完成完整绕转，且该网表未测 JTL；BQ v4 在理想周期电流的 110–150 µA 已测点显示与约 1:1 JTL 传播相容的相位平台，完整 Gate 尚未通过；DCSFQ_BVM 在 68.4 µA 测试输入下未见完整输出。Phase −1 的 M4–M10 已接受：M9 冻结测量/报告语义，M10 重建并封存历史 endpoint arithmetic/provenance；候选 Gate 的数值容差仍须另行预注册并冻结。M11 尚待完成。
+> BVM 的稳定相位状态和状态相关电流已有仿真支持；直接 BVM→当前 BQ 基线的输出支路未完成完整绕转，且该网表未测 JTL；BQ v4 在理想周期电流的 110–150 µA 已测点显示与约 1:1 JTL 传播相容的相位平台，完整 Gate 尚未通过；DCSFQ_BVM 在 68.4 µA 测试输入下未见完整输出。Phase −1 的 M4–M11 已接受：M9 冻结测量/报告语义，M10 重建并封存历史 endpoint arithmetic/provenance，M11 冻结计量与当前 reconstruction knowledge state；候选 Gate 的数值容差仍须另行预注册并冻结。

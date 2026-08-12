@@ -11,7 +11,7 @@ metadata:
 
 > 状态：🔴未开始　🟡进行中　🟢完成　⏸️暂停/被取代
 >
-> 当前唯一优先级：Phase −1 计量修复。旧 Step 0“冻结基线”、BQ 系统排除和 DCSFQ Phase 1 Gate 已因 `P()` 单位错误失效。
+> **当前 active phase（2026-08-13）**：Reference / Source / Receiver Characterization。Phase −1 的 M1–M12 计量修复与双基线已闭环；下一项只准备 **BVM source characterization preflight**，随后才分别建立 receiver facts 与独立 `INTERFACE_GATE_V1`。旧 Step 0“冻结基线”、BQ 系统排除和 DCSFQ Phase 1 Gate 已因 `P()` 单位错误失效，仍不得恢复为现行结论。
 
 ## A. 🟡 Phase −1：修复测量管线与重建基线
 

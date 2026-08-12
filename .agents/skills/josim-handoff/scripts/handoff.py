@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -640,6 +641,126 @@ def _supersession_errors(
     return errors
 
 
+def _parse_timestamp(value: Any, label: str) -> datetime:
+    """Parse an already-schema-validated, timezone-aware protocol timestamp."""
+    if not isinstance(value, str):
+        raise HandoffError(f"{label} is not a timestamp string")
+    try:
+        timestamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise HandoffError(f"{label} is not ISO-8601: {value!r}") from exc
+    if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+        raise HandoffError(f"{label} must include a timezone offset: {value!r}")
+    return timestamp
+
+
+def _chronology_exception_errors(
+    task_dir: Path,
+    request_digest: str,
+    acknowledgements: dict[str, tuple[Path, dict[str, Any]]],
+    receipts: dict[str, tuple[Path, dict[str, Any]]],
+    audits: dict[tuple[str, str], tuple[Path, dict[str, Any]]],
+    violations: list[tuple[str, str]],
+) -> tuple[list[str], set[tuple[str, str]], list[str]]:
+    """Load an explicit, hash-bound legacy chronology errata when present.
+
+    Errata are intentionally narrow: they preserve already-accepted historical
+    records whose *recorded timestamps* were wrong, but cannot waive any new or
+    unlisted chronology violation.  New tasks have no such exception.
+    """
+    path = task_dir / "errata" / "chronology.yaml"
+    if not path.is_file():
+        return [], set(), []
+    errors: list[str] = []
+    warnings: list[str] = []
+    allowed: set[tuple[str, str]] = set()
+    try:
+        errata = _load_yaml(path)
+    except HandoffError as exc:
+        return [f"invalid chronology errata {path}: {exc}"], allowed, warnings
+    if errata.get("protocol") != PROTOCOL or errata.get("document_type") != "chronology_errata":
+        errors.append(f"chronology errata has wrong protocol/document_type: {path}")
+        return errors, allowed, warnings
+    if errata.get("task_id") != task_dir.name or not isinstance(errata.get("errata_id"), str):
+        errors.append(f"chronology errata task_id/errata_id invalid: {path}")
+    bindings = errata.get("bindings")
+    if not isinstance(bindings, dict) or bindings.get("request_sha256") != request_digest:
+        errors.append(f"chronology errata does not bind current request: {path}")
+    document_hashes: dict[str, str] = {}
+    for attempt_id, (ack_path, _ack) in acknowledgements.items():
+        document_hashes[f"ack:{attempt_id}"] = _sha256(ack_path)
+    for attempt_id, (receipt_path, _receipt) in receipts.items():
+        document_hashes[f"receipt:{attempt_id}"] = _sha256(receipt_path)
+    for (attempt_id, audit_id), (audit_path, _audit) in audits.items():
+        document_hashes[f"audit:{attempt_id}:{audit_id}"] = _sha256(audit_path)
+    bound_documents = bindings.get("documents") if isinstance(bindings, dict) else None
+    if not isinstance(bound_documents, dict):
+        errors.append(f"chronology errata lacks bindings.documents: {path}")
+    else:
+        for key, digest in bound_documents.items():
+            if key not in document_hashes or document_hashes[key] != digest:
+                errors.append(f"chronology errata document binding mismatch: {key}")
+    exceptions = errata.get("exceptions")
+    if not isinstance(exceptions, list) or not exceptions:
+        errors.append(f"chronology errata lacks exceptions: {path}")
+    else:
+        for item in exceptions:
+            if not isinstance(item, dict):
+                errors.append(f"chronology errata exception is not a mapping: {path}")
+                continue
+            pair = (item.get("before"), item.get("after"))
+            if not all(isinstance(value, str) for value in pair):
+                errors.append(f"chronology errata exception lacks before/after: {path}")
+                continue
+            if pair not in violations:
+                errors.append(f"chronology errata names no live violation: {pair}")
+                continue
+            allowed.add(pair)
+    if not errors and allowed:
+        warnings.append(
+            f"chronology errata {errata['errata_id']} permits only "
+            + ", ".join(f"{before} > {after}" for before, after in sorted(allowed))
+        )
+    return errors, allowed, warnings
+
+
+def _chronology_errors(
+    request: dict[str, Any],
+    acknowledgements: dict[str, tuple[Path, dict[str, Any]]],
+    receipts: dict[str, tuple[Path, dict[str, Any]]],
+    audits: dict[tuple[str, str], tuple[Path, dict[str, Any]]],
+) -> list[tuple[str, str]]:
+    """Return non-monotonic protocol timestamp pairs as (before, after)."""
+    violations: list[tuple[str, str]] = []
+    issued = _parse_timestamp(request["issued_at"], "request.issued_at")
+    for attempt_id, (_ack_path, ack) in acknowledgements.items():
+        ack_at = _parse_timestamp(ack["created_at"], f"ack:{attempt_id}.created_at")
+        if issued > ack_at:
+            violations.append(("request.issued_at", f"ack:{attempt_id}.created_at"))
+    for attempt_id, (_receipt_path, receipt) in receipts.items():
+        receipt_at = _parse_timestamp(
+            receipt["created_at"], f"receipt:{attempt_id}.created_at"
+        )
+        ack_entry = acknowledgements.get(attempt_id)
+        if ack_entry is not None:
+            ack_at = _parse_timestamp(
+                ack_entry[1]["created_at"], f"ack:{attempt_id}.created_at"
+            )
+            if ack_at > receipt_at:
+                violations.append((f"ack:{attempt_id}.created_at", f"receipt:{attempt_id}.created_at"))
+        for (audit_attempt, audit_id), (_audit_path, audit) in audits.items():
+            if audit_attempt != attempt_id:
+                continue
+            audit_at = _parse_timestamp(
+                audit["created_at"], f"audit:{attempt_id}:{audit_id}.created_at"
+            )
+            if receipt_at > audit_at:
+                violations.append(
+                    (f"receipt:{attempt_id}.created_at", f"audit:{attempt_id}:{audit_id}.created_at")
+                )
+    return violations
+
+
 def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list[str], list[str]]:
     task_dir = _ensure_inside_repo(task_dir, repo_root, "task directory")
     if not task_dir.is_dir():
@@ -774,6 +895,26 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
             errors.append(f"{audit_path}: receipt_sha256 does not bind {receipt_path}")
         if audit["claim_ceiling"] != request["task"]["claim_ceiling"]:
             errors.append(f"{audit_path}: claim_ceiling does not match request")
+
+    chronology_violations = _chronology_errors(
+        request, acknowledgements, receipts, audits
+    )
+    errata_errors, permitted_violations, errata_warnings = _chronology_exception_errors(
+        task_dir,
+        request_digest,
+        acknowledgements,
+        receipts,
+        audits,
+        chronology_violations,
+    )
+    errors.extend(errata_errors)
+    for before, after in chronology_violations:
+        if (before, after) not in permitted_violations:
+            errors.append(
+                "protocol chronology violation: "
+                f"{before} must be <= {after}"
+            )
+    warnings.extend(errata_warnings)
 
     warnings.append(
         "records: "

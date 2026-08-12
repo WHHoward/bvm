@@ -103,7 +103,21 @@ proposed_physical_verdict: PASS | FAIL | INCONCLUSIVE | NOT_APPLICABLE
 
 ## 8. Delivery Snapshot
 
-RESULT 完成后，**授权 snapshot owner**（默认 CODEX；可为 USER 或 CLAUDE_EXPLICITLY_AUTHORIZED）创建一次非 amend 的 delivery commit，只含 allowed paths 改动 + 当前 attempt 的 RESULT + TASK 允许的 evidence metadata；不使用 `git add -A`；commit 后停止修改。RESULT 追加：`Delivery snapshot commit: <commit>`、`Snapshot owner:`、`Snapshot scope check: PASS`。
+RESULT 完成后，**授权 snapshot owner** 创建一次非 amend 的 delivery commit，只含 allowed paths 改动 + 当前 attempt 的 RESULT + TASK 允许的 evidence metadata；不使用 `git add -A`；commit 后停止修改。RESULT 追加：`Delivery snapshot commit: <commit>`、`Snapshot owner:`、`Snapshot scope check: PASS`。
+
+**Snapshot owner 默认（2026-08-12 起）**：
+
+- **LITE Scientific Implementation**（NORMAL/CRITICAL + LITE：implementation、calibration code、bounded characterization、deterministic regression、ordinary experiment implementation）：默认 **`EXECUTOR`**（Claude 或确定性脚本创建；TASK 可改为 CODEX/USER 覆盖）；
+- **FROZEN / Scientific Gate**（M8 decisive convergence、M9 MetricSpec freeze、M11 baseline、INTERFACE_GATE、route verdict、final margin、paper-critical confirmatory evidence）：保持 **CODEX**（或按 TASK 指定），本轮不改。
+
+**Snapshot 必须具备的性质**（对 EXECUTOR-owned 同样强制）：
+
+- **Immutable**：作为 review target 发布后不可修改；需要修复 → 新 attempt / 新 delivery snapshot，绝不静默修改旧 snapshot；
+- **绑定 attempt**：至少记录 `task_id`、`attempt_id`、`snapshot_commit`、`base_commit`、`RESULT path`、`changed paths`；
+- **REVIEW 绑定 snapshot**：Copilot REVIEW 必须声明 `reviewed_attempt` 与 `reviewed_snapshot`，不能只写 "reviewed latest"；
+- **REVIEW_REQUEST 必须携带**：`task_id`、`attempt_id`、`delivery_snapshot`、`result_path`。
+
+snapshot ownership 不等于 scientific authority：EXECUTOR-owned snapshot 不授予 ACCEPT、Gate、FROZEN 升级、scope 扩大或语义修改权。
 
 Reviewer 与 Codex 均审查该 commit，不审查持续变化的 worktree。
 

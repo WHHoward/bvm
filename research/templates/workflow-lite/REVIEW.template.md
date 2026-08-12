@@ -6,6 +6,7 @@ Recommended evidence mode: LITE | FROZEN
 Evidence confidence: HIGH | MEDIUM | LOW
 Residual risk: LOW | MEDIUM | HIGH
 
+Reviewed attempt: <attempt-id>
 Reviewed delivery snapshot: <commit>
 
 ## Scope

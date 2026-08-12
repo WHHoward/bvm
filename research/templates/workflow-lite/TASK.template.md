@@ -6,7 +6,7 @@ Evidence mode: LITE | FROZEN
 Task revision commit: <commit>
 Execution baseline commit: <commit>
 
-Delivery snapshot owner: CODEX | USER | CLAUDE_EXPLICITLY_AUTHORIZED
+Delivery snapshot owner: EXECUTOR（LITE Scientific Implementation 默认；FROZEN/Scientific Gate 任务由 Codex 指定，可为 CODEX | USER）
 
 ## Goal
 本任务要完成什么（一句可验收的话）。

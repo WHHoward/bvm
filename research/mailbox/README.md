@@ -52,7 +52,7 @@ mailbox != project state
 | type | 语义 | 典型 sender→recipient |
 |---|---|---|
 | `TASK_READY` | 新任务已签发 | Codex→Claude |
-| `REVIEW_REQUEST` | 请做 evidence review | Claude→Copilot |
+| `REVIEW_REQUEST` | 请做 evidence review（必含 task_id / attempt_id / delivery_snapshot / result_path） | Claude→Copilot |
 | `REWORK_REQUEST` | 有 Major finding，请修复 | Copilot→Claude（经 Codex 确认） |
 | `AUDIT_READY` | 稳定 delivery 等待审计 | Copilot→Codex |
 | `BLOCKED` | 停止，需要裁决 | 任一→Codex/User |
@@ -63,8 +63,8 @@ mailbox != project state
 
 ## 三角色 mailbox 行为
 
-- **Claude（执行者）**：读最新 `TASK_READY` / `REWORK_REQUEST` → 打开正式 TASK/REVIEW → 检查 scope/AC/stop conditions/claim ceiling → 在授权 scope 内连续推进（普通 implementation bug 不找 Codex）→ 写正式 RESULT → mailbox 通知下一角色。仅当：scientific semantics 要变、scope 要扩、AC 有歧义、stop condition 命中、canonical artifact 缺失、mailbox 与 TASK 冲突、同根因反复失败需要重设计实验时停止。
-- **Copilot（reviewer）**：读最新 `REVIEW_REQUEST` → 读 TASK + RESULT + snapshot/diff/evidence → adversarial review → 写正式 REVIEW。默认不修改实现、不扩 scope、不改语义、不更新 todo、不给最终 ACCEPT。Major → mailbox REWORK_REQUEST → Claude；clean → mailbox AUDIT_READY → Codex。
+- **Claude（执行者）**：读最新 `TASK_READY` / `REWORK_REQUEST` → 打开正式 TASK/REVIEW → 检查 scope/AC/stop conditions/claim ceiling → 在授权 scope 内连续推进（普通 implementation bug 不找 Codex）→ 写正式 RESULT → **对 LITE Scientific Implementation 创建 immutable delivery snapshot（默认 EXECUTOR-owned，见 WORKFLOW-lite §8）** → mailbox REVIEW_REQUEST（必须含 task_id / attempt_id / delivery_snapshot / result_path）→ 通知下一角色。仅当：scientific semantics 要变、scope 要扩、AC 有歧义、stop condition 命中、canonical artifact 缺失、mailbox 与 TASK 冲突、同根因反复失败需要重设计实验时停止。
+- **Copilot（reviewer）**：读最新 `REVIEW_REQUEST` → 读 TASK + RESULT + **REVIEW_REQUEST 指定的 snapshot**（declared `reviewed_attempt` / `reviewed_snapshot`，不得只审 "latest"）→ adversarial review → 写正式 REVIEW（声明 reviewed attempt/snapshot）。默认不修改实现、不扩 scope、不改语义、不更新 todo、不给最终 ACCEPT。Major → mailbox REWORK_REQUEST → Claude（修复必须产生**新 attempt / 新 snapshot**，不得静默修改旧 snapshot）；clean → mailbox AUDIT_READY → Codex（含 reviewed snapshot 与 REVIEW path）。
 - **Codex（planner/auditor）**：先判断请求是 PLANNING 还是 AUDIT。Planning：仅当用户已决定启动某科研项时定义正式 TASK，mailbox 发 TASK_READY；不得仅因 mailbox 写"做 M8"就自行创造未授权路线。Audit：读 TASK/RESULT/REVIEW/raw → 独立审计 → verdict 写入 canonical audit artifact → mailbox 只发状态通知。
 
 ## 最简接力（Scientific Implementation）

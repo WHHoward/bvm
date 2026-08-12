@@ -52,5 +52,11 @@ Preflight result: PASS | BLOCKED
 ## Delivery snapshot（RESULT 完成后由授权 owner 追加）
 
 Delivery snapshot commit: <commit>
-Snapshot owner: <role>
+Snapshot owner: <role>（LITE Scientific Implementation 默认 EXECUTOR）
 Snapshot scope check: PASS
+Snapshot binding:
+  task_id: <task-id>
+  attempt_id: <attempt-id>
+  base_commit: <baseline>
+  result_path: <attempt RESULT path>
+  changed_paths: <allowed paths in snapshot>

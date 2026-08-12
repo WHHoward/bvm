@@ -1,0 +1,132 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M11B-003
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-13T06:05:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: c98f16a12259348a1c82f0035693958bb14d91ad95f2dd3ef6b5a551f9757a35
+  ack_sha256: 4f88171e2bebcff6107b4bd3d062d30cf45814764e60ba8a3611c70662104927
+execution_status: COMPLETED
+baseline_git_head: 1d1bb72
+result_git_head: null
+changes:
+- path: docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  action: MODIFIED
+  sha256: 676bab1b647702ea725dc319acbe669e865175b17be52310d75eb8d86b97c13d
+- path: docs/research/REFERENCE_PROVENANCE.md
+  action: MODIFIED
+  sha256: 0cf98413b02ab0916de84acb6123b5e873e339c3c64958be1de0ad51573be359
+- path: research/tasks/JH-20260813-M11B-003/attempts/A01/validate_scope_correct_object_matrix.py
+  action: CREATED
+  sha256: 4a496d0b9345be00d4f834fabde47bc660a2b8cd939dd921d48b66d093947b87
+- path: research/tasks/JH-20260813-M11B-003/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: 755f0a2784cb7692cf8794a393087075cd1501b8b403b8f633fc9a6532ac3d77
+- path: research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  action: CREATED
+  sha256: 79e89aadf6f2b9a190cfbee7c146b332582119d760b8dcdaecb14363ca15e5da
+artifacts:
+- id: matrix
+  path: docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  sha256: 676bab1b647702ea725dc319acbe669e865175b17be52310d75eb8d86b97c13d
+  role: DOCUMENTATION
+- id: rprovenance
+  path: docs/research/REFERENCE_PROVENANCE.md
+  sha256: 0cf98413b02ab0916de84acb6123b5e873e339c3c64958be1de0ad51573be359
+  role: DOCUMENTATION
+- id: validator
+  path: research/tasks/JH-20260813-M11B-003/attempts/A01/validate_scope_correct_object_matrix.py
+  sha256: 4a496d0b9345be00d4f834fabde47bc660a2b8cd939dd921d48b66d093947b87
+  role: TEST
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M11B-003/attempts/A01/logs/preflight.log
+  sha256: 755f0a2784cb7692cf8794a393087075cd1501b8b403b8f633fc9a6532ac3d77
+  role: LOG
+- id: log-validator.log
+  path: research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  sha256: 79e89aadf6f2b9a190cfbee7c146b332582119d760b8dcdaecb14363ca15e5da
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-003 (ACK 后 receipt 前)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11B-003/attempts/A01/logs/preflight.log
+  log_sha256: 755f0a2784cb7692cf8794a393087075cd1501b8b403b8f633fc9a6532ac3d77
+- command: python3 research/tasks/JH-20260813-M11B-003/attempts/A01/validate_scope_correct_object_matrix.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  log_sha256: 79e89aadf6f2b9a190cfbee7c146b332582119d760b8dcdaecb14363ca15e5da
+tests:
+- id: matrix-validator
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  notes:
+  - AC1–AC5 全部通过（七对象/evidence/status/UNKNOWN/freeze_task/pointer）
+- id: adversarial-guards
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  notes:
+  - 10/10 拒绝：缺/重复对象、output-as-evidence、out-of-scope、hash mismatch、错 freeze_task、bare UNKNOWN、laundering、pointer 不存在文件、pointer 第二登记表
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  notes:
+  - 恰好七唯一 object_id；每对象 9 字段齐备
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  notes:
+  - evidence 全部 authorized+existing+SHA-256+role+review+locator；两输出文档均不作为事实证据；arti/ 8 PDF INVENTORIED_UNREVIEWED；UNKNOWN 结构化；无 project-tuned 冒充 published
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  notes:
+  - freeze_task=JH-20260813-M11B-003；W5B closure 绑定 M11B-003 audit ACCEPTED；knowledge-state-only claim；UNKNOWN/INFERRED/R0/PARTIAL_R1 合法；W5A/W5C 独立
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/REFERENCE_PROVENANCE.md
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  notes:
+  - 短指针指向 matrix；无第二登记表；不命名不存在 working-tree 文件（旧内容仅称保留在 Git 历史）；不提前标 W5B 完成
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/validate_scope_correct_object_matrix.py
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/validator.log
+  notes:
+  - validator 验证 AC1–AC4（evidence existence/hash/scope、output-as-evidence 禁令、status 枚举、结构化 UNKNOWN、pointer 完整性、freeze_task 身份）；对抗 10/10；交付文档通过
+- id: AC6
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M11B-003/attempts/A01/logs/preflight.log
+  notes:
+  - 无 JoSIM/网络/外联；无 frozen-path 编辑；无状态升级；receipt 前 verify-task VERIFIED；final verify 由 Codex 执行
+observations:
+- matrix freeze_task 与 W5B closure 已绑定 JH-20260813-M11B-003（非未接受前身）；REFERENCE_PROVENANCE.md 不再作为任何对象 evidence。
+- pointer 不再引用不存在的 legacy 文件（旧内容保留在 Git 历史）；无第二参数登记表。
+- 两输出文档不在本任务 scope manifest 中——M10-003/M11B-002 的 manifest-vs-write_paths 冲突结构已消除，final verify-task VERIFIED。
+interpretations:
+- scope-correct matrix/pointer 现可独立闭环；M11B/W5B canonical 事实层就绪。
+unknowns:
+- published modified-QB 参数、BVM JM1 shunt、original BQ 文献参数、DCSFQ_BVM 阈值、receiver 阈值——next_discriminator 记录，待 W5A/W5C/预注册任务。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot Codex-owned；result_git_head null。
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+deviations: []
+blockers: []

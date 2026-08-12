@@ -2,7 +2,7 @@ matrix_id: scientific-reconstruction-object-matrix-v1
 parent_todo_ids:
 - M11B
 - W5B
-freeze_task: JH-20260813-M11B-002
+freeze_task: JH-20260813-M11B-003
 attempt: A01
 cutoff: '2026-08-13'
 claim_ceiling: reconstruction_provenance_and_current_characterization_knowledge_state_freeze_only_not_physical_completeness_published_reproduction_candidate_validation_or_literature_boundary
@@ -29,7 +29,7 @@ legal_statuses:
   - CALIBRATION_FIXTURE_ONLY
   - CHARACTERIZED
 w5b_boundary:
-  closure_eligible: only upon this task audit acceptance
+  closure_eligible: only upon JH-20260813-M11B-003 audit ACCEPTED
   w5a: independent and open (literature-boundary)
   w5c: independent and open (author inquiry, user-authorized)
 objects:
@@ -106,11 +106,6 @@ objects:
 - object_id: published_qb
   current_evidence:
   - *id001
-  - path: docs/research/REFERENCE_PROVENANCE.md
-    sha256: b5533ac700551ba4007dca8fbaa0e70ecdb770a78db100b03ede28d99a5ce067
-    source_role: provenance_index
-    review_state: REVIEWED
-    locator: pointer/index (2026-08-13)
   - path: circuits/qb/bq_cell_paper.cir
     sha256: a3accfd49ea7bd1dab46f79f4856a0e0a6c781185c4671a78c863b2217bdb880
     source_role: netlist
@@ -164,7 +159,7 @@ objects:
     reference_status: UNKNOWN
     project_value: v4 design values (project [TUNED])
     provenance_tag: '[UNKNOWN]'
-    reviewed_source_boundary: REFERENCE_PROVENANCE.md; arti/ corpus UNREVIEWED
+    reviewed_source_boundary: HANDOVER audit; arti/ corpus UNREVIEWED
     impact: project BQ cannot be labeled published reproduction
     next_discriminator: W5A literature table or W5C author inquiry
   claim_limitation: behavioral analogue with non-published parameters at most; no published R2; periodic sweep is not a single-event causal test

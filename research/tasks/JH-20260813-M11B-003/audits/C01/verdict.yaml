@@ -1,0 +1,58 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M11B-003
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: CLOSED
+created_at: '2026-08-13T06:20:00+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: c98f16a12259348a1c82f0035693958bb14d91ad95f2dd3ef6b5a551f9757a35
+  ack_sha256: 4f88171e2bebcff6107b4bd3d062d30cf45814764e60ba8a3611c70662104927
+  receipt_sha256: bcebb0aee69ab6662ac6efb8a3b5502801c69131360e762490e513067654d085
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: mechanical-chain-and-scope
+    status: PASS
+    evidence:
+      - 'handoff.py verify-task research/tasks/JH-20260813-M11B-003: VERIFIED'
+      - 'scope manifest excludes both authorized output documents, eliminating the M11B-002 input/write collision'
+  - id: output-structure-and-provenance-boundary
+    status: PASS
+    evidence:
+      - 'SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml has exactly bvm_storage, bvm_source_output, published_qb, bq_v4, standard_dcsfq, dcsfq_bvm, canonical_jtl and all required structured fields'
+      - 'all listed factual evidence sources were independently existence/hash checked by validate_scope_correct_object_matrix.py; output documents are prohibited as factual evidence'
+  - id: independent-adversarial-validator-check
+    status: PASS
+    evidence:
+      - 'In-memory independent mutations were rejected 10/10: missing/duplicate object, output-as-evidence, out-of-scope source, hash mismatch, wrong freeze task, bare UNKNOWN, provenance laundering, nonexistent pointer target, and second parameter table'
+      - 'python3 attempts/A01/validate_scope_correct_object_matrix.py: VALIDATION PASSED'
+  - id: claim-and-execution-boundary
+    status: PASS
+    evidence:
+      - 'matrix and pointer bind W5B closure only to this ACCEPTED audit, retain W5A/W5C independence, and state no physical, candidate, interface, system, T1, hardware, or novelty conclusion'
+      - 'receipt plus independent diff review show documentation/validator changes only; no JoSIM, network, author contact, circuit/raw/test edit, or status upgrade'
+findings:
+  - 'M11B-003 repairs the M11B-002 scope-hash/write-path defect without mutating that historical attempt.'
+  - 'The matrix is accepted as a complete and honest record of the current seven-object reconstruction/provenance knowledge state. Its explicit UNKNOWN, INFERRED, R0, PARTIAL_R1, LEGACY_ONLY, CALIBRATION_FIXTURE_ONLY, and NOT_ATTEMPTED entries are preserved limitations, not failures to be silently filled.'
+accepted_claims:
+  - 'M11B/W5B has one canonical structured provenance/reconstruction/characterization knowledge-state matrix for the defined seven objects.'
+  - 'M11B PASS means the record is complete and honest at its declared boundary; it does not mean circuit physical knowledge, published reproduction, characterization, candidate validation, or an interface/system Gate is complete.'
+  - 'M11A C02 and this M11B C01 independently satisfy the two M11 baseline subgates.'
+rejected_claims:
+  - 'Any physical completeness, published full-reproduction, BQ/DCSFQ/BVM candidate-success, INTERFACE_GATE_V1, T1, hardware, or paper-novelty claim.'
+  - 'That W5A literature boundary or W5C author inquiry is complete.'
+required_rework: []
+next_actions:
+  - 'Codex may synchronize M11 and W5B status in memory/project-todo.md and docs/HANDOVER.md using this accepted verdict; no candidate route is thereby authorized.'
+  - 'Future characterization or reproduction-level upgrades require separately preregistered, scope-correct tasks and, where applicable, new controlled runs.'
+claim_ceiling: reconstruction_provenance_and_current_characterization_knowledge_state_freeze_only_not_physical_completeness_published_reproduction_candidate_validation_or_literature_boundary

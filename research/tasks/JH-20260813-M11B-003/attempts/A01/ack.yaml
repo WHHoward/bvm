@@ -1,0 +1,38 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M11B-003
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T05:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c98f16a12259348a1c82f0035693958bb14d91ad95f2dd3ef6b5a551f9757a35"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "1d1bb72"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M11B-003/**（issue 自带 task packet）"
+    - "docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml + REFERENCE_PROVENANCE.md（M11B-002 draft 输出，本任务 write scope 内可替换）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "按 M11B-003 修复 M11B-002 的两项缺陷：(1) matrix 的 freeze_task 与 W5B closure 绑定改为 JH-20260813-M11B-003（非未接受前身）；(2) 两输出文档不再互为证据——matrix 只用独立 hash-bound 事实路径，REFERENCE_PROVENANCE.md 为有效短指针、不命名不存在的 working-tree 文件、不创建第二登记表、不在 audit ACCEPTED 前标 W5B 完成。保留七对象 exact set、UNKNOWN/INFERRED/R0/PARTIAL_R1 状态、knowledge-state-only claim。写 validator 验证 AC1–AC5 全部条件。不运行 JoSIM/网络/外联，不改 circuits/raw/tests，不升级状态。"
+  non_goals:
+    - "不运行 JoSIM/联网/作者联系；不改 circuit/model/raw/test；不调参；不做 candidate route/INTERFACE_GATE_V1/T1/W5A/W5C/physical/paper novelty claim。"
+    - "不修改 M11B-002、其 A01/C01、M11A、todo、HANDOVER、frozen metric spec。"
+  stop_conditions:
+    - "HEAD/dirty/scope/authority/metric-spec mismatch；需要 write_paths 外编辑/JoSIM/网络/外联/改 circuits-raw-tests/提升状态。"
+    - "事实源 hash 不同、需要把旧输出当证据、或 final verify-task 失败。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M11B-003（ACK 后与交付前）"
+  - "python3 research/tasks/JH-20260813-M11B-003/attempts/A01/validate_scope_correct_object_matrix.py"
+expected_changed_paths:
+  - "docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml"
+  - "docs/research/REFERENCE_PROVENANCE.md"
+  - "research/tasks/JH-20260813-M11B-003/attempts/**"
+blockers: []
+deviations: []

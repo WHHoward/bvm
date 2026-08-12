@@ -1,0 +1,52 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M11B-003
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-13T06:22:00+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M11B
+depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A]
+supersedes: {task_id: JH-20260813-M11B-002, revision: 1}
+task:
+  kind: DOCUMENTATION
+  objective: 'Produce a scope-correct FROZEN M11B/W5B current-knowledge matrix and pointer by repairing only the preserved M11B-002 A01 contract/output defects.'
+  research_question: 'Can the exact seven-object reconstruction/provenance knowledge state be honestly frozen with independently hash-bound factual sources, a valid pointer, and no scientific-status upgrade?'
+  non_goals:
+    - 'No JoSIM run, network access, author contact, circuit/model/raw/test edit, tuning, candidate-route decision, INTERFACE_GATE_V1, T1, W5A, W5C, physical verdict, or paper-novelty claim.'
+    - 'No automatic increase of reproduction or characterization status; a needed run or source remains only a next discriminator.'
+    - 'No modification to JH-20260813-M11B-002, its A01, its C01 audit, M11A, todo, HANDOVER, or the frozen metric specification.'
+  claim_ceiling: reconstruction_provenance_and_current_characterization_knowledge_state_freeze_only_not_physical_completeness_published_reproduction_candidate_validation_or_literature_boundary
+scope:
+  read_paths: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-evidence-audit/SKILL.md, .agents/skills/josim-project-summary/SKILL.md, research/tasks/JH-20260813-M11B-003/design/scope-correct-matrix-rework.md, research/tasks/JH-20260813-M11A-001/audits/C02/verdict.yaml, research/tasks/JH-20260813-M11B-002/**, research/tasks/JH-20260811-M4-003/audits/C01/verdict.yaml, research/tasks/M5-LITE-PILOT-001/attempts/A02/CODEX-AUDIT.md, research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml, research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md, research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml, research/tasks/JH-20260813-M9-004/audits/C01/verdict.yaml, research/tasks/JH-20260813-M10-004/audits/C01/verdict.yaml, circuits/bvm/bvm_cell.cir, circuits/qb/bq_cell.cir, circuits/qb/bq_cell_paper.cir, circuits/qb/bq_cell_v4.cir, circuits/standard/DCSFQ.cir, circuits/standard/JTL.cir, circuits/models/jjmit.cir, circuits/interface/DCSFQ_BVM.cir, test/final/single_bvm_qb/test_bvm_bq_baseline.cir, test/metrics/m7_canonical_jtl.cir, test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json, test/final/interface/data/metrics_v2/p0-v2.json, test/final/bvm/data/metrics_v2/p2-v2.json, test/final/qb/data/metrics_v2/bq-v4-v2.json, arti/*.pdf]
+  write_paths: [docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, docs/research/REFERENCE_PROVENANCE.md, research/tasks/JH-20260813-M11B-003/attempts/**]
+  frozen_paths: [research/tasks/JH-20260813-M11B-002/**, research/tasks/JH-20260813-M11B-003/request.yaml, research/tasks/JH-20260813-M11B-003/request.sha256, research/tasks/JH-20260813-M11B-003/baseline/**, research/tasks/JH-20260813-M11B-003/design/**, research/tasks/JH-20260813-M11B-003/audits/**, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, circuits/**, scripts/**, test/**]
+  locks: [locks/m11b-w5b-unified-object-matrix, locks/reference-provenance]
+baseline:
+  git_head: 1d1bb72
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M11B-003/baseline/git-status.txt, sha256: bfe706c49be1be463a036e47c14d7dd38b3e6c603ac8077ffd6f9b8515db2127}
+  scope_hashes: {path: research/tasks/JH-20260813-M11B-003/baseline/scope-files.sha256, sha256: 9a2c567556f0f3c0a6de42e7efa911b7a39f85d467eb90278bf24514ee8c7f25}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-evidence-audit, josim-project-summary]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, research/tasks/JH-20260813-M11B-003/design/scope-correct-matrix-rework.md, research/tasks/JH-20260813-M11B-002/audits/C01/verdict.yaml, research/tasks/JH-20260813-M11A-001/audits/C02/verdict.yaml]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: e3c7ea5142fdc5ef9458a29f84ff67423f35edf59baae229ab0a7f4fd7153324}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: docs/research/REFERENCE_PROVENANCE.md, role: DOCUMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260813-M11B-003/attempts/**/validate_scope_correct_object_matrix.py, role: TEST, required: true}
+  - {id: D4, path: research/tasks/JH-20260813-M11B-003/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: 'The canonical matrix has exactly the seven unique object_ids bvm_storage, bvm_source_output, published_qb, bq_v4, standard_dcsfq, dcsfq_bvm, canonical_jtl. Every object has structured current_evidence, observable, parameter_provenance, characterization_status, reproduction_status, unknowns, claim_limitation, and next_discriminator fields.', evidence: [SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, validator-log]}
+  - {id: AC2, condition: 'Every factual evidence/source entry is an authorized, existing, SHA-256-bound input with source role, review state, and locator. Neither output document is used as factual evidence. INVENTORIED_UNREVIEWED is distinct from unavailable and cannot support [PUBLISHED]. UNKNOWN/INFERRED items are structured and no project-tuned/inferred behavior is presented as published reproduction.', evidence: [SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, validator-log]}
+  - {id: AC3, condition: 'The matrix binds freeze_task and W5B closure eligibility to JH-20260813-M11B-003 and explicitly preserves the knowledge-state-only claim ceiling, allowed UNKNOWN/INFERRED/R0/PARTIAL_R1 statuses, and independent W5A/W5C boundary.', evidence: [SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml, validator-log]}
+  - {id: AC4, condition: 'REFERENCE_PROVENANCE.md is a valid short pointer/index to the matrix, creates no second register, names no nonexistent working-tree file, and does not mark W5B complete before this task audit is ACCEPTED.', evidence: [REFERENCE_PROVENANCE.md, validator-log]}
+  - {id: AC5, condition: 'An attempt-local deterministic validator verifies AC1-AC4, including evidence existence/hash/scope, the output-as-evidence prohibition, exact status enums, structured UNKNOWN entries, pointer integrity, and final task identity. It passes the delivered documents.', evidence: [validate_scope_correct_object_matrix.py, validator-log]}
+  - {id: AC6, condition: 'Receipt records no JoSIM/network/external-contact activity, no frozen-path edit, no status upgrade, and a successful final handoff verification.', evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions: ['Any circuit run, tuning, external contact, network use, frozen-path edit, unregistered status upgrade, output used as factual evidence, broken pointer, second provenance register, or claim beyond the knowledge-state ceiling.']
+inconclusive_conditions: ['If an object source cannot be bounded from the authorized local corpus, record the object as structured UNKNOWN with an exact discriminator; if the document repair itself needs an out-of-scope input, stop BLOCKED.']
+stop_conditions: ['Any HEAD/dirty/scope/authority/metric-spec mismatch.', 'Need to edit outside write_paths; run JoSIM; use network/external contact; change circuits/raw/tests; or elevate a status.', 'A factual source hash differs, the old output needs to be used as evidence, or final verify-task fails.']
+issuance_blockers: []

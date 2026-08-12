@@ -44,3 +44,7 @@
 ## 4. Phase 1 验证链（V1-V4b，待计划修订）
 
 V1 偏置稳定 → V2 阈值判别扫描（含 L2/L3 输入网络变体）→ V3 JTL 接收 → V4 BVM 级联（含极性验证）→ V4b 去负载链对照。最终 Gate 不变：读1 → 恰好 1 个被 JTL 接收的 SFQ；读0 → 0。
+
+---
+
+> **SUPERSEDED (M10, 2026-08-13)**：本文件正文与历史表格保留原样，不作改写。相位/事件计量口径已由 METRIC_SPEC_V2 v2.0.0 修正（`P(...)` 为 raw rad，圈数 = Δrad/(2π)）。P0 家族的原始 CSV 现按预注册端点算术重建为 [metrics_v2 JSON](test/final/interface/data/metrics_v2/p0-v2.json)；中央修正表见 [HISTORICAL_METRICS_V2_CORRECTION_TABLE](../docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md)。本页任何 SFQ/事件/Gate 表述仅为历史叙述，不代表 V2 口径下的物理结论。

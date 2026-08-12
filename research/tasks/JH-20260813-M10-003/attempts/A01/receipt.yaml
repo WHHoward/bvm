@@ -1,0 +1,279 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260813-M10-003
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-13T03:30:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 682a9563da20771a90f973db2a4c419d9bde94944aba152e2a3513a419319521
+  ack_sha256: 56e5584ed31a473fe74995cfb4ea225d32e2ebd5f4d428421d3238438e45c04e
+execution_status: COMPLETED
+baseline_git_head: f62c31cfe2ad1333175a877d9b4018eead1db6b2
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/ack.yaml
+  action: CREATED
+  sha256: 56e5584ed31a473fe74995cfb4ea225d32e2ebd5f4d428421d3238438e45c04e
+- path: scripts/rebuild_historical_metrics_v2.py
+  action: CREATED
+  sha256: 1f70083a28b8f88ca4cbc4c005801048f57224137d15abe04618931a7649f6f8
+- path: test/metrics/test_rebuild_historical_metrics_v2.py
+  action: CREATED
+  sha256: f249f431b06eedb77450ef11c09b737cab22059f7eeac4999f366c80dcf3d95b
+- path: docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md
+  action: CREATED
+  sha256: 750d1092585e0d6940c3b5708311a5ee054051d19be1b8d11fc557661d6a371f
+- path: test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json
+  action: CREATED
+  sha256: 8a22b9a3fb619b44eb3925e749b4d17094ffd205ff5e7ab4627382c356870a6e
+- path: test/final/interface/data/metrics_v2/p0-v2.json
+  action: CREATED
+  sha256: 2f1d9ec52e2525e69d16e9b5aa4790b0b7cec2b76ffe34c8ececd200e31a4790
+- path: test/final/bvm/data/metrics_v2/p2-v2.json
+  action: CREATED
+  sha256: 71d97eca95a3ff778ea36c443ebc9f80b919291470e8552e5e0486c90fed5b35
+- path: test/final/qb/data/metrics_v2/bq-v4-v2.json
+  action: CREATED
+  sha256: 684ba5fa235dbc0e73fcbfd166a22cc4321b8aff8882b6ade68e4e9f13e947e4
+- path: test/final/single_bvm_qb/BASELINE.md
+  action: MODIFIED
+  sha256: d1910d8feded430d5f02660e9601629ecc84ac45886ea8832238416bc2ee15a8
+- path: test/final/interface/P0_LOG.md
+  action: MODIFIED
+  sha256: 542687d6cb3f7fca60efb3a990a29c49dd5a562c4b99241c13d9570cbb1b9f7a
+- path: test/final/bvm/P2_LOG.md
+  action: MODIFIED
+  sha256: b144714310efdd7f6f627643349f6e64407bbc82842942d32a176ddb81504767
+- path: test/final/single_bvm_qb/EXPERIMENT_LOG.md
+  action: MODIFIED
+  sha256: 036c9c9dbe920f6468aef74562e4d17353ee62f589dc67b69f969dcfb81f3bcd
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: 918c59d9678651f8e0738f6c63b71c78b178e71d397082cc2f4c286d6eda374b
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/generator.log
+  action: CREATED
+  sha256: 1f147f3be082d49009228c5885bc92ee5bea8afb5475a446fb93c00b857ef5ab
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-rebuild.log
+  action: CREATED
+  sha256: 495d0da76af121b0c3e9d12b63e8ef8914bc398eff53630d34b2f185d67dbc31
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-metric-spec-a01.log
+  action: CREATED
+  sha256: ed7acc80ce9200a6e7336bb98f0543ac41a58eaef1fdfd07fc9aba9f85b1939a
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  action: CREATED
+  sha256: 98ea63e2cf508bcb69da2c29c98fec51838cefc33d9a26bc0e5df5f581418ee0
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  action: CREATED
+  sha256: 8e96c33d1981c2d7aaa4f91943f646282737bddf46bce31a23a8da1355883596
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  action: CREATED
+  sha256: 4ff5f304f5d9a911cc6f1608b95ce45daeb24010375ed196cdcd1b634b3486e6
+- path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  action: CREATED
+  sha256: ec36ba6369ba86f697e4fece4691ac47ca3cf63915846c471a1f6e16ae6c70cf
+artifacts:
+- id: generator
+  path: scripts/rebuild_historical_metrics_v2.py
+  sha256: 1f70083a28b8f88ca4cbc4c005801048f57224137d15abe04618931a7649f6f8
+  role: IMPLEMENTATION
+- id: rebuild-tests
+  path: test/metrics/test_rebuild_historical_metrics_v2.py
+  sha256: f249f431b06eedb77450ef11c09b737cab22059f7eeac4999f366c80dcf3d95b
+  role: TEST
+- id: correction-table
+  path: docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md
+  sha256: 750d1092585e0d6940c3b5708311a5ee054051d19be1b8d11fc557661d6a371f
+  role: DOCUMENTATION
+- id: ack
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/ack.yaml
+  sha256: 56e5584ed31a473fe74995cfb4ea225d32e2ebd5f4d428421d3238438e45c04e
+  role: DOCUMENTATION
+- id: json-baseline
+  path: test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json
+  sha256: 8a22b9a3fb619b44eb3925e749b4d17094ffd205ff5e7ab4627382c356870a6e
+  role: RAW
+- id: json-p0
+  path: test/final/interface/data/metrics_v2/p0-v2.json
+  sha256: 2f1d9ec52e2525e69d16e9b5aa4790b0b7cec2b76ffe34c8ececd200e31a4790
+  role: RAW
+- id: json-p2
+  path: test/final/bvm/data/metrics_v2/p2-v2.json
+  sha256: 71d97eca95a3ff778ea36c443ebc9f80b919291470e8552e5e0486c90fed5b35
+  role: RAW
+- id: json-bq
+  path: test/final/qb/data/metrics_v2/bq-v4-v2.json
+  sha256: 684ba5fa235dbc0e73fcbfd166a22cc4321b8aff8882b6ade68e4e9f13e947e4
+  role: RAW
+- id: banner-0
+  path: test/final/single_bvm_qb/BASELINE.md
+  sha256: d1910d8feded430d5f02660e9601629ecc84ac45886ea8832238416bc2ee15a8
+  role: DOCUMENTATION
+- id: banner-1
+  path: test/final/interface/P0_LOG.md
+  sha256: 542687d6cb3f7fca60efb3a990a29c49dd5a562c4b99241c13d9570cbb1b9f7a
+  role: DOCUMENTATION
+- id: banner-2
+  path: test/final/bvm/P2_LOG.md
+  sha256: b144714310efdd7f6f627643349f6e64407bbc82842942d32a176ddb81504767
+  role: DOCUMENTATION
+- id: banner-3
+  path: test/final/single_bvm_qb/EXPERIMENT_LOG.md
+  sha256: 036c9c9dbe920f6468aef74562e4d17353ee62f589dc67b69f969dcfb81f3bcd
+  role: DOCUMENTATION
+- id: log-preflight.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/preflight.log
+  sha256: 918c59d9678651f8e0738f6c63b71c78b178e71d397082cc2f4c286d6eda374b
+  role: LOG
+- id: log-generator.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/generator.log
+  sha256: 1f147f3be082d49009228c5885bc92ee5bea8afb5475a446fb93c00b857ef5ab
+  role: LOG
+- id: log-test-rebuild.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-rebuild.log
+  sha256: 495d0da76af121b0c3e9d12b63e8ef8914bc398eff53630d34b2f185d67dbc31
+  role: LOG
+- id: log-test-metric-spec-a01.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-metric-spec-a01.log
+  sha256: ed7acc80ce9200a6e7336bb98f0543ac41a58eaef1fdfd07fc9aba9f85b1939a
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  sha256: 98ea63e2cf508bcb69da2c29c98fec51838cefc33d9a26bc0e5df5f581418ee0
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2_m5.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  sha256: 8e96c33d1981c2d7aaa4f91943f646282737bddf46bce31a23a8da1355883596
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2_m6.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  sha256: 4ff5f304f5d9a911cc6f1608b95ce45daeb24010375ed196cdcd1b634b3486e6
+  role: LOG
+- id: log-tests-test_sfq_metrics_v2_m7.log
+  path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  sha256: ec36ba6369ba86f697e4fece4691ac47ca3cf63915846c471a1f6e16ae6c70cf
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M10-003 (ACK 后 receipt 前)
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/preflight.log
+  log_sha256: 918c59d9678651f8e0738f6c63b71c78b178e71d397082cc2f4c286d6eda374b
+- command: python3 scripts/rebuild_historical_metrics_v2.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/generator.log
+  log_sha256: 1f147f3be082d49009228c5885bc92ee5bea8afb5475a446fb93c00b857ef5ab
+- command: python3 test/metrics/test_rebuild_historical_metrics_v2.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-rebuild.log
+  log_sha256: 495d0da76af121b0c3e9d12b63e8ef8914bc398eff53630d34b2f185d67dbc31
+- command: python3 test/metrics/test_metric_spec_v2.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-metric-spec-a01.log
+  log_sha256: ed7acc80ce9200a6e7336bb98f0543ac41a58eaef1fdfd07fc9aba9f85b1939a
+- command: python3 test/metrics/test_sfq_metrics_v2.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  log_sha256: 98ea63e2cf508bcb69da2c29c98fec51838cefc33d9a26bc0e5df5f581418ee0
+- command: python3 test/metrics/test_sfq_metrics_v2_m5.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  log_sha256: 8e96c33d1981c2d7aaa4f91943f646282737bddf46bce31a23a8da1355883596
+- command: python3 test/metrics/test_sfq_metrics_v2_m6.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  log_sha256: 4ff5f304f5d9a911cc6f1608b95ce45daeb24010375ed196cdcd1b634b3486e6
+- command: python3 test/metrics/test_sfq_metrics_v2_m7.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  log_sha256: ec36ba6369ba86f697e4fece4691ac47ca3cf63915846c471a1f6e16ae6c70cf
+tests:
+- id: rebuild-regression
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-rebuild.log
+  notes:
+  - 13/13 OK：QA 拒绝、四输出结构、端点算术一致性、已知基线常量、bump_0 控制限定、禁词、legacy 字节保持
+- id: M4-M7 + metric-spec regression
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-metric-spec-a01.log
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2.log
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m5.log
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m6.log
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/tests-test_sfq_metrics_v2_m7.log
+  notes:
+  - 全部 OK，未改动
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-003/attempts/A01/ack.yaml
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/preflight.log
+  notes:
+  - HANDOVER/todo 核验记录 M9 ACCEPTED、用户授权 M10、METRIC_SPEC_V2 measurement-only、全局容差 UNFROZEN；两 authority 文件未编辑（哈希在 preflight.log）
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - scripts/rebuild_historical_metrics_v2.py
+  - test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json
+  - test/final/interface/data/metrics_v2/p0-v2.json
+  - test/final/bvm/data/metrics_v2/p2-v2.json
+  - test/final/qb/data/metrics_v2/bq-v4-v2.json
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/generator.log
+  notes:
+  - stdlib-only 确定性 generator（固定 GENERATION_TIMESTAMP）；四个 JSON 含 raw hashes/metric-spec+plan hashes/选定端点/带符号 rad+turns/limitations+not_applicable
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - test/final/interface/data/metrics_v2/p0-v2.json
+  - docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md
+  notes:
+  - 仅 7 个 bump 文件使用 bump_0 作命名历史 comparator（sustained 无 control，plan 明确）；per-run 值先于校正；control 关系标注历史回归配对非新 netlist-closure 证明
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - test/metrics/test_rebuild_historical_metrics_v2.py
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-rebuild.log
+  notes:
+  - 13 项回归拒绝 units/hash/time/column/control 错误与禁词（claim-form）；legacy CSV 字节级不变测试通过
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md
+  - test/final/single_bvm_qb/BASELINE.md
+  - test/final/interface/P0_LOG.md
+  - test/final/bvm/P2_LOG.md
+  - test/final/single_bvm_qb/EXPERIMENT_LOG.md
+  notes:
+  - 中央表链接四输出与 limits；四文档仅追加紧凑 SUPERSEDED banner，正文/表格逐字保留
+- id: AC6
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260813-M10-003/attempts/A01/ack.yaml
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/preflight.log
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/generator.log
+  - research/tasks/JH-20260813-M10-003/attempts/A01/logs/test-rebuild.log
+  notes:
+  - receipt 记录全部 changes/commands/hashes/limitations；无 JoSIM 运行；final verify 由 Codex 执行
+observations:
+- 四 JSON 生成且交叉核对已知常量：BASELINE JM1 −0.940575 turns、BJS +0.998338、BJL1 0.070556、BJL2 0.059816（与 HANDOVER 独立重算一致）。
+- P0 bump 7 个非零文件用 bump_0 校正；sustained 3 个无 control；BQ v4 6 个 run（5 sweep + sfq）。
+- 13/13 rebuild 测试 + 全部既有回归通过；legacy CSV/JSON 未改动（字节级验证）。
+- 四个历史文档仅追加 SUPERSEDED banner；正文未改写。
+interpretations:
+- 历史原始 CSV 现以 V2 口径可复现表达：raw rad 保留、端点圈数、provenance、控制关系与显式证据边界，无物理 Gate 主张。
+unknowns:
+- BVM→BQ 与 BQ/BVM same-JJ P/V mappings 仍 UNKNOWN（METRIC_SPEC_V2 §3.5）；全局容差仍 UNFROZEN；P0 sustained 缺匹配零输入控制。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- FROZEN delivery snapshot 未由执行者创建（Codex-owned）；result_git_head null。
+- log 文件被 .gitignore 忽略，已在 receipt 显式登记路径与 SHA-256。
+- generator 固定生成 timestamp（GENERATION_TIMESTAMP 常量）保证确定性。
+- 四个历史文档同时出现在 scope.read_paths（scope-files.sha256 冻结其 banner 前哈希）与 scope.write_paths（AC5 授权追加 banner）；banner 追加后 verify-task 对这四个文档报预期 drift（M8 CLOSED 先例：'上层文档更新后 current verify-task 对其历史冻结哈希报 drift 属预期，不修改已签
+  request'）。receipt 已记录 MODIFIED 后的新哈希，形成完整审计轨迹。
+deviations: []
+blockers: []

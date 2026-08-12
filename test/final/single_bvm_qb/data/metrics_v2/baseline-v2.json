@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "family": "baseline",
+  "generator": {
+    "name": "scripts/rebuild_historical_metrics_v2.py",
+    "version": "1.0.0",
+    "sha256": "1f70083a28b8f88ca4cbc4c005801048f57224137d15abe04618931a7649f6f8"
+  },
+  "metric_spec": {
+    "path": "docs/research/METRIC_SPEC_V2.md",
+    "version": "2.0.0",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "reconstruction_plan": {
+    "path": "research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md",
+    "sha256": "14517f8ab740d509069338ca13da0e18b7586d9596913ecf35083e3228833cc8"
+  },
+  "generated_at": "2026-08-13T03:15:00+08:00",
+  "units": {
+    "phase": "rad",
+    "turns": "endpoint_delta_rad / (2*pi)"
+  },
+  "control_relationship": null,
+  "runs": [
+    {
+      "input": {
+        "path": "test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv",
+        "sha256": "951de84c5bac3d5cbaff508036dd9e32e163b167c90ea937bf65ea29dbbf6423",
+        "n_samples": 1099,
+        "interval": {
+          "declared": "[0, 1.10000091075e-10)",
+          "start_s": 0.0,
+          "end_s": 1.1000009107468124e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.099e-10
+      },
+      "quantities": {
+        "P(B_JM1|XBVM1)": {
+          "endpoint_delta_rad": -5.909806,
+          "endpoint_delta_turns": -0.9405748376141416
+        },
+        "P(B_JM2|XBVM1)": {
+          "endpoint_delta_rad": -0.3787724,
+          "endpoint_delta_turns": -0.06028349976678062
+        },
+        "P(BJS|XBQ)": {
+          "endpoint_delta_rad": 6.272743,
+          "endpoint_delta_turns": 0.9983380551950849
+        },
+        "P(BJL1|XBQ)": {
+          "endpoint_delta_rad": 0.4433193,
+          "endpoint_delta_turns": 0.07055645796303889
+        },
+        "P(BJL2|XBQ)": {
+          "endpoint_delta_rad": 0.3758358,
+          "endpoint_delta_turns": 0.059816125360896956
+        }
+      }
+    }
+  ],
+  "limitations": "full-record endpoint arithmetic on historical CSVs; not a pre/post platform result, not an activity/event/SFQ/fluxoid count, not a voltage-area cross-check, not a convergence verdict, and not a physical Gate or candidate conclusion. Missing controls/windows/mappings remain explicit NOT_APPLICABLE/INCONCLUSIVE.",
+  "not_applicable": [
+    "activity clusters / event counts: NOT_APPLICABLE (no predeclared windows)",
+    "voltage-area cross-check: NOT_APPLICABLE (no direct same-JJ V mapping in this family)",
+    "convergence verdict: NOT_APPLICABLE (no preregistered ladder)"
+  ]
+}

@@ -1,0 +1,48 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M10-003
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T03:10:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "682a9563da20771a90f973db2a4c419d9bde94944aba152e2a3513a419319521"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "f62c31cfe2ad1333175a877d9b4018eead1db6b2"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M10-003/request.yaml / request.sha256 / baseline/** / design/**（issue 自带，与 baseline/git-status.txt 一致）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "执行预注册 M10 历史重建：按 reconstruction-plan.md 固定 inventory（BASELINE/P0 bump+sustained/P2/BQ-v4 共 21 个 raw CSV），用确定性 stdlib-only generator 对每个声明 P 列做全记录端点算术（endpoint_delta_rad = P_last - P_first、turns = rad/(2π)，保留符号与 raw rad），产出四个 metrics_v2 JSON + 中央 correction table，四个历史文档仅追加紧凑 SUPERSEDED banner/link（正文逐字保留）。P0 bump 仅用 bump_0 作命名历史 comparator。不运行 JoSIM、不触碰 legacy raw/JSON、不做 voltage-area/activity/convergence/event 声明；缺失证据一律 NOT_APPLICABLE/INCONCLUSIVE。AC1 authority 已核验（HANDOVER/todo 记录 M9 ACCEPTED、用户授权 M10、METRIC_SPEC_V2 measurement-only、全局容差 UNFROZEN），未编辑两文件。"
+  non_goals:
+    - "不运行 JoSIM；不改 legacy raw/netlist/model；不调参；不定义 INTERFACE_GATE_V1/route/paper claim；不把端点算术称为 SFQ/event/fluxoid/接收/candidate/Gate verdict；不重写历史 narrative/表格。"
+  stop_conditions:
+    - "HEAD、dirty snapshot、scope hashes、metric-spec hash、listed input hash/header 或 locks 与 request 不符。"
+    - "需要未声明输入/control/window/mapping、JoSIM/网络/安装、删除/覆盖/重命名或 scope 外编辑。"
+    - "verify-task 无法成功——保留 attempt 并报告 BLOCKED/DEVIATED，不声称 M10 完成。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M10-003（ACK 后 receipt 前；final verify 由 Codex 执行）"
+  - "python3 scripts/rebuild_historical_metrics_v2.py（生成四个 metrics_v2 JSON）"
+  - "python3 test/metrics/test_rebuild_historical_metrics_v2.py（回归）"
+  - "python3 test/metrics/test_metric_spec_v2.py && test_sfq_metrics_v2*.py（只读回归）"
+expected_changed_paths:
+  - "scripts/rebuild_historical_metrics_v2.py"
+  - "test/metrics/test_rebuild_historical_metrics_v2.py"
+  - "test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json"
+  - "test/final/interface/data/metrics_v2/p0-v2.json"
+  - "test/final/bvm/data/metrics_v2/p2-v2.json"
+  - "test/final/qb/data/metrics_v2/bq-v4-v2.json"
+  - "docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md"
+  - "test/final/single_bvm_qb/BASELINE.md"
+  - "test/final/interface/P0_LOG.md"
+  - "test/final/bvm/P2_LOG.md"
+  - "test/final/single_bvm_qb/EXPERIMENT_LOG.md"
+  - "research/tasks/JH-20260813-M10-003/attempts/**"
+blockers: []
+deviations: []

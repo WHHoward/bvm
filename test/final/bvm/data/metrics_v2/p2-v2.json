@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "family": "p2",
+  "generator": {
+    "name": "scripts/rebuild_historical_metrics_v2.py",
+    "version": "1.0.0",
+    "sha256": "1f70083a28b8f88ca4cbc4c005801048f57224137d15abe04618931a7649f6f8"
+  },
+  "metric_spec": {
+    "path": "docs/research/METRIC_SPEC_V2.md",
+    "version": "2.0.0",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "reconstruction_plan": {
+    "path": "research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md",
+    "sha256": "14517f8ab740d509069338ca13da0e18b7586d9596913ecf35083e3228833cc8"
+  },
+  "generated_at": "2026-08-13T03:15:00+08:00",
+  "units": {
+    "phase": "rad",
+    "turns": "endpoint_delta_rad / (2*pi)"
+  },
+  "control_relationship": null,
+  "runs": [
+    {
+      "input": {
+        "path": "test/final/bvm/data/test_bvm_multivortex.csv",
+        "sha256": "fe9718a00583c72f29c7b9d5b5acef480d7b44193cfeb02afcd133eac06c4c8b",
+        "n_samples": 1598,
+        "interval": {
+          "declared": "[0, 1.59900062617e-10)",
+          "start_s": 0.0,
+          "end_s": 1.5990006261740764e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.598e-10
+      },
+      "quantities": {
+        "P(B_JM1|XBVM1)": {
+          "endpoint_delta_rad": 5.914134,
+          "endpoint_delta_turns": 0.9412636602078434
+        },
+        "P(B_JM2|XBVM1)": {
+          "endpoint_delta_rad": -0.0583146,
+          "endpoint_delta_turns": -0.00928105684442664
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/bvm/data/test_bvm_multivortex_wl80.csv",
+        "sha256": "48a20b5902158b03696f97ce41589b6d6db90c4eef285659676af05f10aa06b9",
+        "n_samples": 1598,
+        "interval": {
+          "declared": "[0, 1.59900062617e-10)",
+          "start_s": 0.0,
+          "end_s": 1.5990006261740764e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.598e-10
+      },
+      "quantities": {
+        "P(B_JM1|XBVM1)": {
+          "endpoint_delta_rad": 0.002080381,
+          "endpoint_delta_turns": 0.0003311029196644603
+        },
+        "P(B_JM2|XBVM1)": {
+          "endpoint_delta_rad": 0.02028133,
+          "endpoint_delta_turns": 0.0032278739219779497
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/bvm/data/test_bvm_multivortex_wl120.csv",
+        "sha256": "ec7a9507752c492a4ec6a400e5629ed5bffa684af5f241b0979b0a2529280c72",
+        "n_samples": 1598,
+        "interval": {
+          "declared": "[0, 1.59900062617e-10)",
+          "start_s": 0.0,
+          "end_s": 1.5990006261740764e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.598e-10
+      },
+      "quantities": {
+        "P(B_JM1|XBVM1)": {
+          "endpoint_delta_rad": 5.901907,
+          "endpoint_delta_turns": 0.9393176727186587
+        },
+        "P(B_JM2|XBVM1)": {
+          "endpoint_delta_rad": 0.1119652,
+          "endpoint_delta_turns": 0.01781981503427268
+        }
+      }
+    }
+  ],
+  "limitations": "full-record endpoint arithmetic on historical CSVs; not a pre/post platform result, not an activity/event/SFQ/fluxoid count, not a voltage-area cross-check, not a convergence verdict, and not a physical Gate or candidate conclusion. Missing controls/windows/mappings remain explicit NOT_APPLICABLE/INCONCLUSIVE.",
+  "not_applicable": [
+    "activity clusters / event counts: NOT_APPLICABLE (no predeclared windows)",
+    "voltage-area cross-check: NOT_APPLICABLE (no direct same-JJ V mapping in this family)",
+    "convergence verdict: NOT_APPLICABLE (no preregistered ladder)"
+  ]
+}

@@ -1,0 +1,508 @@
+{
+  "schema_version": 1,
+  "family": "p0",
+  "generator": {
+    "name": "scripts/rebuild_historical_metrics_v2.py",
+    "version": "1.0.0",
+    "sha256": "1f70083a28b8f88ca4cbc4c005801048f57224137d15abe04618931a7649f6f8"
+  },
+  "metric_spec": {
+    "path": "docs/research/METRIC_SPEC_V2.md",
+    "version": "2.0.0",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "reconstruction_plan": {
+    "path": "research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md",
+    "sha256": "14517f8ab740d509069338ca13da0e18b7586d9596913ecf35083e3228833cc8"
+  },
+  "generated_at": "2026-08-13T03:15:00+08:00",
+  "units": {
+    "phase": "rad",
+    "turns": "endpoint_delta_rad / (2*pi)"
+  },
+  "control_relationship": "bump_0 is the declared historical zero-input comparator for every nonzero bump file only",
+  "runs": [
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_1u4.csv",
+        "sha256": "1d10dec2b5242359799e426d55aea279f269589d1f2da39041ad3e2e828b6213",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      },
+      "control_corrected": {
+        "P(B1|XDCSFQ)": {
+          "signal_endpoint_delta_rad": -0.4293468,
+          "control_endpoint_delta_rad": -0.4293468,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B2|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8937733,
+          "control_endpoint_delta_rad": 0.8937733,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B3|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8093716,
+          "control_endpoint_delta_rad": 0.8093716,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        }
+      },
+      "control": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3"
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_20u.csv",
+        "sha256": "403e0863caeac9b5a84b291fbf4a57fcf3422224872af5d917ab0373e2a27e3e",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      },
+      "control_corrected": {
+        "P(B1|XDCSFQ)": {
+          "signal_endpoint_delta_rad": -0.4293468,
+          "control_endpoint_delta_rad": -0.4293468,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B2|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8937733,
+          "control_endpoint_delta_rad": 0.8937733,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B3|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8093716,
+          "control_endpoint_delta_rad": 0.8093716,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        }
+      },
+      "control": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3"
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_40u.csv",
+        "sha256": "fd6ac27b20a1f98594d3a5eb064270a0cbc3c0305fbbd80c55c48525dc64f4af",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      },
+      "control_corrected": {
+        "P(B1|XDCSFQ)": {
+          "signal_endpoint_delta_rad": -0.4293468,
+          "control_endpoint_delta_rad": -0.4293468,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B2|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8937733,
+          "control_endpoint_delta_rad": 0.8937733,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B3|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8093716,
+          "control_endpoint_delta_rad": 0.8093716,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        }
+      },
+      "control": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3"
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_68u.csv",
+        "sha256": "f057a9603139970eafd2a2902aceae486d437929bc69fe1cb291b8b728ca46cf",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      },
+      "control_corrected": {
+        "P(B1|XDCSFQ)": {
+          "signal_endpoint_delta_rad": -0.4293468,
+          "control_endpoint_delta_rad": -0.4293468,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B2|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8937733,
+          "control_endpoint_delta_rad": 0.8937733,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B3|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8093716,
+          "control_endpoint_delta_rad": 0.8093716,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        }
+      },
+      "control": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3"
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_100u.csv",
+        "sha256": "14272d93b5ca747e2a51936ab7e5872978c2886d73b4fc5c79ae15309db3c70c",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      },
+      "control_corrected": {
+        "P(B1|XDCSFQ)": {
+          "signal_endpoint_delta_rad": -0.4293468,
+          "control_endpoint_delta_rad": -0.4293468,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B2|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8937733,
+          "control_endpoint_delta_rad": 0.8937733,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B3|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8093716,
+          "control_endpoint_delta_rad": 0.8093716,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        }
+      },
+      "control": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3"
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_150u.csv",
+        "sha256": "b2c17bc97426a59db687ae80a7a6d74d7cd9bb5a8e7c14e15eae255376193705",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      },
+      "control_corrected": {
+        "P(B1|XDCSFQ)": {
+          "signal_endpoint_delta_rad": -0.4293468,
+          "control_endpoint_delta_rad": -0.4293468,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B2|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8937733,
+          "control_endpoint_delta_rad": 0.8937733,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        },
+        "P(B3|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 0.8093716,
+          "control_endpoint_delta_rad": 0.8093716,
+          "control_corrected_endpoint_delta_rad": 0.0,
+          "control_corrected_endpoint_delta_turns": 0.0
+        }
+      },
+      "control": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3"
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_300u.csv",
+        "sha256": "dfe20406ee1bc54be483b3bc5935cac87ab545af06c47082720523569b90549d",
+        "n_samples": 1999,
+        "interval": {
+          "declared": "[0, 2.0000005005e-10)",
+          "start_s": 0.0,
+          "end_s": 2.0000005005005006e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 1.999e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -6.712532,
+          "endpoint_delta_turns": -1.0683326484625264
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 7.176959,
+          "endpoint_delta_turns": 1.142248501217866
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 7.092557,
+          "endpoint_delta_turns": 1.128815505711024
+        }
+      },
+      "control_corrected": {
+        "P(B1|XDCSFQ)": {
+          "signal_endpoint_delta_rad": -6.712532,
+          "control_endpoint_delta_rad": -0.4293468,
+          "control_corrected_endpoint_delta_rad": -6.2831852,
+          "control_corrected_endpoint_delta_turns": -0.9999999829418391
+        },
+        "P(B2|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 7.176959,
+          "control_endpoint_delta_rad": 0.8937733,
+          "control_corrected_endpoint_delta_rad": 6.2831857,
+          "control_corrected_endpoint_delta_turns": 1.0000000625193106
+        },
+        "P(B3|XDCSFQ)": {
+          "signal_endpoint_delta_rad": 7.092557,
+          "control_endpoint_delta_rad": 0.8093716,
+          "control_corrected_endpoint_delta_rad": 6.283185400000001,
+          "control_corrected_endpoint_delta_turns": 1.0000000147728278
+        }
+      },
+      "control": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_bump_0.csv",
+        "sha256": "2420b99ae10135de14db2a4dd0ea63649e225ff6a467dabe6b7514c1096bd9c3"
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_sustained_68u.csv",
+        "sha256": "f082249001ada2e9dc4ba1b6ba85bac8481eb739465fb04aa6ac31e842174842",
+        "n_samples": 2499,
+        "interval": {
+          "declared": "[0, 2.50000040032e-10)",
+          "start_s": 0.0,
+          "end_s": 2.5000004003202563e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.499e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_sustained_150u.csv",
+        "sha256": "82577c4ce6efd4769cfde457c112ce75b1271056f3d6d775f46ebd390cb5d88d",
+        "n_samples": 2499,
+        "interval": {
+          "declared": "[0, 2.50000040032e-10)",
+          "start_s": 0.0,
+          "end_s": 2.5000004003202563e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.499e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -0.4293468,
+          "endpoint_delta_turns": -0.06833266552068737
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8937733,
+          "endpoint_delta_turns": 0.1422484386985555
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 0.8093716,
+          "endpoint_delta_turns": 0.12881549093819628
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/interface/data/test_dcsfq_behavior_sustained_300u.csv",
+        "sha256": "d73e2502e3c910d7ae1ab31a2dc29c5cac556bff4906c086711198735d5914b6",
+        "n_samples": 2499,
+        "interval": {
+          "declared": "[0, 2.50000040032e-10)",
+          "start_s": 0.0,
+          "end_s": 2.5000004003202563e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.499e-10
+      },
+      "quantities": {
+        "P(B1|XDCSFQ)": {
+          "endpoint_delta_rad": -6.712532,
+          "endpoint_delta_turns": -1.0683326484625264
+        },
+        "P(B2|XDCSFQ)": {
+          "endpoint_delta_rad": 7.176959,
+          "endpoint_delta_turns": 1.142248501217866
+        },
+        "P(B3|XDCSFQ)": {
+          "endpoint_delta_rad": 7.092557,
+          "endpoint_delta_turns": 1.128815505711024
+        }
+      }
+    }
+  ],
+  "limitations": "full-record endpoint arithmetic on historical CSVs; not a pre/post platform result, not an activity/event/SFQ/fluxoid count, not a voltage-area cross-check, not a convergence verdict, and not a physical Gate or candidate conclusion. Missing controls/windows/mappings remain explicit NOT_APPLICABLE/INCONCLUSIVE.",
+  "not_applicable": [
+    "activity clusters / event counts: NOT_APPLICABLE (no predeclared windows)",
+    "voltage-area cross-check: NOT_APPLICABLE (no direct same-JJ V mapping in this family)",
+    "convergence verdict: NOT_APPLICABLE (no preregistered ladder)"
+  ]
+}

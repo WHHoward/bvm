@@ -122,3 +122,7 @@ ea734654...  circuits/bvm/bvm_cell.cir
 - 实验记录: `EXPERIMENT_LOG.md`（7/13-7/17 七轮实验）
 - 矛盾分析: `memory/GuidanceFromGpt.md` §二（GPT 审计）、`memory/bvm-bq-coupling-experiments.md`
 - 原始 CSV（本次生成）: `/tmp/step0_run1/2/3.csv`, `/tmp/step0_bvm_1.csv`, `/tmp/step0_bq_1.csv`
+
+---
+
+> **SUPERSEDED (M10, 2026-08-13)**：本文件正文与历史表格保留原样，不作改写。相位/事件计量口径已由 METRIC_SPEC_V2 v2.0.0 修正（`P(...)` 为 raw rad，圈数 = Δrad/(2π)）。BASELINE 家族的原始 CSV 现按预注册端点算术重建为 [metrics_v2 JSON](test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json)；中央修正表见 [HISTORICAL_METRICS_V2_CORRECTION_TABLE](../docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md)。本页任何 SFQ/事件/Gate 表述仅为历史叙述，不代表 V2 口径下的物理结论。

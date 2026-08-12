@@ -80,3 +80,7 @@
   - wl80 `af183f35aa0ebc97483d7215f3e83a98` / wl120 `f579b0deea12744a6a4cb676ede69ce8`
 - 数据: test/final/bvm/data/{test_bvm_multivortex,test_bvm_multivortex_wl80,test_bvm_multivortex_wl120}.{csv,json}（JSON 内嵌 sha256 + git_head 交叉核对）
 - 提交: `317fa81`（feat(P2) 本体；本行 SHA 由回填提交写入）
+
+---
+
+> **SUPERSEDED (M10, 2026-08-13)**：本文件正文与历史表格保留原样，不作改写。相位/事件计量口径已由 METRIC_SPEC_V2 v2.0.0 修正（`P(...)` 为 raw rad，圈数 = Δrad/(2π)）。P2 家族的原始 CSV 现按预注册端点算术重建为 [metrics_v2 JSON](test/final/bvm/data/metrics_v2/p2-v2.json)；中央修正表见 [HISTORICAL_METRICS_V2_CORRECTION_TABLE](../docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md)。本页任何 SFQ/事件/Gate 表述仅为历史叙述，不代表 V2 口径下的物理结论。

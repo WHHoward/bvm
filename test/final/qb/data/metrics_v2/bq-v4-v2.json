@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "family": "bq_v4",
+  "generator": {
+    "name": "scripts/rebuild_historical_metrics_v2.py",
+    "version": "1.0.0",
+    "sha256": "1f70083a28b8f88ca4cbc4c005801048f57224137d15abe04618931a7649f6f8"
+  },
+  "metric_spec": {
+    "path": "docs/research/METRIC_SPEC_V2.md",
+    "version": "2.0.0",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "reconstruction_plan": {
+    "path": "research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md",
+    "sha256": "14517f8ab740d509069338ca13da0e18b7586d9596913ecf35083e3228833cc8"
+  },
+  "generated_at": "2026-08-13T03:15:00+08:00",
+  "units": {
+    "phase": "rad",
+    "turns": "endpoint_delta_rad / (2*pi)"
+  },
+  "control_relationship": null,
+  "runs": [
+    {
+      "input": {
+        "path": "test/final/qb/data/bq_v4_sweep70.csv",
+        "sha256": "1a892ee23dc5682f3e2e620820c863f02ddfc175f23707e8a1707ffcd486cd41",
+        "n_samples": 2999,
+        "interval": {
+          "declared": "[0, 3.00000033356e-10)",
+          "start_s": 0.0,
+          "end_s": 3.000000333555704e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.999e-10
+      },
+      "quantities": {
+        "P(BJS|XBQ)": {
+          "endpoint_delta_rad": 602.49,
+          "endpoint_delta_turns": 95.88926166343603
+        },
+        "P(BJL1|XBQ)": {
+          "endpoint_delta_rad": 0.292284,
+          "endpoint_delta_turns": 0.046518443386671535
+        },
+        "P(BJL2|XBQ)": {
+          "endpoint_delta_rad": 0.4928446,
+          "endpoint_delta_turns": 0.07843865426614792
+        },
+        "P(B1|XJTL)": {
+          "endpoint_delta_rad": 0.677626,
+          "endpoint_delta_turns": 0.10784752746758866
+        },
+        "P(B2|XJTL)": {
+          "endpoint_delta_rad": 0.7433305,
+          "endpoint_delta_turns": 0.1183047234259701
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/qb/data/bq_v4_sweep90.csv",
+        "sha256": "a10a117e2026acd85b56c1f5cbb34a85671501cc336fdf20f8415a41bbe9cf0c",
+        "n_samples": 2999,
+        "interval": {
+          "declared": "[0, 3.00000033356e-10)",
+          "start_s": 0.0,
+          "end_s": 3.000000333555704e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.999e-10
+      },
+      "quantities": {
+        "P(BJS|XBQ)": {
+          "endpoint_delta_rad": 603.2522,
+          "endpoint_delta_turns": 96.01056956106066
+        },
+        "P(BJL1|XBQ)": {
+          "endpoint_delta_rad": 0.2922082,
+          "endpoint_delta_turns": 0.04650637944198517
+        },
+        "P(BJL2|XBQ)": {
+          "endpoint_delta_rad": 0.4927984,
+          "endpoint_delta_turns": 0.07843130130777708
+        },
+        "P(B1|XJTL)": {
+          "endpoint_delta_rad": 0.6776002,
+          "endpoint_delta_turns": 0.1078434212700569
+        },
+        "P(B2|XJTL)": {
+          "endpoint_delta_rad": 0.7433423,
+          "endpoint_delta_turns": 0.1183066014542986
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/qb/data/bq_v4_sweep110.csv",
+        "sha256": "75fd3cb865fc42803f7ce491e0e507fc9bb02ff102cb3d841805be0fda23cbd1",
+        "n_samples": 2999,
+        "interval": {
+          "declared": "[0, 3.00000033356e-10)",
+          "start_s": 0.0,
+          "end_s": 3.000000333555704e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.999e-10
+      },
+      "quantities": {
+        "P(BJS|XBQ)": {
+          "endpoint_delta_rad": 678.144,
+          "endpoint_delta_turns": 107.92996972811028
+        },
+        "P(BJL1|XBQ)": {
+          "endpoint_delta_rad": 37.99202,
+          "endpoint_delta_turns": 6.046617781046149
+        },
+        "P(BJL2|XBQ)": {
+          "endpoint_delta_rad": 38.19165,
+          "endpoint_delta_turns": 6.0783898823355855
+        },
+        "P(B1|XJTL)": {
+          "endpoint_delta_rad": 38.37613,
+          "endpoint_delta_turns": 6.107750786237178
+        },
+        "P(B2|XJTL)": {
+          "endpoint_delta_rad": 38.44293,
+          "endpoint_delta_turns": 6.118382336435715
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/qb/data/bq_v4_sweep130.csv",
+        "sha256": "5642bc14dcafd088c8838b90f4c02e64fad01402659f350b59a2d6d5031fbf96",
+        "n_samples": 3000,
+        "interval": {
+          "declared": "[0, 3e-10)",
+          "start_s": 0.0,
+          "end_s": 3e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.999e-10
+      },
+      "quantities": {
+        "P(BJS|XBQ)": {
+          "endpoint_delta_rad": 753.1095,
+          "endpoint_delta_turns": 119.86109961446576
+        },
+        "P(BJL1|XBQ)": {
+          "endpoint_delta_rad": 37.99103,
+          "endpoint_delta_turns": 6.046460217652489
+        },
+        "P(BJL2|XBQ)": {
+          "endpoint_delta_rad": 38.19181,
+          "endpoint_delta_turns": 6.078415347126479
+        },
+        "P(B1|XJTL)": {
+          "endpoint_delta_rad": 38.37674,
+          "endpoint_delta_turns": 6.1078478707524635
+        },
+        "P(B2|XJTL)": {
+          "endpoint_delta_rad": 38.4426,
+          "endpoint_delta_turns": 6.118329815304496
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/qb/data/bq_v4_sweep150.csv",
+        "sha256": "131c662cd7a257c781d7d0fadc5bb2f4838478bbc9def87756652c4b87997807",
+        "n_samples": 3000,
+        "interval": {
+          "declared": "[0, 3e-10)",
+          "start_s": 0.0,
+          "end_s": 3e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.999e-10
+      },
+      "quantities": {
+        "P(BJS|XBQ)": {
+          "endpoint_delta_rad": 829.0318,
+          "endpoint_delta_turns": 131.94450895037156
+        },
+        "P(BJL1|XBQ)": {
+          "endpoint_delta_rad": 37.99176,
+          "endpoint_delta_turns": 6.046576400760945
+        },
+        "P(BJL2|XBQ)": {
+          "endpoint_delta_rad": 38.19172,
+          "endpoint_delta_turns": 6.078401023181601
+        },
+        "P(B1|XJTL)": {
+          "endpoint_delta_rad": 38.37626,
+          "endpoint_delta_turns": 6.10777147637978
+        },
+        "P(B2|XJTL)": {
+          "endpoint_delta_rad": 38.44269,
+          "endpoint_delta_turns": 6.118344139249374
+        }
+      }
+    },
+    {
+      "input": {
+        "path": "test/final/qb/data/bq_v4_sfq.csv",
+        "sha256": "24b4bd331e7ea1b6bbeb7a3fe9f0f15abcfb34341e56cac2329fb2b7f077b581",
+        "n_samples": 2999,
+        "interval": {
+          "declared": "[0, 3.00000033356e-10)",
+          "start_s": 0.0,
+          "end_s": 3.000000333555704e-10
+        },
+        "selected_first_time_s": 0.0,
+        "selected_last_time_s": 2.999e-10
+      },
+      "quantities": {
+        "P(BJS|XBQ)": {
+          "endpoint_delta_rad": 75.39826,
+          "endpoint_delta_turns": 12.000005779527928
+        },
+        "P(BJL1|XBQ)": {
+          "endpoint_delta_rad": 0.2923688,
+          "endpoint_delta_turns": 0.046531939725845725
+        },
+        "P(BJL2|XBQ)": {
+          "endpoint_delta_rad": 0.4927162,
+          "endpoint_delta_turns": 0.07841821877145493
+        },
+        "P(B1|XJTL)": {
+          "endpoint_delta_rad": 0.6774845,
+          "endpoint_delta_turns": 0.10782500704314117
+        },
+        "P(B2|XJTL)": {
+          "endpoint_delta_rad": 0.7431829,
+          "endpoint_delta_turns": 0.11828123215636974
+        }
+      }
+    }
+  ],
+  "limitations": "full-record endpoint arithmetic on historical CSVs; not a pre/post platform result, not an activity/event/SFQ/fluxoid count, not a voltage-area cross-check, not a convergence verdict, and not a physical Gate or candidate conclusion. Missing controls/windows/mappings remain explicit NOT_APPLICABLE/INCONCLUSIVE.",
+  "not_applicable": [
+    "activity clusters / event counts: NOT_APPLICABLE (no predeclared windows)",
+    "voltage-area cross-check: NOT_APPLICABLE (no direct same-JJ V mapping in this family)",
+    "convergence verdict: NOT_APPLICABLE (no preregistered ladder)"
+  ]
+}

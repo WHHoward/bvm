@@ -1,0 +1,192 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260812-M8-002
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-12T23:40:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 6e23aae1cb577079085f1437d3aa0e360e6ea2dcf02df93324e4b566352d49ba
+  ack_sha256: 9ca9d461aebc10a759dd04bf58451c6422de553e779a6f46c7f30c499c04046a
+execution_status: COMPLETED
+baseline_git_head: 60cf922e3858984e1845cf8cd2fb825dd3bd4872
+result_git_head: null
+changes:
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/ack.yaml
+  action: CREATED
+  sha256: 9ca9d461aebc10a759dd04bf58451c6422de553e779a6f46c7f30c499c04046a
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/analysis/analyze_m8_002.py
+  action: CREATED
+  sha256: 38506f4686b7bc7d2ab498914ed760e4d182dcca4a1ceb7410b771887e84a11c
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.json
+  action: CREATED
+  sha256: e5bd9447ba27346184c2e1cfc10a3fbc6d4427119c5cea391c7d909cee19f596
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.md
+  action: CREATED
+  sha256: d68b0e69ca63244104c42c96f3c04b6deb619a7fd1fe4b2953a6d47afde2615f
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/analysis-m8-002.log
+  action: CREATED
+  sha256: 921b4d3ba5761586a058111d8b04d7a8e1230f8507b68ba39a5c3121032659ed
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/preflight.log
+  action: CREATED
+  sha256: 2107b774582f2932512eee876dec6fbce12573f43b8907196c91d88d3602a847
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m4.log
+  action: CREATED
+  sha256: 362da18388b5981ea47f2ce205d342a3b9ceeb558aea69d2e1bf792a31bbc8a6
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m5.log
+  action: CREATED
+  sha256: 89db300e84cfd2198ada2fa484d9d2792771e7e11dda20788740d845b5afd7a2
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m6.log
+  action: CREATED
+  sha256: 17dffb77a029273501b150903ac24eaf9c357cad1724e012b6e82f847263dce7
+- path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m7.log
+  action: CREATED
+  sha256: f864f1bfcf9d073945b16b0a2cdc1c2e78b6b75e3b066dcc26804245a8188c4c
+artifacts:
+- id: ack
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/ack.yaml
+  sha256: 9ca9d461aebc10a759dd04bf58451c6422de553e779a6f46c7f30c499c04046a
+  role: DOCUMENTATION
+- id: analyzer
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/analysis/analyze_m8_002.py
+  sha256: 38506f4686b7bc7d2ab498914ed760e4d182dcca4a1ceb7410b771887e84a11c
+  role: IMPLEMENTATION
+- id: convergence-json
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.json
+  sha256: e5bd9447ba27346184c2e1cfc10a3fbc6d4427119c5cea391c7d909cee19f596
+  role: DOCUMENTATION
+- id: convergence-md
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.md
+  sha256: d68b0e69ca63244104c42c96f3c04b6deb619a7fd1fe4b2953a6d47afde2615f
+  role: DOCUMENTATION
+- id: analysis-log
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/analysis-m8-002.log
+  sha256: 921b4d3ba5761586a058111d8b04d7a8e1230f8507b68ba39a5c3121032659ed
+  role: LOG
+- id: preflight-log
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/preflight.log
+  sha256: 2107b774582f2932512eee876dec6fbce12573f43b8907196c91d88d3602a847
+  role: LOG
+- id: tests-m4
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m4.log
+  sha256: 362da18388b5981ea47f2ce205d342a3b9ceeb558aea69d2e1bf792a31bbc8a6
+  role: LOG
+- id: tests-m5
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m5.log
+  sha256: 89db300e84cfd2198ada2fa484d9d2792771e7e11dda20788740d845b5afd7a2
+  role: LOG
+- id: tests-m6
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m6.log
+  sha256: 17dffb77a029273501b150903ac24eaf9c357cad1724e012b6e82f847263dce7
+  role: LOG
+- id: tests-m7
+  path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m7.log
+  sha256: f864f1bfcf9d073945b16b0a2cdc1c2e78b6b75e3b066dcc26804245a8188c4c
+  role: LOG
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260812-M8-002 (ACK 前)
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/preflight.log
+  log_sha256: 2107b774582f2932512eee876dec6fbce12573f43b8907196c91d88d3602a847
+- command: sha256sum -c research/tasks/JH-20260812-M8-002/baseline/scope-files.sha256
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/preflight.log
+  log_sha256: 2107b774582f2932512eee876dec6fbce12573f43b8907196c91d88d3602a847
+- command: sha256sum research/tasks/JH-20260812-M8-001/attempts/A01/runs/*/raw/*.csv (六份 preserved raw 与 M8-001 receipt 哈希比对)
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/preflight.log
+  log_sha256: 2107b774582f2932512eee876dec6fbce12573f43b8907196c91d88d3602a847
+- command: python3 research/tasks/JH-20260812-M8-002/attempts/A01/analysis/analyze_m8_002.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/analysis-m8-002.log
+  log_sha256: 921b4d3ba5761586a058111d8b04d7a8e1230f8507b68ba39a5c3121032659ed
+- command: python3 test/metrics/test_sfq_metrics_v2.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m4.log
+  log_sha256: 362da18388b5981ea47f2ce205d342a3b9ceeb558aea69d2e1bf792a31bbc8a6
+- command: python3 test/metrics/test_sfq_metrics_v2_m5.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m5.log
+  log_sha256: 89db300e84cfd2198ada2fa484d9d2792771e7e11dda20788740d845b5afd7a2
+- command: python3 test/metrics/test_sfq_metrics_v2_m6.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m6.log
+  log_sha256: 17dffb77a029273501b150903ac24eaf9c357cad1724e012b6e82f847263dce7
+- command: python3 test/metrics/test_sfq_metrics_v2_m7.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m7.log
+  log_sha256: f864f1bfcf9d073945b16b0a2cdc1c2e78b6b75e3b066dcc26804245a8188c4c
+tests:
+- id: M4 unit
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m4.log
+  notes:
+  - 21 OK
+- id: M5 windowed
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m5.log
+  notes:
+  - 18 OK
+- id: M6 voltage-area
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m6.log
+  notes:
+  - 15 OK
+- id: M7 regression
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/logs/tests-m7.log
+  notes:
+  - 29 OK
+- id: reanalysis self-check
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/logs/analysis-m8-002.log
+  - research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.json
+  notes:
+  - stdlib-only 独立重算；max |diff| vs M8-001 analysis ≈ 4.9e-12（md 舍入级）
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/ack.yaml
+  - research/tasks/JH-20260812-M8-002/attempts/A01/logs/preflight.log
+  notes:
+  - request seal 6e23aae1…49ba 校验通过；scope hashes 全部 OK；六份 preserved A01 raw 哈希与 M8-001 receipt 记录逐一一致（zero/single × 0.1/0.05/0.025 ps）；全程无 JoSIM 调用（authorization.run_josim=false 且无 invocation）
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.json
+  - research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.md
+  - research/tasks/JH-20260812-M8-002/attempts/A01/logs/analysis-m8-002.log
+  notes:
+  - 纯 stdlib attempt-local 重算，只读六份 preserved raw + M8-001 固定窗/带宽；全部预注册标量可计算；两组相邻细化均在带宽内 → CONVERGED；classification 措辞限定 bounded convergence / NOT_APPLICABLE downstream_count
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.json
+  - research/tasks/JH-20260812-M8-002/attempts/A01/analysis/m8-002-convergence.md
+  notes:
+  - receipt 登记全部稳定产物哈希；未登记最终 verify-task 输出（自引用哈希漂移，Codex 交付后执行最终 verify-task）；AC 全部映射；receipt 自身由 Codex 最终 verify-task 校验
+observations:
+- 独立 stdlib-only 重算与 M8-001 A01 analysis 全部标量一致（max |diff| ≈ 4.9e-12，md 舍入级），分类 CONVERGED：0.1->0.05 ps 与 0.05->0.025 ps 两组相邻细化全部在预注册带宽内。
+- M4–M7 未改动测试 83/83 通过。
+- 六份 preserved raw SHA-256 与 M8-001 receipt 记录完全一致，未被修改。
+interpretations:
+- M8-001 A01 的六 run 原始证据独立可复算，注册标量在固定 0.1/0.05/0.025 ps 阶梯上落入预注册带宽，支持该 fixture 的有界数值收敛分类（CALIBRATION，无物理 Gate 语义）。
+unknowns:
+- 0.025 ps 是注册最大深度，更细步长未注册未运行。
+- 绝对容差冻结属于 M9（METRIC_SPEC_V2），本任务只报告不冻结。
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- 本任务不执行 JoSIM；所有数值来自已保存的 M8-001 A01 raw。
+- log 文件被仓库 .gitignore 忽略（*.log），已在此 receipt 显式登记全部 log 路径与 SHA-256。
+deviations: []
+blockers: []

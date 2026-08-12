@@ -1,0 +1,39 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260812-M8-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-12T23:35:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "6e23aae1cb577079085f1437d3aa0e360e6ea2dcf02df93324e4b566352d49ba"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "60cf922e3858984e1845cf8cd2fb825dd3bd4872"
+  dirty_paths:
+    - "research/tasks/JH-20260812-M8-002/request.yaml / request.sha256 / baseline/git-status.txt / baseline/scope-files.sha256（issue 自带 4 条已 stage 合同包路径，与 baseline/git-status.txt 一致，ALLOW_NONOVERLAP 允许）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "只使用已保存的 M8-001 A01 六份 raw CSV（哈希逐一核验与 M8-001 receipt 一致）做一次 attempt-local 独立重算，按 M8-001 预注册固定窗/带宽重新计算全部注册标量并给出 CONVERGED/INCONCLUSIVE/INVALID 分类，产出机械可满足的 FROZEN receipt；不执行 JoSIM，不修改 M8-001 任何文件，最终 verify-task 由 Codex 交付后执行。"
+  non_goals:
+    - "不运行 JoSIM、不建新网表、不调参、不启动 M9、不做 candidate work、不改窗口/带宽/输入、不加第四层步长、不重写 raw。"
+    - "不修改 M8-001 或任何 frozen/read 输入；不把局部相位/活动/平台称为 SFQ/fluxoid/接收事件/物理 Gate/路线结论。"
+    - "receipt 不把最终 verify-task 输出登记为已哈希 artifact（自引用哈希必然漂移）。"
+  stop_conditions:
+    - "scope/hash 不符、需要新仿真或改变流程、需要修改 M8-001/M9/candidate 文件。"
+    - "任何 M8-001 输入哈希与 M8-001 receipt 记录不一致——保留证据并交付 BLOCKED。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260812-M8-002（ACK 前；交付后由 Codex 最终 verify）"
+  - "sha256sum -c research/tasks/JH-20260812-M8-002/baseline/scope-files.sha256"
+  - "sha256sum research/tasks/JH-20260812-M8-001/attempts/A01/runs/*/raw/*.csv（六份 preserved raw 与 M8-001 receipt 哈希逐一比对）"
+  - "python3 research/tasks/JH-20260812-M8-002/attempts/A01/analysis/analyze_m8_002.py（attempt-local 重算，仅读六份 raw + 冻结 sfq_metrics_v2）"
+  - "python3 test/metrics/test_sfq_metrics_v2.py && test_sfq_metrics_v2_m5.py && test_sfq_metrics_v2_m6.py && test_sfq_metrics_v2_m7.py（只读回归，M4–M7 未改动）"
+expected_changed_paths:
+  - "research/tasks/JH-20260812-M8-002/attempts/**"
+blockers: []
+deviations: []

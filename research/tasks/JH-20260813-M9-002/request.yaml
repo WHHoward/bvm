@@ -1,0 +1,64 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M9-002
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-13T01:16:27+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M9
+depends_on: [M4, M5, M6, M7, M8]
+supersedes: {task_id: JH-20260813-M9-001, revision: 1}
+task:
+  kind: DOCUMENTATION
+  objective: "Close M9 with a mechanically valid FROZEN measurement-only METRIC_SPEC_V2 revision, repairing C02 mapping-lineage and executable negative-oracle defects."
+  research_question: "Can the metric specification be frozen with deterministic, evidence-backed measurement semantics and a fresh valid receipt chain, without defining any interface or candidate success standard?"
+  non_goals:
+    - "No INTERFACE_GATE_V1, BQ/DCSFQ/BVM/JTL/T1 success criterion, M10/M11, JoSIM run, raw/netlist edit, or physical claim."
+    - "Do not modify JH-20260813-M9-001 request, attempts, audits, or their preserved snapshots."
+  claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/metrics/m7_canonical_jtl.cir
+    - research/tasks/JH-20260813-M9-001/audits/C01/verdict.yaml
+    - research/tasks/JH-20260813-M9-001/audits/C02/verdict.yaml
+    - research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md
+    - research/tasks/JH-20260812-M8-001/preregistration.yaml
+    - research/tasks/JH-20260813-M9-002/design/rework-boundary.md
+  write_paths: [docs/research/METRIC_SPEC_V2.md, test/metrics/test_metric_spec_v2.py, research/tasks/JH-20260813-M9-002/attempts/**]
+  frozen_paths: [research/tasks/JH-20260813-M9-002/request.yaml, research/tasks/JH-20260813-M9-002/request.sha256, research/tasks/JH-20260813-M9-002/baseline/**, research/tasks/JH-20260813-M9-002/design/**, research/tasks/JH-20260813-M9-002/audits/**, research/tasks/JH-20260813-M9-001/**, docs/HANDOVER.md, memory/project-todo.md]
+  locks: [locks/metric-spec-v2-m9, locks/test-metrics]
+baseline:
+  git_head: cc3e859
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M9-002/baseline/git-status.txt, sha256: a5384d0999478a7c4b0be02af2772a323bf6618d4ed73e55377d3bbcab770e66}
+  scope_hashes: {path: research/tasks/JH-20260813-M9-002/baseline/scope-files.sha256, sha256: 1f77884e7a3f809f93afa4741242569ae0b569ee09193389545c9f168b59cdf2}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: true, commit: true, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-evidence-audit]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, research/tasks/JH-20260813-M9-001/audits/C02/verdict.yaml, research/tasks/JH-20260813-M9-002/design/rework-boundary.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: e48cb038e87a3c85a10175add569e7fe1498ceda4ac53bffeda74c551260d6fb}
+  metric_spec: {status: UNFROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: null}
+deliverables:
+  - {id: D1, path: docs/research/METRIC_SPEC_V2.md, role: DOCUMENTATION, required: true}
+  - {id: D2, path: test/metrics/test_metric_spec_v2.py, role: TEST, required: true}
+  - {id: D3, path: research/tasks/JH-20260813-M9-002/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Spec retains M9 measurement-only claim ceiling and all exclusions; no candidate/Gate criterion occurs outside explicit prohibition text.", evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]}
+  - {id: AC2, condition: "Verified mappings cite only accepted direct same-JJ evidence: remove XLOAD or add a precise accepted evidence source; M7 XDUT provenance remains bound.", evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]}
+  - {id: AC3, condition: "Dual-sign, legacy M6 boundary, and applicable-observable convergence/N-A semantics remain precise and are independently testable.", evidence: [METRIC_SPEC_V2.md, test_metric_spec_v2.py]}
+  - {id: AC4, condition: "Negative guards are executable: valid inputs pass and poisoned candidate/read/route semantics or missing required provenance/schema fields cause the guard to reject.", evidence: [test_metric_spec_v2.py]}
+  - {id: AC5, condition: "Fresh A01 receipt hashes all current artifacts/logs and final verify-task succeeds without relying on a previous task receipt.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions: ["Any edit to M9-001 or a Gate/candidate claim.", "Any claim that unsupported XLOAD mapping is verified."]
+inconclusive_conditions: ["Required provenance cannot be established without new out-of-scope evidence."]
+stop_conditions: ["Any scope/hash mismatch, need to alter frozen evidence, run JoSIM, or expand scope."]
+issuance_blockers: []

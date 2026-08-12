@@ -1,0 +1,38 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M9-004
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: CLOSED
+created_at: "2026-08-13T02:15:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "fecdaa90155ff92910f513b745b66f560637f406e11c6af1f10dd927e550b1d3"
+  ack_sha256: "33264bc65f18abfb4c4d5c5b6f54fcdb224aa93ae8a5bd5022f7e22aa378b232"
+  receipt_sha256: "3bad49dc84e6c78c0a99874cf716c72252904b878064b19c978869c4bc07ba07"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence: {mode: INDEPENDENT, codex_modified_execution_artifacts: false, reviewer: codex-root}
+checks:
+  - {id: C01-mechanical-closure, status: PASS, evidence: ["Final verify-task succeeds on the independent M9-004 request→ACK→receipt chain; scope and changed/log artifact hashes match."]}
+  - {id: C02-independent-regression, status: PASS, evidence: ["Codex independently reran 59 metric-spec checks plus unchanged M4/M5/M6/M7 suites (15/29/21/18), all passing without JoSIM."]}
+  - {id: C03-metric-semantics-boundary, status: PASS, evidence: ["Spec correctly identifies M9-004 as freeze source; preserves raw-rad, dual-sign, window/control, P/V, N/A convergence, XLOAD UNVERIFIED, UNFROZEN tolerance and no-Gate boundaries."]}
+  - {id: C04-structural-guard, status: PASS, evidence: ["Terra High blocker-only review returns NO_BLOCKER after verifying indentation/tab/list/nested and case-variant claim-key rejection plus bounded §11 schema fields."]}
+findings:
+  - "M9-001 through M9-003 are preserved rejected predecessor records; M9-004 is the sole accepted freeze closure."
+  - "METRIC_SPEC_V2 freezes measurement/reporting semantics and output contract, not universal numerical acceptance values: listed global tolerances remain UNFROZEN."
+accepted_claims:
+  - "docs/research/METRIC_SPEC_V2.md version 2.0.0 is accepted as the canonical measurement/reporting specification under JH-20260813-M9-004."
+  - "M9 does not establish any physical, candidate, interface, SFQ-event, fluxoid, downstream-reception, route, paper, or hardware conclusion."
+rejected_claims:
+  - "MetricSpec is not INTERFACE_GATE_V1 and does not make BQ/DCSFQ/BVM/JTL/T1 success criteria."
+  - "The M8 fixture-local bands and 0.3 rad activity setting are not global acceptance thresholds."
+required_rework: []
+next_actions:
+  - "Update task authority and HANDOVER only to record M9 acceptance and its measurement-only boundary."
+  - "Wait for explicit user authorization before planning or starting M10."
+claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate

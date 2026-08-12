@@ -1,0 +1,19 @@
+* M6 — DCSFQ same-JJ voltage-area cross-check: matched bump 300 uA run
+* Identical to test_dcsfq_behavior_bump_300u.cir except the .print line adds
+* direct junction voltage probes V(Bn|XDCSFQ) alongside the existing
+* P(Bn|XDCSFQ) phase probes (same junction, same endpoints, same run).
+* Measurement contract (per JJ): phase_column P(Bn|XDCSFQ) <-> direct
+* voltage_column V(Bn|XDCSFQ), orientation +1, endpoint window = same
+* first/last selected samples of the declared window.
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/standard/DCSFQ.cir
+
+.param IIN=300u
+
+XDCSFQ IN1 OUT1 THmitll_DCSFQ
+R_LOAD OUT1 0 10
+I_IN 0 IN1 pwl(0 0 10p 0 12p IIN 40p IIN 45p 0)
+
+.tran 0.1p 200p
+.print V(OUT1) V(B1|XDCSFQ) V(B2|XDCSFQ) V(B3|XDCSFQ) P(B1|XDCSFQ) P(B2|XDCSFQ) P(B3|XDCSFQ)
+.end

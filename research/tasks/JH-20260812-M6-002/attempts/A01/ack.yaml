@@ -1,0 +1,43 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260812-M6-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-12T17:30:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "9cc61b8786bb9e060a0a3d5edff4dca97f0b4aee3682c5d5162899bd4dae1a11"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "180a0ade47b9241f4d6c6df2e92f64f6406c79d4"
+  dirty_paths:
+    - "build/ (untracked, Codex 提供的外部 immutable josim-cli link，sha256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2 与合同一致)"
+    - "research/tasks/JH-20260812-M6-002/request.yaml / request.sha256 / baseline/** (untracked, 合同包)"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "以 C01 已审计的只读 M6 候选代码/测试/探针网表为冻结基线，在新的唯一 run IDs 下重新产生 0u/300u 原始运行，用预注册 mapping plan（B1/B2/B3: P↔V, orientation=+1, cross_check=[6e-12,190e-12)）完成同 JJ raw-time phase—voltage-area 交叉校验，保存全部哈希/日志/receipt，最终 verify-task 必须成功。"
+  non_goals:
+    - "不修改 scripts/sfq_metrics_v2.py、M6 测试、M6 探针网表、历史网表/CSV、任何 M6-001 文件或上层文档。"
+    - "不把局部相位/面积结果称为 SFQ 接收、fluxoid、下游 JTL、系统 Gate、路线结论或论文主张。"
+    - "不冻结残差容差、窗口、阈值或 METRIC_SPEC_V2；不执行 M7、M8、M9+。"
+  stop_conditions:
+    - "HEAD、dirty 快照、scope 哈希、工具哈希、依赖或 locks 与合同不符。"
+    - "需要修改 attempts 路径以外的文件，或需要网络、安装、创建 worktree、提交、删除、覆盖或重命名。"
+    - "最终 verify-task 不能成功——保留新 attempt 证据并交付 BLOCKED/DEVIATED，不得声称 FROZEN 完成。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260812-M6-002（交付前最终运行必须成功）"
+  - "sha256sum -c baseline/scope-files.sha256（scope 哈希复验）"
+  - "build/josim-cli --version + sha256sum build/josim-cli（工具哈希复验）"
+  - "build/josim-cli test/final/interface/m6_dcsfq_voltage_area_0.cir -o <run>/raw/<run>.csv（新 run ID m6-002-dcsfq-va-0u-20260812-01）"
+  - "build/josim-cli test/final/interface/m6_dcsfq_voltage_area_300u.cir -o <run>/raw/<run>.csv（新 run ID m6-002-dcsfq-va-300u-20260812-01）"
+  - "python3 scripts/sfq_metrics_v2.py <raw> --measurement-plan plan.json --voltage-area [--control-csv <0u raw>] --json <crosscheck.json>"
+  - "python3 test/metrics/test_sfq_metrics_v2.py && test_sfq_metrics_v2_m5.py && test_sfq_metrics_v2_m6.py（只读回归，65 项）"
+expected_changed_paths:
+  - "research/tasks/JH-20260812-M6-002/attempts/**"
+blockers: []
+deviations: []

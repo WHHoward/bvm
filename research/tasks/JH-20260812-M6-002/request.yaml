@@ -1,0 +1,167 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260812-M6-002
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-12T17:25:00+08:00
+issuer:
+  role: CODEX
+  id: codex-root
+parent_todo_id: M6
+depends_on:
+  - M4
+  - M5
+supersedes:
+  task_id: JH-20260811-M6-001
+  revision: 1
+task:
+  kind: REPRODUCTION
+  objective: "以 C01 已审计的只读 M6 候选代码与探针网表为基线，在独立干净 worktree 重新产生唯一 0/300 uA 原始运行，完成同 JJ raw-time phase—voltage-area 交叉校验，并取得最终机械可验证的 FROZEN 证据包。"
+  research_question: "在最终可验证的冻结包中，同一运行、同一 JJ、同一方向和相同实际采样端点窗口的 delta_phi/(2*pi) 与 integral(V_JJ dt)/Phi0 能否被重新产生并报告？"
+  non_goals:
+    - "不修改 scripts/sfq_metrics_v2.py、M6 测试、M6 探针网表、历史网表/CSV、任何 M6-001 文件或上层文档。"
+    - "不把 A01 或本次局部相位/面积结果称为 SFQ 接收、fluxoid、下游 JTL、系统 Gate、路线结论或论文主张。"
+    - "不冻结残差容差、窗口、阈值或 METRIC_SPEC_V2；不执行 M7、M8、M9+。"
+  claim_ceiling: "same_junction_measurement_pipeline_only_no_physical_gate"
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m5.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/final/interface/m6_dcsfq_voltage_area_0.cir
+    - test/final/interface/m6_dcsfq_voltage_area_300u.cir
+    - test/final/interface/test_dcsfq_behavior_bump_0.cir
+    - test/final/interface/test_dcsfq_behavior_bump_300u.cir
+    - test/final/interface/data/test_dcsfq_behavior_bump_0.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_300u.csv
+    - circuits/standard/DCSFQ.cir
+    - circuits/models/jjmit.cir
+    - research/tasks/JH-20260811-M6-001/audits/C01/verdict.yaml
+  write_paths:
+    - research/tasks/JH-20260812-M6-002/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260812-M6-002/request.yaml
+    - research/tasks/JH-20260812-M6-002/request.sha256
+    - research/tasks/JH-20260812-M6-002/baseline/**
+    - research/tasks/JH-20260812-M6-002/audits/**
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/final/interface/m6_dcsfq_voltage_area_0.cir
+    - test/final/interface/m6_dcsfq_voltage_area_300u.cir
+    - research/tasks/JH-20260811-M6-001/**
+    - test/final/interface/test_dcsfq_behavior_bump_0.cir
+    - test/final/interface/test_dcsfq_behavior_bump_300u.cir
+    - test/final/interface/data/test_dcsfq_behavior_bump_0.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_300u.csv
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - research/schemas/**
+  locks:
+    - locks/sfq-metrics-v2-interface
+    - locks/dcsfq-voltage-area-m6
+    - locks/test-metrics
+baseline:
+  git_head: 180a0ade47b9241f4d6c6df2e92f64f6406c79d4
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status:
+    path: research/tasks/JH-20260812-M6-002/baseline/git-status.txt
+    sha256: a515f00dc0f22f5daeb1c743f17ed84ee12bb5670b74affdb4a48b0ec2d3c852
+  scope_hashes:
+    path: research/tasks/JH-20260812-M6-002/baseline/scope-files.sha256
+    sha256: 067366e31d3d557d6155a658788c688cb3878b0d44dfb69fcead10a98867d5cb
+authorization:
+  edit: true
+  run_josim: true
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills:
+    - josim-handoff
+    - josim-experiment
+    - josim-evidence-audit
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover:
+    status: CURRENT
+    path: docs/HANDOVER.md
+    sha256: d986ad170e36bd5789d92d795736679c9b077f84d418a09f6c015a5c6dd8911e
+  metric_spec:
+    status: UNFROZEN
+    path: null
+    sha256: null
+deliverables:
+  - id: D1
+    path: research/tasks/JH-20260812-M6-002/attempts/**/receipt.yaml
+    role: RECEIPT
+    required: true
+  - id: D2
+    path: research/tasks/JH-20260812-M6-002/attempts/**/runs/**/manifest.yaml
+    role: EXPERIMENT_ARTIFACT
+    required: true
+  - id: D3
+    path: research/tasks/JH-20260812-M6-002/attempts/**/runs/**/raw/*.csv
+    role: EXPERIMENT_ARTIFACT
+    required: true
+acceptance:
+  - id: AC1
+    condition: "候选代码、M6 单元测试和两个探针网表保持与 180a0ad 基线的绑定哈希一致；M4/M5/M6 测试均通过，且本任务执行中不得修改它们。"
+    evidence:
+      - "scope hash manifest"
+      - "测试日志"
+  - id: AC2
+    condition: "用预注册 mapping 产生新 attempt 的 plan：B1/B2/B3 分别 P(Bn|XDCSFQ) 对 V(Bn|XDCSFQ)，orientation=+1，cross_check=[6e-12,190e-12)；只用所选窗口首/末实际样本计算相位差并用相同 samples 的实际 time 轴梯形积分。"
+    evidence:
+      - "attempt plan JSON"
+      - "crosscheck JSON"
+  - id: AC3
+    condition: "在新的、此前不存在的 0u 与 300u run ID 下运行两个只读 M6 探针网表；仅使用 Codex 提供的 worktree 外 immutable josim-cli（sha256=48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2），保存输入快照、模型闭包、binary version/hash、stdout/stderr、raw CSV、manifest 和所有 SHA-256；不得覆盖任何 A01 或历史文件。"
+    evidence:
+      - "两个新 run manifest/raw/log"
+  - id: AC4
+    condition: "逐 run、逐 B1/B2/B3 报告 signed phase_delta_turns、area_turns、residual_turns；若做 300u-0u 控制校正，须在逐 run 结果后单列。仅报告数值，不判接受容差。"
+    evidence:
+      - "crosscheck JSON"
+      - "analysis markdown"
+  - id: AC5
+    condition: "receipt 完整登记全部实际 changes、命令/退出码、产物哈希、测试、AC 映射、限制和 unknowns；最终 handoff verify-task 对本任务返回成功。"
+    evidence:
+      - "receipt.yaml"
+      - "verify-task log"
+invalid_conditions:
+  - "修改任一只读候选实现/测试/网表、历史 raw，或覆盖/删除/重命名 M6-001 A01 证据。"
+  - "以无关节点电压、重采样、插值、固定 dt 假设或不同端点/方向/窗口替代同 JJ 直接 V/P 比较。"
+  - "把局部量称为 SFQ、fluxoid、下游接收、物理 Gate 或冻结容差结论。"
+inconclusive_conditions:
+  - "直接 V/P 列缺失、映射/方向无法复核、solver/CSV 异常，或无冻结容差可判残差接受性。"
+stop_conditions:
+  - "当前 HEAD、dirty 快照、scope 哈希、工具哈希、依赖或 locks 与合同不符。"
+  - "需要修改 attempts 路径以外的文件，或需要网络、安装、创建 worktree、提交、删除、覆盖或重命名。"
+  - "最终 verify-task 不能成功；保留新 attempt 证据并交付 BLOCKED/DEVIATED，不得声称 FROZEN 完成。"
+issuance_blockers: []

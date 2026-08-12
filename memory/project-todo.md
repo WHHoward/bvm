@@ -4,7 +4,7 @@ description: JoSIM × BVM 项目主任务清单 — 2026-08-09 相位单位审�
 metadata:
   type: project
   node_type: memory
-  last_updated: 2026-08-11
+  last_updated: 2026-08-12
 ---
 
 # JoSIM × BVM 项目主任务清单
@@ -23,11 +23,14 @@ metadata:
 | M4 | 修复/替换 `scripts/sfq_metrics.py` | 🟢（2026-08-11） | `scripts/sfq_metrics_v2.py` 明确 rad→圈转换；活动只报告样本/区间，不叫事件；合同 `JH-20260811-M4-003` 的独立审计为 `ACCEPTED` |
 | M5 | 实现事件窗口和零输入控制 | 🟢（2026-08-11） | `M5-LITE-PILOT-001` A02 经 Copilot 复审与 Codex 接受：pre/activity/post 稳定窗、显式方向、匹配零输入控制和活动聚类有统一实现；不构成物理 Gate |
 | M6 | 加电压面积交叉校验 | 🟢（2026-08-12） | `JH-20260812-M6-002` 的 FROZEN 复现已用同一 JJ、同方向、同一实际采样端点窗口的直接 `V(B...)`/`P(B...)` 报告 `∫Vdt/Φ0` 与 `Δφ/2π` 的带符号残差；M9 才冻结其接受容差 |
-| M7 | 指标单元/回归测试 | 🔴 | 合成台阶、两脉冲 JTL、DCSFQ 300 µA、BQ v4 六周期全部通过 |
-| M8 | 时间步收敛 | 🔴 | 至少 0.1/0.05/0.025 ps 的关键事件结论稳定 |
-| M9 | 冻结 `METRIC_SPEC_V2.md` | 🔴 | 用校准数据事先定义整数残差、相位—面积误差、BVM 漂移、步长差和幅度/抖动容差 |
-| M10 | 重生 JSON 和审计表 | 🔴 | BASELINE/P0/P2/v4 写入各实验 `data/metrics_v2/`，保留旧文件 |
-| M11 | 新基线冻结 | 🔴 | 定义、代码测试、版本、原始数据、对照、容差和收敛全部齐全 |
+| M7 | 指标单元/回归测试（拆三子项） | 🔴 | 见 M7A/B/C；三者都通过 M7 才完成 |
+| M7A | Mathematical unit tests | 🔴 | 合成 ground truth（zero trace、±2π 阶跃、双转换、已知电压面积脉冲、sign 反转、窗口边界）：验证公式/单位/sign/window/cluster/integration 正确；不证明任何 BQ/DCSFQ/BVM candidate 物理正确 |
+| M7B | Canonical circuit validation | 🔴 | 独立、已充分理解的 canonical Josephson/SFQ 电路（如标准 JTL）：验证 measurement pipeline 在真实 transient 上正确；不证明 BQ v4/DCSFQ_BVM 成功 |
+| M7C | Historical regression | 🔴 | DCSFQ 300 µA、BQ v4 六周期等 preserved raw：expected 值必须来自独立人工/raw 重算预注册 frozen constants；禁止 production analyzer 自证（生成 expected 再验证 expected）；只证明新 pipeline 未重新误读旧数据 |
+| M8 | 有界时间步收敛（预注册 procedure） | 🔴 | 运行前预注册 initial_dt=0.1 ps、refinement_ratio、max_refinement_levels（≥3：0.1/0.05/0.025 ps）、observables（phase turns、voltage-area turns、phase-area residual、event timing、pulse width、downstream count 若适用）、comparison_windows、stability_tolerance、stop_rule；相邻 refinement 关键量进入稳定带宽=PASS；到最大深度仍不稳定=INCONCLUSIVE；禁止无限 refinement |
+| M9 | 只冻结 `METRIC_SPEC_V2.md`（怎么测） | 🔴 | phase normalization、P/V same-JJ mapping、direction/sign、windows、zero-input control、activity clustering、voltage-area integration、numerical tolerance、convergence rule、output schema；**不定义**接口成功标准（后者为独立 `INTERFACE_GATE_V1`，在 Reference/Source/Receiver 事实层建立后单独冻结） |
+| M10 | 重生 JSON 和审计表 | 🔴 | BASELINE/P0/P2/v4 写入各实验 `data/metrics_v2/`，保留旧文件；历史文档原文保留 + SUPERSEDED banner + central correction table，不机械改写历史 narrative |
+| M11 | 新基线冻结（双子门） | 🔴 | **M11A** Measurement Calibration Baseline（M4–M10 完整、MetricSpec 冻结、tests/raw/controls/convergence/historical recomputation/provenance 齐全）+ **M11B** Scientific Reconstruction Baseline（reference provenance、reproduction level、BVM/published-QB reconstruction 状态、canonical receiver baselines、source/receiver characterization 状态、UNKNOWN/INFERRED 参数明确）；两个子门都通过 M11 才标绿 |
 | M12 | 修复 `josim-plot2.py -j` 布局缩放 | 🟢（2026-08-11） | `M12-LITE-PILOT-001` 经 Copilot 独立复核与 Codex 接受：五种布局对 phase 一致缩放、标签为 turns、回归测试覆盖旧“只改标签”错误；无物理结论 |
 
 ## B. 已重算、当前可用的事实
@@ -94,7 +97,10 @@ ColdFlux 原 DCSFQ 是电压脉冲→SFQ 单元；将其用于 BVM 电流接口�
 | W2 | 审计版 HANDOVER | 🟢 | `docs/HANDOVER.md` |
 | W3 | 更新全部旧日志正文数值 | 🔴 | 先完成自动重算，不删除历史原始数据 |
 | W4 | 重写论文证据链 | 🔴 | 撤销“八轮系统排除”和未验证根因 |
-| W5 | 文献空白系统检索 | 🔴 | 未完成前禁止“首次/无人研究” |
+| W5 | 文献/来源/作者（拆三子项） | 🔴 | 见 W5A/B/C |
+| W5A | Literature boundary | 🔴 | 记录 database/query/date/closest prior art/already does/does not report/allowed novelty wording；W5A 未完成前禁止 first/no prior work/literature blank confirmed |
+| W5B | Reference provenance | 🔴（可与 M7 并行） | `docs/research/REFERENCE_PROVENANCE.md`：参数统一标记 [PUBLISHED]/[AUTHOR_PROVIDED]/[DERIVED]/[INFERRED]/[DESIGNED]/[TUNED]/[UNKNOWN]；[INFERRED]/[DESIGNED]/[TUNED] 不得逐渐写成 paper parameter |
+| W5C | Author inquiry | 🔴（可选） | 联系 BVM 作者询问 modified-QB netlist/参数/JM1 shunt/`.model`/testbench/bias-timestep；发送前需用户明确授权；收到信息标 [AUTHOR_PROVIDED] 不等同 [PUBLISHED]；time-box（发送→一次 follow-up→预设期限无充分回复→继续项目，回退 R0/partial-R1 + UNKNOWN list） |
 | W6 | 论文接口章节 | 🔴 | 至少一条路线通过系统 Gate 后定稿 |
 
 ## G. 已暂停/被取代的旧状态
@@ -115,3 +121,10 @@ ColdFlux 原 DCSFQ 是电压脉冲→SFQ 单元；将其用于 BVM 电流接口�
 6. 周期 `pulse()` 不能当单次输入；因果测试优先 `pwl()`；
 7. 解释性机制必须标记并通过单变量对照；
 8. 论文仿真不写成硬件实测。
+
+## I. 研究阶段与来源纪律（2026-08-12 采纳）
+
+1. **Study Phase**：每个科研任务声明 `EXPLORATORY | CALIBRATION | CONFIRMATORY`。EXPLORATORY（debug/参数扫描/机制假设）不直接成为 final Gate 或 paper-critical evidence，不得事后补票改名 CONFIRMATORY；CALIBRATION（M7–M10/M11A：metric/regression/convergence/baseline/tolerance）；CONFIRMATORY（route verdict/final Interface Gate/final margin/paper-critical result）运行前必须冻结关键变量与判据，使用 CRITICAL+FROZEN + fresh-context independent review。
+2. **Parameter provenance**：参数标记 `[PUBLISHED]`/`[AUTHOR_PROVIDED]`/`[DERIVED]`/`[INFERRED]`/`[DESIGNED]`/`[TUNED]`/`[UNKNOWN]`；`[INFERRED]`/`[DESIGNED]`/`[TUNED]` 参数不得在后续总结中逐渐写成 paper parameter；索引见 `docs/research/REFERENCE_PROVENANCE.md`（W5B）。
+3. **Reproduction levels**：R0 topology reconstruction / R1 published nominal-parameter reconstruction / R2 behavioral reproduction / R3 independent full reproduction；R3 必须在预声明的 model closure、testbench、parameter provenance、numerical settings 与 observation tolerance 下满足全部 reproduction criteria；参数缺失时明确 `R0 / partial-R1`，不得把项目参数冒充论文参数。
+4. **Source/Receiver/Interface 分层**：BVM source characterization 与 receiver characterization 的测量语义必须引用 `METRIC_SPEC_V2`（不另行定义）；`INTERFACE_GATE_V1` 在 Reference/Source/Receiver 事实层建立后独立冻结；正式 candidate tuning 与 route verdict 等待 M11（M11A+M11B）完成。

@@ -163,6 +163,8 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 
 **M4–M6 交接状态（2026-08-12）**：M4-001 仍是被拒绝的历史候选（stand-in `S01` 重签已封存 request，且 A01 receipt 披露未授权删除日志），不得引用为完成证据。其后续合同 `JH-20260811-M4-003` 已在干净 worktree 中验收：`scripts/sfq_metrics_v2.py` 明确把 raw rad 转为圈数，且活动样本/区间绝不称为事件。其后的 `M5-LITE-PILOT-001` 经 A01 REWORK、A02 Copilot 独立复审和 Codex `ACCEPT` 后，已实现并回归验证 pre/activity/post 半开稳定窗、显式 ±方向、匹配零输入控制、严格阈值活动聚类及 activity 窗不足两样本拒绝。M6 的首个冻结候选 `JH-20260811-M6-001` A01 因合同将可修改交付物同时作为冻结输入而被 `REWORK_REQUIRED`；保留其证据但不得作为冻结完成。其 superseding 合同 `JH-20260812-M6-002` 已 `ACCEPTED`：两个唯一 0/300 µA DCSFQ 运行以同一 JJ 的直接 `V(Bn|XDCSFQ)`/`P(Bn|XDCSFQ)`、相同方向和实际 CSV 端点窗口报告相位—面积带符号残差，并经独立 raw 重算与最终 `verify-task` 复核。残差接受容差未冻结，且 M6 不构成局部 SFQ、下游 JTL、fluxoid 或系统 Gate。M7–M11 仍未完成。证据：`research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml`。
 
+**研究计划同步（2026-08-12，用户采纳最终研究流程与协作方案）**：M7 保持单编号下设 `M7A`（数学 ground truth 单元测试）/ `M7B`（canonical JTL 电路验证）/ `M7C`（历史回归，expected 必须来自独立人工/raw 重算预注册 frozen constants，禁止 production analyzer 自证）；M8 为预注册 stopping rule 的有界收敛 procedure（0.1/0.05/0.025 ps 起点，稳定带宽=PASS，最大深度仍不稳=INCONCLUSIVE）；M9 只冻结 `METRIC_SPEC_V2.md`（怎么测），接口成功标准由独立的 `INTERFACE_GATE_V1` 在 Reference/Source/Receiver 事实层建立后冻结；M11 单编号双子门（M11A Measurement Calibration Baseline + M11B Scientific Reconstruction Baseline，都通过才标绿）；W5 拆 W5A 文献边界 / W5B Reference Provenance（可与 M7 并行）/ W5C 作者询问（需用户授权、time-box）。所有科研任务声明 `EXPLORATORY | CALIBRATION | CONFIRMATORY` 阶段语义；参数 provenance 标记与 R0–R3 reproduction 原则见 `memory/project-todo.md` §I 与 `docs/research/REFERENCE_PROVENANCE.md`（W5B）。
+
 ### B. 公平重测两条接口路线
 
 **BQ v4**（等待 Phase −1 指标与容差冻结）：单次 PWL、90–110 µA 细扫、真实 BVM 波形、读 0/1、下游 JTL、参数单变量与鲁棒性。
@@ -220,4 +222,4 @@ Thevenin 值是已测范围的经验拟合，不是 BVM 的普适线性源阻抗
 
 ## 9. 当前一句话状态
 
-> BVM 的稳定相位状态和状态相关电流已有仿真支持；直接 BVM→当前 BQ 基线的输出支路未完成完整绕转，且该网表未测 JTL；BQ v4 在理想周期电流的 110–150 µA 已测点显示与约 1:1 JTL 传播相容的相位平台，完整 Gate 尚未通过；DCSFQ_BVM 在 68.4 µA 测试输入下未见完整输出。第一优先级是修复相位/事件计量、冻结容差并重建基线，然后用同一 Gate 复核两条候选路线。
+> BVM 的稳定相位状态和状态相关电流已有仿真支持；直接 BVM→当前 BQ 基线的输出支路未完成完整绕转，且该网表未测 JTL；BQ v4 在理想周期电流的 110–150 µA 已测点显示与约 1:1 JTL 传播相容的相位平台，完整 Gate 尚未通过；DCSFQ_BVM 在 68.4 µA 测试输入下未见完整输出。第一优先级是修复相位/事件计量、冻结容差并重建基线，然后用同一 Gate 复核两条候选路线。当前执行状态：M4/M5/M6 已接受（测量管线单位、事件窗口、同 JJ 相位—面积交叉校验）；下一项 M7（M7A/B/C）待 Codex 签发，W5B Reference Provenance 可与 M7 并行。

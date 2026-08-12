@@ -1,0 +1,43 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260812-M8-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-12T22:58:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "1490ec9d6cc59ccb344747ec7676d6017ec8d1a99002f6a3398177a707f8a51a"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "a99f01d03b9500dcde4a784f6b915e1e76a80091"
+  dirty_paths:
+    - "research/tasks/JH-20260812-M8-001/request.yaml / request.sha256 / preregistration.yaml / baseline/git-status.txt / baseline/scope-files.sha256（issue 自带 5 条已 stage 的合同包路径，与 baseline/git-status.txt 一致，ALLOW_NONOVERLAP 允许）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "严格按 preregistration.yaml 的预注册有界收敛流程，在 canonical JTL 校准 fixture（m7_canonical_jtl.cir 派生，仅输入幅度/.tran 步长/扩展直接 V/P 打印列/注释可不同）上执行恰好六个唯一 run（zero_input_control 与 single_input × 0.1/0.05/0.025 ps），保存完整 FROZEN 证据包（netlist/include 闭包哈希、binary 哈希、命令、stdout/stderr、raw CSV、manifest、analysis），按固定窗口与预注册相邻细化带宽给出 CONVERGED/INCONCLUSIVE/INVALID 有界分类，不改变任何全局 metric 规格或候选电路。"
+  non_goals:
+    - "不启动 M9、不写/冻结 METRIC_SPEC_V2、不调 BQ/DCSFQ/BVM/T1 候选、不加第四层 refinement、不改窗口/带宽/输入形状、不重跑已有 run ID。"
+    - "不把局部相位/activity/平台称为 SFQ、fluxoid、接收事件、物理 Gate、路线结论或硬件结果。"
+    - "不修改 scripts/sfq_metrics_v2.py、M4–M7 tests、m7_canonical_jtl.cir、历史数据、workflow/skills、todo、HANDOVER 或既有 task 记录。"
+  stop_conditions:
+    - "Observed HEAD、issue dirty 快照、request seal、scope hashes、binary hash、工具可用性或 locks 与 request 不符。"
+    - "执行需要 write_paths 以外的写入、网络、安装、创建 worktree、commit、删除/覆盖/重命名、第四层细化、改变窗口/带宽/输入、M9 工作或候选 tuning。"
+    - "run 目录/run ID 已存在、QA 条件失败或最终 verify-task 无法成功——保留证据并交付 BLOCKED/DEVIATED/INVALID。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260812-M8-001（ACK 前后与交付前）"
+  - "sha256sum -c research/tasks/JH-20260812-M8-001/baseline/scope-files.sha256（scope 哈希复验）"
+  - "/home/howard/JoSIM/build/josim-cli --version && sha256sum /home/howard/JoSIM/build/josim-cli（binary 复验 v2.7.2837d13 / 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2）"
+  - "/home/howard/JoSIM/build/josim-cli -o <run>/raw/<run>.csv test/metrics/m8_jtl_convergence_<case>_<dt>ps.cir × 6（新 run IDs，0.1/0.05/0.025 ps × zero/single）"
+  - "python3 scripts/sfq_metrics_v2.py <raw> --measurement-plan plan.json --voltage-area [--control-csv <zero raw>] --json <crosscheck.json>（同 JJ 相位—面积交叉校验）"
+  - "python3 attempts/A01/analysis/analyze_m8.py（预注册观测值、相邻细化差、带宽分类、activity peak/FWHM）"
+  - "python3 test/metrics/test_sfq_metrics_v2.py && test_sfq_metrics_v2_m5.py && test_sfq_metrics_v2_m6.py && test_sfq_metrics_v2_m7.py（只读回归，M4–M7 未改动）"
+expected_changed_paths:
+  - "test/metrics/m8_jtl_convergence_*.cir"
+  - "research/tasks/JH-20260812-M8-001/attempts/**"
+blockers: []
+deviations: []

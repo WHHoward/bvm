@@ -1,0 +1,57 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260812-M8-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-12T23:20:00+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "1490ec9d6cc59ccb344747ec7676d6017ec8d1a99002f6a3398177a707f8a51a"
+  ack_sha256: "ad8270b40cf6f36d7dc1e14576d88abf6dc87e4e394d4868e10b3c1f5ef99d08"
+  receipt_sha256: "3f8093043bde729438145bc19346c6730f846b73a1713d303c84caf20f39713d"
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-request-seal-and-preexecution-registration
+    status: PASS
+    evidence:
+      - "The signed M8-001 request and preregistration existed before A01; the fixed 0.1/0.05/0.025 ps ladder, six-run budget, windows, bands, and stop rule are present."
+  - id: C02-mechanical-deliverable-closure
+    status: FAIL
+    evidence:
+      - "Independent verify-task reproduces that D1 declares role RECEIPT for attempts/**/ack.yaml; the verifier tests the receipt path for that role, so D1 is structurally unsatisfiable."
+      - "D6 uses attempts/**/analysis/**; the verifier's terminal /** matcher treats the interior ** literally, so ordinary analysis artifacts cannot satisfy it."
+      - "The receipt records a final verify-task.log as a hashed changed artifact. Its contents necessarily change when it records verification of that receipt, producing the reproduced hash mismatch."
+  - id: C03-execution-evidence-preservation
+    status: PASS
+    evidence:
+      - "A01 preserves six distinct run directories, direct V/P raw CSVs, input/model snapshots, logs, analysis, ACK, and receipt. No evidence is authorized for deletion or overwrite."
+  - id: C04-physical-boundary
+    status: NOT_APPLICABLE
+    evidence:
+      - "The blocked package must not be accepted as FROZEN convergence evidence. No physical Gate, SFQ, route, or metric-freeze conclusion is evaluated here."
+findings:
+  - "The failure is a signed-contract/verification-closure defect, not evidence that Claude changed scope or that the JTL fixture failed."
+  - "The A01 raw and analysis remain preserved historical input for a superseding closure task, but M8-001 itself cannot be ACCEPTED."
+accepted_claims: []
+rejected_claims:
+  - "M8-001 A01 is not mechanically valid FROZEN evidence and cannot mark M8 complete."
+  - "The receipt's reported convergence classification is not accepted through this invalid task package."
+required_rework:
+  - "Issue a new immutable M8 contract that explicitly binds the preserved M8-001 A01 inputs, uses satisfiable deliverable patterns, and excludes any self-referential final verify-task log from receipt-hashed artifacts."
+  - "Do not rerun, delete, overwrite, tune, or extend the six original runs merely to repair protocol closure."
+next_actions:
+  - "Codex signs a superseding M8 closure contract; Claude performs only its new ACK/receipt evidence-closure actions within that contract."
+  - "Only after a mechanically valid new receipt and independent raw audit may M8 be considered for acceptance; M9 and candidate tuning remain blocked."
+claim_ceiling: bounded_numerical_convergence_for_this_calibration_fixture_only_no_physical_gate

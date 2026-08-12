@@ -1,0 +1,63 @@
+schema_version: 1
+run_id: m6-dcsfq-va-0u-20260811-01
+created_at: "2026-08-11T18:05:00+08:00"
+mode: calibration  # METRIC_SPEC_V2 unfrozen; establishes the measurement pipeline only
+research_question: "同一运行、同一结、同一方向、同一端点窗口下，delta_phi/(2*pi) 与 integral(V_JJ dt)/Phi0 能否被可复核的测量管线一致地报告？"
+
+hypotheses:
+  primary: "带直接 V(Bn|XDCSFQ) 探针的匹配 DCSFQ 0uA 运行可解析出与 P(Bn|XDCSFQ) 同名对应的电压列，且 V 时间序列与 (Phi0/2pi)*dphi/dt 一致（同结同端点同方向同窗口面积-相位残差可复算）。"
+  alternatives:
+    - "JoSIM 无法解析 V(Bn|XDCSFQ) 或输出与同名 P 列不对应（-> 停止，保留失败证据）。"
+    - "V 列面积与相位差系统性不一致（-> 记录原始残差，不挑选更有利指标，M9 前不判容差）。"
+
+predeclared_outcomes:
+  pass: "V/P 列均存在且一一对应；面积-相位残差为有限值且可复算。"
+  fail: "探针解析失败或列不对应。"
+  inconclusive: "数据有效但残差方向/端点/窗口无法由同运行数据确定。"
+  invalid: "求解器错误、缺列、NaN/Inf、时间非递增或 CSV 截断。"
+
+provenance:
+  git_head: c23b83c7ce9586f9140eb9a389695ce4c2299484
+  git_dirty: true
+  git_status_path: research/tasks/JH-20260811-M6-001/baseline/git-status.txt
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: "v2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  josim_sha256: 48655cb31d6297ba571a
+  netlist_path: test/final/interface/m6_dcsfq_voltage_area_0.cir
+  netlist_sha256: 01e5dfe0f18beea630b330b98acfc991952a1616d032360f647504bb673a50b6
+  include_closure:
+    - {path: circuits/standard/DCSFQ.cir, sha256: 3452106b9a72de20e712c49f002b5dfddf9fba3337f8ca5b809336cd97f42337}
+    - {path: circuits/models/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  model_files: [jjmit.cir]
+
+simulation:
+  input_kind: single_pwl  # I_IN pwl(0 0 10p 0 12p IIN 40p IIN 45p 0) with IIN=0u
+  cases: [zero_input]
+  requested_timesteps_s: [1e-13]
+  stop_time_s: 2e-10
+  repetitions: 1
+  output_load: "R_LOAD OUT1 0 10"
+
+metric_contract:
+  spec_path: null
+  spec_sha256: null
+  status: unfrozen
+
+signals:
+  junctions:
+    - {label: "B1|XDCSFQ", phase_column: "P(B1|XDCSFQ)", voltage_column: "V(B1|XDCSFQ)", orientation: 1}
+    - {label: "B2|XDCSFQ", phase_column: "P(B2|XDCSFQ)", voltage_column: "V(B2|XDCSFQ)", orientation: 1}
+    - {label: "B3|XDCSFQ", phase_column: "P(B3|XDCSFQ)", voltage_column: "V(B3|XDCSFQ)", orientation: 1}
+  downstream_stages: []
+  state_signals: []
+
+windows:
+  pre: [6e-12, 9e-12]
+  activity: [9e-12, 50e-12]
+  post: [100e-12, 190e-12]
+  cross_check: [6e-12, 190e-12]
+
+raw_output: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/raw/m6-dcsfq-va-0u-20260811-01.csv
+raw_sha256: 0a21742e047eeef5663dfa5b9868517391a6566eb55f91b4a0949960d5d39933
+log_path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/logs/run.log
+exit_code: 0

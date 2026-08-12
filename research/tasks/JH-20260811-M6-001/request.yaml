@@ -1,0 +1,189 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260811-M6-001
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-11T19:10:00+08:00
+issuer:
+  role: CODEX
+  id: codex-root
+parent_todo_id: M6
+depends_on:
+  - M4
+  - M5
+supersedes: null
+task:
+  kind: EXPERIMENT
+  objective: "建立 M6 同一 JJ 相位—电压面积交叉校验：扩展 v2 计量实现，生成带直接 JJ V/P 探针的匹配 DCSFQ 0/300 uA 原始运行，并以实际 CSV 时间轴梯形积分报告逐结残差。"
+  research_question: "在同一运行、同一结、同一方向和同一端点窗口中，测得的 delta_phi/(2*pi) 与 integral(V_JJ dt)/Phi0 能否被可复核的测量管线一致地报告？"
+  non_goals:
+    - "不修改、重跑、覆盖或删除任何历史 test/final CSV、网表或旧 JSON。"
+    - "不把局部 JJ 相位绕转、面积积分或活动簇称为下游 SFQ 接收、闭环 fluxoid 或系统 Gate。"
+    - "不冻结 METRIC_SPEC_V2、物理容差、窗口、阈值或论文主张；M9 才能作最终冻结。"
+    - "不执行 M7 回归全套、M8 时间步收敛、M10 JSON 重生或路线比较。"
+    - "不修改 scripts/sfq_metrics.py、docs/HANDOVER.md、memory/project-todo.md、schema、M4/M5 证据或历史 raw。"
+  claim_ceiling: "same_junction_measurement_pipeline_only_no_physical_gate"
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m5.py
+    - test/final/interface/test_dcsfq_behavior_bump_0.cir
+    - test/final/interface/test_dcsfq_behavior_bump_300u.cir
+    - test/final/interface/data/test_dcsfq_behavior_bump_0.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_300u.csv
+    - circuits/standard/DCSFQ.cir
+    - circuits/models/jjmit.cir
+    - build/josim-cli
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  write_paths:
+    - scripts/sfq_metrics_v2.py
+    - test/metrics/test_sfq_metrics_v2_m6.py
+    - test/final/interface/m6_dcsfq_voltage_area_0.cir
+    - test/final/interface/m6_dcsfq_voltage_area_300u.cir
+    - research/tasks/JH-20260811-M6-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260811-M6-001/request.yaml
+    - research/tasks/JH-20260811-M6-001/request.sha256
+    - research/tasks/JH-20260811-M6-001/baseline/**
+    - research/tasks/JH-20260811-M6-001/audits/**
+    - scripts/sfq_metrics.py
+    - test/final/interface/test_dcsfq_behavior_bump_0.cir
+    - test/final/interface/test_dcsfq_behavior_bump_300u.cir
+    - test/final/interface/data/test_dcsfq_behavior_bump_0.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_300u.csv
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - research/schemas/**
+  locks:
+    - locks/sfq-metrics-v2-interface
+    - locks/dcsfq-voltage-area-m6
+    - locks/test-metrics
+baseline:
+  git_head: c23b83c7ce9586f9140eb9a389695ce4c2299484
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status:
+    path: research/tasks/JH-20260811-M6-001/baseline/git-status.txt
+    sha256: 101f810bb359a5bec7eb963ddbbee27e17413d7a06257d54772ab6f44774a3d3
+  scope_hashes:
+    path: research/tasks/JH-20260811-M6-001/baseline/scope-files.sha256
+    sha256: 7efa607b4917fe6c0038b6cbe06fbbe9333e86524d09ec17455547c667b0fe35
+authorization:
+  edit: true
+  run_josim: true
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills:
+    - josim-handoff
+    - josim-experiment
+    - josim-evidence-audit
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover:
+    status: CURRENT
+    path: docs/HANDOVER.md
+    sha256: d986ad170e36bd5789d92d795736679c9b077f84d418a09f6c015a5c6dd8911e
+  metric_spec:
+    status: UNFROZEN
+    path: null
+    sha256: null
+deliverables:
+  - id: D1
+    path: scripts/sfq_metrics_v2.py
+    role: IMPLEMENTATION
+    required: true
+  - id: D2
+    path: test/metrics/test_sfq_metrics_v2_m6.py
+    role: TEST
+    required: true
+  - id: D3
+    path: test/final/interface/m6_dcsfq_voltage_area_0.cir
+    role: EXPERIMENT_ARTIFACT
+    required: true
+  - id: D4
+    path: test/final/interface/m6_dcsfq_voltage_area_300u.cir
+    role: EXPERIMENT_ARTIFACT
+    required: true
+  - id: D5
+    path: research/tasks/JH-20260811-M6-001/attempts/**/receipt.yaml
+    role: RECEIPT
+    required: true
+acceptance:
+  - id: AC1
+    condition: "M6 对每个声明映射显式保存 phase_column、direct voltage_column、orientation、端点窗口；phase_delta_turns=(P_last-P_first)/(2*pi)，area_turns=orientation*trapezoid(V,time)/Phi0，保留原始 rad/V/s，不提前取整或取绝对值。"
+    evidence:
+      - "实现与 CLI/plan 输出"
+      - "独立合成非均匀时间轴测试"
+  - id: AC2
+    condition: "实现拒绝非有限或不严格递增时间、缺列、少于两点、无效窗口、非有限 P/V、未知 orientation，以及未经声明的时间重采样/插值；同一窗口的首末实际样本同时用于相位端点与电压梯形积分。"
+    evidence:
+      - "负例测试日志"
+      - "合成正例测试日志"
+  - id: AC3
+    condition: "新增两个 M6 网表只是在历史匹配 bump 0/300 uA 条件上增加 B1/B2/B3 的直接 V(Bn|XDCSFQ) 与 P(Bn|XDCSFQ) 探针；原历史网表和 raw 保持逐字不变。"
+    evidence:
+      - "受限网表 diff"
+      - "include/provenance manifest"
+  - id: AC4
+    condition: "在唯一 run ID 下运行这两个新网表，保存实际 netlist snapshot、include/model 闭包、build/josim-cli version+sha256、stdout/stderr、原始 CSV 及 sha256；不得覆盖已有 raw 或失败输出。"
+    evidence:
+      - "attempt run manifest"
+      - "raw CSV、日志和哈希"
+  - id: AC5
+    condition: "对每个新 run、每个 B1/B2/B3 生成同一 JJ 的 raw phase delta、voltage-area turns 与 signed residual；0/300 条件如要做差分，只能在逐 run 同一 JJ 结果已完整报告后另列为控制校正，不得混淆为单运行交叉校验。"
+    evidence:
+      - "M6 JSON/report"
+      - "从 raw CSV 独立复算的审计说明"
+  - id: AC6
+    condition: "M4 15 项与 M5 29 项测试保持通过，新增 M6 测试独立验证非均匀时间 trapezoid、正负 orientation、端点一致性、Phi0 单位换算和错误输入拒绝；测试 oracle 不调用被测积分实现。"
+    evidence:
+      - "测试日志"
+      - "测试代码审查"
+  - id: AC7
+    condition: "receipt 完整列出每个新文件、raw/log/manifest 哈希、命令与退出码、AC 映射、solver 警告、未知与限制；proposed_physical_verdict 只能为 NOT_APPLICABLE 或 INCONCLUSIVE。"
+    evidence:
+      - "attempt receipt.yaml"
+      - "handoff verify-task 输出"
+invalid_conditions:
+  - "把 P() 原始 rad 直接称为 SFQ 数，或把局部相位/面积结果称为下游接收、fluxoid 或系统 Gate。"
+  - "phase 与 voltage 不是同一 JJ、同一运行、同一方向、同一端点窗口，或以外部节点电压替代直接 JJ 电压。"
+  - "重采样、插值、常规时间步假设替代 CSV 实际时间轴梯形积分。"
+  - "修改、覆盖、删除、重命名任何历史 raw/netlist，或未保存新的失败运行。"
+  - "把预注册数值检查误写为已冻结 M9 容差或论文/路线结论。"
+inconclusive_conditions:
+  - "JoSIM 的 V(Bn|XDCSFQ) 语义或相位方向无法由网表、输出和可复现的同运行数据确定。"
+  - "任一新运行出现 solver/CSV 异常而无法从保存的原始产物判定其对面积比较的影响。"
+  - "原始同 JJ 数值残差已报告，但在 M9 前没有已冻结的物理接受容差。"
+stop_conditions:
+  - "当前 HEAD、dirty 快照、绑定哈希、依赖、范围或任一 lock 不符合预检。"
+  - "需要修改 scope.write_paths 之外的路径，或需要覆盖、删除、重命名、联网、安装依赖、创建 worktree 或提交。"
+  - "直接 JJ V 探针不能被 JoSIM 解析，或输出不能与同名 P 列一一对应；保留失败证据并停止，不以外部节点 V 代替。"
+  - "需要引入未预注册的参数扫掠、时间步收敛、阈值/容差冻结或 M7+ 逻辑以取得结论。"
+  - "同一根因已造成两个 attempt 无法得到可用的同 JJ raw 输出。"
+issuance_blockers: []

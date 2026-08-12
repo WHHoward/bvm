@@ -56,12 +56,40 @@ M5_DISCLAIMER = (
     "and unfrozen (metric tolerance freeze is M9). No physical Gate."
 )
 
+M6_DISCLAIMER = (
+    "M6 same-JJ cross-check: phase and voltage area are measured on the "
+    "same junction, endpoints, orientation, window and run; "
+    "area_turns = orientation * trapezoid(V, actual_time) / Phi0, with no "
+    "resampling or interpolation. Residuals are raw measurement-pipeline "
+    "values; no physical tolerance is frozen until M9."
+)
+
 DEFAULT_THRESHOLD_RAD = 0.3
+
+# Flux quantum in webers (same constant used in circuits/standard/DCSFQ.cir).
+PHI0 = 2.067833848e-15
 
 
 def rad_to_turns(phase_delta_rad: float) -> float:
     """Explicit rad -> turns conversion: delta_rad / (2*pi)."""
     return phase_delta_rad / (2.0 * math.pi)
+
+
+def trapezoid_integral(values: list[float], times: list[float]) -> float:
+    """Trapezoidal integral of ``values`` over the ACTUAL time axis.
+
+    Uses the CSV's real time column; never assumes a fixed sampling interval
+    and never resamples or interpolates. Requires at least two samples and
+    ``len(values) == len(times)``.
+    """
+    if len(values) != len(times):
+        raise ValueError("values and times must have equal length")
+    if len(values) < 2:
+        raise ValueError("trapezoid integration requires at least two samples")
+    return sum(
+        0.5 * (values[i] + values[i + 1]) * (times[i + 1] - times[i])
+        for i in range(len(values) - 1)
+    )
 
 
 def file_sha256(path: str) -> str:
@@ -208,13 +236,16 @@ def validate_plan(plan: dict) -> dict:
     }
 
 
-def _read_phase_csv(
+def _read_csv(
     csv_path: str,
-) -> tuple[list[str], list[float], dict[str, list[float]]]:
-    """Parse a JoSIM phase-mode CSV with strict time/phase validation.
+    include_voltage: bool = False,
+) -> tuple[list[str], list[float], dict[str, list[float]], dict[str, list[float]]]:
+    """Parse a JoSIM phase-mode CSV with strict time/phase/voltage validation.
 
-    Raises ValueError on empty input, non-numeric or nonfinite time/phase
-    values, or non-strictly-monotonic time.
+    Collects ``P(...)`` columns always and ``V(...)`` columns when
+    ``include_voltage`` is set. Raises ValueError on empty input,
+    non-numeric or nonfinite time/phase/voltage values, or
+    non-strictly-monotonic time.
     """
     with open(csv_path, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
@@ -222,8 +253,10 @@ def _read_phase_csv(
         raise ValueError(f"{csv_path}: empty csv")
     header = list(rows[0].keys())
     phase_cols = [c for c in header if c.startswith("P(")]
+    volt_cols = [c for c in header if c.startswith("V(")] if include_voltage else []
     times: list[float] = []
     phases: dict[str, list[float]] = {c: [] for c in phase_cols}
+    voltages: dict[str, list[float]] = {c: [] for c in volt_cols}
     for i, r in enumerate(rows):
         try:
             t = float(r["time"])
@@ -242,6 +275,22 @@ def _read_phase_csv(
             if not math.isfinite(v):
                 raise ValueError(f"{csv_path}: nonfinite {c} at row {i}")
             phases[c].append(v)
+        for c in volt_cols:
+            try:
+                v = float(r[c])
+            except (KeyError, TypeError, ValueError) as exc:
+                raise ValueError(f"{csv_path}: non-numeric {c} at row {i}") from exc
+            if not math.isfinite(v):
+                raise ValueError(f"{csv_path}: nonfinite {c} at row {i}")
+            voltages[c].append(v)
+    return header, times, phases, voltages
+
+
+def _read_phase_csv(
+    csv_path: str,
+) -> tuple[list[str], list[float], dict[str, list[float]]]:
+    """Phase-only wrapper of :func:`_read_csv` (M5 windowed path)."""
+    header, times, phases, _ = _read_csv(csv_path)
     return header, times, phases
 
 
@@ -443,6 +492,187 @@ def windowed_analyze(
     return result
 
 
+def validate_voltage_plan(plan: dict) -> dict:
+    """Normalize and validate an M6 plan (raises ValueError).
+
+    Extends the M5 plan with a ``voltage_area`` mapping section: each key is
+    a phase column ``P(...)`` whose value declares ``voltage_column``
+    (``V(...)``), ``orientation`` (exactly +1/-1) and ``endpoint_window``
+    (a name present in ``windows_s``). The same windows are then used for
+    both the phase endpoint difference and the voltage trapezoid.
+    """
+    if not isinstance(plan, dict):
+        raise ValueError("measurement plan must be a JSON object")
+    if plan.get("schema_version") != 1:
+        raise ValueError("measurement plan schema_version must be 1")
+    windows = plan.get("windows_s")
+    if not isinstance(windows, dict):
+        raise ValueError("measurement plan must contain windows_s")
+    out_windows: dict[str, tuple[float, float]] = {}
+    for name, w in windows.items():
+        if not isinstance(w, list) or len(w) != 2:
+            raise ValueError(f"windows_s.{name} must be a [start, end] pair")
+        start, end = float(w[0]), float(w[1])
+        if not (math.isfinite(start) and math.isfinite(end)):
+            raise ValueError(f"windows_s.{name} bounds must be finite")
+        if start > end:
+            raise ValueError(f"windows_s.{name} must satisfy start <= end")
+        out_windows[name] = (start, end)
+    for first, second in (("pre", "activity"), ("activity", "post")):
+        if first in out_windows and second in out_windows:
+            if out_windows[first][1] > out_windows[second][0]:
+                raise ValueError(f"require {first}_end <= {second}_start")
+    va = plan.get("voltage_area")
+    if not isinstance(va, dict) or not va:
+        raise ValueError("plan must declare voltage_area mappings")
+    out_va: dict[str, dict[str, Any]] = {}
+    for phase_col, mapping in va.items():
+        if not isinstance(phase_col, str) or not phase_col.startswith("P("):
+            raise ValueError(f"voltage_area key must be a P(...) column: {phase_col!r}")
+        if not isinstance(mapping, dict):
+            raise ValueError(f"voltage_area[{phase_col}] must be an object")
+        vcol = mapping.get("voltage_column")
+        if not isinstance(vcol, str) or not vcol.startswith("V("):
+            raise ValueError(
+                f"voltage_area[{phase_col}].voltage_column must be a V(...) column"
+            )
+        orient = mapping.get("orientation")
+        if isinstance(orient, bool) or not isinstance(orient, (int, float)):
+            raise ValueError(f"voltage_area[{phase_col}].orientation must be +1 or -1")
+        if orient not in (1.0, -1.0):
+            raise ValueError(f"voltage_area[{phase_col}].orientation must be +1 or -1")
+        win = mapping.get("endpoint_window")
+        if not isinstance(win, str) or win not in out_windows:
+            raise ValueError(
+                f"voltage_area[{phase_col}].endpoint_window must name a windows_s entry"
+            )
+        out_va[phase_col] = {
+            "voltage_column": vcol,
+            "orientation": int(orient),
+            "endpoint_window": win,
+        }
+    return {"schema_version": 1, "windows_s": out_windows, "voltage_area": out_va}
+
+
+def voltage_area_analyze(
+    signal_csv: str, plan: dict, control_csv: str | None = None
+) -> dict[str, Any]:
+    """M6 same-JJ phase vs voltage-area cross-check.
+
+    For every declared mapping the phase endpoint difference and the
+    voltage trapezoid are measured on the SAME junction, SAME run, SAME
+    orientation and SAME window, using the CSV's actual time column:
+
+    ``phase_delta_turns = (P_last - P_first) / (2*pi)``
+    ``area_turns = orientation * trapezoid(V, time) / PHI0``
+    ``residual_turns = phase_delta_turns - area_turns``
+
+    Raw rad/V/s values are preserved; nothing is rounded early or made
+    absolute. No resampling or interpolation is ever performed. When a
+    matched control CSV is supplied, per-run results for signal and control
+    are reported in full first and the 0/300-style difference is listed
+    separately under ``control_corrected``.
+    """
+    plan = validate_voltage_plan(plan)
+    s_header, s_times, s_phases, s_voltages = _read_csv(signal_csv, include_voltage=True)
+
+    def run_namespace(
+        times: list[float],
+        phases: dict[str, list[float]],
+        voltages: dict[str, list[float]],
+    ) -> dict[str, Any]:
+        out: dict[str, Any] = {}
+        for phase_col, mapping in plan["voltage_area"].items():
+            vcol = mapping["voltage_column"]
+            if phase_col not in phases:
+                raise ValueError(f"csv missing phase column {phase_col}")
+            if vcol not in voltages:
+                raise ValueError(f"csv missing voltage column {vcol}")
+            win = plan["windows_s"][mapping["endpoint_window"]]
+            indices = _window_indices(times, *win)
+            stats = _window_stats(phases[phase_col], times, indices, win)
+            first, last = indices[0], indices[-1]
+            phase_delta_rad = phases[phase_col][last] - phases[phase_col][first]
+            area = mapping["orientation"] * trapezoid_integral(
+                [voltages[vcol][i] for i in indices], [times[i] for i in indices]
+            )
+            out[phase_col] = {
+                "phase_column": phase_col,
+                "voltage_column": vcol,
+                "orientation": mapping["orientation"],
+                "endpoint_window": mapping["endpoint_window"],
+                "window": {
+                    "requested_start_s": win[0],
+                    "requested_end_s": win[1],
+                    "selected_first_time_s": stats["selected_first_time_s"],
+                    "selected_last_time_s": stats["selected_last_time_s"],
+                    "sample_count": stats["sample_count"],
+                },
+                "phase_first_rad": phases[phase_col][first],
+                "phase_last_rad": phases[phase_col][last],
+                "phase_delta_rad": phase_delta_rad,
+                "phase_delta_turns": rad_to_turns(phase_delta_rad),
+                "area_vs": area,
+                "area_turns": area / PHI0,
+                "residual_turns": rad_to_turns(phase_delta_rad) - area / PHI0,
+            }
+        return out
+
+    signal_ns = run_namespace(s_times, s_phases, s_voltages)
+    control_ns = None
+    if control_csv is not None:
+        c_header, c_times, c_phases, c_voltages = _read_csv(control_csv, include_voltage=True)
+        if c_header != s_header:
+            raise ValueError(
+                "control csv headers must be identical to signal headers (same order)"
+            )
+        if len(c_times) != len(s_times) or any(a != b for a, b in zip(c_times, s_times)):
+            raise ValueError(
+                "control csv time array must be identical to signal time array"
+            )
+        control_ns = run_namespace(c_times, c_phases, c_voltages)
+
+    result: dict[str, Any] = {
+        "metric_version": "v2",
+        "mode": "voltage_area_crosscheck",
+        "units": {**UNITS, "flux_quantum": "Wb", "area": "V*s"},
+        "disclaimer": DISCLAIMER + " " + M5_DISCLAIMER + " " + M6_DISCLAIMER,
+        "runs": {"signal": signal_ns},
+        "provenance": {
+            "signal_csv": signal_csv,
+            "signal_sha256": file_sha256(signal_csv),
+            "control_csv": control_csv,
+            "control_sha256": file_sha256(control_csv) if control_csv is not None else None,
+            "alignment_note": (
+                "CSV alignment cannot prove the netlist control relationship."
+            ),
+        },
+    }
+    if control_ns is not None:
+        result["runs"]["zero_input_control"] = control_ns
+        corrected: dict[str, Any] = {}
+        for phase_col in plan["voltage_area"]:
+            sig = signal_ns[phase_col]
+            ctl = control_ns[phase_col]
+            corrected[phase_col] = {
+                "phase_column": phase_col,
+                "voltage_column": sig["voltage_column"],
+                "orientation": sig["orientation"],
+                "signal_phase_delta_turns": sig["phase_delta_turns"],
+                "control_phase_delta_turns": ctl["phase_delta_turns"],
+                "corrected_phase_delta_turns": sig["phase_delta_turns"] - ctl["phase_delta_turns"],
+                "signal_area_turns": sig["area_turns"],
+                "control_area_turns": ctl["area_turns"],
+                "corrected_area_turns": sig["area_turns"] - ctl["area_turns"],
+                "corrected_residual_turns": (
+                    (sig["phase_delta_turns"] - ctl["phase_delta_turns"])
+                    - (sig["area_turns"] - ctl["area_turns"])
+                ),
+            }
+        result["control_corrected"] = corrected
+    return result
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -480,8 +710,17 @@ def main(argv: list[str] | None = None) -> int:
         "--control-csv",
         metavar="CONTROL.csv",
         help=(
-            "M5 windowed mode: matched zero-input control CSV (must have "
-            "identical headers and identical time array)"
+            "M5 windowed / M6 cross-check mode: matched zero-input control "
+            "CSV (must have identical headers and identical time array)"
+        ),
+    )
+    parser.add_argument(
+        "--voltage-area",
+        action="store_true",
+        help=(
+            "M6 same-JJ phase vs voltage-area cross-check mode: the plan's "
+            "voltage_area mappings drive trapezoid(V, actual time)/Phi0 "
+            "against (P_last - P_first)/(2*pi) on the same window"
         ),
     )
     args = parser.parse_args(argv)
@@ -490,7 +729,12 @@ def main(argv: list[str] | None = None) -> int:
         try:
             with open(args.measurement_plan, encoding="utf-8") as f:
                 plan = json.load(f)
-            result = windowed_analyze(args.csv, plan, control_csv=args.control_csv)
+            if args.voltage_area:
+                result = voltage_area_analyze(
+                    args.csv, plan, control_csv=args.control_csv
+                )
+            else:
+                result = windowed_analyze(args.csv, plan, control_csv=args.control_csv)
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             sys.stderr.write(f"error: {exc}\n")
             return 2

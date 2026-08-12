@@ -1,0 +1,74 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260811-M6-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-12T17:17:01+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "bd6464cf9bd391ac1f2786ca7bfd4439258bd9546da2bf196b8d10a71aa07941"
+  ack_sha256: "5176c97ecaa26329350a1dcefa92cbf02863b51f7ca87b05364dd89b58cf5e3b"
+  receipt_sha256: "9a744f41ca07ef325280b832242e538b1fd676e03afd0950b1378fc0c86c866e"
+scope_status: INCONCLUSIVE
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-contract-hash-chain
+    status: INCONCLUSIVE
+    evidence:
+      - "request.yaml/request.sha256 and A01 ACK/receipt bindings are internally consistent."
+      - "Current `handoff.py verify-task research/tasks/JH-20260811-M6-001` fails because scope-files.sha256 binds the pre-execution hash of scripts/sfq_metrics_v2.py while the same path is an authorized D1 write path."
+  - id: C02-manual-scope-and-frozen-inputs
+    status: PASS
+    evidence:
+      - "Receipt changes are within request scope.write_paths; the legacy v1 script and historical bump netlists/CSVs remain hash-identical."
+      - "Independent `sha256sum -c baseline/scope-files.sha256` finds only the authorized D1 output mismatch."
+  - id: C03-implementation-and-tests
+    status: PASS
+    evidence:
+      - "scripts/sfq_metrics_v2.py explicitly uses actual CSV time samples and trapezoid(V,time)/Phi0, preserves signed phase/area values, and rejects invalid mappings/data."
+      - "Codex independently reran M4 15/15, M5 29/29, and M6 21/21 tests: all passed."
+  - id: C04-netlist-and-run-provenance
+    status: PASS
+    evidence:
+      - "The two new M6 netlists differ from their matching historical 0/300 uA bump netlists only in comments and added direct V(B1/B2/B3|XDCSFQ) print probes."
+      - "Unique 0u/300u run manifests bind input snapshots, model closure, JoSIM v2.7.2837d13 binary hash, raw CSV hashes, and exit-0 logs; both CSVs have 1999 strictly increasing finite samples."
+  - id: C05-independent-raw-recalculation
+    status: PASS
+    evidence:
+      - "Codex independently parsed the raw 0u and 300u CSVs, selected [6,190) ps (6.0 through 189.9 ps; 1839 samples), and calculated phase endpoint turns and actual-time trapezoids without scripts/sfq_metrics_v2.py."
+      - "Corrected residual turns are B1 -1.78107286447071e-05, B2 -1.47803253829348e-05, B3 +1.65644099103801e-07; the 300u P columns are string-identical to the historical 300u P columns."
+  - id: C06-evidence-boundary
+    status: PASS
+    evidence:
+      - "RelevantTrace.cpp resolves V(Bn|XDCSFQ) to the JJ's posIndex/negIndex and variableIndex; Output.cpp uses the JJ variable trace for V(B...) in phase analysis."
+      - "The delivery correctly keeps this as same-JJ JoSIM measurement-pipeline calibration, not downstream reception, fluxoid, system Gate, convergence, or a frozen tolerance claim."
+findings:
+  - "FROZEN contract design defect: an authorized mutable deliverable (D1 scripts/sfq_metrics_v2.py) was also bound in the final scope hash manifest. The verifier therefore cannot distinguish the authorized delivery change from frozen-input drift."
+  - "The receipt's claim that delivery verify-task would report this difference as expected does not satisfy AC7 or the v1 requirement that Codex can mechanically verify the final package."
+  - "A01 raw and code artifacts remain preserved and manually auditable, but cannot be retroactively promoted into valid FROZEN M6 evidence."
+accepted_claims:
+  - "A01 is a valid, reproducible candidate implementation and calibration dataset: the declared direct JoSIM JJ V/P columns, selected window, signed phase/area quantities, and residuals are independently reproducible from its preserved raw CSVs."
+  - "The candidate implementation does not use raw phase radians as SFQ counts and does not call activity samples events."
+rejected_claims:
+  - "JH-20260811-M6-001 A01 is not an accepted FROZEN completion of M6 because its final contract verification is not mechanically valid."
+  - "No residual acceptance tolerance, local SFQ event, downstream JTL reception, fluxoid count, physical Gate, route decision, or paper claim follows from A01."
+required_rework:
+  - "Codex must issue a superseding FROZEN M6 request whose final frozen-input manifest excludes authorized mutable deliverables or otherwise has a verifier-supported pre-execution versus post-execution binding model."
+  - "Claude must execute a new attempt under that request, use new unique run IDs, preserve all old A01 files unchanged, and obtain a final successful verify-task result before delivery."
+  - "The new receipt must retain the same same-JJ/raw-time/endpoint/direction discipline and bind the fresh raw runs, implementation, tests, logs, and analysis hashes."
+next_actions:
+  - "Do not update memory/project-todo.md or docs/HANDOVER.md: M6 remains incomplete."
+  - "Treat A01 only as exploratory design input for the superseding FROZEN rerun; do not use it as frozen M9/M11 evidence."
+  - "After corrected M6 acceptance, proceed to M7/M8 planning according to the approved dependency and evidence-mode boundaries."
+claim_ceiling: same_junction_measurement_pipeline_only_no_physical_gate

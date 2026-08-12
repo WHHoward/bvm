@@ -1,0 +1,55 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260811-M6-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-11T17:58:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "bd6464cf9bd391ac1f2786ca7bfd4439258bd9546da2bf196b8d10a71aa07941"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "c23b83c7ce9586f9140eb9a389695ce4c2299484"
+  dirty_paths:
+    - "research/tasks/JH-20260811-M6-001/request.yaml (untracked, 合同包)"
+    - "research/tasks/JH-20260811-M6-001/request.sha256 (untracked, 合同包)"
+    - "research/tasks/JH-20260811-M6-001/baseline/git-status.txt (untracked, 合同包)"
+    - "research/tasks/JH-20260811-M6-001/baseline/scope-files.sha256 (untracked, 合同包)"
+    - "research/mailbox/from-codex/codex-20260811-174325.md (untracked, 签发通知，与写路径不重叠)"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "建立 M6 同一 JJ 相位—电压面积交叉校验测量链：扩展 scripts/sfq_metrics_v2.py，生成带直接 V(B1/B2/B3|XDCSFQ) 与 P(B1/B2/B3|XDCSFQ) 探针的匹配 DCSFQ 0/300uA 新原始运行（两个新网表），以 CSV 实际时间轴梯形积分报告逐结 phase_delta_turns、area_turns 与 signed residual。"
+  non_goals:
+    - "不修改、重跑、覆盖或删除任何历史 test/final CSV、网表或旧 JSON（历史 bump 0/300u 文件逐字不变）。"
+    - "不把局部 JJ 相位绕转、面积积分或活动簇称为下游 SFQ 接收、闭环 fluxoid 或系统 Gate。"
+    - "不冻结 METRIC_SPEC_V2、物理容差、窗口、阈值或论文主张（M9 才能最终冻结）。"
+    - "不执行 M7 回归全套、M8 时间步收敛、M10 JSON 重生或路线比较。"
+    - "不修改 scripts/sfq_metrics.py、docs/HANDOVER.md、memory/project-todo.md、schema、M4/M5 证据或历史 raw。"
+  stop_conditions:
+    - "HEAD、dirty 快照、绑定哈希、依赖、scope 或任一 lock 不符合预检。"
+    - "需要修改 scope.write_paths 之外的路径，或需要覆盖、删除、重命名、联网、安装依赖、创建 worktree 或提交。"
+    - "直接 JJ V 探针不能被 JoSIM 解析，或输出不能与同名 P 列一一对应——保留失败证据并停止，不以外部节点 V 代替。"
+    - "需要引入未预注册的参数扫掠、时间步收敛、阈值/容差冻结或 M7+ 逻辑以取得结论。"
+    - "同一根因已造成两个 attempt 无法得到可用的同 JJ raw 输出。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260811-M6-001"
+  - "sha256sum 冻结输入复验（历史 bump 0/300u CSV+CIR、DCSFQ.cir、jjmit.cir、M4/M5 测试与实现）"
+  - "build/josim-cli --version 与二进制 SHA-256 记录"
+  - "build/josim-cli test/final/interface/m6_dcsfq_voltage_area_0.cir 与 _300u.cir（唯一 run ID，0.1 ps 步长，保存 raw CSV/日志/manifest）"
+  - "python3 test/metrics/test_sfq_metrics_v2.py（M4 15）与 test_sfq_metrics_v2_m5.py（M5 29）回归"
+  - "python3 test/metrics/test_sfq_metrics_v2_m6.py（新 M6 测试）"
+  - "M6 CLI：sfq_metrics_v2.py --measurement-plan + voltage-area 交叉校验输出"
+  - "delivery 前 handoff.py verify-task"
+expected_changed_paths:
+  - "scripts/sfq_metrics_v2.py"
+  - "test/metrics/test_sfq_metrics_v2_m6.py"
+  - "test/final/interface/m6_dcsfq_voltage_area_0.cir"
+  - "test/final/interface/m6_dcsfq_voltage_area_300u.cir"
+  - "research/tasks/JH-20260811-M6-001/attempts/**"
+blockers: []
+deviations: []

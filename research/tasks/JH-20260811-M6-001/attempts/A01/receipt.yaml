@@ -1,0 +1,282 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260811-M6-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-11T18:12:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "bd6464cf9bd391ac1f2786ca7bfd4439258bd9546da2bf196b8d10a71aa07941"
+  ack_sha256: "5176c97ecaa26329350a1dcefa92cbf02863b51f7ca87b05364dd89b58cf5e3b"
+execution_status: COMPLETED
+baseline_git_head: "c23b83c7ce9586f9140eb9a389695ce4c2299484"
+result_git_head: null  # 未提交（authorization.commit: false）
+changes:
+  - path: scripts/sfq_metrics_v2.py
+    action: MODIFIED
+    sha256: "6be62ed0ef8d8bb747692b5cd83bde42d5d464e610dd67b3c05aef2e3b62db9d"
+  - path: test/metrics/test_sfq_metrics_v2_m6.py
+    action: CREATED
+    sha256: "d18383fd8c40fb172fef99ae3a02166bc0d7d3dd81668b7eefa2166d4ce1ff13"
+  - path: test/final/interface/m6_dcsfq_voltage_area_0.cir
+    action: CREATED
+    sha256: "01e5dfe0f18beea630b330b98acfc991952a1616d032360f647504bb673a50b6"
+  - path: test/final/interface/m6_dcsfq_voltage_area_300u.cir
+    action: CREATED
+    sha256: "8513d63f074a3925f297c54ea743d96e85c4ac89e10ea049730f27946fd464b6"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/ack.yaml
+    action: CREATED
+    sha256: "5176c97ecaa26329350a1dcefa92cbf02863b51f7ca87b05364dd89b58cf5e3b"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/plan-m6.json
+    action: CREATED
+    sha256: "87bf06315910096fba3b2fda7166d8f68de9610ef0070a5d14a61e875f0078cf"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-0u-crosscheck.json
+    action: CREATED
+    sha256: "a6422e6ccf313bfa5183993c76d7d6d221bacadd2dfec22932b94bf2544f31b8"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-300u-crosscheck.json
+    action: CREATED
+    sha256: "fb8498702ad7023012a0f8d91a83139dea83c9adf6cf26fecc98c75f78b7ed70"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-300u-minus-0u-crosscheck.json
+    action: CREATED
+    sha256: "f9a105b223def88d558feebf8e6dae6032f88e5098d1cdf3de4f8fc5f0ac8294"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/analysis.md
+    action: CREATED
+    sha256: "c8f9f45ca13c522768689ad698e7cb7302a196543daeb63ea4830c60e1afdece"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/manifest.yaml
+    action: CREATED
+    sha256: "ecd9dd91eeb51d824cd0b5354c8d5d42821308b6d4e64ef2f9e0b0ac50cec72f"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/manifest.yaml
+    action: CREATED
+    sha256: "7639924f29d9f3b08e73f5c3b5442eeffb2372e59b3ace0f641c3f434070a2b1"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/raw/m6-dcsfq-va-0u-20260811-01.csv
+    action: CREATED
+    sha256: "0a21742e047eeef5663dfa5b9868517391a6566eb55f91b4a0949960d5d39933"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/raw/m6-dcsfq-va-300u-20260811-01.csv
+    action: CREATED
+    sha256: "0cfc8209f83d8a2f2d574185c8323733db3e2529fd7acc2b98c7a34dfd3e94a1"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/logs/run.log
+    action: CREATED
+    sha256: "1de44de14d8e260037f156c84c271915d081cf63301276fbee3439a20e596542"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/logs/run.log
+    action: CREATED
+    sha256: "a3b0955e2d1b9ddf6ada2e7de8585cb277ab433b354bd4ccab37e2dd10ae4233"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/tests.log
+    action: CREATED
+    sha256: "ea0fe8857ece1be16da983fda22eadb843746a74ba521495144d2215549b41d2"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/verify-task.log
+    action: CREATED
+    sha256: "3f17e45917964f3022d13edf4e24f26bd3d2ce3f97d778efe780c40646823009"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-0u.log
+    action: CREATED
+    sha256: "ea950ca68aedfd906f33be8c8f031418936a9c89d64866321c8771c3db26e849"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-300u.log
+    action: CREATED
+    sha256: "3e2f8823ecb5c87b0629f941647a61617292bb13fc474cfa74f37d974e8a00dc"
+  - path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-diff.log
+    action: CREATED
+    sha256: "52faf60794b6a8818f259dab19d0b3d0097b6f79b5bdb23a612dd4d6d3822567"
+artifacts:
+  - id: ART01
+    path: scripts/sfq_metrics_v2.py
+    sha256: "6be62ed0ef8d8bb747692b5cd83bde42d5d464e610dd67b3c05aef2e3b62db9d"
+    role: IMPLEMENTATION
+  - id: ART02
+    path: test/metrics/test_sfq_metrics_v2_m6.py
+    sha256: "d18383fd8c40fb172fef99ae3a02166bc0d7d3dd81668b7eefa2166d4ce1ff13"
+    role: TEST
+  - id: ART03
+    path: test/final/interface/m6_dcsfq_voltage_area_0.cir
+    sha256: "01e5dfe0f18beea630b330b98acfc991952a1616d032360f647504bb673a50b6"
+    role: DOCUMENTATION
+  - id: ART04
+    path: test/final/interface/m6_dcsfq_voltage_area_300u.cir
+    sha256: "8513d63f074a3925f297c54ea743d96e85c4ac89e10ea049730f27946fd464b6"
+    role: DOCUMENTATION
+  - id: ART05
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/ack.yaml
+    sha256: "5176c97ecaa26329350a1dcefa92cbf02863b51f7ca87b05364dd89b58cf5e3b"
+    role: DOCUMENTATION
+  - id: ART06
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/plan-m6.json
+    sha256: "87bf06315910096fba3b2fda7166d8f68de9610ef0070a5d14a61e875f0078cf"
+    role: DOCUMENTATION
+  - id: ART07
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-0u-crosscheck.json
+    sha256: "a6422e6ccf313bfa5183993c76d7d6d221bacadd2dfec22932b94bf2544f31b8"
+    role: DOCUMENTATION
+  - id: ART08
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-300u-crosscheck.json
+    sha256: "fb8498702ad7023012a0f8d91a83139dea83c9adf6cf26fecc98c75f78b7ed70"
+    role: DOCUMENTATION
+  - id: ART09
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-300u-minus-0u-crosscheck.json
+    sha256: "f9a105b223def88d558feebf8e6dae6032f88e5098d1cdf3de4f8fc5f0ac8294"
+    role: DOCUMENTATION
+  - id: ART10
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/analysis.md
+    sha256: "c8f9f45ca13c522768689ad698e7cb7302a196543daeb63ea4830c60e1afdece"
+    role: DOCUMENTATION
+  - id: ART11
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/manifest.yaml
+    sha256: "ecd9dd91eeb51d824cd0b5354c8d5d42821308b6d4e64ef2f9e0b0ac50cec72f"
+    role: MANIFEST
+  - id: ART12
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/manifest.yaml
+    sha256: "7639924f29d9f3b08e73f5c3b5442eeffb2372e59b3ace0f641c3f434070a2b1"
+    role: MANIFEST
+  - id: ART13
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/raw/m6-dcsfq-va-0u-20260811-01.csv
+    sha256: "0a21742e047eeef5663dfa5b9868517391a6566eb55f91b4a0949960d5d39933"
+    role: RAW
+  - id: ART14
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/raw/m6-dcsfq-va-300u-20260811-01.csv
+    sha256: "0cfc8209f83d8a2f2d574185c8323733db3e2529fd7acc2b98c7a34dfd3e94a1"
+    role: RAW
+  - id: ART15
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/logs/run.log
+    sha256: "1de44de14d8e260037f156c84c271915d081cf63301276fbee3439a20e596542"
+    role: LOG
+  - id: ART16
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/logs/run.log
+    sha256: "a3b0955e2d1b9ddf6ada2e7de8585cb277ab433b354bd4ccab37e2dd10ae4233"
+    role: LOG
+  - id: ART17
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/tests.log
+    sha256: "ea0fe8857ece1be16da983fda22eadb843746a74ba521495144d2215549b41d2"
+    role: LOG
+  - id: ART18
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/verify-task.log
+    sha256: "3f17e45917964f3022d13edf4e24f26bd3d2ce3f97d778efe780c40646823009"
+    role: LOG
+  - id: ART19
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-0u.log
+    sha256: "ea950ca68aedfd906f33be8c8f031418936a9c89d64866321c8771c3db26e849"
+    role: LOG
+  - id: ART20
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-300u.log
+    sha256: "3e2f8823ecb5c87b0629f941647a61617292bb13fc474cfa74f37d974e8a00dc"
+    role: LOG
+  - id: ART21
+    path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-diff.log
+    sha256: "52faf60794b6a8818f259dab19d0b3d0097b6f79b5bdb23a612dd4d6d3822567"
+    role: LOG
+commands:
+  - command: "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260811-M6-001"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/verify-task.log
+    log_sha256: "3f17e45917964f3022d13edf4e24f26bd3d2ce3f97d778efe780c40646823009"
+  - command: "build/josim-cli test/final/interface/m6_dcsfq_voltage_area_0.cir -o <run>/raw/<run>.csv"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/logs/run.log
+    log_sha256: "1de44de14d8e260037f156c84c271915d081cf63301276fbee3439a20e596542"
+  - command: "build/josim-cli test/final/interface/m6_dcsfq_voltage_area_300u.cir -o <run>/raw/<run>.csv"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/logs/run.log
+    log_sha256: "a3b0955e2d1b9ddf6ada2e7de8585cb277ab433b354bd4ccab37e2dd10ae4233"
+  - command: "python3 scripts/sfq_metrics_v2.py <raw-0u.csv> --measurement-plan plan-m6.json --voltage-area --json m6-0u-crosscheck.json"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-0u.log
+    log_sha256: "ea950ca68aedfd906f33be8c8f031418936a9c89d64866321c8771c3db26e849"
+  - command: "python3 scripts/sfq_metrics_v2.py <raw-300u.csv> --measurement-plan plan-m6.json --voltage-area --json m6-300u-crosscheck.json"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-300u.log
+    log_sha256: "3e2f8823ecb5c87b0629f941647a61617292bb13fc474cfa74f37d974e8a00dc"
+  - command: "python3 scripts/sfq_metrics_v2.py <raw-300u.csv> --measurement-plan plan-m6.json --voltage-area --control-csv <raw-0u.csv> --json m6-300u-minus-0u-crosscheck.json"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/analysis-diff.log
+    log_sha256: "52faf60794b6a8818f259dab19d0b3d0097b6f79b5bdb23a612dd4d6d3822567"
+  - command: "python3 test/metrics/test_sfq_metrics_v2.py && python3 test/metrics/test_sfq_metrics_v2_m5.py && python3 test/metrics/test_sfq_metrics_v2_m6.py"
+    exit_code: 0
+    log_path: research/tasks/JH-20260811-M6-001/attempts/A01/logs/tests.log
+    log_sha256: "ea0fe8857ece1be16da983fda22eadb843746a74ba521495144d2215549b41d2"
+tests:
+  - id: M4-unit-tests
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260811-M6-001/attempts/A01/logs/tests.log
+    notes:
+      - "15/15，未改动"
+  - id: M5-unit-tests
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260811-M6-001/attempts/A01/logs/tests.log
+    notes:
+      - "29/29，未改动"
+  - id: M6-unit-tests
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260811-M6-001/attempts/A01/logs/tests.log
+    notes:
+      - "21/21；非均匀时间梯形、±orientation、端点一致性、Φ0 换算、错误拒绝、控制校正"
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - scripts/sfq_metrics_v2.py
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-300u-minus-0u-crosscheck.json
+    notes:
+      - "每个映射显式保存 phase_column/voltage_column/orientation/endpoint_window；phase_delta_turns=(P_last-P_first)/(2pi)，area_turns=orientation*trapezoid(V,actual time)/Phi0；保留原始 rad/V/s，无提前取整/绝对值"
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - test/metrics/test_sfq_metrics_v2_m6.py
+    notes:
+      - "拒绝非有限/非递增时间、缺列、<2 点窗口、非有限 P/V、未知 orientation、列长度不匹配；首末实际样本同时用于相位端点与电压梯形"
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - test/final/interface/m6_dcsfq_voltage_area_0.cir
+      - test/final/interface/m6_dcsfq_voltage_area_300u.cir
+    notes:
+      - "与历史 bump 0/300u 网表 diff 仅 .print 行（新增 3 个 V 探针）；历史网表与 raw 逐字未变（基线哈希校验）"
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/manifest.yaml
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/manifest.yaml
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-0u-20260811-01/raw/m6-dcsfq-va-0u-20260811-01.csv
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-dcsfq-va-300u-20260811-01/raw/m6-dcsfq-va-300u-20260811-01.csv
+    notes:
+      - "唯一 run ID 两个新网表运行；inputs/ 保存 netlist+include 闭包快照；josim-cli v2.7.2837d13 二进制 sha256 48655cb31d6297ba571a；stdout/stderr 日志；raw CSV+sha256；无覆盖"
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/m6-300u-minus-0u-crosscheck.json
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/analysis.md
+    notes:
+      - "每 run 每结报告 raw phase delta、area turns 与 signed residual；0/300 差分在逐 run 结果完整报告后另列 control_corrected，未与单运行交叉校验混淆"
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260811-M6-001/attempts/A01/logs/tests.log
+    notes:
+      - "M4 15 + M5 29 保持通过；M6 21 测试独立验证；oracle 为手算首性原理常数，不调用被测积分实现"
+  - id: AC7
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260811-M6-001/attempts/A01/runs/analysis.md
+    notes:
+      - "receipt 列出每个新文件/raw/log/manifest 哈希、命令与退出码、AC 映射、solver 警告（无）、未知与限制；proposed_physical_verdict=NOT_APPLICABLE"
+observations:
+  - "新 300u 运行 P 列与历史 test_dcsfq_behavior_bump_300u.csv 对应列逐行一致（条件复现）。"
+  - "控制校正后相位增量精确复现 M5 冻结重放常数（差异 <1e-14）。"
+  - "逐结 signed residual（cross_check 窗 [6,190)ps）：0u 运行 −2.5e-5/+8.2e-5/+5.7e-5；300u 运行 −4.3e-5/+6.7e-5/+5.7e-5；控制校正后 −1.8e-5/−1.5e-5/+1.7e-7 圈。"
+interpretations:
+  - "V(Bn|XDCSFQ) 为同 JJ 直接结电压：与相位通道同符号同量级，残差 ~1e-5 圈量级；残差系统性来源推断为输出 FIR 滤波与 Gear 二阶导数公式的窗口边界项（推断，未单变量对照）。"
+  - "0u 运行仍有 ~0.003–0.008 圈净变化（偏置启动后慢漂移），由匹配零输入控制相减吸收。"
+unknowns:
+  - "残差 ~1e-5 圈是否可接受：M9 才冻结容差。"
+  - "FIR/边界项对残差的定量贡献：需单变量对照（不在本任务）。"
+  - "下游 JTL 接收、闭环 fluxoid、系统 Gate：不在本任务范围。"
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "单一 0.1 ps 步长；未做 M8 时间步收敛（不在本任务）。"
+  - "metric/容差未冻结（M9），残差只作管线事实报告。"
+  - "探针语义由源码路径（RelevantTrace.cpp handle_voltage_or_phase、Output.cpp V trace 计算）与可复现同运行数据共同确认，非独立第三证据通道。"
+  - "scope manifest 对 scripts/sfq_metrics_v2.py 的基线哈希（1eae8fe2…）与本任务交付后的哈希（6be62ed0…）不同：该文件是 read+write 双路径交付物（D1），修改已由 request 授权并在 changes[] 声明；verify-task 的 scope 检查会报告此预期差异，交由 Codex 审计裁决。"
+deviations: []
+blockers: []

@@ -81,6 +81,6 @@ A02 满足审计 Required correction：A02-local 不可变 M7B analysis 已产�
 
 ## Delivery snapshot（RESULT 完成后由授权 owner 追加）
 
-Delivery snapshot commit: <commit>
-Snapshot owner: <role>
+Delivery snapshot commit: f2e20ea0b2ba92b9fa4634dba29a2778833124c1
+Snapshot owner: CODEX
 Snapshot scope check: PASS

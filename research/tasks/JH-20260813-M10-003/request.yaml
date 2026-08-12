@@ -1,0 +1,53 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M10-003
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-13T02:31:00+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M10
+depends_on: [M4, M5, M6, M7, M8, M9]
+supersedes: {task_id: JH-20260813-M10-002, revision: 1}
+task:
+  kind: REPRODUCTION
+  objective: "Perform the preregistered M10 historical reconstruction: add V2 endpoint-arithmetic JSON and correction documentation for BASELINE/P0/P2/BQ-v4, preserving legacy inputs and narratives."
+  research_question: "Can the fixed historical CSV inventory be reproducibly expressed under accepted METRIC_SPEC_V2 with raw-radian-to-turn arithmetic, provenance, controls and explicit evidence limits, without a physical Gate claim?"
+  non_goals: ["No JoSIM run, raw/netlist/model modification, candidate tuning, INTERFACE_GATE_V1, route decision, paper claim, activity/event, voltage-area, convergence, local-SFQ, fluxoid, downstream-reception, or system verdict.", "Do not rewrite historical narrative/tables; append only the authorized compact SUPERSEDED banner/link."]
+  claim_ceiling: historical_endpoint_arithmetic_and_artifact_provenance_only_no_physical_gate
+scope:
+  read_paths: [AGENTS.md, research/CLAUDE_EXECUTOR.md, research/WORKFLOW.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-experiment/SKILL.md, .agents/skills/josim-evidence-audit/SKILL.md, .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md, scripts/sfq_metrics_v2.py, research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md, research/tasks/JH-20260813-M10-003/design/commit-semantics.md, test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv, test/final/interface/data/test_dcsfq_behavior_bump_0.csv, test/final/interface/data/test_dcsfq_behavior_bump_1u4.csv, test/final/interface/data/test_dcsfq_behavior_bump_20u.csv, test/final/interface/data/test_dcsfq_behavior_bump_40u.csv, test/final/interface/data/test_dcsfq_behavior_bump_68u.csv, test/final/interface/data/test_dcsfq_behavior_bump_100u.csv, test/final/interface/data/test_dcsfq_behavior_bump_150u.csv, test/final/interface/data/test_dcsfq_behavior_bump_300u.csv, test/final/interface/data/test_dcsfq_behavior_sustained_68u.csv, test/final/interface/data/test_dcsfq_behavior_sustained_150u.csv, test/final/interface/data/test_dcsfq_behavior_sustained_300u.csv, test/final/bvm/data/test_bvm_multivortex.csv, test/final/bvm/data/test_bvm_multivortex_wl80.csv, test/final/bvm/data/test_bvm_multivortex_wl120.csv, test/final/qb/data/bq_v4_sweep70.csv, test/final/qb/data/bq_v4_sweep90.csv, test/final/qb/data/bq_v4_sweep110.csv, test/final/qb/data/bq_v4_sweep130.csv, test/final/qb/data/bq_v4_sweep150.csv, test/final/qb/data/bq_v4_sfq.csv, test/final/single_bvm_qb/BASELINE.md, test/final/interface/P0_LOG.md, test/final/bvm/P2_LOG.md, test/final/single_bvm_qb/EXPERIMENT_LOG.md]
+  write_paths: [scripts/rebuild_historical_metrics_v2.py, test/metrics/test_rebuild_historical_metrics_v2.py, test/final/single_bvm_qb/data/metrics_v2/**, test/final/interface/data/metrics_v2/**, test/final/bvm/data/metrics_v2/**, test/final/qb/data/metrics_v2/**, docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, test/final/single_bvm_qb/BASELINE.md, test/final/interface/P0_LOG.md, test/final/bvm/P2_LOG.md, test/final/single_bvm_qb/EXPERIMENT_LOG.md, research/tasks/JH-20260813-M10-003/attempts/**]
+  frozen_paths: [research/tasks/JH-20260813-M10-001/**, research/tasks/JH-20260813-M10-002/**, research/tasks/JH-20260813-M10-003/request.yaml, research/tasks/JH-20260813-M10-003/request.sha256, research/tasks/JH-20260813-M10-003/baseline/**, research/tasks/JH-20260813-M10-003/design/**, research/tasks/JH-20260813-M10-003/audits/**, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, scripts/sfq_metrics_v2.py, test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv, test/final/interface/data/test_dcsfq_behavior_bump_0.csv, test/final/interface/data/test_dcsfq_behavior_bump_1u4.csv, test/final/interface/data/test_dcsfq_behavior_bump_20u.csv, test/final/interface/data/test_dcsfq_behavior_bump_40u.csv, test/final/interface/data/test_dcsfq_behavior_bump_68u.csv, test/final/interface/data/test_dcsfq_behavior_bump_100u.csv, test/final/interface/data/test_dcsfq_behavior_bump_150u.csv, test/final/interface/data/test_dcsfq_behavior_bump_300u.csv, test/final/interface/data/test_dcsfq_behavior_sustained_68u.csv, test/final/interface/data/test_dcsfq_behavior_sustained_150u.csv, test/final/interface/data/test_dcsfq_behavior_sustained_300u.csv, test/final/bvm/data/test_bvm_multivortex.csv, test/final/bvm/data/test_bvm_multivortex_wl80.csv, test/final/bvm/data/test_bvm_multivortex_wl120.csv, test/final/qb/data/bq_v4_sweep70.csv, test/final/qb/data/bq_v4_sweep90.csv, test/final/qb/data/bq_v4_sweep110.csv, test/final/qb/data/bq_v4_sweep130.csv, test/final/qb/data/bq_v4_sweep150.csv, test/final/qb/data/bq_v4_sfq.csv]
+  locks: [locks/historical-metrics-v2-m10, locks/test-metrics]
+baseline:
+  git_head: f62c31cfe2ad1333175a877d9b4018eead1db6b2
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M10-003/baseline/git-status.txt, sha256: 550c3b8222a6970d4ddfd11dbb51bdf9478e0260e2b9dba08237070cce76a1f6}
+  scope_hashes: {path: research/tasks/JH-20260813-M10-003/baseline/scope-files.sha256, sha256: 17e081baef28f1ec1accef71b629df4fee89a854746ce34c567f2714e24a29ce}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: true, commit: true, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md, research/tasks/JH-20260813-M10-003/design/commit-semantics.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: 22b2d2dad95a885a5256c5ef9bc7587131efaefdd2b021df41fe44ef84e02762}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: scripts/rebuild_historical_metrics_v2.py, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: test/metrics/test_rebuild_historical_metrics_v2.py, role: TEST, required: true}
+  - {id: D3, path: test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: test/final/interface/data/metrics_v2/p0-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: test/final/bvm/data/metrics_v2/p2-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D6, path: test/final/qb/data/metrics_v2/bq-v4-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D7, path: docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, role: DOCUMENTATION, required: true}
+  - {id: D8, path: research/tasks/JH-20260813-M10-003/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Verify, without editing either authority file, that docs/HANDOVER.md and memory/project-todo.md record accepted M9, user-authorized M10, METRIC_SPEC_V2 as measurement-only, and global Gate tolerances as separately UNFROZEN/preregistered.", evidence: ["preflight ACK", "authority hashes"]}
+  - {id: AC2, condition: "A deterministic stdlib-only generator validates the preregistered inventory and produces exactly four V2 JSON outputs with raw hashes, metric-spec and plan hashes, actual selected endpoints, signed rad/turn endpoint deltas, and limitations/not-applicable fields.", evidence: ["generator", "four JSON files", "generator log"]}
+  - {id: AC3, condition: "Only preregistered P0 bump files use bump_0 as a named historical comparator; outputs show per-run values before correction and explicitly retain control/mapping gaps.", evidence: ["p0-v2.json", "central correction table"]}
+  - {id: AC4, condition: "Regression tests reject units/hash/time/column/control errors and forbidden event/Gate vocabulary, and prove legacy CSV/JSON preservation.", evidence: ["test", "test log"]}
+  - {id: AC5, condition: "The central table links all four outputs and their limits; the four named historical overview documents keep their bodies unchanged except for compact SUPERSEDED banner/link additions.", evidence: ["central table", "document diffs"]}
+  - {id: AC6, condition: "Receipt records all changes/commands/hashes/limitations and final verify-task succeeds; no JoSIM run occurs.", evidence: ["receipt", "verify log"]}
+invalid_conditions: ["Any legacy raw CSV/JSON is modified, deleted, renamed, or overwritten.", "Any output calls endpoint arithmetic an SFQ/event/fluxoid/local event/downstream reception/candidate or Gate verdict.", "Any voltage-area claim uses a non-same-JJ substitute or calls BQ/BVM mapping verified."]
+inconclusive_conditions: ["Missing control/window/mapping/convergence evidence remains explicit NOT_APPLICABLE/INCONCLUSIVE, never a physical FAIL."]
+stop_conditions: ["HEAD, dirty snapshot, scope hashes, metric-spec hash, listed input hash/header, or locks differ.", "Work needs an undeclared input/control/window/mapping, JoSIM/network/install, deletion/overwrite/rename, or out-of-scope edit.", "verify-task cannot succeed: preserve attempt, report BLOCKED/DEVIATED, do not claim M10 completion."]
+issuance_blockers: []

@@ -1,0 +1,29 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M9-003
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-13T02:00:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "f7211d62968691f1b2262ab5ba1a7a942e5edc661f2eb65cbbb84837afdc099b"
+  ack_sha256: "e6c5945b67dabf36cf8de8dee54cb49d3ee5285ae03df371ee86be4f78106d04"
+  receipt_sha256: "f1ebaae7f273df424e242e1ffa08be3fa94a7f4d6e3b876a1a4228405169dfab"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence: {mode: INDEPENDENT, codex_modified_execution_artifacts: false, reviewer: codex-root}
+checks:
+  - {id: C01-mechanical-closure, status: PASS, evidence: ["M9-003 final verify-task succeeds; 57 metric-spec and 83 M4-M7 regression tests independently pass."]}
+  - {id: C02-prior-m9-repairs, status: PASS, evidence: ["Freeze provenance, XLOAD UNVERIFIED, rd/vts, legacy M6, N/A convergence, and bounded §11 required fields are correct."]}
+  - {id: C03-structural-guard-case-indent, status: FAIL, evidence: ["Terra High demonstrates that indented YAML claim keys and capitalized Gate bypass the lower-case column-zero structural guard."]}
+findings: ["A01 is preserved at candidate snapshot 6f9bb7f2c88e5c4d440ebad03a56a6f7f1384c3c; it cannot freeze the spec while a nested/case-variant success assertion evades AC2."]
+accepted_claims: ["A01 is an in-scope, mechanically valid candidate with all earlier defects repaired."]
+rejected_claims: ["M9-003 A01 is not accepted as METRIC_SPEC_V2."]
+required_rework: ["Fresh successor only: guard must parse structured keys after whitespace and case-fold key matching; test indented YAML and case variants. Do not modify this receipt."]
+next_actions: ["Codex issues M9-004 under existing M9 authorization; M10/M11 remain stopped."]
+claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate

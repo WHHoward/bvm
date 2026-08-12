@@ -1,0 +1,144 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260813-M10-001
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-13T02:17:50+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M10
+depends_on: [M4, M5, M6, M7, M8, M9]
+supersedes: null
+task:
+  kind: REPRODUCTION
+  objective: "Perform the narrowly preregistered M10 reconstruction: write immutable V2 endpoint-arithmetic JSON and a central correction table for the existing BASELINE, P0, P2, and BQ v4 CSV families, while preserving all legacy inputs and narratives."
+  research_question: "Can the four named historical CSV families be re-expressed with raw-radian-to-turn endpoint arithmetic, source hashes, declared controls and explicit evidence limits under accepted METRIC_SPEC_V2, without creating a physical Gate claim?"
+  non_goals:
+    - "No JoSIM simulation, netlist/model/raw-CSV change, candidate tuning, INTERFACE_GATE_V1, BQ/DCSFQ/BVM success criterion, route decision, or paper claim."
+    - "No platform, activity/event, voltage-area, residual-acceptance, convergence, local-SFQ, fluxoid, downstream-reception, or system verdict from these historical reconstructions."
+    - "No rewrite of historical narrative/tables: only the authorized compact SUPERSEDED banner/link may be appended."
+  claim_ceiling: "historical_endpoint_arithmetic_and_artifact_provenance_only_no_physical_gate"
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - scripts/sfq_metrics_v2.py
+    - research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md
+    - test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_0.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_1u4.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_20u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_40u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_68u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_100u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_150u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_300u.csv
+    - test/final/interface/data/test_dcsfq_behavior_sustained_68u.csv
+    - test/final/interface/data/test_dcsfq_behavior_sustained_150u.csv
+    - test/final/interface/data/test_dcsfq_behavior_sustained_300u.csv
+    - test/final/bvm/data/test_bvm_multivortex.csv
+    - test/final/bvm/data/test_bvm_multivortex_wl80.csv
+    - test/final/bvm/data/test_bvm_multivortex_wl120.csv
+    - test/final/qb/data/bq_v4_sweep70.csv
+    - test/final/qb/data/bq_v4_sweep90.csv
+    - test/final/qb/data/bq_v4_sweep110.csv
+    - test/final/qb/data/bq_v4_sweep130.csv
+    - test/final/qb/data/bq_v4_sweep150.csv
+    - test/final/qb/data/bq_v4_sfq.csv
+    - test/final/single_bvm_qb/BASELINE.md
+    - test/final/interface/P0_LOG.md
+    - test/final/bvm/P2_LOG.md
+    - test/final/single_bvm_qb/EXPERIMENT_LOG.md
+  write_paths:
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - scripts/rebuild_historical_metrics_v2.py
+    - test/metrics/test_rebuild_historical_metrics_v2.py
+    - test/final/single_bvm_qb/data/metrics_v2/**
+    - test/final/interface/data/metrics_v2/**
+    - test/final/bvm/data/metrics_v2/**
+    - test/final/qb/data/metrics_v2/**
+    - docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md
+    - test/final/single_bvm_qb/BASELINE.md
+    - test/final/interface/P0_LOG.md
+    - test/final/bvm/P2_LOG.md
+    - test/final/single_bvm_qb/EXPERIMENT_LOG.md
+    - research/tasks/JH-20260813-M10-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260813-M10-001/request.yaml
+    - research/tasks/JH-20260813-M10-001/request.sha256
+    - research/tasks/JH-20260813-M10-001/baseline/**
+    - research/tasks/JH-20260813-M10-001/design/**
+    - research/tasks/JH-20260813-M10-001/audits/**
+    - docs/research/METRIC_SPEC_V2.md
+    - scripts/sfq_metrics_v2.py
+    - test/final/single_bvm_qb/data/test_bvm_bq_baseline.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_0.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_1u4.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_20u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_40u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_68u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_100u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_150u.csv
+    - test/final/interface/data/test_dcsfq_behavior_bump_300u.csv
+    - test/final/interface/data/test_dcsfq_behavior_sustained_68u.csv
+    - test/final/interface/data/test_dcsfq_behavior_sustained_150u.csv
+    - test/final/interface/data/test_dcsfq_behavior_sustained_300u.csv
+    - test/final/bvm/data/test_bvm_multivortex.csv
+    - test/final/bvm/data/test_bvm_multivortex_wl80.csv
+    - test/final/bvm/data/test_bvm_multivortex_wl120.csv
+    - test/final/qb/data/bq_v4_sweep70.csv
+    - test/final/qb/data/bq_v4_sweep90.csv
+    - test/final/qb/data/bq_v4_sweep110.csv
+    - test/final/qb/data/bq_v4_sweep130.csv
+    - test/final/qb/data/bq_v4_sweep150.csv
+    - test/final/qb/data/bq_v4_sfq.csv
+  locks: [locks/historical-metrics-v2-m10, locks/test-metrics]
+baseline:
+  git_head: 532b20995bd5d231965f7205b2bac635f07bbf12
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260813-M10-001/baseline/git-status.txt, sha256: 1e0456180e182239096138e89d059d5596a5503840976de1d2d37f938f354b3b}
+  scope_hashes: {path: research/tasks/JH-20260813-M10-001/baseline/scope-files.sha256, sha256: 6252abf7f4e95f43fcbbf88d7876f3f57a941f410b456b10088eef5b13e62477}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: true, commit: true, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, research/tasks/JH-20260813-M10-001/design/reconstruction-plan.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: 7f349cb775032dea836822fbaac180fabd6b3212e4e970c252edfe55af0cc427}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: scripts/rebuild_historical_metrics_v2.py, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: test/metrics/test_rebuild_historical_metrics_v2.py, role: TEST, required: true}
+  - {id: D3, path: test/final/single_bvm_qb/data/metrics_v2/baseline-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: test/final/interface/data/metrics_v2/p0-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: test/final/bvm/data/metrics_v2/p2-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D6, path: test/final/qb/data/metrics_v2/bq-v4-v2.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D7, path: docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md, role: DOCUMENTATION, required: true}
+  - {id: D8, path: research/tasks/JH-20260813-M10-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Before reconstruction, make only the narrowly authorized authority sync: correct M9-completion/M10-authorization stale statements and remove the false implication that METRIC_SPEC_V2 froze global numerical Gate tolerances; do not otherwise revise history, status, route, Gate, or candidate text.", evidence: ["docs/HANDOVER.md diff", "memory/project-todo.md diff"]}
+  - {id: AC2, condition: "A deterministic stdlib-only generator validates the fixed input inventory and produces exactly the four V2 JSON outputs. Each output records raw hashes, metric-spec path/version/hash, plan path/hash, actual selected endpoint timestamps, signed raw-radian and turn deltas, and explicit limitations/not-applicable fields.", evidence: ["scripts/rebuild_historical_metrics_v2.py", "four metrics_v2 JSON files", "generator log"]}
+  - {id: AC3, condition: "Only the preregistered P0 bump files use bump_0 as a named historical control. Outputs report per-run values before the correction and never represent aligned rows as proof of matched netlist closure. All other family/control and same-JJ P/V gaps are explicit.", evidence: ["p0-v2.json", "HISTORICAL_METRICS_V2_CORRECTION_TABLE.md"]}
+  - {id: AC4, condition: "Regression tests reject a raw phase value treated as turns, incorrect source/spec/plan hashes, nonmonotonic or nonfinite time data, undeclared P columns, an unregistered control pairing, and forbidden event/Gate vocabulary in generated fields. Tests prove no legacy .json/.csv is modified.", evidence: ["test_rebuild_historical_metrics_v2.py", "test log"]}
+  - {id: AC5, condition: "The central correction table links all four V2 JSON artifacts, distinguishes observed endpoint arithmetic from unavailable physical evidence, and each named historical overview retains its original body with only a compact SUPERSEDED banner/link addition.", evidence: ["HISTORICAL_METRICS_V2_CORRECTION_TABLE.md", "historical-document diffs"]}
+  - {id: AC6, condition: "Receipt completely records the authority-sync edit, all generated/implementation/test/doc changes, commands and hashes; final verify-task succeeds. No JoSIM run occurs.", evidence: ["receipt.yaml", "verify-task log"]}
+invalid_conditions:
+  - "Any legacy raw CSV or legacy JSON is modified, deleted, renamed, or overwritten."
+  - "Any output labels endpoint arithmetic/activity as SFQ, event, fluxoid, local event, downstream reception, candidate success/failure, or a Gate verdict."
+  - "A voltage-area claim uses V(OUT1), V(JTLQ), or another non-same-JJ substitute; or BQ/BVM P/V mapping is presented as verified."
+inconclusive_conditions:
+  - "A valid reconstruction lacks the control, stable windows, same-JJ direct P/V mapping, or convergence evidence required for a physical inference; it must remain explicitly not applicable/inconclusive rather than become a physical FAIL."
+stop_conditions:
+  - "Current HEAD, dirty snapshot, scope hashes, METRIC_SPEC_V2 hash, listed input hash/header, or locks differ from the issued contract."
+  - "Any required output needs an undeclared input/control/window/mapping, a JoSIM run, network/install, deletion/overwrite/rename, or an out-of-scope edit."
+  - "The requested authority sync cannot be confined to the stale assertions named in AC1."
+  - "Final verify-task cannot succeed; preserve the attempt and report BLOCKED/DEVIATED without claiming M10 completion."
+issuance_blockers: []

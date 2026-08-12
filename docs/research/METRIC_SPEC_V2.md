@@ -4,7 +4,7 @@
 metric_spec_version: 2.0.0
 canonical_path: docs/research/METRIC_SPEC_V2.md
 status: FROZEN
-freeze_task: JH-20260813-M9-001
+freeze_task: JH-20260813-M9-004
 claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate
 ```
 
@@ -32,6 +32,11 @@ the bounded timestep-convergence procedure. Accepted evidence:
 - `research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml` — same-junction
   direct `P(B...)`/`V(B...)` mapping, identical orientation/window endpoints,
   actual-time trapezoidal voltage area, signed phase-area residuals.
+- `research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md` — canonical-JTL
+  direct same-JJ `V(B1|XDUT)`/`P(B1|XDUT)` and `V(B2|XDUT)`/`P(B2|XDUT)`
+  probes; M7B validates agreement between independent raw arithmetic and the
+  measurement pipeline on one canonical JTL transient. The canonical-JTL
+  mapping block in §3.4 is supported by this M7 evidence together with M6.
 - `research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml` — preregistered
   bounded convergence procedure (ladder, controls, observables, windows, bands,
   maximum depth, stop rule); CONVERGED / INCONCLUSIVE / INVALID classification.
@@ -105,6 +110,39 @@ The reporting direction applies consistently to phase, area, and residual; the
 voltage-to-phase sign only aligns a voltage column with the declared P-branch
 orientation.
 
+3.2.1 Exact signed quantities. With `rd = reporting_direction` and
+`vts = voltage_to_phase_sign`, both strictly `+1` or `-1`, the reported values
+are defined as:
+
+```
+phase_delta_rad        = P_last - P_first            # endpoint identity, raw rad
+phase_reported_turns   = rd * phase_delta_rad / (2*pi)
+area_aligned_vs        = vts * trapezoid(V_jj, actual_time)
+area_reported_turns    = rd * area_aligned_vs / Phi0
+residual_reported_turns = phase_reported_turns - area_reported_turns
+```
+
+`P_last`/`P_first` are the actual first/last samples of the integration window
+(§2.2). `rd` multiplies phase, area, and residual identically; `vts` enters
+only the voltage-area term, aligning the voltage column with the declared
+P-branch orientation before `rd` is applied. For the phase–area identity to
+hold, the P column and the V column must describe the same junction and the
+declared `vts` must match the physical branch relationship; under a correct
+mapping `residual_reported_turns` is a numerical residual, not a sign artifact.
+
+3.2.2 Compatibility boundary with orientation-only M6 output. The accepted M6
+implementation (`voltage_area_analyze`) exposes a single `orientation` field
+and applies it **only to the area term**, with the phase term reported
+unsigned. That output is a predecessor format. Under this specification it is
+**nonconformant** unless reinterpreted as the special case
+`vts = orientation, rd = +1`, and even then its phase term lacks the
+`rd`-signed reporting and therefore must not be labeled
+`phase_reported_turns`. Producers of M6-style output MUST either re-emit with
+explicit `vts` and `rd` fields per §3.2.1, or label the output
+`legacy_orientation_only` so consumers do not mistake it for conformant
+reported values. This boundary is a reporting-contract statement; it does not
+change the accepted M6 calibration evidence itself.
+
 3.3 Direct `V(B...|X...)` branch voltages are preferred over node-to-ground
 differences. Node-pair differences are only acceptable when the branch
 endpoints and orientation are explicitly registered, and a node-to-ground
@@ -112,9 +150,22 @@ voltage equals a junction voltage only when the other terminal is grounded.
 
 3.4 Verified calibration mappings (from accepted M6/M7 evidence):
 - DCSFQ `B1`, `B2`, `B3` (`V(Bn|XDCSFQ)`/`P(Bn|XDCSFQ)`, orientation +1,
-  matched 0/300 uA runs).
-- Canonical JTL `B1|XDUT`, `B2|XDUT`, `B1|XLOAD`, `B2|XLOAD`
-  (`V(Bn|X...)`/`P(Bn|X...)`, orientation +1, matched zero/single-input runs).
+  matched 0/300 uA runs) — accepted M6 evidence
+  (`JH-20260812-M6-002/audits/C01/verdict.yaml`).
+- Canonical JTL `B1|XDUT`, `B2|XDUT`
+  (`V(Bn|XDUT)`/`P(Bn|XDUT)`, orientation +1, matched zero/single-input
+  runs) — accepted M7 evidence (M7B direct same-JJ probes,
+  `M7-LITE-001/attempts/A02/CODEX-AUDIT.md`).
+
+Canonical-JTL `XLOAD` junctions (`B1|XLOAD`, `B2|XLOAD`) are **not** verified
+P/V mappings: the accepted M7 direct-P/V evidence covers `XDUT` only, and the
+accepted M6 evidence is a DCSFQ run. An `XLOAD` loaded-downstream phase-platform
+observable is registered by the accepted M8 convergence procedure
+(`JH-20260812-M8-001/preregistration.yaml`
+`downstream_platform_phase_turns`, matched-control pre/post platform delta),
+but that is a phase-platform diagnostic, not a verified same-JJ P/V identity
+mapping. Any producer needing an `XLOAD` P/V cross-check MUST either cite new
+accepted direct same-JJ evidence or mark the mapping `UNVERIFIED`.
 
 3.5 BQ/BVM junction mappings remain `UNKNOWN` unless separately demonstrated;
 they MUST NOT be assumed to follow any of the verified examples above.
@@ -185,8 +236,8 @@ No fixed-dt assumption, resampling, or interpolation is permitted.
 
 holds only for the same junction, same endpoints, same voltage-to-phase sign,
 same window, and same run. The signed residual is
-`residual_turns = phase_delta_turns - area_turns` computed per run; per-run
-values precede any control correction.
+`residual_reported_turns = phase_reported_turns - area_reported_turns` per
+§3.2.1, computed per run; per-run values precede any control correction.
 
 ## 8. Tolerances: registration, UNFROZEN status, and classification
 
@@ -222,14 +273,26 @@ observables, comparison windows, per-observable comparison bands, and stop
 rule.
 
 9.2 Classification:
-- **CONVERGED** — all runs pass QA, every registered scalar is computable, and
-  every adjacent refinement pair satisfies every applicable predeclared band,
-  with the classification preserved across refinements.
-- **INCONCLUSIVE** — the evidence is valid but a required scalar is missing,
-  ambiguous, or outside its band at the maximum registered depth; the procedure
-  must not be extended to search for a favorable outcome.
+- **CONVERGED** — all runs pass QA, **every applicable** registered scalar is
+  computable, and every adjacent refinement pair satisfies every applicable
+  predeclared band, with the classification preserved across refinements.
+  Observables preregistered as `NOT_APPLICABLE` are not required to be
+  computable but MUST carry an explicit preregistered reason (see 9.3); a
+  registered observable is "applicable" unless preregistered as
+  `NOT_APPLICABLE` with reason or preregistered as conditional with the
+  condition unmet.
+- **INCONCLUSIVE** — the evidence is valid but an applicable required scalar is
+  missing, ambiguous, or outside its band at the maximum registered depth; the
+  procedure must not be extended to search for a favorable outcome.
 - **INVALID** — QA/provenance failure (see §10); the data cannot support any
   classification.
+
+9.3 Preregistered `NOT_APPLICABLE` observables. Any observable registered in a
+convergence procedure with applicability `NOT_APPLICABLE` MUST record at
+registration time a reason (e.g., "M9 has not frozen a downstream
+event-counting semantic; this task must not invent one"). The accepted M8
+fixture registered `downstream_count` as `NOT_APPLICABLE` for exactly that
+reason and its `CONVERGED` classification is the precedent for this rule.
 
 ## 10. Data validity (QA) and three-state classification
 

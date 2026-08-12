@@ -1,0 +1,36 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260813-M9-004
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-13T01:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "fecdaa90155ff92910f513b745b66f560637f406e11c6af1f10dd927e550b1d3"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "531145b"
+  dirty_paths:
+    - "research/tasks/JH-20260813-M9-004/request.yaml / request.sha256 / baseline/** / design/**（issue 自带，与 baseline/git-status.txt 一致）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "封闭 M9：修复结构化 claim guard 的缩进/大小写绕过——解析 leading whitespace 后的 YAML-like claim keys，case-fold 键名后拒绝 candidate/read1/read0/route/gate/success-criterion 断言（含缩进形式与 Gate: 等大小写变体），返回结构化 hits；合法 spec 仍通过。保留所有前序测量语义边界（measurement-only、XLOAD UNVERIFIED、rd/vts、legacy M6、N-A 收敛、freeze_task=M9-004 更新）。新 A01 receipt 独立闭环，不依赖前序任务 receipt。不运行 JoSIM、不启动 M10/M11、不修改 M9-001/M9-003。"
+  non_goals:
+    - "不定义任何实际 Gate/candidate 语义；不修改前序 M9 task 证据；不运行 JoSIM；不启动 M10/M11。"
+  stop_conditions:
+    - "scope/hash 不符、frozen path 变更、JoSIM 运行或 scope 扩张。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260813-M9-004（ACK 后 receipt 前；final verify 由 Codex 执行）"
+  - "python3 test/metrics/test_metric_spec_v2.py（缩进 + 大小写 guard 测试）"
+  - "python3 test/metrics/test_sfq_metrics_v2.py && test_sfq_metrics_v2_m5.py && test_sfq_metrics_v2_m6.py && test_sfq_metrics_v2_m7.py（只读回归）"
+expected_changed_paths:
+  - "docs/research/METRIC_SPEC_V2.md"
+  - "test/metrics/test_metric_spec_v2.py"
+  - "research/tasks/JH-20260813-M9-004/attempts/**"
+blockers: []
+deviations: []

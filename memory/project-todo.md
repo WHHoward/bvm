@@ -29,7 +29,7 @@ metadata:
 | M7C | Historical regression | 🟢（2026-08-12） | DCSFQ 300 µA 控制重放和 BQ v4 六周期平台常量以预注册独立值通过；只证明新 pipeline 未重新误读历史 raw，不把周期平台称为物理事件或 Gate |
 | M8 | 有界时间步收敛（预注册 procedure） | 🟢（2026-08-12） | `JH-20260812-M8-001` 在运行前固定 0.1/0.05/0.025 ps、六次匹配控制运行、窗口、观测量、任务局部稳定带宽与最大深度停止规则；其闭环合同缺陷被保留为 REWORK 历史，`JH-20260812-M8-002` 以冻结原始 CSV 完成独立重算和审计接受。仅证明 loaded canonical JTL 校准 fixture 的有界数值收敛，不冻结 M9 容差或任何物理 Gate |
 | M9 | 只冻结 `METRIC_SPEC_V2.md`（怎么测） | 🟢（2026-08-13） | `docs/research/METRIC_SPEC_V2.md` v2.0.0 由 `JH-20260813-M9-004` 接受：冻结 phase normalization、same-JJ P/V mapping、双符号、窗口/控制、activity、实际时间面积、收敛和输出契约；全局数值容差仍 UNFROZEN；**不定义**接口成功标准（独立 `INTERFACE_GATE_V1`） |
-| M10 | 重生 JSON 和审计表 | 🔴 | BASELINE/P0/P2/v4 写入各实验 `data/metrics_v2/`，保留旧文件；历史文档原文保留 + SUPERSEDED banner + central correction table，不机械改写历史 narrative |
+| M10 | 重生 JSON 和审计表 | 🟢（2026-08-13） | `JH-20260813-M10-004` 已接受：BASELINE/P0/P2/v4 的 `data/metrics_v2/` 重建产物、central correction table 和历史文档 SUPERSEDED banner 均已 hash-bound；旧文件/原文保留，结论限 endpoint arithmetic/provenance，不构成物理 Gate |
 | M11 | 新基线冻结（双子门） | 🔴 | **M11A** Measurement Calibration Baseline（M4–M10 完整、MetricSpec 冻结、tests/raw/controls/convergence/historical recomputation/provenance 齐全）+ **M11B** Scientific Reconstruction Baseline（reference provenance、reproduction level、BVM/published-QB reconstruction 状态、canonical receiver baselines、source/receiver characterization 状态、UNKNOWN/INFERRED 参数明确）；两个子门都通过 M11 才标绿 |
 | M12 | 修复 `josim-plot2.py -j` 布局缩放 | 🟢（2026-08-11） | `M12-LITE-PILOT-001` 经 Copilot 独立复核与 Codex 接受：五种布局对 phase 一致缩放、标签为 turns、回归测试覆盖旧“只改标签”错误；无物理结论 |
 
@@ -49,6 +49,8 @@ metadata:
 **2026-08-12 更新**：M4 建立 raw rad→圈与活动命名基础；M5 已接受 pre/activity/post 窗口、显式方向、匹配零输入对照与连续活动聚类的实现和确定性回归。M6 已接受 FROZEN 同 JJ 相位—电压面积测量管线复现：它使用直接 `V(B...)`、相同方向/端点窗口和 CSV 实际时间轴梯形积分，报告残差但不冻结接受容差。M7 已接受 M7A 合成 ground truth、M7B canonical JTL 同 JJ V/P 校准与 M7C 历史回归；三者均只构成 CALIBRATION LITE 证据。M8 已接受预注册的 0.1/0.05/0.025 ps 有界收敛 procedure：六份 loaded canonical JTL 匹配控制 raw 的注册量均在两个相邻 refinement 带宽内；结论仅限该校准 fixture 的数值收敛。M4–M8 都不构成物理 Gate 或 SFQ 事件计数；M9–M11 仍未完成且等待用户授权。M8 验收证据：`research/tasks/JH-20260812-M8-002/audits/C01/verdict.yaml`；M7 验收证据：`research/tasks/M7-LITE-001/attempts/A02/CODEX-AUDIT.md`；M6 验收证据：`research/tasks/JH-20260812-M6-002/audits/C01/verdict.yaml`。
 
 **2026-08-13 authority sync**：M9 已由 `JH-20260813-M9-004/audits/C01/verdict.yaml` 接受，冻结测量/报告语义而不冻结全局数值容差或接口成功标准。用户已授权 M10；其执行合同必须先复核本 authority 状态。上面的 2026-08-12 历史更新不再表示当前任务状态。
+
+**2026-08-13 M10 接受更新**：`JH-20260813-M10-004/audits/C01/verdict.yaml` 已接受 scope-correct 的重封存。BASELINE、P0、P2 与 BQ v4 的 V2 JSON、correction table 和历史 superseded banners 均与保存的 A01 产物逐字节核验；M10-003 的封存缺陷保留为历史 REWORK。M10 只完成 historical endpoint arithmetic/provenance 重建；不冻结全局容差，也不建立 SFQ、fluxoid、下游、candidate 或系统 Gate 结论。
 
 ## C. ⏸️ 候选路线 1：BQ v4（等待 Phase −1）
 

@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-12
+  last_updated: 2026-08-13
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -144,6 +144,14 @@ metadata:
 **结果/产物**：✅ M5 29 项与 M4 15 项回归均通过；对冻结 DCSFQ bump 0/300 µA CSV 的独立算术重算得到 B1/B2/B3 约一圈，pre/activity/post 为 30/409/900 样本。证据链：`research/tasks/M5-LITE-PILOT-001/attempts/A01/`、`attempts/A02/`；最终裁决：`attempts/A02/CODEX-AUDIT.md`。
 
 **认知**：✅ 窗口、方向、零输入控制和活动聚类的实现已可用；⚠️ 活动簇不是物理事件，CSV 重放不是 Gate。M6 电压面积、M7 回归套件、M8 收敛、M9 指标冻结及后续基线重建仍待完成。
+
+### 2026-08-13：M9 测量规格冻结与 M10 历史重建接受
+
+**做了什么**：✅ 接受 `JH-20260813-M9-004` 的 `METRIC_SPEC_V2.md`，冻结 raw-radian normalization、same-JJ mapping/sign、window/control、activity、实际时间面积、收敛与输出语义；随后接受 `JH-20260813-M10-004` 对 BASELINE/P0/P2/BQ v4 的 `metrics_v2/` endpoint-arithmetic/provenance 重建。M10-003 的 scope-hash 冲突保留为 REWORK 历史，M10-004 逐项重新封存 11 个保存产物。
+
+**结果/产物**：`docs/research/METRIC_SPEC_V2.md`，`docs/research/HISTORICAL_METRICS_V2_CORRECTION_TABLE.md`，`research/tasks/JH-20260813-M9-004/audits/C01/verdict.yaml`，`research/tasks/JH-20260813-M10-004/audits/C01/verdict.yaml`。
+
+**认知**：✅ 历史 raw 的 rad→turn endpoint 表达与可追溯性已完成；⚠️ 全局容差、同 JJ BQ/BVM P/V mapping、SFQ/fluxoid、下游与系统 Gate 均未由 M9/M10 建立。
 
 ## 四、关键转折点速查
 

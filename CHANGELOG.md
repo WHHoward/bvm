@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-08-13 — M9 规格冻结与 M10 历史指标重建接受
+
+### 做了什么
+
+- 接受 `METRIC_SPEC_V2.md` v2.0.0 的测量/报告语义冻结；全局数值容差保持 `UNFROZEN`
+- 接受 `JH-20260813-M10-004`：保留旧数据和叙述，新增 BASELINE/P0/P2/BQ v4 的 V2 endpoint-arithmetic JSON、central correction table 与 superseded banners
+
+### 影响
+
+- M4–M10 已完成；M10 的接受限于历史 endpoint arithmetic/provenance，不构成任何物理 Gate 或路线结论
+- M11 仍是候选路线重启前的下一道基线门
+
+---
+
 ## 2026-08-12 — M8 预注册有界时间步收敛接受
 
 ### 做了什么

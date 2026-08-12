@@ -1,0 +1,69 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M9-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-13T01:00:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "7060180c7ec38c5cf31811668629dbe935aa51fb99f897b967b6094407424f21"
+  ack_sha256: "252f0437aaa44ee0187c18706f85df947977cceb26409809976c291e628f9cb9"
+  receipt_sha256: "95135c71d112fc57e2e034627eda614a7808042ef1866a8dd813e7a91ecccdfe"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-mechanical-closure-and-snapshot
+    status: PASS
+    evidence:
+      - "verify-task passes after the Codex-controlled snapshot preserved the receipt-listed documentation, test, ACK, and six ignored command logs."
+      - "The frozen scope manifest validates every M4–M8 input; receipt artifact/log hashes match the preserved files."
+  - id: C02-deterministic-regression
+    status: PASS
+    evidence:
+      - "Codex independently reran M9's 34 deterministic checks and M4/M5/M6/M7 suites (15/29/21/18); all passed without JoSIM."
+  - id: C03-evidence-lineage
+    status: FAIL
+    evidence:
+      - "METRIC_SPEC_V2 claims an M4–M8 evidence basis but enumerates M4, M5, M6, and M8 only; it does not bind the accepted M7 audit that supports the canonical-JTL direct P/V mapping."
+  - id: C04-sign-and-implementation-semantics
+    status: FAIL
+    evidence:
+      - "The specification declares voltage_to_phase_sign and reporting_direction but does not give the signed phase/area/residual equations; the frozen M6 implementation instead exposes only orientation and applies it only to area."
+  - id: C05-convergence-applicability
+    status: FAIL
+    evidence:
+      - "The specification requires every registered scalar to be computable for CONVERGED, while accepted M8 registered downstream_count as NOT_APPLICABLE and still correctly classified its fixture CONVERGED."
+  - id: C06-independent-material-review
+    status: PASS
+    evidence:
+      - "Terra High read-only review independently reproduced C03–C05 and additionally found the current document test a weak exclusion oracle."
+findings:
+  - "A01 preserves a valid, in-scope documentation/test artifact and its evidence chain, but its semantic contract is not yet sufficiently determinate to freeze."
+  - "M7 evidence must be explicitly cited and mechanically guarded because canonical-JTL P/V mapping relies on M7 rather than M6 alone."
+  - "A02 must state exact signed quantities: phase-reported turns, voltage-aligned area turns, and signed residual, using separate voltage_to_phase_sign and reporting_direction fields; it must state the required compatibility/migration boundary for the existing M5/M6 implementation instead of implying it is already conformant."
+  - "A02 must define CONVERGED over applicable registered observables and require preregistered NOT_APPLICABLE observables to carry a reason; it must add a regression based on M8's downstream_count NOT_APPLICABLE case."
+  - "A02 must strengthen deterministic negative tests so an introduced candidate PASS/FAIL/read/route criterion or a missing required provenance/schema element fails the test."
+accepted_claims:
+  - "A01 performed no JoSIM run, preserved frozen inputs, and produced a reviewable draft of the intended measurement-only specification."
+  - "The task remains restricted to measurement/reporting semantics and has not established a physical Gate."
+rejected_claims:
+  - "A01 is not accepted as the frozen METRIC_SPEC_V2 because the sign contract and convergence applicability rule remain ambiguous or inconsistent with accepted calibration evidence."
+  - "No candidate, interface, SFQ-event, fluxoid, downstream-reception, route, paper, or hardware conclusion is authorized."
+required_rework:
+  - "Create attempts/A02; do not modify A01 or C01.  Explicitly cite and test-bind M7 accepted evidence for canonical JTL mappings."
+  - "Define the dual-sign equations and required output fields, including a compatibility status for existing orientation-only M6 output; add four-sign-combination tests and an implementation/schema compatibility test or an explicit nonconformance assertion."
+  - "Replace 'every registered scalar' with 'every applicable registered scalar'; require preregistered NOT_APPLICABLE plus reason and test the accepted M8 downstream_count case."
+  - "Add adversarial negative tests for prohibited candidate PASS/FAIL/read/route semantics and missing/invalid metric-spec provenance/schema fields."
+next_actions:
+  - "Codex notifies Claude via mailbox to execute the bounded A02 rework under the existing ISSUED request; no M10/M11 work may start."
+  - "After A02 delivery, rerun mechanical checks, obtain a fresh Terra High material review, then conduct a new Codex audit."
+claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate

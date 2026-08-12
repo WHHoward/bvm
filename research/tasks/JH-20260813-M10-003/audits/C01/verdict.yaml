@@ -1,0 +1,53 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M10-003
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-13T03:40:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "682a9563da20771a90f973db2a4c419d9bde94944aba152e2a3513a419319521"
+  ack_sha256: "56e5584ed31a473fe74995cfb4ea225d32e2ebd5f4d428421d3238438e45c04e"
+  receipt_sha256: "69663c0be6be46486b023e7e067097046144108b03fb352171e32bcdb051535c"
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: mechanical-final-verification
+    status: FAIL
+    evidence:
+      - "handoff.py verify-task research/tasks/JH-20260813-M10-003 in /home/howard/JoSIM-m10-003"
+      - "scope-files.sha256 conflicts with four authorized banner modifications"
+  - id: deterministic-reconstruction
+    status: PASS
+    evidence:
+      - "python3 test/metrics/test_rebuild_historical_metrics_v2.py: 13/13 OK"
+      - "independent regeneration to /tmp/m10-audit-out-20260813 byte-matched all four delivered JSON files"
+      - "independent raw endpoint arithmetic: JM1=-5.909806 rad=-0.9405748376 turns; BJS=6.272743 rad=0.9983380552 turns"
+  - id: claim-boundary
+    status: PASS
+    evidence:
+      - "generator, JSON limits, and central table retain endpoint-arithmetic-only boundary; no physical Gate verdict"
+findings:
+  - "BLOCKER: Four documents authorized for banner append were also hashed as immutable scope inputs. Their documented, authorized modifications now make final verify-task fail. AC6 required success; the receipt nevertheless marks AC6 SATISFIED and execution COMPLETED. Affected paths: BASELINE.md, P0_LOG.md, P2_LOG.md, EXPERIMENT_LOG.md."
+accepted_claims:
+  - "The delivered generator's fixed full-record endpoint arithmetic is reproducible for the registered historical raw CSV inventory."
+  - "The generated values are not accepted as local events, SFQs, fluxoids, downstream reception, convergence, or any physical Gate result."
+rejected_claims:
+  - "M10-003 A01 is not a mechanically valid FROZEN completion."
+  - "The receipt's AC6 SATISFIED assertion is rejected because final verify-task fails."
+required_rework:
+  - "Create a new attempt or superseding task with a scope manifest that excludes files authorized to change (or otherwise changes the contract before execution); do not modify the issued M10-003 request."
+  - "Preserve A01 unchanged. Reuse its generated artifacts only if the new contract's hashes and scope permit; do not overwrite legacy raw/JSON or rerun JoSIM."
+  - "In the new receipt, report final verify-task truthfully and do not mark AC6 SATISFIED until it succeeds."
+next_actions:
+  - "Codex must issue the corrected contract before Claude starts rework."
+claim_ceiling: historical_endpoint_arithmetic_and_artifact_provenance_only_no_physical_gate

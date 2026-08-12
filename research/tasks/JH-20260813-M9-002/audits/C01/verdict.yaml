@@ -1,0 +1,46 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260813-M9-002
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-13T01:45:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "7282da98f188fcecbe506bd589c8727a1f744979d57baff03b753dca1298d0ad"
+  ack_sha256: "54f422a71a512fa21a9a0a3b99fef542a40b4086ef68f3bb88005a46e60be5a3"
+  receipt_sha256: "be0aba65defb9a0497a4387456b9a055eaa76d642d20a95e055687a7f520bfd4"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-frozen-mechanical-chain
+    status: PASS
+    evidence: ["M9-002 request→ACK→receipt is self-contained and verify-task succeeds before audit."]
+  - id: C02-metric-semantics-and-lineage
+    status: PASS
+    evidence: ["XLOAD is no longer a verified mapping; dual-sign and N/A convergence rules remain bounded and do not create a physical Gate."]
+  - id: C03-freeze-provenance
+    status: FAIL
+    evidence: ["The spec identifies rejected M9-001 as freeze_task despite M9-002 being its superseding, valid closure candidate."]
+  - id: C04-structural-negative-guard
+    status: FAIL
+    evidence: ["spec_guard accepts structural candidate/read/route forms and only searches whole-document substrings, so missing §11 schema-block fields can evade the guard."]
+findings:
+  - "M9-002 A01 is preserved at candidate snapshot a8861402c06f6801937d381d4fff84a062cd4efa."
+  - "The final frozen specification must bind its actual accepted task and validate prohibited semantics plus required fields structurally in their applicable sections."
+accepted_claims: ["A01 provides a valid in-scope successor candidate and repairs the prior XLOAD provenance and executable-guard defects partially."]
+rejected_claims: ["M9-002 A01 does not yet validly freeze METRIC_SPEC_V2."]
+required_rework:
+  - "Issue a fresh successor; do not mutate the valid A01 receipt chain."
+  - "Set freeze_task to the actual accepting successor and test it."
+  - "Strengthen the guard to reject structural candidate/read/route/Gate assertions and require schema fields in the schema block, not merely anywhere in the document."
+next_actions: ["Codex may issue a final bounded M9 successor under existing user M9 authorization; M10/M11 remain prohibited."]
+claim_ceiling: measurement_semantics_and_reporting_contract_only_no_physical_gate

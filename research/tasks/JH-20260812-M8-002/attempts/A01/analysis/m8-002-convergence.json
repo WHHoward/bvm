@@ -1,0 +1,195 @@
+{
+  "task_id": "JH-20260812-M8-002",
+  "attempt_id": "A01",
+  "source": "preserved M8-001 A01 raw CSVs (hashes below)",
+  "raw_sha256": {
+    "zero_0.1ps": "a2a3e9b50f2739037cbc6b9d56fa5973e237d7bf82a2837ed35bf44e642f6e28",
+    "zero_0.05ps": "d822df0a6c5869370cd73e5fd129fe57d1ea6c0249c1e39979912d730efb2442",
+    "zero_0.025ps": "088ee2af6c8cf494c7c19b23273281e79e0ff6401efc2ec92901f2024b7ff9e1",
+    "single_0.1ps": "e8f731dc3b674d1e4eecf67ec84322dace36251ea6737acf105075fc17b09baa",
+    "single_0.05ps": "cd57a1dbd79f69047807c74b467755d6c1e638f7810e485342c3bdf1429e2c29",
+    "single_0.025ps": "d9114f501edd3e5eb8ce38b62ac47d5c8b5168be597bea50069df6f9cba64b12"
+  },
+  "windows_s": {
+    "pre": [
+      6e-12,
+      9e-12
+    ],
+    "activity": [
+      9e-12,
+      3e-11
+    ],
+    "post": [
+      3.5e-11,
+      5e-11
+    ],
+    "phase_area_crosscheck": [
+      6e-12,
+      5e-11
+    ]
+  },
+  "bands": {
+    "dut_platform_phase_turns": 0.01,
+    "dut_voltage_area_turns": 0.01,
+    "dut_phase_area_residual_turns": 0.005,
+    "activity_peak_time_ps": 0.25,
+    "activity_fwhm_ps": 0.25,
+    "downstream_platform_phase_turns": 0.01
+  },
+  "scalars_by_dt": {
+    "0.1ps": {
+      "platform_XDUT_B1": 0.9999888168432384,
+      "area_XDUT_B1": 1.0001609518199304,
+      "residual_XDUT_B1": -0.0001948529654755577,
+      "platform_XDUT_B2": 0.9998895198620369,
+      "area_XDUT_B2": 0.9987324970567277,
+      "residual_XDUT_B2": 0.0013604642028656761,
+      "platform_XLOAD_B1": 0.9996191191151323,
+      "area_XLOAD_B1": 0.9999112646996954,
+      "residual_XLOAD_B1": -6.612360199038068e-05,
+      "platform_XLOAD_B2": 0.9987237820541297,
+      "area_XLOAD_B2": 0.999939267868313,
+      "residual_XLOAD_B2": -9.058453525421367e-06,
+      "activity_peak_time_ps": 13.1,
+      "activity_fwhm_ps": 3.1999999999999993
+    },
+    "0.05ps": {
+      "platform_XDUT_B1": 0.9999596896318449,
+      "area_XDUT_B1": 0.9999208434657412,
+      "residual_XDUT_B1": 2.782017958728039e-07,
+      "platform_XDUT_B2": 0.9998332728605468,
+      "area_XDUT_B2": 1.0000725288851233,
+      "residual_XDUT_B2": -4.48754063537421e-07,
+      "platform_XLOAD_B1": 0.9997098206683739,
+      "area_XLOAD_B1": 0.9997911340798622,
+      "residual_XLOAD_B1": 9.606753102048282e-07,
+      "platform_XLOAD_B2": 0.9987189105865797,
+      "area_XLOAD_B2": 1.0001032799120833,
+      "residual_XLOAD_B2": -1.1672432621290252e-06,
+      "activity_peak_time_ps": 13.15,
+      "activity_fwhm_ps": 3.1999999999999993
+    },
+    "0.025ps": {
+      "platform_XDUT_B1": 0.9999469484828755,
+      "area_XDUT_B1": 0.9999781075776563,
+      "residual_XDUT_B1": -5.618697510902104e-08,
+      "platform_XDUT_B2": 0.9998236533235798,
+      "area_XDUT_B2": 0.9999547070068456,
+      "residual_XDUT_B2": 1.077621440206955e-07,
+      "platform_XLOAD_B1": 0.9997227837589114,
+      "area_XLOAD_B1": 0.9999490650580182,
+      "residual_XLOAD_B1": 4.217525721023074e-09,
+      "platform_XLOAD_B2": 0.9987332752220718,
+      "area_XLOAD_B2": 0.9999525846777458,
+      "residual_XLOAD_B2": -9.357092536910194e-08,
+      "activity_peak_time_ps": 13.15,
+      "activity_fwhm_ps": 3.174999999999998
+    }
+  },
+  "adjacent_refinement": {
+    "0.1ps->0.05ps": {
+      "within_band_all": true,
+      "observables": {
+        "dut_platform_phase_turns": {
+          "absolute_difference": {
+            "platform_XDUT_B1": 2.912721139347596e-05,
+            "platform_XDUT_B2": 5.6247001490095094e-05
+          },
+          "band": 0.01,
+          "within_band": true
+        },
+        "dut_voltage_area_turns": {
+          "absolute_difference": {
+            "area_XDUT_B1": 0.00024010835418919463,
+            "area_XDUT_B2": 0.0013400318283955936
+          },
+          "band": 0.01,
+          "within_band": true
+        },
+        "dut_phase_area_residual_turns": {
+          "absolute_difference": {
+            "residual_XDUT_B1": 0.0001951311672714305,
+            "residual_XDUT_B2": 0.0013609129569292135
+          },
+          "band": 0.005,
+          "within_band": true
+        },
+        "downstream_platform_phase_turns": {
+          "absolute_difference": {
+            "platform_XLOAD_B1": 9.07015532415345e-05,
+            "platform_XLOAD_B2": 4.8714675500161064e-06
+          },
+          "band": 0.01,
+          "within_band": true
+        },
+        "activity_peak_time_ps": {
+          "absolute_difference": {
+            "activity_peak_time_ps": 0.05000000000000071
+          },
+          "band": 0.25,
+          "within_band": true
+        },
+        "activity_fwhm_ps": {
+          "absolute_difference": {
+            "activity_fwhm_ps": 0.0
+          },
+          "band": 0.25,
+          "within_band": true
+        }
+      }
+    },
+    "0.05ps->0.025ps": {
+      "within_band_all": true,
+      "observables": {
+        "dut_platform_phase_turns": {
+          "absolute_difference": {
+            "platform_XDUT_B1": 1.2741148969430682e-05,
+            "platform_XDUT_B2": 9.619536966987141e-06
+          },
+          "band": 0.01,
+          "within_band": true
+        },
+        "dut_voltage_area_turns": {
+          "absolute_difference": {
+            "area_XDUT_B1": 5.726411191508962e-05,
+            "area_XDUT_B2": 0.00011782187827769075
+          },
+          "band": 0.01,
+          "within_band": true
+        },
+        "dut_phase_area_residual_turns": {
+          "absolute_difference": {
+            "residual_XDUT_B1": 3.3438877098182496e-07,
+            "residual_XDUT_B2": 5.565162075581165e-07
+          },
+          "band": 0.005,
+          "within_band": true
+        },
+        "downstream_platform_phase_turns": {
+          "absolute_difference": {
+            "platform_XLOAD_B1": 1.29630905375544e-05,
+            "platform_XLOAD_B2": 1.4364635492092326e-05
+          },
+          "band": 0.01,
+          "within_band": true
+        },
+        "activity_peak_time_ps": {
+          "absolute_difference": {
+            "activity_peak_time_ps": 0.0
+          },
+          "band": 0.25,
+          "within_band": true
+        },
+        "activity_fwhm_ps": {
+          "absolute_difference": {
+            "activity_fwhm_ps": 0.025000000000001243
+          },
+          "band": 0.25,
+          "within_band": true
+        }
+      }
+    }
+  },
+  "classification": "CONVERGED",
+  "wording": "CONVERGED: all six preserved runs pass QA, every preregistered scalar is computable and both adjacent pairs are within their preregistered task-local bands. Classification is bounded numerical convergence for this calibration fixture only; downstream_count remains NOT_APPLICABLE; not a physical Gate, not a global tolerance freeze (M9 owns METRIC_SPEC_V2)."
+}

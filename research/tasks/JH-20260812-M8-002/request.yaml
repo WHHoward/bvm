@@ -1,0 +1,63 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260812-M8-002
+revision: 1
+workflow_state: ISSUED
+issued_at: 2026-08-12T23:45:00+08:00
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: M8
+depends_on: [M4, M5, M6, M7]
+supersedes: {task_id: JH-20260812-M8-001, revision: 1}
+task:
+  kind: ANALYSIS
+  objective: "Close M8 using only the preserved M8-001 A01 raw evidence under a mechanically satisfiable FROZEN receipt; do not execute JoSIM."
+  research_question: "Does the immutable six-run A01 evidence satisfy its pre-execution preregistered bounded-convergence procedure when independently reanalysed and mechanically sealed?"
+  non_goals:
+    - "No JoSIM run, new netlist, parameter tuning, M9 work, candidate work, window/band change, fourth timestep, raw rewrite, or physical Gate claim."
+    - "Do not modify M8-001 or any frozen/read input."
+  claim_ceiling: bounded_numerical_convergence_for_this_calibration_fixture_only_no_physical_gate
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - research/tasks/JH-20260812-M8-001/request.yaml
+    - research/tasks/JH-20260812-M8-001/preregistration.yaml
+    - research/tasks/JH-20260812-M8-001/audits/C01/verdict.yaml
+    - research/tasks/JH-20260812-M8-001/attempts/A01/analysis/analyze_m8.py
+    - research/tasks/JH-20260812-M8-001/attempts/A01/analysis/m8-convergence.md
+    - research/tasks/JH-20260812-M8-001/attempts/A01/runs/*/manifest.yaml
+    - research/tasks/JH-20260812-M8-001/attempts/A01/runs/*/raw/*.csv
+  write_paths: [research/tasks/JH-20260812-M8-002/attempts/**]
+  frozen_paths: [research/tasks/JH-20260812-M8-001/**, research/tasks/JH-20260812-M8-002/request.yaml, research/tasks/JH-20260812-M8-002/request.sha256, research/tasks/JH-20260812-M8-002/baseline/**, research/tasks/JH-20260812-M8-002/audits/**, docs/HANDOVER.md, memory/project-todo.md]
+  locks: [locks/jtl-convergence-m8]
+baseline:
+  git_head: 60cf922e3858984e1845cf8cd2fb825dd3bd4872
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260812-M8-002/baseline/git-status.txt, sha256: 841841d218f8ba509cbb82f2719e15c47120929f8f8198c763e4716bf21f2795}
+  scope_hashes: {path: research/tasks/JH-20260812-M8-002/baseline/scope-files.sha256, sha256: 3d8ad4a5c07c55b7bdded7aadbdf26813fc04cce8bfeab4679709c1e0ba36894}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first: [AGENTS.md, docs/HANDOVER.md, memory/project-todo.md, research/tasks/JH-20260812-M8-001/preregistration.yaml, research/tasks/JH-20260812-M8-001/audits/C01/verdict.yaml]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: f4e980f7fc6425371b45fbc286c86f6ca1944de339e7bb21b6d6f328af85de37}
+  metric_spec: {status: UNFROZEN, path: null, sha256: null}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260812-M8-002/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+  - {id: D2, path: research/tasks/JH-20260812-M8-002/attempts/**, role: DOCUMENTATION, required: true}
+acceptance:
+  - {id: AC1, condition: "ACK verifies all preserved A01 input hashes; no JoSIM invocation occurs.", evidence: [ack.yaml, scope-hash-log]}
+  - {id: AC2, condition: "Fresh attempt-local analysis recomputes every preregistered scalar from only the six preserved raw CSVs and fixed M8-001 windows/bands; its result is CONVERGED, INCONCLUSIVE, or INVALID without changing the original procedure.", evidence: [analysis-json, analysis-md]}
+  - {id: AC3, condition: "Receipt hashes all its stable artifacts, omits a self-referential final verify log, maps every AC, and verify-task succeeds when run by Codex after delivery.", evidence: [receipt.yaml]}
+invalid_conditions: ["Any M8-001 input hash differs, any JoSIM execution occurs, or any raw/netlist/window/band is changed."]
+inconclusive_conditions: ["A preserved input is valid but a required scalar cannot be recomputed at the fixed maximum depth."]
+stop_conditions: ["Any scope/hash mismatch, need for new simulation or changed procedure, or need to modify M8-001/M9/candidate files."]
+issuance_blockers: []

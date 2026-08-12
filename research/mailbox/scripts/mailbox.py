@@ -20,6 +20,7 @@ Each message is one markdown file named <message_id>.md:
     created_at: "2026-08-09T19:34:00+08:00"
     in_reply_to: ""
     related_task: "JH-20260809-M4-001"
+    type: TASK_READY        # optional: one of MESSAGE_TYPES
     subject: One-line subject
     ---
     free-form markdown body
@@ -39,6 +40,10 @@ import sys
 PARTIES = ("claude", "codex", "copilot")
 REQUIRED_FIELDS = ("message_id", "from", "to", "created_at", "in_reply_to",
                    "related_task", "subject")
+# Optional message-type hint (see research/mailbox/README.md Mailbox Operating
+# Rule). Absent in legacy messages; "INFO" is the default for new messages.
+MESSAGE_TYPES = ("TASK_READY", "REVIEW_REQUEST", "REWORK_REQUEST",
+                 "AUDIT_READY", "BLOCKED", "CLOSED", "INFO")
 
 
 class MailboxError(ValueError):
@@ -81,11 +86,16 @@ def _unique_stem(root: Path, sender: str, base: str) -> str:
 
 
 def _write_message(root: Path, sender: str, recipient: str, subject: str,
-                   body: str, reply_to: str = "", task_id: str = "") -> Path:
+                   body: str, reply_to: str = "", task_id: str = "",
+                   msg_type: str = "INFO") -> Path:
     if sender not in PARTIES or recipient not in PARTIES:
         raise ValueError(f"party must be one of {PARTIES}, got {sender!r}->{recipient!r}")
     if sender == recipient:
         raise ValueError("cannot message yourself")
+    if msg_type not in MESSAGE_TYPES:
+        raise ValueError(
+            f"type must be one of {MESSAGE_TYPES}, got {msg_type!r}"
+        )
     now = datetime.datetime.now().astimezone()
     stem = _unique_stem(root, sender, now.strftime("%Y%m%d-%H%M%S"))
     head = "\n".join(
@@ -97,6 +107,7 @@ def _write_message(root: Path, sender: str, recipient: str, subject: str,
             f'created_at: "{now.isoformat(timespec="seconds")}"',
             f"in_reply_to: {reply_to}",
             f"related_task: {task_id}",
+            f"type: {msg_type}",
             f"subject: {subject}",
             "---",
         ]
@@ -107,9 +118,11 @@ def _write_message(root: Path, sender: str, recipient: str, subject: str,
 
 
 def new_message(root: Path, sender: str, recipient: str, subject: str,
-                body: str = "", reply_to: str = "", task_id: str = "") -> Path:
+                body: str = "", reply_to: str = "", task_id: str = "",
+                msg_type: str = "INFO") -> Path:
     """Programmatic API; mirrors _write_message."""
-    return _write_message(root, sender, recipient, subject, body, reply_to, task_id)
+    return _write_message(root, sender, recipient, subject, body, reply_to,
+                          task_id, msg_type)
 
 
 def parse_message(text: str) -> tuple[dict[str, str], str]:
@@ -149,6 +162,11 @@ def validate_message(path: Path) -> dict[str, str]:
         raise MailboxError(f"{path.name}: unknown party in from/to")
     if head["from"] == head["to"]:
         raise MailboxError(f"{path.name}: cannot message yourself")
+    if head.get("type") not in (None, *MESSAGE_TYPES):
+        raise MailboxError(
+            f"{path.name}: unknown type {head['type']!r} "
+            f"(expected one of {MESSAGE_TYPES})"
+        )
     if not re.fullmatch(
         r"(claude|codex|copilot)-[0-9]{8}-[0-9]{6}(-[0-9]+)?", head["message_id"]
     ):
@@ -185,7 +203,8 @@ def _cmd_send(args: argparse.Namespace) -> int:
     if args.body_file:
         body = Path(args.body_file).read_text(encoding="utf-8")
     path = _write_message(root, args.sender, args.to, args.subject, body,
-                          reply_to=args.reply_to or "", task_id=args.task or "")
+                          reply_to=args.reply_to or "", task_id=args.task or "",
+                          msg_type=args.type)
     print(path)
     return 0
 
@@ -193,8 +212,9 @@ def _cmd_send(args: argparse.Namespace) -> int:
 def _cmd_list(args: argparse.Namespace) -> int:
     root = mailbox_root()
     for path, head in list_messages(root, sender=args.sender, recipient=args.to):
+        tag = f" [{head.get('type', '')}]" if head.get("type") else ""
         print(
-            f"{head['message_id']}  {head['from']}->{head['to']}  "
+            f"{head['message_id']}  {head['from']}->{head['to']}{tag}  "
             f"{head['subject']}"
         )
     return 0
@@ -253,6 +273,15 @@ def main(argv: list[str] | None = None) -> int:
     p_send.add_argument("--body-file")
     p_send.add_argument("--reply-to")
     p_send.add_argument("--task")
+    p_send.add_argument(
+        "--type",
+        choices=MESSAGE_TYPES,
+        default="INFO",
+        help=(
+            "message-type hint (TASK_READY / REVIEW_REQUEST / REWORK_REQUEST / "
+            "AUDIT_READY / BLOCKED / CLOSED / INFO); notification/index only"
+        ),
+    )
     p_send.set_defaults(handler=_cmd_send)
 
     p_list = sub.add_parser("list", help="list messages")

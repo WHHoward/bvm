@@ -36,6 +36,7 @@ These rules apply to the whole repository.
 
 - Use `research/WORKFLOW.md` and `.agents/skills/josim-handoff/` when Codex delegates implementation or experiment execution to Claude Code.
 - `workflowdiscuss/` is a historical design archive, not authority; do not read it by default or infer active requirements from archived proposals/reviews.
+- Mailbox operating rule (single canonical copy): `research/mailbox/README.md`. Mailbox is notification/index only — never authority; answer `NO_PENDING_WORK` when no relevant unprocessed message exists, and never start unrequested research from the todo list.
 - Codex owns SHA-256-sealed task requests and audit verdicts; Claude owns preflight ACKs, in-scope implementation/run artifacts, and execution receipts. The hash seal detects content changes but is not identity authentication. The user retains final approval for route changes, metric freezes, and paper claims.
 - An `ISSUED` request is immutable. Claude must ACK before editing, remain inside `scope.write_paths`, and stop when authorization or scope must expand.
 - Keep execution, artifact validity, physical verdict, and audit disposition separate. A correctly executed experiment may validly return physical `FAIL`; an invalid artifact is not a physical failure.

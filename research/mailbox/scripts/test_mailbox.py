@@ -40,6 +40,51 @@ class FrontmatterTests(unittest.TestCase):
             self.assertIn("请审计 A01。", body)
             self.assertEqual(head["message_id"], msg.stem)
 
+    def test_type_field_roundtrip(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_mailbox(tmp)
+            msg = mb.new_message(
+                root=root,
+                sender="codex",
+                recipient="claude",
+                subject="M7 已签发",
+                task_id="M7",
+                msg_type="TASK_READY",
+            )
+            head, _ = mb.parse_message(msg.read_text(encoding="utf-8"))
+            self.assertEqual(head["type"], "TASK_READY")
+            mb.validate_message(msg)  # must pass validation
+
+    def test_type_defaults_to_info(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_mailbox(tmp)
+            msg = mb.new_message(root, "claude", "copilot", "hello")
+            head, _ = mb.parse_message(msg.read_text(encoding="utf-8"))
+            self.assertEqual(head["type"], "INFO")
+
+    def test_unknown_type_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_mailbox(tmp)
+            with self.assertRaises(ValueError):
+                mb.new_message(
+                    root=root,
+                    sender="claude",
+                    recipient="codex",
+                    subject="bad",
+                    msg_type="NOT_A_TYPE",
+                )
+
+    def test_legacy_message_without_type_validates(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_mailbox(tmp)
+            msg = mb.new_message(root, "claude", "codex", "legacy")
+            raw = msg.read_text(encoding="utf-8")
+            # simulate a legacy message: strip the type line entirely
+            lines = [ln for ln in raw.splitlines() if not ln.startswith("type:")]
+            msg.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            head = mb.validate_message(msg)
+            self.assertNotIn("type", head)
+
     def test_message_id_is_unique_per_second(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = make_mailbox(tmp)

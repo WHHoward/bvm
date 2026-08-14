@@ -85,26 +85,37 @@
 4. 仍不启动 receiver、BQ、DCSFQ_BVM、INTERFACE_GATE_V1 或参数调优——这些需要 S0 之后的事实层与独立授权。
 
 
-## 7. 可视化附件（BVM-S0，从 frozen raw / S0-004 corrected data 生成）
+## 7. 可视化附件（BVM-S0，v2 修正版——从 frozen raw / S0-004 corrected data 生成）
 
-> 生成脚本：`test/final/bvm/runs/bvm-s0-canonical-20260814-01/plots/plot_bvm_s0.py`
-> （stdlib + matplotlib，确定性重渲染；图中数值已程序化验证与 raw 重算逐位一致，无手填值）
+> 生成脚本：`test/final/bvm/runs/bvm-s0-canonical-20260814-01/plots/plot_bvm_s0.py` +
+> `generate_story.py`（stdlib + matplotlib/plotly，确定性重渲染；图中数值已程序化
+> 验证与 raw 重算逐位一致，无手填值；topology 以 **active 未注释 netlist** 为准：
+> SE→N3、WL/BL→N1、无 N4/N7）
 > 完整 figure index（每图回答什么问题/可 claim 什么/不可 claim 什么）：
 > `test/final/bvm/runs/bvm-s0-canonical-20260814-01/plots/README-figure-index.md`
+> 交互式 guided story：`bvm-s0-story.html`（四幕 + 边界 + Explore raw traces 附录）
+
+### Core set（5 个核心视觉）
 
 | # | 图 | 文件名（相对 plots/） |
 |---|---|---|
-| 1 | BVM topology schematic（WL/BL、S-Loop、JM1/JM2、LM1/2/3/LPM、R-Loop、JS1/JS2、SE、SL output；标注 N2/LM3/N5 耦合） | `fig1-bvm-topology.png` |
-| 2 | Source voltage waveform V(SL1) [94,130) ps：三案例叠加 + timestep overlay（0.025 ps 主图） | `fig2-source-voltage.png` |
-| 3 | Source current waveform I(L_SL\|XBVM1) 同上 | `fig3-source-current.png` |
-| 4 | Timestep convergence overlay：pos/neg read 完整波形 0.1/0.05/0.025 ps | `fig4-convergence-overlay.png` |
-| 5 | Storage signature：JM1/JM2 pre/post mean grouped plot（标注 operational phase signature） | `fig5-storage-signature.png` |
-| 6 | Direct-JJ phase–area crosscheck：phase_delta_turns vs area_turns + y=x（JJ/read/step 区分） | `fig6-phase-area-crosscheck.png` |
-| 7 | Control noise zoom：matched controls nV/nA scale + 0.85 ps > 0.5 ps blocker 标注 | `fig7-control-noise-zoom.png` |
-| 8 | Experiment/status flowchart：M1–M12 → D0 → S0 → VALID/INCONCLUSIVE → next week | `fig8-flowchart.png` |
+| 1 | Timing + conceptual topology（注册窗口 + write-like 标注 + 概念拓扑） | `fig1-timing-conceptual.png` |
+| 2 | State-conditioned source response：V(SL1) pos vs neg + controls inset + I≈V/12Ω 标注 | `fig2-source-response.png` |
+| 3 | Storage/initialized operational signatures：PRE + POST−PRE delta（无 gross inversion 观察） | `fig3-storage-signatures.png` |
+| 4 | Read-waveform timestep comparison（完整波形 0.1/0.05/0.025 ps） | `fig4-timestep-comparison.png` |
+| 5 | Control residual + registered INCONCLUSIVE blocker（nV/nA；grid sensitivity 措辞） | `fig5-control-residual-blocker.png` |
 
-所有图区分 observed / derived / inference；不启动任何新实验。
+### Appendix / supporting
 
+| # | 图 | 文件名（相对 plots/） |
+|---|---|---|
+| A1 | Detailed ACTIVE topology（技术参考） | `figA1-detailed-topology.png` |
+| A2 | Source current I(L_SL)（Ohm/KCL 与 V(SL1) 同信息） | `figA2-source-current.png` |
+| A3 | Phase–area same-JJ identity check（residual view；非独立物理证据） | `figA3-phase-area-identity.png` |
+| A4 | Project pipeline（historical 实线 / future 虚线） | `figA4-project-pipeline.png` |
+
+所有图区分 observed / derived / inference；不启动任何新实验。v1 图（fig1-bvm-topology
+等 8 张）已由 v2 集取代并删除，旧文件名不再引用。
 ## 6. 一句总结
 
 > 本周把 BVM 源端从"没有可验证初态"推进到"**两种可操作初态 + 固定 fixture 下可复现、状态相关的源端响应（有界观察）**"，并经过完整的封存/对抗审查链；按预注册规则其科学判定是 INCONCLUSIVE（而非失败）——下一轮是设计正确的收敛/特征化任务，而不是急着接 receiver 或调参。

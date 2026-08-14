@@ -301,19 +301,17 @@ TEMPLATE = r"""<!DOCTYPE html>
       .lblr { font-size:9px; fill:#666; }
       .box { fill:none; stroke-dasharray:4 3; }
     </style>
+    <!-- WL/BL -> N1 (correct) -->
     <text x="10" y="60" class="lbl" font-weight="bold">WL</text>
     <text x="10" y="105" class="lbl" font-weight="bold">BL</text>
-    <text x="40" y="30" class="lbl" font-weight="bold">SE</text>
     <line x1="28" y1="57" x2="70" y2="57" class="wire"/>
     <line x1="28" y1="102" x2="70" y2="102" class="wire"/>
-    <line x1="50" y1="32" x2="80" y2="62" class="wire"/>
     <circle cx="70" cy="57" r="3.2" class="node"/><circle cx="70" cy="102" r="3.2" class="node"/>
-    <circle cx="84" cy="62" r="3.2" class="node"/>
     <text x="76" y="52" class="lblr">R_WL+L_PWL</text>
     <text x="76" y="97" class="lblr">R_BL+L_PBL</text>
-    <text x="86" y="48" class="lblr">R_SE+L_PSE</text>
     <circle cx="112" cy="80" r="3.6" class="node"/>
     <text x="106" y="95" class="lbl">N1</text>
+    <!-- S-loop -->
     <path d="M112 80 L150 58 L150 120 L112 80" class="sloop"/>
     <path d="M112 80 L112 200" class="sloop"/>
     <text x="142" y="52" class="lblb">B_JM1</text>
@@ -327,6 +325,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     <circle cx="210" cy="170" r="3.4" class="node"/>
     <path d="M210 170 L210 205" class="sloop"/>
     <text x="196" y="196" class="lblb">L_PM→GND</text>
+    <!-- R-loop: N2-LS1-JS1-N3 ; N3-(R_S//L_S3)-N6 ; N6-LS2-JS2-N5 -->
     <path d="M150 128 L200 128 L200 230 L240 230 L240 170" class="rloop"/>
     <text x="192" y="140" class="lblr">L_S1</text>
     <text x="196" y="214" class="lblr">B_JS1</text>
@@ -335,16 +334,23 @@ TEMPLATE = r"""<!DOCTYPE html>
     <text x="188" y="244" class="lblr">N3</text>
     <text x="244" y="244" class="lblr">N6</text>
     <path d="M200 230 L280 230 L280 170" class="rloop"/>
-    <text x="252" y="222" class="lblr">R_S</text>
+    <text x="252" y="222" class="lblr">R_S // L_S3</text>
     <text x="256" y="204" class="lblr">B_JS2 (L_S2)</text>
     <circle cx="280" cy="230" r="3.2" class="node"/>
+    <!-- SE -> N3 (correct) -->
+    <text x="40" y="30" class="lbl" font-weight="bold">SE</text>
+    <line x1="50" y1="32" x2="80" y2="62" class="wire"/>
+    <circle cx="84" cy="62" r="3.2" class="node"/>
+    <text x="86" y="48" class="lblr">R_SE+L_PSE</text>
+    <path d="M84 62 L200 230" stroke="#b5457f" stroke-width="1.1" stroke-dasharray="3 2" fill="none"/>
+    <!-- boxes and coupling -->
     <rect x="90" y="40" width="150" height="180" class="box" stroke="#1f6fb2"/>
     <text x="96" y="232" class="lblb">S-Loop (storage)</text>
     <rect x="140" y="110" width="170" height="140" class="box" stroke="#888"/>
     <text x="196" y="262" class="lblr">R-Loop (readout)</text>
     <line x1="210" y1="170" x2="240" y2="170" stroke="#b5457f" stroke-width="1.8"/>
     <text x="220" y="162" class="lbl" fill="#b5457f" font-size="8.5">N2–LM3–N5 coupling</text>
-    <path d="M84 62 L200 230" stroke="#b5457f" stroke-width="1.1" stroke-dasharray="3 2" fill="none"/>
+    <!-- output chain -->
     <path d="M280 230 L330 230 L360 195" class="wire"/>
     <circle cx="330" cy="230" r="3.2" class="node"/>
     <circle cx="360" cy="195" r="3.2" class="node"/>
@@ -352,8 +358,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     <text x="352" y="188" class="lblr">R_SL→N8</text>
     <text x="360" y="180" class="lbl" font-weight="bold">SL out (12 Ω)</text>
   </svg>
-  <div class="foldnote">Element connectivity from <span class="mono">bvm_cell.cir</span> v6；
-  loop roles 依 netlist 注释。仅结构示意，不构成电流/相位结论。</div>
+  <div class="foldnote">Element connectivity from the <b>ACTIVE uncommented</b> <span class="mono">bvm_cell.cir</span> v6：WL/BL→N1，SE→N3（R_SE+L_PSE），N3–N6 经 R_S//L_S3，无 N4/N7（历史注释路径已排除）。仅结构示意，不构成电流/相位结论。</div>
 </details>
 </div>
 
@@ -369,7 +374,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   <div><div class="h">What this shows</div>
     V(SL1)（source 电压）正/负 initialization 的 read 响应：正读 ≈ +0.89–0.90 mV @ ~5 ps，
     负读 ≈ −0.31 mV @ ~10 ps（0.1/0.05/0.025 ps，baseline-subtracted）。controls 为噪声级（15–18 nV）。
-    主曲线为 0.025 ps（最高分辨率，仅用于方向性观察）。</div>
+    主曲线为 0.025 ps（最高分辨率，仅用于方向性观察）。I(L_SL) 与 V(SL1) 经 12 Ω KCL/Ohm 直接相关，见 appendix。</div>
   <div><div class="h">Why it matters</div>
     固定 fixture 中，positive/negative preparation 对 source-port response 有<b>可见且状态相关</b>的差异
     （幅度与 latency 均不同），且都远高于 matched zero-read control。</div>
@@ -377,7 +382,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     不证明 logical bit、state preservation、SFQ/fluxoid、下游接收或接口成功。</div>
 </div>
 
-<div id="act2-i" style="width:100%;"></div>
+<div class="note">I(L_SL|XBVM1) 与 V(SL1) 在固定 12 Ω 负载下经 KCL/Ohm 直接相关：I_load ≈ V(SL1)/12 Ω（同信息，见 appendix figA2）。Fig3 不再作为独立第二份证据。</div>
 <div class="card3">
   <div><div class="h">What this shows</div>
     I(L_SL|XBVM1)（source 电流）同场景：正读 ≈ +74–75 µA @ ~5 ps，负读 ≈ −25.6–26.4 µA @ ~10 ps；
@@ -518,6 +523,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 <div id="explorer" style="width:100%;"></div>
 <div class="note">
   全部 8 轨（WL/SE stimulus、P/V JM1/JM2、V(SL1)、I(L_SL)）同步 zoom/pan/hover；
+  I(L_SL) 轨道与 V(SL1) 为 Ohm/KCL 相关（I≈V/12Ω），属同一 source 信息；
   背景区间：initialization 10–21、settling 21–95、PRE 80–90、READ 96–106、POST 140–150 ps。
   此层用于证据检查，不产生科学裁决。
 </div>
@@ -581,7 +587,7 @@ function act2Fig(id, key, unit){
   }, {responsive:true, displaylogo:false});
 }
 act2Fig('act2-v', 'V_SL1', 'mV');
-act2Fig('act2-i', 'I_LSL', 'µA');
+
 
 /* ---- Act 3: JM1/JM2 diagnostics ---- */
 (function(){
@@ -670,7 +676,7 @@ act2Fig('act2-i', 'I_LSL', 'µA');
   });
   Plotly.newPlot('act4-noise', ntraces, {
     ...baseLayout, yaxis:{title:'V(SL1) (nV)'},
-    title:{text:'Matched controls — noise-level; latency diagnostic 0.85 ps > 0.5 ps band',
+    title:{text:'Matched-control residual — low-amplitude; latency diagnostic shows grid sensitivity (0.85 ps > 0.5 ps band)',
            font:{size:13}},
   }, {responsive:true, displaylogo:false});
 })();

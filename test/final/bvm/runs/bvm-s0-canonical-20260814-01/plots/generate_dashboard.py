@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""generate_dashboard -- self-contained interactive BVM-S0 dashboard generator.
+"""generate_dashboard -- DEPRECATED: superseded by generate_story.py.
+
+Kept as the raw-data explorer generator (and for provenance); the guided
+narrative is bvm-s0-story.html.  Unit schema: t_s (seconds, raw) / t_ps
+(picoseconds, the ONLY axis the HTML consumes); traces use SVG scatter.
+Regenerated bvm-s0-dashboard.html remains a working inspection tool.
 
 Reads ONLY frozen evidence:
   - 12 raw CSVs: test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/<case>/<step>/run-01.csv
@@ -56,25 +61,11 @@ BANDS = [
 ]
 
 
-def load_csv(case: str, step: str) -> dict:
-    with open(RUN / 'raw' / case / step / 'run-01.csv', encoding='utf-8') as f:
-        rows = list(csv.reader(f))
-    hdr = [h.strip().strip('"') for h in rows[0]]
-    idx = {h: i for i, h in enumerate(hdr)}
-    cols: dict[str, list] = {}
-    t: list[float] = []
-    for r in rows[1:]:
-        t.append(round(float(r[0]), 15))
-        for key, col in COL_MAP.items():
-            cols.setdefault(key, []).append(round(float(r[idx[col]]), 9))
-    return {'t': t, 'c': cols}
+from _viz_data import COL_MAP, load_all_datasets
 
 
 def main() -> int:
-    data = {}
-    for case in CASES:
-        for step in STEPS:
-            data[f'{case}/{step}'] = load_csv(case, step)
+    data = load_all_datasets(CASES, STEPS)
 
     corr = json.loads(CORRECTED.read_text(encoding='utf-8'))['cases']
     # summary values for every case/step
@@ -396,7 +387,7 @@ function buildFig(){
   const dom = (i)=>[1-(i+1)/n, 1/n];
   TRACKS.forEach((tr, i)=>{
     traces.push({
-      type:'scattergl', mode:'lines', name:tr.l, legendgroup:'main',
+      type:'scatter', mode:'lines', name:tr.l, legendgroup:'main',
       x:[], y:[], line:{color:tr.c, width:1.2},
       xaxis:'x', yaxis:'y'+(i+1),
       hovertemplate: tr.l+': %{y:.6g}'+tr.u+'<extra></extra>'
@@ -435,7 +426,7 @@ function updateWave(){
   const upd = {};
   const n = TRACKS.length;
   TRACKS.forEach((tr, i)=>{
-    const x = base.t;
+    const x = base.t_ps;
     const y = base.c[tr.k].map(v=>v*tr.s);
     let y2=null;
     if (overSign){
@@ -454,9 +445,9 @@ function updateWave(){
       ? cs.replace('positive','negative') : cs.replace('negative','positive');
     srcIdx.forEach(i=>{
       const tr=TRACKS[i];
-      extra.push({type:'scattergl', mode:'lines',
+      extra.push({type:'scatter', mode:'lines',
         name:(cs.indexOf('positive')>=0?'neg':'pos')+' read '+tr.l,
-        x:DATA[keyOf(other, st)].t,
+        x:DATA[keyOf(other, st)].t_ps,
         y:DATA[keyOf(other, st)].c[tr.k].map(v=>v*tr.s),
         line:{color:'#555', width:1.2, dash:'dot'},
         xaxis:'x', yaxis:'y'+(i+1),
@@ -467,8 +458,8 @@ function updateWave(){
     STEPS.forEach(stp=>{
       srcIdx.forEach(i=>{
         const tr=TRACKS[i];
-        extra.push({type:'scattergl', mode:'lines', name:stp+' '+tr.l,
-          x:DATA[keyOf(cs, stp)].t,
+        extra.push({type:'scatter', mode:'lines', name:stp+' '+tr.l,
+          x:DATA[keyOf(cs, stp)].t_ps,
           y:DATA[keyOf(cs, stp)].c[tr.k].map(v=>v*tr.s),
           line:{color:'#999', width:1.0, dash:'dot'},
           xaxis:'x', yaxis:'y'+(i+1),

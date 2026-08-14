@@ -47,25 +47,11 @@ COL_MAP = {
 }
 
 
-def load_csv(case: str, step: str) -> dict:
-    with open(RUN / 'raw' / case / step / 'run-01.csv', encoding='utf-8') as f:
-        rows = list(csv.reader(f))
-    hdr = [h.strip().strip('"') for h in rows[0]]
-    idx = {h: i for i, h in enumerate(hdr)}
-    cols: dict[str, list] = {}
-    t: list[float] = []
-    for r in rows[1:]:
-        t.append(round(float(r[0]), 15))
-        for key, col in COL_MAP.items():
-            cols.setdefault(key, []).append(round(float(r[idx[col]]), 9))
-    return {'t': t, 'c': cols}
+from _viz_data import COL_MAP, load_all_datasets
 
 
 def main() -> int:
-    data = {}
-    for case in CASES:
-        for step in STEPS:
-            data[f'{case}/{step}'] = load_csv(case, step)
+    data = load_all_datasets(CASES, STEPS)
     corr = json.loads(CORRECTED.read_text(encoding='utf-8'))['cases']
     summary = {}
     for case in CASES:
@@ -572,7 +558,7 @@ function act2Fig(id, key, unit){
                  ['init_positive_control','#d9a0aa','positive control'],
                  ['init_negative_control','#a9c3dd','negative control']];
   cases.forEach(([c,color,lab])=>{
-    traces.push({type:'scattergl', mode:'lines', name:lab, x:DATA[c+'/0.025ps'].t,
+    traces.push({type:'scatter', mode:'lines', name:lab, x:DATA[c+'/0.025ps'].t_ps,
       y:DATA[c+'/0.025ps'].c[key].map(v=>v*(key==='V_SL1'?1e3:1e6)),
       line:{color, width: lab.indexOf('control')>=0 ? 1.1 : 2.0,
             dash: lab.indexOf('control')>=0 ? 'dot' : 'solid'},
@@ -596,9 +582,9 @@ act2Fig('act2-v', 'V_SL1', 'mV');
                  ['init_negative_read','#4f86c6','neg read']];
   cases.forEach(([c,color,lab])=>{
     ['P_JM1','P_JM2'].forEach((k,i)=>{
-      traces.push({type:'scattergl', mode:'lines',
+      traces.push({type:'scatter', mode:'lines',
         name:lab+' '+(k==='P_JM1'?'P(JM1)':'P(JM2)'),
-        x:DATA[c+'/0.025ps'].t, y:DATA[c+'/0.025ps'].c[k],
+        x:DATA[c+'/0.025ps'].t_ps, y:DATA[c+'/0.025ps'].c[k],
         line:{color: i===0?color:'#e07b00', width:1.3, dash: i===1?'dot':'solid'},
         hovertemplate:lab+' %{y:.5g} rad<extra></extra>'});
     });
@@ -647,13 +633,13 @@ act2Fig('act2-v', 'V_SL1', 'mV');
 (function(){
   const traces=[];
   STEPS.forEach((st,i)=>{
-    traces.push({type:'scattergl', mode:'lines', name:st+' pos read',
-      x:DATA['init_positive_read/'+st].t,
+    traces.push({type:'scatter', mode:'lines', name:st+' pos read',
+      x:DATA['init_positive_read/'+st].t_ps,
       y:DATA['init_positive_read/'+st].c.V_SL1.map(v=>v*1e3),
       line:{color:['#c7c7c7','#8a8a8a','#333333'][i], width:1.3},
       hovertemplate:st+': %{y:.4g} mV<extra></extra>'});
-    traces.push({type:'scattergl', mode:'lines', name:st+' neg read',
-      x:DATA['init_negative_read/'+st].t,
+    traces.push({type:'scatter', mode:'lines', name:st+' neg read',
+      x:DATA['init_negative_read/'+st].t_ps,
       y:DATA['init_negative_read/'+st].c.V_SL1.map(v=>v*1e3),
       line:{color:['#c7c7c7','#8a8a8a','#333333'][i], width:1.3, dash:'dot'},
       hovertemplate:st+': %{y:.4g} mV<extra></extra>'});
@@ -667,9 +653,9 @@ act2Fig('act2-v', 'V_SL1', 'mV');
   const ntraces=[];
   ['init_positive_control','init_negative_control'].forEach((c)=>{
     STEPS.forEach((st,i)=>{
-      ntraces.push({type:'scattergl', mode:'lines',
+      ntraces.push({type:'scatter', mode:'lines',
         name:c.split('_')[1]+' ctrl '+st,
-        x:DATA[c+'/'+st].t, y:DATA[c+'/'+st].c.V_SL1.map(v=>v*1e9),
+        x:DATA[c+'/'+st].t_ps, y:DATA[c+'/'+st].c.V_SL1.map(v=>v*1e9),
         line:{color:['#c7c7c7','#8a8a8a','#333333'][i], width:1.1},
         hovertemplate:'%{y:.3g} nV<extra></extra>'});
     });
@@ -686,7 +672,7 @@ act2Fig('act2-v', 'V_SL1', 'mV');
   const n=TRACKS.length;
   const dom=(i)=>[1-(i+1)/n, 1/n];
   const traces=TRACKS.map((tr,i)=>({
-    type:'scattergl', mode:'lines', name:tr.l, x:[], y:[],
+    type:'scatter', mode:'lines', name:tr.l, x:[], y:[],
     line:{color:tr.c, width:1.2}, xaxis:'x', yaxis:'y'+(i+1),
     hovertemplate:tr.l+': %{y:.6g}'+tr.u+'<extra></extra>'}));
   const layout={...baseLayout, hovermode:'x unified'};
@@ -700,7 +686,7 @@ act2Fig('act2-v', 'V_SL1', 'mV');
     const cs=selCase(), st=selStep();
     const upd={};
     TRACKS.forEach((tr,i)=>{
-      upd['x'+(i+1)]=[DATA[keyOf(cs,st)].t];
+      upd['x'+(i+1)]=[DATA[keyOf(cs,st)].t_ps];
       upd['y'+(i+1)]=[DATA[keyOf(cs,st)].c[tr.k].map(v=>v*tr.s)];
     });
     const extra=[];
@@ -709,14 +695,14 @@ act2Fig('act2-v', 'V_SL1', 'mV');
       const other=(cs.indexOf('positive')>=0)?cs.replace('positive','negative')
         :cs.replace('negative','positive');
       srcIdx.forEach(i=>{const tr=TRACKS[i];
-        extra.push({type:'scattergl', mode:'lines', name:'overlay '+tr.l,
-          x:DATA[keyOf(other,st)].t, y:DATA[keyOf(other,st)].c[tr.k].map(v=>v*tr.s),
+        extra.push({type:'scatter', mode:'lines', name:'overlay '+tr.l,
+          x:DATA[keyOf(other,st)].t_ps, y:DATA[keyOf(other,st)].c[tr.k].map(v=>v*tr.s),
           line:{color:'#555',width:1.1,dash:'dot'}, xaxis:'x', yaxis:'y'+(i+1)});});
     }
     if (document.getElementById('chkStepOverlay').checked){
       STEPS.forEach(stp=>{srcIdx.forEach(i=>{const tr=TRACKS[i];
-        extra.push({type:'scattergl', mode:'lines', name:stp+' '+tr.l,
-          x:DATA[keyOf(cs,stp)].t, y:DATA[keyOf(cs,stp)].c[tr.k].map(v=>v*tr.s),
+        extra.push({type:'scatter', mode:'lines', name:stp+' '+tr.l,
+          x:DATA[keyOf(cs,stp)].t_ps, y:DATA[keyOf(cs,stp)].c[tr.k].map(v=>v*tr.s),
           line:{color:'#999',width:1.0,dash:'dot'}, xaxis:'x', yaxis:'y'+(i+1)});});});
     }
     Plotly.react('explorer', traces.concat(extra), layout, {responsive:true});

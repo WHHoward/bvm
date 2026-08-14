@@ -1,0 +1,66 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260814-BVM-S0-004
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: '2026-08-14T22:08:29+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: 3e56f80c61128684b4e56925aeb9427fdc24c57aaa74f0898b801470cdc299bf
+  ack_sha256: 943bad8345a9e3d02cf3e66e353628ffc2505925c535451d71824593e85728f2
+  receipt_sha256: c411010e5133766bf2bc1101e20e157e60322540dc9586359f765cc19df83c7c
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: protocol-chain-and-scope
+    status: PASS
+    evidence:
+      - "handoff.py verify-task research/tasks/JH-20260814-BVM-S0-004 => VERIFIED; request/ACK/receipt hash bindings, scope manifest, deliverables, receipt hashes, and acceptance mapping pass."
+      - "All delivered paths are within the successor attempt or the permitted Claude mailbox notification; no frozen S0-001/S0-002/S0-003 path changed."
+  - id: frozen-source-integrity
+    status: PASS
+    evidence:
+      - "Independent sha256sum --check of source-evidence-manifest.sha256 passes all 24 direct source entries."
+      - "Independent execution of frozen S0-002 seal_check.py reports 59 entries with no missing, added, or hash-mismatched source evidence."
+  - id: independent-regeneration
+    status: PASS
+    evidence:
+      - "The stdlib-only regenerating script was copied to an external temporary directory and independently run there; its raw-CSV reconstruction reports success without writing repository evidence."
+      - "The temporary corrected-analysis.json and corrected-analysis.md are byte-for-byte equal to the delivered files. The script uses the CSV time column, registered [80,90), [94,108), [140,150), and [94,130) windows, and direct JM1/JM2 P/V columns."
+  - id: prior-major-correction
+    status: PASS
+    evidence:
+      - "The corrected report gives init_positive_read/0.1ps JM1 phase_delta_rad 0.068792 rather than the rejected old table's 0.108836; the regenerated value agrees with frozen analysis.json/raw."
+      - "The old analysis.md remains hash-preserved and is explicitly superseded only for human-readable numeric tables; neither raw CSV nor frozen analysis.json was overwritten."
+  - id: claim-boundary
+    status: PASS
+    evidence:
+      - "The corrected data and report retain numerical_status/evidence_quality INCONCLUSIVE because the registered 0.1-to-0.05 ps control-latency comparison is 0.85 ps, above its 0.5-ps task-local band."
+      - "No source physical success, receiver, Gate, route, logical-state, SFQ, fluxoid, or published-reproduction conclusion is accepted by this reporting-only audit."
+  - id: independent-peer-review
+    status: PASS
+    evidence:
+      - "Copilot A01 REVIEW.md is PASS with no Critical/Major finding; it independently reran reconstruction, checked source integrity, deterministic rendering, and claim boundary read-only."
+findings:
+  - "S0-001's old human-readable Observed tables were inconsistent with its otherwise preserved raw/analysis.json evidence."
+  - "S0-004 repairs that report-layer defect without changing the frozen evidence and provides a deterministic regeneration path for the corrected tables."
+accepted_claims:
+  - "S0-004 A01 is a valid, reproducible correction of the human-readable numeric report: its corrected tables are independently regenerated from the twelve frozen CSVs and agree with frozen analysis.json."
+  - "The corrected-analysis.md supersedes S0-001's old analysis.md only as the human-readable numerical-table reference; the old file remains immutable historical evidence."
+rejected_claims:
+  - "This audit does not accept BVM-S0 source-side characterization as physically conclusive, nor establish a read0/read1 logical mapping, storage preservation, an SFQ/fluxoid count, receiver response, INTERFACE_GATE, candidate viability, or route choice."
+  - "The task-local S0 convergence INCONCLUSIVE result is not converted into a general BVM numerical limit or a physical FAIL."
+required_rework: []
+next_actions:
+  - "The report-consistency Major is closed. A separately authorized BVM-S0 scientific evidence audit may now assess the sealed raw package under the original S0 claim boundary; it must retain the registered numerical INCONCLUSIVE disposition unless new, separately authorized evidence changes it."
+  - "Do not begin BQ, DCSFQ_BVM, receiver characterization, INTERFACE_GATE, or parameter tuning from this report-repair acceptance."
+claim_ceiling: correction_provenance_and_report_consistency_only_preserving_s0_source_evidence_as_numerically_inconclusive

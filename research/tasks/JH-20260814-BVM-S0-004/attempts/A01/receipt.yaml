@@ -1,0 +1,151 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260814-BVM-S0-004
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-14T21:43:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 3e56f80c61128684b4e56925aeb9427fdc24c57aaa74f0898b801470cdc299bf
+  ack_sha256: 943bad8345a9e3d02cf3e66e353628ffc2505925c535451d71824593e85728f2
+execution_status: COMPLETED
+baseline_git_head: 835fb64635d9a1c32e20d808bd2a790f865f5273
+result_git_head: 835fb64635d9a1c32e20d808bd2a790f865f5273
+changes:
+- path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/regenerate_s0_report.py
+  action: CREATED
+  sha256: d599c69f4f23220e59679de2c7719f52691090f0f091f14528a9f054e0e393f6
+- path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.json
+  action: CREATED
+  sha256: 1ff332e36744c8d20bb045dfd16ea5916c092be30afb1146b8c871c383cd069f
+- path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.md
+  action: CREATED
+  sha256: 90f6f336bf2eb027f8d8b13441e4fb2833ddf70d9eac9feed4e0d3b192051b5a
+- path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/source-evidence-manifest.sha256
+  action: CREATED
+  sha256: 9fc36c7baf231682550f5c9dc527f2ddb7dcaa9c8e21d34a4bb5e556a6f73e21
+- path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/seal-check.log
+  action: CREATED
+  sha256: 14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148
+- path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log
+  action: CREATED
+  sha256: 9b24e10a59cbf8a523486e752ca1395803c2057bf880b268c9d490aa09c8b875
+- path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/verify-task.log
+  action: CREATED
+  sha256: 915c138311ce88804a8b096a745ce94fb66a261c4cc8a2f7e77226c3bbea2526
+artifacts:
+- id: D1
+  path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/regenerate_s0_report.py
+  sha256: d599c69f4f23220e59679de2c7719f52691090f0f091f14528a9f054e0e393f6
+  role: IMPLEMENTATION
+- id: D2
+  path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.json
+  sha256: 1ff332e36744c8d20bb045dfd16ea5916c092be30afb1146b8c871c383cd069f
+  role: DOCUMENTATION
+- id: D3
+  path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.md
+  sha256: 90f6f336bf2eb027f8d8b13441e4fb2833ddf70d9eac9feed4e0d3b192051b5a
+  role: DOCUMENTATION
+- id: D4
+  path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/source-evidence-manifest.sha256
+  sha256: 9fc36c7baf231682550f5c9dc527f2ddb7dcaa9c8e21d34a4bb5e556a6f73e21
+  role: DOCUMENTATION
+- id: D5
+  path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log
+  sha256: 9b24e10a59cbf8a523486e752ca1395803c2057bf880b268c9d490aa09c8b875
+  role: TEST
+- id: seal-check-log
+  path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/seal-check.log
+  sha256: 14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148
+  role: LOG
+- id: verify-log
+  path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/verify-task.log
+  sha256: 915c138311ce88804a8b096a745ce94fb66a261c4cc8a2f7e77226c3bbea2526
+  role: LOG
+commands:
+- command: python3 research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/seal-check.log
+  log_sha256: 14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148
+- command: python3 research/tasks/JH-20260814-BVM-S0-004/attempts/A01/regenerate_s0_report.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log
+  log_sha256: 9b24e10a59cbf8a523486e752ca1395803c2057bf880b268c9d490aa09c8b875
+tests:
+- id: seal-check
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/seal-check.log
+  notes:
+  - 冻结 S0-002 seal_check.py 重跑 PASS（59 项，无缺/增/hash 不符）
+- id: regenerate-verify
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log
+  notes:
+  - 从 12 frozen CSV 用实际时间独立重建全部 phase-area/pre/post platform/source 值，与 frozen analysis.json 全部一致（含 0.1ps
+    pos/neg read 已知值）；corrected-analysis.md 确定性渲染且字节级重渲染一致；负向毒化（篡改 md）被拒绝
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/seal-check.log
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/source-evidence-manifest.sha256
+  notes:
+  - 任何派生输出前重跑冻结 S0-002 seal_check.py（exit 0 PASS）；24 个直接源输入（S0-001 request/analyze/receipt/REVIEW、S0-002
+    seal/checker、S0-003/S0-D0-003 audits、manifest/closure-hashes/analysis.json/analysis.md、12 raw CSV）hash
+    入 source-evidence-manifest.sha256；无缺/增/改
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/regenerate_s0_report.py
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.json
+  notes:
+  - stdlib-only 脚本从 12 frozen CSV 实际时间+注册窗口/方向独立重建全部数值并与 frozen analysis.json 比对，任何不一致 fail nonzero；0.1ps
+    pos/neg read 值与 frozen JSON 逐位一致（JM1 0.068792）；不静默选其他 case/timestep/window
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.md
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.json
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log
+  notes:
+  - corrected-analysis.md 由同一脚本从 corrected-analysis.json 确定性渲染，含四案例×三时间步的 phase-area/pre/post/source 值、controls、INCONCLUSIVE
+    收敛结果、provenance 路径/hash、correction note（旧 analysis.md retained but superseded）；字节级重渲染校验通过
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.md
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.json
+  notes:
+  - numerical_status=INCONCLUSIVE、evidence_quality=INCONCLUSIVE 保留（0.1->0.05 ps control-latency 0.85 ps
+    > 0.5-ps band）；未改 fixture/stimulus/window/tolerance；未把任何源事实提升为 interface/Gate/logical/physical PASS/FAIL
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log
+  notes:
+  - receipt 映射全部创建 script/report/data/manifest/log artifacts 与 AC1-AC4；final verify-task 成功；已通知 Copilot
+    对新 successor correction 做只读 review（Codex final audit 前置）
+observations:
+- S0-002 seal_check 重跑 PASS：59 项封存与磁盘一致
+- 重建值与 frozen analysis.json 全部一致（12 cases × 3 steps × JM1/JM2 全量比对，含已知的 0.1ps pos/neg read 差异值）
+- corrected-analysis.md 确定性渲染 + 字节级重渲染一致；篡改毒化测试被真实拒绝（exit 1）
+- 旧 analysis.md 表格不一致根因：human-readable 表格手写时取值错误（如 phase_delta_rad 0.108836 vs 实际 0.068792），raw 与 analysis.json
+  本身正确
+interpretations:
+- S0 报告层缺陷已由确定性生成器根治：报告数值永远与 raw/analysis.json 一致
+- INCONCLUSIVE 收敛结论保留（control-latency band 超限），未提升任何物理结论
+unknowns:
+- S0 科学 disposition：仍待后续独立科学审计（本任务仅修正报告一致性）
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- 本任务不评估 S0 科学性；仅确保报告数值与 frozen 证据一致
+- corrected 报告取代旧 analysis.md 仅限 human-readable 数值表；旧文件保留为 immutable evidence
+deviations: []
+blockers: []

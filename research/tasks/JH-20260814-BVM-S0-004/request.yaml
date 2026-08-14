@@ -1,0 +1,119 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260814-BVM-S0-004
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-14T21:30:48+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S0
+depends_on: [JH-20260814-BVM-S0-001, JH-20260814-BVM-S0-002, JH-20260814-BVM-S0-003]
+supersedes: {task_id: JH-20260814-BVM-S0-001, revision: 1}
+task:
+  kind: ANALYSIS
+  objective: "Correct only the rejected human-readable S0 A01 report by regenerating a separately preserved report from the immutable 12-run raw/analysis evidence, with a deterministic verifier; do not run JoSIM or alter any prior artifact."
+  research_question: "Does a newly generated S0 report agree with the frozen raw CSV and frozen analysis.json for every registered case/timestep quantity it presents, while retaining the registered INCONCLUSIVE convergence disposition?"
+  non_goals:
+    - "Do not run JoSIM, create new raw data, modify/move/rename/delete any S0-001/S0-002/S0-003 artifact, or overwrite analysis.md or analysis.json."
+    - "Do not change the S0 fixture, stimulus, windows, controls, directions, task-local bands, evidence-quality conclusion, or numerical convergence classification."
+    - "Do not make any receiver, Gate, candidate, route, logical read0/read1, SFQ, fluxoid, published-reproduction, or physical PASS/FAIL claim."
+  claim_ceiling: correction_provenance_and_report_consistency_only_preserving_s0_source_evidence_as_numerically_inconclusive
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - research/tasks/JH-20260814-BVM-S0-001/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-001/attempts/A01/analyze_s0.py
+    - research/tasks/JH-20260814-BVM-S0-001/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260814-BVM-S0-001/attempts/A01/REVIEW.md
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+    - research/tasks/JH-20260814-BVM-S0-003/audits/C01/verdict.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-003/audits/C01/verdict.yaml
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/manifest.yaml
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/closure-hashes.txt
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/analysis.json
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/analysis.md
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_negative_control/0.025ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_negative_control/0.05ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_negative_control/0.1ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_negative_read/0.025ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_negative_read/0.05ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_negative_read/0.1ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_positive_control/0.025ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_positive_control/0.05ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_positive_control/0.1ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_positive_read/0.025ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_positive_read/0.05ps/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/init_positive_read/0.1ps/run-01.csv
+  write_paths:
+    - research/tasks/JH-20260814-BVM-S0-004/attempts/**
+    - research/mailbox/from-claude/**
+  frozen_paths:
+    - research/tasks/JH-20260814-BVM-S0-004/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-004/request.sha256
+    - research/tasks/JH-20260814-BVM-S0-004/baseline/**
+    - research/tasks/JH-20260814-BVM-S0-004/audits/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260814-BVM-S0-002/**
+    - research/tasks/JH-20260814-BVM-S0-003/**
+    - research/tasks/JH-20260814-BVM-S0-D0-003/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - docs/**
+    - memory/**
+    - circuits/**
+    - scripts/**
+  locks: [locks/bvm-source-characterization, locks/bvm-s0-canonical]
+baseline:
+  git_head: 835fb64635d9a1c32e20d808bd2a790f865f5273
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260814-BVM-S0-004/baseline/git-status.txt, sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855}
+  scope_hashes: {path: research/tasks/JH-20260814-BVM-S0-004/baseline/scope-files.sha256, sha256: 9fc6bf8ed07ee3e80c50f14b7d22f1c3cc2fabf0d0c93e37570c3a1ed1cc2f69}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/tasks/JH-20260814-BVM-S0-001/attempts/A01/REVIEW.md
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+    - research/tasks/JH-20260814-BVM-S0-003/audits/C01/verdict.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-003/audits/C01/verdict.yaml
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: a7110cb0d993bd2946b2bb2dfe075890e34693a2ba7dd6995e405932a57dd688}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/regenerate_s0_report.py, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.json, role: DOCUMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.md, role: DOCUMENTATION, required: true}
+  - {id: D4, path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/source-evidence-manifest.sha256, role: DOCUMENTATION, required: true}
+  - {id: D5, path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/logs/regenerate-and-verify.log, role: TEST, required: true}
+  - {id: D6, path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Before any derived output, rerun the frozen S0-002 seal_check.py and retain its successful output. Hash every direct source input named in this request into source-evidence-manifest.sha256. Any mismatch or added/missing source artifact is BLOCKED; no source artifact may be edited.", evidence: [seal-check-log, source-evidence-manifest.sha256]}
+  - {id: AC2, condition: "Create one stdlib-only regeneration/verifier script. From the twelve frozen CSVs using actual time and the registered windows/directions, it must independently reconstruct every phase-area and pre/post platform value printed in corrected-analysis.md and compare those results with frozen analysis.json. It must fail nonzero on any discrepancy, including the previously reported 0.1-ps positive/negative read discrepancies; it must not silently select a different case/timestep/window.", evidence: [regenerate_s0_report.py, regenerate-and-verify.log, corrected-analysis.json]}
+  - {id: AC3, condition: "corrected-analysis.md must be deterministically rendered by the same script from corrected-analysis.json and must contain the four cases at all three timesteps, their direct-JJ phase-area/pre/post values, source-port waveform values, controls, registered convergence result, provenance paths/hashes, and a correction note identifying the old analysis.md as retained but superseded for human-readable numerical tables. A byte-for-byte re-render check is required.", evidence: [corrected-analysis.md, corrected-analysis.json, regenerate-and-verify.log]}
+  - {id: AC4, condition: "The corrected report preserves numerical_status=INCONCLUSIVE and evidence_quality=INCONCLUSIVE because the preregistered 0.1-to-0.05 ps control-latency comparison exceeds its 0.5-ps task-local band. It must not change the fixture/stimulus/window/tolerance or promote any source fact to interface/Gate/logical/physical PASS/FAIL.", evidence: [corrected-analysis.md, corrected-analysis.json]}
+  - {id: AC5, condition: "Receipt maps every created script/report/data/manifest/log artifact with SHA-256 and maps AC1-AC4. Final verify-task succeeds. After delivery, notify Copilot for a new read-only review of this successor correction before Codex final audit.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions:
+  - "Any source-evidence mutation, JoSIM run, missing/mismatched source hash, failure to use CSV actual time/direct same-JJ mapping, changed registered window/direction/tolerance, or write outside scope."
+  - "Any manual edit to corrected-analysis.md after rendering, any report value without a matching corrected-analysis.json/raw value, or any scientific claim above the stated ceiling."
+inconclusive_conditions:
+  - "The frozen source result remains numerically INCONCLUSIVE under its existing S0 convergence rule; this is a valid corrected reporting outcome, not an execution failure."
+stop_conditions:
+  - "Any source seal/hash mismatch, absent raw/JSON/report input, need to alter old evidence, or need to run JoSIM."
+  - "Need to change the scientific procedure, expand to receiver/Gate work, add a run/case/timestep, or write outside scope."
+  - "Final verify-task fails; preserve only newly created successor artifacts and report BLOCKED/DEVIATED."
+issuance_blockers: []

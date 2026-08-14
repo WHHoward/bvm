@@ -1,0 +1,41 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260814-BVM-S0-004
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-14T21:41:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "3e56f80c61128684b4e56925aeb9427fdc24c57aaa74f0898b801470cdc299bf"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "835fb64635d9a1c32e20d808bd2a790f865f5273"
+  dirty_paths:
+    - "research/tasks/JH-20260814-BVM-S0-001/002/003/**（frozen lineage）"
+    - "test/final/bvm/runs/bvm-s0-canonical-20260814-01/**（frozen evidence package）"
+    - "research/tasks/JH-20260814-BVM-S0-004/**（issuer 签发的任务包）"
+    - "research/mailbox/（消息文件）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "仅更正 S0-001 A01 报告层缺陷：用 stdlib-only 脚本从 12 个 frozen CSV（实际时间 + 注册窗口/方向）独立重建全部 phase-area 与 pre/post platform 值并与 frozen analysis.json 比对（任何不一致 fail nonzero）；确定性渲染 corrected-analysis.md 并要求字节级重渲染一致；保留 numerical_status=INCONCLUSIVE 与 evidence_quality=INCONCLUSIVE；源证据全部 frozen 不可改。"
+  non_goals:
+    - "不运行 JoSIM、不创建新 raw、不改/移/删 S0-001/002/003 任何 artifact、不覆写 analysis.md/analysis.json。"
+    - "不改 S0 fixture/stimulus/windows/controls/directions/bands/evidence-quality/收敛分类。"
+    - "不做 receiver/Gate/candidate/route/logical read0/read1/SFQ/fluxoid/published-reproduction/physical PASS/FAIL 声称。"
+  stop_conditions:
+    - "任何 source seal/hash 不匹配、raw/JSON/report 输入缺失、需要改旧 evidence、或需要运行 JoSIM。"
+    - "需要改科学流程、扩展到 receiver/Gate、加 run/case/timestep、或写 scope 外。"
+    - "final verify-task 失败；仅保留新建 successor artifacts 并报告 BLOCKED/DEVIATED。"
+planned_commands:
+  - "python3 research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py（AC1，已跑 exit 0）"
+  - "python3 research/tasks/JH-20260814-BVM-S0-004/attempts/A01/regenerate_s0_report.py（含字节级重渲染校验）"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-004"
+expected_changed_paths:
+  - "research/tasks/JH-20260814-BVM-S0-004/attempts/**"
+blockers: []
+deviations: []

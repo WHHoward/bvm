@@ -11,7 +11,7 @@ metadata:
 
 > 状态：🔴未开始　🟡进行中　🟢完成　⏸️暂停/被取代
 >
-> **当前 active phase（2026-08-13）**：Reference / Source / Receiver Characterization。Phase −1 的 M1–M12 计量修复与双基线已闭环；下一项只准备 **BVM source characterization preflight**，随后才分别建立 receiver facts 与独立 `INTERFACE_GATE_V1`。旧 Step 0“冻结基线”、BQ 系统排除和 DCSFQ Phase 1 Gate 已因 `P()` 单位错误失效，仍不得恢复为现行结论。
+> **当前 active phase（2026-08-14）**：Reference / Source / Receiver Characterization。Phase −1 的 M1–M12 计量修复与双基线已闭环；BVM-S0 已在单一 12 Ω fixture 产生有效封存的 source-side observations，但注册的 0.1→0.05 ps control-latency 比较为 0.85 ps、超过 0.5 ps task-local band，故 scientific disposition 为 **INCONCLUSIVE**，尚未建立 converged source baseline。下一步若推进，必须单独预注册新的 source convergence/characterization；不得据此启动 receiver、`INTERFACE_GATE_V1`、BQ/DCSFQ_BVM 或候选调优。旧 Step 0“冻结基线”、BQ 系统排除和 DCSFQ Phase 1 Gate 已因 `P()` 单位错误失效，仍不得恢复为现行结论。
 
 ## A. 🟡 Phase −1：修复测量管线与重建基线
 

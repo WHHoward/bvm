@@ -80,29 +80,39 @@ objects:
   current_evidence:
   - *id001
   - *id002
+  - path: research/tasks/JH-20260814-BVM-S0-004/audits/C02/verdict.yaml
+    sha256: d64c452bdb5cc56e509fdccef5d5d0c43c3dd77db2b28f14a570d3e12b2729ac
+    source_role: accepted_scientific_audit
+    review_state: REVIEWED
+    locator: bounded fixed-fixture scientific disposition
+  - path: research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.md
+    sha256: 90f6f336bf2eb027f8d8b13441e4fb2833ddf70d9eac9feed4e0d3b192051b5a
+    source_role: corrected_derived_report
+    review_state: REVIEWED
+    locator: all four cases x three registered timesteps
   - path: test/final/single_bvm_qb/test_bvm_bq_baseline.cir
     sha256: 9b04ac6faa89f07d955fbdc612b3310dc09cfd83b76872cef06d4cf93337dbbc
     source_role: testbench
     review_state: REVIEWED
     locator: full file
-  observable: load current 43.9-97.8 uA, FWHM 6.8-11.2 ps; Thevenin 40 ohm/4 mV (legacy fit)
+  observable: fixed 12-ohm simulated-fixture source observations: matched read/control V(SL1), I(L_SL|XBVM1), direct JM1/JM2 P/V, and pre/activity/post platforms at 0.1/0.05/0.025 ps; retained legacy load scan remains separate
   parameter_provenance:
     load scan values: '[DERIVED] (measured range, HANDOVER §4)'
     Thevenin fit: '[DERIVED] (empirical fit, not universal)'
-  characterization_status: LEGACY_ONLY
+  characterization_status: CALIBRATION_FIXTURE_ONLY
   reproduction_status:
     level: NOT_ATTEMPTED
     rationale: source characterization requires preregistered plan under METRIC_SPEC_V2
   unknowns:
-  - field: full source characterization matrix
-    reference_status: NOT_ATTEMPTED
-    project_value: legacy load scan only
+  - field: resolution-independent canonical BVM source baseline
+    reference_status: INCONCLUSIVE
+    project_value: one 12-ohm fixture has valid sealed observations, but its registered 0.1-to-0.05 ps control-latency difference is 0.85 ps > 0.5 ps task-local band
     provenance_tag: '[DERIVED]'
-    reviewed_source_boundary: HANDOVER §4 (audit 2026-08-09)
-    impact: no source Gate possible
-    next_discriminator: preregistered source characterization task under METRIC_SPEC_V2
-  claim_limitation: legacy measured ranges; not frozen characterization
-  next_discriminator: preregistered source characterization run (separate task)
+    reviewed_source_boundary: JH-20260814-BVM-S0-004 C02; one project-derived read PWL, one load, two operational initialization procedures, one model closure
+    impact: no converged source baseline or source Gate; no state-preservation claim
+    next_discriminator: separately authorized preregistered convergence characterization with new immutable runs
+  claim_limitation: bounded simulation observations only; numerical scientific disposition INCONCLUSIVE, not a source Gate, published reproduction, logical state, fluxoid, or interface claim
+  next_discriminator: separately authorized preregistered source characterization/convergence task; do not reuse this evidence to start receiver work
 - object_id: published_qb
   current_evidence:
   - *id001

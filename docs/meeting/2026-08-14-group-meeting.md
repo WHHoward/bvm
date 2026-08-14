@@ -84,6 +84,27 @@
 3. **考虑预注册可扩展 timestep ladder**（如 0.2/0.1/0.05/0.025 ps 或动态细化规则），明确首个必需相邻对必须全过的判据；
 4. 仍不启动 receiver、BQ、DCSFQ_BVM、INTERFACE_GATE_V1 或参数调优——这些需要 S0 之后的事实层与独立授权。
 
+
+## 7. 可视化附件（BVM-S0，从 frozen raw / S0-004 corrected data 生成）
+
+> 生成脚本：`test/final/bvm/runs/bvm-s0-canonical-20260814-01/plots/plot_bvm_s0.py`
+> （stdlib + matplotlib，确定性重渲染；图中数值已程序化验证与 raw 重算逐位一致，无手填值）
+> 完整 figure index（每图回答什么问题/可 claim 什么/不可 claim 什么）：
+> `test/final/bvm/runs/bvm-s0-canonical-20260814-01/plots/README-figure-index.md`
+
+| # | 图 | 文件名（相对 plots/） |
+|---|---|---|
+| 1 | BVM topology schematic（WL/BL、S-Loop、JM1/JM2、LM1/2/3/LPM、R-Loop、JS1/JS2、SE、SL output；标注 N2/LM3/N5 耦合） | `fig1-bvm-topology.png` |
+| 2 | Source voltage waveform V(SL1) [94,130) ps：三案例叠加 + timestep overlay（0.025 ps 主图） | `fig2-source-voltage.png` |
+| 3 | Source current waveform I(L_SL\|XBVM1) 同上 | `fig3-source-current.png` |
+| 4 | Timestep convergence overlay：pos/neg read 完整波形 0.1/0.05/0.025 ps | `fig4-convergence-overlay.png` |
+| 5 | Storage signature：JM1/JM2 pre/post mean grouped plot（标注 operational phase signature） | `fig5-storage-signature.png` |
+| 6 | Direct-JJ phase–area crosscheck：phase_delta_turns vs area_turns + y=x（JJ/read/step 区分） | `fig6-phase-area-crosscheck.png` |
+| 7 | Control noise zoom：matched controls nV/nA scale + 0.85 ps > 0.5 ps blocker 标注 | `fig7-control-noise-zoom.png` |
+| 8 | Experiment/status flowchart：M1–M12 → D0 → S0 → VALID/INCONCLUSIVE → next week | `fig8-flowchart.png` |
+
+所有图区分 observed / derived / inference；不启动任何新实验。
+
 ## 6. 一句总结
 
 > 本周把 BVM 源端从"没有可验证初态"推进到"**两种可操作初态 + 固定 fixture 下可复现、状态相关的源端响应（有界观察）**"，并经过完整的封存/对抗审查链；按预注册规则其科学判定是 INCONCLUSIVE（而非失败）——下一轮是设计正确的收敛/特征化任务，而不是急着接 receiver 或调参。

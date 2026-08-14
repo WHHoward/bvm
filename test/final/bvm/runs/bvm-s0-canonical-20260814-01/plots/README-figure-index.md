@@ -1,0 +1,51 @@
+# BVM-S0 figure index — 2026-08-14 group-meeting visualization
+
+## Data sources (all frozen, no JoSIM re-run)
+
+- Raw CSVs: `test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/<case>/<step>/run-01.csv`
+  (12 runs; 4 cases × 0.1/0.05/0.025 ps; 170 ps; closed by S0-002 evidence-seal 59 entries)
+- Deterministic corrected data: `research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.json`
+  (values verified byte-consistent with raw in S0-004; reconstruction_matches_frozen_json=true)
+- Audit boundary: `research/tasks/JH-20260814-BVM-S0-004/audits/C02/verdict.yaml`
+  (artifact VALID, scientific disposition INCONCLUSIVE)
+- Generator: `plots/plot_bvm_s0.py` (stdlib + matplotlib; rerun `python3 plots/plot_bvm_s0.py` from repo root)
+
+Every number shown was read from the CSVs/JSON at render time. The generator
+embeds observed / derived / inference labels; no value is hand-filled.
+Programmatic cross-checks (peaks, platform means, phase-area relations)
+reproduce raw recomputation to 1e-12.
+
+## Figures
+
+| # | File | Scientific question | Data source | Can claim | Cannot claim |
+|---|---|---|---|---|---|
+| 1 | `fig1-bvm-topology.png` | What is the BVM cell topology and where do S-loop/R-loop couple? | `circuits/bvm/bvm_cell.cir` (netlist-derived schematic) | element connectivity and loop roles as annotated | any current/phase/storage behavior |
+| 2 | `fig2-source-voltage.png` | What V(SL1) follows the read pulse from each initialized procedure vs controls? | raw CSV, 0.025 ps main + 3-step overlay | state-conditioned source voltage response in this fixture (positive ≈ +0.90 mV @5 ps; negative ≈ −0.31 mV @10 ps; controls ≈ 15–18 nV) | logical read0/read1, resolution-independent baseline, receiver reception |
+| 3 | `fig3-source-current.png` | What I(L_SL\|XBVM1) follows the read pulse? | raw CSV | state-conditioned source current (positive ≈ +75 µA @5 ps; negative ≈ −26 µA @10 ps; controls ≈ 1.3–1.5 nA) | JTL/SFQ reception, non-destructive read |
+| 4 | `fig4-convergence-overlay.png` | Do full waveforms agree across 0.1/0.05/0.025 ps? | raw CSV, full [94,130) ps | full-waveform visual comparison per read case | convergence verdict (registered rule says INCONCLUSIVE) |
+| 5 | `fig5-storage-signature.png` | What are the direct JM1/JM2 pre/post phase means? | corrected JSON (platform) | operational phase signatures; no gross pre/post inversion observed | logical 0/1, fluxoid number, state preservation |
+| 6 | `fig6-phase-area-crosscheck.png` | Does Δφ/2π agree with ∫V dt/Φ0 on the same JJ/window? | corrected JSON (phase_area) | identity-check residuals are descriptive (~1e-4 turns), no tolerance declared | any event/SFQ/fluxoid/downstream conclusion |
+| 7 | `fig7-control-noise-zoom.png` | What is the matched-control noise floor and why is S0 INCONCLUSIVE? | raw CSV, nV/nA scale | controls are noise-level (15–18 nV, 1.3–1.5 nA); the registered 0.1→0.05 ps control-latency difference 0.85 ps > 0.5 ps band is the sole INCONCLUSIVE blocker | changing the verdict or the registered rule |
+| 8 | `fig8-flowchart.png` | Where is BVM-S0 in the overall project flow? | audit chain (M4–M11, D0, S0, C02) | status flow as audited | any "next step" being executed (it is a suggestion) |
+
+## Legend / conventions
+
+- Read cases: warm hues (positive `#d1495b`, negative `#b5457f`); controls:
+  cool hues (positive `#4f86c6`, negative `#56b4a0`); timesteps: same-hue
+  ramp 0.1→0.025 ps (`#c7c7c7 → #333333`); JJs: JM1 blue `#1f6fb2`,
+  JM2 orange `#e07b00`. Identity is never color-alone (labels + legend).
+- All waveforms use the CSV actual time axis; source window `[94,130) ps`;
+  phase windows `[80,90)` (pre), `[94,108)` (activity), `[140,150)` (post);
+  probe directions per design doc (JM1 `N1→n_jm1o`, JM2 `n_jm2i→N2`,
+  V(SL1) `SL1→0`, I(L_SL) `N8→SL1`), vts=+1, rd=+1.
+- Phase values are raw radians (turns = rad/2π shown where labeled).
+
+## Regeneration
+
+```bash
+cd /home/howard/JoSIM
+python3 test/final/bvm/runs/bvm-s0-canonical-20260814-01/plots/plot_bvm_s0.py
+```
+
+Deterministic: same frozen inputs → byte-identical PNGs (matplotlib fixed
+seed not required; no randomness in the script).

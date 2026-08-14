@@ -33,3 +33,4 @@
 - 🟢 [审计后交接](../docs/HANDOVER.md) — 当前执行状态与下一步（新会话第一读）
 - 🕰 [原理深讲（deep-dive）](../docs/guide/deep-dive.md) — 已被证据审计取代，正文仅历史草稿（顶部有警告）
 - **信任与建议（2026-08-10）**：用户信任我并欢迎主动建议；保持"大胆推进 + 严谨标准"平衡，物理结论仍等审计。[详情](feedback-trust-and-advice.md)
+- **改动必通知（2026-08-14）**：每次改动（文档/代码/实验）必须及时 mailbox 告知 Codex（[INFO]）+ 对话告知用户；提交由用户确认后执行。[详情](feedback-notify-changes.md)

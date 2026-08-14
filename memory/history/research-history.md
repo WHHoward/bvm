@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-13
+  last_updated: 2026-08-14
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -169,6 +169,20 @@ metadata:
 
 **认知**：✅ 历史 raw 的 rad→turn endpoint 表达与可追溯性已完成；⚠️ 全局容差、同 JJ BQ/BVM P/V mapping、SFQ/fluxoid、下游与系统 Gate 均未由 M9/M10 建立。
 
+### 2026-08-14：BVM-S0 链闭环 — D0 readiness → 12-run canonical source → VALID + INCONCLUSIVE
+
+**做了什么**（四段合同链，全部由 Codex 签发、Claude 执行、独立审计）：
+1. **D0 initial-state readiness**（`JH-20260814-BVM-S0-D0-001/002/003`）：先判别两个写过程是否产生可区分、稳定的操作性初态。D0-001 因使用 `/usr/local/bin/josim-cli`（非仓库记录的 `build/josim-cli`）被判 INVALID（C04 provenance 失败）；D0-002 用授权二进制重跑（INCONCLUSIVE，JM2 state_early p2p=0.0708 rad > 0.02 guard）；D0-003 延长到 130 ps 五窗口 settle 判别，JM2 振铃单调衰减（0.0708→0.0240→0.0084→0.0029→0.0010 rad），首个合格相邻对 (settle_75, settle_95) 且 settle_115 保持 → **operational readiness bound = 75 ps（测试网格内），VALID**。
+2. **BVM-S0 12-run canonical source experiment**（`JH-20260814-BVM-S0-001`）：4 案例（init_positive/negative × read/matched zero-read control）× 0.1/0.05/0.025 ps，170 ps，固定 12 Ω，read 脉冲 96–106 ps（project-derived，过 75 ps bound）。12 runs 全部 exit 0，pre-window admissibility 全时间步通过（JM1/JM2 p2p ≤ 0.02 rad、pos/neg L-inf 11.82 rad）。但 deliverable D3 `raw/**/*.csv` 在 3 级 raw 布局（`raw/<case>/<step>/run-01.csv`）下与 handoff.py 的 `PurePosixPath.match`（`**` 只匹配一段）不兼容 → 机械 verify 失败，交付 BLOCKED（M8 D1/D6 同类工具缺陷）。
+3. **S0-002/003 sealing & provenance**：S0-002 纯重封存（evidence-seal.yaml 59 项精确清单 + seal_check.py，负向毒化测试真实拒绝）；Copilot 发现 verify-log 归属矛盾（成功 verify 输出未单独保留、receipt 错误指向 seal-check.log）→ S0-003 修复（closure-record.yaml + 独立 verify-s0-002.log），ACCEPTED。
+4. **S0-004 corrected report + Copilot review + Codex scientific audit**：Copilot 科学审查发现旧 analysis.md 数值表与 raw/analysis.json 不一致（手写表格取值错误，如 phase_delta 0.108836 vs 实际 0.068792；raw 与 analysis.json 本身正确）→ S0-004 用 stdlib-only 脚本从 12 frozen CSV 实际时间独立重建全部数值、确定性渲染 corrected-analysis.md（字节级重渲染一致、篡改毒化拒绝），Copilot PASS。**Codex scientific audit C02**：artifact=VALID、physical=INCONCLUSIVE、ACCEPTED。
+
+**结果/产物**：`test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/`（D0 readiness）、`test/final/bvm/runs/bvm-s0-canonical-20260814-01/`（12-run package，frozen）、`research/tasks/JH-20260814-BVM-S0-004/attempts/A01/corrected-analysis.{md,json}`（C02 引用报告）、`research/tasks/JH-20260814-BVM-S0-004/audits/C02/verdict.yaml`（scientific disposition）。
+
+**认知**：✅ 已接受：fixed-fixture source-side simulation observations（正读 V(SL1) 0.890/0.901/0.904 mV、I(L_SL) 74.18/75.06/75.30 µA、latency≈5 ps；负读 −0.307/−0.315/−0.317 mV、−25.57/−26.27/−26.39 µA、latency≈10 ps；matched controls 仅 15–18 nV / 1.3–1.5 nA）、raw/provenance validity、两种 operational initialization 的 state-conditioned source response、direct JM1/JM2 activity-window phase changes 均远小于 ±1 turn、pre/post signatures 未出现 gross inversion；⚠️ 未接受：resolution-independent source baseline、logical 0/1、state preservation、SFQ/fluxoid count、receiver、Gate、route、published/hardware reproduction。**INCONCLUSIVE 直接原因**：预注册 0.1→0.05 ps matched-zero-control peak-latency 差 0.85 ps > 0.5 ps task-local band；不把 INCONCLUSIVE 当实验失败，也不得事后改 S0 criteria。
+
+**本周问题与解决过程**（供组会材料引用）：① D3 glob 导致 S0-001 delivery mechanical failure → S0-002 reseal（59 项精确清单）；② Copilot 发现 verify-log provenance defect → S0-003 修复；③ Copilot 科学审查发现旧 analysis.md 数值表与 raw/analysis.json 不一致 → S0-004 从 frozen raw deterministic regeneration 修正并通过；④ 最终 scientific audit = VALID + INCONCLUSIVE。旧错误报告全部保留为历史 provenance，引用数值统一用 S0-004 corrected report / C02。
+
 ## 四、关键转折点速查
 
 | 转折 | 时间 | 意义 |
@@ -179,6 +193,9 @@ metadata:
 | 双代理协议 | 8/9 | 执行/产物/物理/审计四维分离，独立复核制度化 |
 | M4-001 候选实现 | 8/9–8/11 | 代码测试通过但合同链被拒绝；保留证据并以新合同重做 |
 | M4-003 重新交付 | 8/11 | 干净合同链与独立审计接受 M4 计量基础；未宣称物理 Gate |
+| D0 readiness 75 ps | 8/14 | 两写过程的可操作初态判别闭环（VALID，测试网格内 75 ps bound） |
+| BVM-S0 12-run canonical | 8/14 | 固定 12 Ω fixture 源端响应有界观察；S0-001→002/003→004 链闭环 |
+| **S0 scientific disposition** | 8/14 | **VALID + INCONCLUSIVE**（0.1→0.05 ps control-latency 0.85 ps > 0.5 ps band） |
 
 ## 五、当前认知状态速查（2026-08-09）
 

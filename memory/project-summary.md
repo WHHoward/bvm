@@ -4,12 +4,12 @@ description: JoSIM × BVM 项目综合快照 — 2026-08-09 相位单位审计�
 metadata:
   node_type: memory
   type: project
-  last_updated: 2026-08-13
+  last_updated: 2026-08-14
 ---
 
 # JoSIM × BVM 项目综合总结
 
-**当前阶段**：Reference / Source / Receiver Characterization（2026-08-13）。
+**当前阶段**：Reference / Source / Receiver Characterization（2026-08-14）。
 
 **完整说明**：`docs/guide/project-guide.md`。
 
@@ -17,9 +17,13 @@ metadata:
 
 **任务权威**：`memory/project-todo.md`。
 
-**2026-08-13 状态**：M4–M11 已接受。M9 冻结 `METRIC_SPEC_V2` 的测量/报告语义（全局数值容差仍 UNFROZEN）；M10 接受历史 endpoint-arithmetic/provenance 重建；M11A/M11B 以两个独立审计冻结 measurement calibration 与 seven-object reconstruction/provenance knowledge state。它们均不构成 SFQ、下游接收、系统 Gate、候选路线或 published full-reproduction 结论；后续 characterization 与 `INTERFACE_GATE_V1` 需独立授权。
+**2026-08-14 状态（BVM-S0 闭环）**：M4–M11 已接受（M9 冻结测量/报告语义、M10 历史 endpoint 重建、M11A/M11B 双基线）。本周完成 BVM-S0 链：**D0** initial-state readiness 闭环（75 ps operational readiness bound，`JH-20260814-BVM-S0-D0-003` ACCEPTED）；**BVM-S0** 12-run canonical source 实验（4 案例 × 0.1/0.05/0.025 ps，固定 12 Ω fixture）完成；S0-001 原始证据、S0-002/003 sealing/provenance 链、S0-004 deterministic corrected report 与 Copilot skeptical review 均完成；Codex scientific audit **C02**（`JH-20260814-BVM-S0-004/audits/C02/verdict.yaml`）最终裁决 **artifact=VALID + scientific disposition=INCONCLUSIVE**。INCONCLUSIVE 的直接原因是预注册的 0.1→0.05 ps matched-zero-control peak-latency 差 = 0.85 ps > 0.5 ps task-local band；不允许事后修改 S0 criteria，也不得把 S0 升级为 converged baseline。
 
-**下一步**：只准备 BVM source characterization 的正式 preflight，见 `docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md`；尚未签发、运行或调优任何候选路线。
+**已接受（bounded facts）**：fixed-fixture source-side simulation observations（正读 V(SL1) 0.890/0.901/0.904 mV、I(L_SL) 74.18/75.06/75.30 µA、latency≈5 ps；负读 −0.307/−0.315/−0.317 mV、−25.57/−26.27/−26.39 µA、latency≈10 ps；matched controls 仅 15–18 nV / 1.3–1.5 nA）；raw/provenance validity；两种 operational initialization 的 state-conditioned source response；direct JM1/JM2 activity-window phase changes 均远小于 ±1 turn；pre/post operational signatures 未出现 gross inversion。
+
+**未接受**：resolution-independent source baseline、logical 0/1、state preservation、SFQ/fluxoid count、receiver、`INTERFACE_GATE_V1`、candidate/route、published/hardware reproduction。
+
+**下一步（未执行，等待用户授权）**：新建独立 preregistered source convergence/characterization task，重新设计 zero-control noise-floor waveform metric applicability，考虑预注册可扩展 timestep ladder；任何 receiver/BQ/DCSFQ_BVM/Gate/tuning 工作均不授权。
 
 ## 一句话目标
 

@@ -1,7 +1,7 @@
 ---
 name: feedback-notify-changes
 description: 每次改动后必须及时告知用户和 Codex（mailbox）；用户确认后才 commit
-metadata: 
+metadata:
   node_type: memory
   type: feedback
   originSessionId: 0a6c3d20-0d5b-452e-a234-939c2e31e4bd

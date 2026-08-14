@@ -1,0 +1,129 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-003
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-14T17:35:23+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S0
+depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A, M11B, JH-20260814-BVM-S0-D0-002]
+supersedes: null
+task:
+  kind: EXPERIMENT
+  objective: "Run one preregistered settling/readiness discriminator that determines whether a fixed write-only BVM initialization has a stable, distinguishable operational initial-state bound in the fixed 12-ohm fixture."
+  research_question: "For the three fixed write-only cases, which (if any) preregistered adjacent settling-window pair first satisfies the fixed stability and distinguishability rule and remains so through the final witness window?"
+  non_goals:
+    - "Do not start formal BVM-S0, add a read or SE stimulus, or characterize a BVM source waveform."
+    - "Do not attach BQ, DCSFQ_BVM, JTL, or any receiver; do not define INTERFACE_GATE_V1, candidate success, route choice, logical 0/1, SFQ, or fluxoid conclusions."
+    - "Do not sweep load, bias, Ic, L, R, initialization pulse amplitude/width, timestep, or solver settings; use exactly the three cases and one 12-ohm fixture declared in the frozen design."
+    - "Do not overwrite, delete, reinterpret, or numerically merge D0-001/D0-002 raw evidence, analyses, receipts, requests, or audits."
+  claim_ceiling: exploratory_operational_settling_readiness_only_no_bvm_s0_source_characterization_or_physical_gate
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - build/josim-cli
+    - circuits/bvm/bvm_cell.cir
+    - circuits/models/jjmit.cir
+    - research/tasks/JH-20260814-BVM-S0-D0-002/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-002/audits/C01/verdict.yaml
+    - test/final/bvm/runs/bvm-s0-d0-20260814-02/analysis.md
+    - research/tasks/JH-20260814-BVM-S0-D0-003/design/settling-readiness-discriminator.md
+  write_paths:
+    - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/**
+    - research/tasks/JH-20260814-BVM-S0-D0-003/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260814-BVM-S0-D0-003/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-003/request.sha256
+    - research/tasks/JH-20260814-BVM-S0-D0-003/baseline/**
+    - research/tasks/JH-20260814-BVM-S0-D0-003/design/**
+    - research/tasks/JH-20260814-BVM-S0-D0-003/audits/**
+    - research/tasks/JH-20260814-BVM-S0-D0-001/**
+    - research/tasks/JH-20260814-BVM-S0-D0-002/**
+    - test/final/bvm/runs/bvm-s0-d0-20260814-01/**
+    - test/final/bvm/runs/bvm-s0-d0-20260814-02/**
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/**
+    - circuits/**
+    - scripts/**
+    - test/final/bvm/data/**
+  locks:
+    - locks/bvm-source-characterization
+    - locks/bvm-s0-initial-state
+    - locks/test-final-bvm-runs
+baseline:
+  git_head: 2224611d988950233f5e872ac0ee02ce042f35b2
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260814-BVM-S0-D0-003/baseline/git-status.txt, sha256: 510abdc79118b936efa3b4f49ad9545d39d5d120a72402ce3245fa07f3220afa}
+  scope_hashes: {path: research/tasks/JH-20260814-BVM-S0-D0-003/baseline/scope-files.sha256, sha256: cf23466afe8eeaf4bfb753b9996e25c7652d9b900cb9649dbc509a4fdbf0950f}
+authorization:
+  edit: true
+  run_josim: true
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md
+    - research/tasks/JH-20260814-BVM-S0-D0-002/audits/C01/verdict.yaml
+    - test/final/bvm/runs/bvm-s0-d0-20260814-02/analysis.md
+    - research/tasks/JH-20260814-BVM-S0-D0-003/design/settling-readiness-discriminator.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: a7110cb0d993bd2946b2bb2dfe075890e34693a2ba7dd6995e405932a57dd688}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/**, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D3, path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/**/*.csv, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.md, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D6, path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Before any write or run, A01 verifies and logs the only authorized executable: /home/howard/JoSIM/build/josim-cli, version v2.7.2837d13 compiled on May 30 2026 at 20:37:57, SHA-256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2. PATH josim-cli and /usr/local/bin/josim-cli are prohibited; mismatch is BLOCKED before running.", evidence: [preflight-log, manifest.yaml]}
+  - {id: AC2, condition: "Create exactly one previously absent run root bvm-s0-d0-settle-20260814-01 with copied BVM/model closure and exactly three instrumented input netlists. Each uses XBVM1 WL1 BL1 SE1 SL1 BVM, only R_LD SL1 0 12, direct V/P probes for JM1/JM2, V(SL1), I(L_SL|XBVM1), and the frozen init_positive/init_negative/no_init_control PWL procedures; no read, SE pulse, receiver, or parameter variation.", evidence: [manifest.yaml, input-netlists, closure-hashes]}
+  - {id: AC3, condition: "Using the authorized executable, run exactly the three cases once each at 0.1 ps from 0 to 130 ps. Preserve raw CSV, stdout/stderr, copied inputs, actual time axis, binary/version/hash, and manifest. A pre-existing output, nonzero solver exit, missing required column, NaN/Inf, non-increasing time, or truncated registered window is INVALID.", evidence: [raw-csv, stdout-stderr, manifest.yaml]}
+  - {id: AC4, condition: "Use only the five preregistered half-open windows and the fixed pair/persistence rule in design/settling-readiness-discriminator.md. Report raw-radian mean/min/max/p2p and sample count for both direct P columns in every case/window; report all three pairwise L-infinity separations. Report the first qualifying preregistered adjacent pair or explicit absence. No post-hoc window, guard, case, or timestep change is permitted.", evidence: [analysis.md, analysis-json]}
+  - {id: AC5, condition: "For JM1 N1->n_jm1o and JM2 n_jm2i->N2, report on fixed [9,31) ps the same-run direct P/V endpoint delta (rad and turns), actual-time trapezoid area (V*s and turns), and signed residual with voltage_to_phase_sign=+1 and reporting_direction=+1. State that no residual tolerance is declared. Preserve V(SL1)/I(L_SL|XBVM1) only as raw fixture probes, not source characterization.", evidence: [analysis.md, analysis-json, manifest.yaml]}
+  - {id: AC6, condition: "Receipt records every created input/closure/raw/log/analysis/manifest/command hash and maps AC1-AC5. It preserves D0-001/D0-002 as lineage, uses only VALID/INCONCLUSIVE/INVALID evidence-quality language, makes no S0/source/receiver/Gate/logical/SFQ/fluxoid claim, and final verify-task succeeds.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions:
+  - "Invoking Josim through PATH, /usr/local/bin/josim-cli, or any executable whose absolute path/version/SHA-256 differs from AC1."
+  - "Any read/SE pulse, source characterization claim, receiver attachment, additional case/load/bias/device parameter/timestep, mutable include lookup, raw overwrite/deletion, missing direct probe, solver/CSV failure, or non-actual-time integration."
+  - "Any write outside the two authorized write paths, or any modification to D0-001/D0-002, project authority, MetricSpec, historical evidence, or a frozen path."
+inconclusive_conditions:
+  - "Artifacts are valid but no preregistered adjacent window pair satisfies the all-case stability, pairwise distinguishability, and later-persistence rule."
+  - "Artifacts are valid but a direct P/V mapping, required stable window, or pairwise state separation cannot be observed."
+  - "The task establishes only an operational readiness bound; logical/published read0/read1 identity and non-destructive read behavior remain UNKNOWN pending separately authorized S0."
+stop_conditions:
+  - "HEAD, known issuer-owned dirty files, scope hash, exact binary provenance, authority, metric specification, or lock preflight differs from this contract."
+  - "The run root already exists, a fourth case or any unregistered input/load/bias/device/timestep is needed, or any window/criterion would need to move after observing data."
+  - "A required action needs network, installation, worktree creation, commit, deletion, overwrite, rename, or a write outside scope."
+  - "Final verify-task fails; preserve all newly created attempt evidence and return BLOCKED or DEVIATED without starting BVM-S0."
+issuance_blockers: []

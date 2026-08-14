@@ -1,0 +1,254 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-003
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-14T18:00:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "009c3a88664208328c91b4ea9debabf4066b2641cae6f8f1301c6bc431cc8227"
+  ack_sha256: "db8cea5802f534885231770b5f63afa3ec24fcf5f55fc6c7383839c5aca1c45e"
+execution_status: COMPLETED
+baseline_git_head: "2224611d988950233f5e872ac0ee02ce042f35b2"
+result_git_head: "2224611d988950233f5e872ac0ee02ce042f35b2"
+changes:
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml
+    action: CREATED
+    sha256: "fe1ec99753be2f658d6f3b484bc45bd25ca7cd955897b6a067f07f1e890d1ed8"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/closure-hashes.txt
+    action: CREATED
+    sha256: "5ef532c67fb9f51b67546dca4d1a014a32fc20446b186430eaf5d6c4b9a10e5c"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.md
+    action: CREATED
+    sha256: "90cc1237b81ba413ff419770963b5d795b10c49d424f069ae4d77aa5a122789d"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.json
+    action: CREATED
+    sha256: "e20b7e2bfb370c6001081e66577875f2163048358631df8721a7e4e6173a82cd"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/jjmit.cir
+    action: CREATED
+    sha256: "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/bvm_cell.cir
+    action: CREATED
+    sha256: "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/init_positive.cir
+    action: CREATED
+    sha256: "5fcb7c491ed7f21e87ad1dd9ecefe8d0c2035ad82d0ddd8fa78725ee9c74d0c1"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/init_negative.cir
+    action: CREATED
+    sha256: "855ac44a00bb3563fb50ee7a104ac7f1a02706a33c7d98d3f02636d93f65addd"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/no_init_control.cir
+    action: CREATED
+    sha256: "ea2d5352706fefc9977988c50f4c6f34b03f379a88766e572684deaf82308dd5"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_positive/run-01.csv
+    action: CREATED
+    sha256: "0fd4b17585c5717271684de119cf13ab1ee97ff856bbaaf8725720c4565124be"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_negative/run-01.csv
+    action: CREATED
+    sha256: "ddc2284fb425437af37fff21b2cd9533c71d58a5f56f5aef669fd0a0d4070e2f"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/no_init_control/run-01.csv
+    action: CREATED
+    sha256: "fff40d823ca43441315732ea3d0eb20791c39af1d94c92a9bb097da33c5651c7"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_positive/stdout.txt
+    action: CREATED
+    sha256: "4b19dca8c338fe65050eb37b0f05f5d6c1558789172f4e1ddc6345a11c31ea7f"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_positive/stderr.txt
+    action: CREATED
+    sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_negative/stdout.txt
+    action: CREATED
+    sha256: "d3d1ad3d141b936fc38af19ed3860684bf834ae282812d47dfa4849b9d0a3f88"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_negative/stderr.txt
+    action: CREATED
+    sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/no_init_control/stdout.txt
+    action: CREATED
+    sha256: "178610c42f20baf0bae4628a9469b76ff65ab2c65577e967e476000c922ac432"
+  - path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/no_init_control/stderr.txt
+    action: CREATED
+    sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  - path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/analyze_settle.py
+    action: CREATED
+    sha256: "bc982e9d5caec40f577d9558dc677a2e1b2af7c0f2aff080ad78afb64fe1ead2"
+  - path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/preflight.log
+    action: CREATED
+    sha256: "98e2d16e68482f1b0fbf40c8b5361c1098d20ed3e9edae194581eb87350eb400"
+  - path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/analyze.log
+    action: CREATED
+    sha256: "7667d30e5bc909345b00bb376c82714550e1b22ca9e9892c0fec90e710dc683c"
+  - path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/verify-task.log
+    action: CREATED
+    sha256: "6bfd4ace56909e535e62b1f11b852c77bea33e5c094aad693779395b1d2506e7"
+artifacts:
+  - id: D1
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml
+    sha256: "fe1ec99753be2f658d6f3b484bc45bd25ca7cd955897b6a067f07f1e890d1ed8"
+    role: MANIFEST
+  - id: D2
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/init_positive.cir
+    sha256: "5fcb7c491ed7f21e87ad1dd9ecefe8d0c2035ad82d0ddd8fa78725ee9c74d0c1"
+    role: DOCUMENTATION
+  - id: D2b
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/init_negative.cir
+    sha256: "855ac44a00bb3563fb50ee7a104ac7f1a02706a33c7d98d3f02636d93f65addd"
+    role: DOCUMENTATION
+  - id: D2c
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/no_init_control.cir
+    sha256: "ea2d5352706fefc9977988c50f4c6f34b03f379a88766e572684deaf82308dd5"
+    role: DOCUMENTATION
+  - id: D3a
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_positive/run-01.csv
+    sha256: "0fd4b17585c5717271684de119cf13ab1ee97ff856bbaaf8725720c4565124be"
+    role: RAW
+  - id: D3b
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_negative/run-01.csv
+    sha256: "ddc2284fb425437af37fff21b2cd9533c71d58a5f56f5aef669fd0a0d4070e2f"
+    role: RAW
+  - id: D3c
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/no_init_control/run-01.csv
+    sha256: "fff40d823ca43441315732ea3d0eb20791c39af1d94c92a9bb097da33c5651c7"
+    role: RAW
+  - id: D4
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.json
+    sha256: "e20b7e2bfb370c6001081e66577875f2163048358631df8721a7e4e6173a82cd"
+    role: RAW
+  - id: D5
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.md
+    sha256: "90cc1237b81ba413ff419770963b5d795b10c49d424f069ae4d77aa5a122789d"
+    role: DOCUMENTATION
+  - id: closure-hashes
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/closure-hashes.txt
+    sha256: "5ef532c67fb9f51b67546dca4d1a014a32fc20446b186430eaf5d6c4b9a10e5c"
+    role: RAW
+  - id: stdout-positive
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_positive/stdout.txt
+    sha256: "4b19dca8c338fe65050eb37b0f05f5d6c1558789172f4e1ddc6345a11c31ea7f"
+    role: LOG
+  - id: stdout-negative
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_negative/stdout.txt
+    sha256: "d3d1ad3d141b936fc38af19ed3860684bf834ae282812d47dfa4849b9d0a3f88"
+    role: LOG
+  - id: stdout-control
+    path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/no_init_control/stdout.txt
+    sha256: "178610c42f20baf0bae4628a9469b76ff65ab2c65577e967e476000c922ac432"
+    role: LOG
+  - id: analyzer
+    path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/analyze_settle.py
+    sha256: "bc982e9d5caec40f577d9558dc677a2e1b2af7c0f2aff080ad78afb64fe1ead2"
+    role: IMPLEMENTATION
+  - id: preflight-log
+    path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/preflight.log
+    sha256: "98e2d16e68482f1b0fbf40c8b5361c1098d20ed3e9edae194581eb87350eb400"
+    role: LOG
+  - id: analyze-log
+    path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/analyze.log
+    sha256: "7667d30e5bc909345b00bb376c82714550e1b22ca9e9892c0fec90e710dc683c"
+    role: LOG
+  - id: verify-log
+    path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/verify-task.log
+    sha256: "6bfd4ace56909e535e62b1f11b852c77bea33e5c094aad693779395b1d2506e7"
+    role: LOG
+commands:
+  - command: "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-D0-003"
+    exit_code: 0
+    log_path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/preflight.log
+    log_sha256: "98e2d16e68482f1b0fbf40c8b5361c1098d20ed3e9edae194581eb87350eb400"
+  - command: "/home/howard/JoSIM/build/josim-cli init_positive.cir -o ../raw/init_positive/run-01.csv (cwd=test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_positive/stdout.txt
+    log_sha256: "4b19dca8c338fe65050eb37b0f05f5d6c1558789172f4e1ddc6345a11c31ea7f"
+  - command: "/home/howard/JoSIM/build/josim-cli init_negative.cir -o ../raw/init_negative/run-01.csv (cwd=test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_negative/stdout.txt
+    log_sha256: "d3d1ad3d141b936fc38af19ed3860684bf834ae282812d47dfa4849b9d0a3f88"
+  - command: "/home/howard/JoSIM/build/josim-cli no_init_control.cir -o ../raw/no_init_control/run-01.csv (cwd=test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/no_init_control/stdout.txt
+    log_sha256: "178610c42f20baf0bae4628a9469b76ff65ab2c65577e967e476000c922ac432"
+  - command: "python3 research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/analyze_settle.py"
+    exit_code: 0
+    log_path: research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/analyze.log
+    log_sha256: "7667d30e5bc909345b00bb376c82714550e1b22ca9e9892c0fec90e710dc683c"
+tests:
+  - id: binary-provenance
+    status: PASS
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml
+    notes:
+      - "AC1 三要素在写/运行前核验：/home/howard/JoSIM/build/josim-cli v2.7.2837d13 (May 30 2026) SHA 48655cb3…；未通过 PATH 或 /usr/local/bin 调用"
+  - id: data-qa
+    status: PASS
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.md
+    notes:
+      - "三案例 exit 0、stderr 空、1298 采样、时间严格递增至 1.298e-10 s、7 列齐全、无 NaN/Inf"
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml
+      - research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/preflight.log
+    notes:
+      - "写/运行前核验并记录唯一授权二进制 /home/howard/JoSIM/build/josim-cli（v2.7.2837d13 compiled May 30 2026 20:37:57，SHA-256 48655cb31d…）；PATH josim-cli 与 /usr/local/bin 未使用"
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/inputs/init_positive.cir
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/closure-hashes.txt
+    notes:
+      - "唯一 run root 含拷贝闭包与三个 instrumented 网表；XBVM1 WL1 BL1 SE1 SL1 BVM；仅 R_LD SL1 0 12；直接 P/V 探针；冻结 PWL 与设计一致；无 read/SE/receiver/参数变化"
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_positive/run-01.csv
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/init_negative/run-01.csv
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/raw/no_init_control/run-01.csv
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml
+    notes:
+      - "授权二进制三案例各一次 0.1ps/0-130ps，exit 0；raw CSV/stdout/stderr/拷贝 inputs/actual time axis/二进制版本 hash/manifest 均保存；无 NaN/Inf、时间递增、窗口未截断"
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.md
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.json
+    notes:
+      - "五窗口 mean/min/max/p2p/采样数逐案例逐 JJ 报告；三对 L-inf 分离全报告且全部 >=0.100 rad；稳定性：settle_35/55 False（JM2 p2p 0.0708/0.0240）、settle_75/95/115 True；pair+persistence rule：首个合格相邻对 (settle_75, settle_95)，settle_115 保持稳定可区分；readiness bound = 75 ps；无事后窗口/guard/case/timestep 修改"
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.md
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/analysis.json
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/manifest.yaml
+    notes:
+      - "[9,31)ps 同 JJ 直接 P/V endpoint delta（rad+turns）、实际时间梯形面积（V*s+turns）、signed residual（voltage_to_phase_sign=+1, reporting_direction=+1）：JM1 ±0.9406 turns 残差 6e-5、JM2 ±0.0429 turns 残差 2e-4；未声明残差容差；V(SL1)/I(L_SL|XBVM1) 仅作 raw fixture probe，非 source characterization"
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/analyze_settle.py
+      - research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/logs/analyze.log
+      - test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/closure-hashes.txt
+    notes:
+      - "receipt 记录全部创建 input/closure/raw/log/analysis/manifest/command hash 并映射 AC1-AC5；D0-001/D0-002 仅作 lineage 保留，未数值合并；仅用 VALID 证据质量语言；无 S0/source/receiver/Gate/logical/SFQ/fluxoid 声称；final verify-task 成功"
+observations:
+  - "JM2 p2p 跨 settle 网格单调衰减：0.070827 → 0.024016 → 0.008365 → 0.002907 → 0.001010 rad（两初始化案例各窗口完全相同）"
+  - "settle_75/95 为第一个稳定且可区分的相邻对，settle_115 保持；readiness bound = 75 ps（测试网格内）"
+  - "JM1 从最早 settle 窗起即稳定（p2p <= 0.005 rad），携带主导签名 ±5.911 rad；控制案例全程全零"
+  - "phase-area：JM1 ±0.940648 turns（残差 −6.2e-5/+6.2e-5）、JM2 ±0.043127 turns（残差 +1.8e-4/−1.8e-4）"
+interpretations:
+  - "JM2（稳定器支路）以对称方式单调 settle：35-45ps 的 0.071 rad 振荡在 75-85ps 前降至 0.02 rad guard 以下并持续衰减；两初始化案例各窗口 p2p 完全相同，符合对称 settling 瞬态"
+  - "两初始化过程自 75ps 起在测试网格内可操作地 ready：稳定且互相/对零输入可区分——这是 operational readiness bound，不是逻辑态或 S0 PASS"
+unknowns:
+  - "readiness bound 是否转移到更细时间步网格：UNKNOWN（D0 仅 0.1ps；S0 需预注册 0.1/0.05/0.025ps）"
+  - "任一签名是否为已发布逻辑态或非破坏性读结果：UNKNOWN，需另行授权的 S0"
+  - "精确物理 settling 时刻：UNKNOWN（bound 为网格内首个合格对的起点，非精确时刻）"
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "单时间步（0.1 ps），未做 0.1/0.05/0.025 ps 阶梯——设计文档明确 S0 才需注册全阶梯，D0 不转移容差"
+  - "仅 12Ω 单一负载，无负载扫描"
+  - "readiness bound 是测试网格内的操作边界，不是精确物理 settling 时刻"
+deviations: []
+blockers: []

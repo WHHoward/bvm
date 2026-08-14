@@ -1,0 +1,43 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-003
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-14T17:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "009c3a88664208328c91b4ea9debabf4066b2641cae6f8f1301c6bc431cc8227"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "2224611d988950233f5e872ac0ee02ce042f35b2"
+  dirty_paths:
+    - "research/tasks/JH-20260814-BVM-S0-D0-001/**、JH-20260814-BVM-S0-D0-002/**、bvm-s0-d0-20260814-01/02 runs（frozen lineage）"
+    - "research/tasks/JH-20260814-BVM-S0-D0-003/**（issuer 签发的任务包）"
+    - "research/mailbox/（消息文件）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "用唯一授权二进制 build/josim-cli（v2.7.2837d13，SHA 48655cb3…）在固定 12Ω fixture 上运行三案例 0.1ps/130ps，按冻结设计评估五个预注册 settle 窗口的稳定/可区分 pair+persistence rule，报告第一个合格相邻对或明确不存在，给出 operational readiness bound（若成立）。不启动 S0。"
+  non_goals:
+    - "不启动 BVM-S0、不加 read/SE 刺激、不做 source waveform 表征。"
+    - "不接 BQ/DCSFQ_BVM/JTL/receiver；不定义 INTERFACE_GATE_V1/candidate/路线/逻辑 0/1/SFQ/fluxoid。"
+    - "不扫描负载/偏置/Ic/L/R/脉幅/脉宽/时间步/求解器；仅三案例 + 12Ω。"
+    - "不覆写/删除/重释/数值合并 D0-001/D0-002 raw/analysis/receipt/request/audit。"
+  stop_conditions:
+    - "HEAD、dirty、scope hash、AC1 二进制三要素、authority、metric spec 或 lock 预检不符。"
+    - "run root 已存在、需要第四案例或未注册输入/负载/偏置/器件/时间步、或观察数据后需移动窗口/准则。"
+    - "需要网络、安装、worktree、commit、删除、覆盖、重命名或 scope 外写入。"
+    - "final verify-task 失败；保留全部 attempt 证据并以 BLOCKED/DEVIATED 返回，不启动 BVM-S0。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-D0-003"
+  - "/home/howard/JoSIM/build/josim-cli <case>.cir -o ../raw/<case>/run-01.csv （三案例各一次，cwd=inputs/）"
+  - "python3 research/tasks/JH-20260814-BVM-S0-D0-003/attempts/A01/analyze_settle.py"
+expected_changed_paths:
+  - "test/final/bvm/runs/bvm-s0-d0-settle-20260814-01/**"
+  - "research/tasks/JH-20260814-BVM-S0-D0-003/attempts/**"
+blockers: []
+deviations: []

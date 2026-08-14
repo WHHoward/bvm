@@ -1,0 +1,72 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-003
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-14T18:00:18+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "009c3a88664208328c91b4ea9debabf4066b2641cae6f8f1301c6bc431cc8227"
+  ack_sha256: "db8cea5802f534885231770b5f63afa3ec24fcf5f55fc6c7383839c5aca1c45e"
+  receipt_sha256: "fac7de396f0587cec2299403f06d0f7a7a24a38da05af740aa7cf2a720f17f98"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: protocol-chain-and-scope
+    status: PASS
+    evidence:
+      - "handoff.py verify-task research/tasks/JH-20260814-BVM-S0-D0-003 => VERIFIED; request/ACK/receipt SHA-256 bindings, chronology, scope manifest, receipt hashes, deliverables, and acceptance-ID mapping pass."
+      - "A01 has no write outside its two authorized roots; D0-001/D0-002 remain frozen lineage."
+  - id: closure-and-stimulus
+    status: PASS
+    evidence:
+      - "Independent netlist inspection: each input has one XBVM1, only R_LD SL1 0 12, direct JM1/JM2 P/V probes, .tran 0.1p 130p, and identically zero SE."
+      - "init_positive and init_negative differ only in the registered WL/BL polarity; no_init_control has all three sources zero. No read, receiver, BQ, DCSFQ_BVM, or JTL is attached."
+      - "sha256sum confirms copied bvm_cell.cir and jjmit.cir equal their frozen source closure; closure-hashes.txt verifies all listed inputs, raw CSV, and logs."
+  - id: raw-qa-and-provenance
+    status: PASS
+    evidence:
+      - "Three raw CSVs independently read: each has all seven required columns, 1298 finite rows, strictly increasing actual time from 0 to 1.298e-10 s, and all registered windows contain 100 samples."
+      - "stdout identifies /home/howard/JoSIM/build/josim-cli v2.7.2837d13; its recorded SHA-256 is 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2. stderr files are empty."
+  - id: independent-readiness-recomputation
+    status: PASS
+    evidence:
+      - "Independent CSV arithmetic with the declared half-open windows reproduces JM2 p2p 0.0708275 rad (settle_35), 0.0240160 rad (settle_55), 0.0083653 rad (settle_75), 0.0029067 rad (settle_95), and 0.0010096 rad (settle_115) for both initialized cases."
+      - "All three case-pair L-infinity separations exceed 0.100 rad in every window; the minimum relevant positive/control value is 5.91100041 rad. Thus settle_75 + settle_95 is the first preregistered stable/distinguishable adjacent pair, and settle_115 supplies the required persistence witness."
+      - "The accepted operational readiness bound is therefore 75 ps within this fixed 0.1-ps tested grid, not an exact settling time."
+  - id: same-junction-phase-area
+    status: PASS
+    evidence:
+      - "Independent actual-time trapezoid recomputation on [9,31) ps reproduces, for init_positive, JM1 5.910265 rad = 0.9406478897 turns, area 0.9407101575 turns, residual -6.22678e-05 turns; JM2 0.2709737 rad = 0.0431268038 turns, area 0.0429482016 turns, residual +1.78602e-04 turns. Negative polarity reverses signs; control is zero."
+      - "The probes are direct V(B_JM1|XBVM1)/P(B_JM1|XBVM1) and direct V(B_JM2|XBVM1)/P(B_JM2|XBVM1), with the registered endpoint orientations and +1 voltage-to-phase/reporting signs. No residual tolerance is inferred."
+  - id: claim-boundary
+    status: PASS
+    evidence:
+      - "The final result is artifact VALID plus an operational readiness bound only. The analysis's generic preregistration labels 'PASS observation'/'FAIL observation' are not accepted as physical verdicts; the canonical audit physical verdict is NOT_APPLICABLE."
+      - "No logical read0/read1, published state, fluxoid, SFQ, source waveform characterization, receiver response, timestep convergence, INTERFACE_GATE, candidate, or route claim is accepted."
+findings:
+  - "D0-003 resolves the D0-002 early-window blocker only in the explicitly fixed fixture and nominal 0.1-ps grid: the first permitted readiness bound is 75 ps."
+  - "The result is not a convergence result. D0's single timestep cannot transfer its 75-ps bound to a finer grid; a later S0 must preregister its own 0.1/0.05/0.025-ps ladder and may not import D0 task-local guards as global tolerances."
+accepted_claims:
+  - "Under the copied BVM/jjmit closure, one 12-ohm load, the two fixed write-only initialization PWL procedures, no read/SE stimulus, and build/josim-cli v2.7.2837d13 at 0.1 ps, the registered two-component JM1/JM2 signatures satisfy this task's stability and distinguishability/persistence rule from the tested-grid bound 75 ps."
+  - "A future S0 design may use a single fixed quiescent wait at or after 75 ps as a design input, but must independently preregister and test its read stimulus, matched controls, source observables, state pre/post criteria, and timestep ladder."
+rejected_claims:
+  - "This does not identify either initialization as logical read0/read1, a published BVM state, a fluxoid number, or an SFQ event."
+  - "This does not characterize BVM source-port output, establish state preservation under read, prove numerical convergence, demonstrate receiver/JTL reception, define INTERFACE_GATE_V1, or choose BQ versus DCSFQ_BVM."
+required_rework: []
+next_actions:
+  - "D0 initial-state prerequisite is closed at its bounded operational claim ceiling; retain D0-001 INVALID and D0-002 VALID+INCONCLUSIVE as immutable lineage."
+  - "Before issuing formal BVM-S0, Codex must preregister a single read stimulus and matched zero controls using a fixed quiescent wait no earlier than 75 ps, direct source-port observables, storage pre/post windows, task-local bands, and a 0.1/0.05/0.025-ps convergence ladder."
+  - "If a formal BVM-S0 task is issued, require the user-requested Copilot skeptical evidence review before Codex final audit; do not start BQ, DCSFQ_BVM, or INTERFACE_GATE work from D0 alone."
+claim_ceiling: exploratory_operational_settling_readiness_only_no_bvm_s0_source_characterization_or_physical_gate

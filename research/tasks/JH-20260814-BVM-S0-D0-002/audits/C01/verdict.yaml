@@ -1,0 +1,63 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-002
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: CLOSED
+created_at: '2026-08-14T17:22:00+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: 76a916bf3361fd22c912a38ed92478b33f243f9db8a73e945f88f5589f731821
+  ack_sha256: 005ddad8a4377a3fc3d83a4d08194010fac5a2072ac795944768869f041984a9
+  receipt_sha256: 7aaa372ea682945346dd27ccaa57b5a3858487310c9cac43cb96f8faa90eece4
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: INCONCLUSIVE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-protocol-provenance-and-scope
+    status: PASS
+    evidence:
+      - "handoff.py verify-task returns VERIFIED: request seal, ACK/receipt bindings, declared changed paths, artifact hashes, and frozen scope hashes all verify."
+      - "A01 remains intact and frozen as invalid lineage; all newly created files are contained in D0-002 attempts/** or bvm-s0-d0-20260814-02/**."
+  - id: C02-authorized-binary
+    status: PASS
+    evidence:
+      - "Preflight log and all three stdout logs identify /home/howard/JoSIM/build/josim-cli, v2.7.2837d13 compiled May 30 2026 at 20:37:57."
+      - "Independent SHA-256 of build/josim-cli is 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2, exactly matching AC1 and the manifest."
+  - id: C03-fixture-closure-and-raw-qa
+    status: PASS
+    evidence:
+      - "All three netlists use only XBVM1 WL1 BL1 SE1 SL1 BVM and R_LD SL1 0 12; SE is identically zero and no BQ, DCSFQ, JTL, JJ-stack, read pulse, sweep, or unregistered case is present."
+      - "The copied bvm_cell.cir and jjmit.cir byte-match their declared source files. Each CSV contains the seven registered direct P/V/source columns, 798 finite strictly increasing samples, and reaches 79.8 ps; all registered windows are complete."
+  - id: C04-independent-numerical-recalculation
+    status: PASS
+    evidence:
+      - "From raw CSV actual time samples on [9,31) ps, independent trapezoidal calculation gives JM1 +0.9406478897 phase turns/+0.9407101575 area turns (negative case sign-reversed) and JM2 +0.0431268038/+0.0429482016; no residual acceptance tolerance is asserted."
+      - "On both initialized cases, the independently recomputed state_early JM2 p2p is 0.0708275 rad, exceeding the registered 0.02 rad guard. JM1 p2p and late-window JM2 p2p are below that guard; the state-vector separations exceed 0.10 rad."
+  - id: C05-evidence-boundary
+    status: PASS
+    evidence:
+      - "The delivery distinguishes raw phase radians from turns, uses same-JJ direct P/V with the registered endpoint directions and actual-time integration, and makes no SFQ, fluxoid, logical-state, read, downstream, receiver, candidate, or Interface Gate claim."
+findings:
+  - "D0-002 corrects D0-001's binary-provenance defect. Its raw package is valid and reproducible under the recorded project executable."
+  - "The two write-only procedures create opposite, separated direct-JJ phase signatures, but the registered all-component early-window stability guard fails because JM2 p2p is 0.0708275 rad > 0.02 rad."
+  - "The task-specific guard failure is an honest exploratory INCONCLUSIVE result, not a circuit FAIL and not a data-quality failure."
+accepted_claims:
+  - "Under the fixed BVM/model/12-ohm/no-read fixture and recorded JoSIM binary, D0-002 validly reports the registered phase/area and operational-signature observations."
+  - "D0-002 is accepted as a valid exploratory artifact with an INCONCLUSIVE discriminator result."
+rejected_claims:
+  - "D0-002 does not establish a reproducible read0/read1 initial-state procedure for BVM-S0."
+  - "It does not establish logical state identity, published BVM reproduction, storage preservation under read, source-port readout characterization, SFQ/fluxoid behavior, downstream reception, a candidate verdict, or INTERFACE_GATE_V1."
+required_rework: []
+next_actions:
+  - "Do not issue or run BVM-S0 from this result. The required observable-initial-state prerequisite remains unmet."
+  - "If the user authorizes further work, first design a separate minimal discriminator for the unsettled JM2 early window (for example a predeclared longer settling/readiness procedure), without adding readout, receiver, Gate, or tuning scope."
+  - "Retain D0-001 as INVALID lineage and D0-002 as accepted VALID+INCONCLUSIVE evidence; do not alter project authority documents solely to portray the prerequisite as closed."
+claim_ceiling: exploratory_operational_initialization_discriminator_only_no_bvm_s0_source_characterization_or_physical_gate

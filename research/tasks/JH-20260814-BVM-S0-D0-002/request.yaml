@@ -1,0 +1,127 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-002
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-14T17:03:04+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S0
+depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A, M11B]
+supersedes: {task_id: JH-20260814-BVM-S0-D0-001, revision: 1}
+task:
+  kind: EXPERIMENT
+  objective: "Repeat only the invalidated D0 initialization discriminator under the repository-recorded JoSIM binary, preserving the exact D0 design and producing a new immutable provenance-bound artifact."
+  research_question: "Using the exact recorded build/josim-cli executable, do the same three fixed write-only initialization procedures meet the predeclared D0 operational-signature guards in the fixed 12-ohm BVM fixture?"
+  non_goals:
+    - "Do not modify, overwrite, delete, reinterpret, or numerically compare the invalid D0-001/A01 raw data, analysis, receipt, request, or audit."
+    - "This is not BVM-S0: do not add a read stimulus, source readout characterization, receiver characterization, JTL, BQ, DCSFQ_BVM, INTERFACE_GATE_V1, candidate comparison, or route decision."
+    - "Do not call an operational signature logical 0/1, a published BVM state, an SFQ event, a fluxoid, a read result, or a non-destructive read result."
+    - "Do not sweep load, bias, Ic, L, R, pulse amplitude, pulse width, or timestep; use exactly the three registered cases and one 12-ohm load."
+  claim_ceiling: exploratory_operational_initialization_discriminator_only_no_bvm_s0_source_characterization_or_physical_gate
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md
+    - docs/research/SCIENTIFIC_RECONSTRUCTION_OBJECT_MATRIX_V1.yaml
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - build/josim-cli
+    - circuits/bvm/bvm_cell.cir
+    - circuits/models/jjmit.cir
+    - test/final/interface/test_bvm_load_12ohm.cir
+    - research/tasks/JH-20260814-BVM-S0-D0-001/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-001/audits/C01/verdict.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-001/design/initial-state-discriminator.md
+    - research/tasks/JH-20260814-BVM-S0-D0-001/attempts/A01/analyze_d0.py
+    - research/tasks/JH-20260814-BVM-S0-D0-002/design/retry-rationale.md
+  write_paths:
+    - test/final/bvm/runs/bvm-s0-d0-20260814-02/**
+    - research/tasks/JH-20260814-BVM-S0-D0-002/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260814-BVM-S0-D0-002/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-002/request.sha256
+    - research/tasks/JH-20260814-BVM-S0-D0-002/baseline/**
+    - research/tasks/JH-20260814-BVM-S0-D0-002/design/**
+    - research/tasks/JH-20260814-BVM-S0-D0-002/audits/**
+    - research/tasks/JH-20260814-BVM-S0-D0-001/**
+    - test/final/bvm/runs/bvm-s0-d0-20260814-01/**
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/**
+    - circuits/**
+    - scripts/**
+    - test/final/bvm/data/**
+  locks:
+    - locks/bvm-source-characterization
+    - locks/bvm-s0-initial-state
+    - locks/test-final-bvm-runs
+baseline:
+  git_head: 8b2b5d9
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260814-BVM-S0-D0-002/baseline/git-status.txt, sha256: c761e857406138c33a7bb268f47c58f453a7a2f509fcf4655152ac698f494741}
+  scope_hashes: {path: research/tasks/JH-20260814-BVM-S0-D0-002/baseline/scope-files.sha256, sha256: f8ecea44e9b7f21ea1623e3fa5ca8bdb0fd202a92f20a4ffeb5c0d8038bc352c}
+authorization:
+  edit: true
+  run_josim: true
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md
+    - research/tasks/JH-20260814-BVM-S0-D0-001/audits/C01/verdict.yaml
+    - research/tasks/JH-20260814-BVM-S0-D0-001/design/initial-state-discriminator.md
+    - research/tasks/JH-20260814-BVM-S0-D0-002/design/retry-rationale.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: a7110cb0d993bd2946b2bb2dfe075890e34693a2ba7dd6995e405932a57dd688}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: test/final/bvm/runs/bvm-s0-d0-20260814-02/manifest.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: test/final/bvm/runs/bvm-s0-d0-20260814-02/inputs/**, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D3, path: test/final/bvm/runs/bvm-s0-d0-20260814-02/raw/**/*.csv, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: test/final/bvm/runs/bvm-s0-d0-20260814-02/analysis.md, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: research/tasks/JH-20260814-BVM-S0-D0-002/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Before writing a run input or invoking JoSIM, A01 verifies and logs the only authorized executable: /home/howard/JoSIM/build/josim-cli, version v2.7.2837d13 compiled on May 30 2026 at 20:37:57, SHA-256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2. The PATH name josim-cli and /usr/local/bin/josim-cli are prohibited. Any mismatch is BLOCKED before running.", evidence: [preflight-log, manifest.yaml]}
+  - {id: AC2, condition: "Create exactly one previously absent run root bvm-s0-d0-20260814-02 with copied BVM/model closure and three instrumented input netlists. It uses XBVM1 WL1 BL1 SE1 SL1 BVM, only R_LD SL1 0 12, direct V/P probes for JM1/JM2, V(SL1), I(L_SL|XBVM1), and exactly the immutable PWL cases from D0-001 design; no BQ/DCSFQ/JTL/JJ-stack load/read or SE pulse.", evidence: [manifest.yaml, input-netlists, closure-hashes]}
+  - {id: AC3, condition: "Using the authorized executable, run exactly init_positive, init_negative, and no_init_control once each at 0.1 ps from 0 to 80 ps. Preserve raw CSV, stdout/stderr, copied inputs, actual time axis, binary/version/hash and manifest. A pre-existing output directory, nonzero solver exit, binary mismatch, missing column, NaN/Inf, non-increasing time, or truncated registered window is INVALID.", evidence: [raw-csv, stdout-stderr, manifest.yaml]}
+  - {id: AC4, condition: "Report source-port I(t)/V(t) descriptively and same-JJ raw-time phase/area values for JM1 N1->n_jm1o and JM2 n_jm2i->N2 on [9,31) ps. On fixed [35,45) and [65,75) ps windows, report raw-radian signature means/p2p and evaluate the unmodified D0 guards (>=2 finite samples; p2p <=0.02 rad; L-infinity separation >=0.10 rad). Use only VALID, INCONCLUSIVE, or INVALID as D0 evidence-quality language.", evidence: [analysis.md, analysis-json]}
+  - {id: AC5, condition: "Receipt records every new input/closure/raw/log/analysis/manifest/command hash and maps AC1-AC4. It records the invalid A01 as preserved lineage only, makes no S0/source/receiver/Gate claim, and final verify-task succeeds.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions:
+  - "Invoking josim-cli through PATH, /usr/local/bin/josim-cli, or any binary whose absolute path/version/SHA-256 differs from AC1."
+  - "Any read/SE pulse, load matrix, parameter/timestep sweep, BQ/DCSFQ/JTL attachment, mutable include lookup, raw overwrite/deletion, missing direct probe, solver/CSV failure, or non-actual-time integration."
+  - "Any write outside the two authorized write paths, or a modification to D0-001, project authority, MetricSpec, historical evidence, or a frozen path."
+inconclusive_conditions:
+  - "Artifacts are valid but the two initialized signature vectors fail the unchanged D0 stability/separation guards, direct P/V mapping is unavailable, or a required stable window cannot be observed."
+  - "D0 establishes only operational signatures; logical/published read0/read1 identity remains UNKNOWN pending separate provenance or characterization evidence."
+stop_conditions:
+  - "HEAD, known issuer-owned dirty files, scope hash, exact binary provenance, authority, metric specification, or lock preflight differs from this contract."
+  - "The run root already exists, a fourth case or unregistered timestep/parameter/load is needed, or a window/guard would need to change after observing data."
+  - "A required action needs network, installation, worktree creation, commit, deletion, overwrite, rename, or a write outside scope."
+  - "Final verify-task fails; preserve all newly created attempt evidence and return BLOCKED or DEVIATED without beginning BVM-S0."
+issuance_blockers: []

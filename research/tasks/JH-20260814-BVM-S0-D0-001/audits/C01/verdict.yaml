@@ -1,0 +1,63 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: '2026-08-14T17:08:00+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: c630020c59db3c571d6615e3afe0f068c73b1993af57c1047dca2777657183a4
+  ack_sha256: 9f3a5557848ab69358e6b9b6ff61f9a9c2c0c8409365ef5160e02d0331b222e7
+  receipt_sha256: 08a288bf858e2bb04be6c65787f6c5d06cc5fcbde279a4823c410656f9b9fe77
+scope_status: PASS
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: C01-protocol-and-scope
+    status: PASS
+    evidence:
+      - "handoff.py verify-task returns VERIFIED: request seal, ACK/receipt hash bindings, declared changed paths, and current hashes are mechanically valid."
+      - "The three input netlists, copied model/cell closure, three raw directories, analysis, and attempt-local logs are within the request write scope; no frozen historical BVM/M11/authority file was changed."
+  - id: C02-registered-fixture-and-probes
+    status: PASS
+    evidence:
+      - "Each input netlist instantiates XBVM1 WL1 BL1 SE1 SL1 BVM with the sole passive load R_LD SL1 0 12, has no SE/read pulse, and has direct P/V probes for B_JM1 and B_JM2 plus V(SL1) and I(L_SL|XBVM1)."
+      - "The copied bvm_cell.cir and jjmit.cir byte-match their registered working-tree sources."
+  - id: C03-raw-and-analysis-qa
+    status: PASS
+    evidence:
+      - "Independent CSV inspection finds all three raw files have 798 strictly increasing finite samples from 0 through 79.8 ps and all seven declared columns."
+      - "Independent rerun of the deterministic analyzer reproduces the registered phase/area arithmetic and the failed JM2 state_early p2p guard; analysis.json retains the receipt-bound SHA-256."
+  - id: C04-required-simulator-provenance
+    status: FAIL
+    evidence:
+      - "AGENTS.md requires conclusion-grade runs to use recorded build/josim-cli. Its current version is v2.7.2837d13 and SHA-256 is 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2."
+      - "The run manifest and receipt instead record /usr/local/bin/josim-cli, v2.7.02a34ee, SHA-256 d6913de92f71ee57bcb519f40c9fb60f3b51f404ec46ef8b00d3a7f3dfdf4b9c. This is a different executable and was not authorized as the project recording binary."
+  - id: C05-claim-boundary
+    status: PASS
+    evidence:
+      - "The receipt correctly does not label local phase/area observations as an SFQ, fluxoid, read result, downstream reception, BVM-S0 source characterization, candidate verdict, or Interface Gate."
+findings:
+  - "A01's execution scope and raw-data mechanics are otherwise well preserved, but its simulator provenance violates the repository-level experiment-integrity requirement."
+  - "The raw CSVs, copied inputs, stdout/stderr, manifests, and analysis remain preserved as failed-at-provenance evidence. They must not be overwritten, deleted, or used as the D0/S0 scientific baseline."
+  - "The registered D0 observability guard also evaluates INCONCLUSIVE because JM2 state_early peak-to-peak is 0.0708275 rad, above its D0-specific 0.02-rad guard. That exploratory observation is not accepted as a scientific conclusion because C04 invalidates the conclusion-grade artifact."
+accepted_claims:
+  - "Only the mechanical fact that A01 created a scope-conformant, immutable attempted D0 package is accepted."
+rejected_claims:
+  - "A01 cannot establish an observable BVM initial-state discriminator, an operational read0/read1 preparation procedure, or any BVM-S0 source-side fact."
+  - "A01 cannot support a local JJ, fluxoid, downstream, receiver, candidate, Interface Gate, system, paper, or hardware claim."
+required_rework:
+  - "Do not modify this ISSUED request or overwrite A01. If the user authorizes a retry, Codex must issue a new superseding D0 request that binds the exact build/josim-cli path, version, and SHA-256; it must use a new run ID and preserve A01 as invalid provenance evidence."
+  - "The superseding contract must keep the same three PWL cases, single 12-ohm load, direct JM1/JM2 P/V probes, windows, guards, no-read boundary, and non-goals unless Codex explicitly revises and preregisters them."
+next_actions:
+  - "Send Claude a REWORK notification referencing this verdict; no new execution occurs under JH-20260814-BVM-S0-D0-001."
+  - "Do not issue BVM-S0, BQ, DCSFQ_BVM, receiver characterization, or INTERFACE_GATE_V1 from this invalid attempt. Wait for explicit user authorization before issuing a superseding D0 retry."
+claim_ceiling: exploratory_operational_initialization_discriminator_only_no_bvm_s0_source_characterization_or_physical_gate

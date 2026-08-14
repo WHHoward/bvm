@@ -1,0 +1,41 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-14T16:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c630020c59db3c571d6615e3afe0f068c73b1993af57c1047dca2777657183a4"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "8b2b5d9"
+  dirty_paths:
+    - "research/tasks/JH-20260814-BVM-S0-D0-001/**（issuer 签发的任务包，baseline git-status.txt 已封存，ALLOW_NONOVERLAP）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "用固定 12Ω BVM fixture（XBVM1 WL1 BL1 SE1 SL1 BVM，R_LD SL1 0 12，0.1ps/0-80ps），运行预声明的 init_positive/init_negative/no_init_control 三个无读脉冲案例，判别两个写过程是否产生稳定、可区分、可直接观察的 JM1/JM2 相位签名向量。仅做 D0 初态判别，不启动 BVM-S0 source readout、BQ、DCSFQ_BVM 或 Gate。"
+  non_goals:
+    - "不做 read stimulus、read0/read1 source pulse 测量、receiver 表征、JTL 接收、INTERFACE_GATE_V1、candidate 比较或路线决定。"
+    - "不把任一初始化签名称为逻辑 0/1、发布态、SFQ 事件、fluxoid 或非破坏性读结果。"
+    - "不扫描负载/偏置/Ic/L/R/脉幅/脉宽/时间步；只做三个注册案例 + 12Ω。"
+    - "不改 project authority、METRIC_SPEC_V2、历史 circuits/raw data、任何 M11 artifact；不用旧 sfq_metrics.py 或 legacy JSON 当证据。"
+  stop_conditions:
+    - "HEAD、scope hash、工具 hash、authority、metric spec 或 lock 预检与合同不符。"
+    - "run root 已存在、需要第四案例或未注册参数/时间步/负载、或观察到数据后需要改窗口/guard。"
+    - "需要网络、安装、worktree、commit、删除、覆盖、重命名或 scope 外写入。"
+    - "final verify-task 失败；保留全部 attempt 证据并以 BLOCKED/DEVIATED 返回，不启动 BVM-S0。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-D0-001"
+  - "josim-cli test/final/bvm/runs/bvm-s0-d0-20260814-01/inputs/<case>.cir -o ... （三案例各一次）"
+  - "python3 scripts/sfq_metrics_v2.py / 独立 stdlib 分析脚本（raw-rad 梯形积分、窗口签名）"
+expected_changed_paths:
+  - "test/final/bvm/runs/bvm-s0-d0-20260814-01/**"
+  - "research/tasks/JH-20260814-BVM-S0-D0-001/attempts/**"
+blockers: []
+deviations: []

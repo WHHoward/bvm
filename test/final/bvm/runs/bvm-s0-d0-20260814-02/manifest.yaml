@@ -1,0 +1,110 @@
+schema_version: 1
+run_id: bvm-s0-d0-20260814-02
+created_at: "2026-08-14T17:07:00+08:00"
+mode: exploratory
+supersedes: bvm-s0-d0-20260814-01 (INVALID provenance lineage, preserved untouched)
+research_question: >-
+  Using the exact recorded build/josim-cli executable, do the same three fixed
+  write-only initialization procedures meet the predeclared D0
+  operational-signature guards in the fixed 12-ohm BVM fixture?
+
+hypotheses:
+  primary: >-
+    The two write-only initialization procedures produce two distinct,
+    stable operational phase signatures on the direct JJ probes, and the
+    no-init control stays at the startup reference.
+  alternatives:
+    - Both initialized cases return to the same signature (no separation).
+    - Signatures differ but drift within a state window (p2p > 0.02 rad).
+    - Initialization never settles before simulation end.
+
+predeclared_outcomes:
+  pass: >-
+    All three D0 guards hold in both state windows: >=2 actual samples with
+    finite P columns, per-component p2p <= 0.02 rad, and L-inf separation
+    >= 0.10 rad between init_positive and init_negative means.
+  fail: >-
+    Any guard fails, or direct P/V output is unavailable; conclusion
+    INCONCLUSIVE, D0 does not advance S0.
+  inconclusive: >-
+    Artifacts valid but guards unmet, or only operational distinctness
+    (no logical read0/read1 identity).
+  invalid: >-
+    Missing columns, NaN/Inf, non-monotonic time, truncated window, solver
+    exit nonzero, pre-existing run root, binary provenance mismatch, or
+    unregistered change.
+
+provenance:
+  git_head: 8b2b5d9
+  git_dirty: true
+  git_status_path: research/tasks/JH-20260814-BVM-S0-D0-002/baseline/git-status.txt
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: v2.7.2837d13 compiled on May 30 2026 at 20:37:57
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  netlist_path: test/final/bvm/runs/bvm-s0-d0-20260814-02/inputs/
+  include_closure:
+    - inputs/jjmit.cir (copy of circuits/models/jjmit.cir)
+    - inputs/bvm_cell.cir (copy of circuits/bvm/bvm_cell.cir)
+  model_files:
+    - inputs/jjmit.cir
+    - inputs/bvm_cell.cir
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - init_positive
+    - init_negative
+    - no_init_control
+  requested_timesteps_s: [1e-13]
+  stop_time_s: 8.0e-11
+  repetitions: 1
+  output_load: "R_LD SL1 0 12 (12 ohm, only load)"
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: frozen
+
+signals:
+  junctions:
+    - {name: JM1, probe: "P(B_JM1|XBVM1)", voltage: "V(B_JM1|XBVM1)",
+       orientation: "N1 -> n_jm1o", window: "init_activity [9,31) ps"}
+    - {name: JM2, probe: "P(B_JM2|XBVM1)", voltage: "V(B_JM2|XBVM1)",
+       orientation: "n_jm2i -> N2", window: "init_activity [9,31) ps"}
+  downstream_stages: []
+  state_signals:
+    - {name: SL1, voltage: "V(SL1)", orientation: "SL1 -> 0"}
+    - {name: L_SL, current: "I(L_SL|XBVM1)", orientation: "N8 -> SL"}
+
+windows:
+  pre: [4e-12, 9e-12)
+  activity: [9e-12, 31e-12)
+  post: [31e-12, 80e-12)
+  read_state: null  # D0 has no read stimulus
+
+controls:
+  zero_input: no_init_control
+  read0: null
+  positive: init_positive
+  reverse_polarity: init_negative
+
+artifacts:
+  raw_files:
+    - raw/init_positive/run-01.csv
+    - raw/init_negative/run-01.csv
+    - raw/no_init_control/run-01.csv
+  log_files:
+    - raw/init_positive/stdout.txt
+    - raw/init_positive/stderr.txt
+    - raw/init_negative/stdout.txt
+    - raw/init_negative/stderr.txt
+    - raw/no_init_control/stdout.txt
+    - raw/no_init_control/stderr.txt
+  hashes_path: closure-hashes.txt
+
+outcome:
+  artifact_status: valid
+  verdict: INCONCLUSIVE
+  highest_evidence_level: direct-JJ phase+voltage area (same run, same window)
+  failed_requirements:
+    - "JM2 state_early p2p 0.0708 rad > 0.02 rad guard (both init cases)"

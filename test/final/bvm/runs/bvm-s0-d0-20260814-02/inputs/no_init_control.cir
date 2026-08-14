@@ -1,0 +1,25 @@
+* D0 no_init_control — BVM-S0 initial-state discriminator
+* Fixed closure: copied jjmit model + bvm_cell in this inputs/ dir
+* XBVM1 WL1 BL1 SE1 SL1 BVM ; R_LD SL1 0 12 ; no read/SE stimulus
+* All sources (WL, BL, SE) identically zero.
+.include jjmit.cir
+.include bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* ==== Canonical 12-ohm load (only load, per design) ====
+R_LD SL1 0 12
+
+* ==== Zero-input control (no initialization, no read) ====
+I_WL1 0 WL1 pwl(0 0 80p 0)
+I_BL1 0 BL1 pwl(0 0 80p 0)
+I_SE1 0 SE1 pwl(0 0 80p 0)
+
+.tran 0.1p 80p
+
+* ==== Direct junction probes (positive orientations per design) ====
+* JM1: N1 -> n_jm1o ; JM2: n_jm2i -> N2 ; SL: SL1 -> 0 ; L_SL: N8 -> SL
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print V(SL1) I(L_SL|XBVM1)
+.end

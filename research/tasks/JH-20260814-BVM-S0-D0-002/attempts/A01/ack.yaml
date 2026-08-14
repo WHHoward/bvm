@@ -1,0 +1,44 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260814-BVM-S0-D0-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-14T17:10:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "76a916bf3361fd22c912a38ed92478b33f243f9db8a73e945f88f5589f731821"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "8b2b5d9"
+  dirty_paths:
+    - "research/tasks/JH-20260814-BVM-S0-D0-001/**（D0-001 全包 frozen，保留为 INVALID lineage）"
+    - "research/tasks/JH-20260814-BVM-S0-D0-002/**（issuer 签发的任务包）"
+    - "test/final/bvm/runs/bvm-s0-d0-20260814-01/**（frozen，保留不动）"
+    - "research/mailbox/（消息文件，非合同路径）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "仅用仓库记录的 build/josim-cli（v2.7.2837d13，SHA-256 48655cb3…，AC1 三要素已核验）重跑 D0 三案例初态判别到新 run ID bvm-s0-d0-20260814-02；保留 D0-001/A01 为 INVALID lineage，不做任何数值比较。"
+  non_goals:
+    - "不改/不覆写/不删除/不重释/不数值比较 D0-001/A01 的 raw/analysis/receipt/request/audit。"
+    - "不是 BVM-S0：不加 read 刺激、不做 source readout/receiver/JTL/BQ/DCSFQ_BVM/INTERFACE_GATE_V1/candidate/路线。"
+    - "不把签名称为逻辑 0/1、发布态、SFQ 事件、fluxoid、read 结果。"
+    - "不扫描负载/偏置/Ic/L/R/脉幅/脉宽/时间步；仅三案例 + 12Ω。"
+  stop_conditions:
+    - "HEAD、dirty、scope hash、二进制 provenance（AC1 三要素）、authority、metric spec 或 lock 预检不符。"
+    - "run root 已存在、需要第四案例或未注册参数/时间步/负载、或观察数据后需改窗口/guard。"
+    - "需要网络、安装、worktree、commit、删除、覆盖、重命名或 scope 外写入。"
+    - "final verify-task 失败；保留全部 attempt 证据并以 BLOCKED/DEVIATED 返回，不启动 BVM-S0。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-D0-002"
+  - "/home/howard/JoSIM/build/josim-cli init_positive.cir -o ../raw/init_positive/run-01.csv （三案例各一次，cwd=inputs/）"
+  - "python3 research/tasks/JH-20260814-BVM-S0-D0-002/attempts/A01/analyze_d0.py"
+expected_changed_paths:
+  - "test/final/bvm/runs/bvm-s0-d0-20260814-02/**"
+  - "research/tasks/JH-20260814-BVM-S0-D0-002/attempts/**"
+blockers: []
+deviations: []

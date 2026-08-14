@@ -1,5 +1,14 @@
 # BVM-S0 figure index — 2026-08-14 group-meeting visualization
 
+> **建议阅读路径（教学优先）**：先打开 **`bvm-s0-story.html`**（guided visual
+> story，中文叙事，四幕：实验如何进行 → 观察到什么 → 内部机制（折叠）→ 为何
+> INCONCLUSIVE + 结论边界），最后可用其附录 **Explore raw traces** 检查任意
+> run/window。本文件是 provenance / figure documentation，不承担主要教学职责。
+> 每张静态图的 Look for：Source figure 看 positive/negative 响应的幅度、极性、
+> 描述性时序差异；Control figure 看 control 处于噪声级但其 latency diagnostic
+> 仍触发已注册数值 blocker；Convergence figure 看"接近"与"满足全部判定条件"
+> 是两个不同命题。
+
 ## Data sources (all frozen, no JoSIM re-run)
 
 - Raw CSVs: `test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/<case>/<step>/run-01.csv`

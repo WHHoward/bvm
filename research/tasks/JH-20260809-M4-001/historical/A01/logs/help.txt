@@ -1,0 +1,16 @@
+usage: sfq_metrics_v2.py [-h] [--threshold-rad THRESHOLD_RAD] [--json OUT] csv
+
+M4 unit-layer metrics for JoSIM phase-mode CSVs. Columns P(<name>) are raw
+phase in RADIANS; phase_delta_turns = phase_delta_rad / (2*pi). This is NOT a
+physical Gate (see M5/M6/M9).
+
+positional arguments:
+  csv                   JoSIM CSV output path
+
+options:
+  -h, --help            show this help message and exit
+  --threshold-rad THRESHOLD_RAD
+                        sample-to-sample |dphase| threshold in radians for
+                        activity classification (default 0.3); counts
+                        samples/intervals, never events
+  --json OUT            write JSON to OUT instead of stdout

@@ -1,0 +1,138 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260809-M4-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-09T19:35:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
+  ack_sha256: "daef483de7f2abaa798a8f1ea5ee7d6f93c8bb2d412a3630c187b2a68fab537b"
+execution_status: COMPLETED
+baseline_git_head: "384d75337e23d08516a66f71bb93d87c3f633013"
+result_git_head: null
+changes:
+  - path: scripts/sfq_metrics_v2.py
+    action: CREATED
+    sha256: "acb2f44850d3d24745c3b915dcfed21c0fb1428ca9948e6bbd261302031ad862"
+  - path: test/metrics/test_sfq_metrics_v2.py
+    action: CREATED
+    sha256: "044d30c4914b1d8b7414a971446702efc8965a4ea3d2030f523e12d28042a13c"
+  - path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+    action: CREATED
+    sha256: "a5844541e773982576e69f5ea0a00c8d5a390984cd0aef16d6212f40ead9634f"
+  - path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/smoke.json
+    action: CREATED
+    sha256: "6d1c13096b4c9c8308863c107c84de486f93ba906ba0dfd2d22b2fcf32c5e6b6"
+  - path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/help.txt
+    action: CREATED
+    sha256: "7da826bd3cb6b052e46cc60f3bc848a610c6c4eded07e437a583e1311c8af00f"
+artifacts:
+  - id: implementation
+    path: scripts/sfq_metrics_v2.py
+    sha256: "acb2f44850d3d24745c3b915dcfed21c0fb1428ca9948e6bbd261302031ad862"
+    role: IMPLEMENTATION
+  - id: test-suite
+    path: test/metrics/test_sfq_metrics_v2.py
+    sha256: "044d30c4914b1d8b7414a971446702efc8965a4ea3d2030f523e12d28042a13c"
+    role: TEST
+  - id: unit-tests-log
+    path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+    sha256: "a5844541e773982576e69f5ea0a00c8d5a390984cd0aef16d6212f40ead9634f"
+    role: LOG
+  - id: smoke-json
+    path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/smoke.json
+    sha256: "6d1c13096b4c9c8308863c107c84de486f93ba906ba0dfd2d22b2fcf32c5e6b6"
+    role: LOG
+  - id: cli-help-log
+    path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/help.txt
+    sha256: "7da826bd3cb6b052e46cc60f3bc848a610c6c4eded07e437a583e1311c8af00f"
+    role: LOG
+commands:
+  - command: "python3 test/metrics/test_sfq_metrics_v2.py"
+    exit_code: 0
+    log_path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+    log_sha256: "a5844541e773982576e69f5ea0a00c8d5a390984cd0aef16d6212f40ead9634f"
+  - command: "python3 scripts/sfq_metrics_v2.py --help"
+    exit_code: 0
+    log_path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/help.txt
+    log_sha256: "7da826bd3cb6b052e46cc60f3bc848a610c6c4eded07e437a583e1311c8af00f"
+  - command: "合成 CSV CLI 冒烟：python3 scripts/sfq_metrics_v2.py --json logs/smoke.json <synth.csv>"
+    exit_code: 0
+    log_path: research/tasks/JH-20260809-M4-001/attempts/A01/logs/smoke.json
+    log_sha256: "6d1c13096b4c9c8308863c107c84de486f93ba906ba0dfd2d22b2fcf32c5e6b6"
+tests:
+  - id: unit-tests
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+    notes:
+      - "16 个用例全过；stdlib-only，无 JoSIM/网络/依赖安装"
+  - id: cli-smoke
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/smoke.json
+    notes:
+      - "合成输入 +2pi→turns=1.0、-2pi→-1.0、1.5pi→0.75"
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - scripts/sfq_metrics_v2.py
+      - test/metrics/test_sfq_metrics_v2.py
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+    notes:
+      - "输出同时保留 phase_delta_rad（原始 rad）并显式派生 phase_delta_turns=phase_delta_rad/(2*pi)；UNITS 常量、字段名与 --help 均写明单位（rad / turns）"
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - test/metrics/test_sfq_metrics_v2.py
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+    notes:
+      - "独立常数断言覆盖 0、+2pi(1.0)、-2pi(-1.0)、+4pi(2.0) 与非整数圈(1.5pi→0.75、1rad→0.1591549430918953)；期望值手写、非从被测实现反推"
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - scripts/sfq_metrics_v2.py
+      - test/metrics/test_sfq_metrics_v2.py
+    notes:
+      - "逐采样阈值统计仅命名 over_threshold_sample_count 与 activity_intervals；防回归测试断言全 JSON 无 fast_events/pulse_count/sfq_count/event_count 键"
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - scripts/sfq_metrics_v2.py
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/smoke.json
+    notes:
+      - "模块 docstring、DISCLAIMER 常量（写入每个 JSON）与 CLI help 均标注：full-trace endpoint delta 仅为 M4 单位基础，不替代 M5 稳定窗/零输入控制或 M6 电压面积，不构成物理 Gate"
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - test/metrics/test_sfq_metrics_v2.py
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+    notes:
+      - "v1 scripts/sfq_metrics.py 哈希 84600d3e...（与 request 基线 manifest 一致）在测试中断言未变；git status 确认 test/final/** 与 v1 脚本零改动；测试仅用 stdlib"
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/unit-tests.log
+      - research/tasks/JH-20260809-M4-001/attempts/A01/logs/smoke.json
+    notes:
+      - "本 receipt 逐条映射 AC1-AC6，列出全部实际改动（5 文件：实现/测试/3 日志）、哈希、命令/退出码、测试、限制、未知与偏离；receipt 与 ACK 的哈希链完整性由审计者复跑 josim-handoff verify-task 独立校验"
+observations:
+  - "16/16 单元测试通过；CLI --help 显示 rad/turns 单位说明；合成冒烟 +2pi/-2pi/1.5pi 分别输出 turns 1.0/-1.0/0.75"
+  - "P() 列语义依据：src/Output.cpp 相位模式生成 P(<name>) 列、docs/tech_disc.md MNPA（phase 为直接求解量，rad）、docs/ex_usage.md 示例列 time,\"V(VIN)\",\"I(ROUT)\",\"P(B01)\",\"P(B02)\""
+interpretations:
+  - "M4 单位层按合同完成；自动发现 P( 前缀列与 JoSIM 实际输出命名一致"
+unknowns:
+  - "无（纯实现任务；未运行 JoSIM，未触碰物理数据）"
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "activity_intervals 仅基于相邻样本差；不进行任何窗口/聚类（属 M5），不做电压面积校验（属 M6）"
+  - "阈值统计语义为 samples/intervals，不是事件数"
+deviations:
+  - "调试期间曾在 attempts/A01/logs/ 创建 logs/verify.log（内容为修复前的失败校验输出）；为防止误导审计，已在 receipt 定稿前删除该文件。它不是合同产物、不是原始/实验数据，未进入 changes/artifacts；删除发生在最终 verify-task 通过之前。"
+blockers: []

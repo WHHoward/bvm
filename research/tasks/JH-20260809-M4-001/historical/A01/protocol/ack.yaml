@@ -1,0 +1,60 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260809-M4-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-09T19:27:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "2b28f5f77d8ab84737de9b39e8145cb77901e763745d4bd0b09100f20d065e83"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "384d75337e23d08516a66f71bb93d87c3f633013"
+  dirty_paths:
+    - ".agents/skills/josim-handoff/SKILL.md"
+    - ".agents/skills/josim-handoff/scripts/handoff.py"
+    - ".agents/skills/josim-handoff/scripts/test_handoff.py"
+    - ".agents/skills/josim-handoff/assets/standin-record.yaml"
+    - "research/CLAUDE_EXECUTOR.md"
+    - "docs/HANDOVER.md"
+    - "research/WORKFLOW.md"
+    - "research/schemas/standin-record.schema.json"
+    - "research/schemas/standin-review.schema.json"
+    - "research/tasks/JH-20260809-M4-001/request.yaml"
+    - "research/tasks/JH-20260809-M4-001/request.sha256"
+    - "research/tasks/JH-20260809-M4-001/baseline/git-status.txt"
+    - "research/tasks/JH-20260809-M4-001/baseline/scope-files.sha256"
+    - "research/tasks/JH-20260809-M4-001/standin/S01/record.yaml"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "建立 v2 相位计量的最小可信基础：保留 JoSIM P() 原始 rad，显式派生 phase_delta_turns = phase_delta_rad/(2*pi)，并停止把过阈值采样区间命名为 SFQ/事件数；交付 scripts/sfq_metrics_v2.py 与 test/metrics/test_sfq_metrics_v2.py。"
+  non_goals:
+    - "不冻结 METRIC_SPEC_V2 容差。"
+    - "不实现 M5 的稳定窗、零输入控制或事件聚类。"
+    - "不实现 M6 的同一 JJ 电压面积交叉校验。"
+    - "不重算或覆盖 BASELINE、P0、P2、BQ v4 的历史 JSON/CSV。"
+    - "不判定 BQ、DCSFQ、JTL 或系统物理 Gate。"
+    - "不修改或删除失效的 v1 scripts/sfq_metrics.py。"
+  stop_conditions:
+    - "需要修改 scope.write_paths 之外的任何路径。"
+    - "需要联网、安装依赖、运行 JoSIM、提交 Git 或删除/覆盖文件。"
+    - "需要预先决定 M5 的窗口/聚类规则、M6 的电压面积规则或 M9 的容差。"
+    - "当前 HEAD、dirty 状态或绑定文件哈希与 request 不符。"
+    - "发现另一活动任务占用同一 lock 或写路径。"
+planned_commands:
+  - "先写 test/metrics/test_sfq_metrics_v2.py（unittest，独立常数断言，不跑 JoSIM/不联网/不装依赖）"
+  - "实现 scripts/sfq_metrics_v2.py（rad→turns 显式换算；activity 字段仅用 sample/interval 命名）"
+  - "python3 -m unittest test/metrics/test_sfq_metrics_v2.py 或直接运行测试文件"
+  - "python3 scripts/sfq_metrics_v2.py --help 验证单位说明"
+  - "合成 CSV 冒烟：0/+2pi/-2pi/+4pi/非整数圈输入"
+expected_changed_paths:
+  - "scripts/sfq_metrics_v2.py"
+  - "test/metrics/test_sfq_metrics_v2.py"
+  - "research/tasks/JH-20260809-M4-001/attempts/A01/logs/*"
+blockers: []
+deviations: []

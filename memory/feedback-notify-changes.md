@@ -1,21 +1,58 @@
 ---
 name: feedback-notify-changes
-description: 每次改动后必须及时告知用户和 Codex（mailbox）；重要改动用户确认后才 commit
+description: commit/notification 三级风险模型（L0/L1/L2）——什么直接提交、什么需授权、什么必须通知 Codex/用户
 metadata:
   node_type: memory
   type: feedback
   originSessionId: 0a6c3d20-0d5b-452e-a234-939c2e31e4bd
-  modified: 2026-08-14T15:45:24.943Z
+  modified: 2026-08-14T16:11:01.028Z
 ---
 
-用户要求（2026-08-14）：我对项目做的任何更改/更新（文档、代码、实验、状态同步）都要**及时告知用户和 Codex**——通过 mailbox 发 [INFO] 消息给 Codex，并在对话中向用户说明改了什么。
+用户要求（2026-08-14，2026-08-15 细化为三级风险模型）：commit / notification 机制按下面三级执行，**不再按"重要/不重要"主观判断**。
 
-**Why**: 三代理协作中 Codex 需要了解 Claude 的所有动作才能做独立审计；用户是最终权威，需要知情后才能决定提交。此前改动常不通知，用户无法跟踪。
+## L0 — EPHEMERAL / REGENERABLE
 
-**How to apply**:
-- 每次完成文档/代码/证据改动后，发 mailbox 消息给 Codex（type=INFO），列出：改了哪些文件、为什么改、与哪个 audit/contract 一致、有没有触碰 frozen evidence
-- 对话中向用户简报改动清单
-- **重要/实验推进性改动不主动 commit**——先告知用户，确认后执行；commit 后再次通知 Codex
-- **不重要的、不涉及项目实验具体推进的文件可以直接 commit**（用户 2026-08-14 授权），但仍及时通知
-- **需保留为项目交接历史的 mailbox 通知应及时提交**；纯临时、已被正式 artifact 完整替代的提醒可保持未跟踪。用户要求提交时，以该指示为准。
-- 数值引用统一用最新 accepted 报告（如 S0-004 corrected report / C02），不引用被取代的旧报告
+**典型**：可重新生成的 HTML、cache、临时 debug 文件、scratch 文件、非证据级临时 log、其他可从 tracked source + frozen evidence 确定性重建的产物。
+
+**规则**：默认不 commit；generator / source 可以 commit，纯生成物通常不 commit；**不需要单独通知 Codex**。
+
+## L1 — LOW-RISK DERIVED / MAINTENANCE
+
+**典型**：visualization generator、PNG/SVG 图、dashboard UI/UX、README/figure index、组会排版、typo/formatting、不改变 scientific claim 的说明性文档、portability/path/CSS 等维护。
+
+**规则**：
+- 完成自检后可直接 **atomic commit**，不必每次等用户确认；
+- commit 后向用户简要说明：改了什么、commit SHA、是否运行新实验、是否触碰 frozen evidence / scientific status；
+- 不要每个 L1 commit 都给 Codex 单独发 mailbox；一批完成后发**一条汇总 INFO** 即可（如 `[INFO] visualization/documentation maintenance completed; commits: ...; no new simulation, no frozen evidence change, no scientific authority change`）；
+- **mailbox 不要变成 Git log 的镜像**。
+
+## L2 — SCIENTIFIC / AUTHORITY / EXPERIMENT-PROGRESSING
+
+**包括但不限于**：新建或修改 .cir 科研实验；修改 BVM/BQ/DCSFQ/JTL 参数；新 timestep/sweep/simulation run；修改 acceptance threshold / convergence rule；修改 metric / Gate / route；新的 raw evidence；修改 frozen evidence；改变 scientific conclusion；修改项目 authority 状态；启动 receiver / Gate / candidate tuning；paper-level / hardware-level claim。
+
+**规则**：
+- 没有明确用户授权或有效 Codex-issued contract 时，**禁止自行执行或 commit**；
+- 如果已有有效、ISSUED、sealed 的 Codex contract 且操作完全在 scope.write_paths 与合同范围内，则不需要每个 commit 向用户二次确认——用户授权 + Codex contract 本身就是执行边界；
+- 按合同执行、测试、形成 implementation/execution commits 和 receipt；最终 scientific verdict 仍交给独立 review / Codex audit；
+- 一旦发现需要超出合同、修改 metric/Gate/route/frozen evidence，**立即停止并请求授权**，不要"顺手修复"。
+
+## Commit granularity
+
+一个用户意图 / 一个独立语义变更 = 一个 atomic commit。例如 `viz: redesign BVM-S0 guided visualization` 可同时包含 generator、CSS、README 更新。**不要**为记录 AI 操作过程把完整工作机械拆成 add file → fix file → update README → notify mailbox → commit mailbox，除非各阶段本身有独立科研/审计意义。
+
+## Mailbox policy（Codex）
+
+只用于会影响以下事项的信息：scientific audit、下一步研究动作、evidence authority、blocker、contract execution、supersession、用户改变路线/目标、需要 Codex 做判断的异常。
+
+以下**通常不需要**逐条通知 Codex：CSS/UI 调整、README typo、图的排版、visualization portability、纯组会格式修改、不改变科学含义的 derived artifact。一批低风险工作完成后发一次汇总 INFO 即可。
+
+## User notification
+
+- **L1**：完成并 commit 后简报即可（改动、SHA、是否新实验、是否触碰 frozen evidence / scientific status）；
+- **L2**：已有授权合同则执行后简报；无授权或需扩 scope 必须先问；
+- 任何 frozen evidence、scientific status、route 或 Gate 变化都必须明确告诉用户。
+
+## 历史（被本模型取代的早期约定）
+
+- 2026-08-14 早期："每次改动都 mailbox + 用户确认后 commit"（已被 L1 直接提交 + 汇总通知取代）；
+- 2026-08-14 末："重要/不重要"主观二分 + mailbox 消息不提交（mailbox 消息保持 untracked 的惯例不变，除非用户明确要求提交）。

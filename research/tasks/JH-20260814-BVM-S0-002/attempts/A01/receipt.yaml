@@ -1,0 +1,115 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260814-BVM-S0-002
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: '2026-08-14T20:33:30+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 404750bee874b76a6049b37e79df9b8945d1c6b4558246753afc17f0d6f563c4
+  ack_sha256: 6802a968e354803b03db7183c5a917c3035a83b52835ceef72a2c070ce9b1a68
+execution_status: COMPLETED
+baseline_git_head: 727eac484200f3055d5ce451fb29a493acebbd19
+result_git_head: 727eac484200f3055d5ce451fb29a493acebbd19
+changes:
+- path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+  action: CREATED
+  sha256: 8b97eaf9e3d89f7b52ef5b214a390c5816f5481a26d90a3e3c93a9de0052482c
+- path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+  action: CREATED
+  sha256: af5c15ac877aba53409ee7f7989429bbd15f7ac6debee5d03027864568bf14b2
+- path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  action: CREATED
+  sha256: 14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148
+- path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/chronology-observation.md
+  action: CREATED
+  sha256: c02915567fc60c44cf168d03f96851bde185c77074cce95787945ada0c15731c
+artifacts:
+- id: D1
+  path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+  sha256: 8b97eaf9e3d89f7b52ef5b214a390c5816f5481a26d90a3e3c93a9de0052482c
+  role: DOCUMENTATION
+- id: D2
+  path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+  sha256: af5c15ac877aba53409ee7f7989429bbd15f7ac6debee5d03027864568bf14b2
+  role: IMPLEMENTATION
+- id: D3
+  path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  sha256: 14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148
+  role: TEST
+- id: D4
+  path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/chronology-observation.md
+  sha256: c02915567fc60c44cf168d03f96851bde185c77074cce95787945ada0c15731c
+  role: DOCUMENTATION
+commands:
+- command: python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-002
+  exit_code: 0
+  log_path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  log_sha256: 14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148
+- command: python3 research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+  exit_code: 0
+  log_path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  log_sha256: 14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148
+tests:
+- id: seal-check
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  notes:
+  - 59 项（12 CSV + 12 stdout + 12 stderr + 14 inputs + 4 root + 5 predecessor）全部匹配磁盘；负向毒化（缺项/篡改 hash）均被拒绝
+acceptance_results:
+- id: AC1
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+  notes:
+  - seal 精确列出 12 raw CSV、12 stdout、12 stderr、14 inputs、4 root artifacts、5 predecessor 协议文件，每项带精确 SHA-256
+- id: AC2
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  notes:
+  - seal_check.py 独立校验精确 case×step 标识集、数量、路径集与每项 SHA-256；PASS 日志保留；负向毒化测试（删一项 raw_csv、篡改一项 stdout hash）均真实拒绝
+- id: AC3
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  notes:
+  - 唯一 source-evidence 结论为 RESEALED_ONLY；无数值/物理/S0 PASS/FAIL 结论；receipt 映射全部 successor artifacts；final
+    verify-task 成功
+- id: AC4
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/chronology-observation.md
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  notes:
+  - predecessor receipt created_at(20:05) 与 mtime(19:54:03) 不匹配已记录为 source UNKNOWN；本任务协议时间戳使用 host date
+    -Iseconds 输出（2026-08-14T20:31:46+08:00）；未改 predecessor 元数据
+- id: AC5
+  status: SATISFIED
+  evidence_paths:
+  - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+  notes:
+  - 机械闭环后已向 Copilot 发 REVIEW_REQUEST（本任务/A01/sealed evidence/delivery 路径）；未请求 Codex final audit
+observations:
+- seal 总计 59 项全部与磁盘 SHA-256 一致，无缺失/额外/篡改项
+- 负向毒化测试：删除 1 项 raw_csv 与篡改 1 项 stdout hash 均导致 exit 1（REJECTED）
+- predecessor receipt created_at (2026-08-14T20:05:00+08:00) 晚于其 mtime (19:54:03) 约 11 分钟，来源 UNKNOWN 已记录
+- 本任务全部时间戳取自 host 时钟（date -Iseconds），未使用估计值
+interpretations:
+- S0-001/A01 12-run evidence package 已通过精确清单重封存，可机械闭合；科学内容未评估（RESEALED_ONLY）
+- 时间戳不一致提示 predecessor 的 created_at 为写时估计而非时钟采样；本任务已改采 host 时钟并记录该实践
+unknowns:
+- predecessor receipt created_at 与 mtime 何者为准：UNKNOWN（不改冻结元数据，无法判定）
+- S0-001 的科学结论：未审计（本任务 claim ceiling 仅为协议封存）
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- 本任务不评估 12-run 数据科学性；仅协议级封存
+deviations: []
+blockers: []

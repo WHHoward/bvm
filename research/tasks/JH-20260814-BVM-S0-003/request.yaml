@@ -1,0 +1,85 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260814-BVM-S0-003
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-14T20:45:41+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S0
+depends_on: [JH-20260814-BVM-S0-002]
+supersedes: {task_id: JH-20260814-BVM-S0-002, revision: 1}
+task:
+  kind: ANALYSIS
+  objective: "Repair only the A01 verify-log provenance defect by binding the accepted S0-002 seal to a separately retained successful mechanical verification record."
+  research_question: "Can the already-resealed S0 evidence be referenced by a provenance-correct success log without altering any source evidence or scientific interpretation?"
+  non_goals:
+    - "Do not run JoSIM or change any S0-001 raw/input/log/analysis evidence or any S0-002 A01 artifact."
+    - "Do not re-evaluate numerical results, alter S0 criteria, or make any scientific, physical, candidate, or Gate claim."
+    - "Do not modify any issued request, existing ACK, receipt, REVIEW, audit, or mailbox message."
+  claim_ceiling: protocol_log_provenance_closure_only_no_bvm_s0_scientific_or_physical_conclusion
+scope:
+  read_paths:
+    - AGENTS.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - research/tasks/JH-20260814-BVM-S0-002/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-002/request.sha256
+    - research/tasks/JH-20260814-BVM-S0-002/baseline/scope-files.sha256
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/chronology-observation.md
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/REVIEW.md
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/verify-task.log
+  write_paths:
+    - research/tasks/JH-20260814-BVM-S0-003/attempts/**
+    - research/mailbox/from-claude/**
+  frozen_paths:
+    - research/tasks/JH-20260814-BVM-S0-003/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-003/request.sha256
+    - research/tasks/JH-20260814-BVM-S0-003/baseline/**
+    - research/tasks/JH-20260814-BVM-S0-003/audits/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260814-BVM-S0-002/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - docs/**
+    - memory/**
+    - circuits/**
+    - scripts/**
+  locks: [locks/bvm-source-characterization, locks/bvm-s0-canonical]
+baseline:
+  git_head: 727eac484200f3055d5ce451fb29a493acebbd19
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260814-BVM-S0-003/baseline/git-status.txt, sha256: b6a210e44e59b8d0625bd4ab0678505486cb480843aeb37c0d0258d243284db1}
+  scope_hashes: {path: research/tasks/JH-20260814-BVM-S0-003/baseline/scope-files.sha256, sha256: 01022f716de90006a58ad4bb83e52570ce7ed5ccabe3db8c2846b04175014ff4}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff]
+  read_first:
+    - AGENTS.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - research/tasks/JH-20260814-BVM-S0-002/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/A01/REVIEW.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: a7110cb0d993bd2946b2bb2dfe075890e34693a2ba7dd6995e405932a57dd688}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260814-BVM-S0-003/attempts/A01/closure-record.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260814-BVM-S0-003/attempts/A01/logs/verify-s0-002.log, role: TEST, required: true}
+  - {id: D3, path: research/tasks/JH-20260814-BVM-S0-003/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "closure-record.yaml binds exact SHA-256 values for S0-002 request/seal/receipt/review and both A01 logs, labels the old verify-task.log as superseded failure evidence, and retains RESEALED_ONLY/no-science boundary.", evidence: [closure-record.yaml]}
+  - {id: AC2, condition: "Run handoff.py verify-task on the immutable S0-002 task once after its reviewed A01 artifacts exist; retain its successful stdout/stderr in a distinct verify-s0-002.log with exit 0. Do not claim that a self-referential receipt log proves its own final verification.", evidence: [verify-s0-002.log]}
+  - {id: AC3, condition: "Receipt maps only newly created A01 successor artifacts and accurately maps the verify command to verify-s0-002.log. It contains no receipt-self evidence path and no scientific conclusion.", evidence: [closure-record.yaml, verify-s0-002.log]}
+  - {id: AC4, condition: "After mechanical delivery, send Copilot a new REVIEW_REQUEST for S0-003/A01; await that review before requesting Codex audit.", evidence: [receipt.yaml]}
+invalid_conditions:
+  - "Any JoSIM execution, source-evidence mutation, modification of S0-001/S0-002, hash mismatch, or out-of-scope write."
+inconclusive_conditions: []
+stop_conditions:
+  - "S0-002 verify-task is not successful, any bound input hash differs, or a source artifact needs modification."
+  - "Any need to reinterpret S0 scientific evidence, change criteria, or begin new characterization."
+issuance_blockers: []

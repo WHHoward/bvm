@@ -1,0 +1,39 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260814-BVM-S0-003
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-14T20:52:45+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "d11ed46fd4529b4cb991e7f6050512fdd4656ae4f31b0d859e2aab94762273ab"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "727eac484200f3055d5ce451fb29a493acebbd19"
+  dirty_paths:
+    - "research/tasks/JH-20260814-BVM-S0-001/**、JH-20260814-BVM-S0-002/**（frozen lineage）"
+    - "test/final/bvm/runs/bvm-s0-canonical-20260814-01/**（frozen evidence package）"
+    - "research/tasks/JH-20260814-BVM-S0-003/**（issuer 签发的任务包）"
+    - "research/mailbox/（消息文件）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "修复 S0-002 A01 的 verify-log provenance 缺陷：对不可变的 S0-002 任务独立运行 verify-task 并保留成功 stdout/stderr 到独立的 verify-s0-002.log（exit 0）；创建 closure-record.yaml 绑定 S0-002 request/seal/receipt/review 与两个 A01 日志的精确 SHA-256，并把旧的 verify-task.log 标记为 superseded failure evidence；receipt 只映射新建 successor artifacts，verify 命令准确映射到 verify-s0-002.log，无 receipt 自引用 evidence 与科学结论。完成后向 Copilot 发新的 REVIEW_REQUEST。"
+  non_goals:
+    - "不运行 JoSIM、不改 S0-001 raw/input/log/analysis 或 S0-002 A01 任何 artifact。"
+    - "不重评数值结果、不改 S0 准则、不做科学/物理/candidate/Gate 声称。"
+    - "不改任何已签发 request、现有 ACK、receipt、REVIEW、audit 或 mailbox 消息。"
+  stop_conditions:
+    - "S0-002 verify-task 不成功、任何绑定输入 hash 不同、或需要修改源 artifact。"
+    - "需要重释 S0 科学证据、改准则或开始新表征。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-002（输出存 verify-s0-002.log）"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-003"
+expected_changed_paths:
+  - "research/tasks/JH-20260814-BVM-S0-003/attempts/**"
+blockers: []
+deviations: []

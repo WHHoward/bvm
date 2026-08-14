@@ -1,0 +1,54 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260814-BVM-S0-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: '2026-08-14T20:05:10+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: fb84fe0321642c203a6fa0d3b9732e6d4d6b491c8e55f3edb69b2c628e1bdafe
+  ack_sha256: 9b7414c98fd2a747ffc97d35eb5f1ab6c6ce06289e85af7f24e996b92e94f537
+  receipt_sha256: 7caf4a57224dbad34f178788b7229ce00645789cf3c81259f68d1fd186aa7c43
+scope_status: PASS
+artifact_status: NOT_AUDITED
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: receipt-and-chronology
+    status: PASS
+    evidence:
+      - "The immutable ISSUED request, A01 ACK, and BLOCKED receipt have mutually matching SHA-256 bindings. The audit was written only after receipt.created_at."
+  - id: deliverable-mechanical-closure
+    status: FAIL
+    evidence:
+      - "handoff.py verify-task fails because D3 requires raw/**/*.csv, while every preserved CSV has the fixed three-segment form raw/<case>/<timestep>/run-01.csv."
+      - "PurePosixPath.match confirms the issued D3 expression does not match a representative preserved CSV; it is a contract-pattern defect, not a missing run."
+  - id: execution-scope
+    status: PASS
+    evidence:
+      - "The BLOCKED receipt records the S0 run root and A01 artifacts within the two issued write roots; no out-of-scope execution is accepted or inferred."
+  - id: scientific-evidence-status
+    status: NOT_APPLICABLE
+    evidence:
+      - "Because the required delivery set cannot mechanically close under the immutable request, this audit intentionally does not evaluate the twelve raw runs, derived waveform values, convergence, or any physical interpretation."
+findings:
+  - "A01 preserved a twelve-run S0 raw package, but its immutable D3 glob is unsatisfiable for the registered raw layout."
+  - "The current BLOCKED receipt is a correct stop at the issued stop condition; it is not a completed S0 delivery."
+accepted_claims:
+  - "Only the existence of the preserved, unaccepted A01 execution package and the identified D3 contract-pattern defect are established by this audit."
+rejected_claims:
+  - "No source-port waveform, state-preservation, phase-area, convergence, read-state, SFQ, fluxoid, receiver, INTERFACE_GATE, candidate, or route claim is accepted."
+  - "The twelve runs are not rejected as scientifically invalid; they are simply not audited evidence under this non-closing contract."
+required_rework:
+  - "Do not modify JH-20260814-BVM-S0-001 or rerun/overwrite its raw package. If the user authorizes continuation, issue a superseding scope-correct contract that freezes this package, explicitly enumerates or correctly matches all raw CSV evidence, and independently revalidates provenance before any scientific audit."
+next_actions:
+  - "Notify Claude that A01 is formally REWORK_REQUIRED and that its existing raw evidence is frozen pending a user-authorized successor; do not create A02 under the immutable request."
+  - "Await explicit authorization before issuing the successor; it must not expand S0 science or start receiver, candidate, or Gate work."
+claim_ceiling: calibration_source_side_waveform_and_direct_jj_pre_post_observables_only_no_receiver_gate_or_logical_state_claim

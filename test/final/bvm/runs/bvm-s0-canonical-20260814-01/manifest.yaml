@@ -1,0 +1,126 @@
+schema_version: 1
+run_id: bvm-s0-canonical-20260814-01
+created_at: "2026-08-14T19:52:00+08:00"
+mode: calibration
+mode_flags: [CALIBRATION, CRITICAL, FROZEN]
+lineage:
+  - bvm-s0-d0-20260814-01 (INVALID provenance lineage, frozen)
+  - bvm-s0-d0-20260814-02 (accepted VALID+INCONCLUSIVE, frozen)
+  - bvm-s0-d0-settle-20260814-01 (accepted VALID, readiness bound 75 ps; design input only)
+research_question: >-
+  Under the frozen BVM-S0 closure and one preregistered read pulse, what
+  V(SL1) and I(L_SL|XBVM1) waveforms occur for init_positive and
+  init_negative relative to their matched zero-read controls, and what
+  direct-JJ platform quantities are observed before and after the pulse?
+
+hypotheses:
+  primary: >-
+    The read pulse produces a reproducible source-port waveform from each
+    initialized procedure that is distinct from its matched zero-read control,
+    with direct-JJ pre/post platform quantities stable at every registered
+    timestep.
+  alternatives:
+    - Control and read waveforms are indistinguishable (no read response).
+    - Pre/post platforms drift through the 170 ps window.
+    - Adjacent-timestep comparisons exceed the registered bands (INCONCLUSIVE).
+
+predeclared_outcomes:
+  pass: >-
+    QA passes, pre-window operational admissibility holds at all three
+    timesteps, and all registered adjacent-refinement comparisons meet the
+    bands -> CONVERGED + VALID.
+  fail: >-
+    Any QA/provenance failure -> INVALID; any admissible/convergence
+    shortfall -> INCONCLUSIVE.  No logical/Gate/receiver conclusion is made.
+  inconclusive: >-
+    Valid raw data but initial-state admissibility or a registered
+    convergence comparison not met at the fixed ladder maximum, or valid
+    source-side observation without physical success/Gate interpretation.
+  invalid: >-
+    Wrong binary, missing probes, raw overwrite, solver/CSV failure, changed
+    frozen stimulus/closure/window/band, pre-existing run root, out-of-scope
+    write, or unregistered parameter/timestep.
+
+provenance:
+  git_head: 727eac484200f3055d5ce451fb29a493acebbd19
+  git_dirty: true
+  git_status_path: research/tasks/JH-20260814-BVM-S0-001/baseline/git-status.txt
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: v2.7.2837d13 compiled on May 30 2026 at 20:37:57
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  netlist_path: test/final/bvm/runs/bvm-s0-canonical-20260814-01/inputs/
+  include_closure:
+    - inputs/jjmit.cir (copy of circuits/models/jjmit.cir)
+    - inputs/bvm_cell.cir (copy of circuits/bvm/bvm_cell.cir)
+  model_files:
+    - inputs/jjmit.cir
+    - inputs/bvm_cell.cir
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - init_positive_read
+    - init_positive_control
+    - init_negative_read
+    - init_negative_control
+  requested_timesteps_s: [1e-13, 5e-14, 2.5e-14]
+  stop_time_s: 1.7e-10
+  repetitions: 1
+  output_load: "R_LD SL1 0 12 (12 ohm, only load)"
+  read_stimulus: >-
+    WL: 95p 0 / 96p +100U / 105p +100U / 106p 0; SE: same; BL zero after init.
+    Project-derived from test_bvm_final.cir R1, delayed past D0 75-ps bound.
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: frozen
+
+signals:
+  junctions:
+    - {name: JM1, probe: "P(B_JM1|XBVM1)", voltage: "V(B_JM1|XBVM1)",
+       orientation: "N1 -> n_jm1o", vts: 1, rd: 1,
+       windows: ["activity [94,108) ps", "pre [80,90) ps", "post [140,150) ps"]}
+    - {name: JM2, probe: "P(B_JM2|XBVM1)", voltage: "V(B_JM2|XBVM1)",
+       orientation: "n_jm2i -> N2", vts: 1, rd: 1,
+       windows: ["activity [94,108) ps", "pre [80,90) ps", "post [140,150) ps"]}
+  downstream_stages: []
+  state_signals:
+    - {name: SL1, voltage: "V(SL1)", orientation: "SL1 -> 0", window: "source [94,130) ps"}
+    - {name: L_SL, current: "I(L_SL|XBVM1)", orientation: "N8 -> SL1", window: "source [94,130) ps"}
+    - {name: WL1, current: "I(I_WL1)", window: "source [94,130) ps"}
+    - {name: SE1, current: "I(I_SE1)", window: "source [94,130) ps"}
+
+windows:
+  pre: [80e-12, 90e-12)
+  activity: [94e-12, 108e-12)
+  source: [94e-12, 130e-12)
+  post: [140e-12, 150e-12)
+  read_state: null
+
+controls:
+  zero_input: null
+  read0: null
+  positive: init_positive_read
+  reverse_polarity: init_negative_read
+  matched_controls:
+    - init_positive_control (matches init_positive_read, read amplitudes zero)
+    - init_negative_control (matches init_negative_read, read amplitudes zero)
+
+artifacts:
+  raw_files:
+    - raw/init_positive_read/{0.1ps,0.05ps,0.025ps}/run-01.csv
+    - raw/init_positive_control/{0.1ps,0.05ps,0.025ps}/run-01.csv
+    - raw/init_negative_read/{0.1ps,0.05ps,0.025ps}/run-01.csv
+    - raw/init_negative_control/{0.1ps,0.05ps,0.025ps}/run-01.csv
+  log_files:
+    - raw/<case>/<step>/stdout.txt, stderr.txt (12 each)
+  hashes_path: closure-hashes.txt
+
+outcome:
+  artifact_status: valid
+  numerical_status: INCONCLUSIVE
+  verdict: INCONCLUSIVE
+  highest_evidence_level: direct-JJ phase+voltage area + source-port waveform, 3-timestep ladder
+  failed_requirements:
+    - "0.1ps->0.05ps pair: control-case V_SL1/I_LSL peak latency diff 0.85 ps > 0.5 ps band (noise-level 18 nV control peak)"

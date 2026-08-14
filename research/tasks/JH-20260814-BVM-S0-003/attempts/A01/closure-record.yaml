@@ -1,0 +1,57 @@
+schema_version: 1
+record_id: s0-003-a01-closure-record
+task_id: JH-20260814-BVM-S0-003
+supersedes: JH-20260814-BVM-S0-002 (A01, REWORK_REQUIRED per Copilot REVIEW.md, frozen)
+created_at: "2026-08-14T20:53:00+08:00"
+conclusion: RESEALED_ONLY
+purpose: >-
+  Bind the accepted S0-002 evidence seal to a provenance-correct, separately
+  retained successful mechanical verification record, repairing only the A01
+  verify-log provenance defect. No scientific/physical interpretation.
+
+bound_inputs:
+  request:
+    path: research/tasks/JH-20260814-BVM-S0-002/request.yaml
+    sha256: "404750bee874b76a6049b37e79df9b8945d1c6b4558246753afc17f0d6f563c4"
+  evidence_seal:
+    path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml
+    sha256: "8b97eaf9e3d89f7b52ef5b214a390c5816f5481a26d90a3e3c93a9de0052482c"
+  s0_002_receipt:
+    path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/receipt.yaml
+    sha256: "fd61f1fd42fd08db41d0814faab846b701d18a6fe9476a46066b0afa482f3001"
+  s0_002_review:
+    path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/REVIEW.md
+    sha256: "3de0eb5745c7159bb3b1298007edac6176cbdabaca9f249b35379d3b00d53855"
+  seal_check_log:
+    path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log
+    sha256: "14b4ee9ec0b6c8ea3d9f4be9cd6ec3cbb1ef37f6fdd535aecd0a6f3391c8b148"
+  seal_check_py:
+    path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py
+    sha256: "af5c15ac877aba53409ee7f7989429bbd15f7ac6debee5d03027864568bf14b2"
+  chronology:
+    path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/chronology-observation.md
+    sha256: "c02915567fc60c44cf168d03f96851bde185c77074cce95787945ada0c15731c"
+
+log_provenance:
+  superseded_failure_log:
+    path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/verify-task.log
+    sha256: "a824106a9972fa8c78a393a7049dc09d0b8930ad9ddadfaa4627ced11def37b1"
+    status: SUPERSEDED_FAILURE_EVIDENCE
+    note: >-
+      Contains the ERROR output of an early receipt-schema iteration
+      (AC3/AC5 self-referential evidence); preserved as immutable failure
+      evidence, not as proof of final verification.
+  successful_verify_log:
+    path: research/tasks/JH-20260814-BVM-S0-003/attempts/A01/logs/verify-s0-002.log
+    sha256: "feea61fb1765faaf23f205ee2e4c75d95dd5ed622e9b285008120fe5d933bf86"
+    status: SUCCESSFUL_VERIFY_EVIDENCE
+    exit_code: 0
+    note: >-
+      Independently run after S0-002/A01 reviewed artifacts existed;
+      output: "VERIFIED research/tasks/JH-20260814-BVM-S0-002".
+
+boundary:
+  source_evidence_conclusion: RESEALED_ONLY
+  no_science_claims:
+    - "no numerical, physical, or S0 PASS/FAIL conclusion"
+    - "no read-state, SFQ, fluxoid, receiver, candidate, route, or INTERFACE_GATE claim"

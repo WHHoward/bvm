@@ -1,0 +1,92 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260814-BVM-S0-002
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-14T20:28:46+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S0
+depends_on: [JH-20260814-BVM-S0-D0-003, JH-20260814-BVM-S0-001]
+supersedes: {task_id: JH-20260814-BVM-S0-001, revision: 1}
+task:
+  kind: ANALYSIS
+  objective: "Re-seal the immutable S0-001/A01 evidence package with explicit file paths and SHA-256 records, correcting only the predecessor's unsatisfiable D3 deliverable pattern."
+  research_question: "Can the already-created S0-001/A01 package be mechanically bound by an exact, complete evidence inventory without changing any source evidence?"
+  non_goals:
+    - "Do not run JoSIM, regenerate data, or modify, move, rename, delete, or overwrite any S0-001/A01 raw CSV, input, log, analysis, manifest, request, ACK, receipt, or audit."
+    - "Do not alter stimulus, windows, tolerances, convergence criteria, source interpretation, or any scientific scope from S0-001."
+    - "Do not state or imply scientific PASS, read-state, SFQ, fluxoid, receiver, candidate, route, or INTERFACE_GATE conclusions."
+  claim_ceiling: protocol_evidence_sealing_only_no_bvm_s0_scientific_or_physical_conclusion
+scope:
+  read_paths:
+    - AGENTS.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - research/tasks/JH-20260814-BVM-S0-001/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-001/request.sha256
+    - research/tasks/JH-20260814-BVM-S0-001/attempts/A01/ack.yaml
+    - research/tasks/JH-20260814-BVM-S0-001/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260814-BVM-S0-001/audits/C01/verdict.yaml
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/manifest.yaml
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/closure-hashes.txt
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/analysis.json
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/analysis.md
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/inputs/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/**/run-01.csv
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/**/stdout.txt
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/raw/**/stderr.txt
+  write_paths:
+    - research/tasks/JH-20260814-BVM-S0-002/attempts/**
+    - research/mailbox/from-claude/**
+  frozen_paths:
+    - research/tasks/JH-20260814-BVM-S0-002/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-002/request.sha256
+    - research/tasks/JH-20260814-BVM-S0-002/baseline/**
+    - research/tasks/JH-20260814-BVM-S0-002/audits/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - docs/**
+    - memory/**
+    - circuits/**
+    - scripts/**
+  locks: [locks/bvm-source-characterization, locks/bvm-s0-canonical]
+baseline:
+  git_head: 727eac484200f3055d5ce451fb29a493acebbd19
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260814-BVM-S0-002/baseline/git-status.txt, sha256: 9621e21e86b0b09f27f1fc0d987b003b59dde1781f085fc482e216e09841a644}
+  scope_hashes: {path: research/tasks/JH-20260814-BVM-S0-002/baseline/scope-files.sha256, sha256: e2f2fcc75cc81d588861e130c598ac6d30184b84b59f3ba20b8a118d9a4056d6}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff]
+  read_first:
+    - AGENTS.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - research/tasks/JH-20260814-BVM-S0-001/request.yaml
+    - research/tasks/JH-20260814-BVM-S0-001/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260814-BVM-S0-001/audits/C01/verdict.yaml
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: a7110cb0d993bd2946b2bb2dfe075890e34693a2ba7dd6995e405932a57dd688}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/evidence-seal.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py, role: IMPLEMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/logs/seal-check.log, role: TEST, required: true}
+  - {id: D4, path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/chronology-observation.md, role: DOCUMENTATION, required: true}
+  - {id: D5, path: research/tasks/JH-20260814-BVM-S0-002/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Evidence seal lists exactly the 12 fixed raw CSV paths, 12 matching stdout paths, 12 matching stderr paths, all 14 copied inputs, root manifest/closure-hashes/analysis artifacts, and predecessor request/ACK/receipt/audit; every item has an exact SHA-256.", evidence: [evidence-seal.yaml]}
+  - {id: AC2, condition: "seal_check.py independently checks exact expected case×timestep identifiers, count, path set, and every listed SHA-256 against disk; its PASS log is retained. It must fail on a missing, added, or hash-mismatched evidence item.", evidence: [seal_check.py, seal-check.log]}
+  - {id: AC3, condition: "The only source-evidence conclusion is RESEALED_ONLY: no numerical, physical, or S0 PASS/FAIL conclusion is made. Receipt maps all created successor artifacts and final verify-task succeeds.", evidence: [evidence-seal.yaml, receipt.yaml]}
+  - {id: AC4, condition: "chronology-observation.md records the observed predecessor receipt created_at/mtime mismatch as source UNKNOWN, records the host date -Iseconds output used for this task's protocol timestamps, and does not alter predecessor metadata.", evidence: [chronology-observation.md, seal-check.log]}
+  - {id: AC5, condition: "After a mechanically complete receipt, send Copilot a REVIEW_REQUEST that names this task, A01, the sealed evidence artifact, and the delivery snapshot/path. Do not request Codex final audit before that review.", evidence: [receipt.yaml]}
+invalid_conditions:
+  - "Any JoSIM invocation, source-evidence write, hash mismatch, missing/additional registered evidence item, or predecessor metadata modification."
+  - "Any scientific interpretation, altered S0 criterion, or out-of-scope write."
+inconclusive_conditions:
+  - "None: this is a deterministic sealing task; a missing or changed input is INVALID and requires a new task rather than inference."
+stop_conditions:
+  - "Any source file differs from the sealed scope manifest, current HEAD/baseline/authority differs, a write outside the successor attempt/mailbox path is needed, or final verify-task fails."
+  - "Need to run JoSIM, modify source evidence, reinterpret data, or alter any S0 criterion."
+issuance_blockers: []

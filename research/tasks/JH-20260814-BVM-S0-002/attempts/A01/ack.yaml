@@ -1,0 +1,39 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260814-BVM-S0-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-14T20:32:30+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "404750bee874b76a6049b37e79df9b8945d1c6b4558246753afc17f0d6f563c4"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "727eac484200f3055d5ce451fb29a493acebbd19"
+  dirty_paths:
+    - "research/tasks/JH-20260814-BVM-S0-001/**（frozen lineage）"
+    - "test/final/bvm/runs/bvm-s0-canonical-20260814-01/**（frozen evidence package）"
+    - "research/tasks/JH-20260814-BVM-S0-002/**（issuer 签发的任务包）"
+    - "research/mailbox/（消息文件）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "重封存 S0-001/A01 的 12-run evidence package：创建 evidence-seal.yaml（精确枚举 12 CSV + 12 stdout + 12 stderr + 14 inputs + root artifacts + predecessor 协议文件，全部带 SHA-256）、seal_check.py（独立校验，缺/增/hash 不符必须失败）、seal-check.log、chronology-observation.md（记录 predecessor receipt created_at/mtime 不匹配为 source UNKNOWN + 本任务 host date 输出）。不运行 JoSIM、不改任何源 evidence。完成后向 Copilot 发 REVIEW_REQUEST。"
+  non_goals:
+    - "不运行 JoSIM、不重新生成数据、不改/移/删/覆盖任何 S0-001/A01 raw CSV、input、log、analysis、manifest、request、ACK、receipt 或 audit。"
+    - "不改 S0-001 的 stimulus/windows/tolerances/convergence/source interpretation。"
+    - "不声称或不暗示科学 PASS、read-state、SFQ、fluxoid、receiver、candidate、route 或 INTERFACE_GATE 结论。"
+  stop_conditions:
+    - "任何源文件与 sealed scope manifest 不同、HEAD/baseline/authority 不同、需要写 successor attempt/mailbox 之外、或 final verify-task 失败。"
+    - "需要运行 JoSIM、修改源 evidence、重释数据或改任何 S0 准则。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-002"
+  - "python3 research/tasks/JH-20260814-BVM-S0-002/attempts/A01/seal_check.py"
+expected_changed_paths:
+  - "research/tasks/JH-20260814-BVM-S0-002/attempts/**"
+blockers: []
+deviations: []

@@ -1,0 +1,60 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260814-BVM-S0-003
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: '2026-08-14T20:58:24+08:00'
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: d11ed46fd4529b4cb991e7f6050512fdd4656ae4f31b0d859e2aab94762273ab
+  ack_sha256: 637221c13f51836c01a423cd57b489b3d0c50ca9e7bd815f68125fe80a042813
+  receipt_sha256: f0376b39c5f4d61221bd694913d8a3a4d27038ecfce0270e2ecf14af7243f81a
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: protocol-chain-and-scope
+    status: PASS
+    evidence:
+      - "handoff.py verify-task research/tasks/JH-20260814-BVM-S0-003 => VERIFIED; request/ACK/receipt bindings, chronology, scope manifest, receipt hashes, deliverables, and acceptance-ID mapping pass."
+      - "The request prohibits JoSIM and freezes all S0-001/S0-002/source-run paths; A01 reports only its new closure record and verify log."
+  - id: prior-major-log-provenance
+    status: PASS
+    evidence:
+      - "Independent rerun of handoff.py verify-task research/tasks/JH-20260814-BVM-S0-002 exits 0 and its two output lines match A01 logs/verify-s0-002.log byte-for-byte."
+      - "closure-record.yaml hashes bind the S0-002 request, evidence seal, receipt, REVIEW, seal checker, chronology note, both legacy logs, and the successor success log; independent sha256sum reproduces those values."
+  - id: source-seal-immutability
+    status: PASS
+    evidence:
+      - "Independent execution of the frozen S0-002 seal_check.py passes: its 59 registered source files have no missing, added, or hash-mismatched item."
+      - "The old S0-002 verify-task.log remains present with ERROR content and is correctly labeled SUPERSEDED_FAILURE_EVIDENCE, rather than silently replaced."
+  - id: claim-boundary
+    status: PASS
+    evidence:
+      - "The closure record and receipt use RESEALED_ONLY and proposed_physical_verdict NOT_APPLICABLE. No numeric, state, SFQ, fluxoid, receiver, candidate, route, Gate, or S0 scientific conclusion is accepted."
+  - id: independent-peer-review
+    status: PASS
+    evidence:
+      - "Copilot A01 REVIEW.md is AUDIT_READY with no Major finding; it independently reran S0-002 verification and seal check, tested stale-log and self-reference failure hypotheses, and remained read-only."
+findings:
+  - "S0-002's prior Major was a retained-log provenance defect, not a defect in its 59-file seal or the underlying S0-001 raw package."
+  - "S0-003 correctly preserves the failed historical log, separately retains a successful verification of S0-002, and maps its receipt command to that success log."
+accepted_claims:
+  - "The S0-002 evidence-seal and its 59-file source package are mechanically re-verified through the S0-003 closure record and independently retained successful verification log."
+  - "The only accepted disposition is protocol-level RESEALED_ONLY / log-provenance closure."
+rejected_claims:
+  - "This acceptance does not audit or accept any BVM-S0 waveform, state preservation, phase-area, convergence, read-state, logical, SFQ, fluxoid, receiver, candidate, route, or INTERFACE_GATE conclusion."
+  - "A successful hash/contract replay is not a scientific validation of the S0-001 12-run experiment."
+required_rework: []
+next_actions:
+  - "The S0-001 scientific evidence remains preserved and mechanically sealed, but requires a separately authorized scientific evidence audit before any BVM-S0 source-baseline disposition."
+  - "Do not begin BQ, DCSFQ_BVM, receiver characterization, or Interface Gate work from this protocol-only acceptance."
+claim_ceiling: protocol_log_provenance_closure_only_no_bvm_s0_scientific_or_physical_conclusion

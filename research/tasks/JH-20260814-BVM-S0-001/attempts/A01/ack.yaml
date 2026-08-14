@@ -1,0 +1,42 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260814-BVM-S0-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-14T19:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "fb84fe0321642c203a6fa0d3b9732e6d4d6b491c8e55f3edb69b2c628e1bdafe"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "727eac484200f3055d5ce451fb29a493acebbd19"
+  dirty_paths:
+    - "research/tasks/JH-20260814-BVM-S0-D0-001/002/003/** 及 runs 01/02/settle（frozen lineage）"
+    - "research/tasks/JH-20260814-BVM-S0-001/**（issuer 签发的任务包）"
+    - "research/mailbox/（消息文件）"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "在固定 12Ω fixture 上执行 12-run source-side calibration：四案例（init_positive_read / init_positive_control / init_negative_read / init_negative_control）× 三时间步（0.1/0.05/0.025ps）到 170ps。读取设计：WL+SE read 脉冲 95p 0→96p +100U→105p +100U→106p 0（源自 test_bvm_final.cir R1，延后至 D0 75ps bound 之后）；control 仅 read 振幅为零。报告 V(SL1)/I(L_SL|XBVM1) 源端波形、JM1/JM2 直接 P/V pre/activity/post 可观测量、convergence 判定。完成后停止并请求 Copilot skeptical review（Codex 审计前置）。"
+  non_goals:
+    - "不接 BQ/DCSFQ_BVM/JTL/T1/receiver；不定义 INTERFACE_GATE_V1/event count/candidate/route/system logic。"
+    - "不把 init_positive/init_negative 称为逻辑 read1/read0、发布态、fluxoid、SFQ 或非破坏性读。"
+    - "不扫描负载/偏置/Ic/L/R/read 幅宽/初始化/求解器；仅四案例 × 三注册时间步。"
+    - "不覆写/重释 D0 lineage 或历史 raw artifact。"
+  stop_conditions:
+    - "HEAD、issuer dirty 快照、scope hash、二进制 provenance、authority、metric spec 或 lock 预检不符。"
+    - "需要第五案例、第四时间步、额外负载/参数/脉冲、改窗口/band，或 readout/receiver/Gate 解释。"
+    - "run root 已存在、需要未授权能力，或 final verify-task 失败；保留 evidence 并返回 BLOCKED/DEVIATED。"
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260814-BVM-S0-001"
+  - "/home/howard/JoSIM/build/josim-cli <case>.cir -o ../raw/<case>/<step>/run-01.csv （12 次，cwd=inputs/）"
+  - "python3 research/tasks/JH-20260814-BVM-S0-001/attempts/A01/analyze_s0.py"
+expected_changed_paths:
+  - "test/final/bvm/runs/bvm-s0-canonical-20260814-01/**"
+  - "research/tasks/JH-20260814-BVM-S0-001/attempts/**"
+blockers: []
+deviations: []

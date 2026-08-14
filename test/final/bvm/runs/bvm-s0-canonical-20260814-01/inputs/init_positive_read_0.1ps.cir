@@ -1,0 +1,23 @@
+* S0 init_positive_read at 0.1ps -- BVM-S0 canonical source baseline (frozen)
+* Closure: copied jjmit + bvm_cell; XBVM1 WL1 BL1 SE1 SL1 BVM; only R_LD SL1 0 12
+* Init: WL/BL ramp to +100 uA over 10-11 ps, hold to 20 ps, return to 0 by 21 ps.
+* Read: WL+SE +100 uA 96-105 ps (R1-derived)
+.include jjmit.cir
+.include bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+R_LD SL1 0 12
+
+I_WL1 0 WL1 pwl(0 0 10p 0 11p 100U 20p 100U 21p 0 95p 0 96p 100U 105p 100U 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0 0 10p 0 11p 100U 20p 100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0 0 95p 0 96p 100U 105p 100U 106p 0 170p 0)
+
+.tran 0.1p 170p
+
+* Direct junction probes: JM1 N1->n_jm1o ; JM2 n_jm2i->N2 ; SL1->0 ; L_SL N8->SL1
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print V(SL1) I(L_SL|XBVM1)
+.print I(I_WL1) I(I_SE1)
+.end

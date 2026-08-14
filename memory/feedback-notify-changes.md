@@ -1,11 +1,11 @@
 ---
 name: feedback-notify-changes
-description: 每次改动后必须及时告知用户和 Codex（mailbox）；用户确认后才 commit
+description: 每次改动后必须及时告知用户和 Codex（mailbox）；重要改动用户确认后才 commit
 metadata:
   node_type: memory
   type: feedback
   originSessionId: 0a6c3d20-0d5b-452e-a234-939c2e31e4bd
-  modified: 2026-08-14T14:57:13.850Z
+  modified: 2026-08-14T15:45:24.943Z
 ---
 
 用户要求（2026-08-14）：我对项目做的任何更改/更新（文档、代码、实验、状态同步）都要**及时告知用户和 Codex**——通过 mailbox 发 [INFO] 消息给 Codex，并在对话中向用户说明改了什么。
@@ -15,5 +15,7 @@ metadata:
 **How to apply**:
 - 每次完成文档/代码/证据改动后，发 mailbox 消息给 Codex（type=INFO），列出：改了哪些文件、为什么改、与哪个 audit/contract 一致、有没有触碰 frozen evidence
 - 对话中向用户简报改动清单
-- **不主动 commit**——提交由用户确认后执行；commit 后再次通知 Codex
+- **重要/实验推进性改动不主动 commit**——先告知用户，确认后执行；commit 后再次通知 Codex
+- **不重要的、不涉及项目实验具体推进的文件可以直接 commit**（用户 2026-08-14 授权），但仍及时通知
+- **需保留为项目交接历史的 mailbox 通知应及时提交**；纯临时、已被正式 artifact 完整替代的提醒可保持未跟踪。用户要求提交时，以该指示为准。
 - 数值引用统一用最新 accepted 报告（如 S0-004 corrected report / C02），不引用被取代的旧报告

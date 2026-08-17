@@ -1,0 +1,199 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T15:35:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "155f3db5a005d744d92cb94f314b078642edb75990490d8a8d11b2c34d7db74f"
+  ack_sha256: "4e918278f5f2a0b8d6012cac5407a15c51f54e7ca8f36a1dec5f417385db78b1"
+execution_status: COMPLETED
+baseline_git_head: 96599fca155ea7a2d8b891cd93fc9e0fa2b92eba
+result_git_head: b3a467d983fdb0dcada1ed67c77d23936cb57a62
+changes:
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/manifest.yaml
+    action: CREATED
+    sha256: "108fc678e619fe18216b762772a2ce0f3db32169d00cf3b5a526b28a186425d0"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json
+    action: CREATED
+    sha256: "d9c10c9edfad69c2e5d685a0e63a2269871ddbef6adfeef818a6ea57fa27d758"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.md
+    action: CREATED
+    sha256: "c14bb34280f0f69a7e95e3203d0518bf3ba2baa9a03e4837c9ec6b5b050f9fc7"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/closure-hashes.txt
+    action: CREATED
+    sha256: "f81c4902d460180620c1fb665f72f6e7a71c5c9b8389f9529c3799f3861cf09d"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/gen_inputs.py
+    action: CREATED
+    sha256: "7932b38abd88a0ae7857f336a04eab7883ec29781b09b752d72a6222ebb93672"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/run_all.sh
+    action: CREATED
+    sha256: "d44a955b3b40f16b11ce64317f1062eb3badf4702f276cfcde197c057fffda7a"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/analyze_s2.py
+    action: CREATED
+    sha256: "bd70a7590c686df1123eb2e9502a65eba15c9da0c6ba27e1db01705a1ad69561"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/logs/qa-report.log
+    action: CREATED
+    sha256: "5312fb305cdb671fe61312fd561ec8b6223c22fb5ba5d2aa01dcfd4324c97eaa"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_read_12ohm.cir
+    action: CREATED
+    sha256: "09b8871991fa3651924047457d02c22116a04460d35933e6eca890f90f678db6"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/12ohm/run-01.csv
+    action: CREATED
+    sha256: "cda4ea54c23a6cb30a57c3dfaf97d54fdaa5277c2386122c96d536f61a4d2c91"
+  - path: test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/12ohm/stdout.txt
+    action: CREATED
+    sha256: "a64727275341b1c84a331b03a043c778989a4be28352be7db6e3825b4bd37ed6"
+artifacts:
+  - {id: D1, path: test/final/bvm/runs/bvm-s2-load-20260817-01/manifest.yaml,
+     sha256: "108fc678e619fe18216b762772a2ce0f3db32169d00cf3b5a526b28a186425d0",
+     role: MANIFEST}
+  - {id: D2, path: test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_read_12ohm.cir,
+     sha256: "09b8871991fa3651924047457d02c22116a04460d35933e6eca890f90f678db6",
+     role: DOCUMENTATION}
+  - {id: D3, path: test/final/bvm/runs/bvm-s2-load-20260817-01/closure-hashes.txt,
+     sha256: "f81c4902d460180620c1fb665f72f6e7a71c5c9b8389f9529c3799f3861cf09d",
+     role: RAW}
+  - {id: D4, path: test/final/bvm/runs/bvm-s2-load-20260817-01/logs/qa-report.log,
+     sha256: "5312fb305cdb671fe61312fd561ec8b6223c22fb5ba5d2aa01dcfd4324c97eaa",
+     role: LOG}
+  - {id: D5, path: test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json,
+     sha256: "d9c10c9edfad69c2e5d685a0e63a2269871ddbef6adfeef818a6ea57fa27d758",
+     role: DOCUMENTATION}
+  - {id: D6, path: test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.md,
+     sha256: "c14bb34280f0f69a7e95e3203d0518bf3ba2baa9a03e4837c9ec6b5b050f9fc7",
+     role: DOCUMENTATION}
+  - {id: run-stdout, path: test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/12ohm/stdout.txt,
+     sha256: "a64727275341b1c84a331b03a043c778989a4be28352be7db6e3825b4bd37ed6",
+     role: LOG}
+commands:
+  - command: "python3 gen_inputs.py (run root)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-load-20260817-01/logs/qa-report.log
+    log_sha256: "5312fb305cdb671fe61312fd561ec8b6223c22fb5ba5d2aa01dcfd4324c97eaa"
+  - command: "bash run_all.sh (run root; build/josim-cli, 16 runs)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/12ohm/stdout.txt
+    log_sha256: "a64727275341b1c84a331b03a043c778989a4be28352be7db6e3825b4bd37ed6"
+  - command: "python3 analyze_s2.py (run root)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-load-20260817-01/logs/qa-report.log
+    log_sha256: "5312fb305cdb671fe61312fd561ec8b6223c22fb5ba5d2aa01dcfd4324c97eaa"
+tests:
+  - id: schema-validation
+    status: PASS
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json]
+    notes:
+      - "analysis.json validates against design/analysis-schema.json
+         (jsonschema.validate passed)."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/manifest.yaml]
+    notes:
+      - "Only build/josim-cli v2.7.2837d13 (SHA-256 48655cb3...40b2) used;
+         closure hashes recorded; run root was nonexistent before creation;
+         HEAD b3a467d with baseline 96599fc as ancestor (post-baseline
+         commits are S2 preparation only)."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/closure-hashes.txt]
+    notes:
+      - "Exactly 16 immutable runs: 4 loads x 2 inits x read/control, all
+         0.0125 ps / 170 ps; only R_LD varies; controls keep knots with zero
+         96-105 ps WL/SE amplitudes; all raw/inputs/stdout/stderr hashed
+         (66 files)."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/logs/qa-report.log]
+    notes:
+      - "QA 16/16: exact registered 14-col header (incl JS1/JS2, I(BL1)),
+         finite, strictly increasing nonduplicate time, windows covered,
+         clean stderr."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json]
+    notes:
+      - "Readiness NOT_MET at every load: JM1 pre p2p 0.0035 <= 0.020 PASS,
+         JM2 pre p2p 0.058 rad > 0.020 band (sustained ~5 ps oscillation
+         under the S2 preregistered init PWL, which ramps 1 ps earlier than
+         the S1 PWL); L-inf sep 11.822 >= 0.100 PASS.  Reported as
+         comparability/readiness only, never a Gate; disposition
+         INCONCLUSIVE per the registered inconclusive condition."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json]
+    notes:
+      - "Literal decimal timestamp zero-tolerance matching; Aread/Actrl per
+         preregistration (own PRE baseline); rctrl hierarchy all PASS_REGION
+         (1.0e-4..5.4e-4); control residual metrics; lobe/FWHM rules applied;
+         exact-zero tie rules; NOT_APPLICABLE reasons explicit."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json]
+    notes:
+      - "analysis.json validates against analysis-schema.json; metric spec
+         path/version/hash; provenance; windows; mappings; namespaces; raw
+         rad + turns; activity descriptive only; same-JJ cross_check;
+         convergence NOT_APPLICABLE with reason and empty ladder/bands/
+         per_adjacent_pair; unknown_na; no NaN/Inf or event/SFQ/fluxoid
+         fields."
+  - id: AC7
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json]
+    notes:
+      - "Per JJ P/V: PRE/POST platform means, activity endpoint delta,
+         actual-time V area, residual = phase - area with
+         Phi0 = 2.067833848e-15 Wb; descriptive only, no global band."
+  - id: AC8
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json]
+    notes:
+      - "Terminal V/I per load reported; 1/50 endpoint affine reference with
+         frozen 5 uV / 0.5 uA floors and abs(e) <= max(5 uV, 1% span) band;
+         e12/e25 computed; result NOT_SUPPORTED_AT_NAMED_TIMESTAMP at peak
+         region (non-affine at working grid; bounded, not a physical FAIL);
+         peak envelope reported separately; no universal Thevenin/Norton
+         claim."
+  - id: AC9
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json]
+    notes:
+      - "p-star/v-star/a-star computed for JM1/JM2/JS1/JS2 at all loads on
+         exact common timestamps; comparisons load-to-12/adjacent/full span;
+         control envelopes included; disposition
+         LOAD_EFFECT_ON_INITIALIZATION_OR_UNRESOLVED (RESOLVED label not
+         claimed)."
+  - id: AC10
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s2-load-20260817-01/logs/qa-report.log]
+    notes:
+      - "Receipt hashes/maps all artifacts and AC1-AC9; numerical_status
+         NOT_APPLICABLE; S1 INCONCLUSIVE preserved; delivery stops for
+         Copilot review before Codex audit."
+observations:
+  - "Terminal V depends strongly on load (pos 0.10 -> 2.26 mV over 1-50 ohm);
+     I(L_SL) peaks at 12 ohm (75.3 uA) and falls on both sides."
+  - "Terminal affine non-affine at the working grid (e25 up to ~92 uV vs
+     21.6 uV band for positive V) -> NOT_SUPPORTED_AT_NAMED_TIMESTAMP."
+  - "JM2 pre-window p2p 0.058 rad > 0.020 band at every load under the S2
+     preregistered init PWL (1 ps earlier ramp than S1) -> readiness
+     NOT_MET; disposition INCONCLUSIVE."
+interpretations:
+  - "Proposed interpretations (for audit, not Gates): (1) the non-affine
+     terminal pattern and 12-ohm I(L_SL) peak are bounded observations, no
+     impedance model claimed; (2) the JM2 pre-window oscillation is a
+     stimulus-sensitivity observation under the preregistered S2 PWL,
+     distinct from the S1 stimulus."
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "Single 0.0125 ps grid; no convergence procedure registered; S1
+     INCONCLUSIVE unchanged."
+deviations: []
+blockers: []

@@ -1,0 +1,43 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-SEAL-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T15:50:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "cc3496fca7f85720bc060a2f79b6f431d9166a393a30d05e97f53dc8cbaceb33"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "ffcb2d481ce04b25eb4b77ec1626c4da64c8cd6b"
+  dirty_paths:
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/** (untracked)
+    - research/tasks/JH-20260817-BVM-S2-001/** (untracked, delivered A01)
+    - test/final/bvm/runs/bvm-s2-load-20260817-01/** (untracked, delivered)
+    - research/mailbox/from-claude/*.md (untracked)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Create one immutable recursive hash inventory + evidence-binding receipt
+    for the existing BVM-S2 16-run package; no JoSIM; no alteration of
+    original S2 task or run root.  Bind original request/ACK/receipt as
+    HISTORICAL_PROTOCOL_NOT_FINAL_AUTHORITY; record that the original
+    verify-task fails only on the ACK baseline.git_head mismatch
+    (96599fc request vs b3a467d ACK); write one receipt; stop for Copilot
+    review.
+  non_goals:
+    - "No scientific interpretation; no repair/rewrite of original files."
+  stop_conditions:
+    - "Any original S2 file modified/missing/hash-mismatched; any JoSIM run;
+       write outside successor attempts."
+planned_commands:
+  - "python3 verify_inventory.py (tee logs/inventory-check.log)"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/**
+blockers: []
+deviations: []

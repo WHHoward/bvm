@@ -1,2 +1,84 @@
-# DRAFT only. Issuance must capture the complete existing S2 package plus
-# issuer-owned successor files as an ALLOW_NONOVERLAP dirty snapshot.
+ M research/tasks/JH-20260817-BVM-S2-001/baseline/git-status.txt
+ M research/tasks/JH-20260817-BVM-S2-001/request.yaml
+ M research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/git-status.txt
+ M research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/scope-files.sha256
+ M research/tasks/JH-20260817-BVM-S2-SEAL-001/request.yaml
+?? research/mailbox/from-claude/claude-20260817-151918.md
+?? research/mailbox/from-codex/codex-20260817-150400.md
+?? research/mailbox/from-codex/codex-20260817-153708.md
+?? research/tasks/JH-20260817-BVM-S2-001/attempts/A01/ack.yaml
+?? research/tasks/JH-20260817-BVM-S2-001/attempts/A01/receipt.yaml
+?? research/tasks/JH-20260817-BVM-S2-001/request.sha256
+?? research/tasks/JH-20260817-BVM-S2-SEAL-001/request.sha256
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.md
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/analyze_s2.py
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/closure-hashes.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/gen_inputs.py
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/bvm_cell.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_control_12ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_control_1ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_control_25ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_control_50ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_read_12ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_read_1ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_read_25ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_negative_read_50ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_control_12ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_control_1ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_control_25ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_control_50ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_read_12ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_read_1ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_read_25ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/init_positive_read_50ohm.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/jjmit.cir
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/manifest.yaml
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/12ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/12ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/12ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/1ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/1ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/1ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/25ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/25ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/25ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/50ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/50ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_control/50ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/12ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/12ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/12ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/1ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/1ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/1ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/25ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/25ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/25ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/50ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/50ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_negative_read/50ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/12ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/12ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/12ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/1ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/1ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/1ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/25ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/25ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/25ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/50ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/50ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_control/50ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/12ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/12ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/12ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/1ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/1ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/1ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/25ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/25ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/25ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/50ohm/run-01.csv
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/50ohm/stderr.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/raw/init_positive_read/50ohm/stdout.txt
+?? test/final/bvm/runs/bvm-s2-load-20260817-01/run_all.sh

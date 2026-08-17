@@ -1,0 +1,56 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-SEAL-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: CLOSED
+created_at: "2026-08-17T16:00:26+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "cc3496fca7f85720bc060a2f79b6f431d9166a393a30d05e97f53dc8cbaceb33"
+  ack_sha256: "efc206aec505562665078dde827fb59d19df84f5b25d8ba82c393cdeba238a69"
+  receipt_sha256: "4e69fbe2fa3444ce4279bd099f71a3a1019580271aa1627540ce947a3289c625"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: handoff-chain-and-scope
+    status: PASS
+    evidence:
+      - "handoff.py verify-task passed request, ACK, receipt, path, and hash bindings."
+      - "All A01 deliverables are within the authorized successor attempts path; run_josim was false."
+  - id: recursive-run-root-inventory
+    status: PASS
+    evidence:
+      - "Independent standard-library recomputation established exact 76/76 live-to-inventory path equality, SHA-256 equality, and byte-size equality."
+      - "The supplied verifier independently re-ran successfully and performs post-write verification."
+  - id: historical-protocol-separation
+    status: PASS
+    evidence:
+      - "Original S2 request, ACK, and receipt are each hash-bound and explicitly labelled HISTORICAL_PROTOCOL_NOT_FINAL_AUTHORITY."
+      - "The original request baseline 96599fc versus ACK observed b3a467d mismatch remains recorded, rather than repaired or hidden."
+  - id: skeptical-peer-review
+    status: PASS
+    evidence:
+      - "Copilot REVIEW.md reports PASS after independent 76/76 hash, byte, path-set, historical-protocol, deterministic-verifier, and scope checks."
+findings:
+  - "Minor: two pre-existing .ruff_cache files are retained in the complete run-root inventory under the catch-all S2_RUN_ROOT_FILE layer; this is transparent and does not affect sealing completeness."
+accepted_claims:
+  - "The successor inventory is a complete, reproducible SHA-256 and byte-size binding of the currently retained 76-file S2 run root."
+  - "The original S2 request, ACK, and receipt have preserved historical provenance only; they are not final protocol authority because the original ACK baseline git-head mismatch remains unrepaired."
+rejected_claims:
+  - "This audit does not accept S2 artifact validity, numerical convergence, readiness, terminal affine behavior, internal trajectory behavior, or any physical conclusion."
+  - "This audit does not repair, supersede scientifically, or reinterpret the original S2-001 execution."
+required_rework: []
+next_actions:
+  - "A separately authorized scientific audit may use this accepted sealing layer to assess the frozen S2 evidence; it must not treat this provenance audit as a scientific disposition."
+claim_ceiling: provenance_and_recursive_evidence_integrity_only_preserving_original_s2_execution_artifacts_for_later_independent_scientific_review

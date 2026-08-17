@@ -1,0 +1,49 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T15:10:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "155f3db5a005d744d92cb94f314b078642edb75990490d8a8d11b2c34d7db74f"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "b3a467d983fdb0dcada1ed67c77d23936cb57a62"
+  dirty_paths:
+    - research/tasks/JH-20260817-BVM-S2-001/request.yaml (M vs HEAD)
+    - research/tasks/JH-20260817-BVM-S2-001/baseline/git-status.txt (M vs HEAD)
+    - research/mailbox/from-codex/codex-20260817-150400.md (untracked)
+    - research/tasks/JH-20260817-BVM-S2-001/request.sha256 (untracked)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Create exactly one immutable 16-run BVM S2 package: R_LD in {1,12,25,50}
+    ohm x init_positive/init_negative x read/matched-control, all 0.0125 ps /
+    170 ps, copied closure, only R_LD varies, matched controls retain knots
+    with zero read amplitudes; report bounded per-load source and
+    internal-trajectory observations plus terminal affine-compatibility
+    diagnostics per preregistration.yaml; numerical_status NOT_APPLICABLE.
+  non_goals:
+    - "No S0/S1 rerun/reinterpret; no convergence claim (S1 INCONCLUSIVE
+       unchanged); no receiver/BQ/JTL/T1/route/logical/SFQ/fluxoid/universal
+       impedance claim; no added loads/timesteps/cases/probes/windows/bands."
+  stop_conditions:
+    - "HEAD/dirty/scope-hash/binary/metric-spec/authority/lock preflight
+       differs; active closure/PWL/probe-header/fixture mismatch; run root
+       exists; need unsupported action; final verify-task fails."
+planned_commands:
+  - "python3 gen_inputs.py (16 netlists + closure copies, only R_LD varies)"
+  - "bash run_all.sh (16 x build/josim-cli, capture stdout/stderr)"
+  - "python3 analyze_s2.py (readiness, rctrl hierarchy, lobe/FWHM, terminal
+     affine, internal trajectory, same-JJ cross-check) -> analysis.json/md"
+expected_changed_paths:
+  - test/final/bvm/runs/bvm-s2-load-20260817-01/**
+  - research/tasks/JH-20260817-BVM-S2-001/attempts/**
+blockers: []
+deviations: []

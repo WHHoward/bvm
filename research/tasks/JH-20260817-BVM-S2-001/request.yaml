@@ -3,8 +3,8 @@ document_type: task_request
 schema_version: 1
 task_id: JH-20260817-BVM-S2-001
 revision: 1
-workflow_state: DRAFT
-issued_at: null
+workflow_state: ISSUED
+issued_at: '2026-08-17T15:04:09+08:00'
 issuer: {role: CODEX, id: codex-root}
 parent_todo_id: BVM-S2
 depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A, M11B, JH-20260814-BVM-S0-004, JH-20260817-BVM-S1-002]
@@ -68,9 +68,9 @@ scope:
 baseline:
   git_head: 96599fca155ea7a2d8b891cd93fc9e0fa2b92eba
   dirty_policy: ALLOW_NONOVERLAP
-  git_status: {path: research/tasks/JH-20260817-BVM-S2-001/baseline/git-status.txt, sha256: debd162ff504c41092c1d7926996ecca871dedd27211811084c962eaa010de42}
+  git_status: {path: research/tasks/JH-20260817-BVM-S2-001/baseline/git-status.txt, sha256: 4cb8200cca8dea87388bf8bac4e275509f312b885ec75273d60ad15245b9aca7}
   scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-001/baseline/scope-files.sha256, sha256: 0f9dc1bcd28d5963e1e659f2e23ac315377853f2d3caa15a71a2ebb06b228953}
-authorization: {edit: true, run_josim: true, network: false, install_dependencies: false, create_worktree: true, commit: false, delete_or_overwrite: false}
+authorization: {edit: true, run_josim: true, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
 contracts:
   required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
   read_first:
@@ -123,5 +123,4 @@ stop_conditions:
   - "HEAD, issuer dirty snapshot, scope hash, binary provenance, current HANDOVER/MetricSpec hash, authority, lock, active closure, PWL, probe/header or fixture preflight differs."
   - "Need a different/new load, timestep, case, probe, window, band, source, solver setting, interpolation/alignment, parameter sweep, receiver/Gate interpretation, network/install/commit/delete/overwrite action, or any write outside scope."
   - "Run root exists, any raw artifact is already present, any required deliverable cannot be written without overwrite, or final verify-task fails: preserve evidence and report BLOCKED/DEVIATED."
-issuance_blockers:
-  - "Awaiting user's explicit approval to seal/ISSUE this immutable request and separately notify execution authority."
+issuance_blockers: []

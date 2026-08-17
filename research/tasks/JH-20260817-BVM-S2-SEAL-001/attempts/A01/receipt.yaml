@@ -1,0 +1,93 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-SEAL-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T15:55:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "cc3496fca7f85720bc060a2f79b6f431d9166a393a30d05e97f53dc8cbaceb33"
+  ack_sha256: "efc206aec505562665078dde827fb59d19df84f5b25d8ba82c393cdeba238a69"
+execution_status: COMPLETED
+baseline_git_head: ffcb2d481ce04b25eb4b77ec1626c4da64c8cd6b
+result_git_head: ffcb2d481ce04b25eb4b77ec1626c4da64c8cd6b
+changes:
+  - path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/evidence-inventory.yaml
+    action: CREATED
+    sha256: "eff22d87f28bbbd21c31951e275bee7d149817cccbd4d437648bdc614b77af03"
+  - path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/verify_inventory.py
+    action: CREATED
+    sha256: "5e66b7b683c5a6be6257a08bb54696dbf24b043ce7d9b86a5868140ebac005d0"
+  - path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/logs/inventory-check.log
+    action: CREATED
+    sha256: "bf747f2b8be16c0edeb3ba95aa040584bbdee9b18239e7172df1ee969567aaa8"
+artifacts:
+  - {id: D1, path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/evidence-inventory.yaml,
+     sha256: "eff22d87f28bbbd21c31951e275bee7d149817cccbd4d437648bdc614b77af03",
+     role: DOCUMENTATION}
+  - {id: D2, path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/verify_inventory.py,
+     sha256: "5e66b7b683c5a6be6257a08bb54696dbf24b043ce7d9b86a5868140ebac005d0",
+     role: TEST}
+  - {id: D3, path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/logs/inventory-check.log,
+     sha256: "bf747f2b8be16c0edeb3ba95aa040584bbdee9b18239e7172df1ee969567aaa8",
+     role: LOG}
+commands:
+  - command: "python3 verify_inventory.py (tee logs/inventory-check.log)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/logs/inventory-check.log
+    log_sha256: "bf747f2b8be16c0edeb3ba95aa040584bbdee9b18239e7172df1ee969567aaa8"
+tests:
+  - id: inventory-validation
+    status: PASS
+    evidence_paths: [research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/logs/inventory-check.log]
+    notes:
+      - "76 files (76 live == 76 inventory path-set); every hash and byte size
+         recomputed post-write; 3 historical protocol records bound."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/evidence-inventory.yaml]
+    notes:
+      - "Original S2 request/ACK/receipt hashes verified and recorded as
+         HISTORICAL_PROTOCOL_NOT_FINAL_AUTHORITY; the original verify-task
+         failure is explicitly recorded as the ACK baseline.git_head mismatch
+         (96599fc request vs b3a467d ACK); no original file repaired or
+         rewritten."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/evidence-inventory.yaml]
+    notes:
+      - "Recursive enumeration of every regular run-root file (76): inputs,
+         16 CSV/stdout/stderr triplets, manifest, closure-hashes,
+         generator/runner/analyzer, logs, both analysis artifacts; exact
+         path/SHA-256/bytes/provenance-layer recorded; missing or extra
+         files fail verification."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/logs/inventory-check.log]
+    notes:
+      - "verify_inventory.py recomputes every inventory hash; proves
+         run-root path-set equality (76 == 76); records original
+         request/ACK/receipt separately as
+         HISTORICAL_PROTOCOL_NOT_FINAL_AUTHORITY; writes no file outside
+         this successor attempts path."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/A01/logs/inventory-check.log]
+    notes:
+      - "Receipt hashes/maps all successor files and AC1-AC3; run_josim
+         false; no physical/numerical proposal beyond NOT_APPLICABLE; one
+         Copilot skeptical review requested before Codex audit."
+observations:
+  - "Inventory: 76 run-root files across S2_EXECUTION_* and S2_ANALYSIS_*
+     layers; 3 historical protocol records (original request/ACK/receipt)."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations: []
+deviations: []
+blockers: []

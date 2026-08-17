@@ -1,0 +1,49 @@
+schema_version: 1
+run_id: bvm-s2-load-20260817-01
+created_at: "2026-08-17T15:25:00+08:00"
+mode: calibration
+research_question: >-
+  With every BVM condition fixed except external R_LD={1,12,25,50} ohm, how do
+  matched-control-corrected V(SL1), I(L_SL|XBVM1), and direct
+  JM1/JM2/JS1/JS2 trajectories vary for operational init_positive/
+  init_negative?  (single registered 0.0125 ps working timestep)
+provenance:
+  git_head: b3a467d983fdb0dcada1ed67c77d23936cb57a62
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  closure:
+    - {path: inputs/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4}
+    - {path: inputs/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+simulation:
+  input_kind: single_pwl
+  cases: [init_positive_read, init_positive_control, init_negative_read, init_negative_control]
+  loads_ohm: [1, 12, 25, 50]
+  runs: 16
+  timestep_s: 1.25e-14
+  stop_time_s: 1.7e-10
+  only_variable: "R_LD SL1 0 <1|12|25|50>"
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  status: frozen
+  preregistration: research/tasks/JH-20260817-BVM-S2-001/design/preregistration.yaml
+  analysis_schema: research/tasks/JH-20260817-BVM-S2-001/design/analysis-schema.json
+windows:
+  pre: [80, 90)
+  activity: [94, 108)
+  source: [94, 130)
+  recovery: [108, 130)
+  post: [140, 150)
+numerical_status: NOT_APPLICABLE
+result:
+  artifact_valid: true
+  qa: PASS 16/16
+  disposition: INCONCLUSIVE (readiness NOT_MET; bounded observations
+    reportable per registered inconclusive condition)
+  readiness: NOT_MET (JM2 pre p2p 0.058 rad > 0.020 band at all loads;
+    Linf sep 11.822 rad PASS)
+  control_hierarchy: all PASS_REGION (rctrl 1.0e-4 .. 5.4e-4)
+  terminal_affine: NOT_SUPPORTED_AT_NAMED_TIMESTAMP at peak region (bounded,
+    non-affine at working grid; not a physical FAIL)
+  internal_trajectory: LOAD_EFFECT_ON_INITIALIZATION_OR_UNRESOLVED
+  analysis_path: analysis.json

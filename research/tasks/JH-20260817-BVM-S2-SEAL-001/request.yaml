@@ -3,8 +3,8 @@ document_type: task_request
 schema_version: 1
 task_id: JH-20260817-BVM-S2-SEAL-001
 revision: 1
-workflow_state: DRAFT
-issued_at: null
+workflow_state: ISSUED
+issued_at: '2026-08-17T15:37:20+08:00'
 issuer: {role: CODEX, id: codex-root}
 parent_todo_id: BVM-S2
 depends_on: [JH-20260817-BVM-S2-001]
@@ -49,10 +49,10 @@ scope:
     - docs/research/METRIC_SPEC_V2.md
   locks: [locks/bvm-source-characterization, locks/bvm-s2-evidence-seal]
 baseline:
-  git_head: b3a467d983fdb0dcada1ed67c77d23936cb57a62
+  git_head: ffcb2d481ce04b25eb4b77ec1626c4da64c8cd6b
   dirty_policy: ALLOW_NONOVERLAP
-  git_status: {path: research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/git-status.txt, sha256: 3487b3a85d341b7f5f1ef6bf92eb7f9753725631b617117c1854365e73c20de9}
-  scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/scope-files.sha256, sha256: 69113dec059c75a4ff0acb1e76c83de4b79d2a76efb07d6b31c5fe95d1e1c7f1}
+  git_status: {path: research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/git-status.txt, sha256: c20e40e85ee692e9cdec56bc45d42e02fe7420f23fbdc1af6d50b416a554783f}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/scope-files.sha256, sha256: aa4e4ded0eba2c4f3fe2813185c34193e047b48ec33caa8fc4211692896bfc6e}
 authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
 contracts:
   required_skills: [josim-handoff]
@@ -87,5 +87,4 @@ inconclusive_conditions:
   - "This task has no physical/numerical classification. It may be ACCEPTED only as provenance evidence; scientific validity remains for later Copilot/Codex review."
 stop_conditions:
   - "Current original artifact paths/hashes differ before inventory, scope/baseline/authority/lock mismatch occurs, a missing artifact needs recreation, any desired change exceeds attempts/**, or verify-task fails. Preserve all evidence and report BLOCKED."
-issuance_blockers:
-  - "DRAFT preparation only; baseline scope and dirty snapshot must be recaptured before issuance."
+issuance_blockers: []

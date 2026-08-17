@@ -1,0 +1,162 @@
+schema_version: bvm-s2-preregistration-v1
+status: DRAFT
+study_phase: CALIBRATION
+risk: CRITICAL
+evidence_mode: FROZEN
+task_id: JH-20260817-BVM-S2-001
+run_id: bvm-s2-load-20260817-01
+research_question: >-
+  At the registered 0.0125 ps working timestep, with fixed BVM closure,
+  operational initialization, read stimulus, and internal R_SL, how do four
+  external pure-resistor SL loads change control-corrected terminal source
+  waveforms and direct internal JJ trajectories?
+claim_ceiling: >-
+  bounded per-load source and load-associated internal-trajectory observations
+  at the registered working timestep, plus terminal affine-compatibility
+  diagnostics only; no numerical-convergence, logical-state, fluxoid, SFQ,
+  receiver, candidate, interface, hardware, or universal-impedance claim.
+fixed_closure:
+  binary:
+    path: build/josim-cli
+    required_version: v2.7.2837d13
+    sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  netlist_sources:
+    - {path: circuits/bvm/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4}
+    - {path: circuits/models/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  instance: "XBVM1 WL1 BL1 SE1 SL1 BVM"
+  internal_load: "R_SL n_psl N8 12.0"
+  only_variable: "R_LD SL1 0 <1|12|25|50>"
+  stop_time_ps: 170.0
+  timestep_ps: 0.0125
+  external_loads_ohm: [1.0, 12.0, 25.0, 50.0]
+  run_maximum: 16
+stimulus:
+  initialization:
+    init_positive:
+      wl_bl_pwl: "0 at 0-9 ps; +100 uA at 10-20 ps; 0 at 21 ps"
+      se_pwl: "0 throughout initialization"
+    init_negative:
+      wl_bl_pwl: "0 at 0-9 ps; -100 uA at 10-20 ps; 0 at 21 ps"
+      se_pwl: "0 throughout initialization"
+  read:
+    wl_and_se: "0 at 95 ps; +100 uA at 96-105 ps; 0 at 106 ps"
+    matched_control: "same source names and knot times; only the 96-105 ps WL/SE amplitudes are 0 uA"
+  cases: [init_positive_read, init_positive_control, init_negative_read, init_negative_control]
+windows_ps:
+  pre: [80.0, 90.0]
+  activity: [94.0, 108.0]
+  source: [94.0, 130.0]
+  recovery: [108.0, 130.0]
+  post: [140.0, 150.0]
+  semantics: half_open_actual_csv_time
+readiness:
+  jm1_jm2_pre_p2p_rad_max: 0.020
+  positive_negative_pre_mean_vector_linf_rad_min: 0.100
+  meaning: timestep_comparability_and_operational_readiness_only_not_a_memory_or_state_gate
+probes:
+  source:
+    - {column: V(SL1), endpoints: [SL1, '0'], reporting_direction: 1}
+    - {column: I(L_SL|XBVM1), endpoints: [N8, SL1], reporting_direction: 1}
+  inputs:
+    - {column: I(I_WL1), endpoints: ['0', WL1], reporting_direction: 1}
+    - {column: I(I_BL1), endpoints: ['0', BL1], reporting_direction: 1}
+    - {column: I(I_SE1), endpoints: ['0', SE1], reporting_direction: 1}
+  junctions:
+    JM1:
+      phase_column: P(B_JM1|XBVM1)
+      voltage_column: V(B_JM1|XBVM1)
+      endpoints: [N1, n_jm1o]
+      voltage_to_phase_sign: 1
+      reporting_direction: 1
+    JM2:
+      phase_column: P(B_JM2|XBVM1)
+      voltage_column: V(B_JM2|XBVM1)
+      endpoints: [n_jm2i, N2]
+      voltage_to_phase_sign: 1
+      reporting_direction: 1
+    JS1:
+      phase_column: P(B_JS1|XBVM1)
+      voltage_column: V(B_JS1|XBVM1)
+      endpoints: [n_js1p, N3]
+      voltage_to_phase_sign: 1
+      reporting_direction: 1
+    JS2:
+      phase_column: P(B_JS2|XBVM1)
+      voltage_column: V(B_JS2|XBVM1)
+      endpoints: [n_js2p, N6]
+      voltage_to_phase_sign: 1
+      reporting_direction: 1
+timestamp_matching:
+  parser: decimal_from_literal_csv_token
+  reference: exact_common_absolute_timestamps
+  tolerance_seconds: 0
+  interpolation: prohibited
+  resampling: prohibited
+  time_alignment: prohibited
+  missing_registered_timestamp: INVALID
+control_hierarchy:
+  baseline: each_trace_own_pre_window_mean
+  scope: each_load_each_initialization_each_source_trace
+  aread: "max over source [94,130) ps of abs(read_trace(t)-mean(read_trace, PRE))"
+  actrl: "max over source [94,130) ps of abs(matched_control_trace(t)-mean(matched_control_trace, PRE))"
+  amplitude_floors: {voltage: 5 uV, current: 0.5 uA}
+  ratio: "rctrl = Actrl / max(Aread, Afloor)"
+  regions:
+    - {when: "rctrl <= 0.01", residual_status: PASS_REGION, peak_latency: NOT_APPLICABLE, fwhm: NOT_APPLICABLE}
+    - {when: "0.01 < rctrl < 0.05", residual_status: NOT_ISOLATED, peak_latency: NOT_APPLICABLE, fwhm: NOT_APPLICABLE}
+    - {when: "rctrl >= 0.05", residual_status: NOT_ISOLATED, peak_latency: APPLICABLE, fwhm: APPLICABLE_IF_TWO_CROSSINGS}
+  required_control_metrics: [max_absolute_residual, rms_residual, time_normalized_l1_residual]
+  activity_intervals: "abs(adjacent_delta) > 0.01*Aread; descriptive only, never event counts or acceptance"
+lobe_rules:
+  signal: "source trace minus its own PRE mean"
+  primary_peak: "earliest maximum of abs(signal) in source window"
+  primary_sign: "sign at primary_peak"
+  primary_lobe: "maximal contiguous actual-sample interval containing primary_peak where primary_sign*signal > 0"
+  zero_crossing: "first adjacent actual-sample pair bracketing primary_sign*signal <= 0; an exact-zero sample is its own crossing; for a consecutive zero run use first zero on the left search and last zero on the right search; linearly interpolate only between opposite-sign nonzero samples within one trace; no cross-load alignment"
+  fwhm: "linear interpolation within one trace only at first left/right crossings of primary_sign*signal = 0.5*abs(primary_peak); NOT_APPLICABLE if either crossing is absent"
+  following_opposite_lobe: "largest abs(signal) after the primary-lobe right boundary with sign opposite primary_sign; NOT_APPLICABLE if absent"
+terminal_affine:
+  corrected_traces: "read minus matched control at identical literal decimal timestamps"
+  endpoint_loads_ohm: [1.0, 50.0]
+  interior_loads_ohm: [12.0, 25.0]
+  current_span_floor_uA: 0.5
+  voltage_span_floor_uV: 5.0
+  residual_band: "abs(e_L) <= max(5 uV, 0.01*abs(V50-V1))"
+  classifications: [COMPATIBLE_AT_NAMED_TIMESTAMP, NOT_SUPPORTED_AT_NAMED_TIMESTAMP, INCONCLUSIVE_ILL_CONDITIONED]
+  peak_envelope: separate_noninstantaneous_descriptor
+  forbidden_interpretation: fixed_internal_or_universal_thevenin_norton_impedance
+internal_trajectory:
+  baseline_phase: "p_star = (P_read - mean(P_read, PRE)) - (P_control - mean(P_control, PRE))"
+  baseline_voltage: "v_star = V_read - V_control"
+  cumulative_area: "a_star = integral_from_94ps_to_t(v_star dt)/Phi0 using actual-time trapezoid"
+  comparisons: [load_to_12ohm, adjacent_1_12, adjacent_12_25, adjacent_25_50, full_span_1_50]
+  windows: [pre, activity, recovery, post]
+  report: [pre_post_mean_p2p, path_max_abs_difference, path_actual_time_rms_difference, extrema, lobe_sign_order, phase_excursion, cumulative_area_path, activity_total_variation, control_envelope]
+  control_envelope: "for each witness/window/load-to-12 comparison, Emax=max_t abs(x_control,L-x_control,12) and Erms=actual-time RMS of that same exact-time difference"
+  resolved_label: RESOLVED_LOAD_ASSOCIATED_INTERNAL_TRAJECTORY_DIFFERENCE
+  resolved_requirements:
+    - exact_time_closure_control_and_input_qa_pass
+    - two_physically_distinct_junction_witnesses
+    - "a contiguous exact-common-timestamp interval has t_last-t_first >= 0.25 ps; no inferred sample count or time alignment is allowed"
+    - "phase Dmax > max(0.020 rad, 5*Emax), phase Drms > max(0.005 rad, 5*Erms), voltage Dmax > max(5 uV, 5*Emax), and voltage Drms > max(1 uV, 5*Erms), where D values are read-control path differences and E values are the matching control envelope"
+    - same_junction_phase_area_direction_consistency
+  pre_state_confounded_label: LOAD_EFFECT_ON_INITIALIZATION_OR_UNRESOLVED
+  forbidden_interpretation: state_preservation_mechanism_sfq_fluxoid_logic_or_event
+same_jj_cross_check:
+  phi0_wb: 2.067833848e-15
+  integration: actual_time_trapezoid
+  window: activity
+  phase_turns: "reporting_direction*(P_last-P_first)/(2*pi)"
+  area_turns: "reporting_direction*voltage_to_phase_sign*integral(V dt)/Phi0"
+  residual_turns: "phase_turns - area_turns"
+  status: descriptive_no_global_acceptance_tolerance
+numerical_status:
+  procedure: none_for_s2
+  report_value: NOT_APPLICABLE
+  reason: "S2 is a single-grid bounded load characterization; S1 numerical INCONCLUSIVE remains unchanged."
+  convergence_output: "classification=NOT_APPLICABLE; ladder=[]; bands=[]; per_adjacent_pair=[]; stop_rule_compliance=NOT_APPLICABLE"
+stop_rules:
+  - "Do not add a load, timestep, case, probe, window, band, sweep, receiver, or parameter adjustment."
+  - "Stop BLOCKED on a concrete active-closure, PWL, probe-header, fixture, binary, baseline, or lock mismatch."
+  - "Stop INVALID on missing/NaN/nonfinite/nonmonotonic/duplicate-time/truncated raw, solver failure, provenance failure, or out-of-scope write."
+  - "Preserve every raw/log/input artifact, including failed runs; never overwrite, delete, rename, or reuse the run ID."

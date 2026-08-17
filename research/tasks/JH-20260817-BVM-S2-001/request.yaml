@@ -1,0 +1,128 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-BVM-S2-001
+revision: 1
+workflow_state: DRAFT
+issued_at: null
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S2
+depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A, M11B, JH-20260814-BVM-S0-004, JH-20260817-BVM-S1-002]
+supersedes: null
+task:
+  kind: EXPERIMENT
+  objective: "Create exactly one immutable 16-run BVM S2 package and report only bounded, fixed-closure external-load source and internal-trajectory observations at the registered 0.0125 ps working timestep."
+  research_question: "With every BVM condition fixed except external R_LD={1,12,25,50} ohm, how do matched-control-corrected V(SL1), I(L_SL|XBVM1), and direct JM1/JM2/JS1/JS2 trajectories vary for operational init_positive/init_negative?"
+  non_goals:
+    - "Do not rerun, alter, reinterpret, or upgrade S0 or S1 evidence; S1 numerical INCONCLUSIVE remains unchanged."
+    - "Do not make a numerical-convergence or resolution-independent claim; S2 is a single-grid bounded characterization."
+    - "Do not attach or evaluate BQ, DCSFQ_BVM, JTL, T1, a receiver, INTERFACE_GATE_V1, a candidate, route, logical read0/read1, state preservation, SFQ/event, fluxoid, hardware, published reproduction, or universal source impedance."
+    - "Do not add loads, timesteps, cases, probes, windows, bands, sweeps, parameter tuning, interpolation, resampling, or time alignment after inspecting data."
+  claim_ceiling: "bounded per-load source and load-associated internal-trajectory observations at the registered 0.0125 ps working timestep, plus named terminal affine-compatibility diagnostics only"
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md
+    - docs/research/BVM_S2_LOAD_DEPENDENCE_PREREGISTRATION_DRAFT.md
+    - docs/research/BVM_S2_ARCHITECT_REVIEW.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - build/josim-cli
+    - circuits/bvm/bvm_cell.cir
+    - circuits/models/jjmit.cir
+    - research/tasks/JH-20260814-BVM-S0-004/audits/C02/verdict.yaml
+    - research/tasks/JH-20260817-BVM-S1-002/audits/C01/verdict.yaml
+    - research/tasks/JH-20260817-BVM-S1-SEAL-004/audits/C01/verdict.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/design/analysis-schema.json
+  write_paths:
+    - test/final/bvm/runs/bvm-s2-load-20260817-01/**
+    - research/tasks/JH-20260817-BVM-S2-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-BVM-S2-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S2-001/baseline/**
+    - research/tasks/JH-20260817-BVM-S2-001/design/**
+    - research/tasks/JH-20260817-BVM-S2-001/audits/**
+    - research/tasks/JH-20260814-BVM-S0-004/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S1-SEAL-004/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/**
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/**
+    - circuits/**
+    - scripts/**
+  locks: [locks/bvm-source-characterization, locks/bvm-s2-load, locks/test-final-bvm-runs]
+baseline:
+  git_head: 96599fca155ea7a2d8b891cd93fc9e0fa2b92eba
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-BVM-S2-001/baseline/git-status.txt, sha256: debd162ff504c41092c1d7926996ecca871dedd27211811084c962eaa010de42}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-001/baseline/scope-files.sha256, sha256: 0f9dc1bcd28d5963e1e659f2e23ac315377853f2d3caa15a71a2ebb06b228953}
+authorization: {edit: true, run_josim: true, network: false, install_dependencies: false, create_worktree: true, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_S2_LOAD_DEPENDENCE_PREREGISTRATION_DRAFT.md
+    - docs/research/BVM_S2_ARCHITECT_REVIEW.md
+    - research/tasks/JH-20260817-BVM-S2-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/design/analysis-schema.json
+    - research/tasks/JH-20260817-BVM-S1-002/audits/C01/verdict.yaml
+    - research/tasks/JH-20260817-BVM-S1-SEAL-004/audits/C01/verdict.yaml
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: test/final/bvm/runs/bvm-s2-load-20260817-01/manifest.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: test/final/bvm/runs/bvm-s2-load-20260817-01/inputs/**, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D3, path: test/final/bvm/runs/bvm-s2-load-20260817-01/raw/**, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: test/final/bvm/runs/bvm-s2-load-20260817-01/logs/**, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D6, path: test/final/bvm/runs/bvm-s2-load-20260817-01/analysis.md, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D7, path: research/tasks/JH-20260817-BVM-S2-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Preflight records only build/josim-cli v2.7.2837d13 with SHA-256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2, copied BVM/jjmit closure hashes, and a unique nonexisting run root. Any other binary, PATH resolution, closure or run-root state blocks execution.", evidence: [preflight-log, manifest.yaml, inputs]}
+  - {id: AC2, condition: "Create exactly sixteen immutable runs: R_LD=1/12/25/50 ohm times init_positive/init_negative times read/matched-control, all at 0.0125 ps and 170 ps. Only R_LD changes across loads; matched controls retain every source/knot except 96-105 ps WL/SE amplitudes become zero. Preserve all raw CSV, inputs, stdout/stderr, manifests and hashes.", evidence: [manifest.yaml, inputs, raw, logs]}
+  - {id: AC3, condition: "Every run has all registered finite columns, zero solver exit/no unhandled solver error, strictly increasing nonduplicate actual time, and coverage of all registered half-open windows. Header strings, endpoints, vts and rd exactly equal preregistration.yaml for source, JM1/JM2/JS1/JS2 and inputs (I_WL1 0->WL1, I_BL1 0->BL1, I_SE1 0->SE1).", evidence: [raw-csv, manifest.yaml, qa-report]}
+  - {id: AC4, condition: "Apply per-load/init PRE JM1/JM2 p2p <=0.020 rad and same-load positive/negative JM1/JM2 mean-vector L-infinity separation >=0.100 rad, reporting these only as readiness/comparability and never as a memory, logical, fluxoid or state-preservation Gate.", evidence: [analysis.json, analysis.md]}
+  - {id: AC5, condition: "Use literal CSV decimal timestamps with zero tolerance for every paired-control and cross-load comparison; prohibit interpolation/resampling/correlation/peak alignment. Compute Aread/Actrl only as the own-PRE-baseline-subtracted source-window maxima stated in preregistration.yaml, then apply the frozen rctrl hierarchy, control residual metrics, exact-zero tie rules, lobe/FWHM rules and explicit NOT_APPLICABLE reasons exactly as preregistration.yaml.", evidence: [analysis.json, analysis.md]}
+  - {id: AC6, condition: "analysis.json validates against design/analysis-schema.json and is METRIC_SPEC_V2 section 11.1 complete: metric spec path/version/hash; provenance; selected actual windows; mappings; signal/control/control-corrected namespaces; raw rad plus turns; activity only; same-JJ cross_check; convergence={classification: NOT_APPLICABLE, ladder: [], bands: [], per_adjacent_pair: [], stop_rule_compliance: NOT_APPLICABLE, reason}; explicit unknown/NA; and no NaN/Inf or event/SFQ/pulse/fluxoid-count fields.", evidence: [analysis.json, schema-validation-log]}
+  - {id: AC7, condition: "For every direct JM1/JM2/JS1/JS2 P/V mapping, report PRE/POST platform mean rad and turns; activity endpoint phase rad/turns; actual-time direct-V area; and residual = phase_reported_turns - area_reported_turns using Phi0=2.067833848e-15 Wb. Treat this only as same-JJ descriptive consistency, with no global residual PASS band.", evidence: [analysis.json, analysis.md]}
+  - {id: AC8, condition: "Report per-load terminal V/I observations and 1/50-ohm endpoint affine reference; independently report e12/e25 and named eligible intervals under frozen 0.5-uA/5-uV conditioning floors and abs(e)<=max(5uV,1% endpoint-voltage-span). Report peak-envelope separately; never call either result universal/fixed internal Thevenin/Norton impedance.", evidence: [analysis.json, analysis.md]}
+  - {id: AC9, condition: "Report preregistered control-corrected JM1/JM2/JS1/JS2 p-star/v-star/a-star cross-load paths and the internal trajectory discriminator. If PRE is load-affected, use LOAD_EFFECT_ON_INITIALIZATION_OR_UNRESOLVED; if the exact two-witness/persistence/control-envelope/floor/direction requirements pass, the only permitted positive label is RESOLVED_LOAD_ASSOCIATED_INTERNAL_TRAJECTORY_DIFFERENCE.", evidence: [analysis.json, analysis.md]}
+  - {id: AC10, condition: "Receipt hashes/maps all created artifacts and every AC. It records numerical_status=NOT_APPLICABLE because no S2 convergence procedure is registered, preserves S1 INCONCLUSIVE, and stops after delivery for Copilot skeptical evidence review before Codex audit.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions:
+  - "Wrong binary, closure, netlist, internal R_SL, source/direct-JJ header, endpoint, direction, Phi0, residual definition, load matrix, timestep, PWL, hash/provenance, missing control, missing raw/log/input, solver/CSV/NaN/nonfinite/nonmonotonic/duplicate-time failure, or out-of-scope write."
+  - "Any overwrite/delete/rename/reused run root; added load/timestep/case/probe/window/band; interpolation/resampling/alignment; receiver/JTL/BQ/DCSFQ_BVM/T1 attachment; parameter sweep/tuning; or logical/SFQ/fluxoid/Gate/universal/hardware claim."
+inconclusive_conditions:
+  - "Artifact is valid but readiness, matched-control isolation, exact common-time matching, input identity, terminal conditioning, or internal attribution requirements are unavailable or not met."
+  - "A valid terminal result that is non-affine is NOT_SUPPORTED at a named time/feature, not a physical circuit FAIL; no numerical convergence conclusion is available because S2 deliberately registers no ladder."
+stop_conditions:
+  - "HEAD, issuer dirty snapshot, scope hash, binary provenance, current HANDOVER/MetricSpec hash, authority, lock, active closure, PWL, probe/header or fixture preflight differs."
+  - "Need a different/new load, timestep, case, probe, window, band, source, solver setting, interpolation/alignment, parameter sweep, receiver/Gate interpretation, network/install/commit/delete/overwrite action, or any write outside scope."
+  - "Run root exists, any raw artifact is already present, any required deliverable cannot be written without overwrite, or final verify-task fails: preserve evidence and report BLOCKED/DEVIATED."
+issuance_blockers:
+  - "Awaiting josim_verifier read-only contract/preflight review."
+  - "Awaiting user's explicit approval to seal/ISSUE this immutable request and separately notify execution authority."

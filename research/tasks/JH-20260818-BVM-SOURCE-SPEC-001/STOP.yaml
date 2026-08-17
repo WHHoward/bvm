@@ -1,0 +1,22 @@
+record_type: user_authorized_stop
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+recorded_at: "2026-08-18T02:37:16+08:00"
+system_time_command: "date --iso-8601=seconds"
+status: BLOCKED_STOP
+reason: >-
+  Immutable task metadata contains timestamps later than their actual creation:
+  request issued_at 03:00, C01 created_at 10:20, C02 created_at 10:45, and
+  A03 ACK/receipt timestamps after its 02:17 mailbox delivery. The chronology
+  and provenance defect is preserved as a historical fact.
+constraints:
+  - "Do not start BQ."
+  - "Do not modify request, A01/A02/A03, receipts, C01, or C02."
+  - "A03 is not ACCEPTED BVM_SOURCE_SPEC_V1 and is not an accepted BQ replay input."
+  - "Do not create A04 or perform workflow maintenance."
+future_attempt_condition: >-
+  Only after real system time is strictly later than 2026-08-18T10:45:00+08:00
+  and the user gives new explicit authorization may an append-only A04 be created.
+timestamp_discipline: >-
+  Before ACK, after all work before receipt, and before Codex audit, execute
+  date --iso-8601=seconds and use that actual result without prefill,
+  extrapolation, rounding, or manual future timestamps.

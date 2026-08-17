@@ -1,0 +1,118 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-BVM-S1-002
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-17T11:01:19+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S1
+depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A, M11B, JH-20260814-BVM-S0-004]
+supersedes: {task_id: JH-20260817-BVM-S1-001, revision: 1}
+task:
+  kind: EXPERIMENT
+  objective: "Create a new immutable fixed-fixture BVM source package and determine only whether named source observables are numerically converged under the registered S1 timestep procedure."
+  research_question: "Under the fixed BVM closure, 12-ohm load, operational init_positive/init_negative procedures, single read PWL, and matched zero-read controls, do V(SL1) and I(L_SL|XBVM1) satisfy the preregistered S1 numerical timestep-convergence procedure?"
+  non_goals:
+    - "Do not alter, rerun, overwrite, reinterpret, or upgrade BVM-S0 raw, criteria, or C02 disposition."
+    - "Do not attach/test BQ, DCSFQ_BVM, JTL, T1, receiver behavior, INTERFACE_GATE_V1, candidate selection, route choice, load/bias/device/read sweeps, or parameter tuning."
+    - "Do not make logical read0/read1, memory/state-preservation, SFQ, event, fluxoid, universal source-specification, hardware, or published-reproduction claims."
+    - "Do not add a fourth timestep or move windows/bands/stimulus after inspecting results."
+  claim_ceiling: bounded_fixed_fixture_source_observations_and_numerical_convergence_under_registered_s1_procedure_only
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - build/josim-cli
+    - circuits/bvm/bvm_cell.cir
+    - circuits/models/jjmit.cir
+    - test/final/bvm/test_bvm_final.cir
+    - research/tasks/JH-20260814-BVM-S0-D0-003/audits/C01/verdict.yaml
+    - research/tasks/JH-20260814-BVM-S0-004/audits/C02/verdict.yaml
+    - research/tasks/JH-20260817-BVM-S1-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S1-001/design/s1-canonical-source-convergence.md
+  write_paths:
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/**
+    - research/tasks/JH-20260817-BVM-S1-002/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-BVM-S1-002/request.yaml
+    - research/tasks/JH-20260817-BVM-S1-002/request.sha256
+    - research/tasks/JH-20260817-BVM-S1-002/baseline/**
+    - research/tasks/JH-20260817-BVM-S1-002/audits/**
+    - research/tasks/JH-20260817-BVM-S1-001/**
+    - research/tasks/JH-20260814-BVM-S0-D0-003/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260814-BVM-S0-002/**
+    - research/tasks/JH-20260814-BVM-S0-003/**
+    - research/tasks/JH-20260814-BVM-S0-004/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/**
+    - circuits/**
+    - scripts/**
+  locks: [locks/bvm-source-characterization, locks/bvm-s1-canonical, locks/test-final-bvm-runs]
+baseline:
+  git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-BVM-S1-002/baseline/git-status.txt, sha256: c32fa8963337a6abe95f7070715539ab284398aa5142ebe35f0fdbc744c0e00d}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S1-002/baseline/scope-files.sha256, sha256: aa52039e137d954442b0841cd4dd0ebdd7c973cf2b7055eeef16074c5aa9308b}
+authorization: {edit: true, run_josim: true, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - docs/research/BVM_SOURCE_CHARACTERIZATION_PREFLIGHT.md
+    - research/tasks/JH-20260814-BVM-S0-004/audits/C02/verdict.yaml
+    - research/tasks/JH-20260817-BVM-S1-001/design/s1-canonical-source-convergence.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/manifest.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/inputs/**, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D3, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/raw/**, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.md, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D6, path: research/tasks/JH-20260817-BVM-S1-002/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Before edits/runs, record only /home/howard/JoSIM/build/josim-cli v2.7.2837d13, SHA-256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2; PATH and other binaries are prohibited.", evidence: [preflight-log, manifest.yaml]}
+  - {id: AC2, condition: "Create exactly one immutable 12-run root: four named init/read-control cases x exactly 0.05/0.025/0.0125 ps, copied active closure, one R_LD SL1 0 12 load, fixed initialization/read PWL, exact-zero matched-control knots, and no unregistered change. Required probes are V(SL1) SL1->0; I(L_SL|XBVM1) N8->SL1; P(B_JM1|XBVM1)/V(B_JM1|XBVM1) N1->n_jm1o vts=+1 rd=+1; and P(B_JM2|XBVM1)/V(B_JM2|XBVM1) n_jm2i->N2 vts=+1 rd=+1.", evidence: [manifest.yaml, inputs, closure-hashes]}
+  - {id: AC3, condition: "All raw runs preserve CSV/stdout/stderr/input closure/hash and actual time. Required source/input/direct-JM1/direct-JM2 columns are finite, complete, strictly increasing, and cover every registered window; probe strings, endpoint order, voltage-to-phase sign, and reporting direction must equal AC2 exactly.", evidence: [raw-csv, stdout-stderr, manifest.yaml]}
+  - {id: AC4, condition: "Apply the per-timestep/per-case pre-window JM1/JM2 p2p <=0.020 rad readiness check and positive/negative JM1/JM2 mean-vector L-infinity separation >=0.100 rad; report them only as timestep comparability/readiness, never a memory/state Gate.", evidence: [analysis.md, analysis.json]}
+  - {id: AC5, condition: "Report full signal/control/control-corrected source waveforms, the registered control applicability status and explicit NOT_APPLICABLE reasons, exact-decimal common-time coverage, pre/post platform means in rad and derived turns, and activity-window endpoint delta in rad/derived turns plus same-JJ actual-time area/residual. Do not use event/fluxoid/logical/Gate language.", evidence: [analysis.md, analysis.json]}
+  - {id: AC6, condition: "Apply only the frozen S1 two-pair ladder, zero-tolerance decimal timestamp rule, control applicability hierarchy, bands, and no-extension stop rule. Report artifact validity separately from numerical CONVERGED/INCONCLUSIVE/INVALID and bounded per-timestep observations separately from any converged characterization.", evidence: [analysis.md, analysis.json]}
+  - {id: AC7, condition: "Receipt hashes/maps all created artifacts and AC1-AC6; final verify-task succeeds. Claude stops after delivery for required Copilot skeptical evidence review before Codex audit.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions:
+  - "Wrong binary, missing/misnamed source or direct-JJ probe, endpoint/direction mismatch, missing copied closure/hash, raw overwrite, solver/CSV/NaN/nonmonotonic/duplicate-time failure, truncated registered window, or an out-of-scope write."
+  - "Any receiver/JTL/BQ/DCSFQ_BVM/T1 attachment, Gate/logical/SFQ/fluxoid claim, load/bias/device/read sweep, unregistered parameter/timestep, network/install/commit/delete/rename action."
+inconclusive_conditions:
+  - "Artifact is valid but an S1 readiness, applicable convergence, matched-control residual, or exact common-time comparison requirement fails at the fixed 0.0125-ps maximum."
+  - "Artifact is valid and supports named per-timestep observations, but numerical convergence is not established; those observations must not be upgraded to a timestep-converged characterization."
+stop_conditions:
+  - "HEAD, issuer dirty snapshot, scope hash, binary provenance, authority, metric spec, or lock preflight differs."
+  - "Need a fifth case, fourth timestep, changed closure/stimulus/load/window/band/timestamp rule, interpolation/resampling/time alignment, parameter sweep, or receiver/Gate interpretation."
+  - "Preflight finds a concrete reproducible active closure, stimulus, probe, or fixture inconsistency; run root exists; any required action needs unsupported authority; or final verify-task fails. Preserve evidence and report BLOCKED/DEVIATED."
+issuance_blockers: []

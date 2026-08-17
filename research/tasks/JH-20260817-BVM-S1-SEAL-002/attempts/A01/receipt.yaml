@@ -1,0 +1,105 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-002
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T12:20:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "f0da945f38098dadaa6e0438a54b747af0f89b2df732ad864e3cfa786355638c"
+  ack_sha256: "3fd14912670743efd39dc55bb28c557d52622029365d8aa05ac5cd44cac64085"
+execution_status: COMPLETED
+baseline_git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+result_git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+changes:
+  - path: research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/evidence-seal.yaml
+    action: CREATED
+    sha256: "2ad639584903cbb5d38c965be54db29a3264710aa61baeedda63377a41f3dc66"
+  - path: research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/seal_check.py
+    action: CREATED
+    sha256: "da2cf33fae26d791d6ce9e69b70bd5a603d9abc1eb1e7c012407e3846d8ded41"
+  - path: research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/logs/seal-check.log
+    action: CREATED
+    sha256: "27b5dd869eb7385527f93793cbe6358ef5622891f04f8ec711086ed03de43791"
+artifacts:
+  - {id: D1, path: research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/evidence-seal.yaml,
+     sha256: "2ad639584903cbb5d38c965be54db29a3264710aa61baeedda63377a41f3dc66",
+     role: DOCUMENTATION}
+  - {id: D2, path: research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/seal_check.py,
+     sha256: "da2cf33fae26d791d6ce9e69b70bd5a603d9abc1eb1e7c012407e3846d8ded41",
+     role: IMPLEMENTATION}
+  - {id: D3, path: research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/logs/seal-check.log,
+     sha256: "27b5dd869eb7385527f93793cbe6358ef5622891f04f8ec711086ed03de43791",
+     role: TEST}
+commands:
+  - command: "python3 seal_check.py (from attempts/A01, tee to logs/seal-check.log)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/logs/seal-check.log
+    log_sha256: "27b5dd869eb7385527f93793cbe6358ef5622891f04f8ec711086ed03de43791"
+tests:
+  - id: seal-validation
+    status: PASS
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/logs/seal-check.log]
+    notes:
+      - "72 entries (54 A01_RAW_EXECUTION, 9 A01_HISTORICAL, 9 A02_CORRECTED);
+         closure-hashes.txt cross-check 50/50 OK; post-write tamper check OK."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/evidence-seal.yaml]
+    notes:
+      - "Run no JoSIM; added only attempts/A01/** files; no S1-002 or run-root
+         file modified (seal_check.py is read-only on those paths)."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/evidence-seal.yaml]
+    notes:
+      - "Every referenced S1 source artifact individually SHA-256 hashed and
+         cross-checked against closure-hashes.txt (50 A01 files) and receipt
+         bindings; authority separation explicit per entry
+         (A01_RAW_EXECUTION / A01_HISTORICAL / A02_CORRECTED)."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/logs/seal-check.log]
+    notes:
+      - "Seal distinguishes: A01 raw/execution artifacts are immutable
+         experimental facts (A01_RAW_EXECUTION); A01 receipt is a historical
+         record (post-delivery modified to bind A02 artifacts, hence not final
+         authority for A02 provenance — A02 files are sealed from live disk);
+         A02 is a corrected/recomputed analysis of existing immutable raw,
+         never a new simulation execution (A02_CORRECTED)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/evidence-seal.yaml]
+    notes:
+      - "Authority mapping explicit per entry: A01 analysis.json/analysis.md
+         sealed as A01_HISTORICAL (reporting authority stays historical; their
+         table defects documented in A01 REVIEW.md); A02 corrected analysis
+         supersedes them only for corrected reporting/measurement authority;
+         raw/inputs/stdout/stderr/manifest/closure-hashes remain
+         A01_RAW_EXECUTION authority.  No historical artifact is deleted or
+         relabeled as absent."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/logs/seal-check.log]
+    notes:
+      - "This receipt carries its own A01 timestamp/commands/logs and hashes/
+         maps D1-D3 and AC1-AC4; verify-task succeeds without modifying any
+         S1-002 protocol document."
+observations:
+  - "A01 analysis.json/analysis.md are sealed as A01_HISTORICAL (superseded as
+     analysis authority by A02, kept immutable for provenance; report-layer
+     defects documented in A01 REVIEW.md)."
+  - "A02 corrected artifacts sealed as A02_CORRECTED (current authority)."
+  - "The three A02 command logs are included in the seal (A02_CORRECTED)."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "No scientific disposition authorized by this task."
+deviations: []
+blockers: []

@@ -1,0 +1,55 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S1-002
+revision: 1
+attempt_id: A02
+workflow_state: ACKED
+created_at: "2026-08-17T11:40:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "2e18b89dcaa5650f759063e572cec13b869c880e8086cfb0ba15daf01eaf2a32"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "d0de732c752505fa4cdd1c46598a604cebe0afba"
+  dirty_paths:
+    - research/tasks/JH-20260817-BVM-S1-002/** (A01 delivered, untracked)
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/** (A01 run root, untracked)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Codex REWORK instruction (mailbox codex-20260817-113205, per Copilot
+    REVIEW.md): report-layer correction ONLY.  No JoSIM run.  Do not modify/
+    move/rename/overwrite A01 raw, inputs, stdout/stderr, manifest,
+    closure-hashes, analysis.json or analysis.md.  Create hash-bound
+    corrected JSON + Markdown + deterministic generator + A02 logs:
+    (1) same-script generation of corrected JSON+MD fixing neg:I 0.05->0.025
+    pointwise PASS / band-floor labels and related wording; (2) implement all
+    registered control RMS, time-normalized L1, adjacent-pair control max/RMS
+    differences, control-corrected source waveforms, control-corrected
+    platform deltas and 1%/0.2% bands; (3) report negative-read FWHM with its
+    two half-height crossings (compute if definable) and fix endpoint-wording;
+    (4) prove corrected outputs with independent raw recomputation/tests;
+    (5) verdict remains VALID artifact + numerical INCONCLUSIVE, no new
+    physical/Gate interpretation.  After delivery update the receipt,
+    run verify-task, request Copilot re-review.
+  non_goals:
+    - "No JoSIM run, no raw/analysis.json/analysis.md modification."
+    - "No ladder/window/band/claim-ceiling change; no new physical/Gate claim."
+  stop_conditions:
+    - "Any requirement to touch A01 frozen artifacts; unsupported authority; verify-task failure."
+planned_commands:
+  - "python3 gen_analysis_corrected.py (run root) -> analysis-corrected.json + analysis-corrected.md"
+  - "python3 verify_analysis_corrected.py (independent recomputation checks)"
+  - "python3 handoff.py verify-task"
+expected_changed_paths:
+  - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.json
+  - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.md
+  - test/final/bvm/runs/bvm-s1-canonical-20260817-01/gen_analysis_corrected.py
+  - test/final/bvm/runs/bvm-s1-canonical-20260817-01/verify_analysis_corrected.py
+  - research/tasks/JH-20260817-BVM-S1-002/attempts/A02/**
+blockers: []
+deviations: []

@@ -1,0 +1,44 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-004
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T12:43:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c72262f8646080e3aa496ad5fe390b3e3f149bf412554174e292ec75359b6c8c"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "d0de732c752505fa4cdd1c46598a604cebe0afba"
+  dirty_paths:
+    - research/tasks/JH-20260817-BVM-S1-SEAL-00*/** (untracked)
+    - research/tasks/JH-20260817-BVM-S1-002/** (untracked)
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/** (untracked)
+    - research/mailbox/from-claude/*.md (untracked)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    SEAL-004 supersedes SEAL-003 because analyze_s1.py was omitted.  Add only
+    SEAL-004 attempts/**.  Include analyze_s1.py as A01_HISTORICAL
+    analysis-generation provenance.  seal_check must RECURSIVELY enumerate
+    every regular frozen run-root file and fail unless that exact
+    relative-path set equals the run-root entries in evidence-seal.yaml
+    (report counts and missing/extra paths); closure-hashes.txt must NOT be
+    the completeness oracle.  Preserve authority layers.  No JoSIM; no
+    S1-002/SEAL-003/run-root file altered.
+  non_goals:
+    - "No scientific conclusion; no modification of sealed evidence."
+  stop_conditions:
+    - "Any mismatch between live run-root enumeration and seal entries;
+       missing source artifact; scope need."
+planned_commands:
+  - "python3 seal_check.py (tee logs/seal-check.log)"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S1-SEAL-004/attempts/A01/**
+blockers: []
+deviations: []

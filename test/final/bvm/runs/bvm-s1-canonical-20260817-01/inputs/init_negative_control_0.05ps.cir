@@ -1,0 +1,27 @@
+* S1 init_negative_control at 0.05ps -- BVM-S1 canonical source convergence (frozen)
+* Closure: copied jjmit + bvm_cell; XBVM1 WL1 BL1 SE1 SL1 BVM; only R_LD SL1 0 12
+* Init: WL/BL ramp to -100U over 10-11 ps, hold to 20 ps, return to 0 by 21 ps.
+* Read: WL+SE +100 uA 96-105 ps (matched zero-read control: knots identical, amplitudes 0)
+.include jjmit.cir
+.include bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+R_LD SL1 0 12
+
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+
+.tran 0.05p 170p
+
+* Direct junction probes (registered, S1-001 design):
+*   V(SL1)        SL1 -> 0
+*   I(L_SL|XBVM1) N8 -> SL1
+*   P/V(B_JM1|XBVM1) N1 -> n_jm1o, vts=+1, rd=+1
+*   P/V(B_JM2|XBVM1) n_jm2i -> N2, vts=+1, rd=+1
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print V(SL1) I(L_SL|XBVM1)
+.print I(I_WL1) I(I_SE1)
+.end

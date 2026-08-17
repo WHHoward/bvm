@@ -1,0 +1,102 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-001
+revision: 1
+workflow_state: ISSUED
+issued_at: '2026-08-17T11:58:36+08:00'
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S1
+depends_on: [JH-20260817-BVM-S1-002]
+supersedes: null
+task:
+  kind: ANALYSIS
+  objective: "Create a read-only, hash-bound provenance/evidence seal for existing S1-002 A01 raw execution artifacts and A02 corrected analysis artifacts without rerunning, changing, or scientifically reinterpreting S1."
+  research_question: "Can every final S1 evidence reference be located from zero, SHA-256 rehashed, and assigned an explicit A01 raw/execution versus A02 corrected-analysis authority/lineage role?"
+  non_goals:
+    - "Do not run JoSIM, create raw data, add a timestep/case/probe/window/band, or modify any S1-002 file."
+    - "Do not alter S1-002 acceptance criteria, numerical computation, artifact validity, scientific claim ceiling, or make any physical/Gate conclusion."
+    - "Do not delete, overwrite, rename, regenerate, or relabel historical A01/A02 artifacts; do not treat A02 as a new circuit execution."
+  claim_ceiling: provenance_and_evidence_sealing_only_no_scientific_reinterpretation_or_s1_disposition
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/METRIC_SPEC_V2.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - research/tasks/JH-20260817-BVM-S1-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S1-001/design/s1-canonical-source-convergence.md
+    - research/tasks/JH-20260817-BVM-S1-002/request.yaml
+    - research/tasks/JH-20260817-BVM-S1-002/request.sha256
+    - research/tasks/JH-20260817-BVM-S1-002/attempts/A01/**
+    - research/tasks/JH-20260817-BVM-S1-002/attempts/A02/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/manifest.yaml
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/closure-hashes.txt
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/inputs/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/raw/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/gen_inputs.py
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/run_all.sh
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analyze_s1.py
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.md
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/gen_analysis_corrected.py
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/verify_analysis_corrected.py
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.json
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.md
+  write_paths:
+    - research/tasks/JH-20260817-BVM-S1-SEAL-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-BVM-S1-SEAL-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S1-SEAL-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S1-SEAL-001/baseline/**
+    - research/tasks/JH-20260817-BVM-S1-SEAL-001/audits/**
+    - research/tasks/JH-20260817-BVM-S1-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/**
+    - docs/HANDOVER.md
+    - memory/project-todo.md
+    - docs/research/**
+  locks: [locks/bvm-source-characterization, locks/bvm-s1-evidence-seal]
+baseline:
+  git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-BVM-S1-SEAL-001/baseline/git-status.txt, sha256: 9bd291349769fe420de9bcb936546080479fd6dbc3b21d146a7295fe23a63c96}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S1-SEAL-001/baseline/scope-files.sha256, sha256: 504ae72e329fab789d980686eee72018ae04c0f1f1dd9c540ff091b28452fd8b}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-evidence-audit]
+  read_first:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/tasks/JH-20260817-BVM-S1-002/request.yaml
+    - research/tasks/JH-20260817-BVM-S1-002/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260817-BVM-S1-002/attempts/A01/REVIEW.md
+    - research/tasks/JH-20260817-BVM-S1-002/attempts/A02/REVIEW.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260817-BVM-S1-SEAL-001/attempts/A01/evidence-seal.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260817-BVM-S1-SEAL-001/attempts/A01/seal_check.py, role: IMPLEMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260817-BVM-S1-SEAL-001/attempts/A01/logs/seal-check.log, role: TEST, required: true}
+  - {id: D4, path: research/tasks/JH-20260817-BVM-S1-SEAL-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "No JoSIM command is run and no S1-002/run-root file is changed; every change is under this successor attempts path.", evidence: [receipt.yaml, command-log]}
+  - {id: AC2, condition: "Evidence seal lists every final referenced S1-002 input/raw CSV/stdout/stderr/log, manifest, closure hash, A01 report/receipt/review, A02 corrected generator/verifier/json/markdown/review with original repo path, SHA-256, artifact class, and lineage role; seal_check rehashes every listed file from zero.", evidence: [evidence-seal.yaml, seal-check.log]}
+  - {id: AC3, condition: "Seal explicitly distinguishes A01 raw/execution artifacts as immutable experimental facts; A01 receipt as a historical record not final authority for A02 provenance because it was post-delivery modified; and A02 as a corrected/recomputed analysis of existing immutable raw, never a new simulation execution.", evidence: [evidence-seal.yaml]}
+  - {id: AC4, condition: "Seal explicitly maps reporting/provenance authority: A01 analysis/report remains historical; A02 corrected analysis supersedes it only for corrected reporting/measurement authority; raw, inputs, stdout/stderr, manifest and closure hash remain A01 experimental authority. No historical artifact is deleted or relabeled as absent.", evidence: [evidence-seal.yaml, seal-check.log]}
+  - {id: AC5, condition: "Receipt has its own A01 timestamp, commands and logs; it hashes/maps D1-D3 and AC1-AC4. verify-task succeeds without modifying S1-002 protocol documents.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions:
+  - "Any S1-002/run-root mutation, any JoSIM execution, missing/hash-mismatched listed evidence, omitted final referenced evidence, or out-of-scope write."
+inconclusive_conditions:
+  - "A valid seal may state only provenance/evidence status; it cannot classify S1 numerical convergence or make a scientific disposition."
+stop_conditions:
+  - "Need to modify S1-002, rerun/recreate any raw or analysis artifact, alter scientific criteria, add a run/timestep/case/probe/window/band, or perform scientific interpretation."
+  - "Scope/hash/authority/lock mismatch, missing historical evidence, unsupported write, or verify-task failure."
+issuance_blockers: []

@@ -1,0 +1,44 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-003
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T12:35:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "cebba027735177f274af3cca1e904a0752f82c745253aa88eb1a9b88929a8146"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "d0de732c752505fa4cdd1c46598a604cebe0afba"
+  dirty_paths:
+    - research/tasks/JH-20260817-BVM-S1-SEAL-00*/** (untracked)
+    - research/tasks/JH-20260817-BVM-S1-002/** (untracked)
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/** (untracked)
+    - research/mailbox/from-claude/*.md (untracked)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    SEAL-003 supersedes SEAL-002 solely because logs-tmp-gen.txt (203 B, the
+    run-root input-generation log created 11:15 during A01) was not sealed.
+    Add only SEAL-003 attempts/** evidence-seal.yaml, seal_check.py,
+    seal-check.log, receipt.  Enumerate EVERY retained run-root source file;
+    explicitly include logs-tmp-gen.txt as immutable A01
+    input-generation/execution provenance (not a new simulation/scientific
+    observation); preserve A01 raw / A01 historical / A02 corrected /
+    SEAL-002 historical authority separation.  No JoSIM run; no S1-002,
+    SEAL-002, or run-root file changed.  Stop on any mismatch.
+  non_goals:
+    - "No scientific disposition; no modification of sealed evidence."
+  stop_conditions:
+    - "Any hash mismatch, missing source artifact, or scope need."
+planned_commands:
+  - "python3 seal_check.py (tee logs/seal-check.log)"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/**
+blockers: []
+deviations: []

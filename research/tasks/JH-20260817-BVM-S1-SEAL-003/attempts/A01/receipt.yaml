@@ -1,0 +1,100 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-003
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T12:40:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "cebba027735177f274af3cca1e904a0752f82c745253aa88eb1a9b88929a8146"
+  ack_sha256: "ab55c09f00ec3cbdeff1e517065b4653696b04cff71390fd2348b006c612a91d"
+execution_status: COMPLETED
+baseline_git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+result_git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+changes:
+  - path: research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/evidence-seal.yaml
+    action: CREATED
+    sha256: "6c18ccd3c76367bd62f0ac2fff70603d1f080671fdd1867ba31c88befc3e848d"
+  - path: research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/seal_check.py
+    action: CREATED
+    sha256: "79f40236ce08899180e45fbd94fbd173a38521ef41bacf18eb360043cd557661"
+  - path: research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/logs/seal-check.log
+    action: CREATED
+    sha256: "e02c8c07c4af8693c055c0e854beab3419bfa57bd30d6b148e51cc6cd796a65f"
+artifacts:
+  - {id: D1, path: research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/evidence-seal.yaml,
+     sha256: "6c18ccd3c76367bd62f0ac2fff70603d1f080671fdd1867ba31c88befc3e848d",
+     role: DOCUMENTATION}
+  - {id: D2, path: research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/seal_check.py,
+     sha256: "79f40236ce08899180e45fbd94fbd173a38521ef41bacf18eb360043cd557661",
+     role: IMPLEMENTATION}
+  - {id: D3, path: research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/logs/seal-check.log,
+     sha256: "e02c8c07c4af8693c055c0e854beab3419bfa57bd30d6b148e51cc6cd796a65f",
+     role: TEST}
+commands:
+  - command: "python3 seal_check.py (from attempts/A01, tee to logs/seal-check.log)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/logs/seal-check.log
+    log_sha256: "e02c8c07c4af8693c055c0e854beab3419bfa57bd30d6b148e51cc6cd796a65f"
+tests:
+  - id: seal-validation
+    status: PASS
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/logs/seal-check.log]
+    notes:
+      - "79 entries (55 A01_RAW_EXECUTION incl. logs-tmp-gen.txt, 9
+         A01_HISTORICAL, 9 A02_CORRECTED, 6 SEAL002_HISTORICAL);
+         closure-hashes.txt cross-check 50/50 OK; post-write tamper check OK;
+         logs-tmp-gen.txt explicitly tagged A01_RAW_EXECUTION."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/evidence-seal.yaml]
+    notes:
+      - "No JoSIM run; added only SEAL-003 attempts/A01/** files; no S1-002,
+         SEAL-002, or run-root file modified."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/evidence-seal.yaml]
+    notes:
+      - "Seal enumerates every retained run-root source file (55
+         A01_RAW_EXECUTION incl. logs-tmp-gen.txt) plus A01 historical, A02
+         corrected, and SEAL-002 historical layers; each individually
+         SHA-256 hashed and cross-checked against closure-hashes.txt (50/50)
+         and the SEAL-002 accepted seal."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/evidence-seal.yaml]
+    notes:
+      - "logs-tmp-gen.txt (203 B, run root, created 11:15 during A01) sealed
+         as immutable A01 input-generation/execution provenance, explicitly
+         not a new simulation/scientific observation."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/evidence-seal.yaml]
+    notes:
+      - "Four-layer authority separation preserved: A01 raw/execution
+         (immutable facts), A01 historical (superseded report/receipt),
+         A02 corrected (current analysis authority), SEAL-002 historical
+         (prior accepted seal)."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-SEAL-003/attempts/A01/logs/seal-check.log]
+    notes:
+      - "seal_check.py revalidates the written seal (tamper check) and
+         verifies logs-tmp-gen.txt tagging; exits non-zero on any mismatch;
+         none occurred.  verify-task succeeds; SEAL-002 files untouched."
+observations:
+  - "SEAL-002 C01 accepted (codex-20260817-122417) before SEAL-003 was
+     issued; SEAL-003 adds only the omitted logs-tmp-gen.txt to the seal and
+     preserves the accepted SEAL-002 layer as SEAL002_HISTORICAL."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "No scientific disposition authorized by this task."
+deviations: []
+blockers: []

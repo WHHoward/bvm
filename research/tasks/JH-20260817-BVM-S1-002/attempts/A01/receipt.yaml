@@ -1,0 +1,189 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S1-002
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T11:20:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "2e18b89dcaa5650f759063e572cec13b869c880e8086cfb0ba15daf01eaf2a32"
+  ack_sha256: "d38751162a8bb505d6021e1ce99a3e03f98915dfbce756ea525bd25aaa843ff0"
+execution_status: COMPLETED
+baseline_git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+result_git_head: d0de732c752505fa4cdd1c46598a604cebe0afba
+changes:
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/manifest.yaml
+    action: CREATED
+    sha256: "252280ee459482d6d4a1a4191c5a0a21233b4000b77a76e24405f934f17766ae"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json
+    action: CREATED
+    sha256: "5232a1425eae5e78494ee3b79cb74e287361b9a15364a434e18fd2d14c13b890"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.md
+    action: CREATED
+    sha256: "9b708265b8c4a24b81ab9ade188d7404bbac452f7412537a78e9ba0c45359aa7"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/closure-hashes.txt
+    action: CREATED
+    sha256: "bbb2c7f9520f2233c2e7beb3fca0e1f9ff19cdc6d1923d22689324e8daa334e5"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/gen_inputs.py
+    action: CREATED
+    sha256: "17e2276709b28d142f9de71d71901b0540bd31e17b5a3a929576fb5206c6bcac"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/run_all.sh
+    action: CREATED
+    sha256: "f121dfc5e5f7e2e2f9416aaccf387cc732a727f570ad44236439e533f1bbee35"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analyze_s1.py
+    action: CREATED
+    sha256: "e2c6a5204dbd8d53380d1db42ec911d1d2fae42b72385436ece991e8228e7989"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/inputs/init_positive_read_0.0125ps.cir
+    action: CREATED
+    sha256: "03bd9b9d5f53a4c5a8fdab1327f476c13873ee9e6aede38d577551f74a0e7daf"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/raw/init_positive_read/0.0125ps/run-01.csv
+    action: CREATED
+    sha256: "c5f293159a94d713bcf48d4f2c0a91baeb849730e97ccf9bc0477182b94910a1"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/raw/init_positive_read/0.0125ps/stdout.txt
+    action: CREATED
+    sha256: "8fe44031f55e5dd5ea1fba5990569eacfcdd86cc0f15aa6ba77c5b1b1a50576d"
+  - path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/gen-inputs.log
+    action: CREATED
+    sha256: "57bad5eb7fd7d32eef5e73ecc078c893c7bf9257e26ee6a73e1d73d4a4d379fa"
+  - path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/analyze-s1.log
+    action: CREATED
+    sha256: "bbf7ea81b2912132fcc933cd4b479745a60313acf0815466dfff494ffdc9a750"
+  - path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/verify-task-pre-receipt.log
+    action: CREATED
+    sha256: "230a7fa5ff2457eee7c8f5a4386bf4b375c0a1be79ba6d6fe02e29d6f909f822"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/gen_analysis_corrected.py
+    action: CREATED
+    sha256: "d788643719ba3d41fd379ff17e7e61cbec1a779c88e14bcbfa24a0531a2c7cc4"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/verify_analysis_corrected.py
+    action: CREATED
+    sha256: "40f9ea5db892a33074dad3cc280bf43fd9ca55780ee6fafd026b14f58c512bb8"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.json
+    action: CREATED
+    sha256: "83f65276fea51e8448b4dfb7e4a14da164d3e72452f869cc55fe3d1cf5698dbd"
+  - path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.md
+    action: CREATED
+    sha256: "7fd52638688a33656ad6b6dd58fee91a0059e545f43c9ccae1bd89d3e4addd47"
+artifacts:
+  - {id: D1, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/manifest.yaml,
+     sha256: "252280ee459482d6d4a1a4191c5a0a21233b4000b77a76e24405f934f17766ae",
+     role: MANIFEST}
+  - {id: D2, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/inputs/init_positive_read_0.0125ps.cir,
+     sha256: "03bd9b9d5f53a4c5a8fdab1327f476c13873ee9e6aede38d577551f74a0e7daf",
+     role: DOCUMENTATION}
+  - {id: D3, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/raw/init_positive_read/0.0125ps/run-01.csv,
+     sha256: "c5f293159a94d713bcf48d4f2c0a91baeb849730e97ccf9bc0477182b94910a1",
+     role: RAW}
+  - {id: D4, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json,
+     sha256: "5232a1425eae5e78494ee3b79cb74e287361b9a15364a434e18fd2d14c13b890",
+     role: DOCUMENTATION}
+  - {id: D5, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.md,
+     sha256: "9b708265b8c4a24b81ab9ade188d7404bbac452f7412537a78e9ba0c45359aa7",
+     role: DOCUMENTATION}
+  - {id: closure-hashes, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/closure-hashes.txt,
+     sha256: "bbb2c7f9520f2233c2e7beb3fca0e1f9ff19cdc6d1923d22689324e8daa334e5",
+     role: DOCUMENTATION}
+  - {id: verify-log, path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/verify-task-pre-receipt.log,
+     sha256: "230a7fa5ff2457eee7c8f5a4386bf4b375c0a1be79ba6d6fe02e29d6f909f822",
+     role: LOG}
+  - {id: gen-inputs-log, path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/gen-inputs.log,
+     sha256: "57bad5eb7fd7d32eef5e73ecc078c893c7bf9257e26ee6a73e1d73d4a4d379fa",
+     role: LOG}
+  - {id: analyze-s1-log, path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/analyze-s1.log,
+     sha256: "bbf7ea81b2912132fcc933cd4b479745a60313acf0815466dfff494ffdc9a750",
+     role: LOG}
+  - {id: run-stdout, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/raw/init_positive_read/0.0125ps/stdout.txt,
+     sha256: "8fe44031f55e5dd5ea1fba5990569eacfcdd86cc0f15aa6ba77c5b1b1a50576d",
+     role: LOG}
+  - {id: A02-gen, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/gen_analysis_corrected.py,
+     sha256: "d788643719ba3d41fd379ff17e7e61cbec1a779c88e14bcbfa24a0531a2c7cc4",
+     role: IMPLEMENTATION}
+  - {id: A02-verify, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/verify_analysis_corrected.py,
+     sha256: "40f9ea5db892a33074dad3cc280bf43fd9ca55780ee6fafd026b14f58c512bb8",
+     role: TEST}
+  - {id: A02-json, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.json,
+     sha256: "83f65276fea51e8448b4dfb7e4a14da164d3e72452f869cc55fe3d1cf5698dbd",
+     role: DOCUMENTATION}
+  - {id: A02-md, path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis-corrected.md,
+     sha256: "7fd52638688a33656ad6b6dd58fee91a0059e545f43c9ccae1bd89d3e4addd47",
+     role: DOCUMENTATION}
+commands:
+  - command: "python3 gen_inputs.py (run root)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/gen-inputs.log
+    log_sha256: "57bad5eb7fd7d32eef5e73ecc078c893c7bf9257e26ee6a73e1d73d4a4d379fa"
+  - command: "bash run_all.sh (run root; build/josim-cli, 12 runs)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s1-canonical-20260817-01/raw/init_positive_read/0.0125ps/stdout.txt
+    log_sha256: "8fe44031f55e5dd5ea1fba5990569eacfcdd86cc0f15aa6ba77c5b1b1a50576d"
+  - command: "python3 analyze_s1.py (run root)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/analyze-s1.log
+    log_sha256: "bbf7ea81b2912132fcc933cd4b479745a60313acf0815466dfff494ffdc9a750"
+tests:
+  - id: raw-qa
+    status: PASS
+    evidence_paths: [test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.md]
+    notes:
+      - "12/12 CSVs: exact registered header, no NaN/Inf, strictly increasing time, no duplicates, endpoint covers 170 ps."
+  - id: exact-timestamp-match
+    status: PASS
+    evidence_paths: [test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json]
+    notes:
+      - "Both adjacent pairs x 4 cases: 0 coarse tokens missing from fine CSV in source [94,130) ps (string-exact, zero tolerance)."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s1-canonical-20260817-01/manifest.yaml]
+    notes:
+      - "Only /home/howard/JoSIM/build/josim-cli used (v2.7.2837d13, SHA-256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2, matches AC1/scope hash; PATH not used)."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s1-canonical-20260817-01/manifest.yaml
+      - test/final/bvm/runs/bvm-s1-canonical-20260817-01/closure-hashes.txt
+    notes:
+      - "One immutable 12-run root (4 cases x 0.05/0.025/0.0125 ps); copied closure byte-identical (bvm_cell.cir ea734654..., jjmit.cir 19862d1f...); only R_LD SL1 0 12; fixed init/read PWL; control knots identical with zero amplitudes; registered probes/directions in netlist comments (V(SL1) SL1->0; I(L_SL|XBVM1) N8->SL1; P/V(B_JM1) N1->n_jm1o vts=+1 rd=+1; P/V(B_JM2) n_jm2i->N2 vts=+1 rd=+1)."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json
+      - test/final/bvm/runs/bvm-s1-canonical-20260817-01/closure-hashes.txt
+    notes:
+      - "All 12 raw runs keep CSV/stdout/stderr, closure/hash and actual time; columns finite/complete/strictly increasing; registered windows all covered; probe strings and endpoint order equal AC2 exactly."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json]
+    notes:
+      - "Pre-window p2p max 0.00581 rad <= 0.020 at all steps/cases; pos/neg L-inf mean-vector separation 11.8221 rad >= 0.100 at all steps; reported as timestep comparability/readiness only."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.json]
+    notes:
+      - "Full signal/control/control-corrected observables (peaks, latency, FWHM, pointwise/RMS); control applicability all PASS (rctrl 1.3e-5..3.8e-5) so latency/FWHM NOT_APPLICABLE with explicit reason; exact-decimal common-time coverage; pre/post platform means in rad and turns; activity endpoint deltas rad+turns; same-JJ actual-time area/residual descriptive; no event/fluxoid/logical/Gate language."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths: [test/final/bvm/runs/bvm-s1-canonical-20260817-01/analysis.md]
+    notes:
+      - "Frozen two-pair ladder applied without extension; zero-tolerance decimal timestamp rule; control hierarchy; bands; verdict INCONCLUSIVE reported separately from VALID artifact; bounded per-timestep observations not upgraded to converged characterization."
+  - id: AC7
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-BVM-S1-002/attempts/A01/logs/verify-task-pre-receipt.log]
+    notes:
+      - "Receipt hashes/maps all artifacts; verify-task VERIFIED (1 ACK, 0 receipt at run time); delivery stopped for required Copilot skeptical review before Codex audit."
+observations:
+  - "Artifact VALID; numerical verdict INCONCLUSIVE at fixed 0.0125 ps max depth."
+  - "Coarse pair 0.05->0.025 fails pointwise+RMS bands on all four read observables (e.g. pos V pw 24.45 uV vs 9.04 uV band; pos V peak 0.9007 vs 0.9036 mV)."
+  - "Fine pair 0.025->0.0125: pointwise band passes everywhere; RMS band fails narrowly on positive read only (V 2.00 vs 1.81 uV; I 0.167 vs 0.151 uA)."
+  - "Latency (5.00/5.02/5.01 ps pos; 10.00 ps neg), FWHM (5.90/5.89/5.89 ps), readiness, controls (12-12 nV residual) all pass; predictions essentially met (pos peak at low edge of +0.904..+0.905 mV band)."
+interpretations:
+  - "The remaining drift is amplitude/shape (RMS) of the read excursion, not timing; the 0.05 ps grid under-resolves the ~5.9 ps-wide excursion. This is a proposed interpretation for audit, not a Gate."
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "No fourth timestep per registered stop rule; convergence at finer depth is not established."
+deviations: []
+blockers: []

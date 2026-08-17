@@ -1,0 +1,46 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-001
+revision: 1
+attempt_id: A01
+workflow_state: BLOCKED
+created_at: "2026-08-17T12:10:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c57c0efd8ef205f0dfa6b5e9433d0f148c8e94d711454eb23dcafcb036bfd3ec"
+decision: BLOCKED
+preflight:
+  observed_git_head: "d0de732c752505fa4cdd1c46598a604cebe0afba"
+  dirty_paths:
+    - research/tasks/JH-20260817-BVM-S1-SEAL-001/** (untracked)
+    - research/tasks/JH-20260817-BVM-S1-002/** (untracked)
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/** (untracked)
+    - research/mailbox/from-claude/claude-20260817-120418.md (untracked)
+  scope_accepted: false
+  required_skills_available: true
+understanding:
+  objective: >-
+    Seal S1-002 evidence (A01 raw/execution vs A01 historical-report vs A02
+    corrected-analysis authority separation), run_josim=false, add only
+    attempts/** seal manifest/verifier/command-log/receipt, rehash every
+    referenced artifact individually, stop on any missing/mismatched item.
+  non_goals:
+    - "No scientific verdict; no modification of any S1-002 or run-root file."
+  stop_conditions:
+    - "Scope-hash preflight differs; missing/mismatched source artifact; any
+       need to change S1 criteria/windows/bands."
+planned_commands:
+  - "(blocked — none executed)"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S1-SEAL-001/attempts/**
+blockers:
+  - "verify-task fails: baseline scope-files.sha256 lacks the three A02 command
+     logs created at 11:58 (research/tasks/JH-20260817-BVM-S1-002/attempts/A02/
+     logs/gen-corrected.log, verify-corrected.log, verify-task.log).  read_paths
+     glob attempts/A02/** expands to files not present in the baseline manifest
+     (missing paths).  These files were created per the Codex REWORK instruction
+     (codex-20260817-113205) after the SEAL baseline snapshot was taken."
+deviations: []

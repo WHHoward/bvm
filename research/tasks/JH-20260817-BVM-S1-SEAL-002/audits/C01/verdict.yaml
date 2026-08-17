@@ -1,0 +1,59 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-002
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T12:23:35+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "f0da945f38098dadaa6e0438a54b747af0f89b2df732ad864e3cfa786355638c"
+  ack_sha256: "3fd14912670743efd39dc55bb28c557d52622029365d8aa05ac5cd44cac64085"
+  receipt_sha256: "90fc5a8d4aa15ebe7008b05bdcae03e9d526e2be54ebca3d4a5852032e509789"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-scope
+    status: PASS
+    evidence:
+      - "verify-task: VERIFIED; request, ACK, and receipt hashes bind in order."
+      - "The execution writes are limited to JH-20260817-BVM-S1-SEAL-002/attempts/A01/**; no JoSIM execution is authorized or recorded."
+  - id: complete-zero-base-rehash
+    status: PASS
+    evidence:
+      - "Independent stdlib SHA-256 recomputation: 72/72 seal entries match disk; 0 mismatches, 0 missing expected entries, and 0 unexpected entries."
+      - "Classes are 54 A01_RAW_EXECUTION, 9 A01_HISTORICAL, and 9 A02_CORRECTED; closure-hashes.txt cross-check covers 50/50 listed closure files."
+  - id: authority-lineage-separation
+    status: PASS
+    evidence:
+      - "The seal preserves A01 raw/inputs/stdout/stderr/closure as immutable experimental authority."
+      - "It records A01 receipt/report and A01 verify-task-final.log as historical, including their post-delivery limitations."
+      - "It records A02 only as corrected/recomputed analysis of immutable raw, never as a second circuit execution."
+  - id: independent-peer-review
+    status: PASS
+    evidence:
+      - "Copilot REVIEW.md independently rehashed 72/72 entries and passed AC1-AC5 without Major or Critical findings."
+findings:
+  - "MINOR: A01 verify-task-final.log is an A02-era re-run and A01 receipt was post-delivery modified. Both remain preserved as historical artifacts and are explicitly excluded as final A02 provenance authority; neither invalidates the sealed raw or A02 corrected-analysis lineage."
+accepted_claims:
+  - "The S1-002 evidence set referenced by the seal is locatable from zero and individually SHA-256 bound with complete expected-source coverage."
+  - "A01 raw execution facts, A01 historical reporting records, and A02 corrected analysis have an explicit, non-destructive authority separation."
+  - "This sealing artifact is VALID for provenance/evidence integrity."
+rejected_claims:
+  - "This sealing audit does not rerun JoSIM, create new raw evidence, or certify numerical convergence."
+  - "This sealing audit does not revise S1-002 criteria, determine a source characterization outcome, or support any BQ, DCSFQ_BVM, Interface Gate, logical-state, fluxoid, or SFQ claim."
+required_rework: []
+next_actions:
+  - "Treat SEAL-002 C01 as the provenance authority for the retained S1 evidence set."
+  - "Any final S1 numerical/scientific disposition must be a separately authorized evidence audit using this sealed evidence; it is not decided by this provenance-only task."
+claim_ceiling: provenance_and_evidence_sealing_only_no_scientific_reinterpretation_or_s1_disposition

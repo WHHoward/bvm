@@ -1,0 +1,45 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T12:15:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "f0da945f38098dadaa6e0438a54b747af0f89b2df732ad864e3cfa786355638c"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "d0de732c752505fa4cdd1c46598a604cebe0afba"
+  dirty_paths:
+    - research/tasks/JH-20260817-BVM-S1-SEAL-001/** (untracked)
+    - research/tasks/JH-20260817-BVM-S1-SEAL-002/** (untracked)
+    - research/tasks/JH-20260817-BVM-S1-002/** (untracked)
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/** (untracked)
+    - research/mailbox/from-claude/*.md (untracked)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Read-only hash-bound provenance/evidence seal for S1-002 A01 raw
+    execution artifacts and A02 corrected-analysis artifacts, including the
+    three A02 command logs.  Add only SEAL-002 attempts/** evidence-seal.yaml,
+    seal_check.py, seal-check.log, receipt.  Individually hash/revalidate all
+    referenced S1 sources; distinguish A01 raw/execution authority, A01
+    historical-report/receipt limits, and A02 corrected-analysis authority.
+    Stop on any mismatch or scope need.  No scientific disposition.
+  non_goals:
+    - "No JoSIM run; no modification of any S1-002 or run-root file; no
+       scientific verdict."
+  stop_conditions:
+    - "Any hash mismatch, missing source artifact, or scope need."
+planned_commands:
+  - "python3 seal_check.py (creates evidence-seal.yaml from live files, then
+     revalidates); tee seal-check.log"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S1-SEAL-002/attempts/A01/**
+blockers: []
+deviations: []

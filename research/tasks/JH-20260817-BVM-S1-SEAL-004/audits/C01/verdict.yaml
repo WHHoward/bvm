@@ -1,0 +1,60 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S1-SEAL-004
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T12:48:18+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "c72262f8646080e3aa496ad5fe390b3e3f149bf412554174e292ec75359b6c8c"
+  ack_sha256: "136bcd7b57d4c5d249bc0095e6f84a2e7ce5e90b107d4c99ae025eba6e13f2e1"
+  receipt_sha256: "6942be18c47f2ca9c6f3b244564b7792360b0d4944d07bfeba1e99018a71c8df"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-scope
+    status: PASS
+    evidence:
+      - "verify-task: VERIFIED; request, ACK, receipt, and audit timestamps are monotonic."
+      - "All execution writes are under SEAL-004 attempts/A01/**; no JoSIM execution is authorized or recorded."
+  - id: complete-run-root-coverage
+    status: PASS
+    evidence:
+      - "Independent stdlib SHA-256 recomputation: 86/86 seal entries match disk with zero mismatches."
+      - "Independent recursive enumeration: 62 live regular run-root files equals 62 sealed run-root entries; missing=[] and extra=[]."
+      - "analyze_s1.py is present with disk hash e2c6a5204dbd8d53380d1db42ec911d1d2fae42b72385436ece991e8228e7989 and authority A01_HISTORICAL."
+  - id: integrity-and-authority-lineage
+    status: PASS
+    evidence:
+      - "Closure-hashes integrity cross-check is 50/50 and is explicitly not used as the completeness oracle."
+      - "Authority classes are 55 A01_RAW_EXECUTION, 10 A01_HISTORICAL, 9 A02_CORRECTED, 6 SEAL002_HISTORICAL, and 6 SEAL003_HISTORICAL."
+      - "The seal preserves A01 experimental facts, records limited historical A01 reports/receipt, and marks A02 only as corrected/recomputed analysis."
+  - id: independent-peer-review
+    status: PASS
+    evidence:
+      - "Copilot REVIEW.md independently verified 86/86 hashes, dynamic 62/62 set equality, and closure of the SEAL-003 omission without Major or Critical findings."
+findings: []
+accepted_claims:
+  - "SEAL-004 is the accepted provenance/evidence seal for the retained S1 run-root set and its A01/A02 historical authority records."
+  - "The seal has complete dynamic run-root coverage and is mechanically protected against the prior omitted-file failure mode."
+  - "The sealing artifact is VALID for provenance/evidence integrity."
+rejected_claims:
+  - "This audit does not rerun JoSIM, generate new raw evidence, or certify numerical convergence."
+  - "This audit does not revise S1 criteria, determine a BVM source outcome, or support BQ, DCSFQ_BVM, Interface Gate, logical-state, fluxoid, or SFQ claims."
+required_rework: []
+next_actions:
+  - "Use SEAL-004 C01 rather than superseded SEAL-002/003 as the provenance authority for the retained S1 evidence set."
+  - "The complete S1 evidence set may now be committed as a bounded provenance record."
+  - "Any final S1 numerical/scientific disposition remains a separately authorized evidence audit."
+claim_ceiling: provenance_and_evidence_sealing_only_no_scientific_reinterpretation_or_s1_disposition

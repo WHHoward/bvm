@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://josim-bvm.local/schemas/bvm-s2-analysis-v1.json",
+  "title": "BVM-S2 registered analysis artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "metric_spec", "study_phase", "provenance", "windows",
+    "mappings", "runs", "namespaces", "values", "activity", "cross_check",
+    "convergence", "control_hierarchy", "source_observables",
+    "same_jj_cross_check", "terminal_affine", "internal_trajectory",
+    "numerical_status", "unknown_na"
+  ],
+  "properties": {
+    "schema_version": {"const": "bvm-s2-analysis-v1"},
+    "metric_spec": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "version", "sha256"],
+      "properties": {
+        "path": {"const": "docs/research/METRIC_SPEC_V2.md"},
+        "version": {"const": "2.0.0"},
+        "sha256": {"const": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+      }
+    },
+    "study_phase": {"const": "CALIBRATION"},
+    "provenance": {"type": "object", "required": ["git_head", "binary", "run_id", "runs", "analysis_script"], "additionalProperties": true},
+    "windows": {"type": "object", "required": ["pre", "activity", "source", "recovery", "post"], "additionalProperties": true},
+    "mappings": {"type": "object", "required": ["JM1", "JM2", "JS1", "JS2"], "additionalProperties": true},
+    "runs": {"type": "array", "minItems": 16, "maxItems": 16, "items": {"type": "object", "required": ["load_ohm", "case", "csv_path", "csv_sha256", "input_closure", "stdout_path", "stderr_path", "qa"], "additionalProperties": true}},
+    "namespaces": {"type": "object", "required": ["signal", "zero_input_control", "control_corrected"], "additionalProperties": true},
+    "values": {"type": "object", "required": ["phase_rad", "phase_turns"], "additionalProperties": true},
+    "activity": {"type": "object", "required": ["clusters", "over_threshold_sample_count", "descriptive_only"], "additionalProperties": true},
+    "cross_check": {"type": "object", "required": ["phase_delta_turns", "area_turns", "residual_turns", "same_junction_mapping"], "additionalProperties": true},
+    "convergence": {"type": "object", "additionalProperties": false, "required": ["classification", "reason", "ladder", "bands", "per_adjacent_pair", "stop_rule", "stop_rule_compliance"], "properties": {"classification": {"const": "NOT_APPLICABLE"}, "reason": {"type": "string", "minLength": 1}, "ladder": {"type": "array", "maxItems": 0}, "bands": {"type": "array", "maxItems": 0}, "per_adjacent_pair": {"type": "array", "maxItems": 0}, "stop_rule": {"type": "string", "minLength": 1}, "stop_rule_compliance": {"const": "NOT_APPLICABLE"}}},
+    "control_hierarchy": {"type": "object", "required": ["voltage", "current", "activity_descriptive_only"], "additionalProperties": true},
+    "source_observables": {"type": "object", "required": ["signal", "zero_input_control", "control_corrected", "lobe_rules"], "additionalProperties": true},
+    "same_jj_cross_check": {"type": "object", "required": ["phi0_wb", "residual_definition", "per_run"], "additionalProperties": true},
+    "terminal_affine": {"type": "object", "required": ["endpoint_loads_ohm", "interior_loads_ohm", "eligibility", "e12", "e25", "peak_envelope"], "additionalProperties": true},
+    "internal_trajectory": {"type": "object", "required": ["p_star", "v_star", "a_star", "comparisons", "disposition"], "additionalProperties": true},
+    "numerical_status": {"type": "object", "required": ["value", "reason"], "properties": {"value": {"const": "NOT_APPLICABLE"}, "reason": {"type": "string", "minLength": 1}}, "additionalProperties": false},
+    "unknown_na": {"type": "array", "items": {"type": "object", "required": ["field", "reason"], "additionalProperties": false, "properties": {"field": {"type": "string"}, "reason": {"type": "string", "minLength": 1}}}}
+  }
+}

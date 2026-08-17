@@ -1,0 +1,56 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T23:35:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "973c40f0a03cd33028f807b284b0b3f6d66afe41e0241d997b015b0df4449e15"
+  issuer_snapshot_sha256: "38d7f87da0e5ced2438c4f49812b80b3da0f4090bbd4fec548b14287f7c1f313"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "10b96a845683173a990acd3858e5be1b4f6ed760"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "Observed HEAD equals attestation snapshot S=10b96a84; SALVAGE-001
+       closed ACCEPTED; no prior status updates made."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Run exactly the frozen 16-case stable-initialization BVM load
+    characterization (4 loads x 2 polarities x matched read/control,
+    historical-S1 initialization, dt=0.0125 ps, tstop=170 ps) and preserve
+    source evidence plus attempt-local, append-only derived evidence:
+    readiness (JM1/JM2 PRE [80,90) p2p <=0.020 rad per stratum),
+    control-corrected source descriptors (max/rms/time-normalized-L1,
+    peak/lobe/FWHM per frozen formulas), endpoint-VI at exact Decimal
+    97/99/101/103/105 ps tokens (eligibility + compatibility per frozen
+    rules), deterministic report.md + descriptive report.html, expected
+    matrix/inventory/declared-entry pre-receipt bundle/receipt.
+  non_goals:
+    - "Overwrite/supersede/reinterpret S2 or TIMING/SALVAGE evidence; add
+       sweeps/convergence/BQ/receiver/JTL/mechanism/SFQ/fluxoid/logic
+       studies; modify memory/todo/HANDOVER/protocol/schema before final
+       audit."
+  stop_conditions:
+    - "Any need for a new run/case/sweep/timestep/receiver/BQ/mechanism
+       study, protocol change, unlisted write, overwrite/delete,
+       network/install/worktree/commit, or pre-audit status update."
+planned_commands:
+  - "generate 16 netlists + run build/josim-cli (16 runs)"
+  - "python3 analyze_stable_load.py (readiness + control-corrected + endpoint-VI, Decimal)"
+  - "python3 render_report.py (report.md + report.html deterministic)"
+  - "build expected-matrix/inventory/evidence-bundle + receipt"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001"
+expected_changed_paths:
+  - test/final/bvm/runs/bvm-s2-stable-load-20260817-01/**
+  - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/*
+blockers: []
+deviations: []

@@ -1,0 +1,23 @@
+* STABLE-LOAD L01-negative-control -- historical-S1 init, R_LD=1ohm, dt=0.0125p, tstop=170p (frozen)
+* Init: S1 10-11ps rising edge, -100U plateau through 20ps, 0 at 21ps.
+* Read: WL+SE -100U 96-105ps (matched control: identical topology/knots, amplitudes 0).
+.include jjmit.cir
+.include bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+R_LD SL1 0 1
+
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+
+.tran 0.0125p 170p
+
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1)
+.print P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.print V(SL1) I(L_SL|XBVM1)
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.end

@@ -1,0 +1,69 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T23:50:00+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "973c40f0a03cd33028f807b284b0b3f6d66afe41e0241d997b015b0df4449e15"
+  ack_sha256: "abad46085a5637cbeee7784dc3d1e1ca5f4f08eced1e1961cc478420aafa18c7"
+  receipt_sha256: "0a49289f8159ef37f457a2e26d77b0ebcd5cb2cca932f2a0e1edad0a7e03b6ae"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: PASS
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-snapshot-and-append-only-layout
+    status: PASS
+    evidence:
+      - "Independent handoff.py verify-task reports VERIFIED: the sealed request, external issuer-snapshot attestation, A01 ACK, and A01 receipt have matching hash bindings."
+      - "The ACK observes the attested execution snapshot 10b96a845683173a990acd3858e5be1b4f6ed760; verifier byte-compares the snapshot request/signature/scope files."
+      - "All mutable derived artifacts are confined to attempts/A01; no later attempt exists and this audit did not modify any execution artifact."
+  - id: frozen-matrix-provenance-and-declared-entry-bundle
+    status: PASS
+    evidence:
+      - "The frozen 4 load x 2 polarity x matched read/control matrix is represented by exactly 16 run directories, with manifest, inputs, closure, CSV, stdout, and stderr provenance."
+      - "verify-task independently validates the 81 declared pre-receipt bundle entries for repository-safe paths, regular-file existence, SHA-256, byte size, and duplicate policy; the final receipt is excluded."
+      - "No S2, TIMING, SALVAGE, maintenance, memory, project-todo, HANDOVER, protocol, or historical run evidence was modified by this delivery."
+  - id: readiness-and-source-analysis
+    status: PASS
+    evidence:
+      - "Independent verifier reads raw CSV literals with Decimal and recomputes JM1/JM2 [80,90) ps p2p for both read and control of every load/polarity stratum: 8/8 are READY at the frozen <=0.020 rad threshold."
+      - "The exact 16-case historical-S1 10-11 ps initialization, dt=0.0125 ps, tstop=170 ps, frozen read/control timing, and no additional case are recorded by the manifest and delivery evidence."
+      - "The resulting disposition BOUNDED_SOURCE_CHARACTERIZATION_REPORTED follows the preregistered readiness hierarchy."
+  - id: decimal-endpoint-vi-and-deterministic-reports
+    status: PASS
+    evidence:
+      - "Independent verifier recomputes matched-control-corrected V(SL1)/I(L_SL|XBVM1) at literal Decimal 97/99/101/103/105 ps tokens using the sealed S2-style positive-resistance convention: Rhat=-(V50*-V1*)/(I50*-I1*), Vth=V1*+Rhat I1*, and eL=abs(VL*-(Vth-Rhat IL*))."
+      - "For each polarity, all five tokens are eligible and zero are COMPATIBLE under the frozen emax band; every eligible token is NOT_SUPPORTED. This is a bounded endpoint-affine diagnostic result, not a universal impedance conclusion."
+      - "verify_stable_load.py passes without importing the analyzer, and render_report.py --check reports REPORT CONSISTENT for the deterministic Markdown/HTML reporting package."
+  - id: skeptical-peer-review-and-claim-boundary
+    status: PASS
+    evidence:
+      - "Copilot A01 skeptical review is PASS, with no Critical or Major finding; its independently recomputed readiness, endpoint values, bundle, timing semantics, and scope checks agree."
+      - "The task-local endpoint sign convention is explicitly sealed and internally consistent. The noted difference from the generic maintenance verifier's signed-slope convention is not used to broaden or invalidate this task-local result."
+findings:
+  - "The historical-S1 registered initialization removes the prior S2 readiness blocker for all eight load/polarity strata in this fixed-closure, fixed-grid matrix."
+  - "The registered-token endpoint-VI affine compatibility diagnostic is NOT_SUPPORTED at all five eligible tokens for each polarity; this limits only that diagnostic under its frozen criterion."
+accepted_claims:
+  - "At the frozen historical-S1 initialization, dt=0.0125 ps, and the registered 1/12/25/50 ohm matched read/control matrix, all eight load/polarity strata meet the preregistered JM1/JM2 PRE readiness criterion, so their bounded per-load terminal observations and deterministic source descriptors are validly reported."
+  - "At the five registered exact Decimal source tokens, the frozen endpoint-VI affine diagnostic has five eligible but zero COMPATIBLE tokens per polarity; its prescribed classification is NOT_SUPPORTED."
+  - "These results are a bounded fixed-closure, fixed-grid scientific successor addressing the load-characterization question left unresolved by S2; S2 remains VALID/INCONCLUSIVE and is neither overwritten nor reinterpreted."
+rejected_claims:
+  - "No numerical-convergence, detailed mechanism, logical-state, preservation, load-back-action, receiver, BQ, SFQ, fluxoid, interface, route, hardware, or universal-impedance claim is accepted."
+  - "NOT_SUPPORTED for the registered endpoint-VI diagnostic is not a proof of universal non-affinity, nor authorization for an unregistered sweep, timestep study, or mechanism investigation."
+required_rework: []
+next_actions:
+  - "The stable-initialization load-characterization task is accepted and closed. Do not add cases, rerun JoSIM, or begin timing, convergence, BQ, receiver, or mechanism work under this task."
+  - "Stop at the scientific decision boundary and await explicit user direction for any subsequent scientific question. Post-audit project bookkeeping, if requested, is separate."
+claim_ceiling: "bounded fixed-closure fixed-grid per-load terminal observations and matched-control-corrected endpoint-VI compatibility at registered exact tokens only; no numerical convergence, mechanism, logical-state, preservation, load-back-action, receiver, BQ, SFQ, fluxoid, interface, route, hardware, or universal-impedance claim."

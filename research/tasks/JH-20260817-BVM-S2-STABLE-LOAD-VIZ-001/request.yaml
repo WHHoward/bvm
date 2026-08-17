@@ -1,0 +1,54 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-18T00:10:00+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S2
+depends_on: [JH-20260817-BVM-S2-STABLE-LOAD-001]
+supersedes: null
+task:
+  kind: DOCUMENTATION
+  objective: "Generate a complete offline self-contained interactive Plotly dashboard from accepted stable-load evidence, correcting the original AC5 content omission without changing scientific evidence or conclusions."
+  research_question: "Can the accepted stable-load evidence be rendered as a content-complete, descriptive interactive dashboard under the frozen AC5 visualization requirements?"
+  non_goals:
+    - "No JoSIM run, no new scientific case, no raw/metric/disposition recomputation, and no change to STABLE-LOAD-001 A01, receipt, C01, raw, or analysis."
+    - "No workflow/protocol maintenance, source-characterization extension, BQ, receiver, sweep, convergence, or mechanism work."
+    - "This is a Codex-direct implementation; no Claude Code, DeepSeek, or external reviewer delegation."
+  claim_ceiling: "descriptive non-authoritative visualization completeness only; accepted raw, frozen specification, and accepted structured analysis remain the sole scientific authority, with no new scientific conclusion."
+scope:
+  read_paths: [AGENTS.md, docs/HANDOVER.md, docs/research/METRIC_SPEC_V2.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-viz/SKILL.md, test/final/bvm/bvm_final_viz.html, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.sha256, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/analysis.json, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/report.html, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/audits/C01/verdict.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/**]
+  hash_paths: [AGENTS.md, docs/HANDOVER.md, docs/research/METRIC_SPEC_V2.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-viz/SKILL.md, test/final/bvm/bvm_final_viz.html, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.sha256, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/analysis.json, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/report.html, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/audits/C01/verdict.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/manifest.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/closure-hashes.txt, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/raw/**/run-01.csv]
+  write_paths: [research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/attempts/**]
+  frozen_paths: [research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/**, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/**, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/request.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/request.sha256, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/baseline/**, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/design/**, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/audits/**, memory/project-todo.md, docs/HANDOVER.md]
+  locks: [locks/bvm-s2-stable-load-visualization]
+baseline:
+  git_head: "93c487ac83eb958526834fe494439a2af28c28a4"
+  dirty_policy: ALLOW_NONOVERLAP
+  issuer_snapshot_mode: EXTERNAL_ATTESTATION
+  git_status: {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/baseline/git-status.txt, sha256: "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/baseline/scope-files.sha256, sha256: "de9cf63c3d551101360ced93252e3bedec53d6c7569976281e30732bf983c195"}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: true, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-viz]
+  read_first: [AGENTS.md, docs/HANDOVER.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-viz/SKILL.md, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/design/preregistration.yaml]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/attempts/**/render_stable_load_dashboard.py, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/attempts/**/report.html, role: DOCUMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/attempts/**/verify_content_completeness.py, role: IMPLEMENTATION, required: true}
+  - {id: D4, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/attempts/**/visual-acceptance.yaml, role: DOCUMENTATION, required: true}
+  - {id: D5, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Offline self-contained Plotly report.html renders full unresampled raw waveforms and selectors for all four loads and both polarities.", evidence: [report.html, visual-acceptance.yaml]}
+  - {id: AC2, condition: "Dashboard renders WL/BL/SE; JM1/JM2 raw phase rad with PRE [80,90) shading/readiness; JS1/JS2; V(SL1) and I(L_SL) read/control/corrected; endpoint tokens and all frozen descriptor/endpoint/disposition/provenance fields.", evidence: [report.html, content-completeness]}
+  - {id: AC3, condition: "Deterministic regeneration proves byte-identical output, separately from content-completeness verification.", evidence: [deterministic-check.log, content-completeness.log]}
+  - {id: AC4, condition: "Actual desktop rendering visual review confirms selectors, overlays, units, legends, hover, zoom/pan/reset and readability; screenshots are auxiliary evidence.", evidence: [visual-acceptance.yaml, screenshots]}
+  - {id: AC5, condition: "No source evidence, accepted analysis, scientific conclusion, or original STABLE-LOAD-001 artifact is changed.", evidence: [scope, source-hashes]}
+invalid_conditions: ["Any JoSIM execution, source evidence write, changed accepted metric/disposition, waveform resampling/smoothing, non-self-contained report, missing frozen content, or out-of-scope write."]
+inconclusive_conditions: []
+stop_conditions: ["Need for a new scientific computation, source evidence modification, protocol change, unlisted write, external dependency, or any JoSIM run."]
+issuance_blockers: []

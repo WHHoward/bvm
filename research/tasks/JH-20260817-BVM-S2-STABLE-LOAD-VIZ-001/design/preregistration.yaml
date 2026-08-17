@@ -1,0 +1,33 @@
+protocol: josim-handoff/v1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-001
+kind: REPORT_ONLY
+scientific_change: false
+source_authority:
+  raw_run: test/final/bvm/runs/bvm-s2-stable-load-20260817-01
+  structured_analysis: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/analysis.json
+  frozen_specification: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml
+  accepted_audit: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/audits/C01/verdict.yaml
+historical_fact: "STABLE-LOAD-001 C01 historically marked AC5 PASS, but later inspection established that its original A01 report.html did not satisfy frozen AC5 content completeness. Scientific raw/analysis conclusions remain unchanged."
+authority: "The visualization is descriptive and non-authoritative; accepted raw, frozen specification, and accepted structured analysis remain scientific authority."
+required_interaction:
+  selectors: {loads_ohm: [1, 12, 25, 50], polarities: [positive, negative]}
+  trace_panels:
+    - "WL / BL / SE, time in ps and current in uA"
+    - "JM1 / JM2 raw phase (rad), with PRE [80,90) ps shading"
+    - "JS1 / JS2 raw phase (rad)"
+    - "V(SL1) read / control / corrected, mV"
+    - "I(L_SL|XBVM1) read / control / corrected, uA"
+    - "registered-token endpoint-VI, tokens 97/99/101/103/105 ps"
+  metric_content: ["JM1/JM2 PRE p2p", "0.020-rad threshold", "READY", "Rhat", "Vth", "emax", "eligibility", "classification", "peak", "latency", "FWHM", "primary lobe", "dominant post-primary opposite lobe", "control residual", "overall disposition", "claim ceiling", "provenance"]
+  plotly_controls: [hover, zoom, pan, reset, legend_trace_toggle]
+rendering_rules:
+  waveform_resampling: prohibited
+  waveform_smoothing: prohibited
+  phase_label: "raw phase (rad)"
+  time_unit: ps
+  voltage_unit: mV
+  current_unit: uA
+acceptance:
+  deterministic_output: "same frozen inputs and renderer produce byte-identical HTML"
+  content_completeness: "independent verifier proves all selectors, series, PRE window, endpoint tokens, metrics, disposition, claim ceiling, and provenance occur in the HTML data model"
+  visual_acceptance: "actual rendered dashboard has usable selector changes, legible panels/overlays/units/legend/hover and desktop layout; screenshots are supporting evidence only"

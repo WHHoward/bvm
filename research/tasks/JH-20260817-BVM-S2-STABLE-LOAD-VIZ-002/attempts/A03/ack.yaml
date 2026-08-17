@@ -1,0 +1,56 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A03
+workflow_state: ACKED
+created_at: "2026-08-18T00:55:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  issuer_snapshot_sha256: "da46d92c6cf4f2ac04b60a2e7f0ebd435033cecdce4bba6052c0ba63e0bf44b8"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "A01/A02/C01/C02 immutable; A03 writes only attempts/A03/** per user
+       authorization (codex-20260818-005215)."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A03 (user-authorized per codex-20260818-005215): implement a REAL
+    4x2 load/polarity selector with active state; render all panels
+    (WL/BL/SE; JM1/JM2 + PRE + p2p/threshold/READY; JS1/JS2; V/I
+    read/control/corrected; endpoint Rhat/Vth/emax/eligibility/
+    classification; descriptors/residual/readiness/disposition/ceiling/
+    provenance).  Verifier independently validates renderer series/panel/
+    control coverage (no string search, no renderer import; Chromium DOM
+    smoke allowed, no final visual judgment).  Deterministic comparison
+    writes ONLY to the A03 comparison path; the canonical report.html is
+    generated once and read-only afterwards; no checker writes a
+    receipt-bound output after the receipt.  A02 verify failure is a
+    known C02 historical fact and must be recorded, not rewritten or
+    masked.  No JoSIM, no new science; stop after delivery awaiting Codex
+    AC4.
+  non_goals:
+    - "Modify A01/A02/C01/C02/receipts/source; run JoSIM; change science;
+       make final visual judgment."
+  stop_conditions:
+    - "Any need for a non-enumerated write path, scientific experiment,
+       network/install/worktree/commit, deletion/overwrite, or protocol
+       expansion."
+planned_commands:
+  - "python3 render_stable_load_dashboard.py (canonical report.html, generated once)"
+  - "python3 compare_deterministic.py (writes ONLY A03 comparison path; no output rewrite)"
+  - "python3 verify_content_completeness.py (series/panel/control coverage; DOM smoke if chromium available)"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/*
+blockers: []
+deviations: []

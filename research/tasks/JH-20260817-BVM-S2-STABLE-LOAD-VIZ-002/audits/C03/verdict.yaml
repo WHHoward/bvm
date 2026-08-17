@@ -1,0 +1,62 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A03
+audit_id: C03
+workflow_state: AUDITED
+created_at: "2026-08-18T02:00:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  ack_sha256: "e9f0921385805cb342c6ba64a14fe21262d335f0136c9911ae73125a9defdc1c"
+  receipt_sha256: "724966574c2ca538429245ab037fa76a40f129ce5c0952defa8256231157f604"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: receipt-bound-artifacts-and-mechanical-check
+    status: PASS
+    evidence:
+      - "A03 receipt-bound report.html, visualization-data.json, renderer, verifier, and comparator all reproduce the SHA-256 values recorded in receipt.yaml."
+      - "The independent verify_content_completeness.py exits PASS without importing the renderer; it is necessary evidence, not visual acceptance."
+      - "A03 is attempt-local; no A01/A02 receipt, historical C01/C02 audit, or STABLE-LOAD-001 scientific source artifact was modified."
+  - id: actual-selector-operation
+    status: PASS
+    evidence:
+      - "Fresh-context Codex opened the receipt-bound A03 report.html in Chromium at 1440x1080 and operated all eight 1/12/25/50-ohm × positive/negative buttons. Each click made exactly its target section visible and exactly that button active."
+      - "Each active Plotly plot exposes 25 trace objects and standard modebar controls for hover/zoom/pan/reset plus legend controls."
+  - id: frozen-visible-panel-completeness
+    status: FAIL
+    evidence:
+      - "The receipt-bound renderer constructs only Rhat and emax endpoint traces. It constructs no Vth trace and no visible eligibility or classification representation. Chromium trace inspection confirms the 25 trace names include Rhat (ohm) and emax (mV), but not Vth."
+      - "The active section's rendered text contains neither eligibility, classification, source descriptor, nor provenance. Those records exist only in visualization-data.json and are not readable dashboard panels."
+      - "At 1440x1080 the active Plotly figure is 700x450 with eight subplots and a long scrollable legend; screenshots dashboard-l01-positive.png and dashboard-l50-negative.png show cramped curves/labels and no readable source-descriptor, residual-summary, endpoint-classification, or provenance panels. This does not meet the frozen desktop-readability requirement."
+      - "WL, BL, SE; JM1/JM2; JS1/JS2; V/I read/control/corrected; PRE shading; readiness bars; and selector switching are visibly present, but cannot compensate for the missing required endpoint and summary content."
+  - id: ac4-actual-rendered-visual-acceptance
+    status: FAIL
+    evidence:
+      - "Codex performed the required actual browser render and interaction review; renderer determinism and the content verifier PASS do not establish AC4."
+findings:
+  - "A03 repairs A02's stacked-page selector defect and preserves correct receipt provenance, but does not render the full frozen AC5 content it claims."
+  - "The A03 independent content verifier is not sufficiently independent of the visible presentation: it reports descriptor/endpoint coverage from the data model while actual Chromium inspection finds those required items absent from the page."
+  - "No JoSIM execution or scientific raw/metric/disposition change occurred."
+accepted_claims:
+  - "A03 is a valid, receipt-bound, attempt-local report-only delivery with working load/polarity controls and the listed visible waveform panels."
+  - "The accepted STABLE-LOAD-001 raw evidence, frozen specification, and structured analysis remain unmodified scientific authority."
+rejected_claims:
+  - "A03 does not satisfy frozen AC4/AC5 visual completeness and is not an accepted visualization correction."
+  - "A03 does not visibly render Vth, eligibility, classification, source-descriptor, residual-summary, and provenance requirements as required dashboard content."
+  - "No scientific conclusion is added, changed, or re-audited."
+required_rework:
+  - "Per explicit user instruction, stop here and do not create A04 automatically. Do not modify A01, A02, A03, receipts, C01/C02, screenshots, or accepted STABLE-LOAD-001 source evidence."
+  - "Any user-authorized continuation must be a new append-only report-only attempt and must make all frozen endpoint and summary representations actually visible, then undergo a new actual Codex browser review."
+next_actions:
+  - "Stop at this visual-review failure and await user direction."
+claim_ceiling: "descriptive non-authoritative visualization completeness only; accepted raw, frozen specification, and accepted structured analysis remain the sole scientific authority, with no new scientific conclusion."

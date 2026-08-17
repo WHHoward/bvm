@@ -1,0 +1,20 @@
+visual_checklist:
+  schema_version: bvm-s2-stable-load-viz-checklist-v3
+  attempt: A03
+  status: MECHANICAL_PASS_AWAITING_CODEX_VISUAL_REVIEW
+  reviewer: CODEX (fresh-context, mandatory; AC4)
+  historical_fact: "A02 verify-task failed (C02): A02 report.html drifted
+    from its receipt-bound hash after the --check path rewrote the output.
+    This fact is recorded, not rewritten or masked; A02 remains immutable."
+  items:
+    - {id: V1, check: "4x2 load/polarity selector buttons show active state and switch sections", outcome: MECHANICAL_CONFIRMED}
+    - {id: V2, check: "all 8 dash-sections render panels legibly at desktop", outcome: NOT_YET_REVIEWED}
+    - {id: V3, check: "JM1/JM2 PRE [80,90) shading + p2p/threshold/READY visible", outcome: NOT_YET_REVIEWED}
+    - {id: V4, check: "corrected V/I, control residual, descriptors panels legible", outcome: NOT_YET_REVIEWED}
+    - {id: V5, check: "endpoint Rhat/Vth/emax/eligibility/classification readable", outcome: NOT_YET_REVIEWED}
+    - {id: V6, check: "units correct (ps/mV/uA/raw rad); legends/hover/zoom functional", outcome: NOT_YET_REVIEWED}
+    - {id: V7, check: "disposition/ceiling/provenance rendered", outcome: MECHANICAL_CONFIRMED}
+  mechanical_evidence:
+    - deterministic-comparison.log (CONSISTENT; canonical read-only, temp render)
+    - content-completeness.log (independent series/panel/control verification PASS)
+  authority: "Mechanical PASS does not satisfy visual acceptance; Codex fresh-context rendered review required."

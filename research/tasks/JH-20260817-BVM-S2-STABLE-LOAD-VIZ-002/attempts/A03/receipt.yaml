@@ -1,0 +1,136 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A03
+workflow_state: DELIVERED
+created_at: "2026-08-18T01:00:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  issuer_snapshot_sha256: "da46d92c6cf4f2ac04b60a2e7f0ebd435033cecdce4bba6052c0ba63e0bf44b8"
+  ack_sha256: "e9f0921385805cb342c6ba64a14fe21262d335f0136c9911ae73125a9defdc1c"
+execution_status: COMPLETED
+baseline_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+result_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+changes:
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/render_stable_load_dashboard.py, action: CREATED, sha256: "69f5fb42a3936864e07f5d9583200b3c25d7e64192ebd6e4d4121dc9a9c36754"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visualization-data.json, action: CREATED, sha256: "b66e86e0a3e176c57fc4c46e2f3b6d94b3ac8091bafa82d814636973d9fa4041"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/report.html, action: CREATED, sha256: "d0b4f77c82c71cdc6a376d0d463b4bf3ef76241d9260f626947a4ffafe708e5a"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/verify_content_completeness.py, action: CREATED, sha256: "8546969ea5d931c817fa7ab11683df6cc0ac0cb35e0206aec835681e5cbba3b0"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/compare_deterministic.py, action: CREATED, sha256: "2417d91cb63cd107e73c6e469c7917bf335ccc78e146bda4c7fab30ad851f12e"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visual-acceptance.yaml, action: CREATED, sha256: "5e19e1815e8275955d09c719778237270c1e44e168a943f9ef22cf991b25fd17"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/deterministic-comparison.log, action: CREATED, sha256: "28822b8935c28f6f091d866032c5f8773c998a0ced527b0a7efa4a0414617824"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/content-completeness.log, action: CREATED, sha256: "b878249e1cb29d15b13d37385e3e3944cc3d151b10fab4802219ada0ec07cd04"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/receipt-pending.yaml, action: CREATED, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f"}
+artifacts:
+  - {id: renderer, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/render_stable_load_dashboard.py, sha256: "69f5fb42a3936864e07f5d9583200b3c25d7e64192ebd6e4d4121dc9a9c36754", role: IMPLEMENTATION}
+  - {id: data-model, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visualization-data.json, sha256: "b66e86e0a3e176c57fc4c46e2f3b6d94b3ac8091bafa82d814636973d9fa4041", role: DOCUMENTATION}
+  - {id: report-html, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/report.html, sha256: "d0b4f77c82c71cdc6a376d0d463b4bf3ef76241d9260f626947a4ffafe708e5a", role: DOCUMENTATION}
+  - {id: content-verifier, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/verify_content_completeness.py, sha256: "8546969ea5d931c817fa7ab11683df6cc0ac0cb35e0206aec835681e5cbba3b0", role: IMPLEMENTATION}
+  - {id: comparator, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/compare_deterministic.py, sha256: "2417d91cb63cd107e73c6e469c7917bf335ccc78e146bda4c7fab30ad851f12e", role: IMPLEMENTATION}
+  - {id: visual-checklist, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visual-acceptance.yaml, sha256: "5e19e1815e8275955d09c719778237270c1e44e168a943f9ef22cf991b25fd17", role: DOCUMENTATION}
+  - {id: comparison-log, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/deterministic-comparison.log, sha256: "28822b8935c28f6f091d866032c5f8773c998a0ced527b0a7efa4a0414617824", role: LOG}
+  - {id: completeness-log, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/content-completeness.log, sha256: "b878249e1cb29d15b13d37385e3e3944cc3d151b10fab4802219ada0ec07cd04", role: LOG}
+  - {id: receipt-pending, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/receipt-pending.yaml, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f", role: DOCUMENTATION}
+commands:
+  - command: "python3 render_stable_load_dashboard.py (canonical report.html, generated once; read-only after)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/deterministic-comparison.log
+    log_sha256: "28822b8935c28f6f091d866032c5f8773c998a0ced527b0a7efa4a0414617824"
+  - command: "python3 compare_deterministic.py (temp-path render; canonical never rewritten; writes only comparison log)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/deterministic-comparison.log
+    log_sha256: "28822b8935c28f6f091d866032c5f8773c998a0ced527b0a7efa4a0414617824"
+  - command: "python3 verify_content_completeness.py (independent series/panel/control verification; no renderer import; DOM smoke optional)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/content-completeness.log
+    log_sha256: "b878249e1cb29d15b13d37385e3e3944cc3d151b10fab4802219ada0ec07cd04"
+tests:
+  - id: deterministic-comparison
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/deterministic-comparison.log
+    notes:
+      - "Temp-path render byte-identical to canonical (CONSISTENT);
+         canonical report.html never rewritten after generation; plotly
+         div_id made deterministic."
+  - id: independent-content-completeness
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/content-completeness.log
+    notes:
+      - "Independent verifier (no renderer import, structural not string
+         search): 8 selector buttons with active-state handler, 8
+         dash-sections/panels, series for corrected/descriptors/residual/
+         endpoint/readiness per combination; PASS."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/report.html
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visualization-data.json
+    notes:
+      - "REAL 4x2 load/polarity selector with active-state highlight
+         (HTML buttons + DOM section toggling); full raw traces
+         unsmoothed/unresampled; hover/zoom/pan/reset (plotly config);
+         legend toggles; self-contained offline Plotly."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visualization-data.json
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/report.html
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/content-completeness.log
+    notes:
+      - "All panels per combination: WL/BL/SE; JM1/JM2 + PRE [80,90)
+         shading + p2p + threshold + READY; JS1/JS2; V/I read/control/
+         corrected; endpoint Rhat/Vth/emax/eligibility/classification;
+         descriptors; control residual; readiness; disposition/ceiling/
+         provenance."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/deterministic-comparison.log
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/content-completeness.log
+    notes:
+      - "Deterministic comparison writes ONLY the A03 comparison path;
+         canonical generated once and read-only; no checker writes a
+         receipt-bound output after the receipt."
+  - id: AC4
+    status: NOT_EVALUATED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visual-acceptance.yaml
+    notes:
+      - "Visual acceptance remains Codex fresh-context rendered review
+         (AC4); mechanical PASS recorded only; DOM smoke skipped (no
+         chromium available in runtime)."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A03/visual-acceptance.yaml
+    notes:
+      - "No accepted scientific source or conclusion changed; A01/A02/C01/
+         C02 immutable; A03 append-only attempt-local."
+observations:
+  - "A02 verify failure (C02): A02 report.html drifted from its
+     receipt-bound hash because the --check path rewrote the output.  This
+     is recorded as a known historical fact in visual-acceptance.yaml and
+     this receipt; it is NOT rewritten or masked.  A03 fixes the pattern:
+     canonical report.html generated once and read-only; deterministic
+     comparison renders into a temp path and writes only the comparison
+     log; plotly div_id made deterministic (was uuid4)."
+  - "Deterministic comparison CONSISTENT; independent content verifier
+     PASS (8 selectors with active state, 8 sections, full series)."
+  - "No JoSIM; source evidence untouched; no visual final judgment."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "report.html ~41.9 MB (inlined plotly + 8 sections x full panels);
+     visual acceptance (AC4) requires Codex rendered inspection; DOM smoke
+     unavailable (no chromium binary)."
+deviations: []
+blockers: []

@@ -87,24 +87,47 @@ def metric(d: dict, m: dict, wins: dict) -> float:
                    for j in range(1, len(av))) / m['integration']['phi0_wb']
         area *= sj['voltage_to_phase_sign'] * sj['reporting_direction']
         return dlt - area
-    if kind == 'affine_residual':
-        ae = m['affine_endpoint']
-        cols = m['columns']
-        lo_l, hi_l = ae['endpoint_loads']
-        lo_c, hi_c = cols[str(lo_l)], cols[str(hi_l)]
-        i_l = m['interior_load']
-        i_c = cols[str(i_l)]
-        pts_lo = window(d, lo_c, w)
-        pts_hi = window(d, hi_c, w)
-        pts_i = window(d, i_c, w)
-        n = min(len(pts_lo), len(pts_hi), len(pts_i))
-        worst = 0.0
-        for j in range(n):
-            a, b, x = pts_lo[j][1], pts_hi[j][1], pts_i[j][1]
-            ref = a + (b - a) * (i_l - lo_l) / (hi_l - lo_l)
-            worst = max(worst, abs(x - ref))
-        return worst
     raise ValueError(f'unknown metric kind {kind}')
+
+
+def _exact_token_time(raw: dict, token_ps: float) -> float:
+    """Exact (decimal zero-tolerance) timestamp lookup: the token time in
+    seconds must be one of the raw CSV time values bit-for-bit.  Interpolation
+    or float-nearness is prohibited (spec timestamp_rule)."""
+    wanted = token_ps * 1e-12
+    times = set(raw['time'])
+    if wanted not in times:
+        raise ValueError(
+            f'exact timestamp token {token_ps} ps not present in raw time axis')
+    return wanted
+
+
+def endpoint_vi(evi: dict, base_dir: pathlib.Path) -> dict:
+    """Endpoint-VI affine fit from SIMULTANEOUS endpoint V/I samples.
+
+    Every load run contributes one (I, V) point: the mean of the V and I
+    values taken together at each preregistered exact timestamp token
+    (same token, same raw row -> simultaneous).  Rhat and Vth come from the
+    two endpoint loads; e_L is the worst |V - (Vth - Rhat*I)| across all
+    loads.  No interpolation, no resampling, no cross-run alignment.
+    """
+    pts: dict[str, tuple[float, float]] = {}
+    for load, run in evi['runs'].items():
+        raw = load_raw(base_dir / run['raw_path'])
+        v_vals, i_vals = [], []
+        for token in evi['tokens_ps']:
+            t = _exact_token_time(raw, token)
+            idx = raw['time'].index(t)
+            v_vals.append(raw[run['v_column']][idx])
+            i_vals.append(raw[run['i_column']][idx])
+        pts[load] = (sum(i_vals) / len(i_vals), sum(v_vals) / len(v_vals))
+    lo, hi = str(evi['endpoint_loads'][0]), str(evi['endpoint_loads'][1])
+    i_lo, v_lo = pts[lo]
+    i_hi, v_hi = pts[hi]
+    rhat = (v_hi - v_lo) / (i_hi - i_lo)
+    vth = v_lo - rhat * i_lo
+    e_l = max(abs(v - (vth + rhat * i)) for i, v in pts.values())
+    return {'rhat': rhat, 'vth': vth, 'e_L': e_l}
 
 
 def main() -> None:
@@ -129,20 +152,33 @@ def main() -> None:
     wins = spec['windows']
     fails = []
     checked = 0
+    base_dir = spec_path.resolve().parent
     for m in spec['metrics']:
         if m['kind'] == 'phase_area':
             m = {**m, 'same_jj': spec['same_jj'],
                  'integration': spec['integration']}
-        if m['kind'] == 'affine_residual':
-            m = {**m, 'affine_endpoint': spec['affine_endpoint'],
-                 'columns': spec['columns']}
-        got = metric(d, m, wins)
+        if m['kind'] == 'endpoint_vi':
+            got = endpoint_vi(spec['endpoint_vi'], base_dir)
+        else:
+            got = metric(d, m, wins)
         key = m['id']
         want = structured.get('metrics', {}).get(key)
         if want is None:
             fails.append(f'{key}: missing in structured analysis')
             continue
         tol = m.get('compare_tolerance', 0.0)
+        if isinstance(got, dict):
+            for field, got_value in got.items():
+                want_value = want.get(field)
+                if want_value is None:
+                    fails.append(f'{key}.{field}: missing in structured')
+                    continue
+                if math.isnan(got_value) or abs(got_value - want_value) > tol:
+                    fails.append(f'{key}.{field}: got {got_value:.6e} != '
+                                 f'structured {want_value:.6e} (tol {tol})')
+                else:
+                    checked += 1
+            continue
         if math.isnan(got):
             fails.append(f'{key}: NOT_APPLICABLE (no finite result)')
             continue

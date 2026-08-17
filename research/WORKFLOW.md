@@ -10,7 +10,7 @@ last_updated: 2026-08-11
 
 本文定义项目中“用户作最终裁决、Codex 负责任务设计与独立审计、Claude Code 负责受约束执行”的协作协议。目标不是让代理彼此转述结论，而是让每一步都有冻结输入、明确权限、不可变回执和可复核的原始证据。
 
-这是一份**协作与溯源规范**，不是物理计量规范。它不定义 SFQ 阈值、相位容差或系统 Gate。当前 `memory/project-todo.md` 中 M4–M11 尚未完成；`METRIC_SPEC_V2.md` 尚未冻结时，不得借本工作流宣布相关物理 Gate 已通过。
+这是一份**协作与溯源规范**，不是物理计量规范。它不定义 SFQ 阈值、相位容差或系统 Gate。Phase −1 计量基线（M4–M11）已验收，`METRIC_SPEC_V2.md` 已冻结（FROZEN）；本工作流仍不宣布任何物理 Gate——Gate 主张必须来自独立证据审计。
 
 ## 1. 一句话模型
 
@@ -419,7 +419,7 @@ Claude 不得用 stash/reset/clean 消除用户或其他代理的修改。reques
 3. 经过 2–3 个真实任务后，再评估是否需要自动生成全局任务台账；
 4. 在此之前不搬迁历史实验目录，不重写旧 raw，不制造一个可并发覆盖的中央状态文件。
 
-M4 任务若仍处于 `DRAFT` 或缺少有效签名，Claude 必须等待 Codex 正式签发。工作流基础设施完成不代表 M4、`METRIC_SPEC_V2` 或任何 BQ/DCSFQ Gate 已完成。
+任何任务若仍处于 `DRAFT` 或缺少有效签名，Claude 必须等待 Codex 正式签发。工作流基础设施完成不代表任何 BQ/DCSFQ Gate 已完成；`scientific_claim_ceiling` 由审计者声明并在审计中复核，不是机械的语义子集检查。
 
 ## 14. 快速审计清单
 
@@ -486,5 +486,7 @@ seal/report/hash work is not split into successors.  Optional v1 fields:
 `baseline.issuer_snapshot_commit` (ACK-observed commit tree must carry
 byte-identical request/signature/scope bindings) and
 `scientific_claim_ceiling` (narrower science-specific audit ceiling,
-never broader than the mandatory contract `claim_ceiling`).  Legacy
-requests without v1 fields keep the strict-HEAD behavior unchanged.
+never broader than the mandatory contract `claim_ceiling`; it is
+auditor-declared and reviewed in the audit, not mechanically checked as a
+natural-language semantic subset).  Legacy requests without v1 fields keep
+the strict-HEAD behavior unchanged.

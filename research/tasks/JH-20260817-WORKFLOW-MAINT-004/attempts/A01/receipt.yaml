@@ -1,0 +1,136 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-004
+revision: 1
+attempt_id: A01
+workflow_state: BLOCKED
+created_at: "2026-08-17T19:55:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "b147dc2ef1321d603d8ea644ae44eda929455035087149058bb19036f27ee62b"
+  ack_sha256: "f39ed1125f6a1a24c7b9cc584c6af2c8b6853d9c28395e17c9bec4166dbbd0da"
+execution_status: BLOCKED
+baseline_git_head: "a83b73cc"
+result_git_head: "a83b73cc"
+changes:
+  - {path: .agents/skills/josim-handoff/scripts/handoff.py, action: MODIFIED,
+     sha256: "a140245da3df4414100a27f8350856077ae0373cb9cb9b89d8f06ea0ed1e5d07"}
+  - {path: .agents/skills/josim-handoff/scripts/test_handoff.py, action: MODIFIED,
+     sha256: "74ea88fe9b78a41e1b953227a265116f6de7f73c4d4048ca9b526d68901e92d6"}
+  - {path: scripts/quantitative_analysis_verifier.py, action: MODIFIED,
+     sha256: "b1084a1266e261a5a2bdbf0667e6855b3c70044c2327ccb4d5151525a3bac167"}
+  - {path: scripts/build_evidence_bundle.py, action: MODIFIED,
+     sha256: "2c0c4587a80c9282906da643d8b12aa0b9c6a3a71d2c3cdc342bd3144b6ef8d4"}
+  - {path: test/workflow/test_quantitative_analysis_verifier.py,
+     action: MODIFIED,
+     sha256: "830d9f63e286859b1b73e2f567283a6a692980e5c21cd7a0e51baca583c6773a"}
+  - {path: test/workflow/test_evidence_bundle.py, action: MODIFIED,
+     sha256: "c5df726fda88ddc834b5d3c8212b145a8da98245ff6f46eb5d328bf7f183f81c"}
+  - {path: research/WORKFLOW.md, action: MODIFIED,
+     sha256: "1a65f3850ce2266be30eadf3626a983937b55fe93e52d5c050f39bd75ba3afa2"}
+  - {path: research/CLAUDE_EXECUTOR.md, action: MODIFIED,
+     sha256: "6191f75e0cf8c5c9b51f38ddc60d57d58c2ce54b0a8d4e2b8e4642b1ae7ad884"}
+  - {path: research/schemas/quantitative-analysis-spec.schema.json,
+     action: MODIFIED,
+     sha256: "18cc4d9b740bad8af11155e6d824734c284175f453767c3a5ed4fa4fef54779e"}
+  - {path: .agents/skills/josim-handoff/references/handoff-protocol.md,
+     action: MODIFIED,
+     sha256: "8415f79ac0aa1df440fdd6db452e5c5dfde957b10bf052f003a80ac9292e3b0b"}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/logs/test-suite.log,
+     action: CREATED,
+     sha256: "9d1907cec9cfcd88eef2d17e73c0e9f9bb9a09b03ca31a408e5b0a782b2ce3f7"}
+artifacts:
+  - {id: handoff-py, path: .agents/skills/josim-handoff/scripts/handoff.py,
+     sha256: "a140245da3df4414100a27f8350856077ae0373cb9cb9b89d8f06ea0ed1e5d07",
+     role: IMPLEMENTATION}
+  - {id: handoff-tests, path: .agents/skills/josim-handoff/scripts/test_handoff.py,
+     sha256: "74ea88fe9b78a41e1b953227a265116f6de7f73c4d4048ca9b526d68901e92d6",
+     role: TEST}
+  - {id: verifier, path: scripts/quantitative_analysis_verifier.py,
+     sha256: "b1084a1266e261a5a2bdbf0667e6855b3c70044c2327ccb4d5151525a3bac167",
+     role: IMPLEMENTATION}
+  - {id: bundler, path: scripts/build_evidence_bundle.py,
+     sha256: "2c0c4587a80c9282906da643d8b12aa0b9c6a3a71d2c3cdc342bd3144b6ef8d4",
+     role: IMPLEMENTATION}
+  - {id: verifier-tests, path: test/workflow/test_quantitative_analysis_verifier.py,
+     sha256: "830d9f63e286859b1b73e2f567283a6a692980e5c21cd7a0e51baca583c6773a",
+     role: TEST}
+  - {id: bundle-tests, path: test/workflow/test_evidence_bundle.py,
+     sha256: "c5df726fda88ddc834b5d3c8212b145a8da98245ff6f46eb5d328bf7f183f81c",
+     role: TEST}
+  - {id: workflow-doc, path: research/WORKFLOW.md,
+     sha256: "1a65f3850ce2266be30eadf3626a983937b55fe93e52d5c050f39bd75ba3afa2",
+     role: DOCUMENTATION}
+  - {id: executor-doc, path: research/CLAUDE_EXECUTOR.md,
+     sha256: "6191f75e0cf8c5c9b51f38ddc60d57d58c2ce54b0a8d4e2b8e4642b1ae7ad884",
+     role: DOCUMENTATION}
+  - {id: qas-schema, path: research/schemas/quantitative-analysis-spec.schema.json,
+     sha256: "18cc4d9b740bad8af11155e6d824734c284175f453767c3a5ed4fa4fef54779e",
+     role: DOCUMENTATION}
+  - {id: protocol-doc, path: .agents/skills/josim-handoff/references/handoff-protocol.md,
+     sha256: "8415f79ac0aa1df440fdd6db452e5c5dfde957b10bf052f003a80ac9292e3b0b",
+     role: DOCUMENTATION}
+  - {id: test-suite-log,
+     path: research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/logs/test-suite.log,
+     sha256: "9d1907cec9cfcd88eef2d17e73c0e9f9bb9a09b03ca31a408e5b0a782b2ce3f7",
+     role: LOG}
+commands:
+  - command: "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest .agents/skills/josim-handoff/scripts/test_handoff.py test/workflow/ -v"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/logs/test-suite.log
+    log_sha256: "9d1907cec9cfcd88eef2d17e73c0e9f9bb9a09b03ca31a408e5b0a782b2ce3f7"
+  - command: "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-WORKFLOW-MAINT-004"
+    exit_code: 2
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/logs/test-suite.log
+    log_sha256: "9d1907cec9cfcd88eef2d17e73c0e9f9bb9a09b03ca31a408e5b0a782b2ce3f7"
+tests:
+  - id: handoff-test-suite
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/logs/test-suite.log
+    notes:
+      - "40/40 pass (test_handoff 25 + test/workflow 15) under pytest
+         PYTEST_DISABLE_PLUGIN_AUTOLOAD=1; git diff --check CLEAN."
+acceptance_results:
+  - id: AC1
+    status: NOT_EVALUATED
+    evidence_paths: []
+    notes:
+      - "Implementation done but task-level verify-task is blocked by the
+         frozen-input conflict below; AC1-AC7 all NOT_EVALUATED pending
+         Codex resolution."
+observations:
+  - "All seven acceptance implementations are complete and green in the
+     test suite: AC1/AC2 issuer-snapshot repair + real positive/negative
+     regressions (git commit-tree dangling commits), AC3/AC4 endpoint-VI
+     verifier + schema (affine_residual removed), AC5 multi-entry recursive
+     pre-receipt bundle, AC6 stale-doc fixes, AC7 synthetic end-to-end
+     VERIFIED chain."
+  - "verify-task on the task directory FAILS (exit 2) because
+     scope.hash_paths freezes every writable deliverable file at issuance
+     time: handoff.py, test_handoff.py, scripts/quantitative_analysis_
+     verifier.py, scripts/build_evidence_bundle.py, test/workflow/*,
+     research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, research/schemas/
+     quantitative-analysis-spec.schema.json, handoff-protocol.md and
+     execution-receipt.yaml all hash-mismatch after the mandated edits
+     (_scope_manifest_errors compares current bytes against the issuance
+     snapshot scope-files.sha256)."
+blockers:
+  - "FROZEN-INPUT CONFLICT: request scope.hash_paths equals the full
+     read_paths list and therefore overlaps scope.write_paths for every
+     deliverable D1-D5 plus the protocol docs/schema. Executing any
+     acceptance criterion modifies those files, so task-level verify-task
+     can never succeed, and AC5/AC7's own 'verify-task VERIFIED' acceptance
+     is unreachable. Precedent: MAINT-003 scope.hash_paths contained only
+     frozen inputs (AGENTS/HANDOVER/METRIC_SPEC + 001/002 historical
+     records), never the writable implementation files."
+  - "Per CLAUDE_EXECUTOR.md §3.1 (frozen-input conflict -> stop and
+     escalate without further speculative attempts) execution is stopped
+     here. Preserved in-scope implementation is reusable once Codex either
+     (a) re-issues with hash_paths restricted to genuinely frozen inputs,
+     or (b) authorizes updating baseline/scope-files.sha256 to post-
+     issuance state (not recommended; violates baseline immutability)."
+deviations: []

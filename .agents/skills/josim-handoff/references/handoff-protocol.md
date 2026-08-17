@@ -85,6 +85,18 @@ ACK 的 `created_at` 不得早于 request 的 `issued_at`；receipt 不得早于
 
 如果执行中才发现 request 与仓库冲突，不修改 ACK 掩盖历史；在 receipt 记 `DEVIATED` 或 `BLOCKED`。新的尝试使用新的 attempt ID。
 
+## 6.1 Issuer-snapshot 模式（v1，2026-08-17，MAINT-004）
+
+`baseline.issuer_snapshot_commit` 是可选模式：request 引用签发时快照 commit。
+ACK 的 `observed_git_head` 必须等于快照 commit；快照树必须携带快照时点的
+request.yaml / request.sha256 / scope manifest。快照 request.yaml 是
+**引用前版本**（request 自引用快照 commit，磁盘副本必然携带
+`issuer_snapshot_commit` 字段），因此校验为：快照树中 request.sha256 是
+**树内** request.yaml 的有效签名（快照时点自洽）、快照 request.yaml 与磁盘
+版本**规范化后**（删除 `baseline.issuer_snapshot_commit` 字段）结构相等、
+scope manifest 字节一致（非自引用）。无该字段的 request 保持 legacy
+strict-HEAD（`observed_git_head == baseline.git_head`）不变。
+
 ## 7. Receipt 规则
 
 receipt 逐项列出实际执行产物的改变路径及角色、执行命令/退出码/日志、产物哈希、测试结果、偏离和 blocker。ACK 由 `ack_sha256` 单独绑定，receipt 自身不能自哈希，因此二者不列入 `changes[]`；除这两个协议封装文件外，任务产生的实现、测试、日志和数据不得遗漏。观察与解释分栏；物理 verdict 只能是 proposal。未运行的测试写 `NOT_RUN` 及原因，不能省略。

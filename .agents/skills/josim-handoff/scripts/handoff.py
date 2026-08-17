@@ -438,11 +438,25 @@ def _issuer_snapshot_errors(
     ack: dict[str, Any], request: dict[str, Any], repo_root: Path,
     task_rel: str | None = None,
 ) -> list[str]:
-    """v1 optional issuer-snapshot mode (AC5): when the request declares
-    baseline.issuer_snapshot_commit, that commit's tree must carry
-    byte-identical request.yaml / request.sha256 / scope-files.sha256
-    bindings while scope hashes still match.  Legacy requests without the
-    field keep the strict-HEAD behavior unchanged."""
+    """v1 optional issuer-snapshot mode (AC1/AC2, MAINT-004): when the
+    request declares baseline.issuer_snapshot_commit, that commit's tree
+    must carry the snapshot-time request binding while scope hashes still
+    match.
+
+    The snapshot request.yaml is the pre-reference issuance version: the
+    request binds the snapshot commit, so the disk copy carries the
+    issuer_snapshot_commit field that the tree copy cannot (self-reference).
+    Checks:
+      - ACK observed_git_head == snapshot (strict-HEAD is replaced in this
+        mode; legacy requests without the field keep strict-HEAD).
+      - the snapshot tree carries request.yaml and a request.sha256 that
+        verifies against the TREE request.yaml (snapshot-time self-consistent
+        signature).
+      - the snapshot request.yaml equals the disk request.yaml after
+        normalizing away baseline.issuer_snapshot_commit (structural
+        equality; the field value is the snapshot itself).
+      - the snapshot tree carries baseline/scope-files.sha256 byte-identical
+        to the disk manifest (scope manifest is not self-referential)."""
     if ack["decision"] != "ACCEPTED":
         return []
     snap = request.get("baseline", {}).get("issuer_snapshot_commit")
@@ -454,19 +468,64 @@ def _issuer_snapshot_errors(
     if task_rel is None:
         return ["issuer_snapshot_commit requires task_rel"]
     errors: list[str] = []
-    for rel in ("request.yaml", "request.sha256",
-                "baseline/scope-files.sha256"):
-        path = repo_root / task_rel / rel
+
+    def blob(rel: str) -> bytes | None:
         try:
-            blob = subprocess.run(
+            proc = subprocess.run(
                 ["git", "show", f"{snap}:{task_rel}/{rel}"],
-                capture_output=True, text=True, cwd=repo_root, check=True)
+                capture_output=True, cwd=repo_root, check=True)
+            return proc.stdout
         except (subprocess.CalledProcessError, OSError):
-            errors.append(f"issuer snapshot {snap} lacks {task_rel}/{rel}")
-            continue
-        if blob.stdout.encode() != path.read_bytes():
-            errors.append(f"{rel} differs from issuer snapshot {snap}")
+            return None
+
+    tree_request = blob("request.yaml")
+    tree_signature = blob("request.sha256")
+    if tree_request is None or tree_signature is None:
+        errors.append(f"issuer snapshot {snap} lacks request.yaml/request.sha256")
+    else:
+        try:
+            signed = re.fullmatch(
+                r"([0-9a-f]{64})(?:\s+\*?([^\s]+))?",
+                tree_signature.decode("utf-8").strip())
+        except UnicodeDecodeError:
+            signed = None
+        if signed is None or signed.group(1) != _sha256_bytes(tree_request):
+            errors.append(
+                "issuer snapshot request.sha256 does not sign the snapshot "
+                "request.yaml")
+        disk_request = (repo_root / task_rel / "request.yaml").read_bytes()
+        if _request_without_snapshot(tree_request) != \
+                _request_without_snapshot(disk_request):
+            errors.append(
+                "request.yaml differs from issuer snapshot beyond "
+                "issuer_snapshot_commit")
+    scope_blob = blob("baseline/scope-files.sha256")
+    if scope_blob is None:
+        errors.append(f"issuer snapshot {snap} lacks "
+                      "baseline/scope-files.sha256")
+    elif scope_blob != (repo_root / task_rel / "baseline"
+                        / "scope-files.sha256").read_bytes():
+        errors.append("scope manifest differs from issuer snapshot")
     return errors
+
+
+def _sha256_bytes(data: bytes) -> str:
+    import hashlib as _hashlib
+    return _hashlib.sha256(data).hexdigest()
+
+
+def _request_without_snapshot(data: bytes) -> dict[str, Any] | None:
+    """Parse request YAML and drop the self-referential snapshot field."""
+    try:
+        import yaml as _yaml
+        doc = _yaml.safe_load(data.decode("utf-8"))
+    except Exception:
+        return None
+    if isinstance(doc, dict):
+        baseline = doc.get("baseline")
+        if isinstance(baseline, dict):
+            baseline.pop("issuer_snapshot_commit", None)
+    return doc
 
 
 def _ack_scope_errors(ack: dict[str, Any], request: dict[str, Any]) -> list[str]:
@@ -584,6 +643,7 @@ def _repo_file_hash_error(
 
 
 def _receipt_file_errors(
+    receipt_path: Path,
     receipt: dict[str, Any], request: dict[str, Any], repo_root: Path
 ) -> list[str]:
     errors: list[str] = []
@@ -609,9 +669,14 @@ def _receipt_file_errors(
                     required = {"raw", "inputs", "logs", "manifest", "spec",
                                 "analyzer", "verifier", "structured_result",
                                 "renderer", "report", "inventory", "receipt"}
-                    if roles != required:
+                    if not required.issubset(roles):
                         errors.append("evidence_bundle missing required roles: "
                                       + ",".join(sorted(required - roles)))
+                    if any(e.get("path") == receipt_path.relative_to(repo_root).as_posix()
+                           for e in bdoc.get("entries", [])):
+                        errors.append(
+                            "evidence_bundle must be a PRE-receipt manifest "
+                            "and must not hash the final receipt itself")
                 except OSError:
                     errors.append("evidence_bundle unreadable")
 
@@ -934,14 +999,17 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
     if state == "DRAFT" and (acknowledgements or receipts or audits):
         errors.append("DRAFT request contains executor or audit records")
 
+    expected_head = (request["baseline"].get("issuer_snapshot_commit")
+                     or request["baseline"]["git_head"])
     for attempt_id, (ack_path, ack) in acknowledgements.items():
         if ack["bindings"]["request_sha256"] != request_digest:
             errors.append(f"{ack_path}: request_sha256 does not bind current request")
         if (
             ack["decision"] == "ACCEPTED"
-            and ack["preflight"]["observed_git_head"] != request["baseline"]["git_head"]
+            and ack["preflight"]["observed_git_head"] != expected_head
         ):
-            errors.append(f"{ack_path}: accepted ACK observed_git_head differs from baseline")
+            errors.append(f"{ack_path}: accepted ACK observed_git_head differs "
+                          f"from expected head {expected_head}")
         errors.extend(
             f"{ack_path}: {error}" for error in _ack_scope_errors(ack, request)
         )
@@ -949,7 +1017,7 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
             f"{ack_path}: {error}"
             for error in _issuer_snapshot_errors(
                 ack, request, repo_root,
-                task_rel=str(ack_path.parent.parent.relative_to(repo_root)))
+                task_rel=str(ack_path.parent.parent.parent.relative_to(repo_root)))
         )
 
     for attempt_id, (receipt_path, receipt) in receipts.items():
@@ -965,8 +1033,9 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
             errors.append(f"{receipt_path}: request_sha256 does not bind current request")
         if bindings["ack_sha256"] != _sha256(ack_path):
             errors.append(f"{receipt_path}: ack_sha256 does not bind {ack_path}")
-        if receipt["baseline_git_head"] != request["baseline"]["git_head"]:
-            errors.append(f"{receipt_path}: baseline_git_head differs from request")
+        if receipt["baseline_git_head"] != expected_head:
+            errors.append(f"{receipt_path}: baseline_git_head differs from "
+                          f"expected head {expected_head}")
         errors.extend(f"{receipt_path}: {error}" for error in _scope_errors(receipt, request))
         errors.extend(
             f"{receipt_path}: {error}"
@@ -974,7 +1043,8 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
         )
         errors.extend(
             f"{receipt_path}: {error}"
-            for error in _receipt_file_errors(receipt, request, repo_root)
+            for error in _receipt_file_errors(
+                receipt_path, receipt, request, repo_root)
         )
 
     if receipts:

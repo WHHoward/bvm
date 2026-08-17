@@ -1,0 +1,75 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-004
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T19:28:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "b147dc2ef1321d603d8ea644ae44eda929455035087149058bb19036f27ee62b"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "a83b73cc"
+  dirty_paths:
+    - "Working tree clean. HEAD is e5bbea5 (Codex 19:25:39 commit:
+       mailbox codex-20260817-192529 + MAINT-004 request.yaml/request.sha256/
+       baseline entry, i.e. the issuance itself); request baseline binds
+       a83b73cc. The e5bbea5 delta is coordination-layer only and does not
+       overlap 004 write_paths; scope-files.sha256 verified against current
+       files (all match)."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Repair the bounded v1 issuer-snapshot, endpoint-VI verifier, recursive
+    pre-receipt bundle, and stale-document defects with one synthetic
+    no-JoSIM end-to-end maintenance proof: (AC1/AC2) legacy strict-HEAD
+    preserved and a real issuer-snapshot positive/negative regression;
+    (AC3/AC4) affine_residual rejected, endpoint-VI Rhat/Vth/e_L from
+    simultaneous endpoint V/I at exact preregistered timestamp tokens with
+    cross-run exact-token matching (no interpolation); (AC5) multi-entry
+    recursive pre-receipt bundles with mechanical path-set/hash/byte
+    verification, bundle never hashes final receipts; (AC6) WORKFLOW.md and
+    CLAUDE_EXECUTOR.md drop stale M4-M11/METRIC_SPEC_V2-unfrozen assertions
+    and state scientific_claim_ceiling is auditor-declared/reviewed;
+    (AC7) one synthetic CRITICAL/FROZEN no-JoSIM chain VERIFIED end-to-end.
+  non_goals:
+    - "Run JoSIM; modify or interpret any circuit, raw CSV, S0/S1/S2
+       evidence, physical result, route, metric threshold, or paper claim."
+    - "Modify MAINT-001/002/003, historical records, protocol major
+       version, or create a large DSL."
+    - "Use interpolation, resampling, or float-nearness to match cross-run
+       timestamps."
+    - "Claim mechanical proof of a natural-language scientific_claim_ceiling
+       subset relation."
+  stop_conditions:
+    - "Any required change exceeds the enumerated paths, requires a
+       scientific experiment/claim, dependency installation/network/
+       worktree/commit, or protocol v2/DSL redesign."
+planned_commands:
+  - "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest
+     .agents/skills/josim-handoff/scripts/test_handoff.py
+     test/workflow/ -q"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task
+     research/tasks/JH-20260817-WORKFLOW-MAINT-004"
+  - "git diff --check"
+expected_changed_paths:
+  - .agents/skills/josim-handoff/scripts/handoff.py
+  - .agents/skills/josim-handoff/scripts/test_handoff.py
+  - scripts/quantitative_analysis_verifier.py
+  - scripts/build_evidence_bundle.py
+  - test/workflow/test_quantitative_analysis_verifier.py
+  - test/workflow/test_evidence_bundle.py
+  - research/WORKFLOW.md
+  - research/CLAUDE_EXECUTOR.md
+  - research/schemas/quantitative-analysis-spec.schema.json
+  - .agents/skills/josim-handoff/references/handoff-protocol.md
+  - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/{ack,receipt}.yaml
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/logs/*
+blockers: []
+deviations: []

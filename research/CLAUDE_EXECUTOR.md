@@ -105,7 +105,7 @@ request 的 authorization 未明确允许的动作，一律视为禁止。
 
 JoSIM `P(...)` 是 raw phase，单位 rad；派生圈数为 `phase_delta_rad/(2*pi)`。局部相位圈数不自动等于下游接收事件或闭环 fluxoid 数。相位与电压面积只可在同一 JJ、同端点、同方向、同 run、同窗口下交叉检查。
 
-当前 Phase −1 M4–M11 未完成时，不得把候选实验宣布为冻结系统 Gate，也不要声称 `METRIC_SPEC_V2.md` 已存在或已冻结。
+Phase −1 计量基线（M4–M11）已验收，`METRIC_SPEC_V2.md` 已冻结（FROZEN）；仍不得把候选实验宣布为冻结系统 Gate 或论文主张——Gate 结论只能来自独立证据审计。审计中的 `scientific_claim_ceiling` 由审计者声明并在审计中复核，不是机械语义子集检查。
 
 ## 5. dirty 工作树和独立 worktree
 

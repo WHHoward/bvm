@@ -28,14 +28,18 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "kind", "column"],
+        "required": ["id", "kind"],
         "additionalProperties": true,
+        "if": {"properties": {"kind": {"const": "endpoint_vi"}},
+               "required": ["kind"]},
+        "then": {"properties": {"column": {"type": "string"}}},
+        "else": {"required": ["column"]},
         "properties": {
           "id": {"type": "string"},
           "kind": {"type": "string",
                    "enum": ["baseline_subtracted_peak", "latency_from",
                             "fwhm", "window_mean", "phase_area",
-                            "affine_residual"]},
+                            "endpoint_vi"]},
           "column": {"type": "string"},
           "window": {"type": "string"},
           "baseline_window": {"type": "string"},
@@ -71,15 +75,28 @@
                                 "enum": ["phase_turns_minus_area_turns"]}
       }
     },
-    "affine_endpoint": {
+    "endpoint_vi": {
       "type": "object",
-      "required": ["endpoint_loads", "interior_loads", "floors", "band_fraction"],
+      "required": ["runs", "endpoint_loads", "interior_loads", "tokens_ps"],
       "properties": {
-        "endpoint_loads": {"type": "array", "minItems": 2, "items": {"type": "number"}},
-        "interior_loads": {"type": "array", "minItems": 1, "items": {"type": "number"}},
-        "floors": {"type": "object", "additionalProperties": {"type": "number"}},
-        "band_fraction": {"type": "number"},
-        "interpolation": {"const": "linear_between_endpoints_only"}
+        "runs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["raw_path", "v_column", "i_column"],
+            "properties": {
+              "raw_path": {"type": "string"},
+              "v_column": {"type": "string"},
+              "i_column": {"type": "string"}
+            }
+          }
+        },
+        "endpoint_loads": {"type": "array", "minItems": 2,
+                           "items": {"type": "number"}},
+        "interior_loads": {"type": "array", "minItems": 1,
+                           "items": {"type": "number"}},
+        "tokens_ps": {"type": "array", "minItems": 1,
+                      "items": {"type": "number"}}
       }
     },
     "interpolation": {"const": "prohibited"}

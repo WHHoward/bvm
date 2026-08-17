@@ -1,0 +1,18 @@
+visual_checklist:
+  schema_version: bvm-s2-stable-load-viz-checklist-v2
+  attempt: A02
+  status: MECHANICAL_PASS_AWAITING_CODEX_VISUAL_REVIEW
+  reviewer: CODEX (fresh-context, mandatory)
+  items:
+    - {id: V1, check: "load selectors (1/12/25/50 ohm) operate", outcome: NOT_YET_REVIEWED}
+    - {id: V2, check: "polarity selectors (positive/negative) operate", outcome: NOT_YET_REVIEWED}
+    - {id: V3, check: "all panels legible at desktop resolution", outcome: NOT_YET_REVIEWED}
+    - {id: V4, check: "PRE [80,90) ps shading visible on JM1/JM2 panels", outcome: NOT_YET_REVIEWED}
+    - {id: V5, check: "units correct (ps/mV/uA/raw rad) in titles and axes", outcome: NOT_YET_REVIEWED}
+    - {id: V6, check: "legend toggles work; hover/zoom/pan/reset functional", outcome: NOT_YET_REVIEWED}
+    - {id: V7, check: "JM2 PRE detail visible without distortion", outcome: NOT_YET_REVIEWED}
+    - {id: V8, check: "raw traces unsmoothed/unresampled (13600 pts/run)", outcome: MECHANICAL_CONFIRMED}
+  mechanical_evidence:
+    - content-completeness.log (independent verifier PASS)
+    - deterministic-check.log (byte-identical regeneration)
+  authority: "Mechanical PASS does not satisfy visual acceptance; Codex fresh-context rendered review required."

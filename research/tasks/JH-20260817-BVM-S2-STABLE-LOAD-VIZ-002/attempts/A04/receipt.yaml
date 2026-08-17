@@ -1,0 +1,123 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A04
+workflow_state: DELIVERED
+created_at: "2026-08-18T01:20:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  issuer_snapshot_sha256: "da46d92c6cf4f2ac04b60a2e7f0ebd435033cecdce4bba6052c0ba63e0bf44b8"
+  ack_sha256: "4c3124efc7d4eda56ad7bc483368ff7b26841a56de525aa5c4eb4f5280b8eb6e"
+execution_status: COMPLETED
+baseline_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+result_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+changes:
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/render_stable_load_dashboard.py, action: CREATED, sha256: "1170bf4ade893c6f3e0ce943605a35b6c922f3b9358c1c423c2f0bccbd4a8f48"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/visualization-data.json, action: CREATED, sha256: "21af99b2ade407d1fc7ba21918ba37adb32233638ae04f32b0b0ae52ef7c0b2c"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/report.html, action: CREATED, sha256: "4991644ddcca57ef7555d1be8cceab038867b61773e0fd530322fe0bb8906933"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/verify_content_completeness.py, action: CREATED, sha256: "2477815b9ac7894f4aec083784aed5b8fcd4a87136ebcc4fa246690d437f343e"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/compare_deterministic.py, action: CREATED, sha256: "2417d91cb63cd107e73c6e469c7917bf335ccc78e146bda4c7fab30ad851f12e"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/visual-acceptance.yaml, action: CREATED, sha256: "6323aa825321420b367f56c9aca4bf7d2942324e88f2893ad9a6ce2f953f711f"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/deterministic-comparison.log, action: CREATED, sha256: "13ef6ebd67c91018a71e5557a89b567cfcb00344982a55ea147947c1b7849cc2"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/content-completeness.log, action: CREATED, sha256: "018ea8a9d8c84c0f17bb181f639efa2cec8fb62d6cc44ed1541f9ec0216f9c5c"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/receipt-pending.yaml, action: CREATED, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f"}
+artifacts:
+  - {id: renderer, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/render_stable_load_dashboard.py, sha256: "1170bf4ade893c6f3e0ce943605a35b6c922f3b9358c1c423c2f0bccbd4a8f48", role: IMPLEMENTATION}
+  - {id: data-model, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/visualization-data.json, sha256: "21af99b2ade407d1fc7ba21918ba37adb32233638ae04f32b0b0ae52ef7c0b2c", role: DOCUMENTATION}
+  - {id: report-html, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/report.html, sha256: "4991644ddcca57ef7555d1be8cceab038867b61773e0fd530322fe0bb8906933", role: DOCUMENTATION}
+  - {id: content-verifier, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/verify_content_completeness.py, sha256: "2477815b9ac7894f4aec083784aed5b8fcd4a87136ebcc4fa246690d437f343e", role: IMPLEMENTATION}
+  - {id: comparator, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/compare_deterministic.py, sha256: "2417d91cb63cd107e73c6e469c7917bf335ccc78e146bda4c7fab30ad851f12e", role: IMPLEMENTATION}
+  - {id: visual-checklist, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/visual-acceptance.yaml, sha256: "6323aa825321420b367f56c9aca4bf7d2942324e88f2893ad9a6ce2f953f711f", role: DOCUMENTATION}
+  - {id: comparison-log, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/deterministic-comparison.log, sha256: "13ef6ebd67c91018a71e5557a89b567cfcb00344982a55ea147947c1b7849cc2", role: LOG}
+  - {id: completeness-log, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/content-completeness.log, sha256: "018ea8a9d8c84c0f17bb181f639efa2cec8fb62d6cc44ed1541f9ec0216f9c5c", role: LOG}
+  - {id: receipt-pending, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/receipt-pending.yaml, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f", role: DOCUMENTATION}
+commands:
+  - command: "python3 render_stable_load_dashboard.py (canonical, generated once; read-only after)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/deterministic-comparison.log
+    log_sha256: "13ef6ebd67c91018a71e5557a89b567cfcb00344982a55ea147947c1b7849cc2"
+  - command: "python3 compare_deterministic.py (side-effect-free temp render; comparison log only)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/deterministic-comparison.log
+    log_sha256: "13ef6ebd67c91018a71e5557a89b567cfcb00344982a55ea147947c1b7849cc2"
+  - command: "python3 verify_content_completeness.py (DOM-level independent verification)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/content-completeness.log
+    log_sha256: "018ea8a9d8c84c0f17bb181f639efa2cec8fb62d6cc44ed1541f9ec0216f9c5c"
+tests:
+  - id: deterministic-comparison
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/deterministic-comparison.log
+    notes:
+      - "Side-effect-free temp render; canonical report.html never
+         rewritten after generation; DETERMINISTIC COMPARISON CONSISTENT
+         (sha-identical; len delta is UTF-8 str-vs-bytes counting)."
+  - id: independent-content-completeness
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/content-completeness.log
+    notes:
+      - "DOM-level independent verifier (no renderer import): 8 selector
+         buttons active-state, 8 sections, endpoint/descriptors/residual/
+         provenance tables present with token rows; PASS."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/report.html
+    notes:
+      - "A03 selectors and all waveform content retained; independent wide
+         panels (max-width 1320px, 1440px-friendly); hover/zoom/legend;
+         self-contained offline Plotly."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/report.html
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/content-completeness.log
+    notes:
+      - "Actual visible HTML tables: Endpoint-VI (token/Rhat/Vth/emax/
+         eligible/classification), V*/I* source descriptors, V/I control
+         residual, provenance/status block; plus all waveform panels."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/deterministic-comparison.log
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/content-completeness.log
+    notes:
+      - "Side-effect-free deterministic comparison retained; verifier
+         enhanced to check actual DOM table/panel expression."
+  - id: AC4
+    status: NOT_EVALUATED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/visual-acceptance.yaml
+    notes:
+      - "Awaiting the single Codex fresh-context browser review; mechanical
+         PASS recorded only."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/visual-acceptance.yaml
+    notes:
+      - "No accepted scientific source or conclusion changed; A01/A02/A03/
+         audits immutable; A04 append-only attempt-local; no A05 created."
+observations:
+  - "C03 visibility/desktop-readability items addressed: wide independent
+     panels (1320px max) and visible HTML tables for endpoint/descriptors/
+     residual/provenance; verifier checks the actual DOM expressions."
+  - "A02 verify failure remains a recorded historical fact (C02), not
+     rewritten or masked.  No JoSIM, no scientific change, no protocol
+     modification."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "report.html ~40.6 MB (inlined plotly + 8 sections with full panels and
+     tables); final visual acceptance requires the Codex browser review."
+deviations: []
+blockers: []

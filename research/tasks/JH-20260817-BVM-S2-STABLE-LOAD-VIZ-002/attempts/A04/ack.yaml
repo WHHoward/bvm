@@ -1,0 +1,52 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A04
+workflow_state: ACKED
+created_at: "2026-08-18T01:15:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  issuer_snapshot_sha256: "da46d92c6cf4f2ac04b60a2e7f0ebd435033cecdce4bba6052c0ba63e0bf44b8"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "A01/A02/A03/audits/STABLE-LOAD-001 immutable; A04 writes only
+       attempts/A04/** per user authorization (codex-20260818-011320)."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A04 (user-authorized, FINAL rework per codex-20260818-011320): keep
+    A03 selectors and all waveform content; split into independent wide
+    panels suited to 1440px; actual HTML must visibly contain the
+    Endpoint-VI five-row table (token/Rhat/Vth/emax/eligible/
+    classification), V*/I* source descriptor tables, V/I residual table,
+    and provenance/status block.  Enhance only the existing independent
+    verifier to check the actual DOM expression of those items;
+    side-effect-free deterministic comparison retained.  No JoSIM,
+    scientific change, or protocol/workflow modification.  Stop after A04
+    receipt awaiting one Codex browser review; MUST NOT create A05.
+  non_goals:
+    - "Modify A01/A02/A03/audits/source; run JoSIM; change science;
+       protocol/workflow changes; create A05."
+  stop_conditions:
+    - "Any need for a non-enumerated write path, scientific experiment,
+       network/install/worktree/commit, deletion/overwrite, protocol
+       expansion, or creating a further attempt."
+planned_commands:
+  - "python3 render_stable_load_dashboard.py (canonical, wide panels + visible tables)"
+  - "python3 compare_deterministic.py (side-effect-free)"
+  - "python3 verify_content_completeness.py (DOM table/panel checks)"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A04/*
+blockers: []
+deviations: []

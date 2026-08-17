@@ -1,0 +1,21 @@
+visual_checklist:
+  schema_version: bvm-s2-stable-load-viz-checklist-v4
+  attempt: A04
+  status: MECHANICAL_PASS_AWAITING_CODEX_BROWSER_REVIEW
+  reviewer: CODEX (fresh-context browser review, mandatory; AC4)
+  historical_fact: "A02 verify-task failed (C02): report.html drifted from
+    receipt-bound hash after --check rewrote output. A03 fixed the pattern
+    (canonical read-only + side-effect-free comparison). A04 keeps it."
+  items:
+    - {id: V1, check: "4x2 selector buttons active-state switch sections", outcome: MECHANICAL_CONFIRMED}
+    - {id: V2, check: "panels legible at 1440px desktop (max-width 1320px cards)", outcome: NOT_YET_REVIEWED}
+    - {id: V3, check: "Endpoint-VI 5-row table (token/Rhat/Vth/emax/eligible/classification) visible", outcome: MECHANICAL_CONFIRMED}
+    - {id: V4, check: "V*/I* source descriptor tables visible", outcome: MECHANICAL_CONFIRMED}
+    - {id: V5, check: "V/I control residual table visible", outcome: MECHANICAL_CONFIRMED}
+    - {id: V6, check: "provenance/status block visible", outcome: MECHANICAL_CONFIRMED}
+    - {id: V7, check: "JM1/JM2 PRE [80,90) shading + p2p/threshold/READY legible", outcome: NOT_YET_REVIEWED}
+    - {id: V8, check: "units correct; hover/zoom/legend functional in browser", outcome: NOT_YET_REVIEWED}
+  mechanical_evidence:
+    - deterministic-comparison.log (CONSISTENT; canonical read-only, temp render)
+    - content-completeness.log (DOM-level independent verification PASS)
+  authority: "Mechanical PASS does not satisfy visual acceptance; Codex fresh-context browser review required."

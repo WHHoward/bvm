@@ -1,0 +1,62 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A04
+audit_id: C04
+workflow_state: AUDITED
+created_at: "2026-08-18T02:20:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  ack_sha256: "4c3124efc7d4eda56ad7bc483368ff7b26841a56de525aa5c4eb4f5280b8eb6e"
+  receipt_sha256: "ea824e7a25580fbe7dfd48b224d69c49d21429dc9279a367f480ffe10f604357"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: receipt-bound-artifacts-and-mechanical-check
+    status: PASS
+    evidence:
+      - "A04 receipt-bound report.html, visualization-data.json, renderer, verifier, and comparator reproduce their receipt.yaml SHA-256 values."
+      - "The A04 independent content verifier exits PASS without importing the renderer."
+      - "Task-wide verify-task remains nonzero solely because of the immutable A02 report hash drift recorded by C02; A04 neither modifies nor masks that historical fact."
+      - "A04 is attempt-local. No A01/A02/A03 receipt, prior audit, STABLE-LOAD-001 source artifact, raw data, metric, or disposition was modified."
+  - id: actual-selector-and-browser-controls
+    status: PASS
+    evidence:
+      - "Fresh-context Codex opened receipt-bound A04 report.html in Chromium at 1440x1080 and operated all eight 1/12/25/50-ohm × positive/negative selectors. Every click yielded exactly one visible matching section and exactly one active selector."
+      - "Every active state contains a 5-row endpoint table, a 2-row descriptor table, residual table, and provenance table. Plotly modebar controls for zoom/pan/reset and 22 legend toggles are present."
+      - "dashboard-l01-positive-top.png, dashboard-l01-positive-tables.png, and dashboard-l50-negative-top.png are rendered-review evidence, not scientific authority."
+  - id: frozen-a04-visible-content
+    status: FAIL
+    evidence:
+      - "The actual visible Source descriptors table has columns quantity/max/rms/time-normalized-L1/rctrl. It does not display the explicitly required peak, peak time, latency, FWHM, primary lobe, or dominant post-primary opposite lobe for V* and I*."
+      - "The actual visible Control residual table has only window, V residual max, and I residual max. It does not display the required V/I rctrl, Rmax, RMS, and time-normalized-L1 fields."
+      - "The visible Provenance / status table shows source run, disposition, readiness, and claim ceiling, but does not display the required dt. Load and polarity are only in the page heading, rather than the specified provenance/status block."
+      - "The waveform figure is still a 700x900 Plotly canvas in a 1440px desktop viewport; its 22-entry legend occupies the right side of the figure. The visible tables are readable, but this does not cure the missing functional content above."
+  - id: ac4-actual-rendered-visual-acceptance
+    status: FAIL
+    evidence:
+      - "The required actual browser review was performed. Mechanical verifier PASS cannot substitute for the missing frozen fields in the rendered document."
+findings:
+  - "A04 validly improves A03 by adding selector-driven visible endpoint and status tables, but it does not deliver the final user-authorized A04 table schemas."
+  - "The enhanced verifier still checks table existence and selected headers rather than the exact required descriptor, residual, and provenance field sets."
+  - "No JoSIM execution, new scientific computation, source change, or scientific conclusion occurred."
+accepted_claims:
+  - "A04 is a valid, receipt-bound, attempt-local report-only delivery with working selector state changes and visible endpoint-VI five-token rows."
+  - "The accepted STABLE-LOAD-001 raw evidence, frozen specification, and structured analysis remain unmodified scientific authority."
+rejected_claims:
+  - "A04 does not satisfy the final frozen visualization correction because required source-descriptor, control-residual, and provenance/status fields are absent from its actual page."
+  - "A04 is not an accepted visualization closure and adds no scientific conclusion."
+required_rework:
+  - "Per the user's final-A04 instruction, stop here. Do not create A05 automatically and do not modify A01/A02/A03/A04, receipts, audits, screenshots, or accepted STABLE-LOAD-001 source evidence."
+next_actions:
+  - "Stop at C04 REWORK_REQUIRED and await explicit user direction."
+claim_ceiling: "descriptive non-authoritative visualization completeness only; accepted raw, frozen specification, and accepted structured analysis remain the sole scientific authority, with no new scientific conclusion."

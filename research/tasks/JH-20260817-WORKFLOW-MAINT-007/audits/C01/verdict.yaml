@@ -1,0 +1,61 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-007
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T21:30:10+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "6198c866837d8b0c9b8e7cd9a13e2af73af76be1815f6c8670ec18d20922d449"
+  ack_sha256: "c4a81b91a011dd7b81b9ac2da494b5712cb64cb7ebf4c437db2a0131aad6bf23"
+  receipt_sha256: "ab232059cd47aeca77e160e89bf2433086cd44f60493b526b3b6be8f9cd02ffc"
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: scope-hash-separation
+    status: FAIL
+    evidence:
+      - "The immutable request's scope.hash_paths contains all five writable targets, so its own mandatory documentation edits drift the sealed scope manifest."
+      - "This repeats the MAINT-004 frozen-input design defect and makes task-level verification unreachable after compliant execution."
+  - id: receipt-schema-and-chain
+    status: FAIL
+    evidence:
+      - "verify-task rejects A01 receipt: required interpretations is absent and acceptance_results[0].notes is a scalar rather than an array."
+      - "Therefore the receipt is not a valid canonical execution record and no Copilot review/audit-ready handoff was authorized."
+  - id: bounded-documentation-diff
+    status: PASS
+    evidence:
+      - "The five edited authorized files accurately state declared-entry authority, builder-only directory expansion, per-entry integrity, final-receipt exclusion, and expected evidence/run-artifact matrix completeness."
+      - "A01 test log records 50/50 passing tests and git diff --check clean; no JoSIM or frozen scientific paths were modified."
+  - id: user-no-successor-boundary
+    status: PASS
+    evidence:
+      - "User explicitly prohibited another maintenance successor unless a defect directly compromises scientific evidence correctness; this workflow issuance defect does not authorize overriding that boundary."
+  - id: skeptical-peer-review
+    status: NOT_APPLICABLE
+    evidence:
+      - "A01 is BLOCKED with an invalid receipt, so the requested single Copilot skeptical review cannot be started."
+findings:
+  - "MAJOR: issuer scope construction incorrectly froze every authorized output via hash_paths, preventing a verifiable implementation of the task's own acceptance criteria."
+  - "MAJOR: A01 receipt is schema-invalid, independently of the scope conflict."
+accepted_claims:
+  - "The uncommitted documentation/builder/test diff reflects the user's declared-entry evidence-completeness decision and does not alter MAINT-006 behavior or scientific evidence."
+rejected_claims:
+  - "MAINT-007 is not accepted or closed; it has neither a valid receipt nor a verifiable task chain."
+  - "No scientific completeness, experiment, route, metric, or historical-disposition claim is accepted."
+required_rework:
+  - "A corrected-scope task would need hash_paths limited to immutable inputs and a schema-valid receipt; however, this is not authorized under the user's no-additional-successor boundary."
+next_actions:
+  - "Stop workflow maintenance and await explicit user direction. Do not create a successor, run JoSIM, or treat the uncommitted A01 documentation edits as accepted project state."
+claim_ceiling: "workflow documentation and deterministic evidence-accounting semantics only; no scientific or historical-disposition claim"

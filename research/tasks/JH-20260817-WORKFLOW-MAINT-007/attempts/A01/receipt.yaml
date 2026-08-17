@@ -1,0 +1,109 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-007
+revision: 1
+attempt_id: A01
+workflow_state: BLOCKED
+created_at: '2026-08-17T21:30:00+08:00'
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: 6198c866837d8b0c9b8e7cd9a13e2af73af76be1815f6c8670ec18d20922d449
+  ack_sha256: c4a81b91a011dd7b81b9ac2da494b5712cb64cb7ebf4c437db2a0131aad6bf23
+execution_status: BLOCKED
+baseline_git_head: 1faa890c82917ff0f761d614393a18ad3a06d70c
+result_git_head: 1faa890c82917ff0f761d614393a18ad3a06d70c
+changes:
+- path: research/WORKFLOW.md
+  action: MODIFIED
+  sha256: 08bb4355b1cb29187cdd5ad14a94d11d9558c53732ced66be6ea219e536ef95d
+- path: research/CLAUDE_EXECUTOR.md
+  action: MODIFIED
+  sha256: 86660124545b830482405d869743e7c8b4ceaef3742f9a60528934ea13c1a196
+- path: .agents/skills/josim-handoff/references/handoff-protocol.md
+  action: MODIFIED
+  sha256: 1a6ef37ba329339566feb14df9e4ad37c0f70e5dd63a0d8d6411727468358233
+- path: scripts/build_evidence_bundle.py
+  action: MODIFIED
+  sha256: 71da55b47284065dd666ce1fa72b3c5a5db7df83b5c31953db00277f3509a2d5
+- path: test/workflow/test_evidence_bundle.py
+  action: MODIFIED
+  sha256: 8b437031474efe664ca719f8ec85790d24c199c837a5ac671a4ae21571254f78
+- path: research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/logs/test-suite.log
+  action: CREATED
+  sha256: 9c90b68dfa87983f9d67693844cf1869e5032abffee6839ff719c724859067ed
+artifacts:
+- id: workflow-doc
+  path: research/WORKFLOW.md
+  sha256: 08bb4355b1cb29187cdd5ad14a94d11d9558c53732ced66be6ea219e536ef95d
+  role: DOCUMENTATION
+- id: executor-doc
+  path: research/CLAUDE_EXECUTOR.md
+  sha256: 86660124545b830482405d869743e7c8b4ceaef3742f9a60528934ea13c1a196
+  role: DOCUMENTATION
+- id: protocol-doc
+  path: .agents/skills/josim-handoff/references/handoff-protocol.md
+  sha256: 1a6ef37ba329339566feb14df9e4ad37c0f70e5dd63a0d8d6411727468358233
+  role: DOCUMENTATION
+- id: bundler
+  path: scripts/build_evidence_bundle.py
+  sha256: 71da55b47284065dd666ce1fa72b3c5a5db7df83b5c31953db00277f3509a2d5
+  role: IMPLEMENTATION
+- id: bundle-tests
+  path: test/workflow/test_evidence_bundle.py
+  sha256: 8b437031474efe664ca719f8ec85790d24c199c837a5ac671a4ae21571254f78
+  role: TEST
+- id: test-suite-log
+  path: research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/logs/test-suite.log
+  sha256: 9c90b68dfa87983f9d67693844cf1869e5032abffee6839ff719c724859067ed
+  role: LOG
+commands:
+- command: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest .agents/skills/josim-handoff/scripts/test_handoff.py
+    test/workflow/ -v
+  exit_code: 0
+  log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/logs/test-suite.log
+  log_sha256: 9c90b68dfa87983f9d67693844cf1869e5032abffee6839ff719c724859067ed
+- command: git diff --check
+  exit_code: 0
+  log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/logs/test-suite.log
+  log_sha256: 9c90b68dfa87983f9d67693844cf1869e5032abffee6839ff719c724859067ed
+tests:
+- id: handoff-test-suite
+  status: PASS
+  evidence_paths:
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/logs/test-suite.log
+  notes:
+  - 50/50 pass (test_handoff 35 + test/workflow 15) under pytest PYTEST_DISABLE_PLUGIN_AUTOLOAD=1;
+    git diff --check CLEAN. All MAINT-006 regressions (external attestation byte identity,
+    legacy strict HEAD, Decimal exact timestamps, per-token endpoint-VI, deterministic
+    reporting, listed-entry hash/byte integrity) remain green -> AC5.
+acceptance_results:
+- id: AC1
+  status: NOT_EVALUATED
+  evidence_paths: []
+  notes: All AC1-AC5 documentation edits complete and 50/50 tests green, but task-level
+    verify-task is blocked by the frozen-input conflict below; AC1-AC5 NOT_EVALUATED
+    pending Codex resolution.
+observations:
+- All five authorized documentation/builder/test files were aligned to declared-entry
+  semantics (AC1-AC4) with zero behavior change; 50/50 tests pass; git diff --check
+  CLEAN.
+- 'verify-task FAILS (exit 2): request scope.hash_paths includes all five writable
+  paths (research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, handoff-protocol.md, scripts/build_evidence_bundle.py,
+  test/workflow/test_evidence_bundle.py) at issuance-time hashes; _scope_manifest_errors
+  compares current bytes against that snapshot, so executing any AC1-AC4 edit makes
+  verify-task fail -- the identical frozen-input conflict MAINT-004 hit.'
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+- Two empty self-created debug temp dirs (.dbg-*/) remain untracked at repo root;
+  Codex instructed not to touch debug directories.
+deviations: []
+blockers:
+- 'FROZEN-INPUT CONFLICT (same pattern as MAINT-004): hash_paths overlaps write_paths
+  for all five authorized edit targets. Executing the task''s own acceptance criteria
+  makes task-level verify-task unreachable. Per CLAUDE_EXECUTOR.md §3.1 execution
+  stops here; the completed in-scope documentation edits and test log are preserved
+  for a corrected-scope successor.'

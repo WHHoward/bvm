@@ -1,0 +1,61 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-007
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T21:25:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "6198c866837d8b0c9b8e7cd9a13e2af73af76be1815f6c8670ec18d20922d449"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "1faa890c82917ff0f761d614393a18ad3a06d70c"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Close no-JoSIM workflow maintenance by aligning active evidence-bundle
+    claims with the user-declared DECLARED-ENTRY completeness rule:
+    bundle authority is the declared entries; directory expansion is only
+    a convenience that enumerates declared entries and never a
+    filesystem-completeness authority; completeness for CRITICAL/FROZEN
+    work is the frozen expected evidence/run-artifact matrix plus
+    required-artifact/manifest/inventory delivered-set comparison, never
+    all regular files below a directory.  Documentation/builder docstrings/
+    tests only; no behavior change to MAINT-006 implementations.
+  non_goals:
+    - "Run JoSIM; alter S0/S1/S2, MAINT-001 through MAINT-006 records,
+       scientific evidence, routes, metric thresholds, physical
+       conclusions, or paper claims."
+    - "Implement recursive_roots, a filesystem-root DSL, directory-closure
+       verification, or any new handoff protocol feature."
+    - "Rewrite external snapshot attestation, strict-HEAD behavior, Decimal
+       endpoint-VI, deterministic reporting, or listed-entry integrity
+       implementations."
+  stop_conditions:
+    - "Any need for an unlisted write path, new protocol feature,
+       scientific experiment or claim, network/install/worktree/commit,
+       deletion/overwrite, or an additional maintenance successor."
+planned_commands:
+  - "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest
+     .agents/skills/josim-handoff/scripts/test_handoff.py test/workflow/ -v"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task
+     research/tasks/JH-20260817-WORKFLOW-MAINT-007"
+  - "git diff --check"
+expected_changed_paths:
+  - research/WORKFLOW.md
+  - research/CLAUDE_EXECUTOR.md
+  - .agents/skills/josim-handoff/references/handoff-protocol.md
+  - scripts/build_evidence_bundle.py
+  - test/workflow/test_evidence_bundle.py
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/{ack,receipt}.yaml
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/logs/*
+blockers: []
+deviations: []

@@ -1,0 +1,100 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-007
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T21:19:20+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: WORKFLOW_MAINTENANCE
+depends_on: [JH-20260817-WORKFLOW-MAINT-006]
+supersedes: {task_id: JH-20260817-WORKFLOW-MAINT-006, revision: 1}
+task:
+  kind: DOCUMENTATION
+  objective: "Close no-JoSIM workflow maintenance by aligning active evidence-bundle claims with the user-declared declared-entry completeness rule."
+  research_question: "Do active workflow documentation and builder regression accurately limit bundle authority to declared entries and expected evidence matrices, without filesystem-directory closure?"
+  non_goals:
+    - "Run JoSIM; alter S0/S1/S2, MAINT-001 through MAINT-006 records, scientific evidence, routes, metric thresholds, physical conclusions, or paper claims."
+    - "Implement recursive_roots, a filesystem-root DSL, directory-closure verification, or any new handoff protocol feature."
+    - "Rewrite external snapshot attestation, strict-HEAD behavior, Decimal endpoint-VI, deterministic reporting, or listed-entry integrity implementations."
+  claim_ceiling: "workflow documentation and deterministic evidence-accounting semantics only; no scientific or historical-disposition claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_evidence_bundle.py
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/audits/C01/verdict.yaml
+  hash_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_evidence_bundle.py
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/audits/C01/verdict.yaml
+  write_paths:
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_evidence_bundle.py
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-003/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-005/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/**
+    - test/final/**
+  locks: [locks/handoff-v1-maintenance]
+baseline:
+  git_head: "1faa890c82917ff0f761d614393a18ad3a06d70c"
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-007/baseline/git-status.txt, sha256: "5398ac9415624733a26e5a2dce5e87f3d2645036f2f241c167504049622c8a95"}
+  scope_hashes: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-007/baseline/scope-files.sha256, sha256: "a083253cb6bc217dd5a24fb01997e1912fe90788404daa8ad1d3983a1a1b1ea8"}
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff]
+  read_first: [AGENTS.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/references/handoff-protocol.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: research/WORKFLOW.md, role: DOCUMENTATION, required: true}
+  - {id: D2, path: research/CLAUDE_EXECUTOR.md, role: DOCUMENTATION, required: true}
+  - {id: D3, path: .agents/skills/josim-handoff/references/handoff-protocol.md, role: DOCUMENTATION, required: true}
+  - {id: D4, path: scripts/build_evidence_bundle.py, role: IMPLEMENTATION, required: true}
+  - {id: D5, path: test/workflow/test_evidence_bundle.py, role: TEST, required: true}
+  - {id: D6, path: research/tasks/JH-20260817-WORKFLOW-MAINT-007/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Active workflow and executor documentation call this a multi-entry PRE-receipt evidence bundle, state that final receipt is excluded, and do not claim recursive filesystem completeness.", evidence: [WORKFLOW.md, CLAUDE_EXECUTOR.md]}
+  - {id: AC2, condition: "Protocol documentation states that authority is the bundle's declared entries; handoff independently checks every declared entry for repository-safe path, regular-file existence, SHA-256, bytes, and duplicate policy, without asserting directory closure.", evidence: [handoff-protocol.md]}
+  - {id: AC3, condition: "Builder documentation and regression retain directory expansion only as convenience that enumerates declared entries, explicitly without turning a directory into a filesystem-completeness authority.", evidence: [build_evidence_bundle.py, test_evidence_bundle.py]}
+  - {id: AC4, condition: "For CRITICAL/FROZEN work, active documentation defines completeness as frozen expected evidence/run-artifact matrix plus required artifacts, manifest, and inventory delivered-set comparison; it never defines completeness as all regular files below a directory.", evidence: [WORKFLOW.md, CLAUDE_EXECUTOR.md, handoff-protocol.md]}
+  - {id: AC5, condition: "Existing MAINT-006 implementations remain unchanged in behavior: external attestation, byte identity, legacy strict HEAD, Decimal exact timestamps, per-token endpoint-VI, deterministic reporting, and listed-entry hash/byte integrity all retain their current regressions.", evidence: [test-suite.log]}
+invalid_conditions:
+  - "Any JoSIM execution; frozen or historical task modification; recursive_roots/filesystem-root DSL addition; directory-closure claim; final receipt included in a PRE-receipt bundle; or weakening of declared-entry integrity."
+inconclusive_conditions: []
+stop_conditions:
+  - "Any need for an unlisted write path, new protocol feature, scientific experiment or claim, network/install/worktree/commit, deletion/overwrite, or an additional maintenance successor."
+issuance_blockers: []

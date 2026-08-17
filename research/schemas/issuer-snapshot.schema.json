@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://josim-bvm.local/schemas/issuer-snapshot.schema.json",
+  "title": "JoSIM external issuer snapshot attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "document_type", "schema_version", "task_id", "revision", "issued_at", "issuer", "snapshot_commit", "bindings"],
+  "properties": {
+    "protocol": {"const": "josim-handoff/v1"},
+    "document_type": {"const": "issuer_snapshot_attestation"},
+    "schema_version": {"const": 1},
+    "task_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "issuer": {"type": "object", "additionalProperties": false, "required": ["role", "id"], "properties": {"role": {"const": "CODEX"}, "id": {"type": "string", "minLength": 1}}},
+    "snapshot_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "bindings": {"type": "object", "additionalProperties": false, "required": ["request_sha256", "request_signature_sha256", "scope_manifest_sha256"], "properties": {"request_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "request_signature_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "scope_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+  }
+}

@@ -180,6 +180,10 @@
           "type": "string",
           "pattern": "^[0-9a-f]{40}$",
           "description": "optional v1: commit whose request.yaml/request.sha256/scope-files.sha256 must be byte-identical to the acknowledged ones (issuer snapshot mode)"
+        },
+        "issuer_snapshot_mode": {
+          "enum": ["EXTERNAL_ATTESTATION"],
+          "description": "optional v1 external issuer attestation mode; the final snapshot commit is deliberately absent from request.yaml"
         }
       }
     },

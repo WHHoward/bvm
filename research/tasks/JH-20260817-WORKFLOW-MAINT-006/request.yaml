@@ -1,0 +1,119 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-006
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T20:39:08+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: WORKFLOW_MAINTENANCE
+depends_on: [JH-20260817-WORKFLOW-MAINT-005]
+supersedes: {task_id: JH-20260817-WORKFLOW-MAINT-005, revision: 1}
+task:
+  kind: IMPLEMENTATION
+  objective: "Implement the user-approved external issuer-snapshot attestation, per-token exact-decimal endpoint-VI diagnostic, and independently verified recursive pre-receipt bundle as the final no-JoSIM v1 maintenance package."
+  research_question: "Can v1 validate a byte-identical, externally attested execution snapshot while preserving legacy strict-HEAD behavior, and mechanically validate exact-token endpoint-VI and recursive multi-file pre-receipt evidence?"
+  non_goals:
+    - "Run JoSIM; alter S0/S1/S2 or MAINT-001 through MAINT-005; alter any scientific evidence, route, metric threshold, physical conclusion, or paper claim."
+    - "Create v2, use YAML normalization/field deletion/semantic equality in place of byte identity, use interpolation/resampling/tolerance matching, or build a DSL."
+  claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific or historical-disposition claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - .agents/skills/josim-handoff/assets/execution-ack.yaml
+    - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - scripts/quantitative_analysis_verifier.py
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_quantitative_analysis_verifier.py
+    - test/workflow/test_evidence_bundle.py
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/schemas/task-request.schema.json
+    - research/schemas/execution-ack.schema.json
+    - research/schemas/execution-receipt.schema.json
+    - research/schemas/issuer-snapshot.schema.json
+    - research/schemas/quantitative-analysis-spec.schema.json
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-005/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-005/audits/C01/verdict.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/issuer-snapshot.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/issuer-snapshot.sha256
+  hash_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/schemas/task-request.schema.json
+    - research/schemas/execution-ack.schema.json
+    - research/schemas/issuer-snapshot.schema.json
+  write_paths:
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - .agents/skills/josim-handoff/assets/execution-ack.yaml
+    - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - scripts/quantitative_analysis_verifier.py
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_quantitative_analysis_verifier.py
+    - test/workflow/test_evidence_bundle.py
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/schemas/execution-receipt.schema.json
+    - research/schemas/quantitative-analysis-spec.schema.json
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-003/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-005/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/**
+    - test/final/**
+  locks: [locks/handoff-v1-maintenance]
+baseline:
+  git_head: "be206bf19621ec7545461fb9efad7b0f35ab6f8b"
+  dirty_policy: ALLOW_NONOVERLAP
+  issuer_snapshot_mode: EXTERNAL_ATTESTATION
+  git_status: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-006/baseline/git-status.txt, sha256: "5398ac9415624733a26e5a2dce5e87f3d2645036f2f241c167504049622c8a95"}
+  scope_hashes: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-006/baseline/scope-files.sha256, sha256: "acb051ff8ac84f8d5947128a2c589a4fa00b97638d41f08cdee4761617d1db94"}
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff]
+  read_first: [AGENTS.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/references/handoff-protocol.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: .agents/skills/josim-handoff/scripts/handoff.py, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: scripts/quantitative_analysis_verifier.py, role: IMPLEMENTATION, required: true}
+  - {id: D3, path: scripts/build_evidence_bundle.py, role: IMPLEMENTATION, required: true}
+  - {id: D4, path: test/workflow/test_quantitative_analysis_verifier.py, role: TEST, required: true}
+  - {id: D5, path: test/workflow/test_evidence_bundle.py, role: TEST, required: true}
+  - {id: D6, path: research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "External snapshot mode has no final snapshot SHA in request.yaml. An issuer-created, separately SHA-256-sealed attestation binds S and request/signature/scope hashes; ACK binds both request and attestation hashes and observes S.", evidence: [issuer-snapshot.yaml, issuer-snapshot.sha256, ack.yaml]}
+  - {id: AC2, condition: "Verifier reads request.yaml, request.sha256, and baseline/scope-files.sha256 from S and requires byte-identical equality to current sealed files, with no normalization, deletion, or semantic comparison; legacy no-snapshot strict-HEAD behavior remains unchanged.", evidence: [handoff.py, test_handoff.py]}
+  - {id: AC3, condition: "Snapshot negative tests reject changed request bytes, tampered attestation/seal, wrong S, and scope-manifest drift.", evidence: [test_handoff.py]}
+  - {id: AC4, condition: "Endpoint-VI parses raw and registered timestamps using Decimal or an equivalent exact-decimal representation; per exact token independently computes Rhat(t), Vth(t), e_L(t), then applies frozen max/RMS/count descriptors. No pre-fit token averaging or float equality is used.", evidence: [quantitative_analysis_verifier.py, quantitative-analysis-spec.schema.json, test_quantitative_analysis_verifier.py]}
+  - {id: AC5, condition: "An adversarial cancellation fixture where opposite token residuals average away rejects average-before-fit output and accepts the per-token descriptor output; decimal-token mismatch rejects.", evidence: [test_quantitative_analysis_verifier.py]}
+  - {id: AC6, condition: "PRE-receipt bundles support multiple files/directories per role. handoff.py independently validates every safe regular-file entry's hash and bytes, duplicate-path policy, recursive-root exact path set, and prohibits final receipt inclusion; direct negative tests cover hash/byte/missing-recursive/duplicate/receipt failures.", evidence: [handoff.py, build_evidence_bundle.py, test_handoff.py, test_evidence_bundle.py]}
+  - {id: AC7, condition: "Endpoint-VI signed-slope documentation states V = Vth + Rhat*I and matches the implementation.", evidence: [quantitative_analysis_verifier.py]}
+  - {id: AC8, condition: "A true positive synthetic chain completes sealed request -> S -> external attestation -> ACK at S -> multi-file raw/spec -> per-token endpoint-VI -> structured result -> deterministic report -> recursive pre-receipt bundle -> receipt -> verify-task VERIFIED, without JoSIM or frozen-path changes.", evidence: [test_handoff.py, receipt.yaml]}
+invalid_conditions:
+  - "Any JoSIM or historic/scientific path modification; any v2 change; any non-byte snapshot comparison; float/tolerance/interpolation timestamp matching; final receipt in bundle; missing per-entry bundle verification; or unsealed attestation."
+inconclusive_conditions: []
+stop_conditions:
+  - "Any need for an unlisted write path, scientific experiment/claim, network/install/worktree/commit, deletion/overwrite, or protocol/DSL expansion."
+issuance_blockers: []

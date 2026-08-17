@@ -1,0 +1,67 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S1-002
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T13:41:42+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "2e18b89dcaa5650f759063e572cec13b869c880e8086cfb0ba15daf01eaf2a32"
+  ack_sha256: "d38751162a8bb505d6021e1ce99a3e03f98915dfbce756ea525bd25aaa843ff0"
+  receipt_sha256: "18533c68bc48d197c851f803a174844cc1967ad2aed6cbd30f75d52dfbb441b6"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: INCONCLUSIVE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: sealed-provenance-and-raw-validity
+    status: PASS
+    evidence:
+      - "SEAL-004 C01 is the sole provenance authority: 86/86 hashes match and the run-root set is dynamically complete at 62/62 files."
+      - "josim_verifier independently checked all 36 raw CSVs: finite values, required columns, strictly increasing time, and registered-window coverage at all three timesteps."
+  - id: exact-common-time-and-readiness
+    status: PASS
+    evidence:
+      - "Independent Decimal intersections use no interpolation, resampling, or alignment; common source-window counts are 720, 1440, and 2880 as registered."
+      - "All timestep readiness checks pass: JM1 p2p 0.000372/0.000356/0.000351 rad; JM2 p2p 0.0058071/0.0055528/0.0054827 rad; positive/negative separation 11.8221 rad."
+  - id: control-hierarchy
+    status: PASS
+    evidence:
+      - "Independent verifier recomputation passes all registered control groups; maximum rctrl is 3.77e-5 and latency/FWHM are correctly NOT_APPLICABLE for controls in the rctrl <= 1% region."
+  - id: registered-adjacent-pair-convergence
+    status: INCONCLUSIVE
+    evidence:
+      - "0.05->0.025: positive V pointwise/RMS = 24.445780/9.035968 and 7.998566/1.807194 uV; positive I = 2.037148/0.752997 and 0.666547/0.150599 uA; negative V = 5.942145/5.000000 and 1.940588/1.000000 uV; negative I RMS = 0.161716/0.100000 uA."
+      - "0.025->0.0125: positive V RMS = 2.000566/1.808179 uV and positive I RMS = 0.166714/0.150682 uA. The remaining negative pair checks pass."
+      - "All registered latency and applicable FWHM comparisons pass; nevertheless six required signal-pair comparisons fail, so the frozen no-extension rule yields numerical INCONCLUSIVE."
+  - id: corrected-report-limitations
+    status: INCONCLUSIVE
+    evidence:
+      - "A02 has no independent receipt; it is sealed only as corrected/recomputed analysis, not a second execution."
+      - "analysis-corrected.json lacks METRIC_SPEC_V2 section 11.1 schema/spec/provenance metadata."
+      - "Its phase-area residual uses area-minus-phase and a non-frozen Phi0 constant; phase-area residual values are excluded from this audit's accepted evidence."
+      - "Control-corrected pre/post platform deltas are absent; no control-corrected platform claim is accepted."
+findings:
+  - "Six preregistered required adjacent-pair waveform comparisons fail at the fixed maximum refinement; this is valid numerical non-establishment, not an artifact failure."
+  - "A02 corrected reporting is not a fully METRIC_SPEC_V2-conformant or independently receipt-complete measurement record. These documentation/cross-check limitations do not alter the independent raw-based failure calculation."
+accepted_claims:
+  - "artifact_status = VALID for the sealed 12-run raw package and its bounded source-waveform evidence."
+  - "numerical_convergence = INCONCLUSIVE under the unmodified registered S1 procedure."
+  - "The named per-timestep source observations (with their registered fixed closure, initialization/read protocol, 12-ohm load, windows, and directions) remain bounded observations only."
+rejected_claims:
+  - "No numerically converged BVM source characterization is established."
+  - "No universal source specification, logical read0/read1, state-preservation, SFQ/event, fluxoid, receiver compatibility, BQ/DCSFQ_BVM route, or Interface Gate claim is supported."
+  - "No phase-area residual or control-corrected platform conclusion is accepted from the nonconformant A02 reporting fields."
+required_rework: []
+next_actions:
+  - "Await user direction; this audit does not select, design, or authorize the next experiment."
+claim_ceiling: bounded_fixed_fixture_source_observations_and_numerical_convergence_under_registered_s1_procedure_only

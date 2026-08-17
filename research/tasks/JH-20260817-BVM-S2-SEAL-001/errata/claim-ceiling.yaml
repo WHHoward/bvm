@@ -1,0 +1,28 @@
+protocol: josim-handoff/v1
+document_type: audit_metadata_errata
+schema_version: 1
+task_id: JH-20260817-BVM-S2-SEAL-001
+revision: 1
+errata_id: E01
+created_at: "2026-08-17T17:07:29+08:00"
+classification: metadata_only_audit_claim_ceiling_clarification
+scientific_disposition_unchanged: true
+bindings:
+  request_sha256: "cc3496fca7f85720bc060a2f79b6f431d9166a393a30d05e97f53dc8cbaceb33"
+  documents:
+    audit:A01:C01: "00c51f9033045ef2de9a47ab1871d97820df9bd2bb11666f5602eac649fb3474"
+    audit:A01:C02: "868ed3c1d6ae1472012e2766e94fcdedb181a2003363ca50c5be1acc23af0b5c"
+    scientific_disposition:C02: "5601d291481700288d33f8b79132e5eb8e2fd0cf47b7d101f83bafe9d73caa3e"
+recorded_metadata:
+  field: claim_ceiling
+  value: provenance_and_recursive_evidence_integrity_only_preserving_original_s2_execution_artifacts_for_later_independent_scientific_review
+  reason: "C02 uses the sealing task's request binding. handoff.py requires every audit_verdict claim_ceiling to byte-match that request, so the C02 YAML field was mechanically inherited from C01's provenance-only contract."
+corrected_scientific_claim_ceiling: >-
+  bounded per-load fixed-grid source and unresolved internal-trajectory
+  observations under the frozen S2 closure, controls, windows, and
+  preregistered criteria; readiness-limited INCONCLUSIVE disposition and
+  descriptive named-timestamp terminal affine non-compatibility only.
+correction_boundary:
+  - "This errata does not alter C02/verdict.yaml, the sealed S2 raw/analysis package, S2 criteria, acceptance, or scientific disposition."
+  - "It does not authorize a successor experiment, timestep/load/probe/window change, or any stronger source, Thevenin/Norton, receiver, state, SFQ, fluxoid, logical, route, Gate, hardware, or causal-mechanism claim."
+  - "C02 accepted_claims and rejected_claims, together with C02/scientific-disposition.md, remain the authoritative interpretation of the corrected scientific ceiling."

@@ -1,0 +1,78 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-SEAL-001
+revision: 1
+attempt_id: A01
+audit_id: C02
+workflow_state: AUDITED
+created_at: "2026-08-17T16:45:36+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "cc3496fca7f85720bc060a2f79b6f431d9166a393a30d05e97f53dc8cbaceb33"
+  ack_sha256: "efc206aec505562665078dde827fb59d19df84f5b25d8ba82c393cdeba238a69"
+  receipt_sha256: "4e69fbe2fa3444ce4279bd099f71a3a1019580271aa1627540ce947a3289c625"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: INCONCLUSIVE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: sealed-evidence-authority
+    status: PASS
+    evidence:
+      - "S2-SEAL-001 C01 is the sole provenance authority: its 76-file recursive inventory has exact path, byte-size, and SHA-256 coverage."
+      - "This audit preserves rather than repairs the original S2 request/ACK baseline-head mismatch."
+  - id: raw-artifact-and-closure-validity
+    status: PASS
+    evidence:
+      - "All 16 CSVs have the registered 14-column P/V/I header, finite values, strictly increasing literal timestamps, 13,599 rows, and coverage through 169.9875 ps."
+      - "All sixteen traces share the same literal CSV timestamp set; direct independent recomputation found no missing paired-control or cross-load token."
+      - "Current hashes equal the sealed binary, copied BVM/jjmit closure, raw, inputs, logs, and manifest identities. Direct same-JJ activity-window phase/area recomputation agrees 64/64 with analysis.json; phase-area values remain descriptive."
+  - id: registered-readiness
+    status: INCONCLUSIVE
+    evidence:
+      - "JM2 PRE [80,90) p2p is 0.0582907 to 0.0584342 rad at every load and both initialization polarities, exceeding the frozen 0.020 rad maximum by 0.0382907 to 0.0384342 rad."
+      - "JM1 PRE p2p is 0.003519 to 0.003528 rad and initialized JM1/JM2 L-infinity separation is about 11.82192 rad, but these passing subchecks do not offset the required JM2 failure."
+  - id: matched-controls-and-bounded-source-observations
+    status: PASS
+    evidence:
+      - "Independent own-PRE-baseline source recomputation reproduces all rctrl values in the PASS_REGION (8.76e-5 to 6.05e-4), so control latency/FWHM remain NOT_APPLICABLE by the registered hierarchy."
+      - "The fixed-grid per-load V(SL1) and I(L_SL|XBVM1) source traces and their matched-control-corrected counterparts are immutable bounded observations only."
+  - id: terminal-affine-recomputation
+    status: INCONCLUSIVE
+    evidence:
+      - "The supplied analysis implementation linearly interpolates V and I separately against load, which is not the preregistered endpoint V-I formula for Rhat(t), Vth(t), and e_L(t); its residual magnitudes and Markdown table are therefore not accepted authority."
+      - "Independent exact-token raw recomputation of the frozen V-I formula finds positive: 2,594 eligible timestamps, 87 compatible, 2,507 NOT_SUPPORTED; negative: 2,180 eligible, 167 compatible, 2,013 NOT_SUPPORTED. This preserves only a named-timestamp descriptive non-compatibility observation, not a source-model characterization."
+  - id: internal-trajectory-boundary
+    status: INCONCLUSIVE
+    evidence:
+      - "JM1/JM2 cross-load PRE mean spans are at most 2.8875e-7 and 4.407125e-6 rad, respectively, below the registered 0.020 rad pre-state discriminator; no load effect on initialization is established by that criterion."
+      - "The stored p-star/v-star/a-star paths are usable fixed-grid traces, but the report does not independently establish every preregistered two-witness, persistence, control-envelope, floor, and direction condition. The only defensible internal label is unresolved."
+  - id: numerical-status
+    status: NOT_APPLICABLE
+    evidence:
+      - "S2 preregisters no timestep ladder. It cannot establish numerical convergence and does not alter S1's numerical INCONCLUSIVE disposition."
+findings:
+  - "The sealed raw execution package is valid, while the original analysis/report layer has two material limitations: its terminal-affine implementation does not use the frozen V-I endpoint formula, and several human-readable source-peak table values disagree with independent raw recomputation."
+  - "The immutable raw evidence nevertheless supports the registered JM2 readiness failure and bounded per-load observations without any criterion change or new simulation."
+accepted_claims:
+  - "artifact_status = VALID for the sealed 16-run S2 raw/closure/control/probe/time-axis evidence package."
+  - "readiness_status = NOT_MET because every JM2 PRE p2p value exceeds the unmodified 0.020 rad requirement."
+  - "scientific_disposition = INCONCLUSIVE for the attempted S2 load-dependence characterization."
+  - "At the registered 0.0125 ps working timestep, each named load/init source trace and direct-JJ trace is a bounded simulation observation with its matched control and fixed closure."
+  - "The preregistered endpoint V-I affine diagnostic is NOT_SUPPORTED_AT_NAMED_TIMESTAMP for the independent raw recomputation's stated eligible timestamps; this is descriptive evidence only."
+rejected_claims:
+  - "No numerically converged or resolution-independent BVM source characterization is established."
+  - "No universal/fixed Thevenin or Norton source impedance, hardware specification, receiver compatibility, BQ/DCSFQ_BVM route, Interface Gate, logical read0/read1, state preservation, SFQ/event, fluxoid, or causal read-time back-action claim is supported."
+  - "The original analysis.md terminal residual values and source-peak table are not accepted as authority; S2's earlier phrase that initialization PWL timing caused the JM2 oscillation is only a cross-study hypothesis, not a demonstrated mechanism."
+required_rework: []
+next_actions:
+  - "Close S2 as VALID raw evidence with an ACCEPTED INCONCLUSIVE scientific disposition. Do not add timesteps, loads, or a successor experiment without a new user-authorized scientific decision."
+  - "If a future task needs a reusable human-readable S2 report, separately authorize a no-JoSIM report-correction task; it is not required for this disposition."
+claim_ceiling: provenance_and_recursive_evidence_integrity_only_preserving_original_s2_execution_artifacts_for_later_independent_scientific_review

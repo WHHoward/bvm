@@ -4,20 +4,6 @@
 
 ---
 
-## 2026-08-17 — Workflow-maintenance C01 rework disposition
-
-### 做了什么
-
-- 审计 `JH-20260817-WORKFLOW-MAINT-005` 的 no-JoSIM 维护交付；保留 MAINT-004 的 scope 冲突失败证据
-- 独立确认 snapshot request byte-identity 与 evidence-bundle 逐项 path/SHA-256/bytes 重算仍未满足
-
-### 影响
-
-- C01 为 `REWORK_REQUIRED`，未接受该协议维护实现；不改变任何 S0/S1/S2 或科学结论
-- 等待用户决定满足 byte-identical snapshot 约束的非自引用 v1 表示；此期间不启动科学任务
-
----
-
 ## 2026-08-13 — M11 metadata errata 与 characterization preflight
 
 ### 做了什么

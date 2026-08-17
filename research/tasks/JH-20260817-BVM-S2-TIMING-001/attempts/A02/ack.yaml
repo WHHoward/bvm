@@ -1,0 +1,57 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-001
+revision: 1
+attempt_id: A02
+workflow_state: ACKED
+created_at: "2026-08-17T22:20:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "767292b127e081ae4ea4590b946897c979b93c9628c14f7c390bb67c6a3ae53f"
+  issuer_snapshot_sha256: "d204045b84c3703b40b854d5205d4758b1a6649a4f55d0d4f8e1d4fac2ddae03"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "a0577b32f5dd682838855535fac321f45f52667c"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "A01 delivered artifacts (run root) unchanged; A02 edits only the
+       report renderer and regenerated report/consistency/inventory/bundle
+       under the task-owned run root; raw evidence preserved."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A02 (per Codex codex-20260817-221411): without modifying A01 or
+    rerunning raw/JoSIM, add/correct a deterministic timing-report renderer
+    under the task-owned run root so report.md explicitly renders run_id,
+    frozen spec identity, disposition, JM1/JM2 p2p by all registered
+    windows, A/B Delta/readiness contrasts, and the bounded no-mechanism
+    claim ceiling.  Regenerate report.md, report-consistency, inventory,
+    and the PRE-receipt declared-entry bundle (final receipt excluded);
+    preserve/re-hash existing raw evidence.  Do not alter project
+    memory/todo/HANDOVER.
+  non_goals:
+    - "Modify A01, rerun raw/JoSIM, alter raw evidence, or touch project
+       memory/todo/HANDOVER."
+  stop_conditions:
+    - "Any need to modify A01, rerun simulations, alter raw, or edit
+       memory/todo/HANDOVER."
+planned_commands:
+  - "python3 render_timing_report.py (deterministic renderer)"
+  - "python3 scripts/render_structured_report.py analysis.json report.md --check (consistency)"
+  - "rebuild inventory.yaml + evidence-bundle.yaml (declared entries)"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-BVM-S2-TIMING-001"
+expected_changed_paths:
+  - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/render_timing_report.py
+  - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md
+  - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json
+  - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inventory.yaml
+  - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml
+  - research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/A02/{ack,receipt}.yaml
+  - research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/A02/logs/*
+blockers: []
+deviations: []

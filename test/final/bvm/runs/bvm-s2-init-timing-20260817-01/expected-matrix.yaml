@@ -1,0 +1,52 @@
+expected_matrix: {
+  "schema_version": "bvm-s2-timing-expected-matrix-v1",
+  "run_id": "bvm-s2-init-timing-20260817-01",
+  "expected_runs": [
+    "A-positive",
+    "B-positive",
+    "A-negative",
+    "B-negative"
+  ],
+  "required": {
+    "inputs": [
+      "A-positive.cir",
+      "B-positive.cir",
+      "A-negative.cir",
+      "B-negative.cir",
+      "bvm_cell.cir",
+      "jjmit.cir",
+      "generate_inputs.py",
+      "matrix.txt"
+    ],
+    "raw": [
+      "A-positive/run-01.csv",
+      "B-positive/run-01.csv",
+      "A-negative/run-01.csv",
+      "B-negative/run-01.csv",
+      "A-positive/stdout.txt",
+      "B-positive/stdout.txt",
+      "A-negative/stdout.txt",
+      "B-negative/stdout.txt",
+      "A-positive/stderr.txt",
+      "B-positive/stderr.txt",
+      "A-negative/stderr.txt",
+      "B-negative/stderr.txt"
+    ],
+    "analysis": [
+      "manifest.yaml",
+      "analysis.json",
+      "analyze_timing.py",
+      "verify_timing.py",
+      "verify.log",
+      "report.md",
+      "report-consistency.json"
+    ],
+    "inventory": [
+      "expected-matrix.yaml",
+      "inventory.yaml"
+    ],
+    "handoff": [
+      "evidence-bundle.yaml"
+    ]
+  }
+}

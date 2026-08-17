@@ -1,0 +1,177 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T22:15:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "767292b127e081ae4ea4590b946897c979b93c9628c14f7c390bb67c6a3ae53f"
+  issuer_snapshot_sha256: "d204045b84c3703b40b854d5205d4758b1a6649a4f55d0d4f8e1d4fac2ddae03"
+  ack_sha256: "2a632e139286f0e2c380c718fce673378c440bb96d4fc5186b2594b5308ed06a"
+execution_status: COMPLETED
+baseline_git_head: "a0577b32f5dd682838855535fac321f45f52667c"
+result_git_head: "a0577b32f5dd682838855535fac321f45f52667c"
+changes:
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/manifest.yaml, action: CREATED, sha256: "c0fb721728381cfd9568dfccbedf2a054e89a0d6857440be94a3933eca63724e"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analysis.json, action: CREATED, sha256: "f1d4319a986e33dcd153fd03883e8a41b69bf97c40ccd0566f6f7d1ff603808f"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md, action: CREATED, sha256: "1ab8da8de4a477142720a614db59d1c78ac851370989f833705fe5ed56d3964a"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json, action: CREATED, sha256: "495cb341d7f428890e7f9d048d9ad866c9b422f4963db5a13f21d9e075871342"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify.log, action: CREATED, sha256: "70639764fd4fd3d0179f7bb1825802265e3bcb13bc4d59cd8e336c871af62010"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify_timing.py, action: CREATED, sha256: "4d0c7c077fbc5525432ac092070b64481a786acdcb7a41577dce14b3a42b57be"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analyze_timing.py, action: CREATED, sha256: "70942c5946e5690a03969324cdf7bf765979a702d6aef1f606c7bb78b232d0af"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml, action: CREATED, sha256: "d7b018a1d9b6d30ac1718cd6b0a870142d32fb9675c5db82e90258b75e5a08fc"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inventory.yaml, action: CREATED, sha256: "36fb3dcecc7381076db0ed22e897c9086e0d19e37cf7349adf40f05797c271d2"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/expected-matrix.yaml, action: CREATED, sha256: "5136f3bbc80406f315518cf035533fab00ab6519dac2b73421c41dc28529bcc9"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/closure-hashes.txt, action: CREATED, sha256: "7c562a7b9b9e930829d042b2f7e67843a1fb36c0167758c9ebfbb81ffa3a69ab"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/A-positive/run-01.csv, action: CREATED, sha256: "9bdb35dee731413b73d148feecbf591d4ed5c6dbd14b977825e9d4b18892970f"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/B-positive/run-01.csv, action: CREATED, sha256: "8f768493acbd9f286e7ba17f8ae8d3fb053bc55efa61ce1f68dd5d04e8eac949"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/A-negative/run-01.csv, action: CREATED, sha256: "f0f54c1e1d4df11f8ba7ce2bc4740879496d9f8805761f4c7e92e90625c52e45"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/B-negative/run-01.csv, action: CREATED, sha256: "d91d065bdeda0cab5f4ad43de12893daaeeb3a5743a9efc565b1dcc382ab57fe"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/A01/logs/test-suite.log, action: CREATED, sha256: "70639764fd4fd3d0179f7bb1825802265e3bcb13bc4d59cd8e336c871af62010"}
+artifacts:
+  - {id: manifest, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/manifest.yaml, sha256: "c0fb721728381cfd9568dfccbedf2a054e89a0d6857440be94a3933eca63724e", role: MANIFEST}
+  - {id: analysis, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analysis.json, sha256: "f1d4319a986e33dcd153fd03883e8a41b69bf97c40ccd0566f6f7d1ff603808f", role: DOCUMENTATION}
+  - {id: report, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md, sha256: "1ab8da8de4a477142720a614db59d1c78ac851370989f833705fe5ed56d3964a", role: DOCUMENTATION}
+  - {id: report-consistency, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json, sha256: "495cb341d7f428890e7f9d048d9ad866c9b422f4963db5a13f21d9e075871342", role: DOCUMENTATION}
+  - {id: verify-log, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify.log, sha256: "70639764fd4fd3d0179f7bb1825802265e3bcb13bc4d59cd8e336c871af62010", role: LOG}
+  - {id: verifier, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify_timing.py, sha256: "4d0c7c077fbc5525432ac092070b64481a786acdcb7a41577dce14b3a42b57be", role: IMPLEMENTATION}
+  - {id: analyzer, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analyze_timing.py, sha256: "70942c5946e5690a03969324cdf7bf765979a702d6aef1f606c7bb78b232d0af", role: IMPLEMENTATION}
+  - {id: bundle, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml, sha256: "d7b018a1d9b6d30ac1718cd6b0a870142d32fb9675c5db82e90258b75e5a08fc", role: DOCUMENTATION}
+  - {id: inventory, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inventory.yaml, sha256: "36fb3dcecc7381076db0ed22e897c9086e0d19e37cf7349adf40f05797c271d2", role: DOCUMENTATION}
+  - {id: expected-matrix, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/expected-matrix.yaml, sha256: "5136f3bbc80406f315518cf035533fab00ab6519dac2b73421c41dc28529bcc9", role: DOCUMENTATION}
+  - {id: closure-hashes, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/closure-hashes.txt, sha256: "7c562a7b9b9e930829d042b2f7e67843a1fb36c0167758c9ebfbb81ffa3a69ab", role: DOCUMENTATION}
+  - {id: raw-a-pos, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/A-positive/run-01.csv, sha256: "9bdb35dee731413b73d148feecbf591d4ed5c6dbd14b977825e9d4b18892970f", role: RAW}
+  - {id: raw-b-pos, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/B-positive/run-01.csv, sha256: "8f768493acbd9f286e7ba17f8ae8d3fb053bc55efa61ce1f68dd5d04e8eac949", role: RAW}
+  - {id: raw-a-neg, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/A-negative/run-01.csv, sha256: "f0f54c1e1d4df11f8ba7ce2bc4740879496d9f8805761f4c7e92e90625c52e45", role: RAW}
+  - {id: raw-b-neg, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/B-negative/run-01.csv, sha256: "d91d065bdeda0cab5f4ad43de12893daaeeb3a5743a9efc565b1dcc382ab57fe", role: RAW}
+  - {id: test-suite-log, path: research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/A01/logs/test-suite.log, sha256: "70639764fd4fd3d0179f7bb1825802265e3bcb13bc4d59cd8e336c871af62010", role: LOG}
+evidence_bundle:
+  path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml
+  sha256: "d7b018a1d9b6d30ac1718cd6b0a870142d32fb9675c5db82e90258b75e5a08fc"
+commands:
+  - command: "build/josim-cli <case>.cir -o raw/<case>/run-01.csv (4 runs, dt=0.0125p, tstop=92p; stdout per case in raw/<case>/stdout.txt)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify.log
+    log_sha256: "70639764fd4fd3d0179f7bb1825802265e3bcb13bc4d59cd8e336c871af62010"
+  - command: "python3 analyze_timing.py && python3 verify_timing.py"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify.log
+    log_sha256: "70639764fd4fd3d0179f7bb1825802265e3bcb13bc4d59cd8e336c871af62010"
+  - command: "python3 scripts/render_structured_report.py analysis.json report.md [--check]"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json
+    log_sha256: "495cb341d7f428890e7f9d048d9ad866c9b422f4963db5a13f21d9e075871342"
+tests:
+  - id: verify-timing-independent
+    status: PASS
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify.log
+    notes:
+      - "Independent verifier recomputes all p2p/readiness/contrasts/
+         disposition from raw+spec; disposition
+         CONSISTENT_TIMING_SENSITIVITY_SUPPORTED; Decimal-exact."
+  - id: report-consistency
+    status: PASS
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json
+    notes:
+      - "Deterministic report consistent with structured result."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/manifest.yaml
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/A-positive/run-01.csv
+    notes:
+      - "Exactly 4 runs A/B x positive/negative, R_LD=12 ohm, dt=0.0125 ps,
+         tstop=92 ps; no read pulse (SE 0 throughout; tstop precedes 95 ps
+         read onset)."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/closure-hashes.txt
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/manifest.yaml
+    notes:
+      - "Only inter-timing difference is registered rising edge (S2 9-10 ps
+         vs S1 10-11 ps), common +/-100 uA plateau through 20 ps, common
+         20-21 ps return; Timing B not described as whole-waveform
+         translation."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analysis.json
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md
+    notes:
+      - "Each run reports JM1/JM2 p2p in [30,40)/[50,60)/[70,80)/[80,90) ps;
+         readiness uses frozen 0.020 rad condition separately by polarity
+         (A: not ready both polarities; B: ready both polarities)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analyze_timing.py
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify_timing.py
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analysis.json
+    notes:
+      - "Raw CSV literal timestamps parsed as Decimal; registered bounds
+         Decimal exact; no float equality/interpolation/resampling/alignment."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify_timing.py
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/verify.log
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md
+    notes:
+      - "Independent verifier recomputes all p2p/readiness/contrasts/
+         disposition from raw+spec (VERIFY PASS); deterministic report
+         consistent with structured result."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/expected-matrix.yaml
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inventory.yaml
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml
+    notes:
+      - "Frozen expected matrix + inventory + declared-entry pre-receipt
+         bundle (33 entries) cover every required delivered item; final
+         receipt excluded from bundle."
+  - id: AC7
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analysis.json
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md
+    notes:
+      - "Interpretation bounded to reproducible registered intervention
+         effect (disposition CONSISTENT_TIMING_SENSITIVITY_SUPPORTED,
+         both polarity strata same-sign Delta_JM2 >= 0.020 rad and
+         readiness classification change); no mechanism claim."
+observations:
+  - "Four runs complete (exit 0, 7360 samples each at 0.0125 ps to 92 ps).
+     JM2 readiness-window p2p: S2_REGISTERED 0.05843 rad (not ready) vs
+     S1_REGISTERED 0.00548 rad (ready), identical in both polarities;
+     Delta_JM2 = -0.05295 rad both polarities."
+  - "Disposition: CONSISTENT_TIMING_SENSITIVITY_SUPPORTED (both polarity
+     strata same sign, |Delta_JM2| >= 0.020 rad, and both change the
+     registered readiness classification)."
+interpretations:
+  - "Under the registered closure (12 ohm, 0.0125 ps, no read), the S1
+     10-11 ps rising-edge timing reproducibly yields JM2 readiness-window
+     settling within 0.020 rad, while the S2 9-10 ps timing does not;
+     this supports a bounded, reproducible registered intervention effect,
+     not a mechanism."
+unknowns:
+  - "No mechanism/convergence/load-back-action/state-preservation claims
+     are made; physical origin of the sensitivity remains unaddressed."
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "Fixed single load (12 ohm) and fixed timestep (0.0125 ps) only; no
+     timestep convergence study per stop rules."
+  - "Two empty self-created debug temp dirs (.dbg-*/) remain untracked at
+     repo root; Codex instructed not to touch debug directories."
+deviations: []
+blockers: []

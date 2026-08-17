@@ -1,0 +1,101 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-001
+revision: 1
+attempt_id: A02
+workflow_state: DELIVERED
+created_at: "2026-08-17T22:25:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "767292b127e081ae4ea4590b946897c979b93c9628c14f7c390bb67c6a3ae53f"
+  issuer_snapshot_sha256: "d204045b84c3703b40b854d5205d4758b1a6649a4f55d0d4f8e1d4fac2ddae03"
+  ack_sha256: "5f2094e88c7a4b111a79715dea6a5b75854cb15e7e0ed2f4648e0e620ead6fde"
+execution_status: COMPLETED
+baseline_git_head: "a0577b32f5dd682838855535fac321f45f52667c"
+result_git_head: "a0577b32f5dd682838855535fac321f45f52667c"
+changes:
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/render_timing_report.py, action: CREATED, sha256: "8e66ba3e3bab325a65c5c36b4f8a211fe3100876e7fc02ac3c4aa7884de31974"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md, action: MODIFIED, sha256: "d6f03faa6eca6712502d933856ac8eedace1141b1f3578defe62fc2c5b65f732"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json, action: MODIFIED, sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inventory.yaml, action: MODIFIED, sha256: "6c3112086c438532446dcbef17697fb41acf7c06d091fee81c3de989f5659547"}
+  - {path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml, action: MODIFIED, sha256: "75c09943d5b443d2a67b4f15f5cab0db6b4b5cea33c64504ede350c7644837a6"}
+artifacts:
+  - {id: renderer, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/render_timing_report.py, sha256: "8e66ba3e3bab325a65c5c36b4f8a211fe3100876e7fc02ac3c4aa7884de31974", role: IMPLEMENTATION}
+  - {id: report, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md, sha256: "d6f03faa6eca6712502d933856ac8eedace1141b1f3578defe62fc2c5b65f732", role: DOCUMENTATION}
+  - {id: report-consistency, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json, sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b", role: DOCUMENTATION}
+  - {id: inventory, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inventory.yaml, sha256: "6c3112086c438532446dcbef17697fb41acf7c06d091fee81c3de989f5659547", role: DOCUMENTATION}
+  - {id: bundle, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml, sha256: "75c09943d5b443d2a67b4f15f5cab0db6b4b5cea33c64504ede350c7644837a6", role: DOCUMENTATION}
+evidence_bundle:
+  path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml
+  sha256: "75c09943d5b443d2a67b4f15f5cab0db6b4b5cea33c64504ede350c7644837a6"
+commands:
+  - command: "python3 render_timing_report.py && python3 render_timing_report.py --check"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json
+    log_sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"
+  - command: "rebuild inventory.yaml + evidence-bundle.yaml (declared entries, final receipt excluded)"
+    exit_code: 0
+    log_path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json
+    log_sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"
+tests:
+  - id: report-consistency
+    status: PASS
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report-consistency.json
+    notes:
+      - "Deterministic renderer: render and --check produce identical
+         output; report.md explicitly renders run_id, frozen spec identity,
+         disposition, JM1/JM2 p2p by all registered windows, A/B
+         Delta/readiness contrasts, and the bounded no-mechanism claim
+         ceiling."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md
+    notes:
+      - "Report renders run_id, frozen spec identity (preregistration-v1 +
+         task id), disposition, provenance, and claim ceiling explicitly."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md
+    notes:
+      - "JM1/JM2 p2p rendered for all four registered windows per run;
+         readiness and A/B Delta/readiness contrasts per polarity
+         included."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inventory.yaml
+    notes:
+      - "Regenerated 34-entry declared-entry PRE-receipt bundle (final
+         receipt excluded) and inventory; raw evidence preserved and
+         re-hashed (unchanged from A01)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md
+    notes:
+      - "No A01 modification, no raw rerun, no JoSIM, no memory/todo/
+         HANDOVER alteration."
+observations:
+  - "Copilot A01 Major (report completeness) closed: deterministic
+     render_timing_report.py renders the full registered content set."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "Raw evidence and analysis.json unchanged from A01; only report-layer
+     artifacts regenerated."
+  - "A01 receipt still records the A01-time hashes of the regenerated
+     report-layer files (report.md/report-consistency/inventory/bundle);
+     per A02 instruction A01 was not modified, so verify-task reports those
+     A01 per-receipt hash mismatches as expected multi-attempt behavior.
+     A02 is the authoritative attempt for those files."
+deviations: []
+blockers: []

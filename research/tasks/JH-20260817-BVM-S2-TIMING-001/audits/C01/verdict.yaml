@@ -1,0 +1,72 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-001
+revision: 1
+attempt_id: A02
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T22:26:00+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "767292b127e081ae4ea4590b946897c979b93c9628c14f7c390bb67c6a3ae53f"
+  ack_sha256: "5f2094e88c7a4b111a79715dea6a5b75854cb15e7e0ed2f4648e0e620ead6fde"
+  receipt_sha256: "014733ca1b7dec6eda1188a8f886252d0a06f18e6f8c033ac26fdb08dd0960c2"
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: frozen-contract-and-snapshot-binding
+    status: PASS
+    evidence:
+      - "The request hash and A02 ACK/receipt bindings match the sealed request and external issuer-snapshot attestation."
+      - "The established external-attestation and byte-identity checks remain applicable; no request mutation was made."
+  - id: controlled-intervention-and-raw-analysis
+    status: PASS
+    evidence:
+      - "Independent no-JoSIM rerun of verify_timing.py reports VERIFY PASS: 4 runs, 4 windows x 2 junctions, 2 contrasts, and recomputes the preregistered disposition from raw CSV plus frozen spec."
+      - "The bounded raw observation is JM2 [80,90) ps p2p 0.0584342 rad for Timing A and 0.0054827 rad for Timing B in each polarity; the corresponding A-to-B delta is -0.0529515 rad."
+      - "This check validates the computation only; it cannot promote a physical claim while the receipt chain is invalid."
+  - id: deterministic-report-layer
+    status: PASS
+    evidence:
+      - "Independent render_timing_report.py --check reports REPORT CONSISTENT."
+      - "The regenerated report renders the preregistered windows, per-polarity readiness comparison, and bounded no-mechanism ceiling."
+  - id: receipt-integrity-across-attempts
+    status: FAIL
+    evidence:
+      - "Independent handoff.py verify-task fails for immutable A01: its evidence-bundle binding and four report-layer change/artifact hashes no longer match current files after A02 regenerated report.md, report-consistency.json, inventory.yaml, and evidence-bundle.yaml."
+      - "A01 command log binding for report-consistency.json also mismatches. The verifier reports 2 ACK, 2 receipt, 0 prior audit."
+      - "A later receipt cannot make an earlier receipt's cryptographic bindings non-authoritative; task-wide multi-attempt coverage does not waive per-receipt integrity validation."
+  - id: scope-history
+    status: FAIL
+    evidence:
+      - "A01 wrote an unapproved result paragraph to memory/bvm-chain-status-20260817.md, outside the frozen request write scope. The paragraph was removed before this audit, but the actual out-of-scope write remains a delivery-history violation."
+  - id: skeptical-peer-review
+    status: INCONCLUSIVE
+    evidence:
+      - "Copilot A02 review marked the report repair PASS but classified A01 hash mismatches as expected multi-attempt behavior. Independent verifier output contradicts that interpretation."
+findings:
+  - "MAJOR: A02 overwrote files cryptographically bound by immutable A01 receipt. Consequently the task's formal receipt chain is not VERIFIED."
+  - "MAJOR: A01 included an out-of-scope write to memory/bvm-chain-status-20260817.md, later reverted without changing the fact of the scope violation."
+  - "The raw four-run calculation and regenerated deterministic report are individually reproducible, but cannot become an accepted scientific disposition through an invalid handoff record."
+accepted_claims:
+  - "The frozen analysis program recomputes the stated four-run, no-read, Decimal-exact p2p/readiness result from the delivered raw CSV files."
+  - "The outcome is limited to a registered S1-vs-S2 rising-edge timing intervention observation; neither the raw result nor this audit establishes a detailed physical mechanism."
+rejected_claims:
+  - "JH-20260817-BVM-S2-TIMING-001 is not VERIFIED or ACCEPTED."
+  - "The phrase expected multi-attempt behavior does not excuse current-file hash mismatches in A01's immutable receipt."
+  - "No scientific disposition, mechanism explanation, convergence, load sweep, read-time back-action, or BQ conclusion is accepted."
+required_rework:
+  - "Do not alter A01 or retroactively rewrite its receipt. The accepted result requires a user-authorized superseding task or an explicit protocol decision that preserves immutable attempt artifacts and uses an output layout whose corrections cannot overwrite prior receipt-bound paths."
+  - "Any successor may reuse the sealed raw inputs only after a new immutable request defines the artifact/evidence layout; it must not rerun JoSIM merely to repair this delivery-chain defect."
+next_actions:
+  - "Stop at this scientific decision boundary. Do not issue a successor, run another simulation, update project status, or make a physical claim without user direction."
+claim_ceiling: "raw computation and report reproducibility only; no accepted scientific conclusion while formal artifact and scope integrity are invalid"

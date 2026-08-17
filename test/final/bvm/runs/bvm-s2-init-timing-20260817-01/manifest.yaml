@@ -1,0 +1,28 @@
+{
+  "schema_version": "bvm-s2-run-manifest-v1",
+  "run_id": "bvm-s2-init-timing-20260817-01",
+  "task_id": "JH-20260817-BVM-S2-TIMING-001",
+  "binary": {
+    "path": "build/josim-cli",
+    "version": "v2.7.2837d13",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "closure": {
+    "bvm_cell": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+    "jjmit": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+  },
+  "stimulus": {
+    "timing_A_S2": "9-10ps rising, +/-100uA through 20ps, 0 at 21ps",
+    "timing_B_S1": "10-11ps rising, +/-100uA through 20ps, 0 at 21ps",
+    "read": "none",
+    "tstop_ps": 92.0,
+    "dt_ps": 0.0125,
+    "r_ld_ohm": 12.0
+  },
+  "runs": [
+    "A-positive",
+    "B-positive",
+    "A-negative",
+    "B-negative"
+  ]
+}

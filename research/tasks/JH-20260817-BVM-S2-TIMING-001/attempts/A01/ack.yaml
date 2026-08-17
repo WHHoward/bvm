@@ -1,0 +1,60 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T22:05:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "767292b127e081ae4ea4590b946897c979b93c9628c14f7c390bb67c6a3ae53f"
+  issuer_snapshot_sha256: "d204045b84c3703b40b854d5205d4758b1a6649a4f55d0d4f8e1d4fac2ddae03"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "a0577b32f5dd682838855535fac321f45f52667c"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "Attestation issuer-snapshot.{yaml,sha256} uncommitted in task dir;
+       observed HEAD equals attestation snapshot_commit S=a0577b32."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Create exactly one immutable four-run fixed-closure experiment
+    (bvm-s2-init-timing-20260817-01) isolating the registered S1-versus-S2
+    initialization rising-edge timing intervention at R_LD=12 ohm,
+    dt=0.0125 ps, tstop=92 ps, no read pulse: matrix A/B (S2_REGISTERED
+    9-10 ps vs S1_REGISTERED 10-11 ps rising edge; common +/-100 uA
+    plateau through 20 ps; common 20-21 ps return) x positive/negative.
+    Report JM1/JM2 p2p in [30,40)/[50,60)/[70,80)/[80,90) ps with Decimal
+    exact timestamp semantics; readiness = 0.020 rad condition separately
+    by polarity; produce frozen matrix, raw/structured/independent
+    verifier/report/inventory/pre-receipt bundle/receipt.
+  non_goals:
+    - "Rerun/alter/reinterpret/upgrade S0/S1/S2 or MAINT-001..007; add
+       timing/load/timestep/read/receiver/sweep/probe/window/threshold
+       cases; SFQ/fluxoid/Gate/route/hardware/mechanism claims."
+    - "Describe Timing B as a whole waveform translation or as preserving
+       S2's plateau duration."
+  stop_conditions:
+    - "Any need to add a sweep, read-time stimulus, load/back-action study,
+       receiver, timestep convergence, mechanism experiment,
+       network/install/worktree/commit, deletion/overwrite, or unlisted
+       path."
+planned_commands:
+  - "build/josim-cli -i inputs/*.cir -o raw/<case>/run-01.csv (4 runs)"
+  - "python3 analyze_timing.py (Decimal) -> analysis.json"
+  - "python3 verify_timing.py raw+spec -> verify.log"
+  - "python3 render_structured_report.py -> report.md + consistency"
+  - "python3 build_evidence_bundle.py -> evidence-bundle.yaml"
+  - "handoff.py verify-task research/tasks/JH-20260817-BVM-S2-TIMING-001"
+expected_changed_paths:
+  - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/**
+  - research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/A01/{ack,receipt}.yaml
+  - research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/A01/logs/*
+blockers: []
+deviations: []

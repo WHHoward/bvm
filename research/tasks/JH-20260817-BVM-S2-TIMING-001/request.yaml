@@ -1,0 +1,124 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-001
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T21:57:56+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S2
+depends_on: [M4, M5, M6, M7, M8, M9, M10, M11A, M11B, JH-20260817-BVM-S2-SEAL-001]
+supersedes: null
+task:
+  kind: EXPERIMENT
+  objective: "Create exactly one immutable four-run fixed-closure experiment that isolates the registered S1-versus-S2 initialization rising-edge timing intervention and reports JM1/JM2 pre-read settling/readiness without a read pulse."
+  research_question: "At fixed 12 ohm, 0.0125 ps, closure, and polarity, does the registered S1-versus-S2 initialization rising-edge timing difference reproducibly change JM1/JM2 [80,90) ps readiness or the registered earlier settling amplitudes?"
+  non_goals:
+    - "Do not rerun, alter, reinterpret, or upgrade S0, S1, S2, MAINT-001 through MAINT-007, or their historical evidence."
+    - "Do not add a timing/load/timestep/parameter sweep, read pulse, read-time load back-action study, BQ/DCSFQ/JTL/receiver, logical read, state-preservation, SFQ, fluxoid, Gate, route, hardware, or mechanism claim."
+    - "Do not describe Timing B as a whole waveform translation or as preserving S2's plateau duration; it is the registered historical S1 rising-edge waveform with the common 20-21 ps return."
+  claim_ceiling: "bounded fixed-closure, fixed-grid evidence for or against a reproducible registered initialization rising-edge intervention effect on JM1/JM2 pre-read settling/readiness only; no detailed mechanism or broader scientific claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - research/tasks/JH-20260817-BVM-S2-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/audits/C02/verdict.yaml
+    - circuits/bvm/bvm_cell.cir
+    - circuits/models/jjmit.cir
+    - build/josim-cli
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/analysis-schema.json
+  hash_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - research/tasks/JH-20260817-BVM-S2-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/audits/C02/verdict.yaml
+    - circuits/bvm/bvm_cell.cir
+    - circuits/models/jjmit.cir
+    - build/josim-cli
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/analysis-schema.json
+  write_paths:
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/**
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S1-SEAL-004/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-003/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-005/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-006/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-007/**
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/baseline/**
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/**
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/audits/**
+  locks: [locks/bvm-s2-initialization-timing]
+baseline:
+  git_head: "960dfc23e81356049415255b4b511b705e6a89ba"
+  dirty_policy: ALLOW_NONOVERLAP
+  issuer_snapshot_mode: EXTERNAL_ATTESTATION
+  git_status: {path: research/tasks/JH-20260817-BVM-S2-TIMING-001/baseline/git-status.txt, sha256: "ec3b7fb263ebf19eb42b6087908542e94d43c061ea6c6e736137ebb86239b5b3"}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-TIMING-001/baseline/scope-files.sha256, sha256: "5f028f1c97a254b6bba23cf4ee78bb8edebee2cf64eb72dd236fbf9df221b6e3"}
+authorization:
+  edit: true
+  run_josim: true
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first: [AGENTS.md, docs/HANDOVER.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-experiment/references/run-protocol.md, .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/manifest.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/**/run-01.csv, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D3, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/analysis.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/report.md, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: test/final/bvm/runs/bvm-s2-init-timing-20260817-01/evidence-bundle.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D6, path: research/tasks/JH-20260817-BVM-S2-TIMING-001/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Exactly four runs cover the frozen matrix A/B x positive/negative at R_LD=12 ohm, dt=0.0125 ps, tstop=92 ps; no read pulse occurs.", evidence: [manifest.yaml, inputs, raw]}
+  - {id: AC2, condition: "The only inter-timing stimulus difference is the registered rising edge: S2 9-10 ps versus S1 10-11 ps, with common +/-100 uA plateau through 20 ps and common 20-21 ps return; no claim of whole-waveform translation is made.", evidence: [preregistration.yaml, inputs, closure-hashes.txt]}
+  - {id: AC3, condition: "Each run reports direct JM1/JM2 p2p in [30,40), [50,60), [70,80), and [80,90) ps; readiness uses the frozen 0.020-rad condition separately by polarity.", evidence: [analysis.json, report.md]}
+  - {id: AC4, condition: "Raw CSV literal timestamp tokens and registered bounds use Decimal exact semantics; no float equality, interpolation, resampling, or time alignment is used.", evidence: [analyze_timing.py, verify_timing.py, analysis.json]}
+  - {id: AC5, condition: "Independent verifier reads raw plus frozen specification, recomputes all p2p/readiness/contrasts/disposition, and deterministic report is consistent with structured result.", evidence: [verify_timing.py, verify.log, report-consistency.json, report.md]}
+  - {id: AC6, condition: "Frozen expected evidence/run-artifact matrix, inventory, and declared-entry pre-receipt bundle cover every required delivered item; each bundle entry is independently path/hash/bytes verified and final receipt is excluded.", evidence: [expected-matrix.yaml, inventory.yaml, evidence-bundle.yaml]}
+  - {id: AC7, condition: "Final interpretation distinguishes a reproducible registered intervention effect from a detailed physical mechanism and remains within the frozen claim ceiling.", evidence: [analysis.json, report.md]}
+invalid_conditions:
+  - "Any extra run/case/timing/load/timestep/read pulse/probe/window/threshold; changed binary/closure; missing or malformed raw/log/input; Decimal-time violation; out-of-scope write; or historical/frozen-path modification."
+inconclusive_conditions:
+  - "Opposite polarity contrast signs or mixed evidence outside frozen disposition rules; this is valid INCONCLUSIVE evidence, not a basis to expand the experiment."
+stop_conditions:
+  - "Any need to add a sweep, read-time stimulus, load/back-action study, receiver, timestep convergence, mechanism experiment, network/install/worktree/commit, deletion/overwrite, or unlisted path."
+issuance_blockers: []

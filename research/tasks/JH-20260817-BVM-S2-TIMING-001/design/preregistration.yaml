@@ -1,0 +1,110 @@
+schema_version: bvm-s2-timing-preregistration-v1
+status: FROZEN_ON_ISSUANCE
+study_phase: CALIBRATION
+risk: CRITICAL
+evidence_mode: FROZEN
+task_id: JH-20260817-BVM-S2-TIMING-001
+run_id: bvm-s2-init-timing-20260817-01
+research_question: >-
+  At the registered 0.0125 ps working timestep and fixed 12 ohm BVM fixture,
+  does the registered S1-versus-S2 initialization rising-edge timing
+  intervention reproducibly change direct JM1/JM2 pre-read settling or the
+  [80,90) ps readiness classification, separately for positive and negative
+  initialization?
+claim_ceiling: >-
+  bounded fixed-closure, fixed-grid evidence for or against a reproducible
+  association of this registered initialization rising-edge intervention with
+  JM1/JM2 pre-read settling/readiness; no detailed physical mechanism,
+  convergence, logical-state, preservation, load-back-action, receiver, SFQ,
+  fluxoid, interface, route, hardware, or universal claim.
+fixed_closure:
+  binary:
+    path: build/josim-cli
+    required_version: v2.7.2837d13
+    sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  netlist_sources:
+    - {path: circuits/bvm/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4}
+    - {path: circuits/models/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  instance: "XBVM1 WL1 BL1 SE1 SL1 BVM"
+  external_load: "R_LD SL1 0 12.0"
+  internal_load: "R_SL n_psl N8 12.0 (inside BVM closure)"
+  timestep_ps: 0.0125
+  stop_time_ps: 92.0
+  run_maximum: 4
+  only_variables: [initialization_polarity, registered_rising_edge_timing]
+stimulus:
+  common:
+    init_amplitude: "+/-100 uA applied identically to WL and BL"
+    falling_edge: "held at +/-100 uA through 20 ps; returned to 0 at 21 ps"
+    se: "0 uA throughout"
+    read: "No read pulse is applied; tstop=92 ps precedes the historical 95 ps read onset."
+  timing_A_S2:
+    label: S2_REGISTERED
+    wl_bl_pwl: "0 at 0-9 ps; +/-100 uA at 10 ps; held through 20 ps; 0 at 21 ps"
+    rising_edge: [9.0, 10.0]
+  timing_B_S1:
+    label: S1_REGISTERED
+    wl_bl_pwl: "0 at 0-10 ps; +/-100 uA at 11 ps; held through 20 ps; 0 at 21 ps"
+    rising_edge: [10.0, 11.0]
+  explicit_boundary: >-
+    Timing B is the historical S1 waveform, not a whole-PWL translation:
+    its rising edge differs while its falling edge remains 20-21 ps.
+run_matrix:
+  - {id: A-positive, timing: S2_REGISTERED, polarity: positive, r_ld_ohm: 12.0}
+  - {id: B-positive, timing: S1_REGISTERED, polarity: positive, r_ld_ohm: 12.0}
+  - {id: A-negative, timing: S2_REGISTERED, polarity: negative, r_ld_ohm: 12.0}
+  - {id: B-negative, timing: S1_REGISTERED, polarity: negative, r_ld_ohm: 12.0}
+probes:
+  JM1: {phase_column: "P(B_JM1|XBVM1)", voltage_column: "V(B_JM1|XBVM1)", endpoints: [N1, n_jm1o], reporting_direction: 1}
+  JM2: {phase_column: "P(B_JM2|XBVM1)", voltage_column: "V(B_JM2|XBVM1)", endpoints: [n_jm2i, N2], reporting_direction: 1}
+  retained: ["P/V(B_JS1|XBVM1)", "P/V(B_JS2|XBVM1)", "V(SL1)", "I(L_SL|XBVM1)", "I(I_WL1)", "I(I_BL1)", "I(I_SE1)"]
+windows_ps:
+  settling_early: [30.0, 40.0]
+  settling_mid: [50.0, 60.0]
+  settling_late: [70.0, 80.0]
+  readiness: [80.0, 90.0]
+  semantics: half_open_actual_csv_time
+timestamp_matching:
+  parser: Decimal_from_literal_CSV_token
+  registered_tokens: exact_decimal
+  tolerance_seconds: 0
+  interpolation: prohibited
+  resampling: prohibited
+  time_alignment: prohibited
+  missing_window_coverage: INVALID
+metrics:
+  phase_p2p_rad: "max(P)-min(P) over actual CSV samples whose Decimal timestamps lie in the registered half-open window"
+  primary: "JM2 readiness-window p2p"
+  co_primary_readiness: "JM1 and JM2 readiness-window p2p each <= 0.020 rad"
+  readiness_threshold_rad: 0.020
+  comparison: "Delta_JM2(polarity) = p2p(S1_REGISTERED)-p2p(S2_REGISTERED) in [80,90) ps"
+  earlier_windows: descriptive_only
+dispositions:
+  INVALID: "Any raw/solver/provenance/closure/column/Decimal-time/window-coverage failure."
+  CONSISTENT_TIMING_SENSITIVITY_SUPPORTED: >-
+    Both polarity strata have same-sign Delta_JM2 with abs(Delta_JM2) >=
+    0.020 rad, or both polarity strata change the registered readiness
+    classification. This supports only a bounded intervention effect.
+  POLARITY_CONTINGENT_TIMING_SENSITIVITY: >-
+    Exactly one polarity stratum has abs(Delta_JM2) >= 0.020 rad or a
+    readiness-classification change. Report as polarity-contingent only.
+  NO_REGISTERED_TIMING_SENSITIVITY_OBSERVED: >-
+    Neither stratum changes readiness classification and both abs(Delta_JM2)
+    are < 0.020 rad. This is not evidence of timing invariance.
+  INCONCLUSIVE: "Opposite contrast signs, mixed evidence outside the registered rules, or any unregistered ambiguity."
+evidence_matrix:
+  expected_runs: [A-positive, B-positive, A-negative, B-negative]
+  required:
+    inputs: [four generated netlists, copied bvm_cell.cir, copied jjmit.cir, input-generator, closure-hashes]
+    raw: [four CSV, four stdout, four stderr]
+    analysis: [manifest, frozen preregistration, analysis-schema, analyzer, structured-result, independent-verifier, verifier-log, deterministic-renderer, report, report-consistency]
+    inventory: [expected-run-artifact-matrix, inventory]
+    handoff: [pre-receipt multi-entry evidence bundle, execution receipt]
+  completeness: >-
+    Frozen expected evidence/run-artifact matrix coverage plus required
+    artifacts, manifest, and inventory compared against delivered entries;
+    no filesystem-directory closure claim.
+stop_rules:
+  - "Do not add timing, load, timestep, read, receiver, probe, window, threshold, sweep, or parameter-adjustment cases."
+  - "Do not execute after any closure/binary/PWL/probe/matrix mismatch; record BLOCKED."
+  - "Preserve all raw, input, stdout, stderr, and failed artifacts under the unique run ID."

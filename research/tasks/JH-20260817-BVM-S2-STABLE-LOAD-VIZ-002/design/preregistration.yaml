@@ -1,0 +1,23 @@
+protocol: josim-handoff/v1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+kind: REPORT_ONLY
+scientific_source_authority: "Unchanged: STABLE-LOAD-001 accepted raw run, frozen preregistration, accepted analysis.json, and C01 verdict."
+historical_fact: "STABLE-LOAD-001 C01 historically marked AC5 PASS, but later inspection established that original A01 report.html omitted frozen AC5 content. VIZ-001 was issued Codex-direct but intentionally stopped before any A01 execution attempt; it is preserved immutable history."
+scientific_change: prohibited
+execution_roles:
+  implementation: "CLAUDE_CODE / DeepSeek"
+  mechanical_review: "DeepSeek; no final visual acceptance authority"
+  visual_review: "fresh-context Codex, after delivery and mechanical PASS"
+visualization:
+  offline_self_contained_plotly: true
+  selectors: {loads_ohm: [1, 12, 25, 50], polarities: [positive, negative]}
+  panels: ["WL/BL/SE", "JM1/JM2 raw phase (rad) with PRE [80,90) ps overlay/readiness", "JS1/JS2 raw phase (rad)", "V(SL1) read/control/corrected", "I(L_SL|XBVM1) read/control/corrected", "registered-token endpoint-VI 97/99/101/103/105 ps", "source descriptors", "control residual", "disposition/claim ceiling/provenance"]
+  controls: [hover, zoom, pan, reset, legend_trace_toggle]
+  units: {time: ps, voltage: mV, current: uA, phase: "raw phase (rad)"}
+  raw_plotting: {resampling: prohibited, smoothing: prohibited}
+verification:
+  deterministic_byte_consistency: required
+  independent_content_completeness: required
+  rendered_visual_acceptance: "Codex only; actual selector operation and desktop inspection, never inferred from mechanical checks"
+  visual_checklist: machine_readable_required
+claim_ceiling: "descriptive non-authoritative visualization completeness only; accepted raw/specification/analysis remain scientific authority, with no new scientific conclusion."

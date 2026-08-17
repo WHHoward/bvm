@@ -1,0 +1,104 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-005
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T20:15:56+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: WORKFLOW_MAINTENANCE
+depends_on: [JH-20260817-WORKFLOW-MAINT-004]
+supersedes: {task_id: JH-20260817-WORKFLOW-MAINT-004, revision: 1}
+task:
+  kind: IMPLEMENTATION
+  objective: "Repair only MAINT-004's frozen-input contract defect, then independently revalidate or minimally correct its preserved no-JoSIM maintenance implementation as one verified task package."
+  research_question: "With only immutable external inputs hash-bound, can the preserved v1 maintenance implementation satisfy the issued issuer-snapshot, endpoint-VI, recursive pre-receipt bundle, stale-document, and synthetic-chain requirements?"
+  non_goals:
+    - "Run JoSIM, change a scientific record or physical claim, alter S0/S1/S2, MAINT-001 through MAINT-004, create protocol v2, or build a DSL."
+    - "Use interpolation/resampling/float tolerance as a substitute for preregistered exact timestamp tokens."
+    - "Treat a natural-language scientific_claim_ceiling relation as mechanically decidable."
+  claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific or historical-disposition claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - scripts/quantitative_analysis_verifier.py
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_quantitative_analysis_verifier.py
+    - test/workflow/test_evidence_bundle.py
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/schemas/quantitative-analysis-spec.schema.json
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/request.sha256
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/attempts/A01/receipt.yaml
+  hash_paths: [AGENTS.md, docs/HANDOVER.md, docs/research/METRIC_SPEC_V2.md]
+  write_paths:
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - scripts/quantitative_analysis_verifier.py
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_quantitative_analysis_verifier.py
+    - test/workflow/test_evidence_bundle.py
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/schemas/quantitative-analysis-spec.schema.json
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-005/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-003/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-004/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/**
+    - test/final/**
+  locks: [locks/handoff-v1-maintenance]
+baseline:
+  git_head: "9ae2b1f09a1750225e8bc263fa379057a1979c19"
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-005/baseline/git-status.txt, sha256: "5398ac9415624733a26e5a2dce5e87f3d2645036f2f241c167504049622c8a95"}
+  scope_hashes: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-005/baseline/scope-files.sha256, sha256: "94cd9428e3f1241570386198ea723bdb0ab06b6a798b26d238854f7c8cda66a4"}
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff]
+  read_first: [AGENTS.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/references/handoff-protocol.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: .agents/skills/josim-handoff/scripts/handoff.py, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: scripts/quantitative_analysis_verifier.py, role: IMPLEMENTATION, required: true}
+  - {id: D3, path: scripts/build_evidence_bundle.py, role: IMPLEMENTATION, required: true}
+  - {id: D4, path: test/workflow/test_quantitative_analysis_verifier.py, role: TEST, required: true}
+  - {id: D5, path: test/workflow/test_evidence_bundle.py, role: TEST, required: true}
+  - {id: D6, path: research/tasks/JH-20260817-WORKFLOW-MAINT-005/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Legacy no-snapshot ACK strict-HEAD semantics stay unchanged; snapshot mode uses snapshot execution authority and validates its task-directory request/signature/scope binding without also requiring the parent baseline head.", evidence: [handoff.py, test_handoff.py]}
+  - {id: AC2, condition: "Real parent-head-different snapshot positive and wrong-snapshot/drift negative regressions pass/fail as preregistered.", evidence: [test_handoff.py]}
+  - {id: AC3, condition: "affine_residual is rejected or absent; explicitly named endpoint-VI computes Rhat/Vth/e_L from simultaneous endpoint V/I at exact registered tokens, and rejects old load interpolation and token mismatch.", evidence: [quantitative_analysis_verifier.py, quantitative-analysis-spec.schema.json, test_quantitative_analysis_verifier.py]}
+  - {id: AC4, condition: "A pre-receipt bundle accepts multiple recursive entries per role and handoff mechanically recomputes exact path/hash/bytes; it never hashes the final receipt.", evidence: [build_evidence_bundle.py, handoff.py, test_evidence_bundle.py]}
+  - {id: AC5, condition: "Stale M4-M11/METRIC_SPEC_V2 statements are corrected and scientific_claim_ceiling is documented as auditor-declared/reviewed rather than semantically machine-proven.", evidence: [WORKFLOW.md, CLAUDE_EXECUTOR.md]}
+  - {id: AC6, condition: "The synthetic CRITICAL/FROZEN no-JoSIM chain, including raw+spec independent verification and deterministic report, ends with verify-task VERIFIED under this immutable corrected-scope contract.", evidence: [test_handoff.py, receipt.yaml]}
+  - {id: AC7, condition: "All changed evidence is in scope; MAINT-004 remains immutable failed-attempt evidence, and the complete combined regression suite passes without JoSIM.", evidence: [receipt.yaml]}
+invalid_conditions:
+  - "Any historic/scientific/raw path change, JoSIM run, protocol v2 change, scope hash of mutable source, interpolation/resampling of timestamp tokens, or receipt/bundle circular hash."
+inconclusive_conditions: []
+stop_conditions:
+  - "Need for a non-enumerated write path, scientific experiment/claim, network/install/worktree/commit, deletion/overwrite, or major redesign."
+issuance_blockers: []

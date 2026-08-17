@@ -1,0 +1,70 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A02
+audit_id: C02
+workflow_state: AUDITED
+created_at: "2026-08-18T10:45:00+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  ack_sha256: "d2156d64651f90d381f6506aca8c1c874f93f12837105a9e61706c47676295e3"
+  receipt_sha256: "62f1c2e28516332be3b03cd2ee8e8efb06707d067c57809b6258ed1d23423773"
+scope_status: PASS
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: protocol-validity
+    status: FAIL
+    evidence:
+      - "handoff.py verify-task fails because A02 ACK created_at precedes the sealed request issued_at, violating protocol chronology."
+      - "A02 evidence bundle lacks the required renderer, spec, and structured_result roles."
+  - id: D2-and-raw-family-completeness
+    status: FAIL
+    evidence:
+      - "The immutable request explicitly requires attempts/**/waveform-family.json (D2); A02 creates no such file and its receipt lists no structured result."
+      - "A02 bvm-source-spec-v1.yaml contains only eight corrected V/I series, not the required 16 raw read/control V(SL1)/I(L_SL|XBVM1) sequences with literal-token provenance."
+  - id: frozen-correction-and-descriptors
+    status: FAIL
+    evidence:
+      - "A02's independent verifier does recompute corrected V/I values for all eight load-origin/polarity strata from read/control raw data."
+      - "However, its time_normalized_l1 is a rectangular sum abs(x)*dt/(t_last-t_first), not the preregistered actual-Decimal-time trapezoidal integral."
+      - "The frozen post window, primary-activity interval, and required optional-lobe NOT_APPLICABLE/legal-status fields are absent; the verifier also does not check read/control timestamp-token identity before subtraction."
+      - "Peak selection uses max((abs(value), index)), which resolves an equal-absolute-value tie to the latest index rather than the frozen earliest exact token."
+  - id: orientation-and-provenance
+    status: FAIL
+    evidence:
+      - "A02 correctly states L_SL N8 -> SL and a current-positive convention."
+      - "It omits the required per-source-netlist provenance SHA-256 records for the 16 frozen input netlists, and its verifier does not recompute all source hash/byte/column/token/order provenance."
+  - id: science-boundary
+    status: PASS
+    evidence:
+      - "A02 is attempt-local and reports no JoSIM execution, BQ/replay/cascade calculation, source-model fit, status update, or new scientific conclusion."
+findings:
+  - "A02 closes part of C01 mechanically, but it is not a valid frozen BVM_SOURCE_SPEC_V1 or a valid protocol delivery."
+  - "All deficiencies are sealing, deterministic-calculation, and protocol-completeness defects; accepted STABLE-LOAD-001 raw evidence and scientific conclusions remain unchanged."
+accepted_claims: []
+rejected_claims:
+  - "Neither A01 nor A02 may be consumed as an accepted hash-bound BQ replay input."
+required_rework:
+  - "Create append-only attempts/A03 only. Do not edit A01, A02, either receipt, request, preregistration, accepted Stable-Load evidence, or C01/C02 audit findings."
+  - "Write an A03 ACK and receipt whose created_at timestamps are not earlier than the sealed request issued_at."
+  - "Create the required A03 waveform-family.json as the structured result: retain all 16 raw read/control V(SL1)/I(L_SL|XBVM1) records with original CSV literal time/value tokens, source CSV SHA-256/bytes/columns/sample count, and add eight exact-token matched-control-corrected V*/I* records. No interpolation, resampling, smoothing, normalization, or fitting."
+  - "Record the frozen PRE [80,90), source/activity [94,130), and post [140,160) exact-Decimal half-open windows; prove read/control literal token identity/order before correction."
+  - "For each corrected V* and I*, record earliest-tie deterministic peak/value/time, RMS, actual-Decimal-time trapezoidal time-normalized L1, and primary activity interval. Record FWHM and dominant post-primary opposite lobe as legal values or NOT_APPLICABLE with an explicit reason."
+  - "Provide an independent verifier that imports neither builder nor renderer and recomputes/compares every raw token, corrected token, provenance field, window coverage, descriptor, timestamp identity/order, and orientation field."
+  - "Expand A03 terminal-orientation.yaml with V(SL1) SL1-to-ground, L_SL N8 -> SL, current-positive port relationship, bvm_cell/jjmit hashes, and SHA-256 for every source input netlist; verify all of them."
+  - "Include a deterministic report renderer and all required roles (renderer, spec, structured_result, report, verifier, raw, inputs, inventory, logs) in an A03 declared-entry pre-receipt bundle. The final receipt must be excluded."
+  - "No JoSIM, BQ/replay/cascade analysis, model fit, status bookkeeping, protocol maintenance, source modification, overwrite, or new science is authorized."
+next_actions:
+  - "Executor may perform only this A03 sealing rework and then stop for fresh Codex audit."
+claim_ceiling: "A hash-bound source-observation specification only; accepted STABLE-LOAD-001 remains the sole scientific authority."

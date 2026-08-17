@@ -1,0 +1,108 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A02
+workflow_state: DELIVERED
+created_at: "2026-08-18T02:15:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  issuer_snapshot_sha256: "92ea2f684e7238e68d06124a0e3311562b618b055bcfc5dae9910b11239724d3"
+  ack_sha256: "d2156d64651f90d381f6506aca8c1c874f93f12837105a9e61706c47676295e3"
+execution_status: COMPLETED
+baseline_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+result_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+changes:
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/bvm-source-spec-v1.yaml, action: CREATED, sha256: "27c0d3fb09059fbd203ce1166ca27174c233bb50ac1714a3a6832c498849ab68"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/terminal-orientation.yaml, action: CREATED, sha256: "33456c7893d0ede9469eeee2741ce468c83fd1e5e965adbab52bb559df5a6fdb"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/build_source_spec.py, action: CREATED, sha256: "027c31ad033eb89975c7357a58b0aaab3209f2be6b2186f9d304318feed3a53e"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify_source_spec.py, action: CREATED, sha256: "761c0246f583945ac352cbf5787e4547d4362accdf9e6f7a15927506dc183cf4"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify.log, action: CREATED, sha256: "9de572990681f8f82169313ba566a655b1bcdac7f703f249783dda865d67efc5"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/report.md, action: CREATED, sha256: "fcfe82b47d2502f1677a9a5d2b867cc3b00ad9ae77b0d8bbc38af5922e501c61"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/inventory.yaml, action: CREATED, sha256: "30320119390f74100c41ddaba04cb2892af199d5bd423c2fee67011434dd4c5d"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/evidence-bundle.yaml, action: CREATED, sha256: "ec0b54904bfad56a84f038c4bb08bad2978e8ca7de04835ebc1011243913a8e6"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/receipt-pending.yaml, action: CREATED, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f"}
+artifacts:
+  - {id: source-spec, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/bvm-source-spec-v1.yaml, sha256: "27c0d3fb09059fbd203ce1166ca27174c233bb50ac1714a3a6832c498849ab68", role: MANIFEST}
+  - {id: orientation, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/terminal-orientation.yaml, sha256: "33456c7893d0ede9469eeee2741ce468c83fd1e5e965adbab52bb559df5a6fdb", role: MANIFEST}
+  - {id: builder, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/build_source_spec.py, sha256: "027c31ad033eb89975c7357a58b0aaab3209f2be6b2186f9d304318feed3a53e", role: IMPLEMENTATION}
+  - {id: verifier, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify_source_spec.py, sha256: "761c0246f583945ac352cbf5787e4547d4362accdf9e6f7a15927506dc183cf4", role: IMPLEMENTATION}
+  - {id: verify-log, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify.log, sha256: "9de572990681f8f82169313ba566a655b1bcdac7f703f249783dda865d67efc5", role: LOG}
+  - {id: report, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/report.md, sha256: "fcfe82b47d2502f1677a9a5d2b867cc3b00ad9ae77b0d8bbc38af5922e501c61", role: DOCUMENTATION}
+  - {id: inventory, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/inventory.yaml, sha256: "30320119390f74100c41ddaba04cb2892af199d5bd423c2fee67011434dd4c5d", role: DOCUMENTATION}
+  - {id: bundle, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/evidence-bundle.yaml, sha256: "ec0b54904bfad56a84f038c4bb08bad2978e8ca7de04835ebc1011243913a8e6", role: DOCUMENTATION}
+  - {id: receipt-pending, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/receipt-pending.yaml, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f", role: DOCUMENTATION}
+evidence_bundle:
+  path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/evidence-bundle.yaml
+  sha256: "ec0b54904bfad56a84f038c4bb08bad2978e8ca7de04835ebc1011243913a8e6"
+commands:
+  - command: "python3 build_source_spec.py && python3 verify_source_spec.py"
+    exit_code: 0
+    log_path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify.log
+    log_sha256: "9de572990681f8f82169313ba566a655b1bcdac7f703f249783dda865d67efc5"
+tests:
+  - id: per-token-independent-verification
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify.log
+    notes:
+      - "VERIFY PASS: corrected V/I recomputed byte-exact for EVERY literal
+         Decimal token (8 strata x ~13.6k tokens); all peak/rms/
+         time-normalized-L1 descriptors recomputed byte-exact; orientation
+         N8 -> SL bound."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/bvm-source-spec-v1.yaml
+    notes:
+      - "16 accepted source traces provenance retained; corrected V/I
+         sealed for 8 strata."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/bvm-source-spec-v1.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify.log
+    notes:
+      - "Exact-Decimal read/control/corrected V/I and frozen descriptors
+         (peak/rms/time-normalized-L1) sealed; no interpolation/resampling/
+         fitting."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/terminal-orientation.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/verify.log
+    notes:
+      - "Terminal orientation explicitly records L_SL direction N8 -> SL
+         and positive current out of closure; netlist hashes bound."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/report.md
+    notes:
+      - "No affine source model fit or assertion; accepted evidence remains
+         sole authority."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/inventory.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/evidence-bundle.yaml
+    notes:
+      - "26-entry declared pre-receipt bundle + inventory (A02-local);
+         final receipt excluded."
+observations:
+  - "C01 AC2/AC3 gaps closed: corrected V/I + descriptors sealed;
+     verifier now recomputes per-token and per-descriptor values
+     byte-exactly; orientation states N8 -> SL."
+  - "No JoSIM, no source modification, no model fit, no status update."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "A02-local spec; Task 2 (BQ replay) not authorized."
+deviations: []
+blockers: []

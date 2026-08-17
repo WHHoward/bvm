@@ -1,0 +1,10 @@
+schema_version: bvm-source-spec-terminal-orientation-v1
+port:
+  V(SL1): SL1 node to ground
+  I(L_SL|XBVM1): element L_SL, direction N8 -> SL (port output)
+conventions:
+  voltage_positive: SL1 positive with respect to ground
+  current_positive: positive I(L_SL) flows from N8 to SL (out of closure toward DataOut)
+netlist_hashes:
+  circuits/bvm/bvm_cell.cir: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  circuits/models/jjmit.cir: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336

@@ -1,0 +1,49 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A02
+workflow_state: ACKED
+created_at: "2026-08-18T02:10:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  issuer_snapshot_sha256: "92ea2f684e7238e68d06124a0e3311562b618b055bcfc5dae9910b11239724d3"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "A01 immutable; A02 writes only attempts/A02/** per C01."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A02 (per C01 codex-20260818-020557): seal corrected V/I and frozen
+    descriptors for 4 load-origin x 2 polarity strata (exact Decimal
+    read/control/corrected x_star at identical literal tokens), build an
+    independent raw-to-artifact verifier that recomputes every token and
+    descriptor value and compares byte-exactly, and make the terminal
+    orientation record state L_SL direction N8 -> SL explicitly.  A02-local
+    inventory/pre-receipt bundle/receipt.  No JoSIM, no source/BQ/model-fit/
+    status change; stop after mechanical verification.
+  non_goals:
+    - "Modify A01 or source evidence; run JoSIM; BQ/replay/cascade; model
+       fit; status updates."
+  stop_conditions:
+    - "Any need for a new simulation, BQ/replay/cascade analysis, new
+       source model, protocol change, unlisted write, overwrite/delete,
+       network/install/worktree/commit, or pre-audit status update."
+planned_commands:
+  - "python3 build_source_spec.py (corrected V/I + descriptors + orientation N8->SL)"
+  - "python3 verify_source_spec.py (per-token/per-descriptor independent recompute)"
+  - "build A02-local inventory + evidence-bundle + receipt"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260818-BVM-SOURCE-SPEC-001"
+expected_changed_paths:
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A02/*
+blockers: []
+deviations: []

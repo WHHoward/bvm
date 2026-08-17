@@ -29,7 +29,7 @@ checks:
       - "handoff.py verify-task reports VERIFIED for the sealed request, external issuer-snapshot attestation, A01 ACK, and receipt."
       - "A01 writes are confined to its attempt-local path; no JoSIM execution or stable-load source modification is recorded."
   - id: AC1-raw-waveform-provenance
-    status: PARTIAL
+    status: INCONCLUSIVE
     evidence:
       - "The source manifest and waveform-family enumerate 16 load-origin/polarity/read-control CSVs and include raw V(SL1)/I(L_SL|XBVM1) sequences with source hash and byte fields."
       - "The purported independent verifier checks source CSV hashes, bytes, required columns, and sample counts, but does not compare the declared time, V, or I tokens in waveform-family.json against the raw CSV tokens."
@@ -49,7 +49,7 @@ checks:
     evidence:
       - "A01 preserves the accepted all-READY prerequisite and per-polarity registered-token endpoint-VI NOT_SUPPORTED fact, and asserts no source model or BQ/cascade claim."
   - id: AC5-pre-receipt-declared-entry-bundle
-    status: PARTIAL
+    status: INCONCLUSIVE
     evidence:
       - "verify-task mechanically validates the declared bundle entries and final receipt.yaml is not an entry."
       - "This cannot cure the missing frozen corrected-waveform/descriptors/orientation content required of the artifacts that the bundle binds."
@@ -68,4 +68,4 @@ required_rework:
   - "Rebuild A02-local inventory, declared-entry pre-receipt bundle, and receipt after all A02 artifacts are final. The final receipt must not enter the bundle. No JoSIM, BQ/replay/cascade calculation, source-model fit, or status bookkeeping is authorized."
 next_actions:
   - "Executor may perform only the listed A02 report/sealing rework, then stop for a fresh Codex audit."
-claim_ceiling: "No scientific conclusion: A01 is incomplete source-evidence sealing only. Accepted STABLE-LOAD-001 remains the sole scientific authority."
+claim_ceiling: "A hash-bound source-observation specification only; accepted STABLE-LOAD-001 remains the sole scientific authority."

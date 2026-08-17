@@ -1,0 +1,62 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A02
+audit_id: C02
+workflow_state: AUDITED
+created_at: "2026-08-18T00:50:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  ack_sha256: "c142f5f4c12d4a46adc9ee46625feec354ae1e31940fdf6f7401da02b6f61520"
+  receipt_sha256: "8921e05208f4febe5e0d9b0679955012b1ad89db54fcaf7e8eaa3fd261761fb3"
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: chain-append-only-and-mechanical-content
+    status: FAIL
+    evidence:
+      - "A01/A02 retain distinct ACK and receipt records and no accepted STABLE-LOAD-001 source byte was modified."
+      - "A02 report.html now hashes 080f04f3012a841f6fd5fea6a304e90e177c9661c11e4d478b75b7f6c5e16a47, while its immutable receipt binds c1cd95358a329ce21873d448bbf0284f03f03744ac3528c985818d6811d338e6. verify-task therefore fails."
+      - "The original c1cd blob is absent from Git reachable/unreachable objects and searched temporary locations; it cannot be reconstructed or substituted without falsifying receipt provenance."
+  - id: actual-rendered-selector-operation
+    status: FAIL
+    evidence:
+      - "Fresh-context Codex rendered the currently present, receipt-unbound 080f HTML in headless Chromium at 1440x1080. DOM inspection finds 16 Plotly figures, zero HTML selects, and zero Plotly updatemenu controls."
+      - "The report stacks one raw figure plus one derived figure for every load/polarity combination; it does not provide the frozen 1/12/25/50 ohm or positive/negative selector operation."
+  - id: actual-rendered-panel-coverage-and-readability
+    status: FAIL
+    evidence:
+      - "The rendered raw-input pane titled WL/BL/SE draws WL only; BL and SE traces are absent."
+      - "The endpoint pane title says Rhat/Vth/emax, but its rendered traces are Rhat and emax only; Vth, eligibility, and classification are not visibly rendered."
+      - "Source-descriptor records are present in visualization-data.json but are not rendered as a readable descriptor panel. The page is a 7364-pixel vertical stack of 16 figures rather than a selector-driven desktop dashboard."
+      - "Screenshots of that receipt-unbound current file: dashboard-top.png sha256 f4a9953153b5c75fa3de407463e0768f45d48e57c017ae07f4286edcd324fbb6; dashboard-lower.png sha256 6c2a69e53262b1c06fb80e38dd3818197161fb3354f8494595384ff5f57527e0. They are debugging evidence, not acceptance evidence for immutable A02."
+  - id: ac4-interactions-and-visual-acceptance
+    status: FAIL
+    evidence:
+      - "Plotly modebar and legend controls render, but required selector operation and the complete visible panel set fail. Therefore hover/zoom/pan/reset availability cannot satisfy frozen AC4."
+findings:
+  - "A02 closes the A01 data-model omissions but does not implement the frozen dashboard interaction/visibility contract in the currently available regenerated output."
+  - "The A02 content verifier's field/string checks are necessary but insufficient: actual rendering exposed omissions it did not test."
+  - "Critical provenance defect: an attempted deterministic check had output side effects and the receipt-bound original A02 HTML is no longer available. This audit does not alter the receipt or claim a recovery."
+accepted_claims:
+  - "No A02 visualization artifact is accepted. Only the preserved receipt, the detected provenance defect, and debugging observations on the current unbound regenerated HTML are established."
+rejected_claims:
+  - "A02 does not satisfy AC1, AC2, or AC4 and is not an accepted visualization correction; its receipt-bound report artifact cannot be verified."
+  - "No scientific conclusion is added, changed, or re-audited."
+required_rework:
+  - "Do not modify A01, A02, screenshots, receipts, or accepted scientific source evidence. Any future continuation requires explicit user authorization for a new attempts/A03 regeneration from frozen source inputs, with a side-effect-free deterministic checker and a new immutable receipt."
+  - "Implement actual load and polarity selector controls that replace the active dashboard state rather than stacking all eight states. Render all three WL/BL/SE traces for active read/control state."
+  - "Render visible source-descriptor and control-residual summary panels, and endpoint Rhat/Vth/emax plus eligibility/classification per registered token; extend the independent verifier to assert these actual rendered series/panels and selector control count/coverage."
+  - "No JoSIM, raw/source write, scientific metric/disposition change, protocol work, or additional visualization requirement. After A03, leave AC4 for another Codex rendered inspection."
+next_actions:
+  - "Stop and await user direction; do not send an automatic rework request after this provenance defect."
+claim_ceiling: "descriptive non-authoritative visualization completeness only; accepted raw, frozen specification, and accepted structured analysis remain the sole scientific authority, with no new scientific conclusion."

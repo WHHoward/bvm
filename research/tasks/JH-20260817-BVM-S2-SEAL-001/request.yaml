@@ -1,0 +1,91 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-BVM-S2-SEAL-001
+revision: 1
+workflow_state: DRAFT
+issued_at: null
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S2
+depends_on: [JH-20260817-BVM-S2-001]
+supersedes: {task_id: JH-20260817-BVM-S2-001, revision: 1}
+task:
+  kind: ANALYSIS
+  objective: "Create one immutable recursive hash inventory and evidence-binding receipt for the existing BVM-S2 16-run package, without rerunning, changing or scientifically reinterpreting it."
+  research_question: "Can every retained original S2 execution artifact be located, SHA-256 verified and explicitly classified by provenance layer under a correctly captured successor baseline?"
+  non_goals:
+    - "Do not run JoSIM or regenerate, change, move, rename, delete, overwrite or reinterpret any original S2 task/run-root file."
+    - "Do not change S2 scientific design, matrix, load, timestep, case, probe, window, metric, band, claim ceiling, S1 INCONCLUSIVE, or any numerical/scientific outcome."
+    - "Do not accept artifact validity, numerical convergence, readiness, terminal affine behavior, internal trajectory behavior, logical state, SFQ/fluxoid, receiver, route or Gate."
+  claim_ceiling: provenance_and_recursive_evidence_integrity_only_preserving_original_s2_execution_artifacts_for_later_independent_scientific_review
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - research/tasks/JH-20260817-BVM-S2-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S2-001/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/design/**
+    - test/final/bvm/runs/bvm-s2-load-20260817-01/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/design/rebinding-plan.md
+  write_paths:
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - test/final/bvm/runs/bvm-s2-load-20260817-01/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/design/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/audits/**
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+  locks: [locks/bvm-source-characterization, locks/bvm-s2-evidence-seal]
+baseline:
+  git_head: b3a467d983fdb0dcada1ed67c77d23936cb57a62
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/git-status.txt, sha256: 3487b3a85d341b7f5f1ef6bf92eb7f9753725631b617117c1854365e73c20de9}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-SEAL-001/baseline/scope-files.sha256, sha256: 69113dec059c75a4ff0acb1e76c83de4b79d2a76efb07d6b31c5fe95d1e1c7f1}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff]
+  read_first:
+    - AGENTS.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/WORKFLOW.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/tasks/JH-20260817-BVM-S2-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-BVM-S2-001/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/design/rebinding-plan.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/**/evidence-inventory.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/**/verify_inventory.py, role: TEST, required: true}
+  - {id: D3, path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/**/logs/inventory-check.log, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: research/tasks/JH-20260817-BVM-S2-SEAL-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Before writing, verify original S2 request/signature/ACK/receipt hashes and explicitly record that original verify-task fails only on the ACK baseline.git_head mismatch (96599fc request versus b3a467d ACK). Do not repair or rewrite any original file.", evidence: [evidence-inventory.yaml, inventory-check.log]}
+  - {id: AC2, condition: "Recursively enumerate every regular file under test/final/bvm/runs/bvm-s2-load-20260817-01, recording exact repo-relative path, SHA-256, byte size and provenance layer. Inventory must contain inputs, all 16 CSV/stdout/stderr triplets, manifest, closure hashes, generator/runner/analyzer, logs and both analysis artifacts; missing or extra current files fail verification.", evidence: [evidence-inventory.yaml, inventory-check.log]}
+  - {id: AC3, condition: "The read-only verifier recomputes every inventory hash; it proves original run-root path set equals inventory run-root path set, and records original request/ACK/receipt separately as HISTORICAL_PROTOCOL_NOT_FINAL_AUTHORITY. It writes no file outside this successor attempts path.", evidence: [verify_inventory.py, inventory-check.log, evidence-inventory.yaml]}
+  - {id: AC4, condition: "Receipt hashes/maps all successor files and AC1-AC3, states run_josim=false, lists no physical/numerical proposal beyond NOT_APPLICABLE, and requests one Copilot skeptical review of the sealed package before Codex audit.", evidence: [receipt.yaml, verify-task-log]}
+invalid_conditions:
+  - "Any original S2 task/run-root file is modified, missing, renamed, deleted, overwritten, or hash-mismatched; any JoSIM command is run; or any path outside successor attempts is written."
+  - "Inventory is not a complete one-to-one recursive file/path mapping, original protocol mismatch is hidden, or receipt fails hash/scope verification."
+inconclusive_conditions:
+  - "This task has no physical/numerical classification. It may be ACCEPTED only as provenance evidence; scientific validity remains for later Copilot/Codex review."
+stop_conditions:
+  - "Current original artifact paths/hashes differ before inventory, scope/baseline/authority/lock mismatch occurs, a missing artifact needs recreation, any desired change exceeds attempts/**, or verify-task fails. Preserve all evidence and report BLOCKED."
+issuance_blockers:
+  - "DRAFT preparation only; baseline scope and dirty snapshot must be recaptured before issuance."

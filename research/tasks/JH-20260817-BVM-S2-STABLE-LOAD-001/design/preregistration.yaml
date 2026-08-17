@@ -1,0 +1,121 @@
+schema_version: bvm-s2-stable-load-preregistration-v1
+status: FROZEN_ON_ISSUANCE
+study_phase: CALIBRATION
+risk: CRITICAL
+evidence_mode: FROZEN
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-001
+run_id: bvm-s2-stable-load-20260817-01
+lineage: scientific successor addressing the load-characterization question left unresolved by S2; it does not supersede, overwrite, or reinterpret S2 evidence or its VALID/INCONCLUSIVE disposition.
+research_question: At fixed closure and 0.0125 ps working grid, after the accepted historical-S1 initialization, how do 1/12/25/50 ohm loads change matched-control-corrected V(SL1) and I(L_SL|XBVM1), separately by initialization polarity?
+claim_ceiling: bounded fixed-closure fixed-grid per-load terminal observations and matched-control-corrected endpoint-VI compatibility at registered exact tokens only; no numerical convergence, mechanism, logical-state, preservation, load-back-action, receiver, BQ, SFQ, fluxoid, interface, route, hardware, or universal-impedance claim.
+fixed_closure:
+  binary: {path: build/josim-cli, required_version: v2.7.2837d13, sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2}
+  netlist_sources:
+    - {path: circuits/bvm/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4}
+    - {path: circuits/models/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  instance: "XBVM1 WL1 BL1 SE1 SL1 BVM"
+  internal_load: "R_SL n_psl N8 12.0"
+  external_loads_ohm: [1.0, 12.0, 25.0, 50.0]
+  timestep_ps: 0.0125
+  stop_time_ps: 170.0
+  run_maximum: 16
+stimulus:
+  initialization:
+    historical_s1_positive: "WL/BL: 0 at 0-10 ps; +100 uA at 11 ps; held through 20 ps; 0 at 21 ps; SE=0"
+    historical_s1_negative: "WL/BL: 0 at 0-10 ps; -100 uA at 11 ps; held through 20 ps; 0 at 21 ps; SE=0"
+  read: "WL and SE: 0 at 95 ps; +100 uA at 96-105 ps; 0 at 106 ps"
+  matched_control: "identical topology, closure, load, polarity, timestep, duration, source names and PWL knot times; only the 96-105 ps WL/SE amplitudes are 0 uA"
+  cases: [positive_read, positive_control, negative_read, negative_control]
+run_matrix:
+  - {id: L01-positive-read, load_ohm: 1.0, polarity: positive, case: read}
+  - {id: L01-positive-control, load_ohm: 1.0, polarity: positive, case: control}
+  - {id: L01-negative-read, load_ohm: 1.0, polarity: negative, case: read}
+  - {id: L01-negative-control, load_ohm: 1.0, polarity: negative, case: control}
+  - {id: L12-positive-read, load_ohm: 12.0, polarity: positive, case: read}
+  - {id: L12-positive-control, load_ohm: 12.0, polarity: positive, case: control}
+  - {id: L12-negative-read, load_ohm: 12.0, polarity: negative, case: read}
+  - {id: L12-negative-control, load_ohm: 12.0, polarity: negative, case: control}
+  - {id: L25-positive-read, load_ohm: 25.0, polarity: positive, case: read}
+  - {id: L25-positive-control, load_ohm: 25.0, polarity: positive, case: control}
+  - {id: L25-negative-read, load_ohm: 25.0, polarity: negative, case: read}
+  - {id: L25-negative-control, load_ohm: 25.0, polarity: negative, case: control}
+  - {id: L50-positive-read, load_ohm: 50.0, polarity: positive, case: read}
+  - {id: L50-positive-control, load_ohm: 50.0, polarity: positive, case: control}
+  - {id: L50-negative-read, load_ohm: 50.0, polarity: negative, case: read}
+  - {id: L50-negative-control, load_ohm: 50.0, polarity: negative, case: control}
+windows_ps:
+  pre: [80.0, 90.0]
+  activity: [94.0, 108.0]
+  source: [94.0, 130.0]
+  recovery: [108.0, 130.0]
+  post: [140.0, 150.0]
+  semantics: half_open_actual_csv_time
+readiness:
+  required_junctions: [JM1, JM2]
+  phase_p2p_rad_max: 0.020
+  per_stratum: "both read and matched-control traces at each load/polarity must satisfy both JM1 and JM2 PRE p2p limits"
+  hierarchy: "only READY strata supply formal source descriptors; endpoint-VI per polarity requires all four loads READY"
+timestamp_matching:
+  parser: Decimal_from_literal_csv_token
+  tolerance_seconds: 0
+  interpolation: prohibited_for_cross_run_and_endpoint_vi
+  resampling: prohibited
+  time_alignment: prohibited
+  missing_registered_timestamp: INVALID
+probes:
+  source: [V(SL1), I(L_SL|XBVM1)]
+  inputs: [I(I_WL1), I(I_BL1), I(I_SE1)]
+  junctions: [P/V(B_JM1|XBVM1), P/V(B_JM2|XBVM1), P/V(B_JS1|XBVM1), P/V(B_JS2|XBVM1)]
+control_corrected:
+  definition: "x_star(t)=[x_read(t)-mean(x_read,PRE)]-[x_control(t)-mean(x_control,PRE)] at identical literal Decimal tokens"
+  residual_window: source
+  amplitude_floors: {voltage_uV: 5.0, current_uA: 0.5}
+  formulas:
+    Aread: "max_t_in_source abs(x_read(t)-mean(x_read,PRE))"
+    Actrl: "max_t_in_source abs(x_control(t)-mean(x_control,PRE))"
+    rctrl: "Actrl/max(Aread, Afloor)"
+    max: "max_t_in_source abs(x_control(t)-mean(x_control,PRE))"
+    rms: "sqrt((1/N)*sum_t_in_source residual(t)^2)"
+    time_normalized_l1: "trapezoid_actual_time(abs(residual(t)), source)/(t_last-t_first)"
+  regions: [{max: 0.01, status: PASS_REGION}, {min_exclusive: 0.01, max_exclusive: 0.05, status: NOT_ISOLATED}, {min: 0.05, status: NOT_ISOLATED}]
+source_descriptors:
+  signal: x_star
+  peak: "t_p=min argmax_{t in source} abs(x(t)); earliest exact token wins ties"
+  primary_lobe: "maximal contiguous actual-sample interval containing t_p whose x(t) has strict sign sign(x(t_p))"
+  latency_ps: "t_p-96 ps"
+  fwhm: "nearest left/right same-trace brackets, searched outward from t_p, of sign(x(t_p))*x(t)=0.5*abs(x(t_p)); exact crossing wins, otherwise local linear interpolation within that trace only"
+  fwhm_failure: "NOT_APPLICABLE if either side lacks a legal same-trace half-height crossing bracket in source; extrapolation and cross-window/cross-run crossing searches prohibited"
+  dominant_post_primary_opposite_lobe: "after the primary-lobe right boundary, choose among all opposite-sign contiguous lobes the lobe with greatest absolute extremum; tie: earliest extremum exact token; NOT_APPLICABLE if absent"
+endpoint_vi:
+  corrected_inputs: "V_star(t), I_star(t) at identical literal Decimal tokens"
+  endpoint_loads_ohm: [1.0, 50.0]
+  interior_loads_ohm: [12.0, 25.0]
+  tokens_ps: [97.0, 99.0, 101.0, 103.0, 105.0]
+  formulas:
+    rhat: "-(V_star_50(t)-V_star_1(t))/(I_star_50(t)-I_star_1(t))"
+    vth: "V_star_1(t)+Rhat(t)*I_star_1(t)"
+    e_l: "max_L abs(V_star_L(t)-[Vth(t)-Rhat(t)*I_star_L(t)])"
+  eligibility: "abs(I_star_50-I_star_1)>=0.5 uA and abs(V_star_50-V_star_1)>=5 uV; otherwise ILL_CONDITIONED"
+  compatibility: "eligible token COMPATIBLE iff e_max(t)<=max(5 uV,0.01*abs(V_star_50-V_star_1)); otherwise NOT_SUPPORTED"
+  summaries: [per_token_table, Rhat_signed_min_max_mean, Vth_min_max_mean, e_max, e_rms, eligible_compatible_not_supported_ill_conditioned_counts]
+  prohibited: [pre_fit_token_averaging, float_equality, interpolation, resampling, universal_thevenin_or_norton_interpretation]
+internal_trajectory:
+  report: [JM1, JM2, JS1, JS2, p_star, v_star, a_star, same_junction_phase_area]
+  status: bounded_diagnostic_only
+  forbidden: [state_transition, back_action_mechanism, SFQ, fluxoid, logic]
+evidence_matrix:
+  shared_immutable: [manifest, inputs_and_closure, raw_csv, stdout, stderr]
+  per_attempt_derived: [structured_analysis, independent_verifier, verifier_log, report_md, deterministic_report_html, report_consistency, expected_matrix, inventory, pre_receipt_bundle, receipt]
+  completeness: "frozen expected run-artifact matrix plus required artifacts/manifest/inventory delivered-set comparison; declared bundle entries are authority; final receipt excluded"
+dispositions:
+  INVALID: "Any raw/solver/provenance/closure/Decimal/window/scope failure."
+  READINESS_NOT_MET: "Valid evidence but one or more load/polarity strata are not READY; those strata are excluded from formal characterization."
+  PARTIALLY_EVALUABLE: "At least one but not all strata READY; report eligible per-stratum descriptors only; endpoint-VI only for a polarity whose four loads are READY."
+  BOUNDED_SOURCE_CHARACTERIZATION_REPORTED: "All strata READY and valid source/control descriptors reported; not a universal source-model claim."
+  COMPATIBLE_AT_REGISTERED_TOKENS: "Per-polarity endpoint diagnostic only."
+  NOT_SUPPORTED_AT_REGISTERED_TOKENS: "Per-polarity endpoint diagnostic only."
+  INCONCLUSIVE_ILL_CONDITIONED: "Per-polarity endpoint diagnostic only."
+stop_rules:
+  - Do not add a run, timing, load, timestep, window, probe, receiver, BQ, parameter sweep, convergence ladder, or mechanism study.
+  - Preserve every raw/input/log and failed artifact; no overwrite or deletion.
+  - Any later correction writes only attempts/A02 or later, never a receipt-bound A01 path.

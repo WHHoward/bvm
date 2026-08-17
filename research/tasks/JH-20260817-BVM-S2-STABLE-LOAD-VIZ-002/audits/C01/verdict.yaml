@@ -1,0 +1,58 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-18T00:40:00+08:00"
+auditor: {role: CODEX, id: codex-root}
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  ack_sha256: "1ade86a9fe480d946e08a7d3ff2e3026864df2f928c7147e33a9cc46f28d5906"
+  receipt_sha256: "faa41ce3d402ccd1f161f16b72699fdf35a1eae823db826ceedb112c5811ba60"
+scope_status: PASS
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-source-immutability
+    status: PASS
+    evidence:
+      - "handoff.py verify-task reports VERIFIED for the signed request, external snapshot attestation, A01 ACK, and A01 receipt."
+      - "A01 writes are attempt-local; no accepted STABLE-LOAD-001 raw, analysis, receipt, or C01 byte was modified."
+  - id: deterministic-generation-vs-content-completeness
+    status: FAIL
+    evidence:
+      - "The deterministic check establishes only byte-identical regeneration of the incomplete A01 output."
+      - "verify_content_completeness.py is independent of the renderer at import level, but its REQUIRED_HTML list omits frozen AC2 requirements including corrected V/I, source descriptors, control residual, endpoint Rhat/Vth/emax/eligibility/classification, and readiness p2p/threshold/READY values."
+  - id: frozen-ac2-data-model-and-dashboard-coverage
+    status: FAIL
+    evidence:
+      - "visualization-data.json trace entries contain only raw WL/BL/SE, JM1/JM2/JS1/JS2 phase, V(SL1), and I(L_SL) series. They contain no corrected V/I series, source-descriptor records, or control-residual records."
+      - "The renderer creates six waveform/token panes only. It has no source-descriptor or control-residual panel and does not render the required endpoint Rhat, Vth, emax, eligibility, or classification values."
+      - "Consequently A01 cannot satisfy AC2 even though receipt marks it SATISFIED; a content verifier that only finds token strings in a 31 MB Plotly document cannot repair this omission."
+  - id: visual-ac4
+    status: NOT_APPLICABLE
+    evidence:
+      - "The A01 checklist correctly leaves V1-V7 for Codex rendered inspection. Because frozen AC2 fails, this audit does not treat any mechanical check as visual acceptance."
+findings:
+  - "A01 preserves a useful self-contained raw waveform dashboard foundation, but it is not the complete frozen AC5 correction requested by VIZ-002."
+  - "The original source analysis lacks stored source descriptors; any A02 display-only derivation must state its frozen formula/provenance and must not modify accepted scientific authority or conclusions."
+accepted_claims:
+  - "Only A01 protocol-chain integrity, source immutability, and deterministic regeneration of its present incomplete report are established."
+rejected_claims:
+  - "A01 does not establish content completeness, visual acceptance, or satisfaction of frozen AC2/AC4."
+  - "No scientific conclusion is added, changed, or re-audited."
+required_rework:
+  - "Create attempts/A02 only; do not modify any A01 byte. Add corrected V(SL1)/I(L_SL) series, frozen source-descriptor and control-residual records/panels, and endpoint Rhat/Vth/emax/eligibility/classification presentation for all required selector states."
+  - "Replace the incomplete verifier with an independently implemented checker that reads frozen VIZ-002 requirements, visualization-data.json, and report.html without importing renderer; it must verify actual data-model fields and rendered panel/control coverage, not token presence alone."
+  - "After A02 mechanical delivery, leave AC4 for a separate fresh-context Codex actual rendered visual review; no renderer/checker PASS may mark it accepted."
+next_actions:
+  - "Send report-only rework request to the implementation executor. No JoSIM, scientific source write, protocol change, or new scientific case is authorized."
+claim_ceiling: "descriptive non-authoritative visualization completeness only; accepted raw, frozen specification, and accepted structured analysis remain the sole scientific authority, with no new scientific conclusion."

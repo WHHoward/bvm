@@ -1,0 +1,119 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-18T00:35:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  issuer_snapshot_sha256: "da46d92c6cf4f2ac04b60a2e7f0ebd435033cecdce4bba6052c0ba63e0bf44b8"
+  ack_sha256: "1ade86a9fe480d946e08a7d3ff2e3026864df2f928c7147e33a9cc46f28d5906"
+execution_status: COMPLETED
+baseline_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+result_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+changes:
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/render_stable_load_dashboard.py, action: CREATED, sha256: "a98cd0643289868a4c61caa7ac6f616bf22a869575aa490e5f1fe7041ec3129e"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/visualization-data.json, action: CREATED, sha256: "4e256a8506ef82efab33643cb024be2baae6baab998b0f02bf3da763fb57b53f"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/report.html, action: CREATED, sha256: "4ed36c560e8c295e59e8294ffb3acae4cd60d496d75c62104eb37f7dde88a3bd"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/verify_content_completeness.py, action: CREATED, sha256: "23f71f6a3523a41360762b1a7c5fc5fb1277b7b1a5cfc69eb63dfe6f4e0c0233"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/visual-acceptance.yaml, action: CREATED, sha256: "6958a8b3a20b8ff452850b7d3be25f7bc78e1c510f8242b45a410a2b4271471d"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/deterministic-check.log, action: CREATED, sha256: "41ff2ed6a5ae18e86c1d802cc53b120509fb39acba90a2e9029422f0dc380157"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/content-completeness.log, action: CREATED, sha256: "63534916460fd48ab3b0f65c9c9476f5818b41607e4ae4d96e8f78666feae6c2"}
+  - {path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/receipt-pending.yaml, action: CREATED, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f"}
+artifacts:
+  - {id: renderer, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/render_stable_load_dashboard.py, sha256: "a98cd0643289868a4c61caa7ac6f616bf22a869575aa490e5f1fe7041ec3129e", role: IMPLEMENTATION}
+  - {id: data-model, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/visualization-data.json, sha256: "4e256a8506ef82efab33643cb024be2baae6baab998b0f02bf3da763fb57b53f", role: DOCUMENTATION}
+  - {id: report-html, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/report.html, sha256: "4ed36c560e8c295e59e8294ffb3acae4cd60d496d75c62104eb37f7dde88a3bd", role: DOCUMENTATION}
+  - {id: content-verifier, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/verify_content_completeness.py, sha256: "23f71f6a3523a41360762b1a7c5fc5fb1277b7b1a5cfc69eb63dfe6f4e0c0233", role: IMPLEMENTATION}
+  - {id: visual-checklist, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/visual-acceptance.yaml, sha256: "6958a8b3a20b8ff452850b7d3be25f7bc78e1c510f8242b45a410a2b4271471d", role: DOCUMENTATION}
+  - {id: deterministic-log, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/deterministic-check.log, sha256: "41ff2ed6a5ae18e86c1d802cc53b120509fb39acba90a2e9029422f0dc380157", role: LOG}
+  - {id: completeness-log, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/content-completeness.log, sha256: "63534916460fd48ab3b0f65c9c9476f5818b41607e4ae4d96e8f78666feae6c2", role: LOG}
+  - {id: receipt-pending, path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/receipt-pending.yaml, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f", role: DOCUMENTATION}
+commands:
+  - command: "python3 render_stable_load_dashboard.py && python3 render_stable_load_dashboard.py --check"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/deterministic-check.log
+    log_sha256: "41ff2ed6a5ae18e86c1d802cc53b120509fb39acba90a2e9029422f0dc380157"
+  - command: "python3 verify_content_completeness.py (independent: prereg requirements + data + HTML; no renderer import)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/content-completeness.log
+    log_sha256: "63534916460fd48ab3b0f65c9c9476f5818b41607e4ae4d96e8f78666feae6c2"
+tests:
+  - id: deterministic-byte-consistency
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/deterministic-check.log
+    notes:
+      - "Regeneration byte-identical (DETERMINISTIC CONSISTENT)."
+  - id: independent-content-completeness
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/content-completeness.log
+    notes:
+      - "Independent verifier (no renderer import, no self-report): 16
+         traces, 30 required HTML items, plotly embedded, raw fidelity
+         13599 samples/run; PASS."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/report.html
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/visualization-data.json
+    notes:
+      - "Offline self-contained Plotly HTML with load/polarity selector
+         buttons, full unsmoothed/unresampled raw traces (13599 pts/run),
+         hover/zoom/pan/reset (plotly config), legend toggles."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/content-completeness.log
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/report.html
+    notes:
+      - "Panels render WL/BL/SE; JM1/JM2 raw phase with PRE [80,90) shading;
+         JS1/JS2; V(SL1) read/control; I(L_SL) read/control; endpoint
+         97/99/101/103/105 ps; disposition/ceiling/provenance; units ps/
+         mV/uA/raw rad."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/deterministic-check.log
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/content-completeness.log
+    notes:
+      - "Deterministic byte-identical regeneration + independent content
+         verifier over actual data/HTML (no renderer import)."
+  - id: AC4
+    status: NOT_EVALUATED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/visual-acceptance.yaml
+    notes:
+      - "Visual acceptance is Codex fresh-context rendered review only;
+         mechanical PASS recorded in visual-acceptance.yaml awaiting Codex
+         selector operation/legibility inspection."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/report.html
+    notes:
+      - "No accepted scientific source or conclusion changed; VIZ-001 and
+         STABLE-LOAD-001 history immutable; any rework uses a new
+         attempt-local path (append-only)."
+observations:
+  - "Dashboard renders all 16 runs (4 loads x 2 polarities x read/control)
+     from accepted STABLE-LOAD-001 raw; deterministic regeneration byte-
+     identical; independent content verifier PASS; no JoSIM; source
+     evidence untouched."
+  - "No visual final judgment made; visual-acceptance.yaml checklist awaits
+     fresh-context Codex rendered review."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "report.html ~31.7 MB (inlined plotly.js + 16 raw traces); visual
+     acceptance (AC4) requires Codex rendered inspection."
+deviations: []
+blockers: []

@@ -1,0 +1,57 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-18T00:30:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "a07fa7878d72f9228fa0e2fe3bc3320b2228271a382700496d7aeb990d7d3af9"
+  issuer_snapshot_sha256: "da46d92c6cf4f2ac04b60a2e7f0ebd435033cecdce4bba6052c0ba63e0bf44b8"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "3e95e4407cf8e0ed27959de4062147b549dcd0fb"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "Attestation snapshot_commit S=3e95e440 observed as HEAD (after the
+       coordination-layer issuance commit); STABLE-LOAD-001 closed
+       ACCEPTED; VIZ-001 preserved immutable."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Create an attempt-local offline self-contained interactive Plotly
+    dashboard that fully renders the frozen stable-load AC5 visualization
+    content: selectors (1/12/25/50 ohm, positive/negative), full
+    unsmoothed/unresampled raw traces, panels (WL/BL/SE; JM1/JM2 raw phase
+    with PRE [80,90) overlay/readiness; JS1/JS2; V(SL1) and I(L_SL)
+    read/control/corrected; endpoint 97-105 ps; source descriptors;
+    control residual; disposition/ceiling/provenance), hover/zoom/pan/
+    reset/legend toggles, correct units.  Deliver renderer, data model,
+    self-contained HTML, deterministic check, independent content
+    completeness verifier (no renderer import, no self-report), machine-
+    readable visual checklist, receipt; no JoSIM; no visual final
+    judgment.
+  non_goals:
+    - "Run JoSIM; add scientific cases; modify accepted raw/analysis/
+       metrics/disposition/receipt/verdict; workflow maintenance/BQ/
+       receiver/sweep/convergence/mechanism studies; decide visual
+       correctness (Codex only, fresh context)."
+  stop_conditions:
+    - "Any need for a non-enumerated write path, scientific experiment,
+       network/install/worktree/commit, deletion/overwrite, or protocol/
+       DSL expansion."
+planned_commands:
+  - "python3 render_stable_load_dashboard.py (read frozen analysis + raw; emit visualization-data.json + report.html)"
+  - "python3 render_stable_load_dashboard.py --check (deterministic byte consistency)"
+  - "python3 verify_content_completeness.py (independent: prereg requirements + data + HTML)"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-VIZ-002/attempts/A01/*
+blockers: []
+deviations: []

@@ -1,0 +1,121 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-SALVAGE-001
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T22:30:00+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S2
+depends_on: [JH-20260817-BVM-S2-TIMING-001]
+supersedes: {task_id: JH-20260817-BVM-S2-TIMING-001, revision: 1}
+task:
+  kind: REPRODUCTION
+  objective: "Read-only salvage and independently recompute the four TIMING-001 raw cases into a new immutable, append-only evidence chain without rerunning JoSIM."
+  research_question: "Under the frozen TIMING-001 S2 9-10 ps versus historical S1 10-11 ps rising-edge intervention at 12 ohm, 0.0125 ps, and no read, what do independently recomputed JM1/JM2 settling/readiness metrics and the preregistered disposition show?"
+  non_goals:
+    - "Do not modify any JH-20260817-BVM-S2-TIMING-001 path, rerun JoSIM, alter source raw/input/closure/log bytes, or change timing, load, timestep, window, threshold, probe, metric, or disposition rule."
+    - "Do not create a timing sweep, load characterization, read-time/back-action study, receiver/BQ/JTL experiment, convergence study, or mechanism experiment."
+    - "Do not update memory, project-todo, HANDOVER, project status, or any historical scientific record before a final Codex audit ACCEPTED; post-audit bookkeeping is a separate action."
+    - "Do not modify josim-handoff protocol, schema, or tooling."
+  claim_ceiling: "bounded fixed-closure, fixed-grid evidence for or against a reproducible registered S1-versus-S2 initialization rising-edge intervention observation on JM1/JM2 pre-read settling/readiness only; no detailed mechanism, convergence, load/back-action, receiver, SFQ, fluxoid, logic, interface, route, hardware, or universal claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/analysis-schema.json
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/audits/C01/verdict.yaml
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/manifest.yaml
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/closure-hashes.txt
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inputs/**
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/**/*.csv
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/**/stdout.txt
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/**/stderr.txt
+  hash_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-evidence-audit/SKILL.md
+    - .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/preregistration.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/design/analysis-schema.json
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/audits/C01/verdict.yaml
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/manifest.yaml
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/closure-hashes.txt
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/inputs/**
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/**/*.csv
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/**/stdout.txt
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/raw/**/stderr.txt
+  write_paths:
+    - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-BVM-S2-TIMING-001/**
+    - test/final/bvm/runs/bvm-s2-init-timing-20260817-01/**
+    - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/request.yaml
+    - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/request.sha256
+    - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/baseline/**
+    - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/audits/**
+    - memory/project-todo.md
+    - docs/HANDOVER.md
+  locks: [locks/bvm-s2-initialization-timing-salvage]
+baseline:
+  git_head: "6099b94aba900fc4373dd0f14c8b32d70cd25720"
+  dirty_policy: ALLOW_NONOVERLAP
+  issuer_snapshot_mode: EXTERNAL_ATTESTATION
+  git_status: {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/baseline/git-status.txt, sha256: "f67ae37ac862293288685befa197aa69ea443b6b2ef74d81732a8d1dfb64472f"}
+  scope_hashes: {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/baseline/scope-files.sha256, sha256: "41b496d0668b75b2a6c7514d297b185731b61520269f7a4dc573974e95588fde"}
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff, josim-experiment, josim-evidence-audit]
+  read_first: [AGENTS.md, docs/HANDOVER.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-experiment/references/run-protocol.md, .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**/source-provenance.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**/analysis.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D3, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**/report.md, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**/report-consistency.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D5, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**/inventory.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D6, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**/evidence-bundle.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D7, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "A01 reads, without writing, the four source CSVs, source inputs/closure/logs, and frozen preregistration; it independently recomputes SHA-256, byte size, provenance, all four JM1/JM2 p2p windows, readiness, A/B contrasts, and registered disposition from raw rather than old analysis.json.", evidence: [source-provenance.yaml, salvage_analyze.py, analysis.json]}
+  - {id: AC2, condition: "The sole scientific input is the unchanged registered S2 9-10 ps versus historical S1 10-11 ps rising-edge intervention at 12 ohm, 0.0125 ps, tstop 92 ps, and no read; no new run or changed scientific parameter exists.", evidence: [frozen preregistration, source-provenance.yaml, analysis.json]}
+  - {id: AC3, condition: "Every attempt places all derived code, structured result, report, consistency proof, inventory, pre-receipt bundle, and receipt beneath its own attempts/<attempt-id>/ path. No attempt may overwrite a file hash-bound by another attempt receipt.", evidence: [attempt-local layout, receipt changes, verify-task]}
+  - {id: AC4, condition: "The deterministic report renders the preregistered per-run JM1/JM2 windows, readiness, contrasts, disposition, provenance, and no-mechanism ceiling; report consistency is checked from successor-local structured result.", evidence: [analysis.json, report.md, report-consistency.json]}
+  - {id: AC5, condition: "The frozen expected evidence/run-artifact matrix and inventory cover declared evidence; the pre-receipt multi-entry bundle independently records safe path, SHA-256, and bytes for each declared entry and excludes final receipt.", evidence: [expected-matrix.yaml, inventory.yaml, evidence-bundle.yaml]}
+  - {id: AC6, condition: "No memory/todo/HANDOVER/status update occurs before final Codex audit ACCEPTED, and the final interpretation remains within the frozen claim ceiling.", evidence: [receipt, report.md]}
+invalid_conditions:
+  - "Any source TIMING-001 or source run-root byte modification; any JoSIM execution; missing/hash/bytes/provenance/CSV/Decimal/window failure; old analysis.json used as calculation authority; write outside successor attempts; overwrite of any prior attempt-local artifact; or pre-audit status-authority write."
+inconclusive_conditions:
+  - "Opposite polarity contrast signs or mixed evidence under the unchanged frozen disposition rule is valid INCONCLUSIVE evidence, not authority to alter the rule or expand the experiment."
+stop_conditions:
+  - "Any need to modify josim-handoff protocol/schema/tooling, TIMING-001/source-run bytes, frozen request, scientific parameters, project status files, or an existing attempt-local file; any need to run JoSIM, install, network, create worktree, commit, delete, overwrite, or add a new case."
+issuance_blockers: []

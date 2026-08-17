@@ -1,0 +1,215 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-001
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T18:05:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "757f2965f25a42d5e545b6ddde6ee7bf98dd3332ee588d9077d671fe1aef6aa3"
+  ack_sha256: "7d10ff16902bef44c1ecd3763397d05d07bbed94c994717828d46a0c9e9dac58"
+execution_status: COMPLETED
+baseline_git_head: "58909bc"
+result_git_head: "58909bc"
+changes:
+  - path: research/schemas/quantitative-analysis-spec.schema.json
+    action: CREATED
+    sha256: "d41682c642fa6f70de64b6e07e5f9cdcf3b1da7680e09ad6a0558cf3973be464"
+  - path: scripts/quantitative_analysis_verifier.py
+    action: CREATED
+    sha256: "16c6ecf274f61cf07eb1ca7e5c946dbae77e9b6057faba6f43d3df6917fd56ce"
+  - path: scripts/render_structured_report.py
+    action: CREATED
+    sha256: "ed5eb02a3a368497fe13999dd25837881eaa8f20153ae76f15db3d0f0c52934b"
+  - path: scripts/build_evidence_bundle.py
+    action: CREATED
+    sha256: "a7ce5d9e7957f11f8a066de3df8aaea2a95f667cb59eeef6063157916fb489f6"
+  - path: test/workflow/test_quantitative_analysis_verifier.py
+    action: CREATED
+    sha256: "ce554938f23c0b0353b1dbc5391756e2e4119b2b787680dc78d4536f282b14c3"
+  - path: test/workflow/test_evidence_bundle.py
+    action: CREATED
+    sha256: "b3d23910ecfbc6bffbf5617f31ce375b706f6baa6586647aac30e6562ddb9703"
+  - path: research/schemas/audit-verdict.schema.json
+    action: MODIFIED
+    sha256: "3fdb8a4171c43e20829db7cc67bd24868cc5727892b1458bfd03b1be32d58cd6"
+  - path: research/schemas/execution-receipt.schema.json
+    action: MODIFIED
+    sha256: "9379ff0e21907cfe8459cd6151ba103af9b7230b7b3f9ae32e571ed7acdd3954"
+  - path: research/schemas/task-request.schema.json
+    action: MODIFIED
+    sha256: "96f5faf90a9cac8abc9072549cb3d1df3e157dbf0b4500091584caf0e8770c0a"
+  - path: .agents/skills/josim-handoff/scripts/handoff.py
+    action: MODIFIED
+    sha256: "4ee9627d6d9b83d8cbf3452432b9974bad9e553ef7f65e5c20bc9d66379a37d0"
+  - path: .agents/skills/josim-handoff/scripts/test_handoff.py
+    action: MODIFIED
+    sha256: "a19e0d24811dd81a52c3a3b02eaf022cfee64a7999f6effcf0abb82173aa89c4"
+  - path: research/WORKFLOW.md
+    action: MODIFIED
+    sha256: "10693d297d4ee3d8f132281994b918754a99fb410c1c564f64e13cc4d25c8594"
+  - path: research/CLAUDE_EXECUTOR.md
+    action: MODIFIED
+    sha256: "25e00b9dcbeaf53c64c34640eb302105705fb8f112dbecac5318c0bcceae436e"
+  - path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/logs/test-suite.log
+    action: CREATED
+    sha256: "2e0ec35dbe13c0fd5be9bc626ac052fd365314787e1334216c19d423728efed3"
+artifacts:
+  - {id: D1, path: research/schemas/quantitative-analysis-spec.schema.json,
+     sha256: "d41682c642fa6f70de64b6e07e5f9cdcf3b1da7680e09ad6a0558cf3973be464",
+     role: IMPLEMENTATION}
+  - {id: D2, path: scripts/quantitative_analysis_verifier.py,
+     sha256: "16c6ecf274f61cf07eb1ca7e5c946dbae77e9b6057faba6f43d3df6917fd56ce",
+     role: IMPLEMENTATION}
+  - {id: D3, path: scripts/render_structured_report.py,
+     sha256: "ed5eb02a3a368497fe13999dd25837881eaa8f20153ae76f15db3d0f0c52934b",
+     role: IMPLEMENTATION}
+  - {id: D4, path: scripts/build_evidence_bundle.py,
+     sha256: "a7ce5d9e7957f11f8a066de3df8aaea2a95f667cb59eeef6063157916fb489f6",
+     role: IMPLEMENTATION}
+  - {id: D5, path: test/workflow/test_quantitative_analysis_verifier.py,
+     sha256: "ce554938f23c0b0353b1dbc5391756e2e4119b2b787680dc78d4536f282b14c3",
+     role: TEST}
+  - {id: D6, path: test/workflow/test_evidence_bundle.py,
+     sha256: "b3d23910ecfbc6bffbf5617f31ce375b706f6baa6586647aac30e6562ddb9703",
+     role: TEST}
+  - {id: test-log, path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/logs/test-suite.log,
+     sha256: "2e0ec35dbe13c0fd5be9bc626ac052fd365314787e1334216c19d423728efed3",
+     role: LOG}
+  - {id: handoff-py, path: .agents/skills/josim-handoff/scripts/handoff.py,
+     sha256: "4ee9627d6d9b83d8cbf3452432b9974bad9e553ef7f65e5c20bc9d66379a37d0",
+     role: IMPLEMENTATION}
+  - {id: handoff-tests, path: .agents/skills/josim-handoff/scripts/test_handoff.py,
+     sha256: "a19e0d24811dd81a52c3a3b02eaf022cfee64a7999f6effcf0abb82173aa89c4",
+     role: TEST}
+  - {id: audit-schema, path: research/schemas/audit-verdict.schema.json,
+     sha256: "3fdb8a4171c43e20829db7cc67bd24868cc5727892b1458bfd03b1be32d58cd6",
+     role: IMPLEMENTATION}
+  - {id: receipt-schema, path: research/schemas/execution-receipt.schema.json,
+     sha256: "9379ff0e21907cfe8459cd6151ba103af9b7230b7b3f9ae32e571ed7acdd3954",
+     role: IMPLEMENTATION}
+  - {id: request-schema, path: research/schemas/task-request.schema.json,
+     sha256: "96f5faf90a9cac8abc9072549cb3d1df3e157dbf0b4500091584caf0e8770c0a",
+     role: IMPLEMENTATION}
+  - {id: workflow-doc, path: research/WORKFLOW.md,
+     sha256: "10693d297d4ee3d8f132281994b918754a99fb410c1c564f64e13cc4d25c8594",
+     role: DOCUMENTATION}
+  - {id: executor-doc, path: research/CLAUDE_EXECUTOR.md,
+     sha256: "25e00b9dcbeaf53c64c34640eb302105705fb8f112dbecac5318c0bcceae436e",
+     role: DOCUMENTATION}
+commands:
+  - command: "python3 -m pytest .agents/skills/josim-handoff/scripts/test_handoff.py + test/workflow/ (env -u PYTHONPATH)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/logs/test-suite.log
+    log_sha256: "2e0ec35dbe13c0fd5be9bc626ac052fd365314787e1334216c19d423728efed3"
+tests:
+  - id: legacy-handoff
+    status: PASS
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/logs/test-suite.log]
+    notes:
+      - "test_handoff.py 9/9 (incl. 4 new v1 regressions); one pre-existing
+         stand-in fixture defect (missing baseline files) fixed."
+  - id: workflow-suite
+    status: PASS
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/logs/test-suite.log]
+    notes:
+      - "test/workflow 11/11 (verifier positive/negative fixtures, renderer
+         determinism/consistency, bundle valid/missing-role rejections)."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md]
+    notes:
+      - "WORKFLOW.md §23 and CLAUDE_EXECUTOR.md v1 section default new
+         CRITICAL/FROZEN L2 questions to one preregistered batch
+         (inputs/raw/logs/spec/analyzer/verifier/structured/report/
+         consistency/bundle/receipt); successor use limited to
+         authority/scope defects."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths: [research/schemas/quantitative-analysis-spec.schema.json,
+                     scripts/quantitative_analysis_verifier.py,
+                     test/workflow/test_quantitative_analysis_verifier.py]
+    notes:
+      - "Spec supports exact timestamp rule, windows, metric
+         formula/threshold/sign, actual-time integration, same-JJ phase-area
+         definition, affine endpoint rule; verifier reads raw+spec only,
+         never imports executor analyzer; compares independently recomputed
+         results to structured analysis."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths: [test/workflow/test_quantitative_analysis_verifier.py,
+                     research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/logs/test-suite.log]
+    notes:
+      - "Negative fixtures reject wrong Phi0, phase-area sign, threshold
+         mismatch, interpolation enabled, and S2-style affine interpolation;
+         minimal synthetic data; no historical evidence edited."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths: [scripts/render_structured_report.py,
+                     test/workflow/test_quantitative_analysis_verifier.py]
+    notes:
+      - "Renderer deterministic (byte-identical regeneration); --check
+         rejects a tampered headline; numbers rendered from structured JSON
+         only, no template-duplicated authority numbers."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths: [.agents/skills/josim-handoff/scripts/handoff.py,
+                     .agents/skills/josim-handoff/scripts/test_handoff.py]
+    notes:
+      - "Optional baseline.issuer_snapshot_commit mode validates that the
+         ACK-observed commit tree carries byte-identical request.yaml /
+         request.sha256 / scope-files.sha256 while scope hashes still match;
+         legacy requests without the field keep strict-HEAD behavior
+         (regression: legacy verifies; wrong snapshot rejected)."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths: [research/schemas/audit-verdict.schema.json,
+                     .agents/skills/josim-handoff/scripts/test_handoff.py]
+    notes:
+      - "contract claim_ceiling remains mandatory in audit-verdict schema
+         (fixture rejects missing); optional scientific_claim_ceiling added;
+         legacy audit validation preserved."
+  - id: AC7
+    status: SATISFIED
+    evidence_paths: [scripts/build_evidence_bundle.py,
+                     test/workflow/test_evidence_bundle.py,
+                     research/schemas/execution-receipt.schema.json]
+    notes:
+      - "evidence_bundle validates recursive manifest over all 12 required
+         roles (raw/inputs/logs/manifest/spec/analyzer/verifier/structured/
+         renderer/report/inventory/receipt); regressions reject missing raw,
+         log, script; receipt schema gains optional evidence_bundle field;
+         legacy receipts without it still verify."
+  - id: AC8
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/logs/test-suite.log]
+    notes:
+      - "Legacy handoff fixtures 9/9 + new workflow suites 11/11 pass; no
+         JoSIM command invoked; no frozen S0/S1/S2 path changed."
+observations:
+  - "One pre-existing legacy fixture defect repaired: StandinTests did not
+     create the baseline files its request referenced (git-status.txt /
+     scope-files.sha256), and _make_request wrote them relative to cwd."
+  - "All 20 tests pass (legacy 9 + workflow 11); no JoSIM; no S0/S1/S2
+     change."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations: []
+deviations: []
+blockers:
+  - "verify-task scope-hash check cannot pass: the request mandates modifying
+     read_paths files (audit-verdict.schema.json, execution-receipt.schema
+     .json, task-request.schema.json, handoff.py, test_handoff.py,
+     WORKFLOW.md, CLAUDE_EXECUTOR.md) via AC5/AC6/AC7, but baseline
+     scope-files.sha256 binds their PRE-modification hashes and handoff.py
+     scope verification has no write_paths exemption.  Per the request stop
+     rule ('record BLOCKED instead of changing baseline/history'), the
+     baseline snapshot must be re-issued by Codex with the post-modification
+     hashes (or an evidence-rebinding successor issued, per the S2-SEAL
+     precedent) before final verify-task can succeed."

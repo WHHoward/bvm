@@ -1,0 +1,154 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-002
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T18:25:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "32f52bf6ed266ffe71616645d2d2363a80e247136c86b21575d0f5f0dcf111ce"
+  ack_sha256: "468c1e1cc8977f9bb291993f4a653242b136ebd2e9ef8194814a768bc14f4b06"
+execution_status: COMPLETED
+baseline_git_head: "58909bc"
+result_git_head: "58909bc"
+changes:
+  - path: .agents/skills/josim-handoff/scripts/handoff.py
+    action: MODIFIED
+    sha256: "7e76175094230af5e44369b9e83823631ac73868b53619fa3efb6a2001a02ef7"
+  - path: .agents/skills/josim-handoff/scripts/test_handoff.py
+    action: MODIFIED
+    sha256: "22a6899bf5fe393b87304da9c7b9c2fc041aadf8e8cbec37a81d86abd8215741"
+  - path: research/schemas/task-request.schema.json
+    action: MODIFIED
+    sha256: "2b2c3b0059a8fb2af63bc0815939dd549bce8e874140755c9274b55ce5f07972"
+  - path: research/schemas/execution-receipt.schema.json
+    action: MODIFIED
+    sha256: "9379ff0e21907cfe8459cd6151ba103af9b7230b7b3f9ae32e571ed7acdd3954"
+  - path: research/schemas/audit-verdict.schema.json
+    action: MODIFIED
+    sha256: "3fdb8a4171c43e20829db7cc67bd24868cc5727892b1458bfd03b1be32d58cd6"
+  - path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/evidence-inventory.yaml
+    action: CREATED
+    sha256: "f8ca6a8184c03ca641aba317a2fbdd49118d771d81be1c6bab7d6fbac73e9ecf"
+  - path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/verify-maintenance-evidence.py
+    action: CREATED
+    sha256: "806ee483b01556137fb448d3a295f7488de021e8f77ca92a12607e7d7aec7835"
+  - path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/verification.log
+    action: CREATED
+    sha256: "50a5cb3c635d53d9a0a82c7bcda94ba24277ea2c930613829bf07ccdeb77cc9b"
+  - path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/test-suite.log
+    action: CREATED
+    sha256: "8ad103da0f87d3671fb8b6db2b66c001c4d832c2f28f395556434ed93a75ea7e"
+artifacts:
+  - {id: D-inventory, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/evidence-inventory.yaml,
+     sha256: "f8ca6a8184c03ca641aba317a2fbdd49118d771d81be1c6bab7d6fbac73e9ecf",
+     role: DOCUMENTATION}
+  - {id: D-verifier, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/verify-maintenance-evidence.py,
+     sha256: "806ee483b01556137fb448d3a295f7488de021e8f77ca92a12607e7d7aec7835",
+     role: IMPLEMENTATION}
+  - {id: verify-log, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/verification.log,
+     sha256: "50a5cb3c635d53d9a0a82c7bcda94ba24277ea2c930613829bf07ccdeb77cc9b",
+     role: LOG}
+  - {id: test-log, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/test-suite.log,
+     sha256: "8ad103da0f87d3671fb8b6db2b66c001c4d832c2f28f395556434ed93a75ea7e",
+     role: LOG}
+  - {id: handoff-py, path: .agents/skills/josim-handoff/scripts/handoff.py,
+     sha256: "7e76175094230af5e44369b9e83823631ac73868b53619fa3efb6a2001a02ef7",
+     role: IMPLEMENTATION}
+  - {id: handoff-tests, path: .agents/skills/josim-handoff/scripts/test_handoff.py,
+     sha256: "22a6899bf5fe393b87304da9c7b9c2fc041aadf8e8cbec37a81d86abd8215741",
+     role: TEST}
+  - {id: request-schema, path: research/schemas/task-request.schema.json,
+     sha256: "2b2c3b0059a8fb2af63bc0815939dd549bce8e874140755c9274b55ce5f07972",
+     role: IMPLEMENTATION}
+  - {id: receipt-schema, path: research/schemas/execution-receipt.schema.json,
+     sha256: "9379ff0e21907cfe8459cd6151ba103af9b7230b7b3f9ae32e571ed7acdd3954",
+     role: IMPLEMENTATION}
+  - {id: audit-schema, path: research/schemas/audit-verdict.schema.json,
+     sha256: "3fdb8a4171c43e20829db7cc67bd24868cc5727892b1458bfd03b1be32d58cd6",
+     role: IMPLEMENTATION}
+commands:
+  - command: "python3 verify-maintenance-evidence.py + full pytest suites"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/verification.log
+    log_sha256: "50a5cb3c635d53d9a0a82c7bcda94ba24277ea2c930613829bf07ccdeb77cc9b"
+tests:
+  - id: legacy-and-workflow
+    status: PASS
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/test-suite.log]
+    notes:
+      - "test_handoff.py 9/9 (incl. v1 regressions); test/workflow 11/11;
+         repeated runs leave no .handoff-standin-* dirs (0 remaining)."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [.agents/skills/josim-handoff/scripts/handoff.py,
+                     research/schemas/task-request.schema.json,
+                     .agents/skills/josim-handoff/scripts/test_handoff.py]
+    notes:
+      - "Optional scope.hash_paths added: when present, the scope manifest
+         must cover exactly those paths (writable implementation paths are
+         not required to retain pre-execution hashes); when absent, legacy
+         read_paths hashing is unchanged."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths: [.agents/skills/josim-handoff/scripts/handoff.py,
+                     .agents/skills/josim-handoff/scripts/test_handoff.py]
+    notes:
+      - "issuer_snapshot_commit mode now requires ACK observed_git_head ==
+         declared snapshot and verifies the snapshot tree carries
+         byte-identical request/signature/scope-manifest; legacy strict-HEAD
+         unchanged (regressions pass)."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths: [.agents/skills/josim-handoff/scripts/handoff.py,
+                     research/schemas/execution-receipt.schema.json,
+                     research/schemas/audit-verdict.schema.json]
+    notes:
+      - "evidence_bundle in a receipt is mechanically validated as a hashed
+         artifact and its recursive inventory is checked for the declared
+         required roles; scientific_claim_ceiling is schema-valid only
+         alongside the exact mandatory contract claim_ceiling (auditor-
+         bounded, not inferred)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/evidence-inventory.yaml,
+                     research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/verification.log]
+    notes:
+      - "001 package recursively rehashed (13 entries: 10 implementation
+         package + 3 protocol) with original paths and hashes; 001 recorded
+         as HISTORICAL_PROTOCOL_SCOPE_DEFECT; no 001 file modified."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths: [.agents/skills/josim-handoff/scripts/test_handoff.py,
+                     research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/test-suite.log]
+    notes:
+      - "Test cleanup fixed (_make_request now writes baseline files under
+         REPO_ROOT); the 15 pre-enumerated .handoff-standin-* temp dirs
+         deleted (0 remaining); repeated test runs leave no new temp dirs."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/logs/verification.log]
+    notes:
+      - "All hashes match the new inventory; no frozen scientific path
+         differs; original 001 request/ack/receipt byte-identical (sealed in
+         the inventory); verify-task for 002 succeeds."
+observations:
+  - "AC1 repairs the 001 scope-defect: with scope.hash_paths declared by the
+     issuer, writable implementation files are no longer required to retain
+     pre-execution hashes."
+observations:
+  - "A02 (codex-20260817-181706, whitespace-only hygiene): handoff.py:578
+     trailing whitespace and test_handoff.py final blank line fixed; git
+     diff --check clean; 20/20 tests re-passed; no semantic change.
+     A02 ACK at attempts/A02/ack.yaml; A02 logs at attempts/A02/logs/."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations: []
+deviations: []
+blockers: []

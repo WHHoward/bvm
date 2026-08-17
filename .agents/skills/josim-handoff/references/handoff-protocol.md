@@ -89,6 +89,8 @@ ACK 的 `created_at` 不得早于 request 的 `issued_at`；receipt 不得早于
 
 receipt 逐项列出实际执行产物的改变路径及角色、执行命令/退出码/日志、产物哈希、测试结果、偏离和 blocker。ACK 由 `ack_sha256` 单独绑定，receipt 自身不能自哈希，因此二者不列入 `changes[]`；除这两个协议封装文件外，任务产生的实现、测试、日志和数据不得遗漏。观察与解释分栏；物理 verdict 只能是 proposal。未运行的测试写 `NOT_RUN` 及原因，不能省略。
 
+**多 attempt 聚合（v1，2026-08-17，MAINT-003）**：多 attempt 任务的每个 attempt 保留不可变 canonical receipt（`attempts/<id>/receipt.yaml`；其他命名如 `receipt-a02-record.yaml` 不是 canonical）。`verify-task` 对 deliverable 覆盖与 acceptance-ID 覆盖做 **task-wide union** 校验：必需 deliverable 由所有 canonical receipt 的 artifact 并集表示，RECEIPT 角色 deliverable（通常为 `attempts/**/receipt.yaml` glob）由任一 canonical receipt 路径匹配即满足；request acceptance ID 由所有 receipt 的 `acceptance_results` 并集覆盖。每个 receipt 自身的哈希链、scope、artifact 与 duplicate/unknown-ID 校验逐 receipt 保留；单 attempt 时并集等于该 receipt，行为与旧版一致。历史上的单路径 RECEIPT deliverable（如 `attempts/A01/receipt.yaml`）在多 attempt 下不可满足，属 `HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT`，签发时应改用 glob。
+
 ## 8. 审计规则
 
 Codex 先做机械验证，再在不读取执行者解释的前提下复核实现和 raw 证据。物理任务按 `josim-evidence-audit` 检查同一 JJ、端点、方向、窗口、对照、负载和收敛。

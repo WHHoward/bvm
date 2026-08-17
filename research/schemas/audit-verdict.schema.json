@@ -30,38 +30,114 @@
     "claim_ceiling"
   ],
   "properties": {
-    "protocol": { "const": "josim-handoff/v1" },
-    "document_type": { "const": "audit_verdict" },
-    "schema_version": { "const": 1 },
-    "task_id": { "$ref": "#/$defs/task_id" },
-    "revision": { "type": "integer", "minimum": 1 },
-    "attempt_id": { "$ref": "#/$defs/attempt_id" },
-    "audit_id": { "type": "string", "pattern": "^[A-Z][0-9]{2,}$" },
-    "workflow_state": { "enum": ["AUDITED", "CLOSED"] },
-    "created_at": { "type": "string", "format": "date-time" },
-    "auditor": { "$ref": "#/$defs/actor" },
+    "protocol": {
+      "const": "josim-handoff/v1"
+    },
+    "document_type": {
+      "const": "audit_verdict"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "task_id": {
+      "$ref": "#/$defs/task_id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "attempt_id": {
+      "$ref": "#/$defs/attempt_id"
+    },
+    "audit_id": {
+      "type": "string",
+      "pattern": "^[A-Z][0-9]{2,}$"
+    },
+    "workflow_state": {
+      "enum": [
+        "AUDITED",
+        "CLOSED"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "auditor": {
+      "$ref": "#/$defs/actor"
+    },
     "bindings": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["request_sha256", "ack_sha256", "receipt_sha256"],
+      "required": [
+        "request_sha256",
+        "ack_sha256",
+        "receipt_sha256"
+      ],
       "properties": {
-        "request_sha256": { "$ref": "#/$defs/sha256" },
-        "ack_sha256": { "$ref": "#/$defs/sha256" },
-        "receipt_sha256": { "$ref": "#/$defs/sha256" }
+        "request_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "ack_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
-    "scope_status": { "enum": ["PASS", "FAIL", "INCONCLUSIVE"] },
-    "artifact_status": { "enum": ["VALID", "INVALID", "NOT_AUDITED"] },
-    "physical_verdict": { "enum": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_APPLICABLE"] },
-    "audit_disposition": { "enum": ["ACCEPTED", "REWORK_REQUIRED", "REJECTED"] },
+    "scope_status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "INCONCLUSIVE"
+      ]
+    },
+    "artifact_status": {
+      "enum": [
+        "VALID",
+        "INVALID",
+        "NOT_AUDITED"
+      ]
+    },
+    "physical_verdict": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "INCONCLUSIVE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "audit_disposition": {
+      "enum": [
+        "ACCEPTED",
+        "REWORK_REQUIRED",
+        "REJECTED"
+      ]
+    },
     "independence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["mode", "codex_modified_execution_artifacts", "reviewer"],
+      "required": [
+        "mode",
+        "codex_modified_execution_artifacts",
+        "reviewer"
+      ],
       "properties": {
-        "mode": { "enum": ["INDEPENDENT", "CO_EXECUTOR", "THIRD_PARTY_REVIEW"] },
-        "codex_modified_execution_artifacts": { "type": "boolean" },
-        "reviewer": { "type": "string", "minLength": 1 }
+        "mode": {
+          "enum": [
+            "INDEPENDENT",
+            "CO_EXECUTOR",
+            "THIRD_PARTY_REVIEW"
+          ]
+        },
+        "codex_modified_execution_artifacts": {
+          "type": "boolean"
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "checks": {
@@ -70,13 +146,30 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "status", "evidence"],
+        "required": [
+          "id",
+          "status",
+          "evidence"
+        ],
         "properties": {
-          "id": { "type": "string", "minLength": 1 },
-          "status": { "enum": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_APPLICABLE"] },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "INCONCLUSIVE",
+              "NOT_APPLICABLE"
+            ]
+          },
           "evidence": {
             "type": "array",
-            "items": { "type": "string", "minLength": 1 },
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
             "minItems": 1
           }
         }
@@ -84,45 +177,81 @@
     },
     "findings": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "accepted_claims": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "rejected_claims": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "required_rework": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "next_actions": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
-    "claim_ceiling": { "type": "string", "minLength": 1 }
+    "claim_ceiling": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scientific_claim_ceiling": {
+      "type": "string",
+      "description": "optional narrower science-specific audit ceiling; must not exceed the mandatory contract claim_ceiling"
+    }
   },
   "allOf": [
     {
       "if": {
         "properties": {
           "independence": {
-            "properties": { "mode": { "const": "INDEPENDENT" } },
-            "required": ["mode"]
+            "properties": {
+              "mode": {
+                "const": "INDEPENDENT"
+              }
+            },
+            "required": [
+              "mode"
+            ]
           }
         },
-        "required": ["independence"]
+        "required": [
+          "independence"
+        ]
       },
       "then": {
         "properties": {
           "auditor": {
-            "properties": { "role": { "const": "CODEX" } }
+            "properties": {
+              "role": {
+                "const": "CODEX"
+              }
+            }
           },
           "independence": {
             "properties": {
-              "codex_modified_execution_artifacts": { "const": false }
+              "codex_modified_execution_artifacts": {
+                "const": false
+              }
             }
           }
         }
@@ -132,22 +261,40 @@
       "if": {
         "properties": {
           "independence": {
-            "properties": { "mode": { "const": "CO_EXECUTOR" } },
-            "required": ["mode"]
+            "properties": {
+              "mode": {
+                "const": "CO_EXECUTOR"
+              }
+            },
+            "required": [
+              "mode"
+            ]
           }
         },
-        "required": ["independence"]
+        "required": [
+          "independence"
+        ]
       },
       "then": {
         "properties": {
           "auditor": {
-            "properties": { "role": { "const": "CODEX" } }
+            "properties": {
+              "role": {
+                "const": "CODEX"
+              }
+            }
           },
-          "workflow_state": { "const": "AUDITED" },
-          "audit_disposition": { "const": "REWORK_REQUIRED" },
+          "workflow_state": {
+            "const": "AUDITED"
+          },
+          "audit_disposition": {
+            "const": "REWORK_REQUIRED"
+          },
           "independence": {
             "properties": {
-              "codex_modified_execution_artifacts": { "const": true }
+              "codex_modified_execution_artifacts": {
+                "const": true
+              }
             }
           }
         }
@@ -157,79 +304,156 @@
       "if": {
         "properties": {
           "independence": {
-            "properties": { "mode": { "const": "THIRD_PARTY_REVIEW" } },
-            "required": ["mode"]
+            "properties": {
+              "mode": {
+                "const": "THIRD_PARTY_REVIEW"
+              }
+            },
+            "required": [
+              "mode"
+            ]
           }
         },
-        "required": ["independence"]
+        "required": [
+          "independence"
+        ]
       },
       "then": {
         "properties": {
           "auditor": {
-            "properties": { "role": { "const": "THIRD_PARTY" } }
+            "properties": {
+              "role": {
+                "const": "THIRD_PARTY"
+              }
+            }
           }
         }
       }
     },
     {
       "if": {
-        "properties": { "audit_disposition": { "const": "ACCEPTED" } },
-        "required": ["audit_disposition"]
-      },
-      "then": {
-        "properties": { "required_rework": { "maxItems": 0 } }
-      }
-    },
-    {
-      "if": {
-        "properties": { "audit_disposition": { "const": "REWORK_REQUIRED" } },
-        "required": ["audit_disposition"]
-      },
-      "then": {
-        "properties": { "required_rework": { "minItems": 1 } }
-      }
-    },
-    {
-      "if": {
-        "properties": { "artifact_status": { "const": "INVALID" } },
-        "required": ["artifact_status"]
-      },
-      "then": {
         "properties": {
-          "physical_verdict": { "const": "NOT_APPLICABLE" },
-          "audit_disposition": { "enum": ["REWORK_REQUIRED", "REJECTED"] }
-        }
-      }
-    },
-    {
-      "if": {
-        "properties": {
-          "scope_status": { "enum": ["FAIL", "INCONCLUSIVE"] }
+          "audit_disposition": {
+            "const": "ACCEPTED"
+          }
         },
-        "required": ["scope_status"]
+        "required": [
+          "audit_disposition"
+        ]
       },
       "then": {
         "properties": {
-          "audit_disposition": { "enum": ["REWORK_REQUIRED", "REJECTED"] }
+          "required_rework": {
+            "maxItems": 0
+          }
         }
       }
     },
     {
       "if": {
-        "properties": { "artifact_status": { "const": "NOT_AUDITED" } },
-        "required": ["artifact_status"]
+        "properties": {
+          "audit_disposition": {
+            "const": "REWORK_REQUIRED"
+          }
+        },
+        "required": [
+          "audit_disposition"
+        ]
       },
       "then": {
-        "properties": { "physical_verdict": { "const": "NOT_APPLICABLE" } }
+        "properties": {
+          "required_rework": {
+            "minItems": 1
+          }
+        }
       }
     },
     {
       "if": {
-        "properties": { "workflow_state": { "const": "CLOSED" } },
-        "required": ["workflow_state"]
+        "properties": {
+          "artifact_status": {
+            "const": "INVALID"
+          }
+        },
+        "required": [
+          "artifact_status"
+        ]
       },
       "then": {
-        "properties": { "audit_disposition": { "const": "ACCEPTED" } }
+        "properties": {
+          "physical_verdict": {
+            "const": "NOT_APPLICABLE"
+          },
+          "audit_disposition": {
+            "enum": [
+              "REWORK_REQUIRED",
+              "REJECTED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "scope_status": {
+            "enum": [
+              "FAIL",
+              "INCONCLUSIVE"
+            ]
+          }
+        },
+        "required": [
+          "scope_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "audit_disposition": {
+            "enum": [
+              "REWORK_REQUIRED",
+              "REJECTED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "artifact_status": {
+            "const": "NOT_AUDITED"
+          }
+        },
+        "required": [
+          "artifact_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "physical_verdict": {
+            "const": "NOT_APPLICABLE"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "workflow_state": {
+            "const": "CLOSED"
+          }
+        },
+        "required": [
+          "workflow_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "audit_disposition": {
+            "const": "ACCEPTED"
+          }
+        }
       }
     }
   ],
@@ -238,15 +462,32 @@
       "type": "string",
       "pattern": "^JH-[0-9]{8}-[A-Z0-9][A-Z0-9-]*-[0-9]{3}$"
     },
-    "attempt_id": { "type": "string", "pattern": "^A[0-9]{2,}$" },
-    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^A[0-9]{2,}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "actor": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["role", "id"],
+      "required": [
+        "role",
+        "id"
+      ],
       "properties": {
-        "role": { "enum": ["CODEX", "THIRD_PARTY"] },
-        "id": { "type": "string", "minLength": 1 }
+        "role": {
+          "enum": [
+            "CODEX",
+            "THIRD_PARTY"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }

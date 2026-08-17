@@ -1,0 +1,110 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-003
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T18:54:13+08:00"
+issuer: {role: CODEX, id: codex}
+parent_todo_id: WORKFLOW_MAINTENANCE
+depends_on: []
+supersedes: {task_id: JH-20260817-WORKFLOW-MAINT-002, revision: 1}
+task:
+  kind: IMPLEMENTATION
+  objective: "Repair the v1 multi-attempt receipt aggregation defect, then produce one task-wide, independently checkable maintenance package without changing any historical 001/002 record or scientific evidence."
+  research_question: "Can v1 aggregate required deliverables and acceptance coverage across immutable per-attempt receipts while preserving per-receipt integrity checks and backward-compatible single-attempt behaviour?"
+  non_goals:
+    - "Run JoSIM, change any S0/S1/S2 raw, historical protocol record, disposition, or E01."
+    - "Edit JH-20260817-WORKFLOW-MAINT-001 or -002, including their requests, ACKs, receipts, reviews, logs, or evidence inventories."
+    - "Alter scientific formulas, thresholds, METRIC_SPEC_V2, or protocol major version."
+    - "Create a further successor except for a newly discovered authority/scope defect."
+  claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific or historical-disposition claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.sha256
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/request.sha256
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/evidence-inventory.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/REVIEW.md
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt-a02-record.yaml
+  hash_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.sha256
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/request.sha256
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/evidence-inventory.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/REVIEW.md
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt-a02-record.yaml
+  write_paths:
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/**
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/**
+    - test/final/bvm/runs/bvm-s2-load-20260817-01/**
+  locks: [locks/handoff-v1-maintenance]
+baseline:
+  git_head: "58909bc"
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/baseline/git-status.txt, sha256: "200cb972c46dca668bb9aaef59d0b3d68ab8d8278fad6ecae2880e5cf55bf90c"}
+  scope_hashes: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/baseline/scope-files.sha256, sha256: "df9f29c9316f4cd4e6332be1b330d6e2a640cd61de05dc4b6fe57dc5668fb4f5"}
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: false
+contracts:
+  required_skills: [josim-handoff, skill-creator]
+  read_first: [AGENTS.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/references/handoff-protocol.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: .agents/skills/josim-handoff/scripts/handoff.py, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: .agents/skills/josim-handoff/scripts/test_handoff.py, role: TEST, required: true}
+  - {id: D3, path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/evidence-inventory.yaml, role: DOCUMENTATION, required: true}
+  - {id: D4, path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "verify-task validates required deliverables and request acceptance-ID coverage task-wide across the union of canonical receipts, while preserving duplicate/unknown-ID failures and every individual receipt's hash/scope/artifact validation.", evidence: [handoff.py, test_handoff.py]}
+  - {id: AC2, condition: "A two-attempt regression with separate canonical A01/A02 receipts and a receipt glob succeeds when their union covers the required delivery/acceptance set; it fails when the union misses a requested deliverable or acceptance ID.", evidence: [test_handoff.py]}
+  - {id: AC3, condition: "Single-attempt legacy fixtures remain valid under their original rules; no scientific-path or 001/002 historical record changes.", evidence: [test_handoff.py, evidence-inventory.yaml]}
+  - {id: AC4, condition: "The final 003 inventory hash-binds the exact 001/002 historical records used as lineage, identifies 002's A01/A02 receipt conflict as HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT, and distinguishes it from 003's new implementation/output records.", evidence: [evidence-inventory.yaml, verification-log]}
+  - {id: AC5, condition: "Legacy plus maintenance regression suites pass with no JoSIM; verify-task for 003 succeeds without altering 001/002.", evidence: [test-log, verification-log, receipt.yaml]}
+invalid_conditions:
+  - "Any historical or scientific evidence path changes, any per-receipt integrity check is weakened, any legacy fixture fails, or verifier semantics are silently relaxed instead of task-wide aggregated."
+inconclusive_conditions: []
+stop_conditions:
+  - "Any requirement needs JoSIM, science evidence modification, protocol v2, deletion/overwrite, a non-enumerated write path, or another contract beyond this genuine multi-attempt aggregation defect."
+issuance_blockers: []

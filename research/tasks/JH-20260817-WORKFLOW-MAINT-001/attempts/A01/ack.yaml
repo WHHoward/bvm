@@ -1,0 +1,62 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T17:45:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "757f2965f25a42d5e545b6ddde6ee7bf98dd3332ee588d9077d671fe1aef6aa3"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "58909bc"
+  dirty_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/** (issuer-created untracked
+      task packet; the sole bootstrap preflight non-overlap exception per the
+      mailbox authority codex-20260817-173712)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Implement the smallest backward-compatible v1 workflow-maintenance
+    package: docs defaults (AC1); quantitative-analysis-spec.schema.json +
+    independent verifier reading raw+spec only (AC2); negative regression
+    fixtures (AC3); deterministic structured renderer + consistency check
+    (AC4); optional issuer-snapshot mode preserving legacy strict-HEAD (AC5);
+    mandatory claim_ceiling + optional scientific_claim_ceiling in audit
+    schema (AC6); optional evidence_bundle recursive manifest (AC7); all
+    legacy + new regression suites pass, no JoSIM, no S0/S1/S2 change (AC8).
+    One complete package; one receipt; one Copilot REVIEW_REQUEST; no
+    successor splitting.
+  non_goals:
+    - "No JoSIM run; no S0/S1/S2 sealed/historical evidence or E01 change; no
+       protocol major version; no general DSL."
+  stop_conditions:
+    - "Any change outside scope.write_paths; a required regression cannot
+       pass without relaxing acceptance conditions; bootstrap packet cannot
+       be isolated from write scope."
+planned_commands:
+  - "Implement schemas + tools + handoff.py v1 fields; run test_handoff.py +
+     new regression suites; write docs; receipt; verify-task"
+expected_changed_paths:
+  - research/schemas/quantitative-analysis-spec.schema.json
+  - research/schemas/audit-verdict.schema.json
+  - research/schemas/execution-receipt.schema.json
+  - research/schemas/task-request.schema.json
+  - scripts/quantitative_analysis_verifier.py
+  - scripts/render_structured_report.py
+  - scripts/build_evidence_bundle.py
+  - test/workflow/test_quantitative_analysis_verifier.py
+  - test/workflow/test_evidence_bundle.py
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/**
+  - AGENTS.md
+  - research/WORKFLOW.md
+  - research/CLAUDE_EXECUTOR.md
+  - .agents/skills/josim-handoff/scripts/handoff.py
+  - .agents/skills/josim-handoff/scripts/test_handoff.py
+blockers: []
+deviations: []

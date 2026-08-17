@@ -322,6 +322,8 @@ receipt 记录**实际发生了什么**，而不是计划发生什么。至少�
 - Claude 的 `observations`、`interpretations`、`unknowns` 和**提议的**物理判定；
 - 尚未解决的风险，记录在 `limitations`、`deviations` 或 `blockers`。
 
+**多 attempt 聚合（2026-08-17，MAINT-003）**：同一 task 的多个 attempt 各自保留不可变 canonical receipt（`attempts/<id>/receipt.yaml`）。`verify-task` 对必需 deliverable 覆盖和 request acceptance-ID 覆盖做 **task-wide union** 校验：各 receipt 可分别承载各自交付的子集，只要所有 canonical receipt 的并集覆盖全部必需 deliverable 与全部 acceptance ID 即通过；每个 receipt 自身的哈希链、scope 和 artifact 校验保持不变，duplicate/unknown ID 仍逐 receipt 报错。RECEIPT 角色 deliverable 通常写成 glob（如 `attempts/**/receipt.yaml`），任一 canonical receipt 匹配即满足并集。单 attempt 任务与旧行为完全一致（并集 = 该 receipt）。002 的 A01/A02 单路径 D3 冲突（`attempts/A01/receipt.yaml` 无法由 A02 receipt 满足）为历史协议缺陷，不再重复；新 request 应使用 glob。
+
 Claude 可以提议 `PASS/FAIL/INCONCLUSIVE`，但不能给出最终审计裁决，也不能更新 todo/HANDOVER 证明自己已完成。
 
 ### 8.6 Codex：按固定顺序独立审计
@@ -469,3 +471,20 @@ Codex 恢复后按固定顺序审查：先读 `standin/<Sxx>/record.yaml` 与受
 - stand-in 签发后的任务仍走标准 `ISSUED → ACK → RECEIPT → AUDIT` 生命周期；ACK/receipt 的作者仍是执行者，审计仍由 Codex/THIRD_PARTY 出具。
 - 若 Codex 在不可用期间恢复并发现 stand-in 改动有误，可按 §9 处置（新 attempt、`supersede` 或拒绝），不改写旧 record。
 - 本机制的协议文件（record/review）不属于四维结果，不改变 §6 的四个维度语义。
+
+## §23 v1 workflow-maintenance defaults (2026-08-17)
+
+New CRITICAL/FROZEN L2 scientific questions default to ONE preregistered
+batch containing: inputs, raw, logs, task-owned frozen analysis-spec
+(`research/schemas/quantitative-analysis-spec.schema.json`), analyzer,
+independent verifier (`scripts/quantitative_analysis_verifier.py`),
+structured analysis, deterministic report
+(`scripts/render_structured_report.py`), report-consistency result,
+recursive evidence bundle (`scripts/build_evidence_bundle.py`), and
+receipt.  Successor use is limited to authority/scope defects; ordinary
+seal/report/hash work is not split into successors.  Optional v1 fields:
+`baseline.issuer_snapshot_commit` (ACK-observed commit tree must carry
+byte-identical request/signature/scope bindings) and
+`scientific_claim_ceiling` (narrower science-specific audit ceiling,
+never broader than the mandatory contract `claim_ceiling`).  Legacy
+requests without v1 fields keep the strict-HEAD behavior unchanged.

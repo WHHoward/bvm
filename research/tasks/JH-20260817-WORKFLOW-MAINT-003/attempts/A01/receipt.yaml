@@ -1,0 +1,161 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-003
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T19:05:26+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "4426b221bfddb6e4ce1e160166f781da5157e468458859973c769409732b2430"
+  ack_sha256: "5f8612842e732c1a7f49a981b26967c1c44b82a98de580d0192dc3494a6a19b7"
+execution_status: COMPLETED
+baseline_git_head: "58909bc"
+result_git_head: "58909bc"
+changes:
+  - {path: .agents/skills/josim-handoff/scripts/handoff.py, action: MODIFIED,
+     sha256: "37de3b2f52f922f4c7577fee3a8e00e7ef348b6e1b0ffdea5a107eba31e6abaf"}
+  - {path: .agents/skills/josim-handoff/scripts/test_handoff.py, action: MODIFIED,
+     sha256: "9c0b6bbc065f5776d5dc765e0d67ebf716268362ee5e55f2e1f1fb75abb3ee50"}
+  - {path: .agents/skills/josim-handoff/references/handoff-protocol.md, action: MODIFIED,
+     sha256: "e0e0049c03e647b0b51625e253b9c5d95cde3d246083eebdaa69657d02e65c83"}
+  - {path: .agents/skills/josim-handoff/assets/execution-receipt.yaml, action: MODIFIED,
+     sha256: "3296cd9bb9a09f263024e45317d08257a5015dfea7f6709616bf955be6dadea9"}
+  - {path: research/WORKFLOW.md, action: MODIFIED,
+     sha256: "682831cd2857b3f7bfb8211a03fae40016893649ee881ef819759e0b05e148a6"}
+  - {path: research/CLAUDE_EXECUTOR.md, action: MODIFIED,
+     sha256: "55d36af06a826155c041b0dc91c93bc4a3aab647f6f3b8c751b659eea647e206"}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/evidence-inventory.yaml,
+     action: CREATED,
+     sha256: "7aa048fee883a13d7cdc88b1ffe6fa0c6e9dbb014942db2bdf2a58292d715332"}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log,
+     action: CREATED,
+     sha256: "4e8a2af3af75b3a238b75ab270e44bd7fe72a97bb65fa2b6dd8e1406712d6b51"}
+artifacts:
+  - {id: handoff-py, path: .agents/skills/josim-handoff/scripts/handoff.py,
+     sha256: "37de3b2f52f922f4c7577fee3a8e00e7ef348b6e1b0ffdea5a107eba31e6abaf",
+     role: IMPLEMENTATION}
+  - {id: handoff-tests, path: .agents/skills/josim-handoff/scripts/test_handoff.py,
+     sha256: "9c0b6bbc065f5776d5dc765e0d67ebf716268362ee5e55f2e1f1fb75abb3ee50",
+     role: TEST}
+  - {id: protocol-doc, path: .agents/skills/josim-handoff/references/handoff-protocol.md,
+     sha256: "e0e0049c03e647b0b51625e253b9c5d95cde3d246083eebdaa69657d02e65c83",
+     role: DOCUMENTATION}
+  - {id: receipt-template, path: .agents/skills/josim-handoff/assets/execution-receipt.yaml,
+     sha256: "3296cd9bb9a09f263024e45317d08257a5015dfea7f6709616bf955be6dadea9",
+     role: DOCUMENTATION}
+  - {id: workflow-doc, path: research/WORKFLOW.md,
+     sha256: "682831cd2857b3f7bfb8211a03fae40016893649ee881ef819759e0b05e148a6",
+     role: DOCUMENTATION}
+  - {id: executor-doc, path: research/CLAUDE_EXECUTOR.md,
+     sha256: "55d36af06a826155c041b0dc91c93bc4a3aab647f6f3b8c751b659eea647e206",
+     role: DOCUMENTATION}
+  - {id: evidence-inventory, path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/evidence-inventory.yaml,
+     sha256: "7aa048fee883a13d7cdc88b1ffe6fa0c6e9dbb014942db2bdf2a58292d715332",
+     role: DOCUMENTATION}
+  - {id: test-suite-log, path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log,
+     sha256: "4e8a2af3af75b3a238b75ab270e44bd7fe72a97bb65fa2b6dd8e1406712d6b51",
+     role: LOG}
+commands:
+  - command: "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest .agents/skills/josim-handoff/scripts/test_handoff.py -v"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log
+    log_sha256: "4e8a2af3af75b3a238b75ab270e44bd7fe72a97bb65fa2b6dd8e1406712d6b51"
+  - command: "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-WORKFLOW-MAINT-003"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log
+    log_sha256: "4e8a2af3af75b3a238b75ab270e44bd7fe72a97bb65fa2b6dd8e1406712d6b51"
+  - command: "git diff --check"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log
+    log_sha256: "4e8a2af3af75b3a238b75ab270e44bd7fe72a97bb65fa2b6dd8e1406712d6b51"
+tests:
+  - id: handoff-test-suite
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log
+    notes:
+      - "15/15 pass under pytest (PYTEST_DISABLE_PLUGIN_AUTOLOAD=1) and
+         python3 test_handoff.py; includes 6 new MultiAttemptAggregationTests
+         and now also collects WorkflowMaintenanceTests under unittest."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/handoff.py
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+    notes:
+      - "verify-task validates required deliverables and request
+         acceptance-ID coverage task-wide across the union of canonical
+         receipts (_task_deliverable_errors/_task_acceptance_errors);
+         per-receipt hash/scope/artifact checks unchanged; duplicate and
+         unknown acceptance IDs still fail (schema semantic check + per-
+         receipt unknown check)."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+    notes:
+      - "MultiAttemptAggregationTests: two-attempt A01/A02 fixture with
+         separate canonical receipts + attempts/**/receipt.yaml glob passes
+         on union coverage; fails when the union misses a deliverable
+         (test_union_missing_deliverable_fails) or an acceptance ID
+         (test_union_missing_acceptance_fails)."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/evidence-inventory.yaml
+    notes:
+      - "Legacy single-attempt fixtures (HandoffTests end-to-end,
+         WorkflowMaintenanceTests) still verify under original rules;
+         test_single_attempt_keeps_legacy_full_coverage_rule asserts a lone
+         receipt must still cover the full set.  No 001/002 record or
+         scientific-path change (001/002 files hash-bound in inventory,
+         untouched)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/evidence-inventory.yaml
+    notes:
+      - "003 inventory hash-binds the exact 13 001/002 historical lineage
+         files (scope.hash_paths set), tags them
+         HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT with the 002 A01/A02
+         single-path D3 conflict described, and separates 003's own
+         implementation/output records under IMPLEMENTATION_PACKAGE/
+         OUTPUT_LOG."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/evidence-inventory.yaml
+    notes:
+      - "Legacy (9) + maintenance (6) regression tests pass, no JoSIM run;
+         verify-task for 003 succeeds (this receipt) without altering
+         001/002; git diff --check clean."
+observations:
+  - "verify-task structural defect reproduced: v1 required every receipt to
+     represent every deliverable and all acceptance IDs, which fails when
+     multi-attempt receipts split coverage and cannot satisfy single-path
+     RECEIPT deliverables."
+  - "Fix is task-wide union for deliverable/acceptance coverage; per-receipt
+     checks (bindings, scope, artifacts, duplicate/unknown IDs) unchanged."
+  - "test_handoff.py __main__ block moved to file end so unittest mode
+     collects WorkflowMaintenanceTests and MultiAttemptAggregationTests too."
+interpretations:
+  - "Single-attempt tasks are the degenerate union of one receipt, so the
+     aggregation change is backward compatible by construction."
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "002/001 A01 receipts were themselves written under the old per-receipt
+     rules; they remain historical read-only and are not re-verified under
+     the new union semantics by this task."
+  - "Schema-level duplicate-ID rejection in acceptance_results happens in
+     validate_document before per-receipt mapping checks; both layers still
+     fail the task on duplicates."
+deviations: []
+blockers: []

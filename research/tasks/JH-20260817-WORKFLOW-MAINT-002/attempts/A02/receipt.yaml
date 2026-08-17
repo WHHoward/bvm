@@ -1,0 +1,86 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-002
+revision: 1
+attempt_id: A02
+workflow_state: DELIVERED
+created_at: "2026-08-17T18:26:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "32f52bf6ed266ffe71616645d2d2363a80e247136c86b21575d0f5f0dcf111ce"
+  ack_sha256: "55cf062e8f8f91f805b94f569ee824a43c439baa4a57f176823d8c51f45ac0cc"
+execution_status: COMPLETED
+baseline_git_head: "58909bc"
+result_git_head: "58909bc"
+changes:
+  - path: .agents/skills/josim-handoff/scripts/handoff.py
+    action: MODIFIED
+    sha256: "7e76175094230af5e44369b9e83823631ac73868b53619fa3efb6a2001a02ef7"
+  - path: .agents/skills/josim-handoff/scripts/test_handoff.py
+    action: MODIFIED
+    sha256: "22a6899bf5fe393b87304da9c7b9c2fc041aadf8e8cbec37a81d86abd8215741"
+  - path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/logs/test-suite.log
+    action: CREATED
+    sha256: "8ea89912442aad6c640e0270b24e898700772f51d708f2e83d3fd0b911cd341b"
+  - path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt-a02-record.yaml
+    action: CREATED
+    sha256: "ee14a3e582c7e102f350327a1a242a9375006412fd21707019f5c1899be3d221"
+artifacts:
+  - {id: handoff-py, path: .agents/skills/josim-handoff/scripts/handoff.py,
+     sha256: "7e76175094230af5e44369b9e83823631ac73868b53619fa3efb6a2001a02ef7",
+     role: IMPLEMENTATION}
+  - {id: handoff-tests, path: .agents/skills/josim-handoff/scripts/test_handoff.py,
+     sha256: "22a6899bf5fe393b87304da9c7b9c2fc041aadf8e8cbec37a81d86abd8215741",
+     role: TEST}
+  - {id: test-log, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/logs/test-suite.log,
+     sha256: "8ea89912442aad6c640e0270b24e898700772f51d708f2e83d3fd0b911cd341b",
+     role: LOG}
+  - {id: a02-historical-record, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt-a02-record.yaml,
+     sha256: "ee14a3e582c7e102f350327a1a242a9375006412fd21707019f5c1899be3d221",
+     role: DOCUMENTATION}
+commands:
+  - command: "pytest suites + git diff --check (A02 whitespace-only fix)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/logs/test-suite.log
+    log_sha256: "8ea89912442aad6c640e0270b24e898700772f51d708f2e83d3fd0b911cd341b"
+tests:
+  - id: full-suite
+    status: PASS
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/logs/test-suite.log]
+    notes:
+      - "20/20 pass (test_handoff 9 + workflow 11); git diff --check CLEAN."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/logs/test-suite.log]
+    notes:
+      - "A02 changes exactly the two whitespace bytes named by Codex
+         (handoff.py:578 trailing whitespace; test_handoff.py final blank
+         line); git diff --check clean; no semantic change."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths: [research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/logs/test-suite.log]
+    notes:
+      - "Same tests re-run (20/20); no JoSIM; no scope expansion; no
+         001/S0/S1/S2 changes."
+observations:
+  - "Whitespace-only delivery hygiene completed per Codex
+     codex-20260817-181706."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+deviations:
+  - "A01/receipt.yaml was modified after Copilot A01 review (A02 record was
+     first merged into it before Codex codex-20260817-182438 directed the
+     canonical A02 receipt).  That post-review modification is recorded here
+     as a deviation/limitation, NOT as accepted authority; A01/receipt.yaml
+     is not modified again.  receipt-a02-record.yaml (the earlier standalone
+     A02 record) is preserved as a historical auxiliary artifact with its
+     current SHA."
+limitations:
+  - "A01/receipt.yaml contains an A02 observations entry added post-review;
+     its authority is limited to this documented deviation."
+blockers: []

@@ -1,0 +1,142 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-001
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T17:36:31+08:00"
+issuer:
+  role: CODEX
+  id: codex
+parent_todo_id: WORKFLOW_MAINTENANCE
+depends_on: []
+supersedes: null
+task:
+  kind: IMPLEMENTATION
+  objective: "Implement the smallest backward-compatible v1 workflow-maintenance package that eliminates repeated sealing/report successors and independently verifies preregistered quantitative analysis."
+  research_question: "Can the active v1 tooling and guidance make a complete CRITICAL/FROZEN L2 evidence package mechanically reproducible, quantitatively independently checked, and report-consistent without weakening scientific controls or historical evidence?"
+  non_goals:
+    - "Run JoSIM or create, modify, move, rename, delete, or rehash S0/S1/S2 sealed raw evidence, historical requests/receipts/audits, scientific dispositions, or S2 E01."
+    - "Change a scientific threshold, control, probe, window, physical claim, metric-spec meaning, or protocol major version."
+    - "Build a general experiment DSL, rewrite the handoff framework, or make unrelated workflow refactors."
+    - "Start a new scientific experiment or infer any BVM/BQ/DCSFQ/JTL scientific result."
+  claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific, physical, route, Gate, hardware, SFQ, fluxoid, logical, or historical-disposition claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/assets/task-request.yaml
+    - .agents/skills/josim-handoff/assets/execution-ack.yaml
+    - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+    - .agents/skills/josim-handoff/assets/audit-verdict.yaml
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-experiment/assets/analysis-template.md
+    - research/schemas/task-request.schema.json
+    - research/schemas/execution-ack.schema.json
+    - research/schemas/execution-receipt.schema.json
+    - research/schemas/audit-verdict.schema.json
+  write_paths:
+    - AGENTS.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/SKILL.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+    - .agents/skills/josim-handoff/assets/task-request.yaml
+    - .agents/skills/josim-handoff/assets/execution-ack.yaml
+    - .agents/skills/josim-handoff/assets/execution-receipt.yaml
+    - .agents/skills/josim-handoff/assets/audit-verdict.yaml
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - .agents/skills/josim-experiment/SKILL.md
+    - .agents/skills/josim-experiment/references/run-protocol.md
+    - .agents/skills/josim-experiment/assets/analysis-template.md
+    - research/schemas/task-request.schema.json
+    - research/schemas/execution-ack.schema.json
+    - research/schemas/execution-receipt.schema.json
+    - research/schemas/audit-verdict.schema.json
+    - research/schemas/quantitative-analysis-spec.schema.json
+    - scripts/quantitative_analysis_verifier.py
+    - scripts/render_structured_report.py
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_quantitative_analysis_verifier.py
+    - test/workflow/test_evidence_bundle.py
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-BVM-S0-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/**
+    - test/final/bvm/runs/bvm-s2-load-20260817-01/**
+  locks:
+    - locks/handoff-v1-maintenance
+    - locks/quantitative-analysis-infrastructure
+baseline:
+  git_head: "58909bc"
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status:
+    path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/baseline/git-status.txt
+    sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  scope_hashes:
+    path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/baseline/scope-files.sha256
+    sha256: "462bfe20b6f4c415ce796a6b3d88b1f72658a5b22a139127c1937cf7c1890ac3"
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: true
+  commit: true
+  delete_or_overwrite: false
+contracts:
+  required_skills:
+    - josim-handoff
+    - josim-experiment
+    - skill-creator
+  read_first:
+    - AGENTS.md
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - .agents/skills/josim-handoff/references/handoff-protocol.md
+  handover:
+    status: CURRENT
+    path: docs/HANDOVER.md
+    sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"
+  metric_spec:
+    status: FROZEN
+    path: docs/research/METRIC_SPEC_V2.md
+    sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+deliverables:
+  - {id: D1, path: research/schemas/quantitative-analysis-spec.schema.json, role: IMPLEMENTATION, required: true}
+  - {id: D2, path: scripts/quantitative_analysis_verifier.py, role: IMPLEMENTATION, required: true}
+  - {id: D3, path: scripts/render_structured_report.py, role: IMPLEMENTATION, required: true}
+  - {id: D4, path: scripts/build_evidence_bundle.py, role: IMPLEMENTATION, required: true}
+  - {id: D5, path: test/workflow/test_quantitative_analysis_verifier.py, role: TEST, required: true}
+  - {id: D6, path: test/workflow/test_evidence_bundle.py, role: TEST, required: true}
+  - {id: D7, path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Active workflow/executor/skill guidance defaults new CRITICAL/FROZEN L2 scientific questions to one preregistered batch containing inputs, raw, logs, task-owned frozen analysis-spec, analyzer, independent verifier, structured analysis, deterministic report, report-consistency result, recursive evidence bundle and receipt; successor use is limited to authority/scope defects.", evidence: [workflow-docs, tests]}
+  - {id: AC2, condition: "New optional v1 analysis-spec supports exact timestamp rule, windows, metric/formula/threshold/sign declarations, actual-time integration, same-JJ phase-area definition, and affine endpoint rule; verifier reads raw plus spec, never imports/calls executor analyzer, and compares independently recomputed results to structured analysis.", evidence: [quantitative-analysis-spec.schema.json, quantitative_analysis_verifier.py, test_quantitative_analysis_verifier.py]}
+  - {id: AC3, condition: "Verifier regression fixtures reject wrong Phi0, phase-area sign, integration, forbidden interpolation/resampling, S2-style affine interpolation, and registered-threshold mismatch; all checks use minimal synthetic data and do not edit historical evidence.", evidence: [test_quantitative_analysis_verifier.py, test-log]}
+  - {id: AC4, condition: "Renderer produces report deterministically from structured analysis and report-consistency verification rejects a headline mismatch; no template permits manually duplicated authority numbers.", evidence: [render_structured_report.py, test_quantitative_analysis_verifier.py, test-log]}
+  - {id: AC5, condition: "Optional issuer-snapshot v1 mode preserves legacy strict-HEAD behavior and validates that an ACK-observed commit tree contains byte-identical sealed request/signature/scope bindings while scope hashes still match; regressions cover issuer-parent-versus-snapshot, wrong snapshot, and scope drift.", evidence: [handoff.py, test_handoff.py, test-log]}
+  - {id: AC6, condition: "For new audit records, exact contract claim_ceiling binding remains mandatory and optional scientific_claim_ceiling records the narrower science-specific audit ceiling; fixture rejects missing/mismatched contract ceiling and preserves legacy audit validation.", evidence: [audit-verdict.schema.json, handoff.py, test_handoff.py, test-log]}
+  - {id: AC7, condition: "Optional evidence_bundle validates a recursive manifest over required raw/inputs/logs/manifest/spec/analyzer/verifier/structured result/renderer/report/inventory/receipt bindings; regression rejects missing raw, log, or script, while legacy receipts without it continue to verify.", evidence: [execution-receipt.schema.json, handoff.py, build_evidence_bundle.py, test_evidence_bundle.py, test-log]}
+  - {id: AC8, condition: "Legacy handoff fixtures and all new regression suites pass; no JoSIM command is invoked and no frozen S0/S1/S2 path changes.", evidence: [test_handoff.py, test_quantitative_analysis_verifier.py, test_evidence_bundle.py, command-logs]}
+invalid_conditions:
+  - "Any S0/S1/S2 sealed raw, historical protocol file, scientific disposition, or E01 is changed."
+  - "A new mechanism weakens pre-registered controls/thresholds, lets verifier import the executor analyzer, accepts formula output merely because schema validation passes, or breaks a legacy fixture."
+inconclusive_conditions:
+  - "None: this is a software/documentation maintenance task; an unmet required regression is REWORK_REQUIRED rather than a scientific INCONCLUSIVE result."
+stop_conditions:
+  - "Any change requires JoSIM, a scientific experiment, a protocol major-version change, a historical evidence edit, a new general DSL, or a path outside scope.write_paths."
+  - "A required compatibility or negative regression cannot be made to pass without relaxing the stated acceptance conditions."
+  - "Bootstrap issuer-owned untracked task packet cannot be isolated from this task's write scope; record BLOCKED instead of changing baseline/history."
+issuance_blockers: []

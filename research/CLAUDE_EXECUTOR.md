@@ -199,3 +199,21 @@ ACK 后只执行 request 授权的 read/write paths、命令类型和运行预�
 ```
 
 若 `<task-id>` 的 request 仍是 `DRAFT` 或没有有效 `request.sha256`，不要开始执行；请只报告“等待 Codex 签发”。
+
+## v1 workflow-maintenance (2026-08-17)
+
+For new CRITICAL/FROZEN L2 questions, prepare one complete package
+(inputs/raw/logs/spec/analyzer/verifier/structured/report/consistency/
+bundle/receipt) before delivery; do not split ordinary seal/report/hash
+work into successors.  Use the independent verifier (reads raw+spec only)
+and the deterministic renderer; evidence bundles validate a recursive
+manifest over all 12 required roles.  Optional issuer-snapshot mode
+validates ACK-observed commit-tree bindings; legacy strict-HEAD unchanged.
+
+**多 attempt 聚合（MAINT-003，2026-08-17）**：`verify-task` 对必需 deliverable
+覆盖和 request acceptance-ID 覆盖改为 task-wide union 校验——各 attempt 的
+canonical receipt 可分别覆盖子集，并集覆盖全部即通过；每个 receipt 自身的
+哈希链/scope/artifact 与 duplicate/unknown-ID 校验不变。多 attempt 任务的
+RECEIPT 角色 deliverable 使用 glob（`attempts/**/receipt.yaml`），不要使用
+单路径（单路径在多 attempt 下不可满足，属历史协议缺陷）。执行 receipt 中
+`acceptance_results` 只声明本 attempt 实际评估的 ID，不必重复全部 request ID。

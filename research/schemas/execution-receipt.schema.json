@@ -32,30 +32,75 @@
     "blockers"
   ],
   "properties": {
-    "protocol": { "const": "josim-handoff/v1" },
-    "document_type": { "const": "execution_receipt" },
-    "schema_version": { "const": 1 },
-    "task_id": { "$ref": "#/$defs/task_id" },
-    "revision": { "type": "integer", "minimum": 1 },
-    "attempt_id": { "$ref": "#/$defs/attempt_id" },
-    "workflow_state": { "enum": ["DELIVERED", "BLOCKED", "DEVIATED"] },
-    "created_at": { "type": "string", "format": "date-time" },
-    "executor": { "$ref": "#/$defs/actor" },
+    "protocol": {
+      "const": "josim-handoff/v1"
+    },
+    "document_type": {
+      "const": "execution_receipt"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "task_id": {
+      "$ref": "#/$defs/task_id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "attempt_id": {
+      "$ref": "#/$defs/attempt_id"
+    },
+    "workflow_state": {
+      "enum": [
+        "DELIVERED",
+        "BLOCKED",
+        "DEVIATED"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "executor": {
+      "$ref": "#/$defs/actor"
+    },
     "bindings": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["request_sha256", "ack_sha256"],
+      "required": [
+        "request_sha256",
+        "ack_sha256"
+      ],
       "properties": {
-        "request_sha256": { "$ref": "#/$defs/sha256" },
-        "ack_sha256": { "$ref": "#/$defs/sha256" }
+        "request_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "ack_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
-    "execution_status": { "enum": ["COMPLETED", "BLOCKED", "DEVIATED"] },
-    "baseline_git_head": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+    "execution_status": {
+      "enum": [
+        "COMPLETED",
+        "BLOCKED",
+        "DEVIATED"
+      ]
+    },
+    "baseline_git_head": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,64}$"
+    },
     "result_git_head": {
       "oneOf": [
-        { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
-        { "type": "null" }
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,64}$"
+        },
+        {
+          "type": "null"
+        }
       ]
     },
     "changes": {
@@ -63,33 +108,80 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["path", "action", "sha256"],
+        "required": [
+          "path",
+          "action",
+          "sha256"
+        ],
         "properties": {
-          "path": { "$ref": "#/$defs/repo_path" },
-          "action": { "enum": ["CREATED", "MODIFIED", "DELETED", "RENAMED"] },
-          "sha256": {
-            "oneOf": [
-              { "$ref": "#/$defs/sha256" },
-              { "type": "null" }
+          "path": {
+            "$ref": "#/$defs/repo_path"
+          },
+          "action": {
+            "enum": [
+              "CREATED",
+              "MODIFIED",
+              "DELETED",
+              "RENAMED"
             ]
           },
-          "previous_path": { "$ref": "#/$defs/repo_path" }
+          "sha256": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/sha256"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "previous_path": {
+            "$ref": "#/$defs/repo_path"
+          }
         },
         "allOf": [
           {
             "if": {
-              "properties": { "action": { "const": "DELETED" } },
-              "required": ["action"]
+              "properties": {
+                "action": {
+                  "const": "DELETED"
+                }
+              },
+              "required": [
+                "action"
+              ]
             },
-            "then": { "properties": { "sha256": { "type": "null" } } },
-            "else": { "properties": { "sha256": { "$ref": "#/$defs/sha256" } } }
+            "then": {
+              "properties": {
+                "sha256": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "sha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            }
           },
           {
             "if": {
-              "properties": { "action": { "const": "RENAMED" } },
-              "required": ["action"]
+              "properties": {
+                "action": {
+                  "const": "RENAMED"
+                }
+              },
+              "required": [
+                "action"
+              ]
             },
-            "then": { "required": ["previous_path"] }
+            "then": {
+              "required": [
+                "previous_path"
+              ]
+            }
           }
         ]
       }
@@ -100,13 +192,32 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "path", "sha256", "role"],
+        "required": [
+          "id",
+          "path",
+          "sha256",
+          "role"
+        ],
         "properties": {
-          "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$" },
-          "path": { "$ref": "#/$defs/repo_path" },
-          "sha256": { "$ref": "#/$defs/sha256" },
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$"
+          },
+          "path": {
+            "$ref": "#/$defs/repo_path"
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          },
           "role": {
-            "enum": ["IMPLEMENTATION", "TEST", "RAW", "LOG", "MANIFEST", "DOCUMENTATION"]
+            "enum": [
+              "IMPLEMENTATION",
+              "TEST",
+              "RAW",
+              "LOG",
+              "MANIFEST",
+              "DOCUMENTATION"
+            ]
           }
         }
       }
@@ -116,12 +227,26 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["command", "exit_code", "log_path", "log_sha256"],
+        "required": [
+          "command",
+          "exit_code",
+          "log_path",
+          "log_sha256"
+        ],
         "properties": {
-          "command": { "type": "string", "minLength": 1 },
-          "exit_code": { "type": "integer" },
-          "log_path": { "$ref": "#/$defs/repo_path" },
-          "log_sha256": { "$ref": "#/$defs/sha256" }
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "exit_code": {
+            "type": "integer"
+          },
+          "log_path": {
+            "$ref": "#/$defs/repo_path"
+          },
+          "log_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
         }
       }
     },
@@ -131,33 +256,75 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "status", "evidence_paths", "notes"],
+        "required": [
+          "id",
+          "status",
+          "evidence_paths",
+          "notes"
+        ],
         "properties": {
-          "id": { "type": "string", "minLength": 1 },
-          "status": { "enum": ["PASS", "FAIL", "NOT_RUN"] },
-          "evidence_paths": { "$ref": "#/$defs/path_list" },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_RUN"
+            ]
+          },
+          "evidence_paths": {
+            "$ref": "#/$defs/path_list"
+          },
           "notes": {
             "type": "array",
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         },
         "allOf": [
           {
             "if": {
-              "properties": { "status": { "enum": ["PASS", "FAIL"] } },
-              "required": ["status"]
+              "properties": {
+                "status": {
+                  "enum": [
+                    "PASS",
+                    "FAIL"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
             },
             "then": {
-              "properties": { "evidence_paths": { "minItems": 1 } }
+              "properties": {
+                "evidence_paths": {
+                  "minItems": 1
+                }
+              }
             }
           },
           {
             "if": {
-              "properties": { "status": { "const": "NOT_RUN" } },
-              "required": ["status"]
+              "properties": {
+                "status": {
+                  "const": "NOT_RUN"
+                }
+              },
+              "required": [
+                "status"
+              ]
             },
             "then": {
-              "properties": { "notes": { "minItems": 1 } }
+              "properties": {
+                "notes": {
+                  "minItems": 1
+                }
+              }
             }
           }
         ]
@@ -170,35 +337,75 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "status", "evidence_paths", "notes"],
+        "required": [
+          "id",
+          "status",
+          "evidence_paths",
+          "notes"
+        ],
         "properties": {
-          "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$" },
-          "status": { "enum": ["SATISFIED", "NOT_SATISFIED", "NOT_EVALUATED"] },
-          "evidence_paths": { "$ref": "#/$defs/path_list" },
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$"
+          },
+          "status": {
+            "enum": [
+              "SATISFIED",
+              "NOT_SATISFIED",
+              "NOT_EVALUATED"
+            ]
+          },
+          "evidence_paths": {
+            "$ref": "#/$defs/path_list"
+          },
           "notes": {
             "type": "array",
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         },
         "allOf": [
           {
             "if": {
               "properties": {
-                "status": { "enum": ["SATISFIED", "NOT_SATISFIED"] }
+                "status": {
+                  "enum": [
+                    "SATISFIED",
+                    "NOT_SATISFIED"
+                  ]
+                }
               },
-              "required": ["status"]
+              "required": [
+                "status"
+              ]
             },
             "then": {
-              "properties": { "evidence_paths": { "minItems": 1 } }
+              "properties": {
+                "evidence_paths": {
+                  "minItems": 1
+                }
+              }
             }
           },
           {
             "if": {
-              "properties": { "status": { "const": "NOT_EVALUATED" } },
-              "required": ["status"]
+              "properties": {
+                "status": {
+                  "const": "NOT_EVALUATED"
+                }
+              },
+              "required": [
+                "status"
+              ]
             },
             "then": {
-              "properties": { "notes": { "minItems": 1 } }
+              "properties": {
+                "notes": {
+                  "minItems": 1
+                }
+              }
             }
           }
         ]
@@ -206,66 +413,135 @@
     },
     "observations": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "interpretations": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "unknowns": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "proposed_physical_verdict": {
-      "enum": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_APPLICABLE"]
+      "enum": [
+        "PASS",
+        "FAIL",
+        "INCONCLUSIVE",
+        "NOT_APPLICABLE"
+      ]
     },
     "limitations": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "deviations": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "blockers": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_bundle": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
     }
   },
   "allOf": [
     {
       "if": {
-        "properties": { "execution_status": { "const": "COMPLETED" } },
-        "required": ["execution_status"]
+        "properties": {
+          "execution_status": {
+            "const": "COMPLETED"
+          }
+        },
+        "required": [
+          "execution_status"
+        ]
       },
       "then": {
         "properties": {
-          "workflow_state": { "const": "DELIVERED" },
-          "blockers": { "maxItems": 0 }
+          "workflow_state": {
+            "const": "DELIVERED"
+          },
+          "blockers": {
+            "maxItems": 0
+          }
         }
       }
     },
     {
       "if": {
-        "properties": { "execution_status": { "const": "BLOCKED" } },
-        "required": ["execution_status"]
+        "properties": {
+          "execution_status": {
+            "const": "BLOCKED"
+          }
+        },
+        "required": [
+          "execution_status"
+        ]
       },
       "then": {
         "properties": {
-          "workflow_state": { "const": "BLOCKED" },
-          "blockers": { "minItems": 1 }
+          "workflow_state": {
+            "const": "BLOCKED"
+          },
+          "blockers": {
+            "minItems": 1
+          }
         }
       }
     },
     {
       "if": {
-        "properties": { "execution_status": { "const": "DEVIATED" } },
-        "required": ["execution_status"]
+        "properties": {
+          "execution_status": {
+            "const": "DEVIATED"
+          }
+        },
+        "required": [
+          "execution_status"
+        ]
       },
       "then": {
         "properties": {
-          "workflow_state": { "const": "DEVIATED" },
-          "deviations": { "minItems": 1 }
+          "workflow_state": {
+            "const": "DEVIATED"
+          },
+          "deviations": {
+            "minItems": 1
+          }
         }
       }
     }
@@ -275,8 +551,14 @@
       "type": "string",
       "pattern": "^JH-[0-9]{8}-[A-Z0-9][A-Z0-9-]*-[0-9]{3}$"
     },
-    "attempt_id": { "type": "string", "pattern": "^A[0-9]{2,}$" },
-    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^A[0-9]{2,}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "repo_path": {
       "type": "string",
       "minLength": 1,
@@ -284,16 +566,26 @@
     },
     "path_list": {
       "type": "array",
-      "items": { "$ref": "#/$defs/repo_path" },
+      "items": {
+        "$ref": "#/$defs/repo_path"
+      },
       "uniqueItems": true
     },
     "actor": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["role", "id"],
+      "required": [
+        "role",
+        "id"
+      ],
       "properties": {
-        "role": { "const": "CLAUDE_CODE" },
-        "id": { "type": "string", "minLength": 1 }
+        "role": {
+          "const": "CLAUDE_CODE"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }

@@ -1,0 +1,39 @@
+# WORKFLOW-MAINT-003 package seal (003/A01; D3, AC4)
+# Multi-attempt receipt aggregation repair: task-wide deliverable and
+# acceptance coverage across the union of canonical per-attempt receipts,
+# preserving per-receipt hash/scope/artifact checks and single-attempt
+# behaviour.  001/002 historical records below are hash-bound lineage only;
+# none of them was modified by 003.
+#
+# HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT (002 A01/A02):
+#   002 request D3 bound the RECEIPT deliverable to the single path
+#   attempts/A01/receipt.yaml; the canonical A02 receipt at
+#   attempts/A02/receipt.yaml can never represent that deliverable, so
+#   verify-task fails structurally for any multi-attempt task that uses a
+#   single-path RECEIPT deliverable.  003 repairs the verifier to aggregate
+#   task-wide (union of canonical receipts) and uses the glob
+#   attempts/**/receipt.yaml for its own D4; 002 itself remains historical
+#   read-only with its A01/A02 conflict recorded here as lineage.
+entries:
+  # --- 001/002 historical lineage (hash-bound, untouched) ---
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.yaml, sha256: "757f2965f25a42d5e545b6ddde6ee7bf98dd3332ee588d9077d671fe1aef6aa3", bytes: 10059, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.sha256, sha256: "2f4b9ce1b56a47cdaad2c3e83348c98523fedbb682462ebdbc2a453d369a338a", bytes: 79, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/ack.yaml, sha256: "7d10ff16902bef44c1ecd3763397d05d07bbed94c994717828d46a0c9e9dac58", bytes: 2630, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/receipt.yaml, sha256: "f5c3aa5aa4ce3a4de996b37b5d7cf95bbbbd15242485a92c199f79f5aaac6def", bytes: 10865, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/request.yaml, sha256: "32f52bf6ed266ffe71616645d2d2363a80e247136c86b21575d0f5f0dcf111ce", bytes: 7879, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/request.sha256, sha256: "ff89948b0c91fa871b9e6b2fb80f9037781ffa7dc28a27f7f54afea9c5aa1b94", bytes: 79, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/ack.yaml, sha256: "468c1e1cc8977f9bb291993f4a653242b136ebd2e9ef8194814a768bc14f4b06", bytes: 2686, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/receipt.yaml, sha256: "7dcf1bfd94a1f541a1ef3d06d3ff12679f63cb2536eb41704eff05b2a28fb766", bytes: 7899, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/evidence-inventory.yaml, sha256: "f8ca6a8184c03ca641aba317a2fbdd49118d771d81be1c6bab7d6fbac73e9ecf", bytes: 2520, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/REVIEW.md, sha256: "ff88912fa0d1414e0f5cdb2412a6836a65ce5e031c6b6b1114d35d7d690adcd4", bytes: 5245, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/ack.yaml, sha256: "55cf062e8f8f91f805b94f569ee824a43c439baa4a57f176823d8c51f45ac0cc", bytes: 1547, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt.yaml, sha256: "a49569fd02c63d1a8c49f32f79cb802e22bd041e689cb6fdae4dfbf2e666fd45", bytes: 3988, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/receipt-a02-record.yaml, sha256: "ee14a3e582c7e102f350327a1a242a9375006412fd21707019f5c1899be3d221", bytes: 3387, tag: HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT}
+  # --- 003 new implementation/output records ---
+  - {path: .agents/skills/josim-handoff/scripts/handoff.py, sha256: "37de3b2f52f922f4c7577fee3a8e00e7ef348b6e1b0ffdea5a107eba31e6abaf", bytes: 52167, tag: IMPLEMENTATION_PACKAGE}
+  - {path: .agents/skills/josim-handoff/scripts/test_handoff.py, sha256: "9c0b6bbc065f5776d5dc765e0d67ebf716268362ee5e55f2e1f1fb75abb3ee50", bytes: 44698, tag: IMPLEMENTATION_PACKAGE}
+  - {path: .agents/skills/josim-handoff/references/handoff-protocol.md, sha256: "e0e0049c03e647b0b51625e253b9c5d95cde3d246083eebdaa69657d02e65c83", bytes: 8473, tag: IMPLEMENTATION_PACKAGE}
+  - {path: .agents/skills/josim-handoff/assets/execution-receipt.yaml, sha256: "3296cd9bb9a09f263024e45317d08257a5015dfea7f6709616bf955be6dadea9", bytes: 2189, tag: IMPLEMENTATION_PACKAGE}
+  - {path: research/WORKFLOW.md, sha256: "682831cd2857b3f7bfb8211a03fae40016893649ee881ef819759e0b05e148a6", bytes: 34388, tag: IMPLEMENTATION_PACKAGE}
+  - {path: research/CLAUDE_EXECUTOR.md, sha256: "55d36af06a826155c041b0dc91c93bc4a3aab647f6f3b8c751b659eea647e206", bytes: 15564, tag: IMPLEMENTATION_PACKAGE}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/test-suite.log, sha256: "4e8a2af3af75b3a238b75ab270e44bd7fe72a97bb65fa2b6dd8e1406712d6b51", bytes: 2392, tag: OUTPUT_LOG}

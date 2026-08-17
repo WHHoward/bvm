@@ -1,0 +1,66 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-003
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T19:05:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "4426b221bfddb6e4ce1e160166f781da5157e468458859973c769409732b2430"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "58909bc"
+  dirty_paths:
+    - ".agents/skills/josim-handoff/scripts/handoff.py + test_handoff.py
+       (001/002 deliveries, in baseline snapshot)"
+    - "research/CLAUDE_EXECUTOR.md, research/WORKFLOW.md (001/002 docs)"
+    - "research/schemas/*.json, research/mailbox/*, memory/*, test/workflow/*,
+       scripts/* (other work, non-overlapping with 003 write paths)"
+    - "research/tasks/JH-20260817-WORKFLOW-MAINT-001/** and -002/** untracked
+       (frozen for 003; baseline snapshot matches)"
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Repair the v1 multi-attempt receipt aggregation defect: verify-task must
+    validate required deliverables and request acceptance-ID coverage
+    task-wide across the union of canonical per-attempt receipts, while
+    preserving per-receipt hash/scope/artifact integrity checks and
+    backward-compatible single-attempt behaviour.  Produce one task-wide
+    independently checkable maintenance package (handoff.py, test_handoff.py,
+    protocol docs, evidence-inventory.yaml) without changing any historical
+    001/002 record or scientific evidence.
+  non_goals:
+    - "Run JoSIM or change any S0/S1/S2 raw, historical protocol record,
+       disposition, or E01."
+    - "Edit JH-20260817-WORKFLOW-MAINT-001 or -002 (requests, ACKs,
+       receipts, reviews, logs, evidence inventories)."
+    - "Alter scientific formulas, thresholds, METRIC_SPEC_V2, or protocol
+       major version."
+    - "Create a further successor unless a newly discovered
+       authority/scope defect requires it."
+  stop_conditions:
+    - "Any requirement needing JoSIM, science evidence modification,
+       protocol v2, deletion/overwrite, a non-enumerated write path, or
+       another contract beyond the multi-attempt aggregation defect."
+planned_commands:
+  - "python3 .agents/skills/josim-handoff/scripts/test_handoff.py (and
+     pytest with PYTEST_DISABLE_PLUGIN_AUTOLOAD=1)"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task
+     research/tasks/JH-20260817-WORKFLOW-MAINT-003"
+  - "git diff --check (whitespace hygiene)"
+expected_changed_paths:
+  - .agents/skills/josim-handoff/scripts/handoff.py
+  - .agents/skills/josim-handoff/scripts/test_handoff.py
+  - .agents/skills/josim-handoff/references/handoff-protocol.md
+  - research/WORKFLOW.md
+  - research/CLAUDE_EXECUTOR.md
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/evidence-inventory.yaml
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/receipt.yaml
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-003/attempts/A01/logs/*
+blockers: []
+deviations: []

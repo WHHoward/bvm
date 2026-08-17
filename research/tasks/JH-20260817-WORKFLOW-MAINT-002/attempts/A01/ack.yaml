@@ -1,0 +1,58 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T18:10:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "32f52bf6ed266ffe71616645d2d2363a80e247136c86b21575d0f5f0dcf111ce"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "58909bc"
+  dirty_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-00*/** (untracked or modified)
+    - research/schemas/** (modified per 001)
+    - scripts/quantitative_analysis_verifier.py etc (001 deliverables)
+    - .agents/skills/josim-handoff/scripts/handoff.py + test_handoff.py (001)
+    - research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md (001)
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Supersede 001 solely for genuine scope/authority defects.  AC1: optional
+    scope.hash_paths (legacy read_paths hashing unchanged when absent;
+    writable implementation paths not required to retain pre-execution
+    hashes).  AC2: issuer_snapshot_commit requires ACK observed_git_head ==
+    snapshot and byte-identical request/signature/scope-manifest in the
+    snapshot tree; legacy strict-HEAD unchanged.  AC3: evidence_bundle
+    mechanically validated as hashed artifact with required-role check;
+    scientific_claim_ceiling valid only alongside exact contract
+    claim_ceiling, auditor-bounded not inferred.  AC4: recursively seal the
+    existing 001 package (HISTORICAL_PROTOCOL_SCOPE_DEFECT), no 001 file
+    modified.  AC5: fix test cleanup; delete only the 15 pre-enumerated
+    .handoff-standin-* temp dirs.  AC6: verify-task 002 succeeds.  No JoSIM;
+    no S0/S1/S2 or 001 change; one Copilot REVIEW_REQUEST after delivery.
+  non_goals:
+    - "No 001/S0/S1/S2 modification; no JoSIM; no silent weakening of
+       scope/hash requirements."
+  stop_conditions:
+    - "Historical/scientific evidence change; legacy fixture fails; verifier
+       imports executor analysis; scope/hash requirements silently weakened."
+planned_commands:
+  - "Patch handoff.py (hash_paths + snapshot HEAD + bundle/ceiling checks);
+     update schemas; add regressions; fix test cleanup; delete 15 temp dirs;
+     build 001 evidence inventory; full test suite; verify-task"
+expected_changed_paths:
+  - .agents/skills/josim-handoff/scripts/handoff.py
+  - .agents/skills/josim-handoff/scripts/test_handoff.py
+  - research/schemas/task-request.schema.json
+  - research/schemas/execution-receipt.schema.json
+  - research/schemas/audit-verdict.schema.json
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/**
+blockers: []
+deviations: []

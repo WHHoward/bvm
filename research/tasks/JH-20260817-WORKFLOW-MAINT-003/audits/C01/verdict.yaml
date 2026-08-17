@@ -1,0 +1,62 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-003
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T19:13:07+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "4426b221bfddb6e4ce1e160166f781da5157e468458859973c769409732b2430"
+  ack_sha256: "5f8612842e732c1a7f49a981b26967c1c44b82a98de580d0192dc3494a6a19b7"
+  receipt_sha256: "e23c7ce4d21f5aac51538b851960c74dccb2a918a6f68f41868cbdef7b60d339"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-mechanical-verification
+    status: PASS
+    evidence:
+      - "Request validates; request, ACK, and receipt SHA-256 bindings independently recomputed and match."
+      - "verify-task reports VERIFIED for the task, including chronology, scope, artifact, and receipt checks."
+  - id: task-wide-union-semantics
+    status: PASS
+    evidence:
+      - "Independent code review confirms required deliverables and acceptance IDs are checked against the union of canonical receipts only after individual receipt binding/scope/artifact and duplicate/unknown-ID checks."
+      - "RECEIPT-role deliverables are matched to canonical receipt paths; the single-attempt union remains the original one-receipt behavior."
+  - id: regression-and-adversarial-probes
+    status: PASS
+    evidence:
+      - "Independent pytest run: 15 passed; direct unittest run: 15 passed."
+      - "The aggregation tests cover a successful split-delivery pair plus missing deliverable, missing acceptance, unknown ID, duplicate ID, and single-attempt boundary probes."
+  - id: lineage-and-scope-boundary
+    status: PASS
+    evidence:
+      - "Independent SHA-256 and byte-size recomputation verifies all 20 inventory entries: 13 historical 001/002 lineage entries, 6 implementation-package entries, and 1 output log."
+      - "No JoSIM execution is authorized or recorded; the accepted claim remains workflow infrastructure only."
+  - id: peer-review
+    status: PASS
+    evidence:
+      - "A01 REVIEW.md gives PASS after separate test reruns, 20/20 inventory verification, code-path inspection, and boundary checks; no Major or Critical finding."
+findings:
+  - "Minor documentation wording only: the mailbox phrase '13 records sealed' refers to the 13 historical lineage entries; the complete inventory correctly contains 20 entries."
+accepted_claims:
+  - "v1 verify-task now permits required deliverables and acceptance IDs to be jointly represented by immutable canonical receipts from multiple attempts."
+  - "Per-receipt integrity and malformed acceptance-ID protections remain enforced, and single-attempt behavior remains covered by regression tests."
+  - "The 003 maintenance package is VALID workflow/deterministic-analysis infrastructure evidence."
+rejected_claims:
+  - "This audit makes no scientific, JoSIM, physical, historical-disposition, route, metric-freeze, or paper claim."
+  - "The task does not retroactively validate or modify historical 001/002 records; it preserves them as hash-bound lineage only."
+required_rework: []
+next_actions:
+  - "Record the accepted audit and notify the executor/reviewer through mailbox; do not select a new scientific task without user direction."
+claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific or historical-disposition claim"

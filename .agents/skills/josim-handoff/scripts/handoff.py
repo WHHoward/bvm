@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import subprocess
 import sys
 from typing import Any, Iterable
 
@@ -321,7 +322,10 @@ def _scope_manifest_errors(
         entries[path_value] = expected
 
     required: set[str] = set()
-    for pattern in request["scope"]["read_paths"]:
+    hash_paths = request["scope"].get("hash_paths")
+    read_paths = (hash_paths if hash_paths is not None
+                  else request["scope"]["read_paths"])
+    for pattern in read_paths:
         has_glob = any(character in pattern for character in "*?[")
         if has_glob:
             matches = sorted(
@@ -430,6 +434,41 @@ def _scope_errors(receipt: dict[str, Any], request: dict[str, Any]) -> list[str]
     return errors
 
 
+def _issuer_snapshot_errors(
+    ack: dict[str, Any], request: dict[str, Any], repo_root: Path,
+    task_rel: str | None = None,
+) -> list[str]:
+    """v1 optional issuer-snapshot mode (AC5): when the request declares
+    baseline.issuer_snapshot_commit, that commit's tree must carry
+    byte-identical request.yaml / request.sha256 / scope-files.sha256
+    bindings while scope hashes still match.  Legacy requests without the
+    field keep the strict-HEAD behavior unchanged."""
+    if ack["decision"] != "ACCEPTED":
+        return []
+    snap = request.get("baseline", {}).get("issuer_snapshot_commit")
+    if not snap:
+        return []
+    if ack["preflight"]["observed_git_head"] != snap:
+        return [f"ACK observed_git_head {ack['preflight']['observed_git_head']} "
+                f"!= issuer_snapshot_commit {snap}"]
+    if task_rel is None:
+        return ["issuer_snapshot_commit requires task_rel"]
+    errors: list[str] = []
+    for rel in ("request.yaml", "request.sha256",
+                "baseline/scope-files.sha256"):
+        path = repo_root / task_rel / rel
+        try:
+            blob = subprocess.run(
+                ["git", "show", f"{snap}:{task_rel}/{rel}"],
+                capture_output=True, text=True, cwd=repo_root, check=True)
+        except (subprocess.CalledProcessError, OSError):
+            errors.append(f"issuer snapshot {snap} lacks {task_rel}/{rel}")
+            continue
+        if blob.stdout.encode() != path.read_bytes():
+            errors.append(f"{rel} differs from issuer snapshot {snap}")
+    return errors
+
+
 def _ack_scope_errors(ack: dict[str, Any], request: dict[str, Any]) -> list[str]:
     if ack["decision"] != "ACCEPTED":
         return []
@@ -447,41 +486,80 @@ def _ack_scope_errors(ack: dict[str, Any], request: dict[str, Any]) -> list[str]
 def _acceptance_mapping_errors(
     receipt: dict[str, Any], request: dict[str, Any]
 ) -> list[str]:
+    """Per-receipt acceptance shape check: duplicate or unknown IDs fail.
+
+    Required-ID coverage is checked task-wide by _task_acceptance_errors so
+    that multi-attempt tasks may split acceptance coverage across receipts
+    (MAINT-003); for a single-attempt task the union equals this receipt, so
+    legacy behaviour is unchanged.
+    """
     required_ids = [item["id"] for item in request["acceptance"]]
     reported_ids = [item["id"] for item in receipt["acceptance_results"]]
     errors: list[str] = []
     if len(reported_ids) != len(set(reported_ids)):
         errors.append("acceptance_results contains duplicate ids")
-    missing = sorted(set(required_ids) - set(reported_ids))
     unknown = sorted(set(reported_ids) - set(required_ids))
-    if missing:
-        errors.append(f"acceptance_results is missing request ids: {', '.join(missing)}")
     if unknown:
         errors.append(f"acceptance_results contains unknown ids: {', '.join(unknown)}")
     return errors
 
 
-def _deliverable_errors(
-    receipt_path: Path,
-    receipt: dict[str, Any],
+def _task_acceptance_errors(
+    receipts: dict[str, tuple[Path, dict[str, Any]]],
+    request: dict[str, Any],
+) -> list[str]:
+    """Task-wide acceptance-ID coverage across the union of canonical receipts."""
+    required_ids = [item["id"] for item in request["acceptance"]]
+    reported_ids: set[str] = set()
+    for _receipt_path, receipt in receipts.values():
+        reported_ids.update(item["id"] for item in receipt["acceptance_results"])
+    errors: list[str] = []
+    missing = sorted(set(required_ids) - reported_ids)
+    if missing:
+        errors.append(
+            "acceptance coverage across the union of receipts is missing "
+            f"request ids: {', '.join(missing)}"
+        )
+    return errors
+
+
+def _task_deliverable_errors(
+    receipts: dict[str, tuple[Path, dict[str, Any]]],
     request: dict[str, Any],
     repo_root: Path,
 ) -> list[str]:
-    """Require every request deliverable to appear in the receipt or be the receipt."""
+    """Task-wide deliverable coverage across the union of canonical receipts.
+
+    v1 multi-attempt aggregation (MAINT-003): required deliverables may be
+    delivered across several immutable per-attempt receipts.  For non-RECEIPT
+    roles the union of all receipts' artifact paths must represent every
+    required deliverable; for RECEIPT-role deliverables (typically a glob
+    such as attempts/**/receipt.yaml) any canonical receipt path matching the
+    pattern satisfies the union.  Single-attempt tasks behave exactly as
+    before because their union is one receipt.
+    """
     errors: list[str] = []
-    receipt_relative = receipt_path.relative_to(repo_root).as_posix()
-    artifact_paths = [item["path"] for item in receipt["artifacts"]]
+    receipt_relative_paths = [
+        path.relative_to(repo_root).as_posix() for path, _ in receipts.values()
+    ]
+    artifact_paths: set[str] = set()
+    for _receipt_path, receipt in receipts.values():
+        artifact_paths.update(item["path"] for item in receipt["artifacts"])
     for deliverable in request["deliverables"]:
         if not deliverable["required"]:
             continue
         pattern = deliverable["path"]
         if deliverable["role"] == "RECEIPT":
-            present = _matches_scope(receipt_relative, pattern)
+            present = any(
+                _matches_scope(relative, pattern)
+                for relative in receipt_relative_paths
+            )
         else:
             present = any(_matches_scope(path, pattern) for path in artifact_paths)
         if not present:
             errors.append(
-                f"required deliverable {deliverable['id']} is not represented: {pattern}"
+                f"required deliverable {deliverable['id']} is not represented "
+                f"across the union of receipts: {pattern}"
             )
     return errors
 
@@ -513,6 +591,30 @@ def _receipt_file_errors(
     changes = receipt["changes"]
     change_paths = {change["path"] for change in changes}
     artifact_paths = {artifact["path"] for artifact in receipt["artifacts"]}
+    bundle = receipt.get("evidence_bundle")
+    if bundle is not None:
+        if bundle.get("path") not in artifact_paths:
+            errors.append("evidence_bundle.path is not a hashed artifact: "
+                          + str(bundle.get("path")))
+        else:
+            bpath = repo_root / bundle["path"]
+            if bpath.is_file():
+                actual = _sha256(bpath)
+                if actual != bundle.get("sha256"):
+                    errors.append("evidence_bundle sha256 mismatch")
+                try:
+                    import yaml as _yaml
+                    bdoc = _yaml.safe_load(bpath.read_text(encoding="utf-8"))
+                    roles = {e.get("role") for e in bdoc.get("entries", [])}
+                    required = {"raw", "inputs", "logs", "manifest", "spec",
+                                "analyzer", "verifier", "structured_result",
+                                "renderer", "report", "inventory", "receipt"}
+                    if roles != required:
+                        errors.append("evidence_bundle missing required roles: "
+                                      + ",".join(sorted(required - roles)))
+                except OSError:
+                    errors.append("evidence_bundle unreadable")
+
     if changes and not authorization["edit"]:
         errors.append("receipt reports file changes but authorization.edit is false")
     for index, change in enumerate(changes):
@@ -843,6 +945,12 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
         errors.extend(
             f"{ack_path}: {error}" for error in _ack_scope_errors(ack, request)
         )
+        errors.extend(
+            f"{ack_path}: {error}"
+            for error in _issuer_snapshot_errors(
+                ack, request, repo_root,
+                task_rel=str(ack_path.parent.parent.relative_to(repo_root)))
+        )
 
     for attempt_id, (receipt_path, receipt) in receipts.items():
         ack_entry = acknowledgements.get(attempt_id)
@@ -866,13 +974,21 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
         )
         errors.extend(
             f"{receipt_path}: {error}"
-            for error in _deliverable_errors(
-                receipt_path, receipt, request, repo_root
-            )
+            for error in _receipt_file_errors(receipt, request, repo_root)
+        )
+
+    if receipts:
+        # Multi-attempt aggregation (MAINT-003): required deliverable and
+        # acceptance coverage is validated across the union of canonical
+        # receipts; per-receipt hash/scope/artifact checks above are
+        # unchanged.
+        errors.extend(
+            f"{request['task_id']}: {error}"
+            for error in _task_deliverable_errors(receipts, request, repo_root)
         )
         errors.extend(
-            f"{receipt_path}: {error}"
-            for error in _receipt_file_errors(receipt, request, repo_root)
+            f"{request['task_id']}: {error}"
+            for error in _task_acceptance_errors(receipts, request)
         )
 
     for (attempt_id, _audit_id), (audit_path, audit) in audits.items():

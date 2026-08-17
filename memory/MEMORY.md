@@ -34,3 +34,6 @@
 - 🕰 [原理深讲（deep-dive）](../docs/guide/deep-dive.md) — 已被证据审计取代，正文仅历史草稿（顶部有警告）
 - **信任与建议（2026-08-10）**：用户信任我并欢迎主动建议；保持"大胆推进 + 严谨标准"平衡，物理结论仍等审计。[详情](feedback-trust-and-advice.md)
 - **commit/通知三级模型（2026-08-15）**：L0 默认不提交不通知；L1 自检后直接 atomic commit + 简报用户 + 批量汇总 INFO；L2 须用户授权或有效 Codex contract，超范围立即停止。[详情](feedback-notify-changes.md)
+- **BVM 链状态（2026-08-17）**：S0/S1/S2 全部闭环（Codex 裁决 INCONCLUSIVE）；MAINT-002 唯一待决 = A02 receipt 与 D3 结构性冲突，已报 Codex 等裁决。[详情](bvm-chain-status-20260817.md)
+- **mailbox 全量检查（2026-08-17）**：用户两次强调必须检查全量（所有方向/所有消息），曾漏看 A02 指令。[详情](mailbox-full-scan.md)
+- **不更新 now.md（2026-08-17）**：不要向 `.remember/now.md` 写入或 append，该文件由用户/remember 系统管理；记忆只写 `memory/`。[详情](no-update-remember-now.md)

@@ -1,0 +1,41 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-002
+revision: 1
+attempt_id: A02
+workflow_state: ACKED
+created_at: "2026-08-17T18:20:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "32f52bf6ed266ffe71616645d2d2363a80e247136c86b21575d0f5f0dcf111ce"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "58909bc"
+  dirty_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/** (A01 delivered, modified)
+    - research/schemas/** etc (001/002 deliverables, untracked/modified)
+    - .agents/skills/josim-handoff/scripts/handoff.py + test_handoff.py
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A02 (per Codex codex-20260817-181706): whitespace-only delivery hygiene.
+    Change exactly two formatting bytes: handoff.py line 578 trailing
+    whitespace and test_handoff.py final blank line.  Create new A02
+    ACK/receipt; re-run the same tests.  No JoSIM, no scope expansion, no
+    changes to 001/S0/S1/S2.
+  non_goals:
+    - "No semantic change; no scope expansion; no 001/S0/S1/S2 change."
+  stop_conditions:
+    - "Any non-whitespace change required; test regression."
+planned_commands:
+  - "sed-style byte fix of the two whitespace sites; pytest suites; verify-task"
+expected_changed_paths:
+  - .agents/skills/josim-handoff/scripts/handoff.py
+  - .agents/skills/josim-handoff/scripts/test_handoff.py
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A02/**
+blockers: []
+deviations: []

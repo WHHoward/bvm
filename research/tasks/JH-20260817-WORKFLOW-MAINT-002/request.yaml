@@ -1,0 +1,103 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-002
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-17T18:03:06+08:00"
+issuer: {role: CODEX, id: codex}
+parent_todo_id: WORKFLOW_MAINTENANCE
+depends_on: []
+supersedes: {task_id: JH-20260817-WORKFLOW-MAINT-001, revision: 1}
+task:
+  kind: IMPLEMENTATION
+  objective: "Repair the genuine authority/scope defects discovered in WORKFLOW-MAINT-001, seal its existing package without rerunning it, and leave one backward-compatible v1 complete maintenance delivery."
+  research_question: "Can v1 distinguish immutable hashed inputs from writable implementation files, enforce issuer-snapshot semantics and evidence bundles, and preserve an independently checkable maintenance package without changing scientific evidence?"
+  non_goals:
+    - "Run JoSIM or change any S0/S1/S2 raw, historical protocol record, disposition, or E01."
+    - "Alter the intended quantitative formulas, scientific thresholds, or protocol major version."
+    - "Create another successor except for a newly discovered authority/scope defect."
+  claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific or historical-disposition claim"
+scope:
+  read_paths:
+    - AGENTS.md
+    - docs/HANDOVER.md
+    - docs/research/METRIC_SPEC_V2.md
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/request.sha256
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/ack.yaml
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/attempts/A01/receipt.yaml
+  write_paths:
+    - .agents/skills/josim-handoff/scripts/handoff.py
+    - .agents/skills/josim-handoff/scripts/test_handoff.py
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-74ixf0ft/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-7xh9gw2b/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-93jys1ju/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-9u3a138q/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-a3lkgcl_/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-ax7kgyfu/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-az6e3xgr/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-faiavnc5/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-n5cdu1se/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-ndpu3j2i/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-plpv5qes/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-vkft31co/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-vyefayu3/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-wi2c9sk4/**
+    - .agents/skills/josim-handoff/scripts/.handoff-standin-wi6eh6nz/**
+    - research/WORKFLOW.md
+    - research/CLAUDE_EXECUTOR.md
+    - research/schemas/task-request.schema.json
+    - research/schemas/execution-receipt.schema.json
+    - research/schemas/audit-verdict.schema.json
+    - scripts/quantitative_analysis_verifier.py
+    - scripts/render_structured_report.py
+    - scripts/build_evidence_bundle.py
+    - test/workflow/test_quantitative_analysis_verifier.py
+    - test/workflow/test_evidence_bundle.py
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/**
+  frozen_paths:
+    - research/tasks/JH-20260817-WORKFLOW-MAINT-001/**
+    - research/tasks/JH-20260814-BVM-S0-001/**
+    - research/tasks/JH-20260817-BVM-S1-002/**
+    - research/tasks/JH-20260817-BVM-S2-001/**
+    - research/tasks/JH-20260817-BVM-S2-SEAL-001/**
+    - test/final/bvm/runs/bvm-s0-canonical-20260814-01/**
+    - test/final/bvm/runs/bvm-s1-canonical-20260817-01/**
+    - test/final/bvm/runs/bvm-s2-load-20260817-01/**
+  locks: [locks/handoff-v1-maintenance, locks/quantitative-analysis-infrastructure]
+baseline:
+  git_head: "58909bc"
+  dirty_policy: ALLOW_NONOVERLAP
+  git_status: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/baseline/git-status.txt, sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+  scope_hashes: {path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/baseline/scope-files.sha256, sha256: "c8f2ca3384f7e508af7715c8a5c0909e018f7c5bddd18a39b419056de93be36f"}
+authorization:
+  edit: true
+  run_josim: false
+  network: false
+  install_dependencies: false
+  create_worktree: false
+  commit: false
+  delete_or_overwrite: true
+contracts:
+  required_skills: [josim-handoff, skill-creator]
+  read_first: [AGENTS.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/references/handoff-protocol.md]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "c3818d21370d82a49dc060007534d57a7893392331746e957f242b2074c09c0d"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/evidence-inventory.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/verify-maintenance-evidence.py, role: IMPLEMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260817-WORKFLOW-MAINT-002/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "v1 adds optional scope.hash_paths for immutable input hashes; when absent legacy read_paths hashing remains unchanged, and when present only hash_paths are required in the scope manifest. Writable implementation paths are not mistakenly required to retain pre-execution hashes.", evidence: [handoff.py, task-request.schema.json, test_handoff.py]}
+  - {id: AC2, condition: "issuer_snapshot_commit mode requires ACK observed_git_head equal the declared snapshot and verifies the snapshot tree contains byte-identical request/signature/scope-manifest; legacy strict-HEAD remains unchanged. Regressions cover valid snapshot, wrong observed HEAD, missing blob, and frozen-input drift.", evidence: [handoff.py, test_handoff.py]}
+  - {id: AC3, condition: "evidence_bundle in a receipt is mechanically validated as a hashed artifact and its recursive inventory is checked for declared required roles; scientific_claim_ceiling is schema-valid only alongside exact contract claim_ceiling and documented as auditor-bounded, not automatically inferred.", evidence: [handoff.py, execution-receipt.schema.json, audit-verdict.schema.json, test_handoff.py]}
+  - {id: AC4, condition: "The existing 001 implementation package is recursively rehashed into a new inventory with original paths and hashes, records 001 as HISTORICAL_PROTOCOL_SCOPE_DEFECT, and includes all final docs/schemas/tools/tests/logs. No 001 file is modified.", evidence: [evidence-inventory.yaml, verify-maintenance-evidence.py, verification-log]}
+  - {id: AC5, condition: "Fix test fixture cleanup and remove only the pre-enumerated .handoff-standin-* temporary directories generated by 001 test execution; repeated tests leave no new repository temporary directories. Re-run legacy plus new regression suites with no JoSIM.", evidence: [test_handoff.py, test-log, cleanup-log]}
+  - {id: AC6, condition: "All resulting source/output hashes match the new inventory; no frozen scientific path differs; original 001 request/receipt stay byte-identical; verify-task for 002 succeeds.", evidence: [verification-log, receipt.yaml]}
+invalid_conditions:
+  - "Any historical or scientific evidence path changes, a legacy fixture fails, a verifier imports executor analysis, or scope/hash requirements are silently weakened."
+inconclusive_conditions: []
+stop_conditions:
+  - "Any requirement needs JoSIM, science evidence modification, protocol v2, a non-enumerated deletion, or a further contract beyond this real scope-defect successor."
+issuance_blockers: []

@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "quantitative-analysis-spec",
+  "description": "v1 optional analysis specification: preregisters exact timestamp rule, windows, metrics (formula/threshold/sign), actual-time integration, same-JJ phase-area definition and affine endpoint rule so an INDEPENDENT verifier can recompute structured analysis from raw plus spec alone (never importing the executor analyzer).",
+  "type": "object",
+  "required": ["schema_version", "spec_id", "raw_path", "windows", "columns",
+               "metrics", "integration", "same_jj", "timestamp_rule"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"const": "quantitative-analysis-spec-v1"},
+    "spec_id": {"type": "string"},
+    "raw_path": {"type": "string"},
+    "timestamp_rule": {
+      "type": "string",
+      "enum": ["exact_decimal_zero_tolerance", "half_open_actual_csv_time"]
+    },
+    "windows": {
+      "type": "object",
+      "additionalProperties": {"type": "array", "minItems": 2, "maxItems": 2,
+                               "items": {"type": "number"}}
+    },
+    "columns": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "column"],
+        "additionalProperties": true,
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {"type": "string",
+                   "enum": ["baseline_subtracted_peak", "latency_from",
+                            "fwhm", "window_mean", "phase_area",
+                            "affine_residual"]},
+          "column": {"type": "string"},
+          "window": {"type": "string"},
+          "baseline_window": {"type": "string"},
+          "threshold": {"type": "number"},
+          "sign": {"type": "integer"},
+          "formula": {"type": "string"},
+          "latency_from_ps": {"type": "number"},
+          "reference_time_ps": {"type": "number"},
+          "compare_tolerance": {"type": "number"}
+        }
+      }
+    },
+    "integration": {
+      "type": "object",
+      "required": ["actual_time", "phi0_wb"],
+      "properties": {
+        "actual_time": {"const": true},
+        "phi0_wb": {"type": "number", "const": 2.067833848e-15},
+        "method": {"type": "string", "enum": ["trapezoid"]}
+      }
+    },
+    "same_jj": {
+      "type": "object",
+      "required": ["phase_column", "voltage_column", "window",
+                   "reporting_direction", "voltage_to_phase_sign"],
+      "properties": {
+        "phase_column": {"type": "string"},
+        "voltage_column": {"type": "string"},
+        "window": {"type": "string"},
+        "reporting_direction": {"type": "integer"},
+        "voltage_to_phase_sign": {"type": "integer"},
+        "residual_definition": {"type": "string",
+                                "enum": ["phase_turns_minus_area_turns"]}
+      }
+    },
+    "affine_endpoint": {
+      "type": "object",
+      "required": ["endpoint_loads", "interior_loads", "floors", "band_fraction"],
+      "properties": {
+        "endpoint_loads": {"type": "array", "minItems": 2, "items": {"type": "number"}},
+        "interior_loads": {"type": "array", "minItems": 1, "items": {"type": "number"}},
+        "floors": {"type": "object", "additionalProperties": {"type": "number"}},
+        "band_fraction": {"type": "number"},
+        "interpolation": {"const": "linear_between_endpoints_only"}
+      }
+    },
+    "interpolation": {"const": "prohibited"}
+  }
+}

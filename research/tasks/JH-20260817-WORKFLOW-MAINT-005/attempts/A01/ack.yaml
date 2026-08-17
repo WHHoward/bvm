@@ -1,0 +1,71 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-005
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T20:22:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f7986e391b0455c486925d8cf3f12d225d4cdaa9ce399e8d36b50eeaaa8bb5d"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "9ae2b1f09a1750225e8bc263fa379057a1979c19"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "HEAD is cd727a4d (Codex 20:17:18 commit: mailbox
+       codex-20260817-201715 + MAINT-005 request/baseline entry, i.e. the
+       corrected-scope issuance itself); request baseline binds 9ae2b1f0
+       (the preserved 004 delivery commit). The cd727a4d delta is
+       coordination-layer only and does not overlap 005 write_paths;
+       scope-files.sha256 verified against current files (all 3 frozen
+       inputs match)."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Repair only MAINT-004's frozen-input contract defect and revalidate or
+    minimally correct the preserved no-JoSIM maintenance implementation as
+    one verified task package under corrected scope: hash_paths now bind
+    only AGENTS.md/HANDOVER/METRIC_SPEC_V2.  The preserved implementation
+    (issuer-snapshot repair + real regressions, endpoint-VI verifier,
+    multi-entry recursive pre-receipt bundle, stale-doc corrections,
+    synthetic CRITICAL/FROZEN chain) is carried forward and must end with a
+    schema-complete receipt and task-level verify-task VERIFIED.
+  non_goals:
+    - "Run JoSIM, change a scientific record or physical claim, alter
+       S0/S1/S2, MAINT-001 through MAINT-004, create protocol v2, or build
+       a DSL."
+    - "Use interpolation/resampling/float tolerance as a substitute for
+       preregistered exact timestamp tokens."
+    - "Treat a natural-language scientific_claim_ceiling relation as
+       mechanically decidable."
+  stop_conditions:
+    - "Need for a non-enumerated write path, scientific experiment/claim,
+       network/install/worktree/commit, deletion/overwrite, or major
+       redesign."
+planned_commands:
+  - "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest
+     .agents/skills/josim-handoff/scripts/test_handoff.py test/workflow/ -v"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task
+     research/tasks/JH-20260817-WORKFLOW-MAINT-005"
+  - "git diff --check"
+expected_changed_paths:
+  - .agents/skills/josim-handoff/scripts/handoff.py
+  - .agents/skills/josim-handoff/scripts/test_handoff.py
+  - scripts/quantitative_analysis_verifier.py
+  - scripts/build_evidence_bundle.py
+  - test/workflow/test_quantitative_analysis_verifier.py
+  - test/workflow/test_evidence_bundle.py
+  - research/WORKFLOW.md
+  - research/CLAUDE_EXECUTOR.md
+  - research/schemas/quantitative-analysis-spec.schema.json
+  - .agents/skills/josim-handoff/references/handoff-protocol.md
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-005/attempts/A01/{ack,receipt}.yaml
+  - research/tasks/JH-20260817-WORKFLOW-MAINT-005/attempts/A01/logs/*
+blockers: []
+deviations: []

@@ -1,0 +1,67 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-005
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T20:28:12+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "0f7986e391b0455c486925d8cf3f12d225d4cdaa9ce399e8d36b50eeaaa8bb5d"
+  ack_sha256: "8cb8a81db5122e2036cb2ed7ff07ec44afd4be6fec3d6f8c17e565bb9133f30b"
+  receipt_sha256: "170598ca0a80afbc5030bd7beeeee9942975dd3fbe4b94ef0ac503491f39d81b"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-regression-execution
+    status: PASS
+    evidence:
+      - "verify-task reports VERIFIED for the A01 contract chain; request, ACK, and receipt bindings independently recompute."
+      - "Independent pytest re-run passes 40 tests with no JoSIM execution."
+  - id: legacy-head-and-endpoint-vi-regressions
+    status: PASS
+    evidence:
+      - "Legacy no-snapshot strict-HEAD negative coverage remains present; endpoint_vi rejects affine_residual and exact-token mismatch coverage is present."
+      - "Endpoint-VI code computes Vth + Rhat*I, matching its signed-slope fixture; the retained docstring sign is inconsistent."
+  - id: issuer-snapshot-byte-identity
+    status: FAIL
+    evidence:
+      - "_issuer_snapshot_errors compares request documents after deleting baseline.issuer_snapshot_commit rather than requiring byte-identical snapshot-tree and current request.yaml bytes."
+      - "This is weaker than the issued MAINT-004 AC1 and user requirement; its self-referential representation requires an explicitly authorized non-self-referential design rather than silent normalization."
+  - id: bundle-recursive-mechanical-verification
+    status: FAIL
+    evidence:
+      - "_receipt_file_errors verifies bundle artifact hash and required role presence, but does not iterate entries to require an in-repo file, recompute each SHA-256, or compare each byte size."
+      - "The builder post-write check is not a handoff.py verifier check and does not satisfy the required tamper-resistant receipt-side validation."
+  - id: skeptical-peer-review
+    status: INCONCLUSIVE
+    evidence:
+      - "Copilot REVIEW.md passed the delivery but noted the endpoint-VI formula docstring inconsistency; final audit additionally found the two contract-level gaps above."
+findings:
+  - "MAJOR: issuer-snapshot byte identity is not implemented. Normalizing away the snapshot field changes the specified evidence relationship."
+  - "MAJOR: receipt-side evidence-bundle validation still omits per-entry path, SHA-256, and byte-size recomputation."
+  - "MINOR: endpoint_vi docstring states Vth - Rhat*I while code and fixture correctly use Vth + Rhat*I for signed Rhat."
+accepted_claims:
+  - "MAINT-005 fixes MAINT-004's hash_paths/write_paths overlap and preserves a mechanically valid no-JoSIM A01 contract chain."
+  - "The endpoint-VI implementation and stale-document updates are bounded workflow infrastructure work only."
+rejected_claims:
+  - "The current snapshot implementation does not establish the required byte-identical request.yaml snapshot binding."
+  - "The current handoff verifier does not establish recursive bundle-entry integrity merely from role-set validation."
+  - "No scientific, JoSIM, physical, route, metric-freeze, or historical-disposition conclusion is accepted."
+required_rework:
+  - "Obtain or define an explicitly authorized non-self-referential v1 representation that can satisfy the required byte-identical snapshot-tree binding; do not retain field-normalization as an undocumented substitute."
+  - "Make handoff.py validate every evidence-bundle entry: repository-safe path, existence/type, SHA-256, byte size, duplicate/path-set policy, multiple role entries, and prohibition on final receipt inclusion; add direct negative tests."
+  - "Correct endpoint_vi documentation to the implemented signed-slope formula V = Vth + Rhat*I."
+next_actions:
+  - "Stop this task pending user direction on the exact non-self-referential snapshot authority representation; a new task is required for any scope/semantic change."
+claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific or historical-disposition claim"

@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-14
+  last_updated: 2026-08-17
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -182,6 +182,14 @@ metadata:
 **认知**：✅ 已接受：fixed-fixture source-side simulation observations（正读 V(SL1) 0.890/0.901/0.904 mV、I(L_SL) 74.18/75.06/75.30 µA、latency≈5 ps；负读 −0.307/−0.315/−0.317 mV、−25.57/−26.27/−26.39 µA、latency≈10 ps；matched controls 仅 15–18 nV / 1.3–1.5 nA）、raw/provenance validity、两种 operational initialization 的 state-conditioned source response、direct JM1/JM2 activity-window phase changes 均远小于 ±1 turn、pre/post signatures 未出现 gross inversion；⚠️ 未接受：resolution-independent source baseline、logical 0/1、state preservation、SFQ/fluxoid count、receiver、Gate、route、published/hardware reproduction。**INCONCLUSIVE 直接原因**：预注册 0.1→0.05 ps matched-zero-control peak-latency 差 0.85 ps > 0.5 ps task-local band；不把 INCONCLUSIVE 当实验失败，也不得事后改 S0 criteria。
 
 **本周问题与解决过程**（供组会材料引用）：① D3 glob 导致 S0-001 delivery mechanical failure → S0-002 reseal（59 项精确清单）；② Copilot 发现 verify-log provenance defect → S0-003 修复；③ Copilot 科学审查发现旧 analysis.md 数值表与 raw/analysis.json 不一致 → S0-004 从 frozen raw deterministic regeneration 修正并通过；④ 最终 scientific audit = VALID + INCONCLUSIVE。旧错误报告全部保留为历史 provenance，引用数值统一用 S0-004 corrected report / C02。
+
+### 2026-08-17：workflow-maintenance snapshot/bundle 审计未接受
+
+**做了什么**：签发 no-JoSIM `WORKFLOW-MAINT-004` 以修复 issuer snapshot、endpoint-VI、evidence bundle 与文档语义；A01 因 `hash_paths` 与可写路径重叠而 BLOCKED，保留为不可变失败证据。随后 `WORKFLOW-MAINT-005` 收敛 hash 输入并重放验证，Copilot 审查通过，但 Codex C01 做了独立的实现级检查。
+
+**结果/产物**：⚠️ `research/tasks/JH-20260817-WORKFLOW-MAINT-005/audits/C01/verdict.yaml` 为 `REWORK_REQUIRED`。当前实现未满足 byte-identical request snapshot binding，且 `handoff.py` 未逐项重算 evidence bundle path/SHA-256/bytes。004 由 005 取代只解决了合同范围冲突，不构成对这两项语义的接受。
+
+**认知**：⚠️ endpoint-VI 的有符号公式实现/测试仍是限定的 workflow code evidence，不构成科学结论；在用户明确决定非自引用 snapshot 表示之前，不扩展协议或启动科学实验。
 
 ## 四、关键转折点速查
 

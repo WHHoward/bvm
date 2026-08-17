@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""build_evidence_bundle -- optional recursive evidence bundle builder.
+"""build_evidence_bundle -- declared-entry PRE-receipt evidence bundle builder.
 
-Builds a recursive manifest over required evidence files
-(raw/inputs/logs/manifest/spec/analyzer/verifier/structured result/
-renderer/report/inventory/receipt) with SHA-256 and byte size per file,
-then revalidates the written bundle (every hash recomputed, every required
-role present at least once, no missing required file).  A path argument may
-be a directory: its whole file tree is expanded recursively (one entry per
-file, same role).  Multiple entries per role are allowed.  Writes the bundle
-manifest to the given output path.  Missing required files fail (exit 1).
+Builds a manifest over DECLARED evidence entries (the <path> <role>
+arguments): SHA-256 and byte size per file, every required role present at
+least once, then revalidates the written bundle (every hash recomputed,
+every declared entry checked).  A path argument may be a directory: its
+file tree is expanded recursively as a CONVENIENCE that enumerates the
+declared entries (one entry per file, same role).  This expansion never
+turns a directory into a filesystem-completeness authority: the bundle's
+authority is exactly the declared entries, not every regular file below a
+directory.  Multiple entries per role are allowed.  Writes the bundle
+manifest to the given output path.  Missing declared files fail (exit 1).
 
 The bundle is a PRE-receipt manifest: it must never hash the final receipt
 itself (the receipt binds the bundle, not vice versa).

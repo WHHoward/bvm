@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Regression tests for build_evidence_bundle (AC7).
+"""Regression tests for build_evidence_bundle (declared-entry semantics).
 
 Valid bundle: all 12 required roles present -> OK.  Missing raw, missing
-log, and missing script must be rejected.  Minimal synthetic files only.
+log, and missing script must be rejected.  Directory expansion is only a
+convenience enumerating DECLARED entries — it is never tested or claimed
+as filesystem-completeness authority.  Minimal synthetic files only.
 """
 import pathlib
 import subprocess

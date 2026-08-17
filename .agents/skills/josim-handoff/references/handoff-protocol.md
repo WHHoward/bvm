@@ -111,6 +111,8 @@ receipt 逐项列出实际执行产物的改变路径及角色、执行命令/�
 
 **多 attempt 聚合（v1，2026-08-17，MAINT-003）**：多 attempt 任务的每个 attempt 保留不可变 canonical receipt（`attempts/<id>/receipt.yaml`；其他命名如 `receipt-a02-record.yaml` 不是 canonical）。`verify-task` 对 deliverable 覆盖与 acceptance-ID 覆盖做 **task-wide union** 校验：必需 deliverable 由所有 canonical receipt 的 artifact 并集表示，RECEIPT 角色 deliverable（通常为 `attempts/**/receipt.yaml` glob）由任一 canonical receipt 路径匹配即满足；request acceptance ID 由所有 receipt 的 `acceptance_results` 并集覆盖。每个 receipt 自身的哈希链、scope、artifact 与 duplicate/unknown-ID 校验逐 receipt 保留；单 attempt 时并集等于该 receipt，行为与旧版一致。历史上的单路径 RECEIPT deliverable（如 `attempts/A01/receipt.yaml`）在多 attempt 下不可满足，属 `HISTORICAL_PROTOCOL_MULTI_ATTEMPT_DEFECT`，签发时应改用 glob。
 
+**Evidence bundle 权威 = 声明条目（v1，2026-08-17，MAINT-007）**：PRE-receipt evidence bundle 的权威是 manifest 中 **declared entries**（role 可多条）。`handoff.py` 独立校验每个声明条目：仓库安全路径、regular 文件存在、SHA-256 重算、字节数重算、duplicate-path 策略，且禁止包含最终 receipt。构建脚本的目录展开仅是枚举声明条目的便利，**不构成文件系统完备性权威**——bundle 从不断言"目录下所有 regular 文件都是证据"。CRITICAL/FROZEN 工作的完备性定义为：冻结期望证据/run-artifact 矩阵 + 必需 artifacts/manifest/inventory 交付集比较，而非目录闭包。
+
 ## 8. 审计规则
 
 Codex 先做机械验证，再在不读取执行者解释的前提下复核实现和 raw 证据。物理任务按 `josim-evidence-audit` 检查同一 JJ、端点、方向、窗口、对照、负载和收敛。

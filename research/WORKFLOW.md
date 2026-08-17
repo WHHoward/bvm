@@ -324,6 +324,8 @@ receipt 记录**实际发生了什么**，而不是计划发生什么。至少�
 
 **多 attempt 聚合（2026-08-17，MAINT-003）**：同一 task 的多个 attempt 各自保留不可变 canonical receipt（`attempts/<id>/receipt.yaml`）。`verify-task` 对必需 deliverable 覆盖和 request acceptance-ID 覆盖做 **task-wide union** 校验：各 receipt 可分别承载各自交付的子集，只要所有 canonical receipt 的并集覆盖全部必需 deliverable 与全部 acceptance ID 即通过；每个 receipt 自身的哈希链、scope 和 artifact 校验保持不变，duplicate/unknown ID 仍逐 receipt 报错。RECEIPT 角色 deliverable 通常写成 glob（如 `attempts/**/receipt.yaml`），任一 canonical receipt 匹配即满足并集。单 attempt 任务与旧行为完全一致（并集 = 该 receipt）。002 的 A01/A02 单路径 D3 冲突（`attempts/A01/receipt.yaml` 无法由 A02 receipt 满足）为历史协议缺陷，不再重复；新 request 应使用 glob。
 
+**Evidence bundle = 声明条目（2026-08-17，MAINT-007）**：PRE-receipt evidence bundle 是 **multi-entry** manifest，权威是**声明的条目**（role 可多条），最终 receipt 永不包含在内。目录展开只是枚举声明条目的构建便利，**不声称递归文件系统完备性**。CRITICAL/FROZEN 工作的完备性定义为：冻结期望证据/run-artifact 矩阵 + 必需 artifacts/manifest/inventory 交付集比较；**绝不**用"目录下所有 regular 文件"定义完备性。
+
 Claude 可以提议 `PASS/FAIL/INCONCLUSIVE`，但不能给出最终审计裁决，也不能更新 todo/HANDOVER 证明自己已完成。
 
 ### 8.6 Codex：按固定顺序独立审计

@@ -217,3 +217,10 @@ canonical receipt 可分别覆盖子集，并集覆盖全部即通过；每个 r
 RECEIPT 角色 deliverable 使用 glob（`attempts/**/receipt.yaml`），不要使用
 单路径（单路径在多 attempt 下不可满足，属历史协议缺陷）。执行 receipt 中
 `acceptance_results` 只声明本 attempt 实际评估的 ID，不必重复全部 request ID。
+
+**Evidence bundle 语义（MAINT-007，2026-08-17）**：PRE-receipt bundle 是
+multi-entry manifest，权威 = **声明的条目**（role 可多条），最终 receipt
+永不包含；目录展开仅是枚举声明条目的便利，**不构成文件系统完备性权威**。
+CRITICAL/FROZEN 完备性 = 冻结期望证据/run-artifact 矩阵 + 必需
+artifacts/manifest/inventory 交付集比较，绝不用"目录下所有 regular 文件"
+定义完备性。

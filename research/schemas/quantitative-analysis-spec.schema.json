@@ -96,7 +96,12 @@
         "interior_loads": {"type": "array", "minItems": 1,
                            "items": {"type": "number"}},
         "tokens_ps": {"type": "array", "minItems": 1,
-                      "items": {"type": "number"}}
+                      "items": {"type": "number"}},
+        "descriptors": {
+          "type": "object",
+          "additionalProperties": {"type": "string",
+                                   "enum": ["max", "rms", "mean"]}
+        }
       }
     },
     "interpolation": {"const": "prohibited"}

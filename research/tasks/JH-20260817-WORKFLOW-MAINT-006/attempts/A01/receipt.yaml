@@ -1,0 +1,200 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-006
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-17T20:55:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "a634b68e7afaad8d1046cd7040ae1c5cc7ed201c529c3ab06d1d9ac3fc03468b"
+  issuer_snapshot_sha256: "8339b6931e26a48c910c4fc32dc81cb6f8436d92682ec2968a9ee72c6fd5a0c0"
+  ack_sha256: "225a98008a006f6219107a624ac187d7cbdf58ea5c5655adcba900aeebfbfbaf"
+execution_status: COMPLETED
+baseline_git_head: "c67e85ee5ddcaf430639aefc05ab12e62b959f94"
+result_git_head: "c67e85ee5ddcaf430639aefc05ab12e62b959f94"
+changes:
+  - {path: .agents/skills/josim-handoff/scripts/handoff.py, action: MODIFIED,
+     sha256: "08900114ce501751dfa7053182a75b727152590c50688fc7cd8f6ec2c822949b"}
+  - {path: .agents/skills/josim-handoff/scripts/test_handoff.py, action: MODIFIED,
+     sha256: "663ec6af18c62b50f93c64dc98794d9b567b49a423bd456f74b17fd79f9316a3"}
+  - {path: scripts/quantitative_analysis_verifier.py, action: MODIFIED,
+     sha256: "779f7c4bd26ffd487a97fb313b41c2a9cdfc626c5c914a18c50e416a20723ff9"}
+  - {path: scripts/build_evidence_bundle.py, action: MODIFIED,
+     sha256: "2c0c4587a80c9282906da643d8b12aa0b9c6a3a71d2c3cdc342bd3144b6ef8d4"}
+  - {path: test/workflow/test_quantitative_analysis_verifier.py,
+     action: MODIFIED,
+     sha256: "7c44de53117f7d083bf077fe6fe57eb6fa478fae4e93d8a58633b2238224fb30"}
+  - {path: test/workflow/test_evidence_bundle.py, action: MODIFIED,
+     sha256: "c5df726fda88ddc834b5d3c8212b145a8da98245ff6f46eb5d328bf7f183f81c"}
+  - {path: research/WORKFLOW.md, action: MODIFIED,
+     sha256: "1a65f3850ce2266be30eadf3626a983937b55fe93e52d5c050f39bd75ba3afa2"}
+  - {path: research/CLAUDE_EXECUTOR.md, action: MODIFIED,
+     sha256: "6191f75e0cf8c5c9b51f38ddc60d57d58c2ce54b0a8d4e2b8e4642b1ae7ad884"}
+  - {path: research/schemas/quantitative-analysis-spec.schema.json,
+     action: MODIFIED,
+     sha256: "d3e54983957c651af2b77b6cd8ddb513afdff2b90e121156a022cce273b11c6f"}
+  - {path: .agents/skills/josim-handoff/references/handoff-protocol.md,
+     action: MODIFIED,
+     sha256: "70201aaddf5725dece70e719060f5bef847f9bd2c7ec190c5a746a0bf43180be"}
+  - {path: research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/A01/logs/test-suite.log,
+     action: CREATED,
+     sha256: "e906d439b16672da7bc8074efec1160aaa9e0971ae35b38543167c37104242ac"}
+artifacts:
+  - {id: handoff-py, path: .agents/skills/josim-handoff/scripts/handoff.py,
+     sha256: "08900114ce501751dfa7053182a75b727152590c50688fc7cd8f6ec2c822949b",
+     role: IMPLEMENTATION}
+  - {id: handoff-tests, path: .agents/skills/josim-handoff/scripts/test_handoff.py,
+     sha256: "663ec6af18c62b50f93c64dc98794d9b567b49a423bd456f74b17fd79f9316a3",
+     role: TEST}
+  - {id: verifier, path: scripts/quantitative_analysis_verifier.py,
+     sha256: "779f7c4bd26ffd487a97fb313b41c2a9cdfc626c5c914a18c50e416a20723ff9",
+     role: IMPLEMENTATION}
+  - {id: bundler, path: scripts/build_evidence_bundle.py,
+     sha256: "2c0c4587a80c9282906da643d8b12aa0b9c6a3a71d2c3cdc342bd3144b6ef8d4",
+     role: IMPLEMENTATION}
+  - {id: verifier-tests, path: test/workflow/test_quantitative_analysis_verifier.py,
+     sha256: "7c44de53117f7d083bf077fe6fe57eb6fa478fae4e93d8a58633b2238224fb30",
+     role: TEST}
+  - {id: bundle-tests, path: test/workflow/test_evidence_bundle.py,
+     sha256: "c5df726fda88ddc834b5d3c8212b145a8da98245ff6f46eb5d328bf7f183f81c",
+     role: TEST}
+  - {id: workflow-doc, path: research/WORKFLOW.md,
+     sha256: "1a65f3850ce2266be30eadf3626a983937b55fe93e52d5c050f39bd75ba3afa2",
+     role: DOCUMENTATION}
+  - {id: executor-doc, path: research/CLAUDE_EXECUTOR.md,
+     sha256: "6191f75e0cf8c5c9b51f38ddc60d57d58c2ce54b0a8d4e2b8e4642b1ae7ad884",
+     role: DOCUMENTATION}
+  - {id: qas-schema, path: research/schemas/quantitative-analysis-spec.schema.json,
+     sha256: "d3e54983957c651af2b77b6cd8ddb513afdff2b90e121156a022cce273b11c6f",
+     role: DOCUMENTATION}
+  - {id: protocol-doc, path: .agents/skills/josim-handoff/references/handoff-protocol.md,
+     sha256: "70201aaddf5725dece70e719060f5bef847f9bd2c7ec190c5a746a0bf43180be",
+     role: DOCUMENTATION}
+  - {id: test-suite-log,
+     path: research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/A01/logs/test-suite.log,
+     sha256: "e906d439b16672da7bc8074efec1160aaa9e0971ae35b38543167c37104242ac",
+     role: LOG}
+commands:
+  - command: "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest .agents/skills/josim-handoff/scripts/test_handoff.py test/workflow/ -v"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/A01/logs/test-suite.log
+    log_sha256: "e906d439b16672da7bc8074efec1160aaa9e0971ae35b38543167c37104242ac"
+  - command: "git diff --check"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/A01/logs/test-suite.log
+    log_sha256: "e906d439b16672da7bc8074efec1160aaa9e0971ae35b38543167c37104242ac"
+tests:
+  - id: handoff-test-suite
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/A01/logs/test-suite.log
+    notes:
+      - "50/50 pass (test_handoff 35 + test/workflow 15) under pytest
+         PYTEST_DISABLE_PLUGIN_AUTOLOAD=1; git diff --check CLEAN."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/handoff.py
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+    notes:
+      - "EXTERNAL_ATTESTATION mode: request carries no snapshot SHA;
+         issuer-created attestation (issuer-snapshot.yaml) + separate seal
+         bind S and request/signature/scope hashes; ACK binds request +
+         attestation hashes and observes S (ExternalAttestationTests
+         positive)."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/handoff.py
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+    notes:
+      - "Verifier reads request.yaml/request.sha256/scope-files.sha256 from
+         S via git show and requires BYTE-IDENTICAL equality with current
+         sealed files (_external_attestation_errors); no normalization,
+         deletion, or semantic comparison; legacy strict-HEAD unchanged."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+    notes:
+      - "Negatives: request byte drift, tampered attestation (seal
+         mismatch), wrong S (snapshot_commit), scope-manifest drift all
+         rejected (ExternalAttestationTests 4 cases)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - scripts/quantitative_analysis_verifier.py
+      - research/schemas/quantitative-analysis-spec.schema.json
+      - test/workflow/test_quantitative_analysis_verifier.py
+    notes:
+      - "Endpoint-VI parses raw timestamps and tokens as Decimal (exact
+         decimal, no float equality); per exact token independently
+         computes Rhat(t)/Vth(t)/e_L(t); frozen max/RMS/mean descriptors
+         (spec.endpoint_vi.descriptors) applied afterwards; no pre-fit
+         token averaging."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - test/workflow/test_quantitative_analysis_verifier.py
+    notes:
+      - "Adversarial fixture: interior-load V offset +1e-4 at token 45 and
+         -1e-4 at token 55 (opposite residuals) -> average-before-fit
+         e_L=0 rejected, per-token RMS e_L=1e-4 accepted; decimal-token
+         mismatch rejected."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/handoff.py
+      - scripts/build_evidence_bundle.py
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+      - test/workflow/test_evidence_bundle.py
+    notes:
+      - "PRE-receipt bundles support multiple files/directories per role;
+         handoff.py independently validates every entry: in-repo regular
+         file, SHA-256 and byte-size recomputation, duplicate-path policy,
+         and prohibits final-receipt inclusion (BundleVerifierNegativeTests
+         + SyntheticChainTests); direct negatives cover hash/byte/missing/
+         duplicate/receipt."
+  - id: AC7
+    status: SATISFIED
+    evidence_paths:
+      - scripts/quantitative_analysis_verifier.py
+    notes:
+      - "endpoint_vi docstring states signed-slope load line V = Vth +
+         Rhat*I and matches the implementation (C01 MINOR closed)."
+  - id: AC8
+    status: SATISFIED
+    evidence_paths:
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+      - research/tasks/JH-20260817-WORKFLOW-MAINT-006/attempts/A01/logs/test-suite.log
+    notes:
+      - "Synthetic chain (sealed request -> S -> external attestation ->
+         ACK at S -> multi-file raw/spec -> per-token endpoint-VI ->
+         structured result -> deterministic report -> recursive pre-receipt
+         bundle -> receipt) ends with verify-task VERIFIED
+         (SyntheticChainTests); no JoSIM, no frozen-path changes."
+observations:
+  - "MAINT-005 C01 REWORK items are all addressed in 006: byte-identical
+     snapshot binding via the user-approved EXTERNAL_ATTESTATION
+     representation (no self-reference), receipt-side per-entry bundle
+     verification (path/SHA-256/bytes/duplicate/receipt), and the
+     endpoint_vi docstring sign fix."
+  - "Task-level verify-task VERIFIED (1 ACK + 1 receipt); attestation
+     issuer-snapshot.yaml/sha256 sealed and bound; git diff --check CLEAN;
+     no JoSIM, no MAINT-001..005/S0/S1/S2 changes."
+interpretations:
+  - "The external attestation resolves the byte-identity self-reference
+     that blocked 005 by removing the snapshot SHA from the request
+     entirely; the separately sealed attestation carries the binding."
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "Two empty self-created debug temp dirs (.dbg-*/) remain untracked at
+     repo root; Codex instructed not to touch debug directories."
+deviations: []
+blockers: []

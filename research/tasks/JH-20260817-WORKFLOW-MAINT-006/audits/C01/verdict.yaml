@@ -1,0 +1,68 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-WORKFLOW-MAINT-006
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T21:09:39+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "a634b68e7afaad8d1046cd7040ae1c5cc7ed201c529c3ab06d1d9ac3fc03468b"
+  ack_sha256: "225a98008a006f6219107a624ac187d7cbdf58ea5c5655adcba900aeebfbfbaf"
+  receipt_sha256: "b00a134857b0e0f5aa2155808ae3286df8cd3060cd056b8b2cfab1eabca5dfae"
+scope_status: FAIL
+artifact_status: VALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: CO_EXECUTOR
+  codex_modified_execution_artifacts: true
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-independent-regression
+    status: PASS
+    evidence:
+      - "Independent rerun: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest .agents/skills/josim-handoff/scripts/test_handoff.py test/workflow/ -v; 50 passed."
+      - "Independent handoff.py verify-task reports VERIFIED for the pre-audit A01 chain; request, ACK, receipt, and external-attestation seals recompute."
+  - id: external-attestation-byte-identity
+    status: PASS
+    evidence:
+      - "git show S for request.yaml, request.sha256, and baseline/scope-files.sha256 produced the same SHA-256 as each current sealed file."
+      - "_external_attestation_errors directly compares git-show bytes and preserves legacy no-snapshot strict-HEAD coverage."
+  - id: endpoint-vi-exact-per-token
+    status: PASS
+    evidence:
+      - "Endpoint-VI uses Decimal raw-token matching, computes each token before descriptor aggregation, rejects affine_residual, and its adversarial cancellation regression passes."
+      - "The docstring now states the implemented signed load line V = Vth + Rhat*I."
+  - id: receipt-side-entry-integrity
+    status: PASS
+    evidence:
+      - "_receipt_file_errors independently checks every listed entry for repository-safe regular-file existence, SHA-256, byte size, duplicate paths, and exclusion of the final receipt."
+  - id: recursive-root-exact-path-set
+    status: FAIL
+    evidence:
+      - "The bundle format contains only entries; it has no recursive-root declaration or expected root path-set."
+      - "Consequently handoff.py has no root to expand and cannot reject an additional file placed under a bundled directory but omitted from entries. The existing directory-expansion and missing-entry tests do not establish this required verifier-side property."
+  - id: skeptical-peer-review
+    status: INCONCLUSIVE
+    evidence:
+      - "The single requested Copilot review marked the delivery PASS, but it did not identify the absent recursive-root representation; the final independent audit found the AC6 gap."
+findings:
+  - "MAJOR: AC6 requires declared recursive roots to be expanded and compared to an exact path-set by handoff.py. Neither the manifest representation nor verifier implements that relationship."
+  - "The current recursive builder expansion is a builder-time convenience, not a receipt-side mechanical proof that no file under a declared evidence root was omitted."
+accepted_claims:
+  - "The external non-self-referential issuer-snapshot attestation, byte-identical S binding, legacy strict-HEAD behavior, exact-decimal endpoint-VI, and listed-entry integrity checks are valid bounded no-JoSIM maintenance work."
+  - "No JoSIM, scientific, route, metric-threshold, or historical-record change was performed."
+rejected_claims:
+  - "The delivery does not establish recursive pre-receipt bundle completeness or the required missing-recursive-file negative behavior."
+  - "The claimed end-to-end recursive bundle success cannot be accepted while AC6 remains unmet."
+required_rework:
+  - "Define a minimal v1 recursive-roots field in the pre-receipt bundle that binds each declared repository-safe root and its role, then have handoff.py expand each root and compare its complete regular-file path-set exactly against entries for that root."
+  - "Add direct verifier-side negative coverage for an omitted/new file beneath a declared root, while retaining hash, byte-size, duplicate, and receipt-in-bundle failures."
+next_actions:
+  - "Stop at this maintenance decision boundary. Do not run a scientific experiment or claim acceptance; any further implementation requires user direction because the approved final successor did not satisfy AC6."
+claim_ceiling: "workflow and deterministic-analysis infrastructure only; no scientific or historical-disposition claim"

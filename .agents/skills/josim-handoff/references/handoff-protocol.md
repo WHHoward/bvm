@@ -85,17 +85,25 @@ ACK 的 `created_at` 不得早于 request 的 `issued_at`；receipt 不得早于
 
 如果执行中才发现 request 与仓库冲突，不修改 ACK 掩盖历史；在 receipt 记 `DEVIATED` 或 `BLOCKED`。新的尝试使用新的 attempt ID。
 
-## 6.1 Issuer-snapshot 模式（v1，2026-08-17，MAINT-004）
+## 6.1 Issuer-snapshot 模式（v1，2026-08-17）
 
-`baseline.issuer_snapshot_commit` 是可选模式：request 引用签发时快照 commit。
-ACK 的 `observed_git_head` 必须等于快照 commit；快照树必须携带快照时点的
-request.yaml / request.sha256 / scope manifest。快照 request.yaml 是
-**引用前版本**（request 自引用快照 commit，磁盘副本必然携带
-`issuer_snapshot_commit` 字段），因此校验为：快照树中 request.sha256 是
-**树内** request.yaml 的有效签名（快照时点自洽）、快照 request.yaml 与磁盘
-版本**规范化后**（删除 `baseline.issuer_snapshot_commit` 字段）结构相等、
-scope manifest 字节一致（非自引用）。无该字段的 request 保持 legacy
-strict-HEAD（`observed_git_head == baseline.git_head`）不变。
+快照模式让 ACK 的 `observed_git_head` 指向签发时执行快照，而非 request 的
+parent baseline。两种表示：
+
+- **EXTERNAL_ATTESTATION（MAINT-006，用户批准的权威模式）**：
+  `baseline.issuer_snapshot_mode: EXTERNAL_ATTESTATION`。request **不含**
+  快照 SHA（非自引用）。签发者创建 `issuer-snapshot.yaml`
+  （issuer_snapshot_attestation，绑定 S 与 request/signature/scope 哈希）
+  及其独立封签 `issuer-snapshot.sha256`。ACK 必须绑定 request +
+  attestation 哈希且 `observed_git_head == S`；verifier 从 S 读取
+  request.yaml / request.sha256 / baseline/scope-files.sha256，要求与
+  当前封签文件**逐字节一致**（byte identity，无规范化/删除/语义比较）。
+- **内嵌 `baseline.issuer_snapshot_commit`（002 引入的旧模式）**：request
+  引用含自身的 commit，字节级自引用在数学上不可满足；005 C01 已判定该
+  表示需要显式授权的非自引用设计，新任务应使用 EXTERNAL_ATTESTATION。
+
+无快照字段的 request 保持 legacy strict-HEAD（`observed_git_head ==
+baseline.git_head`）不变。
 
 ## 7. Receipt 规则
 

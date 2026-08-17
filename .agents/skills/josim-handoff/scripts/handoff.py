@@ -26,6 +26,7 @@ SCHEMA_FILES = {
     "audit_verdict": "audit-verdict.schema.json",
     "standin_record": "standin-record.schema.json",
     "standin_review": "standin-review.schema.json",
+    "issuer_snapshot_attestation": "issuer-snapshot.schema.json",
 }
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 MANIFEST_LINE_RE = re.compile(r"^([0-9a-f]{64})  (.+)$")
@@ -514,6 +515,91 @@ def _sha256_bytes(data: bytes) -> str:
     return _hashlib.sha256(data).hexdigest()
 
 
+def _external_attestation_errors(
+    ack: dict[str, Any], request: dict[str, Any], repo_root: Path,
+    task_dir: Path,
+) -> list[str]:
+    """EXTERNAL_ATTESTATION snapshot mode (MAINT-006, AC1/AC2/AC3).
+
+    The request carries NO snapshot SHA (non-self-referential).  An
+    issuer-created attestation (issuer-snapshot.yaml) and its separate
+    SHA-256 seal (issuer-snapshot.sha256) bind execution snapshot S and
+    the request/signature/scope hashes.  The ACK binds request +
+    attestation hashes and observes S; the verifier reads request.yaml,
+    request.sha256 and baseline/scope-files.sha256 from S and requires
+    BYTE-IDENTICAL equality with the current sealed files (no
+    normalization, deletion, or semantic comparison)."""
+    if request.get("baseline", {}).get("issuer_snapshot_mode") != \
+            "EXTERNAL_ATTESTATION":
+        return []
+    errors: list[str] = []
+    attestation_path = task_dir / "issuer-snapshot.yaml"
+    seal_path = task_dir / "issuer-snapshot.sha256"
+    if not attestation_path.is_file():
+        return ["EXTERNAL_ATTESTATION mode requires issuer-snapshot.yaml"]
+    if not seal_path.is_file():
+        return ["EXTERNAL_ATTESTATION mode requires issuer-snapshot.sha256"]
+    try:
+        sealed = _parse_signature(seal_path, attestation_path.name)
+    except HandoffError as exc:
+        return [str(exc)]
+    if sealed != _sha256(attestation_path):
+        errors.append("issuer-snapshot.sha256 does not seal "
+                      "issuer-snapshot.yaml")
+    try:
+        attestation = validate_document(
+            attestation_path, _schema_dir(repo_root), repo_root)
+    except HandoffError as exc:
+        return [f"invalid issuer snapshot attestation: {exc}"]
+    if attestation["document_type"] != "issuer_snapshot_attestation":
+        return ["issuer-snapshot.yaml is not an issuer_snapshot_attestation"]
+    if attestation["task_id"] != request["task_id"]:
+        errors.append("attestation task_id does not match request")
+    if attestation["revision"] != request["revision"]:
+        errors.append("attestation revision does not match request")
+    snap = attestation["snapshot_commit"]
+    if ack["preflight"]["observed_git_head"] != snap:
+        errors.append(
+            f"ACK observed_git_head {ack['preflight']['observed_git_head']} "
+            f"!= attestation snapshot_commit {snap}")
+    if ack["bindings"].get("issuer_snapshot_sha256") != \
+            _sha256(attestation_path):
+        errors.append("ACK issuer_snapshot_sha256 does not bind "
+                      "issuer-snapshot.yaml")
+    request_digest = _sha256(task_dir / "request.yaml")
+    if attestation["bindings"].get("request_sha256") != request_digest:
+        errors.append("attestation request_sha256 does not bind current "
+                      "request.yaml")
+    signature_digest = _sha256(task_dir / "request.sha256")
+    if attestation["bindings"].get("request_signature_sha256") != \
+            signature_digest:
+        errors.append("attestation request_signature_sha256 does not bind "
+                      "request.sha256")
+    manifest_digest = _sha256(task_dir / "baseline" / "scope-files.sha256")
+    if attestation["bindings"].get("scope_manifest_sha256") != manifest_digest:
+        errors.append("attestation scope_manifest_sha256 does not bind "
+                      "baseline/scope-files.sha256")
+    # byte-identical snapshot binding: every sealed file read from S must
+    # equal the current sealed file byte-for-byte.
+    for rel in ("request.yaml", "request.sha256",
+                "baseline/scope-files.sha256"):
+        try:
+            proc = subprocess.run(
+                ["git", "show", f"{snap}:{task_dir.relative_to(repo_root).as_posix()}/{rel}"],
+                capture_output=True, cwd=repo_root, check=True)
+        except (subprocess.CalledProcessError, OSError):
+            errors.append(f"snapshot {snap} lacks {task_dir.name}/{rel}")
+            continue
+        current = (task_dir / rel).read_bytes()
+        if proc.stdout != current:
+            errors.append(f"{rel} differs byte-identically from snapshot {snap}")
+    return errors
+
+
+def _schema_dir(repo_root: Path) -> Path:
+    return repo_root / "research" / "schemas"
+
+
 def _request_without_snapshot(data: bytes) -> dict[str, Any] | None:
     """Parse request YAML and drop the self-referential snapshot field."""
     try:
@@ -665,18 +751,52 @@ def _receipt_file_errors(
                 try:
                     import yaml as _yaml
                     bdoc = _yaml.safe_load(bpath.read_text(encoding="utf-8"))
-                    roles = {e.get("role") for e in bdoc.get("entries", [])}
+                    entries = bdoc.get("entries", [])
+                    roles = {e.get("role") for e in entries}
                     required = {"raw", "inputs", "logs", "manifest", "spec",
                                 "analyzer", "verifier", "structured_result",
                                 "renderer", "report", "inventory", "receipt"}
                     if not required.issubset(roles):
                         errors.append("evidence_bundle missing required roles: "
                                       + ",".join(sorted(required - roles)))
-                    if any(e.get("path") == receipt_path.relative_to(repo_root).as_posix()
-                           for e in bdoc.get("entries", [])):
-                        errors.append(
-                            "evidence_bundle must be a PRE-receipt manifest "
-                            "and must not hash the final receipt itself")
+                    receipt_rel = receipt_path.relative_to(repo_root).as_posix()
+                    seen_paths: set[str] = set()
+                    for index, entry in enumerate(entries):
+                        epath = entry.get("path")
+                        esha = entry.get("sha256")
+                        ebytes = entry.get("bytes")
+                        if not isinstance(epath, str) or not epath:
+                            errors.append(f"evidence_bundle entries[{index}] "
+                                          "missing path")
+                            continue
+                        if epath in seen_paths:
+                            errors.append(f"evidence_bundle entries[{index}] "
+                                          f"duplicate path: {epath}")
+                        seen_paths.add(epath)
+                        if epath == receipt_rel:
+                            errors.append(
+                                "evidence_bundle must be a PRE-receipt "
+                                "manifest and must not hash the final "
+                                "receipt itself")
+                        try:
+                            _validate_repo_path(
+                                epath, f"evidence_bundle entries[{index}]")
+                            ep = _ensure_inside_repo(
+                                repo_root / epath, repo_root,
+                                f"evidence_bundle entries[{index}]")
+                        except HandoffError as exc:
+                            errors.append(str(exc))
+                            continue
+                        if not ep.is_file():
+                            errors.append(f"evidence_bundle entries[{index}] "
+                                          f"missing file: {epath}")
+                            continue
+                        if _sha256(ep) != esha:
+                            errors.append(f"evidence_bundle entries[{index}] "
+                                          f"sha256 mismatch: {epath}")
+                        if ep.stat().st_size != ebytes:
+                            errors.append(f"evidence_bundle entries[{index}] "
+                                          f"byte size mismatch: {epath}")
                 except OSError:
                     errors.append("evidence_bundle unreadable")
 
@@ -1001,6 +1121,13 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
 
     expected_head = (request["baseline"].get("issuer_snapshot_commit")
                      or request["baseline"]["git_head"])
+    if request.get("baseline", {}).get("issuer_snapshot_mode") == \
+            "EXTERNAL_ATTESTATION":
+        try:
+            attestation = _load_yaml(task_dir / "issuer-snapshot.yaml")
+            expected_head = attestation["snapshot_commit"]
+        except (OSError, KeyError, TypeError):
+            expected_head = None
     for attempt_id, (ack_path, ack) in acknowledgements.items():
         if ack["bindings"]["request_sha256"] != request_digest:
             errors.append(f"{ack_path}: request_sha256 does not bind current request")
@@ -1018,6 +1145,11 @@ def verify_task(task_dir: Path, schema_dir: Path, repo_root: Path) -> tuple[list
             for error in _issuer_snapshot_errors(
                 ack, request, repo_root,
                 task_rel=str(ack_path.parent.parent.parent.relative_to(repo_root)))
+        )
+        errors.extend(
+            f"{ack_path}: {error}"
+            for error in _external_attestation_errors(
+                ack, request, repo_root, ack_path.parent.parent.parent)
         )
 
     for attempt_id, (receipt_path, receipt) in receipts.items():

@@ -1022,7 +1022,8 @@ class IssuerSnapshotRealTests(unittest.TestCase):
                        baseline_head: str,
                        write_paths: list[str] | None = None,
                        deliverables: list[dict] | None = None,
-                       acceptance: list[dict] | None = None) -> None:
+                       acceptance: list[dict] | None = None,
+                       mode: str | None = None) -> None:
         relative = td.name
         (td / "baseline").mkdir(exist_ok=True)
         (td / "baseline" / "git-status.txt").write_text("", encoding="utf-8")
@@ -1092,10 +1093,36 @@ class IssuerSnapshotRealTests(unittest.TestCase):
         }
         if snapshot_commit is not None:
             request["baseline"]["issuer_snapshot_commit"] = snapshot_commit
+        if mode is not None:
+            request["baseline"]["issuer_snapshot_mode"] = mode
         write_yaml(td / "request.yaml", request)
         digest = sha256(td / "request.yaml")
         (td / "request.sha256").write_text(
             f"{digest}  request.yaml\n", encoding="utf-8")
+
+    def _write_attestation(self, td: pathlib.Path,
+                           snapshot: str) -> None:
+        attestation = {
+            "protocol": "josim-handoff/v1",
+            "document_type": "issuer_snapshot_attestation",
+            "schema_version": 1,
+            "task_id": self.TASK_ID,
+            "revision": 1,
+            "issued_at": "2026-08-17T04:00:00+08:00",
+            "issuer": {"role": "CODEX", "id": "selftest"},
+            "snapshot_commit": snapshot,
+            "bindings": {
+                "request_sha256": sha256(td / "request.yaml"),
+                "request_signature_sha256": sha256(
+                    td / "request.sha256"),
+                "scope_manifest_sha256": sha256(
+                    td / "baseline" / "scope-files.sha256"),
+            },
+        }
+        write_yaml(td / "issuer-snapshot.yaml", attestation)
+        (td / "issuer-snapshot.sha256").write_text(
+            f"{sha256(td / 'issuer-snapshot.yaml')}  "
+            f"issuer-snapshot.yaml\n", encoding="utf-8")
 
     def _snapshot_commit(self, td: pathlib.Path) -> str:
         """Create a dangling commit whose tree contains byte-identical
@@ -1131,8 +1158,12 @@ class IssuerSnapshotRealTests(unittest.TestCase):
                               check=True)
         return proc.stdout.strip()
 
-    def _ack(self, td: pathlib.Path, observed_head: str) -> None:
+    def _ack(self, td: pathlib.Path, observed_head: str,
+             attestation_sha256: str | None = None) -> None:
         (td / "attempts" / "A01").mkdir(parents=True, exist_ok=True)
+        bindings: dict = {"request_sha256": sha256(td / "request.yaml")}
+        if attestation_sha256 is not None:
+            bindings["issuer_snapshot_sha256"] = attestation_sha256
         ack = {
             "protocol": "josim-handoff/v1",
             "document_type": "execution_ack",
@@ -1143,7 +1174,7 @@ class IssuerSnapshotRealTests(unittest.TestCase):
             "workflow_state": "ACKED",
             "created_at": "2026-08-17T02:00:01+08:00",
             "executor": {"role": "CLAUDE_CODE", "id": "claude-code"},
-            "bindings": {"request_sha256": sha256(td / "request.yaml")},
+            "bindings": bindings,
             "decision": "ACCEPTED",
             "preflight": {
                 "observed_git_head": observed_head,
@@ -1217,6 +1248,116 @@ class IssuerSnapshotRealTests(unittest.TestCase):
             self.assertTrue(
                 any("observed_git_head differs" in e for e in errors),
                 f"wrong observed head must fail, got {errors}")
+
+
+class ExternalAttestationTests(IssuerSnapshotRealTests):
+    """AC1/AC2/AC3 (MAINT-006): EXTERNAL_ATTESTATION snapshot mode.
+
+    The request carries NO snapshot SHA; an issuer-created attestation and
+    its separate SHA-256 seal bind execution snapshot S and the
+    request/signature/scope hashes.  The verifier requires BYTE-IDENTICAL
+    equality of request.yaml / request.sha256 / scope manifest read from S
+    against the current sealed files.
+    """
+
+    TASK_ID = "JH-20260817-WM-ATTEST-SELFTEST-001"
+
+    def _external_fixture(self, td: pathlib.Path) -> str:
+        parent = self._git(REPO_ROOT, "rev-parse", "HEAD")
+        self._write_request(td, None, parent,
+                            mode="EXTERNAL_ATTESTATION")
+        snapshot = self._snapshot_commit(td)
+        self._write_attestation(td, snapshot)
+        self._ack(td, snapshot,
+                  attestation_sha256=sha256(
+                      td / "issuer-snapshot.yaml"))
+        return snapshot
+
+    def test_external_attestation_positive(self) -> None:
+        """AC1/AC2 positive: request has no snapshot SHA; attestation +
+        seal bind S; ACK binds request + attestation and observes S;
+        byte-identical files read from S match current sealed files."""
+        with tempfile.TemporaryDirectory(
+                prefix=".handoff-attest-", dir=REPO_ROOT) as temporary:
+            td = Path(temporary)
+            self._external_fixture(td)
+            request = yaml.safe_load(
+                (td / "request.yaml").read_text(encoding="utf-8"))
+            self.assertNotIn(
+                "issuer_snapshot_commit", request["baseline"],
+                "request must carry no snapshot SHA (non-self-referential)")
+            errors, _ = HANDOFF.verify_task(td, SCHEMA_DIR, REPO_ROOT)
+            self.assertEqual(errors, [],
+                             f"external attestation must verify, got "
+                             f"{errors}")
+
+    def test_request_byte_drift_rejected(self) -> None:
+        """AC3 negative: changed request bytes fail byte-identical check."""
+        with tempfile.TemporaryDirectory(
+                prefix=".handoff-attest-", dir=REPO_ROOT) as temporary:
+            td = Path(temporary)
+            self._external_fixture(td)
+            request_path = td / "request.yaml"
+            request_path.write_text(
+                request_path.read_text(encoding="utf-8").replace(
+                    "selftest", "DRIFTED"),
+                encoding="utf-8")
+            errors, _ = HANDOFF.verify_task(td, SCHEMA_DIR, REPO_ROOT)
+            self.assertTrue(
+                any("differs byte-identically from snapshot" in e
+                    for e in errors),
+                f"byte drift must fail, got {errors}")
+
+    def test_tampered_attestation_rejected(self) -> None:
+        """AC3 negative: tampered attestation breaks the seal."""
+        with tempfile.TemporaryDirectory(
+                prefix=".handoff-attest-", dir=REPO_ROOT) as temporary:
+            td = Path(temporary)
+            self._external_fixture(td)
+            attestation_path = td / "issuer-snapshot.yaml"
+            attestation_path.write_text(
+                attestation_path.read_text(encoding="utf-8") +
+                "  # tamper\n", encoding="utf-8")
+            errors, _ = HANDOFF.verify_task(td, SCHEMA_DIR, REPO_ROOT)
+            self.assertTrue(
+                any("does not seal" in e for e in errors),
+                f"tampered attestation must fail, got {errors}")
+
+    def test_wrong_snapshot_rejected(self) -> None:
+        """AC3 negative: attestation declaring a wrong S fails observed
+        HEAD check."""
+        with tempfile.TemporaryDirectory(
+                prefix=".handoff-attest-", dir=REPO_ROOT) as temporary:
+            td = Path(temporary)
+            self._external_fixture(td)
+            attestation_path = td / "issuer-snapshot.yaml"
+            attestation = yaml.safe_load(
+                attestation_path.read_text(encoding="utf-8"))
+            attestation["snapshot_commit"] = "0" * 40
+            write_yaml(attestation_path, attestation)
+            (td / "issuer-snapshot.sha256").write_text(
+                f"{sha256(attestation_path)}  issuer-snapshot.yaml\n",
+                encoding="utf-8")
+            errors, _ = HANDOFF.verify_task(td, SCHEMA_DIR, REPO_ROOT)
+            self.assertTrue(
+                any("snapshot_commit" in e for e in errors),
+                f"wrong S must fail, got {errors}")
+
+    def test_scope_manifest_drift_rejected(self) -> None:
+        """AC3 negative: scope-manifest drift fails byte-identical check."""
+        with tempfile.TemporaryDirectory(
+                prefix=".handoff-attest-", dir=REPO_ROOT) as temporary:
+            td = Path(temporary)
+            self._external_fixture(td)
+            manifest = td / "baseline" / "scope-files.sha256"
+            manifest.write_text(
+                manifest.read_text(encoding="utf-8") + "extra\n",
+                encoding="utf-8")
+            errors, _ = HANDOFF.verify_task(td, SCHEMA_DIR, REPO_ROOT)
+            self.assertTrue(
+                any("differs byte-identically from snapshot" in e
+                    for e in errors),
+                f"scope drift must fail, got {errors}")
 
 
 class SyntheticChainTests(IssuerSnapshotRealTests):
@@ -1324,8 +1465,8 @@ class SyntheticChainTests(IssuerSnapshotRealTests):
                  f"{relative}/artifacts/analyzer.txt", "analyzer",
                  f"{relative}/artifacts/structured.json",
                  "structured_result",
-                 str(self.VERIFIER), "verifier",
-                 str(self.RENDERER), "renderer",
+                 "scripts/quantitative_analysis_verifier.py", "verifier",
+                 "scripts/render_structured_report.py", "renderer",
                  f"{relative}/artifacts/report.md", "report",
                  f"{relative}/artifacts/inventory.txt", "inventory",
                  f"{relative}/artifacts/receipt-pending.yaml", "receipt"],
@@ -1349,13 +1490,13 @@ class SyntheticChainTests(IssuerSnapshotRealTests):
             self._write_request(td, None, parent,
                                 write_paths=write_paths,
                                 deliverables=deliverables,
-                                acceptance=acceptance)
+                                acceptance=acceptance,
+                                mode="EXTERNAL_ATTESTATION")
             snapshot = self._snapshot_commit(td)
-            self._write_request(td, snapshot, parent,
-                                write_paths=write_paths,
-                                deliverables=deliverables,
-                                acceptance=acceptance)
-            self._ack(td, snapshot)
+            self._write_attestation(td, snapshot)
+            self._ack(td, snapshot,
+                      attestation_sha256=sha256(
+                          td / "issuer-snapshot.yaml"))
             # receipt binds the PRE-receipt bundle (bundle does not hash the
             # final receipt)
             attempt_dir = td / "attempts" / "A01"
@@ -1434,6 +1575,146 @@ class SyntheticChainTests(IssuerSnapshotRealTests):
             errors, _ = HANDOFF.verify_task(td, SCHEMA_DIR, REPO_ROOT)
             self.assertEqual(errors, [],
                              f"synthetic chain must verify, got {errors}")
+
+
+
+class BundleVerifierNegativeTests(unittest.TestCase):
+    """AC6 negatives: handoff.py per-entry bundle verification rejects
+    duplicate paths, missing files, and final-receipt inclusion."""
+
+    def _fixture(self, td: pathlib.Path, entries: list[dict],
+                 include_receipt: bool = False) -> tuple[dict, dict, Path]:
+        relative = td.name
+        (td / "baseline").mkdir(exist_ok=True)
+        (td / "baseline" / "git-status.txt").write_text("", encoding="utf-8")
+        (td / "baseline" / "scope-files.sha256").write_text(
+            f"{sha256(REPO_ROOT / 'AGENTS.md')}  AGENTS.md\n",
+            encoding="utf-8")
+        request = {
+            "protocol": "josim-handoff/v1",
+            "document_type": "task_request",
+            "schema_version": 1,
+            "task_id": "JH-20260817-WM-BNEG-SELFTEST-001",
+            "revision": 1,
+            "workflow_state": "ISSUED",
+            "issued_at": "2026-08-17T05:00:00+08:00",
+            "issuer": {"role": "CODEX", "id": "selftest"},
+            "parent_todo_id": "WM",
+            "depends_on": [],
+            "supersedes": None,
+            "task": {"kind": "IMPLEMENTATION", "objective": "neg",
+                     "research_question": "neg", "non_goals": [],
+                     "claim_ceiling": "selftest_only"},
+            "scope": {"read_paths": ["AGENTS.md"],
+                      "write_paths": [f"{relative}/attempts/**"],
+                      "frozen_paths": [], "locks": ["locks/wm-bneg"]},
+            "baseline": {"git_head": "a83b73cc",
+                         "dirty_policy": "ALLOW_NONOVERLAP",
+                         "git_status": {"path":
+                                        f"{relative}/baseline/git-status.txt",
+                                        "sha256": sha256(
+                                            td / "baseline" /
+                                            "git-status.txt")},
+                         "scope_hashes": {"path": f"{relative}/baseline/"
+                                                  "scope-files.sha256",
+                                          "sha256": sha256(
+                                              td / "baseline" /
+                                              "scope-files.sha256")}},
+            "authorization": {"edit": True, "run_josim": False,
+                              "network": False, "install_dependencies": False,
+                              "create_worktree": False, "commit": False,
+                              "delete_or_overwrite": False},
+            "contracts": {"required_skills": [], "read_first": [],
+                          "handover": {"status": "NOT_APPLICABLE",
+                                       "path": None, "sha256": None},
+                          "metric_spec": {"status": "NOT_APPLICABLE",
+                                          "path": None, "sha256": None}},
+            "deliverables": [],
+            "acceptance": [],
+            "invalid_conditions": [], "inconclusive_conditions": [],
+            "stop_conditions": [], "issuance_blockers": [],
+        }
+        bundle_path = td / "bundle.yaml"
+        write_yaml(bundle_path, {"entries": entries})
+        receipt_path = td / "attempts" / "A01" / "receipt.yaml"
+        if include_receipt:
+            entries = entries + [
+                {"path": f"{relative}/attempts/A01/receipt.yaml",
+                 "role": "receipt", "sha256": "0" * 64, "bytes": 1}]
+            write_yaml(bundle_path, {"entries": entries})
+        (receipt_path).parent.mkdir(parents=True, exist_ok=True)
+        receipt = {
+            "protocol": "josim-handoff/v1",
+            "document_type": "execution_receipt",
+            "schema_version": 1,
+            "task_id": request["task_id"],
+            "revision": 1,
+            "attempt_id": "A01",
+            "workflow_state": "DELIVERED",
+            "created_at": "2026-08-17T05:00:01+08:00",
+            "executor": {"role": "CLAUDE_CODE", "id": "claude-code"},
+            "bindings": {"request_sha256": "0" * 64,
+                         "ack_sha256": "0" * 64},
+            "execution_status": "COMPLETED",
+            "baseline_git_head": "a83b73cc",
+            "result_git_head": None,
+            "changes": [
+                {"path": f"{relative}/bundle.yaml", "action": "CREATED",
+                 "sha256": sha256(bundle_path)}],
+            "artifacts": [
+                {"id": "bundle", "path": f"{relative}/bundle.yaml",
+                 "sha256": sha256(bundle_path),
+                 "role": "DOCUMENTATION"}],
+            "evidence_bundle": {
+                "path": f"{relative}/bundle.yaml",
+                "sha256": sha256(bundle_path)},
+            "commands": [], "tests": [], "acceptance_results": [],
+            "observations": [], "interpretations": [], "unknowns": [],
+            "proposed_physical_verdict": "NOT_APPLICABLE",
+            "limitations": [], "deviations": [], "blockers": [],
+        }
+        return request, receipt, bundle_path
+
+    def _entry(self, td: pathlib.Path, name: str) -> dict:
+        p = td / name
+        if p.exists():
+            return {"path": f"{td.name}/{name}", "role": "raw",
+                    "sha256": sha256(p), "bytes": p.stat().st_size}
+        return {"path": f"{td.name}/{name}", "role": "raw",
+                "sha256": "0" * 64, "bytes": 1}
+
+    def test_duplicate_and_missing_and_receipt_negatives(self) -> None:
+        with tempfile.TemporaryDirectory(
+                prefix=".handoff-bneg-", dir=REPO_ROOT) as temporary:
+            td = Path(temporary)
+            (td / "a.txt").write_text("aaa", encoding="utf-8")
+            request, receipt, _ = self._fixture(
+                td, [self._entry(td, "a.txt"), self._entry(td, "a.txt")])
+            errors = HANDOFF._receipt_file_errors(
+                td / "attempts" / "A01" / "receipt.yaml",
+                receipt, request, REPO_ROOT)
+            self.assertTrue(
+                any("duplicate path" in e for e in errors),
+                f"duplicate path must fail, got {errors}")
+            # missing file
+            request2, receipt2, _ = self._fixture(
+                td, [self._entry(td, "gone.csv")])
+            errors2 = HANDOFF._receipt_file_errors(
+                td / "attempts" / "A01" / "receipt.yaml",
+                receipt2, request2, REPO_ROOT)
+            self.assertTrue(
+                any("missing file" in e for e in errors2),
+                f"missing file must fail, got {errors2}")
+            # final receipt inclusion
+            request3, receipt3, _ = self._fixture(
+                td, [self._entry(td, "a.txt")], include_receipt=True)
+            errors3 = HANDOFF._receipt_file_errors(
+                td / "attempts" / "A01" / "receipt.yaml",
+                receipt3, request3, REPO_ROOT)
+            self.assertTrue(
+                any("must not hash the final receipt" in e
+                    for e in errors3),
+                f"receipt inclusion must fail, got {errors3}")
 
 
 if __name__ == "__main__":

@@ -191,6 +191,12 @@ class EndpointVITests(unittest.TestCase):
                          'i_column': 'I(LD)'}
                 for k in (1, 50, 12, 25)}
 
+    def _structured(self, **overrides) -> dict:
+        value = {'rhat': self.RHAT, 'vth': self.VTH, 'e_L': 0.0,
+                 'token_count': 2}
+        value.update(overrides)
+        return {'metrics': {'evi': value}}
+
     def test_endpoint_vi_passes_with_exact_tokens(self) -> None:
         """AC3/AC4 positive: Rhat/Vth/e_L from simultaneous endpoint V/I at
         exact preregistered tokens verify against structured."""
@@ -198,8 +204,7 @@ class EndpointVITests(unittest.TestCase):
             td = pathlib.Path(td)
             self._make_run(td, 'main.csv', 0.0, 0.0)
             spec = self._evi_spec('main.csv', self._aligned_runs(td))
-            structured = {'metrics': {'evi': {
-                'rhat': self.RHAT, 'vth': self.VTH, 'e_L': 0.0}}}
+            structured = self._structured()
             code, out = self._run(td, spec, structured)
             self.assertEqual(code, 0, out)
 
@@ -225,8 +230,7 @@ class EndpointVITests(unittest.TestCase):
             runs = self._aligned_runs(td)
             self._make_run(td, 'run12.csv', 6e-4, 7e-5, offset_ps=0.05)
             spec = self._evi_spec('main.csv', runs)
-            structured = {'metrics': {'evi': {
-                'rhat': self.RHAT, 'vth': self.VTH, 'e_L': 0.0}}}
+            structured = self._structured()
             code, out = self._run(td, spec, structured)
             self.assertNotEqual(code, 0, 'token mismatch must fail')
             self.assertIn('exact timestamp token', out)
@@ -238,11 +242,45 @@ class EndpointVITests(unittest.TestCase):
             td = pathlib.Path(td)
             self._make_run(td, 'main.csv', 0.0, 0.0)
             spec = self._evi_spec('main.csv', self._aligned_runs(td))
-            structured = {'metrics': {'evi': {
-                'rhat': self.RHAT, 'vth': self.VTH, 'e_L': 1e-4}}}
+            structured = self._structured(e_L=1e-4)
             code, out = self._run(td, spec, structured)
             self.assertNotEqual(code, 0,
                                 f'interpolated e_L must fail: {out}')
+
+    def _run12_opposite_residuals(self, td: pathlib.Path) -> None:
+        """Interior load 12 with OPPOSITE signed residuals at the two
+        tokens: +1e-4 V at 45 ps, -1e-4 V at 55 ps relative to the load
+        line.  Average-before-fit would cancel to e_L=0; per-token RMS
+        yields 1e-4."""
+        rows = ['time,"V(LD)","I(LD)"']
+        for k in range(1001):
+            t = k * 1e-13
+            v = 6e-4
+            if k == 450:
+                v = 7e-4
+            elif k == 550:
+                v = 5e-4
+            rows.append(f'{t:.6e},{v:.9e},{7e-5:.9e}')
+        (td / 'run12.csv').write_text('\n'.join(rows) + '\n',
+                                      encoding='utf-8')
+
+    def test_opposite_token_residuals_reject_average_fit(self) -> None:
+        """AC5: structured e_L from average-before-fit (0, residuals
+        cancel) must be rejected; per-token RMS (1e-4) must pass."""
+        with tempfile.TemporaryDirectory() as td:
+            td = pathlib.Path(td)
+            self._make_run(td, 'main.csv', 0.0, 0.0)
+            runs = self._aligned_runs(td)
+            self._run12_opposite_residuals(td)
+            spec = self._evi_spec('main.csv', runs)
+            code, out = self._run(td, spec, self._structured(e_L=0.0))
+            self.assertNotEqual(
+                code, 0,
+                f'average-before-fit e_L=0 must be rejected: {out}')
+            code, out = self._run(td, spec, self._structured(e_L=1e-4))
+            self.assertEqual(
+                code, 0,
+                f'per-token RMS e_L=1e-4 must pass: {out}')
 
 
 class RendererTests(unittest.TestCase):

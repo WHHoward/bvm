@@ -25,7 +25,8 @@ TAU = 2 * math.pi
 def load_raw(path: pathlib.Path) -> dict:
     rows = list(csv.reader(open(path, encoding='utf-8')))
     hdr = [h.strip().strip('"') for h in rows[0]]
-    out = {'time': [float(r[0]) for r in rows[1:]]}
+    out = {'time': [float(r[0]) for r in rows[1:]],
+           'time_str': [r[0] for r in rows[1:]]}
     for j, col in enumerate(hdr[1:], start=1):
         out[col] = [float(r[j]) for r in rows[1:]]
     return out
@@ -90,44 +91,83 @@ def metric(d: dict, m: dict, wins: dict) -> float:
     raise ValueError(f'unknown metric kind {kind}')
 
 
-def _exact_token_time(raw: dict, token_ps: float) -> float:
-    """Exact (decimal zero-tolerance) timestamp lookup: the token time in
-    seconds must be one of the raw CSV time values bit-for-bit.  Interpolation
-    or float-nearness is prohibited (spec timestamp_rule)."""
-    wanted = token_ps * 1e-12
-    times = set(raw['time'])
-    if wanted not in times:
-        raise ValueError(
-            f'exact timestamp token {token_ps} ps not present in raw time axis')
-    return wanted
+def _exact_token_index(raw: dict, token_ps: float) -> int:
+    """Exact-decimal timestamp lookup: the token time in seconds is
+    represented as Decimal (never float equality, interpolation, or
+    tolerance) and must equal one raw CSV time value exactly.  Returns the
+    row index of the matching time."""
+    from decimal import Decimal
+    wanted = Decimal(str(token_ps)) * Decimal('1e-12')
+    for idx, time_str in enumerate(raw['time_str']):
+        if Decimal(time_str) == wanted:
+            return idx
+    raise ValueError(
+        f'exact timestamp token {token_ps} ps not present in raw time axis')
+
+
+def _agg(values: list[float], descriptor: str) -> float:
+    if descriptor == 'max':
+        return max(values)
+    if descriptor == 'rms':
+        return (sum(v * v for v in values) / len(values)) ** 0.5
+    if descriptor == 'mean':
+        return sum(values) / len(values)
+    raise ValueError(f'unknown endpoint_vi descriptor {descriptor}')
 
 
 def endpoint_vi(evi: dict, base_dir: pathlib.Path) -> dict:
     """Endpoint-VI affine fit from SIMULTANEOUS endpoint V/I samples.
 
-    Every load run contributes one (I, V) point: the mean of the V and I
-    values taken together at each preregistered exact timestamp token
-    (same token, same raw row -> simultaneous).  Rhat and Vth come from the
-    two endpoint loads; e_L is the worst |V - (Vth - Rhat*I)| across all
-    loads.  No interpolation, no resampling, no cross-run alignment.
+    Every load run contributes one (I, V) value per preregistered exact
+    timestamp token (same token, same raw row -> simultaneous).  For each
+    token independently: Rhat(t) = (V_hi(t) - V_lo(t)) / (I_hi(t) - I_lo(t)),
+    Vth(t) = V_lo(t) - Rhat(t) * I_lo(t) (signed-slope load line
+    V = Vth + Rhat*I), and e_L(t) = max over loads of
+    |V_l(t) - (Vth(t) + Rhat(t) * I_l(t))|.  NO pre-fit token averaging:
+    the frozen descriptors (spec.endpoint_vi.descriptors, max/rms/mean)
+    are applied per quantity ACROSS the per-token values afterwards.
+    Timestamps are matched as exact decimals; no interpolation, resampling,
+    float equality, or cross-run alignment.
     """
-    pts: dict[str, tuple[float, float]] = {}
+    raw_by_load: dict[str, dict] = {}
     for load, run in evi['runs'].items():
         raw = load_raw(base_dir / run['raw_path'])
-        v_vals, i_vals = [], []
-        for token in evi['tokens_ps']:
-            t = _exact_token_time(raw, token)
-            idx = raw['time'].index(t)
-            v_vals.append(raw[run['v_column']][idx])
-            i_vals.append(raw[run['i_column']][idx])
-        pts[load] = (sum(i_vals) / len(i_vals), sum(v_vals) / len(v_vals))
+        raw['v_col'] = run['v_column']
+        raw['i_col'] = run['i_column']
+        raw_by_load[load] = raw
+    descriptors = evi.get('descriptors', {'rhat': 'max', 'vth': 'max',
+                                          'e_L': 'rms'})
     lo, hi = str(evi['endpoint_loads'][0]), str(evi['endpoint_loads'][1])
-    i_lo, v_lo = pts[lo]
-    i_hi, v_hi = pts[hi]
-    rhat = (v_hi - v_lo) / (i_hi - i_lo)
-    vth = v_lo - rhat * i_lo
-    e_l = max(abs(v - (vth + rhat * i)) for i, v in pts.values())
-    return {'rhat': rhat, 'vth': vth, 'e_L': e_l}
+    rhat_vals: list[float] = []
+    vth_vals: list[float] = []
+    e_l_vals: list[float] = []
+    for token in evi['tokens_ps']:
+        idx_by_load: dict[str, int] = {}
+        for load, raw in raw_by_load.items():
+            idx_by_load[load] = _exact_token_index(raw, token)
+        def val(load: str, column: str) -> float:
+            raw = raw_by_load[load]
+            return raw[column][idx_by_load[load]]
+        i_lo_t = val(lo, raw_by_load[lo]['i_col'])
+        v_lo_t = val(lo, raw_by_load[lo]['v_col'])
+        i_hi_t = val(hi, raw_by_load[hi]['i_col'])
+        v_hi_t = val(hi, raw_by_load[hi]['v_col'])
+        rhat_t = (v_hi_t - v_lo_t) / (i_hi_t - i_lo_t)
+        vth_t = v_lo_t - rhat_t * i_lo_t
+        e_l_t = max(
+            abs(val(load, raw_by_load[load]['v_col'])
+                - (vth_t + rhat_t * val(load, raw_by_load[load]['i_col'])))
+            for load in raw_by_load)
+        rhat_vals.append(rhat_t)
+        vth_vals.append(vth_t)
+        e_l_vals.append(e_l_t)
+    result = {
+        'rhat': _agg(rhat_vals, descriptors.get('rhat', 'max')),
+        'vth': _agg(vth_vals, descriptors.get('vth', 'max')),
+        'e_L': _agg(e_l_vals, descriptors.get('e_L', 'rms')),
+        'token_count': len(e_l_vals),
+    }
+    return result
 
 
 def main() -> None:

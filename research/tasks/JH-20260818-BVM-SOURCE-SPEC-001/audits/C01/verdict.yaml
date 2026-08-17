@@ -1,0 +1,71 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A01
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-18T10:20:00+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  ack_sha256: "724b7e11d6a20f9c4a91d55194042ec09d5a8154e368e8600023dd1f6c4a2847"
+  receipt_sha256: "8e25334ffde2ecd71b3ca39c262e8b978ab55408c892a88bac5f1c7d3335ddc7"
+scope_status: PASS
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-scope
+    status: PASS
+    evidence:
+      - "handoff.py verify-task reports VERIFIED for the sealed request, external issuer-snapshot attestation, A01 ACK, and receipt."
+      - "A01 writes are confined to its attempt-local path; no JoSIM execution or stable-load source modification is recorded."
+  - id: AC1-raw-waveform-provenance
+    status: PARTIAL
+    evidence:
+      - "The source manifest and waveform-family enumerate 16 load-origin/polarity/read-control CSVs and include raw V(SL1)/I(L_SL|XBVM1) sequences with source hash and byte fields."
+      - "The purported independent verifier checks source CSV hashes, bytes, required columns, and sample counts, but does not compare the declared time, V, or I tokens in waveform-family.json against the raw CSV tokens."
+  - id: AC2-correction-descriptors-and-independent-recomputation
+    status: FAIL
+    evidence:
+      - "Frozen preregistration requires matched-control-corrected x_star(t), exact-Decimal PRE/source/post treatment, peak, RMS, time-normalized L1, and primary activity descriptors."
+      - "A01 waveform-family.json contains only time_ps, v_sl1_V, i_lsl_A, and provenance for each raw read/control trace; it contains neither corrected waveforms nor any frozen descriptors."
+      - "verify_source_spec.py merely establishes nonempty PRE/source V samples. It neither computes nor compares PRE baselines, corrected V/I, post-window coverage, peak/RMS/time-normalized-L1/primary activity, nor any exact waveform token equality."
+  - id: AC3-terminal-orientation
+    status: FAIL
+    evidence:
+      - "terminal-orientation.yaml describes V(SL1) as SL1-to-ground, but records I(L_SL|XBVM1) only as an element within the closure."
+      - "The required element-node direction is absent: the frozen source netlist defines L_SL N8 SL 0.4P, so the record must explicitly bind the current-positive convention to N8 -> SL (and state the port relationship) rather than leave it as prose."
+  - id: AC4-accepted-boundaries
+    status: PASS
+    evidence:
+      - "A01 preserves the accepted all-READY prerequisite and per-polarity registered-token endpoint-VI NOT_SUPPORTED fact, and asserts no source model or BQ/cascade claim."
+  - id: AC5-pre-receipt-declared-entry-bundle
+    status: PARTIAL
+    evidence:
+      - "verify-task mechanically validates the declared bundle entries and final receipt.yaml is not an entry."
+      - "This cannot cure the missing frozen corrected-waveform/descriptors/orientation content required of the artifacts that the bundle binds."
+findings:
+  - "A01 is a valid no-JoSIM, attempt-local partial seal, but it is not a valid BVM_SOURCE_SPEC_V1 because core frozen deliverable content is absent and the advertised independent verifier does not independently validate it."
+  - "The defect is artifact completeness and verification only; it neither changes nor questions the accepted STABLE-LOAD-001 raw evidence, metrics, disposition, or claim ceiling."
+accepted_claims: []
+rejected_claims:
+  - "A01 cannot be used as an accepted frozen input to BQ replay calibration."
+required_rework:
+  - "Create append-only attempts/A02 only; do not modify A01, receipt-bound source evidence, request, preregistration, or historical Stable-Load artifacts."
+  - "For all 4 load-origin x 2 polarity strata, add raw read/control plus matched-control-corrected V(SL1) and I(L_SL|XBVM1) exact-literal Decimal-token waveforms; establish matching token order without interpolation, resampling, smoothing, or fitting."
+  - "Compute and record the frozen source/activity descriptors for each corrected V and I trace: deterministic peak/value/time, RMS, actual-Decimal-time trapezoidal time-normalized L1, and primary activity interval; report optional FWHM/dominant post-primary opposite lobe only when legal, otherwise NOT_APPLICABLE with a reason."
+  - "Replace the verifier with an implementation independent of the builder that reads raw CSVs and compares every declared raw and corrected token plus provenance, recomputes correction and every descriptor, confirms exact Decimal PRE/source/post coverage, and rejects missing/mismatched orientation details."
+  - "Make terminal-orientation.yaml explicitly bind V(SL1) SL1-to-ground and L_SL element orientation N8 -> SL, its associated current-positive direction, source port relationship, relevant cell/include/per-source-netlist hashes, and the future replay-consumer mapping boundary."
+  - "Rebuild A02-local inventory, declared-entry pre-receipt bundle, and receipt after all A02 artifacts are final. The final receipt must not enter the bundle. No JoSIM, BQ/replay/cascade calculation, source-model fit, or status bookkeeping is authorized."
+next_actions:
+  - "Executor may perform only the listed A02 report/sealing rework, then stop for a fresh Codex audit."
+claim_ceiling: "No scientific conclusion: A01 is incomplete source-evidence sealing only. Accepted STABLE-LOAD-001 remains the sole scientific authority."

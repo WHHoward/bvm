@@ -1,0 +1,51 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-18T03:05:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  issuer_snapshot_sha256: "92ea2f684e7238e68d06124a0e3311562b618b055bcfc5dae9910b11239724d3"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "Attestation snapshot S=9a74f570 observed as HEAD."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Create BVM_SOURCE_SPEC_V1, an attempt-local hash-bound specification of
+    the accepted finite BVM terminal waveform family: consume only the 16
+    accepted stable-load raw traces (four loads, two polarities,
+    read/control, V(SL1)/I(L_SL|XBVM1)); generate hash-bound source spec,
+    full exact-token waveform family (Decimal, no interpolation/resampling/
+    fitting), terminal/netlist orientation record, independent verifier,
+    simple report, inventory/pre-receipt bundle/receipt.  No JoSIM, no
+    source/BQ/replay/visual/workflow/status touch.
+  non_goals:
+    - "Run JoSIM; modify source evidence; Thevenin/Norton/affine source
+       model; BQ/receiver/cascade/SFQ/fluxoid/mechanism/hardware claims;
+       visualization dashboard; workflow/protocol maintenance; Task 2."
+  stop_conditions:
+    - "Need for a new simulation, BQ/replay/cascade analysis, new source
+       model, protocol change, unlisted write, overwrite/delete,
+       network/install/worktree/commit, or pre-audit status update."
+planned_commands:
+  - "python3 build_source_spec.py (spec + waveform-family + orientation, Decimal)"
+  - "python3 verify_source_spec.py (independent recompute)"
+  - "python3 render_source_report.py (report.md)"
+  - "build inventory + evidence-bundle + receipt"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260818-BVM-SOURCE-SPEC-001"
+expected_changed_paths:
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A01/*
+blockers: []
+deviations: []

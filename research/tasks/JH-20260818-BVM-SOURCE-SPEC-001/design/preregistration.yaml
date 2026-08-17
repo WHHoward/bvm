@@ -1,0 +1,36 @@
+schema_version: bvm-source-spec-v1-preregistration
+status: FROZEN_ON_ISSUANCE
+study_phase: CALIBRATION
+risk: CRITICAL
+evidence_mode: FROZEN
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+source_task: JH-20260817-BVM-S2-STABLE-LOAD-001
+research_question: "Within accepted stable-load evidence, what finite auditable family of BVM terminal waveform observations is actually available?"
+claim_ceiling: "A hash-bound source-observation specification only; no Thevenin/Norton/affine model, BQ/receiver/direct-cascade/interface/SFQ/fluxoid/mechanism/hardware conclusion."
+source_matrix:
+  load_origin_ohm: [1, 12, 25, 50]
+  polarity: [positive, negative]
+  condition: [read, matched_control]
+  signals: ["V(SL1)", "I(L_SL|XBVM1)"]
+  meaning: "load-origin identifies the accepted BVM experiment that produced a trace; it is not a future BQ input impedance or source impedance."
+windows_ps: {pre: [80, 90], source_activity: [94, 130], post: [140, 160], semantics: half_open_exact_Decimal_tokens}
+correction: "x_star(t)=[x_read(t)-mean(x_read,PRE)]-[x_control(t)-mean(x_control,PRE)] at identical literal Decimal tokens; no interpolation or resampling."
+descriptor_rules:
+  peak: "earliest exact token among maximum absolute values"
+  rms: "sqrt(mean(x^2)) in source/activity window"
+  time_normalized_l1: "trapezoid_actual_Decimal_time(abs(x))/(t_last-t_first) in source/activity window"
+  primary_activity: "same-sign contiguous primary lobe around deterministic peak"
+  optional_lobes: "FWHM and dominant post-primary opposite lobe are reported only when legal same-trace brackets/lobes exist; otherwise NOT_APPLICABLE."
+orientation_record:
+  required: ["V(SL1) port node SL1-to-ground", "I(L_SL|XBVM1) element L_SL orientation", "positive voltage/current conventions", "bvm_cell and per-source-netlist SHA-256"]
+accepted_preconditions:
+  readiness: "all 8 stable-load load-origin/polarity strata READY: JM1/JM2 PRE [80,90) p2p <=0.020 rad"
+  source_disposition: BOUNDED_SOURCE_CHARACTERIZATION_REPORTED
+  endpoint_vi: "five exact Decimal tokens per polarity eligible but NOT_SUPPORTED; no affine source claim"
+prohibited: [JoSIM_execution, raw_modification, source_analysis_modification, source_model_fit, BQ_receiver_claim, direct_cascade_claim, custom_dashboard]
+evidence_matrix:
+  source_immutable: [stable_load_manifest, 16_inputs, 16_raw_csv, accepted_analysis, accepted_receipt, accepted_audit]
+  task_outputs: [source_spec, waveform_family_exact_tokens, terminal_orientation_record, independent_verifier, simple_report, inventory, pre_receipt_bundle, receipt]
+dispositions:
+  INVALID: "Any source hash/column/token/order/window/orientation/provenance failure."
+  VALID_SOURCE_SPEC: "All 16 source observations and derived exact-token representations independently verify; no new scientific conclusion."

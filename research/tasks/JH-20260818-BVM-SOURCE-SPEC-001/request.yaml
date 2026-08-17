@@ -1,0 +1,56 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-18T03:00:00+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S2
+depends_on: [JH-20260817-BVM-S2-STABLE-LOAD-001]
+supersedes: null
+task:
+  kind: ANALYSIS
+  objective: "Create BVM_SOURCE_SPEC_V1, an attempt-local hash-bound specification of the accepted finite BVM terminal waveform family."
+  research_question: "Within accepted stable-load evidence, what finite auditable family of BVM terminal waveform observations is actually available?"
+  non_goals:
+    - "No JoSIM, no source raw/spec/analysis/audit modification, and no new BVM scientific run or conclusion."
+    - "No Thevenin/Norton/affine source model, BQ/receiver/direct-cascade/interface/SFQ/fluxoid/mechanism/hardware claim."
+    - "No visualization dashboard or workflow/protocol maintenance. Task 2 BQ replay is not authorized by this request."
+  claim_ceiling: "A hash-bound source-observation specification only; accepted STABLE-LOAD-001 remains the sole scientific authority."
+scope:
+  read_paths: [AGENTS.md, docs/HANDOVER.md, docs/research/METRIC_SPEC_V2.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-experiment/SKILL.md, .agents/skills/josim-experiment/references/run-protocol.md, circuits/bvm/bvm_cell.cir, circuits/models/jjmit.cir, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.sha256, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/analysis.json, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/receipt.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/evidence-bundle.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/audits/C01/verdict.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/manifest.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/*.cir, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/raw/*/run-01.csv]
+  hash_paths: [AGENTS.md, docs/HANDOVER.md, docs/research/METRIC_SPEC_V2.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-experiment/SKILL.md, .agents/skills/josim-experiment/references/run-protocol.md, circuits/bvm/bvm_cell.cir, circuits/models/jjmit.cir, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.sha256, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/analysis.json, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/receipt.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/evidence-bundle.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/audits/C01/verdict.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/manifest.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/*.cir, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/raw/*/run-01.csv]
+  write_paths: [research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**]
+  frozen_paths: [research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/**, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/**, research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/request.yaml, research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/request.sha256, research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/baseline/**, research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/design/**, research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/audits/**, docs/HANDOVER.md, memory/project-todo.md]
+  locks: [locks/bvm-source-spec-v1]
+baseline:
+  git_head: "9a74f570909341cbf40f96d82bae9a16fb53d6ca"
+  dirty_policy: ALLOW_NONOVERLAP
+  issuer_snapshot_mode: EXTERNAL_ATTESTATION
+  git_status: {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/baseline/git-status.txt, sha256: "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"}
+  scope_hashes: {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/baseline/scope-files.sha256, sha256: "d6f3db2996ef1dacaf21d8a31f5ee60c4247594db0c083015508c9817b4b3d74"}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: false, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff, josim-experiment]
+  read_first: [AGENTS.md, docs/HANDOVER.md, .agents/skills/josim-handoff/references/handoff-protocol.md, .agents/skills/josim-experiment/references/run-protocol.md, research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/design/preregistration.yaml]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "6a27cfbc82128f2438338939805865e117d2e5f9a5f073745e871d324d35d869"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**/bvm-source-spec-v1.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D2, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**/waveform-family.json, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D3, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**/terminal-orientation.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D4, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**/verify_source_spec.py, role: IMPLEMENTATION, required: true}
+  - {id: D5, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**/report.md, role: DOCUMENTATION, required: true}
+  - {id: D6, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**/evidence-bundle.yaml, role: EXPERIMENT_ARTIFACT, required: true}
+  - {id: D7, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/**/receipt.yaml, role: RECEIPT, required: true}
+acceptance:
+  - {id: AC1, condition: "Exactly 16 accepted source traces cover four load-origin values, two polarities, read/control, and raw V(SL1)/I(L_SL|XBVM1) with CSV hash/bytes/columns/literal-token provenance.", evidence: [source-spec, waveform-family, independent-verifier]}
+  - {id: AC2, condition: "Exact-Decimal PRE/source/post windows and read/control correction are independently recomputed without interpolation/resampling; descriptors follow frozen rules and optional lobe fields are NOT_APPLICABLE when unsupported.", evidence: [waveform-family, independent-verifier, report]}
+  - {id: AC3, condition: "Terminal orientation record binds port nodes, L_SL orientation, positive voltage/current conventions, relevant netlist hashes, and source-netlist provenance.", evidence: [terminal-orientation, independent-verifier]}
+  - {id: AC4, condition: "Spec preserves all-READY accepted prerequisite and per-polarity endpoint-VI NOT_SUPPORTED fact without fitting or asserting an affine source model.", evidence: [source-spec, report]}
+  - {id: AC5, condition: "Declared-entry pre-receipt bundle and inventory bind source spec, waveform family, orientation, verifier, report, source references, hash and bytes; final receipt excluded.", evidence: [inventory, evidence-bundle, receipt]}
+invalid_conditions: ["Any JoSIM execution, source modification, source hash/column/token/order mismatch, float timestamp matching, interpolation/resampling, source-model fit, out-of-scope write, overwrite, or absent orientation record."]
+inconclusive_conditions: []
+stop_conditions: ["Need for a new simulation, BQ/replay/cascade analysis, new source model, protocol change, unlisted write, overwrite/delete, network/install/worktree/commit, or pre-audit status update."]
+issuance_blockers: []

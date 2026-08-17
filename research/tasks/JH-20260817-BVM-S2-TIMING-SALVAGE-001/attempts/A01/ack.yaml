@@ -1,0 +1,55 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-SALVAGE-001
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-17T22:45:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c3c50c3efe8bf8750b12f8d206fb59eef61d71f99d365a11f36c0a0e339a7635"
+  issuer_snapshot_sha256: "d3d8b1a4abbd8d6f7df4064f39e45d1e3c74a8a186fd4577d8c99dc7e468bfed"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "099de6c349a2f54f3626821340a25fca41c0202c"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "Observed HEAD equals attestation snapshot_commit S=099de6c3;
+       TIMING-001 and its run root remain frozen and untouched."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    Read-only salvage: independently recompute the four TIMING-001 raw
+    cases into a new immutable append-only evidence chain under
+    attempts/A01/** without rerunning JoSIM and without using the old
+    analysis.json as calculation authority.  Compute SHA-256/bytes/
+    provenance, all four JM1/JM2 p2p windows, readiness, A/B contrasts,
+    and the registered disposition from raw CSV + frozen preregistration;
+    produce source-provenance.yaml, analysis.json, report.md,
+    report-consistency.json, inventory.yaml, evidence-bundle.yaml, and
+    receipt, all attempt-local.
+  non_goals:
+    - "Modify any TIMING-001 path or run-root bytes, rerun JoSIM, change
+       timing/load/timestep/window/threshold/probe/metric/disposition
+       rules, update memory/todo/HANDOVER/status, or modify handoff
+       protocol/schema/tooling."
+  stop_conditions:
+    - "Any need to modify josim-handoff protocol/schema/tooling, TIMING-001/
+       source-run bytes, frozen request, scientific parameters, project
+       status files, or an existing attempt-local file; any need to run
+       JoSIM, install, network, create worktree, commit, delete, overwrite,
+       or add a new case."
+planned_commands:
+  - "python3 salvage_analyze.py (Decimal recompute from frozen raw)"
+  - "python3 render_timing_report.py (attempt-local report)"
+  - "build source-provenance.yaml + inventory.yaml + evidence-bundle.yaml"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A01/*
+blockers: []
+deviations: []

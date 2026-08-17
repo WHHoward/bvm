@@ -1,0 +1,70 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-SALVAGE-001
+revision: 1
+attempt_id: A03
+audit_id: C01
+workflow_state: AUDITED
+created_at: "2026-08-17T23:11:00+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "c3c50c3efe8bf8750b12f8d206fb59eef61d71f99d365a11f36c0a0e339a7635"
+  ack_sha256: "e0ed616badb031d550af7fdb97ab5af4a39aea90a71aec0fb347b45262262023"
+  receipt_sha256: "8e0987a2109828361613c4fe24a96e761b490dd306fcfb2766bc5d9015835f9e"
+scope_status: PASS
+artifact_status: VALID
+physical_verdict: PASS
+audit_disposition: ACCEPTED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: contract-chain-and-append-only-layout
+    status: PASS
+    evidence:
+      - "Independent handoff.py verify-task reports VERIFIED with 3 ACK and 3 receipt records."
+      - "A01, A02, and A03 are separate attempt-local layouts; A03 did not overwrite any receipt-bound earlier artifact."
+      - "The external issuer-snapshot attestation binds S=099de6c349a2f54f3626821340a25fca41c0202c, and the A03 ACK observes that S."
+  - id: source-provenance-and-evidence-bundle
+    status: PASS
+    evidence:
+      - "Independent read-only recomputation verifies 24/24 repository-safe source paths, regular-file existence, SHA-256, and byte sizes: frozen preregistration/schema; source manifest/closure-hashes; all eight inputs; four CSVs; four stdout; and four stderr."
+      - "The A03 declared-entry pre-receipt bundle is mechanically verified and excludes final receipt; expected matrix and inventory are attempt-local."
+  - id: frozen-schema-and-decimal-analysis
+    status: PASS
+    evidence:
+      - "A03 analysis.json validates against the immutable TIMING-001 analysis-schema.json; the former A01 extra top-level field is absent and A03 identity is only in unconstrained provenance."
+      - "Independent raw CSV Decimal-token recomputation of [80,90) ps finds JM2 p2p A-positive/A-negative = 0.0584342 rad and B-positive/B-negative = 0.0054827 rad; B minus A is -0.0529515 rad in both polarity strata."
+      - "The analysis uses actual literal timestamps in half-open windows, with no interpolation, resampling, or tolerance matching."
+  - id: registered-disposition-and-report
+    status: PASS
+    evidence:
+      - "Both polarity strata satisfy the frozen same-sign contrast and readiness-classification-change rule, yielding CONSISTENT_TIMING_SENSITIVITY_SUPPORTED."
+      - "render_timing_report.py --check reports REPORT CONSISTENT and the report renders all preregistered JM1/JM2 windows, readiness, contrasts, provenance, disposition, and bounded ceiling."
+  - id: scope-and-status-authority
+    status: PASS
+    evidence:
+      - "No JoSIM execution, source/TIMING-001/run-root change, workflow/schema change, memory, project-todo, HANDOVER, or pre-audit project-status write occurred."
+  - id: skeptical-peer-review
+    status: PASS
+    evidence:
+      - "Copilot A03 skeptical review is PASS after identifying and closing A01 schema and A02 provenance defects; no Critical or Major finding remains."
+findings:
+  - "A01 and A02 remain immutable historical attempts. A03 is the accepted, schema-valid and fully provenance-bound attempt-local salvage record."
+  - "The accepted result is a four-run, fixed-closure, fixed-grid controlled intervention observation, not a timing sweep or mechanism study."
+accepted_claims:
+  - "At R_LD=12 ohm, dt=0.0125 ps, tstop=92 ps, and no read pulse, the registered S2 9-10 ps versus historical S1 10-11 ps initialization rising-edge intervention produces a reproducible change in the frozen JM1/JM2 pre-read settling/readiness observables in this BVM simulation fixture."
+  - "In both initialized polarity strata, JM2 [80,90) ps p2p changes from 0.0584342 rad (S2 registered timing; not ready) to 0.0054827 rad (S1 registered timing; ready), with Delta_JM2=-0.0529515 rad."
+  - "The preregistered disposition CONSISTENT_TIMING_SENSITIVITY_SUPPORTED is accepted solely as bounded controlled-intervention evidence."
+rejected_claims:
+  - "No detailed physical mechanism for the JM2 oscillation, numerical convergence, timing invariance, load characterization, read-time back-action, BQ/receiver/JTL, SFQ, fluxoid, logic, interface, route, hardware, or universal claim is accepted."
+  - "TIMING-001 C01 remains REWORK_REQUIRED historical evidence and is not rewritten as ACCEPTED."
+required_rework: []
+next_actions:
+  - "Initialization-timing calibration is closed at this accepted bounded evidence state. Do not run a timing sweep or investigate the JM2 oscillation mechanism under this task."
+  - "Stop at the scientific decision boundary. Any later load characterization requires a new user-authorized preregistered task; post-audit project bookkeeping, if desired, is separate."
+claim_ceiling: "bounded fixed-closure, fixed-grid evidence for or against a reproducible registered S1-versus-S2 initialization rising-edge intervention observation on JM1/JM2 pre-read settling/readiness only; no detailed mechanism, convergence, load/back-action, receiver, SFQ, fluxoid, logic, interface, route, hardware, or universal claim"

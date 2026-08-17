@@ -1,0 +1,144 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-SALVAGE-001
+revision: 1
+attempt_id: A02
+workflow_state: DELIVERED
+created_at: "2026-08-17T23:00:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c3c50c3efe8bf8750b12f8d206fb59eef61d71f99d365a11f36c0a0e339a7635"
+  issuer_snapshot_sha256: "d3d8b1a4abbd8d6f7df4064f39e45d1e3c74a8a186fd4577d8c99dc7e468bfed"
+  ack_sha256: "cf6ca4825b7a39dae118a6a6972ffc14f02a57d5f2dc9787cb4dd18594cb95e4"
+execution_status: COMPLETED
+baseline_git_head: "099de6c349a2f54f3626821340a25fca41c0202c"
+result_git_head: "099de6c349a2f54f3626821340a25fca41c0202c"
+changes:
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/source-provenance.yaml, action: CREATED, sha256: "bd98981c781c8e318692cfdfb2e8bf8de06c7fc61ab986629d6f910aecf08247"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/salvage_analyze.py, action: CREATED, sha256: "5001c7147103463182f173c151e1f4a3261eeb8bad9c896367fce6ba5311dbf4"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json, action: CREATED, sha256: "0e95f044a8726f6d0f16f2c732be554ef86b5372adaa4b0962c1692cf68af6f9"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/render_timing_report.py, action: CREATED, sha256: "8e66ba3e3bab325a65c5c36b4f8a211fe3100876e7fc02ac3c4aa7884de31974"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report.md, action: CREATED, sha256: "d6f03faa6eca6712502d933856ac8eedace1141b1f3578defe62fc2c5b65f732"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report-consistency.json, action: CREATED, sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/expected-matrix.yaml, action: CREATED, sha256: "d79e4241730db858b170f7e00cc1417ab15328452d8159c49d3c5fea7cff574c"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/inventory.yaml, action: CREATED, sha256: "d6d021620733ae5b8bbadc1307ed69cae333b2255a38e9d33c29c1d6c468fe0a"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/evidence-bundle.yaml, action: CREATED, sha256: "0be210ceab5632555611e2364d5970afde5b584d24e076ad60e31416890ac277"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/receipt-pending.yaml, action: CREATED, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f"}
+artifacts:
+  - {id: source-provenance, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/source-provenance.yaml, sha256: "bd98981c781c8e318692cfdfb2e8bf8de06c7fc61ab986629d6f910aecf08247", role: MANIFEST}
+  - {id: analyzer, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/salvage_analyze.py, sha256: "5001c7147103463182f173c151e1f4a3261eeb8bad9c896367fce6ba5311dbf4", role: IMPLEMENTATION}
+  - {id: analysis, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json, sha256: "0e95f044a8726f6d0f16f2c732be554ef86b5372adaa4b0962c1692cf68af6f9", role: DOCUMENTATION}
+  - {id: renderer, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/render_timing_report.py, sha256: "8e66ba3e3bab325a65c5c36b4f8a211fe3100876e7fc02ac3c4aa7884de31974", role: IMPLEMENTATION}
+  - {id: report, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report.md, sha256: "d6f03faa6eca6712502d933856ac8eedace1141b1f3578defe62fc2c5b65f732", role: DOCUMENTATION}
+  - {id: report-consistency, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report-consistency.json, sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b", role: DOCUMENTATION}
+  - {id: expected-matrix, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/expected-matrix.yaml, sha256: "d79e4241730db858b170f7e00cc1417ab15328452d8159c49d3c5fea7cff574c", role: MANIFEST}
+  - {id: inventory, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/inventory.yaml, sha256: "d6d021620733ae5b8bbadc1307ed69cae333b2255a38e9d33c29c1d6c468fe0a", role: DOCUMENTATION}
+  - {id: bundle, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/evidence-bundle.yaml, sha256: "0be210ceab5632555611e2364d5970afde5b584d24e076ad60e31416890ac277", role: DOCUMENTATION}
+  - {id: receipt-pending, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/receipt-pending.yaml, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f", role: DOCUMENTATION}
+evidence_bundle:
+  path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/evidence-bundle.yaml
+  sha256: "0be210ceab5632555611e2364d5970afde5b584d24e076ad60e31416890ac277"
+commands:
+  - command: "python3 salvage_analyze.py (schema-valid analysis.json; attempt in provenance)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report-consistency.json
+    log_sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"
+  - command: "python3 render_timing_report.py && python3 render_timing_report.py --check"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report-consistency.json
+    log_sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"
+tests:
+  - id: schema-validation
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json
+    notes:
+      - "analysis.json validates against frozen analysis-schema.json
+         (Draft 2020-12, additionalProperties false): no unregistered
+         fields; salvage attempt identity carried in provenance."
+  - id: independent-recompute
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json
+    notes:
+      - "Recomputed from frozen raw + preregistration; JM2 [80,90) ps
+         A=0.0584342 / B=0.0054827 rad both polarities; disposition
+         CONSISTENT_TIMING_SENSITIVITY_SUPPORTED (identical to A01)."
+  - id: report-consistency
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report-consistency.json
+    notes:
+      - "Deterministic render/check identical; full registered content set."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/source-provenance.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/salvage_analyze.py
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json
+    notes:
+      - "A02 read-only over frozen raw; recomputed SHA-256/bytes/
+         provenance, all p2p windows, readiness, contrasts, disposition
+         from raw; old analysis.json not used as authority."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/source-provenance.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json
+    notes:
+      - "Sole scientific input is the unchanged registered intervention;
+         no new run or changed parameter."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json
+    notes:
+      - "All A02 artifacts beneath attempts/A02/; no file hash-bound by
+         another attempt receipt was overwritten (append-only layout)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/analysis.json
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report.md
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report-consistency.json
+    notes:
+      - "Deterministic report renders per-run windows/readiness/contrasts/
+         disposition/provenance/no-mechanism ceiling; consistency checked
+         from attempt-local structured result."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/expected-matrix.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/inventory.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/evidence-bundle.yaml
+    notes:
+      - "Frozen expected matrix + inventory cover declared evidence; 15
+         declared-entry bundle records safe path/SHA-256/bytes per entry
+         and excludes the final receipt."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A02/report.md
+    notes:
+      - "No memory/todo/HANDOVER/status update made; interpretation remains
+         within frozen claim ceiling."
+observations:
+  - "A01 schema defect fixed: analysis.json no longer carries the
+     unregistered 'salvage_attempt' field; attempt identity moved into
+     provenance (free-form object per frozen schema); jsonschema
+     validation PASSES."
+  - "Scientific result unchanged and identical to A01: disposition
+     CONSISTENT_TIMING_SENSITIVITY_SUPPORTED."
+interpretations:
+  - "Schema-valid structured result plus attempt-local append-only layout
+     completes the salvage evidence chain for final audit."
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "Fixed single load/timestep; no convergence study per stop rules."
+deviations: []
+blockers: []

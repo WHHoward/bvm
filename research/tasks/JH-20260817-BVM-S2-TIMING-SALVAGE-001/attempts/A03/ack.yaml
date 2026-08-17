@@ -1,0 +1,56 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-SALVAGE-001
+revision: 1
+attempt_id: A03
+workflow_state: ACKED
+created_at: "2026-08-17T23:05:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c3c50c3efe8bf8750b12f8d206fb59eef61d71f99d365a11f36c0a0e339a7635"
+  issuer_snapshot_sha256: "d3d8b1a4abbd8d6f7df4064f39e45d1e3c74a8a186fd4577d8c99dc7e468bfed"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "099de6c349a2f54f3626821340a25fca41c0202c"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "A01/A02 attempt-local artifacts remain immutable; A03 writes only
+       attempts/A03/** per Codex codex-20260817-225947."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A03 (per Codex codex-20260817-225947): compute (not copy) a complete
+    attempt-local source-provenance inventory with repository-safe path +
+    SHA-256 + byte size for EVERY reused source: frozen preregistration and
+    analysis schema; source manifest and closure-hashes; every source
+    inputs file including generate_inputs.py and matrix.txt; all 4 raw
+    CSVs; all 4 stdout; all 4 stderr.  Use the actual attempt name A03,
+    validate A03 analysis.json against the frozen schema (independent
+    Decimal recompute, not old analysis), and regenerate solely A03-local
+    report/consistency/expected-matrix/inventory/pre-receipt declared-entry
+    bundle/receipt; bundle excludes the final receipt.  Then one Copilot
+    review and stop.
+  non_goals:
+    - "Modify A01/A02, TIMING-001, run root, protocol/schema files, frozen
+       request, scientific parameters, or project status files; run
+       JoSIM."
+  stop_conditions:
+    - "Any need to modify A01/A02/TIMING-001/run-root bytes, protocol/
+       schema/tooling, frozen request, scientific parameters, status
+       files, or an existing attempt-local file; any need to run JoSIM,
+       install, network, create worktree, commit, delete, overwrite, or
+       add a new case."
+planned_commands:
+  - "python3 salvage_analyze.py (complete computed provenance + schema-valid analysis.json)"
+  - "python3 render_timing_report.py + --check (A03-local)"
+  - "rebuild expected-matrix + inventory + evidence-bundle (declared entries)"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001"
+expected_changed_paths:
+  - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/*
+blockers: []
+deviations: []

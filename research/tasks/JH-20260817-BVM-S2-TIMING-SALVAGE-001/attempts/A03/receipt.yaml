@@ -1,0 +1,157 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260817-BVM-S2-TIMING-SALVAGE-001
+revision: 1
+attempt_id: A03
+workflow_state: DELIVERED
+created_at: "2026-08-17T23:10:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "c3c50c3efe8bf8750b12f8d206fb59eef61d71f99d365a11f36c0a0e339a7635"
+  issuer_snapshot_sha256: "d3d8b1a4abbd8d6f7df4064f39e45d1e3c74a8a186fd4577d8c99dc7e468bfed"
+  ack_sha256: "e0ed616badb031d550af7fdb97ab5af4a39aea90a71aec0fb347b45262262023"
+execution_status: COMPLETED
+baseline_git_head: "099de6c349a2f54f3626821340a25fca41c0202c"
+result_git_head: "099de6c349a2f54f3626821340a25fca41c0202c"
+changes:
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/source-provenance.yaml, action: CREATED, sha256: "c7384b5c3f50f7ab1e56f74b96c246f06d95483ac66d310ebf243dc152ca6e67"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/salvage_analyze.py, action: CREATED, sha256: "1f150ca9bd22b748200a1bc47a5445accebb055517120375a042a69558f23516"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json, action: CREATED, sha256: "90763cd1a25244ae05185a0b2cbe21cc980c181e2bebc3f07c9df5f9fb880d2d"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/schema-validation.json, action: CREATED, sha256: "de104d20ba7762527197e226970bb1bb4bb2f8aed7db31f773602aae7f233411"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/render_timing_report.py, action: CREATED, sha256: "8e66ba3e3bab325a65c5c36b4f8a211fe3100876e7fc02ac3c4aa7884de31974"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report.md, action: CREATED, sha256: "d6f03faa6eca6712502d933856ac8eedace1141b1f3578defe62fc2c5b65f732"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report-consistency.json, action: CREATED, sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/expected-matrix.yaml, action: CREATED, sha256: "08ba89b6db6d3c4408de051b4f71b875f46c7c334c3a17c1cc955de2f4bd5646"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/inventory.yaml, action: CREATED, sha256: "c21f955b7e37cdec0d00398d4adaf950597d877113fdefea7e580d45659e5623"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/evidence-bundle.yaml, action: CREATED, sha256: "0234fa96c84c33dd6867b59484e6493e42907bbd5c577124dc5b80ebd54e96c3"}
+  - {path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/receipt-pending.yaml, action: CREATED, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f"}
+artifacts:
+  - {id: source-provenance, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/source-provenance.yaml, sha256: "c7384b5c3f50f7ab1e56f74b96c246f06d95483ac66d310ebf243dc152ca6e67", role: MANIFEST}
+  - {id: analyzer, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/salvage_analyze.py, sha256: "1f150ca9bd22b748200a1bc47a5445accebb055517120375a042a69558f23516", role: IMPLEMENTATION}
+  - {id: analysis, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json, sha256: "90763cd1a25244ae05185a0b2cbe21cc980c181e2bebc3f07c9df5f9fb880d2d", role: DOCUMENTATION}
+  - {id: schema-validation, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/schema-validation.json, sha256: "de104d20ba7762527197e226970bb1bb4bb2f8aed7db31f773602aae7f233411", role: DOCUMENTATION}
+  - {id: renderer, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/render_timing_report.py, sha256: "8e66ba3e3bab325a65c5c36b4f8a211fe3100876e7fc02ac3c4aa7884de31974", role: IMPLEMENTATION}
+  - {id: report, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report.md, sha256: "d6f03faa6eca6712502d933856ac8eedace1141b1f3578defe62fc2c5b65f732", role: DOCUMENTATION}
+  - {id: report-consistency, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report-consistency.json, sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b", role: DOCUMENTATION}
+  - {id: expected-matrix, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/expected-matrix.yaml, sha256: "08ba89b6db6d3c4408de051b4f71b875f46c7c334c3a17c1cc955de2f4bd5646", role: MANIFEST}
+  - {id: inventory, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/inventory.yaml, sha256: "c21f955b7e37cdec0d00398d4adaf950597d877113fdefea7e580d45659e5623", role: DOCUMENTATION}
+  - {id: bundle, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/evidence-bundle.yaml, sha256: "0234fa96c84c33dd6867b59484e6493e42907bbd5c577124dc5b80ebd54e96c3", role: DOCUMENTATION}
+  - {id: receipt-pending, path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/receipt-pending.yaml, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f", role: DOCUMENTATION}
+evidence_bundle:
+  path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/evidence-bundle.yaml
+  sha256: "0234fa96c84c33dd6867b59484e6493e42907bbd5c577124dc5b80ebd54e96c3"
+commands:
+  - command: "python3 salvage_analyze.py (complete computed provenance; schema-valid analysis.json)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report-consistency.json
+    log_sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"
+  - command: "python3 render_timing_report.py && python3 render_timing_report.py --check"
+    exit_code: 0
+    log_path: research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report-consistency.json
+    log_sha256: "8419e3cd0d66ebeea298ab27039a7f85022cfaddf1a0a2c826aa34e2b0d0007b"
+tests:
+  - id: schema-validation
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/schema-validation.json
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json
+    notes:
+      - "analysis.json validated against frozen analysis-schema.json
+         (jsonschema Draft 2020-12) with explicit evidence file; no
+         unregistered fields."
+  - id: source-provenance-completeness
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/source-provenance.yaml
+    notes:
+      - "24 computed source entries: frozen preregistration + analysis
+         schema, source manifest, closure-hashes, all 8 source inputs
+         (incl. generate_inputs.py and matrix.txt), 4 raw CSVs, 4 stdout,
+         4 stderr; repository-safe path + SHA-256 + bytes each; attempt=A03
+         (computed, not copied)."
+  - id: independent-recompute
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json
+    notes:
+      - "Decimal recompute from frozen raw; JM2 [80,90) ps A=0.0584342 /
+         B=0.0054827 rad both polarities; disposition
+         CONSISTENT_TIMING_SENSITIVITY_SUPPORTED."
+  - id: report-consistency
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report-consistency.json
+    notes:
+      - "Deterministic render/check identical; full registered content set."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/source-provenance.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/salvage_analyze.py
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json
+    notes:
+      - "A03 read-only over all frozen sources; complete provenance
+         computed; all metrics recomputed from raw; old analysis.json not
+         used as authority."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/source-provenance.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json
+    notes:
+      - "Sole scientific input is the unchanged registered intervention;
+         no new run or changed parameter."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json
+    notes:
+      - "All A03 artifacts beneath attempts/A03/; no file hash-bound by
+         another attempt receipt was overwritten (append-only)."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/analysis.json
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report.md
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report-consistency.json
+    notes:
+      - "Deterministic report renders per-run windows/readiness/contrasts/
+         disposition/provenance/no-mechanism ceiling; consistency checked
+         from attempt-local structured result."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/expected-matrix.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/inventory.yaml
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/evidence-bundle.yaml
+    notes:
+      - "Frozen expected matrix + inventory cover declared evidence; 34
+         declared-entry bundle records safe path/SHA-256/bytes for every
+         declared source and attempt-local entry; final receipt excluded."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260817-BVM-S2-TIMING-SALVAGE-001/attempts/A03/report.md
+    notes:
+      - "No memory/todo/HANDOVER/status update made; interpretation remains
+         within frozen claim ceiling."
+observations:
+  - "A02 provenance defect fixed: source-provenance.yaml is computed by
+     salvage_analyze.py (not copied), carries attempt=A03, and covers all
+     24 reused source files with repository-safe path + SHA-256 + bytes."
+  - "Scientific result unchanged: disposition
+     CONSISTENT_TIMING_SENSITIVITY_SUPPORTED; schema validation PASSES
+     with explicit evidence file."
+interpretations:
+  - "Complete attempt-local provenance plus schema-valid structured result
+     completes the salvage chain for Copilot review and Codex final audit."
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "Fixed single load/timestep; no convergence study per stop rules."
+deviations: []
+blockers: []

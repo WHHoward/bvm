@@ -1,0 +1,50 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A03
+workflow_state: ACKED
+created_at: "2026-08-18T03:20:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  issuer_snapshot_sha256: "92ea2f684e7238e68d06124a0e3311562b618b055bcfc5dae9910b11239724d3"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "A01/A02 immutable; A03 writes only attempts/A03/** per C02."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A03 (per C02 codex-20260818-021406): complete protocol-valid source
+    spec sealing: full D2 waveform-family.json (16 raw + 8 corrected,
+    literal token identity + provenance), strict Decimal correction with
+    frozen TRAPEZOID time-normalized-L1, post/primary-activity/optional
+    lobe status (NOT_APPLICABLE when unsupported), all 16 source netlist
+    hashes, complete orientation/provenance, deterministic renderer/
+    report, full pre-receipt bundle roles, chronology-valid timestamps.
+    A01/A02/request/audits/source immutable; no JoSIM; stop after
+    delivery awaiting Codex.
+  non_goals:
+    - "Modify A01/A02/request/audits/source; run JoSIM; start BQ."
+  stop_conditions:
+    - "Any need for a new simulation, BQ/replay/cascade, new source model,
+       protocol change, unlisted write, overwrite/delete, network/install/
+       worktree/commit, or pre-audit status update."
+planned_commands:
+  - "python3 build_source_spec.py (D2 + spec + orientation; trapezoid L1)"
+  - "python3 verify_source_spec.py (per-token/descriptor independent recompute)"
+  - "python3 render_source_report.py (deterministic report.md)"
+  - "build full-role evidence-bundle + inventory + receipt"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260818-BVM-SOURCE-SPEC-001"
+expected_changed_paths:
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/*
+blockers: []
+deviations: []

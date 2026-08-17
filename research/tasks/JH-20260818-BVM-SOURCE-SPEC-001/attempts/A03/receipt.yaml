@@ -1,0 +1,111 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A03
+workflow_state: DELIVERED
+created_at: "2026-08-18T03:30:00+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  issuer_snapshot_sha256: "92ea2f684e7238e68d06124a0e3311562b618b055bcfc5dae9910b11239724d3"
+  ack_sha256: "73824b364e7faa1930d2bea56137ea36d6e278efee6057e8b789eb07e0c19fea"
+execution_status: COMPLETED
+baseline_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+result_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+changes:
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/bvm-source-spec-v1.yaml, action: CREATED, sha256: "28274838277d193065fddbbb0878214a28e7d376226dd5896f8c77b2e3dcf25d"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/waveform-family.json, action: CREATED, sha256: "81096da1e0d01dbd517cb81b34fe2564e32d3b56c41a93e69a3ccac2528fca78"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/terminal-orientation.yaml, action: CREATED, sha256: "ec1a92e9caa9b3fa88e5f7bd67f27247fb5d4560fefc620bef357e788e648f3c"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/build_source_spec.py, action: CREATED, sha256: "e040d514297673769c79149ae108d192e21ad43045a52e9c970458ce7e7adb18"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/verify_source_spec.py, action: CREATED, sha256: "ae4798990c675efbcb79b3826bdfbf8c6f60e1266cf9f0aeb92e49557e0cebf2"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/verify.log, action: CREATED, sha256: "fddcd64bfb311fa50884a0b86c1853a2c77ce00b0b64ea08d70cb341ed12d531"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/render_source_report.py, action: CREATED, sha256: "50ae67e2e9743d09da6d6a056b4db9eaf7ecc0b94491fd43e0f8294f7055321c"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/report.md, action: CREATED, sha256: "ac1552c185d3c138c3a311b405788acb1121eb6a1c01237ab1d6e8310a128213"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/inventory.yaml, action: CREATED, sha256: "54710bedd2f7dfe88aa8f61e9b25d7838a03b18820933535e1c30eea290dd417"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/evidence-bundle.yaml, action: CREATED, sha256: "927928ffa10df33171cfb471cb015e2f9bd80fb1d2c5fedfa484bb783ee6600e"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/receipt-pending.yaml, action: CREATED, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f"}
+artifacts:
+  - {id: source-spec, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/bvm-source-spec-v1.yaml, sha256: "28274838277d193065fddbbb0878214a28e7d376226dd5896f8c77b2e3dcf25d", role: MANIFEST}
+  - {id: waveform-family, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/waveform-family.json, sha256: "81096da1e0d01dbd517cb81b34fe2564e32d3b56c41a93e69a3ccac2528fca78", role: DOCUMENTATION}
+  - {id: orientation, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/terminal-orientation.yaml, sha256: "ec1a92e9caa9b3fa88e5f7bd67f27247fb5d4560fefc620bef357e788e648f3c", role: MANIFEST}
+  - {id: builder, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/build_source_spec.py, sha256: "e040d514297673769c79149ae108d192e21ad43045a52e9c970458ce7e7adb18", role: IMPLEMENTATION}
+  - {id: verifier, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/verify_source_spec.py, sha256: "ae4798990c675efbcb79b3826bdfbf8c6f60e1266cf9f0aeb92e49557e0cebf2", role: IMPLEMENTATION}
+  - {id: verify-log, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/verify.log, sha256: "fddcd64bfb311fa50884a0b86c1853a2c77ce00b0b64ea08d70cb341ed12d531", role: LOG}
+  - {id: renderer, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/render_source_report.py, sha256: "50ae67e2e9743d09da6d6a056b4db9eaf7ecc0b94491fd43e0f8294f7055321c", role: IMPLEMENTATION}
+  - {id: report, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/report.md, sha256: "ac1552c185d3c138c3a311b405788acb1121eb6a1c01237ab1d6e8310a128213", role: DOCUMENTATION}
+  - {id: inventory, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/inventory.yaml, sha256: "54710bedd2f7dfe88aa8f61e9b25d7838a03b18820933535e1c30eea290dd417", role: DOCUMENTATION}
+  - {id: bundle, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/evidence-bundle.yaml, sha256: "927928ffa10df33171cfb471cb015e2f9bd80fb1d2c5fedfa484bb783ee6600e", role: DOCUMENTATION}
+  - {id: receipt-pending, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/receipt-pending.yaml, sha256: "39b14ee73b547816279c8810893eff743c64780a53474adf7411e79e540c9e0f", role: DOCUMENTATION}
+evidence_bundle:
+  path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/evidence-bundle.yaml
+  sha256: "927928ffa10df33171cfb471cb015e2f9bd80fb1d2c5fedfa484bb783ee6600e"
+commands:
+  - command: "python3 build_source_spec.py && python3 verify_source_spec.py && python3 render_source_report.py"
+    exit_code: 0
+    log_path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/verify.log
+    log_sha256: "fddcd64bfb311fa50884a0b86c1853a2c77ce00b0b64ea08d70cb341ed12d531"
+tests:
+  - id: per-token-independent-verification
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/verify.log
+    notes:
+      - "VERIFY PASS: 16 raw + 8 corrected per-token byte-exact; trapezoid
+         L1 and descriptors exact; 16 netlist hashes; lobe statuses
+         NOT_APPLICABLE; orientation N8 -> SL."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/waveform-family.json
+    notes:
+      - "D2 waveform-family.json: 16 raw + 8 corrected with literal token
+         identity and provenance; 16 source netlist hashes."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/bvm-source-spec-v1.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/verify.log
+    notes:
+      - "Strict Decimal correction; frozen TRAPEZOID time-normalized-L1;
+         post/primary-activity/optional-lobe statuses recorded
+         (NOT_APPLICABLE when unsupported)."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/terminal-orientation.yaml
+    notes:
+      - "Complete orientation: L_SL N8 -> SL, conventions, netlist +
+         16 source netlist hashes, provenance."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/report.md
+    notes:
+      - "No affine source model fit; accepted evidence remains sole
+         authority."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/inventory.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A03/evidence-bundle.yaml
+    notes:
+      - "45-entry pre-receipt bundle with ALL 12 required roles
+         (analyzer/inputs/inventory/logs/manifest/raw/receipt/renderer/
+         report/spec/structured_result/verifier); final receipt excluded."
+observations:
+  - "C02 required_rework all addressed: D2 complete, chronology-valid
+     timestamps (request 03:00 <= ACK 03:20 <= receipt 03:30), trapezoid
+     L1, full lobe status, 16 netlist hashes, full bundle roles."
+  - "No JoSIM, no source/A01/A02/audit modification, no BQ."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "A03-local sealing; Task 2 (BQ replay) not authorized."
+deviations: []
+blockers: []

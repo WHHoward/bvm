@@ -1,0 +1,168 @@
+protocol: josim-handoff/v1
+document_type: execution_receipt
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-SEAL-002
+revision: 1
+attempt_id: A01
+workflow_state: DELIVERED
+created_at: "2026-08-18T23:58:01+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "e4dae54315521af5ffec76e64e545bff53baa52cc016d74dfc6e00c8b7fec06e"
+  issuer_snapshot_sha256: "bf0a96bc4a8ad100e5156602e190a2f7e12634dd687b5c4da69b603c97055f58"
+  ack_sha256: "0af392d306aec0539d5974a222509252d4e7f19154d56aaeb873a3d7d77e6185"
+  baseline_git_head: "03725af56a3c9559651f7ef947e3d6bba71c23b4"
+  result_git_head: "224d2fdd877074117a36619b7430eafa2373785b"
+execution_status: COMPLETED
+changes:
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/ack.yaml, action: CREATED, sha256: "0af392d306aec0539d5974a222509252d4e7f19154d56aaeb873a3d7d77e6185"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/bvm-source-spec-v1.yaml, action: CREATED, sha256: "cdb9c5a262332ac5a7364adac456fdb0cc83082b2f4aa85da3dbb6909b46d116"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/waveform-family.json, action: CREATED, sha256: "258751a341bcd91f6639c7a12b1f1194ead8f40f176012340b26d38a3dc6d4e0"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/terminal-orientation.yaml, action: CREATED, sha256: "54a72fc2668ccfead8a09a8c8667c2f6980fbcb286ad61aa038ecc8d58efedd5"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py, action: CREATED, sha256: "b993420935c2b0b50eeb034a9698154d99c5d213f2c57dd7d4afb237d0d7f868"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/inventory.yaml, action: CREATED, sha256: "a93f4303bbbe2ace9341ba5ead838edf71571183ea08549ddda977fc01dcb696"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/evidence-bundle.yaml, action: CREATED, sha256: "fe044f01c33cc2e7218d20922cebf73def41a89ceadde7f92f1e03f6852cf96f"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.yaml, action: CREATED (issuer-provided, committed unchanged), sha256: "bf0a96bc4a8ad100e5156602e190a2f7e12634dd687b5c4da69b603c97055f58"}
+  - {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.sha256, action: CREATED (issuer-provided, committed unchanged), sha256: "bf0a96bc4a8ad100e5156602e190a2f7e12634dd687b5c4da69b603c97055f58"}
+artifacts:
+  - {id: source-spec, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/bvm-source-spec-v1.yaml, sha256: "cdb9c5a262332ac5a7364adac456fdb0cc83082b2f4aa85da3dbb6909b46d116", role: DOCUMENTATION}
+  - {id: waveform-family, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/waveform-family.json, sha256: "258751a341bcd91f6639c7a12b1f1194ead8f40f176012340b26d38a3dc6d4e0", role: DOCUMENTATION}
+  - {id: terminal-orientation, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/terminal-orientation.yaml, sha256: "54a72fc2668ccfead8a09a8c8667c2f6980fbcb286ad61aa038ecc8d58efedd5", role: DOCUMENTATION}
+  - {id: builder, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py, sha256: "b993420935c2b0b50eeb034a9698154d99c5d213f2c57dd7d4afb237d0d7f868", role: IMPLEMENTATION}
+  - {id: inventory, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/inventory.yaml, sha256: "a93f4303bbbe2ace9341ba5ead838edf71571183ea08549ddda977fc01dcb696", role: DOCUMENTATION}
+  - {id: bundle, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/evidence-bundle.yaml, sha256: "fe044f01c33cc2e7218d20922cebf73def41a89ceadde7f92f1e03f6852cf96f", role: DOCUMENTATION}
+  - {id: snapshot, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.yaml, sha256: "bf0a96bc4a8ad100e5156602e190a2f7e12634dd687b5c4da69b603c97055f58", role: MANIFEST}
+evidence_bundle:
+  path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/evidence-bundle.yaml
+  sha256: "fe044f01c33cc2e7218d20922cebf73def41a89ceadde7f92f1e03f6852cf96f"
+commands:
+  - command: "date --iso-8601=seconds (on-site: ACK 23:39:57, receipt 23:58:01; no backfill)"
+    exit_code: 0
+    log_path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/receipt.yaml
+  - command: "python3 research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py"
+    exit_code: 0
+    log_path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py
+  - command: "git commit C_art: seal: SOURCE-SPEC-SEAL-002 A01 producer payload (C_art) (224d2fdd877074117a36619b7430eafa2373785b, parent 03725af56a3c9559651f7ef947e3d6bba71c23b4)"
+    exit_code: 0
+tests:
+  - id: producer-checks
+    status: PASS
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py
+    notes:
+      - "PRODUCER CHECKS PASS: 16 raw waves (sha256/bytes/samples/columns/
+         order vs accepted-input-manifest), 8 aligned read/control pairs
+         (time-token sequences byte-identical before correction), frozen
+         Decimal context (precision 28, ROUND_HALF_EVEN, traps
+         FloatOperation/DivisionByZero/InvalidOperation/Overflow), all-READY
+         8/8 + per-polarity endpoint 5/5 eligible 0/5 compatible
+         NOT_SUPPORTED_AT_REGISTERED_TOKENS, orientation N8 -> SL, 16
+         source-netlist hashes, exact 3-entry equal inventory/bundle sets."
+acceptance_results:
+  - id: AC1
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/bvm-source-spec-v1.yaml
+    notes:
+      - "Normative source = accepted STABLE-LOAD-001 preregistration
+         (b39728084dca48c85ad8ca385a8bffa2480659b7a886d10f67d1489e3b57337c)
+         + analysis (649a9a9cb37e8d8622ac8de752cf831c79fe4929b7c362e880ca29796902293e);
+         successor copies declared validated copies; no second norm."
+  - id: AC2
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/waveform-family.json
+    notes:
+      - "16 raw CSVs: literal time/V(SL1)/I(L_SL|XBVM1) tokens preserved
+         verbatim (13599 samples each), complete columns/order, file
+         SHA-256, bytes, samples, raw-to-sealed mapping; per matched pair
+         read/control time-token sequences bound (per-side SHA-256) and
+         verified IDENTICAL_BEFORE_CORRECTION."
+  - id: AC3
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/bvm-source-spec-v1.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/waveform-family.json
+    notes:
+      - "Decimal contract: precision=28, ROUND_HALF_EVEN, traps
+         FloatOperation/DivisionByZero/InvalidOperation/Overflow, flags
+         cleared, parser Decimal_from_literal_CSV_token, tolerance 0;
+         descriptors use accepted earliest-tie peak, primary lobe,
+         legal-FWHM (REPORTED 8/8 x 2 signals, same-trace local linear
+         interpolation per preregistration), dominant post-primary
+         opposite lobe."
+  - id: AC4
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/bvm-source-spec-v1.yaml
+    notes:
+      - "All-READY prerequisite preserved (8/8 strata); per-polarity
+         endpoint-VI NOT_SUPPORTED_AT_REGISTERED_TOKENS (5/5 eligible,
+         0/5 compatible, both polarities); claim ceiling unchanged."
+  - id: AC5
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/terminal-orientation.yaml
+    notes:
+      - "Orientation L_SL N8 -> SL (netlist line 'L_SL N8 SL 0.4P'); all
+         16 source-netlist SHA-256 + closure hashes sealed and checked."
+  - id: AC6
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/inventory.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/evidence-bundle.yaml
+    notes:
+      - "inventory.yaml and evidence-bundle.yaml required sets exactly
+         equal, 3 entries each, only the three payload artifacts
+         (bvm-source-spec-v1.yaml, waveform-family.json,
+         terminal-orientation.yaml); builder, receipt, and verification
+         package outside the producer bundle."
+  - id: AC7
+    status: SATISFIED (producer stage)
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/receipt.yaml
+    notes:
+      - "Chain to date: I=03725af56a3c9559651f7ef947e3d6bba71c23b4 ->
+         C_art=224d2fdd877074117a36619b7430eafa2373785b (direct child,
+         one parent, no unrelated commit); C_receipt follows as direct
+         child; C_verify/C_audit later stages per contract."
+  - id: AC8
+    status: NOT_RUN (later stage)
+    evidence_paths: []
+    notes:
+      - "Independent verification package (verifications/C01/**) not
+         created by producer per TASK_READY instruction 'Do not create
+         verifier/C_verify or audit'; assigned to later independent
+         stage."
+  - id: AC9
+    status: SATISFIED
+    evidence_paths:
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/ack.yaml
+      - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/receipt.yaml
+    notes:
+      - "ACK 23:39:57 and receipt 23:58:01 live on-site timestamps
+         (date --iso-8601=seconds), both >= request issued_at 23:33:53;
+         no backfill."
+  - id: AC10
+    status: NOT_RUN (later stage)
+    evidence_paths: []
+    notes:
+      - "Depends on final audit ACCEPTED; not in producer scope."
+observations:
+  - "C_art committed as direct child of I=03725af with single parent;
+     issuer-snapshot.yaml/sha256 included in C_art as instructed."
+  - "No JoSIM; no new physical data; no modification of accepted
+     STABLE-LOAD-001, old SOURCE-SPEC-001 task, circuits, or raw files."
+  - "gitignore rules (artifacts/, *.json) blocked staging of task payload;
+     forced add of write_paths-authorized paths only; __pycache__ runtime
+     artifact excluded."
+interpretations: []
+unknowns: []
+proposed_physical_verdict: NOT_APPLICABLE
+limitations:
+  - "Producer-stage delivery only; independent verification (AC8) and
+     final audit (AC10) are later contract stages."
+deviations: []
+blockers: []

@@ -1,0 +1,52 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+title: Canonical BVM Internal Readout Event Survey
+created_at: "2026-08-19T02:26:00+08:00"
+research_question: >-
+  canonical BVM 在 READ 过程中，内部是否已存在可用于构造 one BVM -> one SFQ
+  的稳定、局部、可重复 switching/event source?
+hypothesis: JS1/JS2 (R-Loop 分支结) 可能在 READ 中提供局部 switching 事件源。
+solver:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  sha256: "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  timestep_ps: 0.0125
+  analysis: PHASE
+closure:
+  - {path: circuits/bvm/bvm_cell.cir, sha256: "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4", role: canonical_bvm}
+  - {path: circuits/models/jjmit.cir, sha256: "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336", role: jj_model}
+  - {path: test/exploration/bvm-internal-readout-20260819/inputs/bvm_cell.cir, sha256: "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4", role: fixture_copy}
+  - {path: test/exploration/bvm-internal-readout-20260819/inputs/jjmit.cir, sha256: "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336", role: fixture_copy}
+source_authority:
+  - {task_id: JH-20260817-BVM-S2-STABLE-LOAD-001, status: ACCEPTED, role: read_stimulus_and_load_reference}
+run_matrix:
+  - {id: pos-read-single, input: inputs/pos-read-single.cir, stored_state: positive, reads: 1, load_ohm: 12}
+  - {id: pos-read-repeated, input: inputs/pos-read-repeated.cir, stored_state: positive, reads: 2, load_ohm: 12}
+  - {id: neg-read-single, input: inputs/neg-read-single.cir, stored_state: negative, reads: 1, load_ohm: 12}
+  - {id: neg-read-repeated, input: inputs/neg-read-repeated.cir, stored_state: negative, reads: 2, load_ohm: 12}
+windows_ps:
+  PRE: [80, 90]
+  READ1: [94, 130]
+  READ2: [146, 182]
+  POST1: [140, 150]
+  POST2: [210, 220]
+probes:
+  phase: [P(B_JS1|XBVM1), P(B_JS2|XBVM1), P(B_JM1|XBVM1), P(B_JM2|XBVM1)]
+  same_junction_voltage: [V(B_JS1|XBVM1), V(B_JS2|XBVM1), V(B_JM1|XBVM1), V(B_JM2|XBVM1)]
+  nodes: [V(N6|XBVM1), V(SL1)]
+  currents: [I(L_S1|XBVM1), I(L_S2|XBVM1), I(L_S3|XBVM1), I(L_M3|XBVM1), I(L_PSL|XBVM1), I(L_SL|XBVM1)]
+  sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
+raw_runs:
+  - {id: pos-read-single, path: raw/pos-read-single/run-01.csv}
+  - {id: pos-read-repeated, path: raw/pos-read-repeated/run-01.csv}
+  - {id: neg-read-single, path: raw/neg-read-single/run-01.csv}
+  - {id: neg-read-repeated, path: raw/neg-read-repeated/run-01.csv}
+derived:
+  - {path: analysis.json, role: structured_analysis}
+  - {path: analyze_internal_readout.py, role: analysis_script}
+notes:
+  - "Fixture pos-read-single token-identical to accepted L12-positive-read
+     (14 shared columns, 190386 tokens, 0 mismatch) -- stimulus/load replay
+     verified."
+  - "BVM_SOURCE_SPEC_V1 NOT established; source authority is STABLE-LOAD-001."

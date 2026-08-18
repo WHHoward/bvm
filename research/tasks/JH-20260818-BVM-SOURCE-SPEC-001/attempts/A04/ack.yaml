@@ -1,0 +1,58 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A04
+workflow_state: ACKED
+created_at: "2026-08-18T21:01:17+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  issuer_snapshot_sha256: "92ea2f684e7238e68d06124a0e3311562b618b055bcfc5dae9910b11239724d3"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "6d5847f34ef5eda01fe72889d18b71962cd9bfa7"
+  dirty_paths:
+    - "Working tree clean apart from two empty self-created debug temp
+       dirs (.dbg-*/) which Codex instructed not to touch."
+    - "A01/A02/A03 immutable; A04 writes only attempts/A04/** per user
+       authorization (codex-20260818-205657)."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A04 (user-authorized, codex-20260818-205657): repair chronology and
+    provenance sealing and formally seal BVM_SOURCE_SPEC_V1, consuming only
+    ACCEPTED STABLE-LOAD-001 16-run evidence and A03 mechanically valid
+    content.  Preserve load-origin labels (1/12/25/50 ohm), polarities,
+    matched read/control, raw V(SL1)/I(L_SL|XBVM1), corrected family, frozen
+    PRE/source/post exact-Decimal windows, descriptor semantics, strict
+    token identity, orientation (L_SL N8 -> SL), all 16 source-netlist
+    hashes, complete declared-entry inventory/bundle roles.  Independent
+    verifier re-reads raw and independently checks package/waveform/token/
+    descriptor/hash/orientation/inventory/chronology (not producer PASS).
+    Keep A02 chronology/bundle and AGENTS hash mismatches as immutable
+    historical defects, explicitly recorded, not repaired or bypassed.
+    No JoSIM, no new physics, no BQ/receiver/JTL/T1/replay, no fitting, no
+    Thevenin/Norton.  Stop after receipt; do NOT create A05.
+  non_goals:
+    - "Modify request/A01/A02/A03/receipts/C01/C02/HANDOVER/todo; run
+       JoSIM; generate new physical data; BQ/receiver/QB/direct-SFQ/JTL/
+       T1/replay; sweep; fit; Thevenin/Norton; create A05."
+  stop_conditions:
+    - "Any need for new simulation, BQ/replay/receiver study, new source
+       model, protocol change, unlisted write, overwrite/delete, network/
+       install/worktree/commit, or creating a further attempt."
+planned_commands:
+  - "date --iso-8601=seconds (on-site timestamps: ACK/receipt/audit)"
+  - "python3 build_source_spec.py (A04 sealing; corrected family + descriptors + orientation + hashes)"
+  - "python3 verify_source_spec.py (independent raw re-read; full checks)"
+  - "build full-role evidence-bundle + inventory + report"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260818-BVM-SOURCE-SPEC-001"
+expected_changed_paths:
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A04/*
+blockers: []
+deviations: []

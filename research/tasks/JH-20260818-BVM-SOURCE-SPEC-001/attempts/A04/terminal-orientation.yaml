@@ -1,0 +1,27 @@
+schema_version: bvm-source-spec-terminal-orientation-v1
+port:
+  V(SL1): SL1 node to ground
+  I(L_SL|XBVM1): element L_SL, direction N8 -> SL (port output)
+conventions:
+  voltage_positive: SL1 positive w.r.t. ground
+  current_positive: positive I(L_SL) flows N8 -> SL (out of closure)
+netlist_hashes:
+  circuits/bvm/bvm_cell.cir: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  circuits/models/jjmit.cir: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+source_netlist_hashes:
+  L01-positive-read: 7e581e3daacfc715361c2aedd00930c7747901cf1b1c8ceb22a78a90a8a85da8
+  L01-positive-control: b2b2461a3de47682b3c73725d8d5c04ad066c56e963e101d5f2ae005b7991090
+  L01-negative-read: aef3b2f8b3fb25d07ac880de42a1667ab72f18c05d826aea662ee030d01d390f
+  L01-negative-control: 50479d5767fed464f315623afcdb2864054548e5988769f21fde7fbef6fe3af1
+  L12-positive-read: 5e23083bc425516925bf4ac11d411f9524b1685efec4d4d20f92ff8798ef0bb9
+  L12-positive-control: 7189f36d0607210ca6b426aa7fbabfe73913910fae234899d59f458ca885b000
+  L12-negative-read: 71d165c693db2a196289c470d7775ab0dfcd3168703b0372febd77276353a08f
+  L12-negative-control: e90e155d3b98b24bb2530743111684a3e1cfd582c44777cc3fa6432d30cb7cea
+  L25-positive-read: dea6d07436b696bae6bfebea8cbd4e12e9ff2195d61ce35de4b662a0050bb646
+  L25-positive-control: 3062272ba621c1e4d5dec7b69afe0ee1efd9642a8eb966b544345ad87c39c039
+  L25-negative-read: 4d9d72ec5215d4a8146bd832b9535c173aeb254aff9ff3fe3d0efbe9ae081c36
+  L25-negative-control: 3c9695b28da5c75febc7909200029a76f069f7a70f52e823cb538acaf55b5f85
+  L50-positive-read: 227259231c067ad6e326b7b19ab9d672721715fe04d3bae78e3ba66697832eac
+  L50-positive-control: 6a58f8ef9635c1c4fdf8a812b71db990383d3e64015b228e51cff8fcdf88cf41
+  L50-negative-read: a91113c4d81ba6c3869d5dac48fdc5cbb705fabc8a3b14db56e1c97833d45898
+  L50-negative-control: bbf3f30fca436c039024b0aac03a077de4fe8b1ae6ed0c69ef76d746e7a92822

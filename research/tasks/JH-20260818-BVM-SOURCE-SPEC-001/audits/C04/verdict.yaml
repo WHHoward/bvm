@@ -1,0 +1,89 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A04
+audit_id: C04
+workflow_state: AUDITED
+created_at: "2026-08-18T21:18:48+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  ack_sha256: "e4fa6f1c468db00a556377b3fd1e3a1860e9ec40fb8f33e0b51a364eb725fd1b"
+  receipt_sha256: "2c26008e3b838d81bc43a2b9079d067ef2b2c017d9d002f898c9e9db9bb658fa"
+scope_status: INCONCLUSIVE
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: codex-root
+checks:
+  - id: a04-schema-and-local-chain
+    status: PASS
+    evidence:
+      - "handoff.py validate reports VALID for attempts/A04/ack.yaml and attempts/A04/receipt.yaml."
+      - "A04 local chronology is request 03:00:00 <= ACK 21:01:17 <= receipt 21:02:12 +08:00."
+  - id: task-wide-historical-verification
+    status: INCONCLUSIVE
+    evidence:
+      - "handoff.py verify-task remains nonzero on immutable historical defects: current AGENTS.md hash differs from the sealed scope manifest, A02 evidence bundle lacks renderer/spec/structured_result roles, and A02 ACK precedes request."
+      - "A04 preserves those records and does not modify request, A01/A02/A03, receipts, C01/C02, or accepted stable-load evidence."
+  - id: accepted-source-input-and-bundle-integrity
+    status: PASS
+    evidence:
+      - "Independent bundle scan recomputes all 45 declared entry hashes and byte sizes with zero bad entries and zero duplicates; all 12 declared roles are present and the final receipt is excluded."
+      - "The 16 source-netlist SHA-256 values match the frozen stable-load input files; terminal-orientation.yaml records V(SL1) and L_SL N8 -> SL conventions."
+  - id: raw-waveform-provenance-completeness
+    status: FAIL
+    evidence:
+      - "Independent raw scan confirms 16 raw traces and matching time-token order, but A04 waveform-family.json provenance contains only csv_sha256/csv_bytes/samples and no complete CSV column declaration."
+      - "The raw v_sl1_V and i_lsl_A arrays are Decimal-normalized strings rather than the original CSV literal V/I tokens for all 16 traces; exact raw V/I literal provenance is not sealed."
+      - "Corrected records retain read time tokens but do not represent the control time-token sequence as an independently bound artifact field."
+  - id: independent-verifier-coverage
+    status: FAIL
+    evidence:
+      - "A04 verify_source_spec.py recomputes corrected values and default-context descriptors, but does not check raw V/I literal tokens, raw columns/bytes/sample provenance fields, bundle/inventory completeness, or chronology records."
+      - "The producer receipt's broader verifier claim is not supported by the verifier implementation; this is a weak-oracle/overclaim finding."
+      - "The verifier's VERIFY PASS output cannot substitute for the missing checks."
+  - id: inventory-completeness
+    status: FAIL
+    evidence:
+      - "A04 evidence-bundle.yaml has 45 valid declared entries, while A04 inventory.yaml lists only 8 entries; 37 bundle entries are absent from the inventory."
+      - "The bundle is internally hash-valid, but complete inventory/bundle provenance is not established by the A04 inventory."
+  - id: independent-numerical-cross-check
+    status: INCONCLUSIVE
+    evidence:
+      - "A fresh raw-only Decimal implementation reproduces all 8 corrected V/I arrays, peak values/times, and sealed RMS/trapezoid values under Python Decimal default precision 28."
+      - "The artifact does not record Decimal context/precision; a 60-digit context produces additional RMS and trapezoid L1 digits. Determinism is therefore relative to an unstated precision context."
+  - id: scope-and-snapshot-provenance
+    status: INCONCLUSIVE
+    evidence:
+      - "A04 ACK declares observed_git_head=6d5847f, while the shared audit worktree is at ed1e780 and current AGENTS.md differs from the request's frozen scope hash."
+      - "The external snapshot binding exists, but the delivered uncommitted A04 files do not independently prove their transfer from that snapshot into the current worktree."
+  - id: prior-audit-record
+    status: INCONCLUSIVE
+    evidence:
+      - "C03 is retained append-only as a historical audit record; its claim_ceiling metadata did not match the immutable request, so C04 is the corrected final audit record for A04."
+findings:
+  - "A04 is a no-JoSIM, append-only delivery and its local ACK/receipt schema chain is valid."
+  - "A04 is not a formally complete BVM_SOURCE_SPEC_V1 seal: raw V/I literal provenance, complete column provenance, verifier coverage, and inventory coverage are missing."
+  - "The accepted STABLE-LOAD-001 raw evidence and its scientific disposition are unaffected; this audit makes no new physical claim."
+  - "The task-wide verifier's historical failures are preserved, not repaired or bypassed."
+accepted_claims: []
+rejected_claims:
+  - "A04 cannot establish authoritative BVM_SOURCE_SPEC_V1."
+  - "A04 verifier PASS cannot prove complete package/provenance/chronology verification."
+required_rework:
+  - "Do not create A05 or any follow-on experiment under the current authorization; await explicit user direction for any new attempt."
+  - "If a future attempt is explicitly authorized, preserve original raw V/I literal tokens and complete CSV column/order/bytes/sample provenance for all 16 traces, and bind read/control token identity before correction."
+  - "If a future attempt is explicitly authorized, make the independent verifier check every required raw/corrected token, descriptor, source hash, orientation, bundle entry, inventory entry, and local chronology record without importing the builder or trusting producer PASS."
+  - "If a future attempt is explicitly authorized, make inventory coverage and Decimal precision/context part of the deterministic package contract; do not modify the immutable request or historical attempts."
+next_actions:
+  - "Stop at C04 REWORK_REQUIRED and wait for explicit user authorization; no A05, receiver, BQ, or other scientific work is authorized."
+claim_ceiling: "A hash-bound source-observation specification only; accepted STABLE-LOAD-001 remains the sole scientific authority."
+scientific_claim_ceiling: "No physical verdict or source-model claim; accepted STABLE-LOAD-001 remains the sole scientific authority."

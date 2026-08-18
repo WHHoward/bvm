@@ -1,0 +1,106 @@
+protocol: josim-handoff/v1
+document_type: audit_verdict
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A05
+audit_id: C05
+workflow_state: AUDITED
+created_at: "2026-08-18T22:12:33+08:00"
+auditor:
+  role: CODEX
+  id: codex-root
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  ack_sha256: "3c62cbec6565cc92816149ef1954905b6a9e4ee0cf0873aa4048254c0e22106e"
+  receipt_sha256: "0e1b92280ef19e51b261a1e5deef24322e4668e6379e75d6bc1a80ecd0ae9b86"
+scope_status: FAIL
+artifact_status: INVALID
+physical_verdict: NOT_APPLICABLE
+audit_disposition: REWORK_REQUIRED
+independence:
+  mode: INDEPENDENT
+  codex_modified_execution_artifacts: false
+  reviewer: "codex-root; josim_verifier (independent read-only); josim_architect (Sol XHigh final review)"
+checks:
+  - id: a05-local-schema-and-commit
+    status: PASS
+    evidence:
+      - "A05 ack.yaml and receipt.yaml validate against josim-handoff/v1; ACK 3c62cbec... and receipt 0e1b9228... bind the immutable request."
+      - "Committed delivery state is HEAD 2e875298fc6d0647cbe2845db55fce4860808eed, whose tree contains the complete A05 attempt and the two related mailbox notifications; worktree is clean."
+  - id: independent-raw-literal-provenance
+    status: PASS
+    evidence:
+      - "Independent verifier re-read all 16 accepted stable-load CSVs and matched original time, V(SL1), and I(L_SL|XBVM1) tokens, columns/order, SHA-256, byte size, and sample count against waveform-family.json (15c7686c...)."
+      - "Independent Decimal recomputation reproduced all eight corrected V*/I* token arrays and the source-netlist input files were unchanged; no new physical data was generated."
+  - id: matched-read-control-binding
+    status: FAIL
+    evidence:
+      - "The raw files are actually aligned for all eight pairs, but verify_source_spec.py:78-89 checks matched read against raw read and matched read against matched control without checking matched_pairs.control_time_tokens against the raw control wave. Correction then consumes rows_c at :94-106 without a prior verifier binding."
+  - id: decimal-context-contract
+    status: FAIL
+    evidence:
+      - "bvm-source-spec-v1.yaml declares precision 28, ROUND_HALF_EVEN, and traps, but build_source_spec.py:14-18 and verify_source_spec.py:14-15 set only precision and rounding; traps/full Context are not explicitly configured or independently checked."
+  - id: descriptor-and-window-semantics
+    status: FAIL
+    evidence:
+      - "The frozen preregistration requires earliest exact-token peak tie, primary activity, and legal optional lobe handling at design/preregistration.yaml:18-23. A05 uses max((abs(value), index)) (latest tie), omits primary_activity, and unconditionally records FWHM/opposite-lobe NOT_APPLICABLE."
+      - "Independent raw review found legal FWHM brackets and post-primary opposite-sign lobes in the sealed traces; the verifier only checks the NOT_APPLICABLE strings and does not check peak_index, peak_time_token, post_window_max, or frozen windows at verify_source_spec.py:113-124."
+  - id: source-netlist-and-orientation-content
+    status: PASS
+    evidence:
+      - "Independent review matches all 16 source-netlist hashes plus bvm_cell/jjmit hashes and confirms V(SL1) SL1-to-ground and L_SL N8 -> SL in terminal-orientation.yaml."
+  - id: source-netlist-and-orientation-verifier-coverage
+    status: FAIL
+    evidence:
+      - "verify_source_spec.py:125-130 checks only spec source hashes against inputs and searches the orientation object for the string N8 -> SL; it does not independently verify orientation conventions, cell/model hashes, or orientation source-netlist hashes."
+  - id: accepted-preconditions-and-claim-ceiling
+    status: FAIL
+    evidence:
+      - "Immutable request AC4 and frozen preregistration require all-READY stable-load preconditions and the per-polarity endpoint-VI NOT_SUPPORTED fact. A05 bvm-source-spec-v1.yaml and report.md do not seal those facts; they remain only in accepted STABLE-LOAD-001 C01."
+      - "The claim ceiling itself remains bounded and no source-model, receiver, BQ, SFQ, or interface claim was introduced."
+  - id: bundle-entry-integrity
+    status: PASS
+    evidence:
+      - "Independent scan recomputed all 45 declared evidence-bundle entries (8d356e96...), with correct hashes/bytes, no duplicate paths, and no final receipt.yaml entry."
+  - id: inventory-bundle-bidirectional-completeness
+    status: FAIL
+    evidence:
+      - "evidence-bundle.yaml declares 45 entries while inventory.yaml declares 8; 37 bundle paths are absent from inventory. verify_source_spec.py:131-149 checks inventory-to-bundle membership only and does not enforce bundle-to-inventory equality or compare entry metadata."
+  - id: chronology-and-verification-timestamps
+    status: INCONCLUSIVE
+    evidence:
+      - "The declared request/ACK/receipt order is 03:00 <= 21:48:55 <= 21:51:33, but verify.log:1 contains no on-site verification timestamp and the verifier checks only request-to-ACK at :150-160, not ACK-to-receipt-to-verification. Actual timestamp sampling is therefore not independently sealed."
+  - id: execution-snapshot-and-commit-provenance
+    status: FAIL
+    evidence:
+      - "A05 ACK/receipt record observed/result HEAD 8cf027b..., while the immutable EXTERNAL_ATTESTATION snapshot is 6d5847f...; handoff.py verify-task reports this mismatch. The final artifact commit 2e875298... is not bound into the receipt or a timestamped verification record."
+      - "handoff.py verify-task also reports immutable AGENTS scope drift, A02 chronology/bundle defects, C03 claim-ceiling mismatch, and unknown receipt acceptance id AC6; old records were correctly not modified, but the formal task-wide chain remains non-verifying."
+  - id: no-new-physics-and-scope-boundary
+    status: PASS
+    evidence:
+      - "A05 is append-only, no-JoSIM, and introduces no new physical data or receiver work; A01-A04, request, receipts, C01-C04, and accepted STABLE-LOAD evidence remain unchanged."
+      - "Sol XHigh review independently recommends REWORK_REQUIRED, not REJECTED, because the accepted raw evidence is not damaged and the defects are sealing/contract defects."
+findings:
+  - "A05 raw literal provenance and core corrected numeric arrays are independently consistent with accepted STABLE-LOAD-001 evidence at committed HEAD 2e875298..., but the package is not a complete auditable source-spec seal."
+  - "The producer verifier PASS overclaims coverage: it does not cover the actual control-side binding, full Decimal context, descriptor semantics, orientation provenance, bundle/inventory reverse completeness, receipt chronology, or final commit binding."
+  - "The package omits required accepted READY/endpoint-NOT_SUPPORTED preconditions and has invalid optional-lobe/primary-activity sealing relative to the frozen preregistration."
+  - "No physical verdict is made and accepted STABLE-LOAD-001 remains the sole scientific authority."
+accepted_claims:
+  - "Independent raw review supports only that the 16 raw token/hash records and eight corrected waveform arrays are numerically consistent with the already accepted stable-load evidence."
+  - "A05 did not run JoSIM or create new physical data and did not establish any source model or receiver/interface result."
+rejected_claims:
+  - "A05 does not establish authoritative BVM_SOURCE_SPEC_V1."
+  - "A05 VERIFY PASS is not evidence of complete provenance, deterministic contract, inventory/bundle completeness, chronology, or committed-state binding."
+  - "No Thevenin/Norton source, fixed impedance, BQ compatibility, SFQ compatibility, receiver compatibility, interface PASS, mechanism, or hardware claim is accepted."
+required_rework:
+  - "Do not create A06 or any receiver experiment under the current user authorization; preserve A05 and C05 append-only and stop."
+  - "If the user later authorizes a successor, use a new non-self-referential contract/snapshot bound to a clean committed baseline and bind the final artifact commit, independent verification record, and audit explicitly."
+  - "In that successor, bind raw control time tokens directly to the matched-pair record before correction; set and verify a complete Decimal Context including traps; implement earliest-tie peak, primary activity, and legal FWHM/opposite-lobe semantics; include accepted preconditions."
+  - "Make inventory and bundle sets exactly bidirectional for all declared required entries, independently recompute every entry path/role/hash/bytes, exclude final receipt, and record real on-site timestamps for ACK, receipt, verification, and audit."
+  - "Do not add acceptance IDs not present in the immutable contract unless a new explicit contract revision defines them; preserve the A05 AC6 protocol defect as historical."
+next_actions:
+  - "STOP after C05; await the user's next explicit authorization."
+  - "Do not start BQ, QB, direct-SFQ adapter, JTL, T1, replay, or any new JoSIM experiment."
+claim_ceiling: "A hash-bound source-observation specification only; accepted STABLE-LOAD-001 remains the sole scientific authority."
+scientific_claim_ceiling: "No physical verdict or source-model claim; accepted STABLE-LOAD-001 remains the sole scientific authority."

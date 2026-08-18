@@ -1,0 +1,65 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-001
+revision: 1
+attempt_id: A05
+workflow_state: ACKED
+created_at: "2026-08-18T21:48:55+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "0f29e111ee49d99cb24efedb841c02fe70eb2afe4dd3257dace52dec907cff11"
+  issuer_snapshot_sha256: "92ea2f684e7238e68d06124a0e3311562b618b055bcfc5dae9910b11239724d3"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "8cf027b913bf8ef10e346a6b73e9917a1c509817"
+  dirty_paths:
+    - "Untracked: research/mailbox/from-codex/codex-20260818-214612.md
+       (the A05 authorization message itself).  No other dirty paths.
+       This dirty snapshot is recorded and NOT relied upon for implicit
+       pass-through; delivery commit is root's responsibility per
+       codex-20260818-214612."
+    - "A01-A04/request/audits immutable; A05 writes only attempts/A05/**."
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: >-
+    A05 (user-authorized per codex-20260818-214612): close every C04
+    sealing gap: (1) 16 raw CSVs preserve original literal time/V(SL1)/
+    I(L_SL|XBVM1) tokens with full columns/order, SHA-256, bytes, samples;
+    (2) per matched pair, seal read/control time-token sequences and
+    independently verify identity/alignment before correction; (3) declare
+    and freeze Decimal context (precision>=28, rounding, full context),
+    used explicitly by builder and verifier; (4) independent verifier does
+    NOT import builder and does NOT trust producer PASS - re-reads raw and
+    checks all raw/corrected tokens, columns/provenance, correction,
+    descriptors, context, 16 netlist hashes, orientation, every bundle and
+    inventory entry, bundle<->inventory bidirectional completeness, and
+    A05-local chronology; (5) A05 inventory covers every sealed artifact,
+    bundle binds path/role/SHA-256/bytes per entry, final receipt excluded;
+    (6) on-site date for ACK/receipt/verification (no backfill); (7) ACK
+    records the real observed HEAD 8cf027b9 and the dirty snapshot; no
+    commit (request authorization forbids it) - root commits the A05
+    artifact state after delivery, independent verifier rechecks the
+    commit, final audit binds the commit SHA.  Stop after receipt and
+    reply; do NOT create A06 or any receiver experiment.
+  non_goals:
+    - "Modify request/A01-A04/audits/source/old records; run JoSIM; new
+       physical data; BQ/QB/receiver/adapter/JTL/T1/replay; fitting;
+       Thevenin/Norton; commit (authorization forbids); create A06."
+  stop_conditions:
+    - "Any need for new simulation, BQ/replay/receiver study, new source
+       model, protocol change, unlisted write, overwrite/delete, network/
+       install/worktree/commit, or creating a further attempt."
+planned_commands:
+  - "date --iso-8601=seconds (on-site: ACK/receipt/verification, no backfill)"
+  - "python3 build_source_spec.py (raw literal tokens + matched-pair token sequences + frozen Decimal context)"
+  - "python3 verify_source_spec.py (independent raw re-read; full C04 closure checks)"
+  - "build full-role bundle + complete inventory + report"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260818-BVM-SOURCE-SPEC-001"
+expected_changed_paths:
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-001/attempts/A05/*
+blockers: []
+deviations: []

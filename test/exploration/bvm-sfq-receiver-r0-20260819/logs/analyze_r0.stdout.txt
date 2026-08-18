@@ -1,0 +1,3050 @@
+{
+  "document_type": "r0_raw_analysis",
+  "analysis_version": "r0-local-1",
+  "phi0_Wb": 2.067833848e-15,
+  "windows_ps": {
+    "PRE": [
+      80.0,
+      90.0
+    ],
+    "READ_ACTIVITY": [
+      94.0,
+      130.0
+    ],
+    "POST": [
+      140.0,
+      170.0
+    ],
+    "STORAGE_POST": [
+      140.0,
+      150.0
+    ]
+  },
+  "metric_boundary": "P is raw rad; turns=delta_rad/(2*pi); same-JJ voltage area uses actual CSV time; no SFQ count is inferred.",
+  "cases": {
+    "read1": {
+      "case_id": "read1",
+      "logical_state": 1,
+      "read_kind": "canonical_positive",
+      "csv": "raw/read1/run-01.csv",
+      "sha256": "8349254ed2b82158f7d34f7298bb7f802906ad16fba1b01b0bd6d56a002a0e40",
+      "qa": {
+        "rows": 13599,
+        "time_start_ps": 0.0,
+        "time_end_ps": 169.9875,
+        "dt_min_ps": 0.01249999999996021,
+        "dt_max_ps": 0.025000000000000133,
+        "strictly_increasing_time": true,
+        "all_finite": true,
+        "missing_columns": [],
+        "artifact_valid": true
+      },
+      "windows": {
+        "PRE": {
+          "interval_ps": [
+            80.0,
+            90.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2013007,
+              "min": 0.2009062,
+              "min_time_ps": 80.53750000000001,
+              "max": 0.2017657,
+              "max_time_ps": 82.0375,
+              "abs_peak": 0.2017657,
+              "abs_peak_time_ps": 82.02499999999999
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -7.275449e-09,
+              "min": -2.943058e-07,
+              "min_time_ps": 80.0,
+              "max": 2.988174e-07,
+              "max_time_ps": 81.26249999999999,
+              "abs_peak": 2.988174e-07,
+              "abs_peak_time_ps": 81.26249999999999
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1.000007e-05,
+              "min": 9.999e-06,
+              "min_time_ps": 81.5625,
+              "max": 1.000139e-05,
+              "max_time_ps": 80.475,
+              "abs_peak": 1.000139e-05,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 7.323227e-11,
+              "min": -1.000149e-09,
+              "min_time_ps": 81.5625,
+              "max": 1.385179e-09,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": 1.385179e-09,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 80.0,
+              "max": 1e-05,
+              "max_time_ps": 90.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 80.0
+            },
+            "V(SL1)": {
+              "median": -6.847023e-09,
+              "min": -2.910359e-07,
+              "min_time_ps": 80.0,
+              "max": 2.91837e-07,
+              "max_time_ps": 81.2375,
+              "abs_peak": 2.91837e-07,
+              "abs_peak_time_ps": 81.2375
+            },
+            "V(N6|XBVM1)": {
+              "median": -5.969101e-09,
+              "min": -2.840016e-07,
+              "min_time_ps": 80.0,
+              "max": 2.831422e-07,
+              "max_time_ps": 81.2125,
+              "abs_peak": -2.840016e-07,
+              "abs_peak_time_ps": 80.0
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 7.323227e-11,
+              "min": -1.000149e-09,
+              "min_time_ps": 81.5625,
+              "max": 1.385179e-09,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": 1.385179e-09,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 7.323227e-11,
+              "min": -1.000149e-09,
+              "min_time_ps": 81.5625,
+              "max": 1.385179e-09,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": 1.385179e-09,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.911061,
+              "min": 5.910888,
+              "min_time_ps": 80.05,
+              "max": 5.911255,
+              "max_time_ps": 81.6125,
+              "abs_peak": 5.911255,
+              "abs_peak_time_ps": 81.55000000000001
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.3172264,
+              "min": 0.3141505,
+              "min_time_ps": 82.3,
+              "max": 0.3198928,
+              "max_time_ps": 80.8,
+              "abs_peak": 0.3198928,
+              "abs_peak_time_ps": 80.8
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": 0.2668959,
+              "min": 0.2666495,
+              "min_time_ps": 81.025,
+              "max": 0.2671366,
+              "max_time_ps": 82.7,
+              "abs_peak": 0.2671366,
+              "abs_peak_time_ps": 82.6875
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -0.2668565,
+              "min": -0.2672648,
+              "min_time_ps": 82.0,
+              "max": -0.2664795,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": -0.2672648,
+              "abs_peak_time_ps": 82.0
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.951738e-05,
+              "min": 1.951434e-05,
+              "min_time_ps": 81.3125,
+              "max": 1.952154e-05,
+              "max_time_ps": 80.225,
+              "abs_peak": 1.952154e-05,
+              "abs_peak_time_ps": 80.21249999999999
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.951731e-05,
+              "min": -1.952063e-05,
+              "min_time_ps": 80.1,
+              "max": -1.951495e-05,
+              "max_time_ps": 81.2125,
+              "abs_peak": -1.952063e-05,
+              "abs_peak_time_ps": 80.1
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 1.951744e-05,
+              "min": 1.951467e-05,
+              "min_time_ps": 81.45,
+              "max": 1.952111e-05,
+              "max_time_ps": 80.4,
+              "abs_peak": 1.952111e-05,
+              "abs_peak_time_ps": 80.3625
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.410997e-05,
+              "min": 2.40903e-05,
+              "min_time_ps": 80.675,
+              "max": 2.413118e-05,
+              "max_time_ps": 85.325,
+              "abs_peak": 2.413118e-05,
+              "abs_peak_time_ps": 85.325
+            }
+          }
+        },
+        "READ_ACTIVITY": {
+          "interval_ps": [
+            94.0,
+            130.0
+          ],
+          "rows": 2881,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.410885,
+              "min": -0.981935,
+              "min_time_ps": 108.575,
+              "max": 2.690517,
+              "max_time_ps": 101.94999999999999,
+              "abs_peak": 2.690517,
+              "abs_peak_time_ps": 101.94999999999999
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": 2.290402e-05,
+              "min": -0.0007556538,
+              "min_time_ps": 105.4875,
+              "max": 0.0009080685,
+              "max_time_ps": 109.25,
+              "abs_peak": 0.0009080685,
+              "abs_peak_time_ps": 109.25
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1.119577e-05,
+              "min": -1.838406e-05,
+              "min_time_ps": 101.97500000000001,
+              "max": 7.628572e-05,
+              "max_time_ps": 103.175,
+              "abs_peak": 7.628572e-05,
+              "abs_peak_time_ps": 103.175
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 1.195767e-06,
+              "min": -2.838406e-05,
+              "min_time_ps": 101.97500000000001,
+              "max": 6.628572e-05,
+              "max_time_ps": 103.175,
+              "abs_peak": 6.628572e-05,
+              "abs_peak_time_ps": 103.175
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 94.0,
+              "max": 1e-05,
+              "max_time_ps": 130.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 94.0
+            },
+            "V(SL1)": {
+              "median": 8.828528e-05,
+              "min": -0.0009744924,
+              "min_time_ps": 107.8625,
+              "max": 0.001287409,
+              "max_time_ps": 100.9125,
+              "abs_peak": 0.001287409,
+              "abs_peak_time_ps": 100.9125
+            },
+            "V(N6|XBVM1)": {
+              "median": 8.819008e-05,
+              "min": -0.001258342,
+              "min_time_ps": 107.80000000000001,
+              "max": 0.001884181,
+              "max_time_ps": 100.8625,
+              "abs_peak": 0.001884181,
+              "abs_peak_time_ps": 100.8625
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 1.195767e-06,
+              "min": -2.838406e-05,
+              "min_time_ps": 101.97500000000001,
+              "max": 6.628572e-05,
+              "max_time_ps": 103.175,
+              "abs_peak": 6.628572e-05,
+              "abs_peak_time_ps": 103.175
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 1.195767e-06,
+              "min": -2.838406e-05,
+              "min_time_ps": 101.97500000000001,
+              "max": 6.628572e-05,
+              "max_time_ps": 103.175,
+              "abs_peak": 6.628572e-05,
+              "abs_peak_time_ps": 103.175
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.932291,
+              "min": 5.68964,
+              "min_time_ps": 106.8625,
+              "max": 6.90426,
+              "max_time_ps": 105.0625,
+              "abs_peak": 6.90426,
+              "abs_peak_time_ps": 105.0625
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.4023801,
+              "min": -0.7590071,
+              "min_time_ps": 105.58749999999999,
+              "max": 1.822589,
+              "max_time_ps": 103.92500000000001,
+              "abs_peak": 1.822589,
+              "abs_peak_time_ps": 103.92500000000001
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -18.19023,
+              "min": -20.95703,
+              "min_time_ps": 106.225,
+              "max": 0.3175116,
+              "max_time_ps": 95.925,
+              "abs_peak": -20.95703,
+              "abs_peak_time_ps": 106.225
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -18.83991,
+              "min": -21.05273,
+              "min_time_ps": 107.0125,
+              "max": -0.2668838,
+              "max_time_ps": 95.0125,
+              "abs_peak": -21.05273,
+              "abs_peak_time_ps": 107.0125
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.693256e-05,
+              "min": -0.0002046382,
+              "min_time_ps": 101.39999999999999,
+              "max": 0.000115343,
+              "max_time_ps": 102.8625,
+              "abs_peak": -0.0002046382,
+              "abs_peak_time_ps": 101.39999999999999
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.951726e-05,
+              "min": -0.0001700798,
+              "min_time_ps": 102.71249999999999,
+              "max": 0.0001306837,
+              "max_time_ps": 104.2875,
+              "abs_peak": -0.0001700798,
+              "abs_peak_time_ps": 102.71249999999999
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 2.0278e-05,
+              "min": -9.50591e-05,
+              "min_time_ps": 101.5625,
+              "max": 0.000205301,
+              "max_time_ps": 103.025,
+              "abs_peak": 0.000205301,
+              "abs_peak_time_ps": 103.025
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.692834e-05,
+              "min": -4.220541e-05,
+              "min_time_ps": 106.0125,
+              "max": 0.0002377298,
+              "max_time_ps": 101.425,
+              "abs_peak": 0.0002377298,
+              "abs_peak_time_ps": 101.425
+            }
+          }
+        },
+        "POST": {
+          "interval_ps": [
+            140.0,
+            170.0
+          ],
+          "rows": 2400,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2058652,
+              "min": -0.004909886,
+              "min_time_ps": 140.10000000000002,
+              "max": 0.3931804,
+              "max_time_ps": 141.625,
+              "abs_peak": 0.3931804,
+              "abs_peak_time_ps": 141.625
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": 2.3014054999999997e-06,
+              "min": -0.00012237,
+              "min_time_ps": 142.4,
+              "max": 0.0001346836,
+              "max_time_ps": 140.8375,
+              "abs_peak": 0.0001346836,
+              "abs_peak_time_ps": 140.8375
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1.0002735e-05,
+              "min": 9.756802e-06,
+              "min_time_ps": 143.025,
+              "max": 1.026009e-05,
+              "max_time_ps": 141.8875,
+              "abs_peak": 1.026009e-05,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 2.7380265e-09,
+              "min": -2.431978e-07,
+              "min_time_ps": 143.025,
+              "max": 2.600922e-07,
+              "max_time_ps": 141.8875,
+              "abs_peak": 2.600922e-07,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 169.9875,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": 2.4058455e-06,
+              "min": -0.0001219186,
+              "min_time_ps": 142.4125,
+              "max": 0.000132803,
+              "max_time_ps": 140.8375,
+              "abs_peak": 0.000132803,
+              "abs_peak_time_ps": 140.8375
+            },
+            "V(N6|XBVM1)": {
+              "median": 2.6800270000000003e-06,
+              "min": -0.0001222383,
+              "min_time_ps": 142.425,
+              "max": 0.0001309432,
+              "max_time_ps": 140.8375,
+              "abs_peak": 0.0001309432,
+              "abs_peak_time_ps": 140.8375
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 2.7380265e-09,
+              "min": -2.431978e-07,
+              "min_time_ps": 143.025,
+              "max": 2.600922e-07,
+              "max_time_ps": 141.8875,
+              "abs_peak": 2.600922e-07,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 2.7380265e-09,
+              "min": -2.431978e-07,
+              "min_time_ps": 143.025,
+              "max": 2.600922e-07,
+              "max_time_ps": 141.8875,
+              "abs_peak": 2.600922e-07,
+              "abs_peak_time_ps": 141.8875
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.9112185,
+              "min": 5.897624,
+              "min_time_ps": 140.425,
+              "max": 5.923823,
+              "max_time_ps": 141.9125,
+              "abs_peak": 5.923823,
+              "abs_peak_time_ps": 141.9125
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.3189314,
+              "min": 0.1281445,
+              "min_time_ps": 142.6875,
+              "max": 0.5247157,
+              "max_time_ps": 141.175,
+              "abs_peak": 0.5247157,
+              "abs_peak_time_ps": 141.175
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -18.58509,
+              "min": -18.80598,
+              "min_time_ps": 141.575,
+              "max": -18.35077,
+              "max_time_ps": 140.05,
+              "abs_peak": -18.80598,
+              "abs_peak_time_ps": 141.575
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -19.120465000000003,
+              "min": -19.30492,
+              "min_time_ps": 141.6375,
+              "max": -18.90913,
+              "max_time_ps": 140.0875,
+              "abs_peak": -19.30492,
+              "abs_peak_time_ps": 141.6375
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.9490885e-05,
+              "min": 1.876772e-05,
+              "min_time_ps": 140.675,
+              "max": 2.003846e-05,
+              "max_time_ps": 141.675,
+              "abs_peak": 2.003846e-05,
+              "abs_peak_time_ps": 141.675
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.9489975e-05,
+              "min": -1.984124e-05,
+              "min_time_ps": 141.5875,
+              "max": -1.890557e-05,
+              "max_time_ps": 140.6375,
+              "abs_peak": -1.984124e-05,
+              "abs_peak_time_ps": 141.5875
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 1.9490885e-05,
+              "min": 1.883696e-05,
+              "min_time_ps": 140.825,
+              "max": 1.996844e-05,
+              "max_time_ps": 141.825,
+              "abs_peak": 1.996844e-05,
+              "abs_peak_time_ps": 141.825
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.4116505e-05,
+              "min": 2.256614e-05,
+              "min_time_ps": 141.3625,
+              "max": 2.592706e-05,
+              "max_time_ps": 142.675,
+              "abs_peak": 2.592706e-05,
+              "abs_peak_time_ps": 142.675
+            }
+          }
+        },
+        "STORAGE_POST": {
+          "interval_ps": [
+            140.0,
+            150.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.1810284,
+              "min": -0.004909886,
+              "min_time_ps": 140.10000000000002,
+              "max": 0.3931804,
+              "max_time_ps": 141.625,
+              "abs_peak": 0.3931804,
+              "abs_peak_time_ps": 141.625
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": 9.04675e-06,
+              "min": -0.00012237,
+              "min_time_ps": 142.4,
+              "max": 0.0001346836,
+              "max_time_ps": 140.8375,
+              "abs_peak": 0.0001346836,
+              "abs_peak_time_ps": 140.8375
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 9.992833e-06,
+              "min": 9.756802e-06,
+              "min_time_ps": 143.025,
+              "max": 1.026009e-05,
+              "max_time_ps": 141.8875,
+              "abs_peak": 1.026009e-05,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(R_IN|XTRIG)": {
+              "median": -7.166671e-09,
+              "min": -2.431978e-07,
+              "min_time_ps": 143.025,
+              "max": 2.600922e-07,
+              "max_time_ps": 141.8875,
+              "abs_peak": 2.600922e-07,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 150.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": 9.260555e-06,
+              "min": -0.0001219186,
+              "min_time_ps": 142.4125,
+              "max": 0.000132803,
+              "max_time_ps": 140.8375,
+              "abs_peak": 0.000132803,
+              "abs_peak_time_ps": 140.8375
+            },
+            "V(N6|XBVM1)": {
+              "median": 9.479003e-06,
+              "min": -0.0001222383,
+              "min_time_ps": 142.425,
+              "max": 0.0001309432,
+              "max_time_ps": 140.8375,
+              "abs_peak": 0.0001309432,
+              "abs_peak_time_ps": 140.8375
+            },
+            "I(L_SL|XBVM1)": {
+              "median": -7.166671e-09,
+              "min": -2.431978e-07,
+              "min_time_ps": 143.025,
+              "max": 2.600922e-07,
+              "max_time_ps": 141.8875,
+              "abs_peak": 2.600922e-07,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": -7.166671e-09,
+              "min": -2.431978e-07,
+              "min_time_ps": 143.025,
+              "max": 2.600922e-07,
+              "max_time_ps": 141.8875,
+              "abs_peak": 2.600922e-07,
+              "abs_peak_time_ps": 141.8875
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.90966,
+              "min": 5.897624,
+              "min_time_ps": 140.425,
+              "max": 5.923823,
+              "max_time_ps": 141.9125,
+              "abs_peak": 5.923823,
+              "abs_peak_time_ps": 141.9125
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.322241,
+              "min": 0.1281445,
+              "min_time_ps": 142.6875,
+              "max": 0.5247157,
+              "max_time_ps": 141.175,
+              "abs_peak": 0.5247157,
+              "abs_peak_time_ps": 141.175
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -18.55787,
+              "min": -18.80598,
+              "min_time_ps": 141.575,
+              "max": -18.35077,
+              "max_time_ps": 140.05,
+              "abs_peak": -18.80598,
+              "abs_peak_time_ps": 141.575
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -19.09683,
+              "min": -19.30492,
+              "min_time_ps": 141.6375,
+              "max": -18.90913,
+              "max_time_ps": 140.0875,
+              "abs_peak": -19.30492,
+              "abs_peak_time_ps": 141.6375
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.939967e-05,
+              "min": 1.876772e-05,
+              "min_time_ps": 140.675,
+              "max": 2.003846e-05,
+              "max_time_ps": 141.675,
+              "abs_peak": 2.003846e-05,
+              "abs_peak_time_ps": 141.675
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.942786e-05,
+              "min": -1.984124e-05,
+              "min_time_ps": 141.5875,
+              "max": -1.890557e-05,
+              "max_time_ps": 140.6375,
+              "abs_peak": -1.984124e-05,
+              "abs_peak_time_ps": 141.5875
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 1.940703e-05,
+              "min": 1.883696e-05,
+              "min_time_ps": 140.825,
+              "max": 1.996844e-05,
+              "max_time_ps": 141.825,
+              "abs_peak": 1.996844e-05,
+              "abs_peak_time_ps": 141.825
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.415577e-05,
+              "min": 2.256614e-05,
+              "min_time_ps": 141.3625,
+              "max": 2.592706e-05,
+              "max_time_ps": 142.675,
+              "abs_peak": 2.592706e-05,
+              "abs_peak_time_ps": 142.675
+            }
+          }
+        }
+      },
+      "trigger": {
+        "same_junction": "B_TRIG N_TRIG->0; P in rad; V in V",
+        "phase_pre_median_rad": 0.2013007,
+        "phase_activity_first_rad": 0.2015851,
+        "phase_activity_last_rad": 0.2789445,
+        "phase_activity_delta_rad": 0.0773594,
+        "phase_activity_net_turns": 0.012312130904623167,
+        "phase_activity_range_rad": 3.672452,
+        "phase_activity_range_turns": 0.5844888890677172,
+        "voltage_area_activity_Wb": 2.5464257874113293e-17,
+        "voltage_area_activity_turns": 0.012314460322207324,
+        "voltage_abs_peak_uV": 908.0685,
+        "voltage_abs_peak_time_ps": 109.25,
+        "post_phase_median_rad": 0.1810284,
+        "post_minus_pre_median_rad": -0.020272299999999993
+      },
+      "source_and_receiver_currents": {
+        "SL_voltage_abs_peak_mV": 1.287409,
+        "SL_voltage_abs_peak_time_ps": 100.9125,
+        "SL_current_abs_peak_uA": 66.28572,
+        "SL_current_abs_peak_time_ps": 103.175,
+        "receiver_input_current_abs_peak_uA": 66.28572,
+        "receiver_input_current_abs_peak_time_ps": 103.175,
+        "bias_current_median_uA": 10.0,
+        "effective_drive_signed_peak_uA": 76.28572,
+        "effective_drive_positive_peak_uA": 76.28572,
+        "effective_drive_negative_peak_uA": -18.384059999999995
+      },
+      "storage": {
+        "P(B_JM1|XBVM1)": {
+          "pre_median_rad": 5.911061,
+          "post_median_rad": 5.90966,
+          "post_minus_pre_rad": -0.0014010000000004297,
+          "post_minus_pre_turns": -0.00022297607527181377
+        },
+        "P(B_JM2|XBVM1)": {
+          "pre_median_rad": 0.3172264,
+          "post_median_rad": 0.322241,
+          "post_minus_pre_rad": 0.00501459999999998,
+          "post_minus_pre_turns": 0.0007980983776286152
+        }
+      },
+      "readout": {
+        "P(B_JS1|XBVM1)": {
+          "activity": {
+            "min": -20.95703,
+            "min_time_ps": 106.225,
+            "max": 0.3175116,
+            "max_time_ps": 95.925,
+            "abs_peak": -20.95703,
+            "abs_peak_time_ps": 106.225
+          },
+          "activity_median": -18.19023
+        },
+        "P(B_JS2|XBVM1)": {
+          "activity": {
+            "min": -21.05273,
+            "min_time_ps": 107.0125,
+            "max": -0.2668838,
+            "max_time_ps": 95.0125,
+            "abs_peak": -21.05273,
+            "abs_peak_time_ps": 107.0125
+          },
+          "activity_median": -18.83991
+        },
+        "V(B_JS1|XBVM1)": {
+          "activity": {
+            "min": -0.002182412,
+            "min_time_ps": 102.4125,
+            "max": 0.001200994,
+            "max_time_ps": 106.9,
+            "abs_peak": -0.002182412,
+            "abs_peak_time_ps": 102.4125
+          },
+          "activity_median": -9.048149e-05
+        },
+        "V(B_JS2|XBVM1)": {
+          "activity": {
+            "min": -0.002072016,
+            "min_time_ps": 100.825,
+            "max": 0.001382181,
+            "max_time_ps": 107.7875,
+            "abs_peak": -0.002072016,
+            "abs_peak_time_ps": 100.825
+          },
+          "activity_median": -7.186457e-05
+        }
+      }
+    },
+    "read0": {
+      "case_id": "read0",
+      "logical_state": 0,
+      "read_kind": "canonical_positive",
+      "csv": "raw/read0/run-01.csv",
+      "sha256": "e59910aa93dbced0c7d977f1b4d24e00a18ed0512166e4a9c0b4070b8810e8be",
+      "qa": {
+        "rows": 13599,
+        "time_start_ps": 0.0,
+        "time_end_ps": 169.9875,
+        "dt_min_ps": 0.01249999999996021,
+        "dt_max_ps": 0.025000000000000133,
+        "strictly_increasing_time": true,
+        "all_finite": true,
+        "missing_columns": [],
+        "artifact_valid": true
+      },
+      "windows": {
+        "PRE": {
+          "interval_ps": [
+            80.0,
+            90.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2014383,
+              "min": 0.2003035,
+              "min_time_ps": 81.4625,
+              "max": 0.2024433,
+              "max_time_ps": 80.0,
+              "abs_peak": 0.2024433,
+              "abs_peak_time_ps": 80.0
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -8.382379e-08,
+              "min": -7.309011e-07,
+              "min_time_ps": 80.71249999999999,
+              "max": 6.962343e-07,
+              "max_time_ps": 82.2125,
+              "abs_peak": -7.309011e-07,
+              "abs_peak_time_ps": 80.71249999999999
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 9.999979e-06,
+              "min": 9.99861e-06,
+              "min_time_ps": 80.575,
+              "max": 1.000114e-05,
+              "max_time_ps": 85.8625,
+              "abs_peak": 1.000114e-05,
+              "abs_peak_time_ps": 85.77499999999999
+            },
+            "I(R_IN|XTRIG)": {
+              "median": -2.139113e-11,
+              "min": -1.389552e-09,
+              "min_time_ps": 80.58749999999999,
+              "max": 1.144956e-09,
+              "max_time_ps": 85.825,
+              "abs_peak": -1.389552e-09,
+              "abs_peak_time_ps": 80.58749999999999
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 80.0,
+              "max": 1e-05,
+              "max_time_ps": 90.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 80.0
+            },
+            "V(SL1)": {
+              "median": -8.219412e-08,
+              "min": -7.466721e-07,
+              "min_time_ps": 80.7,
+              "max": 6.961441e-07,
+              "max_time_ps": 82.2125,
+              "abs_peak": -7.466721e-07,
+              "abs_peak_time_ps": 80.7
+            },
+            "V(N6|XBVM1)": {
+              "median": -8.571402e-08,
+              "min": -7.61487e-07,
+              "min_time_ps": 80.7,
+              "max": 6.949195e-07,
+              "max_time_ps": 82.2125,
+              "abs_peak": -7.61487e-07,
+              "abs_peak_time_ps": 80.7
+            },
+            "I(L_SL|XBVM1)": {
+              "median": -2.139113e-11,
+              "min": -1.389552e-09,
+              "min_time_ps": 80.58749999999999,
+              "max": 1.144956e-09,
+              "max_time_ps": 85.825,
+              "abs_peak": -1.389552e-09,
+              "abs_peak_time_ps": 80.58749999999999
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": -2.139113e-11,
+              "min": -1.389552e-09,
+              "min_time_ps": 80.58749999999999,
+              "max": 1.144956e-09,
+              "max_time_ps": 85.825,
+              "abs_peak": -1.389552e-09,
+              "abs_peak_time_ps": 80.58749999999999
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.911061,
+              "min": -5.911253,
+              "min_time_ps": 81.5625,
+              "max": -5.910891,
+              "max_time_ps": 80.125,
+              "abs_peak": -5.911253,
+              "abs_peak_time_ps": 81.5625
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.3172144,
+              "min": -0.3198603,
+              "min_time_ps": 80.8125,
+              "max": -0.3141814,
+              "max_time_ps": 82.325,
+              "abs_peak": -0.3198603,
+              "abs_peak_time_ps": 80.8125
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.2669309,
+              "min": -0.2680733,
+              "min_time_ps": 82.7875,
+              "max": -0.2656648,
+              "max_time_ps": 81.2375,
+              "abs_peak": -0.2680733,
+              "abs_peak_time_ps": 82.7875
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.2668249,
+              "min": 0.2657586,
+              "min_time_ps": 80.0,
+              "max": 0.2679874,
+              "max_time_ps": 81.45,
+              "abs_peak": 0.2679874,
+              "abs_peak_time_ps": 81.45
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -1.951734e-05,
+              "min": -1.952133e-05,
+              "min_time_ps": 80.225,
+              "max": -1.951465e-05,
+              "max_time_ps": 81.325,
+              "abs_peak": -1.952133e-05,
+              "abs_peak_time_ps": 80.225
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.951733e-05,
+              "min": 1.951469e-05,
+              "min_time_ps": 81.2,
+              "max": 1.952082e-05,
+              "max_time_ps": 80.1125,
+              "abs_peak": 1.952082e-05,
+              "abs_peak_time_ps": 80.08749999999999
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.95174e-05,
+              "min": -1.952092e-05,
+              "min_time_ps": 80.3875,
+              "max": -1.951496e-05,
+              "max_time_ps": 81.5,
+              "abs_peak": -1.952092e-05,
+              "abs_peak_time_ps": 80.3875
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.411005e-05,
+              "min": -2.413109e-05,
+              "min_time_ps": 85.3375,
+              "max": -2.409057e-05,
+              "max_time_ps": 80.7,
+              "abs_peak": -2.413109e-05,
+              "abs_peak_time_ps": 85.3375
+            }
+          }
+        },
+        "READ_ACTIVITY": {
+          "interval_ps": [
+            94.0,
+            130.0
+          ],
+          "rows": 2881,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2032981,
+              "min": -0.3991051,
+              "min_time_ps": 106.6,
+              "max": 0.7440724,
+              "max_time_ps": 96.8375,
+              "abs_peak": 0.7440724,
+              "abs_peak_time_ps": 96.8375
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": 3.090422e-06,
+              "min": -0.0002802396,
+              "min_time_ps": 108.8875,
+              "max": 0.0003704558,
+              "max_time_ps": 107.42500000000001,
+              "abs_peak": 0.0003704558,
+              "abs_peak_time_ps": 107.42500000000001
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 9.999974e-06,
+              "min": -1.23192e-05,
+              "min_time_ps": 106.0,
+              "max": 2.722458e-05,
+              "max_time_ps": 96.0,
+              "abs_peak": 2.722458e-05,
+              "abs_peak_time_ps": 96.0
+            },
+            "I(R_IN|XTRIG)": {
+              "median": -2.646523e-11,
+              "min": -2.23192e-05,
+              "min_time_ps": 106.0,
+              "max": 1.722458e-05,
+              "max_time_ps": 96.0,
+              "abs_peak": -2.23192e-05,
+              "abs_peak_time_ps": 106.0
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 94.0,
+              "max": 1e-05,
+              "max_time_ps": 130.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 94.0
+            },
+            "V(SL1)": {
+              "median": 4.278496e-07,
+              "min": -0.0004268325,
+              "min_time_ps": 106.0,
+              "max": 0.0003757184,
+              "max_time_ps": 96.0,
+              "abs_peak": -0.0004268325,
+              "abs_peak_time_ps": 106.0
+            },
+            "V(N6|XBVM1)": {
+              "median": 3.960316e-07,
+              "min": -0.000706729,
+              "min_time_ps": 106.0,
+              "max": 0.0005926977,
+              "max_time_ps": 96.0,
+              "abs_peak": -0.000706729,
+              "abs_peak_time_ps": 106.0
+            },
+            "I(L_SL|XBVM1)": {
+              "median": -2.646523e-11,
+              "min": -2.23192e-05,
+              "min_time_ps": 106.0,
+              "max": 1.722458e-05,
+              "max_time_ps": 96.0,
+              "abs_peak": -2.23192e-05,
+              "abs_peak_time_ps": 106.0
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": -2.646523e-11,
+              "min": -2.23192e-05,
+              "min_time_ps": 106.0,
+              "max": 1.722458e-05,
+              "max_time_ps": 96.0,
+              "abs_peak": -2.23192e-05,
+              "abs_peak_time_ps": 106.0
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.907607,
+              "min": -6.040844,
+              "min_time_ps": 107.51249999999999,
+              "max": -4.935874,
+              "max_time_ps": 98.1625,
+              "abs_peak": -6.040844,
+              "abs_peak_time_ps": 107.51249999999999
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.2724982,
+              "min": -0.4724451,
+              "min_time_ps": 107.175,
+              "max": -0.01002412,
+              "max_time_ps": 96.925,
+              "abs_peak": -0.4724451,
+              "abs_peak_time_ps": 107.175
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.3357359,
+              "min": -1.187267,
+              "min_time_ps": 97.575,
+              "max": 0.3054781,
+              "max_time_ps": 109.96249999999999,
+              "abs_peak": -1.187267,
+              "abs_peak_time_ps": 97.575
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.1490418,
+              "min": -1.523875,
+              "min_time_ps": 97.1375,
+              "max": 0.8591585,
+              "max_time_ps": 106.775,
+              "abs_peak": -1.523875,
+              "abs_peak_time_ps": 97.1375
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -2.064494e-05,
+              "min": -5.414771e-05,
+              "min_time_ps": 96.625,
+              "max": 2.59367e-07,
+              "max_time_ps": 106.625,
+              "abs_peak": -5.414771e-05,
+              "abs_peak_time_ps": 96.625
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.795726e-05,
+              "min": -7.404704e-05,
+              "min_time_ps": 102.425,
+              "max": 3.56493e-05,
+              "max_time_ps": 107.66250000000001,
+              "abs_peak": -7.404704e-05,
+              "abs_peak_time_ps": 102.425
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.786942e-05,
+              "min": -3.546969e-05,
+              "min_time_ps": 107.85,
+              "max": 7.244018e-05,
+              "max_time_ps": 100.16250000000001,
+              "abs_peak": 7.244018e-05,
+              "abs_peak_time_ps": 100.16250000000001
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.286549e-05,
+              "min": -3.910945e-05,
+              "min_time_ps": 108.7875,
+              "max": 3.363908e-05,
+              "max_time_ps": 101.27499999999999,
+              "abs_peak": -3.910945e-05,
+              "abs_peak_time_ps": 108.7875
+            }
+          }
+        },
+        "POST": {
+          "interval_ps": [
+            140.0,
+            170.0
+          ],
+          "rows": 2400,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2000018,
+              "min": 0.1126754,
+              "min_time_ps": 140.7375,
+              "max": 0.2855997,
+              "max_time_ps": 142.275,
+              "abs_peak": 0.2855997,
+              "abs_peak_time_ps": 142.275
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": 1.0916375e-06,
+              "min": -6.182885e-05,
+              "min_time_ps": 140.0,
+              "max": 5.790513e-05,
+              "max_time_ps": 141.5,
+              "abs_peak": -6.182885e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1.0000035e-05,
+              "min": 9.893234e-06,
+              "min_time_ps": 140.7875,
+              "max": 1.009275e-05,
+              "max_time_ps": 141.8875,
+              "abs_peak": 1.009275e-05,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 3.5081275e-11,
+              "min": -1.067661e-07,
+              "min_time_ps": 140.7875,
+              "max": 9.274773e-08,
+              "max_time_ps": 141.8875,
+              "abs_peak": -1.067661e-07,
+              "abs_peak_time_ps": 140.7875
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 169.9875,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": 1.0336865e-06,
+              "min": -6.157968e-05,
+              "min_time_ps": 140.0,
+              "max": 5.838764e-05,
+              "max_time_ps": 141.51250000000002,
+              "abs_peak": -6.157968e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(N6|XBVM1)": {
+              "median": 1.0384640000000002e-06,
+              "min": -6.14942e-05,
+              "min_time_ps": 140.0,
+              "max": 5.913244e-05,
+              "max_time_ps": 141.525,
+              "abs_peak": -6.14942e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 3.5081275e-11,
+              "min": -1.067661e-07,
+              "min_time_ps": 140.7875,
+              "max": 9.274773e-08,
+              "max_time_ps": 141.8875,
+              "abs_peak": -1.067661e-07,
+              "abs_peak_time_ps": 140.7875
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 3.5081275e-11,
+              "min": -1.067661e-07,
+              "min_time_ps": 140.7875,
+              "max": 9.274773e-08,
+              "max_time_ps": 141.8875,
+              "abs_peak": -1.067661e-07,
+              "abs_peak_time_ps": 140.7875
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.9110985,
+              "min": -5.912848,
+              "min_time_ps": 141.3125,
+              "max": -5.909349,
+              "max_time_ps": 142.8625,
+              "abs_peak": -5.912848,
+              "abs_peak_time_ps": 141.3125
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.3168163,
+              "min": -0.3486481,
+              "min_time_ps": 140.5375,
+              "max": -0.2872662,
+              "max_time_ps": 142.04999999999998,
+              "abs_peak": -0.3486481,
+              "abs_peak_time_ps": 140.5375
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.26552005,
+              "min": -0.3561427,
+              "min_time_ps": 142.25,
+              "max": -0.1690128,
+              "max_time_ps": 140.725,
+              "abs_peak": -0.3561427,
+              "abs_peak_time_ps": 142.25
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.26862345,
+              "min": 0.1812984,
+              "min_time_ps": 142.28750000000002,
+              "max": 0.3568948,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 0.3568948,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -1.951174e-05,
+              "min": -1.968351e-05,
+              "min_time_ps": 140.4625,
+              "max": -1.934302e-05,
+              "max_time_ps": 141.5,
+              "abs_peak": -1.968351e-05,
+              "abs_peak_time_ps": 140.4625
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.951337e-05,
+              "min": 1.935517e-05,
+              "min_time_ps": 141.29999999999998,
+              "max": 1.962293e-05,
+              "max_time_ps": 140.32500000000002,
+              "abs_peak": 1.962293e-05,
+              "abs_peak_time_ps": 140.32500000000002
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.951177e-05,
+              "min": -1.966532e-05,
+              "min_time_ps": 140.61249999999998,
+              "max": -1.936049e-05,
+              "max_time_ps": 141.6625,
+              "abs_peak": -1.966532e-05,
+              "abs_peak_time_ps": 140.61249999999998
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.411796e-05,
+              "min": -2.440063e-05,
+              "min_time_ps": 141.75,
+              "max": -2.375117e-05,
+              "max_time_ps": 140.4875,
+              "abs_peak": -2.440063e-05,
+              "abs_peak_time_ps": 141.75
+            }
+          }
+        },
+        "STORAGE_POST": {
+          "interval_ps": [
+            140.0,
+            150.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.1925124,
+              "min": 0.1126754,
+              "min_time_ps": 140.7375,
+              "max": 0.2855997,
+              "max_time_ps": 142.275,
+              "abs_peak": 0.2855997,
+              "abs_peak_time_ps": 142.275
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -4.810324e-06,
+              "min": -6.182885e-05,
+              "min_time_ps": 140.0,
+              "max": 5.790513e-05,
+              "max_time_ps": 141.5,
+              "abs_peak": -6.182885e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 9.990286e-06,
+              "min": 9.893234e-06,
+              "min_time_ps": 140.7875,
+              "max": 1.009275e-05,
+              "max_time_ps": 141.8875,
+              "abs_peak": 1.009275e-05,
+              "abs_peak_time_ps": 141.8875
+            },
+            "I(R_IN|XTRIG)": {
+              "median": -9.713694e-09,
+              "min": -1.067661e-07,
+              "min_time_ps": 140.7875,
+              "max": 9.274773e-08,
+              "max_time_ps": 141.8875,
+              "abs_peak": -1.067661e-07,
+              "abs_peak_time_ps": 140.7875
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 150.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": -4.977939e-06,
+              "min": -6.157968e-05,
+              "min_time_ps": 140.0,
+              "max": 5.838764e-05,
+              "max_time_ps": 141.51250000000002,
+              "abs_peak": -6.157968e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(N6|XBVM1)": {
+              "median": -5.509347e-06,
+              "min": -6.14942e-05,
+              "min_time_ps": 140.0,
+              "max": 5.913244e-05,
+              "max_time_ps": 141.525,
+              "abs_peak": -6.14942e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "I(L_SL|XBVM1)": {
+              "median": -9.713694e-09,
+              "min": -1.067661e-07,
+              "min_time_ps": 140.7875,
+              "max": 9.274773e-08,
+              "max_time_ps": 141.8875,
+              "abs_peak": -1.067661e-07,
+              "abs_peak_time_ps": 140.7875
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": -9.713694e-09,
+              "min": -1.067661e-07,
+              "min_time_ps": 140.7875,
+              "max": 9.274773e-08,
+              "max_time_ps": 141.8875,
+              "abs_peak": -1.067661e-07,
+              "abs_peak_time_ps": 140.7875
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.911069,
+              "min": -5.912848,
+              "min_time_ps": 141.3125,
+              "max": -5.909349,
+              "max_time_ps": 142.8625,
+              "abs_peak": -5.912848,
+              "abs_peak_time_ps": 141.3125
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.3212213,
+              "min": -0.3486481,
+              "min_time_ps": 140.5375,
+              "max": -0.2872662,
+              "max_time_ps": 142.04999999999998,
+              "abs_peak": -0.3486481,
+              "abs_peak_time_ps": 140.5375
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.2576725,
+              "min": -0.3561427,
+              "min_time_ps": 142.25,
+              "max": -0.1690128,
+              "max_time_ps": 140.725,
+              "abs_peak": -0.3561427,
+              "abs_peak_time_ps": 142.25
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.2760438,
+              "min": 0.1812984,
+              "min_time_ps": 142.28750000000002,
+              "max": 0.3568948,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 0.3568948,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -1.951492e-05,
+              "min": -1.968351e-05,
+              "min_time_ps": 140.4625,
+              "max": -1.934302e-05,
+              "max_time_ps": 141.5,
+              "abs_peak": -1.968351e-05,
+              "abs_peak_time_ps": 140.4625
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.950838e-05,
+              "min": 1.935517e-05,
+              "min_time_ps": 141.29999999999998,
+              "max": 1.962293e-05,
+              "max_time_ps": 140.32500000000002,
+              "abs_peak": 1.962293e-05,
+              "abs_peak_time_ps": 140.32500000000002
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.95135e-05,
+              "min": -1.966532e-05,
+              "min_time_ps": 140.61249999999998,
+              "max": -1.936049e-05,
+              "max_time_ps": 141.6625,
+              "abs_peak": -1.966532e-05,
+              "abs_peak_time_ps": 140.61249999999998
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.409076e-05,
+              "min": -2.440063e-05,
+              "min_time_ps": 141.75,
+              "max": -2.375117e-05,
+              "max_time_ps": 140.4875,
+              "abs_peak": -2.440063e-05,
+              "abs_peak_time_ps": 141.75
+            }
+          }
+        }
+      },
+      "trigger": {
+        "same_junction": "B_TRIG N_TRIG->0; P in rad; V in V",
+        "phase_pre_median_rad": 0.2014383,
+        "phase_activity_first_rad": 0.2008027,
+        "phase_activity_last_rad": 0.3516107,
+        "phase_activity_delta_rad": 0.150808,
+        "phase_activity_net_turns": 0.024001838657802553,
+        "phase_activity_range_rad": 1.1431775,
+        "phase_activity_range_turns": 0.18194234995643518,
+        "voltage_area_activity_Wb": 4.9640074737875526e-17,
+        "voltage_area_activity_turns": 0.02400583334385748,
+        "voltage_abs_peak_uV": 370.4558,
+        "voltage_abs_peak_time_ps": 107.42500000000001,
+        "post_phase_median_rad": 0.1925124,
+        "post_minus_pre_median_rad": -0.008925899999999987
+      },
+      "source_and_receiver_currents": {
+        "SL_voltage_abs_peak_mV": -0.4268325,
+        "SL_voltage_abs_peak_time_ps": 106.0,
+        "SL_current_abs_peak_uA": -22.319200000000002,
+        "SL_current_abs_peak_time_ps": 106.0,
+        "receiver_input_current_abs_peak_uA": -22.319200000000002,
+        "receiver_input_current_abs_peak_time_ps": 106.0,
+        "bias_current_median_uA": 10.0,
+        "effective_drive_signed_peak_uA": 27.224580000000003,
+        "effective_drive_positive_peak_uA": 27.224580000000003,
+        "effective_drive_negative_peak_uA": -12.3192
+      },
+      "storage": {
+        "P(B_JM1|XBVM1)": {
+          "pre_median_rad": -5.911061,
+          "post_median_rad": -5.911069,
+          "post_minus_pre_rad": -8.000000000230045e-06,
+          "post_minus_pre_turns": -1.2732395447717756e-06
+        },
+        "P(B_JM2|XBVM1)": {
+          "pre_median_rad": -0.3172144,
+          "post_median_rad": -0.3212213,
+          "post_minus_pre_rad": -0.00400689999999998,
+          "post_minus_pre_turns": -0.0006377179414749122
+        }
+      },
+      "readout": {
+        "P(B_JS1|XBVM1)": {
+          "activity": {
+            "min": -1.187267,
+            "min_time_ps": 97.575,
+            "max": 0.3054781,
+            "max_time_ps": 109.96249999999999,
+            "abs_peak": -1.187267,
+            "abs_peak_time_ps": 97.575
+          },
+          "activity_median": -0.3357359
+        },
+        "P(B_JS2|XBVM1)": {
+          "activity": {
+            "min": -1.523875,
+            "min_time_ps": 97.1375,
+            "max": 0.8591585,
+            "max_time_ps": 106.775,
+            "abs_peak": -1.523875,
+            "abs_peak_time_ps": 97.1375
+          },
+          "activity_median": 0.1490418
+        },
+        "V(B_JS1|XBVM1)": {
+          "activity": {
+            "min": -0.0003994387,
+            "min_time_ps": 110.575,
+            "max": 0.000463473,
+            "max_time_ps": 109.32499999999999,
+            "abs_peak": 0.000463473,
+            "abs_peak_time_ps": 109.32499999999999
+          },
+          "activity_median": 2.68005e-06
+        },
+        "V(B_JS2|XBVM1)": {
+          "activity": {
+            "min": -0.000544009,
+            "min_time_ps": 96.13749999999999,
+            "max": 0.0006472948,
+            "max_time_ps": 106.075,
+            "abs_peak": 0.0006472948,
+            "abs_peak_time_ps": 106.075
+          },
+          "activity_median": -3.541526e-07
+        }
+      }
+    },
+    "logical1-read0-control": {
+      "case_id": "logical1-read0-control",
+      "logical_state": 1,
+      "read_kind": "zero_control",
+      "csv": "raw/logical1-read0-control/run-01.csv",
+      "sha256": "1a4835937a095fbfc6852ae90ab4a59cedae7ca05fcb320684af1831b5329860",
+      "qa": {
+        "rows": 13599,
+        "time_start_ps": 0.0,
+        "time_end_ps": 169.9875,
+        "dt_min_ps": 0.01249999999996021,
+        "dt_max_ps": 0.025000000000000133,
+        "strictly_increasing_time": true,
+        "all_finite": true,
+        "missing_columns": [],
+        "artifact_valid": true
+      },
+      "windows": {
+        "PRE": {
+          "interval_ps": [
+            80.0,
+            90.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2013007,
+              "min": 0.2009062,
+              "min_time_ps": 80.53750000000001,
+              "max": 0.2017657,
+              "max_time_ps": 82.0375,
+              "abs_peak": 0.2017657,
+              "abs_peak_time_ps": 82.02499999999999
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -7.275449e-09,
+              "min": -2.943058e-07,
+              "min_time_ps": 80.0,
+              "max": 2.988174e-07,
+              "max_time_ps": 81.26249999999999,
+              "abs_peak": 2.988174e-07,
+              "abs_peak_time_ps": 81.26249999999999
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1.000007e-05,
+              "min": 9.999e-06,
+              "min_time_ps": 81.5625,
+              "max": 1.000139e-05,
+              "max_time_ps": 80.475,
+              "abs_peak": 1.000139e-05,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 7.323227e-11,
+              "min": -1.000149e-09,
+              "min_time_ps": 81.5625,
+              "max": 1.385179e-09,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": 1.385179e-09,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 80.0,
+              "max": 1e-05,
+              "max_time_ps": 90.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 80.0
+            },
+            "V(SL1)": {
+              "median": -6.847023e-09,
+              "min": -2.910359e-07,
+              "min_time_ps": 80.0,
+              "max": 2.91837e-07,
+              "max_time_ps": 81.2375,
+              "abs_peak": 2.91837e-07,
+              "abs_peak_time_ps": 81.2375
+            },
+            "V(N6|XBVM1)": {
+              "median": -5.969101e-09,
+              "min": -2.840016e-07,
+              "min_time_ps": 80.0,
+              "max": 2.831422e-07,
+              "max_time_ps": 81.2125,
+              "abs_peak": -2.840016e-07,
+              "abs_peak_time_ps": 80.0
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 7.323227e-11,
+              "min": -1.000149e-09,
+              "min_time_ps": 81.5625,
+              "max": 1.385179e-09,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": 1.385179e-09,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 7.323227e-11,
+              "min": -1.000149e-09,
+              "min_time_ps": 81.5625,
+              "max": 1.385179e-09,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": 1.385179e-09,
+              "abs_peak_time_ps": 80.46249999999999
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.911061,
+              "min": 5.910888,
+              "min_time_ps": 80.05,
+              "max": 5.911255,
+              "max_time_ps": 81.6125,
+              "abs_peak": 5.911255,
+              "abs_peak_time_ps": 81.55000000000001
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.3172264,
+              "min": 0.3141505,
+              "min_time_ps": 82.3,
+              "max": 0.3198928,
+              "max_time_ps": 80.8,
+              "abs_peak": 0.3198928,
+              "abs_peak_time_ps": 80.8
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": 0.2668959,
+              "min": 0.2666495,
+              "min_time_ps": 81.025,
+              "max": 0.2671366,
+              "max_time_ps": 82.7,
+              "abs_peak": 0.2671366,
+              "abs_peak_time_ps": 82.6875
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -0.2668565,
+              "min": -0.2672648,
+              "min_time_ps": 82.0,
+              "max": -0.2664795,
+              "max_time_ps": 80.46249999999999,
+              "abs_peak": -0.2672648,
+              "abs_peak_time_ps": 82.0
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.951738e-05,
+              "min": 1.951434e-05,
+              "min_time_ps": 81.3125,
+              "max": 1.952154e-05,
+              "max_time_ps": 80.225,
+              "abs_peak": 1.952154e-05,
+              "abs_peak_time_ps": 80.21249999999999
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.951731e-05,
+              "min": -1.952063e-05,
+              "min_time_ps": 80.1,
+              "max": -1.951495e-05,
+              "max_time_ps": 81.2125,
+              "abs_peak": -1.952063e-05,
+              "abs_peak_time_ps": 80.1
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 1.951744e-05,
+              "min": 1.951467e-05,
+              "min_time_ps": 81.45,
+              "max": 1.952111e-05,
+              "max_time_ps": 80.4,
+              "abs_peak": 1.952111e-05,
+              "abs_peak_time_ps": 80.3625
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.410997e-05,
+              "min": 2.40903e-05,
+              "min_time_ps": 80.675,
+              "max": 2.413118e-05,
+              "max_time_ps": 85.325,
+              "abs_peak": 2.413118e-05,
+              "abs_peak_time_ps": 85.325
+            }
+          }
+        },
+        "READ_ACTIVITY": {
+          "interval_ps": [
+            94.0,
+            130.0
+          ],
+          "rows": 2881,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2013559,
+              "min": 0.2011185,
+              "min_time_ps": 95.725,
+              "max": 0.2016114,
+              "max_time_ps": 94.22500000000001,
+              "abs_peak": 0.2016114,
+              "abs_peak_time_ps": 94.2125
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -1.524634e-09,
+              "min": -1.689627e-07,
+              "min_time_ps": 94.96249999999999,
+              "max": 1.579202e-07,
+              "max_time_ps": 96.475,
+              "abs_peak": -1.689627e-07,
+              "abs_peak_time_ps": 94.96249999999999
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 9.999999e-06,
+              "min": 9.999754e-06,
+              "min_time_ps": 94.48750000000001,
+              "max": 1.00002e-05,
+              "max_time_ps": 95.775,
+              "abs_peak": 1.00002e-05,
+              "abs_peak_time_ps": 95.625
+            },
+            "I(R_IN|XTRIG)": {
+              "median": -6.632256e-13,
+              "min": -2.463182e-10,
+              "min_time_ps": 94.5125,
+              "max": 2.002342e-10,
+              "max_time_ps": 95.7,
+              "abs_peak": -2.463182e-10,
+              "abs_peak_time_ps": 94.5125
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 94.0,
+              "max": 1e-05,
+              "max_time_ps": 130.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 94.0
+            },
+            "V(SL1)": {
+              "median": -1.457311e-09,
+              "min": -1.701432e-07,
+              "min_time_ps": 94.96249999999999,
+              "max": 1.573292e-07,
+              "max_time_ps": 96.4625,
+              "abs_peak": -1.701432e-07,
+              "abs_peak_time_ps": 94.96249999999999
+            },
+            "V(N6|XBVM1)": {
+              "median": -1.546161e-09,
+              "min": -1.708861e-07,
+              "min_time_ps": 94.95,
+              "max": 1.564589e-07,
+              "max_time_ps": 96.4625,
+              "abs_peak": -1.708861e-07,
+              "abs_peak_time_ps": 94.95
+            },
+            "I(L_SL|XBVM1)": {
+              "median": -6.632256e-13,
+              "min": -2.463182e-10,
+              "min_time_ps": 94.5125,
+              "max": 2.002342e-10,
+              "max_time_ps": 95.7,
+              "abs_peak": -2.463182e-10,
+              "abs_peak_time_ps": 94.5125
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": -6.632257e-13,
+              "min": -2.463182e-10,
+              "min_time_ps": 94.5125,
+              "max": 2.002342e-10,
+              "max_time_ps": 95.7,
+              "abs_peak": -2.463182e-10,
+              "abs_peak_time_ps": 94.5125
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.911076,
+              "min": 5.910983,
+              "min_time_ps": 95.1375,
+              "max": 5.911163,
+              "max_time_ps": 96.67500000000001,
+              "abs_peak": 5.911163,
+              "abs_peak_time_ps": 96.6125
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.3169247,
+              "min": 0.3153685,
+              "min_time_ps": 94.36250000000001,
+              "max": 0.3183631,
+              "max_time_ps": 95.875,
+              "abs_peak": 0.3183631,
+              "abs_peak_time_ps": 95.875
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": 0.2669053,
+              "min": 0.2668238,
+              "min_time_ps": 96.13749999999999,
+              "max": 0.2670045,
+              "max_time_ps": 94.65,
+              "abs_peak": 0.2670045,
+              "abs_peak_time_ps": 94.6375
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -0.2669028,
+              "min": -0.2671478,
+              "min_time_ps": 94.19999999999999,
+              "max": -0.2666796,
+              "max_time_ps": 95.71249999999999,
+              "abs_peak": -0.2671478,
+              "abs_peak_time_ps": 94.19999999999999
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951635e-05,
+              "min_time_ps": 94.2375,
+              "max": 1.951798e-05,
+              "max_time_ps": 95.5625,
+              "abs_peak": 1.951798e-05,
+              "abs_peak_time_ps": 95.475
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951781e-05,
+              "min_time_ps": 95.375,
+              "max": -1.951654e-05,
+              "max_time_ps": 94.2625,
+              "abs_peak": -1.951781e-05,
+              "abs_peak_time_ps": 95.375
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951642e-05,
+              "min_time_ps": 94.425,
+              "max": 1.951792e-05,
+              "max_time_ps": 95.7375,
+              "abs_peak": 1.951792e-05,
+              "abs_peak_time_ps": 95.625
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.411242e-05,
+              "min": 2.410165e-05,
+              "min_time_ps": 95.8125,
+              "max": 2.412435e-05,
+              "max_time_ps": 94.3375,
+              "abs_peak": 2.412435e-05,
+              "abs_peak_time_ps": 94.32499999999999
+            }
+          }
+        },
+        "POST": {
+          "interval_ps": [
+            140.0,
+            170.0
+          ],
+          "rows": 2400,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2013577,
+              "min": 0.2013315,
+              "min_time_ps": 141.29999999999998,
+              "max": 0.2013845,
+              "max_time_ps": 140.0,
+              "abs_peak": 0.2013845,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -3.007205e-11,
+              "min": -1.878139e-08,
+              "min_time_ps": 140.5625,
+              "max": 1.72647e-08,
+              "max_time_ps": 142.075,
+              "abs_peak": -1.878139e-08,
+              "abs_peak_time_ps": 140.5625
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1e-05,
+              "min": 9.999986e-06,
+              "min_time_ps": 142.125,
+              "max": 1.000001e-05,
+              "max_time_ps": 168.2625,
+              "abs_peak": 1.000001e-05,
+              "abs_peak_time_ps": 140.1875
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 1.1339975e-13,
+              "min": -1.413668e-11,
+              "min_time_ps": 142.26250000000002,
+              "max": 1.464707e-11,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 1.464707e-11,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 169.9875,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": -2.6968845e-11,
+              "min": -1.862103e-08,
+              "min_time_ps": 140.5625,
+              "max": 1.710842e-08,
+              "max_time_ps": 142.075,
+              "abs_peak": -1.862103e-08,
+              "abs_peak_time_ps": 140.5625
+            },
+            "V(N6|XBVM1)": {
+              "median": -3.2527154999999996e-11,
+              "min": -1.845013e-08,
+              "min_time_ps": 140.54999999999998,
+              "max": 1.694175e-08,
+              "max_time_ps": 142.075,
+              "abs_peak": -1.845013e-08,
+              "abs_peak_time_ps": 140.54999999999998
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 1.1339984999999999e-13,
+              "min": -1.413668e-11,
+              "min_time_ps": 142.26250000000002,
+              "max": 1.464707e-11,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 1.464707e-11,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 1.1339979999999999e-13,
+              "min": -1.413668e-11,
+              "min_time_ps": 142.26250000000002,
+              "max": 1.464707e-11,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 1.464707e-11,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.911076,
+              "min": 5.911065,
+              "min_time_ps": 140.35000000000002,
+              "max": 5.911086,
+              "max_time_ps": 142.03750000000002,
+              "abs_peak": 5.911086,
+              "abs_peak_time_ps": 141.71249999999998
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.31692005,
+              "min": 0.3167653,
+              "min_time_ps": 142.6125,
+              "max": 0.3170851,
+              "max_time_ps": 141.1125,
+              "abs_peak": 0.3170851,
+              "abs_peak_time_ps": 141.1125
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": 0.2669046,
+              "min": 0.2668873,
+              "min_time_ps": 140.65,
+              "max": 0.2669216,
+              "max_time_ps": 142.20000000000002,
+              "abs_peak": 0.2669216,
+              "abs_peak_time_ps": 142.1375
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -0.2669045,
+              "min": -0.2669296,
+              "min_time_ps": 140.0,
+              "max": -0.2668802,
+              "max_time_ps": 141.3625,
+              "abs_peak": -0.2669296,
+              "abs_peak_time_ps": 140.0
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951723e-05,
+              "min_time_ps": 142.3375,
+              "max": 1.951733e-05,
+              "max_time_ps": 141.175,
+              "abs_peak": 1.951733e-05,
+              "abs_peak_time_ps": 140.825
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951732e-05,
+              "min_time_ps": 140.9625,
+              "max": -1.951724e-05,
+              "max_time_ps": 142.7125,
+              "abs_peak": -1.951732e-05,
+              "abs_peak_time_ps": 140.9625
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951723e-05,
+              "min_time_ps": 142.6,
+              "max": 1.951733e-05,
+              "max_time_ps": 141.2375,
+              "abs_peak": 1.951733e-05,
+              "abs_peak_time_ps": 141.075
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.411244e-05,
+              "min": 2.411121e-05,
+              "min_time_ps": 141.04999999999998,
+              "max": 2.411359e-05,
+              "max_time_ps": 142.625,
+              "abs_peak": 2.411359e-05,
+              "abs_peak_time_ps": 142.53750000000002
+            }
+          }
+        },
+        "STORAGE_POST": {
+          "interval_ps": [
+            140.0,
+            150.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2013588,
+              "min": 0.2013315,
+              "min_time_ps": 141.29999999999998,
+              "max": 0.2013845,
+              "max_time_ps": 140.0,
+              "abs_peak": 0.2013845,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -2.122666e-09,
+              "min": -1.878139e-08,
+              "min_time_ps": 140.5625,
+              "max": 1.72647e-08,
+              "max_time_ps": 142.075,
+              "abs_peak": -1.878139e-08,
+              "abs_peak_time_ps": 140.5625
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1e-05,
+              "min": 9.999986e-06,
+              "min_time_ps": 142.125,
+              "max": 1.000001e-05,
+              "max_time_ps": 150.0,
+              "abs_peak": 1.000001e-05,
+              "abs_peak_time_ps": 140.1875
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 1.775242e-12,
+              "min": -1.413668e-11,
+              "min_time_ps": 142.26250000000002,
+              "max": 1.464707e-11,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 1.464707e-11,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 150.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": -2.089263e-09,
+              "min": -1.862103e-08,
+              "min_time_ps": 140.5625,
+              "max": 1.710842e-08,
+              "max_time_ps": 142.075,
+              "abs_peak": -1.862103e-08,
+              "abs_peak_time_ps": 140.5625
+            },
+            "V(N6|XBVM1)": {
+              "median": -2.080372e-09,
+              "min": -1.845013e-08,
+              "min_time_ps": 140.54999999999998,
+              "max": 1.694175e-08,
+              "max_time_ps": 142.075,
+              "abs_peak": -1.845013e-08,
+              "abs_peak_time_ps": 140.54999999999998
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 1.775242e-12,
+              "min": -1.413668e-11,
+              "min_time_ps": 142.26250000000002,
+              "max": 1.464707e-11,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 1.464707e-11,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 1.775242e-12,
+              "min": -1.413668e-11,
+              "min_time_ps": 142.26250000000002,
+              "max": 1.464707e-11,
+              "max_time_ps": 140.76250000000002,
+              "abs_peak": 1.464707e-11,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": 5.911075,
+              "min": 5.911065,
+              "min_time_ps": 140.35000000000002,
+              "max": 5.911086,
+              "max_time_ps": 142.03750000000002,
+              "abs_peak": 5.911086,
+              "abs_peak_time_ps": 141.71249999999998
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": 0.3169236,
+              "min": 0.3167653,
+              "min_time_ps": 142.6125,
+              "max": 0.3170851,
+              "max_time_ps": 141.1125,
+              "abs_peak": 0.3170851,
+              "abs_peak_time_ps": 141.1125
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": 0.2669023,
+              "min": 0.2668873,
+              "min_time_ps": 140.65,
+              "max": 0.2669216,
+              "max_time_ps": 142.20000000000002,
+              "abs_peak": 0.2669216,
+              "abs_peak_time_ps": 142.1375
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": -0.2669056,
+              "min": -0.2669296,
+              "min_time_ps": 140.0,
+              "max": -0.2668802,
+              "max_time_ps": 141.3625,
+              "abs_peak": -0.2669296,
+              "abs_peak_time_ps": 140.0
+            },
+            "I(L_S1|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951723e-05,
+              "min_time_ps": 142.3375,
+              "max": 1.951733e-05,
+              "max_time_ps": 141.175,
+              "abs_peak": 1.951733e-05,
+              "abs_peak_time_ps": 140.825
+            },
+            "I(L_S2|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951732e-05,
+              "min_time_ps": 140.9625,
+              "max": -1.951724e-05,
+              "max_time_ps": 142.7125,
+              "abs_peak": -1.951732e-05,
+              "abs_peak_time_ps": 140.9625
+            },
+            "I(L_S3|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951723e-05,
+              "min_time_ps": 142.6,
+              "max": 1.951733e-05,
+              "max_time_ps": 141.2375,
+              "abs_peak": 1.951733e-05,
+              "abs_peak_time_ps": 141.075
+            },
+            "I(L_M3|XBVM1)": {
+              "median": 2.41124e-05,
+              "min": 2.411121e-05,
+              "min_time_ps": 141.04999999999998,
+              "max": 2.411359e-05,
+              "max_time_ps": 142.625,
+              "abs_peak": 2.411359e-05,
+              "abs_peak_time_ps": 142.53750000000002
+            }
+          }
+        }
+      },
+      "trigger": {
+        "same_junction": "B_TRIG N_TRIG->0; P in rad; V in V",
+        "phase_pre_median_rad": 0.2013007,
+        "phase_activity_first_rad": 0.2015851,
+        "phase_activity_last_rad": 0.201364,
+        "phase_activity_delta_rad": -0.00022110000000000185,
+        "phase_activity_net_turns": -3.518915791761835e-05,
+        "phase_activity_range_rad": 0.0004928999999999906,
+        "phase_activity_range_turns": 7.844747144999371e-05,
+        "voltage_area_activity_Wb": -7.277171571887514e-20,
+        "voltage_area_activity_turns": -3.519224515512193e-05,
+        "voltage_abs_peak_uV": -0.1689627,
+        "voltage_abs_peak_time_ps": 94.96249999999999,
+        "post_phase_median_rad": 0.2013588,
+        "post_minus_pre_median_rad": 5.810000000000537e-05
+      },
+      "source_and_receiver_currents": {
+        "SL_voltage_abs_peak_mV": -0.0001701432,
+        "SL_voltage_abs_peak_time_ps": 94.96249999999999,
+        "SL_current_abs_peak_uA": -0.0002463182,
+        "SL_current_abs_peak_time_ps": 94.5125,
+        "receiver_input_current_abs_peak_uA": -0.0002463182,
+        "receiver_input_current_abs_peak_time_ps": 94.5125,
+        "bias_current_median_uA": 10.0,
+        "effective_drive_signed_peak_uA": 10.000200234200001,
+        "effective_drive_positive_peak_uA": 10.000200234200001,
+        "effective_drive_negative_peak_uA": 9.999753681800001
+      },
+      "storage": {
+        "P(B_JM1|XBVM1)": {
+          "pre_median_rad": 5.911061,
+          "post_median_rad": 5.911075,
+          "post_minus_pre_rad": 1.4000000000180535e-05,
+          "post_minus_pre_turns": 2.2281692033152677e-06
+        },
+        "P(B_JM2|XBVM1)": {
+          "pre_median_rad": 0.3172264,
+          "post_median_rad": 0.3169236,
+          "post_minus_pre_rad": -0.00030279999999999196,
+          "post_minus_pre_turns": -4.819211676822463e-05
+        }
+      },
+      "readout": {
+        "P(B_JS1|XBVM1)": {
+          "activity": {
+            "min": 0.2668238,
+            "min_time_ps": 96.13749999999999,
+            "max": 0.2670045,
+            "max_time_ps": 94.65,
+            "abs_peak": 0.2670045,
+            "abs_peak_time_ps": 94.6375
+          },
+          "activity_median": 0.2669053
+        },
+        "P(B_JS2|XBVM1)": {
+          "activity": {
+            "min": -0.2671478,
+            "min_time_ps": 94.19999999999999,
+            "max": -0.2666796,
+            "max_time_ps": 95.71249999999999,
+            "abs_peak": -0.2671478,
+            "abs_peak_time_ps": 94.19999999999999
+          },
+          "activity_median": -0.2669028
+        },
+        "V(B_JS1|XBVM1)": {
+          "activity": {
+            "min": -6.230895e-08,
+            "min_time_ps": 95.35,
+            "max": 7.50371e-08,
+            "max_time_ps": 94.0,
+            "abs_peak": 7.50371e-08,
+            "abs_peak_time_ps": 94.0
+          },
+          "activity_median": 4.765033e-10
+        },
+        "V(B_JS2|XBVM1)": {
+          "activity": {
+            "min": -1.464841e-07,
+            "min_time_ps": 96.45,
+            "max": 1.607838e-07,
+            "max_time_ps": 94.9375,
+            "abs_peak": 1.607838e-07,
+            "abs_peak_time_ps": 94.9375
+          },
+          "activity_median": 1.461609e-09
+        }
+      }
+    },
+    "logical0-read0-control": {
+      "case_id": "logical0-read0-control",
+      "logical_state": 0,
+      "read_kind": "zero_control",
+      "csv": "raw/logical0-read0-control/run-01.csv",
+      "sha256": "c32dab502189077e39ab5fd7a100a21b6a5cca847f0df8467f15bad49ec2c330",
+      "qa": {
+        "rows": 13599,
+        "time_start_ps": 0.0,
+        "time_end_ps": 169.9875,
+        "dt_min_ps": 0.01249999999996021,
+        "dt_max_ps": 0.025000000000000133,
+        "strictly_increasing_time": true,
+        "all_finite": true,
+        "missing_columns": [],
+        "artifact_valid": true
+      },
+      "windows": {
+        "PRE": {
+          "interval_ps": [
+            80.0,
+            90.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2014383,
+              "min": 0.2003035,
+              "min_time_ps": 81.4625,
+              "max": 0.2024433,
+              "max_time_ps": 80.0,
+              "abs_peak": 0.2024433,
+              "abs_peak_time_ps": 80.0
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -8.382379e-08,
+              "min": -7.309011e-07,
+              "min_time_ps": 80.71249999999999,
+              "max": 6.962343e-07,
+              "max_time_ps": 82.2125,
+              "abs_peak": -7.309011e-07,
+              "abs_peak_time_ps": 80.71249999999999
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 9.999979e-06,
+              "min": 9.99861e-06,
+              "min_time_ps": 80.575,
+              "max": 1.000114e-05,
+              "max_time_ps": 85.8625,
+              "abs_peak": 1.000114e-05,
+              "abs_peak_time_ps": 85.77499999999999
+            },
+            "I(R_IN|XTRIG)": {
+              "median": -2.139113e-11,
+              "min": -1.389552e-09,
+              "min_time_ps": 80.58749999999999,
+              "max": 1.144956e-09,
+              "max_time_ps": 85.825,
+              "abs_peak": -1.389552e-09,
+              "abs_peak_time_ps": 80.58749999999999
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 80.0,
+              "max": 1e-05,
+              "max_time_ps": 90.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 80.0
+            },
+            "V(SL1)": {
+              "median": -8.219412e-08,
+              "min": -7.466721e-07,
+              "min_time_ps": 80.7,
+              "max": 6.961441e-07,
+              "max_time_ps": 82.2125,
+              "abs_peak": -7.466721e-07,
+              "abs_peak_time_ps": 80.7
+            },
+            "V(N6|XBVM1)": {
+              "median": -8.571402e-08,
+              "min": -7.61487e-07,
+              "min_time_ps": 80.7,
+              "max": 6.949195e-07,
+              "max_time_ps": 82.2125,
+              "abs_peak": -7.61487e-07,
+              "abs_peak_time_ps": 80.7
+            },
+            "I(L_SL|XBVM1)": {
+              "median": -2.139113e-11,
+              "min": -1.389552e-09,
+              "min_time_ps": 80.58749999999999,
+              "max": 1.144956e-09,
+              "max_time_ps": 85.825,
+              "abs_peak": -1.389552e-09,
+              "abs_peak_time_ps": 80.58749999999999
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": -2.139113e-11,
+              "min": -1.389552e-09,
+              "min_time_ps": 80.58749999999999,
+              "max": 1.144956e-09,
+              "max_time_ps": 85.825,
+              "abs_peak": -1.389552e-09,
+              "abs_peak_time_ps": 80.58749999999999
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.911061,
+              "min": -5.911253,
+              "min_time_ps": 81.5625,
+              "max": -5.910891,
+              "max_time_ps": 80.125,
+              "abs_peak": -5.911253,
+              "abs_peak_time_ps": 81.5625
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.3172144,
+              "min": -0.3198603,
+              "min_time_ps": 80.8125,
+              "max": -0.3141814,
+              "max_time_ps": 82.325,
+              "abs_peak": -0.3198603,
+              "abs_peak_time_ps": 80.8125
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.2669309,
+              "min": -0.2680733,
+              "min_time_ps": 82.7875,
+              "max": -0.2656648,
+              "max_time_ps": 81.2375,
+              "abs_peak": -0.2680733,
+              "abs_peak_time_ps": 82.7875
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.2668249,
+              "min": 0.2657586,
+              "min_time_ps": 80.0,
+              "max": 0.2679874,
+              "max_time_ps": 81.45,
+              "abs_peak": 0.2679874,
+              "abs_peak_time_ps": 81.45
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -1.951734e-05,
+              "min": -1.952133e-05,
+              "min_time_ps": 80.225,
+              "max": -1.951465e-05,
+              "max_time_ps": 81.325,
+              "abs_peak": -1.952133e-05,
+              "abs_peak_time_ps": 80.225
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.951733e-05,
+              "min": 1.951469e-05,
+              "min_time_ps": 81.2,
+              "max": 1.952082e-05,
+              "max_time_ps": 80.1125,
+              "abs_peak": 1.952082e-05,
+              "abs_peak_time_ps": 80.08749999999999
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.95174e-05,
+              "min": -1.952092e-05,
+              "min_time_ps": 80.3875,
+              "max": -1.951496e-05,
+              "max_time_ps": 81.5,
+              "abs_peak": -1.952092e-05,
+              "abs_peak_time_ps": 80.3875
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.411005e-05,
+              "min": -2.413109e-05,
+              "min_time_ps": 85.3375,
+              "max": -2.409057e-05,
+              "max_time_ps": 80.7,
+              "abs_peak": -2.413109e-05,
+              "abs_peak_time_ps": 85.3375
+            }
+          }
+        },
+        "READ_ACTIVITY": {
+          "interval_ps": [
+            94.0,
+            130.0
+          ],
+          "rows": 2881,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2013661,
+              "min": 0.2007698,
+              "min_time_ps": 96.7875,
+              "max": 0.2019797,
+              "max_time_ps": 95.2625,
+              "abs_peak": 0.2019797,
+              "abs_peak_time_ps": 95.2625
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": 1.511293e-09,
+              "min": -4.096858e-07,
+              "min_time_ps": 96.01249999999999,
+              "max": 4.309785e-07,
+              "max_time_ps": 94.48750000000001,
+              "abs_peak": 4.309785e-07,
+              "abs_peak_time_ps": 94.48750000000001
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1e-05,
+              "min": 9.9997e-06,
+              "min_time_ps": 99.65,
+              "max": 1.000045e-05,
+              "max_time_ps": 94.7875,
+              "abs_peak": 1.000045e-05,
+              "abs_peak_time_ps": 94.73750000000001
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 3.85499e-12,
+              "min": -3.004596e-10,
+              "min_time_ps": 99.675,
+              "max": 4.460934e-10,
+              "max_time_ps": 94.7625,
+              "abs_peak": 4.460934e-10,
+              "abs_peak_time_ps": 94.7625
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 94.0,
+              "max": 1e-05,
+              "max_time_ps": 130.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 94.0
+            },
+            "V(SL1)": {
+              "median": 1.325088e-09,
+              "min": -4.125524e-07,
+              "min_time_ps": 96.01249999999999,
+              "max": 4.352521e-07,
+              "max_time_ps": 94.48750000000001,
+              "abs_peak": 4.352521e-07,
+              "abs_peak_time_ps": 94.48750000000001
+            },
+            "V(N6|XBVM1)": {
+              "median": 1.814039e-09,
+              "min": -4.156121e-07,
+              "min_time_ps": 96.01249999999999,
+              "max": 4.401133e-07,
+              "max_time_ps": 94.48750000000001,
+              "abs_peak": 4.401133e-07,
+              "abs_peak_time_ps": 94.48750000000001
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 3.85499e-12,
+              "min": -3.004596e-10,
+              "min_time_ps": 99.675,
+              "max": 4.460934e-10,
+              "max_time_ps": 94.7625,
+              "abs_peak": 4.460934e-10,
+              "abs_peak_time_ps": 94.7625
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 3.85499e-12,
+              "min": -3.004596e-10,
+              "min_time_ps": 99.675,
+              "max": 4.460934e-10,
+              "max_time_ps": 94.7625,
+              "abs_peak": 4.460934e-10,
+              "abs_peak_time_ps": 94.7625
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.911076,
+              "min": -5.911162,
+              "min_time_ps": 96.6375,
+              "max": -5.910985,
+              "max_time_ps": 95.21249999999999,
+              "abs_peak": -5.911162,
+              "abs_peak_time_ps": 96.6375
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.3169244,
+              "min": -0.3183442,
+              "min_time_ps": 95.8875,
+              "max": -0.3153885,
+              "max_time_ps": 94.3875,
+              "abs_peak": -0.3183442,
+              "abs_peak_time_ps": 95.8875
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.2669123,
+              "min": -0.2675183,
+              "min_time_ps": 95.0125,
+              "max": -0.2663426,
+              "max_time_ps": 96.5625,
+              "abs_peak": -0.2675183,
+              "abs_peak_time_ps": 95.0125
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.2668957,
+              "min": 0.2662756,
+              "min_time_ps": 95.25,
+              "max": 0.2674949,
+              "max_time_ps": 96.77499999999999,
+              "abs_peak": 0.2674949,
+              "abs_peak_time_ps": 96.77499999999999
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951788e-05,
+              "min_time_ps": 95.525,
+              "max": -1.951635e-05,
+              "max_time_ps": 94.36250000000001,
+              "abs_peak": -1.951788e-05,
+              "abs_peak_time_ps": 95.525
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.95165e-05,
+              "min_time_ps": 94.0875,
+              "max": 1.951792e-05,
+              "max_time_ps": 95.425,
+              "abs_peak": 1.951792e-05,
+              "abs_peak_time_ps": 95.33749999999999
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951783e-05,
+              "min_time_ps": 95.7,
+              "max": -1.951643e-05,
+              "max_time_ps": 94.55,
+              "abs_peak": -1.951783e-05,
+              "abs_peak_time_ps": 95.7
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.411241e-05,
+              "min": -2.412421e-05,
+              "min_time_ps": 94.35000000000001,
+              "max": -2.41018e-05,
+              "max_time_ps": 95.85,
+              "abs_peak": -2.412421e-05,
+              "abs_peak_time_ps": 94.35000000000001
+            }
+          }
+        },
+        "POST": {
+          "interval_ps": [
+            140.0,
+            170.0
+          ],
+          "rows": 2400,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.20135935,
+              "min": 0.2012723,
+              "min_time_ps": 142.6625,
+              "max": 0.2014497,
+              "max_time_ps": 141.1375,
+              "abs_peak": 0.2014497,
+              "abs_peak_time_ps": 141.125
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": -3.1243415e-10,
+              "min": -5.999591e-08,
+              "min_time_ps": 141.8875,
+              "max": 6.431208e-08,
+              "max_time_ps": 140.36249999999998,
+              "abs_peak": 6.431208e-08,
+              "abs_peak_time_ps": 140.36249999999998
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1e-05,
+              "min": 9.999973e-06,
+              "min_time_ps": 142.6625,
+              "max": 1.000003e-05,
+              "max_time_ps": 144.39999999999998,
+              "abs_peak": 1.000003e-05,
+              "abs_peak_time_ps": 140.9625
+            },
+            "I(R_IN|XTRIG)": {
+              "median": 6.669203499999999e-13,
+              "min": -2.69804e-11,
+              "min_time_ps": 142.75,
+              "max": 2.840326e-11,
+              "max_time_ps": 141.2,
+              "abs_peak": 2.840326e-11,
+              "abs_peak_time_ps": 141.2
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 169.9875,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": -2.271481e-10,
+              "min": -5.993243e-08,
+              "min_time_ps": 141.8875,
+              "max": 6.426216e-08,
+              "max_time_ps": 140.36249999999998,
+              "abs_peak": 6.426216e-08,
+              "abs_peak_time_ps": 140.36249999999998
+            },
+            "V(N6|XBVM1)": {
+              "median": -3.1122585e-10,
+              "min": -5.99188e-08,
+              "min_time_ps": 141.8875,
+              "max": 6.426549e-08,
+              "max_time_ps": 140.36249999999998,
+              "abs_peak": 6.426549e-08,
+              "abs_peak_time_ps": 140.36249999999998
+            },
+            "I(L_SL|XBVM1)": {
+              "median": 6.669204e-13,
+              "min": -2.69804e-11,
+              "min_time_ps": 142.75,
+              "max": 2.840326e-11,
+              "max_time_ps": 141.2,
+              "abs_peak": 2.840326e-11,
+              "abs_peak_time_ps": 141.2
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": 6.669204e-13,
+              "min": -2.69804e-11,
+              "min_time_ps": 142.75,
+              "max": 2.840326e-11,
+              "max_time_ps": 141.2,
+              "abs_peak": 2.840326e-11,
+              "abs_peak_time_ps": 141.2
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.911076,
+              "min": -5.911086,
+              "min_time_ps": 141.75,
+              "max": -5.911066,
+              "max_time_ps": 140.57500000000002,
+              "abs_peak": -5.911086,
+              "abs_peak_time_ps": 141.75
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.3169201,
+              "min": -0.317082,
+              "min_time_ps": 141.1125,
+              "max": -0.3167682,
+              "max_time_ps": 142.6375,
+              "abs_peak": -0.317082,
+              "abs_peak_time_ps": 141.1125
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.266906,
+              "min": -0.266964,
+              "min_time_ps": 141.15,
+              "max": -0.2668491,
+              "max_time_ps": 142.725,
+              "abs_peak": -0.266964,
+              "abs_peak_time_ps": 141.15
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.2669033,
+              "min": 0.2668147,
+              "min_time_ps": 141.125,
+              "max": 0.2669887,
+              "max_time_ps": 142.675,
+              "abs_peak": 0.2669887,
+              "abs_peak_time_ps": 142.6625
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951731e-05,
+              "min_time_ps": 140.76250000000002,
+              "max": -1.951725e-05,
+              "max_time_ps": 145.6,
+              "abs_peak": -1.951731e-05,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951723e-05,
+              "min_time_ps": 142.325,
+              "max": 1.951734e-05,
+              "max_time_ps": 141.125,
+              "abs_peak": 1.951734e-05,
+              "abs_peak_time_ps": 141.0375
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951731e-05,
+              "min_time_ps": 140.9875,
+              "max": -1.951725e-05,
+              "max_time_ps": 142.8375,
+              "abs_peak": -1.951731e-05,
+              "abs_peak_time_ps": 140.9875
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.411244e-05,
+              "min": -2.411356e-05,
+              "min_time_ps": 142.6,
+              "max": -2.411125e-05,
+              "max_time_ps": 141.125,
+              "abs_peak": -2.411356e-05,
+              "abs_peak_time_ps": 142.6
+            }
+          }
+        },
+        "STORAGE_POST": {
+          "interval_ps": [
+            140.0,
+            150.0
+          ],
+          "rows": 801,
+          "signals": {
+            "P(B_TRIG|XTRIG)": {
+              "median": 0.2013586,
+              "min": 0.2012723,
+              "min_time_ps": 142.6625,
+              "max": 0.2014497,
+              "max_time_ps": 141.1375,
+              "abs_peak": 0.2014497,
+              "abs_peak_time_ps": 141.125
+            },
+            "V(B_TRIG|XTRIG)": {
+              "median": 7.408836e-09,
+              "min": -5.999591e-08,
+              "min_time_ps": 141.8875,
+              "max": 6.431208e-08,
+              "max_time_ps": 140.36249999999998,
+              "abs_peak": 6.431208e-08,
+              "abs_peak_time_ps": 140.36249999999998
+            },
+            "I(B_TRIG|XTRIG)": {
+              "median": 1e-05,
+              "min": 9.999973e-06,
+              "min_time_ps": 142.6625,
+              "max": 1.000003e-05,
+              "max_time_ps": 144.39999999999998,
+              "abs_peak": 1.000003e-05,
+              "abs_peak_time_ps": 140.9625
+            },
+            "I(R_IN|XTRIG)": {
+              "median": -4.489847e-13,
+              "min": -2.69804e-11,
+              "min_time_ps": 142.75,
+              "max": 2.840326e-11,
+              "max_time_ps": 141.2,
+              "abs_peak": 2.840326e-11,
+              "abs_peak_time_ps": 141.2
+            },
+            "I(I_TRIG_BIAS|XTRIG)": {
+              "median": 1e-05,
+              "min": 1e-05,
+              "min_time_ps": 140.0,
+              "max": 1e-05,
+              "max_time_ps": 150.0,
+              "abs_peak": 1e-05,
+              "abs_peak_time_ps": 140.0
+            },
+            "V(SL1)": {
+              "median": 7.412573e-09,
+              "min": -5.993243e-08,
+              "min_time_ps": 141.8875,
+              "max": 6.426216e-08,
+              "max_time_ps": 140.36249999999998,
+              "abs_peak": 6.426216e-08,
+              "abs_peak_time_ps": 140.36249999999998
+            },
+            "V(N6|XBVM1)": {
+              "median": 7.588348e-09,
+              "min": -5.99188e-08,
+              "min_time_ps": 141.8875,
+              "max": 6.426549e-08,
+              "max_time_ps": 140.36249999999998,
+              "abs_peak": 6.426549e-08,
+              "abs_peak_time_ps": 140.36249999999998
+            },
+            "I(L_SL|XBVM1)": {
+              "median": -4.489847e-13,
+              "min": -2.69804e-11,
+              "min_time_ps": 142.75,
+              "max": 2.840326e-11,
+              "max_time_ps": 141.2,
+              "abs_peak": 2.840326e-11,
+              "abs_peak_time_ps": 141.2
+            },
+            "I(L_PSL|XBVM1)": {
+              "median": -4.489847e-13,
+              "min": -2.69804e-11,
+              "min_time_ps": 142.75,
+              "max": 2.840326e-11,
+              "max_time_ps": 141.2,
+              "abs_peak": 2.840326e-11,
+              "abs_peak_time_ps": 141.2
+            },
+            "P(B_JM1|XBVM1)": {
+              "median": -5.911075,
+              "min": -5.911086,
+              "min_time_ps": 141.75,
+              "max": -5.911066,
+              "max_time_ps": 140.57500000000002,
+              "abs_peak": -5.911086,
+              "abs_peak_time_ps": 141.75
+            },
+            "P(B_JM2|XBVM1)": {
+              "median": -0.3169234,
+              "min": -0.317082,
+              "min_time_ps": 141.1125,
+              "max": -0.3167682,
+              "max_time_ps": 142.6375,
+              "abs_peak": -0.317082,
+              "abs_peak_time_ps": 141.1125
+            },
+            "P(B_JS1|XBVM1)": {
+              "median": -0.2669043,
+              "min": -0.266964,
+              "min_time_ps": 141.15,
+              "max": -0.2668491,
+              "max_time_ps": 142.725,
+              "abs_peak": -0.266964,
+              "abs_peak_time_ps": 141.15
+            },
+            "P(B_JS2|XBVM1)": {
+              "median": 0.2669042,
+              "min": 0.2668147,
+              "min_time_ps": 141.125,
+              "max": 0.2669887,
+              "max_time_ps": 142.675,
+              "abs_peak": 0.2669887,
+              "abs_peak_time_ps": 142.6625
+            },
+            "I(L_S1|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951731e-05,
+              "min_time_ps": 140.76250000000002,
+              "max": -1.951725e-05,
+              "max_time_ps": 145.6,
+              "abs_peak": -1.951731e-05,
+              "abs_peak_time_ps": 140.76250000000002
+            },
+            "I(L_S2|XBVM1)": {
+              "median": 1.951728e-05,
+              "min": 1.951723e-05,
+              "min_time_ps": 142.325,
+              "max": 1.951734e-05,
+              "max_time_ps": 141.125,
+              "abs_peak": 1.951734e-05,
+              "abs_peak_time_ps": 141.0375
+            },
+            "I(L_S3|XBVM1)": {
+              "median": -1.951728e-05,
+              "min": -1.951731e-05,
+              "min_time_ps": 140.9875,
+              "max": -1.951725e-05,
+              "max_time_ps": 142.8375,
+              "abs_peak": -1.951731e-05,
+              "abs_peak_time_ps": 140.9875
+            },
+            "I(L_M3|XBVM1)": {
+              "median": -2.411241e-05,
+              "min": -2.411356e-05,
+              "min_time_ps": 142.6,
+              "max": -2.411125e-05,
+              "max_time_ps": 141.125,
+              "abs_peak": -2.411356e-05,
+              "abs_peak_time_ps": 142.6
+            }
+          }
+        }
+      },
+      "trigger": {
+        "same_junction": "B_TRIG N_TRIG->0; P in rad; V in V",
+        "phase_pre_median_rad": 0.2014383,
+        "phase_activity_first_rad": 0.2008027,
+        "phase_activity_last_rad": 0.2012653,
+        "phase_activity_delta_rad": 0.00046260000000000745,
+        "phase_activity_net_turns": 7.362507667431197e-05,
+        "phase_activity_range_rad": 0.0012099000000000137,
+        "phase_activity_range_turns": 0.00019256156564688637,
+        "voltage_area_activity_Wb": 1.5229199166424965e-19,
+        "voltage_area_activity_turns": 7.364807951642044e-05,
+        "voltage_abs_peak_uV": 0.43097850000000004,
+        "voltage_abs_peak_time_ps": 94.48750000000001,
+        "post_phase_median_rad": 0.2013586,
+        "post_minus_pre_median_rad": -7.969999999998811e-05
+      },
+      "source_and_receiver_currents": {
+        "SL_voltage_abs_peak_mV": 0.0004352521,
+        "SL_voltage_abs_peak_time_ps": 94.48750000000001,
+        "SL_current_abs_peak_uA": 0.00044609340000000003,
+        "SL_current_abs_peak_time_ps": 94.7625,
+        "receiver_input_current_abs_peak_uA": 0.00044609340000000003,
+        "receiver_input_current_abs_peak_time_ps": 94.7625,
+        "bias_current_median_uA": 10.0,
+        "effective_drive_signed_peak_uA": 10.0004460934,
+        "effective_drive_positive_peak_uA": 10.0004460934,
+        "effective_drive_negative_peak_uA": 9.999699540400002
+      },
+      "storage": {
+        "P(B_JM1|XBVM1)": {
+          "pre_median_rad": -5.911061,
+          "post_median_rad": -5.911075,
+          "post_minus_pre_rad": -1.4000000000180535e-05,
+          "post_minus_pre_turns": -2.2281692033152677e-06
+        },
+        "P(B_JM2|XBVM1)": {
+          "pre_median_rad": -0.3172144,
+          "post_median_rad": -0.3169234,
+          "post_minus_pre_rad": 0.0002909999999999857,
+          "post_minus_pre_turns": 4.6314088439739274e-05
+        }
+      },
+      "readout": {
+        "P(B_JS1|XBVM1)": {
+          "activity": {
+            "min": -0.2675183,
+            "min_time_ps": 95.0125,
+            "max": -0.2663426,
+            "max_time_ps": 96.5625,
+            "abs_peak": -0.2675183,
+            "abs_peak_time_ps": 95.0125
+          },
+          "activity_median": -0.2669123
+        },
+        "P(B_JS2|XBVM1)": {
+          "activity": {
+            "min": 0.2662756,
+            "min_time_ps": 95.25,
+            "max": 0.2674949,
+            "max_time_ps": 96.77499999999999,
+            "abs_peak": 0.2674949,
+            "abs_peak_time_ps": 96.77499999999999
+          },
+          "activity_median": 0.2668957
+        },
+        "V(B_JS1|XBVM1)": {
+          "activity": {
+            "min": -4.352396e-07,
+            "min_time_ps": 94.2375,
+            "max": 3.946703e-07,
+            "max_time_ps": 95.775,
+            "abs_peak": -4.352396e-07,
+            "abs_peak_time_ps": 94.2375
+          },
+          "activity_median": 1.068244e-09
+        },
+        "V(B_JS2|XBVM1)": {
+          "activity": {
+            "min": -4.380674e-07,
+            "min_time_ps": 94.47500000000001,
+            "max": 4.131925e-07,
+            "max_time_ps": 96.0,
+            "abs_peak": -4.380674e-07,
+            "abs_peak_time_ps": 94.47500000000001
+          },
+          "activity_median": -1.327298e-09
+        }
+      }
+    }
+  }
+}

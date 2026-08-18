@@ -1,0 +1,24 @@
+* BQ Buffer Cell v4 — IC order fix (BJL1 was current sink at IC=36uA)
+* Root cause: BJL1(36uA) < BJs(50uA) → 回流结先触发, 吞噬信号
+* v4: IC order BJs(50uA) < BJL2(70uA) < BJL1(90uA)
+*   BJL1 IC 36→90uA (2.5x) — 不抢信号, 仅 DC 回流
+*   BJL2 IC 54→70uA (1.3x) — 传递输出
+*   RJ1 33→56, RJ2 22→36 — R_eff≈13-14Ω 保持过阻尼, 减小泄放
+*   L0 1.323→2.5p — 更大 L·dI/dt → 更高 Vout, 改善 JTL 匹配
+*
+* NOTE: 独立测试用 IBias=35uA; 输入脉冲 90uA/5ps 应产出 ≥1 SFQ。
+
+.subckt BQ IN OUT IB
+
+Lin IN 1 0.8p
+L0 4 OUT 2.5p
+L1 2 3 3.91p
+L2 3 4 3.91p
+BJs 1 2 jjmit area=0.5
+BJL1 2 0 jjmit area=0.90
+RJ1 2 0 56
+BJL2 4 0 jjmit area=0.70
+RJ2 4 0 36
+RB IB 3 6
+
+.ends BQ

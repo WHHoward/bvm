@@ -1,0 +1,116 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R0 trigger discrimination
+created_at: "2026-08-19T04:10:09+08:00"
+research_question: >-
+  Can one minimum externally loaded, biased JJ trigger clearly switch for
+  canonical logical1 +READ while remaining non-switching for canonical logical0
+  +READ, with matched READ=0 controls?
+hypothesis: >-
+  The SL route has enough current/voltage separation for a 50 uA trigger JJ
+  with 10 uA positive bias and a 12 ohm input resistor: read0 effective drive
+  remains below Ic while read1 effective drive exceeds Ic.
+alternative_explanations:
+  - The receiver load may collapse the SL waveform and remove the margin.
+  - The trigger may switch in READ=0 due to bias-only instability or numerical startup.
+  - A trigger phase excursion may be edge activity or multi-turn running rather than a
+    single bounded pulse; this Exploration does not claim exactly one SFQ.
+route:
+  primary: canonical BVM SL output
+  secondary: not run unless the primary SL point has no usable discrimination
+canonical_boundary: canonical BVM inputs are immutable snapshots of the frozen file;
+  no internal topology or parameter was changed.
+git:
+  head_before_experiment: f64dafc0ba0e6a6629a263fe7d15523e18e6aab7
+  branch: master
+  initial_worktree: clean
+solver:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  timestep_ps: 0.0125
+  stop_ps: 170
+  analysis: PHASE
+  actual_csv_dt_ps: [0.0125, 0.025]
+closure:
+  - {path: circuits/bvm/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4, role: canonical_bvm}
+  - {path: circuits/models/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336, role: jj_model}
+  - {path: inputs/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4, role: fixture_copy}
+  - {path: inputs/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336, role: fixture_copy}
+  - {path: inputs/bq_cell_v4-reference.cir, sha256: 7e0752acffb721c7491999a449c69a422ccfeb2c6fe66507b8a80ffc44a765a0, role: read_reference}
+  - {path: inputs/bq_cell_paper-reference.cir, sha256: a3accfd49ea7bd1dab46f79f4856a0e0a6c781185c4671a78c863b2217bdb880, role: read_reference}
+  - {path: inputs/sl_trigger.cir, sha256: 22e48ed5e9116505de5c92fc76835e44b5a90fe9f5cc41260b2f188433018ec2, role: receiver}
+receiver:
+  topology: SL -> R_IN -> one JJ to ground, with an independent sub-Ic current bias
+  R_IN_ohm: 12.0
+  trigger_area: 0.50
+  trigger_Ic_uA: 50.0
+  trigger_RN_ohm: 32.0
+  trigger_R0_ohm: 320.0
+  trigger_C_fF: 35.0
+  trigger_bias_uA: 10.0
+  parameter_provenance: DESIGNED from current SL separation; model-derived values are
+    calculated from the actual jjmit area scaling implementation.
+analytic_initial_point:
+  source_read1_current_uA: 75.3
+  source_read0_current_uA: 26.4
+  read1_effective_drive_uA: 85.3
+  read0_effective_drive_uA: 36.4
+  criterion: read0 effective drive < trigger Ic < read1 effective drive
+  note: source currents are prior 12 ohm-load observations; loaded reruns are the
+    evidence, not an assumption that these values remain unchanged.
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive, input: inputs/read1.cir}
+  - {id: read0, logical_state: 0, read: canonical_positive, input: inputs/read0.cir}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control, input: inputs/logical1-read0-control.cir}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control, input: inputs/logical0-read0-control.cir}
+raw_runs:
+  - {id: read1, path: raw/read1/run-01.csv, sha256: 8349254ed2b82158f7d34f7298bb7f802906ad16fba1b01b0bd6d56a002a0e40}
+  - {id: read0, path: raw/read0/run-01.csv, sha256: e59910aa93dbced0c7d977f1b4d24e00a18ed0512166e4a9c0b4070b8810e8be}
+  - {id: logical1-read0-control, path: raw/logical1-read0-control/run-01.csv, sha256: 1a4835937a095fbfc6852ae90ab4a59cedae7ca05fcb320684af1831b5329860}
+  - {id: logical0-read0-control, path: raw/logical0-read0-control/run-01.csv, sha256: c32dab502189077e39ab5fd7a100a21b6a5cca847f0df8467f15bad49ec2c330}
+windows_ps:
+  PRE: [80, 90]
+  READ_ACTIVITY: [94, 130]
+  POST: [140, 170]
+  STORAGE_POST: [140, 150]
+probes:
+  trigger_same_junction: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  receiver_branches: [I(R_IN|XTRIG), I(I_TRIG_BIAS|XTRIG)]
+  BVM_output: [V(SL1), I(L_SL|XBVM1), I(L_PSL|XBVM1), V(N6|XBVM1)]
+  storage: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1)]
+  readout: [P(B_JS1|XBVM1), V(B_JS1|XBVM1), P(B_JS2|XBVM1), V(B_JS2|XBVM1)]
+  BVM_branches: [I(L_S1|XBVM1), I(L_S2|XBVM1), I(L_S3|XBVM1), I(L_M3|XBVM1)]
+  sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
+classification:
+  trigger_pass: >-
+    direct trigger P and same-JJ V show a contiguous switching/phase-transition
+    response in READ_ACTIVITY for read1, while read0 and both READ=0 controls show
+    no complete trigger transition; this is not an exactly-one-SFQ criterion.
+  artifact_invalid: nonzero solver failure, missing columns, NaN/Inf, non-monotonic
+    time, or truncated output.
+local_fallback:
+  only_if: initial point does not discriminate
+  allowed_area: [0.45, 0.50, 0.55]
+  allowed_bias_uA: [5.0, 10.0, 15.0]
+  max_additional_cases: 6
+  rationale: local sensitivity around the analytic midpoint, not a blind global sweep.
+convergence: not a Candidate/Gate; this Exploration records the 0.0125 ps result and
+  leaves timestep classification for a later explicitly authorized study.
+result:
+  initial_point: PASS
+  local_fallback_run: false
+  N6_route_run: false
+  r0_verdict: PASS
+  artifact_status: VALID
+  report: analysis/R0_REPORT.md
+  structured_analysis: analysis/r0-analysis.json
+  review: analysis/REVIEW.md
+  hash_inventory: analysis/sha256sums.txt
+authority:
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  source_reference: test/exploration/bvm-internal-readout-20260819/rewrite-read-analysis.json
+  measurement_semantics: docs/research/METRIC_SPEC_V2.md
+  no_candidate_upgrade: true

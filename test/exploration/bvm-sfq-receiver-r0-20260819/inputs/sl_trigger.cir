@@ -1,0 +1,12 @@
+* R0 primary receiver: minimum externally loaded, current-biased JJ trigger.
+* Route: canonical BVM SL -> 12 ohm input resistor -> one trigger JJ -> ground.
+* The bias is intentionally below Ic so the receiver has no idle switching.
+* Parameters are designed for this Exploration, not frozen/candidate values.
+
+.subckt SL_TRIGGER IN
+
+R_IN          IN       N_TRIG       12.0
+B_TRIG        N_TRIG  0             jjmit area=0.50
+I_TRIG_BIAS   0       N_TRIG        pwl(0p 0 2p 10U 80p 10U 140p 10U 170p 10U)
+
+.ends SL_TRIGGER

@@ -13,9 +13,12 @@ title 命名完全一致，可并排比较。
 | `logical0-canonical-read.html` | `raw/neg-init-pos-read/run-01.csv` | logical 0（−init）+ canonical +READ | 正式 read0 |
 | `stateA-negative-read-diagnostic.html` | `raw/pos-init-neg-read/run-01.csv` | state A（+init）+ −READ | polarity diagnostic only |
 | `stateB-negative-read-diagnostic.html` | `raw/neg-read-single-corr/run-01.csv` | state B（−init）+ −READ | polarity diagnostic only |
+| `rewrite-read-1010.html` | `raw/rewrite-read-1010/run-01.csv` | 连续 write 1/0/1/0，每 cycle canonical +READ | continuous closure |
+| `rewrite-read-0101.html` | `raw/rewrite-read-0101/run-01.csv` | 连续 write 0/1/0/1，每 cycle canonical +READ | continuous closure |
 
 （state/read 命名与 `BVM_LOGICAL_SEMANTICS_V1.md` 一致；state A/B 为
-operational states，logical 1/0 为冻结语义。）
+operational states，logical 1/0 为冻结语义。rewrite/read 两图为
+680ps 全时序，4 cycle 可逐段对比 storage 翻转与 read1/read0 差异。）
 
 ## 每图 signal set（14，与 CSV header 逐字一致）
 

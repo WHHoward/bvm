@@ -45,7 +45,7 @@ These rules apply to the whole repository.
 
 ## Controller escalation policy (2026-08-18)
 
-A low-cost root controller (Luna XHigh) can handle routine orchestration, but
+A low-cost root controller (Luna Max) can handle routine orchestration, but
 **model identity is not scientific authority**. Escalate when any of the
 following applies:
 

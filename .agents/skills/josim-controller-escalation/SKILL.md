@@ -5,7 +5,7 @@ description: Controller governance skill — decide whether the root controller 
 
 # josim-controller-escalation
 
-Small governance skill for the Codex root controller (Luna XHigh).  When the
+Small governance skill for the Codex root controller (Luna Max).  When the
 root controller is unsure whether it may continue, run this check before
 proceeding.  Do NOT copy HANDOVER or WORKFLOW content here; this is a
 decision procedure only.

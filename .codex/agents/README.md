@@ -4,7 +4,7 @@
 
 | 角色 | 模型/推理 | 用途 |
 |---|---|---|
-| Root: 默认会话 | Luna / XHigh | 日常 root controller（若环境支持，Plan Mode 可升至 Max） |
+| Root: 默认会话 | Luna / Max | 日常 root controller（Plan Mode 与常规模式均为 Max） |
 | `josim_scout` | Luna / Low | 定位文件、符号、测试与所有权 |
 | `josim_explorer` | Luna / Medium | 跟踪执行路径、数据流、依赖 |
 | `josim_docs_researcher` | Luna / Medium | 核对版本、API、论文与仓库文档 |

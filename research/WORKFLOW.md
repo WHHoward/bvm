@@ -73,7 +73,7 @@ independence:
 | 默认配置 | 职责 |
 |---|---|
 | **Sol XHigh** | 架构、电路/计量方向、合同设计、物理解释与最终审计裁决 |
-| **Luna XHigh** | Codex 日常 root controller：checkin、mailbox、routine planning、依赖/状态调度、routine receipt triage、Claude orchestration、已定义路线的任务推进 |
+| **Luna Max** | Codex 日常 root controller：checkin、mailbox、routine planning、依赖/状态调度、routine receipt triage、Claude orchestration、已定义路线的任务推进 |
 | **Terra Medium** | controller escalation：长上下文状态调和、历史/约束一致性 review、路线连续性 review |
 | **Luna Low/Medium/High** | 大量低成本、只读的 specialist agents（scout/explorer/docs/tester/verifier） |
 | **Terra High** | 复杂工程 review、debugging、相互矛盾的执行证据与根因分析 |
@@ -81,9 +81,7 @@ independence:
 
 > **Running as the root controller does not grant Luna scientific authority.**
 
-当前编排接口不接受直接 `spawn_agent(model="gpt-5.6-luna")`，但项目级 `.codex/agents/*.toml` 的**命名 custom agent** 可以固定路由到 Luna；调用时选择 `josim_scout`、`josim_explorer`、`josim_docs_researcher`、`josim_tester` 或 `josim_verifier` 等角色。controller 状态/上下文歧义时调用 `josim_controller_review`（Terra Medium，只读）。若某环境未注册这些命名角色，先使用确定性工具，必要的低风险只读检查可回退到 Terra Low/Medium，但不得把这类回退当作最终物理审计。`plan_mode_reasoning_effort = "max"` 未启用：本地 Codex schema/help 无法确认该字段受支持（`PLAN_MODE_MAX_NOT_CONFIGURED`），Plan Mode 继承 `model_reasoning_effort = "xhigh"`。
-
-当前编排接口不接受直接 `spawn_agent(model="gpt-5.6-luna")`，但项目级 `.codex/agents/*.toml` 的**命名 custom agent** 可以固定路由到 Luna；调用时选择 `josim_scout`、`josim_explorer`、`josim_docs_researcher`、`josim_tester` 或 `josim_verifier` 等角色。若某环境未注册这些命名角色，先使用确定性工具，必要的低风险只读检查可回退到 Terra Low/Medium，但不得把这类回退当作最终物理审计。
+当前编排接口不接受直接 `spawn_agent(model="gpt-5.6-luna")`，但项目级 `.codex/agents/*.toml` 的**命名 custom agent** 可以固定路由到 Luna；调用时选择 `josim_scout`、`josim_explorer`、`josim_docs_researcher`、`josim_tester` 或 `josim_verifier` 等角色。controller 状态/上下文歧义时调用 `josim_controller_review`（Terra Medium，只读）。若某环境未注册这些命名角色，先使用确定性工具，必要的低风险只读检查可回退到 Terra Low/Medium，但不得把这类回退当作最终物理审计。Root controller 的 Luna Max 可用性已经 `luna_max_smoke` 验证（2026-08-18）。
 
 | 层级 | 可承担的工作 | 不可承担的工作 |
 |---|---|---|

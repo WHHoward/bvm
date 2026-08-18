@@ -42,3 +42,31 @@ These rules apply to the whole repository.
 - An `ISSUED` request is immutable. Claude must ACK before editing, remain inside `scope.write_paths`, and stop when authorization or scope must expand.
 - Keep execution, artifact validity, physical verdict, and audit disposition separate. A correctly executed experiment may validly return physical `FAIL`; an invalid artifact is not a physical failure.
 - Update `memory/project-todo.md`, `docs/HANDOVER.md`, or paper-level claims only after an accepted audit. If Codex changes core task outputs, record it as co-execution and require another independent review.
+
+## Controller escalation policy (2026-08-18)
+
+A low-cost root controller (Luna XHigh) can handle routine orchestration, but
+**model identity is not scientific authority**. Escalate when any of the
+following applies:
+
+1. New evidence conflicts with an ACCEPTED historical result
+2. HANDOVER / todo / request / receipt / audit statuses contradict each other
+3. The current action would change the active scientific route
+4. Acceptance criteria or frozen metric semantics need reinterpretation
+5. An attempt to upgrade `INCONCLUSIVE` into `PASS` / `FAIL`
+6. An attempt to upgrade a bounded observation into a mechanism claim
+7. Sealed contract scope needs to expand
+8. Major engineering / debugging ambiguity appears
+9. A metric freeze is involved
+10. Physics interpretation is involved
+11. A final audit disposition is involved
+12. A paper-level claim is involved
+
+Upgrade routing:
+
+- routine orchestration → Luna root controller
+- state / context / orchestration ambiguity → `josim_controller_review` (Terra Medium)
+- engineering / debugging / conflicting execution evidence → `josim_reviewer` (Terra High)
+- route / metric / physics / contract / final audit → `josim_architect` (Sol XHigh)
+
+The user retains final approval for route changes, metric freezes, and paper claims.

@@ -64,7 +64,7 @@ independence:
 
 这时不能再把同一轮 Codex 审计称为独立复核，应由 Claude 反向复核，或安排第三方/后续独立审计。只运行只读校验、独立计算或新增审计文件，不算参与实现。
 
-### 3.2 模型路由与升级（2026-08-11）
+### 3.2 模型路由与升级（2026-08-11；2026-08-18 调整）
 
 按**角色层级**分派工作，不把某个特定模型名称写入合同；运行环境决定核心、工程审阅和机械检查层各自映射到的模型。
 
@@ -73,10 +73,15 @@ independence:
 | 默认配置 | 职责 |
 |---|---|
 | **Sol XHigh** | 架构、电路/计量方向、合同设计、物理解释与最终审计裁决 |
-| **Terra Medium** | Codex 日常总控：checkin、计划、任务拆分、mailbox、依赖与状态调度 |
-| **Luna Medium/High** | 大量低风险、只读的 diff/回归/日志/验收预审；High 只用于多模块或难复现问题 |
+| **Luna XHigh** | Codex 日常 root controller：checkin、mailbox、routine planning、依赖/状态调度、routine receipt triage、Claude orchestration、已定义路线的任务推进 |
+| **Terra Medium** | controller escalation：长上下文状态调和、历史/约束一致性 review、路线连续性 review |
+| **Luna Low/Medium/High** | 大量低成本、只读的 specialist agents（scout/explorer/docs/tester/verifier） |
 | **Terra High** | 复杂工程 review、debugging、相互矛盾的执行证据与根因分析 |
-| **Claude Code** | 长时间、受合同约束的实现、重构、测试与实验执行 |
+| **Claude Code + 配置的 DeepSeek** | implementation、simulation、testing、execution、evidence packaging |
+
+> **Running as the root controller does not grant Luna scientific authority.**
+
+当前编排接口不接受直接 `spawn_agent(model="gpt-5.6-luna")`，但项目级 `.codex/agents/*.toml` 的**命名 custom agent** 可以固定路由到 Luna；调用时选择 `josim_scout`、`josim_explorer`、`josim_docs_researcher`、`josim_tester` 或 `josim_verifier` 等角色。controller 状态/上下文歧义时调用 `josim_controller_review`（Terra Medium，只读）。若某环境未注册这些命名角色，先使用确定性工具，必要的低风险只读检查可回退到 Terra Low/Medium，但不得把这类回退当作最终物理审计。`plan_mode_reasoning_effort = "max"` 未启用：本地 Codex schema/help 无法确认该字段受支持（`PLAN_MODE_MAX_NOT_CONFIGURED`），Plan Mode 继承 `model_reasoning_effort = "xhigh"`。
 
 当前编排接口不接受直接 `spawn_agent(model="gpt-5.6-luna")`，但项目级 `.codex/agents/*.toml` 的**命名 custom agent** 可以固定路由到 Luna；调用时选择 `josim_scout`、`josim_explorer`、`josim_docs_researcher`、`josim_tester` 或 `josim_verifier` 等角色。若某环境未注册这些命名角色，先使用确定性工具，必要的低风险只读检查可回退到 Terra Low/Medium，但不得把这类回退当作最终物理审计。
 

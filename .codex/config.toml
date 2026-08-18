@@ -1,11 +1,14 @@
 # JoSIM project-local Codex routing defaults.
 # Named agents in .codex/agents/ pin their own model/effort where needed.
-model = "gpt-5.6-terra"
-model_reasoning_effort = "medium"
+# Root controller: Luna XHigh (2026-08-18 user-authorized route adjustment).
+# plan_mode_reasoning_effort = "max" is NOT set: local Codex schema/help
+# could not confirm the field is supported (see WORKFLOW.md §3.2 note).
+model = "gpt-5.6-luna"
+model_reasoning_effort = "xhigh"
 
 [agents]
 enabled = true
-default_subagent_model = "gpt-5.6-terra"
+default_subagent_model = "gpt-5.6-luna"
 default_subagent_reasoning_effort = "medium"
 max_concurrent_threads_per_session = 4
 interrupt_message = true

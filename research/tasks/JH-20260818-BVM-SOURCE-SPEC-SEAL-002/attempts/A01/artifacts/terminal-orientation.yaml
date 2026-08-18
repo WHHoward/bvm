@@ -1,0 +1,65 @@
+schema_version: bvm-source-spec-seal-002-orientation-v1
+attempt: A01
+terminal_orientation:
+  L_SL_current_reference_direction: N8 -> SL
+  netlist_line: L_SL    N8      SL      0.4P
+  source_netlist: circuits/bvm/bvm_cell.cir
+  probe: I(L_SL|XBVM1)
+source_netlists:
+- id: L01-negative-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L01-negative-control.cir
+  sha256: 50479d5767fed464f315623afcdb2864054548e5988769f21fde7fbef6fe3af1
+- id: L01-negative-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L01-negative-read.cir
+  sha256: aef3b2f8b3fb25d07ac880de42a1667ab72f18c05d826aea662ee030d01d390f
+- id: L01-positive-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L01-positive-control.cir
+  sha256: b2b2461a3de47682b3c73725d8d5c04ad066c56e963e101d5f2ae005b7991090
+- id: L01-positive-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L01-positive-read.cir
+  sha256: 7e581e3daacfc715361c2aedd00930c7747901cf1b1c8ceb22a78a90a8a85da8
+- id: L12-negative-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L12-negative-control.cir
+  sha256: e90e155d3b98b24bb2530743111684a3e1cfd582c44777cc3fa6432d30cb7cea
+- id: L12-negative-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L12-negative-read.cir
+  sha256: 71d165c693db2a196289c470d7775ab0dfcd3168703b0372febd77276353a08f
+- id: L12-positive-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L12-positive-control.cir
+  sha256: 7189f36d0607210ca6b426aa7fbabfe73913910fae234899d59f458ca885b000
+- id: L12-positive-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L12-positive-read.cir
+  sha256: 5e23083bc425516925bf4ac11d411f9524b1685efec4d4d20f92ff8798ef0bb9
+- id: L25-negative-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L25-negative-control.cir
+  sha256: 3c9695b28da5c75febc7909200029a76f069f7a70f52e823cb538acaf55b5f85
+- id: L25-negative-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L25-negative-read.cir
+  sha256: 4d9d72ec5215d4a8146bd832b9535c173aeb254aff9ff3fe3d0efbe9ae081c36
+- id: L25-positive-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L25-positive-control.cir
+  sha256: 3062272ba621c1e4d5dec7b69afe0ee1efd9642a8eb966b544345ad87c39c039
+- id: L25-positive-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L25-positive-read.cir
+  sha256: dea6d07436b696bae6bfebea8cbd4e12e9ff2195d61ce35de4b662a0050bb646
+- id: L50-negative-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L50-negative-control.cir
+  sha256: bbf3f30fca436c039024b0aac03a077de4fe8b1ae6ed0c69ef76d746e7a92822
+- id: L50-negative-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L50-negative-read.cir
+  sha256: a91113c4d81ba6c3869d5dac48fdc5cbb705fabc8a3b14db56e1c97833d45898
+- id: L50-positive-control
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L50-positive-control.cir
+  sha256: 6a58f8ef9635c1c4fdf8a812b71db990383d3e64015b228e51cff8fcdf88cf41
+- id: L50-positive-read
+  path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/L50-positive-read.cir
+  sha256: 227259231c067ad6e326b7b19ab9d672721715fe04d3bae78e3ba66697832eac
+closure:
+- path: circuits/bvm/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+- path: circuits/models/jjmit.cir
+  sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+- path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/manifest.yaml
+  sha256: a01deebc2dd78a417673422d9d26db043c1042ae7b8fea7fecabd6b84059e025
+- path: test/final/bvm/runs/bvm-s2-stable-load-20260817-01/closure-hashes.txt
+  sha256: 7c562a7b9b9e930829d042b2f7e67843a1fb36c0167758c9ebfbb81ffa3a69ab

@@ -1,0 +1,463 @@
+schema_version: bvm-source-spec-seal-002-v1
+attempt: A01
+task_id: JH-20260818-BVM-SOURCE-SPEC-SEAL-002
+supersedes:
+  task_id: JH-20260818-BVM-SOURCE-SPEC-001
+  status: historical_rework_record
+normative_source:
+  task_id: JH-20260817-BVM-S2-STABLE-LOAD-001
+  preregistration_sha256: b39728084dca48c85ad8ca385a8bffa2480659b7a886d10f67d1489e3b57337c
+  analysis_sha256: 649a9a9cb37e8d8622ac8de752cf831c79fe4929b7c362e880ca29796902293e
+  disposition: BOUNDED_SOURCE_CHARACTERIZATION_REPORTED
+  sole_authority: true
+claim_ceiling: exact_hash_bound_derived_representation_only; 1/12/25/50 ohm remain
+  load-origin labels only; accepted STABLE-LOAD-001 remains the sole scientific authority;
+  no source impedance, BQ/SFQ/receiver/interface, mechanism, or hardware claim.
+decimal_contract:
+  context: 28
+  rounding: ROUND_HALF_EVEN
+  traps:
+  - FloatOperation
+  - DivisionByZero
+  - InvalidOperation
+  - Overflow
+  flags_initial: cleared
+  parser: Decimal_from_literal_CSV_token
+  tolerance_seconds: '0'
+  interpolation: prohibited_for_cross_run_and_endpoint_vi; same-trace local linear
+    interpolation only inside legal FWHM bracket per accepted preregistration
+  resampling: prohibited
+  time_alignment: prohibited
+windows_ps:
+  pre:
+  - 80.0
+  - 90.0
+  activity:
+  - 94.0
+  - 108.0
+  source:
+  - 94.0
+  - 130.0
+  recovery:
+  - 108.0
+  - 130.0
+  post:
+  - 140.0
+  - 150.0
+  semantics: half_open_actual_csv_time
+descriptor_semantics: strictly reused from accepted preregistration (earliest tie
+  peak, primary activity, legal FWHM with NOT_APPLICABLE, dominant post-primary opposite
+  lobe); no new norm introduced
+probes:
+- V(SL1)
+- I(L_SL|XBVM1)
+readiness:
+  all_ready: true
+  strata:
+    L01-positive:
+      ready: true
+      load_ohm: 1
+      polarity: positive
+    L01-negative:
+      ready: true
+      load_ohm: 1
+      polarity: negative
+    L12-positive:
+      ready: true
+      load_ohm: 12
+      polarity: positive
+    L12-negative:
+      ready: true
+      load_ohm: 12
+      polarity: negative
+    L25-positive:
+      ready: true
+      load_ohm: 25
+      polarity: positive
+    L25-negative:
+      ready: true
+      load_ohm: 25
+      polarity: negative
+    L50-positive:
+      ready: true
+      load_ohm: 50
+      polarity: positive
+    L50-negative:
+      ready: true
+      load_ohm: 50
+      polarity: negative
+  requirement: JM1/JM2 PRE phase p2p <= 0.020 rad per stratum
+endpoint_vi:
+  positive:
+    eligible_tokens:
+    - '97'
+    - '99'
+    - '101'
+    - '103'
+    - '105'
+    ill_conditioned_tokens: []
+    eligible: 5
+    compatible: 0
+    not_supported: 5
+    ill_conditioned: 0
+    disposition: NOT_SUPPORTED_AT_REGISTERED_TOKENS
+  negative:
+    eligible_tokens:
+    - '97'
+    - '99'
+    - '101'
+    - '103'
+    - '105'
+    ill_conditioned_tokens: []
+    eligible: 5
+    compatible: 0
+    not_supported: 5
+    ill_conditioned: 0
+    disposition: NOT_SUPPORTED_AT_REGISTERED_TOKENS
+descriptors:
+  L01-positive:
+    V(SL1):
+      peak_token: '1.018875E-10'
+      peak_abs: '0.000099954794412200000000'
+      peak_ps: '101.8875'
+      latency_ps: '5.8875'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.026500E-10'
+        samples: 612
+      fwhm_ps: '1.6655715519640882973748142'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.064875E-10'
+        extremum_abs: '0.000051227726365000000000'
+        extremum_ps: '106.4875'
+        lobe_start_token: '1.060000E-10'
+        lobe_end_token: '1.071250E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.018875E-10'
+      peak_abs: '0.00009995479441220000000'
+      peak_ps: '101.8875'
+      latency_ps: '5.8875'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.026500E-10'
+        samples: 612
+      fwhm_ps: '1.6655715519640882973748142'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.064875E-10'
+        extremum_abs: '0.00005122772636500000000'
+        extremum_ps: '106.4875'
+        lobe_start_token: '1.060000E-10'
+        lobe_end_token: '1.071250E-10'
+  L01-negative:
+    V(SL1):
+      peak_token: '1.018875E-10'
+      peak_abs: '0.000099954794412200000000'
+      peak_ps: '101.8875'
+      latency_ps: '5.8875'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.026500E-10'
+        samples: 612
+      fwhm_ps: '1.6655715519640882973748142'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.064875E-10'
+        extremum_abs: '0.000051227726365000000000'
+        extremum_ps: '106.4875'
+        lobe_start_token: '1.060000E-10'
+        lobe_end_token: '1.071250E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.018875E-10'
+      peak_abs: '0.00009995479441220000000'
+      peak_ps: '101.8875'
+      latency_ps: '5.8875'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.026500E-10'
+        samples: 612
+      fwhm_ps: '1.6655715519640882973748142'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.064875E-10'
+        extremum_abs: '0.00005122772636500000000'
+        extremum_ps: '106.4875'
+        lobe_start_token: '1.060000E-10'
+        lobe_end_token: '1.071250E-10'
+  L12-positive:
+    V(SL1):
+      peak_token: '1.010125E-10'
+      peak_abs: '0.000904094327111000'
+      peak_ps: '101.0125'
+      latency_ps: '5.0125'
+      primary_lobe:
+        start_token: '9.951250E-11'
+        end_token: '1.017500E-10'
+        samples: 180
+      fwhm_ps: '1.3248436445986674357285155'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.078375E-10'
+        extremum_abs: '0.000541817066371000'
+        extremum_ps: '107.8375'
+        lobe_start_token: '1.070375E-10'
+        lobe_end_token: '1.084750E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.010125E-10'
+      peak_abs: '0.0000753411922593000000'
+      peak_ps: '101.0125'
+      latency_ps: '5.0125'
+      primary_lobe:
+        start_token: '9.951250E-11'
+        end_token: '1.017500E-10'
+        samples: 180
+      fwhm_ps: '1.3248436074019647846428163'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.078375E-10'
+        extremum_abs: '0.0000451514305309000000'
+        extremum_ps: '107.8375'
+        lobe_start_token: '1.070375E-10'
+        lobe_end_token: '1.084750E-10'
+  L12-negative:
+    V(SL1):
+      peak_token: '1.010125E-10'
+      peak_abs: '0.000904094327111000'
+      peak_ps: '101.0125'
+      latency_ps: '5.0125'
+      primary_lobe:
+        start_token: '9.951250E-11'
+        end_token: '1.017500E-10'
+        samples: 180
+      fwhm_ps: '1.3248436445986674357285155'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.078375E-10'
+        extremum_abs: '0.000541817066371000'
+        extremum_ps: '107.8375'
+        lobe_start_token: '1.070375E-10'
+        lobe_end_token: '1.084750E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.010125E-10'
+      peak_abs: '0.0000753411922593000000'
+      peak_ps: '101.0125'
+      latency_ps: '5.0125'
+      primary_lobe:
+        start_token: '9.951250E-11'
+        end_token: '1.017500E-10'
+        samples: 180
+      fwhm_ps: '1.3248436074019647846428163'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.078375E-10'
+        extremum_abs: '0.0000451514305309000000'
+        extremum_ps: '107.8375'
+        lobe_start_token: '1.070375E-10'
+        lobe_end_token: '1.084750E-10'
+  L25-positive:
+    V(SL1):
+      peak_token: '1.037250E-10'
+      peak_abs: '0.00182263627250000000'
+      peak_ps: '103.7250'
+      latency_ps: '7.7250'
+      primary_lobe:
+        start_token: '9.922500E-11'
+        end_token: '1.093500E-10'
+        samples: 811
+      fwhm_ps: '5.6782703750098560051821773'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.106500E-10'
+        extremum_abs: '0.00061061799889600000'
+        extremum_ps: '110.6500'
+        lobe_start_token: '1.093625E-10'
+        lobe_end_token: '1.114125E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.037250E-10'
+      peak_abs: '0.0000729054409000000000'
+      peak_ps: '103.7250'
+      latency_ps: '7.7250'
+      primary_lobe:
+        start_token: '9.922500E-11'
+        end_token: '1.093500E-10'
+        samples: 811
+      fwhm_ps: '5.6782708602636545822909726'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.106500E-10'
+        extremum_abs: '0.0000244247199559000000'
+        extremum_ps: '110.6500'
+        lobe_start_token: '1.093625E-10'
+        lobe_end_token: '1.114125E-10'
+  L25-negative:
+    V(SL1):
+      peak_token: '1.037250E-10'
+      peak_abs: '0.00182263627250000000'
+      peak_ps: '103.7250'
+      latency_ps: '7.7250'
+      primary_lobe:
+        start_token: '9.922500E-11'
+        end_token: '1.093500E-10'
+        samples: 811
+      fwhm_ps: '5.6782703750098560051821773'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.106500E-10'
+        extremum_abs: '0.00061061799889600000'
+        extremum_ps: '110.6500'
+        lobe_start_token: '1.093625E-10'
+        lobe_end_token: '1.114125E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.037250E-10'
+      peak_abs: '0.0000729054409000000000'
+      peak_ps: '103.7250'
+      latency_ps: '7.7250'
+      primary_lobe:
+        start_token: '9.922500E-11'
+        end_token: '1.093500E-10'
+        samples: 811
+      fwhm_ps: '5.6782708602636545822909726'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.106500E-10'
+        extremum_abs: '0.0000244247199559000000'
+        extremum_ps: '110.6500'
+        lobe_start_token: '1.093625E-10'
+        lobe_end_token: '1.114125E-10'
+  L50-positive:
+    V(SL1):
+      peak_token: '1.045375E-10'
+      peak_abs: '0.002258561872230000000'
+      peak_ps: '104.5375'
+      latency_ps: '8.5375'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.091750E-10'
+        samples: 1134
+      fwhm_ps: '7.09203351793799914244042465'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.118250E-10'
+        extremum_abs: '0.000998895739443000000'
+        extremum_ps: '111.8250'
+        lobe_start_token: '1.111250E-10'
+        lobe_end_token: '1.124250E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.045375E-10'
+      peak_abs: '0.00004517122744470000000'
+      peak_ps: '104.5375'
+      latency_ps: '8.5375'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.091750E-10'
+        samples: 1134
+      fwhm_ps: '7.09203435160741862190218171'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.118250E-10'
+        extremum_abs: '0.00001997791678886000000'
+        extremum_ps: '111.8250'
+        lobe_start_token: '1.111250E-10'
+        lobe_end_token: '1.124250E-10'
+  L50-negative:
+    V(SL1):
+      peak_token: '1.045375E-10'
+      peak_abs: '0.002258561872230000000'
+      peak_ps: '104.5375'
+      latency_ps: '8.5375'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.091750E-10'
+        samples: 1134
+      fwhm_ps: '7.09203351793799914244042465'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.118250E-10'
+        extremum_abs: '0.000998895739443000000'
+        extremum_ps: '111.8250'
+        lobe_start_token: '1.111250E-10'
+        lobe_end_token: '1.124250E-10'
+    I(L_SL|XBVM1):
+      peak_token: '1.045375E-10'
+      peak_abs: '0.00004517122744470000000'
+      peak_ps: '104.5375'
+      latency_ps: '8.5375'
+      primary_lobe:
+        start_token: '9.501250E-11'
+        end_token: '1.091750E-10'
+        samples: 1134
+      fwhm_ps: '7.09203435160741862190218171'
+      fwhm_status: REPORTED
+      dominant_post_primary_opposite_lobe:
+        extremum_token: '1.118250E-10'
+        extremum_abs: '0.00001997791678886000000'
+        extremum_ps: '111.8250'
+        lobe_start_token: '1.111250E-10'
+        lobe_end_token: '1.124250E-10'
+matched_pairs:
+- pair_id: L01-positive
+  load_ohm: 1
+  polarity: positive
+  read_id: L01-positive-read
+  control_id: L01-positive-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+- pair_id: L01-negative
+  load_ohm: 1
+  polarity: negative
+  read_id: L01-negative-read
+  control_id: L01-negative-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+- pair_id: L12-positive
+  load_ohm: 12
+  polarity: positive
+  read_id: L12-positive-read
+  control_id: L12-positive-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+- pair_id: L12-negative
+  load_ohm: 12
+  polarity: negative
+  read_id: L12-negative-read
+  control_id: L12-negative-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+- pair_id: L25-positive
+  load_ohm: 25
+  polarity: positive
+  read_id: L25-positive-read
+  control_id: L25-positive-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+- pair_id: L25-negative
+  load_ohm: 25
+  polarity: negative
+  read_id: L25-negative-read
+  control_id: L25-negative-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+- pair_id: L50-positive
+  load_ohm: 50
+  polarity: positive
+  read_id: L50-positive-read
+  control_id: L50-positive-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+- pair_id: L50-negative
+  load_ohm: 50
+  polarity: negative
+  read_id: L50-negative-read
+  control_id: L50-negative-control
+  read_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  control_time_sequence_sha256: 718d7abb27e7ca999c6890668e050f4d74a77919ce53950aa513349df31a69f9
+  time_alignment: IDENTICAL_BEFORE_CORRECTION
+frozen_preregistration_sha256: b39728084dca48c85ad8ca385a8bffa2480659b7a886d10f67d1489e3b57337c

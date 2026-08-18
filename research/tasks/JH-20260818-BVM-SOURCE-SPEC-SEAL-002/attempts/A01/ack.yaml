@@ -1,0 +1,52 @@
+protocol: josim-handoff/v1
+document_type: execution_ack
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-SEAL-002
+revision: 1
+attempt_id: A01
+workflow_state: ACKED
+created_at: "2026-08-18T23:39:57+08:00"
+executor:
+  role: CLAUDE_CODE
+  id: claude-code
+bindings:
+  request_sha256: "e4dae54315521af5ffec76e64e545bff53baa52cc016d74dfc6e00c8b7fec06e"
+  issuer_snapshot_sha256: "bf0a96bc4a8ad100e5156602e190a2f7e12634dd687b5c4da69b603c97055f58"
+decision: ACCEPTED
+preflight:
+  observed_git_head: "03725af56a3c9559651f7ef947e3d6bba71c23b4"
+  dirty_paths:
+    - research/mailbox/from-codex/codex-20260818-233735.md
+    - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.yaml
+    - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.sha256
+  scope_accepted: true
+  required_skills_available: true
+understanding:
+  objective: "Seal BVM_SOURCE_SPEC_V1 as a minimal, deterministic, hash-bound derived representation of the accepted STABLE-LOAD-001 source waveform evidence: produce only the A01 producer payload (bvm-source-spec-v1.yaml, waveform-family.json, terminal-orientation.yaml, build_source_spec.py, inventory.yaml, evidence-bundle.yaml), commit C_art as direct child of issuer commit I=03725af including the issuer snapshot files, then write a live-timestamp receipt binding request/ACK/I/C_art and commit C_receipt as its direct child; stop without creating verifier files, C_verify, or Contract 2."
+  non_goals:
+    - "No JoSIM execution, new simulation, parameter sweep, replay, receiver, QB, direct-SFQ adapter, JTL, or T1 experiment."
+    - "No modification of the accepted source evidence, canonical BVM, old SOURCE-SPEC task, old attempts, old receipts, or old audits."
+    - "No Thevenin, Norton, fixed source impedance, BQ/SFQ/receiver compatibility, interface PASS, mechanism, or hardware claim; 1/12/25/50 ohm remain load-origin labels only."
+    - "No new descriptor/window norm: STABLE-LOAD-001 frozen preregistration/hash is the sole normative source; successor copies are validated copies only."
+    - "No Contract 2 issuance or receiver-architecture work in this task."
+  stop_conditions:
+    - "Stop on any need for scope expansion, route/metric/physics reinterpretation, new experiment, protocol redesign, unlisted write, overwrite/delete, network/install/worktree change, or Contract 2 issuance."
+    - "Do not create verifier files or C_verify/audit files in this phase."
+planned_commands:
+  - "python3 research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py (producer build + producer checks)"
+  - "git add <task A01 paths + issuer-snapshot files> && git commit (C_art)"
+  - "git add receipt && git commit (C_receipt)"
+  - "python3 .agents/skills/josim-handoff/scripts/handoff.py verify-task research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002"
+expected_changed_paths:
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/ack.yaml
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/bvm-source-spec-v1.yaml
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/waveform-family.json
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/terminal-orientation.yaml
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/inventory.yaml
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/evidence-bundle.yaml
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/receipt.yaml
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.yaml (issuer-provided, committed unchanged)
+  - research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.sha256 (issuer-provided, committed unchanged)
+blockers: []
+deviations: []

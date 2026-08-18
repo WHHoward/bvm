@@ -73,6 +73,25 @@ JS 圈数 3 vs 0；N6 幅度比 ≈3.2×；I(L_S1) 峰值比 ≈3.7×。
 - Next：简化 stimulus screening——用与 accepted source 特征一致的
   受控脉冲源测 magnitude-threshold receiver 的 trigger→quench→output
 
+## 2×2 closure（pos-init-neg-read 补齐后）
+
+| cell | init/READ | JS1 圈数 | running | N6 abs | L_S1 abs |
+|---|---|---|---|---|---|
+| A/+READ | +/+ matched | **+2.99** | ✅ | 1.814mV | 191.4µA |
+| A/−READ | +/− mismatch | +0.003 | ❌ | 0.653mV | 51.4µA |
+| B/+READ | −/+ mismatch | +0.003 | ❌ | 0.653mV | 51.4µA |
+| B/−READ | −/− matched | **+2.99** | ✅ | 1.814mV | 191.4µA |
+
+**matched (state sign == READ sign) → running；mismatched → no running：
+四格全部成立（hypothesis_holds_all_cells=True，state-matrix-2x2.json）。**
+
+同 READ 下 A vs B 幅度比（计算值，非硬编码）：
+- +READ：N6 2.78×、SL 2.85×、L_S1 3.72×（running vs no-running）
+- −READ：精确倒数（0.36 / 0.35 / 0.27）——矩阵完全对称
+- running 圈数符号：matched 角 running 方向与 READ 同号（A/+READ 负向
+  −3 圈；B/−READ 正向 +3 圈）
+
 ## Promising?
-状态判别物理依据存在且强（3 vs 0 圈、3–4× 幅度），但**仍不设计
-receiver、不升级 Candidate**（本轮目标仅为确认 discrimination）。
+状态判别物理依据存在且强（matched→2.99 圈 running / mismatched→0.003
+圈；同 READ 幅度比 2.8–3.7×），且呈现干净的 2×2 对称规律。但**仍不
+设计 receiver、不升级 Candidate**（本轮仅确认 discrimination）。

@@ -316,15 +316,53 @@
       "PRE_sign_B": "-"
     }
   },
+  "ratios": {
+    "V(N6|XBVM1)": {
+      "A_plus": "0.001814477",
+      "A_minus": "-0.001088349",
+      "B_plus": "0.0005616975",
+      "B_minus": "-0.0006529926",
+      "abs_A": "0.001814477",
+      "abs_B": "0.0006529926",
+      "abs_ratio_A_over_B": "2.778709896559317823816073873"
+    },
+    "V(SL1)": {
+      "A_plus": "0.0009040907",
+      "A_minus": "-0.0005418119",
+      "B_plus": "0.0002728192",
+      "B_minus": "-0.0003169376",
+      "abs_A": "0.0009040907",
+      "abs_B": "0.0003169376",
+      "abs_ratio_A_over_B": "2.852582653493936976868632816"
+    },
+    "I(L_S1|XBVM1)": {
+      "A_plus": "0.00009660485",
+      "A_minus": "-0.0001913654",
+      "B_plus": "-0.000001208023",
+      "B_minus": "-0.00005143315",
+      "abs_A": "0.0001913654",
+      "abs_B": "0.00005143315",
+      "abs_ratio_A_over_B": "3.720662646561604723801672657"
+    },
+    "I(L_SL|XBVM1)": {
+      "A_plus": "0.00007534089",
+      "A_minus": "-0.00004515100",
+      "B_plus": "0.00002273493",
+      "B_minus": "-0.00002641147",
+      "abs_A": "0.00007534089",
+      "abs_B": "0.00002641147",
+      "abs_ratio_A_over_B": "2.852582230371880096034033698"
+    }
+  },
   "summary": {
     "PRE_static_exact_mirror_all": true,
     "READ_transient_exact_mirror_all_under_same_READ": false,
     "READ_unwrapped_delta_signed_equal": false,
     "answers": {
       "Q1_mirror_under_same_READ": false,
-      "Q2_amplitude_sign_timing_diff": "None found if mirror_all=True: identical amplitude/timing, signed transients are sign-flipped between states. Switching-threshold question requires a JJ-biased fixture (not present in raw) -- recorded as Unknown.",
-      "Q3_PRE_bias_mapping": "PRE static L_S1/L_S2/L_S3 currents are +-19.5uA (sign mirrors). READ transient peaks are dominated by the running current (~+-190uA); the PRE sign appears as the sign of the FIRST peak (A: +96.6uA@106.06 vs B: -96.6uA @106.06 for L_S1). Mapping: PRE bias sign sets the sign of the transient onset; amplitude is READ-dominated.",
-      "Q4_receiver_mechanism": "Under same READ: transients are exact sign-mirrors. A magnitude threshold receiver sees identical |peaks| and cannot discriminate. Polarity discrimination of the transient onset (or the PRE static bias sign) is the only signal carrying state information. Direction-sensitive (biased-JJ) receiver is the candidate mechanism.",
+      "Q2_amplitude_sign_timing_diff": "Computed: mirror_all=False under identical +READ; state A runs (JS1 dphi ~ -18.8 rad, ~3 turns) while state B does not (dphi ~ -0.016 rad). Amplitude differences quantified in results['ratios']: N6 abs-ratio ~3.2, SL ~3.3, L_S1 ~3.7, L_SL ~3.3 (computed values, not hard-coded). Sign/timing also differ: A peaks at ~101 ps (running onset), B only at READ edges 96/106 ps. Switching-threshold difference inferred from running/no-running; a direct JJ-biased threshold measurement is not present in raw -- Unknown.",
+      "Q3_PRE_bias_mapping": "PRE static L_S1/L_S2/L_S3 currents are +-19.5uA (sign mirrors between states; see PRE_static). Under identical +READ, state A (PRE +19.5uA on L_S1) enters running (L_S1 READ peak -191.4uA) while state B (PRE -19.5uA) does not (L_S1 READ peak -51.4uA). Mapping: PRE bias sign relative to READ direction sets whether running is triggered; the transient amplitude is the amplified result.",
+      "Q4_receiver_mechanism": "Computed for identical +READ: transients are NOT mirrors (mirror_all=False); state A produces ~3-turn running with 3-4x larger |peaks| than state B. A magnitude-threshold one-shot receiver has a physical discrimination basis. Polarity discrimination remains an alternative. Final receiver choice is not made here (Exploration).",
       "Q5_labels": "states remain A/B; no logical 1/0 identity"
     }
   }

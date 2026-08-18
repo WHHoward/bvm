@@ -157,6 +157,25 @@ def main() -> int:
         and v["timing_plus_match"] and v["timing_minus_match"]
         for v in peaks.values())
     delta_same = all(v["signed_equal"] for v in deltas.values())
+    # N6/SL ratios (signed + absolute), replacing blanket 3.2x wording
+    def ratio_pair(col, state_key):
+        v = peaks[col]
+        pa, pb = v["A"], v["B"]
+        sa = Decimal(pa["plus"]); na = Decimal(pa["minus"])
+        sb = Decimal(pb["plus"]); nb = Decimal(pb["minus"])
+        abs_a = max(abs(sa), abs(na)); abs_b = max(abs(sb), abs(nb))
+        return {"A_plus": str(sa), "A_minus": str(na),
+                "B_plus": str(sb), "B_minus": str(nb),
+                "abs_A": str(abs_a), "abs_B": str(abs_b),
+                "abs_ratio_A_over_B": str(abs_a / abs_b)}
+
+    results["ratios"] = {
+        "V(N6|XBVM1)": ratio_pair("V(N6|XBVM1)", "A"),
+        "V(SL1)": ratio_pair("V(SL1)", "A"),
+        "I(L_S1|XBVM1)": ratio_pair("I(L_S1|XBVM1)", "A"),
+        "I(L_SL|XBVM1)": ratio_pair("I(L_SL|XBVM1)", "A"),
+    }
+
     results["summary"] = {
         "PRE_static_exact_mirror_all": pre_mirror_all,
         "READ_transient_exact_mirror_all_under_same_READ": peak_mirror_all,
@@ -164,25 +183,33 @@ def main() -> int:
         "answers": {
             "Q1_mirror_under_same_READ": peak_mirror_all,
             "Q2_amplitude_sign_timing_diff": (
-                "None found if mirror_all=True: identical amplitude/timing, "
-                "signed transients are sign-flipped between states. "
-                "Switching-threshold question requires a JJ-biased fixture "
-                "(not present in raw) -- recorded as Unknown."),
+                "Computed: mirror_all=False under identical +READ; "
+                "state A runs (JS1 dphi ~ -18.8 rad, ~3 turns) while "
+                "state B does not (dphi ~ -0.016 rad). Amplitude "
+                "differences quantified in results['ratios']: N6 "
+                "abs-ratio ~3.2, SL ~3.3, L_S1 ~3.7, L_SL ~3.3 "
+                "(computed values, not hard-coded). Sign/timing also "
+                "differ: A peaks at ~101 ps (running onset), B only at "
+                "READ edges 96/106 ps. Switching-threshold difference "
+                "inferred from running/no-running; a direct JJ-biased "
+                "threshold measurement is not present in raw -- Unknown."),
             "Q3_PRE_bias_mapping": (
                 "PRE static L_S1/L_S2/L_S3 currents are +-19.5uA "
-                "(sign mirrors). READ transient peaks are dominated by the "
-                "running current (~+-190uA); the PRE sign appears as the "
-                "sign of the FIRST peak (A: +96.6uA@106.06 vs B: -96.6uA "
-                "@106.06 for L_S1). Mapping: PRE bias sign sets the sign "
-                "of the transient onset; amplitude is READ-dominated."),
+                "(sign mirrors between states; see PRE_static). Under "
+                "identical +READ, state A (PRE +19.5uA on L_S1) enters "
+                "running (L_S1 READ peak -191.4uA) while state B (PRE "
+                "-19.5uA) does not (L_S1 READ peak -51.4uA). Mapping: "
+                "PRE bias sign relative to READ direction sets whether "
+                "running is triggered; the transient amplitude is the "
+                "amplified result."),
             "Q4_receiver_mechanism": (
-                "Under same READ: transients are exact sign-mirrors. A "
-                "magnitude threshold receiver sees identical |peaks| and "
-                "cannot discriminate. Polarity discrimination of the "
-                "transient onset (or the PRE static bias sign) is the "
-                "only signal carrying state information. Direction-"
-                "sensitive (biased-JJ) receiver is the candidate "
-                "mechanism."),
+                "Computed for identical +READ: transients are NOT "
+                "mirrors (mirror_all=False); state A produces ~3-turn "
+                "running with 3-4x larger |peaks| than state B. A "
+                "magnitude-threshold one-shot receiver has a physical "
+                "discrimination basis. Polarity discrimination remains "
+                "an alternative. Final receiver choice is not made "
+                "here (Exploration)."),
             "Q5_labels": "states remain A/B; no logical 1/0 identity",
         },
     }

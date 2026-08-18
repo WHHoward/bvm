@@ -42,9 +42,15 @@ raw_runs:
   - {id: pos-read-repeated, path: raw/pos-read-repeated/run-01.csv}
   - {id: neg-read-single, path: raw/neg-read-single/run-01.csv}
   - {id: neg-read-repeated, path: raw/neg-read-repeated/run-01.csv}
+  - {id: pos-diag, path: raw/pos-diag/run-01.csv, note: "adds L_M1/L_M2/L_PM storage-loop probes"}
+  - {id: neg-diag, path: raw/neg-diag/run-01.csv, note: "adds L_M1/L_M2/L_PM storage-loop probes"}
 derived:
-  - {path: analysis.json, role: structured_analysis}
+  - {path: analysis.json, role: structured_analysis, note: "v1 (superseded analysis)"}
+  - {path: analysis-v2.json, role: structured_analysis, note: "rev2 corrected segmentation"}
   - {path: analyze_internal_readout.py, role: analysis_script}
+  - {path: analyze_internal_readout_v2.py, role: analysis_script, note: "rev2: unwrapped-phase + voltage joint segmentation; independent JM1/JM2 storage"}
+  - {path: summary.md, role: report, note: "v1 summary"}
+  - {path: summary-v2.md, role: report, note: "rev2 corrected summary (user review 2026-08-19)"}
 notes:
   - "Fixture pos-read-single token-identical to accepted L12-positive-read
      (14 shared columns, 190386 tokens, 0 mismatch) -- stimulus/load replay

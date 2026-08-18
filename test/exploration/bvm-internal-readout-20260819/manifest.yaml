@@ -49,6 +49,8 @@ raw_runs:
   - {id: neg-diag-corr, path: raw/neg-diag-corr/run-01.csv, status: CURRENT, note: "corrected negative with storage-loop probes"}
   - {id: neg-init-pos-read, path: raw/neg-init-pos-read/run-01.csv, status: CURRENT, note: "-init + +READ (= B/+READ cell)"}
   - {id: pos-init-neg-read, path: raw/pos-init-neg-read/run-01.csv, status: CURRENT, note: "+init + -READ (= A/-READ cell)"}
+  - {id: rewrite-read-1010, path: raw/rewrite-read-1010/run-01.csv, status: CURRENT, note: "continuous rewrite/read 1/0/1/0, 4 cycles x 170ps"}
+  - {id: rewrite-read-0101, path: raw/rewrite-read-0101/run-01.csv, status: CURRENT, note: "continuous rewrite/read 0/1/0/1, 4 cycles x 170ps"}
   - {id: pos-control, path: raw/pos-control/run-01.csv, status: CURRENT, note: "READ=0 control, +100U init; token-identical to accepted L12-positive-control"}
   - {id: neg-control, path: raw/neg-control/run-01.csv, status: CURRENT, note: "READ=0 control, -100U init; token-identical to accepted L12-negative-control"}
 derived:
@@ -68,6 +70,9 @@ derived:
   - {path: analyze_state_discrimination.py, role: analysis_script, note: "v1"}
   - {path: analyze_state_discrimination_v2.py, role: analysis_script, note: "identical +READ (corrected)"}
   - {path: analyze_state_matrix_2x2.py, role: analysis_script, note: "2x2 matrix + ratios"}
+  - {path: analyze_rewrite_read.py, role: analysis_script, note: "continuous rewrite/read closure (4 cycles)"}
+  - {path: rewrite-read-analysis.json, role: structured_analysis, note: "per-cycle storage/JS/N6/SL/L_S metrics"}
+  - {path: summary-rewrite-read.md, role: report, note: "rewrite/read closure summary"}
 supersedes:
   - {note: "neg-read-single / neg-read-repeated / neg-diag results are INVALID (ramp init -100->+100uA, +100uA READ); replaced by *-corr runs"}
 notes:

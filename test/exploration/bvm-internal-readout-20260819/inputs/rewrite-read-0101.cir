@@ -1,0 +1,26 @@
+* BVM Continuous Rewrite/Read -- sequence 0101 (Exploration)
+* Logical semantics: BVM_LOGICAL_SEMANTICS_V1 (write1=+100U, write0=-100U, canonical READ=+100U WL+SE)
+* Cycle = 170 ps; write 10-21, readiness 21->96 (75 ps), READ 96-105, post 140-150.
+* Load 12 ohm, dt 0.0125 ps.
+.include jjmit.cir
+.include bvm_cell.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+R_LD SL1 0 12
+
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0 180p 0 181p +100U 190p +100U 191p 0 265p 0 266p +100U 275p +100U 276p 0 340p 0 350p 0 351p -100U 360p -100U 361p 0 435p 0 436p +100U 445p +100U 446p 0 510p 0 520p 0 521p +100U 530p +100U 531p 0 605p 0 606p +100U 615p +100U 616p 0 680p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 170p 0 180p 0 181p +100U 190p +100U 191p 0 340p 0 350p 0 351p -100U 360p -100U 361p 0 510p 0 520p 0 521p +100U 530p +100U 531p 0 680p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0 265p 0 266p +100U 275p +100U 276p 0 340p 0 435p 0 436p +100U 445p +100U 446p 0 510p 0 605p 0 606p +100U 615p +100U 616p 0 680p 0)
+
+.tran 0.0125p 680p
+
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1)
+.print P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.print V(N6|XBVM1) V(SL1)
+.print I(L_M1|XBVM1) I(L_M2|XBVM1) I(L_S1|XBVM1) I(L_S2|XBVM1) I(L_S3|XBVM1)
+.print I(L_M3|XBVM1) I(L_PM|XBVM1) I(L_PSL|XBVM1) I(L_SL|XBVM1)
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.end

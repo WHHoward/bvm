@@ -1,5 +1,18 @@
 # BVM Logical-State Discrimination — Exploration summary
 
+> **SUPERSEDED (2026-08-19, user review)**：本文件 READ-transient
+> discrimination 部分存在 provenance 错误——`RUN_B = neg-read-single-corr`
+> 实际使用 **−100µA WL+SE READ**（accepted negative 惯例），不是 +100µA。
+> 因此原比较为 (+init,+READ) vs (−init,−READ)，**不是**
+> (+init,+READ) vs (−init,+READ)。以下结论全部降级/supersede：
+> - "READ transient exact mirror" 及所有基于它的 discrimination 结论
+>   （magnitude detector cannot discriminate / only direction-sensitive
+>   discriminator）
+> - 保留项：**PRE [80,90) 静态 signature 比较**（发生在 READ 前，不受
+>   READ 极性影响）——JS1/JS2 phase ±0.267 rad、L_S1/L_S2/L_S3 static
+>   current ±19.5µA 的 sign-mirror observation 仍有效。
+> 正确实验见 `summary-state-discrimination-v2.md`。
+
 date: 2026-08-19 | tier: Exploration | 复用 rev3 raw（无新 run）
 
 ## State 定义（来自 ACCEPTED 权威，不自行命名 logical 1/0）

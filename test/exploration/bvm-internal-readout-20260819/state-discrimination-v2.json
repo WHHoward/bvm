@@ -1,0 +1,331 @@
+{
+  "note": "Both states read with IDENTICAL +100uA WL+SE READ; differs only in WL/BL initialization polarity.",
+  "state_A": {
+    "init": "+100uA",
+    "read": "+100uA",
+    "run": "pos-read-single"
+  },
+  "state_B": {
+    "init": "-100uA",
+    "read": "+100uA",
+    "run": "neg-init-pos-read"
+  },
+  "PRE_static": {
+    "P(B_JS1|XBVM1)": {
+      "A": "0.2665209",
+      "B": "-0.2665209",
+      "exact_mirror": true
+    },
+    "P(B_JS2|XBVM1)": {
+      "A": "-0.2669321",
+      "B": "0.2669321",
+      "exact_mirror": true
+    },
+    "V(N6|XBVM1)": {
+      "A": "2.602309E-8",
+      "B": "-2.602309E-8",
+      "exact_mirror": true
+    },
+    "V(SL1)": {
+      "A": "1.315082E-8",
+      "B": "-1.315082E-8",
+      "exact_mirror": true
+    },
+    "I(L_S1|XBVM1)": {
+      "A": "0.00001951829",
+      "B": "-0.00001951829",
+      "exact_mirror": true
+    },
+    "I(L_S2|XBVM1)": {
+      "A": "-0.00001951719",
+      "B": "0.00001951719",
+      "exact_mirror": true
+    },
+    "I(L_S3|XBVM1)": {
+      "A": "0.00001951825",
+      "B": "-0.00001951825",
+      "exact_mirror": true
+    },
+    "I(L_M3|XBVM1)": {
+      "A": "0.00002409876",
+      "B": "-0.00002409876",
+      "exact_mirror": true
+    },
+    "I(L_PSL|XBVM1)": {
+      "A": "1.095902E-9",
+      "B": "-1.095902E-9",
+      "exact_mirror": true
+    },
+    "I(L_SL|XBVM1)": {
+      "A": "1.095902E-9",
+      "B": "-1.095902E-9",
+      "exact_mirror": true
+    }
+  },
+  "READ_transient_peaks": {
+    "P(B_JS1|XBVM1)": {
+      "A": {
+        "t_plus_ps": "95.93750",
+        "plus": "0.3205991",
+        "t_minus_ps": "106.3625",
+        "minus": "-20.85395"
+      },
+      "B": {
+        "t_plus_ps": "107.4125",
+        "plus": "0.2533610",
+        "t_minus_ps": "97.57500",
+        "minus": "-1.109763"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "P(B_JS2|XBVM1)": {
+      "A": {
+        "t_plus_ps": "94.91250",
+        "plus": "-0.2668704",
+        "t_minus_ps": "107.0125",
+        "minus": "-20.90359"
+      },
+      "B": {
+        "t_plus_ps": "106.8500",
+        "plus": "0.7198063",
+        "t_minus_ps": "97.16250",
+        "minus": "-1.406203"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "V(N6|XBVM1)": {
+      "A": {
+        "t_plus_ps": "100.9875",
+        "plus": "0.001814477",
+        "t_minus_ps": "107.8000",
+        "minus": "-0.001088349"
+      },
+      "B": {
+        "t_plus_ps": "96.00000",
+        "plus": "0.0005616975",
+        "t_minus_ps": "106.0000",
+        "minus": "-0.0006529926"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "V(SL1)": {
+      "A": {
+        "t_plus_ps": "101.0125",
+        "plus": "0.0009040907",
+        "t_minus_ps": "107.8375",
+        "minus": "-0.0005418119"
+      },
+      "B": {
+        "t_plus_ps": "96.00000",
+        "plus": "0.0002728192",
+        "t_minus_ps": "106.0000",
+        "minus": "-0.0003169376"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "I(L_S1|XBVM1)": {
+      "A": {
+        "t_plus_ps": "106.0625",
+        "plus": "0.00009660485",
+        "t_minus_ps": "104.4750",
+        "minus": "-0.0001913654"
+      },
+      "B": {
+        "t_plus_ps": "106.5875",
+        "plus": "-0.000001208023",
+        "t_minus_ps": "96.61250",
+        "minus": "-0.00005143315"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "I(L_S2|XBVM1)": {
+      "A": {
+        "t_plus_ps": "104.3375",
+        "plus": "0.0001340479",
+        "t_minus_ps": "102.8125",
+        "minus": "-0.0001704490"
+      },
+      "B": {
+        "t_plus_ps": "107.5500",
+        "plus": "0.00004127090",
+        "t_minus_ps": "99.70000",
+        "minus": "-0.00007177819"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "I(L_S3|XBVM1)": {
+      "A": {
+        "t_plus_ps": "103.1375",
+        "plus": "0.0001872118",
+        "t_minus_ps": "104.6375",
+        "minus": "-0.00008205264"
+      },
+      "B": {
+        "t_plus_ps": "100.0750",
+        "plus": "0.00007328062",
+        "t_minus_ps": "107.7375",
+        "minus": "-0.00003229064"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "I(L_M3|XBVM1)": {
+      "A": {
+        "t_plus_ps": "104.5000",
+        "plus": "0.0002218026",
+        "t_minus_ps": "106.1125",
+        "minus": "-0.00003314974"
+      },
+      "B": {
+        "t_plus_ps": "98.73750",
+        "plus": "0.00003366342",
+        "t_minus_ps": "108.6375",
+        "minus": "-0.00003771738"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "I(L_PSL|XBVM1)": {
+      "A": {
+        "t_plus_ps": "101.0125",
+        "plus": "0.00007534089",
+        "t_minus_ps": "107.8375",
+        "minus": "-0.00004515100"
+      },
+      "B": {
+        "t_plus_ps": "96.00000",
+        "plus": "0.00002273493",
+        "t_minus_ps": "106.0000",
+        "minus": "-0.00002641147"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    },
+    "I(L_SL|XBVM1)": {
+      "A": {
+        "t_plus_ps": "101.0125",
+        "plus": "0.00007534089",
+        "t_minus_ps": "107.8375",
+        "minus": "-0.00004515100"
+      },
+      "B": {
+        "t_plus_ps": "96.00000",
+        "plus": "0.00002273493",
+        "t_minus_ps": "106.0000",
+        "minus": "-0.00002641147"
+      },
+      "plus_mirror": false,
+      "minus_mirror": false,
+      "timing_plus_match": false,
+      "timing_minus_match": false
+    }
+  },
+  "READ_unwrapped_delta": {
+    "P(B_JS1|XBVM1)": {
+      "A_rad": "-18.81255950000000000000000000",
+      "B_rad": "-0.016311400000000000000000000",
+      "A_minus_B": "-18.79624810000000000000000000",
+      "signed_equal": false
+    },
+    "P(B_JS2|XBVM1)": {
+      "A_rad": "-18.84202190000000000000000000",
+      "B_rad": "-0.000972100000000000000000000",
+      "A_minus_B": "-18.84104980000000000000000000",
+      "signed_equal": false
+    }
+  },
+  "PRE_to_READ_mapping": {
+    "I(L_S1|XBVM1)": {
+      "PRE_A": "0.00001951829",
+      "PRE_B": "-0.00001951829",
+      "READ_peak_A": {
+        "plus": "0.00009660485",
+        "minus": "-0.0001913654"
+      },
+      "READ_peak_B": {
+        "plus": "-0.000001208023",
+        "minus": "-0.00005143315"
+      },
+      "PRE_sign_A": "+",
+      "PRE_sign_B": "-"
+    },
+    "I(L_S2|XBVM1)": {
+      "PRE_A": "-0.00001951719",
+      "PRE_B": "0.00001951719",
+      "READ_peak_A": {
+        "plus": "0.0001340479",
+        "minus": "-0.0001704490"
+      },
+      "READ_peak_B": {
+        "plus": "0.00004127090",
+        "minus": "-0.00007177819"
+      },
+      "PRE_sign_A": "-",
+      "PRE_sign_B": "+"
+    },
+    "I(L_S3|XBVM1)": {
+      "PRE_A": "0.00001951825",
+      "PRE_B": "-0.00001951825",
+      "READ_peak_A": {
+        "plus": "0.0001872118",
+        "minus": "-0.00008205264"
+      },
+      "READ_peak_B": {
+        "plus": "0.00007328062",
+        "minus": "-0.00003229064"
+      },
+      "PRE_sign_A": "+",
+      "PRE_sign_B": "-"
+    },
+    "I(L_M3|XBVM1)": {
+      "PRE_A": "0.00002409876",
+      "PRE_B": "-0.00002409876",
+      "READ_peak_A": {
+        "plus": "0.0002218026",
+        "minus": "-0.00003314974"
+      },
+      "READ_peak_B": {
+        "plus": "0.00003366342",
+        "minus": "-0.00003771738"
+      },
+      "PRE_sign_A": "+",
+      "PRE_sign_B": "-"
+    }
+  },
+  "summary": {
+    "PRE_static_exact_mirror_all": true,
+    "READ_transient_exact_mirror_all_under_same_READ": false,
+    "READ_unwrapped_delta_signed_equal": false,
+    "answers": {
+      "Q1_mirror_under_same_READ": false,
+      "Q2_amplitude_sign_timing_diff": "None found if mirror_all=True: identical amplitude/timing, signed transients are sign-flipped between states. Switching-threshold question requires a JJ-biased fixture (not present in raw) -- recorded as Unknown.",
+      "Q3_PRE_bias_mapping": "PRE static L_S1/L_S2/L_S3 currents are +-19.5uA (sign mirrors). READ transient peaks are dominated by the running current (~+-190uA); the PRE sign appears as the sign of the FIRST peak (A: +96.6uA@106.06 vs B: -96.6uA @106.06 for L_S1). Mapping: PRE bias sign sets the sign of the transient onset; amplitude is READ-dominated.",
+      "Q4_receiver_mechanism": "Under same READ: transients are exact sign-mirrors. A magnitude threshold receiver sees identical |peaks| and cannot discriminate. Polarity discrimination of the transient onset (or the PRE static bias sign) is the only signal carrying state information. Direction-sensitive (biased-JJ) receiver is the candidate mechanism.",
+      "Q5_labels": "states remain A/B; no logical 1/0 identity"
+    }
+  }
+}

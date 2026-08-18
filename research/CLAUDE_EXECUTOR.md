@@ -224,3 +224,28 @@ multi-entry manifest，权威 = **声明的条目**（role 可多条），最终
 CRITICAL/FROZEN 完备性 = 冻结期望证据/run-artifact 矩阵 + 必需
 artifacts/manifest/inventory 交付集比较，绝不用"目录下所有 regular 文件"
 定义完备性。
+
+## 10. Three-tier research mode (2026-08-19, scientific-throughput-first)
+
+用户已授权三级研究模式（`research/WORKFLOW.md` §24）。Exploration 是
+默认模式；§1–§9 的完整 handoff 协议链（ACK→receipt→audit）**仅在
+Authority 级合同下强制**。
+
+| 层级 | 执行者行为 | 需保存的证据 |
+|---|---|---|
+| **Exploration**（默认） | 直接建立独立 test/exploration fixture、运行 JoSIM、分析迭代；不创建 ack/receipt | input/netlist、command、raw evidence、analysis script、简短 note（Observed / Derived / Inference / Unknown / Next） |
+| **Candidate** | clean rerun；独立机械复算/检查一次；不要求 Sol final audit | 完整 raw evidence + 复算记录 |
+| **Authority** | 仅 metric freeze、scientific baseline、route selection、BVM→receiver→JTL Gate、T1 Gate、paper-level quantitative claim | 完整冻结 contract、independent verification、Sol XHigh final audit |
+
+约束：
+
+- workflow/coordination 时间预算默认 ≤ 研究投入 20%；连续第二个
+  workflow-maintenance successor 默认禁止；
+- 既有 ACCEPTED scientific authority 保持不变；SOURCE-SPEC-SEAL-002
+  保留 legacy invalid/noncanonical 状态，不继续修、不创建 A02、不阻塞
+  receiver exploration；
+- Receiver exploration 可读取/消费 ACCEPTED STABLE-LOAD-001 raw/analysis
+  evidence，source authority 来自 STABLE-LOAD-001，不得声称
+  BVM_SOURCE_SPEC_V1 已建立；
+- exploration 结果不得自动升级为 authoritative claim；所有 local JJ
+  slip 不得直接解释为 successful SFQ delivery。

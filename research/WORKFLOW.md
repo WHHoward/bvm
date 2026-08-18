@@ -495,3 +495,43 @@ never broader than the mandatory contract `claim_ceiling`; it is
 auditor-declared and reviewed in the audit, not mechanically checked as a
 natural-language semantic subset).  Legacy requests without v1 fields keep
 the strict-HEAD behavior unchanged.
+
+## §24 Three-tier research workflow (2026-08-19, scientific-throughput-first)
+
+用户授权将研究工作明确分为三级；**只有 Authority 级才要求完整
+josim-handoff 冻结合同链**。Exploration 是默认模式，workflow 不得阻塞
+BVM→receiver→JTL→T1 研究推进。目标是简化 workflow，而不是继续增加
+例外规则。
+
+| 层级 | 何时使用 | 要求 | 明确不做 |
+|---|---|---|---|
+| **Exploration**（默认） | 常规研究、screening、设计迭代 | 无 task request / ACK / receipt / audit / evidence bundle；Claude 可直接建立独立 test/exploration fixture、运行 JoSIM、分析和迭代；至少保存 input/netlist、command、raw evidence、analysis script 和简短 note（含 Observed / Derived / Inference / Unknown / Next） | 结果不得自动升级为 authoritative claim |
+| **Candidate** | exploration 出现值得继续依赖的结果 | clean rerun；保存完整 raw evidence；独立机械复算/检查一次 | 不要求 Sol final audit |
+| **Authority** | metric freeze、scientific baseline、route selection、BVM→receiver→JTL Gate、T1 Gate、paper-level quantitative claim | 完整冻结 contract、independent verification、Sol XHigh final audit | 只有这些才走完整 handoff 链 |
+
+### 预算与守则
+
+- workflow/coordination 时间预算默认不超过研究投入的 **20%**；
+- 连续第二个 workflow-maintenance successor 默认禁止，除非直接影响
+  scientific evidence correctness；
+- 既有 ACCEPTED scientific authority（含 STABLE-LOAD-001）保持不变；
+- SOURCE-SPEC-SEAL-002 保留 legacy invalid/noncanonical 状态：**不继续修、
+  不创建 A02、不得阻塞 receiver exploration**；
+- Receiver exploration 可直接读取/消费 ACCEPTED STABLE-LOAD-001 raw/
+  analysis evidence，但 source authority 必须来自 STABLE-LOAD-001，
+  不得声称 BVM_SOURCE_SPEC_V1 已建立；
+- 不得修改 accepted STABLE-LOAD evidence、canonical BVM 或任何历史 audit
+  来让新流程看起来通过。
+
+### 研究路线调整（2026-08-19）
+
+- 不再把 paper QB reproduction/characterization 作为 milestone；paper QB
+  仅作为 design reference；
+- 直接围绕当前 canonical BVM 的实际输出设计我们自己的 receiver/quantizer；
+- 优先设计并快速比较：**shared quantizing candidate** 与 **local
+  self-quenching one-shot candidate**；
+- 先用与 accepted BVM source 特征一致的简化 stimulus 做快速 screening；
+- 一旦出现 trigger→quench→output 的可行 prototype，立即进入 coupled
+  canonical BVM test；
+- downstream 最少接 JTL1/JTL2；
+- 所有 local JJ slip 均不得直接解释为 successful SFQ delivery。

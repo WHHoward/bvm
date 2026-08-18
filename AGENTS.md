@@ -70,3 +70,29 @@ Upgrade routing:
 - route / metric / physics / contract / final audit → `josim_architect` (Sol XHigh)
 
 The user retains final approval for route changes, metric freezes, and paper claims.
+
+## Research tiers (2026-08-19, scientific-throughput-first)
+
+研究分三级（规范见 `research/WORKFLOW.md` §24）。Exploration 是默认模式；
+只有 Authority 级才要求完整 josim-handoff 冻结合同链：
+
+- **Exploration**（默认）：无 request/ACK/receipt/audit/evidence bundle 要求；
+  Claude 可直接建立独立 test/exploration fixture、运行 JoSIM、分析和迭代；
+  至少保存 input/netlist、command、raw evidence、analysis script 和简短
+  note（Observed / Derived / Inference / Unknown / Next）；结果不得自动
+  升级为 authoritative claim。
+- **Candidate**：exploration 出现值得继续依赖的结果时使用；clean rerun +
+  完整 raw evidence + 独立机械复算一次；不要求 Sol final audit。
+- **Authority**：仅用于 metric freeze、scientific baseline、route
+  selection、BVM→receiver→JTL Gate、T1 Gate 和 paper-level quantitative
+  claim；才使用冻结 contract、independent verification 和 Sol XHigh
+  final audit。
+
+工作流/协调时间预算默认不超过研究投入的 20%；连续第二个
+workflow-maintenance successor 默认禁止（除非直接影响 scientific evidence
+correctness）。既有 ACCEPTED scientific authority 保持不变；
+SOURCE-SPEC-SEAL-002 保留 legacy invalid/noncanonical 状态，不继续修、
+不创建 A02、不得阻塞 receiver exploration。Receiver exploration 可消费
+ACCEPTED STABLE-LOAD-001 raw/analysis evidence，但 source authority 来自
+STABLE-LOAD-001，不得声称 BVM_SOURCE_SPEC_V1 已建立。所有 local JJ slip
+不得直接解释为 successful SFQ delivery。

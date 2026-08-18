@@ -40,17 +40,26 @@ probes:
 raw_runs:
   - {id: pos-read-single, path: raw/pos-read-single/run-01.csv}
   - {id: pos-read-repeated, path: raw/pos-read-repeated/run-01.csv}
-  - {id: neg-read-single, path: raw/neg-read-single/run-01.csv}
-  - {id: neg-read-repeated, path: raw/neg-read-repeated/run-01.csv}
+  - {id: neg-read-single, path: raw/neg-read-single/run-01.csv, status: SUPERSEDED, note: "ramp-init artifact (rev3); kept append-only"}
+  - {id: neg-read-repeated, path: raw/neg-read-repeated/run-01.csv, status: SUPERSEDED, note: "ramp-init artifact (rev3); kept append-only"}
   - {id: pos-diag, path: raw/pos-diag/run-01.csv, note: "adds L_M1/L_M2/L_PM storage-loop probes"}
-  - {id: neg-diag, path: raw/neg-diag/run-01.csv, note: "adds L_M1/L_M2/L_PM storage-loop probes"}
+  - {id: neg-diag, path: raw/neg-diag/run-01.csv, status: SUPERSEDED, note: "ramp-init artifact (rev3); kept append-only"}
+  - {id: neg-read-single-corr, path: raw/neg-read-single-corr/run-01.csv, status: CURRENT, note: "corrected from accepted L12-negative-read; token-identical (0 mismatch)"}
+  - {id: neg-read-repeated-corr, path: raw/neg-read-repeated-corr/run-01.csv, status: CURRENT}
+  - {id: neg-diag-corr, path: raw/neg-diag-corr/run-01.csv, status: CURRENT, note: "corrected negative with storage-loop probes"}
+  - {id: pos-control, path: raw/pos-control/run-01.csv, status: CURRENT, note: "READ=0 control, +100U init; token-identical to accepted L12-positive-control"}
+  - {id: neg-control, path: raw/neg-control/run-01.csv, status: CURRENT, note: "READ=0 control, -100U init; token-identical to accepted L12-negative-control"}
 derived:
   - {path: analysis.json, role: structured_analysis, note: "v1 (superseded analysis)"}
-  - {path: analysis-v2.json, role: structured_analysis, note: "rev2 corrected segmentation"}
+  - {path: analysis-v2.json, role: structured_analysis, note: "rev2 corrected segmentation (superseded by v3 for negative)"}
+  - {path: analysis-v3.json, role: structured_analysis, note: "rev3: corrected negative + READ=0 controls"}
   - {path: analyze_internal_readout.py, role: analysis_script}
-  - {path: analyze_internal_readout_v2.py, role: analysis_script, note: "rev2: unwrapped-phase + voltage joint segmentation; independent JM1/JM2 storage"}
+  - {path: analyze_internal_readout_v2.py, role: analysis_script, note: "rev2 methodology; v3 runs analyzed via same functions"}
   - {path: summary.md, role: report, note: "v1 summary"}
-  - {path: summary-v2.md, role: report, note: "rev2 corrected summary (user review 2026-08-19)"}
+  - {path: summary-v2.md, role: report, note: "rev2 summary (user review 2026-08-19)"}
+  - {path: summary-v3.md, role: report, note: "rev3 summary: corrected negative + controls + supersede declaration"}
+supersedes:
+  - {note: "neg-read-single / neg-read-repeated / neg-diag results are INVALID (ramp init -100->+100uA, +100uA READ); replaced by *-corr runs"}
 notes:
   - "Fixture pos-read-single token-identical to accepted L12-positive-read
      (14 shared columns, 190386 tokens, 0 mismatch) -- stimulus/load replay

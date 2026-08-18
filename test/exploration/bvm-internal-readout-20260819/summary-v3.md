@@ -50,9 +50,13 @@ corrected runs 取代；旧 raw 保留不改（append-only）。
 → 恢复接近 PRE（bounded；不升级为 nondestructive-read Gate）
 
 ## 4. N6 vs SL（corrected negative）
-- neg-corr: N6 2.38mV @103.3ps / SL 1.19mV @103.3ps（ratio 2.0×，同宽）
-  —— 与 positive 相同幅度与 timing（对称）
+- neg-corr: N6 1.8145mV @100.99ps / SL 0.9041mV @101.01ps（ratio 2.0×，
+  同宽）—— **与 positive 严格一致**（pos: N6 1.8145mV @100.99ps /
+  SL 0.9041mV @101.01ps）；负极性 READ 产生同幅值、同 timing 的瞬态
+  （符号与激励反相，|V| 一致）
 - observed attenuation ≈0.5×；不归因机制
+- 注：summary-v2 中记录的"neg 2.38/1.19mV"来自旧错误 ramp fixture
+  （已 supersede），不是 corrected negative 行为
 
 ## 5. READ=0 control（最小 control）
 - `pos-control`（init +100U，READ 0）：READ1/READ2 均 **NO_ACTIVITY**

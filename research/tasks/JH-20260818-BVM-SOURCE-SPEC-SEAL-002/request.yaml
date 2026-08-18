@@ -1,0 +1,66 @@
+protocol: josim-handoff/v1
+document_type: task_request
+schema_version: 1
+task_id: JH-20260818-BVM-SOURCE-SPEC-SEAL-002
+revision: 1
+workflow_state: ISSUED
+issued_at: "2026-08-18T23:33:53+08:00"
+issuer: {role: CODEX, id: codex-root}
+parent_todo_id: BVM-S2
+depends_on: [JH-20260817-BVM-S2-STABLE-LOAD-001]
+supersedes: {task_id: JH-20260818-BVM-SOURCE-SPEC-001, revision: 1}
+task:
+  kind: ANALYSIS
+  objective: "Seal BVM_SOURCE_SPEC_V1 as a minimal, deterministic, hash-bound derived representation of the accepted STABLE-LOAD-001 source waveform evidence."
+  research_question: "Can the already ACCEPTED 16-run stable-load evidence be sealed with exact raw-token provenance, frozen descriptor semantics, and an independently recomputed verification record?"
+  non_goals:
+    - "No JoSIM execution, new simulation, parameter sweep, replay, receiver, QB, direct-SFQ adapter, JTL, or T1 experiment."
+    - "No modification of the accepted source evidence, canonical BVM, old SOURCE-SPEC task, old attempts, old receipts, or old audits."
+    - "No Thevenin, Norton, fixed source impedance, BQ/SFQ/receiver compatibility, interface PASS, mechanism, or hardware claim."
+    - "No new descriptor/window norm: STABLE-LOAD-001 frozen preregistration/hash is the sole normative source; successor copies are validated copies only."
+    - "No Contract 2 issuance or receiver-architecture work in this task."
+  claim_ceiling: "exact_hash_bound_derived_representation_only; 1/12/25/50 ohm remain load-origin labels only; accepted STABLE-LOAD-001 remains the sole scientific authority."
+scope:
+  read_paths: [AGENTS.md, docs/HANDOVER.md, research/WORKFLOW.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/accepted-input-manifest.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.sha256, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/audits/C01/verdict.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/analysis.json, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/expected-matrix.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/inventory.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/evidence-bundle.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/receipt.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/report.md, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/report.html, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/verify_stable_load.py, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/manifest.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/closure-hashes.txt, circuits/bvm/bvm_cell.cir, circuits/models/jjmit.cir, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/*.cir, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/raw/*/run-01.csv]
+  hash_paths: [AGENTS.md, docs/HANDOVER.md, research/WORKFLOW.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/accepted-input-manifest.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/request.sha256, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/audits/C01/verdict.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/analysis.json, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/expected-matrix.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/inventory.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/evidence-bundle.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/receipt.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/report.md, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/report.html, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/attempts/A01/verify_stable_load.py, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/manifest.yaml, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/closure-hashes.txt, circuits/bvm/bvm_cell.cir, circuits/models/jjmit.cir, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/inputs/*.cir, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/raw/*/run-01.csv]
+  write_paths: [research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.yaml, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/issuer-snapshot.sha256, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/**, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/verifications/**]
+  frozen_paths: [AGENTS.md, docs/HANDOVER.md, research/WORKFLOW.md, memory/project-todo.md, docs/research/METRIC_SPEC_V2.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/**, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/request.yaml, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/request.sha256, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/baseline/**, research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/accepted-input-manifest.yaml, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/**, test/final/bvm/runs/bvm-s2-stable-load-20260817-01/**, circuits/bvm/bvm_cell.cir, circuits/models/jjmit.cir]
+  locks: [locks/bvm-source-spec-seal-002]
+baseline:
+  git_head: "3809edb686f8129a2bd1750920adfb4c3d2e03a1"
+  dirty_policy: ALLOW_NONOVERLAP
+  issuer_snapshot_mode: EXTERNAL_ATTESTATION
+  git_status: {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/baseline/git-status.txt, sha256: "c2b46e6bb185b5675bfa30d37e53447d334614904c3232e2cd985d099fc218c0"}
+  scope_hashes: {path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/baseline/scope-files.sha256, sha256: "14fbb82d5edfe83e86bc1dc51cc04dd27afcede6d824a74c0dbeb111157bcae2"}
+authorization: {edit: true, run_josim: false, network: false, install_dependencies: false, create_worktree: false, commit: true, delete_or_overwrite: false}
+contracts:
+  required_skills: [josim-handoff]
+  read_first: [AGENTS.md, docs/HANDOVER.md, research/WORKFLOW.md, research/CLAUDE_EXECUTOR.md, .agents/skills/josim-handoff/SKILL.md, .agents/skills/josim-handoff/references/handoff-protocol.md, research/tasks/JH-20260817-BVM-S2-STABLE-LOAD-001/design/preregistration.yaml]
+  handover: {status: CURRENT, path: docs/HANDOVER.md, sha256: "6a27cfbc82128f2438338939805865e117d2e5f9a5f073745e871d324d35d869"}
+  metric_spec: {status: FROZEN, path: docs/research/METRIC_SPEC_V2.md, sha256: "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"}
+deliverables:
+  - {id: D1, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/bvm-source-spec-v1.yaml, role: DOCUMENTATION, required: true}
+  - {id: D2, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/waveform-family.json, role: DOCUMENTATION, required: true}
+  - {id: D3, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/terminal-orientation.yaml, role: DOCUMENTATION, required: true}
+  - {id: D4, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/artifacts/build_source_spec.py, role: IMPLEMENTATION, required: true}
+  - {id: D5, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/inventory.yaml, role: DOCUMENTATION, required: true}
+  - {id: D6, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/evidence-bundle.yaml, role: DOCUMENTATION, required: true}
+  - {id: D7, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/attempts/A01/receipt.yaml, role: RECEIPT, required: true}
+  - {id: D8, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/verifications/C01/verify_source_spec_independent.py, role: IMPLEMENTATION, required: true}
+  - {id: D9, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/verifications/C01/verification.yaml, role: DOCUMENTATION, required: true}
+  - {id: D10, path: research/tasks/JH-20260818-BVM-SOURCE-SPEC-SEAL-002/verifications/C01/verify.log, role: DOCUMENTATION, required: true}
+acceptance:
+  - {id: AC1, condition: "The normative source for descriptor and window semantics is exactly the ACCEPTED STABLE-LOAD-001 preregistration/hash; all successor copies are validated copies and do not create a second norm.", evidence: [source-spec, waveform-family, verification]}
+  - {id: AC2, condition: "All 16 raw CSVs preserve original time, V(SL1), and I(L_SL|XBVM1) literal tokens, complete columns/order, file SHA-256, byte size, sample count, and raw-to-sealed token mapping; each read/control pair independently binds both token sequences and verifies alignment before correction.", evidence: [waveform-family, verification]}
+  - {id: AC3, condition: "The frozen Decimal contract records and uses the complete constructed Context, traps, and flags; descriptor calculation strictly reuses accepted earliest-tie, primary-activity, legal-FWHM, and opposite-lobe semantics without interpolation or fitting.", evidence: [source-spec, waveform-family, verification]}
+  - {id: AC4, condition: "The package preserves all-READY prerequisite status and per-polarity endpoint-VI NOT_SUPPORTED_AT_REGISTERED_TOKENS, with both polarity families and matched read/control correction, without upgrading the claim ceiling.", evidence: [source-spec, verification]}
+  - {id: AC5, condition: "Terminal orientation, L_SL current reference direction, and all 16 source-netlist SHA-256 values are explicitly sealed and independently checked.", evidence: [terminal-orientation, source-spec, verification]}
+  - {id: AC6, condition: "Producer payload, bundle, and inventory are minimal and explicit: bundle and inventory required sets are exactly equal and contain only the three payload artifacts; builder, receipt, and independent verification package remain outside that producer bundle.", evidence: [inventory, evidence-bundle, receipt, verification]}
+  - {id: AC7, condition: "The provenance chain is a direct fast-forward chain B0 -> I -> C_art -> C_receipt -> C_verify -> C_audit with one parent at every step and no unrelated commit inserted; verifier runs at HEAD=C_receipt, C_verify.parent=C_receipt is checked by final audit, and final audit runs at HEAD=C_verify.", evidence: [ack, receipt, verification, final-audit]}
+  - {id: AC8, condition: "Independent verification re-reads raw evidence and recomputes the sealed representation without importing builder calculations or trusting producer PASS; verification.yaml is timestamped and binds observed HEAD, C_art, C_receipt, verifier SHA, package hashes, and exact checked scope. It does not claim to inspect future C_verify.", evidence: [verification]}
+  - {id: AC9, condition: "ACK, receipt, verification.yaml, and final audit verdict use live on-site timestamps recorded at artifact creation; verify.log may record runtime but its filesystem creation time is not an acceptance event.", evidence: [ack, receipt, verification, final-audit]}
+  - {id: AC10, condition: "If final audit ACCEPTED, establish BVM_SOURCE_SPEC_V1 as authoritative and stop this task only; this after-acceptance stop does not prohibit a separately authorized future receiver task.", evidence: [final-audit]}
+invalid_conditions: ["Any JoSIM or receiver execution, new physical data, source/canonical-circuit modification, old-task modification, raw token/hash/column/order mismatch, read/control misalignment, Decimal contract mismatch, descriptor semantic drift, orientation omission, bundle/inventory set mismatch, verifier import or producer-PASS trust, chronology or parent-chain mismatch, future self-reference, timestamp backfill, out-of-scope write, overwrite, or claim above the declared ceiling."]
+inconclusive_conditions: []
+stop_conditions: ["Stop on any need for scope expansion, route/metric/physics reinterpretation, new experiment, protocol redesign, unlisted write, overwrite/delete, network/install/worktree change, or Contract 2 issuance; after ACCEPTED stop this task only and await separate authorization for any future receiver task."]
+issuance_blockers: []

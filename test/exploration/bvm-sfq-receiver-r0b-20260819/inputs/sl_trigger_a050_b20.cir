@@ -1,0 +1,8 @@
+* R0b SL receiver: same topology as the prior R0 fixture, +20 uA bias.
+.subckt SL_TRIGGER IN
+
+R_IN          IN       N_TRIG       12.0
+B_TRIG        N_TRIG   0             jjmit area=0.50
+I_TRIG_BIAS   0        N_TRIG        pwl(0p 0 2p 20U 80p 20U 140p 20U 170p 20U)
+
+.ends SL_TRIGGER

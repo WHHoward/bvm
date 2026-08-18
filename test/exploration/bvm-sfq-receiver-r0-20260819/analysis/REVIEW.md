@@ -1,5 +1,11 @@
 # Internal adversarial and numerical review
 
+> **Historical wording correction:** This review belongs to c760c13 and is
+> retained for provenance. Its phrase "local switching/phase-transition
+> excursion" must not be read as a complete 2*pi transition. See
+> [R0_VERDICT_CORRECTION.md](R0_VERDICT_CORRECTION.md): the preserved c760c13
+> result is now `R0-A PASS / R0-B NOT_YET`.
+
 **Review time:** 2026-08-19T04:21:52+08:00
 **Scope:** R0 Exploration only; this is not a Copilot/Sol audit.
 

@@ -1,12 +1,19 @@
 # BVM -> SFQ receiver R0 trigger-discrimination Exploration
 
+> **VERDICT CORRECTION (2026-08-19):** This report's original `R0 PASS`
+> wording is superseded by [R0_VERDICT_CORRECTION.md](R0_VERDICT_CORRECTION.md).
+> The raw CSV artifacts are unchanged. The current result is `R0 PARTIAL`:
+> `R0-A threshold discrimination PASS`; `R0-B complete trigger switching
+> NOT_YET`. The read1 B_TRIG activity range is only 3.672452 rad = 0.584488889
+> turns, and no monotonic segment reaches 2pi.
+
 **Created:** 2026-08-19T04:17:52+08:00
 **Tier:** Exploration / EXPLORATORY
 **Route:** primary canonical SL output
 **Solver:** build/josim-cli v2.7.2837d13, SHA-256
 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
 **Numerical condition:** requested dt=0.0125 ps, stop=169.9875 ps
-**Final local verdict:** **R0 PASS**, bounded to this trigger-level Exploration
+**Current local verdict:** **R0 PARTIAL**; see the correction above
 
 This is not a Candidate result, not an INTERFACE_GATE_V1 result, and not an
 SFQ-count or downstream-JTL claim.
@@ -66,7 +73,8 @@ designed trigger instance is:
 | explicit parallel shunt | none | topology fact |
 
 Using the actual model values, the derived RCSJ damping parameter
-beta_c = 2*pi*Ic*RN^2*C/Phi0 is approximately 0.0544 for the trigger.
+beta_c = 2*pi*Ic*RN^2*C/Phi0 is approximately 5.4451 for the trigger. The
+earlier `0.0544` value in the historical c760c13 text was an arithmetic error.
 This is a model-derived damping calculation, not a new frozen acceptance
 tolerance.
 
@@ -130,11 +138,11 @@ The loaded current relation is directly observed as:
     read1 positive drive = 76.29 uA > trigger Ic 50 uA
 
 In read1, the trigger develops a large, delayed multi-lobe voltage/phase
-transition and then returns toward its superconducting baseline. In read0,
-the response is limited to a smaller edge-dominated transient. The read1
-trigger activity is not described as one SFQ: its net phase and voltage area
-are only about 0.0123 turns because positive and negative voltage lobes
-partly cancel.
+excursion and then returns toward its superconducting baseline. In read0, the
+response is limited to a smaller edge-dominated transient. The read1
+excursion is not a complete 2pi phase transition: its activity range is only
+3.672452 rad = 0.584488889 turns, and its net phase and voltage area are only
+about 0.0123 turns because positive and negative voltage lobes partly cancel.
 
 The phase/area agreement is a local evidence check for the same B_TRIG
 junction and the same window. It supports a real local transition rather than
@@ -190,8 +198,8 @@ an R1 one-shot has been achieved.
   timing, and receiver.
 - The loaded positive-drive current is above 50 uA for read1 and below 50 uA
   for read0.
-- Direct same-JJ trigger voltage and phase show a much larger read1 transition
-  than read0.
+- Direct same-JJ trigger voltage and phase show a much larger read1 excursion
+  than read0, but not a complete 2pi monotonic phase segment.
 - Both READ=0 controls remain at bias-only behavior.
 - Loaded BVM SL/N6 and JS1/JS2 remain strongly separated between read1 and
   read0.
@@ -209,9 +217,9 @@ an R1 one-shot has been achieved.
 
 - The minimum SL receiver is sufficient for R0 trigger discrimination under
   the recorded model, load, timing, and timestep.
-- The read1 response is a finite local switching/phase-transition excursion;
-  the read0 response is edge-dominated and non-switching at this trigger
-  criterion.
+- The read1 response is a finite local phase/voltage excursion below the
+  complete-switching criterion; the read0 response is edge-dominated and has
+  no complete 2pi monotonic phase segment.
 
 ### Unknown
 
@@ -224,15 +232,15 @@ an R1 one-shot has been achieved.
 
 ## 10. R0 verdict and R1 suggestion
 
-**R0: PASS (Exploration-bounded trigger discrimination).**
+**R0: PARTIAL.**
 
-The required logical1 trigger transition, logical0 non-trigger behavior,
-READ=0 controls, preserved loaded readout separation, bounded storage
-back-action, and absence of observed sustained free-running behavior are all
-present at the declared operating point.
+- **R0-A threshold discrimination: PASS.** The SL route separates loaded
+  logical1/read1 from logical0/read0, both READ=0 controls remain inactive, and
+  the bounded BVM back-action checks remain positive.
+- **R0-B complete trigger switching: NOT_YET.** The read1 B_TRIG trace has no
+  monotonic segment with at least 2pi phase evolution. A phase range below 2pi
+  is not called complete switching.
 
-The smallest next R1 step is to keep this SL front-end fixed and add one
-explicit output-isolation/self-quench stage, then test a single trigger event
-into a defined load with the same read1/read0/READ=0 matrix. R1 should freeze
-its one-shot and post-event criteria before running. It is not implemented
-here.
+R1 remains blocked until the separately defined R0b complete-trigger closure
+criterion is met. Self-quench, output isolation, and JTL work are not
+implemented here.

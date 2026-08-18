@@ -86,9 +86,10 @@ probes:
   sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
 classification:
   trigger_pass: >-
-    direct trigger P and same-JJ V show a contiguous switching/phase-transition
-    response in READ_ACTIVITY for read1, while read0 and both READ=0 controls show
-    no complete trigger transition; this is not an exactly-one-SFQ criterion.
+    direct trigger P and same-JJ V show a larger local phase/voltage excursion
+    for read1 than for read0, while read0 and both READ=0 controls show no
+    complete trigger transition; this is a threshold-discrimination criterion,
+    not a complete-switching or exactly-one-SFQ criterion.
   artifact_invalid: nonzero solver failure, missing columns, NaN/Inf, non-monotonic
     time, or truncated output.
 local_fallback:
@@ -100,11 +101,15 @@ local_fallback:
 convergence: not a Candidate/Gate; this Exploration records the 0.0125 ps result and
   leaves timestep classification for a later explicitly authorized study.
 result:
-  initial_point: PASS
+  initial_point:
+    R0_A_threshold_discrimination: PASS
+    R0_B_complete_trigger_switching: NOT_YET
   local_fallback_run: false
   N6_route_run: false
-  r0_verdict: PASS
+  r0_verdict: PARTIAL
+  prior_r0_verdict_in_c760c13: "PASS (superseded by the complete-switching review)"
   artifact_status: VALID
+  verdict_correction: analysis/R0_VERDICT_CORRECTION.md
   report: analysis/R0_REPORT.md
   structured_analysis: analysis/r0-analysis.json
   review: analysis/REVIEW.md

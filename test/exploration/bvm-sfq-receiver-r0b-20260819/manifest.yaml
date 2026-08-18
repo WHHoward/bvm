@@ -1,0 +1,125 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R0b complete-trigger closure
+created_at: "2026-08-19T04:43:25+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r0-20260819
+research_question: >-
+  Can the same minimum biased-JJ SL receiver produce at least one complete
+  2*pi phase transition for canonical logical1 +READ while logical0 +READ and
+  both matched READ=0 controls produce no complete transition?
+hypothesis: >-
+  Raising only the existing SL receiver bias from 10 uA to 15 uA and then
+  20 uA may turn the finite logical1 excursion into a complete monotonic phase
+  segment without making logical0 or READ=0 free-run.
+alternative_explanations:
+  - A higher bias may trigger logical0 as well and remove discrimination.
+  - AREA scaling changes Ic, C, RN, and R0 together; an Ic-only explanation may be wrong.
+  - A delayed multi-lobe response may remain below 2*pi even when the current exceeds Ic.
+  - A complete segment after the read window may be bias-driven free running rather than read-triggered.
+  - The phase and voltage columns may disagree if endpoints, direction, or time units are mismatched.
+route:
+  primary: canonical BVM SL output
+  secondary: N6 local tap not run unless the SL sequence has no usable closure point
+  input_resistance_ohm: 12.0
+  receiver_topology: SL -> R_IN -> one B_TRIG JJ to ground with independent positive bias
+  excluded_this_round: [self_quench_loop, output_junction, JTL]
+canonical_boundary: >-
+  canonical BVM topology and parameters are immutable; each case includes a
+  fixture copy whose SHA-256 is checked against circuits/bvm/bvm_cell.cir.
+git:
+  head_before_experiment: c760c13c685d16bcbe3977e1df535e48bf45711b
+  branch: master
+  initial_worktree: clean
+solver:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170
+  analysis: PHASE
+  actual_csv_dt_ps: [0.0125, 0.025]
+model:
+  source: inputs/jjmit.cir
+  canonical_model_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+  area_semantics: >-
+    JoSIM src/JJ.cpp multiplies Ic and C by AREA and divides RN and R0 by AREA;
+    no explicit IC override is used.
+operating_point_sequence:
+  rationale: >-
+    First hold AREA=0.50 and change only positive bias locally from 15 uA to
+    20 uA. Only if both points fail the complete-trigger criterion, lower AREA
+    to 0.45 and then 0.40 while retaining 20 uA bias. Stop at the first valid
+    point satisfying read1 complete and read0/control non-complete conditions.
+  max_operating_points: 4
+  points:
+    - {id: a050-b15, order: 1, area: 0.50, bias_uA: 15.0, Ic_uA: 50.0, RN_ohm: 32.0, R0_ohm: 320.0, C_fF: 35.0}
+    - {id: a050-b20, order: 2, area: 0.50, bias_uA: 20.0, Ic_uA: 50.0, RN_ohm: 32.0, R0_ohm: 320.0, C_fF: 35.0}
+    - {id: a045-b20, order: 3, area: 0.45, bias_uA: 20.0, Ic_uA: 45.0, RN_ohm: 35.5555556, R0_ohm: 355.5555556, C_fF: 31.5}
+    - {id: a040-b20, order: 4, area: 0.40, bias_uA: 20.0, Ic_uA: 40.0, RN_ohm: 40.0, R0_ohm: 400.0, C_fF: 28.0}
+  explicit_parallel_shunt: none
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive, suffix: read1}
+  - {id: read0, logical_state: 0, read: canonical_positive, suffix: read0}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control, suffix: logical1-read0-control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control, suffix: logical0-read0-control}
+probes:
+  trigger_same_junction: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  receiver_branches: [I(R_IN|XTRIG), I(I_TRIG_BIAS|XTRIG)]
+  BVM_output: [V(SL1), V(N6|XBVM1), I(L_SL|XBVM1), I(L_PSL|XBVM1)]
+  storage: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1)]
+  readout: [P(B_JS1|XBVM1), V(B_JS1|XBVM1), P(B_JS2|XBVM1), V(B_JS2|XBVM1)]
+  BVM_branches: [I(L_S1|XBVM1), I(L_S2|XBVM1), I(L_S3|XBVM1), I(L_M3|XBVM1)]
+  sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
+windows_ps:
+  PRE: [80, 90]
+  READ_ACTIVITY: [94, 130]
+  TRIGGER_ANALYSIS: [94, 170]
+  POST: [130, 170]
+  POST_EARLY: [130, 140]
+  POST_LATE: [160, 170]
+  CONTROL_FULL: [20, 170]
+  STORAGE_POST: [140, 150]
+criterion:
+  phase_source: raw P(B_TRIG|XTRIG) in radians
+  continuity: adjacent-sample 2*pi unwrap; raw P is retained unchanged
+  complete_trigger: >-
+    at least one monotonic unwrapped phase segment in TRIGGER_ANALYSIS with
+    abs(delta_phase)>=2*pi and start_time<=130 ps; report the voltage area over
+    exactly that segment using the same B_TRIG voltage and actual CSV time.
+  non_trigger: no complete segment in TRIGGER_ANALYSIS; controls additionally
+    have no complete segment in CONTROL_FULL and no observed free-running activity
+  forbidden_shortcuts: [I_total_above_Ic, voltage_peak_alone, derivative_sample_count, SFQ_count]
+  SFQ_boundary: complete local phase transition is not called SFQ delivery
+artifact_requirements:
+  raw_csv: preserve every attempted operating point and all four matched cases
+  logs: preserve stdout and stderr for every run
+  analysis_script: analyze_r0b.py
+  independent_crosscheck: analysis/independent_crosscheck.py
+  structured_analysis: analysis/r0b-analysis.json
+  no_raw_overwrite: true
+result:
+  status: PASS
+  R0b_complete_trigger: PASS
+  combined_R0: "R0-A threshold discrimination PASS; R0-B complete trigger switching PASS"
+  operating_points_run: [a050-b15]
+  stopped_after_first_pass: true
+  R1_started: false
+  N6_route_run: false
+  artifact_status: VALID
+  raw_runs:
+    - {id: read1, path: raw/a050-b15/read1/run-01.csv, sha256: 609efe406917f4f110b774fcc103aeef122e1428b0c79ed6f451aa5579cae9e6}
+    - {id: read0, path: raw/a050-b15/read0/run-01.csv, sha256: 096fe02e28980d409de6932095300afef0b955d3a8be448c2781a90203a4e5cd}
+    - {id: logical1-read0-control, path: raw/a050-b15/logical1-read0-control/run-01.csv, sha256: 2264f0833f3d99dbe4f6feae7ec759a3720070bb456b996fc27bf9ea46852564}
+    - {id: logical0-read0-control, path: raw/a050-b15/logical0-read0-control/run-01.csv, sha256: 6815ddda22f74221e3acd7e263029360b1663e9276d38ba5e0585350de6286bc}
+  report: analysis/R0B_REPORT.md
+  review: analysis/REVIEW.md
+  hash_inventory: analysis/sha256sums.txt
+authority:
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  source_reference: test/exploration/bvm-internal-readout-20260819/rewrite-read-analysis.json
+  measurement_semantics: docs/research/METRIC_SPEC_V2.md
+  prior_verdict_correction: ../bvm-sfq-receiver-r0-20260819/analysis/R0_VERDICT_CORRECTION.md
+  no_candidate_upgrade: true

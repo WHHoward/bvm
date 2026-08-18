@@ -1,0 +1,271 @@
+{
+  "state_A": {
+    "id": "A",
+    "init": "+100uA WL/BL 10-21ps",
+    "run": "pos-read-single",
+    "definition": "operational state from +init (S0 D0 JM1=+5.9108 rad); NOT logical-1 claim"
+  },
+  "state_B": {
+    "id": "B",
+    "init": "-100uA WL/BL 10-21ps",
+    "run": "neg-read-single-corr",
+    "definition": "operational state from -init (S0 D0 JM1=-5.9108 rad); NOT logical-0 claim"
+  },
+  "read_stimulus": {
+    "WL_SE_amplitude_uA": 100,
+    "window_ps": [
+      96,
+      105
+    ],
+    "source": "STABLE-LOAD-001 matched read PWL"
+  },
+  "PRE_static_signature": {
+    "P(B_JS1|XBVM1)": {
+      "A": "0.2665209",
+      "B": "-0.2665209",
+      "A_minus_B": "0.5330418",
+      "exact_mirror": true
+    },
+    "P(B_JS2|XBVM1)": {
+      "A": "-0.2669321",
+      "B": "0.2669321",
+      "A_minus_B": "-0.5338642",
+      "exact_mirror": true
+    },
+    "V(N6|XBVM1)": {
+      "A": "2.602309E-8",
+      "B": "-2.602309E-8",
+      "A_minus_B": "5.204618E-8",
+      "exact_mirror": true
+    },
+    "V(SL1)": {
+      "A": "1.315082E-8",
+      "B": "-1.315082E-8",
+      "A_minus_B": "2.630164E-8",
+      "exact_mirror": true
+    },
+    "I(L_S1|XBVM1)": {
+      "A": "0.00001951829",
+      "B": "-0.00001951829",
+      "A_minus_B": "0.00003903658",
+      "exact_mirror": true
+    },
+    "I(L_S2|XBVM1)": {
+      "A": "-0.00001951719",
+      "B": "0.00001951719",
+      "A_minus_B": "-0.00003903438",
+      "exact_mirror": true
+    },
+    "I(L_S3|XBVM1)": {
+      "A": "0.00001951825",
+      "B": "-0.00001951825",
+      "A_minus_B": "0.00003903650",
+      "exact_mirror": true
+    },
+    "I(L_M3|XBVM1)": {
+      "A": "0.00002409876",
+      "B": "-0.00002409876",
+      "A_minus_B": "0.00004819752",
+      "exact_mirror": true
+    },
+    "I(L_PSL|XBVM1)": {
+      "A": "1.095902E-9",
+      "B": "-1.095902E-9",
+      "A_minus_B": "2.191804E-9",
+      "exact_mirror": true
+    },
+    "I(L_SL|XBVM1)": {
+      "A": "1.095902E-9",
+      "B": "-1.095902E-9",
+      "A_minus_B": "2.191804E-9",
+      "exact_mirror": true
+    }
+  },
+  "READ_window_signed_peaks": {
+    "P(B_JS1|XBVM1)": {
+      "A": {
+        "t_plus_ps": "95.93750",
+        "plus": "0.3205991",
+        "t_minus_ps": "106.3625",
+        "minus": "-20.85395"
+      },
+      "B": {
+        "t_plus_ps": "106.3625",
+        "plus": "20.85395",
+        "t_minus_ps": "95.93750",
+        "minus": "-0.3205991"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "P(B_JS2|XBVM1)": {
+      "A": {
+        "t_plus_ps": "94.91250",
+        "plus": "-0.2668704",
+        "t_minus_ps": "107.0125",
+        "minus": "-20.90359"
+      },
+      "B": {
+        "t_plus_ps": "107.0125",
+        "plus": "20.90359",
+        "t_minus_ps": "94.91250",
+        "minus": "0.2668704"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "V(N6|XBVM1)": {
+      "A": {
+        "t_plus_ps": "100.9875",
+        "plus": "0.001814477",
+        "t_minus_ps": "107.8000",
+        "minus": "-0.001088349"
+      },
+      "B": {
+        "t_plus_ps": "107.8000",
+        "plus": "0.001088349",
+        "t_minus_ps": "100.9875",
+        "minus": "-0.001814477"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "V(SL1)": {
+      "A": {
+        "t_plus_ps": "101.0125",
+        "plus": "0.0009040907",
+        "t_minus_ps": "107.8375",
+        "minus": "-0.0005418119"
+      },
+      "B": {
+        "t_plus_ps": "107.8375",
+        "plus": "0.0005418119",
+        "t_minus_ps": "101.0125",
+        "minus": "-0.0009040907"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "I(L_S1|XBVM1)": {
+      "A": {
+        "t_plus_ps": "106.0625",
+        "plus": "0.00009660485",
+        "t_minus_ps": "104.4750",
+        "minus": "-0.0001913654"
+      },
+      "B": {
+        "t_plus_ps": "104.4750",
+        "plus": "0.0001913654",
+        "t_minus_ps": "106.0625",
+        "minus": "-0.00009660485"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "I(L_S2|XBVM1)": {
+      "A": {
+        "t_plus_ps": "104.3375",
+        "plus": "0.0001340479",
+        "t_minus_ps": "102.8125",
+        "minus": "-0.0001704490"
+      },
+      "B": {
+        "t_plus_ps": "102.8125",
+        "plus": "0.0001704490",
+        "t_minus_ps": "104.3375",
+        "minus": "-0.0001340479"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "I(L_S3|XBVM1)": {
+      "A": {
+        "t_plus_ps": "103.1375",
+        "plus": "0.0001872118",
+        "t_minus_ps": "104.6375",
+        "minus": "-0.00008205264"
+      },
+      "B": {
+        "t_plus_ps": "104.6375",
+        "plus": "0.00008205264",
+        "t_minus_ps": "103.1375",
+        "minus": "-0.0001872118"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "I(L_M3|XBVM1)": {
+      "A": {
+        "t_plus_ps": "104.5000",
+        "plus": "0.0002218026",
+        "t_minus_ps": "106.1125",
+        "minus": "-0.00003314974"
+      },
+      "B": {
+        "t_plus_ps": "106.1125",
+        "plus": "0.00003314974",
+        "t_minus_ps": "104.5000",
+        "minus": "-0.0002218026"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "I(L_PSL|XBVM1)": {
+      "A": {
+        "t_plus_ps": "101.0125",
+        "plus": "0.00007534089",
+        "t_minus_ps": "107.8375",
+        "minus": "-0.00004515100"
+      },
+      "B": {
+        "t_plus_ps": "107.8375",
+        "plus": "0.00004515100",
+        "t_minus_ps": "101.0125",
+        "minus": "-0.00007534089"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    },
+    "I(L_SL|XBVM1)": {
+      "A": {
+        "t_plus_ps": "101.0125",
+        "plus": "0.00007534089",
+        "t_minus_ps": "107.8375",
+        "minus": "-0.00004515100"
+      },
+      "B": {
+        "t_plus_ps": "107.8375",
+        "plus": "0.00004515100",
+        "t_minus_ps": "101.0125",
+        "minus": "-0.00007534089"
+      },
+      "plus_mirror": true,
+      "minus_mirror": true,
+      "timing_plus_match": true,
+      "timing_minus_match": true
+    }
+  },
+  "summary": {
+    "PRE_static_exact_mirror_all": true,
+    "READ_transient_exact_mirror_all": true,
+    "discrimination_note": "All probed signals are exact sign-mirrors between states A/B in both PRE static and READ transient (amplitude AND timing). A magnitude/energy detector cannot discriminate; only a direction-sensitive discriminator (e.g. biased JJ responding to signed current/phase) could use this. PRE static L_S1/L_S2 currents (+-19.5uA) and JS1/JS2 phase (+-0.267 rad) carry the state sign. No receiver designed here."
+  }
+}

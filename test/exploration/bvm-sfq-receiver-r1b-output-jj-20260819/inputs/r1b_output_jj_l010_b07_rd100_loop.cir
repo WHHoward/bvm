@@ -1,0 +1,24 @@
+* R1b root-cause correction: minimum output-JJ activation, no self-quench/JTL/T1.
+* The initial point accidentally made L_SEC and R_SEC_LOAD a grounded
+* secondary while B_OUT was connected across N_OUT/N_SEC.  This corrected
+* fixture retains every R1a pickup value and closes the passive output loop:
+* N_SEC -> L_SEC -> OUT_PORT -> R_SEC_LOAD -> ground.
+.subckt SERIES_PICKUP_OUTPUT IN
+
+* Accepted R1a primary pickup, retained unchanged.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* R1a passive secondary values, with an actual passive output loop.
+L_SEC         N_SEC       OUT_PORT      2.0p
+R_SEC_LOAD    OUT_PORT    0            12.0
+K_TX          L_TX        L_SEC        0.80
+
+* Physics-informed output point: AREA=.10, Ic=10uA, bias=7uA.
+B_OUT         N_OUT       N_SEC         jjmit area=0.10
+I_OUT_BIAS    0           N_OUT         pwl(0p 0 2p 7U 80p 7U 140p 7U 170p 7U)
+R_OUT_DAMP    N_OUT       N_SEC        100.0
+
+.ends SERIES_PICKUP_OUTPUT

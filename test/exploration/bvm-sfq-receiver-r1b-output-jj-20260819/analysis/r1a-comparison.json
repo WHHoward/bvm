@@ -1,0 +1,336 @@
+{
+  "document_type": "r1a_r1b_raw_comparison",
+  "method": "independent raw CSV read using B_TRIG same-segment phase/area, source activity, secondary PRE-subtracted amplitude, and JM1/JM2",
+  "r1a_baseline": "test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/raw/l020-k080",
+  "r1b_loaded": "raw/l010-b07-rd100-loop",
+  "cases": {
+    "read1": {
+      "r1a_baseline": {
+        "sha256": "7d1e4b36c220b0a25ecefeb62b11ce36264ff8f298651f45eea7f713206051dd",
+        "btrig_largest": {
+          "start_time_ps": 102.95,
+          "end_time_ps": 110.9,
+          "direction": "increasing",
+          "phase_delta_rad": 24.779443,
+          "phase_delta_turns": 3.9437708405138645,
+          "phase_abs_turns": 3.9437708405138645,
+          "same_junction_voltage_area_turns": 3.9437935585045127,
+          "area_minus_phase_turns": 2.2717990648235542e-05,
+          "complete_2pi": true
+        },
+        "btrig_complete": true,
+        "source_activity_abs_peak": {
+          "V(SL1)": 0.001863837,
+          "V(N6|XBVM1)": 0.002106848,
+          "I(L_SL|XBVM1)": 5.419963e-05,
+          "I(R_IN|XTRIG)": 5.419963e-05
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 6.676847655318e-05,
+          "I(R_SEC_LOAD|XTRIG)": 5.564039712765e-06
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": 5.911061,
+            "post_median_rad": 5.914553,
+            "post_minus_pre_turns": 0.0005557690612768359
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": 0.3172284,
+            "post_median_rad": 0.3488454,
+            "post_minus_pre_turns": 0.005032001835736456
+          }
+        }
+      },
+      "r1b_loaded": {
+        "sha256": "3313a8e9cc9d91849d15a849c07fe846d0aee201fa280f0d37230379ec2fb60a",
+        "btrig_largest": {
+          "start_time_ps": 102.9375,
+          "end_time_ps": 110.7,
+          "direction": "increasing",
+          "phase_delta_rad": 24.586299,
+          "phase_delta_turns": 3.9130310181853236,
+          "phase_abs_turns": 3.9130310181853236,
+          "same_junction_voltage_area_turns": 3.913058494158569,
+          "area_minus_phase_turns": 2.7475973245483232e-05,
+          "complete_2pi": true
+        },
+        "btrig_complete": true,
+        "source_activity_abs_peak": {
+          "V(SL1)": 0.001886142,
+          "V(N6|XBVM1)": 0.002118432,
+          "I(L_SL|XBVM1)": 5.423107e-05,
+          "I(R_IN|XTRIG)": 5.423107e-05
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 7.6838712e-05,
+          "I(R_SEC_LOAD|XTRIG)": 0.0
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": 5.911061,
+            "post_median_rad": 5.914682,
+            "post_minus_pre_turns": 0.000576300048935733
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": 0.317228,
+            "post_median_rad": 0.3143422,
+            "post_minus_pre_turns": -0.00045928933477459063
+          }
+        }
+      },
+      "delta": {
+        "btrig_phase_turns": -0.03073982232854089,
+        "input_current_abs_peak": 3.144000000000389e-08,
+        "sl_abs_peak": 2.2305000000000024e-05,
+        "n6_abs_peak": 1.1583999999999813e-05
+      }
+    },
+    "read0": {
+      "r1a_baseline": {
+        "sha256": "70c03780e58a93d1449aa215a46d1c5245a174588ea0a185437695ac17123107",
+        "btrig_largest": {
+          "start_time_ps": 106.58749999999999,
+          "end_time_ps": 108.2125,
+          "direction": "increasing",
+          "phase_delta_rad": 1.1608645,
+          "phase_delta_turns": 0.18475732343490153,
+          "phase_abs_turns": 0.18475732343490153,
+          "same_junction_voltage_area_turns": 0.18478064663273658,
+          "area_minus_phase_turns": 2.332319783504566e-05,
+          "complete_2pi": false
+        },
+        "btrig_complete": false,
+        "source_activity_abs_peak": {
+          "V(SL1)": 0.0004424284,
+          "V(N6|XBVM1)": 0.0007211924,
+          "I(L_SL|XBVM1)": 2.216104e-05,
+          "I(R_IN|XTRIG)": 2.216104e-05
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 1.3724051845449999e-05,
+          "I(R_SEC_LOAD|XTRIG)": 1.143671320454e-06
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": -5.911061,
+            "post_median_rad": -5.911085,
+            "post_minus_pre_turns": -3.819718634173968e-06
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": -0.3172223,
+            "post_median_rad": -0.3212199,
+            "post_minus_pre_turns": -0.0006362378005041593
+          }
+        }
+      },
+      "r1b_loaded": {
+        "sha256": "7a04b1ef57462df8aea81ad0f6ea564f94d66936213a6625ec653a384b5b1637",
+        "btrig_largest": {
+          "start_time_ps": 106.58749999999999,
+          "end_time_ps": 108.2125,
+          "direction": "increasing",
+          "phase_delta_rad": 1.161802,
+          "phase_delta_turns": 0.1849065311940502,
+          "phase_abs_turns": 0.1849065311940502,
+          "same_junction_voltage_area_turns": 0.18492986453305213,
+          "area_minus_phase_turns": 2.3333339001924136e-05,
+          "complete_2pi": false
+        },
+        "btrig_complete": false,
+        "source_activity_abs_peak": {
+          "V(SL1)": 0.0004417879,
+          "V(N6|XBVM1)": 0.0007208136,
+          "I(L_SL|XBVM1)": 2.217806e-05,
+          "I(R_IN|XTRIG)": 2.217806e-05
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 4.47561e-05,
+          "I(R_SEC_LOAD|XTRIG)": 0.0
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": -5.911061,
+            "post_median_rad": -5.911083,
+            "post_minus_pre_turns": -3.5014087479456853e-06
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": -0.3172237,
+            "post_median_rad": -0.3212223,
+            "post_minus_pre_turns": -0.0006363969554472557
+          }
+        }
+      },
+      "delta": {
+        "btrig_phase_turns": 0.0001492077591486729,
+        "input_current_abs_peak": 1.7020000000001406e-08,
+        "sl_abs_peak": -6.405000000000017e-07,
+        "n6_abs_peak": -3.7879999999993613e-07
+      }
+    },
+    "logical1-read0-control": {
+      "r1a_baseline": {
+        "sha256": "340871e3567564c72c9de599e1ea0889a70bcb0eed3dae98b404d5ffc58e83d2",
+        "btrig_largest": {
+          "start_time_ps": 94.825,
+          "end_time_ps": 96.35,
+          "direction": "decreasing",
+          "phase_delta_rad": -0.0005290000000000017,
+          "phase_delta_turns": -8.419296489561291e-05,
+          "phase_abs_turns": 8.419296489561291e-05,
+          "same_junction_voltage_area_turns": -8.420885707629156e-05,
+          "area_minus_phase_turns": -1.589218067865226e-08,
+          "complete_2pi": false
+        },
+        "btrig_complete": false,
+        "source_activity_abs_peak": {
+          "V(SL1)": 1.95223e-07,
+          "V(N6|XBVM1)": 1.922214e-07,
+          "I(L_SL|XBVM1)": 4.186811e-10,
+          "I(R_IN|XTRIG)": 4.186811e-10
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 5.1567448e-10,
+          "I(R_SEC_LOAD|XTRIG)": 4.2972875e-11
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": 5.911061,
+            "post_median_rad": 5.911075,
+            "post_minus_pre_turns": 2.2281692033152677e-06
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": 0.3172284,
+            "post_median_rad": 0.3169242,
+            "post_minus_pre_turns": -4.841493368855969e-05
+          }
+        }
+      },
+      "r1b_loaded": {
+        "sha256": "636b3c18ce0671e3dd38882ac5a1cf66156315701ebae65e4cf3fb25f9680cac",
+        "btrig_largest": {
+          "start_time_ps": 94.8125,
+          "end_time_ps": 96.35,
+          "direction": "decreasing",
+          "phase_delta_rad": -0.0005294999999999606,
+          "phase_delta_turns": -8.427254236715231e-05,
+          "phase_abs_turns": 8.427254236715231e-05,
+          "same_junction_voltage_area_turns": -8.427520381614578e-05,
+          "area_minus_phase_turns": -2.6614489934687546e-09,
+          "complete_2pi": false
+        },
+        "btrig_complete": false,
+        "source_activity_abs_peak": {
+          "V(SL1)": 1.953712e-07,
+          "V(N6|XBVM1)": 1.924399e-07,
+          "I(L_SL|XBVM1)": 4.170525e-10,
+          "I(R_IN|XTRIG)": 4.170525e-10
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 4.899999999936205e-10,
+          "I(R_SEC_LOAD|XTRIG)": 0.0
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": 5.911061,
+            "post_median_rad": 5.911075,
+            "post_minus_pre_turns": 2.2281692033152677e-06
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": 0.317228,
+            "post_median_rad": 0.3169241,
+            "post_minus_pre_turns": -4.836718720563075e-05
+          }
+        }
+      },
+      "delta": {
+        "btrig_phase_turns": 7.957747153940176e-08,
+        "input_current_abs_peak": -1.6285999999999917e-12,
+        "sl_abs_peak": 1.4819999999999335e-10,
+        "n6_abs_peak": 2.184999999999963e-10
+      }
+    },
+    "logical0-read0-control": {
+      "r1a_baseline": {
+        "sha256": "176132bec1a8885da8c19c9e7692244e6c3129bdcff4c3e5e9d6ff0f4ed3ae0d",
+        "btrig_largest": {
+          "start_time_ps": 94.0375,
+          "end_time_ps": 95.575,
+          "direction": "increasing",
+          "phase_delta_rad": 0.0015993000000000257,
+          "phase_delta_turns": 0.0002545365004868723,
+          "phase_abs_turns": 0.0002545365004868723,
+          "same_junction_voltage_area_turns": 0.00025456521976324666,
+          "area_minus_phase_turns": 2.87192763743626e-08,
+          "complete_2pi": false
+        },
+        "btrig_complete": false,
+        "source_activity_abs_peak": {
+          "V(SL1)": 5.421438e-07,
+          "V(N6|XBVM1)": 5.43882e-07,
+          "I(L_SL|XBVM1)": 5.976982e-10,
+          "I(R_IN|XTRIG)": 5.976982e-10
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 6.908613499999999e-10,
+          "I(R_SEC_LOAD|XTRIG)": 5.7571784000000004e-11
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": -5.911061,
+            "post_median_rad": -5.911075,
+            "post_minus_pre_turns": -2.2281692033152677e-06
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": -0.3172223,
+            "post_median_rad": -0.316924,
+            "post_minus_pre_turns": 4.747591952431701e-05
+          }
+        }
+      },
+      "r1b_loaded": {
+        "sha256": "e5757a09cada2e698bc0d58604cf76afac564bfb8688bfed1986d35b4b40eb6d",
+        "btrig_largest": {
+          "start_time_ps": 94.0375,
+          "end_time_ps": 95.575,
+          "direction": "increasing",
+          "phase_delta_rad": 0.0015970999999999624,
+          "phase_delta_turns": 0.00025418635961206007,
+          "phase_abs_turns": 0.00025418635961206007,
+          "same_junction_voltage_area_turns": 0.0002542235947273748,
+          "area_minus_phase_turns": 3.7235115314736104e-08,
+          "complete_2pi": false
+        },
+        "btrig_complete": false,
+        "source_activity_abs_peak": {
+          "V(SL1)": 5.413721e-07,
+          "V(N6|XBVM1)": 5.431488e-07,
+          "I(L_SL|XBVM1)": 5.95553e-10,
+          "I(R_IN|XTRIG)": 5.95553e-10
+        },
+        "secondary_amplitude": {
+          "V(N_SEC|XTRIG)": 7.59999999998956e-10,
+          "I(R_SEC_LOAD|XTRIG)": 0.0
+        },
+        "storage": {
+          "P(B_JM1|XBVM1)": {
+            "pre_median_rad": -5.911061,
+            "post_median_rad": -5.911075,
+            "post_minus_pre_turns": -2.2281692033152677e-06
+          },
+          "P(B_JM2|XBVM1)": {
+            "pre_median_rad": -0.3172237,
+            "post_median_rad": -0.3169241,
+            "post_minus_pre_turns": 4.768282095033359e-05
+          }
+        }
+      },
+      "delta": {
+        "btrig_phase_turns": -3.50140874812231e-07,
+        "input_current_abs_peak": -2.1451999999999566e-12,
+        "sl_abs_peak": -7.716999999999989e-10,
+        "n6_abs_peak": -7.331999999999949e-10
+      }
+    }
+  }
+}

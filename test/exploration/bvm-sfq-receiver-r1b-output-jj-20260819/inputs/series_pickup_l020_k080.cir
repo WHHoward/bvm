@@ -1,0 +1,15 @@
+* R1a: series pickup / isolated passive secondary, no output JJ.
+* The pickup is in series with the R0b SL -> R_IN -> B_TRIG path.
+.subckt SERIES_PICKUP IN
+
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* Isolated passive secondary: induced voltage drives the defined 12 ohm load.
+L_SEC         N_SEC       0             2.0p
+R_SEC_LOAD   N_SEC       0            12.0
+K_TX          L_TX        L_SEC        0.80
+
+.ends SERIES_PICKUP

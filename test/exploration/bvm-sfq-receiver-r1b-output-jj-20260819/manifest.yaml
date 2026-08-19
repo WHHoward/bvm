@@ -1,0 +1,224 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R1b minimum output-JJ activation
+created_at: "2026-08-19T13:59:30+08:00"
+updated_at: "2026-08-19T14:20:29+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819
+parent_checkpoint: df115dd0720a068314a01605e0b97353ddbb54b1
+current_head_before_experiment: df115dd0720a068314a01605e0b97353ddbb54b1
+research_question: >-
+  Can the accepted R1a passive secondary drive a minimum biased output JJ so
+  logical1 has at least one complete 2*pi B_OUT transition while logical0 and
+  both READ=0 controls have none, with the R1a B_TRIG criterion preserved?
+hypothesis: >-
+  At AREA=0.10, B_OUT Ic is 10 uA.  A 7 uA subcritical bias leaves a nominal
+  read0 margin of 1.86 uA below Ic when the R1a 1.14 uA secondary current is
+  added, while the nominal read1 drive is 12.56 uA and exceeds Ic by 2.56 uA.
+  A 100 ohm parallel damping resistor lowers the output dynamic beta estimate
+  from the intrinsic 5.445 to about 0.805 and should reduce uncontrolled
+  running without adding a self-quench loop.
+diagnostic_initial_point:
+  point: l010-b07-rd100
+  status: completed_initial_common_mode_failure
+  finding: >-
+    The first point produced a valid four-case run but no B_OUT differential
+    drive: P(B_OUT) stayed at 0.7753975 rad, V(B_OUT) was about 6.71e-19 V,
+    I(B_OUT) stayed at the 7 uA bias, and V(N_OUT) followed V(N_SEC).
+  failure_mode: common_mode_no_differential_drive
+  raw_preserved:
+    - raw/l010-b07-rd100/read1/run-01.csv
+    - raw/l010-b07-rd100/read0/run-01.csv
+    - raw/l010-b07-rd100/logical1-read0-control/run-01.csv
+    - raw/l010-b07-rd100/logical0-read0-control/run-01.csv
+  analysis: analysis/initial-point-analysis.json
+alternative_explanations:
+  - The output branch may load N_SEC enough that the nominal 5.56/1.14 uA
+    separation is not preserved.
+  - The output bias or damping may suppress the read1 transition before 2*pi.
+  - The read0 transient may combine with the 7 uA bias and cross the 10 uA
+    threshold after loading.
+  - The positive mutual-coupling polarity or B_OUT terminal direction may
+    oppose the output bias rather than assist it.
+  - B_OUT may free-run at a subcritical bias because the effective damping
+    estimate is not sufficient for the transient circuit.
+  - A local B_OUT phase transition may be numerically real but not downstream
+    SFQ delivery.
+route:
+  primary: canonical BVM SL output
+  preserved_r1a:
+    r_in_ohm: 12.0
+    l_tx_pH: 0.20
+    trigger_area: 0.50
+    trigger_bias_uA: 15.0
+    l_sec_pH: 2.0
+    coupling_k: 0.80
+    r_sec_load_ohm: 12.0
+  receiver_topology: >-
+    SL -> R_IN -> L_TX -> B_TRIG; L_TX couples to the retained R1a
+    secondary loop N_SEC -> L_SEC -> OUT_PORT -> R_SEC_LOAD -> ground;
+    B_OUT is N_OUT -> N_SEC in parallel with a 100 ohm damping resistor,
+    driven by a 7 uA bias source.  This is one root-cause topology correction
+    to make the secondary drive differential at B_OUT.
+  canonical_topology_modified: false
+  excluded_this_round: [self_quench, output_JTL, JTL, T1, R1c, blind_sweep]
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+    beta_c_actual: 5.4450545
+    provenance: DERIVED_FROM_MODEL
+  pickup:
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    coupling_k: 0.80
+    mutual_inductance_pH: 0.5059644
+    r_sec_load_ohm: 12.0
+    provenance: RETAINED_FROM_ACCEPTED_R1A
+  output:
+    area: 0.10
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+    bias_uA: 7.0
+    bias_fraction_of_ic: 0.70
+    r_damp_ohm: 100.0
+    rn_parallel_damp_ohm: 61.5384615
+    r0_parallel_damp_ohm: 94.1176471
+    beta_c_intrinsic: 5.4450545
+    beta_c_with_rn_parallel_damp: 0.8054814
+    provenance: DESIGNED_PHYSICS_INFORMED
+  expected_secondary_drive:
+    read1_current_uA: 5.56404
+    read0_current_uA: 1.14367
+    read1_nominal_total_uA: 12.56404
+    read0_nominal_total_uA: 8.14367
+    read1_nominal_margin_uA: 2.56404
+    read0_nominal_margin_below_ic_uA: 1.85633
+    read1_voltage_uV: 66.7685
+    read0_voltage_uV: 13.7241
+    source: accepted_R1a_raw_secondary_activity
+  parameter_semantics: >-
+    AREA follows JoSIM src/JJ.cpp: Ic and C multiply by AREA, while RN and R0
+    divide by AREA.  The output damping beta is a derived parallel-R estimate,
+    not a replacement for the full transient model.
+model:
+  source: inputs/jjmit.cir
+  canonical_model_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  fixture_sha256: ea7346546bef091dcf3815cdaea42a4
+  immutable: true
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+baseline:
+  r1a_manifest: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/manifest.yaml
+  r1a_receiver_fixture: inputs/series_pickup_l020_k080.cir
+  r1a_receiver_fixture_sha256: 4dcf68611dc7b5223ce88d5a30218a2209fa73ffe29f3e6e4cdb8aea8db879fc
+  r1a_operating_point: {l_tx_pH: 0.20, coupling_k: 0.80, l_sec_pH: 2.0, r_sec_load_ohm: 12.0}
+  r1a_read1_secondary: {v_n_sec_uV: 66.7685, i_r_sec_load_uA: 5.56404}
+  r1a_read0_secondary: {v_n_sec_uV: 13.7241, i_r_sec_load_uA: 1.14367}
+  r1a_read1_trigger_turns: 3.94377084
+  r1a_read0_trigger_turns: 0.18475732
+solver:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170
+  analysis: PHASE
+  actual_csv_dt_ps: {min: 0.0125, max: 0.0250, source: corrected_four_case_raw_csv}
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+operating_point_sequence:
+  max_operating_points: 2
+  points:
+    - {id: l010-b07-rd100, output_area: 0.10, output_bias_uA: 7.0, r_damp_ohm: 100.0, status: completed_initial_common_mode_failure}
+    - {id: l010-b07-rd100-loop, output_area: 0.10, output_bias_uA: 7.0, r_damp_ohm: 100.0, status: completed_fail_no_output_transition}
+  stop_rule: >-
+    Run the initial point and at most one root-cause topology correction.
+    Preserve both raw matrices; do not perform a parameter sweep or begin R1c.
+probes:
+  trigger_same_junction: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  output_same_junction: [P(B_OUT|XTRIG), V(B_OUT|XTRIG), I(B_OUT|XTRIG)]
+  output_branch: [I(I_OUT_BIAS|XTRIG), I(R_OUT_DAMP|XTRIG), V(N_OUT|XTRIG)]
+  pickup: [I(R_IN|XTRIG), I(L_TX|XTRIG), I(I_TRIG_BIAS|XTRIG), V(N_PICK|XTRIG), V(N_TRIG|XTRIG)]
+  secondary: [V(N_SEC|XTRIG), I(L_SEC|XTRIG), I(R_SEC_LOAD|XTRIG)]
+  BVM_output: [V(SL1), V(N6|XBVM1), I(L_SL|XBVM1), I(L_PSL|XBVM1)]
+  storage: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1)]
+  readout: [P(B_JS1|XBVM1), V(B_JS1|XBVM1), P(B_JS2|XBVM1), V(B_JS2|XBVM1)]
+  BVM_branches: [I(L_S1|XBVM1), I(L_S2|XBVM1), I(L_S3|XBVM1), I(L_M3|XBVM1)]
+  sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
+windows_ps:
+  PRE: [80, 90]
+  READ_ACTIVITY: [94, 130]
+  TRIGGER_ANALYSIS: [94, 170]
+  OUTPUT_ANALYSIS: [94, 170]
+  POST: [130, 170]
+  CONTROL_FULL: [20, 170]
+  STORAGE_POST: [140, 150]
+criterion:
+  output_read1: >-
+    At least one monotonic continuous B_OUT segment in OUTPUT_ANALYSIS with
+    abs(delta_phase)>=2*pi and start_time<=130 ps; report raw phase endpoints
+    and same-segment B_OUT voltage area.  The phase/area residual must be
+    <=0.05 turns, inherited from the accepted R1a local evidence contract.
+  output_read0_and_controls: >-
+    No complete B_OUT segment in OUTPUT_ANALYSIS for read0 and no complete
+    segment in CONTROL_FULL for either READ=0 control; no free-running control.
+  trigger_guard: >-
+    B_TRIG must retain a complete read1 segment and no complete read0/control
+    segment under the accepted R0b/R1a direct phase and same-JJ area method.
+  secondary_guard: >-
+    Report retained secondary V/I activity, read1/read0 separation, and
+    control quietness after adding B_OUT; secondary is a transfer guard, not
+    an output-event oracle.
+  storage_guard: >-
+    Retain JM1/JM2 and compare with R1a; no obvious logical-sign inversion or
+    collapse is allowed.  Exact storage preservation is not claimed.
+  forbidden_shortcuts: [I_above_Ic, voltage_peak_alone, phase_range_alone, SFQ_count, downstream_delivery]
+  SFQ_boundary: >-
+    A complete local B_OUT phase transition is not called downstream SFQ
+    delivery because this Exploration has no JTL.
+  verdict: >-
+    PASS only if read1 B_OUT has a complete phase/area-consistent segment,
+    read0/control B_OUT has none, B_TRIG guard passes, and controls do not
+    free-run.  FAIL if artifacts are valid and a necessary condition is
+    absent; INVALID for solver or raw artifact failure.
+artifact_requirements:
+  raw_csv: preserve all four matched cases without overwrite
+  logs: preserve stdout and stderr for every run
+  analysis_script: analyze_r1b.py
+  independent_crosscheck: analysis/independent_crosscheck.py
+  structured_analysis: analysis/r1b-analysis.json
+  initial_point_analysis: analysis/initial-point-analysis.json
+  initial_r1a_comparison: analysis/initial-r1a-comparison.json
+  comparison_analysis: compare_r1a.py
+  r1a_comparison: analysis/r1a-comparison.json
+  review: analysis/REVIEW.md
+  report: analysis/R1B_REPORT.md
+  hash_inventory: analysis/sha256sums.txt
+  no_raw_overwrite: true
+authority:
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  measurement_semantics: docs/research/METRIC_SPEC_V2.md
+  no_candidate_upgrade: true
+  no_r1c_implementation: true
+status: COMPLETED
+result: R1b_FAIL
+verdict_summary: >-
+  Artifact-valid bounded Exploration.  B_TRIG read1 remains complete and
+  read0/controls remain incomplete, but B_OUT has zero phase range and no
+  monotonic segment in all four corrected cases.  The secondary node voltage
+  transient is common-mode at B_OUT; no local output-JJ activation is claimed.

@@ -1,0 +1,223 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R1a non-invasive series pickup transfer
+created_at: "2026-08-19T13:10:53+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r0b-20260819
+parent_checkpoint: fc0f3d9466ff1533ec9f85e83a82c3503b961c16
+current_head_before_experiment: a93ba3bb0923a6ff4ecc12c35bceaf405304dcd4
+research_question: >-
+  Can a series pickup and isolated passive secondary extract a clear,
+  state-dependent transient from the canonical SL -> B_TRIG trigger path
+  without destroying the R0b logical1 complete trigger and read0/control
+  discrimination?
+hypothesis: >-
+  Inserting only L_TX=0.20 pH in series between R_IN and B_TRIG will add a
+  sub-ohm impedance near the AREA=0.50 JJ characteristic frequency while
+  preserving the R0b multi-turn trigger.  A k=0.80 coupling to L_SEC=2 pH
+  and a defined 12 ohm passive secondary load will convert the state-dependent
+  trigger current transient into measurable secondary voltage and load current
+  without a parallel N_TRIG loading branch.
+alternative_explanations:
+  - The secondary reflected impedance may still perturb the series trigger enough to remove the complete read1 transition.
+  - The coupling polarity or secondary load may produce cancellation or a signal below the probe floor.
+  - A secondary transient may be a startup/common-mode artifact rather than a read1 state-dependent response.
+  - The read0 transient may be large enough to erase secondary discrimination even when B_TRIG itself remains non-triggering.
+  - Secondary voltage and current may have a sign/endpoint mapping error if the floating/grounded secondary is misinterpreted.
+  - BVM SL/N6 or JM1/JM2 storage behavior may change even if B_TRIG remains complete.
+route:
+  primary: canonical BVM SL output
+  input_resistance_ohm: 12.0
+  receiver_topology: >-
+    SL -> R_IN -> L_TX -> B_TRIG -> ground, with L_TX magnetically coupled
+    to a grounded passive L_SEC || R_SEC_LOAD secondary.
+  secondary_route: L_SEC=2.0 pH to ground in parallel with R_SEC_LOAD=12.0 ohm
+  excluded_this_round: [N_TRIG_parallel_feedback, output_JJ, self_quench, JTL, T1, R1b]
+  canonical_topology_modified: false
+  bq_references_only: true
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+    beta_c_actual: 5.4450545
+  pickup:
+    l_tx_pH: 0.20
+    provenance: DESIGNED
+    rationale: >-
+      At the AREA=0.50 trigger characteristic angular frequency, the
+      estimated reactance is about 0.48 ohm, small relative to R_IN=12 ohm;
+      this is an order estimate, not a transient replacement.
+  secondary:
+    l_sec_pH: 2.0
+    r_sec_load_ohm: 12.0
+    coupling_k: 0.80
+    mutual_inductance_pH: 0.5059644
+    provenance: DESIGNED
+    expected_current_transfer_order: M_over_Lsec=0.2529822
+  area_semantics: >-
+    JoSIM src/JJ.cpp multiplies Ic and C by AREA and divides RN and R0 by
+    AREA; AREA is not interpreted as an Ic-only knob.
+model:
+  source: inputs/jjmit.cir
+  canonical_model_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  fixture_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  immutable: true
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+baseline:
+  r0b_manifest: test/exploration/bvm-sfq-receiver-r0b-20260819/manifest.yaml
+  r0b_receiver_fixture: inputs/r0b_sl_trigger_reference.cir
+  r0b_receiver_fixture_sha256: 7f36f3f8cdf523393c3ed407500f4e7cdd92ff43dcd3eedde09b581dc9f1d605
+  r0b_operating_point: {area: 0.50, trigger_bias_uA: 15.0, r_in_ohm: 12.0}
+  r0b_read1_complete_segment:
+    interval_ps: [102.9875, 113.7625]
+    phase_delta_rad: 31.399944
+    phase_delta_turns: 4.9974563
+    same_junction_voltage_area_turns: 4.9974806
+  r0b_read0_largest_segment:
+    interval_ps: [106.5875, 108.2125]
+    phase_delta_rad: 1.1641559
+    phase_delta_turns: 0.1852812
+  r0b_raw_reference:
+    - {id: read1, path: test/exploration/bvm-sfq-receiver-r0b-20260819/raw/a050-b15/read1/run-01.csv, sha256: 609efe406917f4f110b774fcc103aeef122e1428b0c79ed6f451aa5579cae9e6}
+    - {id: read0, path: test/exploration/bvm-sfq-receiver-r0b-20260819/raw/a050-b15/read0/run-01.csv, sha256: 096fe02e28980d409de6932095300afef0b955d3a8be448c2781a90203a4e5cd}
+    - {id: logical1-read0-control, path: test/exploration/bvm-sfq-receiver-r0b-20260819/raw/a050-b15/logical1-read0-control/run-01.csv, sha256: 2264f0833f3d99dbe4f6feae7ec759a3720070bb456b996fc27bf9ea46852564}
+    - {id: logical0-read0-control, path: test/exploration/bvm-sfq-receiver-r0b-20260819/raw/a050-b15/logical0-read0-control/run-01.csv, sha256: 6815ddda22f74221e3acd7e263029360b1663e9276d38ba5e0585350de6286bc}
+solver:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170
+  analysis: PHASE
+  actual_csv_dt_ps: [0.0125, 0.025]
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+operating_point_sequence:
+  max_operating_points: 1
+  points:
+    - {id: l020-k080, order: 1, l_tx_pH: 0.20, l_sec_pH: 2.0, coupling_k: 0.80, r_sec_load_ohm: 12.0, status: preregistered_initial}
+  stop_rule: >-
+    Run only this point.  If it fails, classify whether the series pickup is
+    invasive, the secondary is too weak, or the controls are contaminated;
+    do not tune L_TX/L_SEC/K/R_SEC_LOAD in this Exploration.  A topology-level
+    change requires a separately named R1b Exploration.
+probes:
+  trigger_same_junction: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  pickup: [I(R_IN|XTRIG), I(L_TX|XTRIG), I(I_TRIG_BIAS|XTRIG), V(N_PICK|XTRIG), V(N_TRIG|XTRIG)]
+  secondary: [V(N_SEC|XTRIG), I(L_SEC|XTRIG), I(R_SEC_LOAD|XTRIG)]
+  BVM_output: [V(SL1), V(N6|XBVM1), I(L_SL|XBVM1), I(L_PSL|XBVM1)]
+  storage: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1)]
+  readout: [P(B_JS1|XBVM1), V(B_JS1|XBVM1), P(B_JS2|XBVM1), V(B_JS2|XBVM1)]
+  BVM_branches: [I(L_S1|XBVM1), I(L_S2|XBVM1), I(L_S3|XBVM1), I(L_M3|XBVM1)]
+  sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
+windows_ps:
+  PRE: [80, 90]
+  READ_ACTIVITY: [94, 130]
+  TRIGGER_ANALYSIS: [94, 170]
+  POST: [130, 170]
+  CONTROL_FULL: [20, 170]
+  STORAGE_POST: [140, 150]
+criterion:
+  trigger_read1: >-
+    At least one monotonic continuous B_TRIG segment in TRIGGER_ANALYSIS with
+    abs(delta_phase)>=2*pi and start_time<=130 ps; report raw phase endpoints
+    and the same-segment B_TRIG voltage area.
+  trigger_read0_and_controls: >-
+    No complete B_TRIG segment in TRIGGER_ANALYSIS for read0 and no complete
+    segment in CONTROL_FULL for either READ=0 control; no free-running control.
+  secondary_amplitude: >-
+    For V(N_SEC) and I(R_SEC_LOAD), define A as the maximum absolute
+    activity-window deviation from that case's PRE median.  Read1 must have
+    A_V>=10 uV and A_I>=1 uA, each A_read1>=2*A_read0, and each
+    A_read1>=5*max(A_logical1_control,A_logical0_control).  These thresholds
+    are state-dependent signal-extraction thresholds, not JJ switching or SFQ
+    thresholds.
+  secondary_controls: >-
+    Both controls must remain below one-fifth of the read1 secondary amplitude
+    for both selected secondary signals and show no spontaneous trajectory.
+  pickup_noninvasive_comparison: >-
+    Compare new and R0b B_TRIG raw/unwrapped trajectories, same-JJ voltage
+    areas, SL/N6, input current, and JM1/JM2.  Preservation of a complete
+    read1 trigger and read0/control negative behavior is mandatory; closeness
+    to the R0b approximately 4.997-turn multi-turn trajectory is a preferred
+    characterization, not a new SFQ-count claim.
+  forbidden_shortcuts: [I_above_Ic, voltage_peak_alone, phase_range_alone, secondary_peak_without_pre_control, SFQ_count]
+  SFQ_boundary: >-
+    A passive secondary transient and a local B_TRIG transition are not called
+    SFQ delivery and do not establish downstream JTL reception.
+  verdict: >-
+    PASS only if read1 B_TRIG complete, read0/control B_TRIG non-complete,
+    secondary V/I state-dependent thresholds pass, and BVM/back-action probes
+    show no obvious storage-sign destruction. Otherwise FAIL if artifacts are
+    valid and a necessary condition is absent; INVALID for data/solver failure.
+artifact_requirements:
+  raw_csv: preserve all four matched cases without overwrite
+  logs: preserve stdout and stderr for every run
+  analysis_script: analyze_r1a.py
+  independent_crosscheck: analysis/independent_crosscheck.py
+  comparison_analysis: compare_r0b.py
+  structured_analysis: analysis/r1a-analysis.json
+  review: analysis/REVIEW.md
+  report: analysis/R1A_REPORT.md
+  hash_inventory: analysis/sha256sums.txt
+  no_raw_overwrite: true
+authority:
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  measurement_semantics: docs/research/METRIC_SPEC_V2.md
+  no_candidate_upgrade: true
+  no_r1b_implementation: true
+status: COMPLETE_EXPLORATION_R1A_PASS
+completed_at: "2026-08-19T13:23:31+08:00"
+result:
+  status: PASS
+  artifact_status: VALID
+  operating_point: l020-k080
+  matched_case_count: 4
+  raw_evidence:
+    - {id: read1, path: raw/l020-k080/read1/run-01.csv, sha256: 7d1e4b36c220b0a25ecefeb62b11ce36264ff8f298651f45eea7f713206051dd}
+    - {id: read0, path: raw/l020-k080/read0/run-01.csv, sha256: 70c03780e58a93d1449aa215a46d1c5245a174588ea0a185437695ac17123107}
+    - {id: logical1-read0-control, path: raw/l020-k080/logical1-read0-control/run-01.csv, sha256: 340871e3567564c72c9de599e1ea0889a70bcb0eed3dae98b404d5ffc58e83d2}
+    - {id: logical0-read0-control, path: raw/l020-k080/logical0-read0-control/run-01.csv, sha256: 176132bec1a8885da8c19c9e7692244e6c3129bdcff4c3e5e9d6ff0f4ed3ae0d}
+  read1_trigger_complete: PASS
+  read0_trigger_noncomplete: PASS
+  read0_secondary_below_read1: PASS
+  read0_controls_trigger_noncomplete: PASS
+  read0_controls_secondary_quiet: PASS
+  bvm_source_discrimination: preserved
+  bvm_storage: "logical signs remain distinct; bounded JM2 back-action observed"
+  secondary_route: "state-dependent passive V(N_SEC) and I(R_SEC_LOAD)"
+  secondary_read1_amplitude:
+    V_N_SEC_uV: 66.76847655318
+    I_R_SEC_LOAD_uA: 5.564039712765
+  secondary_read0_amplitude:
+    V_N_SEC_uV: 13.72405184545
+    I_R_SEC_LOAD_uA: 1.143671320454
+  secondary_read1_over_read0: 4.8651
+  secondary_read1_over_max_control: 96645.3
+  r0b_read1_trigger_turns: 4.9974563
+  r1a_read1_trigger_turns: 3.94377084
+  r1a_read0_trigger_turns: 0.18475732
+  r1a_read1_same_junction_area_turns: 3.94379356
+  no_output_jj: true
+  no_self_quench: true
+  no_jtl: true
+  r1b_started: false
+  no_candidate_upgrade: true
+  structured_analysis: analysis/r1a-analysis.json
+  independent_crosscheck: analysis/independent-crosscheck.json
+  r0b_comparison: analysis/r0b-comparison.json
+  report: analysis/R1A_REPORT.md
+  review: analysis/REVIEW.md

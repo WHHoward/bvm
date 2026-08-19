@@ -1,0 +1,77 @@
+{
+  "document_type": "r1a_independent_crosscheck",
+  "method": "independent raw CSV read; adjacent phase unwrap; monotonic same-JJ area; PRE-subtracted secondary amplitudes",
+  "all_comparisons_pass": true,
+  "comparisons": [
+    {
+      "case": "read1",
+      "sha_match": true,
+      "trigger_largest_match": true,
+      "trigger_area_match": true,
+      "trigger_complete_match": true,
+      "secondary_v_match": true,
+      "secondary_i_match": true
+    },
+    {
+      "case": "read0",
+      "sha_match": true,
+      "trigger_largest_match": true,
+      "trigger_area_match": true,
+      "trigger_complete_match": true,
+      "secondary_v_match": true,
+      "secondary_i_match": true
+    },
+    {
+      "case": "logical1-read0-control",
+      "sha_match": true,
+      "trigger_largest_match": true,
+      "trigger_area_match": true,
+      "trigger_complete_match": true,
+      "secondary_v_match": true,
+      "secondary_i_match": true
+    },
+    {
+      "case": "logical0-read0-control",
+      "sha_match": true,
+      "trigger_largest_match": true,
+      "trigger_area_match": true,
+      "trigger_complete_match": true,
+      "secondary_v_match": true,
+      "secondary_i_match": true
+    }
+  ],
+  "raw_metrics": {
+    "read1": {
+      "sha256": "7d1e4b36c220b0a25ecefeb62b11ce36264ff8f298651f45eea7f713206051dd",
+      "largest_trigger_abs_turns": 3.9437708405138645,
+      "largest_trigger_area_turns": 3.9437935585045127,
+      "trigger_complete": true,
+      "secondary_v_amplitude": 6.676847655318e-05,
+      "secondary_i_amplitude": 5.564039712765e-06
+    },
+    "read0": {
+      "sha256": "70c03780e58a93d1449aa215a46d1c5245a174588ea0a185437695ac17123107",
+      "largest_trigger_abs_turns": 0.18475732343490153,
+      "largest_trigger_area_turns": 0.18478064663273658,
+      "trigger_complete": false,
+      "secondary_v_amplitude": 1.3724051845449999e-05,
+      "secondary_i_amplitude": 1.143671320454e-06
+    },
+    "logical1-read0-control": {
+      "sha256": "340871e3567564c72c9de599e1ea0889a70bcb0eed3dae98b404d5ffc58e83d2",
+      "largest_trigger_abs_turns": 8.419296489561291e-05,
+      "largest_trigger_area_turns": -8.420885707629156e-05,
+      "trigger_complete": false,
+      "secondary_v_amplitude": 5.1567448e-10,
+      "secondary_i_amplitude": 4.2972875e-11
+    },
+    "logical0-read0-control": {
+      "sha256": "176132bec1a8885da8c19c9e7692244e6c3129bdcff4c3e5e9d6ff0f4ed3ae0d",
+      "largest_trigger_abs_turns": 0.0002545365004868723,
+      "largest_trigger_area_turns": 0.00025456521976324666,
+      "trigger_complete": false,
+      "secondary_v_amplitude": 6.908613499999999e-10,
+      "secondary_i_amplitude": 5.7571784000000004e-11
+    }
+  }
+}

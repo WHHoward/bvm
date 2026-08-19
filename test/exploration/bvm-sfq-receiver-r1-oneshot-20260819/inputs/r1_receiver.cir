@@ -1,0 +1,26 @@
+* R1 initial minimal one-shot receiver.
+* Canonical SL -> R_IN -> B_TRIG.  B_TRIG drives a lossy primary branch
+* and a mutually coupled output loop.  No JTL or downstream receiver is used.
+.subckt R1_RECEIVER IN
+
+R_IN          IN          N_TRIG       12.0
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 200p 15U)
+
+* Dynamic trigger quench / feedback branch.  R_Q is inactive at DC and
+* dissipates the trigger voltage excursion when B_TRIG runs.
+L_Q           N_TRIG      N_Q         1.0p
+R_Q           N_Q         0           15.0
+
+* Minimal quantizing transfer: the trigger branch couples into the output
+* loop.  The positive sign follows the stated branch-current orientations.
+L_SEC         N_SEC       OUT_PORT    2.0p
+K_TX          L_Q         L_SEC       0.80
+
+* Subcritical output JJ, locally damped and terminated; this is not a JTL.
+B_OUT         N_OUT       N_SEC       jjmit area=0.50
+I_OUT_BIAS   0           N_OUT        pwl(0p 0 2p 35U 80p 35U 140p 35U 200p 35U)
+R_OUT_DAMP   N_OUT       N_SEC       20.0
+R_LOAD       OUT_PORT   0           12.0
+
+.ends R1_RECEIVER

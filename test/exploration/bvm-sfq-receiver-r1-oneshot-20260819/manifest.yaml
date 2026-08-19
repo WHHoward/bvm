@@ -1,0 +1,270 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R1 one-shot and self-quench exploration
+created_at: "2026-08-19T12:32:29+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r0b-20260819
+parent_checkpoint: fc0f3d9466ff1533ec9f85e83a82c3503b961c16
+research_question: >-
+  Can the R0b canonical-SL receiver be extended with the minimum local
+  feedback/quench and output-JJ elements so that logical1 produces exactly
+  one complete local output-Junction phase event, while logical0 and both
+  matched READ=0 controls produce zero complete output events?
+hypothesis: >-
+  A 1 pH lossy primary branch, magnetically coupled at k=0.80 to a 2 pH
+  output loop, will transfer one read1 pulse to a 35 uA-biased AREA=0.50
+  output JJ.  The 15 ohm primary shunt and 20 ohm output-JJ shunt will
+  dissipate the post-trigger energy, lower the effective B_TRIG drive, and
+  allow both junctions to retrap without a second output transition.
+alternatives:
+  - The output pulse may be too weak because the output bias is too far below Ic or the coupling polarity is unfavorable.
+  - The output JJ may run more than one turn because the 5-turn R0b trigger excursion is not sufficiently isolated from the output loop.
+  - The quench branch may be too weak to retrap B_TRIG, or too strong and load the SL signal before output transfer.
+  - The output damping may prevent a complete output transition or may be insufficient for reset.
+  - A complete output phase segment may be a startup/bias artifact rather than a canonical read1 response.
+  - Phase and voltage-area agreement may fail if a wrapped phase sample, endpoint, direction, or time unit is mishandled.
+  - The receiver may alter BVM read1/read0 or storage behavior even when its local output looks one-shot.
+route:
+  primary: canonical BVM SL output
+  secondary: N6 local tap not used in this Exploration
+  input_resistance_ohm: 12.0
+  retained_r0b_point:
+    trigger_area: 0.50
+    trigger_bias_uA: 15.0
+  receiver_topology: >-
+    SL -> R_IN -> B_TRIG; B_TRIG node drives L_Q-R_Q lossy feedback and a
+    k=0.80 L_Q/L_SEC transfer into a subcritical B_OUT output loop.
+  excluded_this_round: [JTL, downstream_receiver, T1, Candidate_upgrade]
+  bq_references_only: true
+  canonical_topology_modified: false
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+    beta_c_actual: 5.4450545
+  output:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 35.0
+  receiver:
+    r_in_ohm: 12.0
+    l_q_pH: 1.0
+    r_q_ohm: 15.0
+    l_sec_pH: 2.0
+    k_tx: 0.80
+    mutual_inductance_pH: 1.13137085
+    r_out_damp_ohm: 20.0
+    r_load_ohm: 12.0
+  derived_dynamic_damping:
+    trigger_rn_parallel_rq_ohm: 10.21276596
+    trigger_beta_c_estimate_if_shunt_active: 0.554073
+    output_rn_parallel_shunt_ohm: 12.30769231
+    output_beta_c_estimate_if_shunt_active: 0.805970
+  parameter_semantics: >-
+    AREA follows JoSIM src/JJ.cpp: Ic and C are multiplied by AREA, while RN
+    and R0 are divided by AREA.  The beta estimates are dynamic parallel-R
+    estimates only; they are not substituted for the actual transient model.
+mechanism:
+  first_event: >-
+    The canonical read1 SL current/voltage excursion adds to the independent
+    15 uA trigger bias.  B_TRIG voltage drives L_Q; mutual coupling transfers
+    a pulse through L_SEC into the 35 uA-biased B_OUT loop, which is below its
+    50 uA Ic before the read.
+  self_quench: >-
+    Once B_TRIG develops voltage, R_Q dissipates the primary excursion and
+    the output loop plus R_LOAD reflects a transient load through K_TX.  These
+    paths are intended to reduce the post-event effective trigger drive and
+    pull both junctions toward a bounded retrapping state.
+  sign_to_verify: >-
+    L_Q is oriented N_TRIG->N_Q and L_SEC N_SEC->OUT_PORT; positive K_TX is
+    expected to inject the first output pulse in the output bias direction.
+    This is a design inference and must be checked from raw branch currents.
+solver:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 200
+  reason_for_longer_stop: >-
+    R0b used 170 ps; R1 uses 200 ps to observe a 60 ps post-read window after
+    the possible output event and to test bounded reset/free-running.
+  analysis: PHASE
+  actual_csv_dt_ps: [0.0125, 0.025]
+model:
+  source: inputs/jjmit.cir
+  canonical_model_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+  area_semantics_source: src/JJ.cpp
+  beta_c_warning: >-
+    The trigger AREA=0.50 model has beta_c approximately 5.445, not 0.0544;
+    added damping is evaluated as a physical mechanism rather than by using
+    the old value.
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  fixture_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  immutable: true
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  read_baseline: test/exploration/bvm-internal-readout-20260819
+references:
+  bq_v4_fixture: inputs/bq_cell_v4-reference.cir
+  bq_paper_fixture: inputs/bq_cell_paper-reference.cir
+  use: reference_only_no_topology_copy
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive, suffix: read1}
+  - {id: read0, logical_state: 0, read: canonical_positive, suffix: read0}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control, suffix: logical1-read0-control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control, suffix: logical0-read0-control}
+run_policy:
+  initial_operating_point_only: a050-b15
+  local_followups: >-
+    No blind sweep.  A follow-up point may be added only after classifying a
+    first-point failure as trigger-no-fire, trigger-multi-run, weak-feedback,
+    overloading/no-output, output-multi-run, reset-insufficient, or BVM
+    back-action; the new point and rationale must be appended without
+    overwriting this raw run.
+  executed_followup:
+    id: a050-b15-rq100
+    parent_point: a050-b15
+    changed_parameter: r_q_ohm
+    prior_value_ohm: 15.0
+    new_value_ohm: 100.0
+    rationale: >-
+      Initial read1 B_TRIG excursion was only 0.211572 turns while the
+      feedback resistor carried a 34.73548 uA peak; output B_OUT remained at
+      its 35 uA bias with no pulse.  This is classified as feedback/quench
+      branch too strong and receiver loading, so only R_Q was locally raised.
+    unchanged: [SL_route, R_IN, trigger_AREA, trigger_bias, output_AREA, output_bias, L_Q, L_SEC, K_TX, R_OUT_DAMP, R_LOAD]
+  executed_followup_2:
+    id: a050-b15-rq1k
+    parent_point: a050-b15-rq100
+    changed_parameter: r_q_ohm
+    prior_value_ohm: 100.0
+    new_value_ohm: 1000.0
+    rationale: >-
+      R_Q=100 ohm still left read1 B_TRIG at only 0.341663 turns, so this
+      second local point further isolates the same branch-loading failure
+      without changing the transfer or output parameters.
+    unchanged: [SL_route, R_IN, trigger_AREA, trigger_bias, output_AREA, output_bias, L_Q, L_SEC, K_TX, R_OUT_DAMP, R_LOAD]
+  executed_followup_3:
+    id: a050-b15-lq10
+    parent_point: a050-b15-rq1k
+    changed_parameter: l_q_pH
+    prior_value_pH: 1.0
+    new_value_pH: 10.0
+    r_q_ohm: 15.0
+    rationale: >-
+      R_Q=1 kOhm still produced only 0.919538 trigger turns.  The common
+      remaining feature is the 1 pH branch's low dynamic impedance, so this
+      point increases L_Q by one local decade while restoring the original
+      dissipative R_Q; no output parameter is changed.
+    unchanged: [SL_route, R_IN, trigger_AREA, trigger_bias, output_AREA, output_bias, L_SEC, K_TX, R_OUT_DAMP, R_LOAD]
+  stop_after_first_pass: true
+  raw_overwrite: forbidden
+operating_points:
+  - {id: a050-b15, order: 1, area: 0.50, trigger_bias_uA: 15.0, output_bias_uA: 35.0, r_q_ohm: 15.0, status: initial_failure_feedback_too_strong}
+  - {id: a050-b15-rq100, order: 2, area: 0.50, trigger_bias_uA: 15.0, output_bias_uA: 35.0, r_q_ohm: 100.0, status: followup_pending}
+  - {id: a050-b15-rq1k, order: 3, area: 0.50, trigger_bias_uA: 15.0, output_bias_uA: 35.0, r_q_ohm: 1000.0, status: followup_pending}
+  - {id: a050-b15-lq10, order: 4, area: 0.50, trigger_bias_uA: 15.0, output_bias_uA: 35.0, l_q_pH: 10.0, r_q_ohm: 15.0, status: followup_pending}
+probes:
+  trigger_same_junction: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  feedback: [I(L_Q|XTRIG), I(R_Q|XTRIG)]
+  output_same_junction: [P(B_OUT|XTRIG), V(B_OUT|XTRIG), I(B_OUT|XTRIG)]
+  receiver: [I(R_IN|XTRIG), I(I_TRIG_BIAS|XTRIG), I(I_OUT_BIAS|XTRIG), I(L_SEC|XTRIG), I(R_OUT_DAMP|XTRIG), I(R_LOAD|XTRIG), V(OUT_PORT|XTRIG)]
+  BVM_output: [V(SL1), V(N6|XBVM1), I(L_SL|XBVM1), I(L_PSL|XBVM1)]
+  storage: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1)]
+  readout: [P(B_JS1|XBVM1), V(B_JS1|XBVM1), P(B_JS2|XBVM1), V(B_JS2|XBVM1)]
+  BVM_branches: [I(L_S1|XBVM1), I(L_S2|XBVM1), I(L_S3|XBVM1), I(L_M3|XBVM1)]
+  sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
+windows_ps:
+  PRE: [80, 90]
+  READ_ACTIVITY: [94, 130]
+  TRIGGER_ANALYSIS: [94, 200]
+  OUTPUT_ANALYSIS: [20, 200]
+  READ_OUTPUT_WINDOW: [94, 140]
+  POST: [140, 200]
+  POST_EARLY: [140, 160]
+  POST_LATE: [180, 200]
+  CONTROL_FULL: [20, 200]
+  STORAGE_POST: [160, 180]
+criterion:
+  phase_source: raw P(B_TRIG|XTRIG) and raw P(B_OUT|XTRIG), radians
+  continuity: >-
+    Unwrap adjacent raw samples continuously with +/-2*pi correction only;
+    retain raw columns unchanged.  A monotonic segment is split only when
+    the unwrapped adjacent phase-delta sign changes; its endpoints are shared
+    by the segment voltage-area integral.
+  complete_local_transition: >-
+    A monotonic segment with abs(delta_phase)>=2*pi is one or more complete
+    local phase transitions.  The complete-unit count for a segment is
+    floor(abs(delta_phase)/(2*pi)); a 5-turn monotonic segment therefore
+    cannot be counted as one output event.
+  output_one_shot: >-
+    In OUTPUT_ANALYSIS exactly one complete transition unit must exist, its
+    parent monotonic segment must start in READ_OUTPUT_WINDOW, its same-segment
+    voltage area must agree with its phase delta within 0.05 turns, and no
+    second complete unit may occur in the remaining segment or post window.
+  output_reset: >-
+    POST must contain no complete output segment, finite raw P/V/current
+    samples, and no sustained/free-running output trajectory; post phase,
+    voltage, branch current, and output-port current are reported directly.
+  non_event: >-
+    read0 and both READ=0 controls must have zero complete output transition
+    units over CONTROL_FULL and no observed free-running output trajectory.
+  trigger_reporting: >-
+    B_TRIG phase segments and same-JJ voltage areas are reported to classify
+    trigger-no-fire, trigger-multi-run, weak-feedback, or quench behavior;
+    B_TRIG is not required to be exactly one event in R1.
+  BVM: >-
+    Read1/read0 SL and N6 separation and JM1/JM2 storage signs are reported;
+    a bounded back-action observation is not a system Gate.
+  forbidden_shortcuts: [I_above_Ic, voltage_peak_alone, phase_range_alone, SFQ_count_from_local_phase]
+  SFQ_boundary: >-
+    One local output-JJ phase transition is not called downstream SFQ delivery.
+  verdict: >-
+    PASS only if read1 output_one_shot, read0/control non_event, output_reset,
+    and BVM bounded-discrimination conditions all hold.  Otherwise PARTIAL
+    or FAIL with the classified failure mode; no Candidate upgrade.
+artifact_requirements:
+  raw_csv: preserve every attempted operating point and all four matched cases
+  logs: preserve stdout and stderr for every run
+  analysis_script: analyze_r1.py
+  independent_crosscheck: analysis/independent_crosscheck.py
+  structured_analysis: analysis/r1-analysis.json
+  adversarial_review: analysis/REVIEW.md
+  no_raw_overwrite: true
+status: COMPLETE_EXPLORATION_R1_FAIL
+result:
+  status: FAIL
+  R1_one_shot: FAIL
+  artifact_status: VALID
+  raw_run_count: 16
+  matched_matrix_complete: true
+  logical1_output_complete_units: 0
+  logical0_output_complete_units: 0
+  read0_control_output_complete_units: [0, 0]
+  trigger_complete_units: 0
+  output_reset: NOT_TESTED_AFTER_EVENT
+  failure_mode: >-
+    The minimal parallel L_Q-R_Q feedback branch dynamically loads/stores the
+    trigger excursion; local R_Q and L_Q adjustments did not restore a
+    complete B_TRIG transition, and B_OUT remained static.
+  BVM_loaded_discrimination: OBSERVED_BOUNDED
+  storage_signs: OBSERVED_PRESERVED
+  free_running_output: NOT_OBSERVED
+  independent_crosscheck: analysis/independent-crosscheck.json
+  primary_analysis: analysis/r1-analysis.json
+  report: analysis/R1_REPORT.md
+  review: analysis/REVIEW.md
+  hash_inventory: analysis/sha256sums.txt
+  no_candidate_upgrade: true
+  no_JTL_or_T1: true

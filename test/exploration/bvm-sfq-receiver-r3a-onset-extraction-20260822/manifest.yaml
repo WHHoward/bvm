@@ -1,0 +1,223 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: DRAFT — awaiting Luna/Sol final read-only check before execution; no JoSIM
+  run has occurred under this manifest
+title: R3-A B_TRIG onset-extraction feasibility (C_ON / B_OUT / L_Q-R_Q extractor,
+  single initial point)
+created_at: "2026-08-22T00:06:28+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821
+parent_checkpoint: b7477d6dc783fe1266e1d7727be2046809f4555f
+current_head_before_experiment: 2dddefb
+provenance_note: >-
+  Contract content was designed and sanity-reviewed by Luna Max + Sol XHigh in a
+  read-only discussion before this file existed; this DRAFT is the faithful
+  transcription into the repository and is the preregistration body of record.
+  Semantic fidelity to the reviewed contract is tracked in the report that will
+  accompany execution.
+
+scientific_question:
+  single_question: >-
+    Can exactly one local complete 2*pi B_OUT event be extracted from the
+    logical1-READ multi-turn nonlinear B_TRIG response, while logical0 and
+    READ=0 controls remain zero and BVM/B_TRIG source behavior is preserved?
+  out_of_scope: [JTL_transport, T1_transport]
+
+frozen_source:
+  canonical_bvm_modified: false
+  b_trig_topology_modified: false
+  b_trig_parameters_modified: false
+  canonical_read_write_stimulus_modified: false
+  r0b_source_conditions_retained: true
+  secondary_route_used: false
+  jtl_t1_attached: false
+
+extractor_topology:
+  ascii: |
+    B_TRIG node N_TRIG
+            |
+           C_ON
+            |
+          N_EXT
+            |-- B_OUT JJ -- ground
+            |-- R_DAMP --- ground
+            +-- L_Q -- R_Q -- ground
+  description: >-
+    C_ON couples the N_TRIG onset voltage into an isolated extension node N_EXT;
+    B_OUT (with its bias) is the quantizing element at N_EXT; R_DAMP damps the
+    node; L_Q in series with R_Q forms the refractory/quench branch to ground.
+single_initial_point:
+  note: physics-informed initial instance only; not a verified optimum; sweeps forbidden
+  b_out_area: 0.10
+  i_bout_bias_uA: 7.0
+  r_damp_ohm: 100.0
+  c_on_fF: 1.0
+  l_q_pH: 100.0
+  r_q_ohm: 10.0
+
+runtime_parameter_mapping:
+  rule: >-
+    Must be recorded from the actual jjmit.cir / instantiated netlist before any
+    run; discussion approximations are not acceptable.
+  model_definition_source: inputs/jjmit.cir (copied verbatim from prior R-series
+    fixtures; SHA-256 recorded at execution time)
+  model_line: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+  josim_area_semantics: >-
+    src/JJ.cpp scales Ic and C by AREA and divides RN and R0 by AREA.
+  expected_b_out_mapping_at_area_0p10:
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+  verification_step: values above must be re-derived from the instantiated
+    netlist and recorded in the execution summary before runs.
+
+causal_timing_contract:
+  source_evidence_r0b:
+    common_read_edge_ps: "95-96 (both states; must NOT count as state-selective onset)"
+    divergence_start_ps: "97-98 (read1/read0 stable nonlinear divergence begins)"
+    read1_complete_running_start_ps: 102.9875
+    onset_cutoff_ps: 130
+  frozen_rules:
+    source_selective_causal_window:
+      window_ps: "[97, 130)"
+      rule: >-
+        A qualifying B_OUT event's start / first unambiguous phase-running onset
+        must lie inside this window.
+      common_edge_excluded: "95-96 ps common READ-edge response is not a success trigger."
+      late_tail_rule: >-
+        An output event first occurring at t >= 130 ps is not a PASS; it is
+        marked LATE_OR_TAIL_TRIGGER failure.  A qualifying monotonic segment may
+        extend beyond 130 ps provided its causal onset lies within [97,130) ps
+        and there is no evidence it was induced by READ termination/tail.
+    whole_run_one_shot_rule:
+      observation_interval_ps: "[20, 170]"
+      rule: >-
+        logical1+READ B_OUT allows exactly one qualifying complete event in the
+        whole interval.  Forbidden: second forward complete segment, reverse
+        complete segment, free-running, tail-trigger, shutdown-trigger.
+
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+  optional_reference:
+    id: c_on_zero_reference
+    purpose: loading/reference only
+    constraints: [not part of the success matrix, must not become a sweep]
+  stimulus_definition: identical to the R2-series canonical cases (write init
+    per logical state at 11-20 ps; canonical positive READ = WL+SE +100 uA at
+    96-105 ps; zero-READ controls hold SE at zero)
+
+event_oracle:
+  all_required:
+    - continuous adjacent-sample unwrapped phase
+    - exactly one forward monotonic segment
+    - "|delta(phi)|/(2*pi) >= 1 turn"
+    - same-B_OUT same-segment same-endpoint integral V(B_OUT)dt/Phi0 consistent
+      with phase-turn count within the existing R2 event-oracle tolerance (0.05 turn)
+    - stable before the event
+    - retrap after the event
+    - no second complete event anywhere in the whole observation interval
+  never_sufficient_alone:
+    - I > Ic
+    - voltage peak
+    - phase range
+    - derivative threshold
+    - isolated spike
+
+required_probes:
+  trigger: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  coupling: [I(C_ON|XTRIG), I(R_IN|XTRIG)]
+  output: [P(B_OUT|XTRIG), V(B_OUT|XTRIG), I(B_OUT|XTRIG)]
+  refractory: [I(L_Q|XTRIG), I(R_Q|XTRIG), I(R_DAMP|XTRIG)]
+  source_guards: [V(SL1), V(N6|XBVM1)]
+  storage: [P(B_JM1|XBVM1), P(B_JM2|XBVM1), P(B_JS1|XBVM1), P(B_JS2|XBVM1)]
+
+causal_chain_analysis:
+  required_reconstruction: >-
+    B_TRIG nonlinear onset -> I(C_ON) -> B_OUT drive -> B_OUT phase event ->
+    V_EXT -> I_Q growth -> refractory/quench -> retrap.  Event counts alone are
+    not sufficient reporting.
+
+back_action_guards:
+  relative_baseline: R0b source conditions
+  requirements:
+    - logical1 B_TRIG retains its complete nonlinear transition
+    - logical0 shows no complete B_TRIG transition
+    - both READ=0 controls show no complete B_TRIG transition
+    - B_TRIG does not become persistent free-running
+    - SL/N6 read1/read0 ordering preserved
+    - JM1/JM2 storage signs preserved
+    - JS1/JS2 show no anomalous state indicating storage corruption
+  override_rule: >-
+    If the extractor succeeds but materially changes B_TRIG source dynamics or
+    BVM storage, verdict is BACK_ACTION_FAILURE, not PASS.
+
+rearm_diagnostic_rule:
+  gating: does not block the primary four-case verdict
+  precondition_for_running:
+    - logical1+READ exactly one event
+    - logical0 zero events
+    - both READ=0 controls zero events
+    - clean retrap
+    - back-action guards preserved
+  diagnostic_design:
+    - identical extractor parameters (no sweep)
+    - spacing chosen once from measured settling of the first run, with recorded
+      justification (R2-G practice)
+    - answers whether the extractor can rearm
+  if_not_run: rearm = UNKNOWN; repeatability must not be claimed
+  if_primary_fails: rearm diagnostic forbidden
+
+main_bounded_verdicts:
+  pass: R3A_LOCAL_EXTRACTION_PASS
+  failures:
+    - NO_OUTPUT_EVENT
+    - MULTI_FIRE
+    - READ0_FALSE_TRIGGER
+    - CONTROL_FALSE_TRIGGER
+    - LATE_OR_TAIL_TRIGGER
+    - FREE_RUNNING
+    - BACK_ACTION_FAILURE
+    - INCONCLUSIVE
+  pass_boundary: >-
+    PASS means only local B_TRIG-derived one-shot extraction under this one
+    fixture.  It does not mean SFQ transport, JTL compatibility, T1
+    compatibility, or universal DIRECT viability.
+
+failure_boundary:
+  falsified_by_single_point_failure: current C_ON / B_OUT / L_Q-R_Q extractor instance
+  not_falsified:
+    - B_TRIG_EVENT_EXTRACTION family
+    - conditioned DIRECT family
+    - lightweight accumulation adapter family
+    - paper QB family
+
+r3b_gate:
+  condition: only after R3-A PASS may a separate new preregistration add
+    "frozen R3-A extractor -> JTL stage 1 -> JTL stage 2"
+  this_round: JTL attachment forbidden
+
+execution_plan_when_authorized:
+  step_order:
+    - copy fixture dependencies (jjmit.cir, bvm_cell.cir) into inputs/
+    - build four matched-case netlists + optional C_ON=0 reference netlist on
+      the single extractor topology
+    - record runtime parameter mapping from instantiated netlist
+    - run four matched cases (plus optional reference) once each; no sweeps
+    - analyze per causal timing contract and event oracle
+    - reconstruct causal chain
+    - evaluate guards; issue main verdict
+    - only on PASS, choose and run the single delayed second-read1 rearm
+      diagnostic with recorded spacing justification
+  artifacts_commitment:
+    - raw/
+    - manifest.yaml (this file)
+    - analysis/r3a-summary.json
+    - analysis/R3A_ONSET_REPORT.md
+    - analysis/REVIEW.md
+    - analysis/sha256sums.txt
+  precommit_check: git status must confirm all declared analysis artifacts tracked

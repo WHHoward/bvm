@@ -91,14 +91,14 @@ explicitly; polarity sensitivity is addressed below.
 | logical1 READ=0 | +0.000273 µA | −0.000259 µA | ~0 | −1.26×10⁻⁷ fC | +9.42×10⁻⁷ / −1.07×10⁻⁶ fC | +4.73×10⁻⁷ / −4.48×10⁻⁷ |
 | logical0 READ=0 | +0.001030 µA | −0.000942 µA | ~0 | +4.05×10⁻⁷ fC | +5.59×10⁻⁶ / −5.18×10⁻⁶ fC | +1.78×10⁻⁶ / −1.63×10⁻⁶ |
 
-The corresponding `Phi_ext/Phi0` time-integrals are:
+The corresponding normalized-flux time-integrals `∫(Phi_ext/Phi0) dt` are:
 
-| case | `∫Phi_ext/Phi0 dt` over `[97,130)` |
+| case | `∫(Phi_ext/Phi0) dt` over `[97,130)` |
 |---|---:|
-| read1 | +0.253692 `Phi0·ps` |
-| read0 | −0.035310 `Phi0·ps` |
-| logical1 READ=0 | −2.17×10⁻⁷ `Phi0·ps` |
-| logical0 READ=0 | +7.01×10⁻⁷ `Phi0·ps` |
+| read1 | +0.253692 ps |
+| read0 | −0.035310 ps |
+| logical1 READ=0 | −2.17×10⁻⁷ ps |
+| logical0 READ=0 | +7.01×10⁻⁷ ps |
 
 ### Context over `[20,170] ps`
 

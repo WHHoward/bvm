@@ -49,6 +49,14 @@ capture_topology:
     and J_SET is magnetically coupled to L_TX. There is no C_ON, galvanic
     secondary connection, output JJ, JTL, or automatic reset in this capture-only
     Gate.
+  loop_contract: >-
+    Implement L_H and J_SET as a floating two-node closed loop. Apply the +3 uA
+    J_SET bias through a floating branch across the J_SET terminals, with its
+    polarity chosen to add to J_SET's positive current direction. The bias
+    branch must not create a galvanic path to B_TRIG or the canonical BVM.
+  external_resistors: none in the initial point; use only the instantiated
+    jjmit damping unless execution preflight reports an invalid floating-loop
+    formulation, in which case stop rather than add damping.
   mutual_magnitude_k: 0.80
   mutual_polarity: >-
     Freeze the winding orientation so the raw read1 negative I(L_TX) lobe is
@@ -83,6 +91,11 @@ execution_constraints:
   timestep_ps: 0.0125
   stop_time_ps: 170
   preserve_raw_and_logs: true
+  required_deliverables:
+    - inputs/r4a-receiver.cir
+    - four matched-case netlists or equivalent case records
+    - raw/ and logs/
+    - analysis report with loop-current and fluxoid-balance reconstruction
 
 required_probes:
   source: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG), I(R_IN|XTRIG)]

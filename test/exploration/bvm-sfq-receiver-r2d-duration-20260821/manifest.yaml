@@ -1,0 +1,129 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R2-D drive-duration threshold at fixed direct-drive amplitude
+created_at: "2026-08-21T20:30:25+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821
+parent_checkpoint: f714850a6fa5e8945ab69afc217cb708f9751163
+current_head_before_experiment: f714850a6fa5e8945ab69afc217cb708f9751163
+research_question: >-
+  At fixed direct-drive amplitude 3.5 uA, does increasing pulse duration push
+  B_OUT from the linear sub-turn response into a complete 2*pi transition?
+  This establishes the first controlled duration -> activation relation for the
+  frozen output stage.
+hypothesis: >-
+  H_duration (primary): R2-C showed fast (0.27 ps FWHM) injection is shunted by
+  node reactivity (22.4% junction transfer, strictly linear response).  If
+  drive-duration/charge-delivery timescale is the limiting variable, increasing
+  FWHM at fixed amplitude will produce a strongly nonlinear growth of B_OUT
+  phase excursion and eventually a complete transition; quasi-statically any
+  sustained injection above the +3 uA static margin must switch the junction.
+alternative_hypotheses:
+  amplitude_alone_insufficient: >-
+    Even long pulses remain sub-turn because the output-stage topology or
+    flux-injection mechanism itself cannot activate at 3.5 uA (Situation B).
+  unstable_activation: >-
+    Longer pulses produce multi-turn/free-running/ringing once switching starts
+    (Situation C): activation achieved but retrap/one-shot unresolved.
+variable:
+  name: pulse_fwhm_ps
+  units: ps
+  values: [0.27, 1.0, 5.0, 20.0]
+  baseline: 0.27
+  only_changed_variable: true
+  maximum_operating_points: 4
+  stop_rule: ascending order, stop immediately at first qualifying complete
+    transition; do not run longer points after that.
+fixed_constraints:
+  canonical_bvm_modified: false
+  transformer_modified: false
+  area_bias_k_damping_modified: false
+  jj_model_modified: false
+  direct_drive_topology_modified: false
+  pulse_polarity_center_modified: false
+  amplitude_uA: 3.5
+  timestep_stop_probes_analysis_unchanged: true
+  existing_accepted_artifacts_modified: false
+pulse_geometry:
+  shape: symmetric triangle PWL on I_DIRECT 0 N_SEC (same geometry as R2-C,
+    stretched on the time axis only)
+  amplitude_uA: 3.5
+  center_ps: 104.51
+  fwhm_to_base: base = 2 x FWHM
+  nominal_points:
+    - {id: w027, fwhm_ps: 0.27, base_ps: 0.54, zero_points_ps: [103.97, 105.05],
+       nominal_charge_uA_ps: 1.89}
+    - {id: w1p0, fwhm_ps: 1.0, base_ps: 2.0, zero_points_ps: [103.51, 105.51],
+       nominal_charge_uA_ps: 3.5}
+    - {id: w5p0, fwhm_ps: 5.0, base_ps: 10.0, zero_points_ps: [99.51, 109.51],
+       nominal_charge_uA_ps: 17.5}
+    - {id: w20p0, fwhm_ps: 20.0, base_ps: 40.0, zero_points_ps: [84.51, 124.51],
+       nominal_charge_uA_ps: 70.0}
+  window_note: >-
+    The w20p0 leading edge starts at 84.51 ps, before the OUTPUT_ANALYSIS window
+    start (94 ps).  Windows are kept unchanged per frozen constraints; this
+    clips part of the early response and is conservative for activation
+    detection because the drive peak remains at 104.51 ps inside the window.
+  charge_unit_note: uA*ps = 1e-3 fC; nominal charges are in uA*ps to
+    avoid unit confusion (corrected before first commit).
+  charge_measurement: actual delivered charge computed from measured
+    integral of I(I_DIRECT|XTRIG) over real timestamps, not from nominal
+    geometry.
+background_case: logical1 write init, NO READ, bias 7 uA retained (same as
+  R2-C background)
+output_stage_baseline:
+  area: 0.10
+  ic_uA: 10.0
+  rn_ohm: 160.0
+  r0_ohm: 1600.0
+  c_fF: 7.0
+  bias_uA: 7.0
+  r_damp_ohm: 100.0
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+matched_cases:
+  - {id: w027, kind: r2c_baseline_shape_reproduction}
+  - {id: w1p0, kind: short_pulse}
+  - {id: w5p0, kind: medium_pulse}
+  - {id: w20p0, kind: long_pulse}
+windows_ps:
+  PRE: [80.0, 90.0]
+  PULSE_ACTIVITY: [94.0, 130.0]
+  OUTPUT_ANALYSIS: [94.0, 170.0]
+  POST: [130.0, 170.0]
+  STORAGE_POST: [140.0, 150.0]
+event_criterion:
+  definition: >-
+    Continuous monotonic segment of adjacent-sample-unwrapped P(B_OUT|XTRIG)
+    with abs(delta(phi))/(2*pi) >= 1.0 turn, segment start no later than 130 ps,
+    same-segment direct V(B_OUT|XTRIG) trapezoid integral / Phi0 within 0.05
+    turn of phase delta.  I_peak > Ic and voltage peaks are never oracles.
+interpretation_plan:
+  situation_A: >-
+    Strong nonlinear growth toward >=1 turn with increasing duration; record
+    first complete-transition duration and stop.
+  situation_B: >-
+    Phase stays sub-turn even at 20 ps; report
+    NO_THRESHOLD_IN_BOUNDED_DURATION_MATRIX, analyze failure mode, no auto
+    extension to 50/100 ps.
+  situation_C: >-
+    Multi-turn/free-running/strong ringing appears; record
+    ACTIVATION_WITH_UNSTABLE_RUNNING; never call it exactly-one SFQ.
+derived_quantities:
+  per_pulse: [measured FWHM, measured base width, measured charge Q =
+    integral of I_DIRECT dt, largest monotonic segment turns, same-segment
+    V-area turns]
+  correlation_note: observe whether phase tracks amplitude, duration, or charge;
+    with only four points no empirical law is fitted.
+outputs:
+  raw: raw/<point>/run-01.csv
+  logs: logs/
+  analysis: analysis/r2d-summary.json
+  report: analysis/R2D_DURATION_REPORT.md
+  review: analysis/REVIEW.md

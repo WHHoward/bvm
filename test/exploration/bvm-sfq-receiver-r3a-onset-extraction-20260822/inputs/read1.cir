@@ -1,0 +1,25 @@
+* R3-A case read1: canonical stimulus; extractor via C_ON at N_TRIG.
+.include jjmit.cir
+.include bvm_cell.cir
+.include r3a-receiver.cir
+
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+XTRIG SL1 R3A_SOURCE_EXTRACTOR
+
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)
+
+.tran 0.0125p 170p
+* R3-A probes: trigger, coupling, output, refractory, source guards, storage.
+.print P(B_TRIG|XTRIG) V(B_TRIG|XTRIG) I(B_TRIG|XTRIG)
+.print I(C_ON|XTRIG) I(R_IN|XTRIG)
+.print P(B_OUT|XTRIG) V(B_OUT|XTRIG) I(B_OUT|XTRIG)
+.print I(L_Q|XTRIG) I(R_Q|XTRIG) I(R_DAMP|XTRIG)
+.print V(SL1) V(N6|XBVM1)
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+
+.end

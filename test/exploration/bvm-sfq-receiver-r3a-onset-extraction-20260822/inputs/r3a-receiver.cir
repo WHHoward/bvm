@@ -1,0 +1,17 @@
+.subckt R3A_SOURCE_EXTRACTOR IN
+
+* Canonical SL -> R_IN -> L_TX -> B_TRIG front end, unchanged from R0b.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* R3-A extractor: C_ON couples N_TRIG onset into isolated N_EXT node.
+C_ON          N_TRIG      N_EXT        1f
+B_OUT         N_EXT       0            jjmit area=0.10
+I_OUT_BIAS    0           N_EXT        pwl(0p 0 2p 7U 80p 7U 140p 7U 170p 7U)
+R_DAMP        N_EXT       0            100.0
+L_Q           N_EXT       N_Q          100p
+R_Q           N_Q         0            10.0
+
+.ends R3A_SOURCE_EXTRACTOR

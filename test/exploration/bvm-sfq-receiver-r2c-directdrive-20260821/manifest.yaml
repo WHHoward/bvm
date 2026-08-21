@@ -1,0 +1,137 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R2-C direct-drive B_OUT activation-threshold calibration
+created_at: "2026-08-21T20:10:45+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r2b-damping-20260821
+parent_checkpoint: 163ee6836cb93a568df59c8e1c02c904d001deb8
+current_head_before_experiment: 163ee6836cb93a568df59c8e1c02c904d001deb8
+research_question: >-
+  At the frozen B_OUT operating point (AREA=0.10, Ic=10 uA, bias=7 uA,
+  R_OUT_DAMP=100 ohm, jjmit model), what is the minimum amplitude of an ideal
+  PWL current pulse injected directly into N_SEC, with a shape matched to the
+  measured real read1 forward-drive transient, that produces one complete 2*pi
+  phase transition of B_OUT?  This calibrates the required minimum effective
+  dynamic drive so any future transformer/secondary topology can be compared
+  against it.  It is not receiver optimization.
+pulse_shape_source:
+  method: measured from R2-B raw k095-r100 read1 run-01.csv (not assumed)
+  effective_drive_direction: >-
+    i_BOUT increase in its positive element direction (N_SEC -> ground),
+    produced by secondary loop current flowing INTO N_SEC; KCL closure verified
+    at every snapshot (i_BOUT = I_BIAS - i_LSEC - i_RDAMP).
+  real_read1_transient:
+    forward_lope_peak_delta_i_bout_uA: +1.458
+    forward_lope_peak_time_ps: 104.51
+    forward_lope_fwhm_ps: 0.27
+    forward_lope_fwhm_span_ps: [104.38, 104.65]
+    counter_lobe_min_delta_i_bout_uA: -2.176
+    counter_lope_time_ps: 107.19
+    biphasic_note: >-
+      the real chain drive is biphasic (+1.46 then -2.18 uA); the calibration
+      pulse is unipolar and matches only the forward lobe shape, which is the
+      minimal effective drive direction.  This is recorded as a deliberate
+      simplification, not as an equivalence claim.
+  pulse_definition:
+    waveform: symmetric triangle PWL on source I_DIRECT 0 N_SEC
+    base_zero_points_ps: [103.97, 105.05]
+    peak_time_ps: 104.51
+    fwhm_ps: 0.27
+    polarity: positive amplitude on 0->N_SEC source = same physical direction
+      as the real read1 forward-drive lobe
+amplitude_matrix:
+  values_uA: [2.0, 3.0, 4.0, 5.0]
+  order: ascending, stop at first complete transition
+  rationale: >-
+    Static criticality from bias alone requires +3.0 uA (Ic - bias).  2.0 uA is
+    clearly below even the static requirement; 3.0 uA equals the static
+    minimum; 4.0 and 5.0 exceed it for dynamic/inertial assistance.  The narrow
+    0.27 ps FWHM delivers little charge (Q = A*base/2 = 2.7-6.75 fC across the
+    matrix vs C*Phi0 = 14.5 fC per full turn through the junction capacitance
+    alone), so thresholds above 5 uA are plausible; if no point switches, the
+    bounded answer is NO_THRESHOLD_IN_BOUNDED_MATRIX and duration/shape becomes
+    the next axis by explicit plan, not by auto-extension.
+fixed_constraints:
+  canonical_bvm_topology_modified: false
+  canonical_bvm_parameters_modified: false
+  transformer_topology_modified: false
+  k_tx_modified: false
+  r_out_damp_modified: false
+  b_out_area_modified: false
+  b_out_jj_model_modified: false
+  b_out_bias_modified: false
+  timestep_stop_probes_modified: false
+  existing_accepted_artifacts_modified: false
+route:
+  background_case: >-
+    logical1 write init (+100 uA WL+BL at 11-20 ps), NO READ (SE stays zero);
+    quiet secondary background; storage guard still checked.
+  injection_point: ideal PWL current source I_DIRECT added inside the receiver
+    subckt between N_SEC and ground (parallel to B_OUT branch); all other
+    elements identical to the R2-B k095-r100 receiver.
+  output_stage_baseline:
+    area: 0.10
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+    bias_uA: 7.0
+    r_damp_ohm: 100.0
+    beta_c_reff: 0.8055
+  points:
+    - {id: ctrl-nopulse, amp_uA: 0.0, note: bias-only control, no I_DIRECT}
+    - {id: amp2u0, amp_uA: 2.0}
+    - {id: amp3u0, amp_uA: 3.0}
+    - {id: amp4u0, amp_uA: 4.0}
+    - {id: amp5u0, amp_uA: 5.0}
+  excluded: [bvm_changes, transformer_changes, K_sweep, AREA_sweep, bias_sweep,
+    damping_sweep, JTL, T1, candidate_upgrade, post_threshold_tuning]
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+  same_command_for_all_cases: true
+matched_cases:
+  - {id: ctrl-nopulse, kind: bias_only_control}
+  - {id: amp2u0, kind: direct_pulse_below_static_min}
+  - {id: amp3u0, kind: direct_pulse_at_static_min}
+  - {id: amp4u0, kind: direct_pulse_above_static_min}
+  - {id: amp5u0, kind: direct_pulse_upper_bound}
+windows_ps:
+  PRE: [80.0, 90.0]
+  PULSE_ACTIVITY: [94.0, 130.0]
+  OUTPUT_ANALYSIS: [94.0, 170.0]
+  POST: [130.0, 170.0]
+  STORAGE_POST: [140.0, 150.0]
+event_criterion:
+  definition: >-
+    A local complete event requires a continuous monotonic segment of the
+    adjacent-sample-unwrapped P(B_OUT|XTRIG) with abs(delta(phi))/(2*pi) >= 1.0
+    turn, segment start no later than 130 ps, and same-segment direct
+    V(B_OUT|XTRIG) trapezoid integral / Phi0 within 0.05 turn of the phase
+    delta.  I_peak > Ic and voltage peaks are never sufficient oracles.
+  post_event_checks: retrap (phase returns to plateau), free-running (continued
+    monotonic segments), multi-turn count, ringing (post-window |V| peaks).
+interpretation_plan:
+  threshold_found: >-
+    If a point in 3-5 uA produces the first complete transition with clean
+    controls, record THRESHOLD_FOUND at that amplitude, stop ascending, and
+    report the delivered-vs-required margin of the real chain (~1.46 uA spike).
+  no_threshold_in_matrix: >-
+    If even 5 uA remains sub-turn, report NO_THRESHOLD_IN_BOUNDED_MATRIX and
+    analyze failure mode (charge vs C*Phi0, duration filtering, damping);
+    do not auto-extend amplitudes.
+  activation_unstable: >-
+    If the first switching point shows multi-turn/free-running/persistent
+    ringing, report ACTIVATION_WITH_UNSTABLE_RUNNING; this bounds the
+    one-shot/retrap problem; do not call it exactly-one SFQ.
+outputs:
+  raw: raw/<point>/run-01.csv
+  logs: logs/
+  analysis: analysis/r2c-summary.json
+  report: analysis/R2C_DIRECTDRIVE_REPORT.md
+  review: analysis/REVIEW.md

@@ -1,0 +1,215 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R2-A mutual-coupling input-flux transfer diagnostic
+created_at: "2026-08-21T18:50:37+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821
+parent_checkpoint: c45b5b854b20a80edbd68e61818e3838b8ccf2d5
+current_head_before_experiment: c45b5b854b20a80edbd68e61818e3838b8ccf2d5
+research_question: >-
+  At the frozen R1 differential receiver operating point, does increasing only
+  transformer mutual coupling K increase the state-dependent secondary drive
+  enough to produce a complete B_OUT phase/voltage-area transition?
+hypothesis: >-
+  If H1 is the dominant bottleneck, increasing K at fixed BVM, JJ, bias,
+  inductances, and loads will increase secondary voltage/current and B_OUT
+  phase activity, possibly approaching one complete turn for read1 while
+  read0 remains sub-turn.
+alternative_hypotheses:
+  H2_dynamic_receiver: >-
+    Secondary transfer increases, but loaded B_OUT phase activity remains near
+    the R1 sub-turn response because JJ damping/dynamic operating point limits
+    completion.
+  polarity_or_loading: >-
+    K changes the signed transfer or BVM loading non-monotonically, so a larger
+    nominal mutual coupling does not imply a larger useful B_OUT drive.
+  control_artifact: >-
+    A control or initial-condition transient could mimic K-dependent output
+    activity without a read-state-dependent transfer.
+variable:
+  name: mutual_coupling_K
+  units: dimensionless
+  values: [0.60, 0.70, 0.80, 0.90, 0.95]
+  baseline: 0.80
+  only_changed_variable: true
+  maximum_operating_points: 5
+fixed_constraints:
+  canonical_bvm_topology_modified: false
+  canonical_bvm_parameters_modified: false
+  sl_route_modified: false
+  pickup_inductance_modified: false
+  secondary_inductance_modified: false
+  b_out_area_modified: false
+  b_out_jj_model_modified: false
+  b_out_bias_modified: false
+  damping_modified: false
+  measurement_definition_modified: false
+  existing_accepted_artifacts_modified: false
+route:
+  source: canonical BVM SL output
+  topology: >-
+    SL -> R_IN=12 ohm -> L_TX=0.20 pH -> B_TRIG(area=0.50, bias=15 uA);
+    L_TX couples to L_SEC=2 pH; L_SEC returns through R_SEC_LOAD=12 ohm;
+    B_OUT(area=0.10) is N_SEC -> ground with I_OUT_BIAS=7 uA and
+    R_OUT_DAMP=100 ohm.
+  retained_r1_baseline:
+    r_in_ohm: 12.0
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    r_sec_load_ohm: 12.0
+    trigger_area: 0.50
+    trigger_bias_uA: 15.0
+    output_area: 0.10
+    output_bias_uA: 7.0
+    output_r_damp_ohm: 100.0
+  coupling_values:
+    - {id: diff-a010-b007-k060, K: 0.60, mutual_M_pH: 0.3794733}
+    - {id: diff-a010-b007-k070, K: 0.70, mutual_M_pH: 0.4427189}
+    - {id: diff-a010-b007-k080, K: 0.80, mutual_M_pH: 0.5059644}
+    - {id: diff-a010-b007-k090, K: 0.90, mutual_M_pH: 0.5692099}
+    - {id: diff-a010-b007-k095, K: 0.95, mutual_M_pH: 0.6008327}
+  excluded: [topology_redesign, bias_sweep, area_sweep, damping_sweep, self_quench, JTL, T1, blind_optimization]
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+    beta_c_actual: 5.4450545
+  pickup:
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    coupling_K_by_point: {0.60: 0.60, 0.70: 0.70, 0.80: 0.80, 0.90: 0.90, 0.95: 0.95}
+    mutual_M_pH_by_point: {0.60: 0.3794733, 0.70: 0.4427189, 0.80: 0.5059644, 0.90: 0.5692099, 0.95: 0.6008327}
+    r_sec_load_ohm: 12.0
+  output:
+    area: 0.10
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+    bias_uA: 7.0
+    r_damp_ohm: 100.0
+    beta_c_intrinsic: 5.4450545
+    beta_c_with_rn_parallel_damp: 0.8054814
+model:
+  source: inputs/jjmit.cir
+  sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+  josim_jj_source: src/JJ.cpp
+  josim_jj_source_sha256: 492d3705180ae205c9aba7cf13bef0f5d13ffee123f626cecdfed7a57760a596
+  area_semantics: >-
+    JoSIM src/JJ.cpp scales Ic and C by AREA and divides RN and R0 by AREA;
+    AREA=0.10 gives Ic=10 uA, RN=160 ohm, R0=1600 ohm, C=7 fF.
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  logical_semantics_sha256: fa3599a3e2f6272796dc9a89b745f3e50559948f20353c1c85db9e17fe7688e3
+  immutable: true
+baseline:
+  r1c_report: test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/analysis/R1C_BIAS_REPORT.md
+  r1c_receiver_fixture: test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/inputs/diff-a010-b007-r100-receiver.cir
+  r1c_receiver_fixture_sha256: 261a56b77d78fd91077a56a617c5d760b4bcfff7d57d1fb493d5e336f70862d2
+  relation: exact receiver topology and operating point; only K_TX is varied in R2-A
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+  same_command_for_all_cases: true
+  actual_csv_dt_ps:
+    min: 0.01249999999996021
+    max: 0.025000000000000133
+    rows_per_case: 13599
+    end_time_ps: 169.9875
+    source: analysis/coupling-summary.json
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+windows_ps:
+  PRE: [80.0, 90.0]
+  READ_ACTIVITY: [94.0, 130.0]
+  TRIGGER_ANALYSIS: [94.0, 170.0]
+  OUTPUT_ANALYSIS: [94.0, 170.0]
+  POST: [130.0, 170.0]
+  CONTROL_FULL: [20.0, 170.0]
+  STORAGE_POST: [140.0, 150.0]
+measurement:
+  metric_semantics_source: docs/research/METRIC_SPEC_V2.md
+  metric_semantics_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  direct_probes:
+    btrig_phase: P(B_TRIG|XTRIG)
+    btrig_voltage: V(B_TRIG|XTRIG)
+    btrig_current: I(B_TRIG|XTRIG)
+    bout_phase: P(B_OUT|XTRIG)
+    bout_voltage: V(B_OUT|XTRIG)
+    bout_current: I(B_OUT|XTRIG)
+    secondary_voltage: V(N_SEC|XTRIG)
+    secondary_coil_current: I(L_SEC|XTRIG)
+    secondary_return_current: I(R_SEC_LOAD|XTRIG)
+    sl: V(SL1)
+    n6: V(N6|XBVM1)
+    storage: [P(B_JM1|XBVM1), P(B_JM2|XBVM1)]
+    readout: [P(B_JS1|XBVM1), P(B_JS2|XBVM1)]
+  phase_semantics: >-
+    P(...) is raw phase in radians.  Turns are delta(phi)/(2*pi) from continuous
+    adjacent-sample unwrapping in the declared window.
+  area_semantics: >-
+    Integrate direct same-JJ V(B_TRIG) or V(B_OUT) using actual CSV timestamps
+    over the exact same monotonic segment and divide by Phi0.
+criterion:
+  bout_complete: >-
+    A complete local B_OUT transition requires at least one monotonic continuous
+    segment starting by 130 ps with abs phase evolution >=1.0 turn and direct
+    same-segment voltage-area residual <=0.05 turn.
+  btrig_guard: >-
+    B_TRIG read1 remains complete and read0/controls remain non-complete using
+    the same phase/area evidence.
+  controls: >-
+    READ=0 controls have no complete B_OUT transition or free-running phase.
+  interpretation: >-
+    K-dependent secondary and B_OUT changes distinguish increased input transfer
+    from a receiver-limited response only within this bounded model and range.
+  forbidden_shortcuts: [I_above_Ic, voltage_peak_alone, phase_range_alone, SFQ_count, downstream_delivery]
+  local_event_boundary: >-
+    A local B_OUT phase transition, if observed, is not downstream SFQ delivery
+    because no JTL is present.
+  result_labels: [PASS, FAIL, INCONCLUSIVE, INVALID]
+study_matrix:
+  operating_points: 5
+  cases_per_point: 4
+  total_runs: 20
+  stopping_rule: >-
+    Run the five predeclared K points and stop.  Do not add bias, AREA,
+    damping, inductance, topology, or JTL variants based on observed results.
+provenance:
+  raw_generation: >-
+    Twenty new matched JoSIM runs are stored under this directory.  Existing
+    R1 raw and accepted artifacts are not reused as R2 raw and are not edited.
+  analysis_scripts: [analyze_r2a.py, analysis/independent_crosscheck.py, analysis/aggregate_coupling.py]
+  artifact_requirements: [inputs, raw, logs, analysis, report, review, sha256_inventory]
+  no_candidate_upgrade: true
+status: COMPLETED
+result: R2A_FAIL_NO_COMPLETE_BOUT_IN_BOUNDED_K_MATRIX
+updated_at: "2026-08-21T18:56:39+08:00"
+verdict_summary: >-
+  Artifact-valid twenty-case matched Exploration.  Increasing K from 0.60 to
+  0.95 increased read1 secondary voltage activity from 56.5689 to 88.7317 uV
+  and increased read1 B_OUT activity from 0.016588561 to 0.026122419 turn.
+  The same-JJ voltage areas agree with those sub-turn phase segments, but no
+  point reaches one complete turn.  Read0 and READ=0 controls remain
+  non-complete and non-free-running; B_TRIG, source discrimination, and
+  storage-sign guards pass.  The result supports K as a real input-transfer
+  margin variable but does not show that K alone closes activation; a loaded
+  receiver dynamic limitation or a threshold beyond the bounded range remains
+  plausible.  No topology, BVM, JJ, bias, damping, or measurement change was
+  made, and no Candidate upgrade was performed.

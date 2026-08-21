@@ -1,0 +1,91 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R2-G two-pulse retrigger at the h20 operating point
+created_at: "2026-08-21T21:46:04+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r2f-dwell-20260821
+parent_checkpoint: ebd518aa5ab6dfff2b1ef6b7c42c21c71d79e115
+current_head_before_experiment: ebd518aa5ab6dfff2b1ef6b7c42c21c71d79e115
+research_question: >-
+  At the verified h20 operating point (4.5 uA, 20 ps flat-top trapezoid), do two
+  separated identical input pulses each produce exactly one complete local 2*pi
+  slip with a clean retrap/rearm in between?
+hypothesis: >-
+  H_repeatable (primary): the h20 single-slip event is repeatable; after the
+  first pulse retraps to equilibrium+1 turn, the second identical pulse produces
+  exactly one more complete slip, giving exactly two slips total with no
+  multi-fire, missed second event, or free-running.
+alternative_hypotheses:
+  rearm_failure: >-
+    The second pulse fails to switch (REARM_FAILURE) because the post-first-pulse
+    state differs from the initial state beyond an integer 2*pi (history-dependent
+    threshold shift).
+  multi_fire: >-
+    A pulse produces more than one complete slip (MULTI_FIRE).
+  unstable_running: >-
+    Free-running after one or both pulses (UNSTABLE_RUNNING).
+separation_choice:
+  value_ps: 60.0
+  rationale: >-
+    Measured from R2-F raw h20: after the ~132.4 ps crossing, phase deviation
+    from final decays to +0.0055 turn by 150 ps, +0.0013 turn by 156 ps, and
+    +0.0005 turn by 160 ps; |V| falls below 0.3 uV by 160 ps.  The first pulse
+    envelope ends at 144.51 ps (fall knee); requiring the second rise to start
+    no earlier than full settling gives >=40 ps of quiet time.  A 60 ps gap
+    between envelope ends provides margin without approaching any sweep.
+drive_geometry:
+  single_pulse: identical to R2-F h20 - trapezoid peak 4.5 uA, rise/fall 20 ps,
+    hold 20 ps; knees [84.51, 104.51, 124.51, 144.51]
+  two_pulse: same shape repeated; second pulse knees shifted by +204.51-84.51?
+    no - shifted so envelope-end to next rise-start separation is 60 ps:
+    pulse1 knees [84.51, 104.51, 124.51, 144.51]
+    pulse2 knees [204.51, 224.51, 244.51, 264.51]
+  geometry_note: >-
+    The 170 ps simulation stop used across R2-C..R2-F cannot contain two pulses
+    at a safe separation.  Stop time is extended to 300 ps for this experiment
+    only; this is a recorded deviation from the frozen probe window because the
+    research question is intrinsically two-event.  All other numerical settings
+    unchanged (dt=0.0125 ps, PHASE analysis).  Analysis windows are redefined
+    per pulse rather than reused from R2-F.
+fixed_constraints:
+  bvm_modified: false
+  transformer_modified: false
+  amplitude_hold_risefall_modified: false
+  area_bias_damping_load_topology_modified: false
+  jj_model_modified: false
+  polarity_unchanged: true
+  existing_accepted_artifacts_modified: false
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 300.0
+  analysis: PHASE
+matched_cases:
+  - {id: tp60, kind: two_identical_pulses_60ps_gap}
+windows_ps:
+  PULSE1_ANALYSIS: [80.0, 165.0]
+  INTER_PULSE_GAP: [145.0, 204.0]
+  PULSE2_ANALYSIS: [200.0, 290.0]
+  POST: [265.0, 300.0]
+  STORAGE_POST: [280.0, 295.0]
+event_criterion:
+  definition: >-
+    Per pulse window: continuous monotonic segment of adjacent-sample-unwrapped
+    P(B_OUT|XTRIG) with abs(delta(phi))/(2*pi) >= 1.0 turn starting within that
+    pulse's analysis window, with same-segment direct V(B_OUT|XTRIG) trapezoid
+    integral / Phi0 within 0.05 turn of phase delta.
+interpretation_plan:
+  repeatable: REPEATABLE_TWO_PULSE_SINGLE_SLIP if each pulse yields exactly one
+    qualifying slip with clean retrap/rearm between.
+  rearm_failure: REARM_FAILURE if pulse 2 yields zero slips.
+  multi_fire: MULTI_FIRE if any pulse yields >=2 slips.
+  unstable: UNSTABLE_RUNNING if free-running appears.
+outputs:
+  raw: raw/tp60/run-01.csv
+  logs: logs/
+  analysis: analysis/r2g-summary.json
+  report: analysis/R2G_TWOPULSE_REPORT.md
+  review: analysis/REVIEW.md

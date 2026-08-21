@@ -1,0 +1,137 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: PREREGISTERED_PENDING_EXECUTION
+title: R4-A weak-mutual fluxoid capture-only
+created_at: "2026-08-22T00:54:05+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822
+parent_head: 4842bc7d20c755a28b2cf1a0683fbf81051173bd
+analytic_precheck:
+  report: analysis/R4A_ANALYTIC_PRECHECK.md
+  script: analysis/r4a_analytic_precheck.py
+  verdict: R4A_SINGLE_POINT_WORTH_TESTING
+  josim_run_performed: false
+
+scientific_question:
+  single_question: >-
+    Can the strong logical1 B_TRIG response write exactly one persistent
+    fluxoid/circulating-current state in a weakly coupled capture loop, while
+    logical0 and both READ=0 controls write zero persistent states?
+  out_of_scope:
+    - output quantizer J_Q
+    - self-quench
+    - JTL transport
+    - T1 transport
+    - rearm
+    - universal B_TRIG extraction claims
+
+frozen_source:
+  canonical_bvm_modified: false
+  b_trig_topology_modified: false
+  b_trig_parameters_modified: false
+  r_in_ohm: 12.0
+  l_tx_pH: 0.20
+  secondary_route_used: false
+  c_on_used: false
+  output_jj_used: false
+  jtl_t1_attached: false
+  read_stimulus: R3-A matched canonical matrix
+
+capture_topology:
+  ascii: |
+    existing R_IN -> L_TX -> B_TRIG primary branch
+                              || weak mutual coupling
+                              ||
+                         closed L_H + J_SET loop
+  description: >-
+    L_TX remains the source-side primary. A new isolated loop containing L_H
+    and J_SET is magnetically coupled to L_TX. There is no C_ON, galvanic
+    secondary connection, output JJ, JTL, or automatic reset in this capture-only
+    Gate.
+  mutual_magnitude_k: 0.80
+  mutual_polarity: >-
+    Freeze the winding orientation so the raw read1 negative I(L_TX) lobe is
+    additive to the +3 uA J_SET bias. This changes no |K|, L_H, AREA, or bias
+    value and must not be changed after execution begins.
+
+single_initial_point:
+  l_h_pH: 100.0
+  j_set_area: 0.05
+  j_set_bias_uA: 3.0
+  sweeps_forbidden: true
+  runtime_model_mapping:
+    ic_uA: 5.0
+    c_fF: 3.5
+    rn_ohm: 320.0
+    r0_ohm: 3200.0
+    beta_l: 1.519267448
+  no_external_damping_resistor_initially: true
+
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+
+execution_constraints:
+  run_josim: true
+  modify_canonical_bvm: false
+  modify_existing_r3a_raw: false
+  change_frozen_single_point: false
+  parameter_sweep: false
+  timestep_ps: 0.0125
+  stop_time_ps: 170
+  preserve_raw_and_logs: true
+
+required_probes:
+  source: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG), I(R_IN|XTRIG)]
+  primary: [I(L_TX|XTRIG)]
+  capture_loop: [P(J_SET|XCAP), V(J_SET|XCAP), I(J_SET|XCAP), I(L_H|XCAP)]
+  source_guards: [V(SL1), V(N6|XBVM1)]
+  storage: [P(B_JM1|XBVM1), P(B_JM2|XBVM1), P(B_JS1|XBVM1), P(B_JS2|XBVM1)]
+
+timing:
+  source_selective_onset_window_ps: [97, 130]
+  no_state_transition_after_set_until_ps: 150
+  persistent_state_observation_window_ps: [150, 170]
+  whole_run_observation_window_ps: [20, 170]
+  common_read_edge_ps: [95, 96]
+
+state_oracle:
+  required:
+    - exactly one net persistent fluxoid-state transition in read1
+    - zero net persistent fluxoid-state transitions in read0 and controls
+    - read1 state remains stable through the persistent observation window
+    - no SET->RESET->SET sequence during the same read1 burst
+    - loop circulating current agrees with fluxoid balance including mutual term
+    - J_SET continuous phase and same-JJ voltage area agree for any write slip
+  insufficient_alone:
+    - J_SET switching count
+    - J_SET voltage peak
+    - J_SET phase range
+    - current peak above Ic
+    - transient loop current without post-input persistence
+
+back_action_guards:
+  relative_baseline: R3-A and R0b accepted source behavior
+  requirements:
+    - read1 B_TRIG complete nonlinear response retained
+    - read0 and both READ=0 controls have no complete B_TRIG transition
+    - SL/N6 read1/read0 ordering retained
+    - JM1/JM2 storage signs retained
+    - no source free-running or storage corruption
+
+success_boundary:
+  pass: R4A_CAPTURE_ONLY_PASS
+  failures:
+    - R4A_NO_PERSISTENT_READ1_STATE
+    - R4A_READ0_PERSISTENT_STATE
+    - R4A_CONTROL_PERSISTENT_STATE
+    - R4A_MULTI_FLUXOID_TRANSITION
+    - R4A_BACK_ACTION_FAILURE
+    - R4A_INCONCLUSIVE
+  claim_ceiling: >-
+    A local capture-only result for this single model, source, mutual polarity,
+    load, timestep, and observation window. It is not an output event, SFQ
+    delivery, JTL result, or universal extraction claim.

@@ -1,0 +1,94 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R2-E quasi-static switching-amplitude threshold at FWHM=20ps
+created_at: "2026-08-21T21:01:44+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r2d-duration-20260821
+parent_checkpoint: 32e1143cab52cfdbdcc15d49e2dfead1e7b24032
+current_head_before_experiment: 32e1143cab52cfdbdcc15d49e2dfead1e7b24032
+research_question: >-
+  At fixed FWHM = 20 ps direct-drive pulse (quasi-static regime per R2-D), what
+  is the minimum amplitude that produces the first complete 2*pi phase
+  transition of B_OUT?
+hypothesis: >-
+  H_threshold (primary): R2-D showed the w20p0 point reaches 96.2% of Ic with
+  quasi-static transfer ~75% of the increment; extrapolation predicts first
+  switching near 4-4.5 uA added on top of the 7 uA bias.  The matrix {4.0, 4.5,
+  5.0} uA ascending should contain the threshold.
+alternative_hypotheses:
+  no_threshold: >-
+    Even 5.0 uA remains sub-turn (Situation C of the plan): shunt diversion
+    grows with amplitude faster than linear, or another mechanism blocks
+    switching.
+  unstable_activation: >-
+    First crossing shows multi-turn/free-running/severe ringing (Situation B):
+    activation solved but retrap/one-shot unresolved.
+variable:
+  name: direct_drive_amplitude_uA
+  units: uA
+  values: [4.0, 4.5, 5.0]
+  baseline_r2d_amplitude: 3.5
+  only_changed_variable: true
+  maximum_operating_points: 3
+  stop_rule: sequential ascending execution; stop immediately at the first
+    qualifying complete transition; no higher amplitudes after that.
+fixed_constraints:
+  fwhm_ps: 20.0
+  pulse_shape: symmetric triangle, center 104.51 ps, base 40 ps (84.51/124.51 ps
+    zero points), polarity = verified forward-drive direction
+  bvm_modified: false
+  transformer_modified: false
+  k_area_bias_damping_duration_topology_modified: false
+  jj_model_modified: false
+  timestep_stop_probes_analysis_unchanged: true
+  existing_accepted_artifacts_modified: false
+output_stage_baseline:
+  area: 0.10
+  ic_uA: 10.0
+  rn_ohm: 160.0
+  r0_ohm: 1600.0
+  c_fF: 7.0
+  bias_uA: 7.0
+  r_damp_ohm: 100.0
+background_case: logical1 write init, NO READ, bias retained (same as R2-C/D)
+points:
+  - {id: a40u0, amp_uA: 4.0}
+  - {id: a45u0, amp_uA: 4.5}
+  - {id: a50u0, amp_uA: 5.0}
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+windows_ps:
+  PRE: [80.0, 90.0]
+  PULSE_ACTIVITY: [94.0, 130.0]
+  OUTPUT_ANALYSIS: [94.0, 170.0]
+  POST: [130.0, 170.0]
+  STORAGE_POST: [140.0, 150.0]
+event_criterion:
+  definition: >-
+    Continuous monotonic segment of adjacent-sample-unwrapped P(B_OUT|XTRIG)
+    with abs(delta(phi))/(2*pi) >= 1.0 turn, segment start no later than 130 ps,
+    same-segment direct V(B_OUT|XTRIG) trapezoid integral / Phi0 within 0.05
+    turn of phase delta.  I_peak > Ic and voltage spikes are never sufficient.
+interpretation_plan:
+  situation_A_clean: THRESHOLD_FOUND; record bounded threshold under current
+    shape/topology/bias; not exactly-one SFQ delivery; no JTL/T1 claim.
+  situation_B_unstable: ACTIVATION_WITH_UNSTABLE_RUNNING; do not tune it away.
+  situation_C_none: NO_THRESHOLD_IN_BOUNDED_MATRIX; stop; no auto extension.
+derived_quantities_on_threshold:
+  - threshold amplitude
+  - peak junction current at threshold
+  - pulse charge Q = integral of I_DIRECT dt (uA*ps = 1e-3 fC)
+  - bounded comparison to real transformer chain (+1.46 uA junction spike,
+    ~0.026 turn response from R2-B)
+outputs:
+  raw: raw/<point>/run-01.csv
+  logs: logs/
+  analysis: analysis/r2e-summary.json
+  report: analysis/R2E_AMPTHRESHOLD_REPORT.md
+  review: analysis/REVIEW.md

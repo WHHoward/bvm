@@ -1,0 +1,20 @@
+* R4-A capture-only receiver: R0b front end + weak mutual coupling to a
+* floating L_H + B_SET loop.  No C_ON, no B_OUT, no output JJ, no reset path.
+* Winding polarity: K sign frozen so the raw read1 negative I(L_TX) lobe is
+* additive to the +3 uA B_SET bias (preregistered additive orientation).
+.subckt R4A_SOURCE_CAPTURE IN
+
+* Canonical SL -> R_IN -> L_TX -> B_TRIG front end, unchanged from R0b/R3-A.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* Floating capture loop: L_H in series with B_SET, closed on itself.
+L_H           N_CAP1      N_CAP2       100p
+B_SET         N_CAP2      N_CAP1       jjmit area=0.05
+I_SET_BIAS    N_CAP2      N_CAP1       pwl(0p 0 2p 3U 80p 3U 140p 3U 170p 3U)
+
+K_TX_LH       L_TX        L_H          -0.80
+
+.ends R4A_SOURCE_CAPTURE

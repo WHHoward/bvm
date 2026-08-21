@@ -1,0 +1,236 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R1b differential secondary-to-output-JJ activation
+created_at: "2026-08-21T17:33:46+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819
+parent_checkpoint: 7ea6373c43edbb47ba90a8365d696e899a7c02c1
+current_head_before_experiment: 7ea6373c43edbb47ba90a8365d696e899a7c02c1
+research_question: >-
+  Can a genuinely differential secondary-to-ground B_OUT topology activate
+  the minimum biased output JJ for canonical read1 while read0 and both
+  READ=0 controls have no complete local output transition, with the accepted
+  R0b/R1a B_TRIG guard preserved?
+hypothesis: >-
+  With L_SEC=N_SEC->ground and B_OUT=N_SEC->ground, the transformer current
+  enters the same signal node as the independent 7 uA bias.  For the declared
+  current directions, KCL gives i_BOUT=I_BIAS-i_LSEC-i_RSEC-i_RDAMP.  The
+  negative read1 secondary-current lobe is therefore additive at B_OUT,
+  while the read0 lobe remains below the 10 uA output Ic.
+alternative_explanations:
+  - The chosen mutual polarity may make the read1 additive lobe have the
+    opposite sign at B_OUT.
+  - The 12 ohm retained passive termination may shunt the transient before
+    the output JJ reaches a complete transition.
+  - AREA=0.10, 7 uA, and 100 ohm damping may remain subcritical after loading.
+  - The direct secondary shunt may load B_TRIG enough to destroy R0b trigger
+    discrimination.
+  - The output JJ may trigger in read0 or a READ=0 control because of initial
+    bias transients or a polarity error.
+  - A local B_OUT phase transition would still not establish downstream SFQ
+    delivery because no JTL is present.
+route:
+  primary: canonical BVM SL output
+  preserved_r0b_r1a:
+    r_in_ohm: 12.0
+    l_tx_pH: 0.20
+    coupling_k: 0.80
+    trigger_area: 0.50
+    trigger_bias_uA: 15.0
+    l_sec_pH: 2.0
+    r_sec_load_ohm: 12.0
+  receiver_topology: >-
+    Initial point: SL -> R_IN -> L_TX -> B_TRIG; L_SEC and B_OUT both
+    terminate at the secondary node N_SEC.  The correction point retains
+    B_OUT N_SEC->ground but puts R_SEC_LOAD in series with L_SEC as its
+    return.  Independent I_OUT_BIAS 0->N_SEC and R_OUT_DAMP N_SEC->ground
+    make V(B_OUT)=V(N_SEC)-V(0) differential.
+  canonical_topology_modified: false
+  excluded_this_round: [self_quench, output_JTL, JTL, T1, R1c, blind_sweep]
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+    beta_c_actual: 5.4450545
+    provenance: DERIVED_FROM_MODEL
+  pickup:
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    coupling_k: 0.80
+    mutual_inductance_pH: 0.5059644
+    r_sec_load_ohm: 12.0
+    provenance: RETAINED_FROM_ACCEPTED_R1A
+  output:
+    area: 0.10
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+    bias_uA: 7.0
+    bias_fraction_of_ic: 0.70
+    r_damp_ohm: 100.0
+    rn_parallel_damp_ohm: 61.5384615
+    r0_parallel_damp_ohm: 94.1176471
+    beta_c_intrinsic: 5.4450545
+    beta_c_with_rn_parallel_damp: 0.8054814
+    provenance: RETAINED_INITIAL_POINT_FROM_ACCEPTED_R1B
+  expected_current_margin:
+    read1_negative_lobe_uA: -4.17414
+    read1_expected_bout_peak_uA: 11.17414
+    read0_negative_lobe_uA: -0.976753
+    read0_expected_bout_peak_uA: 7.976753
+    source: accepted_R1a_raw_current_orientation
+  model_semantics: >-
+    jjmit is AREA-scaled by JoSIM src/JJ.cpp: Ic and C multiply by AREA while
+    RN and R0 divide by AREA.  The beta estimates are design diagnostics, not
+    switching criteria.
+model:
+  source: inputs/jjmit.cir
+  sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  immutable: true
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+references:
+  r1a_manifest: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/manifest.yaml
+  r1b_parent_report: test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/analysis/R1B_REPORT.md
+  bq_v4_reference: inputs/bq_cell_v4-reference.cir
+  bq_paper_reference: inputs/bq_cell_paper-reference.cir
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+  actual_csv_dt_ps:
+    min: 0.01249999999996021
+    max: 0.025000000000000133
+    source: analysis/r1b-analysis.json qa fields from all four correction CSVs
+provenance:
+  parent_worktree_before_directory_creation: CLEAN
+  working_tree_before_initial_run: NEW_EXPLORATION_UNTRACKED_ONLY
+  receiver_fixture_sha256: 61f615096abe0f83b71ebef8fbc7691ff489c67d1891bb43bd246aca83de735e
+  canonical_fixture_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  jjmit_fixture_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  r1a_series_fixture_sha256: 4dcf68611dc7b5223ce88d5a30218a2209fa73ffe29f3e6e4cdb8aea8db879fc
+  initial_receiver_fixture_sha256: 61f615096abe0f83b71ebef8fbc7691ff489c67d1891bb43bd246aca83de735e
+  correction_receiver_fixture_sha256: 9b4cee1d9c244b9a52e90111462ccb9a80e637b3698581639868b6961638c587
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+operating_point_sequence:
+  max_operating_points: 2
+  points:
+    - {id: diff-a010-b07-r100, output_area: 0.10, output_bias_uA: 7.0, r_damp_ohm: 100.0, status: completed_initial_bias_diversion}
+    - {id: diff-a010-b07-r100-series-return, output_area: 0.10, output_bias_uA: 7.0, r_damp_ohm: 100.0, status: completed_fail_no_complete_BOUT_transition}
+  correction_rule: >-
+    If and only if the initial point fails, allow one local topology correction
+    supported by an observed KCL/KVL or polarity failure.  Do not alter AREA,
+    bias, damping, or perform a blind parameter sweep.  Preserve the initial
+    raw matrix and preregister the correction before running it.
+  stop_rule: >-
+    Stop after the initial point if it satisfies or clearly fails R1b.  At
+    most one evidence-driven topology correction is allowed; do not start R1c.
+correction:
+  root_cause: >-
+    In the initial direct-node point, the parallel zero-voltage L_SEC branch
+    carried about 6.599 uA of the 7 uA bias while B_OUT carried only about
+    0.401 uA, so the declared output bias did not reach B_OUT.
+  topology: >-
+    Keep B_OUT N_SEC->ground, but use L_SEC N_SEC->N_SEC_RTN followed by
+    R_SEC_LOAD N_SEC_RTN->ground.  The secondary transient still enters N_SEC
+    and the same KCL modulates B_OUT; the series resistor removes the direct
+    zero-voltage DC return.
+  fixture: inputs/diff_output_a010_b07_rd100_series_return.cir
+  initial_analysis: analysis/initial-direct-analysis.json
+probes:
+  trigger_same_junction: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  output_same_junction: [P(B_OUT|XTRIG), V(B_OUT|XTRIG), I(B_OUT|XTRIG)]
+  output_branch: [I(I_OUT_BIAS|XTRIG), I(R_OUT_DAMP|XTRIG)]
+  pickup: [I(R_IN|XTRIG), I(L_TX|XTRIG), I(I_TRIG_BIAS|XTRIG), V(N_PICK|XTRIG), V(N_TRIG|XTRIG)]
+  secondary: [V(N_SEC|XTRIG), I(L_SEC|XTRIG), I(R_SEC_LOAD|XTRIG)]
+  BVM_output: [V(SL1), V(N6|XBVM1), I(L_SL|XBVM1), I(L_PSL|XBVM1)]
+  storage: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1)]
+  readout: [P(B_JS1|XBVM1), V(B_JS1|XBVM1), P(B_JS2|XBVM1), V(B_JS2|XBVM1)]
+  BVM_branches: [I(L_S1|XBVM1), I(L_S2|XBVM1), I(L_S3|XBVM1), I(L_M3|XBVM1)]
+  sources: [I(I_WL1), I(I_BL1), I(I_SE1)]
+windows_ps:
+  PRE: [80, 90]
+  READ_ACTIVITY: [94, 130]
+  TRIGGER_ANALYSIS: [94, 170]
+  OUTPUT_ANALYSIS: [94, 170]
+  POST: [130, 170]
+  CONTROL_FULL: [20, 170]
+  STORAGE_POST: [140, 150]
+criterion:
+  output_read1: >-
+    At least one monotonic continuous B_OUT segment in OUTPUT_ANALYSIS with
+    abs(delta_phase)>=2*pi and start_time<=130 ps, with same-segment direct
+    B_OUT voltage area consistent within the preregistered 0.05-turn local
+    evidence residual.
+  output_read0_and_controls: >-
+    No complete B_OUT segment in read0 or either READ=0 control; controls have
+    no free-running output phase.
+  trigger_guard: >-
+    B_TRIG retains a complete read1 segment and no complete read0/control
+    segment using direct same-JJ phase and voltage-area evidence.
+  back_action: >-
+    Report secondary read1/read0 margin, SL/N6 response, and JM1/JM2 drift;
+    no obvious logical-sign inversion or storage collapse is allowed.
+  forbidden_shortcuts: [I_above_Ic, voltage_peak_alone, phase_range_alone, SFQ_count, downstream_delivery]
+  SFQ_boundary: >-
+    A local B_OUT transition is not called downstream SFQ delivery because no
+    JTL is present.
+  verdict: >-
+    PASS only if read1 B_OUT has a complete phase/area-consistent segment,
+    read0/control have none, B_TRIG guard passes, and controls do not free-run.
+    FAIL if artifacts are valid and a necessary condition is absent; INVALID
+    for solver or raw artifact failure.
+artifact_requirements:
+  raw_csv: preserve all four matched cases without overwrite
+  logs: preserve stdout and stderr for every run
+  analysis_script: analyze_r1b.py
+  independent_crosscheck: analysis/independent_crosscheck.py
+  structured_analysis: analysis/r1b-analysis.json
+  report: analysis/R1B_DIFF_REPORT.md
+  review: analysis/REVIEW.md
+  hash_inventory: analysis/sha256sums.txt
+  initial_direct_analysis: analysis/initial-direct-analysis.json
+  initial_direct_comparison: analysis/initial-direct-r1a-comparison.json
+  correction_analysis: analysis/r1b-analysis.json
+  correction_comparison: analysis/r1a-comparison.json
+  correction_independent_crosscheck: analysis/independent-crosscheck.json
+  no_raw_overwrite: true
+authority:
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  measurement_semantics: docs/research/METRIC_SPEC_V2.md
+  no_candidate_upgrade: true
+  no_r1c_implementation: true
+status: COMPLETED
+result: R1b_FAIL
+updated_at: "2026-08-21T17:47:30+08:00"
+verdict_summary: >-
+  Artifact-valid matched four-case Exploration.  The initial point exposed
+  bias diversion through the parallel zero-voltage L_SEC return.  The one
+  permitted series-return correction restored a direct 7 uA B_OUT bias and a
+  state-dependent differential transient, while preserving the complete
+  read1 B_TRIG guard.  Its largest read1 B_OUT monotonic segment was only
+  0.02205835 turns with same-JJ voltage area 0.02206765 turns, so the required
+  complete output transition was absent.  R1b is therefore FAIL, not INVALID;
+  no R1c/JTL/Candidate action was started.
+execution_note_before_valid_run: >-
+  The first invocation was an artifact-invalid parse attempt because the case
+  fixture instantiated SERIES_PICKUP_OUTPUT instead of SERIES_PICKUP_DIFF.
+  No raw CSV was produced; its stdout/stderr and invalid analysis are retained.
+  The corrected input is run-02, with no overwrite of run-01 artifacts.

@@ -1,0 +1,27 @@
+* R1b differential-input activation fixture.
+* B_OUT is connected directly from the transformer secondary signal node to
+* ground.  It is not a floating/common-mode observer.
+.subckt SERIES_PICKUP_DIFF IN
+
+* Canonical SL -> R_IN -> L_TX -> B_TRIG front end, retained from R0b/R1a.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* R1a transformer pickup, retained.
+L_SEC         N_SEC       0             2.0p
+R_SEC_LOAD    N_SEC       0            12.0
+K_TX          L_TX        L_SEC        0.80
+
+* Differential output: B_OUT and its local shunt both terminate at ground.
+* Explicit KCL at N_SEC, with currents positive from N_SEC to ground:
+*   i_LSEC + i_RSEC + i_RDAMP + i_BOUT - I_BIAS = 0
+*   i_BOUT = I_BIAS - i_LSEC - i_RSEC - i_RDAMP
+* Thus a negative read1 i_LSEC lobe adds to the +7uA bias in B_OUT,
+* while the read0/control lobe remains below the 10uA output Ic.
+B_OUT         N_SEC       0             jjmit area=0.10
+I_OUT_BIAS    0           N_SEC         pwl(0p 0 2p 7U 80p 7U 140p 7U 170p 7U)
+R_OUT_DAMP    N_SEC       0            100.0
+
+.ends SERIES_PICKUP_DIFF

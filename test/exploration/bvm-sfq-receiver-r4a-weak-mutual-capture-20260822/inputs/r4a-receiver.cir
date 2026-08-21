@@ -15,6 +15,13 @@ L_H           N_CAP1      N_CAP2       100p
 B_SET         N_CAP2      N_CAP1       jjmit area=0.05
 I_SET_BIAS    N_CAP2      N_CAP1       pwl(0p 0 2p 3U 80p 3U 140p 3U 170p 3U)
 
+* R4-A formulation amendment (2026-08-22): R_GAUGE provides the MNA common-mode
+* voltage reference for the floating island ONLY.  It is not part of capture,
+* damping, reset, or current-steering.  At uV-scale node voltages its leakage is
+* fA--sub-pA, negligible vs uA-scale loop/JJ currents; verified by probing
+* I(R_GAUGE) in every run.
+R_GAUGE       N_CAP1      0            1G
+
 K_TX_LH       L_TX        L_H          -0.80
 
 .ends R4A_SOURCE_CAPTURE

@@ -14,8 +14,8 @@ I_SE1 0 SE1 pwl(0p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)
 .tran 0.0125p 170p
 * R4-A probes: source, primary current, capture loop, guards, storage.
 .print P(B_TRIG|XTRIG) V(B_TRIG|XTRIG) I(B_TRIG|XTRIG) I(R_IN|XTRIG)
-.print I(L_TX|XTRIG)
-.print P(B_SET|XCAP) V(B_SET|XCAP) I(B_SET|XCAP) I(L_H|XCAP)
+.print I(L_TX|XTRIG) I(R_GAUGE|XTRIG)
+.print P(B_SET|XTRIG) V(B_SET|XTRIG) I(B_SET|XTRIG) I(L_H|XTRIG)
 .print V(SL1) V(N6|XBVM1)
 .print P(B_JM1|XBVM1) V(B_JM1|XBVM1) P(B_JM2|XBVM1) V(B_JM2|XBVM1)
 .print P(B_JS1|XBVM1) V(B_JS1|XBVM1) P(B_JS2|XBVM1) V(B_JS2|XBVM1)

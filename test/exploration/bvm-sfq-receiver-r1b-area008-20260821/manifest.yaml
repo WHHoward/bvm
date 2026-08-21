@@ -1,0 +1,214 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R1b single-point B_OUT AREA=.08 activation margin
+created_at: "2026-08-21T18:06:44+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821
+parent_checkpoint: e3a18da0b42bfdfdd1d36886cbad8b04d77617c9
+current_head_before_experiment: e3a18da0b42bfdfdd1d36886cbad8b04d77617c9
+research_question: >-
+  Does changing only B_OUT AREA from the accepted differential receiver point
+  AREA=.10 to AREA=.08 produce a complete read1 B_OUT transition while read0
+  and both READ=0 controls remain non-complete, and what bounded evidence does
+  that provide about critical-current margin versus transfer or damping?
+hypothesis: >-
+  AREA=.08 lowers B_OUT Ic from 10 uA to 8 uA and increases the effective
+  read1 activation margin.  The same area change also changes RN, R0, and C,
+  so the primary test is a combined JJ activation-barrier perturbation, not an
+  Ic-only proof.  Because the pickup and secondary topology are unchanged,
+  read1/read0 secondary transfer should remain state-dependent.
+alternative_explanations:
+  - The secondary current/voltage transfer may be too small or incorrectly phased, so lower AREA may not activate B_OUT.
+  - The AREA change may alter RN/C and the effective damping dynamics enough to suppress activation or create ringing.
+  - The lower barrier may also activate read0 or a READ=0 control.
+  - B_OUT may show a local phase excursion without a phase/voltage-area complete transition.
+  - A local B_OUT transition would not establish downstream SFQ delivery because no JTL is present.
+independent_variable:
+  name: B_OUT AREA
+  baseline: 0.10
+  point: 0.08
+  max_points_this_round: 1
+frozen_conditions:
+  canonical_bvm: true
+  route: canonical SL
+  r_in_ohm: 12.0
+  l_tx_pH: 0.20
+  coupling_k: 0.80
+  l_sec_pH: 2.0
+  r_sec_load_ohm: 12.0
+  trigger_area: 0.50
+  trigger_bias_uA: 15.0
+  output_bias_uA: 7.0
+  r_damp_ohm: 100.0
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  topology_changed: false
+  excluded: [BVM_edit, pickup_edit, bias_sweep, damping_sweep, QB, JTL, T1, R1c, blind_sweep]
+topology: >-
+  SL -> R_IN -> L_TX -> B_TRIG to ground, with K_TX coupling to L_SEC.
+  L_SEC runs N_SEC -> N_SEC_RTN -> R_SEC_LOAD -> ground.  B_OUT runs
+  N_SEC -> ground, with independent I_OUT_BIAS from ground to N_SEC and
+  R_OUT_DAMP from N_SEC to ground.  At N_SEC, i_BOUT=I_BIAS-i_LSEC-i_RDAMP
+  for currents positive toward ground; V(B_OUT)=V(N_SEC)-V(0).
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+    beta_c_intrinsic: 5.4450545
+    provenance: DERIVED_FROM_JJ_MODEL
+  pickup:
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    coupling_k: 0.80
+    mutual_inductance_pH: 0.5059644
+    r_sec_load_ohm: 12.0
+    provenance: RETAINED_FROM_ACCEPTED_R1A_AND_E3A18DA
+  output:
+    area: 0.08
+    ic_uA: 8.0
+    rn_ohm: 200.0
+    r0_ohm: 2000.0
+    c_fF: 5.6
+    bias_uA: 7.0
+    bias_fraction_of_ic: 0.875
+    r_damp_ohm: 100.0
+    rn_parallel_damp_ohm: 66.6666667
+    r0_parallel_damp_ohm: 95.2380952
+    beta_c_intrinsic: 5.4450545
+    beta_c_with_rn_parallel_damp: 0.6050061
+    provenance: DERIVED_SINGLE_POINT_FROM_JJ_MODEL
+  baseline_area010:
+    area: 0.10
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+    bias_uA: 7.0
+    r_damp_ohm: 100.0
+model:
+  source: inputs/jjmit.cir
+  sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  jj_cpp_source: src/JJ.cpp
+  jj_cpp_sha256: 492d3705180ae205c9aba7cf13bef0f5d13ffee123f626cecdfed7a57760a596
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+  area_semantics: "Ic and C multiply by AREA; RN and R0 divide by AREA in src/JJ.cpp"
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  immutable: true
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  logical_semantics_sha256: fa3599a3e2f6272796dc9a89b745f3e50559948f20353c1c85db9e17fe7688e3
+references:
+  accepted_baseline_commit: e3a18da0b42bfdfdd1d36886cbad8b04d77617c9
+  accepted_baseline_exploration: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821
+  accepted_baseline_receiver: inputs/area010_receiver_reference.cir
+  r1a_manifest: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/manifest.yaml
+  bq_v4_reference: inputs/bq_cell_v4-reference.cir
+  bq_paper_reference: inputs/bq_cell_paper-reference.cir
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+  actual_csv_dt_ps:
+    min: 0.01249999999996021
+    max: 0.025000000000000133
+    source: analysis/r1b-analysis.json qa fields from all four AREA=.08 CSVs
+provenance:
+  parent_worktree_before_directory_creation: CLEAN
+  working_tree_before_run: NEW_EXPLORATION_UNTRACKED_ONLY
+  current_head: e3a18da0b42bfdfdd1d36886cbad8b04d77617c9
+  receiver_fixture_sha256: b82e0ca5b3889f750d8d42edcb36fcb8bcb498eab11e5c090567876550d9f979
+  accepted_area010_receiver_fixture_sha256: 9b4cee1d9c244b9a52e90111462ccb9a80e637b3698581639868b6961638c587
+  canonical_fixture_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  jjmit_fixture_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  jj_cpp_sha256: 492d3705180ae205c9aba7cf13bef0f5d13ffee123f626cecdfed7a57760a596
+  binary_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  accepted_baseline_raw_sha256:
+    read1: 78d55c37f0c3d7825f8d137776df9364b62ad75c461f21d2dd1d443cf9675963
+    read0: 687af646e2360105c63ec0998fa2e5985184bebe595553c652e148d9b3a74f24
+    logical1_read0_control: fcf571008290bacd84bf27f100f6a37dc6297b5ff7395201e60a3b36c4dec9f8
+    logical0_read0_control: 81d1a6fe5a84be3d85a76191071bbb8851ed18b0b1ed835ee84811b7353bc5bd
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+windows_ps:
+  PRE: [80, 90]
+  READ_ACTIVITY: [94, 130]
+  TRIGGER_ANALYSIS: [94, 170]
+  OUTPUT_ANALYSIS: [94, 170]
+  POST: [130, 170]
+  CONTROL_FULL: [20, 170]
+  STORAGE_POST: [140, 150]
+criterion:
+  q1_read1: >-
+    A complete monotonic B_OUT segment with abs(delta_phase)>=2*pi and
+    same-segment direct B_OUT voltage area consistent within 0.05 turn.
+  q1_read0_controls: no complete B_OUT segment and no free-running control output.
+  guard: B_TRIG read1 complete, read0/control incomplete, secondary remains state-dependent, storage signs do not invert.
+  forbidden_shortcuts: [I_above_Ic, voltage_peak_alone, phase_range_alone, SFQ_count, downstream_delivery]
+  verdict: >-
+    PASS only for a valid matched artifact with read1 complete B_OUT and no
+    read0/control complete B_OUT.  FAIL if valid and read1 activation is absent
+    or read0/control activates.  INVALID only for artifact/solver failure.
+comparison:
+  baseline_point: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/raw/diff-a010-b07-r100-series-return
+  new_point: raw/diff-a008-b07-r100-series-return
+  script: analysis/compare_area010.py
+  purpose: determine whether AREA=.08 changes B_OUT activation while transfer topology is held fixed
+probes:
+  output_same_junction: [P(B_OUT|XTRIG), V(B_OUT|XTRIG), I(B_OUT|XTRIG)]
+  trigger_same_junction: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG)]
+  secondary: [V(N_SEC|XTRIG), I(L_SEC|XTRIG), I(R_SEC_LOAD|XTRIG)]
+  output_branch: [I(I_OUT_BIAS|XTRIG), I(R_OUT_DAMP|XTRIG)]
+  bvm_source: [V(SL1), V(N6|XBVM1), I(L_SL|XBVM1), I(L_PSL|XBVM1)]
+  storage: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1)]
+artifact_requirements:
+  raw_csv: preserve all four matched cases without overwrite
+  logs: preserve stdout and stderr for each case
+  analysis_script: analyze_r1b.py
+  independent_crosscheck: analysis/independent_crosscheck.py
+  area_comparison: analysis/compare_area010.py
+  area_comparison_json: analysis/area010-comparison.json
+  structured_analysis: analysis/r1b-analysis.json
+  report: analysis/R1B_AREA008_REPORT.md
+  review: analysis/REVIEW.md
+  hash_inventory: analysis/sha256sums.txt
+  no_raw_overwrite: true
+authority:
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  measurement_semantics: docs/research/METRIC_SPEC_V2.md
+  no_candidate_upgrade: true
+  no_r1c_implementation: true
+status: COMPLETED
+result: R1b_AREA008_FAIL
+updated_at: "2026-08-21T18:12:21+08:00"
+execution:
+  command: ./run_cases.sh diff-a008-b07-r100-series-return
+  analysis_commands:
+    - python3 analyze_r1b.py
+    - python3 analysis/independent_crosscheck.py
+    - python3 analysis/compare_area010.py
+  matched_matrix_complete: true
+  artifact_valid: true
+verdict_summary: >-
+  AREA=.08 lowered the modeled B_OUT Ic from 10 uA to 8 uA but did not produce
+  a complete read1 output transition.  The largest read1 B_OUT segment was
+  0.02012177 turn with same-JJ area magnitude 0.02012715 turn, versus
+  0.02205835/0.02206765 turn at the accepted AREA=.10 baseline.  Read0 and
+  both READ=0 controls remained non-complete.  Secondary transfer remained
+  state-dependent, while read1 secondary current decreased and the effective
+  damped beta diagnostic changed from about 0.805 to 0.605.  The bounded
+  interpretation is B+C loaded transfer/dynamic limitation more plausible
+  than pure Ic margin alone; B and C are not uniquely separated by this one
+  AREA point.  No topology/BVM change, sweep, R1c, JTL, or Candidate upgrade.

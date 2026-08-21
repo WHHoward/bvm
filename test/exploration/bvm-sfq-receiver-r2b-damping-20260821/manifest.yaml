@@ -1,0 +1,219 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R2-B B_OUT local damping diagnostic
+created_at: "2026-08-21T19:36:29+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r2a-coupling-20260821
+parent_checkpoint: 1a78d141e363466b6bc6841534ddaef87e99dd03
+current_head_before_experiment: 1a78d141e363466b6bc6841534ddaef87e99dd03
+research_question: >-
+  Is B_OUT local damping (R_OUT_DAMP, the N_SEC-to-ground shunt in parallel with
+  the output JJ) the dominant reason the state-dependent secondary transient
+  fails to evolve into a complete 2*pi phase transition?  Concretely: with K_TX
+  frozen at 0.95 and all R2-A baseline parameters fixed, does weakening only
+  R_OUT_DAMP produce a large (approaching or reaching one-turn) increase in
+  read1 B_OUT phase excursion, while read0 and zero-READ controls stay sub-turn?
+hypothesis: >-
+  H2 (preregistered primary): at the frozen operating point the read1 drive is
+  marginal and the parallel shunt both steals transient bias current
+  (i_RDAMP = V(N_SEC)/R_OUT_DAMP) and overdamps the junction
+  (beta_c(RN||R_OUT_DAMP) = 0.81 at 100 ohm < 1).  Weakening R_OUT_DAMP raises
+  Reff toward RN, raises beta_c across the underdamped transition, reduces
+  shunt current theft, and lets the input transient evolve into a complete
+  phase slip.  Prediction: read1 largest monotonic B_OUT segment grows strongly
+  and monotonically with R_OUT_DAMP (0.026 turn -> >=0.1 -> ~0.3 -> approaching
+  or reaching 1.0 turn), while read0/controls remain sub-turn.
+alternative_hypotheses:
+  H1_transfer_margin_exhausted: >-
+    The secondary-to-output injection mechanism itself is too weak; damping
+    changes leave read1 B_OUT near 0.02-0.03 turn (Situation B).  This would
+    redirect attention to the flux/current injection topology rather than any
+    further parameter sweep.
+  overweakening_instability: >-
+    At larger R_OUT_DAMP the junction becomes underdamped enough to ring,
+    retrap slowly, free-run, or switch on read0/control (Situation C), meaning
+    activation and self-quenching define an operating window rather than a
+    monotonic improvement.
+  loading_backaction: >-
+    Changing R_OUT_DAMP alters the secondary load line enough to change the
+    upstream transfer or BVM readout itself; guards must be checked before any
+    output-stage interpretation.
+variable:
+  name: r_out_damp_ohm
+  units: ohm
+  values: [100.0, 150.0, 220.0, 330.0]
+  baseline: 100.0
+  only_changed_variable: true
+  maximum_operating_points: 4
+  rationale: >-
+    Candidate ladder chosen from Reff = RN||R_OUT_DAMP and beta_c =
+    2*pi*Ic*Reff^2*C/Phi0 with Ic=10 uA, C=7 fF, RN=160 ohm:
+    100 -> Reff=61.538, beta_c=0.8055;
+    150 -> Reff=77.419, beta_c=1.2749;
+    220 -> Reff=92.632, beta_c=1.8251;
+    330 -> Reff=107.755, beta_c=2.4697.
+    The ladder crosses beta_c = 1 between 100 and 150 ohm, is roughly
+    geometric, and keeps Reff < RN so the junction stays explicitly shunted
+    (no topology change, bounded departure from the accepted baseline).
+fixed_constraints:
+  canonical_bvm_topology_modified: false
+  canonical_bvm_parameters_modified: false
+  sl_route_modified: false
+  pickup_inductance_modified: false
+  secondary_inductance_modified: false
+  coupling_k_modified: false
+  b_out_area_modified: false
+  b_out_jj_model_modified: false
+  b_out_bias_modified: false
+  b_trig_area_bias_modified: false
+  measurement_definition_modified: false
+  existing_accepted_artifacts_modified: false
+route:
+  source: canonical BVM SL output
+  topology: >-
+    SL -> R_IN=12 ohm -> L_TX=0.20 pH -> B_TRIG(area=0.50, bias=15 uA);
+    L_TX couples to L_SEC=2 pH with K_TX=0.95 (M=0.6008327 pH); L_SEC returns
+    through R_SEC_LOAD=12 ohm; B_OUT(area=0.10) is N_SEC -> ground with
+    I_OUT_BIAS=7 uA and R_OUT_DAMP as the only varied parameter.
+  retained_r2a_k095_baseline:
+    r_in_ohm: 12.0
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    k_tx: 0.95
+    mutual_M_pH: 0.6008327
+    r_sec_load_ohm: 12.0
+    trigger_area: 0.50
+    trigger_bias_uA: 15.0
+    output_area: 0.10
+    output_bias_uA: 7.0
+  damping_points:
+    - {id: k095-r100, r_out_damp_ohm: 100.0, reff_ohm: 61.538, beta_c: 0.8055}
+    - {id: k095-r150, r_out_damp_ohm: 150.0, reff_ohm: 77.419, beta_c: 1.2749}
+    - {id: k095-r220, r_out_damp_ohm: 220.0, reff_ohm: 92.632, beta_c: 1.8251}
+    - {id: k095-r330, r_out_damp_ohm: 330.0, reff_ohm: 107.755, beta_c: 2.4697}
+  excluded: [area_sweep, bias_sweep, coupling_sweep, capacitance_sweep,
+    topology_redesign, self_quench_design, JTL, T1, blind_optimization]
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+  pickup:
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    coupling_k: 0.95
+    mutual_M_pH: 0.6008327
+    r_sec_load_ohm: 12.0
+  output:
+    area: 0.10
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+    bias_uA: 7.0
+    r_damp_ohm_by_point: {k095-r100: 100.0, k095-r150: 150.0, k095-r220: 220.0,
+      k095-r330: 330.0}
+model:
+  source: inputs/jjmit.cir
+  sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+  josim_jj_source: src/JJ.cpp
+  josim_jj_source_sha256: 492d3705180ae205c9aba7cf13bef0f5d13ffee123f626cecdfed7a57760a596
+  area_semantics: >-
+    JoSIM src/JJ.cpp scales Ic and C by AREA and divides RN and R0 by AREA;
+    AREA=0.10 gives Ic=10 uA, RN=160 ohm, R0=1600 ohm, C=7 fF.
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  logical_semantics_sha256: fa3599a3e2f6272796dc9a89b745f3e50559948f20353c1c85db9e17fe7688e3
+  immutable: true
+baseline:
+  r2a_report: test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/analysis/R2A_COUPLING_REPORT.md
+  r2a_k095_receiver_fixture: test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/inputs/diff-a010-b007-k095-receiver.cir
+  relation: >-
+    exact receiver topology and operating point at K=0.95; only R_OUT_DAMP is
+    varied in R2-B.  The k095-r100 point is a deliberate deterministic-replay
+    check against the R2-A k095 raw matrix (byte-identical CSVs expected).
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+  same_command_for_all_cases: true
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+windows_ps:
+  PRE: [80.0, 90.0]
+  READ_ACTIVITY: [94.0, 130.0]
+  TRIGGER_ANALYSIS: [94.0, 170.0]
+  OUTPUT_ANALYSIS: [94.0, 170.0]
+  POST: [130.0, 170.0]
+  CONTROL_FULL: [20.0, 170.0]
+  STORAGE_POST: [140.0, 150.0]
+measurement:
+  metric_semantics_source: docs/research/METRIC_SPEC_V2.md
+  metric_semantics_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  direct_probes:
+    btrig_phase: P(B_TRIG|XTRIG)
+    btrig_voltage: V(B_TRIG|XTRIG)
+    btrig_current: I(B_TRIG|XTRIG)
+    bout_phase: P(B_OUT|XTRIG)
+    bout_voltage: V(B_OUT|XTRIG)
+    bout_current: I(B_OUT|XTRIG)
+    bout_damp_current: I(R_OUT_DAMP|XTRIG)
+    secondary_voltage: V(N_SEC|XTRIG)
+    secondary_coil_current: I(L_SEC|XTRIG)
+    secondary_return_current: I(R_SEC_LOAD|XTRIG)
+    storage_phases: [P(B_JM1|XBVM1), P(B_JM2|XBVM1)]
+    source_guards: [V(SL1), V(N6|XBVM1), I(L_SL|XBVM1)]
+event_criterion:
+  definition: >-
+    A local complete event requires a continuous monotonic segment of the
+    adjacent-sample-unwrapped P(B_OUT|XTRIG) with abs(delta(phi))/(2*pi) >= 1.0
+    turn, segment start no later than 130 ps, and same-segment direct
+    V(B_OUT|XTRIG) trapezoid integral / Phi0 within 0.05 turn of the phase
+    delta.  I_peak > Ic, voltage peaks, ringing, or whole-window phase range are
+    activity diagnostics only and never event oracles.
+  read0_and_controls: must not contain qualifying complete segments for a clean
+    activation claim.
+guards:
+  secondary_separation: read1/read0 secondary amplitude ratio expected to remain
+    near the R2-A value (~5.7) up to bounded loading changes from R_OUT_DAMP.
+  storage_signs: JM1/JM2 post medians must keep logical-state signs
+    (read1 positive, read0 negative) in every run.
+  trigger_guard: B_TRIG read1 complete-trigger behavior must be preserved
+    (R0b criterion); bounded back-action changes are recorded, not treated as failure by themselves.
+interpretation_plan:
+  situation_A_damping_dominant: >-
+    read1 largest monotonic B_OUT segment grows strongly with R_OUT_DAMP
+    (0.026 -> >=0.1 -> ~0.3 -> approaching/reaching 1 turn) while read0 and
+    controls stay sub-turn.  Strongly supports H2 as the dominant bottleneck.
+    If a first qualifying read1-complete / read0-incomplete / control-incomplete
+    point appears, record it and stop sweeping.
+  situation_B_not_damping: >-
+    Secondary signals remain state-separated but read1 B_OUT stays near
+    0.02-0.03 turn across all damping points.  Stop damping sweeps immediately;
+    do not auto-continue into AREA/bias/C/K sweeps.  Re-examine the
+    secondary-to-B_OUT injection mechanism and receiver topology instead.
+  situation_C_overweak: >-
+    Multi-turn, free-running, strong ringing, or read0/control switching
+    appears at larger R_OUT_DAMP.  Record as evidence that activation and
+    self-quenching/retrap define an operating window; do not label success.
+outputs:
+  raw: raw/<point>/<case>/run-01.csv
+  logs: logs/
+  analysis: analysis/diff-<point>-analysis.json and crosscheck json per point
+  aggregate: analysis/damping-summary.json
+  report: analysis/R2B_DAMPING_REPORT.md
+  review: analysis/REVIEW.md

@@ -114,13 +114,20 @@ matched_cases:
 event_oracle:
   all_required:
     - continuous adjacent-sample unwrapped phase
-    - exactly one forward monotonic segment
+    - exactly one qualifying complete forward monotonic segment
     - "|delta(phi)|/(2*pi) >= 1 turn"
     - same-B_OUT same-segment same-endpoint integral V(B_OUT)dt/Phi0 consistent
       with phase-turn count within the existing R2 event-oracle tolerance (0.05 turn)
     - stable before the event
     - retrap after the event
     - no second complete event anywhere in the whole observation interval
+  clarification_2026_08_22:
+    - sub-turn monotonic excursions, bias establishment, and bounded ringing may
+      exist; they do not by themselves constitute MULTI_FIRE
+    - MULTI_FIRE / one-shot violation applies only to additional complete
+      qualifying (>= 1 turn) forward events
+    - a reverse complete (>= 1 turn) event still fails
+    - stable-before-event and retrap-after-event requirements unchanged
   never_sufficient_alone:
     - I > Ic
     - voltage peak

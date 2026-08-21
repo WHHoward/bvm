@@ -1,0 +1,24 @@
+* R1c frozen differential receiver bias point 9 uA; logical1 READ=0 control.
+.include jjmit.cir
+.include bvm_cell.cir
+.include diff-a010-b009-r100-receiver.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+XTRIG SL1 SERIES_PICKUP_DIFF_SERIES_RETURN
+
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 170p 0)
+
+.tran 0.0125p 170p
+
+.print P(B_TRIG|XTRIG) V(B_TRIG|XTRIG) I(B_TRIG|XTRIG)
+.print I(R_IN|XTRIG) I(L_TX|XTRIG) I(I_TRIG_BIAS|XTRIG) V(N_PICK|XTRIG) V(N_TRIG|XTRIG)
+.print P(B_OUT|XTRIG) V(B_OUT|XTRIG) I(B_OUT|XTRIG) I(I_OUT_BIAS|XTRIG) I(R_OUT_DAMP|XTRIG)
+.print V(N_SEC|XTRIG) I(L_SEC|XTRIG) I(R_SEC_LOAD|XTRIG)
+.print V(SL1) V(N6|XBVM1) I(L_SL|XBVM1) I(L_PSL|XBVM1)
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.print I(L_S1|XBVM1) I(L_S2|XBVM1) I(L_S3|XBVM1) I(L_M3|XBVM1)
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.end

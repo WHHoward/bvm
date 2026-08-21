@@ -1,0 +1,29 @@
+* R1c frozen differential receiver, B_OUT bias operating point = 10 uA.
+* Root cause addressed: a parallel zero-voltage L_SEC branch diverted the
+* independent bias current before it reached B_OUT.  R_SEC_LOAD is now the
+* return in series with L_SEC; the B_OUT branch remains N_SEC -> ground.
+.subckt SERIES_PICKUP_DIFF_SERIES_RETURN IN
+
+* Canonical SL -> R_IN -> L_TX -> B_TRIG front end, unchanged.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* R1a L_SEC/K values retained; R_SEC_LOAD is the explicit return path.
+L_SEC         N_SEC       N_SEC_RTN     2.0p
+R_SEC_LOAD    N_SEC_RTN   0            12.0
+K_TX          L_TX        L_SEC        0.80
+
+* True differential output node: B_OUT is directly referenced to ground.
+* Currents i_LSEC and i_BOUT are positive N_SEC -> ground direction.
+* KCL at N_SEC is:
+*   i_BOUT = I_BIAS - i_LSEC - i_RDAMP
+* The series R_SEC_LOAD return prevents L_SEC from being a zero-voltage
+* parallel DC return for I_BIAS, while its transient current still enters
+* the same N_SEC node and directly modulates B_OUT.
+B_OUT         N_SEC       0             jjmit area=0.10
+I_OUT_BIAS    0           N_SEC         pwl(0p 0 2p 10U 80p 10U 140p 10U 170p 10U)
+R_OUT_DAMP    N_SEC       0            100.0
+
+.ends SERIES_PICKUP_DIFF_SERIES_RETURN

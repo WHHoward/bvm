@@ -1,0 +1,198 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+title: BVM -> SFQ receiver R1c B_OUT receiver bias margin diagnostic
+created_at: "2026-08-21T18:27:11+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r1b-area008-20260821
+parent_checkpoint: ece568d5d0b1248655ccf892009ab11712855a23
+accepted_receiver_baseline: e3a18da0b42bfdfdd1d36886cbad8b04d77617c9
+current_head_before_experiment: ece568d5d0b1248655ccf892009ab11712855a23
+research_question: >-
+  At the frozen R1b AREA=0.10 differential receiver point, does changing only
+  the B_OUT bias current create a read1 activation window while preserving
+  read0 and both READ=0 controls as non-switching?
+hypothesis: >-
+  Increasing the fixed-AREA B_OUT bias reduces the loaded dynamical distance
+  to the critical operating point.  A local bias window may therefore exist
+  in which the state-dependent read1 secondary transient completes a B_OUT
+  phase transition before the weaker read0 transient does.
+diagnostic_alternatives:
+  A_insufficient_input_energy: >-
+    The secondary transient remains too small after loading, so no tested bias
+    reaches a complete B_OUT phase/area-consistent segment.
+  B_incorrect_JJ_operating_point: >-
+    A bias interval exists, or activation changes sharply with bias, while
+    the fixed secondary transfer remains state-dependent.
+  C_dynamic_damping_limitation: >-
+    Bias changes alter the transient but do not produce a consistent complete
+    segment because the loaded JJ dynamics remain overdamped/under-retrapping
+    or otherwise unable to sustain a phase transition.
+variable:
+  name: B_OUT_bias_current
+  units: uA
+  values: [6.0, 7.0, 8.0, 9.0, 10.0]
+  baseline_uA: 7.0
+  only_changed_variable: true
+  maximum_operating_points: 5
+fixed_constraints:
+  canonical_bvm_topology_modified: false
+  canonical_bvm_parameters_modified: false
+  transformer_topology_modified: false
+  mutual_coupling_modified: false
+  l_sec_modified: false
+  r_sec_load_modified: false
+  b_out_area_modified: false
+  jj_model_modified: false
+  measurement_definition_modified: false
+  existing_accepted_artifacts_modified: false
+route:
+  primary: canonical BVM SL output
+  topology: >-
+    Canonical SL -> R_IN -> L_TX -> B_TRIG; L_TX couples to L_SEC; L_SEC
+    returns through R_SEC_LOAD; B_OUT is N_SEC -> ground with independent
+    I_OUT_BIAS 0 -> N_SEC and R_OUT_DAMP N_SEC -> ground.
+  kcl: >-
+    With currents positive from N_SEC to ground, i_BOUT = I_OUT_BIAS - i_LSEC
+    - i_R_DAMP.  The secondary induced current therefore contributes directly
+    to the same differential B_OUT node rather than moving both output nodes
+    in common mode.
+  retained_r0b_r1a_parameters:
+    r_in_ohm: 12.0
+    l_tx_pH: 0.20
+    coupling_k: 0.80
+    trigger_area: 0.50
+    trigger_bias_uA: 15.0
+    l_sec_pH: 2.0
+    r_sec_load_ohm: 12.0
+  excluded: [self_quench, output_JTL, JTL, T1, QB, topology_sweep]
+parameters:
+  trigger:
+    area: 0.50
+    ic_uA: 50.0
+    rn_ohm: 32.0
+    r0_ohm: 320.0
+    c_fF: 35.0
+    bias_uA: 15.0
+    beta_c_actual: 5.4450545
+  pickup:
+    l_tx_pH: 0.20
+    l_sec_pH: 2.0
+    coupling_k: 0.80
+    mutual_inductance_pH: 0.5059644
+    r_sec_load_ohm: 12.0
+  output:
+    area: 0.10
+    ic_uA: 10.0
+    rn_ohm: 160.0
+    r0_ohm: 1600.0
+    c_fF: 7.0
+    bias_uA_by_point: {6: 6.0, 7: 7.0, 8: 8.0, 9: 9.0, 10: 10.0}
+    r_damp_ohm: 100.0
+    rn_parallel_damp_ohm: 61.5384615
+    r0_parallel_damp_ohm: 94.1176471
+    beta_c_intrinsic: 5.4450545
+    beta_c_with_rn_parallel_damp: 0.8054814
+    bias_fraction_of_ic_by_point: {6: 0.60, 7: 0.70, 8: 0.80, 9: 0.90, 10: 1.00}
+model:
+  source: inputs/jjmit.cir
+  sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  definition: ".model jjmit jj(RTYPE=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)"
+  area_semantics: >-
+    JoSIM src/JJ.cpp scales Ic and C by AREA and divides RN and R0 by AREA;
+    AREA=0.10 therefore gives Ic=10 uA, RN=160 ohm, R0=1600 ohm, C=7 fF.
+canonical:
+  source: circuits/bvm/bvm_cell.cir
+  fixture: inputs/bvm_cell.cir
+  sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  logical_semantics: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  immutable: true
+accepted_receiver_fixture:
+  source: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/inputs/diff_output_a010_b07_rd100_series_return.cir
+  sha256: 9b4cee1d9c244b9a52e90111462ccb9a80e637b3698581639868b6961638c587
+  relation: exact topology/model/measurement baseline; only I_OUT_BIAS is varied here
+solver:
+  binary: /home/howard/JoSIM/build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  requested_timestep_ps: 0.0125
+  stop_ps: 170.0
+  analysis: PHASE
+  same_command_for_all_cases: true
+  actual_csv_dt_ps:
+    min: 0.01249999999996021
+    max: 0.025000000000000133
+    rows_per_case: 13599
+    end_time_ps: 169.9875
+    source: analysis/bias-summary.json
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+windows_ps:
+  PRE: [80.0, 90.0]
+  READ_ACTIVITY: [94.0, 130.0]
+  TRIGGER_ANALYSIS: [94.0, 170.0]
+  OUTPUT_ANALYSIS: [94.0, 170.0]
+  POST: [130.0, 170.0]
+  CONTROL_FULL: [20.0, 170.0]
+  STORAGE_POST: [140.0, 150.0]
+measurement:
+  required_direct_probes:
+    bout_phase: P(B_OUT|XTRIG)
+    bout_voltage: V(B_OUT|XTRIG)
+    bout_current: I(B_OUT|XTRIG)
+    bout_bias_current: I(I_OUT_BIAS|XTRIG)
+    bout_damping_current: I(R_OUT_DAMP|XTRIG)
+    btrig_phase: P(B_TRIG|XTRIG)
+    btrig_voltage: V(B_TRIG|XTRIG)
+    secondary_voltage: V(N_SEC|XTRIG)
+    secondary_return_current: I(R_SEC_LOAD|XTRIG)
+    storage: [P(B_JM1|XBVM1), P(B_JM2|XBVM1)]
+    readout: [P(B_JS1|XBVM1), P(B_JS2|XBVM1)]
+    source: [V(SL1), V(N6|XBVM1)]
+  phase_semantics: >-
+    P(...) is raw phase in radians.  Continuous adjacent-sample unwrapping is
+    used only within each declared window; phase turns are delta(phi)/(2*pi).
+  voltage_area_semantics: >-
+    Integrate the same B_OUT P/V segment with actual CSV timestamps and divide
+    by Phi0.  A phase excursion, current threshold, or voltage peak alone is
+    not a switching event.
+criterion:
+  complete_b_out: >-
+    At least one monotonic continuous B_OUT segment starts by 130 ps, has
+    absolute phase evolution >= 1.0 turn, and has same-segment direct voltage
+    area agreeing with the phase delta within 0.05 turn.
+  read0_and_controls: >-
+    No qualifying B_OUT segment in read0 or either READ=0 control; controls
+    have no free-running B_OUT phase.
+  transfer_and_logic: >-
+    B_TRIG read1 complete/read0 incomplete guard remains, secondary read1 is
+    state-dependent, and JM1/JM2 post signs retain the logical-state mapping.
+  success_definition: >-
+    A local B_OUT phase/area-consistent transition is a local JJ event only;
+    it is not called downstream SFQ delivery because no JTL is present.
+  forbidden_shortcuts: [I_above_Ic, voltage_peak_alone, phase_range_alone, SFQ_count, downstream_delivery]
+provenance:
+  raw_generation: >-
+    Twenty matched JoSIM runs: five bias points times four cases.  No existing
+    accepted or failed raw artifact is overwritten.
+  analysis_scripts: [analyze_r1c.py, analysis/independent_crosscheck.py, analysis/aggregate_bias.py]
+  artifact_requirements: [inputs, raw, logs, analysis, report, review, sha256_inventory]
+  no_candidate_upgrade: true
+status: COMPLETED
+result: R1c_FAIL_NO_COMPLETE_BOUT_IN_BOUNDED_BIAS_MATRIX
+updated_at: "2026-08-21T18:33:06+08:00"
+verdict_summary: >-
+  Artifact-valid twenty-case matched Exploration.  At every fixed AREA=0.10
+  bias point from 6 through 10 uA, read1 B_OUT remained sub-turn
+  (0.022189621 turns at 6 uA down to 0.020449819 turns at 10 uA) with a
+  same-segment voltage area consistent with that sub-turn phase evolution.
+  No read1 complete segment, read0 complete segment, or control complete/free-
+  running segment was observed.  B_TRIG guard, state-dependent secondary
+  transfer, storage signs, artifact QA, and independent raw cross-checks all
+  passed.  No bias window was observed; this diagnostic does not support a
+  simple Ic-margin remedy and does not by itself separate insufficient
+  effective transfer from loaded damping dynamics.  No topology was changed
+  and no Candidate upgrade was made.

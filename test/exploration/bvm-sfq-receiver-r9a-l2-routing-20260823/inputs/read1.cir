@@ -1,0 +1,33 @@
+* R9-A: R7-A receiver point with output-side L2=2.50pH.
+* The canonical BVM SL termination remains inside BVM.  The only source-side
+* interface is an explicit passive primary return SL1 -> R_PRI -> L_PRI -> 0.
+* The secondary is the native QB input arm QB_IN -> L_SEC -> 0.
+.include jjmit.cir
+.include bvm_cell.cir
+.include bq_cell_paper.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+R_PRI SL1 N_PRI 12.0
+L_PRI N_PRI 0 0.20p
+L_SEC QB_IN 0 1.0p
+KISO L_PRI L_SEC 0.70710678
+
+I_IBIAS 0 IBIAS pwl(0p 0 1p 90U 2p 90U 170p 90U)
+XBQ QB_IN OUT_Q IBIAS BQ_PAPER
+R_LOAD_Q OUT_Q 0 10
+
+* logical1 write and canonical positive READ
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)
+
+.tran 0.0125p 170p
+.print P(BJs|XBQ) V(BJs|XBQ) I(BJs|XBQ) P(BJL1|XBQ) V(BJL1|XBQ) I(BJL1|XBQ) P(BJL2|XBQ) V(BJL2|XBQ) I(BJL2|XBQ)
+.print I(Lin|XBQ) I(L1|XBQ) I(L2|XBQ) I(L0|XBQ) I(RB|XBQ) I(RJ1|XBQ) I(RJ2|XBQ)
+.print I(R_PRI) I(L_PRI) V(L_PRI) I(L_SEC) V(L_SEC) V(QB_IN)
+.print V(SL1) V(N6|XBVM1) V(OUT_Q) I(L_SL|XBVM1) I(L_PSL|XBVM1)
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.end

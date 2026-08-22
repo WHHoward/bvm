@@ -1,0 +1,173 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED
+title: R9-A native-QB output-side L2 single-point routing
+run_id: bvm-sfq-receiver-r9a-l2-routing-20260823
+created_at: '2026-08-23T01:35:12+08:00'
+current_head_before_preregistration: edf3226df72f913c4c42bd628bd1a9e949fd0b73
+
+research_question:
+  single_question: >-
+    With the accepted R7-A input-side routing point restored, does reducing
+    native-QB L2 to 2.50 pH improve node3-to-node4/BJL2 dynamic transfer or
+    operating margin while preserving read0 selectivity and the canonical BVM
+    source/storage guard?
+
+hypotheses:
+  primary: >-
+    At the approximately 1.5 ps read1 transient timescale, lower L2 reactance
+    routes a larger fraction of the front-stage perturbation into L2/BJL2.
+  alternatives:
+    - >-
+      L2 changes settled KCL/phase/current operating points without clear
+      dynamic routing gain.
+    - >-
+      The L2 point does not support the passive load-line routing hypothesis.
+    - >-
+      L2 causes reflected-load back-action, nonselective activity, or
+      free-running behavior.
+    - >-
+      Read1 produces exactly one BJL2 local phase/area-consistent event.
+
+frozen_receiver:
+  topology_snapshot: inputs/bq_cell_paper.cir
+  BJs_area: 1.33
+  BJL1_area: 1.12
+  BJL2_area: 1.89
+  Lin_pH: 0.8
+  L0_pH: 1.323
+  L1_pH: 2.5
+  L2_pH: 2.5
+  RJ1_ohm: 33.0
+  RJ2_ohm: 22.0
+  RB_ohm: 8.5
+  IB_bias_uA: 90.0
+  output_load_ohm: 10.0
+
+interface:
+  primary_return: 'R_PRI SL1 N_PRI 12 ohm; L_PRI N_PRI 0 0.20 pH'
+  secondary_input_arm: 'L_SEC QB_IN 0 1.00 pH; QB_IN is native BQ_PAPER IN'
+  mutual_element: 'KISO L_PRI L_SEC 0.70710678'
+  R_PRI_ohm: 12.0
+  L_PRI_pH: 0.20
+  L_SEC_pH: 1.00
+  K: 0.70710678
+  canonical_SL_termination_preserved: true
+  only_changed_receiver_parameter: L2
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  output_load: 'R_LOAD_Q OUT_Q 0 10 ohm'
+  parameter_sweep: false
+  convergence_ladder: not_run_by_design
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_version: 2.0.0
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: FROZEN_measurement_semantics_only
+
+analytic_selection:
+  dominant_timescale_ps: 1.5
+  candidate_L2_pH: [3.0, 2.5, 2.0]
+  selected_L2_pH: 2.5
+  selection_basis: >-
+    Middle point: approximately 36 percent reactance reduction at 1.5 ps and
+    a moderate first-order static flux-preserving proxy shift, avoiding the
+    more aggressive 2.0 pH read0/load-line risk.
+  caveat: >-
+    L1*I(L1)+L2*I(L2) current redistribution is only a first-order selection
+    proxy, not a full nonlinear fluxoid solution.
+
+windows:
+  pre_ps: [80.0, 90.0]
+  activity_ps: [94.0, 130.0]
+  post_ps: [150.0, 170.0]
+  read_state_ps: [20.0, 90.0]
+  half_open_actual_csv_time: true
+
+routing_metrics:
+  delta_definition: 'I_read1_or_read0 - I_matching_READ0_control'
+  rms_window_ps: [94.0, 130.0]
+  R7A_reference_G_L2: 0.2448309270
+  R7A_reference_G_BJL2: 0.2206883471
+  no_new_universal_threshold: true
+
+controls:
+  read0: logical0 with canonical positive READ
+  zero_read_logical1: logical1 with READ=0
+  zero_read_logical0: logical0 with READ=0
+  source_storage_guard: >-
+    Compare canonical no-receiver and R7-A using SL/N6, primary current,
+    JM1/JM2 drift, and JS1/JS2 post-window p2p. Absolute canonical read1 JS
+    phase running is not itself receiver back-action.
+
+provenance:
+  git_head_before_preregistration: edf3226df72f913c4c42bd628bd1a9e949fd0b73
+  git_dirty_before_new_exploration: false
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  parent_R7A_directory: test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823
+
+artifacts:
+  raw_dir: raw/
+  logs_dir: logs/
+  analysis_dir: analysis/
+  preregistration: PREREGISTRATION.md
+  analytic_precheck: analysis/R9A_ANALYTIC_PRECHECK.md
+  report: analysis/R9A_REPORT.md
+  summary: analysis/r9a-summary.json
+  hash_file: analysis/sha256sums.txt
+  successful_run_file: run-02.csv
+
+execution:
+  initial_attempt:
+    status: ARTIFACT_ONLY_FAILURE
+    reason: relative build/josim-cli path was unavailable from the exploration directory
+    raw_written: false
+  successful_attempt:
+    run_file: run-02.csv
+    status: COMPLETED
+    exit_codes:
+      read1: 0
+      read0: 0
+      logical1-read0-control: 0
+      logical0-read0-control: 0
+    rows_each: 13599
+    fields_each: 39
+    first_time_ps: 0.0
+    last_time_ps: 169.9875
+    dt_ps_range: [0.0125, 0.025]
+    stderr_bytes_each: 0
+  analysis:
+    script: analysis/r9a_analyze.py
+    exit_code: 0
+    summary: analysis/r9a-summary.json
+
+outcome:
+  artifact_status: VALID
+  verdict: ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED
+  local_native_qb_pass: false
+  static_operating_point_shift: true
+  threshold_like_nonlinear_amplification: not_observed
+  source_storage_guard: preserved_relative_to_R7A_and_canonical_baselines
+  failed_requirements:
+    - read1 BJL2 did not produce a complete one-turn phase/area-consistent local event
+    - no JTL/T1 transport was tested
+  raw_sha256:
+    raw/read1/run-02.csv: aff03db8139f424e93e8b83e6d26f41cfffb1b1aff627ba97077dc45748ea6f3
+    raw/read0/run-02.csv: b285f903ad9bd0ccd7c0f4648d2b2fa5642a907e4e32bde9b61566be0f810f12
+    raw/logical1-read0-control/run-02.csv: 53bf4453c4a593c06bef08d6263c9a30bbc188d2a0f0a4415ca1937e1151ce79
+    raw/logical0-read0-control/run-02.csv: 532880d0655b1c197544ca90f9be561792d26c8e6ff5a809e56dbbba17e34792

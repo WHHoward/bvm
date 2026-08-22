@@ -1,0 +1,191 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: DRAFT — topology hypothesis + single-point preregistration; awaiting user/Luna-Sol
+  read-only check before execution; no JoSIM run under this manifest
+title: R5-A BVM-specific biased quantizer single-point feasibility (QB-inspired,
+  weak-mutual input)
+created_at: "2026-08-22T01:20:00+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822
+parent_head: 5dd7df87e64f86e9a8d1b2e99b1b443e65b63b0d
+current_head_before_experiment: 5dd7df87e64f86e9a8d1b2e99b1b443e65b63b0d
+
+design_question:
+  single_question: >-
+    How can the measured sub-quantum B_TRIG-derived mutual flux be mapped, via
+    bias-assisted nonlinear thresholding, to a discrete SET/one-shot event for
+    read1 while read0 and controls stay below threshold?
+
+qb_functional_decomposition:
+  paper_qb_elements:
+    - {element: Lin, role: input coupling inductance}
+    - {element: L1+L2 loop with BJs and BJL1, role: accumulation / quantizing loop (digital-SQUID core)}
+    - {element: BJs, role: series SET junction whose switching registers loop state change}
+    - {element: BJL1 + RJ1, role: shunt/load junction keeping the loop load line defined; v4 lesson - its Ic must sit ABOVE BJs so it does not steal the signal}
+    - {element: BJL2 + RJ2 + L0, role: output event regeneration toward JTL}
+    - {element: RB from IB, role: bias-assisted threshold placement inside the loop}
+  functions_required_for_weak_sub_quantum_input:
+    - bias-assisted threshold placement (the +3uA-class bias that puts a JJ just below criticality so sub-quantum flux tips it over)
+    - one nonlinear SET junction to convert threshold crossing into a discrete slip
+    - a loop so the mutual flux appears as loop current rather than a pass-through transient (R4-A lesson)
+  functions_B_TRIG_already_provides:
+    - state-dependent signal generation itself (read1 vs read0 mutual flux lobes already measured: read1 worst-case additive equivalent ~+2.217 uA vs read0 ~0.791 uA)
+    - the primary inductance L_TX for mutual coupling
+  functions_removable_versus_paper:
+    - Lin as a separate input inductor (our L_TX is the primary; the loop couples to it mutually, no galvanic Lin needed)
+    - BJL2/RJ2/L0 output regeneration stage (R4-A/R3-A scope stops at the SET event; JTL-facing regeneration is a later gate)
+    - separate accumulation inductor pair L1/L2 at paper scale (paper L=3.91 pH with 133 uA JS is a 10x-larger current class; our loop uses L_H=100 pH at 5 uA class)
+
+minimal_bvm_specific_quantizer_hypothesis:
+  claim: >-
+    A three-element loop suffices: L_QB (loop inductance) in series with J_SET
+    (the SET junction), closed on itself, with a floating bias branch placing
+    J_SET near criticality, and the whole loop weakly coupled to L_TX by the
+    frozen |K|=0.80 additive polarity. This is exactly the R4-A loop plus a
+    REPOSITIONED bias operating point: instead of biasing at 0.6*Ic and hoping
+    the transient adds 2.2 uA, bias at the near-critical point so the SAME
+    measured transient crosses the threshold.
+  relation_to_paper_qb: >-
+    This is the QB digital-SQUID core (loop + series SET junction + bias) with
+    the output-regeneration stage removed and the input taken mutually instead
+    of through Lin. If execution shows the minimal version cannot work without
+    the shunt junction BJL1 (load-line definition) or without output
+    regeneration, then the honest conclusion is that the minimal version is NOT
+    smaller in function and the paper-QB-derived implementation should be
+    adopted directly.
+  relation_to_r4a_failure: >-
+    R4-A failed because capture required reaching half-quantum current
+    (~10.34 uA) while delivered was 4.87 uA. The biased-quantizer does not need
+    to reach a fluxoid boundary: it needs bias + transient > Ic(J_SET) at the
+    crossing instant. With Ic(J_SET)=5 uA and bias 3 uA, the required transient
+    contribution is only ~2 uA - which the measured read1 lobe (2.217 uA
+    equivalent) just exceeds, while read0 (0.791 uA) does not. The margin is
+    narrow by design: this is a threshold sensor, not an energy transfer.
+
+single_initial_point:
+  frozen_from_r4a:
+    l_tx_pH: 0.20
+    k_abs: 0.80
+    winding_polarity: additive (negative K sign as executed in R4-A amended run)
+    l_qb_pH: 100.0
+    j_set_area: 0.05
+  changed_from_r4a:
+    j_set_bias_uA: 4.2
+    bias_rationale: >-
+      Single physics-informed point. R4-A measured the read1 worst-case additive
+      lobe at ~2.217 uA equivalent loop-current contribution. Bias must satisfy:
+      bias + 2.217 > Ic(=5) for read1 SET, and bias + 0.791 < Ic for read0
+      UNSET. The window is therefore [2.783, 4.209] uA. 4.2 uA sits just inside
+      the upper edge, maximizing read1 crossing probability while keeping read0
+      at 4.99 uA < 5 uA by only 10 nA - deliberately testing the sharpest
+      discrimination the analytic margins allow. No sweep; if this point fails,
+      the window itself is falsified information.
+  gauge_element:
+    r_gauge_ohm: 1e9
+    purpose: MNA common-mode reference only (verified physically nil in R4-A
+      amended run, max |I|=2.82e-22 A)
+  topology_ascii: |
+    existing R_IN -> L_TX -> B_TRIG primary branch
+                              || weak mutual coupling, |K|=0.80, additive polarity
+                              ||
+                         N_A -- L_QB(100pH) -- N_B
+                          |                    |
+                          +-- B_SET JJ --------+
+                          |  (area=0.05, Ic=5uA)
+                          +-- I_SET_BIAS branch (floating, +4.2 uA)
+                          +-- R_GAUGE 1Gohm to ground (N_A)
+
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+
+execution_constraints:
+  run_josim: true
+  modify_canonical_bvm: false
+  parameter_sweep: false
+  timestep_ps: 0.0125
+  stop_time_ps: 170
+  jtl_t1_attached: false
+  output_jq_attached: false
+  preserve_raw_and_logs: true
+
+required_probes:
+  source: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG), I(R_IN|XTRIG), I(L_TX|XTRIG)]
+  quantizer: [P(B_SET|XTRIG), V(B_SET|XTRIG), I(B_SET|XTRIG), I(L_QB|XTRIG), I(R_GAUGE|XTRIG)]
+  guards: [V(SL1), V(N6|XBVM1)]
+  storage: [P(B_JM1|XBVM1), P(B_JM2|XBVM1), P(B_JS1|XBVM1), P(B_JS2|XBVM1)]
+
+timing:
+  reuse_r3a_r4a_windows: true
+  source_selective_onset_window_ps: [97, 130]
+  whole_run_observation_window_ps: [20, 170]
+  persistent_state_observation_window_ps: [150, 170]
+
+event_oracle:
+  set_event:
+    - continuous adjacent-sample unwrapped P(B_SET|XTRIG)
+    - exactly one qualifying complete forward monotonic segment (>= 1 turn),
+      onset within [97,130) ps
+    - same-JJ same-segment V(B_SET) integral / Phi0 consistent within 0.05 turn
+    - retrap after the event (phase settles, V decays)
+    - no second complete event in [20,170] ps
+  read0_and_controls: zero complete segments of either direction
+  insufficient_alone: [I_peak_gt_Ic, voltage peak, phase range, derivative threshold]
+  note: >-
+    A complete forward slip of B_SET IS the discrete SET event here (unlike
+    R4-A where slips were incidental); counting slips is the oracle because the
+    research question is threshold-crossing feasibility.
+
+back_action_guards:
+  - read1 B_TRIG complete nonlinear response retained
+  - read0 and controls show no complete B_TRIG transition
+  - SL/N6 ordering preserved
+  - JM1/JM2 storage signs preserved
+  - JS1/JS2 no anomalous states
+  - coupling-induced loading on N_TRIG does not degrade the R0b-class trigger
+    (bounded back-action recorded, compared against R3-A/R4-A baselines)
+
+main_bounded_verdicts:
+  pass: R5A_SINGLE_POINT_THRESHOLD_PASS
+  failures:
+    - R5A_NO_SET_EVENT
+    - R5A_READ0_FALSE_SET
+    - R5A_CONTROL_FALSE_SET
+    - R5A_MULTI_FIRE
+    - R5A_BACK_ACTION_FAILURE
+    - R5A_INCONCLUSIVE
+  pass_boundary: >-
+    PASS means only that the biased-quantizer threshold mechanism converted the
+    measured read1 mutual-flux transient into exactly one discrete local event
+    at this single point, with selectivity. It is not SFQ delivery, not JTL/T1
+    compatibility, not a universal spec.
+
+interpretation_plan:
+  pass: >-
+    Threshold mechanism validated at the sharpest analytic-margin point;
+    next step would be margin mapping (bias sensitivity) under a new
+    preregistration.
+  no_set_event: >-
+    Either the delivered lobe is smaller than the analytic estimate once loaded,
+    or loop dynamics absorb it; report measured loop-current contribution vs the
+    2.217 uA estimate. Do not sweep bias.
+  read0_false_set: >-
+    Discrimination window falsified at this bias; the analytic margins were too
+    optimistic; report and stop.
+  multi_fire: >-
+    Alternating lobes drive repeated slips (the precheck's principal risk);
+    record lobe structure; one-shot problem confirmed as the binding issue.
+  formulation_failure: >-
+    If MNA fails again despite R_GAUGE, stop and report (same rule as R4-A).
+
+artifacts_commitment:
+  - inputs/r5a-receiver.cir and four matched-case netlists
+  - raw/ and logs/
+  - analysis/r5a-summary.json
+  - analysis/R5A_REPORT.md
+  - analysis/REVIEW.md
+  - analysis/sha256sums.txt
+  - precommit git status check confirming all declared artifacts tracked

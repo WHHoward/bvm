@@ -1,0 +1,223 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED
+title: Native paper-QB topology compatibility with canonical BVM SL
+created_at: "2026-08-22T22:23:14+08:00"
+current_head_before_preregistration: ff4fe59242069208c44a09f2e394dc8b15bf8955
+
+research_question:
+  single_question: >-
+    With the repository BQ_PAPER topology and one explicit reference parameter
+    set held fixed, does canonical BVM SL produce selective native-QB activity
+    or a complete local BJL2 event for read1 while read0 and READ=0 controls
+    remain inactive and BVM back-action remains bounded?
+
+hypotheses:
+  primary: >-
+    The native three-JJ paper-QB topology connected directly to canonical SL
+    will show state-dependent local activity and may produce one complete BJL2
+    phase transition for logical1 +READ.
+  alternatives:
+    - >-
+      The SL current/time-scale is too small for the original paper current
+      class, leaving the native core nearly linear or weakly active.
+    - >-
+      Direct native-QB loading changes the BVM source or storage trajectory
+      enough to fail the back-action guards.
+    - >-
+      The native core responds nonselectively, free-runs, or read0/control
+      activity is comparable to read1.
+
+reference_parameter_set:
+  provenance: >-
+    Repository bq_cell_paper.cir values are preserved without JJ/bias/RJ/Lin
+    retuning. The 90 uA external IB reference follows the existing repository
+    paper-BQ cascade fixture and is not claimed to be a published native QB
+    input specification.
+  topology_netlist: inputs/bq_cell_paper.cir
+  Lin_pH: 0.8
+  L0_pH: 1.323
+  L1_pH: 3.91
+  L2_pH: 3.91
+  BJs_area: 1.33
+  BJL1_area: 1.12
+  BJL2_area: 1.89
+  RJ1_ohm: 33.0
+  RJ2_ohm: 22.0
+  RB_ohm: 8.5
+  IB_bias_uA: 90.0
+  output_load_ohm: 10.0
+  input_mapping: canonical SL1 directly to BQ_PAPER IN
+  excluded_input_routes:
+    - B_TRIG mutual
+    - N6 local tap
+    - secondary pickup
+    - JTL
+    - T1
+
+predeclared_outcomes:
+  native_qb_local_pass: >-
+    Read1 BJL2 has exactly one complete monotonic 2pi phase transition with
+    same-JJ voltage-area consistency; read0 and both READ=0 controls have zero
+    complete transitions; no free-running; source/storage guards are preserved.
+  state_selective_qb_activity: >-
+    Read1 shows clear nonlinear or quantizing activity in one or more of
+    BJs/BJL1/BJL2/loop branches with separation from read0 and controls, but
+    BJL2 does not meet exactly-one complete-event criteria.
+  source_too_weak_or_scale_mismatch: >-
+    The native core remains nearly inactive in all cases and the measured SL
+    input is materially below the paper current class; this is bounded to this
+    reference point and does not authorize a sweep.
+  back_action_failure: >-
+    The native load materially changes BVM source/read behavior or storage
+    guards, including sign collapse or a large receiver-induced JS1/JS2 shift.
+  nonselective_or_free_running: >-
+    Read0 or either READ=0 control has a complete transition, or any case
+    shows sustained/free-running behavior that prevents a bounded local result.
+  inconclusive: >-
+    Artifact QA, phase/V mapping, window stability, or classification of the
+    source/storage guards cannot be resolved from the saved evidence.
+  invalid: >-
+    Solver or provenance failure, missing columns, malformed/truncated CSV,
+    non-finite data, or non-increasing time axis.
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  output_load: R_LOAD_Q OUT_Q 0 10 ohm
+  command_template: >-
+    ../../../build/josim-cli -o raw/<case>/run-01.csv inputs/<case>.cir
+  parameter_sweep: false
+  convergence_ladder: not_run_by_design_in_this_exploration
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_version: 2.0.0
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: FROZEN_measurement_semantics_only
+
+signals:
+  junctions:
+    - {name: BJs, phase: P(BJs|XBQ), voltage: V(BJs|XBQ), orientation: node1_to_node2}
+    - {name: BJL1, phase: P(BJL1|XBQ), voltage: V(BJL1|XBQ), orientation: node2_to_0}
+    - {name: BJL2, phase: P(BJL2|XBQ), voltage: V(BJL2|XBQ), orientation: node4_to_0}
+  branches:
+    - {name: Lin, current: I(Lin|XBQ), orientation: IN_to_node1}
+    - {name: L1, current: I(L1|XBQ), orientation: node2_to_node3}
+    - {name: L2, current: I(L2|XBQ), orientation: node3_to_node4}
+    - {name: L0, current: I(L0|XBQ), orientation: node4_to_OUT}
+    - {name: RB, current: I(RB|XBQ), orientation: IB_to_node3}
+    - {name: RJ1, current: I(RJ1|XBQ), orientation: node2_to_0}
+    - {name: RJ2, current: I(RJ2|XBQ), orientation: node4_to_0}
+  source_and_output:
+    - V(SL1)
+    - V(N6|XBVM1)
+    - I(L_SL|XBVM1)
+    - I(L_PSL|XBVM1)
+    - V(OUT_Q)
+  state_signals:
+    - P(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+
+windows:
+  pre: [80.0, 90.0]
+  activity: [94.0, 130.0]
+  post: [150.0, 170.0]
+  read_state: [20.0, 90.0]
+  units: ps
+  note: >-
+    Windows are half-open and selected against the actual CSV time column.
+    The activity window contains the canonical READ response; post is the
+    bounded-behavior check.
+
+event_rule:
+  phase_units: raw P is radians; turns are delta_phi_rad/(2*pi)
+  complete_local_event: >-
+    A continuous unwrapped same-JJ phase trajectory has one monotonic segment
+    with absolute delta at least 1.0 turn inside the activity window, and the
+    same segment's direct V(B...) time integral divided by Phi0 agrees with the
+    phase delta. This is a local event criterion, not downstream SFQ delivery.
+  multi_turn_activity_is_not_event: true
+  voltage_peak_or_current_peak_alone_insufficient: true
+  event_area_residual_reported: true
+  area_tolerance_turns: 0.05
+  area_tolerance_status: task_local_exploration_diagnostic_not_global_gate
+
+controls:
+  read0: logical0 with canonical positive READ
+  zero_read_logical1: logical1 with SE=0
+  zero_read_logical0: logical0 with SE=0
+  source_storage_guards: >-
+    Report SL/N6 separation, JM1/JM2 logical signs, JS1/JS2 trajectories and
+    pre/post shifts. No global BVM drift tolerance is invented in this run.
+
+provenance:
+  git_head: ff4fe59242069208c44a09f2e394dc8b15bf8955
+  git_dirty_at_preregistration: true
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  input_snapshots:
+    - inputs/jjmit.cir
+    - inputs/bvm_cell.cir
+    - inputs/bq_cell_paper.cir
+  dirty_status_note: repository was clean before this new exploration directory was created
+
+artifacts:
+  raw_dir: raw/
+  logs_dir: logs/
+  analysis_dir: analysis/
+  report: analysis/NATIVE_QB_REPORT.md
+  summary: analysis/native-qb-summary.json
+  hash_file: analysis/sha256sums.txt
+  analysis_script: analysis/analyze_native_qb.py
+
+execution_note:
+  initial_attempt: >-
+    The first command used build/josim-cli relative to the Exploration directory
+    and returned 127 before solver startup; no raw files were created. The
+    failed stdout/stderr files are retained. A second corrected-path attempt
+    reached solver completion but failed to write because the four per-case raw
+    directories had not yet been created; those logs are also retained and no
+    raw files were created by that attempt. The successful third execution uses
+    the repository-root-relative path ../../../build/josim-cli and the frozen
+    inputs.
+  successful_execution:
+    run_logs: "logs/*-run-03.stdout.txt and logs/*-run-03.stderr.txt"
+    raw_files:
+      - raw/read1/run-01.csv
+      - raw/read0/run-01.csv
+      - raw/logical1-read0-control/run-01.csv
+      - raw/logical0-read0-control/run-01.csv
+    exit_codes: 0
+    artifact_rows_each: 13599
+    actual_last_time_ps: 169.9875
+    analysis_script_exit_code: 0
+
+outcome:
+  artifact_status: valid
+  verdict: BACK_ACTION_FAILURE
+  secondary_observation: STATE_SELECTIVE_QB_ACTIVITY
+  highest_evidence_level: >-
+    read1 state-dependent native-QB nonlinear activity with same-JJ phase/V
+    consistency, but failed BVM JS storage guard
+  failed_requirements:
+    - >-
+      read1 did not produce a complete one-turn BJL2 monotonic segment
+    - >-
+      direct QB loading shifted read1 JS1 and JS2 by approximately -3 turns
+  not_supported:
+    - NATIVE_QB_LOCAL_PASS
+    - downstream_SFQ_delivery

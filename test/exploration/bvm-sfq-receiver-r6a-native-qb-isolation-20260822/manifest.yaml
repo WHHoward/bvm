@@ -1,0 +1,245 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED
+title: Weak mutual transformer isolation into frozen native paper-QB input
+created_at: "2026-08-22T22:58:48+08:00"
+current_head_before_preregistration: a455e14884bb43235d032fb8b60a05d033d086de
+
+research_question:
+  single_question: >-
+    Can a single weak mutual-transformer interface replace direct galvanic
+    canonical SL1 to native-QB IN coupling, preserve the BVM storage guard,
+    and retain state-selective native-QB activity in read1 versus read0 and
+    READ=0 controls?
+
+hypotheses:
+  primary: >-
+    A galvanically isolated weak mutual interface reduces receiver-reflected
+    loading enough to prevent the direct-SL approximately three-turn JS1/JS2
+    drift while retaining a measurable read1-over-read0 native-QB response.
+  alternatives:
+    - >-
+      The mutual transient is too weak or too short for the native QB input
+      loop, so read1 activity collapses toward read0/control activity.
+    - >-
+      The native-QB secondary load reflects enough impedance through the
+      transformer to preserve the direct-SL storage failure.
+    - >-
+      The secondary waveform is nonselective or produces free-running native
+      QB activity.
+
+frozen_native_qb:
+  topology_snapshot: inputs/bq_cell_paper.cir
+  BJs_area: 1.33
+  BJL1_area: 1.12
+  BJL2_area: 1.89
+  Lin_pH: 0.8
+  L0_pH: 1.323
+  L1_pH: 3.91
+  L2_pH: 3.91
+  RJ1_ohm: 33.0
+  RJ2_ohm: 22.0
+  RB_ohm: 8.5
+  IB_bias_uA: 90.0
+  output_load_ohm: 10.0
+  note: >-
+    Native topology and reference values are copied unchanged from the
+    accepted direct-SL native-QB Exploration; the 90 uA bias is the repository
+    fixture value, not a universal paper input specification.
+
+interface:
+  direct_galvanic_input_removed: true
+  primary_return: "R_PRI SL1 N_PRI 12 ohm; L_PRI N_PRI 0 0.20 pH"
+  secondary_input_arm: "L_SEC QB_IN 0 2.0 pH; QB_IN is native BQ_PAPER IN"
+  mutual_element: "KISO L_PRI L_SEC 0.50"
+  L_PRI_pH: 0.20
+  L_SEC_pH: 2.0
+  K: 0.50
+  M_pH: 0.3162277660
+  R_PRI_ohm: 12.0
+  added_junctions: 0
+  canonical_SL_termination_preserved: true
+  rationale: >-
+    L_PRI/L_SEC reuse the proven R1a pickup inductance class. K=0.50 is a
+    single weak-mutual point: signal scales linearly with M while a reflected
+    impedance contribution is expected to scale approximately with K^2.
+    R_PRI provides an explicit passive primary current return and avoids an
+    open-primary no-op.
+
+precheck:
+  source_reference_raw: >-
+    test/exploration/bvm-sfq-receiver-native-qb-20260822/raw/<case>/run-01.csv
+  source_reference_commit: a455e14884bb43235d032fb8b60a05d033d086de
+  source_current_column: I(L_SL|XBVM1)
+  source_proxy_note: >-
+    Direct-SL loaded current is a proxy for primary current scale only; the
+    isolated run must measure I(R_PRI) and I(L_PRI), and no equality is assumed.
+  required_calculations:
+    - M=K*sqrt(L_PRI*L_SEC)
+    - Phi_ext=M*I_PRI
+    - V_induced=M*dI_PRI/dt
+    - signed_current_impulse_over_activity
+    - pre/post_current_return
+
+predeclared_outcomes:
+  A_isolation_preserved_state_selective_activity: >-
+    JS1/JS2 no longer show direct-SL-level multi-turn drift, while read1 native
+    QB activity remains clearly above read0 and both READ=0 controls. BJL2 may
+    remain incomplete and this still counts as a positive isolation-feasibility
+    observation.
+  B_isolated_native_qb_local_pass: >-
+    Outcome A plus exactly one read1 BJL2 complete monotonic same-JJ phase/V-area
+    event, zero read0/control complete events, and no free-running.
+  C_bounded_failures:
+    transfer_starvation: >-
+      Read1 native-QB activity collapses toward read0/control despite preserved
+      BVM storage guards.
+    reflected_load_back_action_failure: >-
+      JS1/JS2 remain direct-SL-level multi-turn shifted despite the isolated
+      interface.
+    nonselective_activity: >-
+      Read0/control native-QB complete activity or free-running comparable to
+      read1 appears.
+    inconclusive: >-
+      Artifact, direction, phase/area, window, or storage classification cannot
+      be resolved.
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  output_load: R_LOAD_Q OUT_Q 0 10 ohm
+  parameter_sweep: false
+  convergence_ladder: not_run_by_design_in_this_exploration
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_version: 2.0.0
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: FROZEN_measurement_semantics_only
+
+signals:
+  junctions:
+    - {name: BJs, phase: P(BJs|XBQ), voltage: V(BJs|XBQ), current: I(BJs|XBQ), orientation: node1_to_node2}
+    - {name: BJL1, phase: P(BJL1|XBQ), voltage: V(BJL1|XBQ), current: I(BJL1|XBQ), orientation: node2_to_0}
+    - {name: BJL2, phase: P(BJL2|XBQ), voltage: V(BJL2|XBQ), current: I(BJL2|XBQ), orientation: node4_to_0}
+  branches:
+    - {name: Lin, current: I(Lin|XBQ), orientation: IN_to_node1}
+    - {name: L1, current: I(L1|XBQ), orientation: node2_to_node3}
+    - {name: L2, current: I(L2|XBQ), orientation: node3_to_node4}
+    - {name: L0, current: I(L0|XBQ), orientation: node4_to_OUT}
+    - {name: RB, current: I(RB|XBQ), orientation: IB_to_node3}
+    - {name: RJ1, current: I(RJ1|XBQ), orientation: node2_to_0}
+    - {name: RJ2, current: I(RJ2|XBQ), orientation: node4_to_0}
+    - {name: R_PRI, current: I(R_PRI), orientation: SL1_to_N_PRI}
+    - {name: L_PRI, current: I(L_PRI), voltage: V(L_PRI), orientation: N_PRI_to_0}
+    - {name: L_SEC, current: I(L_SEC), voltage: V(L_SEC), orientation: QB_IN_to_0}
+  source_and_output:
+    - V(SL1)
+    - V(N6|XBVM1)
+    - V(QB_IN)
+    - V(OUT_Q)
+    - I(L_SL|XBVM1)
+    - I(L_PSL|XBVM1)
+  state_signals:
+    - P(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+
+windows:
+  pre: [80.0, 90.0]
+  activity: [94.0, 130.0]
+  post: [150.0, 170.0]
+  read_state: [20.0, 90.0]
+  units: ps
+  note: half_open_against_actual_csv_time
+
+event_rule:
+  phase_units: raw P is radians; turns are delta_phi_rad/(2*pi)
+  complete_local_event: >-
+    A continuous unwrapped same-JJ phase trajectory has one monotonic segment
+    with absolute delta at least 1.0 turn inside the activity window, and the
+    same segment direct V(B...) integral divided by Phi0 agrees with the phase
+    delta. This is local QB evidence, not downstream SFQ delivery.
+  multi_turn_activity_is_not_event: true
+  voltage_peak_or_current_peak_alone_insufficient: true
+  area_tolerance_turns: 0.05
+  area_tolerance_status: task_local_exploration_diagnostic_not_global_gate
+
+controls:
+  read0: logical0 with canonical positive READ
+  zero_read_logical1: logical1 with SE=0
+  zero_read_logical0: logical0 with SE=0
+  source_storage_guards: >-
+    Report primary/secondary transfer, SL/N6, JM1/JM2, JS1/JS2 pre/post and
+    full phase trajectories. Direct-SL native-QB JS drift (~-3 turns in read1)
+    is the reference failure; no new universal drift tolerance is invented.
+
+provenance:
+  git_head: a455e14884bb43235d032fb8b60a05d033d086de
+  git_dirty_at_preregistration: true
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  input_snapshots:
+    - inputs/jjmit.cir
+    - inputs/bvm_cell.cir
+    - inputs/bq_cell_paper.cir
+  direct_source_evidence:
+    path: test/exploration/bvm-sfq-receiver-native-qb-20260822/raw
+    read1_I_L_SL_peak_uA: 84.83853
+    read0_I_L_SL_abs_peak_uA: 31.44714
+  dirty_status_note: new Exploration directory created after clean HEAD
+
+artifacts:
+  raw_dir: raw/
+  logs_dir: logs/
+  analysis_dir: analysis/
+  precheck_script: analysis/r6a_analytic_precheck.py
+  precheck_report: analysis/R6A_ANALYTIC_PRECHECK.md
+  precheck_summary: analysis/r6a-precheck.json
+  source_guard_comparison: analysis/r6a-source-guard-comparison.json
+  report: analysis/R6A_REPORT.md
+  summary: analysis/r6a-summary.json
+  hash_file: analysis/sha256sums.txt
+
+execution:
+  command_template: >-
+    ../../../build/josim-cli -o raw/<case>/run-01.csv inputs/<case>.cir
+  run_logs: logs/*-run-01.stdout.txt and logs/*-run-01.stderr.txt
+  exit_codes: 0
+  artifact_rows_each: 13599
+  actual_last_time_ps: 169.9875
+  analysis_exit_codes:
+    r6a_analyze: 0
+    compare_source_guard: 0
+  convergence_ladder: not_run_by_design_in_this_exploration
+
+outcome:
+  artifact_status: valid
+  verdict: ISOLATION_PRESERVED_STATE_SELECTIVE_QB_ACTIVITY
+  layer_b: NOT_MET
+  highest_evidence_level: >-
+    source-isolated state-selective native-QB sub-turn activity with
+    canonical source/storage guard preserved
+  failed_requirements:
+    - >-
+      read1 BJL2 did not produce a complete one-turn same-JJ phase/area event
+  bounded_failures_not_selected:
+    - TRANSFER_STARVATION
+    - REFLECTED_LOAD_BACK_ACTION_FAILURE
+    - NONSELECTIVE_ACTIVITY
+  unknowns:
+    - timestep_convergence
+    - complete_BJL2_activation_margin
+    - downstream_JTL_or_T1_reception

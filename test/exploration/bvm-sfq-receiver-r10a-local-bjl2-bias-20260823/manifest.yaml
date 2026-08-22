@@ -1,0 +1,194 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED
+title: R10-A output-side local BJL2 bias routing single point
+run_id: bvm-sfq-receiver-r10a-local-bjl2-bias-20260823
+created_at: '2026-08-23T02:29:51+08:00'
+parent_head: 333945981332f9b37b4228e71d82201427b782cd
+
+research_question: >-
+  With R9-A restored, does one finite-impedance output-side local BJL2 bias
+  feed move the existing read1-selective BJL2 transient into a nonlinear or
+  quantizing regime without collapsing read0/control margin or the canonical
+  BVM source/storage guard?
+
+hypotheses:
+  primary: >-
+    A node-4 local bias feed selected just below the calibrated coupled static
+    fold will preferentially expose the read1 positive transient to BJL2.
+  alternatives:
+    - >-
+      The feed only produces proportional bounded sub-turn activity in both
+      read1 and read0.
+    - >-
+      The feed changes static load-line but does not increase BJL2 nonlinear
+      activity.
+    - >-
+      The feed causes read0/control activity, free-running, or BVM back-action.
+    - >-
+      Read1 produces a complete BJL2 local event with retrap.
+
+topology:
+  injection_node: native_QB_node_4_BJL2_top
+  source: independent_voltage_source_ramped_to_DC
+  source_pwl: 'V_BJL2_BIAS BIAS 0 pwl(0p 0 1p 0 2p 21.4m 170p 21.4m)'
+  series_R_ohm: 100.0
+  series_L_pH: 10.0
+  dc_source_impedance_ohm: 100.0
+  source_impedance_at_1p5ps: '100+j41.8879 ohm; |Z|=108.4186 ohm'
+  source_return: independent_voltage_source_negative_terminal_to_ground
+  direct_BJL2_damping_shunt: false
+  branch_direction: 'BIAS -> R_LOCAL_BJL2 -> L_LOCAL_BJL2 -> node4'
+
+frozen_receiver:
+  BJs_area: 1.33
+  BJL1_area: 1.12
+  BJL2_area: 1.89
+  Lin_pH: 0.8
+  L0_pH: 1.323
+  L1_pH: 2.5
+  L2_pH: 2.5
+  RB_ohm: 8.5
+  IB_bias_uA: 90.0
+  RJ1_ohm: 33.0
+  RJ2_ohm: 22.0
+  output_load_ohm: 10.0
+  transformer: 'R_PRI=12 ohm; L_PRI=0.20 pH; L_SEC=1.00 pH; K=0.70710678'
+  canonical_BVM: unchanged
+
+selected_point:
+  local_feed_uA: 214.0
+  local_source_mV: 21.4
+  calibrated_coupled_fold_feed_uA: 216.22378763957306
+  calibrated_read1_positive_equivalent_margin_uA: -0.36686236042693565
+  calibrated_read0_positive_equivalent_margin_uA: 1.6573976395730554
+  selection_not_event_criterion: true
+
+cases:
+  - read1
+  - read0
+  - logical1-read0-control
+  - logical0-read0-control
+
+simulation:
+  input_kind: single_pwl
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  convergence_ladder: not_run_by_design
+  parameter_sweep: false
+
+windows:
+  settled_ps: [80.0, 90.0]
+  activity_ps: [94.0, 130.0]
+  post_ps: [150.0, 170.0]
+  read_state_ps: [20.0, 90.0]
+  half_open_actual_csv_time: true
+
+event_rule:
+  required:
+    - continuous_unwrapped_BJL2_phase
+    - monotonic_segment_abs_phase_turns_at_least_1
+    - same_segment_same_JJ_direct_voltage_area_consistency
+    - post_event_retrap
+    - no_second_complete_segment_or_free_running
+  forbidden_solo_criteria:
+    - current_above_Ic
+    - voltage_peak
+    - activity_range
+    - static_saddle_crossing
+  no_downstream_claim: no_JTL_or_T1
+
+probes:
+  native_junctions:
+    - 'P/V/I(BJs|XBQ)'
+    - 'P/V/I(BJL1|XBQ)'
+    - 'P/V/I(BJL2|XBQ)'
+  branches:
+    - 'I(Lin|XBQ)'
+    - 'I(L1|XBQ)'
+    - 'I(L2|XBQ)'
+    - 'I(L0|XBQ)'
+    - 'I(RB|XBQ)'
+    - 'I(RJ1|XBQ)'
+    - 'I(RJ2|XBQ)'
+    - 'I(R_LOCAL_BJL2|XBQ)'
+    - 'I(L_LOCAL_BJL2|XBQ)'
+    - I(V_BJL2_BIAS)
+  source_and_guard:
+    - V(BIAS)
+    - V(N_LOCAL_BJL2|XBQ)
+    - V(SL1)
+    - V(N6|XBVM1)
+    - V(OUT_Q)
+    - I(L_SL|XBVM1)
+    - JM1/JM2/JS1/JS2 direct P/V
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_version: 2.0.0
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  local_event_metric_script: analysis/r10a_analyze.py
+  no_v1_sfq_metrics_gate: true
+
+provenance:
+  working_tree_note: >-
+    Parent scientific HEAD was clean before this independent directory was
+    created; the current dirty state contains only this R10-A exploration.
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  bvm_input_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  jjmit_input_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  local_qb_input_sha256: c9d723317eedf1eb8d417312720a50d61612d891066c0a7c62c7708f92d7b8f6
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  parent_exploration: test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823
+
+artifacts:
+  raw_dir: raw/
+  logs_dir: logs/
+  analysis_dir: analysis/
+  preregistration: PREREGISTRATION.md
+  analytic_precheck: analysis/R10A_ANALYTIC_PRECHECK.md
+  analytic_json: analysis/r10a-analytic-precheck.json
+  local_qb_snapshot: inputs/bq_cell_paper_r10a_local_bias.cir
+  analysis_script: analysis/r10a_analyze.py
+  report_script: analysis/r10a_report.py
+  report: analysis/R10A_REPORT.md
+  summary: analysis/r10a-summary.json
+  hash_file: analysis/sha256sums.txt
+
+execution:
+  status: COMPLETED
+  command_template: '/home/howard/JoSIM/build/josim-cli -o raw/<case>/run-01.csv inputs/<case>.cir'
+  exit_codes:
+    read1: 0
+    read0: 0
+    logical1-read0-control: 0
+    logical0-read0-control: 0
+  rows_each: 13599
+  fields_each: 44
+  first_time_ps: 0.0
+  last_time_ps: 169.9875
+  dt_ps_range: [0.0125, 0.025]
+  stderr_bytes_each: 0
+  analysis_script_exit_code: 0
+  report_script_exit_code: 0
+
+outcome:
+  artifact_status: VALID
+  verdict: BACK_ACTION_OR_NONSELECTIVE_FAILURE
+  local_native_qb_pass: false
+  settled_operating_point_established: false
+  control_free_running_observed: true
+  read1_read0_selectivity: not_preserved
+  retrap: not_observed
+  source_storage_guard: failed_relative_to_R9A_controls
+  no_JTL_or_T1: true
+  raw_sha256:
+    raw/read1/run-01.csv: 55bff3f21284dff6dc8c266e46027ccd3e1ef9d64772c449b1f53e6f0d12594f
+    raw/read0/run-01.csv: f4c245d3f51a07c2a59317f6f7466d3ebc21eb21a69280089c99fecc6b599c45
+    raw/logical1-read0-control/run-01.csv: 5af2244586a823af7af5d48e10bbfc4743c06b2441ccc43423df257880938562
+    raw/logical0-read0-control/run-01.csv: 99456bc3052ebf27d9bb821abf18f1983a25f600f2957403b838a59320d77c74

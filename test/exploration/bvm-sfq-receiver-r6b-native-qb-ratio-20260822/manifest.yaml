@@ -1,0 +1,180 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED
+title: R6-B matched-ratio isolated native-QB transfer point
+created_at: "2026-08-22T23:33:37+08:00"
+current_head_before_preregistration: c6cdd5672e1ba457cf4c7da8e05c2757def7ccdd
+
+research_question:
+  single_question: >-
+    Does L_SEC=1.00 pH with K=0.70710678 at fixed M=0.316227766 pH
+    increase native-QB drive over R6-A while preserving canonical source and
+    storage behavior sufficiently to justify reflected-load risk?
+
+hypotheses:
+  primary: >-
+    Lower secondary source/leakage impedance at matched M increases native-QB
+    drive and preserves read1/read0 separation without direct-SL-level
+    reflected source disturbance.
+  alternatives:
+    - >-
+      Drive gain is negligible because the nonlinear native-QB network remains
+      the limiting impedance.
+    - >-
+      Drive gain is accompanied by reflected-load source/storage disturbance.
+    - >-
+      Activity becomes nonselective or free-running.
+
+frozen_native_qb:
+  topology_snapshot: inputs/bq_cell_paper.cir
+  BJs_area: 1.33
+  BJL1_area: 1.12
+  BJL2_area: 1.89
+  Lin_pH: 0.8
+  L0_pH: 1.323
+  L1_pH: 3.91
+  L2_pH: 3.91
+  RJ1_ohm: 33.0
+  RJ2_ohm: 22.0
+  RB_ohm: 8.5
+  IB_bias_uA: 90.0
+  output_load_ohm: 10.0
+  note: native QB copied unchanged from R6-A
+
+interface:
+  primary_return: "R_PRI SL1 N_PRI 12 ohm; L_PRI N_PRI 0 0.20 pH"
+  secondary_input_arm: "L_SEC QB_IN 0 1.00 pH; QB_IN is native BQ_PAPER IN"
+  mutual_element: "KISO L_PRI L_SEC 0.70710678"
+  L_PRI_pH: 0.20
+  L_SEC_pH: 1.00
+  K: 0.70710678
+  M_pH: 0.316227766
+  R_PRI_ohm: 12.0
+  R6A_reference:
+    L_SEC_pH: 2.0
+    K: 0.50
+    M_pH: 0.316227766
+  canonical_SL_termination_preserved: true
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  output_load: R_LOAD_Q OUT_Q 0 10 ohm
+  parameter_sweep: false
+  convergence_ladder: not_run_by_design_in_this_exploration
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_version: 2.0.0
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: FROZEN_measurement_semantics_only
+
+windows:
+  pre: [80.0, 90.0]
+  activity: [94.0, 130.0]
+  post: [150.0, 170.0]
+  read_state: [20.0, 90.0]
+  units: ps
+  note: half_open_against_actual_csv_time
+
+event_rule:
+  phase_units: raw P is radians; turns are delta_phi_rad/(2*pi)
+  complete_local_event: >-
+    A continuous unwrapped same-JJ phase trajectory has one monotonic segment
+    with absolute delta at least 1.0 turn inside the activity window, and the
+    same segment direct V(B...) integral divided by Phi0 agrees with the phase
+    delta.
+  voltage_peak_or_current_peak_alone_insufficient: true
+  area_tolerance_turns: 0.05
+  area_tolerance_status: task_local_exploration_diagnostic_not_global_gate
+
+controls:
+  read0: logical0 with canonical positive READ
+  zero_read_logical1: logical1 with SE=0
+  zero_read_logical0: logical0 with SE=0
+  source_storage_guards: >-
+    Compare R6-B with canonical no-receiver and R6-A using V(SL1), V(N6),
+    I(R_PRI), I(L_PRI), JM1/JM2 drift, and JS1/JS2 post-window p2p; absolute
+    canonical read1 JS phase running is not itself a receiver back-action test.
+
+provenance:
+  git_head: c6cdd5672e1ba457cf4c7da8e05c2757def7ccdd
+  git_dirty_at_preregistration: false
+  git_dirty_at_execution: true
+  git_head_at_execution: c6cdd5672e1ba457cf4c7da8e05c2757def7ccdd
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  input_snapshots:
+    - {path: inputs/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+    - {path: inputs/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4}
+    - {path: inputs/bq_cell_paper.cir, sha256: a3accfd49ea7bd1dab46f79f4856a0e0a6c781185c4671a78c863b2217bdb880}
+  netlist_sha256:
+    inputs/read1.cir: ac1a75bc364599e3e55dcef1fef34dfac233c22d8aec77d0686e04df14f320b1
+    inputs/read0.cir: 5ce0e10d183e1b906caa3296df680972439c03b0035317d58027d8ad2eb80b42
+    inputs/logical1-read0-control.cir: 0d09f24e817a93a265e44c34f8d4cd5a76e63b0af200fa45ba76067dd0312b1a
+    inputs/logical0-read0-control.cir: cad0dd1b8db8c35f723fe732ac0bdaed302287b893e6c42f47fa2a39f695aeef
+  R6A_reference:
+    commit: c6cdd5672e1ba457cf4c7da8e05c2757def7ccdd
+    directory: test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822
+
+artifacts:
+  raw_dir: raw/
+  logs_dir: logs/
+  analysis_dir: analysis/
+  preregistration: PREREGISTRATION.md
+  report: analysis/R6B_REPORT.md
+  summary: analysis/r6b-summary.json
+  baseline_comparison: analysis/r6b-baseline-comparison.json
+  analysis_scripts:
+    - analysis/r6b_analyze.py
+    - analysis/compare_r6b_baselines.py
+    - analysis/finalize_r6b_summary.py
+  hash_file: analysis/sha256sums.txt
+  raw_sha256:
+    raw/read1/run-01.csv: 759f91f38343915cbcbe8859286f1ca335adb011168b900b5682d40ddf3aa4b0
+    raw/read0/run-01.csv: aa5f7c11b4b3dd7fbab774c312a66b58297cd76f97e04b6b21d8b3b83df65596
+    raw/logical1-read0-control/run-01.csv: 2ddf1dbb189241e7e78fbcbfe358f4277e282f6693422944de6c2b46392a2679
+    raw/logical0-read0-control/run-01.csv: 9efa9a5595be1b5faf3726de11974cc9fab0f64a71b0aeb4af4e99785e3f5abf
+
+execution:
+  command_template: >-
+    ../../../build/josim-cli -o raw/<case>/run-01.csv inputs/<case>.cir
+  run_logs: logs/*-run-01.stdout.txt and logs/*-run-01.stderr.txt
+  exit_codes:
+    read1: 0
+    read0: 0
+    logical1-read0-control: 0
+    logical0-read0-control: 0
+  artifact_rows_each: 13599
+  actual_first_time_ps: 0.0
+  actual_last_time_ps: 169.9875
+  actual_dt_ps_range: [0.0125, 0.025]
+  solver_stderr_bytes_each: 0
+  analysis_exit_codes:
+    r6b_analyze: 0
+    compare_r6b_baselines: 0
+    finalize_r6b_summary: 0
+  convergence_ladder: not_run_by_design_in_this_exploration
+
+outcome:
+  artifact_status: VALID
+  verdict: DRIVE_GAIN_WITH_ISOLATION_PRESERVED
+  local_native_qb_pass: false
+  highest_evidence_level: >-
+    isolated early-native-QB drive gain with bounded source/storage guard;
+    no complete BJL2 event
+  failed_requirements:
+    - read1 BJL2 largest monotonic segment remained 0.00158795 turn
+    - no read1 complete same-JJ BJL2 phase/area event
+  controls: read0 and both READ=0 controls had zero complete BJL2 segments

@@ -1,0 +1,30 @@
+* R7-A native QB snapshot: single L1 routing point
+* Source: Razmkhah et al., SUST 37 065011 (2024), Fig.4
+* "The Buffer/Quantizer (BQ) circuit functions similarly to the
+*  digital SQUID. BQ will sum the negative and positive fluxes
+*  applied to its loop and then provide quantized SFQ pulses
+*  based on the change in the flux."
+*
+* Original parameters (from Fig.4 caption):
+*   Lin=0.8pH, L0=1.323pH, L1=L2=3.91pH
+*   JS=133uA, JL1=112uA, JL2=189uA, RB=8.5Ω
+*
+* jjmit: icrit=0.1m → area = IC(uA)/100
+*   JS  area=1.33 (IC=133uA)  [our bq: area=0.50, IC=50uA]
+*   JL1 area=1.12 (IC=112uA)  [our bq: area=0.36, IC=36uA]
+*   JL2 area=1.89 (IC=189uA)  [our bq: area=0.54, IC=54uA]
+
+.subckt BQ_PAPER IN OUT IB
+
+Lin IN 1 0.8p
+L0 4 OUT 1.323p
+L1 2 3 2.50p
+L2 3 4 3.91p
+BJs 1 2 jjmit area=1.33
+BJL1 2 0 jjmit area=1.12
+RJ1 2 0 33
+BJL2 4 0 jjmit area=1.89
+RJ2 4 0 22
+RB IB 3 8.5
+
+.ends BQ_PAPER

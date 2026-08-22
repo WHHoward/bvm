@@ -1,0 +1,173 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED
+title: R7-A native-QB L1 single-point routing
+run_id: bvm-sfq-receiver-r7a-l1-routing-20260823
+created_at: '2026-08-23T00:39:08+08:00'
+current_head_before_preregistration: a32c341766150e532a2e097f8c2573eb532748ce
+
+research_question:
+  single_question: >-
+    Does reducing native-QB L1 from 3.91 pH to 2.50 pH increase the fraction
+    of read1 front-stage perturbation routed into L2/BJL2 while preserving
+    read0 selectivity and canonical BVM source/storage behavior?
+
+hypotheses:
+  primary: >-
+    Lower L1 reactance increases node2-to-node3 transient transfer, so
+    control-subtracted read1 G_L2 and/or G_BJL2 increase over R6-B while
+    read0 remains separated and source/storage guards remain bounded.
+  alternatives:
+    - >-
+      L1 changes settled phase/current operating points without clear routing
+      gain.
+    - >-
+      L1 does not support the routing hypothesis at this point.
+    - >-
+      L1 causes reflected-load back-action, nonselective activity, or
+      free-running behavior.
+    - >-
+      Read1 produces exactly one BJL2 local phase/area-consistent event.
+
+frozen_receiver:
+  topology_snapshot: inputs/bq_cell_paper.cir
+  BJs_area: 1.33
+  BJL1_area: 1.12
+  BJL2_area: 1.89
+  Lin_pH: 0.8
+  L0_pH: 1.323
+  L1_pH: 2.5
+  L2_pH: 3.91
+  RJ1_ohm: 33.0
+  RJ2_ohm: 22.0
+  RB_ohm: 8.5
+  IB_bias_uA: 90.0
+  output_load_ohm: 10.0
+
+interface:
+  primary_return: 'R_PRI SL1 N_PRI 12 ohm; L_PRI N_PRI 0 0.20 pH'
+  secondary_input_arm: 'L_SEC QB_IN 0 1.00 pH; QB_IN is native BQ_PAPER IN'
+  mutual_element: 'KISO L_PRI L_SEC 0.70710678'
+  R_PRI_ohm: 12.0
+  L_PRI_pH: 0.20
+  L_SEC_pH: 1.0
+  K: 0.70710678
+  canonical_SL_termination_preserved: true
+  only_changed_receiver_parameter: L1
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  output_load: 'R_LOAD_Q OUT_Q 0 10 ohm'
+  parameter_sweep: false
+  convergence_ladder: not_run_by_design
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_version: 2.0.0
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: FROZEN_measurement_semantics_only
+
+windows:
+  pre_ps: [80.0, 90.0]
+  activity_ps: [94.0, 130.0]
+  post_ps: [150.0, 170.0]
+  read_state_ps: [20.0, 90.0]
+  half_open_actual_csv_time: true
+
+routing_metrics:
+  delta_definition: 'I_read1_or_read0 - I_matching_READ0_control'
+  rms_window_ps: [94.0, 130.0]
+  R6B_reference_G_L2: 0.1944694061
+  R6B_reference_G_BJL2: 0.1748881241
+  no_new_universal_threshold: true
+
+controls:
+  read0: logical0 with canonical positive READ
+  zero_read_logical1: logical1 with READ=0
+  zero_read_logical0: logical0 with READ=0
+  source_storage_guard: >-
+    Compare canonical no-receiver and R6-B using SL/N6, primary current,
+    JM1/JM2 drift, and JS1/JS2 post-window p2p. Absolute canonical read1 JS
+    phase running is not itself receiver back-action.
+
+provenance:
+  git_head_before_preregistration: a32c341766150e532a2e097f8c2573eb532748ce
+  git_dirty_before_new_exploration: false
+  git_head_at_execution: a32c341766150e532a2e097f8c2573eb532748ce
+  git_dirty_at_execution: true
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  R6B_reference_directory: test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822
+  input_snapshots:
+    - {path: inputs/bq_cell_paper.cir, sha256: b9784ddba873e4b4de12d961803938b0f9e08cd4fb62ce444e18a2508c40aac3}
+    - {path: inputs/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4}
+    - {path: inputs/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  netlist_snapshots:
+    inputs/read1.cir: 6a852169eabc21808645872de5ae15aea459e9bd6e90225b1dd66924797a6a36
+    inputs/read0.cir: e7e8a9093d980a9327a74d2ffe326730722bb529e102c7084e662535b09956ad
+    inputs/logical1-read0-control.cir: b7f60fe4a6729400172c48134922fb778921cbf06ab62b03af2aea84acbb4bb0
+    inputs/logical0-read0-control.cir: 83d31b71bf1d5a8102ca2d5a781ab3e79c74a7abc44e8bc6cbf1a0ea05f6ad40
+
+artifacts:
+  raw_dir: raw/
+  logs_dir: logs/
+  analysis_dir: analysis/
+  preregistration: PREREGISTRATION.md
+  report: analysis/R7A_REPORT.md
+  summary: analysis/r7a-summary.json
+  hash_file: analysis/sha256sums.txt
+  successful_run_file: run-02.csv
+  raw_sha256:
+    raw/read1/run-02.csv: 86e55c13f9f2488b7e838dac07bf833ca7948a7ba72de9c4d890e47ec35a6342
+    raw/read0/run-02.csv: 81a2042f59cc1f3938b0d4efe6cb938514364cf8a6f88ef772ce6ba2be7da95e
+    raw/logical1-read0-control/run-02.csv: 549491b67fcca929e37f83c7eb267007b65e1bb0766dd348af599f7d30bb725d
+    raw/logical0-read0-control/run-02.csv: dbef13ba7e323e67736e005ac9d9811c18dcbc239a295a34cec460f8550ad960
+  execution_logs:
+    successful: logs/*-run-02.stdout.txt and logs/*-run-02.stderr.txt
+    preserved_failed_attempt: logs/*-run-01.stdout.txt and logs/*-run-01.stderr.txt
+
+execution:
+  initial_attempt:
+    status: ARTIFACT_ONLY_FAILURE
+    reason: raw case subdirectories were absent, so JoSIM could not open output files
+    raw_written: false
+  successful_attempt:
+    run_file: run-02.csv
+    exit_codes:
+      read1: 0
+      read0: 0
+      logical1-read0-control: 0
+      logical0-read0-control: 0
+    rows_each: 13599
+    fields_each: 39
+    first_time_ps: 0.0
+    last_time_ps: 169.9875
+    dt_ps_range: [0.0125, 0.025]
+    stderr_bytes_each: 0
+  analysis:
+    script: analysis/r7a_analyze.py
+    exit_code: 0
+    summary: analysis/r7a-summary.json
+
+outcome:
+  artifact_status: VALID
+  verdict: ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED
+  local_native_qb_pass: false
+  static_operating_point_shift: true
+  source_storage_guard: preserved_relative_to_R6B_and_canonical_baselines
+  highest_evidence_level: isolated_native_QB_routing_activity
+  failed_requirements:
+    - read1 BJL2 did not produce a complete one-turn phase/area-consistent local event
+    - no JTL/T1 transport was tested

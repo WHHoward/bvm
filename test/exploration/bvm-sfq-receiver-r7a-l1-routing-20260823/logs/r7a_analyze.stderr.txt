@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/howard/JoSIM/test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/r7a_analyze.py", line 375, in <module>
+    main()
+    ~~~~^^
+  File "/home/howard/JoSIM/test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/r7a_analyze.py", line 332, in main
+    r6b_infos = {case: load_case(R6B, case, "run-01.csv") for case in cases}
+                       ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/howard/JoSIM/test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/r7a_analyze.py", line 320, in load_case
+    return load_csv(directory / "raw" / case / filename)
+  File "/home/howard/JoSIM/test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/r7a_analyze.py", line 75, in load_csv
+    with path.open(newline="", encoding="utf-8") as stream:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/howard/anaconda3/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/howard/test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/raw/read1/run-01.csv'

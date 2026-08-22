@@ -1,0 +1,107 @@
+{
+  "document_type": "exploration_aggregate",
+  "experiment": "R5-B load-line necessity test",
+  "execution_history": {
+    "v1_wiring": "shunt N_A->ground: functionally absent (N_A pinned by gauge+shunt; currents ~1e-22 A); runs preserved in raw/",
+    "v2_wiring": "shunt across B_SET (N_B->N_A): functionally active; runs in raw-v2/"
+  },
+  "cases": {
+    "read1": {
+      "n_complete_segments": 0,
+      "n_qualifying_events": 0,
+      "qualifying_details": [],
+      "all_complete": [],
+      "largest_segment_turns": 0.062096,
+      "ilqb_held_uA": 0.7617,
+      "bjl1_absmax_uA": 3.4,
+      "rj1_absmax_uA": 1.433,
+      "vset_absmax_uV": 143.3,
+      "jm1_post_rad": 5.914,
+      "jm2_post_rad": 0.296,
+      "sl_read_peak_mV": 1.823,
+      "n6_read_peak_mV": 2.029,
+      "btrig_range_turn": 5.3568,
+      "_segs_gt_0p05": [
+        [
+          102.638,
+          104.025,
+          "inc",
+          0.050668
+        ],
+        [
+          104.037,
+          105.487,
+          "dec",
+          -0.062096
+        ]
+      ]
+    },
+    "read0": {
+      "n_complete_segments": 0,
+      "n_qualifying_events": 0,
+      "qualifying_details": [],
+      "all_complete": [],
+      "largest_segment_turns": 0.011711,
+      "ilqb_held_uA": 0.7612,
+      "bjl1_absmax_uA": 2.632,
+      "rj1_absmax_uA": 0.58,
+      "vset_absmax_uV": 58.0,
+      "jm1_post_rad": -5.911,
+      "jm2_post_rad": -0.321,
+      "sl_read_peak_mV": 0.442,
+      "n6_read_peak_mV": 0.721,
+      "btrig_range_turn": 0.1892,
+      "_segs_gt_0p05": []
+    },
+    "logical1-read0-control": {
+      "n_complete_segments": 0,
+      "n_qualifying_events": 0,
+      "qualifying_details": [],
+      "all_complete": [],
+      "largest_segment_turns": 0.004625,
+      "ilqb_held_uA": 0.7612,
+      "bjl1_absmax_uA": 2.441,
+      "rj1_absmax_uA": 0.58,
+      "vset_absmax_uV": 58.0,
+      "jm1_post_rad": 5.911,
+      "jm2_post_rad": 0.317,
+      "sl_read_peak_mV": 0.0,
+      "n6_read_peak_mV": 0.0,
+      "btrig_range_turn": 0.0821,
+      "_segs_gt_0p05": []
+    },
+    "logical0-read0-control": {
+      "n_complete_segments": 0,
+      "n_qualifying_events": 0,
+      "qualifying_details": [],
+      "all_complete": [],
+      "largest_segment_turns": 0.004566,
+      "ilqb_held_uA": 0.7612,
+      "bjl1_absmax_uA": 2.432,
+      "rj1_absmax_uA": 0.58,
+      "vset_absmax_uV": 58.0,
+      "jm1_post_rad": -5.911,
+      "jm2_post_rad": -0.317,
+      "sl_read_peak_mV": 0.001,
+      "n6_read_peak_mV": 0.001,
+      "btrig_range_turn": 0.09,
+      "_segs_gt_0p05": []
+    }
+  },
+  "main_verdict": "R5B_STILL_BOUNDED_OSCILLATION",
+  "verdict_reason": "With the shunt correctly across B_SET, the branch acted as plain extra junction damping: phase excursion collapsed to [-0.070, 0] turn (vs R5-A's [-0.25, +0.18]), J_SET current stayed within [-1.7, 0] uA vs Ic=5, zero complete segments anywhere. The load-line-as-shunt-across-SET suppresses escape rather than enabling it. Paper-QB's RJ1 does not sit across its SET junction; translating it as such was a functional mis-mapping.",
+  "comparison_r5a_vs_r5b": {
+    "r5a_phi_excursion_turn": [
+      -0.2496,
+      0.1844
+    ],
+    "r5b_phi_range_turn": [
+      -0.0695,
+      0.0
+    ],
+    "r5a_v_peak_uV": 1087.5,
+    "r5b_v_peak_uV": 143.3,
+    "oscillation": "R5-A sustained symmetric plasma oscillation; R5-B heavily damped small wobble"
+  },
+  "guards": "JM signs preserved all cases; SL/N6 ordering intact; B_TRIG read1 multi-turn retained (5.357 t)"
+}

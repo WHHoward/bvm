@@ -1,0 +1,27 @@
+* R5-B load-line receiver (R5-A + minimal BJL1/RJ1 branch): R0b front end + weak mutual coupling to a
+* biased L_QB + B_SET quantizer loop.  |K|=0.80, frozen additive polarity
+* (negative K sign: raw read1 negative I(L_TX) lobe adds to +4.2 uA bias).
+* R_GAUGE 1Gohm is the MNA common-mode reference only (verified nil in R4-A).
+.subckt R5A_SOURCE_CAPTURE IN
+
+* Canonical SL -> R_IN -> L_TX -> B_TRIG front end, unchanged.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* Biased quantizer loop.
+L_QB          N_A         N_B          100p
+B_SET         N_B         N_A          jjmit area=0.05
+I_SET_BIAS    N_B         N_A          pwl(0p 0 2p 4.2U 80p 4.2U 140p 4.2U 170p 4.2U)
+* R5-B NEW minimal load-line branch: shunt junction + resistor, N_A to ground.
+* BJL1_SHUNT Ic=10 uA (2x J_SET) so signal current switches J_SET first;
+* RJ1_SHUNT=100 ohm matches the proven node impedance class.  These provide the
+* irreversible damping/load-line channel that R5-A lacked.
+BJL1_SHUNT    N_B         N_A          jjmit area=0.10
+RJ1_SHUNT     N_B         N_A          100.0
+R_GAUGE       N_A         0            1G
+
+K_TX_LH       L_TX        L_QB         -0.80
+
+.ends R5A_SOURCE_CAPTURE

@@ -172,7 +172,7 @@ single point and the four matched cases only.
   multi-lobe source waveform.
 - **Derived:** nonlinear branch, saddle locations, external-flux/current
   requirements, model-scaled `Ic/RN/R0/C`, and candidate static margins.
-- **Inference:** the 6.0 µA point should cross read1 while preserving read0
+- **Inference:** the 9.93 µA point should cross read1 while preserving read0
   separation if the source-induced relative excursion remains comparable.
 - **Unknown:** dynamic bias sensitivity, true escape versus bounded turning,
   retrap, timestep stability, and post-event state.

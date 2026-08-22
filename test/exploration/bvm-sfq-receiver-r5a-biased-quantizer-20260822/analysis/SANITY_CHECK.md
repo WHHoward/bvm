@@ -16,7 +16,7 @@
 
 KCL closes exactly with the bias branch inside the island: I_BSET + I_BIAS = I_LQB + I_RG → −2.4868 + 4.2 = 1.7132 + 0 ✓. The floating bias source drives a persistent circulating current around the L_QB+B_SET loop — this is the intended bias-assisted mechanism working as designed.
 
-Supercurrent consistency: Ic·sin(φ) = 5·sin(−0.52056) = −2.487 µA matches I(J_SET) exactly; normal-channel current is zero (V≈0). The junction sits in a stable zero-voltage state at φ = −4.7°.
+Supercurrent consistency: Ic·sin(φ) = 5·sin(−0.52056) = −2.487 µA matches I(J_SET) exactly; normal-channel current is zero (V≈0). The junction sits in a stable zero-voltage state at φ = −0.52056 rad = −0.08285 turn = −29.83°.
 
 ## Answers to the four mandated questions
 

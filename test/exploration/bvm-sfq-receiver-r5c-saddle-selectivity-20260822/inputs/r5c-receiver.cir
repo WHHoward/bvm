@@ -1,0 +1,21 @@
+* R5-C saddle-selectivity receiver: R5-A front end + weak mutual coupling to a
+* biased L_QB + B_SET quantizer loop.  |K|=0.80, frozen additive polarity
+* (negative K sign: raw read1 negative I(L_TX) lobe adds to +9.93 uA bias).
+* R_GAUGE 1Gohm is the MNA common-mode reference only (verified nil in R4-A).
+.subckt R5A_SOURCE_CAPTURE IN
+
+* Canonical SL -> R_IN -> L_TX -> B_TRIG front end, unchanged.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* Biased quantizer loop.
+L_QB          N_A         N_B          100p
+B_SET         N_B         N_A          jjmit area=0.05
+I_SET_BIAS    N_B         N_A          pwl(0p 0 2p 9.93U 80p 9.93U 140p 9.93U 170p 9.93U)
+R_GAUGE       N_A         0            1G
+
+K_TX_LH       L_TX        L_QB         -0.80
+
+.ends R5A_SOURCE_CAPTURE

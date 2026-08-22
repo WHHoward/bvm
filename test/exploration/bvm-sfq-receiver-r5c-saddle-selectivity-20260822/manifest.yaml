@@ -1,0 +1,198 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED — report complete; single analytic saddle-selectivity point
+title: R5-C reduced biased-quantizer correct-saddle selectivity
+created_at: "2026-08-22T21:14:56+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822
+parent_head: 01d2ed5fef790c3e846597446f899ebadbddd52f
+current_head_before_preregistration: 01d2ed5fef790c3e846597446f899ebadbddd52f
+
+preregistration_amendment:
+  amended_at: "2026-08-22T21:19:30+08:00"
+  reason: >-
+    The first draft candidate 6.0 uA used a phase-excursion extrapolation
+    without enforcing the signed external-flux fold separation. Before any
+    JoSIM run, an independent Sol review and direct fluxoid-sign check on the
+    committed raw selected the signed read1/read0 fold midpoint 9.93 uA.
+  superseded_candidate_uA: 6.0
+  selected_candidate_uA: 9.93
+  raw_artifacts_changed: false
+
+design_question:
+  single_question: >-
+    At one analytically selected bias point, does the existing reduced
+    biased-quantizer cross the actual inductive-loop saddle selectively on
+    read1, while read0 and both READ=0 controls remain below the saddle?
+
+analytic_basis:
+  model_equation: >-
+    phi + beta_L*(I_bias/Ic + sin(phi)) + 2*pi*M*I(L_TX)/Phi0 = 2*pi*n
+  stability: 1 + beta_L*cos(phi) > 0
+  saddle_condition: 1 + beta_L*cos(phi) = 0
+  r5a_bias_rejected_uA: 4.2
+  selected_bias_uA: 9.93
+  selection_note: >-
+    R5-A read1 relative excursion was -0.249559 turn while the exact 4.2-uA
+    reverse-saddle distance is 0.281494 turn. With the declared M*I_TX polarity,
+    the read1 positive external-flux lobe is +0.093924 Phi0 and read0 is
+    +0.038292 Phi0. Solving the same nonlinear branch places the corresponding
+    read1/read0 static selectivity interval at approximately 9.356–10.506 uA;
+    9.93 uA is the midpoint using the actual signed raw lobe. The connected n=0
+    branch is stable there. This is an inference to test, not a guaranteed
+    dynamic result.
+
+frozen_receiver:
+  canonical_bvm: unchanged
+  route: SL -> R_IN -> L_TX -> B_TRIG -> weak mutual L_QB/B_SET
+  r_in_ohm: 12.0
+  l_tx_pH: 0.20
+  k: -0.80
+  l_qb_pH: 100.0
+  b_trig_area: 0.50
+  b_trig_bias_uA: 15.0
+  b_set_area: 0.05
+  b_set_bias_uA: 9.93
+  r_gauge_ohm: 1.0e9
+  damping: unchanged from R5-A; no added shunt/load branch
+  topology_changes: none
+  jtl_attached: false
+  t1_attached: false
+
+provenance:
+  git_head: 01d2ed5fef790c3e846597446f899ebadbddd52f
+  git_dirty_at_preregistration: true
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  metric_spec_path: docs/research/METRIC_SPEC_V2.md
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  analytic_precheck: analysis/R5C_ANALYTIC_PRECHECK.md
+  analytic_script: analysis/r5c_analytic_precheck.py
+
+simulation:
+  input_kind: replay
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  output_load: none; local SET only
+  command_template: >-
+    build/josim-cli -o raw/<case>/run-01.csv inputs/<case>.cir
+
+windows:
+  pre: [80.0, 90.0] # ps; operating-point median
+  activity: [97.0, 130.0] # ps; canonical READ causal window
+  post: [150.0, 170.0] # ps; retrap/persistent-state check
+  read_state: [20.0, 95.0] # ps and post-window storage guard comparison
+
+signals:
+  junctions:
+    - {name: B_SET, phase: P(B_SET|XTRIG), voltage: V(B_SET|XTRIG), current: I(B_SET|XTRIG), orientation: N_B_to_N_A}
+    - {name: B_TRIG, phase: P(B_TRIG|XTRIG), voltage: V(B_TRIG|XTRIG), current: I(B_TRIG|XTRIG), orientation: N_TRIG_to_0}
+  inductors:
+    - {name: L_QB, current: I(L_QB|XTRIG), orientation: N_A_to_N_B}
+    - {name: L_TX, current: I(L_TX|XTRIG), orientation: N_PICK_to_N_TRIG}
+  guards:
+    - V(SL1)
+    - V(N6|XBVM1)
+    - P(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+    - I(R_GAUGE|XTRIG)
+
+event_oracle:
+  complete_local_set_event:
+    - continuous unwrapped P(B_SET|XTRIG) trajectory
+    - exactly one monotonic segment reaching at least 1.0 turn in either direction
+    - segment onset within [97,130) ps
+    - same-segment direct V(B_SET|XTRIG) integral / Phi0 agrees with phase within 0.05 turn
+    - post-event retrap: bounded stable phase/current and V decay in [150,170) ps
+    - no second complete segment in [20,170] ps
+  read0_and_controls:
+    - zero complete B_SET segments in either direction
+    - no free-running or self-oscillation
+  insufficient_alone:
+    - I_peak_gt_Ic
+    - voltage_peak
+    - phase_range_without_monotonic_segment
+    - derivative_activity_samples
+
+predeclared_outcomes:
+  pass: >-
+    read1 has exactly one qualifying complete same-JJ B_SET slip with phase/V-area
+    consistency and retrap; read0 and both controls have zero complete slips;
+    B_TRIG/source, SL/N6, JM1/JM2 and JS1/JS2 guards remain within the bounded
+    R5-A-class behavior.
+  fail: >-
+    read1 has no qualifying complete slip, more than one slip, no retrap, or
+    read0/control produces a complete slip/free-running response.
+  inconclusive: >-
+    artifact is valid but the event boundary, phase-area mapping, post window,
+    or source/storage guard classification is unresolved; no automatic promotion.
+  invalid: >-
+    nonzero solver failure, malformed/truncated CSV, missing required probes,
+    nonmonotonic time, NaN/Inf, or provenance failure preventing reconstruction.
+
+constraints:
+  modify_canonical_bvm: false
+  modify_b_trig_parameters: false
+  modify_transformer: false
+  modify_l_qb: false
+  modify_b_set_area: false
+  modify_damping: false
+  parameter_sweep: false
+  bias_points: [9.93]
+  preserve_failed_raw: true
+  no_mailbox_or_ack_workflow: true
+
+interpretation_boundary:
+  local_set_not_sfq_delivery: true
+  no_jtl_claim: true
+  if_true_saddle_crossing_without_event: >-
+    stop reduced-quantizer point tuning and report the reduced point as failed;
+    only then may the next user-authorized direction consider native paper-QB
+    bias routing. No such conclusion is preregistered as a result.
+
+artifacts:
+  preregistration: manifest.yaml
+  analytic_precheck: analysis/R5C_ANALYTIC_PRECHECK.md
+  analytic_json: analysis/r5c-analytic-precheck.json
+  analytic_script: analysis/r5c_analytic_precheck.py
+  input_dir: inputs/
+  raw_dir: raw/
+  logs_dir: logs/
+  hashes: analysis/sha256sums.txt
+
+execution:
+  executed_at: "2026-08-22T21:26:53+08:00"
+  git_head_at_execution: 01d2ed5fef790c3e846597446f899ebadbddd52f
+  git_dirty_at_execution: true
+  raw_files:
+    - raw/read1/run-01.csv
+    - raw/read0/run-01.csv
+    - raw/logical1-read0-control/run-01.csv
+    - raw/logical0-read0-control/run-01.csv
+  log_files:
+    - logs/read1-run-01.stdout.txt
+    - logs/read1-run-01.stderr.txt
+    - logs/read0-run-01.stdout.txt
+    - logs/read0-run-01.stderr.txt
+    - logs/logical1-read0-control-run-01.stdout.txt
+    - logs/logical1-read0-control-run-01.stderr.txt
+    - logs/logical0-read0-control-run-01.stdout.txt
+    - logs/logical0-read0-control-run-01.stderr.txt
+  artifact_status: VALID
+  verdict: FAIL
+  highest_evidence_level: local
+  failed_requirements:
+    - read1_no_complete_same_jj_2pi_segment
+    - read1_btrig_source_back_action
+    - read1_js1_js2_storage_guard_shift
+  report: analysis/R5C_REPORT.md

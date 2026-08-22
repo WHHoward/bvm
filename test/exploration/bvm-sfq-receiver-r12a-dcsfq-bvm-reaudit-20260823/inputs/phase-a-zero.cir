@@ -1,0 +1,15 @@
+* R12-A Phase A: historical DCSFQ_BVM zero-input bias-startup control.
+.include ../../../../circuits/models/jjmit.cir
+.include ../../../../circuits/interface/DCSFQ_BVM.cir
+
+.param IIN=0u
+XDCSFQ IN1 OUT1 THmitll_DCSFQ_BVM
+R_LOAD OUT1 0 10
+I_IN 0 IN1 pwl(0 0 10p 0 12p IIN 40p IIN 45p 0)
+
+.tran 0.1p 200p
+.print P(B1|XDCSFQ) V(B1|XDCSFQ) I(B1|XDCSFQ) P(B2|XDCSFQ) V(B2|XDCSFQ) I(B2|XDCSFQ) P(B3|XDCSFQ) V(B3|XDCSFQ) I(B3|XDCSFQ)
+.print I(L1|XDCSFQ) I(L2|XDCSFQ) I(L3|XDCSFQ) I(L4|XDCSFQ) I(L5|XDCSFQ) I(L6|XDCSFQ) I(LB1|XDCSFQ) I(LB2|XDCSFQ)
+.print I(IB1|XDCSFQ) I(IB2|XDCSFQ) I(RB1|XDCSFQ) I(RB2|XDCSFQ) I(RB3|XDCSFQ)
+.print V(IN1) V(OUT1) I(I_IN) I(R_LOAD)
+.end

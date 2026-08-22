@@ -1,0 +1,14 @@
+# R12-A Phase A
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-a-zero/run-01.csv test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-a-zero.cir
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-a-bump-68u4/run-01.csv test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-a-bump-68u4.cir
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-a-bump-300u/run-01.csv test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-a-bump-300u.cir
+
+# R12-A Phase B; the R11-A accepted positive-control raw is the same frozen JTL fixture.
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-read1/run-01.csv test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-b-read1.cir
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-read0/run-01.csv test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-b-read0.cir
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-logical1-read0-control/run-01.csv test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-b-logical1-read0-control.cir
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-logical0-read0-control/run-01.csv test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-b-logical0-read0-control.cir
+
+# Analysis (same-JJ phase/V; no scripts/sfq_metrics.py)
+python3 analysis/r12a_phase_a_analyze.py
+python3 analysis/r12a_phase_b_analyze.py

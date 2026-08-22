@@ -1,0 +1,37 @@
+experiment: R12-A
+tier: Exploration
+base_head: ca610ce73bf78ddc99edf3f03197be1968bfe8b2
+date: 2026-08-23
+solver:
+  path: build/josim-cli
+  version: 2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+frozen_includes:
+  circuits/models/jjmit.cir: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  circuits/interface/DCSFQ_BVM.cir: 398e9c656f4e6e7b8a866800f019cc8fef3def30da8d508322bb89183d144d95
+  circuits/standard/JTL.cir: ac02fc931742bb857723f9fbb57ac97a179beb6a6466d5a1184e7cf937f599aa
+  circuits/bvm/bvm_cell.cir: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+phase_a:
+  cases: [phase-a-zero, phase-a-bump-68u4, phase-a-bump-300u]
+  timestep_ps: 0.1
+  stop_ps: 200
+  verdict: REGENERATIVE_LOCAL_BEHAVIOR_ESTABLISHED
+phase_b:
+  cases: [phase-b-read1, phase-b-read0, phase-b-logical1-read0-control, phase-b-logical0-read0-control]
+  timestep_ps: 0.0125
+  stop_ps: 170
+  verdict: DCSFQ_BVM_NO_TRIGGER
+  jtl_positive_control: R11-A accepted two-cell positive-control raw
+analysis:
+  phase_a: analysis/phase-a-metrics.json
+  phase_b: analysis/phase-b-metrics.json
+  summary: analysis/r12a-summary.json
+  report: analysis/R12A_REPORT.md
+  hashes: analysis/sha256sums.txt
+policy:
+  modified_canonical_bvm: false
+  modified_dcsfq_bvm: false
+  modified_jtl: false
+  parameter_sweep: false
+  connected_t1: false
+  used_legacy_fast_events: false

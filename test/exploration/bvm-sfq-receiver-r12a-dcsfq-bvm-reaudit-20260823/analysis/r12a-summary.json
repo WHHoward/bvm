@@ -1,0 +1,41 @@
+{
+  "experiment": "R12-A",
+  "base_head": "ca610ce73bf78ddc99edf3f03197be1968bfe8b2",
+  "phase_a": {
+    "gate": "REGENERATIVE_LOCAL_BEHAVIOR_ESTABLISHED",
+    "cases": {
+      "0uA": "bias-startup control; no differential event",
+      "68.4uA": {
+        "B3_largest_monotonic_turns": 0.008091485053274878,
+        "B3_same_segment_voltage_area_turns": 0.008095867508983735,
+        "classification": "no complete event"
+      },
+      "300uA": {
+        "B3_largest_monotonic_turns": 1.030108771836515,
+        "B3_same_segment_voltage_area_turns": 1.0326836182156496,
+        "B3_area_residual_turns": -0.002574846379134632,
+        "B3_segment_ps": [10.0, 28.9],
+        "classification": "one bounded local complete transition"
+      }
+    },
+    "full_metrics": "analysis/phase-a-metrics.json"
+  },
+  "phase_b": {
+    "verdict": "DCSFQ_BVM_NO_TRIGGER",
+    "read1_B3_largest_monotonic_turns": -0.03653670690528283,
+    "read1_B3_same_segment_voltage_area_turns": -0.03654780726669385,
+    "read0_B3_largest_monotonic_turns": 0.009525423344049948,
+    "read0_and_controls_complete_events": 0,
+    "jtl_complete_events": 0,
+    "source_guard": "bounded_extra_loading_observed; logical storage distinction retained",
+    "full_metrics": "analysis/phase-b-metrics.json"
+  },
+  "artifact_policy": {
+    "canonical_bvm_modified": false,
+    "dcsfq_bvm_modified": false,
+    "jtl_modified": false,
+    "parameter_sweep": false,
+    "t1_connected": false,
+    "legacy_fast_events_used": false
+  }
+}

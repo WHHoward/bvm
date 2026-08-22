@@ -1,0 +1,26 @@
+* R12-A Phase B: canonical logical1 + canonical READ.
+.include ../../../../circuits/models/jjmit.cir
+.include ../../../../circuits/bvm/bvm_cell.cir
+.include ../../../../circuits/interface/DCSFQ_BVM.cir
+.include ../../../../circuits/standard/JTL.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+XCONV SL1 CONV_Q THmitll_DCSFQ_BVM
+XJTL1 CONV_Q JTL_MID THmitll_JTL
+XJTL2 JTL_MID JTL_OUT THmitll_JTL
+R_TERM JTL_OUT 0 1
+
+* logical1 write and canonical positive READ
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)
+
+.tran 0.0125p 170p
+.print P(B1|XCONV) V(B1|XCONV) I(B1|XCONV) P(B2|XCONV) V(B2|XCONV) I(B2|XCONV) P(B3|XCONV) V(B3|XCONV) I(B3|XCONV)
+.print I(L1|XCONV) I(L2|XCONV) I(L3|XCONV) I(L4|XCONV) I(L5|XCONV) I(L6|XCONV) I(LB1|XCONV) I(LB2|XCONV) I(IB1|XCONV) I(IB2|XCONV) I(RB1|XCONV) I(RB2|XCONV) I(RB3|XCONV)
+.print P(B1|XJTL1) V(B1|XJTL1) I(B1|XJTL1) P(B2|XJTL1) V(B2|XJTL1) I(B2|XJTL1)
+.print P(B1|XJTL2) V(B1|XJTL2) I(B1|XJTL2) P(B2|XJTL2) V(B2|XJTL2) I(B2|XJTL2)
+.print V(SL1) V(CONV_Q) V(JTL_MID) V(JTL_OUT) I(L_SL|XBVM1) I(L_PSL|XBVM1) I(R_TERM)
+.print V(N6|XBVM1) P(B_JM1|XBVM1) V(B_JM1|XBVM1) P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.end

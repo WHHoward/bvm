@@ -1,0 +1,177 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: EXECUTED
+title: R8 native-QB BJL2 output-class AREA single point
+run_id: bvm-sfq-receiver-r8-bjl2-area070-20260823
+created_at: '2026-08-23T01:18:02+08:00'
+current_head_before_preregistration: 3d8414c7410e2b23a059ba7e711d62bdce1c8969
+
+research_question:
+  single_question: >-
+    Does reducing only BJL2 AREA from 1.89 to 0.70 move the already isolated
+    state-selective native-QB response into a substantially more nonlinear or
+    quantizing regime without collapsing read0 margin or disturbing the
+    canonical BVM source/storage guard?
+
+hypothesis:
+  primary: >-
+    The native BJL2 output current class is too high for the R7-A routed
+    perturbation; lowering BJL2 AREA may increase nonlinear output activity.
+  alternatives:
+    - >-
+      AREA-dependent capacitance/resistance/load-line changes increase only a
+      small sub-turn response.
+    - >-
+      Read0 margin collapses or the output becomes nonselective/free-running.
+    - >-
+      The BJL2 change produces one complete local event.
+
+frozen_receiver:
+  topology_snapshot: inputs/bq_cell_paper.cir
+  BJs_area: 1.33
+  BJL1_area: 1.12
+  BJL2_area: 0.70
+  Lin_pH: 0.8
+  L0_pH: 1.323
+  L1_pH: 2.50
+  L2_pH: 3.91
+  RJ1_ohm: 33.0
+  RJ2_ohm: 22.0
+  RB_ohm: 8.5
+  IB_bias_uA: 90.0
+  output_load_ohm: 10.0
+  expected_bjl2_model:
+    Ic_uA: 70.0
+    C_fF: 49.0
+    RN_ohm: 22.8571428571
+    R0_ohm: 228.571428571
+
+interface:
+  primary_return: 'R_PRI SL1 N_PRI 12 ohm; L_PRI N_PRI 0 0.20 pH'
+  secondary_input_arm: 'L_SEC QB_IN 0 1.00 pH; QB_IN is native BQ_PAPER IN'
+  mutual_element: 'KISO L_PRI L_SEC 0.70710678'
+  R_PRI_ohm: 12.0
+  L_PRI_pH: 0.20
+  L_SEC_pH: 1.00
+  K: 0.70710678
+  canonical_SL_termination_preserved: true
+  only_changed_receiver_parameter: BJL2_AREA
+
+simulation:
+  input_kind: single_pwl
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timestep_s: 1.25e-14
+  stop_time_s: 1.70e-10
+  repetitions: 1
+  output_load: 'R_LOAD_Q OUT_Q 0 10 ohm'
+  parameter_sweep: false
+  convergence_ladder: not_run_by_design
+
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  spec_version: 2.0.0
+  spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  status: FROZEN_measurement_semantics_only
+
+windows:
+  pre_ps: [80.0, 90.0]
+  activity_ps: [94.0, 130.0]
+  post_ps: [150.0, 170.0]
+  read_state_ps: [20.0, 90.0]
+  half_open_actual_csv_time: true
+
+event_rule:
+  junction: BJL2
+  complete_turn_threshold: 1.0
+  same_jj_area_tolerance_turn: 0.05
+  required: >-
+    Continuous unwrapped phase, monotonic segment, same-segment direct voltage
+    area consistency, and bounded post-event retrap; current or voltage peaks
+    alone are insufficient.
+
+controls:
+  read0: logical0 with canonical positive READ
+  zero_read_logical1: logical1 with READ=0
+  zero_read_logical0: logical0 with READ=0
+  source_storage_guard: >-
+    Compare canonical no-receiver and R7-A using SL/N6, primary current,
+    JM1/JM2 drift, and JS1/JS2 post-window p2p. Absolute canonical read1 JS
+    phase running is not itself receiver back-action.
+
+provenance:
+  git_head_before_preregistration: 3d8414c7410e2b23a059ba7e711d62bdce1c8969
+  git_dirty_before_new_exploration: false
+  git_head_at_execution: 3d8414c7410e2b23a059ba7e711d62bdce1c8969
+  git_dirty_at_execution: true
+  josim_binary: build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  R7A_reference_directory: test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823
+  input_snapshots:
+    - {path: inputs/bq_cell_paper.cir, sha256: 902354dbf68591878f510b7587d881d6bdb6b917d233dd7e9a5bdf924ce0903d}
+    - {path: inputs/bvm_cell.cir, sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4}
+    - {path: inputs/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  netlist_snapshots:
+    inputs/read1.cir: 7b5657ff0d3dd5f4e7146598c181ab93b0b7320f0ea0aa4941bf11b4c6c32f28
+    inputs/read0.cir: 2d6f3b84e7b18285df792622703d0fe0327c75daf7f4784b86c5cf46717d3eb7
+    inputs/logical1-read0-control.cir: c3e9c5fdbfd09b8b05e4ac56a4297f1c42a5d159a3db8d4a8513919ba644bb43
+    inputs/logical0-read0-control.cir: 30eb67844254c39adb5aecb9aeb5d43510827040bac6e89a7c40449ce42e3ac5
+
+artifacts:
+  raw_dir: raw/
+  logs_dir: logs/
+  analysis_dir: analysis/
+  preregistration: PREREGISTRATION.md
+  report: analysis/R8_REPORT.md
+  summary: analysis/r8-summary.json
+  hash_file: analysis/sha256sums.txt
+  successful_run_file: run-01.csv
+  raw_sha256:
+    raw/read1/run-01.csv: 1458a4a69ee66fcf58536346999db1cbe10e4a9e9f5ccf99743cbfbc442826e5
+    raw/read0/run-01.csv: 0a905440b8ffa873d9f9dc94d7f3a8f6d0de650d8af76e117a894f40da90f837
+    raw/logical1-read0-control/run-01.csv: 9880a229966de484bd984504710e17aa65e4fbf4d796ecb6a25358f82c288fff
+    raw/logical0-read0-control/run-01.csv: ea99b64a22ab7617f05be4e9922437f012eaee617989b36e97783c14ce99001f
+  execution_logs:
+    successful: logs/*-run-01.stdout.txt and logs/*-run-01.stderr.txt
+
+execution:
+  successful:
+    run_file: run-01.csv
+    exit_codes:
+      read1: 0
+      read0: 0
+      logical1-read0-control: 0
+      logical0-read0-control: 0
+    rows_each: 13599
+    fields_each: 39
+    first_time_ps: 0.0
+    last_time_ps: 169.9875
+    dt_ps_range: [0.0125, 0.025]
+    stderr_bytes_each: 0
+  analysis:
+    script: analysis/r8_analyze.py
+    exit_code: 0
+    summary: analysis/r8-summary.json
+
+outcome:
+  artifact_status: VALID
+  verdict: OUTPUT_CLASS_CHANGE_WITHOUT_MEANINGFUL_BJL2_GAIN
+  local_bjl2_pass: false
+  complete_bjl2_segments_read1: 0
+  complete_bjl2_segments_read0: 0
+  complete_bjl2_segments_controls: 0
+  read0_margin: degraded_but_no_complete_false_fire
+  source_storage_guard: preserved_relative_to_R7A_and_canonical_baselines
+  highest_evidence_level: bounded_BJL2_subturn_activity
+  failed_requirements:
+    - read1 BJL2 remained below one complete phase turn
+    - no threshold-like nonlinear jump was observed
+    - no JTL/T1 transport was tested
+

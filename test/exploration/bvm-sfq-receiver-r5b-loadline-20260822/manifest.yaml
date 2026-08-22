@@ -1,0 +1,141 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: EXPLORATORY
+status: DRAFT — minimal load-line branch preregistration; execute after user confirmation
+title: R5-B QB load-line / shunt necessity test (single branch added to R5-A)
+created_at: "2026-08-22T01:40:00+08:00"
+parent_exploration: test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822
+parent_head: e5dd13aa1b0cfd4b13b1b2fc865e62f7093c39cf
+current_head_before_experiment: e5dd13aa1b0cfd4b13b1b2fc865e62f7093c39cf
+
+scientific_question:
+  single_question: >-
+    With R5-A input coupling, L_QB, J_SET, and bias operating point frozen, does
+    adding a minimal BJL1/RJ1-class load-line branch convert the read1 bounded
+    biphasic plasma oscillation into exactly one complete phase slip, while
+    read0/controls remain zero?
+
+qb_fact_base:
+  bjl1_connection_in_paper_qb: >-
+    BJL1 sits from the loop midpoint node (node 2, between BJs cathode and the
+    L1/L2 loop) to ground, in parallel with RJ1.  It is a shunt junction across
+    the quantizing loop: DC bias path and load-line definition.
+  rj1_role: >-
+    RJ1 (parallel with BJL1) damps the loop and defines the load line so that
+    when BJs enters its voltage state the loop current has an ohmic path -
+    making the state transition irreversible instead of swinging back.
+  ic_ordering_lesson: >-
+    v4 root cause: BJL1 Ic must be ABOVE BJs Ic so the shunt junction never
+    steals the signal current before BJs switches.  Paper ordering:
+    JS(133) < JL1(112) is actually BELOW - but paper JS is on the input arm;
+    our v4 fix applies to the shared-loop geometry where both see the same
+    loop current.  For R5-B: J_SET(Ic=5 uA) must switch FIRST, so the shunt
+    junction Ic must be > J_SET Ic.
+  how_load_line_changes_escape: >-
+    In R5-A the oscillation was symmetric because the loop had no dissipation
+    path: energy sloshed between L_QB and J_SET capacitance.  A shunt branch
+    across the loop adds an asymmetric damping channel that activates only when
+    |V_loop| grows (junction entering voltage state) - converting the crossing
+    of the critical boundary into runaway (slip) rather than turnaround.
+
+topology_delta_from_r5a:
+  ascii: |
+    N_A -- L_QB(100pH) -- N_B
+     |                     |
+     +-- B_SET JJ ---------+   (area=0.05, Ic=5uA, unchanged)
+     |                     |
+     +-- I_SET_BIAS -------+   (+4.2 uA floating, unchanged)
+     |                     |
+     +-- BJL1 (N_A->gnd)   +-- RJ1 (N_A->gnd)   [NEW minimal load-line branch]
+     +-- R_GAUGE 1Gohm ----+   (unchanged reference)
+  new_elements:
+    - name: BJL1_SHUNT
+      nodes: N_A -> ground
+      area: 0.10
+      ic_uA: 10.0
+      ic_ordering_rationale: >-
+        Must be strictly above J_SET Ic (5 uA) so signal current prefers
+        switching J_SET; placed at exactly 2x J_SET Ic as the minimal
+        separation that guarantees ordering without introducing a new scale.
+        Not copied from paper/v4 ratios (different current class entirely).
+    - name: RJ1_SHUNT
+      nodes: N_A -> ground
+      ohm: 100.0
+      rationale: >-
+        Matches the R_DAMP=100 ohm class already proven benign in this node
+        class (R2 series); provides the irreversible damping channel sized to
+        the same impedance environment.  At the ~100 uV oscillation level it
+        draws ~1 uA - comparable to the drive, so it participates in dynamics
+        (which is the point) without dominating them.
+  unchanged: [L_TX, K polarity/magnitude, L_QB, J_SET area, bias 4.2 uA,
+    R_GAUGE 1G, stimulus matrix, timestep/stop]
+
+matched_cases:
+  - {id: read1, logical_state: 1, read: canonical_positive}
+  - {id: read0, logical_state: 0, read: canonical_positive}
+  - {id: logical1-read0-control, logical_state: 1, read: zero_control}
+  - {id: logical0-read0-control, logical_state: 0, read: zero_control}
+
+required_probes:
+  source: [P(B_TRIG|XTRIG), V(B_TRIG|XTRIG), I(B_TRIG|XTRIG), I(L_TX|XTRIG)]
+  quantizer: [P(B_SET|XTRIG), V(B_SET|XTRIG), I(B_SET|XTRIG), I(L_QB|XTRIG),
+    P(BJL1_SHUNT|XTRIG), V(BJL1_SHUNT|XTRIG), I(BJL1_SHUNT|XTRIG),
+    I(RJ1_SHUNT|XTRIG), I(R_GAUGE|XTRIG)]
+  guards: [V(SL1), V(N6|XBVM1)]
+  storage: [P(B_JM1|XBVM1), P(B_JM2|XBVM1), P(B_JS1|XBVM1), P(B_JS2|XBVM1)]
+
+event_oracle:
+  identical_to_r5a_amended: direction-neutral complete segment >= 1 turn of
+    unwrapped P(B_SET|XTRIG), onset in [97,130) ps, same-JJ V-area residual
+    <= 0.05 turn, retrap after, no second complete event in [20,170] ps.
+  read0_and_controls: zero complete segments either direction.
+
+r5a_vs_r5b_comparison_required:
+  - phase trajectory shape and excursion extent
+  - V-area per lobe and net
+  - oscillation decay envelope (R5-A sustained; R5-B expected damped)
+  - first escape timing (crossing of static boundary vs actual slip time)
+  - second-event risk window
+  - source back-action (B_TRIG range, SL/N6 peaks, JM signs)
+
+back_action_guards:
+  - read1 B_TRIG complete nonlinear response retained
+  - read0/controls no complete B_TRIG transition
+  - SL/N6 ordering preserved
+  - JM1/JM2 storage signs preserved
+  - JS1/JS2 no anomalous states
+
+main_bounded_verdicts:
+  pass: R5B_LOADLINE_CONVERTS_PASS
+  failures:
+    - R5B_STILL_BOUNDED_OSCILLATION
+    - R5B_NO_SET_EVENT
+    - R5B_READ0_FALSE_SET
+    - R5B_CONTROL_FALSE_SET
+    - R5B_MULTI_FIRE
+    - R5B_BACK_ACTION_FAILURE
+    - R5B_INCONCLUSIVE
+  interpretation:
+    pass: >-
+      paper-QB load-line/shunt function is necessary and sufficient (at this
+      point) for converting the BVM-derived biphasic excitation into an
+      irreversible quantized event.
+    still_bounded: >-
+      return to full QB core / flux-bias architecture comparison; do not add
+      output regeneration.
+
+execution_constraints:
+  no_sweep: true
+  no_output_regeneration: true
+  no_jtl_t1: true
+  no_full_lin_input: true
+  single_new_branch_only: true
+  artifacts_commitment:
+    - inputs/r5b-receiver.cir + four matched-case netlists
+    - raw/ and logs/
+    - analysis/r5b-summary.json
+    - analysis/R5B_REPORT.md
+    - analysis/REVIEW.md
+    - analysis/sha256sums.txt
+  precommit_check: git status confirming all declared artifacts tracked

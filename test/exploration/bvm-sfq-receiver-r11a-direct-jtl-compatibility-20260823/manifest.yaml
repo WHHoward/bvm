@@ -1,0 +1,116 @@
+experiment_id: R11-A-direct-jtl-compatibility-20260823
+title: canonical BVM to repository standard JTL direct compatibility screening
+date: 2026-08-23
+mode: EXPLORATORY
+head: 6c2530555e239552d611bf9519126e5e596b3cd6
+working_tree_before_run: clean
+coordination: lightweight-exploration
+workflow_mailbox: not_used
+
+research_question: >-
+  Can the canonical BVM SL logical-1 READ transient, without QB, be accepted
+  by the repository standard two-cell JTL and form propagated local JTL events,
+  while logical-0 and both READ=0 controls remain zero-event?
+
+topology:
+  source: canonical circuits/bvm/bvm_cell.cir
+  receiver: circuits/standard/JTL.cir
+  cells: 2
+  instances:
+    - XJTL1 SL1 JTL_MID THmitll_JTL
+    - XJTL2 JTL_MID JTL_OUT THmitll_JTL
+  output_load: R_TERM JTL_OUT 0 1
+  bvm_internal_sl_path_preserved: true
+  bvm_internal_sl_path: N6-L_PSL(0.5p)-R_SL(12ohm)-N8-L_SL(0.4p)-SL
+  extra_transformer_or_conditioner: false
+
+frozen:
+  jtl_parameters: repository standard, unchanged
+  jtl_source_positive_control: test/standard/test_jtl.cir stimulus, 1.5mV 11-13ps
+  timestep_ps: 0.0125
+  stop_time_ps: 170
+  cases:
+    - read1
+    - read0
+    - logical1-read0-control
+    - logical0-read0-control
+  windows_ps:
+    positive_control:
+      pre: [8, 10]
+      activity: [10, 35]
+      post: [35, 60]
+    bvm:
+      pre: [85, 94]
+      activity: [94, 130]
+      post: [130, 165]
+  phase_units: raw P in radians; turns are phase_delta_rad/(2*pi)
+  voltage_area: same_junction_same_segment_integral_Vdt_over_Phi0
+
+provenance:
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  jtl_sha256: ac02fc931742bb857723f9fbb57ac97a179beb6a6466d5a1184e7cf937f599aa
+  jjmit_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  bvm_cell_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  standard_test_jtl_sha256: 4d21cb184ac0f66bdf454a33bba1ac3e49b072686673ad3bdbd824102ecb7c8f
+  phase_contract_sha256: c0e073ccd890d1213b8b037a73f21c8f04f791063de4220968e71330deb7d968
+  handover_sha256: cde01cc22b25e8b0c83c6876a47afafad75f193561270c6e6a41e9c125648b1e
+
+execution:
+  positive_control:
+    run_01:
+      exit_code: 255
+      reason: output directory path was absent; no raw was produced
+      stderr_preserved: logs/positive-control-run-01.stderr.txt
+    run_02:
+      exit_code: 0
+      raw: raw/positive-control/run-02.csv
+      rows_including_header: 13600
+  bvm_runs:
+    - case: read1
+      exit_code: 0
+      raw: raw/read1/run-01.csv
+    - case: read0
+      exit_code: 0
+      raw: raw/read0/run-01.csv
+    - case: logical1-read0-control
+      exit_code: 0
+      raw: raw/logical1-read0-control/run-01.csv
+    - case: logical0-read0-control
+      exit_code: 0
+      raw: raw/logical0-read0-control/run-01.csv
+  solver_stderr: all successful runs empty
+
+registered_probes:
+  jtl_junctions:
+    - P(B1|XJTL1), V(B1|XJTL1), I(B1|XJTL1)
+    - P(B2|XJTL1), V(B2|XJTL1), I(B2|XJTL1)
+    - P(B1|XJTL2), V(B1|XJTL2), I(B1|XJTL2)
+    - P(B2|XJTL2), V(B2|XJTL2), I(B2|XJTL2)
+  source_guards:
+    - V(SL1)
+    - V(N6|XBVM1)
+    - I(L_SL|XBVM1)
+  storage_guards:
+    - P(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+
+analysis:
+  script: analysis/r11a_analyze.py
+  summary: analysis/r11a-summary.json
+  report: analysis/R11A_REPORT.md
+  metric_gate: direct raw P/V and time-column integration; legacy sfq_metrics.py not used
+  positive_control_verdict: PASS
+  bvm_verdict: NO_JTL_TRIGGER
+  architecture_scope: fixed direct-galvanic point only; not entire direct-JTL family
+  next_branch_if_continued: temporal rectification or hold followed by biased one-shot regenerator, then JTL
+
+raw_sha256:
+  raw/positive-control/run-02.csv: 28c1b2f4c2a6adec3973ddebe06d737769d14a0b105b9c03c1666f9d6c6845ec
+  raw/read1/run-01.csv: abbe885cbe3bccfb9655e544b7f39d1de95420e0063048ac89fb86c968100a78
+  raw/read0/run-01.csv: 9d65935c7f08724f8f17e1985df3a3149883dc2c24da21313533beddfe222271
+  raw/logical1-read0-control/run-01.csv: 34e7fa6a696ee643c54dd22d96364146d7971bf2ac82cce471a8ddb46fcab19c
+  raw/logical0-read0-control/run-01.csv: 9dafd454b2a59ab014189cb72a2b75bf7e7537301e622bdcdd82b5b7d7ef4f44

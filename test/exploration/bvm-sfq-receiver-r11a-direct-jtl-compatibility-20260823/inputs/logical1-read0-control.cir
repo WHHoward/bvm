@@ -1,0 +1,24 @@
+* R11-A: logical1 write-only READ=0 control, direct SL -> two standard JTL cells.
+.include ../../../../circuits/models/jjmit.cir
+.include ../../../../circuits/bvm/bvm_cell.cir
+.include ../../../../circuits/standard/JTL.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+XJTL1 SL1 JTL_MID THmitll_JTL
+XJTL2 JTL_MID JTL_OUT THmitll_JTL
+R_TERM JTL_OUT 0 1
+
+* logical1 write only; READ=0
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+
+.tran 0.0125p 170p
+.print P(B1|XJTL1) V(B1|XJTL1) I(B1|XJTL1) P(B2|XJTL1) V(B2|XJTL1) I(B2|XJTL1)
+.print P(B1|XJTL2) V(B1|XJTL2) I(B1|XJTL2) P(B2|XJTL2) V(B2|XJTL2) I(B2|XJTL2)
+.print I(L1|XJTL1) I(L2|XJTL1) I(L3|XJTL1) I(L4|XJTL1) I(IB1|XJTL1) I(RB1|XJTL1) I(RB2|XJTL1)
+.print I(L1|XJTL2) I(L2|XJTL2) I(L3|XJTL2) I(L4|XJTL2) I(IB1|XJTL2) I(RB1|XJTL2) I(RB2|XJTL2)
+.print V(SL1) V(JTL_MID) V(JTL_OUT) I(L_SL|XBVM1) I(L_PSL|XBVM1) I(R_TERM)
+.print V(N6|XBVM1) P(B_JM1|XBVM1) V(B_JM1|XBVM1) P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.end

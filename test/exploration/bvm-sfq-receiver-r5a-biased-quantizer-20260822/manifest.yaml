@@ -127,8 +127,16 @@ timing:
 event_oracle:
   set_event:
     - continuous adjacent-sample unwrapped P(B_SET|XTRIG)
-    - exactly one qualifying complete forward monotonic segment (>= 1 turn),
-      onset within [97,130) ps
+    - exactly one qualifying complete monotonic segment (>= 1 turn) in EITHER
+      direction (forward or reverse; direction recorded), onset within
+      [97,130) ps
+    - amendment_2026_08_22: >-
+        sanity check (analysis/SANITY_CHECK.md) measured the bias-only operating
+        point at phi=-0.0829 turn with the NEARER critical angle in the reverse
+        direction (0.1672 turn away vs 0.3328 forward); a forward-only oracle
+        would misclassify a physically successful extraction. Both-direction
+        counting applies to read1's single SET event only; read0/controls still
+        require zero complete segments of either direction.
     - same-JJ same-segment V(B_SET) integral / Phi0 consistent within 0.05 turn
     - retrap after the event (phase settles, V decays)
     - no second complete event in [20,170] ps

@@ -1,0 +1,17 @@
+* R5-A sanity: K=0 baseline, bias-only operating point.
+.include jjmit.cir
+.include bvm_cell.cir
+.include r5a-receiver.cir
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+XTRIG SL1 R5A_SOURCE_CAPTURE
+
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p +100U 20p +100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 170p 0)
+
+.tran 0.0125p 170p
+.print P(B_SET|XTRIG) V(B_SET|XTRIG) I(B_SET|XTRIG) I(L_QB|XTRIG)
+.print I(R_GAUGE|XTRIG) P(B_TRIG|XTRIG) V(B_TRIG|XTRIG)
+.print P(B_JM1|XBVM1) P(B_JM2|XBVM1)
+.end

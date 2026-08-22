@@ -1,0 +1,19 @@
+* R5-A static operating-point sanity fixture: biased quantizer loop with
+* K_TX_LH = 0 (no mutual stimulus).  Bias-only operating point measurement.
+.subckt R5A_SOURCE_CAPTURE IN
+
+* Canonical SL -> R_IN -> L_TX -> B_TRIG front end, unchanged.
+R_IN          IN          N_PICK      12.0
+L_TX          N_PICK      N_TRIG       0.20p
+B_TRIG        N_TRIG      0            jjmit area=0.50
+I_TRIG_BIAS   0           N_TRIG       pwl(0p 0 2p 15U 80p 15U 140p 15U 170p 15U)
+
+* Biased quantizer loop: L_QB in series with B_SET, floating bias branch.
+L_QB          N_A         N_B          100p
+B_SET         N_B         N_A          jjmit area=0.05
+I_SET_BIAS    N_B         N_A          pwl(0p 0 2p 4.2U 80p 4.2U 140p 4.2U 170p 4.2U)
+R_GAUGE       N_A         0            1G
+
+K_TX_LH       L_TX        L_QB         0.00
+
+.ends R5A_SOURCE_CAPTURE

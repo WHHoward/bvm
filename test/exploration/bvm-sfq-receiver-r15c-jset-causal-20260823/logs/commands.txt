@@ -1,0 +1,30 @@
+# R15-C commands and provenance notes
+
+# Analytic precheck (no JoSIM)
+python3 test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/analysis/analyze_r15c_precheck.py \
+  --r15b-root test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823 \
+  --out-dir test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/analysis
+
+# Four matched JoSIM cases; each command ran once with the corresponding
+# output CSV and stdout/stderr/exitcode captured under logs/.
+timeout --kill-after=10s 300s /home/howard/JoSIM/build/josim-cli -m \
+  -o test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/raw/logical1-read.csv \
+  test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/inputs/logical1-read.cir
+timeout --kill-after=10s 300s /home/howard/JoSIM/build/josim-cli -m \
+  -o test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/raw/logical0-read.csv \
+  test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/inputs/logical0-read.cir
+timeout --kill-after=10s 300s /home/howard/JoSIM/build/josim-cli -m \
+  -o test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/raw/logical1-read0-control.csv \
+  test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/inputs/logical1-read0-control.cir
+timeout --kill-after=10s 300s /home/howard/JoSIM/build/josim-cli -m \
+  -o test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/raw/logical0-read0-control.csv \
+  test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/inputs/logical0-read0-control.cir
+
+# Execution analysis (no additional simulation)
+python3 test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/analysis/analyze_r15c_execution.py
+
+# Frozen execution settings
+dt=0.0125ps
+stop=170ps
+cases=logical1-read,logical0-read,logical1-read0-control,logical0-read0-control
+joSIM=v2.7.2837d13

@@ -1,0 +1,21 @@
+* R15-C causal J_SET fixture.
+* Frozen R0b detector plus finite-impedance current-summing J_SET return.
+.subckt JSET_CAUSAL IN
+
+R_IN        IN          N_PICK      12.0
+L_TX        N_PICK      N_DET       0.20p
+B_DET       N_DET      0           jjmit area=0.50
+I_DET       0           N_DET       pwl(0p 0 2p 15U 80p 15U 170p 15U)
+
+* The ideal source feeds two branches at N_S0; J_SET current is no longer
+* forced to equal I_SET because R_BIAS provides a finite return/summing path.
+I_SET       0           N_S0        pwl(0p 0 2p 5.6U 80p 5.6U 170p 5.6U)
+R_BIAS      N_S0        0           27.5
+L_RET       N_S0        N_S1        5.0p
+L_S         N_S1        N_S2        50.0p
+B_SET       N_S2        0           jjmit area=0.08
+
+* Read1-favorable polarity inherited from R15-B.
+K_IN        L_TX        L_S         -0.80
+
+.ends JSET_CAUSAL

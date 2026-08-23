@@ -1,0 +1,129 @@
+schema_version: 1
+run_id: bvm-sfq-receiver-r15c-jset-causal-20260823
+created_at: 2026-08-23
+mode: exploratory
+study_phase: R15-C
+research_question: >-
+  Can a finite-impedance current-summing return make the R15-B mutual
+  detector transient enter the J_SET current degree of freedom while
+  preserving read1/read0 discrimination and bounded BVM back-action?
+
+parent_evidence:
+  exploration: test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823
+  head: 2622201e7e6ab72ce2a5066ccdbf3fd1c0ea65d7
+  source_column: I(L_TX|XAFQ)
+
+provenance:
+  git_head_at_execution: 61ac9be5af06acf674e4a1c0be09c216f88c27af
+  git_parent_scientific_head: 2622201e7e6ab72ce2a5066ccdbf3fd1c0ea65d7
+  git_dirty_at_execution: true
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: v2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  input_closure:
+    - inputs/jjmit.cir
+    - inputs/bvm_cell.cir
+    - inputs/jset_causal.cir
+    - inputs/logical1-read.cir
+    - inputs/logical0-read.cir
+    - inputs/logical1-read0-control.cir
+    - inputs/logical0-read0-control.cir
+  source_raw:
+    - ../bvm-sfq-receiver-r15b-magnetic-correction-20260823/raw/logical1-read.csv
+    - ../bvm-sfq-receiver-r15b-magnetic-correction-20260823/raw/logical0-read.csv
+    - ../bvm-sfq-receiver-r15b-magnetic-correction-20260823/raw/logical1-read0-control.csv
+    - ../bvm-sfq-receiver-r15b-magnetic-correction-20260823/raw/logical0-read0-control.csv
+
+analytic_precheck:
+  script: analysis/analyze_r15c_precheck.py
+  equation: >-
+    55 pH*d(delta_I_JSET)/dt + 27.5 ohm*delta_I_JSET
+    = -(-2.529822 pH)*dI_TX/dt
+  window_ps: [94.0, 130.0]
+  l_sum_pH: 55.0
+  r_bias_ohm: 27.5
+  mutual_m_pH: -2.529822
+  baseline_i_set_uA: 5.6
+  b_set_ic_uA: 8.0
+  initial_delta_i_uA: 0.0
+  verdict: PRECHECK_GO
+  basis: >-
+    R15-B raw waveform integration predicts state-selective J_SET modulation;
+    this is a pre-switch current prediction, not event evidence.
+
+simulation:
+  input_kind: full_bvm_single_read
+  cases:
+    - logical1-read
+    - logical0-read
+    - logical1-read0-control
+    - logical0-read0-control
+  timestep_ps: 0.0125
+  stop_time_ps: 170.0
+  output_load: none
+  repetitions: 1
+
+frozen_topology:
+  r_bias_ohm: 27.5
+  l_ret_pH: 5.0
+  l_s_pH: 50.0
+  b_set_area: 0.08
+  k_in: -0.80
+  q_out_dcs_removed: true
+  canonical_bvm_modified: false
+  r0b_detector_modified: false
+  parameter_sweep: false
+  jtl_or_t1_attached: false
+
+signals:
+  junctions:
+    - B_DET|XJSET
+    - B_SET|XJSET
+  branches:
+    - I(L_TX|XJSET)
+    - I(L_RET|XJSET)
+    - I(L_S|XJSET)
+    - I(I_SET|XJSET)
+    - I(R_BIAS|XJSET)
+    - I(R_IN|XJSET)
+    - I(I_DET|XJSET)
+  bvm_guards:
+    - V(SL1)
+    - V(N6|XBVM1)
+    - I(L_SL|XBVM1)
+    - P(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+
+windows:
+  pre_ps: [80.0, 90.0]
+  activity_ps: [94.0, 130.0]
+  post_ps: [150.0, 170.0]
+  read_state_ps: [80.0, 90.0]
+
+event_contract:
+  required:
+    - continuous_unwrapped_phase
+    - same_jj_same_segment_voltage_area
+    - phase_area_consistency
+    - bounded_post_retrap
+  forbidden_shortcuts:
+    - current_above_Ic
+    - voltage_peak
+    - phase_range_alone
+
+outcomes:
+  pass: JSET_CAUSAL_ONE_SHOT_PASS
+  near_threshold: CAUSAL_NEAR_THRESHOLD
+  failure: CAUSAL_TRANSFER_FAILURE
+  back_action: BACK_ACTION_FAILURE
+  nonselective: NONSELECTIVE_OR_FREE_RUNNING
+  inconclusive: INCONCLUSIVE
+  artifact: VALID
+  verdict: CAUSAL_NEAR_THRESHOLD
+  disposition: >-
+    The finite-impedance current-summing fixture produces a clear
+    read1-selective I(B_SET) modulation, with phase/voltage-area-consistent
+    sub-turn activity, but no complete J_SET transition. The four raw runs
+    completed with direct KCL closure and no control event.

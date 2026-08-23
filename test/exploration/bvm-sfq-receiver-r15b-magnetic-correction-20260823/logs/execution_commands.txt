@@ -1,0 +1,16 @@
+R15-B execution command record
+date: 2026-08-23
+working directory for JoSIM runs: /home/howard/JoSIM/test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/inputs
+binary: /home/howard/JoSIM/build/josim-cli
+binary version: v2.7.2837d13
+binary sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+command template:
+  timeout --kill-after=10s 300s /home/howard/JoSIM/build/josim-cli -m -o <exploration-root>/raw/<case>.csv <case>.cir
+cases:
+  logical1-read0-control
+  logical1-read
+  logical0-read
+  logical0-read0-control
+solver settings are frozen in each input netlist: .tran 0.0125p 170p
+analysis command:
+  python3 analysis/analyze_r15b_execution.py

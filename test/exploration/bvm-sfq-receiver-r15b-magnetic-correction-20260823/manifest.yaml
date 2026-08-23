@@ -2,7 +2,8 @@ document_type: exploration_manifest
 schema_version: exploration-v1
 task_tier: Exploration
 study_phase: R15-B
-status: PREREGISTERED_PENDING_EXECUTION
+status: COMPLETED
+verdict: ACTIVE_STAGE_NO_TRIGGER
 title: AFQ-3 split-winding magnetic constitutive correction
 created_at: "2026-08-23T17:43:32+08:00"
 parent_exploration: test/exploration/bvm-sfq-receiver-r15a-afq3-20260823
@@ -32,7 +33,7 @@ frozen_scope:
   single_point_only: true
   parameter_sweep: false
   jtl_or_t1_attached: false
-  josim_run_performed: false
+  josim_run_performed: true
 
 unchanged_receiver_point:
   r_in_ohm: 12.0
@@ -81,7 +82,7 @@ solver_provenance:
   binary: build/josim-cli
   version: v2.7.2837d13
   binary_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
-  note: No JoSIM invocation was made in this analytic-only checkpoint.
+  note: Four matched single-point JoSIM cases executed after the analytic gate; no sweep.
 
 matched_cases:
   - {id: logical1-read, logical_state: 1, read: canonical_positive}
@@ -94,6 +95,16 @@ execution_parameters:
   stop_time_ps: 170.0
   source_timing: inherited_R15A_canonical_PWL
   output_load_ohm: 10.0
+
+execution_result:
+  first_control: logical1-read0-control
+  first_control_gate: STABLE_NO_FREE_RUNNING
+  stage1_detector_preserved: true
+  stage2_active_state_compression: false
+  stage3_active_gain_established: false
+  stage4_dcsfq_one_shot: false
+  source_disposition: BOUNDED_EXTRA_BACK_ACTION_NOT_ISOLATED
+  executed_at: "2026-08-23"
 
 required_probes:
   afq_junctions: [B_DET, B_SET, B_Q, B_OUT]
@@ -156,8 +167,35 @@ artifacts:
     - analysis/R15B_ARCHITECTURE_REVIEW.md
     - analysis/r15b_analytic_precheck.py
     - analysis/r15b-analytic-metrics.json
+    - analysis/R15B_EXECUTION_REPORT.md
+    - analysis/analyze_r15b_execution.py
+    - analysis/r15b-execution-metrics.json
+    - analysis/r15b-case-summary.csv
     - analysis/sha256sums.txt
+    - analysis/sha256sums-execution.txt
+  raw:
+    - raw/logical1-read.csv
+    - raw/logical0-read.csv
+    - raw/logical1-read0-control.csv
+    - raw/logical0-read0-control.csv
   logs:
     - logs/r15b-precheck.stdout.txt
     - logs/r15b-precheck.stderr.txt
+    - logs/logical1-read.stdout.txt
+    - logs/logical1-read.stderr.txt
+    - logs/logical1-read.exitcode.txt
+    - logs/logical0-read.stdout.txt
+    - logs/logical0-read.stderr.txt
+    - logs/logical0-read.exitcode.txt
+    - logs/logical1-read0-control.stdout.txt
+    - logs/logical1-read0-control.stderr.txt
+    - logs/logical1-read0-control.exitcode.txt
+    - logs/logical0-read0-control.stdout.txt
+    - logs/logical0-read0-control.stderr.txt
+    - logs/logical0-read0-control.exitcode.txt
+    - logs/analyze-r15b-execution.stdout.txt
+    - logs/analyze-r15b-execution.stderr.txt
+    - logs/analyze-r15b-execution.exitcode.txt
+    - logs/execution_commands.txt
+    - logs/preflight-output-path-failure.stderr.txt
   summary: SUMMARY.md

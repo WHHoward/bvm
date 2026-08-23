@@ -1,0 +1,96 @@
+schema_version: 1
+run_id: bvm-sfq-receiver-r14a-dcsfq-detector-20260823
+created_at: 2026-08-23
+mode: exploratory
+research_question: >-
+  Can an R0b active detector and R1a isolated pickup drive a frozen DCSFQ_BVM
+  input into one selective bounded B3 local event?
+hypotheses:
+  primary: >-
+    B_DET plus isolated secondary preserves selectivity and supplies sufficient
+    transient drive for the frozen DCSFQ_BVM regenerator.
+  alternatives:
+    - >-
+      The detector remains state-selective but the secondary-to-DCSFQ current
+      scale is too small.
+    - >-
+      R_SEC_LOAD plus DCSFQ input causes reflected loading before regeneration.
+predeclared_outcomes:
+  pass: >-
+    Four matched runs show one phase/area-consistent B3 event for read1, zero
+    for read0/controls, bounded post state, and source guards preserved.
+  fail: >-
+    A valid run shows no B3 event, multipulse, nonselectivity, or back-action.
+  inconclusive: >-
+    Precheck or event phase/area/endpoint evidence cannot close the declared
+    measurement.
+  invalid: >-
+    Missing or corrupt raw artifact, solver failure, invalid time axis, or
+    missing required probes.
+provenance:
+  git_head: abad1d46e5f50b0f0796f00e84f1cdd3bb12bca6
+  git_dirty: false
+  josim_binary: /home/howard/JoSIM/build/josim-cli
+  josim_version: 2.7.2837d13
+  josim_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  source_raw:
+    path: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/raw/l020-k080/read1/run-01.csv
+    sha256: 7d1e4b36c220b0a25ecefeb62b11ce36264ff8f298651f45eea7f713206051dd
+  r13_metrics:
+    path: test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/input-waveform-metrics.json
+    sha256: 8d7ca356403e8659f790f5be634eb0abe878c0391c554f6315d9f7efb49e22d2
+  include_closure:
+    - path: circuits/models/jjmit.cir
+      sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+    - path: circuits/interface/DCSFQ_BVM.cir
+      sha256: 398e9c656f4e6e7b8a866800f019cc8fef3def30da8d508322bb89183d144d95
+    - path: circuits/bvm/bvm_cell.cir
+      sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+simulation:
+  status: not_run_precheck_no_go
+  input_kind: full_cascade_if_precheck_passed
+  cases:
+    - logical1-canonical-read
+    - logical0-canonical-read
+    - logical1-read0-control
+    - logical0-read0-control
+  requested_timesteps_s:
+    - 1.25e-14
+  stop_time_s: 1.7e-10
+  repetitions: 1
+  output_load: 10 ohm at DCSFQ q
+metric_contract:
+  spec_path: docs/research/METRIC_SPEC_V2.md
+  status: unfrozen-exploration
+signals:
+  junctions:
+    - B_DET/B_TRIG P/V/I
+    - DCSFQ B1 P/V/I
+    - DCSFQ B2 P/V/I
+    - DCSFQ B3 P/V/I
+  state_signals:
+    - V(SL)
+    - V(N6)
+    - I(L_SL)
+    - JM1/JM2
+    - JS1/JS2
+windows:
+  pre: [80 ps, 90 ps)
+  activity: [94 ps, 130 ps)
+  post: [150 ps, 170 ps)
+  read_state: post source/storage guards relative to canonical baseline
+controls:
+  zero_input: logical1-read0-control and logical0-read0-control
+  read0: logical0-canonical-read
+  positive: logical1-canonical-read
+  reverse_polarity: not run
+artifacts:
+  raw_files: []
+  hashes_path: sha256sums.txt
+outcome:
+  artifact_status: NOT_RUN_BY_PRECHECK
+  verdict: PRECHECK_NO_GO
+  highest_evidence_level: analytic-interface-precheck
+  failed_requirements:
+    - loaded DCSFQ branch optimistic estimate remains single-digit microampere
+    - no demonstrated active current gain from B_DET into DCSFQ input

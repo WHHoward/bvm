@@ -1,0 +1,46 @@
+{
+  "decision": "PRECHECK_NO_GO",
+  "empirical_comparison_uA": {
+    "R12_300_controlled_bump": 300.0,
+    "R12_68p4_controlled_bump": 68.4,
+    "R13_DCSFQ_I_L1_read1_peak": 110.1997,
+    "R1A_secondary_load_current": 5.564035
+  },
+  "experiment": "R14-A",
+  "proposed_point": {
+    "DCSFQ_L1_pH": 1.672,
+    "K": 0.8,
+    "L_PRI_pH": 0.2,
+    "L_SEC_pH": 2.0,
+    "M_pH": 0.5059644256269408,
+    "R_SEC_LOAD_ohm": 12.0
+  },
+  "r13_metrics_path": "test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/input-waveform-metrics.json",
+  "r13_metrics_sha256": "8d7ca356403e8659f790f5be634eb0abe878c0391c554f6315d9f7efb49e22d2",
+  "r1a_measured": {
+    "dominant_lobe_timescale_ps": 1.5374999999999943,
+    "i_lsec_abs_peak_uA": 5.5640350000000005,
+    "i_rsec_load_abs_peak_uA": 5.5640350000000005,
+    "negative_peak_time_ps": 104.27499999999999,
+    "peak_time_ps": 104.27499999999999,
+    "positive_peak_time_ps": 102.7375,
+    "v_sec_abs_peak_uV": 66.76841999999999,
+    "v_sec_negative_peak_uV": -66.76841999999999,
+    "v_sec_positive_peak_uV": 50.08963
+  },
+  "reactance_estimate": {
+    "X_L1_ohm": 6.832836314539387,
+    "X_LSEC_ohm": 8.173249180071037,
+    "dcsfq_I_L1_optimistic_uA": 9.771699031912338,
+    "rsec_load_current_uA": 5.564035,
+    "secondary_total_branch_current_uA": 15.335734031912338
+  },
+  "reason": "Even the optimistic DCSFQ L1 branch estimate is single-digit microampere and the actual parallel termination adds intentional double-loading; no active current-gain evidence exists at this interface before simulation.",
+  "source_raw_path": "test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/raw/l020-k080/read1/run-01.csv",
+  "source_raw_sha256": "7d1e4b36c220b0a25ecefeb62b11ce36264ff8f298651f45eea7f713206051dd",
+  "type": "analytic_precheck_no_josim",
+  "window_ps": [
+    94.0,
+    130.0
+  ]
+}

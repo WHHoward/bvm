@@ -1,0 +1,29 @@
+# QB-Q2B execution commands
+# Working directory: test/exploration/qb-q2b-central-bias-bracketing-20260824
+# JoSIM: ../../../build/josim-cli -m
+# All valid runs used timeout --kill-after=10s 300s and .tran 0.0125p 170p.
+
+# Build frozen replay snapshots and the two bias-point decks.
+python3 analysis/build_bias_fixture.py
+
+# Initial fixture attempt; failed before any raw data was written because the
+# deck include path still referred to a non-existent local jjmit.cir.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS30/logical1-read0-control.csv inputs/IBIAS30/logical1-read0-control.cir
+
+# Corrected include path, before creating the per-bias raw directory; failed
+# before simulation output because raw/IBIAS30 did not yet exist.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS30/logical1-read0-control.csv inputs/IBIAS30/logical1-read0-control.cir
+
+# Final corrected guard-first execution, followed by the remaining matched cases.
+mkdir -p raw/IBIAS30 raw/IBIAS40
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS30/logical1-read0-control.csv inputs/IBIAS30/logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS30/logical0-read0-control.csv inputs/IBIAS30/logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS30/logical1-read.csv inputs/IBIAS30/logical1-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS30/logical0-read.csv inputs/IBIAS30/logical0-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS40/logical1-read0-control.csv inputs/IBIAS40/logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS40/logical0-read0-control.csv inputs/IBIAS40/logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS40/logical1-read.csv inputs/IBIAS40/logical1-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/IBIAS40/logical0-read.csv inputs/IBIAS40/logical0-read.cir
+
+# Analysis-only phase/area audit; does not rerun JoSIM.
+python3 analysis/analyze_qb_q2b.py

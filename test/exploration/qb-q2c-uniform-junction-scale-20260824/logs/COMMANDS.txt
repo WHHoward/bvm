@@ -1,0 +1,37 @@
+# QB-Q2C execution commands
+# Working directory: test/exploration/qb-q2c-uniform-junction-scale-20260824
+# JoSIM: ../../../build/josim-cli -m
+# All valid runs use timeout --kill-after=10s 300s and .tran 0.0125p 170p.
+
+# Build byte-preserved replay snapshots and the three scaled QB fixtures.
+python3 analysis/build_scale_fixture.py
+
+# Initial S085 control attempts before the deck include path was corrected;
+# both exited 255 before raw output because bq_cell.cir was referenced at the
+# wrong relative path. These logs are retained as fixture diagnostics.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S085/logical1-read0-control.csv inputs/S085/logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S085/logical0-read0-control.csv inputs/S085/logical0-read0-control.cir
+
+# Rebuild after correcting the scale-local include path.
+python3 analysis/build_scale_fixture.py
+
+# Scale S085, controls first.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S085/logical1-read0-control.csv inputs/S085/logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S085/logical0-read0-control.csv inputs/S085/logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S085/logical1-read.csv inputs/S085/logical1-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S085/logical0-read.csv inputs/S085/logical0-read.cir
+
+# Scale S070, controls first. Continue only if S085 controls were bounded.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S070/logical1-read0-control.csv inputs/S070/logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S070/logical0-read0-control.csv inputs/S070/logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S070/logical1-read.csv inputs/S070/logical1-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S070/logical0-read.csv inputs/S070/logical0-read.cir
+
+# Scale S055, controls first. Continue only if S070 controls were bounded.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S055/logical1-read0-control.csv inputs/S055/logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S055/logical0-read0-control.csv inputs/S055/logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S055/logical1-read.csv inputs/S055/logical1-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/S055/logical0-read.csv inputs/S055/logical0-read.cir
+
+# Analysis-only phase/area audit; does not rerun JoSIM.
+python3 analysis/analyze_qb_q2c.py

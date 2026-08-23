@@ -1,0 +1,56 @@
+run_id: qb-q2c-uniform-junction-scale-20260824
+tier: Exploration
+mode: exploratory
+study: QB-Q2C
+parent_commit: 0799d0daefd87701bfbc2a9b3552924905f1d502
+question: uniform junction/current scale under frozen canonical source-isolated replay
+canonical_bvm_modified: false
+physical_bvm_connected: false
+parameter_sweep: bounded_three_point_scale_bracket
+scales: [0.85, 0.70, 0.55]
+scale_one_reference: QB-Q2A/QB-Q2B accepted 35uA result; not rerun
+cases_per_scale:
+  - logical1-read0-control
+  - logical0-read0-control
+  - logical1-read
+  - logical0-read
+frozen_network:
+  lin_pH: 0.8
+  l0_pH: 1.323
+  l1_pH: 3.91
+  l2_pH: 3.91
+  rj1_ohm: 33.0
+  rj2_ohm: 22.0
+  rb_ohm: 6.0
+  output_load_ohm: 10.0
+  jjmit_model: inputs/jjmit.cir
+scaled_parameters:
+  s_0.85:
+    bjs_area: 0.425
+    bjl1_area: 0.306
+    bjl2_area: 0.459
+    ibias_uA: 29.75
+  s_0.70:
+    bjs_area: 0.350
+    bjl1_area: 0.252
+    bjl2_area: 0.378
+    ibias_uA: 24.50
+  s_0.55:
+    bjs_area: 0.275
+    bjl1_area: 0.198
+    bjl2_area: 0.297
+    ibias_uA: 19.25
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  timestep_ps: 0.0125
+  stop_time_ps: 170.0
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+source_provenance:
+  canonical_replay: test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824
+  control_replay: test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/reference/canonical
+stop_rule: controls first at each scale; stop smaller scales on control/free-running/nonselective event; no automatic extension

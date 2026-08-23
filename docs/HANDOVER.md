@@ -6,6 +6,30 @@
 >
 > 重要：2026-08-06 版“冻结口径”已因相位单位错误失效；不得从旧日志复制 SFQ 数或 `fast_events` 结论。
 
+## 当前接收器同步（2026-08-23）
+
+当前 HEAD：`2622201e7e6ab72ce2a5066ccdbf3fd1c0ea65d7`。2026-08-14 之后，
+BVM source/read semantics、R0b detector、R1a passive pickup、R2 conditioned
+local B_OUT、R11 standard JTL positive control、R12 controlled DCSFQ local
+regeneration以及 R15-B corrected active-interstage single point均已形成独立
+Exploration evidence。
+
+当前最重要的边界：
+
+1. BVM read1/read0 discrimination 与 R0b local detector 已建立，但 R0b 是
+   multi-turn detector，不是 exactly-one output。
+2. DCSFQ_BVM 在 `300 µA` controlled input 下有约 `1.03-turn` bounded B3
+   local event；canonical BVM cascade read1 只有约 `0.0365 turn`，没有 B3/JTL event。
+3. standard two-cell JTL positive control 有效；canonical BVM direct JTL
+   第一颗 JJ 只有约 `0.151 turn`，verdict 为 `NO_JTL_TRIGGER`。
+4. R15-B corrected split-winding topology 的 verdict 为
+   `ACTIVE_STAGE_NO_TRIGGER`；`I(L1)` peak 约 `0.511 µA`，B3 最大 segment
+   约 `0.0000577 turn`。read1 source ringing 高于 canonical no-receiver，
+   因此 source disposition 是 bounded extra back-action，而非 clean isolation pass。
+
+详细叙事见 `docs/meeting/2026-08-23-group-meeting.md`，最新证据见
+`test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/analysis/R15B_EXECUTION_REPORT.md`。
+
 ## 0. 新会话第一步
 
 ```bash

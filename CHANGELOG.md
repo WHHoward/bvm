@@ -4,6 +4,28 @@
 
 ---
 
+## 2026-08-23 — R0b–R15B receiver Exploration 组会材料与状态同步
+
+### 做了什么
+
+- 新增 `docs/meeting/2026-08-23-group-meeting.md`，汇总 2026-08-14 之后的
+  BVM source、R0b、R1–R15B receiver evidence 与路线裁剪。
+- 同步 `memory/project-summary.md`、`memory/project-todo.md`、`docs/HANDOVER.md`
+  和 `memory/history/research-history.md` 的当前状态入口。
+
+### 影响
+
+- 当前事实层明确为：BVM/read discrimination、R0b local detector、R1a passive
+  extraction、conditioned B_OUT local slip、DCSFQ controlled local event 和
+  standard JTL positive control 已建立。
+- canonical BVM→DCSFQ/JTL exactly-one event 仍未建立；R15-B single point 为
+  `ACTIVE_STAGE_NO_TRIGGER`，不升级为整个 active-interstage family 的普遍失败。
+- 未修改 canonical BVM、DCSFQ_BVM 或 JoSIM solver；未升级 Candidate。R11/R12
+  使用的 frozen JTL positive-control/cascade evidence 保留在各自报告中；R15 阶段
+  未新增 JTL/T1 experiment。
+
+---
+
 ## 2026-08-13 — M11 metadata errata 与 characterization preflight
 
 ### 做了什么

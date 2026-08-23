@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-17
+  last_updated: 2026-08-23
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -27,6 +27,7 @@ metadata:
 | 3. 路线转向 | 8/6 | DCSFQ_BVM 新元件 + Phase 0 表征 | ✅ Phase 0 完成（G1-G5） |
 | 4. 计量审计 | 8/9 起 | **P() 单位事故**发现 + Phase −1 修复 | ✅ 计量与双基线闭环（M4–M11、M12 已验收；物理 Gate 未启动） |
 | 5. 工作流升级 | 8/9 | Codex–Claude 双代理 + stand-in + mailbox | ✅ 基础设施就绪 |
+| 6. Receiver Exploration | 8/17-8/23 | BVM source → detector → passive/direct → DCSFQ/JTL → active interstage | 🔄 detector/source separation 已建立，canonical exactly-one chain 未闭合 |
 
 ## 三、详细时间线
 
@@ -190,6 +191,100 @@ metadata:
 **结果/产物**：⚠️ `research/tasks/JH-20260817-WORKFLOW-MAINT-005/audits/C01/verdict.yaml` 为 `REWORK_REQUIRED`。当前实现未满足 byte-identical request snapshot binding，且 `handoff.py` 未逐项重算 evidence bundle path/SHA-256/bytes。004 由 005 取代只解决了合同范围冲突，不构成对这两项语义的接受。
 
 **认知**：⚠️ endpoint-VI 的有符号公式实现/测试仍是限定的 workflow code evidence，不构成科学结论；在用户明确决定非自引用 snapshot 表示之前，不扩展协议或启动科学实验。
+
+### 2026-08-17 → 2026-08-19：BVM stable-load characterization 与 logical semantics 冻结
+
+**做了什么**：完成固定 `dt=0.0125 ps`、四种 load、双 polarity、read/control
+的 16-run source characterization；随后冻结 `BVM_LOGICAL_SEMANTICS_V1.md`，并
+以连续 rewrite/read sequence 固定 logical 1/0、canonical `+READ` 和 source
+phase-count 不等于 SFQ-count 的边界。
+
+**结果/产物**：stable-load evidence 提供 fixed-fixture bounded observations，
+但没有建立 universal resolution-independent source baseline；exact endpoint-V/I
+diagnostic 未完全支持，VIZ-002 停止。logical semantics 进入后续 receiver
+Exploration 的 canonical source context。
+
+**认知**：✅ source/read distinction 与语义边界仍有效；⚠️ 不把 stable-load
+observations 写成普适 source model。
+
+### 2026-08-19：R0b local trigger closure
+
+**做了什么**：以 canonical SL、`R_IN=12 Ω`、B_TRIG AREA `.50`、bias
+`+15 µA` 完成 R0b single point。
+
+**结果/产物**：read1 B_TRIG 最大 continuous monotonic segment 约 `4.997 turn`，
+read0 约 `0.185 turn`，READ=0 controls 无完整 transition；phase 与同 JJ
+voltage-area 一致。
+
+**认知**：✅ local detector discrimination/complete trigger 建立；⚠️ B_TRIG
+是 multi-turn detector，不构成 exactly-one SFQ delivery。
+
+### 2026-08-19 → 2026-08-21：R1/R2 passive/direct receiver characterization
+
+**做了什么**：测试 parallel feedback、R1a passive pickup、differential B_OUT、
+coupling、damping、amplitude/duration，并完成 conditioned B_OUT local one-slip
+与 retrap evidence。
+
+**结果/产物**：R1a secondary read1 约 `5.564 µA/66.77 µV`、read0 约
+`1.144 µA/13.72 µV`；raw secondary/direct B_OUT 未触发；在 fixture-specific
+约 `4.5 µA/20 ps` direct drive 下 B_OUT 约 `1.004 turn` 并 retrap。
+
+**认知**：✅ passive extraction 有 state separation，B_OUT 在刻意 conditioned
+drive 下能 local slip；⚠️ R2 dwell 数值是 fixture-specific，不是 universal hard
+spec，也不是 downstream JTL evidence。
+
+### 2026-08-21 → 2026-08-22：R3–R5 extraction/capture/quantizer route pruning
+
+**做了什么**：完成 1 fF capacitive onset extractor、weak-mutual passive capture、
+reduced biased quantizer、SET shunt 和正确 saddle point。
+
+**结果/产物**：R3-A 为 fast differentiated onset → insufficient sustained drive；
+R4-A 没有 persistent read1 fluxoid-state transition；R5-C 可跨 nonlinear saddle
+但没有 complete local event，且出现 read1 back-action。
+
+**认知**：⚠️ 这些是 tested instances 的 bounded failures，不是对所有 capacitive、
+mutual 或 quantizer family 的 universal impossibility；reduced quantizer point
+tuning 停止。
+
+### 2026-08-22 → 2026-08-23：R6–R10 native-QB isolation/routing 与 bias review
+
+**做了什么**：比较 direct native QB、weak transformer isolation、winding ratio、
+L1/L2 routing、BJL2 AREA 和 local BJL2 bias。
+
+**结果/产物**：R6-A isolation preserved state-selective QB activity；R6-B、R7-A、
+R9-A 分别建立 drive/routing gain，但 BJL2 仍约 `10^-3 turn`；R8 AREA `.70`
+没有 threshold-like gain；R10-A local bias 出现 nonselective/free-running。
+
+**认知**：✅ source isolation 与 passive routing gain 已被分别证明；⚠️ passive
+L1/L2 和当前 local bias branch 关闭，不把 native QB simple routing tuning 写成
+完整 QB architecture 的普遍否定。
+
+### 2026-08-23：R11–R15B，问题收缩到 active interstage
+
+**做了什么**：R11 完成 standard JTL positive control 与 canonical direct-JTL
+screening；R12 复核 DCSFQ_BVM controlled local regeneration 与 canonical cascade；
+R13 做 raw replay、rectification、20 ps hold；R14 完成 passive interstage analytic
+precheck；R15-A/R15-B 设计、修正并测试 bias-powered active interstage。
+
+**结果/产物**：R11 `NO_JTL_TRIGGER`；R12 controlled `300 µA` 下 B3 约 `1.03 turn`
+但 canonical read1 约 `0.0365 turn`；R13 `TEMPORAL_CONDITIONING_INSUFFICIENT`；
+R14 `PRECHECK_NO_GO`；R15-A 为 invalid mutual constitutive topology；R15-B
+positive-definite split-winding point 执行后 verdict `ACTIVE_STAGE_NO_TRIGGER`，
+`I(L1)` peak 约 `0.511 µA`、B3 最大 segment 约 `0.0000577 turn`。
+
+**认知**：✅ BVM detector、DCSFQ controlled regeneration、JTL fixture 各自均有
+bounded evidence；⚠️ canonical BVM→SFQ chain 尚未闭合。当前最有证据支持的机制
+瓶颈是 `B_DET → bias-powered active state compression/regeneration`。R15-B 的
+read1 post-window ringing 高于 canonical no-receiver，故 source isolation 仍是
+一级约束；本点失败不等于整个 active-interstage family 被证伪。
+
+### 2026-08-23：组会材料同步
+
+**产物**：`docs/meeting/2026-08-23-group-meeting.md`，汇总 R0b–R15B 的 observed/
+derived/inference/unknown、路线裁剪和当前 stop boundaries。
+
+**认知**：🔄 receiver characterization 仍进行中；未升级 Candidate、未接 T1，
+未形成 paper-level quantitative claim。
 
 ## 四、关键转折点速查
 

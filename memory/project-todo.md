@@ -4,14 +4,40 @@ description: JoSIM × BVM 项目主任务清单 — 2026-08-09 相位单位审�
 metadata:
   type: project
   node_type: memory
-  last_updated: 2026-08-14
+  last_updated: 2026-08-23
 ---
 
 # JoSIM × BVM 项目主任务清单
 
+## 2026-08-23 当前状态同步
+
+上方 2026-08-14 的“下一步等待授权”文字保留作为历史状态；随后用户已明确
+授权 receiver Exploration。当前 R0b–R15B 结果及其停止规则以对应
+`test/exploration/` 报告为事实层，不把任何失败单点升级为整个架构族的
+普遍不可能。
+
+- BVM source/read semantics：bounded evidence established；仍无 universal
+  resolution-independent source baseline。
+- R0b：SL→B_TRIG local complete detector established，read1 multi-turn，
+  不是 exactly-one SFQ delivery。
+- R1/R2：passive extraction 有 state separation；conditioned B_OUT 可 local
+  slip；raw BVM secondary/direct receiver 不足。
+- R3–R5：fast onset、passive capture、reduced quantizer 单点均未闭合；
+  R5C saddle crossing 后仍无 complete event。
+- R6–R10：isolated native-QB activity/routing gain 建立，但 BJL2 未量化；
+  passive routing branch 已停止；local bias 单点 nonselective/free-running。
+- R11–R14：standard JTL positive control 有效；canonical direct JTL、
+  canonical DCSFQ cascade 和 ideal rectification/hold 均未触发 downstream event。
+- R15-B：corrected AFQ split-winding topology 可运行，但 active stage no trigger；
+  后续若授权，问题应限定为 detector→active state-compression transfer 和
+  source/back-action，而非恢复无边界 passive sweep。
+
+当前仍未完成：BVM→exactly-one local output、B3/JTL propagation、T1、Candidate
+和 paper-level claim。
+
 > 状态：🔴未开始　🟡进行中　🟢完成　⏸️暂停/被取代
 >
-> **当前 active phase（2026-08-14）**：Reference / Source / Receiver Characterization。Phase −1 的 M1–M12 计量修复与双基线已闭环；BVM-S0 已在单一 12 Ω fixture 产生有效封存的 source-side observations，但注册的 0.1→0.05 ps control-latency 比较为 0.85 ps、超过 0.5 ps task-local band，故 scientific disposition 为 **INCONCLUSIVE**，尚未建立 converged source baseline。下一步若推进，必须单独预注册新的 source convergence/characterization；不得据此启动 receiver、`INTERFACE_GATE_V1`、BQ/DCSFQ_BVM 或候选调优。旧 Step 0“冻结基线”、BQ 系统排除和 DCSFQ Phase 1 Gate 已因 `P()` 单位错误失效，仍不得恢复为现行结论。
+> **当前 active phase（2026-08-23）**：Reference / Source / Receiver Characterization。Phase −1 的 M1–M12 计量修复与双基线已闭环；BVM-S0/stable-load 已形成 bounded source observations，logical semantics 已冻结，但仍未建立 universal resolution-independent source baseline。随后经用户授权完成 R0b–R15B receiver Exploration；当前核心问题是 `B_DET → bias-powered active state compression/regeneration`，而不是恢复无边界 passive sweep。旧 Step 0“冻结基线”、BQ 系统排除和旧 DCSFQ Phase 1 Gate 已因 `P()` 单位错误失效，仍不得恢复为现行结论。
 
 ## A. 🟡 Phase −1：修复测量管线与重建基线
 

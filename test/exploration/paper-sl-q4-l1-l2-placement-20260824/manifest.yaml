@@ -1,0 +1,19 @@
+study: PAPER-SL-Q4
+directory: test/exploration/paper-sl-q4-l1-l2-placement-20260824
+parent_head: bfc3c6ee600f30d27078b53ed09b23053a5191e3
+artifact_class: exploration
+preregistration: PREREGISTRATION.md
+execution:
+  command_log: logs/COMMANDS.txt
+  preflight: logs/PREFLIGHT.md
+  cases: 4
+  all_exit_codes: 0
+  raw_directory: raw/q4-l1-3p91-l2-4p50
+analysis:
+  script: analysis/analyze_q4.py
+  metrics: analysis/metrics.json
+  case_summary: analysis/case-summary.csv
+  report: REPORT.md
+  verdict: Q4_DEGRADES_OPPOSES_Q3_DIRECTIONAL_PLACEMENT_EFFECT
+provenance: reference/source-provenance.yaml
+hashes: sha256sums.txt

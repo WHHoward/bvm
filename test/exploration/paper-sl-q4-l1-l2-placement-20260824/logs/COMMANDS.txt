@@ -1,0 +1,19 @@
+# PAPER-SL-Q4 execution command record
+# Recorded before simulation from parent bfc3c6ee600f30d27078b53ed09b23053a5191e3
+
+date --iso-8601=seconds
+git rev-parse HEAD
+git status --short --branch
+build/josim-cli --version
+sha256sum build/josim-cli docs/research/METRIC_SPEC_V2.md circuits/qb/bq_cell.cir circuits/jjmit.cir
+python3 analysis/build_fixture.py
+
+# Run order is preregistered: logical1 READ=0, logical0 READ=0,
+# logical0 READ, logical1 READ.  Each command is run from this Exploration
+# directory and writes stdout/stderr/exitcode beside its raw CSV.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/q4-l1-3p91-l2-4p50/<case>.csv inputs/q4-l1-3p91-l2-4p50/<case>.cir > logs/<case>.stdout 2> logs/<case>.stderr; echo $? > logs/<case>.exitcode
+
+# After all four cases:
+python3 analysis/analyze_q4.py
+python3 -m py_compile analysis/build_fixture.py analysis/analyze_q4.py
+sha256sum -c sha256sums.txt

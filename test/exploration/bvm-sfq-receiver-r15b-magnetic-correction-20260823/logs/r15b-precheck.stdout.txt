@@ -1,0 +1,198 @@
+{
+  "active_output_bracket": {
+    "10": {
+      "I_DCS_max_uA": 152.04495739384342,
+      "I_DCS_min_uA": 78.3731469722705,
+      "V_DCS_max_uV": 369.5580533949051,
+      "V_DCS_min_uV": 127.63144107868975,
+      "source_impedance_R_ohm": 0.75,
+      "source_impedance_X_LINJ_ohm": 1.2566370614359172
+    },
+    "20": {
+      "I_DCS_max_uA": 188.52989564557714,
+      "I_DCS_min_uA": 119.60464776702483,
+      "V_DCS_max_uV": 262.8822091045592,
+      "V_DCS_min_uV": 84.14680566749415,
+      "source_impedance_R_ohm": 0.75,
+      "source_impedance_X_LINJ_ohm": 0.6283185307179586
+    }
+  },
+  "empirical_references_uA": {
+    "R12_300_one_event_reference": 300.0,
+    "R12_68p4_no_event": 68.4,
+    "R13_110p2_subthreshold": 110.2,
+    "R1a_passive": 5.564
+  },
+  "experiment": "R15-B",
+  "interpretation": {
+    "derived": "Both corrected matrices are positive definite; selected split topology has zero direct Q-CTL mutual and preserves the 2 ps bridge L/R scale.",
+    "inference": "Split-winding is preferable because common-core completion requires a strong direct Q-CTL mutual that changes refractory/load-line behavior.",
+    "observed": "R15-A nominal point had no valid raw run; only its Gate-3 source-scale evidence is reused.",
+    "unknown": "Nonlinear refractory, polarity realization, J_OUT startup, DCSFQ response, source guards, and step convergence require the future four-case run."
+  },
+  "josim_invoked": false,
+  "jset_discrimination": {
+    "Ic_uA": 8.0,
+    "M_IN_pH": 2.529822128134704,
+    "M_over_LS": 0.05059644256269408,
+    "read0_flux_abs_turns": 0.027112182842302664,
+    "read0_total_uA": 6.7212697874895655,
+    "read0_worst_increment_uA": 1.1212697874895659,
+    "read1_flux_abs_turns": 0.06630872371265754,
+    "read1_increment_uA": 2.7423084662142707,
+    "read1_read0_margin_uA": 1.6210386787247049,
+    "read1_total_uA": 8.34230846621427
+  },
+  "option_A_common_core": {
+    "K_FO": 0.9,
+    "K_QF": 0.9,
+    "actual_eigenvalues_pH": [
+      0.54013783,
+      0.8,
+      26.65986217
+    ],
+    "direct_QO_mutual_pH": 3.2,
+    "matrix_pH": [
+      [
+        4.0,
+        8.049844718999244,
+        3.2
+      ],
+      [
+        8.049844718999244,
+        20.0,
+        8.049844718999244
+      ],
+      [
+        3.2,
+        8.049844718999244,
+        4.0
+      ]
+    ],
+    "normalized_determinant": 0.03600000000000003,
+    "normalized_eigenvalues": [
+      0.06583359,
+      0.2,
+      2.73416641
+    ],
+    "positive_definite_range_K_QO": [
+      0.62,
+      1.0
+    ],
+    "selected_comparison_K_QO": 0.8
+  },
+  "option_B_matrix": {
+    "Q_core_order": [
+      "L_Q",
+      "L_FQ"
+    ],
+    "Q_core_pH": [
+      [
+        4.0,
+        8.049844718999244
+      ],
+      [
+        8.049844718999244,
+        20.0
+      ]
+    ],
+    "actual_eigenvalues_pH": [
+      0.07181588688464657,
+      0.6509912327111138,
+      0.6509912327111138,
+      2.0,
+      5.0,
+      23.349008767288886,
+      23.349008767288886,
+      50.12818411311535
+    ],
+    "all_cross_core_mutuals_zero": true,
+    "full_determinant_pH8": 8317.439999999968,
+    "full_order": [
+      "L_TX",
+      "L_S",
+      "L_RET",
+      "L_Q",
+      "L_FQ",
+      "L_FO",
+      "L_CTL",
+      "L_INJ"
+    ],
+    "normalized_determinant": 0.012996,
+    "output_core_order": [
+      "L_FO",
+      "L_CTL"
+    ],
+    "output_core_pH": [
+      [
+        20.0,
+        -8.049844718999244
+      ],
+      [
+        -8.049844718999244,
+        4.0
+      ]
+    ],
+    "source_block_order": [
+      "L_TX",
+      "L_S"
+    ],
+    "source_block_pH": [
+      [
+        0.2,
+        -2.529822128134704
+      ],
+      [
+        -2.529822128134704,
+        50.0
+      ]
+    ]
+  },
+  "reflected_loading": {
+    "10": {
+      "Z_Q_reflected_abs_ohm": 0.7964665956418474,
+      "Z_Q_reflected_ohm": [
+        0.4959414242412875,
+        -0.623218374002915
+      ],
+      "Z_loop_ohm": [
+        20.0,
+        25.132741228718345
+      ]
+    },
+    "2": {
+      "Z_Q_reflected_abs_ohm": 5.02612160893269,
+      "Z_Q_reflected_ohm": [
+        0.7899893363441957,
+        -4.963649390946402
+      ],
+      "Z_loop_ohm": [
+        20.0,
+        125.66370614359171
+      ]
+    },
+    "20": {
+      "Z_Q_reflected_abs_ohm": 0.2707642047896187,
+      "Z_Q_reflected_ohm": [
+        0.22926499173683282,
+        -0.14405144275315174
+      ],
+      "Z_loop_ohm": [
+        20.0,
+        12.566370614359172
+      ]
+    }
+  },
+  "selected_point": {
+    "K_FOCTL": -0.9,
+    "K_FQFO": 0.0,
+    "K_QCTL": 0.0,
+    "K_QFQ": 0.9,
+    "L_FO_pH": 20.0,
+    "L_FQ_pH": 20.0,
+    "R_F_ohm": 20.0,
+    "series_loop_tau_ps": 2.0
+  },
+  "selected_topology": "split_winding_two_core_series_damped_transfer",
+  "verdict": "R15B_SINGLE_POINT_WORTH_TESTING"
+}

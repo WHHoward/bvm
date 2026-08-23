@@ -1,0 +1,47 @@
+* R15-B AFQ-3 split-winding magnetic correction, single frozen point.
+* This is a new hypothesis; R15-A's invalid shared L_F is not modified.
+* IN is canonical BVM SL. DCS_A is galvanic DCSFQ_BVM.a.
+* Positive current orientations follow the element declaration directions.
+
+.subckt AFQ3 IN DCS_A
+
+* R0b detector front end: unchanged.
+R_IN        IN          N_PICK      12.0
+L_TX        N_PICK      N_DET       0.20p
+B_DET       N_DET      0           jjmit area=0.50
+I_DET       0           N_DET       pwl(0p 0 2p 15U 80p 15U 170p 15U)
+
+* SET/Q refractory stage: unchanged.
+I_SET       0           N_S0        pwl(0p 0 2p 5.6U 80p 5.6U 170p 5.6U)
+L_RET       N_S0        N_S1        5.0p
+L_S         N_S1        N_S2        50.0p
+B_SET       N_S2        N_QMODE     jjmit area=0.08
+R_Q         N_QMODE     0           2.0
+L_Q         N_QMODE     N_QJ        4.0p
+B_Q         N_QJ        0           jjmit area=0.50
+
+* Read1-favorable detector polarity: unchanged.
+K_IN        L_TX        L_S         -0.80
+
+* Physically independent two-core transfer loop.
+* L_FQ and L_FO are separate windings with no mutual between the cores.
+* Their series current transfers the Q-state transient to the output winding.
+L_FQ        N_FQ        N_FX        20.0p
+L_FO        N_FX        0           20.0p
+R_F         N_FQ        0           20.0
+K_QFQ       L_Q         L_FQ        +0.90
+
+* Bias-powered output valve: unchanged except for its magnetic partner L_FO.
+I_OUT       0           N_DRV       pwl(0p 0 2p 275U 80p 275U 170p 275U)
+L_CTL       N_DRV       N_OUTJ      4.0p
+B_OUT       N_OUTJ     0           jjmit area=3.0
+R_OUT_SH   N_OUTJ     0           3.0
+* The output-core winding is reverse-dotted to make the declared read1
+* transfer polarity favorable for L_CTL: N_DRV -> N_OUTJ.
+K_FOCTL     L_FO        L_CTL       -0.90
+
+* Finite-source-impedance galvanic injection into frozen DCSFQ_BVM.a.
+R_SRC       N_DRV       N_INJ       0.75
+L_INJ       N_INJ       DCS_A       2.0p
+
+.ends AFQ3

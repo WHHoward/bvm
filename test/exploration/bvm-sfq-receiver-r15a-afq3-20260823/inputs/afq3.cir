@@ -1,0 +1,43 @@
+* R15-A AFQ-3 active interstage, single frozen nominal point.
+* This is an Exploration fixture; all new values are hypotheses.
+* Port IN is canonical BVM SL. Port DCS_A is galvanic DCSFQ_BVM.a.
+* Positive current orientations are the element declaration directions.
+
+.subckt AFQ3 IN DCS_A
+
+* Existing R0b/R1a detector front end.
+R_IN        IN          N_PICK      12.0
+L_TX        N_PICK      N_DET       0.20p
+B_DET       N_DET      0           jjmit area=0.50
+I_DET       0           N_DET       pwl(0p 0 2p 15U 80p 15U 170p 15U)
+
+* Active threshold/state loop.
+I_SET       0           N_S0        pwl(0p 0 2p 5.6U 80p 5.6U 170p 5.6U)
+L_RET       N_S0        N_S1        5.0p
+L_S         N_S1        N_S2        50.0p
+B_SET       N_S2        N_QMODE     jjmit area=0.08
+R_Q         N_QMODE     0           2.0
+L_Q         N_QMODE     N_QJ        4.0p
+B_Q         N_QJ        0           jjmit area=0.50
+
+* Explicit mutual polarity: negative sign is the preregistered
+* read1-favorable winding orientation for the declared element directions.
+K_IN        L_TX        L_S         -0.80
+
+* DC-isolated pulse bridge.
+L_F         N_F        0            20.0p
+R_F         N_F        0            10.0
+K_QF        L_Q        L_F          0.90
+
+* Bias-powered current-steering output valve.
+I_OUT       0           N_DRV       pwl(0p 0 2p 275U 80p 275U 170p 275U)
+L_CTL       N_DRV       N_OUTJ      4.0p
+B_OUT       N_OUTJ     0           jjmit area=3.0
+R_OUT_SH    N_OUTJ     0           3.0
+K_FO        L_F        L_CTL        0.90
+
+* Finite-source-impedance galvanic injection into frozen DCSFQ_BVM.a.
+R_SRC       N_DRV       N_INJ       0.75
+L_INJ       N_INJ       DCS_A       2.0p
+
+.ends AFQ3

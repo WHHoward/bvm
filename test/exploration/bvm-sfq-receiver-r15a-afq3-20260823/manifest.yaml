@@ -1,0 +1,100 @@
+document_type: exploration_manifest
+schema_version: exploration-v1
+task_tier: Exploration
+study_phase: R15-A
+status: PRECHECK_NO_GO
+title: AFQ-3 active interstage single frozen point
+created_at: "2026-08-23T15:01:17+08:00"
+baseline_head: 3113a4640c74e515cc6fe991f1c37752b168e8c2
+
+scientific_question: >-
+  Can the AFQ-3 bias-powered active interstage preserve BVM discrimination,
+  compress the B_DET multi-turn source, and provide a bounded high-current
+  drive to frozen DCSFQ_BVM.a without source back-action?
+
+frozen_scope:
+  canonical_bvm_modified: false
+  dcsfq_bvm_modified: false
+  detector_parameters_modified: false
+  single_point_only: true
+  parameter_sweep: false
+  jtl_or_t1_attached: false
+
+nominal_point:
+  r_in_ohm: 12.0
+  l_tx_pH: 0.20
+  b_det_area: 0.50
+  b_det_bias_uA: 15.0
+  k_in: -0.80
+  l_ret_pH: 5.0
+  l_s_pH: 50.0
+  j_set_area: 0.08
+  i_set_uA: 5.6
+  r_q_ohm: 2.0
+  l_q_pH: 4.0
+  j_q_area: 0.50
+  l_f_pH: 20.0
+  r_f_ohm: 10.0
+  k_qf: 0.90
+  l_ctl_pH: 4.0
+  j_out_area: 3.0
+  i_out_uA: 275.0
+  r_out_sh_ohm: 3.0
+  k_fo: 0.90
+  r_src_ohm: 0.75
+  l_inj_pH: 2.0
+
+precheck:
+  report: analysis/GATE0_4_PRECHECK.md
+  script: analysis/r15a_precheck.py
+  verdict: PRECHECK_NO_GO
+  josim_scientific_case_runs: false
+  gate0_failure: >-
+    The normalized L_Q/L_F/L_CTL mutual matrix has determinant -0.62 and a
+    negative minimum eigenvalue -0.2727922; no valid passive constitutive
+    network exists at this nominal mutual point.
+
+solver_provenance:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  binary_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  note: >-
+    The binary was identified from the retained banner/provenance. No valid
+    scientific case completed after the Gate 0 decision.
+
+matched_cases:
+  - logical1-read
+  - logical0-read
+  - logical1-read0-control
+  - logical0-read0-control
+
+execution:
+  timestep_ps: 0.0125
+  stop_time_ps: 170.0
+  raw_csv_count: 0
+  valid_case_count: 0
+  retained_precheck_probe_log: logs/logical1-read0-control.stdout.txt
+
+artifacts:
+  inputs:
+    - inputs/afq3.cir
+    - inputs/logical1-read.cir
+    - inputs/logical0-read.cir
+    - inputs/logical1-read0-control.cir
+    - inputs/logical0-read0-control.cir
+    - inputs/jjmit.cir
+    - inputs/bvm_cell.cir
+    - inputs/DCSFQ_BVM.cir
+  analysis:
+    - analysis/r15a_precheck.py
+    - analysis/r15a-precheck-metrics.json
+    - analysis/GATE0_4_PRECHECK.md
+    - analysis/R15A_REPORT.md
+    - analysis/sha256sums.txt
+  summary: SUMMARY.md
+
+boundary: >-
+  This stop falsifies only the AFQ-3 nominal mutual formulation as a valid
+  execution point. It does not falsify the active interstage architecture or
+  the BVM/DCSFQ evidence. Any retry needs a new physical topology and a new
+  Gate 0; no silent K/L/bias/AREA repair is authorized.

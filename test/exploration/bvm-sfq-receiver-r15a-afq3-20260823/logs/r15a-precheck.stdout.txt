@@ -1,0 +1,252 @@
+{
+  "decision": "PRECHECK_NO_GO",
+  "execution": {
+    "josim_started_for_scientific_cases": false,
+    "matched_cases": [],
+    "reason": "Gate 0 failed before a valid constitutive magnetic network was established."
+  },
+  "experiment": "R15-A",
+  "external_damping": {
+    "J_OUT_R_eff_ohm": 1.9200000000000004,
+    "J_OUT_R_shunt_ohm": 3.0,
+    "J_OUT_beta_c_with_external_shunt": 0.7056790676599712,
+    "bridge_tau_F_ps": 2.0,
+    "loop_tau_Q_ps": 29.5
+  },
+  "gate0_topology": {
+    "DCSFQ_return": "DCSFQ.a -> L1 -> node1 -> L2 -> ground plus AFQ R_SRC/L_INJ path",
+    "J_OUT": "N_OUTJ to ground, with R_OUT_SH parallel; N_DRV reaches N_OUTJ through L_CTL",
+    "J_Q": "N_QJ to ground",
+    "J_SET": "N_S2 to N_QMODE",
+    "L_F_R_F": "both N_F to ground, L_F magnetically coupled to L_Q and L_CTL",
+    "L_Q": "N_QMODE to N_QJ",
+    "R_Q": "N_QMODE to ground, parallel to L_Q->J_Q series branch only at N_QMODE",
+    "failure_reason": "K_QF^2 + K_FO^2 = 1.62 > 1; the nominal three-coil inductance matrix has a negative eigenvalue. The netlist has no L_Q-L_CTL mutual to repair this block.",
+    "floating_nodes": [],
+    "magnetic_block_order": [
+      "L_Q",
+      "L_F",
+      "L_CTL"
+    ],
+    "minimum_normalized_eigenvalue": -0.2727922061357855,
+    "mutual_matrix_determinant_pH3": -198.4000000000002,
+    "mutual_matrix_pH": [
+      [
+        4.0,
+        8.049844718999244,
+        0.0
+      ],
+      [
+        8.049844718999244,
+        20.0,
+        8.049844718999244
+      ],
+      [
+        0.0,
+        8.049844718999244,
+        4.0
+      ]
+    ],
+    "mutual_polarity": "K_IN=-.80, K_QF=+.90, K_FO=+.90",
+    "node_closure_status": "PASS_ANALYTIC",
+    "normalized_determinant": -0.6200000000000001,
+    "normalized_mutual_matrix": [
+      [
+        1.0,
+        0.9,
+        0.0
+      ],
+      [
+        0.9,
+        1.0,
+        0.9
+      ],
+      [
+        0.0,
+        0.9,
+        1.0
+      ]
+    ],
+    "output_KCL": "I_OUT enters N_DRV and divides between L_CTL/J_OUT path and R_SRC/L_INJ/DCSFQ.a path",
+    "positive_definite": false,
+    "status": "FAIL_INVALID_MUTUAL_INDUCTANCE_MATRIX"
+  },
+  "gate1_actual_jjmit": {
+    "area_invariant_R0_times_C_ps": 11.200000000000001,
+    "area_invariant_RN_times_C_ps": 1.12,
+    "area_invariant_intrinsic_beta_c": 5.445054534413356,
+    "area_scaled": {
+      "B_DET": {
+        "C_F": 3.5e-14,
+        "Ic_A": 5e-05,
+        "R0_ohm": 320.0,
+        "RN_ohm": 32.0,
+        "area": 0.5,
+        "beta_c_intrinsic": 5.445054534413356,
+        "tau_R0_C_ps": 11.200000000000001,
+        "tau_RN_C_ps": 1.12
+      },
+      "J_OUT": {
+        "C_F": 2.1000000000000001e-13,
+        "Ic_A": 0.00030000000000000003,
+        "R0_ohm": 53.333333333333336,
+        "RN_ohm": 5.333333333333333,
+        "area": 3.0,
+        "beta_c_intrinsic": 5.445054534413356,
+        "tau_R0_C_ps": 11.200000000000001,
+        "tau_RN_C_ps": 1.12
+      },
+      "J_Q": {
+        "C_F": 3.5e-14,
+        "Ic_A": 5e-05,
+        "R0_ohm": 320.0,
+        "RN_ohm": 32.0,
+        "area": 0.5,
+        "beta_c_intrinsic": 5.445054534413356,
+        "tau_R0_C_ps": 11.200000000000001,
+        "tau_RN_C_ps": 1.12
+      },
+      "J_SET": {
+        "C_F": 5.6e-15,
+        "Ic_A": 8.000000000000001e-06,
+        "R0_ohm": 2000.0,
+        "RN_ohm": 200.0,
+        "area": 0.08,
+        "beta_c_intrinsic": 5.445054534413356,
+        "tau_R0_C_ps": 11.200000000000001,
+        "tau_RN_C_ps": 1.12
+      }
+    },
+    "base_constants": {
+      "C0_F": 7e-14,
+      "Ic0_A": 0.0001,
+      "R0_ohm": 160.0,
+      "RN0_ohm": 16.0
+    },
+    "loop_L_over_RQ_ps": 29.5,
+    "status": "PASS_MODEL_RECONSTRUCTION"
+  },
+  "gate2_no_input_analytic": {
+    "bias_over_Ic": {
+      "B_DET": 0.3,
+      "DCSFQ_B1_B2_bias_over_Ic": 1.25,
+      "DCSFQ_B3_bias_over_Ic": 0.7,
+      "J_OUT": 0.9166666666666664,
+      "J_Q": 0.11199999999999999,
+      "J_SET": 0.6999999999999998
+    },
+    "risk": "J_OUT is near critical; logical1-read0-control is the first no-input/startup hard check.",
+    "status": "NOT_RUN_GATE0_FAILED"
+  },
+  "gate3_discrimination": {
+    "M_over_LS": 0.05059644256269408,
+    "M_pH": 2.529822128134704,
+    "polarity": "K_IN=-.80 declares the positive read1 primary lobe as favorable; actual branch sign is an execution probe, not an event claim.",
+    "read0_abs_flux_turns": 0.027112182842302664,
+    "read0_primary_extrema_uA": {
+      "abs_peak_uA": 22.16104,
+      "max_time_ps": 96.0,
+      "max_uA": 17.09002,
+      "min_time_ps": 106.0,
+      "min_uA": -22.16104
+    },
+    "read0_worst_abs_JSET_current_uA": 6.7212697874895655,
+    "read1_abs_flux_turns": 0.06630872371265754,
+    "read1_favorable_JSET_current_uA": 8.34230846621427,
+    "read1_primary_extrema_uA": {
+      "abs_peak_uA": 54.19963,
+      "max_time_ps": 100.8125,
+      "max_uA": 54.19963,
+      "min_time_ps": 109.47500000000001,
+      "min_uA": -43.98011
+    },
+    "read1_read0_margin_uA": 1.6210386787247044,
+    "reflected_impedance_ohm_at_10ps": 0.068,
+    "reflected_impedance_ohm_at_2ps": 0.34
+  },
+  "gate4_active_output_scale": {
+    "R12_300_one_event_reference_uA": 300.0,
+    "R12_68p4_no_event_uA": 68.4,
+    "R13_actual_subthreshold_uA": 110.2,
+    "R1A_passive_uA": 5.564,
+    "brackets": {
+      "10": {
+        "DCSFQ_input_current_max_uA": 152.04495739384342,
+        "DCSFQ_input_current_min_uA": 105.539190664306,
+        "DCSFQ_input_voltage_max_uV": 532.4035377692512,
+        "DCSFQ_input_voltage_min_uV": 110.87404724139266,
+        "duration_ps": 10.0,
+        "source_impedance_R_ohm": 0.75,
+        "source_impedance_X_LINJ_ohm": 1.2566370614359172
+      },
+      "20": {
+        "DCSFQ_input_current_max_uA": 188.52989564557714,
+        "DCSFQ_input_current_min_uA": 150.1489432259388,
+        "DCSFQ_input_voltage_max_uV": 330.07994851474547,
+        "DCSFQ_input_voltage_min_uV": 78.86937979953758,
+        "duration_ps": 20.0,
+        "source_impedance_R_ohm": 0.75,
+        "source_impedance_X_LINJ_ohm": 0.6283185307179586
+      }
+    },
+    "interpretation": "Independent I_OUT and nonlinear current steering give >100uA first-order loaded bracket; duration and DCSFQ nonlinear response remain unknown.",
+    "status": "PASS_SCALE_ONLY"
+  },
+  "jjmit_base_constants": {
+    "C0_F": 7e-14,
+    "Ic0_A": 0.0001,
+    "R0_ohm": 160.0,
+    "RN0_ohm": 16.0
+  },
+  "jjmit_parameters": {
+    "B_DET": {
+      "C_F": 3.5e-14,
+      "Ic_A": 5e-05,
+      "R0_ohm": 320.0,
+      "RN_ohm": 32.0,
+      "area": 0.5,
+      "beta_c_intrinsic": 5.445054534413356,
+      "tau_R0_C_ps": 11.200000000000001,
+      "tau_RN_C_ps": 1.12
+    },
+    "J_OUT": {
+      "C_F": 2.1000000000000001e-13,
+      "Ic_A": 0.00030000000000000003,
+      "R0_ohm": 53.333333333333336,
+      "RN_ohm": 5.333333333333333,
+      "area": 3.0,
+      "beta_c_intrinsic": 5.445054534413356,
+      "tau_R0_C_ps": 11.200000000000001,
+      "tau_RN_C_ps": 1.12
+    },
+    "J_Q": {
+      "C_F": 3.5e-14,
+      "Ic_A": 5e-05,
+      "R0_ohm": 320.0,
+      "RN_ohm": 32.0,
+      "area": 0.5,
+      "beta_c_intrinsic": 5.445054534413356,
+      "tau_R0_C_ps": 11.200000000000001,
+      "tau_RN_C_ps": 1.12
+    },
+    "J_SET": {
+      "C_F": 5.6e-15,
+      "Ic_A": 8.000000000000001e-06,
+      "R0_ohm": 2000.0,
+      "RN_ohm": 200.0,
+      "area": 0.08,
+      "beta_c_intrinsic": 5.445054534413356,
+      "tau_R0_C_ps": 11.200000000000001,
+      "tau_RN_C_ps": 1.12
+    }
+  },
+  "model_path": "test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/inputs/jjmit.cir",
+  "model_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+  "type": "analytic_precheck_no_josim",
+  "windows_ps": {
+    "activity": [
+      94.0,
+      130.0
+    ]
+  }
+}

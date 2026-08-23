@@ -1,0 +1,37 @@
+schema_version: paper-sl-q3-pre-provenance-v1
+analysis_only: true
+raw_not_copied: true
+source_cases:
+  - id: Q0_68p4u
+    accepted_exploration: test/exploration/qb-q0-standalone-current-quantized-event-20260824
+    raw: test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv
+    raw_sha256: 0b3fab3ba7357d2475ffadb174f0d48ad33b7e7c934962a687074d4739468bdb
+    input_deck: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir
+    input_deck_sha256: de291da0d082df6267a3a83ad85bd4a3d43ad724550b0a03d9b56ce5d243f1e1
+    raw_timestep_ps: 0.1
+    note: scaled QB ideal-current periodic positive control; no physical BVM
+  - id: PAPER_SL_Q1_35u
+    accepted_exploration: test/exploration/paper-sl-q1-20260824
+    raw: test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read.csv
+    raw_sha256: 3280c7c134dc599bad5e0433ec2650ffb566af5cc37a6849eafb0b2c06b06f24
+    input_deck: test/exploration/paper-sl-q1-20260824/inputs/paper-j1-logical1-read.cir
+    input_deck_sha256: ffe023893b284f512e14d1faec69765c633b4bf6e236d016cf12cf3eb6129f78
+    raw_timestep_ps: 0.0125
+    note: paper-JSL-derived logical1 replay at IBIAS=35 uA
+  - id: PAPER_SL_Q2_40u
+    accepted_exploration: test/exploration/paper-sl-q2-20260824
+    raw: test/exploration/paper-sl-q2-20260824/raw/40u/paper-j1-logical1-read.csv
+    raw_sha256: c9ba678e26ac9c90da922f091457f263d5e3fe5dad7d8e811c98ecb953d65731
+    input_deck: test/exploration/paper-sl-q2-20260824/inputs/40u/paper-j1-logical1-read.cir
+    input_deck_sha256: a90f52ccf1a2a4cddccccaaea78e694e1d8fa6f06e8dd47ba94ffb6dc140cf80
+    raw_timestep_ps: 0.0125
+    note: same paper-JSL replay at IBIAS=40 uA
+topology_snapshot:
+  bq_cell: test/exploration/paper-sl-q1-20260824/inputs/bq_cell.cir
+  bq_cell_sha256: 5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2
+  jjmit: test/exploration/paper-sl-q1-20260824/inputs/jjmit.cir
+  jjmit_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470

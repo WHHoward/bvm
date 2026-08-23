@@ -1,0 +1,41 @@
+schema_version: paper-sl-q3-pre-v1
+run_id: paper-sl-q3-pre-20260824
+tier: Exploration
+study_phase: ANALYSIS_ONLY
+parent_head: 1f6f3c90617c2c28adcb781a5fce747ad216f618
+jo_sim_executed: false
+physical_circuit_changed: false
+question: why Q0 reaches BJL1 complete segment while paper-JSL replay remains subturn
+decision: BJS_TO_BJL1_WAVEFORM_ROUTING_TIMING_LIMITED
+inputs:
+  q0_68p4u:
+    path: test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv
+    sha256: 0b3fab3ba7357d2475ffadb174f0d48ad33b7e7c934962a687074d4739468bdb
+    timestep_ps: 0.1
+    activity_windows_ps: [[10.0, 35.0], [60.0, 85.0], [110.0, 135.0], [160.0, 185.0], [210.0, 235.0], [260.0, 285.0]]
+  paper_sl_q1_35u:
+    path: test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read.csv
+    sha256: 3280c7c134dc599bad5e0433ec2650ffb566af5cc37a6849eafb0b2c06b06f24
+    timestep_ps: 0.0125
+    activity_windows_ps: [[94.0, 130.0]]
+  paper_sl_q2_40u:
+    path: test/exploration/paper-sl-q2-20260824/raw/40u/paper-j1-logical1-read.csv
+    sha256: c9ba678e26ac9c90da922f091457f263d5e3fe5dad7d8e811c98ecb953d65731
+    timestep_ps: 0.0125
+    activity_windows_ps: [[94.0, 130.0]]
+topology:
+  source: test/exploration/paper-sl-q1-20260824/inputs/bq_cell.cir
+  sha256: 5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2
+  model: test/exploration/paper-sl-q1-20260824/inputs/jjmit.cir
+  model_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+analysis:
+  script: analysis/analyze_q3_pre.py
+  uses_actual_csv_time: true
+  resampling: false
+  legacy_fast_events_used: false
+  event_rule: phase and same-JJ voltage-area evidence only; no event claim for subturn segments
+stop_rule: commit analysis/precheck and report, then stop

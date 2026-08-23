@@ -1,0 +1,10 @@
+# PAPER-SL-Q3-PRE QA
+
+- All three input CSVs were read directly from their accepted exploration paths.
+- Time axes are strictly increasing and their actual timestep is retained.
+- Direct P/V/I columns for BJs, BJL1 and BJL2 are present.
+- Same-JJ phase/area calculations use the same segment, endpoint direction and actual CSV time.
+- Node2, node3 and node4 KCL residuals were computed from directly available branch currents.
+- No `scripts/sfq_metrics.py`, `fast_events`, voltage peak, or `I>Ic` criterion was used as an event count.
+- No raw CSV was copied, overwritten, resampled or modified.
+- Q0/Q1/Q2 timestep difference is recorded as an analysis limitation; no convergence claim is made.

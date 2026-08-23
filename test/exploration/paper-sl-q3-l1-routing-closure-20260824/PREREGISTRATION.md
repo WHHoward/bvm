@@ -35,7 +35,7 @@ signed local-current fraction 约为 0.196/0.219，而 Q0 reference 约为 0.381
 | `BJs AREA` | 0.50 |
 | `BJL1 AREA` | 0.36 |
 | `BJL2 AREA` | 0.54 |
-| `IBIAS` | 35 uA |
+| `IBIAS` | **40 uA** |
 | `RJ1/RJ2` | 33/22 ohm |
 | `RB` | 6 ohm |
 | output load | 10 ohm |
@@ -43,9 +43,10 @@ signed local-current fraction 约为 0.196/0.219，而 Q0 reference 约为 0.381
 | source replay | accepted Q2 40-uA paper-JSL waveforms, byte-identical decks |
 | timestep / stop | Q2 fixture: 0.0125 ps / 170 ps |
 
-注意：本任务中的“IBIAS=40-uA”指 PAPER-SL-Q2 的 `40u` source-replay fixture；
-QB central bias 仍按该 fixture实际值 `IBIAS=35 uA` 冻结。不得将两者混写为同一个
-电路参数。
+注意：本任务中的 `IBIAS=40 uA` 同时是 PAPER-SL-Q2 `inputs/40u` source-replay
+fixture 的实际 QB central bias。四个 copied deck 都直接包含
+`I_IBIAS 0 IBIAS pwl(... 40u ...)`；因此这里没有“40-uA source fixture、35-uA
+central bias”的区分。
 
 ## 拓扑和 KCL
 

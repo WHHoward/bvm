@@ -1,0 +1,13 @@
+R15-D execution commands
+
+Control-first command:
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical1-read0-control.csv inputs/logical1-read0-control.cir
+
+After control gate passed, matched-case commands:
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical1-read.csv inputs/logical1-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical0-read.csv inputs/logical0-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical0-read0-control.csv inputs/logical0-read0-control.cir
+
+Analysis command:
+python3 analysis/analyze_r15d_execution.py
+

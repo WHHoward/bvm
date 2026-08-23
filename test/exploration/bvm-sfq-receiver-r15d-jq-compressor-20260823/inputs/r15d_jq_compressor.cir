@@ -1,0 +1,23 @@
+* R15-D split-node + independent J_Q bias + RL refractory compressor.
+* Upstream values are frozen from R15-C. The only interface change is
+* B_SET lower terminal: ground -> N_QJ.
+.subckt R15D IN
+R_IN    IN     N_PICK  12.0
+L_TX    N_PICK N_DET   0.20p
+B_DET   N_DET  0       jjmit area=0.50
+I_DET   0      N_DET   pwl(0p 0 2p 15U 80p 15U 170p 15U)
+
+I_SET   0      N_S0    pwl(0p 0 2p 5.6U 80p 5.6U 170p 5.6U)
+R_BIAS  N_S0   0       27.5
+L_RET   N_S0   N_S1    5.0p
+L_S     N_S1   N_S2    50.0p
+B_SET   N_S2   N_QJ    jjmit area=0.08
+
+I_Q     0      N_QB    pwl(0p 0 2p 2.30U 80p 2.30U 170p 2.30U)
+R_Q     N_QB   0       2.0
+L_Q     N_QB   N_QJ    40.0p
+B_Q     N_QJ   0       jjmit area=0.10
+
+K_IN    L_TX   L_S     -0.80
+.ends R15D
+

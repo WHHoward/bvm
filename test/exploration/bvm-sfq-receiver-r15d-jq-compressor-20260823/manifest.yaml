@@ -1,0 +1,32 @@
+run_id: bvm-sfq-receiver-r15d-jq-compressor-20260823
+tier: Exploration
+study: R15-D
+parent_commit: 97598b4dc3d461b79310a15108f170eb16f7fb91
+canonical_bvm_modified: false
+parameter_sweep: false
+downstream_jout_dcsfq_jtl_t1: false
+cases:
+  - logical1-read0-control
+  - logical1-read
+  - logical0-read
+  - logical0-read0-control
+execution_order:
+  - logical1-read0-control
+  - logical1-read
+  - logical0-read
+  - logical0-read0-control
+time_step_ps: 0.0125
+stop_time_ps: 170.0
+event_phase_turns_min: 1.0
+event_area_relative_tolerance: 0.05
+event_area_absolute_tolerance_turns: 0.02
+windows_ps:
+  settled_pre: [80.0, 90.0]
+  activity: [94.0, 130.0]
+  post: [150.0, 170.0]
+model:
+  cli: build/josim-cli
+  version: v2.7.2837d13
+  metric_spec: docs/research/METRIC_SPEC_V2.md
+stop_rule: first logical1-read0-control instability, startup/free-running, complete control event, or source instability stops the batch
+

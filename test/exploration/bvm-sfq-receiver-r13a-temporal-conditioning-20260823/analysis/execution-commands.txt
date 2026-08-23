@@ -1,0 +1,16 @@
+# R13-A execution record
+# Working directory: /home/howard/JoSIM
+# Solver: build/josim-cli -m, v2.7.2837d13
+
+python3 test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/build_r13_inputs.py
+
+# Raw replay validity matrix
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/raw/raw-replay/<case>/run-01.csv test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/inputs/raw-replay/<case>.cir
+
+# C1/C2/C3 matched matrix
+build/josim-cli -m -o test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/raw/<transform>/<case>/run-01.csv test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/inputs/<transform>/<case>.cir
+
+# Evidence extraction; no scripts/sfq_metrics.py fast_events used
+python3 test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/r13a_analyze.py
+
+# There was no qualifying B3 event, so the conditional JTL step was not run.

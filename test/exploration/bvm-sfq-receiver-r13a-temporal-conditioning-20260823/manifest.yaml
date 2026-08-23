@@ -1,0 +1,42 @@
+experiment: R13-A
+title: canonical-BVM temporal-conditioning requirement experiment
+date: 2026-08-23
+mode: exploration
+baseline_head: ebe24984771255f002499ec9bef35e9953c87d28
+verdict: TEMPORAL_CONDITIONING_INSUFFICIENT
+solver:
+  path: build/josim-cli
+  version: 2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+source:
+  experiment: R12-A
+  column: I(L1|XCONV)
+  direction: a_to_node1
+  favorable_polarity: positive
+  raw_paths:
+    - test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-read1/run-01.csv
+    - test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-read0/run-01.csv
+    - test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-logical1-read0-control/run-01.csv
+    - test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/raw/phase-b-logical0-read0-control/run-01.csv
+fixture:
+  subcircuit: THmitll_DCSFQ_BVM
+  load_ohm: 10
+  timestep_ps: 0.0125
+  stop_ps: 170
+  activity_window_ps: [94, 130]
+  pre_window_ps: [85, 94]
+  post_window_ps: [130, 165]
+  jtl_step: not_run_no_qualifying_b3_event
+transforms:
+  - raw-replay
+  - c1-rectify
+  - c2-hold20
+  - c3-rectify-hold20
+controls:
+  - read1
+  - read0
+  - logical1-read0-control
+  - logical0-read0-control
+provenance:
+  jjmit_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  dcsfq_bvm_sha256: 398e9c656f4e6e7b8a866800f019cc8fef3def30da8d508322bb89183d144d95

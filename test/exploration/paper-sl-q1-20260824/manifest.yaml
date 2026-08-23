@@ -1,0 +1,62 @@
+schema_version: paper-sl-q1-v1
+run_id: paper-sl-q1-20260824
+tier: Exploration
+study_phase: PAPER-SL-Q1
+parent_head: 0bf84c438d4890b7ed095fe526711eafab520ada
+purpose: replay accepted paper-JSL current into frozen scaled QB
+canonical_bvm_connected: false
+physical_jsl_connected: false
+parameter_sweep: false
+cases:
+  - q0-68p4u-positive-control
+  - paper-j1-logical1-read
+  - paper-j0-logical0-read
+  - paper-j1-logical1-read0-control
+  - paper-j0-logical0-read0-control
+frozen_qb:
+  source: QB-Q0/QB-Q2A scaled cell
+  bjs_area: 0.50
+  bjl1_area: 0.36
+  bjl2_area: 0.54
+  lin_pH: 0.8
+  l0_pH: 1.323
+  l1_pH: 3.91
+  l2_pH: 3.91
+  rj1_ohm: 33.0
+  rj2_ohm: 22.0
+  rb_ohm: 6.0
+  ibias_uA: 35.0
+  output_load_ohm: 10.0
+replay:
+  variable: I(B_LD1)
+  series_equivalence_check: I(B_LD1)..I(B_LD12)
+  transform: none
+  interpolation: none
+  resampling: none
+  polarity: original JSL branch-current sign
+  source_element: I_REPLAY 0 IN
+paper_sl_l0:
+  run_id: paper-sl-l0-20260824
+  verdict: PAPER_JSL_LOAD_VALID
+  scope: external_series_load_only
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+timing:
+  jsl_replay_timestep_ps: 0.0125
+  jsl_replay_stop_ps: 170.0
+  q0_timestep_ps: 0.1
+  q0_stop_ps: 300.0
+event_rule:
+  phase: continuous unwrapped P divided by 2*pi
+  complete_min_turns: 1.0
+  area: same JJ and same monotonic segment, integral(V dt)/Phi0
+  residual_tolerance_turns: max(0.05, 0.10*abs(phase_turns))
+  legacy_fast_events_used: false
+stop_rule: complete only registered point; no automatic parameter follow-up
+

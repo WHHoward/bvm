@@ -1,0 +1,14 @@
+* QB-Q2A A: Q0 68.4 uA ideal-current positive control
+.include jjmit.cir
+.include bq_cell.cir
+XBQ IN OUT IBIAS BQ
+R_LOAD OUT 0 10
+I_IBIAS 0 IBIAS pwl(0p 0 1p 35u 2p 35u 300p 35u)
+I_IN 0 IN pulse(0 68.4u 10p 1p 1p 5p 50p)
+.tran 0.1p 300p
+.print P(BJs|XBQ) V(BJs|XBQ) I(BJs|XBQ)
+.print P(BJL1|XBQ) V(BJL1|XBQ) I(BJL1|XBQ)
+.print P(BJL2|XBQ) V(BJL2|XBQ) I(BJL2|XBQ)
+.print I(I_IN) I(I_IBIAS) V(IN) V(OUT) I(R_LOAD)
+.print I(Lin|XBQ) I(L0|XBQ) I(L1|XBQ) I(L2|XBQ) I(RB|XBQ) I(RJ1|XBQ) I(RJ2|XBQ)
+.end

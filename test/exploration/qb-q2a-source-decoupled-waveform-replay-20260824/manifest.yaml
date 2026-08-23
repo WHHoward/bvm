@@ -1,0 +1,46 @@
+run_id: qb-q2a-source-decoupled-waveform-replay-20260824
+tier: Exploration
+study: QB-Q2A
+parent_commit: 4166fe683bdf4599d853546ba7bec64395105e76
+purpose: source-decoupled counterfactual waveform replay diagnosis
+canonical_bvm_modified: false
+qb_parameter_sweep: false
+hardware_interface_claim: false
+cases:
+  - A-q0-68p4u-positive-control
+  - B-q1-loaded-vsl-replay
+  - C-canonical-logical1-vsl-replay
+  - C0-canonical-logical0-vsl-replay
+frozen_qb:
+  source: circuits/qb/bq_cell.cir via QB-Q0/QB-Q1 snapshots
+  bjs_area: 0.50
+  bjl1_area: 0.36
+  bjl2_area: 0.54
+  lin_pH: 0.8
+  l0_pH: 1.323
+  l1_pH: 3.91
+  l2_pH: 3.91
+  rj1_ohm: 33.0
+  rj2_ohm: 22.0
+  rb_ohm: 6.0
+  ibias_uA: 35.0
+  output_load_ohm: 10.0
+replay_definition:
+  B: ideal voltage replay of QB-Q1 raw V(SL1) logical1-read
+  C: ideal voltage replay of canonical no-receiver V(SL1) logical1-read
+  C0: ideal voltage replay of canonical no-receiver V(SL1) logical0-read
+  transform: none
+  interpolation: none; all source CSV points retained
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+source_provenance:
+  q1_exploration: test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824
+  canonical_readout: test/exploration/bvm-internal-readout-20260819
+  q0_positive_control: test/exploration/qb-q0-standalone-current-quantized-event-20260824
+stop_rule: if A fails replay validation, stop before interpreting B/C; otherwise run exactly B/C/C0 once

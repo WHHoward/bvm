@@ -1,0 +1,12 @@
+# QB-Q2A mechanical QA
+
+- Four JoSIM raw artifacts: present; exit codes `0`; stderr empty.
+- Direct `P/V/I` columns for BJs/BJL1/BJL2: present (case-insensitive JoSIM labels checked).
+- Numeric finiteness: PASS.
+- A raw: 2,999 samples, `0…299.9 ps`, nominal `0.1 ps`, common deterministic `0.2 ps` gap at `14.7→14.9 ps`.
+- B/C/C0 raw: 13,599 samples each, `0…169.9875 ps`, nominal `0.0125 ps`, common deterministic `0.025 ps` gap at `1.8375→1.8625 ps`.
+- Analysis script exit code: `0`.
+- Positive-control gate: A reproduced six bounded BJL2 one-unit windows with no post candidate.
+- No convergence refinement or parameter sweep was authorized by QB-Q2A.
+
+The deterministic output gaps are retained as artifact facts and are not silently treated as uniform sampling.

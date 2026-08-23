@@ -1,0 +1,16 @@
+# QB-Q2A execution commands
+# Working directory: test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824
+
+# Build source snapshots and replay decks; analysis-only generation step.
+python3 analysis/build_replay_fixture.py
+
+# Required positive control, run first.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/A-q0-68p4u-positive-control.csv inputs/A-q0-68p4u-positive-control.cir
+
+# Remaining cases, run only after A positive-control validation.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/B-q1-loaded-vsl-replay.csv inputs/B-q1-loaded-vsl.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/C-canonical-logical1-vsl-replay.csv inputs/C-canonical-logical1-vsl.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/C0-canonical-logical0-vsl-replay.csv inputs/C0-canonical-logical0-vsl.cir
+
+# Analysis-only phase/area audit.
+python3 analysis/analyze_qb_q2a.py

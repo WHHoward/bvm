@@ -1,0 +1,59 @@
+run_id: qb-q1-canonical-bvm-scaled-qb-compatibility-20260824
+tier: Exploration
+study: QB-Q1
+parent_commit: f800df0eab8c9402ec521d0c9e96fbc6d7a79e32
+canonical_bvm_modified: false
+parameter_sweep: false
+downstream_dcsfq_jtl_t1: false
+topology: direct galvanic BVM SL1 to frozen QB IN; no added conditioner or termination
+cases:
+  - logical1-read0-control
+  - logical1-read
+  - logical0-read
+  - logical0-read0-control
+execution_order:
+  - logical1-read0-control
+  - logical1-read
+  - logical0-read
+  - logical0-read0-control
+time_step_ps: 0.0125
+stop_time_ps: 170.0
+windows_ps:
+  settled_pre: [80.0, 90.0]
+  activity: [94.0, 130.0]
+  post: [150.0, 170.0]
+event_diagnostic_rule:
+  id: q0_local_phase_area_candidate_v1
+  status: UNFROZEN_TASK_LOCAL
+  phase_min_turns: 1.0
+  residual_max_turns: max(0.05, 0.10*abs(phase_turns))
+frozen_qb:
+  source: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/bq_cell.cir
+  bjs_area: 0.50
+  bjl1_area: 0.36
+  bjl2_area: 0.54
+  lin_pH: 0.8
+  l0_pH: 1.323
+  l1_pH: 3.91
+  l2_pH: 3.91
+  rj1_ohm: 33.0
+  rj2_ohm: 22.0
+  rb_ohm: 6.0
+  ibias_uA: 35.0
+  output_load_ohm: 10.0
+source_semantics:
+  path: docs/research/BVM_LOGICAL_SEMANTICS_V1.md
+  status: FROZEN
+  read_plateau_ps: [96.0, 105.0]
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+reference_no_receiver:
+  exploration: test/exploration/bvm-internal-readout-20260819
+  status: accepted source/read reference; copied append-only into reference/canonical
+stop_rule: first control instability/free-running/control event/source-storage failure stops the matrix

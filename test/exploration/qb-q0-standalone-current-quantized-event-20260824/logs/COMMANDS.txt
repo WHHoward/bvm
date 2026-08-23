@@ -1,0 +1,16 @@
+# QB-Q0 commands
+
+Working directory: `test/exploration/qb-q0-standalone-current-quantized-event-20260824`
+
+```text
+../../../build/josim-cli -m -o raw/scaled/iin-0.csv inputs/scaled-iin-0.cir
+../../../build/josim-cli -m -o raw/scaled/iin-45u.csv inputs/scaled-iin-45u.cir
+../../../build/josim-cli -m -o raw/scaled/iin-68p4u.csv inputs/scaled-iin-68p4u.cir
+../../../build/josim-cli -m -o raw/scaled/iin-90u.csv inputs/scaled-iin-90u.cir
+../../../build/josim-cli -m -o raw/paper/iin-0.csv inputs/paper-iin-0.cir
+../../../build/josim-cli -m -o raw/paper/iin-68p4u.csv inputs/paper-iin-68p4u.cir
+../../../build/josim-cli -m -o raw/paper/iin-90u.csv inputs/paper-iin-90u.cir
+python3 analysis/analyze_qb_q0.py
+```
+
+The JoSIM invocations were wrapped with `timeout --kill-after=10s 300s`, and stdout, stderr, and exit code were saved under `logs/`.

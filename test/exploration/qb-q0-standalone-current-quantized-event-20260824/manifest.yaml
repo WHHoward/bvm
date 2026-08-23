@@ -1,0 +1,45 @@
+run_id: qb-q0-standalone-current-quantized-event-20260824
+tier: Exploration
+study_phase: EXPLORATORY_HISTORICAL_REAUDIT
+parent_commit: f43422507195860075d077a5f692e41bf50cc0b0
+canonical_bvm_connected: false
+downstream_jtl_connected: false
+scaled_fixture:
+  source: test/final/qb/test_qb_final.cir
+  cell: circuits/qb/bq_cell.cir
+  bias_uA: 35.0
+  input_uA: [0.0, 45.0, 68.4, 90.0]
+paper_fixture:
+  source: test/final/single_bvm_qb/test_bvm_paper_bq.cir
+  cell: circuits/qb/bq_cell_paper.cir
+  bias_uA: 90.0
+  bias_provenance: historical/reference BVM-paper fixture; standalone ideal-current substitution is explicit
+  input_uA: [0.0, 68.4, 90.0]
+stimulus:
+  kind: periodic_regression
+  expression: pulse(0 IIN 10p 1p 1p 5p 50p)
+  pulse_starts_ps: [10.0, 60.0, 110.0, 160.0, 210.0, 260.0]
+time_step_ps: 0.1
+stop_time_ps: 300.0
+windows_ps:
+  pre_rule: [s-10, s-1]
+  activity_rule: [s, s+25]
+  post_rule: [s+25, min(s+49, 300)]
+event_diagnostic_rule:
+  id: q0_local_phase_area_candidate_v1
+  status: UNFROZEN
+  scope: this exploratory re-audit only
+  phase_min_turns: 1.0
+  residual_max_turns: max(0.05, 0.10*abs(phase_turns))
+cases:
+  scaled: [iin-0, iin-45u, iin-68p4u, iin-90u]
+  paper: [iin-0, iin-68p4u, iin-90u]
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+stop_rule: complete all preregistered points; no optimization or automatic follow-up

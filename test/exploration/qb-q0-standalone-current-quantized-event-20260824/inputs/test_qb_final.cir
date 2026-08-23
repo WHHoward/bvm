@@ -1,0 +1,13 @@
+* BQ Standalone Test - IC scaled, JL1+JL2 both damped (Bc~1)
+* BJs area=0.5 (IC=50uA), BJL1 area=0.36 (IC=36uA), BJL2 area=0.54 (IC=54uA)
+.include ../../../circuits/models/jjmit.cir
+.include ../../../circuits/qb/bq_cell.cir
+
+XBQ IN1 OUT1 IBIAS BQ
+R_LOAD OUT1 0 10
+I_IBIAS 0 IBIAS pwl(0 0 1p 35u)
+I_IN 0 IN1 pulse(0 90u 10p 1p 1p 5p 50p)
+
+.tran 0.1p 300p
+.print V(OUT1) P(BJs|XBQ) P(BJL1|XBQ) P(BJL2|XBQ)
+.end

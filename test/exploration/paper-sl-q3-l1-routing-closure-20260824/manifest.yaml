@@ -1,0 +1,66 @@
+study: PAPER-SL-Q3
+tier: Exploration
+status: complete
+verdict: ROUTING_GAIN_WITH_BJL1_SUBTHRESHOLD
+created_at: '2026-08-24T04:49:13+08:00'
+git_head_before_execution: 0cdb92e53aa1444d1bba1337567b781886c9149f
+experiment_directory: test/exploration/paper-sl-q3-l1-routing-closure-20260824
+question: >-
+  Does a single L1 increase from 3.91 pH to 4.50 pH improve BJs-to-local
+  BJL1/RJ1 routing under frozen PAPER-SL-Q2 replay without losing selectivity?
+frozen_parameters:
+  L1_baseline_pH: 3.91
+  L1_test_pH: 4.50
+  L2_pH: 3.91
+  Lin_pH: 0.80
+  L0_pH: 1.323
+  BJs_area: 0.50
+  BJL1_area: 0.36
+  BJL2_area: 0.54
+  IBIAS_uA: 35
+  RJ1_ohm: 33
+  RJ2_ohm: 22
+  RB_ohm: 6
+  output_load_ohm: 10
+  timestep_ps: 0.0125
+  stop_time_ps: 170
+  main_window_ps: '[94,130)'
+  post_window_ps: '[140,170)'
+source_replay:
+  accepted_fixture: test/exploration/paper-sl-q2-20260824/inputs/40u
+  source_decks_byte_identical: true
+  hash_record: inputs/deck-hashes.json
+execution:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  binary_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  command_record: logs/COMMANDS.txt
+  preflight: logs/PREFLIGHT.md
+  qa: logs/QA.txt
+cases:
+  - logical1 + READ=0 control
+  - logical0 + READ=0 control
+  - logical0 + canonical READ
+  - logical1 + canonical READ
+raw:
+  directory: raw/l1-4p5
+  files:
+    - name: paper-j1-logical1-read0-control.csv
+      sha256: 78d4fcf3dceab43b2574ed2d11612f743f865b31864fea26fcbdac81ba7f9417
+      exit_code: 0
+    - name: paper-j0-logical0-read0-control.csv
+      sha256: b10fdebcc69b8e6e26eb1a5496d0baeba9985c6ee36311ed74eb56301b7f26ea
+      exit_code: 0
+    - name: paper-j0-logical0-read.csv
+      sha256: a6542fda7724c63e8cd9c304b1c32d5e3013517bc10aadccdb13245f80913868
+      exit_code: 0
+    - name: paper-j1-logical1-read.csv
+      sha256: c60fdf05164457976e276e0900bfea3ddf5f4c2a269ce0f0eb9c529b83baf119
+      exit_code: 0
+analysis:
+  precheck: analysis/ANALYTIC_PRECHECK.md
+  report: analysis/REPORT.md
+  metrics: analysis/metrics.json
+  summary: SUMMARY.md
+  method: direct same-JJ continuous phase, monotonic segment, actual-time voltage area, KCL and post-window boundedness
+  old_fast_events_used_as_gate: false

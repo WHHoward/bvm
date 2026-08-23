@@ -1,0 +1,19 @@
+# PAPER-SL-Q3 execution commands
+# Working directory: test/exploration/paper-sl-q3-l1-routing-closure-20260824
+# Git HEAD before execution: 0cdb92e53aa1444d1bba1337567b781886c9149f
+# JoSIM: build/josim-cli v2.7.2837d13, SHA-256
+# 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+
+python3 analysis/l1_precheck.py
+python3 analysis/build_fixture.py
+
+# First registered stop-rule case.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/l1-4p5/paper-j1-logical1-read0-control.csv inputs/l1-4p5/paper-j1-logical1-read0-control.cir
+
+# Remaining matched cases after the first control remained bounded.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/l1-4p5/paper-j0-logical0-read0-control.csv inputs/l1-4p5/paper-j0-logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/l1-4p5/paper-j0-logical0-read.csv inputs/l1-4p5/paper-j0-logical0-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/l1-4p5/paper-j1-logical1-read.csv inputs/l1-4p5/paper-j1-logical1-read.cir
+
+python3 analysis/analyze_l1.py
+python3 -m py_compile analysis/l1_precheck.py analysis/build_fixture.py analysis/analyze_l1.py

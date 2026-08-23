@@ -1,0 +1,51 @@
+study: PAPER-SL-Q3
+tier: Exploration
+created_from_head: 0cdb92e53aa1444d1bba1337567b781886c9149f
+execution_recorded_at: '2026-08-24T04:49:13+08:00'
+scientific_question: >-
+  Under the frozen paper-JSL replay and IBIAS=35 uA QB operating point, does
+  one modest increase of native L1 from 3.91 pH to 4.50 pH improve node2
+  local-branch routing while preserving read0/control selectivity?
+source_replay:
+  accepted_exploration: test/exploration/paper-sl-q2-20260824
+  source_decks: test/exploration/paper-sl-q2-20260824/inputs/40u
+  source_deck_identity: byte-identical copies; see ../inputs/deck-hashes.json
+  source_raw:
+    logical1_read: test/exploration/paper-sl-q2-20260824/raw/40u/paper-j1-logical1-read.csv
+    logical1_read_sha256: c9ba678e26ac9c90da922f091457f263d5e3fe5dad7d8e811c98ecb953d65731
+    logical0_read: test/exploration/paper-sl-q2-20260824/raw/40u/paper-j0-logical0-read.csv
+    logical0_read_sha256: 247af61f8f5ba1710d8942a6915200959df9e0566b19347d0e906a3d416b193f
+    logical1_read0_control: test/exploration/paper-sl-q2-20260824/raw/40u/paper-j1-logical1-read0-control.csv
+    logical1_read0_control_sha256: 0f2ca8c4919b2ccecfa2340d79c3df021e50cb210b2431eacde2048e36c2eb54
+    logical0_read0_control: test/exploration/paper-sl-q2-20260824/raw/40u/paper-j0-logical0-read0-control.csv
+    logical0_read0_control_sha256: 4d3693a63693175d5b545507b56c9df33d8fe986f9a486f88c6b02201df4233f
+model:
+  source: test/exploration/paper-sl-q2-20260824/inputs/40u/jjmit.cir
+  sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  metric_spec: docs/research/METRIC_SPEC_V2.md
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+fixture:
+  baseline_qb_sha256: 5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2
+  perturbed_qb: inputs/l1-4p5/bq_cell.cir
+  perturbed_qb_sha256: 05e5248d5b3eadb3928c3e25a358cbb10d4fde018907c991e30ea0028947d418
+  only_change: 'L1 2 3 3.91p -> L1 2 3 4.50p'
+  frozen: 'BJs/BJL1/BJL2 AREA, Lin/L0/L2, RB/IBIAS, RJ1/RJ2, load, replay, polarity, dt, stop time'
+execution:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  binary_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  timestep_ps: 0.0125
+  stop_time_ps: 170
+  main_window_ps: '[94,130)'
+  post_window_ps: '[140,170)'
+  raw_dir: raw/l1-4p5
+  raw_sha256:
+    paper-j1-logical1-read0-control.csv: 78d4fcf3dceab43b2574ed2d11612f743f865b31864fea26fcbdac81ba7f9417
+    paper-j0-logical0-read0-control.csv: b10fdebcc69b8e6e26eb1a5496d0baeba9985c6ee36311ed74eb56301b7f26ea
+    paper-j0-logical0-read.csv: a6542fda7724c63e8cd9c304b1c32d5e3013517bc10aadccdb13245f80913868
+    paper-j1-logical1-read.csv: c60fdf05164457976e276e0900bfea3ddf5f4c2a269ce0f0eb9c529b83baf119
+analysis:
+  phase_contract: .agents/skills/josim-evidence-audit/references/phase-evidence-contract.md
+  helper_dependency: test/exploration/paper-sl-q3-pre-20260824/analysis/analyze_q3_pre.py
+  helper_dependency_sha256: 2107da995f67c6a6ccf739e3cd9382790d0baac6fe00d493c7f3b0f8910bda44
+  note: no historical fast-event metric was used as physical event evidence

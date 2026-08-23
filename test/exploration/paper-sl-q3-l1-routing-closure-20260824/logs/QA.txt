@@ -1,0 +1,12 @@
+# PAPER-SL-Q3 artifact QA
+
+- all four JoSIM exit-code files contain `0`
+- all four CSVs have 13,599 data rows and 22 columns
+- all time axes are finite and strictly increasing
+- median timestep is `0.0125000000000038 ps` for all four raw files
+- printed final time is `169.9875 ps` for all four raw files
+- no stderr output was emitted by the four JoSIM runs
+- analysis scripts pass `python3 -m py_compile`
+- phase/area evidence uses direct same-JJ P/V columns and actual CSV time
+- old `scripts/sfq_metrics.py fast_events` was not used as event evidence
+- no raw file from an accepted prior exploration was overwritten

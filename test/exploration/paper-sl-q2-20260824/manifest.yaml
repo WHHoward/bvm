@@ -1,0 +1,57 @@
+schema_version: paper-sl-q2-v1
+run_id: paper-sl-q2-20260824
+tier: Exploration
+study_phase: PAPER-SL-Q2
+parent_head: 5627a6386a143784db109138e953368f7ab8a4c2
+purpose: local QB bias closure under frozen paper-JSL current replay
+canonical_bvm_connected: false
+physical_jsl_connected: false
+q1_replay_byte_identical: true
+parameter_sweep: bounded_two_point_bias_bracket
+registered_bias_uA: [37.5, 40.0]
+first_point_uA: 37.5
+conditional_second_point_uA: 40.0
+executed_bias_uA: [37.5, 40.0]
+verdict: BIAS_BRANCH_SUBTHRESHOLD
+invalid_fixture_attempt:
+  path: reference/invalid-attempt-01
+  disposition: preserved; no raw output was used
+frozen_qb:
+  source: PAPER-SL-Q1 scaled QB
+  bjs_area: 0.50
+  bjl1_area: 0.36
+  bjl2_area: 0.54
+  lin_pH: 0.8
+  l0_pH: 1.323
+  l1_pH: 3.91
+  l2_pH: 3.91
+  rj1_ohm: 33.0
+  rj2_ohm: 22.0
+  rb_ohm: 6.0
+  output_load_ohm: 10.0
+replay:
+  source_fixture: test/exploration/paper-sl-q1-20260824/replay_sources
+  transform: none
+  interpolation: none
+  resampling: none
+  polarity: byte-identical Q1 I_REPLAY 0 IN PWL
+timing:
+  timestep_ps: 0.0125
+  stop_time_ps: 170.0
+  activity_window_ps: [94.0, 130.0]
+  post_window_ps: [140.0, 170.0]
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+event_rule:
+  phase: continuous unwrapped P divided by 2*pi
+  complete_min_turns: 1.0
+  area: same JJ and same monotonic segment, integral(V dt)/Phi0
+  residual_tolerance_turns: max(0.05, 0.10*abs(phase_turns))
+  legacy_fast_events_used: false
+stop_rule: stop on control/logical0 event, free-running, multifire, or BJL1-only closure; no automatic parameter changes

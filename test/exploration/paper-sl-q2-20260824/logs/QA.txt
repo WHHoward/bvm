@@ -1,0 +1,17 @@
+# PAPER-SL-Q2 QA
+
+- Both registered bias points completed all four matched cases with solver
+  exit code 0 after the include-path correction.
+- The initial include-path failure produced no raw output and is preserved as
+  an invalid fixture attempt; it was not silently overwritten.
+- Each valid raw CSV has 13,599 data rows, strictly increasing time, and the
+  registered 0.0125 ps grid through 169.9875 ps.
+- Valid retry `.stderr` files are empty.
+- Q1 replay source snapshots were copied byte-identically; no source shaping,
+  normalization, resampling, or polarity change was applied.
+- BJs/BJL1/BJL2 direct phase and direct voltage columns were analyzed on the
+  same monotonic segment and actual CSV time.
+- No legacy `sfq_metrics.py` or `fast_events` field was used as event evidence.
+- No physical BVM/JSL/QB connection, JTL, T1, or QB topology/model parameter
+  was changed.
+

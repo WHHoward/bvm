@@ -1,0 +1,25 @@
+# PAPER-SL-Q2 execution commands
+# Working directory: test/exploration/paper-sl-q2-20260824
+
+python3 analysis/build_q2_fixture.py
+python3 analysis/analytic_precheck.py
+
+# Initial 37.5u control attempt. It was invalid because the nested input
+# directory lacked local include snapshots; no raw output was produced.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/37p5u/paper-j1-logical1-read0-control.csv inputs/37p5u/paper-j1-logical1-read0-control.cir
+
+# After preserving the failed attempt and adding byte-identical local model
+# snapshots, retry the registered point with a new log name.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/37p5u/paper-j1-logical1-read0-control.csv inputs/37p5u/paper-j1-logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/37p5u/paper-j0-logical0-read0-control.csv inputs/37p5u/paper-j0-logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/37p5u/paper-j0-logical0-read.csv inputs/37p5u/paper-j0-logical0-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/37p5u/paper-j1-logical1-read.csv inputs/37p5u/paper-j1-logical1-read.cir
+
+# Conditional second bracket point after 37.5u remained bounded/subthreshold.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/40u/paper-j1-logical1-read0-control.csv inputs/40u/paper-j1-logical1-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/40u/paper-j0-logical0-read0-control.csv inputs/40u/paper-j0-logical0-read0-control.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/40u/paper-j0-logical0-read.csv inputs/40u/paper-j0-logical0-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/40u/paper-j1-logical1-read.csv inputs/40u/paper-j1-logical1-read.cir
+
+python3 analysis/analyze_q2.py
+

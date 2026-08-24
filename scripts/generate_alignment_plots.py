@@ -63,6 +63,21 @@ def _q0_case(case: str) -> str:
             f"raw/scaled/{case}.csv")
 
 
+def _physical_case(width: int, role: str) -> str:
+    return ("test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/"
+            f"raw/{width}/{role}/run-01.csv")
+
+
+def _physical_ideal_case(width: int, role: str) -> str:
+    return ("test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/"
+            f"raw/replay/{width}ps/{role}/run-01.csv")
+
+
+def _physical_source_case(width: int, role: str) -> str:
+    return ("test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/"
+            f"raw/{width}ps/{role.replace('_', '-')}/run-01.csv")
+
+
 def _read_existing_csv(path: Path) -> pd.DataFrame:
     """Read a committed JoSIM CSV, including files with a text preamble."""
     with path.open("r", encoding="utf-8", errors="replace") as handle:
@@ -285,6 +300,115 @@ def specs() -> list[dict[str, Any]]:
             _panel("QB output voltage", [
                 _series("Q5 standalone", q5, "V(OUT)"),
                 _series("Q6 coupled", q6, "V(OUT)"),
+            ], unit="voltage (µV)"),
+        ],
+    })
+
+    physical_roles = {
+        "physical logical1 READ": "logical1_read",
+        "physical logical0 READ": "logical0_read",
+        "physical logical1 READ=0": "logical1_no_read_control",
+        "physical logical0 READ=0": "logical0_no_read_control",
+    }
+    for width in (13, 14):
+        qb_comparison_series = []
+        for label, role in physical_roles.items():
+            qb_comparison_series.append(_series(f"{label} · physical", _physical_case(width, role), "P(BJL2|XBQ)", phase=True, color="#b23a48" if "logical1 READ" in label else "#3973ac"))
+            qb_comparison_series.append(_series(f"{label} · ideal", _physical_ideal_case(width, role), "P(BJL2|XBQ)", phase=True, color="#e07a5f" if "logical1 READ" in label else "#7aa6d8"))
+        specs.append({
+            "id": f"physical-bvm-jsl12-qb-{width}ps-ideal-vs-physical",
+            "title": f"Physical BVM→JSL12→QB · {width} ps ideal replay versus physical cascade",
+            "output": f"test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/{width}ps-ideal-vs-physical-qb.html",
+            "experiment_id": "physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
+            "role": "COMPARISON",
+            "cases": list(physical_roles),
+            "notes": "同一 width 的 ideal QB replay 与真实 BVM→12×JSL→QB cascade 对比；physical raw 是本实验 primary，ideal replay 只是后验 reference。",
+            "panels": [
+                _panel("BJL2 continuous phase", qb_comparison_series, unit="连续相位 φ/2π（turn）", phase_semantics="continuous_absolute"),
+                _panel("BJL2 voltage", [
+                    _series(f"{label} · physical", _physical_case(width, role), "V(BJL2|XBQ)") for label, role in physical_roles.items()
+                ] + [
+                    _series(f"{label} · ideal", _physical_ideal_case(width, role), "V(BJL2|XBQ)") for label, role in physical_roles.items()
+                ], unit="voltage (µV)"),
+                _panel("BJL2 current", [
+                    _series(f"{label} · physical", _physical_case(width, role), "I(BJL2|XBQ)") for label, role in physical_roles.items()
+                ] + [
+                    _series(f"{label} · ideal", _physical_ideal_case(width, role), "I(BJL2|XBQ)") for label, role in physical_roles.items()
+                ], unit="current (µA)"),
+            ],
+        })
+
+        source_series = [
+            _series("source-only logical1 READ", _physical_source_case(width, "logical1_read"), "I(L_SL|XBVM1)", color="#3973ac"),
+            _series("physical logical1 READ", _physical_case(width, "logical1_read"), "I(L_SL|XBVM1)", color="#b23a48"),
+            _series("source-only logical0 READ", _physical_source_case(width, "logical0_read"), "I(L_SL|XBVM1)", color="#7aa6d8"),
+            _series("physical logical0 READ", _physical_case(width, "logical0_read"), "I(L_SL|XBVM1)", color="#e07a5f"),
+        ]
+        specs.append({
+            "id": f"physical-bvm-jsl12-qb-{width}ps-source-before-after",
+            "title": f"Physical BVM→JSL12→QB · {width} ps source before/after QB loading",
+            "output": f"test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/{width}ps-source-before-vs-after-qb-loading.html",
+            "experiment_id": "physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
+            "role": "COMPARISON",
+            "cases": ["logical1 READ source-only", "logical1 READ physical", "logical0 READ source-only", "logical0 READ physical"],
+            "notes": "source-only 是已有 no-receiver source reference；physical 是 12×JSL 末端接 QB 后的 measured source。图用于区分 current preservation 与 loaded voltage/load-line 改变。",
+            "panels": [
+                _panel("SL branch current", source_series, unit="current (µA)"),
+                _panel("SL voltage", [
+                    _series("source-only logical1 READ", _physical_source_case(width, "logical1_read"), "V(SL1)", color="#3973ac"),
+                    _series("physical logical1 READ", _physical_case(width, "logical1_read"), "V(SL1)", color="#b23a48"),
+                    _series("source-only logical0 READ", _physical_source_case(width, "logical0_read"), "V(SL1)", color="#7aa6d8"),
+                    _series("physical logical0 READ", _physical_case(width, "logical0_read"), "V(SL1)", color="#e07a5f"),
+                ], unit="voltage (µV)"),
+                _panel("N6 voltage", [
+                    _series("source-only logical1 READ", _physical_source_case(width, "logical1_read"), "V(N6|XBVM1)", color="#3973ac"),
+                    _series("physical logical1 READ", _physical_case(width, "logical1_read"), "V(N6|XBVM1)", color="#b23a48"),
+                    _series("source-only logical0 READ", _physical_source_case(width, "logical0_read"), "V(N6|XBVM1)", color="#7aa6d8"),
+                    _series("physical logical0 READ", _physical_case(width, "logical0_read"), "V(N6|XBVM1)", color="#e07a5f"),
+                ], unit="voltage (µV)"),
+            ],
+        })
+
+    physical_logic = {
+        "13 ps logical1 READ": _physical_case(13, "logical1_read"),
+        "13 ps logical0 READ": _physical_case(13, "logical0_read"),
+        "14 ps logical1 READ": _physical_case(14, "logical1_read"),
+        "14 ps logical0 READ": _physical_case(14, "logical0_read"),
+    }
+    specs.append({
+        "id": "physical-bvm-jsl12-qb-logical1-vs-logical0",
+        "title": "Physical BVM→JSL12→QB · logical1 versus logical0 and width comparison",
+        "output": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-logical1-vs-logical0.html",
+        "experiment_id": "physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
+        "role": "COMPARISON",
+        "cases": list(physical_logic),
+        "notes": "physical read1/read0 discrimination、13/14 ps width 和 SL readout current 的联合视图；完整 event 仍由 phase/area analyzer 判定。",
+        "panels": [
+            _panel("BJL2 continuous phase", [
+                _series(k, v, "P(BJL2|XBQ)", phase=True) for k, v in physical_logic.items()
+            ], unit="连续相位 φ/2π（turn）", phase_semantics="continuous_absolute"),
+            _panel("BJL2 voltage", [
+                _series(k, v, "V(BJL2|XBQ)") for k, v in physical_logic.items()
+            ], unit="voltage (µV)"),
+            _panel("SL readout current", [
+                _series(k, v, "I(L_SL|XBVM1)") for k, v in physical_logic.items()
+            ], unit="current (µA)"),
+        ],
+    })
+    specs.append({
+        "id": "physical-bvm-jsl12-qb-bjl2-event-evidence",
+        "title": "Physical BVM→JSL12→QB · BJL2 phase and voltage evidence",
+        "output": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/bjl2-phase-area-evidence.html",
+        "experiment_id": "physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
+        "role": "RESULT",
+        "cases": ["13 ps logical1 READ", "14 ps logical1 READ", "13 ps logical0 READ", "14 ps logical0 READ"],
+        "notes": "BJL2 的连续相位和直接电压轨迹；同段 voltage-area 数值见正式分析 JSON/REPORT，不能从峰值单独判定 event。",
+        "panels": [
+            _panel("BJL2 continuous phase", [
+                _series(k, v, "P(BJL2|XBQ)", phase=True) for k, v in physical_logic.items()
+            ], unit="连续相位 φ/2π（turn）", phase_semantics="continuous_absolute"),
+            _panel("BJL2 same-JJ voltage", [
+                _series(k, v, "V(BJL2|XBQ)") for k, v in physical_logic.items()
             ], unit="voltage (µV)"),
         ],
     })

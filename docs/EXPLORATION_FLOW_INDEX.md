@@ -1,6 +1,6 @@
 # EXPLORATION FLOW INDEX V2
 
-生成基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。
+生成基线 HEAD：`52fdd7212e44dff1d94a6f64b21a31f9927ec4c3`。
 
 本页由 `docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml` 生成，展示科研路线；结果图、controls、source/reference 和电路入口均保持角色区分。
 
@@ -1277,6 +1277,35 @@
 - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/REPORT.md](../test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/REPORT.md)
+
+---
+
+## Physical BVM→12×JSL→scaled QB：SFQ closure
+
+**实验 ID**：`test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824`
+
+**做了什么**：把 canonical BVM SL 通过 12 个 AREA=3.2 的串联 JSL 直接接到 frozen scaled QB，运行 13/14 ps 与 logical1/logical0/两个 READ=0 controls，并与已有 ideal replay 对比。
+
+**关键结果**：PHYSICAL_BACKACTION_PREVENTS_CLOSURE：13/14 ps physical read1 的 BJL2 最大连续段仅约 −0.122 turn，read0/control 为零 complete event；I(L_SL) 未数量级塌缩，但 physical load-line 改变了 source voltage/current partition，ideal replay 的 1/0/0 candidate 未保留。
+
+**当前状态**：`PHYSICAL_BACKACTION_PREVENTS_CLOSURE` / alignment=`ALIGNED`
+
+**结论边界**：不能称 physical BVM→QB selective one-SFQ closure，也没有 T1/JTL evidence；该结果把下一问题限定为 physical QB source matching/load-line，而不是继续 width sweep。
+
+**推荐先看**：
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-ideal-vs-physical-qb.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-ideal-vs-physical-qb.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-ideal-vs-physical-qb.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-ideal-vs-physical-qb.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-logical1-vs-logical0.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-logical1-vs-logical0.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-source-before-vs-after-qb-loading.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-source-before-vs-after-qb-loading.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-source-before-vs-after-qb-loading.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-source-before-vs-after-qb-loading.html)
+- 【单工况/结果图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/bjl2-phase-area-evidence.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/bjl2-phase-area-evidence.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/topology/publication/BVM_JSL12_SCALED_QB_PHYSICAL/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/topology/publication/BVM_JSL12_SCALED_QB_PHYSICAL/schematic-annotated.svg)
+- 【网表连接调试图】 `connectivity-debug.svg（未生成）`
+
+**正式报告**：[test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/REPORT.md](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/REPORT.md)
 
 ---
 

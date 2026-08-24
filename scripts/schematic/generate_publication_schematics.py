@@ -224,8 +224,10 @@ def draw_jtl(ax, g: GeometryLedger, x: float, width: float = 300.0, *, scaled: b
     return left, right
 
 
-def draw_jsl(ax, g: GeometryLedger, x: float, width: float = 300.0) -> tuple[float, float]:
-    left, right = block_shell(ax, g, "JSL", x, width, color=FIXTURE, label_text="paper JSL load · 12 junctions", inner_label="non-switching sense-line stack")
+def draw_jsl(ax, g: GeometryLedger, x: float, width: float = 300.0, *, physical_interface: bool = False) -> tuple[float, float]:
+    label_text = "physical JSL12 interface" if physical_interface else "paper JSL load · 12 junctions"
+    inner_label = "series non-switching interface" if physical_interface else "non-switching sense-line stack"
+    left, right = block_shell(ax, g, "JSL", x, width, color=FIXTURE, label_text=label_text, inner_label=inner_label)
     y = 370.0
     xs = [left + 18 + i * (width - 36) / 12 for i in range(13)]
     for i in range(12):
@@ -302,7 +304,7 @@ def build_chain(ax, g: GeometryLedger, topo: dict[str, Any], deck: Path, annotat
         blocks.append(("BVM", l, r))
         x = r + 45
     if f["jsl"]:
-        l, r = draw_jsl(ax, g, x)
+        l, r = draw_jsl(ax, g, x, physical_interface="BVM_JSL12" in topo_id)
         blocks.append(("JSL", l, r))
         x = r + 45
     if f["receiver"]:
@@ -331,7 +333,8 @@ def build_chain(ax, g: GeometryLedger, topo: dict[str, Any], deck: Path, annotat
         wire(g, f"{name_a}->{name_b}", (right_a, Y_MAIN), (left_b, Y_MAIN), color=BLACK)
         draw_wire(ax, right_a, Y_MAIN, left_b, Y_MAIN, color=BLACK, lw=2.4)
         draw_node(ax, right_a, Y_MAIN, radius=3.5)
-        label(ax, (right_a + left_b) / 2, Y_MAIN + 28, "signal", size=11, color=GRAY)
+        signal_label = "SL" if name_a == "BVM" and name_b == "JSL" else ("QB IN" if name_a == "JSL" and name_b == "QB" else "signal")
+        label(ax, (right_a + left_b) / 2, Y_MAIN + 28, signal_label, size=11, color=GRAY)
     if blocks:
         first_left = blocks[0][1]
         last_right = blocks[-1][2]
@@ -341,7 +344,8 @@ def build_chain(ax, g: GeometryLedger, topo: dict[str, Any], deck: Path, annotat
         else:
             g.add_port("Input", (first_left, Y_MAIN), (first_left - 28, Y_MAIN))
             wire(g, "input-port", (first_left - 28, Y_MAIN), (first_left, Y_MAIN), color=BLACK)
-            draw_port(ax, first_left - 28, Y_MAIN, "In", side="left", color=BLACK)
+            input_label = "" if blocks[0][0] == "BVM" else "In"
+            draw_port(ax, first_left - 28, Y_MAIN, input_label, side="left", color=BLACK)
         # Output boundary is distinct for the matrix fixtures.
         if f["jtl"]:
             g.add_port("Out", (last_right, Y_MAIN), (last_right + 28, Y_MAIN))
@@ -411,7 +415,7 @@ def render_one(topo: dict[str, Any], deck: Path, package: Path, *, annotated: bo
     # provenance and scientific context belong in the index/README.
     occupied = [float(item.get("point", [0, 0])[0]) for item in g.fixed_points]
     xmax = max(occupied + [900.0]) + 90.0
-    ax.set_xlim(0, min(PAGE_W, max(900.0, xmax)))
+    ax.set_xlim(0, max(900.0, xmax + 120.0))
     fig.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
     stem = "schematic-annotated" if annotated else "schematic"
     metadata = {"Title": topo.get("title_cn", topo["topology_id"])}
@@ -448,12 +452,16 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--topology", type=Path, default=ROOT / "docs/TOPOLOGY_ALIGNMENT_MANIFEST.yaml")
     ap.add_argument("--force", action="store_true", help="regenerate generated packages, never overwrite accepted Q0/BVM")
+    ap.add_argument("--topology-id", action="append", help="render only the selected topology id; repeatable")
     args = ap.parse_args()
     manifest = yaml.safe_load(args.topology.read_text(encoding="utf-8"))
+    wanted = set(args.topology_id or [])
     generated = 0
     skipped = 0
     for topo in manifest.get("topologies", []):
         topo_id = topo["topology_id"]
+        if wanted and topo_id not in wanted:
+            continue
         exp = ROOT / str(topo["representative_experiment"]).split("::", 1)[0]
         deck = ROOT / str(topo.get("representative_deck", ""))
         if not deck.exists():

@@ -1,6 +1,6 @@
 # Visualization Reading Guide
 
-本指南由 alignment manifest 生成，基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。
+本指南由 alignment manifest 生成，基线 HEAD：`52fdd7212e44dff1d94a6f64b21a31f9927ec4c3`。
 
 | 想确认什么 | 实验 | 先打开 | 看什么 | 不能据此推出什么 |
 |---|---|---|---|---|

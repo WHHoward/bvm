@@ -94,6 +94,7 @@ EXPERIMENT_ORDER = [
     "paper-sl-q5-l1-l2-factorial-20260824",
     "paper-sl-q6-qb-jtl-compatibility-20260824",
     "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824",
+    "physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
     "qb-load-boundary-matrix-20260824",
     "parallel-qb-jtl-interface-mechanism-20260824",
     "jtl-transport-gate-polarity-replay-20260824",
@@ -112,7 +113,8 @@ STAGE_DEFINITIONS = [
     ("stage-05", "R11–R15：direct JTL / active-stage route", range(29, 37)),
     ("stage-06", "QB-Q0–Q2：standalone scaled QB", range(37, 42)),
     ("stage-07", "PAPER-SL：JSL waveform → QB + READ semantics", range(42, 53)),
-    ("stage-08", "QB output boundary / JTL transport", range(53, 60)),
+    ("stage-08", "physical BVM→JSL12→QB closure", range(53, 54)),
+    ("stage-09", "QB output boundary / JTL transport", range(54, 61)),
 ]
 
 
@@ -476,6 +478,12 @@ EXPERIMENT_NARRATIVES: dict[str, dict[str, str]] = {
         "result_summary": "判定 MIXED_DYNAMIC_LOADING：direct/parallel JTL 在 barrier crossing 前已改 settled load-line，crossing 中继续分流；M3 保留 local BJL2 event但仍不能驱动 JTL。",
         "conclusion_boundary": "不能把负载作用压缩成单一静态阻抗，也不能把 M3 local event 称 downstream SFQ delivery。",
     },
+    "physical-bvm-jsl12-qb-sfq-closure-v1-20260824": {
+        "title_cn": "Physical BVM→12×JSL→scaled QB：SFQ closure",
+        "what_done": "把 canonical BVM SL 通过 12 个 AREA=3.2 的串联 JSL 直接接到 frozen scaled QB，运行 13/14 ps 与 logical1/logical0/两个 READ=0 controls，并与已有 ideal replay 对比。",
+        "result_summary": "PHYSICAL_BACKACTION_PREVENTS_CLOSURE：13/14 ps physical read1 的 BJL2 最大连续段仅约 −0.122 turn，read0/control 为零 complete event；I(L_SL) 未数量级塌缩，但 physical load-line 改变了 source voltage/current partition，ideal replay 的 1/0/0 candidate 未保留。",
+        "conclusion_boundary": "不能称 physical BVM→QB selective one-SFQ closure，也没有 T1/JTL evidence；该结果把下一问题限定为 physical QB source matching/load-line，而不是继续 width sweep。",
+    },
 }
 
 
@@ -539,6 +547,7 @@ EXPERIMENT_STATUS_OVERRIDES = {
     "jtl-transport-gate-v1-numerical-freeze-20260824": "JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE",
     "jtl-transport-gate-v1-numerical-freeze-20260824-rerun": "JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE",
     "qb-to-jtl-load-backaction-causal-audit-v1-20260824": "MIXED_DYNAMIC_LOADING",
+    "physical-bvm-jsl12-qb-sfq-closure-v1-20260824": "PHYSICAL_BACKACTION_PREVENTS_CLOSURE",
 }
 
 
@@ -609,6 +618,7 @@ KNOWN_VERDICTS = [
     "BIAS_BRACKET_NO_BJL1_EVENT",
     "PAPER_JSL_WAVEFORM_MATCHES_QB_ONE_SHOT",
     "IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE",
+    "PHYSICAL_BACKACTION_PREVENTS_CLOSURE",
 ]
 
 
@@ -840,6 +850,39 @@ def curated_entries() -> dict[str, dict[str, Any]]:
             plot_record(f"{q2}/plots/37p5u/comparison.html", role="RESULT", cases=[c["id"] for c in q2cases if c["id"].startswith("37p5u/")], source_classification="CURRENT_RESULT"),
             plot_record(f"{q2}/plots/40u/comparison.html", role="RESULT", cases=[c["id"] for c in q2cases if c["id"].startswith("40u/")], source_classification="CURRENT_RESULT"),
         ], notes="comparison 必须同时覆盖 37.5 和 40 µA。")
+
+    physical = "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824"
+    physical_cases = explicit_cases([
+        ("13/logical1_read", "RESULT", physical, "13 ps logical1 + canonical READ", "SUBTHRESHOLD", f"{physical}/raw/13/logical1_read/run-01.csv"),
+        ("13/logical0_read", "NEGATIVE_CONTROL", physical, "13 ps logical0 + canonical READ", "NO_COMPLETE_EVENT", f"{physical}/raw/13/logical0_read/run-01.csv"),
+        ("13/logical1_no_read_control", "ZERO_CONTROL", physical, "13 ps logical1 + READ=0", "ZERO_EVENT", f"{physical}/raw/13/logical1_no_read_control/run-01.csv"),
+        ("13/logical0_no_read_control", "ZERO_CONTROL", physical, "13 ps logical0 + READ=0", "ZERO_EVENT", f"{physical}/raw/13/logical0_no_read_control/run-01.csv"),
+        ("14/logical1_read", "RESULT", physical, "14 ps logical1 + canonical READ", "SUBTHRESHOLD", f"{physical}/raw/14/logical1_read/run-01.csv"),
+        ("14/logical0_read", "NEGATIVE_CONTROL", physical, "14 ps logical0 + canonical READ", "NO_COMPLETE_EVENT", f"{physical}/raw/14/logical0_read/run-01.csv"),
+        ("14/logical1_no_read_control", "ZERO_CONTROL", physical, "14 ps logical1 + READ=0", "ZERO_EVENT", f"{physical}/raw/14/logical1_no_read_control/run-01.csv"),
+        ("14/logical0_no_read_control", "ZERO_CONTROL", physical, "14 ps logical0 + READ=0", "ZERO_EVENT", f"{physical}/raw/14/logical0_no_read_control/run-01.csv"),
+    ])
+    e[physical] = key_entry(
+        physical,
+        title="Physical BVM→12×JSL→scaled QB：SFQ closure",
+        question="真实 canonical BVM→12×320 µA JSL→frozen scaled QB 连接后，ideal replay 的 read1=1/read0=0 candidate 是否仍保持？",
+        result="PHYSICAL_BACKACTION_PREVENTS_CLOSURE；13/14 ps read1 BJL2 均约 −0.12 turn，read0/controls 无完整 event；I(L_SL) 未数量级塌缩，但 physical source/load-line 与 QB current partition 改变。",
+        status="PHYSICAL_BACKACTION_PREVENTS_CLOSURE",
+        report=f"{physical}/REPORT.md",
+        claim_type="physical_bvm_to_qb_closure",
+        topology_id="BVM_JSL12_SCALED_QB_PHYSICAL",
+        cases=physical_cases,
+        plots=[
+            plot_record(f"{physical}/plots/13ps-ideal-vs-physical-qb.html", role="COMPARISON", cases=["13/logical1_read", "13/logical0_read", "13/logical1_no_read_control", "13/logical0_no_read_control"], source_classification="PHYSICAL_PRIMARY_VS_IDEAL_REFERENCE", source_experiments=[physical, "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"]),
+            plot_record(f"{physical}/plots/14ps-ideal-vs-physical-qb.html", role="COMPARISON", cases=["14/logical1_read", "14/logical0_read", "14/logical1_no_read_control", "14/logical0_no_read_control"], source_classification="PHYSICAL_PRIMARY_VS_IDEAL_REFERENCE", source_experiments=[physical, "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"]),
+            plot_record(f"{physical}/plots/physical-logical1-vs-logical0.html", role="COMPARISON", cases=["13/logical1_read", "13/logical0_read", "14/logical1_read", "14/logical0_read"], source_classification="PHYSICAL_RESULT", source_experiments=[physical]),
+            plot_record(f"{physical}/plots/13ps-source-before-vs-after-qb-loading.html", role="COMPARISON", cases=["13 source-only logical1", "13 physical logical1", "13 source-only logical0", "13 physical logical0"], source_classification="SOURCE_LOADLINE_COMPARISON", source_experiments=[physical, "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"]),
+            plot_record(f"{physical}/plots/14ps-source-before-vs-after-qb-loading.html", role="COMPARISON", cases=["14 source-only logical1", "14 physical logical1", "14 source-only logical0", "14 physical logical0"], source_classification="SOURCE_LOADLINE_COMPARISON", source_experiments=[physical, "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"]),
+            plot_record(f"{physical}/plots/bjl2-phase-area-evidence.html", role="RESULT", cases=["13/logical1_read", "14/logical1_read", "13/logical0_read", "14/logical0_read"], source_classification="PHYSICAL_EVENT_EVIDENCE"),
+        ],
+        notes="ideal replay 只作后验 reference，不能替代 physical primary。13/14 均未形成 physical BJL2 clean one-SFQ；本轮不进入 timestep/rewrite confirmation、JTL 或 T1。",
+        reading="先看 13/14 ideal-vs-physical；再看 source before/after loading；最后看 BJL2 phase/area evidence 与正式 REPORT。",
+    )
 
     legacy_width = "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824"
     legacy_width_path = ROOT / legacy_width
@@ -1167,6 +1210,7 @@ def representative_deck(experiment: Path, topo_id: str, explicit: str | None = N
         "Q5_TO_STANDARD_JTL": experiment / "inputs/q6-q5-to-two-cell-jtl/paper-j1-logical1-read.cir",
         "DCSFQ_REPLAY_CONDITIONER": experiment / "inputs/raw-replay/read1.cir",
         "SCALED_QB_REPLAY": ROOT / "test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/inputs/C-canonical-logical1-vsl.cir",
+        "BVM_JSL12_SCALED_QB_PHYSICAL": experiment / "inputs/13/logical1_read.cir",
     }
     if topo_id in special and special[topo_id].exists():
         return special[topo_id]

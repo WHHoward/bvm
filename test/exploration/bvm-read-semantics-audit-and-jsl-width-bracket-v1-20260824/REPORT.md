@@ -4,6 +4,11 @@
 
 `IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE`；首个 1/0/0 width = **13 ps**。
 
+## Pulse quantization class and execution disposition
+
+`complete_event_units` 仍是同段、同 JJ 的低层整数单位；`pulse_quantization_class` 单独判断 clean one-SFQ candidate、subthreshold、overdrive、multi-event 和 free-running。
+`EARLY_STOP_EXECUTION_DEVIATION`：13 ps 是已注册的首个选择性 candidate；更宽的 width 只是 candidate 之后已执行的 bounded observation，不具有 operating-point 选择权。
+
 本 Exploration 先修正 READ 语义，再对 canonical BVM → external 12-JSL → frozen scaled QB 做 12/13/14/15 ps local bracket。理想 replay 只消费物理 JSL 的实际 `I(B_LD1)(t)`，没有整形、保持、归一化或重采样；本轮没有 physical BVM→JSL→QB 联合连接。
 
 ## Observed
@@ -15,24 +20,24 @@
 
 ## QB replay result
 
-| width | role | BJL2 activity p2p (turn) | largest monotonic segment (turn) | same-segment area (Phi0) | complete units | classification |
-|---:|---|---:|---:|---:|---:|---|
-| 12 | `logical1_read` | 1.09398 | 0.975402 | 0.975411 | 0 | `NO_COMPLETE_EVENT` |
-| 12 | `logical0_read` | 0.0449086 | -0.0254939 | -0.0254963 | 0 | `NO_COMPLETE_EVENT` |
-| 12 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` |
-| 12 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` |
-| 13 | `logical1_read` | 1.13461 | 1.01603 | 1.01604 | 1 | `EXACTLY_ONE` |
-| 13 | `logical0_read` | 0.0455457 | -0.0257304 | -0.0257325 | 0 | `NO_COMPLETE_EVENT` |
-| 13 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` |
-| 13 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` |
-| 14 | `logical1_read` | 1.17928 | 1.06071 | 1.06071 | 1 | `EXACTLY_ONE` |
-| 14 | `logical0_read` | 0.0443489 | -0.0254939 | -0.0254963 | 0 | `NO_COMPLETE_EVENT` |
-| 14 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` |
-| 14 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` |
-| 15 | `logical1_read` | 2.02031 | 1.90044 | 1.90045 | 1 | `EXACTLY_ONE` |
-| 15 | `logical0_read` | 0.0439537 | -0.0254939 | -0.0254963 | 0 | `NO_COMPLETE_EVENT` |
-| 15 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` |
-| 15 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` |
+| width | role | BJL2 activity p2p (turn) | largest monotonic segment (turn) | same-segment area (Phi0) | complete units | legacy classification | pulse quantization class |
+|---:|---|---:|---:|---:|---:|---|---|
+| 12 | `logical1_read` | 1.09398 | 0.975402 | 0.975411 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 12 | `logical0_read` | 0.0449086 | -0.0254939 | -0.0254963 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 12 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 12 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 13 | `logical1_read` | 1.13461 | 1.01603 | 1.01604 | 1 | `EXACTLY_ONE` | `CLEAN_ONE_SFQ_CANDIDATE` |
+| 13 | `logical0_read` | 0.0455457 | -0.0257304 | -0.0257325 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 13 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 13 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 14 | `logical1_read` | 1.17928 | 1.06071 | 1.06071 | 1 | `EXACTLY_ONE` | `CLEAN_ONE_SFQ_CANDIDATE` |
+| 14 | `logical0_read` | 0.0443489 | -0.0254939 | -0.0254963 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 14 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 14 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 15 | `logical1_read` | 2.02031 | 1.90044 | 1.90045 | 1 | `EXACTLY_ONE` | `OVERDRIVEN_ONE_PLUS_LARGE_RESIDUAL` |
+| 15 | `logical0_read` | 0.0439537 | -0.0254939 | -0.0254963 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 15 | `logical1_no_read_control` | 2.5051e-05 | -2.5051e-05 | -2.5055e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
+| 15 | `logical0_no_read_control` | 2.50351e-05 | 2.50351e-05 | 2.50412e-05 | 0 | `NO_COMPLETE_EVENT` | `SUBTHRESHOLD` |
 
 ## JSL source current
 

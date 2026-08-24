@@ -1,0 +1,47 @@
+* PHYSICAL_BVM_JSL12_QB_SFQ_CLOSURE_V1: 14ps logical0_no_read_control
+* canonical BVM -> 12 series JSL -> frozen scaled QB; no ideal replay source
+.include ../jjmit.cir
+.include ../bvm_cell.cir
+.include ../bq_cell.cir
+XBVM1 WL1 BL1 SE1 SL1 BVM
+B_LD1  SL1  njsl1 jjmit area=3.2
+B_LD2  njsl1 njsl2 jjmit area=3.2
+B_LD3  njsl2 njsl3 jjmit area=3.2
+B_LD4  njsl3 njsl4 jjmit area=3.2
+B_LD5  njsl4 njsl5 jjmit area=3.2
+B_LD6  njsl5 njsl6 jjmit area=3.2
+B_LD7  njsl6 njsl7 jjmit area=3.2
+B_LD8  njsl7 njsl8 jjmit area=3.2
+B_LD9  njsl8 njsl9 jjmit area=3.2
+B_LD10  njsl9 njsl10 jjmit area=3.2
+B_LD11  njsl10 njsl11 jjmit area=3.2
+B_LD12 njsl11 IN    jjmit area=3.2
+XBQ IN OUT IBIAS BQ
+R_LOAD OUT 0 10
+I_IBIAS 0 IBIAS pwl(0p 0 1p 35u 2p 35u 170p 35u)
+I_WL1 0 WL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+I_BL1 0 BL1 pwl(0p 0 10p 0 11p -100U 20p -100U 21p 0 170p 0)
+I_SE1 0 SE1 pwl(0p 0 95p 0 96p 0 105p 0 106p 0 170p 0)
+.tran 0.0125p 170p
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) P(B_JM2|XBVM1) V(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) P(B_JS2|XBVM1) V(B_JS2|XBVM1)
+.print V(N6|XBVM1) V(SL1) I(L_PSL|XBVM1) I(L_SL|XBVM1)
+.print P(B_LD1) V(B_LD1) I(B_LD1)
+.print P(B_LD2) V(B_LD2) I(B_LD2)
+.print P(B_LD3) V(B_LD3) I(B_LD3)
+.print P(B_LD4) V(B_LD4) I(B_LD4)
+.print P(B_LD5) V(B_LD5) I(B_LD5)
+.print P(B_LD6) V(B_LD6) I(B_LD6)
+.print P(B_LD7) V(B_LD7) I(B_LD7)
+.print P(B_LD8) V(B_LD8) I(B_LD8)
+.print P(B_LD9) V(B_LD9) I(B_LD9)
+.print P(B_LD10) V(B_LD10) I(B_LD10)
+.print P(B_LD11) V(B_LD11) I(B_LD11)
+.print P(B_LD12) V(B_LD12) I(B_LD12)
+.print P(BJs|XBQ) V(BJs|XBQ) I(BJs|XBQ)
+.print P(BJL1|XBQ) V(BJL1|XBQ) I(BJL1|XBQ)
+.print P(BJL2|XBQ) V(BJL2|XBQ) I(BJL2|XBQ)
+.print V(IN) V(OUT) I(Lin|XBQ) I(L0|XBQ) I(L1|XBQ) I(L2|XBQ)
+.print I(RB|XBQ) I(RJ1|XBQ) I(RJ2|XBQ) I(R_LOAD) I(I_IBIAS)
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.end

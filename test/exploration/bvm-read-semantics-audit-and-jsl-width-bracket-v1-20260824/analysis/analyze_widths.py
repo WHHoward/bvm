@@ -96,6 +96,33 @@ def monotonic_segments(time: np.ndarray, phase: np.ndarray, voltage: np.ndarray,
     return output
 
 
+def classify_pulse_quantization(bjl2: dict[str, Any]) -> tuple[str, str]:
+    """Separate integer event units from the physical pulse-quality class.
+
+    ``complete_event_units`` is intentionally a low-level metric: a 1.90-turn
+    segment contains one complete integer unit, but it is not a clean
+    one-SFQ operating point.  The class therefore uses the preregistered
+    engineering band and the same-segment phase/area consistency already
+    recorded by ``monotonic_segments``.
+    """
+    if bjl2["post_complete_event_units"] > 0:
+        return "FREE_RUNNING", "FREE_RUNNING"
+
+    qualifying = [
+        item for item in bjl2["segments"]
+        if item["complete_event_units"] > 0 and item["area_consistent"]
+    ]
+    units = sum(item["complete_event_units"] for item in qualifying)
+    if len(qualifying) > 1 or units > 1:
+        return "MULTI_EVENT", "MULTI_EVENT"
+    if len(qualifying) == 1:
+        turns = abs(qualifying[0]["delta_turns"])
+        if 0.95 <= turns <= 1.15:
+            return "CLEAN_ONE_SFQ_CANDIDATE", "CLEAN_ONE_SFQ"
+        return "OVERDRIVEN_ONE_PLUS_LARGE_RESIDUAL", "OVERDRIVEN_ONE_PLUS_RESIDUAL"
+    return "SUBTHRESHOLD", "SUBTHRESHOLD"
+
+
 def analyze_qb(path: Path, role: str) -> dict[str, Any]:
     data = load(path)
     time = data["__time_ps"]
@@ -126,6 +153,7 @@ def analyze_qb(path: Path, role: str) -> dict[str, Any]:
         result["classification"] = "EXACTLY_ONE"
     else:
         result["classification"] = "NO_COMPLETE_EVENT"
+    result["pulse_quantization_class"], result["pulse_quantization_family"] = classify_pulse_quantization(bjl2)
     return result
 
 
@@ -198,7 +226,7 @@ def render_report(result: dict[str, Any]) -> str:
         l0 = qb.get("logical0_read")
         controls = [qb.get("logical1_no_read_control"), qb.get("logical0_no_read_control")]
         if l1 and l0 and all(controls):
-            if l1["classification"] == "EXACTLY_ONE" and l0["classification"] == "NO_COMPLETE_EVENT" and all(c["classification"] == "NO_COMPLETE_EVENT" for c in controls):
+            if l1["pulse_quantization_class"] == "CLEAN_ONE_SFQ_CANDIDATE" and l0["pulse_quantization_class"] == "SUBTHRESHOLD" and all(c["pulse_quantization_class"] == "SUBTHRESHOLD" for c in controls):
                 candidate = int(width)
                 break
     if candidate is not None:
@@ -209,12 +237,23 @@ def render_report(result: dict[str, Any]) -> str:
         verdict = "INCOMPLETE_REGISTERED_BRACKET"
     result["verdict"] = verdict
     result["first_selective_width_ps"] = candidate
+    result["execution_disposition"] = {
+        "status": "EARLY_STOP_EXECUTION_DEVIATION" if candidate is not None and any(int(width) > candidate for width in widths) else "REGISTERED_EXECUTION",
+        "candidate_width_ps": candidate,
+        "post_candidate_observations_ps": [int(width) for width in sorted(widths, key=int) if candidate is not None and int(width) > candidate],
+        "selection_authority": f"{candidate} ps 是已注册的首个选择性 candidate；更宽的 width 只是 candidate 之后已执行的 bounded observation，不具有 operating-point 选择权。" if candidate is not None else "没有建立选择性 candidate。",
+    }
     lines = [
         "# BVM_READ_SEMANTICS_AUDIT_AND_JSL_WIDTH_BRACKET_V1",
         "",
         "## Verdict",
         "",
         f"`{verdict}`" + (f"；首个 1/0/0 width = **{candidate} ps**。" if candidate else "。"),
+        "",
+        "## Pulse quantization class and execution disposition",
+        "",
+        "`complete_event_units` 仍是同段、同 JJ 的低层整数单位；`pulse_quantization_class` 单独判断 clean one-SFQ candidate、subthreshold、overdrive、multi-event 和 free-running。",
+        f"`{result['execution_disposition']['status']}`：{result['execution_disposition']['selection_authority']}",
         "",
         "本 Exploration 先修正 READ 语义，再对 canonical BVM → external 12-JSL → frozen scaled QB 做 12/13/14/15 ps local bracket。理想 replay 只消费物理 JSL 的实际 `I(B_LD1)(t)`，没有整形、保持、归一化或重采样；本轮没有 physical BVM→JSL→QB 联合连接。",
         "",
@@ -227,8 +266,8 @@ def render_report(result: dict[str, Any]) -> str:
         "",
         "## QB replay result",
         "",
-        "| width | role | BJL2 activity p2p (turn) | largest monotonic segment (turn) | same-segment area (Phi0) | complete units | classification |",
-        "|---:|---|---:|---:|---:|---:|---|",
+        "| width | role | BJL2 activity p2p (turn) | largest monotonic segment (turn) | same-segment area (Phi0) | complete units | legacy classification | pulse quantization class |",
+        "|---:|---|---:|---:|---:|---:|---|---|",
     ]
     for width in sorted(widths, key=int):
         for role in ("logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"):
@@ -237,7 +276,7 @@ def render_report(result: dict[str, Any]) -> str:
                 continue
             bjl2 = case["junctions"]["BJL2"]
             seg = bjl2["largest_segment"] or {}
-            lines.append(f"| {width} | `{role}` | {bjl2['phase_activity_p2p_turns']:.6g} | {seg.get('delta_turns', float('nan')):.6g} | {seg.get('area_phi0', float('nan')):.6g} | {bjl2['activity_complete_event_units']} | `{case['classification']}` |")
+            lines.append(f"| {width} | `{role}` | {bjl2['phase_activity_p2p_turns']:.6g} | {seg.get('delta_turns', float('nan')):.6g} | {seg.get('area_phi0', float('nan')):.6g} | {bjl2['activity_complete_event_units']} | `{case['classification']}` | `{case['pulse_quantization_class']}` |")
     lines += ["", "## JSL source current", "", "| width | role | min (µA) | max (µA) | positive area (µA·ps) | negative area (µA·ps) | signed area (µA·ps) |", "|---:|---|---:|---:|---:|---:|---:|"]
     for width in sorted(widths, key=int):
         for role in ("logical1_read", "logical0_read"):
@@ -269,7 +308,19 @@ def main() -> None:
     report = render_report(result)
     (ANALYSIS / "metrics.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     (ROOT / "REPORT.md").write_text(report, encoding="utf-8")
-    (ROOT / "SUMMARY.md").write_text("# BVM READ semantics + JSL width bracket\n\n" + f"Verdict: `{result.get('verdict', 'pending')}`\n\n" + "本轮完成 READ 语义审计、12 ps canonical logical0 correction 与注册宽度 bracket；详见 `REPORT.md`。\n", encoding="utf-8")
+    summary = [
+        "# BVM READ semantics + JSL width bracket",
+        "",
+        f"Verdict: `{result.get('verdict', 'pending')}`",
+        "",
+        "- 13 ps：`CLEAN_ONE_SFQ_CANDIDATE`；14 ps：已执行的同类 post-candidate observation。",
+        "- 15 ps：`OVERDRIVEN_ONE_PLUS_LARGE_RESIDUAL`；不能等同于 clean single-SFQ operating point。",
+        f"- 执行记录：`{result['execution_disposition']['status']}`；{result['execution_disposition']['selection_authority']}",
+        "",
+        "本轮完成 READ 语义审计、12 ps canonical logical0 correction 与注册宽度 bracket；详见 `REPORT.md`。",
+        "",
+    ]
+    (ROOT / "SUMMARY.md").write_text("\n".join(summary), encoding="utf-8")
     print(json.dumps({"widths": sorted(result["widths"]), "qb_cases": {k: sorted(v["qb"]) for k, v in result["widths"].items()}}, indent=2))
 
 

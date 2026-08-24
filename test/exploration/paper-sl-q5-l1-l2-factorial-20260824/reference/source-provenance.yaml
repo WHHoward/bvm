@@ -1,0 +1,60 @@
+study: PAPER-SL-Q5
+status: completed_bounded_exploration
+parent_head: 67a7c9e3335343a09e90ec7ddfe5a4d7c38ea52c
+timestamp_build: '2026-08-24T08:01:00+08:00'
+timestamp_completion_check: '2026-08-24T08:06:44+08:00'
+
+fixture:
+  source: test/exploration/paper-sl-q2-20260824/inputs/40u
+  derivation: direct_copy_then_two_registered_L1_L2_replacements
+  changes:
+    - 'L1 2 3 3.91p -> L1 2 3 4.50p'
+    - 'L2 3 4 3.91p -> L2 3 4 4.50p'
+  ibias_uA: 40
+  Q2: {L1_pH: 3.91, L2_pH: 3.91}
+  Q3: {L1_pH: 4.50, L2_pH: 3.91}
+  Q4: {L1_pH: 3.91, L2_pH: 4.50}
+  Q5: {L1_pH: 4.50, L2_pH: 4.50}
+
+model:
+  jjmit_source: circuits/models/jjmit.cir
+  jjmit_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  q2_bq_source_sha256: 5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2
+  q5_bq_sha256: 4ecedca8eba9e80b47294900485723aee4017cffc256ad42777a76f184ac14dc
+  parameters:
+    BJs_area: 0.50
+    BJL1_area: 0.36
+    BJL2_area: 0.54
+    Lin_pH: 0.80
+    L0_pH: 1.323
+    L1_pH: 4.50
+    L2_pH: 4.50
+    RJ1_ohm: 33
+    RJ2_ohm: 22
+    RB_ohm: 6
+    output_load_ohm: 10
+    IBIAS_uA: 40
+
+runtime:
+  binary: build/josim-cli
+  version: v2.7.2837d13
+  binary_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  configured_timestep_ps: 0.0125
+  stop_time_ps: 170
+  main_window_ps: [94, 130]
+  post_window_ps: [140, 170]
+  metric_spec: docs/research/METRIC_SPEC_V2.md
+  metric_spec_sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+
+matched_cases:
+  - paper-j1-logical1-read0-control
+  - paper-j0-logical0-read0-control
+  - paper-j0-logical0-read
+  - paper-j1-logical1-read
+
+interpretation:
+  primary: Q5_COMPLEMENTARY_DOWNSTREAM_PRESERVED_PARTIAL_L1_RECOVERY_NO_EVENT
+  BJL1_complete_event: false
+  BJL2_complete_event: false
+  downstream_JTL_tested: false
+  note: Q5 BJL2 is below one complete monotonic turn; BJs multi-turn source activity is not downstream event evidence.

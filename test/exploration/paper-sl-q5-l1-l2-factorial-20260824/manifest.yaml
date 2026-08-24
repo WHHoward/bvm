@@ -1,0 +1,23 @@
+study: PAPER-SL-Q5
+directory: test/exploration/paper-sl-q5-l1-l2-factorial-20260824
+parent_head: 67a7c9e3335343a09e90ec7ddfe5a4d7c38ea52c
+artifact_class: exploration
+preregistration: PREREGISTRATION.md
+execution:
+  command_log: logs/COMMANDS.txt
+  preflight: logs/PREFLIGHT.md
+  cases: 4
+  all_exit_codes: 0
+  raw_directory: raw/q5-l1-4p50-l2-4p50
+analysis:
+  script: analysis/analyze_q5.py
+  metrics: analysis/metrics.json
+  case_summary: analysis/case-summary.csv
+  report: REPORT.md
+  verdict: Q5_COMPLEMENTARY_DOWNSTREAM_PRESERVED_PARTIAL_L1_RECOVERY_NO_EVENT
+comparators:
+  Q2: test/exploration/paper-sl-q2-20260824
+  Q3: test/exploration/paper-sl-q3-l1-routing-closure-20260824
+  Q4: test/exploration/paper-sl-q4-l1-l2-placement-20260824
+provenance: reference/source-provenance.yaml
+hashes: sha256sums.txt

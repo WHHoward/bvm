@@ -14,6 +14,10 @@
   `I(BJS|XBQ)`、`I(BJL1|XBQ)`、`I(BJL2|XBQ)` 和 `I(I_REPLAY)` 电流对比。
 - `../analysis/phase-c-current-matrix.json` 与对应 metadata：电流图的精确
   CSV/列名清单和 provenance。
+- `sl-readout-current-comparison.html`：Phase A/Phase B 的 BVM SL readout
+  current 对比，包含 `I(L_SL|XBVM1)` 和 `I(L_PSL|XBVM1)`。
+- `../analysis/sl-readout-current-matrix.json` 与对应 metadata：SL source
+  current 图的精确 CSV/列名清单和 provenance。
 
 图中 phase 统一表示：
 

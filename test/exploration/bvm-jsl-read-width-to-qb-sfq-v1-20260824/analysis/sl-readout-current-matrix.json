@@ -1,0 +1,66 @@
+{
+  "title": "BVM SL readout current — READ width and 12-JSL source comparison",
+  "x_label": "time (ps)",
+  "panels": [
+    {
+      "title": "Phase A · canonical BVM + R_LD=12 Ω · I(L_SL|XBVM1)",
+      "column": "I(L_SL|XBVM1)",
+      "x_scale": 1000000000000,
+      "y_label": "I_SL (A)",
+      "series": [
+        {"label": "9 ps · logical1 READ", "csv": "../../bvm-internal-readout-20260819/raw/pos-read-single/run-01.csv", "line": {"color": "#4c78a8"}},
+        {"label": "12 ps · logical1 READ", "csv": "../raw/phase-a/12ps/logical1-read/run-01.csv", "line": {"color": "#f58518"}},
+        {"label": "15 ps · logical1 READ", "csv": "../raw/phase-a/15ps/logical1-read/run-01.csv", "line": {"color": "#e45756"}},
+        {"label": "20 ps · logical1 READ", "csv": "../raw/phase-a/20ps/logical1-read/run-01.csv", "line": {"color": "#54a24b"}},
+        {"label": "9 ps · logical0 READ", "csv": "../../bvm-internal-readout-20260819/raw/neg-init-pos-read/run-01.csv", "line": {"color": "#72b7b2", "dash": "dot"}},
+        {"label": "12 ps · logical0 READ", "csv": "../raw/phase-a/12ps/logical0-read/run-01.csv", "line": {"color": "#b279a2", "dash": "dot"}},
+        {"label": "15 ps · logical0 READ", "csv": "../raw/phase-a/15ps/logical0-read/run-01.csv", "line": {"color": "#9d755d", "dash": "dot"}},
+        {"label": "20 ps · logical0 READ", "csv": "../raw/phase-a/20ps/logical0-read/run-01.csv", "line": {"color": "#bab0ac", "dash": "dot"}}
+      ]
+    },
+    {
+      "title": "Phase B · external 12-JSL load · I(L_SL|XBVM1)",
+      "column": "I(L_SL|XBVM1)",
+      "x_scale": 1000000000000,
+      "y_label": "I_SL (A)",
+      "series": [
+        {"label": "9 ps · logical1 READ", "csv": "../../paper-sl-l0-20260824/raw/logical1-read/run-01.csv", "line": {"color": "#4c78a8"}},
+        {"label": "W*=12 ps · logical1 READ", "csv": "../raw/phase-b/12jsl-12ps/logical1-read/run-01.csv", "line": {"color": "#f58518", "dash": "dash"}},
+        {"label": "9 ps · logical0 READ", "csv": "../../paper-sl-l0-20260824/raw/logical0-read/run-01.csv", "line": {"color": "#72b7b2"}},
+        {"label": "W*=12 ps · logical0 READ", "csv": "../raw/phase-b/12jsl-12ps/logical0-read/run-01.csv", "line": {"color": "#e45756", "dash": "dash"}},
+        {"label": "9 ps · logical1 READ=0", "csv": "../../paper-sl-l0-20260824/raw/logical1-read0-control/run-01.csv", "line": {"color": "#54a24b", "dash": "dot"}},
+        {"label": "9 ps · logical0 READ=0", "csv": "../../paper-sl-l0-20260824/raw/logical0-read0-control/run-01.csv", "line": {"color": "#b279a2", "dash": "dot"}}
+      ]
+    },
+    {
+      "title": "Phase A · canonical BVM + R_LD=12 Ω · I(L_PSL|XBVM1)",
+      "column": "I(L_PSL|XBVM1)",
+      "x_scale": 1000000000000,
+      "y_label": "I_PSL (A)",
+      "series": [
+        {"label": "9 ps · logical1 READ", "csv": "../../bvm-internal-readout-20260819/raw/pos-read-single/run-01.csv", "line": {"color": "#4c78a8"}},
+        {"label": "12 ps · logical1 READ", "csv": "../raw/phase-a/12ps/logical1-read/run-01.csv", "line": {"color": "#f58518"}},
+        {"label": "15 ps · logical1 READ", "csv": "../raw/phase-a/15ps/logical1-read/run-01.csv", "line": {"color": "#e45756"}},
+        {"label": "20 ps · logical1 READ", "csv": "../raw/phase-a/20ps/logical1-read/run-01.csv", "line": {"color": "#54a24b"}},
+        {"label": "9 ps · logical0 READ", "csv": "../../bvm-internal-readout-20260819/raw/neg-init-pos-read/run-01.csv", "line": {"color": "#72b7b2", "dash": "dot"}},
+        {"label": "12 ps · logical0 READ", "csv": "../raw/phase-a/12ps/logical0-read/run-01.csv", "line": {"color": "#b279a2", "dash": "dot"}},
+        {"label": "15 ps · logical0 READ", "csv": "../raw/phase-a/15ps/logical0-read/run-01.csv", "line": {"color": "#9d755d", "dash": "dot"}},
+        {"label": "20 ps · logical0 READ", "csv": "../raw/phase-a/20ps/logical0-read/run-01.csv", "line": {"color": "#bab0ac", "dash": "dot"}}
+      ]
+    },
+    {
+      "title": "Phase B · external 12-JSL load · I(L_PSL|XBVM1)",
+      "column": "I(L_PSL|XBVM1)",
+      "x_scale": 1000000000000,
+      "y_label": "I_PSL (A)",
+      "series": [
+        {"label": "9 ps · logical1 READ", "csv": "../../paper-sl-l0-20260824/raw/logical1-read/run-01.csv", "line": {"color": "#4c78a8"}},
+        {"label": "W*=12 ps · logical1 READ", "csv": "../raw/phase-b/12jsl-12ps/logical1-read/run-01.csv", "line": {"color": "#f58518", "dash": "dash"}},
+        {"label": "9 ps · logical0 READ", "csv": "../../paper-sl-l0-20260824/raw/logical0-read/run-01.csv", "line": {"color": "#72b7b2"}},
+        {"label": "W*=12 ps · logical0 READ", "csv": "../raw/phase-b/12jsl-12ps/logical0-read/run-01.csv", "line": {"color": "#e45756", "dash": "dash"}},
+        {"label": "9 ps · logical1 READ=0", "csv": "../../paper-sl-l0-20260824/raw/logical1-read0-control/run-01.csv", "line": {"color": "#54a24b", "dash": "dot"}},
+        {"label": "9 ps · logical0 READ=0", "csv": "../../paper-sl-l0-20260824/raw/logical0-read0-control/run-01.csv", "line": {"color": "#b279a2", "dash": "dot"}}
+      ]
+    }
+  ]
+}

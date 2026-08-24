@@ -101,6 +101,12 @@ accepted raw。
 `I(I_REPLAY)`，用于查看 current partition 与 source replay 差异；它不替代
 phase/voltage-area event analysis。
 
+BVM 的 SL readout current 单独保存在
+`plots/sl-readout-current-comparison.html`，覆盖 canonical `R_LD=12 Ω` 的
+READ-width cases 与 external 12-JSL source cases，直接显示
+`I(L_SL|XBVM1)` 和 `I(L_PSL|XBVM1)`。这张图用于 source-stage waveform
+比较，不把 SL current peak 单独解释为 QB/SFQ event。
+
 ## Stop rule
 
 本 Exploration 在 Phase C 结束后停止。下一步若要继续，必须另开并重新

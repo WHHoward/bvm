@@ -1,6 +1,6 @@
 888859bb2a26be56533db72c24fd25fade01af8345be731bc0676efea31d9f3c  ./PREREGISTRATION.md
-422446126c359fe4788e383d4263eedc0193629c2972138ae01c3488d8e5cc56  ./REPORT.md
-5c657ed91fa014b86d9565cedf05cc62f3e3b575fd06c4cf18920a75b30d2e00  ./SUMMARY.md
+e87ed3685c10c28ead986faf6a03ace9ac5ca4f00db5fcfec2dc5ce574e2b79f  ./REPORT.md
+44dd0903d1f8118833db4a6be4e6d00074182de10580be815ab8e40a32135779  ./SUMMARY.md
 a527a3786155ebe16dac88e80b0de90abe4c46d4c946bd6f8042bfa92d321f38  ./analysis/PHASE_A_REPORT.md
 8785a9cccbb819398356dda774c274377ea6b49838d557ecb720b65efe077d5d  ./analysis/PHASE_B_REPORT.md
 1a790c92b26873f33c4211da3947e4b545af8d53bf6a4865dc91b1946cb5d9d8  ./analysis/PHASE_C_REPORT.md
@@ -17,6 +17,7 @@ c355099d5110756335961cae48958ebc5f456b224cbc712325b99a47230cfaf0  ./analysis/pha
 ba21fb76d16892f85d46d5a412a309c6e41f36368d29af91d6b41a83732591ef  ./analysis/phase-c-matrix.json
 39785020d99e34a0b6a2ce43282c220cedd7dc07081caa789108da4c1b33c767  ./analysis/prepare_phase_a.py
 9b87f17f0a1b1320a01f11e99523431d8e24211067a243dc52a0e83affec5e44  ./analysis/prepare_phase_b.py
+db51a22693d18979afcde4be5ac51b7bc0eda6f4dca2f6d8c216ac7cbd4d6c62  ./analysis/sl-readout-current-matrix.json
 ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4  ./inputs/bvm_cell.cir
 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336  ./inputs/jjmit.cir
 a31276dcab3550d38b23cc3c1333bf21e99fe5fef7e050a5c8e51a8cd5018f4f  ./inputs/phase-a/12ps/logical0-read.cir
@@ -33,9 +34,9 @@ e41867cea1c380a7012b62d30867f596a8ecbc5387e8fe88b39594e839fea3e4  ./inputs/phase
 09bd6f157ac60d73586e41be6a81b3e1ebf010c021930a1b24fb36cb9881e27a  ./inputs/phase-c/wstar12-logical0-read0-control.cir
 58b171b27de8155df52350b0beffc2c122ea9913324bc6ba19aa70fa9d60b860  ./inputs/phase-c/wstar12-logical1-read.cir
 9be3a4cfd76bccbcfffbcbef48d830215dabbf2c81e6d824e8b823768a2233d3  ./inputs/phase-c/wstar12-logical1-read0-control.cir
-b3c5f552fa0ba0c088f7ec27f887486fee356242d5393d939aea5a26b160d32f  ./logs/COMMANDS.txt
+ac9716e9e0921aca3ba2a8ee40da578f7c4bf6192489ea298de6ee2ba1d7618b  ./logs/COMMANDS.txt
 b6867c1b52aa539b322e32b99e5c9d02a000723e2d4631b3ba63f792288f5940  ./logs/PREFLIGHT.md
-a9e3c45ea477bce5d3fc399e6d9d2e1124a7ea25c2707b33a754285410bd902e  ./logs/QA.txt
+409020087e6c8c3660bddc31f97f9fbfff6867a148aa1d9f0034662c2c455a0b  ./logs/QA.txt
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./logs/phase-a-12ps-logical0-read.stderr.txt
 c9f01f13f31763d3e247072bffd766f3eb0c3eddf8e82e5127d77fc4b6ab5b08  ./logs/phase-a-12ps-logical0-read.stdout.txt
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./logs/phase-a-12ps-logical1-read.stderr.txt
@@ -63,12 +64,14 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./logs/phase-c
 0ef7544b4082123e07e0ceda05af86e6aa0a2a6e1c268e0627768f9d33d8de93  ./logs/phase-c-wstar12-logical1-read.stdout.txt
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./logs/phase-c-wstar12-logical1-read0-control.stderr.txt
 b589bf112a3aac28c4c8236b104ae34d1e3e77e6ae336de367dc3d23636d0944  ./logs/phase-c-wstar12-logical1-read0-control.stdout.txt
-db42d92e579540f9e28c8e900548d4252cc15ebe8085dad0a85f8c8f707c1433  ./manifest.yaml
+a10093228d297355a28e5be31aff7e50c3f10bb59b113728da057740befd9ff5  ./manifest.yaml
 78c7833ad14b35a7425576ffebda7fe2c3e6ab516e6e4ea7ca1a962fb557839b  ./plots/9ps-vs-Wstar-qb-current-comparison.html
 fa3d1f1f4772fee436d8ddb5dcc3ed35e872f90c607f126478a32a32440165c4  ./plots/9ps-vs-Wstar-qb-current-comparison.metadata.json
 faf6562257cdf82561ae6319a78b52225d9a0caeac96f5b6ff28569774c90c98  ./plots/9ps-vs-Wstar-qb-replay-comparison.html
 284fa576e5454947280346bb79943b77be5e57c15a939a71612bbf5d68c87931  ./plots/9ps-vs-Wstar-qb-replay-comparison.metadata.json
-576f81e28e57ce7d6a0d6cd773ef60089fd8c184f81e702750d53cbff5709613  ./plots/README.md
+e7404b615ef710f697d25816d4eed2ed2d5099117f9942ac3a884855c553db21  ./plots/README.md
+e7ee4ab908f7e4039350214ad5e82bd0bb83ddd3d5df3f98ced0cadef49b0c7c  ./plots/sl-readout-current-comparison.html
+6289301062a7776cf57304c67c68e5f585352b1d130928f0d5b7f5b3829ee0c2  ./plots/sl-readout-current-comparison.metadata.json
 177a913f5d38dc48cf45930e94aad9016b5a8e7fb96260494aa04043f6ed9d16  ./raw/phase-a/12ps/logical0-read/run-01.csv
 6ac3990e36118b2a9d02e7b2e83c97eda6db70183263036e4396e11866e60529  ./raw/phase-a/12ps/logical1-read/run-01.csv
 4da4a4b0e4ed9cffc117045f99fbeeaa547ff47988496db93a380594e381a549  ./raw/phase-a/15ps/logical0-read/run-01.csv

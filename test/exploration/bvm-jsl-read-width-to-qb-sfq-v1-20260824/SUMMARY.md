@@ -86,6 +86,7 @@ quantization window。BJL2 的 phase range、current 或 voltage peak 均未被�
 - [Phase C report](analysis/PHASE_C_REPORT.md)
 - [9 ps vs W*=12 ps QB replay comparison](plots/9ps-vs-Wstar-qb-replay-comparison.html)
 - [9 ps vs W*=12 ps QB current comparison](plots/9ps-vs-Wstar-qb-current-comparison.html)
+- [SL readout current comparison](plots/sl-readout-current-comparison.html)
 - [plot provenance metadata](plots/9ps-vs-Wstar-qb-replay-comparison.metadata.json)
 
 图是 descriptive visualization，不改变 raw、analysis 或正式 verdict。

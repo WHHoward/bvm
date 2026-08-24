@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BVM 到 QB/JTL receiver 的可视化结果导航索引">
+  <title>BVM→QB/JTL receiver 可视化索引</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #172033;
+  --muted: #5b667a;
+  --line: #d8dee9;
+  --panel: #f6f8fb;
+  --panel-strong: #edf2f8;
+  --link: #0759a8;
+  --link-hover: #0b78d0;
+  --accent: #1d6f9f;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.65;
+}
+.page {
+  width: min(1480px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 28px 0 56px;
+}
+.utility {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: center;
+  margin: -28px 0 24px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.utility a { font-weight: 600; }
+main > h1 {
+  margin: 0 0 8px;
+  color: #102c4e;
+  font-size: clamp(1.8rem, 3vw, 2.45rem);
+  line-height: 1.2;
+}
+h2 {
+  margin: 42px 0 14px;
+  padding-bottom: 7px;
+  border-bottom: 2px solid var(--accent);
+  color: #123e69;
+  font-size: 1.45rem;
+}
+h3 { color: #18567d; }
+p { max-width: 1100px; }
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--link-hover); }
+code {
+  padding: 0.12em 0.34em;
+  border: 1px solid #e1e6ee;
+  border-radius: 4px;
+  background: #f3f5f8;
+  color: #27364c;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.9em;
+}
+table {
+  width: 100%;
+  margin: 16px 0 30px;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  vertical-align: top;
+  text-align: left;
+}
+th {
+  background: var(--panel-strong);
+  color: #173a5d;
+  font-weight: 700;
+}
+tbody tr:nth-child(even) { background: #fbfcfe; }
+tbody tr:hover { background: #f0f6fc; }
+ul, ol { padding-left: 1.6rem; }
+blockquote {
+  margin: 16px 0;
+  padding: 8px 16px;
+  border-left: 4px solid var(--accent);
+  background: var(--panel);
+  color: var(--muted);
+}
+hr { border: 0; border-top: 1px solid var(--line); }
+@media (max-width: 900px) {
+  .page { width: min(100% - 20px, 1480px); padding-top: 20px; }
+  .utility { margin-top: -20px; }
+  table { display: block; overflow-x: auto; white-space: normal; }
+  th, td { min-width: 180px; }
+}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="utility">
+      <a href="VISUALIZATION_INDEX.md">查看 Markdown 源索引</a>
+      <span>所有实验入口保持原始相对路径，可直接打开对应 HTML 图形。</span>
+    </div>
+    <main>
+<h1 id="bvmqbjtl-receiver">BVM→QB/JTL receiver 可视化索引</h1>
+<p>更新时间：2026-08-24；可视化 checkpoint parent HEAD：<code>960f3948f48017747b79d0a7c37a8b0dd302c913</code>。</p>
+<p>本索引只导航已经存在的 raw 与正式报告，不新增科学结论。所有 HTML 都由仓库现有 <code>scripts/josim-plot2.py</code> 的经典 dark/<code>sep_comb</code> 约定生成，或使用同一 dark Plotly layout 生成 comparison；<code>P(...)</code> 显示为 <code>rad/2π</code> turns。phase turns、voltage peak 和 derivative activity 都不自动等于 SFQ event。正式 event/Gate verdict 以链接的 report 为准。</p>
+<p>HTML 使用 Plotly 3.1.0 CDN；首次打开需要网络加载 Plotly runtime。</p>
+<h2 id="p0-jtlload-boundary">P0：核心证据与 JTL/load boundary</h2>
+<table>
+<thead>
+<tr>
+<th>重要问题 / 该看什么</th>
+<th>已接受结论（不由图形重新判定）</th>
+<th>实验与入口</th>
+<th>主要曲线 / 时间范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scaled QB 的输入窗口在哪里？看四个 ideal input level 的 BJs→BJL1→BJL2 和 OUT</td>
+<td>0 µA <code>ZERO_EVENT</code>；45 µA 无 complete event；68.4 µA standalone exactly-one reference；90 µA multi-event。</td>
+<td><a href="../test/exploration/qb-q0-standalone-current-quantized-event-20260824/plots/scaled-comparison.html">QB-Q0 scaled comparison</a>；<a href="../test/exploration/qb-q0-standalone-current-quantized-event-20260824/plots/README.md">单点目录说明</a></td>
+<td><code>P(BJS|XBQ)</code>, <code>P(BJL1|XBQ)</code>, <code>P(BJL2|XBQ)</code>, <code>V(OUT)</code>；完整 raw window / 原始 pulse</td>
+</tr>
+<tr>
+<td>paper-original QB 与 scaled QB 有何差异？</td>
+<td>paper-original 68.4/90 µA 不建立 complete BJL2 event；它是 provenance comparison，不是 scaled Q0 threshold。</td>
+<td><a href="../test/exploration/qb-q0-standalone-current-quantized-event-20260824/plots/paper-reference-comparison.html">paper reference comparison</a></td>
+<td>BJL1/BJL2 phase、OUT；完整 raw window</td>
+</tr>
+<tr>
+<td>10 Ω、OPEN、JTL-only 怎样改变真实 Q0 event？</td>
+<td>load-boundary matrix 只支持 fixture-bounded local/load conclusions；不要把边界结果外推为 universal interface rule。</td>
+<td><a href="../test/exploration/qb-load-boundary-matrix-20260824/plots/q0-boundary-comparison.html">Q0 boundary comparison</a>；<a href="../test/exploration/qb-load-boundary-matrix-20260824/plots/q5-open-vs-jtl-read1.html">Q5 OPEN/JTL-only</a></td>
+<td>BJL2 phase、OUT、L0；JTL fixtures另有四颗 JTL phase；完整 raw window</td>
+</tr>
+<tr>
+<td>parallel QB→JTL 哪一级丢失？</td>
+<td>M1 <code>FIRST_STAGE_ONLY</code>；M3 local Q0 event preserved but JTL subthreshold；M2/M4/M5 boundary下 local event丢失。</td>
+<td><a href="../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/plots/M1-ideal-replay.html">M1</a>、<a href="../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/plots/M3-rseries10.html">M3</a>、<a href="../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/plots/interface-qb-phase-comparison.html">matrix QB comparison</a>、<a href="../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/plots/interface-jtl-phase-comparison.html">JTL comparison</a></td>
+<td>QB BJs/BJL1/BJL2；四颗 JTL JJ；pulse-by-pulse</td>
+</tr>
+<tr>
+<td>原/反极性 replay 是否进入同一 transport chain？</td>
+<td>原极性与反极性必须分开按 strict local 和 settled transport 阅读；不能以 phase range alone 判定。</td>
+<td><a href="../test/exploration/jtl-transport-gate-polarity-replay-20260824/plots/original.html">original</a>、<a href="../test/exploration/jtl-transport-gate-polarity-replay-20260824/plots/reverse.html">reverse</a>、<a href="../test/exploration/jtl-transport-gate-polarity-replay-20260824/plots/original-vs-reverse.html">对照</a></td>
+<td>四颗 JTL phase、input/mid/output voltage；pulse-5 full window</td>
+</tr>
+<tr>
+<td>JTL methodology 的 strict local 与 settled well 是否一致？</td>
+<td>R11 positive control 在注册方法内为四-stage settled transport reference；M5 historical exactly-one interpretation 已 supersede，不能混用。</td>
+<td><a href="../test/exploration/jtl-transport-gate-v1-methodology-20260824/plots/README.md">methodology sources</a>；<a href="../test/exploration/jtl-transport-gate-v1-methodology-20260824/plots/R11-positive-control.html">R11</a>；<a href="../test/exploration/jtl-transport-gate-v1-methodology-20260824/plots/M5-positive-control.html">M5-PC</a></td>
+<td>四颗 JTL phase/voltage；strict local 与 pre/post well 对应注册窗口</td>
+</tr>
+<tr>
+<td>数值 timestep 是否闭合 Gate？</td>
+<td>当前正式 disposition 保持 <code>JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE</code>；pulse5-original window robustness 未闭合。</td>
+<td><a href="../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/r11-timestep-comparison.html">R11 timestep</a>、<a href="../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/pulse5-original-timestep-comparison.html">original timestep</a>、<a href="../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/pulse5-reverse-timestep-comparison.html">reverse timestep</a></td>
+<td>dt <code>0.025/0.0125/0.00625 ps</code>；注册 pre/post window robustness</td>
+</tr>
+<tr>
+<td>JTL load 怎样改变 QB trajectory？</td>
+<td>accepted bounded mechanism classification：<code>MIXED_DYNAMIC_LOADING</code>。</td>
+<td><a href="../test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824/plots/backaction_compare.html">back-action comparison</a>；<a href="../test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824/plots/README.md">README/window说明</a></td>
+<td>BJL2、L2、L0、OUT；重点 <code>208–210</code>、<code>210–217.1</code>、<code>217.1–259 ps</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="p1paper-sl-qb-internal-route">P1：PAPER-SL / QB internal route</h2>
+<table>
+<thead>
+<tr>
+<th>重要问题 / 该看什么</th>
+<th>已接受结论</th>
+<th>实验与入口</th>
+<th>主要曲线 / 时间范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>paper-JSL replay 对 frozen scaled QB 是否足够？</td>
+<td><code>PAPER-SL_QB_SUBTHRESHOLD</code>，但 read1 near-threshold：BJL1/BJL2 接近 1 turn，read0/control 分离。</td>
+<td><a href="../test/exploration/paper-sl-q1-20260824/plots/qb-replay/comparison.html">PAPER-SL-Q1 comparison</a></td>
+<td>BJs/BJL1/BJL2 phase、V/I、OUT；原始 replay full window</td>
+</tr>
+<tr>
+<td>central bias 37.5/40 µA 能否闭合？</td>
+<td>Q2 bias bracket 仍未建立 selective complete output event；不要把 bias points 解释成连续 threshold。</td>
+<td><a href="../test/exploration/paper-sl-q2-20260824/plots/37p5u/comparison.html">37.5 µA</a>、<a href="../test/exploration/paper-sl-q2-20260824/plots/40u/comparison.html">40 µA</a></td>
+<td>BJs/BJL1/BJL2、input/bias/loop currents；原始 replay window</td>
+</tr>
+<tr>
+<td>Q3-PRE 的 BJs→BJL1 transfer 受什么限制？</td>
+<td>这是 source-linked analysis-only checkpoint；正式 routing/timing 结论以 report 为准。</td>
+<td><a href="../test/exploration/paper-sl-q3-pre-20260824/plots/comparison.html">Q3-PRE comparison</a></td>
+<td>Q0/Q1/Q2 source-linked BJs/BJL1/BJL2；各自原始时间基准</td>
+</tr>
+<tr>
+<td>L1 proximal routing 有多大？</td>
+<td>Q3 是 weak causal routing gain，未闭合 local event。</td>
+<td><a href="../test/exploration/paper-sl-q3-l1-routing-closure-20260824/plots/l1-4p5/comparison.html">Q3 comparison</a></td>
+<td>BJs/BJL1/BJL2、OUT、loop currents；注册主 comparison window</td>
+</tr>
+<tr>
+<td>L2 placement 是共同增益还是方向性 effect？</td>
+<td>Q4 <code>Q4_DEGRADES_OPPOSES_Q3_DIRECTIONAL_PLACEMENT_EFFECT</code>；BJL2 total range 不等于 event。</td>
+<td><a href="../test/exploration/paper-sl-q4-l1-l2-placement-20260824/plots/q4-l1-3p91-l2-4p50/comparison.html">Q4 comparison</a></td>
+<td>BJL1/BJL2 phase、OUT、loop currents；Q4 registered window</td>
+</tr>
+<tr>
+<td>L1×L2 是否产生 nonlinear interaction？</td>
+<td>Q5 <code>Q5_COMPLEMENTARY_DOWNSTREAM_PRESERVED_PARTIAL_L1_RECOVERY_NO_EVENT</code>；未见正的 nonlinear BJL2 interaction。</td>
+<td><a href="../test/exploration/paper-sl-q5-l1-l2-factorial-20260824/plots/q5-l1-4p50-l2-4p50/comparison.html">Q5 comparison</a></td>
+<td>BJs/BJL1/BJL2、OUT、loop currents；Q2–Q5 registered comparison window</td>
+</tr>
+<tr>
+<td>frozen Q5 输出能否直接驱动标准 JTL？</td>
+<td><code>NO_JTL_TRIGGER</code>；不得把 coupled phase/voltage activity叫作 propagated event。</td>
+<td><a href="../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q6-q5-to-two-cell-jtl/comparison.html">Q6 comparison</a></td>
+<td>QB BJL2 与四颗 JTL JJ；canonical matched full window</td>
+</tr>
+</tbody>
+</table>
+<h2 id="p2">P2：路线变化的历史节点</h2>
+<p>这些图用于组会中快速理解路线如何从 receiver front-end 走向 QB/DCSFQ/JTL；它们不替代各自 analysis report，也不把被否定的 instance 升级为整个 architecture family 的 universal impossibility。</p>
+<table>
+<thead>
+<tr>
+<th>路线节点 / 该看什么</th>
+<th>正式结论</th>
+<th>可视化入口</th>
+<th>主要曲线 / 关注窗口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R0b：SL trigger discrimination</td>
+<td>accepted R0b complete-trigger/discrimination baseline。</td>
+<td><a href="../test/exploration/bvm-sfq-receiver-r0b-20260819/plots/comparison.html">R0b comparison</a></td>
+<td>B_TRIG、SL/N6、JM/JS；完整 READ/control window</td>
+</tr>
+<tr>
+<td>R1a：passive series pickup</td>
+<td>passive state-dependent extraction established；不是 downstream SFQ。</td>
+<td><a href="../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/plots/comparison.html">R1a comparison</a></td>
+<td>B_TRIG、L_TX/L_SEC、N_SEC、SL/N6；完整 matched window</td>
+</tr>
+<tr>
+<td>R2a：secondary direct activation</td>
+<td>代表性 K=.80 fixture；正式 R2 evidence 仍在 R2 report。</td>
+<td><a href="../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/plots/k080-representative/comparison.html">R2a K=.80 comparison</a></td>
+<td>B_TRIG/B_OUT、secondary、damping；完整 matched window</td>
+</tr>
+<tr>
+<td>R11a：canonical SL→standard JTL</td>
+<td><code>NO_JTL_TRIGGER</code>；positive control 与 BVM direct test分开。</td>
+<td><a href="../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/plots/comparison.html">R11a BVM comparison</a>、<a href="../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/plots/positive-control.html">positive control</a></td>
+<td>四颗 JTL JJ、SL/N6、JS；full read window</td>
+</tr>
+<tr>
+<td>R12a：historical DCSFQ re-audit</td>
+<td>300 µA controlled point 可建立 local B3 reference；canonical cascade仍 subthreshold。</td>
+<td><a href="../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/plots/phase-a-comparison.html">Phase A</a>、<a href="../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/plots/phase-b-comparison.html">Phase B</a></td>
+<td>DCSFQ B1/B2/B3、两-cell JTL；controlled/full matched windows</td>
+</tr>
+<tr>
+<td>R13a：理想 rectification/hold requirements</td>
+<td><code>TEMPORAL_CONDITIONING_INSUFFICIENT</code>；ideal transformation 不是 physical implementation。</td>
+<td><a href="../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-replay/comparison.html">R13 raw replay</a></td>
+<td>B1/B2/B3、replay voltage、loop currents；raw replay full window</td>
+</tr>
+<tr>
+<td>R15b：AFQ-3 magnetic correction</td>
+<td><code>ACTIVE_STAGE_NO_TRIGGER</code>，并保留 bounded extra back-action disposition。</td>
+<td><a href="../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/plots/comparison.html">R15b comparison</a></td>
+<td>B_DET/B_SET/B_Q/B_OUT、DCS branch、BVM guards；完整 matched window</td>
+</tr>
+</tbody>
+</table>
+<h2 id="p0-anchorcanonical-bvm-internal-readout">P0 anchor：canonical BVM internal readout</h2>
+<p>canonical BVM 的既有交互图仍在：<a href="../test/exploration/bvm-internal-readout-20260819/plots/logical1-canonical-read.html">logical1 canonical READ</a>、<a href="../test/exploration/bvm-internal-readout-20260819/plots/logical0-canonical-read.html">logical0 canonical READ</a>、<a href="../test/exploration/bvm-internal-readout-20260819/plots/rewrite-read-0101.html">rewrite 0101</a>、<a href="../test/exploration/bvm-internal-readout-20260819/plots/rewrite-read-1010.html">rewrite 1010</a>。</p>
+<p>这些图用于 source/storage anchor：JS1/JS2、N6、SL、SL branch currents 与 JM/JS guards。README 已明确 phase turns ≠ SFQ count；canonical BVM topology 与 frozen evidence 没有在本 checkpoint 中修改。</p>
+<h2 id="_1">读图规则</h2>
+<ol>
+<li>先看 matched control/read0，再看 read1；不要只看 voltage peak。</li>
+<li>对任何 event 讨论，回到对应 report 的 continuous monotonic same-JJ phase 与 same-segment direct voltage area；full-window settled well 是另一层证据。</li>
+<li><code>P(...)</code> 的 y 轴是 <code>rad/2π</code> turns；不是 event 数、不是 fluxoid count、也不是 downstream SFQ delivery。</li>
+<li>P2 的代表性节点可能直接消费父实验 raw；README 与 report 会标明 provenance。图形 checkpoint 不改变 raw、formal verdict 或 frozen circuits。</li>
+</ol>
+    </main>
+  </div>
+</body>
+</html>

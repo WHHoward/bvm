@@ -1,0 +1,21 @@
+* R11-A positive control: exact standard-JTL stimulus from test/standard/test_jtl.cir.
+* The two THmitll_JTL cells and all cell parameters are repository standard.
+.include jjmit.cir
+.include JTL.cir
+
+V_IN IN 0 pwl(0 0 10p 0 11p 1.5m 13p 1.5m 14p 0 170p 0)
+R_IN IN N1 3
+L_IN N1 SFQ_IN 0.5p
+
+XJTL1 SFQ_IN SFQ_MID THmitll_JTL
+XJTL2 SFQ_MID SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+
+.tran 0.00625p 170p
+
+.print P(B1|XJTL1) V(B1|XJTL1) I(B1|XJTL1) P(B2|XJTL1) V(B2|XJTL1) I(B2|XJTL1)
+.print P(B1|XJTL2) V(B1|XJTL2) I(B1|XJTL2) P(B2|XJTL2) V(B2|XJTL2) I(B2|XJTL2)
+.print I(L1|XJTL1) I(L2|XJTL1) I(L3|XJTL1) I(L4|XJTL1) I(IB1|XJTL1) I(RB1|XJTL1) I(RB2|XJTL1)
+.print I(L1|XJTL2) I(L2|XJTL2) I(L3|XJTL2) I(L4|XJTL2) I(IB1|XJTL2) I(RB1|XJTL2) I(RB2|XJTL2)
+.print V(SFQ_IN) V(SFQ_MID) V(SFQ_OUT) I(R_IN) I(L_IN) I(R_TERM)
+.end

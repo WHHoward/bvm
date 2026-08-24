@@ -8,55 +8,66 @@
 
 * DC convergence resistors
 .subckt T1 I CLK S C N_BIAS1 N_BIAS2 N_BIAS3
-R_DC3   N3   0  10K
-R_DC4   N4   0  10K
-R_DC9   N9   0  10K
-R_DC12  N12  0  10K
-R_DC17  N17  0  10K
+* R_DC3   N3   0  10K
+* R_DC4   N4   0  10K
+* R_DC9   N9   0  10K
+* R_DC12  N12  0  10K
+* R_DC17  N17  0  10K
 
 * === I (Data) Input Path ===
 L1     I       N1      0.213P
 RB1    N1      N_BIAS1 6.8
 L2     N1      N2      1.6P
 B_J1   N2      0       jjmit area=3.5
+* R_J1   N2      0       1
 L3     N2      N3      2.028P
 
 * === I Main Path → Carry ===
 L10    N3      N4      0.905P
 B_J6   N4      N5      jjmit area=1.051
+R_J6   N4      N5      4
 L15    N5      N6      1.297P
 L16    N6      N7      4.644P
 L17    N7      C       2.0P
 B_J10  N6      0       jjmit area=0.869
+R_J10  N6      0       12
 B_J11  N7      0       jjmit area=1.5
+R_J11  N7      0       7
 
 * === I Split Path → N12 ===
 L7     N3      N8      1.219P
 B_J4   N8      N10     jjmit area=0.803
+R_J4   N8      N10     4
 RB3    N10     N_BIAS3 16.0
 L8     N10     N11     1.383P
 B_J5   N11     0       jjmit area=0.779
+R_J5   N11     0       13
 L9     N11     N12     5.366P
 
 * === N5 → N12 Path ===
 B_J8   N5      N9      jjmit area=1.0
+R_J8   N5      N9      4
 L12    N9      N12     1.219P
 
 * === N12 → N17 Merge ===
 L11    N12     N13     0.957P
 B_J7   N13     N17     jjmit area=1.0
+R_J7   N18     N17     5
 
 * === CLK Input Path ===
 L4     CLK     N14     0.153P
 RB2    N14     N_BIAS2 6.8
 L5     N14     N15     0.6P
 B_J2   N15     0       jjmit area=3.5
+* R_J2   N15     0       1
 L6     N15     N16     2.337P
 B_J3   N16     N17     jjmit area=1.8
+R_J3   N16     N17     8
 
 * === Output Stage → Sum ===
 L13    N17     N18     1.009P
 B_J9   N18     0       jjmit area=1.0
+R_J9   N18     0       10
 L14    N18     S       4.6P
 
 .ends T1

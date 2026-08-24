@@ -68,15 +68,22 @@ figure and must not be cosmetically tuned into a schematic.
 
 ## Matrix plot workflow
 
-Use `scripts/plot_case_matrix.py` with a JSON manifest for multi-operating-point
-plots when that helper is present. If a repository checkout does not contain
-that helper, use a deterministic project-local renderer (for example
-`scripts/generate_physical_closure_visualizations.py`) with the same contract:
-every CSV, exact column, panel meaning, phase-unit conversion, and
-control/variant label must be explicit. The renderer writes standalone Plotly
-HTML and does not rerun simulation. Do not silently fall back to a sparse
-legacy plot that shows only one output JJ when the scientific question is a
-source-to-receiver chain.
+Use the repository's `scripts/josim-plot2.py` as the canonical waveform
+renderer. Standard single-case pages and derived comparison pages must be
+created with the same `sep_comb` / dark-theme template used by the accepted
+Q0 and canonical-BVM plots; phase normalization is allowed only with
+`-j 2pi` in the layouts supported by `josim-viz`. A comparison driver may
+prepare a temporary, explicitly provenance-recorded merged CSV from existing
+raw files, but it must still delegate the final HTML render to
+`josim-plot2.py` and must never alter raw evidence.
+
+Do not use an ad-hoc Plotly renderer as the canonical result page and do not
+silently fall back to a sparse legacy plot that shows only one output JJ when
+the scientific question is a source-to-receiver chain. Every physical
+BVM→load/interface→QB view must expose the SL readout branch current,
+relevant SL/N6 voltages, storage/read guards, JSL current consistency, QB
+BJs→BJL1→BJL2 phase/current, and receiver routing/KCL branches through the
+standard josim-plot2 template. The formal report remains the event authority.
 
 For a BVM→load/interface→QB result, the minimum complete display includes the
 SL readout branch current, relevant SL/N6 voltages, storage/read guards, the

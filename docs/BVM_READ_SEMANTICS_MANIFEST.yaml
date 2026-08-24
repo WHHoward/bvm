@@ -14,6 +14,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -69,6 +105,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -124,6 +196,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 50.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: false
     onset_ps: null
@@ -157,6 +265,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 50.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: false
     onset_ps: null
@@ -190,6 +334,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -241,10 +421,48 @@ cases:
   notes: Canonical BVM internal-readout fixture.
 - id: canonical.logical0_read.neg-read-single
   path: test/exploration/bvm-internal-readout-20260819/inputs/neg-read-single.cir
-  stored_state: logical0
+  stored_state: unknown
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: -100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      - 1
+      sign: mixed
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      - 1
+      sign: mixed
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: false
+    sign_reversal: true
+    valid: false
+    error: INITIALIZATION_PROTOCOL_MISMATCH
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -290,9 +508,9 @@ cases:
   source_lineage:
   - canonical_bvm
   role_hint: canonical.logical0_read.neg-read-single
-  case_role: logical0_read
-  classification: CANONICAL_LOGICAL0_READ_V1
-  current_validity: CURRENT_VALID
+  case_role: SUPERSEDED_INVALID_INIT_FIXTURE
+  classification: INITIALIZATION_PROTOCOL_MISMATCH
+  current_validity: SUPERSEDED_INVALID_INIT_FIXTURE
   notes: Canonical BVM internal-readout fixture.
 - id: paper_sl_l0.logical1-read
   path: test/exploration/paper-sl-l0-20260824/inputs/logical1-read.cir
@@ -300,6 +518,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -354,6 +608,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -397,6 +687,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 50.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: false
     onset_ps: null
@@ -429,6 +755,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 50.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: false
     onset_ps: null
@@ -461,6 +823,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -516,6 +914,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -571,6 +1005,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -626,6 +1096,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -681,6 +1187,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -736,6 +1278,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -791,6 +1369,42 @@ cases:
   initialization:
     wl_first_uA: 100.0
     bl_first_uA: 100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: 100.0
+      last_uA: 100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - 1
+      sign: positive
+      nonzero_points:
+      - - 11.0
+        - 100.0
+      - - 20.0
+        - 100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -845,6 +1459,42 @@ cases:
   initialization:
     wl_first_uA: -100.0
     bl_first_uA: -100.0
+  initialization_protocol:
+    read_cutoff_ps: 96.0
+    wl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    bl:
+      first_uA: -100.0
+      last_uA: -100.0
+      onset_ps: 11.0
+      end_ps: 20.0
+      signs:
+      - -1
+      sign: negative
+      nonzero_points:
+      - - 11.0
+        - -100.0
+      - - 20.0
+        - -100.0
+      magnitude_min_uA: 100.0
+      magnitude_max_uA: 100.0
+    plateau_consistent: true
+    sign_reversal: false
+    valid: true
+    error: null
   read_protocol:
     has_read: true
     onset_ps: 96.0
@@ -888,6 +1538,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -910,6 +1565,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -934,6 +1594,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -957,6 +1622,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -980,6 +1650,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1002,6 +1677,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1026,6 +1706,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1049,6 +1734,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1072,6 +1762,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1094,6 +1789,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1118,6 +1818,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1141,6 +1846,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1164,6 +1874,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1186,6 +1901,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1210,6 +1930,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1233,6 +1958,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1256,6 +1986,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1278,6 +2013,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1302,6 +2042,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1325,6 +2070,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1348,6 +2098,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1370,6 +2125,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1394,6 +2154,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1417,6 +2182,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1440,6 +2210,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1462,6 +2237,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: true
     inherited: true
@@ -1486,6 +2266,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true
@@ -1509,6 +2294,11 @@ cases:
   initialization:
     wl_first_uA: null
     bl_first_uA: null
+  initialization_protocol:
+    inherited: true
+    valid: true
+    plateau_consistent: true
+    sign_reversal: false
   read_protocol:
     has_read: false
     inherited: true

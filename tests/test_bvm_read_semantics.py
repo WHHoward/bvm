@@ -43,3 +43,22 @@ def test_load_mismatch_fails_matched_pair(tmp_path: Path):
     p1 = parse_deck(logical1, role_hint="logical1_read")
     p0 = parse_deck(logical0, role_hint="logical0_read")
     assert any("load_topology" in error for error in validate_pair(p1, p0))
+
+
+def test_negative_initialization_polarity_reversal_is_superseded(tmp_path: Path):
+    path = tmp_path / "negative-reversal.cir"
+    path.write_text(
+        "\n".join([
+            "XBVM1 WL1 BL1 SE1 SL1 BVM",
+            "R_LD SL1 0 12",
+            "I_WL1 0 WL1 pwl(0p 0 10p 0 11p -100U 20p +100U 21p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)",
+            "I_BL1 0 BL1 pwl(0p 0 10p 0 11p -100U 20p +100U 21p 0 170p 0)",
+            "I_SE1 0 SE1 pwl(0p 0 95p 0 96p +100U 105p +100U 106p 0 170p 0)",
+        ]) + "\n",
+        encoding="utf-8",
+    )
+    parsed = parse_deck(path, role_hint="logical0_read")
+    assert parsed["classification"] == "INITIALIZATION_PROTOCOL_MISMATCH"
+    assert parsed["case_role"] == "SUPERSEDED_INVALID_INIT_FIXTURE"
+    assert parsed["current_validity"] == "SUPERSEDED_INVALID_INIT_FIXTURE"
+    assert parsed["initialization_protocol"]["sign_reversal"] is True

@@ -92,17 +92,74 @@ def _pulse_shape(points: list[tuple[float, float]], after: float) -> dict[str, A
     }
 
 
-def _initial_state(wl: list[tuple[float, float]], bl: list[tuple[float, float]], read_onset: float | None) -> str:
+def _initialization_protocol(
+    wl: list[tuple[float, float]],
+    bl: list[tuple[float, float]],
+    read_onset: float | None,
+) -> dict[str, Any]:
+    """Describe the stored-state initialization before the READ pulse.
+
+    Looking only at the first non-zero sample is unsafe: a fixture can start
+    with a negative initialization and then reverse polarity before READ.
+    Such a waveform must not be accepted as a canonical negative state.
+    """
     cutoff = read_onset if read_onset is not None else READ_CUTOFF_PS
-    wl_first = _first_nonzero(wl, 0.0)
-    bl_first = _first_nonzero(bl, 0.0)
-    wl_init = next((p for p in wl if p[0] < cutoff and abs(p[1]) > EPS), None)
-    bl_init = next((p for p in bl if p[0] < cutoff and abs(p[1]) > EPS), None)
-    if not wl_init or not bl_init:
+
+    def channel(points: list[tuple[float, float]]) -> dict[str, Any]:
+        nonzero = [(t, v) for t, v in points if 0.0 <= t < cutoff and abs(v) > EPS]
+        signs = sorted({1 if v > 0 else -1 for _, v in nonzero})
+        magnitudes = [abs(v) for _, v in nonzero]
+        first = nonzero[0] if nonzero else None
+        last = nonzero[-1] if nonzero else None
+        return {
+            "first_uA": round(first[1], 9) if first else None,
+            "last_uA": round(last[1], 9) if last else None,
+            "onset_ps": round(first[0], 9) if first else None,
+            "end_ps": round(last[0], 9) if last else None,
+            "signs": signs,
+            "sign": ("positive" if signs == [1] else
+                     "negative" if signs == [-1] else
+                     "mixed" if signs else "none"),
+            "nonzero_points": [[round(t, 9), round(v, 9)] for t, v in nonzero],
+            "magnitude_min_uA": round(min(magnitudes), 9) if magnitudes else None,
+            "magnitude_max_uA": round(max(magnitudes), 9) if magnitudes else None,
+        }
+
+    wl_info = channel(wl)
+    bl_info = channel(bl)
+    same_single_sign = (
+        wl_info["sign"] in {"positive", "negative"}
+        and wl_info["sign"] == bl_info["sign"]
+    )
+    magnitudes = [
+        value
+        for info in (wl_info, bl_info)
+        for value in (info["magnitude_min_uA"], info["magnitude_max_uA"])
+        if value is not None
+    ]
+    magnitude_consistent = bool(magnitudes) and max(magnitudes) - min(magnitudes) <= 1e-6
+    sign_reversal = any(info["sign"] == "mixed" for info in (wl_info, bl_info))
+    return {
+        "read_cutoff_ps": round(cutoff, 9),
+        "wl": wl_info,
+        "bl": bl_info,
+        "plateau_consistent": bool(same_single_sign and magnitude_consistent),
+        "sign_reversal": sign_reversal,
+        "valid": bool(same_single_sign and magnitude_consistent and not sign_reversal),
+        "error": None if same_single_sign and magnitude_consistent and not sign_reversal
+                  else "INITIALIZATION_PROTOCOL_MISMATCH",
+    }
+
+
+def _initial_state(
+    wl: list[tuple[float, float]], bl: list[tuple[float, float]], read_onset: float | None
+) -> str:
+    profile = _initialization_protocol(wl, bl, read_onset)
+    if not profile["valid"]:
         return "unknown"
-    if wl_init[1] > 0 and bl_init[1] > 0:
+    if profile["wl"]["sign"] == "positive":
         return "logical1"
-    if wl_init[1] < 0 and bl_init[1] < 0:
+    if profile["wl"]["sign"] == "negative":
         return "logical0"
     return "unknown"
 
@@ -149,6 +206,11 @@ def protocol_signature(parsed: dict[str, Any]) -> dict[str, Any]:
 def classify_parsed(parsed: dict[str, Any]) -> dict[str, Any]:
     state = parsed["stored_state"]
     read = parsed["read_protocol"]
+    if not parsed.get("initialization_protocol", {}).get("valid", False):
+        parsed["case_role"] = "SUPERSEDED_INVALID_INIT_FIXTURE"
+        parsed["classification"] = "INITIALIZATION_PROTOCOL_MISMATCH"
+        parsed["current_validity"] = "SUPERSEDED_INVALID_INIT_FIXTURE"
+        return parsed
     if not read.get("has_read"):
         parsed["case_role"] = f"{state}_no_read_control" if state in {"logical0", "logical1"} else "NO_READ_CONTROL"
         parsed["classification"] = "NO_READ_CONTROL"
@@ -212,6 +274,14 @@ def parse_deck(path: str | Path, *, inherited_protocol: dict[str, Any] | None = 
             "se": se_read,
         }
         stored_state = _initial_state(wl, bl, onset)
+        initialization_protocol = _initialization_protocol(wl, bl, onset)
+    if inherited_protocol is not None:
+        initialization_protocol = {
+            "inherited": True,
+            "valid": True,
+            "plateau_consistent": True,
+            "sign_reversal": False,
+        }
     parsed = {
         "path": str(deck_path),
         "stored_state": stored_state,
@@ -219,6 +289,7 @@ def parse_deck(path: str | Path, *, inherited_protocol: dict[str, Any] | None = 
             "wl_first_uA": next((round(v, 9) for t, v in wl if t < READ_CUTOFF_PS and abs(v) > EPS), None),
             "bl_first_uA": next((round(v, 9) for t, v in bl if t < READ_CUTOFF_PS and abs(v) > EPS), None),
         },
+        "initialization_protocol": initialization_protocol,
         "read_protocol": read,
         "protocol_signature": inherited_protocol if inherited_protocol is not None else None,
         "load_topology": _load_topology(text),

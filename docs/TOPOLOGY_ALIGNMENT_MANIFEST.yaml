@@ -1,5 +1,5 @@
 schema_version: '2.0'
-parent_head: ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae
+parent_head: 6e9cbedefeae8e8771299a8624bef081146494eb
 topologies:
 - topology_id: BVM_CANONICAL
   title_cn: Canonical BVM：storage/readout source baseline
@@ -1046,7 +1046,7 @@ topologies:
   representative_experiment: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
   sequence: 53
   stage_id: stage-08
-  stage_title: physical BVM→JSL12/JSL8→QB closure
+  stage_title: physical BVM→JSL12/JSL8→QB closure + internal trajectory audit
   representative_deck: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical1_read.cir
   includes:
   - ../jjmit.cir
@@ -1072,7 +1072,7 @@ topologies:
   representative_experiment: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
   sequence: 54
   stage_id: stage-08
-  stage_title: physical BVM→JSL12/JSL8→QB closure
+  stage_title: physical BVM→JSL12/JSL8→QB closure + internal trajectory audit
   representative_deck: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical1_read.cir
   includes:
   - ../jjmit.cir
@@ -1090,13 +1090,14 @@ topologies:
   geometric_validation: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/geometric-connectivity-validation.json
   shared_by_experiments:
   - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+  - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825
   status: PUBLICATION_SCHEMATIC_VALIDATED
   jsl_count: 8
   jsl_current_uA: 500.0
 - topology_id: QB_Q0_10OHM_PARALLEL_JTL
   title_cn: 低 Ic QB + 10Ω || standard JTL
   representative_experiment: test/exploration/qb-load-boundary-matrix-20260824::QB_Q0_10OHM_PARALLEL_JTL
-  sequence: 55
+  sequence: 56
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/qb-load-boundary-matrix-20260824/inputs-v2/C-q0-10ohm-parallel-jtl/scaled-iin-68p4u.cir
@@ -1121,7 +1122,7 @@ topologies:
 - topology_id: QB_Q0_JTL_ONLY
   title_cn: 低 Ic QB → standard JTL direct
   representative_experiment: test/exploration/qb-load-boundary-matrix-20260824::QB_Q0_JTL_ONLY
-  sequence: 55
+  sequence: 56
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/qb-load-boundary-matrix-20260824/inputs-v2/B-q0-jtl-only/scaled-iin-68p4u.cir
@@ -1146,7 +1147,7 @@ topologies:
 - topology_id: QB_Q0_OPEN
   title_cn: 低 Ic QB → OPEN output boundary
   representative_experiment: test/exploration/qb-load-boundary-matrix-20260824::QB_Q0_OPEN
-  sequence: 55
+  sequence: 56
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/qb-load-boundary-matrix-20260824/inputs-v2/A-q0-open/scaled-iin-68p4u.cir
@@ -1170,7 +1171,7 @@ topologies:
 - topology_id: QB_M1_IDEAL_REPLAY_JTL
   title_cn: Q0 recorded V(OUT) ideal replay → standard JTL
   representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M1_IDEAL_REPLAY_JTL
-  sequence: 56
+  sequence: 57
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M1-ideal-replay/main.cir
@@ -1193,7 +1194,7 @@ topologies:
 - topology_id: QB_M2_RISO10_JTL
   title_cn: 低 Ic QB → RISO=10Ω → standard JTL
   representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M2_RISO10_JTL
-  sequence: 56
+  sequence: 57
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M2-riso10/main.cir
@@ -1217,7 +1218,7 @@ topologies:
 - topology_id: QB_M3_SERIES10_JTL
   title_cn: M1–M5：QB→JTL interface mechanism matrix
   representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824
-  sequence: 56
+  sequence: 57
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M3-rseries10/main.cir
@@ -1242,7 +1243,7 @@ topologies:
 - topology_id: QB_M4_LISO10P_JTL
   title_cn: 低 Ic QB → LISO=10pH → standard JTL
   representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M4_LISO10P_JTL
-  sequence: 56
+  sequence: 57
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M4-liso10p/main.cir
@@ -1266,7 +1267,7 @@ topologies:
 - topology_id: QB_M5_SCALED_JTL
   title_cn: 低 Ic QB → scaled JTL
   representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M5_SCALED_JTL
-  sequence: 56
+  sequence: 57
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M5-q0-scaled/main.cir
@@ -1290,7 +1291,7 @@ topologies:
 - topology_id: TOPOLOGY_0fca67e829
   title_cn: JTL polarity replay：original vs reverse
   representative_experiment: test/exploration/jtl-transport-gate-polarity-replay-20260824
-  sequence: 57
+  sequence: 58
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/jtl-transport-gate-polarity-replay-20260824/inputs/reverse/main.cir
@@ -1313,7 +1314,7 @@ topologies:
 - topology_id: STANDARD_JTL_2CELL
   title_cn: JTL transport methodology：strict vs settled-well
   representative_experiment: test/exploration/jtl-transport-gate-v1-methodology-20260824
-  sequence: 58
+  sequence: 59
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/inputs/r11/0p0125/main.cir
@@ -1336,7 +1337,7 @@ topologies:
 - topology_id: TOPOLOGY_3a1af7987d
   title_cn: JTL transport Gate V1：timestep ladder
   representative_experiment: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824
-  sequence: 59
+  sequence: 60
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/inputs/r11/0p025/main.cir
@@ -1359,7 +1360,7 @@ topologies:
 - topology_id: TOPOLOGY_8403837f5b
   title_cn: JTL transport Gate V1：rerun evidence package
   representative_experiment: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun
-  sequence: 60
+  sequence: 61
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   representative_deck: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/inputs/r11/0p025/main.cir

@@ -1,6 +1,6 @@
 # CIRCUIT SCHEMATIC INDEX
 
-基线 HEAD：`ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae`。本页将论文级电路图、实验注释图和连接调试图分开。
+基线 HEAD：`6e9cbedefeae8e8771299a8624bef081146494eb`。本页将论文级电路图、实验注释图和连接调试图分开。
 
 ## Canonical BVM：storage/readout source baseline
 
@@ -730,6 +730,7 @@
 
 共享实验：
 - `test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824`
+- `test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825`
 
 ---
 

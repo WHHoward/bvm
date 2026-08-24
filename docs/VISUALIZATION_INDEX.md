@@ -1,6 +1,6 @@
 # VISUALIZATION INDEX V2
 
-生成基线 HEAD：`ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae`。
+生成基线 HEAD：`6e9cbedefeae8e8771299a8624bef081146494eb`。
 
 本页由统一 alignment manifest 生成，按科学语义列出核心结果、对比、controls 和 source/reference。
 
@@ -1353,6 +1353,39 @@
 - 【网表连接调试图】 `connectivity-debug.svg（未生成）`
 
 **正式报告**：[test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/REPORT.md](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/REPORT.md)
+
+---
+
+## QB ideal/physical：内部轨迹与分歧层审计
+
+**实验 ID**：`test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825`
+
+**做了什么**：只读取 Q0 45/68.4 µA、C13 13 ps ideal replay、D12 12×320 physical、E8 8×500 physical 的既有 raw，检查端口方向/KCL、PRE state、node2/3/4 current partition、trajectory divergence 和 phase/area 对照。
+
+**关键结果**：MECHANISM_AUDIT_INCONCLUSIVE；C13↔E8 的首个 active/transition 分歧在 95.0125 ps 处由 input_port、BJs trajectory、node2 并列出现；D12 仅作 RUN_INPUT_HASH_MISMATCH 下的描述性 raw 观察，Q0 45/68.4 仅作局部参考。
+
+**当前状态**：`MECHANISM_AUDIT_INCONCLUSIVE` / alignment=`ALIGNED`
+
+**结论边界**：这是 analysis-only mechanism audit；C13 仍是历史 auxiliary I(B_LD1) replay，不是 final-JSL 语义证明；不产生因果定论、参数变更、route/metric freeze 或 paper claim。
+
+**推荐先看**：
+- 【关键对比图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html)
+- 【关键对比图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html)
+- 【单工况/结果图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html)
+- 【单工况/结果图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html)
+- 【单工况/结果图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html)
+- 【关键对比图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html)
+- 【关键对比图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html)
+- 【关键对比图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html)
+- 【关键对比图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html)
+- 【关键对比图】 [test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic-annotated.svg)
+- 【网表连接调试图】 `connectivity-debug.svg（未生成）`
+
+**正式报告**：[test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/REPORT.md](../test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/REPORT.md)
 
 ---
 

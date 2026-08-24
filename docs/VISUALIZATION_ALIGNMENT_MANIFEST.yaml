@@ -1,6 +1,6 @@
 schema_version: '2.0'
 manifest_id: PROJECT_VISUALIZATION_INDEX_ALIGNMENT_V2
-parent_head: ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae
+parent_head: 6e9cbedefeae8e8771299a8624bef081146494eb
 authority_order:
 - raw
 - accepted_analysis_report
@@ -7145,7 +7145,7 @@ experiments:
   jsl_current_uA: 320
   sequence: 53
   stage_id: stage-08
-  stage_title: physical BVM→JSL12/JSL8→QB closure
+  stage_title: physical BVM→JSL12/JSL8→QB closure + internal trajectory audit
   topology_signature: 6bb970abed466863acc621b91ddd772282b97949ccd6243570632b6b8f203f82
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -7448,7 +7448,7 @@ experiments:
   jsl_current_uA: 500
   sequence: 54
   stage_id: stage-08
-  stage_title: physical BVM→JSL12/JSL8→QB closure
+  stage_title: physical BVM→JSL12/JSL8→QB closure + internal trajectory audit
   topology_signature: fe9c11a4258d5c75cf24c21b4098b140149c2a536d5cc86017058f6c236e5508
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -7479,6 +7479,397 @@ experiments:
     - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_read.html
     - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_no_read_control.html
     - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_no_read_control.html
+    source_references: []
+- experiment_id: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825
+  title_cn: QB ideal/physical：内部轨迹与分歧层审计
+  scientific_question: 只读取 Q0 45/68.4 µA、C13 13 ps ideal replay、D12 12×320 physical、E8
+    8×500 physical 的既有 raw，检查端口方向/KCL、PRE state、node2/3/4 current partition、trajectory
+    divergence 和 phase/area 对照。
+  formal_result: MECHANISM_AUDIT_INCONCLUSIVE；C13↔E8 的首个 active/transition 分歧在 95.0125
+    ps 处由 input_port、BJs trajectory、node2 并列出现；D12 仅作 RUN_INPUT_HASH_MISMATCH 下的描述性
+    raw 观察，Q0 45/68.4 仅作局部参考。
+  what_done: 只读取 Q0 45/68.4 µA、C13 13 ps ideal replay、D12 12×320 physical、E8 8×500
+    physical 的既有 raw，检查端口方向/KCL、PRE state、node2/3/4 current partition、trajectory divergence
+    和 phase/area 对照。
+  result_summary: MECHANISM_AUDIT_INCONCLUSIVE；C13↔E8 的首个 active/transition 分歧在 95.0125
+    ps 处由 input_port、BJs trajectory、node2 并列出现；D12 仅作 RUN_INPUT_HASH_MISMATCH 下的描述性
+    raw 观察，Q0 45/68.4 仅作局部参考。
+  conclusion_boundary: 这是 analysis-only mechanism audit；C13 仍是历史 auxiliary I(B_LD1)
+    replay，不是 final-JSL 语义证明；不产生因果定论、参数变更、route/metric freeze 或 paper claim。
+  scientific_status: MECHANISM_AUDIT_INCONCLUSIVE
+  current_status: ALIGNED
+  report: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/REPORT.md
+  claim_type: internal_trajectory_mechanism_audit
+  required_cases:
+  - id: Q0/scaled-45u
+    role: NEGATIVE_CONTROL
+    fixture: test/exploration/qb-q0-standalone-current-quantized-event-20260824
+    condition: scaled Q0 45 µA local reference
+    expected_classification: TRAJECTORY_RESEMBLANCE_TO_SUBTHRESHOLD
+    raw: test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv
+  - id: Q0/scaled-68p4u
+    role: POSITIVE_CONTROL
+    fixture: test/exploration/qb-q0-standalone-current-quantized-event-20260824
+    condition: scaled Q0 68.4 µA local reference
+    expected_classification: TRAJECTORY_RESEMBLANCE_TO_QUANTIZED
+    raw: test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv
+  - id: C13.logical1_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps ideal replay logical1 READ
+    expected_classification: HISTORICAL_AUXILIARY_REPLAY
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+  - id: C13.logical0_read
+    role: NEGATIVE_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps ideal replay logical0 READ
+    expected_classification: HISTORICAL_AUXILIARY_REPLAY_CONTROL
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_read/run-01.csv
+  - id: C13.logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps ideal replay logical1 READ=0
+    expected_classification: HISTORICAL_ZERO_CONTROL
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_no_read_control/run-01.csv
+  - id: C13.logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps ideal replay logical0 READ=0
+    expected_classification: HISTORICAL_ZERO_CONTROL
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_no_read_control/run-01.csv
+  - id: D12.logical1_read
+    role: RESULT
+    fixture: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    condition: 12×320 physical logical1 READ
+    expected_classification: DESCRIPTIVE_RAW_HASH_MISMATCH
+    raw: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+  - id: D12.logical0_read
+    role: NEGATIVE_CONTROL
+    fixture: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    condition: 12×320 physical logical0 READ
+    expected_classification: DESCRIPTIVE_RAW_HASH_MISMATCH
+    raw: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+  - id: D12.logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    condition: 12×320 physical logical1 READ=0
+    expected_classification: DESCRIPTIVE_RAW_HASH_MISMATCH
+    raw: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+  - id: D12.logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    condition: 12×320 physical logical0 READ=0
+    expected_classification: DESCRIPTIVE_RAW_HASH_MISMATCH
+    raw: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - id: E8.logical1_read
+    role: RESULT
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 8×500 physical logical1 READ
+    expected_classification: DESCRIPTIVE_PHYSICAL_RECHECK
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - id: E8.logical0_read
+    role: NEGATIVE_CONTROL
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 8×500 physical logical0 READ
+    expected_classification: DESCRIPTIVE_PHYSICAL_RECHECK
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+  - id: E8.logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 8×500 physical logical1 READ=0
+    expected_classification: DESCRIPTIVE_PHYSICAL_RECHECK
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+  - id: E8.logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 8×500 physical logical0 READ=0
+    expected_classification: DESCRIPTIVE_PHYSICAL_RECHECK
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  required_signals:
+  - I(BJL1|XBQ)
+  - I(BJL2|XBQ)
+  - I(BJS|XBQ)
+  - I(B_LD1)
+  - I(B_LD10)
+  - I(B_LD11)
+  - I(B_LD12)
+  - I(B_LD2)
+  - I(B_LD3)
+  - I(B_LD4)
+  - I(B_LD5)
+  - I(B_LD6)
+  - I(B_LD7)
+  - I(B_LD8)
+  - I(B_LD9)
+  - I(I_BL1)
+  - I(I_IBIAS)
+  - I(I_IN)
+  - I(I_REPLAY)
+  - I(I_SE1)
+  - I(I_WL1)
+  - I(L0|XBQ)
+  - I(L1|XBQ)
+  - I(L2|XBQ)
+  - I(LIN|XBQ)
+  - I(L_PSL|XBVM1)
+  - I(L_SL|XBVM1)
+  - I(RB|XBQ)
+  - I(RJ1|XBQ)
+  - I(RJ2|XBQ)
+  - I(R_LOAD)
+  - P(BJL1|XBQ)
+  - P(BJL2|XBQ)
+  - P(BJS|XBQ)
+  - P(B_JM1|XBVM1)
+  - P(B_JM2|XBVM1)
+  - P(B_JS1|XBVM1)
+  - P(B_JS2|XBVM1)
+  - P(B_LD1)
+  - P(B_LD10)
+  - P(B_LD11)
+  - P(B_LD12)
+  - P(B_LD2)
+  - P(B_LD3)
+  - P(B_LD4)
+  - P(B_LD5)
+  - P(B_LD6)
+  - P(B_LD7)
+  - P(B_LD8)
+  - P(B_LD9)
+  - V(BJL1|XBQ)
+  - V(BJL2|XBQ)
+  - V(BJS|XBQ)
+  - V(B_JM1|XBVM1)
+  - V(B_JM2|XBVM1)
+  - V(B_JS1|XBVM1)
+  - V(B_JS2|XBVM1)
+  - V(B_LD1)
+  - V(B_LD10)
+  - V(B_LD11)
+  - V(B_LD12)
+  - V(B_LD2)
+  - V(B_LD3)
+  - V(B_LD4)
+  - V(B_LD5)
+  - V(B_LD6)
+  - V(B_LD7)
+  - V(B_LD8)
+  - V(B_LD9)
+  - V(IN)
+  - V(N6|XBVM1)
+  - V(OUT)
+  - V(SL1)
+  plots:
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html
+    role: COMPARISON
+    cases:
+    - C13.logical1_read
+    - D12.logical1_read
+    - E8.logical1_read
+    source_classification: INTERNAL_TRAJECTORY_AUDIT
+    phase_semantics: continuous_absolute
+    source_experiments: &id002
+    - test/exploration/qb-q0-standalone-current-quantized-event-20260824
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html
+    role: COMPARISON
+    cases:
+    - C13.logical1_read
+    - D12.logical1_read
+    - E8.logical1_read
+    source_classification: ORIENTATION_KCL_AUDIT
+    phase_semantics: null
+    phase_plot: false
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html
+    role: RESULT
+    cases:
+    - C13.logical1_read
+    - E8.logical1_read
+    source_classification: NODE_PARTITION_AUDIT
+    phase_semantics: null
+    phase_plot: false
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html
+    role: RESULT
+    cases:
+    - C13.logical1_read
+    - E8.logical1_read
+    source_classification: NODE_PARTITION_AUDIT
+    phase_semantics: null
+    phase_plot: false
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html
+    role: RESULT
+    cases:
+    - C13.logical1_read
+    - E8.logical1_read
+    source_classification: NODE_PARTITION_AUDIT
+    phase_semantics: null
+    phase_plot: false
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html
+    role: COMPARISON
+    cases:
+    - C13.logical1_read
+    - E8.logical1_read
+    source_classification: INTERNAL_TRAJECTORY_AUDIT
+    phase_semantics: continuous_absolute
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html
+    role: COMPARISON
+    cases:
+    - C13.logical1_read
+    - E8.logical1_read
+    source_classification: INTERNAL_TRAJECTORY_AUDIT
+    phase_semantics: continuous_absolute
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html
+    role: COMPARISON
+    cases:
+    - C13.logical1_read
+    - E8.logical1_read
+    source_classification: QB_PORT_TRAJECTORY_AUDIT
+    phase_semantics: null
+    phase_plot: false
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html
+    role: COMPARISON
+    cases:
+    - Q0/scaled-45u
+    - Q0/scaled-68p4u
+    - C13.logical1_read
+    - E8.logical1_read
+    source_classification: LOCAL_REFERENCE_TRAJECTORY_AUDIT
+    phase_semantics: continuous_absolute
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv
+    - test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html
+    role: COMPARISON
+    cases:
+    - C13.logical0_read
+    - C13.logical1_no_read_control
+    - C13.logical0_no_read_control
+    - D12.logical0_read
+    - D12.logical1_no_read_control
+    - D12.logical0_no_read_control
+    - E8.logical0_read
+    - E8.logical1_no_read_control
+    - E8.logical0_no_read_control
+    source_classification: MATCHED_CONTROL_AUDIT
+    phase_semantics: continuous_absolute
+    source_experiments: *id002
+    source_paths:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_read/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  topology_id: BVM_JSL8_SCALED_QB_PHYSICAL
+  phase_semantics: *id001
+  notes: 这是 analysis-only mechanism audit；C13 仍是历史 auxiliary I(B_LD1) replay，不是 final-JSL
+    语义证明；不产生因果定论、参数变更、route/metric freeze 或 paper claim。
+  reading_guide: 先看 pre-bias、input-port/KCL 和 matched-controls；再看 node2/3/4 partition；最后看两组
+    phase trajectory、Vin/I(Lin) 和 Q0/local-reference 对比，再读正式 REPORT。
+  sequence: 55
+  stage_id: stage-08
+  stage_title: physical BVM→JSL12/JSL8→QB closure + internal trajectory audit
+  topology_signature: fe9c11a4258d5c75cf24c21b4098b140149c2a536d5cc86017058f6c236e5508
+  topology_status: PUBLICATION_SCHEMATIC_VALIDATED
+  topology:
+    topology_id: BVM_JSL8_SCALED_QB_PHYSICAL
+    topology_signature: fe9c11a4258d5c75cf24c21b4098b140149c2a536d5cc86017058f6c236e5508
+    publication_schematic: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic.svg
+    annotated_schematic: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic-annotated.svg
+    connectivity_debug: null
+  plot_groups:
+    core_result:
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html
+    key_comparison:
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html
+    case_plots:
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html
+    - test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html
+    controls: []
     source_references: []
 - experiment_id: test/exploration/qb-load-boundary-matrix-20260824
   title_cn: QB load-boundary matrix：Q0 output boundary
@@ -7698,7 +8089,7 @@ experiments:
     publication_schematic: test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic.svg
     annotated_schematic: test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 55
+  sequence: 56
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 103283576557852a577289c5b5b7ae5db59b0780fac26881ad1eb1a6376be837
@@ -7924,7 +8315,7 @@ experiments:
     publication_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic.svg
     annotated_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 56
+  sequence: 57
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: b85efce84ad622382fcaa2f12042cbb5fd7846fd70961c31289435814bf83fd1
@@ -8029,7 +8420,7 @@ experiments:
   notes: ideal replay 不是 physical QB→JTL 证据；strict local event 与 settled-well transport
     必须分开。
   reading_guide: ''
-  sequence: 57
+  sequence: 58
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 762b19105f96c0883fdc0060380cd753377a1ddb5c345518104d650f5aa58b07
@@ -8109,7 +8500,7 @@ experiments:
   phase_semantics: *id001
   notes: 这是方法学整理，不是 global metric freeze，也不改变 physical BVM/JTL compatibility。
   reading_guide: ''
-  sequence: 58
+  sequence: 59
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -8267,7 +8658,7 @@ experiments:
   phase_semantics: *id001
   notes: 不是 timestep 数值不稳定，而是 registered robustness Gate 未闭合；不改变 JTL 参数。
   reading_guide: ''
-  sequence: 59
+  sequence: 60
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -8422,7 +8813,7 @@ experiments:
   phase_semantics: *id001
   notes: rerun 只加强 provenance/数值稳定性，不升级 Gate 为 PASS。
   reading_guide: ''
-  sequence: 60
+  sequence: 61
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -8588,7 +8979,7 @@ experiments:
     publication_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic.svg
     annotated_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 61
+  sequence: 62
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 103283576557852a577289c5b5b7ae5db59b0780fac26881ad1eb1a6376be837

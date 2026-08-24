@@ -1,0 +1,15 @@
+{
+  "plot": "standalone45-vs68p4-vs-physical-trajectory",
+  "title": "Native-timestamp Q0 versus ideal/physical BJL2 trajectory",
+  "input": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/standalone45-vs68p4-vs-physical-trajectory.csv",
+  "source_paths": [
+    "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv",
+    "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv",
+    "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv",
+    "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv"
+  ],
+  "phase_semantics": "continuous phase turns rad/2pi; Q0 dt=0.1 ps and 13 ps dt=0.0125 ps are not time-aligned or interpolated",
+  "source_classification": "DERIVED_DIAGNOSTIC_ONLY",
+  "renderer": "scripts/josim-plot2.py",
+  "normalization": "-j 2pi only labels phase as continuous phase turns rad/2pi; no SFQ count"
+}

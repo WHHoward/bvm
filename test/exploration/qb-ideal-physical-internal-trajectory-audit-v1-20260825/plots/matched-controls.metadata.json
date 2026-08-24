@@ -1,0 +1,20 @@
+{
+  "plot": "matched-controls",
+  "title": "Matched logical0 and READ=0 control BJL2 trajectories",
+  "input": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/matched-controls.csv",
+  "source_paths": [
+    "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_read/run-01.csv",
+    "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_no_read_control/run-01.csv",
+    "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_no_read_control/run-01.csv",
+    "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv",
+    "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv",
+    "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv",
+    "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv",
+    "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv",
+    "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv"
+  ],
+  "phase_semantics": "continuous phase turns rad/2pi; matched controls only; not an event count",
+  "source_classification": "DERIVED_DIAGNOSTIC_ONLY",
+  "renderer": "scripts/josim-plot2.py",
+  "normalization": "-j 2pi only labels phase as continuous phase turns rad/2pi; no SFQ count"
+}

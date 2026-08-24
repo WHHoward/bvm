@@ -96,6 +96,7 @@ EXPERIMENT_ORDER = [
     "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824",
     "physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
     "bvm-jsl8-500-physical-qb-recheck-v1-20260824",
+    "qb-ideal-physical-internal-trajectory-audit-v1-20260825",
     "qb-load-boundary-matrix-20260824",
     "parallel-qb-jtl-interface-mechanism-20260824",
     "jtl-transport-gate-polarity-replay-20260824",
@@ -114,8 +115,8 @@ STAGE_DEFINITIONS = [
     ("stage-05", "R11–R15：direct JTL / active-stage route", range(29, 37)),
     ("stage-06", "QB-Q0–Q2：standalone scaled QB", range(37, 42)),
     ("stage-07", "PAPER-SL：JSL waveform → QB + READ semantics", range(42, 53)),
-    ("stage-08", "physical BVM→JSL12/JSL8→QB closure", range(53, 55)),
-    ("stage-09", "QB output boundary / JTL transport", range(55, 62)),
+    ("stage-08", "physical BVM→JSL12/JSL8→QB closure + internal trajectory audit", range(53, 56)),
+    ("stage-09", "QB output boundary / JTL transport", range(56, 63)),
 ]
 
 
@@ -491,6 +492,12 @@ EXPERIMENT_NARRATIVES: dict[str, dict[str, str]] = {
         "result_summary": "PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN：logical1 的 BJL1/BJL2 subthreshold 幅度相对 12×320 略有恢复，但 BJL2 最大同段仅约 −0.125 turn；四工况无 complete BJL2，8 个 JSL 均保持 non-switching。",
         "conclusion_boundary": "这是 JSL sizing 对 frozen QB boundary 的 bounded margin comparison，不是 physical one-SFQ closure、硬件测量、JTL/T1 evidence 或 QB source matching 的最终结论；后续 14 ps 也未自动运行。",
     },
+    "qb-ideal-physical-internal-trajectory-audit-v1-20260825": {
+        "title_cn": "QB ideal/physical：内部轨迹与分歧层审计",
+        "what_done": "只读取 Q0 45/68.4 µA、C13 13 ps ideal replay、D12 12×320 physical、E8 8×500 physical 的既有 raw，检查端口方向/KCL、PRE state、node2/3/4 current partition、trajectory divergence 和 phase/area 对照。",
+        "result_summary": "MECHANISM_AUDIT_INCONCLUSIVE；C13↔E8 的首个 active/transition 分歧在 95.0125 ps 处由 input_port、BJs trajectory、node2 并列出现；D12 仅作 RUN_INPUT_HASH_MISMATCH 下的描述性 raw 观察，Q0 45/68.4 仅作局部参考。",
+        "conclusion_boundary": "这是 analysis-only mechanism audit；C13 仍是历史 auxiliary I(B_LD1) replay，不是 final-JSL 语义证明；不产生因果定论、参数变更、route/metric freeze 或 paper claim。",
+    },
 }
 
 
@@ -556,6 +563,7 @@ EXPERIMENT_STATUS_OVERRIDES = {
     "qb-to-jtl-load-backaction-causal-audit-v1-20260824": "MIXED_DYNAMIC_LOADING",
     "physical-bvm-jsl12-qb-sfq-closure-v1-20260824": "PHYSICAL_BACKACTION_PREVENTS_CLOSURE",
     "bvm-jsl8-500-physical-qb-recheck-v1-20260824": "PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN",
+    "qb-ideal-physical-internal-trajectory-audit-v1-20260825": "MECHANISM_AUDIT_INCONCLUSIVE",
 }
 
 
@@ -944,6 +952,50 @@ def curated_entries() -> dict[str, dict[str, Any]]:
     )
     e[physical8]["jsl_count"] = 8
     e[physical8]["jsl_current_uA"] = 500
+
+    audit = "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825"
+    audit_cases = explicit_cases([
+        ("Q0/scaled-45u", "NEGATIVE_CONTROL", q0, "scaled Q0 45 µA local reference", "TRAJECTORY_RESEMBLANCE_TO_SUBTHRESHOLD", f"{q0}/raw/scaled/iin-45u.csv"),
+        ("Q0/scaled-68p4u", "POSITIVE_CONTROL", q0, "scaled Q0 68.4 µA local reference", "TRAJECTORY_RESEMBLANCE_TO_QUANTIZED", f"{q0}/raw/scaled/iin-68p4u.csv"),
+        ("C13.logical1_read", "RESULT", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824", "13 ps ideal replay logical1 READ", "HISTORICAL_AUXILIARY_REPLAY", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv"),
+        ("C13.logical0_read", "NEGATIVE_CONTROL", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824", "13 ps ideal replay logical0 READ", "HISTORICAL_AUXILIARY_REPLAY_CONTROL", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_read/run-01.csv"),
+        ("C13.logical1_no_read_control", "ZERO_CONTROL", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824", "13 ps ideal replay logical1 READ=0", "HISTORICAL_ZERO_CONTROL", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_no_read_control/run-01.csv"),
+        ("C13.logical0_no_read_control", "ZERO_CONTROL", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824", "13 ps ideal replay logical0 READ=0", "HISTORICAL_ZERO_CONTROL", "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_no_read_control/run-01.csv"),
+        ("D12.logical1_read", "RESULT", physical, "12×320 physical logical1 READ", "DESCRIPTIVE_RAW_HASH_MISMATCH", f"{physical}/raw/13/logical1_read/run-01.csv"),
+        ("D12.logical0_read", "NEGATIVE_CONTROL", physical, "12×320 physical logical0 READ", "DESCRIPTIVE_RAW_HASH_MISMATCH", f"{physical}/raw/13/logical0_read/run-01.csv"),
+        ("D12.logical1_no_read_control", "ZERO_CONTROL", physical, "12×320 physical logical1 READ=0", "DESCRIPTIVE_RAW_HASH_MISMATCH", f"{physical}/raw/13/logical1_no_read_control/run-01.csv"),
+        ("D12.logical0_no_read_control", "ZERO_CONTROL", physical, "12×320 physical logical0 READ=0", "DESCRIPTIVE_RAW_HASH_MISMATCH", f"{physical}/raw/13/logical0_no_read_control/run-01.csv"),
+        ("E8.logical1_read", "RESULT", physical8, "8×500 physical logical1 READ", "DESCRIPTIVE_PHYSICAL_RECHECK", f"{physical8}/raw/13/logical1_read/run-01.csv"),
+        ("E8.logical0_read", "NEGATIVE_CONTROL", physical8, "8×500 physical logical0 READ", "DESCRIPTIVE_PHYSICAL_RECHECK", f"{physical8}/raw/13/logical0_read/run-01.csv"),
+        ("E8.logical1_no_read_control", "ZERO_CONTROL", physical8, "8×500 physical logical1 READ=0", "DESCRIPTIVE_PHYSICAL_RECHECK", f"{physical8}/raw/13/logical1_no_read_control/run-01.csv"),
+        ("E8.logical0_no_read_control", "ZERO_CONTROL", physical8, "8×500 physical logical0 READ=0", "DESCRIPTIVE_PHYSICAL_RECHECK", f"{physical8}/raw/13/logical0_no_read_control/run-01.csv"),
+    ])
+    audit_sources = [q0, "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824", physical, physical8]
+    e[audit] = key_entry(
+        audit,
+        title="QB ideal/physical：内部轨迹与分歧层审计",
+        question="在不重新运行、不改参数、不引入 magnetic coupling/JTL/T1 的边界内，比较 Q0、13 ps ideal replay、12×320 physical、8×500 physical 的 QB 内部轨迹，定位最早可证实的分歧层。",
+        result="MECHANISM_AUDIT_INCONCLUSIVE；C13↔E8 的首个 active/transition 分歧为 input_port + BJs trajectory + node2 的同采样点并列，D12 因 RUN_INPUT_HASH_MISMATCH 仅作描述性观察。",
+        status="MECHANISM_AUDIT_INCONCLUSIVE",
+        report=f"{audit}/REPORT.md",
+        claim_type="internal_trajectory_mechanism_audit",
+        topology_id="BVM_JSL8_SCALED_QB_PHYSICAL",
+        cases=audit_cases,
+        plots=[
+            plot_record(f"{audit}/plots/pre-bias-state-comparison.html", role="COMPARISON", cases=["C13.logical1_read", "D12.logical1_read", "E8.logical1_read"], source_classification="INTERNAL_TRAJECTORY_AUDIT", source_experiments=audit_sources),
+            plot_record(f"{audit}/plots/input-port-orientation-kcl.html", role="COMPARISON", cases=["C13.logical1_read", "D12.logical1_read", "E8.logical1_read"], source_classification="ORIENTATION_KCL_AUDIT", source_experiments=audit_sources, phase=None),
+            plot_record(f"{audit}/plots/node2-current-partition.html", role="RESULT", cases=["C13.logical1_read", "E8.logical1_read"], source_classification="NODE_PARTITION_AUDIT", source_experiments=audit_sources, phase=None),
+            plot_record(f"{audit}/plots/node3-current-partition.html", role="RESULT", cases=["C13.logical1_read", "E8.logical1_read"], source_classification="NODE_PARTITION_AUDIT", source_experiments=audit_sources, phase=None),
+            plot_record(f"{audit}/plots/node4-current-partition.html", role="RESULT", cases=["C13.logical1_read", "E8.logical1_read"], source_classification="NODE_PARTITION_AUDIT", source_experiments=audit_sources, phase=None),
+            plot_record(f"{audit}/plots/bjs-vs-bjl1-phase-trajectory.html", role="COMPARISON", cases=["C13.logical1_read", "E8.logical1_read"], source_classification="INTERNAL_TRAJECTORY_AUDIT", source_experiments=audit_sources),
+            plot_record(f"{audit}/plots/bjl1-vs-bjl2-phase-trajectory.html", role="COMPARISON", cases=["C13.logical1_read", "E8.logical1_read"], source_classification="INTERNAL_TRAJECTORY_AUDIT", source_experiments=audit_sources),
+            plot_record(f"{audit}/plots/vin-vs-ilin-port-trajectory.html", role="COMPARISON", cases=["C13.logical1_read", "E8.logical1_read"], source_classification="QB_PORT_TRAJECTORY_AUDIT", source_experiments=audit_sources, phase=None),
+            plot_record(f"{audit}/plots/standalone45-vs68p4-vs-physical-trajectory.html", role="COMPARISON", cases=["Q0/scaled-45u", "Q0/scaled-68p4u", "C13.logical1_read", "E8.logical1_read"], source_classification="LOCAL_REFERENCE_TRAJECTORY_AUDIT", source_experiments=audit_sources),
+            plot_record(f"{audit}/plots/matched-controls.html", role="COMPARISON", cases=[c["id"] for c in audit_cases if c["id"].startswith(("C13.", "D12.", "E8.")) and c["role"] in {"NEGATIVE_CONTROL", "ZERO_CONTROL"}], source_classification="MATCHED_CONTROL_AUDIT", source_experiments=audit_sources),
+        ],
+        notes="仅展示关键机制诊断和一张 controls 汇总图；HTML 不作为 SFQ event/Gate authority。C13 的 source-chain 只能闭合到 auxiliary index-14 I(B_LD1)，不能替代 final JSL source；D12 不因可读 raw 而越过 input-deck hash boundary。",
+        reading="先看 pre-bias、input-port/KCL 和 matched-controls；再看 node2/3/4 partition；最后看两组 phase trajectory、Vin/I(Lin) 和 Q0/local-reference 对比，再读正式 REPORT。",
+    )
 
     legacy_width = "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824"
     legacy_width_path = ROOT / legacy_width

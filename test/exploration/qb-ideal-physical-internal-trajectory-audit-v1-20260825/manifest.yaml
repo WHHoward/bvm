@@ -1,0 +1,115 @@
+{
+  "experiment": "QB_IDEAL_PHYSICAL_INTERNAL_TRAJECTORY_AUDIT_V1",
+  "date_directory": "qb-ideal-physical-internal-trajectory-audit-v1-20260825",
+  "head": "6e9cbedefeae8e8771299a8624bef081146494eb",
+  "status": "MECHANISM_AUDIT_INCONCLUSIVE",
+  "analysis_only": true,
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version_output": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "raw_refs": {
+    "Q0_45": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv",
+    "Q0_68p4": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv",
+    "C13": {
+      "logical1_read": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv",
+      "logical0_read": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_read/run-01.csv",
+      "logical1_no_read_control": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_no_read_control/run-01.csv",
+      "logical0_no_read_control": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_no_read_control/run-01.csv"
+    },
+    "D12": {
+      "logical1_read": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv",
+      "logical0_read": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv",
+      "logical1_no_read_control": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv",
+      "logical0_no_read_control": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv"
+    },
+    "E8": {
+      "logical1_read": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv",
+      "logical0_read": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv",
+      "logical1_no_read_control": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv",
+      "logical0_no_read_control": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv"
+    }
+  },
+  "source_chain_status": "HISTORICAL_REPLAY_SOURCE_CHAIN_CLOSED",
+  "c13_selected_source_column": {
+    "index": 14,
+    "header": "I(B_LD1)",
+    "semantic": "auxiliary probe; not final I(B_LD12)"
+  },
+  "d12_disposition": "DESCRIPTIVE_RAW_OBSERVATION / RUN_INPUT_HASH_MISMATCH",
+  "derived_evidence": [
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/reference-integrity.json",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/orientation-audit.json",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/pre-bias-state.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/divergence-timeline.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/node-partition-summary.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/trajectory-audit.json",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/independent-raw-recheck.json"
+  ],
+  "plots": [
+    {
+      "name": "pre-bias-state-comparison",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.metadata.json"
+    },
+    {
+      "name": "input-port-orientation-kcl",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.metadata.json"
+    },
+    {
+      "name": "node2-current-partition",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.metadata.json"
+    },
+    {
+      "name": "node3-current-partition",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.metadata.json"
+    },
+    {
+      "name": "node4-current-partition",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.metadata.json"
+    },
+    {
+      "name": "bjs-vs-bjl1-phase-trajectory",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.metadata.json"
+    },
+    {
+      "name": "bjl1-vs-bjl2-phase-trajectory",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.metadata.json"
+    },
+    {
+      "name": "vin-vs-ilin-port-trajectory",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.metadata.json"
+    },
+    {
+      "name": "matched-controls",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.metadata.json"
+    },
+    {
+      "name": "standalone45-vs68p4-vs-physical-trajectory",
+      "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html",
+      "metadata": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.metadata.json"
+    }
+  ],
+  "plot_inputs": [
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/pre-bias-state-comparison.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/input-port-orientation-kcl.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node2-current-partition.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node3-current-partition.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node4-current-partition.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/bjs-vs-bjl1-phase-trajectory.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/bjl1-vs-bjl2-phase-trajectory.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/vin-vs-ilin-port-trajectory.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/matched-controls.csv",
+    "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/standalone45-vs68p4-vs-physical-trajectory.csv"
+  ],
+  "visualization_boundary": "key mechanism diagnostics only; HTML is not event/Gate authority"
+}

@@ -1,0 +1,63 @@
+digraph topology {
+graph [rankdir=LR, splines=polyline, overlap=false, nodesep=0.32, ranksep=1.0, pad=0.3, bgcolor="white"];
+node [fontname="DejaVu Sans", fontsize=9, margin="0.08,0.05"];
+edge [fontname="DejaVu Sans", fontsize=8, color="#65758b"];
+label="qb-q0-standalone-current-quantized-event-20260824 — representative topology\nsource: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir"; labelloc=t; fontsize=16; fontname="DejaVu Sans";
+subgraph "cluster_XBQ" {
+label="QB / regenerator\n(XBQ)";
+color="#eadcff"; style="rounded,filled"; fillcolor="#eadcff55";
+"e_XBQ_Lin" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/Lin\n[L] 0.8p"];
+"e_XBQ_L0" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/L0\n[L] 1.323p"];
+"e_XBQ_L1" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/L1\n[L] 3.91p"];
+"e_XBQ_L2" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/L2\n[L] 3.91p"];
+"e_XBQ_BJs" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/BJs\n[B] jjmit area=0.5"];
+"e_XBQ_BJL1" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/BJL1\n[B] jjmit area=0.36"];
+"e_XBQ_RJ1" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/RJ1\n[R] 33"];
+"e_XBQ_BJL2" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/BJL2\n[B] jjmit area=0.54"];
+"e_XBQ_RJ2" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/RJ2\n[R] 22"];
+"e_XBQ_RB" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ/RB\n[R] 6"];
+}
+subgraph "cluster_top-level" {
+label="bias / top-level\n(top-level)";
+color="#f1f3f5"; style="rounded,filled"; fillcolor="#f1f3f555";
+"e_R_LOAD" [shape=box, style="rounded,filled", fillcolor="white", label="R_LOAD\n[R] 10"];
+"e_I_IBIAS" [shape=box, style="rounded,filled", fillcolor="white", label="I_IBIAS\n[I] pwl(0p 0 1p 35u 2p 35u 300p 35u)"];
+"e_I_IN" [shape=box, style="rounded,filled", fillcolor="white", label="I_IN\n[I] pulse(0 68.4u 10p 1p 1p 5p 50p)"];
+}
+"n_0" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="0"];
+"n_IBIAS" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="IBIAS"];
+"n_IN" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="IN"];
+"n_OUT" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="OUT"];
+"n_XBQ_0" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="XBQ/0"];
+"n_XBQ_1" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="XBQ/1"];
+"n_XBQ_2" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="XBQ/2"];
+"n_XBQ_3" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="XBQ/3"];
+"n_XBQ_4" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="XBQ/4"];
+"e_XBQ_Lin" -> "n_IN" [dir=none, label="a"];
+"e_XBQ_Lin" -> "n_XBQ_1" [dir=none, label="b"];
+"e_XBQ_L0" -> "n_XBQ_4" [dir=none, label="a"];
+"e_XBQ_L0" -> "n_OUT" [dir=none, label="b"];
+"e_XBQ_L1" -> "n_XBQ_2" [dir=none, label="a"];
+"e_XBQ_L1" -> "n_XBQ_3" [dir=none, label="b"];
+"e_XBQ_L2" -> "n_XBQ_3" [dir=none, label="a"];
+"e_XBQ_L2" -> "n_XBQ_4" [dir=none, label="b"];
+"e_XBQ_BJs" -> "n_XBQ_1" [dir=none, label="a"];
+"e_XBQ_BJs" -> "n_XBQ_2" [dir=none, label="b"];
+"e_XBQ_BJL1" -> "n_XBQ_2" [dir=none, label="a"];
+"e_XBQ_BJL1" -> "n_XBQ_0" [dir=none, label="b"];
+"e_XBQ_RJ1" -> "n_XBQ_2" [dir=none, label="a"];
+"e_XBQ_RJ1" -> "n_XBQ_0" [dir=none, label="b"];
+"e_XBQ_BJL2" -> "n_XBQ_4" [dir=none, label="a"];
+"e_XBQ_BJL2" -> "n_XBQ_0" [dir=none, label="b"];
+"e_XBQ_RJ2" -> "n_XBQ_4" [dir=none, label="a"];
+"e_XBQ_RJ2" -> "n_XBQ_0" [dir=none, label="b"];
+"e_XBQ_RB" -> "n_IBIAS" [dir=none, label="a"];
+"e_XBQ_RB" -> "n_XBQ_3" [dir=none, label="b"];
+"e_R_LOAD" -> "n_OUT" [dir=none, label="a"];
+"e_R_LOAD" -> "n_0" [dir=none, label="b"];
+"e_I_IBIAS" -> "n_0" [dir=none, label="a"];
+"e_I_IBIAS" -> "n_IBIAS" [dir=none, label="b"];
+"e_I_IN" -> "n_0" [dir=none, label="a"];
+"e_I_IN" -> "n_IN" [dir=none, label="b"];
+legend [shape=note, label="Legend\nboxes: primitive elements\nellipses: exact nets\ndiamonds: mutual coupling\nsource: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir", color="#8c98a8"];
+}

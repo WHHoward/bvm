@@ -1,0 +1,27 @@
+digraph topology {
+graph [rankdir=LR, splines=polyline, overlap=false, nodesep=0.32, ranksep=1.0, pad=0.3, bgcolor="white"];
+node [fontname="DejaVu Sans", fontsize=9, margin="0.08,0.05"];
+edge [fontname="DejaVu Sans", fontsize=8, color="#65758b"];
+label="qb-q0-standalone-current-quantized-event-20260824 — structural variant test-qb-final\nsource: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/test_qb_final.cir"; labelloc=t; fontsize=16; fontname="DejaVu Sans";
+subgraph "cluster_top-level" {
+label="bias / top-level\n(top-level)";
+color="#f1f3f5"; style="rounded,filled"; fillcolor="#f1f3f555";
+"e_XBQ" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ\n[X] IBIAS BQ"];
+"e_R_LOAD" [shape=box, style="rounded,filled", fillcolor="white", label="R_LOAD\n[R] 10"];
+"e_I_IBIAS" [shape=box, style="rounded,filled", fillcolor="white", label="I_IBIAS\n[I] pwl(0 0 1p 35u)"];
+"e_I_IN" [shape=box, style="rounded,filled", fillcolor="white", label="I_IN\n[I] pulse(0 90u 10p 1p 1p 5p 50p)"];
+}
+"n_0" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="0"];
+"n_IBIAS" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="IBIAS"];
+"n_IN1" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="IN1"];
+"n_OUT1" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="OUT1"];
+"e_XBQ" -> "n_IN1" [dir=none, label="a"];
+"e_XBQ" -> "n_OUT1" [dir=none, label="b"];
+"e_R_LOAD" -> "n_OUT1" [dir=none, label="a"];
+"e_R_LOAD" -> "n_0" [dir=none, label="b"];
+"e_I_IBIAS" -> "n_0" [dir=none, label="a"];
+"e_I_IBIAS" -> "n_IBIAS" [dir=none, label="b"];
+"e_I_IN" -> "n_0" [dir=none, label="a"];
+"e_I_IN" -> "n_IN1" [dir=none, label="b"];
+legend [shape=note, label="Legend\nboxes: primitive elements\nellipses: exact nets\ndiamonds: mutual coupling\nsource: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/test_qb_final.cir", color="#8c98a8"];
+}

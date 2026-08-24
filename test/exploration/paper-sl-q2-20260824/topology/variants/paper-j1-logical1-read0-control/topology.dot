@@ -1,0 +1,27 @@
+digraph topology {
+graph [rankdir=LR, splines=polyline, overlap=false, nodesep=0.32, ranksep=1.0, pad=0.3, bgcolor="white"];
+node [fontname="DejaVu Sans", fontsize=9, margin="0.08,0.05"];
+edge [fontname="DejaVu Sans", fontsize=8, color="#65758b"];
+label="paper-sl-q2-20260824 — structural variant paper-j1-logical1-read0-control\nsource: test/exploration/paper-sl-q2-20260824/reference/invalid-attempt-01/inputs/37p5u/paper-j1-logical1-read0-control.cir"; labelloc=t; fontsize=16; fontname="DejaVu Sans";
+subgraph "cluster_top-level" {
+label="bias / top-level\n(top-level)";
+color="#f1f3f5"; style="rounded,filled"; fillcolor="#f1f3f555";
+"e_XBQ" [shape=box, style="rounded,filled", fillcolor="white", label="XBQ\n[X] IBIAS BQ"];
+"e_I_REPLAY" [shape=box, style="rounded,filled", fillcolor="white", label="I_REPLAY\n[I] pwl(0p 0 0.012500000000000001p 0 0.025000000000000001p 0 0.037499999999999999p 0 0.050000000000000003p 0 0.0625p 0 0.07499999 ... [value shortened for diagram; source deck is exact] ... 000000001p 0 0.21249999999999999p 0"];
+"e_R_LOAD" [shape=box, style="rounded,filled", fillcolor="white", label="R_LOAD\n[R] 10"];
+"e_I_IBIAS" [shape=box, style="rounded,filled", fillcolor="white", label="I_IBIAS\n[I] pwl(0p 0 1p 37.5u 2p 37.5u 170p 37.5u)"];
+}
+"n_0" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="0"];
+"n_IBIAS" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="IBIAS"];
+"n_IN" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="IN"];
+"n_OUT" [shape=ellipse, style=filled, fillcolor="#fffdf2", label="OUT"];
+"e_XBQ" -> "n_IN" [dir=none, label="a"];
+"e_XBQ" -> "n_OUT" [dir=none, label="b"];
+"e_I_REPLAY" -> "n_0" [dir=none, label="a"];
+"e_I_REPLAY" -> "n_IN" [dir=none, label="b"];
+"e_R_LOAD" -> "n_OUT" [dir=none, label="a"];
+"e_R_LOAD" -> "n_0" [dir=none, label="b"];
+"e_I_IBIAS" -> "n_0" [dir=none, label="a"];
+"e_I_IBIAS" -> "n_IBIAS" [dir=none, label="b"];
+legend [shape=note, label="Legend\nboxes: primitive elements\nellipses: exact nets\ndiamonds: mutual coupling\nsource: test/exploration/paper-sl-q2-20260824/reference/invalid-attempt-01/inputs/37p5u/paper-j1-logical1-read0-control.cir", color="#8c98a8"];
+}

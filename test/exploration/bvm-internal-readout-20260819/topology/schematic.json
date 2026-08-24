@@ -1,0 +1,63 @@
+{
+  "schema": "josim-publication-schematic-v1",
+  "source_deck": "test/exploration/bvm-internal-readout-20260819/inputs/pos-read-single.cir",
+  "subcircuit_deck": "test/exploration/bvm-internal-readout-20260819/inputs/bvm_cell.cir",
+  "subcircuit": "BVM",
+  "layout": {
+    "renderer": "scripts/schematic/render_bvm.py",
+    "method": "manual deterministic semantic placement with coordinate ledger",
+    "signal_flow": "left-to-right with external control buses above",
+    "bias_direction": "top/external buses",
+    "return_direction": "bottom/ground",
+    "functional_regions": ["S-Loop", "R-Loop"],
+    "publication_artifacts": {
+      "clean": "schematic.svg",
+      "annotated": "schematic-annotated.svg",
+      "geometry": "geometric-connectivity.json",
+      "geometry_validation": "geometric-connectivity-validation.json"
+    }
+  },
+  "expanded_instances": [
+    {
+      "scope": "top-level",
+      "name": "XBVM1",
+      "subcircuit": "BVM",
+      "reason": "BVM subcircuit is expanded into the publication schematic"
+    }
+  ],
+  "displayed_components": [
+    {"scope": "BVM", "name": "R_WL", "type": "resistor", "nodes": ["WL", "n_wl_0"]},
+    {"scope": "BVM", "name": "L_PWL", "type": "inductor", "nodes": ["n_wl_0", "N1"]},
+    {"scope": "BVM", "name": "R_BL", "type": "resistor", "nodes": ["BL", "n_bl_0"]},
+    {"scope": "BVM", "name": "L_PBL", "type": "inductor", "nodes": ["n_bl_0", "N1"]},
+    {"scope": "BVM", "name": "B_JM1", "display_name": "J_M1", "type": "josephson_junction", "nodes": ["N1", "n_jm1o"]},
+    {"scope": "BVM", "name": "R_JM1", "type": "resistor", "nodes": ["N1", "n_jm1o"]},
+    {"scope": "BVM", "name": "L_M1", "type": "inductor", "nodes": ["n_jm1o", "0"]},
+    {"scope": "BVM", "name": "L_M2", "type": "inductor", "nodes": ["N1", "n_jm2i"]},
+    {"scope": "BVM", "name": "B_JM2", "display_name": "J_M2", "type": "josephson_junction", "nodes": ["n_jm2i", "N2"]},
+    {"scope": "BVM", "name": "L_M3", "type": "inductor", "nodes": ["N2", "N5"]},
+    {"scope": "BVM", "name": "L_PM", "type": "inductor", "nodes": ["N5", "0"]},
+    {"scope": "BVM", "name": "L_S1", "type": "inductor", "nodes": ["N2", "n_js1p"]},
+    {"scope": "BVM", "name": "B_JS1", "display_name": "J_S1", "type": "josephson_junction", "nodes": ["n_js1p", "N3"]},
+    {"scope": "BVM", "name": "R_SE", "type": "resistor", "nodes": ["SE", "n_se_0"]},
+    {"scope": "BVM", "name": "L_PSE", "type": "inductor", "nodes": ["n_se_0", "N3"]},
+    {"scope": "BVM", "name": "R_S", "type": "resistor", "nodes": ["N3", "N6"]},
+    {"scope": "BVM", "name": "L_S3", "type": "inductor", "nodes": ["N3", "N6"]},
+    {"scope": "BVM", "name": "L_S2", "type": "inductor", "nodes": ["N5", "n_js2p"]},
+    {"scope": "BVM", "name": "B_JS2", "display_name": "J_S2", "type": "josephson_junction", "nodes": ["n_js2p", "N6"]},
+    {"scope": "BVM", "name": "L_PSL", "type": "inductor", "nodes": ["N6", "n_psl"]},
+    {"scope": "BVM", "name": "R_SL", "type": "resistor", "nodes": ["n_psl", "N8"]},
+    {"scope": "BVM", "name": "L_SL", "type": "inductor", "nodes": ["N8", "SL"]},
+    {"scope": "top-level", "name": "R_LD", "type": "resistor", "nodes": ["SL1", "0"]}
+  ],
+  "required_internal_components": [
+    "R_WL", "L_PWL", "R_BL", "L_PBL", "B_JM1", "R_JM1", "L_M1",
+    "L_M2", "B_JM2", "L_M3", "L_PM", "L_S1", "B_JS1", "R_SE", "L_PSE",
+    "R_S", "L_S3", "L_S2", "B_JS2", "L_PSL", "R_SL", "L_SL"
+  ],
+  "omitted_from_display": [
+    {"scope": "top-level", "name": "I_WL1", "reason": "ideal PWL control stimulus represented by the WL port/bus and annotated deck note"},
+    {"scope": "top-level", "name": "I_BL1", "reason": "ideal PWL control stimulus represented by the BL port/bus and annotated deck note"},
+    {"scope": "top-level", "name": "I_SE1", "reason": "ideal PWL read stimulus represented by the SE port/bus and annotated deck note"}
+  ]
+}

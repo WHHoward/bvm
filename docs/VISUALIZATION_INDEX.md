@@ -51,7 +51,7 @@ HTML 使用 Plotly 3.1.0 CDN；首次打开需要网络加载 Plotly runtime。
 
 | Exploration | 主结构图 | 拓扑说明 | 结构变体 |
 |---|---|---|---|
-| `bvm-internal-readout-20260819` | [主图](../test/exploration/bvm-internal-readout-20260819/topology/topology.svg) | [README](../test/exploration/bvm-internal-readout-20260819/topology/README.md) | 无 |
+| `bvm-internal-readout-20260819` | [论文级电路图](../test/exploration/bvm-internal-readout-20260819/topology/schematic.svg)；[annotated schematic](../test/exploration/bvm-internal-readout-20260819/topology/schematic-annotated.svg)；[debug graph](../test/exploration/bvm-internal-readout-20260819/topology/connectivity-debug.svg) | [README](../test/exploration/bvm-internal-readout-20260819/topology/README.md) | 无 |
 | `bvm-sfq-receiver-native-qb-20260822` | [主图](../test/exploration/bvm-sfq-receiver-native-qb-20260822/topology/topology.svg) | [README](../test/exploration/bvm-sfq-receiver-native-qb-20260822/topology/README.md) | 无 |
 | `bvm-sfq-receiver-r0-20260819` | [主图](../test/exploration/bvm-sfq-receiver-r0-20260819/topology/topology.svg) | [README](../test/exploration/bvm-sfq-receiver-r0-20260819/topology/README.md) | 无 |
 | `bvm-sfq-receiver-r0b-20260819` | [主图](../test/exploration/bvm-sfq-receiver-r0b-20260819/topology/topology.svg) | [README](../test/exploration/bvm-sfq-receiver-r0b-20260819/topology/README.md) | 无 |

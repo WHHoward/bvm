@@ -1,0 +1,216 @@
+{
+  "status": "PASS",
+  "source_deck": "test/exploration/bvm-internal-readout-20260819/inputs/pos-read-single.cir",
+  "subcircuit_deck": "test/exploration/bvm-internal-readout-20260819/inputs/bvm_cell.cir",
+  "subcircuit": "BVM",
+  "checked_displayed_components": [
+    {
+      "scope": "BVM",
+      "name": "R_WL",
+      "nodes": [
+        "WL",
+        "n_wl_0"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_PWL",
+      "nodes": [
+        "n_wl_0",
+        "N1"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "R_BL",
+      "nodes": [
+        "BL",
+        "n_bl_0"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_PBL",
+      "nodes": [
+        "n_bl_0",
+        "N1"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "B_JM1",
+      "nodes": [
+        "N1",
+        "n_jm1o"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "R_JM1",
+      "nodes": [
+        "N1",
+        "n_jm1o"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_M1",
+      "nodes": [
+        "n_jm1o",
+        "0"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_M2",
+      "nodes": [
+        "N1",
+        "n_jm2i"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "B_JM2",
+      "nodes": [
+        "n_jm2i",
+        "N2"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_M3",
+      "nodes": [
+        "N2",
+        "N5"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_PM",
+      "nodes": [
+        "N5",
+        "0"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_S1",
+      "nodes": [
+        "N2",
+        "n_js1p"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "B_JS1",
+      "nodes": [
+        "n_js1p",
+        "N3"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "R_SE",
+      "nodes": [
+        "SE",
+        "n_se_0"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_PSE",
+      "nodes": [
+        "n_se_0",
+        "N3"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "R_S",
+      "nodes": [
+        "N3",
+        "N6"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_S3",
+      "nodes": [
+        "N3",
+        "N6"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_S2",
+      "nodes": [
+        "N5",
+        "n_js2p"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "B_JS2",
+      "nodes": [
+        "n_js2p",
+        "N6"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_PSL",
+      "nodes": [
+        "N6",
+        "n_psl"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "R_SL",
+      "nodes": [
+        "n_psl",
+        "N8"
+      ]
+    },
+    {
+      "scope": "BVM",
+      "name": "L_SL",
+      "nodes": [
+        "N8",
+        "SL"
+      ]
+    },
+    {
+      "scope": "top-level",
+      "name": "R_LD",
+      "nodes": [
+        "SL1",
+        "0"
+      ]
+    }
+  ],
+  "omitted_from_display": [
+    {
+      "scope": "top-level",
+      "name": "I_WL1",
+      "reason": "ideal PWL control stimulus represented by the WL port/bus and annotated deck note"
+    },
+    {
+      "scope": "top-level",
+      "name": "I_BL1",
+      "reason": "ideal PWL control stimulus represented by the BL port/bus and annotated deck note"
+    },
+    {
+      "scope": "top-level",
+      "name": "I_SE1",
+      "reason": "ideal PWL read stimulus represented by the SE port/bus and annotated deck note"
+    }
+  ],
+  "errors": [],
+  "checks": {
+    "element_exists": true,
+    "endpoint_connectivity": true,
+    "critical_path_displayed": true,
+    "no_invented_element": true
+  }
+}

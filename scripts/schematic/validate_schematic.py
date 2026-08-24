@@ -71,6 +71,7 @@ def main() -> None:
     repo = args.repo_root.resolve()
     source = repo / manifest["source_deck"]
     cell = repo / manifest["subcircuit_deck"]
+    subcircuit_name = manifest["subcircuit"]
     top = parse_section(source)
     internal = parse_section(cell, manifest["subcircuit"])
 
@@ -78,7 +79,7 @@ def main() -> None:
     checked = []
     for item in manifest["displayed_components"]:
         scope = item["scope"]
-        table = internal if scope == "BQ" else top
+        table = internal if scope == subcircuit_name else top
         actual = table.get(item["name"])
         expected = tuple(item["nodes"])
         if actual is None:
@@ -93,17 +94,21 @@ def main() -> None:
         checked.append({"scope": scope, "name": item["name"], "nodes": list(expected)})
 
     for name in manifest["required_internal_components"]:
-        if not any(x["scope"] == "BQ" and x["name"] == name
+        if not any(x["scope"] == subcircuit_name and x["name"] == name
                    for x in manifest["displayed_components"]):
-            errors.append(f"critical internal element not displayed: BQ/{name}")
+            errors.append(
+                f"critical internal element not displayed: {subcircuit_name}/{name}"
+            )
         if name not in internal:
-            errors.append(f"critical internal element absent from deck: BQ/{name}")
+            errors.append(
+                f"critical internal element absent from deck: {subcircuit_name}/{name}"
+            )
 
     omitted = []
     for item in manifest.get("omitted_from_display", []):
         name = item["name"]
         scope = item["scope"]
-        table = internal if scope == "BQ" else top
+        table = internal if scope == subcircuit_name else top
         if name not in table:
             errors.append(f"declared omitted element absent from deck: {scope}/{name}")
         omitted.append({"scope": scope, "name": name, "reason": item["reason"]})

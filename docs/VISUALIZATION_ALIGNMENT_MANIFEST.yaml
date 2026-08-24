@@ -214,7 +214,7 @@ experiments:
     分离且 source/storage guard 保持，但 read1 B_TRIG excursion 未满足完整 2π transition。
   conclusion_boundary: 不能称 complete trigger switching、exactly-one、self-quench 或 SFQ
     delivery。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R0_PARTIAL
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r0-20260819/analysis/R0_REPORT.md
   claim_type: generic_exploration
@@ -318,7 +318,7 @@ experiments:
     最大约 0.185 turn，controls 无完整 transition，source/storage guard 保持。
   conclusion_boundary: 这是 multi-turn local trigger closure，不是 exactly-one SFQ、self-quench
     或 downstream delivery。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R0B_PASS
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r0b-20260819/analysis/R0B_REPORT.md
   claim_type: generic_exploration
@@ -422,7 +422,7 @@ experiments:
   result_summary: R1 FAIL：强 feedback branch 明显加载并压制 B_TRIG，弱 branch 虽保留 trigger 却不能提供足够
     transfer；该拓扑没有建立 read1 output event。
   conclusion_boundary: 只否定当前 parallel LQ–RQ instance，不否定所有 one-shot 或 transfer family。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R1_FAIL
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/analysis/R1_REPORT.md
   claim_type: generic_exploration
@@ -632,7 +632,7 @@ experiments:
     read1 约 66.77 µV/5.56 µA，约为 read0 的 4.9 倍，controls inactive。
   conclusion_boundary: 建立的是 passive state-dependent extraction，不是 output-JJ switching、one-shot
     或 SFQ delivery。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R1A_PASS
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/analysis/R1A_REPORT.md
   claim_type: generic_exploration
@@ -742,7 +742,7 @@ experiments:
   result_summary: FAIL 的根因是 common-mode：V(N_OUT) 跟随 V(N_SEC)，V(B_OUT) 近 numerical
     zero，I(B_OUT) 与 phase 基本恒定；没有实际 differential activation。
   conclusion_boundary: 这是接口/KCL 失配，不是通过调 AREA、bias 或 damping 可以诊断的 output-margin 结果。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R1B_FAIL
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/analysis/R1B_REPORT.md
   claim_type: generic_exploration
@@ -889,7 +889,7 @@ experiments:
     无完整 event；read1 signal 仍存在但远离 switching。
   conclusion_boundary: AREA 同时改变 Ic、C、RN、R0，因此只能说明该 output-class point 不足，不能归因于纯 Ic
     reduction。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R1B_AREA008_FAIL
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r1b-area008-20260821/analysis/R1B_AREA008_REPORT.md
   claim_type: generic_exploration
@@ -1004,7 +1004,7 @@ experiments:
     0.022 turn；read0/controls 无 event，B_TRIG/source guards 保持。
   conclusion_boundary: 证明 signal existence，不证明 output-JJ activation；随后 AREA/bias 诊断均仍是
     bounded sub-turn。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R1B_FAIL
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/analysis/R1B_DIFF_REPORT.md
   claim_type: generic_exploration
@@ -1149,7 +1149,7 @@ experiments:
   result_summary: 所有 bias 点都有 state-dependent read1 transient，但没有完整 B_OUT transition；read0/controls
     无 event，因此 bias operating point 不是该 fixture 的主要解法。
   conclusion_boundary: 这是局部 bias bracket，未测试其他 topology，也没有 downstream SFQ/JTL 结论。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R1C_FAIL
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/analysis/R1C_BIAS_REPORT.md
   claim_type: generic_exploration
@@ -1392,7 +1392,7 @@ experiments:
     event；read0/controls 与 source guards 保持。
   conclusion_boundary: 否定当前 coupling matrix 的 activation closure，不否定全部 transformer/mutual
     family；动态 dwell/receiver load 仍未解决。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R2A_FAIL_NO_COMPLETE_BOUT
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/analysis/R2A_COUPLING_REPORT.md
   claim_type: generic_exploration
@@ -1635,7 +1635,7 @@ experiments:
   result_summary: 减弱 damping 只使 read1 最大段约 0.0261→0.0290 turn（约 10.9%），没有 complete
     event；read0/controls 和 BVM guards 保持。
   conclusion_boundary: 只说明当前 damping sweep 不是主瓶颈，不代表所有拓扑中的 damping 都无关。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R2B_NO_COMPLETE_EVENT
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r2b-damping-20260821/analysis/R2B_DAMPING_REPORT.md
   claim_type: generic_exploration
@@ -1846,7 +1846,7 @@ experiments:
     shunts 分流，junction drive transfer 约 22.4%。
   conclusion_boundary: 这是 fast-transient fixture 的 duration/load limitation，不是静态 Ic
     threshold 的普适结论。
-  scientific_status: REPORT_PRESENT
+  scientific_status: NO_THRESHOLD_BOUNDED_FAST_MATRIX
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/analysis/R2C_DIRECTDRIVE_REPORT.md
   claim_type: generic_exploration
@@ -1967,7 +1967,7 @@ experiments:
   result_summary: 响应随 duration 非线性增大（最大段约 .0096→.0835 turn），但矩阵内仍无完整 event；20 ps 点已接近
     96% Ic 的 quasi-static ceiling。
   conclusion_boundary: 在该 amplitude 下 duration alone 不够；下一限制转向 amplitude，不能推出所有更长脉冲都无效。
-  scientific_status: REPORT_PRESENT
+  scientific_status: NO_THRESHOLD_BOUNDED_DURATION_MATRIX
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r2d-duration-20260821/analysis/R2D_DURATION_REPORT.md
   claim_type: generic_exploration
@@ -2081,7 +2081,7 @@ experiments:
     switching threshold。
   conclusion_boundary: 不能把 I≈Ic 或 voltage peak 当 event，也不涉及 retrap、JTL 或 physical
     transformer。
-  scientific_status: REPORT_PRESENT
+  scientific_status: NO_THRESHOLD_BOUNDED_MATRIX
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/analysis/R2E_AMPTHRESHOLD_REPORT.md
   claim_type: generic_exploration
@@ -2189,7 +2189,7 @@ experiments:
     event；0–10 ps 为 near-miss。
   conclusion_boundary: 这是理想 direct-drive output-stage requirement，不是 BVM→receiver
     或 downstream SFQ delivery。
-  scientific_status: REPORT_PRESENT
+  scientific_status: DWELL_THRESHOLD_FOUND
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/analysis/R2F_DWELL_REPORT.md
   claim_type: generic_exploration
@@ -2306,7 +2306,7 @@ experiments:
     multifire/free-running；建立了 direct-drive 的 2-pulse single-slip primitive。
   conclusion_boundary: 只证明理想 direct-drive output stage 的局部可重复性，不证明真实 transformer、BVM、JTL
     或 T1。
-  scientific_status: REPORT_PRESENT
+  scientific_status: REPEATABLE_TWO_PULSE_SINGLE_SLIP
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/analysis/R2G_TWOPULSE_REPORT.md
   claim_type: generic_exploration
@@ -2398,7 +2398,7 @@ experiments:
     µA、相对 bias 只有约 1.06 µA；四 cases 均无 complete event。
   conclusion_boundary: 只否定该 fast capacitive extractor instance；失败位于 transient→sustained
     drive，不否定所有 B_TRIG extraction。
-  scientific_status: REPORT_PRESENT
+  scientific_status: NO_OUTPUT_EVENT
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/analysis/R3A_ONSET_REPORT.md
   claim_type: generic_exploration
@@ -2503,7 +2503,7 @@ experiments:
     的一小部分，最终回到 n=0；read0/controls 更小，J_SET 无 complete slip。
   conclusion_boundary: 降级的是该 passive weak-mutual single point，不是整个 mutual-coupling
     family；capture 需要更强 transfer 或 bias-assisted quantization。
-  scientific_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
+  scientific_status: R4A_NO_PERSISTENT_READ1_STATE
   current_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
   report: test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/analysis/R4A_AMENDED_REPORT.md
   claim_type: generic_exploration
@@ -2547,7 +2547,7 @@ experiments:
     displacement，但没有 complete phase slip；read0/controls clean。
   conclusion_boundary: 说明 amplitude 已足以产生强 nonlinear activity，但缺少不可逆性/不对称 escape；不能称
     quantization。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R5A_NO_SET_EVENT
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/analysis/R5A_REPORT.md
   claim_type: generic_exploration
@@ -2649,7 +2649,7 @@ experiments:
   result_summary: active shunt 实际只是额外 damping/current diversion，使 R5-A oscillation
     收缩、没有 complete event；结论是 paper-QB 的 bias placement 不能用 SET 并联 shunt 替代。
   conclusion_boundary: 否定该 minimal direct-shunt hypothesis，不等于完整 paper QB 已被实验闭合。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R5B_STILL_BOUNDED_OSCILLATION
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/analysis/R5B_REPORT.md
   claim_type: generic_exploration
@@ -2756,7 +2756,7 @@ experiments:
     complete event；同时产生明显 read1 back-action 和约 −4-turn JS1/JS2 post shift。
   conclusion_boundary: 关闭 reduced quantizer 的 bias/K/L point tuning；不能把 saddle crossing
     当作 event。
-  scientific_status: REPORT_PRESENT
+  scientific_status: R5C_SADDLE_CROSSED_NO_COMPLETE_EVENT
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/analysis/R5C_REPORT.md
   claim_type: generic_exploration
@@ -2972,7 +2972,7 @@ experiments:
     仍明显高于 read0/control，说明 isolation feasibility PASS；BJL2 仍仅约 0.0016 turn，无 local
     pass。
   conclusion_boundary: 这是 isolation-preserved state-selective activity，不是 BJL2 quantization。
-  scientific_status: BACK_ACTION_FAILURE
+  scientific_status: ISOLATION_PRESERVED_STATE_SELECTIVE_QB_ACTIVITY
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/analysis/R6A_REPORT.md
   claim_type: generic_exploration
@@ -3090,7 +3090,7 @@ experiments:
     保持；但 BJL2 最大段几乎不变（约 .0015846→.0015880 turn），没有 output quantization。
   conclusion_boundary: 关闭 transformer 参数优化；瓶颈更像 front-stage absorption/loop load-line，而非单纯
     secondary amplitude。
-  scientific_status: REPORT_PRESENT
+  scientific_status: DRIVE_GAIN_WITH_ISOLATION_PRESERVED
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/analysis/R6B_REPORT.md
   claim_type: generic_exploration
@@ -3323,7 +3323,7 @@ experiments:
   result_summary: read1 phase/area activity 约增加 36%，但仍在 10^-3-turn 区间；BJL2 current
     excursion下降，read0 相对增幅更大，没有 threshold-like jump 或 complete event。
   conclusion_boundary: 停止 BJL2 AREA sweep；不能把该点解释成纯 Ic reduction failure。
-  scientific_status: REPORT_PRESENT
+  scientific_status: OUTPUT_CLASS_CHANGE_WITHOUT_MEANINGFUL_BJL2_GAIN
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/analysis/R8_REPORT.md
   claim_type: generic_exploration
@@ -3555,7 +3555,7 @@ experiments:
   result_summary: local bias 造成四 case 级别的 8–14-turn activity、free-running 和 source
     disturbance，未形成 bounded one-shot；主 verdict 为 BACK_ACTION_OR_NONSELECTIVE_FAILURE。
   conclusion_boundary: 只关闭当前 local-feed point，不否定所有 bias-routing，但不再继续该 sweep。
-  scientific_status: REPORT_PRESENT
+  scientific_status: BACK_ACTION_OR_NONSELECTIVE_FAILURE
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/analysis/R10A_REPORT.md
   claim_type: generic_exploration
@@ -4236,7 +4236,7 @@ experiments:
     interstage energy transfer。
   conclusion_boundary: 没有运行 JoSIM；不把 passive transformer/termination scale 解释成 active
     gain。
-  scientific_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
+  scientific_status: PRECHECK_NO_GO
   current_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
   report: test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/SUMMARY.md
   claim_type: generic_exploration
@@ -4279,7 +4279,7 @@ experiments:
     eigenvalue 为负，拓扑 constitutive matrix 无效；没有运行可解释的 physics point。
   conclusion_boundary: 只否定该 invalid magnetic formulation，不是 active-stage physics failure，也没有
     DCSFQ/JTL 结果。
-  scientific_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
+  scientific_status: PRECHECK_NO_GO
   current_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
   report: test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/SUMMARY.md
   claim_type: generic_exploration
@@ -4572,7 +4572,7 @@ experiments:
     transient depletion/recovery 可见，但 J_Q 没有完整 one-shot event；source guard 仍是 bounded
     extra back-action。
   conclusion_boundary: 不能把 depletion/recovery 单独称 refractory one-shot；暂停 R15-E 设计。
-  scientific_status: CAUSAL_NEAR_THRESHOLD
+  scientific_status: JQ_CAUSAL_NEAR_THRESHOLD
   current_status: ALIGNED
   report: test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/SUMMARY.md
   claim_type: generic_exploration
@@ -5799,7 +5799,7 @@ experiments:
   result_summary: BJs→BJL1 更像 waveform/routing/timing-limited：Q0 的 local branch signed
     transfer 比 Q1/Q2 更有利；phase/area 与 KCL 均闭合。
   conclusion_boundary: 这是 mechanism inference，不是 BJL1 threshold 已被排除；未运行新 circuit。
-  scientific_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
+  scientific_status: Q3_PRE_ROUTING_MECHANISM_INFERENCE
   current_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
   report: test/exploration/paper-sl-q3-pre-20260824/analysis/REPORT.md
   claim_type: generic_exploration
@@ -5841,7 +5841,7 @@ experiments:
   result_summary: 这是 analysis-only provenance checkpoint；结论是 L1 routing knob 值得 single-point
     execution，独立目录不产生新 waveform。
   conclusion_boundary: 正式物理结果归属于下一条 paper-sl-q3-l1-routing-closure execution。
-  scientific_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
+  scientific_status: Q3_PRE_SINGLE_POINT_SELECTED
   current_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
   report: null
   claim_type: analysis_only
@@ -5884,7 +5884,7 @@ experiments:
     .944323→.950537，read0/control zero-event，结论为 routing gain 但仍 subthreshold。
   conclusion_boundary: L1 是 causal routing knob，不是 complete-event 或 nonlinear-gain
     closure；不连接 physical BVM/JSL/QB。
-  scientific_status: ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED
+  scientific_status: ROUTING_GAIN_WITH_BJL1_SUBTHRESHOLD
   current_status: ALIGNED
   report: test/exploration/paper-sl-q3-l1-routing-closure-20260824/analysis/REPORT.md
   claim_type: factorial_point
@@ -6874,7 +6874,7 @@ experiments:
     strict local event、无 one-well transport。
   conclusion_boundary: ideal replay 不是 physical QB→JTL 证据；strict local event 与 settled-well
     transport 必须分开。
-  scientific_status: REPORT_PRESENT
+  scientific_status: POLARITY_REPLAY_RECONCILED
   current_status: ALIGNED
   report: test/exploration/jtl-transport-gate-polarity-replay-20260824/analysis/REPORT.md
   claim_type: generic_exploration
@@ -6969,7 +6969,7 @@ experiments:
   result_summary: 建立 fixture-level 方法学 reconciliation：R11/M1/pulse5 original 呈 provisional
     +1-well transport signature，M5 是 two-well，reverse 非 transport。
   conclusion_boundary: 这是方法学整理，不是 global metric freeze，也不改变 physical BVM/JTL compatibility。
-  scientific_status: JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE
+  scientific_status: JTL_TRANSPORT_GATE_V1_RECONCILED
   current_status: ALIGNED
   report: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/analysis/REPORT.md
   claim_type: polarity_convergence
@@ -7052,7 +7052,7 @@ experiments:
     original post-window robustness 未完全通过，最终 STRICT_REPLAY_INCONCLUSIVE。
   conclusion_boundary: 不是 timestep 数值不稳定，而是 registered robustness Gate 未闭合；不改变 JTL
     参数。
-  scientific_status: REPORT_PRESENT
+  scientific_status: JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE
   current_status: ALIGNED
   report: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/analysis/REPORT.md
   claim_type: generic_exploration

@@ -42,7 +42,7 @@
 
 **关键结果**：R0 PARTIAL：R0-A threshold discrimination PASS；read1 与 read0/controls 分离且 source/storage guard 保持，但 read1 B_TRIG excursion 未满足完整 2π transition。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R0_PARTIAL` / alignment=`ALIGNED`
 
 **结论边界**：不能称 complete trigger switching、exactly-one、self-quench 或 SFQ delivery。
 
@@ -66,7 +66,7 @@
 
 **关键结果**：R0b PASS：read1 出现约 4.997-turn continuous complete segment；read0 最大约 0.185 turn，controls 无完整 transition，source/storage guard 保持。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R0B_PASS` / alignment=`ALIGNED`
 
 **结论边界**：这是 multi-turn local trigger closure，不是 exactly-one SFQ、self-quench 或 downstream delivery。
 
@@ -90,7 +90,7 @@
 
 **关键结果**：R1 FAIL：强 feedback branch 明显加载并压制 B_TRIG，弱 branch 虽保留 trigger 却不能提供足够 transfer；该拓扑没有建立 read1 output event。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R1_FAIL` / alignment=`ALIGNED`
 
 **结论边界**：只否定当前 parallel LQ–RQ instance，不否定所有 one-shot 或 transfer family。
 
@@ -114,7 +114,7 @@
 
 **关键结果**：R1a PASS：read1 B_TRIG 约 3.944-turn complete，read0 约 0.185-turn；secondary read1 约 66.77 µV/5.56 µA，约为 read0 的 4.9 倍，controls inactive。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R1A_PASS` / alignment=`ALIGNED`
 
 **结论边界**：建立的是 passive state-dependent extraction，不是 output-JJ switching、one-shot 或 SFQ delivery。
 
@@ -138,7 +138,7 @@
 
 **关键结果**：FAIL 的根因是 common-mode：V(N_OUT) 跟随 V(N_SEC)，V(B_OUT) 近 numerical zero，I(B_OUT) 与 phase 基本恒定；没有实际 differential activation。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R1B_FAIL` / alignment=`ALIGNED`
 
 **结论边界**：这是接口/KCL 失配，不是通过调 AREA、bias 或 damping 可以诊断的 output-margin 结果。
 
@@ -162,7 +162,7 @@
 
 **关键结果**：AREA=.08 未提高 activation：read1 最大 B_OUT segment 约 0.020 turn，read0/controls 无完整 event；read1 signal 仍存在但远离 switching。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R1B_AREA008_FAIL` / alignment=`ALIGNED`
 
 **结论边界**：AREA 同时改变 Ic、C、RN、R0，因此只能说明该 output-class point 不足，不能归因于纯 Ic reduction。
 
@@ -186,7 +186,7 @@
 
 **关键结果**：因果 transfer 成立：read1 B_OUT 有 state-dependent transient，但最大连续段仅约 0.022 turn；read0/controls 无 event，B_TRIG/source guards 保持。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R1B_FAIL` / alignment=`ALIGNED`
 
 **结论边界**：证明 signal existence，不证明 output-JJ activation；随后 AREA/bias 诊断均仍是 bounded sub-turn。
 
@@ -210,7 +210,7 @@
 
 **关键结果**：所有 bias 点都有 state-dependent read1 transient，但没有完整 B_OUT transition；read0/controls 无 event，因此 bias operating point 不是该 fixture 的主要解法。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R1C_FAIL` / alignment=`ALIGNED`
 
 **结论边界**：这是局部 bias bracket，未测试其他 topology，也没有 downstream SFQ/JTL 结论。
 
@@ -234,7 +234,7 @@
 
 **关键结果**：增大 K 会增强 secondary，但 read1 B_OUT 仍停留在约 10^-2-turn 级，未形成 complete event；read0/controls 与 source guards 保持。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R2A_FAIL_NO_COMPLETE_BOUT` / alignment=`ALIGNED`
 
 **结论边界**：否定当前 coupling matrix 的 activation closure，不否定全部 transformer/mutual family；动态 dwell/receiver load 仍未解决。
 
@@ -258,7 +258,7 @@
 
 **关键结果**：减弱 damping 只使 read1 最大段约 0.0261→0.0290 turn（约 10.9%），没有 complete event；read0/controls 和 BVM guards 保持。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R2B_NO_COMPLETE_EVENT` / alignment=`ALIGNED`
 
 **结论边界**：只说明当前 damping sweep 不是主瓶颈，不代表所有拓扑中的 damping 都无关。
 
@@ -282,7 +282,7 @@
 
 **关键结果**：没有 amplitude 点产生完整 B_OUT event；约 78% 快注入电流被 N_SEC 的 reactive/resistive shunts 分流，junction drive transfer 约 22.4%。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`NO_THRESHOLD_BOUNDED_FAST_MATRIX` / alignment=`ALIGNED`
 
 **结论边界**：这是 fast-transient fixture 的 duration/load limitation，不是静态 Ic threshold 的普适结论。
 
@@ -306,7 +306,7 @@
 
 **关键结果**：响应随 duration 非线性增大（最大段约 .0096→.0835 turn），但矩阵内仍无完整 event；20 ps 点已接近 96% Ic 的 quasi-static ceiling。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`NO_THRESHOLD_BOUNDED_DURATION_MATRIX` / alignment=`ALIGNED`
 
 **结论边界**：在该 amplitude 下 duration alone 不够；下一限制转向 amplitude，不能推出所有更长脉冲都无效。
 
@@ -330,7 +330,7 @@
 
 **关键结果**：所有点都接近 Ic 但没有完整 B_OUT segment，正式结论为 bounded matrix 内 NO_THRESHOLD；没有建立 switching threshold。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`NO_THRESHOLD_BOUNDED_MATRIX` / alignment=`ALIGNED`
 
 **结论边界**：不能把 I≈Ic 或 voltage peak 当 event，也不涉及 retrap、JTL 或 physical transformer。
 
@@ -354,7 +354,7 @@
 
 **关键结果**：20 ps hold 首次产生一个约 1.0039-turn、phase/area 一致且 retrap 的 local B_OUT event；0–10 ps 为 near-miss。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`DWELL_THRESHOLD_FOUND` / alignment=`ALIGNED`
 
 **结论边界**：这是理想 direct-drive output-stage requirement，不是 BVM→receiver 或 downstream SFQ delivery。
 
@@ -378,7 +378,7 @@
 
 **关键结果**：两个 pulse 各产生 exactly one local complete slip，间隔期间 retrap/rearm 清晰，无 multifire/free-running；建立了 direct-drive 的 2-pulse single-slip primitive。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`REPEATABLE_TWO_PULSE_SINGLE_SLIP` / alignment=`ALIGNED`
 
 **结论边界**：只证明理想 direct-drive output stage 的局部可重复性，不证明真实 transformer、BVM、JTL 或 T1。
 
@@ -402,7 +402,7 @@
 
 **关键结果**：read1 的 C_ON current 可达约 2.24 µA，但 B_OUT causal-window peak 仅约 8.06 µA、相对 bias 只有约 1.06 µA；四 cases 均无 complete event。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`NO_OUTPUT_EVENT` / alignment=`ALIGNED`
 
 **结论边界**：只否定该 fast capacitive extractor instance；失败位于 transient→sustained drive，不否定所有 B_TRIG extraction。
 
@@ -426,7 +426,7 @@
 
 **关键结果**：read1 loop 最大 circulating current 约 4.874 µA，仅约 half-quantum boundary 的一小部分，最终回到 n=0；read0/controls 更小，J_SET 无 complete slip。
 
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+**当前状态**：`R4A_NO_PERSISTENT_READ1_STATE` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
 
 **结论边界**：降级的是该 passive weak-mutual single point，不是整个 mutual-coupling family；capture 需要更强 transfer 或 bias-assisted quantization。
 
@@ -449,7 +449,7 @@
 
 **关键结果**：read1 产生 large bounded plasma oscillation并跨过 analytic reverse-critical displacement，但没有 complete phase slip；read0/controls clean。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R5A_NO_SET_EVENT` / alignment=`ALIGNED`
 
 **结论边界**：说明 amplitude 已足以产生强 nonlinear activity，但缺少不可逆性/不对称 escape；不能称 quantization。
 
@@ -473,7 +473,7 @@
 
 **关键结果**：active shunt 实际只是额外 damping/current diversion，使 R5-A oscillation 收缩、没有 complete event；结论是 paper-QB 的 bias placement 不能用 SET 并联 shunt 替代。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R5B_STILL_BOUNDED_OSCILLATION` / alignment=`ALIGNED`
 
 **结论边界**：否定该 minimal direct-shunt hypothesis，不等于完整 paper QB 已被实验闭合。
 
@@ -497,7 +497,7 @@
 
 **关键结果**：read1 确实跨过正确 static saddle，但仍为 bounded multi-lobe oscillation、没有 complete event；同时产生明显 read1 back-action 和约 −4-turn JS1/JS2 post shift。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`R5C_SADDLE_CROSSED_NO_COMPLETE_EVENT` / alignment=`ALIGNED`
 
 **结论边界**：关闭 reduced quantizer 的 bias/K/L point tuning；不能把 saddle crossing 当作 event。
 
@@ -545,7 +545,7 @@
 
 **关键结果**：相对 direct SL，canonical source/storage guard 恢复，read1 QB activity 仍明显高于 read0/control，说明 isolation feasibility PASS；BJL2 仍仅约 0.0016 turn，无 local pass。
 
-**当前状态**：`BACK_ACTION_FAILURE` / alignment=`ALIGNED`
+**当前状态**：`ISOLATION_PRESERVED_STATE_SELECTIVE_QB_ACTIVITY` / alignment=`ALIGNED`
 
 **结论边界**：这是 isolation-preserved state-selective activity，不是 BJL2 quantization。
 
@@ -569,7 +569,7 @@
 
 **关键结果**：read1 secondary/Lin current 和 BJs/BJL1 activity 增强，source isolation 保持；但 BJL2 最大段几乎不变（约 .0015846→.0015880 turn），没有 output quantization。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`DRIVE_GAIN_WITH_ISOLATION_PRESERVED` / alignment=`ALIGNED`
 
 **结论边界**：关闭 transformer 参数优化；瓶颈更像 front-stage absorption/loop load-line，而非单纯 secondary amplitude。
 
@@ -617,7 +617,7 @@
 
 **关键结果**：read1 phase/area activity 约增加 36%，但仍在 10^-3-turn 区间；BJL2 current excursion下降，read0 相对增幅更大，没有 threshold-like jump 或 complete event。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`OUTPUT_CLASS_CHANGE_WITHOUT_MEANINGFUL_BJL2_GAIN` / alignment=`ALIGNED`
 
 **结论边界**：停止 BJL2 AREA sweep；不能把该点解释成纯 Ic reduction failure。
 
@@ -665,7 +665,7 @@
 
 **关键结果**：local bias 造成四 case 级别的 8–14-turn activity、free-running 和 source disturbance，未形成 bounded one-shot；主 verdict 为 BACK_ACTION_OR_NONSELECTIVE_FAILURE。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`BACK_ACTION_OR_NONSELECTIVE_FAILURE` / alignment=`ALIGNED`
 
 **结论边界**：只关闭当前 local-feed point，不否定所有 bias-routing，但不再继续该 sweep。
 
@@ -765,7 +765,7 @@
 
 **关键结果**：PRECHECK_NO_GO：optimistic loaded DCSFQ input 约 9.77 µA，3 ps sanity 也约 19.1 µA，远低于已知 68.4 µA no-event 与 300 µA positive point；缺失功能是 active/regenerative interstage energy transfer。
 
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+**当前状态**：`PRECHECK_NO_GO` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
 
 **结论边界**：没有运行 JoSIM；不把 passive transformer/termination scale 解释成 active gain。
 
@@ -788,7 +788,7 @@
 
 **关键结果**：PRECHECK_NO_GO：L_Q/L_F/L_CTL mutual matrix determinant 为 −.62、最小 eigenvalue 为负，拓扑 constitutive matrix 无效；没有运行可解释的 physics point。
 
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+**当前状态**：`PRECHECK_NO_GO` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
 
 **结论边界**：只否定该 invalid magnetic formulation，不是 active-stage physics failure，也没有 DCSFQ/JTL 结果。
 
@@ -859,7 +859,7 @@
 
 **关键结果**：JQ_CAUSAL_NEAR_THRESHOLD：read1 selective J_SET/J_Q activity 与 L_Q transient depletion/recovery 可见，但 J_Q 没有完整 one-shot event；source guard 仍是 bounded extra back-action。
 
-**当前状态**：`CAUSAL_NEAR_THRESHOLD` / alignment=`ALIGNED`
+**当前状态**：`JQ_CAUSAL_NEAR_THRESHOLD` / alignment=`ALIGNED`
 
 **结论边界**：不能把 depletion/recovery 单独称 refractory one-shot；暂停 R15-E 设计。
 
@@ -1090,7 +1090,7 @@
 
 **关键结果**：BJs→BJL1 更像 waveform/routing/timing-limited：Q0 的 local branch signed transfer 比 Q1/Q2 更有利；phase/area 与 KCL 均闭合。
 
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+**当前状态**：`Q3_PRE_ROUTING_MECHANISM_INFERENCE` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
 
 **结论边界**：这是 mechanism inference，不是 BJL1 threshold 已被排除；未运行新 circuit。
 
@@ -1113,7 +1113,7 @@
 
 **关键结果**：这是 analysis-only provenance checkpoint；结论是 L1 routing knob 值得 single-point execution，独立目录不产生新 waveform。
 
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+**当前状态**：`Q3_PRE_SINGLE_POINT_SELECTED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
 
 **结论边界**：正式物理结果归属于下一条 paper-sl-q3-l1-routing-closure execution。
 
@@ -1134,7 +1134,7 @@
 
 **关键结果**：F_local .218660→.224945、G_local .515185→.526585；BJL1 .815414→.821070，BJL2 .944323→.950537，read0/control zero-event，结论为 routing gain 但仍 subthreshold。
 
-**当前状态**：`ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED` / alignment=`ALIGNED`
+**当前状态**：`ROUTING_GAIN_WITH_BJL1_SUBTHRESHOLD` / alignment=`ALIGNED`
 
 **结论边界**：L1 是 causal routing knob，不是 complete-event 或 nonlinear-gain closure；不连接 physical BVM/JSL/QB。
 
@@ -1322,7 +1322,7 @@
 
 **关键结果**：原极性在 strict local vector 上只保证第一颗 JJ，但 full-window/pre-post 呈四级约一井响应；反极性无 strict local event、无 one-well transport。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`POLARITY_REPLAY_RECONCILED` / alignment=`ALIGNED`
 
 **结论边界**：ideal replay 不是 physical QB→JTL 证据；strict local event 与 settled-well transport 必须分开。
 
@@ -1346,7 +1346,7 @@
 
 **关键结果**：建立 fixture-level 方法学 reconciliation：R11/M1/pulse5 original 呈 provisional +1-well transport signature，M5 是 two-well，reverse 非 transport。
 
-**当前状态**：`JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE` / alignment=`ALIGNED`
+**当前状态**：`JTL_TRANSPORT_GATE_V1_RECONCILED` / alignment=`ALIGNED`
 
 **结论边界**：这是方法学整理，不是 global metric freeze，也不改变 physical BVM/JTL compatibility。
 
@@ -1372,7 +1372,7 @@
 
 **关键结果**：三组 timestep classification 稳定；R11/reverse window checks 通过，但 pulse5 original post-window robustness 未完全通过，最终 STRICT_REPLAY_INCONCLUSIVE。
 
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+**当前状态**：`JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE` / alignment=`ALIGNED`
 
 **结论边界**：不是 timestep 数值不稳定，而是 registered robustness Gate 未闭合；不改变 JTL 参数。
 

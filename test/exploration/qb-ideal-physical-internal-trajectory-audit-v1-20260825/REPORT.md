@@ -1,7 +1,7 @@
 # QB_IDEAL_PHYSICAL_INTERNAL_TRAJECTORY_AUDIT_V1
 
-- analysis timestamp: `2026-08-25T01:35:13+08:00`
-- analysis HEAD: `6e9cbedefeae8e8771299a8624bef081146494eb`
+- analysis timestamp: `2026-08-25T01:44:17+08:00`
+- analysis HEAD: `a03f6ae25b0a1b5133b0fc8dd0c2b918130dd200`
 - solver execution: no new JoSIM run; frozen solver metadata is recorded only
 - final disposition: `MECHANISM_AUDIT_INCONCLUSIVE`
 
@@ -66,6 +66,7 @@
 - `analysis/node-partition-summary.csv`
 - `analysis/trajectory-audit.json`
 - `analysis/independent-raw-recheck.json`
+- `analysis/artifact-inventory.json` (non-circular final SHA-256 inventory; the inventory file itself is explicitly self-exempt)
 - key diagnostic plots are listed in `manifest.yaml` and each has a sidecar metadata JSON; plots are not Gate authority.
 
 ## Provenance and method

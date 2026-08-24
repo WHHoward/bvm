@@ -1,6 +1,6 @@
 # 数值与对抗性审查
 
-- 审查时间：`2026-08-25T01:32:55+08:00`
+- 审查时间：`2026-08-25T01:44:07+08:00`
 - 审查对象：`QB_IDEAL_PHYSICAL_INTERNAL_TRAJECTORY_AUDIT_V1`
 - 分析 HEAD：`6e9cbedefeae8e8771299a8624bef081146494eb`
 - 审查原则：只检查已有 raw、netlist、source chain 和本轮 derived evidence；不修改 raw，不运行新的 JoSIM。
@@ -16,6 +16,7 @@
 | raw 健康 | `PASS` | 注册 raw、C13 snapshots 均存在、有限、严格递增；原始 13 ps 网格为 `0.0125 ps`，Q0 为 `0.1 ps`。 |
 | 独立复算 | `PASS` | `analysis/independent-raw-recheck.json` 通过直接 raw-only 计算路径复算 KCL、BJL2 phase/area、PRE 与 first-divergence 子集，未读取本目录 derived 文件。 |
 | 控制可视化覆盖 | `PASS` | `plots/matched-controls.html` 集中覆盖 C13/D12/E8 的 logical0 与 READ=0 controls；保持关键图数量，不展开全量单工况页面。 |
+| SHA-256 artifact inventory | `PASS` | `analysis/artifact-inventory.json` 覆盖 154 个非自身排除的 raw/provenance、dependency closure、analysis/report、plot/metadata 和 validation 路径；inventory 自身以明确 self-exemption 防止循环。 |
 | 收敛/敏感性 | `UNKNOWN` | 本任务没有 timestep refinement、参数 sweep 或初始条件敏感性；不得把单一 frozen timestep 升格为 convergence Gate。 |
 
 ## 关键数值交叉核对
@@ -35,6 +36,7 @@
 4. **Duplicate-column probe**：四个 C13 role 的 index `14/18` (`I(B_LD1)`) 和 `15/51` (`I(B_LD12)`) 均逐点相等，但历史 builder 的实际选择仍被冻结为 index 14；没有把 index 51 偷换进 replay。
 5. **Boundary probe**：两组 primary pair 均没有 PRE first divergence；C13↔E8 的最早连续三点 crossing 为 `95.0125 ps`，在 ACTIVE 内且不位于窗口左边界 `94 ps`；`input_port`、`bjs_trajectory`、`node2` 在同一采样点，已按 `0.0125 ps` 预注册规则标为 `TIE`，没有强行排序。
 6. **Overclaim probe**：报告把 C13 final-JSL source semantics 标为 `INCONCLUSIVE`，把 D12 标为 `DESCRIPTIVE_RAW_OBSERVATION / PROVENANCE_INCONCLUSIVE`，并将总 disposition 固定为 `MECHANISM_AUDIT_INCONCLUSIVE`。
+7. **Inventory coverage probe**：`analysis/artifact-inventory.json` 的 `all_present=true`，列出 154 条实际路径，覆盖分析脚本、全部 derived JSON/CSV、报告/manifest、10 张 HTML 与 metadata、case deck/include closure 及 validation 文件；自身只在 `self_exempt` 中登记。
 
 ### Residual uncertainty
 
@@ -42,6 +44,7 @@
 - C13 exact source chain 的“可复现”与“物理语义正确”仍是两个命题；辅助 index-14 probe 的 semantic limitation 未被任何图或 phase/area 数字消除。
 - first divergence 是最早可观测 feature-level 分叉，不是唯一根因；source/load-line、端口 operating point 和后续 node partition 仍可能共同耦合；本轮最早层级是并列耦合族，不是唯一 input-port 根因。
 - HTML plot 只作诊断显示；没有使用图形、导数样本或 `I/Ic` 作为 SFQ event count 或 Gate。
+- 最终提交后还必须逐条执行 preregistered fresh-checkout 检查：`git ls-files --error-unmatch`、`git show HEAD:<path>` 非空，以及 checkout 内容 SHA-256 与 inventory 一致；该检查不运行 JoSIM。
 
 ## 审查结论
 

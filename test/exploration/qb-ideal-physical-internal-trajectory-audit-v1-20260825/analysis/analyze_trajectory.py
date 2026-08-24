@@ -781,6 +781,101 @@ def write_json(path: Path, value: Any) -> None:
         handle.write("\n")
 
 
+def write_artifact_inventory(integrity: dict[str, Any], plot_records: list[dict[str, Any]], now: str) -> None:
+    """Write a non-circular SHA-256 inventory for the complete audit bundle.
+
+    ``artifact-inventory.json`` explicitly excludes itself.  All other paths
+    are hashed from the same working tree that will be committed; the final
+    checkpoint additionally verifies that every listed path is tracked and
+    readable through ``git show HEAD:<path>``.
+    """
+    categories: dict[str, set[Path]] = {
+        "raw_and_provenance": set(),
+        "dependency_closure": set(),
+        "analysis_and_reports": set(),
+        "plots_and_metadata": set(),
+        "validation": set(),
+    }
+
+    def add(category: str, path: Path) -> None:
+        if path.resolve() != (ANALYSIS / "artifact-inventory.json").resolve():
+            categories[category].add(path)
+
+    for record in integrity.get("files", []):
+        add("raw_and_provenance", REPO / record["path"])
+
+    exp = REPO / "test/exploration"
+    closure_roots = (
+        exp / "qb-q0-standalone-current-quantized-event-20260824/inputs",
+        exp / "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps",
+        exp / "physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13",
+        exp / "bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13",
+    )
+    for root in closure_roots:
+        if root.exists():
+            for path in root.rglob("*"):
+                if path.is_file():
+                    add("dependency_closure", path)
+
+    for path in (
+        TARGET / "PREREGISTRATION.md",
+        TARGET / "REPORT.md",
+        TARGET / "REVIEW.md",
+        TARGET / "SUMMARY.md",
+        TARGET / "manifest.yaml",
+        ANALYSIS / "analyze_trajectory.py",
+        REPO / "scripts/josim-plot2.py",
+        REPO / "scripts/build_visualization_alignment.py",
+        REPO / "scripts/verify_visualization_alignment.py",
+        REPO / "docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml",
+        REPO / "docs/TOPOLOGY_ALIGNMENT_MANIFEST.yaml",
+        REPO / "visualization-alignment-validation.json",
+    ):
+        add("analysis_and_reports" if path.is_relative_to(TARGET) else "validation", path)
+
+    for path in ANALYSIS.glob("*.json"):
+        add("analysis_and_reports", path)
+    for path in ANALYSIS.glob("*.csv"):
+        add("analysis_and_reports", path)
+    for path in PLOT_INPUTS.glob("*.csv"):
+        add("analysis_and_reports", path)
+    for path in PLOTS.glob("*.html"):
+        add("plots_and_metadata", path)
+    for path in PLOTS.glob("*.metadata.json"):
+        add("plots_and_metadata", path)
+
+    inventory: dict[str, Any] = {
+        "schema_version": "1.0",
+        "inventory_id": "QB_IDEAL_PHYSICAL_INTERNAL_TRAJECTORY_AUDIT_V1_SHA256",
+        "generated_at": now,
+        "scope": "all registered raw/provenance inputs, dependency-closure decks/includes, analysis scripts, derived evidence, reports, key plots/metadata, and validation/index files used by this audit",
+        "self_exempt": {
+            "path": rel(ANALYSIS / "artifact-inventory.json"),
+            "reason": "excluding the inventory file itself prevents a SHA-256 self-reference cycle",
+        },
+        "fresh_checkout_requirement": {
+            "required": True,
+            "checks": [
+                "git ls-files --error-unmatch <path>",
+                "git show HEAD:<path> is non-empty",
+                "sha256(git show HEAD:<path>) == sha256 recorded below",
+            ],
+            "status": "REQUIRED_AFTER_COMMIT",
+        },
+        "categories": {},
+    }
+    for category, paths in categories.items():
+        records = []
+        for path in sorted(paths, key=lambda item: rel(item)):
+            record = file_record(path, csv_quality=False)
+            record["required_tracked"] = True
+            records.append(record)
+        inventory["categories"][category] = records
+    inventory["file_count"] = sum(len(records) for records in inventory["categories"].values())
+    inventory["all_present"] = all(record["exists"] for records in inventory["categories"].values() for record in records)
+    write_json(ANALYSIS / "artifact-inventory.json", inventory)
+
+
 def write_plot_input(name: str, series: list[tuple[str, np.ndarray, np.ndarray]], title: str, source_paths: list[str], phase_semantics: str) -> None:
     time_values = sorted({float(time) for _, times, _ in series for time in (times / 1.0e12)})
     index = {value: row for row, value in enumerate(time_values)}
@@ -1090,6 +1185,7 @@ def write_report(integrity: dict[str, Any], chain: dict[str, Any], primary: dict
         "- `analysis/node-partition-summary.csv`",
         "- `analysis/trajectory-audit.json`",
         "- `analysis/independent-raw-recheck.json`",
+        "- `analysis/artifact-inventory.json` (non-circular final SHA-256 inventory; the inventory file itself is explicitly self-exempt)",
         "- key diagnostic plots are listed in `manifest.yaml` and each has a sidecar metadata JSON; plots are not Gate authority.",
         "",
         "## Provenance and method",
@@ -1158,6 +1254,7 @@ def main() -> None:
         REPO / "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/bq_cell.cir",
         REPO / "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/jjmit.cir",
         REPO / "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/bvm_cell.cir",
+        REPO / "test/exploration/qb-q0-standalone-current-quantized-event-20260824/manifest.yaml",
     ]
     integrity = {
         "analysis_timestamp": now,
@@ -1172,6 +1269,7 @@ def main() -> None:
         "files": [],
         "d12_input_hash_disposition": "RUN_INPUT_HASH_MISMATCH (historical manifest declaration retained; no rewrite)",
         "c13_source_chain": chain,
+        "artifact_inventory": rel(ANALYSIS / "artifact-inventory.json"),
     }
     d12_manifest = REPO / "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/manifest.yaml"
     e8_manifest = REPO / "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/manifest.yaml"
@@ -1230,13 +1328,14 @@ def main() -> None:
         "source_chain_status": "HISTORICAL_REPLAY_SOURCE_CHAIN_CLOSED" if chain["all_roles_closed"] else "INVALID",
         "c13_selected_source_column": {"index": 14, "header": "I(B_LD1)", "semantic": "auxiliary probe; not final I(B_LD12)"},
         "d12_disposition": "DESCRIPTIVE_RAW_OBSERVATION / RUN_INPUT_HASH_MISMATCH",
-        "derived_evidence": [rel(ANALYSIS / name) for name in ("reference-integrity.json", "orientation-audit.json", "pre-bias-state.csv", "divergence-timeline.csv", "node-partition-summary.csv", "trajectory-audit.json", "independent-raw-recheck.json")],
+        "derived_evidence": [rel(ANALYSIS / name) for name in ("reference-integrity.json", "orientation-audit.json", "pre-bias-state.csv", "divergence-timeline.csv", "node-partition-summary.csv", "trajectory-audit.json", "independent-raw-recheck.json", "artifact-inventory.json")],
         "plots": plot_records,
         "plot_inputs": [rel(PLOT_INPUTS / f"{record['name']}.csv") for record in plot_records],
         "visualization_boundary": "key mechanism diagnostics only; HTML is not event/Gate authority",
     }
     write_json(TARGET / "manifest.yaml", manifest)
     write_report(integrity, chain, {"cases": primary_cases}, pre_results, divergence, q0_results, independent, plot_records, now)
+    write_artifact_inventory(integrity, plot_records, now)
     print(json.dumps({"head": integrity["head"], "source_chain": chain["all_roles_closed"], "e8_earliest": divergence["C13.logical1_read vs E8"].get("earliest_active_or_transition"), "q0": {label: result["local_reference_classification"] for label, result in q0_results.items()}}, ensure_ascii=False))
 
 

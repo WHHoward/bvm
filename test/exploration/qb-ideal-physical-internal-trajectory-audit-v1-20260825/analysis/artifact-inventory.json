@@ -1,0 +1,1111 @@
+{
+  "schema_version": "1.0",
+  "inventory_id": "QB_IDEAL_PHYSICAL_INTERNAL_TRAJECTORY_AUDIT_V1_SHA256",
+  "generated_at": "2026-08-25T01:44:17+08:00",
+  "scope": "all registered raw/provenance inputs, dependency-closure decks/includes, analysis scripts, derived evidence, reports, key plots/metadata, and validation/index files used by this audit",
+  "self_exempt": {
+    "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/artifact-inventory.json",
+    "reason": "excluding the inventory file itself prevents a SHA-256 self-reference cycle"
+  },
+  "fresh_checkout_requirement": {
+    "required": true,
+    "checks": [
+      "git ls-files --error-unmatch <path>",
+      "git show HEAD:<path> is non-empty",
+      "sha256(git show HEAD:<path>) == sha256 recorded below"
+    ],
+    "status": "REQUIRED_AFTER_COMMIT"
+  },
+  "categories": {
+    "raw_and_provenance": [
+      {
+        "path": "build/josim-cli",
+        "exists": true,
+        "bytes": 1233976,
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "required_tracked": true
+      },
+      {
+        "path": "docs/research/METRIC_SPEC_V2.md",
+        "exists": true,
+        "bytes": 17057,
+        "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+        "required_tracked": true
+      },
+      {
+        "path": "scripts/josim-plot2.py",
+        "exists": true,
+        "bytes": 12245,
+        "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical0_no_read_control.cir",
+        "exists": true,
+        "bytes": 1558,
+        "sha256": "9dcce02db45fc98efd09bb58634d73e2f68e9eaab8a47a9575e1243bb40f149d",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical0_read.cir",
+        "exists": true,
+        "bytes": 1563,
+        "sha256": "1426592b05cc9a12b59e854e1e58af8185f6af8e0593e516d8e5c11fb0f77490",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical1_no_read_control.cir",
+        "exists": true,
+        "bytes": 1558,
+        "sha256": "ec382730d5cf0a8ff968f090d23606c1610fd86cd4a0dbf373fb4068e8ac770b",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical1_read.cir",
+        "exists": true,
+        "bytes": 1563,
+        "sha256": "849bc3422f35b6f0d4ca926adef577352ecda0b31cbb5dd3a651a081950c0fbe",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/bq_cell.cir",
+        "exists": true,
+        "bytes": 823,
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/bvm_cell.cir",
+        "exists": true,
+        "bytes": 2234,
+        "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/jjmit.cir",
+        "exists": true,
+        "bytes": 504,
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/manifest.yaml",
+        "exists": true,
+        "bytes": 4512,
+        "sha256": "23f075d702019ae5fdf4cc13ef1c7a5465c9257930053bfa877d3a12ab943303",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv",
+        "exists": true,
+        "bytes": 10972204,
+        "sha256": "f024dd8513cad339a934a0eb8d4500a4415601134d598df6efb0906b4fcabcce",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv",
+        "exists": true,
+        "bytes": 10974415,
+        "sha256": "95136d2061039959a095605613f9e32bd070989abe0c0b60a7a2432665c2d85a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv",
+        "exists": true,
+        "bytes": 10937294,
+        "sha256": "cf96ed1e40785a864826bfcb4be7a376f9809f10d01b8d3768173c4ac9973d15",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv",
+        "exists": true,
+        "bytes": 10925362,
+        "sha256": "1aa046b53336427e36f9dd890f1c78ef7a00fbbb855f81823d0441d3c8dbe3c8",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/bq_cell.cir",
+        "exists": true,
+        "bytes": 823,
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/qb-jjmit.cir",
+        "exists": true,
+        "bytes": 504,
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical0_no_read_control.cir",
+        "exists": true,
+        "bytes": 505985,
+        "sha256": "2e11c44e8efd4eb39de0b453fcbd78179a34a28497b2c4cb48861113eb08920a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical0_read.cir",
+        "exists": true,
+        "bytes": 504178,
+        "sha256": "7b3fc0f5d40cac8f758e34b81cd94b911cc653ea7a38db83203b4c8042845f30",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical1_no_read_control.cir",
+        "exists": true,
+        "bytes": 505729,
+        "sha256": "a694655a7de64e68a1fb86efb3f099f21467f8fd523224d3d08483ce5d6fc4ce",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical1_read.cir",
+        "exists": true,
+        "bytes": 505653,
+        "sha256": "3672bd209a504ff2c3b5230b755a71eebfcaea29621cdece4fdbb53af98193f2",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/manifest.yaml",
+        "exists": true,
+        "bytes": 3955,
+        "sha256": "e2b5d30b7c26a46aa832a2e2653d5f511fb69fe84c8915e51afef6c0c2d67b09",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/13ps/logical0-read/run-01.csv",
+        "exists": true,
+        "bytes": 10072184,
+        "sha256": "539ad67c22d861c28bb832e4ba66450535fd30cb0ca42b0f573101ef359bf814",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/13ps/logical1-read/run-01.csv",
+        "exists": true,
+        "bytes": 10016300,
+        "sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_no_read_control/run-01.csv",
+        "exists": true,
+        "bytes": 3989657,
+        "sha256": "9fef2cda22a98f85f18919ae70ea3e77efc7ad54f87cf7b305cd71cf0a56bc7a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_read/run-01.csv",
+        "exists": true,
+        "bytes": 3989912,
+        "sha256": "d646d23d6ec2b88b1d9c58f2c4aaa4d0414e3b6426fcf7cdc9353ae3487602c6",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_no_read_control/run-01.csv",
+        "exists": true,
+        "bytes": 3988036,
+        "sha256": "4d3cb1e47beb5e714d30d6145c230e569a0ce170290e9db6dd90ac500664671f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv",
+        "exists": true,
+        "bytes": 3977526,
+        "sha256": "fd889f6d8f92d3b3d0727d190fcf40bd38a18fa5819d015e38edf08aaddc484a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical0_no_read_control.csv",
+        "exists": true,
+        "bytes": 490211,
+        "sha256": "e5dc2ab0e28fbf15891a7a804aae2915bf153bc5f27e59432082d4f835627a5e",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical0_read.csv",
+        "exists": true,
+        "bytes": 488381,
+        "sha256": "dafa23aca55b14b58a77dc9326a30cb2c5618d3e9e53a5fa0808bb157d6563e7",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical1_no_read_control.csv",
+        "exists": true,
+        "bytes": 489955,
+        "sha256": "1e7674d133315a1870548ed60b2eb55fc747e4a67a8427eb7e0f0018947e3e7c",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical1_read.csv",
+        "exists": true,
+        "bytes": 489856,
+        "sha256": "5c67227ea1fc42169272c00a870e953ffe8f1ae06b268f406d7f7f92da76ddbe",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/source-manifest.json",
+        "exists": true,
+        "bytes": 8861,
+        "sha256": "f13b0658c7334bd1455afbab91eada9f8ee8e69e651c27f9acaddd3674482b3a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/paper-sl-l0-20260824/raw/logical0-read0-control/run-01.csv",
+        "exists": true,
+        "bytes": 10069171,
+        "sha256": "f30f12232214401d02d11ac0e22e88d91d1ac501442d3013bc1bd879ecad08ae",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/paper-sl-l0-20260824/raw/logical1-read0-control/run-01.csv",
+        "exists": true,
+        "bytes": 10033299,
+        "sha256": "8b714f937d68f0e04a1319598d4758feb686d5464cb3c9726cd4d34b061f7a82",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical0_no_read_control.cir",
+        "exists": true,
+        "bytes": 1856,
+        "sha256": "ecdc770e53a50725e98e9c557a41a5ebbbb5609d95b94d149c6130c26d0c5da5",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical0_read.cir",
+        "exists": true,
+        "bytes": 1861,
+        "sha256": "5b45f703a119d4ec9d0efb3aebd94c3876ff44f22fbaa35d1c5bfa13120ca96a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical1_no_read_control.cir",
+        "exists": true,
+        "bytes": 1856,
+        "sha256": "c920c59629d11d6bd64c52cdd83c73278b398b784942b79906aee04e7d344140",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical1_read.cir",
+        "exists": true,
+        "bytes": 1861,
+        "sha256": "1a07bdb7690a5deb046ab95e6246c3a88978a99f25cf66c7373ebf3566115b0b",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/bq_cell.cir",
+        "exists": true,
+        "bytes": 823,
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/bvm_cell.cir",
+        "exists": true,
+        "bytes": 2234,
+        "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/jjmit.cir",
+        "exists": true,
+        "bytes": 504,
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/manifest.yaml",
+        "exists": true,
+        "bytes": 3898,
+        "sha256": "b2402000df9ec2b47df0b5cb881a68a7b129a37b04de1e78c737586b89a7c3c4",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv",
+        "exists": true,
+        "bytes": 13181444,
+        "sha256": "1492613f8b5af9442758c2b6bdf4de469fbd7dd2c7a2154045a7734999c8a727",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv",
+        "exists": true,
+        "bytes": 13183011,
+        "sha256": "d066016c1c91d6ba08f151e5adad77060fd12accf30169c376de61c2bb134045",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv",
+        "exists": true,
+        "bytes": 13140871,
+        "sha256": "7167415ec8b1f6959a28c7529716b5d20ebf7506b6d30fd9849de65f9834d237",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv",
+        "exists": true,
+        "bytes": 13134934,
+        "sha256": "c556fd29176fd25702b48c603d00ac848af43a0e61ebd7ed44b1039841446798",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/PREREGISTRATION.md",
+        "exists": true,
+        "bytes": 22975,
+        "sha256": "bb1854fc23da01520c01ad978b2e075ee9dafb493bd28ffed383610382f59d9f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/bjl1-vs-bjl2-phase-trajectory.csv",
+        "exists": true,
+        "bytes": 692660,
+        "sha256": "a3f8df94ea6b389482f1b46d08c66eee6fb4e32d640c4ccb278bbc592335cadb",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/bjs-vs-bjl1-phase-trajectory.csv",
+        "exists": true,
+        "bytes": 717474,
+        "sha256": "044855421bf3b69dc8bb93b95ba1dd619e7d1ec72bbac63a182c37cbe5813c7d",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/input-port-orientation-kcl.csv",
+        "exists": true,
+        "bytes": 1781029,
+        "sha256": "2f91cf3070d2962c63bdaa5c22388cf668d9e4782b4031506dc007c2ee3ab0a9",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/matched-controls.csv",
+        "exists": true,
+        "bytes": 1379344,
+        "sha256": "95b67bac6effc24a8e6794fcd3999abbda932cd57a2169c74258a37033b2d28d",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node2-current-partition.csv",
+        "exists": true,
+        "bytes": 1248195,
+        "sha256": "b47862136cb17e3530189e884c19a8ab1fcd2a638ffb0de360c3009d5a4e4680",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node3-current-partition.csv",
+        "exists": true,
+        "bytes": 1110821,
+        "sha256": "d1fc690edb3610fbfcdfb8a191d8dcc5ca46327ee617897e3a901140231cdfcc",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node4-current-partition.csv",
+        "exists": true,
+        "bytes": 1230854,
+        "sha256": "eb0a99efd99bca9cd4e98db1b61fd01cb12799648e1a68fadc461dd3f3cdb9b6",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/pre-bias-state-comparison.csv",
+        "exists": true,
+        "bytes": 1101585,
+        "sha256": "49fa50bf347ed7b98b3e7c42d70aa8e298c35637b775ce3c9471f15a192a5825",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/standalone45-vs68p4-vs-physical-trajectory.csv",
+        "exists": true,
+        "bytes": 526943,
+        "sha256": "b95a08a895846c160c261681b27304b40e35b2f6e0490686685e4614f6715355",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/vin-vs-ilin-port-trajectory.csv",
+        "exists": true,
+        "bytes": 880941,
+        "sha256": "53ffa694eb1e12212e00811bc65c5c8be6feca7968eba533b2923126afff985f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html",
+        "exists": true,
+        "bytes": 6124734,
+        "sha256": "b17e828e45e8a9a4ffbee469e971dc49d67b5799a8ffcb0db8879ef808820c69",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 985,
+        "sha256": "a8e3e5ded76fe9fdbd4c8fb07d4be375d424ca9c87b72dc84e29b2109ede5c62",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html",
+        "exists": true,
+        "bytes": 6096396,
+        "sha256": "501117e92707070c556d300499bef5442257c959aff4d7ac67c31b7c8b823fb1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 982,
+        "sha256": "c233c174f96e0890190cf60de3c26fcd63734a5eb4b9eb623d181a6942f9d087",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html",
+        "exists": true,
+        "bytes": 7601105,
+        "sha256": "66342d9f7846ea6564be3511dc8c6db1efc472ff977b1d94607d16201b1e2514",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.metadata.json",
+        "exists": true,
+        "bytes": 1501,
+        "sha256": "a02aa5c0520427b8bc72be6764e9f9c26b6d1128bbf146eb8abf92524598e1f1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html",
+        "exists": true,
+        "bytes": 7812932,
+        "sha256": "0970f88a4c1056114e520f2106152d77cc21d9dc84ee2fe3a10e625ccc6764dd",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.metadata.json",
+        "exists": true,
+        "bytes": 1588,
+        "sha256": "f1886648907cea2a342673c8bd4c0b45108ed99653e908b92ada70ff990b9ce1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html",
+        "exists": true,
+        "bytes": 6635429,
+        "sha256": "9f55086a9f6c7c94f1665167706d7c12b0728bcbc455146330911e0a5c763312",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.metadata.json",
+        "exists": true,
+        "bytes": 1173,
+        "sha256": "2afdc625f743934dedb539d7149efa5774eb11a42443aaf404e6544c1e86b1fd",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html",
+        "exists": true,
+        "bytes": 6714278,
+        "sha256": "4a29e312c6aa6728f744c89a3f2154cb3a94b2e40aa79eb9a3f6d6ecc79b7def",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.metadata.json",
+        "exists": true,
+        "bytes": 1173,
+        "sha256": "be7baa1b9ab0283c6626f41ff2f7adbd4a1a3cffad931ab4732cce230d37fe79",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html",
+        "exists": true,
+        "bytes": 6652992,
+        "sha256": "289b83bbb39bee0f979b7db48e0262cc5505b0eb734e8ae19f397a35855e96b9",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.metadata.json",
+        "exists": true,
+        "bytes": 1180,
+        "sha256": "840b10094ad55f81d34d0f380c912f1cf7c62ad554f99ba1a7d8f4511fd38c64",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html",
+        "exists": true,
+        "bytes": 6714459,
+        "sha256": "19f68ea41720b7c1d924e6676c920c3451172d949467cb90c1097645d7fd6ca1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.metadata.json",
+        "exists": true,
+        "bytes": 1156,
+        "sha256": "396822cd8b297db039c507b94cd45dda9e755c9f0b67f1b12196e91bc8fb0859",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html",
+        "exists": true,
+        "bytes": 6219091,
+        "sha256": "cc5f0df62765490997638ac7872d0822415eff9939daba1784777daac7bf0e98",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 1049,
+        "sha256": "dd70d1e11154ff6d59a728cbb36c732680de4fe4b6a36ad59f3d058d99daff86",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html",
+        "exists": true,
+        "bytes": 6039042,
+        "sha256": "1af1dcd74f4e9a08b090e9978686abacb8ea59bc7ec67e931b527be4c078f08c",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 974,
+        "sha256": "608e863b1282d3a5dfdaac0fb07c77416db03b469be1e1af7a105895469dc653",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/manifest.yaml",
+        "exists": true,
+        "bytes": 1576,
+        "sha256": "2b4b0d36aaf33b34ed06024839074a23014a8b9614271effdae430956bc63090",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv",
+        "exists": true,
+        "bytes": 870888,
+        "sha256": "cc702632dad106f324004dd429dd94e9a4ad38d0cda300671c29b4ea76865517",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv",
+        "exists": true,
+        "bytes": 870453,
+        "sha256": "0b3fab3ba7357d2475ffadb174f0d48ad33b7e7c934962a687074d4739468bdb",
+        "required_tracked": true
+      }
+    ],
+    "dependency_closure": [
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical0_no_read_control.cir",
+        "exists": true,
+        "bytes": 1558,
+        "sha256": "9dcce02db45fc98efd09bb58634d73e2f68e9eaab8a47a9575e1243bb40f149d",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical0_read.cir",
+        "exists": true,
+        "bytes": 1563,
+        "sha256": "1426592b05cc9a12b59e854e1e58af8185f6af8e0593e516d8e5c11fb0f77490",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical1_no_read_control.cir",
+        "exists": true,
+        "bytes": 1558,
+        "sha256": "ec382730d5cf0a8ff968f090d23606c1610fd86cd4a0dbf373fb4068e8ac770b",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical1_read.cir",
+        "exists": true,
+        "bytes": 1563,
+        "sha256": "849bc3422f35b6f0d4ca926adef577352ecda0b31cbb5dd3a651a081950c0fbe",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical0_no_read_control.cir",
+        "exists": true,
+        "bytes": 505985,
+        "sha256": "2e11c44e8efd4eb39de0b453fcbd78179a34a28497b2c4cb48861113eb08920a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical0_read.cir",
+        "exists": true,
+        "bytes": 504178,
+        "sha256": "7b3fc0f5d40cac8f758e34b81cd94b911cc653ea7a38db83203b4c8042845f30",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical1_no_read_control.cir",
+        "exists": true,
+        "bytes": 505729,
+        "sha256": "a694655a7de64e68a1fb86efb3f099f21467f8fd523224d3d08483ce5d6fc4ce",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/replay/13ps/logical1_read.cir",
+        "exists": true,
+        "bytes": 505653,
+        "sha256": "3672bd209a504ff2c3b5230b755a71eebfcaea29621cdece4fdbb53af98193f2",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical0_no_read_control.cir",
+        "exists": true,
+        "bytes": 1856,
+        "sha256": "ecdc770e53a50725e98e9c557a41a5ebbbb5609d95b94d149c6130c26d0c5da5",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical0_read.cir",
+        "exists": true,
+        "bytes": 1861,
+        "sha256": "5b45f703a119d4ec9d0efb3aebd94c3876ff44f22fbaa35d1c5bfa13120ca96a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical1_no_read_control.cir",
+        "exists": true,
+        "bytes": 1856,
+        "sha256": "c920c59629d11d6bd64c52cdd83c73278b398b784942b79906aee04e7d344140",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical1_read.cir",
+        "exists": true,
+        "bytes": 1861,
+        "sha256": "1a07bdb7690a5deb046ab95e6246c3a88978a99f25cf66c7373ebf3566115b0b",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/bq_cell.cir",
+        "exists": true,
+        "bytes": 823,
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/bq_cell_paper.cir",
+        "exists": true,
+        "bytes": 889,
+        "sha256": "a3accfd49ea7bd1dab46f79f4856a0e0a6c781185c4671a78c863b2217bdb880",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/jjmit.cir",
+        "exists": true,
+        "bytes": 504,
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/paper-iin-0.cir",
+        "exists": true,
+        "bytes": 587,
+        "sha256": "ff0ff42673de4d8fe0ddf065de9707bf324da419a2ce9864201a7eb2cf9eefdd",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/paper-iin-68p4u.cir",
+        "exists": true,
+        "bytes": 594,
+        "sha256": "2d935ced1fde8c2f9ac55d3faf3c51638e23989659362a73e1277c1612146a64",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/paper-iin-90u.cir",
+        "exists": true,
+        "bytes": 590,
+        "sha256": "b2df70342f9f4e5ab7064296c73539eff7c87bd93339c7b87f077b9f5d108485",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-0.cir",
+        "exists": true,
+        "bytes": 486,
+        "sha256": "d009a74bd017922c7718839944c2868b131d00e24c3fc5ee3ee30e62f749ae0f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-45u.cir",
+        "exists": true,
+        "bytes": 489,
+        "sha256": "22694856d1fe24d4954903532686dd882b7784eddaa336e2545732e4dac65c07",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir",
+        "exists": true,
+        "bytes": 493,
+        "sha256": "de291da0d082df6267a3a83ad85bd4a3d43ad724550b0a03d9b56ce5d243f1e1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-90u.cir",
+        "exists": true,
+        "bytes": 489,
+        "sha256": "ebc63c589a7b48723848fc51118ca3633120f000f0040c5333d1ca842ae009bb",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/test_bvm_paper_bq.cir",
+        "exists": true,
+        "bytes": 948,
+        "sha256": "c0b5c9187d08d2e5f913b2dd8ae189ccfe5a6dc6f0c394dcaf8396d6f584b679",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/test_qb_final.cir",
+        "exists": true,
+        "bytes": 409,
+        "sha256": "28ebef79bdb3223169610abaff793eab0cf50f1ad596fda42117d2bad5fd3a75",
+        "required_tracked": true
+      }
+    ],
+    "analysis_and_reports": [
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/PREREGISTRATION.md",
+        "exists": true,
+        "bytes": 22975,
+        "sha256": "bb1854fc23da01520c01ad978b2e075ee9dafb493bd28ffed383610382f59d9f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/REPORT.md",
+        "exists": true,
+        "bytes": 6745,
+        "sha256": "61ef834e0d866fc7c41ba6a9ab65cdd384342df256547abaf18c439fcff85b2c",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/REVIEW.md",
+        "exists": true,
+        "bytes": 5953,
+        "sha256": "428cf56a366d8dde6d05774a7a7e8e0f57e308b3ec32d72282a9af10763fff9d",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/SUMMARY.md",
+        "exists": true,
+        "bytes": 722,
+        "sha256": "1be24fb9a60ad03b129bd3f9be2d5ad2e7eada5766d607ac42ed7bfb338a262f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/analyze_trajectory.py",
+        "exists": true,
+        "bytes": 76009,
+        "sha256": "a6e85b4a21214467e3356abc6aa0d450e516ee12c7f3c6db576a529799d26103",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/divergence-timeline.csv",
+        "exists": true,
+        "bytes": 5690,
+        "sha256": "68357ddf182f58f00cd11a11405d3bc9027bbaaebbfcce4666cfb1848f0eb72e",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/independent-raw-recheck.json",
+        "exists": true,
+        "bytes": 61278,
+        "sha256": "152b27eed13baf748a2c42d934167226d5cddd40b76effdc873dbd5117b2a30f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/node-partition-summary.csv",
+        "exists": true,
+        "bytes": 128523,
+        "sha256": "9f99488ea3239c339be0ac326758d4424ada0f5dec3a2df3456ba7a9c4b7d99c",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/orientation-audit.json",
+        "exists": true,
+        "bytes": 98480,
+        "sha256": "aa3bba2dfe3f4ede334acd7623cd7c813b8c9b129e4e5b0e2c933090ed7fd36c",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/bjl1-vs-bjl2-phase-trajectory.csv",
+        "exists": true,
+        "bytes": 692660,
+        "sha256": "a3f8df94ea6b389482f1b46d08c66eee6fb4e32d640c4ccb278bbc592335cadb",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/bjs-vs-bjl1-phase-trajectory.csv",
+        "exists": true,
+        "bytes": 717474,
+        "sha256": "044855421bf3b69dc8bb93b95ba1dd619e7d1ec72bbac63a182c37cbe5813c7d",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/input-port-orientation-kcl.csv",
+        "exists": true,
+        "bytes": 1781029,
+        "sha256": "2f91cf3070d2962c63bdaa5c22388cf668d9e4782b4031506dc007c2ee3ab0a9",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/matched-controls.csv",
+        "exists": true,
+        "bytes": 1379344,
+        "sha256": "95b67bac6effc24a8e6794fcd3999abbda932cd57a2169c74258a37033b2d28d",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node2-current-partition.csv",
+        "exists": true,
+        "bytes": 1248195,
+        "sha256": "b47862136cb17e3530189e884c19a8ab1fcd2a638ffb0de360c3009d5a4e4680",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node3-current-partition.csv",
+        "exists": true,
+        "bytes": 1110821,
+        "sha256": "d1fc690edb3610fbfcdfb8a191d8dcc5ca46327ee617897e3a901140231cdfcc",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/node4-current-partition.csv",
+        "exists": true,
+        "bytes": 1230854,
+        "sha256": "eb0a99efd99bca9cd4e98db1b61fd01cb12799648e1a68fadc461dd3f3cdb9b6",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/pre-bias-state-comparison.csv",
+        "exists": true,
+        "bytes": 1101585,
+        "sha256": "49fa50bf347ed7b98b3e7c42d70aa8e298c35637b775ce3c9471f15a192a5825",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/standalone45-vs68p4-vs-physical-trajectory.csv",
+        "exists": true,
+        "bytes": 526943,
+        "sha256": "b95a08a895846c160c261681b27304b40e35b2f6e0490686685e4614f6715355",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/plot_inputs/vin-vs-ilin-port-trajectory.csv",
+        "exists": true,
+        "bytes": 880941,
+        "sha256": "53ffa694eb1e12212e00811bc65c5c8be6feca7968eba533b2923126afff985f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/pre-bias-state.csv",
+        "exists": true,
+        "bytes": 10836,
+        "sha256": "e968f88ccfc38084c6edafd38e18b9d7f2b73da5f25326a86022778566ff4cd6",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/reference-integrity.json",
+        "exists": true,
+        "bytes": 57992,
+        "sha256": "9ea79e937eecca1741e690fa77e91af3c8742bf171500b7e2c8f6a4a3331e90a",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/analysis/trajectory-audit.json",
+        "exists": true,
+        "bytes": 1509224,
+        "sha256": "9164e531a919254c3eda99b91adbd7f81cd5affb3899f6e0fd0d683528615f8f",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/manifest.yaml",
+        "exists": true,
+        "bytes": 8492,
+        "sha256": "9cf5bf582b47eaf2c927aa03426663fc8407ff543fa5833f5f6e5a10b7a79441",
+        "required_tracked": true
+      }
+    ],
+    "plots_and_metadata": [
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.html",
+        "exists": true,
+        "bytes": 6124734,
+        "sha256": "b17e828e45e8a9a4ffbee469e971dc49d67b5799a8ffcb0db8879ef808820c69",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjl1-vs-bjl2-phase-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 985,
+        "sha256": "a8e3e5ded76fe9fdbd4c8fb07d4be375d424ca9c87b72dc84e29b2109ede5c62",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.html",
+        "exists": true,
+        "bytes": 6096396,
+        "sha256": "501117e92707070c556d300499bef5442257c959aff4d7ac67c31b7c8b823fb1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/bjs-vs-bjl1-phase-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 982,
+        "sha256": "c233c174f96e0890190cf60de3c26fcd63734a5eb4b9eb623d181a6942f9d087",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.html",
+        "exists": true,
+        "bytes": 7601105,
+        "sha256": "66342d9f7846ea6564be3511dc8c6db1efc472ff977b1d94607d16201b1e2514",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/input-port-orientation-kcl.metadata.json",
+        "exists": true,
+        "bytes": 1501,
+        "sha256": "a02aa5c0520427b8bc72be6764e9f9c26b6d1128bbf146eb8abf92524598e1f1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.html",
+        "exists": true,
+        "bytes": 7812932,
+        "sha256": "0970f88a4c1056114e520f2106152d77cc21d9dc84ee2fe3a10e625ccc6764dd",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/matched-controls.metadata.json",
+        "exists": true,
+        "bytes": 1588,
+        "sha256": "f1886648907cea2a342673c8bd4c0b45108ed99653e908b92ada70ff990b9ce1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.html",
+        "exists": true,
+        "bytes": 6635429,
+        "sha256": "9f55086a9f6c7c94f1665167706d7c12b0728bcbc455146330911e0a5c763312",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node2-current-partition.metadata.json",
+        "exists": true,
+        "bytes": 1173,
+        "sha256": "2afdc625f743934dedb539d7149efa5774eb11a42443aaf404e6544c1e86b1fd",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.html",
+        "exists": true,
+        "bytes": 6714278,
+        "sha256": "4a29e312c6aa6728f744c89a3f2154cb3a94b2e40aa79eb9a3f6d6ecc79b7def",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node3-current-partition.metadata.json",
+        "exists": true,
+        "bytes": 1173,
+        "sha256": "be7baa1b9ab0283c6626f41ff2f7adbd4a1a3cffad931ab4732cce230d37fe79",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.html",
+        "exists": true,
+        "bytes": 6652992,
+        "sha256": "289b83bbb39bee0f979b7db48e0262cc5505b0eb734e8ae19f397a35855e96b9",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/node4-current-partition.metadata.json",
+        "exists": true,
+        "bytes": 1180,
+        "sha256": "840b10094ad55f81d34d0f380c912f1cf7c62ad554f99ba1a7d8f4511fd38c64",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.html",
+        "exists": true,
+        "bytes": 6714459,
+        "sha256": "19f68ea41720b7c1d924e6676c920c3451172d949467cb90c1097645d7fd6ca1",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/pre-bias-state-comparison.metadata.json",
+        "exists": true,
+        "bytes": 1156,
+        "sha256": "396822cd8b297db039c507b94cd45dda9e755c9f0b67f1b12196e91bc8fb0859",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.html",
+        "exists": true,
+        "bytes": 6219091,
+        "sha256": "cc5f0df62765490997638ac7872d0822415eff9939daba1784777daac7bf0e98",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/standalone45-vs68p4-vs-physical-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 1049,
+        "sha256": "dd70d1e11154ff6d59a728cbb36c732680de4fe4b6a36ad59f3d058d99daff86",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.html",
+        "exists": true,
+        "bytes": 6039042,
+        "sha256": "1af1dcd74f4e9a08b090e9978686abacb8ea59bc7ec67e931b527be4c078f08c",
+        "required_tracked": true
+      },
+      {
+        "path": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825/plots/vin-vs-ilin-port-trajectory.metadata.json",
+        "exists": true,
+        "bytes": 974,
+        "sha256": "608e863b1282d3a5dfdaac0fb07c77416db03b469be1e1af7a105895469dc653",
+        "required_tracked": true
+      }
+    ],
+    "validation": [
+      {
+        "path": "docs/TOPOLOGY_ALIGNMENT_MANIFEST.yaml",
+        "exists": true,
+        "bytes": 85221,
+        "sha256": "c89da7757ca4fe7acfaa22825647eeb235679a7a88c90e15a9a50e88eebe8f5b",
+        "required_tracked": true
+      },
+      {
+        "path": "docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml",
+        "exists": true,
+        "bytes": 427911,
+        "sha256": "afa64337f54d910419116fa103f9c3b24391b1513b97ef567d8998fab828f2b4",
+        "required_tracked": true
+      },
+      {
+        "path": "scripts/build_visualization_alignment.py",
+        "exists": true,
+        "bytes": 137673,
+        "sha256": "1f9c0a1c1f83622de16adb6934c3de8549956b0bbe28d421ce64b3bef84f31f9",
+        "required_tracked": true
+      },
+      {
+        "path": "scripts/josim-plot2.py",
+        "exists": true,
+        "bytes": 12245,
+        "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+        "required_tracked": true
+      },
+      {
+        "path": "scripts/verify_visualization_alignment.py",
+        "exists": true,
+        "bytes": 14307,
+        "sha256": "b473893c12828697766697f9516e34e630e7fe6f17aff416b1430223c27b1cd4",
+        "required_tracked": true
+      },
+      {
+        "path": "visualization-alignment-validation.json",
+        "exists": true,
+        "bytes": 203,
+        "sha256": "0404bed19e1357441f9180c65fe79e8b643267a87fd037a7f76335c3fb693f89",
+        "required_tracked": true
+      }
+    ]
+  },
+  "file_count": 154,
+  "all_present": true
+}

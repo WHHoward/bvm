@@ -1,6 +1,6 @@
 # 数值与对抗性审查
 
-- 审查时间：`2026-08-25T01:44:07+08:00`
+- 审查时间：`2026-08-25T01:46:05+08:00`
 - 审查对象：`QB_IDEAL_PHYSICAL_INTERNAL_TRAJECTORY_AUDIT_V1`
 - 分析 HEAD：`6e9cbedefeae8e8771299a8624bef081146494eb`
 - 审查原则：只检查已有 raw、netlist、source chain 和本轮 derived evidence；不修改 raw，不运行新的 JoSIM。
@@ -37,6 +37,7 @@
 5. **Boundary probe**：两组 primary pair 均没有 PRE first divergence；C13↔E8 的最早连续三点 crossing 为 `95.0125 ps`，在 ACTIVE 内且不位于窗口左边界 `94 ps`；`input_port`、`bjs_trajectory`、`node2` 在同一采样点，已按 `0.0125 ps` 预注册规则标为 `TIE`，没有强行排序。
 6. **Overclaim probe**：报告把 C13 final-JSL source semantics 标为 `INCONCLUSIVE`，把 D12 标为 `DESCRIPTIVE_RAW_OBSERVATION / PROVENANCE_INCONCLUSIVE`，并将总 disposition 固定为 `MECHANISM_AUDIT_INCONCLUSIVE`。
 7. **Inventory coverage probe**：`analysis/artifact-inventory.json` 的 `all_present=true`，列出 154 条实际路径，覆盖分析脚本、全部 derived JSON/CSV、报告/manifest、10 张 HTML 与 metadata、case deck/include closure 及 validation 文件；自身只在 `self_exempt` 中登记。
+8. **Fresh-checkout probe**：逐条对 inventory 中 154 条路径执行 `git ls-files --error-unmatch`、`git show HEAD:<path>` 非空和 checkout 内容 SHA-256 对比，结果为 `PASS`；冻结 `build/josim-cli` 已显式进入 checkpoint。
 
 ### Residual uncertainty
 
@@ -44,7 +45,7 @@
 - C13 exact source chain 的“可复现”与“物理语义正确”仍是两个命题；辅助 index-14 probe 的 semantic limitation 未被任何图或 phase/area 数字消除。
 - first divergence 是最早可观测 feature-level 分叉，不是唯一根因；source/load-line、端口 operating point 和后续 node partition 仍可能共同耦合；本轮最早层级是并列耦合族，不是唯一 input-port 根因。
 - HTML plot 只作诊断显示；没有使用图形、导数样本或 `I/Ic` 作为 SFQ event count 或 Gate。
-- 最终提交后还必须逐条执行 preregistered fresh-checkout 检查：`git ls-files --error-unmatch`、`git show HEAD:<path>` 非空，以及 checkout 内容 SHA-256 与 inventory 一致；该检查不运行 JoSIM。
+- fresh-checkout 检查已完成且为 `PASS`；该检查不运行 JoSIM，只确认 tracked tree 与 inventory 的路径、非空性和 SHA-256 一致。
 
 ## 审查结论
 

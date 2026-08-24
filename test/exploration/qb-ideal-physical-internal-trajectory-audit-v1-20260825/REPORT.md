@@ -1,7 +1,7 @@
 # QB_IDEAL_PHYSICAL_INTERNAL_TRAJECTORY_AUDIT_V1
 
-- analysis timestamp: `2026-08-25T01:44:17+08:00`
-- analysis HEAD: `a03f6ae25b0a1b5133b0fc8dd0c2b918130dd200`
+- analysis timestamp: `2026-08-25T01:46:17+08:00`
+- analysis HEAD: `233d9b249d63e1ff4df8330859d54bc118d868ea`
 - solver execution: no new JoSIM run; frozen solver metadata is recorded only
 - final disposition: `MECHANISM_AUDIT_INCONCLUSIVE`
 

@@ -5,10 +5,16 @@
   "subcircuit": "BQ",
   "layout": {
     "renderer": "scripts/schematic/render_qb_q0.py",
-    "method": "manual deterministic semantic placement",
+    "method": "manual deterministic semantic placement with coordinate ledger",
     "signal_flow": "left-to-right",
     "bias_direction": "top",
-    "return_direction": "bottom"
+    "return_direction": "bottom",
+    "publication_artifacts": {
+      "clean": "schematic.svg",
+      "annotated": "schematic-annotated.svg",
+      "geometry": "geometric-connectivity.json",
+      "geometry_validation": "geometric-connectivity-validation.json"
+    }
   },
   "displayed_components": [
     {"scope": "BQ", "name": "Lin", "type": "inductor", "nodes": ["IN", "1"]},

@@ -20,8 +20,11 @@ The canonical user-facing files are:
 - `schematic.svg`: scalable vector schematic;
 - `schematic.png`: preview raster;
 - `schematic.pdf`: paper/meeting output;
+- `schematic-annotated.svg/.png/.pdf`: optional experiment-annotation version;
 - `schematic.json`: selected deck and semantic placement;
 - `schematic-validation.json`: endpoint/provenance validation result;
+- `geometric-connectivity.json`: renderer coordinate ledger;
+- `geometric-connectivity-validation.json`: wire/terminal coincidence result;
 - `README.md`: source, includes, omissions, and renderer boundary.
 
 The old `topology.svg/.dot` names are reserved for retained

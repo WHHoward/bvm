@@ -1,0 +1,785 @@
+{
+  "schema": "josim-geometric-connectivity-v1",
+  "coordinate_tolerance": 1e-09,
+  "components": [
+    {
+      "name": "Lin",
+      "kind": "inductor",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          83.0,
+          325.0
+        ],
+        "b": [
+          238.0,
+          325.0
+        ]
+      }
+    },
+    {
+      "name": "BJs",
+      "kind": "josephson_junction",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          276.0,
+          325.0
+        ],
+        "b": [
+          312.0,
+          325.0
+        ]
+      },
+      "symbol_center": [
+        294.0,
+        325.0
+      ]
+    },
+    {
+      "name": "L1",
+      "kind": "inductor",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          365.0,
+          325.0
+        ],
+        "b": [
+          505.0,
+          325.0
+        ]
+      }
+    },
+    {
+      "name": "L2",
+      "kind": "inductor",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          548.0,
+          325.0
+        ],
+        "b": [
+          688.0,
+          325.0
+        ]
+      }
+    },
+    {
+      "name": "L0",
+      "kind": "inductor",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          728.0,
+          325.0
+        ],
+        "b": [
+          868.0,
+          325.0
+        ]
+      }
+    },
+    {
+      "name": "RB",
+      "kind": "resistor",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          548.0,
+          427.0
+        ],
+        "b": [
+          548.0,
+          505.0
+        ]
+      }
+    },
+    {
+      "name": "BJL1",
+      "kind": "josephson_junction",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          339.0,
+          260.0
+        ],
+        "b": [
+          339.0,
+          175.0
+        ]
+      },
+      "symbol_center": [
+        339.0,
+        217.5
+      ]
+    },
+    {
+      "name": "RJ1",
+      "kind": "resistor",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          391.0,
+          260.0
+        ],
+        "b": [
+          391.0,
+          175.0
+        ]
+      }
+    },
+    {
+      "name": "BJL2",
+      "kind": "josephson_junction",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          702.0,
+          260.0
+        ],
+        "b": [
+          702.0,
+          175.0
+        ]
+      },
+      "symbol_center": [
+        702.0,
+        217.5
+      ]
+    },
+    {
+      "name": "RJ2",
+      "kind": "resistor",
+      "scope": "BQ",
+      "terminals": {
+        "a": [
+          754.0,
+          260.0
+        ],
+        "b": [
+          754.0,
+          175.0
+        ]
+      }
+    },
+    {
+      "name": "R_LOAD",
+      "kind": "resistor",
+      "scope": "top-level",
+      "terminals": {
+        "a": [
+          1030.0,
+          263.0
+        ],
+        "b": [
+          1030.0,
+          198.0
+        ]
+      }
+    }
+  ],
+  "wires": [
+    {
+      "name": "port:In",
+      "start": [
+        55.0,
+        325.0
+      ],
+      "end": [
+        83.0,
+        325.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "Lin_to_BJs",
+      "start": [
+        238.0,
+        325.0
+      ],
+      "end": [
+        276.0,
+        325.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJs_to_node2",
+      "start": [
+        312.0,
+        325.0
+      ],
+      "end": [
+        365.0,
+        325.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "L1_to_node3",
+      "start": [
+        505.0,
+        325.0
+      ],
+      "end": [
+        548.0,
+        325.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "L2_to_node4",
+      "start": [
+        688.0,
+        325.0
+      ],
+      "end": [
+        728.0,
+        325.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "L0_to_OUT",
+      "start": [
+        868.0,
+        325.0
+      ],
+      "end": [
+        1030.0,
+        325.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "port:Out",
+      "start": [
+        1030.0,
+        325.0
+      ],
+      "end": [
+        1002.0,
+        325.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "node3_to_RB",
+      "start": [
+        548.0,
+        325.0
+      ],
+      "end": [
+        548.0,
+        427.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "RB_to_bias_arrow",
+      "start": [
+        548.0,
+        505.0
+      ],
+      "end": [
+        548.0,
+        545.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL1:drop",
+      "start": [
+        365.0,
+        325.0
+      ],
+      "end": [
+        365.0,
+        260.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL1:top_join",
+      "start": [
+        339.0,
+        260.0
+      ],
+      "end": [
+        391.0,
+        260.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL1:bottom_join",
+      "start": [
+        339.0,
+        175.0
+      ],
+      "end": [
+        391.0,
+        175.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL1:ground_return",
+      "start": [
+        365.0,
+        175.0
+      ],
+      "end": [
+        365.0,
+        150.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL2:drop",
+      "start": [
+        728.0,
+        325.0
+      ],
+      "end": [
+        728.0,
+        260.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL2:top_join",
+      "start": [
+        702.0,
+        260.0
+      ],
+      "end": [
+        754.0,
+        260.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL2:bottom_join",
+      "start": [
+        702.0,
+        175.0
+      ],
+      "end": [
+        754.0,
+        175.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "BJL2:ground_return",
+      "start": [
+        728.0,
+        175.0
+      ],
+      "end": [
+        728.0,
+        150.0
+      ],
+      "color": "black"
+    },
+    {
+      "name": "OUT_to_RLOAD",
+      "start": [
+        1030.0,
+        325.0
+      ],
+      "end": [
+        1030.0,
+        263.0
+      ],
+      "color": "light-gray"
+    },
+    {
+      "name": "RLOAD_to_ground",
+      "start": [
+        1030.0,
+        198.0
+      ],
+      "end": [
+        1030.0,
+        150.0
+      ],
+      "color": "light-gray"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "node2",
+      "point": [
+        365.0,
+        325.0
+      ]
+    },
+    {
+      "name": "node3",
+      "point": [
+        548.0,
+        325.0
+      ]
+    },
+    {
+      "name": "node4",
+      "point": [
+        728.0,
+        325.0
+      ]
+    },
+    {
+      "name": "OUT",
+      "point": [
+        1030.0,
+        325.0
+      ]
+    },
+    {
+      "name": "BJL1:split",
+      "point": [
+        365.0,
+        260.0
+      ]
+    },
+    {
+      "name": "BJL1:ground_join",
+      "point": [
+        365.0,
+        175.0
+      ]
+    },
+    {
+      "name": "BJL2:split",
+      "point": [
+        728.0,
+        260.0
+      ]
+    },
+    {
+      "name": "BJL2:ground_join",
+      "point": [
+        728.0,
+        175.0
+      ]
+    }
+  ],
+  "fixed_points": [
+    {
+      "name": "In",
+      "kind": "port_terminal",
+      "point": [
+        83.0,
+        325.0
+      ]
+    },
+    {
+      "name": "In:outer",
+      "kind": "port_outer",
+      "point": [
+        55.0,
+        325.0
+      ]
+    },
+    {
+      "name": "Lin:a",
+      "kind": "component_terminal",
+      "point": [
+        83.0,
+        325.0
+      ]
+    },
+    {
+      "name": "Lin:b",
+      "kind": "component_terminal",
+      "point": [
+        238.0,
+        325.0
+      ]
+    },
+    {
+      "name": "BJs:a",
+      "kind": "component_terminal",
+      "point": [
+        276.0,
+        325.0
+      ]
+    },
+    {
+      "name": "BJs:b",
+      "kind": "component_terminal",
+      "point": [
+        312.0,
+        325.0
+      ]
+    },
+    {
+      "name": "node2",
+      "kind": "anchor",
+      "point": [
+        365.0,
+        325.0
+      ]
+    },
+    {
+      "name": "L1:a",
+      "kind": "component_terminal",
+      "point": [
+        365.0,
+        325.0
+      ]
+    },
+    {
+      "name": "L1:b",
+      "kind": "component_terminal",
+      "point": [
+        505.0,
+        325.0
+      ]
+    },
+    {
+      "name": "node3",
+      "kind": "anchor",
+      "point": [
+        548.0,
+        325.0
+      ]
+    },
+    {
+      "name": "L2:a",
+      "kind": "component_terminal",
+      "point": [
+        548.0,
+        325.0
+      ]
+    },
+    {
+      "name": "L2:b",
+      "kind": "component_terminal",
+      "point": [
+        688.0,
+        325.0
+      ]
+    },
+    {
+      "name": "node4",
+      "kind": "anchor",
+      "point": [
+        728.0,
+        325.0
+      ]
+    },
+    {
+      "name": "L0:a",
+      "kind": "component_terminal",
+      "point": [
+        728.0,
+        325.0
+      ]
+    },
+    {
+      "name": "L0:b",
+      "kind": "component_terminal",
+      "point": [
+        868.0,
+        325.0
+      ]
+    },
+    {
+      "name": "OUT",
+      "kind": "anchor",
+      "point": [
+        1030.0,
+        325.0
+      ]
+    },
+    {
+      "name": "Out",
+      "kind": "port_terminal",
+      "point": [
+        1030.0,
+        325.0
+      ]
+    },
+    {
+      "name": "Out:outer",
+      "kind": "port_outer",
+      "point": [
+        1002.0,
+        325.0
+      ]
+    },
+    {
+      "name": "RB:a",
+      "kind": "component_terminal",
+      "point": [
+        548.0,
+        427.0
+      ]
+    },
+    {
+      "name": "RB:b",
+      "kind": "component_terminal",
+      "point": [
+        548.0,
+        505.0
+      ]
+    },
+    {
+      "name": "I_Bias:start",
+      "kind": "current_terminal",
+      "point": [
+        548.0,
+        545.0
+      ]
+    },
+    {
+      "name": "I_Bias:end",
+      "kind": "current_terminal",
+      "point": [
+        548.0,
+        602.0
+      ]
+    },
+    {
+      "name": "BJL1:split",
+      "kind": "anchor",
+      "point": [
+        365.0,
+        260.0
+      ]
+    },
+    {
+      "name": "BJL1:ground_join",
+      "kind": "anchor",
+      "point": [
+        365.0,
+        175.0
+      ]
+    },
+    {
+      "name": "BJL1:ground",
+      "kind": "ground_terminal",
+      "point": [
+        365.0,
+        150.0
+      ]
+    },
+    {
+      "name": "BJL1:a",
+      "kind": "component_terminal",
+      "point": [
+        339.0,
+        260.0
+      ]
+    },
+    {
+      "name": "BJL1:b",
+      "kind": "component_terminal",
+      "point": [
+        339.0,
+        175.0
+      ]
+    },
+    {
+      "name": "RJ1:a",
+      "kind": "component_terminal",
+      "point": [
+        391.0,
+        260.0
+      ]
+    },
+    {
+      "name": "RJ1:b",
+      "kind": "component_terminal",
+      "point": [
+        391.0,
+        175.0
+      ]
+    },
+    {
+      "name": "BJL2:split",
+      "kind": "anchor",
+      "point": [
+        728.0,
+        260.0
+      ]
+    },
+    {
+      "name": "BJL2:ground_join",
+      "kind": "anchor",
+      "point": [
+        728.0,
+        175.0
+      ]
+    },
+    {
+      "name": "BJL2:ground",
+      "kind": "ground_terminal",
+      "point": [
+        728.0,
+        150.0
+      ]
+    },
+    {
+      "name": "BJL2:a",
+      "kind": "component_terminal",
+      "point": [
+        702.0,
+        260.0
+      ]
+    },
+    {
+      "name": "BJL2:b",
+      "kind": "component_terminal",
+      "point": [
+        702.0,
+        175.0
+      ]
+    },
+    {
+      "name": "RJ2:a",
+      "kind": "component_terminal",
+      "point": [
+        754.0,
+        260.0
+      ]
+    },
+    {
+      "name": "RJ2:b",
+      "kind": "component_terminal",
+      "point": [
+        754.0,
+        175.0
+      ]
+    },
+    {
+      "name": "R_LOAD:a",
+      "kind": "component_terminal",
+      "point": [
+        1030.0,
+        263.0
+      ]
+    },
+    {
+      "name": "R_LOAD:b",
+      "kind": "component_terminal",
+      "point": [
+        1030.0,
+        198.0
+      ]
+    },
+    {
+      "name": "R_LOAD:ground",
+      "kind": "ground_terminal",
+      "point": [
+        1030.0,
+        150.0
+      ]
+    }
+  ]
+}

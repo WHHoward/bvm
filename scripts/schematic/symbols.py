@@ -8,8 +8,6 @@ selected JoSIM deck.
 
 from __future__ import annotations
 
-from typing import Iterable
-
 import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.patches import Circle, FancyArrowPatch, Rectangle
@@ -35,32 +33,81 @@ def draw_node(ax: Axes, x: float, y: float, *, color: str = BLACK,
                         lw=0, zorder=8))
 
 
-def _coil_points(start: float, end: float, center: float, amplitude: float,
-                 cycles: int = 5) -> tuple[np.ndarray, np.ndarray]:
-    xs = np.linspace(start, end, 160)
-    ys = center + amplitude * np.sin(np.linspace(0, cycles * 2 * np.pi, xs.size))
-    return xs, ys
+def _classic_horizontal_coil(start: float, end: float, center: float,
+                             amplitude: float, loops: int) -> tuple[np.ndarray, np.ndarray]:
+    """Return a paper-style sequence of semicircular coil loops.
+
+    The old prototype used a sinusoid, which reads as a waveform rather than
+    an electrical inductor.  The reference QB figure uses compact semicircular
+    loops on one side of the wire; this helper reproduces that vocabulary while
+    keeping the two electrical terminals exactly at ``start`` and ``end``.
+    """
+    direction = 1.0 if end >= start else -1.0
+    lo, hi = (start, end) if direction > 0 else (end, start)
+    width = (hi - lo) / max(loops, 1)
+    xs: list[float] = []
+    ys: list[float] = []
+    for index in range(max(loops, 1)):
+        x0 = lo + index * width
+        theta = np.linspace(0.0, np.pi, 32)
+        x = x0 + width * theta / np.pi
+        y = center + amplitude * np.sin(theta)
+        if direction < 0:
+            x = x[::-1]
+            y = y[::-1]
+        if xs:
+            # Keep adjacent semicircles joined at their common baseline point.
+            xs.extend(x[1:].tolist())
+            ys.extend(y[1:].tolist())
+        else:
+            xs.extend(x.tolist())
+            ys.extend(y.tolist())
+    return np.asarray(xs), np.asarray(ys)
+
+
+def _classic_vertical_coil(start: float, end: float, center: float,
+                           amplitude: float, loops: int) -> tuple[np.ndarray, np.ndarray]:
+    direction = 1.0 if end >= start else -1.0
+    lo, hi = (start, end) if direction > 0 else (end, start)
+    width = (hi - lo) / max(loops, 1)
+    xs: list[float] = []
+    ys: list[float] = []
+    for index in range(max(loops, 1)):
+        y0 = lo + index * width
+        theta = np.linspace(0.0, np.pi, 32)
+        y = y0 + width * theta / np.pi
+        x = center + amplitude * np.sin(theta)
+        if direction < 0:
+            y = y[::-1]
+            x = x[::-1]
+        if xs:
+            xs.extend(x[1:].tolist())
+            ys.extend(y[1:].tolist())
+        else:
+            xs.extend(x.tolist())
+            ys.extend(y.tolist())
+    return np.asarray(xs), np.asarray(ys)
 
 
 def draw_inductor(ax: Axes, x1: float, y1: float, x2: float, y2: float,
                   *, color: str = BLACK, lw: float = 2.2,
-                  cycles: int = 5, amplitude: float = 13.0) -> None:
+                  cycles: int = 4, amplitude: float = 13.0) -> None:
     """Draw a horizontal or vertical coil between two endpoints."""
     if abs(y2 - y1) < abs(x2 - x1):
         lead = min(20.0, abs(x2 - x1) * 0.18)
         sign = 1.0 if x2 >= x1 else -1.0
         draw_wire(ax, x1, y1, x1 + sign * lead, y1, color=color, lw=lw)
         draw_wire(ax, x2 - sign * lead, y2, x2, y2, color=color, lw=lw)
-        xs, ys = _coil_points(x1 + sign * lead, x2 - sign * lead, y1,
-                              amplitude, cycles)
+        xs, ys = _classic_horizontal_coil(x1 + sign * lead, x2 - sign * lead,
+                                           y1, amplitude, cycles)
         ax.plot(xs, ys, color=color, lw=lw, solid_capstyle="round", zorder=3)
     else:
         lead = min(20.0, abs(y2 - y1) * 0.18)
         sign = 1.0 if y2 >= y1 else -1.0
         draw_wire(ax, x1, y1, x1, y1 + sign * lead, color=color, lw=lw)
         draw_wire(ax, x2, y2 - sign * lead, x2, y2, color=color, lw=lw)
-        ys = np.linspace(y1 + sign * lead, y2 - sign * lead, 160)
-        xs = x1 + amplitude * np.sin(np.linspace(0, cycles * 2 * np.pi, ys.size))
+        xs, ys = _classic_vertical_coil(y1 + sign * lead, y2 - sign * lead,
+                                         x1, amplitude, cycles)
         ax.plot(xs, ys, color=color, lw=lw, solid_capstyle="round", zorder=3)
 
 
@@ -96,14 +143,29 @@ def draw_resistor(ax: Axes, x1: float, y1: float, x2: float, y2: float,
 
 
 def draw_josephson_junction(ax: Axes, x: float, y: float, *, color: str = BLACK,
-                            size: float = 16.0, lw: float = 2.4) -> None:
-    """Draw the cross/asterisk JJ vocabulary used by the reference figures."""
+                            size: float = 16.0, lw: float = 2.4,
+                            terminal_span: float | None = None) -> None:
+    """Draw a connected horizontal JJ cross with explicit terminal leads."""
+    span = terminal_span if terminal_span is not None else size + 3.0
+    draw_wire(ax, x - span, y, x, y, color=color, lw=lw)
+    draw_wire(ax, x, y, x + span, y, color=color, lw=lw)
     ax.plot([x - size, x + size], [y - size, y + size], color=color, lw=lw,
             solid_capstyle="round", zorder=5)
     ax.plot([x - size, x + size], [y + size, y - size], color=color, lw=lw,
             solid_capstyle="round", zorder=5)
     ax.add_patch(Circle((x, y), 2.2, facecolor=color, edgecolor=color,
                         lw=0, zorder=6))
+
+
+def draw_vertical_josephson_junction(ax: Axes, x: float, y_top: float,
+                                     y_bottom: float, *, color: str = BLACK,
+                                     size: float = 13.0, lw: float = 2.2) -> None:
+    """Draw a vertically oriented, electrically continuous JJ cross."""
+    y = (y_top + y_bottom) / 2.0
+    draw_wire(ax, x, y_top, x, y, color=color, lw=lw)
+    draw_wire(ax, x, y, x, y_bottom, color=color, lw=lw)
+    draw_josephson_junction(ax, x, y, color=color, size=size, lw=lw,
+                            terminal_span=0.0)
 
 
 def draw_ground(ax: Axes, x: float, y: float, *, color: str = BLACK,

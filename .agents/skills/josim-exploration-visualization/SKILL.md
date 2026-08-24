@@ -20,8 +20,10 @@ For each affected Exploration:
    `combined`/`sep_comb` layouts may display normalized `rad/2π` phase through
    `josim-plot2.py`.
 3. Put a netlist-validated schematic package under `topology/`:
-   `schematic.svg`, `schematic.png`, `schematic.pdf`, `schematic.json`,
-   `schematic-validation.json`, and a short `README.md` naming the source
+   `schematic.svg`, `schematic.png`, `schematic.pdf`, and, when an annotated
+   view is useful, `schematic-annotated.svg/.png/.pdf`; retain
+   `schematic.json`, `schematic-validation.json`, a geometry ledger and
+   geometric validation result, and a short `README.md` naming the source
    deck, included subcircuits, representative variants, and any elements
    intentionally omitted from the drawing. The schematic is a publication
    electrical schematic with deterministic semantic placement, not a graph
@@ -47,14 +49,18 @@ For each affected Exploration:
 The publication schematic pipeline is:
 
 `.cir` → netlist/include parser → semantic schematic description →
-deterministic manual layout → schematic renderer → endpoint validator.
+deterministic manual layout → schematic renderer → endpoint validator →
+geometric endpoint validator.
 
 The selected `.cir` deck and resolved includes are the only connectivity
 authority. Use project-local symbols for inductors, resistors, Josephson
 junctions, grounds, current arrows, ports, nodes, and mutual windings. The
 layout grammar is left-to-right signal flow, top bias, bottom return, and
 explicit branch placement. Every displayed endpoint must be validated against
-the selected netlist before the schematic is accepted.
+the selected netlist before the schematic is accepted. The renderer must also
+emit a coordinate ledger and prove that every wire endpoint coincides with a
+component terminal, junction anchor, port, ground, or current-arrow terminal;
+semantic agreement alone does not certify visual continuity.
 
 The historical Graphviz helpers may still produce a connectivity-debug graph
 for provenance, but they must not be presented as the canonical structure

@@ -1,0 +1,38 @@
+{
+  "parent_head": "8bb86f61c3243655467d61f00680977349b41cf3",
+  "new_josim_runs": false,
+  "analysis_script": "test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824/analysis/audit_load_backaction.py",
+  "analysis_script_sha256": "18a44171ebe25cde277a5b541f8fdea360c8b7cb9197a56c38bbff0a297c97fa",
+  "josim_binary": {
+    "path": "build/josim-cli",
+    "version": "2.7.2837d13",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "cases": {
+    "Q0_10ohm": {
+      "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv",
+      "sha256": "0b3fab3ba7357d2475ffadb174f0d48ad33b7e7c934962a687074d4739468bdb"
+    },
+    "Q0_OPEN": {
+      "path": "test/exploration/qb-load-boundary-matrix-20260824/raw-v2/A-q0-open/scaled-iin-68p4u.csv",
+      "sha256": "ac24ad24823d868c835598ad69aa8130a407a5033b3d3a5729400b6a7170776e"
+    },
+    "Q0_JTL_ONLY": {
+      "path": "test/exploration/qb-load-boundary-matrix-20260824/raw-v2/B-q0-jtl-only/scaled-iin-68p4u.csv",
+      "sha256": "60182a117f391ad31abb8079cff5c27ce673933b0c3a2e15c245494251bb7913"
+    },
+    "Q0_10ohm_PARALLEL_JTL": {
+      "path": "test/exploration/qb-load-boundary-matrix-20260824/raw-v2/C-q0-10ohm-parallel-jtl/scaled-iin-68p4u.csv",
+      "sha256": "e4998a4a47163d44a7fd1f54a1dd43a5659f9968a427e2995f60af946676cf9c"
+    },
+    "M3_SERIES_10ohm_JTL": {
+      "path": "test/exploration/parallel-qb-jtl-interface-mechanism-20260824/raw-v2/M3-rseries10/run.csv",
+      "sha256": "6a6817c11534819ebb03cf8c9d565925eab2865798a21c71bc38b3617483ee21"
+    }
+  },
+  "analysis": {
+    "reference_event": "Q0+10ohm pulse-5 BJL2 210-217.1 ps",
+    "node4_kcl": "I(L2)=I(L0)+I(BJL2)+I(RJ2)",
+    "classification": "MIXED_DYNAMIC_LOADING"
+  }
+}

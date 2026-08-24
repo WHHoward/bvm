@@ -1,0 +1,102 @@
+schema_version: bvm-jsl-read-width-to-qb-sfq-v1
+run_id: bvm-jsl-read-width-to-qb-sfq-v1-20260824
+tier: Exploration
+parent_head: 955a99e9c70489f6e67ee31c7e9a21de7f4e22ff
+current_checkpoint_head_before_finalization: 00f4e2d149c16335e0ac2e76f8d7653d36ad1ce2
+scientific_question: >-
+  Does a registered canonical BVM READ-width increase, followed by the accepted
+  external 12-JSL source interface, move the frozen scaled QB into a selective
+  exactly-one BJL2 window?
+canonical_bvm: circuits/bvm/bvm_cell.cir
+canonical_bvm_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+jjmit: jjmit.cir
+jjmit_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+metric_spec:
+  path: docs/research/METRIC_SPEC_V2.md
+  version: 2.0.0
+  sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+frozen_boundaries:
+  bvm: canonical topology and parameters unchanged
+  phase_a_load: external R_LD=12 ohm
+  phase_b_load: 12 external series jjmit AREA=3.2 JSL junctions
+  phase_c_qb:
+    bjs_area: 0.50
+    bjl1_area: 0.36
+    bjl2_area: 0.54
+    ibias_uA: 35.0
+    lin_pH: 0.80
+    l0_pH: 1.323
+    l1_pH: 3.91
+    l2_pH: 3.91
+    rj1_ohm: 33.0
+    rj2_ohm: 22.0
+    rb_ohm: 6.0
+    r_load_ohm: 10.0
+registered_widths_ps: [9, 12, 15, 20]
+w_star_ps: 12
+cases:
+  phase_a:
+    accepted_9ps:
+      logical1_read: test/exploration/bvm-internal-readout-20260819/raw/pos-read-single/run-01.csv
+      logical0_read: test/exploration/bvm-internal-readout-20260819/raw/neg-init-pos-read/run-01.csv
+      logical1_read0: test/exploration/bvm-internal-readout-20260819/raw/pos-control/run-01.csv
+      logical0_read0: test/exploration/bvm-internal-readout-20260819/raw/neg-control/run-01.csv
+    new:
+      - 12ps/logical1-read
+      - 12ps/logical0-read
+      - 15ps/logical1-read
+      - 15ps/logical0-read
+      - 20ps/logical1-read
+      - 20ps/logical0-read
+  phase_b:
+    accepted_9ps:
+      logical1_read: test/exploration/paper-sl-l0-20260824/raw/logical1-read/run-01.csv
+      logical0_read: test/exploration/paper-sl-l0-20260824/raw/logical0-read/run-01.csv
+      logical1_read0: test/exploration/paper-sl-l0-20260824/raw/logical1-read0-control/run-01.csv
+      logical0_read0: test/exploration/paper-sl-l0-20260824/raw/logical0-read0-control/run-01.csv
+    new:
+      - 12jsl-12ps/logical1-read
+      - 12jsl-12ps/logical0-read
+    provenance_note: >-
+      The accepted paper-SL-L0 logical0-read deck contains one active +100 uA
+      READ transition; it is preserved as accepted source provenance and is not
+      silently rewritten to canonical WL+SE semantics.
+  phase_c:
+    accepted_9ps_comparator:
+      logical1_read: test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read.csv
+      logical0_read: test/exploration/paper-sl-q1-20260824/raw/paper-j0-logical0-read.csv
+      logical1_read0: test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read0-control.csv
+      logical0_read0: test/exploration/paper-sl-q1-20260824/raw/paper-j0-logical0-read0-control.csv
+    new:
+      - phase-c/wstar12-logical1-read
+      - phase-c/wstar12-logical0-read
+      - phase-c/wstar12-logical1-read0-control
+      - phase-c/wstar12-logical0-read0-control
+    replay: exact I(B_LD1) current, original polarity, actual time grid, no transform
+verdicts:
+  phase_a: DURATION_SUPPORTED
+  phase_b: PAPER_JSL_WSTAR_SOURCE_VALID
+  phase_c: WIDTH_IMPROVES_QB_MARGIN_BUT_SUBTHRESHOLD
+event_rule:
+  phase: continuous unwrapped P(t)/(2*pi)
+  complete_min_turns: 1.0
+  area: same-JJ same-monotonic-segment integral(V dt)/Phi0
+  post: bounded/retrap required
+  voltage_peak_or_I_gt_Ic_alone: not sufficient
+  legacy_fast_events_used: false
+plots:
+  - id: 9ps-vs-wstar-qb-replay-comparison
+    role: COMPARISON
+    path: plots/9ps-vs-Wstar-qb-replay-comparison.html
+    metadata: plots/9ps-vs-Wstar-qb-replay-comparison.metadata.json
+    phase_semantics: continuous_absolute
+prohibited_in_this_exploration:
+  - physical BVM->12JSL->QB connection
+  - JTL
+  - T1
+  - unregistered width or parameter sweep
+  - waveform reshape or normalization

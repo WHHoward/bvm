@@ -1,0 +1,19 @@
+# BVM_JSL_READ_WIDTH_TO_QB_SFQ_V1 command record
+# Solver: build/josim-cli v2.7.2837d13
+
+python3 analysis/prepare_phase_a.py
+./run_phase_a.sh
+python3 analysis/analyze_phase_a.py
+
+python3 analysis/prepare_phase_b.py
+./run_phase_b.sh
+python3 analysis/analyze_phase_b.py
+
+python3 analysis/build_phase_c_fixture.py
+./run_phase_c.sh
+python3 analysis/analyze_phase_c.py
+
+python3 analysis/generate_phase_c_comparison.py
+
+# The 9 ps data in Phase A/B/C are accepted comparator raw from the paths
+# recorded in manifest.yaml; they were not regenerated in this Exploration.

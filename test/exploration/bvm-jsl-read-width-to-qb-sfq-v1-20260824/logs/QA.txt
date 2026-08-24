@@ -1,0 +1,20 @@
+# QA / artifact checks
+
+- All 12 new raw CSV files are non-empty, have a strictly increasing `time`
+  column, and contain the expected JoSIM probe headers.
+- Phase-A analysis completed for accepted 9 ps plus new 12/15/20 ps points.
+- Phase-B analysis completed for accepted 9 ps plus new W*=12 ps 12-JSL cases.
+- Phase-C analysis completed for W*=12 logical1/logical0/READ=0 matched cases and
+  accepted 9 ps comparator cases.
+- `PAPER_JSL_WSTAR_SOURCE_VALID` is a source-stage verdict only.
+- `WIDTH_IMPROVES_QB_MARGIN_BUT_SUBTHRESHOLD` is the final Phase-C verdict.
+- No complete BJL2 event is claimed in Phase C; the largest W*=12 read1
+  monotonic segment is `0.975402 turn` with same-segment area `0.975411 Phi0`.
+- Plot metadata declares `continuous_absolute` phase semantics and identifies
+  raw provenance. The HTML visualization does not define event counts.
+- Python analysis/plot scripts compile and execute successfully; YAML manifest
+  parses successfully.
+- `sha256sums.txt` covers source, input, raw, log, report, metric and plot
+  artifacts; ignored Python `__pycache__` files are excluded.
+- Pre-existing unrelated user modification to `circuits/t1/t1_cell.cir` was
+  preserved and is outside this Exploration directory.

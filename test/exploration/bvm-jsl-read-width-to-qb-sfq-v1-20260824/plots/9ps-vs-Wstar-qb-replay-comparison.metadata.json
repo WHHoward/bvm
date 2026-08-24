@@ -1,0 +1,27 @@
+{
+  "experiment_id": "bvm-jsl-read-width-to-qb-sfq-v1-20260824",
+  "plot_id": "9ps-vs-wstar-qb-replay-comparison",
+  "role": "COMPARISON",
+  "phase_semantics": [
+    "continuous_absolute"
+  ],
+  "description": "Accepted 9 ps PAPER-SL-Q1 replay compared with W*=12 ps replay into frozen scaled QB.",
+  "cases": [
+    "read1",
+    "read0",
+    "zero_control_logical1",
+    "zero_control_logical0"
+  ],
+  "source_paths": [
+    "test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read.csv",
+    "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical1-read/run-01.csv",
+    "test/exploration/paper-sl-q1-20260824/raw/paper-j0-logical0-read.csv",
+    "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical0-read/run-01.csv",
+    "test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read0-control.csv",
+    "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical1-read0-control/run-01.csv",
+    "test/exploration/paper-sl-q1-20260824/raw/paper-j0-logical0-read0-control.csv",
+    "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical0-read0-control/run-01.csv"
+  ],
+  "generated_from": "analysis/generate_phase_c_comparison.py; existing raw CSV only",
+  "event_claim_boundary": "Visualization is descriptive; formal event claims require continuous phase, same-JJ same-segment voltage area, and post-state analysis in PHASE_C_REPORT.md."
+}

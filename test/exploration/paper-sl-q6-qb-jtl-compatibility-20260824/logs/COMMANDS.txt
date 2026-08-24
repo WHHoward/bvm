@@ -1,0 +1,20 @@
+# PAPER-SL-Q6 execution command record
+# Parent HEAD: b92fdb7a37b17cadaa2e9bc96f1689bf45178ceb
+# Q5 source: test/exploration/paper-sl-q5-l1-l2-factorial-20260824/inputs/q5-l1-4p50-l2-4p50
+# R11-A positive-control provenance is accepted; it was not rerun in Q6.
+
+date --iso-8601=seconds
+git rev-parse HEAD
+git status --short --branch
+build/josim-cli --version
+sha256sum build/josim-cli docs/research/METRIC_SPEC_V2.md circuits/standard/JTL.cir circuits/models/jjmit.cir
+python3 analysis/build_fixture.py
+
+# Preregistered order: logical1 READ=0 control, logical1 READ, logical0 READ,
+# logical0 READ=0 control. Commands run from this Exploration directory.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/q6-q5-to-two-cell-jtl/<case>.csv inputs/q6-q5-to-two-cell-jtl/<case>.cir > logs/<case>.stdout 2> logs/<case>.stderr
+
+# After all four cases:
+python3 analysis/analyze_q6.py
+python3 -m py_compile analysis/build_fixture.py analysis/analyze_q6.py
+sha256sum -c sha256sums.txt

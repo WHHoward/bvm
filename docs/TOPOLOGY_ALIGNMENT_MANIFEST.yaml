@@ -1,0 +1,1050 @@
+schema_version: '2.0'
+parent_head: e41d05fcf9aabd26890805bc4f2a12622b24eed7
+topologies:
+- topology_id: BVM_CANONICAL
+  title_cn: Canonical BVM：storage/readout cell
+  representative_experiment: test/exploration/bvm-internal-readout-20260819
+  representative_deck: test/exploration/bvm-internal-readout-20260819/inputs/pos-read-single.cir
+  includes:
+  - jjmit.cir
+  - bvm_cell.cir
+  subcircuits: []
+  topology_signature: 0527abb40428e8e4bd9c50433e7f0a407c7c16afc210f7de189bed4efe8f4352
+  core_blocks:
+  - BVM_CANONICAL
+  external_boundary: []
+  publication_schematic: test/exploration/bvm-internal-readout-20260819/topology/schematic.svg
+  annotated_schematic: test/exploration/bvm-internal-readout-20260819/topology/schematic-annotated.svg
+  connectivity_debug: test/exploration/bvm-internal-readout-20260819/topology/connectivity-debug.svg
+  semantic_validation: test/exploration/bvm-internal-readout-20260819/topology/schematic-validation.json
+  geometric_validation: test/exploration/bvm-internal-readout-20260819/topology/geometric-connectivity-validation.json
+  shared_by_experiments:
+  - test/exploration/bvm-internal-readout-20260819
+  status: PUBLICATION_SCHEMATIC_VALIDATED
+- topology_id: DCSFQ_REPLAY_CONDITIONER
+  title_cn: R13-A：temporal conditioning requirements
+  representative_experiment: test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/inputs/raw-replay/read1.cir
+  includes:
+  - ../../../../../circuits/models/jjmit.cir
+  - ../../../../../circuits/interface/DCSFQ_BVM.cir
+  subcircuits: []
+  topology_signature: 1cae9275fd3e2fc725521696829a276747d76241e1698af447ed1f0a14ff1ec5
+  core_blocks:
+  - DCSFQ_REPLAY_CONDITIONER
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823
+  status: DEBUG_ONLY
+- topology_id: PAPER_JSL_TO_FROZEN_QB
+  title_cn: PAPER-SL-Q1：paper-JSL replay → frozen scaled QB
+  representative_experiment: test/exploration/paper-sl-q1-20260824
+  representative_deck: test/exploration/paper-sl-q1-20260824/inputs/paper-j1-logical1-read.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  subcircuits: []
+  topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
+  core_blocks:
+  - PAPER_JSL_TO_FROZEN_QB
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/paper-sl-q1-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/paper-sl-q1-20260824
+  - test/exploration/paper-sl-q2-20260824
+  - test/exploration/paper-sl-q3-l1-routing-closure-20260824
+  - test/exploration/paper-sl-q4-l1-l2-placement-20260824
+  - test/exploration/paper-sl-q5-l1-l2-factorial-20260824
+  status: DEBUG_ONLY
+- topology_id: Q5_TO_STANDARD_JTL
+  title_cn: PAPER-SL-Q6：Q5 → standard JTL compatibility
+  representative_experiment: test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824
+  representative_deck: test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/inputs/q6-q5-to-two-cell-jtl/paper-j1-logical1-read.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: 997d6d8e61c47e3f213092261f6436f63cbef734d0b9ef05ef7cd3090be89c6c
+  core_blocks:
+  - Q5_TO_STANDARD_JTL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_M1_IDEAL_REPLAY_JTL
+  title_cn: Q0 recorded V(OUT) ideal replay → standard JTL
+  representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M1_IDEAL_REPLAY_JTL
+  representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M1-ideal-replay/main.cir
+  includes:
+  - jjmit.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: 762b19105f96c0883fdc0060380cd753377a1ddb5c345518104d650f5aa58b07
+  core_blocks:
+  - QB_M1_IDEAL_REPLAY_JTL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/parallel-qb-jtl-interface-mechanism-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_M2_RISO10_JTL
+  title_cn: 低 Ic QB → RISO=10Ω → standard JTL
+  representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M2_RISO10_JTL
+  representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M2-riso10/main.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: 18bc023d1f93bb00cfe9af608d6952a86310092caa7ecfff8f63d2bb4fad1be0
+  core_blocks:
+  - QB_M2_RISO10_JTL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-2/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/parallel-qb-jtl-interface-mechanism-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_M3_SERIES10_JTL
+  title_cn: M1–M5：QB→JTL interface mechanism matrix
+  representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824
+  representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M3-rseries10/main.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: b85efce84ad622382fcaa2f12042cbb5fd7846fd70961c31289435814bf83fd1
+  core_blocks:
+  - QB_M3_SERIES10_JTL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-3/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/parallel-qb-jtl-interface-mechanism-20260824
+  - test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_M4_LISO10P_JTL
+  title_cn: 低 Ic QB → LISO=10pH → standard JTL
+  representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M4_LISO10P_JTL
+  representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M4-liso10p/main.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: ffeb4cda355de410948519c37a09e2035696340aa0a44168dd675139150f3ba4
+  core_blocks:
+  - QB_M4_LISO10P_JTL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-4/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/parallel-qb-jtl-interface-mechanism-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_M5_SCALED_JTL
+  title_cn: 低 Ic QB → scaled JTL
+  representative_experiment: test/exploration/parallel-qb-jtl-interface-mechanism-20260824::QB_M5_SCALED_JTL
+  representative_deck: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/inputs/M5-q0-scaled/main.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  - JTL_SCALED.cir
+  subcircuits: []
+  topology_signature: e7516b9c2a62ed6cb1495c1803b67dad0f272b37e99acb3cd253d7e17086e0a2
+  core_blocks:
+  - QB_M5_SCALED_JTL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-5/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/parallel-qb-jtl-interface-mechanism-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_Q0_10OHM
+  title_cn: QB-Q0：低 Ic QB standalone 量化窗口
+  representative_experiment: test/exploration/qb-q0-standalone-current-quantized-event-20260824
+  representative_deck: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  subcircuits: []
+  topology_signature: 103283576557852a577289c5b5b7ae5db59b0780fac26881ad1eb1a6376be837
+  core_blocks:
+  - QB_Q0_10OHM
+  external_boundary: []
+  publication_schematic: test/exploration/qb-q0-standalone-current-quantized-event-20260824/topology/schematic.svg
+  annotated_schematic: test/exploration/qb-q0-standalone-current-quantized-event-20260824/topology/schematic-annotated.svg
+  connectivity_debug: test/exploration/qb-q0-standalone-current-quantized-event-20260824/topology/connectivity-debug.svg
+  semantic_validation: test/exploration/qb-q0-standalone-current-quantized-event-20260824/topology/schematic-validation.json
+  geometric_validation: test/exploration/qb-q0-standalone-current-quantized-event-20260824/topology/geometric-connectivity-validation.json
+  shared_by_experiments:
+  - test/exploration/qb-q0-standalone-current-quantized-event-20260824
+  - test/exploration/qb-load-boundary-matrix-20260824
+  - test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824
+  status: PUBLICATION_SCHEMATIC_VALIDATED
+- topology_id: QB_Q0_10OHM_PARALLEL_JTL
+  title_cn: 低 Ic QB + 10Ω || standard JTL
+  representative_experiment: test/exploration/qb-load-boundary-matrix-20260824::QB_Q0_10OHM_PARALLEL_JTL
+  representative_deck: test/exploration/qb-load-boundary-matrix-20260824/inputs-v2/C-q0-10ohm-parallel-jtl/scaled-iin-68p4u.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: b0e8c66a4fd29fe2ad80ac7a7bf33af122605b58d6c9df861faa2e8b6deecc52
+  core_blocks:
+  - QB_Q0_10OHM_PARALLEL_JTL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/qb-load-boundary-matrix-20260824/topology/variants/scaled-iin-68p4u-2/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/qb-load-boundary-matrix-20260824
+  - test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_Q0_JTL_ONLY
+  title_cn: 低 Ic QB → standard JTL direct
+  representative_experiment: test/exploration/qb-load-boundary-matrix-20260824::QB_Q0_JTL_ONLY
+  representative_deck: test/exploration/qb-load-boundary-matrix-20260824/inputs-v2/B-q0-jtl-only/scaled-iin-68p4u.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: c4a9a1a578c1742f10c90f464bd112a3a24b700cdaf8c32561daf57cd6a34963
+  core_blocks:
+  - QB_Q0_JTL_ONLY
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/qb-load-boundary-matrix-20260824/topology/variants/scaled-iin-68p4u/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/qb-load-boundary-matrix-20260824
+  - test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824
+  status: DEBUG_ONLY
+- topology_id: QB_Q0_OPEN
+  title_cn: 低 Ic QB → OPEN output boundary
+  representative_experiment: test/exploration/qb-load-boundary-matrix-20260824::QB_Q0_OPEN
+  representative_deck: test/exploration/qb-load-boundary-matrix-20260824/inputs-v2/A-q0-open/scaled-iin-68p4u.cir
+  includes:
+  - jjmit.cir
+  - bq_cell.cir
+  subcircuits: []
+  topology_signature: 1a217f47dac80ec856defc6750e56669acc780d1be6c290d6dd71ee65227e4ed
+  core_blocks:
+  - QB_Q0_OPEN
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/qb-load-boundary-matrix-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/qb-load-boundary-matrix-20260824
+  - test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824
+  status: DEBUG_ONLY
+- topology_id: SCALED_QB_REPLAY
+  title_cn: QB-Q1：physical BVM → frozen scaled QB
+  representative_experiment: test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824
+  representative_deck: test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/inputs/bq_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - SCALED_QB_REPLAY
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824
+  - test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824
+  - test/exploration/qb-q2b-central-bias-bracketing-20260824
+  status: DEBUG_ONLY
+- topology_id: STANDARD_JTL_2CELL
+  title_cn: JTL transport methodology
+  representative_experiment: test/exploration/jtl-transport-gate-v1-methodology-20260824
+  representative_deck: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/inputs/r11/0p0125/main.cir
+  includes:
+  - jjmit.cir
+  - JTL.cir
+  subcircuits: []
+  topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
+  core_blocks:
+  - STANDARD_JTL_2CELL
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/jtl-transport-gate-v1-methodology-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/jtl-transport-gate-v1-methodology-20260824
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_076c3ccc98
+  title_cn: bvm-sfq-receiver-r6a-native-qb-isolation-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/inputs/bq_cell_paper.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_076c3ccc98
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_0bba1f61c1
+  title_cn: bvm-sfq-receiver-r6b-native-qb-ratio-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/inputs/bq_cell_paper.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_0bba1f61c1
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_0da30ee288
+  title_cn: bvm-sfq-receiver-r2c-directdrive-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/inputs/amp20u0-receiver.cir
+  includes: []
+  subcircuits: []
+  topology_signature: ea1a9c827ff301b5b8253d0dfd4cfacc99e4e45de4754cde3301533ca9abe476
+  core_blocks:
+  - TOPOLOGY_0da30ee288
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_0fca67e829
+  title_cn: jtl-transport-gate-polarity-replay-20260824
+  representative_experiment: test/exploration/jtl-transport-gate-polarity-replay-20260824
+  representative_deck: null
+  includes: []
+  subcircuits: []
+  topology_signature: MISSING
+  core_blocks:
+  - TOPOLOGY_0fca67e829
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/jtl-transport-gate-polarity-replay-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/jtl-transport-gate-polarity-replay-20260824
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_16ea7d821b
+  title_cn: bvm-sfq-receiver-r5a-biased-quantizer-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_16ea7d821b
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_2600b475f4
+  title_cn: bvm-sfq-receiver-r0b-20260819
+  representative_experiment: test/exploration/bvm-sfq-receiver-r0b-20260819
+  representative_deck: test/exploration/bvm-sfq-receiver-r0b-20260819/inputs/a050-b15-read1.cir
+  includes:
+  - jjmit.cir
+  - bvm_cell.cir
+  - sl_trigger_a050_b15.cir
+  subcircuits: []
+  topology_signature: cefd9f9e156ea6a33d2c08fe2d43406e0de85454fca665cad0897602d649b8f4
+  core_blocks:
+  - TOPOLOGY_2600b475f4
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r0b-20260819/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r0b-20260819
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_345d48a6be
+  title_cn: paper-sl-l0-20260824
+  representative_experiment: test/exploration/paper-sl-l0-20260824
+  representative_deck: test/exploration/paper-sl-l0-20260824/inputs/jjmit.cir
+  includes: []
+  subcircuits: []
+  topology_signature: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  core_blocks:
+  - TOPOLOGY_345d48a6be
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/paper-sl-l0-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/paper-sl-l0-20260824
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_36fb1f63c9
+  title_cn: bvm-sfq-receiver-r5b-loadline-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-r5b-loadline-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_36fb1f63c9
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r5b-loadline-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_3a1af7987d
+  title_cn: jtl-transport-gate-v1-numerical-freeze-20260824
+  representative_experiment: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824
+  representative_deck: null
+  includes: []
+  subcircuits: []
+  topology_signature: MISSING
+  core_blocks:
+  - TOPOLOGY_3a1af7987d
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_4e1d8a8345
+  title_cn: bvm-sfq-receiver-r5c-saddle-selectivity-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_4e1d8a8345
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_5233bbad6e
+  title_cn: bvm-sfq-receiver-r1b-output-jj-20260819
+  representative_experiment: test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819
+  representative_deck: test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/inputs/bq_cell_paper-reference.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_5233bbad6e
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_599236eda7
+  title_cn: bvm-sfq-receiver-native-qb-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-native-qb-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-native-qb-20260822/inputs/bq_cell_paper.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_599236eda7
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-native-qb-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-native-qb-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_6161c7c30f
+  title_cn: bvm-sfq-receiver-r15c-jset-causal-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_6161c7c30f
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_658acd44d8
+  title_cn: bvm-sfq-receiver-r1-oneshot-20260819
+  representative_experiment: test/exploration/bvm-sfq-receiver-r1-oneshot-20260819
+  representative_deck: test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/inputs/a050-b15-lq10-read1.cir
+  includes:
+  - jjmit.cir
+  - bvm_cell.cir
+  - r1_receiver_lq10.cir
+  subcircuits: []
+  topology_signature: cefd9f9e156ea6a33d2c08fe2d43406e0de85454fca665cad0897602d649b8f4
+  core_blocks:
+  - TOPOLOGY_658acd44d8
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r1-oneshot-20260819
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_6776d3562e
+  title_cn: bvm-sfq-receiver-r10a-local-bjl2-bias-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/inputs/bq_cell_paper_r10a_local_bias.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 3ee72bfb04746e3afe8cd261764e15588b99e48203b743b7770c109daabe7573
+  core_blocks:
+  - TOPOLOGY_6776d3562e
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_7278e859dc
+  title_cn: bvm-sfq-receiver-r2f-dwell-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r2f-dwell-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_7278e859dc
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r2f-dwell-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_73d3c8d7f4
+  title_cn: bvm-sfq-receiver-r1a-transfer-20260819
+  representative_experiment: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819
+  representative_deck: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/inputs/bq_cell_paper-reference.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_73d3c8d7f4
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r1a-transfer-20260819
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_75d201da61
+  title_cn: bvm-sfq-receiver-r0-20260819
+  representative_experiment: test/exploration/bvm-sfq-receiver-r0-20260819
+  representative_deck: test/exploration/bvm-sfq-receiver-r0-20260819/inputs/bq_cell_paper-reference.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_75d201da61
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r0-20260819/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r0-20260819
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_7dca5b0bd5
+  title_cn: bvm-sfq-receiver-r1b-area008-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r1b-area008-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r1b-area008-20260821/inputs/area010_receiver_reference.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 185660d47eaffad04c67348294f06ed87f1661449bf787e769e2b82a33ab0953
+  core_blocks:
+  - TOPOLOGY_7dca5b0bd5
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r1b-area008-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r1b-area008-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_8403837f5b
+  title_cn: jtl-transport-gate-v1-numerical-freeze-20260824-rerun
+  representative_experiment: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun
+  representative_deck: null
+  includes: []
+  subcircuits: []
+  topology_signature: MISSING
+  core_blocks:
+  - TOPOLOGY_8403837f5b
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_879c0c5b61
+  title_cn: bvm-sfq-receiver-r2e-ampthreshold-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/inputs/a40u0-receiver.cir
+  includes: []
+  subcircuits: []
+  topology_signature: ea1a9c827ff301b5b8253d0dfd4cfacc99e4e45de4754cde3301533ca9abe476
+  core_blocks:
+  - TOPOLOGY_879c0c5b61
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_9334bd7f21
+  title_cn: bvm-sfq-receiver-r15d-jq-compressor-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_9334bd7f21
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_9a2c21177c
+  title_cn: bvm-sfq-receiver-r15a-afq3-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r15a-afq3-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/inputs/DCSFQ_BVM.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 051d117392ff4ceef4c782915560c75705c3d0ded8d564c25e50e803594a0a39
+  core_blocks:
+  - TOPOLOGY_9a2c21177c
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r15a-afq3-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_a4ff2838c2
+  title_cn: bvm-sfq-receiver-r3a-onset-extraction-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_a4ff2838c2
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_a5649ee5af
+  title_cn: bvm-sfq-receiver-r2a-coupling-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r2a-coupling-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/inputs/bq_cell_paper-reference.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_a5649ee5af
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r2a-coupling-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_a61a44b0c0
+  title_cn: bvm-sfq-receiver-r2d-duration-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r2d-duration-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r2d-duration-20260821/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_a61a44b0c0
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r2d-duration-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r2d-duration-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_a8dab02d1d
+  title_cn: bvm-sfq-receiver-r1b-differential-output-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/inputs/bq_cell_paper-reference.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_a8dab02d1d
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_ac497f8640
+  title_cn: bvm-sfq-receiver-r1c-bias-margin-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/inputs/bq_cell_paper-reference.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_ac497f8640
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_ad32926098
+  title_cn: bvm-sfq-receiver-r2g-twopulse-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_ad32926098
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_b01953770c
+  title_cn: bvm-sfq-receiver-r2b-damping-20260821
+  representative_experiment: test/exploration/bvm-sfq-receiver-r2b-damping-20260821
+  representative_deck: test/exploration/bvm-sfq-receiver-r2b-damping-20260821/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_b01953770c
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r2b-damping-20260821/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r2b-damping-20260821
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_b2733b8e3c
+  title_cn: bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/inputs/phase-a-bump-300u.cir
+  includes:
+  - ../../../../circuits/models/jjmit.cir
+  - ../../../../circuits/interface/DCSFQ_BVM.cir
+  subcircuits: []
+  topology_signature: d1a7855abab4a553904fb02565de1d035c35465a88299a6a65103381eb6d5575
+  core_blocks:
+  - TOPOLOGY_b2733b8e3c
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_b2e3690473
+  title_cn: bvm-sfq-receiver-r7a-l1-routing-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/inputs/bq_cell_paper.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_b2e3690473
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_ba0fe9d75d
+  title_cn: paper-sl-q3-pre-20260824
+  representative_experiment: test/exploration/paper-sl-q3-pre-20260824
+  representative_deck: null
+  includes: []
+  subcircuits: []
+  topology_signature: MISSING
+  core_blocks:
+  - TOPOLOGY_ba0fe9d75d
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/paper-sl-q3-pre-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/paper-sl-q3-pre-20260824
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_bb821ba72c
+  title_cn: qb-q2c-uniform-junction-scale-20260824
+  representative_experiment: test/exploration/qb-q2c-uniform-junction-scale-20260824
+  representative_deck: test/exploration/qb-q2c-uniform-junction-scale-20260824/inputs/jjmit.cir
+  includes: []
+  subcircuits: []
+  topology_signature: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  core_blocks:
+  - TOPOLOGY_bb821ba72c
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/qb-q2c-uniform-junction-scale-20260824/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/qb-q2c-uniform-junction-scale-20260824
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_c69c14b0ad
+  title_cn: bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/inputs/positive-control.cir
+  includes:
+  - ../../../../circuits/models/jjmit.cir
+  - ../../../../circuits/standard/JTL.cir
+  subcircuits: []
+  topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
+  core_blocks:
+  - TOPOLOGY_c69c14b0ad
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_cb0a106fd7
+  title_cn: bvm-sfq-receiver-r4a-weak-mutual-capture-20260822
+  representative_experiment: test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822
+  representative_deck: test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/inputs/bvm_cell.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 1a8fdb9f2b649c71f04a63475934b88ef40f804cc3f89c350dbd052a66ebfcb5
+  core_blocks:
+  - TOPOLOGY_cb0a106fd7
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_d1f5096eb9
+  title_cn: bvm-sfq-receiver-r14a-dcsfq-detector-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823
+  representative_deck: null
+  includes: []
+  subcircuits: []
+  topology_signature: MISSING
+  core_blocks:
+  - TOPOLOGY_d1f5096eb9
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_e9d593f012
+  title_cn: bvm-sfq-receiver-r15b-magnetic-correction-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/inputs/DCSFQ_BVM.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 051d117392ff4ceef4c782915560c75705c3d0ded8d564c25e50e803594a0a39
+  core_blocks:
+  - TOPOLOGY_e9d593f012
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_e9e3fdb426
+  title_cn: bvm-sfq-receiver-r8-bjl2-area070-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/inputs/bq_cell_paper.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_e9e3fdb426
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823
+  status: DEBUG_ONLY
+- topology_id: TOPOLOGY_f2413fa505
+  title_cn: bvm-sfq-receiver-r9a-l2-routing-20260823
+  representative_experiment: test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823
+  representative_deck: test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/inputs/bq_cell_paper.cir
+  includes: []
+  subcircuits: []
+  topology_signature: 043c29a9dfbfe094fd6f91de536535220f3048f950cf9f789d7c6ca71cebb463
+  core_blocks:
+  - TOPOLOGY_f2413fa505
+  external_boundary: []
+  publication_schematic: null
+  annotated_schematic: null
+  connectivity_debug: test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/topology/topology.svg
+  semantic_validation: null
+  geometric_validation: null
+  shared_by_experiments:
+  - test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823
+  status: DEBUG_ONLY

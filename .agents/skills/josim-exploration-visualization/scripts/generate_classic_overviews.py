@@ -8,6 +8,8 @@ event or reruns JoSIM.
 from __future__ import annotations
 
 import argparse
+import html
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -40,10 +42,20 @@ def choose_cases(raw_root: Path) -> list[Path]:
     ]
 
 
+def read_frame(path: Path, **kwargs):
+    """Read a JoSIM CSV, tolerating a leading simulator banner."""
+    with path.open("r", encoding="utf-8", errors="replace") as handle:
+        lines = handle.readlines()
+    header = next((i for i, line in enumerate(lines) if line.startswith("time,")), None)
+    if header is None:
+        raise ValueError(f"no CSV header beginning with time, in {path}")
+    return pd.read_csv(path, skiprows=header, **kwargs)
+
+
 def collect_columns(cases: list[Path]) -> tuple[list[str], list[str], list[str]]:
     headers = {}
     for path in cases:
-        df = pd.read_csv(path, nrows=1)
+        df = read_frame(path, nrows=1)
         headers[path] = list(df.columns)
     all_columns = sorted({c for values in headers.values() for c in values})
     phases = [c for c in all_columns if c.startswith("P(")]
@@ -58,9 +70,9 @@ def collect_columns(cases: list[Path]) -> tuple[list[str], list[str], list[str]]
 def panel(fig, row: int, title: str, column: str, cases: list[Path], raw_root: Path,
           kind: str) -> None:
     for path in cases:
-        if column not in pd.read_csv(path, nrows=0).columns:
+        if column not in read_frame(path, nrows=0).columns:
             continue
-        df = pd.read_csv(path, usecols=[df_col for df_col in ["time", column]])
+        df = read_frame(path, usecols=[df_col for df_col in ["time", column]])
         y = df[column]
         y_label = "raw"
         if kind == "phase":
@@ -89,12 +101,13 @@ def panel(fig, row: int, title: str, column: str, cases: list[Path], raw_root: P
     fig.update_xaxes(title_text="time (ps)", row=row, col=1)
 
 
-def generate(exploration: Path) -> bool:
+def generate(exploration: Path, *, force: bool = False,
+             output_name: str = "overview.html") -> bool:
     raw_root = exploration / "raw"
     plots = exploration / "plots"
     if not raw_root.exists():
         return False
-    if plots.exists() and list(plots.rglob("*.html")):
+    if not force and plots.exists() and list(plots.rglob("*.html")):
         return False
     cases = choose_cases(raw_root)
     if not cases:
@@ -119,12 +132,25 @@ def generate(exploration: Path) -> bool:
         margin=dict(l=100, r=30, t=90, b=130),
     )
     plots.mkdir(parents=True, exist_ok=True)
-    output = plots / "overview.html"
+    output = plots / output_name
     fig.write_html(output, include_plotlyjs="cdn", config={"displaylogo": False})
+    metadata = {
+        "experiment_id": exploration.name,
+        "plot_id": output.stem,
+        "role": "RESULT",
+        "cases": [case_label(p, raw_root) for p in cases],
+        "phase_semantics": ["continuous_absolute"] if phases else [],
+        "source_paths": [p.relative_to(Path.cwd()).as_posix() if p.is_relative_to(Path.cwd()) else str(p) for p in cases],
+        "generated_from": "generate_classic_overviews.py; existing raw CSV only",
+    }
+    output.with_suffix(".metadata.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     lines = [
         f"# {exploration.name} overview",
         "",
         "此图由既有 raw CSV 生成，仅用于跨 case 阅读；没有重新运行 JoSIM，也不从图中判定 event/Gate。",
+        "",
+        "plot role: RESULT；required-case coverage 由 alignment manifest 管理，不由目录中是否存在 HTML 判断。",
+        "原始 JoSIM P(...) 连续轨迹显示为 φ/2π（turn）；未做基线相减、未按脉冲归零；不等于 SFQ 计数。",
         "",
         "## cases",
         "",
@@ -146,10 +172,12 @@ def generate(exploration: Path) -> bool:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", type=Path, default=Path("test/exploration"))
+    ap.add_argument("--force", action="store_true", help="write even when another HTML already exists")
+    ap.add_argument("--output-name", default="overview.html")
     args = ap.parse_args()
     count = 0
     for exploration in sorted(p for p in args.root.iterdir() if p.is_dir()):
-        count += int(generate(exploration))
+        count += int(generate(exploration, force=args.force, output_name=args.output_name))
     print(f"generated={count}")
 
 

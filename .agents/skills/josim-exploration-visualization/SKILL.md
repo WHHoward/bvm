@@ -80,17 +80,20 @@ Graphviz topology helper is debug/provenance-only; it is not a replacement for
 the semantic schematic pipeline. For a prototype, work on one selected
 Exploration and stop for visual review before extending the renderer.
 
-1. `scripts/generate_classic_overviews.py --root test/exploration` adds one
-   descriptive `plots/overview.html` only to directories that have raw CSVs
-   but no existing HTML plot. It preserves all available raw cases and uses
-   exact headers.
+1. `scripts/generate_classic_overviews.py --root test/exploration --force
+   --output-name alignment-overview.html` may add a case-complete descriptive
+   overview for an explicitly authorized completed set. It preserves all
+   available raw cases, uses exact headers, and records metadata; never infer
+   completeness from the presence of `overview.html`.
 2. Do not call the old Graphviz topology generator to create canonical
    schematics. A future batch schematic driver must parse the selected deck,
    consume an explicit semantic layout, run endpoint validation, and write
    `schematic.*`; directories without an independent deck must use an
    explicitly recorded inherited frozen fixture.
-3. `scripts/update_indexes.py --repo-root .` adds result-overview, topology,
-   reference-image, and matrix links to both Markdown and HTML indexes.
+3. `scripts/build_visualization_alignment.py` writes the V2 manifest, topology
+   manifest, audit, reading guide, schematic index, and both indexes from one
+   source. The historical `scripts/update_indexes.py` is not a V2 index
+   generator and must not be used as the final mapping source.
 
 These helpers are documentation-only: they read existing raw/netlist/report
 artifacts and never invoke JoSIM. Re-run the skill validator after changing the
@@ -105,6 +108,55 @@ original report and raw-derived plot. Keep a node's text in the four layers
 summary. Validate every local HTML/Markdown/SVG link, check non-zero files,
 run `git diff --check`, and commit the visualization/topology/index update as
 one documentation checkpoint.
+
+## Alignment V2: permanent provenance rules
+
+The machine-readable source for the two result indexes is
+`docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml`. Do not maintain an independent
+experiment-to-plot mapping in `EXPLORATION_FLOW_INDEX` or
+`VISUALIZATION_INDEX`; both pages must be generated from that manifest.
+
+1. HTML existence is not visualization completeness. Completeness means that
+   every registered `required_case` has a plot provenance entry, or an explicit
+   documented visualization exemption.
+2. A comparison claim requires a comparison plot covering every registered
+   comparison case. A single operating-point HTML is never a substitute for a
+   matrix comparison.
+3. `RESULT`, `COMPARISON`, `POSITIVE_CONTROL`, `NEGATIVE_CONTROL`,
+   `ZERO_CONTROL`, `SOURCE_REFERENCE`, `HISTORICAL_REFERENCE`, and
+   `SUPERSEDED_REFERENCE` are semantic roles, not filename conventions.
+   Source/reference/control plots must not become a current result's primary
+   evidence by alphabetical ordering.
+4. Every phase plot declares one of `continuous_absolute`,
+   `relative_to_baseline`, `event_delta`, or `settled_well`. Raw JoSIM
+   `P(...) / (2*pi)` is labelled continuous phase φ/2π (turns), is not
+   automatically an SFQ count, and must not be called a phase jump without a
+   registered delta calculation.
+5. The manifest is the only index authority. The alignment verifier must
+   check raw provenance, required-case coverage, plot role, report
+   classification, comparison completeness, polarity/convergence completeness,
+   topology links, and MD/HTML index agreement.
+6. Superseded and historical evidence remains reachable for provenance but
+   cannot be the current core result. In particular, a paper-original QB plot
+   cannot support a scaled-QB exactly-one claim.
+7. Publication schematic, experiment-annotated schematic, and Graphviz
+   connectivity-debug graph are different artifact classes. Graphviz is debug
+   only; it must never be the default publication schematic link.
+8. A topology signature is based on resolved electrical connectivity and
+   external boundary, not on a directory name. Parameter-only variants may
+   share a clean schematic; load/interface/mutual/source-boundary changes need
+   a distinct topology declaration or a validated abstraction.
+9. Visualization describes existing raw/report evidence and never changes a
+   scientific verdict, event count, or Gate disposition.
+10. Run `scripts/verify_visualization_alignment.py` and its regression tests
+    before an alignment checkpoint. A result is acceptable only when the
+    verifier reports `result_alignment`, `topology_alignment`,
+    `schematic_alignment`, `index_alignment`, and `phase_semantics` all
+    `PASS`.
+
+The legacy `update_indexes.py` and Graphviz topology helpers are not allowed
+to become the final V2 renderer. Use them only for historical/debug
+provenance, or replace them with the manifest-driven builders.
 
 For detailed schematic labels and the generated-artifact contract, read
 `references/topology-format.md` when changing the generator.

@@ -1,6 +1,6 @@
 schema_version: '2.0'
 manifest_id: PROJECT_VISUALIZATION_INDEX_ALIGNMENT_V2
-parent_head: 52fdd7212e44dff1d94a6f64b21a31f9927ec4c3
+parent_head: 576ca9d32b15c99f8c35c4271336ffa079664b64
 authority_order:
 - raw
 - accepted_analysis_report
@@ -6854,6 +6854,180 @@ experiments:
   - V(OUT)
   - V(SL1)
   plots:
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-width-comparison.html
+    role: COMPARISON
+    cases:
+    - 13/logical1_read
+    - 13/logical0_read
+    - 13/logical1_no_read_control
+    - 13/logical0_no_read_control
+    - 14/logical1_read
+    - 14/logical0_read
+    - 14/logical1_no_read_control
+    - 14/logical0_no_read_control
+    source_classification: PHYSICAL_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-matched-cases.html
+    role: COMPARISON
+    cases:
+    - 13/logical1_read
+    - 13/logical0_read
+    - 13/logical1_no_read_control
+    - 13/logical0_no_read_control
+    source_classification: PHYSICAL_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-matched-cases.html
+    role: COMPARISON
+    cases:
+    - 14/logical1_read
+    - 14/logical0_read
+    - 14/logical1_no_read_control
+    - 14/logical0_no_read_control
+    source_classification: PHYSICAL_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-source-and-storage-guards.html
+    role: COMPARISON
+    cases:
+    - 13/logical1_read
+    - 13/logical0_read
+    - 13/logical1_no_read_control
+    - 13/logical0_no_read_control
+    - 14/logical1_read
+    - 14/logical0_read
+    - 14/logical1_no_read_control
+    - 14/logical0_no_read_control
+    source_classification: SOURCE_STORAGE_GUARD
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-jsl12-current-consistency.html
+    role: RESULT
+    cases:
+    - 13/logical1_read
+    - 13/logical0_read
+    - 13/logical1_no_read_control
+    - 13/logical0_no_read_control
+    - 14/logical1_read
+    - 14/logical0_read
+    - 14/logical1_no_read_control
+    - 14/logical0_no_read_control
+    source_classification: JSL_SERIES_CONSISTENCY
+    phase_semantics: null
+    phase_plot: false
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-qb-routing-and-kcl.html
+    role: COMPARISON
+    cases:
+    - 13/logical1_read
+    - 13/logical0_read
+    - 14/logical1_read
+    - 14/logical0_read
+    source_classification: QB_ROUTING_KCL
+    phase_semantics: null
+    phase_plot: false
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_read.html
+    role: RESULT
+    cases:
+    - 13/logical1_read
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_read.html
+    role: NEGATIVE_CONTROL
+    cases:
+    - 13/logical0_read
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_no_read_control.html
+    role: ZERO_CONTROL
+    cases:
+    - 13/logical1_no_read_control
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_no_read_control.html
+    role: ZERO_CONTROL
+    cases:
+    - 13/logical0_no_read_control
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_read.html
+    role: RESULT
+    cases:
+    - 14/logical1_read
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_read.html
+    role: NEGATIVE_CONTROL
+    cases:
+    - 14/logical0_read
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_read/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_no_read_control.html
+    role: ZERO_CONTROL
+    cases:
+    - 14/logical1_no_read_control
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical1_no_read_control/run-01.csv
+  - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_no_read_control.html
+    role: ZERO_CONTROL
+    cases:
+    - 14/logical0_no_read_control
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/14/logical0_no_read_control/run-01.csv
   - path: test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-ideal-vs-physical-qb.html
     role: COMPARISON
     cases:
@@ -6964,8 +7138,9 @@ experiments:
   phase_semantics: *id001
   notes: 不能称 physical BVM→QB selective one-SFQ closure，也没有 T1/JTL evidence；该结果把下一问题限定为
     physical QB source matching/load-line，而不是继续 width sweep。
-  reading_guide: 先看 13/14 ideal-vs-physical；再看 source before/after loading；最后看 BJL2
-    phase/area evidence 与正式 REPORT。
+  reading_guide: 先看 physical-width-comparison 或 13/14 matched-cases；再看 physical-source-and-storage-guards
+    与 physical-jsl12-current-consistency；然后看 physical-qb-routing-and-kcl；最后看 bjl2-phase-area-evidence
+    与正式 REPORT。
   sequence: 53
   stage_id: stage-08
   stage_title: physical BVM→JSL12→QB closure
@@ -6979,6 +7154,14 @@ experiments:
     connectivity_debug: null
   plot_groups:
     core_result:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-width-comparison.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-matched-cases.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-matched-cases.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-source-and-storage-guards.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-jsl12-current-consistency.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-qb-routing-and-kcl.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_read.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_read.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-ideal-vs-physical-qb.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-ideal-vs-physical-qb.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-logical1-vs-logical0.html
@@ -6986,14 +7169,28 @@ experiments:
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-source-before-vs-after-qb-loading.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/bjl2-phase-area-evidence.html
     key_comparison:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-width-comparison.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-matched-cases.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-matched-cases.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-source-and-storage-guards.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-qb-routing-and-kcl.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-ideal-vs-physical-qb.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-ideal-vs-physical-qb.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-logical1-vs-logical0.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-source-before-vs-after-qb-loading.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-source-before-vs-after-qb-loading.html
     case_plots:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-jsl12-current-consistency.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_read.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_read.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/bjl2-phase-area-evidence.html
-    controls: []
+    controls:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_read.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_no_read_control.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_no_read_control.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_read.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_no_read_control.html
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_no_read_control.html
     source_references: []
 - experiment_id: test/exploration/qb-load-boundary-matrix-20260824
   title_cn: QB load-boundary matrix：Q0 output boundary

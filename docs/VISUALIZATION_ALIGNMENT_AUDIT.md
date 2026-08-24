@@ -1,6 +1,6 @@
 # Visualization Alignment Audit V2
 
-基线 HEAD：`52fdd7212e44dff1d94a6f64b21a31f9927ec4c3`
+基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`
 
 本审计只检查 raw/report/plot/index/topology 的 provenance 对齐，不改变任何 scientific verdict。
 
@@ -58,7 +58,7 @@
 | test/exploration/paper-sl-q5-l1-l2-factorial-20260824 | `Q5_COMPLEMENTARY_DOWNSTREAM_PRESERVED_PARTIAL_L1_RECOVERY_NO_EVENT` | 4 | 2 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824 | `NO_JTL_TRIGGER` | 4 | 3 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824 | `IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE` | 16 | 4 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
-| test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824 | `PHYSICAL_BACKACTION_PREVENTS_CLOSURE` | 8 | 6 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
+| test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824 | `PHYSICAL_BACKACTION_PREVENTS_CLOSURE` | 8 | 20 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/qb-load-boundary-matrix-20260824 | `MIXED_DYNAMIC_LOADING` | 11 | 3 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/parallel-qb-jtl-interface-mechanism-20260824 | `BOUNDED_INTERFACE_MATRIX` | 6 | 6 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/jtl-transport-gate-polarity-replay-20260824 | `POLARITY_REPLAY_RECONCILED` | 2 | 1 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |

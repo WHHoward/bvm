@@ -1,6 +1,6 @@
 # EXPLORATION FLOW INDEX V2
 
-生成基线 HEAD：`52fdd7212e44dff1d94a6f64b21a31f9927ec4c3`。
+生成基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。
 
 本页由 `docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml` 生成，展示科研路线；结果图、controls、source/reference 和电路入口均保持角色区分。
 
@@ -1293,6 +1293,20 @@
 **结论边界**：不能称 physical BVM→QB selective one-SFQ closure，也没有 T1/JTL evidence；该结果把下一问题限定为 physical QB source matching/load-line，而不是继续 width sweep。
 
 **推荐先看**：
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-width-comparison.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-width-comparison.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-matched-cases.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-matched-cases.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-matched-cases.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-matched-cases.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-source-and-storage-guards.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-source-and-storage-guards.html)
+- 【单工况/结果图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-jsl12-current-consistency.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-jsl12-current-consistency.html)
+- 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-qb-routing-and-kcl.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-qb-routing-and-kcl.html)
+- 【单工况/结果图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_read.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_read.html)
+- 【负向对照】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_read.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_read.html)
+- 【零输入对照】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_no_read_control.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical1_no_read_control.html)
+- 【零输入对照】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_no_read_control.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/13ps-logical0_no_read_control.html)
+- 【单工况/结果图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_read.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_read.html)
+- 【负向对照】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_read.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_read.html)
+- 【零输入对照】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_no_read_control.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_no_read_control.html)
+- 【零输入对照】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_no_read_control.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_no_read_control.html)
 - 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-ideal-vs-physical-qb.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/13ps-ideal-vs-physical-qb.html)
 - 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-ideal-vs-physical-qb.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/14ps-ideal-vs-physical-qb.html)
 - 【关键对比图】 [test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-logical1-vs-logical0.html](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-logical1-vs-logical0.html)

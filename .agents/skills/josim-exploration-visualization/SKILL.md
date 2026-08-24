@@ -69,9 +69,23 @@ figure and must not be cosmetically tuned into a schematic.
 ## Matrix plot workflow
 
 Use `scripts/plot_case_matrix.py` with a JSON manifest for multi-operating-point
-plots. A manifest must name every CSV, exact column, panel meaning, phase-unit
-conversion, and control/variant label. The script writes a standalone Plotly
-HTML and does not rerun simulation.
+plots when that helper is present. If a repository checkout does not contain
+that helper, use a deterministic project-local renderer (for example
+`scripts/generate_physical_closure_visualizations.py`) with the same contract:
+every CSV, exact column, panel meaning, phase-unit conversion, and
+control/variant label must be explicit. The renderer writes standalone Plotly
+HTML and does not rerun simulation. Do not silently fall back to a sparse
+legacy plot that shows only one output JJ when the scientific question is a
+source-to-receiver chain.
+
+For a BVM→load/interface→QB result, the minimum complete display includes the
+SL readout branch current, relevant SL/N6 voltages, storage/read guards, the
+interface/load current consistency, BJs→BJL1→BJL2 phase/current, and the
+receiver routing/KCL branches. Every matched RESULT, NEGATIVE_CONTROL and
+ZERO_CONTROL case must have either a direct single-case page or an explicit
+comparison-panel provenance entry. A phase/area event page must show the
+continuous phase and same-JJ voltage trace together; the formal report remains
+the event authority.
 
 ## Batch workflow for a completed Exploration set
 

@@ -873,6 +873,22 @@ def curated_entries() -> dict[str, dict[str, Any]]:
         topology_id="BVM_JSL12_SCALED_QB_PHYSICAL",
         cases=physical_cases,
         plots=[
+            # Rebuilt physical-closure views: the first five are the intended
+            # navigation entry points.  They expose SL current, BVM guards,
+            # all JSL currents, QB routing/KCL, and the four matched cases;
+            # the per-case pages below ensure every required raw case has a
+            # direct result view rather than only appearing inside a matrix.
+            plot_record(f"{physical}/plots/physical-width-comparison.html", role="COMPARISON", cases=[f"{w}/{r}" for w in (13, 14) for r in ["logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]], source_classification="PHYSICAL_RESULT"),
+            plot_record(f"{physical}/plots/13ps-matched-cases.html", role="COMPARISON", cases=[f"13/{r}" for r in ["logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]], source_classification="PHYSICAL_RESULT"),
+            plot_record(f"{physical}/plots/14ps-matched-cases.html", role="COMPARISON", cases=[f"14/{r}" for r in ["logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]], source_classification="PHYSICAL_RESULT"),
+            plot_record(f"{physical}/plots/physical-source-and-storage-guards.html", role="COMPARISON", cases=[f"{w}/{r}" for w in (13, 14) for r in ["logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]], source_classification="SOURCE_STORAGE_GUARD"),
+            plot_record(f"{physical}/plots/physical-jsl12-current-consistency.html", role="RESULT", cases=[f"{w}/{r}" for w in (13, 14) for r in ["logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]], source_classification="JSL_SERIES_CONSISTENCY", phase=None),
+            plot_record(f"{physical}/plots/physical-qb-routing-and-kcl.html", role="COMPARISON", cases=["13/logical1_read", "13/logical0_read", "14/logical1_read", "14/logical0_read"], source_classification="QB_ROUTING_KCL", phase=None),
+            *[
+                plot_record(f"{physical}/plots/cases/{w}ps-{r}.html", role=("ZERO_CONTROL" if "no_read_control" in r else ("NEGATIVE_CONTROL" if r == "logical0_read" else "RESULT")), cases=[f"{w}/{r}"], source_classification="PHYSICAL_CASE_RESULT")
+                for w in (13, 14)
+                for r in ["logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]
+            ],
             plot_record(f"{physical}/plots/13ps-ideal-vs-physical-qb.html", role="COMPARISON", cases=["13/logical1_read", "13/logical0_read", "13/logical1_no_read_control", "13/logical0_no_read_control"], source_classification="PHYSICAL_PRIMARY_VS_IDEAL_REFERENCE", source_experiments=[physical, "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"]),
             plot_record(f"{physical}/plots/14ps-ideal-vs-physical-qb.html", role="COMPARISON", cases=["14/logical1_read", "14/logical0_read", "14/logical1_no_read_control", "14/logical0_no_read_control"], source_classification="PHYSICAL_PRIMARY_VS_IDEAL_REFERENCE", source_experiments=[physical, "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"]),
             plot_record(f"{physical}/plots/physical-logical1-vs-logical0.html", role="COMPARISON", cases=["13/logical1_read", "13/logical0_read", "14/logical1_read", "14/logical0_read"], source_classification="PHYSICAL_RESULT", source_experiments=[physical]),
@@ -880,8 +896,8 @@ def curated_entries() -> dict[str, dict[str, Any]]:
             plot_record(f"{physical}/plots/14ps-source-before-vs-after-qb-loading.html", role="COMPARISON", cases=["14 source-only logical1", "14 physical logical1", "14 source-only logical0", "14 physical logical0"], source_classification="SOURCE_LOADLINE_COMPARISON", source_experiments=[physical, "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"]),
             plot_record(f"{physical}/plots/bjl2-phase-area-evidence.html", role="RESULT", cases=["13/logical1_read", "14/logical1_read", "13/logical0_read", "14/logical0_read"], source_classification="PHYSICAL_EVENT_EVIDENCE"),
         ],
-        notes="ideal replay 只作后验 reference，不能替代 physical primary。13/14 均未形成 physical BJL2 clean one-SFQ；本轮不进入 timestep/rewrite confirmation、JTL 或 T1。",
-        reading="先看 13/14 ideal-vs-physical；再看 source before/after loading；最后看 BJL2 phase/area evidence 与正式 REPORT。",
+        notes="ideal replay 只作后验 reference，不能替代 physical primary。13/14 均未形成 physical BJL2 clean one-SFQ；本轮不进入 timestep/rewrite confirmation、JTL 或 T1。新入口先看 width/matched-cases，再看 SL current/source guards、JSL12 consistency、QB routing/KCL，最后看 strict phase/area evidence。",
+        reading="先看 physical-width-comparison 或 13/14 matched-cases；再看 physical-source-and-storage-guards 与 physical-jsl12-current-consistency；然后看 physical-qb-routing-and-kcl；最后看 bjl2-phase-area-evidence 与正式 REPORT。",
     )
 
     legacy_width = "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824"
@@ -1460,6 +1476,7 @@ def build_reading_guide(entries: dict[str, dict[str, Any]], *, head: str = HEAD)
         ("我想看 R13 conditioning", "R13-A", "bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-vs-c1-vs-c2-vs-c3.html", "逐条件查看 raw/C1/C2/C3 的 B3。", "理想 replay 不是 physical implementation。"),
         ("我想看 Q5 接 JTL 的变化", "PAPER-SL-Q6", "paper-sl-q6-qb-jtl-compatibility-20260824/plots/q5-standalone-vs-q6-coupled.html", "直接比较 BJL1/BJL2/V(OUT)。", "不把耦合系统成功等同 isolated QB event。"),
         ("我想确认 READ 语义和首个 width candidate", "BVM READ audit + JSL width", "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html", "先确认 canonical logical0 是负存储态 + 同一正 WL/SE READ，再看 13 ps 的 QB replay。", "不能把 ideal replay candidate 当作 physical BVM→12JSL→QB closure。"),
+        ("我想看真实 BVM→12×JSL→QB 的完整电流链", "Physical BVM→12×JSL→QB", "physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/physical-width-comparison.html", "先看 SL 读出电流，再看 BJs→BJL1→BJL2 phase/current、JSL12 电流一致性和 node2/3/4 KCL。", "不能把 phase activity 或电流峰值单独称为 SFQ event；正式判定看同段 phase/voltage area。"),
     ]
     lines = ["# Visualization Reading Guide", "", f"本指南由 alignment manifest 生成，基线 HEAD：`{head}`。", "", "| 想确认什么 | 实验 | 先打开 | 看什么 | 不能据此推出什么 |", "|---|---|---|---|---|"]
     lines += ["|" + "|".join(row) + "|" for row in rows]

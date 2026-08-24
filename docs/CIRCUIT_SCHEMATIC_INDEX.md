@@ -1,6 +1,6 @@
 # CIRCUIT SCHEMATIC INDEX
 
-基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。本页将论文级电路图、实验注释图和连接调试图分开。
+基线 HEAD：`ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae`。本页将论文级电路图、实验注释图和连接调试图分开。
 
 ## Canonical BVM：storage/readout source baseline
 
@@ -714,6 +714,22 @@
 
 共享实验：
 - `test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824`
+
+---
+
+## Paper-like BVM→8×500 JSL→scaled QB：13 ps recheck
+
+**Topology ID**：`BVM_JSL8_SCALED_QB_PHYSICAL`
+
+**状态**：`PUBLICATION_SCHEMATIC_VALIDATED`；signature=`fe9c11a4258d5c75`…
+
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic-annotated.svg)
+- 【网表连接调试图】 `connectivity-debug.svg（未生成）`
+- representative deck：`test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/inputs/13/logical1_read.cir`
+
+共享实验：
+- `test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824`
 
 ---
 

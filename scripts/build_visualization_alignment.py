@@ -95,6 +95,7 @@ EXPERIMENT_ORDER = [
     "paper-sl-q6-qb-jtl-compatibility-20260824",
     "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824",
     "physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
+    "bvm-jsl8-500-physical-qb-recheck-v1-20260824",
     "qb-load-boundary-matrix-20260824",
     "parallel-qb-jtl-interface-mechanism-20260824",
     "jtl-transport-gate-polarity-replay-20260824",
@@ -113,8 +114,8 @@ STAGE_DEFINITIONS = [
     ("stage-05", "R11–R15：direct JTL / active-stage route", range(29, 37)),
     ("stage-06", "QB-Q0–Q2：standalone scaled QB", range(37, 42)),
     ("stage-07", "PAPER-SL：JSL waveform → QB + READ semantics", range(42, 53)),
-    ("stage-08", "physical BVM→JSL12→QB closure", range(53, 54)),
-    ("stage-09", "QB output boundary / JTL transport", range(54, 61)),
+    ("stage-08", "physical BVM→JSL12/JSL8→QB closure", range(53, 55)),
+    ("stage-09", "QB output boundary / JTL transport", range(55, 62)),
 ]
 
 
@@ -484,6 +485,12 @@ EXPERIMENT_NARRATIVES: dict[str, dict[str, str]] = {
         "result_summary": "PHYSICAL_BACKACTION_PREVENTS_CLOSURE：13/14 ps physical read1 的 BJL2 最大连续段仅约 −0.122 turn，read0/control 为零 complete event；I(L_SL) 未数量级塌缩，但 physical load-line 改变了 source voltage/current partition，ideal replay 的 1/0/0 candidate 未保留。",
         "conclusion_boundary": "不能称 physical BVM→QB selective one-SFQ closure，也没有 T1/JTL evidence；该结果把下一问题限定为 physical QB source matching/load-line，而不是继续 width sweep。",
     },
+    "bvm-jsl8-500-physical-qb-recheck-v1-20260824": {
+        "title_cn": "Paper-like BVM→8×500 JSL→scaled QB：13 ps recheck",
+        "what_done": "在冻结 canonical BVM、正向 READ、scaled QB bias/load 与 dt=0.0125 ps 下，只把已失败的 12×320 physical JSL 改为 8 个 AREA=5 JSL，并运行 logical1/logical0/read/READ=0 四工况。",
+        "result_summary": "PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN：logical1 的 BJL1/BJL2 subthreshold 幅度相对 12×320 略有恢复，但 BJL2 最大同段仅约 −0.125 turn；四工况无 complete BJL2，8 个 JSL 均保持 non-switching。",
+        "conclusion_boundary": "这是 JSL sizing 对 frozen QB boundary 的 bounded margin comparison，不是 physical one-SFQ closure、硬件测量、JTL/T1 evidence 或 QB source matching 的最终结论；后续 14 ps 也未自动运行。",
+    },
 }
 
 
@@ -548,6 +555,7 @@ EXPERIMENT_STATUS_OVERRIDES = {
     "jtl-transport-gate-v1-numerical-freeze-20260824-rerun": "JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE",
     "qb-to-jtl-load-backaction-causal-audit-v1-20260824": "MIXED_DYNAMIC_LOADING",
     "physical-bvm-jsl12-qb-sfq-closure-v1-20260824": "PHYSICAL_BACKACTION_PREVENTS_CLOSURE",
+    "bvm-jsl8-500-physical-qb-recheck-v1-20260824": "PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN",
 }
 
 
@@ -899,6 +907,43 @@ def curated_entries() -> dict[str, dict[str, Any]]:
         notes="ideal replay 只作后验 reference，不能替代 physical primary。13/14 均未形成 physical BJL2 clean one-SFQ；本轮不进入 timestep/rewrite confirmation、JTL 或 T1。新入口先看 width/matched-cases，再看 SL current/source guards、JSL12 consistency、QB routing/KCL，最后看 strict phase/area evidence。",
         reading="先看 physical-width-comparison 或 13/14 matched-cases；再看 physical-source-and-storage-guards 与 physical-jsl12-current-consistency；然后看 physical-qb-routing-and-kcl；最后看 bjl2-phase-area-evidence 与正式 REPORT。",
     )
+    e[physical]["jsl_count"] = 12
+    e[physical]["jsl_current_uA"] = 320
+
+    physical8 = "test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824"
+    physical8_cases = explicit_cases([
+        ("13/logical1_read", "RESULT", physical8, "13 ps logical1 + canonical READ", "SUBTHRESHOLD", f"{physical8}/raw/13/logical1_read/run-01.csv"),
+        ("13/logical0_read", "NEGATIVE_CONTROL", physical8, "13 ps logical0 + canonical READ", "NO_COMPLETE_EVENT", f"{physical8}/raw/13/logical0_read/run-01.csv"),
+        ("13/logical1_no_read_control", "ZERO_CONTROL", physical8, "13 ps logical1 + READ=0", "ZERO_EVENT", f"{physical8}/raw/13/logical1_no_read_control/run-01.csv"),
+        ("13/logical0_no_read_control", "ZERO_CONTROL", physical8, "13 ps logical0 + READ=0", "ZERO_EVENT", f"{physical8}/raw/13/logical0_no_read_control/run-01.csv"),
+    ])
+    e[physical8] = key_entry(
+        physical8,
+        title="Paper-like BVM→8×500 JSL→scaled QB：13 ps recheck",
+        question="在冻结 BVM/QB/read/bias/load 条件下，8×500 JSL 是否相对已失败的 12×320 physical boundary 恢复 BJL1/BJL2 margin？",
+        result="PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN；logical1 的 BJL1/BJL2 仍为 bounded subthreshold，BJL2 最大同段约 −0.125 turn；logical0/READ=0 无 complete event，8 个 JSL 未 switching。",
+        status="PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN",
+        report=f"{physical8}/REPORT.md",
+        claim_type="physical_bvm_to_qb_jsl_sizing_comparison",
+        topology_id="BVM_JSL8_SCALED_QB_PHYSICAL",
+        cases=physical8_cases,
+        plots=[
+            plot_record(f"{physical8}/plots/12x320-vs-8x500-source-loadline.html", role="COMPARISON", cases=["12x320/13/logical1_read", "12x320/13/logical0_read", "8x500/13/logical1_read", "8x500/13/logical0_read"], source_classification="SOURCE_LOADLINE_COMPARISON", source_experiments=[physical, physical8], phase=None),
+            plot_record(f"{physical8}/plots/12x320-vs-8x500-qb-transfer.html", role="COMPARISON", cases=["12x320/13/all-four", "8x500/13/all-four"], source_classification="QB_TRANSFER_COMPARISON", source_experiments=[physical, physical8]),
+            plot_record(f"{physical8}/plots/12x320-vs-8x500-port-trajectory.html", role="COMPARISON", cases=["12x320/13/V(IN)-I(Lin)", "8x500/13/V(IN)-I(Lin)"], source_classification="QB_PORT_LOADLINE_COMPARISON", source_experiments=[physical, physical8], phase=None),
+            plot_record(f"{physical8}/plots/12x320-vs-8x500-jsl-current-phase.html", role="COMPARISON", cases=["12x320/13/JSL1..8", "8x500/13/JSL1..8"], source_classification="JSL_NONSWITCHING_COMPARISON", source_experiments=[physical, physical8]),
+            plot_record(f"{physical8}/plots/13ps-matched-cases.html", role="COMPARISON", cases=[c["id"] for c in physical8_cases], source_classification="PHYSICAL_RESULT"),
+            plot_record(f"{physical8}/plots/13ps-bjl2-phase-area-evidence.html", role="RESULT", cases=[c["id"] for c in physical8_cases], source_classification="PHYSICAL_EVENT_EVIDENCE"),
+            *[
+                plot_record(f"{physical8}/plots/cases/13ps-{role}.html", role=("ZERO_CONTROL" if "no_read_control" in role else ("NEGATIVE_CONTROL" if role == "logical0_read" else "RESULT")), cases=[f"13/{role}"], source_classification="PHYSICAL_CASE_RESULT")
+                for role in ["logical1_read", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]
+            ],
+        ],
+        notes="12×320 physical raw 是 matched reference；本轮不把 BJs local activity 当作 downstream SFQ，不运行 14 ps、dt ladder、rewrite/read、JTL/T1，也不自动进入 SOURCE_MATCHED_QB_V1。",
+        reading="先看 12x320-vs-8x500-source-loadline 与 qb-transfer，再看 port-trajectory、JSL current/phase 和 bjl2 phase/area；最后看 REPORT。",
+    )
+    e[physical8]["jsl_count"] = 8
+    e[physical8]["jsl_current_uA"] = 500
 
     legacy_width = "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824"
     legacy_width_path = ROOT / legacy_width
@@ -1227,6 +1272,7 @@ def representative_deck(experiment: Path, topo_id: str, explicit: str | None = N
         "DCSFQ_REPLAY_CONDITIONER": experiment / "inputs/raw-replay/read1.cir",
         "SCALED_QB_REPLAY": ROOT / "test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/inputs/C-canonical-logical1-vsl.cir",
         "BVM_JSL12_SCALED_QB_PHYSICAL": experiment / "inputs/13/logical1_read.cir",
+        "BVM_JSL8_SCALED_QB_PHYSICAL": experiment / "inputs/13/logical1_read.cir",
     }
     if topo_id in special and special[topo_id].exists():
         return special[topo_id]
@@ -1290,6 +1336,10 @@ def build_topology_manifest(entries: dict[str, dict[str, Any]]) -> dict[str, Any
         })
         if shared_experiment not in topo["shared_by_experiments"]:
             topo["shared_by_experiments"].append(shared_experiment)
+        if entry.get("jsl_count") is not None:
+            topo["jsl_count"] = int(entry["jsl_count"])
+        if entry.get("jsl_current_uA") is not None:
+            topo["jsl_current_uA"] = float(entry["jsl_current_uA"])
         tdir = exp / "topology"
         debug_override = entry.get("_connectivity_debug")
         if topo_id == "QB_M3_SERIES10_JTL" and not debug_override:

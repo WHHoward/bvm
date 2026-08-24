@@ -1,6 +1,6 @@
 # EXPLORATION FLOW INDEX V2
 
-生成基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。
+生成基线 HEAD：`ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae`。
 
 本页由 `docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml` 生成，展示科研路线；结果图、controls、source/reference 和电路入口均保持角色区分。
 
@@ -1320,6 +1320,39 @@
 - 【网表连接调试图】 `connectivity-debug.svg（未生成）`
 
 **正式报告**：[test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/REPORT.md](../test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/REPORT.md)
+
+---
+
+## Paper-like BVM→8×500 JSL→scaled QB：13 ps recheck
+
+**实验 ID**：`test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824`
+
+**做了什么**：在冻结 canonical BVM、正向 READ、scaled QB bias/load 与 dt=0.0125 ps 下，只把已失败的 12×320 physical JSL 改为 8 个 AREA=5 JSL，并运行 logical1/logical0/read/READ=0 四工况。
+
+**关键结果**：PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN：logical1 的 BJL1/BJL2 subthreshold 幅度相对 12×320 略有恢复，但 BJL2 最大同段仅约 −0.125 turn；四工况无 complete BJL2，8 个 JSL 均保持 non-switching。
+
+**当前状态**：`PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN` / alignment=`ALIGNED`
+
+**结论边界**：这是 JSL sizing 对 frozen QB boundary 的 bounded margin comparison，不是 physical one-SFQ closure、硬件测量、JTL/T1 evidence 或 QB source matching 的最终结论；后续 14 ps 也未自动运行。
+
+**推荐先看**：
+- 【关键对比图】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-source-loadline.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-source-loadline.html)
+- 【关键对比图】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-qb-transfer.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-qb-transfer.html)
+- 【关键对比图】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-port-trajectory.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-port-trajectory.html)
+- 【关键对比图】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-jsl-current-phase.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-jsl-current-phase.html)
+- 【关键对比图】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-matched-cases.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-matched-cases.html)
+- 【单工况/结果图】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-bjl2-phase-area-evidence.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-bjl2-phase-area-evidence.html)
+- 【单工况/结果图】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_read.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_read.html)
+- 【负向对照】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_read.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_read.html)
+- 【零输入对照】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_no_read_control.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_no_read_control.html)
+- 【零输入对照】 [test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_no_read_control.html](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_no_read_control.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic-annotated.svg)
+- 【网表连接调试图】 `connectivity-debug.svg（未生成）`
+
+**正式报告**：[test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/REPORT.md](../test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/REPORT.md)
 
 ---
 

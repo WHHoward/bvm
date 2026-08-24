@@ -224,17 +224,19 @@ def draw_jtl(ax, g: GeometryLedger, x: float, width: float = 300.0, *, scaled: b
     return left, right
 
 
-def draw_jsl(ax, g: GeometryLedger, x: float, width: float = 300.0, *, physical_interface: bool = False) -> tuple[float, float]:
-    label_text = "physical JSL12 interface" if physical_interface else "paper JSL load · 12 junctions"
+def draw_jsl(ax, g: GeometryLedger, x: float, width: float = 300.0, *, count: int = 12, current_uA: float | None = None, physical_interface: bool = False) -> tuple[float, float]:
+    current_label = f" · {current_uA:g} µA" if current_uA is not None else ""
+    label_text = f"physical JSL{count}{current_label} interface" if physical_interface else f"paper JSL load · {count} junctions{current_label}"
     inner_label = "series non-switching interface" if physical_interface else "non-switching sense-line stack"
     left, right = block_shell(ax, g, "JSL", x, width, color=FIXTURE, label_text=label_text, inner_label=inner_label)
     y = 370.0
-    xs = [left + 18 + i * (width - 36) / 12 for i in range(13)]
-    for i in range(12):
+    xs = [left + 18 + i * (width - 36) / count for i in range(count + 1)]
+    for i in range(count):
         draw_wire(ax, xs[i], y, xs[i] + 7, y, color=BLACK, lw=1.2)
         draw_josephson_junction(ax, xs[i] + 12, y, color=BLACK, size=5.5, lw=1.2, terminal_span=7)
         draw_wire(ax, xs[i] + 19, y, xs[i + 1], y, color=BLACK, lw=1.2)
-    label(ax, left + 14, 310, r"$J_{SL,1}\ldots J_{SL,12}$", size=12, color=FIXTURE, ha="left")
+    tail = rf" · $I_{{c,SL}}\approx {current_uA:g}\,\mu A$" if current_uA is not None else ""
+    label(ax, left + 14, 310, rf"$J_{{SL,1}}\ldots J_{{SL,{count}}}${tail}", size=12, color=FIXTURE, ha="left")
     return left, right
 
 
@@ -304,7 +306,8 @@ def build_chain(ax, g: GeometryLedger, topo: dict[str, Any], deck: Path, annotat
         blocks.append(("BVM", l, r))
         x = r + 45
     if f["jsl"]:
-        l, r = draw_jsl(ax, g, x, physical_interface="BVM_JSL12" in topo_id)
+        jsl_count = int(topo.get("jsl_count", 12))
+        l, r = draw_jsl(ax, g, x, count=jsl_count, current_uA=topo.get("jsl_current_uA"), physical_interface="BVM_JSL" in topo_id)
         blocks.append(("JSL", l, r))
         x = r + 45
     if f["receiver"]:
@@ -430,6 +433,10 @@ def render_one(topo: dict[str, Any], deck: Path, package: Path, *, annotated: bo
 
 
 def write_readme(topo: dict[str, Any], deck: Path, package: Path) -> None:
+    jsl_info = ""
+    if topo.get("jsl_count") is not None:
+        current = f"；I_c≈{topo['jsl_current_uA']:g} µA" if topo.get("jsl_current_uA") is not None else ""
+        jsl_info = f"\n- JSL interface：`{int(topo['jsl_count'])}` junctions{current}（与 matched layout 对照）"
     text = f"""# {topo.get('title_cn', topo['topology_id'])} publication schematic
 
 这是一张由实际 representative deck 生成的论文级语义原理图，不是 Graphviz connectivity graph。
@@ -440,6 +447,7 @@ def write_readme(topo: dict[str, Any], deck: Path, package: Path) -> None:
 - clean：`schematic.svg/png/pdf`
 - annotated：`schematic-annotated.svg/png/pdf`
 - debug/provenance：`connectivity-debug.svg`（若源目录已有）
+{jsl_info}
 
 ## Display boundary
 

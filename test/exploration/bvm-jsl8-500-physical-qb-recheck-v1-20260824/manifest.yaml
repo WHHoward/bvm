@@ -1,0 +1,121 @@
+{
+  "schema_version": "BVM_JSL8_500_PHYSICAL_QB_RECHECK_V1",
+  "recorded_at": "2026-08-24T23:50:42+08:00",
+  "parent_head": "ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae",
+  "paper_interface_audit": "docs/BVM_QB_PAPER_INTERFACE_AUDIT.md",
+  "reference_experiment": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824",
+  "solver": {
+    "path": "build/josim-cli",
+    "version": "v2.7.2837d13",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "metric_spec": {
+    "path": "docs/METRIC_SPEC_V2.md",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "timestep_ps": 0.0125,
+  "stop_ps": 170.0,
+  "topology": "canonical BVM SL -> B_LD1...B_LD8 AREA=5 -> QB IN; B_LD8 no GND termination",
+  "frozen_qb": {
+    "BJs_area": 0.5,
+    "BJL1_area": 0.36,
+    "BJL2_area": 0.54,
+    "Lin_pH": 0.8,
+    "L0_pH": 1.323,
+    "L1_pH": 3.91,
+    "L2_pH": 3.91,
+    "RJ1_ohm": 33.0,
+    "RJ2_ohm": 22.0,
+    "RB_ohm": 6.0,
+    "IBIAS_uA": 35.0,
+    "RLOAD_ohm": 10.0
+  },
+  "small_signal_diagnostic_only": {
+    "label": "ZERO_PHASE_SMALL_SIGNAL_ESTIMATE_ONLY",
+    "L_12x320_pH": 12.34,
+    "L_8x500_pH": 5.27,
+    "ratio_8x500_over_12x320": 0.427
+  },
+  "snapshots": {
+    "jjmit.cir": {
+      "path": "inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "bvm_cell.cir": {
+      "path": "inputs/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    },
+    "bq_cell.cir": {
+      "path": "inputs/bq_cell.cir",
+      "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2"
+    }
+  },
+  "topology_precheck": "analysis/topology-precheck.json",
+  "cases": {
+    "13ps_logical1_read": {
+      "input": "inputs/13/logical1_read.cir",
+      "read_width_ps": 13,
+      "role": "logical1_read",
+      "sha256": "849bc3422f35b6f0d4ca926adef577352ecda0b31cbb5dd3a651a081950c0fbe"
+    },
+    "13ps_logical1_no_read_control": {
+      "input": "inputs/13/logical1_no_read_control.cir",
+      "read_width_ps": 13,
+      "role": "logical1_no_read_control",
+      "sha256": "ec382730d5cf0a8ff968f090d23606c1610fd86cd4a0dbf373fb4068e8ac770b"
+    },
+    "13ps_logical0_read": {
+      "input": "inputs/13/logical0_read.cir",
+      "read_width_ps": 13,
+      "role": "logical0_read",
+      "sha256": "1426592b05cc9a12b59e854e1e58af8185f6af8e0593e516d8e5c11fb0f77490"
+    },
+    "13ps_logical0_no_read_control": {
+      "input": "inputs/13/logical0_no_read_control.cir",
+      "read_width_ps": 13,
+      "role": "logical0_no_read_control",
+      "sha256": "9dcce02db45fc98efd09bb58634d73e2f68e9eaab8a47a9575e1243bb40f149d"
+    }
+  },
+  "execution": {
+    "status": "COMPLETE",
+    "recorded_at": "2026-08-24T23:52:36+08:00",
+    "case_count": 4,
+    "roles": [
+      "logical1_read",
+      "logical0_read",
+      "logical1_no_read_control",
+      "logical0_no_read_control"
+    ],
+    "command": "build/josim-cli -a 1 -o raw/13/<role>/run-01.csv inputs/13/<role>.cir",
+    "raw_sha256": {
+      "13/logical1_read/run-01.csv": "1aa046b53336427e36f9dd890f1c78ef7a00fbbb855f81823d0441d3c8dbe3c8",
+      "13/logical0_read/run-01.csv": "95136d2061039959a095605613f9e32bd070989abe0c0b60a7a2432665c2d85a",
+      "13/logical1_no_read_control/run-01.csv": "cf96ed1e40785a864826bfcb4be7a376f9809f10d01b8d3768173c4ac9973d15",
+      "13/logical0_no_read_control/run-01.csv": "f024dd8513cad339a934a0eb8d4500a4415601134d598df6efb0906b4fcabcce"
+    },
+    "no_14ps_run": true
+  },
+  "analysis": {
+    "status": "COMPLETE",
+    "script": "analysis/analyze_physical.py",
+    "metrics": [
+      "continuous_unwrapped_phase",
+      "same_jj_same_segment_voltage_area",
+      "post_retrap",
+      "source_guard",
+      "jsl8_non_switching_guard",
+      "qb_node2_node3_node4_kcl",
+      "12x320_vs_8x500_loadline"
+    ],
+    "phase_semantics": "continuous_absolute",
+    "verdict": "PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN",
+    "comparison": "analysis/comparison-12x320-vs-8x500.json"
+  },
+  "reference_raw_sha256": {
+    "13/logical1_read/run-01.csv": "c556fd29176fd25702b48c603d00ac848af43a0e61ebd7ed44b1039841446798",
+    "13/logical0_read/run-01.csv": "d066016c1c91d6ba08f151e5adad77060fd12accf30169c376de61c2bb134045",
+    "13/logical1_no_read_control/run-01.csv": "7167415ec8b1f6959a28c7529716b5d20ebf7506b6d30fd9849de65f9834d237",
+    "13/logical0_no_read_control/run-01.csv": "1492613f8b5af9442758c2b6bdf4de469fbd7dd2c7a2154045a7734999c8a727"
+  }
+}

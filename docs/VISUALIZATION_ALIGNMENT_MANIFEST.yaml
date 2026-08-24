@@ -1,6 +1,6 @@
 schema_version: '2.0'
 manifest_id: PROJECT_VISUALIZATION_INDEX_ALIGNMENT_V2
-parent_head: 576ca9d32b15c99f8c35c4271336ffa079664b64
+parent_head: ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae
 authority_order:
 - raw
 - accepted_analysis_report
@@ -7141,9 +7141,11 @@ experiments:
   reading_guide: 先看 physical-width-comparison 或 13/14 matched-cases；再看 physical-source-and-storage-guards
     与 physical-jsl12-current-consistency；然后看 physical-qb-routing-and-kcl；最后看 bjl2-phase-area-evidence
     与正式 REPORT。
+  jsl_count: 12
+  jsl_current_uA: 320
   sequence: 53
   stage_id: stage-08
-  stage_title: physical BVM→JSL12→QB closure
+  stage_title: physical BVM→JSL12/JSL8→QB closure
   topology_signature: 6bb970abed466863acc621b91ddd772282b97949ccd6243570632b6b8f203f82
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -7191,6 +7193,292 @@ experiments:
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_read.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical1_no_read_control.html
     - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/plots/cases/14ps-logical0_no_read_control.html
+    source_references: []
+- experiment_id: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+  title_cn: Paper-like BVM→8×500 JSL→scaled QB：13 ps recheck
+  scientific_question: 在冻结 canonical BVM、正向 READ、scaled QB bias/load 与 dt=0.0125 ps
+    下，只把已失败的 12×320 physical JSL 改为 8 个 AREA=5 JSL，并运行 logical1/logical0/read/READ=0
+    四工况。
+  formal_result: PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN：logical1 的 BJL1/BJL2 subthreshold
+    幅度相对 12×320 略有恢复，但 BJL2 最大同段仅约 −0.125 turn；四工况无 complete BJL2，8 个 JSL 均保持 non-switching。
+  what_done: 在冻结 canonical BVM、正向 READ、scaled QB bias/load 与 dt=0.0125 ps 下，只把已失败的
+    12×320 physical JSL 改为 8 个 AREA=5 JSL，并运行 logical1/logical0/read/READ=0 四工况。
+  result_summary: PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN：logical1 的 BJL1/BJL2 subthreshold
+    幅度相对 12×320 略有恢复，但 BJL2 最大同段仅约 −0.125 turn；四工况无 complete BJL2，8 个 JSL 均保持 non-switching。
+  conclusion_boundary: 这是 JSL sizing 对 frozen QB boundary 的 bounded margin comparison，不是
+    physical one-SFQ closure、硬件测量、JTL/T1 evidence 或 QB source matching 的最终结论；后续 14
+    ps 也未自动运行。
+  scientific_status: PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN
+  current_status: ALIGNED
+  report: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/REPORT.md
+  claim_type: physical_bvm_to_qb_jsl_sizing_comparison
+  required_cases:
+  - id: 13/logical1_read
+    role: RESULT
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 13 ps logical1 + canonical READ
+    expected_classification: SUBTHRESHOLD
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - id: 13/logical0_read
+    role: NEGATIVE_CONTROL
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 13 ps logical0 + canonical READ
+    expected_classification: NO_COMPLETE_EVENT
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+  - id: 13/logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 13 ps logical1 + READ=0
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+  - id: 13/logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    condition: 13 ps logical0 + READ=0
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  required_signals:
+  - I(BJL1|XBQ)
+  - I(BJL2|XBQ)
+  - I(BJS|XBQ)
+  - I(B_LD1)
+  - I(B_LD2)
+  - I(B_LD3)
+  - I(B_LD4)
+  - I(B_LD5)
+  - I(B_LD6)
+  - I(B_LD7)
+  - I(B_LD8)
+  - I(I_BL1)
+  - I(I_IBIAS)
+  - I(I_SE1)
+  - I(I_WL1)
+  - I(L0|XBQ)
+  - I(L1|XBQ)
+  - I(L2|XBQ)
+  - I(LIN|XBQ)
+  - I(L_PSL|XBVM1)
+  - I(L_SL|XBVM1)
+  - I(RB|XBQ)
+  - I(RJ1|XBQ)
+  - I(RJ2|XBQ)
+  - I(R_LOAD)
+  - P(BJL1|XBQ)
+  - P(BJL2|XBQ)
+  - P(BJS|XBQ)
+  - P(B_JM1|XBVM1)
+  - P(B_JM2|XBVM1)
+  - P(B_JS1|XBVM1)
+  - P(B_JS2|XBVM1)
+  - P(B_LD1)
+  - P(B_LD2)
+  - P(B_LD3)
+  - P(B_LD4)
+  - P(B_LD5)
+  - P(B_LD6)
+  - P(B_LD7)
+  - P(B_LD8)
+  - V(BJL1|XBQ)
+  - V(BJL2|XBQ)
+  - V(BJS|XBQ)
+  - V(B_JM1|XBVM1)
+  - V(B_JM2|XBVM1)
+  - V(B_JS1|XBVM1)
+  - V(B_JS2|XBVM1)
+  - V(B_LD1)
+  - V(B_LD2)
+  - V(B_LD3)
+  - V(B_LD4)
+  - V(B_LD5)
+  - V(B_LD6)
+  - V(B_LD7)
+  - V(B_LD8)
+  - V(IN)
+  - V(N6|XBVM1)
+  - V(OUT)
+  - V(SL1)
+  plots:
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-source-loadline.html
+    role: COMPARISON
+    cases:
+    - 12x320/13/logical1_read
+    - 12x320/13/logical0_read
+    - 8x500/13/logical1_read
+    - 8x500/13/logical0_read
+    source_classification: SOURCE_LOADLINE_COMPARISON
+    phase_semantics: null
+    phase_plot: false
+    source_experiments:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-qb-transfer.html
+    role: COMPARISON
+    cases:
+    - 12x320/13/all-four
+    - 8x500/13/all-four
+    source_classification: QB_TRANSFER_COMPARISON
+    phase_semantics: continuous_absolute
+    source_experiments:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-port-trajectory.html
+    role: COMPARISON
+    cases:
+    - 12x320/13/V(IN)-I(Lin)
+    - 8x500/13/V(IN)-I(Lin)
+    source_classification: QB_PORT_LOADLINE_COMPARISON
+    phase_semantics: null
+    phase_plot: false
+    source_experiments:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-jsl-current-phase.html
+    role: COMPARISON
+    cases:
+    - 12x320/13/JSL1..8
+    - 8x500/13/JSL1..8
+    source_classification: JSL_NONSWITCHING_COMPARISON
+    phase_semantics: continuous_absolute
+    source_experiments:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824
+    source_paths:
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-matched-cases.html
+    role: COMPARISON
+    cases:
+    - 13/logical1_read
+    - 13/logical0_read
+    - 13/logical1_no_read_control
+    - 13/logical0_no_read_control
+    source_classification: PHYSICAL_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-bjl2-phase-area-evidence.html
+    role: RESULT
+    cases:
+    - 13/logical1_read
+    - 13/logical0_read
+    - 13/logical1_no_read_control
+    - 13/logical0_no_read_control
+    source_classification: PHYSICAL_EVENT_EVIDENCE
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_read.html
+    role: RESULT
+    cases:
+    - 13/logical1_read
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_read/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_read.html
+    role: NEGATIVE_CONTROL
+    cases:
+    - 13/logical0_read
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_read/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_no_read_control.html
+    role: ZERO_CONTROL
+    cases:
+    - 13/logical1_no_read_control
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical1_no_read_control/run-01.csv
+  - path: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_no_read_control.html
+    role: ZERO_CONTROL
+    cases:
+    - 13/logical0_no_read_control
+    source_classification: PHYSICAL_CASE_RESULT
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/raw/13/logical0_no_read_control/run-01.csv
+  topology_id: BVM_JSL8_SCALED_QB_PHYSICAL
+  phase_semantics: *id001
+  notes: 这是 JSL sizing 对 frozen QB boundary 的 bounded margin comparison，不是 physical
+    one-SFQ closure、硬件测量、JTL/T1 evidence 或 QB source matching 的最终结论；后续 14 ps 也未自动运行。
+  reading_guide: 先看 12x320-vs-8x500-source-loadline 与 qb-transfer，再看 port-trajectory、JSL
+    current/phase 和 bjl2 phase/area；最后看 REPORT。
+  jsl_count: 8
+  jsl_current_uA: 500
+  sequence: 54
+  stage_id: stage-08
+  stage_title: physical BVM→JSL12/JSL8→QB closure
+  topology_signature: fe9c11a4258d5c75cf24c21b4098b140149c2a536d5cc86017058f6c236e5508
+  topology_status: PUBLICATION_SCHEMATIC_VALIDATED
+  topology:
+    topology_id: BVM_JSL8_SCALED_QB_PHYSICAL
+    topology_signature: fe9c11a4258d5c75cf24c21b4098b140149c2a536d5cc86017058f6c236e5508
+    publication_schematic: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic.svg
+    annotated_schematic: test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/topology/publication/BVM_JSL8_SCALED_QB_PHYSICAL/schematic-annotated.svg
+    connectivity_debug: null
+  plot_groups:
+    core_result:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-source-loadline.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-qb-transfer.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-port-trajectory.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-jsl-current-phase.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-matched-cases.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-bjl2-phase-area-evidence.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_read.html
+    key_comparison:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-source-loadline.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-qb-transfer.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-port-trajectory.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/12x320-vs-8x500-jsl-current-phase.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-matched-cases.html
+    case_plots:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/13ps-bjl2-phase-area-evidence.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_read.html
+    controls:
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_read.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical1_no_read_control.html
+    - test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824/plots/cases/13ps-logical0_no_read_control.html
     source_references: []
 - experiment_id: test/exploration/qb-load-boundary-matrix-20260824
   title_cn: QB load-boundary matrix：Q0 output boundary
@@ -7410,7 +7698,7 @@ experiments:
     publication_schematic: test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic.svg
     annotated_schematic: test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 54
+  sequence: 55
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 103283576557852a577289c5b5b7ae5db59b0780fac26881ad1eb1a6376be837
@@ -7636,7 +7924,7 @@ experiments:
     publication_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic.svg
     annotated_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 55
+  sequence: 56
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: b85efce84ad622382fcaa2f12042cbb5fd7846fd70961c31289435814bf83fd1
@@ -7741,7 +8029,7 @@ experiments:
   notes: ideal replay 不是 physical QB→JTL 证据；strict local event 与 settled-well transport
     必须分开。
   reading_guide: ''
-  sequence: 56
+  sequence: 57
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 762b19105f96c0883fdc0060380cd753377a1ddb5c345518104d650f5aa58b07
@@ -7821,7 +8109,7 @@ experiments:
   phase_semantics: *id001
   notes: 这是方法学整理，不是 global metric freeze，也不改变 physical BVM/JTL compatibility。
   reading_guide: ''
-  sequence: 57
+  sequence: 58
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -7979,7 +8267,7 @@ experiments:
   phase_semantics: *id001
   notes: 不是 timestep 数值不稳定，而是 registered robustness Gate 未闭合；不改变 JTL 参数。
   reading_guide: ''
-  sequence: 58
+  sequence: 59
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -8134,7 +8422,7 @@ experiments:
   phase_semantics: *id001
   notes: rerun 只加强 provenance/数值稳定性，不升级 Gate 为 PASS。
   reading_guide: ''
-  sequence: 59
+  sequence: 60
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -8300,7 +8588,7 @@ experiments:
     publication_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic.svg
     annotated_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 60
+  sequence: 61
   stage_id: stage-09
   stage_title: QB output boundary / JTL transport
   topology_signature: 103283576557852a577289c5b5b7ae5db59b0780fac26881ad1eb1a6376be837

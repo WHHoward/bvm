@@ -1,6 +1,6 @@
 # Visualization Alignment Audit V2
 
-基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`
+基线 HEAD：`ff80ce285a2ce97f2414a19a7f8d6b92d8b1d3ae`
 
 本审计只检查 raw/report/plot/index/topology 的 provenance 对齐，不改变任何 scientific verdict。
 
@@ -59,6 +59,7 @@
 | test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824 | `NO_JTL_TRIGGER` | 4 | 3 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824 | `IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE` | 16 | 4 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824 | `PHYSICAL_BACKACTION_PREVENTS_CLOSURE` | 8 | 20 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
+| test/exploration/bvm-jsl8-500-physical-qb-recheck-v1-20260824 | `PAPER_JSL8_IMPROVES_PHYSICAL_MARGIN` | 4 | 10 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/qb-load-boundary-matrix-20260824 | `MIXED_DYNAMIC_LOADING` | 11 | 3 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/parallel-qb-jtl-interface-mechanism-20260824 | `BOUNDED_INTERFACE_MATRIX` | 6 | 6 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/jtl-transport-gate-polarity-replay-20260824 | `POLARITY_REPLAY_RECONCILED` | 2 | 1 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |

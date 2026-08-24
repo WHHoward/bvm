@@ -96,6 +96,13 @@ plots:
     matrix_manifest: analysis/phase-c-matrix.json
     renderer: .agents/skills/josim-exploration-visualization/scripts/plot_case_matrix.py
     phase_semantics: continuous_absolute
+  - id: 9ps-vs-wstar-qb-current-comparison
+    role: COMPARISON
+    path: plots/9ps-vs-Wstar-qb-current-comparison.html
+    metadata: plots/9ps-vs-Wstar-qb-current-comparison.metadata.json
+    matrix_manifest: analysis/phase-c-current-matrix.json
+    renderer: .agents/skills/josim-exploration-visualization/scripts/plot_case_matrix.py
+    phase_semantics: not_applicable
 prohibited_in_this_exploration:
   - physical BVM->12JSL->QB connection
   - JTL

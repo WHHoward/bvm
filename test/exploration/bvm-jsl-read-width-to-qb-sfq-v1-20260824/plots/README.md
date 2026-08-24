@@ -10,6 +10,10 @@
   CSV、精确列名、case role、单位换算和线型。
 - `9ps-vs-Wstar-qb-replay-comparison.metadata.json`：plot role、case provenance
   和 phase semantics。
+- `9ps-vs-Wstar-qb-current-comparison.html`：同一 matched case 矩阵中的
+  `I(BJS|XBQ)`、`I(BJL1|XBQ)`、`I(BJL2|XBQ)` 和 `I(I_REPLAY)` 电流对比。
+- `../analysis/phase-c-current-matrix.json` 与对应 metadata：电流图的精确
+  CSV/列名清单和 provenance。
 
 图中 phase 统一表示：
 

@@ -96,6 +96,11 @@ deck 只有一个 active `+100 µA` READ transition，而不是 canonical BVM
 source-stage comparison。Phase-A 的 logical0 使用 canonical internal-readout
 accepted raw。
 
+电流 waveform 的可视化单独保存在
+`plots/9ps-vs-Wstar-qb-current-comparison.html`，覆盖 BJs、BJL1、BJL2 和
+`I(I_REPLAY)`，用于查看 current partition 与 source replay 差异；它不替代
+phase/voltage-area event analysis。
+
 ## Stop rule
 
 本 Exploration 在 Phase C 结束后停止。下一步若要继续，必须另开并重新

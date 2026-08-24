@@ -1,6 +1,6 @@
 # VISUALIZATION INDEX V2
 
-生成基线 HEAD：`e41d05fcf9aabd26890805bc4f2a12622b24eed7`。
+生成基线 HEAD：`3e714f3fdd593511971136ee470ec0418d775d24`。
 
 本页由统一 alignment manifest 生成，按科学语义列出核心结果、对比、controls 和 source/reference。
 
@@ -9,6 +9,871 @@
 - `continuous_absolute`：原始 JoSIM P(...) 连续轨迹的 φ/2π（turn），不等于 SFQ 计数。
 - source/reference/historical 图不能作为 current result 的核心证据。
 - 论文级 schematic、annotated schematic、connectivity debug graph 分开列出。
+
+## Canonical BVM：storage/readout cell
+
+**实验 ID**：`test/exploration/bvm-internal-readout-20260819`
+
+**做了什么**：canonical BVM 的 S-Loop、R-Loop、read timing 与 SL output 的真实结构和 waveform 是什么？
+
+**关键结果**：canonical BVM source/read behavior frozen；本页只做结构与已有 read evidence 导航。
+
+**当前状态**：`ACCEPTED_CANONICAL_SOURCE` / alignment=`ALIGNED`
+
+**结论边界**：publication schematic 已通过 semantic + geometric validation；不把 schematic 当作 receiver verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-internal-readout-20260819/plots/alignment-overview.html](../test/exploration/bvm-internal-readout-20260819/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-internal-readout-20260819/topology/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-internal-readout-20260819/topology/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-internal-readout-20260819/topology/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-internal-readout-20260819/summary.md](../test/exploration/bvm-internal-readout-20260819/summary.md)
+
+---
+
+## bvm-sfq-receiver-r0-20260819
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r0-20260819`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r0-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r0-20260819/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r0-20260819/topology/publication/TOPOLOGY_75d201da61/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r0-20260819/topology/publication/TOPOLOGY_75d201da61/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r0-20260819/topology/publication/TOPOLOGY_75d201da61/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r0-20260819/analysis/R0_REPORT.md](../test/exploration/bvm-sfq-receiver-r0-20260819/analysis/R0_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r0b-20260819
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r0b-20260819`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r0b-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r0b-20260819/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r0b-20260819/topology/publication/TOPOLOGY_2600b475f4/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r0b-20260819/topology/publication/TOPOLOGY_2600b475f4/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r0b-20260819/topology/publication/TOPOLOGY_2600b475f4/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r0b-20260819/analysis/R0B_REPORT.md](../test/exploration/bvm-sfq-receiver-r0b-20260819/analysis/R0B_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r1-oneshot-20260819
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r1-oneshot-20260819`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/topology/publication/TOPOLOGY_658acd44d8/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/topology/publication/TOPOLOGY_658acd44d8/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/topology/publication/TOPOLOGY_658acd44d8/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/analysis/R1_REPORT.md](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/analysis/R1_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r1a-transfer-20260819
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r1a-transfer-20260819`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/topology/publication/TOPOLOGY_73d3c8d7f4/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/topology/publication/TOPOLOGY_73d3c8d7f4/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/topology/publication/TOPOLOGY_73d3c8d7f4/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/analysis/R1A_REPORT.md](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/analysis/R1A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r1b-output-jj-20260819
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/topology/publication/TOPOLOGY_5233bbad6e/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/topology/publication/TOPOLOGY_5233bbad6e/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/topology/publication/TOPOLOGY_5233bbad6e/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/analysis/R1B_REPORT.md](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/analysis/R1B_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r1b-area008-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r1b-area008-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1b-area008-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/topology/publication/TOPOLOGY_7dca5b0bd5/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/topology/publication/TOPOLOGY_7dca5b0bd5/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/topology/publication/TOPOLOGY_7dca5b0bd5/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r1b-area008-20260821/analysis/R1B_AREA008_REPORT.md](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/analysis/R1B_AREA008_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r1b-differential-output-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/topology/publication/TOPOLOGY_a8dab02d1d/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/topology/publication/TOPOLOGY_a8dab02d1d/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/topology/publication/TOPOLOGY_a8dab02d1d/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/analysis/R1B_DIFF_REPORT.md](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/analysis/R1B_DIFF_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r1c-bias-margin-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/topology/publication/TOPOLOGY_ac497f8640/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/topology/publication/TOPOLOGY_ac497f8640/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/topology/publication/TOPOLOGY_ac497f8640/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/analysis/R1C_BIAS_REPORT.md](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/analysis/R1C_BIAS_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r2a-coupling-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r2a-coupling-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/topology/publication/TOPOLOGY_a5649ee5af/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/topology/publication/TOPOLOGY_a5649ee5af/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/topology/publication/TOPOLOGY_a5649ee5af/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/analysis/R2A_COUPLING_REPORT.md](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/analysis/R2A_COUPLING_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r2b-damping-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r2b-damping-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2b-damping-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/topology/publication/TOPOLOGY_b01953770c/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/topology/publication/TOPOLOGY_b01953770c/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/topology/publication/TOPOLOGY_b01953770c/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r2b-damping-20260821/analysis/R2B_DAMPING_REPORT.md](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/analysis/R2B_DAMPING_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r2c-directdrive-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/topology/publication/TOPOLOGY_0da30ee288/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/topology/publication/TOPOLOGY_0da30ee288/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/topology/publication/TOPOLOGY_0da30ee288/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/analysis/R2C_DIRECTDRIVE_REPORT.md](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/analysis/R2C_DIRECTDRIVE_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r2d-duration-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r2d-duration-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2d-duration-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/topology/publication/TOPOLOGY_a61a44b0c0/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/topology/publication/TOPOLOGY_a61a44b0c0/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/topology/publication/TOPOLOGY_a61a44b0c0/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r2d-duration-20260821/analysis/R2D_DURATION_REPORT.md](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/analysis/R2D_DURATION_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r2e-ampthreshold-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/topology/publication/TOPOLOGY_879c0c5b61/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/topology/publication/TOPOLOGY_879c0c5b61/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/topology/publication/TOPOLOGY_879c0c5b61/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/analysis/R2E_AMPTHRESHOLD_REPORT.md](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/analysis/R2E_AMPTHRESHOLD_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r2f-dwell-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r2f-dwell-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/topology/publication/TOPOLOGY_7278e859dc/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/topology/publication/TOPOLOGY_7278e859dc/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/topology/publication/TOPOLOGY_7278e859dc/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/analysis/R2F_DWELL_REPORT.md](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/analysis/R2F_DWELL_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r2g-twopulse-20260821
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/topology/publication/TOPOLOGY_ad32926098/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/topology/publication/TOPOLOGY_ad32926098/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/topology/publication/TOPOLOGY_ad32926098/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/analysis/R2G_TWOPULSE_REPORT.md](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/analysis/R2G_TWOPULSE_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r3a-onset-extraction-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/topology/publication/TOPOLOGY_a4ff2838c2/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/topology/publication/TOPOLOGY_a4ff2838c2/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/topology/publication/TOPOLOGY_a4ff2838c2/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/analysis/R3A_ONSET_REPORT.md](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/analysis/R3A_ONSET_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r4a-weak-mutual-capture-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/topology/publication/TOPOLOGY_cb0a106fd7/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/topology/publication/TOPOLOGY_cb0a106fd7/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/topology/publication/TOPOLOGY_cb0a106fd7/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/analysis/R4A_AMENDED_REPORT.md](../test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/analysis/R4A_AMENDED_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r5a-biased-quantizer-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/topology/publication/TOPOLOGY_16ea7d821b/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/topology/publication/TOPOLOGY_16ea7d821b/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/topology/publication/TOPOLOGY_16ea7d821b/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/analysis/R5A_REPORT.md](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/analysis/R5A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r5b-loadline-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r5b-loadline-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/topology/publication/TOPOLOGY_36fb1f63c9/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/topology/publication/TOPOLOGY_36fb1f63c9/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/topology/publication/TOPOLOGY_36fb1f63c9/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/analysis/R5B_REPORT.md](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/analysis/R5B_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r5c-saddle-selectivity-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/topology/publication/TOPOLOGY_4e1d8a8345/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/topology/publication/TOPOLOGY_4e1d8a8345/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/topology/publication/TOPOLOGY_4e1d8a8345/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/analysis/R5C_REPORT.md](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/analysis/R5C_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-native-qb-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-native-qb-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`BACK_ACTION_FAILURE` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-native-qb-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-native-qb-20260822/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-native-qb-20260822/topology/publication/TOPOLOGY_599236eda7/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-native-qb-20260822/topology/publication/TOPOLOGY_599236eda7/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-native-qb-20260822/topology/publication/TOPOLOGY_599236eda7/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-native-qb-20260822/analysis/NATIVE_QB_REPORT.md](../test/exploration/bvm-sfq-receiver-native-qb-20260822/analysis/NATIVE_QB_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r6a-native-qb-isolation-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`BACK_ACTION_FAILURE` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/topology/publication/TOPOLOGY_076c3ccc98/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/topology/publication/TOPOLOGY_076c3ccc98/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/topology/publication/TOPOLOGY_076c3ccc98/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/analysis/R6A_REPORT.md](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/analysis/R6A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r6b-native-qb-ratio-20260822
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/topology/publication/TOPOLOGY_0bba1f61c1/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/topology/publication/TOPOLOGY_0bba1f61c1/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/topology/publication/TOPOLOGY_0bba1f61c1/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/analysis/R6B_REPORT.md](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/analysis/R6B_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r7a-l1-routing-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/topology/publication/TOPOLOGY_b2e3690473/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/topology/publication/TOPOLOGY_b2e3690473/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/topology/publication/TOPOLOGY_b2e3690473/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/R7A_REPORT.md](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/R7A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r8-bjl2-area070-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/topology/publication/TOPOLOGY_e9e3fdb426/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/topology/publication/TOPOLOGY_e9e3fdb426/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/topology/publication/TOPOLOGY_e9e3fdb426/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/analysis/R8_REPORT.md](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/analysis/R8_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r9a-l2-routing-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/topology/publication/TOPOLOGY_f2413fa505/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/topology/publication/TOPOLOGY_f2413fa505/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/topology/publication/TOPOLOGY_f2413fa505/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/analysis/R9A_REPORT.md](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/analysis/R9A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r10a-local-bjl2-bias-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/topology/publication/TOPOLOGY_6776d3562e/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/topology/publication/TOPOLOGY_6776d3562e/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/topology/publication/TOPOLOGY_6776d3562e/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/analysis/R10A_REPORT.md](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/analysis/R10A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`NO_JTL_TRIGGER` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/topology/publication/TOPOLOGY_c69c14b0ad/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/topology/publication/TOPOLOGY_c69c14b0ad/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/topology/publication/TOPOLOGY_c69c14b0ad/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/analysis/R11A_REPORT.md](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/analysis/R11A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`DCSFQ_BVM_NO_TRIGGER` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/topology/publication/TOPOLOGY_b2733b8e3c/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/topology/publication/TOPOLOGY_b2733b8e3c/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/topology/publication/TOPOLOGY_b2733b8e3c/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/analysis/R12A_REPORT.md](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/analysis/R12A_REPORT.md)
+
+---
+
+## R13-A：temporal conditioning requirements
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823`
+
+**做了什么**：极性整流、20 ps hold 或两者是否足以触发 frozen DCSFQ？
+
+**关键结果**：TEMPORAL_CONDITIONING_INSUFFICIENT。raw/C1/C2/C3 均未完成 selective DCSFQ event。
+
+**当前状态**：`TEMPORAL_CONDITIONING_INSUFFICIENT` / alignment=`ALIGNED`
+
+**结论边界**：理想 waveform transformation 的结果只建立 requirements boundary，不是 physical receiver implementation。
+
+**推荐先看**：
+- 【关键对比图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-vs-c1-vs-c2-vs-c3.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-vs-c1-vs-c2-vs-c3.html)
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-replay/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-replay/comparison.html)
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c1-rectify/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c1-rectify/comparison.html)
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c2-hold20/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c2-hold20/comparison.html)
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c3-rectify-hold20/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c3-rectify-hold20/comparison.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/topology/publication/DCSFQ_REPLAY_CONDITIONER/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/topology/publication/DCSFQ_REPLAY_CONDITIONER/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/topology/publication/DCSFQ_REPLAY_CONDITIONER/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/R13A_REPORT.md](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/R13A_REPORT.md)
+
+---
+
+## bvm-sfq-receiver-r14a-dcsfq-detector-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/topology/publication/TOPOLOGY_d1f5096eb9/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/topology/publication/TOPOLOGY_d1f5096eb9/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/topology/publication/TOPOLOGY_d1f5096eb9/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/SUMMARY.md)
+
+---
+
+## bvm-sfq-receiver-r15a-afq3-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r15a-afq3-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/topology/publication/TOPOLOGY_9a2c21177c/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/topology/publication/TOPOLOGY_9a2c21177c/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/topology/publication/TOPOLOGY_9a2c21177c/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/SUMMARY.md)
+
+---
+
+## bvm-sfq-receiver-r15b-magnetic-correction-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`ACTIVE_STAGE_NO_TRIGGER` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/topology/publication/TOPOLOGY_e9d593f012/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/topology/publication/TOPOLOGY_e9d593f012/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/topology/publication/TOPOLOGY_e9d593f012/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/SUMMARY.md)
+
+---
+
+## bvm-sfq-receiver-r15c-jset-causal-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`CAUSAL_NEAR_THRESHOLD` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/topology/publication/TOPOLOGY_6161c7c30f/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/topology/publication/TOPOLOGY_6161c7c30f/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/topology/publication/TOPOLOGY_6161c7c30f/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/SUMMARY.md)
+
+---
+
+## bvm-sfq-receiver-r15d-jq-compressor-20260823
+
+**实验 ID**：`test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`CAUSAL_NEAR_THRESHOLD` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/topology/publication/TOPOLOGY_9334bd7f21/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/topology/publication/TOPOLOGY_9334bd7f21/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/topology/publication/TOPOLOGY_9334bd7f21/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/SUMMARY.md)
+
+---
 
 ## QB-Q0：低 Ic QB standalone 量化窗口
 
@@ -41,6 +906,126 @@
 
 ---
 
+## QB-Q1：physical BVM → frozen scaled QB
+
+**实验 ID**：`test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824`
+
+**做了什么**：canonical BVM 直接驱动 frozen scaled QB 是否保持 source guard 并量化？
+
+**关键结果**：QB_SOURCE_BACKACTION_FAILURE；次级 QB_BVM_SUBTHRESHOLD。
+
+**当前状态**：`QB_SOURCE_BACKACTION_FAILURE` / alignment=`ALIGNED`
+
+**结论边界**：重要因果节点；overview 只用于导航，正式结论以 report 为准。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/plots/alignment-overview.html](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/topology/publication/BVM_TO_SCALED_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/topology/publication/BVM_TO_SCALED_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/topology/publication/BVM_TO_SCALED_QB/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/SUMMARY.md](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/SUMMARY.md)
+
+---
+
+## QB-Q2A：source-decoupled waveform replay
+
+**实验 ID**：`test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824`
+
+**做了什么**：source isolation alone 是否足以让 frozen QB 量化？
+
+**关键结果**：QB_DYNAMIC_WINDOW_MISMATCH。
+
+**当前状态**：`QB_DYNAMIC_WINDOW_MISMATCH` / alignment=`ALIGNED`
+
+**结论边界**：重要因果节点；overview 只用于导航，正式结论以 report 为准。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/plots/alignment-overview.html](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/SUMMARY.md](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/SUMMARY.md)
+
+---
+
+## QB-Q2B：central-bias bracket
+
+**实验 ID**：`test/exploration/qb-q2b-central-bias-bracketing-20260824`
+
+**做了什么**：central bias bracket 是否建立 read1-only BJL1 event？
+
+**关键结果**：BIAS_BRACKET_NO_BJL1_EVENT。
+
+**当前状态**：`BIAS_BRACKET_NO_BJL1_EVENT` / alignment=`ALIGNED`
+
+**结论边界**：重要因果节点；overview 只用于导航，正式结论以 report 为准。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/qb-q2b-central-bias-bracketing-20260824/plots/alignment-overview.html](../test/exploration/qb-q2b-central-bias-bracketing-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/qb-q2b-central-bias-bracketing-20260824/SUMMARY.md](../test/exploration/qb-q2b-central-bias-bracketing-20260824/SUMMARY.md)
+
+---
+
+## QB-Q2C：uniform junction-scale bracketing
+
+**实验 ID**：`test/exploration/qb-q2c-uniform-junction-scale-20260824`
+
+**做了什么**：uniform junction scaling 是否建立 selective BJL1/BJL2 event？
+
+**关键结果**：UNIFORM_SCALE_NO_OUTPUT_EVENT。
+
+**当前状态**：`UNIFORM_SCALE_NO_OUTPUT_EVENT` / alignment=`ALIGNED`
+
+**结论边界**：重要因果节点；overview 只用于导航，正式结论以 report 为准。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/qb-q2c-uniform-junction-scale-20260824/plots/alignment-overview.html](../test/exploration/qb-q2c-uniform-junction-scale-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/topology/publication/SCALED_QB_REPLAY/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/qb-q2c-uniform-junction-scale-20260824/SUMMARY.md](../test/exploration/qb-q2c-uniform-junction-scale-20260824/SUMMARY.md)
+
+---
+
+## paper-sl-l0-20260824
+
+**实验 ID**：`test/exploration/paper-sl-l0-20260824`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`PAPER_JSL_LOAD_VALID` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/paper-sl-l0-20260824/plots/alignment-overview.html](../test/exploration/paper-sl-l0-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-l0-20260824/topology/publication/TOPOLOGY_345d48a6be/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-l0-20260824/topology/publication/TOPOLOGY_345d48a6be/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-l0-20260824/topology/publication/TOPOLOGY_345d48a6be/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/paper-sl-l0-20260824/REPORT.md](../test/exploration/paper-sl-l0-20260824/REPORT.md)
+
+---
+
 ## PAPER-SL-Q1：paper-JSL replay → frozen scaled QB
 
 **实验 ID**：`test/exploration/paper-sl-q1-20260824`
@@ -63,9 +1048,9 @@
 - 【源波形参考】 [test/exploration/paper-sl-q1-20260824/plots/paper-sl-l0-classic/logical1-read.html](../test/exploration/paper-sl-q1-20260824/plots/paper-sl-l0-classic/logical1-read.html)
 
 **电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/topology.svg)
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/paper-sl-q1-20260824/analysis/REPORT.md](../test/exploration/paper-sl-q1-20260824/analysis/REPORT.md)
 
@@ -89,11 +1074,55 @@
 - 【单工况/结果图】 [test/exploration/paper-sl-q2-20260824/plots/40u/comparison.html](../test/exploration/paper-sl-q2-20260824/plots/40u/comparison.html)
 
 **电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/topology.svg)
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/paper-sl-q2-20260824/analysis/REPORT.md](../test/exploration/paper-sl-q2-20260824/analysis/REPORT.md)
+
+---
+
+## paper-sl-q3-pre-20260824
+
+**实验 ID**：`test/exploration/paper-sl-q3-pre-20260824`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q3-pre-20260824/topology/publication/TOPOLOGY_ba0fe9d75d/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q3-pre-20260824/topology/publication/TOPOLOGY_ba0fe9d75d/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q3-pre-20260824/topology/publication/TOPOLOGY_ba0fe9d75d/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/paper-sl-q3-pre-20260824/analysis/REPORT.md](../test/exploration/paper-sl-q3-pre-20260824/analysis/REPORT.md)
+
+---
+
+## PAPER-SL-Q3-PRE：L1 routing closure precheck
+
+**实验 ID**：`test/exploration/q3-l1-routing-closure-20260824`
+
+**做了什么**：Q3 的 L1 routing hypothesis 是否值得进入单点 execution？
+
+**关键结果**：分析-only provenance checkpoint；不单独产生 waveform verdict。
+
+**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+
+**结论边界**：该目录只保存分析/拓扑来源；正式 raw、report 和 result plot 归属于 paper-sl-q3-l1-routing-closure-20260824。
+
+**推荐先看**：
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
 
 ---
 
@@ -114,9 +1143,9 @@
 - 【单工况/结果图】 [test/exploration/paper-sl-q3-l1-routing-closure-20260824/plots/alignment-overview.html](../test/exploration/paper-sl-q3-l1-routing-closure-20260824/plots/alignment-overview.html)
 
 **电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/topology.svg)
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/paper-sl-q3-l1-routing-closure-20260824/analysis/REPORT.md](../test/exploration/paper-sl-q3-l1-routing-closure-20260824/analysis/REPORT.md)
 
@@ -139,9 +1168,9 @@
 - 【单工况/结果图】 [test/exploration/paper-sl-q4-l1-l2-placement-20260824/plots/alignment-overview.html](../test/exploration/paper-sl-q4-l1-l2-placement-20260824/plots/alignment-overview.html)
 
 **电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/topology.svg)
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/paper-sl-q4-l1-l2-placement-20260824/REPORT.md](../test/exploration/paper-sl-q4-l1-l2-placement-20260824/REPORT.md)
 
@@ -164,11 +1193,37 @@
 - 【单工况/结果图】 [test/exploration/paper-sl-q5-l1-l2-factorial-20260824/plots/alignment-overview.html](../test/exploration/paper-sl-q5-l1-l2-factorial-20260824/plots/alignment-overview.html)
 
 **电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/topology.svg)
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/paper-sl-q5-l1-l2-factorial-20260824/REPORT.md](../test/exploration/paper-sl-q5-l1-l2-factorial-20260824/REPORT.md)
+
+---
+
+## PAPER-SL-Q6：Q5 → standard JTL compatibility
+
+**实验 ID**：`test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824`
+
+**做了什么**：Q5 near-threshold QB output 接入 standard JTL 后是否产生 selective regenerative event？
+
+**关键结果**：NO_JTL_TRIGGER；Q5 standalone 对照必须与 Q6 coupled 并列。
+
+**当前状态**：`NO_JTL_TRIGGER` / alignment=`ALIGNED`
+
+**结论边界**：正式结论以 report 为准；可视化不改变 scientific verdict。
+
+**推荐先看**：
+- 【关键对比图】 [test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q5-standalone-vs-q6-coupled.html](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q5-standalone-vs-q6-coupled.html)
+- 【单工况/结果图】 [test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q6-q5-to-two-cell-jtl/comparison.html](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q6-q5-to-two-cell-jtl/comparison.html)
+- 【单工况/结果图】 [test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/alignment-overview.html](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/topology/publication/Q5_TO_STANDARD_JTL/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/topology/publication/Q5_TO_STANDARD_JTL/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/topology/publication/Q5_TO_STANDARD_JTL/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/REPORT.md](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/REPORT.md)
 
 ---
 
@@ -196,17 +1251,17 @@
 
 **真实 topology 变体**：
 - `低 Ic QB → OPEN output boundary`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_OPEN/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_OPEN/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_OPEN/connectivity-debug.svg)
 - `低 Ic QB → standard JTL direct`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/variants/scaled-iin-68p4u/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_JTL_ONLY/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_JTL_ONLY/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_JTL_ONLY/connectivity-debug.svg)
 - `低 Ic QB + 10Ω || standard JTL`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/variants/scaled-iin-68p4u-2/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/qb-load-boundary-matrix-20260824/analysis/REPORT.md](../test/exploration/qb-load-boundary-matrix-20260824/analysis/REPORT.md)
 
@@ -233,29 +1288,53 @@
 - 【单工况/结果图】 [test/exploration/parallel-qb-jtl-interface-mechanism-20260824/plots/alignment-overview.html](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/plots/alignment-overview.html)
 
 **电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-3/topology.svg)
+- 【论文级电路图】 [schematic.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/connectivity-debug.svg)
 
 **真实 topology 变体**：
 - `Q0 recorded V(OUT) ideal replay → standard JTL`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M1_IDEAL_REPLAY_JTL/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M1_IDEAL_REPLAY_JTL/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M1_IDEAL_REPLAY_JTL/connectivity-debug.svg)
 - `低 Ic QB → RISO=10Ω → standard JTL`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-2/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M2_RISO10_JTL/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M2_RISO10_JTL/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M2_RISO10_JTL/connectivity-debug.svg)
 - `低 Ic QB → LISO=10pH → standard JTL`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-4/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M4_LISO10P_JTL/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M4_LISO10P_JTL/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M4_LISO10P_JTL/connectivity-debug.svg)
 - `低 Ic QB → scaled JTL`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-5/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/parallel-qb-jtl-interface-mechanism-20260824/analysis-v2/REPORT.md](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/analysis-v2/REPORT.md)
+
+---
+
+## jtl-transport-gate-polarity-replay-20260824
+
+**实验 ID**：`test/exploration/jtl-transport-gate-polarity-replay-20260824`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/jtl-transport-gate-polarity-replay-20260824/plots/alignment-overview.html](../test/exploration/jtl-transport-gate-polarity-replay-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/jtl-transport-gate-polarity-replay-20260824/topology/publication/TOPOLOGY_0fca67e829/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/jtl-transport-gate-polarity-replay-20260824/topology/publication/TOPOLOGY_0fca67e829/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-polarity-replay-20260824/topology/publication/TOPOLOGY_0fca67e829/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/jtl-transport-gate-polarity-replay-20260824/analysis/REPORT.md](../test/exploration/jtl-transport-gate-polarity-replay-20260824/analysis/REPORT.md)
 
 ---
 
@@ -277,9 +1356,57 @@
 - 【负向对照】 [test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/pulse5-reverse-timestep-comparison.html](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/pulse5-reverse-timestep-comparison.html)
 
 **电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-v1-methodology-20260824/topology/topology.svg)
+- 【论文级电路图】 [schematic.svg](../test/exploration/jtl-transport-gate-v1-methodology-20260824/topology/publication/STANDARD_JTL_2CELL/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/jtl-transport-gate-v1-methodology-20260824/topology/publication/STANDARD_JTL_2CELL/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-v1-methodology-20260824/topology/publication/STANDARD_JTL_2CELL/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/analysis/REPORT.md](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/analysis/REPORT.md)
+
+---
+
+## jtl-transport-gate-v1-numerical-freeze-20260824
+
+**实验 ID**：`test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/plots/alignment-overview.html](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/topology/publication/TOPOLOGY_3a1af7987d/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/topology/publication/TOPOLOGY_3a1af7987d/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/topology/publication/TOPOLOGY_3a1af7987d/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/analysis/REPORT.md](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/analysis/REPORT.md)
+
+---
+
+## jtl-transport-gate-v1-numerical-freeze-20260824-rerun
+
+**实验 ID**：`test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun`
+
+**做了什么**：见该 Exploration 的 preregistration / report。
+
+**关键结果**：正式结论见 report；索引不新增科学解释。
+
+**当前状态**：`JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE` / alignment=`ALIGNED`
+
+**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
+
+**推荐先看**：
+- 【单工况/结果图】 [test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/alignment-overview.html](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/alignment-overview.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/topology/publication/TOPOLOGY_8403837f5b/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/topology/publication/TOPOLOGY_8403837f5b/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/topology/publication/TOPOLOGY_8403837f5b/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/analysis/REPORT.md](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/analysis/REPORT.md)
 
@@ -307,1128 +1434,22 @@
 
 **真实 topology 变体**：
 - `低 Ic QB → OPEN output boundary`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_OPEN/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_OPEN/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_OPEN/connectivity-debug.svg)
 - `低 Ic QB → standard JTL direct`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/variants/scaled-iin-68p4u/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_JTL_ONLY/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_JTL_ONLY/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_JTL_ONLY/connectivity-debug.svg)
 - `低 Ic QB + 10Ω || standard JTL`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/variants/scaled-iin-68p4u-2/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/connectivity-debug.svg)
 - `低 Ic QB → series 10Ω → standard JTL`：
-  - 【论文级电路图】 `schematic.svg（未生成）`
-  - 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-3/topology.svg)
+  - 【论文级电路图】 [schematic.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic.svg)
+  - 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic-annotated.svg)
+  - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824/analysis/REPORT.md](../test/exploration/qb-to-jtl-load-backaction-causal-audit-v1-20260824/analysis/REPORT.md)
-
----
-
-## R13-A：temporal conditioning requirements
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823`
-
-**做了什么**：极性整流、20 ps hold 或两者是否足以触发 frozen DCSFQ？
-
-**关键结果**：TEMPORAL_CONDITIONING_INSUFFICIENT。raw/C1/C2/C3 均未完成 selective DCSFQ event。
-
-**当前状态**：`TEMPORAL_CONDITIONING_INSUFFICIENT` / alignment=`ALIGNED`
-
-**结论边界**：理想 waveform transformation 的结果只建立 requirements boundary，不是 physical receiver implementation。
-
-**推荐先看**：
-- 【关键对比图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-vs-c1-vs-c2-vs-c3.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-vs-c1-vs-c2-vs-c3.html)
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-replay/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-replay/comparison.html)
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c1-rectify/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c1-rectify/comparison.html)
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c2-hold20/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c2-hold20/comparison.html)
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c3-rectify-hold20/comparison.html](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/c3-rectify-hold20/comparison.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/R13A_REPORT.md](../test/exploration/bvm-sfq-receiver-r13a-temporal-conditioning-20260823/analysis/R13A_REPORT.md)
-
----
-
-## PAPER-SL-Q6：Q5 → standard JTL compatibility
-
-**实验 ID**：`test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824`
-
-**做了什么**：Q5 near-threshold QB output 接入 standard JTL 后是否产生 selective regenerative event？
-
-**关键结果**：NO_JTL_TRIGGER；Q5 standalone 对照必须与 Q6 coupled 并列。
-
-**当前状态**：`NO_JTL_TRIGGER` / alignment=`ALIGNED`
-
-**结论边界**：正式结论以 report 为准；可视化不改变 scientific verdict。
-
-**推荐先看**：
-- 【关键对比图】 [test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q5-standalone-vs-q6-coupled.html](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q5-standalone-vs-q6-coupled.html)
-- 【单工况/结果图】 [test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q6-q5-to-two-cell-jtl/comparison.html](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/q6-q5-to-two-cell-jtl/comparison.html)
-- 【单工况/结果图】 [test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/alignment-overview.html](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/REPORT.md](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/REPORT.md)
-
----
-
-## QB-Q1：physical BVM → frozen scaled QB
-
-**实验 ID**：`test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824`
-
-**做了什么**：canonical BVM 直接驱动 frozen scaled QB 是否保持 source guard 并量化？
-
-**关键结果**：QB_SOURCE_BACKACTION_FAILURE；次级 QB_BVM_SUBTHRESHOLD。
-
-**当前状态**：`QB_SOURCE_BACKACTION_FAILURE` / alignment=`ALIGNED`
-
-**结论边界**：重要因果节点；overview 只用于导航，正式结论以 report 为准。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/plots/alignment-overview.html](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/SUMMARY.md](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/SUMMARY.md)
-
----
-
-## QB-Q2A：source-decoupled waveform replay
-
-**实验 ID**：`test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824`
-
-**做了什么**：source isolation alone 是否足以让 frozen QB 量化？
-
-**关键结果**：QB_DYNAMIC_WINDOW_MISMATCH。
-
-**当前状态**：`QB_DYNAMIC_WINDOW_MISMATCH` / alignment=`ALIGNED`
-
-**结论边界**：重要因果节点；overview 只用于导航，正式结论以 report 为准。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/plots/alignment-overview.html](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/SUMMARY.md](../test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/SUMMARY.md)
-
----
-
-## QB-Q2B：central-bias bracket
-
-**实验 ID**：`test/exploration/qb-q2b-central-bias-bracketing-20260824`
-
-**做了什么**：central bias bracket 是否建立 read1-only BJL1 event？
-
-**关键结果**：BIAS_BRACKET_NO_BJL1_EVENT。
-
-**当前状态**：`BIAS_BRACKET_NO_BJL1_EVENT` / alignment=`ALIGNED`
-
-**结论边界**：重要因果节点；overview 只用于导航，正式结论以 report 为准。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/qb-q2b-central-bias-bracketing-20260824/plots/alignment-overview.html](../test/exploration/qb-q2b-central-bias-bracketing-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/qb-q2b-central-bias-bracketing-20260824/SUMMARY.md](../test/exploration/qb-q2b-central-bias-bracketing-20260824/SUMMARY.md)
-
----
-
-## Canonical BVM：storage/readout cell
-
-**实验 ID**：`test/exploration/bvm-internal-readout-20260819`
-
-**做了什么**：canonical BVM 的 S-Loop、R-Loop、read timing 与 SL output 的真实结构和 waveform 是什么？
-
-**关键结果**：canonical BVM source/read behavior frozen；本页只做结构与已有 read evidence 导航。
-
-**当前状态**：`ACCEPTED_CANONICAL_SOURCE` / alignment=`ALIGNED`
-
-**结论边界**：publication schematic 已通过 semantic + geometric validation；不把 schematic 当作 receiver verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-internal-readout-20260819/plots/alignment-overview.html](../test/exploration/bvm-internal-readout-20260819/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 [schematic.svg](../test/exploration/bvm-internal-readout-20260819/topology/schematic.svg)
-- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/bvm-internal-readout-20260819/topology/schematic-annotated.svg)
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-internal-readout-20260819/topology/connectivity-debug.svg)
-
-**正式报告**：[test/exploration/bvm-internal-readout-20260819/summary.md](../test/exploration/bvm-internal-readout-20260819/summary.md)
-
----
-
-## bvm-sfq-receiver-native-qb-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-native-qb-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`BACK_ACTION_FAILURE` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-native-qb-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-native-qb-20260822/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-native-qb-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-native-qb-20260822/analysis/NATIVE_QB_REPORT.md](../test/exploration/bvm-sfq-receiver-native-qb-20260822/analysis/NATIVE_QB_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r0-20260819
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r0-20260819`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r0-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r0-20260819/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r0-20260819/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r0-20260819/analysis/R0_REPORT.md](../test/exploration/bvm-sfq-receiver-r0-20260819/analysis/R0_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r0b-20260819
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r0b-20260819`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r0b-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r0b-20260819/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r0b-20260819/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r0b-20260819/analysis/R0B_REPORT.md](../test/exploration/bvm-sfq-receiver-r0b-20260819/analysis/R0B_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r1-oneshot-20260819
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r1-oneshot-20260819`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/analysis/R1_REPORT.md](../test/exploration/bvm-sfq-receiver-r1-oneshot-20260819/analysis/R1_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r10a-local-bjl2-bias-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/analysis/R10A_REPORT.md](../test/exploration/bvm-sfq-receiver-r10a-local-bjl2-bias-20260823/analysis/R10A_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`NO_JTL_TRIGGER` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/analysis/R11A_REPORT.md](../test/exploration/bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823/analysis/R11A_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`DCSFQ_BVM_NO_TRIGGER` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/analysis/R12A_REPORT.md](../test/exploration/bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823/analysis/R12A_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r14a-dcsfq-detector-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r14a-dcsfq-detector-20260823/SUMMARY.md)
-
----
-
-## bvm-sfq-receiver-r15a-afq3-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r15a-afq3-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15a-afq3-20260823/SUMMARY.md)
-
----
-
-## bvm-sfq-receiver-r15b-magnetic-correction-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`ACTIVE_STAGE_NO_TRIGGER` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/SUMMARY.md)
-
----
-
-## bvm-sfq-receiver-r15c-jset-causal-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`CAUSAL_NEAR_THRESHOLD` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15c-jset-causal-20260823/SUMMARY.md)
-
----
-
-## bvm-sfq-receiver-r15d-jq-compressor-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`CAUSAL_NEAR_THRESHOLD` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/SUMMARY.md](../test/exploration/bvm-sfq-receiver-r15d-jq-compressor-20260823/SUMMARY.md)
-
----
-
-## bvm-sfq-receiver-r1a-transfer-20260819
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r1a-transfer-20260819`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/analysis/R1A_REPORT.md](../test/exploration/bvm-sfq-receiver-r1a-transfer-20260819/analysis/R1A_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r1b-area008-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r1b-area008-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1b-area008-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r1b-area008-20260821/analysis/R1B_AREA008_REPORT.md](../test/exploration/bvm-sfq-receiver-r1b-area008-20260821/analysis/R1B_AREA008_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r1b-differential-output-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/analysis/R1B_DIFF_REPORT.md](../test/exploration/bvm-sfq-receiver-r1b-differential-output-20260821/analysis/R1B_DIFF_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r1b-output-jj-20260819
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/analysis/R1B_REPORT.md](../test/exploration/bvm-sfq-receiver-r1b-output-jj-20260819/analysis/R1B_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r1c-bias-margin-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/analysis/R1C_BIAS_REPORT.md](../test/exploration/bvm-sfq-receiver-r1c-bias-margin-20260821/analysis/R1C_BIAS_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r2a-coupling-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r2a-coupling-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/analysis/R2A_COUPLING_REPORT.md](../test/exploration/bvm-sfq-receiver-r2a-coupling-20260821/analysis/R2A_COUPLING_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r2b-damping-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r2b-damping-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2b-damping-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r2b-damping-20260821/analysis/R2B_DAMPING_REPORT.md](../test/exploration/bvm-sfq-receiver-r2b-damping-20260821/analysis/R2B_DAMPING_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r2c-directdrive-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/analysis/R2C_DIRECTDRIVE_REPORT.md](../test/exploration/bvm-sfq-receiver-r2c-directdrive-20260821/analysis/R2C_DIRECTDRIVE_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r2d-duration-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r2d-duration-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2d-duration-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r2d-duration-20260821/analysis/R2D_DURATION_REPORT.md](../test/exploration/bvm-sfq-receiver-r2d-duration-20260821/analysis/R2D_DURATION_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r2e-ampthreshold-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/analysis/R2E_AMPTHRESHOLD_REPORT.md](../test/exploration/bvm-sfq-receiver-r2e-ampthreshold-20260821/analysis/R2E_AMPTHRESHOLD_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r2f-dwell-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r2f-dwell-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/analysis/R2F_DWELL_REPORT.md](../test/exploration/bvm-sfq-receiver-r2f-dwell-20260821/analysis/R2F_DWELL_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r2g-twopulse-20260821
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/analysis/R2G_TWOPULSE_REPORT.md](../test/exploration/bvm-sfq-receiver-r2g-twopulse-20260821/analysis/R2G_TWOPULSE_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r3a-onset-extraction-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/analysis/R3A_ONSET_REPORT.md](../test/exploration/bvm-sfq-receiver-r3a-onset-extraction-20260822/analysis/R3A_ONSET_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r4a-weak-mutual-capture-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/analysis/R4A_AMENDED_REPORT.md](../test/exploration/bvm-sfq-receiver-r4a-weak-mutual-capture-20260822/analysis/R4A_AMENDED_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r5a-biased-quantizer-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/analysis/R5A_REPORT.md](../test/exploration/bvm-sfq-receiver-r5a-biased-quantizer-20260822/analysis/R5A_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r5b-loadline-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r5b-loadline-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/analysis/R5B_REPORT.md](../test/exploration/bvm-sfq-receiver-r5b-loadline-20260822/analysis/R5B_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r5c-saddle-selectivity-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/analysis/R5C_REPORT.md](../test/exploration/bvm-sfq-receiver-r5c-saddle-selectivity-20260822/analysis/R5C_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r6a-native-qb-isolation-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`BACK_ACTION_FAILURE` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/analysis/R6A_REPORT.md](../test/exploration/bvm-sfq-receiver-r6a-native-qb-isolation-20260822/analysis/R6A_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r6b-native-qb-ratio-20260822
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/analysis/R6B_REPORT.md](../test/exploration/bvm-sfq-receiver-r6b-native-qb-ratio-20260822/analysis/R6B_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r7a-l1-routing-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/R7A_REPORT.md](../test/exploration/bvm-sfq-receiver-r7a-l1-routing-20260823/analysis/R7A_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r8-bjl2-area070-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/analysis/R8_REPORT.md](../test/exploration/bvm-sfq-receiver-r8-bjl2-area070-20260823/analysis/R8_REPORT.md)
-
----
-
-## bvm-sfq-receiver-r9a-l2-routing-20260823
-
-**实验 ID**：`test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/plots/alignment-overview.html](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/topology/topology.svg)
-
-**正式报告**：[test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/analysis/R9A_REPORT.md](../test/exploration/bvm-sfq-receiver-r9a-l2-routing-20260823/analysis/R9A_REPORT.md)
-
----
-
-## jtl-transport-gate-polarity-replay-20260824
-
-**实验 ID**：`test/exploration/jtl-transport-gate-polarity-replay-20260824`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/jtl-transport-gate-polarity-replay-20260824/plots/alignment-overview.html](../test/exploration/jtl-transport-gate-polarity-replay-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-polarity-replay-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/jtl-transport-gate-polarity-replay-20260824/analysis/REPORT.md](../test/exploration/jtl-transport-gate-polarity-replay-20260824/analysis/REPORT.md)
-
----
-
-## jtl-transport-gate-v1-numerical-freeze-20260824
-
-**实验 ID**：`test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`REPORT_PRESENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/plots/alignment-overview.html](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/analysis/REPORT.md](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824/analysis/REPORT.md)
-
----
-
-## jtl-transport-gate-v1-numerical-freeze-20260824-rerun
-
-**实验 ID**：`test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`JTL_TRANSPORT_GATE_V1_STRICT_REPLAY_INCONCLUSIVE` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/alignment-overview.html](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/topology/topology.svg)
-
-**正式报告**：[test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/analysis/REPORT.md](../test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/analysis/REPORT.md)
-
----
-
-## paper-sl-l0-20260824
-
-**实验 ID**：`test/exploration/paper-sl-l0-20260824`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`PAPER_JSL_LOAD_VALID` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/paper-sl-l0-20260824/plots/alignment-overview.html](../test/exploration/paper-sl-l0-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-l0-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/paper-sl-l0-20260824/REPORT.md](../test/exploration/paper-sl-l0-20260824/REPORT.md)
-
----
-
-## paper-sl-q3-pre-20260824
-
-**实验 ID**：`test/exploration/paper-sl-q3-pre-20260824`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`NO_WAVEFORM_VISUALIZATION_REQUIRED` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q3-pre-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/paper-sl-q3-pre-20260824/analysis/REPORT.md](../test/exploration/paper-sl-q3-pre-20260824/analysis/REPORT.md)
-
----
-
-## qb-q2c-uniform-junction-scale-20260824
-
-**实验 ID**：`test/exploration/qb-q2c-uniform-junction-scale-20260824`
-
-**做了什么**：见该 Exploration 的 preregistration / report。
-
-**关键结果**：正式结论见 report；索引不新增科学解释。
-
-**当前状态**：`UNIFORM_SCALE_NO_OUTPUT_EVENT` / alignment=`ALIGNED`
-
-**结论边界**：自动审计条目；未在本轮改写 scientific verdict。
-
-**推荐先看**：
-- 【单工况/结果图】 [test/exploration/qb-q2c-uniform-junction-scale-20260824/plots/alignment-overview.html](../test/exploration/qb-q2c-uniform-junction-scale-20260824/plots/alignment-overview.html)
-
-**电路**：
-- 【论文级电路图】 `schematic.svg（未生成）`
-- 【实验注释电路图】 `schematic-annotated.svg（未生成）`
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/qb-q2c-uniform-junction-scale-20260824/topology/topology.svg)
-
-**正式报告**：[test/exploration/qb-q2c-uniform-junction-scale-20260824/SUMMARY.md](../test/exploration/qb-q2c-uniform-junction-scale-20260824/SUMMARY.md)
 
 ---

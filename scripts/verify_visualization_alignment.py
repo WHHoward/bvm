@@ -117,7 +117,11 @@ def validate_manifest(manifest: dict[str, Any], *, root: Path = ROOT,
         if claim == "conditioning_matrix":
             if not {"raw-replay", "c1-rectify", "c2-hold20", "c3-rectify-hold20"}.issubset(comp_cases):
                 _fail(errors["result_alignment"], f"{exp_id}: R13 raw/C1/C2/C3 comparison incomplete")
-        if not entry.get("report") or not (root / str(entry.get("report"))).exists():
+        # Analysis-only provenance checkpoints may intentionally have no raw
+        # waveform package and therefore no independent formal report.  They
+        # remain visible in execution order, but cannot claim a result.
+        analysis_only = entry.get("current_status") == "NO_WAVEFORM_VISUALIZATION_REQUIRED" or entry.get("claim_type") == "analysis_only"
+        if not analysis_only and (not entry.get("report") or not (root / str(entry.get("report"))).exists()):
             _fail(errors["result_alignment"], f"{exp_id}: formal report missing")
 
     if topology_manifest is None:

@@ -179,6 +179,20 @@ class AlignmentRegression(unittest.TestCase):
         result = MODULE.validate_manifest(manifest, root=ROOT, topology_manifest=topology)
         self.assertEqual(result["overall"], "PASS")
 
+    def test_22_analysis_only_checkpoint_may_omit_report_and_raw(self):
+        t, root, m, topo = self.base()
+        entry = m["experiments"][0]
+        entry.update({
+            "required_cases": [], "plots": [], "report": None,
+            "current_status": "NO_WAVEFORM_VISUALIZATION_REQUIRED",
+            "claim_type": "analysis_only",
+        })
+        try:
+            result = MODULE.validate_manifest(m, root=root, topology_manifest=topo)
+            self.assertEqual(result["overall"], "PASS")
+        finally:
+            t.cleanup()
+
 
 if __name__ == "__main__":
     unittest.main()

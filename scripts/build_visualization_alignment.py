@@ -18,9 +18,15 @@ from typing import Any
 
 import yaml
 
+from render_alignment_ui import render_index as render_rich_index
+from render_alignment_ui import render_topology_index
+
 
 ROOT = Path(__file__).resolve().parents[1]
-HEAD = "e41d05fcf9aabd26890805bc4f2a12622b24eed7"
+# The documentation-only alignment rebuild is anchored to the repository HEAD
+# that was present when this task started.  It is deliberately not replaced by
+# the post-generation commit hash.
+HEAD = "3e714f3fdd593511971136ee470ec0418d775d24"
 MANIFEST_PATH = ROOT / "docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml"
 TOPOLOGY_PATH = ROOT / "docs/TOPOLOGY_ALIGNMENT_MANIFEST.yaml"
 
@@ -30,6 +36,103 @@ PHASE_SEMANTICS = {
     "event_delta": "登记同一 JJ、同一 monotonic segment 的 ΔP/(2π)。",
     "settled_well": "pre/post 稳定势阱变化 Δn；不能由连续轨迹本身替代。",
 }
+
+
+# The indexes are a research narrative, not a lexical directory listing.
+# Keep the sequence explicit so a newly added directory cannot silently move
+# an old result to a different place in the story.
+EXPERIMENT_ORDER = [
+    "bvm-internal-readout-20260819",
+    "bvm-sfq-receiver-r0-20260819",
+    "bvm-sfq-receiver-r0b-20260819",
+    "bvm-sfq-receiver-r1-oneshot-20260819",
+    "bvm-sfq-receiver-r1a-transfer-20260819",
+    "bvm-sfq-receiver-r1b-output-jj-20260819",
+    "bvm-sfq-receiver-r1b-area008-20260821",
+    "bvm-sfq-receiver-r1b-differential-output-20260821",
+    "bvm-sfq-receiver-r1c-bias-margin-20260821",
+    "bvm-sfq-receiver-r2a-coupling-20260821",
+    "bvm-sfq-receiver-r2b-damping-20260821",
+    "bvm-sfq-receiver-r2c-directdrive-20260821",
+    "bvm-sfq-receiver-r2d-duration-20260821",
+    "bvm-sfq-receiver-r2e-ampthreshold-20260821",
+    "bvm-sfq-receiver-r2f-dwell-20260821",
+    "bvm-sfq-receiver-r2g-twopulse-20260821",
+    "bvm-sfq-receiver-r3a-onset-extraction-20260822",
+    "bvm-sfq-receiver-r4a-weak-mutual-capture-20260822",
+    "bvm-sfq-receiver-r5a-biased-quantizer-20260822",
+    "bvm-sfq-receiver-r5b-loadline-20260822",
+    "bvm-sfq-receiver-r5c-saddle-selectivity-20260822",
+    "bvm-sfq-receiver-native-qb-20260822",
+    "bvm-sfq-receiver-r6a-native-qb-isolation-20260822",
+    "bvm-sfq-receiver-r6b-native-qb-ratio-20260822",
+    "bvm-sfq-receiver-r7a-l1-routing-20260823",
+    "bvm-sfq-receiver-r8-bjl2-area070-20260823",
+    "bvm-sfq-receiver-r9a-l2-routing-20260823",
+    "bvm-sfq-receiver-r10a-local-bjl2-bias-20260823",
+    "bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823",
+    "bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823",
+    "bvm-sfq-receiver-r13a-temporal-conditioning-20260823",
+    "bvm-sfq-receiver-r14a-dcsfq-detector-20260823",
+    "bvm-sfq-receiver-r15a-afq3-20260823",
+    "bvm-sfq-receiver-r15b-magnetic-correction-20260823",
+    "bvm-sfq-receiver-r15c-jset-causal-20260823",
+    "bvm-sfq-receiver-r15d-jq-compressor-20260823",
+    "qb-q0-standalone-current-quantized-event-20260824",
+    "qb-q1-canonical-bvm-scaled-qb-compatibility-20260824",
+    "qb-q2a-source-decoupled-waveform-replay-20260824",
+    "qb-q2b-central-bias-bracketing-20260824",
+    "qb-q2c-uniform-junction-scale-20260824",
+    "paper-sl-l0-20260824",
+    "paper-sl-q1-20260824",
+    "paper-sl-q2-20260824",
+    "paper-sl-q3-pre-20260824",
+    "q3-l1-routing-closure-20260824",
+    "paper-sl-q3-l1-routing-closure-20260824",
+    "paper-sl-q4-l1-l2-placement-20260824",
+    "paper-sl-q5-l1-l2-factorial-20260824",
+    "paper-sl-q6-qb-jtl-compatibility-20260824",
+    "qb-load-boundary-matrix-20260824",
+    "parallel-qb-jtl-interface-mechanism-20260824",
+    "jtl-transport-gate-polarity-replay-20260824",
+    "jtl-transport-gate-v1-methodology-20260824",
+    "jtl-transport-gate-v1-numerical-freeze-20260824",
+    "jtl-transport-gate-v1-numerical-freeze-20260824-rerun",
+    "qb-to-jtl-load-backaction-causal-audit-v1-20260824",
+]
+
+STAGE_DEFINITIONS = [
+    ("stage-00", "基础 source：canonical BVM readout", range(1, 2)),
+    ("stage-01", "R0–R1：trigger / passive transfer", range(2, 10)),
+    ("stage-02", "R2：direct receiver feasibility", range(10, 17)),
+    ("stage-03", "R3–R5：capture / quantizer closure", range(17, 22)),
+    ("stage-04", "R6–R10：native QB isolation / routing", range(22, 29)),
+    ("stage-05", "R11–R15：direct JTL / active-stage route", range(29, 37)),
+    ("stage-06", "QB-Q0–Q2：standalone scaled QB", range(37, 42)),
+    ("stage-07", "PAPER-SL：JSL waveform → QB", range(42, 51)),
+    ("stage-08", "QB output boundary / JTL transport", range(51, 58)),
+]
+
+
+def order_metadata(name: str) -> tuple[int, str, str]:
+    """Return one-based execution order and stage metadata."""
+    try:
+        number = EXPERIMENT_ORDER.index(name) + 1
+    except ValueError:
+        number = len(EXPERIMENT_ORDER) + 1
+    for stage_id, title, positions in STAGE_DEFINITIONS:
+        if number in positions:
+            return number, stage_id, title
+    return number, "stage-99", "其它 / 后续补充"
+
+
+def ordered_entries(entries: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    for name, entry in entries.items():
+        sequence, stage_id, stage_title = order_metadata(Path(name).name)
+        entry.setdefault("sequence", sequence)
+        entry.setdefault("stage_id", stage_id)
+        entry.setdefault("stage_title", stage_title)
+    return sorted(entries.values(), key=lambda e: (int(e.get("sequence", 10**9)), e.get("experiment_id", "")))
 
 
 def rel(path: Path) -> str:
@@ -413,15 +516,30 @@ def curated_entries() -> dict[str, dict[str, Any]]:
             plot_record(f"{q6}/plots/alignment-overview.html", role="RESULT", cases=[c["id"] for c in raw_cases(ROOT / q6)], source_classification="CURRENT_RESULT"),
         ])
 
-    for name, title, question, result, status, claim in [
-        ("test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824", "QB-Q1：physical BVM → frozen scaled QB", "canonical BVM 直接驱动 frozen scaled QB 是否保持 source guard 并量化？", "QB_SOURCE_BACKACTION_FAILURE；次级 QB_BVM_SUBTHRESHOLD。", "QB_SOURCE_BACKACTION_FAILURE", "source_backaction"),
-        ("test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824", "QB-Q2A：source-decoupled waveform replay", "source isolation alone 是否足以让 frozen QB 量化？", "QB_DYNAMIC_WINDOW_MISMATCH。", "QB_DYNAMIC_WINDOW_MISMATCH", "source_isolation"),
-        ("test/exploration/qb-q2b-central-bias-bracketing-20260824", "QB-Q2B：central-bias bracket", "central bias bracket 是否建立 read1-only BJL1 event？", "BIAS_BRACKET_NO_BJL1_EVENT。", "BIAS_BRACKET_NO_BJL1_EVENT", "bias_bracket"),
+    for name, title, question, result, status, claim, topology_id in [
+        ("test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824", "QB-Q1：physical BVM → frozen scaled QB", "canonical BVM 直接驱动 frozen scaled QB 是否保持 source guard 并量化？", "QB_SOURCE_BACKACTION_FAILURE；次级 QB_BVM_SUBTHRESHOLD。", "QB_SOURCE_BACKACTION_FAILURE", "source_backaction", "BVM_TO_SCALED_QB"),
+        ("test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824", "QB-Q2A：source-decoupled waveform replay", "source isolation alone 是否足以让 frozen QB 量化？", "QB_DYNAMIC_WINDOW_MISMATCH。", "QB_DYNAMIC_WINDOW_MISMATCH", "source_isolation", "SCALED_QB_REPLAY"),
+        ("test/exploration/qb-q2b-central-bias-bracketing-20260824", "QB-Q2B：central-bias bracket", "central bias bracket 是否建立 read1-only BJL1 event？", "BIAS_BRACKET_NO_BJL1_EVENT。", "BIAS_BRACKET_NO_BJL1_EVENT", "bias_bracket", "SCALED_QB_REPLAY"),
+        ("test/exploration/qb-q2c-uniform-junction-scale-20260824", "QB-Q2C：uniform junction-scale bracketing", "uniform junction scaling 是否建立 selective BJL1/BJL2 event？", "UNIFORM_SCALE_NO_OUTPUT_EVENT。", "UNIFORM_SCALE_NO_OUTPUT_EVENT", "uniform_scale", "SCALED_QB_REPLAY"),
     ]:
         path = ROOT / name
         e[name] = key_entry(name, title=title, question=question, result=result, status=status,
-            report=report_for(path), claim_type=claim, topology_id="SCALED_QB_REPLAY", cases=raw_cases(path),
+            report=report_for(path), claim_type=claim, topology_id=topology_id, cases=raw_cases(path),
             plots=common_plot(path, raw_cases(path)), notes="重要因果节点；overview 只用于导航，正式结论以 report 为准。")
+
+    # Q3 routing closure is an analysis-only provenance checkpoint.  It has no
+    # independent waveform/report package; the accepted Q3 execution fixture
+    # is the paper-sl-q3-l1-routing-closure entry below.  Keep this checkpoint
+    # visible in execution order without inventing a result plot or report.
+    q3_pre = "test/exploration/q3-l1-routing-closure-20260824"
+    e[q3_pre] = key_entry(
+        q3_pre, title="PAPER-SL-Q3-PRE：L1 routing closure precheck",
+        question="Q3 的 L1 routing hypothesis 是否值得进入单点 execution？",
+        result="分析-only provenance checkpoint；不单独产生 waveform verdict。",
+        status="NO_WAVEFORM_VISUALIZATION_REQUIRED", report=None, claim_type="analysis_only",
+        topology_id="PAPER_JSL_TO_FROZEN_QB", cases=[], plots=[],
+        notes="该目录只保存分析/拓扑来源；正式 raw、report 和 result plot 归属于 paper-sl-q3-l1-routing-closure-20260824。",
+    )
 
     bvm = "test/exploration/bvm-internal-readout-20260819"
     e[bvm] = key_entry(
@@ -475,39 +593,120 @@ def include_refs(deck: Path | None) -> list[str]:
     return refs
 
 
+LIBRARY_ONLY_NAMES = {
+    "jjmit.cir", "bvm_cell.cir", "bq_cell.cir", "bq_cell_paper.cir",
+    "JTL.cir", "JTL_SCALED.cir", "DCSFQ_BVM.cir", "receiver.cir",
+}
+
+
+def has_top_level_circuit_elements(path: Path) -> bool:
+    """Reject copied include libraries when resolving a representative deck."""
+    if not path.exists() or path.name in LIBRARY_ONLY_NAMES:
+        return False
+    inside_subckt = False
+    for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw.strip()
+        if not line or line.startswith(("*", ";")):
+            continue
+        low = line.lower()
+        if low.startswith(".subckt"):
+            inside_subckt = True
+            continue
+        if low.startswith(".ends"):
+            inside_subckt = False
+            continue
+        if inside_subckt or low.startswith((".include", ".print", ".plot", ".tran", ".option", ".end", ".param", ".model", ".ic", ".nodeset")):
+            continue
+        tokens = line.replace("\t", " ").split()
+        if tokens and len(tokens) >= 3 and tokens[0][0].upper() in "BICJLRV":
+            return True
+        if tokens and len(tokens) >= 4 and tokens[0].upper().startswith("X"):
+            return True
+    return False
+
+
+def inherited_source_deck(experiment: Path) -> Path | None:
+    """Read an analysis-only fixture's explicit source-deck provenance."""
+    notes = sorted(experiment.glob("**/README*.md")) + sorted(experiment.glob("**/*REPORT*.md"))
+    for note in notes:
+        text = note.read_text(encoding="utf-8", errors="replace")
+        match = re.search(r"source deck[^`]*`([^`]+)`", text, re.IGNORECASE)
+        if match:
+            candidate = ROOT / match.group(1).strip()
+            if candidate.exists():
+                return candidate
+    return None
+
+
+def representative_deck(experiment: Path, topo_id: str, explicit: str | None = None) -> Path | None:
+    """Resolve the top-level simulation deck, never a copied library include."""
+    if explicit:
+        candidate = ROOT / explicit
+        if candidate.exists():
+            return candidate
+    special = {
+        "QB_Q0_10OHM": experiment / "inputs/scaled-iin-68p4u.cir",
+        "BVM_CANONICAL": experiment / "inputs/pos-read-single.cir",
+        "PAPER_JSL_TO_FROZEN_QB": experiment / "inputs/paper-j1-logical1-read.cir",
+        "BVM_TO_SCALED_QB": experiment / "inputs/logical1-read.cir",
+        "QB_M3_SERIES10_JTL": experiment / "inputs/M3-rseries10/main.cir",
+        "STANDARD_JTL_2CELL": ROOT / "test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/inputs/r11/0p0125/main.cir",
+        "Q5_TO_STANDARD_JTL": experiment / "inputs/q6-q5-to-two-cell-jtl/paper-j1-logical1-read.cir",
+        "DCSFQ_REPLAY_CONDITIONER": experiment / "inputs/raw-replay/read1.cir",
+        "SCALED_QB_REPLAY": ROOT / "test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824/inputs/C-canonical-logical1-vsl.cir",
+    }
+    if topo_id in special and special[topo_id].exists():
+        return special[topo_id]
+    inherited = inherited_source_deck(experiment)
+    if inherited:
+        return inherited
+    inputs = experiment / "inputs"
+    if not inputs.exists():
+        return None
+    candidates = [p for p in sorted(inputs.rglob("*.cir")) if has_top_level_circuit_elements(p)]
+    if not candidates:
+        return None
+    preferred_tokens = ("logical1", "read1", "positive", "main", "paper-j1", "scaled-iin-68")
+    candidates.sort(key=lambda p: (0 if any(token in p.name.lower() for token in preferred_tokens) else 1, len(p.parts), p.as_posix()))
+    return candidates[0]
+
+
+def schematic_package(experiment: Path, topo_id: str) -> Path | None:
+    """Find an existing or generated publication-schematic package."""
+    root_package = experiment / "topology"
+    root_json = root_package / "schematic.json"
+    if (root_package / "schematic.svg").exists():
+        if not root_json.exists():
+            return root_package
+        try:
+            if json.loads(root_json.read_text(encoding="utf-8")).get("topology_id", topo_id) == topo_id:
+                return root_package
+        except (OSError, json.JSONDecodeError):
+            pass
+    for manifest in sorted(experiment.glob("topology/**/schematic.json")):
+        try:
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if data.get("topology_id") == topo_id and (manifest.parent / "schematic.svg").exists():
+            return manifest.parent
+    return None
+
+
 def build_topology_manifest(entries: dict[str, dict[str, Any]]) -> dict[str, Any]:
     topologies: dict[str, dict[str, Any]] = {}
     for exp_id, entry in entries.items():
         topo_id = entry.get("topology_id") or f"TOPOLOGY_{hashlib.sha1(exp_id.encode()).hexdigest()[:10]}"
         shared_experiment = entry.get("_shared_experiment", exp_id)
         exp = ROOT / entry.get("_topology_experiment", shared_experiment)
-        source = None
-        for candidate in sorted((exp / "inputs").glob("*.cir")) if (exp / "inputs").exists() else []:
-            if "read0" not in candidate.name and "logical0" not in candidate.name and "paper-iin-0" not in candidate.name:
-                source = candidate
-                break
-        if topo_id == "QB_Q0_10OHM":
-            source = exp / "inputs/scaled-iin-68p4u.cir"
-        if topo_id == "BVM_CANONICAL":
-            source = exp / "inputs/pos-read-single.cir"
-        if topo_id == "PAPER_JSL_TO_FROZEN_QB":
-            source = exp / "inputs/paper-j1-logical1-read.cir"
-        if topo_id == "QB_M3_SERIES10_JTL":
-            source = exp / "inputs/M3-rseries10/main.cir"
-        if topo_id == "STANDARD_JTL_2CELL":
-            source = ROOT / "test/exploration/jtl-transport-gate-v1-numerical-freeze-20260824-rerun/inputs/r11/0p0125/main.cir"
-        if topo_id == "Q5_TO_STANDARD_JTL":
-            source = exp / "inputs/q6-q5-to-two-cell-jtl/paper-j1-logical1-read.cir"
-        if topo_id == "DCSFQ_REPLAY_CONDITIONER":
-            source = exp / "inputs/raw-replay/read1.cir"
-        if entry.get("_representative_deck"):
-            source = ROOT / entry["_representative_deck"]
-        if source is None:
-            source = next(iter(sorted((exp / "inputs").glob("*.cir"))), None) if (exp / "inputs").exists() else None
+        source = representative_deck(exp, topo_id, entry.get("_representative_deck"))
         topo = topologies.setdefault(topo_id, {
             "topology_id": topo_id,
             "title_cn": entry["title_cn"],
             "representative_experiment": exp_id,
+            "sequence": int(entry.get("sequence") or order_metadata(Path(shared_experiment).name)[0]),
+            "stage_id": entry.get("stage_id") or order_metadata(Path(shared_experiment).name)[1],
+            "stage_title": entry.get("stage_title") or order_metadata(Path(shared_experiment).name)[2],
             "representative_deck": rel(source) if source and source.exists() else None,
             "includes": include_refs(source), "subcircuits": [],
             "topology_signature": topology_signature(source) if source else "MISSING",
@@ -526,16 +725,25 @@ def build_topology_manifest(entries: dict[str, dict[str, Any]]) -> dict[str, Any
             debug_override = "test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/variants/main-3/topology.svg"
         if debug_override and not topo["connectivity_debug"]:
             topo["connectivity_debug"] = debug_override
-        if (tdir / "schematic.svg").exists() and not topo["publication_schematic"]:
-            topo["publication_schematic"] = rel(tdir / "schematic.svg")
-            topo["annotated_schematic"] = rel(tdir / "schematic-annotated.svg") if (tdir / "schematic-annotated.svg").exists() else None
-            topo["connectivity_debug"] = rel(tdir / "connectivity-debug.svg") if (tdir / "connectivity-debug.svg").exists() else None
-            topo["semantic_validation"] = rel(tdir / "schematic-validation.json") if (tdir / "schematic-validation.json").exists() else None
-            topo["geometric_validation"] = rel(tdir / "geometric-connectivity-validation.json") if (tdir / "geometric-connectivity-validation.json").exists() else None
+        package = schematic_package(exp, topo_id)
+        if package and not topo["publication_schematic"]:
+            topo["publication_schematic"] = rel(package / "schematic.svg")
+            topo["annotated_schematic"] = rel(package / "schematic-annotated.svg") if (package / "schematic-annotated.svg").exists() else None
+            topo["connectivity_debug"] = rel(package / "connectivity-debug.svg") if (package / "connectivity-debug.svg").exists() else topo["connectivity_debug"]
+            topo["semantic_validation"] = rel(package / "schematic-validation.json") if (package / "schematic-validation.json").exists() else None
+            topo["geometric_validation"] = rel(package / "geometric-connectivity-validation.json") if (package / "geometric-connectivity-validation.json").exists() else None
             topo["status"] = "PUBLICATION_SCHEMATIC_VALIDATED" if topo["semantic_validation"] and topo["geometric_validation"] else "PUBLICATION_SCHEMATIC_UNVALIDATED"
         elif (tdir / "topology.svg").exists() and not topo["connectivity_debug"] and not debug_override:
             topo["connectivity_debug"] = rel(tdir / "topology.svg")
-    return {"schema_version": "2.0", "parent_head": HEAD, "topologies": sorted(topologies.values(), key=lambda x: x["topology_id"])}
+    values = list(topologies.values())
+    values.sort(key=lambda x: (int(x.get("sequence", 10**9)), x["topology_id"]))
+    for topo in values:
+        seq = int(topo.get("sequence", 10**9))
+        if seq < 10**9 and seq <= len(EXPERIMENT_ORDER):
+            _, sid, title = order_metadata(EXPERIMENT_ORDER[seq - 1])
+            topo["stage_id"] = topo.get("stage_id") or sid
+            topo["stage_title"] = topo.get("stage_title") or title
+    return {"schema_version": "2.0", "parent_head": HEAD, "topologies": values}
 
 
 def markdown_link(path: str | None, label: str) -> str:
@@ -739,6 +947,10 @@ def main() -> None:
             status=("NO_WAVEFORM_VISUALIZATION_REQUIRED" if not cases else infer_verdict(path)), report=report, claim_type="generic_exploration",
             topology_id=f"TOPOLOGY_{hashlib.sha1(path.name.encode()).hexdigest()[:10]}", cases=cases,
             plots=plots, notes="自动审计条目；未在本轮改写 scientific verdict。")
+    # Reinsert the mapping in explicit scientific execution order.  This order
+    # drives both Markdown and HTML; directory enumeration is never a route
+    # authority.
+    entries = {entry["experiment_id"]: entry for entry in ordered_entries(entries)}
     # Use the recorded baseline supplied by the caller, not the current
     # post-generation HEAD, so provenance stays explicit.
     # A comparison experiment may contain several real electrical boundaries.
@@ -807,7 +1019,7 @@ def main() -> None:
         "parent_head": recorded_head,
         "authority_order": ["raw", "accepted_analysis_report", "visualization", "index"],
         "phase_semantics": PHASE_SEMANTICS,
-        "experiments": list(entries.values()),
+        "experiments": ordered_entries(entries),
     }
     MANIFEST_PATH.write_text(yaml.safe_dump(manifest, allow_unicode=True, sort_keys=False), encoding="utf-8")
     TOPOLOGY_PATH.write_text(yaml.safe_dump(topology, allow_unicode=True, sort_keys=False), encoding="utf-8")
@@ -815,11 +1027,12 @@ def main() -> None:
     viz_md = render_index(entries, flow=False)
     (ROOT / "docs/EXPLORATION_FLOW_INDEX.md").write_text(flow_md, encoding="utf-8")
     (ROOT / "docs/VISUALIZATION_INDEX.md").write_text(viz_md, encoding="utf-8")
-    (ROOT / "docs/EXPLORATION_FLOW_INDEX.html").write_text(html_index(flow_md, "EXPLORATION FLOW INDEX V2", entries, topology), encoding="utf-8")
-    (ROOT / "docs/VISUALIZATION_INDEX.html").write_text(html_index(viz_md, "VISUALIZATION INDEX V2", entries, topology), encoding="utf-8")
+    entry_list = ordered_entries(entries)
+    (ROOT / "docs/EXPLORATION_FLOW_INDEX.html").write_text(render_rich_index(entry_list, topology, title="BVM→QB/JTL receiver Exploration 流程总索引", flow=True, head=recorded_head), encoding="utf-8")
+    (ROOT / "docs/VISUALIZATION_INDEX.html").write_text(render_rich_index(entry_list, topology, title="BVM→QB/JTL receiver 可视化结果索引", flow=False, head=recorded_head), encoding="utf-8")
     (ROOT / "docs/VISUALIZATION_READING_GUIDE.md").write_text(build_reading_guide(entries), encoding="utf-8")
     (ROOT / "docs/CIRCUIT_SCHEMATIC_INDEX.md").write_text(build_schematic_index(topology, entries), encoding="utf-8")
-    (ROOT / "docs/CIRCUIT_SCHEMATIC_INDEX.html").write_text(html_topology_index(topology), encoding="utf-8")
+    (ROOT / "docs/CIRCUIT_SCHEMATIC_INDEX.html").write_text(render_topology_index(topology, title="BVM→QB/JTL 电路结构导航", head=recorded_head), encoding="utf-8")
     (ROOT / "docs/VISUALIZATION_ALIGNMENT_AUDIT.md").write_text(build_alignment_audit(manifest, topology), encoding="utf-8")
     print(f"experiments={len(entries)} topologies={len(topology['topologies'])}")
 

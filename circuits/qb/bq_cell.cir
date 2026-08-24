@@ -5,9 +5,11 @@
 * BJL1 IC=36uA  (area=0.36) - DC bias path, RJ1=33 (Bc_Re~1)
 * BJL2 IC=54uA  (area=0.54) - output isolation, RJ2=22 (Bc_Re~1)
 *
-* NOTE: For standalone testing with ideal current source, use:
-*   IBias=35uA, Iin=90uA pulse, Rload=10
-*   Achieves Vout~1mV SFQ pulses (5/5 correct)
+* HISTORICAL NOTE (superseded for current phase/area evidence): standalone tests
+* used IBias=35uA, Iin=90uA pulse, Rload=10 and were described as "5/5 correct".
+* Current QB-Q0 strict re-audit instead finds 68.4uA -> bounded exactly-one BJL2
+* reference and 90uA -> multi-event (~2 turns per pulse). Do not cite this note
+* as an exactly-one or downstream-SFQ result; see JTL_TRANSPORT_GATE_V1.
 *
 * NOTE: For BVM+BQ chain, additional input bias (~15uA) may be
 *   needed to forward-bias BJs. BVM SL output impedance (~15ohm)

@@ -5,6 +5,13 @@
 
 > **开始**: 2026-07-13 | **josim-cli**: v2.7.2837d13 | **模型**: jjmit (Ic×RN=1.6mV)
 
+> **历史结果说明（2026-08-24）**：下方旧的 `90µA→190 SFQ` 和相关 phase/event
+> 叙述已被当前 raw phase/voltage-area 口径 supersede，不能作为 exactly-one 或
+> downstream SFQ 证据。当前 scaled QB-Q0 re-audit 的 accepted reference 是
+> `68.4µA→约1.096 turn exactly-one`，而 `90µA→约2.006 turn multi-event`；详见
+> `test/exploration/qb-q0-standalone-current-quantized-event-20260824/` 与
+> `JTL_TRANSPORT_GATE_V1` methodology checkpoint。以下历史表格和 raw 不删除。
+
 > ✅ **2026-08-06 Step 0 基线冻结**: 本文件中的旧数值（0.94 / 1.00 / 190）与冻结口径
 > 不一致，详见同目录 `BASELINE.md`。以冻结口径 + `scripts/sfq_metrics.py` 为准。
 

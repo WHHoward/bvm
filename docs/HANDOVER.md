@@ -6,29 +6,36 @@
 >
 > 重要：2026-08-06 版“冻结口径”已因相位单位错误失效；不得从旧日志复制 SFQ 数或 `fast_events` 结论。
 
-## 当前接收器同步（2026-08-23）
+## 当前接收器同步（2026-08-24）
 
-当前 HEAD：`2622201e7e6ab72ce2a5066ccdbf3fd1c0ea65d7`。2026-08-14 之后，
-BVM source/read semantics、R0b detector、R1a passive pickup、R2 conditioned
-local B_OUT、R11 standard JTL positive control、R12 controlled DCSFQ local
-regeneration以及 R15-B corrected active-interstage single point均已形成独立
-Exploration evidence。
+本轮科学分析的 parent HEAD：`edf9b6d6c9a26c999a9f95f8ca604993475c51d4`。R0b–R15B 的 receiver
+Exploration 结论保持不变；本轮仅对既有 R11、M1、M5-PC 和 pulse-5 replay raw
+完成 `JTL_TRANSPORT_GATE_V1` 回顾性 provisional 方法学分类，没有运行 JoSIM、没有修改物理电路。
 
-当前最重要的边界：
+当前最重要的证据边界：
 
-1. BVM read1/read0 discrimination 与 R0b local detector 已建立，但 R0b 是
-   multi-turn detector，不是 exactly-one output。
-2. DCSFQ_BVM 在 `300 µA` controlled input 下有约 `1.03-turn` bounded B3
-   local event；canonical BVM cascade read1 只有约 `0.0365 turn`，没有 B3/JTL event。
-3. standard two-cell JTL positive control 有效；canonical BVM direct JTL
-   第一颗 JJ 只有约 `0.151 turn`，verdict 为 `NO_JTL_TRIGGER`。
-4. R15-B corrected split-winding topology 的 verdict 为
-   `ACTIVE_STAGE_NO_TRIGGER`；`I(L1)` peak 约 `0.511 µA`，B3 最大 segment
-   约 `0.0000577 turn`。read1 source ringing 高于 canonical no-receiver，
-   因此 source disposition 是 bounded extra back-action，而非 clean isolation pass。
+1. `STRICT_LOCAL_EVENT` 与 `JTL_TRANSPORT_EVENT` 是两条不同证据链。strict
+   local event 仍要求一个 continuous monotonic segment 达到至少一圈并由同一
+   JJ、同一 segment 的直接电压面积支持；settled pre→post adjacent-well
+   transition 不能回写成 local event。
+2. R11 standard-JTL positive control 的 strict vector 为 `[1,0,0,0]`，但四颗
+   JJ 的 pre/post settled wells、full-window phase/area 和 causal onset order
+   满足本批 provisional transport gate。该 gate 是标准 JTL fixture 的 transport
+   evidence，不是 global Authority metric freeze。
+3. Q0 pulse-5 原极性 ideal replay 与 R11 在本批 provisional transport signature 下均为
+   四颗 `+1` well、bounded、逐级传播；这只证明 ideal replay transport
+   compatibility，不证明 physical Q0→JTL coupling。反极性 replay 不是 logical0
+   control，且不形成预期的 `+1` chain。
+4. M5-PC 的 full-window/pre→post 约为 `+2` wells。历史
+   `abs(turns)>=0.90` predicate 没有 one-turn 上界，故旧 “approximately-one”
+   label 已被更正为 `MULTI_WELL_TRANSPORT_NOT_ONE_TURN`，不能再引用为 exactly-one。
+5. 当前仍没有 canonical BVM→JTL、physical QB→JTL→T1 closure；不得把 ideal
+   replay transport 结果升级为最终接口成功。
 
-详细叙事见 `docs/meeting/2026-08-23-group-meeting.md`，最新证据见
-`test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/analysis/R15B_EXECUTION_REPORT.md`。
+详细方法与逐 JJ 数据见
+`test/exploration/jtl-transport-gate-v1-methodology-20260824/analysis/REPORT.md`；
+M5 判据更正见
+`test/exploration/parallel-qb-jtl-interface-mechanism-20260824/analysis-v2/M5_PREDICATE_CORRECTION.md`。
 
 ## 0. 新会话第一步
 

@@ -4,36 +4,35 @@ description: JoSIM × BVM 项目综合快照 — 2026-08-09 相位单位审计�
 metadata:
   node_type: memory
   type: project
-  last_updated: 2026-08-23
+  last_updated: 2026-08-24
 ---
 
 # JoSIM × BVM 项目综合总结
 
-## 当前同步（2026-08-23）
+## 当前同步（2026-08-24）
 
-当前 HEAD：`2622201e7e6ab72ce2a5066ccdbf3fd1c0ea65d7`。在 2026-08-14 的
-BVM-S0 bounded source observations 之后，用户授权完成了 R0b–R15B 的
-Exploration chain。当前已建立：BVM logical/read discrimination、SL→B_TRIG
-local complete detector、R1a passive state extraction、conditioned B_OUT local
-slip、DCSFQ 300 µA controlled local regenerative event，以及 standard two-cell
-JTL positive control。当前仍未建立 canonical BVM→DCSFQ/JTL exactly-one event。
+本轮科学分析的 parent HEAD：`edf9b6d6c9a26c999a9f95f8ca604993475c51d4`。R0b–R15B 的 receiver
+Exploration chain 保持原结论；本轮新增的是不运行 JoSIM 的
+`JTL_TRANSPORT_GATE_V1` evidence/methodology checkpoint。
 
-当前主瓶颈是 **B_DET → bias-powered active state compression/regeneration**：
-passive transfer、ideal rectification/hold、native-QB passive routing、L1/L2
-load-line 和单点 local BJL2 bias 均未产生 quantizing gain。R15-A 的 AFQ-3
-三绕组矩阵无效；R15-B 已改为 positive-definite split-winding/two-core
-topology，但 single point verdict 为 `ACTIVE_STAGE_NO_TRIGGER`，DCSFQ
-`I(L1)` peak 约 `0.511 µA`，B3 最大 segment 约 `0.0000577 turn`。
+当前已建立：BVM logical/read discrimination、SL→B_TRIG local complete detector、
+R1a passive state extraction、conditioned B_OUT local slip、DCSFQ controlled local
+regeneration、standard two-cell JTL positive control，以及 ideal Q0 pulse replay
+在 frozen standard JTL 上的 settled-well transport-compatible response。当前仍未
+建立 canonical BVM→DCSFQ/JTL exactly-one event、physical QB→JTL interface 或 T1。
 
-R15-B 的 source disposition 为 `BOUNDED_EXTRA_BACK_ACTION_NOT_ISOLATED`：
-READ=0 control 稳定、storage sign 保持，但 read1 post-window 的 SL/N6/JS
-ringing 高于 canonical no-receiver baseline。该结果只约束当前 single point，
-不升级为整个 active-interstage family 的普遍不可能。
+本轮明确的 provisional 边界是：strict local event 必须有至少一圈 continuous monotonic
+segment；transport event 则另行使用 bounded pre/post adjacent-well、同 JJ
+phase/area consistency 和 causal onset order。R11、M1 ideal replay、pulse-5
+original 落入本批 provisional transport-signature class；M5-PC 是约 +2-well scaled-JTL control，旧无上界的
+“approximately-one” predicate 已 supersede；reverse polarity 不是 logical0 control。
 
-详细组会材料：`docs/meeting/2026-08-23-group-meeting.md`；最新实验报告：
-`test/exploration/bvm-sfq-receiver-r15b-magnetic-correction-20260823/analysis/R15B_EXECUTION_REPORT.md`。
+R15-B 的 source disposition 仍为 `BOUNDED_EXTRA_BACK_ACTION_NOT_ISOLATED`，不因
+本轮 ideal replay 回顾性方法学分类而改变。详细报告见
+`test/exploration/jtl-transport-gate-v1-methodology-20260824/analysis/REPORT.md`。
 
-**当前阶段**：Reference / Source / Receiver Characterization（2026-08-23；R15 active-interstage screening）。
+**当前阶段**：Reference / Source / Receiver Characterization（2026-08-24；JTL
+transport evidence closure，physical interface 仍未闭合）。
 
 **完整说明**：`docs/guide/project-guide.md`。
 

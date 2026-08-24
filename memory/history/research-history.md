@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-23
+  last_updated: 2026-08-24
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -285,6 +285,28 @@ derived/inference/unknown、路线裁剪和当前 stop boundaries。
 
 **认知**：🔄 receiver characterization 仍进行中；未升级 Candidate、未接 T1，
 未形成 paper-level quantitative claim。
+
+### 2026-08-24：JTL transport gate 与 pulse polarity evidence closure
+
+**做了什么**：停止 M1–M5 参数延伸，消费已接受的 R11 standard-JTL positive
+control、M1 ideal Q0 replay、M5-PC 和 pulse-5 原/反极性 replay raw；建立
+`JTL_TRANSPORT_GATE_V1` 回顾性 provisional 分类，把 strict continuous monotonic
+local event 与 settled pre→post Josephson-well transport evidence 分开。
+
+**结果/产物**：R11、M1 ideal replay 和 pulse-5 original 在本批 provisional transport gate 下
+均显示四颗 JTL JJ 的 `+1` adjacent-well、bounded pre/post 和正确的逐级 onset
+order。R11 与 pulse-5 original 在该离散 transport signature 下相容，但两者仍不
+等同于 physical interface。反极性 replay 不是 logical0 control，也没有形成预期
+正向 one-well chain。M5-PC 的 full-window/pre→post 为约 `+2` wells。
+
+**纠正**：M5 历史 `positive_control_valid()` 只有 `abs(turns)>=0.90`，没有 one-turn
+上界；旧 approximately-one/exactly-one 解释由
+`test/exploration/parallel-qb-jtl-interface-mechanism-20260824/analysis-v2/M5_PREDICATE_CORRECTION.md`
+明确 supersede，raw 和旧报告保留不改。
+
+**认知**：✅ 本批方法学层现在明确区分 local event 与 downstream transport；⚠️ ideal
+replay 不能证明 physical QB→JTL，canonical BVM→JTL、T1 和最终 interface 仍未
+闭合。没有修改 canonical BVM、QB/JTL topology 或运行新 JoSIM。
 
 ## 四、关键转折点速查
 

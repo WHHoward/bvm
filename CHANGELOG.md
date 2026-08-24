@@ -4,6 +4,30 @@
 
 ---
 
+## 2026-08-24 — JTL_TRANSPORT_GATE_V1 回顾性方法学分类 checkpoint
+
+### 做了什么
+
+- 新增 `test/exploration/jtl-transport-gate-v1-methodology-20260824/`，只读重算
+  R11、M1、M5-PC 和 pulse-5 原/反极性既有 raw。
+- 分离 `STRICT_LOCAL_EVENT` 与 settled-well `JTL_TRANSPORT_EVENT`，从 accepted
+  references 注册本批 provisional one-well、phase/area residual、pre/post boundedness
+  和 t50 onset-order 容差；未运行 JoSIM、未改 physical circuit。
+- 新增 M5 predicate correction note：旧 `abs(turns)>=0.90` 无 one-turn 上界，M5
+  约 `+2` wells，旧 approximately-one label 不再作为 exactly-one 证据。
+- 同步 `HANDOVER`、project summary/todo、research history，并标记历史 QB “90uA
+  5/5 correct” 注释不属于当前 strict Q0 evidence。
+
+### 影响
+
+- R11 standard positive control、M1 ideal replay、pulse-5 original 在 transport gate
+  下具有四颗 `+1` chain；strict local vector 仍独立报告。
+- 反极性 replay 不是 logical0 control；physical QB→JTL、canonical BVM→JTL 和 T1
+  仍未闭合，global Authority metric freeze 仍需 timestep ladder/repeatability。停止在
+  方法学 checkpoint，未升级 Candidate。
+
+---
+
 ## 2026-08-23 — R0b–R15B receiver Exploration 组会材料与状态同步
 
 ### 做了什么

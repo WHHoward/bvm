@@ -4,17 +4,17 @@ description: JoSIM × BVM 项目主任务清单 — 2026-08-09 相位单位审�
 metadata:
   type: project
   node_type: memory
-  last_updated: 2026-08-23
+  last_updated: 2026-08-24
 ---
 
 # JoSIM × BVM 项目主任务清单
 
-## 2026-08-23 当前状态同步
+## 2026-08-24 当前状态同步
 
 上方 2026-08-14 的“下一步等待授权”文字保留作为历史状态；随后用户已明确
 授权 receiver Exploration。当前 R0b–R15B 结果及其停止规则以对应
 `test/exploration/` 报告为事实层，不把任何失败单点升级为整个架构族的
-普遍不可能。
+普遍不可能；本轮 `JTL_TRANSPORT_GATE_V1` 只修订证据分层，不改变既有电路结论。
 
 - BVM source/read semantics：bounded evidence established；仍无 universal
   resolution-independent source baseline。
@@ -31,13 +31,16 @@ metadata:
 - R15-B：corrected AFQ split-winding topology 可运行，但 active stage no trigger；
   后续若授权，问题应限定为 detector→active state-compression transfer 和
   source/back-action，而非恢复无边界 passive sweep。
+- JTL_TRANSPORT_GATE_V1：R11 standard-JTL、M1 ideal Q0 replay 和 pulse-5 原极性
+  在 settled-well transport gate 下均为四颗 `+1` chain；strict local vector 仍
+  单独保留。M5-PC 更正为约 `+2` wells，反极性不是 logical0 control。
 
 当前仍未完成：BVM→exactly-one local output、B3/JTL propagation、T1、Candidate
 和 paper-level claim。
 
 > 状态：🔴未开始　🟡进行中　🟢完成　⏸️暂停/被取代
 >
-> **当前 active phase（2026-08-23）**：Reference / Source / Receiver Characterization。Phase −1 的 M1–M12 计量修复与双基线已闭环；BVM-S0/stable-load 已形成 bounded source observations，logical semantics 已冻结，但仍未建立 universal resolution-independent source baseline。随后经用户授权完成 R0b–R15B receiver Exploration；当前核心问题是 `B_DET → bias-powered active state compression/regeneration`，而不是恢复无边界 passive sweep。旧 Step 0“冻结基线”、BQ 系统排除和旧 DCSFQ Phase 1 Gate 已因 `P()` 单位错误失效，仍不得恢复为现行结论。
+> **当前 active phase（2026-08-24）**：Reference / Source / Receiver Characterization。Phase −1 的 M1–M12 计量修复与双基线已闭环；BVM-S0/stable-load 已形成 bounded source observations，logical semantics 已冻结，但仍未建立 universal resolution-independent source baseline。R0b–R15B receiver Exploration 保持其 bounded evidence；`JTL_TRANSPORT_GATE_V1` 只闭合 strict local 与 settled-well transport 的方法学分层。当前仍未建立 canonical BVM→exactly-one output、physical QB→JTL 或 T1；不得把 ideal replay transport evidence 升级为 physical interface success。
 
 ## A. 🟡 Phase −1：修复测量管线与重建基线
 

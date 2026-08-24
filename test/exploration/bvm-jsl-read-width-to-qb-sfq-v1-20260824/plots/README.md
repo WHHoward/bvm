@@ -2,8 +2,12 @@
 
 ## Registered comparison
 
-- `9ps-vs-Wstar-qb-replay-comparison.html`：accepted PAPER-SL-Q1 9 ps replay
-  与本轮 W*=12 ps exact current replay 的 QB 对比。
+- `9ps-vs-Wstar-qb-replay-comparison.html`：由仓库
+  `.agents/skills/josim-exploration-visualization/scripts/plot_case_matrix.py`
+  生成的 accepted PAPER-SL-Q1 9 ps replay 与本轮 W*=12 ps exact current
+  replay 的 QB 对比。
+- `../analysis/phase-c-matrix.json`：matrix plot 的唯一输入清单，声明了每个
+  CSV、精确列名、case role、单位换算和线型。
 - `9ps-vs-Wstar-qb-replay-comparison.metadata.json`：plot role、case provenance
   和 phase semantics。
 

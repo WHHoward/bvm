@@ -8,12 +8,12 @@ a527a3786155ebe16dac88e80b0de90abe4c46d4c946bd6f8042bfa92d321f38  ./analysis/PHA
 0b86c20a5baf9cf600a1dd97a31ad47aacf2fcec147422fec4f4bf216e6ec328  ./analysis/analyze_phase_b.py
 5ae1cac45c7e167b651a26b3ae6e9bff54a75955531e37641e37e3163b1f9c58  ./analysis/analyze_phase_c.py
 649863ab2dbb285ffce8273c87aee06d6e73fc55eeef169664b33a68b88b2461  ./analysis/build_phase_c_fixture.py
-3e2cb9c1bf70818a57cfc9af650e895024d0c6236e1eec8fc6d35ea755987c8c  ./analysis/generate_phase_c_comparison.py
 305f1ee1922df44073bda7954b77bfff241343211cf4e615c7881f2416f61c09  ./analysis/metrics-phase-a.json
 cf81f4423e6330220c77b1a54595bb99b05a8b4113976c3ec36bf952159b0f99  ./analysis/metrics-phase-b.json
 598d69670acaf29e3be6df423033ffa42eff0d74d7f779e338d6fb04f2ae2492  ./analysis/metrics-phase-c.json
 ce932221d6f86420e04f95839f44d16a53dd66941a26eaaa83562ba36751efcc  ./analysis/phase-a-case-map.json
 088660123ab8bbe6713c01861c24afce0a63f3090208cb68581842214cf75eb9  ./analysis/phase-b-case-map.json
+ba21fb76d16892f85d46d5a412a309c6e41f36368d29af91d6b41a83732591ef  ./analysis/phase-c-matrix.json
 39785020d99e34a0b6a2ce43282c220cedd7dc07081caa789108da4c1b33c767  ./analysis/prepare_phase_a.py
 9b87f17f0a1b1320a01f11e99523431d8e24211067a243dc52a0e83affec5e44  ./analysis/prepare_phase_b.py
 ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4  ./inputs/bvm_cell.cir
@@ -32,7 +32,7 @@ e41867cea1c380a7012b62d30867f596a8ecbc5387e8fe88b39594e839fea3e4  ./inputs/phase
 09bd6f157ac60d73586e41be6a81b3e1ebf010c021930a1b24fb36cb9881e27a  ./inputs/phase-c/wstar12-logical0-read0-control.cir
 58b171b27de8155df52350b0beffc2c122ea9913324bc6ba19aa70fa9d60b860  ./inputs/phase-c/wstar12-logical1-read.cir
 9be3a4cfd76bccbcfffbcbef48d830215dabbf2c81e6d824e8b823768a2233d3  ./inputs/phase-c/wstar12-logical1-read0-control.cir
-a16c5e6ec66bced2fd88686f2ce61d401b1b90a808a3ff3e7eeb1d02bcb6dff6  ./logs/COMMANDS.txt
+dd43229ccd60d3a7e0132084dca120d26cb947371c34275f441ee9f482fa5e2a  ./logs/COMMANDS.txt
 b6867c1b52aa539b322e32b99e5c9d02a000723e2d4631b3ba63f792288f5940  ./logs/PREFLIGHT.md
 bc6a33e8348dddcaf6be25410a03bd137c57a20df1954ba3bdb734cf9ef63849  ./logs/QA.txt
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./logs/phase-a-12ps-logical0-read.stderr.txt
@@ -62,10 +62,10 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./logs/phase-c
 0ef7544b4082123e07e0ceda05af86e6aa0a2a6e1c268e0627768f9d33d8de93  ./logs/phase-c-wstar12-logical1-read.stdout.txt
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./logs/phase-c-wstar12-logical1-read0-control.stderr.txt
 b589bf112a3aac28c4c8236b104ae34d1e3e77e6ae336de367dc3d23636d0944  ./logs/phase-c-wstar12-logical1-read0-control.stdout.txt
-53a047760e377b0ff0ad4358397b86147f01e4100a8489fa3424625d475d40a4  ./manifest.yaml
-39480a472b7ab9c994b3b818ef6a35a728f0c63a5e6c67f8527371ae8246ad25  ./plots/9ps-vs-Wstar-qb-replay-comparison.html
-99082a06d1d5aed147644c2f544f413e0c778edcaf337e447dc960826ec86c55  ./plots/9ps-vs-Wstar-qb-replay-comparison.metadata.json
-771ecbe5a7c4c6ad4f58a4896f7f3985152fda5a95767fa163773a592428bee5  ./plots/README.md
+3c4633baf8483024970dd68a0fc5e64afdf04a748184ede291e410963d199075  ./manifest.yaml
+faf6562257cdf82561ae6319a78b52225d9a0caeac96f5b6ff28569774c90c98  ./plots/9ps-vs-Wstar-qb-replay-comparison.html
+284fa576e5454947280346bb79943b77be5e57c15a939a71612bbf5d68c87931  ./plots/9ps-vs-Wstar-qb-replay-comparison.metadata.json
+577d08b27038b6301500e4b99b5713ee9bd3134369ddeffead40db6e04886634  ./plots/README.md
 177a913f5d38dc48cf45930e94aad9016b5a8e7fb96260494aa04043f6ed9d16  ./raw/phase-a/12ps/logical0-read/run-01.csv
 6ac3990e36118b2a9d02e7b2e83c97eda6db70183263036e4396e11866e60529  ./raw/phase-a/12ps/logical1-read/run-01.csv
 4da4a4b0e4ed9cffc117045f99fbeeaa547ff47988496db93a380594e381a549  ./raw/phase-a/15ps/logical0-read/run-01.csv

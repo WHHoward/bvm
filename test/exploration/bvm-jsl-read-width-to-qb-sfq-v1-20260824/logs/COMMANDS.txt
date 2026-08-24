@@ -13,7 +13,10 @@ python3 analysis/build_phase_c_fixture.py
 ./run_phase_c.sh
 python3 analysis/analyze_phase_c.py
 
-python3 analysis/generate_phase_c_comparison.py
+# Run from repository root:
+python3 .agents/skills/josim-exploration-visualization/scripts/plot_case_matrix.py \
+  test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/analysis/phase-c-matrix.json \
+  --output test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-replay-comparison.html
 
 # The 9 ps data in Phase A/B/C are accepted comparator raw from the paths
 # recorded in manifest.yaml; they were not regenerated in this Exploration.

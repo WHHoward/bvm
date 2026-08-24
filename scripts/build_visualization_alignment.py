@@ -114,6 +114,357 @@ STAGE_DEFINITIONS = [
 ]
 
 
+# Human-facing experiment narratives.  These are deliberately kept separate
+# from the machine-derived raw/plot discovery below: the report remains the
+# scientific authority, while this catalog supplies the short answer to
+# “what was tested / what was learned / what is the boundary?” for both
+# generated indexes.  Keys are Exploration directory basenames.
+EXPERIMENT_NARRATIVES: dict[str, dict[str, str]] = {
+    "bvm-internal-readout-20260819": {
+        "title_cn": "Canonical BVM：storage/readout source baseline",
+        "what_done": "对 canonical BVM 做 write/read 与 READ=0 对照，检查 JM1/JM2、JS1/JS2、SL、N6 及 read timing。",
+        "result_summary": "read1/read0 的 storage sign 与 SL/N6 输出保持稳定区分；read1 有强 R-loop/JS activity，read0 主要是 READ-edge response，因此该结果被用作 source baseline。",
+        "conclusion_boundary": "这是 BVM source/read baseline，不是 receiver switching 或 SFQ-delivery 结果。",
+    },
+    "bvm-sfq-receiver-r0-20260819": {
+        "title_cn": "R0：SL-route trigger discrimination",
+        "what_done": "在 canonical SL 后接最小外部 JJ trigger，比较 logical1/read1、logical0/read0 和两个 READ=0 controls。",
+        "result_summary": "R0 PARTIAL：R0-A threshold discrimination PASS；read1 与 read0/controls 分离且 source/storage guard 保持，但 read1 B_TRIG excursion 未满足完整 2π transition。",
+        "conclusion_boundary": "不能称 complete trigger switching、exactly-one、self-quench 或 SFQ delivery。",
+    },
+    "bvm-sfq-receiver-r0b-20260819": {
+        "title_cn": "R0b：complete trigger closure",
+        "what_done": "保持 SL route，使用 B_TRIG AREA=.50、bias=+15 µA，执行 read1/read0/两个 READ=0 matched cases。",
+        "result_summary": "R0b PASS：read1 出现约 4.997-turn continuous complete segment；read0 最大约 0.185 turn，controls 无完整 transition，source/storage guard 保持。",
+        "conclusion_boundary": "这是 multi-turn local trigger closure，不是 exactly-one SFQ、self-quench 或 downstream delivery。",
+    },
+    "bvm-sfq-receiver-r1-oneshot-20260819": {
+        "title_cn": "R1：parallel feedback one-shot attempt",
+        "what_done": "在 B_TRIG 后加入 parallel LQ–RQ feedback/transfer branch，尝试把 trigger running 压缩为 one-shot output。",
+        "result_summary": "R1 FAIL：强 feedback branch 明显加载并压制 B_TRIG，弱 branch 虽保留 trigger 却不能提供足够 transfer；该拓扑没有建立 read1 output event。",
+        "conclusion_boundary": "只否定当前 parallel LQ–RQ instance，不否定所有 one-shot 或 transfer family。",
+    },
+    "bvm-sfq-receiver-r1a-transfer-20260819": {
+        "title_cn": "R1a：series pickup passive transfer",
+        "what_done": "用 SL→R_IN→L_TX→B_TRIG 的 series pickup，并以 L_TX–L_SEC mutual coupling 接 passive secondary/load。",
+        "result_summary": "R1a PASS：read1 B_TRIG 约 3.944-turn complete，read0 约 0.185-turn；secondary read1 约 66.77 µV/5.56 µA，约为 read0 的 4.9 倍，controls inactive。",
+        "conclusion_boundary": "建立的是 passive state-dependent extraction，不是 output-JJ switching、one-shot 或 SFQ delivery。",
+    },
+    "bvm-sfq-receiver-r1b-output-jj-20260819": {
+        "title_cn": "R1b：common-mode secondary → B_OUT",
+        "what_done": "把 R1a secondary 接到最小 output JJ，并检查 secondary 是否在 B_OUT 两端形成有效 differential drive。",
+        "result_summary": "FAIL 的根因是 common-mode：V(N_OUT) 跟随 V(N_SEC)，V(B_OUT) 近 numerical zero，I(B_OUT) 与 phase 基本恒定；没有实际 differential activation。",
+        "conclusion_boundary": "这是接口/KCL 失配，不是通过调 AREA、bias 或 damping 可以诊断的 output-margin 结果。",
+    },
+    "bvm-sfq-receiver-r1b-area008-20260821": {
+        "title_cn": "R1b-area=.08：output-JJ barrier diagnostic",
+        "what_done": "保持 R1b differential topology，只将 B_OUT AREA 从 .10 改为 .08，比较 read1/read0/controls。",
+        "result_summary": "AREA=.08 未提高 activation：read1 最大 B_OUT segment 约 0.020 turn，read0/controls 无完整 event；read1 signal 仍存在但远离 switching。",
+        "conclusion_boundary": "AREA 同时改变 Ic、C、RN、R0，因此只能说明该 output-class point 不足，不能归因于纯 Ic reduction。",
+    },
+    "bvm-sfq-receiver-r1b-differential-output-20260821": {
+        "title_cn": "R1b：differential secondary-driven output",
+        "what_done": "修正 secondary→B_OUT 的 differential KCL，使 induced current 直接进入 B_OUT 对地支路，并保留 R1a secondary/load。",
+        "result_summary": "因果 transfer 成立：read1 B_OUT 有 state-dependent transient，但最大连续段仅约 0.022 turn；read0/controls 无 event，B_TRIG/source guards 保持。",
+        "conclusion_boundary": "证明 signal existence，不证明 output-JJ activation；随后 AREA/bias 诊断均仍是 bounded sub-turn。",
+    },
+    "bvm-sfq-receiver-r1c-bias-margin-20260821": {
+        "title_cn": "R1c：B_OUT bias-margin diagnostic",
+        "what_done": "冻结 AREA=.10、transformer、secondary、damping，只测试 B_OUT bias 6/7/8/9/10 µA。",
+        "result_summary": "所有 bias 点都有 state-dependent read1 transient，但没有完整 B_OUT transition；read0/controls 无 event，因此 bias operating point 不是该 fixture 的主要解法。",
+        "conclusion_boundary": "这是局部 bias bracket，未测试其他 topology，也没有 downstream SFQ/JTL 结论。",
+    },
+    "bvm-sfq-receiver-r2a-coupling-20260821": {
+        "title_cn": "R2-A：mutual-coupling transfer diagnostic",
+        "what_done": "冻结 R1b differential receiver，只比较 K=.6/.7/.8/.9/.95 对 secondary 与 B_OUT activation 的影响。",
+        "result_summary": "增大 K 会增强 secondary，但 read1 B_OUT 仍停留在约 10^-2-turn 级，未形成 complete event；read0/controls 与 source guards 保持。",
+        "conclusion_boundary": "否定当前 coupling matrix 的 activation closure，不否定全部 transformer/mutual family；动态 dwell/receiver load 仍未解决。",
+    },
+    "bvm-sfq-receiver-r2b-damping-20260821": {
+        "title_cn": "R2-B：receiver damping diagnostic",
+        "what_done": "冻结其他条件，只改变 output damping，观察 underdamped/overdamped 变化是否能释放 B_OUT phase slip。",
+        "result_summary": "减弱 damping 只使 read1 最大段约 0.0261→0.0290 turn（约 10.9%），没有 complete event；read0/controls 和 BVM guards 保持。",
+        "conclusion_boundary": "只说明当前 damping sweep 不是主瓶颈，不代表所有拓扑中的 damping 都无关。",
+    },
+    "bvm-sfq-receiver-r2c-directdrive-20260821": {
+        "title_cn": "R2-C：fast direct-drive threshold",
+        "what_done": "将实测 read1 narrow forward lobe 以 ideal direct current 注入 secondary，固定快脉冲形状，测试有限 amplitude matrix。",
+        "result_summary": "没有 amplitude 点产生完整 B_OUT event；约 78% 快注入电流被 N_SEC 的 reactive/resistive shunts 分流，junction drive transfer 约 22.4%。",
+        "conclusion_boundary": "这是 fast-transient fixture 的 duration/load limitation，不是静态 Ic threshold 的普适结论。",
+    },
+    "bvm-sfq-receiver-r2d-duration-20260821": {
+        "title_cn": "R2-D：direct-drive duration bracket",
+        "what_done": "固定 3.5 µA direct-drive amplitude，只增加 pulse FWHM/有效持续时间。",
+        "result_summary": "响应随 duration 非线性增大（最大段约 .0096→.0835 turn），但矩阵内仍无完整 event；20 ps 点已接近 96% Ic 的 quasi-static ceiling。",
+        "conclusion_boundary": "在该 amplitude 下 duration alone 不够；下一限制转向 amplitude，不能推出所有更长脉冲都无效。",
+    },
+    "bvm-sfq-receiver-r2e-ampthreshold-20260821": {
+        "title_cn": "R2-E：quasi-static amplitude threshold",
+        "what_done": "固定 20 ps pulse width/shape，测试 4.0/4.5/5.0 µA direct-drive amplitude。",
+        "result_summary": "所有点都接近 Ic 但没有完整 B_OUT segment，正式结论为 bounded matrix 内 NO_THRESHOLD；没有建立 switching threshold。",
+        "conclusion_boundary": "不能把 I≈Ic 或 voltage peak 当 event，也不涉及 retrap、JTL 或 physical transformer。",
+    },
+    "bvm-sfq-receiver-r2f-dwell-20260821": {
+        "title_cn": "R2-F：near-critical dwell closure",
+        "what_done": "固定 4.5 µA direct-drive，增加 0/5/10/20 ps flat-top hold，检查 near-critical creep 是否完成 phase slip。",
+        "result_summary": "20 ps hold 首次产生一个约 1.0039-turn、phase/area 一致且 retrap 的 local B_OUT event；0–10 ps 为 near-miss。",
+        "conclusion_boundary": "这是理想 direct-drive output-stage requirement，不是 BVM→receiver 或 downstream SFQ delivery。",
+    },
+    "bvm-sfq-receiver-r2g-twopulse-20260821": {
+        "title_cn": "R2-G：two-pulse retrigger/rearm",
+        "what_done": "在 R2-F h20 点输入两个间隔约 60 ps 的相同 4.5 µA/20 ps-hold pulse，直接检查两次 local slip 和中间 retrap。",
+        "result_summary": "两个 pulse 各产生 exactly one local complete slip，间隔期间 retrap/rearm 清晰，无 multifire/free-running；建立了 direct-drive 的 2-pulse single-slip primitive。",
+        "conclusion_boundary": "只证明理想 direct-drive output stage 的局部可重复性，不证明真实 transformer、BVM、JTL 或 T1。",
+    },
+    "bvm-sfq-receiver-r3a-onset-extraction-20260822": {
+        "title_cn": "R3-A：B_TRIG onset extractor",
+        "what_done": "用 1 fF C_ON 将 B_TRIG onset 变成 fast differentiated spike，再驱动 B_OUT/hold branch。",
+        "result_summary": "read1 的 C_ON current 可达约 2.24 µA，但 B_OUT causal-window peak 仅约 8.06 µA、相对 bias 只有约 1.06 µA；四 cases 均无 complete event。",
+        "conclusion_boundary": "只否定该 fast capacitive extractor instance；失败位于 transient→sustained drive，不否定所有 B_TRIG extraction。",
+    },
+    "bvm-sfq-receiver-r4a-weak-mutual-capture-20260822": {
+        "title_cn": "R4-A：weak-mutual passive flux capture",
+        "what_done": "用 B_TRIG→weak mutual→100 pH capture loop/J_SET，测试 read1 是否留下 persistent fluxoid state。",
+        "result_summary": "read1 loop 最大 circulating current 约 4.874 µA，仅约 half-quantum boundary 的一小部分，最终回到 n=0；read0/controls 更小，J_SET 无 complete slip。",
+        "conclusion_boundary": "降级的是该 passive weak-mutual single point，不是整个 mutual-coupling family；capture 需要更强 transfer 或 bias-assisted quantization。",
+    },
+    "bvm-sfq-receiver-r5a-biased-quantizer-20260822": {
+        "title_cn": "R5-A：reduced biased quantizer",
+        "what_done": "给单 JJ quantizer 加独立 bias，在实际 B_TRIG mutual drive 下检查 read1 是否跨过 nonlinear saddle 并 escape。",
+        "result_summary": "read1 产生 large bounded plasma oscillation并跨过 analytic reverse-critical displacement，但没有 complete phase slip；read0/controls clean。",
+        "conclusion_boundary": "说明 amplitude 已足以产生强 nonlinear activity，但缺少不可逆性/不对称 escape；不能称 quantization。",
+    },
+    "bvm-sfq-receiver-r5b-loadline-20260822": {
+        "title_cn": "R5-B：minimal SET shunt/load-line test",
+        "what_done": "先保留并诊断 wiring correction，再把最小 shunt 放到 functionally active 的 SET boundary，测试其是否促成 escape。",
+        "result_summary": "active shunt 实际只是额外 damping/current diversion，使 R5-A oscillation 收缩、没有 complete event；结论是 paper-QB 的 bias placement 不能用 SET 并联 shunt 替代。",
+        "conclusion_boundary": "否定该 minimal direct-shunt hypothesis，不等于完整 paper QB 已被实验闭合。",
+    },
+    "bvm-sfq-receiver-r5c-saddle-selectivity-20260822": {
+        "title_cn": "R5-C：correct-saddle selectivity",
+        "what_done": "使用完整 nonlinear loop equation 选 bias，使 read1 预计跨真实 saddle，再用四 matched cases 检查 local phase escape。",
+        "result_summary": "read1 确实跨过正确 static saddle，但仍为 bounded multi-lobe oscillation、没有 complete event；同时产生明显 read1 back-action 和约 −4-turn JS1/JS2 post shift。",
+        "conclusion_boundary": "关闭 reduced quantizer 的 bias/K/L point tuning；不能把 saddle crossing 当作 event。",
+    },
+    "bvm-sfq-receiver-native-qb-20260822": {
+        "title_cn": "Native paper-QB：direct SL compatibility",
+        "what_done": "用 canonical SL galvanic 直接驱动 frozen native paper-QB，记录 BJs/BJL1/BJL2 与 BVM source/storage guards。",
+        "result_summary": "read1 在 QB core 中有明显 state-selective nonlinear activity，但 JS1/JS2 post-state 各约 −3 turns，source/storage guard 失败；BJL2 无 complete event。",
+        "conclusion_boundary": "direct SL native-QB point 是 back-action failure；不能因 activity 强就称 local pass。",
+    },
+    "bvm-sfq-receiver-r6a-native-qb-isolation-20260822": {
+        "title_cn": "R6-A：isolated native-QB transfer",
+        "what_done": "将 canonical SL 改接 weak mutual transformer isolation，再进入冻结 native paper-QB，保持 QB 内部 topology/参数。",
+        "result_summary": "相对 direct SL，canonical source/storage guard 恢复，read1 QB activity 仍明显高于 read0/control，说明 isolation feasibility PASS；BJL2 仍仅约 0.0016 turn，无 local pass。",
+        "conclusion_boundary": "这是 isolation-preserved state-selective activity，不是 BJL2 quantization。",
+    },
+    "bvm-sfq-receiver-r6b-native-qb-ratio-20260822": {
+        "title_cn": "R6-B：secondary winding-ratio transfer",
+        "what_done": "冻结 native QB，只把 R6-A 的 secondary 改为 L_PRI=.20 pH、L_SEC=1.0 pH、K=.707 单点，检查 drive gain 与 reflected loading。",
+        "result_summary": "read1 secondary/Lin current 和 BJs/BJL1 activity 增强，source isolation 保持；但 BJL2 最大段几乎不变（约 .0015846→.0015880 turn），没有 output quantization。",
+        "conclusion_boundary": "关闭 transformer 参数优化；瓶颈更像 front-stage absorption/loop load-line，而非单纯 secondary amplitude。",
+    },
+    "bvm-sfq-receiver-r7a-l1-routing-20260823": {
+        "title_cn": "R7-A：native-QB L1 routing",
+        "what_done": "回到 R6-B baseline，只将 native QB L1 从 3.91 pH 降到 2.50 pH，比较 front-stage→L2/BJL2 routing。",
+        "result_summary": "G_L2 约提升 25.9%、G_BJL2 约提升 26.2%，read0 selectivity/source guard 保持；但 BJL2 最大段仍约 .001886 turn，且 settled BJL2 current 反而下降。",
+        "conclusion_boundary": "建立 routing gain，不是 threshold gain、complete event 或 SFQ delivery。",
+    },
+    "bvm-sfq-receiver-r8-bjl2-area070-20260823": {
+        "title_cn": "R8：BJL2 output-class adjustment",
+        "what_done": "保持 R7-A，只将 BJL2 AREA 1.89→.70，实际同时改变 Ic/C/RN/R0 与 damping/load-line。",
+        "result_summary": "read1 phase/area activity 约增加 36%，但仍在 10^-3-turn 区间；BJL2 current excursion下降，read0 相对增幅更大，没有 threshold-like jump 或 complete event。",
+        "conclusion_boundary": "停止 BJL2 AREA sweep；不能把该点解释成纯 Ic reduction failure。",
+    },
+    "bvm-sfq-receiver-r9a-l2-routing-20260823": {
+        "title_cn": "R9-A：native-QB L2 routing",
+        "what_done": "恢复 R7-A output class，将 L2 3.91→2.50 pH，测 node3→node4/BJL2 routing 与 static bias redistribution。",
+        "result_summary": "L2/BJL2 control-subtracted routing 再次提高（read0 也近似 co-amplify），source guard 保持；BJL2 仍约 2×10^-3 turn，未进入 quantization。",
+        "conclusion_boundary": "关闭 passive L1/L2 tuning 分支，不能由 routing gain 推断 nonlinear amplification。",
+    },
+    "bvm-sfq-receiver-r10a-local-bjl2-bias-20260823": {
+        "title_cn": "R10-A：local BJL2 bias routing",
+        "what_done": "在 node4 加有限阻抗、独立 bias feed，不把它直接作为 BJL2 parallel damping shunt。",
+        "result_summary": "local bias 造成四 case 级别的 8–14-turn activity、free-running 和 source disturbance，未形成 bounded one-shot；主 verdict 为 BACK_ACTION_OR_NONSELECTIVE_FAILURE。",
+        "conclusion_boundary": "只关闭当前 local-feed point，不否定所有 bias-routing，但不再继续该 sweep。",
+    },
+    "bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823": {
+        "title_cn": "R11-A：canonical BVM → standard JTL direct",
+        "what_done": "先用标准 SFQ positive control 验证两-cell JTL，再将 canonical BVM SL galvanic 接到同一冻结 JTL chain。",
+        "result_summary": "positive control 通过；canonical read1 对第一颗 JTL JJ 最大单调 excursion 仅约 .151 turn，未触发第一 stage，主 verdict NO_JTL_TRIGGER；read0/controls 无 event。",
+        "conclusion_boundary": "仅否定当前 direct-galvanic BVM→standard JTL point，不否定有 conditioner 的 JTL route。",
+    },
+    "bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823": {
+        "title_cn": "R12-A：historical DCSFQ_BVM re-audit",
+        "what_done": "先用 0/68.4/300 µA controlled bump 重审 frozen DCSFQ_BVM，再以 canonical BVM SL 接 converter 与两-cell JTL。",
+        "result_summary": "Phase A 证明 300 µA controlled point 可使 B3 产生约 1.03-turn bounded local event，而 68.4 µA 无 event；canonical read1 B3 仅约 .0365 turn，未量化也未驱动 JTL。",
+        "conclusion_boundary": "converter mechanism 本身成立，但 canonical source 到 backend 的 amplitude/time-scale 不匹配；不恢复旧参数 sweep。",
+    },
+    "bvm-sfq-receiver-r13a-temporal-conditioning-20260823": {
+        "title_cn": "R13-A：temporal conditioning requirements",
+        "what_done": "把 R12 actual input 做 raw replay，并分别测试原始、单极性整流、20 ps hold、整流+hold 四种 ideal transform。",
+        "result_summary": "四种 replay 都未产生 selective DCSFQ B3 exactly-one；最终 verdict TEMPORAL_CONDITIONING_INSUFFICIENT，说明无 amplitude gain 的理想 conditioning 仍不够。",
+        "conclusion_boundary": "这是 requirements/counterfactual 结果，不是 physical conditioner implementation，也不支持参数 sweep。",
+    },
+    "bvm-sfq-receiver-r14a-dcsfq-detector-20260823": {
+        "title_cn": "R14-A：passive interstage scale precheck",
+        "what_done": "只读比较 R1a passive secondary 的 5.56 µA 量级与 frozen DCSFQ 的 68.4/110/300 µA reference，并审计 R_SEC_LOAD termination。",
+        "result_summary": "PRECHECK_NO_GO：optimistic loaded DCSFQ input 约 9.77 µA，3 ps sanity 也约 19.1 µA，远低于已知 68.4 µA no-event 与 300 µA positive point；缺失功能是 active/regenerative interstage energy transfer。",
+        "conclusion_boundary": "没有运行 JoSIM；不把 passive transformer/termination scale 解释成 active gain。",
+    },
+    "bvm-sfq-receiver-r15a-afq3-20260823": {
+        "title_cn": "R15-A：AFQ-3 active interstage precheck",
+        "what_done": "对 AFQ-3 nominal three-winding mutual topology 做 netlist closure、jjmit 参数、稳定性、discrimination 与 output-scale precheck。",
+        "result_summary": "PRECHECK_NO_GO：L_Q/L_F/L_CTL mutual matrix determinant 为 −.62、最小 eigenvalue 为负，拓扑 constitutive matrix 无效；没有运行可解释的 physics point。",
+        "conclusion_boundary": "只否定该 invalid magnetic formulation，不是 active-stage physics failure，也没有 DCSFQ/JTL 结果。",
+    },
+    "bvm-sfq-receiver-r15b-magnetic-correction-20260823": {
+        "title_cn": "R15-B：split-winding active interstage",
+        "what_done": "用 two-core/split-winding 修正 mutual matrix，保留 B_DET 并加入 J_SET/J_Q/J_OUT active-state-compression path。",
+        "result_summary": "B_DET read1 仍约 3.9-turn 强 activity，但 J_SET/J_Q/J_OUT 四 cases 几乎相同，DCSFQ I(L1) 仅约 .511 µA；主 verdict ACTIVE_STAGE_NO_TRIGGER，另有 bounded extra back-action。",
+        "conclusion_boundary": "问题定位到 detector state 未进入 J_SET 判别变量；不说明 active gain family 普遍失败。",
+    },
+    "bvm-sfq-receiver-r15c-jset-causal-20260823": {
+        "title_cn": "R15-C：finite-impedance J_SET causal fixture",
+        "what_done": "移除 ideal 5.6 µA current clamp，使用有限阻抗 bias return，让 B_DET mutual waveform 可改变 J_SET branch current。",
+        "result_summary": "CAUSAL_NEAR_THRESHOLD：read1 I(B_SET) 约 2.10–9.13 µA、read0 约 4.89–6.28 µA，read1 最大 J_SET segment 约 .2244 turn；因果 modulation 成立但未完成 event。",
+        "conclusion_boundary": "建立 detector→J_SET causal transfer，不建立 one-shot；没有接 J_Q/J_OUT/DCSFQ。",
+    },
+    "bvm-sfq-receiver-r15d-jq-compressor-20260823": {
+        "title_cn": "R15-D：J_SET → J_Q refractory compressor",
+        "what_done": "保留 R15-C J_SET，增加 split node、独立 J_Q bias、L_Q 和 R_Q refractory branch，检查 state compression。",
+        "result_summary": "JQ_CAUSAL_NEAR_THRESHOLD：read1 selective J_SET/J_Q activity 与 L_Q transient depletion/recovery 可见，但 J_Q 没有完整 one-shot event；source guard 仍是 bounded extra back-action。",
+        "conclusion_boundary": "不能把 depletion/recovery 单独称 refractory one-shot；暂停 R15-E 设计。",
+    },
+    "qb-q0-standalone-current-quantized-event-20260824": {
+        "title_cn": "QB-Q0：scaled QB standalone 量化窗口",
+        "what_done": "用理想 current pulse 0/45/68.4/90 µA 驱动 frozen scaled QB，并以 paper-original QB 做历史参数对照。",
+        "result_summary": "scaled：0=ZERO_EVENT，45=NO_COMPLETE_EVENT，68.4=EXACTLY_ONE（每 pulse 约 1.096 turn），90=MULTI_EVENT（约 2.006 turn）；paper 68.4/90 均无完整 BJL2 event。",
+        "conclusion_boundary": "68.4 µA 只是 ideal standalone reference，不是 canonical BVM threshold 或 physical receiver requirement。",
+    },
+    "qb-q1-canonical-bvm-scaled-qb-compatibility-20260824": {
+        "title_cn": "QB-Q1：physical BVM → frozen scaled QB",
+        "what_done": "把 canonical BVM 直接接入 Q0 frozen scaled QB，运行 logical1/read、logical0/read 和两个 READ=0 controls。",
+        "result_summary": "read1 QB activity 强于 read0/control，但 direct coupling 造成 JS1/JS2 约 −3-turn post drift，主 verdict QB_SOURCE_BACKACTION_FAILURE；BJL2 仍 subthreshold。",
+        "conclusion_boundary": "直接 physical coupling 失败，不能用 source-isolated replay 替代真实 BVM back-action。",
+    },
+    "qb-q2a-source-decoupled-waveform-replay-20260824": {
+        "title_cn": "QB-Q2A：source-decoupled waveform replay",
+        "what_done": "冻结 scaled QB，用 Q0 positive control、Q1 loaded waveform 和 canonical no-receiver read1/read0 waveform 做 ideal replay。",
+        "result_summary": "Q0 68.4 µA replay exactly-one；canonical no-receiver read1 BJL2 约 .178 turn、read0 约 .031 turn，仍未量化，结论 QB_DYNAMIC_WINDOW_MISMATCH。",
+        "conclusion_boundary": "完美 source isolation alone 也不够；不是 source impedance 唯一瓶颈。",
+    },
+    "qb-q2b-central-bias-bracketing-20260824": {
+        "title_cn": "QB-Q2B：central-bias bracket",
+        "what_done": "冻结 canonical source-isolated replay，只测试 central IBIAS=30/35/40 µA 对 BJs→BJL1/BJL2 的影响。",
+        "result_summary": "read1 BJL1 约 +.321/.339/−.415 turn，logical0 约 .059 turn；所有点无 complete BJL1/BJL2 event，controls bounded，BIAS_BRACKET_NO_BJL1_EVENT。",
+        "conclusion_boundary": "停止 central-bias branch；不把 phase range 或 I/Ic 当作 event。",
+    },
+    "qb-q2c-uniform-junction-scale-20260824": {
+        "title_cn": "QB-Q2C：uniform junction-scale bracket",
+        "what_done": "在 canonical source-isolated replay 下统一缩放 BJs/BJL1/BJL2 AREA 与 IBIAS，测试 s=.85/.70/.55。",
+        "result_summary": "三个 scale 都没有建立 selective BJL1/BJL2 event，最终 UNIFORM_SCALE_NO_OUTPUT_EVENT；停止整体缩放，转向 paper-JSL load waveform。",
+        "conclusion_boundary": "不能从 uniform scaling 推断某一颗 JJ ratio 是唯一原因。",
+    },
+    "paper-sl-l0-20260824": {
+        "title_cn": "PAPER-SL-L0：12×320 µA JSL external load",
+        "what_done": "在 canonical SL path 加入 paper Figure 4/section 2.5 语义下的 12 个 AREA=3.2 non-switching JSL series external load。",
+        "result_summary": "12 个 JSL 全部 non-switching；logical1 current/area/duration waveform 明显改变，logical0 仍很小，判定 PAPER_JSL_LOAD_VALID（external-series-load realization）。",
+        "conclusion_boundary": "只验证 paper-shaped SL load waveform，不接 QB，也不说明 JSL load 一定改善量化。",
+    },
+    "paper-sl-q1-20260824": {
+        "title_cn": "PAPER-SL-Q1：paper-JSL waveform → frozen scaled QB",
+        "what_done": "将 PAPER-SL-L0 logical1/logical0/controls 的实际 JSL current trajectory 原样 ideal replay 到 frozen scaled QB。",
+        "result_summary": "read1 BJL1 约 .830、BJL2 约 .893 turn，read0 约 .019/.0066，controls≈0；read1 明显 near-threshold 但无 complete event，PAPER_JSL_QB_SUBTHRESHOLD。",
+        "conclusion_boundary": "不能改写为 one-shot；Q0 68.4 µA 只作 positive control。",
+    },
+    "paper-sl-q2-20260824": {
+        "title_cn": "PAPER-SL-Q2：paper-JSL local bias bracket",
+        "what_done": "保持 PAPER-SL-Q1 waveform byte-identical，只比较 37.5/40 µA central QB bias。",
+        "result_summary": "两点均保持 read1>read0、bounded 且无 complete BJL1/BJL2 event；40 µA 将 BJL2 推到约 .944 turn，但仍未闭合。",
+        "conclusion_boundary": "停止 bias-only bracket；不把 .944 turn 当 event，也不连接 physical BVM。",
+    },
+    "paper-sl-q3-pre-20260824": {
+        "title_cn": "PAPER-SL-Q3-PRE：BJs→BJL1 routing audit",
+        "what_done": "只读对齐 Q0 68.4 µA、PAPER-SL-Q1 35 µA、Q2 40 µA 的 BJs/BJL1/BJL2 phase、current/KCL 和 timing。",
+        "result_summary": "BJs→BJL1 更像 waveform/routing/timing-limited：Q0 的 local branch signed transfer 比 Q1/Q2 更有利；phase/area 与 KCL 均闭合。",
+        "conclusion_boundary": "这是 mechanism inference，不是 BJL1 threshold 已被排除；未运行新 circuit。",
+    },
+    "q3-l1-routing-closure-20260824": {
+        "title_cn": "PAPER-SL-Q3-PRE：L1 routing point selection",
+        "what_done": "基于 Q3-PRE routing audit 选择唯一 L1=4.50 pH point，并登记其与 Q2/Q4/Q5 的 factorial 关系。",
+        "result_summary": "这是 analysis-only provenance checkpoint；结论是 L1 routing knob 值得 single-point execution，独立目录不产生新 waveform。",
+        "conclusion_boundary": "正式物理结果归属于下一条 paper-sl-q3-l1-routing-closure execution。",
+    },
+    "paper-sl-q3-l1-routing-closure-20260824": {
+        "title_cn": "PAPER-SL-Q3：L1=4.50 pH routing closure",
+        "what_done": "以 Q2 accepted 40 µA replay 为 baseline，只把 native QB L1 3.91→4.50 pH，测 node2 routing 与 BJL1/BJL2。",
+        "result_summary": "F_local .218660→.224945、G_local .515185→.526585；BJL1 .815414→.821070，BJL2 .944323→.950537，read0/control zero-event，结论为 routing gain 但仍 subthreshold。",
+        "conclusion_boundary": "L1 是 causal routing knob，不是 complete-event 或 nonlinear-gain closure；不连接 physical BVM/JSL/QB。",
+    },
+    "paper-sl-q4-l1-l2-placement-20260824": {
+        "title_cn": "PAPER-SL-Q4：L2=4.50 pH placement comparator",
+        "what_done": "从 Q2 直接改 L2 3.91→4.50 pH，与 Q3 保持相同 L1+L2 总电感，区分 proximal 与 downstream placement effect。",
+        "result_summary": "Q4 的 BJL2 response 可增强，但 BJL1 forward phase 与 node2 local routing 明显退化；BJL2 最大连续段约 .9654 turn，仍无 event，判定方向性 placement effect。",
+        "conclusion_boundary": "不能要求 BJL1 complete slip 才解释 BJL2 activity；仍无 isolated QB event。",
+    },
+    "paper-sl-q5-l1-l2-factorial-20260824": {
+        "title_cn": "PAPER-SL-Q5：L1×L2 factorial completion",
+        "what_done": "完成 Q2/Q3/Q4/Q5=(3.91,3.91)/(4.50,3.91)/(3.91,4.50)/(4.50,4.50) 的 2×2 factorial comparison。",
+        "result_summary": "Q5 保留 Q4 downstream BJL2 gain并部分恢复 Q3 L1 routing，但 BJL2 最大段约 .9682 turn；interaction≈−.00344，无 complete event。",
+        "conclusion_boundary": "停止 passive L1/L2 tuning；未建立正向 nonlinear BJL2 interaction。",
+    },
+    "paper-sl-q6-qb-jtl-compatibility-20260824": {
+        "title_cn": "PAPER-SL-Q6：Q5 → standard JTL",
+        "what_done": "将 frozen Q5 near-event output 接入已验证的 two-cell standard JTL，和 Q5 standalone 做 matched comparison。",
+        "result_summary": "JTL loading 使 Q5 trajectory collapse，四颗 JTL JJ 均无完整 propagated event，主 verdict NO_JTL_TRIGGER。",
+        "conclusion_boundary": "不能把 coupled failure 归因于 isolated QB 本身，也不能称 JTL voltage peak 为 event。",
+    },
+    "qb-load-boundary-matrix-20260824": {
+        "title_cn": "QB load-boundary matrix：Q0 output boundary",
+        "what_done": "保持同一 Q0 true-event source，比较 OPEN、10Ω、JTL-only、10Ω||JTL 四种 output boundary。",
+        "result_summary": "OPEN≈3 events；10Ω exactly-one；JTL-only 与 10Ω||JTL 无 event；矩阵支持 MIXED_DYNAMIC_LOADING，load 在 crossing 前/中/后都改变 current partition。",
+        "conclusion_boundary": "不冻结普适等效阻抗；Q5 boundary 仅作 secondary comparator。",
+    },
+    "parallel-qb-jtl-interface-mechanism-20260824": {
+        "title_cn": "M1–M5：QB→JTL interface mechanism matrix",
+        "what_done": "并列比较 ideal replay、series R/L、standard/scaled JTL 和 Q0/Q5 source boundary 对 QB local event 与 JTL transport 的影响。",
+        "result_summary": "Q0+10Ω 保留 exactly-one，M3 series-10Ω 保留 local event但 JTL subthreshold；M1/Q0 replay 与 M5 transport 需按 strict/local 与 settled-well 分层，M5 历史 exactly-one 解释废止。",
+        "conclusion_boundary": "这是 interface mechanism matrix，不是一个可直接实现的 receiver，也不授权参数优化。",
+    },
+    "jtl-transport-gate-polarity-replay-20260824": {
+        "title_cn": "JTL polarity replay：original vs reverse",
+        "what_done": "从 accepted Q0 pulse-5 提取完整 V(OUT,t)，原极性/反极性 ideal replay 到同一 standard two-cell JTL。",
+        "result_summary": "原极性在 strict local vector 上只保证第一颗 JJ，但 full-window/pre-post 呈四级约一井响应；反极性无 strict local event、无 one-well transport。",
+        "conclusion_boundary": "ideal replay 不是 physical QB→JTL 证据；strict local event 与 settled-well transport 必须分开。",
+    },
+    "jtl-transport-gate-v1-methodology-20260824": {
+        "title_cn": "JTL transport methodology：strict vs settled-well",
+        "what_done": "统一 R11 positive、M1 ideal replay、M5-PC、pulse5 original/reverse 的 phase/area、pre/post well、onset 和 transport vector 口径。",
+        "result_summary": "建立 fixture-level 方法学 reconciliation：R11/M1/pulse5 original 呈 provisional +1-well transport signature，M5 是 two-well，reverse 非 transport。",
+        "conclusion_boundary": "这是方法学整理，不是 global metric freeze，也不改变 physical BVM/JTL compatibility。",
+    },
+    "jtl-transport-gate-v1-numerical-freeze-20260824": {
+        "title_cn": "JTL transport Gate V1：timestep ladder",
+        "what_done": "对 R11、pulse5 original、pulse5 reverse 做 0.025/0.0125/0.00625 ps ladder 与预注册 window robustness。",
+        "result_summary": "三组 timestep classification 稳定；R11/reverse window checks 通过，但 pulse5 original post-window robustness 未完全通过，最终 STRICT_REPLAY_INCONCLUSIVE。",
+        "conclusion_boundary": "不是 timestep 数值不稳定，而是 registered robustness Gate 未闭合；不改变 JTL 参数。",
+    },
+    "jtl-transport-gate-v1-numerical-freeze-20260824-rerun": {
+        "title_cn": "JTL transport Gate V1：rerun evidence package",
+        "what_done": "对同一 numerical-freeze raw 做 successor/rerun 复核，保留完整 timestep、phase/area、pre/post 和 window-grid evidence。",
+        "result_summary": "R11 与 pulse5 original 的 +1-well settled behavior 跨 timestep 保持，reverse 保持 non-transport；original robustness 条件仍未全通过，结论仍 INCONCLUSIVE。",
+        "conclusion_boundary": "rerun 只加强 provenance/数值稳定性，不升级 Gate 为 PASS。",
+    },
+    "qb-to-jtl-load-backaction-causal-audit-v1-20260824": {
+        "title_cn": "QB→JTL load back-action causal audit",
+        "what_done": "用 Q0+10Ω、OPEN、JTL-only、10Ω||JTL、M3 series-10Ω→JTL 的既有 raw，按 pre-crossing/crossing/retrap 三个时间窗审计 node4 KCL 与 current partition。",
+        "result_summary": "判定 MIXED_DYNAMIC_LOADING：direct/parallel JTL 在 barrier crossing 前已改 settled load-line，crossing 中继续分流；M3 保留 local BJL2 event但仍不能驱动 JTL。",
+        "conclusion_boundary": "不能把负载作用压缩成单一静态阻抗，也不能把 M3 local event 称 downstream SFQ delivery。",
+    },
+}
+
+
 def order_metadata(name: str) -> tuple[int, str, str]:
     """Return one-based execution order and stage metadata."""
     try:
@@ -302,6 +653,9 @@ def key_entry(name: str, *, title: str, question: str, result: str, status: str,
         "title_cn": title,
         "scientific_question": question,
         "formal_result": result,
+        "what_done": question,
+        "result_summary": result,
+        "conclusion_boundary": notes or "正式结论以 report 为准；可视化不改变 scientific verdict。",
         "scientific_status": status,
         "current_status": ("NO_WAVEFORM_VISUALIZATION_REQUIRED" if not (cases or []) else ("ALIGNED" if plots else "VISUALIZATION_INCOMPLETE")),
         "report": report,
@@ -317,6 +671,25 @@ def key_entry(name: str, *, title: str, question: str, result: str, status: str,
     if topology_variants:
         entry["topology_variants"] = topology_variants
     return entry
+
+
+def apply_experiment_narratives(entries: dict[str, dict[str, Any]]) -> None:
+    """Attach explicit human-readable purpose/result/boundary to every entry."""
+    missing: list[str] = []
+    for entry in entries.values():
+        name = Path(entry["experiment_id"]).name
+        narrative = EXPERIMENT_NARRATIVES.get(name)
+        if narrative is None:
+            missing.append(name)
+            continue
+        entry.update(narrative)
+        # Keep the legacy manifest keys populated for existing consumers while
+        # making the new three fields the UI-facing source of wording.
+        entry["scientific_question"] = narrative["what_done"]
+        entry["formal_result"] = narrative["result_summary"]
+        entry["notes"] = narrative["conclusion_boundary"]
+    if missing:
+        raise RuntimeError("Missing experiment narrative metadata: " + ", ".join(sorted(missing)))
 
 
 def explicit_cases(items: list[tuple[str, str, str, str, str, str]]) -> list[dict[str, Any]]:
@@ -777,10 +1150,10 @@ def render_index(entries: dict[str, dict[str, Any]], *, flow: bool) -> str:
     for exp_id in order:
         entry = entries[exp_id]
         lines += [f"## {entry['title_cn']}", "", f"**实验 ID**：`{exp_id}`", "",
-                  f"**做了什么**：{entry['scientific_question']}", "",
-                  f"**关键结果**：{entry['formal_result']}", "",
+                  f"**做了什么**：{entry.get('what_done', entry['scientific_question'])}", "",
+                  f"**关键结果**：{entry.get('result_summary', entry['formal_result'])}", "",
                   f"**当前状态**：`{entry['scientific_status']}` / alignment=`{entry['current_status']}`", "",
-                  f"**结论边界**：{entry.get('notes') or '正式结论以 report 为准；可视化不改变 scientific verdict。'}", "",
+                  f"**结论边界**：{entry.get('conclusion_boundary', entry.get('notes') or '正式结论以 report 为准；可视化不改变 scientific verdict。')}", "",
                   "**推荐先看**：", *plot_links(entry), ""]
         topo = next((t for t in yaml.safe_load(TOPOLOGY_PATH.read_text(encoding="utf-8")).get("topologies", []) if t["topology_id"] == entry.get("topology_id")), None) if TOPOLOGY_PATH.exists() else None
         if topo:
@@ -811,8 +1184,9 @@ def html_index(markdown: str, title: str, entries: dict[str, dict[str, Any]], to
     topology_map = {t.get("topology_id"): t for t in (topology or {}).get("topologies", [])}
     for entry in entries.values():
         body.append(f"<section data-experiment-id='{html.escape(entry['experiment_id'])}'><h2>{html.escape(entry['title_cn'])}</h2>")
-        body.append(f"<p><b>做了什么：</b>{html.escape(entry['scientific_question'])}</p>")
-        body.append(f"<p><b>关键结果：</b>{html.escape(entry['formal_result'])}</p>")
+        body.append(f"<p><b>做了什么：</b>{html.escape(entry.get('what_done', entry['scientific_question']))}</p>")
+        body.append(f"<p><b>关键结果：</b>{html.escape(entry.get('result_summary', entry['formal_result']))}</p>")
+        body.append(f"<p><b>结论边界：</b>{html.escape(entry.get('conclusion_boundary', entry.get('notes', '正式结论以 report 为准。')))}</p>")
         body.append(f"<p><b>状态：</b><code>{html.escape(entry['scientific_status'])}</code> / <code>{html.escape(entry['current_status'])}</code></p><ul>")
         for p in entry.get("plots", []):
             if exists(p["path"]):
@@ -947,6 +1321,7 @@ def main() -> None:
             status=("NO_WAVEFORM_VISUALIZATION_REQUIRED" if not cases else infer_verdict(path)), report=report, claim_type="generic_exploration",
             topology_id=f"TOPOLOGY_{hashlib.sha1(path.name.encode()).hexdigest()[:10]}", cases=cases,
             plots=plots, notes="自动审计条目；未在本轮改写 scientific verdict。")
+    apply_experiment_narratives(entries)
     # Reinsert the mapping in explicit scientific execution order.  This order
     # drives both Markdown and HTML; directory enumeration is never a route
     # authority.

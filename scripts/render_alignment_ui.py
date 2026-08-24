@@ -134,9 +134,9 @@ def _card(entry: dict[str, Any], topology_map: dict[str, dict[str, Any]]) -> str
     stage = entry.get("stage_title", "")
     title = entry.get("title_cn", entry.get("experiment_id", ""))
     note = entry.get("notes") or "正式结论以 report 为准；可视化不改变 scientific verdict。"
-    return f'''<article class="card {_status_class(status)}" data-search="{_esc(" ".join(str(entry.get(k, "")) for k in ("experiment_id", "title_cn", "scientific_question", "formal_result", "scientific_status")))}">
+    return f'''<article class="card {_status_class(status)}" data-search="{_esc(" ".join(str(entry.get(k, "")) for k in ("experiment_id", "title_cn", "what_done", "result_summary", "conclusion_boundary", "scientific_status")))}">
   <div class="card-header"><div><h3 class="card-title">{_esc(title)}</h3><span class="card-id">{_esc(sequence)} · {_esc(stage)} · {_esc(entry.get("experiment_id", ""))}</span></div><div class="status-stack">{_status_badge(status)} <span class="badge badge-status">{_esc(entry.get("current_status", ""))}</span></div></div>
-  <dl><dt>做了什么</dt><dd class="question">{_esc(entry.get("scientific_question", ""))}</dd><dt>关键结果</dt><dd class="result">{_esc(entry.get("formal_result", ""))}</dd><dt>结论边界</dt><dd class="boundary">{_esc(note)}</dd></dl>
+  <dl><dt>做了什么</dt><dd class="question">{_esc(entry.get("what_done", entry.get("scientific_question", "")))}</dd><dt>关键结果</dt><dd class="result">{_esc(entry.get("result_summary", entry.get("formal_result", "")))}</dd><dt>结论边界</dt><dd class="boundary">{_esc(entry.get("conclusion_boundary", note))}</dd></dl>
   <div class="link-groups">{"".join(groups)}</div>
   {_topology_links(entry, topology_map)}
 </article>'''

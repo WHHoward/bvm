@@ -25,6 +25,7 @@ ROLES = {
 PHASES = {"continuous_absolute", "relative_to_baseline", "event_delta", "settled_well"}
 EXPECTED_EXPERIMENT_KEYS = {
     "scientific_question", "formal_result", "required_cases", "required_signals",
+    "what_done", "result_summary", "conclusion_boundary",
     "plots", "report", "current_status",
 }
 
@@ -67,6 +68,9 @@ def validate_manifest(manifest: dict[str, Any], *, root: Path = ROOT,
         missing = EXPECTED_EXPERIMENT_KEYS - set(entry)
         if missing:
             _fail(errors["result_alignment"], f"{exp_id}: missing fields {sorted(missing)}")
+        for narrative_field in ("what_done", "result_summary", "conclusion_boundary"):
+            if not str(entry.get(narrative_field, "")).strip():
+                _fail(errors["result_alignment"], f"{exp_id}: empty narrative field {narrative_field}")
         required = entry.get("required_cases", [])
         if not isinstance(required, list):
             _fail(errors["result_alignment"], f"{exp_id}: required_cases is not a list")

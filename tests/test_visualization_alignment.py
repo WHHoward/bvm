@@ -49,6 +49,7 @@ class AlignmentRegression(unittest.TestCase):
             (root / "geometric.json").write_text(json.dumps({"status": geometric}), encoding="utf-8")
         entry = {
             "experiment_id": "exp", "scientific_question": "q", "formal_result": "r",
+            "what_done": "q", "result_summary": "r", "conclusion_boundary": "bounded test",
             "required_cases": [{"id": c, "raw": f"raw/{c}.csv", "role": "RESULT"} for c in cases],
             "required_signals": ["P(J)"], "report": "report.md", "current_status": "ALIGNED",
             "claim_type": claim, "topology_id": topology_id, "topology_signature": signature,

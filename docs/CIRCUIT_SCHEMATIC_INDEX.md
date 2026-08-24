@@ -2,7 +2,7 @@
 
 基线 HEAD：`3e714f3fdd593511971136ee470ec0418d775d24`。本页将论文级电路图、实验注释图和连接调试图分开。
 
-## Canonical BVM：storage/readout cell
+## Canonical BVM：storage/readout source baseline
 
 **Topology ID**：`BVM_CANONICAL`
 
@@ -18,7 +18,7 @@
 
 ---
 
-## bvm-sfq-receiver-r0-20260819
+## R0：SL-route trigger discrimination
 
 **Topology ID**：`TOPOLOGY_75d201da61`
 
@@ -34,7 +34,7 @@
 
 ---
 
-## bvm-sfq-receiver-r0b-20260819
+## R0b：complete trigger closure
 
 **Topology ID**：`TOPOLOGY_2600b475f4`
 
@@ -50,7 +50,7 @@
 
 ---
 
-## bvm-sfq-receiver-r1-oneshot-20260819
+## R1：parallel feedback one-shot attempt
 
 **Topology ID**：`TOPOLOGY_658acd44d8`
 
@@ -66,7 +66,7 @@
 
 ---
 
-## bvm-sfq-receiver-r1a-transfer-20260819
+## R1a：series pickup passive transfer
 
 **Topology ID**：`TOPOLOGY_73d3c8d7f4`
 
@@ -82,7 +82,7 @@
 
 ---
 
-## bvm-sfq-receiver-r1b-output-jj-20260819
+## R1b：common-mode secondary → B_OUT
 
 **Topology ID**：`TOPOLOGY_5233bbad6e`
 
@@ -98,7 +98,7 @@
 
 ---
 
-## bvm-sfq-receiver-r1b-area008-20260821
+## R1b-area=.08：output-JJ barrier diagnostic
 
 **Topology ID**：`TOPOLOGY_7dca5b0bd5`
 
@@ -114,7 +114,7 @@
 
 ---
 
-## bvm-sfq-receiver-r1b-differential-output-20260821
+## R1b：differential secondary-driven output
 
 **Topology ID**：`TOPOLOGY_a8dab02d1d`
 
@@ -130,7 +130,7 @@
 
 ---
 
-## bvm-sfq-receiver-r1c-bias-margin-20260821
+## R1c：B_OUT bias-margin diagnostic
 
 **Topology ID**：`TOPOLOGY_ac497f8640`
 
@@ -146,7 +146,7 @@
 
 ---
 
-## bvm-sfq-receiver-r2a-coupling-20260821
+## R2-A：mutual-coupling transfer diagnostic
 
 **Topology ID**：`TOPOLOGY_a5649ee5af`
 
@@ -162,7 +162,7 @@
 
 ---
 
-## bvm-sfq-receiver-r2b-damping-20260821
+## R2-B：receiver damping diagnostic
 
 **Topology ID**：`TOPOLOGY_b01953770c`
 
@@ -178,7 +178,7 @@
 
 ---
 
-## bvm-sfq-receiver-r2c-directdrive-20260821
+## R2-C：fast direct-drive threshold
 
 **Topology ID**：`TOPOLOGY_0da30ee288`
 
@@ -194,7 +194,7 @@
 
 ---
 
-## bvm-sfq-receiver-r2d-duration-20260821
+## R2-D：direct-drive duration bracket
 
 **Topology ID**：`TOPOLOGY_a61a44b0c0`
 
@@ -210,7 +210,7 @@
 
 ---
 
-## bvm-sfq-receiver-r2e-ampthreshold-20260821
+## R2-E：quasi-static amplitude threshold
 
 **Topology ID**：`TOPOLOGY_879c0c5b61`
 
@@ -226,7 +226,7 @@
 
 ---
 
-## bvm-sfq-receiver-r2f-dwell-20260821
+## R2-F：near-critical dwell closure
 
 **Topology ID**：`TOPOLOGY_7278e859dc`
 
@@ -242,7 +242,7 @@
 
 ---
 
-## bvm-sfq-receiver-r2g-twopulse-20260821
+## R2-G：two-pulse retrigger/rearm
 
 **Topology ID**：`TOPOLOGY_ad32926098`
 
@@ -258,7 +258,7 @@
 
 ---
 
-## bvm-sfq-receiver-r3a-onset-extraction-20260822
+## R3-A：B_TRIG onset extractor
 
 **Topology ID**：`TOPOLOGY_a4ff2838c2`
 
@@ -274,7 +274,7 @@
 
 ---
 
-## bvm-sfq-receiver-r4a-weak-mutual-capture-20260822
+## R4-A：weak-mutual passive flux capture
 
 **Topology ID**：`TOPOLOGY_cb0a106fd7`
 
@@ -290,7 +290,7 @@
 
 ---
 
-## bvm-sfq-receiver-r5a-biased-quantizer-20260822
+## R5-A：reduced biased quantizer
 
 **Topology ID**：`TOPOLOGY_16ea7d821b`
 
@@ -306,7 +306,7 @@
 
 ---
 
-## bvm-sfq-receiver-r5b-loadline-20260822
+## R5-B：minimal SET shunt/load-line test
 
 **Topology ID**：`TOPOLOGY_36fb1f63c9`
 
@@ -322,7 +322,7 @@
 
 ---
 
-## bvm-sfq-receiver-r5c-saddle-selectivity-20260822
+## R5-C：correct-saddle selectivity
 
 **Topology ID**：`TOPOLOGY_4e1d8a8345`
 
@@ -338,7 +338,7 @@
 
 ---
 
-## bvm-sfq-receiver-native-qb-20260822
+## Native paper-QB：direct SL compatibility
 
 **Topology ID**：`TOPOLOGY_599236eda7`
 
@@ -354,7 +354,7 @@
 
 ---
 
-## bvm-sfq-receiver-r6a-native-qb-isolation-20260822
+## R6-A：isolated native-QB transfer
 
 **Topology ID**：`TOPOLOGY_076c3ccc98`
 
@@ -370,7 +370,7 @@
 
 ---
 
-## bvm-sfq-receiver-r6b-native-qb-ratio-20260822
+## R6-B：secondary winding-ratio transfer
 
 **Topology ID**：`TOPOLOGY_0bba1f61c1`
 
@@ -386,7 +386,7 @@
 
 ---
 
-## bvm-sfq-receiver-r7a-l1-routing-20260823
+## R7-A：native-QB L1 routing
 
 **Topology ID**：`TOPOLOGY_b2e3690473`
 
@@ -402,7 +402,7 @@
 
 ---
 
-## bvm-sfq-receiver-r8-bjl2-area070-20260823
+## R8：BJL2 output-class adjustment
 
 **Topology ID**：`TOPOLOGY_e9e3fdb426`
 
@@ -418,7 +418,7 @@
 
 ---
 
-## bvm-sfq-receiver-r9a-l2-routing-20260823
+## R9-A：native-QB L2 routing
 
 **Topology ID**：`TOPOLOGY_f2413fa505`
 
@@ -434,7 +434,7 @@
 
 ---
 
-## bvm-sfq-receiver-r10a-local-bjl2-bias-20260823
+## R10-A：local BJL2 bias routing
 
 **Topology ID**：`TOPOLOGY_6776d3562e`
 
@@ -450,7 +450,7 @@
 
 ---
 
-## bvm-sfq-receiver-r11a-direct-jtl-compatibility-20260823
+## R11-A：canonical BVM → standard JTL direct
 
 **Topology ID**：`TOPOLOGY_c69c14b0ad`
 
@@ -466,7 +466,7 @@
 
 ---
 
-## bvm-sfq-receiver-r12a-dcsfq-bvm-reaudit-20260823
+## R12-A：historical DCSFQ_BVM re-audit
 
 **Topology ID**：`TOPOLOGY_b2733b8e3c`
 
@@ -498,7 +498,7 @@
 
 ---
 
-## bvm-sfq-receiver-r14a-dcsfq-detector-20260823
+## R14-A：passive interstage scale precheck
 
 **Topology ID**：`TOPOLOGY_d1f5096eb9`
 
@@ -514,7 +514,7 @@
 
 ---
 
-## bvm-sfq-receiver-r15a-afq3-20260823
+## R15-A：AFQ-3 active interstage precheck
 
 **Topology ID**：`TOPOLOGY_9a2c21177c`
 
@@ -530,7 +530,7 @@
 
 ---
 
-## bvm-sfq-receiver-r15b-magnetic-correction-20260823
+## R15-B：split-winding active interstage
 
 **Topology ID**：`TOPOLOGY_e9d593f012`
 
@@ -546,7 +546,7 @@
 
 ---
 
-## bvm-sfq-receiver-r15c-jset-causal-20260823
+## R15-C：finite-impedance J_SET causal fixture
 
 **Topology ID**：`TOPOLOGY_6161c7c30f`
 
@@ -562,7 +562,7 @@
 
 ---
 
-## bvm-sfq-receiver-r15d-jq-compressor-20260823
+## R15-D：J_SET → J_Q refractory compressor
 
 **Topology ID**：`TOPOLOGY_9334bd7f21`
 
@@ -578,7 +578,7 @@
 
 ---
 
-## QB-Q0：低 Ic QB standalone 量化窗口
+## QB-Q0：scaled QB standalone 量化窗口
 
 **Topology ID**：`QB_Q0_10OHM`
 
@@ -630,7 +630,7 @@
 
 ---
 
-## paper-sl-l0-20260824
+## PAPER-SL-L0：12×320 µA JSL external load
 
 **Topology ID**：`TOPOLOGY_345d48a6be`
 
@@ -646,7 +646,7 @@
 
 ---
 
-## PAPER-SL-Q1：paper-JSL replay → frozen scaled QB
+## PAPER-SL-Q1：paper-JSL waveform → frozen scaled QB
 
 **Topology ID**：`PAPER_JSL_TO_FROZEN_QB`
 
@@ -667,7 +667,7 @@
 
 ---
 
-## paper-sl-q3-pre-20260824
+## PAPER-SL-Q3-PRE：BJs→BJL1 routing audit
 
 **Topology ID**：`TOPOLOGY_ba0fe9d75d`
 
@@ -683,7 +683,7 @@
 
 ---
 
-## PAPER-SL-Q6：Q5 → standard JTL compatibility
+## PAPER-SL-Q6：Q5 → standard JTL
 
 **Topology ID**：`Q5_TO_STANDARD_JTL`
 
@@ -831,7 +831,7 @@
 
 ---
 
-## jtl-transport-gate-polarity-replay-20260824
+## JTL polarity replay：original vs reverse
 
 **Topology ID**：`TOPOLOGY_0fca67e829`
 
@@ -847,7 +847,7 @@
 
 ---
 
-## JTL transport methodology
+## JTL transport methodology：strict vs settled-well
 
 **Topology ID**：`STANDARD_JTL_2CELL`
 
@@ -863,7 +863,7 @@
 
 ---
 
-## jtl-transport-gate-v1-numerical-freeze-20260824
+## JTL transport Gate V1：timestep ladder
 
 **Topology ID**：`TOPOLOGY_3a1af7987d`
 
@@ -879,7 +879,7 @@
 
 ---
 
-## jtl-transport-gate-v1-numerical-freeze-20260824-rerun
+## JTL transport Gate V1：rerun evidence package
 
 **Topology ID**：`TOPOLOGY_8403837f5b`
 

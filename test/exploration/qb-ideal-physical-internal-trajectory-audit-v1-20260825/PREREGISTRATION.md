@@ -2,12 +2,14 @@
 
 ## 当前状态
 
-- revision：`r3`，首轮与二审 `SOL_XHIGH_PHYSICS_ARCHITECT` 均返回
-  `PLAN_REVISION_REQUIRED`；本文件是再次修订后的 preregistration。
-- parent HEAD：`f9a1cc24aae575182c0643092a4f008f12df0458`
-- 修订记录时间：`2026-08-25T01:00:45+08:00`
+- revision：`r4`，前三次 `SOL_XHIGH_PHYSICS_ARCHITECT` 审阅发现并登记了
+  12×320 run-input provenance mismatch；本文件是再次修订后的 preregistration。
+- scientific parent HEAD：`f9a1cc24aae575182c0643092a4f008f12df0458`
+- pre-analysis checkpoint：上一版已提交为 `fa7d591f72d91e72b4adb4022058cc7e67101ca2`；
+  r4 也必须在正式 analysis 前提交。
+- 修订记录时间：`2026-08-25T01:06:08+08:00`
 - 本轮类型：`ANALYSIS ONLY`
-- r3 必须先作为 pre-analysis checkpoint 提交进 HEAD；正式 analysis 尚未开始，等待同一个 Sol XHigh agent 三次返回
+- r4 必须先作为 pre-analysis checkpoint 提交进 HEAD；正式 analysis 尚未开始，等待同一个 Sol XHigh agent 最终返回
   `APPROVED_ANALYSIS_PLAN`。
 
 ## 不变边界
@@ -78,6 +80,66 @@ scripts、derived outputs、plot metadata 和报告。每一个列入报告或 m
 路径都必须在 fresh checkout 中通过 `git ls-files --error-unmatch` 且
 `git show HEAD:<path>` 非空；被 `.gitignore` 匹配的正式 JSON/HTML 必须显式
 force-add，不能只依赖当前工作树。
+
+## D12 历史 run-input provenance disposition
+
+只读 git 追溯没有找到与 physical 12×320 manifest 声明 SHA 相符的不可变 case
+deck。当前四个 deck 的实际 SHA 与历史 manifest 声明如下：
+
+| case | manifest SHA 前缀 | 当前 HEAD deck SHA 前缀 | disposition |
+|---|---|---|---|
+| `13ps/logical1_read` | `dece76aa1806` | `1a07bdb7690a` | `RUN_INPUT_HASH_MISMATCH` |
+| `13ps/logical1_no_read_control` | `cf6902529d41` | `c920c59629d1` | `RUN_INPUT_HASH_MISMATCH` |
+| `13ps/logical0_read` | `e7cc641a1c57` | `5b45f703a119` | `RUN_INPUT_HASH_MISMATCH` |
+| `13ps/logical0_no_read_control` | `ad5a2abb02ec` | `ecdc770e53a5` | `RUN_INPUT_HASH_MISMATCH` |
+
+不修改历史 manifest，不重签旧 run，不把当前 deck 伪装成 manifest 声明的
+deck。D12 raw 仍可做以下受限用途：
+
+- raw completeness、P/V/I、KCL、trajectory 和 current partition 的
+  `DESCRIPTIVE_RAW_OBSERVATION`；
+- 与 D12 当前 deck/topology 相容性的结构检查；
+- 作为 `C13↔D12` 的 provenance-inconclusive pair，不能进入认证的机制排序。
+
+D12 不可支持“raw 确由当前 deck 生成”的强断言。由于本任务的完整机制目标
+注册了 C13↔D12 与 C13↔E8 两个 primary pair，只要 D12 provenance 未恢复，
+总 disposition 至少为 `MECHANISM_AUDIT_INCONCLUSIVE`；不得用 E8 单独结果把
+总审计升级为 `MECHANISM_AUDIT_COMPLETE`。E8 pair 可以在 Sol 批准后独立分析，
+并明确标注 D12 pair 的缺陷。
+
+## 历史 manifest exception inventory
+
+以下是既有文件中的历史错误/缺失引用，不属于本轮 dependency closure；本轮只
+登记，不静默修复：
+
+- `reference/control-provenance.yaml`：`PROVENANCE_REFERENCE_MISSING`；
+- `docs/METRIC_SPEC_V2.md`：历史错误路径；本轮只用
+  `docs/research/METRIC_SPEC_V2.md`；
+- 旧 `analysis/topology-precheck.json` 和旧 8×500 comparison JSON：旧的
+  ignored/非 HEAD 派生产物；本轮不引用；
+- physical 12×320 manifest 中四个 case deck SHA：
+  `RUN_INPUT_HASH_MISMATCH`，不得重写。
+
+本次 analysis dependency closure 只要求当前 tracked raw、当前实际使用的
+deck/include/source snapshot、正确 metric spec、source-manifest 及本目录产物
+可取得且哈希可复核。历史 exception 不自动使无关 raw 变成 physical `FAIL`。
+
+## Ideal source-chain content closure
+
+对 `REF-C13` 每个 role，正式 analysis 必须逐项验证：
+
+1. source-manifest 指向的 source raw 存在且 hash 一致；
+2. replay snapshot 的 source current/voltage 列存在且 hash 一致；
+3. replay deck 的 `I_REPLAY 0 IN PWL(...)` time/current 序列与 snapshot
+   的 registered source sequence 完全一致，未 rectify、hold、normalize、
+   rescale 或重采样；
+4. deck 使用的 `bq_cell.cir`、`qb-jjmit.cir` 和 bias/load 与 manifest 一致；
+5. 四个 role 的 READ/no-read 控制关系可由当前 tracked source chain 复核。
+
+若第 1–4 项失败，ideal replay 该 role 的 source-chain artifact 为
+`INVALID`；若仅第 5 项依赖缺失的历史 YAML，则该 control/selectivity claim
+为 `INCONCLUSIVE`，primary logical1 trajectory 不自动作废。`control-provenance.yaml`
+始终保持 `PROVENANCE_REFERENCE_MISSING`。
 
 ## 预冻结的 sign/orientation Gate
 

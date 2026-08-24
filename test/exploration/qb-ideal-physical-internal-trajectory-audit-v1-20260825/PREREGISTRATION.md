@@ -2,14 +2,16 @@
 
 ## 当前状态
 
-- revision：`r4`，前三次 `SOL_XHIGH_PHYSICS_ARCHITECT` 审阅发现并登记了
-  12×320 run-input provenance mismatch；本文件是再次修订后的 preregistration。
+- revision：`r5`，前几次 `SOL_XHIGH_PHYSICS_ARCHITECT` 审阅发现并登记了
+  12×320 run-input provenance mismatch，以及 C13 ideal replay 的来源列身份
+  未冻结；本文件是再次修订后的 preregistration。
 - scientific parent HEAD：`f9a1cc24aae575182c0643092a4f008f12df0458`
-- pre-analysis checkpoint：上一版已提交为 `fa7d591f72d91e72b4adb4022058cc7e67101ca2`；
-  r4 也必须在正式 analysis 前提交。
-- 修订记录时间：`2026-08-25T01:06:08+08:00`
+- pre-analysis checkpoints：r3=`fa7d591f72d91e72b4adb4022058cc7e67101ca2`，
+  r4=`b57edcb20c53e675deb9af0300ce0f06306d4bbb`；r5 也必须在正式 analysis
+  前提交。
+- 修订记录时间：`2026-08-25T01:10:29+08:00`
 - 本轮类型：`ANALYSIS ONLY`
-- r4 必须先作为 pre-analysis checkpoint 提交进 HEAD；正式 analysis 尚未开始，等待同一个 Sol XHigh agent 最终返回
+- r5 必须先作为 pre-analysis checkpoint 提交进 HEAD；正式 analysis 尚未开始，等待同一个 Sol XHigh agent 最终返回
   `APPROVED_ANALYSIS_PLAN`。
 
 ## 不变边界
@@ -124,22 +126,70 @@ D12 不可支持“raw 确由当前 deck 生成”的强断言。由于本任务
 deck/include/source snapshot、正确 metric spec、source-manifest 及本目录产物
 可取得且哈希可复核。历史 exception 不自动使无关 raw 变成 physical `FAIL`。
 
-## Ideal source-chain content closure
+## REF-C13 source-column identity and exact source chain
 
-对 `REF-C13` 每个 role，正式 analysis 必须逐项验证：
+本节冻结的是历史 C13 replay 的实际构建链，不对历史脚本作静默修复，也不把
+另一个列替换进既有 replay。四个 C13 role 的 source raw 路径分别是：
 
-1. source-manifest 指向的 source raw 存在且 hash 一致；
-2. replay snapshot 的 source current/voltage 列存在且 hash 一致；
-3. replay deck 的 `I_REPLAY 0 IN PWL(...)` time/current 序列与 snapshot
-   的 registered source sequence 完全一致，未 rectify、hold、normalize、
-   rescale 或重采样；
-4. deck 使用的 `bq_cell.cir`、`qb-jjmit.cir` 和 bias/load 与 manifest 一致；
-5. 四个 role 的 READ/no-read 控制关系可由当前 tracked source chain 复核。
+| role | source raw | historical replay snapshot |
+|---|---|---|
+| `logical1_read` | `test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/13ps/logical1-read/run-01.csv` | `test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical1_read.csv` |
+| `logical0_read` | `test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/13ps/logical0-read/run-01.csv` | `test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical0_read.csv` |
+| `logical1_no_read_control` | `test/exploration/paper-sl-l0-20260824/raw/logical1-read0-control/run-01.csv` | `test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical1_no_read_control.csv` |
+| `logical0_no_read_control` | `test/exploration/paper-sl-l0-20260824/raw/logical0-read0-control/run-01.csv` | `test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/reference/replay_sources/13ps-logical0_no_read_control.csv` |
 
-若第 1–4 项失败，ideal replay 该 role 的 source-chain artifact 为
-`INVALID`；若仅第 5 项依赖缺失的历史 YAML，则该 control/selectivity claim
-为 `INCONCLUSIVE`，primary logical1 trajectory 不自动作废。`control-provenance.yaml`
-始终保持 `PROVENANCE_REFERENCE_MISSING`。
+只读检查确认上述 12×320 source raw 的表头含重复列名。按零基索引，相关列为：
+
+| zero-based index | header | role in this audit |
+|---:|---|---|
+| `14` | `I(B_LD1)` | 历史 `analysis/build_replay_fixtures.py` 通过 `header.index("I(B_LD1)")` 实际选中的列；这是辅助 probe 列 |
+| `18` | `I(B_LD1)` | 同名重复列，必须与 index 14 单独比较 |
+| `15` | `I(B_LD12)` | 同名辅助列，不能因列名相同而代替历史选择 |
+| `51` | `I(B_LD12)` | 末端直接 JSL branch probe；本轮只作 diagnostic，不是历史 snapshot 的来源 |
+
+因此，本轮对 C13 的来源身份必须同时记录：
+
+- `HISTORICAL_SELECTED_SOURCE_COLUMN = index 14, I(B_LD1)`；
+- `DIRECT_FINAL_JSL_DIAGNOSTIC_COLUMN = index 51, I(B_LD12)`；
+- index 51 不得静默替换 index 14，否则会产生一个新的 ideal replay source，
+  不能再称为既有 `REF-C13`；
+- replay snapshot 的表头严格为 `time_ps,I_JSL_A`，只保存 current，不保存
+  voltage。source raw 中的 voltage 仅作为 raw diagnostic，不能写成 snapshot
+  已含 voltage 的 provenance 事实。
+
+正式 analysis 对每个 role 固定执行以下逐点闭合，比较值都先按 IEEE-754
+float64 解析：
+
+1. source raw `time`（秒）乘以 float64 `1e12` 后，必须与 snapshot `time_ps`
+   逐元素 `==`；
+2. source raw index 14 的 `I(B_LD1)` 必须与 snapshot `I_JSL_A` 逐元素 `==`；
+3. snapshot 的 `(time_ps,I_JSL_A)` 必须与对应 replay deck 的
+   `I_REPLAY 0 IN PWL(...)` time/current token 序列逐元素 `==`；
+4. 不允许 rectify、hold、normalize、rescale、插值或重采样；不设事后绝对或
+   相对容差，任何一个 float64 不相等都记录 exact index、raw value、snapshot
+   value、deck value，并使该 source-chain role 进入 `INVALID`；
+5. index 14 与 index 18 的同名列、index 15 与 index 51 的同名列都必须独立
+   报告逐点一致性。若历史选中的同名列 index 14/18 不一致，该 role 的来源
+   身份为 `INVALID`，primary C13 pair STOP；即使它们一致，index 14 是辅助
+   probe 而非末端直接 JSL branch 的事实仍保留。
+
+source-manifest/source raw hash、snapshot hash、replay deck PWL、
+`bq_cell.cir`、`qb-jjmit.cir`、bias/load closure 均必须在同一 inventory 中
+复核。由此允许的状态只有：
+
+- raw→snapshot→PWL exact chain 全部闭合：
+  `HISTORICAL_REPLAY_SOURCE_CHAIN_CLOSED`，但
+  `C13_FINAL_JSL_SOURCE_SEMANTICS=INCONCLUSIVE`；
+- 任一 exact chain、重复列或 input closure 失败：该 role 为 `INVALID`，
+  involved C13 primary pair STOP；
+- chain 闭合但将 C13 解释为“末端 final-JSL current replay”时：
+  `PROVENANCE_INCONCLUSIVE`，不得用 E8 绕过 C13，也不得把辅助列改名成末端
+  branch。
+
+若仅第 READ/no-read 控制关系依赖缺失的历史 YAML，则该 control/selectivity
+claim 为 `INCONCLUSIVE`，primary logical1 trajectory 仍必须保留上述 source
+column status。`control-provenance.yaml` 始终保持
+`PROVENANCE_REFERENCE_MISSING`。
 
 ## 预冻结的 sign/orientation Gate
 

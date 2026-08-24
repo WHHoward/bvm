@@ -1,0 +1,31 @@
+{
+  "schema": "josim-publication-schematic-v1",
+  "source_deck": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir",
+  "subcircuit_deck": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/bq_cell.cir",
+  "subcircuit": "BQ",
+  "layout": {
+    "renderer": "scripts/schematic/render_qb_q0.py",
+    "method": "manual deterministic semantic placement",
+    "signal_flow": "left-to-right",
+    "bias_direction": "top",
+    "return_direction": "bottom"
+  },
+  "displayed_components": [
+    {"scope": "BQ", "name": "Lin", "type": "inductor", "nodes": ["IN", "1"]},
+    {"scope": "BQ", "name": "BJs", "display_name": "Js", "type": "josephson_junction", "nodes": ["1", "2"]},
+    {"scope": "BQ", "name": "L1", "type": "inductor", "nodes": ["2", "3"]},
+    {"scope": "BQ", "name": "L2", "type": "inductor", "nodes": ["3", "4"]},
+    {"scope": "BQ", "name": "L0", "type": "inductor", "nodes": ["4", "OUT"]},
+    {"scope": "BQ", "name": "BJL1", "display_name": "JL1", "type": "josephson_junction", "nodes": ["2", "0"]},
+    {"scope": "BQ", "name": "RJ1", "type": "resistor", "nodes": ["2", "0"]},
+    {"scope": "BQ", "name": "BJL2", "display_name": "JL2", "type": "josephson_junction", "nodes": ["4", "0"]},
+    {"scope": "BQ", "name": "RJ2", "type": "resistor", "nodes": ["4", "0"]},
+    {"scope": "BQ", "name": "RB", "type": "resistor", "nodes": ["IB", "3"]},
+    {"scope": "top-level", "name": "I_IBIAS", "display_name": "I_Bias", "type": "current_source", "nodes": ["0", "IBIAS"]},
+    {"scope": "top-level", "name": "R_LOAD", "type": "resistor", "nodes": ["OUT", "0"]}
+  ],
+  "required_internal_components": ["Lin", "BJs", "L1", "L2", "L0", "BJL1", "RJ1", "BJL2", "RJ2", "RB"],
+  "omitted_from_display": [
+    {"scope": "top-level", "name": "I_IN", "reason": "external ideal stimulus is represented by the In port and documented as I_IN=68.4uA pulse"}
+  ]
+}

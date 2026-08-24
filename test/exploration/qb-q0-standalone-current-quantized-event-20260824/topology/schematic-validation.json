@@ -1,0 +1,118 @@
+{
+  "status": "PASS",
+  "source_deck": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir",
+  "subcircuit_deck": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/bq_cell.cir",
+  "subcircuit": "BQ",
+  "checked_displayed_components": [
+    {
+      "scope": "BQ",
+      "name": "Lin",
+      "nodes": [
+        "IN",
+        "1"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "BJs",
+      "nodes": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "L1",
+      "nodes": [
+        "2",
+        "3"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "L2",
+      "nodes": [
+        "3",
+        "4"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "L0",
+      "nodes": [
+        "4",
+        "OUT"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "BJL1",
+      "nodes": [
+        "2",
+        "0"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "RJ1",
+      "nodes": [
+        "2",
+        "0"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "BJL2",
+      "nodes": [
+        "4",
+        "0"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "RJ2",
+      "nodes": [
+        "4",
+        "0"
+      ]
+    },
+    {
+      "scope": "BQ",
+      "name": "RB",
+      "nodes": [
+        "IB",
+        "3"
+      ]
+    },
+    {
+      "scope": "top-level",
+      "name": "I_IBIAS",
+      "nodes": [
+        "0",
+        "IBIAS"
+      ]
+    },
+    {
+      "scope": "top-level",
+      "name": "R_LOAD",
+      "nodes": [
+        "OUT",
+        "0"
+      ]
+    }
+  ],
+  "omitted_from_display": [
+    {
+      "scope": "top-level",
+      "name": "I_IN",
+      "reason": "external ideal stimulus is represented by the In port and documented as I_IN=68.4uA pulse"
+    }
+  ],
+  "errors": [],
+  "checks": {
+    "element_exists": true,
+    "endpoint_connectivity": true,
+    "critical_path_displayed": true,
+    "no_invented_element": true
+  }
+}

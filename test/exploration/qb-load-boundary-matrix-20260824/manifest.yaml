@@ -1,0 +1,19 @@
+exploration: qb-load-boundary-matrix-20260824
+parent_head: 30590c9d9d4831f98c2a3f1db28ee7f6813eee59
+status: completed-bounded-matrix
+execution_batch: v2
+fixtures: 5
+jo_sim_jobs: 11
+binary: build/josim-cli
+binary_version: v2.7.2837d13
+metric_rule: same-JJ same-monotonic-segment phase/area consistency, >=1 turn
+raw_root: raw-v2
+invalid_attempt_root: raw
+analysis_report: analysis/REPORT.md
+analysis_metrics: analysis/metrics.json
+local_verdicts:
+  A-q0-open: Q0_MULTIEVENT
+  B-q0-jtl-only: Q0_EVENT_LOST_UNDER_LOAD
+  C-q0-10ohm-parallel-jtl: Q0_EVENT_LOST_UNDER_LOAD
+  D-q5-open: Q5_MULTIFIRE
+  E-q5-jtl-only: Q5_NO_JTL_TRIGGER

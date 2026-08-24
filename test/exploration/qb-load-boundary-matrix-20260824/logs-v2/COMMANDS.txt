@@ -1,0 +1,18 @@
+# Q0/Q5 load-boundary matrix commands
+
+Parent: 30590c9d9d4831f98c2a3f1db28ee7f6813eee59
+
+```sh
+python3 analysis/build_matrix.py > build-v2-manifest.json
+python3 -m py_compile analysis/analyze_matrix.py
+build/josim-cli inputs-v2/A-q0-open/scaled-iin-68p4u.cir
+build/josim-cli inputs-v2/B-q0-jtl-only/scaled-iin-68p4u.cir
+build/josim-cli inputs-v2/C-q0-10ohm-parallel-jtl/scaled-iin-68p4u.cir
+build/josim-cli inputs-v2/D-q5-open/paper-j*-*.cir
+build/josim-cli inputs-v2/E-q5-jtl-only/paper-j*-*.cir
+python3 analysis/analyze_matrix.py
+```
+
+The five fixtures were launched as 11 independent JoSIM processes. Each
+process wrote only to its own `raw-v2/<fixture>/` and `logs-v2/<fixture>/`
+paths; no output file was shared between jobs.

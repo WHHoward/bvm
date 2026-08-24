@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # The documentation-only alignment rebuild is anchored to the repository HEAD
 # that was present when this task started.  It is deliberately not replaced by
 # the post-generation commit hash.
-HEAD = "3e714f3fdd593511971136ee470ec0418d775d24"
+HEAD = "576ca9d32b15c99f8c35c4271336ffa079664b64"
 MANIFEST_PATH = ROOT / "docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml"
 TOPOLOGY_PATH = ROOT / "docs/TOPOLOGY_ALIGNMENT_MANIFEST.yaml"
 
@@ -83,6 +83,7 @@ EXPERIMENT_ORDER = [
     "qb-q2a-source-decoupled-waveform-replay-20260824",
     "qb-q2b-central-bias-bracketing-20260824",
     "qb-q2c-uniform-junction-scale-20260824",
+    "bvm-jsl-read-width-to-qb-sfq-v1-20260824",
     "paper-sl-l0-20260824",
     "paper-sl-q1-20260824",
     "paper-sl-q2-20260824",
@@ -92,6 +93,7 @@ EXPERIMENT_ORDER = [
     "paper-sl-q4-l1-l2-placement-20260824",
     "paper-sl-q5-l1-l2-factorial-20260824",
     "paper-sl-q6-qb-jtl-compatibility-20260824",
+    "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824",
     "qb-load-boundary-matrix-20260824",
     "parallel-qb-jtl-interface-mechanism-20260824",
     "jtl-transport-gate-polarity-replay-20260824",
@@ -109,8 +111,8 @@ STAGE_DEFINITIONS = [
     ("stage-04", "R6–R10：native QB isolation / routing", range(22, 29)),
     ("stage-05", "R11–R15：direct JTL / active-stage route", range(29, 37)),
     ("stage-06", "QB-Q0–Q2：standalone scaled QB", range(37, 42)),
-    ("stage-07", "PAPER-SL：JSL waveform → QB", range(42, 51)),
-    ("stage-08", "QB output boundary / JTL transport", range(51, 58)),
+    ("stage-07", "PAPER-SL：JSL waveform → QB + READ semantics", range(42, 53)),
+    ("stage-08", "QB output boundary / JTL transport", range(53, 60)),
 ]
 
 
@@ -372,6 +374,12 @@ EXPERIMENT_NARRATIVES: dict[str, dict[str, str]] = {
         "result_summary": "12 个 JSL 全部 non-switching；logical1 current/area/duration waveform 明显改变，logical0 仍很小，判定 PAPER_JSL_LOAD_VALID（external-series-load realization）。",
         "conclusion_boundary": "只验证 paper-shaped SL load waveform，不接 QB，也不说明 JSL load 一定改善量化。",
     },
+    "bvm-jsl-read-width-to-qb-sfq-v1-20260824": {
+        "title_cn": "历史 JSL width bracket：12 ps W* baseline",
+        "what_done": "在旧 lineage 中比较 canonical BVM/12×JSL 的 READ plateau，并把 12 ps source waveform replay 到 frozen scaled QB。",
+        "result_summary": "旧报告支持 12 ps source-side margin improvement，但 Phase C 仍为 subthreshold；其 logical0 source provenance 不是当前 canonical WL+SE logical0，因此仅作历史/同-read1 reference。",
+        "conclusion_boundary": "不得用该旧 logical0 lineage 支撑新的 canonical logical0 discrimination claim；本轮新的 READ semantics audit 已提供修正 12 ps logical0 与 13/14/15 ps bracket。",
+    },
     "paper-sl-q1-20260824": {
         "title_cn": "PAPER-SL-Q1：paper-JSL waveform → frozen scaled QB",
         "what_done": "将 PAPER-SL-L0 logical1/logical0/controls 的实际 JSL current trajectory 原样 ideal replay 到 frozen scaled QB。",
@@ -419,6 +427,12 @@ EXPERIMENT_NARRATIVES: dict[str, dict[str, str]] = {
         "what_done": "将 frozen Q5 near-event output 接入已验证的 two-cell standard JTL，和 Q5 standalone 做 matched comparison。",
         "result_summary": "JTL loading 使 Q5 trajectory collapse，四颗 JTL JJ 均无完整 propagated event，主 verdict NO_JTL_TRIGGER。",
         "conclusion_boundary": "不能把 coupled failure 归因于 isolated QB 本身，也不能称 JTL voltage peak 为 event。",
+    },
+    "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824": {
+        "title_cn": "BVM READ semantics audit + JSL width bracket",
+        "what_done": "审计 logical1/logical0/READ=0 的正式语义，修正 canonical logical0，并把 12/13/14/15 ps 的实际 12-JSL source current 原样 replay 到 frozen scaled QB。",
+        "result_summary": "READ audit PASS；修正后的 12 ps logical0 为 zero-event；ideal replay 首个 1/0/0 candidate 在 13 ps（BJL2≈1.016 turn），14/15 ps为已执行的 post-candidate observations。",
+        "conclusion_boundary": "这只是 source waveform→frozen QB 的 ideal replay candidate，不是 physical BVM→12JSL→QB，也不是 JTL/T1 delivery；旧 PAPER-SL logical0 lineage 的 canonical read0 claims 被降级。",
     },
     "qb-load-boundary-matrix-20260824": {
         "title_cn": "QB load-boundary matrix：Q0 output boundary",
@@ -508,6 +522,7 @@ EXPERIMENT_STATUS_OVERRIDES = {
     "qb-q2b-central-bias-bracketing-20260824": "BIAS_BRACKET_NO_BJL1_EVENT",
     "qb-q2c-uniform-junction-scale-20260824": "UNIFORM_SCALE_NO_OUTPUT_EVENT",
     "paper-sl-l0-20260824": "PAPER_JSL_LOAD_VALID",
+    "bvm-jsl-read-width-to-qb-sfq-v1-20260824": "WIDTH_IMPROVES_QB_MARGIN_BUT_SUBTHRESHOLD",
     "paper-sl-q1-20260824": "PAPER_JSL_QB_SUBTHRESHOLD",
     "paper-sl-q2-20260824": "BIAS_BRANCH_SUBTHRESHOLD",
     "paper-sl-q3-pre-20260824": "Q3_PRE_ROUTING_MECHANISM_INFERENCE",
@@ -516,6 +531,7 @@ EXPERIMENT_STATUS_OVERRIDES = {
     "paper-sl-q4-l1-l2-placement-20260824": "Q4_DEGRADES_OPPOSES_Q3_DIRECTIONAL_PLACEMENT_EFFECT",
     "paper-sl-q5-l1-l2-factorial-20260824": "Q5_COMPLEMENTARY_DOWNSTREAM_PRESERVED_PARTIAL_L1_RECOVERY_NO_EVENT",
     "paper-sl-q6-qb-jtl-compatibility-20260824": "NO_JTL_TRIGGER",
+    "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824": "IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE",
     "qb-load-boundary-matrix-20260824": "MIXED_DYNAMIC_LOADING",
     "parallel-qb-jtl-interface-mechanism-20260824": "BOUNDED_INTERFACE_MATRIX",
     "jtl-transport-gate-polarity-replay-20260824": "POLARITY_REPLAY_RECONCILED",
@@ -592,6 +608,7 @@ KNOWN_VERDICTS = [
     "UNIFORM_SCALE_NO_OUTPUT_EVENT",
     "BIAS_BRACKET_NO_BJL1_EVENT",
     "PAPER_JSL_WAVEFORM_MATCHES_QB_ONE_SHOT",
+    "IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE",
 ]
 
 
@@ -687,6 +704,8 @@ def plot_record(path: str, *, role: str, cases: list[str], source_classification
         "source_classification": source_classification,
         "phase_semantics": phase,
     }
+    if phase is None:
+        record["phase_plot"] = False
     if source_experiments:
         record["source_experiments"] = source_experiments
     meta = read_plot_meta(ROOT / path)
@@ -822,6 +841,27 @@ def curated_entries() -> dict[str, dict[str, Any]]:
             plot_record(f"{q2}/plots/40u/comparison.html", role="RESULT", cases=[c["id"] for c in q2cases if c["id"].startswith("40u/")], source_classification="CURRENT_RESULT"),
         ], notes="comparison 必须同时覆盖 37.5 和 40 µA。")
 
+    legacy_width = "test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824"
+    legacy_width_path = ROOT / legacy_width
+    e[legacy_width] = key_entry(
+        legacy_width,
+        title="历史 JSL width bracket：12 ps W* baseline",
+        question="旧 JSL width baseline 对 frozen scaled QB 的 source-side margin 做了什么？",
+        result="WIDTH_IMPROVES_QB_MARGIN_BUT_SUBTHRESHOLD；该 lineage 的 logical0 语义已被新的 READ audit 标为 noncanonical。",
+        status="SUPERSEDED_ONLY",
+        report=f"{legacy_width}/REPORT.md",
+        claim_type="historical_width_reference",
+        topology_id="PAPER_JSL_TO_FROZEN_QB",
+        cases=[],
+        plots=[
+            plot_record(f"{legacy_width}/plots/9ps-vs-Wstar-qb-replay-comparison.html", role="HISTORICAL_REFERENCE", cases=["historical/QB replay"], source_classification="HISTORICAL_REFERENCE"),
+            plot_record(f"{legacy_width}/plots/9ps-vs-Wstar-qb-current-comparison.html", role="HISTORICAL_REFERENCE", cases=["historical/current"], source_classification="HISTORICAL_REFERENCE", phase=None),
+            plot_record(f"{legacy_width}/plots/sl-readout-current-comparison.html", role="HISTORICAL_REFERENCE", cases=["historical/SL current"], source_classification="HISTORICAL_REFERENCE", phase=None),
+        ],
+        notes="保留旧 raw/plots 供 provenance 追溯；不得用其非canonical logical0 作为当前 read1/read0 claim 的 primary evidence。",
+        reading="作为旧 12 ps baseline 参考；canonical READ 语义和 corrected 12/13/14/15 ps bracket 以本阶段新 Exploration 为准。",
+    )
+
     factor_info = {
         "paper-sl-q3-l1-routing-closure-20260824": ("Q3", "L1=4.50,L2=3.91", "ROUTING_GAIN_WITH_SELECTIVITY_PRESERVED"),
         "paper-sl-q4-l1-l2-placement-20260824": ("Q4", "L1=3.91,L2=4.50", "Q4_DEGRADES_OPPOSES_Q3_DIRECTIONAL_PLACEMENT_EFFECT"),
@@ -950,6 +990,44 @@ def curated_entries() -> dict[str, dict[str, Any]]:
             plot_record(f"{q6}/plots/q6-q5-to-two-cell-jtl/comparison.html", role="RESULT", cases=[c["id"] for c in raw_cases(ROOT / q6)], source_classification="Q6_COUPLED_RESULT"),
             plot_record(f"{q6}/plots/alignment-overview.html", role="RESULT", cases=[c["id"] for c in raw_cases(ROOT / q6)], source_classification="CURRENT_RESULT"),
         ])
+
+    read_width = "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824"
+    read_width_cases = []
+    for width in (12, 13, 14, 15):
+        for role, expected in [
+            ("logical1_read", "EXACTLY_ONE" if width >= 13 else "NO_COMPLETE_EVENT"),
+            ("logical0_read", "NO_COMPLETE_EVENT"),
+            ("logical1_no_read_control", "ZERO_EVENT"),
+            ("logical0_no_read_control", "ZERO_EVENT"),
+        ]:
+            read_width_cases.append({
+                "id": f"{width}ps/{role}",
+                "role": "ZERO_CONTROL" if "no_read_control" in role else "RESULT",
+                "fixture": read_width,
+                "condition": f"{width} ps {role}",
+                "expected_classification": expected,
+                "raw": f"{read_width}/raw/replay/{width}ps/{role}/run-01.csv",
+            })
+    source_case_ids = [f"{width}ps/{role}" for width in (12, 13, 14, 15) for role in ("logical1_read", "logical0_read")]
+    e[read_width] = key_entry(
+        read_width,
+        title="BVM READ semantics audit + canonical JSL width bracket",
+        question="修正 READ 语义后，canonical 12-JSL source current 的 12/13/14/15 ps plateau replay 是否在 frozen scaled QB 中形成 selective 1/0/0 event？",
+        result="IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE；首个 1/0/0 replay candidate 为 13 ps。",
+        status="IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE",
+        report=f"{read_width}/REPORT.md",
+        claim_type="read_semantics_width_bracket",
+        topology_id="PAPER_JSL_TO_FROZEN_QB",
+        cases=read_width_cases,
+        plots=[
+            plot_record(f"{read_width}/plots/qb-replay-width-comparison.html", role="COMPARISON", cases=[c["id"] for c in read_width_cases], source_classification="QB_WIDTH_REPLAY"),
+            plot_record(f"{read_width}/plots/source-width-comparison.html", role="SOURCE_REFERENCE", cases=source_case_ids, source_classification="CANONICAL_JSL_SOURCE", phase=None),
+            plot_record(f"{read_width}/plots/bjl2-margin-vs-width.html", role="COMPARISON", cases=[f"{w}ps/logical1_read" for w in (12, 13, 14, 15)] + [f"{w}ps/logical0_read" for w in (12, 13, 14, 15)], source_classification="QB_WIDTH_MARGIN"),
+            plot_record(f"{read_width}/plots/read-semantics-audit.html", role="COMPARISON", cases=["READ_SEMANTICS_AUDIT"], source_classification="READ_PROTOCOL_AUDIT", phase=None),
+        ],
+        notes="canonical logical0 必须是负存储态 + 与 logical1 完全相同的正 WL+SE READ；旧 PAPER-SL logical0 为 WL-only/noncanonical lineage。13 ps 是 ideal replay candidate，不是 physical cascade。",
+        reading="先看 READ semantics audit，再看 source-width-comparison 的 SL/JSL 电流，最后看 frozen QB replay 与 BJL2 margin。",
+    )
 
     for name, title, question, result, status, claim, topology_id in [
         ("test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824", "QB-Q1：physical BVM → frozen scaled QB", "canonical BVM 直接驱动 frozen scaled QB 是否保持 source guard 并量化？", "QB_SOURCE_BACKACTION_FAILURE；次级 QB_BVM_SUBTHRESHOLD。", "QB_SOURCE_BACKACTION_FAILURE", "source_backaction", "BVM_TO_SCALED_QB"),
@@ -1195,15 +1273,15 @@ def plot_links(entry: dict[str, Any]) -> list[str]:
     return [f"- {labels.get(p['role'], '[' + p['role'] + ']')} {markdown_link(p['path'], p['path'])}" for p in entry.get("plots", [])]
 
 
-def render_index(entries: dict[str, dict[str, Any]], *, flow: bool) -> str:
+def render_index(entries: dict[str, dict[str, Any]], *, flow: bool, head: str = HEAD) -> str:
     order = list(entries)
     if flow:
         title = "# EXPLORATION FLOW INDEX V2"
-        intro = (f"生成基线 HEAD：`{HEAD}`。\n\n"
+        intro = (f"生成基线 HEAD：`{head}`。\n\n"
                  "本页由 `docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml` 生成，展示科研路线；结果图、controls、source/reference 和电路入口均保持角色区分。")
     else:
         title = "# VISUALIZATION INDEX V2"
-        intro = (f"生成基线 HEAD：`{HEAD}`。\n\n"
+        intro = (f"生成基线 HEAD：`{head}`。\n\n"
                  "本页由统一 alignment manifest 生成，按科学语义列出核心结果、对比、controls 和 source/reference。")
     lines = [title, "", intro, "", "## 阅读约定", "",
              "- `continuous_absolute`：原始 JoSIM P(...) 连续轨迹的 φ/2π（turn），不等于 SFQ 计数。",
@@ -1327,7 +1405,7 @@ def build_alignment_audit(manifest: dict[str, Any], topology: dict[str, Any]) ->
     return "\n".join(lines)
 
 
-def build_reading_guide(entries: dict[str, dict[str, Any]]) -> str:
+def build_reading_guide(entries: dict[str, dict[str, Any]], *, head: str = HEAD) -> str:
     rows = [
         ("我想确认 scaled QB 的输入窗口", "QB-Q0", "qb-q0-standalone-current-quantized-event-20260824/plots/scaled-comparison.html", "看 scaled 0/45/68.4/90 的 BJL2 连续轨迹；paper 只作历史对照。", "不推出 canonical BVM compatibility。"),
         ("我想看 paper-JSL 是否驱动 QB", "PAPER-SL-Q1", "paper-sl-q1-20260824/plots/qb-replay/comparison.html", "看 BJs/BJL1/BJL2 的 read1/read0/control 分离。", "不要把 paper-JSL source 图当 QB response。"),
@@ -1337,15 +1415,16 @@ def build_reading_guide(entries: dict[str, dict[str, Any]]) -> str:
         ("我想看 JTL polarity/convergence", "JTL methodology", "jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/pulse5-original-timestep-comparison.html", "同时打开 R11 与 reverse。", "严格 Gate 仍 INCONCLUSIVE。"),
         ("我想看 R13 conditioning", "R13-A", "bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-vs-c1-vs-c2-vs-c3.html", "逐条件查看 raw/C1/C2/C3 的 B3。", "理想 replay 不是 physical implementation。"),
         ("我想看 Q5 接 JTL 的变化", "PAPER-SL-Q6", "paper-sl-q6-qb-jtl-compatibility-20260824/plots/q5-standalone-vs-q6-coupled.html", "直接比较 BJL1/BJL2/V(OUT)。", "不把耦合系统成功等同 isolated QB event。"),
+        ("我想确认 READ 语义和首个 width candidate", "BVM READ audit + JSL width", "bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html", "先确认 canonical logical0 是负存储态 + 同一正 WL/SE READ，再看 13 ps 的 QB replay。", "不能把 ideal replay candidate 当作 physical BVM→12JSL→QB closure。"),
     ]
-    lines = ["# Visualization Reading Guide", "", f"本指南由 alignment manifest 生成，基线 HEAD：`{HEAD}`。", "", "| 想确认什么 | 实验 | 先打开 | 看什么 | 不能据此推出什么 |", "|---|---|---|---|---|"]
+    lines = ["# Visualization Reading Guide", "", f"本指南由 alignment manifest 生成，基线 HEAD：`{head}`。", "", "| 想确认什么 | 实验 | 先打开 | 看什么 | 不能据此推出什么 |", "|---|---|---|---|---|"]
     lines += ["|" + "|".join(row) + "|" for row in rows]
     lines += ["", "## Phase semantics", "", *[f"- `{k}`：{v}" for k, v in PHASE_SEMANTICS.items()], ""]
     return "\n".join(lines)
 
 
-def build_schematic_index(topology: dict[str, Any], entries: dict[str, dict[str, Any]]) -> str:
-    lines = ["# CIRCUIT SCHEMATIC INDEX", "", f"基线 HEAD：`{HEAD}`。本页将论文级电路图、实验注释图和连接调试图分开。", ""]
+def build_schematic_index(topology: dict[str, Any], entries: dict[str, dict[str, Any]], *, head: str = HEAD) -> str:
+    lines = ["# CIRCUIT SCHEMATIC INDEX", "", f"基线 HEAD：`{head}`。本页将论文级电路图、实验注释图和连接调试图分开。", ""]
     for topo in topology["topologies"]:
         lines += [f"## {topo['title_cn']}", "", f"**Topology ID**：`{topo['topology_id']}`", "",
                   f"**状态**：`{topo['status']}`；signature=`{topo['topology_signature'][:16]}`…", "",
@@ -1460,15 +1539,15 @@ def main() -> None:
     }
     MANIFEST_PATH.write_text(yaml.safe_dump(manifest, allow_unicode=True, sort_keys=False), encoding="utf-8")
     TOPOLOGY_PATH.write_text(yaml.safe_dump(topology, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    flow_md = render_index(entries, flow=True)
-    viz_md = render_index(entries, flow=False)
+    flow_md = render_index(entries, flow=True, head=recorded_head)
+    viz_md = render_index(entries, flow=False, head=recorded_head)
     (ROOT / "docs/EXPLORATION_FLOW_INDEX.md").write_text(flow_md, encoding="utf-8")
     (ROOT / "docs/VISUALIZATION_INDEX.md").write_text(viz_md, encoding="utf-8")
     entry_list = ordered_entries(entries)
     (ROOT / "docs/EXPLORATION_FLOW_INDEX.html").write_text(render_rich_index(entry_list, topology, title="BVM→QB/JTL receiver Exploration 流程总索引", flow=True, head=recorded_head), encoding="utf-8")
     (ROOT / "docs/VISUALIZATION_INDEX.html").write_text(render_rich_index(entry_list, topology, title="BVM→QB/JTL receiver 可视化结果索引", flow=False, head=recorded_head), encoding="utf-8")
-    (ROOT / "docs/VISUALIZATION_READING_GUIDE.md").write_text(build_reading_guide(entries), encoding="utf-8")
-    (ROOT / "docs/CIRCUIT_SCHEMATIC_INDEX.md").write_text(build_schematic_index(topology, entries), encoding="utf-8")
+    (ROOT / "docs/VISUALIZATION_READING_GUIDE.md").write_text(build_reading_guide(entries, head=recorded_head), encoding="utf-8")
+    (ROOT / "docs/CIRCUIT_SCHEMATIC_INDEX.md").write_text(build_schematic_index(topology, entries, head=recorded_head), encoding="utf-8")
     (ROOT / "docs/CIRCUIT_SCHEMATIC_INDEX.html").write_text(render_topology_index(topology, title="BVM→QB/JTL 电路结构导航", head=recorded_head), encoding="utf-8")
     (ROOT / "docs/VISUALIZATION_ALIGNMENT_AUDIT.md").write_text(build_alignment_audit(manifest, topology), encoding="utf-8")
     print(f"experiments={len(entries)} topologies={len(topology['topologies'])}")

@@ -1,6 +1,6 @@
 # Visualization Alignment Audit V2
 
-基线 HEAD：`3e714f3fdd593511971136ee470ec0418d775d24`
+基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`
 
 本审计只检查 raw/report/plot/index/topology 的 provenance 对齐，不改变任何 scientific verdict。
 
@@ -47,6 +47,7 @@
 | test/exploration/qb-q2a-source-decoupled-waveform-replay-20260824 | `QB_DYNAMIC_WINDOW_MISMATCH` | 4 | 1 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/qb-q2b-central-bias-bracketing-20260824 | `BIAS_BRACKET_NO_BJL1_EVENT` | 8 | 1 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/qb-q2c-uniform-junction-scale-20260824 | `UNIFORM_SCALE_NO_OUTPUT_EVENT` | 12 | 1 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
+| test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824 | `WIDTH_IMPROVES_QB_MARGIN_BUT_SUBTHRESHOLD` | 0 | 3 | NO | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `NO_WAVEFORM_VISUALIZATION_REQUIRED` |
 | test/exploration/paper-sl-l0-20260824 | `PAPER_JSL_LOAD_VALID` | 4 | 1 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/paper-sl-q1-20260824 | `PAPER_JSL_QB_SUBTHRESHOLD` | 5 | 7 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/paper-sl-q2-20260824 | `BIAS_BRANCH_SUBTHRESHOLD` | 8 | 3 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
@@ -56,6 +57,7 @@
 | test/exploration/paper-sl-q4-l1-l2-placement-20260824 | `Q4_DEGRADES_OPPOSES_Q3_DIRECTIONAL_PLACEMENT_EFFECT` | 4 | 2 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/paper-sl-q5-l1-l2-factorial-20260824 | `Q5_COMPLEMENTARY_DOWNSTREAM_PRESERVED_PARTIAL_L1_RECOVERY_NO_EVENT` | 4 | 2 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824 | `NO_JTL_TRIGGER` | 4 | 3 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
+| test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824 | `IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE` | 16 | 4 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/qb-load-boundary-matrix-20260824 | `MIXED_DYNAMIC_LOADING` | 11 | 3 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/parallel-qb-jtl-interface-mechanism-20260824 | `BOUNDED_INTERFACE_MATRIX` | 6 | 6 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |
 | test/exploration/jtl-transport-gate-polarity-replay-20260824 | `POLARITY_REPLAY_RECONCILED` | 2 | 1 | YES | YES | `PUBLICATION_SCHEMATIC_VALIDATED` | `ALIGNED` |

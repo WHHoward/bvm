@@ -1,0 +1,26 @@
+{
+  "title": "Frozen scaled QB replay: 12/13/14/15 ps canonical read1 vs read0",
+  "source_paths": [
+    "../../raw/replay/12ps/logical0_read/run-01.csv",
+    "../../raw/replay/12ps/logical1_read/run-01.csv",
+    "../../raw/replay/13ps/logical0_read/run-01.csv",
+    "../../raw/replay/13ps/logical1_read/run-01.csv",
+    "../../raw/replay/14ps/logical0_read/run-01.csv",
+    "../../raw/replay/14ps/logical1_read/run-01.csv",
+    "../../raw/replay/15ps/logical0_read/run-01.csv",
+    "../../raw/replay/15ps/logical1_read/run-01.csv"
+  ],
+  "phase_semantics": "continuous_absolute",
+  "case_roles": {
+    "12 ps · read1": "RESULT",
+    "12 ps · read0": "NEGATIVE_CONTROL",
+    "13 ps · read1": "RESULT",
+    "13 ps · read0": "NEGATIVE_CONTROL",
+    "14 ps · read1": "RESULT",
+    "14 ps · read0": "NEGATIVE_CONTROL",
+    "15 ps · read1": "RESULT",
+    "15 ps · read0": "NEGATIVE_CONTROL"
+  },
+  "notes": "连续相位 φ/2π（turn）：原始 JoSIM P(t)/(2π) 连续轨迹；未做基线相减、未按脉冲归零；不等于 SFQ 计数。 同一 BJL2 segment 的 direct voltage area 见 REPORT.md。",
+  "renderer": "josim-exploration-visualization/plot_case_matrix.py"
+}

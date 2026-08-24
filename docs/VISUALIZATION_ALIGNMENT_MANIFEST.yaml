@@ -1,6 +1,6 @@
 schema_version: '2.0'
 manifest_id: PROJECT_VISUALIZATION_INDEX_ALIGNMENT_V2
-parent_head: 3e714f3fdd593511971136ee470ec0418d775d24
+parent_head: 576ca9d32b15c99f8c35c4271336ffa079664b64
 authority_order:
 - raw
 - accepted_analysis_report
@@ -5356,6 +5356,83 @@ experiments:
     - test/exploration/qb-q2c-uniform-junction-scale-20260824/plots/alignment-overview.html
     controls: []
     source_references: []
+- experiment_id: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824
+  title_cn: 历史 JSL width bracket：12 ps W* baseline
+  scientific_question: 在旧 lineage 中比较 canonical BVM/12×JSL 的 READ plateau，并把 12 ps
+    source waveform replay 到 frozen scaled QB。
+  formal_result: 旧报告支持 12 ps source-side margin improvement，但 Phase C 仍为 subthreshold；其
+    logical0 source provenance 不是当前 canonical WL+SE logical0，因此仅作历史/同-read1 reference。
+  what_done: 在旧 lineage 中比较 canonical BVM/12×JSL 的 READ plateau，并把 12 ps source waveform
+    replay 到 frozen scaled QB。
+  result_summary: 旧报告支持 12 ps source-side margin improvement，但 Phase C 仍为 subthreshold；其
+    logical0 source provenance 不是当前 canonical WL+SE logical0，因此仅作历史/同-read1 reference。
+  conclusion_boundary: 不得用该旧 logical0 lineage 支撑新的 canonical logical0 discrimination
+    claim；本轮新的 READ semantics audit 已提供修正 12 ps logical0 与 13/14/15 ps bracket。
+  scientific_status: WIDTH_IMPROVES_QB_MARGIN_BUT_SUBTHRESHOLD
+  current_status: NO_WAVEFORM_VISUALIZATION_REQUIRED
+  report: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/REPORT.md
+  claim_type: historical_width_reference
+  required_cases: []
+  required_signals:
+  - phase P(...)
+  - same-JJ voltage V(...)
+  - current I(...)
+  plots:
+  - path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-replay-comparison.html
+    role: HISTORICAL_REFERENCE
+    cases:
+    - historical/QB replay
+    source_classification: HISTORICAL_REFERENCE
+    phase_semantics: continuous_absolute
+    source_paths:
+    - test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read.csv
+    - test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical1-read/run-01.csv
+    - test/exploration/paper-sl-q1-20260824/raw/paper-j0-logical0-read.csv
+    - test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical0-read/run-01.csv
+    - test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read0-control.csv
+    - test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical1-read0-control/run-01.csv
+    - test/exploration/paper-sl-q1-20260824/raw/paper-j0-logical0-read0-control.csv
+    - test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-c/wstar12-logical0-read0-control/run-01.csv
+  - path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-current-comparison.html
+    role: HISTORICAL_REFERENCE
+    cases:
+    - historical/current
+    source_classification: HISTORICAL_REFERENCE
+    phase_semantics: null
+    phase_plot: false
+  - path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/sl-readout-current-comparison.html
+    role: HISTORICAL_REFERENCE
+    cases:
+    - historical/SL current
+    source_classification: HISTORICAL_REFERENCE
+    phase_semantics: null
+    phase_plot: false
+  topology_id: PAPER_JSL_TO_FROZEN_QB
+  phase_semantics: *id001
+  notes: 不得用该旧 logical0 lineage 支撑新的 canonical logical0 discrimination claim；本轮新的
+    READ semantics audit 已提供修正 12 ps logical0 与 13/14/15 ps bracket。
+  reading_guide: 作为旧 12 ps baseline 参考；canonical READ 语义和 corrected 12/13/14/15 ps
+    bracket 以本阶段新 Exploration 为准。
+  sequence: 42
+  stage_id: stage-07
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
+  topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
+  topology_status: PUBLICATION_SCHEMATIC_VALIDATED
+  topology:
+    topology_id: PAPER_JSL_TO_FROZEN_QB
+    topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
+    publication_schematic: test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg
+    annotated_schematic: test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg
+    connectivity_debug: test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg
+  plot_groups:
+    core_result: []
+    key_comparison: []
+    case_plots: []
+    controls: []
+    source_references:
+    - test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-replay-comparison.html
+    - test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-current-comparison.html
+    - test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/sl-readout-current-comparison.html
 - experiment_id: test/exploration/paper-sl-l0-20260824
   title_cn: PAPER-SL-L0：12×320 µA JSL external load
   scientific_question: 在 canonical SL path 加入 paper Figure 4/section 2.5 语义下的 12 个
@@ -5468,9 +5545,9 @@ experiments:
   phase_semantics: *id001
   notes: 只验证 paper-shaped SL load waveform，不接 QB，也不说明 JSL load 一定改善量化。
   reading_guide: ''
-  sequence: 42
+  sequence: 43
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: 8c5b9ce30b2466e3037813191eabfc92985d6216a744c4ee7214f97864dcac96
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -5613,9 +5690,9 @@ experiments:
   phase_semantics: *id001
   notes: 不能改写为 one-shot；Q0 68.4 µA 只作 positive control。
   reading_guide: ''
-  sequence: 43
+  sequence: 44
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -5765,9 +5842,9 @@ experiments:
   phase_semantics: *id001
   notes: 停止 bias-only bracket；不把 .944 turn 当 event，也不连接 physical BVM。
   reading_guide: ''
-  sequence: 44
+  sequence: 45
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -5813,9 +5890,9 @@ experiments:
   phase_semantics: *id001
   notes: 这是 mechanism inference，不是 BJL1 threshold 已被排除；未运行新 circuit。
   reading_guide: ''
-  sequence: 45
+  sequence: 46
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -5855,9 +5932,9 @@ experiments:
   phase_semantics: *id001
   notes: 正式物理结果归属于下一条 paper-sl-q3-l1-routing-closure execution。
   reading_guide: ''
-  sequence: 46
+  sequence: 47
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -5974,9 +6051,9 @@ experiments:
   notes: L1 是 causal routing knob，不是 complete-event 或 nonlinear-gain closure；不连接 physical
     BVM/JSL/QB。
   reading_guide: ''
-  sequence: 47
+  sequence: 48
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -6095,9 +6172,9 @@ experiments:
   phase_semantics: *id001
   notes: 不能要求 BJL1 complete slip 才解释 BJL2 activity；仍无 isolated QB event。
   reading_guide: ''
-  sequence: 48
+  sequence: 49
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -6216,9 +6293,9 @@ experiments:
   phase_semantics: *id001
   notes: 停止 passive L1/L2 tuning；未建立正向 nonlinear BJL2 interaction。
   reading_guide: ''
-  sequence: 49
+  sequence: 50
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -6367,9 +6444,9 @@ experiments:
   phase_semantics: *id001
   notes: 不能把 coupled failure 归因于 isolated QB 本身，也不能称 JTL voltage peak 为 event。
   reading_guide: ''
-  sequence: 50
+  sequence: 51
   stage_id: stage-07
-  stage_title: PAPER-SL：JSL waveform → QB
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
   topology_signature: 997d6d8e61c47e3f213092261f6436f63cbef734d0b9ef05ef7cd3090be89c6c
   topology_status: PUBLICATION_SCHEMATIC_VALIDATED
   topology:
@@ -6390,6 +6467,251 @@ experiments:
     - test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/plots/alignment-overview.html
     controls: []
     source_references: []
+- experiment_id: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+  title_cn: BVM READ semantics audit + JSL width bracket
+  scientific_question: 审计 logical1/logical0/READ=0 的正式语义，修正 canonical logical0，并把
+    12/13/14/15 ps 的实际 12-JSL source current 原样 replay 到 frozen scaled QB。
+  formal_result: READ audit PASS；修正后的 12 ps logical0 为 zero-event；ideal replay 首个
+    1/0/0 candidate 在 13 ps（BJL2≈1.016 turn），14/15 ps为已执行的 post-candidate observations。
+  what_done: 审计 logical1/logical0/READ=0 的正式语义，修正 canonical logical0，并把 12/13/14/15
+    ps 的实际 12-JSL source current 原样 replay 到 frozen scaled QB。
+  result_summary: READ audit PASS；修正后的 12 ps logical0 为 zero-event；ideal replay 首个
+    1/0/0 candidate 在 13 ps（BJL2≈1.016 turn），14/15 ps为已执行的 post-candidate observations。
+  conclusion_boundary: 这只是 source waveform→frozen QB 的 ideal replay candidate，不是 physical
+    BVM→12JSL→QB，也不是 JTL/T1 delivery；旧 PAPER-SL logical0 lineage 的 canonical read0
+    claims 被降级。
+  scientific_status: IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE
+  current_status: ALIGNED
+  report: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/REPORT.md
+  claim_type: read_semantics_width_bracket
+  required_cases:
+  - id: 12ps/logical1_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 12 ps logical1_read
+    expected_classification: NO_COMPLETE_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/12ps/logical1_read/run-01.csv
+  - id: 12ps/logical0_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 12 ps logical0_read
+    expected_classification: NO_COMPLETE_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/12ps/logical0_read/run-01.csv
+  - id: 12ps/logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 12 ps logical1_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/12ps/logical1_no_read_control/run-01.csv
+  - id: 12ps/logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 12 ps logical0_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/12ps/logical0_no_read_control/run-01.csv
+  - id: 13ps/logical1_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps logical1_read
+    expected_classification: EXACTLY_ONE
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_read/run-01.csv
+  - id: 13ps/logical0_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps logical0_read
+    expected_classification: NO_COMPLETE_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_read/run-01.csv
+  - id: 13ps/logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps logical1_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical1_no_read_control/run-01.csv
+  - id: 13ps/logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 13 ps logical0_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/13ps/logical0_no_read_control/run-01.csv
+  - id: 14ps/logical1_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 14 ps logical1_read
+    expected_classification: EXACTLY_ONE
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/14ps/logical1_read/run-01.csv
+  - id: 14ps/logical0_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 14 ps logical0_read
+    expected_classification: NO_COMPLETE_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/14ps/logical0_read/run-01.csv
+  - id: 14ps/logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 14 ps logical1_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/14ps/logical1_no_read_control/run-01.csv
+  - id: 14ps/logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 14 ps logical0_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/14ps/logical0_no_read_control/run-01.csv
+  - id: 15ps/logical1_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 15 ps logical1_read
+    expected_classification: EXACTLY_ONE
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/15ps/logical1_read/run-01.csv
+  - id: 15ps/logical0_read
+    role: RESULT
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 15 ps logical0_read
+    expected_classification: NO_COMPLETE_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/15ps/logical0_read/run-01.csv
+  - id: 15ps/logical1_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 15 ps logical1_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/15ps/logical1_no_read_control/run-01.csv
+  - id: 15ps/logical0_no_read_control
+    role: ZERO_CONTROL
+    fixture: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+    condition: 15 ps logical0_no_read_control
+    expected_classification: ZERO_EVENT
+    raw: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/raw/replay/15ps/logical0_no_read_control/run-01.csv
+  required_signals:
+  - I(BJL1|XBQ)
+  - I(BJL2|XBQ)
+  - I(BJS|XBQ)
+  - I(I_IBIAS)
+  - I(I_REPLAY)
+  - I(L0|XBQ)
+  - I(L1|XBQ)
+  - I(L2|XBQ)
+  - I(LIN|XBQ)
+  - I(RB|XBQ)
+  - I(RJ1|XBQ)
+  - I(RJ2|XBQ)
+  - I(R_LOAD)
+  - P(BJL1|XBQ)
+  - P(BJL2|XBQ)
+  - P(BJS|XBQ)
+  - V(BJL1|XBQ)
+  - V(BJL2|XBQ)
+  - V(BJS|XBQ)
+  - V(IN)
+  - V(OUT)
+  plots:
+  - path: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/qb-replay-width-comparison.html
+    role: COMPARISON
+    cases:
+    - 12ps/logical1_read
+    - 12ps/logical0_read
+    - 12ps/logical1_no_read_control
+    - 12ps/logical0_no_read_control
+    - 13ps/logical1_read
+    - 13ps/logical0_read
+    - 13ps/logical1_no_read_control
+    - 13ps/logical0_no_read_control
+    - 14ps/logical1_read
+    - 14ps/logical0_read
+    - 14ps/logical1_no_read_control
+    - 14ps/logical0_no_read_control
+    - 15ps/logical1_read
+    - 15ps/logical0_read
+    - 15ps/logical1_no_read_control
+    - 15ps/logical0_no_read_control
+    source_classification: QB_WIDTH_REPLAY
+    phase_semantics: continuous_absolute
+    source_paths:
+    - ../../raw/replay/12ps/logical0_read/run-01.csv
+    - ../../raw/replay/12ps/logical1_read/run-01.csv
+    - ../../raw/replay/13ps/logical0_read/run-01.csv
+    - ../../raw/replay/13ps/logical1_read/run-01.csv
+    - ../../raw/replay/14ps/logical0_read/run-01.csv
+    - ../../raw/replay/14ps/logical1_read/run-01.csv
+    - ../../raw/replay/15ps/logical0_read/run-01.csv
+    - ../../raw/replay/15ps/logical1_read/run-01.csv
+  - path: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/source-width-comparison.html
+    role: SOURCE_REFERENCE
+    cases:
+    - 12ps/logical1_read
+    - 12ps/logical0_read
+    - 13ps/logical1_read
+    - 13ps/logical0_read
+    - 14ps/logical1_read
+    - 14ps/logical0_read
+    - 15ps/logical1_read
+    - 15ps/logical0_read
+    source_classification: CANONICAL_JSL_SOURCE
+    phase_semantics: null
+    phase_plot: false
+    source_paths:
+    - ../../../bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-b/12jsl-12ps/logical1-read/run-01.csv
+    - ../../raw/12ps-canonical/logical0-read/run-01.csv
+    - ../../raw/13ps/logical0-read/run-01.csv
+    - ../../raw/13ps/logical1-read/run-01.csv
+    - ../../raw/14ps/logical0-read/run-01.csv
+    - ../../raw/14ps/logical1-read/run-01.csv
+    - ../../raw/15ps/logical0-read/run-01.csv
+    - ../../raw/15ps/logical1-read/run-01.csv
+  - path: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/bjl2-margin-vs-width.html
+    role: COMPARISON
+    cases:
+    - 12ps/logical1_read
+    - 13ps/logical1_read
+    - 14ps/logical1_read
+    - 15ps/logical1_read
+    - 12ps/logical0_read
+    - 13ps/logical0_read
+    - 14ps/logical0_read
+    - 15ps/logical0_read
+    source_classification: QB_WIDTH_MARGIN
+    phase_semantics: continuous_absolute
+    source_paths:
+    - ../width-margin-summary.csv
+  - path: test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html
+    role: COMPARISON
+    cases:
+    - READ_SEMANTICS_AUDIT
+    source_classification: READ_PROTOCOL_AUDIT
+    phase_semantics: null
+    phase_plot: false
+    source_paths:
+    - docs/BVM_READ_SEMANTICS_MANIFEST.yaml
+    - docs/BVM_READ_SEMANTICS_AUDIT.md
+  topology_id: PAPER_JSL_TO_FROZEN_QB
+  phase_semantics: *id001
+  notes: 这只是 source waveform→frozen QB 的 ideal replay candidate，不是 physical BVM→12JSL→QB，也不是
+    JTL/T1 delivery；旧 PAPER-SL logical0 lineage 的 canonical read0 claims 被降级。
+  reading_guide: 先看 READ semantics audit，再看 source-width-comparison 的 SL/JSL 电流，最后看
+    frozen QB replay 与 BJL2 margin。
+  sequence: 52
+  stage_id: stage-07
+  stage_title: PAPER-SL：JSL waveform → QB + READ semantics
+  topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
+  topology_status: PUBLICATION_SCHEMATIC_VALIDATED
+  topology:
+    topology_id: PAPER_JSL_TO_FROZEN_QB
+    topology_signature: cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14
+    publication_schematic: test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg
+    annotated_schematic: test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg
+    connectivity_debug: test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg
+  plot_groups:
+    core_result:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/qb-replay-width-comparison.html
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/bjl2-margin-vs-width.html
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html
+    key_comparison:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/qb-replay-width-comparison.html
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/bjl2-margin-vs-width.html
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html
+    case_plots: []
+    controls: []
+    source_references:
+    - test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/source-width-comparison.html
 - experiment_id: test/exploration/qb-load-boundary-matrix-20260824
   title_cn: QB load-boundary matrix：Q0 output boundary
   scientific_question: 保持同一 Q0 true-event source，比较 OPEN、10Ω、JTL-only、10Ω||JTL 四种
@@ -6608,7 +6930,7 @@ experiments:
     publication_schematic: test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic.svg
     annotated_schematic: test/exploration/qb-load-boundary-matrix-20260824/topology/publication/QB_Q0_10OHM_PARALLEL_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 51
+  sequence: 53
   stage_id: stage-08
   stage_title: QB output boundary / JTL transport
   topology_signature: 103283576557852a577289c5b5b7ae5db59b0780fac26881ad1eb1a6376be837
@@ -6834,7 +7156,7 @@ experiments:
     publication_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic.svg
     annotated_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M5_SCALED_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 52
+  sequence: 54
   stage_id: stage-08
   stage_title: QB output boundary / JTL transport
   topology_signature: b85efce84ad622382fcaa2f12042cbb5fd7846fd70961c31289435814bf83fd1
@@ -6939,7 +7261,7 @@ experiments:
   notes: ideal replay 不是 physical QB→JTL 证据；strict local event 与 settled-well transport
     必须分开。
   reading_guide: ''
-  sequence: 53
+  sequence: 55
   stage_id: stage-08
   stage_title: QB output boundary / JTL transport
   topology_signature: 762b19105f96c0883fdc0060380cd753377a1ddb5c345518104d650f5aa58b07
@@ -7019,7 +7341,7 @@ experiments:
   phase_semantics: *id001
   notes: 这是方法学整理，不是 global metric freeze，也不改变 physical BVM/JTL compatibility。
   reading_guide: ''
-  sequence: 54
+  sequence: 56
   stage_id: stage-08
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -7177,7 +7499,7 @@ experiments:
   phase_semantics: *id001
   notes: 不是 timestep 数值不稳定，而是 registered robustness Gate 未闭合；不改变 JTL 参数。
   reading_guide: ''
-  sequence: 55
+  sequence: 57
   stage_id: stage-08
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -7332,7 +7654,7 @@ experiments:
   phase_semantics: *id001
   notes: rerun 只加强 provenance/数值稳定性，不升级 Gate 为 PASS。
   reading_guide: ''
-  sequence: 56
+  sequence: 58
   stage_id: stage-08
   stage_title: QB output boundary / JTL transport
   topology_signature: 194cd42df9988272a7490ccbecf3a396d5889da1f65d73eedf6f22f0968ab801
@@ -7498,7 +7820,7 @@ experiments:
     publication_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic.svg
     annotated_schematic: test/exploration/parallel-qb-jtl-interface-mechanism-20260824/topology/publication/QB_M3_SERIES10_JTL/schematic-annotated.svg
     status: PUBLICATION_SCHEMATIC_VALIDATED
-  sequence: 57
+  sequence: 59
   stage_id: stage-08
   stage_title: QB output boundary / JTL transport
   topology_signature: 103283576557852a577289c5b5b7ae5db59b0780fac26881ad1eb1a6376be837

@@ -1,6 +1,6 @@
 # Visualization Reading Guide
 
-本指南由 alignment manifest 生成，基线 HEAD：`3e714f3fdd593511971136ee470ec0418d775d24`。
+本指南由 alignment manifest 生成，基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。
 
 | 想确认什么 | 实验 | 先打开 | 看什么 | 不能据此推出什么 |
 |---|---|---|---|---|
@@ -12,6 +12,7 @@
 |我想看 JTL polarity/convergence|JTL methodology|jtl-transport-gate-v1-numerical-freeze-20260824-rerun/plots/pulse5-original-timestep-comparison.html|同时打开 R11 与 reverse。|严格 Gate 仍 INCONCLUSIVE。|
 |我想看 R13 conditioning|R13-A|bvm-sfq-receiver-r13a-temporal-conditioning-20260823/plots/raw-vs-c1-vs-c2-vs-c3.html|逐条件查看 raw/C1/C2/C3 的 B3。|理想 replay 不是 physical implementation。|
 |我想看 Q5 接 JTL 的变化|PAPER-SL-Q6|paper-sl-q6-qb-jtl-compatibility-20260824/plots/q5-standalone-vs-q6-coupled.html|直接比较 BJL1/BJL2/V(OUT)。|不把耦合系统成功等同 isolated QB event。|
+|我想确认 READ 语义和首个 width candidate|BVM READ audit + JSL width|bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html|先确认 canonical logical0 是负存储态 + 同一正 WL/SE READ，再看 13 ps 的 QB replay。|不能把 ideal replay candidate 当作 physical BVM→12JSL→QB closure。|
 
 ## Phase semantics
 

@@ -42,6 +42,8 @@ def _case_coverage(entry: dict[str, Any]) -> set[str]:
 
 
 def _is_phase_plot(plot: dict[str, Any]) -> bool:
+    if "phase_plot" in plot:
+        return bool(plot["phase_plot"])
     if plot.get("phase_semantics"):
         return True
     name = str(plot.get("path", "")).lower()

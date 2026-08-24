@@ -1,0 +1,1639 @@
+schema_version: bvm-read-semantics-v1
+parent_head: 576ca9d32b15c99f8c35c4271336ffa079664b64
+canonical_protocol:
+  name: CANONICAL_READ_PROTOCOL_V1
+  logical1_initialization: WL=+100 µA, BL=+100 µA
+  logical0_initialization: WL=-100 µA, BL=-100 µA
+  read: WL=+100 µA and SE=+100 µA, same onset/width/rise/fall
+  no_read: WL=0 and SE=0 after initialization
+phase_semantics: continuous_absolute
+cases:
+- id: canonical.logical1_read.pos-read-single
+  path: test/exploration/bvm-internal-readout-20260819/inputs/pos-read-single.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id001
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id002
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 9.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id001
+    se_points: *id002
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: canonical.logical1_read.pos-read-single
+  case_role: logical1_read
+  classification: CANONICAL_LOGICAL1_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Canonical BVM internal-readout fixture.
+- id: canonical.logical0_read.neg-init-pos-read
+  path: test/exploration/bvm-internal-readout-20260819/inputs/neg-init-pos-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id003
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id004
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 9.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id003
+    se_points: *id004
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: canonical.logical0_read.neg-init-pos-read
+  case_role: logical0_read
+  classification: CANONICAL_LOGICAL0_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Canonical BVM internal-readout fixture.
+- id: canonical.logical1_no_read_control.pos-control
+  path: test/exploration/bvm-internal-readout-20260819/inputs/pos-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: false
+    onset_ps: null
+    wl: null
+    se: null
+  protocol_signature:
+    has_read: false
+    wl_amplitude_uA: null
+    se_amplitude_uA: null
+    onset_ps: null
+    plateau_ps: null
+    rise_ps: null
+    fall_ps: null
+    wl_points: []
+    se_points: []
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: canonical.logical1_no_read_control.pos-control
+  case_role: logical1_no_read_control
+  classification: NO_READ_CONTROL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  notes: Canonical no-READ control.
+- id: canonical.logical0_no_read_control.neg-control
+  path: test/exploration/bvm-internal-readout-20260819/inputs/neg-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: false
+    onset_ps: null
+    wl: null
+    se: null
+  protocol_signature:
+    has_read: false
+    wl_amplitude_uA: null
+    se_amplitude_uA: null
+    onset_ps: null
+    plateau_ps: null
+    rise_ps: null
+    fall_ps: null
+    wl_points: []
+    se_points: []
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: canonical.logical0_no_read_control.neg-control
+  case_role: logical0_no_read_control
+  classification: NO_READ_CONTROL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  notes: Canonical no-READ control.
+- id: canonical.negative_polarity_read_diagnostic.pos-init-neg-read
+  path: test/exploration/bvm-internal-readout-20260819/inputs/pos-init-neg-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: -100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id005
+      - - 96.0
+        - -100.0
+      - - 105.0
+        - -100.0
+    se:
+      amplitude_uA: -100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id006
+      - - 96.0
+        - -100.0
+      - - 105.0
+        - -100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: -100.0
+    se_amplitude_uA: -100.0
+    onset_ps: 96.0
+    plateau_ps: 9.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id005
+    se_points: *id006
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: canonical.negative_polarity_read_diagnostic.pos-init-neg-read
+  case_role: NEGATIVE_POLARITY_READ_DIAGNOSTIC
+  classification: NEGATIVE_POLARITY_READ
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  notes: Canonical BVM internal-readout fixture.
+- id: canonical.logical0_read.neg-read-single
+  path: test/exploration/bvm-internal-readout-20260819/inputs/neg-read-single.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id007
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id008
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 9.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id007
+    se_points: *id008
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: canonical.logical0_read.neg-read-single
+  case_role: logical0_read
+  classification: CANONICAL_LOGICAL0_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Canonical BVM internal-readout fixture.
+- id: paper_sl_l0.logical1-read
+  path: test/exploration/paper-sl-l0-20260824/inputs/logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id009
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id010
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+  protocol_signature: &id027
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 9.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id009
+    se_points: *id010
+  load_topology:
+    kind: external_series_12x_JSL
+    jsl_count: 12
+    loads: []
+  source_lineage:
+  - paper_sl_l0
+  role_hint: paper_sl_l0.logical1-read
+  case_role: logical1_read
+  classification: CANONICAL_LOGICAL1_READ_V1
+  current_validity: CURRENT_VALID
+  notes: PAPER-SL-L0 external 12-JSL source fixture.
+- id: paper_sl_l0.logical0-read
+  path: test/exploration/paper-sl-l0-20260824/inputs/logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 105.0
+      plateau_ps: 9.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id011
+      - - 96.0
+        - 100.0
+      - - 105.0
+        - 100.0
+    se: null
+  protocol_signature: &id028
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: null
+    onset_ps: 96.0
+    plateau_ps: 9.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id011
+    se_points: []
+  load_topology:
+    kind: external_series_12x_JSL
+    jsl_count: 12
+    loads: []
+  source_lineage:
+  - paper_sl_l0
+  role_hint: paper_sl_l0.logical0-read
+  case_role: WL_ONLY_NEGATIVE_STATE_DIAGNOSTIC
+  classification: NONCANONICAL_WL_ONLY_LOGICAL0_SOURCE
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  notes: PAPER-SL-L0 external 12-JSL source fixture.
+- id: paper_sl_l0.logical1-read0-control
+  path: test/exploration/paper-sl-l0-20260824/inputs/logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: false
+    onset_ps: null
+    wl: null
+    se: null
+  protocol_signature: &id029
+    has_read: false
+    wl_amplitude_uA: null
+    se_amplitude_uA: null
+    onset_ps: null
+    plateau_ps: null
+    rise_ps: null
+    fall_ps: null
+    wl_points: []
+    se_points: []
+  load_topology:
+    kind: external_series_12x_JSL
+    jsl_count: 12
+    loads: []
+  source_lineage:
+  - paper_sl_l0
+  role_hint: paper_sl_l0.logical1-read0-control
+  case_role: logical1_no_read_control
+  classification: NO_READ_CONTROL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  notes: PAPER-SL-L0 external 12-JSL source fixture.
+- id: paper_sl_l0.logical0-read0-control
+  path: test/exploration/paper-sl-l0-20260824/inputs/logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: false
+    onset_ps: null
+    wl: null
+    se: null
+  protocol_signature: &id030
+    has_read: false
+    wl_amplitude_uA: null
+    se_amplitude_uA: null
+    onset_ps: null
+    plateau_ps: null
+    rise_ps: null
+    fall_ps: null
+    wl_points: []
+    se_points: []
+  load_topology:
+    kind: external_series_12x_JSL
+    jsl_count: 12
+    loads: []
+  source_lineage:
+  - paper_sl_l0
+  role_hint: paper_sl_l0.logical0-read0-control
+  case_role: logical0_no_read_control
+  classification: NO_READ_CONTROL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  notes: PAPER-SL-L0 external 12-JSL source fixture.
+- id: width.phase_a.12ps.logical1_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-a/12ps/logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 108.0
+      plateau_ps: 12.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id012
+      - - 96.0
+        - 100.0
+      - - 108.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 108.0
+      plateau_ps: 12.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id013
+      - - 96.0
+        - 100.0
+      - - 108.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 12.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id012
+    se_points: *id013
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: width.phase_a.12ps.logical1_read
+  case_role: logical1_read
+  classification: CANONICAL_LOGICAL1_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Phase-A external R_LD=12 Ω canonical width fixture.
+- id: width.phase_a.12ps.logical0_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-a/12ps/logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 108.0
+      plateau_ps: 12.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id014
+      - - 96.0
+        - 100.0
+      - - 108.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 108.0
+      plateau_ps: 12.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id015
+      - - 96.0
+        - 100.0
+      - - 108.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 12.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id014
+    se_points: *id015
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: width.phase_a.12ps.logical0_read
+  case_role: logical0_read
+  classification: CANONICAL_LOGICAL0_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Phase-A external R_LD=12 Ω canonical width fixture.
+- id: width.phase_a.15ps.logical1_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-a/15ps/logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 111.0
+      plateau_ps: 15.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id016
+      - - 96.0
+        - 100.0
+      - - 111.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 111.0
+      plateau_ps: 15.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id017
+      - - 96.0
+        - 100.0
+      - - 111.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 15.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id016
+    se_points: *id017
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: width.phase_a.15ps.logical1_read
+  case_role: logical1_read
+  classification: CANONICAL_LOGICAL1_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Phase-A external R_LD=12 Ω canonical width fixture.
+- id: width.phase_a.15ps.logical0_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-a/15ps/logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 111.0
+      plateau_ps: 15.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id018
+      - - 96.0
+        - 100.0
+      - - 111.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 111.0
+      plateau_ps: 15.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id019
+      - - 96.0
+        - 100.0
+      - - 111.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 15.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id018
+    se_points: *id019
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: width.phase_a.15ps.logical0_read
+  case_role: logical0_read
+  classification: CANONICAL_LOGICAL0_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Phase-A external R_LD=12 Ω canonical width fixture.
+- id: width.phase_a.20ps.logical1_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-a/20ps/logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 116.0
+      plateau_ps: 20.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id020
+      - - 96.0
+        - 100.0
+      - - 116.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 116.0
+      plateau_ps: 20.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id021
+      - - 96.0
+        - 100.0
+      - - 116.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 20.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id020
+    se_points: *id021
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: width.phase_a.20ps.logical1_read
+  case_role: logical1_read
+  classification: CANONICAL_LOGICAL1_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Phase-A external R_LD=12 Ω canonical width fixture.
+- id: width.phase_a.20ps.logical0_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-a/20ps/logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 116.0
+      plateau_ps: 20.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id022
+      - - 96.0
+        - 100.0
+      - - 116.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 116.0
+      plateau_ps: 20.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id023
+      - - 96.0
+        - 100.0
+      - - 116.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 20.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id022
+    se_points: *id023
+  load_topology:
+    kind: direct_BVM_or_unknown
+    jsl_count: 0
+    loads:
+    - R_LD SL1 0 12
+  source_lineage:
+  - canonical_bvm
+  role_hint: width.phase_a.20ps.logical0_read
+  case_role: logical0_read
+  classification: CANONICAL_LOGICAL0_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Phase-A external R_LD=12 Ω canonical width fixture.
+- id: width.phase_b.12ps.logical1_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-b/12jsl-12ps/logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: 100.0
+    bl_first_uA: 100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 108.0
+      plateau_ps: 12.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id024
+      - - 96.0
+        - 100.0
+      - - 108.0
+        - 100.0
+    se:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 108.0
+      plateau_ps: 12.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id025
+      - - 96.0
+        - 100.0
+      - - 108.0
+        - 100.0
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: 100.0
+    onset_ps: 96.0
+    plateau_ps: 12.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id024
+    se_points: *id025
+  load_topology:
+    kind: external_series_12x_JSL
+    jsl_count: 12
+    loads: []
+  source_lineage:
+  - paper_sl_l0.logical1-read
+  role_hint: width.phase_b.12ps.logical1_read
+  case_role: logical1_read
+  classification: CANONICAL_LOGICAL1_READ_V1
+  current_validity: CURRENT_VALID
+  notes: Phase-B 12-JSL source; logical0 preserves historical WL-only semantics.
+- id: width.phase_b.12ps.logical0_read
+  path: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-b/12jsl-12ps/logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: -100.0
+    bl_first_uA: -100.0
+  read_protocol:
+    has_read: true
+    onset_ps: 96.0
+    wl:
+      amplitude_uA: 100.0
+      onset_ps: 96.0
+      end_ps: 108.0
+      plateau_ps: 12.0
+      rise_ps: 1.0
+      fall_ps: 1.0
+      nonzero_points: &id026
+      - - 96.0
+        - 100.0
+      - - 108.0
+        - 100.0
+    se: null
+  protocol_signature:
+    has_read: true
+    wl_amplitude_uA: 100.0
+    se_amplitude_uA: null
+    onset_ps: 96.0
+    plateau_ps: 12.0
+    rise_ps: 1.0
+    fall_ps: 1.0
+    wl_points: *id026
+    se_points: []
+  load_topology:
+    kind: external_series_12x_JSL
+    jsl_count: 12
+    loads: []
+  source_lineage:
+  - paper_sl_l0.logical0-read
+  role_hint: width.phase_b.12ps.logical0_read
+  case_role: WL_ONLY_NEGATIVE_STATE_DIAGNOSTIC
+  classification: NONCANONICAL_WL_ONLY_LOGICAL0_SOURCE
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  notes: Phase-B 12-JSL source; logical0 preserves historical WL-only semantics.
+- id: paper_sl_q1.paper-j1-logical1-read
+  path: test/exploration/paper-sl-q1-20260824/inputs/paper-j1-logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id027
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_l0.logical1-read
+  role_hint: logical1_read
+  case_role: logical1_read
+  classification: INHERITED_PROTOCOL
+  current_validity: CURRENT_VALID
+  notes: Ideal-current replay; protocol is inherited, not present in replay deck.
+- id: paper_sl_q1.paper-j0-logical0-read
+  path: test/exploration/paper-sl-q1-20260824/inputs/paper-j0-logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id028
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_l0.logical0-read
+  role_hint: logical0_read
+  case_role: logical0_read
+  classification: INHERITED_PROTOCOL
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  required_action: Do not use as canonical logical0 gate evidence; rerun with canonical
+    WL+SE READ.
+  notes: Ideal-current replay; protocol is inherited, not present in replay deck.
+- id: paper_sl_q1.paper-j1-logical1-read0-control
+  path: test/exploration/paper-sl-q1-20260824/inputs/paper-j1-logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id029
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_l0.logical1-read0-control
+  role_hint: logical1_no_read_control
+  case_role: logical1_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: Ideal-current replay; protocol is inherited, not present in replay deck.
+- id: paper_sl_q1.paper-j0-logical0-read0-control
+  path: test/exploration/paper-sl-q1-20260824/inputs/paper-j0-logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id030
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_l0.logical0-read0-control
+  role_hint: logical0_no_read_control
+  case_role: logical0_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: Ideal-current replay; protocol is inherited, not present in replay deck.
+- id: paper_sl_q2.37p5u.paper-j1-logical1-read
+  path: test/exploration/paper-sl-q2-20260824/inputs/37p5u/paper-j1-logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id027
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j1-logical1-read
+  role_hint: logical1_read
+  case_role: logical1_read
+  classification: INHERITED_PROTOCOL
+  current_validity: CURRENT_VALID
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q2.37p5u.paper-j0-logical0-read
+  path: test/exploration/paper-sl-q2-20260824/inputs/37p5u/paper-j0-logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id028
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j0-logical0-read
+  role_hint: logical0_read
+  case_role: logical0_read
+  classification: INHERITED_PROTOCOL
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  required_action: Do not use as canonical logical0 gate evidence; rerun with canonical
+    WL+SE READ.
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q2.37p5u.paper-j1-logical1-read0-control
+  path: test/exploration/paper-sl-q2-20260824/inputs/37p5u/paper-j1-logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id029
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j1-logical1-read0-control
+  role_hint: logical1_no_read_control
+  case_role: logical1_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q2.37p5u.paper-j0-logical0-read0-control
+  path: test/exploration/paper-sl-q2-20260824/inputs/37p5u/paper-j0-logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id030
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j0-logical0-read0-control
+  role_hint: logical0_no_read_control
+  case_role: logical0_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q2.40u.paper-j1-logical1-read
+  path: test/exploration/paper-sl-q2-20260824/inputs/40u/paper-j1-logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id027
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j1-logical1-read
+  role_hint: logical1_read
+  case_role: logical1_read
+  classification: INHERITED_PROTOCOL
+  current_validity: CURRENT_VALID
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q2.40u.paper-j0-logical0-read
+  path: test/exploration/paper-sl-q2-20260824/inputs/40u/paper-j0-logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id028
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j0-logical0-read
+  role_hint: logical0_read
+  case_role: logical0_read
+  classification: INHERITED_PROTOCOL
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  required_action: Do not use as canonical logical0 gate evidence; rerun with canonical
+    WL+SE READ.
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q2.40u.paper-j1-logical1-read0-control
+  path: test/exploration/paper-sl-q2-20260824/inputs/40u/paper-j1-logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id029
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j1-logical1-read0-control
+  role_hint: logical1_no_read_control
+  case_role: logical1_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q2.40u.paper-j0-logical0-read0-control
+  path: test/exploration/paper-sl-q2-20260824/inputs/40u/paper-j0-logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id030
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q1.paper-j0-logical0-read0-control
+  role_hint: logical0_no_read_control
+  case_role: logical0_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: Q2 replay derived from Q1 source deck; logical0 lineage remains noncanonical.
+- id: paper_sl_q3.paper-j1-logical1-read
+  path: test/exploration/paper-sl-q3-l1-routing-closure-20260824/inputs/l1-4p5/paper-j1-logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id027
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read
+  role_hint: logical1_read
+  case_role: logical1_read
+  classification: INHERITED_PROTOCOL
+  current_validity: CURRENT_VALID
+  notes: PAPER_SL_Q3 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q3.paper-j0-logical0-read
+  path: test/exploration/paper-sl-q3-l1-routing-closure-20260824/inputs/l1-4p5/paper-j0-logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id028
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read
+  role_hint: logical0_read
+  case_role: logical0_read
+  classification: INHERITED_PROTOCOL
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  required_action: Do not use as canonical logical0 gate evidence; rerun with canonical
+    WL+SE READ.
+  notes: PAPER_SL_Q3 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q3.paper-j1-logical1-read0-control
+  path: test/exploration/paper-sl-q3-l1-routing-closure-20260824/inputs/l1-4p5/paper-j1-logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id029
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read0-control
+  role_hint: logical1_no_read_control
+  case_role: logical1_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q3 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q3.paper-j0-logical0-read0-control
+  path: test/exploration/paper-sl-q3-l1-routing-closure-20260824/inputs/l1-4p5/paper-j0-logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id030
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read0-control
+  role_hint: logical0_no_read_control
+  case_role: logical0_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q3 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q4.paper-j1-logical1-read
+  path: test/exploration/paper-sl-q4-l1-l2-placement-20260824/inputs/q4-l1-3p91-l2-4p50/paper-j1-logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id027
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read
+  role_hint: logical1_read
+  case_role: logical1_read
+  classification: INHERITED_PROTOCOL
+  current_validity: CURRENT_VALID
+  notes: PAPER_SL_Q4 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q4.paper-j0-logical0-read
+  path: test/exploration/paper-sl-q4-l1-l2-placement-20260824/inputs/q4-l1-3p91-l2-4p50/paper-j0-logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id028
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read
+  role_hint: logical0_read
+  case_role: logical0_read
+  classification: INHERITED_PROTOCOL
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  required_action: Do not use as canonical logical0 gate evidence; rerun with canonical
+    WL+SE READ.
+  notes: PAPER_SL_Q4 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q4.paper-j1-logical1-read0-control
+  path: test/exploration/paper-sl-q4-l1-l2-placement-20260824/inputs/q4-l1-3p91-l2-4p50/paper-j1-logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id029
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read0-control
+  role_hint: logical1_no_read_control
+  case_role: logical1_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q4 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q4.paper-j0-logical0-read0-control
+  path: test/exploration/paper-sl-q4-l1-l2-placement-20260824/inputs/q4-l1-3p91-l2-4p50/paper-j0-logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id030
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read0-control
+  role_hint: logical0_no_read_control
+  case_role: logical0_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q4 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q5.paper-j1-logical1-read
+  path: test/exploration/paper-sl-q5-l1-l2-factorial-20260824/inputs/q5-l1-4p50-l2-4p50/paper-j1-logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id027
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read
+  role_hint: logical1_read
+  case_role: logical1_read
+  classification: INHERITED_PROTOCOL
+  current_validity: CURRENT_VALID
+  notes: PAPER_SL_Q5 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q5.paper-j0-logical0-read
+  path: test/exploration/paper-sl-q5-l1-l2-factorial-20260824/inputs/q5-l1-4p50-l2-4p50/paper-j0-logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id028
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read
+  role_hint: logical0_read
+  case_role: logical0_read
+  classification: INHERITED_PROTOCOL
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  required_action: Do not use as canonical logical0 gate evidence; rerun with canonical
+    WL+SE READ.
+  notes: PAPER_SL_Q5 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q5.paper-j1-logical1-read0-control
+  path: test/exploration/paper-sl-q5-l1-l2-factorial-20260824/inputs/q5-l1-4p50-l2-4p50/paper-j1-logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id029
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read0-control
+  role_hint: logical1_no_read_control
+  case_role: logical1_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q5 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q5.paper-j0-logical0-read0-control
+  path: test/exploration/paper-sl-q5-l1-l2-factorial-20260824/inputs/q5-l1-4p50-l2-4p50/paper-j0-logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id030
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read0-control
+  role_hint: logical0_no_read_control
+  case_role: logical0_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q5 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q6.paper-j1-logical1-read
+  path: test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/inputs/q6-q5-to-two-cell-jtl/paper-j1-logical1-read.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id027
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read
+  role_hint: logical1_read
+  case_role: logical1_read
+  classification: INHERITED_PROTOCOL
+  current_validity: CURRENT_VALID
+  notes: PAPER_SL_Q6 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q6.paper-j0-logical0-read
+  path: test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/inputs/q6-q5-to-two-cell-jtl/paper-j0-logical0-read.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: true
+    inherited: true
+  protocol_signature: *id028
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read
+  role_hint: logical0_read
+  case_role: logical0_read
+  classification: INHERITED_PROTOCOL
+  current_validity: LOGICAL0_GATE_NOT_TESTED
+  required_action: Do not use as canonical logical0 gate evidence; rerun with canonical
+    WL+SE READ.
+  notes: PAPER_SL_Q6 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q6.paper-j1-logical1-read0-control
+  path: test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/inputs/q6-q5-to-two-cell-jtl/paper-j1-logical1-read0-control.cir
+  stored_state: logical1
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id029
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j1-logical1-read0-control
+  role_hint: logical1_no_read_control
+  case_role: logical1_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q6 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+- id: paper_sl_q6.paper-j0-logical0-read0-control
+  path: test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/inputs/q6-q5-to-two-cell-jtl/paper-j0-logical0-read0-control.cir
+  stored_state: logical0
+  initialization:
+    wl_first_uA: null
+    bl_first_uA: null
+  read_protocol:
+    has_read: false
+    inherited: true
+  protocol_signature: *id030
+  load_topology:
+    kind: ideal_current_replay_to_QB
+    jsl_count: 0
+    loads:
+    - R_LOAD OUT 0 10
+  source_lineage:
+  - paper_sl_q2.40u.paper-j0-logical0-read0-control
+  role_hint: logical0_no_read_control
+  case_role: logical0_no_read_control
+  classification: INHERITED_PROTOCOL
+  current_validity: VALID_WITH_RELABELED_CONTROL
+  required_action: May remain a no-read control if no READ source is present.
+  notes: PAPER_SL_Q6 replay descendant; logical0 gate status inherited from PAPER-SL-L0.
+matched_pairs:
+- id: canonical_internal_read
+  logical1_read: canonical.logical1_read.pos-read-single
+  logical0_read: canonical.logical0_read.neg-init-pos-read
+- id: phase_a_12ps
+  logical1_read: width.phase_a.12ps.logical1_read
+  logical0_read: width.phase_a.12ps.logical0_read
+- id: phase_a_15ps
+  logical1_read: width.phase_a.15ps.logical1_read
+  logical0_read: width.phase_a.15ps.logical0_read
+- id: phase_a_20ps
+  logical1_read: width.phase_a.20ps.logical1_read
+  logical0_read: width.phase_a.20ps.logical0_read
+mismatched_pairs:
+- id: paper_sl_l0_legacy
+  logical1_read: paper_sl_l0.logical1-read
+  logical0_read: paper_sl_l0.logical0-read
+  disposition: READ_PROTOCOL_MISMATCH
+- id: phase_b_12ps_legacy
+  logical1_read: width.phase_b.12ps.logical1_read
+  logical0_read: width.phase_b.12ps.logical0_read
+  disposition: READ_PROTOCOL_MISMATCH
+- id: paper_sl_q1
+  logical1_read: paper_sl_q1.paper-j1-logical1-read
+  logical0_read: paper_sl_q1.paper-j0-logical0-read
+  disposition: INHERITED_NONCANONICAL_LOGICAL0
+- id: paper_sl_q3
+  logical1_read: paper_sl_q3.paper-j1-logical1-read
+  logical0_read: paper_sl_q3.paper-j0-logical0-read
+  disposition: INHERITED_NONCANONICAL_LOGICAL0
+- id: paper_sl_q4
+  logical1_read: paper_sl_q4.paper-j1-logical1-read
+  logical0_read: paper_sl_q4.paper-j0-logical0-read
+  disposition: INHERITED_NONCANONICAL_LOGICAL0
+- id: paper_sl_q5
+  logical1_read: paper_sl_q5.paper-j1-logical1-read
+  logical0_read: paper_sl_q5.paper-j0-logical0-read
+  disposition: INHERITED_NONCANONICAL_LOGICAL0
+- id: paper_sl_q6
+  logical1_read: paper_sl_q6.paper-j1-logical1-read
+  logical0_read: paper_sl_q6.paper-j0-logical0-read
+  disposition: INHERITED_NONCANONICAL_LOGICAL0
+- id: paper_sl_q2_37p5u
+  logical1_read: paper_sl_q2.37p5u.paper-j1-logical1-read
+  logical0_read: paper_sl_q2.37p5u.paper-j0-logical0-read
+  disposition: INHERITED_NONCANONICAL_LOGICAL0
+- id: paper_sl_q2_40u
+  logical1_read: paper_sl_q2.40u.paper-j1-logical1-read
+  logical0_read: paper_sl_q2.40u.paper-j0-logical0-read
+  disposition: INHERITED_NONCANONICAL_LOGICAL0
+lineage_edges:
+- parent: paper_sl_l0.logical1-read
+  child: width.phase_b.12ps.logical1_read
+- parent: paper_sl_l0.logical0-read
+  child: width.phase_b.12ps.logical0_read
+- parent: paper_sl_l0.logical1-read
+  child: paper_sl_q1.paper-j1-logical1-read
+- parent: paper_sl_l0.logical0-read
+  child: paper_sl_q1.paper-j0-logical0-read
+- parent: paper_sl_l0.logical1-read0-control
+  child: paper_sl_q1.paper-j1-logical1-read0-control
+- parent: paper_sl_l0.logical0-read0-control
+  child: paper_sl_q1.paper-j0-logical0-read0-control
+- parent: paper_sl_q1.paper-j1-logical1-read
+  child: paper_sl_q2.37p5u.paper-j1-logical1-read
+- parent: paper_sl_q1.paper-j0-logical0-read
+  child: paper_sl_q2.37p5u.paper-j0-logical0-read
+- parent: paper_sl_q1.paper-j1-logical1-read0-control
+  child: paper_sl_q2.37p5u.paper-j1-logical1-read0-control
+- parent: paper_sl_q1.paper-j0-logical0-read0-control
+  child: paper_sl_q2.37p5u.paper-j0-logical0-read0-control
+- parent: paper_sl_q1.paper-j1-logical1-read
+  child: paper_sl_q2.40u.paper-j1-logical1-read
+- parent: paper_sl_q1.paper-j0-logical0-read
+  child: paper_sl_q2.40u.paper-j0-logical0-read
+- parent: paper_sl_q1.paper-j1-logical1-read0-control
+  child: paper_sl_q2.40u.paper-j1-logical1-read0-control
+- parent: paper_sl_q1.paper-j0-logical0-read0-control
+  child: paper_sl_q2.40u.paper-j0-logical0-read0-control
+- parent: paper_sl_q2.40u.paper-j1-logical1-read
+  child: paper_sl_q3.paper-j1-logical1-read
+- parent: paper_sl_q2.40u.paper-j0-logical0-read
+  child: paper_sl_q3.paper-j0-logical0-read
+- parent: paper_sl_q2.40u.paper-j1-logical1-read0-control
+  child: paper_sl_q3.paper-j1-logical1-read0-control
+- parent: paper_sl_q2.40u.paper-j0-logical0-read0-control
+  child: paper_sl_q3.paper-j0-logical0-read0-control
+- parent: paper_sl_q2.40u.paper-j1-logical1-read
+  child: paper_sl_q4.paper-j1-logical1-read
+- parent: paper_sl_q2.40u.paper-j0-logical0-read
+  child: paper_sl_q4.paper-j0-logical0-read
+- parent: paper_sl_q2.40u.paper-j1-logical1-read0-control
+  child: paper_sl_q4.paper-j1-logical1-read0-control
+- parent: paper_sl_q2.40u.paper-j0-logical0-read0-control
+  child: paper_sl_q4.paper-j0-logical0-read0-control
+- parent: paper_sl_q2.40u.paper-j1-logical1-read
+  child: paper_sl_q5.paper-j1-logical1-read
+- parent: paper_sl_q2.40u.paper-j0-logical0-read
+  child: paper_sl_q5.paper-j0-logical0-read
+- parent: paper_sl_q2.40u.paper-j1-logical1-read0-control
+  child: paper_sl_q5.paper-j1-logical1-read0-control
+- parent: paper_sl_q2.40u.paper-j0-logical0-read0-control
+  child: paper_sl_q5.paper-j0-logical0-read0-control
+- parent: paper_sl_q2.40u.paper-j1-logical1-read
+  child: paper_sl_q6.paper-j1-logical1-read
+- parent: paper_sl_q2.40u.paper-j0-logical0-read
+  child: paper_sl_q6.paper-j0-logical0-read
+- parent: paper_sl_q2.40u.paper-j1-logical1-read0-control
+  child: paper_sl_q6.paper-j1-logical1-read0-control
+- parent: paper_sl_q2.40u.paper-j0-logical0-read0-control
+  child: paper_sl_q6.paper-j0-logical0-read0-control

@@ -1,0 +1,66 @@
+{
+  "title": "BJL2 margin vs canonical JSL plateau width",
+  "x_label": "JSL plateau width (ps)",
+  "panels": [
+    {
+      "title": "BJL2 activity range",
+      "column": "read1_bjl2_activity_p2p_turns",
+      "y_label": "read1 / read0 activity (turn)",
+      "series": [
+        {
+          "label": "read1",
+          "csv": "../width-margin-summary.csv",
+          "column": "read1_bjl2_activity_p2p_turns"
+        },
+        {
+          "label": "read0",
+          "csv": "../width-margin-summary.csv",
+          "column": "read0_bjl2_activity_p2p_turns",
+          "line": {
+            "dash": "dash"
+          }
+        }
+      ]
+    },
+    {
+      "title": "BJL2 largest monotonic segment",
+      "column": "read1_bjl2_largest_segment_turns",
+      "y_label": "largest segment (turn)",
+      "series": [
+        {
+          "label": "read1",
+          "csv": "../width-margin-summary.csv",
+          "column": "read1_bjl2_largest_segment_turns"
+        },
+        {
+          "label": "read0",
+          "csv": "../width-margin-summary.csv",
+          "column": "read0_bjl2_largest_segment_turns",
+          "line": {
+            "dash": "dash"
+          }
+        }
+      ]
+    },
+    {
+      "title": "same-segment voltage area",
+      "column": "read1_bjl2_area_phi0",
+      "y_label": "∫Vdt/Φ0 (turn-equivalent)",
+      "series": [
+        {
+          "label": "read1",
+          "csv": "../width-margin-summary.csv",
+          "column": "read1_bjl2_area_phi0"
+        },
+        {
+          "label": "read0",
+          "csv": "../width-margin-summary.csv",
+          "column": "read0_bjl2_area_phi0",
+          "line": {
+            "dash": "dash"
+          }
+        }
+      ]
+    }
+  ]
+}

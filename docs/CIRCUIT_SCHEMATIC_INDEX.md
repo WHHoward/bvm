@@ -1,6 +1,6 @@
 # CIRCUIT SCHEMATIC INDEX
 
-基线 HEAD：`3e714f3fdd593511971136ee470ec0418d775d24`。本页将论文级电路图、实验注释图和连接调试图分开。
+基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。本页将论文级电路图、实验注释图和连接调试图分开。
 
 ## Canonical BVM：storage/readout source baseline
 
@@ -630,6 +630,29 @@
 
 ---
 
+## 历史 JSL width bracket：12 ps W* baseline
+
+**Topology ID**：`PAPER_JSL_TO_FROZEN_QB`
+
+**状态**：`PUBLICATION_SCHEMATIC_VALIDATED`；signature=`cbe5a50d8d737fac`…
+
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
+- representative deck：`test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/inputs/phase-c/wstar12-logical1-read.cir`
+
+共享实验：
+- `test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824`
+- `test/exploration/paper-sl-q1-20260824`
+- `test/exploration/paper-sl-q2-20260824`
+- `test/exploration/q3-l1-routing-closure-20260824`
+- `test/exploration/paper-sl-q3-l1-routing-closure-20260824`
+- `test/exploration/paper-sl-q4-l1-l2-placement-20260824`
+- `test/exploration/paper-sl-q5-l1-l2-factorial-20260824`
+- `test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824`
+
+---
+
 ## PAPER-SL-L0：12×320 µA JSL external load
 
 **Topology ID**：`TOPOLOGY_345d48a6be`
@@ -643,27 +666,6 @@
 
 共享实验：
 - `test/exploration/paper-sl-l0-20260824`
-
----
-
-## PAPER-SL-Q1：paper-JSL waveform → frozen scaled QB
-
-**Topology ID**：`PAPER_JSL_TO_FROZEN_QB`
-
-**状态**：`PUBLICATION_SCHEMATIC_VALIDATED`；signature=`cbe5a50d8d737fac`…
-
-- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
-- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
-- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
-- representative deck：`test/exploration/paper-sl-q1-20260824/inputs/paper-j1-logical1-read.cir`
-
-共享实验：
-- `test/exploration/paper-sl-q1-20260824`
-- `test/exploration/paper-sl-q2-20260824`
-- `test/exploration/q3-l1-routing-closure-20260824`
-- `test/exploration/paper-sl-q3-l1-routing-closure-20260824`
-- `test/exploration/paper-sl-q4-l1-l2-placement-20260824`
-- `test/exploration/paper-sl-q5-l1-l2-factorial-20260824`
 
 ---
 

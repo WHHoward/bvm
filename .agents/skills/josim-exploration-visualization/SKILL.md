@@ -154,6 +154,35 @@ experiment-to-plot mapping in `EXPLORATION_FLOW_INDEX` or
     `schematic_alignment`, `index_alignment`, and `phase_semantics` all
     `PASS`.
 
+## BVM READ protocol semantics
+
+For BVM readout visualizations and experiment metadata, use these four
+formal roles rather than inferring logical state from a directory name:
+
+- `logical1_read`: positive stored state plus the canonical positive READ
+  protocol (WL and SE together, with the registered timing and load).
+- `logical0_read`: negative stored state plus the *same* canonical positive
+  READ protocol. It is not a negative-polarity read and it is not a WL-only
+  diagnostic.
+- `logical1_no_read_control` and `logical0_no_read_control`: stored-state
+  controls with READ disabled, using the registered no-read fixture.
+
+Every paired logical1/logical0 result must expose the READ waveform
+signature: WL/SE amplitude, polarity, onset, plateau width, rise/fall, and
+relevant external load. If any of these differ, mark the pair
+`READ_PROTOCOL_MISMATCH`; do not present it as canonical read1/read0
+discrimination. A negative initialization followed by WL-only drive is a
+diagnostic case and must be labelled `WL_ONLY_DIAGNOSTIC`, not
+`logical0_read`.
+
+When a corrected canonical case supersedes an old raw lineage, preserve the
+old files and their links, but label the old case as noncanonical or
+superseded. Descendant receiver replays inherit that provenance boundary:
+their read1 and same-read1 parameter comparisons may remain useful, while
+claims requiring canonical logical0 discrimination must be downgraded until
+the corrected logical0/control is replayed. A phase plot must display the
+case role and protocol status in its metadata and caption.
+
 The legacy `update_indexes.py` and Graphviz topology helpers are not allowed
 to become the final V2 renderer. Use them only for historical/debug
 provenance, or replace them with the manifest-driven builders.

@@ -1,6 +1,6 @@
 # EXPLORATION FLOW INDEX V2
 
-生成基线 HEAD：`3e714f3fdd593511971136ee470ec0418d775d24`。
+生成基线 HEAD：`576ca9d32b15c99f8c35c4271336ffa079664b64`。
 
 本页由 `docs/VISUALIZATION_ALIGNMENT_MANIFEST.yaml` 生成，展示科研路线；结果图、controls、source/reference 和电路入口均保持角色区分。
 
@@ -1002,6 +1002,32 @@
 
 ---
 
+## 历史 JSL width bracket：12 ps W* baseline
+
+**实验 ID**：`test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824`
+
+**做了什么**：在旧 lineage 中比较 canonical BVM/12×JSL 的 READ plateau，并把 12 ps source waveform replay 到 frozen scaled QB。
+
+**关键结果**：旧报告支持 12 ps source-side margin improvement，但 Phase C 仍为 subthreshold；其 logical0 source provenance 不是当前 canonical WL+SE logical0，因此仅作历史/同-read1 reference。
+
+**当前状态**：`WIDTH_IMPROVES_QB_MARGIN_BUT_SUBTHRESHOLD` / alignment=`NO_WAVEFORM_VISUALIZATION_REQUIRED`
+
+**结论边界**：不得用该旧 logical0 lineage 支撑新的 canonical logical0 discrimination claim；本轮新的 READ semantics audit 已提供修正 12 ps logical0 与 13/14/15 ps bracket。
+
+**推荐先看**：
+- 【历史参考】 [test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-replay-comparison.html](../test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-replay-comparison.html)
+- 【历史参考】 [test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-current-comparison.html](../test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/9ps-vs-Wstar-qb-current-comparison.html)
+- 【历史参考】 [test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/sl-readout-current-comparison.html](../test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/plots/sl-readout-current-comparison.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/REPORT.md](../test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/REPORT.md)
+
+---
+
 ## PAPER-SL-L0：12×320 µA JSL external load
 
 **实验 ID**：`test/exploration/paper-sl-l0-20260824`
@@ -1224,6 +1250,33 @@
 - 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/topology/publication/Q5_TO_STANDARD_JTL/connectivity-debug.svg)
 
 **正式报告**：[test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/REPORT.md](../test/exploration/paper-sl-q6-qb-jtl-compatibility-20260824/REPORT.md)
+
+---
+
+## BVM READ semantics audit + JSL width bracket
+
+**实验 ID**：`test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824`
+
+**做了什么**：审计 logical1/logical0/READ=0 的正式语义，修正 canonical logical0，并把 12/13/14/15 ps 的实际 12-JSL source current 原样 replay 到 frozen scaled QB。
+
+**关键结果**：READ audit PASS；修正后的 12 ps logical0 为 zero-event；ideal replay 首个 1/0/0 candidate 在 13 ps（BJL2≈1.016 turn），14/15 ps为已执行的 post-candidate observations。
+
+**当前状态**：`IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE` / alignment=`ALIGNED`
+
+**结论边界**：这只是 source waveform→frozen QB 的 ideal replay candidate，不是 physical BVM→12JSL→QB，也不是 JTL/T1 delivery；旧 PAPER-SL logical0 lineage 的 canonical read0 claims 被降级。
+
+**推荐先看**：
+- 【关键对比图】 [test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/qb-replay-width-comparison.html](../test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/qb-replay-width-comparison.html)
+- 【源波形参考】 [test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/source-width-comparison.html](../test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/source-width-comparison.html)
+- 【关键对比图】 [test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/bjl2-margin-vs-width.html](../test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/bjl2-margin-vs-width.html)
+- 【关键对比图】 [test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html](../test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/plots/read-semantics-audit.html)
+
+**电路**：
+- 【论文级电路图】 [schematic.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic.svg)
+- 【实验注释电路图】 [schematic-annotated.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/schematic-annotated.svg)
+- 【网表连接调试图】 [connectivity-debug.svg](../test/exploration/paper-sl-q1-20260824/topology/publication/PAPER_JSL_TO_FROZEN_QB/connectivity-debug.svg)
+
+**正式报告**：[test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/REPORT.md](../test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/REPORT.md)
 
 ---
 

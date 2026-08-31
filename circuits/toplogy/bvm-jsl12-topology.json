@@ -1,0 +1,116 @@
+{
+  "schema": "josim-drawio-topology-v1",
+  "topology_id": "BVM_JSL12_LOAD",
+  "status": "STRUCTURAL_MAPPING_CHECKED",
+  "generated_at": "2026-08-31T17:54:00+08:00",
+  "source_commit": "1a56b956264520553029284f6b50c08da85b3076",
+  "source_deck": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/13/logical1_read.cir",
+  "source_deck_sha256": "1a07bdb7690a5deb046ab95e6246c3a88978a99f25cf66c7373ebf3566115b0b",
+  "includes": [
+    {
+      "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    {
+      "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    },
+    {
+      "path": "test/exploration/physical-bvm-jsl12-qb-sfq-closure-v1-20260824/inputs/bq_cell.cir",
+      "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2"
+    }
+  ],
+  "pages": [
+    "Overview",
+    "BVM internal",
+    "12JJ load boundary"
+  ],
+  "bvm_subcircuit": {
+    "name": "BVM",
+    "ports": ["WL", "BL", "SE", "SL"],
+    "canonical_path": "circuits/bvm/bvm_cell.cir",
+    "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+    "elements": [
+      {"name": "R_WL", "kind": "R", "nodes": ["WL", "n_wl_0"], "value": "20.0"},
+      {"name": "L_PWL", "kind": "L", "nodes": ["n_wl_0", "N1"], "value": "0.5P"},
+      {"name": "R_BL", "kind": "R", "nodes": ["BL", "n_bl_0"], "value": "20.0"},
+      {"name": "L_PBL", "kind": "L", "nodes": ["n_bl_0", "N1"], "value": "0.5P"},
+      {"name": "B_JM1", "kind": "JJ", "nodes": ["N1", "n_jm1o"], "model": "jjmit", "area": 1.2},
+      {"name": "R_JM1", "kind": "R", "nodes": ["N1", "n_jm1o"], "value": "6"},
+      {"name": "L_M1", "kind": "L", "nodes": ["n_jm1o", "0"], "value": "12.5P"},
+      {"name": "L_M2", "kind": "L", "nodes": ["N1", "n_jm2i"], "value": "24.5P"},
+      {"name": "B_JM2", "kind": "JJ", "nodes": ["n_jm2i", "N2"], "model": "jjmit", "area": 1.4},
+      {"name": "L_M3", "kind": "L", "nodes": ["N2", "N5"], "value": "8.5P"},
+      {"name": "L_PM", "kind": "L", "nodes": ["N5", "0"], "value": "0.5P"},
+      {"name": "L_S1", "kind": "L", "nodes": ["N2", "n_js1p"], "value": "0.5P"},
+      {"name": "B_JS1", "kind": "JJ", "nodes": ["n_js1p", "N3"], "model": "jjmit", "area": 0.74},
+      {"name": "R_SE", "kind": "R", "nodes": ["SE", "n_se_0"], "value": "20.0"},
+      {"name": "L_PSE", "kind": "L", "nodes": ["n_se_0", "N3"], "value": "0.5P"},
+      {"name": "R_S", "kind": "R", "nodes": ["N3", "N6"], "value": "3.0"},
+      {"name": "L_S3", "kind": "L", "nodes": ["N3", "N6"], "value": "0.5P"},
+      {"name": "L_S2", "kind": "L", "nodes": ["N5", "n_js2p"], "value": "0.5P"},
+      {"name": "B_JS2", "kind": "JJ", "nodes": ["n_js2p", "N6"], "model": "jjmit", "area": 0.74},
+      {"name": "L_PSL", "kind": "L", "nodes": ["N6", "n_psl"], "value": "0.5P"},
+      {"name": "R_SL", "kind": "R", "nodes": ["n_psl", "N8"], "value": "12.0"},
+      {"name": "L_SL", "kind": "L", "nodes": ["N8", "SL"], "value": "0.4P"}
+    ]
+  },
+  "top_level_boundary": {
+    "elements": [
+      {"name": "XBVM1", "kind": "X", "nodes": ["WL1", "BL1", "SE1", "SL1"], "subcircuit": "BVM"},
+      {"name": "XBQ", "kind": "X", "nodes": ["IN", "OUT", "IBIAS"], "subcircuit": "BQ"},
+      {"name": "R_LOAD", "kind": "R", "nodes": ["OUT", "0"], "value": "10"},
+      {"name": "I_IBIAS", "kind": "I", "nodes": ["0", "IBIAS"], "waveform": "pwl"},
+      {"name": "I_WL1", "kind": "I", "nodes": ["0", "WL1"], "waveform": "pwl"},
+      {"name": "I_BL1", "kind": "I", "nodes": ["0", "BL1"], "waveform": "pwl"},
+      {"name": "I_SE1", "kind": "I", "nodes": ["0", "SE1"], "waveform": "pwl"}
+    ]
+  },
+  "load_chain": {
+    "name": "JSL12",
+    "model": "jjmit",
+    "area": 3.2,
+    "ground_termination": false,
+    "elements": [
+      {"name": "B_LD1", "nodes": ["SL1", "njsl1"]},
+      {"name": "B_LD2", "nodes": ["njsl1", "njsl2"]},
+      {"name": "B_LD3", "nodes": ["njsl2", "njsl3"]},
+      {"name": "B_LD4", "nodes": ["njsl3", "njsl4"]},
+      {"name": "B_LD5", "nodes": ["njsl4", "njsl5"]},
+      {"name": "B_LD6", "nodes": ["njsl5", "njsl6"]},
+      {"name": "B_LD7", "nodes": ["njsl6", "njsl7"]},
+      {"name": "B_LD8", "nodes": ["njsl7", "njsl8"]},
+      {"name": "B_LD9", "nodes": ["njsl8", "njsl9"]},
+      {"name": "B_LD10", "nodes": ["njsl9", "njsl10"]},
+      {"name": "B_LD11", "nodes": ["njsl10", "njsl11"]},
+      {"name": "B_LD12", "nodes": ["njsl11", "IN"]}
+    ]
+  },
+  "display_boundary": {
+    "displayed": [
+      "BVM internal elements",
+      "B_LD1...B_LD12",
+      "XBQ",
+      "R_LOAD",
+      "I_IBIAS",
+      "I_WL1",
+      "I_BL1",
+      "I_SE1"
+    ],
+    "omitted_from_first_figure": [
+      "BQ internal elements",
+      ".print probe directives",
+      "full PWL sample list",
+      "expanded jjmit model parameters"
+    ],
+    "scientific_status": "structural aid only; not a physical Gate"
+  },
+  "checks": {
+    "bvm_element_count": 22,
+    "load_junction_count": 12,
+    "load_chain_is_continuous": true,
+    "load_chain_ends_at_bq_in": true,
+    "mutual_coupling_in_selected_deck": false,
+    "all_drawn_elements_have_netlist_mapping": true
+  }
+}

@@ -23,7 +23,7 @@
 - JJ model SHA-256：
   `19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336`
 - source Git HEAD：`1a56b956264520553029284f6b50c08da85b3076`
-- 生成时间：`2026-08-31T17:54:00+08:00`
+- 生成/最近修改时间：`2026-08-31T18:11:14+08:00`
 
 代表 deck 的连接边界为：
 
@@ -45,6 +45,15 @@ XBVM1(WL1, BL1, SE1, SL1)
 2. `BVM internal`：展开 `circuits/bvm/bvm_cell.cir` 中的 22 个实际元件，
    包括 S-loop、R-loop、WL/BL/SE 输入和 SL 输出链。
 3. `12JJ load boundary`：展开 `B_LD1`…`B_LD12` 的每个端点和器件参数。
+
+## 符号约定
+
+- `R_*` 使用 draw.io 电气库的电阻符号（锯齿）。
+- `L_*` 使用 draw.io 电气库的电感符号（线圈）；垂直支路的符号已旋转为竖直方向。
+- `B_*` 使用圆圈内叉号表示 Josephson junction，并在符号内保留实例名、`jjmit`
+  模型和 area 参数；draw.io 标准电气库没有专用 Josephson junction 图元。
+- `I_*` 使用 draw.io 电气库的电流源符号。
+- BVM/QB、S-loop/R-loop 和负载范围框只是子电路/功能分组边界，不代表离散电路元件。
 
 详细 `.print` 探针、完整 PWL 时间点和 QB 内部元件没有塞进第一张主拓扑图；
 它们仍保留在来源 deck 中。图中“关键测量点”只表示探针位置，不把局部相位

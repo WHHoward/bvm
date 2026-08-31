@@ -1,0 +1,99 @@
+schema_version: bvm-read-semantics-jsl-width-v1
+run_id: bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824
+tier: Exploration
+parent_head: 576ca9d32b15c99f8c35c4271336ffa079664b64
+scientific_question: >-
+  After correcting the logical0 READ semantics, does a local 12/13/14/15 ps
+  canonical WL+SE plateau bracket produce a selective exactly-one event in
+  the frozen scaled QB replay?
+read_semantics_manifest: docs/BVM_READ_SEMANTICS_MANIFEST.yaml
+read_semantics_validator: scripts/verify_bvm_read_semantics.py
+canonical_bvm: circuits/bvm/bvm_cell.cir
+canonical_bvm_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+solver:
+  path: build/josim-cli
+  version: v2.7.2837d13
+  sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+models:
+  bvm_jjmit_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  qb_cell_sha256: 5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2
+frozen:
+  jsl: "12 external series jjmit AREA=3.2 junctions from SL1 to ground"
+  qb: "scaled Q0/Q1 QB; BJs/BJL1/BJL2=.50/.36/.54; IBIAS=35uA; RLOAD=10ohm"
+  timestep_ps: 0.0125
+  stop_ps: 170
+  read_amplitude_uA: 100
+  read_polarity: positive_WL_and_SE
+  widths_ps: [12, 13, 14, 15]
+  controls: reused_exact_external_12JSL_no_read_controls
+required_cases:
+  - logical1_read
+  - logical0_read
+  - logical1_no_read_control
+  - logical0_no_read_control
+phase_semantics:
+  name: continuous_absolute
+  axis: continuous_phi_over_2pi_turns
+  definition: raw JoSIM P(t)/(2*pi), not an SFQ counter
+event_rule:
+  phase: same_JJ_continuous_monotonic_segment
+  minimum_turns: 1.0
+  voltage_area: same_segment_integral_Vdt_over_Phi0
+  post: bounded_retrap_and_no_second_complete_event
+physical_cases:
+  - id: 12ps_logical0_read
+    input: inputs/12ps-canonical/logical0-read.cir
+    raw: raw/12ps-canonical/logical0-read/run-01.csv
+    role: logical0_read
+    protocol: canonical_negative_init_positive_WL_SE_read
+    correction: true
+    reused_logical1_raw: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-b/12jsl-12ps/logical1-read/run-01.csv
+  - id: 13ps_logical1_read
+    input: inputs/13ps/logical1-read.cir
+    raw: raw/13ps/logical1-read/run-01.csv
+    role: logical1_read
+  - id: 13ps_logical0_read
+    input: inputs/13ps/logical0-read.cir
+    raw: raw/13ps/logical0-read/run-01.csv
+    role: logical0_read
+  - id: 14ps_logical1_read
+    input: inputs/14ps/logical1-read.cir
+    raw: raw/14ps/logical1-read/run-01.csv
+    role: logical1_read
+  - id: 14ps_logical0_read
+    input: inputs/14ps/logical0-read.cir
+    raw: raw/14ps/logical0-read/run-01.csv
+    role: logical0_read
+  - id: 15ps_logical1_read
+    input: inputs/15ps/logical1-read.cir
+    raw: raw/15ps/logical1-read/run-01.csv
+    role: logical1_read
+  - id: 15ps_logical0_read
+    input: inputs/15ps/logical0-read.cir
+    raw: raw/15ps/logical0-read/run-01.csv
+    role: logical0_read
+reused_source_cases:
+  12ps_logical1_read:
+    raw: test/exploration/bvm-jsl-read-width-to-qb-sfq-v1-20260824/raw/phase-b/12jsl-12ps/logical1-read/run-01.csv
+    protocol_status: canonical_logical1_read
+  no_read_controls:
+    provenance: reference/control-provenance.yaml
+replay_source_manifest: reference/source-manifest.json
+replay_raw_root: raw/replay
+verdicts:
+  read_semantics_audit: PASS
+  corrected_12ps_logical0: ZERO_COMPLETE_EVENT
+  width_bracket: IDEAL_REPLAY_SELECTIVE_ONE_SFQ_CANDIDATE
+  first_selective_width_ps: 13
+  physical_bvm_jsl_qb: NOT_RUN
+  jtl_t1: NOT_RUN
+execution_notes:
+  - 13 ps was the first registered read1/read0/control 1/0/0 replay candidate.
+  - 14/15 ps raw runs were already executed within the authorized bounded bracket
+    before the intermediate candidate analysis; they are retained as
+    post-candidate observations and were not used to choose the 13 ps point.
+analysis:
+  script: analysis/analyze_widths.py
+  metrics: analysis/metrics.json
+  report: REPORT.md
+  legacy_fast_events_used: false

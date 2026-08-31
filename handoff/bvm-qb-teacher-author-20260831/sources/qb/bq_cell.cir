@@ -1,0 +1,31 @@
+* BQ Buffer Cell v2 - IC scaled for BVM output (~59uA).
+* JL1/JL2 both overdamped (Bc~1).
+*
+* BJs  IC=50uA  (area=0.5)  - triggers on BVM SL + bias
+* BJL1 IC=36uA  (area=0.36) - DC bias path, RJ1=33 (Bc_Re~1)
+* BJL2 IC=54uA  (area=0.54) - output isolation, RJ2=22 (Bc_Re~1)
+*
+* HISTORICAL NOTE (superseded for current phase/area evidence): standalone tests
+* used IBias=35uA, Iin=90uA pulse, Rload=10 and were described as "5/5 correct".
+* Current QB-Q0 strict re-audit instead finds 68.4uA -> bounded exactly-one BJL2
+* reference and 90uA -> multi-event (~2 turns per pulse). Do not cite this note
+* as an exactly-one or downstream-SFQ result; see JTL_TRANSPORT_GATE_V1.
+*
+* NOTE: For BVM+BQ chain, additional input bias (~15uA) may be
+*   needed to forward-bias BJs. BVM SL output impedance (~15ohm)
+*   limits current delivery. See test/final/single_bvm_qb/ for details.
+
+.subckt BQ IN OUT IB
+
+Lin IN 1 0.8p
+L0 4 OUT 1.323p
+L1 2 3 3.91p
+L2 3 4 3.91p
+BJs 1 2 jjmit area=0.5
+BJL1 2 0 jjmit area=0.36
+RJ1 2 0 33
+BJL2 4 0 jjmit area=0.54
+RJ2 4 0 22
+RB IB 3 6
+
+.ends BQ

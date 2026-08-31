@@ -1,0 +1,14 @@
+# QB-Q1 mechanical QA
+
+- Raw files checked: 4
+- Samples per raw file: 13,599
+- Time origin/end: 0 to 169.9875 ps
+- Requested transient step: 0.0125 ps
+- Common deterministic output gap: 1.8375 to 1.8625 ps (0.025 ps)
+- Gap location: before the [94,130) ps activity window
+- Required phase/voltage/current/source-guard columns: present
+- Numeric finiteness: PASS
+- Analysis script: exit code 0
+- `git diff --check`: PASS before checkpoint
+
+The common output gap is retained as a raw-artifact fact; it is not silently treated as uniform timestep data.

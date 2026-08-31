@@ -1,0 +1,15 @@
+# QB-Q1 execution commands
+# Working directory: test/exploration/qb-q1-canonical-bvm-scaled-qb-compatibility-20260824
+# JoSIM: ../../../build/josim-cli -m
+# All runs used timeout --kill-after=10s 300s and .tran 0.0125p 170p.
+
+# Required first control; it completed with exit code 0 and no complete QB event.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical1-read0-control.csv inputs/logical1-read0-control.cir
+
+# Remaining matched cases, run only after the first control was bounded.
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical1-read.csv inputs/logical1-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical0-read.csv inputs/logical0-read.cir
+timeout --kill-after=10s 300s ../../../build/josim-cli -m -o raw/logical0-read0-control.csv inputs/logical0-read0-control.cir
+
+# Analysis-only command; it does not rerun JoSIM.
+python3 analysis/analyze_qb_q1.py

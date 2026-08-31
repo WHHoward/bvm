@@ -1,0 +1,14 @@
+# PAPER-SL-Q1：paper-JSL replay → frozen scaled QB publication schematic
+
+这是一张由实际 representative deck 生成的论文级语义原理图，不是 Graphviz connectivity graph。
+
+- topology_id：`PAPER_JSL_TO_FROZEN_QB`
+- representative deck：`test/exploration/paper-sl-q1-20260824/inputs/paper-j1-logical1-read.cir`
+- topology signature：`cbe5a50d8d737facd87f517242610f53b116cdaa126b6d553887a94fef2a3d14`
+- clean：`schematic.svg/png/pdf`
+- annotated：`schematic-annotated.svg/png/pdf`
+- debug/provenance：`connectivity-debug.svg`（若源目录已有）
+
+## Display boundary
+
+内部 flattened node name、probe-only directive、完整 jjmit model 字段未塞入主图；它们没有从 simulation deck 删除。所有 top-level 电气元件都在 `schematic.json` 中登记并映射到功能区域或外部符号，semantic 与 geometric validation 必须为 PASS。

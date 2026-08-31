@@ -1,0 +1,78 @@
+schema_version: paper-sl-l0-v1
+run_id: paper-sl-l0-20260824
+created_at: '2026-08-24T03:26:38+08:00'
+mode: exploratory
+study_phase: PAPER-SL-L0
+parent_head: 5ea93b13add28b78d6366282ad54a632c4c92eb1
+
+research_question: >-
+  Does the paper-motivated twelve-junction sense-line load remain
+  non-switching under the canonical BVM read matrix while preserving
+  logical read separation and storage guards?
+
+topology:
+  interpretation: external_series_jsl_load
+  bvm_subcircuit_modified: false
+  canonical_internal_output: 'L_PSL -> R_SL=12 ohm -> L_SL=0.4 pH -> SL'
+  stack: 'SL -> B_LD1 -> ... -> B_LD12 -> ground'
+  jsl_area: 3.2
+  jsl_count: 12
+  jsl_ic_uA: 320
+  far_side_node: NJSL11
+  qb_connected: false
+  jtl_connected: false
+  t1_connected: false
+
+stimulus:
+  source_fixture: test/exploration/bvm-internal-readout-20260819/inputs
+  canonical_read: '+100 uA WL+SE, 96-105 ps for both logical states'
+  logical1_init: '+100 uA WL+BL, 11-20 ps'
+  logical0_init: '-100 uA WL+BL, 11-20 ps'
+  read0_controls: true
+  timestep_ps: 0.0125
+  stop_time_ps: 170.0
+
+provenance:
+  solver: build/josim-cli
+  solver_version: v2.7.2837d13
+  solver_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  paper_pdf_sha256: f26bb2d2e7c49011283a4428c60ac3e779f5396cecc5197084f8439d43fd88d6
+  canonical_bvm_sha256: ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4
+  repository_jjmit_sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  local_jjmit_sha256: 7afca1762aa314dc2589d86b69cc9e3bfe471f28b83bb5fc3eda45fef50b3022
+
+cases:
+  - id: logical1-read
+    input: inputs/logical1-read.cir
+    raw: raw/logical1-read/run-01.csv
+    canonical_baseline: test/exploration/bvm-internal-readout-20260819/raw/pos-read-single/run-01.csv
+    raw_sha256: 6ddc85050294fd38be0f55602af3517ec6bcfcd00794128f69dee545bf82ef65
+  - id: logical0-read
+    input: inputs/logical0-read.cir
+    raw: raw/logical0-read/run-01.csv
+    canonical_baseline: test/exploration/bvm-internal-readout-20260819/raw/neg-init-pos-read/run-01.csv
+    raw_sha256: 8b9c1d10d4547db0fcb8cd172eea72d4e917aa91b124b4759bd8e1405b843951
+  - id: logical1-read0-control
+    input: inputs/logical1-read0-control.cir
+    raw: raw/logical1-read0-control/run-01.csv
+    canonical_baseline: test/exploration/bvm-internal-readout-20260819/raw/pos-control/run-01.csv
+    raw_sha256: 8b714f937d68f0e04a1319598d4758feb686d5464cb3c9726cd4d34b061f7a82
+  - id: logical0-read0-control
+    input: inputs/logical0-read0-control.cir
+    raw: raw/logical0-read0-control/run-01.csv
+    canonical_baseline: test/exploration/bvm-internal-readout-20260819/raw/neg-control/run-01.csv
+    raw_sha256: f30f12232214401d02d11ac0e22e88d91d1ac501442d3013bc1bd879ecad08ae
+
+analysis:
+  script: analysis/analyze_paper_sl_l0.py
+  metrics: analysis/metrics.json
+  summary_csv: analysis/jsl-summary.csv
+  phase_units: raw P radians; turns = continuous delta/(2*pi)
+  voltage_area: same JJ and same monotonic segment, actual CSV time, divided by Phi0
+  legacy_fast_events_used: false
+
+verdict:
+  primary: PAPER_JSL_LOAD_VALID
+  scope: bounded external-series-load fixture only
+  next_boundary: loaded-waveform ideal replay into frozen scaled QB
+

@@ -1,0 +1,97 @@
+{
+  "schema_version": "physical-bvm-jsl12-qb-v1",
+  "parent_head": "52fdd7212e44dff1d94a6f64b21a31f9927ec4c3",
+  "topology_precheck": "analysis/topology-precheck.json",
+  "solver": {
+    "path": "build/josim-cli",
+    "version": "v2.7.2837d13",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "execution": {
+    "recorded_at": "2026-08-24T22:31:39+08:00",
+    "timestep_ps": 0.0125,
+    "stop_ps": 170.0,
+    "case_count": 8,
+    "roles": [
+      "logical1_read",
+      "logical0_read",
+      "logical1_no_read_control",
+      "logical0_no_read_control"
+    ],
+    "no_new_execution_after_raw_generation": true
+  },
+  "analysis": {
+    "script": "analysis/analyze_physical.py",
+    "metrics": [
+      "continuous_unwrapped_phase",
+      "same_jj_same_segment_voltage_area",
+      "post_retrap",
+      "source_guard",
+      "jsl_series_consistency",
+      "qb_node2_node3_node4_kcl"
+    ],
+    "phase_semantics": "continuous_absolute",
+    "verdict": "PHYSICAL_BACKACTION_PREVENTS_CLOSURE"
+  },
+  "topology": "canonical BVM SL -> B_LD1...B_LD12 -> QB IN; B_LD12 no GND termination",
+  "cases": {
+    "13ps_logical1_read": {
+      "input": "inputs/13/logical1_read.cir",
+      "width_ps": 13,
+      "role": "logical1_read",
+      "sha256": "dece76aa180604a704eee4cc590058917ce27bb7b7ac640b9a5dffc59bbe81e2"
+    },
+    "13ps_logical1_no_read_control": {
+      "input": "inputs/13/logical1_no_read_control.cir",
+      "width_ps": 13,
+      "role": "logical1_no_read_control",
+      "sha256": "cf6902529d4115423fb75a78ef35aff91c85d992ad4cfa36bc6f08a7d262ca79"
+    },
+    "13ps_logical0_read": {
+      "input": "inputs/13/logical0_read.cir",
+      "width_ps": 13,
+      "role": "logical0_read",
+      "sha256": "e7cc641a1c57c42823ca2fc0bd7b643a3af6dc8d2aec53cb28202e0ad237bfd1"
+    },
+    "13ps_logical0_no_read_control": {
+      "input": "inputs/13/logical0_no_read_control.cir",
+      "width_ps": 13,
+      "role": "logical0_no_read_control",
+      "sha256": "ad5a2abb02eacce1dfbfada669730b85483fa34938f18affd0da15c07901737d"
+    },
+    "14ps_logical1_read": {
+      "input": "inputs/14/logical1_read.cir",
+      "width_ps": 14,
+      "role": "logical1_read",
+      "sha256": "e70d8ca6339b48b74102fc23665d36947a79b9d914214c6ffeedd4225905c995"
+    },
+    "14ps_logical1_no_read_control": {
+      "input": "inputs/14/logical1_no_read_control.cir",
+      "width_ps": 14,
+      "role": "logical1_no_read_control",
+      "sha256": "70f52aa493e9b9ee4c89e51d8e1ad14897df6210f6f6277bfca3181ea92a74a1"
+    },
+    "14ps_logical0_read": {
+      "input": "inputs/14/logical0_read.cir",
+      "width_ps": 14,
+      "role": "logical0_read",
+      "sha256": "5130c0c0d31be943d19b98154d5f5d4dbdc2ebbddd96aea04376df09d890be4a"
+    },
+    "14ps_logical0_no_read_control": {
+      "input": "inputs/14/logical0_no_read_control.cir",
+      "width_ps": 14,
+      "role": "logical0_no_read_control",
+      "sha256": "5804700827ebb017ca7a9f020a0d5ea783b8320e0227b69eea0d86d7bc0d3914"
+    }
+  },
+  "raw_sha256": {
+    "13/logical1_read/run-01.csv": "c556fd29176fd25702b48c603d00ac848af43a0e61ebd7ed44b1039841446798",
+    "13/logical0_read/run-01.csv": "d066016c1c91d6ba08f151e5adad77060fd12accf30169c376de61c2bb134045",
+    "13/logical1_no_read_control/run-01.csv": "7167415ec8b1f6959a28c7529716b5d20ebf7506b6d30fd9849de65f9834d237",
+    "13/logical0_no_read_control/run-01.csv": "1492613f8b5af9442758c2b6bdf4de469fbd7dd2c7a2154045a7734999c8a727",
+    "14/logical1_read/run-01.csv": "47c0ac1c8e321ad5751e0d471b82c756c6716db2e750bef6088dd7d60c8f5487",
+    "14/logical0_read/run-01.csv": "1d8715a333c8127194f6dd6da49a5c1e04e8c25a03f3accd8c4ae7a568ddff94",
+    "14/logical1_no_read_control/run-01.csv": "7167415ec8b1f6959a28c7529716b5d20ebf7506b6d30fd9849de65f9834d237",
+    "14/logical0_no_read_control/run-01.csv": "1492613f8b5af9442758c2b6bdf4de469fbd7dd2c7a2154045a7734999c8a727"
+  }
+}

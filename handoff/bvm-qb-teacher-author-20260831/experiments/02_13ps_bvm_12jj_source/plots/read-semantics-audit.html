@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>BVM READ semantics audit</title>
+<style>body{font-family:system-ui,sans-serif;background:#111827;color:#e5e7eb;margin:2rem}h1{font-size:1.5rem}p{max-width:1100px;line-height:1.6}table{border-collapse:collapse;width:100%;font-size:.82rem}th,td{border:1px solid #374151;padding:.45rem;text-align:left;vertical-align:top}th{background:#1f2937;position:sticky;top:0}tr:nth-child(even){background:#172033}.ok{color:#86efac}</style>
+</head><body><h1>BVM READ semantics audit</h1>
+<p><span class="ok">Formal roles:</span> logical1_read = positive stored state + canonical positive WL/SE READ；logical0_read = negative stored state + exactly the same canonical positive READ；logical1/0_no_read_control = READ disabled. WL-only negative initialization is a diagnostic, not canonical logical0.</p>
+<p>本表是 provenance audit，不是 event 计数。旧 PAPER-SL logical0 lineage 保留用于追溯，但不得作为 canonical read0 结果。</p>
+<table><thead><tr><th>case</th><th>role</th><th>fixture</th><th>classification</th><th>protocol</th><th>lineage</th></tr></thead><tbody>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL1_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL0_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>NO_READ_CONTROL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>NO_READ_CONTROL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>NEGATIVE_POLARITY_READ</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL0_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL1_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>NONCANONICAL_WL_ONLY_LOGICAL0_SOURCE</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>NO_READ_CONTROL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>NO_READ_CONTROL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL1_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL0_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL1_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL0_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL1_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL0_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>CANONICAL_LOGICAL1_READ_V1</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>NONCANONICAL_WL_ONLY_LOGICAL0_SOURCE</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td>INHERITED_PROTOCOL</td><td></td><td></td></tr></tbody></table></body></html>

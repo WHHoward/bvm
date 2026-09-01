@@ -1,0 +1,97 @@
+{
+  "analysis_id": "BVM_QB_IDLE_AND_READ_BOUNDARY_STATE_DECOMPOSITION_V1",
+  "recorded_at": "2026-09-01T18:10:19+08:00",
+  "mode": "EXPLORATORY_QUICK",
+  "raw_execution": "EXISTING_RAW_ONLY",
+  "joSIM_run": false,
+  "command": "PYTHONPATH=scripts python3 analysis/analyze_boundary_state.py",
+  "config": "test/exploration/bvm-qb-idle-read-boundary-state-decomposition-v1-20260901/experiment.yaml",
+  "config_sha256": "928d2a965fbbff17052599449ef0280e51302dac0fc0552368f9355221cf819f",
+  "preregistration": "test/exploration/bvm-qb-idle-read-boundary-state-decomposition-v1-20260901/PREREGISTRATION.md",
+  "preregistration_sha256": "252e52ba224c49adf5bb6fa93c04de4825c66677180e237fb59af23b6b9826b4",
+  "parent_reference": {
+    "manifest": "test/exploration/bvm-load-qb-matrix-v1-20260901/manifest.yaml",
+    "manifest_sha256": "be820542508f75a5045449f72a874e650721f23c62980db65df04363e06260fe",
+    "parent_head": "c0b073a4390afd29417fd2935539835ae891710b",
+    "metric_spec": {
+      "path": "docs/research/METRIC_SPEC_V2.md",
+      "version": "2.0.0",
+      "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+    },
+    "metric_spec_hash_verified": true,
+    "inherited_solver": {
+      "path": "build/josim-cli",
+      "version": "v2.7.2837d13",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+    }
+  },
+  "raw_records": {
+    "A_grounded_source_reference": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv.sha256"
+    },
+    "B_ideal_replay_qb": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv.sha256"
+    },
+    "C_physical_bvm_jsl_qb": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv.sha256"
+    }
+  },
+  "windows_ps": {
+    "W0_bias": [
+      2.0,
+      9.0
+    ],
+    "W1_initialization": [
+      10.0,
+      21.0
+    ],
+    "W2_settled_idle": [
+      80.0,
+      90.0
+    ],
+    "W3_read": [
+      95.0,
+      110.0
+    ],
+    "W4_post_read": [
+      110.0,
+      130.0
+    ]
+  },
+  "comparison_rules": {
+    "time_selection": "actual time column, half-open windows [start,end)",
+    "alignment": "exact-grid only; no interpolation",
+    "phase_display": "raw phase in rad divided by 2pi for turns",
+    "difference_convention": "right_minus_left",
+    "local_phase_boundary": "local JJ phase turns are not SFQ received counts",
+    "current_area_boundary": "current-time area is a waveform diagnostic, not an SFQ quantity"
+  },
+  "plot_profile": {
+    "path": "test/exploration/bvm-qb-idle-read-boundary-state-decomposition-v1-20260901/plots/RESULT_OVERVIEW.html",
+    "backend": "scripts/josim-plot2.py",
+    "command_profile": "-t sep_comb -c dark -j 2pi",
+    "style": "CLASSIC_LOCKED",
+    "mode": "compact",
+    "signal_count": 10,
+    "signals": [
+      "I(grounded source · B_LD1)",
+      "I(physical QB · B_LD1)",
+      "P(grounded source · B_JM2)",
+      "P(physical QB · B_JM2)",
+      "P(ideal replay QB · BJS)",
+      "P(physical QB · BJS)",
+      "I(ideal replay QB · L1)",
+      "I(physical QB · L1)",
+      "P(ideal replay QB · BJL1)",
+      "P(physical QB · BJL1)"
+    ],
+    "full_time_grid_exact": true
+  },
+  "integrity_note": "No raw CSV, source sidecar, parent input or science netlist was modified."
+}

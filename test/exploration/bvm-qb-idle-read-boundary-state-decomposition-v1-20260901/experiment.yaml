@@ -1,0 +1,134 @@
+schema_version: BVM_QB_IDLE_AND_READ_BOUNDARY_STATE_DECOMPOSITION_V1
+id: BVM_QB_IDLE_AND_READ_BOUNDARY_STATE_DECOMPOSITION_V1
+date: 2026-09-01
+study_phase: EXPLORATORY
+workflow_stage: QUICK
+raw_execution: EXISTING_RAW_ONLY
+joSIM_run: false
+
+question: >-
+  在固定的13 ps、12x320 JSL与logical1/read条件下，比较接地JSL源参考、理想
+  电流重放QB和物理BVM/JSL/QB三种边界条件，区分QB对BVM初始化、稳定idle状态
+  和READ动态输出的影响。
+
+parent_experiment:
+  path: test/exploration/bvm-load-qb-matrix-v1-20260901
+  manifest: test/exploration/bvm-load-qb-matrix-v1-20260901/manifest.yaml
+  selected_case: 13ps/12x320/logical1_read
+
+cases:
+  - id: A_grounded_source_reference
+    label: GROUNDED-JSL SOURCE REFERENCE
+    topology: canonical BVM -> 12x320 JSL -> ground
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv
+    signal_groups: [bvm_phase, bvm_support]
+  - id: B_ideal_replay_qb
+    label: IDEAL CURRENT REPLAY QB
+    topology: exact existing source waveform -> ideal current replay -> QB
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv
+    signal_groups: [qb_phase, qb_support]
+  - id: C_physical_bvm_jsl_qb
+    label: PHYSICAL BVM/JSL/QB
+    topology: canonical BVM -> 12x320 JSL -> physical QB
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv
+    signal_groups: [bvm_phase, bvm_support, qb_phase, qb_support]
+
+held_fixed:
+  - logical1 initialization semantics
+  - 13 ps READ timing
+  - 12x320 JSL family (12 junctions, IC=320 uA)
+  - canonical BVM and scaled QB topology
+  - QB IBIAS=35 uA
+  - QB output load RLOAD=10 ohm to ground
+  - jjmit model
+  - existing requested timestep=0.0125 ps
+  - existing raw bytes
+
+windows_ps:
+  W0_bias: [2.0, 9.0]
+  W1_initialization: [10.0, 21.0]
+  W2_settled_idle: [80.0, 90.0]
+  W3_read: [95.0, 110.0]
+  W4_post_read: [110.0, 130.0]
+
+reference_check:
+  name: frozen_source_vs_physical_bld1_reference
+  window_ps: [94.0, 130.0]
+  signal: I(B_LD1)
+  note: >-
+    这是父实验已冻结的历史核对窗口，与W3严格分开；电流时间积分是波形
+    诊断量，不是SFQ计数或SFQ面积。
+
+duplicate_occurrence:
+  I(B_LD1): 0
+  I(B_LD12): 0
+
+signal_groups:
+  bvm_phase:
+    - P(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+  bvm_support:
+    - name: I(L_PSL|XBVM1)
+      unit: A
+    - name: I(L_SL|XBVM1)
+      unit: A
+    - name: I(B_LD1)
+      unit: A
+    - name: I(B_LD12)
+      unit: A
+    - name: V(SL1)
+      unit: V
+  qb_phase:
+    - P(BJS|XBQ)
+    - P(BJL1|XBQ)
+    - P(BJL2|XBQ)
+  qb_support:
+    - name: I(L1|XBQ)
+      unit: A
+    - name: I(LIN|XBQ)
+      unit: A
+    - name: I(RB|XBQ)
+      unit: A
+    - name: I(L2|XBQ)
+      unit: A
+
+hypotheses:
+  H-A: persistent QB-bias backfeed changes BVM idle state
+  H-B: QB mainly changes BVM initialization and leaves a persistent stored-state difference
+  H-C: BVM stored state is largely preserved but JSL/QB interface preload differs
+  H-D: pre-READ states are approximately preserved and dominant incompatibility emerges during READ
+
+comparison_rules:
+  time_selection: actual time column, half-open windows [start,end)
+  alignment: exact-grid only; no interpolation
+  phase_display: raw phase in rad divided by 2pi for turns
+  difference_convention: right_minus_left
+  local_phase_boundary: local JJ phase turns are not SFQ received counts
+  current_area_boundary: current-time area is a waveform diagnostic, not an SFQ quantity
+
+visualization:
+  mode: compact
+  style: CLASSIC_LOCKED
+  backend: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_jump: 2pi
+  overview: plots/RESULT_OVERVIEW.html
+  paired_signal_groups:
+    - I(grounded source · B_LD1) vs I(physical QB · B_LD1)
+    - P(grounded source · B_JM2) vs P(physical QB · B_JM2)
+    - P(ideal replay QB · BJS) vs P(physical QB · BJS)
+    - I(ideal replay QB · L1) vs I(physical QB · L1)
+    - P(ideal replay QB · BJL1) vs P(physical QB · BJL1)
+
+outcome:
+  status: QUICK_AMBIGUOUS
+  physical_disposition: INCONCLUSIVE
+  gate: AWAITING_USER_REVIEW
+  stop: STOP
+
+stop_rule: >-
+  本轮只完成固定窗口、共享信号和现有raw的边界分解；不重跑JoSIM，不做步长
+  收敛，不修改BVM/QB/JSL接口，不进入磁耦合、JTL或T1。

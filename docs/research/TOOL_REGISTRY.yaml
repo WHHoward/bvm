@@ -1,0 +1,374 @@
+registry_version: 1
+generated_on: '2026-09-01'
+scope: JoSIM/BVM research tooling inventory and consolidation boundary
+inventory:
+  scanned_globs:
+    - scripts/**/*.py
+    - scripts/**/*.sh
+    - .agents/skills/**/*.py
+    - .agents/skills/**/*.sh
+    - test/exploration/**/*.py
+    - test/exploration/**/*.sh
+    - experiment-local builders, analyzers, plotters, and verifiers
+  counts_at_inventory:
+    scripts_python: 32
+    scripts_shell: 1
+    skill_python_or_shell: 7
+    exploration_python_or_shell: 154
+    exploration_analysis_files: 105
+  classification_rule: Historical experiment-local files remain in place and reproducible; new work reuses CORE/SUPPORTED tools first.
+  authority_rule: A tool can be authoritative for a calculation or rendering operation without being scientific Gate authority.
+entries:
+  - name: bvmtools.raw
+    path: scripts/bvmtools/raw.py
+    status: CORE
+    purpose: Strict JoSIM CSV reader preserving quoted exact labels, duplicate identity, occurrence selection, actual time grid, and basic numerical QA.
+    authoritative_for:
+      - future raw CSV parsing
+      - duplicate column selection semantics
+      - time-grid and NaN/Inf artifact QA
+    not_authoritative_for:
+      - circuit correctness
+      - physical event or system Gate conclusions
+    known_consumers:
+      - scripts/bvm-exp.py
+      - test/tools/test_bvmtools.py
+    overlaps_with:
+      - scripts/sfq_metrics_v2.py internal CSV reader
+      - test/exploration/**/analysis/*.py local readers
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - CSV only in V1; DAT parsing remains with historical plotting scripts.
+    tests:
+      - test/tools/test_bvmtools.py RawReaderTests
+    notes: Duplicate labels require occurrence or all_matches; no silent first-match behavior.
+
+  - name: bvmtools.provenance
+    path: scripts/bvmtools/provenance.py
+    status: CORE
+    purpose: Shared SHA-256, Git snapshot, solver version/hash, and input snapshot helpers.
+    authoritative_for:
+      - provenance fields emitted by future Quick tooling
+    not_authoritative_for:
+      - identity authentication
+      - scientific correctness or convergence
+    known_consumers:
+      - scripts/bvm-exp.py
+    overlaps_with:
+      - scripts/run_exp.sh hash logic
+      - test/exploration/**/analysis/*provenance*.py
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - Include closure discovery remains an experiment-specific responsibility.
+    tests:
+      - test/tools/test_bvmtools.py WaveformAndCompareTests.test_file_provenance_contains_hash_and_size
+    notes: Historical manifests are not rewritten.
+
+  - name: bvmtools.phase
+    path: scripts/bvmtools/phase.py
+    status: CORE
+    purpose: Raw-radian phase preservation, continuous unwrap, rad-to-turn conversion, half-open windows, and deterministic monotonic segmentation.
+    authoritative_for:
+      - future phase scientific primitive
+      - strict-event segment boundaries
+    not_authoritative_for:
+      - fluxoid counts
+      - downstream reception
+      - system Gate
+    known_consumers:
+      - scripts/bvmtools/sfq.py
+      - test/tools/test_bvmtools.py
+    overlaps_with:
+      - test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/reclassify_strict_events.py
+      - test/exploration/jtl-transport-gate-v1-methodology-20260824/analysis/analyze_transport_gate.py
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - Unwrap follows sampled phase; unresolved aliasing cannot be repaired by this tool.
+    tests:
+      - test/tools/test_bvmtools.py PhaseAndStrictEventTests
+    notes: Segmentation intentionally follows the accepted strict-event reclassification semantics.
+
+  - name: bvmtools.sfq
+    path: scripts/bvmtools/sfq.py
+    status: CORE
+    purpose: Same-JJ strict local event calculation using one continuous monotonic segment, phase delta, same-segment voltage area, signed residual, complete segment count, and post boundedness.
+    authoritative_for:
+      - future local strict-event calculation
+      - Anchor A/B tooling regression
+    not_authoritative_for:
+      - automatic single-SFQ system claims
+      - JTL transport or QB/BVM interface success
+      - closed-loop fluxoid count
+    known_consumers:
+      - scripts/bvm-exp.py
+      - test/tools/test_bvmtools.py
+    overlaps_with:
+      - test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/reclassify_strict_events.py
+      - test/exploration/jtl-transport-gate-v1-methodology-20260824/analysis/analyze_transport_gate.py
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - Strict local evidence remains bounded and exploratory unless a separate scientific contract says otherwise.
+    tests:
+      - test/tools/test_bvmtools.py PhaseAndStrictEventTests.test_frozen_anchor_a_and_b
+    notes: WINDOW_PHASE_DISPLACEMENT is not EVENT_COUNT; all input windows are explicit.
+
+  - name: bvmtools.waveform
+    path: scripts/bvmtools/waveform.py
+    status: CORE
+    purpose: Descriptive min/max/p2p/mean/RMS/max_abs, actual-time integrals, areas, extrema times, and optional first-moment centroid.
+    authoritative_for:
+      - shared waveform diagnostics
+    not_authoritative_for:
+      - SFQ quantity or event count
+      - physical Gate
+    known_consumers:
+      - scripts/bvm-exp.py
+    overlaps_with:
+      - local waveform metric helpers in test/exploration/**/analysis/*.py
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - Current-time area is intentionally a waveform diagnostic.
+    tests:
+      - test/tools/test_bvmtools.py WaveformAndCompareTests
+    notes: Centroid definition is documented as integral(t*f(t)dt)/integral(f(t)dt).
+
+  - name: bvmtools.compare
+    path: scripts/bvmtools/compare.py
+    status: CORE
+    purpose: Exact time-grid identity, pointwise difference, max-absolute, RMS, p95, optional correlation and scalar fit.
+    authoritative_for:
+      - shared trace comparison arithmetic
+    not_authoritative_for:
+      - causal or physical interpretation
+      - implicit interpolation
+    known_consumers:
+      - scripts/bvm-exp.py
+    overlaps_with:
+      - scripts/plot-compare.py
+      - local compare_* analysis scripts
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - Default mode rejects mismatched grids; linear interpolation must be named explicitly.
+    tests:
+      - test/tools/test_bvmtools.py WaveformAndCompareTests.test_compare_metrics_use_exact_grid_by_default
+    notes: Difference is defined as values_b - values_a.
+
+  - name: signal-presets
+    path: scripts/bvmtools/presets.yaml
+    status: CORE
+    purpose: Shared exact signal-label presets with physical units, ordering intent, and classic layout recommendation.
+    authoritative_for:
+      - default signal selection convenience
+    not_authoritative_for:
+      - scientific verdict
+      - topology mutation
+    known_consumers:
+      - scripts/bvm-exp.py
+    overlaps_with:
+      - experiment-local signal lists
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - Presets are label conveniences and may need a case-local subset.
+    tests:
+      - scripts/bvm-exp.py config validation
+    notes: V1 presets are explicit labels, not wildcard selectors.
+
+  - name: bvm-exp
+    path: scripts/bvm-exp.py
+    status: CORE
+    purpose: Minimal config-driven Quick runner with explicit cases, immutable output paths, shared QA/metrics, RESULT_BRIEF, classic compact plot, and Human Understanding Gate.
+    authoritative_for:
+      - future Quick workflow mechanics
+      - stop-at-review behavior
+    not_authoritative_for:
+      - automatic Promotion/Formal execution
+      - physical conclusions
+      - arbitrary topology mutation
+    known_consumers:
+      - future test/exploration/<family>/experiment.yaml
+      - tooling smoke fixture
+    overlaps_with:
+      - scripts/run_exp.sh
+      - experiment-local run_*.py and run_*.sh
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - V1 implements quick only; Promotion is a planning gate and Formal remains the strict path.
+      - Alternative visual backends are not implemented.
+    tests:
+      - tooling smoke test under test/exploration/tooling-consolidation-smoke-v1-20260901
+    notes: Normal Quick runs invoke only explicitly listed cases; smoke configs consume existing raw without JoSIM.
+
+  - name: CLASSIC_CORE_VISUALIZATION
+    path: scripts/josim-plot2.py
+    status: CORE
+    purpose: Existing project classic interactive waveform backend; V1 compact profile is sep_comb/dark and raw phase divided numerically by 2*pi when -j 2pi is selected.
+    authoritative_for:
+      - classic waveform rendering and phase-axis scaling
+    not_authoritative_for:
+      - event counts
+      - physical interpretation or Gate
+    known_consumers:
+      - scripts/bvm-exp.py
+      - existing exploration visualization scripts
+    overlaps_with:
+      - scripts/josim-plot.py
+      - scripts/plot-compare.py
+    replaces: []
+    replaced_by: []
+    known_limitations:
+      - Duplicate signal occurrences are not selectable by the legacy CLI; use a unique label or explicit preprocessing outside this backend.
+    tests:
+      - test/plot/test_josim_plot2.py
+    notes: All five supported layouts have data-level phase-scaling regression coverage; style remains classic-locked.
+
+  - name: sfq_metrics.py
+    path: scripts/sfq_metrics.py
+    status: SUPERSEDED
+    purpose: Historical v1 metric implementation retained for reproducibility.
+    authoritative_for:
+      - historical reproduction only
+    not_authoritative_for:
+      - current phase/SFQ physical Gate
+      - future Quick analysis
+    known_limitations:
+      - Legacy unit and event semantics are invalid for current physical claims.
+    tests: []
+    notes: Never use net_delta_sfq or fast_events as current event evidence.
+    overlaps_with:
+      - scripts/sfq_metrics_v2.py
+    replaces: []
+    replaced_by:
+      - scripts/bvmtools/phase.py
+      - scripts/bvmtools/sfq.py
+
+  - name: sfq_metrics_v2.py
+    path: scripts/sfq_metrics_v2.py
+    status: LEGACY
+    purpose: Accepted M4-M9 measurement implementation/reference, retained for historical calibration and regression.
+    authoritative_for:
+      - METRIC_SPEC_V2-compatible historical measurement pipeline where explicitly referenced
+    not_authoritative_for:
+      - sole physical Gate authority
+      - future strict-event implementation
+    known_limitations:
+      - Shared future primitive is now bvmtools; historical consumers are not mass-migrated.
+    tests:
+      - test/metrics/test_sfq_metrics_v2.py
+      - test/metrics/test_sfq_metrics_v2_m5.py
+      - test/metrics/test_sfq_metrics_v2_m6.py
+      - test/metrics/test_sfq_metrics_v2_m7.py
+    notes: Preserve as reproducible historical/calibration code.
+    overlaps_with:
+      - scripts/bvmtools/raw.py
+      - scripts/bvmtools/phase.py
+      - scripts/bvmtools/waveform.py
+    replaces: []
+    replaced_by:
+      - scripts/bvmtools/phase.py
+      - scripts/bvmtools/sfq.py
+
+  - name: run_exp.sh
+    path: scripts/run_exp.sh
+    status: LEGACY
+    purpose: Historical one-shot experiment runner.
+    authoritative_for:
+      - historical reproduction only
+    not_authoritative_for:
+      - new Quick/Formal science runner
+      - current physical Gate
+    known_limitations:
+      - Calls invalid v1 metrics and overwrites fixed output names.
+    tests: []
+    notes: Do not use for new experiments; no physical relocation is planned.
+    overlaps_with:
+      - scripts/bvm-exp.py
+      - test/exploration/**/run*.sh
+    replaces: []
+    replaced_by:
+      - scripts/bvm-exp.py
+
+  - name: authority-handoff-backend
+    path: .agents/skills/josim-handoff/scripts/handoff.py
+    status: CORE
+    purpose: Frozen josim-handoff/v1 contract validation, signing, and audit mechanics.
+    authoritative_for:
+      - v1 request/ACK/receipt/audit mechanics
+    not_authoritative_for:
+      - physical correctness
+      - Quick workflow status
+    known_limitations:
+      - josim-handoff/v1 semantics are frozen; this consolidation does not change them.
+    tests:
+      - .agents/skills/josim-handoff/scripts/test_handoff.py
+    notes: Shared Quick workflow must not masquerade as a v1 handoff contract.
+    overlaps_with:
+      - research/WORKFLOW.md
+    replaces: []
+    replaced_by: []
+
+  - name: authority-evidence-tools
+    path: scripts/quantitative_analysis_verifier.py
+    status: CORE
+    purpose: Existing Authority/FROZEN evidence verification support.
+    authoritative_for:
+      - task-scoped evidence consistency checks when explicitly contracted
+    not_authoritative_for:
+      - Quick outcome
+      - physical conclusion without audit
+    known_limitations:
+      - Contract scope and acceptance remain external to the script.
+    tests:
+      - test/workflow/test_quantitative_analysis_verifier.py
+    notes: Existing evidence tooling remains reproducible and is not replaced by Quick.
+    overlaps_with:
+      - scripts/build_evidence_bundle.py
+      - scripts/render_structured_report.py
+    replaces: []
+    replaced_by: []
+
+  - name: historical-schematic-tools
+    path: scripts/schematic/*.py
+    status: SUPPORTED
+    purpose: Existing netlist-derived schematic rendering and geometry validation.
+    authoritative_for:
+      - declared schematic geometry/rendering checks
+    not_authoritative_for:
+      - waveform metrics
+      - physical Gate
+    known_limitations:
+      - Not part of the shared numerical analysis core.
+    tests:
+      - scripts/schematic/validate_geometry.py
+      - scripts/schematic/validate_schematic.py
+    notes: Retained in place; no bulk migration.
+    overlaps_with:
+      - experiment-local topology renderers
+    replaces: []
+    replaced_by: []
+
+  - name: experiment-local-analysis-family
+    path: test/exploration/**/analysis/*.py
+    status: LEGACY
+    purpose: Historical experiment-local builders, analyzers, plotters, and verifiers.
+    authoritative_for:
+      - the local report/evidence contract that explicitly names the file
+    not_authoritative_for:
+      - universal shared metric semantics
+      - future tool selection without registry review
+    known_limitations:
+      - Multiple local implementations can overlap; future work follows Reuse First and Rule of Two.
+    tests: []
+    notes: Preserve every historical file and raw dependency; classify before adding another copy.
+    overlaps_with:
+      - scripts/bvmtools/*.py
+    replaces: []
+    replaced_by:
+      - scripts/bvmtools/*.py for future experiments only

@@ -535,3 +535,75 @@ BVM→receiver→JTL→T1 研究推进。目标是简化 workflow，而不是继
   canonical BVM test；
 - downstream 最少接 JTL1/JTL2；
 - 所有 local JJ slip 均不得直接解释为 successful SFQ delivery。
+
+## §25 Future experiment tooling consolidation V1 (2026-09-01)
+
+本节只约束未来的 scientific experiment experience；它不修改
+`josim-handoff/v1` 的既有语义，也不重写历史 raw、report 或 task contract。
+
+### 25.1 Reuse First 与 Rule of Two
+
+新实验在创建 builder、analyzer、plotter 或 verifier 前，必须依次检查：
+
+1. `docs/research/TOOL_REGISTRY.yaml`；
+2. `scripts/bvmtools/`；
+3. `scripts/bvmtools/presets.yaml`；
+4. 已登记的 supported scripts。
+
+如果功能确实不存在，第一次可以在实验目录中用
+`EXPERIMENTAL_LOCAL` 实现。第二个实验需要相同 diagnostic 时必须停止复制，
+先提升到共享工具、补 focused regression、登记权威边界，再让新实验使用。
+历史 local tools 只做 registry classification，不做 physical mass relocation。
+
+### 25.2 QUICK → PROMOTION → FORMAL
+
+未来实验声明三种层级：
+
+| 层级 | 默认内容 | 结果边界 |
+|---|---|---|
+| `QUICK` | 1–4 个显式 case、一个中心变量、基础 raw QA、共享 metrics、一个 compact classic plot、`RESULT_BRIEF.md` | 只能是 `QUICK_PROMISING`、`QUICK_NO_EFFECT`、`QUICK_OPPOSITE`、`QUICK_AMBIGUOUS` 或 `QUICK_INVALID` |
+| `PROMOTED` | 只生成 `PROMOTION_PLAN.md`，列出假说、竞争解释、controls、timestep、case 数上限、成功标准和 stop rule | planning gate；不得自动开始 Formal |
+| `FORMAL` | 当前严格 provenance、匹配 controls、same-JJ phase/area、必要 timestep、独立复核和 bounded claim | 仍须停在用户 review，不自动启动下一项 |
+
+最小 future 配置使用显式 `baseline.deck`、`candidate.deck`、`run`、
+`probe_preset`、`metrics`、`visualization`、`promotion_rule`、`stop_rule` 和
+`cases`。V1 不提供万能 circuit DSL、arbitrary topology mutation、mass
+scheduler 或 web/database framework。
+
+### 25.3 Compact classic visualization lock
+
+默认配置是：
+
+```yaml
+visualization:
+  mode: compact
+  style: CLASSIC_LOCKED
+```
+
+compact 只减少信号数量，通常选择 2–5 条与问题直接相关的波形；不引入新的
+dashboard、色彩系统、card layout 或 publication aesthetic。classic backend
+固定为 `scripts/josim-plot2.py` 的 `sep_comb` / `dark` profile；`-j 2pi`
+必须是数值 `phase/(2*pi)`，不能只是改轴标签。
+
+`mode: full` 只能由用户或配置明确 opt-in，仍使用 classic style。alternative
+visual style 只有用户明确授权“自由发挥/其他方案/论文风格/不要经典方案”等价
+语句后才可另立任务；不得由 agent 自行切换。
+
+### 25.4 Human Understanding Gate
+
+每个 future Quick、Promotion plan 或 Formal 结果完成后，顺序固定为：
+
+```text
+execution complete
+  → RESULT_BRIEF.md
+  → compact classic visualization
+  → AWAITING_USER_REVIEW
+  → stop
+  → explicit user understanding/authorization
+```
+
+`RESULT_BRIEF.md` 固定包含 WHAT CHANGED、WHAT WAS HELD FIXED、WHAT HAPPENED、
+WHAT IT MEANS、WHAT IT DOES NOT PROVE、当前状态和最多三个建议选项。工具可以
+生成 `human-gate.yaml`，但不得自行写入 `USER_REVIEWED` 或
+`NEXT_STEP_AUTHORIZED`，也不得因为结果看起来有希望而自动设计/运行下一项物理
+实验。Quick 不是 Formal evidence，局部 phase/area 也不自动成为 SFQ 或系统 Gate。

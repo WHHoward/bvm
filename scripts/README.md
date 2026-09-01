@@ -14,5 +14,13 @@
 | `sp_generator.py` | SP 网表生成 | 🟡 参考 |
 | `JoSIM_n++_UDL.xml` | 编辑器语法高亮 | 📚 参考 |
 | `MC_conclu.py` | 蒙特卡洛结论分析（2026-08-06 自 circuits/ 归位） | 🟡 参考 |
+| `bvmtools/` | 未来实验共享 raw/provenance/phase/strict-event/waveform/compare 核心 | 🟢 新实验优先复用；不直接给物理 Gate |
+| `bvm-exp.py` | 显式 case 的 Quick runner；生成 RESULT_BRIEF、classic compact plot 和 AWAITING_USER_REVIEW | 🟢 V1 Quick；不自动 Promotion/Formal |
 
 **整理原则 (2026-08-09)**: 旧脚本保留用于追溯并明确标为 superseded。正式结论应依赖不可覆盖的 raw run、版本化 v2 指标、匹配控制和收敛 Gate；在 M4–M11 完成前不存在冻结的自动物理结论流水线。
+
+**Tool consolidation (2026-09-01)**: 新工具先查 `docs/research/TOOL_REGISTRY.yaml`，
+再复用 `scripts/bvmtools/` 和 `scripts/bvmtools/presets.yaml`。旧 experiment-local
+脚本不批量搬迁；`run_exp.sh`、`sfq_metrics.py` 和旧 plotting paths 只按 registry
+中的历史边界使用。未来 Quick 默认使用 `bvm-exp.py` 与
+`josim-plot2.py` 的 compact classic profile，并在 `AWAITING_USER_REVIEW` 停止。

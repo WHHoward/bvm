@@ -81,7 +81,9 @@ class RawTrace:
                 "select occurrence=... or all_matches=True"
             )
         selected = 0 if occurrence is None else occurrence
-        if isinstance(selected, bool) or selected < 0 or selected >= len(matches):
+        if isinstance(selected, bool) or not isinstance(selected, int):
+            raise RawTraceError("occurrence must be a nonnegative integer")
+        if selected < 0 or selected >= len(matches):
             raise IndexError(
                 f"signal {name!r} occurrence {selected} is out of range "
                 f"(0..{len(matches) - 1})"

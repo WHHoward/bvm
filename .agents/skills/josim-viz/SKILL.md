@@ -23,11 +23,14 @@ description: Visualize JoSIM CSV or DAT traces and inspect superconducting circu
 
 ### 当前绘图脚本限制
 
-`scripts/josim-plot2.py` 目前只有 `combined` 和 `sep_comb` 布局真正对相位应用 `-j 2pi`。`grid`、`stacked`、`square` 会改变标签但不缩放数据。在修复并加回归前：
+`scripts/josim-plot2.py` 的历史布局问题已由数据级回归覆盖：当前 `grid`、
+`stacked`、`combined`、`square`、`sep_comb` 都在 `-j 2pi` 下对相位数据真实除以
+`2*pi`。回归位置为 `test/plot/test_josim_plot2.py`；若未来修改 backend，必须先
+修复并通过该回归，不能只改轴标签。
 
-- 相位保持 raw rad 时可以使用任意布局；
-- 相位使用 `-j 2pi` 时只允许 `combined` 或 `sep_comb`；
-- 用户要求“独立窗格 + 归一化相位”时，解释限制并改用 raw rad，或使用 `sep_comb`。
+新实验默认使用 `visualization.mode: compact` 和 `CLASSIC_LOCKED`：只选 2–5 条
+关键波形，固定 `sep_comb` / `dark` / `-j 2pi`。`full` 只在用户或配置明确
+opt-in 时增加信号；alternative visual style 需要用户明确授权。
 
 ## 推荐命令
 
@@ -42,6 +45,9 @@ python3 scripts/josim-plot2.py path/to/run/raw.csv \
 ```
 
 若不能确认 `V(B1|XCELL)` 与 `P(B1|XCELL)` 是同一 JJ、同方向，图中保留原标签，不做相位—面积结论。
+
+`RESULT_BRIEF.md` 解释科学意义，`plots/RESULT_OVERVIEW.html` 负责让用户直接
+看到 classic waveform；图本身不产生 SFQ 或 system Gate 结论。
 
 ## 仿真边界
 

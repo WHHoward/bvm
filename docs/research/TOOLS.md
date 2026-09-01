@@ -61,10 +61,14 @@ reader 保留 quoted header 的 exact label、duplicate occurrence、sample coun
 
 ## 如何计算 strict BJL2 local event
 
-`scripts/bvmtools/sfq.py` 是未来共享实现：
+`scripts/bvmtools/sfq.py` 是未来共享实现。严格分类不能依赖隐含全局阈值，必须从
+case 的 hash-bound `strict_event.spec` 构造完整 `StrictLocalEventSpec`；缺少 spec
+时仍可得到 raw arithmetic，但 classification 必须是 `INCONCLUSIVE`：
 
 ```python
-from bvmtools.sfq import strict_event_summary
+from bvmtools.sfq import StrictLocalEventSpec, strict_event_summary
+
+spec = StrictLocalEventSpec.from_mapping(case["strict_event"]["spec"])
 
 summary = strict_event_summary(
     trace.time,
@@ -73,11 +77,15 @@ summary = strict_event_summary(
     activity_window_s=(94e-12, 130e-12),
     post_window_s=(140e-12, 170e-12),
     post_tail_window_s=(165e-12, 170e-12),
+    spec=spec,
+    actual_raw_sha256=raw_sha256,
+    actual_metric_spec_sha256=metric_spec_sha256,
 )
 ```
 
 它只给同一 JJ 的 local phase/area evidence。`WINDOW_PHASE_DISPLACEMENT` 不等于
-`EVENT_COUNT`；局部一圈也不等于 downstream SFQ、闭环 fluxoid 或 system Gate。
+`EVENT_COUNT`；`complete_segment_count` 和 compatibility label 也不等于 event/SFQ
+count。局部一圈不等于 downstream SFQ、闭环 fluxoid 或 system Gate。
 
 ## phase turn 是什么
 

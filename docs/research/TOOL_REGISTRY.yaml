@@ -94,10 +94,10 @@ entries:
   - name: bvmtools.sfq
     path: scripts/bvmtools/sfq.py
     status: CORE
-    purpose: Same-JJ strict local event calculation using one continuous monotonic segment, phase delta, same-segment voltage area, signed residual, complete segment count, and post boundedness.
+    purpose: Same-JJ local phase/area arithmetic plus guarded compatibility classification using one continuous monotonic segment, explicit mapping/provenance, frozen task-local tolerances, complete segment count, and post boundedness.
     authoritative_for:
-      - future local strict-event calculation
-      - Anchor A/B tooling regression
+      - future local strict-event arithmetic
+      - explicit Anchor compatibility profile regression
     not_authoritative_for:
       - automatic single-SFQ system claims
       - JTL transport or QB/BVM interface success
@@ -111,7 +111,7 @@ entries:
     replaces: []
     replaced_by: []
     known_limitations:
-      - Strict local evidence remains bounded and exploratory unless a separate scientific contract says otherwise.
+      - Missing or unfrozen StrictLocalEventSpec fields force INCONCLUSIVE; compatibility labels are not event counts or scientific Gates.
     tests:
       - test/tools/test_bvmtools.py PhaseAndStrictEventTests.test_frozen_anchor_a_and_b
     notes: WINDOW_PHASE_DISPLACEMENT is not EVENT_COUNT; all input windows are explicit.

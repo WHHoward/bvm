@@ -22,6 +22,17 @@ description: Audit JoSIM phase, voltage-area, SFQ counting, JTL propagation, sta
 7. **检查系统逻辑**：read1、read0、重复读、状态保持和收敛均满足冻结规范后，才允许系统 `PASS`。
 8. **审计措辞**：区分直接观察、与数据相容的解释、已排除解释和未知机制。
 
+## Shared calculation boundary
+
+未来 strict local event 的共享计算优先调用 `scripts/bvmtools/phase.py` 与
+`scripts/bvmtools/sfq.py`。它们统一实现 raw rad→turns、continuous unwrap、
+deterministic monotonic segmentation、同一 JJ 同一 segment 的实际时间电压面积
+和 signed residual；分类还必须绑定完整的 `StrictLocalEventSpec`、raw/metric-spec
+hash 和 task-local frozen tolerance。shared code 的回归通过不等于电路物理 Gate
+通过；仍必须按本 skill 的 Artifact / Activity / Local / Downstream / System 分层审计。历史
+`sfq_metrics_v2.py` 和实验目录中的 analyzer 保持可复现，不因共享工具出现而批量
+改写或删除。
+
 ## 固定证据层级
 
 | 层级 | 可以声称 | 不能自动声称 |

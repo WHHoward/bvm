@@ -20,13 +20,14 @@ from .provenance import (
     solver_provenance,
 )
 from .raw import DuplicateColumnError, RawTrace, RawTraceError, read_csv
-from .sfq import PHI0, strict_event_summary, strict_segment_metrics
+from .sfq import PHI0, StrictLocalEventSpec, strict_event_summary, strict_segment_metrics
 from .waveform import waveform_metrics
 
 __all__ = [
     "DuplicateColumnError",
     "MonotonicSegment",
     "PHI0",
+    "StrictLocalEventSpec",
     "RawTrace",
     "RawTraceError",
     "TimeGridMismatch",

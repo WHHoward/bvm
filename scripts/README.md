@@ -7,7 +7,7 @@
 | `run_exp.sh` | 历史一键实验器；会覆盖固定输出并调用失效 v1 指标 | ⏸️ 仅历史复现，不得用于物理 Gate |
 | `sfq_metrics.py` | v1 历史指标；raw rad 误标 SFQ、过阈值样本误标事件 | ⏸️ 已失效，等待 M4–M9 替代 |
 | `josim-plot.py` | 波形绘图 | 🟡 使用中（与 plot2 并存，待确认规范） |
-| `josim-plot2.py` | 波形绘图；当前仅 combined/sep_comb 正确应用 `-j 2pi` | 🟡 使用中，归一化布局受限 |
+| `josim-plot2.py` | 波形绘图；五种布局均通过 `-j 2pi` 相位归一化回归 | 🟢 新实验默认的 compact classic 后端 |
 | `ivcurve.py` | I-V 曲线 | 🟡 参考 |
 | `plot-compare.py` | 波形对比 | 🟡 参考 |
 | `noise_insert.py` | 噪声注入（论文扩展用） | 🔴 备用 |
@@ -24,3 +24,4 @@
 脚本不批量搬迁；`run_exp.sh`、`sfq_metrics.py` 和旧 plotting paths 只按 registry
 中的历史边界使用。未来 Quick 默认使用 `bvm-exp.py` 与
 `josim-plot2.py` 的 compact classic profile，并在 `AWAITING_USER_REVIEW` 停止。
+完整 future workflow 见 [`docs/research/FUTURE_EXPERIMENT_WORKFLOW.md`](../docs/research/FUTURE_EXPERIMENT_WORKFLOW.md)。

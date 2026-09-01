@@ -1,0 +1,115 @@
+id: tooling-consolidation-smoke-v1
+family: research-workflow-tooling-consolidation
+mode: QUICK
+tooling_smoke_test_only: true
+question: Can the shared analysis core reproduce the registered strict-event anchors and create the default compact classic review artifact?
+hypothesis: Existing raw evidence should reproduce the frozen 9 ps and 13 ps BJL2 anchor values without running JoSIM or changing scientific evidence.
+baseline:
+  deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/9ps/12x320/logical1_read.cir
+candidate:
+  deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir
+run:
+  timestep_ps: 0.0125
+  stop_ps: 170.0
+  solver: build/josim-cli
+probe_preset: strict-event
+metrics:
+  - raw_qa
+  - waveform
+  - strict_event
+visualization:
+  mode: compact
+  style: CLASSIC_LOCKED
+  primary_case: 13ps-12x320-replay
+promotion_rule: Never promote automatically; user must explicitly request a Promotion plan.
+stop_rule: Stop after RESULT_BRIEF, compact classic plots, and AWAITING_USER_REVIEW.
+changed_variables:
+  - tooling path only; no circuit or parameter change
+held_fixed:
+  - existing 9 ps and 13 ps raw CSV bytes
+  - BVM/JSL/QB topology and all scientific parameters
+  - strict-event windows and residual semantics
+  - classic sep_comb/dark/rad/(2*pi) rendering profile
+cases:
+  - id: 9ps-12x320-replay
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/12x320/logical1_read/run-01.csv
+    signals:
+      - P(BJL2|XBQ)
+      - V(BJL2|XBQ)
+      - I(BJL2|XBQ)
+    strict_event:
+      phase: P(BJL2|XBQ)
+      voltage: V(BJL2|XBQ)
+      activity_window_ps: [94.0, 130.0]
+      post_window_ps: [140.0, 170.0]
+      post_tail_window_ps: [165.0, 170.0]
+      spec:
+        id: bvm-qb-strict-event-anchor-compatibility-v1
+        scope: task-local
+        status: FROZEN
+        mapping_status: UNVERIFIED_BQ_BVM_PV_MAPPING
+        phase_column: P(BJL2|XBQ)
+        voltage_column: V(BJL2|XBQ)
+        branch_endpoints: BJL2 branch orientation declared by the frozen replay fixture
+        voltage_to_phase_sign: 1
+        reporting_direction: 1
+        run_id: bvm-load-qb-matrix-v1-20260901/replay/9ps/12x320/logical1_read
+        window_id: activity-94-130ps-post-140-170ps-tail-165-170ps
+        raw_sha256: d488f7b3cb1d229a750500ab78656e0b291beb0f7083a8361a4883a9e67a8a43
+        metric_spec:
+          path: docs/research/METRIC_SPEC_V2.md
+          version: 2.0.0
+          sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+        tolerance:
+          id: bvm-qb-strict-event-anchor-task-local-v1
+          scope: task-local
+          status: FROZEN
+          evidence: test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/REPORT.md
+          phase_area_residual_abs_floor_turns: 0.05
+          phase_area_residual_relative: 0.10
+          complete_min_turns: 1.0
+          clean_upper_turns: 1.15
+          post_range_max_turns: 1.0
+          post_tail_p2p_max_turns: 0.25
+        compatibility_profile: STRICT_EVENT_ANCHOR_COMPATIBILITY_V1
+  - id: 13ps-12x320-replay
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv
+    signals:
+      - P(BJL2|XBQ)
+      - V(BJL2|XBQ)
+      - I(BJL2|XBQ)
+    strict_event:
+      phase: P(BJL2|XBQ)
+      voltage: V(BJL2|XBQ)
+      activity_window_ps: [94.0, 130.0]
+      post_window_ps: [140.0, 170.0]
+      post_tail_window_ps: [165.0, 170.0]
+      spec:
+        id: bvm-qb-strict-event-anchor-compatibility-v1
+        scope: task-local
+        status: FROZEN
+        mapping_status: UNVERIFIED_BQ_BVM_PV_MAPPING
+        phase_column: P(BJL2|XBQ)
+        voltage_column: V(BJL2|XBQ)
+        branch_endpoints: BJL2 branch orientation declared by the frozen replay fixture
+        voltage_to_phase_sign: 1
+        reporting_direction: 1
+        run_id: bvm-load-qb-matrix-v1-20260901/replay/13ps/12x320/logical1_read
+        window_id: activity-94-130ps-post-140-170ps-tail-165-170ps
+        raw_sha256: be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c
+        metric_spec:
+          path: docs/research/METRIC_SPEC_V2.md
+          version: 2.0.0
+          sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+        tolerance:
+          id: bvm-qb-strict-event-anchor-task-local-v1
+          scope: task-local
+          status: FROZEN
+          evidence: test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/REPORT.md
+          phase_area_residual_abs_floor_turns: 0.05
+          phase_area_residual_relative: 0.10
+          complete_min_turns: 1.0
+          clean_upper_turns: 1.15
+          post_range_max_turns: 1.0
+          post_tail_p2p_max_turns: 0.25
+        compatibility_profile: STRICT_EVENT_ANCHOR_COMPATIBILITY_V1

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import math
 import sys
 import tempfile
@@ -24,7 +25,12 @@ from bvmtools.phase import (  # noqa: E402
 )
 from bvmtools.provenance import file_snapshot  # noqa: E402
 from bvmtools.raw import DuplicateColumnError, RawTraceError, read_csv  # noqa: E402
-from bvmtools.sfq import PHI0, strict_event_summary, strict_segment_metrics  # noqa: E402
+from bvmtools.sfq import (  # noqa: E402
+    PHI0,
+    StrictLocalEventSpec,
+    strict_event_summary,
+    strict_segment_metrics,
+)
 from bvmtools.waveform import waveform_metrics  # noqa: E402
 
 
@@ -126,7 +132,19 @@ class PhaseAndStrictEventTests(unittest.TestCase):
         self.assertAlmostEqual(records[0]["delta_turns"], 3.0 / TAU, places=12)
         self.assertAlmostEqual(records[0]["area_turns"], 3.0 / TAU, places=12)
         self.assertAlmostEqual(records[0]["phase_area_residual_turns"], 0.0, places=12)
-        self.assertFalse(records[0]["area_consistent"])
+        self.assertIsNone(records[0]["area_consistent"])
+
+    def test_missing_strict_spec_is_inconclusive(self) -> None:
+        result = strict_event_summary(
+            (0.0, 1.0, 2.0),
+            (0.0, 1.0, 2.0),
+            (0.0, PHI0 / TAU, 0.0),
+            activity_window_s=(0.0, 3.0),
+            post_window_s=(0.0, 3.0),
+            post_tail_window_s=(0.0, 3.0),
+        )
+        self.assertEqual(result["compatibility_classification"], "INCONCLUSIVE")
+        self.assertIsNone(result["complete_segment_count"])
 
     def test_frozen_anchor_a_and_b(self) -> None:
         raw_root = REPO / "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay"
@@ -142,6 +160,38 @@ class PhaseAndStrictEventTests(unittest.TestCase):
                 self.assertAlmostEqual(independent[1], area, places=12)
                 self.assertAlmostEqual(independent[2], end_ps, places=12)
                 trace = read_csv(path)
+                spec = StrictLocalEventSpec.from_mapping({
+                    "id": "bvm-qb-strict-event-anchor-compatibility-v1",
+                    "scope": "task-local",
+                    "status": "FROZEN",
+                    "mapping_status": "UNVERIFIED_BQ_BVM_PV_MAPPING",
+                    "phase_column": "P(BJL2|XBQ)",
+                    "voltage_column": "V(BJL2|XBQ)",
+                    "branch_endpoints": "BJL2 branch orientation declared by the frozen replay fixture",
+                    "voltage_to_phase_sign": 1,
+                    "reporting_direction": 1,
+                    "run_id": f"bvm-load-qb-matrix-v1-20260901/replay/{width}ps/12x320/logical1_read",
+                    "window_id": "activity-94-130ps-post-140-170ps-tail-165-170ps",
+                    "raw_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                    "metric_spec": {
+                        "path": "docs/research/METRIC_SPEC_V2.md",
+                        "version": "2.0.0",
+                        "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+                    },
+                    "tolerance": {
+                        "id": "bvm-qb-strict-event-anchor-task-local-v1",
+                        "scope": "task-local",
+                        "status": "FROZEN",
+                        "evidence": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/REPORT.md",
+                        "phase_area_residual_abs_floor_turns": 0.05,
+                        "phase_area_residual_relative": 0.10,
+                        "complete_min_turns": 1.0,
+                        "clean_upper_turns": 1.15,
+                        "post_range_max_turns": 1.0,
+                        "post_tail_p2p_max_turns": 0.25,
+                    },
+                    "compatibility_profile": "STRICT_EVENT_ANCHOR_COMPATIBILITY_V1",
+                })
                 result = strict_event_summary(
                     trace.time,
                     trace.column("P(BJL2|XBQ)"),
@@ -149,12 +199,21 @@ class PhaseAndStrictEventTests(unittest.TestCase):
                     activity_window_s=(94.0e-12, 130.0e-12),
                     post_window_s=(140.0e-12, 170.0e-12),
                     post_tail_window_s=(165.0e-12, 170.0e-12),
+                    spec=spec,
+                    actual_raw_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                    actual_metric_spec_sha256="f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
                 )
                 largest = result["largest_monotonic_segment"]
                 self.assertAlmostEqual(largest["delta_turns"], turns, places=12)
                 self.assertAlmostEqual(largest["area_turns"], area, places=12)
+                self.assertAlmostEqual(largest["start_time_ps"], 103.0375, places=12)
                 self.assertAlmostEqual(largest["end_time_ps"], end_ps, places=12)
-                self.assertEqual(result["strict_classification"], classification)
+                self.assertEqual(result["compatibility_classification"], classification)
+                self.assertEqual(result["raw_sha256_match"], True)
+                self.assertEqual(result["metric_spec_sha256_match"], True)
+                self.assertEqual(result["complete_segment_count"], 1 if width == 13 else 0)
+                self.assertEqual(result["second_complete_segment_present"], False)
+                self.assertEqual(result["post_boundedness"]["status"], "VALID")
 
 
 class WaveformAndCompareTests(unittest.TestCase):

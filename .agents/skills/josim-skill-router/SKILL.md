@@ -31,6 +31,21 @@ description: Route broad, ambiguous, or multi-part JoSIM/BVM repository work to 
 - **并行 subagent 必须文件隔离（2026-08-06 起，用户要求）**：各 agent 只写自己前缀的文件，提交时只 `git add` 自己的文件（防止并行提交竞态）；派发上下文配方：HANDOVER → 相关 skill/契约 → 任务全文 → 冻结口径（相对路径、不可覆盖、禁 sed 生成变体）。
 - 完成声明必须附验证结果；未知、缺证据或步长不收敛时使用“不确定”，不得挑选有利结果。
 
+## Future tooling defaults
+
+- **REUSE FIRST**：新实验先查 `docs/research/TOOL_REGISTRY.yaml`、
+  `scripts/bvmtools/`、presets 和 supported scripts；不要先创建新的
+  builder/analyzer/plotter/verifier。
+- **RULE OF TWO**：第一次新 diagnostic 可标 `EXPERIMENTAL_LOCAL`；第二次重复需求
+  必须提升到共享工具、补 regression 并登记。
+- **QUICK BEFORE FORMAL**：适合机制筛选时先用显式 case 的 Quick；Promotion 只
+  是 planning gate，不自动启动 Formal。
+- **CLASSIC VIZ FIRST / COMPACT BY DEFAULT**：默认使用 `josim-plot2.py` 的
+  `CLASSIC_LOCKED` compact profile；full 和 alternative style 都要明确授权。
+- **HUMAN UNDERSTANDING GATE**：每项 future experiment 完成后交付
+  `RESULT_BRIEF.md`、关键 classic plot 并停在 `AWAITING_USER_REVIEW`；不得自填
+  `USER_REVIEWED` 或自动执行下一项物理实验。
+
 ## 路由输出
 
 简洁报告：任务、所选 skill、执行顺序，以及任何会阻止物理结论的当前 Gate。选完后继续完成任务，不要仅停在路由说明。

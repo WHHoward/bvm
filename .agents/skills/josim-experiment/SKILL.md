@@ -35,6 +35,27 @@ description: Design, create, run, sweep, reproduce, or document JoSIM/BVM `.cir`
 9. **记录**：填写分析模板，保留失败运行，并把上层文档链接到 run ID，而非复制整份数据。
 10. **交付**：若由 task request 发起，把 run 路径、哈希、命令、测试和偏离写入 execution receipt；只提出物理判定建议，不代替 Codex 审计。
 
+## Future experiment modes and reuse policy
+
+- 默认先做 `QUICK`：1–4 个显式 case、一个中心 changed variable、基础 raw QA、
+  shared metrics、一个 compact classic visualization 和 `RESULT_BRIEF.md`；结果
+  只能是 `QUICK_PROMISING`、`QUICK_NO_EFFECT`、`QUICK_OPPOSITE`、
+  `QUICK_AMBIGUOUS` 或 `QUICK_INVALID`。从 local compatibility label 派生前三种
+  方向性 outcome 必须有显式、预注册的 `outcome_rule`；缺少时保持
+  `QUICK_AMBIGUOUS`。
+- `PROMOTED` 只生成 `PROMOTION_PLAN.md`，不是自动扩大实验；`FORMAL` 才沿用当前
+  完整严格流程。三者完成后都停在 `AWAITING_USER_REVIEW`。
+- 新实验写工具前先查 `docs/research/TOOL_REGISTRY.yaml`、`scripts/bvmtools/`、
+  `scripts/bvmtools/presets.yaml` 和 supported scripts。Rule of Two：第一次可用
+  `EXPERIMENTAL_LOCAL`，第二次重复需求必须提升到共享工具并补 focused test。
+- 每个 future experiment 显式记录 baseline、candidate、changed variables 和
+  held-fixed variables；不得要求 reviewer 手动 diff 两个网表才能理解实验变化。
+- 默认 `visualization.mode: compact`、`style: CLASSIC_LOCKED`，使用已有
+  `josim-plot2.py` classic backend；full 必须明确 opt-in，alternative style 必须
+  有用户明确授权。
+- `RESULT_BRIEF.md` 负责解释意义，`plots/RESULT_OVERVIEW.html` 负责 classic
+  waveform；agent 不得自填 `USER_REVIEWED`、`NEXT_STEP_AUTHORIZED` 或自动执行下一项。
+
 ## 扫描纪律
 
 - 预先记录参数、范围、步长、最大运行数和停止规则。

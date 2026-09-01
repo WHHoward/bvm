@@ -42,11 +42,12 @@ Agent 不得因为一个 Quick 结果自动设计或执行下一个物理实验�
 | `raw.py` | 保留 exact labels、duplicate occurrence、实际时间轴与基础 QA |
 | `provenance.py` | SHA-256、Git、solver 和输入快照 |
 | `phase.py` | raw rad、continuous unwrap、rad→turns、既有 deterministic segmentation |
-| `sfq.py` | 同一 JJ、同一 segment、phase/area residual 的 strict local evidence |
+| `sfq.py` | 同一 JJ、同一 segment、带显式映射/溯源/spec 的 phase/area arithmetic 与 guarded local compatibility label |
 | `waveform.py` | waveform diagnostics；current-time area 不是 SFQ quantity |
 | `compare.py` | exact-grid comparison；默认不插值 |
 
-只有出现立即的重复需求，才新增 `runner.py`、`plotting.py`、`report.py` 或
+strict-event classification 不使用共享隐含阈值：缺少完整 `StrictLocalEventSpec`
+或 hash-bound provenance 时只返回 arithmetic 和 `INCONCLUSIVE`。只有出现立即的重复需求，才新增 `runner.py`、`plotting.py`、`report.py` 或
 `netlist.py`；V1 用 `bvm-exp.py` 和既有 `josim-plot2.py` 完成 Quick。
 
 ## Rule of Two

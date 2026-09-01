@@ -1,0 +1,37 @@
+{
+  "schema_version": "BVM_LOAD_QB_MATRIX_TOPOLOGY_V1",
+  "exploration": "test/exploration/bvm-load-qb-matrix-v1-20260901",
+  "source_manifest": "topology/topology_manifest.yaml",
+  "packages": [
+    {
+      "topology_id": "BVM_JSL_SOURCE",
+      "representative_deck": "inputs/source/13ps/12x320/logical1_read.cir",
+      "package": "publication/BVM_JSL_SOURCE",
+      "variants": ["9ps", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]
+    },
+    {
+      "topology_id": "BVM_JSL8_SOURCE",
+      "representative_deck": "inputs/source/13ps/8x500/logical1_read.cir",
+      "package": "publication/BVM_JSL8_SOURCE",
+      "variants": ["9ps", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]
+    },
+    {
+      "topology_id": "BVM_JSL12_SCALED_QB_PHYSICAL",
+      "representative_deck": "inputs/physical/13ps/12x320/logical1_read.cir",
+      "package": "publication/BVM_JSL12_SCALED_QB_PHYSICAL",
+      "variants": ["9ps", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]
+    },
+    {
+      "topology_id": "BVM_JSL8_SCALED_QB_PHYSICAL",
+      "representative_deck": "inputs/physical/13ps/8x500/logical1_read.cir",
+      "package": "publication/BVM_JSL8_SCALED_QB_PHYSICAL",
+      "variants": ["9ps", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]
+    },
+    {
+      "topology_id": "SCALED_QB_REPLAY",
+      "representative_deck": "inputs/replay/13ps/12x320/logical1_read.cir",
+      "package": "publication/SCALED_QB_REPLAY",
+      "variants": ["9ps", "8x500", "logical0_read", "logical1_no_read_control", "logical0_no_read_control"]
+    }
+  ]
+}

@@ -1,0 +1,556 @@
+{
+  "schema_version": "BVM_LOAD_QB_MATRIX_PLOT_V1",
+  "generated_at": "2026-09-01T11:39:39+08:00",
+  "plot_id": "13ps-8x500-physical-key",
+  "kind": "physical",
+  "width_ps": 13,
+  "load": "8x500",
+  "roles": [
+    "logical1_read",
+    "logical0_read",
+    "logical1_no_read_control",
+    "logical0_no_read_control"
+  ],
+  "renderer": "scripts/josim-plot2.py",
+  "plot_type": "sep_comb",
+  "phase_semantics": "continuous_absolute",
+  "fixture_role": "RESULT",
+  "phase_display": "P columns are displayed as P/(2*pi) continuous phase turns; not an SFQ counter",
+  "raw_evidence": false,
+  "raw_sources": {
+    "logical1_read": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+    "logical0_read": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+    "logical1_no_read_control": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+    "logical0_no_read_control": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv"
+  },
+  "derived_input": "analysis/derived_inputs/13ps-8x500-physical-key.csv",
+  "requested_columns": {
+    "I(QB_input)": "I(Lin|XBQ)",
+    "I(JSL_first)": "I(B_LD1)",
+    "I(JSL_last)": "I(B_LD8)",
+    "I(READ_WL)": "I(I_WL1)",
+    "I(READ_SE)": "I(I_SE1)",
+    "I(SL_current)": "I(L_SL|XBVM1)",
+    "V(SL1)": "V(SL1)",
+    "V(BVM_node)": "V(N6|XBVM1)",
+    "P(storage_JM1)": "P(B_JM1|XBVM1)",
+    "P(storage_JS1)": "P(B_JS1|XBVM1)",
+    "V(QB_IN)": "V(IN)",
+    "P(BJs)": "P(BJs|XBQ)",
+    "P(BJL1)": "P(BJL1|XBQ)",
+    "P(BJL2)": "P(BJL2|XBQ)",
+    "I(BJs)": "I(BJs|XBQ)",
+    "I(BJL1)": "I(BJL1|XBQ)",
+    "I(BJL2)": "I(BJL2|XBQ)",
+    "I(QB_L0)": "I(L0|XBQ)",
+    "I(QB_L1)": "I(L1|XBQ)",
+    "I(QB_L2)": "I(L2|XBQ)",
+    "I(QB_RB)": "I(RB|XBQ)",
+    "I(QB_RJ1)": "I(RJ1|XBQ)",
+    "I(QB_RJ2)": "I(RJ2|XBQ)",
+    "V(QB_OUT)": "V(OUT)",
+    "I(R_LOAD)": "I(R_LOAD)"
+  },
+  "column_provenance": {
+    "I(QB_input)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(Lin|XBQ)",
+      "actual_column": "I(LIN|XBQ)"
+    },
+    "I(JSL_first)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(B_LD8)",
+      "actual_column": "I(B_LD8)"
+    },
+    "I(READ_WL)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "I(SL_current)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "V(SL1)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "V(QB_IN)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "V(IN)",
+      "actual_column": "V(IN)"
+    },
+    "P(BJs)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "P(BJs|XBQ)",
+      "actual_column": "P(BJS|XBQ)"
+    },
+    "P(BJL1)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "P(BJL1|XBQ)",
+      "actual_column": "P(BJL1|XBQ)"
+    },
+    "P(BJL2)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "P(BJL2|XBQ)",
+      "actual_column": "P(BJL2|XBQ)"
+    },
+    "I(BJs)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(BJs|XBQ)",
+      "actual_column": "I(BJS|XBQ)"
+    },
+    "I(BJL1)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(BJL1|XBQ)",
+      "actual_column": "I(BJL1|XBQ)"
+    },
+    "I(BJL2)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(BJL2|XBQ)",
+      "actual_column": "I(BJL2|XBQ)"
+    },
+    "I(QB_L0)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(L0|XBQ)",
+      "actual_column": "I(L0|XBQ)"
+    },
+    "I(QB_L1)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(L1|XBQ)",
+      "actual_column": "I(L1|XBQ)"
+    },
+    "I(QB_L2)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(L2|XBQ)",
+      "actual_column": "I(L2|XBQ)"
+    },
+    "I(QB_RB)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(RB|XBQ)",
+      "actual_column": "I(RB|XBQ)"
+    },
+    "I(QB_RJ1)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(RJ1|XBQ)",
+      "actual_column": "I(RJ1|XBQ)"
+    },
+    "I(QB_RJ2)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(RJ2|XBQ)",
+      "actual_column": "I(RJ2|XBQ)"
+    },
+    "V(QB_OUT)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "V(OUT)",
+      "actual_column": "V(OUT)"
+    },
+    "I(R_LOAD)_read1": {
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv",
+      "requested_column": "I(R_LOAD)",
+      "actual_column": "I(R_LOAD)"
+    },
+    "I(QB_input)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(Lin|XBQ)",
+      "actual_column": "I(LIN|XBQ)"
+    },
+    "I(JSL_first)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(B_LD8)",
+      "actual_column": "I(B_LD8)"
+    },
+    "I(READ_WL)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "I(SL_current)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "V(SL1)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "V(QB_IN)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "V(IN)",
+      "actual_column": "V(IN)"
+    },
+    "P(BJs)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "P(BJs|XBQ)",
+      "actual_column": "P(BJS|XBQ)"
+    },
+    "P(BJL1)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "P(BJL1|XBQ)",
+      "actual_column": "P(BJL1|XBQ)"
+    },
+    "P(BJL2)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "P(BJL2|XBQ)",
+      "actual_column": "P(BJL2|XBQ)"
+    },
+    "I(BJs)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(BJs|XBQ)",
+      "actual_column": "I(BJS|XBQ)"
+    },
+    "I(BJL1)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(BJL1|XBQ)",
+      "actual_column": "I(BJL1|XBQ)"
+    },
+    "I(BJL2)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(BJL2|XBQ)",
+      "actual_column": "I(BJL2|XBQ)"
+    },
+    "I(QB_L0)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(L0|XBQ)",
+      "actual_column": "I(L0|XBQ)"
+    },
+    "I(QB_L1)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(L1|XBQ)",
+      "actual_column": "I(L1|XBQ)"
+    },
+    "I(QB_L2)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(L2|XBQ)",
+      "actual_column": "I(L2|XBQ)"
+    },
+    "I(QB_RB)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(RB|XBQ)",
+      "actual_column": "I(RB|XBQ)"
+    },
+    "I(QB_RJ1)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(RJ1|XBQ)",
+      "actual_column": "I(RJ1|XBQ)"
+    },
+    "I(QB_RJ2)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(RJ2|XBQ)",
+      "actual_column": "I(RJ2|XBQ)"
+    },
+    "V(QB_OUT)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "V(OUT)",
+      "actual_column": "V(OUT)"
+    },
+    "I(R_LOAD)_read0": {
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv",
+      "requested_column": "I(R_LOAD)",
+      "actual_column": "I(R_LOAD)"
+    },
+    "I(QB_input)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(Lin|XBQ)",
+      "actual_column": "I(LIN|XBQ)"
+    },
+    "I(JSL_first)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD8)",
+      "actual_column": "I(B_LD8)"
+    },
+    "I(READ_WL)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "I(SL_current)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "V(SL1)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "V(QB_IN)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "V(IN)",
+      "actual_column": "V(IN)"
+    },
+    "P(BJs)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(BJs|XBQ)",
+      "actual_column": "P(BJS|XBQ)"
+    },
+    "P(BJL1)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(BJL1|XBQ)",
+      "actual_column": "P(BJL1|XBQ)"
+    },
+    "P(BJL2)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(BJL2|XBQ)",
+      "actual_column": "P(BJL2|XBQ)"
+    },
+    "I(BJs)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(BJs|XBQ)",
+      "actual_column": "I(BJS|XBQ)"
+    },
+    "I(BJL1)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(BJL1|XBQ)",
+      "actual_column": "I(BJL1|XBQ)"
+    },
+    "I(BJL2)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(BJL2|XBQ)",
+      "actual_column": "I(BJL2|XBQ)"
+    },
+    "I(QB_L0)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(L0|XBQ)",
+      "actual_column": "I(L0|XBQ)"
+    },
+    "I(QB_L1)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(L1|XBQ)",
+      "actual_column": "I(L1|XBQ)"
+    },
+    "I(QB_L2)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(L2|XBQ)",
+      "actual_column": "I(L2|XBQ)"
+    },
+    "I(QB_RB)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(RB|XBQ)",
+      "actual_column": "I(RB|XBQ)"
+    },
+    "I(QB_RJ1)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(RJ1|XBQ)",
+      "actual_column": "I(RJ1|XBQ)"
+    },
+    "I(QB_RJ2)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(RJ2|XBQ)",
+      "actual_column": "I(RJ2|XBQ)"
+    },
+    "V(QB_OUT)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "V(OUT)",
+      "actual_column": "V(OUT)"
+    },
+    "I(R_LOAD)_read1_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(R_LOAD)",
+      "actual_column": "I(R_LOAD)"
+    },
+    "I(QB_input)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(Lin|XBQ)",
+      "actual_column": "I(LIN|XBQ)"
+    },
+    "I(JSL_first)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD8)",
+      "actual_column": "I(B_LD8)"
+    },
+    "I(READ_WL)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "I(SL_current)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "V(SL1)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "V(QB_IN)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "V(IN)",
+      "actual_column": "V(IN)"
+    },
+    "P(BJs)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(BJs|XBQ)",
+      "actual_column": "P(BJS|XBQ)"
+    },
+    "P(BJL1)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(BJL1|XBQ)",
+      "actual_column": "P(BJL1|XBQ)"
+    },
+    "P(BJL2)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(BJL2|XBQ)",
+      "actual_column": "P(BJL2|XBQ)"
+    },
+    "I(BJs)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(BJs|XBQ)",
+      "actual_column": "I(BJS|XBQ)"
+    },
+    "I(BJL1)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(BJL1|XBQ)",
+      "actual_column": "I(BJL1|XBQ)"
+    },
+    "I(BJL2)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(BJL2|XBQ)",
+      "actual_column": "I(BJL2|XBQ)"
+    },
+    "I(QB_L0)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(L0|XBQ)",
+      "actual_column": "I(L0|XBQ)"
+    },
+    "I(QB_L1)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(L1|XBQ)",
+      "actual_column": "I(L1|XBQ)"
+    },
+    "I(QB_L2)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(L2|XBQ)",
+      "actual_column": "I(L2|XBQ)"
+    },
+    "I(QB_RB)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(RB|XBQ)",
+      "actual_column": "I(RB|XBQ)"
+    },
+    "I(QB_RJ1)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(RJ1|XBQ)",
+      "actual_column": "I(RJ1|XBQ)"
+    },
+    "I(QB_RJ2)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(RJ2|XBQ)",
+      "actual_column": "I(RJ2|XBQ)"
+    },
+    "V(QB_OUT)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "V(OUT)",
+      "actual_column": "V(OUT)"
+    },
+    "I(R_LOAD)_read0_no_read": {
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(R_LOAD)",
+      "actual_column": "I(R_LOAD)"
+    }
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "schema": "josim-geometric-connectivity-v1",
+  "coordinate_tolerance": 1e-09,
+  "components": [
+    {
+      "name": "REPLAY",
+      "kind": "functional_block",
+      "scope": "topology",
+      "terminals": {
+        "a": [
+          70.0,
+          360.0
+        ],
+        "b": [
+          260.0,
+          360.0
+        ]
+      },
+      "symbol_center": [
+        165.0,
+        360.0
+      ]
+    },
+    {
+      "name": "QB",
+      "kind": "functional_block",
+      "scope": "topology",
+      "terminals": {
+        "a": [
+          315.0,
+          360.0
+        ],
+        "b": [
+          645.0,
+          360.0
+        ]
+      },
+      "symbol_center": [
+        480.0,
+        360.0
+      ]
+    },
+    {
+      "name": "R_LOAD",
+      "kind": "resistor",
+      "scope": "external_fixture",
+      "terminals": {
+        "a": [
+          690.0,
+          360.0
+        ],
+        "b": [
+          690.0,
+          250.0
+        ]
+      },
+      "symbol_center": [
+        690.0,
+        305.0
+      ]
+    }
+  ],
+  "wires": [
+    {
+      "name": "REPLAY->QB",
+      "start": [
+        260.0,
+        360.0
+      ],
+      "end": [
+        315.0,
+        360.0
+      ],
+      "color": "#111111"
+    },
+    {
+      "name": "input-port",
+      "start": [
+        42.0,
+        360.0
+      ],
+      "end": [
+        70.0,
+        360.0
+      ],
+      "color": "#111111"
+    },
+    {
+      "name": "output-port",
+      "start": [
+        645.0,
+        360.0
+      ],
+      "end": [
+        673.0,
+        360.0
+      ],
+      "color": "#111111"
+    },
+    {
+      "name": "output-to-load",
+      "start": [
+        645.0,
+        360.0
+      ],
+      "end": [
+        690.0,
+        360.0
+      ],
+      "color": "#8b939d"
+    },
+    {
+      "name": "output-load-ground",
+      "start": [
+        690.0,
+        250.0
+      ],
+      "end": [
+        690.0,
+        230.0
+      ],
+      "color": "black"
+    }
+  ],
+  "anchors": [],
+  "fixed_points": [
+    {
+      "name": "REPLAY:a",
+      "kind": "component_terminal",
+      "point": [
+        70.0,
+        360.0
+      ]
+    },
+    {
+      "name": "REPLAY:b",
+      "kind": "component_terminal",
+      "point": [
+        260.0,
+        360.0
+      ]
+    },
+    {
+      "name": "QB:a",
+      "kind": "component_terminal",
+      "point": [
+        315.0,
+        360.0
+      ]
+    },
+    {
+      "name": "QB:b",
+      "kind": "component_terminal",
+      "point": [
+        645.0,
+        360.0
+      ]
+    },
+    {
+      "name": "Input",
+      "kind": "port_terminal",
+      "point": [
+        70.0,
+        360.0
+      ]
+    },
+    {
+      "name": "Input:outer",
+      "kind": "port_outer",
+      "point": [
+        42.0,
+        360.0
+      ]
+    },
+    {
+      "name": "Out",
+      "kind": "port_terminal",
+      "point": [
+        645.0,
+        360.0
+      ]
+    },
+    {
+      "name": "Out:outer",
+      "kind": "port_outer",
+      "point": [
+        673.0,
+        360.0
+      ]
+    },
+    {
+      "name": "R_LOAD:a",
+      "kind": "component_terminal",
+      "point": [
+        690.0,
+        360.0
+      ]
+    },
+    {
+      "name": "R_LOAD:b",
+      "kind": "component_terminal",
+      "point": [
+        690.0,
+        250.0
+      ]
+    },
+    {
+      "name": "R_LOAD:ground",
+      "kind": "ground_terminal",
+      "point": [
+        690.0,
+        230.0
+      ]
+    }
+  ]
+}

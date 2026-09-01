@@ -1,0 +1,159 @@
+{
+  "schema": "josim-publication-schematic-v2",
+  "topology_id": "SCALED_QB_REPLAY",
+  "topology_signature": "ideal-replay-scaled-qb-rload",
+  "source_deck": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir",
+  "includes": [
+    "../../../jjmit.cir",
+    "../../../bq_cell.cir"
+  ],
+  "top_level_elements": [
+    {
+      "name": "XBQ",
+      "kind": "X",
+      "nodes": [
+        "IN",
+        "OUT"
+      ],
+      "tokens": [
+        "XBQ",
+        "IN",
+        "OUT",
+        "IBIAS",
+        "BQ"
+      ]
+    },
+    {
+      "name": "I_REPLAY",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "IN"
+      ],
+      "tokens": [
+        "I_REPLAY",
+        "0",
+        "IN",
+        "pwl(0p",
+        "0",
+        "0.012500000000000001p",
+        "0",
+        "0.025000000000000001p",
+        "0",
+        "0.037499999999999999p",
+        "0",
+        "0.050000000000000003p",
+        "0",
+        "0.0625p",
+        "0",
+        "0.074999999999999997p",
+        "0",
+        "0.087500000000000008p",
+        "0",
+        "0.10000000000000001p",
+        "0",
+        "0.1125p",
+        "0",
+        "0.125p",
+        "0",
+        "0.13749999999999998p",
+        "0",
+        "0.14999999999999999p",
+        "0",
+        "0.16249999999999998p",
+        "0",
+        "0.17500000000000002p",
+        "0",
+        "0.1875p",
+        "0",
+        "0.20000000000000001p",
+        "0",
+        "0.21249999999999999p",
+        "0"
+      ]
+    },
+    {
+      "name": "R_LOAD",
+      "kind": "R",
+      "nodes": [
+        "OUT",
+        "0"
+      ],
+      "tokens": [
+        "R_LOAD",
+        "OUT",
+        "0",
+        "10"
+      ]
+    },
+    {
+      "name": "I_IBIAS",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "IBIAS"
+      ],
+      "tokens": [
+        "I_IBIAS",
+        "0",
+        "IBIAS",
+        "pwl(0p",
+        "0",
+        "1p",
+        "35u",
+        "2p",
+        "35u",
+        "170p",
+        "35u)"
+      ]
+    }
+  ],
+  "displayed_components": [
+    {
+      "name": "XBQ",
+      "kind": "X",
+      "nodes": [
+        "IN",
+        "OUT"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "I_REPLAY",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "IN"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "R_LOAD",
+      "kind": "R",
+      "nodes": [
+        "OUT",
+        "0"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "I_IBIAS",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "IBIAS"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    }
+  ],
+  "omitted_from_display": [
+    "flattened internal node labels",
+    "PWL/timestep/probe-only directives",
+    "full jjmit VG/RN/R0/C model fields"
+  ],
+  "functional_blocks": [
+    "REPLAY",
+    "QB"
+  ],
+  "validation_scope": "All top-level electrical elements are listed and mapped; nested subcircuit internals are represented by the named functional block and remain present in the source deck."
+}

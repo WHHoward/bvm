@@ -1,0 +1,430 @@
+{
+  "schema": "josim-publication-schematic-v2",
+  "topology_id": "BVM_JSL8_SCALED_QB_PHYSICAL",
+  "topology_signature": "physical-bvm-jsl8-scaled-qb-rload",
+  "source_deck": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/8x500/logical1_read.cir",
+  "includes": [
+    "../../../jjmit.cir",
+    "../../../bvm_cell.cir",
+    "../../../bq_cell.cir"
+  ],
+  "top_level_elements": [
+    {
+      "name": "XBVM1",
+      "kind": "X",
+      "nodes": [
+        "WL1",
+        "BL1"
+      ],
+      "tokens": [
+        "XBVM1",
+        "WL1",
+        "BL1",
+        "SE1",
+        "SL1",
+        "BVM"
+      ]
+    },
+    {
+      "name": "B_LD1",
+      "kind": "B",
+      "nodes": [
+        "SL1",
+        "njsl1"
+      ],
+      "tokens": [
+        "B_LD1",
+        "SL1",
+        "njsl1",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "B_LD2",
+      "kind": "B",
+      "nodes": [
+        "njsl1",
+        "njsl2"
+      ],
+      "tokens": [
+        "B_LD2",
+        "njsl1",
+        "njsl2",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "B_LD3",
+      "kind": "B",
+      "nodes": [
+        "njsl2",
+        "njsl3"
+      ],
+      "tokens": [
+        "B_LD3",
+        "njsl2",
+        "njsl3",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "B_LD4",
+      "kind": "B",
+      "nodes": [
+        "njsl3",
+        "njsl4"
+      ],
+      "tokens": [
+        "B_LD4",
+        "njsl3",
+        "njsl4",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "B_LD5",
+      "kind": "B",
+      "nodes": [
+        "njsl4",
+        "njsl5"
+      ],
+      "tokens": [
+        "B_LD5",
+        "njsl4",
+        "njsl5",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "B_LD6",
+      "kind": "B",
+      "nodes": [
+        "njsl5",
+        "njsl6"
+      ],
+      "tokens": [
+        "B_LD6",
+        "njsl5",
+        "njsl6",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "B_LD7",
+      "kind": "B",
+      "nodes": [
+        "njsl6",
+        "njsl7"
+      ],
+      "tokens": [
+        "B_LD7",
+        "njsl6",
+        "njsl7",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "B_LD8",
+      "kind": "B",
+      "nodes": [
+        "njsl7",
+        "IN"
+      ],
+      "tokens": [
+        "B_LD8",
+        "njsl7",
+        "IN",
+        "jjmit",
+        "area=5"
+      ]
+    },
+    {
+      "name": "XBQ",
+      "kind": "X",
+      "nodes": [
+        "IN",
+        "OUT"
+      ],
+      "tokens": [
+        "XBQ",
+        "IN",
+        "OUT",
+        "IBIAS",
+        "BQ"
+      ]
+    },
+    {
+      "name": "R_LOAD",
+      "kind": "R",
+      "nodes": [
+        "OUT",
+        "0"
+      ],
+      "tokens": [
+        "R_LOAD",
+        "OUT",
+        "0",
+        "10"
+      ]
+    },
+    {
+      "name": "I_IBIAS",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "IBIAS"
+      ],
+      "tokens": [
+        "I_IBIAS",
+        "0",
+        "IBIAS",
+        "pwl(0p",
+        "0",
+        "1p",
+        "35u",
+        "2p",
+        "35u",
+        "170p",
+        "35u)"
+      ]
+    },
+    {
+      "name": "I_WL1",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "WL1"
+      ],
+      "tokens": [
+        "I_WL1",
+        "0",
+        "WL1",
+        "pwl(0p",
+        "0",
+        "10p",
+        "0",
+        "11p",
+        "+100U",
+        "20p",
+        "+100U",
+        "21p",
+        "0",
+        "95p",
+        "0",
+        "96p",
+        "+100U",
+        "109p",
+        "+100U",
+        "110p",
+        "0",
+        "170p",
+        "0)"
+      ]
+    },
+    {
+      "name": "I_BL1",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "BL1"
+      ],
+      "tokens": [
+        "I_BL1",
+        "0",
+        "BL1",
+        "pwl(0p",
+        "0",
+        "10p",
+        "0",
+        "11p",
+        "+100U",
+        "20p",
+        "+100U",
+        "21p",
+        "0",
+        "170p",
+        "0)"
+      ]
+    },
+    {
+      "name": "I_SE1",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "SE1"
+      ],
+      "tokens": [
+        "I_SE1",
+        "0",
+        "SE1",
+        "pwl(0p",
+        "0",
+        "95p",
+        "0",
+        "96p",
+        "+100U",
+        "109p",
+        "+100U",
+        "110p",
+        "0",
+        "170p",
+        "0)"
+      ]
+    }
+  ],
+  "displayed_components": [
+    {
+      "name": "XBVM1",
+      "kind": "X",
+      "nodes": [
+        "WL1",
+        "BL1"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD1",
+      "kind": "B",
+      "nodes": [
+        "SL1",
+        "njsl1"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD2",
+      "kind": "B",
+      "nodes": [
+        "njsl1",
+        "njsl2"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD3",
+      "kind": "B",
+      "nodes": [
+        "njsl2",
+        "njsl3"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD4",
+      "kind": "B",
+      "nodes": [
+        "njsl3",
+        "njsl4"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD5",
+      "kind": "B",
+      "nodes": [
+        "njsl4",
+        "njsl5"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD6",
+      "kind": "B",
+      "nodes": [
+        "njsl5",
+        "njsl6"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD7",
+      "kind": "B",
+      "nodes": [
+        "njsl6",
+        "njsl7"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "B_LD8",
+      "kind": "B",
+      "nodes": [
+        "njsl7",
+        "IN"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "XBQ",
+      "kind": "X",
+      "nodes": [
+        "IN",
+        "OUT"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "R_LOAD",
+      "kind": "R",
+      "nodes": [
+        "OUT",
+        "0"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "I_IBIAS",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "IBIAS"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "I_WL1",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "WL1"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "I_BL1",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "BL1"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    },
+    {
+      "name": "I_SE1",
+      "kind": "I",
+      "nodes": [
+        "0",
+        "SE1"
+      ],
+      "display_role": "represented by semantic block / external symbol"
+    }
+  ],
+  "omitted_from_display": [
+    "flattened internal node labels",
+    "PWL/timestep/probe-only directives",
+    "full jjmit VG/RN/R0/C model fields"
+  ],
+  "functional_blocks": [
+    "BVM",
+    "JSL",
+    "QB"
+  ],
+  "validation_scope": "All top-level electrical elements are listed and mapped; nested subcircuit internals are represented by the named functional block and remain present in the source deck."
+}

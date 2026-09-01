@@ -1,0 +1,241 @@
+{
+  "schema_version": "BVM_LOAD_QB_MATRIX_PLOT_V1",
+  "generated_at": "2026-09-01T11:34:38+08:00",
+  "plot_id": "9ps-12x320-source-key",
+  "kind": "source",
+  "width_ps": 9,
+  "load": "12x320",
+  "roles": [
+    "logical1_read",
+    "logical0_read",
+    "logical1_no_read_control",
+    "logical0_no_read_control"
+  ],
+  "renderer": "scripts/josim-plot2.py",
+  "plot_type": "sep_comb",
+  "phase_semantics": "continuous_absolute",
+  "fixture_role": "SOURCE_REFERENCE",
+  "phase_display": "P columns are displayed as P/(2*pi) continuous phase turns; not an SFQ counter",
+  "raw_evidence": false,
+  "raw_sources": {
+    "logical1_read": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+    "logical0_read": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+    "logical1_no_read_control": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+    "logical0_no_read_control": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv"
+  },
+  "derived_input": "analysis/derived_inputs/9ps-12x320-source-key.csv",
+  "requested_columns": {
+    "I(SL_current)": "I(L_SL|XBVM1)",
+    "I(JSL_first)": "I(B_LD1)",
+    "I(JSL_last)": "I(B_LD12)",
+    "I(READ_WL)": "I(I_WL1)",
+    "I(READ_SE)": "I(I_SE1)",
+    "V(SL1)": "V(SL1)",
+    "V(BVM_node)": "V(N6|XBVM1)",
+    "P(storage_JM1)": "P(B_JM1|XBVM1)",
+    "P(storage_JS1)": "P(B_JS1|XBVM1)",
+    "P(JSL_last)": "P(B_LD12)"
+  },
+  "column_provenance": {
+    "I(SL_current)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "I(JSL_first)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "I(B_LD12)",
+      "actual_column": "I(B_LD12)"
+    },
+    "I(READ_WL)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "V(SL1)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "P(JSL_last)_read1": {
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "requested_column": "P(B_LD12)",
+      "actual_column": "P(B_LD12)"
+    },
+    "I(SL_current)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "I(JSL_first)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "I(B_LD12)",
+      "actual_column": "I(B_LD12)"
+    },
+    "I(READ_WL)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "V(SL1)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "P(JSL_last)_read0": {
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv",
+      "requested_column": "P(B_LD12)",
+      "actual_column": "P(B_LD12)"
+    },
+    "I(SL_current)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "I(JSL_first)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD12)",
+      "actual_column": "I(B_LD12)"
+    },
+    "I(READ_WL)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "V(SL1)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "P(JSL_last)_read1_no_read": {
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv",
+      "requested_column": "P(B_LD12)",
+      "actual_column": "P(B_LD12)"
+    },
+    "I(SL_current)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(L_SL|XBVM1)",
+      "actual_column": "I(L_SL|XBVM1)"
+    },
+    "I(JSL_first)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD1)",
+      "actual_column": "I(B_LD1)"
+    },
+    "I(JSL_last)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(B_LD12)",
+      "actual_column": "I(B_LD12)"
+    },
+    "I(READ_WL)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(I_WL1)",
+      "actual_column": "I(I_WL1)"
+    },
+    "I(READ_SE)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "I(I_SE1)",
+      "actual_column": "I(I_SE1)"
+    },
+    "V(SL1)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "V(SL1)",
+      "actual_column": "V(SL1)"
+    },
+    "V(BVM_node)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "V(N6|XBVM1)",
+      "actual_column": "V(N6|XBVM1)"
+    },
+    "P(storage_JM1)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(B_JM1|XBVM1)",
+      "actual_column": "P(B_JM1|XBVM1)"
+    },
+    "P(storage_JS1)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(B_JS1|XBVM1)",
+      "actual_column": "P(B_JS1|XBVM1)"
+    },
+    "P(JSL_last)_read0_no_read": {
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv",
+      "requested_column": "P(B_LD12)",
+      "actual_column": "P(B_LD12)"
+    }
+  }
+}

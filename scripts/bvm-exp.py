@@ -45,7 +45,7 @@ from bvmtools.waveform import waveform_metrics
 REPO = Path(__file__).resolve().parents[1]
 SCRIPT = Path(__file__).resolve()
 PRESETS_PATH = SCRIPT.parent / "bvmtools" / "presets.yaml"
-ALLOWED_MODES = {"QUICK", "PROMOTED", "FORMAL"}
+ALLOWED_MODES = {"QUICK"}
 ALLOWED_VISUAL_MODES = {"none", "compact", "full"}
 ALLOWED_METRICS = {"raw_qa", "waveform", "strict_event", "compare"}
 QUICK_OUTCOMES = {

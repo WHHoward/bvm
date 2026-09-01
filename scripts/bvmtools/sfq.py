@@ -449,12 +449,18 @@ def strict_event_summary(
             "post_complete_segment_count": None,
         }
     raw_hash_match = None
-    if active_spec.raw_sha256 is not None and actual_raw_sha256 is not None:
-        raw_hash_match = active_spec.raw_sha256.casefold() == actual_raw_sha256.casefold()
+    if active_spec.raw_sha256 is not None:
+        raw_hash_match = (
+            actual_raw_sha256 is not None
+            and active_spec.raw_sha256.casefold() == actual_raw_sha256.casefold()
+        )
     metric_spec_hash_match = None
     expected_metric_hash = active_spec.metric_spec.get("sha256")
-    if expected_metric_hash is not None and actual_metric_spec_sha256 is not None:
-        metric_spec_hash_match = str(expected_metric_hash).casefold() == actual_metric_spec_sha256.casefold()
+    if expected_metric_hash is not None:
+        metric_spec_hash_match = (
+            actual_metric_spec_sha256 is not None
+            and str(expected_metric_hash).casefold() == actual_metric_spec_sha256.casefold()
+        )
     if raw_hash_match is False or metric_spec_hash_match is False:
         active_spec = replace(active_spec, status="INVALID_PROVENANCE")
     classification, reason = _classify(

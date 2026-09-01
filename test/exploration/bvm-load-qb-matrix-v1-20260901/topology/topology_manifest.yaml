@@ -1,0 +1,49 @@
+schema_version: '2.0'
+exploration: test/exploration/bvm-load-qb-matrix-v1-20260901
+topologies:
+- topology_id: BVM_JSL_SOURCE
+  title_cn: BVM → JSL source fixture
+  representative_experiment: test/exploration/bvm-load-qb-matrix-v1-20260901
+  representative_deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/source/13ps/12x320/logical1_read.cir
+  topology_signature: source-boundary-bvm-jsl-ground
+  jsl_count: 12
+  jsl_current_uA: 320
+  external_boundary:
+  - JSL endpoint connected to ground
+- topology_id: BVM_JSL12_SCALED_QB_PHYSICAL
+  title_cn: BVM → 12×JSL → scaled QB physical cascade
+  representative_experiment: test/exploration/bvm-load-qb-matrix-v1-20260901
+  representative_deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir
+  topology_signature: physical-bvm-jsl12-scaled-qb-rload
+  jsl_count: 12
+  jsl_current_uA: 320
+  external_boundary:
+  - JSL endpoint connected to QB IN
+  - QB OUT connected to R_LOAD=10 ohm to ground
+- topology_id: BVM_JSL8_SOURCE
+  title_cn: BVM → 8×JSL source fixture
+  representative_experiment: test/exploration/bvm-load-qb-matrix-v1-20260901
+  representative_deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/source/13ps/8x500/logical1_read.cir
+  topology_signature: source-boundary-bvm-jsl8-ground
+  jsl_count: 8
+  jsl_current_uA: 500
+  external_boundary:
+  - JSL endpoint connected to ground
+- topology_id: BVM_JSL8_SCALED_QB_PHYSICAL
+  title_cn: BVM → 8×JSL → scaled QB physical cascade
+  representative_experiment: test/exploration/bvm-load-qb-matrix-v1-20260901
+  representative_deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/8x500/logical1_read.cir
+  topology_signature: physical-bvm-jsl8-scaled-qb-rload
+  jsl_count: 8
+  jsl_current_uA: 500
+  external_boundary:
+  - JSL endpoint connected to QB IN
+  - QB OUT connected to R_LOAD=10 ohm to ground
+- topology_id: SCALED_QB_REPLAY
+  title_cn: ideal source waveform replay → scaled QB
+  representative_experiment: test/exploration/bvm-load-qb-matrix-v1-20260901
+  representative_deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir
+  topology_signature: ideal-replay-scaled-qb-rload
+  external_boundary:
+  - I_REPLAY connected to QB IN
+  - QB OUT connected to R_LOAD=10 ohm to ground

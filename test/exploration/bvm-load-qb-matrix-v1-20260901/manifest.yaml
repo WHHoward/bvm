@@ -1,0 +1,509 @@
+{
+  "schema_version": "BVM_LOAD_QB_MATRIX_V1",
+  "recorded_at": "2026-09-01T11:05:20+08:00",
+  "mode": "exploratory",
+  "parent_head": "c0b073a4390afd29417fd2935539835ae891710b",
+  "git_dirty_before_build": true,
+  "metric_spec": {
+    "path": "docs/research/METRIC_SPEC_V2.md",
+    "version": "2.0.0",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "version": "v2.7.2837d13",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "research_question": "在9/13 ps与12x320/8x500 JSL条件下，真实BVM源波形是否能经JSL传递并在scaled QB输出端形成有状态差异？",
+  "hypotheses": {
+    "primary": "不同JSL负载会改变BVM源端和QB输入/输出轨迹，至少一个点可能有state-selective QB output activity。",
+    "alternatives": [
+      "JSL load-line改变BVM source waveform或storage state",
+      "QB input有state-dependent activity但内部transfer或R_LOAD输出不足",
+      "read0或no-read control出现非零活动/自由运行",
+      "结果随时间步改变而不可判定"
+    ]
+  },
+  "topology": {
+    "source": "BVM SL -> N series JSL -> GND",
+    "replay": "I_REPLAY exact source I(B_LD1)(t) -> QB IN",
+    "physical": "BVM SL -> N series JSL -> QB IN -> scaled QB -> R_LOAD",
+    "magnetic_coupling": false,
+    "jsl_bypass": false
+  },
+  "loads": {
+    "12x320": {
+      "count": 12,
+      "area": 3.2,
+      "ic_uA": 320.0
+    },
+    "8x500": {
+      "count": 8,
+      "area": 5.0,
+      "ic_uA": 500.0
+    }
+  },
+  "stimulus": {
+    "initialization": "logical1=+100uA WL+BL; logical0=-100uA WL+BL",
+    "read": "positive +100uA WL+SE",
+    "start_ps": 96.0,
+    "widths_ps": [
+      9,
+      13
+    ],
+    "stop_ps": 170.0
+  },
+  "simulation": {
+    "requested_timestep_ps": 0.0125,
+    "stop_time_ps": 170.0,
+    "repetitions": 1,
+    "qb": {
+      "BJs_area": 0.5,
+      "BJL1_area": 0.36,
+      "BJL2_area": 0.54,
+      "Lin_pH": 0.8,
+      "L0_pH": 1.323,
+      "L1_pH": 3.91,
+      "L2_pH": 3.91,
+      "RJ1_ohm": 33.0,
+      "RJ2_ohm": 22.0,
+      "RB_ohm": 6.0,
+      "IBIAS_uA": 35.0,
+      "RLOAD_ohm": 10.0
+    }
+  },
+  "windows_ps": {
+    "pre": [
+      80.0,
+      94.0
+    ],
+    "activity": [
+      94.0,
+      130.0
+    ],
+    "post": [
+      140.0,
+      170.0
+    ]
+  },
+  "roles": [
+    "logical1_read",
+    "logical0_read",
+    "logical1_no_read_control",
+    "logical0_no_read_control"
+  ],
+  "snapshots": {
+    "jjmit.cir": {
+      "source": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/jjmit.cir",
+      "path": "inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "bvm_cell.cir": {
+      "source": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/bvm_cell.cir",
+      "path": "inputs/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    },
+    "bq_cell.cir": {
+      "source": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/inputs/bq_cell.cir",
+      "path": "inputs/bq_cell.cir",
+      "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2"
+    }
+  },
+  "cases": [
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical1_read",
+      "deck": "inputs/source/9ps/12x320/logical1_read.cir",
+      "raw": "raw/source/9ps/12x320/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical0_read",
+      "deck": "inputs/source/9ps/12x320/logical0_read.cir",
+      "raw": "raw/source/9ps/12x320/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/source/9ps/12x320/logical1_no_read_control.cir",
+      "raw": "raw/source/9ps/12x320/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/source/9ps/12x320/logical0_no_read_control.cir",
+      "raw": "raw/source/9ps/12x320/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical1_read",
+      "deck": "inputs/source/9ps/8x500/logical1_read.cir",
+      "raw": "raw/source/9ps/8x500/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical0_read",
+      "deck": "inputs/source/9ps/8x500/logical0_read.cir",
+      "raw": "raw/source/9ps/8x500/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/source/9ps/8x500/logical1_no_read_control.cir",
+      "raw": "raw/source/9ps/8x500/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/source/9ps/8x500/logical0_no_read_control.cir",
+      "raw": "raw/source/9ps/8x500/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical1_read",
+      "deck": "inputs/source/13ps/12x320/logical1_read.cir",
+      "raw": "raw/source/13ps/12x320/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical0_read",
+      "deck": "inputs/source/13ps/12x320/logical0_read.cir",
+      "raw": "raw/source/13ps/12x320/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/source/13ps/12x320/logical1_no_read_control.cir",
+      "raw": "raw/source/13ps/12x320/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/source/13ps/12x320/logical0_no_read_control.cir",
+      "raw": "raw/source/13ps/12x320/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical1_read",
+      "deck": "inputs/source/13ps/8x500/logical1_read.cir",
+      "raw": "raw/source/13ps/8x500/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical0_read",
+      "deck": "inputs/source/13ps/8x500/logical0_read.cir",
+      "raw": "raw/source/13ps/8x500/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/source/13ps/8x500/logical1_no_read_control.cir",
+      "raw": "raw/source/13ps/8x500/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "source",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/source/13ps/8x500/logical0_no_read_control.cir",
+      "raw": "raw/source/13ps/8x500/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical1_read",
+      "deck": "inputs/physical/9ps/12x320/logical1_read.cir",
+      "raw": "raw/physical/9ps/12x320/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical0_read",
+      "deck": "inputs/physical/9ps/12x320/logical0_read.cir",
+      "raw": "raw/physical/9ps/12x320/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/physical/9ps/12x320/logical1_no_read_control.cir",
+      "raw": "raw/physical/9ps/12x320/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/physical/9ps/12x320/logical0_no_read_control.cir",
+      "raw": "raw/physical/9ps/12x320/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical1_read",
+      "deck": "inputs/physical/9ps/8x500/logical1_read.cir",
+      "raw": "raw/physical/9ps/8x500/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical0_read",
+      "deck": "inputs/physical/9ps/8x500/logical0_read.cir",
+      "raw": "raw/physical/9ps/8x500/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/physical/9ps/8x500/logical1_no_read_control.cir",
+      "raw": "raw/physical/9ps/8x500/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/physical/9ps/8x500/logical0_no_read_control.cir",
+      "raw": "raw/physical/9ps/8x500/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical1_read",
+      "deck": "inputs/physical/13ps/12x320/logical1_read.cir",
+      "raw": "raw/physical/13ps/12x320/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical0_read",
+      "deck": "inputs/physical/13ps/12x320/logical0_read.cir",
+      "raw": "raw/physical/13ps/12x320/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/physical/13ps/12x320/logical1_no_read_control.cir",
+      "raw": "raw/physical/13ps/12x320/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/physical/13ps/12x320/logical0_no_read_control.cir",
+      "raw": "raw/physical/13ps/12x320/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical1_read",
+      "deck": "inputs/physical/13ps/8x500/logical1_read.cir",
+      "raw": "raw/physical/13ps/8x500/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical0_read",
+      "deck": "inputs/physical/13ps/8x500/logical0_read.cir",
+      "raw": "raw/physical/13ps/8x500/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/physical/13ps/8x500/logical1_no_read_control.cir",
+      "raw": "raw/physical/13ps/8x500/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/physical/13ps/8x500/logical0_no_read_control.cir",
+      "raw": "raw/physical/13ps/8x500/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical1_read",
+      "deck": "inputs/replay/9ps/12x320/logical1_read.cir",
+      "raw": "raw/replay/9ps/12x320/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical0_read",
+      "deck": "inputs/replay/9ps/12x320/logical0_read.cir",
+      "raw": "raw/replay/9ps/12x320/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/replay/9ps/12x320/logical1_no_read_control.cir",
+      "raw": "raw/replay/9ps/12x320/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "12x320",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/replay/9ps/12x320/logical0_no_read_control.cir",
+      "raw": "raw/replay/9ps/12x320/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical1_read",
+      "deck": "inputs/replay/9ps/8x500/logical1_read.cir",
+      "raw": "raw/replay/9ps/8x500/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical0_read",
+      "deck": "inputs/replay/9ps/8x500/logical0_read.cir",
+      "raw": "raw/replay/9ps/8x500/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/replay/9ps/8x500/logical1_no_read_control.cir",
+      "raw": "raw/replay/9ps/8x500/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 9,
+      "load": "8x500",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/replay/9ps/8x500/logical0_no_read_control.cir",
+      "raw": "raw/replay/9ps/8x500/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical1_read",
+      "deck": "inputs/replay/13ps/12x320/logical1_read.cir",
+      "raw": "raw/replay/13ps/12x320/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical0_read",
+      "deck": "inputs/replay/13ps/12x320/logical0_read.cir",
+      "raw": "raw/replay/13ps/12x320/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/replay/13ps/12x320/logical1_no_read_control.cir",
+      "raw": "raw/replay/13ps/12x320/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/replay/13ps/12x320/logical0_no_read_control.cir",
+      "raw": "raw/replay/13ps/12x320/logical0_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical1_read",
+      "deck": "inputs/replay/13ps/8x500/logical1_read.cir",
+      "raw": "raw/replay/13ps/8x500/logical1_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical0_read",
+      "deck": "inputs/replay/13ps/8x500/logical0_read.cir",
+      "raw": "raw/replay/13ps/8x500/logical0_read/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical1_no_read_control",
+      "deck": "inputs/replay/13ps/8x500/logical1_no_read_control.cir",
+      "raw": "raw/replay/13ps/8x500/logical1_no_read_control/run-01.csv"
+    },
+    {
+      "kind": "replay",
+      "width_ps": 13,
+      "load": "8x500",
+      "role": "logical0_no_read_control",
+      "deck": "inputs/replay/13ps/8x500/logical0_no_read_control.cir",
+      "raw": "raw/replay/13ps/8x500/logical0_no_read_control/run-01.csv"
+    }
+  ],
+  "artifacts": {
+    "raw_sha256": [],
+    "log_files": []
+  },
+  "status": "PRE_REGISTERED",
+  "claim_ceiling": "exploratory simulation observations; no hardware or downstream JTL claim",
+  "execution": {
+    "planned_runs": 48,
+    "source_and_physical": "planned",
+    "replay_built_at": "2026-09-01T11:07:09+08:00"
+  }
+}

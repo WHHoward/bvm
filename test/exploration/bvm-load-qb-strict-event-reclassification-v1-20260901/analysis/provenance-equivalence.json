@@ -1,0 +1,135 @@
+{
+  "recorded_at": "2026-09-01T14:56:16+08:00",
+  "parent_head": "d1e5134ac40e60f39dc90fa1c294ef7b81a9c635",
+  "legacy_new_source_identity": {
+    "status": "LEGACY_NEW_SOURCE_IDENTITY = PASS",
+    "checks": {
+      "sha256_equal": true,
+      "byte_identical": true,
+      "sample_count_equal": true,
+      "time_grid_exact": true,
+      "i_bld1_exact": true
+    },
+    "comparison": {
+      "path_a": "test/exploration/paper-sl-l0-20260824/raw/logical1-read/run-01.csv",
+      "path_b": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "sha256_a": "6ddc85050294fd38be0f55602af3517ec6bcfcd00794128f69dee545bf82ef65",
+      "sha256_b": "6ddc85050294fd38be0f55602af3517ec6bcfcd00794128f69dee545bf82ef65",
+      "byte_identical": true,
+      "sample_count_a": 13599,
+      "sample_count_b": 13599,
+      "time_grid_exact": true,
+      "max_abs_time_difference_s": 0.0,
+      "signals": {
+        "I(B_LD1)": {
+          "status": "PASS",
+          "exact_equal": true,
+          "max_abs_difference": 0.0,
+          "rms_difference": 0.0
+        }
+      },
+      "status": "PASS"
+    }
+  },
+  "legacy_new_replay_fixture_equivalence": {
+    "status": "LEGACY_NEW_REPLAY_FIXTURE_EQUIVALENCE = PASS",
+    "checks": {
+      "bq_cell_sha_equal": true,
+      "bq_cell_content_equal": true,
+      "jjmit_sha_equal": true,
+      "jjmit_content_equal": true,
+      "ibias_equal": true,
+      "r_load_equal": true,
+      "tran_timestep_equal": true,
+      "i_replay_nodes_equal": true,
+      "i_replay_orientation_equal": true
+    },
+    "old_semantics": {
+      "path": "test/exploration/paper-sl-q1-20260824/inputs/paper-j1-logical1-read.cir",
+      "i_replay_nodes": [
+        "0",
+        "IN"
+      ],
+      "i_replay_orientation": "I_REPLAY 0 IN",
+      "r_load_ohm": 10.0,
+      "ibias_uA": 35.0,
+      "tran_timestep_ps": 0.0125,
+      "tran_stop_ps": 170.0,
+      "raw_lines": {
+        "i_replay": "I_REPLAY 0 IN pwl(0p 0 0.012500000000000001p 0 0.025000000000000001p 0 0.037499999999999999p 0 0.050000000000000003p 0 0.0625p 0 0.074999999999999997p 0 0.087500000000000008p 0 0.10000000000000001p 0 0.1125p 0 0.125p 0 0.13749999999999998p 0 0.14999999999999999p 0 0.16249999999999998p 0 0.17500000000000002p 0 0.1875p 0 0.20000000000000001p 0 0.21249999999999999p 0",
+        "r_load": "R_LOAD OUT 0 10",
+        "i_ibias": "I_IBIAS 0 IBIAS pwl(0p 0 1p 35u 2p 35u 170p 35u)",
+        "tran": ".tran 0.0125p 170p"
+      }
+    },
+    "new_semantics": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/9ps/12x320/logical1_read.cir",
+      "i_replay_nodes": [
+        "0",
+        "IN"
+      ],
+      "i_replay_orientation": "I_REPLAY 0 IN",
+      "r_load_ohm": 10.0,
+      "ibias_uA": 35.0,
+      "tran_timestep_ps": 0.0125,
+      "tran_stop_ps": 170.0,
+      "raw_lines": {
+        "i_replay": "I_REPLAY 0 IN pwl(0p 0 0.012500000000000001p 0 0.025000000000000001p 0 0.037499999999999999p 0 0.050000000000000003p 0 0.0625p 0 0.074999999999999997p 0 0.087500000000000008p 0 0.10000000000000001p 0 0.1125p 0 0.125p 0 0.13749999999999998p 0 0.14999999999999999p 0 0.16249999999999998p 0 0.17500000000000002p 0 0.1875p 0 0.20000000000000001p 0 0.21249999999999999p 0",
+        "r_load": "R_LOAD OUT 0 10",
+        "i_ibias": "I_IBIAS 0 IBIAS pwl(0p 0 1p 35u 2p 35u 170p 35u)",
+        "tran": ".tran 0.0125p 170p"
+      }
+    },
+    "snapshot_files": {
+      "old_bq_cell": {
+        "path": "test/exploration/paper-sl-q1-20260824/inputs/bq_cell.cir",
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2"
+      },
+      "new_bq_cell": {
+        "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/bq_cell.cir",
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2"
+      },
+      "old_jjmit": {
+        "path": "test/exploration/paper-sl-q1-20260824/inputs/jjmit.cir",
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+      },
+      "new_jjmit": {
+        "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/jjmit.cir",
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+      }
+    }
+  },
+  "legacy_new_replay_raw_numeric_equivalence": {
+    "path_a": "test/exploration/paper-sl-q1-20260824/raw/paper-j1-logical1-read.csv",
+    "path_b": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/12x320/logical1_read/run-01.csv",
+    "sha256_a": "3280c7c134dc599bad5e0433ec2650ffb566af5cc37a6849eafb0b2c06b06f24",
+    "sha256_b": "d488f7b3cb1d229a750500ab78656e0b291beb0f7083a8361a4883a9e67a8a43",
+    "byte_identical": false,
+    "sample_count_a": 13599,
+    "sample_count_b": 13599,
+    "time_grid_exact": true,
+    "max_abs_time_difference_s": 0.0,
+    "signals": {
+      "P(BJL2|XBQ)": {
+        "status": "PASS",
+        "exact_equal": true,
+        "max_abs_difference": 0.0,
+        "rms_difference": 0.0
+      },
+      "V(BJL2|XBQ)": {
+        "status": "PASS",
+        "exact_equal": true,
+        "max_abs_difference": 0.0,
+        "rms_difference": 0.0
+      },
+      "I(BJL2|XBQ)": {
+        "status": "PASS",
+        "exact_equal": true,
+        "max_abs_difference": 0.0,
+        "rms_difference": 0.0
+      }
+    },
+    "status": "PASS"
+  },
+  "overall_provenance_status": "PASS"
+}

@@ -1,0 +1,69 @@
+{
+  "document_type": "strict_event_regression_check",
+  "tolerances": {
+    "turns": 1e-09,
+    "ps": 1e-09
+  },
+  "status": "PASS",
+  "comparable_fixture_required": true,
+  "anchors": [
+    {
+      "id": "legacy_9ps_12x320_replay_logical1_read",
+      "reference": "test/exploration/paper-sl-q1-20260824/analysis/metrics.json",
+      "expected": {
+        "expected_largest_turns": 0.8925272335342432,
+        "expected_area_turns": 0.8925370087565057,
+        "expected_start_ps": 103.03750000000001,
+        "expected_end_ps": 109.65,
+        "expected_classifications": [
+          "SUBTHRESHOLD",
+          "NO_COMPLETE_EVENT"
+        ]
+      },
+      "observed": {
+        "largest_turns": 0.8925272335342432,
+        "area_turns": 0.8925370087565059,
+        "start_ps": 103.03750000000001,
+        "end_ps": 109.65,
+        "classification": "SUBTHRESHOLD"
+      },
+      "checks": {
+        "largest_turns": true,
+        "area_turns": true,
+        "start_ps": true,
+        "end_ps": true,
+        "classification": true
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "historical_13ps_12x320_replay_logical1_read",
+      "reference": "test/exploration/bvm-read-semantics-audit-and-jsl-width-bracket-v1-20260824/analysis/metrics.json",
+      "expected": {
+        "expected_largest_turns": 1.0160289228944646,
+        "expected_area_turns": 1.0160368344325381,
+        "expected_start_ps": 103.03750000000001,
+        "expected_end_ps": 110.175,
+        "expected_classifications": [
+          "CLEAN_ONE_SFQ_CANDIDATE",
+          "EXACTLY_ONE"
+        ]
+      },
+      "observed": {
+        "largest_turns": 1.0160289228944646,
+        "area_turns": 1.0160368344325386,
+        "start_ps": 103.03750000000001,
+        "end_ps": 110.175,
+        "classification": "CLEAN_ONE_SFQ_CANDIDATE"
+      },
+      "checks": {
+        "largest_turns": true,
+        "area_turns": true,
+        "start_ps": true,
+        "end_ps": true,
+        "classification": true
+      },
+      "status": "PASS"
+    }
+  ]
+}

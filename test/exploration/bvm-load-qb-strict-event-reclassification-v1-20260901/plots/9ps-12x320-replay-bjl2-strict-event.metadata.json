@@ -1,0 +1,60 @@
+{
+  "schema_version": "STRICT_EVENT_JOSIM_PLOT_V1",
+  "generated_at": "2026-09-01T14:56:16+08:00",
+  "experiment_id": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901",
+  "plot_id": "9ps-12x320-replay-bjl2-strict-event",
+  "plot_path": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/plots/9ps-12x320-replay-bjl2-strict-event.html",
+  "title": "Ideal replay → scaled QB — 9 ps / 12x320 / logical1 READ — BJL2 strict trajectory; segment 103–109.7 ps",
+  "generated_from": "scripts/josim-plot2.py",
+  "plot_type": "sep_comb",
+  "color": "dark",
+  "phase_display": "continuous unwrapped P(BJL2|XBQ)/(2pi) in turns; not an SFQ counter",
+  "raw_columns": [
+    "P(BJL2|XBQ)",
+    "V(BJL2|XBQ)",
+    "V(IN)",
+    "V(OUT)",
+    "I(I_REPLAY)",
+    "I(R_LOAD)"
+  ],
+  "source_paths": [
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/12x320/logical1_read/run-01.csv"
+  ],
+  "source_sha256": {
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/12x320/logical1_read/run-01.csv": "d488f7b3cb1d229a750500ab78656e0b291beb0f7083a8361a4883a9e67a8a43"
+  },
+  "plot_input_kind": "temporary_derived_event_overlay_csv",
+  "strict_annotation_source": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/strict-event-details.json",
+  "strict_annotations": [
+    {
+      "fixture": "replay",
+      "width_ps": 9,
+      "jsl_load": "12x320",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": 1.0021786231268355,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 103.03750000000001,
+      "largest_segment_end_ps": 109.65,
+      "largest_segment_turns": 0.8925272335342432,
+      "same_segment_area_turns": 0.8925370087565059,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    }
+  ],
+  "scientific_authority": "raw evidence and strict-event analysis; visualization is descriptive only",
+  "derived_input_sha256": "052f24413e3e05ad6c6c69773cab6ccf56068babd1e66b0831803b92aaa5f9a5",
+  "derived_input_lifetime": "temporary; regenerate from listed raw paths with generate_strict_plots.py",
+  "derived_annotation_columns": [
+    "P(STRICT marker: window start 94.000000 ps)",
+    "P(STRICT marker: largest segment start 103.037500 ps)",
+    "P(STRICT marker: largest segment end 109.650000 ps)",
+    "P(STRICT marker: window end 129.987500 ps)"
+  ],
+  "output_sha256": "02395fa4c1912cb2edec17ce11058113a347171971cc612c8e300831ae972f5e"
+}

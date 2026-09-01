@@ -1,0 +1,205 @@
+{
+  "schema_version": "STRICT_EVENT_JOSIM_PLOT_V1",
+  "generated_at": "2026-09-01T14:56:16+08:00",
+  "experiment_id": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901",
+  "plot_id": "strict-event-matrix",
+  "plot_path": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/plots/strict-event-matrix.html",
+  "title": "BJL2 strict-event matrix — logical1 READ; ideal replay and physical four-point raw trajectories",
+  "generated_from": "scripts/josim-plot2.py",
+  "plot_type": "sep_comb",
+  "color": "dark",
+  "phase_display": "continuous unwrapped P(BJL2|XBQ)/(2pi) in turns; not an SFQ counter",
+  "raw_columns": [
+    "P(BJL2|XBQ)",
+    "V(BJL2|XBQ)",
+    "V(OUT)"
+  ],
+  "source_paths": [
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/12x320/logical1_read/run-01.csv",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/8x500/logical1_read/run-01.csv",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/8x500/logical1_read/run-01.csv",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/9ps/12x320/logical1_read/run-01.csv",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/9ps/8x500/logical1_read/run-01.csv",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/8x500/logical1_read/run-01.csv"
+  ],
+  "source_sha256": {
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/12x320/logical1_read/run-01.csv": "d488f7b3cb1d229a750500ab78656e0b291beb0f7083a8361a4883a9e67a8a43",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/8x500/logical1_read/run-01.csv": "e08e5a8671f267cb00226efe01a7c329a2d578be5715a190a9a8ffb185ecaa09",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/8x500/logical1_read/run-01.csv": "547fc352fa21cf1bc6ca4a361f76045e6f6a8ad0c37f98042e589e1ff7aff997",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/9ps/12x320/logical1_read/run-01.csv": "a725e1fbfcb1cac7ac436bb1c109d8b03427841d8dc368393bbd459b687442e2",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/9ps/8x500/logical1_read/run-01.csv": "68bd40f33c76bfe2424e19bd80ff0c92b06aebea3eba2f72c29e933707e0ea9d",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66",
+    "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/8x500/logical1_read/run-01.csv": "15463fa194b160c3212f9ffac7739c3885585385e5e1b93a107b6d345768a190"
+  },
+  "plot_input_kind": "temporary_derived_comparison_csv",
+  "strict_annotation_source": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/strict-event-details.json",
+  "strict_annotations": [
+    {
+      "fixture": "replay",
+      "width_ps": 9,
+      "jsl_load": "12x320",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": 1.0021786231268355,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 103.03750000000001,
+      "largest_segment_end_ps": 109.65,
+      "largest_segment_turns": 0.8925272335342432,
+      "same_segment_area_turns": 0.8925370087565059,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    },
+    {
+      "fixture": "replay",
+      "width_ps": 9,
+      "jsl_load": "8x500",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": 0.9954188829753763,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 103.875,
+      "largest_segment_end_ps": 110.1125,
+      "largest_segment_turns": 0.8773658153454229,
+      "same_segment_area_turns": 0.8773776878439751,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    },
+    {
+      "fixture": "replay",
+      "width_ps": 13,
+      "jsl_load": "12x320",
+      "role": "logical1_read",
+      "classification": "CLEAN_ONE_SFQ_CANDIDATE",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": 1.0020942710069967,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 103.03750000000001,
+      "largest_segment_end_ps": 110.175,
+      "largest_segment_turns": 1.0160289228944646,
+      "same_segment_area_turns": 1.0160368344325386,
+      "complete_segment_count": 1,
+      "post_bounded": true
+    },
+    {
+      "fixture": "replay",
+      "width_ps": 13,
+      "jsl_load": "8x500",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": 0.9976465747138336,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 103.875,
+      "largest_segment_end_ps": 110.4375,
+      "largest_segment_turns": 0.9732870671524204,
+      "same_segment_area_turns": 0.9732971562471492,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    },
+    {
+      "fixture": "physical",
+      "width_ps": 9,
+      "jsl_load": "12x320",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": -0.0017097060606703742,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 104.9125,
+      "largest_segment_end_ps": 108.125,
+      "largest_segment_turns": -0.10407140137229605,
+      "same_segment_area_turns": -0.1040788033913037,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    },
+    {
+      "fixture": "physical",
+      "width_ps": 9,
+      "jsl_load": "8x500",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": -0.0013799529340782738,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 104.95,
+      "largest_segment_end_ps": 107.4,
+      "largest_segment_turns": -0.1468712531756027,
+      "same_segment_area_turns": -0.14687957850252772,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    },
+    {
+      "fixture": "physical",
+      "width_ps": 13,
+      "jsl_load": "12x320",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": -0.004181557397324913,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 106.525,
+      "largest_segment_end_ps": 109.6875,
+      "largest_segment_turns": -0.12212780022947484,
+      "same_segment_area_turns": -0.12213103894324585,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    },
+    {
+      "fixture": "physical",
+      "width_ps": 13,
+      "jsl_load": "8x500",
+      "role": "logical1_read",
+      "classification": "SUBTHRESHOLD",
+      "window_ps": [
+        94.0,
+        130.0
+      ],
+      "window_phase_delta_turns": -0.007379871471722404,
+      "window_first_time_ps": 94.0,
+      "window_last_time_ps": 129.9875,
+      "largest_segment_start_ps": 104.95,
+      "largest_segment_end_ps": 106.7625,
+      "largest_segment_turns": -0.12499623385332576,
+      "same_segment_area_turns": -0.12500610820171176,
+      "complete_segment_count": 0,
+      "post_bounded": true
+    }
+  ],
+  "scientific_authority": "raw evidence and strict-event analysis; visualization is descriptive only",
+  "derived_input_sha256": "0eaca65c4b653a748274f2e5d771c69dba9996ccec73da3db8d2c1337817f906",
+  "derived_input_lifetime": "temporary; regenerate from listed raw paths with generate_strict_plots.py",
+  "output_sha256": "e3c18bc9bc380d612bd2d3b385feab1556dc59b2c632b736e7c3f13939ad41bd"
+}

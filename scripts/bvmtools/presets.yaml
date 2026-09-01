@@ -1,0 +1,77 @@
+schema_version: 1
+style: CLASSIC_LOCKED
+presets:
+  bvm-core:
+    signals:
+      - P(B_JM1|XBVM1)
+      - V(B_JM1|XBVM1)
+      - P(B_JM2|XBVM1)
+      - V(B_JM2|XBVM1)
+      - V(SL1)
+      - I(L_SL|XBVM1)
+    physical_units:
+      phase: raw_rad
+      voltage: V
+      current: A
+    ordering_intent: BVM junction phase/voltage then source terminal/current
+    classic_layout: sep_comb
+  qb-core:
+    signals:
+      - P(BJS|XBQ)
+      - V(BJS|XBQ)
+      - P(BJL1|XBQ)
+      - V(BJL1|XBQ)
+      - P(BJL2|XBQ)
+      - V(BJL2|XBQ)
+      - V(IN)
+      - V(OUT)
+    physical_units:
+      phase: raw_rad
+      voltage: V
+    ordering_intent: QB input, source JJ, load JJ chain, output
+    classic_layout: sep_comb
+  bvm-jsl-qb:
+    signals:
+      - V(SL1)
+      - I(L_SL|XBVM1)
+      - P(BJS|XBQ)
+      - P(BJL1|XBQ)
+      - P(BJL2|XBQ)
+      - V(OUT)
+    physical_units:
+      phase: raw_rad
+      voltage: V
+      current: A
+    ordering_intent: BVM source, JSL/QB internal trajectory, output
+    classic_layout: sep_comb
+  strict-event:
+    signals:
+      - P(BJL2|XBQ)
+      - V(BJL2|XBQ)
+      - I(BJL2|XBQ)
+    physical_units:
+      phase: raw_rad
+      voltage: V
+      current: A
+    ordering_intent: same-JJ local phase/voltage/current evidence
+    classic_layout: sep_comb
+  source-load:
+    signals:
+      - V(SL1)
+      - I(L_SL|XBVM1)
+      - V(N6|XBVM1)
+    physical_units:
+      voltage: V
+      current: A
+    ordering_intent: source terminal and loading diagnostics
+    classic_layout: sep_comb
+  compact-result:
+    signals:
+      - P(BJL2|XBQ)
+      - V(BJL2|XBQ)
+      - V(OUT)
+    physical_units:
+      phase: raw_rad
+      voltage: V
+    ordering_intent: minimum result view for QB local/output trajectory
+    classic_layout: sep_comb

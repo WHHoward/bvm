@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+"""Focused regressions for the reusable JoSIM/BVM analysis core."""
+
+from __future__ import annotations
+
+import csv
+import math
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+import numpy as np
+
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO / "scripts"))
+
+from bvmtools.compare import TimeGridMismatch, compare_series  # noqa: E402
+from bvmtools.phase import (  # noqa: E402
+    TAU,
+    continuous_unwrap,
+    monotonic_segments,
+    phase_delta_turns,
+)
+from bvmtools.provenance import file_snapshot  # noqa: E402
+from bvmtools.raw import DuplicateColumnError, RawTraceError, read_csv  # noqa: E402
+from bvmtools.sfq import PHI0, strict_event_summary, strict_segment_metrics  # noqa: E402
+from bvmtools.waveform import waveform_metrics  # noqa: E402
+
+
+def _independent_anchor(path: Path) -> tuple[float, float, float]:
+    """Independent raw CSV arithmetic used as an oracle-side cross-check."""
+
+    with path.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    time_s = np.asarray([float(row["time"]) for row in rows], dtype=float)
+    phase = np.asarray([float(row["P(BJL2|XBQ)"]) for row in rows], dtype=float)
+    voltage = np.asarray([float(row["V(BJL2|XBQ)"]) for row in rows], dtype=float)
+    unwrapped = np.unwrap(phase)
+    selected = np.flatnonzero((time_s >= 94e-12) & (time_s < 130e-12))
+    local = unwrapped[selected]
+    signs = np.sign(np.diff(local))
+    nonzero = np.flatnonzero(signs)
+    start = 0
+    current = signs[nonzero[0]]
+    segments: list[tuple[int, int]] = []
+    for position in nonzero[1:]:
+        if signs[position] != current:
+            segments.append((start, int(position)))
+            start = int(position)
+            current = signs[position]
+    segments.append((start, len(local) - 1))
+    left, right = max(segments, key=lambda item: abs(unwrapped[selected[item[1]]] - unwrapped[selected[item[0]]]))
+    indices = selected[left : right + 1]
+    delta_turns = float((unwrapped[indices[-1]] - unwrapped[indices[0]]) / (2.0 * math.pi))
+    area_turns = float(np.trapezoid(voltage[indices], time_s[indices]) / PHI0)
+    return delta_turns, area_turns, float(time_s[indices[-1]] * 1e12)
+
+
+class RawReaderTests(unittest.TestCase):
+    def _write(self, content: str) -> Path:
+        handle = tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8")
+        self.addCleanup(lambda: Path(handle.name).unlink(missing_ok=True))
+        handle.write(content)
+        handle.close()
+        return Path(handle.name)
+
+    def test_quoted_headers_and_duplicate_occurrences_are_preserved(self) -> None:
+        path = self._write(
+            '"time","P(X)","P(X)","V(X)"\n'
+            '0,"1","2","0"\n'
+            '1,"3","4","1"\n'
+        )
+        trace = read_csv(path)
+        self.assertEqual(trace.headers, ("time", "P(X)", "P(X)", "V(X)"))
+        self.assertEqual(trace.sample_count, 2)
+        self.assertEqual(trace.duplicate_columns, {"P(X)": 2})
+        with self.assertRaises(DuplicateColumnError):
+            trace.column("P(X)")
+        self.assertEqual(trace.column("P(X)", occurrence=0), (1.0, 3.0))
+        self.assertEqual(trace.column("P(X)", occurrence=1), (2.0, 4.0))
+        self.assertEqual(trace.column("P(X)", all_matches=True), ((1.0, 3.0), (2.0, 4.0)))
+
+    def test_nonuniform_grid_is_valid_and_visible(self) -> None:
+        path = self._write("time,V(X)\n0,1\n1,2\n3,4\n")
+        trace = read_csv(path)
+        qa = trace.qa()
+        self.assertEqual(qa["status"], "VALID")
+        self.assertTrue(qa["nonuniform_time_grid"])
+        self.assertEqual(qa["dt_min"], 1.0)
+        self.assertEqual(qa["dt_max"], 2.0)
+
+    def test_time_and_nonfinite_values_are_rejected(self) -> None:
+        for content in (
+            "time,V(X)\n0,1\n0,2\n",
+            "time,V(X)\n0,1\n1,nan\n",
+            "time,V(X)\n0,1\n1,inf\n",
+        ):
+            with self.subTest(content=content):
+                path = self._write(content)
+                with self.assertRaises(RawTraceError):
+                    read_csv(path)
+
+
+class PhaseAndStrictEventTests(unittest.TestCase):
+    def test_unwrap_and_turn_conversion(self) -> None:
+        raw = (0.0, 6.0, 0.5)
+        unwrapped = continuous_unwrap(raw)
+        self.assertAlmostEqual(unwrapped[-1], 0.5, places=12)
+        self.assertAlmostEqual(phase_delta_turns((0.0, math.pi, TAU)), 1.0, places=12)
+        self.assertAlmostEqual(phase_delta_turns((TAU, math.pi, 0.0)), -1.0, places=12)
+
+    def test_monotonic_segmentation_is_deterministic_and_overlaps_turn(self) -> None:
+        segments = monotonic_segments((0.0, 1.0, 2.0, 1.0, 0.0))
+        self.assertEqual(
+            [(item.start_index, item.end_index, item.direction) for item in segments],
+            [(0, 2, 1), (2, 4, -1)],
+        )
+
+    def test_same_segment_area_uses_actual_time_grid(self) -> None:
+        times = (0.0, 1.0e-12, 3.0e-12)
+        phase = (0.0, 1.0, 3.0)
+        voltage = tuple(PHI0 / TAU * 1.0e12 for _ in times)
+        records = strict_segment_metrics(times, phase, voltage, (0.0, 4.0e-12))
+        self.assertEqual(len(records), 1)
+        self.assertAlmostEqual(records[0]["delta_turns"], 3.0 / TAU, places=12)
+        self.assertAlmostEqual(records[0]["area_turns"], 3.0 / TAU, places=12)
+        self.assertAlmostEqual(records[0]["phase_area_residual_turns"], 0.0, places=12)
+        self.assertFalse(records[0]["area_consistent"])
+
+    def test_frozen_anchor_a_and_b(self) -> None:
+        raw_root = REPO / "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay"
+        expected = {
+            9: (0.8925272335342432, 0.8925370087565057, 109.65, "SUBTHRESHOLD"),
+            13: (1.0160289228944646, 1.0160368344325381, 110.175, "CLEAN_ONE_SFQ_CANDIDATE"),
+        }
+        for width, (turns, area, end_ps, classification) in expected.items():
+            with self.subTest(width=width):
+                path = raw_root / f"{width}ps/12x320/logical1_read/run-01.csv"
+                independent = _independent_anchor(path)
+                self.assertAlmostEqual(independent[0], turns, places=12)
+                self.assertAlmostEqual(independent[1], area, places=12)
+                self.assertAlmostEqual(independent[2], end_ps, places=12)
+                trace = read_csv(path)
+                result = strict_event_summary(
+                    trace.time,
+                    trace.column("P(BJL2|XBQ)"),
+                    trace.column("V(BJL2|XBQ)"),
+                    activity_window_s=(94.0e-12, 130.0e-12),
+                    post_window_s=(140.0e-12, 170.0e-12),
+                    post_tail_window_s=(165.0e-12, 170.0e-12),
+                )
+                largest = result["largest_monotonic_segment"]
+                self.assertAlmostEqual(largest["delta_turns"], turns, places=12)
+                self.assertAlmostEqual(largest["area_turns"], area, places=12)
+                self.assertAlmostEqual(largest["end_time_ps"], end_ps, places=12)
+                self.assertEqual(result["strict_classification"], classification)
+
+
+class WaveformAndCompareTests(unittest.TestCase):
+    def test_waveform_metrics_and_centroid(self) -> None:
+        result = waveform_metrics((0.0, 1.0, 2.0), (0.0, 2.0, 0.0), include_centroid=True)
+        self.assertEqual(result["sample_count"], 3)
+        self.assertEqual(result["p2p"], 2.0)
+        self.assertAlmostEqual(result["signed_time_integral"], 2.0, places=12)
+        self.assertEqual(result["peak_time"], 1.0)
+        self.assertAlmostEqual(result["centroid_time"], 1.0, places=12)
+
+    def test_compare_metrics_use_exact_grid_by_default(self) -> None:
+        result = compare_series((0.0, 1.0, 2.0), (1.0, 2.0, 3.0), (0.0, 1.0, 2.0), (2.0, 1.0, 4.0), include_correlation=True, include_scalar_fit=True)
+        self.assertEqual(result["time_grid_exact"], True)
+        self.assertEqual(result["pointwise_difference"], [1.0, -1.0, 1.0])
+        self.assertEqual(result["max_abs_difference"], 1.0)
+        self.assertEqual(result["p95_abs_difference"], 1.0)
+        self.assertIn("correlation", result)
+        self.assertIn("scalar_fit", result)
+        with self.assertRaises(TimeGridMismatch):
+            compare_series((0.0, 1.0), (1.0, 2.0), (0.0, 2.0), (1.0, 2.0))
+
+    def test_file_provenance_contains_hash_and_size(self) -> None:
+        with tempfile.NamedTemporaryFile("wb", delete=False) as handle:
+            handle.write(b"abc")
+            path = Path(handle.name)
+        self.addCleanup(lambda: path.unlink(missing_ok=True))
+        snapshot = file_snapshot(path)
+        self.assertEqual(snapshot["bytes"], 3)
+        self.assertEqual(snapshot["sha256"], "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

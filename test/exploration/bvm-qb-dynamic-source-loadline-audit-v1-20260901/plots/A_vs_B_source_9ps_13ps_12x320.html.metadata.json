@@ -1,0 +1,27 @@
+{
+  "title": "A→B source waveform：9 ps vs 13 ps，12×320",
+  "renderer": "scripts/josim-plot2.py",
+  "output": "test/exploration/bvm-qb-dynamic-source-loadline-audit-v1-20260901/plots/A_vs_B_source_9ps_13ps_12x320.html",
+  "output_sha256": "7c875f444d3f00d77fbef825140bdfdb02a612f96919dcb38ed3a293ce9bfb02",
+  "parent_head": "b761ba948d0cf64affdc0b9fb623fab05197cf21",
+  "source_raw": [
+    {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "sha256": "6ddc85050294fd38be0f55602af3517ec6bcfcd00794128f69dee545bf82ef65"
+    },
+    {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de"
+    }
+  ],
+  "signals": [
+    "I(A) grounded source I(B_LD1)",
+    "I(B) grounded source I(B_LD1)",
+    "I(B-A) source difference",
+    "V(A) SL1",
+    "V(B) SL1"
+  ],
+  "notes": [
+    "current/voltage waveform only; current difference is not an SFQ count"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "title": "13 ps ideal replay：12×320 vs 8×500 source/QB trajectory",
+  "renderer": "scripts/josim-plot2.py",
+  "output": "test/exploration/bvm-qb-dynamic-source-loadline-audit-v1-20260901/plots/13ps_12x320_vs_8x500_ideal.html",
+  "output_sha256": "1633ad780024e99ff0f3ba6758a38119c4b2b029ee95982e2c0901e990e10984",
+  "parent_head": "b761ba948d0cf64affdc0b9fb623fab05197cf21",
+  "source_raw": [
+    {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c"
+    },
+    {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/8x500/logical1_read/run-01.csv",
+      "sha256": "547fc352fa21cf1bc6ca4a361f76045e6f6a8ad0c37f98042e589e1ff7aff997"
+    }
+  ],
+  "signals": [
+    "I(12x320) I(I_REPLAY)",
+    "I(8x500) I(I_REPLAY)",
+    "I(12x320) I(LIN|XBQ)",
+    "I(8x500) I(LIN|XBQ)",
+    "P(12x320) BJs",
+    "P(8x500) BJs",
+    "P(12x320) BJL1",
+    "P(8x500) BJL1",
+    "P(12x320) BJL2",
+    "P(8x500) BJL2"
+  ],
+  "notes": [
+    "phase is continuously unwrapped and shown in turns; count/Ic are confounded; no H7 attribution"
+  ]
+}

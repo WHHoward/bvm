@@ -1,0 +1,2640 @@
+{
+  "document_type": "bvm_qb_causal_divergence_timeline",
+  "recorded_at": "2026-09-01T15:33:35+08:00",
+  "parent_head": "b761ba948d0cf64affdc0b9fb623fab05197cf21",
+  "status": "PASS",
+  "timelines": {
+    "12x320": {
+      "load": "12x320",
+      "case_a": {
+        "source": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/9ps/12x320/logical1_read/run-01.csv",
+        "replay": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/12x320/logical1_read/run-01.csv"
+      },
+      "case_b": {
+        "source": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+        "replay": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv"
+      },
+      "pre_divergence_end_ps": 105.0,
+      "identity_status": "PASS",
+      "identity": {
+        "source/I(B_LD1)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/I(B_LD12)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/I(L_SL|XBVM1)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/V(SL1)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/V(N6|XBVM1)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/I(L_PSL|XBVM1)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(I_REPLAY)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(IN)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(LIN|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/P(BJS|XBQ)": {
+          "status": "PASS",
+          "unit": "turns",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1.5612471255289719e-12,
+          "scale": 1.561247125528972,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(BJS|XBQ)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(BJS|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/P(BJL1|XBQ)": {
+          "status": "PASS",
+          "unit": "turns",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(BJL1|XBQ)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(BJL1|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(RJ1|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(L1|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(RB|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(L2|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/P(BJL2|XBQ)": {
+          "status": "PASS",
+          "unit": "turns",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(BJL2|XBQ)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(BJL2|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(RJ2|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(L0|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(OUT)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(R_LOAD)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        }
+      },
+      "family_first_divergence": [
+        {
+          "family": "source waveform",
+          "signal": "I(B_LD1)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 8.042699999999997e-07,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "A",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "I(I_REPLAY)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 8.042699999999997e-07,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "A",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "BJs",
+          "signal": "P(BJS|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 7.957747154563322e-07,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 2.441763094663013e-11,
+          "unit": "turns",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "P(BJL1|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 1.114084601683274e-06,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1.3562052658645937e-12,
+          "unit": "turns",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "node3",
+          "signal": "I(L2|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 2.7999999999248244e-10,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "A",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "BJL2",
+          "signal": "V(BJL2|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 1.0000000000699553e-10,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "V",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "OUT",
+          "signal": "V(OUT)",
+          "sample_index": 8401,
+          "time_ps": 105.02499999999999,
+          "delta_at_start": 9.999999997989048e-11,
+          "run_end_time_ps": 105.0375,
+          "threshold": 1e-12,
+          "unit": "V",
+          "tie": false,
+          "tie_families": []
+        }
+      ],
+      "signal_records": [
+        {
+          "family": "source waveform",
+          "signal": "I(B_LD1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.042699999999997e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "I(B_LD12)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.042699999999997e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "I(L_SL|XBVM1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.042699999999997e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "V(SL1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 3.590000000001231e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "V(N6|XBVM1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 9.687049999999994e-05,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "I(L_PSL|XBVM1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.042699999999997e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "I(I_REPLAY)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.042699999999997e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "V(IN)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 7.766400000000029e-05,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "I(LIN|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.042699999999997e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJs",
+          "signal": "P(BJS|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "turns",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 24.41763094663013,
+            "threshold": 2.441763094663013e-11,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 7.957747154563322e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJs",
+          "signal": "V(BJS|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 1.9100000000008e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJs",
+          "signal": "I(BJS|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.042699999999997e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "P(BJL1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "turns",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.3562052658645938,
+            "threshold": 1.3562052658645937e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 1.114084601683274e-06,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "V(BJL1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.629999999999939e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "I(BJL1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 7.960200000000002e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "I(RJ1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 7.971000000000012e-09,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "I(L1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.799999999992587e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node3",
+          "signal": "I(RB|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": null
+          }
+        },
+        {
+          "family": "node3",
+          "signal": "I(L2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.7999999999248244e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "P(BJL2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "turns",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.1945985408743678,
+            "threshold": 1.1945985408743677e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8402,
+              "time_ps": 105.0375,
+              "delta_at_start": 1.591549431134709e-07,
+              "run_end_time_ps": 105.05
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "V(BJL2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 1.0000000000699553e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "I(BJL2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.799999999992587e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "I(RJ2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.000000000478724e-12,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "I(L0|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8401,
+              "time_ps": 105.02499999999999,
+              "delta_at_start": 1.0000000000699553e-11,
+              "run_end_time_ps": 105.0375
+            }
+          }
+        },
+        {
+          "family": "OUT",
+          "signal": "V(OUT)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8401,
+              "time_ps": 105.02499999999999,
+              "delta_at_start": 9.999999997989048e-11,
+              "run_end_time_ps": 105.0375
+            }
+          }
+        },
+        {
+          "family": "OUT",
+          "signal": "I(R_LOAD)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8401,
+              "time_ps": 105.02499999999999,
+              "delta_at_start": 1.0000000000699553e-11,
+              "run_end_time_ps": 105.0375
+            }
+          }
+        }
+      ],
+      "algorithm": "continuous unwrap for P; max(10*p99.9 baseline, 1e-12*scale, 100*eps*scale); two consecutive samples; TIE at same sample index"
+    },
+    "8x500": {
+      "load": "8x500",
+      "case_a": {
+        "source": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/9ps/8x500/logical1_read/run-01.csv",
+        "replay": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/9ps/8x500/logical1_read/run-01.csv"
+      },
+      "case_b": {
+        "source": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/8x500/logical1_read/run-01.csv",
+        "replay": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/8x500/logical1_read/run-01.csv"
+      },
+      "pre_divergence_end_ps": 105.0,
+      "identity_status": "PASS",
+      "identity": {
+        "source/I(B_LD1)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/I(B_LD8)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/I(L_SL|XBVM1)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/V(SL1)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/V(N6|XBVM1)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "source/I(L_PSL|XBVM1)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(I_REPLAY)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(IN)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(LIN|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/P(BJS|XBQ)": {
+          "status": "PASS",
+          "unit": "turns",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 2.5657861756168032e-12,
+          "scale": 2.5657861756168034,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(BJS|XBQ)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(BJS|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/P(BJL1|XBQ)": {
+          "status": "PASS",
+          "unit": "turns",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(BJL1|XBQ)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(BJL1|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(RJ1|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(L1|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(RB|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(L2|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/P(BJL2|XBQ)": {
+          "status": "PASS",
+          "unit": "turns",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(BJL2|XBQ)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(BJL2|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(RJ2|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(L0|XBQ)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/V(OUT)": {
+          "status": "PASS",
+          "unit": "V",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "replay/I(R_LOAD)": {
+          "status": "PASS",
+          "unit": "A",
+          "sample_count": 8400,
+          "max_abs": 0.0,
+          "rms": 0.0,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": true,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        }
+      },
+      "family_first_divergence": [
+        {
+          "family": "source waveform",
+          "signal": "I(B_LD1)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 8.051399999999995e-07,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "A",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "I(I_REPLAY)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 8.051399999999995e-07,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "A",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "BJs",
+          "signal": "P(BJS|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 1.5915494304685751e-06,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1.4438951831698215e-11,
+          "unit": "turns",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "P(BJL1|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 9.54929658569803e-07,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1.2998675991089246e-12,
+          "unit": "turns",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "node3",
+          "signal": "I(L2|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 2.8000000000603497e-10,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "A",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "BJL2",
+          "signal": "V(BJL2|XBQ)",
+          "sample_index": 8400,
+          "time_ps": 105.0125,
+          "delta_at_start": 1.0000000000699553e-10,
+          "run_end_time_ps": 105.02499999999999,
+          "threshold": 1e-12,
+          "unit": "V",
+          "tie": true,
+          "tie_families": [
+            "source waveform",
+            "QB IN/Lin",
+            "BJs",
+            "node2/BJL1",
+            "node3",
+            "BJL2"
+          ]
+        },
+        {
+          "family": "OUT",
+          "signal": "V(OUT)",
+          "sample_index": 8402,
+          "time_ps": 105.0375,
+          "delta_at_start": 1.0000000000699553e-10,
+          "run_end_time_ps": 105.05,
+          "threshold": 1e-12,
+          "unit": "V",
+          "tie": false,
+          "tie_families": []
+        }
+      ],
+      "signal_records": [
+        {
+          "family": "source waveform",
+          "signal": "I(B_LD1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.051399999999995e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "I(B_LD8)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.051399999999995e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "I(L_SL|XBVM1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.051399999999995e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "V(SL1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 1.5320000000001066e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "V(N6|XBVM1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 9.677079999999998e-05,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "source waveform",
+          "signal": "I(L_PSL|XBVM1)",
+          "fixture": "source",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.051399999999995e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "I(I_REPLAY)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.051399999999995e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "V(IN)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 7.774699999999997e-05,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "QB IN/Lin",
+          "signal": "I(LIN|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.051399999999995e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJs",
+          "signal": "P(BJS|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "turns",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 14.438951831698215,
+            "threshold": 1.4438951831698215e-11,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 1.5915494304685751e-06,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJs",
+          "signal": "V(BJS|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 1.9000000000017267e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJs",
+          "signal": "I(BJS|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 8.051399999999995e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "P(BJL1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "turns",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.2998675991089246,
+            "threshold": 1.2998675991089246e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 9.54929658569803e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "V(BJL1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.633000000000149e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "I(BJL1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 7.968800000000011e-07,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "I(RJ1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 7.979999999999202e-09,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node2/BJL1",
+          "signal": "I(L1|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.799999999992587e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "node3",
+          "signal": "I(RB|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": null
+          }
+        },
+        {
+          "family": "node3",
+          "signal": "I(L2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.8000000000603497e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "P(BJL2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "turns",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.1702217331706406,
+            "threshold": 1.1702217331706405e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8405,
+              "time_ps": 105.075,
+              "delta_at_start": 1.5915494308571532e-07,
+              "run_end_time_ps": 105.0875
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "V(BJL2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 1.0000000000699553e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "I(BJL2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 2.8000000000603497e-10,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "I(RJ2|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8400,
+              "time_ps": 105.0125,
+              "delta_at_start": 3.000000000718086e-12,
+              "run_end_time_ps": 105.02499999999999
+            }
+          }
+        },
+        {
+          "family": "BJL2",
+          "signal": "I(L0|XBQ)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8402,
+              "time_ps": 105.0375,
+              "delta_at_start": 9.999999999005488e-12,
+              "run_end_time_ps": 105.05
+            }
+          }
+        },
+        {
+          "family": "OUT",
+          "signal": "V(OUT)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "V",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8402,
+              "time_ps": 105.0375,
+              "delta_at_start": 1.0000000000699553e-10,
+              "run_end_time_ps": 105.05
+            }
+          }
+        },
+        {
+          "family": "OUT",
+          "signal": "I(R_LOAD)",
+          "fixture": "replay",
+          "result": {
+            "status": "VALID",
+            "unit": "A",
+            "grid": {
+              "status": "PASS",
+              "exact": true,
+              "sample_count": 13599,
+              "max_abs_time_difference_s": 0.0
+            },
+            "baseline_p99_9": 0.0,
+            "scale": 1.0,
+            "threshold": 1e-12,
+            "sustained_samples": 2,
+            "first_divergence": {
+              "sample_index": 8402,
+              "time_ps": 105.0375,
+              "delta_at_start": 9.999999999005488e-12,
+              "run_end_time_ps": 105.05
+            }
+          }
+        }
+      ],
+      "algorithm": "continuous unwrap for P; max(10*p99.9 baseline, 1e-12*scale, 100*eps*scale); two consecutive samples; TIE at same sample index"
+    }
+  },
+  "b_to_c_backaction": {
+    "delta_i": {
+      "status": "VALID",
+      "sample_count": 2880,
+      "first": -3.7616687e-09,
+      "last": -2.6653611000000003e-06,
+      "min": -1.931155000000001e-05,
+      "max": 8.4594322e-05,
+      "p2p": 0.00010390587200000001,
+      "mean": 1.44001735332227e-05,
+      "rms": 2.3195592255848504e-05,
+      "max_abs": 8.4594322e-05,
+      "positive_peak": 8.4594322e-05,
+      "positive_peak_time_ps": 108.7,
+      "minimum_time_ps": 103.7,
+      "signed_integral_As": 5.184229292133217e-16,
+      "positive_integral_As": 5.485255619015126e-16,
+      "negative_integral_As": -3.0102632688190903e-17,
+      "signed_integral_uA_ps": 518.4229292133217,
+      "positive_integral_uA_ps": 548.5255619015126,
+      "negative_integral_uA_ps": -30.1026326881909,
+      "signed_centroid_ps": 111.31793980253288,
+      "positive_centroid_ps": 111.32461222820845,
+      "negative_centroid_ps": 111.43952372115038,
+      "effective_duration": {
+        "duration_ps": 33.95,
+        "first_time_ps": 95.6375,
+        "last_time_ps": 129.5875,
+        "threshold": 4.2296131091499995e-06,
+        "baseline": 2.0598170000000003e-09,
+        "status": "VALID"
+      },
+      "definition": "I_source_grounded - I_physical_JSL",
+      "max_abs_time_ps": 108.7
+    },
+    "pre_state_guard": {
+      "status": "CHANGED",
+      "interpretation": "CHANGED means B/C initial trajectory already differs in the pre-window; it does not identify a READ-period lobe as cause.",
+      "checks": {
+        "physical_vs_replay/V(IN)": {
+          "status": "FAIL",
+          "unit": "V",
+          "sample_count": 7520,
+          "max_abs": 6.790439999999999e-05,
+          "rms": 1.6030277480546123e-05,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "physical_vs_replay/I(LIN|XBQ)": {
+          "status": "FAIL",
+          "unit": "A",
+          "sample_count": 7520,
+          "max_abs": 2.924979e-06,
+          "rms": 7.863097345933922e-07,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "physical_vs_replay/P(BJS|XBQ)": {
+          "status": "FAIL",
+          "unit": "turns",
+          "sample_count": 7520,
+          "max_abs": 0.014410843477198752,
+          "rms": 0.0029115904368183176,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "physical_vs_replay/I(BJS|XBQ)": {
+          "status": "FAIL",
+          "unit": "A",
+          "sample_count": 7520,
+          "max_abs": 2.924979e-06,
+          "rms": 7.863097345934172e-07,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "physical_vs_replay/P(BJL1|XBQ)": {
+          "status": "FAIL",
+          "unit": "turns",
+          "sample_count": 7520,
+          "max_abs": 0.008935085829133473,
+          "rms": 0.002501271994924083,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "physical_vs_replay/I(BJL1|XBQ)": {
+          "status": "FAIL",
+          "unit": "A",
+          "sample_count": 7520,
+          "max_abs": 2.3358909999999995e-06,
+          "rms": 5.435795881648383e-07,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "physical_vs_replay/P(BJL2|XBQ)": {
+          "status": "FAIL",
+          "unit": "turns",
+          "sample_count": 7520,
+          "max_abs": 0.0035986205872622287,
+          "rms": 0.0009563193058680428,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "physical_vs_replay/I(BJL2|XBQ)": {
+          "status": "FAIL",
+          "unit": "A",
+          "sample_count": 7520,
+          "max_abs": 1.23334e-06,
+          "rms": 2.9862928393385034e-07,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "grounded_source_vs_physical/I(B_LD1)": {
+          "status": "FAIL",
+          "unit": "A",
+          "sample_count": 7520,
+          "max_abs": 2.924979e-06,
+          "rms": 7.863097345933922e-07,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "grounded_source_vs_physical/I(L_SL|XBVM1)": {
+          "status": "FAIL",
+          "unit": "A",
+          "sample_count": 7520,
+          "max_abs": 2.924979e-06,
+          "rms": 7.863097345933922e-07,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        },
+        "grounded_source_vs_physical/V(SL1)": {
+          "status": "FAIL",
+          "unit": "V",
+          "sample_count": 7520,
+          "max_abs": 6.774719e-05,
+          "rms": 2.1999171118656504e-05,
+          "tolerance": 1e-12,
+          "scale": 1.0,
+          "exact": false,
+          "grid": {
+            "status": "PASS",
+            "exact": true,
+            "sample_count": 13599,
+            "max_abs_time_difference_s": 0.0
+          }
+        }
+      }
+    }
+  }
+}

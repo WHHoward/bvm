@@ -1,0 +1,205 @@
+{
+  "document_type": "bvm_qb_dynamic_source_loadline_hypotheses",
+  "recorded_at": "2026-09-01T15:33:35+08:00",
+  "parent_head": "b761ba948d0cf64affdc0b9fb623fab05197cf21",
+  "status": "DYNAMIC_SOURCE_LOADLINE_MECHANISM_SUPPORTED",
+  "hypotheses": [
+    {
+      "id": "H1",
+      "prediction": "READ extension mainly adds useful source duration/area",
+      "observation": {
+        "pre_identity": true,
+        "absolute_difference_area_uA_ps": 416.5443002334625,
+        "extension_105_110_share": 0.48869290880893884,
+        "strict_boundary_reference": "A SUBTHRESHOLD -> B CLEAN_ONE reference"
+      },
+      "status": "DISFAVORED",
+      "allowed_wording": "bounded source-area/duration compatibility; not unique causation"
+    },
+    {
+      "id": "H2",
+      "prediction": "READ extension changes source shape/trailing/timing onto another nonlinear branch",
+      "observation": {
+        "outside_105_110_absolute_difference_share": 0.5113070911910611,
+        "decomposition_windows": [
+          "94_105ps",
+          "105_106ps",
+          "106_109ps",
+          "109_110ps",
+          "110_130ps"
+        ]
+      },
+      "status": "SUPPORTED",
+      "allowed_wording": "only a shape/timing family statement if outside-extension signature is present"
+    },
+    {
+      "id": "H3",
+      "prediction": "QB internal current partition near BJs/BJL1/node2 is the discriminator",
+      "observation": {
+        "timeline_12x320": [
+          {
+            "family": "source waveform",
+            "signal": "I(B_LD1)",
+            "time_ps": 105.0125,
+            "tie": true
+          },
+          {
+            "family": "QB IN/Lin",
+            "signal": "I(I_REPLAY)",
+            "time_ps": 105.0125,
+            "tie": true
+          },
+          {
+            "family": "BJs",
+            "signal": "P(BJS|XBQ)",
+            "time_ps": 105.0125,
+            "tie": true
+          },
+          {
+            "family": "node2/BJL1",
+            "signal": "P(BJL1|XBQ)",
+            "time_ps": 105.0125,
+            "tie": true
+          },
+          {
+            "family": "node3",
+            "signal": "I(L2|XBQ)",
+            "time_ps": 105.0125,
+            "tie": true
+          },
+          {
+            "family": "BJL2",
+            "signal": "V(BJL2|XBQ)",
+            "time_ps": 105.0125,
+            "tie": true
+          },
+          {
+            "family": "OUT",
+            "signal": "V(OUT)",
+            "time_ps": 105.02499999999999,
+            "tie": false
+          }
+        ],
+        "kcl_status": {
+          "ideal_replay_13ps_12x320": "PASS",
+          "physical_13ps_12x320": "PASS"
+        }
+      },
+      "status": "UNRESOLVED",
+      "allowed_wording": "mediator/compatibility evidence only; no independent intervention"
+    },
+    {
+      "id": "H4",
+      "prediction": "physical source/load closure changes the trajectory versus grounded ideal replay",
+      "observation": {
+        "delta_i_max_A": 8.4594322e-05,
+        "delta_i_rms_A": 2.3195592255848504e-05,
+        "pre_state_guard": "CHANGED",
+        "dynamic_input_difference_max_A": 6.81454e-05
+      },
+      "status": "SUPPORTED",
+      "allowed_wording": "overall dynamic source-load interaction is supported if report conditions pass"
+    },
+    {
+      "id": "H5",
+      "prediction": "physical source is a scalar attenuation of grounded source",
+      "observation": {
+        "raw_origin": {
+          "status": "FAIL",
+          "mode": "raw_origin",
+          "k": 0.5421357301046518,
+          "normalized_residual": 0.6659450141958494,
+          "correlation": 0.7231616473844803,
+          "signed_area_ratio": 0.39941627322363354,
+          "positive_area_ratio": 0.554995968833263,
+          "negative_area_ratio": 4.275249242235859,
+          "grounded_signed_area_As": 8.631984286286892e-16,
+          "physical_signed_area_As": 3.4477549941536766e-16,
+          "grounded_positive_area_As": 8.992970861413087e-16,
+          "physical_positive_area_As": 4.99106257591926e-16,
+          "grounded_negative_area_As": -3.609865751261952e-17,
+          "physical_negative_area_As": -1.5433075817655837e-16,
+          "timing_residual_ps": -9.36640214322631,
+          "grounded_signed_centroid_ps": 105.08884422306787,
+          "physical_signed_centroid_ps": 95.72244207984156,
+          "grounded_positive_peak_time_ps": 104.2375,
+          "physical_positive_peak_time_ps": 103.76249999999999,
+          "peak_time_shift_ps": -0.4750000000000085,
+          "max_residual": 5.029477480711765e-05,
+          "max_residual_time_ps": 108.675,
+          "polarity_preserved": true,
+          "fit_checks": {
+            "normalized_residual": false,
+            "correlation": false,
+            "positive_peak_time_shift": false,
+            "polarity_preserved": true
+          },
+          "tolerances": {
+            "normalized_residual_max": 0.25,
+            "correlation_min": 0.9,
+            "peak_time_shift_max_ps": 0.05
+          }
+        },
+        "baseline_corrected": {
+          "status": "FAIL",
+          "mode": "baseline_corrected",
+          "k": 0.542167657277274,
+          "normalized_residual": 0.6659267942124746,
+          "correlation": 0.7231616473844803,
+          "signed_area_ratio": 0.3994674182479163,
+          "positive_area_ratio": 0.5550346194067453,
+          "negative_area_ratio": 4.273662512033557,
+          "grounded_signed_area_As": 8.631495847202705e-16,
+          "physical_signed_area_As": 3.4480013616996757e-16,
+          "grounded_positive_area_As": 8.99259076972125e-16,
+          "physical_positive_area_As": 4.991199195352844e-16,
+          "grounded_negative_area_As": -3.610949225185452e-17,
+          "physical_negative_area_As": -1.5431978336531686e-16,
+          "timing_residual_ps": -9.36484878643104,
+          "grounded_signed_centroid_ps": 105.08845348826199,
+          "physical_signed_centroid_ps": 95.72360470183095,
+          "grounded_positive_peak_time_ps": 104.2375,
+          "physical_positive_peak_time_ps": 103.76249999999999,
+          "peak_time_shift_ps": -0.4750000000000085,
+          "max_residual": 5.0295740069726556e-05,
+          "max_residual_time_ps": 108.675,
+          "polarity_preserved": true,
+          "fit_checks": {
+            "normalized_residual": false,
+            "correlation": false,
+            "positive_peak_time_shift": false,
+            "polarity_preserved": true
+          },
+          "tolerances": {
+            "normalized_residual_max": 0.25,
+            "correlation_min": 0.9,
+            "peak_time_shift_max_ps": 0.05
+          }
+        }
+      },
+      "status": "DISFAVORED",
+      "allowed_wording": "fit property only; attenuation is not a sufficient-cause proof"
+    },
+    {
+      "id": "H6",
+      "prediction": "scalar attenuation is insufficient; waveform/load-line reshaping is required",
+      "observation": {
+        "scalar_model_status": "DISFAVORED",
+        "raw_origin_normalized_residual": 0.6659450141958494,
+        "baseline_corrected_normalized_residual": 0.6659267942124746
+      },
+      "status": "SUPPORTED",
+      "allowed_wording": "bounded non-scalar waveform/load-line family, not unique device mechanism"
+    },
+    {
+      "id": "H7",
+      "prediction": "12x320 vs 8x500 difference is primarily source/load-line rather than fundamental BJL2 change",
+      "observation": {
+        "strict_reference_difference_turns": "1.016028923 - 0.973287067",
+        "source_and_internal_comparison": "recorded in qb-internal-comparison.csv"
+      },
+      "status": "UNRESOLVED",
+      "allowed_wording": "junction count and Ic/area are confounded; no primary attribution"
+    }
+  ]
+}

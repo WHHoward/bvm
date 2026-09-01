@@ -1,0 +1,189 @@
+{
+  "document_type": "independent_raw_recheck",
+  "status": "PASS",
+  "parent_head": "b761ba948d0cf64affdc0b9fb623fab05197cf21",
+  "method": "raw-only direct CSV parser; no import of primary analysis helpers",
+  "selected_raw": {
+    "A_source_9ps_12x320": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/9ps/12x320/logical1_read/run-01.csv",
+      "sha256": "6ddc85050294fd38be0f55602af3517ec6bcfcd00794128f69dee545bf82ef65"
+    },
+    "B_source_13ps_12x320": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de"
+    },
+    "B_replay_13ps_12x320": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c"
+    },
+    "C_physical_13ps_12x320": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66"
+    },
+    "D_replay_13ps_8x500": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/8x500/logical1_read/run-01.csv",
+      "sha256": "547fc352fa21cf1bc6ca4a361f76045e6f6a8ad0c37f98042e589e1ff7aff997"
+    }
+  },
+  "recomputed": {
+    "source": {
+      "A": {
+        "positive_peak_A": 7.90668e-05,
+        "positive_peak_time_ps": 104.2375,
+        "signed_area_uA_ps": 516.3615525817268,
+        "positive_area_uA_ps": 580.5913446668462,
+        "negative_area_uA_ps": -64.22979208511951
+      },
+      "B": {
+        "positive_peak_A": 7.90668e-05,
+        "positive_peak_time_ps": 104.2375,
+        "signed_area_uA_ps": 863.1984286286892,
+        "positive_area_uA_ps": 899.2970861413088,
+        "negative_area_uA_ps": -36.09865751261952
+      },
+      "difference_decomposition": {
+        "94_105ps": {
+          "absolute_area_uA_ps": 0.0,
+          "signed_area_uA_ps": 0.0,
+          "max_abs_A": 0.0
+        },
+        "105_106ps": {
+          "absolute_area_uA_ps": 10.901724625000112,
+          "signed_area_uA_ps": 10.901724625000112,
+          "max_abs_A": 2.2083160000000003e-05
+        },
+        "106_109ps": {
+          "absolute_area_uA_ps": 134.0953022072497,
+          "signed_area_uA_ps": 134.0953022072497,
+          "max_abs_A": 7.4130806e-05
+        },
+        "109_110ps": {
+          "absolute_area_uA_ps": 56.75657364037532,
+          "signed_area_uA_ps": 56.75657364037532,
+          "max_abs_A": 7.1101011e-05
+        },
+        "110_130ps": {
+          "absolute_area_uA_ps": 212.98205450458778,
+          "signed_area_uA_ps": 143.27463031808776,
+          "max_abs_A": 5.2965188999999996e-05
+        }
+      },
+      "extension_105_110_share": 0.4864631194627098,
+      "outside_105_110_share": 0.5135368805372902
+    },
+    "backaction": {
+      "max_abs_A": 8.4594322e-05,
+      "rms_A": 2.3195592255848504e-05,
+      "signed_area_uA_ps": 518.4229292133217,
+      "max_abs_time_ps": 108.7
+    },
+    "scalar": {
+      "raw_origin": {
+        "k": 0.5421357301046518,
+        "normalized_residual": 0.6659450141958494,
+        "correlation": 0.7231616473844803,
+        "max_abs_residual_A": 5.029477480711765e-05,
+        "max_abs_residual_time_ps": 108.675,
+        "grounded_signed_area_uA_ps": 863.1984286286892,
+        "physical_signed_area_uA_ps": 344.7754994153677
+      },
+      "baseline_corrected": {
+        "k": 0.542167657277274,
+        "normalized_residual": 0.6659267942124746,
+        "correlation": 0.7231616473844803,
+        "max_abs_residual_A": 5.0295740069726556e-05,
+        "max_abs_residual_time_ps": 108.675,
+        "grounded_signed_area_uA_ps": 863.1495847202705,
+        "physical_signed_area_uA_ps": 344.8001361699676
+      }
+    },
+    "kcl": {
+      "B_replay_13ps_12x320": {
+        "node1": {
+          "max_abs_A": 0.0,
+          "bound_A": 1.581336e-10,
+          "ratio": 0.0,
+          "passed": true
+        },
+        "node2": {
+          "max_abs_A": 1.000000001425208e-11,
+          "bound_A": 1.9401626999999997e-10,
+          "ratio": 0.05154206919992886,
+          "passed": true
+        },
+        "node3": {
+          "max_abs_A": 5.000000000349777e-11,
+          "bound_A": 2.2541477e-10,
+          "ratio": 0.22181332662228728,
+          "passed": true
+        },
+        "node4": {
+          "max_abs_A": 6.000000000419732e-11,
+          "bound_A": 2.6166828000000003e-10,
+          "ratio": 0.22929794931276085,
+          "passed": true
+        },
+        "overall_passed": true
+      },
+      "C_physical_13ps_12x320": {
+        "node1": {
+          "max_abs_A": 9.99999999905181e-16,
+          "bound_A": 1.362908e-10,
+          "ratio": 7.337252403721902e-06,
+          "passed": true
+        },
+        "node2": {
+          "max_abs_A": 1.4000000001657001e-11,
+          "bound_A": 1.36290796e-10,
+          "ratio": 0.10272153668877979,
+          "passed": true
+        },
+        "node3": {
+          "max_abs_A": 5.00000000712604e-12,
+          "bound_A": 1.1865402e-10,
+          "ratio": 0.04213932243615548,
+          "passed": true
+        },
+        "node4": {
+          "max_abs_A": 1.2000000004566409e-11,
+          "bound_A": 1.1865402e-10,
+          "ratio": 0.10113437374112069,
+          "passed": true
+        },
+        "overall_passed": true
+      }
+    }
+  },
+  "comparison_to_primary": {
+    "source_A_peak": {
+      "direct": 7.90668e-05,
+      "primary": 7.90668e-05,
+      "match": true
+    },
+    "source_B_signed_area": {
+      "direct": 863.1984286286892,
+      "primary": 863.1984286286892,
+      "match": true
+    },
+    "delta_i_max": {
+      "direct": 8.4594322e-05,
+      "primary": 8.4594322e-05,
+      "match": true
+    },
+    "scalar_raw_residual": {
+      "direct": 0.6659450141958494,
+      "primary": 0.6659450141958494,
+      "match": true
+    }
+  },
+  "matches_primary_key_values": {
+    "source_A_peak": true,
+    "source_B_signed_area": true,
+    "delta_i_max": true,
+    "scalar_raw_residual": true
+  },
+  "limitations": [
+    "This is a mechanical consistency check, not an independent scientific authority.",
+    "It rechecks selected raw metrics and does not replace the frozen strict BJL2 evidence."
+  ]
+}

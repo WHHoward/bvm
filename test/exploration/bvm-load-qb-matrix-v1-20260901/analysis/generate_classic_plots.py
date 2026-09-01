@@ -97,11 +97,16 @@ def run_plotter(command: list[str]) -> None:
 
 
 def metadata_base(output: Path, title: str, *, phase: bool) -> dict[str, Any]:
+    plot_id = output.stem
+    if output.parent.name in {"source", "replay", "physical"}:
+        plot_id = f"{output.parent.name}-{plot_id}"
     return {
         "schema_version": "CLASSIC_JOSIM_PLOT_V1",
         "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
         "experiment_id": repo_relative(ROOT),
-        "plot_id": output.stem,
+        "plot_id": plot_id,
+        "plot_path": plot_relative(output),
+        "output_path": repo_relative(output),
         "title": title,
         "generated_from": "scripts/josim-plot2.py",
         "plot_type": "sep_comb",
@@ -337,12 +342,47 @@ def generate() -> list[dict[str, Any]]:
     with tempfile.TemporaryDirectory(prefix="josimplot-bvm-load-qb-") as temporary:
         temp_root = Path(temporary)
 
-        # Independent physical pages follow the established canonical BVM
-        # renderer: every physical case can be opened directly from raw CSV.
+        # Independent case pages follow the established canonical BVM
+        # renderer: source, replay, and physical cases can each be opened
+        # directly from their raw CSV.
         for width_ps in WIDTHS:
             for load_name, load in LOADS.items():
                 count = int(load["count"])
                 for role in ROLES:
+                    source_output = PLOT_DIR / "cases" / "source" / (
+                        f"{width_ps}ps-{load_name}-{role}.html"
+                    )
+                    source_title = (
+                        f"BVM → {count}×JSL ({load['ic_uA']} µA) → GND source "
+                        f"— {width_ps} ps — {ROLE_LABELS[role]}"
+                    )
+                    pages.append(direct_plot(
+                        raw_path("source", width_ps, load_name, role),
+                        source_output,
+                        source_title,
+                        source_columns(count),
+                        phase=True,
+                        page_class="source_case",
+                        case_role=role,
+                    ))
+
+                    replay_output = PLOT_DIR / "cases" / "replay" / (
+                        f"{width_ps}ps-{load_name}-{role}.html"
+                    )
+                    replay_title = (
+                        f"Ideal source replay → scaled QB "
+                        f"— {width_ps} ps — {load_name} — {ROLE_LABELS[role]}"
+                    )
+                    pages.append(direct_plot(
+                        raw_path("replay", width_ps, load_name, role),
+                        replay_output,
+                        replay_title,
+                        qb_columns(replay=True),
+                        phase=True,
+                        page_class="replay_case",
+                        case_role=role,
+                    ))
+
                     output = PLOT_DIR / "cases" / "physical" / (
                         f"{width_ps}ps-{load_name}-{role}.html"
                     )
@@ -465,8 +505,8 @@ def generate() -> list[dict[str, Any]]:
 
 
 def write_readme(pages: list[dict[str, Any]]) -> None:
-    direct = [page for page in pages if page["page_class"] == "physical_case"]
-    comparisons = [page for page in pages if page["page_class"] != "physical_case"]
+    direct = [page for page in pages if page["page_class"].endswith("_case")]
+    comparisons = [page for page in pages if not page["page_class"].endswith("_case")]
     recommended_ids = {"matrix-physical-readout-key", "matrix-replay-readout-key"}
     lines = [
         "# BVM_LOAD_QB_MATRIX_V1 classic 可视化",
@@ -486,13 +526,22 @@ def write_readme(pages: list[dict[str, Any]]) -> None:
             lines.append(f"- [{page['title']}]({page['plot_path']})")
     lines += [
         "",
-        "## 独立 physical case 页面（16 个）",
+        "## 独立 case 页面（48 个）",
         "",
-        "这些页面保留四种 formal role，可分别打开检查 BVM、JSL、QB 和 10 Ω 输出负载。",
+        "这些页面直接读取 raw CSV，保留四种 formal role；source、replay、physical "
+        "分别对应三类 fixture。",
         "",
     ]
-    for page in direct:
-        lines.append(f"- [{page['title']}]({page['plot_path']})")
+    for page_class, heading in (
+        ("source_case", "### Source 独立页面（16 个）"),
+        ("replay_case", "### Replay 独立页面（16 个）"),
+        ("physical_case", "### Physical 独立页面（16 个）"),
+    ):
+        lines += [heading, ""]
+        for page in direct:
+            if page["page_class"] == page_class:
+                lines.append(f"- [{page['title']}]({page['plot_path']})")
+        lines.append("")
     lines += [
         "",
         "## 聚焦 comparison 页面",
@@ -537,17 +586,6 @@ def main() -> None:
         return
 
     pages = generate()
-    # Attach the final relative path to each payload after the output is known.
-    for page in pages:
-        metadata_paths = list(PLOT_DIR.rglob(f"{page['plot_id']}.metadata.json"))
-        if len(metadata_paths) != 1:
-            raise RuntimeError(
-                f"expected one metadata sidecar for {page['plot_id']}, "
-                f"found {len(metadata_paths)}"
-            )
-        metadata_path = metadata_paths[0]
-        html_name = metadata_path.name.removesuffix(".metadata.json") + ".html"
-        page["plot_path"] = plot_relative(metadata_path.with_name(html_name))
     write_readme(pages)
     (PLOT_DIR / "index.json").write_text(json.dumps({
         "schema_version": "CLASSIC_JOSIM_PLOT_INDEX_V1",

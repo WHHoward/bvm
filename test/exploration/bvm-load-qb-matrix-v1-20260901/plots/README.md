@@ -10,9 +10,49 @@
 - [Physical BVM → JSL → scaled QB — four-point readout key data](comparisons/matrix-physical-readout-key.html)
 - [Ideal source replay → scaled QB — four-point readout key data](comparisons/matrix-replay-readout-key.html)
 
-## 独立 physical case 页面（16 个）
+## 独立 case 页面（48 个）
 
-这些页面保留四种 formal role，可分别打开检查 BVM、JSL、QB 和 10 Ω 输出负载。
+这些页面直接读取 raw CSV，保留四种 formal role；source、replay、physical 分别对应三类 fixture。
+
+### Source 独立页面（16 个）
+
+- [BVM → 12×JSL (320 µA) → GND source — 9 ps — logical1 READ](cases/source/9ps-12x320-logical1_read.html)
+- [BVM → 12×JSL (320 µA) → GND source — 9 ps — logical0 READ](cases/source/9ps-12x320-logical0_read.html)
+- [BVM → 12×JSL (320 µA) → GND source — 9 ps — logical1 READ=0](cases/source/9ps-12x320-logical1_no_read_control.html)
+- [BVM → 12×JSL (320 µA) → GND source — 9 ps — logical0 READ=0](cases/source/9ps-12x320-logical0_no_read_control.html)
+- [BVM → 8×JSL (500 µA) → GND source — 9 ps — logical1 READ](cases/source/9ps-8x500-logical1_read.html)
+- [BVM → 8×JSL (500 µA) → GND source — 9 ps — logical0 READ](cases/source/9ps-8x500-logical0_read.html)
+- [BVM → 8×JSL (500 µA) → GND source — 9 ps — logical1 READ=0](cases/source/9ps-8x500-logical1_no_read_control.html)
+- [BVM → 8×JSL (500 µA) → GND source — 9 ps — logical0 READ=0](cases/source/9ps-8x500-logical0_no_read_control.html)
+- [BVM → 12×JSL (320 µA) → GND source — 13 ps — logical1 READ](cases/source/13ps-12x320-logical1_read.html)
+- [BVM → 12×JSL (320 µA) → GND source — 13 ps — logical0 READ](cases/source/13ps-12x320-logical0_read.html)
+- [BVM → 12×JSL (320 µA) → GND source — 13 ps — logical1 READ=0](cases/source/13ps-12x320-logical1_no_read_control.html)
+- [BVM → 12×JSL (320 µA) → GND source — 13 ps — logical0 READ=0](cases/source/13ps-12x320-logical0_no_read_control.html)
+- [BVM → 8×JSL (500 µA) → GND source — 13 ps — logical1 READ](cases/source/13ps-8x500-logical1_read.html)
+- [BVM → 8×JSL (500 µA) → GND source — 13 ps — logical0 READ](cases/source/13ps-8x500-logical0_read.html)
+- [BVM → 8×JSL (500 µA) → GND source — 13 ps — logical1 READ=0](cases/source/13ps-8x500-logical1_no_read_control.html)
+- [BVM → 8×JSL (500 µA) → GND source — 13 ps — logical0 READ=0](cases/source/13ps-8x500-logical0_no_read_control.html)
+
+### Replay 独立页面（16 个）
+
+- [Ideal source replay → scaled QB — 9 ps — 12x320 — logical1 READ](cases/replay/9ps-12x320-logical1_read.html)
+- [Ideal source replay → scaled QB — 9 ps — 12x320 — logical0 READ](cases/replay/9ps-12x320-logical0_read.html)
+- [Ideal source replay → scaled QB — 9 ps — 12x320 — logical1 READ=0](cases/replay/9ps-12x320-logical1_no_read_control.html)
+- [Ideal source replay → scaled QB — 9 ps — 12x320 — logical0 READ=0](cases/replay/9ps-12x320-logical0_no_read_control.html)
+- [Ideal source replay → scaled QB — 9 ps — 8x500 — logical1 READ](cases/replay/9ps-8x500-logical1_read.html)
+- [Ideal source replay → scaled QB — 9 ps — 8x500 — logical0 READ](cases/replay/9ps-8x500-logical0_read.html)
+- [Ideal source replay → scaled QB — 9 ps — 8x500 — logical1 READ=0](cases/replay/9ps-8x500-logical1_no_read_control.html)
+- [Ideal source replay → scaled QB — 9 ps — 8x500 — logical0 READ=0](cases/replay/9ps-8x500-logical0_no_read_control.html)
+- [Ideal source replay → scaled QB — 13 ps — 12x320 — logical1 READ](cases/replay/13ps-12x320-logical1_read.html)
+- [Ideal source replay → scaled QB — 13 ps — 12x320 — logical0 READ](cases/replay/13ps-12x320-logical0_read.html)
+- [Ideal source replay → scaled QB — 13 ps — 12x320 — logical1 READ=0](cases/replay/13ps-12x320-logical1_no_read_control.html)
+- [Ideal source replay → scaled QB — 13 ps — 12x320 — logical0 READ=0](cases/replay/13ps-12x320-logical0_no_read_control.html)
+- [Ideal source replay → scaled QB — 13 ps — 8x500 — logical1 READ](cases/replay/13ps-8x500-logical1_read.html)
+- [Ideal source replay → scaled QB — 13 ps — 8x500 — logical0 READ](cases/replay/13ps-8x500-logical0_read.html)
+- [Ideal source replay → scaled QB — 13 ps — 8x500 — logical1 READ=0](cases/replay/13ps-8x500-logical1_no_read_control.html)
+- [Ideal source replay → scaled QB — 13 ps — 8x500 — logical0 READ=0](cases/replay/13ps-8x500-logical0_no_read_control.html)
+
+### Physical 独立页面（16 个）
 
 - [Physical BVM → 12×JSL (320 µA) → scaled QB — 9 ps — logical1 READ](cases/physical/9ps-12x320-logical1_read.html)
 - [Physical BVM → 12×JSL (320 µA) → scaled QB — 9 ps — logical0 READ](cases/physical/9ps-12x320-logical0_read.html)
@@ -30,6 +70,7 @@
 - [Physical BVM → 8×JSL (500 µA) → scaled QB — 13 ps — logical0 READ](cases/physical/13ps-8x500-logical0_read.html)
 - [Physical BVM → 8×JSL (500 µA) → scaled QB — 13 ps — logical1 READ=0](cases/physical/13ps-8x500-logical1_no_read_control.html)
 - [Physical BVM → 8×JSL (500 µA) → scaled QB — 13 ps — logical0 READ=0](cases/physical/13ps-8x500-logical0_no_read_control.html)
+
 
 ## 聚焦 comparison 页面
 

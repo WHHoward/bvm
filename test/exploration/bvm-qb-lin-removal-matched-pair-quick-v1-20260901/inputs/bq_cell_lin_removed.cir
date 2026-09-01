@@ -1,0 +1,17 @@
+* BVM_QB_LIN_REMOVAL_MATCHED_PAIR_QUICK_V1: scaled QB with Lin removed.
+* Only intervention: remove Lin IN 1 0.8p and merge former node 1 into IN.
+* All BJs/BJL1/BJL2/L0/L1/L2/RJ1/RJ2/RB values remain the frozen P0/I0 values.
+
+.subckt BQ IN OUT IB
+
+L0 4 OUT 1.323p
+L1 2 3 3.91p
+L2 3 4 3.91p
+BJs IN 2 jjmit area=0.5
+BJL1 2 0 jjmit area=0.36
+RJ1 2 0 33
+BJL2 4 0 jjmit area=0.54
+RJ2 4 0 22
+RB IB 3 6
+
+.ends BQ

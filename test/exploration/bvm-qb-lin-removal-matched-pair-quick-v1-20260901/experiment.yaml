@@ -1,0 +1,222 @@
+id: BVM_QB_LIN_REMOVAL_MATCHED_PAIR_QUICK_V1
+family: bvm-qb-lin-removal-matched-pair
+mode: QUICK
+output_dir: run
+question: >-
+  在固定 13 ps、12×320、logical1/read 和 scaled QB 条件下，测试 QB 输入电感
+  Lin=0.8 pH 是否是 physical BVM→JSL→QB 动态接口失配的重要 degree of freedom。
+hypothesis: >-
+  若移除 QB Lin 能改善输入电流传递且不破坏 QB 自身工作，则 P1 physical 与 I1
+  ideal-replay 的 matched trajectory gap 应相对 P0/I0 缩小；source-side distortion
+  也可能同步减小。Lin 越小越好不作预设。
+baseline:
+  deck: ../bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir
+  raw: ../bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv
+candidate:
+  deck: inputs/physical/13ps/12x320/p1_physical_lin_removed.cir
+run:
+  timestep_ps: 0.0125
+  stop_ps: 170.0
+  solver: build/josim-cli
+probe_preset: bvm-jsl-qb
+metrics:
+  - raw_qa
+  - waveform
+  - strict_event
+visualization:
+  mode: none
+  style: CLASSIC_LOCKED
+promotion_rule: Never promote automatically; stop at AWAITING_USER_REVIEW.
+stop_rule: Exactly two new science runs, then QA, matched analysis, one compact classic overview, and AWAITING_USER_REVIEW.
+changed_variables:
+  - QB Lin: 0.8 pH → removed
+held_fixed:
+  - canonical BVM and BVM L_SL=0.4 pH
+  - logical1 initialization, 13 ps READ timing, and all source timing
+  - 12 JSL junctions with IC=320 uA each and unchanged JSL topology
+  - BJs/BJL1/BJL2 areas and models
+  - L0/L1/L2, RJ1/RJ2, RB, QB bias IBIAS=35 uA, and R_LOAD=10 ohm
+  - jjmit model, timestep=0.0125 ps, stop time=170 ps, and solver
+  - no logical0/no-read controls, other Lin values, BJs/bias/L variants, JTL, T1, or magnetic coupling
+references:
+  grounded_source:
+    raw: ../bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv
+    deck: ../bvm-load-qb-matrix-v1-20260901/inputs/source/13ps/12x320/logical1_read.cir
+    meaning: existing canonical BVM → 12×320 JSL → ground source reference G
+  physical_baseline:
+    raw: ../bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv
+    deck: ../bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir
+    meaning: existing P0 BVM → 12×320 JSL → QB with Lin=0.8 pH
+  ideal_baseline:
+    raw: ../bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv
+    deck: ../bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir
+    meaning: existing I0 exact frozen G source waveform → QB with Lin=0.8 pH
+frozen_replay:
+  source_raw: ../bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv
+  source_signal: I(B_LD1)
+  source_occurrence: 0
+  source_deck: ../bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir
+  rule: exact same PWL source as I0; no reshape, scale, hold, retime, resample, or interpolation
+windows_ps:
+  W2_pre_read_idle: [80.0, 90.0]
+  W3_read: [95.0, 110.0]
+  W4_post_read_observation: [110.0, 130.0]
+strict_event:
+  read_diagnostic_window_ps: [95.0, 110.0]
+  activity_window_ps: [95.0, 115.0]
+  post_window_ps: [115.0, 130.0]
+  post_tail_window_ps: [125.0, 130.0]
+  window_id: W3-read-95-110ps-activity-95-115ps-post-115-130ps-tail-125-130ps
+  phase: P(BJL2|XBQ)
+  voltage: V(BJL2|XBQ)
+  metric_spec:
+    path: docs/research/METRIC_SPEC_V2.md
+    version: 2.0.0
+    sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  task_local_tolerance:
+    id: bvm-qb-lin-removal-matched-pair-quick-bjl2-v1
+    scope: task-local
+    status: FROZEN
+    evidence: test/exploration/bvm-qb-lin-removal-matched-pair-quick-v1-20260901/PREREGISTRATION.md
+    phase_area_residual_abs_floor_turns: 0.05
+    phase_area_residual_relative: 0.10
+    complete_min_turns: 1.0
+    clean_upper_turns: 1.15
+    post_range_max_turns: 1.0
+    post_tail_p2p_max_turns: 0.25
+    note: inherited frozen local compatibility arithmetic; not a system Gate
+signal_occurrences:
+  I(B_LD1): 0
+  I(B_LD12): 0
+outcome_rule:
+  status: FROZEN_BEFORE_CANDIDATE_RUN
+  meaningful_distance_reduction_fraction: 0.20
+  primary_source_signals:
+    - I(B_LD1)
+    - I(B_LD12)
+    - I(L_PSL|XBVM1)
+    - V(SL1)
+  bvm_support_signals:
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+    - P(B_JM2|XBVM1)
+  primary_qb_signals:
+    - P(BJS|XBQ)
+    - I(L1|XBQ)
+    - P(BJL1|XBQ)
+    - I(L2|XBQ)
+    - P(BJL2|XBQ)
+  supporting_qb_signals:
+    - I(Lin|XBQ)
+    - I(RB|XBQ)
+  pre_read_not_degraded:
+    bvm_phase_max_diff_turns: 0.01
+    source_current_max_diff_uA: 5.0
+  promising_requires:
+    - P1 pre-READ BVM state is not obviously degraded
+    - source G↔P1 improves coherently
+    - multiple primary matched QB gaps reduce by at least 20 percent
+    - BJL2 candidate is not obviously contradictory
+  no_effect: matched primary physical↔ideal distances remain broadly within +/-20 percent and changes are weak
+  opposite: source or matched QB gaps worsen materially and coherently
+  otherwise: QUICK_AMBIGUOUS
+analysis_visualization:
+  mode: compact
+  style: CLASSIC_LOCKED
+  backend: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_jump: 2pi
+  overview: plots/RESULT_OVERVIEW.html
+  key_groups:
+    - I(B_LD1): G vs P0 vs P1
+    - P(B_JS1|XBVM1): G vs P0 vs P1
+    - P(B_JS2|XBVM1): G vs P0 vs P1
+    - P(BJS|XBQ): I0 vs P0 vs I1 vs P1
+    - I(L1|XBQ): I0 vs P0 vs I1 vs P1
+    - P(BJL1|XBQ): I0 vs P0 vs I1 vs P1
+    - P(BJL2|XBQ): I0 vs P0 vs I1 vs P1
+cases:
+  - id: p1-physical-lin-removed
+    deck: inputs/physical/13ps/12x320/p1_physical_lin_removed.cir
+    signals:
+      - name: I(B_LD1)
+        occurrence: 0
+      - P(B_JS1|XBVM1)
+      - P(B_JS2|XBVM1)
+      - P(BJS|XBQ)
+      - P(BJL2|XBQ)
+    strict_event:
+      phase: P(BJL2|XBQ)
+      voltage: V(BJL2|XBQ)
+      activity_window_ps: [95.0, 115.0]
+      post_window_ps: [115.0, 130.0]
+      post_tail_window_ps: [125.0, 130.0]
+      spec:
+        id: bvm-qb-lin-removal-matched-pair-quick-bjl2-v1
+        scope: task-local
+        status: FROZEN
+        mapping_status: UNVERIFIED_BQ_BVM_PV_MAPPING
+        phase_column: P(BJL2|XBQ)
+        voltage_column: V(BJL2|XBQ)
+        branch_endpoints: BJL2 branch orientation declared by the existing scaled-QB fixture
+        voltage_to_phase_sign: 1
+        reporting_direction: 1
+        run_id: BVM_QB_LIN_REMOVAL_MATCHED_PAIR_QUICK_V1/p1-physical-lin-removed
+        window_id: W3-read-95-110ps-activity-95-115ps-post-115-130ps-tail-125-130ps
+        metric_spec:
+          path: docs/research/METRIC_SPEC_V2.md
+          version: 2.0.0
+          sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+        tolerance:
+          id: bvm-qb-lin-removal-matched-pair-quick-bjl2-v1
+          scope: task-local
+          status: FROZEN
+          evidence: test/exploration/bvm-qb-lin-removal-matched-pair-quick-v1-20260901/PREREGISTRATION.md
+          phase_area_residual_abs_floor_turns: 0.05
+          phase_area_residual_relative: 0.10
+          complete_min_turns: 1.0
+          clean_upper_turns: 1.15
+          post_range_max_turns: 1.0
+          post_tail_p2p_max_turns: 0.25
+  - id: i1-ideal-replay-lin-removed
+    deck: inputs/replay/13ps/12x320/i1_replay_lin_removed.cir
+    signals:
+      - P(BJS|XBQ)
+      - I(L1|XBQ)
+      - P(BJL1|XBQ)
+      - I(L2|XBQ)
+      - P(BJL2|XBQ)
+    strict_event:
+      phase: P(BJL2|XBQ)
+      voltage: V(BJL2|XBQ)
+      activity_window_ps: [95.0, 115.0]
+      post_window_ps: [115.0, 130.0]
+      post_tail_window_ps: [125.0, 130.0]
+      spec:
+        id: bvm-qb-lin-removal-matched-pair-quick-bjl2-v1
+        scope: task-local
+        status: FROZEN
+        mapping_status: UNVERIFIED_BQ_BVM_PV_MAPPING
+        phase_column: P(BJL2|XBQ)
+        voltage_column: V(BJL2|XBQ)
+        branch_endpoints: BJL2 branch orientation declared by the existing scaled-QB fixture
+        voltage_to_phase_sign: 1
+        reporting_direction: 1
+        run_id: BVM_QB_LIN_REMOVAL_MATCHED_PAIR_QUICK_V1/i1-ideal-replay-lin-removed
+        window_id: W3-read-95-110ps-activity-95-115ps-post-115-130ps-tail-125-130ps
+        metric_spec:
+          path: docs/research/METRIC_SPEC_V2.md
+          version: 2.0.0
+          sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+        tolerance:
+          id: bvm-qb-lin-removal-matched-pair-quick-bjl2-v1
+          scope: task-local
+          status: FROZEN
+          evidence: test/exploration/bvm-qb-lin-removal-matched-pair-quick-v1-20260901/PREREGISTRATION.md
+          phase_area_residual_abs_floor_turns: 0.05
+          phase_area_residual_relative: 0.10
+          complete_min_turns: 1.0
+          clean_upper_turns: 1.15
+          post_range_max_turns: 1.0
+          post_tail_p2p_max_turns: 0.25

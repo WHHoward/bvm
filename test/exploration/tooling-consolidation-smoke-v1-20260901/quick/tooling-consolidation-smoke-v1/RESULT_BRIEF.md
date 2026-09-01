@@ -2,9 +2,17 @@
 
 ## 1. What we changed
 
-- Baseline: `test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/9ps/12x320/logical1_read.cir`
-- Candidate: `test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir`
-- Changed variables: tooling path only; no circuit or parameter change
+Tooling action performed in this smoke:
+
+- no circuit change
+- no parameter change
+- no JoSIM rerun
+- only reprocessed existing historical raw through the new shared tooling path
+
+Historical scientific comparison represented by those reused raw files:
+
+- READ width: 9 ps → 13 ps
+- all other registered scientific conditions remain existing historical fixture conditions
 
 ## 2. What was held fixed
 

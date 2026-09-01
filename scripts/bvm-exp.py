@@ -626,6 +626,17 @@ def _write_brief(
         ]
     observations = observations[:6]
     if outcome == "TOOLING_SMOKE_TEST_ONLY":
+        changed_section = [
+            "Tooling action performed in this smoke:",
+            "- no circuit change",
+            "- no parameter change",
+            "- no JoSIM rerun",
+            "- only reprocessed existing historical raw through the new shared tooling path",
+            "",
+            "Historical scientific comparison represented by those reused raw files:",
+            "- READ width: 9 ps → 13 ps",
+            "- all other registered scientific conditions remain existing historical fixture conditions",
+        ]
         meaning = "共享 raw reader、strict-event 实现、结果摘要和经典 compact 后端已用既有 raw 做工具链重放；这些输出不产生新的 physics conclusion。"
         not_prove = [
             "不证明任何新的电路行为、SFQ delivery、下游接收或 system Gate。",
@@ -633,6 +644,11 @@ def _write_brief(
             "未运行 JoSIM，也未改变历史输入或 raw。",
         ]
     else:
+        changed_section = [
+            f"- Baseline: `{baseline['deck']}`",
+            f"- Candidate: `{candidate['deck']}`",
+            f"- Changed variables: {', '.join(str(item) for item in changed)}",
+        ]
         meaning = "这是 QUICK 层的有界方向性观察，只用于筛选假说；它不是 formal evidence 或物理 Gate。"
         not_prove = [
             "不证明完整物理机制、鲁棒裕度、下游接收或 system Gate。",
@@ -649,9 +665,7 @@ def _write_brief(
         "",
         "## 1. What we changed",
         "",
-        f"- Baseline: `{baseline['deck']}`",
-        f"- Candidate: `{candidate['deck']}`",
-        f"- Changed variables: {', '.join(str(item) for item in changed)}",
+        *changed_section,
         "",
         "## 2. What was held fixed",
         "",

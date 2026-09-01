@@ -125,6 +125,8 @@ python3 scripts/josim-plot2.py path/to/run.csv \
 
 只选最少的关键波形；`-j 2pi` 的数值是 `rad/(2*pi)` turns，不是 SFQ 数。未来
 Quick 默认就是这一 classic profile，compact 只减少信号数量。
+建议只将 `plots/RESULT_OVERVIEW.html` 作为 human-facing compact visualization
+版本化；full 或任意其他 HTML 保持可再生并默认 ignored。
 
 ## 如何请求 full visualization
 

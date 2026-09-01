@@ -56,6 +56,8 @@ visualization:
 `-j 2pi` 是对 raw phase radians 做数值 `/(2*pi)`，不是 SFQ 计数。`full`
 必须显式 opt-in，仍保持 classic style；alternative style 需要用户明确授权，
 且 V1 不提供第二套 backend。
+建议只将 `plots/RESULT_OVERVIEW.html` 作为 human-facing compact visualization
+版本化；full 或任意其他 HTML 保持可再生并默认 ignored。
 
 ## Strict local evidence
 

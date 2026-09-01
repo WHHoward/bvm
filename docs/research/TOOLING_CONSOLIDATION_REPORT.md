@@ -45,6 +45,9 @@ prove、图的位置和当前状态；机器细节在 `analysis.json`、`manifes
 `provenance.json`。初始 gate 的 `user_reviewed` 和 `next_step_authorized` 都为
 `false`，工具不代填。
 
+其中 `plots/RESULT_OVERVIEW.html` 是建议随结果版本化的唯一 human-facing compact
+visualization；full 或任意其他 HTML 仍可再生并默认 ignored。
+
 ## HOW CLASSIC VISUALIZATION WORKS
 
 默认后端是：

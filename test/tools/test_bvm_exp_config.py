@@ -59,6 +59,22 @@ class QuickConfigTests(unittest.TestCase):
         self.assertTrue((output / "RESULT_BRIEF.md").is_file())
         self.assertIn("AWAITING_USER_REVIEW", (output / "RESULT_BRIEF.md").read_text(encoding="utf-8"))
 
+    def test_smoke_brief_separates_tooling_action_from_historical_comparison(self) -> None:
+        output = self.CONFIG.parent / "quick/tooling-consolidation-smoke-v1"
+        brief = (output / "RESULT_BRIEF.md").read_text(encoding="utf-8")
+        self.assertIn("Tooling action performed in this smoke:", brief)
+        self.assertIn("- no circuit change", brief)
+        self.assertIn("- no parameter change", brief)
+        self.assertIn("- no JoSIM rerun", brief)
+        self.assertIn("- READ width: 9 ps → 13 ps", brief)
+        self.assertIn(
+            "- all other registered scientific conditions remain existing historical fixture conditions",
+            brief,
+        )
+        self.assertNotIn("- Baseline:", brief)
+        self.assertNotIn("- Candidate:", brief)
+        self.assertNotIn("Changed variables: tooling path only", brief)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

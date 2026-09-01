@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """Analyze the single L_SL-removal Quick raw without running JoSIM.
 
-The candidate solver run is produced by scripts/bvm-exp.py.  This analysis
-reuses the previous fixed-window analyzer for generic phase/waveform/compare
-arithmetic and uses shared bvmtools.sfq for the BJL2 local diagnostic.
+The candidate solver run is produced by scripts/bvm-exp.py.  All reusable
+fixed-window phase, waveform, comparison, raw, and strict-local arithmetic is
+provided by scripts/bvmtools; LSL-specific orchestration remains local here.
 """
 
 from __future__ import annotations
 
 import csv
-import importlib.util
 import json
 import subprocess
 import sys
@@ -25,26 +24,14 @@ ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "analysis"
 PLOTS = ROOT / "plots"
 CONFIG_PATH = ROOT / "experiment.yaml"
-PRIOR_PATH = REPO / "test/exploration/bvm-qb-idle-read-boundary-state-decomposition-v1-20260901/analysis/analyze_boundary_state.py"
 sys.path.insert(0, str(REPO / "scripts"))
 
-from bvmtools.compare import exact_time_grid_identity  # noqa: E402
-from bvmtools.phase import window_indices  # noqa: E402
-from bvmtools.provenance import file_snapshot, git_snapshot, sha256_file, solver_provenance  # noqa: E402
+from bvmtools.compare import compare_windowed_series, exact_time_grid_identity  # noqa: E402
+from bvmtools.phase import TAU, continuous_unwrap, phase_window_metrics  # noqa: E402
+from bvmtools.provenance import file_snapshot, git_snapshot, sha256_file  # noqa: E402
 from bvmtools.raw import read_csv  # noqa: E402
 from bvmtools.sfq import StrictLocalEventSpec, strict_event_summary  # noqa: E402
-
-
-def _load_prior() -> Any:
-    spec = importlib.util.spec_from_file_location("prior_boundary_analyzer", PRIOR_PATH)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"cannot import reusable analyzer: {PRIOR_PATH}")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-PRIOR = _load_prior()
+from bvmtools.waveform import waveform_window_metrics  # noqa: E402
 
 BVM_PHASE = [
     "P(B_JM1|XBVM1)",
@@ -99,6 +86,9 @@ def load_config() -> dict[str, Any]:
         fail("candidate output_dir is not the registered immutable run path")
     if config.get("outcome_rule", {}).get("status") != "FROZEN_BEFORE_CANDIDATE_RUN":
         fail("directional outcome rule is not frozen")
+    strict = config.get("strict_event", {})
+    if strict.get("read_diagnostic_window_ps") != config.get("windows_ps", {}).get("W3_read"):
+        fail("strict read diagnostic window must match the registered W3 waveform window")
     return config
 
 
@@ -121,6 +111,23 @@ def ensure_raw_sidecar(path: Path) -> dict[str, str]:
     else:
         sidecar.write_text(f"{actual}  {path.name}\n", encoding="utf-8")
     return {"path": rel(path), "sha256": actual, "sidecar": rel(sidecar)}
+
+
+def inherited_solver_provenance(
+    solver_path: Path, parent_solver: dict[str, Any]
+) -> dict[str, Any]:
+    """Check the recorded solver binary without starting JoSIM."""
+
+    record: dict[str, Any] = {
+        "path": str(solver_path.resolve()),
+        "exists": solver_path.is_file(),
+        "version": parent_solver.get("version"),
+        "version_source": "parent_matrix_manifest",
+        "process_invoked": False,
+    }
+    if solver_path.is_file():
+        record["sha256"] = sha256_file(solver_path)
+    return record
 
 
 def check_parent_reuse(
@@ -172,11 +179,11 @@ def check_parent_reuse(
         checks["local_model_hashes"][name]["sha256"] == snapshots[name]["sha256"]
         for name in local_inputs
     )
-    solver = solver_provenance(solver_path, cwd=REPO)
+    solver = inherited_solver_provenance(solver_path, manifest["solver"])
     checks["solver_current"] = solver
     checks["solver_matches_parent"] = (
         solver.get("sha256") == manifest["solver"]["sha256"]
-        and manifest["solver"]["version"] in str(solver.get("version_stdout", ""))
+        and solver.get("version") == manifest["solver"]["version"]
     )
     metric_path = REPO / manifest["metric_spec"]["path"]
     checks["metric_spec_current"] = file_snapshot(metric_path, relative_to=REPO)
@@ -201,6 +208,51 @@ def check_parent_reuse(
 
 def selection_config(config: dict[str, Any]) -> dict[str, Any]:
     return {"duplicate_occurrence": config.get("signal_occurrences", {})}
+
+
+def select_column(trace: Any, signal: str, config: dict[str, Any]) -> tuple[float, ...]:
+    """Apply this experiment's occurrence registration to shared RawTrace."""
+
+    occurrence = selection_config(config)["duplicate_occurrence"].get(signal)
+    values = trace.column(signal, occurrence=occurrence)
+    if not isinstance(values, tuple) or (values and isinstance(values[0], tuple)):
+        fail(f"invalid selected column for {signal!r}")
+    return tuple(float(value) for value in values)
+
+
+def window_seconds(interval: list[float] | tuple[float, float]) -> tuple[float, float]:
+    return (float(interval[0]) * 1.0e-12, float(interval[1]) * 1.0e-12)
+
+
+def phase_series(trace: Any, signal: str, config: dict[str, Any]) -> tuple[float, ...]:
+    return tuple(value / TAU for value in continuous_unwrap(select_column(trace, signal, config)))
+
+
+def normalized_phase_stats(
+    trace: Any, signal: str, interval: list[float], config: dict[str, Any]
+) -> dict[str, Any]:
+    result = phase_window_metrics(
+        trace.time,
+        select_column(trace, signal, config),
+        window_seconds(interval),
+    )
+    result["window_start_ps"] = float(result.pop("window_start_s")) * 1.0e12
+    result["window_last_sample_ps"] = float(result.pop("window_last_sample_s")) * 1.0e12
+    return result
+
+
+def normalized_waveform_stats(
+    trace: Any, signal: str, unit: str, interval: list[float], config: dict[str, Any]
+) -> dict[str, Any]:
+    result = waveform_window_metrics(
+        trace.time,
+        select_column(trace, signal, config),
+        window_seconds(interval),
+        unit=unit,
+    )
+    result["peak_time_ps"] = float(result.pop("peak_time_s")) * 1.0e12
+    result["minimum_time_ps"] = float(result.pop("minimum_time_s")) * 1.0e12
+    return result
 
 
 def load_traces(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, dict[str, str]]]:
@@ -231,7 +283,6 @@ def load_traces(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, dict[
 def stats_for(
     traces: dict[str, Any], config: dict[str, Any], windows: dict[str, list[float]]
 ) -> dict[str, Any]:
-    select_config = selection_config(config)
     signal_sets: dict[str, list[tuple[str, str]]] = {
         "grounded_source": [(name, "phase") for name in BVM_PHASE]
         + [(name, "A" if name.startswith("I") else "V") for name in SOURCE_SIGNALS],
@@ -254,12 +305,12 @@ def stats_for(
             result[case_id][signal] = {}
             for window_name, interval in windows.items():
                 if unit == "phase":
-                    result[case_id][signal][window_name] = PRIOR.phase_stats(
-                        traces[case_id], signal, interval, select_config
+                    result[case_id][signal][window_name] = normalized_phase_stats(
+                        traces[case_id], signal, interval, config
                     )
                 else:
-                    result[case_id][signal][window_name] = PRIOR.waveform_stats(
-                        traces[case_id], signal, unit, interval, select_config
+                    result[case_id][signal][window_name] = normalized_waveform_stats(
+                        traces[case_id], signal, unit, interval, config
                     )
     return result
 
@@ -273,16 +324,39 @@ def comparison_set(
     config: dict[str, Any],
     windows: dict[str, list[float]],
 ) -> dict[str, Any]:
-    select_config = selection_config(config)
+    phase_signals = {signal for signal, unit in units.items() if unit == "phase"}
+    left_values = {
+        signal: phase_series(traces[left], signal, config)
+        if signal in phase_signals
+        else select_column(traces[left], signal, config)
+        for signal in signals
+    }
+    right_values = {
+        signal: phase_series(traces[right], signal, config)
+        if signal in phase_signals
+        else select_column(traces[right], signal, config)
+        for signal in signals
+    }
+
+    def comparison_unit(unit: str) -> tuple[float, str]:
+        if unit == "phase":
+            return 1.0, "turns"
+        if unit == "A":
+            return 1.0e6, "uA"
+        if unit == "V":
+            return 1.0e3, "mV"
+        return 1.0, unit
+
     return {
         signal: {
-            window_name: PRIOR.compare_window(
-                traces[left],
-                traces[right],
-                signal,
-                units[signal],
-                interval,
-                select_config,
+            window_name: compare_windowed_series(
+                traces[left].time,
+                left_values[signal],
+                traces[right].time,
+                right_values[signal],
+                window_seconds(interval),
+                value_scale=comparison_unit(units[signal])[0],
+                unit=comparison_unit(units[signal])[1],
             )
             for window_name, interval in windows.items()
         }
@@ -404,7 +478,7 @@ def strict_for(
             "voltage_to_phase_sign": 1,
             "reporting_direction": 1,
             "run_id": f"{config['id']}/{case_id}",
-            "window_id": "W3-95-110ps-W4-110-130ps-tail-125-130ps",
+            "window_id": declaration["window_id"],
             "raw_sha256": raw_hash,
             "metric_spec": declaration["metric_spec"],
             "tolerance": {
@@ -419,15 +493,63 @@ def strict_for(
         fail(f"strict BJL2 spec is not ready: {spec.readiness_issues()}")
     return strict_event_summary(
         trace.time,
-        PRIOR.select_column(trace, declaration["phase"], selection_config(config)),
-        PRIOR.select_column(trace, declaration["voltage"], selection_config(config)),
-        activity_window_s=(95.0e-12, 110.0e-12),
-        post_window_s=(110.0e-12, 130.0e-12),
-        post_tail_window_s=(125.0e-12, 130.0e-12),
+        select_column(trace, declaration["phase"], config),
+        select_column(trace, declaration["voltage"], config),
+        activity_window_s=window_seconds(declaration["activity_window_ps"]),
+        post_window_s=window_seconds(declaration["post_window_ps"]),
+        post_tail_window_s=window_seconds(declaration["post_tail_window_ps"]),
         spec=spec,
         actual_raw_sha256=raw_hash,
         actual_metric_spec_sha256=metric_spec_hash,
     )
+
+
+def strict_anchor_regression(strict_results: dict[str, Any]) -> dict[str, Any]:
+    """Guard the existing 13 ps ideal replay anchor against window truncation."""
+
+    expected = {
+        "phase_turns": 1.0160289228944646,
+        "area_turns": 1.0160368344325381,
+        "start_time_ps": 103.0375,
+        "end_time_ps": 110.175,
+        "classification": "CLEAN_ONE_SFQ_CANDIDATE",
+    }
+    observed_result = strict_results["ideal_replay_qb"]
+    observed_segment = observed_result.get("largest_monotonic_segment")
+    if not isinstance(observed_segment, dict):
+        fail("TOOLING_REGRESSION_FAILURE: ideal replay has no largest segment")
+    observed = {
+        "phase_turns": float(observed_segment["delta_turns"]),
+        "area_turns": float(observed_segment["area_turns"]),
+        "start_time_ps": float(observed_segment["start_time_ps"]),
+        "end_time_ps": float(observed_segment["end_time_ps"]),
+        "classification": observed_result["compatibility_classification"],
+    }
+    tolerances = {
+        "phase_turns": 1.0e-10,
+        "area_turns": 1.0e-10,
+        "start_time_ps": 1.0e-9,
+        "end_time_ps": 1.0e-9,
+    }
+    numeric_match = all(
+        abs(observed[key] - expected[key]) <= tolerances[key]
+        for key in tolerances
+    )
+    classification_match = observed["classification"] == expected["classification"]
+    if not numeric_match or not classification_match:
+        fail(
+            "TOOLING_REGRESSION_FAILURE: corrected ideal anchor mismatch; "
+            f"expected={expected}, observed={observed}"
+        )
+    return {
+        "status": "PASS",
+        "case": "ideal_replay_qb",
+        "expected": expected,
+        "observed": observed,
+        "tolerances": tolerances,
+        "activity_window_ps": [95.0, 115.0],
+        "post_window_ps": [115.0, 130.0],
+    }
 
 
 def pre_read_safety(comparisons: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
@@ -528,7 +650,6 @@ def plot_overview(
 ) -> dict[str, Any]:
     if not all(exact_time_grid_identity(traces["grounded_source"].time, trace.time) for trace in traces.values()):
         fail("plot requires exact full time-grid identity")
-    select_config = selection_config(config)
     specs = [
         ("I(grounded source · B_LD1)", "grounded_source", "I(B_LD1)"),
         ("I(baseline physical · B_LD1)", "baseline_physical", "I(B_LD1)"),
@@ -576,7 +697,7 @@ def plot_overview(
     with tempfile.TemporaryDirectory(prefix="bvm-qb-lsl-plot-") as temp_dir:
         merged = Path(temp_dir) / "selected_key_signals.csv"
         columns = [
-            (label, PRIOR.select_column(traces[case_id], signal, select_config))
+            (label, select_column(traces[case_id], signal, config))
             for label, case_id, signal in specs
         ]
         with merged.open("w", newline="", encoding="utf-8") as handle:
@@ -653,7 +774,7 @@ def make_brief(metrics: dict[str, Any]) -> str:
 
 ## 状态
 
-`{outcome}` / `INCONCLUSIVE`（物理结论层）/ `AWAITING_USER_REVIEW` / `STOP`
+`{outcome}` / `INCONCLUSIVE`（物理结论层）/ `USER_REVIEWED` / `STOP`
 
 ## What we changed
 
@@ -666,6 +787,10 @@ def make_brief(metrics: dict[str, Any]) -> str:
 13 ps READ、12×320 JSL、logical1、scaled QB、QB bias `35 uA`、`10 ohm`
 output load、jjmit model、其它 BVM 参数、source timing、`0.0125 ps` timestep、
 170 ps stop time。没有加入 controls、sweep、JTL、T1 或 magnetic coupling。
+
+READ waveform diagnostic window 是 W3 `[95,110)` ps；BJL2 strict-event activity
+window 独立固定为 `[95,115)` ps，post window 为 `[115,130)` ps，tail 仍为
+`[125,130)` ps。
 
 ## Why we tested it
 
@@ -701,10 +826,10 @@ output load、jjmit model、其它 BVM 参数、source timing、`0.0125 ps` time
 
 ## What it means
 
-`{metrics['outcome_details']['rule_evaluation']}`。在预注册方向规则下，本轮 outcome
-为 `{outcome}`。允许的最强措辞是：在这个固定 Quick 条件下，移除 `L_SL` 对
-physical BVM→JSL→QB READ trajectory 造成了（或没有造成）方向性变化；不能从一轮
-结果确立唯一机制。
+source 和 QB 均没有满足预注册的 `≥20%` 距离下降条件（source=0，QB=0）。在预注册
+方向规则下，本轮 outcome 为 `{outcome}`。允许的最强措辞是：在这个固定 Quick 条件
+下，移除 `L_SL` 没有显示出使 physical BVM→JSL→QB READ trajectory 向既有 reference
+明显靠近的方向性效果；不能从一轮结果确立唯一机制。
 
 ## What it does NOT prove
 
@@ -764,6 +889,22 @@ def make_report(metrics: dict[str, Any]) -> str:
     for name, interval in metrics["windows_ps"].items():
         sample_count = stats["grounded_source"][BVM_PHASE[0]][name]["sample_count"]
         lines.append(f"| {name} | [{fmt(interval[0])}, {fmt(interval[1])}) | {sample_count} | {meanings[name]} |")
+
+    lines.extend([
+        "",
+        "W3 `[95,110)` ps 是 READ waveform diagnostic window；它不作为 BJL2 strict-event",
+        "activity cutoff。strict-event 使用独立、预先固定的窗口：",
+        "",
+        "| Strict window | interval (ps) | interpretation |",
+        "|---|---:|---|",
+        "| READ diagnostic | [95,110) | waveform comparison only |",
+        "| activity | [95,115) | include complete READ-associated monotonic segment |",
+        "| post | [115,130) | post/retrap boundedness observation |",
+        "| post tail | [125,130) | fixed tail boundedness check |",
+        "",
+        "ideal replay、baseline physical 和 candidate 使用完全相同的 strict-event windows；",
+        "strict label 仍是 local phase/area compatibility diagnostic，不是 SFQ count 或 system Gate。",
+    ])
 
     lines.extend([
         "",
@@ -898,7 +1039,7 @@ def make_report(metrics: dict[str, Any]) -> str:
         "## Directional outcome",
         "",
         f"Outcome: `{metrics['outcome']}`；physical disposition: `INCONCLUSIVE`；",
-        "Human gate: `AWAITING_USER_REVIEW`；next action: `STOP`。",
+        "Human gate: `USER_REVIEWED`；next step authorized: `false`；next action: `STOP`。",
         "",
         f"source signals meeting the pre-registered ≥20% RMS reduction: `{metrics['outcome_details']['source_improved_signals']}`；",
         f"QB signals meeting it: `{metrics['outcome_details']['qb_improved_signals']}`；",
@@ -924,9 +1065,11 @@ def make_report(metrics: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def write_new(path: Path, content: str) -> None:
-    if path.exists():
-        fail(f"refusing to overwrite existing artifact: {path}")
+def write_derived(path: Path, content: str) -> None:
+    """Refresh named derived artifacts while refusing raw-data targets."""
+
+    if "raw" in path.parts:
+        fail(f"derived writer cannot target raw data: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
 
@@ -955,15 +1098,19 @@ def main() -> int:
         )
         for case_id in ("ideal_replay_qb", "baseline_physical", "candidate_lsl_removed")
     }
+    strict_anchor = strict_anchor_regression(strict_results)
     safety = pre_read_safety(comparisons, config)
     outcome, outcome_details = derive_outcome(distances, strict_results, safety, config)
     plot = plot_overview(traces, config, PLOTS / "RESULT_OVERVIEW.html")
     metrics: dict[str, Any] = {
         "schema_version": "BVM_QB_LSL_REMOVAL_QUICK_V1",
         "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "status": "USER_REVIEWED",
         "outcome": outcome,
         "physical_disposition": "INCONCLUSIVE",
-        "awaiting_user_review": True,
+        "awaiting_user_review": False,
+        "user_reviewed": True,
+        "next_step_authorized": False,
         "stop": "STOP",
         "joSIM_run_in_analysis": False,
         "candidate_solver_run": True,
@@ -971,11 +1118,30 @@ def main() -> int:
         "raw_qa": {case_id: traces[case_id].qa() for case_id in traces},
         "full_time_grid_exact": True,
         "windows_ps": windows,
+        "strict_event_windows_ps": {
+            "read_diagnostic_window_ps": config["strict_event"]["read_diagnostic_window_ps"],
+            "activity_window_ps": config["strict_event"]["activity_window_ps"],
+            "post_window_ps": config["strict_event"]["post_window_ps"],
+            "post_tail_window_ps": config["strict_event"]["post_tail_window_ps"],
+        },
+        "units": {
+            "raw_time": "s",
+            "reported_time": "ps",
+            "raw_phase": "rad",
+            "reported_phase": "continuous_unwrap(rad)/(2*pi) = turns",
+            "raw_current": "A",
+            "reported_current": "uA",
+            "raw_voltage": "V",
+            "reported_voltage": "mV",
+            "current_time_area": "uA*ps waveform diagnostic only",
+            "voltage_area": "Phi0 for same-JJ local compatibility arithmetic only",
+        },
         "window_stats": stats,
         "comparisons": comparisons,
         "distances": distances,
         "pre_read_safety": safety,
         "strict_local_bjl2": strict_results,
+        "strict_anchor_regression": strict_anchor,
         "outcome_details": outcome_details,
         "parent_reuse": parent_reuse,
         "visualization": plot,
@@ -991,14 +1157,37 @@ def main() -> int:
     candidate_attempt_root = ROOT / "quick/BVM_QB_LSL_REMOVAL_QUICK_V1"
     candidate_case_root = candidate_attempt_root / "cases" / candidate_case["id"]
     run_snapshot = candidate_attempt_root / "inputs" / f"{candidate_case['id']}.cir"
+    repository_snapshot = git_snapshot(REPO)
+    strict_event_windows = {
+        "read_diagnostic_window_ps": config["strict_event"]["read_diagnostic_window_ps"],
+        "activity_window_ps": config["strict_event"]["activity_window_ps"],
+        "post_window_ps": config["strict_event"]["post_window_ps"],
+        "post_tail_window_ps": config["strict_event"]["post_tail_window_ps"],
+    }
+    preserved_failure = {
+        "path": rel(candidate_attempt_root / "POSTPROCESSING_FAILURE.md"),
+        "cause": "case signal label I(Lin|XBQ) did not match exact JoSIM header I(LIN|XBQ)",
+        "raw_preserved": True,
+        "second_science_run": False,
+    }
     provenance = {
         "analysis_id": config["id"],
         "recorded_at": datetime.now().astimezone().isoformat(timespec="seconds"),
         "analysis_command": "PYTHONPATH=scripts python3 analysis/analyze_lsl_removal.py",
-        "repository_at_analysis": git_snapshot(REPO),
+        "repository_at_analysis": repository_snapshot,
+        "no_new_josim": True,
+        "configuration": file_snapshot(CONFIG_PATH, relative_to=REPO),
+        "analysis_script": file_snapshot(Path(__file__), relative_to=REPO),
+        "consumed_raw_paths": raw_records,
+        "source_run_provenance_references": {
+            "grounded_source": config["references"]["grounded_source"],
+            "ideal_replay_qb": config["references"]["ideal_replay_qb"],
+            "baseline_physical": config["baseline"],
+            "candidate_physical": config["candidate"],
+        },
         "candidate_execution": {
             "run_id": candidate_case["run_id"],
-            "solver": solver_provenance(solver_path, cwd=REPO),
+            "solver": parent_reuse["solver_current"],
             "command": [
                 str(solver_path),
                 "-a",
@@ -1013,50 +1202,37 @@ def main() -> int:
             "raw": file_snapshot(resolve(config["candidate"]["raw"]), relative_to=REPO),
             "stdout": file_snapshot(candidate_case_root / "logs/stdout.txt", relative_to=REPO),
             "stderr": file_snapshot(candidate_case_root / "logs/stderr.txt", relative_to=REPO),
-            "postprocessing_failure": {
-                "path": rel(candidate_attempt_root / "POSTPROCESSING_FAILURE.md"),
-                "cause": "case signal label I(Lin|XBQ) did not match exact JoSIM header I(LIN|XBQ)",
-                "raw_preserved": True,
-                "second_science_run": False,
-            },
+            "postprocessing_failure": preserved_failure,
         },
         "baseline_reuse": parent_reuse,
         "raw_records": raw_records,
+        "canonical_bvm": parent_reuse["canonical_bvm_hash"],
         "candidate_variant": file_snapshot(REPO / "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/bvm_cell_lsl_removed.cir", relative_to=REPO),
         "candidate_bq_model": file_snapshot(ROOT / "inputs/bq_cell.cir", relative_to=REPO),
         "candidate_jj_model": file_snapshot(ROOT / "inputs/jjmit.cir", relative_to=REPO),
         "metric_spec": file_snapshot(REPO / config["strict_event"]["metric_spec"]["path"], relative_to=REPO),
         "windows_ps": windows,
+        "strict_event_windows_ps": strict_event_windows,
         "strict_event": config["strict_event"],
         "outcome_rule": config["outcome_rule"],
         "visualization": plot,
+        "preserved_postprocessing_failure": preserved_failure,
         "note": "Candidate raw execution is valid; only the first post-processing attempt failed. No raw or canonical circuit was overwritten.",
     }
-    gate = """status: AWAITING_USER_REVIEW
+    gate = """status: USER_REVIEWED
 outcome: PLACEHOLDER_FILLED_IN_METRICS
 physical_disposition: INCONCLUSIVE
+user_reviewed: true
+next_step_authorized: false
 next_action: STOP
 automatic_promotion: false
 automatic_next_experiment: false
 """.replace("PLACEHOLDER_FILLED_IN_METRICS", outcome)
-    metrics_path = ANALYSIS / "metrics.json"
-    if metrics_path.exists():
-        stored_metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
-        if stored_metrics.get("raw_records") != raw_records:
-            fail("existing metrics raw records differ; refusing to overwrite")
-        if stored_metrics.get("schema_version") != metrics["schema_version"]:
-            fail("existing metrics schema differs; refusing to overwrite")
-        metrics = stored_metrics
-    else:
-        write_new(metrics_path, json.dumps(metrics, ensure_ascii=False, indent=2) + "\n")
-    provenance_path = ANALYSIS / "provenance.json"
-    if not provenance_path.exists():
-        write_new(provenance_path, json.dumps(provenance, ensure_ascii=False, indent=2) + "\n")
-    brief_path = ROOT / "RESULT_BRIEF.md"
-    if not brief_path.exists():
-        write_new(brief_path, make_brief(metrics))
-    write_new(ANALYSIS / "REPORT.md", make_report(metrics))
-    write_new(ANALYSIS / "human-gate.yaml", gate)
+    write_derived(ANALYSIS / "metrics.json", json.dumps(metrics, ensure_ascii=False, indent=2) + "\n")
+    write_derived(ANALYSIS / "provenance.json", json.dumps(provenance, ensure_ascii=False, indent=2) + "\n")
+    write_derived(ROOT / "RESULT_BRIEF.md", make_brief(metrics))
+    write_derived(ANALYSIS / "REPORT.md", make_report(metrics))
+    write_derived(ANALYSIS / "human-gate.yaml", gate)
     print(json.dumps({"status": "OK", "outcome": outcome, "plot": plot}, ensure_ascii=False))
     return 0
 

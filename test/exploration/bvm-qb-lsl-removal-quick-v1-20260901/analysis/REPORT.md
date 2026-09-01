@@ -26,6 +26,19 @@ v2.7.2837d13 和 `METRIC_SPEC_V2.md` hash 均与父矩阵 manifest 一致。
 | W3_read | [95, 110) | 1200 | READ dynamic mismatch |
 | W4_post_read_observation | [110, 130) | 1600 | post-READ observation |
 
+W3 `[95,110)` ps 是 READ waveform diagnostic window；它不作为 BJL2 strict-event
+activity cutoff。strict-event 使用独立、预先固定的窗口：
+
+| Strict window | interval (ps) | interpretation |
+|---|---:|---|
+| READ diagnostic | [95,110) | waveform comparison only |
+| activity | [95,115) | include complete READ-associated monotonic segment |
+| post | [115,130) | post/retrap boundedness observation |
+| post tail | [125,130) | fixed tail boundedness check |
+
+ideal replay、baseline physical 和 candidate 使用完全相同的 strict-event windows；
+strict label 仍是 local phase/area compatibility diagnostic，不是 SFQ count 或 system Gate。
+
 ## Pre-READ BVM state safety
 
 | BVM phase | baseline W2 median | candidate W2 median | baseline→candidate W2 max diff (turns) |
@@ -107,14 +120,14 @@ candidate 没有 `L_SL` 支路，因此不伪造 `I(L_SL|XBVM1)`；candidate 使
 
 | case | classification | largest segment phase (turns) | area (Phi0) | residual (turns) | complete segments | post bounded |
 |---|---|---:|---:|---:|---:|---|
-| ideal replay QB | CLEAN_ONE_SFQ_CANDIDATE | 1.01336 | 1.01337 | -8.51161e-06 | 1 | True |
+| ideal replay QB | CLEAN_ONE_SFQ_CANDIDATE | 1.01603 | 1.01604 | -7.91154e-06 | 1 | True |
 | baseline physical QB | SUBTHRESHOLD | -0.122128 | -0.122131 | 3.23871e-06 | 0 | True |
 | LSL-removed candidate | SUBTHRESHOLD | -0.121208 | -0.121212 | 4.20732e-06 | 0 | True |
 
 ## Directional outcome
 
 Outcome: `QUICK_NO_EFFECT`；physical disposition: `INCONCLUSIVE`；
-Human gate: `AWAITING_USER_REVIEW`；next action: `STOP`。
+Human gate: `USER_REVIEWED`；next step authorized: `false`；next action: `STOP`。
 
 source signals meeting the pre-registered ≥20% RMS reduction: `[]`；
 QB signals meeting it: `[]`；

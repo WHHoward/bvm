@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from statistics import median
 from typing import Sequence
 
 
@@ -60,6 +61,42 @@ def phase_delta_turns(values: Sequence[float], *, unwrap: bool = True) -> float:
     """Return ``phase_delta_rad / (2*pi)`` without rounding or abs()."""
 
     return phase_delta_rad(values, unwrap=unwrap) / TAU
+
+
+def phase_window_metrics(
+    time_s: Sequence[float],
+    phase_raw: Sequence[float],
+    window_s: tuple[float, float],
+) -> dict[str, float | int | list[float]]:
+    """Return fixed-window phase statistics with explicit rad/turns units.
+
+    The complete raw phase trace is unwrapped before the half-open window is
+    selected.  This keeps a wrap crossing outside the window from changing
+    the displayed trajectory and makes the window semantics reusable across
+    experiment analyzers.
+    """
+
+    if len(time_s) != len(phase_raw):
+        raise ValueError("time and phase must have equal length")
+    unwrapped = continuous_unwrap(phase_raw)
+    indices = window_indices(time_s, *window_s)
+    if len(indices) < 2:
+        raise ValueError("phase window requires at least two samples")
+    selected = [unwrapped[index] / TAU for index in indices]
+    return {
+        "raw_unit": "rad",
+        "display_unit": "turns",
+        "phase_conversion": "continuous_unwrap(rad) / (2*pi)",
+        "window_s": [float(window_s[0]), float(window_s[1])],
+        "sample_count": len(selected),
+        "median_turns": float(median(selected)),
+        "minimum_turns": float(min(selected)),
+        "maximum_turns": float(max(selected)),
+        "p2p_turns": float(max(selected) - min(selected)),
+        "endpoint_delta_turns": float(selected[-1] - selected[0]),
+        "window_start_s": float(time_s[indices[0]]),
+        "window_last_sample_s": float(time_s[indices[-1]]),
+    }
 
 
 def window_indices(

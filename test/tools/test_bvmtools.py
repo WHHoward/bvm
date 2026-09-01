@@ -16,12 +16,18 @@ import numpy as np
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
 
-from bvmtools.compare import TimeGridMismatch, compare_series  # noqa: E402
+from bvmtools.compare import (  # noqa: E402
+    TimeGridMismatch,
+    compare_series,
+    compare_windowed_series,
+)
 from bvmtools.phase import (  # noqa: E402
     TAU,
     continuous_unwrap,
     monotonic_segments,
     phase_delta_turns,
+    phase_window_metrics,
+    window_indices,
 )
 from bvmtools.provenance import file_snapshot  # noqa: E402
 from bvmtools.raw import DuplicateColumnError, RawTraceError, read_csv  # noqa: E402
@@ -31,7 +37,7 @@ from bvmtools.sfq import (  # noqa: E402
     strict_event_summary,
     strict_segment_metrics,
 )
-from bvmtools.waveform import waveform_metrics  # noqa: E402
+from bvmtools.waveform import waveform_metrics, waveform_window_metrics  # noqa: E402
 
 
 def _independent_anchor(path: Path) -> tuple[float, float, float]:
@@ -109,6 +115,22 @@ class RawReaderTests(unittest.TestCase):
 
 
 class PhaseAndStrictEventTests(unittest.TestCase):
+    def test_fixed_window_is_half_open(self) -> None:
+        self.assertEqual(
+            window_indices((0.0, 1.0e-12, 2.0e-12), 1.0e-12, 2.0e-12),
+            (1,),
+        )
+
+    def test_fixed_window_phase_metrics_unwraps_before_turn_conversion(self) -> None:
+        result = phase_window_metrics(
+            (0.0, 1.0e-12, 2.0e-12),
+            (0.0, math.pi, TAU),
+            (0.0, 3.0e-12),
+        )
+        self.assertEqual(result["raw_unit"], "rad")
+        self.assertEqual(result["display_unit"], "turns")
+        self.assertAlmostEqual(result["endpoint_delta_turns"], 1.0, places=12)
+
     def test_unwrap_and_turn_conversion(self) -> None:
         raw = (0.0, 6.0, 0.5)
         unwrapped = continuous_unwrap(raw)
@@ -215,8 +237,75 @@ class PhaseAndStrictEventTests(unittest.TestCase):
                 self.assertEqual(result["second_complete_segment_present"], False)
                 self.assertEqual(result["post_boundedness"]["status"], "VALID")
 
+    def test_13ps_anchor_activity_window_is_not_truncated_at_110ps(self) -> None:
+        path = REPO / "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv"
+        trace = read_csv(path)
+        raw_hash = hashlib.sha256(path.read_bytes()).hexdigest()
+        spec = StrictLocalEventSpec.from_mapping({
+            "id": "bvm-qb-strict-event-anchor-compatibility-v1",
+            "scope": "task-local",
+            "status": "FROZEN",
+            "mapping_status": "UNVERIFIED_BQ_BVM_PV_MAPPING",
+            "phase_column": "P(BJL2|XBQ)",
+            "voltage_column": "V(BJL2|XBQ)",
+            "branch_endpoints": "BJL2 branch orientation declared by the frozen replay fixture",
+            "voltage_to_phase_sign": 1,
+            "reporting_direction": 1,
+            "run_id": "bvm-qb-lsl-removal-quick-v1-20260901/strict-anchor",
+            "window_id": "activity-95-115ps-post-115-130ps-tail-125-130ps",
+            "raw_sha256": raw_hash,
+            "metric_spec": {
+                "path": "docs/research/METRIC_SPEC_V2.md",
+                "version": "2.0.0",
+                "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+            },
+            "tolerance": {
+                "id": "bvm-qb-strict-event-anchor-task-local-v1",
+                "scope": "task-local",
+                "status": "FROZEN",
+                "evidence": "test/exploration/bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/REPORT.md",
+                "phase_area_residual_abs_floor_turns": 0.05,
+                "phase_area_residual_relative": 0.10,
+                "complete_min_turns": 1.0,
+                "clean_upper_turns": 1.15,
+                "post_range_max_turns": 1.0,
+                "post_tail_p2p_max_turns": 0.25,
+            },
+            "compatibility_profile": "STRICT_EVENT_ANCHOR_COMPATIBILITY_V1",
+        })
+        result = strict_event_summary(
+            trace.time,
+            trace.column("P(BJL2|XBQ)"),
+            trace.column("V(BJL2|XBQ)"),
+            activity_window_s=(95.0e-12, 115.0e-12),
+            post_window_s=(115.0e-12, 130.0e-12),
+            post_tail_window_s=(125.0e-12, 130.0e-12),
+            spec=spec,
+            actual_raw_sha256=raw_hash,
+            actual_metric_spec_sha256="f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+        )
+        largest = result["largest_monotonic_segment"]
+        self.assertAlmostEqual(largest["delta_turns"], 1.0160289228944646, places=12)
+        self.assertAlmostEqual(largest["area_turns"], 1.0160368344325381, places=12)
+        self.assertAlmostEqual(largest["start_time_ps"], 103.0375, places=12)
+        self.assertAlmostEqual(largest["end_time_ps"], 110.175, places=12)
+        self.assertEqual(result["compatibility_classification"], "CLEAN_ONE_SFQ_CANDIDATE")
+        self.assertEqual(result["complete_segment_count"], 1)
+
 
 class WaveformAndCompareTests(unittest.TestCase):
+    def test_fixed_window_waveform_normalizes_si_units(self) -> None:
+        result = waveform_window_metrics(
+            (0.0, 1.0e-12, 2.0e-12),
+            (0.0, 1.0e-6, 0.0),
+            (0.0, 3.0e-12),
+            unit="A",
+        )
+        self.assertEqual(result["unit"], "uA")
+        self.assertEqual(result["area_unit"], "uA*ps")
+        self.assertAlmostEqual(result["peak_value"], 1.0, places=12)
+        self.assertAlmostEqual(result["signed_time_integral"], 1.0, places=12)
+
     def test_waveform_metrics_and_centroid(self) -> None:
         result = waveform_metrics((0.0, 1.0, 2.0), (0.0, 2.0, 0.0), include_centroid=True)
         self.assertEqual(result["sample_count"], 3)
@@ -235,6 +324,16 @@ class WaveformAndCompareTests(unittest.TestCase):
         self.assertIn("scalar_fit", result)
         with self.assertRaises(TimeGridMismatch):
             compare_series((0.0, 1.0), (1.0, 2.0), (0.0, 2.0), (1.0, 2.0))
+
+    def test_fixed_window_compare_refuses_interpolation(self) -> None:
+        with self.assertRaises(TimeGridMismatch):
+            compare_windowed_series(
+                (0.0, 1.0e-12, 2.0e-12),
+                (0.0, 1.0, 2.0),
+                (0.0, 1.5e-12, 3.0e-12),
+                (0.0, 1.0, 2.0),
+                (0.0, 3.0e-12),
+            )
 
     def test_file_provenance_contains_hash_and_size(self) -> None:
         with tempfile.NamedTemporaryFile("wb", delete=False) as handle:

@@ -22,7 +22,7 @@ delivery、系统 Gate 或论文级结论。
 | 检查项 | 结果 | 证据 |
 |---|---|---|
 | 单位与相位换算 | `PASS` | raw 的 `time` 按秒读取；固定窗报告为 ps；相位轨迹只有在比较/报告时按 `rad/(2π)` 写成 turns；电流面积仍标为 `µA·ps`，没有写成 SFQ/Φ0。 |
-| 窗口边界 | `PASS` | 独立 raw-only 复核严格使用 `[80,90)` ps 和 `[95,110)` ps；得到与报告一致的 W2 phase 最大差 `1.32894377482e-05 turns`、source current 最大差 `0.000800136 µA`。 |
+| 窗口边界 | `PASS` | 独立 raw-only 复核严格使用 `[80,90)` ps 和 READ diagnostic `[95,110)` ps；BJL2 strict activity 另使用 `[95,115)` ps，避免截断 `110.175 ps` 的完整段；得到与报告一致的 W2 phase 最大差 `1.32894377482e-05 turns`、source current 最大差 `0.000800136 µA`。 |
 | 符号与重复列 | `PASS` | `I(B_LD1)` occurrence 0 被明确读取；baseline 列索引 `[14,18]`、candidate `[13,17]`，各自重复列逐点相等，没有偷换 occurrence。 |
 | raw 健康 | `PASS` | grounded、ideal replay、baseline、candidate 均为 `13599` 行，时间严格递增，数值有限，覆盖 `0–169.9875 ps`；candidate solver return code 为 `0`。 |
 | 独立 raw cross-check | `PASS` | 不读取 `metrics.json`，用独立 CSV parser 直接重算 source 与四个 QB primary RMS distance；source `-0.288175915%`，BJS `+0.871821439%`，L1 `-1.144005307%`，BJL1 `-0.448068497%`，BJL2 `-0.366914238%`，与报告一致。 |
@@ -58,5 +58,21 @@ delivery、系统 Gate 或论文级结论。
 ## 审查处置
 
 机械证据和关键数值复核未发现足以推翻本轮有界结果的单位、窗口、分支或 stale-artifact
-问题。保留 `QUICK_NO_EFFECT / INCONCLUSIVE / AWAITING_USER_REVIEW / STOP`，不自动
+问题。保留 `QUICK_NO_EFFECT / INCONCLUSIVE / USER_REVIEWED / STOP`，不自动
 Promotion，不启动下一实验，不更新 HANDOVER、project-todo 或 paper claim。
+
+## Review-fix：strict window 与共享工具清理
+
+- 修复记录时间：`2026-09-01T19:59:54+08:00`。
+- 保留 READ waveform diagnostic `[95,110)` ps；strict activity 改为固定的
+  `[95,115)` ps，post 为 `[115,130)` ps，tail 为 `[125,130)` ps；ideal replay、
+  baseline physical、candidate 使用同一组窗口。
+- existing raw 重算后，13 ps / 12×320 ideal replay 的 BJL2 anchor 为
+  `1.0160289228944646 turns`、`1.0160368344325383 Phi0`，区间
+  `103.0375→110.175 ps`，分类 `CLEAN_ONE_SFQ_CANDIDATE`；与冻结值在浮点容差内一致，
+  没有使用被截断的 `~1.01336 turns`。
+- baseline physical 与 LSL-removed candidate 仍为 `SUBTHRESHOLD`；directional
+  outcome 仍为 `QUICK_NO_EFFECT`，physical disposition 仍为 `INCONCLUSIVE`。
+- 当前 analyzer 已移除前一实验 analyzer 的运行时依赖；fixed-window phase、waveform、
+  exact-grid comparison 和单位归一化由 `scripts/bvmtools` 提供，并由 focused tests
+  覆盖。本次未启动 JoSIM、未重写 raw、未改变 canonical BVM 或实验拓扑。

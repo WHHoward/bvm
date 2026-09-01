@@ -2,7 +2,7 @@
 
 ## 状态
 
-`QUICK_NO_EFFECT` / `INCONCLUSIVE`（物理结论层）/ `AWAITING_USER_REVIEW` / `STOP`
+`QUICK_NO_EFFECT` / `INCONCLUSIVE`（物理结论层）/ `USER_REVIEWED` / `STOP`
 
 ## What we changed
 
@@ -15,6 +15,10 @@
 13 ps READ、12×320 JSL、logical1、scaled QB、QB bias `35 uA`、`10 ohm`
 output load、jjmit model、其它 BVM 参数、source timing、`0.0125 ps` timestep、
 170 ps stop time。没有加入 controls、sweep、JTL、T1 或 magnetic coupling。
+
+READ waveform diagnostic window 是 W3 `[95,110)` ps；BJL2 strict-event activity
+window 独立固定为 `[95,115)` ps，post window 为 `[115,130)` ps，tail 仍为
+`[125,130)` ps。
 
 ## Why we tested it
 
@@ -50,11 +54,10 @@ output load、jjmit model、其它 BVM 参数、source timing、`0.0125 ps` time
 
 ## What it means
 
-`pre-READ` 未退化；source 和 QB 均没有满足预注册的 `≥20%` 距离下降条件
-（source=0，QB=0）。在预注册方向规则下，本轮 outcome 为 `QUICK_NO_EFFECT`。
-允许的最强措辞是：在这个固定 Quick 条件下，移除 `L_SL` 没有显示出使
-physical BVM→JSL→QB READ trajectory 向既有 reference 明显靠近的方向性效果；不能
-从一轮结果确立唯一机制。
+source 和 QB 均没有满足预注册的 `≥20%` 距离下降条件（source=0，QB=0）。在预注册
+方向规则下，本轮 outcome 为 `QUICK_NO_EFFECT`。允许的最强措辞是：在这个固定 Quick 条件
+下，移除 `L_SL` 没有显示出使 physical BVM→JSL→QB READ trajectory 向既有 reference
+明显靠近的方向性效果；不能从一轮结果确立唯一机制。
 
 ## What it does NOT prove
 

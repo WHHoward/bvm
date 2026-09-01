@@ -28,6 +28,19 @@ physical raw。另以已有 grounded-JSL source 和 ideal replay QB 作为只读
 | W3 | [95,110) ps | READ dynamic mismatch |
 | W4 | [110,130) ps | post-READ observation |
 
+W3 是 READ waveform diagnostic window，保持为 `[95,110)` ps；它不再作为
+`BJL2` strict-event activity cutoff。strict-event 口径在 candidate 分析前固定为：
+
+| Strict window | interval | purpose |
+|---|---:|---|
+| READ diagnostic | [95,110) ps | waveform comparison only |
+| activity | [95,115) ps | include the complete READ-associated monotonic segment |
+| post | [115,130) ps | post/retrap boundedness observation |
+| post tail | [125,130) ps | fixed tail boundedness check |
+
+该 strict window 对 ideal replay、baseline physical 和 candidate 完全相同，不按结果
+选取；它用于 local phase/area compatibility arithmetic，不改变 W3 waveform metrics。
+
 核心链条为：`BVM JS1/JS2 → L_PSL/source current → JSL current → QB Lin →
 BJs → L1 → BJL1 → L2 → BJL2`。所有 exact-grid 比较均使用 `right - left`，
 不插值；raw `P(...)` 为 rad，phase turns 只由 continuous unwrap 后除以

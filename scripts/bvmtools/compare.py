@@ -6,6 +6,8 @@ import bisect
 import math
 from typing import Sequence
 
+from .phase import window_indices
+
 
 class TimeGridMismatch(ValueError):
     """Traces need explicit interpolation before they can be compared."""
@@ -145,4 +147,56 @@ def compare_series(
         result["correlation"] = _correlation(aligned_a, aligned_b)
     if include_scalar_fit:
         result["scalar_fit"] = _scalar_fit(aligned_a, aligned_b)
+    return result
+
+
+def compare_windowed_series(
+    time_a: Sequence[float],
+    values_a: Sequence[float],
+    time_b: Sequence[float],
+    values_b: Sequence[float],
+    window_s: tuple[float, float],
+    *,
+    value_scale: float = 1.0,
+    unit: str = "raw",
+    include_correlation: bool = False,
+    include_scalar_fit: bool = False,
+) -> dict[str, object]:
+    """Compare two traces on the same fixed window without interpolation."""
+
+    if len(time_a) != len(values_a) or len(time_b) != len(values_b):
+        raise ValueError("each time/value pair must have equal lengths")
+    indices_a = window_indices(time_a, *window_s)
+    indices_b = window_indices(time_b, *window_s)
+    selected_time_a = [float(time_a[index]) for index in indices_a]
+    selected_time_b = [float(time_b[index]) for index in indices_b]
+    selected_values_a = [float(values_a[index]) for index in indices_a]
+    selected_values_b = [float(values_b[index]) for index in indices_b]
+    comparison = compare_series(
+        selected_time_a,
+        selected_values_a,
+        selected_time_b,
+        selected_values_b,
+        interpolation=None,
+        include_correlation=include_correlation,
+        include_scalar_fit=include_scalar_fit,
+    )
+    if not math.isfinite(float(value_scale)):
+        raise ValueError("value_scale must be finite")
+    result: dict[str, object] = {
+        "status": str(comparison["status"]),
+        "difference_convention": "right_minus_left",
+        "interpolation_mode": comparison["interpolation_mode"],
+        "time_grid_exact": bool(comparison["time_grid_exact"]),
+        "window_s": [float(window_s[0]), float(window_s[1])],
+        "sample_count": int(comparison["sample_count"]),
+        "max_abs_difference": float(comparison["max_abs_difference"]) * value_scale,
+        "rms_difference": float(comparison["rms_difference"]) * value_scale,
+        "p95_abs_difference": float(comparison["p95_abs_difference"]) * value_scale,
+        "unit": unit,
+    }
+    if include_correlation:
+        result["correlation"] = comparison["correlation"]
+    if include_scalar_fit:
+        result["scalar_fit"] = comparison["scalar_fit"]
     return result

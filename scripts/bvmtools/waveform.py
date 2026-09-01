@@ -5,6 +5,8 @@ from __future__ import annotations
 import math
 from typing import Sequence
 
+from .phase import window_indices
+
 
 def _validate(times: Sequence[float], values: Sequence[float]) -> None:
     if len(times) != len(values):
@@ -80,3 +82,63 @@ def waveform_metrics(
         first_moment = _integral_or_zero([time * value for time, value in zip(t, y)], t)
         result["centroid_time"] = first_moment / signed_area if signed_area else None
     return result
+
+
+def waveform_window_metrics(
+    times: Sequence[float],
+    values: Sequence[float],
+    window_s: tuple[float, float],
+    *,
+    unit: str = "raw",
+) -> dict[str, float | int | str | list[float]]:
+    """Return unit-normalized waveform statistics in a fixed half-open window.
+
+    Input values remain in their JoSIM SI units (A or V).  The returned
+    value/area fields are normalized only for display: A→uA and A·s→uA·ps,
+    V→mV and V·s→mV·ps.  Integration always uses the actual input time grid.
+    """
+
+    if len(times) != len(values):
+        raise ValueError("times and values must have equal length")
+    indices = window_indices(times, *window_s)
+    if len(indices) < 2:
+        raise ValueError("waveform window requires at least two samples")
+    selected_times = [float(times[index]) for index in indices]
+    selected_values = [float(values[index]) for index in indices]
+    base = waveform_metrics(selected_times, selected_values)
+    if unit == "A":
+        value_factor = 1.0e6
+        area_factor = 1.0e18
+        display_unit = "uA"
+        area_unit = "uA*ps"
+    elif unit == "V":
+        value_factor = 1.0e3
+        area_factor = 1.0e15
+        display_unit = "mV"
+        area_unit = "mV*ps"
+    elif unit == "raw":
+        value_factor = 1.0
+        area_factor = 1.0
+        display_unit = "raw"
+        area_unit = "raw*s"
+    else:
+        raise ValueError("unit must be 'A', 'V', or 'raw'")
+    return {
+        "unit": display_unit,
+        "area_unit": area_unit,
+        "window_s": [float(window_s[0]), float(window_s[1])],
+        "sample_count": int(base["sample_count"]),
+        "minimum": float(base["minimum"]) * value_factor,
+        "maximum": float(base["maximum"]) * value_factor,
+        "p2p": float(base["p2p"]) * value_factor,
+        "mean": float(base["mean"]) * value_factor,
+        "rms": float(base["rms"]) * value_factor,
+        "max_abs": float(base["max_abs"]) * value_factor,
+        "peak_value": float(base["peak_value"]) * value_factor,
+        "peak_time_s": float(base["peak_time"]),
+        "minimum_value": float(base["minimum_value"]) * value_factor,
+        "minimum_time_s": float(base["minimum_time"]),
+        "signed_time_integral": float(base["signed_time_integral"]) * area_factor,
+        "positive_area": float(base["positive_area"]) * area_factor,
+        "negative_area": float(base["negative_area"]) * area_factor,
+    }

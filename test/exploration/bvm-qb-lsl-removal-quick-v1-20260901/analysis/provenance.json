@@ -1,0 +1,413 @@
+{
+  "analysis_id": "BVM_QB_LSL_REMOVAL_QUICK_V1",
+  "recorded_at": "2026-09-01T19:59:11+08:00",
+  "analysis_command": "PYTHONPATH=scripts python3 analysis/analyze_lsl_removal.py",
+  "repository_at_analysis": {
+    "repo": "/home/howard/JoSIM",
+    "head": "1586773faf998c59c6be78a283580d307ced787a",
+    "dirty": true,
+    "status_porcelain": "M scripts/bvmtools/__init__.py\n M scripts/bvmtools/compare.py\n M scripts/bvmtools/phase.py\n M scripts/bvmtools/waveform.py\n M test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/PREREGISTRATION.md\n M test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/README.md\n M test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/analysis/analyze_lsl_removal.py\n M test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/experiment.yaml\n M test/tools/test_bvmtools.py"
+  },
+  "no_new_josim": true,
+  "configuration": {
+    "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/experiment.yaml",
+    "sha256": "02ded6e122be414c81a8409a069e86a4216228f2cd0a5ed47de844ef432206cb",
+    "bytes": 6210,
+    "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/experiment.yaml"
+  },
+  "analysis_script": {
+    "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/analysis/analyze_lsl_removal.py",
+    "sha256": "0183b4045903164356dcc5c96815a21998aa2971a88aa4241b95085a94e3ced9",
+    "bytes": 56320,
+    "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/analysis/analyze_lsl_removal.py"
+  },
+  "consumed_raw_paths": {
+    "grounded_source": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    },
+    "ideal_replay_qb": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    },
+    "baseline_physical": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    },
+    "candidate_lsl_removed": {
+      "path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv",
+      "sha256": "d31cdfdddcf5b7db7ee2a1c323c6f349e1d7eff593bc8fb198cb72ba0d0c4984",
+      "sidecar": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    }
+  },
+  "source_run_provenance_references": {
+    "grounded_source": {
+      "raw": "../bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+      "meaning": "canonical BVM -> 12x320 JSL -> ground"
+    },
+    "ideal_replay_qb": {
+      "raw": "../bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+      "meaning": "exact existing source waveform -> ideal current replay -> QB"
+    },
+    "baseline_physical": {
+      "deck": "../bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir",
+      "raw": "../bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv"
+    },
+    "candidate_physical": {
+      "deck": "inputs/physical/13ps/12x320/logical1_read_lsl_removed.cir",
+      "raw": "quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv"
+    }
+  },
+  "candidate_execution": {
+    "run_id": "bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/13ps-12x320-logical1-read-lsl-removed",
+    "solver": {
+      "path": "/home/howard/JoSIM/build/josim-cli",
+      "exists": true,
+      "version": "v2.7.2837d13",
+      "version_source": "parent_matrix_manifest",
+      "process_invoked": false,
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+    },
+    "command": [
+      "/home/howard/JoSIM/build/josim-cli",
+      "-a",
+      "1",
+      "-o",
+      "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv",
+      "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/physical/13ps/12x320/logical1_read_lsl_removed.cir"
+    ],
+    "returncode": 0,
+    "candidate_deck": {
+      "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/physical/13ps/12x320/logical1_read_lsl_removed.cir",
+      "sha256": "16c82e8dec113a20da2c27593fc49b9ca8d1aca7e0019064547640010d14d4f0",
+      "bytes": 1965,
+      "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/physical/13ps/12x320/logical1_read_lsl_removed.cir"
+    },
+    "candidate_run_snapshot": {
+      "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/inputs/13ps-12x320-logical1-read-lsl-removed.cir",
+      "sha256": "16c82e8dec113a20da2c27593fc49b9ca8d1aca7e0019064547640010d14d4f0",
+      "bytes": 1965,
+      "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/inputs/13ps-12x320-logical1-read-lsl-removed.cir"
+    },
+    "raw": {
+      "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv",
+      "sha256": "d31cdfdddcf5b7db7ee2a1c323c6f349e1d7eff593bc8fb198cb72ba0d0c4984",
+      "bytes": 13489216,
+      "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv"
+    },
+    "stdout": {
+      "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/logs/stdout.txt",
+      "sha256": "00289dc39e7a6f995734201d6f828c9fbd56afe25f5455156f9ded9c89e1ec88",
+      "bytes": 1224913,
+      "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/logs/stdout.txt"
+    },
+    "stderr": {
+      "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/logs/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/logs/stderr.txt"
+    },
+    "postprocessing_failure": {
+      "path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/POSTPROCESSING_FAILURE.md",
+      "cause": "case signal label I(Lin|XBQ) did not match exact JoSIM header I(LIN|XBQ)",
+      "raw_preserved": true,
+      "second_science_run": false
+    }
+  },
+  "baseline_reuse": {
+    "manifest": "test/exploration/bvm-load-qb-matrix-v1-20260901/manifest.yaml",
+    "manifest_sha256": "be820542508f75a5045449f72a874e650721f23c62980db65df04363e06260fe",
+    "execution_log": "test/exploration/bvm-load-qb-matrix-v1-20260901/logs/execution-physical.json",
+    "baseline_log_entry": {
+      "kind": "physical",
+      "width_ps": 13,
+      "load": "12x320",
+      "role": "logical1_read",
+      "deck": "inputs/physical/13ps/12x320/logical1_read.cir",
+      "raw": "raw/physical/13ps/12x320/logical1_read/run-01.csv",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir"
+      ],
+      "started_at": "2026-09-01T11:05:42+08:00",
+      "finished_at": "2026-09-01T11:05:43+08:00",
+      "returncode": 0,
+      "stdout": "logs/physical/13ps/12x320/logical1_read.stdout.txt",
+      "stderr": "logs/physical/13ps/12x320/logical1_read.stderr.txt",
+      "raw_sha256": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66",
+      "raw_bytes": 13684878
+    },
+    "raw_hash_match": true,
+    "returncode_zero": true,
+    "canonical_bvm_hash": {
+      "path": "/home/howard/JoSIM/circuits/bvm/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+      "bytes": 2234,
+      "relative_path": "circuits/bvm/bvm_cell.cir"
+    },
+    "canonical_matches_parent_snapshot": true,
+    "local_model_hashes": {
+      "jjmit.cir": {
+        "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/jjmit.cir",
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "bytes": 504,
+        "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/jjmit.cir"
+      },
+      "bq_cell.cir": {
+        "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/bq_cell.cir",
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2",
+        "bytes": 823,
+        "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/bq_cell.cir"
+      }
+    },
+    "models_match_parent": true,
+    "solver_current": {
+      "path": "/home/howard/JoSIM/build/josim-cli",
+      "exists": true,
+      "version": "v2.7.2837d13",
+      "version_source": "parent_matrix_manifest",
+      "process_invoked": false,
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+    },
+    "solver_matches_parent": true,
+    "metric_spec_current": {
+      "path": "/home/howard/JoSIM/docs/research/METRIC_SPEC_V2.md",
+      "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+      "bytes": 17057,
+      "relative_path": "docs/research/METRIC_SPEC_V2.md"
+    },
+    "metric_spec_matches_parent": true,
+    "all_reuse_checks_pass": true,
+    "parent_head": "c0b073a4390afd29417fd2935539835ae891710b",
+    "parent_manifest_metric_spec": {
+      "path": "docs/research/METRIC_SPEC_V2.md",
+      "version": "2.0.0",
+      "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+    }
+  },
+  "raw_records": {
+    "grounded_source": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    },
+    "ideal_replay_qb": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    },
+    "baseline_physical": {
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+      "sha256": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    },
+    "candidate_lsl_removed": {
+      "path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv",
+      "sha256": "d31cdfdddcf5b7db7ee2a1c323c6f349e1d7eff593bc8fb198cb72ba0d0c4984",
+      "sidecar": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv.sha256",
+      "sample_count": "13599",
+      "time_start_ps": "0",
+      "time_end_ps": "169.988"
+    }
+  },
+  "canonical_bvm": {
+    "path": "/home/howard/JoSIM/circuits/bvm/bvm_cell.cir",
+    "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+    "bytes": 2234,
+    "relative_path": "circuits/bvm/bvm_cell.cir"
+  },
+  "candidate_variant": {
+    "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/bvm_cell_lsl_removed.cir",
+    "sha256": "28890aec007e802df3188ba0c74273f3e232dc7e27a449968aba60e4d04c6dbb",
+    "bytes": 2215,
+    "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/bvm_cell_lsl_removed.cir"
+  },
+  "candidate_bq_model": {
+    "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/bq_cell.cir",
+    "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2",
+    "bytes": 823,
+    "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/bq_cell.cir"
+  },
+  "candidate_jj_model": {
+    "path": "/home/howard/JoSIM/test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/jjmit.cir",
+    "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "bytes": 504,
+    "relative_path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/inputs/jjmit.cir"
+  },
+  "metric_spec": {
+    "path": "/home/howard/JoSIM/docs/research/METRIC_SPEC_V2.md",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+    "bytes": 17057,
+    "relative_path": "docs/research/METRIC_SPEC_V2.md"
+  },
+  "windows_ps": {
+    "W2_pre_read_idle": [
+      80.0,
+      90.0
+    ],
+    "W3_read": [
+      95.0,
+      110.0
+    ],
+    "W4_post_read_observation": [
+      110.0,
+      130.0
+    ]
+  },
+  "strict_event_windows_ps": {
+    "read_diagnostic_window_ps": [
+      95.0,
+      110.0
+    ],
+    "activity_window_ps": [
+      95.0,
+      115.0
+    ],
+    "post_window_ps": [
+      115.0,
+      130.0
+    ],
+    "post_tail_window_ps": [
+      125.0,
+      130.0
+    ]
+  },
+  "strict_event": {
+    "read_diagnostic_window_ps": [
+      95.0,
+      110.0
+    ],
+    "activity_window_ps": [
+      95.0,
+      115.0
+    ],
+    "post_window_ps": [
+      115.0,
+      130.0
+    ],
+    "post_tail_window_ps": [
+      125.0,
+      130.0
+    ],
+    "window_id": "W3-read-95-110ps-activity-95-115ps-post-115-130ps-tail-125-130ps",
+    "phase": "P(BJL2|XBQ)",
+    "voltage": "V(BJL2|XBQ)",
+    "metric_spec": {
+      "path": "docs/research/METRIC_SPEC_V2.md",
+      "version": "2.0.0",
+      "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+    },
+    "task_local_tolerance": {
+      "id": "bvm-qb-lsl-removal-quick-bjl2-v1",
+      "scope": "task-local",
+      "status": "FROZEN",
+      "evidence": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/PREREGISTRATION.md",
+      "phase_area_residual_abs_floor_turns": 0.05,
+      "phase_area_residual_relative": 0.1,
+      "complete_min_turns": 1.0,
+      "clean_upper_turns": 1.15,
+      "post_range_max_turns": 1.0,
+      "post_tail_p2p_max_turns": 0.25,
+      "note": "inherited frozen local compatibility arithmetic; not a system Gate"
+    }
+  },
+  "outcome_rule": {
+    "status": "FROZEN_BEFORE_CANDIDATE_RUN",
+    "pre_read_not_degraded": {
+      "bvm_phase_max_diff_turns": 0.01,
+      "source_current_max_diff_uA": 5.0
+    },
+    "meaningful_distance_reduction_fraction": 0.2,
+    "primary_source_signals": [
+      "I(B_LD1)",
+      "I(B_LD12)",
+      "I(L_PSL|XBVM1)",
+      "V(SL1)"
+    ],
+    "primary_qb_signals": [
+      "P(BJS|XBQ)",
+      "I(L1|XBQ)",
+      "P(BJL1|XBQ)",
+      "P(BJL2|XBQ)"
+    ],
+    "promising_requires": [
+      "pre_read_not_degraded",
+      "at_least_two_source_signals_reduce_exact_grid_RMS_distance_to_grounded_by_20_percent",
+      "at_least_three_qb_signals_reduce_exact_grid_RMS_distance_to_ideal_replay_by_20_percent",
+      "BJL2_distance_reduces_and_strict_local_diagnostic_is_not_worse"
+    ],
+    "no_effect": "all primary distances remain within +/-20 percent of baseline distance",
+    "opposite": "source_or_qb_primary_distance_increases_by_at_least_20_percent_without_coherent_layer_improvement",
+    "otherwise": "QUICK_AMBIGUOUS"
+  },
+  "visualization": {
+    "path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/plots/RESULT_OVERVIEW.html",
+    "backend": "scripts/josim-plot2.py",
+    "profile": "sep_comb / dark / -j 2pi",
+    "style": "CLASSIC_LOCKED",
+    "mode": "compact",
+    "paired_group_count": 7,
+    "signal_count": 21,
+    "signals": [
+      "I(grounded source · B_LD1)",
+      "I(baseline physical · B_LD1)",
+      "I(LSL-removed candidate · B_LD1)",
+      "P(grounded source · B_JS1)",
+      "P(baseline physical · B_JS1)",
+      "P(LSL-removed candidate · B_JS1)",
+      "P(grounded source · B_JS2)",
+      "P(baseline physical · B_JS2)",
+      "P(LSL-removed candidate · B_JS2)",
+      "P(ideal replay QB · BJS)",
+      "P(baseline physical QB · BJS)",
+      "P(LSL-removed candidate QB · BJS)",
+      "I(ideal replay QB · L1)",
+      "I(baseline physical QB · L1)",
+      "I(LSL-removed candidate QB · L1)",
+      "P(ideal replay QB · BJL1)",
+      "P(baseline physical QB · BJL1)",
+      "P(LSL-removed candidate QB · BJL1)",
+      "P(ideal replay QB · BJL2)",
+      "P(baseline physical QB · BJL2)",
+      "P(LSL-removed candidate QB · BJL2)"
+    ],
+    "raw_phase_preserved": true,
+    "full_time_grid_exact": true,
+    "reused_existing_output": true
+  },
+  "preserved_postprocessing_failure": {
+    "path": "test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/POSTPROCESSING_FAILURE.md",
+    "cause": "case signal label I(Lin|XBQ) did not match exact JoSIM header I(LIN|XBQ)",
+    "raw_preserved": true,
+    "second_science_run": false
+  },
+  "note": "Candidate raw execution is valid; only the first post-processing attempt failed. No raw or canonical circuit was overwritten."
+}

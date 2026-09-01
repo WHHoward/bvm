@@ -23,4 +23,4 @@
 
 结果是当前模型、单一 Quick 条件和单一请求步长下的 exploratory simulation
 evidence，不是硬件测量；局部 phase/area compatibility 不是 SFQ delivery 或
-system Gate。状态会固定停在 `AWAITING_USER_REVIEW` / `STOP`。
+system Gate。用户复核后状态固定为 `USER_REVIEWED` / `STOP`，不授权下一物理实验。

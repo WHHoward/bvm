@@ -1,0 +1,151 @@
+id: BVM_QB_LSL_REMOVAL_QUICK_V1
+family: bvm-qb-lsl-removal
+mode: QUICK
+output_dir: quick/BVM_QB_LSL_REMOVAL_QUICK_V1
+question: >-
+  在固定13 ps、12x320、logical1/read和scaled QB条件下，测试canonical BVM输出链
+  中L_SL=0.4 pH是否对BVM→JSL→QB READ dynamic mismatch有显著方向性贡献。
+hypothesis: >-
+  移除L_SL并把R_SL输出直接接到SL后，physical source trajectory应部分靠近
+  grounded-JSL source reference，且BJs/L1/BJL1/BJL2 trajectory应部分靠近ideal replay QB。
+baseline:
+  deck: ../bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir
+  raw: ../bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv
+candidate:
+  deck: inputs/physical/13ps/12x320/logical1_read_lsl_removed.cir
+  raw: quick/BVM_QB_LSL_REMOVAL_QUICK_V1/cases/13ps-12x320-logical1-read-lsl-removed/raw/run-01.csv
+run:
+  timestep_ps: 0.0125
+  stop_ps: 170.0
+  solver: build/josim-cli
+probe_preset: bvm-jsl-qb
+metrics:
+  - raw_qa
+  - waveform
+visualization:
+  mode: none
+  style: CLASSIC_LOCKED
+promotion_rule: Never promote automatically; this directional Quick stops for user review.
+stop_rule: Stop after candidate QA, fixed-window analysis, one compact classic overview, and AWAITING_USER_REVIEW.
+tooling_note: Reuse scripts/bvm-exp.py for the one run and scripts/bvmtools for analysis; do not create a tooling rewrite.
+changed_variables:
+  - remove BVM L_SL=0.4 pH
+  - connect R_SL output directly to the BVM SL port
+  - omit the candidate deck print probe for the removed I(L_SL|XBVM1) branch
+held_fixed:
+  - canonical BVM parameters other than the registered L_SL intervention
+  - 13 ps READ timing and all source timing
+  - 12 JSL junctions with IC=320 uA each
+  - scaled QB topology, QB bias IBIAS=35 uA, and R_LOAD=10 ohm to ground
+  - jjmit model and all non-BVM component values
+  - requested timestep=0.0125 ps and stop time=170 ps
+  - no magnetic coupling, JTL, T1, controls, sweeps, or other parameter variants
+references:
+  grounded_source:
+    raw: ../bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv
+    meaning: canonical BVM -> 12x320 JSL -> ground
+  ideal_replay_qb:
+    raw: ../bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv
+    meaning: exact existing source waveform -> ideal current replay -> QB
+parent_matrix:
+  path: ../bvm-load-qb-matrix-v1-20260901
+  manifest: ../bvm-load-qb-matrix-v1-20260901/manifest.yaml
+  physical_execution_log: ../bvm-load-qb-matrix-v1-20260901/logs/execution-physical.json
+  baseline_case: physical/13ps/12x320/logical1_read
+  canonical_bvm: circuits/bvm/bvm_cell.cir
+windows_ps:
+  W2_pre_read_idle: [80.0, 90.0]
+  W3_read: [95.0, 110.0]
+  W4_post_read_observation: [110.0, 130.0]
+strict_event:
+  activity_window_ps: [95.0, 110.0]
+  post_window_ps: [110.0, 130.0]
+  post_tail_window_ps: [125.0, 130.0]
+  phase: P(BJL2|XBQ)
+  voltage: V(BJL2|XBQ)
+  metric_spec:
+    path: docs/research/METRIC_SPEC_V2.md
+    version: 2.0.0
+    sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  task_local_tolerance:
+    id: bvm-qb-lsl-removal-quick-bjl2-v1
+    scope: task-local
+    status: FROZEN
+    evidence: test/exploration/bvm-qb-lsl-removal-quick-v1-20260901/PREREGISTRATION.md
+    phase_area_residual_abs_floor_turns: 0.05
+    phase_area_residual_relative: 0.10
+    complete_min_turns: 1.0
+    clean_upper_turns: 1.15
+    post_range_max_turns: 1.0
+    post_tail_p2p_max_turns: 0.25
+    note: inherited frozen local compatibility arithmetic; not a system Gate
+signal_occurrences:
+  I(B_LD1): 0
+  I(B_LD12): 0
+analysis_visualization:
+  mode: compact
+  style: CLASSIC_LOCKED
+  backend: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_jump: 2pi
+  overview: plots/RESULT_OVERVIEW.html
+  paired_groups:
+    - I(B_LD1): grounded source vs baseline physical vs LSL-removed candidate
+    - P(B_JS1|XBVM1): grounded source vs baseline physical vs candidate
+    - P(B_JS2|XBVM1): grounded source vs baseline physical vs candidate
+    - P(BJS|XBQ): ideal replay vs baseline physical vs candidate
+    - I(L1|XBQ): ideal replay vs baseline physical vs candidate
+    - P(BJL1|XBQ): ideal replay vs baseline physical vs candidate
+    - P(BJL2|XBQ): ideal replay vs baseline physical vs candidate
+outcome_rule:
+  status: FROZEN_BEFORE_CANDIDATE_RUN
+  pre_read_not_degraded:
+    bvm_phase_max_diff_turns: 0.01
+    source_current_max_diff_uA: 5.0
+  meaningful_distance_reduction_fraction: 0.20
+  primary_source_signals:
+    - I(B_LD1)
+    - I(B_LD12)
+    - I(L_PSL|XBVM1)
+    - V(SL1)
+  primary_qb_signals:
+    - P(BJS|XBQ)
+    - I(L1|XBQ)
+    - P(BJL1|XBQ)
+    - P(BJL2|XBQ)
+  promising_requires:
+    - pre_read_not_degraded
+    - at_least_two_source_signals_reduce_exact_grid_RMS_distance_to_grounded_by_20_percent
+    - at_least_three_qb_signals_reduce_exact_grid_RMS_distance_to_ideal_replay_by_20_percent
+    - BJL2_distance_reduces_and_strict_local_diagnostic_is_not_worse
+  no_effect: all primary distances remain within +/-20 percent of baseline distance
+  opposite: source_or_qb_primary_distance_increases_by_at_least_20_percent_without_coherent_layer_improvement
+  otherwise: QUICK_AMBIGUOUS
+possible_next_options:
+  - 用户先审核本次 directional Quick 的 brief 和唯一 overview。
+  - 如需机制定位，另行授权一个预注册的 interface/preload Quick；本轮不执行。
+  - 如需结论级主张，另行冻结 Candidate 的 controls、timestep/convergence 和独立审计。
+cases:
+  - id: 13ps-12x320-logical1-read-lsl-removed
+    deck: candidate
+    signals:
+      - P(B_JM1|XBVM1)
+      - P(B_JM2|XBVM1)
+      - P(B_JS1|XBVM1)
+      - P(B_JS2|XBVM1)
+      - V(SL1)
+      - name: I(L_PSL|XBVM1)
+      - name: I(B_LD1)
+        occurrence: 0
+      - name: I(B_LD12)
+        occurrence: 0
+      - P(BJS|XBQ)
+      - V(BJL2|XBQ)
+      - I(LIN|XBQ)
+      - I(L1|XBQ)
+      - P(BJL1|XBQ)
+      - I(RB|XBQ)
+      - I(L2|XBQ)
+      - P(BJL2|XBQ)
+    run_id: bvm-qb-lsl-removal-quick-v1-20260901/quick/BVM_QB_LSL_REMOVAL_QUICK_V1/13ps-12x320-logical1-read-lsl-removed

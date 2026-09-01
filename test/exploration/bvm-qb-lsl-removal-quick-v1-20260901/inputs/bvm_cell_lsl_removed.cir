@@ -1,0 +1,69 @@
+* BVM Cell Subcircuit v6 — Based on description.md (8-node topology)
+* Reference: Karamuftuoglu et al., Supercond. Sci. Technol. 38 015020 (2025)
+*
+*
+* IMPORTANT: Test file must .include the desired JJ model file BEFORE this subcircuit.
+*   e.g.: .include ../../circuits/models/mitll_models_our.cir
+* N1: WL+BL entry → JM1+LM1→GND, LM2→JM2→N2
+* N2: JM2→LM3→N5, LS1→JS1→N3
+* N3: JS1←, SE entry, (wire)→N4, RS→N6
+* N4: (wire)←N3, LS3→N7
+* N5: LM3←N2, LPM→GND, LS2→JS2→N6
+* N6: JS2←, RS←N3, (wire)→N7
+* N7: (wire)←N6, LS3←N4, LPSL→RSL→N8
+* N8: RSL←, LSL→DataOut, SL port
+*
+* S-Loop: N1→JM1→LM1→GND←LPM←N5←LM3←N2←JM2←LM2←N1
+* R-Loop: N3→JS1→LS1→N2→LM3→N5→LS2→JS2→N6→RS→N3 (via RS)
+*          N3→(wire)→N4→LS3→N7→(wire)→N6→RS→N3 (via LS3)
+
+
+.subckt BVM WL BL SE SL
+
+* === WL+BL merge at N1 ===
+R_WL    WL      n_wl_0   20.0
+L_PWL   n_wl_0  N1       0.5P
+R_BL    BL      n_bl_0   20.0
+L_PBL   n_bl_0  N1       0.5P
+
+* === S-Loop ===
+* Main branch: N1 → JM1 → LM1 → GND
+B_JM1   N1      n_jm1o  jjmit area=1.2
+R_JM1   N1      n_jm1o  6
+L_M1    n_jm1o  0       12.5P
+* Stabilizer branch: N1 → LM2 → JM2 → N2
+L_M2    N1      n_jm2i  24.5P
+B_JM2   n_jm2i  N2      jjmit area=1.4
+* N2 → LM3 → N5 (shared path with R-Loop)
+L_M3    N2      N5      8.5P
+* N5 → LPM → GND (loop closure)
+L_PM    N5      0       0.5P
+
+* === R-Loop upper branch: N2 → LS1 → JS1 → N3 ===
+L_S1    N2      n_js1p  0.5P
+B_JS1   n_js1p  N3      jjmit area=0.74
+
+* === SE into N3 ===
+R_SE    SE      n_se_0   20.0
+L_PSE   n_se_0  N3       0.5P
+
+* === R-Loop bridge network ===
+* N3 → N4 (direct wire — 0V voltage source for current measurement)
+* R_N3N4  N3      N4      1E-6
+* N3 → RS → N6
+R_S     N3      N6      3.0
+* N4 → LS3 → N7
+L_S3    N3      N6      0.5P
+
+* === R-Loop lower branch: N5 → LS2 → JS2 → N6 ===
+L_S2    N5      n_js2p  0.5P
+B_JS2   n_js2p  N6      jjmit area=0.74
+
+* === N6 → N7 (direct wire) ===
+* R_N6N7  N6      N7      1E-6
+
+* === Output chain: N7 → LPSL → RSL → SL (L_SL removed for this probe) ===
+L_PSL   N6      n_psl   0.5P
+R_SL    n_psl   SL      12.0
+
+.ends BVM

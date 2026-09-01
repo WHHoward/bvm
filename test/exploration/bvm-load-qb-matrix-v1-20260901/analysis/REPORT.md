@@ -47,7 +47,9 @@
 - `inputs/`：BVM/JSL/QB 网表快照和每组不可变输入 deck。
 - `analysis/metrics.json`：逐 case QA、窗口统计、相位/面积诊断和成对比较。
 - `analysis/summary.csv`：四个工作点的关键 QB 输出摘要。
-- `plots/README.md`：只列关键源端、物理级联和理想重放可视化。
+- `plots/README.md`：按项目既有 classic `josim-plot2.py` 方案生成的可视化入口；
+  physical case 直接读取 raw CSV，比较页使用临时 merged CSV，统一为
+  `sep_comb`/dark/`-j 2pi`。
 
 ## Next
 

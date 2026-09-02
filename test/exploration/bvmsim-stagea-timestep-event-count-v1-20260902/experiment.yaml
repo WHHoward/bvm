@@ -96,6 +96,8 @@ matrix:
     allowed_changed_lines: ["single .tran control line"]
     exact_fixture_hash_audit: true
     generated_deck_diff_against_template: "only .tran line may differ"
+    execution_deck_directory: migrated/
+    relative_include_constraint: "deck must remain at the frozen template directory depth"
 windows_ps:
   INITIAL_PRE: [0, 50]
   WRITE0: [50, 70]

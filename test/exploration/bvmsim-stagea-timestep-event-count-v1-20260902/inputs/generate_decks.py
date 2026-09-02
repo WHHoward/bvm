@@ -19,6 +19,7 @@ REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
 TEMPLATE = REPO / "test/exploration/bvmsim-qb-strict-qualification-v1-20260902/migrated/m0_bvmsim_qb.cir"
 TEMPLATE_SHA256 = "e0eeb3435336ca86253241f6bdabb86b8c39baf642cb16c7b0a6409035a0518e"
+EXPECTED_OUTPUT_DIR = EXP / "migrated"
 TRAN_RE = re.compile(r"(?m)^\.tran 0\.1p 200p 45p$")
 
 
@@ -60,6 +61,11 @@ def main() -> int:
 
     generated = derive(args.tran)
     template = TEMPLATE.read_text(encoding="utf-8")
+    if args.output.parent.resolve() != EXPECTED_OUTPUT_DIR.resolve():
+        raise SystemExit(
+            "generated decks must live directly under the experiment migrated/ "
+            "directory so the frozen relative include paths remain valid"
+        )
     changes = changed_lines(template, generated)
     if len(changes) == 0:
         if args.tran != ".tran 0.1p 200p 45p":

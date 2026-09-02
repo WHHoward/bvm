@@ -52,7 +52,7 @@ ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a  BVMSim/library
 预注册脚本和共享分析工具指纹：
 
 ```text
-14ce87b9c7630652f58209104ba02063a1bc4a73e47b8ce6eef168db63a63350  inputs/generate_decks.py
+3afc4cab7fa62cf6095a998e17e49116e80159e0185dfc1eb36cd62d76dcf9d2  inputs/generate_decks.py
 760252ffaac695964f3ec58f5c25555078c78d0c6411b0e4bfed35913209a0ea  analysis/audit_existing.py
 2b7303fd5f99a61846f24d50c18594d073e858a74e6fa632bc90d7d1dbb1f8e2  scripts/bvmtools/raw.py
 ac79f640bc9fae8784f75ef00a6cb978e8fa3606a9938cf0eb131fc728caba3c  scripts/bvmtools/phase.py
@@ -90,6 +90,11 @@ python3 analysis/audit_existing.py
 预注册设置必须先提交；提交后才允许生成 deck、运行 T100/T050/T025/T0125
 及可选的 T100_FULL。每次运行保存独立 deck、command、log、raw、hash 和
 artifact result，不覆盖历史文件。
+
+注意：冻结模板使用相对 `.include` 路径，所以执行 deck 必须放在本实验的
+`migrated/` 目录（与 Stage-A 模板相同的目录深度）。生成器现在会拒绝其他
+输出位置。首次误放在 `runs/T100/` 的 T100 attempt 保留在 `runs/T100/`，其
+退出码为 255、没有 raw，不作为 science result。
 
 ## 停止条件
 

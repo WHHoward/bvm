@@ -14,7 +14,7 @@
 ## 2. Numerical review：PASS
 
 - 所有 branch orientation 直接从实际 QB netlist 记录：BJs `1→2`、BJL1 `2→0`、L1 `2→3`、RB `IB→3`、L2 `3→4`、BJL2 `4→0`、L0 `4→OUT`。
-- KCL 使用实际方向和 `0.001 µA` absolute tolerance；I0/P0 在 W2/W3/W4 的 input/node2/node3/node4 均通过，最大 residual 约 `6×10^-5 µA`，远低于容差。
+- I0/P0 满足 QB input/node2/node3/node4 KCL，使用实际方向和 `0.001 µA` absolute tolerance；G 仅是 grounded-source reference，不作为 QB KCL case。I0/P0 最大 residual 约 `6×10^-5 µA`，远低于容差。
 - signed area、positive/negative area、zero crossing 和 occupancy 均按窗口内实际时间坐标计算；没有把 derivative over-threshold samples 当作 event count。
 - phase 仍被当作 raw JoSIM radians；turns 只由同一 signal 的连续 unwrap phase difference `/ (2π)` 得到。phase turn 未被等同为 SFQ count。
 - I0/P0 的 W3 difference 是 same signal、same window、same run pair、exact common grid，`interpolation_mode=none`。
@@ -32,14 +32,16 @@
 | weak oracle | `CLEAN_ONE_SFQ_CANDIDATE` 只作为任务局部 anchor compatibility；不用于证明 event count 或 downstream delivery | 报告显式 claim ceiling |
 | local phase as SFQ | 所有报告和图注都保留“phase turns are not SFQ counts”边界 | evidence contract |
 | old audit authority leakage | 旧 audit 只记录为历史动机，未消费为当前 authority | provenance boundary |
-| first-divergence overclaim | crossing 使用预注册归一化阈值，1 native timestep 内只记 TIE，且报告为 descriptive，不记 causal | layer/tie metadata |
+| first-divergence overclaim | legacy result-dependent 10% 规则降为 sensitivity-only；primary 只用 W2 PRE p99 noise，矩阵覆盖 1/2 µA、0.05/0.10 turns、1/3 samples、time-aware persistence 及 0.0125/0.025 ps tie；报告为 descriptive，不记 causal | onset/KCL shared helpers + layer/tie metadata |
 | Q45/Q68 threshold overclaim | Q45/Q68 不做 pointwise comparison、插值或通用阈值拟合 | supporting-only authority |
 
-## 4. 科学解释边界
+## 4. Corrective analysis disposition
 
-当前 raw 支持 `NODE2_REDISTRIBUTION_SUPPORTED` 的探索性描述：BJs 局部 active，node2 partition 最早出现 resolved difference，RB 稳定，node3/node4 随后变化。但这不是唯一根因证明；`INPUT_BJS_LIMITATION` 与 coupled interpretation 没有被本次 raw 排除。
+旧分类 `NODE2_REDISTRIBUTION_SUPPORTED` 已被 corrective reanalysis 改为 `COUPLED_INPUT_BJS_NODE2`。robustness summary=`MIXED`：24 个 PRE-noise 配置中 12 个为 input/BJs+node2 tie 的 coupled ordering，12 个为 input/BJs earliest ordering。主配置的首组是 input/BJs 与 node2 的 `0.025 ps` tie，因此不支持 node2-only 的稳健 temporal order。
 
-特别注意：I0 的 clean local anchor 和 P0 的 subthreshold label 都不提供 JTL reception 证据；本任务没有 JTL downstream event counter，也没有 timestep convergence rerun。图形只描述数据，不能单独赋予 physical Gate authority。
+独立强观察 `NODE2_REDISTRIBUTION_DIFFERENCE_OBSERVED=true`：BJL1 current/phase、L1 separation、稳定 RB、L2 downstream separation 和 I0 clean/P0 subthreshold 的 BJL2 local contrast 均成立。该观察与 onset ordering 分开，不等于 causal proof。
+
+特别注意：I0 的 clean local anchor 和 P0 的 subthreshold label 都不提供 JTL reception 证据；本任务没有 JTL downstream event counter，也没有 timestep convergence rerun。图形只描述数据，不能单独赋予 physical Gate authority。`causal_order=NOT_PROVEN`。
 
 ## 5. 审查 disposition
 

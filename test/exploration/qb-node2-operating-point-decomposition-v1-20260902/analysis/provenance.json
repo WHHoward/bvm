@@ -1,9 +1,22 @@
 {
+  "analysis_correction": {
+    "base_head_before_patch": "c5fe0d4",
+    "causal_order": "NOT_PROVEN",
+    "legacy_method_retained_as": "LEGACY_RELATIVE_FINAL_AMPLITUDE_ONSET",
+    "method": "PRE_NOISE_REFERENCED_ONSET",
+    "shared_numeric_primitives": [
+      "scripts/bvmtools/phase.py",
+      "scripts/bvmtools/waveform.py",
+      "scripts/bvmtools/compare.py",
+      "scripts/bvmtools/onset.py",
+      "scripts/bvmtools/kcl.py"
+    ]
+  },
   "analysis_script": {
-    "bytes": 54517,
+    "bytes": 73752,
     "path": "/home/howard/JoSIM/test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py",
     "relative_path": "test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py",
-    "sha256": "fbf189f585971e17cf574c0b438065bdb7ee81f8f90c96a5e1a62de7144026be"
+    "sha256": "ff85d50878f1c7701b3eb56ab7407069870faa1acc9d65d8a8959d4cdf60e66c"
   },
   "branch_orientation": {
     "BJL1": "2 -> 0",
@@ -18,10 +31,10 @@
     "RJ2": "4 -> 0"
   },
   "config": {
-    "bytes": 6190,
+    "bytes": 7808,
     "path": "/home/howard/JoSIM/test/exploration/qb-node2-operating-point-decomposition-v1-20260902/experiment.yaml",
     "relative_path": "test/exploration/qb-node2-operating-point-decomposition-v1-20260902/experiment.yaml",
-    "sha256": "57984fd09b16ef533328551714afca412a792fda7194091817960b2a5c261ebd"
+    "sha256": "2550ca1d8f05d3d7cfa1fcaae4863d4d5027ba42e9cd5d454651646cfc568311"
   },
   "first_divergence": {
     "analysis_window_ps": [
@@ -29,7 +42,7 @@
       130.0
     ],
     "comparison": "I0 versus P0 exact_grid",
-    "interpretation": "A crossing is a descriptive normalized trajectory difference, not a causal proof. Crossings within one declared native timestep are TIE.",
+    "interpretation": "The legacy result-dependent onset is retained as a sensitivity view only. The primary onset references W2 PRE noise and uses actual nonuniform sample times. A crossing is descriptive, not causal proof; tie resolution is tested at 0.025 ps and 0.0125 ps only as a sensitivity view.",
     "layers": {
       "L0_input_source": "I(LIN|XBQ)",
       "L1_BJs": [
@@ -54,16 +67,79 @@
         "P(BJL2|XBQ)"
       ]
     },
-    "persistence_samples": 1,
-    "thresholds": {
-      "current_abs_uA": 1.0,
-      "current_relative_to_pair_max": 0.1,
-      "partition_abs_fraction": 0.1,
-      "phase_abs_turns": 0.05
+    "pre_reference_window_ps": [
+      80.0,
+      90.0
+    ],
+    "primary": {
+      "current_abs_floor_uA": 1.0,
+      "method": "PRE_NOISE_REFERENCED_ONSET",
+      "partition_denominator_floor_uA": 5.0,
+      "partition_threshold_abs_fraction": 0.1,
+      "persistence": {
+        "id": "PRE_NOISE_REFERENCED_ONSET",
+        "logical_operator": "OR",
+        "min_consecutive_samples": 3,
+        "min_duration_ps": 0.025,
+        "report_actual_span": true
+      },
+      "phase_abs_floor_turns": 0.05,
+      "tie_resolution_ps": 0.025
     },
-    "tie_resolution_ps": 0.0125
+    "robustness_matrix": {
+      "current_abs_floor_uA": [
+        1.0,
+        2.0
+      ],
+      "persistence": [
+        {
+          "id": "ONE_SAMPLE_SENSITIVITY",
+          "logical_operator": "SAMPLES_ONLY",
+          "min_consecutive_samples": 1,
+          "min_duration_ps": null
+        },
+        {
+          "id": "THREE_CONSECUTIVE_SAMPLES",
+          "logical_operator": "SAMPLES_ONLY",
+          "min_consecutive_samples": 3,
+          "min_duration_ps": null
+        },
+        {
+          "id": "PRE_NOISE_REFERENCED_ONSET",
+          "logical_operator": "OR",
+          "min_consecutive_samples": 3,
+          "min_duration_ps": 0.025,
+          "report_actual_span": true
+        }
+      ],
+      "phase_abs_floor_turns": [
+        0.05,
+        0.1
+      ],
+      "tie_resolution_ps": [
+        0.0125,
+        0.025
+      ]
+    },
+    "semantics": {
+      "causal_order": "NOT_PROVEN",
+      "primary_persistence": "threshold exceeded for at least 0.025 ps actual sampled span OR 3 consecutive samples",
+      "sample_spacing_label": "MINIMUM_OBSERVED_SAMPLE_SPACING",
+      "threshold_reference": "W2 PRE only; ACTIVE and READ responses never set thresholds"
+    },
+    "sensitivity": {
+      "method": "LEGACY_RELATIVE_FINAL_AMPLITUDE_ONSET",
+      "persistence_samples": 1,
+      "thresholds": {
+        "current_abs_floor_uA": 1.0,
+        "current_relative_to_final_amplitude": 0.1,
+        "partition_abs_fraction": 0.1,
+        "phase_abs_floor_turns": 0.05
+      },
+      "tie_resolution_ps": 0.0125
+    }
   },
-  "generated_at": "2026-09-02T10:27:54+08:00",
+  "generated_at": "2026-09-02T11:05:52+08:00",
   "historical_boundary": {
     "old_audit": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825",
     "old_audit_use": "historical motivation only; not authoritative because of D12 RUN_INPUT_HASH_MISMATCH and replay-source semantic limitation"
@@ -534,9 +610,41 @@
   "raw_provenance_statement": "All primary conclusions use existing raw CSVs; Q45/Q68 are scalar historical support only; raw files are not copied or rewritten.",
   "repository": {
     "dirty": true,
-    "head": "853a722feaa047bafdc82eb6b6f3c0faa0c432e4",
+    "head": "c5fe0d4fdb1b0d3178f10f62ffc4cfd35305039f",
     "repo": "/home/howard/JoSIM",
-    "status_porcelain": "M  test/exploration/bvm-qb-lin-removal-matched-pair-quick-v1-20260901/analysis/human-gate.yaml\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/PREFLIGHT.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/README.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/RESULT_BRIEF.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/REPORT.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/REVIEW.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/human-gate.yaml\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/metrics.json\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/plot_input.csv\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/plot_metadata.json\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/provenance.json\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/experiment.yaml\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/plots/RESULT_OVERVIEW.html\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/plots/RESULT_OVERVIEW.metadata.json"
+    "status_porcelain": "M research/WORKFLOW.md\n M scripts/bvmtools/__init__.py\n M scripts/bvmtools/phase.py\n M scripts/bvmtools/waveform.py\n M test/exploration/bvm-qb-lin-removal-matched-pair-quick-v1-20260901/analysis/human-gate.yaml\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/PREFLIGHT.md\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/README.md\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/RESULT_BRIEF.md\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/REPORT.md\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/REVIEW.md\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/human-gate.yaml\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/metrics.json\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/provenance.json\n M test/exploration/qb-node2-operating-point-decomposition-v1-20260902/experiment.yaml\n M test/tools/test_bvmtools.py\n?? scripts/bvmtools/kcl.py\n?? scripts/bvmtools/onset.py"
+  },
+  "shared_tooling": {
+    "compare": {
+      "bytes": 8199,
+      "path": "/home/howard/JoSIM/scripts/bvmtools/compare.py",
+      "relative_path": "scripts/bvmtools/compare.py",
+      "sha256": "105f21a3fd8fc0199988dc7b5a0c586f98554f940255d66a3c4c31a5a2d8317f"
+    },
+    "kcl": {
+      "bytes": 2563,
+      "path": "/home/howard/JoSIM/scripts/bvmtools/kcl.py",
+      "relative_path": "scripts/bvmtools/kcl.py",
+      "sha256": "0cbdf83063d64d18d8c9a56a66fe6d996df26ec1b1815659968eee1e10ce153d"
+    },
+    "onset": {
+      "bytes": 5429,
+      "path": "/home/howard/JoSIM/scripts/bvmtools/onset.py",
+      "relative_path": "scripts/bvmtools/onset.py",
+      "sha256": "989bee8e5e549a8bc2d3e0d29367c3b1812337b4e4dbe80613197dfbed04f326"
+    },
+    "phase": {
+      "bytes": 5697,
+      "path": "/home/howard/JoSIM/scripts/bvmtools/phase.py",
+      "relative_path": "scripts/bvmtools/phase.py",
+      "sha256": "ac79f640bc9fae8784f75ef00a6cb978e8fa3606a9938cf0eb131fc728caba3c"
+    },
+    "waveform": {
+      "bytes": 7405,
+      "path": "/home/howard/JoSIM/scripts/bvmtools/waveform.py",
+      "relative_path": "scripts/bvmtools/waveform.py",
+      "sha256": "75ca2f24ff3df4c7706af5cf4bb23880e74100e7f694ab612cb02ad07d0f2af1"
+    }
   },
   "signal_occurrences": {
     "I(B_LD1)": 0,

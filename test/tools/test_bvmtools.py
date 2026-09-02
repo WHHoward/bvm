@@ -21,6 +21,12 @@ from bvmtools.compare import (  # noqa: E402
     compare_series,
     compare_windowed_series,
 )
+from bvmtools.kcl import kcl_window_metrics, linear_kcl_residual  # noqa: E402
+from bvmtools.onset import (  # noqa: E402
+    first_persistent_exceedance,
+    pre_noise_referenced_threshold,
+    tie_groups,
+)
 from bvmtools.phase import (  # noqa: E402
     TAU,
     continuous_unwrap,
@@ -129,6 +135,8 @@ class PhaseAndStrictEventTests(unittest.TestCase):
         )
         self.assertEqual(result["raw_unit"], "rad")
         self.assertEqual(result["display_unit"], "turns")
+        self.assertAlmostEqual(result["mean_turns"], 0.5, places=12)
+        self.assertAlmostEqual(result["rms_turns"], math.sqrt(5.0 / 12.0), places=12)
         self.assertAlmostEqual(result["endpoint_delta_turns"], 1.0, places=12)
 
     def test_unwrap_and_turn_conversion(self) -> None:
@@ -314,6 +322,14 @@ class WaveformAndCompareTests(unittest.TestCase):
         self.assertEqual(result["peak_time"], 1.0)
         self.assertAlmostEqual(result["centroid_time"], 1.0, places=12)
 
+    def test_waveform_occupancy_and_zero_crossings_are_shared(self) -> None:
+        result = waveform_metrics((0.0, 1.0, 2.0, 3.0), (-1.0, 0.0, 2.0, -3.0))
+        self.assertAlmostEqual(result["median"], -0.5, places=12)
+        self.assertAlmostEqual(result["positive_occupancy"], 0.25, places=12)
+        self.assertAlmostEqual(result["negative_occupancy"], 0.5, places=12)
+        self.assertAlmostEqual(result["zero_occupancy"], 0.25, places=12)
+        self.assertEqual(result["zero_crossing_count"], 2)
+
     def test_compare_metrics_use_exact_grid_by_default(self) -> None:
         result = compare_series((0.0, 1.0, 2.0), (1.0, 2.0, 3.0), (0.0, 1.0, 2.0), (2.0, 1.0, 4.0), include_correlation=True, include_scalar_fit=True)
         self.assertEqual(result["time_grid_exact"], True)
@@ -334,6 +350,73 @@ class WaveformAndCompareTests(unittest.TestCase):
                 (0.0, 1.0, 2.0),
                 (0.0, 3.0e-12),
             )
+
+
+class OnsetAndKclTests(unittest.TestCase):
+    def test_pre_noise_threshold_uses_only_pre_reference_scale(self) -> None:
+        pre = (0.1, 0.2, 0.3)
+        threshold = pre_noise_referenced_threshold(pre, 1.0)
+        self.assertAlmostEqual(threshold, 1.49, places=12)
+        result = first_persistent_exceedance(
+            (0.0, 1.0, 2.0),
+            (1.0, 1.5, 1.6),
+            threshold,
+        )
+        self.assertEqual(result["status"], "CROSSED")
+        self.assertEqual(result["first_index"], 1)
+
+    def test_one_sample_and_three_sample_persistence_are_distinct(self) -> None:
+        times = (0.0, 1.0, 2.0, 3.0)
+        values = (0.0, 2.0, 0.0, 2.0)
+        one = first_persistent_exceedance(times, values, 1.0, min_consecutive_samples=1)
+        three = first_persistent_exceedance(times, values, 1.0, min_consecutive_samples=3)
+        self.assertEqual(one["status"], "CROSSED")
+        self.assertEqual(one["first_index"], 1)
+        self.assertEqual(three["status"], "NO_CROSSING")
+
+    def test_time_aware_persistence_reports_actual_nonuniform_span(self) -> None:
+        times = (0.0, 0.010e-12, 0.035e-12, 0.060e-12)
+        values = (0.0, 2.0, 2.0, 0.0)
+        result = first_persistent_exceedance(
+            times,
+            values,
+            1.0,
+            min_consecutive_samples=3,
+            min_duration_s=0.025e-12,
+        )
+        self.assertEqual(result["status"], "CROSSED")
+        self.assertEqual(result["first_index"], 1)
+        self.assertAlmostEqual(result["persistence_span_s"], 0.025e-12, places=24)
+        self.assertEqual(result["persistence_sample_count"], 2)
+
+    def test_tie_groups_use_declared_absolute_tolerance(self) -> None:
+        groups = tie_groups(
+            {"L0": 95.0, "L1": 95.025, "L2": 95.026},
+            0.025,
+        )
+        self.assertEqual(groups[0]["layers"], ["L0", "L1"])
+        self.assertEqual(groups[1]["layers"], ["L2"])
+
+    def test_generic_kcl_uses_signed_coefficients(self) -> None:
+        residual = linear_kcl_residual(
+            {
+                "a": (1.0e-6, 2.0e-6),
+                "b": (0.5e-6, 1.0e-6),
+                "c": (0.1e-6, 0.2e-6),
+            },
+            {"a": 1.0, "b": -2.0, "c": -1.0},
+        )
+        self.assertEqual(residual, (-0.1e-6, -0.2e-6))
+
+    def test_kcl_window_summary_uses_actual_window_samples(self) -> None:
+        result = kcl_window_metrics(
+            (0.0, 1.0e-12, 3.0e-12),
+            (1.0e-6, -2.0e-6, 4.0e-6),
+            (0.0, 4.0e-12),
+        )
+        self.assertEqual(result["sample_count"], 3)
+        self.assertAlmostEqual(result["max_abs_uA"], 4.0, places=12)
+        self.assertAlmostEqual(result["rms_uA"], math.sqrt(7.0), places=12)
 
     def test_file_provenance_contains_hash_and_size(self) -> None:
         with tempfile.NamedTemporaryFile("wb", delete=False) as handle:

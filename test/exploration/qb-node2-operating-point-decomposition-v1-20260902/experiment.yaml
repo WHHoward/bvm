@@ -1,5 +1,6 @@
 id: QB_NODE2_OPERATING_POINT_DECOMPOSITION_V1
 date_directory: qb-node2-operating-point-decomposition-v1-20260902
+base_head_before_patch: c5fe0d4
 tier: Exploration
 mode: EXISTING_RAW_ONLY
 analysis_only: true
@@ -120,13 +121,52 @@ strict_local_anchor:
 first_divergence:
   comparison: I0 versus P0 exact_grid
   analysis_window_ps: [95.0, 130.0]
-  persistence_samples: 1
-  tie_resolution_ps: 0.0125
-  thresholds:
-    current_abs_uA: 1.0
-    current_relative_to_pair_max: 0.10
-    phase_abs_turns: 0.05
-    partition_abs_fraction: 0.10
+  pre_reference_window_ps: [80.0, 90.0]
+  primary:
+    method: PRE_NOISE_REFERENCED_ONSET
+    current_abs_floor_uA: 1.0
+    phase_abs_floor_turns: 0.05
+    partition_threshold_abs_fraction: 0.10
+    partition_denominator_floor_uA: 5.0
+    tie_resolution_ps: 0.025
+    persistence:
+      id: PRE_NOISE_REFERENCED_ONSET
+      min_consecutive_samples: 3
+      min_duration_ps: 0.025
+      logical_operator: OR
+      report_actual_span: true
+  sensitivity:
+    method: LEGACY_RELATIVE_FINAL_AMPLITUDE_ONSET
+    persistence_samples: 1
+    tie_resolution_ps: 0.0125
+    thresholds:
+      current_abs_floor_uA: 1.0
+      current_relative_to_final_amplitude: 0.10
+      phase_abs_floor_turns: 0.05
+      partition_abs_fraction: 0.10
+  robustness_matrix:
+    current_abs_floor_uA: [1.0, 2.0]
+    phase_abs_floor_turns: [0.05, 0.10]
+    tie_resolution_ps: [0.0125, 0.025]
+    persistence:
+      - id: ONE_SAMPLE_SENSITIVITY
+        min_consecutive_samples: 1
+        min_duration_ps: null
+        logical_operator: SAMPLES_ONLY
+      - id: THREE_CONSECUTIVE_SAMPLES
+        min_consecutive_samples: 3
+        min_duration_ps: null
+        logical_operator: SAMPLES_ONLY
+      - id: PRE_NOISE_REFERENCED_ONSET
+        min_consecutive_samples: 3
+        min_duration_ps: 0.025
+        logical_operator: OR
+        report_actual_span: true
+  semantics:
+    threshold_reference: W2 PRE only; ACTIVE and READ responses never set thresholds
+    sample_spacing_label: MINIMUM_OBSERVED_SAMPLE_SPACING
+    primary_persistence: threshold exceeded for at least 0.025 ps actual sampled span OR 3 consecutive samples
+    causal_order: NOT_PROVEN
   layers:
     L0_input_source: I(LIN|XBQ)
     L1_BJs: [I(BJS|XBQ), P(BJS|XBQ)]
@@ -134,8 +174,10 @@ first_divergence:
     L3_node3: [I(L1|XBQ), I(RB|XBQ), I(L2|XBQ)]
     L4_node4_output: [I(L2|XBQ), I(BJL2|XBQ), I(RJ2|XBQ), I(L0|XBQ), P(BJL2|XBQ)]
   interpretation: >-
-    A crossing is a descriptive normalized trajectory difference, not a causal
-    proof. Crossings within one declared native timestep are TIE.
+    The legacy result-dependent onset is retained as a sensitivity view only.
+    The primary onset references W2 PRE noise and uses actual nonuniform sample
+    times. A crossing is descriptive, not causal proof; tie resolution is
+    tested at 0.025 ps and 0.0125 ps only as a sensitivity view.
 q_reference:
   no_pointwise_comparison: true
   scalar_only: true

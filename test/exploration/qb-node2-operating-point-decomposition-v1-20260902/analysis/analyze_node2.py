@@ -32,11 +32,18 @@ PLOTTER = REPO / "scripts" / "josim-plot2.py"
 sys.path.insert(0, str(REPO / "scripts"))
 
 from bvmtools.compare import compare_windowed_series, exact_time_grid_identity  # noqa: E402
-from bvmtools.phase import TAU, continuous_unwrap, window_indices  # noqa: E402
+from bvmtools.kcl import kcl_window_metrics, linear_kcl_residual  # noqa: E402
+from bvmtools.onset import (  # noqa: E402
+    first_persistent_exceedance,
+    p99,
+    pre_noise_referenced_threshold,
+    tie_groups,
+)
+from bvmtools.phase import TAU, continuous_unwrap, phase_window_metrics, window_indices  # noqa: E402
 from bvmtools.provenance import file_snapshot, git_snapshot, sha256_file  # noqa: E402
 from bvmtools.raw import RawTrace, read_csv  # noqa: E402
 from bvmtools.sfq import StrictLocalEventSpec, strict_event_summary  # noqa: E402
-from bvmtools.waveform import trapezoid_integral  # noqa: E402
+from bvmtools.waveform import percentile, waveform_window_metrics  # noqa: E402
 
 
 WINDOWS_PS = {
@@ -48,12 +55,12 @@ WINDOWS_PS = {
     "node4_strict_tail": (125.0, 130.0),
 }
 KCL_ABS_TOL_UA = 0.001
-CURRENT_FLOOR_UA = 1.0
-CURRENT_RELATIVE = 0.10
-PHASE_THRESHOLD_TURNS = 0.05
+LEGACY_CURRENT_FLOOR_UA = 1.0
+LEGACY_CURRENT_RELATIVE = 0.10
+LEGACY_PHASE_THRESHOLD_TURNS = 0.05
+LEGACY_TIE_RESOLUTION_PS = 0.0125
 PARTITION_THRESHOLD = 0.10
 PARTITION_DENOMINATOR_FLOOR_UA = 5.0
-TIE_RESOLUTION_PS = 0.0125
 
 QB_CURRENT_SIGNALS = [
     "I(LIN|XBQ)",
@@ -241,107 +248,78 @@ def indices(trace: RawTrace, window_ps: Sequence[float]) -> tuple[int, ...]:
     return window_indices(trace.time, float(window_ps[0]) * 1.0e-12, float(window_ps[1]) * 1.0e-12)
 
 
-def percentile(values: Sequence[float], fraction: float) -> float:
-    ordered = sorted(float(value) for value in values)
-    if not ordered:
-        return float("nan")
-    rank = (len(ordered) - 1) * fraction
-    low = math.floor(rank)
-    high = math.ceil(rank)
-    if low == high:
-        return ordered[low]
-    return ordered[low] + (ordered[high] - ordered[low]) * (rank - low)
-
-
-def zero_crossings(values: Sequence[float]) -> int:
-    previous = 0
-    count = 0
-    for value in values:
-        sign = 1 if value > 0.0 else -1 if value < 0.0 else 0
-        if sign == 0:
-            continue
-        if previous and sign != previous:
-            count += 1
-        previous = sign
-    return count
-
-
 def current_stats(trace: RawTrace, signal: str, window_ps: Sequence[float], *, q_case: bool = False) -> dict[str, Any]:
     label = signal if not q_case else signal.replace("Lin", "LIN")
     values = selected(trace, signal)
-    ii = indices(trace, window_ps)
-    times = [trace.time[index] for index in ii]
-    amps = [values[index] for index in ii]
-    if len(amps) < 2:
-        fail(f"too few samples for current window: {signal} {window_ps}")
-    display = [value * 1.0e6 for value in amps]
-    peak = max(range(len(display)), key=display.__getitem__)
-    minimum = min(range(len(display)), key=display.__getitem__)
-    signed = trapezoid_integral(amps, times) * 1.0e18
-    positive = trapezoid_integral([max(value, 0.0) for value in amps], times) * 1.0e18
-    negative = trapezoid_integral([min(value, 0.0) for value in amps], times) * 1.0e18
-    result = {
+    display = waveform_window_metrics(
+        trace.time,
+        values,
+        (float(window_ps[0]) * 1.0e-12, float(window_ps[1]) * 1.0e-12),
+        unit="A",
+    )
+    return {
         "signal": label,
         "window_ps": [float(window_ps[0]), float(window_ps[1])],
-        "sample_count": len(display),
-        "mean_uA": sum(display) / len(display),
-        "median_uA": percentile(display, 0.5),
-        "rms_uA": math.sqrt(sum(value * value for value in display) / len(display)),
-        "minimum_uA": min(display),
-        "maximum_uA": max(display),
-        "max_abs_uA": max(abs(value) for value in display),
-        "p2p_uA": max(display) - min(display),
-        "signed_integral_uA_ps": signed,
-        "positive_area_uA_ps": positive,
-        "negative_area_uA_ps": negative,
-        "zero_crossing_count": zero_crossings(display),
-        "positive_occupancy": sum(value > 0.0 for value in display) / len(display),
-        "negative_occupancy": sum(value < 0.0 for value in display) / len(display),
-        "zero_occupancy": sum(value == 0.0 for value in display) / len(display),
-        "maximum_time_ps": trace.time[ii[peak]] * 1.0e12,
-        "minimum_time_ps": trace.time[ii[minimum]] * 1.0e12,
-        "first_sample_ps": trace.time[ii[0]] * 1.0e12,
-        "last_sample_ps": trace.time[ii[-1]] * 1.0e12,
+        "sample_count": int(display["sample_count"]),
+        "mean_uA": float(display["mean"]),
+        "median_uA": float(display["median"]),
+        "rms_uA": float(display["rms"]),
+        "minimum_uA": float(display["minimum"]),
+        "maximum_uA": float(display["maximum"]),
+        "max_abs_uA": float(display["max_abs"]),
+        "p2p_uA": float(display["p2p"]),
+        "signed_integral_uA_ps": float(display["signed_time_integral"]),
+        "positive_area_uA_ps": float(display["positive_area"]),
+        "negative_area_uA_ps": float(display["negative_area"]),
+        "zero_crossing_count": int(display["zero_crossing_count"]),
+        "positive_occupancy": float(display["positive_occupancy"]),
+        "negative_occupancy": float(display["negative_occupancy"]),
+        "zero_occupancy": float(display["zero_occupancy"]),
+        "maximum_time_ps": float(display["peak_time_s"]) * 1.0e12,
+        "minimum_time_ps": float(display["minimum_time_s"]) * 1.0e12,
+        "first_sample_ps": float(display["window_start_s"]) * 1.0e12,
+        "last_sample_ps": float(display["window_last_sample_s"]) * 1.0e12,
     }
-    return result
 
 
 def phase_stats(trace: RawTrace, signal: str, window_ps: Sequence[float]) -> dict[str, Any]:
-    raw = selected(trace, signal)
-    unwrapped = continuous_unwrap(raw)
-    ii = indices(trace, window_ps)
-    values = [unwrapped[index] / TAU for index in ii]
-    if len(values) < 2:
-        fail(f"too few samples for phase window: {signal} {window_ps}")
+    display = phase_window_metrics(
+        trace.time,
+        selected(trace, signal),
+        (float(window_ps[0]) * 1.0e-12, float(window_ps[1]) * 1.0e-12),
+    )
     return {
         "signal": signal,
         "window_ps": [float(window_ps[0]), float(window_ps[1])],
-        "sample_count": len(values),
-        "mean_turns": sum(values) / len(values),
-        "median_turns": percentile(values, 0.5),
-        "rms_turns": math.sqrt(sum(value * value for value in values) / len(values)),
-        "minimum_turns": min(values),
-        "maximum_turns": max(values),
-        "p2p_turns": max(values) - min(values),
-        "endpoint_delta_turns": values[-1] - values[0],
-        "first_sample_ps": trace.time[ii[0]] * 1.0e12,
-        "last_sample_ps": trace.time[ii[-1]] * 1.0e12,
+        "sample_count": int(display["sample_count"]),
+        "mean_turns": float(display["mean_turns"]),
+        "median_turns": float(display["median_turns"]),
+        "rms_turns": float(display["rms_turns"]),
+        "minimum_turns": float(display["minimum_turns"]),
+        "maximum_turns": float(display["maximum_turns"]),
+        "p2p_turns": float(display["p2p_turns"]),
+        "endpoint_delta_turns": float(display["endpoint_delta_turns"]),
+        "first_sample_ps": float(display["window_start_s"]) * 1.0e12,
+        "last_sample_ps": float(display["window_last_sample_s"]) * 1.0e12,
     }
 
 
 def voltage_stats(trace: RawTrace, signal: str, window_ps: Sequence[float]) -> dict[str, Any]:
-    values = selected(trace, signal)
-    ii = indices(trace, window_ps)
-    vals = [values[index] * 1.0e3 for index in ii]
+    display = waveform_window_metrics(
+        trace.time,
+        selected(trace, signal),
+        (float(window_ps[0]) * 1.0e-12, float(window_ps[1]) * 1.0e-12),
+        unit="V",
+    )
     return {
         "signal": signal,
         "window_ps": [float(window_ps[0]), float(window_ps[1])],
-        "sample_count": len(vals),
-        "mean_mV": sum(vals) / len(vals),
-        "rms_mV": math.sqrt(sum(value * value for value in vals) / len(vals)),
-        "minimum_mV": min(vals),
-        "maximum_mV": max(vals),
-        "p2p_mV": max(vals) - min(vals),
+        "sample_count": int(display["sample_count"]),
+        "mean_mV": float(display["mean"]),
+        "rms_mV": float(display["rms"]),
+        "minimum_mV": float(display["minimum"]),
+        "maximum_mV": float(display["maximum"]),
+        "p2p_mV": float(display["p2p"]),
     }
 
 
@@ -372,7 +350,6 @@ def exact_compare(trace_a: RawTrace, trace_b: RawTrace, signal_a: str, signal_b:
 
 
 def kcl_metrics(trace: RawTrace, window_ps: Sequence[float], *, q_case: bool = False) -> dict[str, Any]:
-    suffix = "" if not q_case else "_q"
     names = {
         "lin": "I(LIN|XBQ)" if not q_case else "I(Lin|XBQ)",
         "bjs": "I(BJS|XBQ)",
@@ -386,36 +363,35 @@ def kcl_metrics(trace: RawTrace, window_ps: Sequence[float], *, q_case: bool = F
         "l0": "I(L0|XBQ)",
     }
     arrays = {key: selected(trace, signal) for key, signal in names.items()}
-    ii = indices(trace, window_ps)
-    residuals = {
-        "input_node": [arrays["lin"][index] - arrays["bjs"][index] for index in ii],
-        "node2": [arrays["bjs"][index] - arrays["bjl1"][index] - arrays["rj1"][index] - arrays["l1"][index] for index in ii],
-        "node3": [arrays["l1"][index] + arrays["rb"][index] - arrays["l2"][index] for index in ii],
-        "node4": [arrays["l2"][index] - arrays["bjl2"][index] - arrays["rj2"][index] - arrays["l0"][index] for index in ii],
+    equations = {
+        "input_node": ({"lin": 1.0, "bjs": -1.0}, "I(LIN) - I(BJS)"),
+        "node2": ({"bjs": 1.0, "bjl1": -1.0, "rj1": -1.0, "l1": -1.0}, "I(BJS) - I(BJL1) - I(RJ1) - I(L1)"),
+        "node3": ({"l1": 1.0, "rb": 1.0, "l2": -1.0}, "I(L1) + I(RB) - I(L2)"),
+        "node4": ({"l2": 1.0, "bjl2": -1.0, "rj2": -1.0, "l0": -1.0}, "I(L2) - I(BJL2) - I(RJ2) - I(L0)"),
     }
     result: dict[str, Any] = {
         "window_ps": [float(window_ps[0]), float(window_ps[1])],
-        "sample_count": len(ii),
+        "sample_count": None,
         "absolute_tolerance_uA": KCL_ABS_TOL_UA,
-        "equations": {
-            "input_node": "I(LIN) - I(BJS)",
-            "node2": "I(BJS) - I(BJL1) - I(RJ1) - I(L1)",
-            "node3": "I(L1) + I(RB) - I(L2)",
-            "node4": "I(L2) - I(BJL2) - I(RJ2) - I(L0)",
-        },
+        "equations": {key: equation[1] for key, equation in equations.items()},
         "residuals": {},
     }
     all_pass = True
-    for key, values in residuals.items():
-        scaled = [value * 1.0e6 for value in values]
-        record = {
-            "max_abs_uA": max(abs(value) for value in scaled),
-            "p95_abs_uA": percentile([abs(value) for value in scaled], 0.95),
-            "rms_uA": math.sqrt(sum(value * value for value in scaled) / len(scaled)),
-        }
+    for key, (coefficients, _equation) in equations.items():
+        residual = linear_kcl_residual(
+            {name: arrays[name] for name in coefficients},
+            coefficients,
+        )
+        record = kcl_window_metrics(
+            trace.time,
+            residual,
+            (float(window_ps[0]) * 1.0e-12, float(window_ps[1]) * 1.0e-12),
+        )
         record["pass"] = record["max_abs_uA"] <= KCL_ABS_TOL_UA
         all_pass = all_pass and bool(record["pass"])
         result["residuals"][key] = record
+        if result["sample_count"] is None:
+            result["sample_count"] = record["sample_count"]
     result["status"] = "KCL_CONSISTENT" if all_pass else "MECHANISM_ANALYSIS_INVALID"
     return result
 
@@ -446,14 +422,18 @@ def source_metrics(trace: RawTrace) -> dict[str, Any]:
 
 def resistor_proxy(trace: RawTrace, signal: str, resistance_ohm: float, window_ps: Sequence[float]) -> dict[str, Any]:
     values = selected(trace, signal)
-    ii = indices(trace, window_ps)
-    times = [trace.time[index] for index in ii]
-    powers = [resistance_ohm * values[index] ** 2 for index in ii]
+    powers = tuple(resistance_ohm * value ** 2 for value in values)
+    display = waveform_window_metrics(
+        trace.time,
+        powers,
+        (float(window_ps[0]) * 1.0e-12, float(window_ps[1]) * 1.0e-12),
+        unit="raw",
+    )
     return {
         "resistor_ohm": resistance_ohm,
-        "mean_power_W": sum(powers) / len(powers),
-        "rms_power_W": math.sqrt(sum(value * value for value in powers) / len(powers)),
-        "energy_fJ": trapezoid_integral(powers, times) * 1.0e15,
+        "mean_power_W": float(display["mean"]),
+        "rms_power_W": float(display["rms"]),
+        "energy_fJ": float(display["signed_time_integral"]) * 1.0e15,
         "interpretation": "resistor dissipation proxy only; not total QB power",
     }
 
@@ -708,9 +688,9 @@ def divergence_feature(trace_i0: RawTrace, trace_p0: RawTrace, signal_i0: str, s
             "status": "NO_VALID_DENOMINATOR",
         }
     if kind == "current":
-        threshold = max(CURRENT_FLOOR_UA, CURRENT_RELATIVE * max(finite_diffs))
+        threshold = max(LEGACY_CURRENT_FLOOR_UA, LEGACY_CURRENT_RELATIVE * max(finite_diffs))
     elif kind == "phase":
-        threshold = PHASE_THRESHOLD_TURNS
+        threshold = LEGACY_PHASE_THRESHOLD_TURNS
     else:
         threshold = PARTITION_THRESHOLD
     first: int | None = None
@@ -770,27 +750,425 @@ def first_divergence(trace_i0: RawTrace, trace_p0: RawTrace) -> dict[str, Any]:
     present = sorted((time, layer) for layer, time in layer_times.items() if time is not None)
     groups: list[dict[str, Any]] = []
     for time, layer in present:
-        if not groups or time - groups[-1]["first_time_ps"] > TIE_RESOLUTION_PS:
+        if not groups or time - groups[-1]["first_time_ps"] > LEGACY_TIE_RESOLUTION_PS:
             groups.append({"first_time_ps": time, "layers": [layer]})
         else:
             groups[-1]["layers"].append(layer)
     first_group = groups[0] if groups else None
     return {
+        "method": "LEGACY_RELATIVE_FINAL_AMPLITUDE_ONSET",
+        "semantic_role": "sensitivity_only",
         "comparison": "I0 versus P0 exact_grid",
         "precentered": True,
         "analysis_window_ps": [95.0, 130.0],
         "thresholds": {
-            "current_abs_floor_uA": CURRENT_FLOOR_UA,
-            "current_relative_to_feature_scale": CURRENT_RELATIVE,
-            "phase_abs_turns": PHASE_THRESHOLD_TURNS,
+            "current_abs_floor_uA": LEGACY_CURRENT_FLOOR_UA,
+            "current_relative_to_feature_scale": LEGACY_CURRENT_RELATIVE,
+            "phase_abs_turns": LEGACY_PHASE_THRESHOLD_TURNS,
             "partition_abs_fraction": PARTITION_THRESHOLD,
             "partition_denominator_floor_uA": PARTITION_DENOMINATOR_FLOOR_UA,
-            "tie_resolution_ps": TIE_RESOLUTION_PS,
+            "tie_resolution_ps": LEGACY_TIE_RESOLUTION_PS,
         },
         "features": features,
         "layer_first_time_ps": layer_times,
         "ordered_tie_groups": groups,
         "first_group": first_group,
+    }
+
+
+def divergence_feature_specs() -> dict[str, list[tuple[str, str, str, str | None]]]:
+    """Return the fixed QB feature map used by both onset analyses."""
+
+    return {
+        "L0_input_source": [
+            ("I(LIN|XBQ)", "I(LIN|XBQ)", "current", None),
+        ],
+        "L1_BJs": [
+            ("I(BJS|XBQ)", "I(BJS|XBQ)", "current", None),
+            ("P(BJS|XBQ)", "P(BJS|XBQ)", "phase", None),
+        ],
+        "L2_node2": [
+            ("I(BJL1|XBQ)", "I(BJL1|XBQ)", "current", None),
+            ("P(BJL1|XBQ)", "P(BJL1|XBQ)", "phase", None),
+            ("I(RJ1|XBQ)", "I(RJ1|XBQ)", "current", None),
+            ("I(L1|XBQ)", "I(L1|XBQ)", "current", None),
+            ("I(BJL1|XBQ)", "I(BJL1|XBQ)", "partition", "I(BJS|XBQ)"),
+            ("I(L1|XBQ)", "I(L1|XBQ)", "partition", "I(BJS|XBQ)"),
+        ],
+        "L3_node3": [
+            ("I(L1|XBQ)", "I(L1|XBQ)", "current", None),
+            ("I(RB|XBQ)", "I(RB|XBQ)", "current", None),
+            ("I(L2|XBQ)", "I(L2|XBQ)", "current", None),
+            ("I(L1|XBQ)", "I(L1|XBQ)", "partition", "I(L2|XBQ)"),
+        ],
+        "L4_node4_output": [
+            ("I(L2|XBQ)", "I(L2|XBQ)", "current", None),
+            ("I(BJL2|XBQ)", "I(BJL2|XBQ)", "current", None),
+            ("I(RJ2|XBQ)", "I(RJ2|XBQ)", "current", None),
+            ("I(L0|XBQ)", "I(L0|XBQ)", "current", None),
+            ("P(BJL2|XBQ)", "P(BJL2|XBQ)", "phase", None),
+        ],
+    }
+
+
+def normalized_onset_series(
+    trace: RawTrace,
+    signal: str,
+    *,
+    kind: str,
+    denominator_signal: str | None,
+    denominator_floor_uA: float,
+    pre_window_ps: Sequence[float],
+    analysis_window_ps: Sequence[float],
+) -> tuple[tuple[int, ...], list[float], float | None, list[float]]:
+    """Return W2-centered values and the finite W2 reference samples."""
+
+    raw = selected(trace, signal)
+    if kind == "phase":
+        values = [value / TAU for value in continuous_unwrap(raw)]
+    elif kind in {"current", "partition"}:
+        values = [value * 1.0e6 for value in raw]
+    else:
+        fail(f"unknown onset feature kind: {kind}")
+
+    if denominator_signal is not None:
+        denominator = [value * 1.0e6 for value in selected(trace, denominator_signal)]
+        values = [
+            value / denom if abs(denom) >= denominator_floor_uA else float("nan")
+            for value, denom in zip(values, denominator)
+        ]
+    pre_idx = indices(trace, pre_window_ps)
+    pre_values = [values[index] for index in pre_idx if math.isfinite(values[index])]
+    baseline = percentile(pre_values, 0.5) if pre_values else None
+    centered = [
+        value - baseline if baseline is not None and math.isfinite(value) else float("nan")
+        for value in values
+    ]
+    analysis_idx = indices(trace, analysis_window_ps)
+    return (
+        analysis_idx,
+        [centered[index] for index in analysis_idx],
+        baseline,
+        [value - baseline for value in pre_values] if baseline is not None else [],
+    )
+
+
+def pre_noise_divergence_feature(
+    trace_i0: RawTrace,
+    trace_p0: RawTrace,
+    signal_i0: str,
+    signal_p0: str,
+    *,
+    kind: str,
+    denominator: str | None,
+    current_floor_uA: float,
+    phase_floor_turns: float,
+    partition_threshold: float,
+    denominator_floor_uA: float,
+    pre_window_ps: Sequence[float],
+    analysis_window_ps: Sequence[float],
+    persistence: dict[str, Any],
+) -> dict[str, Any]:
+    idx_i, values_i, baseline_i, pre_i = normalized_onset_series(
+        trace_i0,
+        signal_i0,
+        kind=kind,
+        denominator_signal=denominator,
+        denominator_floor_uA=denominator_floor_uA,
+        pre_window_ps=pre_window_ps,
+        analysis_window_ps=analysis_window_ps,
+    )
+    idx_p, values_p, baseline_p, pre_p = normalized_onset_series(
+        trace_p0,
+        signal_p0,
+        kind=kind,
+        denominator_signal=denominator,
+        denominator_floor_uA=denominator_floor_uA,
+        pre_window_ps=pre_window_ps,
+        analysis_window_ps=analysis_window_ps,
+    )
+    if idx_i != idx_p:
+        fail("robust onset features do not share exact indices")
+    pre_differences = [
+        abs(left - right)
+        for left, right in zip(pre_i, pre_p)
+        if math.isfinite(left) and math.isfinite(right)
+    ]
+    analysis_differences = [
+        abs(left - right) if math.isfinite(left) and math.isfinite(right) else float("nan")
+        for left, right in zip(values_i, values_p)
+    ]
+    pre_scale = p99(pre_differences) if pre_differences else None
+    if kind == "current":
+        threshold = pre_noise_referenced_threshold(
+            pre_differences, float(current_floor_uA)
+        )
+        formula = "max(current_abs_floor_uA, 5 * PRE_W2_p99(abs(I0-P0)))"
+        threshold_unit = "uA"
+    elif kind == "phase":
+        threshold = pre_noise_referenced_threshold(
+            pre_differences, float(phase_floor_turns)
+        )
+        formula = "max(phase_abs_floor_turns, 5 * PRE_W2_p99(abs(I0-P0)))"
+        threshold_unit = "turns"
+    elif kind == "partition":
+        threshold = float(partition_threshold)
+        formula = "partition_abs_fraction (fixed; denominator floor applied before ratio)"
+        threshold_unit = "fraction"
+    else:
+        fail(f"unknown robust onset feature kind: {kind}")
+
+    times_s = [trace_i0.time[index] for index in idx_i]
+    persistence_result = first_persistent_exceedance(
+        times_s,
+        analysis_differences,
+        threshold,
+        min_consecutive_samples=int(persistence.get("min_consecutive_samples", 1)),
+        min_duration_s=(
+            None
+            if persistence.get("min_duration_ps") is None
+            else float(persistence["min_duration_ps"]) * 1.0e-12
+        ),
+    )
+    first_local = persistence_result.get("first_index")
+    record: dict[str, Any] = {
+        "method": "PRE_NOISE_REFERENCED_ONSET",
+        "semantic_role": "primary_robustness_matrix",
+        "signal_i0": signal_i0,
+        "signal_p0": signal_p0,
+        "kind": kind,
+        "pre_window_ps": [float(pre_window_ps[0]), float(pre_window_ps[1])],
+        "pre_median_i0": baseline_i,
+        "pre_median_p0": baseline_p,
+        "pre_sample_count": len(pre_differences),
+        "pre_p99_abs_difference": pre_scale,
+        "threshold": threshold,
+        "threshold_unit": threshold_unit,
+        "threshold_formula": formula,
+        "denominator_signal": denominator,
+        "denominator_floor_uA": denominator_floor_uA if denominator is not None else None,
+        "persistence_rule": {
+            "min_consecutive_samples": int(persistence.get("min_consecutive_samples", 1)),
+            "min_duration_ps": persistence.get("min_duration_ps"),
+            "logical_operator": persistence.get("logical_operator", "OR"),
+        },
+        "max_abs_analysis_difference": max(
+            (value for value in analysis_differences if math.isfinite(value)),
+            default=None,
+        ),
+        "status": persistence_result["status"],
+        "first_time_ps": None,
+        "first_sample_index": None,
+        "first_difference": None,
+        "persistence_start_ps": None,
+        "persistence_end_ps": None,
+        "persistence_span_ps": None,
+        "persistence_sample_count": int(persistence_result["persistence_sample_count"]),
+    }
+    if first_local is not None:
+        first_global = idx_i[int(first_local)]
+        record.update({
+            "first_time_ps": trace_i0.time[first_global] * 1.0e12,
+            "first_sample_index": first_global,
+            "first_difference": analysis_differences[int(first_local)],
+            "persistence_start_ps": float(persistence_result["persistence_start_s"]) * 1.0e12,
+            "persistence_end_ps": float(persistence_result["persistence_end_s"]) * 1.0e12,
+            "persistence_span_ps": float(persistence_result["persistence_span_s"]) * 1.0e12,
+        })
+    return record
+
+
+def classify_first_group(first_group: dict[str, Any] | None) -> str:
+    """Map a descriptive onset ordering to the allowed exploratory labels."""
+
+    if not first_group:
+        return "NO_CLEAR_DISCRIMINATION"
+    layers = set(first_group.get("layers", []))
+    input_or_bjs = bool(layers & {"L0_input_source", "L1_BJs"})
+    node2 = "L2_node2" in layers
+    if node2 and input_or_bjs:
+        return "COUPLED_INPUT_BJS_NODE2"
+    if node2:
+        return "NODE2_REDISTRIBUTION_SUPPORTED"
+    if input_or_bjs:
+        return "INPUT_BJS_LIMITATION_SUPPORTED"
+    return "NO_CLEAR_DISCRIMINATION"
+
+
+def robust_onset_features(
+    trace_i0: RawTrace,
+    trace_p0: RawTrace,
+    *,
+    current_floor_uA: float,
+    phase_floor_turns: float,
+    partition_threshold: float,
+    denominator_floor_uA: float,
+    pre_window_ps: Sequence[float],
+    analysis_window_ps: Sequence[float],
+    persistence: dict[str, Any],
+) -> dict[str, Any]:
+    features: dict[str, list[dict[str, Any]]] = {}
+    for layer, specifications in divergence_feature_specs().items():
+        features[layer] = [
+            pre_noise_divergence_feature(
+                trace_i0,
+                trace_p0,
+                signal_i0,
+                signal_p0,
+                kind=kind,
+                denominator=denominator,
+                current_floor_uA=current_floor_uA,
+                phase_floor_turns=phase_floor_turns,
+                partition_threshold=partition_threshold,
+                denominator_floor_uA=denominator_floor_uA,
+                pre_window_ps=pre_window_ps,
+                analysis_window_ps=analysis_window_ps,
+                persistence=persistence,
+            )
+            for signal_i0, signal_p0, kind, denominator in specifications
+        ]
+    layer_first_time_ps = {
+        layer: min(
+            (item["first_time_ps"] for item in records if item["first_time_ps"] is not None),
+            default=None,
+        )
+        for layer, records in features.items()
+    }
+    return {
+        "features": features,
+        "layer_first_time_ps": layer_first_time_ps,
+    }
+
+
+def robustness_matrix(
+    config: dict[str, Any],
+    trace_i0: RawTrace,
+    trace_p0: RawTrace,
+) -> dict[str, Any]:
+    first_config = config["first_divergence"]
+    pre_window = first_config["pre_reference_window_ps"]
+    analysis_window = first_config["analysis_window_ps"]
+    partition_threshold = float(first_config["primary"]["partition_threshold_abs_fraction"])
+    denominator_floor = float(first_config["primary"]["partition_denominator_floor_uA"])
+    observed_spacings_s = [
+        right - left
+        for trace in (trace_i0, trace_p0)
+        for left, right in zip(trace.time, trace.time[1:])
+        if math.isfinite(left) and math.isfinite(right) and right > left
+    ]
+    if not observed_spacings_s:
+        fail("cannot determine observed sample spacing")
+    minimum_observed_spacing_ps = round(min(observed_spacings_s) * 1.0e12, 12)
+    entries: list[dict[str, Any]] = []
+    for current_floor in first_config["robustness_matrix"]["current_abs_floor_uA"]:
+        for phase_floor in first_config["robustness_matrix"]["phase_abs_floor_turns"]:
+            for persistence in first_config["robustness_matrix"]["persistence"]:
+                for tie_ps in first_config["robustness_matrix"]["tie_resolution_ps"]:
+                    result = robust_onset_features(
+                        trace_i0,
+                        trace_p0,
+                        current_floor_uA=float(current_floor),
+                        phase_floor_turns=float(phase_floor),
+                        partition_threshold=partition_threshold,
+                        denominator_floor_uA=denominator_floor,
+                        pre_window_ps=pre_window,
+                        analysis_window_ps=analysis_window,
+                        persistence=persistence,
+                    )
+                    groups = tie_groups(result["layer_first_time_ps"], float(tie_ps))
+                    first_group = groups[0] if groups else None
+                    persistence_id = str(persistence["id"])
+                    config_id = (
+                        f"current-{float(current_floor):g}uA__phase-{float(phase_floor):g}turns__"
+                        f"{persistence_id}__tie-{float(tie_ps):g}ps"
+                    )
+                    entries.append({
+                        "config_id": config_id,
+                        "current_abs_floor_uA": float(current_floor),
+                        "phase_abs_floor_turns": float(phase_floor),
+                        "persistence": persistence,
+                        "tie_resolution_ps": float(tie_ps),
+                        "method": "PRE_NOISE_REFERENCED_ONSET",
+                        "analysis_window_ps": [float(analysis_window[0]), float(analysis_window[1])],
+                        "minimum_observed_sample_spacing_ps": minimum_observed_spacing_ps,
+                        "features": result["features"],
+                        "layer_first_time_ps": result["layer_first_time_ps"],
+                        "ordered_tie_groups": groups,
+                        "first_group": first_group,
+                        "implied_classification": classify_first_group(first_group),
+                    })
+    primary_persistence = first_config["primary"]["persistence"]
+    primary_id = (
+        f"current-{float(first_config['primary']['current_abs_floor_uA']):g}uA__"
+        f"phase-{float(first_config['primary']['phase_abs_floor_turns']):g}turns__"
+        f"{primary_persistence['id']}__tie-{float(first_config['primary']['tie_resolution_ps']):g}ps"
+    )
+    primary = next((entry for entry in entries if entry["config_id"] == primary_id), None)
+    if primary is None:
+        fail(f"primary robustness configuration missing: {primary_id}")
+    classifications = [str(entry["implied_classification"]) for entry in entries]
+    unique = sorted(set(classifications))
+    if not classifications:
+        robustness_status = "NOT_ROBUST"
+        consensus = "NO_CLEAR_DISCRIMINATION"
+    elif len(unique) == 1:
+        robustness_status = "ROBUST"
+        consensus = unique[0]
+    else:
+        robustness_status = "MIXED"
+        has_node2 = any(item in {"NODE2_REDISTRIBUTION_SUPPORTED", "COUPLED_INPUT_BJS_NODE2"} for item in unique)
+        has_input = any(item in {"INPUT_BJS_LIMITATION_SUPPORTED", "COUPLED_INPUT_BJS_NODE2"} for item in unique)
+        consensus = "COUPLED_INPUT_BJS_NODE2" if has_node2 and has_input else "NO_CLEAR_DISCRIMINATION"
+    counts = {label: classifications.count(label) for label in unique}
+    return {
+        "primary_method": "PRE_NOISE_REFERENCED_ONSET",
+        "primary_config_id": primary_id,
+        "primary": primary,
+        "configurations": entries,
+        "summary": {
+            "status": robustness_status,
+            "consensus_classification": consensus,
+            "configuration_count": len(entries),
+            "valid_configuration_count": len(entries),
+            "classification_counts": counts,
+            "tie_tolerance_primary_ps": float(first_config["primary"]["tie_resolution_ps"]),
+            "tie_tolerance_sensitivity_ps": float(first_config["sensitivity"]["tie_resolution_ps"]),
+            "minimum_observed_sample_spacing_ps": minimum_observed_spacing_ps,
+            "time_semantics": "actual_nonuniform_csv_time; minimum observed spacing is measured from the CSV traces, not universal resolution",
+        },
+    }
+
+
+def node2_redistribution_observation(metrics: dict[str, Any]) -> dict[str, Any]:
+    """Report the strong node2 difference observation independently of onset order."""
+
+    primary = metrics["first_divergence_robustness"]["primary"]
+    feature_by_key = {
+        (item["kind"], item["signal_i0"], item.get("denominator_signal")): item
+        for records in primary["features"].values()
+        for item in records
+    }
+    differences = metrics["I0_vs_P0_W3"]
+    bjl1_current_threshold = float(feature_by_key[("current", "I(BJL1|XBQ)", None)]["threshold"])
+    l1_current_threshold = float(feature_by_key[("current", "I(L1|XBQ)", None)]["threshold"])
+    phase_threshold = float(feature_by_key[("phase", "P(BJL1|XBQ)", None)]["threshold"])
+    rb_threshold = float(feature_by_key[("current", "I(RB|XBQ)", None)]["threshold"])
+    l2_threshold = float(feature_by_key[("current", "I(L2|XBQ)", None)]["threshold"])
+    strict_i0 = metrics["strict_local"]["I0"]["compatibility_classification"]
+    strict_p0 = metrics["strict_local"]["P0"]["compatibility_classification"]
+    criteria = {
+        "BJL1_current_separation": differences["I(BJL1|XBQ)"]["rms_difference"] > bjl1_current_threshold,
+        "BJL1_phase_separation": differences["P(BJL1|XBQ)"]["rms_difference"] > phase_threshold,
+        "L1_current_separation": differences["I(L1|XBQ)"]["rms_difference"] > l1_current_threshold,
+        "RB_stable": differences["I(RB|XBQ)"]["rms_difference"] <= rb_threshold,
+        "L2_downstream_separation": differences["I(L2|XBQ)"]["rms_difference"] > l2_threshold,
+        "BJL2_clean_vs_subthreshold": strict_i0 == "CLEAN_ONE_SFQ_CANDIDATE" and strict_p0 == "SUBTHRESHOLD",
+    }
+    return {
+        "value": all(criteria.values()),
+        "criteria": criteria,
+        "strict_labels": {"I0": strict_i0, "P0": strict_p0},
+        "interpretation": "strong descriptive node2/downstream difference observation; independent of temporal onset ordering",
     }
 
 
@@ -805,28 +1183,30 @@ def mechanism_classification(metrics: dict[str, Any]) -> dict[str, Any]:
         p0_sig["BJs_drive"]["phase"]["p2p_turns"] >= 1.0
         and p0_sig["BJs_drive"]["current"]["p2p_uA"] >= 5.0
     )
-    node2 = metrics["I0_vs_P0_W3"]
-    critical_node2 = (
-        node2["I(BJL1|XBQ)"]["rms_difference"] > CURRENT_FLOOR_UA
-        and node2["I(L1|XBQ)"]["rms_difference"] > CURRENT_FLOOR_UA
-        and node2["P(BJL1|XBQ)"]["rms_difference"] > PHASE_THRESHOLD_TURNS
+    node2_observation = metrics["node2_redistribution_difference_observed"]
+    critical_node2 = all(
+        node2_observation["criteria"][key]
+        for key in ("BJL1_current_separation", "BJL1_phase_separation", "L1_current_separation")
     )
-    rb_stable = node2["I(RB|XBQ)"]["rms_difference"] <= CURRENT_FLOOR_UA
+    rb_stable = node2_observation["criteria"]["RB_stable"]
     strict_i0 = metrics["strict_local"]["I0"]["compatibility_classification"]
     strict_p0 = metrics["strict_local"]["P0"]["compatibility_classification"]
     downstream_follows = strict_i0 == "CLEAN_ONE_SFQ_CANDIDATE" and strict_p0 == "SUBTHRESHOLD"
-    first_group = metrics["first_divergence"].get("first_group") or {}
-    first_layers = set(first_group.get("layers", []))
+    robustness = metrics["first_divergence_robustness"]["summary"]
+    order_classification = robustness["consensus_classification"]
     if p0_bjs_active and critical_node2 and rb_stable and downstream_follows:
-        if {"L0_input_source", "L1_BJs", "L2_node2"}.issubset(first_layers):
+        if order_classification == "COUPLED_INPUT_BJS_NODE2":
             classification = "COUPLED_INPUT_BJS_NODE2"
-            reason = "BJs is locally active, node2 branch separation and downstream separation are observed, RB remains stable, and L0/L1/L2 first crossings are tied at declared resolution."
-        elif "L2_node2" in first_layers and "L1_BJs" not in first_layers:
+            reason = "Robustness matrix contains input/BJs and node2 onset orderings or ties; the strong node2/downstream difference is observed, but temporal ordering supports only a coupled exploratory description."
+        elif order_classification == "NODE2_REDISTRIBUTION_SUPPORTED":
             classification = "NODE2_REDISTRIBUTION_SUPPORTED"
-            reason = "BJs is locally active and the first resolved separation is in the node2 partition while RB remains stable."
+            reason = "The earliest robust descriptive divergence under the tested PRE-noise-referenced onset semantics is in node2; this is not a unique root-cause proof."
+        elif order_classification == "INPUT_BJS_LIMITATION_SUPPORTED":
+            classification = "INPUT_BJS_LIMITATION_SUPPORTED"
+            reason = "Input/BJs is robustly earlier under the tested PRE-noise-referenced onset semantics; node2/downstream differences remain observed, so this is exploratory rather than a unique root-cause proof."
         else:
-            classification = "NODE2_REDISTRIBUTION_SUPPORTED"
-            reason = "BJs is locally active, critical node2 separation and downstream separation are present, and RB remains stable; onset ordering is not sufficient for a narrower claim."
+            classification = "NO_CLEAR_DISCRIMINATION"
+            reason = "Node2/downstream differences are observed, but the robustness matrix does not supply a clear allowed onset ordering."
     elif not p0_bjs_active and metrics["q_reference"]["Q45"]["representative_pulse_110ps"]["phases"]["P(BJL2|XBQ)"]["endpoint_delta_turns"] < 1.0:
         classification = "INPUT_BJS_LIMITATION_SUPPORTED"
         reason = "Physical P0 BJs activity is not clear under the preregistered descriptive activity rule and the lower scalar reference is also subthreshold; this remains exploratory."
@@ -843,6 +1223,10 @@ def mechanism_classification(metrics: dict[str, Any]) -> dict[str, Any]:
             "RB_stable": rb_stable,
             "downstream_follows": downstream_follows,
         },
+        "robustness_status": robustness["status"],
+        "order_classification": order_classification,
+        "causal_order": "NOT_PROVEN",
+        "node2_redistribution_difference_observed": bool(node2_observation["value"]),
         "strict_local_labels_used": {"I0": strict_i0, "P0": strict_p0},
         "not_unique_root_cause": True,
     }
@@ -934,7 +1318,18 @@ def topology_check(path: Path) -> dict[str, Any]:
     }
 
 
-def write_plot(trace_i0: RawTrace, trace_p0: RawTrace, paths: dict[str, Path]) -> dict[str, Any]:
+def write_plot(
+    trace_i0: RawTrace,
+    trace_p0: RawTrace,
+    paths: dict[str, Path],
+    *,
+    regenerate: bool = False,
+) -> dict[str, Any]:
+    existing_metadata = PLOTS / "RESULT_OVERVIEW.metadata.json"
+    existing_html = PLOTS / "RESULT_OVERVIEW.html"
+    existing_input = ANALYSIS / "plot_input.csv"
+    if not regenerate and existing_metadata.is_file() and existing_html.is_file() and existing_input.is_file():
+        return json.loads(existing_metadata.read_text(encoding="utf-8"))
     signals = [
         ("I(BJS|XBQ)", "I(I0|BJS)", "I0"),
         ("I(BJS|XBQ)", "I(P0|BJS)", "P0"),
@@ -1050,6 +1445,29 @@ def build_provenance(config: dict[str, Any], paths: dict[str, Path], records: di
         "windows_ps": config["windows_ps"],
         "strict_local_anchor": config["strict_local_anchor"],
         "first_divergence": config["first_divergence"],
+        "analysis_correction": {
+            "base_head_before_patch": config.get("base_head_before_patch"),
+            "method": "PRE_NOISE_REFERENCED_ONSET",
+            "legacy_method_retained_as": "LEGACY_RELATIVE_FINAL_AMPLITUDE_ONSET",
+            "causal_order": "NOT_PROVEN",
+            "shared_numeric_primitives": [
+                "scripts/bvmtools/phase.py",
+                "scripts/bvmtools/waveform.py",
+                "scripts/bvmtools/compare.py",
+                "scripts/bvmtools/onset.py",
+                "scripts/bvmtools/kcl.py",
+            ],
+        },
+        "shared_tooling": {
+            name: file_snapshot(REPO / path, relative_to=REPO)
+            for name, path in {
+                "phase": "scripts/bvmtools/phase.py",
+                "waveform": "scripts/bvmtools/waveform.py",
+                "compare": "scripts/bvmtools/compare.py",
+                "onset": "scripts/bvmtools/onset.py",
+                "kcl": "scripts/bvmtools/kcl.py",
+            }.items()
+        },
         "historical_boundary": {
             "old_audit": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825",
             "old_audit_use": "historical motivation only; not authoritative because of D12 RUN_INPUT_HASH_MISMATCH and replay-source semantic limitation",
@@ -1111,6 +1529,7 @@ def main() -> None:
     }
     topology = topology_check(resolve(config["qb_topology"]["source"]))
     first = first_divergence(traces["I0"], traces["P0"])
+    robust = robustness_matrix(config, traces["I0"], traces["P0"])
     i0_vs_p0 = {
         signal: exact_compare(traces["I0"], traces["P0"], signal, signal, WINDOWS_PS["W3_read"], unit="uA" if signal.startswith("I(") else "turns")
         for signal in ["I(BJS|XBQ)", "P(BJS|XBQ)", "I(BJL1|XBQ)", "I(RJ1|XBQ)", "I(L1|XBQ)", "I(RB|XBQ)", "I(L2|XBQ)", "I(BJL2|XBQ)", "I(RJ2|XBQ)", "I(L0|XBQ)", "P(BJL1|XBQ)", "P(BJL2|XBQ)"]
@@ -1131,14 +1550,24 @@ def main() -> None:
         "strict_local": strict_local,
         "I0_vs_P0_W3": i0_vs_p0,
         "first_divergence": first,
+        "legacy_relative_final_amplitude_onset": first,
+        "first_divergence_robustness": robust,
+        "sample_spacing_semantics": {
+            "label": "MINIMUM_OBSERVED_SAMPLE_SPACING",
+            "minimum_observed_ps": round(min(traces["I0"].dt) * 1.0e12, 12),
+            "maximum_observed_ps": round(max(traces["I0"].dt) * 1.0e12, 12),
+            "not_a_universal_resolution": True,
+            "primary_persistence": "at least 0.025 ps of actual sampled span OR 3 consecutive samples; actual span is reported",
+        },
         "q_reference": q_reference,
         "q_reference_provenance": q0,
         "topology": topology,
     }
+    metrics["node2_redistribution_difference_observed"] = node2_redistribution_observation(metrics)
     metrics["mechanism"] = mechanism_classification(metrics)
     write_json(ANALYSIS / "metrics.json", metrics)
     write_json(ANALYSIS / "provenance.json", build_provenance(config, paths, records, q0, topology))
-    plot_metadata = write_plot(traces["I0"], traces["P0"], paths)
+    plot_metadata = write_plot(traces["I0"], traces["P0"], paths, regenerate=False)
     write_json(ANALYSIS / "plot_metadata.json", plot_metadata)
     print(json.dumps({
         "status": "PASS" if kcl_status == "KCL_CONSISTENT" else "MECHANISM_ANALYSIS_INVALID",

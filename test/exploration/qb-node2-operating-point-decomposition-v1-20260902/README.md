@@ -25,6 +25,6 @@
 python3 test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py
 ```
 
-分析脚本只读取预先登记的 raw/deck/model/manifest，计算 KCL、窗口统计、strict local compatibility、exact-grid 差异和 supporting scalar；它只调用 `scripts/josim-plot2.py` 生成本目录内的那一张图。
+分析脚本只读取预先登记的 raw/deck/model/manifest，计算 KCL、窗口统计、strict local compatibility、exact-grid 差异和 supporting scalar；本次修正复用 `scripts/bvmtools` 的 phase/waveform/onset/KCL 原语，未因指标修正而重生成已有关键图。
 
-当前状态：`NODE2_REDISTRIBUTION_SUPPORTED`，`mechanism_disposition: EXPLORATORY`，等待用户 review 后停止。
+当前状态：`COUPLED_INPUT_BJS_NODE2`，`mechanism_disposition: EXPLORATORY`，robustness `MIXED`，等待用户 review 后停止。该标签不证明 causal order；`causal_order: NOT_PROVEN`。

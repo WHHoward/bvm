@@ -69,5 +69,14 @@ I(L2) - I(BJL2) - I(RJ2) - I(L0) = 0
 - W2：`[80,90) ps`；W3：`[95,110) ps`；W4：`[110,130) ps`。
 - 严格 node4 local anchor：activity `[95,115) ps`，post `[115,130) ps`，tail `[125,130) ps`。
 - I0 的严格锚点必须保持 phase `1.0160289228944646 turns`、area `1.0160368344325381 Φ0`、segment `103.0375–110.175 ps`、`CLEAN_ONE_SFQ_CANDIDATE`；若漂移则停止，不得替换为新解释。
-- first-divergence 使用 W2 中心化后的 exact-grid 轨迹、当前任务预注册的 current/phase/partition 阈值；一个 native timestep `0.0125 ps` 内的 crossings 记为 `TIE`。
+- 历史 first-divergence 文字保留在原始记录中；corrective analysis 使用 W2 PRE-only noise reference、实际非均匀采样 persistence，以及 `0.025 ps` 主 tie tolerance，`0.0125 ps` 只作 sensitivity。
 - 完成后状态固定为 `AWAITING_USER_REVIEW / STOP`，不得自动执行 follow-up。
+
+## Corrective patch preflight（2026-09-02T10:56:06+08:00）
+
+- 本修正的 `HEAD BEFORE PATCH` 为 `c5fe0d4`（`analysis: decompose QB node2 operating point`）。
+- 历史事实保留：原始 node2 V1 分析开始时，工作树因本任务输出和前置 human-gate 更新而 dirty；本段不把该历史状态改写为 clean。当前 corrective patch 从已提交的 `c5fe0d4` 开始。
+- 只消费既有 G/I0/P0/Q45/Q68 raw；不调用 JoSIM，不新增 raw，不改变电路、参数、bias、BJs、sweep、路线或 promotion。
+- 旧的 result-dependent 10% first-divergence 结果保留为 `LEGACY_RELATIVE_FINAL_AMPLITUDE_ONSET` sensitivity-only；主方法为只引用 W2 PRE 的 `PRE_NOISE_REFERENCED_ONSET`。
+- 主 persistence 使用实际非均匀采样跨度至少 `0.025 ps` 或 3 个连续样本；`0.0125 ps` 仅记录为 `MINIMUM_OBSERVED_SAMPLE_SPACING`，并保留为 tie sensitivity。
+- 未来规则：`user gate transition → commit gate transition → clean frozen HEAD → new task PREFLIGHT → analysis/experiment execution`。这是后续工作顺序要求，不声称历史任务曾经按此顺序发生。

@@ -28,13 +28,15 @@ Q45 raw SHA-256 为 `cc702632dad106f324004dd429dd94e9a4ad38d0cda300671c29b4ea768
 
 ### 2.3 模型与运行边界
 
-- 分析基线 HEAD：`853a722feaa047bafdc82eb6b6f3c0faa0c432e4`。
+- 原 V1 分析基线 HEAD：`853a722feaa047bafdc82eb6b6f3c0faa0c432e4`；本 corrective patch 的 `HEAD BEFORE PATCH` 为 `c5fe0d4`（完整提交哈希见交付说明）。
 - 记录的 solver：`build/josim-cli` v`2.7.2837d13`，hash `48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2`；本次没有调用。
 - QB snapshot 的原始 hash 为 `5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2`，语义 netlist hash 为 `b026981dbed5b8772ba3f928597d1b0750f133246763ba997caff3094c613063`。
 - `bvm_cell.cir` hash 为 `ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4`；`jjmit.cir` hash 为 `19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336`。
 - 指标规范 `docs/research/METRIC_SPEC_V2.md` hash 为 `f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470`。
 
 ## 3. QB 拓扑、方向与 KCL
+
+范围修正：本报告的 QB KCL 结论只针对 I0 和 P0；G 仅作为 grounded-source reference，不作为 QB KCL case。
 
 实际 QB snapshot 的 branch orientation 是：
 
@@ -53,7 +55,7 @@ node3: I(L1) + I(RB) - I(L2) = 0
 node4: I(L2) - I(BJL2) - I(RJ2) - I(L0) = 0
 ```
 
-电流单位为 µA。KCL 检查阈值为 `0.001 µA`，对每个 case 的 W2 `[80,90) ps`、W3 `[95,110) ps`、W4 `[110,130) ps` 报告 max absolute、p95 absolute 和 RMS residual。结果全部 `KCL_CONSISTENT`；input node 最大残差为 0（P0 局部最高 `1×10^-9 µA`），其余节点最大残差也只有约 `10^-5–5×10^-5 µA`。
+电流单位为 µA。I0 和 P0 满足 QB input/node2/node3/node4 KCL；G 仅用于 grounded-source reference，不作为 QB KCL case。KCL 检查阈值为 `0.001 µA`，对 I0/P0 的 W2 `[80,90) ps`、W3 `[95,110) ps`、W4 `[110,130) ps` 报告 max absolute、p95 absolute 和 RMS residual。结果全部 `KCL_CONSISTENT`；input node 最大残差为 0（P0 局部最高 `1×10^-9 µA`），其余节点最大残差也只有约 `10^-5–5×10^-5 µA`。
 
 代表性残差如下，完整值见 `metrics.json`：
 
@@ -65,6 +67,8 @@ node4: I(L2) - I(BJL2) - I(RJ2) - I(L0) = 0
 | P0/W2 | 9.479e-6 / 7.576e-6 / 4.030e-6 | 6.776e-15 / 6.776e-15 / 3.517e-15 | 9.485e-6 / 7.573e-6 / 4.000e-6 |
 | P0/W3 | 1.000e-5 / 9.000e-6 / 4.524e-6 | 5.000e-6 / 4.000e-6 / 1.958e-6 | 1.200e-5 / 8.000e-6 / 4.287e-6 |
 | P0/W4 | 1.000e-5 / 8.000e-6 / 3.994e-6 | 5.000e-6 / 4.000e-6 / 1.248e-6 | 1.000e-5 / 7.900e-6 / 4.040e-6 |
+
+说明：旧版本此处的“每个 case”是历史文字；corrective metrics 已按要求只对 I0/P0 计算 QB KCL，G 不参与 QB KCL 判定。
 
 ## 4. W2 operating point：read 前稳定状态
 
@@ -170,19 +174,44 @@ P0 最大局部 segment 为约 `106.525–109.6875 ps`，phase `−0.1221278 tur
 
 这组严格结果的 claim ceiling 是 same-JJ local phase/area compatibility。它不表示 event count、SFQ delivery、JTL reception、system Gate 或 hardware behavior。
 
-## 8. I0/P0 first-divergence
+## 8. I0/P0 first-divergence：corrective reanalysis
 
-比较窗口为 `[95,130) ps`，在 W2 中心化后对 I0/P0 做 exact-grid 描述性 crossing。阈值为 current absolute floor `1 µA`、相对 feature scale `10%`、phase `0.05 turns`、partition `0.10`；一个 native timestep `0.0125 ps` 内的 crossing 是 `TIE`。
+旧的 result-dependent 10% 规则保留在 `metrics.json` 的 `legacy_relative_final_amplitude_onset`，仅作 sensitivity view。它不能建立 temporal order，因为 current threshold 使用了 READ 结果自身的 final amplitude。主方法为 `PRE_NOISE_REFERENCED_ONSET`：W2 `[80,90) ps` 是唯一 threshold reference；current threshold=`max(current floor, 5×PRE W2 p99(abs(I0−P0)))`，phase threshold 同理，partition 使用固定 `0.10` absolute fraction，并在除法前应用 `5 µA` denominator floor。ACTIVE/READ 响应不参与阈值估计。
 
-| layer | first resolved time |
-|---|---:|
-| L2_node2 | 95.2 ps（最早是 node2 partition feature） |
-| L0_input_source | 97.9 ps |
-| L1_BJs | 97.9 ps，与 L0 tie |
-| L3_node3 | 98.3375 ps |
-| L4_node4_output | 98.3375 ps，与 L3 tie |
+时间网格非均匀，`dt_min≈0.0125 ps`、`dt_max≈0.025 ps`；`0.0125 ps` 只标作 `MINIMUM_OBSERVED_SAMPLE_SPACING`，不是 universal resolution。主 persistence 采用“实际采样跨度至少 `0.025 ps` 或 3 个连续样本”，每个 crossing 在 `metrics.json` 中记录实际跨度；另列 1-sample、3-sample 和 `0.0125/0.025 ps` tie sensitivity。
 
-因此可做的最小描述是：在当前 raw 和当前预注册归一化规则下，node2 partition 的差异先被解析出来；随后输入/BJs、node3 和 node4 也出现差异。这个 crossing 不是 causal proof，`persistence_samples=1` 也不应被误读为稳定事件。
+主配置（current floor `1 µA`、phase floor `0.05 turns`、time-aware persistence、tie `0.025 ps`）的首层为 input/BJs `95.075 ps`，node2 `95.0875 ps`；三者在 `0.025 ps` tie tolerance 下同属首组。因此主配置的 implied ordering 是 `COUPLED_INPUT_BJS_NODE2`，不是 node2-only。
+
+固定 robustness matrix 共 24 个配置；下表逐项列出 first time/layer、首个 tie group 和 implied classification。`C`=`COUPLED_INPUT_BJS_NODE2`，`I`=`INPUT_BJS_LIMITATION_SUPPORTED`。
+
+| current floor | phase floor | persistence | tie (ps) | first time/layer | first tie group | implied |
+|---:|---:|---|---:|---|---|---|
+| 1 | 0.05 | 1 sample | 0.0125 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.05 | 1 sample | 0.025 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.05 | 3 samples | 0.0125 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.05 | 3 samples | 0.025 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.05 | time-aware primary | 0.0125 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.05 | time-aware primary | 0.025 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.10 | 1 sample | 0.0125 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.10 | 1 sample | 0.025 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.10 | 3 samples | 0.0125 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.10 | 3 samples | 0.025 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.10 | time-aware primary | 0.0125 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 1 | 0.10 | time-aware primary | 0.025 | 95.075 / L0,L1 | L0,L1,L2 | C |
+| 2 | 0.05 | 1 sample | 0.0125 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.05 | 1 sample | 0.025 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.05 | 3 samples | 0.0125 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.05 | 3 samples | 0.025 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.05 | time-aware primary | 0.0125 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.05 | time-aware primary | 0.025 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.10 | 1 sample | 0.0125 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.10 | 1 sample | 0.025 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.10 | 3 samples | 0.0125 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.10 | 3 samples | 0.025 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.10 | time-aware primary | 0.0125 | 95.25 / L0,L1 | L0,L1 | I |
+| 2 | 0.10 | time-aware primary | 0.025 | 95.25 / L0,L1 | L0,L1 | I |
+
+因此 robustness summary=`MIXED`（12 C、12 I），不能把“node2 是稳健最早层”作为结论。该 ordering 仍是 descriptive only，不是 causal proof。
 
 ## 9. G→I0 replay closure
 
@@ -205,11 +234,13 @@ Q45/Q68 每个 pulse 独立计算 scalar；不和 G/I0/P0 做 pointwise comparis
 
 ## 11. 结果分类与边界
 
-允许的分类中，本次为：
+允许的分类中，旧结果为 `NODE2_REDISTRIBUTION_SUPPORTED`；corrective reanalysis 后为：
 
-`NODE2_REDISTRIBUTION_SUPPORTED`
+`COUPLED_INPUT_BJS_NODE2`
 
-理由是：BJs 在 P0 中有局部活动；最早 resolved difference 出现在 node2 partition；RB 在 I0/P0 保持 35 µA；node3/node4 随 L1/L2 的变化出现后续轨迹差异。分类仅是当前 raw 的探索性机制描述，`mechanism_disposition=EXPLORATORY`，不是 accepted scientific authority。
+理由是：BJs 在 P0 中有局部活动，node2/downstream difference observation 成立，但 PRE-noise robustness matrix 同时出现 input/BJs 首组和 input/BJs+node2 tie，summary=`MIXED`。因此只能保留 coupled exploratory description，`mechanism_disposition=EXPLORATORY`，`causal_order=NOT_PROVEN`，不是 accepted scientific authority。
+
+独立强观察：`NODE2_REDISTRIBUTION_DIFFERENCE_OBSERVED=true`。BJL1 current/phase、L1 separation、稳定 RB、L2 downstream separation 以及 I0 clean/P0 subthreshold 的 BJL2 local contrast 均成立；这不依赖 first-divergence 顺序。
 
 ### Observed
 
@@ -217,11 +248,11 @@ Q45/Q68 每个 pulse 独立计算 scalar；不和 G/I0/P0 做 pointwise comparis
 
 ### Derived
 
-由实际 netlist branch orientation 得到的 KCL；非均匀网格上的 trapezoidal signed/positive/negative integrals；phase unwrap 后的 turns；strict local same-JJ phase/area arithmetic；预注册阈值下的 first-divergence 时间。
+由实际 netlist branch orientation 得到的 KCL；非均匀网格上的 trapezoidal signed/positive/negative integrals；phase unwrap 后的 turns；strict local same-JJ phase/area arithmetic；PRE-noise threshold 与 persistence matrix 的 first-divergence 时间。
 
 ### Inference
 
-本组条件下，差异首先表现为 node2 内部支路重新分配，node3 在固定 RB 下跟随变化，node4/output 随后变化。
+本组条件下，RB 保持 35 µA，node3 随 L1/L2 改变；node2/downstream difference 是明确观察，但 onset robustness MIXED，不能将 node2 写成稳健的最早层或唯一原因。
 
 ### Unknown
 
@@ -231,4 +262,4 @@ Q45/Q68 每个 pulse 独立计算 scalar；不和 G/I0/P0 做 pointwise comparis
 
 本报告不证明：唯一 root cause、最佳参数、论文 Fig.7 topology、Formal BVM→QB Gate、JTL/T1 delivery、hardware behavior、universal impossibility 或 SFQ count。
 
-未执行的后续最多三个，已列于 `RESULT_BRIEF.md`；本任务不自动启动它们。当前状态为 `AWAITING_USER_REVIEW / STOP`。
+本 corrective patch 不执行 follow-up。当前状态为 `AWAITING_USER_REVIEW / STOP`。

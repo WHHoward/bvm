@@ -40,6 +40,38 @@ def _integral_or_zero(values: Sequence[float], times: Sequence[float]) -> float:
     return 0.0 if len(values) < 2 else trapezoid_integral(values, times)
 
 
+def percentile(values: Sequence[float], fraction: float) -> float:
+    """Return a deterministic linearly interpolated sample percentile."""
+
+    if not 0.0 <= float(fraction) <= 1.0:
+        raise ValueError("fraction must be between 0 and 1")
+    ordered = sorted(float(value) for value in values)
+    if not ordered:
+        raise ValueError("percentile requires at least one value")
+    rank = (len(ordered) - 1) * float(fraction)
+    lower = math.floor(rank)
+    upper = math.ceil(rank)
+    if lower == upper:
+        return ordered[lower]
+    weight = rank - lower
+    return ordered[lower] + (ordered[upper] - ordered[lower]) * weight
+
+
+def zero_crossing_count(values: Sequence[float]) -> int:
+    """Count sign changes while ignoring exact zero samples."""
+
+    previous = 0
+    count = 0
+    for value in values:
+        sign = 1 if float(value) > 0.0 else -1 if float(value) < 0.0 else 0
+        if sign == 0:
+            continue
+        if previous and sign != previous:
+            count += 1
+        previous = sign
+    return count
+
+
 def waveform_metrics(
     times: Sequence[float],
     values: Sequence[float],
@@ -68,8 +100,13 @@ def waveform_metrics(
         "maximum": max(y),
         "p2p": max(y) - min(y),
         "mean": sum(y) / len(y),
+        "median": percentile(y, 0.5),
         "rms": math.sqrt(sum(value * value for value in y) / len(y)),
         "max_abs": max(abs(value) for value in y),
+        "positive_occupancy": sum(value > 0.0 for value in y) / len(y),
+        "negative_occupancy": sum(value < 0.0 for value in y) / len(y),
+        "zero_occupancy": sum(value == 0.0 for value in y) / len(y),
+        "zero_crossing_count": zero_crossing_count(y),
         "signed_time_integral": signed_area,
         "positive_area": positive_area,
         "negative_area": negative_area,
@@ -132,12 +169,19 @@ def waveform_window_metrics(
         "maximum": float(base["maximum"]) * value_factor,
         "p2p": float(base["p2p"]) * value_factor,
         "mean": float(base["mean"]) * value_factor,
+        "median": float(base["median"]) * value_factor,
         "rms": float(base["rms"]) * value_factor,
         "max_abs": float(base["max_abs"]) * value_factor,
+        "positive_occupancy": float(base["positive_occupancy"]),
+        "negative_occupancy": float(base["negative_occupancy"]),
+        "zero_occupancy": float(base["zero_occupancy"]),
+        "zero_crossing_count": int(base["zero_crossing_count"]),
         "peak_value": float(base["peak_value"]) * value_factor,
         "peak_time_s": float(base["peak_time"]),
         "minimum_value": float(base["minimum_value"]) * value_factor,
         "minimum_time_s": float(base["minimum_time"]),
+        "window_start_s": float(selected_times[0]),
+        "window_last_sample_s": float(selected_times[-1]),
         "signed_time_integral": float(base["signed_time_integral"]) * area_factor,
         "positive_area": float(base["positive_area"]) * area_factor,
         "negative_area": float(base["negative_area"]) * area_factor,

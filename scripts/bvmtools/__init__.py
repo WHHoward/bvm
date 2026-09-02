@@ -11,6 +11,13 @@ from .compare import (
     compare_windowed_series,
     exact_time_grid_identity,
 )
+from .kcl import kcl_window_metrics, linear_kcl_residual
+from .onset import (
+    first_persistent_exceedance,
+    p99,
+    pre_noise_referenced_threshold,
+    tie_groups,
+)
 from .phase import (
     MonotonicSegment,
     continuous_unwrap,
@@ -28,6 +35,7 @@ from .provenance import (
 from .raw import DuplicateColumnError, RawTrace, RawTraceError, read_csv
 from .sfq import PHI0, StrictLocalEventSpec, strict_event_summary, strict_segment_metrics
 from .waveform import waveform_metrics, waveform_window_metrics
+from .waveform import percentile, zero_crossing_count
 
 __all__ = [
     "DuplicateColumnError",
@@ -42,11 +50,17 @@ __all__ = [
     "continuous_unwrap",
     "exact_time_grid_identity",
     "file_snapshot",
+    "first_persistent_exceedance",
     "git_snapshot",
+    "kcl_window_metrics",
+    "linear_kcl_residual",
     "monotonic_segments",
     "phase_delta_rad",
     "phase_delta_turns",
     "phase_window_metrics",
+    "percentile",
+    "p99",
+    "pre_noise_referenced_threshold",
     "read_csv",
     "sha256_file",
     "solver_provenance",
@@ -54,4 +68,6 @@ __all__ = [
     "strict_segment_metrics",
     "waveform_metrics",
     "waveform_window_metrics",
+    "zero_crossing_count",
+    "tie_groups",
 ]

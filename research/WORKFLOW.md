@@ -3,7 +3,7 @@ title: JoSIM × BVM 双代理研究工作流
 document_type: workflow
 protocol: josim-handoff/v1
 status: active
-last_updated: 2026-08-11
+last_updated: 2026-09-02
 ---
 
 # JoSIM × BVM 双代理研究工作流
@@ -386,6 +386,8 @@ Claude 不得用 stash/reset/clean 消除用户或其他代理的修改。reques
 - `REQUIRE_CLEAN`：任何预存改动都阻塞执行；
 - `ALLOW_NONOVERLAP`：允许预存改动，但它们不得与 read/write/frozen 作用域冲突；
 在 `ALLOW_NONOVERLAP` 下，Claude 必须把发行时的 `baseline/git-status.txt` 与当前状态比较；新出现的非本任务改动、作用域重叠或无法归属的文件都应阻塞。审计 diff 应相对冻结基线和 scope hashes，而不是假定 `git diff` 中所有内容都来自 Claude。
+
+未来默认顺序：`user gate transition → commit gate transition → clean frozen HEAD → new task PREFLIGHT → analysis/experiment execution`。这是一条后续流程规则；不得用它改写既有任务曾经从 dirty 工作树开始的历史事实。
 
 ## 11. 并行执行规则
 

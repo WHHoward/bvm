@@ -6,6 +6,7 @@ from __future__ import annotations
 import math
 import sys
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -126,6 +127,11 @@ class StrictEventListTests(unittest.TestCase):
             [int(item["direction"]) for item in result["complete_events"]],
             [1, -1, 1],
         )
+
+    def test_post_hoc_provenance_is_metadata_only(self) -> None:
+        spec = replace(_spec(), provenance_status="POST_HOC_EXPLORATORY")
+        self.assertTrue(spec.classification_ready)
+        self.assertEqual(spec.metadata()["provenance_status"], "POST_HOC_EXPLORATORY")
 
 
 if __name__ == "__main__":

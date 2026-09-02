@@ -55,6 +55,7 @@ class StrictLocalEventSpec:
     id: str | None = None
     scope: str | None = None
     status: str | None = None
+    provenance_status: str | None = None
     mapping_status: str | None = None
     phase_column: str | None = None
     voltage_column: str | None = None
@@ -79,6 +80,7 @@ class StrictLocalEventSpec:
             id=_optional_text(raw.get("id")),
             scope=_optional_text(raw.get("scope")),
             status=_optional_text(raw.get("status")),
+            provenance_status=_optional_text(raw.get("provenance_status")),
             mapping_status=_optional_text(raw.get("mapping_status")),
             phase_column=_optional_text(raw.get("phase_column")),
             voltage_column=_optional_text(raw.get("voltage_column")),
@@ -187,6 +189,7 @@ class StrictLocalEventSpec:
             "id": self.id,
             "scope": self.scope,
             "status": self.status,
+            "provenance_status": self.provenance_status,
             "mapping_status": self.mapping_status,
             "phase_column": self.phase_column,
             "voltage_column": self.voltage_column,

@@ -129,6 +129,11 @@ signals:
 
 analysis:
   script: analysis/analyze.py
+  independent_recheck: analysis/independent_recheck.py
+  focused_tests:
+    - analysis/test_analyze.py
+    - env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test/tools/test_bvmtools.py
+    - env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test/plot/test_josim_plot2.py
   outputs:
     - analysis/metrics.json
     - analysis/provenance.json

@@ -53,7 +53,11 @@ def rel(path: Path) -> str:
 
 def resolve(value: str) -> Path:
     path = Path(value)
-    return path if path.is_absolute() else (ROOT / path).resolve()
+    if path.is_absolute():
+        return path
+    if path.parts and path.parts[0] in {"docs", "circuits", "scripts", "build", "test"}:
+        return (REPO / path).resolve()
+    return (ROOT / path).resolve()
 
 
 def load_config() -> dict[str, Any]:
@@ -512,9 +516,9 @@ PLOT_SPECS = [
     ("I(P0 · Lin input)", "P0", "I(LIN|XBQ)"),
     ("I(RP · replay input)", "RP", "I(I_REPLAY)"),
     ("I(I0 · replay input)", "I0", "I(I_REPLAY)"),
-    ("P(P0 · BJs)", "P0", "P(BJs|XBQ)"),
-    ("P(RP · BJs)", "RP", "P(BJs|XBQ)"),
-    ("P(I0 · BJs)", "I0", "P(BJs|XBQ)"),
+    ("P(P0 · BJs)", "P0", "P(BJS|XBQ)"),
+    ("P(RP · BJs)", "RP", "P(BJS|XBQ)"),
+    ("P(I0 · BJs)", "I0", "P(BJS|XBQ)"),
     ("P(P0 · BJL1)", "P0", "P(BJL1|XBQ)"),
     ("P(RP · BJL1)", "RP", "P(BJL1|XBQ)"),
     ("P(I0 · BJL1)", "I0", "P(BJL1|XBQ)"),
@@ -538,16 +542,25 @@ def write_plot(traces: Mapping[str, RawTrace], config: Mapping[str, Any]) -> dic
     input_path = ANALYSIS / "plot_input.csv"
     output_path = PLOTS / "RESULT_OVERVIEW.html"
     columns = [label for label, _case, _signal in PLOT_SPECS]
+    # Cache every selected series before writing rows.  Recomputing a complete
+    # continuous unwrap inside the row loop would turn this derived-artifact
+    # writer into an accidental O(N^2) operation for the 13,599-sample raw.
+    series_cache: dict[tuple[str, str], tuple[float, ...]] = {}
+    for _label, case, signal in PLOT_SPECS:
+        key = (case, signal)
+        if key not in series_cache:
+            series_cache[key] = (
+                phase_radians(traces[case], signal, config)
+                if phase_unit(signal)
+                else selected(traces[case], signal, config)
+            )
     with input_path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["time", *columns])
         for index, time_value in enumerate(traces["P0"].time):
             row: list[float] = [time_value]
             for _label, case, signal in PLOT_SPECS:
-                if phase_unit(signal):
-                    row.append(phase_radians(traces[case], signal, config)[index])
-                else:
-                    row.append(selected(traces[case], signal, config)[index])
+                row.append(series_cache[(case, signal)][index])
             writer.writerow(row)
     command = [
         sys.executable,
@@ -678,7 +691,7 @@ def strict_row(case: str, value: Mapping[str, Any]) -> str:
         f"[{fmt(segment.get('start_time_ps'))}, {fmt(segment.get('end_time_ps'))}] ps | "
         f"{fmt(segment.get('phase_reported_turns'))} | {fmt(segment.get('area_reported_turns'))} | "
         f"{fmt(segment.get('phase_area_residual_turns'))} | {fmt(value.get('complete_segment_count'))} | "
-        f"{fmt(value.get('second_complete_segment_present'))} | {fmt(post.get('bounded'))} |"
+        f"{str(value.get('second_complete_segment_present'))} | {fmt(post.get('bounded'))} |"
     )
 
 
@@ -834,7 +847,7 @@ def write_reports(
         "",
         "## 9. Visualization and stop",
         "",
-        f"- 唯一图：`{plot['path']}`；`{plot['style']}`，`{plot['profile']}`，{plot['group_count']} groups / {plot['signal_count']} key traces。",
+        f"- 唯一图：`{plot.get('plot_path', plot.get('path'))}`；`{plot['style']}`，`{plot['profile']}`，{plot['group_count']} groups / {plot['signal_count']} key traces。",
         f"- 最终 workflow：`{metrics['workflow']['state']}`，`{metrics['workflow']['next_action']}`；user_reviewed=false，next_step_authorized=false，automatic flags=false。",
     ]
     (ANALYSIS / "REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -947,6 +960,9 @@ def main() -> int:
         "task_id": config["id"],
         "generated_at": metrics["generated_at"],
         "repository": git_snapshot(REPO),
+        "head_before_gate_transition": config["head_before_gate_transition"],
+        "authorization_gate_transition_commit": config["authorization_gate_transition_commit"],
+        "preflight_head": config["preflight_head"],
         "preflight_base_after_authorization": config["base_head_after_authorization"],
         "solver": solver_provenance(REPO / config["fixed_conditions"]["solver"], cwd=REPO),
         "metric_spec": file_snapshot(metric_path, relative_to=REPO),
@@ -964,6 +980,7 @@ def main() -> int:
             "execution": execution,
         },
         "analysis_scripts": {rel(path): sha256_file(path) for path in analysis_script_paths},
+        "independent_review": file_snapshot(ANALYSIS / "independent_review.json", relative_to=REPO) if (ANALYSIS / "independent_review.json").is_file() else None,
         "commands": {
             "deck_generation": "python3 analysis/build_replay_deck.py",
             "science_run": execution.get("command"),
@@ -988,7 +1005,7 @@ def main() -> int:
         "pre_state": pre_result["status"],
         "strict_RP": metric_strict["RP"].get("compatibility_classification"),
         "strict_P0": metric_strict["P0"].get("compatibility_classification"),
-        "plot": plot.get("path"),
+        "plot": plot.get("plot_path", plot.get("path")),
     }, ensure_ascii=False, indent=2))
     return 0
 

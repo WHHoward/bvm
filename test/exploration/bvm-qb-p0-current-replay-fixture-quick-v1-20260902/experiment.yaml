@@ -4,6 +4,9 @@ tier: Exploration
 mode: ONE_RUN_QUICK_PROBE
 new_science_run_count: 1
 base_head_after_authorization: 0ab139aca7f452faf93cf6d81e3f30be714a7e51
+head_before_gate_transition: 4b2bb3cd8df6232e145a30d7f529b8782a363abd
+authorization_gate_transition_commit: 0ab139aca7f452faf93cf6d81e3f30be714a7e51
+preflight_head: e5e3e878edb1a016d66e896840609d7dfbac54d9
 
 question: >-
   在固定 13 ps、12×320、logical1/read、Lin=0.8 pH scaled-QB 条件下，
@@ -120,11 +123,11 @@ signals:
     - I(L2|XBQ)
     - I(BJL2|XBQ)
   pre_phases:
-    - P(BJs|XBQ)
+    - P(BJS|XBQ)
     - P(BJL1|XBQ)
     - P(BJL2|XBQ)
   primary_trajectory:
-    - P(BJs|XBQ)
+    - P(BJS|XBQ)
     - I(BJL1|XBQ)
     - P(BJL1|XBQ)
     - I(L1|XBQ)
@@ -187,7 +190,7 @@ strict_event:
   metric_spec:
     path: docs/research/METRIC_SPEC_V2.md
     version: 2.0.0
-    sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74b8b7bb7f0be470
+    sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
   activity_window_ps: [95, 115]
   post_window_ps: [115, 130]
   post_tail_window_ps: [125, 130]

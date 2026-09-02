@@ -156,7 +156,7 @@ def main() -> int:
                 continue
             denominator = float(i0_gap["rms"])
             ratio = float(rp_gap["rms"]) / denominator if denominator > 1.0e-9 else None
-            reported = metrics["trajectory_closure"][window_name][signal]
+            reported = metrics["trajectory_closure"]["records"][window_name][signal]
             checks.append({
                 "name": f"closure {window_name} {signal}",
                 "pass": ratio is None or abs(ratio - float(reported["C_x"])) <= 1.0e-9,

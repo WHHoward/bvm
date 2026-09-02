@@ -1,0 +1,172 @@
+id: QB_NODE2_OPERATING_POINT_DECOMPOSITION_V1
+date_directory: qb-node2-operating-point-decomposition-v1-20260902
+tier: Exploration
+mode: EXISTING_RAW_ONLY
+analysis_only: true
+no_new_josim: true
+no_circuit_change: true
+no_parameter_change: true
+no_historical_raw_rewrite: true
+question: >-
+  在固定 13 ps、12x320、logical1/read、scaled QB 条件下，分解 G、I0、P0
+  的 QB 输入、节点2、节点3 和节点4轨迹，判断当前 raw 是否支持
+  INPUT_BJS_LIMITATION、NODE2_REDISTRIBUTION 或耦合的探索性机制描述。
+authorization:
+  previous_experiment: BVM_QB_LIN_REMOVAL_MATCHED_PAIR_QUICK_V1
+  previous_outcome: QUICK_NO_EFFECT
+  previous_gate_reviewed: true
+  authorized_scope: QB_NODE2_OPERATING_POINT_DECOMPOSITION_V1 existing-raw-only analysis
+  not_authorized:
+    - new JoSIM run
+    - BJs Ic or bias experiment
+    - parameter sweep or optimization
+    - topology or route change
+    - promotion or Formal BVM-to-QB Gate
+    - magnetic coupling continuation
+primary_cases:
+  G:
+    role: grounded_source
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv
+    deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/source/13ps/12x320/logical1_read.cir
+    meaning: canonical BVM -> 12x320 JSL -> ground source reference
+  I0:
+    role: ideal_current_replay
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv
+    deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir
+    meaning: exact frozen G source waveform replayed into scaled QB
+  P0:
+    role: physical_bvm_jls_qb
+    raw: test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv
+    deck: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir
+    meaning: BVM -> 12x320 JSL -> scaled QB physical connection
+supporting_cases:
+  Q45:
+    role: historical_supporting_reference
+    raw: test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv
+    deck: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-45u.cir
+    input_uA: 45.0
+  Q68:
+    role: historical_supporting_reference
+    raw: test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv
+    deck: test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir
+    input_uA: 68.4
+supporting_authority: >-
+  Raw and Q0 manifest provenance are checked. Q45/Q68 retain historical
+  supporting-reference status because their source task uses a periodic
+  0.1 ps standalone fixture and an unfrozen local diagnostic rule. They are
+  not pointwise-comparable to G/I0/P0 and do not supply mechanism authority.
+qb_topology:
+  source: test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/bq_cell.cir
+  subcircuit: BQ IN OUT IB
+  parameters:
+    Lin_pH: 0.8
+    L0_pH: 1.323
+    L1_pH: 3.91
+    L2_pH: 3.91
+    BJs_area: 0.5
+    BJL1_area: 0.36
+    BJL2_area: 0.54
+    RJ1_ohm: 33.0
+    RJ2_ohm: 22.0
+    RB_ohm: 6.0
+    IBIAS_uA: 35.0
+    RLOAD_ohm: 10.0
+  branch_orientation_from_netlist:
+    Lin: IN -> 1
+    BJs: 1 -> 2
+    BJL1: 2 -> 0
+    RJ1: 2 -> 0
+    L1: 2 -> 3
+    RB: IB -> 3
+    L2: 3 -> 4
+    BJL2: 4 -> 0
+    RJ2: 4 -> 0
+    L0: 4 -> OUT
+  kcl:
+    node2: I(BJS) - I(BJL1) - I(RJ1) - I(L1) = 0
+    node3: I(L1) + I(RB) - I(L2) = 0
+    node4: I(L2) - I(BJL2) - I(RJ2) - I(L0) = 0
+    input_node: I(LIN) - I(BJS) = 0
+    numerical_abs_tolerance_uA: 0.001
+windows_ps:
+  W2_pre_read_idle: [80.0, 90.0]
+  W3_read: [95.0, 110.0]
+  W4_post_read_observation: [110.0, 130.0]
+  node4_strict_activity: [95.0, 115.0]
+  node4_strict_post: [115.0, 130.0]
+  node4_strict_tail: [125.0, 130.0]
+  semantics: half_open_actual_csv_time
+strict_local_anchor:
+  scope: task-local
+  profile: STRICT_EVENT_ANCHOR_COMPATIBILITY_V1
+  phase: P(BJL2|XBQ)
+  voltage: V(BJL2|XBQ)
+  activity_window_ps: [95.0, 115.0]
+  post_window_ps: [115.0, 130.0]
+  post_tail_window_ps: [125.0, 130.0]
+  tolerance:
+    phase_area_residual_abs_floor_turns: 0.05
+    phase_area_residual_relative: 0.10
+    complete_min_turns: 1.0
+    clean_upper_turns: 1.15
+    post_range_max_turns: 1.0
+    post_tail_p2p_max_turns: 0.25
+  claim_ceiling: same-JJ local phase/area compatibility only
+  forbidden_interpretations:
+    - SFQ count
+    - downstream JTL delivery
+    - system Gate
+    - hardware behavior
+first_divergence:
+  comparison: I0 versus P0 exact_grid
+  analysis_window_ps: [95.0, 130.0]
+  persistence_samples: 1
+  tie_resolution_ps: 0.0125
+  thresholds:
+    current_abs_uA: 1.0
+    current_relative_to_pair_max: 0.10
+    phase_abs_turns: 0.05
+    partition_abs_fraction: 0.10
+  layers:
+    L0_input_source: I(LIN|XBQ)
+    L1_BJs: [I(BJS|XBQ), P(BJS|XBQ)]
+    L2_node2: [I(BJL1|XBQ), I(RJ1|XBQ), I(L1|XBQ)]
+    L3_node3: [I(L1|XBQ), I(RB|XBQ), I(L2|XBQ)]
+    L4_node4_output: [I(L2|XBQ), I(BJL2|XBQ), I(RJ2|XBQ), I(L0|XBQ), P(BJL2|XBQ)]
+  interpretation: >-
+    A crossing is a descriptive normalized trajectory difference, not a causal
+    proof. Crossings within one declared native timestep are TIE.
+q_reference:
+  no_pointwise_comparison: true
+  scalar_only: true
+  pulse_starts_ps: [10.0, 60.0, 110.0, 160.0, 210.0, 260.0]
+  activity_rule: '[s, s+25)'
+  post_rule: '[s+25, min(s+49, 300))'
+visualization:
+  exactly_one: true
+  output: plots/RESULT_OVERVIEW.html
+  renderer: scripts/josim-plot2.py
+  style: CLASSIC_LOCKED
+  layout: sep_comb
+  color: dark
+  phase_display: -j 2pi
+  key_groups:
+    - I(BJS|XBQ)
+    - P(BJS|XBQ)
+    - I(BJL1|XBQ)
+    - I(L1|XBQ)
+    - I(RB|XBQ)
+    - I(L2|XBQ)
+    - P(BJL1|XBQ)
+    - P(BJL2|XBQ)
+  note: One compact descriptive overview; no dashboard and no exhaustive matrix.
+mechanism_classifications_allowed:
+  - NODE2_REDISTRIBUTION_SUPPORTED
+  - INPUT_BJS_LIMITATION_SUPPORTED
+  - COUPLED_INPUT_BJS_NODE2
+  - NO_CLEAR_DISCRIMINATION
+  - ANALYSIS_INVALID
+mechanism_disposition: EXPLORATORY
+stop_rule: >-
+  Finish existing-raw analysis, one compact overview, independent numerical and
+  adversarial review, then AWAITING_USER_REVIEW / STOP. Do not execute follow-up.

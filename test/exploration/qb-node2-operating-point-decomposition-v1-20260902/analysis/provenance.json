@@ -1,0 +1,774 @@
+{
+  "analysis_script": {
+    "bytes": 54517,
+    "path": "/home/howard/JoSIM/test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py",
+    "relative_path": "test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py",
+    "sha256": "fbf189f585971e17cf574c0b438065bdb7ee81f8f90c96a5e1a62de7144026be"
+  },
+  "branch_orientation": {
+    "BJL1": "2 -> 0",
+    "BJL2": "4 -> 0",
+    "BJs": "1 -> 2",
+    "L0": "4 -> OUT",
+    "L1": "2 -> 3",
+    "L2": "3 -> 4",
+    "Lin": "IN -> 1",
+    "RB": "IB -> 3",
+    "RJ1": "2 -> 0",
+    "RJ2": "4 -> 0"
+  },
+  "config": {
+    "bytes": 6190,
+    "path": "/home/howard/JoSIM/test/exploration/qb-node2-operating-point-decomposition-v1-20260902/experiment.yaml",
+    "relative_path": "test/exploration/qb-node2-operating-point-decomposition-v1-20260902/experiment.yaml",
+    "sha256": "57984fd09b16ef533328551714afca412a792fda7194091817960b2a5c261ebd"
+  },
+  "first_divergence": {
+    "analysis_window_ps": [
+      95.0,
+      130.0
+    ],
+    "comparison": "I0 versus P0 exact_grid",
+    "interpretation": "A crossing is a descriptive normalized trajectory difference, not a causal proof. Crossings within one declared native timestep are TIE.",
+    "layers": {
+      "L0_input_source": "I(LIN|XBQ)",
+      "L1_BJs": [
+        "I(BJS|XBQ)",
+        "P(BJS|XBQ)"
+      ],
+      "L2_node2": [
+        "I(BJL1|XBQ)",
+        "I(RJ1|XBQ)",
+        "I(L1|XBQ)"
+      ],
+      "L3_node3": [
+        "I(L1|XBQ)",
+        "I(RB|XBQ)",
+        "I(L2|XBQ)"
+      ],
+      "L4_node4_output": [
+        "I(L2|XBQ)",
+        "I(BJL2|XBQ)",
+        "I(RJ2|XBQ)",
+        "I(L0|XBQ)",
+        "P(BJL2|XBQ)"
+      ]
+    },
+    "persistence_samples": 1,
+    "thresholds": {
+      "current_abs_uA": 1.0,
+      "current_relative_to_pair_max": 0.1,
+      "partition_abs_fraction": 0.1,
+      "phase_abs_turns": 0.05
+    },
+    "tie_resolution_ps": 0.0125
+  },
+  "generated_at": "2026-09-02T10:27:54+08:00",
+  "historical_boundary": {
+    "old_audit": "test/exploration/qb-ideal-physical-internal-trajectory-audit-v1-20260825",
+    "old_audit_use": "historical motivation only; not authoritative because of D12 RUN_INPUT_HASH_MISMATCH and replay-source semantic limitation"
+  },
+  "kcl_equations": {
+    "input_node": "I(LIN) - I(BJS) = 0",
+    "node2": "I(BJS) - I(BJL1) - I(RJ1) - I(L1) = 0",
+    "node3": "I(L1) + I(RB) - I(L2) = 0",
+    "node4": "I(L2) - I(BJL2) - I(RJ2) - I(L0) = 0",
+    "numerical_abs_tolerance_uA": 0.001
+  },
+  "metric_spec": {
+    "bytes": 17057,
+    "path": "/home/howard/JoSIM/docs/research/METRIC_SPEC_V2.md",
+    "relative_path": "docs/research/METRIC_SPEC_V2.md",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "models": {
+    "bvm_current_canonical": {
+      "bytes": 2234,
+      "path": "/home/howard/JoSIM/circuits/bvm/bvm_cell.cir",
+      "relative_path": "circuits/bvm/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    },
+    "bvm_parent_snapshot": {
+      "bytes": 2234,
+      "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/bvm_cell.cir",
+      "relative_path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    },
+    "jjmit_current_canonical": {
+      "bytes": 504,
+      "path": "/home/howard/JoSIM/circuits/models/jjmit.cir",
+      "relative_path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "jjmit_parent_snapshot": {
+      "bytes": 504,
+      "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/jjmit.cir",
+      "relative_path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    }
+  },
+  "no_circuit_change": true,
+  "no_historical_raw_rewrite": true,
+  "no_new_josim": true,
+  "no_parameter_change": true,
+  "primary_decks": {
+    "G": {
+      "bytes": 1588,
+      "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/source/13ps/12x320/logical1_read.cir",
+      "relative_path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/source/13ps/12x320/logical1_read.cir",
+      "sha256": "fd8e73d406ac3acf496cb641b3cf4fcc1a79d46bd3871a24b321c7c1c8a1e0a9"
+    },
+    "I0": {
+      "bytes": 505570,
+      "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir",
+      "relative_path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir",
+      "sha256": "c8260125fa2b39533d6d64507134b7bbeffaaf00bbbfb18e9e53103ed14945a1"
+    },
+    "P0": {
+      "bytes": 1952,
+      "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir",
+      "relative_path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir",
+      "sha256": "afd9f65aaadc15db25d0a34de5bea37ce9f81be3afa261ca946e432868187e0e"
+    }
+  },
+  "primary_raw": {
+    "G": {
+      "bytes": 10016300,
+      "dt_max_ps": 0.024999999999999994,
+      "dt_min_ps": 0.012499999999977985,
+      "header_sha256": "707bc6bc0f8cee587c6baa986c3c8132dc5d1b73c65db19b59a7390ee490aed3",
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+      "qa": {
+        "dt_max": 2.4999999999999994e-14,
+        "dt_min": 1.2499999999977985e-14,
+        "duplicate_columns": {
+          "I(B_LD1)": 2,
+          "I(B_LD12)": 2
+        },
+        "headers": [
+          "time",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "V(N6|XBVM1)",
+          "V(SL1)",
+          "V(NJSL11)",
+          "I(L_PSL|XBVM1)",
+          "I(L_SL|XBVM1)",
+          "I(B_LD1)",
+          "I(B_LD12)",
+          "P(B_LD1)",
+          "V(B_LD1)",
+          "I(B_LD1)",
+          "P(B_LD2)",
+          "V(B_LD2)",
+          "I(B_LD2)",
+          "P(B_LD3)",
+          "V(B_LD3)",
+          "I(B_LD3)",
+          "P(B_LD4)",
+          "V(B_LD4)",
+          "I(B_LD4)",
+          "P(B_LD5)",
+          "V(B_LD5)",
+          "I(B_LD5)",
+          "P(B_LD6)",
+          "V(B_LD6)",
+          "I(B_LD6)",
+          "P(B_LD7)",
+          "V(B_LD7)",
+          "I(B_LD7)",
+          "P(B_LD8)",
+          "V(B_LD8)",
+          "I(B_LD8)",
+          "P(B_LD9)",
+          "V(B_LD9)",
+          "I(B_LD9)",
+          "P(B_LD10)",
+          "V(B_LD10)",
+          "I(B_LD10)",
+          "P(B_LD11)",
+          "V(B_LD11)",
+          "I(B_LD11)",
+          "P(B_LD12)",
+          "V(B_LD12)",
+          "I(B_LD12)",
+          "I(I_WL1)",
+          "I(I_BL1)",
+          "I(I_SE1)"
+        ],
+        "nan_inf_status": "PASS",
+        "nonuniform_time_grid": true,
+        "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv",
+        "sample_count": 13599,
+        "status": "VALID",
+        "strictly_increasing_time": true,
+        "time_column": "time",
+        "time_end": 1.699875e-10,
+        "time_start": 0.0,
+        "uniform_time_grid": false
+      },
+      "registered_hash_matches": [
+        {
+          "declared_sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de",
+          "source": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv.sha256"
+        }
+      ],
+      "registered_hash_verified": true,
+      "sample_count": 13599,
+      "sha256": "b92056235a06f86fdbc55b670656aecab834ab728d4fc44ba128ca0a30a809de",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/source/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "time_end_ps": 169.9875,
+      "time_start_ps": 0.0
+    },
+    "I0": {
+      "bytes": 3977526,
+      "dt_max_ps": 0.024999999999999994,
+      "dt_min_ps": 0.012499999999977985,
+      "header_sha256": "c917d9f91bc073d0041ba1ef4588948283a48c93329fa74d0e483c40c6ec70eb",
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+      "qa": {
+        "dt_max": 2.4999999999999994e-14,
+        "dt_min": 1.2499999999977985e-14,
+        "duplicate_columns": {},
+        "headers": [
+          "time",
+          "P(BJS|XBQ)",
+          "V(BJS|XBQ)",
+          "I(BJS|XBQ)",
+          "P(BJL1|XBQ)",
+          "V(BJL1|XBQ)",
+          "I(BJL1|XBQ)",
+          "P(BJL2|XBQ)",
+          "V(BJL2|XBQ)",
+          "I(BJL2|XBQ)",
+          "V(IN)",
+          "V(OUT)",
+          "I(LIN|XBQ)",
+          "I(L0|XBQ)",
+          "I(L1|XBQ)",
+          "I(L2|XBQ)",
+          "I(RB|XBQ)",
+          "I(RJ1|XBQ)",
+          "I(RJ2|XBQ)",
+          "I(R_LOAD)",
+          "I(I_IBIAS)",
+          "I(I_REPLAY)"
+        ],
+        "nan_inf_status": "PASS",
+        "nonuniform_time_grid": true,
+        "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv",
+        "sample_count": 13599,
+        "status": "VALID",
+        "strictly_increasing_time": true,
+        "time_column": "time",
+        "time_end": 1.699875e-10,
+        "time_start": 0.0,
+        "uniform_time_grid": false
+      },
+      "registered_hash_matches": [
+        {
+          "declared_sha256": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c",
+          "source": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv.sha256"
+        }
+      ],
+      "registered_hash_verified": true,
+      "sample_count": 13599,
+      "sha256": "be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "time_end_ps": 169.9875,
+      "time_start_ps": 0.0
+    },
+    "P0": {
+      "bytes": 13684878,
+      "dt_max_ps": 0.024999999999999994,
+      "dt_min_ps": 0.012499999999977985,
+      "header_sha256": "08a2df78e50b8b28b2c30ebffac86c4746883ffa1eb4714e525c6a74d4d4b539",
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+      "qa": {
+        "dt_max": 2.4999999999999994e-14,
+        "dt_min": 1.2499999999977985e-14,
+        "duplicate_columns": {
+          "I(B_LD1)": 2,
+          "I(B_LD12)": 2
+        },
+        "headers": [
+          "time",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "V(N6|XBVM1)",
+          "V(SL1)",
+          "V(NJSL11)",
+          "I(L_PSL|XBVM1)",
+          "I(L_SL|XBVM1)",
+          "I(B_LD1)",
+          "I(B_LD12)",
+          "P(B_LD1)",
+          "V(B_LD1)",
+          "I(B_LD1)",
+          "P(B_LD2)",
+          "V(B_LD2)",
+          "I(B_LD2)",
+          "P(B_LD3)",
+          "V(B_LD3)",
+          "I(B_LD3)",
+          "P(B_LD4)",
+          "V(B_LD4)",
+          "I(B_LD4)",
+          "P(B_LD5)",
+          "V(B_LD5)",
+          "I(B_LD5)",
+          "P(B_LD6)",
+          "V(B_LD6)",
+          "I(B_LD6)",
+          "P(B_LD7)",
+          "V(B_LD7)",
+          "I(B_LD7)",
+          "P(B_LD8)",
+          "V(B_LD8)",
+          "I(B_LD8)",
+          "P(B_LD9)",
+          "V(B_LD9)",
+          "I(B_LD9)",
+          "P(B_LD10)",
+          "V(B_LD10)",
+          "I(B_LD10)",
+          "P(B_LD11)",
+          "V(B_LD11)",
+          "I(B_LD11)",
+          "P(B_LD12)",
+          "V(B_LD12)",
+          "I(B_LD12)",
+          "I(I_WL1)",
+          "I(I_BL1)",
+          "I(I_SE1)",
+          "P(BJS|XBQ)",
+          "V(BJS|XBQ)",
+          "I(BJS|XBQ)",
+          "P(BJL1|XBQ)",
+          "V(BJL1|XBQ)",
+          "I(BJL1|XBQ)",
+          "P(BJL2|XBQ)",
+          "V(BJL2|XBQ)",
+          "I(BJL2|XBQ)",
+          "V(IN)",
+          "V(OUT)",
+          "I(LIN|XBQ)",
+          "I(L0|XBQ)",
+          "I(L1|XBQ)",
+          "I(L2|XBQ)",
+          "I(RB|XBQ)",
+          "I(RJ1|XBQ)",
+          "I(RJ2|XBQ)",
+          "I(R_LOAD)",
+          "I(I_IBIAS)"
+        ],
+        "nan_inf_status": "PASS",
+        "nonuniform_time_grid": true,
+        "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv",
+        "sample_count": 13599,
+        "status": "VALID",
+        "strictly_increasing_time": true,
+        "time_column": "time",
+        "time_end": 1.699875e-10,
+        "time_start": 0.0,
+        "uniform_time_grid": false
+      },
+      "registered_hash_matches": [
+        {
+          "declared_sha256": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66",
+          "source": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv.sha256"
+        }
+      ],
+      "registered_hash_verified": true,
+      "sample_count": 13599,
+      "sha256": "9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66",
+      "sidecar": "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv.sha256",
+      "time_end_ps": 169.9875,
+      "time_start_ps": 0.0
+    }
+  },
+  "qb_topology": {
+    "current_canonical": {
+      "bytes": 1068,
+      "path": "/home/howard/JoSIM/circuits/qb/bq_cell.cir",
+      "relative_path": "circuits/qb/bq_cell.cir",
+      "sha256": "7e019511c0615e1208b1887e49b0a33e61d18e5423134984f052318f494856ce"
+    },
+    "input_load": "R_LOAD OUT 0 10 ohm; IBIAS=35 uA",
+    "parameters": {
+      "BJL1_area": 0.36,
+      "BJL2_area": 0.54,
+      "BJs_area": 0.5,
+      "IBIAS_uA": 35.0,
+      "L0_pH": 1.323,
+      "L1_pH": 3.91,
+      "L2_pH": 3.91,
+      "Lin_pH": 0.8,
+      "RB_ohm": 6.0,
+      "RJ1_ohm": 33.0,
+      "RJ2_ohm": 22.0,
+      "RLOAD_ohm": 10.0
+    },
+    "parent_snapshot": {
+      "bytes": 823,
+      "path": "/home/howard/JoSIM/test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/bq_cell.cir",
+      "relative_path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/bq_cell.cir",
+      "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2"
+    },
+    "semantic_hash_current": "b026981dbed5b8772ba3f928597d1b0750f133246763ba997caff3094c613063",
+    "semantic_hash_parent": "b026981dbed5b8772ba3f928597d1b0750f133246763ba997caff3094c613063",
+    "topology_orientation": {
+      "all_expected_orientation_verified": true,
+      "branches": {
+        "BJL1": [
+          "2",
+          "0"
+        ],
+        "BJL2": [
+          "4",
+          "0"
+        ],
+        "BJs": [
+          "1",
+          "2"
+        ],
+        "L0": [
+          "4",
+          "OUT"
+        ],
+        "L1": [
+          "2",
+          "3"
+        ],
+        "L2": [
+          "3",
+          "4"
+        ],
+        "Lin": [
+          "IN",
+          "1"
+        ],
+        "RB": [
+          "IB",
+          "3"
+        ],
+        "RJ1": [
+          "2",
+          "0"
+        ],
+        "RJ2": [
+          "4",
+          "0"
+        ]
+      },
+      "expected_orientation": {
+        "BJL1": [
+          "2",
+          "0"
+        ],
+        "BJL2": [
+          "4",
+          "0"
+        ],
+        "BJs": [
+          "1",
+          "2"
+        ],
+        "L0": [
+          "4",
+          "OUT"
+        ],
+        "L1": [
+          "2",
+          "3"
+        ],
+        "L2": [
+          "3",
+          "4"
+        ],
+        "Lin": [
+          "IN",
+          "1"
+        ],
+        "RB": [
+          "IB",
+          "3"
+        ],
+        "RJ1": [
+          "2",
+          "0"
+        ],
+        "RJ2": [
+          "4",
+          "0"
+        ]
+      },
+      "path": "test/exploration/bvm-load-qb-matrix-v1-20260901/inputs/bq_cell.cir",
+      "per_branch": {
+        "BJL1": true,
+        "BJL2": true,
+        "BJs": true,
+        "L0": true,
+        "L1": true,
+        "L2": true,
+        "Lin": true,
+        "RB": true,
+        "RJ1": true,
+        "RJ2": true
+      },
+      "semantic_sha256": "b026981dbed5b8772ba3f928597d1b0750f133246763ba997caff3094c613063"
+    }
+  },
+  "raw_provenance_statement": "All primary conclusions use existing raw CSVs; Q45/Q68 are scalar historical support only; raw files are not copied or rewritten.",
+  "repository": {
+    "dirty": true,
+    "head": "853a722feaa047bafdc82eb6b6f3c0faa0c432e4",
+    "repo": "/home/howard/JoSIM",
+    "status_porcelain": "M  test/exploration/bvm-qb-lin-removal-matched-pair-quick-v1-20260901/analysis/human-gate.yaml\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/PREFLIGHT.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/README.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/RESULT_BRIEF.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/REPORT.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/REVIEW.md\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/analyze_node2.py\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/human-gate.yaml\nAM test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/metrics.json\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/plot_input.csv\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/plot_metadata.json\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/analysis/provenance.json\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/experiment.yaml\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/plots/RESULT_OVERVIEW.html\nA  test/exploration/qb-node2-operating-point-decomposition-v1-20260902/plots/RESULT_OVERVIEW.metadata.json"
+  },
+  "signal_occurrences": {
+    "I(B_LD1)": 0,
+    "I(B_LD12)": 0,
+    "all_other_registered_signals": "unique exact occurrence; case-sensitive labels retained"
+  },
+  "strict_local_anchor": {
+    "activity_window_ps": [
+      95.0,
+      115.0
+    ],
+    "claim_ceiling": "same-JJ local phase/area compatibility only",
+    "forbidden_interpretations": [
+      "SFQ count",
+      "downstream JTL delivery",
+      "system Gate",
+      "hardware behavior"
+    ],
+    "phase": "P(BJL2|XBQ)",
+    "post_tail_window_ps": [
+      125.0,
+      130.0
+    ],
+    "post_window_ps": [
+      115.0,
+      130.0
+    ],
+    "profile": "STRICT_EVENT_ANCHOR_COMPATIBILITY_V1",
+    "scope": "task-local",
+    "tolerance": {
+      "clean_upper_turns": 1.15,
+      "complete_min_turns": 1.0,
+      "phase_area_residual_abs_floor_turns": 0.05,
+      "phase_area_residual_relative": 0.1,
+      "post_range_max_turns": 1.0,
+      "post_tail_p2p_max_turns": 0.25
+    },
+    "voltage": "V(BJL2|XBQ)"
+  },
+  "supporting_q45_q68": {
+    "authority": "HISTORICAL_SUPPORTING_REFERENCE",
+    "fixture_inputs": {
+      "Q45_deck": {
+        "bytes": 489,
+        "path": "/home/howard/JoSIM/test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-45u.cir",
+        "relative_path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-45u.cir",
+        "sha256": "22694856d1fe24d4954903532686dd882b7784eddaa336e2545732e4dac65c07"
+      },
+      "Q68_deck": {
+        "bytes": 493,
+        "path": "/home/howard/JoSIM/test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir",
+        "relative_path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/scaled-iin-68p4u.cir",
+        "sha256": "de291da0d082df6267a3a83ad85bd4a3d43ad724550b0a03d9b56ce5d243f1e1"
+      },
+      "bq_cell_snapshot": {
+        "bytes": 823,
+        "path": "/home/howard/JoSIM/test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/bq_cell.cir",
+        "relative_path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/bq_cell.cir",
+        "sha256": "5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2"
+      },
+      "jjmit_snapshot": {
+        "bytes": 504,
+        "path": "/home/howard/JoSIM/test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/jjmit.cir",
+        "relative_path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/inputs/jjmit.cir",
+        "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+      }
+    },
+    "manifest": {
+      "bytes": 1576,
+      "path": "/home/howard/JoSIM/test/exploration/qb-q0-standalone-current-quantized-event-20260824/manifest.yaml",
+      "relative_path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/manifest.yaml",
+      "sha256": "2b4b0d36aaf33b34ed06024839074a23014a8b9614271effdae430956bc63090"
+    },
+    "manifest_checks": {
+      "Q45_Q68_load_semantics": true,
+      "Q45_deck_input_semantics": true,
+      "Q45_raw_hash_registered": true,
+      "Q68_deck_input_semantics": true,
+      "Q68_raw_hash_registered": true,
+      "jj_model_hash_matches_q0_snapshot": true,
+      "periodic_stimulus_registered": true,
+      "scaled_bias_uA": true,
+      "scaled_cell_hash_matches_q0_snapshot": true,
+      "scaled_inputs_include_45_and_68p4": true,
+      "stop_time_registered": true,
+      "time_step_registered": true
+    },
+    "raw_hash_source": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/analysis/SHA256SUMS.txt",
+    "raw_records": {
+      "Q45": {
+        "bytes": 870888,
+        "dt_max_ps": 0.19999999999999996,
+        "dt_min_ps": 0.09999999999997898,
+        "header_sha256": "acb9da16fcb4bf3b3dd3a59104cf4acaa7c880f33e558efd9692c938bb1f3e3a",
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv",
+        "qa": {
+          "dt_max": 1.9999999999999996e-13,
+          "dt_min": 9.999999999997898e-14,
+          "duplicate_columns": {},
+          "headers": [
+            "time",
+            "P(BJS|XBQ)",
+            "V(BJS|XBQ)",
+            "I(BJS|XBQ)",
+            "P(BJL1|XBQ)",
+            "V(BJL1|XBQ)",
+            "I(BJL1|XBQ)",
+            "P(BJL2|XBQ)",
+            "V(BJL2|XBQ)",
+            "I(BJL2|XBQ)",
+            "I(I_IN)",
+            "I(I_IBIAS)",
+            "V(IN)",
+            "V(OUT)",
+            "I(R_LOAD)",
+            "I(LIN|XBQ)",
+            "I(L0|XBQ)",
+            "I(L1|XBQ)",
+            "I(L2|XBQ)",
+            "I(RB|XBQ)",
+            "I(RJ1|XBQ)",
+            "I(RJ2|XBQ)"
+          ],
+          "nan_inf_status": "PASS",
+          "nonuniform_time_grid": true,
+          "path": "/home/howard/JoSIM/test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-45u.csv",
+          "sample_count": 2999,
+          "status": "VALID",
+          "strictly_increasing_time": true,
+          "time_column": "time",
+          "time_end": 2.999e-10,
+          "time_start": 0.0,
+          "uniform_time_grid": false
+        },
+        "registered_hash_matches": [
+          {
+            "declared_sha256": "cc702632dad106f324004dd429dd94e9a4ad38d0cda300671c29b4ea76865517",
+            "source": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/analysis/SHA256SUMS.txt"
+          }
+        ],
+        "registered_hash_verified": true,
+        "sample_count": 2999,
+        "sha256": "cc702632dad106f324004dd429dd94e9a4ad38d0cda300671c29b4ea76865517",
+        "time_end_ps": 299.90000000000003,
+        "time_start_ps": 0.0
+      },
+      "Q68": {
+        "bytes": 870453,
+        "dt_max_ps": 0.19999999999999996,
+        "dt_min_ps": 0.09999999999997898,
+        "header_sha256": "acb9da16fcb4bf3b3dd3a59104cf4acaa7c880f33e558efd9692c938bb1f3e3a",
+        "path": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv",
+        "qa": {
+          "dt_max": 1.9999999999999996e-13,
+          "dt_min": 9.999999999997898e-14,
+          "duplicate_columns": {},
+          "headers": [
+            "time",
+            "P(BJS|XBQ)",
+            "V(BJS|XBQ)",
+            "I(BJS|XBQ)",
+            "P(BJL1|XBQ)",
+            "V(BJL1|XBQ)",
+            "I(BJL1|XBQ)",
+            "P(BJL2|XBQ)",
+            "V(BJL2|XBQ)",
+            "I(BJL2|XBQ)",
+            "I(I_IN)",
+            "I(I_IBIAS)",
+            "V(IN)",
+            "V(OUT)",
+            "I(R_LOAD)",
+            "I(LIN|XBQ)",
+            "I(L0|XBQ)",
+            "I(L1|XBQ)",
+            "I(L2|XBQ)",
+            "I(RB|XBQ)",
+            "I(RJ1|XBQ)",
+            "I(RJ2|XBQ)"
+          ],
+          "nan_inf_status": "PASS",
+          "nonuniform_time_grid": true,
+          "path": "/home/howard/JoSIM/test/exploration/qb-q0-standalone-current-quantized-event-20260824/raw/scaled/iin-68p4u.csv",
+          "sample_count": 2999,
+          "status": "VALID",
+          "strictly_increasing_time": true,
+          "time_column": "time",
+          "time_end": 2.999e-10,
+          "time_start": 0.0,
+          "uniform_time_grid": false
+        },
+        "registered_hash_matches": [
+          {
+            "declared_sha256": "0b3fab3ba7357d2475ffadb174f0d48ad33b7e7c934962a687074d4739468bdb",
+            "source": "test/exploration/qb-q0-standalone-current-quantized-event-20260824/analysis/SHA256SUMS.txt"
+          }
+        ],
+        "registered_hash_verified": true,
+        "sample_count": 2999,
+        "sha256": "0b3fab3ba7357d2475ffadb174f0d48ad33b7e7c934962a687074d4739468bdb",
+        "time_end_ps": 299.90000000000003,
+        "time_start_ps": 0.0
+      }
+    },
+    "reason": "Q0 manifest and raw hashes are verified, but the fixture is periodic, 0.1 ps, standalone, and its local event rule is UNFROZEN."
+  },
+  "task_id": "QB_NODE2_OPERATING_POINT_DECOMPOSITION_V1",
+  "windows_ps": {
+    "W2_pre_read_idle": [
+      80.0,
+      90.0
+    ],
+    "W3_read": [
+      95.0,
+      110.0
+    ],
+    "W4_post_read_observation": [
+      110.0,
+      130.0
+    ],
+    "node4_strict_activity": [
+      95.0,
+      115.0
+    ],
+    "node4_strict_post": [
+      115.0,
+      130.0
+    ],
+    "node4_strict_tail": [
+      125.0,
+      130.0
+    ],
+    "semantics": "half_open_actual_csv_time"
+  }
+}

@@ -4,7 +4,7 @@ description: JoSIM × BVM 仓库级 skills 的发现位置、触发边界与使�
 metadata:
   node_type: memory
   type: project
-  last_updated: 2026-08-09
+  last_updated: 2026-09-02
 ---
 
 # 项目 skill 使用规范
@@ -21,15 +21,19 @@ metadata:
 
 | Skill | 用途 |
 |---|---|
-| `josim-handoff` | 签发/ACK/执行/审计 Codex–Claude 文件化任务合同 |
-| `josim-experiment` | 设计、运行、扫描和记录不可覆盖的 JoSIM 实验 |
+| `josim-experiment` | 默认 Compact Quick；只有用户明确要求时进入 Formal |
 | `josim-evidence-audit` | 审计 raw phase、同 JJ 电压面积、JTL 接收、收敛和物理结论 |
-| `josim-viz` | 安全绘图；可视化不替代物理 Gate |
-| `josim-todo-manager` | 只读查询或按完成证据更新主任务表 |
-| `josim-project-summary` | 生成/持久化项目总结、交接和变更历史；普通总结不删除文件 |
-| `josim-skill-router` | 为跨工作流任务选择最小 skill 组合 |
+| `josim-viz` | 关键 waveform、拓扑图和 classic 结果索引；可视化不替代物理 Gate |
+| `josim-handoff` | 仅显式 Codex–Claude 合同、ACK/receipt 或委派审计 |
+| `reviewer-adversarial` | 仅显式深度/对抗性复核 |
+| `reviewer-numerical` | 仅显式数值单位、积分、阈值和收敛复核 |
 
 ## 使用原则
+
+Compact V2 普通路径为 QUESTION → MINIMUM QUICK → RESULT → USER REVIEW →
+NEXT or ARCHIVE。check-in、router、task-manager 和 summary 不再是普通 Quick 的
+前置技能；它们的少量耐久规则进入 workflow 文档或项目状态页。历史任务文本中
+出现的旧 skill 名称保持原样，不因此重写历史。
 
 1. 先按用户授权区分只读审查、诊断、实现和实验，不因 skill 触发扩大写入范围。
 2. 只加载完成任务所需的最小 skill 和 reference，避免把整个项目知识库塞入上下文。
@@ -47,10 +51,12 @@ $josim-handoff：为 M4 创建可由 Claude ACK 的实现任务包，完成后�
 $josim-experiment：给 BQ v4 设计一次不可覆盖的单 PWL 对照实验。
 $josim-evidence-audit：审计这个 CSV 能支持到哪一级证据。
 $josim-viz：把相位以 raw rad 绘图并标出 pre/post 窗口。
-$josim-todo-manager：只读告诉我当前下一项未阻塞任务。
+$josim-handoff：只有明确存在 Codex–Claude 合同或 receipt 时才介入。
 ```
 
-**Why（2026-08-09）**：旧平铺技能引用了失效的 v1 指标、过时 Phase 1 优先级和自动删除规则；新版结构将实验执行、可视化和物理判定分离，并以单一 canonical source 防止 Claude/Codex 两套说明漂移。
+**Why（2026-09-02）**：Compact V2 将日常路径收敛为 QUESTION → MINIMUM QUICK →
+RESULT → USER REVIEW → NEXT or ARCHIVE；实验执行、可视化和物理判定仍分离，
+但不再用 router、check-in、summary 或 task-manager 作为普通 Quick 前置仪式。
 
 **How to apply**：新增或修改 skill 时使用标准 `<name>/SKILL.md` 结构，运行 `skill-creator` 的 `quick_validate.py`，检查 `agents/openai.yaml`，再用独立任务做前向测试。
 

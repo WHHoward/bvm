@@ -1,58 +1,43 @@
 ---
 name: josim-evidence-audit
-description: Audit JoSIM phase, voltage-area, SFQ counting, JTL propagation, state preservation, convergence, and paper claims from raw CSV/netlist evidence. Use when interpreting `P(...)`, deciding whether a phase change is an event, reviewing historical metrics or plots, comparing BQ and DCSFQ routes, or issuing `PASS/FAIL/INCONCLUSIVE`; do not use derivative samples or visualization alone as event counts.
+description: Interpret JoSIM raw evidence for phase, voltage-area, SFQ event, JTL transport, convergence, or scientific claims. Use only when a Quick result needs physical interpretation; plots and execution success are never sufficient.
 ---
 
 # JoSIM 证据审计
 
-## 必读合同
+涉及相位、SFQ、事件数、传播或 Gate 时，先读
+references/phase-evidence-contract.md；本入口只保留稳定判断边界，不复制完整
+算法或易变项目状态。
 
-凡涉及相位、SFQ、事件数或传播结论，先完整阅读 [phase-evidence-contract.md](references/phase-evidence-contract.md)。数值容差只从当前版本化 `METRIC_SPEC_V2` 读取；skill 本身不得发明或复制临时阈值。
+## 不可替代的核心
 
-若审计来自 `research/tasks/<task-id>/`，同时使用 `josim-handoff`：先验证 request/ACK/receipt 的哈希与路径范围，再进行物理证据审计。机械合同通过不代表科学证据通过。
+- raw CSV、网表、日志、版本和匹配控制是证据；图和摘要只是展示层。
+- JoSIM P(...) 是 raw radians。保留 Δφ_rad，再计算 Δφ_rad/(2π)；一结
+  相位圈不自动是 SFQ 或闭环 fluxoid。
+- 事件必须绑定同一 JJ、同一端点/方向、同一连续 monotonic segment，并用
+  实际时间列的同 JJ V(...) 面积交叉检查。
+- Vpeak、I>Ic、导数过阈值、whole-window turns、fast_events 都不是 SFQ count。
+- local activity 不等于 loaded downstream reception；JTL 传播必须逐级检查，
+  并确认因果顺序、负载和事件后不持续 running。
+- 缺少方向、端点、稳定窗、read0/零输入、适用容差或收敛证据时只能
+  INCONCLUSIVE，不能用“没有看到”补齐证据。
 
-## 审计流程
+## 审计输出
 
-1. **确认主张**：把待审计句子改写成可检验对象，例如“JTL 末级在 read1 后增加一个稳定相位平台”。
-2. **定位原始证据**：读取网表、CSV 表头、manifest、JoSIM/脚本/规格版本和匹配对照；旧 JSON 只能定位历史，不优先于 raw CSV。
-3. **检查有效性**：检查退出状态、NaN/缺列、时间轴、方向、稳定窗、控制、负载和步长。缺关键项时输出 `INCONCLUSIVE`。
-4. **计算本地量**：保留 `phase_delta_rad`，再计算 `phase_delta_turns = phase_delta_rad/(2π)`；使用 CSV 实际时间列积分同一 JJ 的直接电压。
-5. **检查双证据**：相位和面积必须对应同一个 JJ、同一对端点、同一方向、同一时间窗。无法建立映射时不判本地事件。
-6. **检查传播**：确认输出实际连接标准负载/JTL，并逐级检查稳定平台；没有 JTL 的网表不得判传播成功或失败。
-7. **检查系统逻辑**：read1、read0、重复读、状态保持和收敛均满足冻结规范后，才允许系统 `PASS`。
-8. **审计措辞**：区分直接观察、与数据相容的解释、已排除解释和未知机制。
+用紧凑表格分别报告：
 
-## Shared calculation boundary
+1. Artifact：文件/时间轴/列/日志是否有效；
+2. Observed：raw 直接读到或独立重算的事实；
+3. Inference：与事实相容但未被对照证明的解释；
+4. Unknown：缺失的控制、端点、负载、收敛或机制；
+5. 允许的最强措辞与 PASS/FAIL/INCONCLUSIVE/INVALID。
 
-未来 strict local event 的共享计算优先调用 `scripts/bvmtools/phase.py` 与
-`scripts/bvmtools/sfq.py`。它们统一实现 raw rad→turns、continuous unwrap、
-deterministic monotonic segmentation、同一 JJ 同一 segment 的实际时间电压面积
-和 signed residual；分类还必须绑定完整的 `StrictLocalEventSpec`、raw/metric-spec
-hash 和 task-local frozen tolerance。shared code 的回归通过不等于电路物理 Gate
-通过；仍必须按本 skill 的 Artifact / Activity / Local / Downstream / System 分层审计。历史
-`sfq_metrics_v2.py` 和实验目录中的 analyzer 保持可复现，不因共享工具出现而批量
-改写或删除。
+关键数字必须注明单位、窗口、信号方向和 raw 路径。结论只限于声明的模型、
+激励、负载、参数、时间步和指标版本，不把仿真写成硬件实测。
 
-## 固定证据层级
+## 共用实现
 
-| 层级 | 可以声称 | 不能自动声称 |
-|---|---|---|
-| Artifact | 数据完整且可追溯 | 电路物理正确 |
-| Activity | 存在快速变化候选区 | 一个 SFQ 或一次开关 |
-| Local | 同一 JJ 的净相位和电压面积与一次事件相容 | 下游已接收、环 fluxoid 改变 |
-| Downstream | 加载后的 JTL 逐级出现对应平台 | 系统逻辑和存储保持都通过 |
-| System | read1/read0/重复/状态/收敛满足冻结 Gate | 硬件一定可工作 |
-
-## 三态判定
-
-- `PASS`：当前主张所需的全部预先声明条件满足。
-- `FAIL`：数据有效，且至少一个必要条件明确不满足。
-- `INCONCLUSIVE`：缺列、方向未知、缺控制、未稳定、无适当负载、无冻结容差或步长改变分类。
-
-不得把缺证据当作失败，也不得把“与一次事件相容”简写成“已证明一个 SFQ”。
-
-## 输出格式
-
-以紧凑表格报告：待审计主张、所需层级、原始证据、计算量、缺失项、判定和允许的最强措辞。每个数字附单位、窗口/控制、信号方向和数据路径；列出替代解释及下一项最小判别实验。
-
-有 handoff task 时，把最终判定写入 audit verdict，并分别填写 artifact status、physical verdict 和 audit disposition。执行者的 proposal 只是待核验输入，不得直接复制为裁决。
+优先调用 scripts/bvmtools.raw、phase、sfq、waveform 和 compare。共享 helper
+的回归通过不等于电路 Gate 通过；不要在本 skill 或实验目录重写事件检测器。
+需要数值单位、符号、积分、窗口或精度的独立复核时，显式调用保留的
+reviewer-numerical 专项技能。

@@ -84,18 +84,24 @@ Phase analysis is the standard mode (voltage was deprecated as of v2.5). Only tr
 
 ## Repository skills
 
-Project skills use the standard `SKILL.md` layout. The canonical source is `.agents/skills/`; `.claude/skills/` contains directory links for Claude Code compatibility. Let each skill's description trigger it, or invoke it explicitly by name. Do not force a router before every tool call.
+Project skills use the standard SKILL.md layout. The canonical source is
+.agents/skills/; .claude/skills/ contains directory links for Claude Code
+compatibility. The normal user→Codex path is intentionally small; load a
+specialist only when the request needs it. The compact workflow is documented in
+docs/research/COMPACT_WORKFLOW_V2.md.
 
 | Skill | Use for |
 |---|---|
-| `josim-handoff` | Work with hash-sealed task contracts: Claude writes ACK/receipts; Codex writes audits |
-| `josim-checkin` | One-screen status reminder at session start (mailbox, open contracts, todo head, worktrees, dirty tree) — run `python3 scripts/checkin.py` |
-| `josim-experiment` | Create/run/sweep/reproduce `.cir` experiments with immutable evidence |
-| `josim-evidence-audit` | Interpret phase, voltage area, SFQ claims, JTL reception and Gate verdicts |
-| `josim-viz` | Plot CSV/DAT waveforms without upgrading plots into physical proof |
-| `josim-todo-manager` | Read or update evidence-backed task status and dependencies |
-| `josim-project-summary` | Persist summaries, handovers, memory and material history |
-| `josim-skill-router` | Route broad tasks that span several of the workflows above |
+| josim-experiment | Default Compact Quick, or an explicitly requested Formal experiment |
+| josim-evidence-audit | Interpret phase, voltage area, SFQ claims, JTL reception and Gate evidence |
+| josim-viz | Focused waveform/topology visualization and classic result indexes |
+| josim-handoff | Explicit Codex↔Claude contracts, ACK/receipt, or delegated audit only |
+| reviewer-adversarial | Explicit deep/adversarial review only |
+| reviewer-numerical | Explicit numerical review when units, integration, thresholds or convergence need an independent check |
+
+Do not force a router, check-in ritual, task manager, or summary skill before
+ordinary Quick work. Historical handoff v1 documents may still mention retired
+skill names; those references do not activate them.
 
 The repository-wide invariants are in `AGENTS.md`; the full delegation protocol is in `research/WORKFLOW.md`. Do not require external plugin skills unless they are actually available in the current runtime.
 

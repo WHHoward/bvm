@@ -1,0 +1,31 @@
+schema_version: compact-quick-v2
+id: replace-with-quick-id
+mode: QUICK
+question: Does the changed input produce the expected directional response?
+hypothesis: The candidate will change the selected target signal in the declared direction.
+changed: one central parameter, input, or topology choice
+frozen:
+  - solver and model closure
+  - load and stimulus timing
+  - time step and stop time
+  - selected signal labels and metric semantics
+deck: inputs/main.cir
+run:
+  solver: build/josim-cli
+  args: []
+analysis:
+  metrics: [raw_qa, waveform]
+  signals:
+    - I(INPUT)
+    - V(OUT)
+visualization:
+  mode: compact
+  style: CLASSIC_LOCKED
+  title: replace-with-quick-id — key signals
+  signals:
+    - I(INPUT)
+    - V(OUT)
+possible_next_options:
+  - User reviews RESULT_BRIEF.md and the compact plot.
+  - User authorizes one explicitly bounded follow-up Quick.
+  - User archives the result.

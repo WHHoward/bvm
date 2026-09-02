@@ -15,13 +15,13 @@
 | `JoSIM_n++_UDL.xml` | 编辑器语法高亮 | 📚 参考 |
 | `MC_conclu.py` | 蒙特卡洛结论分析（2026-08-06 自 circuits/ 归位） | 🟡 参考 |
 | `bvmtools/` | 未来实验共享 raw/provenance/phase/strict-event/waveform/compare 核心 | 🟢 新实验优先复用；不直接给物理 Gate |
-| `bvm-exp.py` | 显式 case 的 Quick runner；生成 RESULT_BRIEF、classic compact plot 和 AWAITING_USER_REVIEW | 🟢 V1 Quick；不自动 Promotion/Formal |
+| `bvm-exp.py` | Compact Quick V2 runner；run/analyze/plot/inspect，Axxx 不可覆盖 attempt 和 classic compact plot | 🟢 新实验默认；保留 quick 兼容旧 V1 fixture |
 
 **整理原则 (2026-08-09)**: 旧脚本保留用于追溯并明确标为 superseded。正式结论应依赖不可覆盖的 raw run、版本化 v2 指标、匹配控制和收敛 Gate；在 M4–M11 完成前不存在冻结的自动物理结论流水线。
 
-**Tool consolidation (2026-09-01)**: 新工具先查 `docs/research/TOOL_REGISTRY.yaml`，
-再复用 `scripts/bvmtools/` 和 `scripts/bvmtools/presets.yaml`。旧 experiment-local
-脚本不批量搬迁；`run_exp.sh`、`sfq_metrics.py` 和旧 plotting paths 只按 registry
-中的历史边界使用。未来 Quick 默认使用 `bvm-exp.py` 与
-`josim-plot2.py` 的 compact classic profile，并在 `AWAITING_USER_REVIEW` 停止。
-完整 future workflow 见 [`docs/research/FUTURE_EXPERIMENT_WORKFLOW.md`](../docs/research/FUTURE_EXPERIMENT_WORKFLOW.md)。
+**Compact workflow V2 (2026-09-02)**: 新实验使用 `scripts/bvm-exp.py` 的
+`run|analyze|plot|inspect` 接口和 `scripts/templates/compact-quick/` 模板。
+`run` 自动创建不可覆盖的 `runs/Axxx/{deck.cir,raw.csv,run.log,result.yaml}`；
+`analyze` 只消费既有 raw，`plot` 使用 `josim-plot2.py`，完成后停在
+`AWAITING_USER_REVIEW`。旧 experiment-local 脚本、run_exp.sh、历史 raw 和旧
+协议不批量迁移。完整说明见 `docs/research/COMPACT_WORKFLOW_V2.md`。

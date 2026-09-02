@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Minimal config-driven JoSIM Quick workflow.
+"""Config-driven JoSIM Quick workflow with legacy and Compact V2 entrypoints.
 
-The command intentionally has a small surface:
+The legacy command remains available for existing V1 fixtures:
 
     python3 scripts/bvm-exp.py quick path/to/experiment.yaml
 
-Cases are explicit.  A normal Quick run invokes only the registered decks,
-never overwrites an existing run directory, performs shared raw QA/metrics,
-creates a compact classic ``josim-plot2.py`` view, and stops at
-``AWAITING_USER_REVIEW``.  A ``tooling_smoke_test_only`` config may consume
-existing raw CSVs without invoking JoSIM; it cannot create new science data.
+New experiments use ``run``, ``analyze``, ``plot`` and ``inspect`` with
+immutable Axxx attempts.  A normal Quick run invokes only its registered deck,
+performs shared raw QA/metrics, creates a compact classic ``josim-plot2.py``
+view, and stops at ``AWAITING_USER_REVIEW``.  Analyze/plot operate on existing
+raw only; they cannot create new science data.
 """
 
 from __future__ import annotations
@@ -18,6 +18,7 @@ import argparse
 import json
 import math
 import re
+import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -791,14 +792,567 @@ def run_quick(config_path: str | Path) -> int:
     return 0
 
 
+# ---------------------------------------------------------------------------
+# Compact Quick V2
+# ---------------------------------------------------------------------------
+# The legacy ``quick`` command above remains available for already-created V1
+# fixtures.  New experiments use the smaller directory/attempt contract below
+# and never share output paths with the legacy command.
+
+COMPACT_SCHEMA = "compact-quick-v2"
+COMPACT_RESULT_SCHEMA = "compact-quick-v2-result"
+COMPACT_STATES = {"READY", "RUNNING", "AWAITING_USER_REVIEW", "REVIEWED", "ARCHIVED"}
+
+
+def _compact_root(value: str | Path) -> tuple[Path, Path]:
+    supplied = Path(value).resolve()
+    if supplied.is_file():
+        root = supplied.parent
+        config_path = supplied
+    else:
+        root = supplied
+        config_path = root / "experiment.yaml"
+    if not config_path.is_file():
+        raise ConfigError(f"compact experiment.yaml does not exist: {config_path}")
+    return root, config_path
+
+
+def _compact_nonempty_text(value: Any, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ConfigError(f"{name} must be a non-empty string")
+    return value.strip()
+
+
+def _compact_signal_specs(value: Any, name: str) -> list[dict[str, Any]]:
+    try:
+        return _case_signals({"id": name, "signals": value}, {})
+    except ConfigError as exc:
+        raise ConfigError(f"{name}: {exc}") from exc
+
+
+def validate_compact_config(config: dict[str, Any], config_path: str | Path) -> dict[str, Any]:
+    """Validate the small, single-attempt-at-a-time Quick V2 schema."""
+
+    root, path = _compact_root(config_path)
+    if config.get("schema_version") != COMPACT_SCHEMA:
+        raise ConfigError(f"compact config must declare schema_version: {COMPACT_SCHEMA}")
+    experiment_id = _compact_nonempty_text(config.get("id"), "id")
+    mode = str(config.get("mode", "QUICK")).upper()
+    if mode != "QUICK":
+        raise ConfigError("compact runner supports only mode: QUICK; Formal is an explicit separate workflow")
+    question = _compact_nonempty_text(config.get("question"), "question")
+    hypothesis = _compact_nonempty_text(config.get("hypothesis"), "hypothesis")
+    if not config.get("changed"):
+        raise ConfigError("changed must name the one central variable or change")
+    frozen = config.get("frozen")
+    if not isinstance(frozen, (list, dict)) or not frozen:
+        raise ConfigError("frozen must be a non-empty list or mapping")
+    deck_value = _compact_nonempty_text(config.get("deck"), "deck")
+    deck = _resolve_existing(deck_value, config_dir=root)
+
+    run = config.get("run", {})
+    if not isinstance(run, dict):
+        raise ConfigError("run must be a mapping")
+    solver = _resolve_existing(run.get("solver", "build/josim-cli"), config_dir=root)
+    solver_args = run.get("args", [])
+    if not isinstance(solver_args, list) or any(not isinstance(arg, str) for arg in solver_args):
+        raise ConfigError("run.args must be a list of strings")
+    if "timestep_ps" in run:
+        _positive_number(run["timestep_ps"], "run.timestep_ps")
+    if "stop_ps" in run:
+        _positive_number(run["stop_ps"], "run.stop_ps")
+
+    visualization = config.get("visualization", {})
+    if not isinstance(visualization, dict):
+        raise ConfigError("visualization must be a mapping")
+    visual_mode = str(visualization.get("mode", "compact")).lower()
+    if visual_mode not in {"none", "compact", "full"}:
+        raise ConfigError("visualization.mode must be none, compact, or full")
+    visual_style = str(visualization.get("style", "CLASSIC_LOCKED"))
+    if visual_style != "CLASSIC_LOCKED":
+        raise ConfigError("Compact Quick V2 supports only visualization.style: CLASSIC_LOCKED")
+    visual_specs = _compact_signal_specs(visualization.get("signals"), "visualization.signals")
+    if visual_mode == "compact" and not 2 <= len(visual_specs) <= 5:
+        raise ConfigError("compact visualization must select 2-5 key signals")
+    if any(spec.get("occurrence") is not None for spec in visual_specs):
+        raise ConfigError("classic plot2 visualization requires unique labels; occurrence selectors are analysis-only")
+
+    analysis = config.get("analysis", {})
+    if not isinstance(analysis, dict):
+        raise ConfigError("analysis must be a mapping")
+    analysis_specs = _compact_signal_specs(analysis.get("signals", visualization.get("signals")), "analysis.signals")
+    metrics = analysis.get("metrics", ["raw_qa", "waveform"])
+    if not isinstance(metrics, list) or not metrics or any(metric not in ALLOWED_METRICS for metric in metrics):
+        raise ConfigError(f"analysis.metrics must be drawn from {sorted(ALLOWED_METRICS)}")
+    analysis_case: dict[str, Any] = {"id": experiment_id, "signals": analysis_specs}
+    strict = analysis.get("strict_event")
+    if strict is not None:
+        if not isinstance(strict, dict):
+            raise ConfigError("analysis.strict_event must be a mapping")
+        for key in ("phase", "voltage", "activity_window_ps", "post_window_ps", "post_tail_window_ps"):
+            if key not in strict:
+                raise ConfigError(f"analysis.strict_event missing {key}")
+        analysis_case["strict_event"] = strict
+        if "strict_event" not in metrics:
+            metrics = [*metrics, "strict_event"]
+
+    declared_status = str(config.get("status", "READY")).upper()
+    if declared_status not in COMPACT_STATES:
+        raise ConfigError(f"status must be one of {sorted(COMPACT_STATES)}")
+    return {
+        "root": root,
+        "config_path": path,
+        "config": config,
+        "id": experiment_id,
+        "mode": mode,
+        "question": question,
+        "hypothesis": hypothesis,
+        "deck": deck,
+        "solver": solver,
+        "solver_args": solver_args,
+        "analysis_case": analysis_case,
+        "metrics": metrics,
+        "visualization": visualization,
+        "visual_specs": visual_specs,
+        "visual_mode": visual_mode,
+        "declared_status": declared_status,
+    }
+
+
+def _compact_attempt_number(name: str) -> int | None:
+    match = re.fullmatch(r"A(\d{3,})", name)
+    return int(match.group(1)) if match else None
+
+
+def _compact_attempt_dirs(root: Path) -> list[Path]:
+    runs = root / "runs"
+    if not runs.is_dir():
+        return []
+    return sorted(
+        (path for path in runs.iterdir() if path.is_dir() and _compact_attempt_number(path.name) is not None),
+        key=lambda path: _compact_attempt_number(path.name) or 0,
+    )
+
+
+def _compact_next_attempt(root: Path) -> str:
+    numbers = [_compact_attempt_number(path.name) for path in _compact_attempt_dirs(root)]
+    next_number = max((number for number in numbers if number is not None), default=0) + 1
+    return f"A{next_number:03d}"
+
+
+def _compact_resolve_attempt(root: Path, requested: str | None) -> Path:
+    if requested is None:
+        attempts = _compact_attempt_dirs(root)
+        if not attempts:
+            raise ConfigError(f"no Quick attempts exist under {root / 'runs'}")
+        return attempts[-1]
+    if _compact_attempt_number(requested) is None:
+        raise ConfigError("attempt must look like A001")
+    path = root / "runs" / requested
+    if not path.is_dir():
+        raise ConfigError(f"attempt does not exist: {path}")
+    return path
+
+
+def _compact_relative(root: Path, path: Path) -> str:
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return str(path)
+
+
+def _compact_short_analysis(raw_result: dict[str, Any]) -> dict[str, Any]:
+    qa = raw_result.get("qa", {})
+    qa_keys = (
+        "status", "sample_count", "time_start", "time_end", "dt_min", "dt_max",
+        "uniform_time_grid", "nonuniform_time_grid", "duplicate_columns",
+    )
+    compact: dict[str, Any] = {
+        "artifact_status": qa.get("status", "INVALID"),
+        "qa": {key: qa[key] for key in qa_keys if key in qa},
+    }
+    if raw_result.get("signals"):
+        compact["signals"] = raw_result["signals"]
+    strict = raw_result.get("strict_event")
+    if isinstance(strict, dict):
+        strict_keys = (
+            "status", "compatibility_classification", "complete_segment_count",
+            "post_bounded", "activity_cluster_count", "largest_monotonic_segment",
+        )
+        compact["strict_event"] = {key: strict[key] for key in strict_keys if key in strict}
+    if raw_result.get("compare") is not None:
+        compact["compare"] = raw_result["compare"]
+    compact["raw_sha256"] = raw_result.get("raw_sha256")
+    return compact
+
+
+def _compact_compute_analysis(normalized: dict[str, Any], attempt_dir: Path) -> dict[str, Any]:
+    raw_path = attempt_dir / "raw.csv"
+    if not raw_path.is_file():
+        return {"artifact_status": "INVALID", "error": f"missing raw CSV: {_compact_relative(normalized['root'], raw_path)}"}
+    try:
+        full = _analyze_raw(normalized["analysis_case"], raw_path, normalized["metrics"])
+    except (RawTraceError, OSError, ValueError, KeyError, IndexError) as exc:
+        return {
+            "artifact_status": "INVALID",
+            "error": str(exc),
+            "raw_sha256": sha256_file(raw_path),
+        }
+    return _compact_short_analysis(full)
+
+
+def _compact_outcome(analysis: dict[str, Any], plot: dict[str, Any] | None = None) -> str:
+    if analysis.get("artifact_status") != "VALID":
+        return "QUICK_INVALID"
+    if plot is not None and plot.get("status") not in {"PASS", "NOT_REQUESTED"}:
+        return "QUICK_INVALID"
+    strict = analysis.get("strict_event", {})
+    classification = strict.get("compatibility_classification") if isinstance(strict, dict) else None
+    if classification == "CLEAN_ONE_SFQ_CANDIDATE":
+        return "QUICK_PROMISING"
+    if classification in {"NO_NONZERO_MONOTONIC_SEGMENT", "SUBTHRESHOLD"}:
+        return "QUICK_NO_EFFECT"
+    if classification in {"OVERDRIVEN_ONE_PLUS_RESIDUAL", "MULTIPLE_COMPLETE_SEGMENTS"}:
+        return "QUICK_OPPOSITE"
+    return "QUICK_AMBIGUOUS"
+
+
+def _compact_render(normalized: dict[str, Any], attempt_dir: Path) -> dict[str, Any]:
+    if normalized["visual_mode"] == "none":
+        return {"status": "NOT_REQUESTED", "style": "CLASSIC_LOCKED"}
+    raw_path = attempt_dir / "raw.csv"
+    try:
+        trace = read_csv(raw_path)
+        duplicated = sorted(
+            spec["name"] for spec in normalized["visual_specs"] if spec["name"] in trace.duplicate_columns
+        )
+        if duplicated:
+            raise RawTraceError("visualization selects duplicate exact labels: " + ", ".join(duplicated))
+        for spec in normalized["visual_specs"]:
+            trace.column(spec["name"])
+    except (RawTraceError, KeyError, IndexError) as exc:
+        return {"status": "INVALID", "error": str(exc)}
+
+    plot_dir = normalized["root"] / "plots"
+    attempt_plot = plot_dir / attempt_dir.name / "RESULT_OVERVIEW.html"
+    current_plot = plot_dir / "RESULT_OVERVIEW.html"
+    attempt_plot.parent.mkdir(parents=True, exist_ok=True)
+    title = str(normalized["visualization"].get("title", f"{normalized['id']} — {attempt_dir.name}"))
+    command = _classic_command(raw_path, attempt_plot, normalized["visual_specs"], title)
+    completed = subprocess.run(command, cwd=REPO, capture_output=True, text=True, check=False)
+    if completed.returncode != 0 or not attempt_plot.is_file() or attempt_plot.stat().st_size == 0:
+        return {
+            "status": "INVALID",
+            "command": command,
+            "returncode": completed.returncode,
+            "stderr": completed.stderr,
+        }
+    current_plot.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(attempt_plot, current_plot)
+    return {
+        "status": "PASS",
+        "style": "CLASSIC_LOCKED",
+        "profile": {"layout": "sep_comb", "color": "dark", "phase": "rad/(2*pi) turns"},
+        "attempt_plot": _compact_relative(normalized["root"], attempt_plot),
+        "current_plot": _compact_relative(normalized["root"], current_plot),
+        "signals": [spec["name"] for spec in normalized["visual_specs"]],
+        "command": command,
+    }
+
+
+def _compact_brief(
+    normalized: dict[str, Any],
+    attempt: str,
+    analysis: dict[str, Any],
+    outcome: str,
+    plot: dict[str, Any] | None,
+) -> str:
+    config = normalized["config"]
+    frozen = config.get("frozen", [])
+    frozen_lines = frozen.items() if isinstance(frozen, dict) else ((str(item), "") for item in frozen)
+    lines = [
+        f"# {normalized['id']} — Quick Result",
+        "",
+        "## Question",
+        "",
+        normalized["question"],
+        "",
+        "## Hypothesis",
+        "",
+        normalized["hypothesis"],
+        "",
+        "## Changed",
+        "",
+        f"{config['changed']}",
+        "",
+        "## Held fixed",
+        "",
+    ]
+    for key, value in frozen_lines:
+        lines.append(f"- {key}" if value == "" else f"- {key}: {value}")
+    lines.extend(["", "## Result", "", f"- Attempt: `{attempt}`", f"- Outcome: `{outcome}`"])
+    qa = analysis.get("qa", {})
+    if qa:
+        lines.append(
+            f"- Artifact: `{analysis.get('artifact_status')}`, {qa.get('sample_count', '?')} samples, "
+            f"time {qa.get('time_start', '?')}–{qa.get('time_end', '?')} s"
+        )
+    if analysis.get("error"):
+        lines.append(f"- Analysis error: `{analysis['error']}`")
+    strict = analysis.get("strict_event")
+    if isinstance(strict, dict):
+        largest = strict.get("largest_monotonic_segment") or {}
+        if largest:
+            turns = largest.get("phase_reported_turns", "?")
+            area = largest.get("area_turns", "?")
+            lines.append(f"- Strict local diagnostic: largest segment {turns} turns; area {area} Φ0")
+        lines.append(f"- Strict classification: `{strict.get('compatibility_classification', 'UNKNOWN')}`")
+    lines.extend([
+        "",
+        "## Meaning",
+        "",
+        "这是 QUICK 层的最小方向性证据；它只支持本配置、输入、负载、时间步和指标下的有限观察，不自动形成物理 Gate。",
+        "",
+        "## Does NOT prove",
+        "",
+        "- 不证明完整机制、参数裕度、下游系统成功或硬件行为。",
+        "- 不把 phase turns、波形峰值或局部活动自动称为 SFQ 事件。",
+        "",
+        "## Visualization and status",
+        "",
+        f"- Plot: `{(plot or {}).get('current_plot', 'not generated')}`",
+        "- Status: `AWAITING_USER_REVIEW`",
+        "- Agent will not execute a next physical experiment automatically.",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def _compact_record(
+    normalized: dict[str, Any],
+    attempt_dir: Path,
+    *,
+    command: list[str],
+    started_at: str,
+    finished_at: str,
+    returncode: int | None,
+    analysis: dict[str, Any],
+    plot: dict[str, Any] | None,
+    git_record: dict[str, Any],
+    solver_record: dict[str, Any],
+    execution: str,
+) -> dict[str, Any]:
+    raw_path = attempt_dir / "raw.csv"
+    deck_path = attempt_dir / "deck.cir"
+    outcome = _compact_outcome(analysis, plot)
+    return {
+        "schema_version": COMPACT_RESULT_SCHEMA,
+        "experiment_id": normalized["id"],
+        "attempt": attempt_dir.name,
+        "workflow": "QUICK",
+        "execution": execution,
+        "question": normalized["question"],
+        "hypothesis": normalized["hypothesis"],
+        "changed": normalized["config"].get("changed"),
+        "frozen": normalized["config"].get("frozen"),
+        "git": {"head": git_record.get("head"), "dirty": git_record.get("dirty")},
+        "solver": solver_record,
+        "command": command,
+        "started_at": started_at,
+        "finished_at": finished_at,
+        "returncode": returncode,
+        "inputs": {
+            "deck": _compact_relative(normalized["root"], deck_path),
+            "deck_sha256": sha256_file(deck_path) if deck_path.is_file() else None,
+        },
+        "raw": {
+            "path": _compact_relative(normalized["root"], raw_path),
+            "sha256": sha256_file(raw_path) if raw_path.is_file() else None,
+        },
+        "artifact": analysis.get("artifact_status", "INVALID"),
+        "metrics": analysis,
+        "outcome": outcome,
+        "status": "AWAITING_USER_REVIEW",
+        "plot": plot or {"status": "NOT_REQUESTED"},
+    }
+
+
+def _compact_write_result(path: Path, record: dict[str, Any]) -> None:
+    if path.exists():
+        existing = yaml.safe_load(path.read_text(encoding="utf-8"))
+        if existing != record:
+            raise RuntimeError(f"refusing to overwrite immutable result.yaml: {path}")
+        return
+    path.write_text(yaml.safe_dump(record, sort_keys=False, allow_unicode=True), encoding="utf-8")
+
+
+def _compact_write_brief(normalized: dict[str, Any], record: dict[str, Any]) -> None:
+    brief = _compact_brief(
+        normalized,
+        str(record["attempt"]),
+        record.get("metrics", {}),
+        str(record.get("outcome", "QUICK_AMBIGUOUS")),
+        record.get("plot"),
+    )
+    (normalized["root"] / "RESULT_BRIEF.md").write_text(brief + "\n", encoding="utf-8")
+
+
+def compact_run(experiment: str | Path) -> int:
+    normalized = validate_compact_config(_load_yaml(_compact_root(experiment)[1]), _compact_root(experiment)[1])
+    if normalized["declared_status"] in {"ARCHIVED", "REVIEWED"}:
+        raise ConfigError(f"experiment status {normalized['declared_status']} does not accept an implicit new run")
+    root = normalized["root"]
+    git_record = git_snapshot(REPO)
+    attempt_name = _compact_next_attempt(root)
+    attempt_dir = root / "runs" / attempt_name
+    attempt_dir.mkdir(parents=True, exist_ok=False)
+    deck_path = attempt_dir / "deck.cir"
+    _copy_exact(normalized["deck"], deck_path)
+    raw_path = attempt_dir / "raw.csv"
+    log_path = attempt_dir / "run.log"
+    command = [str(normalized["solver"]), *normalized["solver_args"], "-a", "1", "-o", str(raw_path), str(deck_path)]
+    solver_record = solver_provenance(normalized["solver"], cwd=REPO)
+    started_at = _now()
+    completed = subprocess.run(command, cwd=REPO, capture_output=True, text=True, check=False)
+    finished_at = _now()
+    log = completed.stdout
+    if completed.stderr:
+        log += ("\n" if log else "") + "[stderr]\n" + completed.stderr
+    log_path.write_text(log, encoding="utf-8")
+    if completed.returncode != 0:
+        analysis = {
+            "artifact_status": "INVALID",
+            "error": f"solver returned non-zero exit status {completed.returncode}",
+            "raw_sha256": sha256_file(raw_path) if raw_path.is_file() else None,
+        }
+    else:
+        analysis = _compact_compute_analysis(normalized, attempt_dir)
+    plot = _compact_render(normalized, attempt_dir) if analysis.get("artifact_status") == "VALID" else {"status": "NOT_RENDERED"}
+    record = _compact_record(
+        normalized,
+        attempt_dir,
+        command=command,
+        started_at=started_at,
+        finished_at=finished_at,
+        returncode=completed.returncode,
+        analysis=analysis,
+        plot=plot,
+        git_record=git_record,
+        solver_record=solver_record,
+        execution="JO_SIM_RUN",
+    )
+    _compact_write_result(attempt_dir / "result.yaml", record)
+    _compact_write_brief(normalized, record)
+    print(json.dumps({
+        "experiment": normalized["id"],
+        "attempt": attempt_name,
+        "outcome": record["outcome"],
+        "status": record["status"],
+        "raw": record["raw"],
+        "plot": record["plot"],
+    }, ensure_ascii=False, indent=2))
+    return 0 if record["outcome"] != "QUICK_INVALID" else 2
+
+
+def compact_analyze(experiment: str | Path, requested_attempt: str | None = None) -> int:
+    config_path = _compact_root(experiment)[1]
+    normalized = validate_compact_config(_load_yaml(config_path), config_path)
+    attempt_dir = _compact_resolve_attempt(normalized["root"], requested_attempt)
+    result_path = attempt_dir / "result.yaml"
+    analysis = _compact_compute_analysis(normalized, attempt_dir)
+    if result_path.is_file():
+        existing = yaml.safe_load(result_path.read_text(encoding="utf-8"))
+        if not isinstance(existing, dict) or existing.get("metrics") != analysis:
+            raise RuntimeError(f"raw-only analysis differs from immutable result.yaml: {result_path}")
+        record = existing
+    else:
+        git_record = git_snapshot(REPO)
+        solver_record = solver_provenance(normalized["solver"], cwd=REPO)
+        now = _now()
+        record = _compact_record(
+            normalized,
+            attempt_dir,
+            command=["ANALYZE_EXISTING_RAW_ONLY"],
+            started_at=now,
+            finished_at=now,
+            returncode=None,
+            analysis=analysis,
+            plot=None,
+            git_record=git_record,
+            solver_record=solver_record,
+            execution="EXISTING_RAW_ONLY",
+        )
+        _compact_write_result(result_path, record)
+        _compact_write_brief(normalized, record)
+    print(json.dumps({
+        "experiment": normalized["id"],
+        "attempt": attempt_dir.name,
+        "outcome": record.get("outcome"),
+        "status": record.get("status"),
+        "raw_only": True,
+    }, ensure_ascii=False, indent=2))
+    return 0 if record.get("artifact") == "VALID" else 2
+
+
+def compact_plot(experiment: str | Path, requested_attempt: str | None = None) -> int:
+    config_path = _compact_root(experiment)[1]
+    normalized = validate_compact_config(_load_yaml(config_path), config_path)
+    attempt_dir = _compact_resolve_attempt(normalized["root"], requested_attempt)
+    rendered = _compact_render(normalized, attempt_dir)
+    if rendered.get("status") != "PASS" and rendered.get("status") != "NOT_REQUESTED":
+        print(json.dumps(rendered, ensure_ascii=False, indent=2))
+        return 2
+    print(json.dumps({"experiment": normalized["id"], "attempt": attempt_dir.name, "plot": rendered}, ensure_ascii=False, indent=2))
+    return 0
+
+
+def compact_inspect(experiment: str | Path, requested_attempt: str | None = None) -> int:
+    config_path = _compact_root(experiment)[1]
+    normalized = validate_compact_config(_load_yaml(config_path), config_path)
+    attempts = _compact_attempt_dirs(normalized["root"])
+    attempt_dir = _compact_resolve_attempt(normalized["root"], requested_attempt) if (requested_attempt or attempts) else None
+    record: dict[str, Any] | None = None
+    if attempt_dir is not None and (attempt_dir / "result.yaml").is_file():
+        value = yaml.safe_load((attempt_dir / "result.yaml").read_text(encoding="utf-8"))
+        if isinstance(value, dict):
+            record = value
+    print(f"QUESTION: {normalized['question']}")
+    print(f"CHANGED: {normalized['config'].get('changed')}")
+    print(f"ATTEMPT: {attempt_dir.name if attempt_dir else 'none'}")
+    print(f"HEAD: {(record or {}).get('git', {}).get('head', git_snapshot(REPO).get('head'))}")
+    print(f"RESULT: {(record or {}).get('outcome', 'not run')}")
+    print(f"STATUS: {(record or {}).get('status', 'READY')}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Config-driven JoSIM Quick workflow")
     subparsers = parser.add_subparsers(dest="command", required=True)
     quick = subparsers.add_parser("quick", help="run explicit Quick cases and stop for user review")
     quick.add_argument("experiment", help="path to experiment.yaml")
+    for command, handler, help_text in (
+        ("run", compact_run, "run one immutable Compact Quick attempt"),
+        ("analyze", compact_analyze, "analyze an existing attempt raw only"),
+        ("plot", compact_plot, "regenerate the classic compact visualization"),
+        ("inspect", compact_inspect, "print a concise human summary"),
+    ):
+        parser_for_command = subparsers.add_parser(command, help=help_text)
+        parser_for_command.add_argument("experiment", help="experiment directory or experiment.yaml")
+        if command != "run":
+            parser_for_command.add_argument("attempt", nargs="?", help="optional attempt id such as A001")
     args = parser.parse_args(argv)
     try:
-        return run_quick(args.experiment)
+        if args.command == "quick":
+            return run_quick(args.experiment)
+        if args.command == "run":
+            return compact_run(args.experiment)
+        if args.command == "analyze":
+            return compact_analyze(args.experiment, args.attempt)
+        if args.command == "plot":
+            return compact_plot(args.experiment, args.attempt)
+        if args.command == "inspect":
+            return compact_inspect(args.experiment, args.attempt)
+        raise ConfigError(f"unknown command: {args.command}")
     except (ConfigError, RawTraceError, OSError, RuntimeError, subprocess.SubprocessError) as exc:
         sys.stderr.write(f"bvm-exp error: {exc}\n")
         return 2

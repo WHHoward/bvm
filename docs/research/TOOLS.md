@@ -16,30 +16,25 @@ build/josim-cli -a 1 -o path/to/unique/run.csv path/to/run.cir
 raw CSV 和 provenance。历史 `scripts/run_exp.sh` 只用于明确标注的历史复现，
 不能作为当前物理 Gate runner。
 
-## 如何开始 Quick Probe
+## 如何开始 Compact Quick
 
-新实验先查看 [`TOOL_REGISTRY.yaml`](TOOL_REGISTRY.yaml)、`scripts/bvmtools/`、
-presets 和现有 supported scripts，然后创建一个带显式 `cases` 的
-`experiment.yaml`：
+新实验先查看 TOOL_REGISTRY.yaml、scripts/bvmtools/、presets 和 supported
+scripts，然后从 scripts/templates/compact-quick/ 创建 experiment.yaml 和薄
+run.sh：
 
 ```bash
-python3 scripts/bvm-exp.py quick path/to/experiment.yaml
+./run.sh
+./run.sh analyze A001
+./run.sh plot A001
+./run.sh inspect A001
 ```
 
-配置必须给出 baseline/candidate deck、中心假说、固定变量、run timestep/stop、
-probe preset、metrics、visualization、promotion/stop rule 和每个 case。CLI
-只运行显式列出的 case，路径存在时拒绝覆盖。
+run 调用 scripts/bvm-exp.py 并创建不可覆盖的 runs/Axxx attempt；每个 attempt
+保存 deck.cir、raw.csv、run.log 和 result.yaml。analyze 只消费已有 raw，plot
+使用 scripts/josim-plot2.py，完成后状态为 AWAITING_USER_REVIEW。
 
-输出重点看：
-
-```text
-quick/<probe-id>/RESULT_BRIEF.md
-quick/<probe-id>/plots/RESULT_OVERVIEW.html
-quick/<probe-id>/human-gate.yaml
-```
-
-完成后状态固定为 `AWAITING_USER_REVIEW`；工具不会自动 Promotion 或执行下一项
-物理实验。
+旧的 python3 scripts/bvm-exp.py quick path/to/experiment.yaml 入口保留给已经
+创建的 V1 fixture，不作为新实验默认接口。
 
 ## 如何检查 JoSIM raw
 
@@ -164,15 +159,16 @@ compact。
 需要同样功能时停止复制：先比较 registry/现有工具，提升到 `scripts/bvmtools/`，
 补 focused tests，登记 authoritative boundary，然后再使用。
 
-## Promotion 如何工作
+## Quick 与 Formal
 
-Promotion 不是自动扩大实验。它只生成 `PROMOTION_PLAN.md`，说明 Quick observation、
-形式化假说、竞争解释、缺少的 controls/timestep、planned cases、maximum run count、
-success criterion 和 stop rule。生成后仍停在 `AWAITING_USER_REVIEW`。
+V2 不再把 Promotion 作为单独生命周期。Quick 只提供最小方向性证据；如果结果
+值得依赖，RESULT_BRIEF 最多列出三个后续选项，其中可以包含 Formal 建议。只有
+用户明确授权，才另行建立 Formal 的 controls、收敛、完整 provenance 和独立复核。
 
 ## Human Understanding Gate
 
-每个 Quick/Promoted/Formal 结果优先交付：WHAT CHANGED、WHAT WAS HELD FIXED、WHAT
-HAPPENED、WHAT IT MEANS、WHAT IT DOES NOT PROVE、图的位置和当前状态。CLI 生成
-`human-gate.yaml`，其中 `user_reviewed: false`、`next_step_authorized: false`。
-只有用户明确表示理解并授权后，才可进入下一步；agent 不得自填这些字段。
+每个 Quick 结果优先交付：WHAT CHANGED、WHAT WAS HELD FIXED、WHAT HAPPENED、
+WHAT IT MEANS、WHAT IT DOES NOT PROVE、图的位置和当前状态。V2 将这些内容放入
+RESULT_BRIEF.md，并把简单状态写入 attempt/result.yaml；不再创建冗余的
+human-gate.yaml。只有用户明确表示理解并授权后，才可进入下一步；agent 不得
+自填 REVIEWED 或自动执行下一项。

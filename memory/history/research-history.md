@@ -3,7 +3,7 @@ name: research-history
 description: 项目完整研究历程时间线（2026-07-12 至今）——阶段、实验、结论演变、转折点；跨会话/跨模型交接的第一手历史权威
 metadata:
   type: project
-  last_updated: 2026-08-24
+  last_updated: 2026-09-02
 ---
 
 # 研究历程（2026-07-12 至今）
@@ -30,6 +30,22 @@ metadata:
 | 6. Receiver Exploration | 8/17-8/23 | BVM source → detector → passive/direct → DCSFQ/JTL → active interstage | 🔄 detector/source separation 已建立，canonical exactly-one chain 未闭合 |
 
 ## 三、详细时间线
+
+### 2026-09-02：Compact Workflow V2 与 Skills V2（✅ 仍有效）
+
+**做了什么**：在不运行 JoSIM 科学仿真和不改动电路/历史 raw 的前提下，将现有
+scripts/bvm-exp.py 扩展为 Compact Quick 的 run、analyze、plot、inspect 入口；
+每次运行创建不可覆盖的 Axxx attempt，并把机器记录收敛为 result.yaml。新增
+docs/research/COMPACT_WORKFLOW_V2.md、docs/research/CURRENT.md 和模板；将
+Exploration 可视化辅助实现并入 josim-viz，保留旧路径兼容 launcher；普通 Quick
+不再要求 router、check-in、task-manager 或 summary 技能前置加载。
+
+**结果/产物**：Compact workflow、核心 skills V2 和当前状态页已提交；
+Stage A 的现有结果仍保持 CONTINUOUS_MULTI_TURN_RUNNING_STATE、
+AWAITING_USER_REVIEW，canonical BVM→QB 与 Stage B 仍未授权。
+
+**认知**：✅ 工作流入口更短且风险验证仍可按需追加；⚠️ 本次没有新的科学
+证据，未改变 Stage A 或任何既有 accepted scientific conclusion。
 
 ### 2026-08-13：M11 metadata errata 与下一阶段切换
 

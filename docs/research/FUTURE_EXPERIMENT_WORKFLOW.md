@@ -1,87 +1,73 @@
-# Future Experiment Workflow V1
+# Future Experiment Workflow V2
 
-本文是 `RESEARCH_WORKFLOW_TOOLING_CONSOLIDATION_V1` 产生的 future scientific
-experiment 使用指南。它是 `research/WORKFLOW.md`（`josim-handoff/v1`）之外的
-sidecar，不修改 handoff v1 的合同、schema、验证器或历史记录。
+本文是普通 JoSIM/BVM 研究的 Compact Quick 入口。显式 Codex↔Claude 合同仍由
+research/WORKFLOW.md 的冻结 josim-handoff/v1 处理；历史实验目录不批量迁移。
 
-## 默认路径
+## 日常路径
 
-```text
-scientific question
-  → minimal hypothesis
-  → Reuse First / TOOL_REGISTRY / bvmtools / presets
-  → QUICK (1–4 explicit cases)
-  → RESULT_BRIEF + compact classic visualization
-  → AWAITING_USER_REVIEW
-  → stop
-  → explicit user understanding and authorization
-```
+QUESTION → MINIMUM QUICK → RESULT → USER REVIEW → NEXT or ARCHIVE
 
-新实验必须显式记录 `baseline`、`candidate`、`changed_variables` 和
-`held_fixed`。第一次缺少共享 diagnostic 时可以在实验目录中标记
-`EXPERIMENTAL_LOCAL`；第二次遇到相同需求时必须先提升到
-`scripts/bvmtools/` 并补 focused regression（Rule of Two）。历史 local
-builder/analyzer/plotter/verifier 只登记，不批量搬迁或删除。
+普通 Quick 默认只回答一个主要问题，改变一个中心变量，并采用最少的方向性
+case。结果必须停止在 AWAITING_USER_REVIEW，不自动设计或执行下一项物理实验。
 
-## 三条独立轴
+## Compact 目录
 
-- `evidence_tier`：`EXPLORATION`、`CANDIDATE`、`AUTHORITY`；
-- `workflow_stage`：`QUICK`、`PROMOTION_PLAN`、`FORMAL`；
-- `review_state`：`AWAITING_USER_REVIEW`、`USER_REVIEWED`、
-  `NEXT_STEP_AUTHORIZED`。
+experiment.yaml
+run.sh
+RESULT_BRIEF.md
+runs/A001/deck.cir
+runs/A001/raw.csv
+runs/A001/run.log
+runs/A001/result.yaml
+plots/RESULT_OVERVIEW.html
 
-V1 CLI 只执行 `QUICK`。Promotion 只应形成计划，Formal 继续使用现有严格
-流程；两者都不能由 Quick 自动启动。`USER_REVIEWED` 和
-`NEXT_STEP_AUTHORIZED` 只能由用户明确产生，代理不得代填。
+使用 scripts/templates/compact-quick/ 的薄 run.sh。入口命令为：
 
-## Quick 与可视化
+    ./run.sh
+    ./run.sh run
+    ./run.sh analyze A001
+    ./run.sh plot A001
+    ./run.sh inspect A001
 
-入口：
+run 使用 scripts/bvm-exp.py 创建下一个 Axxx，绝不覆盖已有 attempt。analyze
+只读现有 raw；plot 只重建 CLASSIC_LOCKED classic 图；inspect 只打印
+question、changed、attempt、HEAD、result 和 status。result.yaml 是小型机器
+记录，不再要求普通 Quick 额外维护 PREFLIGHT、REPORT、REVIEW、human-gate、
+provenance 或 metrics 文件。
 
-```bash
-python3 scripts/bvm-exp.py quick path/to/experiment.yaml
-```
+## 两种生命周期
 
-Quick 输出 `RESULT_BRIEF.md`、`human-gate.yaml` 和
-`plots/RESULT_OVERVIEW.html`，并在 `AWAITING_USER_REVIEW` 停止。默认只展示
-2–5 条关键波形：
+- QUICK：raw QA、相关 metric、RESULT_BRIEF 和 compact classic visualization。
+- FORMAL：只有用户明确要求时才启用 controls、收敛、完整 provenance 和独立复核。
 
-```yaml
-visualization:
-  mode: compact
-  style: CLASSIC_LOCKED
-```
+不再把 PROMOTION 作为单独生命周期。Quick 可以提出 Formal 选项，但用户决定
+是否继续，工具不自动升级。
 
-经典后端固定为 `scripts/josim-plot2.py -t sep_comb -c dark -j 2pi`。
-`-j 2pi` 是对 raw phase radians 做数值 `/(2*pi)`，不是 SFQ 计数。`full`
-必须显式 opt-in，仍保持 classic style；alternative style 需要用户明确授权，
-且 V1 不提供第二套 backend。
-建议只将 `plots/RESULT_OVERVIEW.html` 作为 human-facing compact visualization
-版本化；full 或任意其他 HTML 保持可再生并默认 ignored。
+## 风险触发验证
 
-## Strict local evidence
+| 风险 | 追加验证 |
+|---|---|
+| 参数或输入小改动 | raw QA + 目标 waveform/metric |
+| 新拓扑或节点重连 | KCL/拓扑端点验证 |
+| 电路迁移 | 一次等价性比较 |
+| 共享科学工具改动 | focused tests + frozen anchors |
+| QB→JTL 主张 | 同 JJ phase/area + 逐级 transport evidence |
+| Formal、论文或 system Gate | matched controls + timestep/convergence + 完整 provenance + 独立复核 |
 
-`scripts/bvmtools/phase.py` 和 `sfq.py` 提供共享算术和确定性 segment 路径。
-任何分类必须携带完整的 `StrictLocalEventSpec`：同一 JJ 的 phase/voltage
-列、端点、`voltage_to_phase_sign`、`reporting_direction`、run/window、raw
-SHA-256、METRIC_SPEC 版本/hash 和 task-local frozen tolerance。缺少其中任一
-项时只报告 raw arithmetic，classification 为 `INCONCLUSIVE`。
+默认 Quick 不机械要求时间步梯、完整四角色控制矩阵、KCL、迁移等价性、独立
+reviewer、长报告或每个 Git 输入的重复哈希；这些要求由风险触发。
 
-公共工具输出的 compatibility label 只用于明确的历史 Anchor 兼容 profile。
-`complete_segment_count`、`whole_turns_floor_diagnostic` 和 waveform activity
-都不是 event/SFQ count；local phase/area 也不证明 downstream reception 或
-system Gate。
+## 共享规则
 
-## Result brief 的固定内容
+优先复用 scripts/bvmtools/、presets 和 scripts/josim-plot2.py。raw P(...) 保留
+radians；turns 显式除以 2π。local phase/activity 不自动是 SFQ，local event 不
+自动是 downstream transport；需要物理解释时加载 josim-evidence-audit。
 
-每个 future result 必须回答：
+默认可视化为 sep_comb、dark、compact、CLASSIC_LOCKED，只画关键数据。拓扑图
+由 josim-viz 使用实际网表和元件符号；Graphviz 仅作 debug/provenance。
 
-1. WHAT WE CHANGED；
-2. WHAT WAS HELD FIXED；
-3. WHAT HAPPENED；
-4. WHAT IT MEANS；
-5. WHAT IT DOES NOT PROVE；
-6. 图的位置；
-7. 当前状态和最多三个下一选项。
+## 状态
 
-工具不会自动设计、扫参、Promotion 或下一项物理实验。
+允许的简单状态为 READY、RUNNING、AWAITING_USER_REVIEW、REVIEWED、ARCHIVED。
+用户审阅是唯一重要 gate；代理不得自行填写 REVIEWED、扩大 scope 或启动下一项
+实验。项目当前科学状态见 docs/research/CURRENT.md。

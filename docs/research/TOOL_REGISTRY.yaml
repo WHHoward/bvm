@@ -1,5 +1,5 @@
 registry_version: 1
-generated_on: '2026-09-01'
+generated_on: '2026-09-02'
 scope: JoSIM/BVM research tooling inventory and consolidation boundary
 inventory:
   scanned_globs:
@@ -183,7 +183,7 @@ entries:
   - name: bvm-exp
     path: scripts/bvm-exp.py
     status: CORE
-    purpose: Minimal config-driven Quick runner with explicit cases, immutable output paths, shared QA/metrics, RESULT_BRIEF, classic compact plot, and Human Understanding Gate.
+    purpose: Compact Quick runner with run/analyze/plot/inspect commands, immutable Axxx attempts, shared raw QA/metrics, RESULT_BRIEF, and classic compact plot.
     authoritative_for:
       - future Quick workflow mechanics
       - stop-at-review behavior
@@ -200,11 +200,13 @@ entries:
     replaces: []
     replaced_by: []
     known_limitations:
-      - V1 implements quick only; Promotion is a planning gate and Formal remains the strict path.
+      - Compact V2 implements Quick only; Formal remains an explicit separate workflow.
+      - The legacy quick subcommand remains for existing V1 fixtures and is not the new default.
       - Alternative visual backends are not implemented.
     tests:
-      - tooling smoke test under test/exploration/tooling-consolidation-smoke-v1-20260901
-    notes: Normal Quick runs invoke only explicitly listed cases; smoke configs consume existing raw without JoSIM.
+      - test/tools/test_bvm_exp_config.py
+      - test/tools/test_bvm_exp_compact.py
+    notes: New Compact Quick runs create runs/Axxx and consume existing raw only for analyze; legacy smoke configs remain untouched.
 
   - name: CLASSIC_CORE_VISUALIZATION
     path: scripts/josim-plot2.py

@@ -4,6 +4,33 @@
 
 ---
 
+## 2026-09-02 — Compact Workflow V2 与 Skills V2
+
+### 做了什么
+
+- 在现有 scripts/bvm-exp.py 中加入 Compact Quick 的 run、analyze、plot、inspect
+  入口；每次 run 创建不可覆盖的 runs/Axxx attempt，并将 deck、raw、run log、
+  result.yaml 收敛为最小可复盘记录。
+- 新增 Compact workflow 文档、实验模板和 docs/research/CURRENT.md；普通 Quick
+  默认只做风险相关的最小验证，结果停在 AWAITING_USER_REVIEW。
+- 将 Exploration 可视化/拓扑辅助实现归入 josim-viz；旧路径只保留兼容 launcher。
+  撤下 router、check-in、todo、project-summary 和 controller escalation 的活动
+  skill 入口；josim-handoff/v1 协议与历史任务保持不变。
+
+### 为什么
+
+降低普通 BVM/JoSIM 研究的理解和复现成本，把完整 controls、收敛、KCL、迁移
+等价性和独立复核改为由科学风险触发，而不是每次 Quick 的固定仪式。
+
+### 影响
+
+- 新日常路径为 QUESTION → MINIMUM QUICK → RESULT → USER REVIEW → NEXT or ARCHIVE；
+  不再把 PROMOTION 作为独立生命周期，也不自动执行下一项物理实验。
+- 本次只改 workflow/tooling 与文档，未运行 JoSIM 科学仿真、未修改电路参数、未改写历史
+  raw；Stage-A human gate 仍保持 AWAITING_USER_REVIEW。
+
+---
+
 ## 2026-08-24 — JTL_TRANSPORT_GATE_V1 回顾性方法学分类 checkpoint
 
 ### 做了什么

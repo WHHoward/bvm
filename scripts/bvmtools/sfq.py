@@ -468,6 +468,8 @@ def strict_event_list(
     complete_events = [
         item for item in segments if bool(item["complete_segment"]) and bool(item["onset_in_event_window"])
     ]
+    for ordinal, item in enumerate(complete_events, start=1):
+        item["event_window_event_index"] = ordinal
     clean_events = [
         item for item in complete_events if bool(item["clean_separated_event"])
     ]

@@ -1,10 +1,18 @@
 schema_version: 1
-state: AWAITING_USER_REVIEW
+state: USER_REVIEWED
 outcome: COUPLED_INPUT_BJS_NODE2
 mechanism_disposition: EXPLORATORY
-user_reviewed: false
-next_step_authorized: false
+user_reviewed: true
+reviewed_at: '2026-09-02T11:40:52+08:00'
+reviewed_by: user
+review_note: >-
+  User reviewed and accepted the corrected exploratory result with MIXED
+  robustness and NOT_PROVEN causal order, and authorized only the
+  BVM_QB_P0_CURRENT_REPLAY_FIXTURE_QUICK_V1 one-run quick probe.
+next_step_authorized: true
+authorized_next_step: BVM_QB_P0_CURRENT_REPLAY_FIXTURE_QUICK_V1
+authorized_next_step_scope: ONE_RUN_QUICK_PROBE
 next_action: STOP
 automatic_promotion: false
 automatic_next_experiment: false
-note: Corrective existing-raw-only analysis complete; robustness is MIXED and the coupled exploratory label is awaiting user review.
+note: User review was recorded; only the authorized one-run P0-current replay Quick Probe may proceed after this gate transition is committed.

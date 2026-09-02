@@ -1,0 +1,206 @@
+task_id: BVMSIM_STAGEA_TIMESTEP_EVENT_COUNT_CONVERGENCE_V1
+stage: A
+study_phase: EXPLORATORY
+purpose: >-
+  Independently test whether the historical BVMSim approximately-four-turn
+  result and the Stage-A S1 approximately-five-turn result are a
+  timestep-induced branch change, while separating net phase displacement
+  from discrete retrapped event count.
+authorization:
+  user_authorized: true
+  user_message_scope: "new independent 4-BVM timestep / event-count convergence Quick"
+  timestamp_utc: "2026-09-02T06:24:35Z"
+  head_before_task: c54ed80
+  preregistered_at_local: "2026-09-02T19:36:03+08:00"
+scope:
+  preserve_historical_bvmsim: true
+  preserve_stage_a_raws: true
+  canonical_bvm_replacement: false
+  single_bvm_run: false
+  qb_or_jtl_parameter_change: false
+  qb_bias_change: false
+  parameter_sweep: false
+  topology_redesign: false
+  t1: false
+  automatic_follow_up: false
+  stage_b: false
+fixture:
+  template: test/exploration/bvmsim-qb-strict-qualification-v1-20260902/migrated/m0_bvmsim_qb.cir
+  template_sha256: e0eeb3435336ca86253241f6bdabb86b8c39baf642cb16c7b0a6409035a0518e
+  bvm_instances: 4
+  bvm_source: BVMSim/bvm_cell.cir
+  bvm_source_status: HISTORICAL_EXPLORATORY_NOT_CANONICAL
+  canonical_bvm_explicitly_not_used: circuits/bvm/bvm_cell.cir
+  qb_source: circuits/qb/bq_cell_bvmsim_v1.cir
+  qb_subckt: BQ_BVMSIM_V1
+  qb_instance: xBQ1
+  qb_bias: "I_QB_BIAS 0 QB_BIAS pwl(0 0 1p 250u)"
+  accumulated_sensing_line: "four preserved 12-junction branches, area=3.2"
+  jtl_source: BVMSim/library_josim/jtl2.cir
+  jtl_instances: [XJTL1_1, XJTL1_2, XJTL1_3, XJTL1_4, XJTL1_5, XJTL1_6]
+  final_load: "RBQ1 o6 0 10"
+  model: circuits/models/jjmit.cir
+  model_equivalence: "shared jjmit equals active BVMSim QB model values; BVMSim JTL model remains unnormalized"
+  fixed_physics: >-
+    Every netlist token, source waveform, BVM/JTL/QB parameter, connection,
+    bias, load, and stop time is held fixed. Only the transient control line
+    differs between matrix members.
+existing_raw_audit:
+  required_before_new_run: true
+  inputs:
+    historical_bvmsim: BVMSim/data_tran.csv
+    stage_a_m0: test/exploration/bvmsim-qb-strict-qualification-v1-20260902/raw/m0/run-01.csv
+    stage_a_s1: test/exploration/bvmsim-qb-strict-qualification-v1-20260902/raw/s1/run-01.csv
+  matching: exact_stored_timestamp_overlap_only
+  interpolation: prohibited
+  phase_alignment: >-
+    For post-110 ps trajectory comparison, subtract each trace's value at the
+    first exact stored sample at or after 110 ps before comparing phase.
+  meaningful_divergence_rule:
+    phase_threshold_turns: 0.05
+    voltage_floor_v: 0.000005
+    voltage_relative_to_pair_peak: 0.10
+    persistence_common_samples: 3
+    description: >-
+      A candidate is meaningful only when phase trajectory difference reaches
+      the phase threshold and voltage difference reaches max(floor,
+      relative-to-pair peak) for three consecutive exact common samples.
+      Isolated solver noise or a phase offset is not a divergence.
+matrix:
+  - id: T100
+    tran: ".tran 0.1p 200p 45p"
+    nominal_timestep_ps: 0.1
+    output_start: 45ps
+    purpose: historical_print_start_reproduction
+  - id: T050
+    tran: ".tran 0.05p 200p"
+    nominal_timestep_ps: 0.05
+    output_start: 0ps
+    purpose: timestep_probe
+  - id: T025
+    tran: ".tran 0.025p 200p"
+    nominal_timestep_ps: 0.025
+    output_start: 0ps
+    purpose: stage_a_s1_reproduction
+  - id: T0125
+    tran: ".tran 0.0125p 200p"
+    nominal_timestep_ps: 0.0125
+    output_start: 0ps
+    purpose: finer_diagnostic
+  - id: T100_FULL
+    tran: ".tran 0.1p 200p"
+    nominal_timestep_ps: 0.1
+    output_start: 0ps
+    purpose: print_start_control
+  change_audit:
+    allowed_changed_lines: ["single .tran control line"]
+    exact_fixture_hash_audit: true
+    generated_deck_diff_against_template: "only .tran line may differ"
+windows_ps:
+  INITIAL_PRE: [0, 50]
+  WRITE0: [50, 70]
+  READ0: [70, 90]
+  WRITE1: [90, 110]
+  READ1_RESPONSE: [110, 170]
+  TAIL_RESET: [170, 200]
+event_semantics:
+  raw_phase_units: JoSIM P output in radians
+  phase_display_conversion: continuous_unwrap_rad_divided_by_2pi
+  event_basis: >-
+    Same junction, same continuous monotonic segment, phase delta and
+    same-segment integral(V dt)/Phi0, with direction and completeness retained.
+  complete_min_abs_turns: 1.0
+  clean_upper_abs_turns: 1.15
+  clean_separated_requires: >-
+    complete phase/area-consistent segment plus bounded/retrapped interval
+    before the next same-polarity complete event
+  not_event_count_authority: [Vpeak, I_over_Ic, whole_window_phase, whole_window_area]
+  distinction_required:
+    - FOUR_SEPARATED_EVENTS
+    - ONE_CONTINUOUS_MULTI_TURN_RUNNING_SEGMENT
+    - MIXED_OR_AMBIGUOUS_PHASE_ACTIVITY
+    - LOCAL_EVENT_WITH_DOWNSTREAM_TRANSPORT_LOSS
+  source_order: [BJs, BJ1, BJ2, JTL1, JTL2, JTL3, JTL4, JTL5, JTL6]
+observables:
+  qb:
+    - P(BJS|XBQ1)
+    - V(BJS|XBQ1)
+    - P(BJ1|XBQ1)
+    - V(BJ1|XBQ1)
+    - P(BJ2|XBQ1)
+    - V(BJ2|XBQ1)
+    - V(QBIN)
+    - V(QBOUT)
+  jtl_each_stage:
+    - P(B01|XJTL1_N)
+    - V(B01|XJTL1_N)
+    - P(B02|XJTL1_N)
+    - V(B02|XJTL1_N)
+  optional:
+    - I(BVMOUT)
+    - I(LIN|XBQ1)
+    - I(I_QB_BIAS)
+analysis_plan:
+  per_run_outputs:
+    - local voltage pulse regions
+    - same-interval voltage area divided by Phi0
+    - same-interval phase delta divided by 2pi
+    - onset, peak, end, polarity, settling, event index
+    - complete segment count
+    - clean separated event count
+    - largest segment turns
+    - any segment over 1.15 turns
+    - continuous multi-turn running status
+  transport: "BJ2 -> JTL1 -> JTL2 -> JTL3 -> JTL4 -> JTL5 -> JTL6"
+  required_table_columns:
+    - timestep
+    - BJ2_READ_net_turns
+    - BJ2_quantized_event_count
+    - JTL1_B01_net_turns
+    - JTL1_B01_transported_event_count
+    - JTL6_B01_transported_event_count
+    - final_classification
+  convergence_rule: >-
+    A stable event count requires the independently enumerated clean separated
+    event count and identity/onset ordering to remain stable across the finer
+    timestep members. Net turns alone never establish convergence.
+  causal_attribution_rule: >-
+    Timestep-induced branch change is supported only if the new T100 run
+    reproduces the historical T100 trajectory/event behavior and the finer
+    runs reproduce the Stage-A S1 behavior, with unchanged deck physics and
+    no provenance or print-start explanation sufficient to account for it.
+    Otherwise attribution remains INCONCLUSIVE or is rejected.
+allowed_primary_classifications:
+  - FOUR_SEPARATED_SFQ_TRANSPORT_SUPPORTED
+  - OTHER_SEPARATED_MULTI_SFQ_TRANSPORT_SUPPORTED
+  - LOCAL_MULTI_SFQ_WITH_TRANSPORT_LOSS
+  - CONTINUOUS_MULTI_TURN_RUNNING_STATE
+  - MULTI_PHASE_ACTIVITY_ONLY
+  - SELECTIVITY_OR_OVERDRIVE_FAILURE
+  - NO_CLEAR_STRICT_CLASSIFICATION
+  - MIGRATION_INVALID
+  - ANALYSIS_INVALID
+visualization:
+  renderer: scripts/josim-plot2.py
+  pages:
+    - plots/RESULT_TIMESTEP_BJ2.html
+    - plots/RESULT_TIMESTEP_JTL1.html
+    - plots/RESULT_EVENT5_ORIGIN.html
+  phase_display: turns_rad_div_2pi
+  plotting_grid: exact_common_timestamp_decimation_for_visualization_only
+  zoom_ps: [120, 145]
+review:
+  required_reviewer: Sol_XHigh_josim_architect
+  required_focus: >-
+    Adversarially test whether 4-to-5 is genuinely timestep-induced branch
+    change; challenge provenance, print-start effects, branch identity,
+    event segmentation, and convergence. Do not accept an expected result as
+    evidence.
+  reviewer_read_only: true
+stop_gate:
+  state: PREREGISTERED_BEFORE_RUN
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  stage_b_authorized: false
+  next_action_after_stage_a: AWAITING_USER_REVIEW

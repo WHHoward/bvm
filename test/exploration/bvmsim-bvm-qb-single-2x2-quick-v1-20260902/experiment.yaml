@@ -1,0 +1,191 @@
+schema_version: compact-quick-v2-matrix
+id: BVM_QB_SINGLE_BVMSIM_BVM_TO_QB_MATCHED_2X2_QUICK_V1
+mode: QUICK
+study_phase: EXPLORATORY
+status: READY
+date_directory: bvmsim-bvm-qb-single-2x2-quick-v1-20260902
+base_head: 61627bdaf1c76395106ddbcabfcae572a5920ebd
+preflight_timestamp: 2026-09-02T16:50:54+08:00
+
+question:
+  - Does one historical BVMSim BVM drive a clean local event or a multi-fire burst in BQ_BVMSIM_V1 through the original 12-JJ sensing-line load?
+  - Does the six-stage JTL transport the QB output stage by stage, and does its load feed back on the QB?
+hypothesis: The read-1 condition may produce discrete QB activity, while read-0 should not; the JTL result must be determined from same-JJ event and transport evidence rather than cumulative phase alone.
+
+topology:
+  bvm_source: BVMSim/bvm_cell.cir
+  bvm_authority: historical_bvmsim_source_only
+  qb_cell: circuits/qb/bq_cell_bvmsim_v1.cir
+  qb_subckt: BQ_BVMSIM_V1
+  jj_model: circuits/models/jjmit.cir
+  jtl_source: BVMSim/library_josim/jtl2.cir
+  bvm_instances: 1
+  terminal_sensing_line:
+    elements: 11 B_LD4_01..B_LD4_11 plus BVMout
+    jj_count: 12
+    area: 3.2
+    terminal: SL1 -> BVMout -> QBin
+  qb_bias_uA: 250
+  direct_load_ohm: 10
+  jtl_stages: 6
+  jtl_load_ohm: 10
+
+changed:
+  - logical write sign: S0 uses -100 uA on WL and BL; S1 uses +100 uA on WL and BL
+  - downstream load: direct 10 ohm versus six BVMSim jtl cells followed by 10 ohm
+frozen:
+  - BVMSim/bvm_cell.cir is historical and unedited
+  - single BVM plus exactly 12 terminal sensing-line junctions
+  - BQ_BVMSIM_V1 topology and 250 uA external bias waveform
+  - exact BVMSim/library_josim/jtl2.cir behavior in J conditions
+  - 1 ps ramp, 9 ps hold, 1 ps fall pulse shape
+  - write slot 50..61 ps and positive read slot 70..81 ps
+  - logical 1 is the same-slot positive counterpart of the existing BVMSim logical-0 waveform
+  - .tran 0.025p 200p, saved from t=0
+  - no canonical BVM, four-BVM fixture, parameter sweep, timestep ladder, magnetic coupling, JSL redesign, T1, or automatic follow-up
+
+conditions:
+  - id: S0-R
+    logical_state: 0
+    load: direct_10ohm
+    deck: inputs/s0-r.cir
+    run_dir: runs/A001/S0-R
+  - id: S1-R
+    logical_state: 1
+    load: direct_10ohm
+    deck: inputs/s1-r.cir
+    run_dir: runs/A001/S1-R
+  - id: S0-J
+    logical_state: 0
+    load: jtl1_to_jtl6_plus_10ohm
+    deck: inputs/s0-j.cir
+    run_dir: runs/A001/S0-J
+  - id: S1-J
+    logical_state: 1
+    load: jtl1_to_jtl6_plus_10ohm
+    deck: inputs/s1-j.cir
+    run_dir: runs/A001/S1-J
+
+windows_ps:
+  pre: [0, 50]
+  write: [50, 62]
+  read: [70, 82]
+  post: [82, 200]
+  full: [0, 200]
+  boundary_rule: associate a candidate by onset and context; do not cut a monotonic or voltage-active candidate at a window boundary
+
+event_segmentation:
+  status: TASK_LOCAL_EXPLORATORY
+  method: voltage_activity_then_quiescent_gap_then_same_jj_phase_area
+  active_threshold: max(1e-6 V, 0.01 * peak_abs_voltage)
+  quiescent_threshold: max(0.2e-6 V, 0.002 * peak_abs_voltage)
+  min_quiescent_gap_ps: 0.25
+  min_candidate_duration_ps: 0.05
+  near_unit_turns: [0.75, 1.25]
+  max_phase_area_residual_turns: 0.20
+  event_counter_authority: candidate phase-area and retrap evidence; not Vpeak, I>Ic, derivative activity, whole-window phase, or whole-window area
+  algorithm_scope: analysis-only helper for this exploration; bvmtools.sfq is not modified
+
+signals:
+  bvm:
+    - P(B_JM1|XBVM1)
+    - V(B_JM1|XBVM1)
+    - I(B_JM1|XBVM1)
+    - P(B_LD4_01)
+    - V(B_LD4_01)
+    - I(B_LD4_01)
+    - P(B_LD4_11)
+    - V(B_LD4_11)
+    - I(B_LD4_11)
+    - P(BVMOUT)
+    - V(BVMOUT)
+    - I(BVMOUT)
+    - V(SL1)
+    - I(L_SL|XBVM1)
+    - V(QBIN)
+  qb:
+    - P(BJS|XBQ1)
+    - V(BJS|XBQ1)
+    - I(BJS|XBQ1)
+    - P(BJ1|XBQ1)
+    - V(BJ1|XBQ1)
+    - I(BJ1|XBQ1)
+    - P(BJ2|XBQ1)
+    - V(BJ2|XBQ1)
+    - I(BJ2|XBQ1)
+    - V(QBOUT)
+    - I(LIN|XBQ1)
+    - I(L1|XBQ1)
+    - I(L2|XBQ1)
+    - I(L3|XBQ1)
+    - I(RJ1|XBQ1)
+    - I(RJ2|XBQ1)
+    - I(I_QB_BIAS)
+  jtl:
+    - P(B01|XJTL1_1)..P(B01|XJTL1_6)
+    - V(B01|XJTL1_1)..V(B01|XJTL1_6)
+    - P(B02|XJTL1_1)..P(B02|XJTL1_6)
+    - V(B02|XJTL1_1)..V(B02|XJTL1_6)
+
+analysis:
+  script: analysis/analyze.py
+  outputs:
+    - analysis/metrics.json
+    - analysis/provenance.json
+    - analysis/REVIEW.md
+    - analysis/human-gate.yaml
+  checks:
+    - raw_qa
+    - actual_time_grid
+    - voltage_gap_candidates
+    - same_junction_phase_area
+    - qb_kcl
+    - load_backaction
+    - jtl_transport
+
+visualization:
+  backend: scripts/josim-plot2.py
+  profile: CLASSIC_LOCKED
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  pages:
+    - plots/RESULT_OVERVIEW.html
+    - plots/RESULT_BVM_INTERFACE.html
+    - plots/RESULT_QB_INTERNAL.html
+    - plots/RESULT_TRANSPORT_VOLTAGE.html
+    - plots/RESULT_TRANSPORT_PHASE.html
+  generation_script: analysis/plot.py
+  rule: plots are compact descriptive evidence generated from saved immutable raw CSVs; they do not certify SFQ events
+
+provenance:
+  source_hashes:
+    BVMSim/bvm_cell.cir: 009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125
+    circuits/qb/bq_cell_bvmsim_v1.cir: 9cb0f218db8a8a85a811b6be4984e1af7121edeff2961a6f5608cdb808866ac7
+    circuits/models/jjmit.cir: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+    BVMSim/library_josim/jtl2.cir: ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a
+  solver:
+    path: build/josim-cli
+    version: v2.7.2837d13
+    sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  visualization_hash:
+    scripts/josim-plot2.py: 0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6
+  input_hashes:
+    inputs/s0-r.cir: c5f31bef09e4f97b5bf9e29669770ad26a18b369ca9436aaf9130b2c0bf70c16
+    inputs/s1-r.cir: 068ab1c67b1699ae3ae8e3dce0a77c2ae9c9e494240b5b1b8cc73c275368d0fc
+    inputs/s0-j.cir: 88b45b0a364e01e6b87e8f7ffdf47ecaa314f3cb1804d7e1bba8745daea4d50c
+    inputs/s1-j.cir: 92946f450d2fab90dd03ed416f77543b070815bccd40b20f668191e8cf7186bc
+
+possible_next_options:
+  - User reviews this four-condition Quick and its focused plots.
+  - If warranted, authorize one separately bounded follow-up experiment.
+  - Archive the exploratory evidence without promoting it to a Gate or paper claim.
+
+gate:
+  status: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  stage_b_authorized: false
+
+stop_rule: Stop after S0-R, S1-R, S0-J, S1-J analysis and focused HTML generation; do not run any automatic follow-up.

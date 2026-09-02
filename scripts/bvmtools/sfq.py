@@ -312,6 +312,193 @@ def strict_segment_metrics(
     return records
 
 
+def strict_event_list(
+    time_s: Sequence[float],
+    phase_raw: Sequence[float],
+    voltage_v: Sequence[float],
+    *,
+    event_window_s: tuple[float, float],
+    scan_window_s: tuple[float, float] | None = None,
+    retrap_max_p2p_turns: float,
+    spec: StrictLocalEventSpec | None = None,
+) -> dict[str, object]:
+    """Enumerate ordered strict local events from shared segment records.
+
+    ``strict_segment_metrics`` remains the sole phase/area arithmetic source.
+    This helper adds only reusable event-list semantics: complete segments,
+    bounded opposite-direction retraps, event ordering, and continuous
+    multi-turn status.  The scan window may extend beyond ``event_window_s``
+    so the final event in a reporting window can be checked against its full
+    post-event tail without cutting a segment at the reporting boundary.
+
+    The result is local to one junction.  It is not a downstream transport
+    count and it never turns a whole-window phase displacement into events.
+    """
+
+    _validate_series(time_s, phase_raw, voltage_v)
+    scan = scan_window_s if scan_window_s is not None else event_window_s
+    if scan[0] > event_window_s[0] or scan[1] < event_window_s[1]:
+        raise ValueError("scan_window_s must contain event_window_s")
+    if (
+        isinstance(retrap_max_p2p_turns, bool)
+        or not math.isfinite(float(retrap_max_p2p_turns))
+        or float(retrap_max_p2p_turns) < 0.0
+    ):
+        raise ValueError("retrap_max_p2p_turns must be a finite nonnegative number")
+
+    active_spec = spec if spec is not None else StrictLocalEventSpec()
+    segments = [
+        dict(item)
+        for item in strict_segment_metrics(
+            time_s,
+            phase_raw,
+            voltage_v,
+            scan,
+            spec=active_spec,
+        )
+    ]
+    phase_unwrapped = continuous_unwrap(phase_raw)
+    scan_indices = window_indices(time_s, *scan)
+    if len(scan_indices) < 2:
+        raise ValueError("scan window requires at least two samples")
+    event_left, event_right = event_window_s
+
+    for item in segments:
+        turns = float(item["phase_reported_turns"])
+        complete = bool(
+            active_spec.classification_ready
+            and item["area_consistent"] is True
+            and abs(turns) >= float(active_spec.complete_min_turns)
+        )
+        item["complete_segment"] = complete
+        item["clean_band"] = bool(
+            complete and abs(turns) <= float(active_spec.clean_upper_turns)
+        )
+        item["onset_in_event_window"] = bool(
+            event_left <= float(item["start_time_s"]) < event_right
+        )
+        item["event_index"] = None
+        item["retrap_or_bounded_interval"] = None
+        item["clean_separated_event"] = False
+        item["continuous_multiturn_segment"] = bool(
+            complete and abs(turns) > float(active_spec.clean_upper_turns)
+        )
+
+    complete_indices = [
+        index for index, item in enumerate(segments) if bool(item["complete_segment"])
+    ]
+    for ordinal, index in enumerate(complete_indices, start=1):
+        segments[index]["event_index"] = ordinal
+    for ordinal, index in enumerate(complete_indices, start=1):
+        current = segments[index]
+        next_index = complete_indices[ordinal] if ordinal < len(complete_indices) else None
+        if next_index is not None:
+            following = segments[next_index]
+            between = segments[index + 1 : next_index]
+            gap_start = int(current["end_index"])
+            gap_end = int(following["start_index"])
+            gap_values = phase_unwrapped[gap_start : gap_end + 1]
+            gap_p2p = (
+                (max(gap_values) - min(gap_values)) / TAU
+                if len(gap_values) >= 2
+                else 0.0
+            )
+            intermediate_turns = sum(
+                abs(float(item["phase_reported_turns"])) for item in between
+            )
+            opposite_retrap = any(
+                int(item["direction"]) == -int(current["direction"])
+                for item in between
+            )
+            bounded = bool(
+                between
+                and opposite_retrap
+                and not any(bool(item["complete_segment"]) for item in between)
+                and intermediate_turns < float(active_spec.complete_min_turns)
+                and gap_p2p <= float(retrap_max_p2p_turns)
+            )
+            current["retrap_or_bounded_interval"] = {
+                "kind": "INTER_EVENT_RETRAP",
+                "bounded": bounded,
+                "start_time_ps": float(between[0]["start_time_ps"]) if between else None,
+                "end_time_ps": float(between[-1]["end_time_ps"]) if between else None,
+                "duration_ps": (
+                    float(between[-1]["end_time_ps"])
+                    - float(between[0]["start_time_ps"])
+                    if between
+                    else 0.0
+                ),
+                "intermediate_segment_count": len(between),
+                "intermediate_abs_turns_sum": intermediate_turns,
+                "opposite_direction_retrap": opposite_retrap,
+                "intermediate_complete_segment": any(
+                    bool(item["complete_segment"]) for item in between
+                ),
+                "phase_p2p_turns": gap_p2p,
+                "next_event_index": int(following["event_index"]),
+                "next_event_onset_ps": float(following["start_time_ps"]),
+            }
+        else:
+            tail_start = int(current["end_index"])
+            tail_end = int(scan_indices[-1])
+            tail_values = phase_unwrapped[tail_start : tail_end + 1]
+            tail_p2p = (
+                (max(tail_values) - min(tail_values)) / TAU
+                if len(tail_values) >= 2
+                else None
+            )
+            bounded = bool(
+                tail_p2p is not None
+                and tail_p2p <= float(retrap_max_p2p_turns)
+            )
+            current["retrap_or_bounded_interval"] = {
+                "kind": "POST_EVENT_BOUNDED_TAIL",
+                "bounded": bounded,
+                "start_time_ps": float(current["end_time_ps"]),
+                "end_time_ps": float(time_s[tail_end] * 1.0e12),
+                "duration_ps": float(time_s[tail_end] - time_s[tail_start]) * 1.0e12,
+                "tail_phase_p2p_turns": tail_p2p,
+            }
+        current["clean_separated_event"] = bool(
+            current["clean_band"]
+            and isinstance(current["retrap_or_bounded_interval"], dict)
+            and bool(current["retrap_or_bounded_interval"].get("bounded"))
+        )
+
+    complete_events = [
+        item for item in segments if bool(item["complete_segment"]) and bool(item["onset_in_event_window"])
+    ]
+    clean_events = [
+        item for item in complete_events if bool(item["clean_separated_event"])
+    ]
+    return {
+        "mode": "strict_local_event_list_v1",
+        "claim_ceiling": "LOCAL_JUNCTION_ONLY",
+        "event_window_s": [float(event_window_s[0]), float(event_window_s[1])],
+        "scan_window_s": [float(scan[0]), float(scan[1])],
+        "retrap_max_p2p_turns": float(retrap_max_p2p_turns),
+        "spec": active_spec.metadata(),
+        "segments": segments,
+        "complete_events": complete_events,
+        "clean_separated_events": clean_events,
+        "complete_segment_count": len(complete_events) if active_spec.classification_ready else None,
+        "clean_separated_event_count": len(clean_events) if active_spec.classification_ready else None,
+        "complete_event_onset_times_ps": [float(item["start_time_ps"]) for item in complete_events],
+        "clean_event_onset_times_ps": [float(item["start_time_ps"]) for item in clean_events],
+        "clean_event_directions": [int(item["direction"]) for item in clean_events],
+        "largest_segment_turns": max(
+            (abs(float(item["phase_reported_turns"])) for item in segments),
+            default=0.0,
+        ),
+        "any_segment_spans_over_1_15_turns": any(
+            bool(item["continuous_multiturn_segment"]) for item in segments
+        ),
+        "continuous_multi_turn_running": any(
+            bool(item["continuous_multiturn_segment"]) for item in segments
+        ),
+    }
+
+
 def _post_boundedness(
     time_s: Sequence[float],
     phase_unwrapped: Sequence[float],

@@ -1,0 +1,283 @@
+id: BVM_QB_P0_CURRENT_REPLAY_FIXTURE_QUICK_V1
+date_directory: bvm-qb-p0-current-replay-fixture-quick-v1-20260902
+tier: Exploration
+mode: ONE_RUN_QUICK_PROBE
+new_science_run_count: 1
+base_head_after_authorization: 0ab139aca7f452faf93cf6d81e3f30be714a7e51
+
+question: >-
+  在固定 13 ps、12×320、logical1/read、Lin=0.8 pH scaled-QB 条件下，
+  将真实 P0 physical BVM→12×JSL→QB 的完整输入支路电流 literal replay
+  到同一个 QB，是否足以重现 P0 的 PRE 状态、QB 内部轨迹和 BJL2 严格本地分类？
+
+hypotheses:
+  H1: >-
+    current-only replay 在输入波形、PRE 状态和 W3/W4 QB 轨迹上都足够接近 P0，
+    可作为后续隔离输入边界的 causal fixture。
+  H2: >-
+    replay 输入、符号、时间网格或 PRE preload 不等价，导致比较无效或只能得到
+    QUICK_AMBIGUOUS；此时不能解释 W3/W4。
+  H3: >-
+    输入 replay 有效且 PRE 等价，但 QB 轨迹仍不能重现 P0；这只支持
+    current-only replay insufficient，不证明 source-impedance mechanism。
+
+authorization:
+  authorized_by: user
+  authorized_scope: exactly_one_new_josim_science_run
+  authorized_task: BVM_QB_P0_CURRENT_REPLAY_FIXTURE_QUICK_V1
+  previous_gate_transition_commit: 0ab139aca7f452faf93cf6d81e3f30be714a7e51
+  not_authorized:
+    - P0 rerun
+    - I0 rerun
+    - bias experiment
+    - BJs-Ic experiment
+    - parameter sweep or optimization
+    - timestep ladder
+    - magnetic coupling continuation
+    - JTL or T1 experiment
+    - Formal BVM-to-QB Gate
+    - paper-level claim
+
+references:
+  P0:
+    role: existing_physical_bvm_12x320_qb
+    raw: ../bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv
+    deck: ../bvm-load-qb-matrix-v1-20260901/inputs/physical/13ps/12x320/logical1_read.cir
+    raw_sha256: 9aecc3f626148737bbd14e8cdb42a546002d7b2f268cc39badc430647c877d66
+    deck_sha256: afd9f65aaadc15db25d0a34de5bea37ce9f81be3afa261ca946e432868187e0e
+  I0:
+    role: existing_ideal_grounded_source_replay_reference
+    raw: ../bvm-load-qb-matrix-v1-20260901/raw/replay/13ps/12x320/logical1_read/run-01.csv
+    deck: ../bvm-load-qb-matrix-v1-20260901/inputs/replay/13ps/12x320/logical1_read.cir
+    raw_sha256: be7e0403586b8819a9f4d7e4f4400af90e640b281b7a3ae4e1331d351c866d4c
+    deck_sha256: c8260125fa2b39533d6d64507134b7bbeffaaf00bbbfb18e9e53103ed14945a1
+    meaning: reference gap only; never rerun in this task
+  qb_snapshot:
+    path: inputs/bq_cell.cir
+    source_parent: ../bvm-load-qb-matrix-v1-20260901/inputs/bq_cell.cir
+    sha256: 5ee4e8f054a9a49aea7e48493b20ef3d794db01b2902f15a439b0ea31f2276a2
+  jj_snapshot:
+    path: inputs/jjmit.cir
+    source_parent: ../bvm-load-qb-matrix-v1-20260901/inputs/jjmit.cir
+    sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+
+candidate:
+  id: RP
+  role: literal_p0_current_replay_into_identical_qb
+  deck: inputs/rp_p0_current_replay.cir
+  raw: raw/run-01.csv
+  source_raw: ../bvm-load-qb-matrix-v1-20260901/raw/physical/13ps/12x320/logical1_read/run-01.csv
+  source_signal: I(LIN|XBQ)
+  source_occurrence: 0
+  replay_output_signal: I(I_REPLAY)
+  source_orientation: 0 -> IN
+  positive_current_direction: into_QB_IN
+  source_rule: >-
+    Use every P0 source sample and its actual timestamp as a literal PWL pair;
+    no fit, smoothing, scaling, holding, truncation, negative-lobe removal,
+    retiming, resampling, or interpolation.
+  generation:
+    script: analysis/build_replay_deck.py
+    pairs_per_continuation_line: 18
+    time_unit: ps
+    value_unit: A
+    formatter: Python format .17g for both time and current
+
+fixed_conditions:
+  topology: BVM -> 12 JSL junctions -> identical scaled QB
+  bvm_load: 12 junctions, IC=320 uA each
+  width_ps: 13
+  logical_state: logical1
+  read_condition: read
+  QB:
+    Lin_pH: 0.8
+    L0_pH: 1.323
+    L1_pH: 3.91
+    L2_pH: 3.91
+    BJs_area: 0.5
+    BJL1_area: 0.36
+    BJL2_area: 0.54
+    RJ1_ohm: 33
+    RJ2_ohm: 22
+    RB_ohm: 6
+    IBIAS_uA: 35
+    R_LOAD_ohm: 10
+  solver: build/josim-cli
+  solver_version: v2.7.2837d13
+  solver_sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  timestep_ps: 0.0125
+  stop_ps: 170
+  jj_model: inputs/jjmit.cir
+
+signals:
+  input:
+    P0: I(LIN|XBQ)
+    RP: I(I_REPLAY)
+  pre_currents:
+    - I(BJL1|XBQ)
+    - I(L1|XBQ)
+    - I(RB|XBQ)
+    - I(L2|XBQ)
+    - I(BJL2|XBQ)
+  pre_phases:
+    - P(BJs|XBQ)
+    - P(BJL1|XBQ)
+    - P(BJL2|XBQ)
+  primary_trajectory:
+    - P(BJs|XBQ)
+    - I(BJL1|XBQ)
+    - P(BJL1|XBQ)
+    - I(L1|XBQ)
+    - I(L2|XBQ)
+    - I(BJL2|XBQ)
+    - P(BJL2|XBQ)
+  supporting_trajectory:
+    - I(RJ1|XBQ)
+    - I(RB|XBQ)
+    - I(RJ2|XBQ)
+    - I(L0|XBQ)
+  signal_occurrences:
+    I(LIN|XBQ): 0
+    I(I_REPLAY): 0
+
+windows_ps:
+  W2_pre_read_idle: [80, 90]
+  W3_read: [95, 110]
+  W4_post_read_observation: [110, 130]
+
+pre_state_rule:
+  comparison: P0_vs_RP
+  phase_semantics: each phase trace is continuously unwrapped and centered by its own W2 median
+  all_signals_required: true
+  current_max_abs_difference_uA: 0.01
+  phase_max_abs_difference_turns: 0.001
+  no_interpolation: true
+
+trajectory_closure_rule:
+  comparison: exact_grid_fixed_window
+  phase_semantics: continuous_unwrap(rad)/(2*pi), centered by W2 median for comparisons
+  difference_convention: RP_minus_P0 and I0_minus_P0; RMS is sign-insensitive but sign is retained
+  reference_gap_floor:
+    current_rms_uA: 1.0e-9
+    phase_rms_turns: 1.0e-9
+  ratio: C_x = RMS(RP-P0) / RMS(I0-P0)
+  threshold: 0.10
+  windows: [W3_read, W4_post_read_observation]
+  denominator_too_small: NOT_DEFINED_SMALL_REFERENCE_GAP
+  if_denominator_too_small: use_absolute_comparison_and_do_not_manufacture_ratio
+
+kcl_rule:
+  implementation: scripts/bvmtools/kcl.py
+  tolerance_uA: 0.001
+  equations:
+    input: I(LIN|XBQ) - I(BJS|XBQ) = 0
+    node2: I(BJS|XBQ) - I(BJL1|XBQ) - I(RJ1|XBQ) - I(L1|XBQ) = 0
+    node3: I(L1|XBQ) + I(RB|XBQ) - I(L2|XBQ) = 0
+    node4: I(L2|XBQ) - I(BJL2|XBQ) - I(RJ2|XBQ) - I(L0|XBQ) = 0
+  windows: [W2_pre_read_idle, W3_read, W4_post_read_observation]
+
+strict_event:
+  profile: STRICT_EVENT_ANCHOR_COMPATIBILITY_V1
+  phase: P(BJL2|XBQ)
+  voltage: V(BJL2|XBQ)
+  branch_endpoints: BJL2 4 -> 0; direct JoSIM branch voltage
+  voltage_to_phase_sign: 1
+  reporting_direction: 1
+  mapping_status: VERIFIED_FROM_BQ_SUBCIRCUIT_AND_DIRECT_COLUMNS
+  metric_spec:
+    path: docs/research/METRIC_SPEC_V2.md
+    version: 2.0.0
+    sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74b8b7bb7f0be470
+  activity_window_ps: [95, 115]
+  post_window_ps: [115, 130]
+  post_tail_window_ps: [125, 130]
+  tolerance:
+    id: bvm-qb-p0-current-replay-fixture-quick-bjl2-v1
+    scope: task-local
+    status: FROZEN
+    evidence: test/exploration/bvm-qb-p0-current-replay-fixture-quick-v1-20260902/PREFLIGHT.md
+    phase_area_residual_abs_floor_turns: 0.05
+    phase_area_residual_relative: 0.10
+    complete_min_turns: 1.0
+    clean_upper_turns: 1.15
+    post_range_max_turns: 1.0
+    post_tail_p2p_max_turns: 0.25
+  closure_to_P0:
+    phase_abs_difference_turns: 0.05
+    area_abs_difference_phi0: 0.05
+    endpoint_abs_difference_ps: 0.10
+  claim_ceiling: same-JJ local phase/area compatibility only
+  forbidden_interpretations:
+    - SFQ count
+    - downstream delivery
+    - source impedance mechanism proof
+    - system Gate
+    - hardware behavior
+
+strict_anchor_regression:
+  summary_csv: ../bvm-load-qb-strict-event-reclassification-v1-20260901/analysis/strict-event-summary.csv
+  numeric_tolerance: 1.0e-9
+  expected:
+    replay 9 12x320:
+      largest_monotonic_segment_turns: 0.8925272335342432
+      same_segment_voltage_area_turns: 0.8925370087565059
+      complete_segment_count: 0
+      strict_classification: SUBTHRESHOLD
+    replay 13 12x320:
+      largest_monotonic_segment_turns: 1.0160289228944646
+      same_segment_voltage_area_turns: 1.0160368344325386
+      complete_segment_count: 1
+      strict_classification: CLEAN_ONE_SFQ_CANDIDATE
+
+outcome_rule:
+  status: FROZEN_BEFORE_CANDIDATE_RUN
+  input_replay_fidelity: grid exact and max_abs_error <= 1.0e-6 uA
+  pre_state: every registered current and phase signal satisfies its threshold
+  qualified: all nondegenerate primary C_x <= 0.10, strict class matches P0, and strict local values close
+  partial: input/pre pass, strict class matches P0, at least one C_x > 0.10, at most one ratio is >0.10 and <=0.20
+  insufficient: input/pre pass but qualified and partial rules fail
+  invalid: input grid/amplitude fidelity or PRE equivalence fails, or artifact is invalid
+  labels:
+    qualified: CURRENT_REPLAY_FIXTURE_QUALIFIED
+    partial: PARTIAL_CURRENT_REPLAY_CLOSURE
+    insufficient: CURRENT_ONLY_REPLAY_INSUFFICIENT
+    invalid: REPLAY_INVALID
+  quick_labels:
+    CURRENT_REPLAY_FIXTURE_QUALIFIED: QUICK_PROMISING
+    PARTIAL_CURRENT_REPLAY_CLOSURE: QUICK_AMBIGUOUS
+    CURRENT_ONLY_REPLAY_INSUFFICIENT: QUICK_OPPOSITE
+    REPLAY_INVALID: QUICK_INVALID
+  interpretation: >-
+    QUICK_PROMISING only means the current replay is a useful causal fixture;
+    it does not solve the physical BVM→QB route and does not prove a mechanism.
+
+visualization:
+  count: exactly_one
+  path: plots/RESULT_OVERVIEW.html
+  style: CLASSIC_LOCKED
+  backend: scripts/josim-plot2.py
+  profile: sep_comb/dark/-j 2pi
+  source: one derived exact-grid CSV containing only key P0/RP/I0 signals
+  groups:
+    - input current
+    - BJs phase
+    - BJL1 phase
+    - L1 current
+    - RB current
+    - L2 current
+    - BJL2 phase
+  note: visualization is descriptive and cannot certify events or a Gate
+
+delivery:
+  result_brief: RESULT_BRIEF.md
+  report: analysis/REPORT.md
+  metrics: analysis/metrics.json
+  provenance: analysis/provenance.json
+  independent_review: analysis/REVIEW.md
+  gate: analysis/human-gate.yaml
+  final_state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  next_action: STOP
+  automatic_promotion: false
+  automatic_next_experiment: false

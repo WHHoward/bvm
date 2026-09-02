@@ -1,0 +1,111 @@
+task_id: IMPORT_BVMSIM_QB_AND_STRICTLY_QUALIFY_V1
+stage: A
+study_phase: EXPLORATORY
+authorization:
+  user_authorized: true
+  timestamp_utc: "2026-09-02T06:24:35Z"
+  head_before_task: 22376a3f1a8c3cfd40a6f9afaf85da7b43e3c3f6
+scope:
+  preserve_historical_bvmsim: true
+  canonical_bvm_replacement: false
+  new_qb_run: false
+  single_bvm_run: false
+  parameter_sweep: false
+  topology_redesign: false
+  jsl_redesign: false
+  t1: false
+  stage_b: false
+fixture:
+  bvm_instances: 4
+  accumulated_sensing_line: "four 12-junction branches, area=3.2"
+  bvm_source: BVMSim/bvm_cell.cir
+  bvm_source_status: HISTORICAL_EXPLORATORY_NOT_CANONICAL
+  qb_source: BVMSim/BQ.cir active subcircuit only
+  qb_migrated: circuits/qb/bq_cell_bvmsim_v1.cir
+  qb_subckt: BQ_BVMSIM_V1
+  qb_instance: xBQ1
+  qb_bias: "I_QB_BIAS 0 QB_BIAS pwl(0 0 1p 250u)"
+  jtl_source: BVMSim/library_josim/jtl2.cir
+  jtl_instances: [XJTL1_1, XJTL1_2, XJTL1_3, XJTL1_4, XJTL1_5, XJTL1_6]
+  final_load: "RBQ1 o6 0 10"
+  jj_model: circuits/models/jjmit.cir
+  jj_model_equivalence: "shared jjmit matches active BVMSim QB model values"
+runs:
+  M0:
+    purpose: MIGRATION_EQUIVALENCE
+    deck: migrated/m0_bvmsim_qb.cir
+    raw: raw/m0/run-01.csv
+    tran: ".tran 0.1p 200p 45p"
+    reference_raw: BVMSim/data_tran.csv
+    interpolation: none
+  S1:
+    purpose: STRICT_DIAGNOSTIC
+    deck: migrated/s1_bvmsim_qb.cir
+    raw: raw/s1/run-01.csv
+    tran: ".tran 0.025p 200p"
+    start_saved: t=0
+    conditional_on: M0_PASS
+    run_count: 1
+migration_acceptance:
+  time_grid: exact_length_and_token_identity_required
+  interpolation: prohibited
+  signal_comparison: "same stored grid; max absolute, RMS, p95, endpoints, and event-scale review"
+  numerical_ceiling_only:
+    phase_rad_abs: 1.0e-8
+    voltage_v_abs: 1.0e-12
+    current_a_abs: 1.0e-12
+  interpretation: "ceilings are tight numerical diagnostics, not percentage engineering tolerances"
+fixed_physics:
+  bvm_topology_and_parameters: true
+  stimulus_timing_and_four_bvm_configuration: true
+  bvmout_chain_and_jtl_topology_parameters: true
+  qb_physical_values_and_bias_waveform: true
+  final_load_and_stop_time: true
+strict_windows_ps:
+  INITIAL_PRE: [0, 50]
+  WRITE0: [50, 70]
+  READ0: [70, 90]
+  WRITE1: [90, 110]
+  READ1_RESPONSE: [110, 170]
+  TAIL_RESET: [170, 200]
+strict_semantics:
+  phase_input: raw JoSIM radians
+  phase_conversion: continuous_unwrap_rad_divided_by_2pi
+  event_basis: same_jj_same_continuous_monotonic_segment_same_segment_voltage_area
+  complete_min_abs_turns: 1.0
+  clean_upper_abs_turns: 1.15
+  phase_area_tolerance:
+    profile: STRICT_EVENT_ANCHOR_COMPATIBILITY_V1
+    scope: task-local
+    residual_abs_floor_turns: 0.05
+    residual_relative: 0.10
+  no_event_count_from: [Vpeak, I_over_Ic, whole_window_phase, whole_window_area, legacy_fast_events]
+  boundary_rule: "analyze full trace segments; associate by onset/context and report crossings"
+transport_chain: [BJ2, JTL1, JTL2, JTL3, JTL4, JTL5, JTL6]
+hypothesis:
+  READ0_transported_clean_events: 0
+  READ1_transported_clean_events: approximately_4
+allowed_primary_classifications:
+  - FOUR_SEPARATED_SFQ_TRANSPORT_SUPPORTED
+  - OTHER_SEPARATED_MULTI_SFQ_TRANSPORT_SUPPORTED
+  - LOCAL_MULTI_SFQ_WITH_TRANSPORT_LOSS
+  - CONTINUOUS_MULTI_TURN_RUNNING_STATE
+  - MULTI_PHASE_ACTIVITY_ONLY
+  - SELECTIVITY_OR_OVERDRIVE_FAILURE
+  - NO_CLEAR_STRICT_CLASSIFICATION
+  - MIGRATION_INVALID
+  - ANALYSIS_INVALID
+visualization:
+  renderer: scripts/josim-plot2.py
+  primary: plots/RESULT_OVERVIEW.html
+  layout: sep_comb
+  color: dark
+  phase_display: turns_rad_div_2pi
+  key_signals_only: true
+stop_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  stage_b_authorized: false
+  next_action: STOP

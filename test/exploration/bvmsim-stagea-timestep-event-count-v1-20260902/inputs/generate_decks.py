@@ -61,13 +61,19 @@ def main() -> int:
     generated = derive(args.tran)
     template = TEMPLATE.read_text(encoding="utf-8")
     changes = changed_lines(template, generated)
-    if len(changes) != 1 or changes[0][1] != ".tran 0.1p 200p 45p" or changes[0][2] != args.tran:
+    if len(changes) == 0:
+        if args.tran != ".tran 0.1p 200p 45p":
+            raise SystemExit(f"unchanged fixture has unexpected requested .tran: {args.tran}")
+    elif len(changes) != 1 or changes[0][1] != ".tran 0.1p 200p 45p" or changes[0][2] != args.tran:
         raise SystemExit(f"fixture diff is not single .tran change: {changes}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(generated, encoding="utf-8")
     print(f"{args.run_id}: template_sha256={TEMPLATE_SHA256}")
     print(f"{args.run_id}: deck={args.output} sha256={sha256(args.output)}")
-    print(f"{args.run_id}: changed_line={changes[0][0]} {changes[0][1]} -> {changes[0][2]}")
+    if changes:
+        print(f"{args.run_id}: changed_line={changes[0][0]} {changes[0][1]} -> {changes[0][2]}")
+    else:
+        print(f"{args.run_id}: changed_line=none (template already has {args.tran})")
     return 0
 
 

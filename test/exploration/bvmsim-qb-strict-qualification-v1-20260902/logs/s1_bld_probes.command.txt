@@ -1,0 +1,26 @@
+# BVM load-branch/BVMout print-only diagnostic
+HEAD before run: 53aa07348b58649861cc431f10b90045e8da4d9a
+solver: build/josim-cli v2.7.2837d13
+command: build/josim-cli -a 1 -o test/exploration/bvmsim-qb-strict-qualification-v1-20260902/raw/s1_bld_probes/run-01.csv test/exploration/bvmsim-qb-strict-qualification-v1-20260902/migrated/s1_bvmsim_qb_bld_probes.cir
+exit: 0
+
+plots: scripts/josim-plot2.py, type=sep_comb, color=dark, jump=2pi
+plot source selection: bvmtools.raw; I(BVMOUT) occurrence=0
+plot outputs:
+- plots/RESULT_B_LD12.html
+- plots/RESULT_B_LD2_12.html
+- plots/RESULT_B_LD3_12.html
+- plots/RESULT_BVMOUT.html
+- plots/RESULT_BLD_BVMOUT_MERGED.html
+plot exit: 0
+
+comparison: bvmtools.raw + bvmtools.compare against raw/s1/run-01.csv
+comparison result: exact time-grid identity; 52 common traces; max_abs_difference=0
+
+sha256:
+- build/josim-cli: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+- scripts/josim-plot2.py: 0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6
+- migrated/s1_bvmsim_qb.cir: 4ee38ad2b515c170a2c4f6847176ea0d20e923f767101a15a288a745514780db
+- migrated/s1_bvmsim_qb_bld_probes.cir: 06f820dd98e135c555f9a6ec33ae9bb5bba07dc11a7bda992e056edf4acba2b1
+- raw/s1/run-01.csv: a2101459d0c17114676e44bd77fdc40eec2d0daf568a803bfb0fe8c5cf33ba57
+- raw/s1_bld_probes/run-01.csv: 4583c9e43701178577671c9bedc70535b8cd8cbbe03703e76ab30a38d238b59b

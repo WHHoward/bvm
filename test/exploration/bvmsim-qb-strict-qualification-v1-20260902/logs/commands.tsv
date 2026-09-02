@@ -7,3 +7,8 @@ TEST_BVMTOOLS_EXIT|0
 TEST_JOSIM_PLOT2_EXIT|0
 ANALYZE_FINAL_EXIT|0
 ANALYZE_DETERMINISM_EXIT|1
+S1_BLD_PROBES|build/josim-cli -a 1 -o test/exploration/bvmsim-qb-strict-qualification-v1-20260902/raw/s1_bld_probes/run-01.csv test/exploration/bvmsim-qb-strict-qualification-v1-20260902/migrated/s1_bvmsim_qb_bld_probes.cir
+S1_BLD_PROBES_EXIT|0
+VIZ_BLD_PROBES|scripts/josim-plot2.py sep_comb dark 2pi; five focused HTML pages
+VIZ_BLD_PROBES_EXIT|0
+COMPARE_S1_BLD_PROBES|bvmtools.raw + bvmtools.compare; exact grid; 52 common traces; max_abs_difference=0

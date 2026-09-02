@@ -419,6 +419,7 @@ def analyze_kcl(trace: RawTrace) -> dict[str, object]:
     branches = {
         "BJs": signal(trace, "I(BJS|XBQ1)"),
         "BJ1": signal(trace, "I(BJ1|XBQ1)"),
+        "RJ1": signal(trace, "I(RJ1|XBQ1)"),
         "L1": signal(trace, "I(L1|XBQ1)"),
         "QB_BIAS": signal(trace, "I(I_QB_BIAS)"),
         "L2": signal(trace, "I(L2|XBQ1)"),
@@ -428,7 +429,7 @@ def analyze_kcl(trace: RawTrace) -> dict[str, object]:
     }
     equations = OrderedDict(
         (
-            ("node_2_BJs_BJ1_L1", ({"BJs": 1.0, "BJ1": -1.0, "L1": -1.0}, "I(BJs)-I(BJ1)-I(L1)=0")),
+            ("node_2_BJs_BJ1_RJ1_L1", ({"BJs": 1.0, "BJ1": -1.0, "RJ1": -1.0, "L1": -1.0}, "I(BJs)-I(BJ1)-I(RJ1)-I(L1)=0")),
             ("node_bias_L1_source_L2", ({"L1": 1.0, "QB_BIAS": 1.0, "L2": -1.0}, "I(L1)+I(I_QB_BIAS)-I(L2)=0")),
             ("node_4_L2_BJ2_RJ2_L3", ({"L2": 1.0, "BJ2": -1.0, "RJ2": -1.0, "L3": -1.0}, "I(L2)-I(BJ2)-I(RJ2)-I(L3)=0")),
         )
@@ -441,7 +442,8 @@ def analyze_kcl(trace: RawTrace) -> dict[str, object]:
     }
     metrics: dict[str, object] = {"orientation": orientation, "equations": {}}
     for label, (coefficients, equation) in equations.items():
-        residual = linear_kcl_residual(branches, coefficients)
+        equation_branches = {name: branches[name] for name in coefficients}
+        residual = linear_kcl_residual(equation_branches, coefficients)
         windows: dict[str, object] = {}
         for window_label, (left_ps, right_ps) in WINDOWS_PS.items():
             try:

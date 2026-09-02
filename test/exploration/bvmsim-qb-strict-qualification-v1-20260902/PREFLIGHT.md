@@ -49,7 +49,7 @@ not reconcile this and does not claim that canonical BVM drives this QB.
 ## Analysis/tool hashes at setup
 
 ```text
-0bc0e4775517072b5ba042688cbafdb91648cf510e41fa064dc66f2d26794843  analysis/analyze.py
+0bc0e4775517072b5ba042688cbafdb91648cf510e41fa064dc66f2d26794843  analysis/analyze.py (preregistered setup)
 544729761950f3485c73ae642d1edbad042887f0e8620d3b6b74e2822fc77190  inputs/prepare_decks.py
 0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6  scripts/josim-plot2.py
 bce9f07baaadca3bdd0c84aae6f4ca287039d7c92cec0430e7f0976f00991e99  scripts/bvmtools/sfq.py
@@ -61,6 +61,12 @@ ac79f640bc9fae8784f75ef00a6cb978e8fa3606a9938cf0eb131fc728caba3c  scripts/bvmtoo
 0cbdf83063d64d18d8c9a56a66fe6d996df26ec1b1815659968eee1e10ce153d  scripts/bvmtools/kcl.py
 f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470  docs/research/METRIC_SPEC_V2.md
 ```
+
+分析器在 S1 raw 生成后发现 KCL 节点 2 还必须包含与 `BJ1` 并联的
+`RJ1` 支路；这是分析口径修正，不是物理网表或 raw 重跑。最终使用的
+`analysis/analyze.py` SHA-256 为
+`2c1758678aa3e42f00d135f833a449eadc3c602ab2da34a8e7c6095b408439d8`，并在
+`provenance.json` 中同时保留了最终工具闭包。
 
 ## Run authorization and stop conditions
 

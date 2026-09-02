@@ -44,6 +44,8 @@ QB 电路文件为 [`circuits/qb/bq_cell_bvmsim_v1.cir`](../../../circuits/qb/bq
 
 Quick label：`QUICK_OPPOSITE_OR_AMBIGUOUS`。
 
+可视化纠正：初版合并标签把条件前缀放在 `P/V/I` 之前，导致 `josim-plot2.py -j 2pi` 未能识别相位列。现已将条件改为信号标签后的后缀并重新生成五个 HTML；例如修正后的 `S1-J` `P(BJ2|XBQ1)` 最大值为 `1.15520339528` turns，约 `7.18 rad` 的原始值不再被误显示为 turns。raw CSV、metrics 和物理分类未改变。
+
 ## 6. What it does NOT prove
 
 这不是 canonical BVM 兼容性结论，也不是对单 BVM 普适行为、工艺裕量、时间步收敛、论文机制身份或唯一 QB operating mechanism 的证明。它也没有证明 BVM 没有任何作用；只是当前 BVMout 的量化 terminal phase activity 很小，而 QB/JTL 的主要候选在 read 之前已开始。

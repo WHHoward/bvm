@@ -73,6 +73,12 @@ The largest residual is numerical-scale relative to the approximately 100–250 
 - Scientific claim strength: exploratory only; no Formal PASS language.
 - Remaining uncertainty: the current 2×2 does not isolate the BVM contribution from early 250 µA QB/JTL bias activity, and no timestep convergence or alternate bias control was authorized.
 
+## Visualization corrective patch
+
+初版合并投影把条件前缀放在信号名前面（例如 `S1-J::P(BJ2|XBQ1)`）。这会绕过 `scripts/josim-plot2.py` 按首字符识别 `P/V/I` 的逻辑，因此 `-j 2pi` 没有作用，且图中出现了 `Unknown` 纵轴。该问题只影响派生 HTML 的显示，不影响 raw CSV、metrics 或事件分析。
+
+本次修正将条件后缀放在原始信号标签之后（例如 `P(BJ2|XBQ1) [S1-J]`），并重新生成五个 HTML 页面。修正后的 `RESULT_OVERVIEW.html` 中，`S1-J` 的 `P(BJ2|XBQ1)` 最大值为 `1.15520339528` turns，末值为 `1.14310714214` turns；原始弧度值约 `7.18 rad` 不再作为纵轴显示。raw CSV 未重写，原始 hash 保持不变。
+
 ## Commands and exit codes
 
 | command | exit |
@@ -82,6 +88,7 @@ The largest residual is numerical-scale relative to the approximately 100–250 
 | `env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test/tools/test_bvmtools.py` | 0; 23 passed |
 | `env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test/plot/test_josim_plot2.py` | 0; 5 passed |
 | `python3 analysis/independent_recheck.py` | 0 |
-| `python3 analysis/plot.py --timestamp 2026-09-02T16:58:41+08:00` | 0; 5 HTML pages |
+| `python3 analysis/plot.py --timestamp 2026-09-02T17:41:56+08:00` | 0; 5 HTML pages; corrected P/V/I display labels |
+| `python3 analysis/analyze.py --timestamp 2026-09-02T17:45:57+08:00` | 0; refreshed provenance after visualization-script and regression-test correction |
 
 No additional experiment is authorized by this review. The human gate remains open.

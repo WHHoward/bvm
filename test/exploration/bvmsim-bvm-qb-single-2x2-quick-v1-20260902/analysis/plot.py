@@ -34,6 +34,20 @@ def safe_column(trace, label):
     return trace.column(label)
 
 
+def display_label(condition: str, source_label: str) -> str:
+    """Keep the signal-kind prefix visible to josim-plot2's unit classifier.
+
+    josim-plot2 identifies phase, voltage, and current columns from the first
+    character (P/V/I).  The condition therefore belongs after the original
+    signal label; putting it before the label silently disables the `-j 2pi`
+    phase conversion and sends all mixed-unit traces to the Unknown axis.
+    """
+
+    if not source_label or source_label[0] not in {"P", "V", "I"}:
+        raise ValueError(f"unsupported plot signal label: {source_label!r}")
+    return f"{source_label} [{condition}]"
+
+
 def projected_csv(path: Path, traces: dict[str, object], selections: list[tuple[str, str, str]], temporary: Path) -> tuple[Path, list[str]]:
     """Write a unique-label projection without changing any raw evidence."""
 
@@ -124,16 +138,16 @@ def main() -> int:
         temporary = Path(temporary_name)
         all_conditions = list(CONDITIONS)
         overview_selection = [
-            (f"{condition}::V(BVMOUT)", condition, "V(BVMOUT)")
+            (display_label(condition, "V(BVMOUT)"), condition, "V(BVMOUT)")
             for condition in all_conditions
         ] + [
-            (f"{condition}::V(QBIN)", condition, "V(QBIN)")
+            (display_label(condition, "V(QBIN)"), condition, "V(QBIN)")
             for condition in all_conditions
         ] + [
-            (f"{condition}::P(BJ2|XBQ1)", condition, "P(BJ2|XBQ1)")
+            (display_label(condition, "P(BJ2|XBQ1)"), condition, "P(BJ2|XBQ1)")
             for condition in all_conditions
         ] + [
-            (f"{condition}::V(QBOUT)", condition, "V(QBOUT)")
+            (display_label(condition, "V(QBOUT)"), condition, "V(QBOUT)")
             for condition in all_conditions
         ]
         render(
@@ -148,7 +162,7 @@ def main() -> int:
         interface_selection = []
         for condition in all_conditions:
             for label in ("P(BVMOUT)", "V(BVMOUT)", "I(BVMOUT)", "V(QBIN)"):
-                interface_selection.append((f"{condition}::{label}", condition, label))
+                interface_selection.append((display_label(condition, label), condition, label))
         render(
             "RESULT_BVM_INTERFACE.html",
             "BVM sensing-line terminal and QB input — matched 2x2",
@@ -168,7 +182,7 @@ def main() -> int:
                 "V(BJ1|XBQ1)",
                 "V(BJ2|XBQ1)",
             ):
-                qb_selection.append((f"{condition}::{label}", condition, label))
+                qb_selection.append((display_label(condition, label), condition, label))
         render(
             "RESULT_QB_INTERNAL.html",
             "QB internal phase and voltage — matched 2x2",
@@ -182,13 +196,13 @@ def main() -> int:
         transport_voltage = []
         transport_phase = []
         for condition in jtl_conditions:
-            transport_voltage.append((f"{condition}::V(BJ2|XBQ1)", condition, "V(BJ2|XBQ1)"))
-            transport_phase.append((f"{condition}::P(BJ2|XBQ1)", condition, "P(BJ2|XBQ1)"))
+            transport_voltage.append((display_label(condition, "V(BJ2|XBQ1)"), condition, "V(BJ2|XBQ1)"))
+            transport_phase.append((display_label(condition, "P(BJ2|XBQ1)"), condition, "P(BJ2|XBQ1)"))
             for stage in range(1, 7):
                 label_v = f"V(B01|XJTL1_{stage})"
                 label_p = f"P(B01|XJTL1_{stage})"
-                transport_voltage.append((f"{condition}::{label_v}", condition, label_v))
-                transport_phase.append((f"{condition}::{label_p}", condition, label_p))
+                transport_voltage.append((display_label(condition, label_v), condition, label_v))
+                transport_phase.append((display_label(condition, label_p), condition, label_p))
         render(
             "RESULT_TRANSPORT_VOLTAGE.html",
             "QB BJ2 -> JTL1..JTL6 voltage transport — J conditions",

@@ -14,6 +14,7 @@ import numpy as np
 ANALYSIS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(ANALYSIS_DIR))
 from analyze import PHI0, TAU, voltage_gap_candidates  # noqa: E402
+from plot import display_label  # noqa: E402
 
 
 def synthetic_trace(pulses: list[tuple[int, int, float]], sample_count: int = 800):
@@ -66,6 +67,17 @@ class VoltageGapCandidateTests(unittest.TestCase):
         self.assertEqual(result["candidate_count"], 2)
         self.assertEqual(result["complete_segment_count"], 2)
         self.assertEqual([item["direction"] for item in result["candidates"]], [1, -1])
+
+
+class PlotLabelTests(unittest.TestCase):
+    def test_condition_suffix_preserves_plot2_signal_kind(self) -> None:
+        self.assertEqual(display_label("S1-J", "P(BJ2|XBQ1)"), "P(BJ2|XBQ1) [S1-J]")
+        self.assertEqual(display_label("S0-R", "V(BVMOUT)"), "V(BVMOUT) [S0-R]")
+        self.assertEqual(display_label("S1-R", "I(BVMOUT)"), "I(BVMOUT) [S1-R]")
+
+    def test_plot_label_rejects_unknown_signal_kind(self) -> None:
+        with self.assertRaises(ValueError):
+            display_label("S0-R", "time")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,174 @@
+schema_version: compact-quick-v2-rj1-robustness
+id: BVM_QB_RJ1_TIMESTEP_ROBUSTNESS_V1
+mode: QUICK
+study_phase: EXPLORATORY
+status: AUTHORIZED
+date_directory: bvm-qb-rj1-timestep-robustness-v1-20260903
+authorization:
+  user_authorized: true
+  request_source: /home/howard/.codex/attachments/7ebe0d0f-51eb-4250-9961-7381853ce63d/pasted-text.txt
+  execution_date: 2026-09-03
+  head_before_task: 751a276adb73214c34b5f39fcfab4fbff95d1060
+
+question:
+  - Does RJ1=12/11.5/11 ohm give a timestep-robust four-BVM collective response?
+  - Does lowering RJ1 remove or reduce the late BJ2 excursion without changing the mechanism by assumption?
+  - Does each RJ1 variant preserve the existing single-BVM S1 approximately-one-Phi0 QB-to-JTL response and S0 selectivity?
+  - Is any apparent four-to-five-turn change a timestep-induced branch change, or merely a net trajectory difference without separated event support?
+
+scope:
+  four_bvm_runs: 12
+  single_bvm_protection_runs: 12
+  total_runs: 24
+  canonical_bvm_replacement: false
+  magnetic_coupling: false
+  topology_redesign: false
+  automatic_follow_up: false
+  formal_promotion: false
+
+fixed_physics:
+  bvm_source: BVMSim/bvm_cell.cir
+  bvm_source_status: HISTORICAL_BVMSIM_SOURCE_ONLY
+  qb_source_basis: circuits/qb/bq_cell_bvmsim_v1.cir
+  qb_subckt: BQ_BVMSIM_V1
+  qb_bias: I_QB_BIAS 0 QB_BIAS pwl(0 0 1p 250u)
+  qb_topology: Lin-L1-L2-BJs/BJ1/RJ1-BJ2/RJ2-L3
+  jj_model: circuits/models/jjmit.cir
+  sensing_line: 12 terminal JJ per BVM branch, area=3.2, BVMout included
+  jtl_source: BVMSim/library_josim/jtl2.cir
+  jtl_stages: 6
+  final_load: RBQ1 o6 0 10
+  stimuli: existing_BVMSim_write0_read0_write1_read1_sequence
+  solver: build/josim-cli
+  stop_time_ps: 200
+
+experiment_a_four_bvm:
+  fixture: historical_BVMSim_four_BVM_accumulated_sensing_line_to_QB_to_six_JTL
+  print_start_ps: 45
+  tran_semantics: preserve_45p_print_start
+  rj1_ohm: [12.0, 11.5, 11.0]
+  timestep_ps: [0.1, 0.05, 0.025, 0.0125]
+  run_ids:
+    - F4_R12_T100
+    - F4_R12_T050
+    - F4_R12_T025
+    - F4_R12_T0125
+    - F4_R11P5_T100
+    - F4_R11P5_T050
+    - F4_R11P5_T025
+    - F4_R11P5_T0125
+    - F4_R11_T100
+    - F4_R11_T050
+    - F4_R11_T025
+    - F4_R11_T0125
+
+experiment_b_single_bvm_protection:
+  fixture: existing_single_historical_BVMSim_BVM_to_12JJ_to_six_JTL
+  load: jtl_loaded_only
+  print_start_ps: 0
+  rj1_ohm: [12.0, 11.5, 11.0]
+  timestep_ps: [0.025, 0.0125]
+  logical_states: [S0, S1]
+  run_ids:
+    - S1B_R12_T025_S0
+    - S1B_R12_T025_S1
+    - S1B_R12_T0125_S0
+    - S1B_R12_T0125_S1
+    - S1B_R11P5_T025_S0
+    - S1B_R11P5_T025_S1
+    - S1B_R11P5_T0125_S0
+    - S1B_R11P5_T0125_S1
+    - S1B_R11_T025_S0
+    - S1B_R11_T025_S1
+    - S1B_R11_T0125_S0
+    - S1B_R11_T0125_S1
+
+probes:
+  interface:
+    - P(BVMOUT)
+    - V(BVMOUT)
+    - I(BVMOUT)
+    - V(QBIN)
+  qb:
+    - P(BJS|XBQ1)
+    - V(BJS|XBQ1)
+    - I(BJS|XBQ1)
+    - P(BJ1|XBQ1)
+    - V(BJ1|XBQ1)
+    - I(BJ1|XBQ1)
+    - P(BJ2|XBQ1)
+    - V(BJ2|XBQ1)
+    - I(BJ2|XBQ1)
+    - V(QBOUT)
+    - I(RJ1|XBQ1)
+    - I(RJ2|XBQ1)
+    - I(LIN|XBQ1)
+    - I(L1|XBQ1)
+    - I(L2|XBQ1)
+    - I(L3|XBQ1)
+    - I(I_QB_BIAS)
+  jtl:
+    - P(B01|XJTL1_n)
+    - V(B01|XJTL1_n)
+    - P(B02|XJTL1_n)
+    - V(B02|XJTL1_n)
+    - n: 1..6
+
+windows_ps:
+  INITIAL_PRE: [0, 50]
+  WRITE0: [50, 70]
+  READ0: [70, 90]
+  WRITE1: [90, 110]
+  READ1_RESPONSE: [110, 170]
+  TAIL_RESET: [170, 200]
+  boundary_rule: associate by onset/context; never cut a continuous segment at a boundary
+
+event_semantics:
+  phase_input: raw JoSIM P output in radians
+  phase_conversion: continuous_unwrap_rad_divided_by_2pi
+  event_authority: shared_bvmtools.sfq.strict_event_list
+  same_jj_same_segment: true
+  same_segment_voltage_area: true
+  complete_min_abs_turns: 1.0
+  clean_upper_abs_turns: 1.15
+  retrap_max_p2p_turns: 0.25
+  no_count_from:
+    - whole_window_net_phase
+    - whole_window_voltage_area
+    - Vpeak
+    - I_over_Ic
+    - derivative_activity
+    - legacy_fast_events
+
+fine_timestep_criteria:
+  comparison_pair: [0.025, 0.0125]
+  read_local_event_count_same: true
+  polarity_same: true
+  late_extra_event_presence_same: true
+  principal_flux_difference_max_phi0: 0.02
+  principal_phase_step_difference_max_turn: 0.02
+  principal_onset_difference_max_ps: 0.5
+  jtl_stage_order_and_count_same: true
+  mismatch_label: TIMESTEP_ROBUSTNESS_FAIL_OR_INCONCLUSIVE
+  no_automatic_00625_follow_up: true
+
+single_bvm_protection_criteria:
+  S0: no_comparable_QB_trigger_and_no_obvious_false_propagated_SFQ_like_event
+  S1: BJ2_same_event_phase_and_voltage_area_each_approximately_one_phi0
+  jtl: one_corresponding_B02_event_same_polarity_increasing_forward_latency_no_loss_no_copy
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  profile: CLASSIC_LOCKED
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  individual_before_comparison: true
+  raw_immutable: true
+
+stop_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

@@ -1,0 +1,21 @@
+* BVMSim active QB imported as a circuit-level interface.
+* The JJ model is supplied by circuits/models/jjmit.cir.
+
+.subckt BQ_BVMSIM_V1 IN OUT BIAS
+
+Lin IN 1 1.5p
+
+L1 2 BIAS 2p
+L2 BIAS 4 2p
+
+BJs 1 2 jjmit area=3
+
+BJ1 2 0 jjmit area=0.9
+RJ1 2 0 11
+
+BJ2 4 0 jjmit area=2
+RJ2 4 0 4
+
+L3 4 OUT 1.3p
+
+.ends BQ_BVMSIM_V1

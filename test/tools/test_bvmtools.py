@@ -176,6 +176,39 @@ class PhaseAndStrictEventTests(unittest.TestCase):
         self.assertEqual(result["compatibility_classification"], "INCONCLUSIVE")
         self.assertIsNone(result["complete_segment_count"])
 
+    def test_post_hoc_strict_spec_is_ready_without_claiming_protocol_freeze(self) -> None:
+        spec = StrictLocalEventSpec.from_mapping({
+            "id": "post-hoc-test",
+            "scope": "task-local",
+            "status": "POST_HOC_EXPLORATORY",
+            "provenance_status": "RAW_HASHED_REPRODUCTION_ONLY",
+            "mapping_status": "DECLARED_DIRECT_SAME_JJ_PV",
+            "phase_column": "P(J)",
+            "voltage_column": "V(J)",
+            "branch_endpoints": "test branch",
+            "voltage_to_phase_sign": 1,
+            "reporting_direction": 1,
+            "run_id": "post-hoc-test-run",
+            "window_id": "activity",
+            "raw_sha256": "0" * 64,
+            "metric_spec": {"path": "metric.md", "version": "1", "sha256": "1" * 64},
+            "tolerance": {
+                "id": "post-hoc-tolerance",
+                "scope": "task-local",
+                "status": "POST_HOC_EXPLORATORY",
+                "evidence": "post-hoc.md",
+                "phase_area_residual_abs_floor_turns": 0.05,
+                "phase_area_residual_relative": 0.10,
+                "complete_min_turns": 1.0,
+                "clean_upper_turns": 1.15,
+                "post_range_max_turns": 1.0,
+                "post_tail_p2p_max_turns": 0.25,
+            },
+        })
+        self.assertTrue(spec.classification_ready)
+        self.assertEqual(spec.status, "POST_HOC_EXPLORATORY")
+        self.assertEqual(spec.tolerance["status"], "POST_HOC_EXPLORATORY")
+
     def test_frozen_anchor_a_and_b(self) -> None:
         raw_root = REPO / "test/exploration/bvm-load-qb-matrix-v1-20260901/raw/replay"
         expected = {

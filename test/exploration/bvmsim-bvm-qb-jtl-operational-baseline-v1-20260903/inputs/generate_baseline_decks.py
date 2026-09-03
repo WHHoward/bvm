@@ -114,6 +114,15 @@ SINGLE_PRINTS = """.print I(I_WL1) I(I_BL1) I(I_SE1)
 """
 
 
+SINGLE_JTL_PRINTS = """.print P(B01|XJTL1_1) V(B01|XJTL1_1) P(B02|XJTL1_1) V(B02|XJTL1_1)
+.print P(B01|XJTL1_2) V(B01|XJTL1_2) P(B02|XJTL1_2) V(B02|XJTL1_2)
+.print P(B01|XJTL1_3) V(B01|XJTL1_3) P(B02|XJTL1_3) V(B02|XJTL1_3)
+.print P(B01|XJTL1_4) V(B01|XJTL1_4) P(B02|XJTL1_4) V(B02|XJTL1_4)
+.print P(B01|XJTL1_5) V(B01|XJTL1_5) P(B02|XJTL1_5) V(B02|XJTL1_5)
+.print P(B01|XJTL1_6) V(B01|XJTL1_6) P(B02|XJTL1_6) V(B02|XJTL1_6)
+"""
+
+
 def replace_prints(text: str, block: str) -> str:
     end = text.find("\n.end")
     if end < 0:
@@ -174,7 +183,7 @@ def make_single(run_id: str, deck_dir: Path) -> str:
     source = source.replace("I_QB_BIAS 0 QB_BIAS pwl(0 0 1p 250u)\n", "", 1)
     source = source.replace("xBQ1 QBin QBout QB_BIAS BQ_BVMSIM_V1", "xBQ1 QBin QBout BQ", 1)
     source = re.sub(r"(?m)^\.tran\s+[^\n]+$", ".tran 0.1p 200p", source)
-    source = replace_prints(source, SINGLE_PRINTS)
+    source = replace_prints(source, SINGLE_PRINTS + (SINGLE_JTL_PRINTS if run_id.endswith("-J") else ""))
     if not re.search(r"(?m)^xBQ1\s+QBin\s+QBout\s+BQ\s*$", source) or re.search(
         r"(?m)^xBQ1\s+QBin\s+QBout\s+QB_BIAS\s+BQ_BVMSIM_V1\s*$", source
     ):

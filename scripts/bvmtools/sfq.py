@@ -2,7 +2,9 @@
 
 The arithmetic in this module is reusable.  A strict compatibility label is
 only produced when the caller supplies a complete, hash-bound local mapping
-and frozen task-local tolerances.  The module never claims downstream
+and explicitly declared task-local tolerances.  A ``POST_HOC_EXPLORATORY``
+status is mechanically analyzable but is not a protocol freeze.  The module
+never claims downstream
 reception, a closed-loop fluxoid count, or a system Gate.
 """
 
@@ -20,6 +22,7 @@ from .waveform import trapezoid_integral
 PHI0 = 2.067833848e-15
 _COMPATIBILITY_PROFILE = "STRICT_EVENT_ANCHOR_COMPATIBILITY_V1"
 _SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
+_READY_SPEC_STATUSES = {"FROZEN", "POST_HOC_EXPLORATORY"}
 
 
 def _optional_text(value: object) -> str | None:
@@ -49,7 +52,7 @@ class StrictLocalEventSpec:
     This object deliberately has no scientific defaults.  Incomplete specs
     remain useful for reporting raw arithmetic, but strict compatibility
     classification becomes ``INCONCLUSIVE`` until every required field is
-    present and frozen.
+    present and the spec status is explicitly ready for analysis.
     """
 
     id: str | None = None
@@ -134,8 +137,8 @@ class StrictLocalEventSpec:
                 issues.append(f"missing spec.{name}")
         if self.scope not in {"fixture", "procedure", "task-local"}:
             issues.append("spec.scope must be fixture, procedure, or task-local")
-        if self.status != "FROZEN":
-            issues.append("spec.status is not FROZEN")
+        if self.status not in _READY_SPEC_STATUSES:
+            issues.append("spec.status must be FROZEN or POST_HOC_EXPLORATORY")
         if self.mapping_status is None:
             issues.append("missing spec.mapping_status")
         if self.voltage_to_phase_sign not in (-1, 1):
@@ -157,8 +160,8 @@ class StrictLocalEventSpec:
             issues.append("missing spec.tolerance.scope")
         if _optional_text(self.tolerance.get("evidence")) is None:
             issues.append("missing spec.tolerance.evidence")
-        if self.tolerance.get("status") != "FROZEN":
-            issues.append("spec.tolerance.status is not FROZEN")
+        if self.tolerance.get("status") not in _READY_SPEC_STATUSES:
+            issues.append("spec.tolerance.status must be FROZEN or POST_HOC_EXPLORATORY")
         numeric = (
             ("phase_area_residual_abs_floor_turns", self.residual_abs_floor_turns),
             ("phase_area_residual_relative", self.residual_relative),

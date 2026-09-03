@@ -1,0 +1,87 @@
+schema_version: compact-quick-v2-corrected-single-baseline
+id: BVMSIM_SINGLE_CORRECTED_ORIGINAL_QB_BASELINE_V1
+mode: QUICK
+study_phase: CALIBRATION
+status: PREREGISTERED
+date_directory: bvmsim-single-corrected-baseline-v1-20260903
+base_head: 62cc2130bf0a0157ffe6f2d5a8de7ebf075d0c00
+
+question:
+  - Does one historical BVMSim BVM produce a usable sensing response under the correct WL+SE READ protocol?
+  - Do logical S0 and S1 remain distinguishable when the same READ is applied?
+  - Does original BVMSim QB behave consistently with a direct 10-ohm load and a six-stage historical JTL load?
+
+scope:
+  included: [S0-R-CORRECTED, S1-R-CORRECTED, S0-J-CORRECTED, S1-J-CORRECTED]
+  excluded: [four_bvm_16_state, state_position_closure, IB_margin, RJ1_margin, input_alpha_margin, canonical_bvm, timestep_sweep, T1, QB_parameter_change]
+
+source_class: HISTORICAL_BVMSIM
+authority_boundary: "BVMSim/bvm_cell.cir is historical source evidence, not canonical BVM authority"
+
+frozen:
+  bvm: BVMSim/bvm_cell.cir
+  qb: BVMSim/BQ.cir
+  qb_nominal: "RJ1=12 ohm, RJ2=4 ohm, internal IB=250 uA"
+  jj_model: circuits/models/jjmit.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  bvm_instances: 1
+  terminal_sensing_line: "B_LD4_01..B_LD4_11 plus BVMout, all area=3.2; 12 JJ total"
+  jtl_stages: 6
+  jtl_bias: "280 uA per historical JTL cell"
+  termination: 10 ohm
+  timestep: 0.1 ps
+  stop_time: 200 ps
+  write_window: "[50,62) ps; WL and BL have equal polarity and amplitude"
+  read_window: "[70,82) ps; WL=+100 uA, SE=+100 uA, BL=0"
+  solver: build/josim-cli
+
+changed:
+  - "task-local single-BVM fixture uses corrected WL+SE READ rather than historical invalid SE-only READ"
+  - "task-local deck provides top-level jjmit closure so BVM and terminal JJ do not use default fallback"
+  - "downstream load is direct 10 ohm for R or six historical JTL cells plus 10 ohm for J"
+
+conditions:
+  - id: S0-R-CORRECTED
+    logical_state: 0
+    load: direct_10ohm
+    input_deck: inputs/S0-R-CORRECTED.cir
+    run_dir: runs/S0-R-CORRECTED
+    historical_invalid_raw: test/exploration/bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903/runs/single/S0-R/raw/run-01.csv
+  - id: S1-R-CORRECTED
+    logical_state: 1
+    load: direct_10ohm
+    input_deck: inputs/S1-R-CORRECTED.cir
+    run_dir: runs/S1-R-CORRECTED
+    historical_invalid_raw: test/exploration/bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903/runs/single/S1-R/raw/run-01.csv
+  - id: S0-J-CORRECTED
+    logical_state: 0
+    load: six_stage_jtl_plus_10ohm
+    input_deck: inputs/S0-J-CORRECTED.cir
+    run_dir: runs/S0-J-CORRECTED
+    historical_invalid_raw: test/exploration/bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903/runs/single/S0-J/raw/run-01.csv
+  - id: S1-J-CORRECTED
+    logical_state: 1
+    load: six_stage_jtl_plus_10ohm
+    input_deck: inputs/S1-J-CORRECTED.cir
+    run_dir: runs/S1-J-CORRECTED
+    historical_invalid_raw: test/exploration/bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903/runs/single/S1-J/raw/run-01.csv
+
+probes:
+  stimulus: [I(I_WL1), I(I_BL1), I(I_SE1)]
+  bvm: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), I(B_JM1|XBVM1), P(B_JM2|XBVM1), V(B_JM2|XBVM1), I(B_JM2|XBVM1), P(B_JS1|XBVM1), V(B_JS1|XBVM1), I(B_JS1|XBVM1), P(B_JS2|XBVM1), V(B_JS2|XBVM1), I(B_JS2|XBVM1), I(L_M1|XBVM1), I(L_M2|XBVM1), I(L_M3|XBVM1), I(L_PM|XBVM1), V(SL1), I(L_PSL|XBVM1), I(L_SL|XBVM1)]
+  terminal: [P(B_LD4_01), V(B_LD4_01), I(B_LD4_01), P(B_LD4_11), V(B_LD4_11), I(B_LD4_11), P(BVMOUT), V(BVMOUT), I(BVMOUT)]
+  qb: [V(QBIN), I(LIN|XBQ1), P(BJS|XBQ1), V(BJS|XBQ1), I(BJS|XBQ1), P(BJ1|XBQ1), V(BJ1|XBQ1), I(BJ1|XBQ1), I(RJ1|XBQ1), P(BJ2|XBQ1), V(BJ2|XBQ1), I(BJ2|XBQ1), I(RJ2|XBQ1), I(L1|XBQ1), I(L2|XBQ1), I(L3|XBQ1), I(IB|XBQ1), V(QBOUT)]
+  jtl: [P(B01|XJTL1_1), V(B01|XJTL1_1), P(B02|XJTL1_1), V(B02|XJTL1_1), P(B01|XJTL1_2), V(B01|XJTL1_2), P(B02|XJTL1_2), V(B02|XJTL1_2), P(B01|XJTL1_3), V(B01|XJTL1_3), P(B02|XJTL1_3), V(B02|XJTL1_3), P(B01|XJTL1_4), V(B01|XJTL1_4), P(B02|XJTL1_4), V(B02|XJTL1_4), P(B01|XJTL1_5), V(B01|XJTL1_5), P(B02|XJTL1_5), V(B02|XJTL1_5), P(B01|XJTL1_6), V(B01|XJTL1_6), P(B02|XJTL1_6), V(B02|XJTL1_6)]
+
+analysis:
+  semantics: docs/research/METRIC_SPEC_V2.md
+  functional_contract: docs/research/BOUNDARY_SPEC_V2.md
+  phase: "P(...) remains raw radians; phase differences are reported as rad/(2*pi) turns"
+  count_boundary: "whole-window phase displacement is not an SFQ count; use same-JJ phase/area and downstream evidence"
+  old_raw_status: ARTIFACT_INVALID
+
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false

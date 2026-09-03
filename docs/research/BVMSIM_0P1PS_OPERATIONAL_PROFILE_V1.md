@@ -35,7 +35,7 @@ historical `R_JM1=8 ohm`、canonical `R_JM1=6 ohm`。因此本 profile 不能被
 
 - QB 使用 `BVMSim/BQ.cir` 的 active `BQ IN OUT`，内部 bias 为
   `IB 0 3 pwl(0 0 1p 250u)`；原文件只读保留。
-- QB 的 nominal shunt 是 `RJ1 2 0 12`，`RJ2 2 0 4`。本轮 RJ1 只作为
+- QB 的 nominal shunt 是 `RJ1 2 0 12`，`RJ2 4 0 4`。本轮 RJ1 只作为
   `BJ1` 显式 shunt/component-design margin 轴，12 ohm 始终是 nominal，
   不因 margin 结果自动替换设计。
 - BVM 到 QB 的 shared sensing line 沿用 historical 4-BVM fixture：每级

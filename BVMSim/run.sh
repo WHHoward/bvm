@@ -9,7 +9,7 @@ echo "Run JoSIM sim..."
 # josim-cli -o $FILE_PATH test_bvm.cir
 # josim-cli -o $FILE_PATH test_bvm_mixed.cir
 #josim-cli -o $FILE_PATH test_bvm_mixed_0.cir
-josim-cli -o $FILE_PATH test_bvm_mixed_0.cir
+josim-cli -o $FILE_PATH test_bvm_mixed_0_0.05.cir
 # josim-cli test_bvm_mixed.cir
 
 if [ $? -eq 0 ]; then

@@ -1,0 +1,130 @@
+task_id: BVM_QB_4BVM_SIX_STATE_POSITION_CLOSURE_V1
+experiment_id: bvmsim-4bvm-state-position-closure-v1-20260903
+study_phase: EXPLORATION
+source_class: HISTORICAL_BVMSIM
+
+authorization:
+  user_authorized: true
+  user_request_date: 2026-09-03
+  head_before_setup: b9bb32b9a3fdcee75e8dd9d760400876c626e5d7
+  phase_a_gate:
+    experiment: research-workflow-tooling-consolidation-v1-20260903
+    status: INFRA_REGRESSION_PASS
+    simulation_invoked: false
+  phase_b_scope: "six selected states only; no full 16-state sweep"
+
+scope:
+  allowed:
+    - "four historical BVMSim BVM instances"
+    - "historical BVM shared sensing line"
+    - "historical original QB with RJ1=12 ohm, RJ2=4 ohm, IB=250uA"
+    - "historical six-stage JTL and 10-ohm termination"
+    - "additional P/V/I probes only"
+  prohibited:
+    - "canonical BVM substitution"
+    - "single-BVM run"
+    - "full 16-state sweep"
+    - "RJ1, QB bias, input amplitude, or timestep sweep/optimization"
+    - "topology, BVM, QB, JTL, or T1 redesign"
+
+sources:
+  historical_fixture: BVMSim/test_bvm_mixed_0.cir
+  bvm: BVMSim/bvm_cell.cir
+  qb: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  shared_jjmit_reference: circuits/models/jjmit.cir
+  canonical_bvm_not_used: circuits/bvm/bvm_cell.cir
+
+fixture:
+  bvm_instances: 4
+  shared_sensing_line: "four historical 12-JJ branches; BVMout is the final B_LD4_11 junction"
+  qb_subcircuit: BQ
+  qb_nominal:
+    bias_uA: 250
+    rj1_ohm: 12
+    rj2_ohm: 4
+  jtl_stages: 6
+  final_termination_ohm: 10
+  timestep_ps: 0.1
+  stop_time_ps: 200
+  solver_output_start_ps: 45
+
+states:
+  selected: ["0000", "1000", "0100", "0010", "0001", "1111"]
+  count: 6
+  bit_order: "b3b2b1b0 maps b3->BVM1, b2->BVM2, b1->BVM3, b0->BVM4"
+  expected_popcount_is_reference_only: true
+
+stimulus:
+  initial_write:
+    association_window_ps: [50, 70]
+    plateau_window_ps: [51, 60]
+    wl_uA: -100
+    bl_uA: -100
+  read0:
+    association_window_ps: [70, 90]
+    plateau_window_ps: [71, 80]
+    wl_uA: 100
+    se_uA: 100
+  write1:
+    association_window_ps: [90, 101]
+    plateau_window_ps: [91, 100]
+    wl_uA: 100
+    bl_by_state: true
+  read1:
+    association_window_ps: [110, 170]
+    plateau_window_ps: [111, 120]
+    wl_uA: 100
+    se_uA: 100
+
+windows_ps:
+  PRE: [0, 50]
+  WRITE0: [50, 70]
+  READ0: [70, 90]
+  WRITE1: [90, 101]
+  POST_WRITE1: [101, 105]
+  PRE_READ1: [105, 110]
+  READ1: [110, 170]
+  TAIL: [170, 200]
+
+state_discriminator:
+  basis: "task-local direct BVM JM1 phase displacement during WRITE1"
+  phase_sign_min_turns: 0.25
+  pre_read_phase_p2p_max_turns: 0.25
+  phase_area_residual_abs_floor_turns: 0.05
+  phase_area_residual_relative: 0.10
+  note: "This assignment is an observed write-response basis, not a universal storage-mechanism claim."
+
+strict_event_semantics:
+  metric_spec: docs/research/METRIC_SPEC_V2.md
+  complete_min_turns: 1.0
+  clean_upper_turns: 1.15
+  post_range_max_turns: 1.0
+  post_tail_p2p_max_turns: 0.25
+  event_window: READ1
+  scan_window_ps: [0, 200]
+  count_prohibited_from:
+    - Vpeak
+    - I_over_Ic
+    - whole_window_phase_only
+    - legacy_fast_events
+
+analysis:
+  input_difference_tolerance_uA: 0.1
+  no_interpolation_for_cross_state_comparison: true
+  raw_policy: "raw.csv and run.log are immutable once created"
+  verdict_ceiling: "exploratory position/state evidence; no paper-level or Gate claim"
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_display: rad_div_2pi_turns
+  individual_before_comparison: true
+  scope: "key control, BVM state, QB response, and JTL transport signals"
+
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false

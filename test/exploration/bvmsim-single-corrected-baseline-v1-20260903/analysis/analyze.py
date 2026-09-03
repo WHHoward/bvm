@@ -587,10 +587,17 @@ def near_one(value: float) -> bool:
 def functional_assessment(condition: str, response: Mapping[str, Any]) -> dict[str, object]:
     info = CONDITIONS[condition]
     bj2 = response["qb"]["BJ2"]["phase_area"]["RESPONSE"]
+    descriptive_rule = {
+        "near_zero_abs_turns_max": 0.1,
+        "near_one_turns_range": [0.75, 1.25],
+        "same_jj_phase_area_residual_abs_max_turns": 0.05,
+        "status": "task-local exploratory descriptive rule; not a universal metric freeze",
+    }
     if info["load"] == "direct_10ohm":
         return {
             "verdict": "INCONCLUSIVE_FOR_COUNT",
             "reason": "direct-load count was not the preregistered functional boundary; retain as load comparison baseline",
+            "descriptive_rule": descriptive_rule,
             "bj2_response_phase_turns": bj2["phase_delta_turns"],
             "bj2_response_area_turns": bj2["voltage_area_turns"],
         }
@@ -616,6 +623,7 @@ def functional_assessment(condition: str, response: Mapping[str, Any]) -> dict[s
     return {
         "verdict": verdict,
         "reason": reason,
+        "descriptive_rule": descriptive_rule,
         "count_basis": "burst_total_phase_area_plus_downstream_B02; not whole-window phase alone",
         "bj2_response_phase_turns": bj2["phase_delta_turns"],
         "bj2_response_area_turns": bj2["voltage_area_turns"],
@@ -708,6 +716,8 @@ def report_text(metrics: Mapping[str, Any]) -> str:
     s0r = cases["S0-R-CORRECTED"]
     s0j_bj2 = s0j["functional_assessment"]
     s1j_bj2 = s1j["functional_assessment"]
+    s0j_qbin_read_p2p = s0j["response"]["qbin_voltage"]["windows"]["READ"]["p2p"]
+    s1j_qbin_read_p2p = s1j["response"]["qbin_voltage"]["windows"]["READ"]["p2p"]
 
     def f(value: object, digits: int = 6) -> str:
         return f"{float(value):.{digits}f}"
@@ -751,13 +761,13 @@ def report_text(metrics: Mapping[str, Any]) -> str:
         "## 5. OBSERVED S0",
         "",
         f"- direct 10 Ω：S0 `BJ2` RESPONSE 的 phase/area 为 `{f(s0r['response']['qb']['BJ2']['phase_area']['RESPONSE']['phase_delta_turns'])}` / `{f(s0r['response']['qb']['BJ2']['phase_area']['RESPONSE']['voltage_area_turns'])}` turns，未见约 1 turn 的 READ-associated QB burst。",
-        f"- JTL load：S0 `BJ2` RESPONSE 的 phase/area 为 `{f(s0j_bj2['bj2_response_phase_turns'])}` / `{f(s0j_bj2['bj2_response_area_turns'])}` turns；JTL1–JTL6 的 B02 burst-total area 为 `{', '.join(f(x) for x in s0j_stages)}` turns，均接近零。",
+        f"- JTL load：S0 `QBin` READ voltage p2p 为 `{f(s0j_qbin_read_p2p, 6)}` mV；`BJ2` RESPONSE 的 phase/area 为 `{f(s0j_bj2['bj2_response_phase_turns'])}` / `{f(s0j_bj2['bj2_response_area_turns'])}` turns；JTL1–JTL6 的 B02 burst-total area 为 `{', '.join(f(x) for x in s0j_stages)}` turns，均接近零。",
         f"- bounded no-output control assessment：`{s0j_bj2['verdict']}`。这不是对任意 future load 的普遍无输出证明。",
         "",
         "## 6. OBSERVED S1",
         "",
         f"- direct 10 Ω：S1 `BJ2` RESPONSE 的 phase/area 为 `{f(s1r['response']['qb']['BJ2']['phase_area']['RESPONSE']['phase_delta_turns'])}` / `{f(s1r['response']['qb']['BJ2']['phase_area']['RESPONSE']['voltage_area_turns'])}` turns，显示 direct load 下约 2-turn response；这一路径没有预注册的单量子 count boundary，因此不把它直接判为 count PASS。",
-        f"- JTL load：S1 `BJ2` RESPONSE 的 phase/area 为 `{f(s1j_bj2['bj2_response_phase_turns'])}` / `{f(s1j_bj2['bj2_response_area_turns'])}` turns，residual `{f(s1j_bj2['bj2_response_residual_turns'])}` turns。",
+        f"- JTL load：S1 `QBin` READ voltage p2p 为 `{f(s1j_qbin_read_p2p, 6)}` mV；`BJ2` RESPONSE 的 phase/area 为 `{f(s1j_bj2['bj2_response_phase_turns'])}` / `{f(s1j_bj2['bj2_response_area_turns'])}` turns，residual `{f(s1j_bj2['bj2_response_residual_turns'])}` turns。",
         f"- JTL1–JTL6 的 B02 RESPONSE phase/area 为：`{' / '.join(f(p) + ' / ' + f(a) for p, a in zip(s1j_bj2['jtl_b02_response_phase_turns'], s1j_bj2['jtl_b02_response_area_turns']))}` turns；极性为 `{'/'.join('+' if p > 0 else '-' if p < 0 else '0' for p in s1j_bj2['polarity'])}`。",
         f"- bounded one-burst assessment：`{s1j_bj2['verdict']}`。计数依据是同一 JJ 的 burst-total phase/area 与下游 B02 的一致性，不是 whole-window phase 单独计数。",
         "",
@@ -776,6 +786,7 @@ def report_text(metrics: Mapping[str, Any]) -> str:
         "- 本轮没有拆分 READ protocol 与 model closure 两个修复各自的因果贡献。",
         "- 本轮没有证明 canonical BVM 兼容性、single-BVM 的普遍行为、参数/偏置裕度、timestep convergence、T1 行为或论文机制身份。",
         "- `P(...)` 的局部 phase turns 不是自动的 SFQ count；严格 clean-separated event count 本轮没有使用未预注册的 task-local tolerance 强行生成。",
+        "- JTL 的 0/1 bounded assessment 使用报告中明确列出的 task-local descriptive bands；这些 bands 不是全局 metric freeze，也没有被用于声称 timestep convergence。",
         "- direct 10 Ω 的约 2-turn response 说明负载敏感，但本轮没有把它解释为错误机制或做参数优化。",
         "",
         "## 10. Reasonable next options",

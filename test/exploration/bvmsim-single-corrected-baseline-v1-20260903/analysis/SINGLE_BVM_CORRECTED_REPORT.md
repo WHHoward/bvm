@@ -34,13 +34,13 @@
 ## 5. OBSERVED S0
 
 - direct 10 Ω：S0 `BJ2` RESPONSE 的 phase/area 为 `0.000359` / `0.000369` turns，未见约 1 turn 的 READ-associated QB burst。
-- JTL load：S0 `BJ2` RESPONSE 的 phase/area 为 `0.000617` / `0.000631` turns；JTL1–JTL6 的 B02 burst-total area 为 `-0.000069, 0.000004, -0.000001, -0.000000, 0.000000, 0.000000` turns，均接近零。
+- JTL load：S0 `QBin` READ voltage p2p 为 `0.230042` mV；`BJ2` RESPONSE 的 phase/area 为 `0.000617` / `0.000631` turns；JTL1–JTL6 的 B02 burst-total area 为 `-0.000069, 0.000004, -0.000001, -0.000000, 0.000000, 0.000000` turns，均接近零。
 - bounded no-output control assessment：`FUNCTIONAL_PASS`。这不是对任意 future load 的普遍无输出证明。
 
 ## 6. OBSERVED S1
 
 - direct 10 Ω：S1 `BJ2` RESPONSE 的 phase/area 为 `1.999600` / `1.999590` turns，显示 direct load 下约 2-turn response；这一路径没有预注册的单量子 count boundary，因此不把它直接判为 count PASS。
-- JTL load：S1 `BJ2` RESPONSE 的 phase/area 为 `0.999369` / `0.999355` turns，residual `0.000014` turns。
+- JTL load：S1 `QBin` READ voltage p2p 为 `0.563671` mV；`BJ2` RESPONSE 的 phase/area 为 `0.999369` / `0.999355` turns，residual `0.000014` turns。
 - JTL1–JTL6 的 B02 RESPONSE phase/area 为：`1.000070 / 1.000071 / 0.999996 / 0.999995 / 1.000001 / 1.000001 / 1.000000 / 1.000000 / 1.000000 / 1.000000 / 1.000000 / 1.000000` turns；极性为 `+/+/+/+/+/+`。
 - bounded one-burst assessment：`FUNCTIONAL_PASS`。计数依据是同一 JJ 的 burst-total phase/area 与下游 B02 的一致性，不是 whole-window phase 单独计数。
 
@@ -59,6 +59,7 @@
 - 本轮没有拆分 READ protocol 与 model closure 两个修复各自的因果贡献。
 - 本轮没有证明 canonical BVM 兼容性、single-BVM 的普遍行为、参数/偏置裕度、timestep convergence、T1 行为或论文机制身份。
 - `P(...)` 的局部 phase turns 不是自动的 SFQ count；严格 clean-separated event count 本轮没有使用未预注册的 task-local tolerance 强行生成。
+- JTL 的 0/1 bounded assessment 使用报告中明确列出的 task-local descriptive bands；这些 bands 不是全局 metric freeze，也没有被用于声称 timestep convergence。
 - direct 10 Ω 的约 2-turn response 说明负载敏感，但本轮没有把它解释为错误机制或做参数优化。
 
 ## 10. Reasonable next options

@@ -101,6 +101,14 @@ STRICT_TOLERANCE = {
     "post_tail_p2p_max_turns": 0.25,
 }
 
+# These are deliberately descriptive analysis aids.  They were not frozen as
+# acceptance thresholds in experiment.yaml and must never be reported as
+# preregistered gates.
+DESCRIPTIVE_CANDIDATE_MIN_TURNS = 0.2
+DESCRIPTIVE_ONE_PHI0_MIN_TURNS = 0.75
+DESCRIPTIVE_ONE_PHI0_MAX_TURNS = 1.25
+DESCRIPTIVE_ONE_PHI0_RESIDUAL_MAX_TURNS = 0.20
+
 
 def sha256(path: Path) -> str:
     return sha256_file(path)
@@ -316,7 +324,11 @@ def event_window_summary(
     selected = window_segments(event_list, bounds)
     complete = [item for item in selected if bool(item["complete_segment"])]
     clean = [item for item in complete if bool(item["clean_separated_event"])]
-    candidate = [item for item in selected if abs(float(item["phase_reported_turns"])) >= 0.2]
+    candidate = [
+        item
+        for item in selected
+        if abs(float(item["phase_reported_turns"])) >= DESCRIPTIVE_CANDIDATE_MIN_TURNS
+    ]
     return {
         "window_ps": list(bounds),
         "phase_window": phase_window(trace, phase_name, bounds),
@@ -329,6 +341,10 @@ def event_window_summary(
         "largest_segment_turns": max((abs(float(item["phase_reported_turns"])) for item in selected), default=0.0),
         "any_segment_spans_over_1_15_turns": any(bool(item["continuous_multiturn_segment"]) for item in selected),
         "continuous_multi_turn_running": any(bool(item["continuous_multiturn_segment"]) for item in selected),
+        "descriptive_candidate_threshold": {
+            "min_abs_phase_turns": DESCRIPTIVE_CANDIDATE_MIN_TURNS,
+            "status": "POST_HOC_DESCRIPTIVE_NOT_PREREGISTERED",
+        },
         "candidate_segments": [compact_segment(item) for item in candidate],
         "complete_segments": [compact_segment(item) for item in complete],
         "clean_separated_events": [compact_segment(item) for item in clean],
@@ -545,16 +561,25 @@ def protection_summary(record: dict[str, Any], junctions: dict[str, Any]) -> dic
     for stage in range(1, 7):
         b02 = junctions[f"JTL{stage}.B02"]
         read = window_segments({"segments": b02["segments"]}, PROTECTION_READ_PS)
+        post = window_segments({"segments": b02["segments"]}, PROTECTION_POST_PS)
         complete = [item for item in read if bool(item["complete_segment"])]
         clean = [item for item in complete if bool(item["clean_separated_event"])]
+        post_complete = [item for item in post if bool(item["complete_segment"])]
+        post_clean = [item for item in post_complete if bool(item["clean_separated_event"])]
         principal = max(complete, key=lambda item: abs(float(item["phase_turns"])), default=None)
-        candidates = [item for item in read if abs(float(item["phase_turns"])) >= 0.2]
+        candidates = [
+            item
+            for item in read
+            if abs(float(item["phase_turns"])) >= DESCRIPTIVE_CANDIDATE_MIN_TURNS
+        ]
         principal_candidate = max(candidates, key=lambda item: abs(float(item["phase_turns"])), default=None)
         stage_rows.append(
             {
                 "stage": stage,
                 "complete_count_read": len(complete),
                 "clean_count_read": len(clean),
+                "complete_count_post": len(post_complete),
+                "clean_count_post": len(post_clean),
                 "principal_candidate_phase_turns": float(principal_candidate["phase_turns"]) if principal_candidate else None,
                 "principal_candidate_area_turns": float(principal_candidate["voltage_area_turns"]) if principal_candidate else None,
                 "principal_candidate_onset_ps": float(principal_candidate["start_time_ps"]) if principal_candidate else None,
@@ -566,16 +591,24 @@ def protection_summary(record: dict[str, Any], junctions: dict[str, Any]) -> dic
             }
         )
     bj2_principal = max(read_complete, key=lambda item: abs(float(item["phase_turns"])), default=None)
-    false_trigger = bool(read_complete or post_complete or any(row["complete_count_read"] for row in stage_rows))
+    false_trigger = bool(
+        read_complete
+        or post_complete
+        or any(row["complete_count_read"] or row["complete_count_post"] for row in stage_rows)
+    )
+    source_approximately_one_phi0 = False
+    all_stage_one = False
+    same_polarity = False
+    increasing = False
     if state == "S0":
         verdict = "S0_NO_STRICT_TRIGGER" if not false_trigger else "S0_FALSE_TRIGGER_OBSERVED"
     else:
-        source_good = bool(
+        source_approximately_one_phi0 = bool(
             len(read_complete) == 1
             and bj2_principal
-            and 0.75 <= abs(float(bj2_principal["phase_turns"])) <= 1.25
-            and 0.75 <= abs(float(bj2_principal["voltage_area_turns"])) <= 1.25
-            and abs(float(bj2_principal["signed_phase_area_residual_turns"])) <= 0.20
+            and DESCRIPTIVE_ONE_PHI0_MIN_TURNS <= abs(float(bj2_principal["phase_turns"])) <= DESCRIPTIVE_ONE_PHI0_MAX_TURNS
+            and DESCRIPTIVE_ONE_PHI0_MIN_TURNS <= abs(float(bj2_principal["voltage_area_turns"])) <= DESCRIPTIVE_ONE_PHI0_MAX_TURNS
+            and abs(float(bj2_principal["signed_phase_area_residual_turns"])) <= DESCRIPTIVE_ONE_PHI0_RESIDUAL_MAX_TURNS
         )
         all_stage_one = all(row["clean_count_read"] == 1 for row in stage_rows)
         same_polarity = bool(
@@ -590,7 +623,7 @@ def protection_summary(record: dict[str, Any], junctions: dict[str, Any]) -> dic
                 for index in range(len(stage_rows) - 1)
             )
         )
-        verdict = "S1_PROTECTED_CANDIDATE" if source_good and all_stage_one and same_polarity and increasing else "S1_PROTECTION_INCONCLUSIVE"
+        verdict = "S1_PROTECTED_CANDIDATE" if source_approximately_one_phi0 and all_stage_one and same_polarity and increasing else "S1_PROTECTION_INCONCLUSIVE"
     return {
         "state": state,
         "read_window_ps": list(PROTECTION_READ_PS),
@@ -605,13 +638,25 @@ def protection_summary(record: dict[str, Any], junctions: dict[str, Any]) -> dic
         "BJ2_principal_direction": int(bj2_principal["direction"]) if bj2_principal else None,
         "jtl_B02_read": stage_rows,
         "criteria_observation": {
-            "S1_source_same_event_approximately_one_phi0": state == "S1" and len(read_complete) == 1,
+            "S1_source_same_event_approximately_one_phi0": source_approximately_one_phi0 if state == "S1" else None,
+            "S1_source_approximately_one_phi0_threshold_status": (
+                "POST_HOC_DESCRIPTIVE_NOT_PREREGISTERED" if state == "S1" else None
+            ),
             "all_six_B02_one_clean_event": state == "S1" and all(row["clean_count_read"] == 1 for row in stage_rows),
             "same_polarity": state == "S1" and bool(bj2_principal) and same_polarity if state == "S1" else None,
             "strictly_increasing_onsets": state == "S1" and increasing if state == "S1" else None,
         },
+        "descriptive_thresholds": {
+            "candidate_min_abs_phase_turns": DESCRIPTIVE_CANDIDATE_MIN_TURNS,
+            "one_phi0_phase_and_area_range_turns": [
+                DESCRIPTIVE_ONE_PHI0_MIN_TURNS,
+                DESCRIPTIVE_ONE_PHI0_MAX_TURNS,
+            ],
+            "one_phi0_phase_area_residual_max_turns": DESCRIPTIVE_ONE_PHI0_RESIDUAL_MAX_TURNS,
+            "status": "POST_HOC_DESCRIPTIVE_NOT_PREREGISTERED",
+        },
         "protection_verdict": verdict,
-        "warning": "S0 is assessed for complete local/read/post activity; sub-unit voltage activity is not called an SFQ trigger",
+        "warning": "S0 is assessed for complete local/read/post activity; sub-unit voltage activity is not called an SFQ trigger; descriptive candidate and approximately-one-Phi0 bounds are not preregistered acceptance gates",
     }
 
 
@@ -727,14 +772,14 @@ def run_result(record: dict[str, Any]) -> dict[str, Any]:
             "analysis_boundaries": {
                 "observed": "raw/grid, phase/area segments, waveform and KCL arithmetic",
                 "derived": "window-assigned complete/clean local segments and onset/latency summaries",
-                "inference": "exploratory branch/protection labels only after comparison; not a Gate",
+                "inference": "exploratory branch/protection labels only after comparison; not a Gate; descriptive candidate bounds are post-hoc",
                 "unknown": "paper mechanism identity, canonical BVM compatibility, timestep convergence beyond tested pair",
             },
             "warnings": [
                 "P(...) is raw JoSIM radians; turns are only continuous_unwrap(rad)/(2*pi)",
                 "local JJ phase slip is not automatically downstream reception",
                 "net phase trajectory is not an SFQ count",
-                "no post-hoc threshold tuning was performed; strict-event tolerances are pre-registered in experiment.yaml",
+                "no post-hoc parameter tuning was performed; strict-event tolerances are pre-registered in experiment.yaml, while candidate and approximately-one-Phi0 bounds are descriptive post-hoc analysis aids",
             ],
         }
     )
@@ -935,6 +980,18 @@ def provenance(records: list[dict[str, Any]], results: list[dict[str, Any]], tim
             "event_helper": "scripts/bvmtools/sfq.py strict_event_list",
             "kcl_helper": "scripts/bvmtools/kcl.py",
             "interpolation": "none for run-local arithmetic and no raw rewrite",
+            "descriptive_candidate_threshold": {
+                "min_abs_phase_turns": DESCRIPTIVE_CANDIDATE_MIN_TURNS,
+                "status": "POST_HOC_DESCRIPTIVE_NOT_PREREGISTERED",
+            },
+            "descriptive_one_phi0_thresholds": {
+                "phase_and_area_range_turns": [
+                    DESCRIPTIVE_ONE_PHI0_MIN_TURNS,
+                    DESCRIPTIVE_ONE_PHI0_MAX_TURNS,
+                ],
+                "phase_area_residual_max_turns": DESCRIPTIVE_ONE_PHI0_RESIDUAL_MAX_TURNS,
+                "status": "POST_HOC_DESCRIPTIVE_NOT_PREREGISTERED",
+            },
         },
     }
 
@@ -972,11 +1029,13 @@ def main() -> int:
     json_write(EXP / "analysis/metrics.json", global_metrics)
     json_write(EXP / "analysis/effective_run_manifest.json", effective_manifest(records))
     json_write(EXP / "analysis/provenance.json", provenance(records, results, timestamp))
-    (EXP / "analysis/REVIEW.md").write_text(
-        "# REVIEW\n\n分析产物已生成；最终科学审阅待 Sol XHigh reviewer。\n\n"
-        "本文件不把 solver exit 0、图形或 net turns 升级为 SFQ/Gate 结论。\n",
-        encoding="utf-8",
-    )
+    review_path = EXP / "analysis/REVIEW.md"
+    if not review_path.exists():
+        review_path.write_text(
+            "# REVIEW\n\n分析产物已生成；最终科学审阅待 Sol XHigh reviewer。\n\n"
+            "本文件不把 solver exit 0、图形或 net turns 升级为 SFQ/Gate 结论。\n",
+            encoding="utf-8",
+        )
     (EXP / "analysis/human-gate.yaml").write_text(
         "state: AWAITING_USER_REVIEW\nuser_reviewed: false\nnext_step_authorized: false\nautomatic_next_experiment: false\nstage_b_authorized: false\nnext_action: STOP\n",
         encoding="utf-8",

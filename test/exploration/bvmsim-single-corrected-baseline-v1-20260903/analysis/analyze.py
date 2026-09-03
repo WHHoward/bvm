@@ -326,7 +326,8 @@ def stimulus_metrics(trace: RawTrace) -> dict[str, object]:
     labels = ("I(I_WL1)", "I(I_BL1)", "I(I_SE1)")
     result: dict[str, object] = {}
     plateau_write = window_s("WRITE")
-    plateau_read = (71.0e-12, 81.0e-12)
+    # 70--81 ps is the full READ support; 71--80 ps is the flat plateau.
+    plateau_read = (71.0e-12, 80.0e-12)
     for label in labels:
         values = sig(trace, label)
         write_indices = window_indices(trace.time, *plateau_write)
@@ -350,7 +351,8 @@ def stimulus_metrics(trace: RawTrace) -> dict[str, object]:
 def expected_stimulus_check(trace: RawTrace, logical_state: int) -> dict[str, object]:
     write_amp = -100.0 if logical_state == 0 else 100.0
     plateau_write = (51.0e-12, 60.0e-12)
-    plateau_read = (71.0e-12, 81.0e-12)
+    # 70--81 ps is the full READ support; 71--80 ps is the flat plateau.
+    plateau_read = (71.0e-12, 80.0e-12)
     checks: dict[str, object] = {}
     for label, expected in (
         ("I(I_WL1)", write_amp),

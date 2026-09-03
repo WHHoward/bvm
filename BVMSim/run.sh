@@ -1,7 +1,9 @@
 #!/bin/bash
 
 #FILE_PATH="data_tran.csv"
-FILE_PATH="data_tran_0.05.csv"
+#FILE_PATH="data_tran_0.05.csv"
+#FILE_PATH="data_tran_0_0.05_v1.csv"
+FILE_PATH="data_tran_0_0.05_v2.csv"
 
 echo "Run JoSIM sim..."
 # josim-cli -o $FILE_PATH BQ_test.cir
@@ -9,7 +11,9 @@ echo "Run JoSIM sim..."
 # josim-cli -o $FILE_PATH test_bvm.cir
 # josim-cli -o $FILE_PATH test_bvm_mixed.cir
 #josim-cli -o $FILE_PATH test_bvm_mixed_0.cir
-josim-cli -o $FILE_PATH test_bvm_mixed_0_0.05.cir
+#josim-cli -o $FILE_PATH test_bvm_mixed_0_0.05.cir
+#josim-cli -o $FILE_PATH test_bvm_mixed_0_0.05_v1.cir
+josim-cli -o $FILE_PATH test_bvm_mixed_0_0.05_v2.cir
 # josim-cli test_bvm_mixed.cir
 
 if [ $? -eq 0 ]; then

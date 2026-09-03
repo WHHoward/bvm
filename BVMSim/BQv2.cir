@@ -1,0 +1,33 @@
+
+* .subckt BQ IN OUT IB
+
+* Lin IN 1 0.8p
+* L0 4 OUT 1.323p
+* L1 2 3 3.91p
+* L2 3 4 3.91p
+* BJs 1 2 jjmit area=1.33
+* BJL1 2 0 jjmit area=1.12
+* BJL2 4 0 jjmit area=1.89
+* RB IB 3 8.5
+* * IB 0 IBias pwl(0 0 1p 100u)
+
+* .ends BQ
+
+
+
+.subckt BQ IN OUT
+
+Lin IN 1 1.5p
+L1 2 3 2p
+L2 3 4 2p
+BJs 1 2 jjmit area=3
+BJ1 2 0 jjmit area=0.9
+RJ1 2 0 11.5
+BJ2 4 0 jjmit area=2
+RJ2 4 0 4
+L3 4 OUT 1.3p
+
+* RB IB 3 9
+IB 0 3 pwl(0 0 1p 250u)
+.model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=160, rN=16, icrit=0.1mA)
+.ends BQ

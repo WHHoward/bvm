@@ -1,0 +1,269 @@
+{
+  "run_id": "F4_R11P5_T100",
+  "output_dir": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots",
+  "raw": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/attempt-03/raw/run-01.csv",
+  "raw_sha256": "410853620e942d2cede766efac497e39b6eab61ad1a30d830fe00e34682c5534",
+  "pages": [
+    {
+      "output": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/BVM_INTERFACE.html",
+      "sha256": "c6fabe84805879f036baf9d61e462f8367e0c277f844777ec33bd52bcc144d77",
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "renderer_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/tmp/rj1_run_plots_aulhq35c/F4_R11P5_T100_projection.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/BVM_INTERFACE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "F4_R11P5_T100 — BVM / QB interface",
+        "-s",
+        "P(BVMOUT) [F4_R11P5_T100]",
+        "V(BVMOUT) [F4_R11P5_T100]",
+        "I(BVMOUT) [F4_R11P5_T100]",
+        "V(QBIN) [F4_R11P5_T100]"
+      ],
+      "source_raw": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/attempt-03/raw/run-01.csv",
+      "selected_source_labels": [
+        "P(BVMOUT)",
+        "V(BVMOUT)",
+        "I(BVMOUT)",
+        "V(QBIN)"
+      ],
+      "selected_display_labels": [
+        "P(BVMOUT) [F4_R11P5_T100]",
+        "V(BVMOUT) [F4_R11P5_T100]",
+        "I(BVMOUT) [F4_R11P5_T100]",
+        "V(QBIN) [F4_R11P5_T100]"
+      ],
+      "phase_conversion": "P raw radians -> turns via josim-plot2 -j 2pi",
+      "interpolation": "none",
+      "qa": {
+        "exists_nonempty": true,
+        "labels_present": true,
+        "missing_labels": [],
+        "expected_axis_titles": {
+          "phase": true,
+          "voltage": true,
+          "current": true
+        },
+        "unknown_axis_title_present": false
+      }
+    },
+    {
+      "output": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/QB_INTERNAL.html",
+      "sha256": "afe6a2c0d4b821a676b1edc679dcfc54b8e1cae395b24ba43afa4cf2f6e04bb1",
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "renderer_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/tmp/rj1_run_plots_aulhq35c/F4_R11P5_T100_projection.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/QB_INTERNAL.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "F4_R11P5_T100 — QB internal key signals",
+        "-s",
+        "P(BJS|XBQ1) [F4_R11P5_T100]",
+        "P(BJ1|XBQ1) [F4_R11P5_T100]",
+        "P(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(QBOUT) [F4_R11P5_T100]"
+      ],
+      "source_raw": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/attempt-03/raw/run-01.csv",
+      "selected_source_labels": [
+        "P(BJS|XBQ1)",
+        "P(BJ1|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "V(BJ2|XBQ1)",
+        "V(QBOUT)"
+      ],
+      "selected_display_labels": [
+        "P(BJS|XBQ1) [F4_R11P5_T100]",
+        "P(BJ1|XBQ1) [F4_R11P5_T100]",
+        "P(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(QBOUT) [F4_R11P5_T100]"
+      ],
+      "phase_conversion": "P raw radians -> turns via josim-plot2 -j 2pi",
+      "interpolation": "none",
+      "qa": {
+        "exists_nonempty": true,
+        "labels_present": true,
+        "missing_labels": [],
+        "expected_axis_titles": {
+          "phase": true,
+          "voltage": true,
+          "current": false
+        },
+        "unknown_axis_title_present": false
+      }
+    },
+    {
+      "output": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/BJ2_EVENT.html",
+      "sha256": "68ea7a963a9fa70384b849d3f8d663cf2067c1df7b56c7908adb69f643685dfd",
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "renderer_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/tmp/rj1_run_plots_aulhq35c/F4_R11P5_T100_projection.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/BJ2_EVENT.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "F4_R11P5_T100 — QB BJ2 phase / voltage / current",
+        "-s",
+        "P(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(BJ2|XBQ1) [F4_R11P5_T100]",
+        "I(BJ2|XBQ1) [F4_R11P5_T100]"
+      ],
+      "source_raw": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/attempt-03/raw/run-01.csv",
+      "selected_source_labels": [
+        "P(BJ2|XBQ1)",
+        "V(BJ2|XBQ1)",
+        "I(BJ2|XBQ1)"
+      ],
+      "selected_display_labels": [
+        "P(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(BJ2|XBQ1) [F4_R11P5_T100]",
+        "I(BJ2|XBQ1) [F4_R11P5_T100]"
+      ],
+      "phase_conversion": "P raw radians -> turns via josim-plot2 -j 2pi",
+      "interpolation": "none",
+      "qa": {
+        "exists_nonempty": true,
+        "labels_present": true,
+        "missing_labels": [],
+        "expected_axis_titles": {
+          "phase": true,
+          "voltage": true,
+          "current": true
+        },
+        "unknown_axis_title_present": false
+      }
+    },
+    {
+      "output": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/JTL_TRANSPORT_VOLTAGE.html",
+      "sha256": "97ea9fdd5f7faba4bbc8887cc22a33640b75959f7dec47f6bf45ced984bfa87e",
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "renderer_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/tmp/rj1_run_plots_aulhq35c/F4_R11P5_T100_projection.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/JTL_TRANSPORT_VOLTAGE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "F4_R11P5_T100 — BJ2 -> JTL output-facing voltage (JTL1 / JTL3 / JTL6)",
+        "-s",
+        "V(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(B02|XJTL1_1) [F4_R11P5_T100]",
+        "V(B02|XJTL1_3) [F4_R11P5_T100]",
+        "V(B02|XJTL1_6) [F4_R11P5_T100]"
+      ],
+      "source_raw": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/attempt-03/raw/run-01.csv",
+      "selected_source_labels": [
+        "V(BJ2|XBQ1)",
+        "V(B02|XJTL1_1)",
+        "V(B02|XJTL1_3)",
+        "V(B02|XJTL1_6)"
+      ],
+      "selected_display_labels": [
+        "V(BJ2|XBQ1) [F4_R11P5_T100]",
+        "V(B02|XJTL1_1) [F4_R11P5_T100]",
+        "V(B02|XJTL1_3) [F4_R11P5_T100]",
+        "V(B02|XJTL1_6) [F4_R11P5_T100]"
+      ],
+      "phase_conversion": "not applicable",
+      "interpolation": "none",
+      "qa": {
+        "exists_nonempty": true,
+        "labels_present": true,
+        "missing_labels": [],
+        "expected_axis_titles": {
+          "phase": false,
+          "voltage": true,
+          "current": false
+        },
+        "unknown_axis_title_present": false
+      }
+    },
+    {
+      "output": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/JTL_TRANSPORT_PHASE.html",
+      "sha256": "9ed80fda6fac77bf412b44189be6ff13a99256361b37ba918cae047a23fe5256",
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "renderer_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/tmp/rj1_run_plots_aulhq35c/F4_R11P5_T100_projection.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/plots/JTL_TRANSPORT_PHASE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "F4_R11P5_T100 — BJ2 -> JTL output-facing phase turns (JTL1 / JTL3 / JTL6)",
+        "-s",
+        "P(BJ2|XBQ1) [F4_R11P5_T100]",
+        "P(B02|XJTL1_1) [F4_R11P5_T100]",
+        "P(B02|XJTL1_3) [F4_R11P5_T100]",
+        "P(B02|XJTL1_6) [F4_R11P5_T100]"
+      ],
+      "source_raw": "test/exploration/bvm-qb-rj1-timestep-robustness-v1-20260903/runs/F4_R11P5_T100/attempt-03/raw/run-01.csv",
+      "selected_source_labels": [
+        "P(BJ2|XBQ1)",
+        "P(B02|XJTL1_1)",
+        "P(B02|XJTL1_3)",
+        "P(B02|XJTL1_6)"
+      ],
+      "selected_display_labels": [
+        "P(BJ2|XBQ1) [F4_R11P5_T100]",
+        "P(B02|XJTL1_1) [F4_R11P5_T100]",
+        "P(B02|XJTL1_3) [F4_R11P5_T100]",
+        "P(B02|XJTL1_6) [F4_R11P5_T100]"
+      ],
+      "phase_conversion": "P raw radians -> turns via josim-plot2 -j 2pi",
+      "interpolation": "none",
+      "qa": {
+        "exists_nonempty": true,
+        "labels_present": true,
+        "missing_labels": [],
+        "expected_axis_titles": {
+          "phase": true,
+          "voltage": false,
+          "current": false
+        },
+        "unknown_axis_title_present": false
+      }
+    }
+  ],
+  "qa_status": "PASS"
+}

@@ -53,6 +53,18 @@
 
 ## 6. OBSERVED omitted-versus-connected A/B
 
+- comparison matrix 现在共 14 张：direct load 为 6 张，JTL load 为 8 张。
+  本轮新增的 6 张 JTL-load 页面为：
+  S0/S1 的 BVM_INTERNAL_JTL、SENSING_JTL 和 QB_JTL；文件名分别是
+  S0_JM2_OMITTED_VS_CONNECTED_BVM_INTERNAL_JTL.html、
+  S1_JM2_OMITTED_VS_CONNECTED_BVM_INTERNAL_JTL.html、
+  S0_JM2_OMITTED_VS_CONNECTED_SENSING_JTL.html、
+  S1_JM2_OMITTED_VS_CONNECTED_SENSING_JTL.html、
+  S0_JM2_OMITTED_VS_CONNECTED_QB_JTL.html 和
+  S1_JM2_OMITTED_VS_CONNECTED_QB_JTL.html。
+- 新增页面直接使用 JTL A/B raw pair；A 仍排在 JM2-OMITTED，B 仍排在
+  JM2-CONNECTED，沿用 corrected single-BVM 的 renderer、布局、颜色、
+  signal order、phase turns 显示和 exact-grid/no-interpolation 规则。
 - 各 condition 的 `BVM_INTERNAL_STATE`、`BVM_SENSING`、`QB`，以及 JTL case 的 `JTL_TRANSPORT` 都使用相同的旧图布局、命名和 signal order 生成 A/B comparison。
 - A/B 页面中的差值约定为 connected − omitted；phase comparison 显示为 turns。具体逐窗口 max/RMS/P95、时间网格和相关系数见 `metrics.json`。
 - A-side 的四条 L_M 电流 probe 缺失是不可恢复的历史观测限制；本轮不重跑 A-side，因此没有把缺失列插值或补成零。

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import csv
+import argparse
 import hashlib
 import json
 import re
@@ -187,67 +188,132 @@ def comparison_csv(path: Path, reference: RawTrace, connected: RawTrace, labels:
     return output_labels
 
 
-def comparison_specs() -> list[tuple[str, str, list[str]]]:
-    return [
-        ("S0_JM2_OMITTED_VS_CONNECTED_BVM_INTERNAL", "S0-R-JM2C", BVM_INTERNAL_STATE),
-        ("S1_JM2_OMITTED_VS_CONNECTED_BVM_INTERNAL", "S1-R-JM2C", BVM_INTERNAL_STATE),
-        ("S0_JM2_OMITTED_VS_CONNECTED_SENSING", "S0-R-JM2C", PLOTS["BVM_SENSING"][0]),
-        ("S1_JM2_OMITTED_VS_CONNECTED_SENSING", "S1-R-JM2C", PLOTS["BVM_SENSING"][0]),
-        ("S0_JM2_OMITTED_VS_CONNECTED_QB", "S0-R-JM2C", PLOTS["QB_INTERNAL"][0]),
-        ("S1_JM2_OMITTED_VS_CONNECTED_QB", "S1-R-JM2C", PLOTS["QB_INTERNAL"][0]),
-        ("S0_JM2_OMITTED_VS_CONNECTED_JTL", "S0-J-JM2C", PLOTS["JTL_TRANSPORT"][0]),
-        ("S1_JM2_OMITTED_VS_CONNECTED_JTL", "S1-J-JM2C", PLOTS["JTL_TRANSPORT"][0]),
-    ]
+COMPARISON_GROUPS = OrderedDict(
+    (
+        ("BVM_INTERNAL", BVM_INTERNAL_STATE),
+        ("SENSING", PLOTS["BVM_SENSING"][0]),
+        ("QB", PLOTS["QB_INTERNAL"][0]),
+        ("JTL_TRANSPORT", PLOTS["JTL_TRANSPORT"][0]),
+    )
+)
+
+DIRECT_GROUPS = ("BVM_INTERNAL", "SENSING", "QB")
+JTL_GROUPS = ("BVM_INTERNAL", "SENSING", "QB", "JTL_TRANSPORT")
+NEW_JTL_GROUPS = ("BVM_INTERNAL", "SENSING", "QB")
 
 
-def main() -> int:
-    traces: dict[str, RawTrace] = {}
-    reference_traces: dict[str, RawTrace] = {}
-    raw_hashes: dict[str, str] = {}
-    plots: list[dict[str, object]] = []
+def comparison_specs() -> list[dict[str, Any]]:
+    """Return the complete comparison matrix, including the six new JTL-load pages."""
+    specs: list[dict[str, Any]] = []
 
-    # Standalone B-side plots are deliberately completed before any A/B page.
-    for condition, info in CONDITIONS.items():
-        all_labels = sorted(set(label for name, (labels, _) in PLOTS.items() if name != "JTL_TRANSPORT" or info["jtl"] for label in labels))
-        trace = check_input(info["raw"], all_labels)
-        traces[condition] = trace
-        raw_hashes[condition] = sha256(info["raw"])
-        for name, (labels, description) in PLOTS.items():
-            if name == "JTL_TRANSPORT" and not info["jtl"]:
-                continue
-            title = (
-                f"{condition} — complete BVM internal JJ state and SL boundary"
-                if name == "BVM_INTERNAL_STATE"
-                else f"{description} — {condition}"
-            )
-            output = EXP / "plots/runs" / condition / f"{name}.html"
-            plots.append(render(info["raw"], output, title, labels))
-
-        reference_traces[condition] = check_input(info["reference"], all_labels)
-        raw_hashes[f"reference:{condition}"] = sha256(info["reference"])
-
-    comparisons: list[dict[str, object]] = []
-    for name, condition, labels in comparison_specs():
-        derived = EXP / "plots/comparison/data" / f"{name}.csv"
-        comparison_labels = comparison_csv(derived, reference_traces[condition], traces[condition], labels)
-        title = f"{condition.split('-')[0]} — JM2 omitted vs connected — {name.rsplit('_', 1)[-1]}"
-        output = EXP / "plots/comparison" / f"{name}.html"
-        record = render(derived, output, title, comparison_labels)
-        record.update({
-            "comparison": True,
-            "reference_role": "JM2-OMITTED",
-            "connected_role": "JM2-CONNECTED",
-            "derived_csv": str(derived.relative_to(REPO)),
-            "derived_csv_sha256": sha256(derived),
-            "base_signal_order": labels,
+    def add_group(load_family: str, group: str, state: int) -> None:
+        state_name = f"S{state}"
+        condition = f"{state_name}-R-JM2C" if load_family == "direct" else f"{state_name}-J-JM2C"
+        legacy_jtl_name = load_family == "jtl" and group == "JTL_TRANSPORT"
+        suffix = "" if load_family == "direct" or legacy_jtl_name else "_JTL"
+        output_group = "JTL" if legacy_jtl_name else group
+        specs.append({
+            "name": f"{state_name}_JM2_OMITTED_VS_CONNECTED_{output_group}{suffix}",
+            "condition": condition,
+            "state": state,
+            "load_family": load_family,
+            "load": CONDITIONS[condition]["load"],
+            "group": group,
+            "labels": list(COMPARISON_GROUPS[group]),
+            "new_in_task": load_family == "jtl" and group in NEW_JTL_GROUPS,
         })
-        comparisons.append(record)
 
+    # Preserve the old eight comparison names and their logical grouping first.
+    for group in DIRECT_GROUPS:
+        for state in (0, 1):
+            add_group("direct", group, state)
+    for group in ("JTL_TRANSPORT",):
+        for state in (0, 1):
+            add_group("jtl", group, state)
+
+    # Append only the new load-aware views; they use the JTL A/B raw pair.
+    for group in NEW_JTL_GROUPS:
+        for state in (0, 1):
+            add_group("jtl", group, state)
+    return specs
+
+
+def comparison_coverage() -> dict[str, dict[str, list[str]]]:
+    """Return the declared direct/JTL signal-group coverage matrix."""
+    return {
+        "direct": {
+            "S0": list(DIRECT_GROUPS),
+            "S1": list(DIRECT_GROUPS),
+        },
+        "jtl": {
+            "S0": list(JTL_GROUPS),
+            "S1": list(JTL_GROUPS),
+        },
+    }
+
+
+def initial_raw_hashes() -> dict[str, str]:
+    raw_hashes: dict[str, str] = {}
+    for condition, info in CONDITIONS.items():
+        raw_hashes[condition] = sha256(info["raw"])
+        raw_hashes[f"reference:{condition}"] = sha256(info["reference"])
+    return raw_hashes
+
+
+def check_raw_hashes_unchanged(raw_hashes: dict[str, str]) -> None:
     for condition, info in CONDITIONS.items():
         if sha256(info["raw"]) != raw_hashes[condition] or sha256(info["reference"]) != raw_hashes[f"reference:{condition}"]:
             raise RuntimeError(f"raw hash changed during plotting: {condition}")
 
-    manifest: dict[str, Any] = {
+
+def render_comparison_spec(
+    spec: dict[str, Any],
+    traces: dict[str, RawTrace],
+    reference_traces: dict[str, RawTrace],
+    refuse_existing: bool = False,
+) -> dict[str, object]:
+    name = str(spec["name"])
+    condition = str(spec["condition"])
+    labels = list(spec["labels"])
+    derived = EXP / "plots/comparison/data" / f"{name}.csv"
+    output = EXP / "plots/comparison" / f"{name}.html"
+    if refuse_existing and (derived.exists() or output.exists()):
+        raise RuntimeError(f"refusing to overwrite existing new comparison artifact: {name}")
+
+    comparison_labels = comparison_csv(derived, reference_traces[condition], traces[condition], labels)
+    if spec["new_in_task"]:
+        title = (
+            f"{condition.split('-')[0]} — JM2 omitted vs connected — "
+            f"{spec['group']} — JTL load"
+        )
+    else:
+        title = f"{condition.split('-')[0]} — JM2 omitted vs connected — {name.rsplit('_', 1)[-1]}"
+    record = render(derived, output, title, comparison_labels)
+    record.update({
+        "comparison": True,
+        "reference_role": "JM2-OMITTED",
+        "connected_role": "JM2-CONNECTED",
+        "derived_csv": str(derived.relative_to(REPO)),
+        "derived_csv_sha256": sha256(derived),
+        "base_signal_order": labels,
+        "state": spec["state"],
+        "load_family": spec["load_family"],
+        "load": spec["load"],
+        "signal_group": spec["group"],
+        "new_in_task": spec["new_in_task"],
+    })
+    return record
+
+
+def base_manifest(
+    raw_hashes: dict[str, str],
+    standalone: list[dict[str, object]],
+    comparisons: list[dict[str, object]],
+    run_mode: str,
+    previous: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    manifest: dict[str, Any] = dict(previous) if previous is not None else {}
+    manifest.update({
         "schema": "bvmsim-jm2-connected-visual-manifest-v1",
         "experiment": "bvmsim-jm2-connected-single-ab-v1-20260903",
         "renderer": str(PLOTTER.relative_to(REPO)),
@@ -266,8 +332,13 @@ def main() -> int:
         "phase_display": "P(...) raw radians displayed as rad/(2*pi) turns",
         "raw_unchanged": True,
         "raw_sha256": raw_hashes,
-        "standalone": plots,
+        "standalone": standalone,
         "comparisons": comparisons,
+        "comparison_coverage": comparison_coverage(),
+        "new_comparison_count": sum(1 for item in comparisons if item.get("new_in_task") is True),
+        "total_comparison_count": len(comparisons),
+        "simulation_invoked": False,
+        "run_mode": run_mode,
         "comparison_limitations": {
             "unavailable_on_omitted_reference": [
                 "I(L_M1|XBVM1)", "I(L_M2|XBVM1)", "I(L_M3|XBVM1)", "I(L_PM|XBVM1)"
@@ -275,10 +346,114 @@ def main() -> int:
             "reason": "immutable corrected baseline raw was not rerun and does not contain these four probes",
             "no_interpolation": True,
         },
-    }
+    })
+    return manifest
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--only-new-jtl-comparisons",
+        action="store_true",
+        help="append the six JTL-load A/B pages without regenerating standalone or existing pages",
+    )
+    args = parser.parse_args()
+
+    traces: dict[str, RawTrace] = {}
+    reference_traces: dict[str, RawTrace] = {}
+    raw_hashes = initial_raw_hashes()
+    plots: list[dict[str, object]] = []
     manifest_path = EXP / "analysis/plot_manifest.json"
+    previous_manifest: dict[str, Any] | None = None
+
+    if args.only_new_jtl_comparisons:
+        previous_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        specs = comparison_specs()
+        expected_existing = {str(spec["name"]) for spec in specs if not spec["new_in_task"]}
+        existing_names = {
+            Path(str(record["path"])).stem
+            for record in previous_manifest.get("comparisons", [])
+        }
+        missing = sorted(expected_existing - existing_names)
+        if missing:
+            raise RuntimeError(f"existing comparison manifest is incomplete: {missing}")
+        for key, value in previous_manifest.get("raw_sha256", {}).items():
+            if raw_hashes.get(key) != value:
+                raise RuntimeError(f"raw hash differs from existing manifest: {key}")
+
+        selected_specs = [spec for spec in specs if spec["new_in_task"]]
+        selected_conditions = ["S0-J-JM2C", "S1-J-JM2C"]
+        for condition in selected_conditions:
+            labels = sorted({
+                label
+                for spec in selected_specs
+                if spec["condition"] == condition
+                for label in spec["labels"]
+            })
+            info = CONDITIONS[condition]
+            traces[condition] = check_input(info["raw"], labels)
+            reference_traces[condition] = check_input(info["reference"], labels)
+
+        existing_comparisons = list(previous_manifest["comparisons"])
+        new_comparisons = [
+            render_comparison_spec(spec, traces, reference_traces, refuse_existing=True)
+            for spec in selected_specs
+        ]
+        comparisons = existing_comparisons + new_comparisons
+        manifest = base_manifest(
+            raw_hashes,
+            list(previous_manifest.get("standalone", [])),
+            comparisons,
+            "append-new-jtl-load-comparisons",
+            previous_manifest,
+        )
+        generated_count = len(new_comparisons)
+    else:
+        specs = comparison_specs()
+        # Standalone B-side plots are deliberately completed before any A/B page.
+        for condition, info in CONDITIONS.items():
+            all_labels = sorted(set(
+                label
+                for name, (labels, _) in PLOTS.items()
+                if name != "JTL_TRANSPORT" or info["jtl"]
+                for label in labels
+            ))
+            trace = check_input(info["raw"], all_labels)
+            traces[condition] = trace
+            for name, (labels, description) in PLOTS.items():
+                if name == "JTL_TRANSPORT" and not info["jtl"]:
+                    continue
+                title = (
+                    f"{condition} — complete BVM internal JJ state and SL boundary"
+                    if name == "BVM_INTERNAL_STATE"
+                    else f"{description} — {condition}"
+                )
+                output = EXP / "plots/runs" / condition / f"{name}.html"
+                plots.append(render(info["raw"], output, title, labels))
+
+            reference_traces[condition] = check_input(info["reference"], all_labels)
+
+        comparisons = [
+            render_comparison_spec(spec, traces, reference_traces)
+            for spec in specs
+        ]
+        manifest = base_manifest(
+            raw_hashes,
+            plots,
+            comparisons,
+            "full-regeneration",
+        )
+        generated_count = len(comparisons)
+
+    check_raw_hashes_unchanged(raw_hashes)
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(json.dumps({"standalone_plots": len(plots), "comparison_plots": len(comparisons), "raw_unchanged": True}, ensure_ascii=False))
+    print(json.dumps({
+        "standalone_plots": len(plots),
+        "generated_comparison_plots": generated_count,
+        "total_comparison_plots": len(manifest["comparisons"]),
+        "raw_unchanged": True,
+        "simulation_invoked": False,
+    }, ensure_ascii=False))
     return 0
 
 

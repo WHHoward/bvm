@@ -1,5 +1,8 @@
 # JM2-connected single-BVM A/B Quick — result brief
 
+- **comparison coverage**：保留原有 8 张 comparison，并新增 6 张 JTL-load
+  comparison；最终矩阵为 direct=6、JTL=8、合计 14。新增页面包含 S0/S1
+  的 BVM internal、sensing 和 QB，且沿用旧 single-BVM 图的布局与顺序。
 - **范围**：只改变 historical BVM 的 `L_M2` 第二节点 `4→3`；四个 single-BVM 新 run；不使用 canonical BVM。
 - **artifact**：preflight=`ARTIFACT_VALID`，all runs=`True`。
 - **可视化**：严格复用 corrected single-BVM 的 `scripts/josim-plot2.py`、现有命名、signal order、`sep_comb + dark + 2pi`；旧图与新图可直接并排比较。

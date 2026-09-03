@@ -25,7 +25,7 @@ fixture:
 state_semantics:
   initialization: "all four BVMs logical-0 at 50--61 ps"
   read0: "positive SE pulse at 70--81 ps; expected 0"
-  write1: "state-coded WL/BL polarity at 90--101 ps"
+  write1: "state-coded BL polarity at 90--101 ps; WL remains the fixed historical +100uA pulse"
   read1: "positive SE pulse at 110--121 ps; expected popcount(state)"
   bit_order: "state b3b2b1b0 maps b3->BVM1 ... b0->BVM4"
 baseline:
@@ -68,4 +68,3 @@ human_gate:
   user_reviewed: false
   next_step_authorized: false
   automatic_next_experiment: false
-

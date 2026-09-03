@@ -51,13 +51,14 @@ historical `R_JM1=8 ohm`、canonical `R_JM1=6 ohm`。因此本 profile 不能被
 1. `50--61 ps`：四个 BVM 都写入 logical-0（WL、BL 为 -100 uA）；
 2. `70--81 ps`：READ0，作为 0-count control；
 3. `90--101 ps`：按状态字对每个 BVM 写入 logical-0 或 logical-1，
-   logical-1 的 WL、BL 为 +100 uA；
+   `BL` 的极性编码状态；`WL` 仍按 historical fixture 固定为 +100 uA；
 4. `110--121 ps`：READ1，状态 `b3b2b1b0` 的预期 active count 为
    `popcount(state)`。
 
 因此 `1111` 与 historical active fixture 的 READ1 完全对应；16-state
-不会改变初始化阶段。状态字的最高位对应 `BVM1`，最低位对应 `BVM4`，并在
-每个 deck 的 metadata 中显式记录。
+不会改变初始化阶段。状态字的最高位对应 `BL1`/`BVM1`，最低位对应
+`BL4`/`BVM4`，并在每个 deck 的 metadata 中显式记录；90 ps 的 `WL1..WL4`
+和 70/110 ps 的 `WL`、`SE` 读出脉冲保持历史值。
 
 功能计数以同一 burst 窗口内的 phase/voltage-area 一致性和 downstream
 JTL6 output-facing marker 为依据。phase 原始单位是 rad；报告中的 turns
@@ -72,4 +73,3 @@ burst area/Phi0、可解析的局部 event 结构和 downstream count 分开报�
 JJ Ic、L/C、JTL bias、timestep、canonical BVM 和 T1 均保持冻结，除非另有
 明确授权。margin 是对 nominal 12 ohm operational tolerance 的测量，不是
 优化或替换 nominal 设计。
-

@@ -42,3 +42,14 @@ python3 test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/analysis
 python3 test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/analysis/check_sl_endpoint_parity.py                  # exit 0; PROBE_EXTENSION_PARITY_PASS
 python3 test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/analysis/render_sl_endpoint_plots.py                 # exit 0; 6 plots
 ```
+
+## 用户复核后的主视图修正
+
+上一版曾额外生成 `plots/sl_endpoints/` 视图；按用户复核要求，现已将同一组
+30 条关键探针原位加入每个 run 原有的：
+
+`plots/runs/<state>/BVMOUT_QB_INPUT.html`
+
+因此用户直接打开原来的六个 `BVMOUT_QB_INPUT.html` 即可看到更新后的内容。
+这一步只重新渲染 HTML，没有重跑 JoSIM；输入使用已验证的
+`runs_sl_endpoints/<state>/raw.csv`，六个原始 PHASE-B raw 仍保持不变。

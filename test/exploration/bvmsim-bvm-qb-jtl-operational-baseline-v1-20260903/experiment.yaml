@@ -1,0 +1,71 @@
+task_id: BVMSIM_BVM_QB_JTL_OPERATIONAL_BASELINE_V1
+experiment_id: bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903
+study_phase: EXPLORATION
+source_class: HISTORICAL_BVMSIM
+authorization:
+  user_authorized: true
+  user_request_date: 2026-09-03
+  head_before_setup: 2a2159a5d012011b44186600987f09ba46eed9b2
+profile:
+  path: docs/research/BVMSIM_0P1PS_OPERATIONAL_PROFILE_V1.md
+  timestep_ps: 0.1
+  convergence_claim: NOT_CLAIMED
+sources:
+  bvm: BVMSim/bvm_cell.cir
+  qb: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  historical_raw_reference: BVMSim/data_tran.csv
+  shared_jjmit_reference: circuits/models/jjmit.cir
+fixture:
+  bvm_instances: 4
+  shared_sensing_line: "four 12-JJ branches; final BVMout connects to QBin"
+  qb_nominal: "BQ IN OUT; internal IB=250uA; RJ1=12 ohm; RJ2=4 ohm"
+  jtl_stages: 6
+  final_load: "RBQ1 o6 0 10"
+state_semantics:
+  initialization: "all four BVMs logical-0 at 50--61 ps"
+  read0: "positive SE pulse at 70--81 ps; expected 0"
+  write1: "state-coded WL/BL polarity at 90--101 ps"
+  read1: "positive SE pulse at 110--121 ps; expected popcount(state)"
+  bit_order: "state b3b2b1b0 maps b3->BVM1 ... b0->BVM4"
+baseline:
+  single_runs: [S0-R, S1-R, S0-J, S1-J]
+  four_state_runs: [0000, 0001, 0010, 0011, 0100, 0101, 0110, 0111, 1000, 1001, 1010, 1011, 1100, 1101, 1110, 1111]
+  expected_count: popcount
+  timestep_ps: 0.1
+  stop_time_ps: 200
+margin_axes:
+  - name: qb_bias_IB
+    nominal_uA: 250
+    first_points_uA: [225, 250, 275]
+  - name: qb_RJ1_shunt
+    nominal_ohm: 12
+    first_points_ohm: [10.8, 12.0, 13.2]
+  - name: physical_input_alpha
+    nominal: 1.0
+    first_points: [0.9, 1.0, 1.1]
+margin_policy:
+  sentinel_selection: "automatic from baseline; preserve 0/1/2/3/4 count and position boundaries"
+  fixed_quiet_gap_pass_required: false
+  nominal_RJ1_must_remain_12_ohm: true
+  no_other_parameter_sweeps: true
+pairwise:
+  maps: [IB_x_RJ1, RJ1_x_alpha, IB_x_alpha]
+  grid: 3x3
+  optional_3d_corners: false
+functional_rule:
+  hard: [expected_count, no_false_trigger, JTL6_end_to_end_count, polarity, no_extra, no_loss, same_JJ_phase_area]
+  count_basis: "burst-total phase/area plus downstream JTL6 output-facing marker"
+  no_count_from: [Vpeak, I_over_Ic, whole_window_phase_only, legacy_fast_events]
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_display: rad_div_2pi_turns
+  individual_before_comparison: true
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+

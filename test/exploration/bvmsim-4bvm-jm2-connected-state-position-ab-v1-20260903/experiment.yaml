@@ -1,0 +1,167 @@
+task_id: JM2_CONNECTED_4BVM_SIX_STATE_POSITION_AB_QUICK_V1
+experiment_id: bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903
+study_phase: EXPLORATION
+source_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+authority_boundary: task-local historical variant; exploratory evidence only
+
+authorization:
+  user_authorized: true
+  current_run_authorized: true
+  authorization_basis: user-reviewed bvmsim-jm2-connected-single-ab-v1-20260903
+  head_before_setup: d54233d76ed78806191d752bc3d11070e5b88697
+  authorized_scope: "one JM2-connected six-state 4-BVM A/B Quick"
+  automatic_followup: false
+  post_result_human_gate_is_separate: true
+
+comparison:
+  omitted_authority: test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903
+  omitted_formal_raw: runs/<state>/raw.csv
+  omitted_endpoint_raw: runs_sl_endpoints/<state>/raw.csv
+  connected_fixture_base: runs/<state>/deck.cir copied from omitted endpoint deck
+  state_mapping: b3b2b1b0 -> BVM1/BVM2/BVM3/BVM4
+  changed_only:
+    - "BVM include: historical BVMSim/bvm_cell.cir -> accepted JM2-connected variant"
+    - "additional endpoint probes already present in the omitted endpoint authority"
+  held_fixed:
+    - "historical 4-BVM shared sensing line topology"
+    - "historical original BQ: RJ1=12 ohm, RJ2=4 ohm, IB=250 uA"
+    - "historical six-stage JTL and 10-ohm termination"
+    - "all BVM parameters, junction areas, stimulus timing and amplitudes"
+    - ".tran 0.1p 200p 45p"
+  canonical_bvm_used: false
+  canonical_bvm_path: circuits/bvm/bvm_cell.cir
+  canonical_bvm_change_forbidden: true
+
+states:
+  selected: ["0000", "1000", "0100", "0010", "0001", "1111"]
+  count: 6
+  one_hot: ["1000", "0100", "0010", "0001"]
+  bit_order: "b3b2b1b0 maps b3->BVM1, b2->BVM2, b1->BVM3, b0->BVM4"
+  no_renumbering: true
+
+fixture:
+  bvm_instances: 4
+  sensing_sections: 4
+  sensing_junctions_per_section: 12
+  bvmout: BVMout
+  qb_subcircuit: BQ
+  qb_bias_uA: 250
+  qb_rj1_ohm: 12
+  qb_rj2_ohm: 4
+  jtl_stages: 6
+  jtl_bias_uA: 280
+  termination_ohm: 10
+  timestep_ps: 0.1
+  stop_time_ps: 200
+  output_start_ps: 45
+
+stimulus:
+  write0:
+    association_window_ps: [50, 70]
+    plateau_window_ps: [51, 60]
+    WL_uA: -100
+    BL_uA: -100
+  read0:
+    association_window_ps: [70, 90]
+    plateau_window_ps: [71, 80]
+    WL_uA: 100
+    SE_uA: 100
+    BL_uA: 0
+  write1:
+    association_window_ps: [90, 101]
+    plateau_window_ps: [91, 100]
+    WL_uA: 100
+    BL_by_state_bit: true
+  read1:
+    association_window_ps: [110, 170]
+    plateau_window_ps: [111, 120]
+    WL_uA: 100
+    SE_uA: 100
+    BL_uA: 0
+
+windows_ps:
+  PRE: [0, 50]
+  WRITE0: [50, 70]
+  READ0: [70, 90]
+  WRITE1: [90, 101]
+  POST_WRITE1: [101, 105]
+  PRE_READ1: [105, 110]
+  READ1: [110, 170]
+  TAIL: [170, 200]
+
+questions:
+  primary: "Does one active-1 BVM pull a stored-0 BVM's READ response away from 0000?"
+  comparison: "How does that zero-cell cross-coupling change between JM2 omitted and JM2 connected?"
+  position: "How position-dependent are V(QBIN) and I(LIN|XBQ1) for the four one-hot states?"
+  secondary: "What local QB and downstream JTL evidence accompanies these responses?"
+
+measurements:
+  cross_coupling:
+    baseline: "same fixture's 0000 raw, separately for omitted and connected"
+    state_conditioned_current_delta: "I(L_SL|XBVMn, one_hot) - I(L_SL|XBVMn, 0000)"
+    state_conditioned_voltage_delta: "V(SLn, one_hot) - V(SLn, 0000)"
+    read_associated_difference_in_differences: "center each state by its PRE_READ1 median, then subtract centered 0000 trace"
+    difference_in_differences_formula: "r[T,s,n](t)=X[T,s,n](t)-median_PRE_READ1(X[T,s,n]); delta[T,s,n](t)=r[T,s,n](t)-r[T,0000,n](t)"
+    windows: [READ0, READ1]
+    signed_metrics: [minimum, maximum, max_abs, p2p, rms, signed_time_integral, onset_ps, peak_time_ps]
+    active_cell_reported_separately: true
+    read0_role: "negative-control window before WRITE1; nonzero contrast is important but is not causal proof"
+    comparison_rule: "raw numeric values are primary; descriptive larger/smaller/similar uses ratio >=1.10 or <=1/1.10 only, never as a scientific threshold"
+    four_track_grid_gate: "A one-hot, A 0000, B one-hot, B 0000 must all have exact time tokens before pointwise comparison"
+    zero_cell_matrix: "4 one-hot states x 3 commanded-zero victims; do not pool as one total"
+  position_input:
+    signals: ["V(QBIN)", "I(LIN|XBQ1)"]
+    states: ["1000", "0100", "0010", "0001"]
+    window: READ1
+    metrics: [minimum, maximum, max_abs, p2p, rms, signed_time_integral, onset_ps, peak_time_ps]
+    baseline_correction: "report raw one-hot and same-side one-hot-minus-0000 for each signal"
+  state_closure:
+    window: PRE_READ1
+    retention_window: TAIL
+    probes: "all BVM JM1/JM2 P/V/I plus L_M1/L_M2/L_M3/L_PM/L_PSL and SL telemetry"
+    rule: "no old ±0.938-turn threshold is reused; report observed levels, PRE_READ1-to-TAIL retention and stability"
+    stored_label_policy: "use stored-0 wording only when the task-local retention observation supports it; otherwise say commanded-0"
+  qb_jtl:
+    qb_same_jj: ["P(BJ2|XBQ1)", "V(BJ2|XBQ1)", "I(BJ2|XBQ1)"]
+    jtl_same_jj: "P/V(B02|XJTL1_stage) for stages 1..6"
+    phase_units: "raw P is rad; display/derived turns are continuous_unwrap(rad)/(2*pi)"
+    event_warning: "phase displacement and whole-window area are not SFQ counts"
+    strict_event_list: "diagnostic local segmentation only; no downstream count claim"
+
+activity_localization:
+  current_threshold_uA: 1.0
+  voltage_threshold_uV: 1.0
+  minimum_consecutive_samples: 2
+  role: "descriptive onset/localization only, never an event-count threshold"
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_jump: 2pi
+  phase_display: rad_div_2pi_turns
+  standalone_first: true
+  standalone_names: [CONTROL_TIMING, BVM_STATE, BVM_INTERNAL_PVI, BVMOUT_QB_INPUT, QB_INTERNAL, JTL_TRANSPORT]
+  aggregate_names:
+    - WEIGHT1_QBIN_INPUT_JM2C
+    - WEIGHT1_POSITION_OMITTED_VS_CONNECTED
+    - ZERO_BVM_INDUCED_RESPONSE_OMITTED_VS_CONNECTED
+  plot_role: descriptive only; metrics and raw provenance carry evidence
+
+prohibited:
+  - canonical BVM substitution
+  - single-BVM run
+  - 16-state sweep
+  - RJ1/JJ/bias/input/timestep sweep or optimization
+  - topology redesign
+  - JSL/JTL redesign
+  - T1 or paper-level claim
+  - automatic follow-up experiment
+
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  stage_b_authorized: false
+  next_action: STOP

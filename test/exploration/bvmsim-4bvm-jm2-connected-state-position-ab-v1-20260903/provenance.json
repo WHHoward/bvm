@@ -1,0 +1,175 @@
+{
+  "schema": "bvmsim-4bvm-jm2-connected-state-position-ab-provenance-v1",
+  "experiment_id": "bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903",
+  "created_at": "2026-09-03T20:30:13+08:00",
+  "head_before_setup": "d54233d76ed78806191d752bc3d11070e5b88697",
+  "source_class": "HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT",
+  "source_records": {
+    "historical_fixture": {
+      "path": "BVMSim/test_bvm_mixed_0.cir",
+      "sha256": "09b30458cf2bec3fbe85221e9f34661ecee4c6e28aed18c54aaa30a94ad1f948"
+    },
+    "historical_bvm": {
+      "path": "BVMSim/bvm_cell.cir",
+      "sha256": "009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125"
+    },
+    "historical_qb": {
+      "path": "BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd"
+    },
+    "historical_jtl": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "shared_jjmit_reference": {
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "canonical_bvm_not_used": {
+      "path": "circuits/bvm/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    },
+    "jm2_connected_variant": {
+      "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+    }
+  },
+  "variant_diff": {
+    "status": "PASS",
+    "difference_count": 1,
+    "difference": {
+      "line": 37,
+      "historical": "L_M2    2       4       24.5P",
+      "connected": "L_M2    2       3       24.5P"
+    },
+    "historical_sha256": "009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125",
+    "connected_variant_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+  },
+  "a_side": {
+    "0000": {
+      "formal_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0000/deck.cir",
+      "formal_deck_sha256": "7c83c88c3f84ad4bbeea8540f9337f89163ceda359ec36bd12ec8dd0a4c9359c",
+      "formal_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0000/raw.csv",
+      "formal_raw_sha256": "19adb2286289a99761aace1786e8a191d63aa68a95e9ce3cda9af96a7e7cf634",
+      "endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0000/deck.cir",
+      "endpoint_deck_sha256": "a9f112314df0902481053c14fe2ab76bfb9a45cfc24700b9c50e69d8a96950f0",
+      "endpoint_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0000/raw.csv",
+      "endpoint_raw_sha256": "8d90420b804a670191a024c44011f54395581db8038671a144d08746a67cec66"
+    },
+    "1000": {
+      "formal_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/1000/deck.cir",
+      "formal_deck_sha256": "24f4357ca74f1f6166e794e334ee34f1fc1d78551516ecc3117e76d56123b3fc",
+      "formal_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/1000/raw.csv",
+      "formal_raw_sha256": "a8efdc5aece1234a5c7b262956e8dcf5eadf5ac3f30febc7de90ee6ff8077092",
+      "endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/1000/deck.cir",
+      "endpoint_deck_sha256": "e2c418242c000878fc5b1b8331542644b81c6ace298185de1d2c4101a0862fc0",
+      "endpoint_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/1000/raw.csv",
+      "endpoint_raw_sha256": "54dc9f6d804c178568aa8525e61ac0e6e11a42b1eddb11ab6280e59f3851b7d1"
+    },
+    "0100": {
+      "formal_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0100/deck.cir",
+      "formal_deck_sha256": "82de8bb642d30850d7348f2043057549d6d11b473be77f00776703747df428a0",
+      "formal_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0100/raw.csv",
+      "formal_raw_sha256": "dae3cbbc2d656a61e52e8b27ebe0ceac2a493fc93d01825705b1cd56025cb24d",
+      "endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0100/deck.cir",
+      "endpoint_deck_sha256": "660def0d67ff1f1d509ba230c38f1cb99cc66d21d1edff9453fc67d04b5390ce",
+      "endpoint_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0100/raw.csv",
+      "endpoint_raw_sha256": "6e99a325d9780c8d38f1651185b685261a35981889d0256db43079c955e4aa1c"
+    },
+    "0010": {
+      "formal_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0010/deck.cir",
+      "formal_deck_sha256": "db55421bef34365df764652be37b477e338eb4970b0e524cbdba09d2e8851645",
+      "formal_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0010/raw.csv",
+      "formal_raw_sha256": "a55bc29656a2d2a19a84e8d16a65b57c62fb026c7e1465e4f2fd80852e3da56e",
+      "endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0010/deck.cir",
+      "endpoint_deck_sha256": "ce77e344028c378c49a5379ba49b37a4706eda7080c170c1e03c3fdccb95cf67",
+      "endpoint_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0010/raw.csv",
+      "endpoint_raw_sha256": "8cc619959fdde5467f41585c6194828dae5d5f19f3ac9f22cbdc807eaa8fcaa5"
+    },
+    "0001": {
+      "formal_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0001/deck.cir",
+      "formal_deck_sha256": "4f9b0d0b414c35d1db9ca5821fbc388059c2282aa48f52ed6c98f803201af32f",
+      "formal_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/0001/raw.csv",
+      "formal_raw_sha256": "18de167475bdaf3a5e85b87e0bb28a61ad0ac058cf3b73aea64fcf3b9d1e0e06",
+      "endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0001/deck.cir",
+      "endpoint_deck_sha256": "50ecf032277bac660d23584ac86b996a100b2e17248d0f21b80be173b789da70",
+      "endpoint_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0001/raw.csv",
+      "endpoint_raw_sha256": "93c05b06340ea9e4a0f68d5524b57d96fdfb57b5a70dbd6623a9de503dcb8dc6"
+    },
+    "1111": {
+      "formal_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/1111/deck.cir",
+      "formal_deck_sha256": "e9ef35edb9a0e0b503f2a3fa403e55f9aafe929d22f2f71ce901841810a6bcbb",
+      "formal_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs/1111/raw.csv",
+      "formal_raw_sha256": "6018d420a98ee3634f11b4b655153194e4959c79375427c8bd722d3e451a9e9f",
+      "endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/1111/deck.cir",
+      "endpoint_deck_sha256": "fb112479306e11aadb0b3f473943a81497c9519e0d4ba0e8645afba9ff9b53cc",
+      "endpoint_raw": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/1111/raw.csv",
+      "endpoint_raw_sha256": "88af60ec474077203bd3b7ded8bb6c1229139942eda17cfa94d2d0919817b1a4"
+    }
+  },
+  "b_side_decks": {
+    "0000": {
+      "path": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/0000/deck.cir",
+      "source_endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0000/deck.cir",
+      "source_endpoint_deck_sha256": "a9f112314df0902481053c14fe2ab76bfb9a45cfc24700b9c50e69d8a96950f0",
+      "sha256": "893818ae348cf7c2a8c2a7766c3963db1fe2a34ca9886a984ef3bd1b06e3bb50",
+      "variant_include": "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir"
+    },
+    "1000": {
+      "path": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1000/deck.cir",
+      "source_endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/1000/deck.cir",
+      "source_endpoint_deck_sha256": "e2c418242c000878fc5b1b8331542644b81c6ace298185de1d2c4101a0862fc0",
+      "sha256": "8fbceb223a8a50fef178db324d72fe97a957bd8a7535e7430de271785bd69d7c",
+      "variant_include": "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir"
+    },
+    "0100": {
+      "path": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/0100/deck.cir",
+      "source_endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0100/deck.cir",
+      "source_endpoint_deck_sha256": "660def0d67ff1f1d509ba230c38f1cb99cc66d21d1edff9453fc67d04b5390ce",
+      "sha256": "c88d58d3ef5e8e1e83f356561563ce62922e3c7391aff0b1a3a50edfe27208b2",
+      "variant_include": "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir"
+    },
+    "0010": {
+      "path": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/0010/deck.cir",
+      "source_endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0010/deck.cir",
+      "source_endpoint_deck_sha256": "ce77e344028c378c49a5379ba49b37a4706eda7080c170c1e03c3fdccb95cf67",
+      "sha256": "7fa7ffaf758aaef341e17715b01119d8d42b6d82da8e4006308474126acc4d29",
+      "variant_include": "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir"
+    },
+    "0001": {
+      "path": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/0001/deck.cir",
+      "source_endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/0001/deck.cir",
+      "source_endpoint_deck_sha256": "50ecf032277bac660d23584ac86b996a100b2e17248d0f21b80be173b789da70",
+      "sha256": "38d4783509fd8013b767416800204ca2f42f7c56326927f417ab545d0c33204c",
+      "variant_include": "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir"
+    },
+    "1111": {
+      "path": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/deck.cir",
+      "source_endpoint_deck": "test/exploration/bvmsim-4bvm-state-position-closure-v1-20260903/runs_sl_endpoints/1111/deck.cir",
+      "source_endpoint_deck_sha256": "fb112479306e11aadb0b3f473943a81497c9519e0d4ba0e8645afba9ff9b53cc",
+      "sha256": "3fcdb8b0d61c91cadcacee77c3c06b3a03f8f9392a8c838e9b8574b8938b4e88",
+      "variant_include": "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir"
+    }
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "frozen": {
+    "states": [
+      "0000",
+      "1000",
+      "0100",
+      "0010",
+      "0001",
+      "1111"
+    ],
+    "timestep_ps": 0.1,
+    "stop_time_ps": 200,
+    "output_start_ps": 45,
+    "qb": "BVMSim/BQ.cir; RJ1=12 ohm; RJ2=4 ohm; IB=250 uA",
+    "jtl": "BVMSim/library_josim/jtl2.cir; six stages; 10 ohm termination"
+  },
+  "canonical_bvm_statement": "canonical circuits/bvm/bvm_cell.cir was not used; historical BVM and canonical BVM remain distinct authorities"
+}

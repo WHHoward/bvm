@@ -37,13 +37,15 @@ for item in "${conditions[@]}"; do
 
   solver_hash=$(sha256sum "$SOLVER" | awk '{print $1}')
   git_head=$(git -C "$REPO_ROOT" rev-parse HEAD)
+  solver_version=$(
+    "$SOLVER" --version | tr '\n' ' ' | sed 's/[[:space:]]*$//'
+  )
   {
     printf 'condition=%s\nload=%s\n' "$condition" "$load"
     printf 'git_head_before_run=%s\n' "$git_head"
     printf 'input=%s\ndeck=%s\nraw=%s\n' "$input" "$run_dir/deck.cir" "$raw"
-    printf 'solver=%s\nsolver_version=' "$SOLVER"
-    "$SOLVER" --version | tr '\n' ' '
-    printf '\nsolver_sha256=%s\n' "$solver_hash"
+    printf 'solver=%s\nsolver_version=%s\n' "$SOLVER" "$solver_version"
+    printf 'solver_sha256=%s\n' "$solver_hash"
     printf 'command=%s -a 1 -o %s %s\n' "$SOLVER" "$raw" "$input"
   } > "$run_dir/command.txt"
 

@@ -1,0 +1,1091 @@
+{
+  "schema": "jm2-connected-post-run-preflight-v1",
+  "experiment": "bvmsim-jm2-connected-single-ab-v1-20260903",
+  "variant_diff": {
+    "status": "PASS",
+    "difference_count": 1,
+    "differences": [
+      {
+        "line": 37,
+        "historical": "L_M2    2       4       24.5P",
+        "connected": "L_M2    2       3       24.5P"
+      }
+    ],
+    "historical_sha256": "009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125",
+    "connected_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+  },
+  "runs": {
+    "S0-R-JM2C": {
+      "condition": "S0-R-JM2C",
+      "load": "direct_10ohm",
+      "logical_state": 0,
+      "raw": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-R-JM2C/raw/run-01.csv",
+        "sha256": "52216e20039b0717504f4bf75b3e854c2ac48dc61e989c798f51d071e3038fb0",
+        "qa": {
+          "status": "VALID",
+          "path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-R-JM2C/raw/run-01.csv",
+          "headers": [
+            "time",
+            "I(I_WL1)",
+            "I(I_BL1)",
+            "I(I_SE1)",
+            "P(B_JM1|XBVM1)",
+            "V(B_JM1|XBVM1)",
+            "I(B_JM1|XBVM1)",
+            "P(B_JM2|XBVM1)",
+            "V(B_JM2|XBVM1)",
+            "I(B_JM2|XBVM1)",
+            "P(B_JS1|XBVM1)",
+            "V(B_JS1|XBVM1)",
+            "I(B_JS1|XBVM1)",
+            "P(B_JS2|XBVM1)",
+            "V(B_JS2|XBVM1)",
+            "I(B_JS2|XBVM1)",
+            "I(L_M1|XBVM1)",
+            "I(L_M2|XBVM1)",
+            "I(L_M3|XBVM1)",
+            "I(L_PM|XBVM1)",
+            "V(SL1)",
+            "I(L_PSL|XBVM1)",
+            "I(L_SL|XBVM1)",
+            "P(B_LD4_01)",
+            "V(B_LD4_01)",
+            "I(B_LD4_01)",
+            "P(B_LD4_11)",
+            "V(B_LD4_11)",
+            "I(B_LD4_11)",
+            "P(BVMOUT)",
+            "V(BVMOUT)",
+            "I(BVMOUT)",
+            "V(QBIN)",
+            "V(QBOUT)",
+            "I(LIN|XBQ1)",
+            "P(BJS|XBQ1)",
+            "V(BJS|XBQ1)",
+            "I(BJS|XBQ1)",
+            "P(BJ1|XBQ1)",
+            "V(BJ1|XBQ1)",
+            "I(BJ1|XBQ1)",
+            "I(RJ1|XBQ1)",
+            "I(L1|XBQ1)",
+            "I(IB|XBQ1)",
+            "I(L2|XBQ1)",
+            "P(BJ2|XBQ1)",
+            "V(BJ2|XBQ1)",
+            "I(BJ2|XBQ1)",
+            "I(RJ2|XBQ1)",
+            "I(L3|XBQ1)"
+          ],
+          "time_column": "time",
+          "sample_count": 1999,
+          "time_start": 0.0,
+          "time_end": 1.999e-10,
+          "dt_min": 9.999999999997898e-14,
+          "dt_max": 1.9999999999999996e-13,
+          "uniform_time_grid": false,
+          "nonuniform_time_grid": true,
+          "strictly_increasing_time": true,
+          "nan_inf_status": "PASS",
+          "duplicate_columns": {}
+        }
+      },
+      "deck": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-R-JM2C/deck.cir",
+        "sha256": "c918fbbf7102bfa87473801967506ad4becb466a420513258211d85d267d53bb",
+        "qa": {
+          "status": "ARTIFACT_VALID",
+          "deck_path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-R-JM2C/deck.cir",
+          "include_tokens": [
+            "../../../../circuits/models/jjmit.cir",
+            "../variants/bvm_jm2_connected.cir",
+            "../../../../BVMSim/BQ.cir"
+          ],
+          "missing_includes": [],
+          "model_warning_detected": false,
+          "bvm_instances": [
+            1
+          ],
+          "terminal_device_line_count": 11,
+          "terminal_bvmout_line_count": 1,
+          "terminal_sensing_jj_count": 12,
+          "jtl_stages": [],
+          "qb_subcircuit": "BQ",
+          "termination_ohm": 10.0,
+          "requested_tran_timestep_ps": 0.1,
+          "topology_issues": [],
+          "missing_probes": [],
+          "raw_missing_probes": [],
+          "raw_duplicate_columns": {}
+        },
+        "topology_only": {
+          "variant_include_active": true,
+          "historical_bvm_include_absent": true,
+          "canonical_bvm_absent": true,
+          "jm2_connected_source_line_present": true
+        }
+      },
+      "log": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-R-JM2C/logs/run-01.log",
+        "sha256": "e74638602d3f05cf1b6ebb617fb2cb1101cf5ee16c538a45b716a52b82d1b641",
+        "solver_exit_code": 0,
+        "model_warning_absent": true
+      },
+      "stimulus_protocol": {
+        "status": "PROTOCOL_VALID",
+        "write_window_s": [
+          5.1e-11,
+          6e-11
+        ],
+        "read_window_s": [
+          7.1e-11,
+          8e-11
+        ],
+        "unit": "uA",
+        "write": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": -0.0001,
+            "expected_value_display": -100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": -100.0,
+            "actual_max_display": -100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": -0.0001,
+            "expected_value_display": -100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": -100.0,
+            "actual_max_display": -100.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          }
+        },
+        "read": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          }
+        },
+        "expected_protocol_is_caller_declared": true
+      },
+      "artifact_status": "ARTIFACT_VALID"
+    },
+    "S1-R-JM2C": {
+      "condition": "S1-R-JM2C",
+      "load": "direct_10ohm",
+      "logical_state": 1,
+      "raw": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-R-JM2C/raw/run-01.csv",
+        "sha256": "1df0de9515cffaabdf79fd9b20a31270e29eb194f3d9b89a46a8b9a5e8de4e07",
+        "qa": {
+          "status": "VALID",
+          "path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-R-JM2C/raw/run-01.csv",
+          "headers": [
+            "time",
+            "I(I_WL1)",
+            "I(I_BL1)",
+            "I(I_SE1)",
+            "P(B_JM1|XBVM1)",
+            "V(B_JM1|XBVM1)",
+            "I(B_JM1|XBVM1)",
+            "P(B_JM2|XBVM1)",
+            "V(B_JM2|XBVM1)",
+            "I(B_JM2|XBVM1)",
+            "P(B_JS1|XBVM1)",
+            "V(B_JS1|XBVM1)",
+            "I(B_JS1|XBVM1)",
+            "P(B_JS2|XBVM1)",
+            "V(B_JS2|XBVM1)",
+            "I(B_JS2|XBVM1)",
+            "I(L_M1|XBVM1)",
+            "I(L_M2|XBVM1)",
+            "I(L_M3|XBVM1)",
+            "I(L_PM|XBVM1)",
+            "V(SL1)",
+            "I(L_PSL|XBVM1)",
+            "I(L_SL|XBVM1)",
+            "P(B_LD4_01)",
+            "V(B_LD4_01)",
+            "I(B_LD4_01)",
+            "P(B_LD4_11)",
+            "V(B_LD4_11)",
+            "I(B_LD4_11)",
+            "P(BVMOUT)",
+            "V(BVMOUT)",
+            "I(BVMOUT)",
+            "V(QBIN)",
+            "V(QBOUT)",
+            "I(LIN|XBQ1)",
+            "P(BJS|XBQ1)",
+            "V(BJS|XBQ1)",
+            "I(BJS|XBQ1)",
+            "P(BJ1|XBQ1)",
+            "V(BJ1|XBQ1)",
+            "I(BJ1|XBQ1)",
+            "I(RJ1|XBQ1)",
+            "I(L1|XBQ1)",
+            "I(IB|XBQ1)",
+            "I(L2|XBQ1)",
+            "P(BJ2|XBQ1)",
+            "V(BJ2|XBQ1)",
+            "I(BJ2|XBQ1)",
+            "I(RJ2|XBQ1)",
+            "I(L3|XBQ1)"
+          ],
+          "time_column": "time",
+          "sample_count": 1999,
+          "time_start": 0.0,
+          "time_end": 1.999e-10,
+          "dt_min": 9.999999999997898e-14,
+          "dt_max": 1.9999999999999996e-13,
+          "uniform_time_grid": false,
+          "nonuniform_time_grid": true,
+          "strictly_increasing_time": true,
+          "nan_inf_status": "PASS",
+          "duplicate_columns": {}
+        }
+      },
+      "deck": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-R-JM2C/deck.cir",
+        "sha256": "4f2a6515488d50da004340e3c250e71e8984ed2290c99583109faa392fe3b6e9",
+        "qa": {
+          "status": "ARTIFACT_VALID",
+          "deck_path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-R-JM2C/deck.cir",
+          "include_tokens": [
+            "../../../../circuits/models/jjmit.cir",
+            "../variants/bvm_jm2_connected.cir",
+            "../../../../BVMSim/BQ.cir"
+          ],
+          "missing_includes": [],
+          "model_warning_detected": false,
+          "bvm_instances": [
+            1
+          ],
+          "terminal_device_line_count": 11,
+          "terminal_bvmout_line_count": 1,
+          "terminal_sensing_jj_count": 12,
+          "jtl_stages": [],
+          "qb_subcircuit": "BQ",
+          "termination_ohm": 10.0,
+          "requested_tran_timestep_ps": 0.1,
+          "topology_issues": [],
+          "missing_probes": [],
+          "raw_missing_probes": [],
+          "raw_duplicate_columns": {}
+        },
+        "topology_only": {
+          "variant_include_active": true,
+          "historical_bvm_include_absent": true,
+          "canonical_bvm_absent": true,
+          "jm2_connected_source_line_present": true
+        }
+      },
+      "log": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-R-JM2C/logs/run-01.log",
+        "sha256": "a8dc9a81112b1dfcfe0428c1480211835c2d68070e244a94b822bb39bf211d45",
+        "solver_exit_code": 0,
+        "model_warning_absent": true
+      },
+      "stimulus_protocol": {
+        "status": "PROTOCOL_VALID",
+        "write_window_s": [
+          5.1e-11,
+          6e-11
+        ],
+        "read_window_s": [
+          7.1e-11,
+          8e-11
+        ],
+        "unit": "uA",
+        "write": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          }
+        },
+        "read": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          }
+        },
+        "expected_protocol_is_caller_declared": true
+      },
+      "artifact_status": "ARTIFACT_VALID"
+    },
+    "S0-J-JM2C": {
+      "condition": "S0-J-JM2C",
+      "load": "six_stage_jtl_plus_10ohm",
+      "logical_state": 0,
+      "raw": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/raw/run-01.csv",
+        "sha256": "317c2ecfd1b7ebabf791de2cf2365f0c882e2f071b281ac59aca2603c98f97e6",
+        "qa": {
+          "status": "VALID",
+          "path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/raw/run-01.csv",
+          "headers": [
+            "time",
+            "I(I_WL1)",
+            "I(I_BL1)",
+            "I(I_SE1)",
+            "P(B_JM1|XBVM1)",
+            "V(B_JM1|XBVM1)",
+            "I(B_JM1|XBVM1)",
+            "P(B_JM2|XBVM1)",
+            "V(B_JM2|XBVM1)",
+            "I(B_JM2|XBVM1)",
+            "P(B_JS1|XBVM1)",
+            "V(B_JS1|XBVM1)",
+            "I(B_JS1|XBVM1)",
+            "P(B_JS2|XBVM1)",
+            "V(B_JS2|XBVM1)",
+            "I(B_JS2|XBVM1)",
+            "I(L_M1|XBVM1)",
+            "I(L_M2|XBVM1)",
+            "I(L_M3|XBVM1)",
+            "I(L_PM|XBVM1)",
+            "V(SL1)",
+            "I(L_PSL|XBVM1)",
+            "I(L_SL|XBVM1)",
+            "P(B_LD4_01)",
+            "V(B_LD4_01)",
+            "I(B_LD4_01)",
+            "P(B_LD4_11)",
+            "V(B_LD4_11)",
+            "I(B_LD4_11)",
+            "P(BVMOUT)",
+            "V(BVMOUT)",
+            "I(BVMOUT)",
+            "V(QBIN)",
+            "V(QBOUT)",
+            "I(LIN|XBQ1)",
+            "P(BJS|XBQ1)",
+            "V(BJS|XBQ1)",
+            "I(BJS|XBQ1)",
+            "P(BJ1|XBQ1)",
+            "V(BJ1|XBQ1)",
+            "I(BJ1|XBQ1)",
+            "I(RJ1|XBQ1)",
+            "I(L1|XBQ1)",
+            "I(IB|XBQ1)",
+            "I(L2|XBQ1)",
+            "P(BJ2|XBQ1)",
+            "V(BJ2|XBQ1)",
+            "I(BJ2|XBQ1)",
+            "I(RJ2|XBQ1)",
+            "I(L3|XBQ1)",
+            "P(B01|XJTL1_1)",
+            "V(B01|XJTL1_1)",
+            "P(B02|XJTL1_1)",
+            "V(B02|XJTL1_1)",
+            "P(B01|XJTL1_2)",
+            "V(B01|XJTL1_2)",
+            "P(B02|XJTL1_2)",
+            "V(B02|XJTL1_2)",
+            "P(B01|XJTL1_3)",
+            "V(B01|XJTL1_3)",
+            "P(B02|XJTL1_3)",
+            "V(B02|XJTL1_3)",
+            "P(B01|XJTL1_4)",
+            "V(B01|XJTL1_4)",
+            "P(B02|XJTL1_4)",
+            "V(B02|XJTL1_4)",
+            "P(B01|XJTL1_5)",
+            "V(B01|XJTL1_5)",
+            "P(B02|XJTL1_5)",
+            "V(B02|XJTL1_5)",
+            "P(B01|XJTL1_6)",
+            "V(B01|XJTL1_6)",
+            "P(B02|XJTL1_6)",
+            "V(B02|XJTL1_6)"
+          ],
+          "time_column": "time",
+          "sample_count": 1999,
+          "time_start": 0.0,
+          "time_end": 1.999e-10,
+          "dt_min": 9.999999999997898e-14,
+          "dt_max": 1.9999999999999996e-13,
+          "uniform_time_grid": false,
+          "nonuniform_time_grid": true,
+          "strictly_increasing_time": true,
+          "nan_inf_status": "PASS",
+          "duplicate_columns": {}
+        }
+      },
+      "deck": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir",
+        "sha256": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
+        "qa": {
+          "status": "ARTIFACT_VALID",
+          "deck_path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir",
+          "include_tokens": [
+            "../../../../circuits/models/jjmit.cir",
+            "../variants/bvm_jm2_connected.cir",
+            "../../../../BVMSim/BQ.cir",
+            "../../../../BVMSim/library_josim/jtl2.cir"
+          ],
+          "missing_includes": [],
+          "model_warning_detected": false,
+          "bvm_instances": [
+            1
+          ],
+          "terminal_device_line_count": 11,
+          "terminal_bvmout_line_count": 1,
+          "terminal_sensing_jj_count": 12,
+          "jtl_stages": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "qb_subcircuit": "BQ",
+          "termination_ohm": 10.0,
+          "requested_tran_timestep_ps": 0.1,
+          "topology_issues": [],
+          "missing_probes": [],
+          "raw_missing_probes": [],
+          "raw_duplicate_columns": {}
+        },
+        "topology_only": {
+          "variant_include_active": true,
+          "historical_bvm_include_absent": true,
+          "canonical_bvm_absent": true,
+          "jm2_connected_source_line_present": true
+        }
+      },
+      "log": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/logs/run-01.log",
+        "sha256": "fa692b90fdf6a7e262d5d9dd0cd13e3654baea8590600f70e834d0ce62048779",
+        "solver_exit_code": 0,
+        "model_warning_absent": true
+      },
+      "stimulus_protocol": {
+        "status": "PROTOCOL_VALID",
+        "write_window_s": [
+          5.1e-11,
+          6e-11
+        ],
+        "read_window_s": [
+          7.1e-11,
+          8e-11
+        ],
+        "unit": "uA",
+        "write": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": -0.0001,
+            "expected_value_display": -100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": -100.0,
+            "actual_max_display": -100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": -0.0001,
+            "expected_value_display": -100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": -100.0,
+            "actual_max_display": -100.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          }
+        },
+        "read": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          }
+        },
+        "expected_protocol_is_caller_declared": true
+      },
+      "artifact_status": "ARTIFACT_VALID"
+    },
+    "S1-J-JM2C": {
+      "condition": "S1-J-JM2C",
+      "load": "six_stage_jtl_plus_10ohm",
+      "logical_state": 1,
+      "raw": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/raw/run-01.csv",
+        "sha256": "c570719de02b346da4b11fe3a1d44aeea07dfb48235fd37236a4484ba33c94de",
+        "qa": {
+          "status": "VALID",
+          "path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/raw/run-01.csv",
+          "headers": [
+            "time",
+            "I(I_WL1)",
+            "I(I_BL1)",
+            "I(I_SE1)",
+            "P(B_JM1|XBVM1)",
+            "V(B_JM1|XBVM1)",
+            "I(B_JM1|XBVM1)",
+            "P(B_JM2|XBVM1)",
+            "V(B_JM2|XBVM1)",
+            "I(B_JM2|XBVM1)",
+            "P(B_JS1|XBVM1)",
+            "V(B_JS1|XBVM1)",
+            "I(B_JS1|XBVM1)",
+            "P(B_JS2|XBVM1)",
+            "V(B_JS2|XBVM1)",
+            "I(B_JS2|XBVM1)",
+            "I(L_M1|XBVM1)",
+            "I(L_M2|XBVM1)",
+            "I(L_M3|XBVM1)",
+            "I(L_PM|XBVM1)",
+            "V(SL1)",
+            "I(L_PSL|XBVM1)",
+            "I(L_SL|XBVM1)",
+            "P(B_LD4_01)",
+            "V(B_LD4_01)",
+            "I(B_LD4_01)",
+            "P(B_LD4_11)",
+            "V(B_LD4_11)",
+            "I(B_LD4_11)",
+            "P(BVMOUT)",
+            "V(BVMOUT)",
+            "I(BVMOUT)",
+            "V(QBIN)",
+            "V(QBOUT)",
+            "I(LIN|XBQ1)",
+            "P(BJS|XBQ1)",
+            "V(BJS|XBQ1)",
+            "I(BJS|XBQ1)",
+            "P(BJ1|XBQ1)",
+            "V(BJ1|XBQ1)",
+            "I(BJ1|XBQ1)",
+            "I(RJ1|XBQ1)",
+            "I(L1|XBQ1)",
+            "I(IB|XBQ1)",
+            "I(L2|XBQ1)",
+            "P(BJ2|XBQ1)",
+            "V(BJ2|XBQ1)",
+            "I(BJ2|XBQ1)",
+            "I(RJ2|XBQ1)",
+            "I(L3|XBQ1)",
+            "P(B01|XJTL1_1)",
+            "V(B01|XJTL1_1)",
+            "P(B02|XJTL1_1)",
+            "V(B02|XJTL1_1)",
+            "P(B01|XJTL1_2)",
+            "V(B01|XJTL1_2)",
+            "P(B02|XJTL1_2)",
+            "V(B02|XJTL1_2)",
+            "P(B01|XJTL1_3)",
+            "V(B01|XJTL1_3)",
+            "P(B02|XJTL1_3)",
+            "V(B02|XJTL1_3)",
+            "P(B01|XJTL1_4)",
+            "V(B01|XJTL1_4)",
+            "P(B02|XJTL1_4)",
+            "V(B02|XJTL1_4)",
+            "P(B01|XJTL1_5)",
+            "V(B01|XJTL1_5)",
+            "P(B02|XJTL1_5)",
+            "V(B02|XJTL1_5)",
+            "P(B01|XJTL1_6)",
+            "V(B01|XJTL1_6)",
+            "P(B02|XJTL1_6)",
+            "V(B02|XJTL1_6)"
+          ],
+          "time_column": "time",
+          "sample_count": 1999,
+          "time_start": 0.0,
+          "time_end": 1.999e-10,
+          "dt_min": 9.999999999997898e-14,
+          "dt_max": 1.9999999999999996e-13,
+          "uniform_time_grid": false,
+          "nonuniform_time_grid": true,
+          "strictly_increasing_time": true,
+          "nan_inf_status": "PASS",
+          "duplicate_columns": {}
+        }
+      },
+      "deck": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir",
+        "sha256": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
+        "qa": {
+          "status": "ARTIFACT_VALID",
+          "deck_path": "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir",
+          "include_tokens": [
+            "../../../../circuits/models/jjmit.cir",
+            "../variants/bvm_jm2_connected.cir",
+            "../../../../BVMSim/BQ.cir",
+            "../../../../BVMSim/library_josim/jtl2.cir"
+          ],
+          "missing_includes": [],
+          "model_warning_detected": false,
+          "bvm_instances": [
+            1
+          ],
+          "terminal_device_line_count": 11,
+          "terminal_bvmout_line_count": 1,
+          "terminal_sensing_jj_count": 12,
+          "jtl_stages": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "qb_subcircuit": "BQ",
+          "termination_ohm": 10.0,
+          "requested_tran_timestep_ps": 0.1,
+          "topology_issues": [],
+          "missing_probes": [],
+          "raw_missing_probes": [],
+          "raw_duplicate_columns": {}
+        },
+        "topology_only": {
+          "variant_include_active": true,
+          "historical_bvm_include_absent": true,
+          "canonical_bvm_absent": true,
+          "jm2_connected_source_line_present": true
+        }
+      },
+      "log": {
+        "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/logs/run-01.log",
+        "sha256": "fd8f55a93d0227eb6e7e24fb207b355547205007c2d515a271ca16a169748f39",
+        "solver_exit_code": 0,
+        "model_warning_absent": true
+      },
+      "stimulus_protocol": {
+        "status": "PROTOCOL_VALID",
+        "write_window_s": [
+          5.1e-11,
+          6e-11
+        ],
+        "read_window_s": [
+          7.1e-11,
+          8e-11
+        ],
+        "unit": "uA",
+        "write": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              5.1e-11,
+              6e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          }
+        },
+        "read": {
+          "I(I_WL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          },
+          "I(I_BL1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0,
+            "expected_value_display": 0.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 0.0,
+            "actual_max_display": 0.0
+          },
+          "I(I_SE1)": {
+            "status": "PASS",
+            "unit": "uA",
+            "window_s": [
+              7.1e-11,
+              8e-11
+            ],
+            "sample_count": 90,
+            "expected_value_si": 0.0001,
+            "expected_value_display": 100.0,
+            "max_abs_error_si": 0.0,
+            "max_abs_error_display": 0.0,
+            "tolerance_si": 1e-10,
+            "tolerance_display": 0.0001,
+            "actual_min_display": 100.0,
+            "actual_max_display": 100.0
+          }
+        },
+        "expected_protocol_is_caller_declared": true
+      },
+      "artifact_status": "ARTIFACT_VALID"
+    }
+  },
+  "shared_s0_s1_read_stimulus": {
+    "time_grid_exact": true,
+    "comparison": {
+      "status": "VALID",
+      "window_s": [
+        7.1e-11,
+        8e-11
+      ],
+      "signals": {
+        "I(I_WL1)": {
+          "status": "VALID",
+          "difference_convention": "right_minus_left",
+          "interpolation_mode": "none",
+          "time_grid_exact": true,
+          "window_s": [
+            7.1e-11,
+            8e-11
+          ],
+          "sample_count": 90,
+          "max_abs_difference": 0.0,
+          "rms_difference": 0.0,
+          "p95_abs_difference": 0.0,
+          "unit": "A"
+        },
+        "I(I_BL1)": {
+          "status": "VALID",
+          "difference_convention": "right_minus_left",
+          "interpolation_mode": "none",
+          "time_grid_exact": true,
+          "window_s": [
+            7.1e-11,
+            8e-11
+          ],
+          "sample_count": 90,
+          "max_abs_difference": 0.0,
+          "rms_difference": 0.0,
+          "p95_abs_difference": 0.0,
+          "unit": "A"
+        },
+        "I(I_SE1)": {
+          "status": "VALID",
+          "difference_convention": "right_minus_left",
+          "interpolation_mode": "none",
+          "time_grid_exact": true,
+          "window_s": [
+            7.1e-11,
+            8e-11
+          ],
+          "sample_count": 90,
+          "max_abs_difference": 0.0,
+          "rms_difference": 0.0,
+          "p95_abs_difference": 0.0,
+          "unit": "A"
+        }
+      }
+    },
+    "status": "PASS"
+  },
+  "all_artifact_valid": true,
+  "status": "ARTIFACT_VALID"
+}

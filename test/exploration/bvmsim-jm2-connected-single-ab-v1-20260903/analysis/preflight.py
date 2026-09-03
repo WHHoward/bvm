@@ -207,6 +207,7 @@ def main() -> int:
         WINDOWS["read_plateau"],
         unit="A",
     )
+    read_time_grid_exact = exact_time_grid_identity(s0.time, s1.time)
     all_artifact_valid = all(item["artifact_status"] == "ARTIFACT_VALID" for item in records.values())
     report = {
         "schema": "jm2-connected-post-run-preflight-v1",
@@ -214,9 +215,9 @@ def main() -> int:
         "variant_diff": variant_diff(),
         "runs": records,
         "shared_s0_s1_read_stimulus": {
-            "time_grid_exact": exact_time_grid_identity(s0.time, s1.time),
+            "time_grid_exact": read_time_grid_exact,
             "comparison": read_stimulus_match,
-            "status": "PASS" if read_stimulus_match["status"] == "VALID" and read_stimulus_match["time_grid_exact"] else "FAIL",
+            "status": "PASS" if read_stimulus_match["status"] == "VALID" and read_time_grid_exact else "FAIL",
         },
         "all_artifact_valid": all_artifact_valid,
         "status": "ARTIFACT_VALID" if all_artifact_valid else "ARTIFACT_INVALID",

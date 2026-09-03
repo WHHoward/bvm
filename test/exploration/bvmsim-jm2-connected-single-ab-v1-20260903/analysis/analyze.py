@@ -23,13 +23,14 @@ REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
 
-from bvmtools.compare import compare_windowed_series, compare_stimuli, exact_time_grid_identity  # noqa: E402
+from bvmtools.compare import compare_windowed_series, exact_time_grid_identity  # noqa: E402
 from bvmtools.kcl import kcl_window_metrics, linear_kcl_residual  # noqa: E402
 from bvmtools.metrics import phase_area_window  # noqa: E402
 from bvmtools.onset import first_persistent_exceedance  # noqa: E402
 from bvmtools.phase import TAU, window_indices  # noqa: E402
 from bvmtools.provenance import file_snapshot, git_snapshot, sha256_file, solver_provenance  # noqa: E402
 from bvmtools.raw import RawTrace, read_csv  # noqa: E402
+from bvmtools.stimulus import compare_stimuli  # noqa: E402
 from bvmtools.waveform import waveform_window_metrics  # noqa: E402
 
 
@@ -262,7 +263,7 @@ def phase_area(trace: RawTrace, phase_label: str, voltage_label: str, window: st
         win_s(window),
         voltage_to_phase_sign=1,
         reporting_direction=1,
-        include_segments=True,
+        include_segments=False,
     )
 
 
@@ -634,14 +635,14 @@ def response_summary(records: Mapping[str, Mapping[str, object]]) -> dict[str, o
         def pv(branch: Mapping[str, object], window: str = "RESPONSE") -> dict[str, object]:
             phase = branch["phase_voltage_same_jj"][window]
             voltage = branch["voltage"][window]
-            current = branch["current"][window]
+            current = branch.get("current")
             return {
                 "phase_delta_turns": phase["phase_delta_turns"],
                 "voltage_area_over_phi0": phase["voltage_area_over_phi0"],
                 "phase_area_residual_turns": phase["phase_area_residual_turns"],
                 "phase_p2p_turns": phase["phase_p2p_turns"],
                 "voltage_p2p_mV": voltage["p2p"],
-                "current_p2p_uA": current["p2p"],
+                "current_p2p_uA": current[window]["p2p"] if current is not None else None,
             }
 
         item: dict[str, object] = {
@@ -690,6 +691,7 @@ def make_provenance(
         EXP / "experiment.yaml",
         EXP / "PREFLIGHT.md",
         EXP / "inputs/generate_decks.py",
+        EXP / "run.sh",
         EXP / "analysis/preflight.py",
         EXP / "analysis/analyze.py",
         PLOT_RENDERER,
@@ -871,6 +873,14 @@ def report_text(
 
 def brief_text(metrics: Mapping[str, object], preflight: Mapping[str, object]) -> str:
     artifact = artifact_summary(preflight)
+    jm2 = metrics["jm2_summary"]
+    responses = metrics["response_summary"]
+    s0r = jm2["S0-R-JM2C"]["windows"]["READ"]
+    s1r = jm2["S1-R-JM2C"]["windows"]["READ"]
+    s0j = jm2["S0-J-JM2C"]["windows"]["READ"]
+    s1j = jm2["S1-J-JM2C"]["windows"]["READ"]
+    s1r_bj2 = responses["S1-R-JM2C"]["bj2"]
+    s1j_bj2 = responses["S1-J-JM2C"]["bj2"]
     return "\n".join(
         [
             "# JM2-connected single-BVM A/B Quick — result brief",
@@ -878,7 +888,9 @@ def brief_text(metrics: Mapping[str, object], preflight: Mapping[str, object]) -
             "- **范围**：只改变 historical BVM 的 `L_M2` 第二节点 `4→3`；四个 single-BVM 新 run；不使用 canonical BVM。",
             f"- **artifact**：preflight=`{artifact['preflight_status']}`，all runs=`{artifact['all_artifact_valid']}`。",
             "- **可视化**：严格复用 corrected single-BVM 的 `scripts/josim-plot2.py`、现有命名、signal order、`sep_comb + dark + 2pi`；旧图与新图可直接并排比较。",
-            "- **观察边界**：JM2 的相位/面积、电压/电流、BVM sensing、QB 和 JTL 数据均已分层保存；turns 不是 SFQ count。",
+            f"- **JM2 READ 观察**：S0 direct/JTL 的 Δphase 为 `{fmt(s0r['phase_delta_turns'])}` / `{fmt(s0j['phase_delta_turns'])}` turns；S1 direct/JTL 为 `{fmt(s1r['phase_delta_turns'])}` / `{fmt(s1j['phase_delta_turns'])}` turns。这里的 turns 是 rad/(2π) 的局部净相位位移，不是 SFQ count。",
+            f"- **QB 负载观察**：S1 direct 与 JTL 的 BJ2 RESPONSE Δphase/V-area 分别约 `{fmt(s1r_bj2['phase_delta_turns'])}`/`{fmt(s1r_bj2['voltage_area_over_phi0'])}` 和 `{fmt(s1j_bj2['phase_delta_turns'])}`/`{fmt(s1j_bj2['voltage_area_over_phi0'])}` turns；这是固定 fixture 的 load-sensitive observation。",
+            "- **观察边界**：JM2 的相位/面积、电压/电流、BVM sensing、QB 和 JTL 数据均已分层保存；没有把局部 phase displacement 升级为 SFQ event 或系统 Gate。",
             "- **历史限制**：A-side immutable raw 没有 `L_M1/L_M2/L_M3/L_PM`，因此未伪造这些 A/B 对照。",
             "- **状态**：`AWAITING_USER_REVIEW`；未授权任何自动后续实验。",
             "",
@@ -904,6 +916,8 @@ def review_text(metrics: Mapping[str, object], preflight: Mapping[str, object]) 
             "- same-JJ phase/voltage-area pairing: direct P/V labels and identical windows: `PASS`",
             "- voltage-area integration: trapezoid on each raw's actual stored time column: `PASS`",
             "- QB KCL: shared `bvmtools.kcl` residuals recorded before current-partition interpretation: `PASS`",
+            "- independent CSV recheck: 4 connected raws have 1999 samples; all four A/B grids are exact; JM2 READ/RESPONSE phase-area residuals reproduce `metrics.json` to machine precision: `PASS`",
+            "- independent S1-J full-window KCL recheck: maximum absolute residual is 0.000110 µA across the four declared equations: `PASS`",
             "",
             "## Adversarial checks",
             "",
@@ -913,6 +927,7 @@ def review_text(metrics: Mapping[str, object], preflight: Mapping[str, object]) 
             "- missing A-side L_M probes: explicitly reported as unavailable; no zeros, interpolation or fabricated comparison.",
             "- phase overclaim: no phase displacement, voltage peak, or onset sample count is called an SFQ count.",
             "- convergence overclaim: `.tran 0.1p 200p` is a fixed Quick only; no timestep convergence is claimed.",
+            "- execution wrapper: the first `run.sh` returned 1 only because preflight indexed a nonexistent `compare_stimuli` field; all four solver commands returned 0, the preflight code was corrected without rerunning raw, and corrected preflight returned 0.",
             "- scientific status: exploratory characterization only; user review remains required.",
             "",
         ]

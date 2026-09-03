@@ -151,7 +151,7 @@ def main() -> int:
         "assertions": {
             "six_connected_raw_loaded": len(connected) == 6,
             "four_one_hot_position_records": len(position) == 4,
-            "zero_cell_records": sum(len(value) for value in cross.values()) == 8,
+            "zero_cell_records": sum(len(value) for value in cross.values()) == 12,
             "phase_area_records": len(phase_area) == 6,
         },
     }

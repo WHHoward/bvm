@@ -45,6 +45,14 @@ def write_once(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
+def write_generated(path: Path, content: str) -> None:
+    """更新可再生成的索引/manifest，不触碰 raw 或 plot HTML 内容。"""
+    if path.exists() and path.read_text(encoding="utf-8") == content:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+
+
 def b_raw(state: str) -> Path:
     return EXP / "runs" / state / "raw.csv"
 
@@ -193,12 +201,12 @@ def write_index(records: list[dict[str, object]]) -> None:
     links = []
     for record in records:
         path = Path(str(record["path"]))
-        relative = path.relative_to(EXP.relative_to(REPO)).as_posix()
+        relative = path.relative_to(EXP.relative_to(REPO) / "plots").as_posix()
         links.append(f'<li><a href="{relative}">{record["title"]}</a></li>')
-    content = "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>JM2-connected Quick plots</title></head><body>\n<h1>JM2-connected 4-BVM six-state A/B Quick</h1>\n<ul>\n" + "\n".join(links) + "\n</ul>\n<p>Standalone plots are generated before comparisons. P(...) uses JoSIM rad/(2*pi) and is displayed as turns; plots are descriptive only.</p>\n</body></html>\n"
-    write_once(EXP / "plots/INDEX.html", content)
-    overview = "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>RESULT OVERVIEW</title></head><body>\n<h1>JM2-connected 4-BVM A/B Quick — result overview</h1>\n<p>重点：active-1 对 commanded/stored-0 BVM 的 READ-associated response、JM2 omitted/connected 差异，以及 position-dependent QB input。</p>\n<p><a href=\"../analysis/REPORT.md\">分析报告</a> · <a href=\"INDEX.html\">全部图索引</a> · <a href=\"../analysis/metrics.json\">metrics.json</a></p>\n<ul>\n" + "\n".join(links) + "\n</ul>\n</body></html>\n"
-    write_once(EXP / "plots/RESULT_OVERVIEW.html", overview)
+    content = "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>JM2-connected Quick plots</title></head><body>\n<h1>JM2-connected 4-BVM six-state A/B Quick</h1>\n<ul>\n" + "\n".join(links) + "\n</ul>\n<p>Standalone plots are generated before comparisons. P(...) uses JoSIM rad/(2*pi) and is displayed as turns; plots are descriptive only.</p>\n<p>这 39 个 Plotly HTML 是工作区生成文件，因体积按仓库 .gitignore 不纳入 Git；本索引在已生成的工作区中链接有效。提交快照绑定 plot manifest，重新生成命令见 analysis/TEST_COMMANDS.md。</p>\n</body></html>\n"
+    write_generated(EXP / "plots/INDEX.html", content)
+    overview = "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>RESULT OVERVIEW</title></head><body>\n<h1>JM2-connected 4-BVM A/B Quick — result overview</h1>\n<p>重点：一个 one-hot active BVM 对其他 commanded-0、task-local retention-stable BVM 的 READ-associated response、JM2 omitted/connected 差异，以及 position-dependent QB input。</p>\n<p><a href=\"../analysis/REPORT.md\">分析报告</a> · <a href=\"INDEX.html\">全部图索引</a> · <a href=\"../analysis/metrics.json\">metrics.json</a> · <a href=\"../analysis/plot_manifest.json\">plot manifest</a></p>\n<ul>\n" + "\n".join(links) + "\n</ul>\n<p>上面的 39 个详细图均由本轮 renderer 生成；由于单张图内嵌 Plotly、体积较大，按 .gitignore 作为可再生成的工作区 HTML，不纳入 Git。提交快照保留本页、原始 raw、derived CSV、metrics 和 manifest；重新生成详细图的命令见 analysis/TEST_COMMANDS.md。</p>\n</body></html>\n"
+    write_generated(EXP / "plots/RESULT_OVERVIEW.html", overview)
 
 
 def main() -> int:
@@ -235,7 +243,7 @@ def main() -> int:
         "raw_unchanged": b_before == {state: digest(b_raw(state)) for state in STATES} and a_before == {state: digest(a_raw(state)) for state in STATES},
         "plots": records,
     }
-    write_once(args.manifest, json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
+    write_generated(args.manifest, json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     write_index(records)
     print(json.dumps({"status": "PASS", "plot_count": len(records), "raw_unchanged": manifest["raw_unchanged"]}, ensure_ascii=False))
     return 0

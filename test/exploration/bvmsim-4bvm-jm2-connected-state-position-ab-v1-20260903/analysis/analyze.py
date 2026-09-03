@@ -32,6 +32,7 @@ HISTORICAL_JTL = REPO / "BVMSim/library_josim/jtl2.cir"
 SHARED_JJMIT = REPO / "circuits/models/jjmit.cir"
 STATES = ("0000", "1000", "0100", "0010", "0001", "1111")
 ONE_HOT = ("1000", "0100", "0010", "0001")
+SELECTIVITY_WINDOWS = ("PRE", "WRITE0", "READ0", "WRITE1", "READ1", "TAIL")
 STORAGE_BRANCHES = ("L_M1", "L_M2", "L_M3", "L_PM", "L_PSL")
 
 WINDOWS_PS: "OrderedDict[str, tuple[float, float]]" = OrderedDict(
@@ -423,6 +424,8 @@ def cross_coupling(connected: Mapping[str, RawTrace], omitted_endpoint: Mapping[
         b, b0 = connected[state], connected["0000"]
         a, a0 = omitted_endpoint[state], omitted_endpoint["0000"]
         four_grid = all(exact_time_grid_identity(x.time, y.time) for x, y in ((a, a0), (b, b0), (a, b), (a0, b0)))
+        if not four_grid:
+            raise RuntimeError(f"four-track exact time-grid gate failed: {state}")
         zero_cells: dict[str, object] = {}
         for number, bit in enumerate(state, start=1):
             if bit == "1":
@@ -431,8 +434,10 @@ def cross_coupling(connected: Mapping[str, RawTrace], omitted_endpoint: Mapping[
             windows: dict[str, object] = {}
             for name in ("READ0", "READ1"):
                 bounds = win(name)
-                a_i, b_i = delta_fact(a, a0, current_label, bounds, "A", ACTIVITY_CURRENT_A)
-                a_v, b_v = delta_fact(a, a0, voltage_label, bounds, "V", ACTIVITY_VOLTAGE_V)
+                a_i = delta_fact(a, a0, current_label, bounds, "A", ACTIVITY_CURRENT_A)
+                b_i = delta_fact(b, b0, current_label, bounds, "A", ACTIVITY_CURRENT_A)
+                a_v = delta_fact(a, a0, voltage_label, bounds, "V", ACTIVITY_VOLTAGE_V)
+                b_v = delta_fact(b, b0, voltage_label, bounds, "V", ACTIVITY_VOLTAGE_V)
                 a_ci = delta_fact(a, a0, current_label, bounds, "A", ACTIVITY_CURRENT_A, center_pre=True)
                 b_ci = delta_fact(b, b0, current_label, bounds, "A", ACTIVITY_CURRENT_A, center_pre=True)
                 a_cv = delta_fact(a, a0, voltage_label, bounds, "V", ACTIVITY_VOLTAGE_V, center_pre=True)
@@ -506,12 +511,12 @@ def position_input(connected: Mapping[str, RawTrace], omitted: Mapping[str, RawT
     return output
 
 
-def strict_spec(state: str, phase_label: str, voltage_label: str, raw_hash: str) -> StrictLocalEventSpec:
+def strict_spec(state: str, phase_label: str, voltage_label: str, raw_hash: str, window_name: str) -> StrictLocalEventSpec:
     return StrictLocalEventSpec(
         id="JM2_CONNECTED_4BVM_LOCAL_EVENT_DIAGNOSTIC_V1", scope="task-local", status="POST_HOC_EXPLORATORY",
         provenance_status="RECORDED", mapping_status="EXACT_RAW_LABEL_SAME_JJ", phase_column=phase_label,
         voltage_column=voltage_label, branch_endpoints="same JJ phase/voltage branch", voltage_to_phase_sign=1,
-        reporting_direction=1, run_id=state, window_id="READ1", raw_sha256=raw_hash,
+        reporting_direction=1, run_id=state, window_id=window_name, raw_sha256=raw_hash,
         metric_spec={"path": rel(METRIC_SPEC), "version": "2.0.0", "sha256": digest(METRIC_SPEC)},
         tolerance={
             "id": "task-local-diagnostic", "scope": "task-local diagnostic only", "evidence": "same JJ phase-area plus segmentation", "status": "POST_HOC_EXPLORATORY",
@@ -522,11 +527,11 @@ def strict_spec(state: str, phase_label: str, voltage_label: str, raw_hash: str)
     )
 
 
-def strict_summary(trace: RawTrace, state: str, phase_label: str, voltage_label: str, raw_hash: str) -> dict[str, object]:
+def strict_summary(trace: RawTrace, state: str, phase_label: str, voltage_label: str, raw_hash: str, window_name: str = "READ1") -> dict[str, object]:
     try:
         result = strict_event_list(
-            trace.time, sig(trace, phase_label), sig(trace, voltage_label), event_window_s=win("READ1"), scan_window_s=SCAN,
-            retrap_max_p2p_turns=0.25, spec=strict_spec(state, phase_label, voltage_label, raw_hash),
+            trace.time, sig(trace, phase_label), sig(trace, voltage_label), event_window_s=win(window_name), scan_window_s=SCAN,
+            retrap_max_p2p_turns=0.25, spec=strict_spec(state, phase_label, voltage_label, raw_hash, window_name),
         )
         return {
             "status": "DIAGNOSTIC_VALID", "method": result["mode"], "complete_segment_count": result["complete_segment_count"],
@@ -537,6 +542,10 @@ def strict_summary(trace: RawTrace, state: str, phase_label: str, voltage_label:
         }
     except Exception as exc:
         return {"status": "DIAGNOSTIC_ERROR", "error": str(exc), "claim_ceiling": "no event interpretation"}
+
+
+def strict_window_summaries(trace: RawTrace, state: str, phase_label: str, voltage_label: str, raw_hash: str) -> dict[str, object]:
+    return {window_name: strict_summary(trace, state, phase_label, voltage_label, raw_hash, window_name) for window_name in SELECTIVITY_WINDOWS}
 
 
 def qb_jtl(connected: Mapping[str, RawTrace]) -> tuple[dict[str, object], dict[str, object]]:
@@ -551,6 +560,7 @@ def qb_jtl(connected: Mapping[str, RawTrace]) -> tuple[dict[str, object], dict[s
             },
             "BJ2_same_jj": {name: phase_fact(trace, "P(BJ2|XBQ1)", "V(BJ2|XBQ1)", win(name)) for name in ("READ0", "READ1", "TAIL")},
             "BJ2_strict_local_diagnostic": strict_summary(trace, state, "P(BJ2|XBQ1)", "V(BJ2|XBQ1)", raw_hash),
+            "BJ2_strict_by_window": strict_window_summaries(trace, state, "P(BJ2|XBQ1)", "V(BJ2|XBQ1)", raw_hash),
         }
         jtl[state] = {}
         for stage in range(1, 7):
@@ -559,7 +569,8 @@ def qb_jtl(connected: Mapping[str, RawTrace]) -> tuple[dict[str, object], dict[s
                 p, v = f"P({branch}|XJTL1_{stage})", f"V({branch}|XJTL1_{stage})"
                 jtl[state][f"JTL{stage}"][branch] = {
                     "same_jj": {name: phase_fact(trace, p, v, win(name)) for name in ("READ0", "READ1", "TAIL")},
-                    "strict_local_diagnostic": strict_summary(trace, state, p, v, raw_hash) if branch == "B02" else {"status": "NOT_REQUIRED_FOR_SUMMARY"},
+                    "strict_local_diagnostic": strict_summary(trace, state, p, v, raw_hash),
+                    "strict_by_window": strict_window_summaries(trace, state, p, v, raw_hash),
                 }
     return qb, jtl
 
@@ -638,6 +649,10 @@ def fmt(value: object, digits: int = 4) -> str:
     return str(value)
 
 
+def relation_counts_text(counts: Mapping[str, int]) -> str:
+    return ", ".join(f"{name}={counts.get(name, 0)}" for name in ("SIMILAR", "SMALLER_CONNECTED", "LARGER_CONNECTED"))
+
+
 def reports(metrics: dict[str, object]) -> tuple[str, str, str]:
     qa = metrics["artifact_qa"]
     position = metrics["position_input"]
@@ -647,7 +662,9 @@ def reports(metrics: dict[str, object]) -> tuple[str, str, str]:
     rows: list[str] = []
     total, active = 0, 0
     relations: dict[str, int] = {}
+    voltage_relations: dict[str, int] = {}
     max_zero = (0.0, "")
+    max_zero_v = (0.0, "")
     for state in ONE_HOT:
         for bvm, record in cross[state]["zero_cells"].items():
             total += 1
@@ -657,27 +674,45 @@ def reports(metrics: dict[str, object]) -> tuple[str, str, str]:
                 active += 1
             if peak > max_zero[0]:
                 max_zero = (peak, f"{state}/{bvm}")
+            voltage_item = record["windows"]["READ1"]["state_conditioned"]["voltage"]
+            voltage_peak = float(voltage_item["connected"]["max_abs"])
+            if voltage_peak > max_zero_v[0]:
+                max_zero_v = (voltage_peak, f"{state}/{bvm}")
             rel_name = item["omitted_vs_connected"]["fields"]["max_abs"]["relation_by_absolute_magnitude"]
             relations[rel_name] = relations.get(rel_name, 0) + 1
+            voltage_rel = voltage_item["omitted_vs_connected"]["fields"]["max_abs"]["relation_by_absolute_magnitude"]
+            voltage_relations[voltage_rel] = voltage_relations.get(voltage_rel, 0) + 1
             rows.append(f"| {state} | {bvm} | {fmt(item['omitted']['max_abs'])} | {fmt(item['connected']['max_abs'])} | {rel_name} | {fmt(item['omitted_vs_connected']['abs_peak_time_change_ps'])} |")
     transport: list[str] = []
     for state in STATES:
         values = [fmt(metrics["jtl"][state][f"JTL{stage}"]["B02"]["strict_local_diagnostic"].get("clean_separated_event_count")) for stage in range(1, 7)]
         transport.append(f"| {state} | " + " | ".join(values) + " |")
+    selectivity: list[str] = []
+    for state in STATES:
+        values = []
+        for window_name in SELECTIVITY_WINDOWS:
+            item = metrics["qb"][state]["BJ2_strict_by_window"][window_name]
+            values.append(f"{fmt(item.get('clean_separated_event_count'))}/{fmt(item.get('complete_segment_count'))}")
+        selectivity.append(f"| {state} | " + " | ".join(values) + " |")
+    bj2_clean = {state: int(metrics["qb"][state]["BJ2_strict_local_diagnostic"]["clean_separated_event_count"]) for state in STATES}
+    bj2_running = [state for state in STATES if metrics["qb"][state]["BJ2_strict_local_diagnostic"]["continuous_multi_turn_running"]]
     observations = [
         f"六个 connected raw 的 artifact QA 为 `{qa['status']}`，且这不是物理 PASS。",
         f"connected one-hot 的 READ1 `I(LIN|XBQ1)` raw 峰值 spread 为 {fmt(lin_spread['spread_abs_peak'])} uA（{fmt(lin_spread['minimum_abs_peak'])}–{fmt(lin_spread['maximum_abs_peak'])} uA）；`V(QBIN)` spread 为 {fmt(qbin_spread['spread_abs_peak'])} mV。",
-        f"12 个 active→zero cell pair 中，connected state-conditioned READ1 Delta I 的 {active} 个超过 1 uA 描述性 floor；最大为 {fmt(max_zero[0])} uA（{max_zero[1]}）。",
-        f"这 12 个 pair 的 connected-vs-omitted `max_abs` 描述性关系计数为 {relations}；方向没有预先假定。",
+        f"12 个 one-hot→commanded-0 pair 中，connected state-conditioned READ1 Delta I 的 {active} 个超过 1 uA 描述性 floor；这 12 个 victim 的 PRE_READ1→TAIL retention 均稳定，故本轮可称为 task-local retention-stable；最大 Delta I 为 {fmt(max_zero[0])} uA（{max_zero[1]}）。",
+        f"同一批 pair 的 connected state-conditioned READ1 Delta V_SL max_abs 为 {fmt(min(float(record['windows']['READ1']['state_conditioned']['voltage']['connected']['max_abs']) for state in ONE_HOT for record in cross[state]['zero_cells'].values()))}–{fmt(max(float(record['windows']['READ1']['state_conditioned']['voltage']['connected']['max_abs']) for state in ONE_HOT for record in cross[state]['zero_cells'].values()))} mV；最大值 {fmt(max_zero_v[0])} mV（{max_zero_v[1]}）。",
+        f"12 个 Delta I 的 JM2 connected-vs-omitted `max_abs` 关系为 {relation_counts_text(relations)}；12 个 Delta V_SL 的关系为 {relation_counts_text(voltage_relations)}。两者都只是此 fixture 的描述，方向没有预先假定。",
+        f"BJ2 READ1 clean-separated event count 为 {bj2_clean}，六状态均为 0；strict local diagnostic 的 continuous multi-turn running 出现在 {', '.join(bj2_running) if bj2_running else '无'}，因此不能把 BJ2 的累计 turns 当作 SFQ 事件数。",
         "READ0 被作为 WRITE1 前的负控制；centered difference 与原始 state-conditioned difference 都保留，避免把 WRITE1 后状态偏移误写成唯一 READ 因果。",
     ]
     report = """# JM2-connected 4-BVM 六状态 A/B Quick 报告
 
 ## 首要问题与边界
 
-本轮优先回答：一个 active-1 BVM 是否会把其他 commanded/stored-0 BVM 的 READ
-response 拉离 `0000`，以及该 cross-coupling 在 JM2 omitted/connected 之间如何
-变化；`I(LIN|XBQ1)` 的 position dependence 是并列问题。A/B 只改变 BVM include。
+本轮优先回答：一个 one-hot active BVM 是否会把其他 commanded-0、且在本轮
+task-local retention criterion 下稳定的 BVM 的 READ-associated response 拉离
+`0000`，以及该 cross-coupling 在 JM2 omitted/connected 之间如何变化；
+`I(LIN|XBQ1)` 的 position dependence 是并列问题。A/B 只改变 BVM include。
 
 原始差分是 `X(one-hot)-X(0000)`。为避免将 WRITE1 后残留误写成 READ 因果，另
 报告以各自 `PRE_READ1` median 中心化后的 difference-in-differences。`READ0`
@@ -690,7 +725,7 @@ response 拉离 `0000`，以及该 cross-coupling 在 JM2 omitted/connected 之�
 
 ## Zero-cell READ1 response
 
-下表只展示 state-conditioned `Delta I_LSL` 的 `max_abs`，单位 uA；完整的
+下表展示 state-conditioned `Delta I_LSL` 的 `max_abs`，单位 uA；对应的
 `Delta V_SL`、centered difference、signed integral、RMS、onset 和 timing 在
 `analysis/metrics.json`。每一行是 4×3 矩阵中的一个 pair，不池化。
 
@@ -717,6 +752,18 @@ grid，未做插值。它们是波形统计，不能作为 SFQ count。
 和 `jtl` 中对齐；JoSIM `P(...)` 是 rad，turns 只由 continuous unwrap 后除以
 `2*pi` 得到。phase/area、local activity 和下游身份匹配必须分开看。
 
+## 全时窗 selectivity diagnostic
+
+为检查 spontaneous/extra activity，BJ2 和 JTL 的 B01/B02 都按同一个共享
+strict-event-list helper 扫描 `PRE/WRITE0/READ0/WRITE1/READ1/TAIL`；下表为
+BJ2 的 `clean-separated/complete-segment` 数，完整的 BJ2/JTL 逐支路记录在
+`metrics.json` 的 `strict_by_window` 中。它们仍是 post-hoc local diagnostic，
+不是 SFQ 或 transport Gate。
+
+| state | PRE | WRITE0 | READ0 | WRITE1 | READ1 | TAIL |
+|---|---:|---:|---:|---:|---:|---:|
+""" + "\n".join(selectivity) + """
+
 ## 证据分层
 
 - **Observed**：六个 B-side raw、四组控制、每个 BVM 内部 P/V/I 和 SL telemetry、
@@ -725,7 +772,7 @@ grid，未做插值。它们是波形统计，不能作为 SFQ count。
   position baseline correction、same-JJ phase-area、strict local diagnostic、
   QB KCL residual、A/B numeric relations。
 - **Inference（有边界）**：非零 zero-cell delta 表示在此历史 shared network 中
-  可以观察到 active-state-conditioned 的 victim response；A/B 大小关系只属于
+  可以观察到 one-hot-conditioned 的 commanded-0、retention-stable victim response；A/B 大小关系只属于
   这个 fixture，不能升级为机制或普适结论。
 - **Unknown**：connected-side 是否满足真正存储语义、canonical BVM、single-BVM、
   timestep convergence、process margin、paper mechanism identity 和系统 SFQ
@@ -745,7 +792,7 @@ phase/area/local activity 变成 Gate，也没有执行下一项实验。
 
 ## 2. 最重要的结果
 
-""" + "\n".join(f"- {item}" for item in observations[:5]) + """
+""" + "\n".join(f"- {item}" for item in observations[:6]) + """
 
 ## 3. 物理含义
 
@@ -777,10 +824,12 @@ T1、paper-level claim 或任何 Gate。
 - A/B 的 `0000` baseline 分侧使用；没有用 active state 或跨拓扑 baseline。
 - state mapping 固定为 `b3b2b1b0 -> BVM1/BVM2/BVM3/BVM4`；zero-cell 主表保留
   完整 4×3 pair，不用总和掩盖位置和符号。
-- 四条轨迹（A one-hot、A 0000、B one-hot、B 0000）逐点比较前有 exact-grid gate；
-  不满足时禁止插值。
+- 四条轨迹（A one-hot、A 0000、B one-hot、B 0000）逐点比较前有 hard exact-grid
+  gate；不满足时分析直接失败，禁止插值。
 - `READ0` 作为 WRITE1 前负控制；`PRE_READ1` 到 `TAIL` 的 retention 先报告，
   不机械重用旧 ±0.938 turn threshold。
+- BJ2 以及 JTL 的 B01/B02 均用同一个共享 strict-event-list helper 扫描
+  `PRE/WRITE0/READ0/WRITE1/READ1/TAIL`；事件按 onset 归窗，连续多圈仍不计为 SFQ。
 - exact raw labels、duplicate header、metadata/hash、solver exit、model warning、
   variant identity 和 canonical BVM 排除均检查。
 - plot2 只负责描述图；phase display 使用 rad/(2*pi)，不从 HTML 外观推断事件。
@@ -794,8 +843,9 @@ zero-cell Delta I 和 BJ2 phase-area；主分析与其有 `{independent_count}` 
 
 这是 historical BVMSim task-local variant 的 exploratory A/B。zero-cell response
 的机制解释必须保持 bounded inference；本文件不授予 Formal/Gate/paper authority。
-已请求只读 Sol XHigh reviewer 检查 baseline、centered delta、position 和
-local-to-downstream overclaim；该审阅不修改仓库。
+Sol XHigh 只读复核结果为 `NEED_REVISION`；其指出的交付层问题已修正，复核不修改
+raw、不要求重跑 JoSIM，也不改变本轮 human gate。完整意见见
+`analysis/SOL_XHIGH_REVIEW.md`。
 """
     return report, brief, review
 
@@ -874,6 +924,19 @@ def main() -> int:
             "metrics": {"path": rel(args.output), "sha256": digest(args.output)},
             "connected_raw_sha256": metrics["provenance"]["connected_raw_sha256"],
             "independent_check": metrics["independent_check"],
+            "independent_checker": {
+                "path": rel(EXP / "analysis/independent_check.py"),
+                "sha256": digest(EXP / "analysis/independent_check.py"),
+            },
+            "bound_artifacts": {
+                "independent_check_json": {"path": rel(EXP / "analysis/independent_check.json"), "sha256": digest(EXP / "analysis/independent_check.json")},
+                "report": {"path": rel(EXP / "analysis/REPORT.md"), "sha256": digest(EXP / "analysis/REPORT.md")},
+                "result_brief": {"path": rel(EXP / "RESULT_BRIEF.md"), "sha256": digest(EXP / "RESULT_BRIEF.md")},
+                "review": {"path": rel(EXP / "analysis/REVIEW.md"), "sha256": digest(EXP / "analysis/REVIEW.md")},
+                "sol_xhigh_review": {"path": rel(EXP / "analysis/SOL_XHIGH_REVIEW.md"), "sha256": digest(EXP / "analysis/SOL_XHIGH_REVIEW.md")},
+                "human_gate": {"path": rel(EXP / "analysis/human-gate.yaml"), "sha256": digest(EXP / "analysis/human-gate.yaml")},
+                "plot_manifest": {"path": rel(EXP / "analysis/plot_manifest.json"), "sha256": digest(EXP / "analysis/plot_manifest.json")},
+            },
         },
     )
     print(json.dumps({"status": "PASS", "artifact_status": qa["status"], "independent_check": metrics["independent_check"]["status"]}, ensure_ascii=False))

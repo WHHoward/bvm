@@ -1,0 +1,30 @@
+id: BVMSIM_SINGLE_CORRECTED_ORIGINAL_QB_JTL_PROBE_RERUN_V1
+status: PREREGISTERED
+purpose: "补齐初次 corrected JTL run 遗漏的六级 B01/B02 P/V 观测；不改变电路物理。"
+parent_experiment: experiment.yaml
+preserved_parent_runs:
+  - runs/S0-J-CORRECTED
+  - runs/S1-J-CORRECTED
+new_runs:
+  - runs/S0-J-CORRECTED-RERUN
+  - runs/S1-J-CORRECTED-RERUN
+allowed_change: "仅在同一 deck 的 .end 前增加 JTL1..JTL6 的 P/V(B01,B02) .print 行。"
+forbidden_change:
+  - BVM topology or parameters
+  - original BVMSim BQ topology or parameters
+  - stimulus timing, polarity, amplitude, or read/write windows
+  - terminal sensing-line topology or JJ area
+  - JTL topology, local model, or bias
+  - timestep or stop time
+  - load or solver
+observables:
+  - P(B01|XJTL1_1)..P(B01|XJTL1_6)
+  - V(B01|XJTL1_1)..V(B01|XJTL1_6)
+  - P(B02|XJTL1_1)..P(B02|XJTL1_6)
+  - V(B02|XJTL1_1)..V(B02|XJTL1_6)
+artifact_boundary: "父 run raw/deck/log 与新 rerun raw/deck/log 均不可覆盖；父 run 仅标记为 OBSERVABILITY_INCOMPLETE。"
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false

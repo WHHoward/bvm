@@ -1,0 +1,66 @@
+* CORRECTED SINGLE-BVM BASELINE: S0-J-CORRECTED
+* source_class=HISTORICAL_BVMSIM; old single raw remains invalid history
+* corrected_read=WL+SE at 70--81 ps; corrected_write=WL+BL at 50--61 ps
+* model_closure=top-level circuits/models/jjmit.cir + historical local QB/JTL models
+* BVM_QB_SINGLE_2X2_QUICK_V1 — S0-J
+* Single historical BVMSim BVM -> terminal 12-JJ sensing line -> original BVMSim BQ
+* -> six-stage JTL -> 10 ohm.
+* Logical 0 uses the existing BVMSim negative WL+BL write waveform.
+* The read pulse and write timing are taken from the existing BVMSim fixture.
+
+.include ../../../../circuits/models/jjmit.cir
+.include ../../../../BVMSim/bvm_cell.cir
+.include ../../../../BVMSim/BQ.cir
+.include ../../../../BVMSim/library_josim/jtl2.cir
+
+* Exactly one BVM instance.
+XBVM1 WL1 BL1 SE1 SL1 BVM
+
+* Terminal sensing-line: 11 series JJ + BVMout = 12 JJ total.
+B_LD4_01 SL1     nld4_11 jjmit area=3.2
+B_LD4_02 nld4_11 nld4_12 jjmit area=3.2
+B_LD4_03 nld4_12 nld4_13 jjmit area=3.2
+B_LD4_04 nld4_13 nld4_14 jjmit area=3.2
+B_LD4_05 nld4_14 nld4_15 jjmit area=3.2
+B_LD4_06 nld4_15 nld4_16 jjmit area=3.2
+B_LD4_07 nld4_16 nld4_17 jjmit area=3.2
+B_LD4_08 nld4_17 nld4_18 jjmit area=3.2
+B_LD4_09 nld4_18 nld4_19 jjmit area=3.2
+B_LD4_10 nld4_19 nld4_20 jjmit area=3.2
+B_LD4_11 nld4_20 nld4_21 jjmit area=3.2
+BVMout   nld4_21 QBin    jjmit area=3.2
+
+* CORRECTED protocol: WRITE = WL+BL; READ = WL+SE; BL=0 during READ.
+I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 200p 0)
+I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 200p 0)
+I_SE1 0 SE1 pwl(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 200p 0)
+
+* Active BVMSim QB bias, externally connected at BIAS.
+xBQ1 QBin QBout BQ
+xjtl1_1 QBout o1 jtl
+xjtl1_2 o1 o2 jtl
+xjtl1_3 o2 o3 jtl
+xjtl1_4 o3 o4 jtl
+xjtl1_5 o4 o5 jtl
+xjtl1_6 o5 o6 jtl
+RBQ1 o6 0 10
+
+.tran 0.1p 200p
+
+* BVM / sensing-line probes.
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) I(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1) I(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) I(B_JS1|XBVM1)
+.print P(B_JS2|XBVM1) V(B_JS2|XBVM1) I(B_JS2|XBVM1)
+.print V(SL1) I(L_PSL|XBVM1) I(L_SL|XBVM1)
+.print P(B_LD4_01) V(B_LD4_01) I(B_LD4_01)
+.print P(B_LD4_11) V(B_LD4_11) I(B_LD4_11)
+.print P(BVMOUT) V(BVMOUT) I(BVMOUT)
+.print V(QBIN) V(QBOUT)
+.print I(LIN|XBQ1) P(BJS|XBQ1) V(BJS|XBQ1) I(BJS|XBQ1)
+.print P(BJ1|XBQ1) V(BJ1|XBQ1) I(BJ1|XBQ1) I(RJ1|XBQ1)
+.print I(L1|XBQ1) I(IB|XBQ1) I(L2|XBQ1)
+.print P(BJ2|XBQ1) V(BJ2|XBQ1) I(BJ2|XBQ1) I(RJ2|XBQ1) I(L3|XBQ1)
+
+.end

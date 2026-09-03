@@ -1,0 +1,186 @@
+* GENERATED OPERATIONAL BASELINE: F4_1100_R12_T100
+* source_class=HISTORICAL_BVMSIM state=1100 expected_count=2
+* state mapping: b3/b2/b1/b0 -> BL1/BL2/BL3/BL4 at WRITE1 90--101 ps
+* BVM Mixed Model Verification — BVM junctions use V0 params only
+* Verifies that adding ColdFlux QB models doesn't break BVM
+
+.include ../../../../../../BVMSim/bvm_cell.cir
+.include ../../../../../../BVMSim/BQ.cir
+.include ../../../../../../BVMSim/library_josim/jtl2.cir
+
+
+
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+XBVM2 WL2 BL2 SE2 SL2 BVM
+XBVM3 WL3 BL3 SE3 SL3 BVM
+XBVM4 WL4 BL4 SE4 SL4 BVM
+
+* R_0 SL1 0 2
+
+B_LD01  SL1   nld11 jjmit area=3.2
+B_LD02  nld11 nld12 jjmit area=3.2
+B_LD03  nld12 nld13 jjmit area=3.2
+B_LD04  nld13 nld14 jjmit area=3.2
+B_LD05  nld14 nld15 jjmit area=3.2
+B_LD06  nld15 nld16 jjmit area=3.2
+B_LD07  nld16 nld17 jjmit area=3.2
+B_LD08  nld17 nld18 jjmit area=3.2
+B_LD09  nld18 nld19 jjmit area=3.2
+B_LD10  nld19 nld20 jjmit area=3.2
+B_LD11  nld20 nld21 jjmit area=3.2
+B_LD12  nld21 SL2 jjmit area=3.2
+* BVMout  nld21 QBin jjmit area=3.2
+
+
+B_LD2_01  SL2     nld2_11 jjmit area=3.2
+B_LD2_02  nld2_11 nld2_12 jjmit area=3.2
+B_LD2_03  nld2_12 nld2_13 jjmit area=3.2
+B_LD2_04  nld2_13 nld2_14 jjmit area=3.2
+B_LD2_05  nld2_14 nld2_15 jjmit area=3.2
+B_LD2_06  nld2_15 nld2_16 jjmit area=3.2
+B_LD2_07  nld2_16 nld2_17 jjmit area=3.2
+B_LD2_08  nld2_17 nld2_18 jjmit area=3.2
+B_LD2_09  nld2_18 nld2_19 jjmit area=3.2
+B_LD2_10  nld2_19 nld2_20 jjmit area=3.2
+B_LD2_11  nld2_20 nld2_21 jjmit area=3.2
+B_LD2_12  nld2_21 SL3     jjmit area=3.2
+* BVMout    nld2_21 QBin jjmit area=3.2
+
+
+B_LD3_01  SL3     nld3_11 jjmit area=3.2
+B_LD3_02  nld3_11 nld3_12 jjmit area=3.2
+B_LD3_03  nld3_12 nld3_13 jjmit area=3.2
+B_LD3_04  nld3_13 nld3_14 jjmit area=3.2
+B_LD3_05  nld3_14 nld3_15 jjmit area=3.2
+B_LD3_06  nld3_15 nld3_16 jjmit area=3.2
+B_LD3_07  nld3_16 nld3_17 jjmit area=3.2
+B_LD3_08  nld3_17 nld3_18 jjmit area=3.2
+B_LD3_09  nld3_18 nld3_19 jjmit area=3.2
+B_LD3_10  nld3_19 nld3_20 jjmit area=3.2
+B_LD3_11  nld3_20 nld3_21 jjmit area=3.2
+B_LD3_12  nld3_21 SL4     jjmit area=3.2
+* BVMout    nld3_21 QBin jjmit area=3.2
+
+
+B_LD4_01  SL4     nld4_11 jjmit area=3.2
+B_LD4_02  nld4_11 nld4_12 jjmit area=3.2
+B_LD4_03  nld4_12 nld4_13 jjmit area=3.2
+B_LD4_04  nld4_13 nld4_14 jjmit area=3.2
+B_LD4_05  nld4_14 nld4_15 jjmit area=3.2
+B_LD4_06  nld4_15 nld4_16 jjmit area=3.2
+B_LD4_07  nld4_16 nld4_17 jjmit area=3.2
+B_LD4_08  nld4_17 nld4_18 jjmit area=3.2
+B_LD4_09  nld4_18 nld4_19 jjmit area=3.2
+B_LD4_10  nld4_19 nld4_20 jjmit area=3.2
+B_LD4_11  nld4_20 nld4_21 jjmit area=3.2
+BVMout    nld4_21 QBin jjmit area=3.2
+
+
+
+
+* .param tsWL1_1=10p
+* .param tsWL1_2=50p
+* .param tsWL1_3=90p
+* .param tsWL1_4=130p
+* .param tsWL1_5=170p
+* .param tsWL1_6=210p
+* .param delay1_1 = 0
+
+* I_WL1 0 WL1 pwl(0 0
+* + {tsWL1_1} 0 {tsWL1_1+1p} 100u {tsWL1_1+10p} 100U {tsWL1_1+11p} 0
+* + {tsWL1_2} 0 {tsWL1_2+1p} 100u {tsWL1_2+20p} 100U {tsWL1_2+21p} 0
+* + {tsWL1_3} 0 {tsWL1_3+1p} 100u {tsWL1_3+10p} 100U {tsWL1_3+11p} 0
+* + {tsWL1_4} 0 {tsWL1_4+1p} -100u {tsWL1_4+10p} -100U {tsWL1_4+11p} 0
+* + {tsWL1_5} 0 {tsWL1_5+1p} 100u {tsWL1_5+10p} 100U {tsWL1_5+11p} 0
+* + {tsWL1_6} 0 {tsWL1_6+1p} 100u {tsWL1_6+10p} 100U {tsWL1_6+11p} 0
+* + )
+
+* .param tsBL1_1=10p
+* .param tsBL1_2=110p
+* .param tsBL1_3=130p
+* * .param tsBL1_4=130p
+* I_BL1 0 BL1 pwl(0 0
+* + {tsBL1_1} 0 {tsBL1_1+1p} 100u {tsBL1_1+10p} 100U {tsBL1_1+11p} 0
+* + {tsBL1_2} 0 {tsBL1_2+1p} 100u {tsBL1_2+10p} 100U {tsBL1_2+11p} 0
+* + {tsBL1_3} 0 {tsBL1_3+1p} -100u {tsBL1_3+10p} -100U {tsBL1_3+11p} 0
+* + )
+
+* .param tsSE1_1=50p
+* .param tsSE1_2=90p
+* .param tsSE1_3=170p
+* .param tsSE1_4=210p
+* I_SE1 0 SE1 pwl(0 0
+* + {tsSE1_1} 0 {tsSE1_1+1p} 100u {tsSE1_1+20p} 100U {tsSE1_1+21p} 0
+* + {tsSE1_2} 0 {tsSE1_2+1p} 100u {tsSE1_2+10p} 100U {tsSE1_2+11p} 0
+* + {tsSE1_3} 0 {tsSE1_3+1p} 100u {tsSE1_3+10p} 100U {tsSE1_3+11p} 0
+* + {tsSE1_4} 0 {tsSE1_4+1p} 100u {tsSE1_4+10p} 100U {tsSE1_4+11p} 0
+* + )
+
+
+
+
+
+* State 1100: b3/b2/b1/b0 -> BVM1/BVM2/BVM3/BVM4; only BL at WRITE1 is state-coded.
+* Historical schedule: initial logical-0 write, READ0, state write, READ1.
+I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)
+I_SE1 0 SE1 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)
+I_SE2 0 SE2 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p -100u 100p -100u 101p 0 200p 0)
+I_SE3 0 SE3 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p -100u 100p -100u 101p 0 200p 0)
+I_SE4 0 SE4 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)
+xBQ1 QBin QBout BQ
+* RBQ1 QBout 0 20
+* xjtl1_1 QBout o1 jtl
+* RBQ1 o1 0 40
+
+xjtl1_1 QBout o1 jtl
+xjtl1_2 o1 o2 jtl
+xjtl1_3 o2 o3 jtl
+xjtl1_4 o3 o4 jtl
+xjtl1_5 o4 o5 jtl
+xjtl1_6 o5 o6 jtl
+RBQ1 o6 0 10
+
+
+.model jjmit  jj(rtype=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)
+
+.tran 0.1p 200p 45p
+* .print I(I_WL1) I(I_BL1) I(I_SE1) I(I_SL1)
+* .print P(B_JM1|XBVM1) P(B_JM2|XBVM1) P(B_JS1|XBVM1) P(B_JS2|XBVM1) P(B_JT1|XBVM1)
+* .print I(L_M1|XBVM1) I(L_M2|XBVM1) I(L_M3|XBVM1) I(B_JT1|XBVM1)
+* .print i(R_SL|XBVM1) i(L_SL|XBVM1)
+* .print v(SL1) v(out) v(o1)
+
+
+.print I(I_WL1) I(I_BL1) I(I_SE1) I(I_WL2) I(I_BL2) I(I_SE2) I(I_WL3) I(I_BL3) I(I_SE3) I(I_WL4) I(I_BL4) I(I_SE4)
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) I(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1) I(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) I(B_JS1|XBVM1)
+.print P(B_JS2|XBVM1) V(B_JS2|XBVM1) I(B_JS2|XBVM1)
+.print V(SL1) I(L_PSL|XBVM1) I(L_SL|XBVM1)
+.print V(SL2) I(L_SL|XBVM2)
+.print V(SL3) I(L_SL|XBVM3)
+.print V(SL4) I(L_SL|XBVM4)
+.print P(B_LD4_01) V(B_LD4_01) I(B_LD4_01)
+.print P(B_LD4_11) V(B_LD4_11) I(B_LD4_11)
+.print P(BVMOUT) V(BVMOUT) I(BVMOUT)
+.print V(QBIN) V(QBOUT)
+.print I(LIN|XBQ1) P(BJS|XBQ1) V(BJS|XBQ1) I(BJS|XBQ1)
+.print P(BJ1|XBQ1) V(BJ1|XBQ1) I(BJ1|XBQ1) I(RJ1|XBQ1)
+.print I(L1|XBQ1) I(IB|XBQ1) I(L2|XBQ1)
+.print P(BJ2|XBQ1) V(BJ2|XBQ1) I(BJ2|XBQ1) I(RJ2|XBQ1) I(L3|XBQ1)
+.print P(B01|XJTL1_1) V(B01|XJTL1_1) P(B02|XJTL1_1) V(B02|XJTL1_1)
+.print P(B01|XJTL1_2) V(B01|XJTL1_2) P(B02|XJTL1_2) V(B02|XJTL1_2)
+.print P(B01|XJTL1_3) V(B01|XJTL1_3) P(B02|XJTL1_3) V(B02|XJTL1_3)
+.print P(B01|XJTL1_4) V(B01|XJTL1_4) P(B02|XJTL1_4) V(B02|XJTL1_4)
+.print P(B01|XJTL1_5) V(B01|XJTL1_5) P(B02|XJTL1_5) V(B02|XJTL1_5)
+.print P(B01|XJTL1_6) V(B01|XJTL1_6) P(B02|XJTL1_6) V(B02|XJTL1_6)
+
+.end

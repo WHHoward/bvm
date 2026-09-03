@@ -1,5 +1,10 @@
 # Future Experiment Workflow V2
 
+> 当前未来实验的规范已冻结在
+> [EXPERIMENT_WORKFLOW_V1.md](EXPERIMENT_WORKFLOW_V1.md)。本文保留为历史
+> 兼容参考，不覆盖 V1 的 deck、preflight、standalone-first 和 human-gate
+> 要求，也不触发历史实验迁移。
+
 本文是普通 JoSIM/BVM 研究的 Compact Quick 入口。显式 Codex↔Claude 合同仍由
 research/WORKFLOW.md 的冻结 josim-handoff/v1 处理；历史实验目录不批量迁移。
 

@@ -1,5 +1,10 @@
 # Compact JoSIM Research Workflow V2
 
+> 当前未来实验的规范已冻结在
+> [EXPERIMENT_WORKFLOW_V1.md](EXPERIMENT_WORKFLOW_V1.md)。本文仅保留既有
+> Compact Quick 目录和命令的历史兼容说明，不覆盖 V1 的执行顺序、冻结
+> deck 权威、两阶段 preflight、standalone-first 可视化和 human-gate 要求。
+
 ## 默认路径
 
 QUESTION → MINIMUM QUICK → RESULT → USER REVIEW → NEXT or ARCHIVE

@@ -1,5 +1,14 @@
 # BVM→QB Experiment Index
 
+## 当前实验流程规范
+
+未来新实验的规范入口是
+[EXPERIMENT_WORKFLOW_V1.md](EXPERIMENT_WORKFLOW_V1.md)。它冻结
+QUESTION → PREREGISTER → FREEZE DECK → PREFLIGHT → RUN → QA →
+STANDALONE VISUALIZATION → COMPARISON → ANALYSIS → REVIEW → HUMAN GATE
+的顺序，以及 runs/<condition>/deck.cir 的 executed-deck 权威边界。
+下方历史实验不批量迁移；旧的 V2/Compact 文档只作为兼容性和历史参考。
+
 这是当前高价值 BVM→QB lineage 的复盘入口。它是导航索引，不替代各实验的
 raw、analysis、报告或 accepted audit。历史条目没有被虚构为 `USER_REVIEWED`。
 

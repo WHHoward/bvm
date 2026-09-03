@@ -1,0 +1,57 @@
+schema_version: compact-workflow-v2-tooling-consolidation-v1
+experiment_id: research-workflow-tooling-consolidation-v1-20260903
+study_phase: CALIBRATION
+status: PREREGISTERED_PHASE_A
+
+purpose: >-
+  Move stable repeated measurement logic into scripts/bvmtools while keeping
+  windows, scientific semantics, and verdicts task-local.
+
+phase_a:
+  simulation_allowed: false
+  old_experiments_mutable: false
+  golden_cases:
+    - corrected_single_bvm_S0_J
+    - corrected_single_bvm_S1_J
+    - historical_four_bvm_1111
+  sources:
+    single_metrics: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/analysis/metrics.json
+    four_metrics: test/exploration/bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903/analysis/metrics.json
+  shared_modules:
+    - scripts/bvmtools/metrics.py
+    - scripts/bvmtools/probes.py
+    - scripts/bvmtools/stimulus.py
+    - scripts/bvmtools/deckqa.py
+  parity_rule: >-
+    Shared results must agree with the immutable old authoritative metrics and
+    raw-derived reference within the declared numerical tolerances; a mismatch
+    is a regression failure and blocks Phase B.
+  tolerances:
+    turns_abs: 1.0e-12
+    turns_rel: 1.0e-12
+    waveform_display_abs: 1.0e-9
+    waveform_display_rel: 1.0e-12
+    exact_status_fields: true
+
+phase_b_gate:
+  only_after: INFRA_REGRESSION_PASS
+  run_count: 6
+  states: [0000, 1000, 0100, 0010, 0001, 1111]
+  no_full_16_state: true
+  no_parameter_sweep: true
+
+frozen_scientific_baseline:
+  source_class: HISTORICAL_BVMSIM
+  bvm: BVMSim/bvm_cell.cir
+  qb: BVMSim/BQ.cir
+  qb_nominal: RJ1=12 ohm; RJ2=4 ohm; IB=250 uA
+  jtl: BVMSim/library_josim/jtl2.cir; six stages; 280 uA per stage
+  termination: 10 ohm
+  timestep_ps: 0.1
+  solver: build/josim-cli
+
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false

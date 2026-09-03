@@ -46,6 +46,7 @@ from bvmtools.waveform import trapezoid_integral, waveform_window_metrics  # noq
 ANALYSIS_VERSION = "BVM_QB_SINGLE_CORRECTED_BASELINE_ANALYSIS_V1"
 SOLVER = REPO / "build/josim-cli"
 PLOTTER = REPO / "scripts/josim-plot2.py"
+RENDERER = EXP / "analysis/render_plots.py"
 BOUNDARY = REPO / "docs/research/BOUNDARY_SPEC_V2.md"
 METRIC_SPEC = REPO / "docs/research/METRIC_SPEC_V2.md"
 
@@ -657,6 +658,7 @@ def make_provenance(traces: Mapping[str, RawTrace]) -> dict[str, object]:
         BOUNDARY,
         METRIC_SPEC,
         Path(__file__),
+        RENDERER,
     ]
     source_paths = [path for path in source_paths if path.is_file()]
     raw_snapshots = []
@@ -685,6 +687,7 @@ def make_provenance(traces: Mapping[str, RawTrace]) -> dict[str, object]:
         "solver": solver_provenance(SOLVER, cwd=REPO),
         "files": [file_snapshot(path, relative_to=REPO) for path in source_paths],
         "plotter": file_snapshot(PLOTTER, relative_to=REPO),
+        "plot_generator": file_snapshot(RENDERER, relative_to=REPO),
         "corrected_raws": raw_snapshots,
         "preserved_initial_jtl_raws": initial,
         "preserved_old_invalid_raw": file_snapshot(old_path, relative_to=REPO),

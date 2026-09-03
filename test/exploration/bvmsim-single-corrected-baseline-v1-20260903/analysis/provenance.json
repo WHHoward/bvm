@@ -1,0 +1,160 @@
+{
+  "analysis_version": "BVM_QB_SINGLE_CORRECTED_BASELINE_ANALYSIS_V1",
+  "generated_at": "2026-09-03T07:39:04.427062+00:00",
+  "analysis_claim_ceiling": "historical BVMSim source-class single-BVM baseline; exploratory functional evidence only",
+  "git_before_analysis": {
+    "repo": "/home/howard/JoSIM",
+    "head": "abf5aca71058a55a20a1ced9241b76e865bce8bc",
+    "dirty": true,
+    "status_porcelain": "?? test/exploration/bvmsim-single-corrected-baseline-v1-20260903/analysis/SINGLE_BVM_CORRECTED_REPORT.md"
+  },
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "exists": true,
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version_returncode": 0,
+    "version_stdout": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "version_stderr": ""
+  },
+  "files": [
+    {
+      "path": "/home/howard/JoSIM/BVMSim/bvm_cell.cir",
+      "sha256": "009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125",
+      "bytes": 2325,
+      "relative_path": "BVMSim/bvm_cell.cir"
+    },
+    {
+      "path": "/home/howard/JoSIM/BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "bytes": 503,
+      "relative_path": "BVMSim/BQ.cir"
+    },
+    {
+      "path": "/home/howard/JoSIM/BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "relative_path": "BVMSim/library_josim/jtl2.cir"
+    },
+    {
+      "path": "/home/howard/JoSIM/circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "relative_path": "circuits/models/jjmit.cir"
+    },
+    {
+      "path": "/home/howard/JoSIM/test/exploration/bvmsim-single-corrected-baseline-v1-20260903/experiment.yaml",
+      "sha256": "140e9653badf8f566bd5c436a1a9a6125e5b211395aa9ac2f1289132bd7db8a3",
+      "bytes": 4555,
+      "relative_path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/experiment.yaml"
+    },
+    {
+      "path": "/home/howard/JoSIM/test/exploration/bvmsim-single-corrected-baseline-v1-20260903/analysis/jtl-probe-rerun.yaml",
+      "sha256": "4d863455bb57115faf1ff83e1ae51d357e5c9b7d09baccd0866181016ac6e5e2",
+      "bytes": 1165,
+      "relative_path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/analysis/jtl-probe-rerun.yaml"
+    },
+    {
+      "path": "/home/howard/JoSIM/docs/research/BOUNDARY_SPEC_V2.md",
+      "sha256": "6426365f452f59d9e332476cf5d560c1c7ab4c913177ac919a956de7b8a33313",
+      "bytes": 11047,
+      "relative_path": "docs/research/BOUNDARY_SPEC_V2.md"
+    },
+    {
+      "path": "/home/howard/JoSIM/docs/research/METRIC_SPEC_V2.md",
+      "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+      "bytes": 17057,
+      "relative_path": "docs/research/METRIC_SPEC_V2.md"
+    },
+    {
+      "path": "/home/howard/JoSIM/test/exploration/bvmsim-single-corrected-baseline-v1-20260903/analysis/analyze.py",
+      "sha256": "bc8107ad1c81795d4e6c72472521f3ecb9137088654080301539e558ce619a09",
+      "bytes": 37552,
+      "relative_path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/analysis/analyze.py"
+    }
+  ],
+  "plotter": {
+    "path": "/home/howard/JoSIM/scripts/josim-plot2.py",
+    "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "bytes": 12245,
+    "relative_path": "scripts/josim-plot2.py"
+  },
+  "corrected_raws": [
+    {
+      "condition": "S0-R-CORRECTED",
+      "path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-R-CORRECTED/raw/run-01.csv",
+      "sha256": "b6ea0c5cb2812d95e78be98ca9c578a9f8f1a4b366ba7bc1a78dafa261eb0c76",
+      "bytes": 1230978,
+      "sample_count": 1999
+    },
+    {
+      "condition": "S1-R-CORRECTED",
+      "path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-R-CORRECTED/raw/run-01.csv",
+      "sha256": "846ecfce6347fcd59e5f22cf1f41103194115bd1e7a22accacad870732a7d5cd",
+      "bytes": 1230335,
+      "sample_count": 1999
+    },
+    {
+      "condition": "S0-J-CORRECTED-RERUN",
+      "path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-J-CORRECTED-RERUN/raw/run-01.csv",
+      "sha256": "11750108356fb2931dc1c50d2259ca9cb7ff0567ae792647353f2bec04a84ffb",
+      "bytes": 1865990,
+      "sample_count": 1999
+    },
+    {
+      "condition": "S1-J-CORRECTED-RERUN",
+      "path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-J-CORRECTED-RERUN/raw/run-01.csv",
+      "sha256": "2cf5954fb59207e5bc6ca3ba80aceef23650884b20eab065dfd9ca5f863377c2",
+      "bytes": 1864249,
+      "sample_count": 1999
+    }
+  ],
+  "preserved_initial_jtl_raws": [
+    {
+      "condition": "S0-J-CORRECTED-RERUN",
+      "path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-J-CORRECTED/raw/run-01.csv",
+      "sha256": "345de06e44bf110c21b7bc629428bb12c070ffcce87c03b6a6ff5f544f3731b6"
+    },
+    {
+      "condition": "S1-J-CORRECTED-RERUN",
+      "path": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-J-CORRECTED/raw/run-01.csv",
+      "sha256": "1e25fee1666538d38490abe1a646f9ed0605f4689f2f9c851571e360fb1135b0"
+    }
+  ],
+  "preserved_old_invalid_raw": {
+    "path": "/home/howard/JoSIM/test/exploration/bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903/runs/single/S1-R/raw/run-01.csv",
+    "sha256": "7c0838d2fc2cc429eb3537f36c62d1ea72ccb2e491661eb98bc1dbb154092124",
+    "bytes": 1230123,
+    "relative_path": "test/exploration/bvmsim-bvm-qb-jtl-operational-baseline-v1-20260903/runs/single/S1-R/raw/run-01.csv"
+  },
+  "no_raw_rewrite": true,
+  "phase_unit": "JoSIM P(...) raw radians; displayed turns are continuous_unwrap(rad)/(2*pi)",
+  "integral_unit": "same-JJ trapezoidal integral on actual stored time grid divided by Phi0",
+  "windows_ps": {
+    "PRE": [
+      0.0,
+      50.0
+    ],
+    "WRITE": [
+      50.0,
+      62.0
+    ],
+    "READ": [
+      70.0,
+      82.0
+    ],
+    "RESPONSE": [
+      70.0,
+      170.0
+    ],
+    "TAIL": [
+      170.0,
+      200.0
+    ],
+    "FULL": [
+      0.0,
+      200.0
+    ]
+  },
+  "kcl_tool": "scripts/bvmtools/kcl.py",
+  "sfq_tool": "scripts/bvmtools/sfq.py strict_segment_metrics (descriptive only)"
+}

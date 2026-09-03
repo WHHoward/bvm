@@ -6,6 +6,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -36,44 +37,40 @@ PLOTS = OrderedDict(
     (
         (
             "BVM_STIMULUS_AND_STATE",
-            ["I(I_WL1)", "I(I_BL1)", "I(I_SE1)", "P(BVMOUT)"],
-            "Corrected single-BVM stimulus and state — WRITE WL+BL; READ WL+SE (BL=0)",
+            (["I(I_WL1)", "I(I_BL1)", "I(I_SE1)", "P(BVMOUT)"],
+             "Corrected single-BVM stimulus and state — WRITE WL+BL; READ WL+SE (BL=0)"),
         ),
         (
             "BVM_SENSING",
-            [
+            ([
                 "P(B_JM1|XBVM1)", "V(B_JM1|XBVM1)", "P(B_JS2|XBVM1)",
                 "V(SL1)", "I(L_SL|XBVM1)", "P(B_LD4_01)", "V(B_LD4_01)",
                 "P(B_LD4_11)", "V(B_LD4_11)", "P(BVMOUT)", "V(BVMOUT)", "I(BVMOUT)",
-            ],
-            "Corrected single-BVM sensing line and terminal response",
+            ], "Corrected single-BVM sensing line and terminal response"),
         ),
         (
             "QB_INTERNAL",
-            [
+            ([
                 "V(QBIN)", "V(QBOUT)", "I(LIN|XBQ1)",
                 "P(BJS|XBQ1)", "V(BJS|XBQ1)", "I(BJS|XBQ1)",
                 "P(BJ1|XBQ1)", "V(BJ1|XBQ1)", "I(BJ1|XBQ1)", "I(RJ1|XBQ1)",
                 "P(BJ2|XBQ1)", "V(BJ2|XBQ1)", "I(BJ2|XBQ1)", "I(RJ2|XBQ1)",
                 "I(L1|XBQ1)", "I(L2|XBQ1)", "I(L3|XBQ1)", "I(IB|XBQ1)",
-            ],
-            "Original QB internal phase, voltage and current probes",
+            ], "Original QB internal phase, voltage and current probes"),
         ),
         (
             "QB_BURST",
-            [
+            ([
                 "V(QBIN)", "V(QBOUT)", "P(BJS|XBQ1)", "V(BJS|XBQ1)",
                 "P(BJ1|XBQ1)", "V(BJ1|XBQ1)", "P(BJ2|XBQ1)", "V(BJ2|XBQ1)",
-            ],
-            "Original QB READ-associated response — phase is rad/(2pi) turns",
+            ], "Original QB READ-associated response — phase is rad/(2pi) turns"),
         ),
         (
             "JTL_TRANSPORT",
-            sum(
+            (sum(
                 ([f"P(B01|XJTL1_{stage})", f"V(B01|XJTL1_{stage})", f"P(B02|XJTL1_{stage})", f"V(B02|XJTL1_{stage})"] for stage in range(1, 7)),
                 [],
-            ),
-            "Six-stage historical JTL transport — B01/B02 phase and voltage",
+            ), "Six-stage historical JTL transport — B01/B02 phase and voltage"),
         ),
     )
 )
@@ -84,6 +81,7 @@ def sha(path: Path) -> str:
 
 
 def run_plot(input_path: Path, output_path: Path, title: str, labels: list[str]) -> dict[str, Any]:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     command = [
         sys.executable,
         str(PLOTTER),
@@ -99,7 +97,10 @@ def run_plot(input_path: Path, output_path: Path, title: str, labels: list[str])
     if result.returncode != 0:
         raise RuntimeError(f"plot failed ({result.returncode}): {' '.join(command)}\n{result.stderr}")
     html = output_path.read_text(encoding="utf-8")
-    if "Unknown" in html:
+    # Plotly embeds unrelated strings such as JavaScript "Unknown encoding";
+    # only a literal axis title is a visualization-unit failure.
+    unknown_axis = bool(re.search(r'"title":\{"text":"Unknown"\}', html))
+    if unknown_axis:
         raise RuntimeError(f"plot has Unknown axis: {output_path}")
     if any(label.startswith("P(") for label in labels) and "Phase (turns)" not in html:
         raise RuntimeError(f"plot phase unit QA failed: {output_path}")
@@ -113,7 +114,7 @@ def run_plot(input_path: Path, output_path: Path, title: str, labels: list[str])
         "renderer_command": command,
         "exit_code": result.returncode,
         "qa": {
-            "unknown_axis_absent": "Unknown" not in html,
+            "unknown_axis_absent": not unknown_axis,
             "phase_turn_label_present": not any(label.startswith("P(") for label in labels) or "Phase (turns)" in html,
             "classic_renderer": True,
         },
@@ -139,6 +140,7 @@ def main() -> int:
     old_trace = read_csv(OLD)
     before_hashes = {str(path): sha(path) for path in list(CONDITIONS.values()) + [OLD]}
     manifest: dict[str, Any] = {
+        "plot_generator": {"path": str(Path(__file__).relative_to(REPO)), "sha256": sha(Path(__file__))},
         "renderer": str(PLOTTER.relative_to(REPO)),
         "renderer_sha256": sha(PLOTTER),
         "phase_option": "2pi; P(...) raw radians are displayed as turns",
@@ -147,7 +149,7 @@ def main() -> int:
         "merged": [],
     }
     for condition, input_path in CONDITIONS.items():
-        for name, labels, title in PLOTS.items():
+        for name, (labels, title) in PLOTS.items():
             if name == "JTL_TRANSPORT" and "-J-" not in condition:
                 continue
             output = EXP / "plots/runs" / condition / f"{name}.html"

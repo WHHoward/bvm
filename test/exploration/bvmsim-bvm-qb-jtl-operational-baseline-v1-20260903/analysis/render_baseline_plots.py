@@ -144,19 +144,34 @@ def compare_inputs(results: list[dict[str, Any]], labels: list[tuple[str, str]])
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check-only", action="store_true")
+    parser.add_argument(
+        "--four-only",
+        action="store_true",
+        help="render only the 4-BVM individual plots and preserve other manifest entries",
+    )
     args = parser.parse_args()
     metrics = json.loads(METRICS.read_text(encoding="utf-8"))["results"]
-    records = metrics["four"] + metrics["single"]
-    manifest: dict[str, Any] = {
-        "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
-        "renderer": str(RENDERER.relative_to(REPO)),
-        "renderer_sha256": sha256(RENDERER),
-        "layout": "sep_comb",
-        "color": "dark",
-        "phase_option": "-j 2pi; raw P(...) radians are displayed as rad/2pi turns",
-        "individual": [],
-        "comparisons": [],
-    }
+    manifest_path = EXP / "analysis/visualization_manifest.json"
+    if args.four_only:
+        if not manifest_path.is_file():
+            raise RuntimeError(f"existing visualization manifest is required: {manifest_path}")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["generated_at"] = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+        manifest["renderer"] = str(RENDERER.relative_to(REPO))
+        manifest["renderer_sha256"] = sha256(RENDERER)
+    else:
+        manifest = {
+            "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+            "renderer": str(RENDERER.relative_to(REPO)),
+            "renderer_sha256": sha256(RENDERER),
+            "layout": "sep_comb",
+            "color": "dark",
+            "phase_option": "-j 2pi; raw P(...) radians are displayed as rad/2pi turns",
+            "individual": [],
+            "comparisons": [],
+        }
+    records = metrics["four"] if args.four_only else metrics["four"] + metrics["single"]
+    rendered_individual: list[dict[str, Any]] = []
     core = [
         "I(BVMOUT)",
         "V(BVMOUT)",
@@ -168,14 +183,26 @@ def main() -> int:
         "V(BJ2|XBQ1)",
         "P(BJ2|XBQ1)",
     ]
+    four_stimulus = [
+        probe
+        for index in range(1, 5)
+        for probe in (
+            f"I(I_WL{index})",
+            f"I(I_BL{index})",
+            f"I(I_SE{index})",
+        )
+    ]
     for item in records:
         run_id = item["run_id"]
         raw = REPO / item["raw"]
         labels = list(core)
+        if item["family"] == "four_bvm":
+            labels.extend(four_stimulus)
         if item.get("load") == "JTL" or item["family"] == "four_bvm":
             labels.extend(["V(B02|XJTL1_6)", "P(B02|XJTL1_6)"])
         output = EXP / "plots/runs" / safe_name(run_id) / "RUN_OVERVIEW.html"
-        title = f"Historical BVMSim original QB baseline — {run_id} — key signals"
+        suffix = "key signals + WL/BL/SE" if item["family"] == "four_bvm" else "key signals"
+        title = f"Historical BVMSim original QB baseline — {run_id} — {suffix}"
         if args.check_only:
             headers, _ = load_rows(raw)
             missing = [label for label in labels if label not in headers]
@@ -193,60 +220,73 @@ def main() -> int:
             "output": str(output.relative_to(REPO)),
             "qa": qa,
         }
-        manifest["individual"].append(entry)
+        rendered_individual.append(entry)
 
-    four = metrics["four"]
-    selected_four = ["0000", "0100", "0001", "1111"]
-    state_to_run = {item["state"]: item["run_id"] for item in four}
-    four_labels = [("P(BJ2|XBQ1)", state_to_run[state]) for state in selected_four]
-    four_labels.append(("P(B02|XJTL1_6)", state_to_run["1111"]))
-    four_input, four_plot_labels = compare_inputs(four, four_labels)
-    four_output = EXP / "plots/RESULT_OVERVIEW.html"
-    if not args.check_only:
-        four_qa = plot_one(
-            four_input,
-            four_output,
-            four_plot_labels,
-            "Historical BVMSim original QB baseline — representative 4-BVM states",
-        )
+    if args.four_only:
+        existing_by_run = {entry["run_id"]: entry for entry in manifest["individual"]}
+        rendered_by_run = {entry["run_id"]: entry for entry in rendered_individual}
+        all_run_ids = [item["run_id"] for item in metrics["four"] + metrics["single"]]
+        missing = [run_id for run_id in all_run_ids if run_id not in rendered_by_run and run_id not in existing_by_run]
+        if missing:
+            raise RuntimeError(f"manifest entries missing for preserved runs: {missing}")
+        manifest["individual"] = [
+            rendered_by_run.get(run_id, existing_by_run[run_id]) for run_id in all_run_ids
+        ]
     else:
-        four_qa = {"check_only": True, "input_sha256": sha256(four_input)}
-    manifest["comparisons"].append({
-        "name": "representative_four_state_overview",
-        "input": str(four_input.relative_to(REPO)),
-        "output": str(four_output.relative_to(REPO)),
-        "labels": four_plot_labels,
-        "qa": four_qa,
-    })
+        manifest["individual"] = rendered_individual
 
-    single = metrics["single"]
-    single_labels = [("P(BJ2|XBQ1)", item["run_id"]) for item in single]
-    single_labels.extend(("P(B02|XJTL1_6)", item["run_id"]) for item in single if item.get("load") == "JTL")
-    single_input, single_plot_labels = compare_inputs(single, single_labels)
-    single_output = EXP / "plots/SINGLE_2X2_OVERVIEW.html"
-    if not args.check_only:
-        single_qa = plot_one(
-            single_input,
-            single_output,
-            single_plot_labels,
-            "Historical BVMSim original QB baseline — single-BVM 2x2 overview",
-        )
-    else:
-        single_qa = {"check_only": True, "input_sha256": sha256(single_input)}
-    manifest["comparisons"].append({
-        "name": "single_2x2_overview",
-        "input": str(single_input.relative_to(REPO)),
-        "output": str(single_output.relative_to(REPO)),
-        "labels": single_plot_labels,
-        "qa": single_qa,
-    })
+    if not args.four_only:
+        four = metrics["four"]
+        selected_four = ["0000", "0100", "0001", "1111"]
+        state_to_run = {item["state"]: item["run_id"] for item in four}
+        four_labels = [("P(BJ2|XBQ1)", state_to_run[state]) for state in selected_four]
+        four_labels.append(("P(B02|XJTL1_6)", state_to_run["1111"]))
+        four_input, four_plot_labels = compare_inputs(four, four_labels)
+        four_output = EXP / "plots/RESULT_OVERVIEW.html"
+        if not args.check_only:
+            four_qa = plot_one(
+                four_input,
+                four_output,
+                four_plot_labels,
+                "Historical BVMSim original QB baseline — representative 4-BVM states",
+            )
+        else:
+            four_qa = {"check_only": True, "input_sha256": sha256(four_input)}
+        manifest["comparisons"].append({
+            "name": "representative_four_state_overview",
+            "input": str(four_input.relative_to(REPO)),
+            "output": str(four_output.relative_to(REPO)),
+            "labels": four_plot_labels,
+            "qa": four_qa,
+        })
 
-    manifest_path = EXP / "analysis/visualization_manifest.json"
+        single = metrics["single"]
+        single_labels = [("P(BJ2|XBQ1)", item["run_id"]) for item in single]
+        single_labels.extend(("P(B02|XJTL1_6)", item["run_id"]) for item in single if item.get("load") == "JTL")
+        single_input, single_plot_labels = compare_inputs(single, single_labels)
+        single_output = EXP / "plots/SINGLE_2X2_OVERVIEW.html"
+        if not args.check_only:
+            single_qa = plot_one(
+                single_input,
+                single_output,
+                single_plot_labels,
+                "Historical BVMSim original QB baseline — single-BVM 2x2 overview",
+            )
+        else:
+            single_qa = {"check_only": True, "input_sha256": sha256(single_input)}
+        manifest["comparisons"].append({
+            "name": "single_2x2_overview",
+            "input": str(single_input.relative_to(REPO)),
+            "output": str(single_output.relative_to(REPO)),
+            "labels": single_plot_labels,
+            "qa": single_qa,
+        })
+
     if not args.check_only:
         manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        print(json.dumps({"individual": len(manifest["individual"]), "comparisons": len(manifest["comparisons"])}, ensure_ascii=False))
+        print(json.dumps({"individual": len(rendered_individual), "comparisons": len(manifest["comparisons"])}, ensure_ascii=False))
     else:
-        print(json.dumps({"check_only": True, "individual": len(manifest["individual"]), "comparisons": len(manifest["comparisons"])}, ensure_ascii=False))
+        print(json.dumps({"check_only": True, "individual": len(rendered_individual), "comparisons": len(manifest["comparisons"])}, ensure_ascii=False))
     return 0
 
 

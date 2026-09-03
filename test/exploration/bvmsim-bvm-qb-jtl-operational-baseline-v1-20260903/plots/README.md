@@ -10,6 +10,10 @@
 
 ## Independent 4-BVM run plots
 
+每个 4-BVM 独立图除核心 BVM/QB/JTL 信号外，还包含四个 BVM 的
+`I(I_WL1..4)`、`I(I_BL1..4)`、`I(I_SE1..4)` 输入电流轨迹；这些轨迹用于
+核对每个 state run 的 WL、BL、SE 激励时序和极性。
+
 - [0000](runs/F4_0000_R12_T100/RUN_OVERVIEW.html)
 - [0001](runs/F4_0001_R12_T100/RUN_OVERVIEW.html)
 - [0010](runs/F4_0010_R12_T100/RUN_OVERVIEW.html)

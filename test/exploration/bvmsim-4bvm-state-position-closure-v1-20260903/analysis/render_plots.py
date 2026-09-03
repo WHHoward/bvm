@@ -7,6 +7,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -144,6 +145,7 @@ def run_plot(input_path: Path, output_path: Path, title: str, labels: list[str])
         "-w",
         title,
     ]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     if not output_path.exists():
         completed = subprocess.run(command, cwd=REPO, text=True, capture_output=True)
         if completed.returncode != 0:
@@ -154,10 +156,12 @@ def run_plot(input_path: Path, output_path: Path, title: str, labels: list[str])
     html = output_path.read_text(encoding="utf-8", errors="replace")
     if "<html" not in html.lower():
         raise RuntimeError(f"plot output is not HTML: {output_path}")
-    if "unknown" in html.lower():
+    if re.search(r'"title":\{"text":"Unknown"', html):
         raise RuntimeError(f"plot has an Unknown axis label: {output_path}")
     phase_check = any(label.startswith("P") for label in labels)
-    phase_units_ok = ("Phase (turns) [rad/2pi]" in html) if phase_check else True
+    # Plotly JSON escapes the slash as ``\\u002f`` in some versions, so use
+    # the stable unit tokens rather than one literal serialization.
+    phase_units_ok = ("Phase (turns)" in html and "2pi" in html) if phase_check else True
     if not phase_units_ok:
         raise RuntimeError(f"phase plot lacks rad/2pi unit label: {output_path}")
     return {
@@ -302,7 +306,7 @@ def main() -> int:
         "raw_unchanged": before == after,
         "plots": records,
     }
-    write_once(Path(args.manifest), manifest)
+    write_once(Path(args.manifest), json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     write_index(records)
     print(json.dumps({"plots": len(records), "raw_unchanged": before == after}, ensure_ascii=False))
     return 0

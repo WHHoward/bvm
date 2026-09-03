@@ -12,6 +12,6 @@ RJ2=4 Ω、QB bias=250 µA、六级 JTL、10 Ω 终端、`.tran 0.1p 200p 45p`�
 PHASE B 不做 16-state 扫描、参数优化、canonical BVM 替换、timestep sweep
 或自动 follow-up。所有 raw、run.log 和 metadata 在创建后视为不可覆盖。
 
-状态判别是 task-local 的观测规则：用 WRITE1 期间各 BVM 的 `JM1` phase
-displacement 的符号和预读窗口稳定性报告“observed state basis”。它不会把
-该规则升级为普适存储机制证明。
+状态判别是 task-local 的观测规则：用各 BVM 在 `PRE_READ1` 的连续展开
+`JM1` phase 电平符号和窗口稳定性报告“observed state basis”；WRITE1
+phase displacement 仍作为诊断量保存。它不会把该规则升级为普适存储机制证明。

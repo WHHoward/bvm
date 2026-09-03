@@ -88,12 +88,12 @@ windows_ps:
   TAIL: [170, 200]
 
 state_discriminator:
-  basis: "task-local direct BVM JM1 phase displacement during WRITE1"
-  phase_sign_min_turns: 0.25
+  basis: "task-local BVM JM1 continuous-unwrapped phase level sign in PRE_READ1"
+  phase_level_sign_min_turns: 0.25
   pre_read_phase_p2p_max_turns: 0.25
   phase_area_residual_abs_floor_turns: 0.05
   phase_area_residual_relative: 0.10
-  note: "This assignment is an observed write-response basis, not a universal storage-mechanism claim."
+  note: "The absolute phase level is used only within this historical fixture; this is an observed state basis, not a universal storage-mechanism claim."
 
 strict_event_semantics:
   metric_spec: docs/research/METRIC_SPEC_V2.md

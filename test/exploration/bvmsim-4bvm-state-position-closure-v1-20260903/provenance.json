@@ -1,0 +1,161 @@
+{
+  "schema": "bvmsim-4bvm-six-state-position-closure-provenance-v1",
+  "recorded_at": "2026-09-03T17:10:10+08:00",
+  "task_id": "BVM_QB_4BVM_SIX_STATE_POSITION_CLOSURE_V1",
+  "experiment_id": "bvmsim-4bvm-state-position-closure-v1-20260903",
+  "study_phase": "EXPLORATION",
+  "authorization": {
+    "user_authorized": true,
+    "head_before_task": "e2dbda0ed26ae862a87a219c885494cdc352dc56",
+    "head_before_phase_a": "e2dbda0ed26ae862a87a219c885494cdc352dc56",
+    "head_before_phase_b_setup": "b9bb32b9a3fdcee75e8dd9d760400876c626e5d7",
+    "phase_b_execution_head": "210d383b0b27b0adc6f11d7c1246f40445670545",
+    "phase_a_infrastructure_commit": "361df084d7e78a71291d586709b93568f176e0d",
+    "phase_a_parity_commit": "b9bb32b9a3fdcee75e8dd9d760400876c626e5d7",
+    "phase_b_setup_commit": "210d383b0b27b0adc6f11d7c1246f40445670545"
+  },
+  "phase_a_gate": {
+    "status": "INFRA_REGRESSION_PASS",
+    "simulation_invoked": false,
+    "parity_checks": 94,
+    "parity_failed": 0,
+    "parity_artifact": "../research-workflow-tooling-consolidation-v1-20260903/parity/parity.json"
+  },
+  "historical_sources": {
+    "fixture": {
+      "path": "BVMSim/test_bvm_mixed_0.cir",
+      "sha256": "09b30458cf2bec3fbe85221e9f34661ecee4c6e28aed18c54aaa30a94ad1f948"
+    },
+    "bvm": {
+      "path": "BVMSim/bvm_cell.cir",
+      "sha256": "009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125"
+    },
+    "qb": {
+      "path": "BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd"
+    },
+    "jtl": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "shared_jjmit_reference": {
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "canonical_bvm_not_used": {
+      "path": "circuits/bvm/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    }
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "version": "v2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "shared_tooling": {
+    "scripts/bvmtools/__init__.py": "cb2b8ae3719bf7445505834452ed36705933d698a9bdb38a5ca7b251ca62e0f2",
+    "scripts/bvmtools/metrics.py": "67c54fa47fe0a1d8d2622d330ed7810e42810e3dc3e2034ff423329b09e9754e",
+    "scripts/bvmtools/probes.py": "640b97d4172655d9d68db53e801bfb48d479843fdb7b5877cfe10d22c0aaf348",
+    "scripts/bvmtools/stimulus.py": "e6b64b9bdfe5a6899273e2ba535adf8bb7083db63cfc9f5491c133d0082cdc49",
+    "scripts/bvmtools/deckqa.py": "a53068117345bd25c2fd30510c22f3444695a770d7b48f0a0167e08ca6cb66a3",
+    "test/tools/test_bvmtools_infrastructure.py": "ef7e00259b0f66ce2ad7cb1d913a646236895590acf504f5e81d96a78152ba88",
+    "scripts/josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "docs/research/METRIC_SPEC_V2.md": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470",
+    "docs/research/BOUNDARY_SPEC_V2.md": "6426365f452f59d9e332476cf5d560c1c7ab4c913177ac919a956de7b8a33313"
+  },
+  "phase_b_scope": {
+    "states": ["0000", "1000", "0100", "0010", "0001", "1111"],
+    "count": 6,
+    "timestep_ps": 0.1,
+    "stop_time_ps": 200,
+    "solver_output_start_ps": 45,
+    "physics_changes": false,
+    "probes_only_change": true,
+    "raw_immutable": true
+  },
+  "phase_b_artifacts": {
+    "experiment.yaml": "19eacf3c7ec944ac78843e853b4a0e4f0b84b263e462e9a43317828042f9bfc3",
+    "PREFLIGHT.md": "1d1d418ea435ee8800c80babcf149894400c690eb2f8a46e93f1b3f593368d83",
+    "RESULT_BRIEF.md": "f4292483505ebb680ee87814daddc7028c8d2270a459ec72df6e4c045c7d82d1",
+    "analysis/analyze.py": "7bbff69eb5b1c9b3bec7495de2f119f3fce47b5ecfd2c0d1790b37c72ec0216d",
+    "analysis/render_plots.py": "d7d33ec7f0ccf54be60605b142690b4c98aa12dda899f3359e832cf12e21022b",
+    "analysis/metrics.json": "dcc93abdde09678fb0afe8283469fe682b4a7e7580211ee2dba0aa6e0daa9ece",
+    "analysis/plot_manifest.json": "61e49f99edfd15508303ddbe05c393ca7f6db12b93caca53948cbb31404ec7c7",
+    "analysis/REPORT.md": "e50d4e9631ab32d55d7c0d3a8522675a2b130dfa23b47b87017778852d9ddf23",
+    "analysis/REVIEW.md": "56c9efb7f5d3ec611f145830a26614771c19e1274cf734ef0fb540860601dcc5",
+    "analysis/TEST_COMMANDS.md": "25819c5dabae430dc4c956e4401835bd98cc87f994cf0ef4c751cbe8cad02f4c",
+    "analysis/human-gate.yaml": "629caf7fd6fb617579885771a8008a77134c6014fd1703ce11d3dba0e25ae493",
+    "generate_decks.py": "cd0fb2847a50f06df8ab89056a9d9e061d00d1bd4b867973757734c53820ae74",
+    "run.sh": "63aadd2b6909d446796e1ecf0a5a2db8c2cdb8013c693db6143b7c08ca937ff1"
+  },
+  "runs": {
+    "0000": {
+      "deck.cir": "7c83c88c3f84ad4bbeea8540f9337f89163ceda359ec36bd12ec8dd0a4c9359c",
+      "raw.csv": "19adb2286289a99761aace1786e8a191d63aa68a95e9ce3cda9af96a7e7cf634",
+      "run.log": "383c87bce99bad095e03ffef5aac50ada8dee03f4e8280850dad43d1702b9060",
+      "metadata.json": "31499f330a9637787a1651c706848e54187d5d7258a317aa82c9e9103366152e"
+    },
+    "1000": {
+      "deck.cir": "24f4357ca74f1f6166e794e334ee34f1fc1d78551516ecc3117e76d56123b3fc",
+      "raw.csv": "a8efdc5aece1234a5c7b262956e8dcf5eadf5ac3f30febc7de90ee6ff8077092",
+      "run.log": "03e1aff5447a8315c2887d8300783403e0bc94ba2cf661b9d25e9af8bca497cf",
+      "metadata.json": "ea43eb2d470cd79b59aa36cee03a433925d1fdcfadae4acf3edaa025d1f8d88a"
+    },
+    "0100": {
+      "deck.cir": "82de8bb642d30850d7348f2043057549d6d11b473be77f00776703747df428a0",
+      "raw.csv": "dae3cbbc2d656a61e52e8b27ebe0ceac2a493fc93d01825705b1cd56025cb24d",
+      "run.log": "c508bb3f8181adc255bb3d43d822ead8d86a90bbc72bd6bc3c7c4eadfb20d07e",
+      "metadata.json": "a34e77e0ac0a4a4f185f64e5a140877f8acb5283f2e2287b86eb48e0f92f883b"
+    },
+    "0010": {
+      "deck.cir": "db55421bef34365df764652be37b477e338eb4970b0e524cbdba09d2e8851645",
+      "raw.csv": "a55bc29656a2d2a19a84e8d16a65b57c62fb026c7e1465e4f2fd80852e3da56e",
+      "run.log": "0495a4aa859e427ec15728b02fd273005efa751b956fb85f4081b700cb0511df",
+      "metadata.json": "928fff039174a9b6d48149c2f509212d9dacf36bc3b6d4edb204ef4ffe5df63c"
+    },
+    "0001": {
+      "deck.cir": "4f9b0d0b414c35d1db9ca5821fbc388059c2282aa48f52ed6c98f803201af32f",
+      "raw.csv": "18de167475bdaf3a5e85b87e0bb28a61ad0ac058cf3b73aea64fcf3b9d1e0e06",
+      "run.log": "dcd71894c37baa1f91d8c4cc0ad86ea12cda74cb8c121c815c33161ddaba9a26",
+      "metadata.json": "388802a958484ea2f093e851ece46cc897bd895ea4c50024eef62e81a389b2aa"
+    },
+    "1111": {
+      "deck.cir": "e9ef35edb9a0e0b503f2a3fa403e55f9aafe929d22f2f71ce901841810a6bcbb",
+      "raw.csv": "6018d420a98ee3634f11b4b655153194e4959c79375427c8bd722d3e451a9e9f",
+      "run.log": "d50bc0c32179fa3840fff6e43961afed91692d9f31c0f50182361779ce5d91e0",
+      "metadata.json": "0a6dae586b3b34b98196a0de9ae44ea9bb721b701c82225f5a178bee764d5483"
+    }
+  },
+  "verification": {
+    "raw_rows_per_run": 1549,
+    "time_grids_identical": true,
+    "interpolation_used": false,
+    "actual_dt_min_ps": 0.1,
+    "actual_dt_max_ps": 0.2,
+    "solver_runs_successful": "6/6",
+    "model_warnings": false,
+    "independent_raw_recheck": {
+      "status": "PASS",
+      "checks": 30,
+      "exit_code": 0,
+      "scope": ["grid", "BJ2 phase/area", "JTL6 phase/area", "weight-1 input", "PRE_READ1 state level", "QB KCL"]
+    },
+    "primary_exploratory_classification": "STATE_CLOSED_POSITION_DEPENDENT_INPUT_WITH_COUNT_MISMATCH",
+    "quick_label": "QUICK_AMBIGUOUS"
+  },
+  "human_gate": {
+    "state": "AWAITING_USER_REVIEW",
+    "user_reviewed": false,
+    "next_step_authorized": false,
+    "automatic_next_experiment": false,
+    "stage_b_authorized": false,
+    "next_action": "STOP"
+  },
+  "notes": [
+    "Historical BVMSim BVM is not the canonical circuits/bvm/bvm_cell.cir authority.",
+    "No canonical BVM substitution, single-BVM run, full 16-state sweep, parameter sweep, timestep sweep, topology redesign, or automatic follow-up was performed.",
+    "P(...) remains raw radians; phase turns in derived artifacts are rad/(2*pi).",
+    "Cumulative phase displacement is not used as an SFQ event count.",
+    "The analysis correction trace is retained locally but intermediate incorrect JSON outputs are not authority."
+  ]
+}

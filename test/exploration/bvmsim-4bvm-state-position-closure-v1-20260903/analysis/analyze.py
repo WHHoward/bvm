@@ -91,7 +91,7 @@ SCAN_S = (0.0, 200.0e-12)
 PLATEAU_TOLERANCE_A = 1.0e-9
 PHASE_AREA_ABS_FLOOR = 0.05
 PHASE_AREA_RELATIVE = 0.10
-STATE_SIGN_MIN_TURNS = 0.25
+STATE_LEVEL_SIGN_MIN_TURNS = 0.25
 STATE_STABILITY_MAX_P2P_TURNS = 0.25
 RETRAP_MAX_P2P_TURNS = 0.25
 INPUT_DIFFERENCE_TOLERANCE_UA = 0.1
@@ -392,11 +392,12 @@ def state_closure(trace: RawTrace, state: str) -> dict[str, object]:
         write = phase_area_fact(trace, jm1["phase"], jm1["voltage"], window("WRITE1"))  # type: ignore[index]
         level = level_fact(trace, jm1["phase"], window("PRE_READ1"))  # type: ignore[index]
         delta = float(write["phase_delta_turns"])
+        level_mean = float(level["mean_turns"])
         area_ok = bool(write["phase_area_consistency"]["phase_area_consistent"])  # type: ignore[index]
         stable = float(level["p2p_turns"]) <= STATE_STABILITY_MAX_P2P_TURNS
-        if delta >= STATE_SIGN_MIN_TURNS:
+        if level_mean >= STATE_LEVEL_SIGN_MIN_TURNS:
             observed = "1"
-        elif delta <= -STATE_SIGN_MIN_TURNS:
+        elif level_mean <= -STATE_LEVEL_SIGN_MIN_TURNS:
             observed = "0"
         else:
             observed = None
@@ -416,6 +417,7 @@ def state_closure(trace: RawTrace, state: str) -> dict[str, object]:
                 "bvm": f"BVM{instance}",
                 "commanded_bit": commanded,
                 "observed_bit_basis": observed,
+                "pre_read_jm1_level_mean_turns": level_mean,
                 "write1_jm1_phase_delta_turns": delta,
                 "write1_jm1_voltage_area_turns": write["voltage_area_over_phi0"],
                 "write1_jm1_phase_area_consistency": write["phase_area_consistency"],
@@ -435,7 +437,7 @@ def state_closure(trace: RawTrace, state: str) -> dict[str, object]:
     else:
         status = "OBSERVED_STATE_INCONCLUSIVE"
     return {
-        "basis": "task-local direct BVM JM1 WRITE1 phase displacement sign plus PRE_READ1 p2p stability",
+        "basis": "task-local BVM JM1 PRE_READ1 continuous-unwrapped phase level sign plus p2p stability",
         "commanded_state": state,
         "observed_state_basis": observed_state,
         "state_basis_complete": complete,
@@ -788,11 +790,14 @@ def position_summary(state_results: Mapping[str, Mapping[str, object]]) -> dict[
         for state in WEIGHT_ONE_STATES
     ]
     bvmout_peaks = [
-        float(inputs[state]["BVMout_READ1_current"]["peak_abs"])  # type: ignore[index]
+        float(inputs[state]["BVMout_READ1_current"]["max_abs"])  # type: ignore[index]
         for state in WEIGHT_ONE_STATES
     ]
-    lin_range_uA = (max(lin_peaks) - min(lin_peaks)) * 1.0e6
-    bvmout_range_uA = (max(bvmout_peaks) - min(bvmout_peaks)) * 1.0e6
+    # ``peak_timing_metrics(..., unit="A")`` and
+    # ``waveform_window_summary(..., unit="A")`` already return display
+    # values in uA.  Do not apply a second SI-to-display conversion here.
+    lin_range_uA = max(lin_peaks) - min(lin_peaks)
+    bvmout_range_uA = max(bvmout_peaks) - min(bvmout_peaks)
     return {
         "weight_one_states": list(WEIGHT_ONE_STATES),
         "per_state": inputs,
@@ -849,6 +854,8 @@ def exploratory_classification(
         label = "ANALYSIS_INVALID"
     elif not protocol_ok:
         label = "CONTROL_PROTOCOL_MISMATCH"
+    elif closure_ok and bool(position["position_dependent_Lin_peak_observed"]) and not aggregate_count_match:
+        label = "STATE_CLOSED_POSITION_DEPENDENT_INPUT_WITH_COUNT_MISMATCH"
     elif closure_ok and bool(position["position_dependent_Lin_peak_observed"]):
         label = "STATE_CLOSED_POSITION_DEPENDENT_INPUT_OBSERVED"
     elif closure_ok and aggregate_count_match:
@@ -864,6 +871,7 @@ def exploratory_classification(
         "all_six_observed_state_basis_match_and_closed": closure_ok,
         "aggregate_strict_count_matches_popcount": aggregate_count_match,
         "position_dependent_input_observed": bool(position["position_dependent_Lin_peak_observed"]),
+        "count_mismatch_is_not_hidden_by_position_result": not aggregate_count_match,
         "no_gate_or_paper_claim": True,
         "classification_note": "The result is exploratory evidence for this historical fixture only; no mechanism or canonical-BVM claim is made.",
     }
@@ -915,7 +923,7 @@ def analyze() -> dict[str, object]:
     return {
         "schema": "bvmsim-4bvm-six-state-position-closure-metrics-v1",
         "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
-        "experiment": relative(EX),
+        "experiment": relative(EXP),
         "source_class": "HISTORICAL_BVMSIM",
         "phase_a_gate": {
             "path": relative(PHASE_A_PARITY),
@@ -937,8 +945,8 @@ def analyze() -> dict[str, object]:
         "windows_ps": {name: list(bounds) for name, bounds in WINDOWS_PS.items()},
         "strict_tolerance": STRICT_TOLERANCE,
         "state_discriminator": {
-            "basis": "WRITE1 JM1 phase displacement sign plus PRE_READ1 p2p stability",
-            "phase_sign_min_turns": STATE_SIGN_MIN_TURNS,
+            "basis": "PRE_READ1 JM1 continuous-unwrapped phase level sign plus p2p stability",
+            "phase_level_sign_min_turns": STATE_LEVEL_SIGN_MIN_TURNS,
             "pre_read_phase_p2p_max_turns": STATE_STABILITY_MAX_P2P_TURNS,
             "not_a_universal_storage_claim": True,
         },

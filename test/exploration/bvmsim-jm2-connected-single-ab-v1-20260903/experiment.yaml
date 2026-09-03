@@ -1,0 +1,165 @@
+id: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT_V1
+experiment_id: bvmsim-jm2-connected-single-ab-v1-20260903
+study_phase: EXPLORATION
+mode: QUICK
+status: PREREGISTERED
+base_head: 55632a7fe70bf7bab3cfb80ed768f9135582254c
+source_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+authority_boundary: "This is a task-local historical BVMSim derivative; it is not a fixed/correct/canonical BVM."
+
+question:
+  - "Does restoring only the intended L_M2-to-node3 connection make historical JM2 electrically active?"
+  - "Under the corrected single-BVM WL+BL WRITE and WL+SE READ, do S0 and S1 remain stable and distinguishable?"
+  - "Does JM2 reconnection change BVM sensing, QB response, or direct-versus-JTL load behavior?"
+
+sources:
+  historical_bvm: BVMSim/bvm_cell.cir
+  connected_variant: variants/bvm_jm2_connected.cir
+  qb: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  jj_model: circuits/models/jjmit.cir
+  corrected_single_reference: test/exploration/bvmsim-single-corrected-baseline-v1-20260903
+  canonical_bvm_not_used: circuits/bvm/bvm_cell.cir
+
+changed:
+  only_physics_change: "L_M2 second node: 4 -> 3"
+  historical_line: "L_M2 2 4 24.5P"
+  connected_line: "L_M2 2 3 24.5P"
+  unchanged: [R_JM1, JJ areas, all inductances, R_SL, R_S, JS1, JS2, WL/BL/SE network, QB, JTL, loads, timestep, stop time]
+
+frozen:
+  bvm_subckt: BVM
+  qb_subckt: BQ
+  qb_nominal: "RJ1=12 ohm; RJ2=4 ohm; IB=250 uA"
+  terminal_sensing_line: "B_LD4_01..B_LD4_11 plus BVMout; 12 area=3.2 JJ"
+  jtl: "six historical jtl cells; 280 uA per cell"
+  termination: 10 ohm
+  tran: ".tran 0.1p 200p"
+  solver: build/josim-cli
+  raw_policy: "new raw files are immutable; existing reference raw files are never overwritten"
+
+stimulus:
+  all_runs:
+    read: "70-81 ps; WL=+100 uA; SE=+100 uA; BL=0"
+    protocol: "WRITE=WL+BL; READ=WL+SE"
+  S0:
+    write: "50-61 ps; WL=-100 uA; BL=-100 uA; SE=0"
+  S1:
+    write: "50-61 ps; WL=+100 uA; BL=+100 uA; SE=0"
+  plateau_write_ps: [51, 60]
+  plateau_read_ps: [71, 80]
+
+windows_ps:
+  PRE: [0, 50]
+  WRITE: [50, 62]
+  POST_WRITE: [62, 70]
+  PRE_READ: [62, 70]
+  READ: [70, 82]
+  RESPONSE: [70, 170]
+  TAIL: [170, 200]
+  FULL: [0, 200]
+  semantics: "half-open [start,end), interpreted against each raw's actual time column"
+
+conditions:
+  - id: S0-R-JM2C
+    logical_state: 0
+    load: direct_10ohm
+    input: inputs/S0-R-JM2C.cir
+    run_dir: runs/S0-R-JM2C
+    reference_raw: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-R-CORRECTED/raw/run-01.csv
+    reference_deck: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-R-CORRECTED/deck.cir
+  - id: S1-R-JM2C
+    logical_state: 1
+    load: direct_10ohm
+    input: inputs/S1-R-JM2C.cir
+    run_dir: runs/S1-R-JM2C
+    reference_raw: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-R-CORRECTED/raw/run-01.csv
+    reference_deck: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-R-CORRECTED/deck.cir
+  - id: S0-J-JM2C
+    logical_state: 0
+    load: six_stage_jtl_plus_10ohm
+    input: inputs/S0-J-JM2C.cir
+    run_dir: runs/S0-J-JM2C
+    reference_raw: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-J-CORRECTED-RERUN/raw/run-01.csv
+    reference_deck: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-J-CORRECTED-RERUN/deck.cir
+  - id: S1-J-JM2C
+    logical_state: 1
+    load: six_stage_jtl_plus_10ohm
+    input: inputs/S1-J-JM2C.cir
+    run_dir: runs/S1-J-JM2C
+    reference_raw: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-J-CORRECTED-RERUN/raw/run-01.csv
+    reference_deck: test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-J-CORRECTED-RERUN/deck.cir
+
+probes:
+  stimulus: [I(I_WL1), I(I_BL1), I(I_SE1)]
+  bvm_internal:
+    - P(B_JM1|XBVM1)
+    - V(B_JM1|XBVM1)
+    - I(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - V(B_JM2|XBVM1)
+    - I(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - V(B_JS1|XBVM1)
+    - I(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+    - V(B_JS2|XBVM1)
+    - I(B_JS2|XBVM1)
+    - I(L_M1|XBVM1)
+    - I(L_M2|XBVM1)
+    - I(L_M3|XBVM1)
+    - I(L_PM|XBVM1)
+  bvm_boundary: [V(SL1), I(L_PSL|XBVM1), I(L_SL|XBVM1)]
+  terminal: [P(B_LD4_01), V(B_LD4_01), I(B_LD4_01), P(B_LD4_11), V(B_LD4_11), I(B_LD4_11), P(BVMOUT), V(BVMOUT), I(BVMOUT)]
+  qb: [V(QBIN), V(QBOUT), I(LIN|XBQ1), P(BJS|XBQ1), V(BJS|XBQ1), I(BJS|XBQ1), P(BJ1|XBQ1), V(BJ1|XBQ1), I(BJ1|XBQ1), I(RJ1|XBQ1), P(BJ2|XBQ1), V(BJ2|XBQ1), I(BJ2|XBQ1), I(RJ2|XBQ1), I(L1|XBQ1), I(L2|XBQ1), I(L3|XBQ1), I(IB|XBQ1)]
+  jtl: "JTL1..JTL6 each P/V(B01) and P/V(B02)"
+
+visual_authority:
+  reference_experiment: test/exploration/bvmsim-single-corrected-baseline-v1-20260903
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  phase_display: "P(...) raw radians; displayed value is rad/(2*pi) turns"
+  bvm_internal_state_signal_order:
+    - P(B_JM1|XBVM1)
+    - V(B_JM1|XBVM1)
+    - I(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - V(B_JM2|XBVM1)
+    - I(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - V(B_JS1|XBVM1)
+    - I(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+    - V(B_JS2|XBVM1)
+    - I(B_JS2|XBVM1)
+    - V(SL1)
+    - I(L_PSL|XBVM1)
+    - I(L_SL|XBVM1)
+    - P(B_LD4_01)
+    - V(B_LD4_01)
+    - I(B_LD4_01)
+    - P(B_LD4_11)
+    - V(B_LD4_11)
+    - I(B_LD4_11)
+    - P(BVMOUT)
+    - V(BVMOUT)
+    - I(BVMOUT)
+
+analysis:
+  metric_spec: docs/research/METRIC_SPEC_V2.md
+  boundary_spec: docs/research/BOUNDARY_SPEC_V2.md
+  same_jj_cross_check: "phase endpoint delta and actual-time trapezoid integral of the direct same-JJ V column"
+  event_boundary: "whole-window turns and Vpeak are not SFQ counts; JM2 activity is separated from complete 2pi switching"
+  electrical_activity_diagnostic: "abs(V) > 1 uV for two consecutive stored samples; descriptive onset only, never an event count"
+  electrical_activity_threshold_uV: 1.0
+  electrical_activity_min_consecutive_samples: 2
+  interpretation_ceiling: "task-local historical variant characterization; no canonical or paper claim"
+
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  prohibited_followups: [four_bvm, six_state, sixteen_state, RJ1_sweep, IB_sweep, alpha_sweep, timestep_sweep, canonical_bvm, T1, parameter_optimization]

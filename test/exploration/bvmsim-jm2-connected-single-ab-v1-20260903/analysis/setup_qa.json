@@ -1,0 +1,69 @@
+{
+  "schema": "jm2-connected-setup-qa-v1",
+  "experiment": "bvmsim-jm2-connected-single-ab-v1-20260903",
+  "source_class": "HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT",
+  "variant": {
+    "status": "PASS",
+    "difference_count": 1,
+    "difference": {
+      "line": 37,
+      "historical": "L_M2    2       4       24.5P",
+      "connected": "L_M2    2       3       24.5P"
+    },
+    "historical_sha256": "009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125",
+    "connected_variant_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+  },
+  "decks": [
+    {
+      "condition": "S0-R-JM2C",
+      "reference_deck": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-R-CORRECTED/deck.cir",
+      "input_deck": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/inputs/S0-R-JM2C.cir",
+      "input_sha256": "c918fbbf7102bfa87473801967506ad4becb466a420513258211d85d267d53bb",
+      "is_jtl": false,
+      "reference_equivalence": {
+        "status": "PASS",
+        "normalized_line_count": 37,
+        "reference": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-R-CORRECTED/deck.cir"
+      }
+    },
+    {
+      "condition": "S1-R-JM2C",
+      "reference_deck": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-R-CORRECTED/deck.cir",
+      "input_deck": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/inputs/S1-R-JM2C.cir",
+      "input_sha256": "4f2a6515488d50da004340e3c250e71e8984ed2290c99583109faa392fe3b6e9",
+      "is_jtl": false,
+      "reference_equivalence": {
+        "status": "PASS",
+        "normalized_line_count": 37,
+        "reference": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-R-CORRECTED/deck.cir"
+      }
+    },
+    {
+      "condition": "S0-J-JM2C",
+      "reference_deck": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-J-CORRECTED-RERUN/deck.cir",
+      "input_deck": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/inputs/S0-J-JM2C.cir",
+      "input_sha256": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
+      "is_jtl": true,
+      "reference_equivalence": {
+        "status": "PASS",
+        "normalized_line_count": 50,
+        "reference": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S0-J-CORRECTED-RERUN/deck.cir"
+      }
+    },
+    {
+      "condition": "S1-J-JM2C",
+      "reference_deck": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-J-CORRECTED-RERUN/deck.cir",
+      "input_deck": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/inputs/S1-J-JM2C.cir",
+      "input_sha256": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
+      "is_jtl": true,
+      "reference_equivalence": {
+        "status": "PASS",
+        "normalized_line_count": 50,
+        "reference": "test/exploration/bvmsim-single-corrected-baseline-v1-20260903/runs/S1-J-CORRECTED-RERUN/deck.cir"
+      }
+    }
+  ],
+  "only_authorized_physics_change": true,
+  "canonical_bvm_used": false,
+  "historical_reference_runs_not_rerun": true
+}

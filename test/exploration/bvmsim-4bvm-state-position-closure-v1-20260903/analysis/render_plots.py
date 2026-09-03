@@ -181,21 +181,17 @@ def individual_specs() -> list[tuple[str, list[str], str]]:
         for number in range(1, 5)
         for control in ("WL", "BL", "SE")
     ]
-    bvm_state = [
-        *(f"P(B_JM1|XBVM{number})" for number in range(1, 5)),
-        *(f"P(B_JS1|XBVM{number})" for number in range(1, 5)),
+    bvm_jj_pvi = [
+        f"{kind}(B_{junction}|XBVM{number})"
+        for number in range(1, 5)
+        for junction in ("JM1", "JM2", "JS1", "JS2")
+        for kind in ("P", "V", "I")
+    ]
+    bvm_state = bvm_jj_pvi + [
         *(f"V(SL{number})" for number in range(1, 5)),
         *(f"I(L_SL|XBVM{number})" for number in range(1, 5)),
     ]
-    bvm_pvi = [
-        f"{kind}(B_JM1|XBVM{number})"
-        for number in range(1, 5)
-        for kind in ("P", "V", "I")
-    ] + [
-        f"{kind}(B_JS1|XBVM{number})"
-        for number in range(1, 5)
-        for kind in ("P", "V", "I")
-    ]
+    bvm_pvi = bvm_jj_pvi
     terminal = [
         "P(B_LD4_01)", "V(B_LD4_01)", "I(B_LD4_01)",
         "P(B_LD4_11)", "V(B_LD4_11)", "I(B_LD4_11)",
@@ -219,8 +215,8 @@ def individual_specs() -> list[tuple[str, list[str], str]]:
     ]
     return [
         ("CONTROL_TIMING", controls, "control timing"),
-        ("BVM_STATE", bvm_state, "BVM state and sensing-line observables"),
-        ("BVM_INTERNAL_PVI", bvm_pvi, "BVM internal JM1/JS1 P/V/I observables"),
+        ("BVM_STATE", bvm_state, "BVM all-JJ P/V/I state and sensing-line observables"),
+        ("BVM_INTERNAL_PVI", bvm_pvi, "BVM all internal JJ P/V/I observables"),
         ("BVMOUT_QB_INPUT", terminal, "BVMout and QB input/output"),
         ("QB_INTERNAL", qb, "QB internal observables"),
         ("JTL_TRANSPORT", jtl, "six-stage JTL P/V observables"),

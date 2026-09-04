@@ -1,7 +1,14 @@
-state: AWAITING_USER_REVIEW
-user_reviewed: false
-next_step_authorized: false
+state: USER_REVIEWED
+user_reviewed: true
+reviewed_at: '2026-09-04T16:34:16+08:00'
+reviewed_by: user
+review_note: >-
+  User completed and accepted the 1111 history-read crossover causal A/B
+  experiment and explicitly authorized the paper-like common-SL topology
+  experiment. This authorization does not authorize automatic follow-up
+  experiments or parameter tuning.
+next_step_authorized: true
+authorized_next_step: PREREGISTER_PAPERLIKE_COMMON_SL_ACCUMULATION_ISOLATION
 automatic_next_experiment: false
 stage_b_authorized: false
 next_action: STOP
-review_note: "本实验结果等待用户审阅；不得自动启动 follow-up。"

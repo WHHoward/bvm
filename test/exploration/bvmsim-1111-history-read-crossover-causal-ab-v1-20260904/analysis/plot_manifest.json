@@ -1,0 +1,718 @@
+[
+  {
+    "phase": "standalone",
+    "name": "O+_BVM_INTERNAL_STATE",
+    "condition": "O+",
+    "input": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv",
+    "output": "plots/runs/O+/BVM_INTERNAL_STATE.html",
+    "subset": [
+      "P(B_JM1|XBVM1)",
+      "P(B_JM1|XBVM2)",
+      "P(B_JM1|XBVM3)",
+      "P(B_JM1|XBVM4)",
+      "P(B_JM2|XBVM1)",
+      "P(B_JM2|XBVM2)",
+      "P(B_JM2|XBVM3)",
+      "P(B_JM2|XBVM4)"
+    ],
+    "title": "O+ OLD-WITH-HISTORY — BVM_INTERNAL_STATE"
+  },
+  {
+    "phase": "standalone",
+    "name": "O+_BVM_RLOOP_CURRENT",
+    "condition": "O+",
+    "input": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv",
+    "output": "plots/runs/O+/BVM_RLOOP_CURRENT.html",
+    "subset": [
+      "I(L_M3|XBVM1)",
+      "I(L_M3|XBVM2)",
+      "I(L_M3|XBVM3)",
+      "I(L_M3|XBVM4)",
+      "I(L_PM|XBVM1)",
+      "I(L_PM|XBVM2)",
+      "I(L_PM|XBVM3)",
+      "I(L_PM|XBVM4)"
+    ],
+    "title": "O+ OLD-WITH-HISTORY — BVM_RLOOP_CURRENT"
+  },
+  {
+    "phase": "standalone",
+    "name": "O+_BVM_RLOOP_VOLTAGE",
+    "condition": "O+",
+    "input": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv",
+    "output": "plots/runs/O+/BVM_RLOOP_VOLTAGE.html",
+    "subset": [
+      "V(B_JM1|XBVM1)",
+      "V(B_JM1|XBVM2)",
+      "V(B_JM1|XBVM3)",
+      "V(B_JM1|XBVM4)",
+      "V(B_JM2|XBVM1)",
+      "V(B_JM2|XBVM2)",
+      "V(B_JM2|XBVM3)",
+      "V(B_JM2|XBVM4)"
+    ],
+    "title": "O+ OLD-WITH-HISTORY — BVM_RLOOP_VOLTAGE"
+  },
+  {
+    "phase": "standalone",
+    "name": "O+_BVM_SENSING",
+    "condition": "O+",
+    "input": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv",
+    "output": "plots/runs/O+/BVM_SENSING.html",
+    "subset": [
+      "I(L_SL|XBVM1)",
+      "I(L_SL|XBVM2)",
+      "I(L_SL|XBVM3)",
+      "I(L_SL|XBVM4)",
+      "V(SL1)",
+      "V(SL2)",
+      "V(SL3)",
+      "V(SL4)"
+    ],
+    "title": "O+ OLD-WITH-HISTORY — BVM_SENSING"
+  },
+  {
+    "phase": "standalone",
+    "name": "O+_BVMOUT_QB_INPUT",
+    "condition": "O+",
+    "input": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv",
+    "output": "plots/runs/O+/BVMOUT_QB_INPUT.html",
+    "subset": [
+      "P(BVMOUT)",
+      "V(BVMOUT)",
+      "I(BVMOUT)",
+      "V(QBIN)",
+      "I(LIN|XBQ1)",
+      "V(QBOUT)"
+    ],
+    "title": "O+ OLD-WITH-HISTORY — BVMOUT_QB_INPUT"
+  },
+  {
+    "phase": "standalone",
+    "name": "O+_QB_INTERNAL",
+    "condition": "O+",
+    "input": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv",
+    "output": "plots/runs/O+/QB_INTERNAL.html",
+    "subset": [
+      "P(BJS|XBQ1)",
+      "P(BJ1|XBQ1)",
+      "P(BJ2|XBQ1)",
+      "V(BJ2|XBQ1)",
+      "I(L1|XBQ1)",
+      "I(L2|XBQ1)"
+    ],
+    "title": "O+ OLD-WITH-HISTORY — QB_INTERNAL"
+  },
+  {
+    "phase": "standalone",
+    "name": "O+_JTL_TRANSPORT",
+    "condition": "O+",
+    "input": "test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv",
+    "output": "plots/runs/O+/JTL_TRANSPORT.html",
+    "subset": [
+      "P(B02|XJTL1_1)",
+      "P(B02|XJTL1_2)",
+      "P(B02|XJTL1_3)",
+      "P(B02|XJTL1_4)",
+      "P(B02|XJTL1_5)",
+      "P(B02|XJTL1_6)"
+    ],
+    "title": "O+ OLD-WITH-HISTORY — JTL_TRANSPORT"
+  },
+  {
+    "phase": "standalone",
+    "name": "O-_BVM_INTERNAL_STATE",
+    "condition": "O-",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv",
+    "output": "plots/runs/O-/BVM_INTERNAL_STATE.html",
+    "subset": [
+      "P(B_JM1|XBVM1)",
+      "P(B_JM1|XBVM2)",
+      "P(B_JM1|XBVM3)",
+      "P(B_JM1|XBVM4)",
+      "P(B_JM2|XBVM1)",
+      "P(B_JM2|XBVM2)",
+      "P(B_JM2|XBVM3)",
+      "P(B_JM2|XBVM4)"
+    ],
+    "title": "O- OLD-NO-HISTORY — BVM_INTERNAL_STATE"
+  },
+  {
+    "phase": "standalone",
+    "name": "O-_BVM_RLOOP_CURRENT",
+    "condition": "O-",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv",
+    "output": "plots/runs/O-/BVM_RLOOP_CURRENT.html",
+    "subset": [
+      "I(L_M3|XBVM1)",
+      "I(L_M3|XBVM2)",
+      "I(L_M3|XBVM3)",
+      "I(L_M3|XBVM4)",
+      "I(L_PM|XBVM1)",
+      "I(L_PM|XBVM2)",
+      "I(L_PM|XBVM3)",
+      "I(L_PM|XBVM4)"
+    ],
+    "title": "O- OLD-NO-HISTORY — BVM_RLOOP_CURRENT"
+  },
+  {
+    "phase": "standalone",
+    "name": "O-_BVM_RLOOP_VOLTAGE",
+    "condition": "O-",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv",
+    "output": "plots/runs/O-/BVM_RLOOP_VOLTAGE.html",
+    "subset": [
+      "V(B_JM1|XBVM1)",
+      "V(B_JM1|XBVM2)",
+      "V(B_JM1|XBVM3)",
+      "V(B_JM1|XBVM4)",
+      "V(B_JM2|XBVM1)",
+      "V(B_JM2|XBVM2)",
+      "V(B_JM2|XBVM3)",
+      "V(B_JM2|XBVM4)"
+    ],
+    "title": "O- OLD-NO-HISTORY — BVM_RLOOP_VOLTAGE"
+  },
+  {
+    "phase": "standalone",
+    "name": "O-_BVM_SENSING",
+    "condition": "O-",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv",
+    "output": "plots/runs/O-/BVM_SENSING.html",
+    "subset": [
+      "I(L_SL|XBVM1)",
+      "I(L_SL|XBVM2)",
+      "I(L_SL|XBVM3)",
+      "I(L_SL|XBVM4)",
+      "V(SL1)",
+      "V(SL2)",
+      "V(SL3)",
+      "V(SL4)"
+    ],
+    "title": "O- OLD-NO-HISTORY — BVM_SENSING"
+  },
+  {
+    "phase": "standalone",
+    "name": "O-_BVMOUT_QB_INPUT",
+    "condition": "O-",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv",
+    "output": "plots/runs/O-/BVMOUT_QB_INPUT.html",
+    "subset": [
+      "P(BVMOUT)",
+      "V(BVMOUT)",
+      "I(BVMOUT)",
+      "V(QBIN)",
+      "I(LIN|XBQ1)",
+      "V(QBOUT)"
+    ],
+    "title": "O- OLD-NO-HISTORY — BVMOUT_QB_INPUT"
+  },
+  {
+    "phase": "standalone",
+    "name": "O-_QB_INTERNAL",
+    "condition": "O-",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv",
+    "output": "plots/runs/O-/QB_INTERNAL.html",
+    "subset": [
+      "P(BJS|XBQ1)",
+      "P(BJ1|XBQ1)",
+      "P(BJ2|XBQ1)",
+      "V(BJ2|XBQ1)",
+      "I(L1|XBQ1)",
+      "I(L2|XBQ1)"
+    ],
+    "title": "O- OLD-NO-HISTORY — QB_INTERNAL"
+  },
+  {
+    "phase": "standalone",
+    "name": "O-_JTL_TRANSPORT",
+    "condition": "O-",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv",
+    "output": "plots/runs/O-/JTL_TRANSPORT.html",
+    "subset": [
+      "P(B02|XJTL1_1)",
+      "P(B02|XJTL1_2)",
+      "P(B02|XJTL1_3)",
+      "P(B02|XJTL1_4)",
+      "P(B02|XJTL1_5)",
+      "P(B02|XJTL1_6)"
+    ],
+    "title": "O- OLD-NO-HISTORY — JTL_TRANSPORT"
+  },
+  {
+    "phase": "standalone",
+    "name": "N-_BVM_INTERNAL_STATE",
+    "condition": "N-",
+    "input": "test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv",
+    "output": "plots/runs/N-/BVM_INTERNAL_STATE.html",
+    "subset": [
+      "P(B_JM1|XBVM1)",
+      "P(B_JM1|XBVM2)",
+      "P(B_JM1|XBVM3)",
+      "P(B_JM1|XBVM4)",
+      "P(B_JM2|XBVM1)",
+      "P(B_JM2|XBVM2)",
+      "P(B_JM2|XBVM3)",
+      "P(B_JM2|XBVM4)"
+    ],
+    "title": "N- NEW-NO-HISTORY — BVM_INTERNAL_STATE"
+  },
+  {
+    "phase": "standalone",
+    "name": "N-_BVM_RLOOP_CURRENT",
+    "condition": "N-",
+    "input": "test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv",
+    "output": "plots/runs/N-/BVM_RLOOP_CURRENT.html",
+    "subset": [
+      "I(L_M3|XBVM1)",
+      "I(L_M3|XBVM2)",
+      "I(L_M3|XBVM3)",
+      "I(L_M3|XBVM4)",
+      "I(L_PM|XBVM1)",
+      "I(L_PM|XBVM2)",
+      "I(L_PM|XBVM3)",
+      "I(L_PM|XBVM4)"
+    ],
+    "title": "N- NEW-NO-HISTORY — BVM_RLOOP_CURRENT"
+  },
+  {
+    "phase": "standalone",
+    "name": "N-_BVM_RLOOP_VOLTAGE",
+    "condition": "N-",
+    "input": "test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv",
+    "output": "plots/runs/N-/BVM_RLOOP_VOLTAGE.html",
+    "subset": [
+      "V(B_JM1|XBVM1)",
+      "V(B_JM1|XBVM2)",
+      "V(B_JM1|XBVM3)",
+      "V(B_JM1|XBVM4)",
+      "V(B_JM2|XBVM1)",
+      "V(B_JM2|XBVM2)",
+      "V(B_JM2|XBVM3)",
+      "V(B_JM2|XBVM4)"
+    ],
+    "title": "N- NEW-NO-HISTORY — BVM_RLOOP_VOLTAGE"
+  },
+  {
+    "phase": "standalone",
+    "name": "N-_BVM_SENSING",
+    "condition": "N-",
+    "input": "test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv",
+    "output": "plots/runs/N-/BVM_SENSING.html",
+    "subset": [
+      "I(L_SL|XBVM1)",
+      "I(L_SL|XBVM2)",
+      "I(L_SL|XBVM3)",
+      "I(L_SL|XBVM4)",
+      "V(SL1)",
+      "V(SL2)",
+      "V(SL3)",
+      "V(SL4)"
+    ],
+    "title": "N- NEW-NO-HISTORY — BVM_SENSING"
+  },
+  {
+    "phase": "standalone",
+    "name": "N-_BVMOUT_QB_INPUT",
+    "condition": "N-",
+    "input": "test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv",
+    "output": "plots/runs/N-/BVMOUT_QB_INPUT.html",
+    "subset": [
+      "P(BVMOUT)",
+      "V(BVMOUT)",
+      "I(BVMOUT)",
+      "V(QBIN)",
+      "I(LIN|XBQ1)",
+      "V(QBOUT)"
+    ],
+    "title": "N- NEW-NO-HISTORY — BVMOUT_QB_INPUT"
+  },
+  {
+    "phase": "standalone",
+    "name": "N-_QB_INTERNAL",
+    "condition": "N-",
+    "input": "test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv",
+    "output": "plots/runs/N-/QB_INTERNAL.html",
+    "subset": [
+      "P(BJS|XBQ1)",
+      "P(BJ1|XBQ1)",
+      "P(BJ2|XBQ1)",
+      "V(BJ2|XBQ1)",
+      "I(L1|XBQ1)",
+      "I(L2|XBQ1)"
+    ],
+    "title": "N- NEW-NO-HISTORY — QB_INTERNAL"
+  },
+  {
+    "phase": "standalone",
+    "name": "N-_JTL_TRANSPORT",
+    "condition": "N-",
+    "input": "test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv",
+    "output": "plots/runs/N-/JTL_TRANSPORT.html",
+    "subset": [
+      "P(B02|XJTL1_1)",
+      "P(B02|XJTL1_2)",
+      "P(B02|XJTL1_3)",
+      "P(B02|XJTL1_4)",
+      "P(B02|XJTL1_5)",
+      "P(B02|XJTL1_6)"
+    ],
+    "title": "N- NEW-NO-HISTORY — JTL_TRANSPORT"
+  },
+  {
+    "phase": "standalone",
+    "name": "N+_BVM_INTERNAL_STATE",
+    "condition": "N+",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv",
+    "output": "plots/runs/N+/BVM_INTERNAL_STATE.html",
+    "subset": [
+      "P(B_JM1|XBVM1)",
+      "P(B_JM1|XBVM2)",
+      "P(B_JM1|XBVM3)",
+      "P(B_JM1|XBVM4)",
+      "P(B_JM2|XBVM1)",
+      "P(B_JM2|XBVM2)",
+      "P(B_JM2|XBVM3)",
+      "P(B_JM2|XBVM4)"
+    ],
+    "title": "N+ NEW-WITH-HISTORY — BVM_INTERNAL_STATE"
+  },
+  {
+    "phase": "standalone",
+    "name": "N+_BVM_RLOOP_CURRENT",
+    "condition": "N+",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv",
+    "output": "plots/runs/N+/BVM_RLOOP_CURRENT.html",
+    "subset": [
+      "I(L_M3|XBVM1)",
+      "I(L_M3|XBVM2)",
+      "I(L_M3|XBVM3)",
+      "I(L_M3|XBVM4)",
+      "I(L_PM|XBVM1)",
+      "I(L_PM|XBVM2)",
+      "I(L_PM|XBVM3)",
+      "I(L_PM|XBVM4)"
+    ],
+    "title": "N+ NEW-WITH-HISTORY — BVM_RLOOP_CURRENT"
+  },
+  {
+    "phase": "standalone",
+    "name": "N+_BVM_RLOOP_VOLTAGE",
+    "condition": "N+",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv",
+    "output": "plots/runs/N+/BVM_RLOOP_VOLTAGE.html",
+    "subset": [
+      "V(B_JM1|XBVM1)",
+      "V(B_JM1|XBVM2)",
+      "V(B_JM1|XBVM3)",
+      "V(B_JM1|XBVM4)",
+      "V(B_JM2|XBVM1)",
+      "V(B_JM2|XBVM2)",
+      "V(B_JM2|XBVM3)",
+      "V(B_JM2|XBVM4)"
+    ],
+    "title": "N+ NEW-WITH-HISTORY — BVM_RLOOP_VOLTAGE"
+  },
+  {
+    "phase": "standalone",
+    "name": "N+_BVM_SENSING",
+    "condition": "N+",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv",
+    "output": "plots/runs/N+/BVM_SENSING.html",
+    "subset": [
+      "I(L_SL|XBVM1)",
+      "I(L_SL|XBVM2)",
+      "I(L_SL|XBVM3)",
+      "I(L_SL|XBVM4)",
+      "V(SL1)",
+      "V(SL2)",
+      "V(SL3)",
+      "V(SL4)"
+    ],
+    "title": "N+ NEW-WITH-HISTORY — BVM_SENSING"
+  },
+  {
+    "phase": "standalone",
+    "name": "N+_BVMOUT_QB_INPUT",
+    "condition": "N+",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv",
+    "output": "plots/runs/N+/BVMOUT_QB_INPUT.html",
+    "subset": [
+      "P(BVMOUT)",
+      "V(BVMOUT)",
+      "I(BVMOUT)",
+      "V(QBIN)",
+      "I(LIN|XBQ1)",
+      "V(QBOUT)"
+    ],
+    "title": "N+ NEW-WITH-HISTORY — BVMOUT_QB_INPUT"
+  },
+  {
+    "phase": "standalone",
+    "name": "N+_QB_INTERNAL",
+    "condition": "N+",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv",
+    "output": "plots/runs/N+/QB_INTERNAL.html",
+    "subset": [
+      "P(BJS|XBQ1)",
+      "P(BJ1|XBQ1)",
+      "P(BJ2|XBQ1)",
+      "V(BJ2|XBQ1)",
+      "I(L1|XBQ1)",
+      "I(L2|XBQ1)"
+    ],
+    "title": "N+ NEW-WITH-HISTORY — QB_INTERNAL"
+  },
+  {
+    "phase": "standalone",
+    "name": "N+_JTL_TRANSPORT",
+    "condition": "N+",
+    "input": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv",
+    "output": "plots/runs/N+/JTL_TRANSPORT.html",
+    "subset": [
+      "P(B02|XJTL1_1)",
+      "P(B02|XJTL1_2)",
+      "P(B02|XJTL1_3)",
+      "P(B02|XJTL1_4)",
+      "P(B02|XJTL1_5)",
+      "P(B02|XJTL1_6)"
+    ],
+    "title": "N+ NEW-WITH-HISTORY — JTL_TRANSPORT"
+  },
+  {
+    "phase": "comparison",
+    "name": "HISTORY_CONTROL_2X2",
+    "input": "analysis/plot_inputs/HISTORY_CONTROL_2X2.csv",
+    "output": "plots/comparison/HISTORY_CONTROL_2X2.html",
+    "subset": [
+      "I(O+::I(I_WL1))",
+      "I(O+::I(I_BL1))",
+      "I(O+::I(I_SE1))",
+      "I(O-::I(I_WL1))",
+      "I(O-::I(I_BL1))",
+      "I(O-::I(I_SE1))",
+      "I(N-::I(I_WL1))",
+      "I(N-::I(I_BL1))",
+      "I(N-::I(I_SE1))",
+      "I(N+::I(I_WL1))",
+      "I(N+::I(I_BL1))",
+      "I(N+::I(I_SE1))"
+    ],
+    "title": "HISTORY_READ crossover — BVM1 WL / BL / SE controls — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "PRE_READ1_LM3_2X2",
+    "input": "analysis/plot_inputs/PRE_READ1_LM3_2X2.csv",
+    "output": "plots/comparison/PRE_READ1_LM3_2X2.html",
+    "subset": [
+      "I(O+::I(L_M3|XBVM1))",
+      "I(O-::I(L_M3|XBVM1))",
+      "I(N-::I(L_M3|XBVM1))",
+      "I(N+::I(L_M3|XBVM1))",
+      "I(O+::I(L_M3|XBVM2))",
+      "I(O-::I(L_M3|XBVM2))",
+      "I(N-::I(L_M3|XBVM2))",
+      "I(N+::I(L_M3|XBVM2))",
+      "I(O+::I(L_M3|XBVM3))",
+      "I(O-::I(L_M3|XBVM3))",
+      "I(N-::I(L_M3|XBVM3))",
+      "I(N+::I(L_M3|XBVM3))",
+      "I(O+::I(L_M3|XBVM4))",
+      "I(O-::I(L_M3|XBVM4))",
+      "I(N-::I(L_M3|XBVM4))",
+      "I(N+::I(L_M3|XBVM4))"
+    ],
+    "title": "PRE_READ1 LM3 crossover — all BVMs — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "PRE_READ1_STATE_VECTOR_2X2",
+    "input": "analysis/plot_inputs/PRE_READ1_STATE_VECTOR_2X2.csv",
+    "output": "plots/comparison/PRE_READ1_STATE_VECTOR_2X2.html",
+    "subset": [
+      "P(O+::P(B_JM1|XBVM1))",
+      "P(O-::P(B_JM1|XBVM1))",
+      "P(N-::P(B_JM1|XBVM1))",
+      "P(N+::P(B_JM1|XBVM1))",
+      "P(O+::P(B_JM2|XBVM1))",
+      "P(O-::P(B_JM2|XBVM1))",
+      "P(N-::P(B_JM2|XBVM1))",
+      "P(N+::P(B_JM2|XBVM1))",
+      "P(O+::P(B_JM1|XBVM2))",
+      "P(O-::P(B_JM1|XBVM2))",
+      "P(N-::P(B_JM1|XBVM2))",
+      "P(N+::P(B_JM1|XBVM2))",
+      "P(O+::P(B_JM2|XBVM2))",
+      "P(O-::P(B_JM2|XBVM2))",
+      "P(N-::P(B_JM2|XBVM2))",
+      "P(N+::P(B_JM2|XBVM2))",
+      "P(O+::P(B_JM1|XBVM3))",
+      "P(O-::P(B_JM1|XBVM3))",
+      "P(N-::P(B_JM1|XBVM3))",
+      "P(N+::P(B_JM1|XBVM3))",
+      "P(O+::P(B_JM2|XBVM3))",
+      "P(O-::P(B_JM2|XBVM3))",
+      "P(N-::P(B_JM2|XBVM3))",
+      "P(N+::P(B_JM2|XBVM3))",
+      "P(O+::P(B_JM1|XBVM4))",
+      "P(O-::P(B_JM1|XBVM4))",
+      "P(N-::P(B_JM1|XBVM4))",
+      "P(N+::P(B_JM1|XBVM4))",
+      "P(O+::P(B_JM2|XBVM4))",
+      "P(O-::P(B_JM2|XBVM4))",
+      "P(N-::P(B_JM2|XBVM4))",
+      "P(N+::P(B_JM2|XBVM4))"
+    ],
+    "title": "PRE_READ1 BVM JM1/JM2 phase state — four conditions"
+  },
+  {
+    "phase": "comparison",
+    "name": "BVM1_LSL_CROSSOVER",
+    "input": "analysis/plot_inputs/BVM1_LSL_CROSSOVER.csv",
+    "output": "plots/comparison/BVM1_LSL_CROSSOVER.html",
+    "subset": [
+      "I(O+::I(L_SL|XBVM1))",
+      "I(O-::I(L_SL|XBVM1))",
+      "I(N-::I(L_SL|XBVM1))",
+      "I(N+::I(L_SL|XBVM1))"
+    ],
+    "title": "BVM1 LSL output crossover — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "BVM2_LSL_CROSSOVER",
+    "input": "analysis/plot_inputs/BVM2_LSL_CROSSOVER.csv",
+    "output": "plots/comparison/BVM2_LSL_CROSSOVER.html",
+    "subset": [
+      "I(O+::I(L_SL|XBVM2))",
+      "I(O-::I(L_SL|XBVM2))",
+      "I(N-::I(L_SL|XBVM2))",
+      "I(N+::I(L_SL|XBVM2))"
+    ],
+    "title": "BVM2 LSL output crossover — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "BVM3_LSL_CROSSOVER",
+    "input": "analysis/plot_inputs/BVM3_LSL_CROSSOVER.csv",
+    "output": "plots/comparison/BVM3_LSL_CROSSOVER.html",
+    "subset": [
+      "I(O+::I(L_SL|XBVM3))",
+      "I(O-::I(L_SL|XBVM3))",
+      "I(N-::I(L_SL|XBVM3))",
+      "I(N+::I(L_SL|XBVM3))"
+    ],
+    "title": "BVM3 LSL output crossover — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "BVM4_LSL_CROSSOVER",
+    "input": "analysis/plot_inputs/BVM4_LSL_CROSSOVER.csv",
+    "output": "plots/comparison/BVM4_LSL_CROSSOVER.html",
+    "subset": [
+      "I(O+::I(L_SL|XBVM4))",
+      "I(O-::I(L_SL|XBVM4))",
+      "I(N-::I(L_SL|XBVM4))",
+      "I(N+::I(L_SL|XBVM4))"
+    ],
+    "title": "BVM4 LSL output crossover — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "TOTAL_BVM_OUTPUT_VS_LIN",
+    "input": "analysis/plot_inputs/TOTAL_BVM_OUTPUT_VS_LIN.csv",
+    "output": "plots/comparison/TOTAL_BVM_OUTPUT_VS_LIN.html",
+    "subset": [
+      "I(SUM_LSL|O+)",
+      "I(SUM_LSL|O-)",
+      "I(SUM_LSL|N-)",
+      "I(SUM_LSL|N+)",
+      "I(O+::I(LIN|XBQ1))",
+      "I(O-::I(LIN|XBQ1))",
+      "I(N-::I(LIN|XBQ1))",
+      "I(N+::I(LIN|XBQ1))"
+    ],
+    "title": "Σ BVM LSL output versus LIN — four-condition crossover"
+  },
+  {
+    "phase": "comparison",
+    "name": "QBIN_LIN_CROSSOVER",
+    "input": "analysis/plot_inputs/QBIN_LIN_CROSSOVER.csv",
+    "output": "plots/comparison/QBIN_LIN_CROSSOVER.html",
+    "subset": [
+      "V(O+::V(QBIN))",
+      "V(O-::V(QBIN))",
+      "V(N-::V(QBIN))",
+      "V(N+::V(QBIN))",
+      "I(O+::I(LIN|XBQ1))",
+      "I(O-::I(LIN|XBQ1))",
+      "I(N-::I(LIN|XBQ1))",
+      "I(N+::I(LIN|XBQ1))"
+    ],
+    "title": "QBIN and LIN crossover — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "BJ2_CROSSOVER_4CONDITION",
+    "input": "analysis/plot_inputs/BJ2_CROSSOVER_4CONDITION.csv",
+    "output": "plots/comparison/BJ2_CROSSOVER_4CONDITION.html",
+    "subset": [
+      "P(O+::P(BJ2|XBQ1))",
+      "P(O-::P(BJ2|XBQ1))",
+      "P(N-::P(BJ2|XBQ1))",
+      "P(N+::P(BJ2|XBQ1))",
+      "V(O+::V(BJ2|XBQ1))",
+      "V(O-::V(BJ2|XBQ1))",
+      "V(N-::V(BJ2|XBQ1))",
+      "V(N+::V(BJ2|XBQ1))"
+    ],
+    "title": "QB BJ2 trajectory crossover — phase and voltage — O+ O- N- N+"
+  },
+  {
+    "phase": "comparison",
+    "name": "BJ2_CROSSING_TIMELINE_2X2",
+    "input": "analysis/plot_inputs/BJ2_CROSSING_TIMELINE_2X2.csv",
+    "output": "plots/comparison/BJ2_CROSSING_TIMELINE_2X2.html",
+    "subset": [
+      "P(O+::P(BJ2|XBQ1))",
+      "P(O-::P(BJ2|XBQ1))",
+      "P(N-::P(BJ2|XBQ1))",
+      "P(N+::P(BJ2|XBQ1))"
+    ],
+    "title": "BJ2 integer-crossing timeline markers — not SFQ count"
+  },
+  {
+    "phase": "comparison",
+    "name": "HISTORY_GROUPING_VS_CONTEXT_GROUPING",
+    "input": "analysis/plot_inputs/HISTORY_GROUPING_VS_CONTEXT_GROUPING.csv",
+    "output": "plots/comparison/HISTORY_GROUPING_VS_CONTEXT_GROUPING.html",
+    "subset": [
+      "P(|O+_vs_N+|::P(B_JM2|XBVM1))",
+      "P(|O-_vs_N-|::P(B_JM2|XBVM1))",
+      "P(|O+_vs_O-|::P(B_JM2|XBVM1))",
+      "P(|N+_vs_N-|::P(B_JM2|XBVM1))",
+      "I(|O+_vs_N+|::I(L_M3|XBVM1))",
+      "I(|O-_vs_N-|::I(L_M3|XBVM1))",
+      "I(|O+_vs_O-|::I(L_M3|XBVM1))",
+      "I(|N+_vs_N-|::I(L_M3|XBVM1))",
+      "I(|O+_vs_N+|::I(L_SL|XBVM1))",
+      "I(|O-_vs_N-|::I(L_SL|XBVM1))",
+      "I(|O+_vs_O-|::I(L_SL|XBVM1))",
+      "I(|N+_vs_N-|::I(L_SL|XBVM1))",
+      "I(|O+_vs_N+|::I(LIN|XBQ1))",
+      "I(|O-_vs_N-|::I(LIN|XBQ1))",
+      "I(|O+_vs_O-|::I(LIN|XBQ1))",
+      "I(|N+_vs_N-|::I(LIN|XBQ1))",
+      "V(|O+_vs_N+|::V(QBIN))",
+      "V(|O-_vs_N-|::V(QBIN))",
+      "V(|O+_vs_O-|::V(QBIN))",
+      "V(|N+_vs_N-|::V(QBIN))",
+      "P(|O+_vs_N+|::P(BJ2|XBQ1))",
+      "P(|O-_vs_N-|::P(BJ2|XBQ1))",
+      "P(|O+_vs_O-|::P(BJ2|XBQ1))",
+      "P(|N+_vs_N-|::P(BJ2|XBQ1))"
+    ],
+    "title": "Pairwise waveform distances — history pairs versus context pairs (no aggregate score)"
+  }
+]

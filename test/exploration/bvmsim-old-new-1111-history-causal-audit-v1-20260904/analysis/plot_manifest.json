@@ -1,0 +1,450 @@
+[
+  {
+    "name": "OLD_NEW_PROTOCOL_CONTROL",
+    "input": "analysis/plot_inputs/OLD_NEW_PROTOCOL_CONTROL.csv",
+    "output": "plots/OLD_NEW_PROTOCOL_CONTROL.html",
+    "title": "OLD vs NEW 1111 — protocol controls and the 70–81 ps history intervention",
+    "bounds_ps": [
+      45.0,
+      121.0
+    ],
+    "signals": [
+      "I(I_WL1) [OLD]",
+      "I(I_WL1) [NEW]",
+      "I(I_BL1) [OLD]",
+      "I(I_BL1) [NEW]",
+      "I(I_SE1) [OLD]",
+      "I(I_SE1) [NEW]",
+      "I(I_WL2) [OLD]",
+      "I(I_WL2) [NEW]",
+      "I(I_BL2) [OLD]",
+      "I(I_BL2) [NEW]",
+      "I(I_SE2) [OLD]",
+      "I(I_SE2) [NEW]",
+      "I(I_WL3) [OLD]",
+      "I(I_WL3) [NEW]",
+      "I(I_BL3) [OLD]",
+      "I(I_BL3) [NEW]",
+      "I(I_SE3) [OLD]",
+      "I(I_SE3) [NEW]",
+      "I(I_WL4) [OLD]",
+      "I(I_WL4) [NEW]",
+      "I(I_BL4) [OLD]",
+      "I(I_BL4) [NEW]",
+      "I(I_SE4) [OLD]",
+      "I(I_SE4) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "PRE70_PARITY",
+    "input": "analysis/plot_inputs/PRE70_PARITY.csv",
+    "output": "plots/PRE70_PARITY.html",
+    "title": "OLD vs NEW 1111 — exact common-grid parity before 70 ps",
+    "bounds_ps": [
+      45.0,
+      70.0
+    ],
+    "signals": [
+      "I(I_WL1) [OLD]",
+      "I(I_WL1) [NEW]",
+      "I(I_SE1) [OLD]",
+      "I(I_SE1) [NEW]",
+      "P(B_JM1|XBVM1) [OLD]",
+      "P(B_JM1|XBVM1) [NEW]",
+      "P(B_JM2|XBVM1) [OLD]",
+      "P(B_JM2|XBVM1) [NEW]",
+      "P(B_JS1|XBVM1) [OLD]",
+      "P(B_JS1|XBVM1) [NEW]",
+      "V(SL1) [OLD]",
+      "V(SL1) [NEW]",
+      "P(BVMOUT) [OLD]",
+      "P(BVMOUT) [NEW]",
+      "V(QBIN) [OLD]",
+      "V(QBIN) [NEW]",
+      "I(LIN|XBQ1) [OLD]",
+      "I(LIN|XBQ1) [NEW]",
+      "P(BJ2|XBQ1) [OLD]",
+      "P(BJ2|XBQ1) [NEW]",
+      "P(B01|XJTL1_1) [OLD]",
+      "P(B01|XJTL1_1) [NEW]",
+      "P(B02|XJTL1_6) [OLD]",
+      "P(B02|XJTL1_6) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "READ0_HISTORY_DIVERGENCE_BVM",
+    "input": "analysis/plot_inputs/READ0_HISTORY_DIVERGENCE_BVM.csv",
+    "output": "plots/READ0_HISTORY_DIVERGENCE_BVM.html",
+    "title": "OLD vs NEW 1111 — BVM/SL response to the READ0 history",
+    "bounds_ps": [
+      70.0,
+      90.0
+    ],
+    "signals": [
+      "P(B_JM1|XBVM1) [OLD]",
+      "P(B_JM1|XBVM1) [NEW]",
+      "P(B_JM2|XBVM1) [OLD]",
+      "P(B_JM2|XBVM1) [NEW]",
+      "P(B_JM1|XBVM2) [OLD]",
+      "P(B_JM1|XBVM2) [NEW]",
+      "P(B_JM2|XBVM2) [OLD]",
+      "P(B_JM2|XBVM2) [NEW]",
+      "P(B_JM1|XBVM3) [OLD]",
+      "P(B_JM1|XBVM3) [NEW]",
+      "P(B_JM2|XBVM3) [OLD]",
+      "P(B_JM2|XBVM3) [NEW]",
+      "P(B_JM1|XBVM4) [OLD]",
+      "P(B_JM1|XBVM4) [NEW]",
+      "P(B_JM2|XBVM4) [OLD]",
+      "P(B_JM2|XBVM4) [NEW]",
+      "I(L_M3|XBVM1) [OLD]",
+      "I(L_M3|XBVM1) [NEW]",
+      "I(L_M3|XBVM2) [OLD]",
+      "I(L_M3|XBVM2) [NEW]",
+      "I(L_M3|XBVM3) [OLD]",
+      "I(L_M3|XBVM3) [NEW]",
+      "I(L_M3|XBVM4) [OLD]",
+      "I(L_M3|XBVM4) [NEW]",
+      "V(SL1) [OLD]",
+      "V(SL1) [NEW]",
+      "V(SL2) [OLD]",
+      "V(SL2) [NEW]",
+      "V(SL3) [OLD]",
+      "V(SL3) [NEW]",
+      "V(SL4) [OLD]",
+      "V(SL4) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "WRITE1_HISTORY_DEPENDENCE",
+    "input": "analysis/plot_inputs/WRITE1_HISTORY_DEPENDENCE.csv",
+    "output": "plots/WRITE1_HISTORY_DEPENDENCE.html",
+    "title": "OLD vs NEW 1111 — same WRITE1 input from different history",
+    "bounds_ps": [
+      90.0,
+      101.0
+    ],
+    "signals": [
+      "P(B_JM1|XBVM1) [OLD]",
+      "P(B_JM1|XBVM1) [NEW]",
+      "P(B_JM2|XBVM1) [OLD]",
+      "P(B_JM2|XBVM1) [NEW]",
+      "P(B_JM1|XBVM2) [OLD]",
+      "P(B_JM1|XBVM2) [NEW]",
+      "P(B_JM2|XBVM2) [OLD]",
+      "P(B_JM2|XBVM2) [NEW]",
+      "P(B_JM1|XBVM3) [OLD]",
+      "P(B_JM1|XBVM3) [NEW]",
+      "P(B_JM2|XBVM3) [OLD]",
+      "P(B_JM2|XBVM3) [NEW]",
+      "P(B_JM1|XBVM4) [OLD]",
+      "P(B_JM1|XBVM4) [NEW]",
+      "P(B_JM2|XBVM4) [OLD]",
+      "P(B_JM2|XBVM4) [NEW]",
+      "I(L_M3|XBVM1) [OLD]",
+      "I(L_M3|XBVM1) [NEW]",
+      "I(L_M3|XBVM2) [OLD]",
+      "I(L_M3|XBVM2) [NEW]",
+      "I(L_M3|XBVM3) [OLD]",
+      "I(L_M3|XBVM3) [NEW]",
+      "I(L_M3|XBVM4) [OLD]",
+      "I(L_M3|XBVM4) [NEW]",
+      "P(B_JS1|XBVM1) [OLD]",
+      "P(B_JS1|XBVM1) [NEW]",
+      "P(B_JS1|XBVM2) [OLD]",
+      "P(B_JS1|XBVM2) [NEW]",
+      "P(B_JS1|XBVM3) [OLD]",
+      "P(B_JS1|XBVM3) [NEW]",
+      "P(B_JS1|XBVM4) [OLD]",
+      "P(B_JS1|XBVM4) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "PRE_READ1_STATE_COMPARISON",
+    "input": "analysis/plot_inputs/PRE_READ1_STATE_COMPARISON.csv",
+    "output": "plots/PRE_READ1_STATE_COMPARISON.html",
+    "title": "OLD vs NEW 1111 — residual state immediately before READ1",
+    "bounds_ps": [
+      101.0,
+      110.0
+    ],
+    "signals": [
+      "P(B_JM1|XBVM1) [OLD]",
+      "P(B_JM1|XBVM1) [NEW]",
+      "P(B_JM2|XBVM1) [OLD]",
+      "P(B_JM2|XBVM1) [NEW]",
+      "P(B_JM1|XBVM2) [OLD]",
+      "P(B_JM1|XBVM2) [NEW]",
+      "P(B_JM2|XBVM2) [OLD]",
+      "P(B_JM2|XBVM2) [NEW]",
+      "P(B_JM1|XBVM3) [OLD]",
+      "P(B_JM1|XBVM3) [NEW]",
+      "P(B_JM2|XBVM3) [OLD]",
+      "P(B_JM2|XBVM3) [NEW]",
+      "P(B_JM1|XBVM4) [OLD]",
+      "P(B_JM1|XBVM4) [NEW]",
+      "P(B_JM2|XBVM4) [OLD]",
+      "P(B_JM2|XBVM4) [NEW]",
+      "I(L_M3|XBVM1) [OLD]",
+      "I(L_M3|XBVM1) [NEW]",
+      "I(L_M3|XBVM2) [OLD]",
+      "I(L_M3|XBVM2) [NEW]",
+      "I(L_M3|XBVM3) [OLD]",
+      "I(L_M3|XBVM3) [NEW]",
+      "I(L_M3|XBVM4) [OLD]",
+      "I(L_M3|XBVM4) [NEW]",
+      "V(SL1) [OLD]",
+      "V(SL1) [NEW]",
+      "V(SL2) [OLD]",
+      "V(SL2) [NEW]",
+      "V(SL3) [OLD]",
+      "V(SL3) [NEW]",
+      "V(SL4) [OLD]",
+      "V(SL4) [NEW]",
+      "P(BVMOUT) [OLD]",
+      "P(BVMOUT) [NEW]",
+      "V(QBIN) [OLD]",
+      "V(QBIN) [NEW]",
+      "I(LIN|XBQ1) [OLD]",
+      "I(LIN|XBQ1) [NEW]",
+      "P(BJS|XBQ1) [OLD]",
+      "P(BJS|XBQ1) [NEW]",
+      "P(BJ1|XBQ1) [OLD]",
+      "P(BJ1|XBQ1) [NEW]",
+      "P(BJ2|XBQ1) [OLD]",
+      "P(BJ2|XBQ1) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "READ1_QBIN_LIN_COMPARISON",
+    "input": "analysis/plot_inputs/READ1_QBIN_LIN_COMPARISON.csv",
+    "output": "plots/READ1_QBIN_LIN_COMPARISON.html",
+    "title": "OLD vs NEW 1111 — READ1 input and QB trajectory onset",
+    "bounds_ps": [
+      110.0,
+      121.0
+    ],
+    "signals": [
+      "V(SL1) [OLD]",
+      "V(SL1) [NEW]",
+      "V(SL2) [OLD]",
+      "V(SL2) [NEW]",
+      "V(SL3) [OLD]",
+      "V(SL3) [NEW]",
+      "V(SL4) [OLD]",
+      "V(SL4) [NEW]",
+      "I(L_SL|XBVM1) [OLD]",
+      "I(L_SL|XBVM1) [NEW]",
+      "I(L_SL|XBVM2) [OLD]",
+      "I(L_SL|XBVM2) [NEW]",
+      "I(L_SL|XBVM3) [OLD]",
+      "I(L_SL|XBVM3) [NEW]",
+      "I(L_SL|XBVM4) [OLD]",
+      "I(L_SL|XBVM4) [NEW]",
+      "P(BVMOUT) [OLD]",
+      "P(BVMOUT) [NEW]",
+      "V(BVMOUT) [OLD]",
+      "V(BVMOUT) [NEW]",
+      "I(BVMOUT) [OLD]",
+      "I(BVMOUT) [NEW]",
+      "V(QBIN) [OLD]",
+      "V(QBIN) [NEW]",
+      "I(LIN|XBQ1) [OLD]",
+      "I(LIN|XBQ1) [NEW]",
+      "P(BJ2|XBQ1) [OLD]",
+      "P(BJ2|XBQ1) [NEW]",
+      "V(BJ2|XBQ1) [OLD]",
+      "V(BJ2|XBQ1) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "BJ2_4_VS_5_TURN",
+    "input": "analysis/plot_inputs/BJ2_4_VS_5_TURN.csv",
+    "output": "plots/BJ2_4_VS_5_TURN.html",
+    "title": "OLD vs NEW 1111 — BJ2 four-turn versus five-turn trajectory",
+    "bounds_ps": [
+      110.0,
+      170.0
+    ],
+    "signals": [
+      "P(BJ2|XBQ1) [OLD]",
+      "P(BJ2|XBQ1) [NEW]",
+      "P(NEW-OLD BJ2|XBQ1)",
+      "V(BJ2|XBQ1) [OLD]",
+      "V(BJ2|XBQ1) [NEW]",
+      "V(NEW-OLD BJ2|XBQ1)"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "BJ2_CROSSING_TIMELINE",
+    "input": "analysis/plot_inputs/BJ2_CROSSING_TIMELINE.csv",
+    "output": "plots/BJ2_CROSSING_TIMELINE.html",
+    "title": "OLD vs NEW 1111 — BJ2 integer-crossing timing markers",
+    "bounds_ps": [
+      110.0,
+      150.0
+    ],
+    "signals": [
+      "P(BJ2|XBQ1) [OLD]",
+      "P(BJ2|XBQ1) [NEW]",
+      "V(BJ2|XBQ1) [OLD]",
+      "V(BJ2|XBQ1) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "QB_RETRAP_TAIL_COMPARISON",
+    "input": "analysis/plot_inputs/QB_RETRAP_TAIL_COMPARISON.csv",
+    "output": "plots/QB_RETRAP_TAIL_COMPARISON.html",
+    "title": "OLD vs NEW 1111 — QB response, retrap indicator, and tail",
+    "bounds_ps": [
+      121.0,
+      170.0
+    ],
+    "signals": [
+      "P(BJS|XBQ1) [OLD]",
+      "P(BJS|XBQ1) [NEW]",
+      "V(BJS|XBQ1) [OLD]",
+      "V(BJS|XBQ1) [NEW]",
+      "I(BJS|XBQ1) [OLD]",
+      "I(BJS|XBQ1) [NEW]",
+      "P(BJ1|XBQ1) [OLD]",
+      "P(BJ1|XBQ1) [NEW]",
+      "V(BJ1|XBQ1) [OLD]",
+      "V(BJ1|XBQ1) [NEW]",
+      "I(BJ1|XBQ1) [OLD]",
+      "I(BJ1|XBQ1) [NEW]",
+      "P(BJ2|XBQ1) [OLD]",
+      "P(BJ2|XBQ1) [NEW]",
+      "V(BJ2|XBQ1) [OLD]",
+      "V(BJ2|XBQ1) [NEW]",
+      "I(BJ2|XBQ1) [OLD]",
+      "I(BJ2|XBQ1) [NEW]",
+      "I(LIN|XBQ1) [OLD]",
+      "I(LIN|XBQ1) [NEW]",
+      "V(QBIN) [OLD]",
+      "V(QBIN) [NEW]",
+      "I(L1|XBQ1) [OLD]",
+      "I(L1|XBQ1) [NEW]",
+      "I(L2|XBQ1) [OLD]",
+      "I(L2|XBQ1) [NEW]",
+      "I(L3|XBQ1) [OLD]",
+      "I(L3|XBQ1) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "JTL6_4_VS_5",
+    "input": "analysis/plot_inputs/JTL6_4_VS_5.csv",
+    "output": "plots/JTL6_4_VS_5.html",
+    "title": "OLD vs NEW 1111 — JTL1 to JTL6 downstream trajectory",
+    "bounds_ps": [
+      110.0,
+      170.0
+    ],
+    "signals": [
+      "P(B02|XJTL1_1) [OLD]",
+      "P(B02|XJTL1_1) [NEW]",
+      "P(B02|XJTL1_6) [OLD]",
+      "P(B02|XJTL1_6) [NEW]",
+      "V(B02|XJTL1_6) [OLD]",
+      "V(B02|XJTL1_6) [NEW]"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  },
+  {
+    "name": "OLD_MINUS_NEW_MULTI_LAYER",
+    "input": "analysis/plot_inputs/OLD_MINUS_NEW_MULTI_LAYER.csv",
+    "output": "plots/OLD_MINUS_NEW_MULTI_LAYER.html",
+    "title": "NEW minus OLD — cross-layer history difference (common probes)",
+    "bounds_ps": [
+      45.0,
+      170.0
+    ],
+    "signals": [
+      "P(NEW-OLD B_JM1|XBVM1)",
+      "P(NEW-OLD B_JM2|XBVM1)",
+      "V(NEW-OLD SL1)",
+      "I(NEW-OLD L_SL|XBVM1)",
+      "P(NEW-OLD BVMOUT)",
+      "V(NEW-OLD QBIN)",
+      "I(NEW-OLD LIN|XBQ1)",
+      "P(NEW-OLD BJ2|XBQ1)",
+      "P(NEW-OLD B02|XJTL1_6)"
+    ],
+    "renderer": "scripts/josim-plot2.py",
+    "options": {
+      "type": "sep_comb",
+      "color": "dark",
+      "jump": "2pi"
+    },
+    "phase_input_note": "P columns contain continuous-unwrapped radians; josim-plot2 -j 2pi displays rad/(2*pi) turns"
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "checks": [
+    "exact common-grid pre70 equality",
+    "same-JJ BJ2 phase endpoint delta",
+    "same-JJ BJ2 voltage area over Phi0",
+    "sample-based integer crossing order",
+    "raw hashes unchanged at independent check"
+  ],
+  "observed": {
+    "old_net_turns": 3.999197997755599,
+    "new_net_turns": 4.999159910835051,
+    "old_area_turns": 3.9991796646395255,
+    "new_area_turns": 4.9991438584341745,
+    "old_crossing_times_ps": [
+      118.3,
+      121.7,
+      125.5,
+      138.8
+    ],
+    "new_crossing_times_ps": [
+      118.10000000000001,
+      121.39999999999999,
+      124.9,
+      129.5,
+      141.4
+    ],
+    "pre70_common_probe_count": 157,
+    "old_raw_sha256": "9563ac09d75770cd9d9c2f2a93de0f418778012e64adb40fbf118ae0561d813f",
+    "new_raw_sha256": "b3d421822dd893d17331016b7f954784d24c90c97f58bc362676467c7650998b"
+  },
+  "comparison_to_analyzer_expected_values": {
+    "old_net_turns": 3.9991979977555987,
+    "new_net_turns": 4.9991599108350515,
+    "old_area_turns": 3.9991796646395255,
+    "new_area_turns": 4.9991438584341745
+  },
+  "interpretation_boundary": "crossings are trajectory markers, not SFQ event counts"
+}

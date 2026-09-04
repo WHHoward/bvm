@@ -1,0 +1,853 @@
+{
+  "schema": "deck-diff-summary-v1",
+  "old_deck_sha256": "3fcdb8b0d61c91cadcacee77c3c06b3a03f8f9392a8c838e9b8574b8938b4e88",
+  "new_deck_sha256": "5ee085051cfdc2cc6e45deac657230e86c64795d9cd9be100735b13974c3222e",
+  "line_counts": {
+    "old": 177,
+    "new": 195
+  },
+  "all_changes": [
+    {
+      "opcode": "insert",
+      "old_line_numbers": [
+        1,
+        0
+      ],
+      "new_line_numbers": [
+        1,
+        4
+      ],
+      "category": "comment_provenance",
+      "removed": [],
+      "added": [
+        "* GENERATED ALL-ONE SELECTIVE-READ DECK: mask=1111",
+        "* source_class=HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT",
+        "* all four BVMs are initialized to 1111; only READ WL+SE follows mask",
+        "* no-read interval 70--81 ps is deliberately zero for all BVMs"
+      ]
+    },
+    {
+      "opcode": "replace",
+      "old_line_numbers": [
+        130,
+        141
+      ],
+      "new_line_numbers": [
+        134,
+        145
+      ],
+      "category": "physics_protocol_control",
+      "removed": [
+        "I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "I_SE1 0 SE1 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "I_SE2 0 SE2 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "I_SE3 0 SE3 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "I_SE4 0 SE4 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      ],
+      "added": [
+        "I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)",
+        "I_SE1 0 SE1 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)",
+        "I_SE2 0 SE2 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)",
+        "I_SE3 0 SE3 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)",
+        "I_SE4 0 SE4 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      ]
+    },
+    {
+      "opcode": "insert",
+      "old_line_numbers": [
+        177,
+        176
+      ],
+      "new_line_numbers": [
+        181,
+        194
+      ],
+      "category": "mixed_change_block",
+      "removed": [],
+      "added": [
+        "* BVM_SINGLE_ARRAY_BRANCH_V1: direct branch probes for hierarchy/sign/KCL QA.",
+        "* Strict-series probes are intentionally retained; this block changes observability only.",
+        "* BVM1 branch schema",
+        ".print I(R_JM1|XBVM1) I(L_S1|XBVM1) I(L_S2|XBVM1) I(R_S|XBVM1) I(L_S3|XBVM1) I(R_SE|XBVM1) I(L_PSE|XBVM1) I(R_SL|XBVM1) V(R_JM1|XBVM1) V(L_S1|XBVM1) V(L_S2|XBVM1) V(R_S|XBVM1)",
+        ".print V(L_S3|XBVM1) V(R_SE|XBVM1) V(L_PSE|XBVM1) V(L_PSL|XBVM1) V(R_SL|XBVM1) V(L_SL|XBVM1)",
+        "* BVM2 branch schema",
+        ".print I(R_JM1|XBVM2) I(L_S1|XBVM2) I(L_S2|XBVM2) I(R_S|XBVM2) I(L_S3|XBVM2) I(R_SE|XBVM2) I(L_PSE|XBVM2) I(R_SL|XBVM2) V(R_JM1|XBVM2) V(L_S1|XBVM2) V(L_S2|XBVM2) V(R_S|XBVM2)",
+        ".print V(L_S3|XBVM2) V(R_SE|XBVM2) V(L_PSE|XBVM2) V(L_PSL|XBVM2) V(R_SL|XBVM2) V(L_SL|XBVM2)",
+        "* BVM3 branch schema",
+        ".print I(R_JM1|XBVM3) I(L_S1|XBVM3) I(L_S2|XBVM3) I(R_S|XBVM3) I(L_S3|XBVM3) I(R_SE|XBVM3) I(L_PSE|XBVM3) I(R_SL|XBVM3) V(R_JM1|XBVM3) V(L_S1|XBVM3) V(L_S2|XBVM3) V(R_S|XBVM3)",
+        ".print V(L_S3|XBVM3) V(R_SE|XBVM3) V(L_PSE|XBVM3) V(L_PSL|XBVM3) V(R_SL|XBVM3) V(L_SL|XBVM3)",
+        "* BVM4 branch schema",
+        ".print I(R_JM1|XBVM4) I(L_S1|XBVM4) I(L_S2|XBVM4) I(R_S|XBVM4) I(L_S3|XBVM4) I(R_SE|XBVM4) I(L_PSE|XBVM4) I(R_SL|XBVM4) V(R_JM1|XBVM4) V(L_S1|XBVM4) V(L_S2|XBVM4) V(R_S|XBVM4)",
+        ".print V(L_S3|XBVM4) V(R_SE|XBVM4) V(L_PSE|XBVM4) V(L_PSL|XBVM4) V(R_SL|XBVM4) V(L_SL|XBVM4)"
+      ]
+    }
+  ],
+  "categorized_change_counts": {
+    "physics_protocol_control": 24,
+    "observability_only_print": 8,
+    "comment_provenance": 10,
+    "blank_formatting": 0,
+    "other": 0
+  },
+  "physics_protocol_differences": {
+    "changed_control_sources": [
+      "I_BL1",
+      "I_BL2",
+      "I_BL3",
+      "I_BL4",
+      "I_SE1",
+      "I_SE2",
+      "I_SE3",
+      "I_SE4",
+      "I_WL1",
+      "I_WL2",
+      "I_WL3",
+      "I_WL4"
+    ],
+    "lines": [
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 130,
+        "line": "I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 131,
+        "line": "I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 132,
+        "line": "I_SE1 0 SE1 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 133,
+        "line": "I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 134,
+        "line": "I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 135,
+        "line": "I_SE2 0 SE2 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 136,
+        "line": "I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 137,
+        "line": "I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 138,
+        "line": "I_SE3 0 SE3 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 139,
+        "line": "I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 140,
+        "line": "I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "removed",
+        "line_number": 141,
+        "line": "I_SE4 0 SE4 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 134,
+        "line": "I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 135,
+        "line": "I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 136,
+        "line": "I_SE1 0 SE1 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 137,
+        "line": "I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 138,
+        "line": "I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 139,
+        "line": "I_SE2 0 SE2 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 140,
+        "line": "I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 141,
+        "line": "I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 142,
+        "line": "I_SE3 0 SE3 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 143,
+        "line": "I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 144,
+        "line": "I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      {
+        "opcode": "replace",
+        "side": "added",
+        "line_number": 145,
+        "line": "I_SE4 0 SE4 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      }
+    ],
+    "semantic_samples": {
+      "I_BL1": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "80.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "new_line": "I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      "I_BL2": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "80.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "new_line": "I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      "I_BL3": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "80.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "new_line": "I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      "I_BL4": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "80.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 90p 0 91p +100u 100p +100u 101p 0 200p 0)",
+        "new_line": "I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)"
+      },
+      "I_SE1": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_SE1 0 SE1 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_SE1 0 SE1 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      "I_SE2": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_SE2 0 SE2 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_SE2 0 SE2 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      "I_SE3": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_SE3 0 SE3 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_SE3 0 SE3 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      "I_SE4": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_SE4 0 SE4 pwl(0 0 70p 0 71p 100u 80p 100u 81p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_SE4 0 SE4 pwl(0 0 50p 0 70p 0 90p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      "I_WL1": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      "I_WL2": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      "I_WL3": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      },
+      "I_WL4": {
+        "samples_uA": {
+          "70.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "75.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "80.0": {
+            "old": 99.99999999999999,
+            "new": 0.0,
+            "new_minus_old": -99.99999999999999
+          },
+          "85.0": {
+            "old": 0.0,
+            "new": 0.0,
+            "new_minus_old": 0.0
+          },
+          "95.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          },
+          "115.0": {
+            "old": 99.99999999999999,
+            "new": 99.99999999999999,
+            "new_minus_old": 0.0
+          }
+        },
+        "old_line": "I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)",
+        "new_line": "I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p 100u 100p 100u 101p 0 110p 0 111p 100u 120p 100u 121p 0 200p 0)"
+      }
+    },
+    "read0_semantics": {
+      "old": "all BVM WL and SE are +100 uA on the 71-80 ps plateau",
+      "new": "all BVM WL and SE are 0 during the 70-90 ps no-op interval",
+      "difference": "OLD has an all-BVM positive READ history; NEW does not"
+    },
+    "write0_semantics_equal_at_55ps": true,
+    "write1_semantics_equal_at_95ps": true,
+    "read1_semantics_equal_at_115ps": true
+  },
+  "observability_only_differences": {
+    "old_print_line_count": 5,
+    "new_print_line_count": 13,
+    "new_only_print_lines": [
+      ".print I(R_JM1|XBVM1) I(L_S1|XBVM1) I(L_S2|XBVM1) I(R_S|XBVM1) I(L_S3|XBVM1) I(R_SE|XBVM1) I(L_PSE|XBVM1) I(R_SL|XBVM1) V(R_JM1|XBVM1) V(L_S1|XBVM1) V(L_S2|XBVM1) V(R_S|XBVM1)",
+      ".print V(L_S3|XBVM1) V(R_SE|XBVM1) V(L_PSE|XBVM1) V(L_PSL|XBVM1) V(R_SL|XBVM1) V(L_SL|XBVM1)",
+      ".print I(R_JM1|XBVM2) I(L_S1|XBVM2) I(L_S2|XBVM2) I(R_S|XBVM2) I(L_S3|XBVM2) I(R_SE|XBVM2) I(L_PSE|XBVM2) I(R_SL|XBVM2) V(R_JM1|XBVM2) V(L_S1|XBVM2) V(L_S2|XBVM2) V(R_S|XBVM2)",
+      ".print V(L_S3|XBVM2) V(R_SE|XBVM2) V(L_PSE|XBVM2) V(L_PSL|XBVM2) V(R_SL|XBVM2) V(L_SL|XBVM2)",
+      ".print I(R_JM1|XBVM3) I(L_S1|XBVM3) I(L_S2|XBVM3) I(R_S|XBVM3) I(L_S3|XBVM3) I(R_SE|XBVM3) I(L_PSE|XBVM3) I(R_SL|XBVM3) V(R_JM1|XBVM3) V(L_S1|XBVM3) V(L_S2|XBVM3) V(R_S|XBVM3)",
+      ".print V(L_S3|XBVM3) V(R_SE|XBVM3) V(L_PSE|XBVM3) V(L_PSL|XBVM3) V(R_SL|XBVM3) V(L_SL|XBVM3)",
+      ".print I(R_JM1|XBVM4) I(L_S1|XBVM4) I(L_S2|XBVM4) I(R_S|XBVM4) I(L_S3|XBVM4) I(R_SE|XBVM4) I(L_PSE|XBVM4) I(R_SL|XBVM4) V(R_JM1|XBVM4) V(L_S1|XBVM4) V(L_S2|XBVM4) V(R_S|XBVM4)",
+      ".print V(L_S3|XBVM4) V(R_SE|XBVM4) V(L_PSE|XBVM4) V(L_PSL|XBVM4) V(R_SL|XBVM4) V(L_SL|XBVM4)"
+    ],
+    "lines": [
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 184,
+        "line": ".print I(R_JM1|XBVM1) I(L_S1|XBVM1) I(L_S2|XBVM1) I(R_S|XBVM1) I(L_S3|XBVM1) I(R_SE|XBVM1) I(L_PSE|XBVM1) I(R_SL|XBVM1) V(R_JM1|XBVM1) V(L_S1|XBVM1) V(L_S2|XBVM1) V(R_S|XBVM1)"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 185,
+        "line": ".print V(L_S3|XBVM1) V(R_SE|XBVM1) V(L_PSE|XBVM1) V(L_PSL|XBVM1) V(R_SL|XBVM1) V(L_SL|XBVM1)"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 187,
+        "line": ".print I(R_JM1|XBVM2) I(L_S1|XBVM2) I(L_S2|XBVM2) I(R_S|XBVM2) I(L_S3|XBVM2) I(R_SE|XBVM2) I(L_PSE|XBVM2) I(R_SL|XBVM2) V(R_JM1|XBVM2) V(L_S1|XBVM2) V(L_S2|XBVM2) V(R_S|XBVM2)"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 188,
+        "line": ".print V(L_S3|XBVM2) V(R_SE|XBVM2) V(L_PSE|XBVM2) V(L_PSL|XBVM2) V(R_SL|XBVM2) V(L_SL|XBVM2)"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 190,
+        "line": ".print I(R_JM1|XBVM3) I(L_S1|XBVM3) I(L_S2|XBVM3) I(R_S|XBVM3) I(L_S3|XBVM3) I(R_SE|XBVM3) I(L_PSE|XBVM3) I(R_SL|XBVM3) V(R_JM1|XBVM3) V(L_S1|XBVM3) V(L_S2|XBVM3) V(R_S|XBVM3)"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 191,
+        "line": ".print V(L_S3|XBVM3) V(R_SE|XBVM3) V(L_PSE|XBVM3) V(L_PSL|XBVM3) V(R_SL|XBVM3) V(L_SL|XBVM3)"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 193,
+        "line": ".print I(R_JM1|XBVM4) I(L_S1|XBVM4) I(L_S2|XBVM4) I(R_S|XBVM4) I(L_S3|XBVM4) I(R_SE|XBVM4) I(L_PSE|XBVM4) I(R_SL|XBVM4) V(R_JM1|XBVM4) V(L_S1|XBVM4) V(L_S2|XBVM4) V(R_S|XBVM4)"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 194,
+        "line": ".print V(L_S3|XBVM4) V(R_SE|XBVM4) V(L_PSE|XBVM4) V(L_PSL|XBVM4) V(R_SL|XBVM4) V(L_SL|XBVM4)"
+      }
+    ],
+    "interpretation": "NEW appends direct BVM branch probes; these do not alter circuit equations"
+  },
+  "comment_provenance_differences": {
+    "lines": [
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 1,
+        "line": "* GENERATED ALL-ONE SELECTIVE-READ DECK: mask=1111"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 2,
+        "line": "* source_class=HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 3,
+        "line": "* all four BVMs are initialized to 1111; only READ WL+SE follows mask"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 4,
+        "line": "* no-read interval 70--81 ps is deliberately zero for all BVMs"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 181,
+        "line": "* BVM_SINGLE_ARRAY_BRANCH_V1: direct branch probes for hierarchy/sign/KCL QA."
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 182,
+        "line": "* Strict-series probes are intentionally retained; this block changes observability only."
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 183,
+        "line": "* BVM1 branch schema"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 186,
+        "line": "* BVM2 branch schema"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 189,
+        "line": "* BVM3 branch schema"
+      },
+      {
+        "opcode": "insert",
+        "side": "added",
+        "line_number": 192,
+        "line": "* BVM4 branch schema"
+      }
+    ],
+    "interpretation": "comments and generated-deck provenance only"
+  },
+  "unexpected_nonclassified_differences": [],
+  "fixed_core_equal_after_excluding_controls_prints_comments": true,
+  "fixed_targets": {
+    "bvm_topology_and_jm2_variant": true,
+    "sensing_topology": true,
+    "qb": true,
+    "jtl": true,
+    "final_10_ohm_load": true,
+    "timestep_stop_output_start": true,
+    "write0_semantics": true,
+    "write1_semantics": true,
+    "final_read1_semantics": true
+  }
+}

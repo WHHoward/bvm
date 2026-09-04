@@ -1,0 +1,263 @@
+experiment_id: bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904
+study_phase: EXPLORATION
+mode: QUICK
+status: PREREGISTERED
+base_head: 9e8fa5aed3346a30531d5001874e27dbee8eb81a
+
+question:
+  primary: >-
+    在四颗 JM2-connected BVM 均先写入 stored-1111 后，只对 READ 阶段的
+    WL+SE 做 one-hot 或 multi-active 选择时，四个 BVM 是否各自提供近似独立
+    的 unit current，并经 RSL isolation 在共享 SL 上近似线性累加？
+  priority_evidence:
+    - active BVM vs isolated single-BVM S1 reference
+    - inactive BVM vs same-position 0000 no-read baseline
+    - multi-active actual vs baseline-corrected one-hot superposition
+  secondary:
+    - one-hot position dependence
+    - forward/reverse cumulative direction dependence
+    - downstream QB/JTL response as a secondary, not primary, layer
+
+source_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+authority_boundary:
+  evidence:
+    - independent runs/<mask>/deck.cir
+    - immutable runs/<mask>/raw.csv
+    - run metadata and logs
+    - task-local analysis and focused plots
+  not_authoritative:
+    - canonical BVM in circuits/bvm/bvm_cell.cir
+    - paper mechanism identity
+    - hardware measurement
+    - universal array isolation or linearity
+    - SFQ count inferred from whole-window phase turns
+  interpretation_ceiling: >-
+    仅在当前 historical JM2-connected BVM + original BVMSim QB + six-stage JTL
+    fixture、固定 0.1 ps 步长和本轮 10 个 mask 下报告 bounded array evidence；
+    不外推为 canonical、工艺裕量、普适 RSL isolation 或论文机制证明。
+
+authorization:
+  user_reviewed_previous_single_reference: true
+  previous_single_gate: test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/human-gate.yaml
+  authorization_record_commit: 9e8fa5aed3346a30531d5001874e27dbee8eb81a
+  user_authorized_run_set: true
+  automatic_followup: false
+  stage_b_or_t1_authorized: false
+
+physical_reference:
+  template_experiment: test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903
+  template_deck: test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/deck.cir
+  template_deck_sha256: 3fcdb8b0d61c91cadcacee77c3c06b3a03f8f9392a8c838e9b8574b8938b4e88
+  single_reference_experiment: test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904
+  single_reference_run: S1-J-RLOOP
+  single_reference_raw: test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/raw.csv
+  variant: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+  canonical_bvm_used: false
+
+run_set:
+  bit_order: b3b2b1b0 -> BVM1/BVM2/BVM3/BVM4
+  masks:
+    - 0000
+    - 0001
+    - 0010
+    - 0100
+    - 1000
+    - 0011
+    - 0111
+    - 1100
+    - 1110
+    - 1111
+  groups:
+    no_read_control: [0000]
+    one_hot: [0001, 0010, 0100, 1000]
+    cumulative_from_bvm4_side: [0001, 0011, 0111, 1111]
+    cumulative_from_bvm1_side: [1000, 1100, 1110, 1111]
+  independent_run_rule: >-
+    每个 mask 独立初始化四颗 BVM 为 stored-1111，再单独执行该 mask 的 READ；
+    不在一个 transient 中串联多个 mask。
+
+changed:
+  - >-
+    相对于 template 1111 deck，将 70--81 ps 的旧全体 READ 置零，避免正式
+    selective READ 前产生额外 read history。
+  - >-
+    保留统一 WRITE0 reset 后，在 90--101 ps 对四颗 BVM 全部执行 WL+BL=+100 uA
+    的 WRITE1，以建立 stored-1111。
+  - >-
+    在 110--121 ps 仅对 mask=1 的 BVM 执行 WL=+100 uA、SE=+100 uA；mask=0
+    的 BVM 在 READ 中 WL=SE=BL=0。
+  - >-
+    为四个 hierarchical BVM 实例加入同一套 BVM_SINGLE_ARRAY_BRANCH_V1
+    branch current/voltage/phase probes。
+
+frozen:
+  - historical JM2-connected BVM variant and its exact component endpoints
+  - all BVM R/J/L values and JJ areas
+  - original BVMSim/BQ.cir, RJ1=12 ohm, RJ2=4 ohm, IB=250 uA
+  - six historical JTL stages from BVMSim/library_josim/jtl2.cir
+  - 280 uA JTL bias per stage
+  - 12-JJ sensing section per BVM, BVMout, and 10-ohm termination
+  - WRITE0 amplitude/timing: WL=BL=-100 uA at 51--60 ps
+  - all-one WRITE1 amplitude/timing: WL=BL=+100 uA at 91--100 ps
+  - selective READ amplitude/timing: +100 uA plateau at 111--120 ps
+  - .tran 0.1p 200p 45p
+  - build/josim-cli solver and model closure
+  - source bit order b3b2b1b0 -> BVM1..BVM4
+
+stimulus_semantics:
+  initialization:
+    write0_window_ps: [50, 70]
+    write0_plateau_ps: [51, 60]
+    write0_WL_uA: -100
+    write0_BL_uA: -100
+    all_one_write1_window_ps: [90, 101]
+    all_one_write1_plateau_ps: [91, 100]
+    all_one_write1_WL_uA: 100
+    all_one_write1_BL_uA: 100
+  pre_read_noop_window_ps: [70, 90]
+  selective_read:
+    window_ps: [110, 170]
+    plateau_ps: [111, 120]
+    active_WL_uA: 100
+    active_SE_uA: 100
+    active_BL_uA: 0
+    inactive_WL_uA: 0
+    inactive_SE_uA: 0
+    inactive_BL_uA: 0
+
+windows_ps:
+  PRE: [45, 50]
+  WRITE0: [50, 70]
+  PRE_ALL_ONE_WRITE: [70, 90]
+  WRITE1_ALL: [90, 101]
+  SETTLE_1111: [101, 110]
+  READ: [110, 170]
+  TAIL: [170, 200]
+  semantics: half-open [start,end), using each raw's stored time column
+
+probe_schema:
+  id: BVM_SINGLE_ARRAY_BRANCH_V1
+  purpose: >-
+    single 与 array 逐支路对照；即使某些元件严格串联，也保留直接 branch
+    probes，以验证 hierarchy、方向约定和 KCL。
+  hierarchy: XBVM1, XBVM2, XBVM3, XBVM4
+  per_bvm:
+    storage_jj_pvi: [B_JM1, B_JM2]
+    rloop_jj_pvi: [B_JS1, B_JS2]
+    current_branches: [L_M1, L_M2, L_M3, L_PM, R_JM1, L_S1, L_S2, R_S, L_S3, R_SE, L_PSE, L_PSL, R_SL, L_SL]
+    voltage_branches: [R_JM1, L_S1, B_JS1, L_S2, B_JS2, R_S, L_S3, R_SE, L_PSE, L_PSL, R_SL, L_SL]
+    boundary_voltage: V(SL<n>)
+  shared_boundary:
+    - P/V/I(B_LD01)
+    - P/V/I(B_LD12)
+    - P/V/I(B_LD2_01)
+    - P/V/I(B_LD2_12)
+    - P/V/I(B_LD3_01)
+    - P/V/I(B_LD3_12)
+    - P/V/I(B_LD4_01)
+    - P/V/I(B_LD4_11)
+    - P/V/I(BVMOUT)
+  qb_jtl:
+    - V(QBIN)
+    - V(QBOUT)
+    - I(LIN|XBQ1)
+    - P/V/I(BJS|XBQ1)
+    - P/V/I(BJ1|XBQ1)
+    - P/V/I(BJ2|XBQ1)
+    - I(RJ1|XBQ1)
+    - I(RJ2|XBQ1)
+    - I(L1|XBQ1)
+    - I(L2|XBQ1)
+    - I(L3|XBQ1)
+    - I(IB|XBQ1)
+    - P/V(B01|XJTL1_<1..6>)
+    - P/V(B02|XJTL1_<1..6>)
+  direct_element_voltage: DIRECT_ELEMENT_VOLTAGE_REQUIRED_AND_SUPPORTED
+  node_difference_fallback: NOT_USED
+
+comparison_contract:
+  primary_shared_signal: I(LIN|XBQ1)
+  secondary_shared_signals: [V(QBIN), I(L_SL|XBVM1..4), I(R_SL|XBVM1..4)]
+  active_vs_single:
+    array_read_window_ps: [110, 170]
+    single_reference_read_window_ps: [70, 130]
+    alignment: relative_to_read_onset_on_exact_0.1_ps_sample_grid
+    interpolation: none
+    signals: [LM3, JS1, JS2, RS, LS3, RSL, LSL, V(SL), I(LIN|XBQ1), V(QBIN)]
+  inactive_vs_0000:
+    baseline: same-position 0000 stored-1111 no-read run
+    signals: [RSL, LSL, RS, LS3, JS1, JS2, LM3, JM1, JM2, LM1, LM2, LPM]
+    window_ps: [110, 170]
+  superposition:
+    delta_X_mask: X_mask - X_0000
+    predicted_delta_X_mask: sum(delta_X_one_hot_i for active i)
+    residual: actual_delta - predicted_delta
+    forward_masks: [1100, 1110, 1111]
+    reverse_masks: [0011, 0111, 1111]
+    metrics: [max_abs, RMS, signed_integral, peak_time, normalized_RMS_error, correlation]
+    interpolation: none
+
+state_closure:
+  pre_read_window_ps: [101, 110]
+  retention_window_ps: [170, 200]
+  marker: JM1/JM2 continuous-unwrapped phase level plus P/V same-JJ area context
+  descriptive_sign_min_turns: 0.25
+  descriptive_stability_max_p2p_turns: 0.25
+  no_legacy_state_threshold_reuse: true
+
+kcl:
+  source: scripts/bvmtools/kcl.py
+  orientation: positive current from first netlist node to second
+  equations_per_bvm:
+    JM1_shunt: I(B_JM1)+I(R_JM1)-I(L_M1)
+    SE_RLOOP: I(B_JS1)+I(L_PSE)-I(R_S)-I(L_S3)
+    RLOOP_output: I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)
+    SL_series_1: I(L_PSL)-I(R_SL)
+    SL_series_2: I(R_SL)-I(L_SL)
+  role: probe/sign/topology sanity only, not a functional gate
+
+downstream:
+  phase_area: same-JJ BJ2 and JTL6 B02 in READ window
+  event_detector: shared strict_event_list diagnostic only
+  phase_units: raw P is radians; displayed turns are continuous_unwrap(rad)/(2*pi)
+  warning: phase turns and whole-window voltage area are not SFQ counts
+
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  standalone_first: true
+  per_mask_pages:
+    - CONTROL_TIMING
+    - BVM_STATE
+    - BVM_RLOOP_CURRENT
+    - BVM_RLOOP_VOLTAGE
+    - BVMOUT_QB_INPUT
+    - QB_INTERNAL
+    - JTL_TRANSPORT
+    - BVM_RLOOP_KCL
+  comparison_pages:
+    - ONEHOT_QBIN_POSITION
+    - ONEHOT_RSL_POSITION
+    - ACTIVE_VS_SINGLE_REFERENCE
+    - INACTIVE_CELL_ISOLATION_1000
+    - INACTIVE_CELL_ISOLATION_0001
+    - ADDITIVITY_FORWARD
+    - ADDITIVITY_REVERSE
+    - SUPERPOSITION_RESIDUAL
+  role: descriptive only; raw/metrics/provenance carry scientific evidence
+
+prohibited_followups:
+  - additional masks or sequential replay in this round
+  - RJ1, RS, LS3, bias, input, area or timestep sweep
+  - topology redesign or canonical BVM substitution
+  - QB tuning, T1, full 16-state matrix
+  - automatic design change after any result
+
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

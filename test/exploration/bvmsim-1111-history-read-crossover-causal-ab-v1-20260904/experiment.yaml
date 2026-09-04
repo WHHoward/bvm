@@ -1,0 +1,117 @@
+experiment_id: bvmsim-1111-history-read-crossover-causal-ab-v1-20260904
+title: 1111 HISTORY-READ CROSSOVER CAUSAL A/B
+question: >-
+  在保持 OLD/NEW JM2-connected BVMSim 物理上下文各自不变的条件下，
+  70--81 ps 的 HISTORY_READ_PRESENT/ABSENT 是否比 OLD/NEW deck context
+  更能解释 PRE_READ1 BVM internal state、LSL、LIN/QBIN 与 QB trajectory 的分组？
+source_class: historical
+authority_boundary:
+  evidence:
+    - immutable existing O+ raw/deck
+    - immutable existing N- raw/deck
+    - new O- raw/deck
+    - new N+ raw/deck
+    - task-local analysis and plots
+  not_proven:
+    - canonical BVM compatibility
+    - clean SFQ event count
+    - numerical convergence
+    - unique physical root cause
+    - hardware or paper-mechanism identity
+conditions:
+  O+:
+    label: OLD-WITH-HISTORY
+    context: OLD
+    history: HISTORY_READ_PRESENT
+    source: existing_immutable
+    deck: test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/deck.cir
+    raw: test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/runs/1111/raw.csv
+  O-:
+    label: OLD-NO-HISTORY
+    context: OLD
+    history: HISTORY_READ_ABSENT
+    source: new_physical_run
+    deck: test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/deck.cir
+    raw: test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/raw.csv
+  N-:
+    label: NEW-NO-HISTORY
+    context: NEW
+    history: HISTORY_READ_ABSENT
+    source: existing_immutable
+    deck: test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/deck.cir
+    raw: test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904/runs/1111/raw.csv
+  N+:
+    label: NEW-WITH-HISTORY
+    context: NEW
+    history: HISTORY_READ_PRESENT
+    source: new_physical_run
+    deck: test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/deck.cir
+    raw: test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/raw.csv
+changed:
+  - O- removes only the 70--81 ps all-BVM positive history read from the OLD deck
+  - N+ inserts only the exact OLD 70--81 ps all-BVM positive history read into the NEW deck
+  - O- may inherit the current full branch observability .print schema as observability-only additions
+frozen:
+  - four-BVM topology and BVM ordering
+  - historical JM2-connected BVM variant and all BVM R/J/L values, areas, and models
+  - WRITE0, WRITE1, and final READ1 source semantics
+  - sensing JJ chain, BVMout, QB, six JTL stages, and 10 ohm termination
+  - QB RJ1=12 ohm, RJ2=4 ohm, IB=250 uA
+  - JTL bias=280 uA per stage
+  - solver build/josim-cli and model closure
+  - timestep=0.1 ps, stop=200 ps, output start=45 ps
+  - no interpolation and no raw rewrite
+windows_ps:
+  baseline_common: [45, 70]
+  history_intervention: [70, 81]
+  post_history_recovery: [81, 90]
+  write1: [90, 101]
+  pre_read1: [101, 110]
+  read1: [110, 121]
+  response: [121, 160]
+  tail: [160, 170]
+probes:
+  source_controls: all WL/BL/SE currents for BVM1..BVM4
+  bvm_internal: JM1/JM2/JS1/JS2 P/V/I and LM1/LM2/LM3/LPM plus R-loop/SL branch probes
+  bvm_output: all four I(L_SL|XBVMn), V(SLn), BVMout P/V/I
+  qb_input: V(QBIN), V(QBOUT), I(LIN|XBQ1)
+  qb_internal: BJS/BJ1/BJ2 P/V/I, RJ1/RJ2/L1/L2/L3/IB currents
+  jtl: B01/B02 P/V for JTL1..JTL6
+comparison:
+  matrix_order: [O+, O-, N-, N+]
+  history_pairs: [O+_vs_N+, O-_vs_N-]
+  context_pairs: [O+_vs_O-, N+_vs_N-]
+  required_contrasts: [O+_minus_O-, N+_minus_N-, O+_minus_N+, O-_minus_N-]
+  time_grid: exact stored grid only
+  phase_raw_unit: rad
+  phase_display: continuous unwrap(rad)/(2*pi), labeled turns
+hypotheses:
+  H1: O+ should be closer to N+ than to O-, and O- should be closer to N- than to O+ if history is the major driver
+  H2: PRE_READ1 analog state should cluster more strongly by history than by OLD/NEW context
+  H3: final BVM LSL and LIN waveforms should cluster by history condition
+  H4: QB BJ2 trajectory should follow HISTORY_READ_PRESENT/ABSENT rather than deck context
+interpretation_ceiling: >-
+  最多支持“当前可观测轨迹在本模型和本步长下按 history 或 context 分组”的
+  有界推断；不得提升为唯一根因、clean SFQ count、收敛或硬件结论。
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase: -j 2pi
+  standalone_first: true
+prohibited_followups:
+  - longer settling test
+  - history-delay sweep
+  - RSL/RS/LS3 sweep
+  - QB tuning or bias sweep
+  - timestep sweep
+  - topology change
+  - canonical BVM or T1
+  - automatic next physical experiment
+human_gate:
+  state: AWAITING_USER_REVIEW
+  analysis_completed: false
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

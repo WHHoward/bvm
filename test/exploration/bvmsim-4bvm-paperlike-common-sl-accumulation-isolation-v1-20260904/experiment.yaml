@@ -1,0 +1,141 @@
+experiment_id: bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904
+study_phase: EXPLORATION
+mode: QUICK
+status: PREREGISTERED
+base_head: 9b89b95e0e43c3a21571d67db4cf98b46d9bea90
+
+question:
+  primary: >-
+    在四颗 historical JM2-connected BVM 均先写入 stored-1111 后，只在一次
+    selective READ 中激活指定 BVM，替换 distributed sensing network 为
+    per-cell internal RSL -> one common column SL -> one shared 12-JJ 500-uA
+    load 后，输出是否表现为相对独立的 unit current、可隔离且近似累加？
+  causal_focus:
+    - topology change only: distributed sensing network -> common column SL
+    - active BVM versus isolated single-cell context
+    - inactive stored-0 read response versus 0000
+    - multi-active actual versus one-hot superposition
+  interpretation_ceiling: >-
+    仅报告固定 historical JM2-connected BVM、固定 12-ohm internal RSL、固定
+    0.1-ps solver 和本轮十个 mask 的 bounded topology evidence；不外推为论文
+    机制、canonical BVM、硬件或普适 isolation。
+
+authorization:
+  user_authorized: true
+  authorization_basis: >-
+    User accepted the previous 1111 history-read crossover and explicitly
+    authorized this topology-causality experiment.
+  parameter_tuning_authorized: false
+  automatic_followup: false
+  qb_or_jtl_authorized: false
+
+source_authority:
+  bvm_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+  bvm_variant: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+  canonical_bvm: circuits/bvm/bvm_cell.cir
+  canonical_bvm_used: false
+  canonical_boundary: >-
+    canonical circuits/bvm/bvm_cell.cir is not used; the historical JM2-connected
+    variant is the sole BVM source in this experiment.
+  historical_reference_fixture: test/exploration/bvmsim-4bvm-allone-selective-read-additivity-isolation-v1-20260904
+
+frozen:
+  bvm_variant_and_all_internal_values: true
+  internal_rsl_ohm: 12.0
+  external_rsl_added: false
+  timestep_ps: 0.1
+  stop_time_ps: 200.0
+  output_start_ps: 45.0
+  bvm_count: 4
+  stored_state_protocol: >-
+    Each independent run applies the accepted no-history schedule: WRITE0 at
+    51--60 ps, then all-four WL+BL WRITE1 at 91--100 ps, then one final selective
+    READ at 111--120 ps. No history READ is present.
+  source_amplitude_uA: 100.0
+  shared_load:
+    topology: one shared series stack from COMMON_SL to ground
+    junction_count: 12
+    model: jjmit
+    area: 5.0
+    ic_uA: 500.0
+    derivation: shared jjmit ICRIT=100uA multiplied by repository area convention
+  qb_present: false
+  jtl_present: false
+  termination_present: false
+  tuning: none
+
+run_set:
+  bit_order: b3b2b1b0 -> BVM1/BVM2/BVM3/BVM4
+  masks: [0000, 0001, 0010, 0100, 1000, 0011, 0111, 1100, 1110, 1111]
+  mask_semantics: >-
+    All four BVMs are initialized to stored-1111; mask=1 means WL+SE is active
+    in the final READ and mask=0 means WL=SE=BL=0 in that READ.
+  independent_run_rule: each mask has its own deck, raw CSV, log and metadata
+  no_additional_masks: true
+
+windows_ps:
+  PRE: [45.0, 50.0]
+  WRITE0: [50.0, 70.0]
+  NO_HISTORY_READ: [70.0, 90.0]
+  WRITE1_ALL: [90.0, 101.0]
+  SETTLE: [101.0, 110.0]
+  READ: [110.0, 170.0]
+  TAIL: [170.0, 200.0]
+  semantics: half-open intervals except final tail endpoint
+
+topology_preflight:
+  ascii_source: analysis/TOPOLOGY_ASCII.md
+  machine_check: analysis/topology_preflight.py
+  output: analysis/topology_preflight.json
+  required:
+    - all four BVMs same variant and hash
+    - all BVM SL endpoints are COMMON_SL
+    - no duplicate/external RSL
+    - no per-cell 12-JJ load
+    - exactly one shared 12-JJ load with Ic=500uA each
+    - no daisy sensing segment
+    - no QB/JTL/termination
+    - position-symmetric external connectivity
+
+probe_schema:
+  per_bvm:
+    storage_jj_pvi: [B_JM1, B_JM2]
+    rloop_jj_pvi: [B_JS1, B_JS2]
+    current_branches: [L_M1, L_M2, L_M3, L_PM, R_JM1, L_S1, L_S2, R_S, L_S3, R_SE, L_PSE, L_PSL, R_SL, L_SL]
+    voltage_branches: [R_JM1, L_S1, B_JS1, L_S2, B_JS2, R_S, L_S3, R_SE, L_PSE, L_PSL, R_SL, L_SL]
+    boundary_node: COMMON_SL
+  common_sl:
+    - V(COMMON_SL)
+    - I(B_COL_LOAD01)
+    - I(L_SL|XBVM1..4)
+  shared_load:
+    - P/V/I(B_COL_LOAD01..12)
+
+analysis_contract:
+  primary_layers:
+    - active BVM versus isolated single context
+    - inactive BVM versus 0000
+    - common-SL actual versus one-hot superposition
+  direct_common_current_authority: I(B_COL_LOAD01)
+  fabricated_sum_only: SUM_BVM_OUTPUT = sum(I(L_SL|XBVM1..4)); compare by KCL, never substitute authority
+  kcl_source: scripts/bvmtools/kcl.py
+  phase_source: P is radians; continuous unwrapped phase turns are rad/(2*pi)
+  event_rule: no phase displacement or voltage area is an SFQ count
+  load_rule: if any shared-load JJ switches, report assumption violated; no retuning
+  old_distributed_comparison: read-only metrics/raw from historical reference fixture
+  qb_jtl_metrics: forbidden
+
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  standalone_first: true
+  compact_key_data_only: true
+
+gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

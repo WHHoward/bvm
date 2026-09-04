@@ -1,0 +1,54 @@
+{
+  "schema": "bvm-jm2-connected-rloop-provenance-v1",
+  "experiment": "bvmsim-jm2-connected-single-rloop-observability-v1-20260904",
+  "head_before_task": "824c5c735b647028712e752a599bee8711c46a30",
+  "head_at_static_preflight": "824c5c735b647028712e752a599bee8711c46a30",
+  "source_class": "HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT",
+  "source_files": {
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "circuits/models/jjmit.cir": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "BVMSim/BQ.cir": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+    "BVMSim/library_josim/jtl2.cir": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "src/RelevantTrace.cpp": "83e60b48da28ea710d875243a6b678768062ae1467824ba950175a5511ba94cb",
+    "scripts/josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/generate_decks.py": "106d8727942aaa807217094e6bf62fc3589e0ec7b4d8ef966e001e042bbf8e72",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/experiment.yaml": "961ecd871bcab8a3e0990dce93ec39634f5483a86fc1c6b2dcda9a425e962e3d"
+  },
+  "variant": {
+    "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
+    "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "expected_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "identity_status": "PASS"
+  },
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version_exit_code": 0,
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "new_decks": {
+    "S0-J-RLOOP": {
+      "path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S0-J-RLOOP/deck.cir",
+      "sha256": "eda81fa182c1c01fc28ff129d6cf195e9bf05fcdaa8970ff5410e5db5afc3c85",
+      "old_authority": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir",
+      "old_sha256": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
+      "normalized_physics_difference_count": 0,
+      "probe_only_extension": true
+    },
+    "S1-J-RLOOP": {
+      "path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/deck.cir",
+      "sha256": "066b47e600b75adfe52aa1f26b45bac48344e2dafd72b0c87fac7bbaef9f8131",
+      "old_authority": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir",
+      "old_sha256": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
+      "normalized_physics_difference_count": 0,
+      "probe_only_extension": true
+    }
+  },
+  "static_preflight": {
+    "status": "PASS",
+    "direct_element_voltage_mode": "DIRECT_ELEMENT_VOLTAGE_SUPPORTED",
+    "node_difference_fallback": "NOT_USED"
+  }
+}

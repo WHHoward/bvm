@@ -1,0 +1,267 @@
+{
+  "schema": "bvm-jm2-connected-rloop-static-preflight-v1",
+  "experiment": "bvmsim-jm2-connected-single-rloop-observability-v1-20260904",
+  "preflight_at": "2026-09-04T12:38:06+08:00",
+  "git_head": "824c5c735b647028712e752a599bee8711c46a30",
+  "git_status_before_run": "?? test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/run_metadata.py\n?? test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/static_preflight.py\n?? test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/experiment.yaml\n?? test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/generate_decks.py\n?? test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/run.sh\n?? test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S0-J-RLOOP/deck.cir\n?? test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/deck.cir",
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version_exit_code": 0,
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "source_hashes": {
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "circuits/models/jjmit.cir": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "BVMSim/BQ.cir": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+    "BVMSim/library_josim/jtl2.cir": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "src/RelevantTrace.cpp": "83e60b48da28ea710d875243a6b678768062ae1467824ba950175a5511ba94cb",
+    "scripts/josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/generate_decks.py": "106d8727942aaa807217094e6bf62fc3589e0ec7b4d8ef966e001e042bbf8e72",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/experiment.yaml": "961ecd871bcab8a3e0990dce93ec39634f5483a86fc1c6b2dcda9a425e962e3d"
+  },
+  "variant_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+  "variant_expected_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+  "shared_jj_model_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+  "direct_voltage_mode": "DIRECT_ELEMENT_VOLTAGE_SUPPORTED",
+  "node_difference_fallback": "NOT_USED",
+  "runs": {
+    "S0-J-RLOOP": {
+      "condition": "S0-J-RLOOP",
+      "new_deck": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S0-J-RLOOP/deck.cir",
+      "old_authority_deck": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir",
+      "old_deck_sha256": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
+      "new_deck_sha256": "eda81fa182c1c01fc28ff129d6cf195e9bf05fcdaa8970ff5410e5db5afc3c85",
+      "source_hash_identity": true,
+      "normalized_physics_difference_count": 0,
+      "normalized_physics_differences": [],
+      "probe_only_extension": true,
+      "old_probe_count": 73,
+      "new_probe_count": 91,
+      "original_probe_loss": [],
+      "missing_required_probes": [],
+      "duplicate_probe_labels": {},
+      "include_identity": true,
+      "include_tokens": [
+        ".include circuits/models/jjmit.cir",
+        ".include historical-jm2-variant/bvm_jm2_connected.cir",
+        ".include BVMSim/BQ.cir",
+        ".include BVMSim/library_josim/jtl2.cir"
+      ],
+      "direct_element_voltage_parser_contract": true,
+      "variant_component_identity": {
+        "status": "PASS",
+        "missing": [],
+        "endpoints": {
+          "B_JM1": [
+            "2",
+            "7"
+          ],
+          "R_JM1": [
+            "2",
+            "7"
+          ],
+          "L_M1": [
+            "7",
+            "0"
+          ],
+          "L_M2": [
+            "2",
+            "3"
+          ],
+          "B_JM2": [
+            "3",
+            "4"
+          ],
+          "L_M3": [
+            "4",
+            "8"
+          ],
+          "L_PM": [
+            "8",
+            "0"
+          ],
+          "L_S1": [
+            "4",
+            "5"
+          ],
+          "B_JS1": [
+            "5",
+            "6"
+          ],
+          "R_SE": [
+            "SE",
+            "14"
+          ],
+          "L_PSE": [
+            "14",
+            "6"
+          ],
+          "R_S": [
+            "6",
+            "10"
+          ],
+          "L_S3": [
+            "6",
+            "10"
+          ],
+          "L_S2": [
+            "8",
+            "9"
+          ],
+          "B_JS2": [
+            "9",
+            "10"
+          ],
+          "L_PSL": [
+            "10",
+            "11"
+          ],
+          "R_SL": [
+            "11",
+            "12"
+          ],
+          "L_SL": [
+            "12",
+            "SL"
+          ]
+        }
+      },
+      "physical_flags": {
+        "tran_0.1p_200p": true,
+        "single_bvm": true,
+        "twelve_terminal_jjs": true,
+        "six_jtl": true,
+        "original_bq": true,
+        "ten_ohm_load": true,
+        "canonical_bvm_absent": true
+      },
+      "outputs_absent_before_run": {
+        "raw.csv": true,
+        "run.log": true,
+        "metadata.json": true
+      },
+      "status": "PASS"
+    },
+    "S1-J-RLOOP": {
+      "condition": "S1-J-RLOOP",
+      "new_deck": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/deck.cir",
+      "old_authority_deck": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir",
+      "old_deck_sha256": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
+      "new_deck_sha256": "066b47e600b75adfe52aa1f26b45bac48344e2dafd72b0c87fac7bbaef9f8131",
+      "source_hash_identity": true,
+      "normalized_physics_difference_count": 0,
+      "normalized_physics_differences": [],
+      "probe_only_extension": true,
+      "old_probe_count": 73,
+      "new_probe_count": 91,
+      "original_probe_loss": [],
+      "missing_required_probes": [],
+      "duplicate_probe_labels": {},
+      "include_identity": true,
+      "include_tokens": [
+        ".include circuits/models/jjmit.cir",
+        ".include historical-jm2-variant/bvm_jm2_connected.cir",
+        ".include BVMSim/BQ.cir",
+        ".include BVMSim/library_josim/jtl2.cir"
+      ],
+      "direct_element_voltage_parser_contract": true,
+      "variant_component_identity": {
+        "status": "PASS",
+        "missing": [],
+        "endpoints": {
+          "B_JM1": [
+            "2",
+            "7"
+          ],
+          "R_JM1": [
+            "2",
+            "7"
+          ],
+          "L_M1": [
+            "7",
+            "0"
+          ],
+          "L_M2": [
+            "2",
+            "3"
+          ],
+          "B_JM2": [
+            "3",
+            "4"
+          ],
+          "L_M3": [
+            "4",
+            "8"
+          ],
+          "L_PM": [
+            "8",
+            "0"
+          ],
+          "L_S1": [
+            "4",
+            "5"
+          ],
+          "B_JS1": [
+            "5",
+            "6"
+          ],
+          "R_SE": [
+            "SE",
+            "14"
+          ],
+          "L_PSE": [
+            "14",
+            "6"
+          ],
+          "R_S": [
+            "6",
+            "10"
+          ],
+          "L_S3": [
+            "6",
+            "10"
+          ],
+          "L_S2": [
+            "8",
+            "9"
+          ],
+          "B_JS2": [
+            "9",
+            "10"
+          ],
+          "L_PSL": [
+            "10",
+            "11"
+          ],
+          "R_SL": [
+            "11",
+            "12"
+          ],
+          "L_SL": [
+            "12",
+            "SL"
+          ]
+        }
+      },
+      "physical_flags": {
+        "tran_0.1p_200p": true,
+        "single_bvm": true,
+        "twelve_terminal_jjs": true,
+        "six_jtl": true,
+        "original_bq": true,
+        "ten_ohm_load": true,
+        "canonical_bvm_absent": true
+      },
+      "outputs_absent_before_run": {
+        "raw.csv": true,
+        "run.log": true,
+        "metadata.json": true
+      },
+      "status": "PASS"
+    }
+  },
+  "status": "PASS"
+}

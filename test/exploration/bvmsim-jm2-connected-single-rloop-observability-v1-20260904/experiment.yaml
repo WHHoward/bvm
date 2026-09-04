@@ -1,0 +1,222 @@
+experiment_id: bvmsim-jm2-connected-single-rloop-observability-v1-20260904
+study_phase: exploration
+mode: QUICK
+status: PREREGISTERED
+base_head: 824c5c735b647028712e752a599bee8711c46a30
+
+question:
+  primary: >-
+    在历史 JM2-connected single-BVM 的 JTL-loaded fixture 中，补齐 S-loop、
+    R-loop、阻尼桥、SE 输入、RSL 隔离支路和 SL 输出支路的 branch-level
+    current/voltage observability 后，S0 与 S1 的 read transient 如何分配？
+  bounded_subquestions:
+    - isolated stored-0 在 positive-SE READ 下的 R-loop activity 量级
+    - isolated stored-1 的 SE-to-SL branch current/voltage redistribution
+    - RS 与 LS3 在真实 transient 中的 descriptive current split
+    - RJM1、LM3、RSL 和 LSL 的 single-BVM reference waveform
+
+source_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+authority_boundary:
+  evidence:
+    - frozen executed decks in runs/
+    - immutable raw.csv files
+    - task-local analysis and plots
+  not_authoritative:
+    - canonical BVM in circuits/bvm/bvm_cell.cir
+    - paper mechanism identity
+    - any 4-BVM array behavior
+    - any universal isolation or cross-coupling claim
+  interpretation_ceiling: >-
+    仅作为 isolated historical single-BVM branch-level reference；不把 local
+    phase/activity 自动解释为 SFQ delivery，也不外推为 array 结果。
+
+physical_reference:
+  old_experiment: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903
+  old_s0_deck: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir
+  old_s1_deck: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir
+  jm2_variant: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+  variant_identity: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+  canonical_bvm_used: false
+
+run_set:
+  - condition: S0-J-RLOOP
+    logical_state: 0
+    stimulus: existing_S0_JM2C_deck_inherited
+    run_dir: runs/S0-J-RLOOP
+  - condition: S1-J-RLOOP
+    logical_state: 1
+    stimulus: existing_S1_JM2C_deck_inherited
+    run_dir: runs/S1-J-RLOOP
+
+changed:
+  - additional direct .print probes only
+  - include paths relocated so runs/<condition>/deck.cir is executable
+frozen:
+  - historical JM2-connected BVM topology, including L_M2 2 3 24.5P
+  - all R/J/L values and JJ areas
+  - circuits/models/jjmit.cir model closure
+  - original BVMSim/BQ.cir with RJ1=12 ohm, RJ2=4 ohm, IB=250 uA
+  - six historical JTL cells from BVMSim/library_josim/jtl2.cir
+  - 280 uA JTL bias in every stage
+  - 10 ohm RBQ1 termination
+  - WRITE and READ PWL timing, polarity and amplitude
+  - .tran 0.1p 200p
+  - solver build/josim-cli
+  - old experiment and all old raw/deck/plot/report files
+
+topology:
+  fixture: single BVM -> 11 sensing-line load JJs + BVMout -> original BQ -> six JTL stages -> 10 ohm
+  bvm_terminal_jjs: 12
+  bq: BVMSim/BQ.cir
+  qb_nominal: RJ1=12 ohm; RJ2=4 ohm; IB=250 uA
+  jtl_stages: 6
+  jtl_bias: 280 uA per stage
+  termination: 10 ohm
+  jm2_connection: L_M2 second node is 3
+
+stimulus:
+  inherited_from_old_deck: true
+  write: WL+BL from 50 ps to 61 ps
+  read: WL+SE from 70 ps to 81 ps; BL=0 during READ
+  S0_write: WL=-100 uA; BL=-100 uA; SE=0
+  S1_write: WL=+100 uA; BL=+100 uA; SE=0
+  read: WL=+100 uA; BL=0; SE=+100 uA
+
+probe_schema:
+  id: BVM_SINGLE_ARRAY_BRANCH_V1
+  purpose: >-
+    single 与 future 4-BVM 使用同一 branch schema；即使严格串联也保留少量
+    冗余 probe，用于 hierarchy、方向约定和 KCL 交叉检查。
+  hierarchy: XBVM1 for single; replace XBVM1 by XBVM<n> for array
+  current:
+    - I(L_M1|XBVM1)
+    - I(L_M2|XBVM1)
+    - I(L_M3|XBVM1)
+    - I(L_PM|XBVM1)
+    - I(B_JM1|XBVM1)
+    - I(R_JM1|XBVM1)
+    - I(B_JM2|XBVM1)
+    - I(L_S1|XBVM1)
+    - I(B_JS1|XBVM1)
+    - I(L_S2|XBVM1)
+    - I(B_JS2|XBVM1)
+    - I(R_S|XBVM1)
+    - I(L_S3|XBVM1)
+    - I(R_SE|XBVM1)
+    - I(L_PSE|XBVM1)
+    - I(L_PSL|XBVM1)
+    - I(R_SL|XBVM1)
+    - I(L_SL|XBVM1)
+  voltage:
+    - V(B_JM1|XBVM1)
+    - V(R_JM1|XBVM1)
+    - V(B_JM2|XBVM1)
+    - V(L_M3|XBVM1)
+    - V(L_S1|XBVM1)
+    - V(B_JS1|XBVM1)
+    - V(L_S2|XBVM1)
+    - V(B_JS2|XBVM1)
+    - V(R_S|XBVM1)
+    - V(L_S3|XBVM1)
+    - V(R_SE|XBVM1)
+    - V(L_PSE|XBVM1)
+    - V(L_PSL|XBVM1)
+    - V(R_SL|XBVM1)
+    - V(L_SL|XBVM1)
+  nonlinear_context:
+    - P(B_JM1|XBVM1)
+    - P(B_JM2|XBVM1)
+    - P(B_JS1|XBVM1)
+    - P(B_JS2|XBVM1)
+  boundary:
+    - V(SL1)
+    - P(B_LD4_01)
+    - V(B_LD4_01)
+    - P(B_LD4_11)
+    - V(B_LD4_11)
+    - P(BVMOUT)
+    - V(BVMOUT)
+    - I(BVMOUT)
+
+direction_convention:
+  current: JoSIM I(element) is positive from the first netlist node to the second
+  voltage: JoSIM V(element) is V(first node)-V(second node)
+  phase: P(JJ) is raw radians; displayed turns are continuous_unwrap(rad)/(2*pi)
+  direct_element_voltage: supported_by_joSIM_relevant_trace_device_lookup
+  node_difference_fallback: not_used
+
+kcl:
+  source: scripts/bvmtools/kcl.py
+  residual_units: A, displayed as uA
+  equations:
+    JM1_shunt_node7: I(B_JM1)+I(R_JM1)-I(L_M1)
+    JM2_node3: I(L_M2)-I(B_JM2)
+    LM3_node4: I(B_JM2)-I(L_M3)-I(L_S1)
+    Sloop_node8: I(L_M3)-I(L_PM)-I(L_S2)
+    SE_RLOOP_node6: I(B_JS1)+I(L_PSE)-I(R_S)-I(L_S3)
+    RLOOP_output_node10: I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)
+    JS1_series_node5: I(L_S1)-I(B_JS1)
+    JS2_series_node9: I(L_S2)-I(B_JS2)
+    SE_series_node14: I(R_SE)-I(L_PSE)
+    SL_series_node11: I(L_PSL)-I(R_SL)
+    SL_series_node12: I(R_SL)-I(L_SL)
+
+windows_ps:
+  PRE_READ: [62, 70]
+  READ: [70, 82]
+  EARLY_RESPONSE: [82, 120]
+  TAIL: [170, 200]
+  FULL: [0, 200]
+  semantics: half-open [start,end) using each raw's actual time column
+
+expected_qa:
+  - solver exit code is 0
+  - raw.csv exists, parses, has a strictly increasing 0.1 ps grid through 200 ps
+  - no duplicate raw headers
+  - no Missing model or Using default model warning
+  - original probes remain present
+  - all direct branch current and voltage probes remain present
+  - new and old time grids are exactly identical; no interpolation
+  - post-run metadata hashes are internally consistent
+
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  phase_display: P raw radians transformed numerically to rad/(2*pi) turns
+  standalone_first: true
+  standard_pages:
+    - BVM_STIMULUS_AND_STATE
+    - BVM_SENSING
+    - BVM_INTERNAL_STATE
+    - QB_INTERNAL
+    - JTL_TRANSPORT
+  focused_pages:
+    - BVM_RLOOP_PASSIVE_NETWORK
+    - BVM_RLOOP_KCL
+
+analysis_limits:
+  resistor_energy: descriptive signed V*I and I^2*R READ-window integrals only
+  inductor_energy: descriptive 0.5*L*I^2; L*I is flux linkage, not trapped Phi0
+  rs_fraction_denominator_threshold_A: 1.0e-12
+  event_claims: no SFQ count or downstream transport claim from this task
+
+prohibited_followups:
+  - 4-BVM selective-read
+  - 4-BVM all-one
+  - read-mask or 16-state
+  - RJ1 sweep
+  - IB sweep
+  - alpha sweep
+  - timestep sweep
+  - canonical BVM
+  - T1
+  - optimization
+
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

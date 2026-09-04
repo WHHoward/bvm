@@ -24,8 +24,9 @@ question:
 authorization:
   user_authorized: true
   authorization_basis: >-
-    User accepted the common-SL passive baseline and explicitly authorized the
-    causal-continuity QB integration with only the JSL12 downstream boundary changed.
+    User explicitly authorized the causal-continuity QB integration with only the
+    JSL12 downstream boundary changed; the prior passive fixture is retained as a
+    read-only comparison baseline.
   parameter_tuning_authorized: false
   automatic_followup: false
   prohibited_changes:
@@ -87,7 +88,7 @@ frozen:
   output_start_ps: 45.0
   convergence_claim: NOT_CLAIMED
   stimulus_protocol: >-
-    Each run uses the accepted no-history schedule: WRITE0 at 51--60 ps,
+    Each run uses the prior frozen no-history schedule: WRITE0 at 51--60 ps,
     no-history interval 70--90 ps, all-four WRITE1 at 91--100 ps, settle,
     and exactly one selective READ at 111--120 ps. No history READ is present.
 
@@ -164,7 +165,7 @@ analysis_contract:
   event_rule: phase displacement, voltage area, integer crossings, or I>Ic are not SFQ counts
   load_rule: strict local JSL diagnostic only; any complete event marks assumption violated
   comparison_rule: exact grids required for pointwise deltas; otherwise no silent interpolation
-  passive_context: read-only same-mask raw and metrics from the accepted passive baseline
+  passive_context: read-only same-mask raw and metrics from the prior passive comparison baseline
 
 visual_authority:
   renderer: scripts/josim-plot2.py

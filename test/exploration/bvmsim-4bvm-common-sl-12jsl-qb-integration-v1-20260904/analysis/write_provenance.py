@@ -82,6 +82,17 @@ def main() -> int:
         "plot_manifest": {"path": rel(EXP / "plots/plot_manifest.json"), "sha256": sha256(EXP / "plots/plot_manifest.json")},
         "primary_overview": {"path": rel(EXP / "plots/RESULT_OVERVIEW.html"), "sha256": sha256(EXP / "plots/RESULT_OVERVIEW.html")},
     }
+    final_closure_paths = [
+        EXP / "RESULT_BRIEF.md",
+        EXP / "experiment.yaml",
+        EXP / "analysis/REVIEW.md",
+        EXP / "analysis/commands.txt",
+        EXP / "analysis/human-gate.yaml",
+        EXP / "analysis/TOPOLOGY_ASCII.md",
+        EXP / "analysis/topology_preflight.json",
+        EXP / "provenance.json",
+        EXP / "plots/README.md",
+    ]
     solver = REPO / "build/josim-cli"
     version = subprocess.check_output([str(solver), "--version"], text=True, stderr=subprocess.STDOUT).strip()
     output = {
@@ -98,6 +109,8 @@ def main() -> int:
         "analysis_tool_sha256": files_hashes(tool_paths),
         "run_artifacts": run_files,
         "analysis_and_visual_artifacts": checks,
+        "final_documentation_and_setup_closure_sha256": files_hashes(final_closure_paths),
+        "final_provenance_excludes_self": True,
         "supplemental_html_sha256": files_hashes(supplemental_html),
         "comparison_data_sha256": files_hashes(comparison_data),
         "command_exit_codes": {

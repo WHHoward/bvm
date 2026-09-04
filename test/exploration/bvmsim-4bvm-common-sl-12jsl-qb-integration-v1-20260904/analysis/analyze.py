@@ -3,7 +3,7 @@
 
 The analyzer keeps the causal comparison local to this experiment:
 
-* receiver-loaded runs are compared with the accepted passive same-mask raw;
+* receiver-loaded runs are compared with the prior passive same-mask raw;
 * all arithmetic is performed on the stored grid, without interpolation;
 * phase is raw JoSIM radians until it is explicitly converted with
   continuous_unwrap(rad)/(2*pi);

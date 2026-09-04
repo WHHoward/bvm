@@ -1,0 +1,22 @@
+# Common-SL -> 12-JSL -> frozen QB/JTL integration Quick
+# Commands and exit codes
+
+HEAD before setup: a58bbb3b566b466110bccda8f89fc36c4ce2d368
+python3 generate_decks.py: 0
+python3 analysis/topology_preflight.py: 0
+git commit -m "experiment: preregister common-SL 12JSL QB integration": 0
+./run.sh: 0
+python3 analysis/analyze.py --write: 0
+python3 analysis/independent_check.py: 0
+python3 analysis/render_plots.py --write: 0
+python3 analysis/viz_qa.py: 0
+python3 analysis/write_provenance.py: 0
+env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test/tools/test_bvmtools.py test/tools/test_bvmtools_infrastructure.py test/tools/test_bvmtools_sl_probes.py test/tools/test_strict_event_list.py test/plot/test_josim_plot2.py: 0 (46 passed)
+
+Physical run command used by run.sh for each mask:
+build/josim-cli -a 1 -o runs/<mask>/raw.csv runs/<mask>/deck.cir
+
+Solver:
+build/josim-cli
+version: v2.7.2837d13 compiled on May 30 2026 at 20:37:57
+sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2

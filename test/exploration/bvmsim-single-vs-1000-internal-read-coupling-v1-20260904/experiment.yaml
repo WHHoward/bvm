@@ -1,0 +1,41 @@
+task_id: SINGLE_VS_1000_INTERNAL_READ_COUPLING_ANALYSIS_V1
+experiment_id: bvmsim-single-vs-1000-internal-read-coupling-v1-20260904
+study_phase: EXPLORATION
+mode: READ_ONLY_ANALYSIS
+new_simulation: false
+canonical_bvm_used: false
+inputs:
+  single_reference: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/
+  four_bvm_target: test/exploration/bvmsim-4bvm-jm2-connected-state-position-ab-v1-20260903/
+  target_states: [1000, 0000]
+comparison:
+  primary: 1000_minus_0000
+  reference_mapping: BVM1->S1, BVM2->S0, BVM3->S0, BVM4->S0
+  interpolation: forbidden
+  phase_display: continuous_unwrap(rad)/(2*pi)
+  phase_is_sfq_count: false
+causal_boundary:
+  read0_precedes_write1: true
+  post_write_state_matched_read0_or_no_read_control: false
+  interpretation: state-conditioned association/localization only; READ drive, free evolution, and shared-load feedback are not uniquely separated
+windows_ps:
+  single_pre_read_match: [65, 70]
+  four_pre_read1: [105, 110]
+  single_read_overlay: [70, 130]
+  four_read_overlay: [110, 170]
+  four_early_response: [121, 140]
+observability:
+  reconstruct: I_RJM1_equals_V_BJM1_div_8ohm
+  gap: R_S_parallel_L_S3_partition
+  status: OBSERVABILITY_GAP
+prohibited:
+  - JoSIM rerun
+  - circuit or parameter change
+  - timestep or load change
+  - sweep or optimization
+  - automatic probe-only rerun
+human_gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false

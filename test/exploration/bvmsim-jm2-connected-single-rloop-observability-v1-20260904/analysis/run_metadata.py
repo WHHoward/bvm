@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -40,7 +41,17 @@ def main() -> int:
     parser.add_argument("solver", type=Path)
     parser.add_argument("--git-head-before-run", required=True)
     parser.add_argument("--command", nargs=argparse.REMAINDER, required=True)
-    args = parser.parse_args()
+    # argparse treats a literal ``--`` before a REMAINDER option as an
+    # unrecognized option on the Python version used in this workspace.  The
+    # run script deliberately keeps that separator for command clarity, so
+    # remove only that one marker before parsing; the solver argv itself is
+    # preserved byte-for-byte.
+    argv = sys.argv[1:]
+    if "--command" in argv:
+        command_index = argv.index("--command")
+        if command_index + 1 < len(argv) and argv[command_index + 1] == "--":
+            del argv[command_index + 1]
+    args = parser.parse_args(argv)
     command = list(args.command)
     if command and command[0] == "--":
         command.pop(0)

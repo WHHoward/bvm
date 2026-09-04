@@ -1,54 +1,122 @@
 {
-  "schema": "bvm-jm2-connected-rloop-provenance-v1",
+  "schema": "bvm-jm2-connected-single-rloop-final-provenance-v1",
   "experiment": "bvmsim-jm2-connected-single-rloop-observability-v1-20260904",
+  "completed_at": "2026-09-04T12:48:45+08:00",
   "head_before_task": "824c5c735b647028712e752a599bee8711c46a30",
-  "head_at_static_preflight": "824c5c735b647028712e752a599bee8711c46a30",
+  "preregistration_commit": "0c68b524",
+  "head_at_final_analysis": "0c68b524a8e4f19f5f9127d4068cdcb67f938e89",
   "source_class": "HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT",
-  "source_files": {
-    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
-    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
-    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
-    "circuits/models/jjmit.cir": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
-    "BVMSim/BQ.cir": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
-    "BVMSim/library_josim/jtl2.cir": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
-    "src/RelevantTrace.cpp": "83e60b48da28ea710d875243a6b678768062ae1467824ba950175a5511ba94cb",
-    "scripts/josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
-    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/generate_decks.py": "106d8727942aaa807217094e6bf62fc3589e0ec7b4d8ef966e001e042bbf8e72",
-    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/experiment.yaml": "961ecd871bcab8a3e0990dce93ec39634f5483a86fc1c6b2dcda9a425e962e3d"
-  },
-  "variant": {
+  "variant_identity": {
     "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
     "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
     "expected_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
-    "identity_status": "PASS"
+    "status": "PASS"
   },
   "solver": {
     "path": "/home/howard/JoSIM/build/josim-cli",
     "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
-    "version_exit_code": 0,
     "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
   },
-  "new_decks": {
+  "source_hashes": {
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/experiment.yaml": "58c9bc3f5b611736c1f2ee664f91a4c97cd429da00c48c2d81cc8489e77a89f4",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/generate_decks.py": "106d8727942aaa807217094e6bf62fc3589e0ec7b4d8ef966e001e042bbf8e72",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/run.sh": "a98c975d9dcd31dcce8cc4597596e0ea3fc35415885748a738ceaf939582e7a7",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/static_preflight.py": "c9a07a0f7444e2b47bf1233cfe1d35673193bacaf82a6bdeb1e7177ad5b33d11",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/analyze.py": "98b22295bd667f5aecf9729deddc6f4505ce67c6368c3e36d3681e543e67189f",
+    "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/render_plots.py": "255d9b90ae2619c5b5666fa389ecef072a78f6dd15c4c5871567bb13a84c9a73",
+    "scripts/bvmtools/raw.py": "2b7303fd5f99a61846f24d50c18594d073e858a74e6fa632bc90d7d1dbb1f8e2",
+    "scripts/bvmtools/waveform.py": "75ca2f24ff3df4c7706af5cf4bb23880e74100e7f694ab612cb02ad07d0f2af1",
+    "scripts/bvmtools/phase.py": "ac79f640bc9fae8784f75ef00a6cb978e8fa3606a9938cf0eb131fc728caba3c",
+    "scripts/bvmtools/kcl.py": "0cbdf83063d64d18d8c9a56a66fe6d996df26ec1b1815659968eee1e10ce153d",
+    "scripts/josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "circuits/models/jjmit.cir": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "BVMSim/BQ.cir": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+    "BVMSim/library_josim/jtl2.cir": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
+    "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7"
+  },
+  "run_records": {
     "S0-J-RLOOP": {
-      "path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S0-J-RLOOP/deck.cir",
-      "sha256": "eda81fa182c1c01fc28ff129d6cf195e9bf05fcdaa8970ff5410e5db5afc3c85",
-      "old_authority": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S0-J-JM2C/deck.cir",
-      "old_sha256": "28c4c99eaad687c8905226790bfec7a61a609d9680cf49b0030953d1ef0b07b6",
-      "normalized_physics_difference_count": 0,
-      "probe_only_extension": true
+      "metadata_path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S0-J-RLOOP/metadata.json",
+      "metadata_created_at": "2026-09-04T12:39:30+08:00",
+      "command": {
+        "argv": [
+          "/home/howard/JoSIM/build/josim-cli",
+          "-a",
+          "1",
+          "-o",
+          "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S0-J-RLOOP/raw.csv",
+          "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S0-J-RLOOP/deck.cir"
+        ],
+        "exit_code": 0
+      },
+      "deck_sha256": "eda81fa182c1c01fc28ff129d6cf195e9bf05fcdaa8970ff5410e5db5afc3c85",
+      "raw_sha256": "a946fd5326bf1efbe5942a69d77bd8477db99ed884f6bab6d9d39891f55a6a92",
+      "log_sha256": "61222dca79382d57349e7b06c83c82c7434a73a8a00c047ebea97348acc23459",
+      "artifact_status": "ARTIFACT_VALID"
     },
     "S1-J-RLOOP": {
-      "path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/deck.cir",
-      "sha256": "066b47e600b75adfe52aa1f26b45bac48344e2dafd72b0c87fac7bbaef9f8131",
-      "old_authority": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/runs/S1-J-JM2C/deck.cir",
-      "old_sha256": "5d8ff1a9314136b9916ef2e472cc5c34688d1d580650e07d8cf04a1cd3f8ccd7",
-      "normalized_physics_difference_count": 0,
-      "probe_only_extension": true
+      "metadata_path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/metadata.json",
+      "metadata_created_at": "2026-09-04T12:39:51+08:00",
+      "command": {
+        "argv": [
+          "/home/howard/JoSIM/build/josim-cli",
+          "-a",
+          "1",
+          "-o",
+          "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/raw.csv",
+          "/home/howard/JoSIM/test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/deck.cir"
+        ],
+        "exit_code": 0
+      },
+      "deck_sha256": "066b47e600b75adfe52aa1f26b45bac48344e2dafd72b0c87fac7bbaef9f8131",
+      "raw_sha256": "4dd63aa296355a45256851f4628712732b75785ba67d69f4f2ef9ad8b0e92eab",
+      "log_sha256": "c4dfc1af4c77b7e6d2648bd5c6981e9a3e25a5a1af21e64c7fef4bb3bbe147f3",
+      "artifact_status": "ARTIFACT_VALID"
     }
   },
-  "static_preflight": {
+  "static_preflight_snapshot": {
+    "path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/static_preflight.json",
+    "sha256": "afd51676a11a01e939d9f6e466f58dd219f93eba3592939d231592af4a5133b3",
     "status": "PASS",
-    "direct_element_voltage_mode": "DIRECT_ELEMENT_VOLTAGE_SUPPORTED",
-    "node_difference_fallback": "NOT_USED"
+    "normalized_physics_difference_count": 0,
+    "probe_only_extension": true
+  },
+  "analysis": {
+    "path": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/metrics.json",
+    "sha256": "96a81950c5b50e2bc5512319877d048723a640bc37e21f0706597b2f3213c7da",
+    "status": "ANALYSIS_VALID"
+  },
+  "plots": {
+    "manifest": "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/analysis/plot_manifest.json",
+    "manifest_sha256": "6a56434f70f30695f981354255c0176f357cdd787a8a0a45e264a52b0cbaba72",
+    "count": 18,
+    "raw_unchanged": true
+  },
+  "tooling_incidents": [
+    {
+      "stage": "physical_run_orchestration",
+      "description": "First run.sh invocation completed S0 but the metadata writer rejected the literal -- separator.",
+      "impact": "S0 raw/log were preserved; metadata was repaired from the same artifacts; S0 was not rerun."
+    },
+    {
+      "stage": "analysis",
+      "description": "First analyzer invocation omitted the OLD experiment-root variable.",
+      "impact": "Analyzer exited before writing scientific outputs; fixed and rerun on immutable raw only."
+    },
+    {
+      "stage": "visualization",
+      "description": "First renderer invocation used a three-item OrderedDict entry for comparison plots.",
+      "impact": "No plot was produced in the failed invocation; fixed and rerun without changing raw."
+    }
+  ],
+  "status": "AWAITING_USER_REVIEW",
+  "human_gate": {
+    "user_reviewed": false,
+    "next_step_authorized": false,
+    "automatic_next_experiment": false,
+    "next_action": "STOP",
+    "array_followup_run": false
   }
 }

@@ -1,0 +1,78 @@
+{
+  "schema": "bvmsim-1111-history-read-crossover-static-preflight-v1",
+  "status": "PASS",
+  "require_clean": true,
+  "git_head": "1eed89650c257f257b1df715923540256962e6bc",
+  "git_status": [],
+  "physical_difference_count": {
+    "O-_vs_O+": 0,
+    "N+_vs_N-": 0,
+    "O+_vs_N-": 0
+  },
+  "allowed_changes": {
+    "O-": [
+      "70--81 ps history controls",
+      "additional full-schema .print probes"
+    ],
+    "N+": [
+      "70--81 ps history controls"
+    ]
+  },
+  "history_present_max_abs_A": 0.0,
+  "history_absent_max_abs_A": 0.0,
+  "bl_max_abs_A": 0.0,
+  "write1_max_abs_A": 0.0,
+  "read1_max_abs_A": 0.0,
+  "outside_history_max_abs_A": 0.0,
+  "probe_count": 229,
+  "output_absent": {
+    "OLD-NO-HISTORY/raw.csv": true,
+    "OLD-NO-HISTORY/run.log": true,
+    "OLD-NO-HISTORY/metadata.json": true,
+    "NEW-WITH-HISTORY/raw.csv": true,
+    "NEW-WITH-HISTORY/run.log": true,
+    "NEW-WITH-HISTORY/metadata.json": true
+  },
+  "source_hashes": {
+    "jm2_connected_variant": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "shared_jjmit": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "solver": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "old_parent_deck": "3fcdb8b0d61c91cadcacee77c3c06b3a03f8f9392a8c838e9b8574b8938b4e88",
+    "new_parent_deck": "5ee085051cfdc2cc6e45deac657230e86c64795d9cd9be100735b13974c3222e",
+    "old_parent_raw": "9563ac09d75770cd9d9c2f2a93de0f418778012e64adb40fbf118ae0561d813f",
+    "new_parent_raw": "b3d421822dd893d17331016b7f954784d24c90c97f58bc362676467c7650998b"
+  },
+  "solver_version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+  "decks": {
+    "O-": {
+      "path": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/OLD-NO-HISTORY/deck.cir",
+      "sha256": "74495de047205152a60af3c2f40b526e670abae4fc399d4b35c7034bf6f8bb7e"
+    },
+    "N+": {
+      "path": "test/exploration/bvmsim-1111-history-read-crossover-causal-ab-v1-20260904/runs/NEW-WITH-HISTORY/deck.cir",
+      "sha256": "04808872343d5b6a8bda0137aa7b6ed2f981ab74a4d82731526d29ed65480e07"
+    }
+  },
+  "history_source_comparison": {
+    "O+_vs_N+_present": {
+      "I_WL1": 0.0,
+      "I_SE1": 0.0,
+      "I_WL2": 0.0,
+      "I_SE2": 0.0,
+      "I_WL3": 0.0,
+      "I_SE3": 0.0,
+      "I_WL4": 0.0,
+      "I_SE4": 0.0
+    },
+    "O-_vs_N-_absent": {
+      "I_WL1": 0.0,
+      "I_SE1": 0.0,
+      "I_WL2": 0.0,
+      "I_SE2": 0.0,
+      "I_WL3": 0.0,
+      "I_SE3": 0.0,
+      "I_WL4": 0.0,
+      "I_SE4": 0.0
+    }
+  }
+}

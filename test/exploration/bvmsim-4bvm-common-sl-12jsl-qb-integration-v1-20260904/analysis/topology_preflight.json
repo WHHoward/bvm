@@ -1,0 +1,221 @@
+{
+  "schema": "common-sl-12jsl-qb-topology-preflight-v1",
+  "experiment_id": "bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904",
+  "created_at_local": "2026-09-04T17:34:07+08:00",
+  "head_at_check": "a58bbb3b566b466110bccda8f89fc36c4ce2d368",
+  "base_head_expected": "a58bbb3b566b466110bccda8f89fc36c4ce2d368",
+  "source_sha256": {
+    "jm2_connected_bvm_variant": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "bvmsim_bq": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+    "bvmsim_jtl": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "shared_jjmit": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "canonical_bvm_not_used": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+    "passive_template_deck": "4159a81074053eabd310f08e955953a12d412e00e9bb9d4cc0ebbc7512c9bef6"
+  },
+  "canonical_bvm_used": false,
+  "authorized_change": {
+    "old": "COMMON_SL -> B_JSL01..12 -> GND",
+    "new": "COMMON_SL -> same B_JSL01..12 -> QBIN -> BQ -> JTL1..6 -> R_TERM(10 ohm)",
+    "only_boundary_change": "B_JSL12 COL11 0 -> COL11 QBIN"
+  },
+  "checks": {
+    "mask_count": 10,
+    "masks": [
+      "0000",
+      "0001",
+      "0010",
+      "0100",
+      "1000",
+      "0011",
+      "0111",
+      "1100",
+      "1110",
+      "1111"
+    ],
+    "all_fixture_checks_pass": true,
+    "upstream_unclassified_change_count": 0,
+    "receiver_counts": {
+      "BQ": 1,
+      "JTL": 6,
+      "R_TERM": 1
+    },
+    "probe_schema_from_generator": 258,
+    "frozen_bq_interface": ".subckt BQ IN OUT",
+    "frozen_jtl_interface": ".subckt jtl 4 5",
+    "stimulus_and_tran_frozen": true
+  },
+  "run_records": [
+    {
+      "mask": "0000",
+      "new_deck_sha256": "2d034ce30fbe8705d794bde017a0ed51e73c63787098ba83363058ba40108ce4",
+      "passive_deck_sha256": "89823a6bf3131dcc13ed7f18f53e6d773036aeba5981b79aba77f31896d4a6c3",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "0001",
+      "new_deck_sha256": "67688cc864bfd0cab698e71211889d4e8da0b8fb75a35be7edb5995cdfbc39bf",
+      "passive_deck_sha256": "5c0b5eb8bc1246acfbda58b80293909ec97ddabd57364ed52d1ad01b4b746d2e",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "0010",
+      "new_deck_sha256": "faac78a1194ddfb9e2b8da0edcbfb37a3fbe1d9867d22ffd6ed0f77f92a4d947",
+      "passive_deck_sha256": "06f25bdc6b8caf903b7bfe26f91232c5ffbd1a70c62ec45ffa223b809da173fe",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "0100",
+      "new_deck_sha256": "2bcf3b0155176ffab488387c6262f02ed59b521bcbb740e8a12097e46fed6642",
+      "passive_deck_sha256": "0f032f8e7328e823d2a143b5778d3c758d157981a4a47b6ddc9f47b409e492de",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "1000",
+      "new_deck_sha256": "45e7607250b44ab34752b62bd0357269f7ae09e1f7cd49acddc5feeb393f1f02",
+      "passive_deck_sha256": "b14d042aeadcc57cbef3dc14fbd16900808001117de3692dd87ea395b900df04",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "0011",
+      "new_deck_sha256": "f6500fb1b790ea6503dea51d06cbef3088c51d084adde18f4eb6349bf48832be",
+      "passive_deck_sha256": "44ad2c6b7fbe6cf87683f4ca0fedfb99ca740515733f2c3da139e9430ad7da19",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "0111",
+      "new_deck_sha256": "ae339a88e1dfb5fa636f052878e603dbc495c0c68e4bf949682c9c90b354f383",
+      "passive_deck_sha256": "21a30e2032c759796bdf823be7c2a1f459e8aade9d5c13c4e35b563916f51697",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "1100",
+      "new_deck_sha256": "853a1b287ae33ba73840ba34370ec3d1c29f0618693f9c8b824188d11eca99a7",
+      "passive_deck_sha256": "71f108156c178fd8e96b9bea802ae9e1eeb9f7372075ef281325b2c550fc6cfc",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "1110",
+      "new_deck_sha256": "839a446fb85db54bcf3c9433039ab7f3b24456cc10ff609944adc7b83315372f",
+      "passive_deck_sha256": "498bc600855cda817f8c57034123228ac745e7faa6985d3f128fa00e30dc6d39",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    },
+    {
+      "mask": "1111",
+      "new_deck_sha256": "150ee18f4238a85dd1cb9c1035bff52f1f0524818f3de986964990d2c2d5b13a",
+      "passive_deck_sha256": "4159a81074053eabd310f08e955953a12d412e00e9bb9d4cc0ebbc7512c9bef6",
+      "bvm_rows_identical": true,
+      "stimulus_identical": true,
+      "jsl_count_new": 12,
+      "authorized_boundary": "B_JSL12 COL11 0 -> COL11 QBIN",
+      "upstream_unclassified_change_count": 0,
+      "receiver_instance_count": {
+        "bq": 1,
+        "jtl": 6,
+        "termination": 1
+      },
+      "probe_count": 258,
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS",
+  "failures": []
+}

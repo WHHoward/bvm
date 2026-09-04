@@ -1,0 +1,207 @@
+experiment_id: bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904
+study_phase: EXPLORATION
+mode: QUICK
+status: PREREGISTERED
+base_head: a58bbb3b566b466110bccda8f89fc36c4ce2d368
+
+question:
+  primary: >-
+    在上一轮冻结的四颗 historical JM2-connected BVM、symmetric COMMON_SL
+    和共享 12x500uA JSL stack 上，只把 JSL12 的下游边界从 GND 改为
+    frozen BVMSim BQ -> frozen six-stage JTL -> 10 ohm 后，QB loading、
+    JSL-to-QB transfer 和 population-dependent trajectory 如何变化？
+  causal_focus:
+    - passive baseline COMMON_SL -> 12x500uA JSL -> GND
+    - receiver-loaded COMMON_SL -> 12x500uA JSL -> QB -> 6-stage JTL -> 10 ohm
+    - BVM/common-SL source back-action caused by the receiver boundary
+    - population 0/1/2/3/4 at the QB input and BJ2/JTL6 trajectory
+  interpretation_ceiling: >-
+    仅报告本 historical JM2-connected BVM、固定 common-SL、固定 12x500uA JSL、
+    frozen BVMSim BQ/JTL、固定 0.1-ps solver 和本轮十个 mask 的 bounded
+    simulation evidence；不外推为论文机制、canonical BVM、硬件、数值收敛或
+    普适功能结论。
+
+authorization:
+  user_authorized: true
+  authorization_basis: >-
+    User accepted the common-SL passive baseline and explicitly authorized the
+    causal-continuity QB integration with only the JSL12 downstream boundary changed.
+  parameter_tuning_authorized: false
+  automatic_followup: false
+  prohibited_changes:
+    - BVM parameters or topology
+    - common-SL geometry
+    - JSL count, ordering, model, area, or Ic
+    - BVMSim/BQ.cir contents or QB parameters
+    - BVMSim/library_josim/jtl2.cir contents or JTL parameters
+    - termination value
+    - stimulus timing, amplitudes, mask set, timestep, or stop time
+    - RSL/JJ/QB/JTL sweeps
+    - 20-GHz timing or topology optimization
+
+source_authority:
+  bvm_class: HISTORICAL_BVMSIM_JM2_CONNECTED_COMMON_SL_12JSL_QB_VARIANT
+  bvm_variant: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+  passive_baseline: test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904
+  qb: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  shared_jjmit: circuits/models/jjmit.cir
+  canonical_bvm: circuits/bvm/bvm_cell.cir
+  canonical_bvm_used: false
+  canonical_boundary: >-
+    canonical circuits/bvm/bvm_cell.cir remains outside this experiment; the
+    historical JM2-connected variant is the sole BVM source.
+
+changed:
+  only_authorized_boundary: JSL12 downstream node GND -> QBIN
+  added_frozen_receiver_chain:
+    - XBQ1 QBIN QBOUT BQ from BVMSim/BQ.cir
+    - xjtl1_1 through xjtl1_6 from BVMSim/library_josim/jtl2.cir
+    - R_TERM JTL6_OUT 0 10
+  observability_only:
+    - QB BJS/BJ1/BJ2 P/V/I and branch currents
+    - all six JTL stages B01/B02 P/V/I
+    - all twelve JSL P/V/I
+
+frozen:
+  bvm_variant_and_all_internal_values: true
+  internal_rsl_ohm: 12.0
+  external_rsl_added: false
+  common_sl_topology: four BVM SL endpoints directly on COMMON_SL
+  jsl_count: 12
+  jsl_model: jjmit
+  jsl_area: 5.0
+  jsl_ic_uA: 500.0
+  jsl_order: B_JSL01 -> B_JSL02 -> ... -> B_JSL12
+  jsl_upstream: COMMON_SL
+  jsl_downstream: QBIN
+  qb_source: BVMSim/BQ.cir
+  qb_subckt: BQ IN OUT
+  qb_nominal_parameters: RJ1=12ohm, RJ2=4ohm, IB=250uA, original BVMSim values
+  jtl_source: BVMSim/library_josim/jtl2.cir
+  jtl_stage_count: 6
+  jtl_internal_bias_uA: 280.0
+  termination_ohm: 10.0
+  timestep_ps: 0.1
+  stop_time_ps: 200.0
+  output_start_ps: 45.0
+  convergence_claim: NOT_CLAIMED
+  stimulus_protocol: >-
+    Each run uses the accepted no-history schedule: WRITE0 at 51--60 ps,
+    no-history interval 70--90 ps, all-four WRITE1 at 91--100 ps, settle,
+    and exactly one selective READ at 111--120 ps. No history READ is present.
+
+run_set:
+  bit_order: b3b2b1b0 -> BVM1/BVM2/BVM3/BVM4
+  masks: [0000, 0001, 0010, 0100, 1000, 0011, 0111, 1100, 1110, 1111]
+  population: >-
+    0000=0; 0001/0010/0100/1000=1; 0011/1100=2;
+    0111/1110=3; 1111=4. Population is commanded active-row count,
+    not measured SFQ count.
+  mask_semantics: >-
+    All four BVMs are initialized to stored-1111. During the final READ,
+    mask=1 applies WL=+100uA and SE=+100uA with BL=0; mask=0 applies
+    WL=SE=BL=0.
+  no_additional_masks: true
+  independent_run_rule: every mask has its own frozen deck, raw, log, and metadata
+
+windows_ps:
+  PRE: [45.0, 50.0]
+  WRITE0: [50.0, 70.0]
+  NO_HISTORY_READ: [70.0, 90.0]
+  WRITE1_ALL: [90.0, 101.0]
+  SETTLE: [101.0, 110.0]
+  READ: [110.0, 170.0]
+  TAIL: [170.0, 200.0]
+  semantics: half-open intervals except final tail endpoint
+
+preflight_contract:
+  ascii_topology: analysis/TOPOLOGY_ASCII.md
+  machine_check: analysis/topology_preflight.py
+  normalized_diff_check: compare passive same-mask deck against new deck
+  required_proofs:
+    - all four BVM variant hashes match passive baseline
+    - all BVM SL endpoints remain COMMON_SL
+    - exact same twelve JSL model/area/order/upstream connection
+    - JSL12 no longer terminates at GND and connects exactly to QBIN
+    - no second JSL/load branch, per-BVM JSL, or daisy network
+    - exactly one frozen BQ instance and six frozen JTL instances
+    - 10-ohm termination exists exactly once
+    - same stimulus and .tran settings as passive baseline
+    - no unclassified upstream physics difference
+
+probe_schema:
+  bvm_per_cell: >-
+    B_JM1/B_JM2/B_JS1/B_JS2 P/V/I; L_M1/L_M2/L_M3/L_PM/R_JM1/L_S1/L_S2/R_S/
+    L_S3/R_SE/L_PSE/L_PSL/R_SL/L_SL I and V; control source currents
+  common_sl:
+    - V(COMMON_SL)
+    - I(L_SL|XBVM1..4)
+    - I(B_JSL01)
+  jsl: B_JSL01..B_JSL12 P/V/I
+  qb:
+    - V(QBIN)
+    - V(QBOUT)
+    - I(LIN|XBQ1)
+    - BJS/BJ1/BJ2 P/V/I
+    - RJ1/RJ2/L1/L2/L3/IB branch currents and V where available
+  jtl: XJTL1..XJTL6 B01/B02 P/V/I
+  termination:
+    - V(JTL6_OUT)
+    - I(R_TERM)
+
+analysis_contract:
+  primary_layers:
+    - BVM/common-SL source back-action versus passive same-mask baseline
+    - common-SL sum to JSL01 and JSL01-to-JSL12 series transfer
+    - JSL12-to-QB input boundary consistency
+    - population input levels and QB BJ2 trajectory
+    - BJ2 to JTL6 downstream transport, kept as separate evidence layer
+    - additivity under QB load versus passive boundary
+  direct_source_sum: SUM_LSL = sum(I(L_SL|XBVM1..4)); derived, not a fabricated branch
+  direct_jsl_authority: I(B_JSL01)
+  phase_source: P is radians; turns only continuous_unwrap(rad)/(2*pi)
+  event_rule: phase displacement, voltage area, integer crossings, or I>Ic are not SFQ counts
+  load_rule: strict local JSL diagnostic only; any complete event marks assumption violated
+  comparison_rule: exact grids required for pointwise deltas; otherwise no silent interpolation
+  passive_context: read-only same-mask raw and metrics from the accepted passive baseline
+
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  standalone_first: true
+  compact_key_data_only: true
+  required_comparison_pages:
+    - ONEHOT_SUM_LSL.html
+    - ONEHOT_JSL_CURRENT.html
+    - ONEHOT_QB_INPUT.html
+    - POPULATION_SUM_LSL.html
+    - POPULATION_JSL_CURRENT.html
+    - POPULATION_LIN.html
+    - QB_BJ2_0_TO_4.html
+    - BJ2_CROSSING_TIMELINE.html
+    - JTL6_0_TO_4.html
+    - PASSIVE_VS_QB_SUM_LSL.html
+    - PASSIVE_VS_QB_JSL.html
+    - QB_LOAD_BACKACTION_ONEHOT.html
+    - QB_LOAD_BACKACTION_1111.html
+    - ADDITIVITY_UNDER_QB_LOAD.html
+    - RESULT_OVERVIEW.html
+
+prohibited_followups:
+  - 20-GHz timing
+  - 8-JSL or JSL Ic/count sweep
+  - direct-QB or QB-open boundary
+  - RSL/JJ/QB/JTL parameter tuning
+  - timestep sweep or convergence claim
+  - topology redesign
+  - automatic next experiment
+
+gate:
+  state: AWAITING_USER_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

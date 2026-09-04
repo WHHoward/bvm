@@ -1,0 +1,147 @@
+{
+  "schema": "bvmsim-common-sl-12jsl-qb-integration-provenance-v1",
+  "experiment_id": "bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904",
+  "created_at_local": "2026-09-04T17:33:56+08:00",
+  "head_before_setup": "a58bbb3b566b466110bccda8f89fc36c4ce2d368",
+  "base_head_expected": "a58bbb3b566b466110bccda8f89fc36c4ce2d368",
+  "source_class": "HISTORICAL_BVMSIM_JM2_CONNECTED_COMMON_SL_12JSL_QB_VARIANT",
+  "source_records": {
+    "passive_baseline_experiment": {
+      "path": "test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904/experiment.yaml",
+      "sha256": "8adc02c5d68f2fac48cbb07b7ea85d94ca4ad7c02c7aaf942dff956b116c675e"
+    },
+    "passive_baseline_template_deck": {
+      "path": "test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904/runs/1111/deck.cir",
+      "sha256": "4159a81074053eabd310f08e955953a12d412e00e9bb9d4cc0ebbc7512c9bef6"
+    },
+    "jm2_connected_bvm_variant": {
+      "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+    },
+    "bvmsim_bq": {
+      "path": "BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd"
+    },
+    "bvmsim_jtl": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "shared_jjmit": {
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "canonical_bvm_not_used": {
+      "path": "circuits/bvm/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+    },
+    "solver": {
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+    }
+  },
+  "expected_hashes": {
+    "bvm_variant": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "bq": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+    "jtl": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "shared_jjmit": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+  },
+  "passive_baseline": {
+    "path": "test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904",
+    "template_deck_sha256": "4159a81074053eabd310f08e955953a12d412e00e9bb9d4cc0ebbc7512c9bef6",
+    "template_deck_expected_sha256": "4159a81074053eabd310f08e955953a12d412e00e9bb9d4cc0ebbc7512c9bef6",
+    "raw_sha256_by_mask": {
+      "0000": "44617e9e19332a9a7f88a9e5f9ef7094f6840ef1cc0741cebf8c5aa3f74af464",
+      "0001": "9987dbfb542a365faafbcb96f131851a2c425f6fe959c30799ac81ddd8f5c733",
+      "0010": "8a7835d7a8d10dd4e17d3b3ffd8a8987958c3209d449a697276d5e87df68c674",
+      "0100": "2b1289fbcf7cc5130dfc32c537d299b6833bfb5b5ecb4b73d26e0045fa1f1471",
+      "1000": "ac4075375cd7dbec72589b77ea780e5e4d0e16b7cefca282790fecd5077e4cbe",
+      "0011": "8215d5ce8dcc432d0e0bcc11e5eb78a48c065623ada6570ecb0ce7df774e5dba",
+      "0111": "1fcc4bc45fb442d4937b28d79e4137b7a9e56a06dd601df0202f3e5dae5aeb61",
+      "1100": "4a349b5fb32a0b6492ad9e0159fa0bc7e6f700fc7a82a5f9b16869e39763835e",
+      "1110": "a5d6df96ca2f138b5ed6000a2809743bb7d912272b1f55e9f11fbc21540ad269",
+      "1111": "90e6d63322d922ea2a040cca01e4c23bfa90865577db761ac43b970940bf2bab"
+    }
+  },
+  "authorized_boundary_change": {
+    "from": "B_JSL12 COL11 0 jjmit area=5.0",
+    "to": "B_JSL12 COL11 QBIN jjmit area=5.0",
+    "all_upstream_bvm_common_sl_jsl_physics_frozen": true,
+    "frozen_bq_added": true,
+    "frozen_six_stage_jtl_added": true,
+    "termination_ohm": 10.0
+  },
+  "deck_records": {
+    "0000": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/0000/deck.cir",
+      "sha256": "2d034ce30fbe8705d794bde017a0ed51e73c63787098ba83363058ba40108ce4",
+      "mask": "0000",
+      "population": 0
+    },
+    "0001": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/0001/deck.cir",
+      "sha256": "67688cc864bfd0cab698e71211889d4e8da0b8fb75a35be7edb5995cdfbc39bf",
+      "mask": "0001",
+      "population": 1
+    },
+    "0010": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/0010/deck.cir",
+      "sha256": "faac78a1194ddfb9e2b8da0edcbfb37a3fbe1d9867d22ffd6ed0f77f92a4d947",
+      "mask": "0010",
+      "population": 1
+    },
+    "0100": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/0100/deck.cir",
+      "sha256": "2bcf3b0155176ffab488387c6262f02ed59b521bcbb740e8a12097e46fed6642",
+      "mask": "0100",
+      "population": 1
+    },
+    "1000": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/1000/deck.cir",
+      "sha256": "45e7607250b44ab34752b62bd0357269f7ae09e1f7cd49acddc5feeb393f1f02",
+      "mask": "1000",
+      "population": 1
+    },
+    "0011": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/0011/deck.cir",
+      "sha256": "f6500fb1b790ea6503dea51d06cbef3088c51d084adde18f4eb6349bf48832be",
+      "mask": "0011",
+      "population": 2
+    },
+    "0111": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/0111/deck.cir",
+      "sha256": "ae339a88e1dfb5fa636f052878e603dbc495c0c68e4bf949682c9c90b354f383",
+      "mask": "0111",
+      "population": 3
+    },
+    "1100": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/1100/deck.cir",
+      "sha256": "853a1b287ae33ba73840ba34370ec3d1c29f0618693f9c8b824188d11eca99a7",
+      "mask": "1100",
+      "population": 2
+    },
+    "1110": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/1110/deck.cir",
+      "sha256": "839a446fb85db54bcf3c9433039ab7f3b24456cc10ff609944adc7b83315372f",
+      "mask": "1110",
+      "population": 3
+    },
+    "1111": {
+      "path": "test/exploration/bvmsim-4bvm-common-sl-12jsl-qb-integration-v1-20260904/runs/1111/deck.cir",
+      "sha256": "150ee18f4238a85dd1cb9c1035bff52f1f0524818f3de986964990d2c2d5b13a",
+      "mask": "1111",
+      "population": 4
+    }
+  },
+  "canonical_bvm_used": false,
+  "qb_authority": "BVMSim/BQ.cir exact file; no handwritten replacement",
+  "jtl_authority": "BVMSim/library_josim/jtl2.cir exact file; no normalization",
+  "phase_statement": "P is raw radians; turns are continuous_unwrap(rad)/(2*pi)",
+  "event_statement": "phase displacement, voltage area, and crossings are not SFQ counts",
+  "gate": {
+    "state": "AWAITING_USER_REVIEW",
+    "user_reviewed": false,
+    "next_step_authorized": false,
+    "automatic_next_experiment": false,
+    "next_action": "STOP"
+  }
+}

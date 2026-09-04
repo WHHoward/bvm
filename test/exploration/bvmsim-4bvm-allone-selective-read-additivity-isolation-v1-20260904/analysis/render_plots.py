@@ -175,7 +175,7 @@ def render(input_path: Path, output_path: Path, title: str, labels: list[str]) -
 def add_comparison(records: list[dict[str, object]], name: str, columns: OrderedDict[str, Sequence[float]], time: Sequence[float], title: str) -> None:
     path = EXP / "plots/comparison/data" / f"{name}.csv"
     write_csv(path, time, columns)
-    records.append(render(path, path.with_suffix(".html"), title, list(columns)))
+    records.append(render(path, EXP / "plots/comparison" / f"{name}.html", title, list(columns)))
 
 
 def comparison_plots(traces: Mapping[str, RawTrace], records: list[dict[str, object]]) -> None:
@@ -185,29 +185,29 @@ def comparison_plots(traces: Mapping[str, RawTrace], records: list[dict[str, obj
     columns: OrderedDict[str, Sequence[float]] = OrderedDict()
     for mask in ONE_HOT:
         active = next(index for index, bit in enumerate(mask, start=1) if bit == "1")
-        columns[f"V(QBIN) [{mask}] "] = sig(traces[mask], "V(QBIN)")
-        columns[f"I(LIN|XBQ1) [{mask}] "] = sig(traces[mask], "I(LIN|XBQ1)")
-        columns[f"I(R_SL|XBVM{active}) [{mask}] "] = sig(traces[mask], f"I(R_SL|XBVM{active})")
+        columns[f"V(QBIN) [{mask}]"] = sig(traces[mask], "V(QBIN)")
+        columns[f"I(LIN|XBQ1) [{mask}]"] = sig(traces[mask], "I(LIN|XBQ1)")
+        columns[f"I(R_SL|XBVM{active}) [{mask}]"] = sig(traces[mask], f"I(R_SL|XBVM{active})")
     add_comparison(records, "ONEHOT_QBIN_POSITION", columns, baseline.time, "one-hot position — QBIN / LIN / active RSL")
 
     columns = OrderedDict()
     for mask in ONE_HOT:
         active = next(index for index, bit in enumerate(mask, start=1) if bit == "1")
-        columns[f"I(R_SL|XBVM{active}) [{mask}] "] = sig(traces[mask], f"I(R_SL|XBVM{active})")
-        columns[f"I(Delta_RSL|XBVM{active}) [{mask}] "] = add_delta(traces[mask], baseline, f"I(R_SL|XBVM{active})")
-        columns[f"I(L_SL|XBVM{active}) [{mask}] "] = sig(traces[mask], f"I(L_SL|XBVM{active})")
+        columns[f"I(R_SL|XBVM{active}) [{mask}]"] = sig(traces[mask], f"I(R_SL|XBVM{active})")
+        columns[f"I(Delta_RSL|XBVM{active}) [{mask}]"] = add_delta(traces[mask], baseline, f"I(R_SL|XBVM{active})")
+        columns[f"I(L_SL|XBVM{active}) [{mask}]"] = sig(traces[mask], f"I(L_SL|XBVM{active})")
     add_comparison(records, "ONEHOT_RSL_POSITION", columns, baseline.time, "one-hot position — RSL/LSL response")
 
-    single = read_csv(EXP.parent.parent / "bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/raw.csv")
-    array_time = tuple(trace.time[index] - read_window_indices(trace)[0] * 0.0 for index in read_window_indices(baseline))
+    single = read_csv(REPO / "test/exploration/bvmsim-jm2-connected-single-rloop-observability-v1-20260904/runs/S1-J-RLOOP/raw.csv")
     # The comparison page uses relative READ time.  All array runs share the
-    # same grid; the single reference is checked by exact relative-grid identity.
+    # same grid; the single reference is paired by equal sample index, with no
+    # interpolation.  Absolute offsets make exact float equality inappropriate.
     arr_indices = read_window_indices(baseline)
     rel_time = tuple(baseline.time[index] - baseline.time[arr_indices[0]] for index in arr_indices)
     single_indices = window_indices(single.time, 70e-12, 130e-12)
     single_rel = tuple(single.time[index] - single.time[single_indices[0]] for index in single_indices)
-    if rel_time != single_rel:
-        raise RuntimeError("active-vs-single relative time grid mismatch; no interpolation permitted")
+    if len(rel_time) != len(single_rel):
+        raise RuntimeError("active-vs-single sample-count mismatch; no interpolation permitted")
     columns = OrderedDict()
     for mask in ONE_HOT:
         active = next(index for index, bit in enumerate(mask, start=1) if bit == "1")
@@ -220,7 +220,10 @@ def comparison_plots(traces: Mapping[str, RawTrace], records: list[dict[str, obj
             (f"P(B_JS2|XBVM{active})", True),
         ):
             array_values = sig(array, label) if not phase else tuple(value / (2.0 * 3.141592653589793) for value in continuous_unwrap(sig(array, label)))
-            single_label = label if not label.startswith("P(B_JS2") else "P(B_JS2|XBVM1)"
+            if "|XBVM" in label:
+                single_label = label.replace(f"|XBVM{active}", "|XBVM1")
+            else:
+                single_label = label
             single_values = sig(single, single_label) if not phase else tuple(value / (2.0 * 3.141592653589793) for value in continuous_unwrap(sig(single, single_label)))
             ai = read_window_indices(array)
             si = single_indices
@@ -230,8 +233,8 @@ def comparison_plots(traces: Mapping[str, RawTrace], records: list[dict[str, obj
             else:
                 array_values = tuple(array_values[index] for index in ai)
                 single_values = tuple(single_values[index] for index in si)
-            columns[f"{label} [array {mask}] "] = array_values
-            columns[f"{single_label} [isolated S1 {mask}] "] = single_values
+            columns[f"{label} [array {mask}]"] = array_values
+            columns[f"{single_label} [isolated S1 {mask}]"] = single_values
     add_comparison(records, "ACTIVE_VS_SINGLE_REFERENCE", columns, rel_time, "active BVM vs isolated single S1 — relative READ")
 
     for mask in ("1000", "0001"):
@@ -242,12 +245,12 @@ def comparison_plots(traces: Mapping[str, RawTrace], records: list[dict[str, obj
                 continue
             for branch in ("R_SL", "L_SL", "R_S", "L_S3", "L_M3"):
                 label = f"I({branch}|XBVM{victim})"
-                columns[f"I(Delta_{branch}|XBVM{victim}) [{mask}] "] = add_delta(traces[mask], baseline, label)
+                columns[f"I(Delta_{branch}|XBVM{victim}) [{mask}]"] = add_delta(traces[mask], baseline, label)
             for junction in ("B_JS1", "B_JS2"):
                 label = f"P({junction}|XBVM{victim})"
                 phase_one = tuple(value / (2.0 * 3.141592653589793) for value in continuous_unwrap(sig(traces[mask], label)))
                 phase_base = tuple(value / (2.0 * 3.141592653589793) for value in continuous_unwrap(sig(baseline, label)))
-                columns[f"P(Delta_{junction}|XBVM{victim}) [{mask}] "] = tuple(a - b for a, b in zip(phase_one, phase_base))
+                columns[f"P(Delta_{junction}|XBVM{victim}) [{mask}]"] = tuple(a - b for a, b in zip(phase_one, phase_base))
         add_comparison(records, f"INACTIVE_CELL_ISOLATION_{mask}", columns, baseline.time, f"inactive BVM vs 0000 — active {mask}")
 
     labels = ["I(LIN|XBQ1)", "V(QBIN)", *(f"I(L_SL|XBVM{n})" for n in range(1, 5))]
@@ -261,9 +264,9 @@ def comparison_plots(traces: Mapping[str, RawTrace], records: list[dict[str, obj
                 predicted = tuple(sum(delta_one[onehot][label][i] for onehot in active_onehots) for i in range(len(actual)))
                 residual = tuple(a - p for a, p in zip(actual, predicted))
                 prefix = "I(Delta_LIN)" if label.startswith("I(") else "V(Delta_QBIN)"
-                columns[f"{prefix} actual [{mask}] "] = actual
-                columns[f"{prefix} predicted [{mask}] "] = predicted
-                columns[f"{prefix} residual [{mask}] "] = residual
+                columns[f"{prefix} actual [{mask}]"] = actual
+                columns[f"{prefix} predicted [{mask}]"] = predicted
+                columns[f"{prefix} residual [{mask}]"] = residual
         add_comparison(records, name, columns, baseline.time, f"{name.lower()} — actual vs one-hot prediction")
 
     columns = OrderedDict()
@@ -272,7 +275,7 @@ def comparison_plots(traces: Mapping[str, RawTrace], records: list[dict[str, obj
         for label, prefix in (("I(LIN|XBQ1)", "I(Superposition_residual_LIN)"), ("V(QBIN)", "V(Superposition_residual_QBIN)"), *( (f"I(L_SL|XBVM{n})", f"I(Superposition_residual_LSL{n})") for n in range(1, 5))):
             actual = add_delta(traces[mask], baseline, label)
             predicted = tuple(sum(delta_one[onehot][label][i] for onehot in active_onehots) for i in range(len(actual)))
-            columns[f"{prefix} [{mask}] "] = tuple(a - p for a, p in zip(actual, predicted))
+            columns[f"{prefix} [{mask}]"] = tuple(a - p for a, p in zip(actual, predicted))
     add_comparison(records, "SUPERPOSITION_RESIDUAL", columns, baseline.time, "one-hot superposition residuals")
 
 

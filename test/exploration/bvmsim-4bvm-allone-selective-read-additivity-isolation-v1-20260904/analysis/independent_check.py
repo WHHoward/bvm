@@ -19,6 +19,7 @@ import sys
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
 MASKS = ("0000", "0001", "0010", "0100", "1000", "0011", "0111", "1100", "1110", "1111")
+ONE_HOT = ("0001", "0010", "0100", "1000")
 ONE_HOT_BY_INSTANCE = {1: "1000", 2: "0100", 3: "0010", 4: "0001"}
 FORWARD = ("1100", "1110", "1111")
 REVERSE = ("0011", "0111", "1111")

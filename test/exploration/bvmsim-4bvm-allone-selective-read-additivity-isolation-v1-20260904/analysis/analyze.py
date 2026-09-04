@@ -446,7 +446,7 @@ def inactive_isolation(traces: Mapping[str, RawTrace]) -> dict[str, object]:
                     "baseline": metric(baseline, label, READ_WINDOW, "A" if unit == "A" else "raw"),
                     "one_hot": metric(one, label, READ_WINDOW, "A" if unit == "A" else "raw"),
                     "delta": series_stats(one.time, values, READ_WINDOW, "A" if unit == "A" else "raw"),
-                    "delta_max_abs_display": series_stats(one.time, values, READ_WINDOW, "A" if unit == "A" else "raw")["max_abs"] * scale,
+                    "delta_max_abs_display": series_stats(one.time, values, READ_WINDOW, "A" if unit == "A" else "raw")["max_abs"],
                 }
             victims[f"BVM{victim}"] = {"commanded_read_bit": 0, "signals": signals}
         output["per_one_hot"][mask] = {  # type: ignore[index]
@@ -491,14 +491,30 @@ def active_vs_single(traces: Mapping[str, RawTrace]) -> dict[str, object]:
             array_label = array_pattern.format(n=active)
             ta, va = relative_series(array, array_label, READ_WINDOW, phase=phase)
             ts, vs = relative_series(single, single_label, (70e-12, 130e-12), phase=phase)
-            if not exact_time_grid_identity(ta, ts):
-                entries[name] = {"status": "RELATIVE_GRID_MISMATCH", "array_samples": len(ta), "single_samples": len(ts)}
+            if len(ta) != len(ts):
+                entries[name] = {"status": "SAMPLE_COUNT_MISMATCH", "array_samples": len(ta), "single_samples": len(ts)}
             else:
+                array_dt = tuple(ta[index + 1] - ta[index] for index in range(len(ta) - 1))
+                single_dt = tuple(ts[index + 1] - ts[index] for index in range(len(ts) - 1))
+                max_dt_difference = max(
+                    (abs(left - right) for left, right in zip(array_dt, single_dt)),
+                    default=0.0,
+                )
+                # Pair equal sample indices.  The comparison is deliberately
+                # performed on a synthetic sample-index axis: this is not
+                # interpolation, and it avoids treating binary floating-point
+                # offset representation as a physical grid change.
+                index_axis = tuple(float(index) for index in range(len(ta)))
                 entries[name] = {
                     "array_label": array_label,
                     "single_label": single_label,
                     "phase_centered": phase,
-                    "comparison": compact_compare(ta, va, ts, vs, unit=unit, scale=scale),
+                    "alignment": "same relative READ sample index; no interpolation",
+                    "array_samples": len(ta),
+                    "single_samples": len(ts),
+                    "max_abs_dt_difference_s": max_dt_difference,
+                    "exact_relative_time_grid": exact_time_grid_identity(ta, ts),
+                    "comparison": compact_compare(index_axis, va, index_axis, vs, unit=unit, scale=scale),
                 }
         result["per_one_hot"][mask] = {"active_bvm": f"BVM{active}", "signals": entries}  # type: ignore[index]
     return result
@@ -633,8 +649,8 @@ def kcl_record(traces: Mapping[str, RawTrace]) -> dict[str, object]:
         per_bvm: dict[str, object] = {}
         for instance in range(1, 5):
             branch_values = {
-                key: sig(trace, bvm_label(instance, branch))
-                for key in {branch for terms in equations.values() for branch, _ in terms}
+                branch: sig(trace, bvm_label(instance, branch))
+                for branch in {branch for terms in equations.values() for branch, _ in terms}
             }
             per_equation: dict[str, object] = {}
             for name, terms in equations.items():
@@ -866,23 +882,34 @@ def report(metrics: Mapping[str, object]) -> str:
         "",
         "`Delta_X(mask)=X(mask)-X(0000)`；`Delta_X_pred=sum(Delta_X(one-hot))`；残差为 actual-predicted。没有预设 5%/10% 合格阈值，保留 max abs、RMS、signed integral、peak-time difference、normalized RMS 和 correlation。",
         "",
-        "| direction | mask | LIN residual max abs (uA) | LIN normalized RMS | QBIN residual max abs (mV) | QBIN normalized RMS |",
-        "|---|---|---:|---:|---:|---:|",
+        "| direction | mask | LIN residual max abs (uA) | LIN normalized RMS | max per-BVM LSL residual (uA) | QBIN residual max abs (mV) | QBIN normalized RMS |",
+        "|---|---|---:|---:|---:|---:|---:|",
     ])
     for direction in ("forward", "reverse"):
         for mask in (FORWARD if direction == "forward" else REVERSE):
             entry = metrics["additivity"][direction][mask]  # type: ignore[index]
             lin = entry["QB_LIN"]["summary"]
             qbin = entry["QB_QBIN"]["summary"]
-            lines.append(f"| {direction} | {mask} | {fmt(lin['residual']['max_abs'])} | {fmt(lin['normalized_rms_error'])} | {fmt(qbin['residual']['max_abs'])} | {fmt(qbin['normalized_rms_error'])} |")
+            lsl_max = max(entry[f"BVM{instance}_LSL"]["summary"]["residual"]["max_abs"] for instance in range(1, 5))
+            lines.append(f"| {direction} | {mask} | {fmt(lin['residual']['max_abs'])} | {fmt(lin['normalized_rms_error'])} | {fmt(lsl_max)} | {fmt(qbin['residual']['max_abs'])} | {fmt(qbin['normalized_rms_error'])} |")
 
     lines.extend([
         "",
-        "## 4. RSL / RS||LS3 / KCL",
+        "## 4. 有界结论（仅限本 fixture）",
+        "",
+        "基于上述三组优先证据，本轮不支持把四颗 BVM 描述为在当前共享 RSL/SL fixture 中提供相对独立、可近似线性叠加的 unit-current 源。",
+        "",
+        "- **Observed:** one-hot active 响应随位置明显变化；array one-hot 与 isolated single 的 branch waveform 不能视为同协议等价。",
+        "- **Observed:** 每个 one-hot run 中，三个 commanded-0、但先前经过 all-one WRITE1 的 victim 都相对 0000 出现非零 RSL/LSL；差异还出现在 RS、LS3、LM3 以及 JM1/JM2 phase probes。",
+        "- **Observed:** multi-active 实际波形与 one-hot superposition 的 LIN、每路 LSL 和 QBIN 残差达到事件/波形尺度；因此当前数据不支持 near-linear accumulation。",
+        "- **Caveat:** task-local 的 all-one stored-1111 closure 没有被四颗 BVM 全部确认：JM1 WRITE1 约为 2 turns，但 JM2 约为 0.124 turns，低于本轮描述性 0.25-turn marker。因而不能把所有 victim 的小响应简单表述为完整存储态下的隔离失败，也不能据此否定所有可能的其他协议。",
+        "- **Inference:** 在本固定历史模型、固定偏置、固定步长和固定拓扑下，证据更接近 `cross-coupling/back-action + position-dependent response + non-additive accumulation`；耦合的具体物理路径仍是 Unknown。",
+        "",
+        "## 5. RSL / RS||LS3 / KCL",
         "",
         "RSL 的 `V*I` 和积分能量、RS/LS3 的支路电流分配以及五组 BVM KCL 只用于验证方向、层级和 current partition；它们不是独立性 gate。完整结果见 `metrics.json`。",
         "",
-        "## 5. QB/JTL 次级诊断",
+        "## 6. QB/JTL 次级诊断",
         "",
         "BJ2 与 JTL6 B02 保存同 JJ phase/voltage-area 与 shared strict event-list 诊断。phase turns、whole-window voltage area 和 local segment 数均不直接等于 SFQ received count。",
         "",
@@ -897,7 +924,7 @@ def report(metrics: Mapping[str, object]) -> str:
 
     lines.extend([
         "",
-        "## 6. 证据分层",
+        "## 7. 证据分层",
         "",
         "**Observed:** raw 中的四路控制、四个 hierarchical BVM 的直接 branch P/V/I、BVMout、QB 和六级 JTL 探针；10 个 mask 各有独立 deck/raw/log/metadata。",
         "",
@@ -907,7 +934,7 @@ def report(metrics: Mapping[str, object]) -> str:
         "",
         "**Unknown:** 本轮不能证明论文机制、普适 RSL isolation、unit current 的工艺独立性、canonical BVM 兼容性、硬件行为或系统 QB 逻辑正确性；也没有做参数、bias、timestep、T1 或完整 16-state matrix。",
         "",
-        "## 7. 文件与 gate",
+        "## 8. 文件与 gate",
         "",
         "主数据：`analysis/metrics.json`；独立复算：`analysis/independent_check.json`；图索引：`plots/RESULT_OVERVIEW.html`。本轮结束后 gate 必须保持 `AWAITING_USER_REVIEW`、`user_reviewed: false`、`next_step_authorized: false`，不自动启动后续实验。",
         "",

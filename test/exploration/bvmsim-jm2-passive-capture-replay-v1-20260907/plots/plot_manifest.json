@@ -1,7 +1,7 @@
 {
   "schema": "jm2-passive-capture-replay-plot-manifest-v1",
   "experiment_id": "bvmsim-jm2-passive-capture-replay-v1-20260907",
-  "created_at_local": "2026-09-07T15:45:21+08:00",
+  "created_at_local": "2026-09-07T16:16:25+08:00",
   "source_raw_hashes": {
     "SINGLE_PASSIVE": "2553796d8c4c0e4edc5784ad184bf2ceb93a2ebd2cdd948c458891d59cfc4672",
     "ARRAY_PASSIVE": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6",
@@ -136,10 +136,217 @@
       "sample_count": 1999
     }
   },
+  "standalone_run_pages": {
+    "SINGLE_PASSIVE": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/single_passive/raw.csv",
+      "labels": [
+        "I(B_JSL8)",
+        "V(SL1)",
+        "I(I_WL1)",
+        "I(I_BL1)",
+        "I(I_SE1)"
+      ]
+    },
+    "ARRAY_PASSIVE": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/raw.csv",
+      "labels": [
+        "I(B_JSL8)",
+        "V(COMMON_SL)",
+        "I(I_WL1)",
+        "I(I_BL1)",
+        "I(I_SE1)"
+      ]
+    },
+    "REPLAY_SINGLE": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_single/raw.csv",
+      "labels": [
+        "I(I_REPLAY)",
+        "V(QBIN)",
+        "P(BJ1|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "I(R_TERM)"
+      ]
+    },
+    "REPLAY_ARRAY": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+      "labels": [
+        "I(I_REPLAY)",
+        "V(QBIN)",
+        "P(BJ1|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "I(R_TERM)"
+      ]
+    }
+  },
   "pages": {
+    "SINGLE_PASSIVE": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/single_passive/raw.csv",
+      "input_sha256": "2553796d8c4c0e4edc5784ad184bf2ceb93a2ebd2cdd948c458891d59cfc4672",
+      "source_kind": "raw_run",
+      "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/SINGLE_PASSIVE.html",
+      "output_sha256": "a9f4012f44dc07be6ec450fc5ab526c3683b6d59bd7dbc3ebf7c7435c2b8ebef",
+      "output_bytes": 4999603,
+      "labels": [
+        "I(B_JSL8)",
+        "V(SL1)",
+        "I(I_WL1)",
+        "I(I_BL1)",
+        "I(I_SE1)"
+      ],
+      "title": "SINGLE_PASSIVE standalone | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/single_passive/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/SINGLE_PASSIVE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "SINGLE_PASSIVE standalone | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+        "-s",
+        "I(B_JSL8)",
+        "V(SL1)",
+        "I(I_WL1)",
+        "I(I_BL1)",
+        "I(I_SE1)"
+      ],
+      "returncode": 0,
+      "reused_existing_output": false,
+      "phase_axis_conversion": null,
+      "read_write_protocol_labels_visible": false
+    },
+    "ARRAY_PASSIVE": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/raw.csv",
+      "input_sha256": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6",
+      "source_kind": "raw_run",
+      "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/ARRAY_PASSIVE.html",
+      "output_sha256": "d07a159b3a6a6ba99a394da8b7d251355b142a61ee831720fc5d981e4f098df1",
+      "output_bytes": 4999638,
+      "labels": [
+        "I(B_JSL8)",
+        "V(COMMON_SL)",
+        "I(I_WL1)",
+        "I(I_BL1)",
+        "I(I_SE1)"
+      ],
+      "title": "ARRAY_PASSIVE standalone | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/ARRAY_PASSIVE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "ARRAY_PASSIVE standalone | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+        "-s",
+        "I(B_JSL8)",
+        "V(COMMON_SL)",
+        "I(I_WL1)",
+        "I(I_BL1)",
+        "I(I_SE1)"
+      ],
+      "returncode": 0,
+      "reused_existing_output": false,
+      "phase_axis_conversion": null,
+      "read_write_protocol_labels_visible": false
+    },
+    "REPLAY_SINGLE": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_single/raw.csv",
+      "input_sha256": "edeb1c692bf3fa1da43cc50df5eb516615a7a7df729afe5d099243c01cb17bfa",
+      "source_kind": "raw_run",
+      "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/REPLAY_SINGLE.html",
+      "output_sha256": "8a1cafed50264fcfc667f08b09162a5352485e3215825a734288f937ee63fa3f",
+      "output_bytes": 5010948,
+      "labels": [
+        "I(I_REPLAY)",
+        "V(QBIN)",
+        "P(BJ1|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "I(R_TERM)"
+      ],
+      "title": "REPLAY_SINGLE standalone | QB/JTL current replay | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_single/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/REPLAY_SINGLE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "REPLAY_SINGLE standalone | QB/JTL current replay | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+        "-s",
+        "I(I_REPLAY)",
+        "V(QBIN)",
+        "P(BJ1|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "I(R_TERM)"
+      ],
+      "returncode": 0,
+      "reused_existing_output": false,
+      "phase_axis_conversion": "rad/(2*pi) displayed as turns",
+      "read_write_protocol_labels_visible": false
+    },
+    "REPLAY_ARRAY": {
+      "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+      "input_sha256": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+      "source_kind": "raw_run",
+      "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/REPLAY_ARRAY.html",
+      "output_sha256": "ebcca25f2d662263f37541b7d71d4b856448ddf321eb905d18ead0f0b09a8d3a",
+      "output_bytes": 5010862,
+      "labels": [
+        "I(I_REPLAY)",
+        "V(QBIN)",
+        "P(BJ1|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "I(R_TERM)"
+      ],
+      "title": "REPLAY_ARRAY standalone | QB/JTL current replay | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/REPLAY_ARRAY.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "REPLAY_ARRAY standalone | QB/JTL current replay | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+        "-s",
+        "I(I_REPLAY)",
+        "V(QBIN)",
+        "P(BJ1|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "I(R_TERM)"
+      ],
+      "returncode": 0,
+      "reused_existing_output": false,
+      "phase_axis_conversion": "rad/(2*pi) displayed as turns",
+      "read_write_protocol_labels_visible": false
+    },
     "PASSIVE_SOURCE_COMPARE": {
       "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/data/PASSIVE_SOURCE_COMPARE.csv",
       "input_sha256": "0f823b78fd6c47ffa57126d4f934c62aec1fdc0c09b9c93e2af362be33eec969",
+      "source_kind": "derived_comparison_csv",
       "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/PASSIVE_SOURCE_COMPARE.html",
       "output_sha256": "80b7581b7e4e40f063fc28b0c670e39aa157e95394773d24d8d94355b993dcff",
       "output_bytes": 5187690,
@@ -188,6 +395,7 @@
     "ARRAY_CURRENT_BALANCE": {
       "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/data/ARRAY_CURRENT_BALANCE.csv",
       "input_sha256": "f3f233ed5a623e1db86add2508418e5fb93b391ae933805209dd6300c09ff6a1",
+      "source_kind": "derived_comparison_csv",
       "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/ARRAY_CURRENT_BALANCE.html",
       "output_sha256": "a2d08ad851009c9145af86f62252f348807e2b4ccd332502c79eb816c45bd176",
       "output_bytes": 5089901,
@@ -232,6 +440,7 @@
     "QB_REPLAY_COMPARE": {
       "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/data/QB_REPLAY_COMPARE.csv",
       "input_sha256": "58b466a12f2428d20ad7ed615b4d214fb411a219a7d941c6d4dfaf20de1e082b",
+      "source_kind": "derived_comparison_csv",
       "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/QB_REPLAY_COMPARE.html",
       "output_sha256": "abfb5439ab710436dff3cbbc9fbe17511aa772589f45bfa3f55cb296689d5b28",
       "output_bytes": 5898160,
@@ -310,6 +519,7 @@
     "JTL_REPLAY_COMPARE": {
       "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/data/JTL_REPLAY_COMPARE.csv",
       "input_sha256": "38bcbc1f6dba4a2c5636ddd4994a14a959c3111410b60784cbdf353e05d32e74",
+      "source_kind": "derived_comparison_csv",
       "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/JTL_REPLAY_COMPARE.html",
       "output_sha256": "37446d7fa8d0a8a1cab8367c08a25afacf4306f60dbcd7b11a79051547177a58",
       "output_bytes": 6329499,
@@ -406,6 +616,7 @@
     "READ_WRITE_CONTROLS": {
       "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/data/READ_WRITE_CONTROLS.csv",
       "input_sha256": "0e8bdb4ecb83d8fea5ffe3f0aa0d07e6aa9e8eaf63b899517c0b1f61745ab2aa",
+      "source_kind": "derived_comparison_csv",
       "output": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/plots/READ_WRITE_CONTROLS.html",
       "output_sha256": "df24f79b26a900d796da99fa0be5d0e7b8d0724d658342d88c48425f10149ac9",
       "output_bytes": 5462983,

@@ -153,11 +153,16 @@ visualization:
   renderer: scripts/josim-plot2.py
   options: 'sep_comb dark -j 2pi'
   required_pages:
+    - SINGLE_PASSIVE.html
+    - ARRAY_PASSIVE.html
+    - REPLAY_SINGLE.html
+    - REPLAY_ARRAY.html
     - PASSIVE_SOURCE_COMPARE.html
     - ARRAY_CURRENT_BALANCE.html
     - QB_REPLAY_COMPARE.html
     - JTL_REPLAY_COMPARE.html
     - READ_WRITE_CONTROLS.html
+  standalone_run_source: each standalone page reads the corresponding run raw.csv directly
   read_write_requirement: READ_WRITE_CONTROLS.html must visibly show WRITE0, ZERO_STATE_READ_CONTROL, WRITE1 and FINAL READ target/quiet controls
   phase_display: continuous_unwrap(raw radians)/(2*pi), label phase turns
   forbidden_label: SFQ count

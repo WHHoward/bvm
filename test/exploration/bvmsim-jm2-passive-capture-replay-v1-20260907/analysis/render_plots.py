@@ -23,13 +23,35 @@ RAW_CASES = {
     "REPLAY_ARRAY": EXP / "runs/replay_array/raw.csv",
 }
 PAGE_TITLES = {
+    "SINGLE_PASSIVE": "SINGLE_PASSIVE standalone | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+    "ARRAY_PASSIVE": "ARRAY_PASSIVE standalone | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+    "REPLAY_SINGLE": "REPLAY_SINGLE standalone | QB/JTL current replay | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
+    "REPLAY_ARRAY": "REPLAY_ARRAY standalone | QB/JTL current replay | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
     "PASSIVE_SOURCE_COMPARE": "Passive source comparison | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
     "ARRAY_CURRENT_BALANCE": "ARRAY_PASSIVE shared-SL current balance | WRITE0 / ZERO_STATE_READ_CONTROL / WRITE1 / FINAL READ",
     "QB_REPLAY_COMPARE": "Current-only QB replay | REPLAY_SINGLE vs REPLAY_ARRAY | WRITE0 / ZERO_STATE_READ_CONTROL / WRITE1 / FINAL READ",
     "JTL_REPLAY_COMPARE": "JTL replay endpoints | REPLAY_SINGLE vs REPLAY_ARRAY | WRITE0 / ZERO_STATE_READ_CONTROL / WRITE1 / FINAL READ",
     "READ_WRITE_CONTROLS": "Read/write controls | WRITE0 50-61 ps | ZERO_STATE_READ_CONTROL 70-81 ps | WRITE1 90-101 ps | FINAL READ 110-121 ps",
 }
-PHASE_PAGES = {"QB_REPLAY_COMPARE", "JTL_REPLAY_COMPARE"}
+RUN_PAGES = {
+    "SINGLE_PASSIVE": {
+        "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/single_passive/raw.csv",
+        "labels": ["I(B_JSL8)", "V(SL1)", "I(I_WL1)", "I(I_BL1)", "I(I_SE1)"],
+    },
+    "ARRAY_PASSIVE": {
+        "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/raw.csv",
+        "labels": ["I(B_JSL8)", "V(COMMON_SL)", "I(I_WL1)", "I(I_BL1)", "I(I_SE1)"],
+    },
+    "REPLAY_SINGLE": {
+        "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_single/raw.csv",
+        "labels": ["I(I_REPLAY)", "V(QBIN)", "P(BJ1|XBQ1)", "P(BJ2|XBQ1)", "I(R_TERM)"],
+    },
+    "REPLAY_ARRAY": {
+        "input": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+        "labels": ["I(I_REPLAY)", "V(QBIN)", "P(BJ1|XBQ1)", "P(BJ2|XBQ1)", "I(R_TERM)"],
+    },
+}
+PHASE_PAGES = {"QB_REPLAY_COMPARE", "JTL_REPLAY_COMPARE", "REPLAY_SINGLE", "REPLAY_ARRAY"}
 CONTROL_LABELS = (
     "I(I_WL1)",
     "I(I_BL1)",
@@ -84,13 +106,24 @@ def main() -> int:
     pages: dict[str, object] = {}
     plots_dir = EXP / "plots"
     for name, title in PAGE_TITLES.items():
-        if name not in plot_inputs:
+        if name in RUN_PAGES:
+            run_spec = RUN_PAGES[name]
+            input_path = REPO / run_spec["input"]
+            registered_labels = run_spec["labels"]
+            source_kind = "raw_run"
+        elif name in plot_inputs:
+            input_path = REPO / plot_inputs[name]["path"]
+            registered_labels = plot_inputs[name]["labels"]
+            source_kind = "derived_comparison_csv"
+        else:
             failures.append(f"missing registered plot input: {name}")
             continue
-        input_path = REPO / plot_inputs[name]["path"]
         labels = csv_headers(input_path)[1:]
-        registered_labels = plot_inputs[name]["labels"]
-        if labels != registered_labels:
+        if name in RUN_PAGES:
+            labels = registered_labels
+        if not set(labels).issubset(set(csv_headers(input_path)[1:])):
+            failures.append(f"{name}: requested standalone labels are absent from raw header")
+        if name not in RUN_PAGES and labels != registered_labels:
             failures.append(f"{name}: header differs from registered plot-input labels")
         output_path = plots_dir / f"{name}.html"
         command = [
@@ -146,6 +179,7 @@ def main() -> int:
         pages[name] = {
             "input": input_path.relative_to(REPO).as_posix(),
             "input_sha256": sha256(input_path),
+            "source_kind": source_kind,
             "output": output_path.relative_to(REPO).as_posix(),
             "output_sha256": sha256(output_path),
             "output_bytes": output_path.stat().st_size,
@@ -183,6 +217,9 @@ def main() -> int:
         "raw_unchanged": raw_unchanged,
         "pages": pages,
         "read_write_page": "plots/READ_WRITE_CONTROLS.html",
+        "standalone_run_pages": {
+            name: f"plots/{name}.html" for name in RUN_PAGES
+        },
         "read_write_protocol": [
             "WRITE0 50-61 ps",
             "ZERO_STATE_READ_CONTROL 70-81 ps",
@@ -198,6 +235,7 @@ def main() -> int:
         "created_at_local": now_local(),
         "source_raw_hashes": raw_after,
         "derived_plot_inputs": plot_inputs,
+        "standalone_run_pages": RUN_PAGES,
         "pages": pages,
         "visualization_is_descriptive": True,
         "phase_rule": "P(...) raw radians; renderer -j 2pi displays rad/(2*pi) as turns",

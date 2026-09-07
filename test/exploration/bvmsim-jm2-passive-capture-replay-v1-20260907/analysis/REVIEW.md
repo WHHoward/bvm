@@ -3,6 +3,7 @@
 - Status: **PASS**
 - Independent method: standard-library CSV, SHA-256, exact Decimal source/PWL comparison, and actual-grid trapezoid/KCL checks. No solver call was made.
 - Physical runs checked: exactly four new runs (`SINGLE_PASSIVE`, `ARRAY_PASSIVE`, `REPLAY_SINGLE`, `REPLAY_ARRAY`).
+- Visualization QA: **PASS** for 9 pages, including one standalone raw-run page for each of the four runs and the five focused comparison/control pages; see `analysis/viz_qa.json` and `plots/plot_manifest.json`.
 
 ## Numerical review
 

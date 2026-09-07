@@ -34,6 +34,15 @@
 
 ## 可视化与证据
 
+四个 run 现在各有独立 standalone 页面（直接读取对应 raw）：
+
+- [SINGLE_PASSIVE.html](plots/SINGLE_PASSIVE.html)：JSL8、SL1 电压及目标 BVM1 的 WL/BL/SE。
+- [ARRAY_PASSIVE.html](plots/ARRAY_PASSIVE.html)：JSL8、COMMON_SL 电压及目标 BVM1 的 WL/BL/SE。
+- [REPLAY_SINGLE.html](plots/REPLAY_SINGLE.html)：I_REPLAY、QBIN、BJ1/BJ2 phase、R_TERM。
+- [REPLAY_ARRAY.html](plots/REPLAY_ARRAY.html)：I_REPLAY、QBIN、BJ1/BJ2 phase、R_TERM。
+
+对应的比较和控制页：
+
 - [READ_WRITE_CONTROLS.html](plots/READ_WRITE_CONTROLS.html)：读写控制、目标 BVM 与 BVM2–4 quiet/control 历史，含协议窗口。
 - [PASSIVE_SOURCE_COMPARE.html](plots/PASSIVE_SOURCE_COMPARE.html)：JSL1/JSL8、ARRAY−SINGLE 差分、SL/COMMON_SL 电压。
 - [ARRAY_CURRENT_BALANCE.html](plots/ARRAY_CURRENT_BALANCE.html)：四个 `L_SL` 分支、SUM_LSL、JSL1/JSL8。

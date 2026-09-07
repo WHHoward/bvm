@@ -1,0 +1,138 @@
+experiment_id: bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907
+study_phase: EXPLORATION
+mode: QUICK
+status: PREREGISTERED_PENDING_PREFLIGHT
+created_at_local: '2026-09-07T13:11:46+08:00'
+head_before_setup: 36a59701acc535d3ff98ffa590640555ada898ac
+
+question:
+  primary: >-
+    Under identical target-BVM WL/BL/SE history and identical downstream
+    8x500-uA-JSL -> QB -> six-stage-JTL -> 10-ohm loading, compare an isolated
+    historical JM2-connected BVM with BVM1 in a four-cell shared-SL array.
+  comparison_path: BVM internal -> output branch -> SL/COMMON_SL -> JSL -> QB -> JTL
+  interpretation_ceiling: >-
+    Bounded simulation evidence only. This experiment does not identify a
+    physical mechanism, hardware behavior, an SFQ event count, or a universal
+    isolation claim.
+
+source_authority:
+  bvm_variant: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+  bvm_variant_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+  canonical_bvm: circuits/bvm/bvm_cell.cir
+  canonical_bvm_used: false
+  qb: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  jjmit: circuits/models/jjmit.cir
+  solver: build/josim-cli
+
+fixtures:
+  single:
+    label: SINGLE
+    bvm_count: 1
+    bvm_instance: XBVM1 WL1 BL1 SE1 SL1 BVM
+    sensing_endpoint: SL1
+  array:
+    label: ARRAY
+    bvm_count: 4
+    bvm_instances:
+      - XBVM1 WL1 BL1 SE1 COMMON_SL BVM
+      - XBVM2 WL2 BL2 SE2 COMMON_SL BVM
+      - XBVM3 WL3 BL3 SE3 COMMON_SL BVM
+      - XBVM4 WL4 BL4 SE4 COMMON_SL BVM
+    target: BVM1
+    quiet_final_read: BVM2/BVM3/BVM4 have WL=BL=SE=0
+    sensing_endpoint: COMMON_SL
+
+frozen:
+  bvm_variant_and_internal_values: true
+  jm2_connection: 'L_M2 2 3 24.5P'
+  internal_rsl_ohm: 12.0
+  jsl_count: 8
+  jsl_model: jjmit
+  jsl_area: 5.0
+  jsl_ic_uA: 500.0
+  jsl_order: JSL1 -> JSL2 -> JSL3 -> JSL4 -> JSL5 -> JSL6 -> JSL7 -> JSL8
+  qb_source: BVMSim/BQ.cir exact file
+  qb_parameters: 'RJ1=12 ohm; RJ2=4 ohm; IB=250 uA; BJs area=3; BJ1 area=0.9; BJ2 area=2'
+  jtl_source: BVMSim/library_josim/jtl2.cir exact file
+  jtl_stage_count: 6
+  jtl_stage_bias_uA: 280.0
+  termination_ohm: 10.0
+  solver_nominal_timestep_ps: 0.1
+  stop_time_ps: 200.0
+  output_interval: solver_default
+  no_interpolation: true
+  no_event_alignment: true
+  no_parameter_sweep: true
+  exactly_two_physical_runs: true
+
+stimulus:
+  amplitude_uA: 100.0
+  rise_time_ps: 1.0
+  fall_time_ps: 1.0
+  plateau_ps: 9.0
+  timing_ps:
+    initial_settle: [0, 50]
+    write0: [50, 61]
+    post_write0_settle: [61, 70]
+    zero_state_read_control: [70, 81]
+    post_zero_read_settle: [81, 90]
+    write1: [90, 101]
+    pre_final_read: [101, 110]
+    selective_one_state_read: [110, 121]
+    tail: [121, 200]
+  windows_half_open_ps:
+    INITIAL_PRE_WRITE0: [0, 50]
+    WRITE0: [50, 61]
+    PRE_ZERO_READ: [61, 70]
+    ZERO_STATE_READ_CONTROL: [70, 81]
+    POST_ZERO_READ: [81, 90]
+    WRITE1: [90, 101]
+    PRE_FINAL_READ: [101, 110]
+    FINAL_READ: [110, 121]
+    TAIL: [121, 200]
+  single:
+    target_history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> FINAL_READ
+    final_read: 'WL=+100uA, BL=0, SE=+100uA'
+  array:
+    target_history: all four synchronize WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1; final read selective
+    stored_protocol: '1111'
+    final_read_mask: '1000'
+    target_read: 'BVM1: WL1=+100uA, BL1=0, SE1=+100uA'
+    quiet_cells: 'BVM2/BVM3/BVM4: WL=BL=SE=0'
+
+probe_schema:
+  bvm_each: P/V/I for JM1, JM2, JS1, JS2; I/V for LM1, LM2, LM3, LPM, RJM1, LS1, LS2, RS, LS3, RSE, LPSE, LPSL, RSL, LSL
+  source_currents: I(WL), I(BL), I(SE)
+  boundary: SINGLE V(SL); ARRAY V(COMMON_SL)
+  jsl: P/V/I for JSL1 through JSL8
+  qb: V(QBIN), V(QBOUT); I/V for LIN, L1, L2, L3, RJ1, RJ2, IB; P/V/I for BJS, BJ1, BJ2
+  jtl: P/V/I for B01 and B02 at all six stages; output node V for all stages; I(R_TERM)
+  phase_rule: P output is raw radians; comparisons use continuous_unwrap(rad); display uses rad/(2*pi) turns
+  event_rule: phase displacement, voltage area, I>Ic and crossings are activity diagnostics, not SFQ counts
+
+analysis:
+  comparison_convention: ARRAY_TARGET_MINUS_SINGLE
+  time_grid_gate: exact stored timestamps, same length and token values; otherwise EXACT_GRID_FAIL
+  control_gate: raw I(I_WL1), I(I_BL1), I(I_SE1) pointwise exact zero difference
+  registered_metrics:
+    waveform: [max_abs_delta, RMS_delta, p95_abs_delta, mean_delta, p2p, signed_integral_delta, endpoint_delta]
+    jj: [continuous_phase_delta, phase_p2p, voltage_area, phase_area_residual]
+  phase_area_note: same JJ, same orientation, same window; descriptive consistency only
+  pre_final_state_signals: [JM1, JM2, LM1, LM2, LM3, LPM]
+  pre_final_quiet_state_signals: [JM1, JM2, LM1, LM2, LM3, LPM]
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  options: 'sep_comb dark -j 2pi'
+  phase_display: continuous_unwrap(raw radians)/(2*pi), label phase turns
+  forbidden_label: SFQ count
+  raw_immutable: true
+  main_jtl_focus: [JTL1, JTL6, R_TERM]
+  main_jsl_focus: [JSL1, JSL8]
+
+stop:
+  after: preregistration -> preflight -> exactly two runs -> raw QA -> control/grid QA -> metrics -> standalone and RAW+DELTA plots -> visualization QA -> RESULT_BRIEF
+  automatic_followup: false
+  user_review_required: true

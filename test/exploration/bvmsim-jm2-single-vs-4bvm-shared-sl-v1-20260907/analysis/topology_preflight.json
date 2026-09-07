@@ -1,0 +1,97 @@
+{
+  "schema": "jm2-single-vs-4bvm-shared-sl-topology-preflight-v1",
+  "experiment_id": "bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907",
+  "created_at_local": "2026-09-07T13:15:24+08:00",
+  "status": "PASS",
+  "head_at_preflight": "36a59701acc535d3ff98ffa590640555ada898ac",
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "source_hashes": {
+    "bvm_variant": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "qb": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+    "jtl": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "jjmit": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "canonical_bvm_not_used": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4"
+  },
+  "variant_diff": {
+    "status": "PASS",
+    "differences": [
+      {
+        "line": 37,
+        "historical": "L_M2    2       4       24.5P",
+        "variant": "L_M2    2       3       24.5P"
+      }
+    ]
+  },
+  "decks": {
+    "single": {
+      "kind": "single",
+      "path": "test/exploration/bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907/runs/single/deck.cir",
+      "deck_sha256": "2fa6e712d329ef445b9fa08664b4b11f0ad5c3d0b077b751d6eacb89a92b0c9f",
+      "bytes": 3857,
+      "bvm_count": 1,
+      "jsl_count": 8,
+      "qb_count": 1,
+      "jtl_count": 6,
+      "termination_count": 1,
+      "include_resolution": {
+        "../../../../../circuits/models/jjmit.cir": "circuits/models/jjmit.cir",
+        "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
+        "../../../../../BVMSim/BQ.cir": "BVMSim/BQ.cir",
+        "../../../../../BVMSim/library_josim/jtl2.cir": "BVMSim/library_josim/jtl2.cir"
+      },
+      "controls": {
+        "WL1": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0",
+        "BL1": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "SE1": "0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0"
+      },
+      "probe_count": 136,
+      "failures": [],
+      "status": "PASS"
+    },
+    "array": {
+      "kind": "array",
+      "path": "test/exploration/bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907/runs/array/deck.cir",
+      "deck_sha256": "85227538d48d69251f4276b94b28adfc83cd25f95aa6609fa9eb2375c873f1cf",
+      "bytes": 7486,
+      "bvm_count": 4,
+      "jsl_count": 8,
+      "qb_count": 1,
+      "jtl_count": 6,
+      "termination_count": 1,
+      "include_resolution": {
+        "../../../../../circuits/models/jjmit.cir": "circuits/models/jjmit.cir",
+        "../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
+        "../../../../../BVMSim/BQ.cir": "BVMSim/BQ.cir",
+        "../../../../../BVMSim/library_josim/jtl2.cir": "BVMSim/library_josim/jtl2.cir"
+      },
+      "controls": {
+        "WL1": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0",
+        "BL1": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "SE1": "0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0",
+        "WL2": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "BL2": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "SE2": "0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "WL3": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "BL3": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "SE3": "0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "WL4": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "BL4": "0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0",
+        "SE4": "0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0"
+      },
+      "probe_count": 265,
+      "failures": [],
+      "status": "PASS"
+    }
+  },
+  "cross_fixture": {
+    "downstream_text_identical": true,
+    "target_static_controls_identical": true,
+    "same_nominal_tran": true,
+    "same_jsl_count_area_model": true,
+    "canonical_bvm_used": false
+  },
+  "failures": []
+}

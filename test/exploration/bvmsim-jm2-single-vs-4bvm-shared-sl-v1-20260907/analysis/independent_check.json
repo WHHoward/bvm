@@ -1,0 +1,564 @@
+{
+  "schema": "jm2-single-vs-4bvm-shared-sl-independent-check-v1",
+  "created_at_local": "2026-09-07T13:22:40+08:00",
+  "status": "PASS",
+  "raw_paths": {
+    "single": "test/exploration/bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907/runs/single/raw.csv",
+    "array": "test/exploration/bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907/runs/array/raw.csv"
+  },
+  "row_counts": {
+    "single": 1999,
+    "array": 1999
+  },
+  "grid_exact": true,
+  "control_equivalence": {
+    "WL": {
+      "pointwise_exact_zero": true,
+      "max_abs_delta_A": 0.0
+    },
+    "BL": {
+      "pointwise_exact_zero": true,
+      "max_abs_delta_A": 0.0
+    },
+    "SE": {
+      "pointwise_exact_zero": true,
+      "max_abs_delta_A": 0.0
+    }
+  },
+  "observed_control_levels_uA": {
+    "WL": [
+      -100.0,
+      -90.0,
+      -80.0,
+      -70.0,
+      -60.0,
+      -50.0,
+      -40.0,
+      -30.0,
+      -20.0,
+      -10.0,
+      0.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0,
+      90.0,
+      100.0
+    ],
+    "BL": [
+      -100.0,
+      -90.0,
+      -80.0,
+      -70.0,
+      -60.0,
+      -50.0,
+      -40.0,
+      -30.0,
+      -20.0,
+      -10.0,
+      0.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0,
+      90.0,
+      100.0
+    ],
+    "SE": [
+      0.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0,
+      90.0,
+      100.0
+    ]
+  },
+  "window": {
+    "name": "FINAL_READ",
+    "half_open_ps": [
+      110.0,
+      121.0
+    ],
+    "sample_count": 110,
+    "first_time_ps": 110.0,
+    "last_time_ps": 120.89999999999999
+  },
+  "independent_key_crosscheck": {
+    "BVM_STORAGE_JM2_P": {
+      "independent": {
+        "sample_count": 110,
+        "max_abs_delta_raw": 1.0572891,
+        "RMS_delta_raw": 0.4110101128152216,
+        "p95_abs_delta_raw": 0.8897049199999998,
+        "mean_delta_raw": 0.027090463199999994,
+        "p2p_delta_raw": 1.9262214,
+        "signed_integral_delta_raw": 2.930389202000027e-13,
+        "endpoint_delta_raw": 0.09730460000000002,
+        "pointwise_grid_identity": true
+      },
+      "production": {
+        "unit": "rad",
+        "raw_unit": "rad",
+        "area_unit": "rad*s",
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "sample_count": 110,
+        "max_abs_delta": 1.0572891,
+        "RMS_delta": 0.4110101128152216,
+        "p95_abs_delta": 0.8897049199999998,
+        "mean_delta": 0.027090463199999994,
+        "p2p": 1.9262214,
+        "signed_integral_delta": 2.930389202000027e-13,
+        "signed_integral_delta_raw": 2.930389202000027e-13,
+        "endpoint_delta": 0.09730460000000002,
+        "endpoint_change_delta": 0.0954857,
+        "max_abs_time_ps": 120.29999999999998,
+        "single": {
+          "raw_unit": "rad",
+          "display_unit": "rad",
+          "area_unit": "rad*s",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": -0.6383983,
+          "maximum": 1.658343,
+          "mean": 0.4887688888,
+          "p2p": 2.2967413,
+          "rms": 0.7177984030752519,
+          "max_abs": 1.658343,
+          "p95_abs": 1.5223425,
+          "endpoint": -0.473408,
+          "endpoint_change": -0.9277283000000001,
+          "signed_integral": 5.3774121618000035e-12,
+          "signed_integral_raw": 5.3774121618000035e-12,
+          "minimum_time_ps": 120.60000000000001,
+          "maximum_time_ps": 119.0,
+          "max_abs_time_ps": 119.0
+        },
+        "array_target": {
+          "raw_unit": "rad",
+          "display_unit": "rad",
+          "area_unit": "rad*s",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": -0.3761034,
+          "maximum": 1.392865,
+          "mean": 0.515859352,
+          "p2p": 1.7689683999999999,
+          "rms": 0.6464470992569794,
+          "max_abs": 1.392865,
+          "p95_abs": 1.2908548999999998,
+          "endpoint": -0.3761034,
+          "endpoint_change": -0.8322426,
+          "signed_integral": 5.670451082000006e-12,
+          "signed_integral_raw": 5.670451082000006e-12,
+          "minimum_time_ps": 120.89999999999999,
+          "maximum_time_ps": 119.5,
+          "max_abs_time_ps": 119.5
+        },
+        "continuous_phase_delta_endpoint_rad": 0.09730460000000002,
+        "continuous_phase_delta_change_rad": 0.0954857,
+        "continuous_phase_delta_endpoint_turns": 0.015486508075579643,
+        "phase_p2p_delta_turns": 0.30656765729939095,
+        "voltage_area_delta_wb": 3.351685084000705e-17,
+        "voltage_area_delta_over_phi0": 0.0162086769555612,
+        "voltage_area_single_over_phi0": -0.14972511241145187,
+        "voltage_area_array_over_phi0": -0.13351643545589068,
+        "phase_area_consistency": {
+          "single": {
+            "phase_delta_turns": -0.1476525447912408,
+            "voltage_area_turns": -0.14972511241145187,
+            "residual_turns": 0.0020725676202110743,
+            "status": "DESCRIPTIVE_ONLY"
+          },
+          "array_target": {
+            "phase_delta_turns": -0.13245552364165103,
+            "voltage_area_turns": -0.13351643545589068,
+            "residual_turns": 0.0010609118142396456,
+            "status": "DESCRIPTIVE_ONLY"
+          },
+          "note": "same-JJ P/V arithmetic; no event count or physical Gate"
+        }
+      },
+      "expected_from_independent": {
+        "max_abs_delta": 1.0572891,
+        "RMS_delta": 0.4110101128152216,
+        "p95_abs_delta": 0.8897049199999998,
+        "mean_delta": 0.027090463199999994,
+        "p2p": 1.9262214,
+        "signed_integral_delta": 2.930389202000027e-13,
+        "endpoint_delta": 0.09730460000000002
+      },
+      "difference": {
+        "max_abs_delta": 0.0,
+        "RMS_delta": 0.0,
+        "p95_abs_delta": 0.0,
+        "mean_delta": 0.0,
+        "p2p": 0.0,
+        "signed_integral_delta": 0.0,
+        "endpoint_delta": 0.0
+      },
+      "status": "PASS"
+    },
+    "BVM_RLOOP_LS2_I": {
+      "independent": {
+        "sample_count": 110,
+        "max_abs_delta_raw": 0.000236517,
+        "RMS_delta_raw": 9.526196549482379e-05,
+        "p95_abs_delta_raw": 0.0001980672285,
+        "mean_delta_raw": 1.2535741814545454e-05,
+        "p2p_delta_raw": 0.0004366116,
+        "signed_integral_delta_raw": 1.2831479445999883e-16,
+        "endpoint_delta_raw": 0.00019048865,
+        "pointwise_grid_identity": true
+      },
+      "production": {
+        "unit": "uA",
+        "raw_unit": "A",
+        "area_unit": "uA*ps",
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "sample_count": 110,
+        "max_abs_delta": 236.517,
+        "RMS_delta": 95.26196549482378,
+        "p95_abs_delta": 198.0672285,
+        "mean_delta": 12.535741814545455,
+        "p2p": 436.6116,
+        "signed_integral_delta": 128.31479445999884,
+        "signed_integral_delta_raw": 1.2831479445999883e-16,
+        "endpoint_delta": 190.48865,
+        "endpoint_change_delta": 189.40999,
+        "max_abs_time_ps": 120.60000000000001,
+        "single": {
+          "raw_unit": "A",
+          "display_unit": "uA",
+          "area_unit": "uA*ps",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": -143.6677,
+          "maximum": 138.9587,
+          "mean": -23.498079672727275,
+          "p2p": 282.6264,
+          "rms": 84.48369204041596,
+          "max_abs": 143.6677,
+          "p95_abs": 139.271265,
+          "endpoint": -109.98589999999999,
+          "endpoint_change": -91.7088,
+          "signed_integral": -252.0657263999992,
+          "signed_integral_raw": -2.520657263999992e-16,
+          "minimum_time_ps": 118.0,
+          "maximum_time_ps": 119.39999999999999,
+          "max_abs_time_ps": 118.0
+        },
+        "array_target": {
+          "raw_unit": "A",
+          "display_unit": "uA",
+          "area_unit": "uA*ps",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": -125.86269999999999,
+          "maximum": 150.1242,
+          "mean": -10.96233785818182,
+          "p2p": 275.9869,
+          "rms": 77.74375734670676,
+          "max_abs": 150.1242,
+          "p95_abs": 132.68224999999998,
+          "endpoint": 80.50274999999999,
+          "endpoint_change": 97.70119,
+          "signed_integral": -123.75093194000038,
+          "signed_integral_raw": -1.2375093194000038e-16,
+          "minimum_time_ps": 115.39999999999999,
+          "maximum_time_ps": 120.39999999999999,
+          "max_abs_time_ps": 120.39999999999999
+        }
+      },
+      "expected_from_independent": {
+        "max_abs_delta": 236.517,
+        "RMS_delta": 95.26196549482378,
+        "p95_abs_delta": 198.0672285,
+        "mean_delta": 12.535741814545455,
+        "p2p": 436.6116,
+        "signed_integral_delta": 128.31479445999884,
+        "endpoint_delta": 190.48865
+      },
+      "difference": {
+        "max_abs_delta": 0.0,
+        "RMS_delta": 0.0,
+        "p95_abs_delta": 0.0,
+        "mean_delta": 0.0,
+        "p2p": 0.0,
+        "signed_integral_delta": 0.0,
+        "endpoint_delta": 0.0
+      },
+      "status": "PASS"
+    },
+    "BVM_OUTPUT_BOUNDARY_V": {
+      "independent": {
+        "sample_count": 110,
+        "max_abs_delta_raw": 0.0012574601,
+        "RMS_delta_raw": 0.0005064329394422455,
+        "p95_abs_delta_raw": 0.0011125871972,
+        "mean_delta_raw": -8.408802712454546e-05,
+        "p2p_delta_raw": 0.0023809758199999998,
+        "signed_integral_delta_raw": -9.06377194369994e-16,
+        "endpoint_delta_raw": -0.0002454227,
+        "pointwise_grid_identity": true
+      },
+      "production": {
+        "unit": "mV",
+        "raw_unit": "V",
+        "area_unit": "mV*ps",
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "sample_count": 110,
+        "max_abs_delta": 1.2574601,
+        "RMS_delta": 0.5064329394422454,
+        "p95_abs_delta": 1.1125871971999999,
+        "mean_delta": -0.08408802712454547,
+        "p2p": 2.3809758199999997,
+        "signed_integral_delta": -0.9063771943699941,
+        "signed_integral_delta_raw": -9.06377194369994e-16,
+        "endpoint_delta": -0.2454227,
+        "endpoint_change_delta": -0.11902332,
+        "max_abs_time_ps": 120.2,
+        "single": {
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "area_unit": "mV*ps",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": -1.174718,
+          "maximum": 1.2607359999999999,
+          "mean": 0.14083334336363637,
+          "p2p": 2.435454,
+          "rms": 0.5709553834545672,
+          "max_abs": 1.2607359999999999,
+          "p95_abs": 1.1702999,
+          "endpoint": -0.25459160000000003,
+          "endpoint_change": -0.19846808000000002,
+          "signed_integral": 1.564702532999998,
+          "signed_integral_raw": 1.5647025329999979e-15,
+          "minimum_time_ps": 120.29999999999998,
+          "maximum_time_ps": 118.69999999999999,
+          "max_abs_time_ps": 118.69999999999999
+        },
+        "array_target": {
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "area_unit": "mV*ps",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": -0.5000143,
+          "maximum": 0.3117905,
+          "mean": 0.05674531623909091,
+          "p2p": 0.8118048,
+          "rms": 0.19248791412067204,
+          "max_abs": 0.5000143,
+          "p95_abs": 0.310003235,
+          "endpoint": -0.5000143,
+          "endpoint_change": -0.31749140000000003,
+          "signed_integral": 0.658325338630004,
+          "signed_integral_raw": 6.583253386300039e-16,
+          "minimum_time_ps": 120.89999999999999,
+          "maximum_time_ps": 119.39999999999999,
+          "max_abs_time_ps": 120.89999999999999
+        }
+      },
+      "expected_from_independent": {
+        "max_abs_delta": 1.2574601,
+        "RMS_delta": 0.5064329394422454,
+        "p95_abs_delta": 1.1125871971999999,
+        "mean_delta": -0.08408802712454547,
+        "p2p": 2.3809758199999997,
+        "signed_integral_delta": -0.9063771943699941,
+        "endpoint_delta": -0.2454227
+      },
+      "difference": {
+        "max_abs_delta": 0.0,
+        "RMS_delta": 0.0,
+        "p95_abs_delta": 0.0,
+        "mean_delta": 0.0,
+        "p2p": 0.0,
+        "signed_integral_delta": 0.0,
+        "endpoint_delta": 0.0
+      },
+      "status": "PASS"
+    },
+    "QB_BJ2_P": {
+      "independent": {
+        "sample_count": 110,
+        "max_abs_delta_raw": 5.309605,
+        "RMS_delta_raw": 1.989595803959314,
+        "p95_abs_delta_raw": 5.06747135,
+        "mean_delta_raw": -1.1555925409090908,
+        "p2p_delta_raw": 5.313154900000001,
+        "signed_integral_delta_raw": -1.244621519499995e-11,
+        "endpoint_delta_raw": -5.309605,
+        "pointwise_grid_identity": true
+      },
+      "production": {
+        "unit": "rad",
+        "raw_unit": "rad",
+        "area_unit": "rad*s",
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "sample_count": 110,
+        "max_abs_delta": 5.309605,
+        "RMS_delta": 1.989595803959314,
+        "p95_abs_delta": 5.06747135,
+        "mean_delta": -1.1555925409090908,
+        "p2p": 5.313154900000001,
+        "signed_integral_delta": -1.244621519499995e-11,
+        "signed_integral_delta_raw": -1.244621519499995e-11,
+        "endpoint_delta": -5.309605,
+        "endpoint_change_delta": -5.313154900000001,
+        "max_abs_time_ps": 120.89999999999999,
+        "single": {
+          "raw_unit": "rad",
+          "display_unit": "rad",
+          "area_unit": "rad*s",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": 0.9025819,
+          "maximum": 6.565875,
+          "mean": 2.1999535463636364,
+          "p2p": 5.6632931,
+          "rms": 2.7848008967773037,
+          "max_abs": 6.565875,
+          "p95_abs": 6.26782245,
+          "endpoint": 6.565875,
+          "endpoint_change": 5.6615041,
+          "signed_integral": 2.3825976714999945e-11,
+          "signed_integral_raw": 2.3825976714999945e-11,
+          "minimum_time_ps": 110.7,
+          "maximum_time_ps": 120.89999999999999,
+          "max_abs_time_ps": 120.89999999999999
+        },
+        "array_target": {
+          "raw_unit": "rad",
+          "display_unit": "rad",
+          "area_unit": "rad*s",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "minimum": 0.890347,
+          "maximum": 1.25627,
+          "mean": 1.0443610054545454,
+          "p2p": 0.365923,
+          "rms": 1.0495896843581172,
+          "max_abs": 1.25627,
+          "p95_abs": 1.2003511,
+          "endpoint": 1.25627,
+          "endpoint_change": 0.3483492,
+          "signed_integral": 1.1379761519999993e-11,
+          "signed_integral_raw": 1.1379761519999993e-11,
+          "minimum_time_ps": 111.0,
+          "maximum_time_ps": 120.89999999999999,
+          "max_abs_time_ps": 120.89999999999999
+        },
+        "continuous_phase_delta_endpoint_rad": -5.309605,
+        "continuous_phase_delta_change_rad": -5.313154900000001,
+        "continuous_phase_delta_endpoint_turns": -0.845049881615443,
+        "phase_p2p_delta_turns": 0.845614865747925,
+        "voltage_area_delta_wb": -1.748417475929998e-15,
+        "voltage_area_delta_over_phi0": -0.8455309296832817,
+        "voltage_area_single_over_phi0": 0.9009270503487752,
+        "voltage_area_array_over_phi0": 0.05539612066549347,
+        "phase_area_consistency": {
+          "single": {
+            "phase_delta_turns": 0.9010563628500322,
+            "voltage_area_turns": 0.9009270503487752,
+            "residual_turns": 0.00012931250125702842,
+            "status": "DESCRIPTIVE_ONLY"
+          },
+          "array_target": {
+            "phase_delta_turns": 0.05544149710210727,
+            "voltage_area_turns": 0.05539612066549347,
+            "residual_turns": 4.537643661380042e-05,
+            "status": "DESCRIPTIVE_ONLY"
+          },
+          "note": "same-JJ P/V arithmetic; no event count or physical Gate"
+        }
+      },
+      "expected_from_independent": {
+        "max_abs_delta": 5.309605,
+        "RMS_delta": 1.989595803959314,
+        "p95_abs_delta": 5.06747135,
+        "mean_delta": -1.1555925409090908,
+        "p2p": 5.313154900000001,
+        "signed_integral_delta": -1.244621519499995e-11,
+        "endpoint_delta": -5.309605
+      },
+      "difference": {
+        "max_abs_delta": 0.0,
+        "RMS_delta": 0.0,
+        "p95_abs_delta": 0.0,
+        "mean_delta": 0.0,
+        "p2p": 0.0,
+        "signed_integral_delta": 0.0,
+        "endpoint_delta": 0.0
+      },
+      "status": "PASS"
+    }
+  },
+  "phase_wrap_probe": {
+    "direct_wrapped_delta_max_abs_rad": 1.0572891,
+    "continuous_unwrapped_delta_max_abs_rad": 1.0572891,
+    "production_uses_continuous_unwrap": true
+  },
+  "raw_hashes_before_after": {
+    "before": {
+      "single": "26a70e75afced6e91a7f75e9048b2700839051f38bcd2844d3f153b04ef0939a",
+      "array": "8543abc6d7a7d276c0bfa3159a4d3d37d569200e5fa30082466e66df8ab24dc2"
+    },
+    "after": {
+      "single": "26a70e75afced6e91a7f75e9048b2700839051f38bcd2844d3f153b04ef0939a",
+      "array": "8543abc6d7a7d276c0bfa3159a4d3d37d569200e5fa30082466e66df8ab24dc2"
+    },
+    "unchanged": true
+  },
+  "failures": []
+}

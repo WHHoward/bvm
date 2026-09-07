@@ -1,0 +1,574 @@
+{
+  "schema": "jm2-n4-post-third-response-v1",
+  "raw_provenance": {
+    "N1_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+      "sha256": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+      "role": "N1 first-response reference",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    },
+    "N3_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv",
+      "sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "role": "main read-only deep-dive case",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    },
+    "N4_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv",
+      "sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "role": "main read-only deep-dive case",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    }
+  },
+  "analysis": {
+    "case": "N4_REPLAY",
+    "t3": {
+      "time_ps": 141.6,
+      "definition": "third positive I(R_TERM) peak-like maximum in FINAL_READ_RESPONSE",
+      "evidence_class": "OBSERVED"
+    },
+    "fourth_candidate_probe_start_ps": 144.6,
+    "fourth_candidate_probe_end_ps": 200.0,
+    "fourth_candidate_probe_note": "the +3 ps offset excludes the observed third terminal pulse and its immediate tail; this is a descriptive activity probe, not an Ic or switching criterion",
+    "source_residual": {
+      "label": "I(I_REPLAY)",
+      "window_ps": [
+        141.6,
+        200.0
+      ],
+      "sample_count": 584,
+      "raw_unit": "A",
+      "display_unit": "uA",
+      "minimum": -9.159445,
+      "maximum": 8.144466,
+      "maximum_time_ps": 141.6,
+      "minimum_time_ps": 142.5,
+      "max_abs": 9.159445,
+      "max_abs_time_ps": 142.5,
+      "rms_sample_value": 1.9193265200633212,
+      "signed_integral": -2.125657328000047,
+      "positive_area": 29.51003933845991,
+      "negative_area": -31.63569666645996,
+      "first_sample_ps": 141.6,
+      "last_sample_ps": 199.9,
+      "actual_time_grid_for_integration": true,
+      "significant_positive_threshold": 5.0,
+      "significant_positive_threshold_unit": "uA",
+      "significant_positive_sample_count": 13,
+      "significant_positive_first_ps": 141.6,
+      "significant_positive_last_ps": 148.10000000000002,
+      "significant_positive_duration_span_ps": 6.5000000000000036
+    },
+    "n1_first_response_source_reference": {
+      "label": "I(I_REPLAY)",
+      "window_ps": [
+        110.0,
+        138.8
+      ],
+      "sample_count": 288,
+      "raw_unit": "A",
+      "display_unit": "uA",
+      "minimum": -4.657083,
+      "maximum": 68.41421,
+      "maximum_time_ps": 120.0,
+      "minimum_time_ps": 127.89999999999999,
+      "max_abs": 68.41421,
+      "max_abs_time_ps": 120.0,
+      "rms_sample_value": 26.489333083170536,
+      "signed_integral": 519.157654349,
+      "positive_area": 529.908634669,
+      "negative_area": -10.750980320000005,
+      "first_sample_ps": 110.0,
+      "last_sample_ps": 138.7,
+      "actual_time_grid_for_integration": true,
+      "reference_response_time_ps": 138.8,
+      "reference_definition": "N1 first terminal peak-like maximum; source metrics use N1_REPLAY I(I_REPLAY) before that reference"
+    },
+    "n4_residual_to_n1_first_positive_area_ratio": 0.05568891957552823,
+    "n4_residual_to_n1_first_peak_ratio": 0.11904640863352803,
+    "phase_post_probe": {
+      "BJS": {
+        "cphi_start_turns_from_110_ps": 0.02428801516097608,
+        "cphi_end_turns_from_110_ps": -0.0017991820147469887,
+        "cphi_net_turns_in_probe_window": -0.026087197175723068,
+        "cphi_p2p_turns_in_probe_window": 0.057058956957761586,
+        "continuous_quantity_not_event_count": true
+      },
+      "BJ1": {
+        "cphi_start_turns_from_110_ps": 3.0103150035042234,
+        "cphi_end_turns_from_110_ps": 3.0029509042873617,
+        "cphi_net_turns_in_probe_window": -0.007364099216861764,
+        "cphi_p2p_turns_in_probe_window": 0.014825282949010088,
+        "continuous_quantity_not_event_count": true
+      },
+      "BJ2": {
+        "cphi_start_turns_from_110_ps": 2.9978086239915567,
+        "cphi_end_turns_from_110_ps": 2.9970701450556096,
+        "cphi_net_turns_in_probe_window": -0.000738478935947029,
+        "cphi_p2p_turns_in_probe_window": 0.00455342292185934,
+        "continuous_quantity_not_event_count": true
+      },
+      "JTL1_B01": {
+        "cphi_start_turns_from_110_ps": 2.999111466355707,
+        "cphi_end_turns_from_110_ps": 3.0005868326781684,
+        "cphi_net_turns_in_probe_window": 0.001475366322461369,
+        "cphi_p2p_turns_in_probe_window": 0.0026960847359767115,
+        "continuous_quantity_not_event_count": true
+      },
+      "JTL6_B01": {
+        "cphi_start_turns_from_110_ps": 2.990899119038648,
+        "cphi_end_turns_from_110_ps": 2.9999995986846426,
+        "cphi_net_turns_in_probe_window": 0.009100479645994586,
+        "cphi_p2p_turns_in_probe_window": 0.009740282517224141,
+        "continuous_quantity_not_event_count": true
+      }
+    },
+    "fourth_response_questions": {
+      "A_I_REPLAY": {
+        "status": "RESIDUAL_POSITIVE_DRIVE",
+        "evidence_class": "OBSERVED",
+        "source_metrics_window_ps": [
+          141.6,
+          200.0
+        ],
+        "source_metrics": {
+          "label": "I(I_REPLAY)",
+          "window_ps": [
+            141.6,
+            200.0
+          ],
+          "sample_count": 584,
+          "raw_unit": "A",
+          "display_unit": "uA",
+          "minimum": -9.159445,
+          "maximum": 8.144466,
+          "maximum_time_ps": 141.6,
+          "minimum_time_ps": 142.5,
+          "max_abs": 9.159445,
+          "max_abs_time_ps": 142.5,
+          "rms_sample_value": 1.9193265200633212,
+          "signed_integral": -2.125657328000047,
+          "positive_area": 29.51003933845991,
+          "negative_area": -31.63569666645996,
+          "first_sample_ps": 141.6,
+          "last_sample_ps": 199.9,
+          "actual_time_grid_for_integration": true,
+          "significant_positive_threshold": 5.0,
+          "significant_positive_threshold_unit": "uA",
+          "significant_positive_sample_count": 13,
+          "significant_positive_first_ps": 141.6,
+          "significant_positive_last_ps": 148.10000000000002,
+          "significant_positive_duration_span_ps": 6.5000000000000036
+        }
+      },
+      "B_QBIN": {
+        "raw_label": "V(QBIN)",
+        "probe_window_ps": [
+          144.6,
+          200.0
+        ],
+        "threshold": 0.25,
+        "threshold_unit": "mV",
+        "meaning": "voltage excursion",
+        "peak_like_candidates": [],
+        "waveform_stats": {
+          "label": "V(QBIN)",
+          "window_ps": [
+            144.6,
+            200.0
+          ],
+          "sample_count": 554,
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "minimum": -0.11248599999999999,
+          "maximum": 0.1250569,
+          "maximum_time_ps": 150.29999999999998,
+          "minimum_time_ps": 148.9,
+          "max_abs": 0.1250569,
+          "max_abs_time_ps": 150.29999999999998,
+          "rms_sample_value": 0.038563386034764405,
+          "signed_integral": -0.06331334166999959,
+          "positive_area": 0.7321206841000009,
+          "negative_area": -0.7954340257700004,
+          "first_sample_ps": 144.6,
+          "last_sample_ps": 199.9,
+          "actual_time_grid_for_integration": true
+        },
+        "candidate_status": "NO_SEPARABLE_FOURTH_CANDIDATE",
+        "evidence_class": "BOUNDED_RESULT"
+      },
+      "C_BJS": {
+        "raw_label": "V(BJS|XBQ1)",
+        "probe_window_ps": [
+          144.6,
+          200.0
+        ],
+        "threshold": 0.1,
+        "threshold_unit": "mV",
+        "meaning": "absolute voltage activity",
+        "peak_like_candidates": [
+          {
+            "time_ps": 145.5,
+            "value": -0.1267792,
+            "abs_value": 0.1267792
+          }
+        ],
+        "waveform_stats": {
+          "label": "V(BJS|XBQ1)",
+          "window_ps": [
+            144.6,
+            200.0
+          ],
+          "sample_count": 554,
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "minimum": -0.1267792,
+          "maximum": 0.0970159,
+          "maximum_time_ps": 147.1,
+          "minimum_time_ps": 145.5,
+          "max_abs": 0.1267792,
+          "max_abs_time_ps": 145.5,
+          "rms_sample_value": 0.03735585639306978,
+          "signed_integral": -0.054498165259999606,
+          "positive_area": 0.7198367001300009,
+          "negative_area": -0.7743348653900005,
+          "first_sample_ps": 144.6,
+          "last_sample_ps": 199.9,
+          "actual_time_grid_for_integration": true
+        },
+        "candidate_status": "RESIDUAL_RINGDOWN_ACTIVITY_NOT_FOURTH",
+        "evidence_class": "UNKNOWN",
+        "fourth_response_status": "UNKNOWN",
+        "interpretation": "absolute voltage activity remains, but it is not separable from third-response ringdown and is not promoted to a fourth nonlinear response"
+      },
+      "D_BJ1": {
+        "raw_label": "V(BJ1|XBQ1)",
+        "probe_window_ps": [
+          144.6,
+          200.0
+        ],
+        "threshold": 0.3,
+        "threshold_unit": "mV",
+        "meaning": "voltage activity",
+        "peak_like_candidates": [],
+        "waveform_stats": {
+          "label": "V(BJ1|XBQ1)",
+          "window_ps": [
+            144.6,
+            200.0
+          ],
+          "sample_count": 554,
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "minimum": -0.04228278,
+          "maximum": 0.04276536,
+          "maximum_time_ps": 148.2,
+          "minimum_time_ps": 147.1,
+          "max_abs": 0.04276536,
+          "max_abs_time_ps": 148.2,
+          "rms_sample_value": 0.011711344424741733,
+          "signed_integral": -0.015521274002100044,
+          "positive_area": 0.1768742024999001,
+          "negative_area": -0.19239547650200015,
+          "first_sample_ps": 144.6,
+          "last_sample_ps": 199.9,
+          "actual_time_grid_for_integration": true
+        },
+        "candidate_status": "NO_SEPARABLE_FOURTH_CANDIDATE",
+        "evidence_class": "BOUNDED_RESULT"
+      },
+      "E_BJ2": {
+        "raw_label": "V(BJ2|XBQ1)",
+        "probe_window_ps": [
+          144.6,
+          200.0
+        ],
+        "threshold": 0.5,
+        "threshold_unit": "mV",
+        "meaning": "voltage activity",
+        "peak_like_candidates": [],
+        "waveform_stats": {
+          "label": "V(BJ2|XBQ1)",
+          "window_ps": [
+            144.6,
+            200.0
+          ],
+          "sample_count": 554,
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "minimum": -0.01199123,
+          "maximum": 0.015115229999999999,
+          "maximum_time_ps": 144.6,
+          "minimum_time_ps": 145.6,
+          "max_abs": 0.015115229999999999,
+          "max_abs_time_ps": 144.6,
+          "rms_sample_value": 0.0033883445454071424,
+          "signed_integral": -0.001540091429499952,
+          "positive_area": 0.05263869487290006,
+          "negative_area": -0.05417878630240001,
+          "first_sample_ps": 144.6,
+          "last_sample_ps": 199.9,
+          "actual_time_grid_for_integration": true
+        },
+        "candidate_status": "NO_SEPARABLE_FOURTH_CANDIDATE",
+        "evidence_class": "BOUNDED_RESULT"
+      },
+      "F_QBOUT": {
+        "raw_label": "V(QBOUT)",
+        "probe_window_ps": [
+          144.6,
+          200.0
+        ],
+        "threshold": 0.45,
+        "threshold_unit": "mV",
+        "meaning": "pulse-like voltage activity",
+        "peak_like_candidates": [],
+        "waveform_stats": {
+          "label": "V(QBOUT)",
+          "window_ps": [
+            144.6,
+            200.0
+          ],
+          "sample_count": 554,
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "minimum": -0.006576263,
+          "maximum": 0.009090761,
+          "maximum_time_ps": 144.6,
+          "minimum_time_ps": 150.1,
+          "max_abs": 0.009090761,
+          "max_abs_time_ps": 144.6,
+          "rms_sample_value": 0.0019591848434505257,
+          "signed_integral": 0.0002230602419500231,
+          "positive_area": 0.030926665161000004,
+          "negative_area": -0.03070360491904998,
+          "first_sample_ps": 144.6,
+          "last_sample_ps": 199.9,
+          "actual_time_grid_for_integration": true
+        },
+        "candidate_status": "NO_SEPARABLE_FOURTH_CANDIDATE",
+        "evidence_class": "BOUNDED_RESULT"
+      },
+      "G_JTL1": {
+        "raw_label": "V(B01|XJTL1_1)",
+        "probe_window_ps": [
+          144.6,
+          200.0
+        ],
+        "threshold": 0.5,
+        "threshold_unit": "mV",
+        "meaning": "JTL1 voltage activity",
+        "peak_like_candidates": [],
+        "waveform_stats": {
+          "label": "V(B01|XJTL1_1)",
+          "window_ps": [
+            144.6,
+            200.0
+          ],
+          "sample_count": 554,
+          "raw_unit": "V",
+          "display_unit": "mV",
+          "minimum": -0.005786699,
+          "maximum": 0.007800694999999999,
+          "maximum_time_ps": 145.2,
+          "minimum_time_ps": 146.3,
+          "max_abs": 0.007800694999999999,
+          "max_abs_time_ps": 145.2,
+          "rms_sample_value": 0.001617431655763462,
+          "signed_integral": 0.003106969727649982,
+          "positive_area": 0.026715002704049966,
+          "negative_area": -0.023608032976399986,
+          "first_sample_ps": 144.6,
+          "last_sample_ps": 199.9,
+          "actual_time_grid_for_integration": true
+        },
+        "candidate_status": "NO_SEPARABLE_FOURTH_CANDIDATE",
+        "evidence_class": "BOUNDED_RESULT"
+      },
+      "H_JTL6_R_TERM": {
+        "JTL6": {
+          "raw_label": "V(B01|XJTL1_6)",
+          "probe_window_ps": [
+            144.6,
+            200.0
+          ],
+          "threshold": 0.5,
+          "threshold_unit": "mV",
+          "meaning": "JTL6 voltage activity",
+          "peak_like_candidates": [],
+          "waveform_stats": {
+            "label": "V(B01|XJTL1_6)",
+            "window_ps": [
+              144.6,
+              200.0
+            ],
+            "sample_count": 554,
+            "raw_unit": "V",
+            "display_unit": "mV",
+            "minimum": -0.0022763109999999996,
+            "maximum": 0.024972340000000003,
+            "maximum_time_ps": 145.1,
+            "minimum_time_ps": 148.0,
+            "max_abs": 0.024972340000000003,
+            "max_abs_time_ps": 145.1,
+            "rms_sample_value": 0.0026337933269135966,
+            "signed_integral": 0.019186901665528385,
+            "positive_area": 0.02160157773105559,
+            "negative_area": -0.0024146760655272105,
+            "first_sample_ps": 144.6,
+            "last_sample_ps": 199.9,
+            "actual_time_grid_for_integration": true
+          },
+          "candidate_status": "NO_SEPARABLE_FOURTH_CANDIDATE",
+          "evidence_class": "BOUNDED_RESULT"
+        },
+        "R_TERM": {
+          "raw_label": "I(R_TERM)",
+          "probe_window_ps": [
+            144.6,
+            200.0
+          ],
+          "threshold": 5.0,
+          "threshold_unit": "uA",
+          "meaning": "terminal current activity",
+          "peak_like_candidates": [],
+          "waveform_stats": {
+            "label": "I(R_TERM)",
+            "window_ps": [
+              144.6,
+              200.0
+            ],
+            "sample_count": 554,
+            "raw_unit": "A",
+            "display_unit": "uA",
+            "minimum": -1.689813,
+            "maximum": 0.6627811,
+            "maximum_time_ps": 146.0,
+            "minimum_time_ps": 144.6,
+            "max_abs": 1.689813,
+            "max_abs_time_ps": 144.6,
+            "rms_sample_value": 0.14345067971495384,
+            "signed_integral": 0.041126660910388246,
+            "positive_area": 0.7438437593211997,
+            "negative_area": -0.7027170984108115,
+            "first_sample_ps": 144.6,
+            "last_sample_ps": 199.9,
+            "actual_time_grid_for_integration": true
+          },
+          "candidate_status": "NO_SEPARABLE_FOURTH_CANDIDATE",
+          "evidence_class": "BOUNDED_RESULT"
+        },
+        "joint_candidate_status": "NO_SEPARABLE_FOURTH_DOWNSTREAM_CANDIDATE",
+        "evidence_class": "BOUNDED_RESULT"
+      }
+    },
+    "earliest_observed_missing_response": {
+      "location": "QB front-end / BJS-to-BJ1 progression boundary",
+      "evidence_class": "BOUNDED_RESULT",
+      "statement": "after the third response, no separable fourth QBIN-to-BJS/BJ1 progression is observed; the exact BJS-versus-BJ1 boundary is not uniquely localized",
+      "not_root_cause": true
+    },
+    "classification": {
+      "primary": "D_EFFECTIVE_STIMULUS_LIMIT",
+      "selected": [
+        "D_EFFECTIVE_STIMULUS_LIMIT",
+        "F_MIXED_OR_UNRESOLVED"
+      ],
+      "evidence_class": "BOUNDED_RESULT",
+      "criterion_check": {
+        "D": "N4 post-t3 positive source area and peak are far below the N1 first-response reference, while no independent fourth QB/front-end progression is resolved",
+        "F": "the exact first missing internal level cannot be uniquely separated because BJS residual activity is oscillatory and not a fourth-response marker",
+        "A_not_selected": "no separable fourth BJS activity is established",
+        "B_not_selected": "no separable fourth BJ1 attempt is established",
+        "C_not_selected_as_primary": "spacing shortens, but fixed-offset phase plateaus do not by themselves establish dead time or a physical recovery mechanism",
+        "E_not_selected": "no complete fourth BJ2 progression is established, so downstream loss cannot be isolated"
+      },
+      "boundary": "classification is a bounded raw-evidence fit, not a root-cause or hardware claim"
+    }
+  },
+  "classification_boundary": "earliest observed missing-response location is not automatically a root cause"
+}

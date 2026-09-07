@@ -1,0 +1,1473 @@
+{
+  "schema": "jm2-n3-n4-replay-event-timeline-v1",
+  "raw_provenance": {
+    "N1_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+      "sha256": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+      "role": "N1 first-response reference",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    },
+    "N3_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv",
+      "sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "role": "main read-only deep-dive case",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    },
+    "N4_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv",
+      "sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "role": "main read-only deep-dive case",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    }
+  },
+  "window_ps": [
+    110.0,
+    200.0
+  ],
+  "cases": {
+    "N3_REPLAY": {
+      "case": "N3_REPLAY",
+      "window_ps": [
+        110.0,
+        200.0
+      ],
+      "terminal_probe": {
+        "threshold_uA": 5.0,
+        "merge_separation_ps": 1.0,
+        "meaning": "local positive current maxima for descriptive timing only; not an event count"
+      },
+      "internal_voltage_probes": {
+        "JTL1_B01_threshold_mV": 0.5,
+        "JTL6_B01_threshold_mV": 0.5,
+        "QBOUT_threshold_mV": 0.45,
+        "BJ2_threshold_mV": 0.5,
+        "BJ1_threshold_mV": 0.3,
+        "meaning": "descriptive voltage activity probes; no Ic threshold or switching inference"
+      },
+      "responses": [
+        {
+          "response_index": 1,
+          "reference_time_ps": 132.79999999999998,
+          "evidence_class": "OBSERVED",
+          "reference": {
+            "time_ps": 132.79999999999998,
+            "value": 0.0001251052,
+            "response_index": 1,
+            "value_uA": 125.1052,
+            "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count",
+            "evidence_class": "OBSERVED"
+          },
+          "time_positions": {
+            "BJS": {
+              "time_ps": null,
+              "evidence_class": "UNKNOWN",
+              "status": "UNKNOWN",
+              "reason": "BJS voltage activity is overlapping/oscillatory; no reliable per-response separation"
+            },
+            "BJ1": {
+              "time_ps": 113.4,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ1|XBQ1)",
+              "raw_value": 0.001001468,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 113.4,
+                "value": 0.001001468,
+                "target_time_ps": 113.7,
+                "selection_error_ps": 0.29999999999999716,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  113.4,
+                  116.2
+                ],
+                "selection_label": "BJ1 preceding BJ2 peak",
+                "second_candidate_separation_ps": 2.799999999999997,
+                "value_mV": 1.001468
+              },
+              "display_value": 1.001468,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 3.2663249999999997,
+                "cphi_turns_from_110_ps": 0.519851769494635,
+                "cv_over_phi0_from_110_ps": 0.5196156284216137
+              }
+            },
+            "BJ2": {
+              "time_ps": 115.2,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ2|XBQ1)",
+              "raw_value": 0.0008497817,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 115.2,
+                "value": 0.0008497817,
+                "target_time_ps": 115.19999999999999,
+                "selection_error_ps": 1.4210854715202004e-14,
+                "candidate_count": 1,
+                "candidate_times_ps": [
+                  115.2
+                ],
+                "selection_label": "BJ2 near QBOUT peak",
+                "value_mV": 0.8497817
+              },
+              "display_value": 0.8497817,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 3.7721971,
+                "cphi_turns_from_110_ps": 0.6003638147819127,
+                "cv_over_phi0_from_110_ps": 0.6000797672671622
+              }
+            },
+            "QBOUT": {
+              "time_ps": 115.39999999999999,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(QBOUT)",
+              "raw_value": 0.000704127,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 115.39999999999999,
+                "value": 0.000704127,
+                "target_time_ps": 115.39999999999999,
+                "selection_error_ps": 0.0,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  115.39999999999999,
+                  116.39999999999999
+                ],
+                "selection_label": "QBOUT near JTL1 peak",
+                "second_candidate_separation_ps": 1.0,
+                "value_mV": 0.7041270000000001
+              },
+              "display_value": 0.7041270000000001,
+              "display_unit": "mV"
+            },
+            "JTL1_B01": {
+              "time_ps": 116.39999999999999,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_1)",
+              "raw_value": 0.00125463,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 116.39999999999999,
+                "value": 0.00125463,
+                "value_mV": 1.2546300000000001
+              },
+              "display_value": 1.2546300000000001,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 4.2801331000000005,
+                "cphi_turns_from_110_ps": 0.6812043399562376,
+                "cv_over_phi0_from_110_ps": 0.6808178738836431
+              }
+            },
+            "JTL6_B01": {
+              "time_ps": 131.2,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_6)",
+              "raw_value": 0.0011864,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 131.2,
+                "value": 0.0011864,
+                "value_mV": 1.1864
+              },
+              "display_value": 1.1864,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 4.1408814,
+                "cphi_turns_from_110_ps": 0.6590417435672878,
+                "cv_over_phi0_from_110_ps": 0.6586118720843405
+              }
+            },
+            "R_TERM": {
+              "time_ps": 132.79999999999998,
+              "evidence_class": "OBSERVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "I(R_TERM)",
+              "raw_value": 0.0001251052,
+              "raw_unit": "A",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 132.79999999999998,
+                "value": 0.0001251052,
+                "response_index": 1,
+                "value_uA": 125.1052,
+                "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count"
+              }
+            }
+          }
+        },
+        {
+          "response_index": 2,
+          "reference_time_ps": 138.4,
+          "evidence_class": "OBSERVED",
+          "reference": {
+            "time_ps": 138.4,
+            "value": 0.0001246071,
+            "response_index": 2,
+            "value_uA": 124.6071,
+            "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count",
+            "evidence_class": "OBSERVED"
+          },
+          "time_positions": {
+            "BJS": {
+              "time_ps": null,
+              "evidence_class": "UNKNOWN",
+              "status": "UNKNOWN",
+              "reason": "BJS voltage activity is overlapping/oscillatory; no reliable per-response separation"
+            },
+            "BJ1": {
+              "time_ps": 117.8,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ1|XBQ1)",
+              "raw_value": 0.001051256,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 117.8,
+                "value": 0.001051256,
+                "target_time_ps": 118.10000000000001,
+                "selection_error_ps": 0.30000000000001137,
+                "candidate_count": 3,
+                "candidate_times_ps": [
+                  116.2,
+                  117.8,
+                  120.7
+                ],
+                "selection_label": "BJ1 preceding BJ2 peak",
+                "second_candidate_separation_ps": -1.5999999999999943,
+                "value_mV": 1.051256
+              },
+              "display_value": 1.051256,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 10.262017,
+                "cphi_turns_from_110_ps": 1.6332507316430627,
+                "cv_over_phi0_from_110_ps": 1.632985688219567
+              }
+            },
+            "BJ2": {
+              "time_ps": 119.60000000000001,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ2|XBQ1)",
+              "raw_value": 0.0008730241,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 119.60000000000001,
+                "value": 0.0008730241,
+                "target_time_ps": 119.50000000000001,
+                "selection_error_ps": 0.09999999999999432,
+                "candidate_count": 1,
+                "candidate_times_ps": [
+                  119.60000000000001
+                ],
+                "selection_label": "BJ2 near QBOUT peak",
+                "value_mV": 0.8730241
+              },
+              "display_value": 0.8730241,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 10.1843271,
+                "cphi_turns_from_110_ps": 1.6208860000297476,
+                "cv_over_phi0_from_110_ps": 1.6205938825772637
+              }
+            },
+            "QBOUT": {
+              "time_ps": 119.70000000000002,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(QBOUT)",
+              "raw_value": 0.000700063,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 119.70000000000002,
+                "value": 0.000700063,
+                "target_time_ps": 119.80000000000001,
+                "selection_error_ps": 0.09999999999999432,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  119.70000000000002,
+                  120.89999999999999
+                ],
+                "selection_label": "QBOUT near JTL1 peak",
+                "second_candidate_separation_ps": 1.1999999999999744,
+                "value_mV": 0.700063
+              },
+              "display_value": 0.700063,
+              "display_unit": "mV"
+            },
+            "JTL1_B01": {
+              "time_ps": 120.80000000000001,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_1)",
+              "raw_value": 0.001232843,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 120.80000000000001,
+                "value": 0.001232843,
+                "value_mV": 1.232843
+              },
+              "display_value": 1.232843,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 10.5006431,
+                "cphi_turns_from_110_ps": 1.6712292550088035,
+                "cv_over_phi0_from_110_ps": 1.6707387205125268
+              }
+            },
+            "JTL6_B01": {
+              "time_ps": 136.8,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_6)",
+              "raw_value": 0.001178384,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 136.8,
+                "value": 0.001178384,
+                "value_mV": 1.1783839999999999
+              },
+              "display_value": 1.1783839999999999,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 10.2576634,
+                "cphi_turns_from_110_ps": 1.6325578346828178,
+                "cv_over_phi0_from_110_ps": 1.632000934168217
+              }
+            },
+            "R_TERM": {
+              "time_ps": 138.4,
+              "evidence_class": "OBSERVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "I(R_TERM)",
+              "raw_value": 0.0001246071,
+              "raw_unit": "A",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 138.4,
+                "value": 0.0001246071,
+                "response_index": 2,
+                "value_uA": 124.6071,
+                "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count"
+              }
+            }
+          }
+        },
+        {
+          "response_index": 3,
+          "reference_time_ps": 144.20000000000002,
+          "evidence_class": "OBSERVED",
+          "reference": {
+            "time_ps": 144.20000000000002,
+            "value": 0.0001241529,
+            "response_index": 3,
+            "value_uA": 124.15289999999999,
+            "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count",
+            "evidence_class": "OBSERVED"
+          },
+          "time_positions": {
+            "BJS": {
+              "time_ps": null,
+              "evidence_class": "UNKNOWN",
+              "status": "UNKNOWN",
+              "reason": "BJS voltage activity is overlapping/oscillatory; no reliable per-response separation"
+            },
+            "BJ1": {
+              "time_ps": 122.30000000000001,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ1|XBQ1)",
+              "raw_value": 0.0003928056,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 122.30000000000001,
+                "value": 0.0003928056,
+                "target_time_ps": 123.9,
+                "selection_error_ps": 1.5999999999999943,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  122.30000000000001,
+                  125.69999999999999
+                ],
+                "selection_label": "BJ1 preceding BJ2 peak",
+                "second_candidate_separation_ps": 3.3999999999999773,
+                "value_mV": 0.39280560000000003
+              },
+              "display_value": 0.39280560000000003,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 15.409346999999999,
+                "cphi_turns_from_110_ps": 2.452473744868268,
+                "cv_over_phi0_from_110_ps": 2.4524941364631347
+              }
+            },
+            "BJ2": {
+              "time_ps": 125.4,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ2|XBQ1)",
+              "raw_value": 0.0006170743,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 125.4,
+                "value": 0.0006170743,
+                "target_time_ps": 125.7,
+                "selection_error_ps": 0.29999999999999716,
+                "candidate_count": 1,
+                "candidate_times_ps": [
+                  125.4
+                ],
+                "selection_label": "BJ2 near QBOUT peak",
+                "value_mV": 0.6170743
+              },
+              "display_value": 0.6170743,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 16.3536371,
+                "cphi_turns_from_110_ps": 2.6027621819960083,
+                "cv_over_phi0_from_110_ps": 2.6025966609745685
+              }
+            },
+            "QBOUT": {
+              "time_ps": 125.9,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(QBOUT)",
+              "raw_value": 0.0005765235,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 125.9,
+                "value": 0.0005765235,
+                "target_time_ps": 125.60000000000001,
+                "selection_error_ps": 0.29999999999999716,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  125.9,
+                  126.5
+                ],
+                "selection_label": "QBOUT near JTL1 peak",
+                "second_candidate_separation_ps": 0.5999999999999943,
+                "value_mV": 0.5765235
+              },
+              "display_value": 0.5765235,
+              "display_unit": "mV"
+            },
+            "JTL1_B01": {
+              "time_ps": 126.60000000000001,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_1)",
+              "raw_value": 0.001140592,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 126.60000000000001,
+                "value": 0.001140592,
+                "value_mV": 1.140592
+              },
+              "display_value": 1.140592,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 16.567813100000002,
+                "cphi_turns_from_110_ps": 2.6368493510876583,
+                "cv_over_phi0_from_110_ps": 2.6363412155733355
+              }
+            },
+            "JTL6_B01": {
+              "time_ps": 142.6,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_6)",
+              "raw_value": 0.001171229,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 142.6,
+                "value": 0.001171229,
+                "value_mV": 1.171229
+              },
+              "display_value": 1.171229,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 16.836393400000002,
+                "cphi_turns_from_110_ps": 2.6795952334497626,
+                "cv_over_phi0_from_110_ps": 2.679370151039645
+              }
+            },
+            "R_TERM": {
+              "time_ps": 144.20000000000002,
+              "evidence_class": "OBSERVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "I(R_TERM)",
+              "raw_value": 0.0001241529,
+              "raw_unit": "A",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 144.20000000000002,
+                "value": 0.0001241529,
+                "response_index": 3,
+                "value_uA": 124.15289999999999,
+                "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count"
+              }
+            }
+          }
+        }
+      ],
+      "spacing_ps": {
+        "R_TERM": [
+          5.600000000000023,
+          5.800000000000011
+        ],
+        "BJ1": [
+          4.3999999999999915,
+          4.500000000000014
+        ],
+        "BJ2": [
+          4.400000000000006,
+          5.799999999999997
+        ]
+      },
+      "bjs_global_activity": {
+        "evidence_class": "UNKNOWN",
+        "probe_threshold_mV_abs": 0.05,
+        "peak_count_before_160_ps": 25,
+        "top_abs_peaks": [
+          {
+            "time_ps": 120.39999999999999,
+            "value_mV": -0.252293,
+            "abs_value_mV": 0.252293
+          },
+          {
+            "time_ps": 128.6,
+            "value_mV": 0.1645851,
+            "abs_value_mV": 0.1645851
+          },
+          {
+            "time_ps": 119.10000000000001,
+            "value_mV": 0.151967,
+            "abs_value_mV": 0.151967
+          },
+          {
+            "time_ps": 129.9,
+            "value_mV": -0.1491105,
+            "abs_value_mV": 0.1491105
+          },
+          {
+            "time_ps": 127.29999999999998,
+            "value_mV": -0.1476644,
+            "abs_value_mV": 0.1476644
+          },
+          {
+            "time_ps": 117.19999999999999,
+            "value_mV": -0.1416616,
+            "abs_value_mV": 0.1416616
+          },
+          {
+            "time_ps": 123.1,
+            "value_mV": -0.120965,
+            "abs_value_mV": 0.120965
+          },
+          {
+            "time_ps": 136.39999999999998,
+            "value_mV": -0.11922609999999999,
+            "abs_value_mV": 0.11922609999999999
+          },
+          {
+            "time_ps": 114.3,
+            "value_mV": -0.1175471,
+            "abs_value_mV": 0.1175471
+          },
+          {
+            "time_ps": 116.0,
+            "value_mV": 0.1074796,
+            "abs_value_mV": 0.1074796
+          },
+          {
+            "time_ps": 137.7,
+            "value_mV": 0.1039629,
+            "abs_value_mV": 0.1039629
+          },
+          {
+            "time_ps": 135.0,
+            "value_mV": 0.1034436,
+            "abs_value_mV": 0.1034436
+          },
+          {
+            "time_ps": 111.2,
+            "value_mV": 0.09899298000000001,
+            "abs_value_mV": 0.09899298000000001
+          },
+          {
+            "time_ps": 113.10000000000001,
+            "value_mV": 0.09761228000000001,
+            "abs_value_mV": 0.09761228000000001
+          },
+          {
+            "time_ps": 121.80000000000001,
+            "value_mV": 0.09212678,
+            "abs_value_mV": 0.09212678
+          },
+          {
+            "time_ps": 131.3,
+            "value_mV": 0.08865949,
+            "abs_value_mV": 0.08865949
+          }
+        ],
+        "reason": "BJS activity is oscillatory and overlapping across the three response chain; no unique per-response peak assignment is made"
+      },
+      "cumulative_endpoint_summary": {
+        "BJS": {
+          "time_ps": 199.9,
+          "cphi_rad": -0.015424929000000049,
+          "cphi_turns": -0.002454953697191534,
+          "cv_over_phi0": -0.0025278836498669847,
+          "phase_area_residual_turns": 7.29299526754509e-05
+        },
+        "BJ1": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.868217,
+          "cphi_turns": 3.0029700028805326,
+          "cv_over_phi0": 3.0029879649412647,
+          "phase_area_residual_turns": -1.796206073212403e-05
+        },
+        "BJ2": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8311571,
+          "cphi_turns": 2.9970717366050406,
+          "cv_over_phi0": 2.9970114141789583,
+          "phase_area_residual_turns": 6.03224260822266e-05
+        },
+        "JTL1_B01": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8532431,
+          "cphi_turns": 3.0005868326781684,
+          "cv_over_phi0": 3.000601672317354,
+          "phase_area_residual_turns": -1.4839639185471043e-05
+        },
+        "JTL1_B02": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8517929,
+          "cphi_turns": 3.0003560261796967,
+          "cv_over_phi0": 3.000361077508155,
+          "phase_area_residual_turns": -5.051328458183235e-06
+        },
+        "JTL6_B01": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8495534,
+          "cphi_turns": 2.9999995986846426,
+          "cv_over_phi0": 2.999999890158404,
+          "phase_area_residual_turns": -2.9147376157112603e-07
+        },
+        "JTL6_B02": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8495536,
+          "cphi_turns": 2.999999630515631,
+          "cv_over_phi0": 2.999999993883178,
+          "phase_area_residual_turns": -3.6336754671850713e-07
+        }
+      },
+      "phase_area_semantics": "Cphi and Cv are continuous cumulative quantities from 110 ps; they are not SFQ event counts"
+    },
+    "N4_REPLAY": {
+      "case": "N4_REPLAY",
+      "window_ps": [
+        110.0,
+        200.0
+      ],
+      "terminal_probe": {
+        "threshold_uA": 5.0,
+        "merge_separation_ps": 1.0,
+        "meaning": "local positive current maxima for descriptive timing only; not an event count"
+      },
+      "internal_voltage_probes": {
+        "JTL1_B01_threshold_mV": 0.5,
+        "JTL6_B01_threshold_mV": 0.5,
+        "QBOUT_threshold_mV": 0.45,
+        "BJ2_threshold_mV": 0.5,
+        "BJ1_threshold_mV": 0.3,
+        "meaning": "descriptive voltage activity probes; no Ic threshold or switching inference"
+      },
+      "responses": [
+        {
+          "response_index": 1,
+          "reference_time_ps": 132.1,
+          "evidence_class": "OBSERVED",
+          "reference": {
+            "time_ps": 132.1,
+            "value": 0.0001252969,
+            "response_index": 1,
+            "value_uA": 125.29690000000001,
+            "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count",
+            "evidence_class": "OBSERVED"
+          },
+          "time_positions": {
+            "BJS": {
+              "time_ps": null,
+              "evidence_class": "UNKNOWN",
+              "status": "UNKNOWN",
+              "reason": "BJS voltage activity is overlapping/oscillatory; no reliable per-response separation"
+            },
+            "BJ1": {
+              "time_ps": 113.0,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ1|XBQ1)",
+              "raw_value": 0.001329527,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 113.0,
+                "value": 0.001329527,
+                "target_time_ps": 113.0,
+                "selection_error_ps": 0.0,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  113.0,
+                  116.10000000000001
+                ],
+                "selection_label": "BJ1 preceding BJ2 peak",
+                "second_candidate_separation_ps": 3.1000000000000085,
+                "value_mV": 1.3295270000000001
+              },
+              "display_value": 1.3295270000000001,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 3.632521,
+                "cphi_turns_from_110_ps": 0.5781336730351148,
+                "cv_over_phi0_from_110_ps": 0.5773815146970146
+              }
+            },
+            "BJ2": {
+              "time_ps": 114.5,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ2|XBQ1)",
+              "raw_value": 0.0009037562,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 114.5,
+                "value": 0.0009037562,
+                "target_time_ps": 114.5,
+                "selection_error_ps": 0.0,
+                "candidate_count": 1,
+                "candidate_times_ps": [
+                  114.5
+                ],
+                "selection_label": "BJ2 near QBOUT peak",
+                "value_mV": 0.9037562
+              },
+              "display_value": 0.9037562,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 3.6268040999999998,
+                "cphi_turns_from_110_ps": 0.5772238001409526,
+                "cv_over_phi0_from_110_ps": 0.5769544698714134
+              }
+            },
+            "QBOUT": {
+              "time_ps": 114.7,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(QBOUT)",
+              "raw_value": 0.0007343884,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 114.7,
+                "value": 0.0007343884,
+                "target_time_ps": 114.8,
+                "selection_error_ps": 0.09999999999999432,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  114.7,
+                  115.8
+                ],
+                "selection_label": "QBOUT near JTL1 peak",
+                "second_candidate_separation_ps": 1.0999999999999943,
+                "value_mV": 0.7343884
+              },
+              "display_value": 0.7343884,
+              "display_unit": "mV"
+            },
+            "JTL1_B01": {
+              "time_ps": 115.8,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_1)",
+              "raw_value": 0.001279118,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 115.8,
+                "value": 0.001279118,
+                "value_mV": 1.2791180000000002
+              },
+              "display_value": 1.2791180000000002,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 4.4298561,
+                "cphi_turns_from_110_ps": 0.7050334955007855,
+                "cv_over_phi0_from_110_ps": 0.7048146781471994
+              }
+            },
+            "JTL6_B01": {
+              "time_ps": 130.5,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_6)",
+              "raw_value": 0.001195052,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 130.5,
+                "value": 0.001195052,
+                "value_mV": 1.195052
+              },
+              "display_value": 1.195052,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 4.275936399999999,
+                "cphi_turns_from_110_ps": 0.6805364144065637,
+                "cv_over_phi0_from_110_ps": 0.6802416920089032
+              }
+            },
+            "R_TERM": {
+              "time_ps": 132.1,
+              "evidence_class": "OBSERVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "I(R_TERM)",
+              "raw_value": 0.0001252969,
+              "raw_unit": "A",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 132.1,
+                "value": 0.0001252969,
+                "response_index": 1,
+                "value_uA": 125.29690000000001,
+                "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count"
+              }
+            }
+          }
+        },
+        {
+          "response_index": 2,
+          "reference_time_ps": 137.0,
+          "evidence_class": "OBSERVED",
+          "reference": {
+            "time_ps": 137.0,
+            "value": 0.0001262076,
+            "response_index": 2,
+            "value_uA": 126.2076,
+            "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count",
+            "evidence_class": "OBSERVED"
+          },
+          "time_positions": {
+            "BJS": {
+              "time_ps": null,
+              "evidence_class": "UNKNOWN",
+              "status": "UNKNOWN",
+              "reason": "BJS voltage activity is overlapping/oscillatory; no reliable per-response separation"
+            },
+            "BJ1": {
+              "time_ps": 116.10000000000001,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ1|XBQ1)",
+              "raw_value": 0.00113931,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 116.10000000000001,
+                "value": 0.00113931,
+                "target_time_ps": 116.8,
+                "selection_error_ps": 0.6999999999999886,
+                "candidate_count": 4,
+                "candidate_times_ps": [
+                  116.10000000000001,
+                  117.8,
+                  119.20000000000002,
+                  120.0
+                ],
+                "selection_label": "BJ1 preceding BJ2 peak",
+                "second_candidate_separation_ps": 1.6999999999999886,
+                "value_mV": 1.1393099999999998
+              },
+              "display_value": 1.1393099999999998,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 9.205477,
+                "cphi_turns_from_110_ps": 1.4650971680687515,
+                "cv_over_phi0_from_110_ps": 1.4646461446741954
+              }
+            },
+            "BJ2": {
+              "time_ps": 118.3,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ2|XBQ1)",
+              "raw_value": 0.0008238562,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 118.3,
+                "value": 0.0008238562,
+                "target_time_ps": 118.2,
+                "selection_error_ps": 0.09999999999999432,
+                "candidate_count": 1,
+                "candidate_times_ps": [
+                  118.3
+                ],
+                "selection_label": "BJ2 near QBOUT peak",
+                "value_mV": 0.8238562
+              },
+              "display_value": 0.8238562,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 10.2233671,
+                "cphi_turns_from_110_ps": 1.6270994090080553,
+                "cv_over_phi0_from_110_ps": 1.6267575728139432
+              }
+            },
+            "QBOUT": {
+              "time_ps": 118.4,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(QBOUT)",
+              "raw_value": 0.0007512609,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 118.4,
+                "value": 0.0007512609,
+                "target_time_ps": 118.5,
+                "selection_error_ps": 0.09999999999999432,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  118.4,
+                  119.60000000000001
+                ],
+                "selection_label": "QBOUT near JTL1 peak",
+                "second_candidate_separation_ps": 1.2000000000000028,
+                "value_mV": 0.7512609
+              },
+              "display_value": 0.7512609,
+              "display_unit": "mV"
+            },
+            "JTL1_B01": {
+              "time_ps": 119.5,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_1)",
+              "raw_value": 0.001212532,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 119.5,
+                "value": 0.001212532,
+                "value_mV": 1.2125320000000002
+              },
+              "display_value": 1.2125320000000002,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 10.4246731,
+                "cphi_turns_from_110_ps": 1.6591382539821122,
+                "cv_over_phi0_from_110_ps": 1.6586361894391428
+              }
+            },
+            "JTL6_B01": {
+              "time_ps": 135.4,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_6)",
+              "raw_value": 0.001206113,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 135.4,
+                "value": 0.001206113,
+                "value_mV": 1.206113
+              },
+              "display_value": 1.206113,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 10.3752934,
+                "cphi_turns_from_110_ps": 1.6512792306387174,
+                "cv_over_phi0_from_110_ps": 1.6506876250517823
+              }
+            },
+            "R_TERM": {
+              "time_ps": 137.0,
+              "evidence_class": "OBSERVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "I(R_TERM)",
+              "raw_value": 0.0001262076,
+              "raw_unit": "A",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 137.0,
+                "value": 0.0001262076,
+                "response_index": 2,
+                "value_uA": 126.2076,
+                "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count"
+              }
+            }
+          }
+        },
+        {
+          "response_index": 3,
+          "reference_time_ps": 141.6,
+          "evidence_class": "OBSERVED",
+          "reference": {
+            "time_ps": 141.6,
+            "value": 0.000124704,
+            "response_index": 3,
+            "value_uA": 124.70400000000001,
+            "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count",
+            "evidence_class": "OBSERVED"
+          },
+          "time_positions": {
+            "BJS": {
+              "time_ps": null,
+              "evidence_class": "UNKNOWN",
+              "status": "UNKNOWN",
+              "reason": "BJS voltage activity is overlapping/oscillatory; no reliable per-response separation"
+            },
+            "BJ1": {
+              "time_ps": 120.0,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ1|XBQ1)",
+              "raw_value": 0.0009775322,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 120.0,
+                "value": 0.0009775322,
+                "target_time_ps": 119.89999999999999,
+                "selection_error_ps": 0.10000000000000853,
+                "candidate_count": 4,
+                "candidate_times_ps": [
+                  117.8,
+                  119.20000000000002,
+                  120.0,
+                  122.80000000000001
+                ],
+                "selection_label": "BJ1 preceding BJ2 peak",
+                "second_candidate_separation_ps": -0.799999999999983,
+                "value_mV": 0.9775322
+              },
+              "display_value": 0.9775322,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 16.427367,
+                "cphi_turns_from_110_ps": 2.6144966600346797,
+                "cv_over_phi0_from_110_ps": 2.6143702108990716
+              }
+            },
+            "BJ2": {
+              "time_ps": 121.39999999999999,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(BJ2|XBQ1)",
+              "raw_value": 0.0006525671,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 121.39999999999999,
+                "value": 0.0006525671,
+                "target_time_ps": 121.69999999999999,
+                "selection_error_ps": 0.29999999999999716,
+                "candidate_count": 1,
+                "candidate_times_ps": [
+                  121.39999999999999
+                ],
+                "selection_label": "BJ2 near QBOUT peak",
+                "value_mV": 0.6525671
+              },
+              "display_value": 0.6525671,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 15.3830371,
+                "cphi_turns_from_110_ps": 2.4482863942310145,
+                "cv_over_phi0_from_110_ps": 2.4482044538788275
+              }
+            },
+            "QBOUT": {
+              "time_ps": 121.89999999999999,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(QBOUT)",
+              "raw_value": 0.0006051476,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 121.89999999999999,
+                "value": 0.0006051476,
+                "target_time_ps": 122.3,
+                "selection_error_ps": 0.4000000000000057,
+                "candidate_count": 2,
+                "candidate_times_ps": [
+                  121.89999999999999,
+                  123.4
+                ],
+                "selection_label": "QBOUT near JTL1 peak",
+                "second_candidate_separation_ps": 1.5000000000000142,
+                "value_mV": 0.6051476
+              },
+              "display_value": 0.6051476,
+              "display_unit": "mV"
+            },
+            "JTL1_B01": {
+              "time_ps": 123.3,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_1)",
+              "raw_value": 0.001062028,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 123.3,
+                "value": 0.001062028,
+                "value_mV": 1.062028
+              },
+              "display_value": 1.062028,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 16.5610231,
+                "cphi_turns_from_110_ps": 2.635768689024064,
+                "cv_over_phi0_from_110_ps": 2.6354333116806585
+              }
+            },
+            "JTL6_B01": {
+              "time_ps": 140.10000000000002,
+              "evidence_class": "DERIVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "V(B01|XJTL1_6)",
+              "raw_value": 0.00117974,
+              "raw_unit": "V",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 140.10000000000002,
+                "value": 0.00117974,
+                "value_mV": 1.17974
+              },
+              "display_value": 1.17974,
+              "display_unit": "mV",
+              "phase_progression": {
+                "cphi_rad_from_110_ps": 16.9277434,
+                "cphi_turns_from_110_ps": 2.694134037501207,
+                "cv_over_phi0_from_110_ps": 2.6938561944638573
+              }
+            },
+            "R_TERM": {
+              "time_ps": 141.6,
+              "evidence_class": "OBSERVED",
+              "status": "DESCRIPTIVE_PEAK",
+              "raw_signal_label": "I(R_TERM)",
+              "raw_value": 0.000124704,
+              "raw_unit": "A",
+              "grid_error_ps": 0.0,
+              "selection": {
+                "time_ps": 141.6,
+                "value": 0.000124704,
+                "response_index": 3,
+                "value_uA": 124.70400000000001,
+                "probe": "local positive I(R_TERM) maximum > 5 uA; descriptive activity probe, not an event count"
+              }
+            }
+          }
+        }
+      ],
+      "spacing_ps": {
+        "R_TERM": [
+          4.900000000000006,
+          4.599999999999994
+        ],
+        "BJ1": [
+          3.1000000000000085,
+          3.8999999999999915
+        ],
+        "BJ2": [
+          3.799999999999997,
+          3.0999999999999943
+        ]
+      },
+      "bjs_global_activity": {
+        "evidence_class": "UNKNOWN",
+        "probe_threshold_mV_abs": 0.05,
+        "peak_count_before_160_ps": 33,
+        "top_abs_peaks": [
+          {
+            "time_ps": 127.20000000000002,
+            "value_mV": -0.2363242,
+            "abs_value_mV": 0.2363242
+          },
+          {
+            "time_ps": 125.9,
+            "value_mV": 0.2257178,
+            "abs_value_mV": 0.2257178
+          },
+          {
+            "time_ps": 128.5,
+            "value_mV": 0.2238914,
+            "abs_value_mV": 0.2238914
+          },
+          {
+            "time_ps": 124.69999999999999,
+            "value_mV": -0.2236999,
+            "abs_value_mV": 0.2236999
+          },
+          {
+            "time_ps": 120.2,
+            "value_mV": -0.2212722,
+            "abs_value_mV": 0.2212722
+          },
+          {
+            "time_ps": 136.3,
+            "value_mV": -0.2049209,
+            "abs_value_mV": 0.2049209
+          },
+          {
+            "time_ps": 119.0,
+            "value_mV": 0.1992242,
+            "abs_value_mV": 0.1992242
+          },
+          {
+            "time_ps": 129.9,
+            "value_mV": -0.19538770000000003,
+            "abs_value_mV": 0.19538770000000003
+          },
+          {
+            "time_ps": 134.9,
+            "value_mV": 0.1918707,
+            "abs_value_mV": 0.1918707
+          },
+          {
+            "time_ps": 137.7,
+            "value_mV": 0.170143,
+            "abs_value_mV": 0.170143
+          },
+          {
+            "time_ps": 117.00000000000001,
+            "value_mV": -0.1646606,
+            "abs_value_mV": 0.1646606
+          },
+          {
+            "time_ps": 123.4,
+            "value_mV": 0.1630785,
+            "abs_value_mV": 0.1630785
+          },
+          {
+            "time_ps": 113.0,
+            "value_mV": 0.1543397,
+            "abs_value_mV": 0.1543397
+          },
+          {
+            "time_ps": 144.1,
+            "value_mV": 0.1443886,
+            "abs_value_mV": 0.1443886
+          },
+          {
+            "time_ps": 121.89999999999999,
+            "value_mV": -0.1401548,
+            "abs_value_mV": 0.1401548
+          },
+          {
+            "time_ps": 142.70000000000002,
+            "value_mV": -0.1379402,
+            "abs_value_mV": 0.1379402
+          }
+        ],
+        "reason": "BJS activity is oscillatory and overlapping across the three response chain; no unique per-response peak assignment is made"
+      },
+      "cumulative_endpoint_summary": {
+        "BJS": {
+          "time_ps": 199.9,
+          "cphi_rad": -0.011304594000000045,
+          "cphi_turns": -0.0017991820147469887,
+          "cv_over_phi0": -0.001866013458350376,
+          "phase_area_residual_turns": 6.683144360338737e-05
+        },
+        "BJ1": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.868097000000002,
+          "cphi_turns": 3.0029509042873617,
+          "cv_over_phi0": 3.0029689542144977,
+          "phase_area_residual_turns": -1.8049927136054578e-05
+        },
+        "BJ2": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8311471,
+          "cphi_turns": 2.9970701450556096,
+          "cv_over_phi0": 2.997010688764729,
+          "phase_area_residual_turns": 5.945629088044413e-05
+        },
+        "JTL1_B01": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8532431,
+          "cphi_turns": 3.0005868326781684,
+          "cv_over_phi0": 3.000602307972592,
+          "phase_area_residual_turns": -1.5475294423694663e-05
+        },
+        "JTL1_B02": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8518029,
+          "cphi_turns": 3.0003576177291276,
+          "cv_over_phi0": 3.0003629172458233,
+          "phase_area_residual_turns": -5.29951669570039e-06
+        },
+        "JTL6_B01": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8495534,
+          "cphi_turns": 2.9999995986846426,
+          "cv_over_phi0": 2.9999998823272724,
+          "phase_area_residual_turns": -2.8364262982805144e-07
+        },
+        "JTL6_B02": {
+          "time_ps": 199.9,
+          "cphi_rad": 18.8495536,
+          "cphi_turns": 2.999999630515631,
+          "cv_over_phi0": 2.999999968690242,
+          "phase_area_residual_turns": -3.381746109809569e-07
+        }
+      },
+      "phase_area_semantics": "Cphi and Cv are continuous cumulative quantities from 110 ps; they are not SFQ event counts"
+    }
+  },
+  "spacing_comparison": {
+    "N3_REPLAY": {
+      "R_TERM": [
+        5.600000000000023,
+        5.800000000000011
+      ],
+      "BJ1": [
+        4.3999999999999915,
+        4.500000000000014
+      ],
+      "BJ2": [
+        4.400000000000006,
+        5.799999999999997
+      ]
+    },
+    "N4_REPLAY": {
+      "R_TERM": [
+        4.900000000000006,
+        4.599999999999994
+      ],
+      "BJ1": [
+        3.1000000000000085,
+        3.8999999999999915
+      ],
+      "BJ2": [
+        3.799999999999997,
+        3.0999999999999943
+      ]
+    }
+  },
+  "timing_semantics": "descriptive joint raw evidence; voltage peaks and terminal maxima are not SFQ event counts"
+}

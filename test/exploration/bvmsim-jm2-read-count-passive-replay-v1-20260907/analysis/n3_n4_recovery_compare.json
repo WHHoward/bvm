@@ -1,0 +1,2885 @@
+{
+  "schema": "jm2-n3-n4-recovery-state-compare-v1",
+  "raw_provenance": {
+    "N1_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+      "sha256": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+      "role": "N1 first-response reference",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    },
+    "N3_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv",
+      "sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "role": "main read-only deep-dive case",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    },
+    "N4_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv",
+      "sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "role": "main read-only deep-dive case",
+      "grid": {
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "nominal_median_dt_ps": 0.10000000000000482,
+        "uniform_time_grid": false,
+        "strictly_increasing": true,
+        "large_gap_records": [
+          {
+            "from_ps": 14.700000000000001,
+            "to_ps": 14.900000000000002,
+            "dt_ps": 0.19999999999999996
+          }
+        ],
+        "window_grid": {
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "sample_count": 900,
+          "first_sample_ps": 110.0,
+          "last_sample_ps": 199.9,
+          "actual_time_values_used_for_integration": true
+        }
+      },
+      "required_header_count": 38,
+      "required_headers_present": true
+    }
+  },
+  "window_ps": [
+    110.0,
+    200.0
+  ],
+  "cases": {
+    "N3_REPLAY": {
+      "case": "N3_REPLAY",
+      "offsets_ps": [
+        0.5,
+        1.0,
+        2.0,
+        3.0
+      ],
+      "variables": [
+        "I(L1|XBQ1)",
+        "I(L2|XBQ1)",
+        "I(L3|XBQ1)",
+        "I(BJ1|XBQ1)",
+        "I(BJ2|XBQ1)",
+        "I(RJ1|XBQ1)",
+        "I(RJ2|XBQ1)",
+        "I(IB|XBQ1)",
+        "V(QBIN)"
+      ],
+      "states": [
+        {
+          "response_index": 1,
+          "reference_time_ps": 132.79999999999998,
+          "offsets": {
+            "+0.5ps": {
+              "target_time_ps": 133.29999999999998,
+              "actual_time_ps": 133.29999999999998,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -7.610658e-05,
+                "display_value": -76.10658000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001738934,
+                "display_value": 173.89339999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 1.032386e-05,
+                "display_value": 10.32386,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 6.710884e-05,
+                "display_value": 67.10884,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001595684,
+                "display_value": 159.5684,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -9.778525e-09,
+                "display_value": -0.009778525,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 4.001187e-06,
+                "display_value": 4.001187,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -0.0001033147,
+                "display_value": -0.1033147,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.32247,
+                "cphi_rad_from_110_ps": 18.990427,
+                "cphi_turns_from_110_ps": 3.0224203284757927,
+                "cv_over_phi0_from_110_ps": 3.02283507567432
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.72822,
+                "cphi_rad_from_110_ps": 18.8106471,
+                "cphi_turns_from_110_ps": 2.9938074687222263,
+                "cv_over_phi0_from_110_ps": 2.9936889951015013
+              }
+            },
+            "+1ps": {
+              "target_time_ps": 133.79999999999998,
+              "actual_time_ps": 133.79999999999998,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.724645e-05,
+                "display_value": -87.24645,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001627536,
+                "display_value": 162.7536,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 8.144452e-06,
+                "display_value": 8.144452,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.377279e-05,
+                "display_value": 83.77279,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001512284,
+                "display_value": 151.2284,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -1.002069e-05,
+                "display_value": -10.02069,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 3.380723e-06,
+                "display_value": 3.380723,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -0.000146842,
+                "display_value": -0.146842,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.21404,
+                "cphi_rad_from_110_ps": 18.881997000000002,
+                "cphi_turns_from_110_ps": 3.0051631579963387,
+                "cv_over_phi0_from_110_ps": 3.005349847279413
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.75518,
+                "cphi_rad_from_110_ps": 18.8376071,
+                "cphi_turns_from_110_ps": 2.9980982859879837,
+                "cv_over_phi0_from_110_ps": 2.998074523952754
+              }
+            },
+            "+2ps": {
+              "target_time_ps": 134.79999999999998,
+              "actual_time_ps": 134.79999999999998,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -9.229932e-05,
+                "display_value": -92.29932,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001577007,
+                "display_value": 157.7007,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 1.42456e-06,
+                "display_value": 1.42456,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 9.648269e-05,
+                "display_value": 96.48268999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001596696,
+                "display_value": 159.6696,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 8.334902e-06,
+                "display_value": 8.334902,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -3.393474e-06,
+                "display_value": -3.393474,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 0.0001890716,
+                "display_value": 0.1890716,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.12813,
+                "cphi_rad_from_110_ps": 18.796087,
+                "cphi_turns_from_110_ps": 2.991490156835314,
+                "cv_over_phi0_from_110_ps": 2.991246788405409
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.73068,
+                "cphi_rad_from_110_ps": 18.8131071,
+                "cphi_turns_from_110_ps": 2.994198989882232,
+                "cv_over_phi0_from_110_ps": 2.9941108509487906
+              }
+            },
+            "+3ps": {
+              "target_time_ps": 135.79999999999998,
+              "actual_time_ps": 135.8,
+              "grid_error_ps": 2.842170943040401e-14,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.043651e-05,
+                "display_value": -80.43651,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001695635,
+                "display_value": 169.5635,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 9.707387e-06,
+                "display_value": 9.707387,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 7.565688e-05,
+                "display_value": 75.65688,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.000154722,
+                "display_value": 154.72199999999998,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -4.010717e-06,
+                "display_value": -4.0107170000000005,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 5.134099e-06,
+                "display_value": 5.134099,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -9.548203e-05,
+                "display_value": -0.09548203,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.30173,
+                "cphi_rad_from_110_ps": 18.969687,
+                "cphi_turns_from_110_ps": 3.019119454956067,
+                "cv_over_phi0_from_110_ps": 3.0194220916052537
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.7601,
+                "cphi_rad_from_110_ps": 18.8425271,
+                "cphi_turns_from_110_ps": 2.9988813283079963,
+                "cv_over_phi0_from_110_ps": 2.998831874695183
+              }
+            }
+          }
+        },
+        {
+          "response_index": 2,
+          "reference_time_ps": 138.4,
+          "offsets": {
+            "+0.5ps": {
+              "target_time_ps": 138.9,
+              "actual_time_ps": 138.9,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -9.25512e-05,
+                "display_value": -92.55120000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001574488,
+                "display_value": 157.4488,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 4.970114e-06,
+                "display_value": 4.970114,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 9.68711e-05,
+                "display_value": 96.8711,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001560969,
+                "display_value": 156.0969,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 6.929814e-07,
+                "display_value": 0.6929814000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -3.618188e-06,
+                "display_value": -3.618188,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -2.935712e-05,
+                "display_value": -0.029357119999999997,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.14599,
+                "cphi_rad_from_110_ps": 18.813947000000002,
+                "cphi_turns_from_110_ps": 2.9943326641189354,
+                "cv_over_phi0_from_110_ps": 2.994160034646218
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.7516,
+                "cphi_rad_from_110_ps": 18.8340271,
+                "cphi_turns_from_110_ps": 2.9975285112917147,
+                "cv_over_phi0_from_110_ps": 2.9974883705482283
+              }
+            },
+            "+1ps": {
+              "target_time_ps": 139.4,
+              "actual_time_ps": 139.4,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.657061e-05,
+                "display_value": -86.57060999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001634294,
+                "display_value": 163.42940000000002,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 3.47883e-06,
+                "display_value": 3.47883,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.815864e-05,
+                "display_value": 88.15863999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001607304,
+                "display_value": 160.73039999999997,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 4.553309e-06,
+                "display_value": 4.553309,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -7.798562e-07,
+                "display_value": -0.7798562,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -2.707071e-05,
+                "display_value": -0.027070709999999998,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.20289,
+                "cphi_rad_from_110_ps": 18.870847,
+                "cphi_turns_from_110_ps": 3.003388580380864,
+                "cv_over_phi0_from_110_ps": 3.003357758326191
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.73582,
+                "cphi_rad_from_110_ps": 18.8182471,
+                "cphi_turns_from_110_ps": 2.9950170462897248,
+                "cv_over_phi0_from_110_ps": 2.994913535555973
+              }
+            },
+            "+2ps": {
+              "target_time_ps": 140.4,
+              "actual_time_ps": 140.4,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.778116e-05,
+                "display_value": -87.78116,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001622188,
+                "display_value": 162.2188,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 7.735048e-06,
+                "display_value": 7.735047999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.458429e-05,
+                "display_value": 84.58429,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001529994,
+                "display_value": 152.99939999999998,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -4.632565e-06,
+                "display_value": -4.632565,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 1.484442e-06,
+                "display_value": 1.484442,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -2.215055e-05,
+                "display_value": -0.02215055,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.21479,
+                "cphi_rad_from_110_ps": 18.882747000000002,
+                "cphi_turns_from_110_ps": 3.0052825242036576,
+                "cv_over_phi0_from_110_ps": 3.005403047653518
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.76242,
+                "cphi_rad_from_110_ps": 18.8448471,
+                "cphi_turns_from_110_ps": 2.999250567775969,
+                "cv_over_phi0_from_110_ps": 2.9992268955479404
+              }
+            },
+            "+3ps": {
+              "target_time_ps": 141.4,
+              "actual_time_ps": 141.4,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -9.002183e-05,
+                "display_value": -90.02183000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001599782,
+                "display_value": 159.97820000000002,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 3.622802e-06,
+                "display_value": 3.622802,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 9.330489e-05,
+                "display_value": 93.30489,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001591223,
+                "display_value": 159.1223,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 3.818789e-06,
+                "display_value": 3.8187889999999998,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -2.766968e-06,
+                "display_value": -2.766968,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 9.243129e-05,
+                "display_value": 0.09243129,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.16024,
+                "cphi_rad_from_110_ps": 18.828197000000003,
+                "cphi_turns_from_110_ps": 2.9966006220579953,
+                "cv_over_phi0_from_110_ps": 2.9964710631433196
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.73511,
+                "cphi_rad_from_110_ps": 18.8175371,
+                "cphi_turns_from_110_ps": 2.994904046280129,
+                "cv_over_phi0_from_110_ps": 2.9948194018516667
+              }
+            }
+          }
+        },
+        {
+          "response_index": 3,
+          "reference_time_ps": 144.20000000000002,
+          "offsets": {
+            "+0.5ps": {
+              "target_time_ps": 144.70000000000002,
+              "actual_time_ps": 144.7,
+              "grid_error_ps": 2.842170943040401e-14,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.579843e-05,
+                "display_value": -85.79843,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001642016,
+                "display_value": 164.2016,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 6.70582e-06,
+                "display_value": 6.70582,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.409968e-05,
+                "display_value": 84.09968,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001549759,
+                "display_value": 154.9759,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -2.017808e-06,
+                "display_value": -2.017808,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 2.519876e-06,
+                "display_value": 2.519876,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -5.713281e-06,
+                "display_value": -0.005713281,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.23015,
+                "cphi_rad_from_110_ps": 18.898107,
+                "cphi_turns_from_110_ps": 3.007727144129549,
+                "cv_over_phi0_from_110_ps": 3.007842811517951
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.75369,
+                "cphi_rad_from_110_ps": 18.8361171,
+                "cphi_turns_from_110_ps": 2.997861145122777,
+                "cv_over_phi0_from_110_ps": 2.997810169855577
+              }
+            },
+            "+1ps": {
+              "target_time_ps": 145.20000000000002,
+              "actual_time_ps": 145.2,
+              "grid_error_ps": 2.842170943040401e-14,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.991683e-05,
+                "display_value": -89.91683,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001600832,
+                "display_value": 160.0832,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 6.784799e-06,
+                "display_value": 6.784799,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 9.093809e-05,
+                "display_value": 90.93808999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001540431,
+                "display_value": 154.0431,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -2.109186e-06,
+                "display_value": -2.1091860000000002,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -7.44697e-07,
+                "display_value": -0.7446969999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -6.599468e-05,
+                "display_value": -0.06599468,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.18596,
+                "cphi_rad_from_110_ps": 18.853917000000003,
+                "cphi_turns_from_110_ps": 3.0006940871943186,
+                "cv_over_phi0_from_110_ps": 3.0006706042275324
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.75956,
+                "cphi_rad_from_110_ps": 18.8419871,
+                "cphi_turns_from_110_ps": 2.998795384638726,
+                "cv_over_phi0_from_110_ps": 2.998768861029879
+              }
+            },
+            "+2ps": {
+              "target_time_ps": 146.20000000000002,
+              "actual_time_ps": 146.2,
+              "grid_error_ps": 2.842170943040401e-14,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.621616e-05,
+                "display_value": -86.21616,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001637838,
+                "display_value": 163.7838,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 4.582655e-06,
+                "display_value": 4.582655,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.611802e-05,
+                "display_value": 86.11802,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.00015911,
+                "display_value": 159.11,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 2.209728e-06,
+                "display_value": 2.209728,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 9.118909e-08,
+                "display_value": 0.09118909,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 9.486096e-07,
+                "display_value": 0.0009486096,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.21263,
+                "cphi_rad_from_110_ps": 18.880587000000002,
+                "cphi_turns_from_110_ps": 3.004938749526579,
+                "cv_over_phi0_from_110_ps": 3.004966249358108
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.74124,
+                "cphi_rad_from_110_ps": 18.8236671,
+                "cphi_turns_from_110_ps": 2.995879666081283,
+                "cv_over_phi0_from_110_ps": 2.995792153502844
+              }
+            },
+            "+3ps": {
+              "target_time_ps": 147.20000000000002,
+              "actual_time_ps": 147.2,
+              "grid_error_ps": 2.842170943040401e-14,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.906071e-05,
+                "display_value": -89.06071,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001609393,
+                "display_value": 160.9393,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 6.569098e-06,
+                "display_value": 6.569097999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.852799e-05,
+                "display_value": 88.52799,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001542124,
+                "display_value": 154.2124,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -2.482023e-06,
+                "display_value": -2.4820230000000003,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 1.578262e-07,
+                "display_value": 0.1578262,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 3.072508e-05,
+                "display_value": 0.030725080000000002,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.19313,
+                "cphi_rad_from_110_ps": 18.861087,
+                "cphi_turns_from_110_ps": 3.0018352281362874,
+                "cv_over_phi0_from_110_ps": 3.0018632124113984
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.75632,
+                "cphi_rad_from_110_ps": 18.8387471,
+                "cphi_turns_from_110_ps": 2.998279722623108,
+                "cv_over_phi0_from_110_ps": 2.9982451272584028
+              }
+            }
+          }
+        }
+      ],
+      "comparisons_to_event_1": {
+        "event_2_minus_event_1": {
+          "+0.5ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -1.6444619999999996e-05,
+              "display_difference": -16.44462,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -1.6444599999999995e-05,
+              "display_difference": -16.44459999999998,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -5.353746e-06,
+              "display_difference": -5.353746,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 2.9762259999999995e-05,
+              "display_difference": 29.762259999999998,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -3.4714999999999887e-06,
+              "display_difference": -3.471499999999992,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": 7.027599250000001e-07,
+              "display_difference": 0.7027599250000001,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -7.619375e-06,
+              "display_difference": -7.619375,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 7.395758e-05,
+              "display_difference": 0.07395758,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.028087664356857278,
+              "raw_phase_rad_difference": -0.17647999999999797
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.003721042569488464,
+              "raw_phase_rad_difference": 0.023379999999999512
+            }
+          },
+          "+1ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": 6.758400000000074e-07,
+              "display_difference": 0.675840000000008,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": 6.758000000000046e-07,
+              "display_difference": 0.6758000000000095,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -4.665622e-06,
+              "display_difference": -4.665621999999999,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 4.385849999999998e-06,
+              "display_difference": 4.385849999999991,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": 9.501999999999991e-06,
+              "display_difference": 9.501999999999981,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": 1.4573999e-05,
+              "display_difference": 14.573999,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -4.1605792e-06,
+              "display_difference": -4.1605792,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 0.00011977129,
+              "display_difference": 0.11977129,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.0017745776154747261,
+              "raw_phase_rad_difference": -0.01115000000000066
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": -0.0030812396982589085,
+              "raw_phase_rad_difference": -0.019359999999998934
+            }
+          },
+          "+2ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": 4.518159999999997e-06,
+              "display_difference": 4.518159999999995,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": 4.518099999999993e-06,
+              "display_difference": 4.518099999999976,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 6.310487999999999e-06,
+              "display_difference": 6.310487999999999,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": -1.1898400000000001e-05,
+              "display_difference": -11.898399999999995,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -6.670200000000003e-06,
+              "display_difference": -6.6702000000000226,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -1.2967466999999999e-05,
+              "display_difference": -12.967467,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": 4.877916e-06,
+              "display_difference": 4.877916,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": -0.00021122215,
+              "display_difference": -0.21122215,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": 0.013792367368343772,
+              "raw_phase_rad_difference": 0.08666000000000196
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.005051577893736781,
+              "raw_phase_rad_difference": 0.03173999999999921
+            }
+          },
+          "+3ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -9.585320000000006e-06,
+              "display_difference": -9.58532000000001,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -9.585299999999991e-06,
+              "display_difference": -9.58529999999999,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -6.084585000000001e-06,
+              "display_difference": -6.084585000000001,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 1.764800999999999e-05,
+              "display_difference": 17.64801,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": 4.4003000000000195e-06,
+              "display_difference": 4.400300000000016,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": 7.829506e-06,
+              "display_difference": 7.829506,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -7.901067000000001e-06,
+              "display_difference": -7.901066999999999,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 0.00018791332,
+              "display_difference": 0.18791332,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.02251883289807166,
+              "raw_phase_rad_difference": -0.14148999999999745
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": -0.0039772820278671794,
+              "raw_phase_rad_difference": -0.02499000000000251
+            }
+          }
+        },
+        "event_3_minus_event_1": {
+          "+0.5ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -9.691849999999991e-06,
+              "display_difference": -9.691849999999988,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -9.691799999999987e-06,
+              "display_difference": -9.691799999999972,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -3.61804e-06,
+              "display_difference": -3.6180399999999997,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 1.6990840000000003e-05,
+              "display_difference": 16.990840000000006,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -4.592499999999994e-06,
+              "display_difference": -4.592500000000001,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -2.0080294750000004e-06,
+              "display_difference": -2.008029475,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -1.4813110000000002e-06,
+              "display_difference": -1.4813109999999998,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 9.760141900000001e-05,
+              "display_difference": 0.097601419,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.014693184346243893,
+              "raw_phase_rad_difference": -0.09232000000000085
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.004053676400550543,
+              "raw_phase_rad_difference": 0.02546999999999855
+            }
+          },
+          "+1ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -2.6703799999999993e-06,
+              "display_difference": -2.6703800000000086,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -2.6704000000000007e-06,
+              "display_difference": -2.6704000000000008,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -1.3596530000000005e-06,
+              "display_difference": -1.3596529999999998,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 7.165299999999997e-06,
+              "display_difference": 7.165299999999988,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": 2.814700000000012e-06,
+              "display_difference": 2.814700000000016,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": 7.911504e-06,
+              "display_difference": 7.911504,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -4.12542e-06,
+              "display_difference": -4.12542,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 8.084732e-05,
+              "display_difference": 0.08084732,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.004469070802020081,
+              "raw_phase_rad_difference": -0.028079999999999217
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.0006970986507424115,
+              "raw_phase_rad_difference": 0.004380000000001161
+            }
+          },
+          "+2ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": 6.08316e-06,
+              "display_difference": 6.083159999999992,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": 6.083099999999996e-06,
+              "display_difference": 6.083100000000002,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 3.1580949999999995e-06,
+              "display_difference": 3.158095,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": -1.036466999999999e-05,
+              "display_difference": -10.36466999999999,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -5.595999999999802e-07,
+              "display_difference": -0.559599999999989,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -6.125173999999999e-06,
+              "display_difference": -6.1251739999999995,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": 3.48466309e-06,
+              "display_difference": 3.4846630899999997,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": -0.0001881229904,
+              "display_difference": -0.1881229904,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": 0.013448592691265304,
+              "raw_phase_rad_difference": 0.08450000000000202
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.001680676199050879,
+              "raw_phase_rad_difference": 0.01056000000000168
+            }
+          },
+          "+3ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -8.624200000000005e-06,
+              "display_difference": -8.624200000000002,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -8.624200000000005e-06,
+              "display_difference": -8.624200000000002,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -3.138289000000001e-06,
+              "display_difference": -3.138289000000001,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 1.287111e-05,
+              "display_difference": 12.871110000000002,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -5.09599999999979e-07,
+              "display_difference": -0.5095999999999776,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": 1.5286940000000001e-06,
+              "display_difference": 1.5286940000000002,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -4.9762728000000005e-06,
+              "display_difference": -4.9762728,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 0.00012620711,
+              "display_difference": 0.12620711,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.01728422681977948,
+              "raw_phase_rad_difference": -0.10859999999999914
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": -0.0006016056848880957,
+              "raw_phase_rad_difference": -0.003780000000002559
+            }
+          }
+        }
+      },
+      "phase_plateau_ranges_across_events": {
+        "BJ1_phase_plateau": {
+          "+0.5ps": {
+            "min_turns": 2.9943326641189354,
+            "max_turns": 3.0224203284757927,
+            "range_turns": 0.028087664356857278
+          },
+          "+1ps": {
+            "min_turns": 3.0006940871943186,
+            "max_turns": 3.0051631579963387,
+            "range_turns": 0.004469070802020081
+          },
+          "+2ps": {
+            "min_turns": 2.991490156835314,
+            "max_turns": 3.0052825242036576,
+            "range_turns": 0.013792367368343772
+          },
+          "+3ps": {
+            "min_turns": 2.9966006220579953,
+            "max_turns": 3.019119454956067,
+            "range_turns": 0.02251883289807166
+          }
+        },
+        "BJ2_phase_plateau": {
+          "+0.5ps": {
+            "min_turns": 2.9938074687222263,
+            "max_turns": 2.997861145122777,
+            "range_turns": 0.004053676400550543
+          },
+          "+1ps": {
+            "min_turns": 2.9950170462897248,
+            "max_turns": 2.998795384638726,
+            "range_turns": 0.00377833834900132
+          },
+          "+2ps": {
+            "min_turns": 2.994198989882232,
+            "max_turns": 2.999250567775969,
+            "range_turns": 0.005051577893736781
+          },
+          "+3ps": {
+            "min_turns": 2.994904046280129,
+            "max_turns": 2.9988813283079963,
+            "range_turns": 0.0039772820278671794
+          }
+        }
+      },
+      "interpretation_boundary": "fixed-offset state comparison is descriptive; it does not establish a physical recovery mechanism"
+    },
+    "N4_REPLAY": {
+      "case": "N4_REPLAY",
+      "offsets_ps": [
+        0.5,
+        1.0,
+        2.0,
+        3.0
+      ],
+      "variables": [
+        "I(L1|XBQ1)",
+        "I(L2|XBQ1)",
+        "I(L3|XBQ1)",
+        "I(BJ1|XBQ1)",
+        "I(BJ2|XBQ1)",
+        "I(RJ1|XBQ1)",
+        "I(RJ2|XBQ1)",
+        "I(IB|XBQ1)",
+        "V(QBIN)"
+      ],
+      "states": [
+        {
+          "response_index": 1,
+          "reference_time_ps": 132.1,
+          "offsets": {
+            "+0.5ps": {
+              "target_time_ps": 132.6,
+              "actual_time_ps": 132.60000000000002,
+              "grid_error_ps": 2.842170943040401e-14,
+              "I(L1|XBQ1)": {
+                "raw_value": -7.980166e-05,
+                "display_value": -79.80166,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001701983,
+                "display_value": 170.19830000000002,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 3.070576e-06,
+                "display_value": 3.070576,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.119743e-05,
+                "display_value": 81.19743000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001673475,
+                "display_value": 167.3475,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 1.306628e-05,
+                "display_value": 13.066279999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -2.197164e-07,
+                "display_value": -0.2197164,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 9.687944e-05,
+                "display_value": 0.09687944,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.25572,
+                "cphi_rad_from_110_ps": 18.923677,
+                "cphi_turns_from_110_ps": 3.011796736024409,
+                "cv_over_phi0_from_110_ps": 3.0118403341949773
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.70637,
+                "cphi_rad_from_110_ps": 18.7887971,
+                "cphi_turns_from_110_ps": 2.9903299332156683,
+                "cv_over_phi0_from_110_ps": 2.9901471509692605
+              }
+            },
+            "+1ps": {
+              "target_time_ps": 133.1,
+              "actual_time_ps": 133.10000000000002,
+              "grid_error_ps": 2.842170943040401e-14,
+              "I(L1|XBQ1)": {
+                "raw_value": -7.220355e-05,
+                "display_value": -72.20354999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001777965,
+                "display_value": 177.7965,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 7.736691e-06,
+                "display_value": 7.736691,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 6.170803e-05,
+                "display_value": 61.70803,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001598817,
+                "display_value": 159.8817,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -8.103637e-07,
+                "display_value": -0.8103637,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 1.017805e-05,
+                "display_value": 10.17805,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -0.0001823251,
+                "display_value": -0.18232510000000002,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.38351,
+                "cphi_rad_from_110_ps": 19.051467000000002,
+                "cphi_turns_from_110_ps": 3.0321351462021227,
+                "cv_over_phi0_from_110_ps": 3.032654319705286
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.74181,
+                "cphi_rad_from_110_ps": 18.8242371,
+                "cphi_turns_from_110_ps": 2.995970384398845,
+                "cv_over_phi0_from_110_ps": 2.9958476047225453
+              }
+            },
+            "+2ps": {
+              "target_time_ps": 134.1,
+              "actual_time_ps": 134.1,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -0.0001043122,
+                "display_value": -104.3122,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001456878,
+                "display_value": 145.6878,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 5.930987e-06,
+                "display_value": 5.930987,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 0.0001094369,
+                "display_value": 109.4369,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001490153,
+                "display_value": 149.0153,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -5.643504e-06,
+                "display_value": -5.643504,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -9.25841e-06,
+                "display_value": -9.25841,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -1.729818e-05,
+                "display_value": -0.01729818,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.02538,
+                "cphi_rad_from_110_ps": 18.693337,
+                "cphi_turns_from_110_ps": 2.9751369864326214,
+                "cv_over_phi0_from_110_ps": 2.974738874097395
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.77394,
+                "cphi_rad_from_110_ps": 18.8563671,
+                "cphi_turns_from_110_ps": 3.0010840327203874,
+                "cv_over_phi0_from_110_ps": 3.0011335538864836
+              }
+            },
+            "+3ps": {
+              "target_time_ps": 135.1,
+              "actual_time_ps": 135.1,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -7.623054e-05,
+                "display_value": -76.23054,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001737695,
+                "display_value": 173.7695,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 2.645368e-06,
+                "display_value": 2.645368,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 7.398444e-05,
+                "display_value": 73.98444,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001656806,
+                "display_value": 165.6806,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 9.833444e-06,
+                "display_value": 9.833444,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 5.443524e-06,
+                "display_value": 5.443524,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 0.0002425503,
+                "display_value": 0.2425503,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.29499,
+                "cphi_rad_from_110_ps": 18.962947,
+                "cphi_turns_from_110_ps": 3.0180467506396274,
+                "cv_over_phi0_from_110_ps": 3.0182654198046586
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.70224,
+                "cphi_rad_from_110_ps": 18.7846671,
+                "cphi_turns_from_110_ps": 2.9896726233006987,
+                "cv_over_phi0_from_110_ps": 2.9894776168181787
+              }
+            }
+          }
+        },
+        {
+          "response_index": 2,
+          "reference_time_ps": 137.0,
+          "offsets": {
+            "+0.5ps": {
+              "target_time_ps": 137.5,
+              "actual_time_ps": 137.5,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -7.922364e-05,
+                "display_value": -79.22364,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001707764,
+                "display_value": 170.7764,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 4.237854e-06,
+                "display_value": 4.237854,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 7.330202e-05,
+                "display_value": 73.30202,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001630089,
+                "display_value": 163.0089,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 3.602819e-06,
+                "display_value": 3.6028189999999998,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 3.529562e-06,
+                "display_value": 3.529562,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 0.0001335754,
+                "display_value": 0.1335754,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.28608,
+                "cphi_rad_from_110_ps": 18.954037,
+                "cphi_turns_from_110_ps": 3.016628680096679,
+                "cv_over_phi0_from_110_ps": 3.016885382475856
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.72971,
+                "cphi_rad_from_110_ps": 18.8121371,
+                "cphi_turns_from_110_ps": 2.994044609587433,
+                "cv_over_phi0_from_110_ps": 2.993898543174927
+              }
+            },
+            "+1ps": {
+              "target_time_ps": 138.0,
+              "actual_time_ps": 138.0,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.432819e-05,
+                "display_value": -84.32818999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001656718,
+                "display_value": 165.6718,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 8.3451e-06,
+                "display_value": 8.3451,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.026158e-05,
+                "display_value": 80.26158,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001525423,
+                "display_value": 152.5423,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -6.152412e-06,
+                "display_value": -6.152412,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 4.784444e-06,
+                "display_value": 4.784444,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 9.062054e-05,
+                "display_value": 0.09062054,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.25492,
+                "cphi_rad_from_110_ps": 18.922877,
+                "cphi_turns_from_110_ps": 3.011669412069935,
+                "cv_over_phi0_from_110_ps": 3.0119072965866267
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.76059,
+                "cphi_rad_from_110_ps": 18.8430171,
+                "cphi_turns_from_110_ps": 2.998959314230111,
+                "cv_over_phi0_from_110_ps": 2.9989243775813286
+              }
+            },
+            "+2ps": {
+              "target_time_ps": 139.0,
+              "actual_time_ps": 139.0,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -9.138893e-05,
+                "display_value": -91.38893,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001586111,
+                "display_value": 158.6111,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 3.842409e-06,
+                "display_value": 3.8424090000000004,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 9.604479e-05,
+                "display_value": 96.04479,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001592369,
+                "display_value": 159.2369,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 4.049841e-06,
+                "display_value": 4.049841,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -4.46827e-06,
+                "display_value": -4.4682699999999995,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -4.130442e-05,
+                "display_value": -0.04130442,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.15063,
+                "cphi_rad_from_110_ps": 18.818587,
+                "cphi_turns_from_110_ps": 2.9950711430548815,
+                "cv_over_phi0_from_110_ps": 2.9948841940128643
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.74212,
+                "cphi_rad_from_110_ps": 18.8245471,
+                "cphi_turns_from_110_ps": 2.9960197224312037,
+                "cv_over_phi0_from_110_ps": 2.995947279636078
+              }
+            },
+            "+3ps": {
+              "target_time_ps": 140.0,
+              "actual_time_ps": 140.0,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.25941e-05,
+                "display_value": -82.5941,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001674059,
+                "display_value": 167.4059,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 6.901598e-06,
+                "display_value": 6.901598,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 7.592819e-05,
+                "display_value": 75.92819,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001558593,
+                "display_value": 155.8593,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -2.775552e-06,
+                "display_value": -2.7755520000000002,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 4.644964e-06,
+                "display_value": 4.644964,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -0.0001020779,
+                "display_value": -0.1020779,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.26998,
+                "cphi_rad_from_110_ps": 18.937937,
+                "cphi_turns_from_110_ps": 3.0140662855128992,
+                "cv_over_phi0_from_110_ps": 3.0143305743102426
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.75457,
+                "cphi_rad_from_110_ps": 18.8369971,
+                "cphi_turns_from_110_ps": 2.998001201472698,
+                "cv_over_phi0_from_110_ps": 2.9979368350029083
+              }
+            }
+          }
+        },
+        {
+          "response_index": 3,
+          "reference_time_ps": 141.6,
+          "offsets": {
+            "+0.5ps": {
+              "target_time_ps": 142.1,
+              "actual_time_ps": 142.1,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.036612e-05,
+                "display_value": -80.36612000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001696339,
+                "display_value": 169.63389999999998,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 5.873471e-06,
+                "display_value": 5.873470999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 7.57208e-05,
+                "display_value": 75.7208,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001580818,
+                "display_value": 158.0818,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 8.289302e-07,
+                "display_value": 0.8289302,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 5.678647e-06,
+                "display_value": 5.678647000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -8.12912e-05,
+                "display_value": -0.08129120000000001,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.28355,
+                "cphi_rad_from_110_ps": 18.951507000000003,
+                "cphi_turns_from_110_ps": 3.0162260180906566,
+                "cv_over_phi0_from_110_ps": 3.0164758437206887
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.74106,
+                "cphi_rad_from_110_ps": 18.8234871,
+                "cphi_turns_from_110_ps": 2.995851018191526,
+                "cv_over_phi0_from_110_ps": 2.995755771101491
+              }
+            },
+            "+1ps": {
+              "target_time_ps": 142.6,
+              "actual_time_ps": 142.6,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.721748e-05,
+                "display_value": -87.21748,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001627825,
+                "display_value": 162.7825,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 8.429712e-06,
+                "display_value": 8.429712,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.422417e-05,
+                "display_value": 84.22417,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001516283,
+                "display_value": 151.6283,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -5.775452e-06,
+                "display_value": -5.7754520000000005,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 2.724485e-06,
+                "display_value": 2.724485,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": -0.0001947316,
+                "display_value": -0.1947316,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.22958,
+                "cphi_rad_from_110_ps": 18.897537,
+                "cphi_turns_from_110_ps": 3.0076364258119868,
+                "cv_over_phi0_from_110_ps": 3.0077807844356355
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.77036,
+                "cphi_rad_from_110_ps": 18.8527871,
+                "cphi_turns_from_110_ps": 3.000514258024119,
+                "cv_over_phi0_from_110_ps": 3.000508286643059
+              }
+            },
+            "+2ps": {
+              "target_time_ps": 143.6,
+              "actual_time_ps": 143.6,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -9.023384e-05,
+                "display_value": -90.23384,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001597662,
+                "display_value": 159.7662,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 3.475527e-06,
+                "display_value": 3.475527,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 9.333871e-05,
+                "display_value": 93.33871,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.000160134,
+                "display_value": 160.13400000000001,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": 4.242636e-06,
+                "display_value": 4.242636,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": -3.843389e-06,
+                "display_value": -3.843389,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 0.000116612,
+                "display_value": 0.11661200000000001,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.16026,
+                "cphi_rad_from_110_ps": 18.828217000000002,
+                "cphi_turns_from_110_ps": 2.9966038051568566,
+                "cv_over_phi0_from_110_ps": 2.996463773631004
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.73771,
+                "cphi_rad_from_110_ps": 18.8201371,
+                "cphi_turns_from_110_ps": 2.995317849132168,
+                "cv_over_phi0_from_110_ps": 2.9952304044473705
+              }
+            },
+            "+3ps": {
+              "target_time_ps": 144.6,
+              "actual_time_ps": 144.6,
+              "grid_error_ps": 0.0,
+              "I(L1|XBQ1)": {
+                "raw_value": -8.443357e-05,
+                "display_value": -84.43356999999999,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L2|XBQ1)": {
+                "raw_value": 0.0001655664,
+                "display_value": 165.5664,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(L3|XBQ1)": {
+                "raw_value": 6.937472e-06,
+                "display_value": 6.9374720000000005,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ1|XBQ1)": {
+                "raw_value": 8.235339e-05,
+                "display_value": 82.35339,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(BJ2|XBQ1)": {
+                "raw_value": 0.0001548501,
+                "display_value": 154.8501,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ1|XBQ1)": {
+                "raw_value": -2.330222e-06,
+                "display_value": -2.330222,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(RJ2|XBQ1)": {
+                "raw_value": 3.778806e-06,
+                "display_value": 3.778806,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "I(IB|XBQ1)": {
+                "raw_value": 0.00025,
+                "display_value": 250.0,
+                "raw_unit": "A",
+                "display_unit": "uA"
+              },
+              "V(QBIN)": {
+                "raw_value": 3.797192e-05,
+                "display_value": 0.037971920000000006,
+                "raw_unit": "V",
+                "display_unit": "mV"
+              },
+              "BJ1_phase_plateau": {
+                "raw_phase_rad": 20.24641,
+                "cphi_rad_from_110_ps": 18.914367000000002,
+                "cphi_turns_from_110_ps": 3.0103150035042234,
+                "cv_over_phi0_from_110_ps": 3.0104750089282812
+              },
+              "BJ2_phase_plateau": {
+                "raw_phase_rad": 19.75336,
+                "cphi_rad_from_110_ps": 18.8357871,
+                "cphi_turns_from_110_ps": 2.9978086239915567,
+                "cv_over_phi0_from_110_ps": 2.9977554736665684
+              }
+            }
+          }
+        }
+      ],
+      "comparisons_to_event_1": {
+        "event_2_minus_event_1": {
+          "+0.5ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": 5.780199999999948e-07,
+              "display_difference": 0.5780199999999951,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": 5.781000000000004e-07,
+              "display_difference": 0.5780999999999779,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 1.1672779999999996e-06,
+              "display_difference": 1.1672779999999996,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": -7.895410000000006e-06,
+              "display_difference": -7.8954100000000125,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -4.338599999999986e-06,
+              "display_difference": -4.338599999999985,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -9.463460999999998e-06,
+              "display_difference": -9.463460999999999,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": 3.7492784e-06,
+              "display_difference": 3.7492783999999997,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 3.669596000000001e-05,
+              "display_difference": 0.036695960000000014,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": 0.004831944072269945,
+              "raw_phase_rad_difference": 0.030359999999998166
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.0037146763717648135,
+              "raw_phase_rad_difference": 0.023340000000001027
+            }
+          },
+          "+1ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -1.2124639999999998e-05,
+              "display_difference": -12.12464,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -1.2124700000000016e-05,
+              "display_difference": -12.124700000000018,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 6.084090000000004e-07,
+              "display_difference": 0.608409,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 1.8553549999999995e-05,
+              "display_difference": 18.553549999999994,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -7.339400000000006e-06,
+              "display_difference": -7.3393999999999835,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -5.3420483e-06,
+              "display_difference": -5.3420483,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -5.393606e-06,
+              "display_difference": -5.393606000000001,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 0.00027294564,
+              "display_difference": 0.27294564,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.020465734132187663,
+              "raw_phase_rad_difference": -0.12859000000000265
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.002988929831265974,
+              "raw_phase_rad_difference": 0.018779999999999575
+            }
+          },
+          "+2ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": 1.2923270000000003e-05,
+              "display_difference": 12.923270000000002,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": 1.2923299999999992e-05,
+              "display_difference": 12.923299999999983,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -2.0885779999999996e-06,
+              "display_difference": -2.0885779999999996,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": -1.339210999999999e-05,
+              "display_difference": -13.392109999999988,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": 1.0221599999999997e-05,
+              "display_difference": 10.221599999999995,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": 9.693345e-06,
+              "display_difference": 9.693345,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": 4.79014e-06,
+              "display_difference": 4.79014,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": -2.400624e-05,
+              "display_difference": -0.02400624,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": 0.01993415662226017,
+              "raw_phase_rad_difference": 0.1252500000000012
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": -0.005064310289183638,
+              "raw_phase_rad_difference": -0.03181999999999974
+            }
+          },
+          "+3ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -6.363559999999992e-06,
+              "display_difference": -6.3635599999999926,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -6.3635999999999944e-06,
+              "display_difference": -6.363599999999991,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 4.2562299999999996e-06,
+              "display_difference": 4.25623,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 1.9437499999999896e-06,
+              "display_difference": 1.9437499999999943,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -9.821299999999994e-06,
+              "display_difference": -9.821300000000008,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -1.2608996e-05,
+              "display_difference": -12.608996000000001,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -7.9856e-07,
+              "display_difference": -0.7985600000000002,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": -0.0003446282,
+              "display_difference": -0.3446282,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.003980465126728117,
+              "raw_phase_rad_difference": -0.0250099999999982
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.008328578171999279,
+              "raw_phase_rad_difference": 0.05233000000000132
+            }
+          }
+        },
+        "event_3_minus_event_1": {
+          "+0.5ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -5.644600000000085e-07,
+              "display_difference": -0.5644600000000111,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -5.644000000000178e-07,
+              "display_difference": -0.5644000000000347,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 2.8028949999999995e-06,
+              "display_difference": 2.8028949999999995,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": -5.476630000000003e-06,
+              "display_difference": -5.476630000000014,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -9.265699999999995e-06,
+              "display_difference": -9.26570000000001,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -1.2237349799999999e-05,
+              "display_difference": -12.237349799999999,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": 5.8983634e-06,
+              "display_difference": 5.898363400000001,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": -0.00017817064,
+              "display_difference": -0.17817064,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": 0.004429282066247708,
+              "raw_phase_rad_difference": 0.027830000000001576
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.005521084975857793,
+              "raw_phase_rad_difference": 0.03469000000000122
+            }
+          },
+          "+1ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -1.5013929999999997e-05,
+              "display_difference": -15.013930000000002,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -1.5014000000000016e-05,
+              "display_difference": -15.01400000000001,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 6.930209999999991e-07,
+              "display_difference": 0.6930209999999999,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 2.2516139999999995e-05,
+              "display_difference": 22.51614,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -8.253400000000005e-06,
+              "display_difference": -8.2534,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -4.9650883000000004e-06,
+              "display_difference": -4.965088300000001,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -7.453565e-06,
+              "display_difference": -7.453565000000001,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": -1.2406499999999997e-05,
+              "display_difference": -0.012406499999999987,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.024498720390135897,
+              "raw_phase_rad_difference": -0.15393000000000256
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.004543873625273864,
+              "raw_phase_rad_difference": 0.028549999999999187
+            }
+          },
+          "+2ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": 1.4078359999999994e-05,
+              "display_difference": 14.078360000000004,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": 1.4078399999999997e-05,
+              "display_difference": 14.078399999999988,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": -2.4554599999999998e-06,
+              "display_difference": -2.45546,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": -1.6098189999999994e-05,
+              "display_difference": -16.09818999999999,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": 1.1118700000000006e-05,
+              "display_difference": 11.118700000000018,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": 9.88614e-06,
+              "display_difference": 9.886140000000001,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": 5.415021e-06,
+              "display_difference": 5.415020999999999,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": 0.00013391018,
+              "display_difference": 0.13391018000000002,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": 0.02146681872423528,
+              "raw_phase_rad_difference": 0.13488000000000255
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": -0.005766183588219231,
+              "raw_phase_rad_difference": -0.03622999999999976
+            }
+          },
+          "+3ps": {
+            "I(L1|XBQ1)": {
+              "raw_difference": -8.203029999999991e-06,
+              "display_difference": -8.203029999999984,
+              "display_unit": "uA"
+            },
+            "I(L2|XBQ1)": {
+              "raw_difference": -8.20310000000001e-06,
+              "display_difference": -8.203100000000006,
+              "display_unit": "uA"
+            },
+            "I(L3|XBQ1)": {
+              "raw_difference": 4.292104e-06,
+              "display_difference": 4.292104,
+              "display_unit": "uA"
+            },
+            "I(BJ1|XBQ1)": {
+              "raw_difference": 8.368949999999997e-06,
+              "display_difference": 8.368949999999998,
+              "display_unit": "uA"
+            },
+            "I(BJ2|XBQ1)": {
+              "raw_difference": -1.0830499999999984e-05,
+              "display_difference": -10.8305,
+              "display_unit": "uA"
+            },
+            "I(RJ1|XBQ1)": {
+              "raw_difference": -1.2163666e-05,
+              "display_difference": -12.163666,
+              "display_unit": "uA"
+            },
+            "I(RJ2|XBQ1)": {
+              "raw_difference": -1.6647180000000004e-06,
+              "display_difference": -1.6647180000000001,
+              "display_unit": "uA"
+            },
+            "I(IB|XBQ1)": {
+              "raw_difference": 0.0,
+              "display_difference": 0.0,
+              "display_unit": "uA"
+            },
+            "V(QBIN)": {
+              "raw_difference": -0.00020457838000000002,
+              "display_difference": -0.20457838,
+              "display_unit": "mV"
+            },
+            "BJ1_phase_plateau": {
+              "cphi_turns_difference": -0.007731747135403921,
+              "raw_phase_rad_difference": -0.048579999999997625
+            },
+            "BJ2_phase_plateau": {
+              "cphi_turns_difference": 0.008136000690857959,
+              "raw_phase_rad_difference": 0.05112000000000094
+            }
+          }
+        }
+      },
+      "phase_plateau_ranges_across_events": {
+        "BJ1_phase_plateau": {
+          "+0.5ps": {
+            "min_turns": 3.011796736024409,
+            "max_turns": 3.016628680096679,
+            "range_turns": 0.004831944072269945
+          },
+          "+1ps": {
+            "min_turns": 3.0076364258119868,
+            "max_turns": 3.0321351462021227,
+            "range_turns": 0.024498720390135897
+          },
+          "+2ps": {
+            "min_turns": 2.9751369864326214,
+            "max_turns": 2.9966038051568566,
+            "range_turns": 0.02146681872423528
+          },
+          "+3ps": {
+            "min_turns": 3.0103150035042234,
+            "max_turns": 3.0180467506396274,
+            "range_turns": 0.007731747135403921
+          }
+        },
+        "BJ2_phase_plateau": {
+          "+0.5ps": {
+            "min_turns": 2.9903299332156683,
+            "max_turns": 2.995851018191526,
+            "range_turns": 0.005521084975857793
+          },
+          "+1ps": {
+            "min_turns": 2.995970384398845,
+            "max_turns": 3.000514258024119,
+            "range_turns": 0.004543873625273864
+          },
+          "+2ps": {
+            "min_turns": 2.995317849132168,
+            "max_turns": 3.0010840327203874,
+            "range_turns": 0.005766183588219231
+          },
+          "+3ps": {
+            "min_turns": 2.9896726233006987,
+            "max_turns": 2.998001201472698,
+            "range_turns": 0.008328578171999279
+          }
+        }
+      },
+      "interpretation_boundary": "fixed-offset state comparison is descriptive; it does not establish a physical recovery mechanism"
+    }
+  },
+  "offset_semantics": "exact stored samples at +0.5/+1/+2/+3 ps relative to each observed terminal peak-like reference",
+  "mechanism_boundary": "state comparison is descriptive and does not prove physical recovery mechanism"
+}

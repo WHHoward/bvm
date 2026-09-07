@@ -1,0 +1,474 @@
+{
+  "schema": "jm2-n3-n4-replay-deep-dive-provenance-v1",
+  "git_head": "316a3046fbb7d51621a4144aae1d41d101016c13",
+  "raw_provenance": {
+    "schema": "jm2-n3-n4-replay-deep-dive-raw-qa-v1",
+    "status": "PASS",
+    "raw_unchanged": true,
+    "raw_hashes_before": {
+      "N1_REPLAY": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+      "N3_REPLAY": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "N4_REPLAY": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28"
+    },
+    "raw_hashes_after": {
+      "N1_REPLAY": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+      "N3_REPLAY": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "N4_REPLAY": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28"
+    },
+    "raw_cases": {
+      "N1_REPLAY": {
+        "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+        "sha256": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+        "role": "N1 first-response reference",
+        "grid": {
+          "sample_count": 1999,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "dt_min_ps": 0.09999999999997898,
+          "dt_max_ps": 0.19999999999999996,
+          "nominal_median_dt_ps": 0.10000000000000482,
+          "uniform_time_grid": false,
+          "strictly_increasing": true,
+          "large_gap_records": [
+            {
+              "from_ps": 14.700000000000001,
+              "to_ps": 14.900000000000002,
+              "dt_ps": 0.19999999999999996
+            }
+          ],
+          "window_grid": {
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "sample_count": 900,
+            "first_sample_ps": 110.0,
+            "last_sample_ps": 199.9,
+            "actual_time_values_used_for_integration": true
+          }
+        },
+        "required_header_count": 38,
+        "required_headers_present": true
+      },
+      "N3_REPLAY": {
+        "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv",
+        "sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+        "role": "main read-only deep-dive case",
+        "grid": {
+          "sample_count": 1999,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "dt_min_ps": 0.09999999999997898,
+          "dt_max_ps": 0.19999999999999996,
+          "nominal_median_dt_ps": 0.10000000000000482,
+          "uniform_time_grid": false,
+          "strictly_increasing": true,
+          "large_gap_records": [
+            {
+              "from_ps": 14.700000000000001,
+              "to_ps": 14.900000000000002,
+              "dt_ps": 0.19999999999999996
+            }
+          ],
+          "window_grid": {
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "sample_count": 900,
+            "first_sample_ps": 110.0,
+            "last_sample_ps": 199.9,
+            "actual_time_values_used_for_integration": true
+          }
+        },
+        "required_header_count": 38,
+        "required_headers_present": true
+      },
+      "N4_REPLAY": {
+        "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv",
+        "sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+        "role": "main read-only deep-dive case",
+        "grid": {
+          "sample_count": 1999,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "dt_min_ps": 0.09999999999997898,
+          "dt_max_ps": 0.19999999999999996,
+          "nominal_median_dt_ps": 0.10000000000000482,
+          "uniform_time_grid": false,
+          "strictly_increasing": true,
+          "large_gap_records": [
+            {
+              "from_ps": 14.700000000000001,
+              "to_ps": 14.900000000000002,
+              "dt_ps": 0.19999999999999996
+            }
+          ],
+          "window_grid": {
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "sample_count": 900,
+            "first_sample_ps": 110.0,
+            "last_sample_ps": 199.9,
+            "actual_time_values_used_for_integration": true
+          }
+        },
+        "required_header_count": 38,
+        "required_headers_present": true
+      }
+    },
+    "analysis_window_ps": [
+      110.0,
+      200.0
+    ],
+    "no_solver": true,
+    "no_circuit_parameter_timing_changes": true,
+    "integration_rule": "trapezoid integration on actual stored time values; no resampling",
+    "phase_rule": "continuous_unwrap(raw P radians) then Cphi_rad/(2*pi); no event-count interpretation"
+  },
+  "derived_csvs": {
+    "cumulative": {
+      "single_records": {
+        "N3_REPLAY": {
+          "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/plots/deep_dive/data/N3_REPLAY_CUMULATIVE.csv",
+          "sha256": "5c4427bc925e0a8b94c361d55de8a4c116a201b5d1a55d4b633ac80b01f3eb75",
+          "labels": [
+            "I(I_REPLAY) | N3_REPLAY raw A",
+            "V(QBIN) | N3_REPLAY raw V",
+            "V(QBOUT) | N3_REPLAY raw V",
+            "I(R_TERM) | N3_REPLAY raw A",
+            "P(BJS) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+            "V(Cv BJS from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+            "P(BJ1) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+            "V(Cv BJ1 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+            "P(BJ2) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+            "V(Cv BJ2 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+            "P(JTL1_B01) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL1_B01 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+            "P(JTL1_B02) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL1_B02 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+            "P(JTL6_B01) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL6_B01 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+            "P(JTL6_B02) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL6_B02 from 110 ps / Phi0) | N3_REPLAY [dimensionless]"
+          ],
+          "sample_count": 900,
+          "time_start_ps": 110.0,
+          "time_end_ps": 199.9
+        },
+        "N4_REPLAY": {
+          "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/plots/deep_dive/data/N4_REPLAY_CUMULATIVE.csv",
+          "sha256": "72952932423bff5cdb3f9ea692a712cc8c95c2e29f303f25ff747d596c44db79",
+          "labels": [
+            "I(I_REPLAY) | N4_REPLAY raw A",
+            "V(QBIN) | N4_REPLAY raw V",
+            "V(QBOUT) | N4_REPLAY raw V",
+            "I(R_TERM) | N4_REPLAY raw A",
+            "P(BJS) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+            "V(Cv BJS from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+            "P(BJ1) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+            "V(Cv BJ1 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+            "P(BJ2) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+            "V(Cv BJ2 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+            "P(JTL1_B01) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL1_B01 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+            "P(JTL1_B02) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL1_B02 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+            "P(JTL6_B01) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL6_B01 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+            "P(JTL6_B02) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+            "V(Cv JTL6_B02 from 110 ps / Phi0) | N4_REPLAY [dimensionless]"
+          ],
+          "sample_count": 900,
+          "time_start_ps": 110.0,
+          "time_end_ps": 199.9
+        }
+      },
+      "single_labels": {
+        "N3_REPLAY": [
+          "I(I_REPLAY) | N3_REPLAY raw A",
+          "V(QBIN) | N3_REPLAY raw V",
+          "V(QBOUT) | N3_REPLAY raw V",
+          "I(R_TERM) | N3_REPLAY raw A",
+          "P(BJS) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+          "V(Cv BJS from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+          "P(BJ1) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+          "V(Cv BJ1 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+          "P(BJ2) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+          "V(Cv BJ2 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+          "P(JTL1_B01) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL1_B01 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+          "P(JTL1_B02) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL1_B02 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+          "P(JTL6_B01) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL6_B01 from 110 ps / Phi0) | N3_REPLAY [dimensionless]",
+          "P(JTL6_B02) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL6_B02 from 110 ps / Phi0) | N3_REPLAY [dimensionless]"
+        ],
+        "N4_REPLAY": [
+          "I(I_REPLAY) | N4_REPLAY raw A",
+          "V(QBIN) | N4_REPLAY raw V",
+          "V(QBOUT) | N4_REPLAY raw V",
+          "I(R_TERM) | N4_REPLAY raw A",
+          "P(BJS) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+          "V(Cv BJS from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+          "P(BJ1) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+          "V(Cv BJ1 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+          "P(BJ2) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+          "V(Cv BJ2 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+          "P(JTL1_B01) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL1_B01 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+          "P(JTL1_B02) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL1_B02 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+          "P(JTL6_B01) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL6_B01 from 110 ps / Phi0) | N4_REPLAY [dimensionless]",
+          "P(JTL6_B02) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+          "V(Cv JTL6_B02 from 110 ps / Phi0) | N4_REPLAY [dimensionless]"
+        ]
+      }
+    },
+    "comparison": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/plots/deep_dive/data/N3_VS_N4_CUMULATIVE.csv",
+      "sha256": "605037d74a9a918269ba8402c486876b5ec8333156bf9c80594fbff15caf97f1",
+      "labels": [
+        "I(I_REPLAY) | N3_REPLAY raw A",
+        "I(I_REPLAY) | N4_REPLAY raw A",
+        "V(QBIN) | N3_REPLAY raw V",
+        "V(QBIN) | N4_REPLAY raw V",
+        "V(QBOUT) | N3_REPLAY raw V",
+        "V(QBOUT) | N4_REPLAY raw V",
+        "I(R_TERM) | N3_REPLAY raw A",
+        "I(R_TERM) | N4_REPLAY raw A",
+        "P(BJS) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+        "P(BJS) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+        "P(BJ1) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+        "P(BJ1) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+        "P(BJ2) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+        "P(BJ2) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+        "P(JTL1_B01) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+        "P(JTL1_B01) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]",
+        "P(JTL6_B01) Cphi from 110 ps | N3_REPLAY [raw rad; shown turns]",
+        "P(JTL6_B01) Cphi from 110 ps | N4_REPLAY [raw rad; shown turns]"
+      ],
+      "sample_count": 900,
+      "time_start_ps": 110.0,
+      "time_end_ps": 199.9
+    },
+    "event_aligned": {
+      "EVENT1_N3_VS_N4": {
+        "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/plots/deep_dive/data/EVENT1_N3_VS_N4.csv",
+        "sha256": "14a5806640bcf097409a752ee24e927c13975b61c165783b7e21fb7cc8f4bf82",
+        "labels": [
+          "I(I_REPLAY) | N3_REPLAY raw A",
+          "I(I_REPLAY) | N4_REPLAY raw A",
+          "V(QBIN) | N3_REPLAY raw V",
+          "V(QBIN) | N4_REPLAY raw V",
+          "P(BJS|XBQ1) | N3_REPLAY raw rad",
+          "P(BJS|XBQ1) | N4_REPLAY raw rad",
+          "V(BJS|XBQ1) | N3_REPLAY raw V",
+          "V(BJS|XBQ1) | N4_REPLAY raw V",
+          "P(BJ1|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ1|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ1|XBQ1) | N3_REPLAY raw V",
+          "V(BJ1|XBQ1) | N4_REPLAY raw V",
+          "I(L1|XBQ1) | N3_REPLAY raw A",
+          "I(L1|XBQ1) | N4_REPLAY raw A",
+          "I(L2|XBQ1) | N3_REPLAY raw A",
+          "I(L2|XBQ1) | N4_REPLAY raw A",
+          "P(BJ2|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ2|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ2|XBQ1) | N3_REPLAY raw V",
+          "V(BJ2|XBQ1) | N4_REPLAY raw V",
+          "V(QBOUT) | N3_REPLAY raw V",
+          "V(QBOUT) | N4_REPLAY raw V",
+          "P(B01|XJTL1_1) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_1) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_1) | N3_REPLAY raw V",
+          "V(B01|XJTL1_1) | N4_REPLAY raw V",
+          "P(B01|XJTL1_6) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_6) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_6) | N3_REPLAY raw V",
+          "V(B01|XJTL1_6) | N4_REPLAY raw V",
+          "I(R_TERM) | N3_REPLAY raw A",
+          "I(R_TERM) | N4_REPLAY raw A"
+        ],
+        "sample_count": 261,
+        "time_start_ps": -22.0,
+        "time_end_ps": 4.0,
+        "reference_time_ps": {
+          "N3_REPLAY": 132.79999999999998,
+          "N4_REPLAY": 132.1
+        },
+        "relative_window_ps": [
+          -22.0,
+          4.0
+        ],
+        "alignment": "each case re-based to its own observed terminal peak-like reference; exact stored samples, no interpolation or value normalization"
+      },
+      "EVENT2_N3_VS_N4": {
+        "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/plots/deep_dive/data/EVENT2_N3_VS_N4.csv",
+        "sha256": "27da06a6968afbb0f1a5f4a30271542a2653a305e0da4512d7c51c817b4a9a31",
+        "labels": [
+          "I(I_REPLAY) | N3_REPLAY raw A",
+          "I(I_REPLAY) | N4_REPLAY raw A",
+          "V(QBIN) | N3_REPLAY raw V",
+          "V(QBIN) | N4_REPLAY raw V",
+          "P(BJS|XBQ1) | N3_REPLAY raw rad",
+          "P(BJS|XBQ1) | N4_REPLAY raw rad",
+          "V(BJS|XBQ1) | N3_REPLAY raw V",
+          "V(BJS|XBQ1) | N4_REPLAY raw V",
+          "P(BJ1|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ1|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ1|XBQ1) | N3_REPLAY raw V",
+          "V(BJ1|XBQ1) | N4_REPLAY raw V",
+          "I(L1|XBQ1) | N3_REPLAY raw A",
+          "I(L1|XBQ1) | N4_REPLAY raw A",
+          "I(L2|XBQ1) | N3_REPLAY raw A",
+          "I(L2|XBQ1) | N4_REPLAY raw A",
+          "P(BJ2|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ2|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ2|XBQ1) | N3_REPLAY raw V",
+          "V(BJ2|XBQ1) | N4_REPLAY raw V",
+          "V(QBOUT) | N3_REPLAY raw V",
+          "V(QBOUT) | N4_REPLAY raw V",
+          "P(B01|XJTL1_1) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_1) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_1) | N3_REPLAY raw V",
+          "V(B01|XJTL1_1) | N4_REPLAY raw V",
+          "P(B01|XJTL1_6) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_6) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_6) | N3_REPLAY raw V",
+          "V(B01|XJTL1_6) | N4_REPLAY raw V",
+          "I(R_TERM) | N3_REPLAY raw A",
+          "I(R_TERM) | N4_REPLAY raw A"
+        ],
+        "sample_count": 261,
+        "time_start_ps": -22.0,
+        "time_end_ps": 4.0,
+        "reference_time_ps": {
+          "N3_REPLAY": 138.4,
+          "N4_REPLAY": 137.0
+        },
+        "relative_window_ps": [
+          -22.0,
+          4.0
+        ],
+        "alignment": "each case re-based to its own observed terminal peak-like reference; exact stored samples, no interpolation or value normalization"
+      },
+      "EVENT3_N3_VS_N4": {
+        "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/plots/deep_dive/data/EVENT3_N3_VS_N4.csv",
+        "sha256": "473094f02478f220d67e2d60433c138986d128048e3e306441e98741e6aa15fc",
+        "labels": [
+          "I(I_REPLAY) | N3_REPLAY raw A",
+          "I(I_REPLAY) | N4_REPLAY raw A",
+          "V(QBIN) | N3_REPLAY raw V",
+          "V(QBIN) | N4_REPLAY raw V",
+          "P(BJS|XBQ1) | N3_REPLAY raw rad",
+          "P(BJS|XBQ1) | N4_REPLAY raw rad",
+          "V(BJS|XBQ1) | N3_REPLAY raw V",
+          "V(BJS|XBQ1) | N4_REPLAY raw V",
+          "P(BJ1|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ1|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ1|XBQ1) | N3_REPLAY raw V",
+          "V(BJ1|XBQ1) | N4_REPLAY raw V",
+          "I(L1|XBQ1) | N3_REPLAY raw A",
+          "I(L1|XBQ1) | N4_REPLAY raw A",
+          "I(L2|XBQ1) | N3_REPLAY raw A",
+          "I(L2|XBQ1) | N4_REPLAY raw A",
+          "P(BJ2|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ2|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ2|XBQ1) | N3_REPLAY raw V",
+          "V(BJ2|XBQ1) | N4_REPLAY raw V",
+          "V(QBOUT) | N3_REPLAY raw V",
+          "V(QBOUT) | N4_REPLAY raw V",
+          "P(B01|XJTL1_1) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_1) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_1) | N3_REPLAY raw V",
+          "V(B01|XJTL1_1) | N4_REPLAY raw V",
+          "P(B01|XJTL1_6) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_6) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_6) | N3_REPLAY raw V",
+          "V(B01|XJTL1_6) | N4_REPLAY raw V",
+          "I(R_TERM) | N3_REPLAY raw A",
+          "I(R_TERM) | N4_REPLAY raw A"
+        ],
+        "sample_count": 261,
+        "time_start_ps": -22.0,
+        "time_end_ps": 4.0,
+        "reference_time_ps": {
+          "N3_REPLAY": 144.20000000000002,
+          "N4_REPLAY": 141.6
+        },
+        "relative_window_ps": [
+          -22.0,
+          4.0
+        ],
+        "alignment": "each case re-based to its own observed terminal peak-like reference; exact stored samples, no interpolation or value normalization"
+      },
+      "POST_EVENT3_N3_VS_N4": {
+        "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/plots/deep_dive/data/POST_EVENT3_N3_VS_N4.csv",
+        "sha256": "2bc1edc2ce0c92b654c593beedd08495fe6b5a7ae30b7c7aa0b3db44372cebe2",
+        "labels": [
+          "I(I_REPLAY) | N3_REPLAY raw A",
+          "I(I_REPLAY) | N4_REPLAY raw A",
+          "V(QBIN) | N3_REPLAY raw V",
+          "V(QBIN) | N4_REPLAY raw V",
+          "P(BJS|XBQ1) | N3_REPLAY raw rad",
+          "P(BJS|XBQ1) | N4_REPLAY raw rad",
+          "V(BJS|XBQ1) | N3_REPLAY raw V",
+          "V(BJS|XBQ1) | N4_REPLAY raw V",
+          "P(BJ1|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ1|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ1|XBQ1) | N3_REPLAY raw V",
+          "V(BJ1|XBQ1) | N4_REPLAY raw V",
+          "I(L1|XBQ1) | N3_REPLAY raw A",
+          "I(L1|XBQ1) | N4_REPLAY raw A",
+          "I(L2|XBQ1) | N3_REPLAY raw A",
+          "I(L2|XBQ1) | N4_REPLAY raw A",
+          "P(BJ2|XBQ1) | N3_REPLAY raw rad",
+          "P(BJ2|XBQ1) | N4_REPLAY raw rad",
+          "V(BJ2|XBQ1) | N3_REPLAY raw V",
+          "V(BJ2|XBQ1) | N4_REPLAY raw V",
+          "V(QBOUT) | N3_REPLAY raw V",
+          "V(QBOUT) | N4_REPLAY raw V",
+          "P(B01|XJTL1_1) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_1) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_1) | N3_REPLAY raw V",
+          "V(B01|XJTL1_1) | N4_REPLAY raw V",
+          "P(B01|XJTL1_6) | N3_REPLAY raw rad",
+          "P(B01|XJTL1_6) | N4_REPLAY raw rad",
+          "V(B01|XJTL1_6) | N3_REPLAY raw V",
+          "V(B01|XJTL1_6) | N4_REPLAY raw V",
+          "I(R_TERM) | N3_REPLAY raw A",
+          "I(R_TERM) | N4_REPLAY raw A"
+        ],
+        "sample_count": 558,
+        "time_start_ps": 0.0,
+        "time_end_ps": 55.699999999999996,
+        "reference_time_ps": {
+          "N3_REPLAY": 144.20000000000002,
+          "N4_REPLAY": 141.6
+        },
+        "relative_window_ps": [
+          0.0,
+          55.69999999999999
+        ],
+        "absolute_coverage_ps": {
+          "N3_REPLAY": [
+            144.20000000000002,
+            199.9
+          ],
+          "N4_REPLAY": [
+            141.6,
+            197.29999999999998
+          ]
+        },
+        "alignment": "common overlap after each case's third observed terminal peak-like reference; exact stored samples, no interpolation or value normalization"
+      }
+    }
+  },
+  "solver_invoked": false,
+  "visualization_is_descriptive": true
+}

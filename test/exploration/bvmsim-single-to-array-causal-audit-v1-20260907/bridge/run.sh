@@ -14,7 +14,7 @@ HEAD_BEFORE_RUN=$(git -C "$REPO_ROOT" rev-parse HEAD)
   exit 3
 }
 
-for generation in G1 G2; do
+for generation in G1-retry-01 G2-retry-01; do
   run_dir="$SCRIPT_DIR/runs/$generation"
   deck="$run_dir/deck.cir"
   raw="$run_dir/raw.csv"
@@ -29,7 +29,7 @@ for generation in G1 G2; do
   "${command_text[@]}" >"$log" 2>&1
   exit_code=$?
   set -e
-  python3 "$META" --generation "$generation" --deck "$deck" --raw "$raw" --log "$log" --metadata "$metadata" --solver "$SOLVER" --exit-code "$exit_code" --git-head-before-run "$HEAD_BEFORE_RUN" --command -- "${command_text[@]}"
+  python3 "$META" --generation "$generation" --deck "$deck" --raw "$raw" --log "$log" --metadata "$metadata" --solver "$SOLVER" --exit-code "$exit_code" --git-head-before-run "$HEAD_BEFORE_RUN" --command-text "${command_text[*]}"
   if [[ "$exit_code" -ne 0 ]]; then
     echo "JoSIM failed for $generation; artifacts preserved" >&2
     exit "$exit_code"

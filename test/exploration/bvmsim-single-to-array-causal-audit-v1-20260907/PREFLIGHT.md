@@ -57,6 +57,11 @@ G4: four BVMs on COMMON_SL, BVM1+BVM2 active, existing mask 1100
 G1/G2 的生成与运行必须在本 preregistration setup commit 之后进行。G3/G4
 不是新的物理 run，而是现有 raw 的 hash-bound reuse。
 
+初次 G1 尝试使用了错误的相对 include 路径，求解器在读入 deck 前退出；失败
+的 `bridge/runs/G1/deck.cir` 与 `run.log` 保留为 tooling incident，未产生 raw，
+也没有被覆盖。修正后的物理等价尝试使用 `bridge/runs/G1-retry-01/` 和
+`bridge/runs/G2-retry-01/`；它们不改变 netlist 物理内容或 stimulus。
+
 ## Visualization acceptance
 
 必须使用 `scripts/josim-plot2.py -t sep_comb -c dark -j 2pi`。每个 comparison

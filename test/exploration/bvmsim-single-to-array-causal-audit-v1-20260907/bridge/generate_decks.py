@@ -24,7 +24,8 @@ BQ = REPO / "BVMSim/BQ.cir"
 JTL = REPO / "BVMSim/library_josim/jtl2.cir"
 JJMIT = REPO / "circuits/models/jjmit.cir"
 SOLVER = REPO / "build/josim-cli"
-EXPECTED_HEAD = "470ad38cdaea0e55ed2a77d5e72c3ec7d001192e"
+EXPECTED_HEAD = "c50db7c4cc102d3846e12b8511b7ea504539b5ac"
+ATTEMPT_IDS = {"G1": "G1-retry-01", "G2": "G2-retry-01"}
 
 
 def sha256(path: Path) -> str:
@@ -122,10 +123,10 @@ def deck_text(generation: str) -> str:
         f"* protocol={history}",
         "* canonical BVM is not used; BVM variant is bvm_jm2_connected.cir",
         "",
-        ".include ../../../../../circuits/models/jjmit.cir",
-        ".include ../../../../../test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
-        ".include ../../../../../BVMSim/BQ.cir",
-        ".include ../../../../../BVMSim/library_josim/jtl2.cir",
+        ".include ../../../../../../circuits/models/jjmit.cir",
+        ".include ../../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
+        ".include ../../../../../../BVMSim/BQ.cir",
+        ".include ../../../../../../BVMSim/library_josim/jtl2.cir",
         "",
         "XBVM1 WL1 BL1 SE1 COMMON_SL BVM",
         "",
@@ -186,12 +187,12 @@ def main() -> int:
     for generation in ("G1", "G2"):
         content = deck_text(generation)
         validate(generation, content)
-        target = BRIDGE / "runs" / generation / "deck.cir"
+        target = BRIDGE / "runs" / ATTEMPT_IDS[generation] / "deck.cir"
         if target.exists():
             raise RuntimeError(f"refusing to overwrite deck: {target}")
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(content, encoding="utf-8")
-        records[generation] = {"path": str(target.relative_to(REPO)), "sha256": sha256(target), "probe_count": len(probes())}
+        records[generation] = {"path": str(target.relative_to(REPO)), "sha256": sha256(target), "probe_count": len(probes()), "logical_generation": generation, "attempt": ATTEMPT_IDS[generation]}
     print(json.dumps({"status": "PASS", "records": records}, ensure_ascii=False))
     return 0
 

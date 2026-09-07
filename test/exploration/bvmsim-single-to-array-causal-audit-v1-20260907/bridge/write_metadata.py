@@ -29,19 +29,16 @@ def main() -> int:
     parser.add_argument("--solver", type=Path, required=True)
     parser.add_argument("--exit-code", type=int, required=True)
     parser.add_argument("--git-head-before-run", required=True)
-    parser.add_argument("--command", nargs=argparse.REMAINDER, required=True)
+    parser.add_argument("--command-text", required=True)
     args = parser.parse_args()
     if args.metadata.exists():
         raise RuntimeError(f"refusing to overwrite metadata: {args.metadata}")
-    command = list(args.command)
-    if command[:1] == ["--"]:
-        command = command[1:]
     payload = {
         "schema": "bvmsim-single-to-array-bridge-run-metadata-v1",
         "generation": args.generation,
         "created_at_local": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "git_head_before_run": args.git_head_before_run,
-        "command": command,
+        "command": args.command_text,
         "solver": {"path": str(args.solver.resolve()), "sha256": sha256(args.solver), "version": subprocess.check_output([str(args.solver), "--version"], text=True, stderr=subprocess.STDOUT)},
         "artifacts": {
             "deck": {"path": str(args.deck.resolve()), "sha256": sha256(args.deck)},

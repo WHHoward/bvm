@@ -1,0 +1,177 @@
+{
+  "schema": "jm2-passive-capture-replay-independent-check-v1",
+  "experiment_id": "bvmsim-jm2-passive-capture-replay-v1-20260907",
+  "created_at_local": "2026-09-07T15:43:22+08:00",
+  "status": "PASS",
+  "method": "standard-library independent CSV/hash/PWL re-read; no solver call",
+  "raw_hashes_before": {
+    "SINGLE_PASSIVE": "2553796d8c4c0e4edc5784ad184bf2ceb93a2ebd2cdd948c458891d59cfc4672",
+    "ARRAY_PASSIVE": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6",
+    "REPLAY_SINGLE": "edeb1c692bf3fa1da43cc50df5eb516615a7a7df729afe5d099243c01cb17bfa",
+    "REPLAY_ARRAY": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e"
+  },
+  "raw_hashes_after": {
+    "SINGLE_PASSIVE": "2553796d8c4c0e4edc5784ad184bf2ceb93a2ebd2cdd948c458891d59cfc4672",
+    "ARRAY_PASSIVE": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6",
+    "REPLAY_SINGLE": "edeb1c692bf3fa1da43cc50df5eb516615a7a7df729afe5d099243c01cb17bfa",
+    "REPLAY_ARRAY": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e"
+  },
+  "raw_hashes_unchanged": true,
+  "raw_expected_hashes": {
+    "SINGLE_PASSIVE": "2553796d8c4c0e4edc5784ad184bf2ceb93a2ebd2cdd948c458891d59cfc4672",
+    "ARRAY_PASSIVE": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6",
+    "REPLAY_SINGLE": "edeb1c692bf3fa1da43cc50df5eb516615a7a7df729afe5d099243c01cb17bfa",
+    "REPLAY_ARRAY": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e"
+  },
+  "sample_counts": {
+    "SINGLE_PASSIVE": 1999,
+    "ARRAY_PASSIVE": 1999,
+    "REPLAY_SINGLE": 1999,
+    "REPLAY_ARRAY": 1999
+  },
+  "source_snapshot_checks": {
+    "SINGLE_PASSIVE": {
+      "passive_case": "SINGLE_PASSIVE",
+      "snapshot": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/data/single_passive_JSL8_source.csv",
+      "raw_sample_count": 1999,
+      "snapshot_sample_count": 1999,
+      "exact_raw_token_pairs": true,
+      "raw_signal": "I(B_JSL8)"
+    },
+    "ARRAY_PASSIVE": {
+      "passive_case": "ARRAY_PASSIVE",
+      "snapshot": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/data/array_passive_JSL8_source.csv",
+      "raw_sample_count": 1999,
+      "snapshot_sample_count": 1999,
+      "exact_raw_token_pairs": true,
+      "raw_signal": "I(B_JSL8)"
+    }
+  },
+  "replay_contract_checks": {
+    "REPLAY_SINGLE": {
+      "replay_case": "REPLAY_SINGLE",
+      "source_case": "SINGLE_PASSIVE",
+      "source_snapshot_pair_count": 1999,
+      "deck_pwl_pair_count": 1999,
+      "replay_sample_count": 1999,
+      "deck_pwl_exact_numeric_fidelity": true,
+      "replay_input_exact_numeric_fidelity": true,
+      "replay_input_matches_QB_LIN": true,
+      "orientation": "I_REPLAY 0 QBIN; positive source maps directly from JSL8 into QBIN",
+      "transformations": [],
+      "failures": []
+    },
+    "REPLAY_ARRAY": {
+      "replay_case": "REPLAY_ARRAY",
+      "source_case": "ARRAY_PASSIVE",
+      "source_snapshot_pair_count": 1999,
+      "deck_pwl_pair_count": 1999,
+      "replay_sample_count": 1999,
+      "deck_pwl_exact_numeric_fidelity": true,
+      "replay_input_exact_numeric_fidelity": true,
+      "replay_input_matches_QB_LIN": true,
+      "orientation": "I_REPLAY 0 QBIN; positive source maps directly from JSL8 into QBIN",
+      "transformations": [],
+      "failures": []
+    }
+  },
+  "independent_metrics": {
+    "window": "FINAL_READ [110 ps, 121 ps)",
+    "array_kcl_residual_max_abs_uA": 1.29e-05,
+    "array_kcl_residual_rms_uA": 4.9480850290335e-06,
+    "passive_delta_max_abs_uA": {
+      "I(B_JSL1)": 32.00461,
+      "I(B_JSL8)": 32.00461
+    },
+    "replay": {
+      "REPLAY_SINGLE": {
+        "I_REPLAY_max_abs_uA": 85.01338,
+        "I_REPLAY_signed_area_uA_ps": 476.7710203,
+        "V_QBIN_max_abs_mV": 0.7014045,
+        "BJ1_endpoint_change_rad": 6.803068,
+        "BJ1_endpoint_change_turns": 1.0827419003902943,
+        "JTL1_B01_endpoint_change_rad": 5.6757278,
+        "JTL6_B01_endpoint_change_rad": 2.2e-06,
+        "R_TERM_max_abs_uA": 9.358271e-06
+      },
+      "REPLAY_ARRAY": {
+        "I_REPLAY_max_abs_uA": 68.41421,
+        "I_REPLAY_signed_area_uA_ps": 401.1982839,
+        "V_QBIN_max_abs_mV": 0.5371413,
+        "BJ1_endpoint_change_rad": 4.794084,
+        "BJ1_endpoint_change_turns": 0.763002166197766,
+        "JTL1_B01_endpoint_change_rad": 1.1372214,
+        "JTL6_B01_endpoint_change_rad": 4e-07,
+        "R_TERM_max_abs_uA": 4.185339e-06
+      }
+    }
+  },
+  "production_metric_comparisons": [
+    {
+      "name": "JSL1 final-read max abs delta [uA]",
+      "independent": 32.00461,
+      "production": 32.00460999999999,
+      "difference": 1e-14,
+      "pass": true
+    },
+    {
+      "name": "JSL8 final-read max abs delta [uA]",
+      "independent": 32.00461,
+      "production": 32.00460999999999,
+      "difference": 1e-14,
+      "pass": true
+    },
+    {
+      "name": "array KCL final-read max abs residual [uA]",
+      "independent": 1.29e-05,
+      "production": 1.2899999999466703e-05,
+      "difference": 5.33297e-16,
+      "pass": true
+    },
+    {
+      "name": "REPLAY_SINGLE final-read I_REPLAY max abs [uA]",
+      "independent": 85.01338,
+      "production": 85.01338,
+      "difference": 0.0,
+      "pass": true
+    },
+    {
+      "name": "REPLAY_SINGLE final-read V(QBIN) max abs [mV]",
+      "independent": 0.7014045,
+      "production": 0.7014045000000001,
+      "difference": -1e-16,
+      "pass": true
+    },
+    {
+      "name": "REPLAY_ARRAY final-read I_REPLAY max abs [uA]",
+      "independent": 68.41421,
+      "production": 68.41421,
+      "difference": 0.0,
+      "pass": true
+    },
+    {
+      "name": "REPLAY_ARRAY final-read V(QBIN) max abs [mV]",
+      "independent": 0.5371413,
+      "production": 0.5371412999999999,
+      "difference": 1e-16,
+      "pass": true
+    }
+  ],
+  "contextual_direct_hashes": {
+    "SINGLE": "26a70e75afced6e91a7f75e9048b2700839051f38bcd2844d3f153b04ef0939a",
+    "ARRAY": "8543abc6d7a7d276c0bfa3159a4d3d37d569200e5fa30082466e66df8ab24dc2"
+  },
+  "contextual_direct_hashes_expected": {
+    "SINGLE": "26a70e75afced6e91a7f75e9048b2700839051f38bcd2844d3f153b04ef0939a",
+    "ARRAY": "8543abc6d7a7d276c0bfa3159a4d3d37d569200e5fa30082466e66df8ab24dc2"
+  },
+  "replay_preflight_status": "PASS",
+  "limitations": [
+    "No timestep convergence or parameter sensitivity run was performed.",
+    "The optional V(IB|XBQ1) probe is absent from the emitted JoSIM raw schema.",
+    "Phase values are raw radians; turns are only rad/(2*pi) derived values.",
+    "No phase trajectory, derivative activity, voltage area, or local junction change is counted as an SFQ event.",
+    "Direct historical raw is contextual only and was not rerun."
+  ],
+  "failures": []
+}

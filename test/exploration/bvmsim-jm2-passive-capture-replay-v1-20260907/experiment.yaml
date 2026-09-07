@@ -1,0 +1,169 @@
+experiment_id: bvmsim-jm2-passive-capture-replay-v1-20260907
+study_phase: EXPLORATION
+mode: QUICK
+status: PREREGISTERED_PENDING_PREFLIGHT
+created_at_local: '2026-09-07T15:28:06+08:00'
+head_at_setup: 510cb59ebaa237268980133435aa2ff32468c935
+
+role: Experimental Operator + Evidence Packager
+
+question:
+  primary: >-
+    Compare passive SINGLE/ARRAY source waveforms and then replay the recorded
+    I(JSL8) current into an isolated QB/JTL receiver to separate shared-SL
+    source coupling from QB back-action.
+  bounded_oracle: >-
+    A current-only ideal replay removes BVM, COMMON_SL and JSL source
+    back-action; it is a counterfactual waveform-sufficiency fixture, not a
+    physical buffer or hardware result.
+  interpretation_ceiling: >-
+    Bounded simulation evidence only. Do not identify a physical root cause,
+    report SFQ event counts, or generalize beyond the declared fixtures,
+    waveform snapshots, models, timing, load and numerical settings.
+
+source_authority:
+  bvm_variant: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+  bvm_variant_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+  canonical_bvm: circuits/bvm/bvm_cell.cir
+  canonical_bvm_used: false
+  jjmit: circuits/models/jjmit.cir
+  qb: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  solver: build/josim-cli
+  contextual_reference_only: test/exploration/bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907
+
+cases:
+  SINGLE_PASSIVE:
+    id: SINGLE_PASSIVE
+    topology: 1 historical JM2-connected BVM -> SL1 -> 8 JSL -> GND
+    bvm_count: 1
+    bvm_instance: XBVM1 WL1 BL1 SE1 SL1 BVM
+    sensing_endpoint: SL1
+    downstream: passive JSL chain to ground; no QB, JTL or termination
+    source_waveform: I(B_JSL8)
+  ARRAY_PASSIVE:
+    id: ARRAY_PASSIVE
+    topology: 4 historical JM2-connected BVM -> COMMON_SL -> 8 JSL -> GND
+    bvm_count: 4
+    bvm_instances:
+      - XBVM1 WL1 BL1 SE1 COMMON_SL BVM
+      - XBVM2 WL2 BL2 SE2 COMMON_SL BVM
+      - XBVM3 WL3 BL3 SE3 COMMON_SL BVM
+      - XBVM4 WL4 BL4 SE4 COMMON_SL BVM
+    final_read_target: BVM1
+    quiet_final_read: BVM2/BVM3/BVM4 have WL=BL=SE=0
+    sensing_endpoint: COMMON_SL
+    downstream: passive shared JSL chain to ground; no QB, JTL or termination
+    source_waveform: I(B_JSL8)
+  REPLAY_SINGLE:
+    id: REPLAY_SINGLE
+    topology: exact SINGLE_PASSIVE I(JSL8) PWL current -> QB -> 6-stage JTL -> 10 ohm
+    source_capture: SINGLE_PASSIVE
+    replay_source: I_REPLAY 0 QBIN
+  REPLAY_ARRAY:
+    id: REPLAY_ARRAY
+    topology: exact ARRAY_PASSIVE I(JSL8) PWL current -> QB -> 6-stage JTL -> 10 ohm
+    source_capture: ARRAY_PASSIVE
+    replay_source: I_REPLAY 0 QBIN
+
+frozen:
+  bvm_variant_and_internal_values: true
+  jm2_connection: 'L_M2 2 3 24.5P'
+  jsl_count: 8
+  jsl_model: jjmit
+  jsl_area: 5.0
+  jsl_nominal_ic_uA: 500.0
+  passive_jsl_termination: ground
+  qb_source: BVMSim/BQ.cir exact file
+  qb_parameters: 'RJ1=12 ohm; RJ2=4 ohm; IB=250 uA; BJs area=3; BJ1 area=0.9; BJ2 area=2'
+  jtl_source: BVMSim/library_josim/jtl2.cir exact file
+  jtl_stage_count: 6
+  jtl_stage_bias_uA: 280.0
+  replay_termination_ohm: 10.0
+  solver_nominal_timestep_ps: 0.1
+  stop_time_ps: 200.0
+  replay_current_only: true
+  replay_transformations: []
+  no_parameter_sweep: true
+  no_timestep_sweep: true
+  exactly_four_physical_runs: true
+
+stimulus:
+  amplitude_uA: 100.0
+  rise_time_ps: 1.0
+  fall_time_ps: 1.0
+  plateau_ps: 9.0
+  timing_ps:
+    initial_settle: [0, 50]
+    write0: [50, 61]
+    post_write0_settle: [61, 70]
+    zero_state_read_control: [70, 81]
+    post_zero_read_settle: [81, 90]
+    write1: [90, 101]
+    pre_final_read: [101, 110]
+    selective_one_state_read: [110, 121]
+    tail: [121, 200]
+  windows_half_open_ps:
+    INITIAL_PRE_WRITE0: [0, 50]
+    WRITE0: [50, 61]
+    PRE_ZERO_READ: [61, 70]
+    ZERO_STATE_READ_CONTROL: [70, 81]
+    POST_ZERO_READ: [81, 90]
+    WRITE1: [90, 101]
+    PRE_FINAL_READ: [101, 110]
+    FINAL_READ: [110, 121]
+    TAIL: [121, 200]
+  single_passive: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> FINAL_READ
+  array_passive: all four synchronize WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1; final READ mask 1000
+  final_read_target: 'BVM1: WL1=+100uA, BL1=0, SE1=+100uA'
+  quiet_cells: 'BVM2/BVM3/BVM4: WL=BL=SE=0 during final READ'
+
+passive_capture:
+  bvm_each: P/V/I for JM1, JM2, JS1, JS2; I/V for all registered BVM branches
+  controls: I(WL), I(BL), I(SE) for every present BVM
+  boundaries: SINGLE V(SL1); ARRAY V(COMMON_SL)
+  jsl: P/V/I for JSL1 through JSL8
+  replay_source: I(B_JSL8), exact stored timestamps and values
+  forbidden_transformations: [interpolation, smoothing, fitting, scaling, shifting, rectification, truncation]
+
+replay_capture:
+  bvm_and_jsls_present: false
+  qbin: V(QBIN)
+  qb: I/V for LIN, L1, L2, L3, RJ1, RJ2, IB; P/V/I for BJS, BJ1, BJ2; V(QBOUT)
+  jtl: P/V/I for B01/B02 and output voltage at all six stages
+  termination: I(R_TERM)
+  replay_source_probe: I(I_REPLAY)
+
+orientation:
+  passive_probe: I(B_JSL8) is branch current from JSL7 node to QBIN in the direct orientation
+  replay_source: I_REPLAY 0 QBIN; positive current injects QBIN in the same JSL8 -> QBIN sense
+  qa: compare source snapshot and replay I(I_REPLAY) without changing sign unless orientation check fails
+
+analysis:
+  source_comparison: ARRAY_PASSIVE minus SINGLE_PASSIVE on shared observable labels
+  replay_comparison: REPLAY_ARRAY minus REPLAY_SINGLE on exact common output labels
+  metrics: [max_abs_delta, RMS_delta, p95_abs_delta, mean_delta, p2p, signed_integral_delta, endpoint_delta]
+  phase_rule: raw P is radians; continuous_unwrap before comparison; plots use rad/(2*pi) phase turns
+  event_rule: phase displacement, voltage area, threshold activity and crossings are not SFQ counts
+  source_fidelity_gate: exact source timestamp/value pairs in generated PWL; no interpolation or transformation
+  current_balance: report BVM1-4 LSL branches, sum LSL and JSL1/JSL8 with explicit signs
+  interpretation: separate Observed, Derived, Inference and Unknown; no mechanism claim
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  options: 'sep_comb dark -j 2pi'
+  required_pages:
+    - PASSIVE_SOURCE_COMPARE.html
+    - ARRAY_CURRENT_BALANCE.html
+    - QB_REPLAY_COMPARE.html
+    - JTL_REPLAY_COMPARE.html
+    - READ_WRITE_CONTROLS.html
+  read_write_requirement: READ_WRITE_CONTROLS.html must visibly show WRITE0, ZERO_STATE_READ_CONTROL, WRITE1 and FINAL READ target/quiet controls
+  phase_display: continuous_unwrap(raw radians)/(2*pi), label phase turns
+  forbidden_label: SFQ count
+  raw_immutable: true
+
+stop:
+  after: preregistration -> preflight -> 2 passive captures -> exact PWL extraction -> replay sign QA -> 2 replay runs -> raw QA -> metrics -> focused plots -> visualization QA -> RESULT_BRIEF
+  automatic_followup: false
+  user_review_required: true

@@ -1,0 +1,52 @@
+{
+  "schema": "jm2-passive-capture-replay-replay-preflight-v1",
+  "experiment_id": "bvmsim-jm2-passive-capture-replay-v1-20260907",
+  "created_at_local": "2026-09-07T15:32:58+08:00",
+  "status": "PASS",
+  "head_at_setup": "510cb59ebaa237268980133435aa2ff32468c935",
+  "head_at_replay_preflight": "510cb59ebaa237268980133435aa2ff32468c935",
+  "source_signal": "I(B_JSL8)",
+  "source_to_replay_transformations": [],
+  "cases": {
+    "replay_single": {
+      "status": "PASS",
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_single/deck.cir",
+      "deck_sha256": "c7c78cc7ffad3bff45b2de9c704f104d4c636b3db4c109def6bc1b7df2af8c45",
+      "source_case": "SINGLE_PASSIVE",
+      "source_snapshot_sha256": "5c6700b0d53b16f709928adcdde3046231af3e766d4571e578ec9b8dd7877677",
+      "pwl_pairs_expected": 1999,
+      "pwl_pairs_actual": 1999,
+      "pwl_exact_timestamp_value_fidelity": true,
+      "positive_orientation": "I_REPLAY 0 QBIN; no sign change",
+      "failures": []
+    },
+    "replay_array": {
+      "status": "PASS",
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/deck.cir",
+      "deck_sha256": "a22b715ff83485e410315111011b7cc0baf9b54380b55bafe0c4993220b17708",
+      "source_case": "ARRAY_PASSIVE",
+      "source_snapshot_sha256": "e91b747f833ec87ad79691e558085ae1bc10c3b688f4e9635feaa87f926f4946",
+      "pwl_pairs_expected": 1999,
+      "pwl_pairs_actual": 1999,
+      "pwl_exact_timestamp_value_fidelity": true,
+      "positive_orientation": "I_REPLAY 0 QBIN; no sign change",
+      "failures": []
+    }
+  },
+  "common_receiver": {
+    "qb_source": {
+      "path": "BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "bytes": 503
+    },
+    "jtl_source": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864
+    },
+    "termination_ohm": 10.0,
+    "contains_bvm": false,
+    "contains_jsls": false
+  },
+  "failures": []
+}

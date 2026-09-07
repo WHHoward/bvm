@@ -1,0 +1,76 @@
+{
+  "schema": "jm2-passive-capture-replay-source-snapshot-manifest-v1",
+  "experiment_id": "bvmsim-jm2-passive-capture-replay-v1-20260907",
+  "created_at_local": "2026-09-07T15:32:07+08:00",
+  "source_signal": "I(B_JSL8)",
+  "raw_hashes": {
+    "single_passive": "2553796d8c4c0e4edc5784ad184bf2ceb93a2ebd2cdd948c458891d59cfc4672",
+    "array_passive": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6"
+  },
+  "sources": {
+    "single_passive": {
+      "raw": {
+        "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/single_passive/raw.csv",
+        "sha256": "2553796d8c4c0e4edc5784ad184bf2ceb93a2ebd2cdd948c458891d59cfc4672",
+        "bytes": 1838650
+      },
+      "snapshot": {
+        "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/data/single_passive_JSL8_source.csv",
+        "sha256": "5c6700b0d53b16f709928adcdde3046231af3e766d4571e578ec9b8dd7877677",
+        "bytes": 52687,
+        "source_signal": "I(B_JSL8)",
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "transformations": []
+      },
+      "orientation": {
+        "passive_branch": "B_JSL8 JSL_NODE7 0",
+        "replay_source": "I_REPLAY 0 QBIN",
+        "positive_direction": "from JSL_NODE7 toward the passive load / into QBIN",
+        "sign_change": false
+      }
+    },
+    "array_passive": {
+      "raw": {
+        "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/raw.csv",
+        "sha256": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6",
+        "bytes": 5269098
+      },
+      "snapshot": {
+        "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/data/array_passive_JSL8_source.csv",
+        "sha256": "e91b747f833ec87ad79691e558085ae1bc10c3b688f4e9635feaa87f926f4946",
+        "bytes": 52635,
+        "source_signal": "I(B_JSL8)",
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "transformations": []
+      },
+      "orientation": {
+        "passive_branch": "B_JSL8 JSL_NODE7 0",
+        "replay_source": "I_REPLAY 0 QBIN",
+        "positive_direction": "from JSL_NODE7 toward the passive load / into QBIN",
+        "sign_change": false
+      }
+    }
+  },
+  "replay_decks": {
+    "replay_single": {
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_single/deck.cir",
+      "sha256": "c7c78cc7ffad3bff45b2de9c704f104d4c636b3db4c109def6bc1b7df2af8c45",
+      "bytes": 41377,
+      "pwl_pairs": 1999,
+      "source_case": "SINGLE_PASSIVE"
+    },
+    "replay_array": {
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/deck.cir",
+      "sha256": "a22b715ff83485e410315111011b7cc0baf9b54380b55bafe0c4993220b17708",
+      "bytes": 41323,
+      "pwl_pairs": 1999,
+      "source_case": "ARRAY_PASSIVE"
+    }
+  },
+  "orientation_qa": "registered positive JSL8 branch current maps directly to I_REPLAY 0 QBIN; no sign change",
+  "transformations": []
+}

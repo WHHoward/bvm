@@ -1,0 +1,56 @@
+{
+  "schema": "jm2-passive-capture-replay-topology-preflight-v1",
+  "experiment_id": "bvmsim-jm2-passive-capture-replay-v1-20260907",
+  "created_at_local": "2026-09-07T15:30:31+08:00",
+  "stage": "PASSIVE_BEFORE_CAPTURE",
+  "status": "PASS",
+  "head_at_setup": "510cb59ebaa237268980133435aa2ff32468c935",
+  "head_at_preflight": "510cb59ebaa237268980133435aa2ff32468c935",
+  "source_hashes_unchanged": true,
+  "passive": {
+    "single_passive": {
+      "status": "PASS",
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/single_passive/deck.cir",
+      "deck_sha256": "4d9bb7325a095f20abcc9831967078e7d0499ca187fe3c7055262676be35c776",
+      "bvm_count": 1,
+      "jsl_count": 8,
+      "jsl8_to_ground": true,
+      "controls": 3,
+      "has_qb": false,
+      "has_jtl": false,
+      "has_termination": false,
+      "failures": []
+    },
+    "array_passive": {
+      "status": "PASS",
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/deck.cir",
+      "deck_sha256": "260f4f4cd49cdaba5c2d4e1c113f5085a13c627c27d7e4bf560b46d3f943f08d",
+      "bvm_count": 4,
+      "jsl_count": 8,
+      "jsl8_to_ground": true,
+      "controls": 12,
+      "has_qb": false,
+      "has_jtl": false,
+      "has_termination": false,
+      "failures": []
+    }
+  },
+  "replay_contract": {
+    "status": "REGISTERED_POST_CAPTURE_MECHANICAL_CHECK_REQUIRED",
+    "contains_bvm": false,
+    "contains_jsls": false,
+    "qb_source": {
+      "path": "BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "bytes": 503
+    },
+    "jtl_source": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864
+    },
+    "termination_ohm": 10.0,
+    "pwl_source": "captured I(B_JSL8) exact stored timestamp/value pairs"
+  },
+  "failures": []
+}

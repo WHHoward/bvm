@@ -1,0 +1,67 @@
+{
+  "schema": "jm2-read-count-passive-replay-replay-preflight-v1",
+  "experiment_id": "bvmsim-jm2-read-count-passive-replay-v1-20260907",
+  "created_at_local": "2026-09-07T16:37:16+08:00",
+  "status": "PASS",
+  "head_at_setup": "217305580f1c9cec17839896730fbe9b1016c837",
+  "head_at_replay_preflight": "217305580f1c9cec17839896730fbe9b1016c837",
+  "source_signal": "I(B_JSL8)",
+  "source_to_replay_transformations": [],
+  "cases": {
+    "N2_REPLAY": {
+      "status": "PASS",
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n2_replay/deck.cir",
+      "deck_sha256": "8e122d8e025c1e7f91a163b1988ca4a267bc496d2743c9033b1aa33fe8fdb9ee",
+      "source_case": "N2_PASSIVE",
+      "source_snapshot_sha256": "deb3e77e0b7b64819f6173e0320c04ad2fd6de31eb85359d5826cbb691f0e011",
+      "pwl_pairs_expected": 1999,
+      "pwl_pairs_actual": 1999,
+      "pwl_exact_timestamp_value_fidelity": true,
+      "positive_orientation": "I_REPLAY 0 QBIN; no sign change",
+      "transformations": [],
+      "failures": []
+    },
+    "N3_REPLAY": {
+      "status": "PASS",
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/deck.cir",
+      "deck_sha256": "4a44e198ccc91d07bcccdee1baf1539e231d3d39ede173b052d343d5c664d93d",
+      "source_case": "N3_PASSIVE",
+      "source_snapshot_sha256": "93e41cf604bd373ad63f8fce2eadfd88d735b481fffc2e5e6434b0ff4ce7b586",
+      "pwl_pairs_expected": 1999,
+      "pwl_pairs_actual": 1999,
+      "pwl_exact_timestamp_value_fidelity": true,
+      "positive_orientation": "I_REPLAY 0 QBIN; no sign change",
+      "transformations": [],
+      "failures": []
+    },
+    "N4_REPLAY": {
+      "status": "PASS",
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/deck.cir",
+      "deck_sha256": "fedf870ca228ae8ec1dbc6fe1d9f37d722f4d0d418ba1571c4ebe10e6e2f8044",
+      "source_case": "N4_PASSIVE",
+      "source_snapshot_sha256": "f917c119fb9920a167188c45bd31f93895720f71e5ebe35f753181307860e2e6",
+      "pwl_pairs_expected": 1999,
+      "pwl_pairs_actual": 1999,
+      "pwl_exact_timestamp_value_fidelity": true,
+      "positive_orientation": "I_REPLAY 0 QBIN; no sign change",
+      "transformations": [],
+      "failures": []
+    }
+  },
+  "common_receiver": {
+    "qb_source": {
+      "path": "BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "bytes": 503
+    },
+    "jtl_source": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864
+    },
+    "termination_ohm": 10.0,
+    "contains_bvm": false,
+    "contains_jsls": false
+  },
+  "failures": []
+}

@@ -1,0 +1,93 @@
+{
+  "schema": "jm2-read-count-passive-replay-source-manifest-v1",
+  "experiment_id": "bvmsim-jm2-read-count-passive-replay-v1-20260907",
+  "created_at_local": "2026-09-07T16:35:26+08:00",
+  "head_at_setup": "217305580f1c9cec17839896730fbe9b1016c837",
+  "sources": {
+    "bvm_variant": {
+      "path": "test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325
+    },
+    "historical_bvm_reference": {
+      "path": "BVMSim/bvm_cell.cir",
+      "sha256": "009e0683c7d4ffe14e2582c6d0a807669cc9b290639af7298d290ff7bbb43125",
+      "bytes": 2325
+    },
+    "canonical_bvm_not_used": {
+      "path": "circuits/bvm/bvm_cell.cir",
+      "sha256": "ea7346546bef091dc2efa39ab6f0abcfa54f833aeeabb909dcf3815cdaea42a4",
+      "bytes": 2234
+    },
+    "jjmit": {
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504
+    },
+    "qb": {
+      "path": "BVMSim/BQ.cir",
+      "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "bytes": 503
+    },
+    "jtl": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864
+    },
+    "solver": {
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976
+    }
+  },
+  "variant_diff": {
+    "status": "PASS",
+    "difference_count": 1,
+    "difference": {
+      "line": 37,
+      "historical": "L_M2    2       4       24.5P",
+      "variant": "L_M2    2       3       24.5P"
+    }
+  },
+  "n1_reference": {
+    "N1_PASSIVE": {
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/raw.csv",
+      "sha256": "6ba17bbf2d8a31d59067da930bf8cb3be53f06695c166ce68b6630ea89a1eef6",
+      "source_experiment": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907",
+      "rerun": false
+    },
+    "N1_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv",
+      "sha256": "11bce2601a6f3b63dff33a32771bb7c406e0b6e64236facabbfd25676220151e",
+      "source_experiment": "test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907",
+      "rerun": false
+    }
+  },
+  "passive_decks": {
+    "N2_PASSIVE": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n2_passive/deck.cir",
+      "sha256": "62866cdca15910e9dd5d29a71e1348f397932b384cdb94967faac8ca6e7be723",
+      "bytes": 6057,
+      "read_count": 2,
+      "final_read_mask": "1100"
+    },
+    "N3_PASSIVE": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_passive/deck.cir",
+      "sha256": "8fb04d8f63bf8a1255b9f58c679f579d452f2707787d31ae6649bca043378d7c",
+      "bytes": 6073,
+      "read_count": 3,
+      "final_read_mask": "1110"
+    },
+    "N4_PASSIVE": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_passive/deck.cir",
+      "sha256": "164cff57b1b314a7a44c6ec306e17dd9313922bc179d36b936044015789f4be4",
+      "bytes": 6089,
+      "read_count": 4,
+      "final_read_mask": "1111"
+    }
+  },
+  "new_physical_solve_count": 6,
+  "replay_generation": "PENDING_N2_N4_PASSIVE_CAPTURE",
+  "canonical_bvm_used": false,
+  "transformations": []
+}

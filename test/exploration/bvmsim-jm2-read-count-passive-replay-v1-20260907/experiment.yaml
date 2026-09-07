@@ -1,0 +1,182 @@
+experiment_id: bvmsim-jm2-read-count-passive-replay-v1-20260907
+study_phase: EXPLORATION
+mode: QUICK
+status: PREREGISTERED_PENDING_PREFLIGHT
+created_at_local: '2026-09-07T16:33:33+08:00'
+head_at_setup: 217305580f1c9cec17839896730fbe9b1016c837
+
+role: Experimental Operator + Evidence Packager
+
+question:
+  primary: >-
+    At fixed BVM/JSL/QB/JTL settings, compare passive source and isolated
+    current-replay responses for final READ masks N1=1000, N2=1100, N3=1110
+    and N4=1111.
+  bounded_oracle: >-
+    The N2-N4 passive captures and their exact-current QB/JTL replays are
+    bounded simulation fixtures. N1 is the existing ARRAY_PASSIVE /
+    REPLAY_ARRAY result reused by immutable hash-bound reference.
+  interpretation_ceiling: >-
+    Do not infer a universal read-count law, physical root cause, hardware
+    measurement, Gate result, or SFQ event count from these fixtures.
+
+baseline:
+  experiment: test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907
+  N1_PASSIVE:
+    source_case: ARRAY_PASSIVE
+    raw: test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/array_passive/raw.csv
+    rerun: false
+    final_read_mask: '1000'
+  N1_REPLAY:
+    source_case: REPLAY_ARRAY
+    raw: test/exploration/bvmsim-jm2-passive-capture-replay-v1-20260907/runs/replay_array/raw.csv
+    rerun: false
+    final_read_mask: '1000'
+
+cases:
+  N2_PASSIVE:
+    read_count: 2
+    final_read_mask: '1100'
+    topology: 4 historical JM2-connected BVMs -> COMMON_SL -> 8 jjmit JSLs area 5 -> GND
+    downstream: passive only; no QB, JTL or termination
+    source_waveform: I(B_JSL8)
+  N3_PASSIVE:
+    read_count: 3
+    final_read_mask: '1110'
+    topology: 4 historical JM2-connected BVMs -> COMMON_SL -> 8 jjmit JSLs area 5 -> GND
+    downstream: passive only; no QB, JTL or termination
+    source_waveform: I(B_JSL8)
+  N4_PASSIVE:
+    read_count: 4
+    final_read_mask: '1111'
+    topology: 4 historical JM2-connected BVMs -> COMMON_SL -> 8 jjmit JSLs area 5 -> GND
+    downstream: passive only; no QB, JTL or termination
+    source_waveform: I(B_JSL8)
+  N2_REPLAY:
+    read_count: 2
+    source_capture: N2_PASSIVE
+    topology: exact I(JSL8) PWL -> BQ -> six jtl stages -> 10 ohm
+  N3_REPLAY:
+    read_count: 3
+    source_capture: N3_PASSIVE
+    topology: exact I(JSL8) PWL -> BQ -> six jtl stages -> 10 ohm
+  N4_REPLAY:
+    read_count: 4
+    source_capture: N4_PASSIVE
+    topology: exact I(JSL8) PWL -> BQ -> six jtl stages -> 10 ohm
+
+frozen:
+  bvm_variant: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+  bvm_variant_class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+  canonical_bvm_used: false
+  jm2_connection: 'L_M2 2 3 24.5P'
+  jjmit: circuits/models/jjmit.cir
+  qb: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  jsl_count: 8
+  jsl_area: 5.0
+  jsl_nominal_ic_uA: 500.0
+  passive_termination: GND
+  qb_parameters: 'RJ1=12 ohm; RJ2=4 ohm; IB=250 uA; BJs area=3; BJ1 area=0.9; BJ2 area=2'
+  jtl_stage_count: 6
+  jtl_stage_bias_uA: 280.0
+  replay_termination_ohm: 10.0
+  solver: build/josim-cli
+  solver_nominal_timestep_ps: 0.1
+  stop_time_ps: 200.0
+  no_parameter_sweep: true
+  no_timestep_sweep: true
+  new_physical_solve_count: 6
+
+stimulus:
+  amplitude_uA: 100.0
+  rise_time_ps: 1.0
+  fall_time_ps: 1.0
+  plateau_ps: 9.0
+  history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> final READ -> TAIL
+  timing_ps:
+    initial_settle: [0, 50]
+    write0: [50, 61]
+    post_write0_settle: [61, 70]
+    zero_state_read_control: [70, 81]
+    post_zero_read_settle: [81, 90]
+    write1: [90, 101]
+    pre_final_read: [101, 110]
+    final_read: [110, 121]
+    tail: [121, 200]
+  final_read_masks:
+    N1: '1000'
+    N2: '1100'
+    N3: '1110'
+    N4: '1111'
+  quiet_cells: BVM instances outside the mask have WL=BL=SE=0 during final READ
+  tran: '.tran 0.1p 200p'
+
+probes:
+  passive: >-
+    BVM1-4 JM1/JM2/JS1/JS2 P/V/I; BVM1-4 L_M1/L_M2/L_M3/L_PM/R_JM1 /
+    L_S1/L_S2/L_S3/R_S/R_SE/L_PSE/L_PSL/R_SL/L_SL I/V; all controls;
+    V(COMMON_SL); JSL1-8 P/V/I; source I(B_JSL8).
+  replay: >-
+    I(I_REPLAY), V(QBIN), V(QBOUT); QB LIN/L1/L2/L3/RJ1/RJ2/IB I/V;
+    BJS/BJ1/BJ2 P/V/I; JTL1-6 B01/B02 P/V/I and output voltage; I(R_TERM).
+  optional: V(IB|XBQ1) may be absent from emitted JoSIM schema and is recorded as optional
+
+source_replay_contract:
+  source_signal: I(B_JSL8)
+  replay_source: I_REPLAY 0 QBIN
+  exact_timestamp_value_pairs: true
+  transformations: []
+  forbidden_transformations: [interpolation, smoothing, fitting, scaling, shifting, rectification, truncation]
+  orientation_qa: positive passive JSL8 branch maps directly into QBIN; change sign only if independent QA fails
+
+analysis:
+  windows_ps:
+    INITIAL_PRE_WRITE0: [0, 50]
+    WRITE0: [50, 61]
+    PRE_ZERO_READ: [61, 70]
+    ZERO_STATE_READ_CONTROL: [70, 81]
+    POST_ZERO_READ: [81, 90]
+    WRITE1: [90, 101]
+    PRE_FINAL_READ: [101, 110]
+    FINAL_READ: [110, 121]
+    FINAL_READ_RESPONSE: [110, 200]
+    TAIL: [121, 200]
+  passive_metrics: [peak, min, RMS, p2p, signed_area, positive_area, negative_area, endpoint]
+  replay_metrics: [QBIN, QBOUT, BJ1_phase, BJ2_phase, JTL1_phase, JTL6_phase, R_TERM, terminal_voltage_area]
+  phase_rule: raw P is radians; continuous_unwrap first; turns are rad/(2*pi), never an SFQ count
+  current_balance: sum_i I(L_SL|XBVMi) - I(B_JSL1) = 0 at COMMON_SL, report per N
+  event_rule: >-
+    A transmitted SFQ statement requires same-JJ phase progression, downstream
+    causal propagation, a termination pulse, and terminal area near an integer
+    Phi0; pulse-looking activity, phase turns, threshold crossings and area
+    alone are not counts.
+  evidence_labels: [Observed, Derived, Inference, Unknown]
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  options: 'sep_comb dark -j 2pi'
+  standalone_pages:
+    - N1_PASSIVE.html
+    - N2_PASSIVE.html
+    - N3_PASSIVE.html
+    - N4_PASSIVE.html
+    - N1_REPLAY.html
+    - N2_REPLAY.html
+    - N3_REPLAY.html
+    - N4_REPLAY.html
+  aggregate_pages:
+    - PASSIVE_SOURCE_N1_N4.html
+    - ARRAY_LSL_BALANCE_N1_N4.html
+    - QB_REPLAY_N1_N4.html
+    - JTL_REPLAY_N1_N4.html
+    - READ_COUNT_SUMMARY.html
+  standalone_source: each page reads its corresponding N raw directly; N1 pages read the prior immutable raw by reference
+  phase_display: continuous_unwrap(raw radians)/(2*pi), label phase turns
+  forbidden_label: [SFQ count, event count]
+  raw_immutable: true
+
+stop:
+  after: preregistration -> preflight -> 3 passive captures -> exact PWL extraction -> replay preflight -> 3 replay runs -> raw QA -> metrics -> 8 standalone plots -> 5 aggregate plots -> visualization QA -> RESULT_BRIEF
+  automatic_followup: false
+  user_review_required: true

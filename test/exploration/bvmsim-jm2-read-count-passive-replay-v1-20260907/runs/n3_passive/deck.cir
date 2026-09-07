@@ -1,0 +1,122 @@
+* GENERATED N3_PASSIVE DECK: read-count passive source capture
+* source_class=HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+* Four BVMs share COMMON_SL; final READ mask is 1110.
+* Registered history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> final READ -> TAIL.
+* No QB, JTL or termination is present in this passive fixture.
+
+.include ../../../../../circuits/models/jjmit.cir
+.include ../../../bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+
+XBVM1 WL1 BL1 SE1 COMMON_SL BVM
+XBVM2 WL2 BL2 SE2 COMMON_SL BVM
+XBVM3 WL3 BL3 SE3 COMMON_SL BVM
+XBVM4 WL4 BL4 SE4 COMMON_SL BVM
+
+B_JSL1 COMMON_SL JSL_NODE1 jjmit area=5.0
+B_JSL2 JSL_NODE1 JSL_NODE2 jjmit area=5.0
+B_JSL3 JSL_NODE2 JSL_NODE3 jjmit area=5.0
+B_JSL4 JSL_NODE3 JSL_NODE4 jjmit area=5.0
+B_JSL5 JSL_NODE4 JSL_NODE5 jjmit area=5.0
+B_JSL6 JSL_NODE5 JSL_NODE6 jjmit area=5.0
+B_JSL7 JSL_NODE6 JSL_NODE7 jjmit area=5.0
+B_JSL8 JSL_NODE7 0 jjmit area=5.0
+
+I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+I_SE1 0 SE1 pwl(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_WL2 0 WL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_BL2 0 BL2 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+I_SE2 0 SE2 pwl(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_WL3 0 WL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_BL3 0 BL3 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+I_SE3 0 SE3 pwl(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_WL4 0 WL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+I_BL4 0 BL4 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+I_SE4 0 SE4 pwl(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+
+.tran 0.1p 200p
+
+* Full passive probe: every BVM, every control, COMMON_SL, and all eight JSL P/V/I.
+.print I(I_WL1) I(I_BL1) I(I_SE1) I(I_WL2) I(I_BL2) I(I_SE2) I(I_WL3) I(I_BL3) I(I_SE3) I(I_WL4) I(I_BL4) I(I_SE4)
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) I(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1) I(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) I(B_JS1|XBVM1)
+.print P(B_JS2|XBVM1) V(B_JS2|XBVM1) I(B_JS2|XBVM1)
+.print I(L_M1|XBVM1) V(L_M1|XBVM1)
+.print I(L_M2|XBVM1) V(L_M2|XBVM1)
+.print I(L_M3|XBVM1) V(L_M3|XBVM1)
+.print I(L_PM|XBVM1) V(L_PM|XBVM1)
+.print I(R_JM1|XBVM1) V(R_JM1|XBVM1)
+.print I(L_S1|XBVM1) V(L_S1|XBVM1)
+.print I(L_S2|XBVM1) V(L_S2|XBVM1)
+.print I(R_S|XBVM1) V(R_S|XBVM1)
+.print I(L_S3|XBVM1) V(L_S3|XBVM1)
+.print I(R_SE|XBVM1) V(R_SE|XBVM1)
+.print I(L_PSE|XBVM1) V(L_PSE|XBVM1)
+.print I(L_PSL|XBVM1) V(L_PSL|XBVM1)
+.print I(R_SL|XBVM1) V(R_SL|XBVM1)
+.print I(L_SL|XBVM1) V(L_SL|XBVM1)
+.print P(B_JM1|XBVM2) V(B_JM1|XBVM2) I(B_JM1|XBVM2)
+.print P(B_JM2|XBVM2) V(B_JM2|XBVM2) I(B_JM2|XBVM2)
+.print P(B_JS1|XBVM2) V(B_JS1|XBVM2) I(B_JS1|XBVM2)
+.print P(B_JS2|XBVM2) V(B_JS2|XBVM2) I(B_JS2|XBVM2)
+.print I(L_M1|XBVM2) V(L_M1|XBVM2)
+.print I(L_M2|XBVM2) V(L_M2|XBVM2)
+.print I(L_M3|XBVM2) V(L_M3|XBVM2)
+.print I(L_PM|XBVM2) V(L_PM|XBVM2)
+.print I(R_JM1|XBVM2) V(R_JM1|XBVM2)
+.print I(L_S1|XBVM2) V(L_S1|XBVM2)
+.print I(L_S2|XBVM2) V(L_S2|XBVM2)
+.print I(R_S|XBVM2) V(R_S|XBVM2)
+.print I(L_S3|XBVM2) V(L_S3|XBVM2)
+.print I(R_SE|XBVM2) V(R_SE|XBVM2)
+.print I(L_PSE|XBVM2) V(L_PSE|XBVM2)
+.print I(L_PSL|XBVM2) V(L_PSL|XBVM2)
+.print I(R_SL|XBVM2) V(R_SL|XBVM2)
+.print I(L_SL|XBVM2) V(L_SL|XBVM2)
+.print P(B_JM1|XBVM3) V(B_JM1|XBVM3) I(B_JM1|XBVM3)
+.print P(B_JM2|XBVM3) V(B_JM2|XBVM3) I(B_JM2|XBVM3)
+.print P(B_JS1|XBVM3) V(B_JS1|XBVM3) I(B_JS1|XBVM3)
+.print P(B_JS2|XBVM3) V(B_JS2|XBVM3) I(B_JS2|XBVM3)
+.print I(L_M1|XBVM3) V(L_M1|XBVM3)
+.print I(L_M2|XBVM3) V(L_M2|XBVM3)
+.print I(L_M3|XBVM3) V(L_M3|XBVM3)
+.print I(L_PM|XBVM3) V(L_PM|XBVM3)
+.print I(R_JM1|XBVM3) V(R_JM1|XBVM3)
+.print I(L_S1|XBVM3) V(L_S1|XBVM3)
+.print I(L_S2|XBVM3) V(L_S2|XBVM3)
+.print I(R_S|XBVM3) V(R_S|XBVM3)
+.print I(L_S3|XBVM3) V(L_S3|XBVM3)
+.print I(R_SE|XBVM3) V(R_SE|XBVM3)
+.print I(L_PSE|XBVM3) V(L_PSE|XBVM3)
+.print I(L_PSL|XBVM3) V(L_PSL|XBVM3)
+.print I(R_SL|XBVM3) V(R_SL|XBVM3)
+.print I(L_SL|XBVM3) V(L_SL|XBVM3)
+.print P(B_JM1|XBVM4) V(B_JM1|XBVM4) I(B_JM1|XBVM4)
+.print P(B_JM2|XBVM4) V(B_JM2|XBVM4) I(B_JM2|XBVM4)
+.print P(B_JS1|XBVM4) V(B_JS1|XBVM4) I(B_JS1|XBVM4)
+.print P(B_JS2|XBVM4) V(B_JS2|XBVM4) I(B_JS2|XBVM4)
+.print I(L_M1|XBVM4) V(L_M1|XBVM4)
+.print I(L_M2|XBVM4) V(L_M2|XBVM4)
+.print I(L_M3|XBVM4) V(L_M3|XBVM4)
+.print I(L_PM|XBVM4) V(L_PM|XBVM4)
+.print I(R_JM1|XBVM4) V(R_JM1|XBVM4)
+.print I(L_S1|XBVM4) V(L_S1|XBVM4)
+.print I(L_S2|XBVM4) V(L_S2|XBVM4)
+.print I(R_S|XBVM4) V(R_S|XBVM4)
+.print I(L_S3|XBVM4) V(L_S3|XBVM4)
+.print I(R_SE|XBVM4) V(R_SE|XBVM4)
+.print I(L_PSE|XBVM4) V(L_PSE|XBVM4)
+.print I(L_PSL|XBVM4) V(L_PSL|XBVM4)
+.print I(R_SL|XBVM4) V(R_SL|XBVM4)
+.print I(L_SL|XBVM4) V(L_SL|XBVM4)
+.print V(COMMON_SL)
+.print P(B_JSL1) V(B_JSL1) I(B_JSL1)
+.print P(B_JSL2) V(B_JSL2) I(B_JSL2)
+.print P(B_JSL3) V(B_JSL3) I(B_JSL3)
+.print P(B_JSL4) V(B_JSL4) I(B_JSL4)
+.print P(B_JSL5) V(B_JSL5) I(B_JSL5)
+.print P(B_JSL6) V(B_JSL6) I(B_JSL6)
+.print P(B_JSL7) V(B_JSL7) I(B_JSL7)
+.print P(B_JSL8) V(B_JSL8) I(B_JSL8)
+.end

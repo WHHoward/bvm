@@ -1,0 +1,12 @@
+git status --short --untracked-files=all  # exit 0; clean before setup
+python3 bridge/generate_decks.py  # exit 0 for initial setup decks; first run path incident preserved
+./bridge/run.sh  # exit 2 on initial wrong-include attempt; no raw; failed log preserved
+python3 bridge/generate_decks.py  # exit 0 for G1/G2 retry decks
+./bridge/run.sh  # exit 0; G1-retry-01 and G2-retry-01 raw generated
+python3 analysis/analyze_existing.py --write  # exit 0
+python3 analysis/render_plots.py --write  # exit 0; 11 comparison HTML pages rendered
+python3 analysis/independent_check.py  # exit 0; independent raw/grid/arithmetic cross-check
+env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test/tools/test_bvmtools.py test/tools/test_bvmtools_infrastructure.py test/tools/test_bvmtools_sl_probes.py test/tools/test_strict_event_list.py  # exit 0; 41 passed
+env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test/metrics/test_metric_spec_v2.py test/metrics/test_sfq_metrics_v2.py test/metrics/test_sfq_metrics_v2_m5.py test/metrics/test_sfq_metrics_v2_m6.py test/metrics/test_sfq_metrics_v2_m7.py  # exit 0; 142 passed
+python3 analysis/viz_qa.py  # exit 0; 11/11 comparison HTML pages passed
+

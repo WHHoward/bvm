@@ -8,6 +8,24 @@ These rules apply to the whole repository.
 - Treat `memory/project-todo.md` as the task authority and its completion criteria as binding.
 - Use repository-local skills from `.agents/skills/`; choose the smallest skill set that covers the request.
 
+## Experimental Work — Mandatory Contract
+
+All simulation experiments, replay experiments, parameter studies,
+read-only raw analyses, and evidence-packaging tasks MUST comply with:
+
+`docs/EXPERIMENT_CONTRACT.md`
+
+This contract is mandatory unless the user explicitly overrides a specific rule.
+
+Every new experiment directory must state in `PREFLIGHT.md`:
+
+> This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+
+Agents must not silently weaken, skip, reinterpret, or replace this contract.
+Existing-experiment read-only analysis MUST still obey the contract's raw
+immutability, provenance, evidence-label, visualization, QA and bounded-claim
+rules.
+
 ## Measurement invariants
 
 - JoSIM `P(...)` output is raw phase in radians. Convert a declared phase difference with `phase_delta_turns = phase_delta_rad / (2*pi)`.

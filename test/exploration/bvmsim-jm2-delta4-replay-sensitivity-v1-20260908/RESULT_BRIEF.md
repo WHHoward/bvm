@@ -88,26 +88,32 @@ Transformation registry: [analysis/transformation_registry.json](analysis/transf
 
 Independent check: [analysis/independent_check.json](analysis/independent_check.json).
 
-Visualization QA: [analysis/viz_qa.json](analysis/viz_qa.json).
+Visualization QA v1 (preserved): [analysis/viz_qa.json](analysis/viz_qa.json).
 
-Each run has standalone QB and JTL pages:
+Visualization QA v2: [analysis/viz_qa_v2.json](analysis/viz_qa_v2.json) and
+[independent v2 check](analysis/viz_qa_v2_independent_check.json).
 
-- [DELTA4_DELAY_3PS QB](plots/delta4_v1/DELTA4_DELAY_3PS_QB_FULL_INTERNAL.html)
-- [DELTA4_DELAY_3PS JTL](plots/delta4_v1/DELTA4_DELAY_3PS_JTL_FULL_CHAIN.html)
-- [DELTA4_DELAY_6PS QB](plots/delta4_v1/DELTA4_DELAY_6PS_QB_FULL_INTERNAL.html)
-- [DELTA4_DELAY_6PS JTL](plots/delta4_v1/DELTA4_DELAY_6PS_JTL_FULL_CHAIN.html)
-- [DELTA4_GAIN_1P25 QB](plots/delta4_v1/DELTA4_GAIN_1P25_QB_FULL_INTERNAL.html)
-- [DELTA4_GAIN_1P25 JTL](plots/delta4_v1/DELTA4_GAIN_1P25_JTL_FULL_CHAIN.html)
-- [DELTA4_GAIN_1P50 QB](plots/delta4_v1/DELTA4_GAIN_1P50_QB_FULL_INTERNAL.html)
-- [DELTA4_GAIN_1P50 JTL](plots/delta4_v1/DELTA4_GAIN_1P50_JTL_FULL_CHAIN.html)
+Visualization manifest v2: [analysis/visualization_manifest_v2.json](analysis/visualization_manifest_v2.json).
 
-Comparison and critical pages:
+Primary per-run visualization index:
+[plots/delta4_v2/index.html](plots/delta4_v2/index.html).
 
-- [DELTA4 source components](plots/delta4_v1/DELTA4_SOURCE_COMPONENTS.html)
-- [controls vs interventions QB](plots/delta4_v1/CONTROLS_VS_INTERVENTIONS_QB.html)
-- [controls vs interventions JTL](plots/delta4_v1/CONTROLS_VS_INTERVENTIONS_JTL.html)
-- [QB internal critical zoom](plots/delta4_v1/QB_INTERNAL_CRITICAL_ZOOM_118_140.html)
-- [JTL downstream zoom](plots/delta4_v1/JTL_DOWNSTREAM_ZOOM_118_180.html)
+- [DELTA4_DELAY_3PS run directory](plots/delta4_v2/DELTA4_DELAY_3PS/index.html)
+- [DELTA4_DELAY_6PS run directory](plots/delta4_v2/DELTA4_DELAY_6PS/index.html)
+- [DELTA4_GAIN_1P25 run directory](plots/delta4_v2/DELTA4_GAIN_1P25/index.html)
+- [DELTA4_GAIN_1P50 run directory](plots/delta4_v2/DELTA4_GAIN_1P50/index.html)
+
+Each run directory contains BVM source reference, input components, QB full
+internal, JTL full chain, both windowed zooms, and N4 pairwise raw+delta:
+
+- [DELAY_3PS QB pairwise](plots/delta4_v2/DELTA4_DELAY_3PS/N4_VS_RUN_QB_RAW_DELTA.html)
+- [DELAY_3PS JTL pairwise](plots/delta4_v2/DELTA4_DELAY_3PS/N4_VS_RUN_JTL_RAW_DELTA.html)
+- [DELAY_6PS QB pairwise](plots/delta4_v2/DELTA4_DELAY_6PS/N4_VS_RUN_QB_RAW_DELTA.html)
+- [DELAY_6PS JTL pairwise](plots/delta4_v2/DELTA4_DELAY_6PS/N4_VS_RUN_JTL_RAW_DELTA.html)
+- [GAIN_1P25 QB pairwise](plots/delta4_v2/DELTA4_GAIN_1P25/N4_VS_RUN_QB_RAW_DELTA.html)
+- [GAIN_1P25 JTL pairwise](plots/delta4_v2/DELTA4_GAIN_1P25/N4_VS_RUN_JTL_RAW_DELTA.html)
+- [GAIN_1P50 QB pairwise](plots/delta4_v2/DELTA4_GAIN_1P50/N4_VS_RUN_QB_RAW_DELTA.html)
+- [GAIN_1P50 JTL pairwise](plots/delta4_v2/DELTA4_GAIN_1P50/N4_VS_RUN_JTL_RAW_DELTA.html)
 
 After this package is complete, status is AWAITING_USER_REVIEW. No
 N5/N6, parameter tuning, sweep, convergence run, physical BVM rerun or T1

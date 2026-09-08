@@ -1,0 +1,256 @@
+{
+  "schema": "jm2-delta4-replay-sensitivity-preflight-v1",
+  "experiment_id": "bvmsim-jm2-delta4-replay-sensitivity-v1-20260908",
+  "created_at_local": "2026-09-08T10:39:34+08:00",
+  "status": "PASS",
+  "head_at_setup": "2a3e3caeaefd511aa6e555dff18e596bd968f3a2",
+  "head_at_preflight": "2a3e3caeaefd511aa6e555dff18e596bd968f3a2",
+  "tracked_worktree_clean_at_preflight": true,
+  "contract_sentence_present": true,
+  "source_signal": "I(B_JSL8)",
+  "source_checks": {
+    "N3_PASSIVE": {
+      "raw": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_passive/raw.csv",
+      "raw_sha256": "f966077641779f90c5043bf7f5d9a4beaba9b13214977cc26cb399e1f6d90273",
+      "snapshot": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/data/n3_passive_JSL8_source.csv",
+      "snapshot_sha256": "93e41cf604bd373ad63f8fce2eadfd88d735b481fffc2e5e6434b0ff4ce7b586",
+      "raw_snapshot_exact_decimal_match": true,
+      "mismatches": [],
+      "sample_count": 1999,
+      "time_start_ps": "0E+6",
+      "time_end_ps": "199.9000",
+      "dt_ps": [
+        "0.1",
+        "0.2"
+      ],
+      "tail": {
+        "window_ps": [
+          "190.0",
+          "199.9"
+        ],
+        "sample_count": 100,
+        "last_value_uA": "-0.02882568",
+        "p2p_uA": "0.17378300",
+        "max_adjacent_step_uA": "0.022579749",
+        "criterion": {
+          "abs_last_uA_max": "1.0",
+          "p2p_uA_max": "1.0",
+          "max_adjacent_step_uA_max": "0.1"
+        },
+        "status": "PASS",
+        "interpretation": "bounded quiet-tail criterion; not exact equilibrium"
+      }
+    },
+    "N4_PASSIVE": {
+      "raw": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_passive/raw.csv",
+      "raw_sha256": "ea9e1e123c80dfc38a0d3b061d8eb68f9ed76133db07490da616cb3bf5b70ba0",
+      "snapshot": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/data/n4_passive_JSL8_source.csv",
+      "snapshot_sha256": "f917c119fb9920a167188c45bd31f93895720f71e5ebe35f753181307860e2e6",
+      "raw_snapshot_exact_decimal_match": true,
+      "mismatches": [],
+      "sample_count": 1999,
+      "time_start_ps": "0E+6",
+      "time_end_ps": "199.9000",
+      "dt_ps": [
+        "0.1",
+        "0.2"
+      ],
+      "tail": {
+        "window_ps": [
+          "190.0",
+          "199.9"
+        ],
+        "sample_count": 100,
+        "last_value_uA": "-0.04059690",
+        "p2p_uA": "0.2481494",
+        "max_adjacent_step_uA": "0.03227200",
+        "criterion": {
+          "abs_last_uA_max": "1.0",
+          "p2p_uA_max": "1.0",
+          "max_adjacent_step_uA_max": "0.1"
+        },
+        "status": "PASS",
+        "interpretation": "bounded quiet-tail criterion; not exact equilibrium"
+      }
+    }
+  },
+  "source_grid": {
+    "sample_count": 1999,
+    "time_start_ps": "0.0",
+    "time_end_ps": "199.9",
+    "dt_ps": [
+      "0.1",
+      "0.2"
+    ],
+    "common_actual_decimal_grid_required": true
+  },
+  "delta4": {
+    "equation": "I_N4_PASSIVE(B_JSL8,t) - I_N3_PASSIVE(B_JSL8,t)",
+    "role": "marginal source contribution / mathematical counterfactual component",
+    "reconstruction": "I_N3_PASSIVE + delta_I4 == I_N4_PASSIVE",
+    "reconstruction_abs_tolerance_A": "1E-21",
+    "timestamp_arithmetic": "exact Decimal",
+    "no_interpolation": true,
+    "no_resampling": true,
+    "no_waveform_reconstruction": true,
+    "out_of_range_delta": "zero"
+  },
+  "tail_decision": {
+    "window_ps": [
+      "190.0",
+      "199.9"
+    ],
+    "abs_last_uA_max": "1.0",
+    "p2p_uA_max": "1.0",
+    "max_adjacent_step_uA_max": "0.1",
+    "output_grid_end_ps": "205.9",
+    "tstop_ps": "206.0",
+    "n3_background_extension": "hold final N3 stored value only after 199.9 ps",
+    "primary_window_ps": [
+      "110.0",
+      "200.0"
+    ]
+  },
+  "controls": {
+    "N3_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv",
+      "expected_sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "actual_sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "unchanged": true,
+      "rerun": false
+    },
+    "N4_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv",
+      "expected_sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "actual_sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "unchanged": true,
+      "rerun": false
+    }
+  },
+  "models": {
+    "qb": {
+      "path": "BVMSim/BQ.cir",
+      "expected_sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "actual_sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "unchanged": true,
+      "bytes": 503
+    },
+    "jtl": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "expected_sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "actual_sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "unchanged": true,
+      "bytes": 864
+    },
+    "jjmit": {
+      "path": "circuits/models/jjmit.cir",
+      "expected_sha256": null,
+      "actual_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "unchanged": true,
+      "bytes": 504
+    }
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "authorized_run_matrix": [
+    {
+      "id": "DELTA4_DELAY_3PS",
+      "formula": "I_N3(t) + delta_I4(t - 3 ps)",
+      "kind": "exact_timestamp_shift",
+      "delay_ps": "3.0"
+    },
+    {
+      "id": "DELTA4_DELAY_6PS",
+      "formula": "I_N3(t) + delta_I4(t - 6 ps)",
+      "kind": "exact_timestamp_shift",
+      "delay_ps": "6.0"
+    },
+    {
+      "id": "DELTA4_GAIN_1P25",
+      "formula": "I_N3(t) + 1.25 * delta_I4(t)",
+      "kind": "signed_gain",
+      "gain": "1.25"
+    },
+    {
+      "id": "DELTA4_GAIN_1P50",
+      "formula": "I_N3(t) + 1.50 * delta_I4(t)",
+      "kind": "signed_gain",
+      "gain": "1.50"
+    }
+  ],
+  "receiver": {
+    "qb": "BVMSim/BQ.cir",
+    "jtl": "BVMSim/library_josim/jtl2.cir",
+    "jjmit": "circuits/models/jjmit.cir",
+    "jtl_stages": 6,
+    "termination_ohm": 10.0,
+    "parameters": "RJ1=12 ohm; RJ2=4 ohm; IB=250 uA; BJS area=3; BJ1 area=0.9; BJ2 area=2"
+  },
+  "probes": {
+    "QB_full": "QBIN/input boundary, I(I_REPLAY), LIN, BJS, L1, BJ1, RJ1, L2, IB, BJ2, RJ2, L3, QBOUT; JJ P/V/I and inductor/resistor I/V where available",
+    "JTL_full": "JTL1-JTL6 B01/B02 P/V/I and each stage output voltage; I(R_TERM)"
+  },
+  "windows_ps": {
+    "FINAL_READ_RESPONSE": [
+      "110.0",
+      "200.0"
+    ],
+    "QB_INTERNAL_CRITICAL": [
+      "118.0",
+      "140.0"
+    ],
+    "FOURTH_INTERNAL_SEARCH": [
+      "120.0",
+      "140.0"
+    ],
+    "DOWNSTREAM_ZOOM": [
+      "118.0",
+      "180.0"
+    ],
+    "TAIL_COMPLETENESS": [
+      "190.0",
+      "206.0"
+    ],
+    "semantics": "half-open [start,end)",
+    "internal_priority": [
+      "BJ1",
+      "BJ2",
+      "QBOUT"
+    ]
+  },
+  "thresholds": {
+    "voltage_mV": {
+      "QBIN": 0.25,
+      "BJS": 0.1,
+      "BJ1": 0.3,
+      "BJ2": 0.5,
+      "QBOUT": 0.45,
+      "JTL_B01": 0.5
+    },
+    "termination_uA": 5.0,
+    "minimum_consecutive_samples": 2,
+    "semantics": "activity samples/clusters only; never event counts"
+  },
+  "phase_area": {
+    "raw_phase_unit": "rad",
+    "conversion": "continuous_unwrap(rad)/(2*pi)",
+    "same_jj_same_endpoints_same_direction_same_window": true,
+    "absolute_tolerance_turns": 0.15,
+    "relative_tolerance": 0.15,
+    "SFQ_count_allowed": false
+  },
+  "convergence": "UNKNOWN; no timestep convergence or sensitivity sweep authorized",
+  "prohibited_followups": [
+    "N5/N6",
+    "QB/JTL tuning",
+    "BJ1/BJ2/RJ1/RJ2/IB sweep",
+    "timestep sweep",
+    "physical BVM rerun",
+    "additional condition",
+    "T1"
+  ],
+  "failures": []
+}

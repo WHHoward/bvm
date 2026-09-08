@@ -1,0 +1,256 @@
+experiment_id: bvmsim-jm2-delta4-replay-sensitivity-v1-20260908
+study_phase: EXPLORATION
+mode: QUICK
+status: AWAITING_USER_REVIEW
+created_at_local: '2026-09-08T10:31:52+08:00'
+head_at_setup: 2a3e3caeaefd511aa6e555dff18e596bd968f3a2
+
+role: Experimental Operator + Evidence Packager
+
+question:
+  primary: >-
+    At the frozen N3/N4 passive source and receiver/JTL topology, distinguish
+    timing/recovery sensitivity from effective marginal-stimulus/front-end
+    sensitivity for the incomplete N4 fourth progression.
+  bounded_oracle: >-
+    The four runs are ideal-current replay sufficiency tests. DELTA4_DELAY_3PS
+    and DELTA4_DELAY_6PS delay only the matched N3-to-N4 marginal source
+    component; DELTA4_GAIN_1P25 and DELTA4_GAIN_1P50 scale that signed
+    component. They are mathematical counterfactual components, not
+    independent SFQ pulses, independent BVM sources, or source-network
+    reconstructions.
+  interpretation_ceiling: >-
+    Report only OBSERVED, DERIVED, BOUNDED_RESULT and UNKNOWN. Do not infer
+    root cause, dead-time limited behavior, saturation, hardware behavior,
+    universal mechanism, or a formal SFQ PASS. Convergence and sensitivity
+    remain UNKNOWN.
+
+controls:
+  N3_REPLAY:
+    experiment: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907
+    case: N3_REPLAY
+    raw: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv
+    raw_sha256: 555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225
+    rerun: false
+  N4_REPLAY:
+    experiment: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907
+    case: N4_REPLAY
+    raw: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv
+    raw_sha256: 5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28
+    rerun: false
+
+source_identity:
+  N3_PASSIVE:
+    raw: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_passive/raw.csv
+    raw_sha256: f966077641779f90c5043bf7f5d9a4beaba9b13214977cc26cb399e1f6d90273
+    snapshot: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/data/n3_passive_JSL8_source.csv
+    snapshot_sha256: 93e41cf604bd373ad63f8fce2eadfd88d735b481fffc2e5e6434b0ff4ce7b586
+    signal: I(B_JSL8)
+  N4_PASSIVE:
+    raw: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_passive/raw.csv
+    raw_sha256: ea9e1e123c80dfc38a0d3b061d8eb68f9ed76133db07490da616cb3bf5b70ba0
+    snapshot: test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/data/n4_passive_JSL8_source.csv
+    snapshot_sha256: f917c119fb9920a167188c45bd31f93895720f71e5ebe35f753181307860e2e6
+    signal: I(B_JSL8)
+  source_branch:
+    passive_endpoint: B_JSL8 JSL_NODE7 0
+    replay_endpoint: I_REPLAY 0 QBIN
+    positive_direction: JSL_NODE7 toward passive load / into QBIN
+    sign_change: false
+
+delta4:
+  equation: I_N4_PASSIVE(B_JSL8,t) - I_N3_PASSIVE(B_JSL8,t)
+  role: marginal source contribution / mathematical counterfactual component
+  common_actual_grid_required: true
+  source_grid:
+    sample_count: 1999
+    time_start_ps: 0.0
+    time_end_ps: 199.9
+    dt_ps: [0.1, 0.2]
+  reconstruction_equation: I_N3_PASSIVE + delta_I4 = I_N4_PASSIVE
+  reconstruction_abs_tolerance_A: 1.0e-21
+  source_values: signed Decimal tokens from immutable source snapshots
+  forbidden_labels:
+    - independent SFQ pulse
+    - independent BVM current source
+    - physical pulse separation
+    - circuit-equivalent source reconstruction
+
+authorized_runs:
+  - id: DELTA4_DELAY_3PS
+    formula: I_N3(t) + delta_I4(t - 3 ps)
+    transformation: exact_timestamp_shift
+    delay_ps: 3.0
+  - id: DELTA4_DELAY_6PS
+    formula: I_N3(t) + delta_I4(t - 6 ps)
+    transformation: exact_timestamp_shift
+    delay_ps: 6.0
+  - id: DELTA4_GAIN_1P25
+    formula: I_N3(t) + 1.25 * delta_I4(t)
+    transformation: signed_gain
+    gain: 1.25
+  - id: DELTA4_GAIN_1P50
+    formula: I_N3(t) + 1.50 * delta_I4(t)
+    transformation: signed_gain
+    gain: 1.50
+  count: 4
+  controls_are_immutable: true
+  no_other_conditions: true
+
+transformation_contract:
+  delay:
+    timestamp_lookup: exact Decimal timestamp key on original source grid
+    interpolation: forbidden
+    smoothing: forbidden
+    resampling: forbidden
+    fitting: forbidden
+    pulse_reconstruction: forbidden
+    out_of_range_delta: zero
+    missing_exact_timestamp: zero
+    N3_background: unchanged on original domain
+  tail_extension:
+    source_quiet_check_window_ps: [190.0, 199.9]
+    source_quiet_check_semantics: closed at 199.9 for terminal-sample check
+    quiet_abs_last_uA_max: 1.0
+    quiet_p2p_uA_max: 1.0
+    quiet_max_adjacent_step_uA_max: 0.1
+    output_grid_end_ps: 205.9
+    tstop_ps: 206.0
+    extension_rule: >-
+      Because both source tails pass the registered quiet criterion, extend
+      only outside the original source domain by holding N3 at its final
+      stored value. This extension changes no original N3 sample. The shifted
+      delta is still exact timestamp lookup and is zero when its argument is
+      outside the original source grid.
+    interpretation: >-
+      Samples after 200 ps are tail-completeness evidence only; primary
+      response conclusions use FINAL_READ_RESPONSE [110,200) ps.
+  gain:
+    signed_scaling: true
+    positive_and_negative_scaled: true
+    rectification: forbidden
+    clipping: forbidden
+    reshaping: forbidden
+    timestamp_change: forbidden
+
+frozen_receiver:
+  bq: BVMSim/BQ.cir
+  jtl: BVMSim/library_josim/jtl2.cir
+  jjmit: circuits/models/jjmit.cir
+  topology: exact I_REPLAY 0 QBIN -> BQ -> six jtl stages -> 10 ohm termination
+  qb_parameters: RJ1=12 ohm; RJ2=4 ohm; IB=250 uA; BJS area=3; BJ1 area=0.9; BJ2 area=2
+  jtl_stage_count: 6
+  jtl_stage_bias_uA: 280.0
+  termination_ohm: 10.0
+  bvm_in_replay: false
+  passive_jsl_in_replay: false
+
+solver:
+  path: build/josim-cli
+  nominal_timestep_ps: 0.1
+  tstop_ps: 206.0
+  tran: .tran 0.1p 206p
+  timestep_sweep: false
+  convergence_sweep: false
+  parameter_sweep: false
+
+probes:
+  QB_full:
+    - I(I_REPLAY)
+    - V(QBIN)
+    - I(LIN|XBQ1)
+    - V(LIN|XBQ1)
+    - P(BJS|XBQ1)
+    - V(BJS|XBQ1)
+    - I(BJS|XBQ1)
+    - I(L1|XBQ1)
+    - V(L1|XBQ1)
+    - P(BJ1|XBQ1)
+    - V(BJ1|XBQ1)
+    - I(BJ1|XBQ1)
+    - I(RJ1|XBQ1)
+    - V(RJ1|XBQ1)
+    - I(L2|XBQ1)
+    - V(L2|XBQ1)
+    - I(IB|XBQ1)
+    - P(BJ2|XBQ1)
+    - V(BJ2|XBQ1)
+    - I(BJ2|XBQ1)
+    - I(RJ2|XBQ1)
+    - V(RJ2|XBQ1)
+    - I(L3|XBQ1)
+    - V(L3|XBQ1)
+    - V(QBOUT)
+  JTL_full:
+    all_stages: JTL1-JTL6
+    per_stage:
+      - P(B01|XJTL1_stage)
+      - V(B01|XJTL1_stage)
+      - I(B01|XJTL1_stage)
+      - P(B02|XJTL1_stage)
+      - V(B02|XJTL1_stage)
+      - I(B02|XJTL1_stage)
+      - V(JTLstage_OUT)
+    termination:
+      - I(R_TERM)
+
+windows:
+  FINAL_READ_RESPONSE: [110.0, 200.0]
+  QB_INTERNAL_CRITICAL: [118.0, 140.0]
+  FOURTH_INTERNAL_SEARCH: [120.0, 140.0]
+  DOWNSTREAM_ZOOM: [118.0, 180.0]
+  TAIL_COMPLETENESS: [190.0, 206.0]
+  semantics: all analysis windows are half-open [start,end) unless stated otherwise
+  internal_reference_priority: BJ1, BJ2, QBOUT
+  downstream_references: JTL1-JTL6 and R_TERM only
+
+metrics_and_thresholds:
+  source_reconstruction:
+    exact_decimal_residual_tolerance_A: 1.0e-21
+  activity:
+    QBIN_mV: 0.25
+    BJS_mV: 0.10
+    BJ1_mV: 0.30
+    BJ2_mV: 0.50
+    QBOUT_mV: 0.45
+    JTL_B01_mV: 0.50
+    termination_uA: 5.0
+    minimum_consecutive_samples: 2
+    threshold_semantics: activity samples/clusters only, never event counts
+  phase_area:
+    raw_phase_unit: rad
+    display_conversion: continuous_unwrap(rad)/(2*pi)
+    voltage_direction: direct same-JJ JoSIM V(P) orientation
+    absolute_tolerance_turns: 0.15
+    relative_tolerance: 0.15
+    no_SFQ_count: true
+  arithmetic:
+    integration: trapezoid on actual stored time column
+    phase: independently unwrap each run before comparison
+  convergence: UNKNOWN; no timestep convergence in this batch
+
+interpretation_matrix:
+  delay_only: bounded support for timing/recovery sensitivity only if both delay runs show a new bounded BJ2 progression plus ordered downstream activity and gain runs do not
+  gain_only: bounded support for effective marginal-stimulus/front-end sensitivity only if both gain runs show the same evidence and delay runs do not
+  both: bounded mixed timing/stimulus sensitivity
+  neither: retain MIXED_OR_UNRESOLVED; do not infer root cause
+  complete_progression_is_not_SFQ: true
+
+prohibited_followups:
+  - N5/N6
+  - QB/JTL parameter tuning
+  - BJ1/BJ2/RJ1/RJ2/IB sweep
+  - timestep sweep
+  - physical BVM rerun
+  - additional delay or gain condition
+  - T1
+  - convergence or confirmation run
+
+stop:
+  after: >-
+    exactly four authorized solves, raw QA, source reconstruction QA,
+    independent mechanical recomputation, metrics, standalone visualization
+    for every run, control/intervention comparison, QB critical zoom, JTL
+    full-chain view, visualization QA and RESULT_BRIEF
+  final_status: AWAITING_USER_REVIEW
+  automatic_followup: false

@@ -1,0 +1,433 @@
+{
+  "schema": "jm2-delta4-independent-mechanical-check-v1",
+  "experiment_id": "bvmsim-jm2-delta4-replay-sensitivity-v1-20260908",
+  "head": "2a3e3caeaefd511aa6e555dff18e596bd968f3a2",
+  "status": "PASS",
+  "source_reconstruction": {
+    "same_actual_decimal_grid": true,
+    "sample_count": 1999,
+    "max_abs_residual_A": "0.000000",
+    "tolerance_A": "1e-21",
+    "nonzero_residual_count": 0
+  },
+  "transform_checks": {
+    "DELTA4_DELAY_3PS": {
+      "source_sha256": "e0ad5274d9711309a4d2e0a9313eab9047dbc7ed10535fabf12d5a21ef3d33a8",
+      "deck_sha256": "667dde7e022a446827f61a75544af419ed4c37ef34206d95e5abd2545e332fbb",
+      "sample_count": 2059,
+      "deck_pair_count": 2059,
+      "exact_formula_check": true
+    },
+    "DELTA4_DELAY_6PS": {
+      "source_sha256": "594e0ba5ee28af85792f58ad2a1a5a2db0d31e4d37dc84fe59f2d01c035b5538",
+      "deck_sha256": "26080f679668cd8680f8e0177976d143cfe8fc80520b6246fd5723d408698b64",
+      "sample_count": 2059,
+      "deck_pair_count": 2059,
+      "exact_formula_check": true
+    },
+    "DELTA4_GAIN_1P25": {
+      "source_sha256": "f5d00fdcb98731e2c8d4f503a8e71f67c1b95e1ebc9371ed11b92505d750ae2e",
+      "deck_sha256": "35e5abf1cb698d4d256b8e022ceb975ffd1c239ffb34c4c4890f0f6eb201054e",
+      "sample_count": 2059,
+      "deck_pair_count": 2059,
+      "exact_formula_check": true
+    },
+    "DELTA4_GAIN_1P50": {
+      "source_sha256": "cc806511cbc648136f9a8825f93ee9e010e6bbe73b5c0f5186b238ba7fb9dee2",
+      "deck_sha256": "c090955a26c2afaab970fe12c73de4cc49c3abbb8b11b35b04bbbffe4977d36f",
+      "sample_count": 2059,
+      "deck_pair_count": 2059,
+      "exact_formula_check": true
+    }
+  },
+  "raw_hashes": {
+    "N3_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv",
+      "sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "expected": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "unchanged": true
+    },
+    "N4_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv",
+      "sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "expected": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "unchanged": true
+    },
+    "DELTA4_DELAY_3PS": {
+      "path": "test/exploration/bvmsim-jm2-delta4-replay-sensitivity-v1-20260908/runs/DELTA4_DELAY_3PS/raw.csv",
+      "sha256": "da0239d7134be2c212f6de07fe99b609a55fee01bcab27c30b0b3b601a11278a",
+      "hash_at_execution": "da0239d7134be2c212f6de07fe99b609a55fee01bcab27c30b0b3b601a11278a",
+      "unchanged": true
+    },
+    "DELTA4_DELAY_6PS": {
+      "path": "test/exploration/bvmsim-jm2-delta4-replay-sensitivity-v1-20260908/runs/DELTA4_DELAY_6PS/raw.csv",
+      "sha256": "285078256918fda077767fc4368dcdd394f86cc36641789a25c31f2ffa1691b6",
+      "hash_at_execution": "285078256918fda077767fc4368dcdd394f86cc36641789a25c31f2ffa1691b6",
+      "unchanged": true
+    },
+    "DELTA4_GAIN_1P25": {
+      "path": "test/exploration/bvmsim-jm2-delta4-replay-sensitivity-v1-20260908/runs/DELTA4_GAIN_1P25/raw.csv",
+      "sha256": "9a20400bde72c81f45f3ca8f72fc7b560298cc8ee1be1f2e542d52f2360429ba",
+      "hash_at_execution": "9a20400bde72c81f45f3ca8f72fc7b560298cc8ee1be1f2e542d52f2360429ba",
+      "unchanged": true
+    },
+    "DELTA4_GAIN_1P50": {
+      "path": "test/exploration/bvmsim-jm2-delta4-replay-sensitivity-v1-20260908/runs/DELTA4_GAIN_1P50/raw.csv",
+      "sha256": "624a67de1d9e19f3a9f863122adcc72fbf7eb3209af2b068d17563243a89bf36",
+      "hash_at_execution": "624a67de1d9e19f3a9f863122adcc72fbf7eb3209af2b068d17563243a89bf36",
+      "unchanged": true
+    }
+  },
+  "metric_reproduction": {
+    "N3_REPLAY": {
+      "BJ1": {
+        "actual": {
+          "phase_delta_turns": 1.2841798555232997,
+          "voltage_area_over_phi0": 1.2834561443063777
+        },
+        "expected": {
+          "phase_delta_turns": 1.2841798555232995,
+          "voltage_area_over_phi0": 1.2834561443063746
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "BJ2": {
+        "actual": {
+          "phase_delta_turns": 1.8273828382683777,
+          "voltage_area_over_phi0": 1.8273964665951246
+        },
+        "expected": {
+          "phase_delta_turns": 1.8273828382683777,
+          "voltage_area_over_phi0": 1.8273964665951228
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL1_B01": {
+        "actual": {
+          "phase_delta_turns": 2.0798789723848077,
+          "voltage_area_over_phi0": 2.080823429581466
+        },
+        "expected": {
+          "phase_delta_turns": 2.0798789723848072,
+          "voltage_area_over_phi0": 2.080823429581465
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL6_B01": {
+        "actual": {
+          "phase_delta_turns": 2.084885541260638,
+          "voltage_area_over_phi0": 2.085324964247541
+        },
+        "expected": {
+          "phase_delta_turns": 2.084885541260638,
+          "voltage_area_over_phi0": 2.0853249642475395
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      }
+    },
+    "N4_REPLAY": {
+      "BJ1": {
+        "actual": {
+          "phase_delta_turns": 1.0952677127215127,
+          "voltage_area_over_phi0": 1.0954434840163232
+        },
+        "expected": {
+          "phase_delta_turns": 1.0952677127215122,
+          "voltage_area_over_phi0": 1.095443484016323
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "BJ2": {
+        "actual": {
+          "phase_delta_turns": 1.4838842950161482,
+          "voltage_area_over_phi0": 1.4843648731733112
+        },
+        "expected": {
+          "phase_delta_turns": 1.4838842950161482,
+          "voltage_area_over_phi0": 1.484364873173309
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL1_B01": {
+        "actual": {
+          "phase_delta_turns": 1.9335616261576478,
+          "voltage_area_over_phi0": 1.934137817169535
+        },
+        "expected": {
+          "phase_delta_turns": 1.9335616261576478,
+          "voltage_area_over_phi0": 1.9341378171695318
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL6_B01": {
+        "actual": {
+          "phase_delta_turns": 2.582249274338689,
+          "voltage_area_over_phi0": 2.5812860495524688
+        },
+        "expected": {
+          "phase_delta_turns": 2.582249274338689,
+          "voltage_area_over_phi0": 2.5812860495524723
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      }
+    },
+    "DELTA4_DELAY_3PS": {
+      "BJ1": {
+        "actual": {
+          "phase_delta_turns": 1.096577557903159,
+          "voltage_area_over_phi0": 1.0951587179938647
+        },
+        "expected": {
+          "phase_delta_turns": 1.0965775579031587,
+          "voltage_area_over_phi0": 1.095158717993865
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "BJ2": {
+        "actual": {
+          "phase_delta_turns": 1.6660285330178954,
+          "voltage_area_over_phi0": 1.6661331762086524
+        },
+        "expected": {
+          "phase_delta_turns": 1.6660285330178959,
+          "voltage_area_over_phi0": 1.6661331762086506
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL1_B01": {
+        "actual": {
+          "phase_delta_turns": 2.0481780133549345,
+          "voltage_area_over_phi0": 2.0492972367284703
+        },
+        "expected": {
+          "phase_delta_turns": 2.048178013354935,
+          "voltage_area_over_phi0": 2.0492972367284708
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL6_B01": {
+        "actual": {
+          "phase_delta_turns": 2.308775165905731,
+          "voltage_area_over_phi0": 2.3080138966541353
+        },
+        "expected": {
+          "phase_delta_turns": 2.3087751659057307,
+          "voltage_area_over_phi0": 2.3080138966541353
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      }
+    },
+    "DELTA4_DELAY_6PS": {
+      "BJ1": {
+        "actual": {
+          "phase_delta_turns": 1.216209553977044,
+          "voltage_area_over_phi0": 1.2150182479264648
+        },
+        "expected": {
+          "phase_delta_turns": 1.216209553977044,
+          "voltage_area_over_phi0": 1.2150182479264622
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "BJ2": {
+        "actual": {
+          "phase_delta_turns": 1.8125515074315302,
+          "voltage_area_over_phi0": 1.812656534892933
+        },
+        "expected": {
+          "phase_delta_turns": 1.8125515074315302,
+          "voltage_area_over_phi0": 1.8126565348929313
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL1_B01": {
+        "actual": {
+          "phase_delta_turns": 2.0795945625015024,
+          "voltage_area_over_phi0": 2.0805886591498526
+        },
+        "expected": {
+          "phase_delta_turns": 2.0795945625015024,
+          "voltage_area_over_phi0": 2.0805886591498535
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL6_B01": {
+        "actual": {
+          "phase_delta_turns": 2.194974606946733,
+          "voltage_area_over_phi0": 2.1949098862658865
+        },
+        "expected": {
+          "phase_delta_turns": 2.1949746069467326,
+          "voltage_area_over_phi0": 2.194909886265885
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      }
+    },
+    "DELTA4_GAIN_1P25": {
+      "BJ1": {
+        "actual": {
+          "phase_delta_turns": 1.0436776379182748,
+          "voltage_area_over_phi0": 1.0438597556509288
+        },
+        "expected": {
+          "phase_delta_turns": 1.0436776379182748,
+          "voltage_area_over_phi0": 1.0438597556509277
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "BJ2": {
+        "actual": {
+          "phase_delta_turns": 1.3955310199081132,
+          "voltage_area_over_phi0": 1.3958991743566818
+        },
+        "expected": {
+          "phase_delta_turns": 1.395531019908113,
+          "voltage_area_over_phi0": 1.3958991743566787
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL1_B01": {
+        "actual": {
+          "phase_delta_turns": 1.8841422656232403,
+          "voltage_area_over_phi0": 1.8845677973697623
+        },
+        "expected": {
+          "phase_delta_turns": 1.8841422656232398,
+          "voltage_area_over_phi0": 1.8845677973697588
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL6_B01": {
+        "actual": {
+          "phase_delta_turns": 2.729504122758132,
+          "voltage_area_over_phi0": 2.7295522563958676
+        },
+        "expected": {
+          "phase_delta_turns": 2.7295041227581316,
+          "voltage_area_over_phi0": 2.729552256395871
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      }
+    },
+    "DELTA4_GAIN_1P50": {
+      "BJ1": {
+        "actual": {
+          "phase_delta_turns": 0.9724780825766844,
+          "voltage_area_over_phi0": 0.9724905605960465
+        },
+        "expected": {
+          "phase_delta_turns": 0.9724780825766848,
+          "voltage_area_over_phi0": 0.9724905605960458
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "BJ2": {
+        "actual": {
+          "phase_delta_turns": 1.3153885483141894,
+          "voltage_area_over_phi0": 1.3154795796581815
+        },
+        "expected": {
+          "phase_delta_turns": 1.3153885483141894,
+          "voltage_area_over_phi0": 1.315479579658178
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL1_B01": {
+        "actual": {
+          "phase_delta_turns": 1.8334092401885522,
+          "voltage_area_over_phi0": 1.833764345364367
+        },
+        "expected": {
+          "phase_delta_turns": 1.833409240188552,
+          "voltage_area_over_phi0": 1.8337643453643642
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      },
+      "JTL6_B01": {
+        "actual": {
+          "phase_delta_turns": 2.8378487866059627,
+          "voltage_area_over_phi0": 2.8391391872791076
+        },
+        "expected": {
+          "phase_delta_turns": 2.837848786605962,
+          "voltage_area_over_phi0": 2.8391391872791094
+        },
+        "checks": {
+          "phase_delta_turns": true,
+          "voltage_area_over_phi0": true
+        }
+      }
+    }
+  },
+  "method": "independent standard-library CSV/Decimal parser, exact lookup, and actual-grid trapezoid/unwrap arithmetic",
+  "failures": []
+}

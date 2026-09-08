@@ -1,0 +1,115 @@
+{
+  "schema": "jm2-delta4-source-identity-manifest-v1",
+  "experiment_id": "bvmsim-jm2-delta4-replay-sensitivity-v1-20260908",
+  "head": "2a3e3caeaefd511aa6e555dff18e596bd968f3a2",
+  "source_signal": "I(B_JSL8)",
+  "N3_PASSIVE": {
+    "raw": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_passive/raw.csv",
+    "raw_sha256": "f966077641779f90c5043bf7f5d9a4beaba9b13214977cc26cb399e1f6d90273",
+    "snapshot": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/data/n3_passive_JSL8_source.csv",
+    "snapshot_sha256": "93e41cf604bd373ad63f8fce2eadfd88d735b481fffc2e5e6434b0ff4ce7b586",
+    "raw_snapshot_exact_decimal_match": true,
+    "mismatches": [],
+    "sample_count": 1999,
+    "time_start_ps": "0E+6",
+    "time_end_ps": "199.9000",
+    "dt_ps": [
+      "0.1",
+      "0.2"
+    ],
+    "tail": {
+      "window_ps": [
+        "190.0",
+        "199.9"
+      ],
+      "sample_count": 100,
+      "last_value_uA": "-0.02882568",
+      "p2p_uA": "0.17378300",
+      "max_adjacent_step_uA": "0.022579749",
+      "criterion": {
+        "abs_last_uA_max": "1.0",
+        "p2p_uA_max": "1.0",
+        "max_adjacent_step_uA_max": "0.1"
+      },
+      "status": "PASS",
+      "interpretation": "bounded quiet-tail criterion; not exact equilibrium"
+    }
+  },
+  "N4_PASSIVE": {
+    "raw": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_passive/raw.csv",
+    "raw_sha256": "ea9e1e123c80dfc38a0d3b061d8eb68f9ed76133db07490da616cb3bf5b70ba0",
+    "snapshot": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/data/n4_passive_JSL8_source.csv",
+    "snapshot_sha256": "f917c119fb9920a167188c45bd31f93895720f71e5ebe35f753181307860e2e6",
+    "raw_snapshot_exact_decimal_match": true,
+    "mismatches": [],
+    "sample_count": 1999,
+    "time_start_ps": "0E+6",
+    "time_end_ps": "199.9000",
+    "dt_ps": [
+      "0.1",
+      "0.2"
+    ],
+    "tail": {
+      "window_ps": [
+        "190.0",
+        "199.9"
+      ],
+      "sample_count": 100,
+      "last_value_uA": "-0.04059690",
+      "p2p_uA": "0.2481494",
+      "max_adjacent_step_uA": "0.03227200",
+      "criterion": {
+        "abs_last_uA_max": "1.0",
+        "p2p_uA_max": "1.0",
+        "max_adjacent_step_uA_max": "0.1"
+      },
+      "status": "PASS",
+      "interpretation": "bounded quiet-tail criterion; not exact equilibrium"
+    }
+  },
+  "controls": {
+    "N3_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n3_replay/raw.csv",
+      "expected_sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "actual_sha256": "555e850fde892da7fd2328d2ac34081b45459ab48e8181a8e95d7cd531e7c225",
+      "unchanged": true,
+      "rerun": false
+    },
+    "N4_REPLAY": {
+      "path": "test/exploration/bvmsim-jm2-read-count-passive-replay-v1-20260907/runs/n4_replay/raw.csv",
+      "expected_sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "actual_sha256": "5cac782aa9dfa5d467d81e2988e772f1978abfe8313d7896089d5dfa84517b28",
+      "unchanged": true,
+      "rerun": false
+    }
+  },
+  "models": {
+    "qb": {
+      "path": "BVMSim/BQ.cir",
+      "expected_sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "actual_sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd",
+      "unchanged": true,
+      "bytes": 503
+    },
+    "jtl": {
+      "path": "BVMSim/library_josim/jtl2.cir",
+      "expected_sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "actual_sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "unchanged": true,
+      "bytes": 864
+    },
+    "jjmit": {
+      "path": "circuits/models/jjmit.cir",
+      "expected_sha256": null,
+      "actual_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "unchanged": true,
+      "bytes": 504
+    }
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "delta4_role": "marginal source contribution / mathematical counterfactual component; not independent SFQ or independent BVM source"
+}

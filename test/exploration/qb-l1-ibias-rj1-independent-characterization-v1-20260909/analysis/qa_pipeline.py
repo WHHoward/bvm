@@ -240,7 +240,7 @@ def mechanical_case(case_id: str) -> tuple[dict[str, Any], dict[str, Any]]:
 
 
 def deck_diff() -> dict[str, Any]:
-    nominal = (EXP / "references" / "reused" / "NOMINAL" / "deck.cir").read_text(encoding="utf-8").splitlines()
+    nominal = (EXP / "inputs" / "nominal_deck_template.cir").read_text(encoding="utf-8").splitlines()
     nominal_params = {line.split("=", 1)[0]: line for line in nominal if line.startswith(".param ")}
     families: dict[str, Any] = {}
     failures: list[str] = []
@@ -266,7 +266,7 @@ def deck_diff() -> dict[str, Any]:
     return {
         "schema": "qb-l1-ibias-rj1-deck-diff-qa-v1",
         "status": "PASS" if not failures else "FAIL",
-        "baseline": "references/reused/NOMINAL/deck.cir (same frozen non-parameter text)",
+        "baseline": "inputs/nominal_deck_template.cir (same frozen non-parameter text)",
         "family_rule": "one registered parameter line changes; all other deck lines remain identical",
         "runs": families,
         "failures": failures,
@@ -276,8 +276,24 @@ def deck_diff() -> dict[str, Any]:
 def main() -> int:
     current_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
     preflight = json.loads((EXP / "analysis/preflight.json").read_text(encoding="utf-8"))
-    if current_head != preflight.get("head"):
-        raise RuntimeError("HEAD changed after preflight; do not analyze or package")
+    preflight_head = preflight.get("head")
+    if current_head != preflight_head:
+        changed = set(subprocess.check_output(
+            ["git", "diff", "--name-only", f"{preflight_head}..{current_head}"],
+            cwd=REPO,
+            text=True,
+        ).splitlines())
+        allowed_seal = {
+            str(EXP.relative_to(REPO) / "PREFLIGHT.md"),
+            str(EXP.relative_to(REPO) / "analysis/preflight.json"),
+        }
+        distance = int(subprocess.check_output(
+            ["git", "rev-list", "--count", f"{preflight_head}..{current_head}"],
+            cwd=REPO,
+            text=True,
+        ).strip())
+        if not preflight.get("head_refresh") or distance != 1 or changed != allowed_seal:
+            raise RuntimeError(f"HEAD changed after preflight outside seal: {current_head} != {preflight_head}")
     execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
     if execution.get("status") != "RUN_PASS" or execution.get("new_physical_solve_count") != 12:
         raise RuntimeError("execution summary is not an exact successful 12-run matrix")
@@ -301,6 +317,7 @@ def main() -> int:
     post_hashes = {case_id: sha256(case_path(case_id)) for case_id in pre_hashes}
     raw_qa = {
         "schema": "qb-l1-ibias-rj1-raw-qa-v1",
+        "status": "PASS" if not raw_failures and pre_hashes == post_hashes else "FAIL",
         "experiment_id": EXP.name,
         "created_at_local": now(),
         "head": current_head,

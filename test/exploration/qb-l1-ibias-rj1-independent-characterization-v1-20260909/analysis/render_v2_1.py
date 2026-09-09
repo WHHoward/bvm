@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 REPO = Path(__file__).resolve().parents[4]
-EXP = Path(__file__).resolve().parents[2]
+EXP = Path(__file__).resolve().parents[1]
 V2_ANALYSIS = EXP / "visualization"
 V2_PLOTS = EXP / "plots/v2_1"
 V21_ANALYSIS = V2_ANALYSIS
@@ -621,7 +621,11 @@ def render_v21(stage: str) -> int:
     else:
         entries = []
         for run_id, spec in RUNS.items():
-            directory = spec[0]
+            # Use the logical case ID for generated paths.  Several logical
+            # nominal aliases intentionally share one reused raw directory;
+            # using the source path here would make later aliases overwrite
+            # earlier HTML/CSV artifacts and invalidate their manifest hashes.
+            directory = run_id
             for category, windows in V21_STANDALONE_WINDOWS.items():
                 for window_name, window in windows.items():
                     input_csv = V21_ANALYSIS / "derived" / "standalone" / directory / category / f"{window_name}.csv"
@@ -652,7 +656,8 @@ def render_v21(stage: str) -> int:
 def write_v21_run_summaries() -> None:
     summary_dir = V21_ANALYSIS / "run_summaries"
     for run_id, spec in RUNS.items():
-        directory, rj1, l1, ibias = spec
+        _, rj1, l1, ibias = spec
+        directory = run_id
         base = "../../plots/v2_1"
         lines = [f"# {run_id} — V2.1 system-chain summary", "", f"Registered parameters: RJ1={rj1:g} ohm; L1={l1:g} pH; IBias={ibias:g} uA.", "", "Evidence-only navigation; scientific interpretation was not performed.", ""]
         for category, windows in V21_STANDALONE_WINDOWS.items():

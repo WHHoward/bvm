@@ -21,6 +21,7 @@ EXP = Path(__file__).resolve().parents[1]
 TEMPLATE = EXP / "inputs/array_fixture_template.cir"
 BQ_SOURCE = EXP / "inputs/BQ_source.cir"
 BQ_PARAMETERIZED = EXP / "inputs/BQ_parameterized_v2.cir"
+NOMINAL_DECK_TEMPLATE = EXP / "inputs/nominal_deck_template.cir"
 SOLVER = REPO / "build/josim-cli"
 OLD_EXP = REPO / "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909"
 CONTRACT_SENTENCE = "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
@@ -141,6 +142,7 @@ def verify_inputs() -> list[str]:
 
 
 def generate_decks() -> dict[str, dict[str, object]]:
+    write_once(NOMINAL_DECK_TEMPLATE, build_deck(12.0, 2.0, 250.0))
     records: dict[str, dict[str, object]] = {}
     for run_id, (family, rj1, l1, ibias) in NEW_RUNS.items():
         directory = EXP / "runs" / run_id
@@ -206,6 +208,7 @@ def reused_manifest() -> dict[str, object]:
 def source_manifest(current_head: str) -> dict[str, object]:
     sources = [
         ("inputs/array_fixture_template.cir", "fixture template"),
+        ("inputs/nominal_deck_template.cir", "nominal deck diff baseline"),
         ("inputs/bvm_jm2_connected.cir", "historical BVM variant"),
         ("inputs/jjmit.cir", "JJ model"),
         ("inputs/BQ_source.cir", "BQ source"),

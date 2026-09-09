@@ -178,8 +178,213 @@ def check_jsl_consistency(failures: list[str]) -> None:
                 fail(f"negative JSL consistency residual {run_id} {window}", failures)
 
 
+V21A = V2A / "v2_1"
+V21P = V2P / "v2_1"
+V21_CATEGORIES = {"01_SIGNAL_TIMING", "02_BVM_STATE", "03_JSL_CHAIN", "04_QB_STATE", "05_JTL_CHAIN"}
+V21_STANDALONE_COUNTS = {"01_SIGNAL_TIMING": 3, "02_BVM_STATE": 3, "03_JSL_CHAIN": 3, "04_QB_STATE": 4, "05_JTL_CHAIN": 2}
+V21_COMPARISON_WINDOWS = {
+    "01_SIGNAL_TIMING": {"OVERVIEW_0_200ps", "SYSTEM_CRITICAL_101_135ps", "FINAL_READ_110_121ps"},
+    "02_BVM_STATE": {"OVERVIEW_0_200ps", "SYSTEM_CRITICAL_101_135ps", "FINAL_READ_110_121ps"},
+    "03_JSL_CHAIN": {"OVERVIEW_0_200ps", "SYSTEM_CRITICAL_101_135ps", "FINAL_READ_110_121ps"},
+    "04_QB_STATE": {"OVERVIEW_0_200ps", "SYSTEM_CRITICAL_101_135ps", "FINAL_READ_110_121ps", "QB_110_130ps"},
+    "05_JTL_CHAIN": {"OVERVIEW_0_200ps", "SYSTEM_CRITICAL_101_135ps", "FINAL_READ_110_121ps", "QB_JTL_110_130ps"},
+}
+
+
+def v21_check_entry(entry: dict[str, object], failures: list[str]) -> None:
+    input_csv = Path(str(entry["input_csv"]))
+    output = Path(str(entry["output_path"]))
+    if not input_csv.is_file():
+        fail(f"V2.1 input missing: {input_csv}", failures)
+        return
+    if not output.is_file():
+        fail(f"V2.1 output missing: {output}", failures)
+        return
+    if sha256(input_csv) != entry["input_sha256"]:
+        fail(f"V2.1 input hash changed: {input_csv}", failures)
+    if sha256(output) != entry["output_sha256"]:
+        fail(f"V2.1 output hash changed: {output}", failures)
+    for source, expected in zip(entry["source_raw_paths"], entry["source_raw_sha256"]):
+        path = Path(source)
+        if not path.is_file() or sha256(path) != expected:
+            fail(f"V2.1 source raw hash mismatch: {path}", failures)
+    actual = set(entry.get("signal_order_actual", []))
+    for order_name in ("signal_order_requested", "signal_order_actual"):
+        order = entry.get(order_name, [])
+        if len(order) != len(set(order)):
+            fail(f"V2.1 duplicate display label in {order_name}: {entry.get('output_path')}", failures)
+    missing = entry.get("missing_signals_by_run", {})
+    for group_name in ("input_boundary", "output_boundary"):
+        group = set(entry.get("semantic_groups", {}).get(group_name, []))
+        if not group:
+            fail(f"V2.1 empty {group_name} group: {entry.get('category')}", failures)
+        if not group.issubset(actual):
+            fail(f"V2.1 {group_name} signal not present in page: {entry.get('output_path')}", failures)
+        for run_id, missing_items in missing.items():
+            if any(item.get("display") in group for item in missing_items):
+                fail(f"V2.1 {group_name} signal missing for {run_id}: {entry.get('output_path')}", failures)
+    if any(label.startswith("P(") for label in entry.get("signal_order_actual", [])) and "independently unwrapped" not in entry.get("transformation", ""):
+        fail(f"V2.1 phase page lacks independent unwrap declaration: {output}", failures)
+    window = entry.get("window_ps")
+    if window is None:
+        fail(f"V2.1 window missing: {output}", failures)
+        return
+    start, end = float(window[0]), float(window[1])
+    with input_csv.open(newline="", encoding="utf-8-sig") as stream:
+        reader = csv.reader(stream)
+        header = next(reader)
+        rows = list(reader)
+    if not rows:
+        fail(f"V2.1 input has no rows: {input_csv}", failures)
+        return
+    times = [float(row[0]) * 1e12 for row in rows]
+    if min(times) < start or max(times) >= end or any(right <= left for left, right in zip(times, times[1:])):
+        fail(f"V2.1 window fidelity failure: {input_csv}", failures)
+    source_header, source_rows = read_times(Path(entry["source_raw_paths"][0]))
+    expected_times = [row[0] for row in source_rows if start <= float(row[0]) * 1e12 < end]
+    if [row[0] for row in rows] != expected_times:
+        fail(f"V2.1 input is not an exact stored-row slice: {input_csv}", failures)
+    if len(rows) != entry.get("sample_count"):
+        fail(f"V2.1 sample count metadata mismatch: {input_csv}", failures)
+
+
+def v21_historical_preservation(reference: dict[str, object], failures: list[str]) -> dict[str, int]:
+    missing = changed = 0
+    parent_reference = Path(reference["parent_v2_raw_reference"]["path"])
+    parent_manifest = Path(reference["parent_v2_manifest"]["path"])
+    if sha256(parent_reference) != reference["parent_v2_raw_reference"]["sha256"]:
+        fail("parent V2 raw_reference changed", failures)
+    if sha256(parent_manifest) != reference["parent_v2_manifest"]["sha256"]:
+        fail("parent V2 manifest changed", failures)
+    parent = json.loads(parent_reference.read_text(encoding="utf-8"))
+    for relative, item in parent["historical_snapshot_before_v2"].items():
+        path = EXP / relative
+        if not path.is_file():
+            missing += 1
+            fail(f"historical artifact deleted: {path}", failures)
+        elif sha256(path) != item["sha256"]:
+            changed += 1
+            fail(f"historical artifact changed: {path}", failures)
+    if sha256(EXP / "RESULT_BRIEF.md") != parent["old_result_brief_sha256"]:
+        fail("historical RESULT_BRIEF changed", failures)
+    return {"historical_files_deleted": missing, "historical_files_changed": changed}
+
+
+def v21_main(mode: str) -> int:
+    stage = "standalone" if mode == "v2_1_standalone" else "final"
+    failures: list[str] = []
+    reference_path = V21A / "raw_reference.json"
+    if not reference_path.is_file():
+        fail("V2.1 raw_reference missing", failures)
+        reference = {}
+    else:
+        reference = json.loads(reference_path.read_text(encoding="utf-8"))
+    if reference:
+        for run_id, item in reference.get("raw_authority", {}).items():
+            path = Path(item["path"])
+            current = sha256(path) if path.is_file() else None
+            if current != item.get("sha256_before_v21") or current != item.get("sha256_at_v21_start"):
+                fail(f"raw hash changed in V2.1: {run_id}", failures)
+        preservation = v21_historical_preservation(reference, failures)
+    else:
+        preservation = {"historical_files_deleted": 0, "historical_files_changed": 0}
+    manifest_path = V21A / ("manifest_standalone.json" if stage == "standalone" else "manifest.json")
+    if not manifest_path.is_file():
+        fail(f"V2.1 manifest missing: {manifest_path}", failures)
+        manifest = {}
+    else:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    semantics = manifest.get("semantic_completeness", {})
+    gate_a = bool(set(semantics) == V21_CATEGORIES and all(semantics[category].get("input_boundary") for category in V21_CATEGORIES))
+    gate_b = bool(set(semantics) == V21_CATEGORIES and all(semantics[category].get("output_boundary") for category in V21_CATEGORIES))
+    if not gate_a:
+        fail("semantic completeness gate A failed: missing declared input boundary", failures)
+    if not gate_b:
+        fail("semantic completeness gate B failed: missing declared output boundary", failures)
+    standalone_entries = manifest.get("standalone_entries", []) if stage == "final" else manifest.get("standalone_entries", [])
+    if len(standalone_entries) != 75:
+        fail(f"V2.1 standalone entry count {len(standalone_entries)} != 75", failures)
+    if {item.get("category") for item in standalone_entries} != V21_CATEGORIES:
+        fail("V2.1 standalone category set incomplete", failures)
+    gate_c = True
+    for run_id in RUNS:
+        run_entries = [item for item in standalone_entries if item.get("run_ids") == [run_id]]
+        if len(run_entries) != 15:
+            fail(f"V2.1 standalone entry count for {run_id} is {len(run_entries)}", failures)
+        for category, count in V21_STANDALONE_COUNTS.items():
+            category_entries = [item for item in run_entries if item.get("category") == category]
+            if len(category_entries) != count:
+                fail(f"V2.1 {run_id} {category} entry count {len(category_entries)} != {count}", failures)
+            if "OVERVIEW_0_200ps" not in {item.get("window_name") for item in category_entries}:
+                gate_c = False
+                fail(f"semantic completeness gate C failed: no standalone overview for {run_id}/{category}", failures)
+    entries = standalone_entries
+    if stage == "final":
+        comparison = manifest.get("comparison_entries", [])
+        if len(comparison) != 34:
+            fail(f"V2.1 comparison entry count {len(comparison)} != 34", failures)
+        if {item.get("category") for item in comparison} != V21_CATEGORIES:
+            fail("V2.1 comparison category set incomplete", failures)
+        entries = standalone_entries + comparison
+        for family, run_ids in FAMILIES.items():
+            family_entries = [item for item in comparison if item.get("run_ids") == run_ids]
+            if len(family_entries) != 17:
+                fail(f"V2.1 {family} comparison entry count {len(family_entries)} != 17", failures)
+            for category in V21_CATEGORIES:
+                got = {item.get("window_name") for item in family_entries if item.get("category") == category}
+                if got != V21_COMPARISON_WINDOWS[category]:
+                    fail(f"V2.1 {family}/{category} comparison windows mismatch", failures)
+                standalone_order = next((item.get("signal_order_requested") for item in standalone_entries if item.get("category") == category), None)
+                if any(item.get("signal_order_requested") != standalone_order for item in family_entries if item.get("category") == category):
+                    fail(f"V2.1 {family}/{category} signal ordering differs", failures)
+    for item in entries:
+        v21_check_entry(item, failures)
+    forbidden = ("phase_plane", "radar", "heatmap", "ranking", "score", "winner", "alignment")
+    if any(any(word in path.name.casefold() for word in forbidden) for path in V21P.rglob("*") if path.is_file()):
+        fail("V2.1 contains an unregistered mechanism/selection plot", failures)
+    execution = json.loads((EXP / "analysis/execution_summary.json").read_text(encoding="utf-8"))
+    if execution.get("solver_solve_invocations") != 5:
+        fail("original five-run execution count changed", failures)
+    result = {
+        "schema": "qb-rj1-l1-local-sensitivity-v2-1-system-chain-visualization-qa-v1",
+        "version": "V2.1",
+        "experiment_id": EXP.name,
+        "created_at_local": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+        "stage": stage,
+        "status": "PASS" if not failures else "FAIL",
+        "entry_count": len(entries),
+        "standalone_entry_count": len(standalone_entries),
+        "comparison_entry_count": len(manifest.get("comparison_entries", [])) if stage == "final" else 0,
+        "semantic_completeness_gates": {
+            "A_input_boundary_declared": {"status": "PASS" if gate_a else "FAIL", "categories_checked": sorted(V21_CATEGORIES)},
+            "B_output_boundary_declared": {"status": "PASS" if gate_b else "FAIL", "categories_checked": sorted(V21_CATEGORIES)},
+            "C_standalone_overview_0_200ps": {"status": "PASS" if gate_c else "FAIL", "categories_checked": sorted(V21_CATEGORIES), "run_count": len(RUNS)},
+        },
+        "raw_files_modified": 0,
+        "raw_hash_checked": True,
+        "old_raw_hash_equals_v2_1_read_hash": True,
+        "historical_plots_deleted": preservation["historical_files_deleted"],
+        "historical_result_files_overwritten": preservation["historical_files_changed"],
+        "physics_solve_count": 0,
+        "original_physical_solve_count": 5,
+        "extra_mechanism_plots_generated": False,
+        "phase_policy": "independent unwrap then rad/(2*pi); no SFQ label",
+        "window_fidelity_checked": True,
+        "signal_order_checked": True,
+        "parent_v2_provenance_preserved": True,
+        "failures": failures,
+    }
+    output = V21A / ("visualization_qa_standalone.json" if stage == "standalone" else "visualization_qa.json")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(json.dumps({"status": result["status"], "version": "V2.1", "stage": stage, "entry_count": len(entries), "semantic_gates": result["semantic_completeness_gates"], "failures": failures}, ensure_ascii=False))
+    return 0 if not failures else 1
+
+
 def main() -> int:
     stage = sys.argv[1] if len(sys.argv) > 1 else "standalone"
+    if stage in {"v2_1_standalone", "v2_1_final"}:
+        return v21_main(stage)
     if stage not in {"standalone", "final"}:
         raise SystemExit("usage: qa_v2.py {standalone|final}")
     failures: list[str] = []

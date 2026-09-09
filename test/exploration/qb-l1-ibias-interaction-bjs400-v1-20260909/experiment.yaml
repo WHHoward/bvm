@@ -1,0 +1,167 @@
+schema_version: evidence-first-bjs400-l1-ibias-interaction-v1
+id: qb-l1-ibias-interaction-bjs400-v1-20260909
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+base_head: e72b4f568a1d49100b5e4fefa60bee8955bb0db8
+
+question: >-
+  Record the minimal two-by-two L1 and IBias interaction evidence under the
+  fixed BJS400 ARRAY BVM -> COMMON_SL -> JSL -> QB -> 6JTL fixture. The
+  experiment does not rank corners or interpret mechanisms.
+interpretation_ceiling: >-
+  Evidence-only observations for this fixed topology, history, solver and
+  stored grid. No interaction conclusion, SFQ/event count, mechanism, Gate,
+  robustness, optimum, hardware or follow-up claim is authorized.
+
+physical_authority:
+  experiment: test/exploration/qb-bjs400-array-population-single-matched-v1-20260909
+  role: physical fixture, BJS400 QB, BVM history, controls, masks, timing, probes and solver authority
+  bjs400_source_sha256: 883308517d48470cbedab878f9e3c71721cd972db248c6b821ce5dba642ff810
+  authority_git_head: e72b4f568a1d49100b5e4fefa60bee8955bb0db8
+
+changed:
+  - L1: 2.0pH -> 1.6pH for registered C/D corners
+  - IBias: 250uA -> 260uA for registered B/D corners
+  - final-read mask: only 0001 or 0011
+  - no other QB parameter, topology, timing, solver or load change
+
+frozen:
+  BJS: area=4; Ic=400uA
+  RJ1: 12ohm
+  bvm: historical JM2-connected variant, four BVM shared COMMON_SL
+  jsl: eight jjmit area=5.0 elements
+  qb: all values from BJS400 authority except registered L1/IBias
+  jtl: six jtl2 stages and 10ohm termination
+  stimulus: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> mask-selective FINAL READ -> TAIL
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored 0 to 199.9ps
+  probes: broad BVM/interface/QB/JTL P/V/I coverage from BJS400 authority
+  raw: immutable solver output; no derived standalone plot CSV
+
+interaction_matrix:
+  A: {label: A, L1_pH: 2.0, IBias_uA: 250, mask_cases: ["0001", "0011"], role: nominal-BJS400 reference}
+  B: {label: B, L1_pH: 2.0, IBias_uA: 260, mask_cases: ["0001", "0011"], role: historical BJS400 reuse}
+  C: {label: C, L1_pH: 1.6, IBias_uA: 250, mask_cases: ["0001", "0011"], role: L1-only reference}
+  D: {label: D, L1_pH: 1.6, IBias_uA: 260, mask_cases: ["0001", "0011"], role: combined registered corner}
+
+authorized_runs:
+  - runs/ARRAY_L1P20_IB250_0001
+  - runs/ARRAY_L1P20_IB250_0011
+  - runs/ARRAY_L1P16_IB250_0001
+  - runs/ARRAY_L1P16_IB250_0011
+  - runs/ARRAY_L1P16_IB260_0001
+  - runs/ARRAY_L1P16_IB260_0011
+reuse_cases:
+  - logical_case_id: ARRAY_IB260_0001
+    reference: references/reused/ARRAY_IB260_0001
+    corner: B
+  - logical_case_id: ARRAY_IB260_0011
+    reference: references/reused/ARRAY_IB260_0011
+    corner: B
+new_physical_solve_count: 6
+reused_physical_case_count: 2
+exact_physical_case_count: 8
+unauthorized_extra_solves: 0
+no_extra_masks: true
+no_extra_single: true
+no_timestep_sweep: true
+no_scientific_analysis: true
+
+masks:
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  allowed: ["0001", "0011"]
+  "0001": BVM4 active during FINAL READ
+  "0011": BVM3 and BVM4 active during FINAL READ
+  scope: FINAL READ only, 110-121ps
+
+stimulus:
+  idle_0_50ps: all controls 0
+  WRITE0_50_61ps: WL=BL=-100uA; SE=0
+  idle_61_70ps: all controls 0
+  ZERO_STATE_READ_CONTROL_70_81ps: WL=SE=+100uA; BL=0
+  idle_81_90ps: all controls 0
+  WRITE1_90_101ps: WL=BL=+100uA; SE=0
+  SETTLE_101_110ps: all controls 0
+  FINAL_READ_110_121ps: registered mask only
+  TAIL_121_200ps: all controls 0
+  edge_ps: 1
+  plateau_ps: 9
+  amplitude_uA: 100
+  tran: 0.1p 200p
+  window_semantics: half-open registered PWL intervals
+
+source_authority:
+  bvm: inputs/bvm_jm2_connected.cir
+  jjmit: inputs/jjmit.cir
+  bq: inputs/BQ_parameterized_bjs400.cir
+  jtl: inputs/jtl2.cir
+  fixture_template: inputs/array_fixture_template.cir
+  solver: build/josim-cli
+  reused_manifest: REUSED_REFERENCE_MANIFEST.json
+  historical_bjs400_source: test/exploration/qb-bjs400-array-population-single-matched-v1-20260909
+
+probe_schema:
+  controls: I(I_WL1..4), I(I_BL1..4), I(I_SE1..4)
+  bvm: P/V/I(B_JM1,B_JM2,B_JS1,B_JS2), I/V registered internal branches and L_SL
+  interface: V(COMMON_SL), P/V/I(B_JSL1..8), V(QBIN)
+  qb: V(QBIN), I/V(LIN), P/V/I(BJS), P/V/I(BJ1), I/V(RJ1), I/V(L1), I(IB), I/V(L2), P/V/I(BJ2), I/V(RJ2), I/V(L3), V(QBOUT)
+  jtl: P/V/I(B01), P/V/I(B02), V(stage_OUT) for stages 1..6, V(JTL6_OUT), I(R_TERM)
+  optional_unknown: V(IB|XBQ1) if solver does not emit it
+  missing_probe_policy: preserve requested probe and mark UNKNOWN; never fabricate
+
+mechanical_qa:
+  - exact 2x2 matrix and exactly 6 new physical solves
+  - B reuse exact physical comparability and raw/deck SHA
+  - BJS area=4, RJ1=12ohm, registered L1/IBias/mask only
+  - successful history and mask-only-after-110ps control structure
+  - raw existence, SHA256, finite values, monotonic actual grid, 1999 samples, 0-199.9ps
+  - required probes present or explicitly UNKNOWN
+  - raw unchanged during QA/visualization/packaging
+
+visualization:
+  profile: COMPACT_FLAT_INTERACTION
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0.0, 200.0]
+  focused_windows: none
+  standalone_input: raw.csv direct
+  standalone_per_new_run: exactly 3 HTML
+  standalone_names: [SIGNAL_PATH.html, QB_STATE.html, JTL_CHAIN.html]
+  comparison_names: [0001_INTERACTION_COMPARE.html, 0011_INTERACTION_COMPARE.html]
+  flat_structure: plots/runs/<run_id>/<three files> and plots/comparison/<two files>
+  no_derived_plot_csv: true
+  no_mechanism_plots: true
+
+package:
+  include_plots: false
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+    visualization_qa.json: qa/visualization_qa.json
+  additional_paths:
+    - HANDOFF_README.md
+    - RESULT_BRIEF.md
+    - analysis
+    - visualization
+    - references/reused
+    - REUSED_REFERENCE_MANIFEST.json
+
+prohibited_followups:
+  - any mask other than 0001 or 0011
+  - any extra L1, IBias or RJ1 point
+  - any 0000, 1000, SINGLE or combined parameter beyond A-D
+  - any timestep sweep, retry, tune, ranking, threshold, event counter or mechanism analysis
+  - any scientific interpretation or next experiment
+
+final_state: AWAITING_SCIENTIFIC_REVIEW
+

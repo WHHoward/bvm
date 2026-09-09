@@ -1,0 +1,98 @@
+{
+  "schema": "bjs400-array-single-source-manifest-v1",
+  "experiment_id": "qb-bjs400-array-population-single-matched-v1-20260909",
+  "created_at_local": "2026-09-09T18:38:22+08:00",
+  "physical_stimulus_authority": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909",
+  "mask_visual_reference_only": "test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904",
+  "sources": [
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/array_fixture_authority_reference.cir",
+      "path": "inputs/array_fixture_authority_reference.cir",
+      "sha256": "85227538d48d69251f4276b94b28adfc83cd25f95aa6609fa9eb2375c873f1cf",
+      "bytes": 7486,
+      "role": "20260909 physical/stimulus authority template"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/array_fixture_template.cir",
+      "path": "inputs/array_fixture_template.cir",
+      "sha256": "8971a82dfbac223b9be139f719afae2eb156f0f68fb2a4811858f0a0b482cf71",
+      "bytes": 5822,
+      "role": "BJS400 ARRAY template derived from authority"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/single_fixture_template.cir",
+      "path": "inputs/single_fixture_template.cir",
+      "sha256": "0643bfe9a12cf81dbe34121f4a21760f215bc2680b2c1e0747726ffc4d586c8d",
+      "bytes": 3377,
+      "role": "matched SINGLE template derived from ARRAY authority"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/BQ_parameterized_bjs300_reference.cir",
+      "path": "inputs/BQ_parameterized_bjs300_reference.cir",
+      "sha256": "427385991d51acd330f9b3a5fc1596a3ecb161a98900f3b5341d88962aac874e",
+      "bytes": 813,
+      "role": "20260909 BJS300 BQ reference"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/BQ_parameterized_bjs400.cir",
+      "path": "inputs/BQ_parameterized_bjs400.cir",
+      "sha256": "883308517d48470cbedab878f9e3c71721cd972db248c6b821ce5dba642ff810",
+      "bytes": 813,
+      "role": "experiment-local BJS400 BQ variant"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/bvm_jm2_connected.cir",
+      "path": "inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "historical BVM variant"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/jjmit.cir",
+      "path": "inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "JJ model"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/inputs/jtl2.cir",
+      "path": "inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "JTL model"
+    },
+    {
+      "repo_relative_path": "build/josim-cli",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "solver identity",
+      "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+    },
+    {
+      "repo_relative_path": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909",
+      "path": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909",
+      "sha256": null,
+      "bytes": null,
+      "role": "physical/stimulus authority experiment; no copy treated as new source",
+      "authority_git_head": "dfb0e2cf4d3dbcf261e49e0854b8ce35f77939d9"
+    },
+    {
+      "repo_relative_path": "test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904",
+      "path": "test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904",
+      "sha256": "8adc02c5d68f2fac48cbb07b7ea85d94ca4ad7c02c7aaf942dff956b116c675e",
+      "bytes": 5238,
+      "role": "mask bit-order and flat plot style reference only",
+      "physical_authority": false,
+      "stimulus_authority": false
+    }
+  ],
+  "bjs_modification": {
+    "reference": "inputs/BQ_parameterized_bjs300_reference.cir",
+    "variant": "inputs/BQ_parameterized_bjs400.cir",
+    "changed_line": "BJs 1 2 jjmit area=3 -> BJs 1 2 jjmit area=4",
+    "icrit_uA": 100,
+    "reference_ic_uA": 300,
+    "variant_ic_uA": 400
+  }
+}

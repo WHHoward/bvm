@@ -1,0 +1,186 @@
+schema_version: evidence-first-bjs400-array-single-v1
+id: qb-bjs400-array-population-single-matched-v1-20260909
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+base_head: dfb0e2cf4d3dbcf261e49e0854b8ce35f77939d9
+
+question: >-
+  Record evidence for BJS area=4 (Ic=400uA) under four registered functional
+  QB working points, four authorized ARRAY final-read masks, and matched
+  SINGLE-BVM controls. This experiment does not rank conditions or interpret
+  physical mechanisms.
+interpretation_ceiling: >-
+  Evidence-only observations for the fixed 20260909 ARRAY->QB->6JTL fixture,
+  exact history, exact solver and exact stored grid. No mechanism, SFQ count,
+  success claim, equivalence claim, convergence claim, hardware claim or
+  follow-up design is authorized.
+
+changed:
+  - BJS area changes from 3 to 4 in the experiment-local BQ copy for every new run
+  - registered working points are L1P12, L1P14, IB260 and IB270
+  - ARRAY final-read mask is one of exactly 0000, 1000, 0001, 0011
+  - SINGLE topology is one historical JM2-connected BVM feeding the same 8-JJ JSL, BJS400 QB and 6-stage JTL
+
+frozen:
+  physical_authority: test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909
+  bvm_variant: historical JM2-connected BVM; canonical BVM is not used
+  bvm_history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> mask-selective FINAL READ -> TAIL
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored rows from 0 to 199.9ps
+  pre_read: all ARRAY masks are identical through 110ps; mask changes only 110-121ps
+  jsl: eight jjmit area=5.0 elements from COMMON_SL to QBIN
+  qb: Lin=1.5pH; BJS area=4; BJ1 area=0.9; L1 registered; L2=2pH; BJ2 area=2; RJ2=4ohm; L3=1.3pH
+  jtl: six jtl2 stages; bias and termination frozen
+  termination: R_TERM JTL6_OUT 0 10ohm
+  model: local jjmit, BVM, BQ and jtl2 closure recorded by SOURCE_MANIFEST
+  solver: build/josim-cli with recorded version and binary hash
+  probes: full requested ARRAY/SINGLE probe schema; emitted-but-missing values remain UNKNOWN
+  raw: immutable solver output; no standalone derived CSV
+
+authorized_solve_count: 24
+exact_physical_solve_count: 24
+array_solve_count: 16
+single_solve_count: 8
+unauthorized_extra_solves: 0
+no_combination_runs: true
+no_extra_masks: true
+no_extra_parameters: true
+
+authorized_runs:
+  - runs/ARRAY_L1P12_0000
+  - runs/ARRAY_L1P12_1000
+  - runs/ARRAY_L1P12_0001
+  - runs/ARRAY_L1P12_0011
+  - runs/ARRAY_L1P14_0000
+  - runs/ARRAY_L1P14_1000
+  - runs/ARRAY_L1P14_0001
+  - runs/ARRAY_L1P14_0011
+  - runs/ARRAY_IB260_0000
+  - runs/ARRAY_IB260_1000
+  - runs/ARRAY_IB260_0001
+  - runs/ARRAY_IB260_0011
+  - runs/ARRAY_IB270_0000
+  - runs/ARRAY_IB270_1000
+  - runs/ARRAY_IB270_0001
+  - runs/ARRAY_IB270_0011
+  - runs/SINGLE_L1P12_0
+  - runs/SINGLE_L1P12_1
+  - runs/SINGLE_L1P14_0
+  - runs/SINGLE_L1P14_1
+  - runs/SINGLE_IB260_0
+  - runs/SINGLE_IB260_1
+  - runs/SINGLE_IB270_0
+  - runs/SINGLE_IB270_1
+
+working_points:
+  L1P12: {L1_pH: 1.2, IBias_uA: 250, RJ1_ohm: 12}
+  L1P14: {L1_pH: 1.4, IBias_uA: 250, RJ1_ohm: 12}
+  IB260: {L1_pH: 2.0, IBias_uA: 260, RJ1_ohm: 12}
+  IB270: {L1_pH: 2.0, IBias_uA: 270, RJ1_ohm: 12}
+
+array_matrix:
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  masks: ["0000", "1000", "0001", "0011"]
+  semantics:
+    "0000": no BVM active during FINAL READ
+    "1000": BVM1 active during FINAL READ
+    "0001": BVM4 active during FINAL READ
+    "0011": BVM3 and BVM4 active simultaneously during FINAL READ
+  mask_scope: FINAL READ only, 110-121ps
+
+single_matrix:
+  controls:
+    "0": final WL=0, BL=0, SE=0
+    "1": final WL=+100uA, BL=0, SE=+100uA
+  topology: one BVM -> COMMON_SL -> same 8-JJ JSL -> BJS400 QB -> same 6-stage JTL -> 10ohm termination
+
+stimulus:
+  idle_0_50ps: all controls 0
+  WRITE0_50_61ps: WL=BL=-100uA; SE=0; 1ps edges and 9ps plateau
+  idle_61_70ps: all controls 0
+  ZERO_STATE_READ_CONTROL_70_81ps: WL=SE=+100uA; BL=0; 1ps edges and 9ps plateau
+  idle_81_90ps: all controls 0
+  WRITE1_90_101ps: WL=BL=+100uA; SE=0; 1ps edges and 9ps plateau
+  SETTLE_101_110ps: all controls 0
+  FINAL_READ_110_121ps: registered ARRAY mask or SINGLE control only
+  TAIL_121_200ps: all controls 0
+  window_semantics: half-open intervals; control transition points are registered PWL points
+
+source_authority:
+  physical_fixture: test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909
+  mask_style_reference: test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904
+  mask_style_reference_role: bit order and flat whole-run plot style only; not physical or stimulus authority
+  bvm: inputs/bvm_jm2_connected.cir
+  jjmit: inputs/jjmit.cir
+  bq_bjs300_reference: inputs/BQ_parameterized_bjs300_reference.cir
+  bq_bjs400: inputs/BQ_parameterized_bjs400.cir
+  jtl: inputs/jtl2.cir
+  array_template: inputs/array_fixture_template.cir
+  single_template: inputs/single_fixture_template.cir
+  solver: build/josim-cli
+  historical_bridge: references/historical_bjs300 and HISTORICAL_BRIDGE_MANIFEST.json
+
+probe_schema:
+  controls_array: I(I_WL1..4), I(I_BL1..4), I(I_SE1..4)
+  controls_single: I(I_WL), I(I_BL), I(I_SE)
+  bvm_per_instance: P/V/I(B_JM1), P/V/I(B_JM2), P/V/I(B_JS1), P/V/I(B_JS2)
+  bvm_branches: I/V(L_M1,L_M2,L_M3,L_PM,R_JM1,L_S1,L_S2,R_S,L_S3,R_SE,L_PSE,L_PSL,R_SL,L_SL)
+  shared_boundary: V(COMMON_SL)
+  jsl: P/V/I(B_JSL1..8)
+  qb: V(QBIN), V(QBOUT), I/V(LIN), P/V/I(BJS), P/V/I(BJ1), I/V(RJ1), I/V(L1), I(IB), V(IB if emitted), I/V(L2), P/V/I(BJ2), I/V(RJ2), I/V(L3)
+  jtl_per_stage: P/V/I(B01), P/V/I(B02), V(stage_OUT) for stages 1..6
+  terminal: V(JTL6_OUT), I(R_TERM)
+  missing_probe_policy: preserve requested probe and mark UNKNOWN; never fabricate
+
+mechanical_qa:
+  - exact 24 authorized runs and zero unauthorized extra solves
+  - BJS area=4 and exact one-variable working-point/mask/topology differences
+  - successful-history stimulus and ARRAY pre-110ps equality
+  - raw existence, SHA256, finite values, monotonic actual grid, 0-199.9ps range
+  - required probes present or explicitly UNKNOWN
+  - raw unchanged during QA/visualization/packaging
+
+visualization:
+  profile: COMPACT_FLAT_WHOLE_RUN
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  standalone_input: raw.csv directly; no standalone derived CSV
+  standalone_plot_count: exactly 6 HTML per run
+  standalone_names: [SIGNAL_PATH.html, BVM_STATE.html, BVM_OUTPUT.html, JSL_CHAIN.html, QB_STATE.html, JTL_CHAIN.html]
+  plot_window_ps: [0.0, 200.0]
+  focused_windows: none
+  comparison_plot_count: exactly 20 authorized HTML
+  directory_structure: plots/runs/<run_id>/<six files> and plots/comparison/<20 files>
+  no_extra_mechanism_plots: true
+
+package:
+  include_plots: false
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+  additional_paths:
+    - HANDOFF_README.md
+    - analysis
+    - visualization
+    - references/historical_bjs300
+    - HISTORICAL_BRIDGE_MANIFEST.json
+
+prohibited_followups:
+  - any mask other than 0000, 1000, 0001, 0011
+  - any parameter other than BJS area=4 and the four registered working points
+  - any combined parameter tuning or topology tuning
+  - any focused-window, mechanism, ranking, dashboard or event plot
+  - any retry because a waveform appears strange or differs from expectation
+  - any scientific interpretation, SFQ/event classification, Gate claim or next experiment
+
+final_state: AWAITING_SCIENTIFIC_REVIEW

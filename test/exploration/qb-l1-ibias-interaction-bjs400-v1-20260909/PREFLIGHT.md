@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Authority
 
 - Physical/stimulus authority: test/exploration/qb-bjs400-array-population-single-matched-v1-20260909
-- Preflight HEAD: e72b4f568a1d49100b5e4fefa60bee8955bb0db8
+- Preflight HEAD: 6d2df80987de8aa154364f3758fa9e8f13f9e335
 - BJS400 source: inputs/BQ_parameterized_bjs400.cir; area=4; Ic=400uA.
 - The older no-history stimulus is not used.
 - B reuse is historical immutable evidence, not a new solve.

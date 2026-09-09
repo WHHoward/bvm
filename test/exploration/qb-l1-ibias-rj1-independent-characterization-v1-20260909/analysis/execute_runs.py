@@ -91,8 +91,29 @@ def main() -> int:
     if preflight.get("status") != "PASS":
         raise RuntimeError("machine preflight is not PASS; solver invocation forbidden")
     current_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
-    if current_head != preflight.get("head"):
-        raise RuntimeError(f"HEAD changed after final preflight: {current_head} != {preflight.get('head')}")
+    preflight_head = preflight.get("head")
+    head_relation = "EXACT_PREFLIGHT_HEAD"
+    if current_head != preflight_head:
+        changed = set(subprocess.check_output(
+            ["git", "diff", "--name-only", f"{preflight_head}..{current_head}"],
+            cwd=REPO,
+            text=True,
+        ).splitlines())
+        allowed_seal = {
+            str(EXP.relative_to(REPO) / "PREFLIGHT.md"),
+            str(EXP.relative_to(REPO) / "analysis/preflight.json"),
+        }
+        distance = int(subprocess.check_output(
+            ["git", "rev-list", "--count", f"{preflight_head}..{current_head}"],
+            cwd=REPO,
+            text=True,
+        ).strip())
+        if not preflight.get("head_refresh") or distance != 1 or changed != allowed_seal:
+            raise RuntimeError(
+                "HEAD changed after preflight outside the permitted preflight-only seal: "
+                f"{current_head} != {preflight_head}; changed={sorted(changed)}"
+            )
+        head_relation = "PREFLIGHT_ONLY_SEAL_COMMIT"
     if not SOLVER.is_file():
         raise RuntimeError(f"solver missing: {SOLVER}")
     solver_version = subprocess.check_output([str(SOLVER), "--version"], cwd=REPO, text=True)
@@ -164,6 +185,8 @@ def main() -> int:
         "started_at_local": records[0]["started_at_local"],
         "finished_at_local": now(),
         "head": current_head,
+        "preflight_head": preflight_head,
+        "head_relation_to_preflight": head_relation,
         "solver_solve_invocations": len(records),
         "exact_authorized_run_count": len(RUNS),
         "new_physical_solve_count": len(records),

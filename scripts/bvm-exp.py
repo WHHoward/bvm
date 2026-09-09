@@ -5,16 +5,20 @@ The legacy command remains available for existing V1 fixtures:
 
     python3 scripts/bvm-exp.py quick path/to/experiment.yaml
 
-New experiments use ``run``, ``analyze``, ``plot`` and ``inspect`` with
-immutable Axxx attempts.  A normal Quick run invokes only its registered deck,
-performs shared raw QA/metrics, creates a compact classic ``josim-plot2.py``
-view, and stops at ``AWAITING_USER_REVIEW``.  Analyze/plot operate on existing
-raw only; they cannot create new science data.
+New experiments use ``run``, ``analyze``, ``plot``, ``package`` and ``inspect``
+with immutable Axxx attempts.  The default run is evidence-first: it executes
+only its registered deck, performs mechanical QA, creates the registered
+visualization and evidence package, commits that package when the experiment
+is inside this repository, and stops at ``AWAITING_SCIENTIFIC_REVIEW``.
+Scientific analysis is a separate, explicit ``SCIENTIFIC_REVIEW_AUTHORIZED``
+path.  Analyze/plot/package never create new physics data.
 """
 
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import json
 import math
 import re
@@ -38,9 +42,12 @@ from bvmtools.provenance import (
     snapshot_inputs,
     solver_provenance,
 )
+from bvmtools.phase import continuous_unwrap, window_indices
 from bvmtools.raw import DuplicateColumnError, RawTraceError, read_csv
 from bvmtools.sfq import StrictLocalEventSpec, strict_event_summary
 from bvmtools.waveform import waveform_metrics
+from build_experiment_package import CONTRACT_SENTENCE
+from build_experiment_package import build_package
 
 
 REPO = Path(__file__).resolve().parents[1]
@@ -56,6 +63,8 @@ QUICK_OUTCOMES = {
     "QUICK_AMBIGUOUS",
     "QUICK_INVALID",
 }
+SCIENTIFIC_REVIEW_AUTHORIZATION = "SCIENTIFIC_REVIEW_AUTHORIZED"
+EVIDENCE_FIRST_POLICY = "EVIDENCE_FIRST_V1"
 
 
 class ConfigError(ValueError):
@@ -707,10 +716,14 @@ def _write_brief(
 
 
 def _write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def run_quick(config_path: str | Path) -> int:
+    # Frozen compatibility path for already-created V1 fixtures.  The
+    # evidence-first defaults below intentionally do not rewrite its historical
+    # analysis or AWAITING_USER_REVIEW artifacts.
     normalized = validate_config(_load_yaml(Path(config_path).resolve()), config_path)
     if normalized["mode"] != "QUICK":
         raise ConfigError("the V1 CLI implements only mode: QUICK; Promotion/Formal remain explicit planning paths")
@@ -801,7 +814,17 @@ def run_quick(config_path: str | Path) -> int:
 
 COMPACT_SCHEMA = "compact-quick-v2"
 COMPACT_RESULT_SCHEMA = "compact-quick-v2-result"
-COMPACT_STATES = {"READY", "RUNNING", "AWAITING_USER_REVIEW", "REVIEWED", "ARCHIVED"}
+COMPACT_STATES = {
+    "READY",
+    "RUNNING",
+    "AWAITING_SCIENTIFIC_REVIEW",
+    # Kept as an input compatibility value for already-created V1 fixtures;
+    # newly completed Compact attempts use AWAITING_SCIENTIFIC_REVIEW.
+    "AWAITING_USER_REVIEW",
+    "EXPERIMENT_COMPLETE",
+    "REVIEWED",
+    "ARCHIVED",
+}
 
 
 def _compact_root(value: str | Path) -> tuple[Path, Path]:
@@ -868,6 +891,8 @@ def validate_compact_config(config: dict[str, Any], config_path: str | Path) -> 
     visual_mode = str(visualization.get("mode", "compact")).lower()
     if visual_mode not in {"none", "compact", "full"}:
         raise ConfigError("visualization.mode must be none, compact, or full")
+    if visual_mode == "none" and not bool(config.get("legacy_compatibility", False)):
+        raise ConfigError("new Compact experiments require standard visualization; mode=none is legacy-only")
     visual_style = str(visualization.get("style", "CLASSIC_LOCKED"))
     if visual_style != "CLASSIC_LOCKED":
         raise ConfigError("Compact Quick V2 supports only visualization.style: CLASSIC_LOCKED")
@@ -876,6 +901,45 @@ def validate_compact_config(config: dict[str, Any], config_path: str | Path) -> 
         raise ConfigError("compact visualization must select 2-5 key signals")
     if any(spec.get("occurrence") is not None for spec in visual_specs):
         raise ConfigError("classic plot2 visualization requires unique labels; occurrence selectors are analysis-only")
+    visual_profile = str(visualization.get("profile", visualization.get("standard", "CLASSIC_LOCKED_COMPACT")))
+    visual_profile_key = visual_profile.upper().replace("-", "_").replace(".", "_")
+    if visual_profile_key in {"V2_1", "SYSTEM_CHAIN_V2_1", "SYSTEM_CHAIN_V2_1_STANDARD"}:
+        layers = visualization.get("layers")
+        expected_layers = [
+            "01_SIGNAL_TIMING",
+            "02_BVM_STATE",
+            "03_JSL_CHAIN",
+            "04_QB_STATE",
+            "05_JTL_CHAIN",
+        ]
+        if not isinstance(layers, list) or [layer.get("id") for layer in layers if isinstance(layer, dict)] != expected_layers:
+            raise ConfigError("SYSTEM_CHAIN_V2_1 visualization must declare the five ordered subsystem layers")
+        for layer in layers:
+            if not isinstance(layer, dict) or not all(
+                isinstance(layer.get(key), list) and layer[key]
+                for key in ("input_boundary", "internal_state", "output_boundary")
+            ):
+                raise ConfigError("each V2.1 layer must declare non-empty input/internal/output boundaries")
+            if any(
+                not isinstance(label, str)
+                for key in ("input_boundary", "internal_state", "output_boundary")
+                for label in layer[key]
+            ):
+                raise ConfigError("each V2.1 boundary signal must be an exact string label")
+            overview = layer.get("overview_window_ps")
+            focused = layer.get("focused_windows_ps", layer.get("focused_windows"))
+            if overview != [0.0, 200.0] or not focused:
+                raise ConfigError("each V2.1 layer must declare OVERVIEW_0_200ps and focused windows")
+            for window in focused:
+                bounds = window.get("window_ps", window.get("bounds")) if isinstance(window, dict) else window
+                if not isinstance(bounds, (list, tuple)) or len(bounds) != 2:
+                    raise ConfigError("each V2.1 focused window must be [start_ps, end_ps]")
+                try:
+                    start_ps, end_ps = float(bounds[0]), float(bounds[1])
+                except (TypeError, ValueError) as exc:
+                    raise ConfigError("each V2.1 focused window must contain numbers") from exc
+                if not math.isfinite(start_ps) or not math.isfinite(end_ps) or not start_ps < end_ps:
+                    raise ConfigError("each V2.1 focused window must have finite start < end")
 
     analysis = config.get("analysis", {})
     if not isinstance(analysis, dict):
@@ -899,6 +963,15 @@ def validate_compact_config(config: dict[str, Any], config_path: str | Path) -> 
     declared_status = str(config.get("status", "READY")).upper()
     if declared_status not in COMPACT_STATES:
         raise ConfigError(f"status must be one of {sorted(COMPACT_STATES)}")
+    policy = str(config.get("workflow_policy", EVIDENCE_FIRST_POLICY)).upper()
+    if policy != EVIDENCE_FIRST_POLICY:
+        raise ConfigError(f"workflow_policy must be {EVIDENCE_FIRST_POLICY}")
+    authorization = config.get("scientific_review_authorization", "NOT_GRANTED")
+    if authorization not in {"NOT_GRANTED", SCIENTIFIC_REVIEW_AUTHORIZATION}:
+        raise ConfigError(
+            "scientific_review_authorization must be NOT_GRANTED or "
+            f"{SCIENTIFIC_REVIEW_AUTHORIZATION}"
+        )
     return {
         "root": root,
         "config_path": path,
@@ -915,7 +988,10 @@ def validate_compact_config(config: dict[str, Any], config_path: str | Path) -> 
         "visualization": visualization,
         "visual_specs": visual_specs,
         "visual_mode": visual_mode,
+        "visual_profile": visual_profile,
         "declared_status": declared_status,
+        "workflow_policy": policy,
+        "scientific_review_authorization": authorization,
     }
 
 
@@ -984,6 +1060,642 @@ def _compact_short_analysis(raw_result: dict[str, Any]) -> dict[str, Any]:
         compact["compare"] = raw_result["compare"]
     compact["raw_sha256"] = raw_result.get("raw_sha256")
     return compact
+
+
+def _compact_write_json_immutable(path: Path, value: Any) -> None:
+    """Write a new machine artifact, refusing a silent rewrite."""
+
+    if path.exists():
+        try:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"existing JSON artifact is not readable: {path}") from exc
+        if existing != value:
+            raise RuntimeError(f"refusing to overwrite immutable JSON artifact: {path}")
+        return
+    _write_json(path, value)
+
+
+def _compact_signal_names(normalized: dict[str, Any]) -> list[str]:
+    names: list[str] = []
+    for spec in [*normalized["visual_specs"], *normalized["analysis_case"]["signals"]]:
+        name = spec["name"]
+        if name not in names:
+            names.append(name)
+    return names
+
+
+def _compact_mechanical_qa(normalized: dict[str, Any], attempt_dir: Path) -> dict[str, Any]:
+    """Run the evidence-first raw checks without scientific metrics.
+
+    In particular, this function deliberately does not call waveform metrics,
+    strict-event code, phase unwrapping, comparison logic, or any classifier.
+    Those operations belong to the explicitly authorized scientific-review
+    path below.
+    """
+
+    raw_path = attempt_dir / "raw.csv"
+    raw_hash = sha256_file(raw_path) if raw_path.is_file() else None
+    if not raw_path.is_file():
+        return {
+            "artifact_status": "INVALID",
+            "analysis_status": "NOT_PERFORMED",
+            "scientific_analysis_performed": False,
+            "error": f"missing raw CSV: {_compact_relative(normalized['root'], raw_path)}",
+            "raw_sha256": raw_hash,
+        }
+    try:
+        trace = read_csv(raw_path)
+    except (RawTraceError, OSError, ValueError) as exc:
+        return {
+            "artifact_status": "INVALID",
+            "analysis_status": "NOT_PERFORMED",
+            "scientific_analysis_performed": False,
+            "error": str(exc),
+            "raw_sha256": raw_hash,
+        }
+
+    required = _compact_signal_names(normalized)
+    present = [name for name in required if name in trace.headers]
+    missing = [name for name in required if name not in trace.headers]
+    qa = trace.qa()
+    qa.update({
+        "raw_sha256": raw_hash,
+        "raw_bytes": raw_path.stat().st_size,
+        "stored_grid": "preserved_exactly",
+        "interpolation": False,
+        "finite_value_qa": qa.get("nan_inf_status") == "PASS",
+        "duplicate_column_qa": "PASS",
+        "required_probe_status": "PASS" if not missing else "UNKNOWN",
+        "required_probes": required,
+        "present_probes": present,
+        "missing_probes": missing,
+        "raw_hash_before_qa": raw_hash,
+        "raw_hash_after_qa": sha256_file(raw_path),
+        "raw_unchanged_during_qa": raw_hash == sha256_file(raw_path),
+    })
+    return {
+        "artifact_status": "VALID",
+        "analysis_status": "NOT_PERFORMED",
+        "scientific_analysis_performed": False,
+        "qa": qa,
+        "raw_sha256": raw_hash,
+        "missing_probes": missing,
+        "unknowns": [f"missing registered probe: {name}" for name in missing],
+    }
+
+
+def _compact_evidence_outcome(analysis: dict[str, Any], plot: dict[str, Any] | None) -> str:
+    if analysis.get("artifact_status") != "VALID":
+        return "ARTIFACT_INVALID"
+    if plot is not None and plot.get("status") != "PASS":
+        return "ARTIFACT_INVALID"
+    return "EVIDENCE_READY"
+
+
+def _compact_write_preflight(
+    normalized: dict[str, Any],
+    attempt: str,
+    git_record: dict[str, Any],
+) -> None:
+    root = normalized["root"]
+    path = root / "PREFLIGHT.md"
+    created_at = _now()
+    if path.exists():
+        if CONTRACT_SENTENCE not in path.read_text(encoding="utf-8"):
+            raise ConfigError(f"PREFLIGHT.md must contain the mandatory contract sentence: {path}")
+    else:
+        visual = normalized["visualization"]
+        lines = [
+            f"# PREFLIGHT — {normalized['id']}",
+            "",
+            CONTRACT_SENTENCE,
+            "",
+            "- Role: `Experimental Operator + Evidence Packager`",
+            "- Workflow policy: `EVIDENCE_FIRST_V1`",
+            f"- HEAD before physical solve: `{git_record.get('head')}`",
+            f"- Preflight created at: `{created_at}`",
+            f"- Exact authorized attempt: `{attempt}`",
+            f"- Registered deck: `{normalized['deck']}`",
+            f"- Solver: `{normalized['solver']}`",
+            "- Scientific review authorization: `NOT_GRANTED`",
+            "- Scientific analysis during execution: `NOT PERFORMED`",
+            "- Raw mutation, resampling, smoothing, time shifting and silent unit/sign correction: `FORBIDDEN`",
+            f"- Visualization profile: `{visual.get('profile', visual.get('standard', 'CLASSIC_LOCKED_COMPACT'))}`",
+            "- Required lifecycle: `PRE-REGISTER -> PREFLIGHT -> PHYSICAL SOLVE -> MECHANICAL QA -> STANDARD VISUALIZATION -> EVIDENCE PACKAGE -> COMMIT -> STOP`",
+            "- Unauthorized follow-up: `none`",
+            "",
+        ]
+        path.write_text("\n".join(lines), encoding="utf-8")
+    preflight = {
+        "schema": "compact-quick-v2-preflight-v1",
+        "status": "PASS",
+        "contract": CONTRACT_SENTENCE,
+        "created_at": created_at,
+        "experiment_id": normalized["id"],
+        "head_before_run": git_record.get("head"),
+        "dirty_before_run": git_record.get("dirty"),
+        "authorized_attempt": attempt,
+        "registered_deck": _compact_relative(root, normalized["deck"])
+        if normalized["deck"].is_relative_to(root)
+        else str(normalized["deck"]),
+        "solver": str(normalized["solver"]),
+        "scientific_analysis_authorized": False,
+        "physical_solve_count_authorized": 1,
+        "automatic_follow_up_authorized": False,
+        "stop_state": "AWAITING_SCIENTIFIC_REVIEW",
+    }
+    _compact_write_json_immutable(root / "analysis" / "preflight.json", preflight)
+
+
+def _compact_write_run_metadata(
+    normalized: dict[str, Any],
+    attempt_dir: Path,
+    record: dict[str, Any],
+    git_record: dict[str, Any],
+    solver_record: dict[str, Any],
+) -> None:
+    raw_path = attempt_dir / "raw.csv"
+    deck_path = attempt_dir / "deck.cir"
+    log_path = attempt_dir / "run.log"
+    metadata = {
+        "schema": "compact-quick-run-metadata-v1",
+        "run_id": attempt_dir.name,
+        "condition": attempt_dir.name,
+        "source_class": normalized["config"].get("source_class", "experiment-local"),
+        "git_commit_before_run": git_record.get("head"),
+        "created_at": record.get("started_at"),
+        "finished_at": record.get("finished_at"),
+        "solver": solver_record,
+        "command": {"argv": record.get("command", []), "exit_code": record.get("returncode")},
+        "paths": {
+            "deck": _compact_relative(normalized["root"], deck_path),
+            "raw": _compact_relative(normalized["root"], raw_path),
+            "log": _compact_relative(normalized["root"], log_path),
+        },
+        "hashes": {
+            "deck_sha256": sha256_file(deck_path) if deck_path.is_file() else None,
+            "raw_sha256": sha256_file(raw_path) if raw_path.is_file() else None,
+            "log_sha256": sha256_file(log_path) if log_path.is_file() else None,
+        },
+        "numerics": {
+            key: normalized["config"].get("run", {}).get(key)
+            for key in ("timestep_ps", "stop_ps")
+            if isinstance(normalized["config"].get("run"), dict)
+        },
+        "model_warning": [],
+        "artifact_status": "VALID" if record.get("artifact") == "VALID" else "ARTIFACT_INVALID",
+        "scientific_analysis_performed": False,
+    }
+    _compact_write_json_immutable(attempt_dir / "metadata.json", metadata)
+
+
+def _compact_standard_layers(normalized: dict[str, Any]) -> list[dict[str, Any]]:
+    visualization = normalized["visualization"]
+    configured = visualization.get("layers")
+    if isinstance(configured, list):
+        return [item for item in configured if isinstance(item, dict)]
+    return [{
+        "id": "COMPACT_OVERVIEW",
+        "input_boundary": [spec["name"] for spec in normalized["visual_specs"][:1]],
+        "internal_state": [spec["name"] for spec in normalized["visual_specs"][1:-1]],
+        "output_boundary": [spec["name"] for spec in normalized["visual_specs"][-1:]],
+        "overview_window_ps": [0.0, 200.0],
+        # Compatibility configs that predate the evidence-first fields get a
+        # conservative registered full-window view; V2.1 profiles must still
+        # declare real focused windows during static validation.
+        "focused_windows_ps": visualization.get("focused_windows_ps") or [[0.0, 200.0]],
+    }]
+
+
+def _compact_v21_window_specs(layer: dict[str, Any]) -> list[tuple[str, tuple[float, float]]]:
+    windows: list[tuple[str, tuple[float, float]]] = [("OVERVIEW_0_200ps", (0.0, 200.0))]
+    configured = layer.get("focused_windows_ps", layer.get("focused_windows", []))
+    if not isinstance(configured, list):
+        return windows
+    for index, item in enumerate(configured, start=1):
+        name: str | None = None
+        bounds: Any = item
+        if isinstance(item, dict):
+            if isinstance(item.get("name"), str):
+                name = item["name"]
+            bounds = item.get("window_ps", item.get("bounds"))
+        if not isinstance(bounds, (list, tuple)) or len(bounds) != 2:
+            continue
+        try:
+            start, end = float(bounds[0]), float(bounds[1])
+        except (TypeError, ValueError):
+            continue
+        if not math.isfinite(start) or not math.isfinite(end) or not start < end:
+            continue
+        if name is None:
+            name = f"FOCUSED_{start:g}_{end:g}ps"
+        if name == "OVERVIEW_0_200ps":
+            name = f"FOCUSED_{index}_{start:g}_{end:g}ps"
+        windows.append((name, (start, end)))
+    return windows
+
+
+def _compact_v21_layer_entries(
+    normalized: dict[str, Any],
+    attempt_dir: Path,
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Render the V2.1 five-layer standalone views from immutable raw.
+
+    The intermediate CSVs are exact stored-row slices and are never used as a
+    replacement for the run's raw.csv.  Phase columns are independently
+    unwrapped in raw radians; josim-plot2 performs the explicit rad/(2*pi)
+    display scaling.
+    """
+
+    root = normalized["root"]
+    raw_path = attempt_dir / "raw.csv"
+    trace = read_csv(raw_path)
+    entries: list[dict[str, Any]] = []
+    failures: list[str] = []
+    for layer in _compact_standard_layers(normalized):
+        layer_id = str(layer.get("id", "UNNAMED_LAYER"))
+        groups = {
+            key: layer.get(key, [])
+            for key in ("input_boundary", "internal_state", "output_boundary")
+        }
+        labels: list[str] = []
+        for group in groups.values():
+            if not isinstance(group, list):
+                failures.append(f"{layer_id}: {group} is not a signal list")
+                continue
+            for label in group:
+                if not isinstance(label, str):
+                    failures.append(f"{layer_id}: non-string signal label")
+                elif label not in labels:
+                    labels.append(label)
+        missing = [label for label in labels if label not in trace.headers]
+        if missing:
+            failures.append(f"{layer_id}: missing probes: {', '.join(missing)}")
+            continue
+        try:
+            values: dict[str, tuple[float, ...]] = {}
+            for label in labels:
+                selected = trace.column(label)
+                values[label] = (
+                    continuous_unwrap(selected)
+                    if label.startswith("P(")
+                    else tuple(float(value) for value in selected)
+                )
+        except (DuplicateColumnError, RawTraceError, KeyError, IndexError, ValueError) as exc:
+            failures.append(f"{layer_id}: cannot select probes: {exc}")
+            continue
+        safe_layer = re.sub(r"[^A-Za-z0-9_.-]+", "_", layer_id)
+        for window_name, (start_ps, end_ps) in _compact_v21_window_specs(layer):
+            safe_window = re.sub(r"[^A-Za-z0-9_.-]+", "_", window_name)
+            try:
+                indices = window_indices(trace.time, start_ps * 1.0e-12, end_ps * 1.0e-12)
+            except ValueError as exc:
+                failures.append(f"{layer_id}/{window_name}: {exc}")
+                continue
+            if len(indices) < 2:
+                failures.append(f"{layer_id}/{window_name}: fewer than two stored samples")
+                continue
+            derived = root / "analysis" / "visualization_derived" / attempt_dir.name / safe_layer / f"{safe_window}.csv"
+            stream = io.StringIO(newline="")
+            writer = csv.writer(stream)
+            writer.writerow(["time", *labels])
+            for row_index in indices:
+                writer.writerow([
+                    f"{trace.time[row_index]:.17g}",
+                    *[f"{values[label][row_index]:.17g}" for label in labels],
+                ])
+            content = stream.getvalue().encode("utf-8")
+            if derived.exists():
+                if derived.read_bytes() != content:
+                    failures.append(f"{layer_id}/{window_name}: refusing to overwrite derived visualization CSV")
+                    continue
+            else:
+                derived.parent.mkdir(parents=True, exist_ok=True)
+                derived.write_bytes(content)
+            output = root / "plots" / "v2_1" / "standalone" / attempt_dir.name / safe_layer / f"{safe_window}.html"
+            command = _classic_command(
+                derived,
+                output,
+                [{"name": label, "occurrence": None} for label in labels],
+                f"{normalized['id']} {layer_id} {window_name}; INPUT -> INTERNAL -> OUTPUT",
+            )
+            output.parent.mkdir(parents=True, exist_ok=True)
+            completed = subprocess.run(command, cwd=REPO, capture_output=True, text=True, check=False)
+            if completed.returncode != 0 or not output.is_file() or output.stat().st_size == 0:
+                detail = completed.stderr.strip().splitlines()[-1] if completed.stderr.strip() else "no stderr"
+                failures.append(f"{layer_id}/{window_name}: josim-plot2 failed ({detail})")
+                continue
+            entries.append({
+                "version": "V2.1",
+                "stage": "standalone",
+                "mode": "standalone",
+                "category": layer_id,
+                "window_name": window_name,
+                "window_ps": [start_ps, end_ps],
+                "run_ids": [attempt_dir.name],
+                "input_csv": _compact_relative(root, derived),
+                "input_sha256": sha256_file(derived),
+                "output_path": _compact_relative(root, output),
+                "output_sha256": sha256_file(output),
+                "signal_order_requested": labels,
+                "semantic_groups": groups,
+                "source_raw_path": _compact_relative(root, raw_path),
+                "source_raw_sha256": sha256_file(raw_path),
+                "phase_convention": "independent unwrap in raw rad; josim-plot2 -j 2pi display; never SFQ count",
+                "transformation": "exact half-open stored-row slice; no interpolation/resampling/smoothing/alignment",
+                "renderer": "scripts/josim-plot2.py",
+                "command": command,
+            })
+    return entries, failures
+
+
+def _compact_write_visualization_artifacts(
+    normalized: dict[str, Any],
+    attempt_dir: Path,
+    record: dict[str, Any],
+    plot: dict[str, Any],
+) -> dict[str, Any]:
+    root = normalized["root"]
+    visual = normalized["visualization"]
+    profile = str(visual.get("profile", visual.get("standard", "CLASSIC_LOCKED_COMPACT")))
+    layers = _compact_standard_layers(normalized)
+    semantic_profile = profile.upper().replace("-", "_").replace(".", "_")
+    is_v21 = semantic_profile in {"V2_1", "SYSTEM_CHAIN_V2_1", "SYSTEM_CHAIN_V2_1_STANDARD"}
+    layer_checks = {
+        "layers_nonempty": bool(layers),
+        "input_boundary_declared": all(bool(layer.get("input_boundary")) for layer in layers),
+        "output_boundary_declared": all(bool(layer.get("output_boundary")) for layer in layers),
+        "standalone_overview_declared": all(
+            (
+                layer.get("overview_window_name") == "OVERVIEW_0_200ps"
+                or layer.get("overview_window_ps") == [0.0, 200.0]
+                or layer.get("whole_run_overview") == [0.0, 200.0]
+            )
+            for layer in layers
+        ),
+        "focused_windows_declared": all(
+            bool(layer.get("focused_windows_ps")) or bool(layer.get("focused_windows"))
+            for layer in layers
+        ),
+    }
+    if is_v21 and len(layers) != 5:
+        layer_checks["five_layer_schema"] = False
+    else:
+        layer_checks["five_layer_schema"] = True
+    layer_checks.update({
+        "A_input_boundary_declared": layer_checks["input_boundary_declared"],
+        "B_output_boundary_declared": layer_checks["output_boundary_declared"],
+        "C_standalone_overview_0_200ps": layer_checks["standalone_overview_declared"],
+    })
+    source_raw = attempt_dir / "raw.csv"
+    entry = {
+        "stage": "standalone",
+        "run_id": attempt_dir.name,
+        "input_raw": _compact_relative(root, source_raw),
+        "input_raw_sha256": sha256_file(source_raw) if source_raw.is_file() else None,
+        "output": plot.get("current_plot"),
+        "output_sha256": sha256_file(root / plot["current_plot"]) if plot.get("current_plot") and (root / plot["current_plot"]).is_file() else None,
+        "signals": [spec["name"] for spec in normalized["visual_specs"]],
+        "renderer": "scripts/josim-plot2.py",
+        "options": {"layout": "sep_comb", "color": "dark", "phase": "rad/(2*pi) turns"},
+        "transformation": "exact raw input; no interpolation/resampling/smoothing; phase display only via rad/(2*pi)",
+    }
+    standard_entries: list[dict[str, Any]] = []
+    standard_failures: list[str] = []
+    if is_v21 and source_raw.is_file():
+        try:
+            standard_entries, standard_failures = _compact_v21_layer_entries(normalized, attempt_dir)
+        except (RawTraceError, OSError, ValueError) as exc:
+            standard_failures.append(str(exc))
+        expected_entries = sum(len(_compact_v21_window_specs(layer)) for layer in layers)
+        layer_checks["layer_views_rendered"] = (
+            not standard_failures and len(standard_entries) == expected_entries
+        )
+    else:
+        layer_checks["layer_views_rendered"] = True
+    manifest = {
+        "schema": "josim-standard-visualization-manifest-v1",
+        "version": "V2.1" if is_v21 else "COMPACT_STANDARD_V1",
+        "experiment_id": normalized["id"],
+        "profile": profile,
+        "semantic_order": "INPUT_BOUNDARY -> INTERNAL_STATE -> OUTPUT_BOUNDARY",
+        "layers": layers,
+        "whole_run_overview": visual.get("whole_run_overview_ps", [0.0, 200.0]),
+        "focused_windows": visual.get("focused_windows_ps") or [[0.0, 200.0]],
+        "standalone_entries": standard_entries if is_v21 else [entry],
+        "compact_overview_entry": entry,
+        "comparison_entries": [],
+        "raw_hashes": {attempt_dir.name: entry["input_raw_sha256"]},
+        "scientific_analysis_performed": False,
+    }
+    qa_status = plot.get("status") == "PASS" and all(layer_checks.values()) and not standard_failures and bool(entry["input_raw_sha256"])
+    qa = {
+        "schema": "josim-standard-visualization-qa-v1",
+        "status": "PASS" if qa_status else "FAIL",
+        "experiment_id": normalized["id"],
+        "profile": profile,
+        "semantic_completeness_gates": layer_checks,
+        "raw_hash_checked": True,
+        "raw_files_modified": 0,
+        "physics_solve_count": 0,
+        "scientific_analysis_performed": False,
+        "extra_mechanism_plots_generated": False,
+        "failures": [] if qa_status else [key for key, passed in layer_checks.items() if not passed] + standard_failures + (["plot"] if plot.get("status") != "PASS" else []),
+    }
+    analysis_dir = root / "analysis"
+    _compact_write_json_immutable(analysis_dir / "visualization_manifest.json", manifest)
+    _compact_write_json_immutable(analysis_dir / "visualization_qa.json", qa)
+    summary = "\n".join([
+        f"# Visualization navigation — {attempt_dir.name}",
+        "",
+        "Evidence-only standalone navigation; no scientific interpretation was performed.",
+        "",
+        f"- Raw: `{_compact_relative(root, source_raw)}`",
+        f"- Raw SHA-256: `{entry['input_raw_sha256']}`",
+        f"- Plot: `{plot.get('current_plot', 'not generated')}`",
+        f"- Profile: `{profile}`",
+        "- Semantic order: `INPUT_BOUNDARY -> INTERNAL_STATE -> OUTPUT_BOUNDARY`",
+        "- Comparison: `not generated for this single-attempt run`",
+        "",
+    ])
+    if is_v21:
+        summary = summary.rstrip("\n") + "\n" + "\n".join(
+            f"- {item['category']} / {item['window_name']}: `{item['output_path']}`"
+            for item in standard_entries
+        ) + "\n\n"
+    summary_path = analysis_dir / "run_summaries" / f"{attempt_dir.name}.md"
+    if summary_path.exists() and summary_path.read_text(encoding="utf-8") != summary:
+        raise RuntimeError(f"refusing to overwrite immutable visualization navigation: {summary_path}")
+    if not summary_path.exists():
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(summary, encoding="utf-8")
+    return {"manifest": manifest, "qa": qa, "summary": str(summary_path)}
+
+
+def _compact_write_analysis_artifacts(
+    normalized: dict[str, Any],
+    attempt_dir: Path,
+    record: dict[str, Any],
+    git_record: dict[str, Any],
+    solver_record: dict[str, Any],
+) -> None:
+    root = normalized["root"]
+    raw_path = attempt_dir / "raw.csv"
+    deck_path = attempt_dir / "deck.cir"
+    raw_qa = {
+        "schema": "josim-raw-qa-v1",
+        "status": "PASS" if record.get("artifact") == "VALID" else "FAIL",
+        "scientific_analysis_performed": False,
+        "runs": {attempt_dir.name: record.get("metrics", {})},
+        "raw_files_modified": 0,
+    }
+    deck_diff = {
+        "schema": "josim-registered-deck-diff-qa-v1",
+        "status": "PASS" if deck_path.is_file() else "FAIL",
+        "registered_deck": str(normalized["deck"]),
+        "executed_deck": _compact_relative(root, deck_path),
+        "executed_deck_sha256": sha256_file(deck_path) if deck_path.is_file() else None,
+        "authorized_change": normalized["config"].get("changed"),
+        "unregistered_changes": [],
+    }
+    provenance = {
+        "schema": "josim-experiment-provenance-v1",
+        "repository": str(REPO),
+        "head_before_run": git_record.get("head"),
+        "dirty_before_run": git_record.get("dirty"),
+        "config": file_snapshot(normalized["config_path"], relative_to=REPO),
+        "solver": solver_record,
+        "executed_deck": file_snapshot(deck_path, relative_to=root) if deck_path.is_file() else None,
+        "raw": file_snapshot(raw_path, relative_to=root) if raw_path.is_file() else None,
+        "scientific_analysis_performed": False,
+    }
+    execution = {
+        "schema": "josim-execution-summary-v1",
+        "experiment_id": normalized["id"],
+        "attempt": attempt_dir.name,
+        "execution_status": "COMPLETED" if record.get("returncode") == 0 else "FAILED",
+        "physics_solve_count": 1,
+        "authorized_physics_solve_count": 1,
+        "scientific_analysis_performed": False,
+        "standard_visualization_required": True,
+        "evidence_package_required": True,
+        "expected_package": f"handoff/{normalized['id']}_raw_handoff.zip",
+        "automatic_follow_up": False,
+        "lifecycle": "EXPERIMENT_COMPLETE",
+        "stop_state": "AWAITING_SCIENTIFIC_REVIEW",
+    }
+    profile_key = normalized["visual_profile"].upper().replace("-", "_").replace(".", "_")
+    v21_transform = profile_key in {"V2_1", "SYSTEM_CHAIN_V2_1", "SYSTEM_CHAIN_V2_1_STANDARD"}
+    transformation = {
+        "schema": "josim-transformation-registry-v1",
+        "raw_immutable": True,
+        "transformations": [
+            {
+                "name": "phase_display",
+                "scope": "visualization only",
+                "operation": "independent display conversion rad/(2*pi)",
+                "scientific_analysis": False,
+            },
+            {
+                "name": "stored_grid",
+                "scope": "mechanical QA",
+                "operation": "preserve actual raw timestamps; no interpolation/resampling",
+                "scientific_analysis": False,
+            },
+            {
+                "name": "standard_visualization_windows",
+                "scope": "V2.1 visualization only",
+                "operation": (
+                    "exact half-open stored-row slices; independent phase unwrap before rad/(2*pi) display"
+                    if v21_transform
+                    else "no V2.1 derived windows requested; CLASSIC_LOCKED raw display uses -j 2pi"
+                ),
+                "scientific_analysis": False,
+            },
+        ],
+    }
+    analysis_dir = root / "analysis"
+    _compact_write_json_immutable(analysis_dir / "raw_qa.json", raw_qa)
+    _compact_write_json_immutable(analysis_dir / "deck_diff_qa.json", deck_diff)
+    _compact_write_json_immutable(analysis_dir / "provenance.json", provenance)
+    _compact_write_json_immutable(analysis_dir / "execution_summary.json", execution)
+    _compact_write_json_immutable(analysis_dir / "transformation_registry.json", transformation)
+
+
+def _compact_commit_experiment(root: Path, package: dict[str, Any]) -> dict[str, Any]:
+    """Commit only an in-repository experiment and its package.
+
+    A temporary/out-of-repository fixture is useful for tooling tests; it is
+    reported as NOT_APPLICABLE rather than causing a broad repository commit.
+    """
+
+    try:
+        top = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return {"status": "NOT_APPLICABLE", "reason": "experiment is outside a Git repository"}
+    if Path(top).resolve() != REPO.resolve():
+        return {"status": "NOT_APPLICABLE", "reason": f"experiment repository is {top}, not {REPO}"}
+    if root.resolve() == REPO.resolve():
+        raise RuntimeError("refusing to stage the repository root as an experiment")
+    relative_root = root.resolve().relative_to(REPO.resolve()).as_posix()
+    subprocess.run(["git", "add", "-A", "--", relative_root], cwd=REPO, check=True)
+    force_paths = [
+        root / "SOURCE_MANIFEST.json",
+        root / "RAW_ANALYSIS_HANDOFF_MANIFEST.json",
+        root / "handoff" / "PACKAGE_QA.json",
+        *sorted((root / "analysis").glob("*.json")),
+        *sorted(run_path / "metadata.json" for run_path in (root / "runs").iterdir() if run_path.is_dir() and (run_path / "metadata.json").is_file()),
+        root / str(package["package_path"]),
+    ]
+    existing_force = [str(path.resolve().relative_to(REPO.resolve())) for path in force_paths if path.is_file()]
+    if existing_force:
+        subprocess.run(["git", "add", "-f", "--", *existing_force], cwd=REPO, check=True)
+    staged = subprocess.run(
+        ["git", "diff", "--cached", "--name-only", "--", relative_root],
+        cwd=REPO,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    if not staged:
+        return {"status": "NOT_APPLICABLE", "reason": "experiment produced no new Git paths"}
+    qa_path = root / "handoff" / "PACKAGE_QA.json"
+    qa_before_commit: bytes | None = None
+    if qa_path.is_file():
+        qa_before_commit = qa_path.read_bytes()
+        try:
+            qa_record = json.loads(qa_before_commit.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"PACKAGE_QA.json is not readable before commit: {qa_path}") from exc
+        if isinstance(qa_record, dict):
+            # This detached record is not part of the ZIP, so it can truthfully
+            # close the commit status without changing the immutable package.
+            qa_record["zip_committed"] = True
+            qa_path.write_text(json.dumps(qa_record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            subprocess.run(
+                ["git", "add", "-f", "--", str(qa_path.resolve().relative_to(REPO.resolve()))],
+                cwd=REPO,
+                check=True,
+            )
+    message = f"Add evidence-first experiment package {root.name}"
+    completed = subprocess.run(["git", "commit", "-m", message], cwd=REPO, check=False, capture_output=True, text=True)
+    if completed.returncode != 0:
+        if qa_before_commit is not None:
+            qa_path.write_bytes(qa_before_commit)
+            subprocess.run(
+                ["git", "add", "-f", "--", str(qa_path.resolve().relative_to(REPO.resolve()))],
+                cwd=REPO,
+                check=True,
+            )
+        raise RuntimeError(f"Git commit failed: {completed.stderr.strip() or completed.stdout.strip()}")
+    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, check=True, capture_output=True, text=True).stdout.strip()
+    return {"status": "PASS", "commit": head, "message": message, "staged_paths": staged}
 
 
 def _compact_compute_analysis(normalized: dict[str, Any], attempt_dir: Path) -> dict[str, Any]:
@@ -1070,59 +1782,55 @@ def _compact_brief(
     config = normalized["config"]
     frozen = config.get("frozen", [])
     frozen_lines = frozen.items() if isinstance(frozen, dict) else ((str(item), "") for item in frozen)
+    qa = analysis.get("qa", {}) if isinstance(analysis, dict) else {}
+    missing = analysis.get("missing_probes", []) if isinstance(analysis, dict) else []
     lines = [
-        f"# {normalized['id']} — Quick Result",
+        f"# {normalized['id']} — Evidence-only result",
         "",
-        "## Question",
+        "Scientific interpretation is `NOT PERFORMED` unless a separate explicit "
+        f"`{SCIENTIFIC_REVIEW_AUTHORIZATION}` authorization is supplied.",
         "",
-        normalized["question"],
+        "## Experiment identity",
         "",
-        "## Hypothesis",
+        f"- Experiment: `{normalized['id']}`",
+        f"- Attempt: `{attempt}`",
+        f"- Question: {normalized['question']}",
+        f"- Changed: `{config.get('changed')}`",
         "",
-        normalized["hypothesis"],
-        "",
-        "## Changed",
-        "",
-        f"{config['changed']}",
-        "",
-        "## Held fixed",
+        "## Registered conditions",
         "",
     ]
-    for key, value in frozen_lines:
-        lines.append(f"- {key}" if value == "" else f"- {key}: {value}")
-    lines.extend(["", "## Result", "", f"- Attempt: `{attempt}`", f"- Outcome: `{outcome}`"])
-    qa = analysis.get("qa", {})
-    if qa:
-        lines.append(
-            f"- Artifact: `{analysis.get('artifact_status')}`, {qa.get('sample_count', '?')} samples, "
-            f"time {qa.get('time_start', '?')}–{qa.get('time_end', '?')} s"
-        )
-    if analysis.get("error"):
-        lines.append(f"- Analysis error: `{analysis['error']}`")
-    strict = analysis.get("strict_event")
-    if isinstance(strict, dict):
-        largest = strict.get("largest_monotonic_segment") or {}
-        if largest:
-            turns = largest.get("phase_reported_turns", "?")
-            area = largest.get("area_turns", "?")
-            lines.append(f"- Strict local diagnostic: largest segment {turns} turns; area {area} Φ0")
-        lines.append(f"- Strict classification: `{strict.get('compatibility_classification', 'UNKNOWN')}`")
+    lines.extend(f"- Held fixed: {key}" if value == "" else f"- Held fixed: {key}: {value}" for key, value in frozen_lines)
     lines.extend([
         "",
-        "## Meaning",
+        "## Mechanical QA",
         "",
-        "这是 QUICK 层的最小方向性证据；它只支持本配置、输入、负载、时间步和指标下的有限观察，不自动形成物理 Gate。",
+        "- OBSERVED: the registered raw artifact and solver output paths are preserved.",
+        "- DERIVED (MECHANICAL_QA): hashes, sample/time-grid and finite-value checks below.",
+        f"- Artifact status: `{analysis.get('artifact_status', 'UNKNOWN')}`",
+        f"- Raw SHA-256: `{analysis.get('raw_sha256', 'UNKNOWN')}`",
+        f"- Samples: `{qa.get('sample_count', 'UNKNOWN')}`",
+        f"- Stored time range: `{qa.get('time_start', 'UNKNOWN')}` to `{qa.get('time_end', 'UNKNOWN')}` seconds",
+        f"- Monotonic time / finite values / duplicate-column checks: `{qa.get('strictly_increasing_time', 'UNKNOWN')}` / `{qa.get('finite_value_qa', 'UNKNOWN')}` / `{qa.get('duplicate_column_qa', 'UNKNOWN')}`",
+        f"- Missing probes / UNKNOWN: `{', '.join(missing) if missing else 'none reported'}`",
+        "- BOUNDED_RESULT: `NOT ASSIGNED; scientific review has not been authorized`",
+        "- Raw mutation during QA: `0`",
         "",
-        "## Does NOT prove",
+        "## Evidence and visualization",
         "",
-        "- 不证明完整机制、参数裕度、下游系统成功或硬件行为。",
-        "- 不把 phase turns、波形峰值或局部活动自动称为 SFQ 事件。",
+        f"- Standard visualization: `{(plot or {}).get('current_plot', 'not generated')}`",
+        "- Visualization is descriptive evidence; no mechanism plot or scientific classifier was generated.",
+        "- Evidence package: `handoff/" + normalized["id"] + "_raw_handoff.zip`",
+        "- Package SHA-256: `see handoff/PACKAGE_QA.json`",
         "",
-        "## Visualization and status",
+        "## Boundaries",
         "",
-        f"- Plot: `{(plot or {}).get('current_plot', 'not generated')}`",
-        "- Status: `AWAITING_USER_REVIEW`",
-        "- Agent will not execute a next physical experiment automatically.",
+        "- Scientific interpretation: `NOT PERFORMED`",
+        "- Parameter ranking / winner selection / root-cause or mechanism claim: `NOT PERFORMED`",
+        "- Unauthorized follow-up solve: `none`",
+        "- Lifecycle: `EXPERIMENT_COMPLETE`",
+        "- Status: `AWAITING_SCIENTIFIC_REVIEW`",
+        "- Next action: `STOP`",
         "",
     ])
     return "\n".join(lines)
@@ -1144,12 +1852,13 @@ def _compact_record(
 ) -> dict[str, Any]:
     raw_path = attempt_dir / "raw.csv"
     deck_path = attempt_dir / "deck.cir"
-    outcome = _compact_outcome(analysis, plot)
+    outcome = _compact_evidence_outcome(analysis, plot)
     return {
         "schema_version": COMPACT_RESULT_SCHEMA,
         "experiment_id": normalized["id"],
         "attempt": attempt_dir.name,
-        "workflow": "QUICK",
+        "workflow": "QUICK_EVIDENCE_FIRST",
+        "workflow_policy": EVIDENCE_FIRST_POLICY,
         "execution": execution,
         "question": normalized["question"],
         "hypothesis": normalized["hypothesis"],
@@ -1161,6 +1870,7 @@ def _compact_record(
         "started_at": started_at,
         "finished_at": finished_at,
         "returncode": returncode,
+        "physics_solve_count": 1 if execution == "JO_SIM_RUN" else 0,
         "inputs": {
             "deck": _compact_relative(normalized["root"], deck_path),
             "deck_sha256": sha256_file(deck_path) if deck_path.is_file() else None,
@@ -1172,7 +1882,11 @@ def _compact_record(
         "artifact": analysis.get("artifact_status", "INVALID"),
         "metrics": analysis,
         "outcome": outcome,
-        "status": "AWAITING_USER_REVIEW",
+        "lifecycle": "EXPERIMENT_COMPLETE" if outcome == "EVIDENCE_READY" else "ARTIFACT_INVALID",
+        "status": "AWAITING_SCIENTIFIC_REVIEW" if outcome == "EVIDENCE_READY" else "ARTIFACT_INVALID",
+        "scientific_analysis_performed": False,
+        "scientific_review_authorization": "NOT_GRANTED",
+        "automatic_follow_up": False,
         "plot": plot or {"status": "NOT_REQUESTED"},
     }
 
@@ -1194,16 +1908,57 @@ def _compact_write_brief(normalized: dict[str, Any], record: dict[str, Any]) -> 
         str(record.get("outcome", "QUICK_AMBIGUOUS")),
         record.get("plot"),
     )
-    (normalized["root"] / "RESULT_BRIEF.md").write_text(brief + "\n", encoding="utf-8")
+    path = normalized["root"] / "RESULT_BRIEF.md"
+    content = brief + "\n"
+    if path.exists():
+        if path.read_text(encoding="utf-8") != content:
+            raise RuntimeError(f"refusing to overwrite immutable RESULT_BRIEF.md: {path}")
+        return
+    path.write_text(content, encoding="utf-8")
+
+
+def _compact_write_human_gate(root: Path, record: dict[str, Any]) -> None:
+    gate = {
+        "schema": "compact-evidence-first-gate-v1",
+        "lifecycle": record.get("lifecycle", "ARTIFACT_INVALID"),
+        "state": record.get("status", "ARTIFACT_INVALID"),
+        "scientific_analysis_performed": False,
+        "scientific_review_authorization": "NOT_GRANTED",
+        "user_reviewed": False,
+        "next_step_authorized": False,
+        "automatic_next_experiment": False,
+        "next_action": "STOP",
+        "outcome": record.get("outcome"),
+    }
+    path = root / "human-gate.yaml"
+    if path.exists():
+        existing = yaml.safe_load(path.read_text(encoding="utf-8"))
+        if existing != gate:
+            raise RuntimeError(f"refusing to overwrite immutable human-gate.yaml: {path}")
+        return
+    path.write_text(yaml.safe_dump(gate, sort_keys=False, allow_unicode=True), encoding="utf-8")
 
 
 def compact_run(experiment: str | Path) -> int:
     normalized = validate_compact_config(_load_yaml(_compact_root(experiment)[1]), _compact_root(experiment)[1])
-    if normalized["declared_status"] in {"ARCHIVED", "REVIEWED"}:
+    if normalized["declared_status"] in {
+        "ARCHIVED",
+        "REVIEWED",
+        "EXPERIMENT_COMPLETE",
+        "AWAITING_SCIENTIFIC_REVIEW",
+    }:
         raise ConfigError(f"experiment status {normalized['declared_status']} does not accept an implicit new run")
     root = normalized["root"]
+    package_path = root / "handoff" / f"{normalized['id']}_raw_handoff.zip"
+    if package_path.exists():
+        raise ConfigError(
+            f"evidence package already exists: {package_path}; no implicit follow-up solve is allowed"
+        )
     git_record = git_snapshot(REPO)
+    if root.is_relative_to(REPO) and git_record.get("dirty"):
+        raise ConfigError("clean worktree is required before a physical solve")
     attempt_name = _compact_next_attempt(root)
+    _compact_write_preflight(normalized, attempt_name, git_record)
     attempt_dir = root / "runs" / attempt_name
     attempt_dir.mkdir(parents=True, exist_ok=False)
     deck_path = attempt_dir / "deck.cir"
@@ -1222,11 +1977,16 @@ def compact_run(experiment: str | Path) -> int:
     if completed.returncode != 0:
         analysis = {
             "artifact_status": "INVALID",
+            "analysis_status": "NOT_PERFORMED",
+            "scientific_analysis_performed": False,
             "error": f"solver returned non-zero exit status {completed.returncode}",
             "raw_sha256": sha256_file(raw_path) if raw_path.is_file() else None,
         }
     else:
-        analysis = _compact_compute_analysis(normalized, attempt_dir)
+        # The default execution path is deliberately mechanical only.  It
+        # does not invoke waveform/strict-event metrics or a scientific
+        # classifier; those are available only through explicit review.
+        analysis = _compact_mechanical_qa(normalized, attempt_dir)
     plot = _compact_render(normalized, attempt_dir) if analysis.get("artifact_status") == "VALID" else {"status": "NOT_RENDERED"}
     record = _compact_record(
         normalized,
@@ -1243,6 +2003,24 @@ def compact_run(experiment: str | Path) -> int:
     )
     _compact_write_result(attempt_dir / "result.yaml", record)
     _compact_write_brief(normalized, record)
+    _compact_write_human_gate(root, record)
+    _compact_write_run_metadata(normalized, attempt_dir, record, git_record, solver_record)
+    _compact_write_analysis_artifacts(normalized, attempt_dir, record, git_record, solver_record)
+    visualization_artifacts = _compact_write_visualization_artifacts(
+        normalized, attempt_dir, record, plot
+    )
+    package: dict[str, Any] | None = None
+    commit: dict[str, Any] | None = None
+    if record["artifact"] == "VALID" and visualization_artifacts["qa"]["status"] == "PASS":
+        package = build_package(
+            root,
+            requested_attempt=attempt_name,
+            physics_solve_count=1,
+            scientific_analysis_performed=False,
+        )
+        commit = _compact_commit_experiment(root, package)
+        if commit.get("status") == "PASS":
+            package["zip_committed"] = True
     print(json.dumps({
         "experiment": normalized["id"],
         "attempt": attempt_name,
@@ -1250,20 +2028,34 @@ def compact_run(experiment: str | Path) -> int:
         "status": record["status"],
         "raw": record["raw"],
         "plot": record["plot"],
+        "package": package,
+        "git_commit": commit,
+        "scientific_analysis_performed": False,
     }, ensure_ascii=False, indent=2))
-    return 0 if record["outcome"] != "QUICK_INVALID" else 2
+    return 0 if package is not None and record["outcome"] == "EVIDENCE_READY" else 2
 
 
-def compact_analyze(experiment: str | Path, requested_attempt: str | None = None) -> int:
+def compact_analyze(
+    experiment: str | Path,
+    requested_attempt: str | None = None,
+    *,
+    scientific_review_authorized: bool = False,
+) -> int:
     config_path = _compact_root(experiment)[1]
     normalized = validate_compact_config(_load_yaml(config_path), config_path)
     attempt_dir = _compact_resolve_attempt(normalized["root"], requested_attempt)
     result_path = attempt_dir / "result.yaml"
-    analysis = _compact_compute_analysis(normalized, attempt_dir)
+    # Re-running QA is allowed and remains raw-only.  Scientific metrics are
+    # a separate, explicitly authorized artifact and never overwrite result.yaml.
+    analysis = _compact_mechanical_qa(normalized, attempt_dir)
     if result_path.is_file():
         existing = yaml.safe_load(result_path.read_text(encoding="utf-8"))
-        if not isinstance(existing, dict) or existing.get("metrics") != analysis:
-            raise RuntimeError(f"raw-only analysis differs from immutable result.yaml: {result_path}")
+        if not isinstance(existing, dict):
+            raise RuntimeError(f"immutable result.yaml is not a mapping: {result_path}")
+        if existing.get("workflow") == "QUICK_EVIDENCE_FIRST" and existing.get("metrics") != analysis:
+            raise RuntimeError(f"raw-only QA differs from immutable result.yaml: {result_path}")
+        # Legacy Compact records are read-only compatibility artifacts.  Do
+        # not rewrite them merely because the new default has a smaller QA set.
         record = existing
     else:
         git_record = git_snapshot(REPO)
@@ -1284,26 +2076,96 @@ def compact_analyze(experiment: str | Path, requested_attempt: str | None = None
         )
         _compact_write_result(result_path, record)
         _compact_write_brief(normalized, record)
+    scientific_review: dict[str, Any] | None = None
+    if scientific_review_authorized:
+        full = _compact_compute_analysis(normalized, attempt_dir)
+        review = {
+            "schema": "compact-scientific-review-v1",
+            "authorization": SCIENTIFIC_REVIEW_AUTHORIZATION,
+            "experiment_id": normalized["id"],
+            "attempt": attempt_dir.name,
+            "physics_solve_count": 0,
+            "scientific_analysis_performed": True,
+            "raw_sha256": analysis.get("raw_sha256"),
+            "analysis": full,
+            "automatic_follow_up": False,
+        }
+        review_path = normalized["root"] / "analysis" / "scientific_review.json"
+        if review_path.exists():
+            try:
+                old_review = json.loads(review_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                raise RuntimeError(f"existing scientific review is not readable: {review_path}") from exc
+            if old_review != review:
+                raise RuntimeError(f"refusing to overwrite immutable scientific review: {review_path}")
+        else:
+            _write_json(review_path, review)
+        scientific_review = {
+            "path": _compact_relative(normalized["root"], review_path),
+            "authorization": SCIENTIFIC_REVIEW_AUTHORIZATION,
+        }
     print(json.dumps({
         "experiment": normalized["id"],
         "attempt": attempt_dir.name,
         "outcome": record.get("outcome"),
         "status": record.get("status"),
-        "raw_only": True,
+        "raw_only": not scientific_review_authorized,
+        "scientific_analysis_performed": scientific_review_authorized,
+        "scientific_review": scientific_review,
     }, ensure_ascii=False, indent=2))
     return 0 if record.get("artifact") == "VALID" else 2
+
+
+def compact_package(
+    experiment: str | Path,
+    requested_attempt: str | None = None,
+    *,
+    include_plots: bool = False,
+) -> int:
+    """Package existing immutable evidence without solving or analyzing it."""
+
+    config_path = _compact_root(experiment)[1]
+    normalized = validate_compact_config(_load_yaml(config_path), config_path)
+    attempt_dir = _compact_resolve_attempt(normalized["root"], requested_attempt)
+    result_path = attempt_dir / "result.yaml"
+    result = yaml.safe_load(result_path.read_text(encoding="utf-8")) if result_path.is_file() else {}
+    if not isinstance(result, dict):
+        result = {}
+    if result.get("scientific_analysis_performed") is True:
+        raise ConfigError("scientific-review outputs are separate from the immutable execution package")
+    package = build_package(
+        normalized["root"],
+        requested_attempt=attempt_dir.name,
+        physics_solve_count=int(result.get("physics_solve_count", 0) or 0),
+        scientific_analysis_performed=False,
+        include_plots=include_plots,
+    )
+    commit = _compact_commit_experiment(normalized["root"], package)
+    if commit.get("status") == "PASS":
+        package["zip_committed"] = True
+    print(json.dumps({"experiment": normalized["id"], "attempt": attempt_dir.name, "package": package, "git_commit": commit, "scientific_analysis_performed": False}, ensure_ascii=False, indent=2))
+    return 0
 
 
 def compact_plot(experiment: str | Path, requested_attempt: str | None = None) -> int:
     config_path = _compact_root(experiment)[1]
     normalized = validate_compact_config(_load_yaml(config_path), config_path)
+    package_path = normalized["root"] / "handoff" / f"{normalized['id']}_raw_handoff.zip"
+    if package_path.exists():
+        raise ConfigError(
+            f"evidence package is immutable: {package_path}; use a versioned visualization revision"
+        )
     attempt_dir = _compact_resolve_attempt(normalized["root"], requested_attempt)
     rendered = _compact_render(normalized, attempt_dir)
     if rendered.get("status") != "PASS" and rendered.get("status") != "NOT_REQUESTED":
         print(json.dumps(rendered, ensure_ascii=False, indent=2))
         return 2
-    print(json.dumps({"experiment": normalized["id"], "attempt": attempt_dir.name, "plot": rendered}, ensure_ascii=False, indent=2))
-    return 0
+    if rendered.get("status") == "NOT_REQUESTED":
+        print(json.dumps({"experiment": normalized["id"], "attempt": attempt_dir.name, "plot": rendered}, ensure_ascii=False, indent=2))
+        return 0
+    visualization = _compact_write_visualization_artifacts(normalized, attempt_dir, {}, rendered)
+    print(json.dumps({"experiment": normalized["id"], "attempt": attempt_dir.name, "plot": rendered, "visualization_qa": visualization["qa"]}, ensure_ascii=False, indent=2))
+    return 0 if visualization["qa"]["status"] == "PASS" else 2
 
 
 def compact_inspect(experiment: str | Path, requested_attempt: str | None = None) -> int:
@@ -1331,15 +2193,24 @@ def main(argv: list[str] | None = None) -> int:
     quick = subparsers.add_parser("quick", help="run explicit Quick cases and stop for user review")
     quick.add_argument("experiment", help="path to experiment.yaml")
     for command, handler, help_text in (
-        ("run", compact_run, "run one immutable Compact Quick attempt"),
-        ("analyze", compact_analyze, "analyze an existing attempt raw only"),
-        ("plot", compact_plot, "regenerate the classic compact visualization"),
+        ("run", compact_run, "run one immutable evidence-first Compact attempt"),
+        ("analyze", compact_analyze, "run raw-only QA; scientific review requires explicit authorization"),
+        ("plot", compact_plot, "regenerate the registered descriptive visualization"),
+        ("package", compact_package, "package existing evidence without a solve"),
         ("inspect", compact_inspect, "print a concise human summary"),
     ):
         parser_for_command = subparsers.add_parser(command, help=help_text)
         parser_for_command.add_argument("experiment", help="experiment directory or experiment.yaml")
-        if command != "run":
+        if command not in {"run"}:
             parser_for_command.add_argument("attempt", nargs="?", help="optional attempt id such as A001")
+        if command == "analyze":
+            parser_for_command.add_argument(
+                "--scientific-review-authorized",
+                action="store_true",
+                help=f"explicitly authorize {SCIENTIFIC_REVIEW_AUTHORIZATION}",
+            )
+        if command == "package":
+            parser_for_command.add_argument("--include-plots", action="store_true")
     args = parser.parse_args(argv)
     try:
         if args.command == "quick":
@@ -1347,9 +2218,15 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "run":
             return compact_run(args.experiment)
         if args.command == "analyze":
-            return compact_analyze(args.experiment, args.attempt)
+            return compact_analyze(
+                args.experiment,
+                args.attempt,
+                scientific_review_authorized=args.scientific_review_authorized,
+            )
         if args.command == "plot":
             return compact_plot(args.experiment, args.attempt)
+        if args.command == "package":
+            return compact_package(args.experiment, args.attempt, include_plots=args.include_plots)
         if args.command == "inspect":
             return compact_inspect(args.experiment, args.attempt)
         raise ConfigError(f"unknown command: {args.command}")

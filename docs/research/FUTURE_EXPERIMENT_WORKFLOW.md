@@ -19,21 +19,41 @@ docs/research/BOUNDARY_SPEC_V2.md
 
 ## 日常路径
 
-QUESTION → MINIMUM QUICK → RESULT → USER REVIEW → NEXT or ARCHIVE
+PRE-REGISTER → PREFLIGHT → PHYSICAL SOLVE → MECHANICAL QA → STANDARD
+VISUALIZATION → EVIDENCE PACKAGE → COMMIT → STOP /
+AWAITING_SCIENTIFIC_REVIEW
 
 普通 Quick 默认只回答一个主要问题，改变一个中心变量，并采用最少的方向性
-case。结果必须停止在 AWAITING_USER_REVIEW，不自动设计或执行下一项物理实验。
+case。默认只做机械 QA 和标准描述性可视化；完成 ZIP 与 Git commit 后停止在
+`EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`。科学分析需要显式
+`SCIENTIFIC_REVIEW_AUTHORIZED`，不自动设计或执行下一项物理实验。
 
 ## Compact 目录
 
 experiment.yaml
 run.sh
+PREFLIGHT.md
 RESULT_BRIEF.md
 runs/A001/deck.cir
 runs/A001/raw.csv
 runs/A001/run.log
 runs/A001/result.yaml
+runs/A001/metadata.json
 plots/RESULT_OVERVIEW.html
+analysis/raw_qa.json
+analysis/deck_diff_qa.json
+analysis/provenance.json
+analysis/execution_summary.json
+analysis/transformation_registry.json
+analysis/visualization_manifest.json
+analysis/visualization_qa.json
+analysis/run_summaries/A001.md
+human-gate.yaml
+EVIDENCE_MANIFEST.md
+SOURCE_MANIFEST.json
+RAW_ANALYSIS_HANDOFF_MANIFEST.json
+handoff/<experiment_id>_raw_handoff.zip
+handoff/PACKAGE_QA.json
 
 使用 scripts/templates/compact-quick/ 的薄 run.sh。入口命令为：
 
@@ -43,16 +63,20 @@ plots/RESULT_OVERVIEW.html
     ./run.sh plot A001
     ./run.sh inspect A001
 
-run 使用 scripts/bvm-exp.py 创建下一个 Axxx，绝不覆盖已有 attempt。analyze
-只读现有 raw；plot 只重建 CLASSIC_LOCKED classic 图；inspect 只打印
-question、changed、attempt、HEAD、result 和 status。result.yaml 是小型机器
-记录，不再要求普通 Quick 额外维护 PREFLIGHT、REPORT、REVIEW、human-gate、
-provenance 或 metrics 文件。
+run 使用 scripts/bvm-exp.py 创建不可覆盖的 Axxx，并完成 mechanical QA、标准
+visualization、evidence package 和默认 Git commit。analyze 默认只读 raw 做
+机械 QA；只有 `--scientific-review-authorized` 才生成独立 scientific review。
+plot 只重建描述性图；package 只打包现有证据；inspect 只打印状态。历史实验
+目录不批量迁移。
 
 ## 两种生命周期
 
-- QUICK：raw QA、相关 metric、RESULT_BRIEF 和 compact classic visualization。
+- QUICK：raw/mechanical QA、evidence-only RESULT_BRIEF、标准 visualization 和
+  immutable evidence ZIP。
 - FORMAL：只有用户明确要求时才启用 controls、收敛、完整 provenance 和独立复核。
+
+`RESULT_BRIEF` 默认不含 mechanism、root cause、parameter recommendation、
+winner 或 physical `BOUNDED_RESULT` interpretation。
 
 不再把 PROMOTION 作为单独生命周期。Quick 可以提出 Formal 选项，但用户决定
 是否继续，工具不自动升级。
@@ -98,6 +122,7 @@ radians；turns 显式除以 2π。local phase/activity 不自动是 SFQ，local
 
 ## 状态
 
-允许的简单状态为 READY、RUNNING、AWAITING_USER_REVIEW、REVIEWED、ARCHIVED。
-用户审阅是唯一重要 gate；代理不得自行填写 REVIEWED、扩大 scope 或启动下一项
-实验。项目当前科学状态见 docs/research/CURRENT.md。
+允许的简单状态为 READY、RUNNING、EXPERIMENT_COMPLETE、
+AWAITING_SCIENTIFIC_REVIEW、REVIEWED、ARCHIVED。科学审阅和新 solve 是两个
+独立授权；代理不得自行填写 REVIEWED、扩大 scope 或启动下一项实验。项目当前
+科学状态见 docs/research/CURRENT.md。

@@ -1,0 +1,65 @@
+schema_version: compact-quick-v2
+workflow_policy: EVIDENCE_FIRST_V1
+id: replace-with-bvm-qb-id
+mode: QUICK
+source_class: canonical-or-historical-explicitly-declared
+question: What evidence is produced at the registered BVM to QB boundary?
+hypothesis: The registered intervention changes only the declared evidence inputs.
+changed: one central registered parameter or input
+scientific_review_authorization: NOT_GRANTED
+frozen:
+  - BVM, QB, JSL, JTL and JJ model closure
+  - stimulus, polarity, bias, load and controls
+  - time step, stop time, stored grid and registered windows
+  - signal labels and evidence-only interpretation ceiling
+deck: inputs/main.cir
+run:
+  solver: build/josim-cli
+  args: []
+analysis:
+  # These are available only after explicit scientific review authorization;
+  # the default run performs raw/mechanical QA instead.
+  metrics: [raw_qa, waveform]
+  signals: [I(L_SL|XBVM1), V(COMMON_SL), V(QBIN), P(BJ1|XBQ1), V(QBOUT)]
+visualization:
+  mode: compact
+  style: CLASSIC_LOCKED
+  profile: SYSTEM_CHAIN_V2_1
+  whole_run_overview_ps: [0.0, 200.0]
+  focused_windows_ps: [[110.0, 121.0]]
+  title: replace-with-bvm-qb-id — V2.1 system chain
+  signals: [I(L_SL|XBVM1), V(COMMON_SL), V(QBIN), P(BJ1|XBQ1), V(QBOUT)]
+  layers:
+    - id: 01_SIGNAL_TIMING
+      input_boundary: [I(I_WL1), I(I_BL1), I(I_SE1)]
+      internal_state: [I(L_SL|XBVM1), I(B_JSL8)]
+      output_boundary: [V(QBIN), V(QBOUT), I(R_TERM)]
+      overview_window_ps: [0.0, 200.0]
+      focused_windows_ps: [[110.0, 121.0]]
+    - id: 02_BVM_STATE
+      input_boundary: [I(I_WL1), I(I_BL1), I(I_SE1)]
+      internal_state: [P(B_JM1|XBVM1), V(B_JM1|XBVM1), I(L_SL|XBVM1)]
+      output_boundary: [I(L_SL|XBVM1), V(L_SL|XBVM1), V(COMMON_SL)]
+      overview_window_ps: [0.0, 200.0]
+      focused_windows_ps: [[101.0, 135.0]]
+    - id: 03_JSL_CHAIN
+      input_boundary: [V(COMMON_SL), I(B_JSL1)]
+      internal_state: [P(B_JSL1), P(B_JSL8), I(B_JSL1), I(B_JSL8)]
+      output_boundary: [I(B_JSL8), V(QBIN)]
+      overview_window_ps: [0.0, 200.0]
+      focused_windows_ps: [[101.0, 135.0]]
+    - id: 04_QB_STATE
+      input_boundary: [V(QBIN), I(LIN|XBQ1), P(BJS|XBQ1)]
+      internal_state: [P(BJ1|XBQ1), P(BJ2|XBQ1), I(L1|XBQ1)]
+      output_boundary: [I(L3|XBQ1), V(QBOUT), P(B01|XJTL1_1)]
+      overview_window_ps: [0.0, 200.0]
+      focused_windows_ps: [[110.0, 121.0]]
+    - id: 05_JTL_CHAIN
+      input_boundary: [V(QBOUT)]
+      internal_state: [P(B01|XJTL1_1), P(B01|XJTL1_6)]
+      output_boundary: [V(JTL6_OUT), I(R_TERM)]
+      overview_window_ps: [0.0, 200.0]
+      focused_windows_ps: [[110.0, 140.0]]
+package:
+  include_plots: false
+  additional_paths: []

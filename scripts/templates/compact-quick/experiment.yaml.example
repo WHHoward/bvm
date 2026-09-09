@@ -1,9 +1,12 @@
 schema_version: compact-quick-v2
+workflow_policy: EVIDENCE_FIRST_V1
 id: replace-with-quick-id
 mode: QUICK
+source_class: exploratory
 question: Does the changed input produce the expected directional response?
 hypothesis: The candidate will change the selected target signal in the declared direction.
 changed: one central parameter, input, or topology choice
+scientific_review_authorization: NOT_GRANTED
 frozen:
   - solver and model closure
   - load and stimulus timing
@@ -14,6 +17,8 @@ run:
   solver: build/josim-cli
   args: []
 analysis:
+  # These metrics are not executed by the default run; they require an
+  # explicit --scientific-review-authorized analysis invocation.
   metrics: [raw_qa, waveform]
   signals:
     - I(INPUT)
@@ -21,11 +26,20 @@ analysis:
 visualization:
   mode: compact
   style: CLASSIC_LOCKED
+  profile: CLASSIC_LOCKED_COMPACT
+  # BVM -> QB experiments must use the five-layer SYSTEM_CHAIN_V2_1 profile;
+  # see system-chain-v2.1.yaml.example and declare INPUT/INTERNAL/OUTPUT
+  # groups for every subsystem.
+  whole_run_overview_ps: [0.0, 200.0]
+  focused_windows_ps: [[100.0, 120.0]]
   title: replace-with-quick-id — key signals
   signals:
     - I(INPUT)
     - V(OUT)
-possible_next_options:
-  - User reviews RESULT_BRIEF.md and the compact plot.
-  - User authorizes one explicitly bounded follow-up Quick.
-  - User archives the result.
+package:
+  include_plots: false
+  # Additional local closure files may be listed here when needed.
+  additional_paths: []
+
+# The default run stops after the evidence ZIP and package QA.  Scientific
+# interpretation is a separate command requiring --scientific-review-authorized.

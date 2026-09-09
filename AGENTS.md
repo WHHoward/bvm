@@ -26,6 +26,14 @@ Existing-experiment read-only analysis MUST still obey the contract's raw
 immutability, provenance, evidence-label, visualization, QA and bounded-claim
 rules.
 
+For future experiments using the standard runner, the default role is
+`Experimental Operator + Evidence Packager`: PRE-REGISTER → PREFLIGHT →
+PHYSICAL SOLVE → MECHANICAL QA → STANDARD VISUALIZATION → EVIDENCE PACKAGE →
+COMMIT → STOP at `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`.
+Scientific analysis requires the explicit token
+`SCIENTIFIC_REVIEW_AUTHORIZED`; an interesting, anomalous, successful or failed
+run never supplies that authorization and never triggers a follow-up solve.
+
 ## Measurement invariants
 
 - JoSIM `P(...)` output is raw phase in radians. Convert a declared phase difference with `phase_delta_turns = phase_delta_rad / (2*pi)`.
@@ -94,11 +102,10 @@ The user retains final approval for route changes, metric freezes, and paper cla
 研究分三级（规范见 `research/WORKFLOW.md` §24）。Exploration 是默认模式；
 只有 Authority 级才要求完整 josim-handoff 冻结合同链：
 
-- **Exploration**（默认）：无 request/ACK/receipt/audit/evidence bundle 要求；
-  Claude 可直接建立独立 test/exploration fixture、运行 JoSIM、分析和迭代；
-  至少保存 input/netlist、command、raw evidence、analysis script 和简短
-  note（Observed / Derived / Inference / Unknown / Next）；结果不得自动
-  升级为 authoritative claim。
+- **Exploration**（默认）：结果仍不是 authoritative claim；但使用标准
+  Compact runner 的新实验必须完成机械 QA、标准可视化、evidence ZIP、
+  PACKAGE_QA 和默认 Git commit。自定义/历史 fixture 不因本规则而批量迁移，
+  但不得把其旧 summary 当作新 evidence-first output。
 - **Candidate**：exploration 出现值得继续依赖的结果时使用；clean rerun +
   完整 raw evidence + 独立机械复算一次；不要求 Sol final audit。
 - **Authority**：仅用于 metric freeze、scientific baseline、route

@@ -25,13 +25,20 @@ run.sh：
 ```bash
 ./run.sh
 ./run.sh analyze A001
+./run.sh analyze A001 --scientific-review-authorized
 ./run.sh plot A001
+./run.sh package A001
 ./run.sh inspect A001
 ```
 
 run 调用 scripts/bvm-exp.py 并创建不可覆盖的 runs/Axxx attempt；每个 attempt
-保存 deck.cir、raw.csv、run.log 和 result.yaml。analyze 只消费已有 raw，plot
-使用 scripts/josim-plot2.py，完成后状态为 AWAITING_USER_REVIEW。
+保存 deck.cir、raw.csv、run.log、metadata.json 和 result.yaml。默认 run 只做
+mechanical QA，使用 scripts/josim-plot2.py 生成标准描述性可视化，生成
+`handoff/<experiment_id>_raw_handoff.zip` 与 detached `PACKAGE_QA.json`，并在
+仓库内默认提交 Git，完成后状态为
+`EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`。analyze 默认只消费已有
+raw 做 QA；只有显式 `--scientific-review-authorized` 才生成独立 scientific
+review artifact。package 只打包现有证据，不运行 solver。
 
 旧的 python3 scripts/bvm-exp.py quick path/to/experiment.yaml 入口保留给已经
 创建的 V1 fixture，不作为新实验默认接口。
@@ -103,6 +110,7 @@ phase_delta_turns = phase_delta_rad / (2*pi)
 - waveform diagnostics：`bvmtools.waveform`；
 - exact-grid compare：`bvmtools.compare`；
 - classic waveform backend：`scripts/josim-plot2.py`；
+- evidence-first package/ZIP QA：`scripts/build_experiment_package.py`；
 - Authority/FROZEN handoff：`.agents/skills/josim-handoff/scripts/handoff.py`。
 
 “authoritative for calculation”不表示这些工具自己给出物理 Gate；Gate 仍由
@@ -120,8 +128,11 @@ python3 scripts/josim-plot2.py path/to/run.csv \
 
 只选最少的关键波形；`-j 2pi` 的数值是 `rad/(2*pi)` turns，不是 SFQ 数。未来
 Quick 默认就是这一 classic profile，compact 只减少信号数量。
-建议只将 `plots/RESULT_OVERVIEW.html` 作为 human-facing compact visualization
-版本化；full 或任意其他 HTML 保持可再生并默认 ignored。
+未来 BVM→QB→JTL 标准 evidence 还必须保存 visualization manifest、visualization
+QA 和 per-run navigation；HTML/PNG 可按体积不放入 ZIP。V2.1 语义结构为
+`01_SIGNAL_TIMING`、`02_BVM_STATE`、`03_JSL_CHAIN`、`04_QB_STATE`、
+`05_JTL_CHAIN`，每层均为 `INPUT -> INTERNAL -> OUTPUT` 加 whole-run overview
+和 focused windows。任何 phase display 仍是 `rad/(2*pi)`，不是 SFQ count。
 
 ## 如何请求 full visualization
 
@@ -161,14 +172,17 @@ compact。
 
 ## Quick 与 Formal
 
-V2 不再把 Promotion 作为单独生命周期。Quick 只提供最小方向性证据；如果结果
-值得依赖，RESULT_BRIEF 最多列出三个后续选项，其中可以包含 Formal 建议。只有
-用户明确授权，才另行建立 Formal 的 controls、收敛、完整 provenance 和独立复核。
+Evidence-first Quick 默认只提供 raw/mechanical QA、标准描述性可视化和科学审阅
+所需的 immutable package；`RESULT_BRIEF.md` 不给出 mechanism、root cause、
+winner 或下一实验建议。只有用户明确给出
+`SCIENTIFIC_REVIEW_AUTHORIZED`，才另行生成 scientific-review artifact；新的
+physical solve 仍须独立注册和授权。
 
 ## Human Understanding Gate
 
-每个 Quick 结果优先交付：WHAT CHANGED、WHAT WAS HELD FIXED、WHAT HAPPENED、
-WHAT IT MEANS、WHAT IT DOES NOT PROVE、图的位置和当前状态。V2 将这些内容放入
-RESULT_BRIEF.md，并把简单状态写入 attempt/result.yaml；不再创建冗余的
-human-gate.yaml。只有用户明确表示理解并授权后，才可进入下一步；agent 不得
-自填 REVIEWED 或自动执行下一项。
+每个标准结果优先交付：experiment identity、exact run matrix、mechanical QA、
+raw/plot/package links、UNKNOWN 和当前状态。Evidence-first V2 将这些内容放入
+`RESULT_BRIEF.md`、`EVIDENCE_MANIFEST.md`、`result.yaml` 和
+`human-gate.yaml`；默认 scientific interpretation 为 `NOT PERFORMED`，状态为
+`AWAITING_SCIENTIFIC_REVIEW`。只有明确授权后才可进入 review；agent 不得自填
+REVIEWED 或自动执行下一项。

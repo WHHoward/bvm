@@ -1,6 +1,6 @@
 # Experimental Contract
 
-状态：`ACTIVE / V1`
+状态：`ACTIVE / V1`（2026-09-09 evidence-first amendment）
 
 本合同适用于本仓库中的所有 simulation experiments、replay experiments、
 parameter studies、read-only raw analyses 和 evidence-packaging tasks。它
@@ -23,16 +23,22 @@ deck、报告、指标定义或科学结论。
 - create the registered decks and probes；
 - execute exactly the authorized solves；
 - preserve raw evidence；
-- perform artifact and numerical QA；
-- compute only preregistered metrics；
-- generate human-readable evidence；
+- perform artifact and mechanical/registered-arithmetic QA；
+- generate only the standard descriptive visualization by default；
+- package the immutable evidence and perform package QA；
 - preserve provenance；
-- report bounded findings。
+- report evidence readiness without scientific interpretation。
 
-执行者 MUST NOT 自动承担 speculative mechanism storytelling、redesign、tuning、
-parameter sweep 或 follow-up experiment。实验执行成功不等于 artifact 有效、
-物理结论成立或 Gate 通过；`PASS`、`FAIL`、`INCONCLUSIVE` 和 artifact
-`INVALID` MUST 分开记录。
+除非用户在当前 review 阶段明确给出
+`SCIENTIFIC_REVIEW_AUTHORIZED`，执行者 MUST NOT 进行 scientific analysis、
+root-cause analysis、mechanism interpretation、parameter ranking、winner
+selection、next-experiment design、post-hoc threshold invention 或额外 solve。
+执行成功不等于 artifact 有效、物理结论成立或 Gate 通过；`PASS`、`FAIL`、
+`INCONCLUSIVE` 和 artifact `INVALID` MUST 分开记录。
+
+`MECHANICAL_QA` 可以包含固定定义的纯数值 consistency check，例如 KCL/KVL、
+series-current residual、actual-grid arithmetic 和 phase `rad/(2*pi)` display
+conversion；这些操作不构成 scientific interpretation。
 
 ## II. PREFLIGHT
 
@@ -134,6 +140,24 @@ phase display convention；MUST NOT 用漂亮的 summary 隐藏 full internal ra
 默认使用仓库接受的 `scripts/josim-plot2.py`、`sep_comb`、`dark` 和 `-j 2pi`
 语言。图是 descriptive evidence，MUST NOT 单独认证 SFQ、Gate 或机制。
 
+未来 BVM→QB→JTL 实验的 standard visualization MUST 使用 V2.1 semantic
+structure：
+
+```text
+01_SIGNAL_TIMING
+02_BVM_STATE
+03_JSL_CHAIN
+04_QB_STATE
+05_JTL_CHAIN
+```
+
+每个 subsystem view MUST 明确 `INPUT BOUNDARY -> INTERNAL STATE -> OUTPUT
+BOUNDARY`，并同时提供 whole-run `OVERVIEW` 与注册的 focused windows。Standalone
+与 comparison MUST 使用同一 semantic signal schema；comparison 只能增加 case
+dimension，不能另挑一套“interesting signals”。额外 mechanism/dashboard/phase-plane
+图默认不生成。若具体 fixture 不含一个假定的 top-level node，MUST 在 manifest
+中登记真实 semantic boundary，不得伪造 probe。
+
 ## VII. PHASE HANDLING
 
 JoSIM `P(...)` raw value MUST 按 radians 保存和注明。phase comparison MUST：
@@ -228,6 +252,8 @@ offset MUST 在 machine-readable artifact 中保存。
 - stale artifact detection；
 - transformation registry；
 - overclaim review。
+- evidence manifest、ZIP contents、archived raw/deck hash 和 detached package QA；
+- package bytes、repository-relative path 和 package SHA-256。
 
 QA 失败的 artifact MUST 标为 `ARTIFACT_INVALID`，不能改写成 physical `FAIL`。
 分析工具失败而 raw 有效时，MUST 保留原 raw/deck/log/metadata，修复工具后只
@@ -252,23 +278,54 @@ analysis/
 plots/
 ```
 
-`analysis/` 至少 MUST 包含 metrics JSON、provenance/hash QA、visualization QA、
-machine-readable interpretations，以及 transformation registry（如有）。
+`analysis/` 至少 MUST 包含 mechanical QA、provenance/hash QA、visualization QA
+和 transformation registry。machine-readable scientific interpretations 只在
+`SCIENTIFIC_REVIEW_AUTHORIZED` 后作为独立、版本化 artifact 出现。
 `plots/` MUST 包含可人工审阅的 standalone 和 comparison evidence；每个 run 的
 standalone 页面与其 raw 的直接 provenance MUST 可反查。
 
+每个未来完成的正式实验还 MUST 生成并提交：
+
+```text
+handoff/<experiment_id>_raw_handoff.zip
+handoff/PACKAGE_QA.json
+```
+
+ZIP MUST 至少包含 experiment definition、`PREFLIGHT.md`、每个 authorized run
+的 `deck.cir`/`raw.csv`/`metadata.json`/`run.log`、experiment-local inputs 或
+`SOURCE_MANIFEST.json`、mechanical QA/provenance、standard visualization
+manifest/QA、per-run navigation、`EVIDENCE_MANIFEST.md` 和
+`RAW_ANALYSIS_HANDOFF_MANIFEST.json`。`raw.csv` 是 immutable solver output，
+不得用 selected/resampled/cropped/processed 文件替代。
+
+`PACKAGE_QA.json` MUST 在重新打开 ZIP 后验证 authorized runs、raw/deck hashes、
+required definitions、mechanical QA 和 visualization artifacts。它记录最终
+package SHA-256；为避免自哈希循环，QA 文件保持在 ZIP 外。PACKAGE_QA FAIL 时
+MUST NOT commit package，状态为 `ARTIFACT_INVALID` 并 STOP。
+
+ZIP 一旦提交即 immutable。后续 scientific review 只能引用相同 package SHA；若
+packaging 确实有错误，必须生成 versioned `_v2.zip` 并保留旧 ZIP，不能静默覆盖。
+若 package 过大，工具只记录 `STORAGE_POLICY_REVIEW_RECOMMENDED`，不得自行切换
+Git LFS、release artifact 或外部存储。
+
 ## XVI. RESULT_BRIEF STYLE
 
-`RESULT_BRIEF.md` MUST 保持 answer-first、短而可审计，优先顺序是：
+默认的 `RESULT_BRIEF.md` / `EVIDENCE_MANIFEST.md` MUST 是 evidence-only、
+answer-first、短而可审计，优先顺序是：
 
 1. experiment identity；
 2. exact run matrix；
 3. QA status；
 4. `OBSERVED`；
-5. `DERIVED`；
-6. `BOUNDED_RESULT`；
+5. `DERIVED`（仅已注册的 mechanical arithmetic）；
+6. `BOUNDED_RESULT`（仅在另一个明确授权的 scientific review 中）；
 7. `UNKNOWN`；
-8. raw、plots 和 machine-readable artifacts 的 links。
+8. raw、plots、package 和 machine-readable artifacts 的 links。
+
+默认 summary MUST 明确 `scientific interpretation = NOT PERFORMED`、
+`unauthorized follow-up = none` 和 `status = AWAITING_SCIENTIFIC_REVIEW`，不得
+写 mechanism、root cause、parameter recommendation、winner 或 physical
+`BOUNDED_RESULT` interpretation。
 
 它 MUST NOT 以长篇 mechanism essay 代替 raw、human-readable visual evidence
 和 reproducibility。没有证据支持的 mechanism、hardware claim、Gate 或 universal
@@ -277,11 +334,32 @@ law MUST NOT 通过篇幅升级。
 ## XVII. NO SILENT FOLLOW-UP
 
 实验完成后，执行者 MUST NOT 自动 tune、redesign、sweep、launch next experiment、
-change receiver、change BVM、change load 或 change timing。执行者 MUST 先报告
-结果并停止，等待用户下一步明确授权。`AWAITING_USER_REVIEW` 之后不得自动扩大
-scope 或启动新的 physical solve。
+change receiver、change BVM、change load、change timing 或从结果推导下一项
+recommendation。完成 package 和 commit 后必须 STOP，状态为
+`EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`。`AWAITING_SCIENTIFIC_REVIEW`
+之后不得自动扩大 scope 或启动新的 physical solve。
 
-## XVIII. SCIENTIFIC STATE PRESERVATION
+只有用户明确给出 `SCIENTIFIC_REVIEW_AUTHORIZED` 才能进入独立 scientific
+review；该 review 不修改原始 evidence ZIP，也不授予新的 solve authorization。
+
+## XVIII. DEFAULT LIFECYCLE AND GIT POLICY
+
+未来标准实验的默认顺序是：
+
+```text
+PRE-REGISTER -> PREFLIGHT -> PHYSICAL SOLVE -> MECHANICAL QA
+-> STANDARD VISUALIZATION -> EVIDENCE PACKAGE
+-> COMMIT EXPERIMENT + PACKAGE -> STOP
+-> AWAITING_SCIENTIFIC_REVIEW
+```
+
+Codex 的默认职责固定为 `Experimental Operator + Evidence Packager`。标准工具
+必须默认执行 exact authorized solves、raw/provenance/QA、标准可视化、package
+integrity QA 和 Git commit；不默认执行 scientific analysis。正式实验 ZIP
+默认直接提交 Git，同时记录 bytes、repository-relative path 和 SHA-256。历史
+实验、历史 ZIP 和 legacy protocol 不因本节而迁移或重写。
+
+## XIX. SCIENTIFIC STATE PRESERVATION
 
 如果后续 analysis 推翻旧 interpretation，执行者 MUST：
 

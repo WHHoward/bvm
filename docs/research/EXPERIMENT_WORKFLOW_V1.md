@@ -1,5 +1,9 @@
 # JoSIM 实验工作流 V1
 
+> Evidence-first amendment (2026-09-09): the default execution role is
+> `Experimental Operator + Evidence Packager`; scientific analysis is opt-in
+> via `SCIENTIFIC_REVIEW_AUTHORIZED`.
+
 ## 1. 目的与适用范围
 
 本文是项目未来新建 JoSIM/BVM 实验的规范性流程与目录结构。它冻结的是
@@ -20,30 +24,26 @@
 
 所有未来的新实验默认按下列顺序推进：
 
-    QUESTION
-      → PREREGISTER
-      → GENERATE / FREEZE DECKS
-      → STATIC PREFLIGHT
-      → PREREGISTRATION COMMIT
-      → CLEAN WORKTREE
-      → PHYSICAL RUN
-      → RAW / POST-RUN QA
-      → STANDALONE VISUALIZATION
-      → STANDALONE VISUAL QA
-      → COMPARISON VISUALIZATION
-      → ANALYSIS
-      → ADVERSARIAL / NUMERICAL REVIEW
-      → REPORT
-      → HUMAN REVIEW GATE
-      → STOP / NEXT AUTHORIZATION
+    PRE-REGISTER
+      → PREFLIGHT
+      → PHYSICAL SOLVE
+      → MECHANICAL QA
+      → STANDARD VISUALIZATION
+      → EVIDENCE PACKAGE
+      → COMMIT EXPERIMENT + PACKAGE
+      → STOP / AWAITING_SCIENTIFIC_REVIEW
+
+`SCIENTIFIC ANALYSIS` 不在默认执行链中。只有用户明确给出
+`SCIENTIFIC_REVIEW_AUTHORIZED`，才在停止后的独立 review 阶段执行；该阶段
+不授予新的 solve，也不改写已提交的 evidence ZIP。
 
 顺序有三条硬约束：
 
 1. 只有冻结并已登记的 executed deck 才能进入物理运行；
 2. 每个 condition 先有独立的 standalone visualization 和 QA，之后才做
    comparison visualization；
-3. 到达 HUMAN REVIEW GATE 后必须停止。代理不得因为结果“看起来符合预期”
-   自动扩展参数、改变路线或启动下一项实验。
+3. 完成 evidence package 和 Git commit 后必须停止。代理不得因为结果“看起来
+   符合预期”自动分析、扩展参数、改变路线或启动下一项实验。
 
 普通 Exploration 可以使用本流程的完整证据结构，但结果仍然只能保持在
 相应证据等级；本流程本身不会把 Exploration 自动提升为 Candidate、Formal
@@ -85,13 +85,17 @@
     expected_qa: []
     interpretation_ceiling: <bounded statement>
     prohibited_followups: [<actions requiring new authorization>]
+    scientific_review_authorization: NOT_GRANTED
+    package:
+      zip: handoff/<experiment_id>_raw_handoff.zip
+      commit_by_default: true
     visual_authority:
       renderer: scripts/josim-plot2.py
       layout: sep_comb
       color: dark
       phase: 2pi
     human_gate:
-      state: AWAITING_USER_REVIEW
+      state: AWAITING_SCIENTIFIC_REVIEW
       user_reviewed: false
       next_step_authorized: false
       automatic_next_experiment: false
@@ -112,14 +116,26 @@
     │       ├── run.log
     │       └── metadata.json
     ├── analysis/
-    │   ├── analyze.py
-    │   ├── metrics.json
-    │   ├── REPORT.md
-    │   └── human-gate.yaml
+    │   ├── preflight.json
+    │   ├── raw_qa.json
+    │   ├── deck_diff_qa.json
+    │   ├── provenance.json
+    │   ├── execution_summary.json
+    │   ├── transformation_registry.json
+    │   ├── visualization_manifest.json
+    │   ├── visualization_qa.json
+    │   └── run_summaries/
     ├── plots/
     │   ├── runs/
     │   └── comparison/
-    └── provenance.json
+    ├── RESULT_BRIEF.md
+    ├── human-gate.yaml
+    ├── EVIDENCE_MANIFEST.md
+    ├── SOURCE_MANIFEST.json
+    ├── RAW_ANALYSIS_HANDOFF_MANIFEST.json
+    └── handoff/
+        ├── <experiment_id>_raw_handoff.zip
+        └── PACKAGE_QA.json
 
 目录名和 condition 名必须能从 experiment.yaml 反查。优先把哈希、命令、
 solver、时间步长、artifact 状态和来源写进 metadata.json 与
@@ -222,11 +238,15 @@ experiment.yaml/task-local analysis 中可读地保留。
 
 时间戳必须是真实创建时间，不得使用未来时间或事后伪造运行时间。
 
-## 8. 共享测量逻辑与 task-local 结论
+## 8. 共享测量逻辑与 scientific-review opt-in
 
 稳定、可复用的 raw 读取、时间网格、相位转换、波形比较、KCL 和严格事件
-测量逻辑应优先下沉到 scripts/bvmtools/。实验特有的窗口、对照语义、
-判定标签、解释上限和结论仍保留在 task-local 的 analysis/ 与报告中。
+测量逻辑应优先下沉到 scripts/bvmtools/。默认执行只允许 raw/provenance/
+mechanical QA 和已注册的 arithmetic consistency check；波形指标、事件分类、
+参数排序、机制解释和结论必须等用户明确给出
+`SCIENTIFIC_REVIEW_AUTHORIZED` 后，写入独立、版本化的 scientific-review
+artifact。实验特有的窗口、对照语义和解释上限仍保留在 task-local 的
+analysis/ 与报告中，但默认结果不得替 review 做科学判断。
 
 必须保持下列测量不变量：
 
@@ -260,6 +280,13 @@ signal order、phase unit 和 naming。BVM 默认 visual authority 为：
 后的轴或标签才能写 turns；turns 不是 SFQ 数量。图只展示支持当前问题的
 关键数据，不以全信号堆叠替代证据选择。
 
+BVM→QB→JTL 的标准 system-chain visualization 使用 V2.1 的五层 schema：
+`01_SIGNAL_TIMING`、`02_BVM_STATE`、`03_JSL_CHAIN`、`04_QB_STATE`、
+`05_JTL_CHAIN`。每层都必须声明 `INPUT BOUNDARY`、`INTERNAL STATE` 和
+`OUTPUT BOUNDARY`，并有 whole-run overview 与 registered focused windows。
+Standalone 与 comparison 共享同一 signal ordering；缺失 probe 记录为
+`UNKNOWN`，不伪造 top-level node，也不默认生成 mechanism/dashboard 图。
+
 ## 10. 历史 incident 规则
 
 如果 solver exit 为 0，但由于 preflight 或 analyzer bug 导致分析退出 1：
@@ -275,19 +302,36 @@ signal order、phase unit 和 naming。BVM 默认 visual authority 为：
 
 ## 11. 人工理解门
 
-实验完成后的默认状态是：
+标准 evidence-first 实验在 package 和 commit 完成后的默认状态是：
 
-    state: AWAITING_USER_REVIEW
+    state: AWAITING_SCIENTIFIC_REVIEW
+    lifecycle: EXPERIMENT_COMPLETE
     user_reviewed: false
     next_step_authorized: false
     automatic_next_experiment: false
     next_action: STOP
 
-只有用户明确审阅并授权，才能改变下一步。代理不能自行把
-AWAITING_USER_REVIEW 写成 REVIEWED，不能把一个 Quick 结果升级成
-Formal/Authority，也不能自动执行报告中列出的后续选项。
+只有用户明确给出 `SCIENTIFIC_REVIEW_AUTHORIZED`，才能进入独立科学审阅；
+只有另一个明确授权才可注册新的 physical solve。代理不能自行把
+AWAITING_SCIENTIFIC_REVIEW 写成 REVIEWED、把 Quick 结果升级成
+Formal/Authority，或执行任何由结果诱发的 follow-up。
 
-## 12. 提交纪律与非目标
+## 12. Evidence package 与提交
+
+每个标准完成的正式实验 MUST 生成
+`handoff/<experiment_id>_raw_handoff.zip` 和 detached `handoff/PACKAGE_QA.json`。
+ZIP 至少包含 experiment.yaml、PREFLIGHT.md、所有 authorized run 的
+`deck.cir`/`raw.csv`/`metadata.json`/`run.log`、experiment-local source closure
+或 `SOURCE_MANIFEST.json`、mechanical QA/provenance、standard visualization
+manifest/QA、per-run navigation、`EVIDENCE_MANIFEST.md` 和
+`RAW_ANALYSIS_HANDOFF_MANIFEST.json`。PACKAGE_QA 必须重新打开 ZIP 并复算
+raw/deck SHA-256；失败时不得 commit，必须标 `ARTIFACT_INVALID` 并 STOP。
+
+ZIP 默认直接提交 Git，并记录 package bytes、repository-relative path 和
+SHA-256。ZIP 提交后 immutable；后续 scientific review 只引用相同 package SHA。
+历史实验、历史 ZIP 和 legacy protocol 不批量迁移。
+
+## 13. 提交纪律与非目标
 
 预注册和流程改动应先形成独立、可审阅的 commit；在 clean worktree 上才
 开始物理 run。实验完成后，代码、analysis、manifest 和报告的修改按主题

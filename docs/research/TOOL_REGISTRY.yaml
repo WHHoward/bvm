@@ -1,5 +1,5 @@
 registry_version: 1
-generated_on: '2026-09-02'
+generated_on: '2026-09-09'
 scope: JoSIM/BVM research tooling inventory and consolidation boundary
 inventory:
   scanned_globs:
@@ -11,7 +11,7 @@ inventory:
     - test/exploration/**/*.sh
     - experiment-local builders, analyzers, plotters, and verifiers
   counts_at_inventory:
-    scripts_python: 32
+    scripts_python: 33
     scripts_shell: 1
     skill_python_or_shell: 7
     exploration_python_or_shell: 154
@@ -183,11 +183,13 @@ entries:
   - name: bvm-exp
     path: scripts/bvm-exp.py
     status: CORE
-    purpose: Compact Quick runner with run/analyze/plot/inspect commands, immutable Axxx attempts, shared raw QA/metrics, RESULT_BRIEF, and classic compact plot.
+    purpose: Evidence-first Compact runner with run/analyze/plot/package/inspect commands, immutable Axxx attempts, mechanical QA, standard visualization, evidence ZIP packaging, and stop-at-scientific-review behavior.
     authoritative_for:
       - future Quick workflow mechanics
-      - stop-at-review behavior
+      - default evidence-first lifecycle
+      - stop-at-scientific-review behavior
     not_authoritative_for:
+      - scientific interpretation without SCIENTIFIC_REVIEW_AUTHORIZED
       - automatic Promotion/Formal execution
       - physical conclusions
       - arbitrary topology mutation
@@ -206,7 +208,27 @@ entries:
     tests:
       - test/tools/test_bvm_exp_config.py
       - test/tools/test_bvm_exp_compact.py
-    notes: New Compact Quick runs create runs/Axxx and consume existing raw only for analyze; legacy smoke configs remain untouched.
+      - test/workflow/test_experiment_evidence_first.py
+    notes: New Compact runs default to mechanical QA, V2.1-compatible visualization metadata, evidence packaging, and Git ZIP commit; legacy smoke configs remain untouched.
+
+  - name: experiment-evidence-package
+    path: scripts/build_experiment_package.py
+    status: CORE
+    purpose: Build one immutable scientific-review ZIP from an experiment-local manifest and re-open it to verify authorized run contents and raw/deck hashes.
+    authoritative_for:
+      - evidence package file set
+      - detached PACKAGE_QA integrity checks
+      - package bytes, path, and SHA-256 recording
+    not_authoritative_for:
+      - scientific interpretation
+      - physical conclusions or Gate status
+      - authorization of new solves
+    known_limitations:
+      - PACKAGE_QA remains outside the ZIP to avoid a self-hash cycle.
+      - It does not migrate historical experiment directories automatically.
+    tests:
+      - test/workflow/test_experiment_evidence_first.py
+    notes: Refuses ZIP overwrite and records STORAGE_POLICY_REVIEW_RECOMMENDED when the package exceeds the configured size threshold.
 
   - name: CLASSIC_CORE_VISUALIZATION
     path: scripts/josim-plot2.py

@@ -7,7 +7,9 @@
 
 ## 默认路径
 
-QUESTION → MINIMUM QUICK → RESULT → USER REVIEW → NEXT or ARCHIVE
+PRE-REGISTER → PREFLIGHT → PHYSICAL SOLVE → MECHANICAL QA → STANDARD
+VISUALIZATION → EVIDENCE PACKAGE → COMMIT EXPERIMENT + PACKAGE → STOP /
+AWAITING_SCIENTIFIC_REVIEW
 
 普通 Quick 使用一个中心问题、一个主要改变项和最少能区分方向的 case。
 它不是 Formal，也不会自动升级为物理 Gate。
@@ -18,13 +20,30 @@ QUESTION → MINIMUM QUICK → RESULT → USER REVIEW → NEXT or ARCHIVE
 
 experiment.yaml
 run.sh
+PREFLIGHT.md
 RESULT_BRIEF.md
 runs/A001/
   deck.cir
   raw.csv
   run.log
   result.yaml
+  metadata.json
+analysis/
+  raw_qa.json
+  deck_diff_qa.json
+  provenance.json
+  execution_summary.json
+  transformation_registry.json
+  visualization_manifest.json
+  visualization_qa.json
+  run_summaries/A001.md
+human-gate.yaml
+EVIDENCE_MANIFEST.md
+SOURCE_MANIFEST.json
+RAW_ANALYSIS_HANDOFF_MANIFEST.json
 plots/RESULT_OVERVIEW.html
+handoff/<experiment_id>_raw_handoff.zip
+handoff/PACKAGE_QA.json
 
 以 scripts/templates/compact-quick/ 为起点。薄 run.sh 只转发命令，不含
 科学算法：
@@ -32,28 +51,39 @@ plots/RESULT_OVERVIEW.html
     ./run.sh
     ./run.sh run
     ./run.sh analyze A001
+    ./run.sh analyze A001 --scientific-review-authorized
     ./run.sh plot A001
+    ./run.sh package A001
     ./run.sh inspect A001
 
-run 自动创建下一个 Axxx，绝不覆盖已有 attempt。analyze 只读现有 raw，
-plot 只生成 classic 图，inspect 只打印问题、changed、attempt、HEAD、结果
-和状态。一次结果完成后状态为 AWAITING_USER_REVIEW；只有用户明确审阅后才
-能变成 REVIEWED，代理不自动执行下一项物理实验。
+run 自动创建一个不可覆盖的 Axxx，绝不覆盖已有 attempt；它默认只执行
+mechanical QA，不计算 scientific metrics。analyze 默认只重做 raw-only QA；
+只有显式 `--scientific-review-authorized` 才生成独立、版本化的 scientific
+review artifact。plot 只生成 descriptive classic 图，package 只打包现有证据，
+inspect 只打印状态。完成 package 后状态为
+`EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`，代理不自动执行下一项
+物理实验。
 
 result.yaml 是未来 Quick 的小型机器记录，至少包含 Git HEAD、solver
-identity/version、命令、deck/raw 哈希、artifact validity、相关 metrics、
-outcome 和 status。raw、deck、log 和 result 属于 attempt；重复执行创建新的
-attempt。当前图是可再生的 human-facing convenience，不改变 raw 或结果判定。
+identity/version、命令、deck/raw 哈希、artifact validity、mechanical QA、
+evidence-ready outcome 和 status。raw、deck、log、metadata 和 result 属于
+attempt；raw 与 package 不得覆盖。`PACKAGE_QA.json` 在重新打开 ZIP 后验证
+全部 authorized runs 和 hash，ZIP 默认直接提交 Git；QA 文件因自哈希循环保持
+在 ZIP 外。
 
 ## Quick 与 Formal
 
-- QUICK：方向性筛选，默认 raw QA、目标 metric、简短 RESULT_BRIEF 和一张
-  compact classic 图。
+- QUICK：方向性实验执行；默认只做 raw/mechanical QA、标准 descriptive
+  visualization、短的 evidence-only summary 和 immutable evidence ZIP。
 - FORMAL：只有用户明确要求才进入；追加匹配 controls、时间步/收敛、完整
   provenance、独立复核和更强 claim criteria。
 
-不再把 PROMOTION 当作独立生命周期。Quick 可以在摘要中建议 Formal，但不能
-自动生成或执行它。
+任何 scientific interpretation、parameter ranking、winner、root cause 或
+机制分析都必须在停止后的独立 review 阶段，并有明确
+`SCIENTIFIC_REVIEW_AUTHORIZED`；该授权不等于新的 solve authorization。
+
+不再把 PROMOTION 当作独立生命周期。Evidence-only summary 不提出 Formal 或
+下一实验建议；用户可在独立 review 后另行授权新的注册流程。
 
 ## 风险触发验证
 
@@ -79,6 +109,12 @@ transport。需要这些解释时加载 josim-evidence-audit。
 默认可视化为 CLASSIC_LOCKED、sep_comb、dark、compact，使用
 scripts/josim-plot2.py，只展示关键数据。拓扑图使用 josim-viz 的元件符号
 和端点验证；Graphviz 只作 debug/provenance。
+
+BVM→QB→JTL 的标准 profile 使用 V2.1 五层：
+`01_SIGNAL_TIMING`、`02_BVM_STATE`、`03_JSL_CHAIN`、`04_QB_STATE`、
+`05_JTL_CHAIN`；每层必须有 `INPUT -> INTERNAL -> OUTPUT`、whole-run
+overview 和 registered focused windows。Standalone 与 comparison 复用同一
+semantic signal schema；额外 mechanism/dashboard 图不属于默认输出。
 
 历史实验目录、raw、旧报告、josim-handoff/v1 和旧协议引用不批量迁移。显式
 Codex↔Claude 合同、ACK/receipt 或正式委派审计仍单独使用 josim-handoff。

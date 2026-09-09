@@ -9,9 +9,9 @@ if [[ "$#" -gt 0 ]]; then
 fi
 
 case "$command" in
-  run|analyze|plot|inspect) ;;
+  run|analyze|plot|package|inspect) ;;
   *)
-    echo "usage: ./run.sh [run|analyze|plot|inspect] [Axxx]" >&2
+    echo "usage: ./run.sh [run|analyze|plot|package|inspect] [Axxx] [options]" >&2
     exit 2
     ;;
 esac

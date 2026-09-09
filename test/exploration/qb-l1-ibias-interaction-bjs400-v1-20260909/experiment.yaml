@@ -126,6 +126,10 @@ mechanical_qa:
 visualization:
   profile: COMPACT_FLAT_INTERACTION
   renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
   layout: sep_comb
   color: dark
   phase_option: 2pi
@@ -141,6 +145,7 @@ visualization:
 
 package:
   include_plots: false
+  canonical_path: handoff/qb-l1-ibias-interaction-bjs400-v1-20260909_raw_handoff_v2.zip
   analysis_files:
     raw_qa.json: qa/raw_qa.json
     deck_diff_qa.json: qa/deck_diff_qa.json
@@ -164,4 +169,3 @@ prohibited_followups:
   - any scientific interpretation or next experiment
 
 final_state: AWAITING_SCIENTIFIC_REVIEW
-

@@ -60,6 +60,7 @@ RUN_TO_CORNER = {
 }
 RUN_TO_MASK = {run_id: run_id.rsplit("_", 1)[1] for run_id in NEW_RUNS}
 SOURCE_TEMPLATE = EXP / "inputs/array_fixture_template.cir"
+BQ400 = EXP / "inputs/BQ_parameterized_bjs400.cir"
 CONTROL_KINDS = ("WL", "BL", "SE")
 
 

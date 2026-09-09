@@ -1,0 +1,23 @@
+{
+  "schema": "bjs400-l1-ibias-interaction-transformation-registry-v1",
+  "raw_immutable": true,
+  "scientific_analysis_performed": false,
+  "transformations": [
+    {
+      "name": "standalone_plot_input",
+      "operation": "raw.csv direct; no crop/resample/derived CSV",
+      "scope": "visualization"
+    },
+    {
+      "name": "comparison_plot_input",
+      "operation": "temporary full-run merged CSV under /tmp only; deleted after render",
+      "scope": "visualization"
+    },
+    {
+      "name": "phase_display",
+      "operation": "plot2 -j 2pi; raw P values remain radians",
+      "scope": "visualization",
+      "not_event_count": true
+    }
+  ]
+}

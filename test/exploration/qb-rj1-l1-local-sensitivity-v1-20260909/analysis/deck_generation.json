@@ -1,0 +1,76 @@
+{
+  "schema": "qb-rj1-l1-local-sensitivity-deck-generation-v1",
+  "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+  "created_at_local": "2026-09-09T10:18:18+08:00",
+  "head_at_generation": "08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604",
+  "fixture_template": {
+    "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/inputs/array_fixture_template.cir",
+    "sha256": "85227538d48d69251f4276b94b28adfc83cd25f95aa6609fa9eb2375c873f1cf"
+  },
+  "bq_source": {
+    "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/inputs/BQ_source.cir",
+    "sha256": "f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd"
+  },
+  "bq_parameterized": {
+    "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/inputs/BQ_parameterized.cir",
+    "sha256": "ff67dbbe42feb6a33d4573fdfd84e4657d1d0fd241f9b497e231b23a936afe10"
+  },
+  "parameterization": "only active BQ L1 and RJ1 element values are global parameter references",
+  "decks": {
+    "NOMINAL": {
+      "directory": "runs/nominal",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal/deck.cir",
+      "sha256": "7a2dd8c229d8a6eee7137006e0b22680f19b015bc5dbf124f4a86631baa94845",
+      "bytes": 7441,
+      "parameter_line_RJ1": ".param RJ1_VALUE=12",
+      "parameter_line_L1": ".param L1_VALUE=2p",
+      "RJ1_ohm": 12.0,
+      "L1_pH": 2.0,
+      "purpose": "matched internal baseline"
+    },
+    "L1_DOWN": {
+      "directory": "runs/l1_down",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down/deck.cir",
+      "sha256": "d8737d605869c3d103cb9cd6ec7c5265005c52fdf8a1eeb15e036f02bd72639f",
+      "bytes": 7443,
+      "parameter_line_RJ1": ".param RJ1_VALUE=12",
+      "parameter_line_L1": ".param L1_VALUE=1.9p",
+      "RJ1_ohm": 12.0,
+      "L1_pH": 1.9,
+      "purpose": "L1 decrease"
+    },
+    "L1_UP": {
+      "directory": "runs/l1_up",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up/deck.cir",
+      "sha256": "4349cccc22ffbf4eead7603f9cc596f3b9b170ac1759dba005d6861616ee158c",
+      "bytes": 7443,
+      "parameter_line_RJ1": ".param RJ1_VALUE=12",
+      "parameter_line_L1": ".param L1_VALUE=2.1p",
+      "RJ1_ohm": 12.0,
+      "L1_pH": 2.1,
+      "purpose": "opposite-direction L1 control"
+    },
+    "RJ1_UP_05": {
+      "directory": "runs/rj1_up_05",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05/deck.cir",
+      "sha256": "0cdad935aff48460bcc4d75565c8e742b10beb7dd8ea71aa93c7b8570a630efc",
+      "bytes": 7443,
+      "parameter_line_RJ1": ".param RJ1_VALUE=12.5",
+      "parameter_line_L1": ".param L1_VALUE=2p",
+      "RJ1_ohm": 12.5,
+      "L1_pH": 2.0,
+      "purpose": "small RJ1 increase"
+    },
+    "RJ1_UP_10": {
+      "directory": "runs/rj1_up_10",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10/deck.cir",
+      "sha256": "b5a9e798fa5e37989850060c2932ea7e457da955233af03d6bacbb3eb6bef5e0",
+      "bytes": 7441,
+      "parameter_line_RJ1": ".param RJ1_VALUE=13",
+      "parameter_line_L1": ".param L1_VALUE=2p",
+      "RJ1_ohm": 13.0,
+      "L1_pH": 2.0,
+      "purpose": "larger RJ1 increase"
+    }
+  }
+}

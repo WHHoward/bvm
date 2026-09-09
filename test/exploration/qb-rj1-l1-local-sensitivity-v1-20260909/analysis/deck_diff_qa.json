@@ -1,0 +1,144 @@
+{
+  "schema": "qb-rj1-l1-local-sensitivity-deck-diff-qa-v1",
+  "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+  "created_at_local": "2026-09-09T10:20:29+08:00",
+  "baseline": "runs/nominal/deck.cir",
+  "allowed_variant_change": "exactly one registered .param line for the relevant single parameter",
+  "runs": {
+    "NOMINAL": {
+      "run_id": "NOMINAL",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal/deck.cir",
+      "exists": true,
+      "sha256": "7a2dd8c229d8a6eee7137006e0b22680f19b015bc5dbf124f4a86631baa94845",
+      "parameter": {
+        "RJ1_VALUE": "12",
+        "L1_VALUE": "2p"
+      },
+      "failures": [],
+      "nominal_diff": {
+        "changed_lines": [],
+        "allowed_lines": [],
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    "L1_DOWN": {
+      "run_id": "L1_DOWN",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down/deck.cir",
+      "exists": true,
+      "sha256": "d8737d605869c3d103cb9cd6ec7c5265005c52fdf8a1eeb15e036f02bd72639f",
+      "parameter": {
+        "RJ1_VALUE": "12",
+        "L1_VALUE": "1.9p"
+      },
+      "failures": [],
+      "nominal_diff": {
+        "changed_lines": [
+          {
+            "line": 7,
+            "nominal": ".param L1_VALUE=2p",
+            "variant": ".param L1_VALUE=1.9p"
+          }
+        ],
+        "allowed_lines": [
+          {
+            "line": 7,
+            "nominal": ".param L1_VALUE=2p",
+            "variant": ".param L1_VALUE=1.9p"
+          }
+        ],
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    "L1_UP": {
+      "run_id": "L1_UP",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up/deck.cir",
+      "exists": true,
+      "sha256": "4349cccc22ffbf4eead7603f9cc596f3b9b170ac1759dba005d6861616ee158c",
+      "parameter": {
+        "RJ1_VALUE": "12",
+        "L1_VALUE": "2.1p"
+      },
+      "failures": [],
+      "nominal_diff": {
+        "changed_lines": [
+          {
+            "line": 7,
+            "nominal": ".param L1_VALUE=2p",
+            "variant": ".param L1_VALUE=2.1p"
+          }
+        ],
+        "allowed_lines": [
+          {
+            "line": 7,
+            "nominal": ".param L1_VALUE=2p",
+            "variant": ".param L1_VALUE=2.1p"
+          }
+        ],
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    "RJ1_UP_05": {
+      "run_id": "RJ1_UP_05",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05/deck.cir",
+      "exists": true,
+      "sha256": "0cdad935aff48460bcc4d75565c8e742b10beb7dd8ea71aa93c7b8570a630efc",
+      "parameter": {
+        "RJ1_VALUE": "12.5",
+        "L1_VALUE": "2p"
+      },
+      "failures": [],
+      "nominal_diff": {
+        "changed_lines": [
+          {
+            "line": 6,
+            "nominal": ".param RJ1_VALUE=12",
+            "variant": ".param RJ1_VALUE=12.5"
+          }
+        ],
+        "allowed_lines": [
+          {
+            "line": 6,
+            "nominal": ".param RJ1_VALUE=12",
+            "variant": ".param RJ1_VALUE=12.5"
+          }
+        ],
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    "RJ1_UP_10": {
+      "run_id": "RJ1_UP_10",
+      "path": "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10/deck.cir",
+      "exists": true,
+      "sha256": "b5a9e798fa5e37989850060c2932ea7e457da955233af03d6bacbb3eb6bef5e0",
+      "parameter": {
+        "RJ1_VALUE": "13",
+        "L1_VALUE": "2p"
+      },
+      "failures": [],
+      "nominal_diff": {
+        "changed_lines": [
+          {
+            "line": 6,
+            "nominal": ".param RJ1_VALUE=12",
+            "variant": ".param RJ1_VALUE=13"
+          }
+        ],
+        "allowed_lines": [
+          {
+            "line": 6,
+            "nominal": ".param RJ1_VALUE=12",
+            "variant": ".param RJ1_VALUE=13"
+          }
+        ],
+        "status": "PASS"
+      },
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "failures": []
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "qb-rj1-l1-local-sensitivity-interpretations-v1",
+  "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+  "artifact_status": "VALID",
+  "physical_disposition": "INCONCLUSIVE",
+  "final_state": "AWAITING_USER_REVIEW",
+  "scope": "Only the fixed historical 4-BVM shared-SL ARRAY mask-1000 fixture, registered parameter matrix, solver and 0.1-ps timestep.",
+  "Q1_L1": {
+    "OBSERVED": [
+      "For L1_DOWN, NOMINAL and L1_UP, I(L1|XBQ1) remains negative throughout FULL_FINAL; no negative-to-nonnegative stored-sample bracket occurs.",
+      "In FULL_READ, the maximum BJ1 relative progression is 0.194062238 turns (L1_DOWN), 0.188484175 turns (NOMINAL), and 0.183404745 turns (L1_UP); all maxima occur at the 120.9-ps stored sample.",
+      "In FULL_READ, the maximum I(L1) is -17.928370 uA (L1_DOWN), -20.599240 uA (NOMINAL), and -22.963580 uA (L1_UP); maximum I(L2) is 232.071600, 229.400800 and 227.036400 uA respectively."
+    ],
+    "DERIVED": [
+      "The registered L1 direction produces a monotonic ordering of these trajectory extrema: lowering L1 moves the observed I(L1) maximum toward zero and increases the observed BJ1 progression maximum in this fixed matrix.",
+      "The corresponding EARLY_TRIGGER W_QBIN values are 5.6184005, 5.5830098 and 5.5494725 zJ for L1_DOWN, NOMINAL and L1_UP."
+    ],
+    "BOUNDED_RESULT": "Within the registered mask-1000 fixture and windows, L1 decrease is associated with a larger BJ1 relative progression and less-negative I(L1) excursion, while no nonnegative I(L1) crossing occurs. This is bounded local trajectory sensitivity, not proof of a complete trigger or transmitted event.",
+    "UNKNOWN": [
+      "Whether the trajectory reaches a valid receiver event under a finer timestep or another authorized condition.",
+      "Any universal L1 mechanism, optimum or parameter recommendation."
+    ]
+  },
+  "Q2_RJ1": {
+    "OBSERVED": [
+      "The maximum BJ1 relative progression in FULL_READ is 0.188484175 turns at RJ1=12.0 ohm, 0.189896198 turns at 12.5 ohm and 0.191231985 turns at 13.0 ohm; each maximum occurs at 120.9 ps.",
+      "The maximum V(BJ1) is 0.1227016, 0.1242360 and 0.1256916 mV for RJ1=12.0, 12.5 and 13.0 ohm respectively.",
+      "Positive-voltage duration in FULL_READ is 8.4, 8.5 and 8.4 ps; FULL_FINAL duration is 40.8, 41.1 and 41.0 ps. These duration values are not monotonic."
+    ],
+    "DERIVED": [
+      "RJ1 increase changes the registered BJ1 magnitude metrics, but the registered maximum-time and positive-duration diagnostics do not show a consistent delayed-retap/duration ordering."
+    ],
+    "BOUNDED_RESULT": "RJ1 increase changes the local BJ1 trajectory under the fixed fixture, with a small monotonic increase in the measured progression and voltage maxima, but the registered duration/retrap proxies do not consistently increase. The H-RJ1 persistence hypothesis is therefore not established by this five-run matrix.",
+    "UNKNOWN": [
+      "A damping or retrap mechanism explanation.",
+      "Whether a different RJ1 condition would change a downstream event classification; no additional RJ1 values are authorized."
+    ]
+  },
+  "Q3_SOURCE_SIDE": {
+    "OBSERVED": [
+      "Source-side quantities vary together with the local interventions. For example, FULL_READ maximum I_quiet_total is 38.651100, 38.805000 and 38.949810 uA across L1_DOWN, NOMINAL and L1_UP; maximum V(COMMON_SL) is 0.3133238, 0.3117905 and 0.3103962 mV.",
+      "FULL_READ maximum V(QBIN) is 0.1472519, 0.1452526 and 0.1435118 mV across the same L1 family; FULL_READ W_QBIN is 15.1572228, 14.9083597 and 14.6782040 zJ.",
+      "For RJ1_UP_05 and RJ1_UP_10, FULL_READ maximum I_quiet_total is 38.790630 and 38.775750 uA, maximum V(COMMON_SL) is 0.3120886 and 0.3123703 mV, and FULL_READ W_QBIN is 14.9736686 and 15.0348322 zJ."
+    ],
+    "DERIVED": [
+      "The source/interface tracks and QB-local tracks are not invariant under the registered parameter interventions; the package preserves both raw tracks and the samplewise I_quiet_total decomposition for direct comparison."
+    ],
+    "BOUNDED_RESULT": "Under this loaded topology, local QB parameter changes are accompanied by bounded changes in COMMON_SL/JSL/QBIN and quiet-cell-sum observables. The data support a source/receiver co-variation observation, not a measured shunting percentage or an isolated causal attribution.",
+    "UNKNOWN": [
+      "Whether quiet-cell response is the mechanism responsible for the QB-local changes.",
+      "Any general back-action law, current fraction or hardware implication."
+    ]
+  },
+  "DOWNSTREAM": {
+    "OBSERVED": [
+      "All six JTL levels, their available P/V/I probes, output-node voltages and terminal current are retained and independently phase/area checked where direct same-JJ P/V columns exist.",
+      "The registered raw data do not provide a frozen acceptance tolerance or timestep-convergence result for classifying a transmitted event."
+    ],
+    "DERIVED": [
+      "Same-JJ phase/voltage-area arithmetic is reported in metrics.json with raw phase in radians and derived turns only after independent unwrap and division by 2*pi."
+    ],
+    "BOUNDED_RESULT": "The package provides downstream descriptive evidence under the five fixed conditions, but does not upgrade local phase, voltage area, or JTL traces into an SFQ count or system-level receiver result.",
+    "UNKNOWN": [
+      "SFQ event count, exactly-one transmission, system Gate status and convergence."
+    ]
+  },
+  "prohibited_claims_not_made": [
+    "root cause",
+    "proves mechanism",
+    "optimal",
+    "general solution",
+    "hardware-safe",
+    "SFQ count",
+    "RJ1 fixes the problem",
+    "L1 is the cause"
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "schema": "qb-rj1-l1-local-sensitivity-execution-v1",
+  "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+  "started_at_local": "2026-09-09T10:31:26+08:00",
+  "finished_at_local": "2026-09-09T10:31:27+08:00",
+  "head": "08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604",
+  "solver_solve_invocations": 5,
+  "exact_authorized_run_count": 5,
+  "run_order": [
+    "NOMINAL",
+    "L1_DOWN",
+    "L1_UP",
+    "RJ1_UP_05",
+    "RJ1_UP_10"
+  ],
+  "runs": [
+    {
+      "schema": "qb-rj1-l1-local-sensitivity-run-metadata-v1",
+      "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+      "run_id": "NOMINAL",
+      "run_directory": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal",
+      "started_at_local": "2026-09-09T10:31:26+08:00",
+      "finished_at_local": "2026-09-09T10:31:26+08:00",
+      "git_head_before_run": "08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "parameters": {
+        "RJ1_ohm": 12.0,
+        "L1_pH": 2.0,
+        "parameterization": "BQ_parameterized.cir"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal/deck.cir",
+          "sha256": "7a2dd8c229d8a6eee7137006e0b22680f19b015bc5dbf124f4a86631baa94845",
+          "bytes": 7441
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal/raw.csv",
+          "exists": true,
+          "sha256": "8543abc6d7a7d276c0bfa3159a4d3d37d569200e5fa30082466e66df8ab24dc2",
+          "bytes": 7093733
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/nominal/run.log",
+          "sha256": "a9bc25f7b72305dc678c89071f662a673d9e204958867e1cb82138dd79694aa5",
+          "bytes": 222146
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "exception": null,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_start": "0.000000e+00",
+        "time_end": "1.999000e-10"
+      }
+    },
+    {
+      "schema": "qb-rj1-l1-local-sensitivity-run-metadata-v1",
+      "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+      "run_id": "L1_DOWN",
+      "run_directory": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down",
+      "started_at_local": "2026-09-09T10:31:26+08:00",
+      "finished_at_local": "2026-09-09T10:31:26+08:00",
+      "git_head_before_run": "08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "parameters": {
+        "RJ1_ohm": 12.0,
+        "L1_pH": 1.9,
+        "parameterization": "BQ_parameterized.cir"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down/deck.cir",
+          "sha256": "d8737d605869c3d103cb9cd6ec7c5265005c52fdf8a1eeb15e036f02bd72639f",
+          "bytes": 7443
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down/raw.csv",
+          "exists": true,
+          "sha256": "9569ba7fa045416781e3b20da1c1b36b7daf52f669587f2633d4b257f584c4fa",
+          "bytes": 7093633
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_down/run.log",
+          "sha256": "6fabcbf158db477f7b23fa20e6dd608bcc58513f55c563b35f59c4d41051418d",
+          "bytes": 222968
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "exception": null,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_start": "0.000000e+00",
+        "time_end": "1.999000e-10"
+      }
+    },
+    {
+      "schema": "qb-rj1-l1-local-sensitivity-run-metadata-v1",
+      "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+      "run_id": "L1_UP",
+      "run_directory": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up",
+      "started_at_local": "2026-09-09T10:31:26+08:00",
+      "finished_at_local": "2026-09-09T10:31:27+08:00",
+      "git_head_before_run": "08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "parameters": {
+        "RJ1_ohm": 12.0,
+        "L1_pH": 2.1,
+        "parameterization": "BQ_parameterized.cir"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up/deck.cir",
+          "sha256": "4349cccc22ffbf4eead7603f9cc596f3b9b170ac1759dba005d6861616ee158c",
+          "bytes": 7443
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up/raw.csv",
+          "exists": true,
+          "sha256": "517c2bac49ab5c3c2573fd0bc037858d1f462ff7c31741bd0ae502713e794d36",
+          "bytes": 7093775
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/l1_up/run.log",
+          "sha256": "266062143e153e9b22d1d408f09a64b3de64e0ae945a9d73a00129e65ef0e618",
+          "bytes": 221683
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "exception": null,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_start": "0.000000e+00",
+        "time_end": "1.999000e-10"
+      }
+    },
+    {
+      "schema": "qb-rj1-l1-local-sensitivity-run-metadata-v1",
+      "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+      "run_id": "RJ1_UP_05",
+      "run_directory": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05",
+      "started_at_local": "2026-09-09T10:31:27+08:00",
+      "finished_at_local": "2026-09-09T10:31:27+08:00",
+      "git_head_before_run": "08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "parameters": {
+        "RJ1_ohm": 12.5,
+        "L1_pH": 2.0,
+        "parameterization": "BQ_parameterized.cir"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05/deck.cir",
+          "sha256": "0cdad935aff48460bcc4d75565c8e742b10beb7dd8ea71aa93c7b8570a630efc",
+          "bytes": 7443
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05/raw.csv",
+          "exists": true,
+          "sha256": "63885caca34ca653fd34751d92397812e3a0000c3f95943bbd1f143553fb520a",
+          "bytes": 7093665
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_05/run.log",
+          "sha256": "8b40ac62a70f4ee58299faf697a821fb733832ded87f8880bc53cdb831202125",
+          "bytes": 222593
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "exception": null,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_start": "0.000000e+00",
+        "time_end": "1.999000e-10"
+      }
+    },
+    {
+      "schema": "qb-rj1-l1-local-sensitivity-run-metadata-v1",
+      "experiment_id": "qb-rj1-l1-local-sensitivity-v1-20260909",
+      "run_id": "RJ1_UP_10",
+      "run_directory": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10",
+      "started_at_local": "2026-09-09T10:31:27+08:00",
+      "finished_at_local": "2026-09-09T10:31:27+08:00",
+      "git_head_before_run": "08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "parameters": {
+        "RJ1_ohm": 13.0,
+        "L1_pH": 2.0,
+        "parameterization": "BQ_parameterized.cir"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10/deck.cir",
+          "sha256": "b5a9e798fa5e37989850060c2932ea7e457da955233af03d6bacbb3eb6bef5e0",
+          "bytes": 7441
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10/raw.csv",
+          "exists": true,
+          "sha256": "496f2782edf17d1d6348799b161d5e846a1d0d7cdb8c3581b34b87ca0dd744c7",
+          "bytes": 7093665
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909/runs/rj1_up_10/run.log",
+          "sha256": "f6d0b4a28db859e41bd5495ca7924049a89fd6cbcd0ed1fc21e86313276ca4e3",
+          "bytes": 223585
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "exception": null,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_start": "0.000000e+00",
+        "time_end": "1.999000e-10"
+      }
+    }
+  ],
+  "status": "RUN_PASS",
+  "automatic_followup": false,
+  "next_action": "raw QA, registered analysis and visualization only; stop at AWAITING_USER_REVIEW"
+}

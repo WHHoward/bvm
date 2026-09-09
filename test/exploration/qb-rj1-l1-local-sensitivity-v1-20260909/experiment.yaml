@@ -1,0 +1,267 @@
+experiment_id: qb-rj1-l1-local-sensitivity-v1-20260909
+study_phase: EXPLORATORY
+mode: QUICK
+status: PREREGISTERED_PENDING_PREFLIGHT
+role: Experimental Operator + Evidence Packager
+created_at_local: '2026-09-09'
+base_head: 08c7320bdd6e871d9b9536dcd27f5e8b2b0d5604
+
+question:
+  primary: >-
+    Under the matched 4-BVM shared-SL physical fixture, test the local first-order
+    sensitivity of the QB trigger trajectory to L1 and RJ1 for ARRAY final READ
+    mask 1000. This is a registered local sensitivity experiment, not an
+    optimization sweep.
+  H_L1: >-
+    L1 decrease may make I(L1) more readily move from negative toward zero or
+    positive and may subsequently increase I(L2)=I(IB)+I(L1).
+  H_RJ1: >-
+    RJ1 increase may weaken BJ1 shunt damping, allowing positive V(BJ1) and
+    phase progression to persist longer and changing the retrap trajectory.
+  questions_to_answer:
+    - Does L1=1.9pH -> 2.0pH -> 2.1pH show a consistent local directional change in BJ1/L1 trajectory?
+    - Does RJ1=12.0ohm -> 12.5ohm -> 13.0ohm change the duration of positive BJ1 voltage/phase progression?
+    - Do source-side I_quiet_total, V(COMMON_SL), JSL currents, V(QBIN), and W_QBIN change together with the receiver trajectory?
+  interpretation_ceiling: >-
+    Bounded simulation evidence for this fixed historical JM2-connected BVM,
+    fixed 4-cell shared COMMON_SL, fixed 8x500-uA JSL, fixed BVMSim BQ/JTL,
+    fixed stimulus, solver and 0.1-ps timestep only. No universal mechanism,
+    hardware, optimal parameter, SFQ count, or convergence claim.
+
+fixture_authority:
+  experiment: test/exploration/bvmsim-jm2-single-vs-4bvm-shared-sl-v1-20260907
+  fixture_run: runs/array
+  fixture_deck_sha256: 85227538d48d69251f4276b94b28adfc83cd25f95aa6609fa9eb2375c873f1cf
+  fixture_raw_sha256: 8543abc6d7a7d276c0bfa3159a4d3d37d569200e5fa30082466e66df8ab24dc2
+  fixture_head_recorded: 36a59701acc535d3ff98ffa590640555ada898ac
+  source_protocol: stored-1111; final READ mask 1000; BVM1 target; BVM2-BVM4 quiet at final READ
+
+source_authority:
+  bvm_variant:
+    repository_path: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+    sha256: 0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54
+    class: HISTORICAL_BVMSIM_JM2_CONNECTED_VARIANT
+    canonical_bvm_used: false
+  jjmit:
+    repository_path: circuits/models/jjmit.cir
+    sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  qb_source:
+    repository_path: BVMSim/BQ.cir
+    sha256: f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd
+    active_subckt: BQ IN OUT
+  jtl_source:
+    repository_path: BVMSim/library_josim/jtl2.cir
+    sha256: ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a
+  solver:
+    repository_path: build/josim-cli
+    sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+    version: JoSIM v2.7.2837d13 compiled 2026-05-30
+  local_inputs:
+    fixture_template: inputs/array_fixture_template.cir
+    fixture_template_sha256: 85227538d48d69251f4276b94b28adfc83cd25f95aa6609fa9eb2375c873f1cf
+    bq_source_copy: inputs/BQ_source.cir
+    bq_source_copy_sha256: f3dcbf5f9bb3898faf5194b5f7c4771df3fa1ed16150496de4b52cb6f7256dfd
+    bq_parameterized: inputs/BQ_parameterized.cir
+    bq_parameterized_sha256: ff67dbbe42feb6a33d4573fdfd84e4657d1d0fd241f9b497e231b23a936afe10
+  parameterization: >-
+    BQ_source.cir is byte-identical to BVMSim/BQ.cir. BQ_parameterized.cir is a
+    derived copy whose active L1 and RJ1 element values reference global
+    RJ1_VALUE/L1_VALUE parameters; all other active BQ topology, values and
+    model text are unchanged. This is the only implementation needed to expose
+    the two registered local parameters without editing repository sources.
+
+topology:
+  bvm_count: 4
+  bvm_instances: XBVM1, XBVM2, XBVM3, XBVM4
+  bvm_sl_connection: all four BVM SL endpoints directly on COMMON_SL
+  bvm1: final READ target
+  bvm2_bvm4: quiet during final READ
+  jsl_count: 8
+  jsl_elements: B_JSL1 -> B_JSL8, jjmit area=5.0, effective Ic=500uA
+  jsl_upstream: COMMON_SL
+  jsl_downstream: QBIN
+  qb: XBQ1 QBIN QBOUT BQ
+  jtl: XJTL1_1 through XJTL1_6, each subcircuit jtl
+  termination: R_TERM JTL6_OUT 0 10
+  changed_topology: false
+
+frozen:
+  internal_rsl_ohm: 12.0
+  external_rsl_added: false
+  jsl_model: jjmit
+  jsl_area: 5.0
+  jsl_ic_uA: 500.0
+  qb_rj2_ohm: 4.0
+  qb_ib_uA: 250.0
+  qb_lin_pH: 1.5
+  qb_l2_pH: 2.0
+  qb_l3_pH: 1.3
+  qb_bjs_area: 3.0
+  qb_bj1_area: 0.9
+  qb_bj2_area: 2.0
+  jtl_stage_bias_uA: 280.0
+  termination_ohm: 10.0
+  timestep_ps: 0.1
+  stop_time_ps: 200.0
+  output_start: solver_default
+  no_interpolation: true
+  no_event_alignment: true
+  no_smoothing: true
+
+run_matrix:
+  exact_physical_solve_count: 5
+  no_history_nominal_reuse: true
+  runs:
+    - id: NOMINAL
+      directory: runs/nominal
+      RJ1_ohm: 12.0
+      L1_pH: 2.0
+      parameter_delta: none
+      purpose: internal matched baseline; re-solved in this experiment
+    - id: L1_DOWN
+      directory: runs/l1_down
+      RJ1_ohm: 12.0
+      L1_pH: 1.9
+      parameter_delta: L1 2.0pH -> 1.9pH
+      purpose: registered L1 decrease intervention
+    - id: L1_UP
+      directory: runs/l1_up
+      RJ1_ohm: 12.0
+      L1_pH: 2.1
+      parameter_delta: L1 2.0pH -> 2.1pH
+      purpose: opposite-direction L1 control
+    - id: RJ1_UP_05
+      directory: runs/rj1_up_05
+      RJ1_ohm: 12.5
+      L1_pH: 2.0
+      parameter_delta: RJ1 12.0ohm -> 12.5ohm
+      purpose: registered small RJ1 increase intervention
+    - id: RJ1_UP_10
+      directory: runs/rj1_up_10
+      RJ1_ohm: 13.0
+      L1_pH: 2.0
+      parameter_delta: RJ1 12.0ohm -> 13.0ohm
+      purpose: registered larger RJ1 increase intervention
+  forbidden_runs:
+    - any RJ1+L1 combined point
+    - any L1 other than 1.9pH, 2.0pH, 2.1pH
+    - any RJ1 other than 12.0ohm, 12.5ohm, 13.0ohm
+    - N2/N3/N4, ideal replay, SINGLE, idle/0-active, timestep or solver sensitivity
+    - parameter refinement, timing/JSL/BVM/QB/JTL/load changes, automatic follow-up
+
+stimulus:
+  amplitude_uA: 100.0
+  rise_time_ps: 1.0
+  fall_time_ps: 1.0
+  plateau_ps: 9.0
+  stored_protocol: 1111
+  final_read_mask: 1000
+  target_read: BVM1 WL1=+100uA, BL1=0, SE1=+100uA
+  quiet_final_read: BVM2/BVM3/BVM4 WL=BL=SE=0
+  history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> selective FINAL_READ -> TAIL
+  timing_ps:
+    initial_settle: [0, 50]
+    write0: [50, 61]
+    post_write0_settle: [61, 70]
+    zero_state_read_control: [70, 81]
+    post_zero_read_settle: [81, 90]
+    write1: [90, 101]
+    pre_final: [101, 110]
+    final_read: [110, 121]
+    tail: [121, 200]
+
+windows_ps:
+  PRE_FINAL: [101.0, 110.0]
+  EARLY_TRIGGER: [110.0, 116.0]
+  FULL_READ: [110.0, 121.0]
+  TAIL: [121.0, 200.0]
+  FULL_FINAL: [110.0, 200.0]
+  semantics: half-open; actual stored timestamps only
+  reference_sample: exact stored sample at 110.0ps; if absent, nearest sample is recorded and classified UNKNOWN
+
+probe_schema:
+  bvm_each: >-
+    P/V/I(B_JM1), P/V/I(B_JM2), P/V/I(B_JS1), P/V/I(B_JS2), I/V(L_M1),
+    I/V(L_M2), I/V(L_M3), I/V(L_PM), I/V(R_JM1), I/V(L_S1), I/V(L_S2),
+    I/V(L_S3), I/V(R_S), I/V(L_PSE), I/V(L_PSL), I/V(R_SL), I/V(L_SL)
+  bvm_controls: I(I_WL1..4), I(I_BL1..4), I(I_SE1..4)
+  bvm_derived: I_LSL1=I(L_SL|XBVM1); I_quiet_total=sum(I(L_SL|XBVM2..4))
+  boundary: V(COMMON_SL); P/V/I(B_JSL1..8)
+  qb: >-
+    V(QBIN), V(QBOUT), P/V/I(BJS|XBQ1), P/V/I(BJ1|XBQ1),
+    P/V/I(BJ2|XBQ1), I/V(LIN|XBQ1), I/V(RJ1|XBQ1), I/V(L1|XBQ1),
+    I/V(IB|XBQ1), I/V(L2|XBQ1), I/V(RJ2|XBQ1), I/V(L3|XBQ1)
+  jtl: >-
+    P/V/I(B01|XJTL1_1..6), P/V/I(B02|XJTL1_1..6),
+    V(JTL1_OUT..JTL6_OUT), I(R_TERM)
+  missing_probe_policy: >-
+    If JoSIM does not emit a requested optional branch column, preserve the
+    requested probe in the deck and mark the missing column UNKNOWN in QA; do
+    not fabricate a signal.
+
+registered_metrics:
+  source_interface_signals:
+    - I(LSL|XBVM1)
+    - I_quiet_total=sum(I(L_SL|XBVM2..4))
+    - I(B_JSL1)
+    - I(B_JSL8)
+    - V(COMMON_SL)
+    - V(QBIN)
+  waveform_statistics: [max, min, max_abs, RMS, p2p, first, last, endpoint_delta, signed_area, positive_area, negative_area]
+  waveform_area: trapezoid on actual stored time grid; area units remain signal_unit*s
+  qbin_port_work:
+    formula: W_QBIN = integral(V(QBIN)*I(LIN)*dt)
+    windows: [EARLY_TRIGGER, FULL_READ]
+    label: DERIVED port-work diagnostic; not a universal trigger-energy threshold
+  bj1:
+    phase_raw_unit: rad
+    phase_display: continuous_unwrap(raw_rad)/(2*pi) turns
+    relative_reference: phase_unwrap(t)-phase_unwrap(110ps), divided by 2*pi
+    metrics: [phase_at_PRE_FINAL_last, max_positive_relative_progression, min_relative_progression, final_relative_progression, time_of_max_progression, V_max, V_min, V_p2p, positive_voltage_duration, I_RJ1_max, I_RJ1_min, I_RJ1_RMS]
+    positive_voltage_rule: V(BJ1)>0 on actual stored intervals; no threshold and no event count
+  l1:
+    metrics: [value_at_or_nearest_110ps, max, min, first, last, endpoint_delta, p2p]
+    sign_rule: detect stored-sample bracket from negative to nonnegative only; no interpolation
+    bracket_fields: [last_negative_time_ps, last_negative_current_uA, first_nonnegative_time_ps, first_nonnegative_current_uA]
+  regeneration:
+    kcl_formula: I(L2)-I(IB)-I(L1)
+    metrics: [KCL_residual_max_abs, KCL_residual_RMS, I(L2)_max, I(L2)_min, BJ2_phase_progression, V(BJ2)_max, V(BJ2)_min, I(BJ2)_max, I(BJ2)_min, I(RJ2)_max, I(RJ2)_min, I(L3)_max, I(L3)_min, V(QBOUT)_max, V(QBOUT)_min]
+    order_diagnostic: registered descriptive peak-time comparison only; not causal event detection
+  downstream:
+    metrics: stage-wise P/V/I and same-JJ P/V area diagnostics for JTL1..JTL6 plus terminal voltage/current diagnostics
+    classification: no SFQ/event count; missing frozen acceptance tolerance or convergence remains UNKNOWN/INCONCLUSIVE
+  phase_area_rule: same JJ, same endpoint/direction, same run and same registered window; no wrapped subtraction
+
+visualization:
+  renderer_default: scripts/josim-plot2.py
+  options: sep_comb dark -j 2pi
+  stages: standalone_then_standalone_QA_then_comparison_then_final_QA
+  standalone_blocks: [source_interface, qb_trigger, regeneration, downstream]
+  critical_windows_ps: [[110.0, 116.0], [110.0, 121.0]]
+  comparison_families:
+    L1: [L1_DOWN, NOMINAL, L1_UP]
+    RJ1: [NOMINAL, RJ1_UP_05, RJ1_UP_10]
+  mechanism_plots: [BJ1_phase_plane_separate_by_family, ARRAY_source_decomposition_110_116ps]
+  transformations: none except registered exact window slices and independent phase unwrap/rad_to_turn display
+  no_sfq_label: true
+
+qa:
+  raw: [pre_hash, post_hash, sample_count, first_timestamp, last_timestamp, monotonicity, stored_grid_stats, finite_values, required_probe_presence, duplicate_columns, units, sign_convention]
+  deck_diff: variants_vs_nominal_only_one_registered_parameter_line
+  raw_qa_failure_state: ARTIFACT_INVALID
+  no_convergence: UNKNOWN
+  independent_crosscheck_required: true
+
+prohibited_followups:
+  - combined RJ1+L1 point
+  - any unregistered L1/RJ1 value or additional mask
+  - N2/N3/N4, SINGLE, ideal replay, idle/0-active
+  - timestep/solver convergence or sensitivity
+  - timing, JSL count/area, BVM/QB/JTL/load/topology changes
+  - BJ1/BJ2/BJs/IB/L2/RJ2/L3/LIN redesign or tuning
+  - automatic next experiment or parameter recommendation
+
+interpretation:
+  allowed_labels: [OBSERVED, DERIVED, BOUNDED_RESULT, UNKNOWN]
+  no_claims: [root_cause, proves_mechanism, optimal, general_solution, hardware_safe, SFQ_count]
+  final_state: AWAITING_USER_REVIEW

@@ -107,8 +107,24 @@ def main() -> int:
     if preflight.get("status") != "PASS" or preflight.get("exact_physical_solve_count") != 24:
         raise RuntimeError("preflight is not PASS for the exact 24-run matrix")
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
-    if head != preflight.get("head"):
-        raise RuntimeError(f"HEAD differs from sealed preflight: {head} != {preflight.get('head')}")
+    preflight_head = preflight.get("head")
+    if head != preflight_head:
+        changed = set(subprocess.check_output(
+            ["git", "diff", "--name-only", f"{preflight_head}..{head}"],
+            cwd=REPO,
+            text=True,
+        ).splitlines())
+        allowed_seal = {
+            str(EXP.relative_to(REPO) / "PREFLIGHT.md"),
+            str(EXP.relative_to(REPO) / "analysis/preflight.json"),
+        }
+        distance = int(subprocess.check_output(
+            ["git", "rev-list", "--count", f"{preflight_head}..{head}"],
+            cwd=REPO,
+            text=True,
+        ).strip())
+        if not preflight.get("head_refresh") or distance != 1 or changed != allowed_seal:
+            raise RuntimeError(f"HEAD differs from sealed preflight outside seal: {head} != {preflight_head}")
     if not SOLVER.is_file():
         raise RuntimeError(f"missing solver: {SOLVER}")
     started_all = now()
@@ -165,4 +181,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

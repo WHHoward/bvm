@@ -20,7 +20,7 @@ REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
 TEMPLATE = EXP / "inputs/array_fixture_template.cir"
 BQ_SOURCE = EXP / "inputs/BQ_source.cir"
-BQ_PARAMETERIZED = EXP / "inputs/BQ_parameterized.cir"
+BQ_PARAMETERIZED = EXP / "inputs/BQ_parameterized_v2.cir"
 SOLVER = REPO / "build/josim-cli"
 OLD_EXP = REPO / "test/exploration/qb-rj1-l1-local-sensitivity-v1-20260909"
 CONTRACT_SENTENCE = "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
@@ -95,7 +95,7 @@ def build_deck(rj1: float, l1: float, ibias: float) -> str:
         f".param IB_VALUE={ibias:g}u\n"
         ".include ../../inputs/jjmit.cir\n"
         ".include ../../inputs/bvm_jm2_connected.cir\n"
-        ".include ../../inputs/BQ_parameterized.cir\n"
+        ".include ../../inputs/BQ_parameterized_v2.cir\n"
         ".include ../../inputs/jtl2.cir"
     )
     if template.count(old_block) != 1:
@@ -127,9 +127,11 @@ def verify_inputs() -> list[str]:
         failures.append("missing parameterized BQ")
     else:
         bq = BQ_PARAMETERIZED.read_text(encoding="utf-8")
-        for token in ("{L1_VALUE}", "{RJ1_VALUE}", "{IB_VALUE}"):
+        for token in ("{L1_VALUE}", "{RJ1_VALUE}"):
             if bq.count(token) != 1:
                 failures.append(f"parameterized BQ placeholder count is not one: {token}")
+        if bq.count("IB_VALUE") != 1 or "{IB_VALUE}" in bq:
+            failures.append("parameterized BQ IB_VALUE token is not the supported bare form")
         for token in ("L1 2 3 2p", "RJ1 2 0 12", "1p 250u"):
             if token in bq:
                 failures.append(f"parameterized BQ retains nominal literal: {token}")
@@ -207,7 +209,7 @@ def source_manifest(current_head: str) -> dict[str, object]:
         ("inputs/bvm_jm2_connected.cir", "historical BVM variant"),
         ("inputs/jjmit.cir", "JJ model"),
         ("inputs/BQ_source.cir", "BQ source"),
-        ("inputs/BQ_parameterized.cir", "derived parameterized BQ"),
+        ("inputs/BQ_parameterized_v2.cir", "derived parameterized BQ; repaired bare PWL parameter syntax"),
         ("inputs/jtl2.cir", "JTL source"),
         ("build/josim-cli", "solver identity"),
     ]

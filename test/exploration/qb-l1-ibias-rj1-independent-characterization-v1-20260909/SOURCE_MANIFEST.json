@@ -33,11 +33,11 @@
       "role": "BQ source"
     },
     {
-      "repo_relative_path": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909/inputs/BQ_parameterized.cir",
-      "path": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909/inputs/BQ_parameterized.cir",
-      "sha256": "3817211d45100b9787785a0a9db7caeefbbb590f69e679d074c880bf672b9d60",
-      "bytes": 815,
-      "role": "derived parameterized BQ"
+      "repo_relative_path": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909/inputs/BQ_parameterized_v2.cir",
+      "path": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909/inputs/BQ_parameterized_v2.cir",
+      "sha256": "427385991d51acd330f9b3a5fc1596a3ecb161a98900f3b5341d88962aac874e",
+      "bytes": 813,
+      "role": "derived parameterized BQ; repaired bare PWL parameter syntax"
     },
     {
       "repo_relative_path": "test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909/inputs/jtl2.cir",
@@ -53,5 +53,12 @@
       "bytes": 1233976,
       "role": "solver identity"
     }
-  ]
+  ],
+  "repair_history": {
+    "repair_head": "f61bcc97d5bd82f499f9e957d2850e39889bda12",
+    "superseded_source": "inputs/BQ_parameterized.cir",
+    "superseded_source_sha256": "3817211d45100b9787785a0a9db7caeefbbb590f69e679d074c880bf672b9d60",
+    "failure_note": "qa/attempts/parse_failure_001/FAILURE_NOTE.md",
+    "reason": "JoSIM parser rejected brace parameter syntax inside the PWL function; matrix and non-target physics are unchanged."
+  }
 }

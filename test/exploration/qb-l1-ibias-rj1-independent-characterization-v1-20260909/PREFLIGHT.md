@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Role: `Experimental Operator + Evidence Packager`
 - Workflow: `PRE-REGISTER -> PREFLIGHT -> 12 PHYSICAL SOLVES -> MECHANICAL QA -> V2.1 VISUALIZATION -> EVIDENCE PACKAGE -> COMMIT -> STOP`
-- HEAD at this preflight: `c82f2fd7ed8290f0fea5e28a747bb34dc57afb63`
+- HEAD at this preflight: `f61bcc97d5bd82f499f9e957d2850e39889bda12`
 - Exact new physical solves: `12`
 - Reused physical solves: `0` (five unique historical references, hash matched)
 - Combination interventions: `FORBIDDEN`

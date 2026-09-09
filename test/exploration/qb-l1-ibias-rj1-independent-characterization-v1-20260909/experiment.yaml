@@ -137,11 +137,11 @@ source_authority:
     canonical_bvm_used: false
   jjmit: inputs/jjmit.cir
   qb_source: inputs/BQ_source.cir
-  qb_parameterized: inputs/BQ_parameterized.cir
+  qb_parameterized: inputs/BQ_parameterized_v2.cir
   jtl: inputs/jtl2.cir
   fixture_template: inputs/array_fixture_template.cir
   solver: build/josim-cli
-  parameterization: only active L1, RJ1 and IBias values are parameter references
+  parameterization: only active L1, RJ1 and IBias values are parameter references; IBias uses JoSIM bare parameter syntax inside PWL
 timing:
   time_step_ps: 0.1
   stop_time_ps: 200.0
@@ -199,6 +199,7 @@ package:
     - HANDOFF_README.md
     - REUSED_REFERENCE_MANIFEST.json
     - references/reused
+    - qa/attempts
     - analysis
 prohibited_followups:
   - combination tuning or parameter ranking

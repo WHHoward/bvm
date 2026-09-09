@@ -1,0 +1,208 @@
+schema_version: evidence-first-independent-characterization-v1
+id: qb-l1-ibias-rj1-independent-characterization-v1-20260909
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED_PENDING_PREFLIGHT
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+base_head: 6c14838b6cdf947e81e50399b157451f6e994307
+question: >-
+  Under the matched historical 4-BVM shared-COMMON_SL fixture, record three
+  independent one-dimensional response families for L1, IBias and RJ1 without
+  ranking, optimizing, or combining interventions.
+interpretation_ceiling: >-
+  Evidence-only observations for this fixed historical fixture, exact source
+  closure, exact stimulus, exact solver and exact stored time grid. No mechanism,
+  winner, optimum, margin, SFQ count, convergence, hardware or universal claim.
+changed:
+  - L1 family: four new values 1.2, 1.4, 1.6, 1.8 pH
+  - IBias family: four new values 230, 240, 260, 270 uA
+  - RJ1 family: four new values 8, 10, 14, 16 ohm
+frozen:
+  bvm_topology: four historical JM2-connected BVM cells on shared COMMON_SL
+  bvm_parameters: exact local historical variant; canonical BVM not used
+  stored_mask: 1111 history; final read mask 1000; BVM1 target; BVM2-BVM4 quiet
+  stimulus: stored WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> final READ -> TAIL
+  timing: rise/fall 1 ps; plateaus 9 ps; .tran 0.1p 200p; stored rows only
+  jsl: eight jjmit area=5.0 elements from COMMON_SL to QBIN
+  qb_nominal: L1=2.0pH; IBias=250uA; RJ1=12.0ohm; all other QB values frozen
+  jtl: six jtl2 stages; bias and termination frozen
+  termination: R_TERM JTL6_OUT 0 10ohm
+  model: jjmit and all include/model closure frozen by SOURCE_MANIFEST
+  solver: build/josim-cli with recorded version and binary hash
+  probes: full historical probe schema retained; missing emitted columns remain UNKNOWN
+  transformations: none on raw; visualization uses exact half-open stored-row slices and independent phase unwrap for display
+authorized_solve_count: 12
+exact_new_physical_solve_count: 12
+reused_physical_solve_count: 0
+unauthorized_extra_solves: 0
+no_combination_runs: true
+authorized_runs:
+  - runs/L1_1P2
+  - runs/L1_1P4
+  - runs/L1_1P6
+  - runs/L1_1P8
+  - runs/IB_230
+  - runs/IB_240
+  - runs/IB_260
+  - runs/IB_270
+  - runs/RJ1_8
+  - runs/RJ1_10
+  - runs/RJ1_14
+  - runs/RJ1_16
+run_matrix:
+  L1:
+    parameter: L1
+    nominal: 2.0pH
+    new:
+      - id: L1_1P2
+        directory: runs/L1_1P2
+        L1_pH: 1.2
+      - id: L1_1P4
+        directory: runs/L1_1P4
+        L1_pH: 1.4
+      - id: L1_1P6
+        directory: runs/L1_1P6
+        L1_pH: 1.6
+      - id: L1_1P8
+        directory: runs/L1_1P8
+        L1_pH: 1.8
+    reused:
+      - logical_case_id: L1_1P9
+        reference: references/reused/L1_1P9
+        L1_pH: 1.9
+      - logical_case_id: L1_NOMINAL
+        reference: references/reused/NOMINAL
+        L1_pH: 2.0
+      - logical_case_id: L1_2P1
+        reference: references/reused/L1_2P1
+        L1_pH: 2.1
+  IBias:
+    parameter: IB_VALUE
+    nominal: 250uA
+    new:
+      - id: IB_230
+        directory: runs/IB_230
+        IBias_uA: 230
+      - id: IB_240
+        directory: runs/IB_240
+        IBias_uA: 240
+      - id: IB_260
+        directory: runs/IB_260
+        IBias_uA: 260
+      - id: IB_270
+        directory: runs/IB_270
+        IBias_uA: 270
+    reused:
+      - logical_case_id: IB_NOMINAL
+        reference: references/reused/NOMINAL
+        IBias_uA: 250
+  RJ1:
+    parameter: RJ1
+    nominal: 12.0ohm
+    new:
+      - id: RJ1_8
+        directory: runs/RJ1_8
+        RJ1_ohm: 8
+      - id: RJ1_10
+        directory: runs/RJ1_10
+        RJ1_ohm: 10
+      - id: RJ1_14
+        directory: runs/RJ1_14
+        RJ1_ohm: 14
+      - id: RJ1_16
+        directory: runs/RJ1_16
+        RJ1_ohm: 16
+    reused:
+      - logical_case_id: RJ1_NOMINAL
+        reference: references/reused/NOMINAL
+        RJ1_ohm: 12.0
+      - logical_case_id: RJ1_12P5
+        reference: references/reused/RJ1_12P5
+        RJ1_ohm: 12.5
+      - logical_case_id: RJ1_13
+        reference: references/reused/RJ1_13
+        RJ1_ohm: 13
+forbidden_runs:
+  - any combined L1+IBias, L1+RJ1, IBias+RJ1 or three-parameter intervention
+  - any unregistered parameter value or extra point
+  - timestep, solver, timing, load, topology, BVM, JSL, QB, JTL or termination change
+  - retry, tuning, automatic follow-up, ranking, winner or combination experiment
+source_authority:
+  bvm_variant:
+    path: inputs/bvm_jm2_connected.cir
+    repository_source: test/exploration/bvmsim-jm2-connected-single-ab-v1-20260903/variants/bvm_jm2_connected.cir
+    canonical_bvm_used: false
+  jjmit: inputs/jjmit.cir
+  qb_source: inputs/BQ_source.cir
+  qb_parameterized: inputs/BQ_parameterized.cir
+  jtl: inputs/jtl2.cir
+  fixture_template: inputs/array_fixture_template.cir
+  solver: build/josim-cli
+  parameterization: only active L1, RJ1 and IBias values are parameter references
+timing:
+  time_step_ps: 0.1
+  stop_time_ps: 200.0
+  expected_first_timestamp_ps: 0.0
+  expected_last_timestamp_ps: 199.9
+  windows_ps:
+    PRE_FINAL: [101.0, 110.0]
+    EARLY_TRIGGER: [110.0, 116.0]
+    FULL_READ: [110.0, 121.0]
+    TAIL: [121.0, 200.0]
+    FULL_FINAL: [110.0, 200.0]
+    semantics: half-open actual stored timestamps
+probe_schema:
+  raw_header_expected_minimum: 265
+  missing_probe_policy: preserve requested probe and mark UNKNOWN; never fabricate
+  semantic_layers:
+    - 01_SIGNAL_TIMING
+    - 02_BVM_STATE
+    - 03_JSL_CHAIN
+    - 04_QB_STATE
+    - 05_JTL_CHAIN
+registered_mechanical_arithmetic:
+  - raw SHA256/sample count/time grid/finite values/duplicate columns
+  - exact one-parameter deck diff per family
+  - I(L2)-I(IB)-I(L1) residual as DERIVED arithmetic diagnostic
+  - phase display continuous_unwrap(raw_rad)/(2*pi), never an event count
+  - actual-grid descriptive waveform extrema, signed areas and timestamps
+  - exact stored-row visualization slices
+visualization:
+  profile: V2.1_SYSTEM_CHAIN
+  renderer: analysis/render_v2_1.py
+  manifest_path: visualization/manifest.json
+  qa_path: visualization/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  whole_run_overview_ps: [0.0, 200.0]
+  focused_windows_ps: [[90.0, 140.0], [101.0, 135.0], [110.0, 121.0], [110.0, 130.0]]
+  comparison_required: true
+  categories:
+    - 01_SIGNAL_TIMING
+    - 02_BVM_STATE
+    - 03_JSL_CHAIN
+    - 04_QB_STATE
+    - 05_JTL_CHAIN
+  families: [L1, IBIAS, RJ1]
+  no_mechanism_plots: true
+package:
+  include_plots: false
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+  additional_paths:
+    - HANDOFF_README.md
+    - REUSED_REFERENCE_MANIFEST.json
+    - references/reused
+    - analysis
+prohibited_followups:
+  - combination tuning or parameter ranking
+  - any new solve beyond the exact 12
+  - scientific interpretation without SCIENTIFIC_REVIEW_AUTHORIZED
+  - changes to historical references or raw files
+final_state: AWAITING_SCIENTIFIC_REVIEW

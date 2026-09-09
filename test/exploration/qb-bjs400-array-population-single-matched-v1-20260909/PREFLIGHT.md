@@ -6,7 +6,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Physical/stimulus authority: test/exploration/qb-l1-ibias-rj1-independent-characterization-v1-20260909
 - Mask bit-order and flat visualization style reference only: test/exploration/bvmsim-4bvm-paperlike-common-sl-accumulation-isolation-v1-20260904
-- Preflight HEAD: dfb0e2cf4d3dbcf261e49e0854b8ce35f77939d9
+- Preflight HEAD: 71fa16002ceebbab1b9dd85f6b8c02f74dea9da7
 - Preregistration/base HEAD: dfb0e2cf4d3dbcf261e49e0854b8ce35f77939d9
 - Solver: build/josim-cli; SHA-256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
 - Solver version: JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator

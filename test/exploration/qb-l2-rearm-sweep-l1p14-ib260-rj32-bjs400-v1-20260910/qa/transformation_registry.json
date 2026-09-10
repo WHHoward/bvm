@@ -1,0 +1,45 @@
+{
+  "schema": "bjs400-l2-rearm-transformation-registry-v1",
+  "raw_immutable": true,
+  "scientific_analysis_performed": false,
+  "transformations": [
+    {
+      "name": "origin_separation",
+      "operation": "CONTROL_ORIGIN [70,110) and FINAL_ORIGIN [110,200)",
+      "scope": "mechanical navigation"
+    },
+    {
+      "name": "differential_voltage_impulse",
+      "operation": "V(BJ1)-V(BJ2) and actual-grid cumulative/segment trapezoids",
+      "scope": "DERIVED_DIFFERENTIAL_VOLTAGE_IMPULSE / MECHANICAL_NAVIGATION_ONLY",
+      "not_switching_energy": true
+    },
+    {
+      "name": "post_first_bj2_rearm",
+      "operation": "stored-anchor L1 transitions and L2 local maxima",
+      "scope": "MECHANICAL_REARM_PROXY_ONLY / MECHANICAL_SECOND_SURGE_PROXY_ONLY"
+    },
+    {
+      "name": "phase_display",
+      "operation": "continuous_unwrap(raw_rad)/(2*pi)",
+      "scope": "diagnostic/display only",
+      "not_event_count": true
+    },
+    {
+      "name": "area_integration",
+      "operation": "trapezoid on actual stored time values; half-open windows",
+      "scope": "mechanical arithmetic",
+      "interpolation": false
+    },
+    {
+      "name": "standalone_plot_input",
+      "operation": "raw.csv direct; no crop/resample/derived CSV",
+      "scope": "visualization"
+    },
+    {
+      "name": "comparison_plot_input",
+      "operation": "temporary full-run merged CSV under /tmp only; deleted after render",
+      "scope": "visualization"
+    }
+  ]
+}

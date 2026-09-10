@@ -1,0 +1,74 @@
+{
+  "schema": "bjs400-l2-rearm-deck-diff-qa-v1",
+  "status": "PASS",
+  "new_run_count": 6,
+  "reused_case_count": 2,
+  "fixed_L1_pH": 1.4,
+  "fixed_IBias_uA": 260.0,
+  "fixed_RJ1_ohm": 32.0,
+  "fixed_BJS_area": 4,
+  "new_L2_values_pH": [
+    1.6,
+    1.2,
+    0.8
+  ],
+  "same_mask_only_L2_difference": true,
+  "mask_pair_only_final_read_difference": true,
+  "normalized_new_decks_identical": true,
+  "historical_deck_comparability": "PASS",
+  "bq_parameterization_delta": {
+    "status": "PASS",
+    "changed_lines": [
+      [
+        4,
+        "* Only the active BQ element values for L1, RJ1 and IBias are parameter references;",
+        "* Only the active BQ element values for L1, L2, RJ1 and IBias are parameter references;"
+      ],
+      [
+        27,
+        "L2 3 4 2p",
+        "L2 3 4 {L2_VALUE}"
+      ]
+    ],
+    "only_L2_parameter_exposure": true
+  },
+  "runs": {
+    "ARRAY_L1P14_L2P16_IB260_RJ32_0001": {
+      "L2_pH": 1.6,
+      "mask": "0001",
+      "deck_sha256": "3159d6839dd2b734acb28177c123464fbf1c04ad540712f560d0268c0f3847cd",
+      "deck_bytes": 7484
+    },
+    "ARRAY_L1P14_L2P16_IB260_RJ32_0011": {
+      "L2_pH": 1.6,
+      "mask": "0011",
+      "deck_sha256": "67beb69b3ecaabb3ea1fc073f9c0b55349edf16e72abf07ce8efe34f257da875",
+      "deck_bytes": 7500
+    },
+    "ARRAY_L1P14_L2P12_IB260_RJ32_0001": {
+      "L2_pH": 1.2,
+      "mask": "0001",
+      "deck_sha256": "f2c9be76823704a0dd039d5ff5214c537190fd0533ffe96feaacda8796bff134",
+      "deck_bytes": 7484
+    },
+    "ARRAY_L1P14_L2P12_IB260_RJ32_0011": {
+      "L2_pH": 1.2,
+      "mask": "0011",
+      "deck_sha256": "1189ec3d89a6203309e8935ce852fe09b0ecaba9c556b846bce925d86e8938e0",
+      "deck_bytes": 7500
+    },
+    "ARRAY_L1P14_L2P08_IB260_RJ32_0001": {
+      "L2_pH": 0.8,
+      "mask": "0001",
+      "deck_sha256": "335555f81120b7d62bfd2328dedf709c2f781252182a5e898b24e624ecbbdb3f",
+      "deck_bytes": 7484
+    },
+    "ARRAY_L1P14_L2P08_IB260_RJ32_0011": {
+      "L2_pH": 0.8,
+      "mask": "0011",
+      "deck_sha256": "7cb6311e2d0c26e5026bb5cf05836128bf906059c3362b22a1cdbc3be0f4e4f3",
+      "deck_bytes": 7500
+    }
+  },
+  "failures": []
+}

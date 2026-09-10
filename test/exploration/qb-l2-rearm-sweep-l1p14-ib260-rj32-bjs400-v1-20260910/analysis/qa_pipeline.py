@@ -405,6 +405,11 @@ def differential_voltage_impulse(trace: Any, final_record: dict[str, Any], l2: f
         "A_DIFF_first_BJ1_to_first_BJ2": diff_segment(trace, "A_DIFF_first_BJ1_to_first_BJ2", t1, t2),
         "A_DIFF_post_BJ2_to_121": diff_segment(trace, "A_DIFF_post_BJ2_to_121", t2, DIFF_TO_121),
         "A_DIFF_121_to_140": diff_segment(trace, "A_DIFF_121_to_140", DIFF_TO_121, DIFF_TO_140),
+        "A_DIFF_cumulative_landmarks": {
+            "from_110_to_121": cumulative_diff(trace, DIFF_START, DIFF_TO_121),
+            "from_110_to_140": cumulative_diff(trace, DIFF_START, DIFF_TO_140),
+            "from_110_to_200": cumulative_diff(trace, DIFF_START, 200e-12),
+        },
         "A_DIFF_cumulative_after_BJ2_anchor_to_140": cumulative_after_anchor,
         "A_REQUIRED_TO_L1_ZERO": required,
         "rearm_impulse_completion_ratio": ratio,
@@ -631,7 +636,7 @@ def main() -> int:
             post = post_first_bj2_rearm(trace, origin_records["FINAL_ORIGIN"], CASE_L2[case_id])
             diff = differential_voltage_impulse(trace, origin_records["FINAL_ORIGIN"], CASE_L2[case_id])
             ratio_inputs[case_id] = {"I(B_JSL8)": area(trace, "I(B_JSL8)", PRE_SWITCH_WINDOW), "I(LIN|XBQ1)": area(trace, "I(LIN|XBQ1)", PRE_SWITCH_WINDOW)}
-            cases[case_id] = {"case_id": case_id, "L1_pH": FIXED["L1_pH"], "L2_pH": CASE_L2[case_id], "IBias_uA": FIXED["IBias_uA"], "RJ1_ohm": FIXED["RJ1_ohm"], "mask": case_id.rsplit("_", 1)[1], "source_experiment": source_experiment(case_id), "source_run": source_run(case_id), "physical_solve_this_experiment": case_id in NEW_RUNS, "scientific_interpretation_performed": False, "CONTROL_ORIGIN": origin_records["CONTROL_ORIGIN"], "FINAL_ORIGIN": origin_records["FINAL_ORIGIN"], "POST_FIRST_BJ2_REARM": post, "DIFFERENTIAL_VOLTAGE_IMPULSE": diff, "terminal_control_area": origin_records["CONTROL_ORIGIN"]["terminal_diagnostics"], "terminal_final_area": origin_records["FINAL_ORIGIN"]["terminal_diagnostics"], "terminal_whole_run_area": whole_run_terminal(trace), "whole_run_terminal": whole_run_terminal(trace), "notes": ["CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.", "POST_FIRST_BJ2_REARM uses a navigation anchor, not an event boundary.", "Differential-voltage integrals and phase thresholds are mechanical/proxy diagnostics, not switching energy or SFQ counts."]}
+            cases[case_id] = {"case_id": case_id, "L1_pH": FIXED["L1_pH"], "L2_pH": CASE_L2[case_id], "IBias_uA": FIXED["IBias_uA"], "RJ1_ohm": FIXED["RJ1_ohm"], "mask": case_id.rsplit("_", 1)[1], "source_experiment": source_experiment(case_id), "source_run": source_run(case_id), "physical_solve_this_experiment": case_id in NEW_RUNS, "scientific_interpretation_performed": False, "raw_provenance": {"path": str(path.relative_to(REPO)), "sha256": pre_hashes[case_id]}, "CONTROL_ORIGIN": origin_records["CONTROL_ORIGIN"], "FINAL_ORIGIN": origin_records["FINAL_ORIGIN"], "POST_FIRST_BJ2_REARM": post, "DIFFERENTIAL_VOLTAGE_IMPULSE": diff, "terminal_control_area": origin_records["CONTROL_ORIGIN"]["terminal_diagnostics"], "terminal_final_area": origin_records["FINAL_ORIGIN"]["terminal_diagnostics"], "terminal_whole_run_area": whole_run_terminal(trace), "whole_run_terminal": whole_run_terminal(trace), "notes": ["CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.", "POST_FIRST_BJ2_REARM uses a navigation anchor, not an event boundary.", "Differential-voltage integrals and phase thresholds are mechanical/proxy diagnostics, not switching energy or SFQ counts."]}
         except Exception as exc:
             raw_failures.append(f"{case_id}: mechanical arithmetic failure: {exc}")
     post_hashes = {case_id: sha256(raw_path(case_id)) for case_id in pre_hashes}

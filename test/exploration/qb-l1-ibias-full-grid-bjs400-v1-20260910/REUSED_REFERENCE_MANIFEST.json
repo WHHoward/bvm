@@ -1,0 +1,897 @@
+{
+  "schema": "bjs400-l1-ibias-full-grid-reuse-manifest-v1",
+  "experiment_id": "qb-l1-ibias-full-grid-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T10:54:27+08:00",
+  "source_authorities": [
+    "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+    "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909"
+  ],
+  "references": {
+    "ARRAY_L1P12_0001": {
+      "logical_case_id": "ARRAY_L1P12_0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P12_0001",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 1.2,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0001/raw.csv",
+          "source_sha256": "ca7464f0467816b7edd1c3b3dd9a7130aa1b9910c4e2581f151d9c3c26e18282",
+          "archived_sha256": "ca7464f0467816b7edd1c3b3dd9a7130aa1b9910c4e2581f151d9c3c26e18282",
+          "bytes": 7098383
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0001/deck.cir",
+          "source_sha256": "58b660ebc7f65a0a710c0044b8be73b4a9473569477acf093c0dcf2affdf1d19",
+          "archived_sha256": "58b660ebc7f65a0a710c0044b8be73b4a9473569477acf093c0dcf2affdf1d19",
+          "bytes": 7460
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0001/metadata.json",
+          "source_sha256": "814767e8d920e2eeffeeeb30d03878b7da52e48aee3978f1b730742100ebe11f",
+          "archived_sha256": "814767e8d920e2eeffeeeb30d03878b7da52e48aee3978f1b730742100ebe11f",
+          "bytes": 2344
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0001/run.log",
+          "source_sha256": "6fca740cfc90240e30e8a1def6b707e835dd22e9f782735cbd3b90e25fc768b5",
+          "archived_sha256": "6fca740cfc90240e30e8a1def6b707e835dd22e9f782735cbd3b90e25fc768b5",
+          "bytes": 224934
+        }
+      }
+    },
+    "ARRAY_L1P12_0011": {
+      "logical_case_id": "ARRAY_L1P12_0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P12_0011",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 1.2,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0011/raw.csv",
+          "source_sha256": "c1f8b00bc162b7a6e5726a3cbc35b7e629832b0f0bc3aef5345f85e2d7f61e1d",
+          "archived_sha256": "c1f8b00bc162b7a6e5726a3cbc35b7e629832b0f0bc3aef5345f85e2d7f61e1d",
+          "bytes": 7095877
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0011/deck.cir",
+          "source_sha256": "187dd17aa1f1caa7f4d0e7b2b1f088a9b8e89a7d90c647abe2ddaf60b5f57994",
+          "archived_sha256": "187dd17aa1f1caa7f4d0e7b2b1f088a9b8e89a7d90c647abe2ddaf60b5f57994",
+          "bytes": 7476
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0011/metadata.json",
+          "source_sha256": "b93465e67248aa19aeb8e7fcab907d164cba7f8429211472bc3c20269e82141b",
+          "archived_sha256": "b93465e67248aa19aeb8e7fcab907d164cba7f8429211472bc3c20269e82141b",
+          "bytes": 2351
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P12_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0011/run.log",
+          "source_sha256": "a53e82a7a8770f4635aacf0216f190f629ab808df8678baf95a9e20f37fa84eb",
+          "archived_sha256": "a53e82a7a8770f4635aacf0216f190f629ab808df8678baf95a9e20f37fa84eb",
+          "bytes": 222558
+        }
+      }
+    },
+    "ARRAY_L1P14_0001": {
+      "logical_case_id": "ARRAY_L1P14_0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P14_0001",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 1.4,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0001/raw.csv",
+          "source_sha256": "a41584282fdc4441deef9867656d4aa24ea7f69204da2abea5c1f5a103bb7ceb",
+          "archived_sha256": "a41584282fdc4441deef9867656d4aa24ea7f69204da2abea5c1f5a103bb7ceb",
+          "bytes": 7098605
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0001/deck.cir",
+          "source_sha256": "4e61cf55d14421e9956ea8e55f44123048e68f6968f5cc5569598a817558ed3f",
+          "archived_sha256": "4e61cf55d14421e9956ea8e55f44123048e68f6968f5cc5569598a817558ed3f",
+          "bytes": 7460
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0001/metadata.json",
+          "source_sha256": "f8ab036a40e0bb83ec9801ac5925d3b5a12ea5859bdcd203d6cb4ca449f0e801",
+          "archived_sha256": "f8ab036a40e0bb83ec9801ac5925d3b5a12ea5859bdcd203d6cb4ca449f0e801",
+          "bytes": 2344
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0001/run.log",
+          "source_sha256": "03c74ddd8363cf6bf2020270910512661d686480b4b9602f5b7235a422891d38",
+          "archived_sha256": "03c74ddd8363cf6bf2020270910512661d686480b4b9602f5b7235a422891d38",
+          "bytes": 220341
+        }
+      }
+    },
+    "ARRAY_L1P14_0011": {
+      "logical_case_id": "ARRAY_L1P14_0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P14_0011",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 1.4,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0011/raw.csv",
+          "source_sha256": "0d178557937293c0b2c6f84c676ccf28873bdca853ac10d642ff08b7e6042406",
+          "archived_sha256": "0d178557937293c0b2c6f84c676ccf28873bdca853ac10d642ff08b7e6042406",
+          "bytes": 7095925
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0011/deck.cir",
+          "source_sha256": "4c2c86b5924cae6ba3f36aa26e7e72f159607b59719a7988039ef727d7b2beaa",
+          "archived_sha256": "4c2c86b5924cae6ba3f36aa26e7e72f159607b59719a7988039ef727d7b2beaa",
+          "bytes": 7476
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0011/metadata.json",
+          "source_sha256": "20e21d75273ffc537c55ba0647a2926a9af621c1d7ed85aa51bdb7200321d249",
+          "archived_sha256": "20e21d75273ffc537c55ba0647a2926a9af621c1d7ed85aa51bdb7200321d249",
+          "bytes": 2351
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_L1P14_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0011/run.log",
+          "source_sha256": "0f9a02bdeb4f926b2eedcbde24d96277e260b86a7cf740c1e889ed367ad00181",
+          "archived_sha256": "0f9a02bdeb4f926b2eedcbde24d96277e260b86a7cf740c1e889ed367ad00181",
+          "bytes": 221749
+        }
+      }
+    },
+    "ARRAY_IB260_0001": {
+      "logical_case_id": "ARRAY_IB260_0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB260_0001",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0001/raw.csv",
+          "source_sha256": "793f9e3a78dc877b7cae4d48e5ffe0d31712a984ce586dc4df7b01781679ee67",
+          "archived_sha256": "793f9e3a78dc877b7cae4d48e5ffe0d31712a984ce586dc4df7b01781679ee67",
+          "bytes": 7098283
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0001/deck.cir",
+          "source_sha256": "2166e9e5643b8e62e5f8f31bd26a4c33e781a64cadab723db3ac301aef92ab24",
+          "archived_sha256": "2166e9e5643b8e62e5f8f31bd26a4c33e781a64cadab723db3ac301aef92ab24",
+          "bytes": 7458
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0001/metadata.json",
+          "source_sha256": "a20e0cf620a2640d9b5c2c3e3c86768bd864f9e46a3f5dabdf95e420dce51ce3",
+          "archived_sha256": "a20e0cf620a2640d9b5c2c3e3c86768bd864f9e46a3f5dabdf95e420dce51ce3",
+          "bytes": 2344
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0001/run.log",
+          "source_sha256": "bb820c48c2cf95f55f0e5bae16240c33e855643b8c80f98d0007ad2da0d7d68c",
+          "archived_sha256": "bb820c48c2cf95f55f0e5bae16240c33e855643b8c80f98d0007ad2da0d7d68c",
+          "bytes": 221218
+        }
+      }
+    },
+    "ARRAY_IB260_0011": {
+      "logical_case_id": "ARRAY_IB260_0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB260_0011",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0011/raw.csv",
+          "source_sha256": "7c1c11f27da06d7a0eae440264b03b2e53cb8a430ba8cacd027441806117f401",
+          "archived_sha256": "7c1c11f27da06d7a0eae440264b03b2e53cb8a430ba8cacd027441806117f401",
+          "bytes": 7095799
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0011/deck.cir",
+          "source_sha256": "b5479b90b79b1e782db7730b843b7322b5c60d92298d775a014a01487550e8ba",
+          "archived_sha256": "b5479b90b79b1e782db7730b843b7322b5c60d92298d775a014a01487550e8ba",
+          "bytes": 7474
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0011/metadata.json",
+          "source_sha256": "107ee0ba64c1d08763741c6a6920b41fb8083a8a819caf49154e8b22d7c46252",
+          "archived_sha256": "107ee0ba64c1d08763741c6a6920b41fb8083a8a819caf49154e8b22d7c46252",
+          "bytes": 2351
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB260_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0011/run.log",
+          "source_sha256": "0861571ea17365bcb993e3121fe14628d1e9bba04d65412b9deded7bd0c8a0ba",
+          "archived_sha256": "0861571ea17365bcb993e3121fe14628d1e9bba04d65412b9deded7bd0c8a0ba",
+          "bytes": 222025
+        }
+      }
+    },
+    "ARRAY_IB270_0001": {
+      "logical_case_id": "ARRAY_IB270_0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB270_0001",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 2.0,
+        "IBias_uA": 270.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0001/raw.csv",
+          "source_sha256": "98abb1e3be68587961177fcf7b5c0ad5421b39443f2785cb4eb2d6d98d133fb6",
+          "archived_sha256": "98abb1e3be68587961177fcf7b5c0ad5421b39443f2785cb4eb2d6d98d133fb6",
+          "bytes": 7098501
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0001/deck.cir",
+          "source_sha256": "f45f42fe712a62a235f46b5366df937b52509e45cbb3829fee1844a5f935102f",
+          "archived_sha256": "f45f42fe712a62a235f46b5366df937b52509e45cbb3829fee1844a5f935102f",
+          "bytes": 7458
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0001/metadata.json",
+          "source_sha256": "1bd02c33148d0a577b53c0a6a6ac198112804a7ad3cda74c0297ac0c505f66e8",
+          "archived_sha256": "1bd02c33148d0a577b53c0a6a6ac198112804a7ad3cda74c0297ac0c505f66e8",
+          "bytes": 2344
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0001/run.log",
+          "source_sha256": "d168d06a98104b4ea7897dde5ab4ca97140e35ea64db43a606e5dded50d1b98f",
+          "archived_sha256": "d168d06a98104b4ea7897dde5ab4ca97140e35ea64db43a606e5dded50d1b98f",
+          "bytes": 223111
+        }
+      }
+    },
+    "ARRAY_IB270_0011": {
+      "logical_case_id": "ARRAY_IB270_0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB270_0011",
+      "source_git_head": "266f959f73cd9bd4d30d9269149c29a096713055",
+      "parameters": {
+        "L1_pH": 2.0,
+        "IBias_uA": 270.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+        "authority_git_head": "e72b4f568a1d49100b5e4fefa60bee8955bb0db8",
+        "package_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/handoff/qb-bjs400-array-population-single-matched-v1-20260909_raw_handoff.zip",
+        "package_sha256": "2e0647daf57c62e25dea3e9e4165a33ef169f0cc05888b33bb645bef6339f68a",
+        "source_manifest_path": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "3069d48ade02fed285cb1f01a578f7bbd7342cd0f810e6a0242e3eea7621ef33"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0011/raw.csv",
+          "source_sha256": "93822a1f634818f04ca6613e348009ef24ab4add3d1a518be8ddf384e2a8a12c",
+          "archived_sha256": "93822a1f634818f04ca6613e348009ef24ab4add3d1a518be8ddf384e2a8a12c",
+          "bytes": 7096304
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0011/deck.cir",
+          "source_sha256": "7ebbad9d2b842e53e08f41700ba7f7e09023f4e6ededd473736e9d8b413e6317",
+          "archived_sha256": "7ebbad9d2b842e53e08f41700ba7f7e09023f4e6ededd473736e9d8b413e6317",
+          "bytes": 7474
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0011/metadata.json",
+          "source_sha256": "fc432cfbae362377329dc2b87910f122682eea9242faccfdd79e19feb1e9641b",
+          "archived_sha256": "fc432cfbae362377329dc2b87910f122682eea9242faccfdd79e19feb1e9641b",
+          "bytes": 2351
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-bjs400-array-population-single-matched-v1-20260909/runs/ARRAY_IB270_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0011/run.log",
+          "source_sha256": "7ea6ef08cb237f641eb1a867917a7bcbf245ea525fbec414779f8359d1c9a7f0",
+          "archived_sha256": "7ea6ef08cb237f641eb1a867917a7bcbf245ea525fbec414779f8359d1c9a7f0",
+          "bytes": 223449
+        }
+      }
+    },
+    "ARRAY_L1P20_IB250_0001": {
+      "logical_case_id": "ARRAY_L1P20_IB250_0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P20_IB250_0001",
+      "source_git_head": "6003722187c9c11c88375d42e9e547da5a03a695",
+      "parameters": {
+        "L1_pH": 2.0,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+        "authority_git_head": "74c64cf1fe74f6b9dc01d08e854e825329e31f6c",
+        "package_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/handoff/qb-l1-ibias-interaction-bjs400-v1-20260909_raw_handoff_v2.zip",
+        "package_sha256": "3c105c850823fee747632860ebfb17ee930617ec21ebfc4c92c73a20d959575d",
+        "source_manifest_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "c88f0d6102cb5f8722c1ac417ae3d0109faef5e505375d44da101612732914d3"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0001/raw.csv",
+          "source_sha256": "89691de5428229adfa76beda1e4569990d17334e67dcc25a92e0fa7c846ffaa8",
+          "archived_sha256": "89691de5428229adfa76beda1e4569990d17334e67dcc25a92e0fa7c846ffaa8",
+          "bytes": 7093697
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0001/deck.cir",
+          "source_sha256": "1097c466b39536405c2e0f1ab548ad610d795a16aaf36263e983833605e00805",
+          "archived_sha256": "1097c466b39536405c2e0f1ab548ad610d795a16aaf36263e983833605e00805",
+          "bytes": 7458
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0001/metadata.json",
+          "source_sha256": "078663604bdc50f70c29cf29b136288dfb96c420e76c5a70e1b7500986c6178b",
+          "archived_sha256": "078663604bdc50f70c29cf29b136288dfb96c420e76c5a70e1b7500986c6178b",
+          "bytes": 2412
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0001/run.log",
+          "source_sha256": "c5470c492cfac83f893bc3a43c67fcd52a698bd0f9d653d7c8c504f4a98aad7a",
+          "archived_sha256": "c5470c492cfac83f893bc3a43c67fcd52a698bd0f9d653d7c8c504f4a98aad7a",
+          "bytes": 220948
+        }
+      }
+    },
+    "ARRAY_L1P20_IB250_0011": {
+      "logical_case_id": "ARRAY_L1P20_IB250_0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P20_IB250_0011",
+      "source_git_head": "6003722187c9c11c88375d42e9e547da5a03a695",
+      "parameters": {
+        "L1_pH": 2.0,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+        "authority_git_head": "74c64cf1fe74f6b9dc01d08e854e825329e31f6c",
+        "package_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/handoff/qb-l1-ibias-interaction-bjs400-v1-20260909_raw_handoff_v2.zip",
+        "package_sha256": "3c105c850823fee747632860ebfb17ee930617ec21ebfc4c92c73a20d959575d",
+        "source_manifest_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "c88f0d6102cb5f8722c1ac417ae3d0109faef5e505375d44da101612732914d3"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0011/raw.csv",
+          "source_sha256": "90cae8056de67f0a107dd9e6af9ce7c7d20982250cd8c1a6bc46c55aeb5c4e86",
+          "archived_sha256": "90cae8056de67f0a107dd9e6af9ce7c7d20982250cd8c1a6bc46c55aeb5c4e86",
+          "bytes": 7095978
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0011/deck.cir",
+          "source_sha256": "109f97a4f5c7d8e80bb7af6bb4bc3530d4c96b646e781c4bb0ce369b74de0f08",
+          "archived_sha256": "109f97a4f5c7d8e80bb7af6bb4bc3530d4c96b646e781c4bb0ce369b74de0f08",
+          "bytes": 7474
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0011/metadata.json",
+          "source_sha256": "33b7293347c8b251c8bc30ab84307cfb1adfdb7f279e272365649c263521c618",
+          "archived_sha256": "33b7293347c8b251c8bc30ab84307cfb1adfdb7f279e272365649c263521c618",
+          "bytes": 2412
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P20_IB250_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0011/run.log",
+          "source_sha256": "e55a3f2162e483788ef29daded687689a714ceaac2006c0db0ad0d1ff5acbd0f",
+          "archived_sha256": "e55a3f2162e483788ef29daded687689a714ceaac2006c0db0ad0d1ff5acbd0f",
+          "bytes": 218868
+        }
+      }
+    },
+    "ARRAY_L1P16_IB250_0001": {
+      "logical_case_id": "ARRAY_L1P16_IB250_0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB250_0001",
+      "source_git_head": "6003722187c9c11c88375d42e9e547da5a03a695",
+      "parameters": {
+        "L1_pH": 1.6,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+        "authority_git_head": "74c64cf1fe74f6b9dc01d08e854e825329e31f6c",
+        "package_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/handoff/qb-l1-ibias-interaction-bjs400-v1-20260909_raw_handoff_v2.zip",
+        "package_sha256": "3c105c850823fee747632860ebfb17ee930617ec21ebfc4c92c73a20d959575d",
+        "source_manifest_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "c88f0d6102cb5f8722c1ac417ae3d0109faef5e505375d44da101612732914d3"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0001/raw.csv",
+          "source_sha256": "99ccb857dffc1c080fc122d41ba3a0c1359cd182a6e15a4b25b44f901130282a",
+          "archived_sha256": "99ccb857dffc1c080fc122d41ba3a0c1359cd182a6e15a4b25b44f901130282a",
+          "bytes": 7093195
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0001/deck.cir",
+          "source_sha256": "79b25848966744bb11e8d5d4af47af08f90abeea55ee7e9b8cbf6b14b8e52fd0",
+          "archived_sha256": "79b25848966744bb11e8d5d4af47af08f90abeea55ee7e9b8cbf6b14b8e52fd0",
+          "bytes": 7460
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0001/metadata.json",
+          "source_sha256": "a17a81440a6094d69a0a44d521994260f29621a90f4196d1e25bb3613a29f462",
+          "archived_sha256": "a17a81440a6094d69a0a44d521994260f29621a90f4196d1e25bb3613a29f462",
+          "bytes": 2405
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0001/run.log",
+          "source_sha256": "9b4b980776d4cef6602387ce09bf358df9dff2e0c1211b79a7c0f3ccaaed99fc",
+          "archived_sha256": "9b4b980776d4cef6602387ce09bf358df9dff2e0c1211b79a7c0f3ccaaed99fc",
+          "bytes": 217420
+        }
+      }
+    },
+    "ARRAY_L1P16_IB250_0011": {
+      "logical_case_id": "ARRAY_L1P16_IB250_0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB250_0011",
+      "source_git_head": "6003722187c9c11c88375d42e9e547da5a03a695",
+      "parameters": {
+        "L1_pH": 1.6,
+        "IBias_uA": 250.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+        "authority_git_head": "74c64cf1fe74f6b9dc01d08e854e825329e31f6c",
+        "package_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/handoff/qb-l1-ibias-interaction-bjs400-v1-20260909_raw_handoff_v2.zip",
+        "package_sha256": "3c105c850823fee747632860ebfb17ee930617ec21ebfc4c92c73a20d959575d",
+        "source_manifest_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "c88f0d6102cb5f8722c1ac417ae3d0109faef5e505375d44da101612732914d3"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0011/raw.csv",
+          "source_sha256": "acef942ab643b52ec7b927b3da93517da8b3b663747721b1a781fe832f15db0e",
+          "archived_sha256": "acef942ab643b52ec7b927b3da93517da8b3b663747721b1a781fe832f15db0e",
+          "bytes": 7095928
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0011/deck.cir",
+          "source_sha256": "1568b3f67405c73cf709e9f1987c4fd4947a7f72bafad33b13fada549b258f39",
+          "archived_sha256": "1568b3f67405c73cf709e9f1987c4fd4947a7f72bafad33b13fada549b258f39",
+          "bytes": 7476
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0011/metadata.json",
+          "source_sha256": "48ac78980434f571c984451265f98fe029a0dc25f691145d6d25a526af89bff5",
+          "archived_sha256": "48ac78980434f571c984451265f98fe029a0dc25f691145d6d25a526af89bff5",
+          "bytes": 2405
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB250_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0011/run.log",
+          "source_sha256": "4d9178d00d14bad395202d0c0685926735b383595dddf9e85074cc669a0d1b6f",
+          "archived_sha256": "4d9178d00d14bad395202d0c0685926735b383595dddf9e85074cc669a0d1b6f",
+          "bytes": 215695
+        }
+      }
+    },
+    "ARRAY_L1P16_IB260_0001": {
+      "logical_case_id": "ARRAY_L1P16_IB260_0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB260_0001",
+      "source_git_head": "6003722187c9c11c88375d42e9e547da5a03a695",
+      "parameters": {
+        "L1_pH": 1.6,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+        "authority_git_head": "74c64cf1fe74f6b9dc01d08e854e825329e31f6c",
+        "package_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/handoff/qb-l1-ibias-interaction-bjs400-v1-20260909_raw_handoff_v2.zip",
+        "package_sha256": "3c105c850823fee747632860ebfb17ee930617ec21ebfc4c92c73a20d959575d",
+        "source_manifest_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "c88f0d6102cb5f8722c1ac417ae3d0109faef5e505375d44da101612732914d3"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0001/raw.csv",
+          "source_sha256": "78ffd2f02bfe1d208334d1359f5f3ae492bfa961d15930443c471cc9cd574f25",
+          "archived_sha256": "78ffd2f02bfe1d208334d1359f5f3ae492bfa961d15930443c471cc9cd574f25",
+          "bytes": 7098961
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0001/deck.cir",
+          "source_sha256": "5ce05644caf830af955a25853d1c681558dca4f4dbce646a2205d3db14962c3d",
+          "archived_sha256": "5ce05644caf830af955a25853d1c681558dca4f4dbce646a2205d3db14962c3d",
+          "bytes": 7460
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0001/metadata.json",
+          "source_sha256": "49c0caa85d7b697148980218c8b2778772fa0550728fb0052384a1d6bd2df19a",
+          "archived_sha256": "49c0caa85d7b697148980218c8b2778772fa0550728fb0052384a1d6bd2df19a",
+          "bytes": 2414
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0001/run.log",
+          "source_sha256": "86e2b3cc6d0542b221e27f26d76695dea8e329e3aaabef54d18d7c8a1caa8fe2",
+          "archived_sha256": "86e2b3cc6d0542b221e27f26d76695dea8e329e3aaabef54d18d7c8a1caa8fe2",
+          "bytes": 220873
+        }
+      }
+    },
+    "ARRAY_L1P16_IB260_0011": {
+      "logical_case_id": "ARRAY_L1P16_IB260_0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB260_0011",
+      "source_git_head": "6003722187c9c11c88375d42e9e547da5a03a695",
+      "parameters": {
+        "L1_pH": 1.6,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 12.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact BJS400 ARRAY fixture, stored-history stimulus, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_12ohm": "PASS",
+        "four_BVM_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "stored_history_and_final_read": "PASS",
+        "read_timing_amplitude_duration": "PASS",
+        "solver_timestep_stop_time": "PASS",
+        "deck_structure_and_pre_read_controls": "PASS",
+        "raw_grid_finite_monotonic": "PASS"
+      },
+      "source_evidence_package": {
+        "experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+        "authority_git_head": "74c64cf1fe74f6b9dc01d08e854e825329e31f6c",
+        "package_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/handoff/qb-l1-ibias-interaction-bjs400-v1-20260909_raw_handoff_v2.zip",
+        "package_sha256": "3c105c850823fee747632860ebfb17ee930617ec21ebfc4c92c73a20d959575d",
+        "source_manifest_path": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/SOURCE_MANIFEST.json",
+        "source_manifest_sha256": "c88f0d6102cb5f8722c1ac417ae3d0109faef5e505375d44da101612732914d3"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0011/raw.csv",
+          "source_sha256": "fb12efab0025e13cfb6ea758f130d33d8f30c72eec8fabb72fa12f817874924b",
+          "archived_sha256": "fb12efab0025e13cfb6ea758f130d33d8f30c72eec8fabb72fa12f817874924b",
+          "bytes": 7095907
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0011/deck.cir",
+          "source_sha256": "576e5b99ffde8b0b427bd2c4e41997a797e3f1156174e7b347b0787c7e424a18",
+          "archived_sha256": "576e5b99ffde8b0b427bd2c4e41997a797e3f1156174e7b347b0787c7e424a18",
+          "bytes": 7476
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0011/metadata.json",
+          "source_sha256": "fe506be8c47aaba6c7bd3eabf5e2c3ec959850ce36d59221ec5bc5620db0a72b",
+          "archived_sha256": "fe506be8c47aaba6c7bd3eabf5e2c3ec959850ce36d59221ec5bc5620db0a72b",
+          "bytes": 2414
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909/runs/ARRAY_L1P16_IB260_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0011/run.log",
+          "source_sha256": "a03ae8f8a5465ecd5e4b4af0b3124693bff85c395c0a2840215641320857e044",
+          "archived_sha256": "a03ae8f8a5465ecd5e4b4af0b3124693bff85c395c0a2840215641320857e044",
+          "bytes": 222754
+        }
+      }
+    }
+  },
+  "reused_physical_case_count": 14,
+  "no_reuse_by_filename_only": true,
+  "no_new_historical_solves": true,
+  "exact_reuse_verification": "PASS"
+}

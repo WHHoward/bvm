@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Authority
 
 - Physical/stimulus authority: test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909
-- Preflight HEAD: 74c64cf1fe74f6b9dc01d08e854e825329e31f6c
+- Preflight HEAD: 223475abd803b48e52edb695d18948023170c0f0
 - Fixed point: L1=1.6pH, IBias=260uA, BJS area=4, BJS Ic=400uA.
 - RJ1 values: new 10/14/16ohm; 12ohm reused by hash.
 - Masks: 0001 and 0011 only; no older no-history stimulus.

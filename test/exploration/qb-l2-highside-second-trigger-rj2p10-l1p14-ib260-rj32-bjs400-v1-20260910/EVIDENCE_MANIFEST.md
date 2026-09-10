@@ -5,7 +5,8 @@ This is an evidence-only handoff. Scientific interpretation is `NOT PERFORMED`.
 - Experiment ID: `qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910`
 - Frozen point: L1=1.4pH, RJ2=10ohm, IBias=260uA, RJ1=32ohm, BJS=400uA.
 - L2 matrix: 2.0pH historical reuse; 2.4/2.8/3.2pH new physical values.
-- Logical cases: 8; maximum new solves: 6; historical reuse: 2.
+- Registered logical cases: 8; actual new solves: 4 of maximum 6; historical reuse: 2.
+- First control-failure boundary: L2=2.4pH; later executor stop record at L2=2.8pH / 0011 is preserved as a protocol-audit deviation. L2=3.2pH remains unsolved with preserved decks.
 - Mechanical QA: `qa/*.json` and `mechanical_summary.json`.
 - Independent numerical/adversarial review: `analysis/REVIEW.md`.
 - Visualization: `visualization/manifest.json` and per-run navigation.

@@ -61,6 +61,10 @@ l2_matrix:
   logical_case_count: 8
   historical_reuse_count: 2
   new_physical_solve_max: 6
+  actual_new_physical_solve_count: 4
+  stop_reason: SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE:ARRAY_L1P14_L2P28_IB260_RJ32_RJ2P10_0011
+  first_control_failure_boundary: L2=2.4pH
+  protocol_audit: executor did not stop at the earlier registered control-failure boundary; preserve and review this history
   unauthorized_extra_solves: 0
   execution_order:
     - L2=2.4pH / 0001
@@ -79,14 +83,16 @@ l2_matrix:
   reused_runs:
     - references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001
     - references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011
+  unrun_preserved_decks:
+    - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0001
+    - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0011
 
 authorized_runs:
   - runs/ARRAY_L1P14_L2P24_IB260_RJ32_RJ2P10_0001
   - runs/ARRAY_L1P14_L2P24_IB260_RJ32_RJ2P10_0011
   - runs/ARRAY_L1P14_L2P28_IB260_RJ32_RJ2P10_0001
   - runs/ARRAY_L1P14_L2P28_IB260_RJ32_RJ2P10_0011
-  - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0001
-  - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0011
+  # L2=3.2pH was not run after the registered second-complete-candidate stop.
 
 early_stop:
   enabled: true
@@ -161,6 +167,7 @@ visualization:
   focused_windows: []
   standalone_input_policy: raw.csv direct
   standalone_per_new_run: 3
+  standalone_total: 12
   standalone_max: 18
   comparison_total: 2
   comparison_names: [L2_SECOND_TRIGGER_0001_COMPARE.html, L2_SECOND_TRIGGER_0011_COMPARE.html]
@@ -186,6 +193,7 @@ package:
     - analysis/REVIEW.md
     - analysis/independent_review.py
     - qa/independent_review.json
+    - qa/protocol_audit.json
     - visualization
 
 final_state: AWAITING_SCIENTIFIC_REVIEW

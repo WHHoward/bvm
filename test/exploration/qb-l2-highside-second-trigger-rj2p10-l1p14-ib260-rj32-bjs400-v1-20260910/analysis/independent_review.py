@@ -127,6 +127,25 @@ def phase_anchor(times: list[float], values: list[float], threshold: float) -> i
     return next((index for index in origin if (continuous[index] - reference) / PI2 >= threshold), None)
 
 
+def positive_segments(times: list[float], l1: list[float], anchor: int) -> list[dict[str, Any]]:
+    groups: list[list[int]] = []
+    for index in range(anchor, len(times)):
+        if times[index] >= 200e-12:
+            break
+        if l1[index] > 0.0:
+            if not groups or index != groups[-1][-1] + 1:
+                groups.append([index])
+            else:
+                groups[-1].append(index)
+    return [{
+        "start_time_ps": times[group[0]] * 1e12,
+        "end_time_ps": times[group[-1]] * 1e12,
+        "positive_dwell_duration_ps": (times[group[-1]] - times[group[0]]) * 1e12,
+        "peak_time_ps": times[max(group, key=lambda index: l1[index])] * 1e12,
+        "peak_A": max(l1[index] for index in group),
+    } for group in groups]
+
+
 def diff_values(columns: dict[str, list[float]], indices: list[int]) -> list[float]:
     bj1 = columns["V(BJ1|XBQ1)"]
     bj2 = columns["V(BJ2|XBQ1)"]
@@ -211,6 +230,7 @@ def main() -> int:
     case_records = recorded.get("cases", {})
     raw_records = raw_qa.get("cases", {})
     phase_records: dict[str, dict[str, int | None]] = {}
+    positive_records: dict[str, list[dict[str, Any]]] = {}
     for run_id, (_header, times, columns) in traces.items():
         window_counts["CONTROL_ORIGIN_[70,110)"].add(len(indexes(times, 70e-12, 110e-12)))
         window_counts["FINAL_ORIGIN_[110,200)"].add(len(indexes(times, 110e-12, 200e-12)))
@@ -253,12 +273,23 @@ def main() -> int:
                 compare(failures, f"{run_id} {name}", cumulative_diff(times, columns, start, end), diff_record.get("A_DIFF_cumulative_landmarks", {}).get(key, {}).get("value_V_s"))
             compare(failures, f"{run_id} differential after BJ2 anchor", cumulative_diff(times, columns, anchor_time, 140e-12), diff_record.get("A_DIFF_cumulative_after_BJ2_anchor_to_140", {}).get("value_V_s"))
             l1_anchor = columns["I(L1|XBQ1)"][bj2_index]
-            required = -3.4e-12 * l1_anchor if l1_anchor < 0.0 else None
+            required = -((1.4 + L2_BY_RUN[run_id]) * 1e-12) * l1_anchor if l1_anchor < 0.0 else None
             compare(failures, f"{run_id} required L1-zero proxy", required, diff_record.get("A_REQUIRED_TO_L1_ZERO", {}).get("value_V_s"))
             post = case.get("POST_FIRST_BJ2_REARM", {})
             post_indices = [index for index, value in enumerate(times) if anchor_time <= value < 200e-12]
             compare(failures, f"{run_id} post L1 minimum", min(columns["I(L1|XBQ1)"][index] for index in post_indices), post.get("L1_post_anchor_min"))
             compare(failures, f"{run_id} post L2 maximum", max(columns["I(L2|XBQ1)"][index] for index in post_indices), post.get("L2_post_anchor_max_A"))
+            positive = positive_segments(times, columns["I(L1|XBQ1)"], bj2_index)
+            positive_records[run_id] = positive
+            second_analysis = case.get("SECOND_TRIGGER_ANALYSIS", {})
+            compare(failures, f"{run_id} positive segment count", len(positive), second_analysis.get("positive_segment_count"))
+            first_record = second_analysis.get("first_successful_regeneration_reference") or {}
+            strongest_record = second_analysis.get("strongest_second_positive_excursion") or {}
+            if positive:
+                compare(failures, f"{run_id} first positive L1 peak", positive[0]["peak_A"], first_record.get("L1_peak_A"))
+            if len(positive) > 1:
+                strongest = max(positive[1:], key=lambda item: item["peak_A"])
+                compare(failures, f"{run_id} strongest second L1 peak", strongest["peak_A"], strongest_record.get("L1_peak_A"))
 
     expected_window_counts = {
         "CONTROL_ORIGIN_[70,110)": 400,
@@ -296,20 +327,23 @@ def main() -> int:
     observed_recrossing_cases = [run_id for run_id in ALL_RUNS if recrossing_records.get(run_id, {}).get("observed")]
     compare(failures, "mechanical summary observed recrossing cases", observed_recrossing_cases, recorded.get("observed_l1_recrossing_cases"))
     if len(NEW_RUNS) < len(REGISTERED_NEW_RUNS):
-        expected_stop = f"OBSERVED_L1_RECROSSING:{observed_recrossing_cases[-1]}" if observed_recrossing_cases else None
-        compare(failures, "registered early-stop reason", expected_stop, execution.get("early_stop_reason"))
+        stop_reason = execution.get("early_stop_reason")
+        if not isinstance(stop_reason, str) or not stop_reason.startswith("SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE:"):
+            failures.append(f"registered early-stop reason is not a second-candidate stop: {stop_reason!r}")
 
     # Adversarial probes: non-no-op parameterization, correct branch routing,
     # independent oracle agreement, boundary discipline, stale-artifact shield,
     # and explicit overclaim ceiling.
     probes.update({
-        "no_op_parameterization": len(set(deck_hashes.values())) == len(deck_hashes) and {L2_BY_RUN[run_id] for run_id in NEW_RUNS} == {2.4, 2.8, 3.2},
+        "no_op_parameterization": len(set(deck_hashes.values())) == len(deck_hashes) and {L2_BY_RUN[run_id] for run_id in NEW_RUNS} == {2.4, 2.8},
         "wrong_branch_guard": all(case_records.get(run_id, {}).get("RJ2_ohm") == RJ2_BY_RUN[run_id] for run_id in ALL_RUNS),
         "weak_oracle_differential": not any("independent=" in failure for failure in failures),
         "boundary_windows": all(window_counts[name] == {expected} for name, expected in expected_window_counts.items()),
         "stale_artifact_guard": raw_qa.get("pre_analysis_sha256") == raw_qa.get("post_analysis_sha256") and all(raw_hashes.get(run_id) == raw_records.get(run_id, {}).get("sha256") for run_id in ALL_RUNS),
         "overclaim_ceiling": recorded.get("scientific_interpretation_performed") is False and raw_qa.get("scientific_analysis_performed") is False,
         "strict_recrossing_recomputed": observed_recrossing_cases == recorded.get("observed_l1_recrossing_cases"),
+        "second_positive_excursions_recomputed": all(run_id in positive_records for run_id in ALL_RUNS if phase_records.get(run_id, {}).get("bj2") is not None),
+        "protocol_deviation_visible": json.loads((EXP / "qa/protocol_audit.json").read_text(encoding="utf-8")).get("status") == "FAIL",
     })
     for name, value in probes.items():
         if value is not True:
@@ -331,6 +365,8 @@ def main() -> int:
         "window_counts": {name: sorted(values) for name, values in window_counts.items()},
         "phase_anchor_recomputed": phase_records,
         "recrossing_recomputed": recrossing_records,
+        "positive_excursions_recomputed": positive_records,
+        "protocol_audit_status": json.loads((EXP / "qa/protocol_audit.json").read_text(encoding="utf-8")).get("status"),
         "adversarial_probes": probes,
         "execution_head": execution.get("head"),
         "preflight_head": preflight.get("head"),

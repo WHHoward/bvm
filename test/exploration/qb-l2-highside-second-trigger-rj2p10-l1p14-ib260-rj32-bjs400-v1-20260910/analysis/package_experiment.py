@@ -45,6 +45,7 @@ def main() -> int:
     execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
     viz_qa = json.loads((EXP / "qa/visualization_qa.json").read_text(encoding="utf-8"))
     independent = json.loads((EXP / "qa/independent_review.json").read_text(encoding="utf-8"))
+    protocol_audit = json.loads((EXP / "qa/protocol_audit.json").read_text(encoding="utf-8"))
     mechanical = json.loads((EXP / "mechanical_summary.json").read_text(encoding="utf-8"))
     if raw_qa.get("status") != "PASS" or raw_qa.get("artifact_validity") != "VALID":
         raise RuntimeError("raw QA is not PASS/VALID")
@@ -70,6 +71,7 @@ def main() -> int:
         "qa/provenance.json", "qa/execution_summary.json",
         "qa/transformation_registry.json", "qa/visualization_qa.json",
         "qa/independent_review.json", "analysis/REVIEW.md", "analysis/independent_review.py",
+        "qa/protocol_audit.json",
         "visualization/manifest.json",
     }
     failures: list[str] = []
@@ -132,6 +134,8 @@ def main() -> int:
         "raw_files_modified": 0,
         "scientific_analysis_performed": False,
         "mechanical_summary_present": True,
+        "protocol_audit_status": protocol_audit.get("status"),
+        "first_guardrail_failure_boundary_L2_pH": mechanical.get("first_guardrail_failure_boundary_L2_pH"),
         "standalone_html_count": len(NEW_RUNS) * 3,
         "comparison_html_count": 2,
         "whole_run_plots_only": True,

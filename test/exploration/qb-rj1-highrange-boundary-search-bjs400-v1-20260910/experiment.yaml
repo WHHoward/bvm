@@ -1,0 +1,202 @@
+schema_version: evidence-first-rj1-highrange-bjs400-v1
+id: qb-rj1-highrange-boundary-search-bjs400-v1-20260910
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+base_head: 9f3412453b2f617e39245a34c73af3f0c20881d4
+
+question: >-
+  Record coarse high-range RJ1 evidence at the fixed BJS400 D working point
+  using masks 0001 and 0011. This experiment does not identify a boundary,
+  classify events, rank RJ1 values or interpret mechanisms.
+interpretation_ceiling: >-
+  Evidence-only observations for the fixed BJS400 ARRAY fixture, successful
+  history, exact solver and stored grid. No RJ1 threshold, second SFQ claim,
+  root cause, optimum, robustness, Gate or follow-up claim is authorized.
+
+physical_authority:
+  primary: test/exploration/qb-rj1-switched-regime-characterization-bjs400-v1-20260910
+  upstream: test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909
+  role: physical fixture, stimulus/history, BJS400 QB, mask semantics, probes, solver and timing authority
+  authority_git_head: 9f3412453b2f617e39245a34c73af3f0c20881d4
+
+fixed_working_point:
+  L1_pH: 1.6
+  IBias_uA: 260
+  BJS_area: 4
+  BJS_Ic_uA: 400
+  RJ1_baseline_history_ohm: 12
+  JTL_stages: 6
+  termination_ohm: 10
+
+changed:
+  - RJ1: new high-range values 20/24/32/48ohm
+  - final-read mask: only 0001 or 0011
+  - historical trend values 10/12/14/16ohm are read-only references
+
+frozen:
+  bvm: four historical JM2-connected BVMs with all internal values unchanged
+  shared_interface: COMMON_SL and eight-JJ JSL unchanged
+  qb: BJS400 fixture; L1=1.6pH; IBias=260uA; all QB values except RJ1 unchanged
+  stimulus: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> mask-selective FINAL READ -> TAIL
+  read_protocol: unchanged; no READ width, edge, amplitude or timing modification
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored rows 0 to 199.9ps
+  masks: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4; only 0001 and 0011
+  solver: build/josim-cli with recorded version and binary hash
+  probes: broad BVM/interface/QB/JTL P/V/I coverage from RJ1 authority
+  transformations: raw immutable; standalone plots raw-direct; comparison temp CSV only
+
+authorized_runs:
+  - runs/ARRAY_L1P16_IB260_RJ20_0001
+  - runs/ARRAY_L1P16_IB260_RJ20_0011
+  - runs/ARRAY_L1P16_IB260_RJ24_0001
+  - runs/ARRAY_L1P16_IB260_RJ24_0011
+  - runs/ARRAY_L1P16_IB260_RJ32_0001
+  - runs/ARRAY_L1P16_IB260_RJ32_0011
+  - runs/ARRAY_L1P16_IB260_RJ48_0001
+  - runs/ARRAY_L1P16_IB260_RJ48_0011
+new_physical_solve_count: 8
+historical_reference_case_count: 8
+exact_logical_case_count: 16
+unauthorized_extra_solves: 0
+no_extra_rj1_values: true
+no_extra_masks: true
+no_single_runs: true
+no_timestep_sweep: true
+no_adaptive_refinement: true
+no_scientific_analysis: true
+
+rj1_matrix:
+  historical_ohm: [10, 12, 14, 16]
+  new_ohm: [20, 24, 32, 48]
+  full_trend_ohm: [10, 12, 14, 16, 20, 24, 32, 48]
+  masks: ["0001", "0011"]
+  only_new_variable: RJ1
+
+masks:
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  allowed: ["0001", "0011"]
+  "0001": BVM4 active during FINAL READ
+  "0011": BVM3 and BVM4 active simultaneously during FINAL READ
+  scope: FINAL READ only, 110-121ps
+
+stimulus:
+  idle_0_50ps: all controls 0
+  WRITE0_50_61ps: WL=BL=-100uA; SE=0
+  idle_61_70ps: all controls 0
+  ZERO_STATE_READ_CONTROL_70_81ps: WL=SE=+100uA; BL=0
+  idle_81_90ps: all controls 0
+  WRITE1_90_101ps: WL=BL=+100uA; SE=0
+  SETTLE_101_110ps: all controls 0
+  FINAL_READ_110_121ps: registered mask only
+  TAIL_121_200ps: all controls 0
+  edge_ps: 1
+  plateau_ps: 9
+  amplitude_uA: 100
+  tran: 0.1p 200p
+  read_protocol_status: UNCHANGED_FROZEN
+  window_semantics: half-open registered PWL intervals
+
+historical_references:
+  source_experiment: test/exploration/qb-rj1-switched-regime-characterization-bjs400-v1-20260910
+  cases:
+    RJ10_0001: references/historical/RJ10_0001
+    RJ10_0011: references/historical/RJ10_0011
+    RJ12_0001: references/historical/RJ12_0001
+    RJ12_0011: references/historical/RJ12_0011
+    RJ14_0001: references/historical/RJ14_0001
+    RJ14_0011: references/historical/RJ14_0011
+    RJ16_0001: references/historical/RJ16_0001
+    RJ16_0011: references/historical/RJ16_0011
+  physical_solve_this_experiment: false
+  historical_metrics: read-only recomputation from immutable raw
+
+source_authority:
+  bvm: inputs/bvm_jm2_connected.cir
+  jjmit: inputs/jjmit.cir
+  bq: inputs/BQ_parameterized_bjs400.cir
+  jtl: inputs/jtl2.cir
+  fixture_template: inputs/array_fixture_template.cir
+  solver: build/josim-cli
+  reuse_manifest: REUSED_REFERENCE_MANIFEST.json
+
+probe_schema:
+  controls: I(I_WL1..4), I(I_BL1..4), I(I_SE1..4)
+  bvm: P/V/I(B_JM1,B_JM2,B_JS1,B_JS2), I/V registered internal branches and L_SL
+  interface: V(COMMON_SL), P/V/I(B_JSL1..8), I(B_JSL8), V(QBIN)
+  qb: V(QBIN), I/V(LIN), P/V/I(BJS), P/V/I(BJ1), I/V(RJ1), I/V(L1), I(IB), I/V(L2), P/V/I(BJ2), I/V(RJ2), I/V(L3), V(QBOUT)
+  jtl: P/V/I(B01), P/V/I(B02), V(stage_OUT) for stages 1..6, V(JTL6_OUT), I(R_TERM)
+  optional_unknown: V(IB|XBQ1) if solver does not emit it
+  missing_probe_policy: preserve requested probe and mark UNKNOWN; never fabricate
+
+mechanical_qa:
+  - exact 8 new runs and 8 historical logical references
+  - fixed D point and RJ1-only new deck changes
+  - mask-only final-read control changes
+  - historical 10/12/14/16 raw/deck provenance and SHA
+  - raw existence, SHA256, finite values, monotonic actual grid, 1999 samples, 0-199.9ps
+  - registered mechanical summary only; phase diagnostics are not event counts
+  - raw unchanged during QA/visualization/packaging
+
+mechanical_summary:
+  path: mechanical_summary.json
+  scientific_interpretation_performed: false
+  phase_unit: raw P radians; continuous_unwrap(raw)/(2*pi) for display/diagnostics only
+  optional_threshold_flags: mechanical diagnostic only; not event count, success, Gate or boundary
+
+visualization:
+  profile: COMPACT_FLAT_RJ1_HIGH_RANGE
+  renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0.0, 200.0]
+  focused_windows: none
+  standalone_input: raw.csv direct
+  standalone_per_new_run: exactly 3 HTML
+  standalone_names: [SIGNAL_PATH.html, QB_STATE.html, JTL_CHAIN.html]
+  comparison_names: [RJ1_FULL_TREND_0001.html, RJ1_FULL_TREND_0011.html]
+  flat_structure: plots/runs/<new_run_id>/<three files> and plots/comparison/<two files>
+  no_derived_plot_csv: true
+  no_event_annotations: true
+  no_mechanism_plots: true
+
+package:
+  include_plots: false
+  canonical_path: handoff/qb-rj1-highrange-boundary-search-bjs400-v1-20260910_raw_handoff.zip
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+    visualization_qa.json: qa/visualization_qa.json
+  additional_paths:
+    - HANDOFF_README.md
+    - RESULT_BRIEF.md
+    - mechanical_summary.json
+    - analysis
+    - visualization
+    - references/historical
+    - HISTORICAL_REFERENCE_MANIFEST.json
+
+prohibited_followups:
+  - RJ1 values other than 20, 24, 32 and 48ohm in new runs
+  - any L1, IBias, BJS, BJ1, RJ2, JTL, load or topology change
+  - any mask other than 0001 and 0011
+  - any READ duration, timing, edge, amplitude or stimulus change
+  - any retry because a waveform appears strange
+  - any adaptive refinement, timestep sweep, optimizer, threshold, event/SFQ counter or mechanism analysis
+  - any automatic boundary conclusion or next experiment
+
+final_state: AWAITING_SCIENTIFIC_REVIEW
+

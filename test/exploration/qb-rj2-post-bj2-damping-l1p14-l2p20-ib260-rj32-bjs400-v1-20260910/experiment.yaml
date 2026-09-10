@@ -1,0 +1,157 @@
+schema_version: evidence-first-bjs400-rj2-damping-v1
+id: qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+
+question: >-
+  Record whether the registered RJ2 values change post-first-BJ2 transient
+  diagnostics at fixed L1=1.4pH, L2=2.0pH, IBias=260uA and RJ1=32ohm, while
+  preserving the ZERO_STATE_READ_CONTROL and 0001 first-response guardrails.
+  This experiment does not classify a successful working point.
+motivation: >-
+  Test RJ2 as a local output-side transient/damping intervention using only
+  the registered 2/3/4/6ohm values. The hypothesis is not assumed to be true.
+interpretation_ceiling: >-
+  Evidence-only observations and registered mechanical arithmetic for this
+  fixed topology, stored history, solver and time grid. No RJ2 threshold,
+  damping mechanism, re-arm proof, event/SFQ count, population discrimination,
+  optimum, control PASS/FAIL or follow-up claim is authorized.
+
+physical_authority:
+  experiment: test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910
+  topology_stimulus_reference: test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910
+  role: BJS400 fixture, stored history, controls, probes, solver and RJ2=4 baseline authority
+  git_head: 9e1401021c4247017f5459d2c6c0cd67dcac1c30
+  source_manifest_sha256: 9c8951ca23fd4927db95f6cfe83d8f2e54fcfba7e57a273133e7916240b3a73f
+  source_package_sha256: 7b8da746829605973e0b8d469deccbf8e254df59d46bca02f4b181e584988ea8
+  source_raw_deck_status: RJ32 baseline raw/deck unmodified and verified by hash; other source-worktree history is not used as mutable authority
+
+changed:
+  - RJ2: expose the existing 4ohm element as a registered RJ2 parameter and use 2/3/6ohm
+  - no L1, L2, IBias, RJ1, BJS, BJ1, topology, controls, solver, timestep, load or mask change
+
+frozen:
+  L1: 1.4pH
+  L2: 2.0pH
+  IBias: 260uA
+  RJ1: 32ohm
+  BJS: area=4; Ic=400uA
+  topology: four BVMs -> COMMON_SL -> eight-JJ JSL -> QB -> six-stage JTL -> 10ohm terminal
+  history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> mask-selective FINAL READ -> TAIL
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored 0 to 199.9ps at 0.1ps nominal spacing
+  solver: build/josim-cli; hash recorded in SOURCE_MANIFEST.json
+  raw: immutable solver output; no crop, interpolation, smoothing, resampling or sign correction
+
+rj2_matrix:
+  values_ohm: [4, 2, 3, 6]
+  masks: ["0001", "0011"]
+  logical_case_count: 8
+  historical_reuse_count: 2
+  new_physical_solve_count: 6
+  unauthorized_extra_solves: 0
+  new_runs:
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P2_0001
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P2_0011
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P3_0001
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P3_0011
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011
+  reused_runs:
+    - references/reused/ARRAY_L1P14_IB260_RJ32_0001
+    - references/reused/ARRAY_L1P14_IB260_RJ32_0011
+
+mask_semantics:
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  "0001": BVM4 active during FINAL READ only
+  "0011": BVM3 and BVM4 active simultaneously during FINAL READ only
+
+windows:
+  control_origin_ps: [70.0, 110.0]
+  control_baseline_ps: [61.0, 70.0]
+  final_origin_ps: [110.0, 200.0]
+  final_baseline_ps: [101.0, 110.0]
+  pre_switch_proxy_ps: [110.0, 114.5]
+  post_first_bj2_anchor: first FINAL-origin BJ2 +0.9-turn marker
+  post_first_bj2_to_121_ps: [first_BJ2_0p9, 121.0]
+  post_first_bj2_to_140_ps: [first_BJ2_0p9, 140.0]
+  post_first_bj2_to_200_ps: [first_BJ2_0p9, 200.0]
+  differential_cumulative_landmarks_ps: [[110.0, 121.0], [110.0, 140.0], [110.0, 200.0]]
+  semantics: half-open windows over actual stored timestamps; dynamic endpoints are stored navigation markers
+
+mechanical_metrics:
+  phase: raw P radians; independently continuous unwrap then divide by 2*pi for diagnostic turns only
+  thresholds: +0.5, +0.9 and +1.5 relative turns; thresholds are navigation diagnostics only
+  differential_voltage: V(BJ1|XBQ1)-V(BJ2|XBQ1); cumulative and segment areas use actual stored grid
+  differential_label: DERIVED_DIFFERENTIAL_VOLTAGE_IMPULSE / MECHANICAL_NAVIGATION_ONLY
+  l1_recrossing: exact stored-sample negative-to-positive transition after first BJ2 +0.9 anchor; NO_OBSERVED_L1_RECROSSING when absent
+  required_impulse: -(L1+L2)*I(L1_anchor) when I(L1_anchor)<0; compare only as MECHANICAL_PROXY_ONLY
+  l2_surge: extrema and strict local maxima after anchor; no automatic second response classification
+  jtl: P(B01|XJTL1_stage) +0.5/+1.5 ordered timing diagnostics; MECHANICAL_CANDIDATE_ONLY
+  terminal: CONTROL-support [70,110), FINAL-support [110,200), whole-run WHOLE_RUN_TOTAL_ONLY
+  ratio:
+    numerator_denominator: 0011 / 0001
+    denominator_area_tolerance_A_s: 1.0e-18
+    cancellation_fraction: 0.01
+    ambiguous_status: UNKNOWN
+
+guardrails:
+  zero_state_read_control: inspect independently for every RJ2/mask pair; no control/final combination into one count
+  first_response_0001: later scientific review must verify at least one complete multi-evidence final response before treating any RJ2 as a candidate
+  first_response_0011: preserve first progression diagnostics separately from any later trajectory
+  multi_evidence: [BJ1, BJ2, QBOUT, ordered_JTL1_to_JTL6, terminal_voltage_or_flux_area]
+  no_event_or_sfq_counter: true
+
+probe_schema:
+  controls: I(I_WL1..4), I(I_BL1..4), I(I_SE1..4)
+  bvm: P/V/I(B_JM1,B_JM2,B_JS1,B_JS2), I/V registered branches and L_SL for XBVM1..4
+  interface: V(COMMON_SL), P/V/I(B_JSL1..8), I(B_JSL8), V(QBIN)
+  qb: V(QBIN), I/V(LIN), P/V/I(BJS), P/V/I(BJ1), I/V(RJ1), I/V(L1), I(IB), I/V(L2), P/V/I(BJ2), I/V(RJ2), I/V(L3), V(QBOUT)
+  jtl: P/V/I(B01), P/V/I(B02), V(stage_OUT) for XJTL1_1..6, V(JTL6_OUT), I(R_TERM)
+  optional_unknown: V(IB|XBQ1) if the solver does not emit it
+  missing_probe_policy: preserve requested probe and mark UNKNOWN; never fabricate
+
+visualization:
+  profile: COMPACT_FLAT_RJ2_DAMPING
+  renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0.0, 200.0]
+  focused_windows: []
+  standalone_input_policy: raw.csv direct
+  standalone_per_new_run: 3
+  standalone_total: 18
+  comparison_total: 2
+  comparison_names: [L2_REARM_0001_COMPARE.html, L2_REARM_0011_COMPARE.html]
+  no_derived_plot_csv: true
+
+package:
+  include_plots: false
+  canonical_path: handoff/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+  additional_paths:
+    - mechanical_summary.json
+    - references/reused
+    - REUSED_REFERENCE_MANIFEST.json
+    - HANDOFF_README.md
+    - RESULT_BRIEF.md
+    - EVIDENCE_MANIFEST.md
+    - RAW_ANALYSIS_HANDOFF_MANIFEST.json
+    - visualization
+
+final_state: AWAITING_SCIENTIFIC_REVIEW

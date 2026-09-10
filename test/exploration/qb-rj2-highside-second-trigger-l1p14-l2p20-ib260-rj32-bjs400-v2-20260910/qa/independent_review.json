@@ -1,0 +1,908 @@
+{
+  "schema": "bjs400-rj2-highside-second-trigger-independent-review-v2",
+  "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+  "created_at_local": "2026-09-10T18:58:18+08:00",
+  "status": "PASS",
+  "review_type": "stdlib-only numerical cross-check plus bounded adversarial probes",
+  "cases_checked": 8,
+  "registered_new_case_count": 6,
+  "unrun_preserved_case_ids": [],
+  "raw_hash_count": 8,
+  "raw_hashes_unique": true,
+  "optional_unknown": "V(IB|XBQ1)",
+  "optional_unknown_absent_in_all_cases": true,
+  "window_counts": {
+    "CONTROL_ORIGIN_[70,110)": [
+      400
+    ],
+    "FINAL_ORIGIN_[110,200)": [
+      900
+    ],
+    "PRE_SWITCH_[110,114.5)": [
+      45
+    ]
+  },
+  "phase_anchor_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "bj1": 1197,
+      "bj2": 1225
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "bj1": 1151,
+      "bj2": 1170
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": {
+      "bj1": 1197,
+      "bj2": 1215
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "bj1": 1151,
+      "bj2": 1168
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": {
+      "bj1": 1196,
+      "bj2": 1213
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": {
+      "bj1": 1151,
+      "bj2": 1167
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": {
+      "bj1": 1196,
+      "bj2": 1212
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": {
+      "bj1": 1151,
+      "bj2": 1166
+    }
+  },
+  "recrossing_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "anchor_index": 1225,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "anchor_index": 1170,
+      "negative_to_positive_times_ps": [
+        119.89999999999999,
+        121.89999999999999
+      ],
+      "observed": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": {
+      "anchor_index": 1215,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "anchor_index": 1168,
+      "negative_to_positive_times_ps": [
+        119.79999999999998,
+        121.7,
+        123.9
+      ],
+      "observed": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": {
+      "anchor_index": 1213,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": {
+      "anchor_index": 1167,
+      "negative_to_positive_times_ps": [
+        119.79999999999998,
+        121.6,
+        123.7
+      ],
+      "observed": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": {
+      "anchor_index": 1212,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": {
+      "anchor_index": 1166,
+      "negative_to_positive_times_ps": [
+        119.70000000000002,
+        121.6,
+        123.6
+      ],
+      "observed": true
+    }
+  },
+  "positive_excursions_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": [],
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": [
+      {
+        "start_time_ps": 119.89999999999999,
+        "end_time_ps": 120.10000000000001,
+        "positive_dwell_duration_ps": 0.20000000000000964,
+        "peak_time_ps": 120.0,
+        "peak_A": 2.6208e-06
+      },
+      {
+        "start_time_ps": 121.89999999999999,
+        "end_time_ps": 122.6,
+        "positive_dwell_duration_ps": 0.700000000000008,
+        "peak_time_ps": 122.2,
+        "peak_A": 1.442208e-05
+      }
+    ],
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": [],
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": [
+      {
+        "start_time_ps": 119.79999999999998,
+        "end_time_ps": 120.10000000000001,
+        "positive_dwell_duration_ps": 0.3000000000000145,
+        "peak_time_ps": 119.89999999999999,
+        "peak_A": 5.501757e-06
+      },
+      {
+        "start_time_ps": 121.7,
+        "end_time_ps": 122.9,
+        "positive_dwell_duration_ps": 1.2000000000000062,
+        "peak_time_ps": 122.2,
+        "peak_A": 3.08815e-05
+      },
+      {
+        "start_time_ps": 123.9,
+        "end_time_ps": 126.19999999999999,
+        "positive_dwell_duration_ps": 2.2999999999999816,
+        "peak_time_ps": 124.6,
+        "peak_A": 3.999782e-05
+      }
+    ],
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": [],
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": [
+      {
+        "start_time_ps": 119.79999999999998,
+        "end_time_ps": 120.0,
+        "positive_dwell_duration_ps": 0.20000000000000964,
+        "peak_time_ps": 119.89999999999999,
+        "peak_A": 7.796225e-06
+      },
+      {
+        "start_time_ps": 121.6,
+        "end_time_ps": 123.1,
+        "positive_dwell_duration_ps": 1.499999999999995,
+        "peak_time_ps": 122.2,
+        "peak_A": 4.397254e-05
+      },
+      {
+        "start_time_ps": 123.7,
+        "end_time_ps": 124.9,
+        "positive_dwell_duration_ps": 1.2000000000000062,
+        "peak_time_ps": 124.4,
+        "peak_A": 4.189081e-05
+      }
+    ],
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": [],
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": [
+      {
+        "start_time_ps": 119.70000000000002,
+        "end_time_ps": 120.0,
+        "positive_dwell_duration_ps": 0.2999999999999886,
+        "peak_time_ps": 119.89999999999999,
+        "peak_A": 9.0039e-06
+      },
+      {
+        "start_time_ps": 121.6,
+        "end_time_ps": 123.2,
+        "positive_dwell_duration_ps": 1.5999999999999996,
+        "peak_time_ps": 122.2,
+        "peak_A": 5.426851e-05
+      },
+      {
+        "start_time_ps": 123.6,
+        "end_time_ps": 124.4,
+        "positive_dwell_duration_ps": 0.8000000000000127,
+        "peak_time_ps": 124.19999999999999,
+        "peak_A": 1.966724e-05
+      }
+    ]
+  },
+  "control_candidates_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 2.0678338432601338e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 2.0678338958371885e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 2.067833908437288e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 4.1356677710835936e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 2.0678338002073557e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 4.135667932899743e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 2.0678339237334065e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": null,
+        "JTL4": null,
+        "JTL5": null,
+        "JTL6": null
+      },
+      "terminal_area_V_s": 4.1356676835356896e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    }
+  },
+  "first_response_candidates_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 119.79999999999998,
+      "BJ2_marker_time_ps": 122.6,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 121.80000000000001,
+        "JTL2": 124.69999999999999,
+        "JTL3": 127.7,
+        "JTL4": 130.7,
+        "JTL5": 133.7,
+        "JTL6": 136.70000000000002
+      },
+      "terminal_area_V_s": 2.0678337806170723e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 115.2,
+      "BJ2_marker_time_ps": 117.1,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 117.19999999999999,
+        "JTL2": 120.10000000000001,
+        "JTL3": 123.1,
+        "JTL4": 126.10000000000001,
+        "JTL5": 129.1,
+        "JTL6": 132.1
+      },
+      "terminal_area_V_s": 2.0678338331941266e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 119.79999999999998,
+      "BJ2_marker_time_ps": 121.6,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 121.6,
+        "JTL2": 124.6,
+        "JTL3": 127.60000000000001,
+        "JTL4": 130.6,
+        "JTL5": 133.60000000000002,
+        "JTL6": 136.6
+      },
+      "terminal_area_V_s": 2.067833842668453e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 115.2,
+      "BJ2_marker_time_ps": 116.9,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 117.1,
+        "JTL2": 120.0,
+        "JTL3": 122.99999999999999,
+        "JTL4": 126.0,
+        "JTL5": 129.0,
+        "JTL6": 132.0
+      },
+      "terminal_area_V_s": 4.135667705314759e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 119.70000000000002,
+      "BJ2_marker_time_ps": 121.39999999999999,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 121.6,
+        "JTL2": 124.50000000000001,
+        "JTL3": 127.5,
+        "JTL4": 130.5,
+        "JTL5": 133.5,
+        "JTL6": 136.5
+      },
+      "terminal_area_V_s": 2.0678337319785977e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 115.2,
+      "BJ2_marker_time_ps": 116.8,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 117.00000000000001,
+        "JTL2": 120.0,
+        "JTL3": 122.99999999999999,
+        "JTL4": 126.0,
+        "JTL5": 129.0,
+        "JTL6": 132.0
+      },
+      "terminal_area_V_s": 4.135667864670985e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 119.70000000000002,
+      "BJ2_marker_time_ps": 121.30000000000001,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 121.5,
+        "JTL2": 124.4,
+        "JTL3": 127.39999999999999,
+        "JTL4": 130.4,
+        "JTL5": 133.4,
+        "JTL6": 136.39999999999998
+      },
+      "terminal_area_V_s": 2.0678338534807817e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": {
+      "status": "BOUNDED_RESULT",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 115.2,
+      "BJ2_marker_time_ps": 116.69999999999999,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 117.00000000000001,
+        "JTL2": 119.89999999999999,
+        "JTL3": 122.9,
+        "JTL4": 125.9,
+        "JTL5": 128.89999999999998,
+        "JTL6": 131.9
+      },
+      "terminal_area_V_s": 4.135667613283065e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    }
+  },
+  "second_response_candidates_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": 124.8,
+        "JTL3": 127.7,
+        "JTL4": 130.7,
+        "JTL5": 133.7,
+        "JTL6": 136.70000000000002
+      },
+      "terminal_area_V_s": 2.0678337601117923e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": null,
+        "JTL3": 123.4,
+        "JTL4": 126.10000000000001,
+        "JTL5": 129.1,
+        "JTL6": 132.1
+      },
+      "terminal_area_V_s": 2.0678314423838655e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": null,
+        "JTL2": 124.6,
+        "JTL3": 127.60000000000001,
+        "JTL4": 130.6,
+        "JTL5": 133.60000000000002,
+        "JTL6": 136.6
+      },
+      "terminal_area_V_s": 2.0678338122560243e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 127.39999999999999,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 127.60000000000001,
+        "JTL2": 130.5,
+        "JTL3": 133.29999999999998,
+        "JTL4": 126.10000000000001,
+        "JTL5": 129.0,
+        "JTL6": 132.0
+      },
+      "terminal_area_V_s": 4.1356407994724526e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 122.4,
+        "JTL2": 124.50000000000001,
+        "JTL3": 127.5,
+        "JTL4": 130.5,
+        "JTL5": 133.5,
+        "JTL6": 136.5
+      },
+      "terminal_area_V_s": 2.067833692532494e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 125.8,
+      "BJ2_marker_time_ps": 129.7,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 126.3,
+        "JTL2": 129.0,
+        "JTL3": 123.2,
+        "JTL4": 126.0,
+        "JTL5": 129.0,
+        "JTL6": 132.0
+      },
+      "terminal_area_V_s": 4.1356658653229766e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": false,
+        "BJ2_progression_candidate": false,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": true,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": null,
+      "BJ2_marker_time_ps": null,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 122.30000000000001,
+        "JTL2": 124.50000000000001,
+        "JTL3": 127.39999999999999,
+        "JTL4": 130.4,
+        "JTL5": 133.4,
+        "JTL6": 136.39999999999998
+      },
+      "terminal_area_V_s": 2.0678338102581808e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": {
+      "status": "NO_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "checks": {
+        "BJ1_progression_candidate": true,
+        "BJ2_progression_candidate": true,
+        "QBOUT_direct_signal": true,
+        "ordered_JTL1_to_JTL6_candidate": false,
+        "terminal_direct_area": true
+      },
+      "BJ1_marker_time_ps": 125.4,
+      "BJ2_marker_time_ps": 129.20000000000002,
+      "ordered_JTL_marker_times_ps": {
+        "JTL1": 125.69999999999999,
+        "JTL2": 128.39999999999998,
+        "JTL3": 123.2,
+        "JTL4": 125.9,
+        "JTL5": 128.89999999999998,
+        "JTL6": 131.9
+      },
+      "terminal_area_V_s": 4.135665497035945e-15,
+      "not_event_count": true,
+      "not_sfq_count": true
+    }
+  },
+  "stage_decisions_checked": [
+    {
+      "schema": "bjs400-rj2-highside-second-trigger-stage-decision-v2",
+      "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+      "stage": 1,
+      "rj2_ohm": 12.0,
+      "registered_pair": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011"
+      ],
+      "execution_run_order": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011"
+      ],
+      "decision": "CONTINUE",
+      "stop_reasons": [],
+      "execution_failure_cases": [],
+      "control_failure_cases": [],
+      "first_response_failure_cases": [],
+      "first_response_0001_failure_cases": [],
+      "second_response_candidate_cases": [],
+      "second_response_evaluated_only_if_control_and_first_clean": true,
+      "protocol_audit_status": "PASS",
+      "qa_status": {
+        "raw": "PASS",
+        "deck": "PASS",
+        "mechanical": "PASS"
+      },
+      "guardrail_policy": "STOP on control/first-response failure or, only when both are clean, a second multi-evidence candidate; otherwise CONTINUE until stage 3 matrix exhaustion",
+      "created_at_local": "2026-09-10T18:56:52+08:00",
+      "scientific_interpretation_performed": false
+    },
+    {
+      "schema": "bjs400-rj2-highside-second-trigger-stage-decision-v2",
+      "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+      "stage": 2,
+      "rj2_ohm": 14.0,
+      "registered_pair": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011"
+      ],
+      "execution_run_order": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011"
+      ],
+      "decision": "CONTINUE",
+      "stop_reasons": [],
+      "execution_failure_cases": [],
+      "control_failure_cases": [],
+      "first_response_failure_cases": [],
+      "first_response_0001_failure_cases": [],
+      "second_response_candidate_cases": [],
+      "second_response_evaluated_only_if_control_and_first_clean": true,
+      "protocol_audit_status": "PASS",
+      "qa_status": {
+        "raw": "PASS",
+        "deck": "PASS",
+        "mechanical": "PASS"
+      },
+      "guardrail_policy": "STOP on control/first-response failure or, only when both are clean, a second multi-evidence candidate; otherwise CONTINUE until stage 3 matrix exhaustion",
+      "created_at_local": "2026-09-10T18:57:09+08:00",
+      "scientific_interpretation_performed": false
+    },
+    {
+      "schema": "bjs400-rj2-highside-second-trigger-stage-decision-v2",
+      "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+      "stage": 3,
+      "rj2_ohm": 16.0,
+      "registered_pair": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+      ],
+      "execution_run_order": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+      ],
+      "decision": "STOP",
+      "stop_reasons": [
+        "MATRIX_EXHAUSTED"
+      ],
+      "execution_failure_cases": [],
+      "control_failure_cases": [],
+      "first_response_failure_cases": [],
+      "first_response_0001_failure_cases": [],
+      "second_response_candidate_cases": [],
+      "second_response_evaluated_only_if_control_and_first_clean": true,
+      "protocol_audit_status": "PASS",
+      "qa_status": {
+        "raw": "PASS",
+        "deck": "PASS",
+        "mechanical": "PASS"
+      },
+      "guardrail_policy": "STOP on control/first-response failure or, only when both are clean, a second multi-evidence candidate; otherwise CONTINUE until stage 3 matrix exhaustion",
+      "created_at_local": "2026-09-10T18:57:24+08:00",
+      "scientific_interpretation_performed": false,
+      "authorized_runs_update": {
+        "previous": [
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+        ],
+        "updated": [
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001",
+          "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+        ]
+      }
+    }
+  ],
+  "adversarial_probes": {
+    "no_op_parameterization": true,
+    "wrong_branch_guard": true,
+    "weak_oracle_differential": true,
+    "boundary_windows": true,
+    "stale_artifact_guard": true,
+    "overclaim_ceiling": true,
+    "strict_recrossing_recomputed": true,
+    "control_first_second_candidates_recomputed": true,
+    "stage_decision_artifacts_present": true
+  },
+  "execution_head": "b365b72744a1bce7bc648d42972c596ca82736a7",
+  "preflight_head": "86e332d2805a8606939b5ead5873f6efa8b99afe",
+  "metadata_hash_checks": true,
+  "raw_immutable_check": true,
+  "scientific_interpretation_performed": false,
+  "failures": [],
+  "residual_uncertainty": [
+    "No timestep convergence or scientific mechanism interpretation was performed.",
+    "Phase thresholds remain stored-sample navigation diagnostics, not event or SFQ counts.",
+    "Optional V(IB|XBQ1) remains UNKNOWN because the solver did not emit it."
+  ]
+}

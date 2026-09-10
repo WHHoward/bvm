@@ -1,0 +1,34 @@
+{
+  "schema": "bjs400-rj2-highside-second-trigger-stage-decision-v2",
+  "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+  "stage": 2,
+  "rj2_ohm": 14.0,
+  "registered_pair": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011"
+  ],
+  "execution_run_order": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011"
+  ],
+  "decision": "CONTINUE",
+  "stop_reasons": [],
+  "execution_failure_cases": [],
+  "control_failure_cases": [],
+  "first_response_failure_cases": [],
+  "first_response_0001_failure_cases": [],
+  "second_response_candidate_cases": [],
+  "second_response_evaluated_only_if_control_and_first_clean": true,
+  "protocol_audit_status": "PASS",
+  "qa_status": {
+    "raw": "PASS",
+    "deck": "PASS",
+    "mechanical": "PASS"
+  },
+  "guardrail_policy": "STOP on control/first-response failure or, only when both are clean, a second multi-evidence candidate; otherwise CONTINUE until stage 3 matrix exhaustion",
+  "created_at_local": "2026-09-10T18:57:09+08:00",
+  "scientific_interpretation_performed": false,
+  "qa_after_decision_status": "PASS"
+}

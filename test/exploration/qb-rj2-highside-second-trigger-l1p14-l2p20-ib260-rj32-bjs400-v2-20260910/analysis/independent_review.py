@@ -126,10 +126,10 @@ def phase_anchor(times: list[float], values: list[float], threshold: float) -> i
     return next((index for index in origin if (continuous[index] - reference) / PI2 >= threshold), None)
 
 
-def phase_anchor_from(times: list[float], values: list[float], *, reference_index: int, start_index: int, threshold: float) -> int | None:
+def phase_anchor_from(times: list[float], values: list[float], *, reference_index: int, start_index: int, threshold: float, end_time_s: float = 200e-12) -> int | None:
     continuous = unwrap(values)
     reference = continuous[reference_index]
-    return next((index for index in range(start_index, len(times)) if times[index] < 200e-12 and (continuous[index] - reference) / PI2 >= threshold), None)
+    return next((index for index in range(start_index, len(times)) if times[index] < end_time_s and (continuous[index] - reference) / PI2 >= threshold), None)
 
 
 def positive_segments(times: list[float], l1: list[float], anchor: int) -> list[dict[str, Any]]:
@@ -151,10 +151,10 @@ def positive_segments(times: list[float], l1: list[float], anchor: int) -> list[
     } for group in groups]
 
 
-def ordered_jtl_candidate(times: list[float], columns: dict[str, list[float]], *, reference_index: int, start_index: int, threshold: float) -> tuple[bool, dict[str, float | None]]:
+def ordered_jtl_candidate(times: list[float], columns: dict[str, list[float]], *, reference_index: int, start_index: int, threshold: float, end_time_s: float = 200e-12) -> tuple[bool, dict[str, float | None]]:
     markers: dict[str, float | None] = {}
     for stage in range(1, 7):
-        index = phase_anchor_from(times, columns[f"P(B01|XJTL1_{stage})"], reference_index=reference_index, start_index=start_index, threshold=threshold)
+        index = phase_anchor_from(times, columns[f"P(B01|XJTL1_{stage})"], reference_index=reference_index, start_index=start_index, threshold=threshold, end_time_s=end_time_s)
         markers[f"JTL{stage}"] = times[index] * 1e12 if index is not None else None
     ordered = all(value is not None for value in markers.values()) and all(markers[f"JTL{stage}"] < markers[f"JTL{stage + 1}"] for stage in range(1, 6))
     return ordered, markers
@@ -167,9 +167,9 @@ def multi_evidence_candidate(times: list[float], columns: dict[str, list[float]]
         return {"status": "UNKNOWN", "checks": {}}
     reference = baseline[0] if reference_index is None else reference_index
     start = origin[0] if start_index is None else start_index
-    bj1 = phase_anchor_from(times, columns["P(BJ1|XBQ1)"], reference_index=reference, start_index=start, threshold=0.5)
-    bj2 = phase_anchor_from(times, columns["P(BJ2|XBQ1)"], reference_index=reference, start_index=start, threshold=0.9)
-    ordered, markers = ordered_jtl_candidate(times, columns, reference_index=reference, start_index=start, threshold=0.5)
+    bj1 = phase_anchor_from(times, columns["P(BJ1|XBQ1)"], reference_index=reference, start_index=start, threshold=0.5, end_time_s=origin_window[1])
+    bj2 = phase_anchor_from(times, columns["P(BJ2|XBQ1)"], reference_index=reference, start_index=start, threshold=0.9, end_time_s=origin_window[1])
+    ordered, markers = ordered_jtl_candidate(times, columns, reference_index=reference, start_index=start, threshold=0.5, end_time_s=origin_window[1])
     post = indexes(times, times[start], 200e-12)
     checks = {
         "BJ1_progression_candidate": bj1 is not None,
@@ -377,7 +377,8 @@ def main() -> int:
                 start_index=second_start if second_start is not None else bj2_index,
             )
             second_response_records[run_id] = independent_second
-            compare(failures, f"{run_id} second response status", independent_second.get("status"), (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("status"))
+            independent_second_status = "BOUNDED_RESULT" if independent_second.get("status") == "BOUNDED_RESULT" else "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE"
+            compare(failures, f"{run_id} second response status", independent_second_status, (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("status"))
 
     expected_window_counts = {
         "CONTROL_ORIGIN_[70,110)": 400,

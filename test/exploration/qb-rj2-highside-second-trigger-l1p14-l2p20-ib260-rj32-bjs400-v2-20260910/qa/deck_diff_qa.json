@@ -1,0 +1,81 @@
+{
+  "schema": "bjs400-rj2-highside-second-trigger-deck-diff-qa-v2",
+  "status": "PASS",
+  "new_run_count": 6,
+  "reused_case_count": 2,
+  "fixed_L1_pH": 1.4,
+  "fixed_IBias_uA": 260.0,
+  "fixed_RJ1_ohm": 32.0,
+  "fixed_BJS_area": 4,
+  "new_RJ2_values_ohm": [
+    12.0,
+    14.0,
+    16.0
+  ],
+  "fixed_L2_pH": 2.0,
+  "same_mask_only_RJ2_difference": true,
+  "mask_pair_only_final_read_difference": true,
+  "normalized_new_decks_identical": true,
+  "historical_deck_comparability": "PASS",
+  "bq_parameterization_delta": {
+    "status": "PASS",
+    "changed_lines": [
+      [
+        4,
+        "* Only the active BQ element values for L1, RJ1 and IBias are parameter references;",
+        "* Only the active BQ element values for L1, RJ1, RJ2 and IBias are parameter references;"
+      ],
+      [
+        32,
+        "RJ2 4 0 4",
+        "RJ2 4 0 {RJ2_VALUE}"
+      ]
+    ],
+    "only_RJ2_parameter_exposure": true
+  },
+  "runs": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": {
+      "L2_pH": 2.0,
+      "RJ2_ohm": 12.0,
+      "mask": "0001",
+      "deck_sha256": "81a9b7e75437a5cb9ccd173b9db3bf93697ea6dd6017bb1d8dbf4bd4008d70fb",
+      "deck_bytes": 7484
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "L2_pH": 2.0,
+      "RJ2_ohm": 12.0,
+      "mask": "0011",
+      "deck_sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+      "deck_bytes": 7500
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": {
+      "L2_pH": 2.0,
+      "RJ2_ohm": 14.0,
+      "mask": "0001",
+      "deck_sha256": "d02c922ac65e16fb8d27206c3a52032419fa7d67a32ef9ea3e29cfb981f01610",
+      "deck_bytes": 7484
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": {
+      "L2_pH": 2.0,
+      "RJ2_ohm": 14.0,
+      "mask": "0011",
+      "deck_sha256": "d0615ba75ae92fa93c5cf2a5c7080e6ab1c17bef632ddb58b042e51ebd297fec",
+      "deck_bytes": 7500
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": {
+      "L2_pH": 2.0,
+      "RJ2_ohm": 16.0,
+      "mask": "0001",
+      "deck_sha256": "ce10f5bccf70b580ee411ebb2b8c3c7255ab1d3eb225c36343d998ca0eba31a5",
+      "deck_bytes": 7484
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": {
+      "L2_pH": 2.0,
+      "RJ2_ohm": 16.0,
+      "mask": "0011",
+      "deck_sha256": "c2dc80b55cd5dd15d1ec4d9032ca8b0a52dfd773f5b11987359ec9d55cbd0b2f",
+      "deck_bytes": 7500
+    }
+  },
+  "failures": []
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and verify the immutable fixed-point RJ1 re-arm evidence ZIP."""
+"""Build and verify the immutable fixed-point RJ1 evidence ZIP."""
 
 from __future__ import annotations
 
@@ -12,15 +12,15 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
-PACKAGE_RELATIVE = "handoff/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910_raw_handoff.zip"
+PACKAGE_RELATIVE = "handoff/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910_raw_handoff.zip"
 sys.path.insert(0, str(REPO / "scripts"))
 from build_experiment_package import build_package  # noqa: E402
 NEW_RUNS = (
-    "ARRAY_L1P14_IB260_RJ16_0001", "ARRAY_L1P14_IB260_RJ16_0011",
-    "ARRAY_L1P14_IB260_RJ24_0001", "ARRAY_L1P14_IB260_RJ24_0011",
-    "ARRAY_L1P14_IB260_RJ32_0001", "ARRAY_L1P14_IB260_RJ32_0011",
+    "ARRAY_L1P14_IB270_RJ16_0001", "ARRAY_L1P14_IB270_RJ16_0011",
+    "ARRAY_L1P14_IB270_RJ24_0001", "ARRAY_L1P14_IB270_RJ24_0011",
+    "ARRAY_L1P14_IB270_RJ32_0001", "ARRAY_L1P14_IB270_RJ32_0011",
 )
-REUSED = ("ARRAY_L1P14_IB260_0001", "ARRAY_L1P14_IB260_0011")
+REUSED = ("ARRAY_L1P14_IB270_0001", "ARRAY_L1P14_IB270_0011")
 
 
 def sha256(path: Path) -> str:

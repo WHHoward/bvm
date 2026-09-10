@@ -39,16 +39,16 @@ AUTH_PACKAGE_SHA256 = "7ccb82a479f792a14e8f1e6bbe66f7f8acd51ef133f6fbe23175b7430
 AUTH_GIT_HEAD = "3498294daaa1669dde631fbfab4bb105056f7cba"
 SOLVER_SHA256 = "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
 
-FIXED = {"L1_pH": 1.4, "IBias_uA": 260.0}
+FIXED = {"L1_pH": 1.4, "IBias_uA": 270.0}
 RJ1_VALUES = (16.0, 24.0, 32.0)
 MASKS = ("0001", "0011")
 CONTROL_KINDS = ("WL", "BL", "SE")
 NEW_RUNS = tuple(
-    f"ARRAY_L1P14_IB260_RJ{int(rj1)}_{mask}"
+    f"ARRAY_L1P14_IB270_RJ{int(rj1)}_{mask}"
     for rj1 in RJ1_VALUES
     for mask in MASKS
 )
-REUSE_RUNS = ("ARRAY_L1P14_IB260_0001", "ARRAY_L1P14_IB260_0011")
+REUSE_RUNS = ("ARRAY_L1P14_IB270_0001", "ARRAY_L1P14_IB270_0011")
 RUN_TO_RJ1 = {
     run_id: float(run_id.split("_RJ", 1)[1].split("_", 1)[0])
     for run_id in NEW_RUNS
@@ -59,7 +59,7 @@ SOURCE_REUSE = {
         "source_experiment": AUTH,
         "source_run": run_id,
         "L1_pH": 1.4,
-        "IBias_uA": 260.0,
+        "IBias_uA": 270.0,
         "RJ1_ohm": 12.0,
         "mask": mask,
     }
@@ -231,7 +231,7 @@ def write_reuse_manifest() -> dict[str, Any]:
             failures.append("topology is not ARRAY")
         if metadata.get("mask") != spec["mask"]:
             failures.append("mask mismatch")
-        if params.get("L1_pH") != 1.4 or params.get("IBias_uA") != 260.0 or params.get("RJ1_ohm") != 12.0:
+        if params.get("L1_pH") != 1.4 or params.get("IBias_uA") != 270.0 or params.get("RJ1_ohm") != 12.0:
             failures.append("fixed parameter mismatch")
         if metadata.get("execution_status") != "RUN_PASS":
             failures.append("source execution was not RUN_PASS")
@@ -250,13 +250,13 @@ def write_reuse_manifest() -> dict[str, Any]:
             "source_experiment": str(spec["source_experiment"].relative_to(REPO)),
             "source_run": f"runs/{spec['source_run']}",
             "source_git_head": metadata.get("git_head_before_run"),
-            "parameters": {"L1_pH": 1.4, "IBias_uA": 260.0, "RJ1_ohm": 12.0},
+            "parameters": {"L1_pH": 1.4, "IBias_uA": 270.0, "RJ1_ohm": 12.0},
             "topology": "ARRAY",
             "mask": spec["mask"],
             "physical_solve_this_experiment": False,
             "reuse_reason": "exact fixed working point, BJS400 fixture, stored history, mask semantics, solver/timestep/stop-time and source/archive hashes match",
             "comparability": {
-                "L1_1p4_IBias_260": "PASS",
+                "L1_1p4_IBias_270": "PASS",
                 "BJS_area_4_Ic_400uA": "PASS",
                 "RJ1_12ohm": "PASS",
                 "same_ARRAY_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
@@ -317,7 +317,7 @@ def write_source_manifest() -> dict[str, Any]:
         "physical_stimulus_authority_git_head": AUTH_GIT_HEAD,
         "physical_stimulus_authority_source_manifest": {"path": str((AUTH / "SOURCE_MANIFEST.json").relative_to(REPO)), "sha256": AUTH_SOURCE_MANIFEST_SHA256},
         "local_sources": local_sources,
-        "fixed_working_point": {"L1_pH": 1.4, "IBias_uA": 260.0, "BJS_area": 4, "BJS_Ic_uA": 400, "RJ1_baseline_ohm": 12},
+        "fixed_working_point": {"L1_pH": 1.4, "IBias_uA": 270.0, "BJS_area": 4, "BJS_Ic_uA": 400, "RJ1_baseline_ohm": 12},
         "new_rj1_values_ohm": list(RJ1_VALUES),
         "reuse_source_experiment": str(AUTH.relative_to(REPO)),
     }
@@ -347,7 +347,7 @@ def verify_decks() -> dict[str, Any]:
         text = deck.read_text(encoding="utf-8")
         rj1 = RUN_TO_RJ1[run_id]
         mask = RUN_TO_MASK[run_id]
-        for required in (".param L1_VALUE=1.4p", ".param IB_VALUE=260u", f".param RJ1_VALUE={rj1:g}", ".tran 0.1p 200p", "P(BJS|XBQ1) V(BJS|XBQ1) I(BJS|XBQ1)"):
+        for required in (".param L1_VALUE=1.4p", ".param IB_VALUE=270u", f".param RJ1_VALUE={rj1:g}", ".tran 0.1p 200p", "P(BJS|XBQ1) V(BJS|XBQ1) I(BJS|XBQ1)"):
             if required not in text:
                 failures.append(f"{run_id}: missing {required}")
         if any(text.count(f"XBVM{index} ") != 1 for index in range(1, 5)):
@@ -369,7 +369,7 @@ def verify_decks() -> dict[str, Any]:
         "new_run_count": len(NEW_RUNS),
         "reused_case_count": len(REUSE_RUNS),
         "fixed_L1_pH": 1.4,
-        "fixed_IBias_uA": 260.0,
+        "fixed_IBias_uA": 270.0,
         "fixed_BJS_area": 4,
         "new_RJ1_values_ohm": list(RJ1_VALUES),
         "same_mask_only_RJ1_difference": len(normalized) == 1,
@@ -391,7 +391,7 @@ def preflight_markdown(record: dict[str, Any]) -> str:
         f"- Preflight HEAD: `{record['head']}`",
         f"- Preregistration HEAD: `{record['preregistration_head']}`",
         f"- Primary authority: `{AUTH.relative_to(REPO)}`; source package SHA-256 `{AUTH_PACKAGE_SHA256}`.",
-        "- Fixed L1=1.4pH, IBias=260uA, BJS area=4 / Ic=400uA, terminal=10ohm.",
+        "- Fixed L1=1.4pH, IBias=270uA, BJS area=4 / Ic=400uA, terminal=10ohm.",
         "- RJ1=12ohm is historical immutable reuse; only RJ1=16/24/32ohm are new physical values.",
         "- The older no-history stimulus is not used.",
         "",
@@ -399,7 +399,7 @@ def preflight_markdown(record: dict[str, Any]) -> str:
         "",
         "- Logical cases: exactly 4 RJ1 values (12,16,24,32ohm) x 2 masks (0001,0011) = 8.",
         "- New physical solves: exactly 6: RJ1=16/24/32ohm, each with 0001 and 0011.",
-        "- Historical reuse: exactly ARRAY_L1P14_IB260_0001 and ARRAY_L1P14_IB260_0011 at RJ1=12ohm.",
+        "- Historical reuse: exactly ARRAY_L1P14_IB270_0001 and ARRAY_L1P14_IB270_0011 at RJ1=12ohm.",
         "- Unauthorized extra solves: 0; no other RJ1, mask, SINGLE, retry or refinement.",
         "",
         "## Frozen protocol",
@@ -416,8 +416,6 @@ def preflight_markdown(record: dict[str, Any]) -> str:
         "- BJ1/BJ2 phase is independently unwrapped from raw radians and displayed as rad/(2*pi) turns; +0.5 timing is a navigation diagnostic, never an event time/count.",
         "- JTL progression candidate uses fixed +0.5-turn stage-B01 timing in order across JTL1..JTL6; a second candidate uses fixed +1.5-turn timing. Both are MECHANICAL_CANDIDATE_ONLY, not SFQ/event classifiers.",
         "- RJ1 I/V extrema and V*I energy are separated for CONTROL_ORIGIN and FINAL_ORIGIN; L1 zero crossings use stored sample transition times only, no interpolation.",
-        "- POST_FIRST_BJ1_REARM_DIAGNOSTICS uses the first FINAL-origin BJ1 +0.5-turn timing diagnostic as t_BJ1_half; L1 negative-to-positive is MECHANICAL_REARM_PROXY_ONLY.",
-        "- Post-anchor L2 local maxima separated by at least 1.0ps are MECHANICAL_SECOND_SURGE_PROXY_ONLY; BJ2 +1.5 and JTL +0.5/+1.5 fields are mechanical threshold/candidate diagnostics only.",
         "- Terminal V(JTL6_OUT) signed areas are separately recorded in CONTROL_ORIGIN and FINAL_ORIGIN; whole-run area is labeled WHOLE_RUN_TOTAL_ONLY and is not a population count.",
         "- I(B_JSL8) and I(LIN) [110,114.5) signed-area ratios are labeled MECHANICAL_PRE_SWITCH_PROXY; ambiguous denominators are UNKNOWN.",
         "",
@@ -426,7 +424,7 @@ def preflight_markdown(record: dict[str, Any]) -> str:
         "- No control/final response is combined into an event count. No phase, voltage area, terminal area or current sign is called an SFQ count.",
         "- Scientific interpretation is NOT_PERFORMED; no exact RJ1 threshold, optimum, mechanism, control PASS/FAIL or follow-up is authorized.",
         "- Output: exactly 18 standalone whole-run HTML and two comparison HTML; no permanent focused plots or duplicate plot CSV.",
-        "- Canonical package: `handoff/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910_raw_handoff.zip`.",
+        "- Canonical package: `handoff/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910_raw_handoff.zip`.",
         "",
         "## Automatic preflight result",
         "",
@@ -467,7 +465,7 @@ def main() -> int:
         "reused_physical_case_count": 2,
         "exact_logical_case_count": 8,
         "unauthorized_extra_solves": 0,
-        "fixed_working_point": {"L1_pH": 1.4, "IBias_uA": 260.0, "BJS_area": 4, "BJS_Ic_uA": 400.0},
+        "fixed_working_point": {"L1_pH": 1.4, "IBias_uA": 270.0, "BJS_area": 4, "BJS_Ic_uA": 400.0},
         "new_rj1_values_ohm": list(RJ1_VALUES),
         "reused_rj1_value_ohm": 12.0,
         "authorized_masks": list(MASKS),

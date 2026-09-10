@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the frozen compact RJ1 re-arm whole-run visualization set."""
+"""Render the frozen compact RJ1 whole-run visualization set."""
 
 from __future__ import annotations
 
@@ -22,25 +22,25 @@ from bvmtools.raw import RawTrace, read_csv  # noqa: E402
 
 
 NEW_RUNS = (
-    "ARRAY_L1P14_IB260_RJ16_0001", "ARRAY_L1P14_IB260_RJ16_0011",
-    "ARRAY_L1P14_IB260_RJ24_0001", "ARRAY_L1P14_IB260_RJ24_0011",
-    "ARRAY_L1P14_IB260_RJ32_0001", "ARRAY_L1P14_IB260_RJ32_0011",
+    "ARRAY_L1P14_IB270_RJ16_0001", "ARRAY_L1P14_IB270_RJ16_0011",
+    "ARRAY_L1P14_IB270_RJ24_0001", "ARRAY_L1P14_IB270_RJ24_0011",
+    "ARRAY_L1P14_IB270_RJ32_0001", "ARRAY_L1P14_IB270_RJ32_0011",
 )
-REUSE_RUNS = ("ARRAY_L1P14_IB260_0001", "ARRAY_L1P14_IB260_0011")
+REUSE_RUNS = ("ARRAY_L1P14_IB270_0001", "ARRAY_L1P14_IB270_0011")
 RUN_PATHS = {run_id: EXP / "runs" / run_id for run_id in NEW_RUNS}
 RUN_PATHS.update({run_id: EXP / "references/reused" / run_id for run_id in REUSE_RUNS})
 COMPARISON_CASES = {
     "0001": [
-        "ARRAY_L1P14_IB260_0001",
-        "ARRAY_L1P14_IB260_RJ16_0001",
-        "ARRAY_L1P14_IB260_RJ24_0001",
-        "ARRAY_L1P14_IB260_RJ32_0001",
+        "ARRAY_L1P14_IB270_0001",
+        "ARRAY_L1P14_IB270_RJ16_0001",
+        "ARRAY_L1P14_IB270_RJ24_0001",
+        "ARRAY_L1P14_IB270_RJ32_0001",
     ],
     "0011": [
-        "ARRAY_L1P14_IB260_0011",
-        "ARRAY_L1P14_IB260_RJ16_0011",
-        "ARRAY_L1P14_IB260_RJ24_0011",
-        "ARRAY_L1P14_IB260_RJ32_0011",
+        "ARRAY_L1P14_IB270_0011",
+        "ARRAY_L1P14_IB270_RJ16_0011",
+        "ARRAY_L1P14_IB270_RJ24_0011",
+        "ARRAY_L1P14_IB270_RJ32_0011",
     ],
 }
 STANDALONE_NAMES = ("SIGNAL_PATH", "QB_STATE", "JTL_CHAIN")
@@ -233,7 +233,7 @@ def write_run_summaries() -> list[Path]:
     for run_id in NEW_RUNS:
         path = root / f"{run_id}.md"
         lines = [
-            f"# {run_id} — RJ1 re-arm evidence",
+            f"# {run_id} — RJ1 interaction evidence",
             "",
             "Scientific interpretation: NOT_PERFORMED.",
             "",
@@ -256,13 +256,13 @@ def write_run_summaries() -> list[Path]:
 def main() -> int:
     entries: list[dict[str, object]] = []
     render_standalone(entries)
-    render_comparison(entries, "RJ1_REARM_0001_COMPARE", COMPARISON_CASES["0001"])
-    render_comparison(entries, "RJ1_REARM_0011_COMPARE", COMPARISON_CASES["0011"])
+    render_comparison(entries, "RJ1_0001_COMPARE", COMPARISON_CASES["0001"])
+    render_comparison(entries, "RJ1_0011_COMPARE", COMPARISON_CASES["0011"])
     summaries = write_run_summaries()
     standalone = [item for item in entries if item["stage"] == "standalone"]
     comparisons = [item for item in entries if item["stage"] == "comparison"]
     manifest = {
-        "schema": "bjs400-rj1-rearm-flat-visualization-manifest-v1",
+        "schema": "bjs400-rj1-interaction-flat-visualization-manifest-v1",
         "experiment_id": EXP.name,
         "created_at_local": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         "renderer": "scripts/josim-plot2.py",
@@ -279,7 +279,7 @@ def main() -> int:
         "standalone_entry_count": len(standalone),
         "comparison_entry_count": len(comparisons),
         "run_summary_paths": [rel(path) for path in summaries],
-        "rj1_values_new_ohm": [16, 24, 32],
+        "rj1_values_new_ohm": [10, 14, 16],
         "rj1_baseline_reused_ohm": 12,
         "masks": ["0001", "0011"],
         "scientific_analysis_performed": False,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Raw, deck and registered mechanical QA for RJ1 post-slip re-arm navigation."""
+"""Raw, deck and registered mechanical QA for the RJ1 interaction."""
 
 from __future__ import annotations
 
@@ -50,9 +50,6 @@ ORIGINS = OrderedDict(
 PRE_SWITCH_WINDOW = (110e-12, 114.5e-12)
 RATIO_AREA_TOLERANCE_A_S = 1e-18
 RATIO_CANCELLATION_FRACTION = 0.01
-BJ1_SECOND_THRESHOLD_TURNS = 1.5
-BJ1_ROLLBACK_DROP_TURNS = 0.25
-SECOND_SURGE_MIN_SEPARATION_PS = 1.0
 
 
 def now() -> str:
@@ -166,12 +163,6 @@ def phase_origin_diagnostic(trace: Any, label: str, origin_name: str) -> dict[st
     baseline = unwrapped[baseline_indices[0]]
     relative = tuple((unwrapped[index] - baseline) / (2.0 * math.pi) for index in origin_indices)
     half_index = next((index for index, value in zip(origin_indices, relative) if value >= 0.5), None)
-    second_index = next((index for index, value in zip(origin_indices, relative) if value >= BJ1_SECOND_THRESHOLD_TURNS), None)
-    max_position = max(range(len(relative)), key=relative.__getitem__)
-    max_value = relative[max_position]
-    after_max = relative[max_position:]
-    rollback = any(value <= max_value - BJ1_ROLLBACK_DROP_TURNS for value in after_max[1:])
-    additional_forward = max_value >= BJ1_SECOND_THRESHOLD_TURNS
     return {
         "status": "DERIVED",
         "label": label,
@@ -184,18 +175,9 @@ def phase_origin_diagnostic(trace: Any, label: str, origin_name: str) -> dict[st
         "baseline_reference_time_ps": trace.time[baseline_indices[0]] * 1e12,
         "first_half_turn_timing_diagnostic_ps": trace.time[half_index] * 1e12 if half_index is not None else None,
         "first_half_turn_diagnostic_found": half_index is not None,
-        "second_threshold_turns": BJ1_SECOND_THRESHOLD_TURNS,
-        "second_threshold_timing_diagnostic_ps": trace.time[second_index] * 1e12 if second_index is not None else None,
-        "second_threshold_diagnostic_found": second_index is not None,
-        "second_threshold_label": "MECHANICAL_THRESHOLD_ONLY",
         "max_continuous_relative_phase_turns": max(relative),
         "min_continuous_relative_phase_turns": min(relative),
         "final_continuous_relative_phase_turns": relative[-1],
-        "time_of_max_forward_phase_ps": trace.time[origin_indices[max_position]] * 1e12,
-        "additional_forward_excursion_candidate": additional_forward,
-        "rollback_candidate": rollback,
-        "only_first_progression_candidate": bool(max_value >= 0.5 and not additional_forward and not rollback),
-        "diagnostic_label": "MECHANICAL_DIAGNOSTIC_ONLY",
         "not_event_time": True,
         "not_event_count": True,
         "scientific_interpretation_performed": False,
@@ -299,7 +281,7 @@ def origin_summary(trace: Any, origin_name: str) -> tuple[dict[str, Any], dict[s
     window = ORIGINS[origin_name]["window"]
     receiver = {
         label: extrema(trace, label, window)
-        for label in ("I(L1|XBQ1)", "I(IB|XBQ1)", "I(L2|XBQ1)", "I(RJ1|XBQ1)", "V(RJ1|XBQ1)")
+        for label in ("I(L1|XBQ1)", "I(L2|XBQ1)", "I(RJ1|XBQ1)", "V(RJ1|XBQ1)")
     }
     l1_zero = zero_crossings(trace, "I(L1|XBQ1)", window)
     voltage_times, voltage = selected(trace, "V(RJ1|XBQ1)", window)
@@ -371,136 +353,6 @@ def whole_run_terminal(trace: Any) -> dict[str, Any]:
     }
 
 
-def post_first_bj1_rearm_diagnostics(trace: Any) -> dict[str, Any]:
-    """Record post-anchor navigation arithmetic without classifying events."""
-
-    final_phase = phase_origin_diagnostic(trace, "P(BJ1|XBQ1)", "FINAL_ORIGIN")
-    final_bj2_phase = phase_origin_diagnostic(trace, "P(BJ2|XBQ1)", "FINAL_ORIGIN")
-    final_window = ORIGINS["FINAL_ORIGIN"]["window"]
-    final_bj1_area = signed_components(trace, "V(BJ1|XBQ1)", final_window)
-    anchor_ps = final_phase.get("first_half_turn_timing_diagnostic_ps")
-    if anchor_ps is None:
-        return {
-            "status": "UNKNOWN",
-            "t_BJ1_half_ps": None,
-            "BJ1_max_turns": final_phase.get("max_continuous_relative_phase_turns"),
-            "BJ1_final_turns": final_phase.get("final_continuous_relative_phase_turns"),
-            "BJ1_positive_voltage_area": final_bj1_area.get("positive_V_s"),
-            "BJ1_negative_voltage_area": final_bj1_area.get("negative_V_s"),
-            "L1_post_anchor_min": None,
-            "L1_post_anchor_max": None,
-            "L1_sign_transitions": [],
-            "L1_first_negative_to_positive_time_ps": None,
-            "post_first_bj1_L1_negative_to_positive_candidate": "UNKNOWN",
-            "L2_post_anchor_min": None,
-            "L2_post_anchor_max": None,
-            "L2_post_anchor_peak_time_ps": None,
-            "second_L2_surge_proxy": "UNKNOWN",
-            "BJ2_max_turns": final_bj2_phase.get("max_continuous_relative_phase_turns"),
-            "BJ2_final_turns": final_bj2_phase.get("final_continuous_relative_phase_turns"),
-            "BJ2_second_threshold_candidate": "UNKNOWN",
-            "JTL_threshold_diagnostics": {"CONTROL_ORIGIN": None, "FINAL_ORIGIN": None},
-            "label": "MECHANICAL_REARM_PROXY_ONLY",
-            "reason": "no FINAL-origin BJ1 +0.5-turn navigation anchor",
-        }
-    anchor_s = float(anchor_ps) * 1e-12
-    post_window = (anchor_s, 200e-12)
-    indexes = window_indices(trace.time, *post_window)
-    if len(indexes) < 2:
-        return {
-            "status": "UNKNOWN",
-            "t_BJ1_half_ps": anchor_ps,
-            "post_anchor_window_ps": [anchor_ps, 200.0],
-            "BJ1_max_turns": final_phase.get("max_continuous_relative_phase_turns"),
-            "BJ1_final_turns": final_phase.get("final_continuous_relative_phase_turns"),
-            "BJ1_positive_voltage_area": final_bj1_area.get("positive_V_s"),
-            "BJ1_negative_voltage_area": final_bj1_area.get("negative_V_s"),
-            "L1_post_anchor_min": None,
-            "L1_post_anchor_max": None,
-            "L1_sign_transitions": [],
-            "L1_first_negative_to_positive_time_ps": None,
-            "post_first_bj1_L1_negative_to_positive_candidate": "UNKNOWN",
-            "L2_post_anchor_min": None,
-            "L2_post_anchor_max": None,
-            "L2_post_anchor_peak_time_ps": None,
-            "second_L2_surge_proxy": "UNKNOWN",
-            "BJ2_max_turns": final_bj2_phase.get("max_continuous_relative_phase_turns"),
-            "BJ2_final_turns": final_bj2_phase.get("final_continuous_relative_phase_turns"),
-            "BJ2_second_threshold_candidate": "UNKNOWN",
-            "JTL_threshold_diagnostics": {"CONTROL_ORIGIN": None, "FINAL_ORIGIN": None},
-            "label": "MECHANICAL_REARM_PROXY_ONLY",
-            "reason": "post-anchor window has fewer than two stored samples",
-        }
-
-    l1 = tuple(float(trace.column("I(L1|XBQ1)")[index]) for index in indexes)
-    l2 = tuple(float(trace.column("I(L2|XBQ1)")[index]) for index in indexes)
-    times_ps = tuple(trace.time[index] * 1e12 for index in indexes)
-    sign_transitions: list[dict[str, Any]] = []
-    negative_to_positive: list[float] = []
-    for position, (left, right) in enumerate(zip(l1, l1[1:])):
-        if left == 0.0:
-            sign_transitions.append({"time_ps": times_ps[position], "direction": "exact_zero_sample"})
-        if (left < 0.0 < right) or (left > 0.0 > right):
-            direction = "negative_to_positive" if left < 0.0 < right else "positive_to_negative"
-            sign_transitions.append({"time_ps": times_ps[position + 1], "direction": direction, "interpolation": False})
-            if direction == "negative_to_positive":
-                negative_to_positive.append(times_ps[position + 1])
-    if l1[-1] == 0.0:
-        sign_transitions.append({"time_ps": times_ps[-1], "direction": "exact_zero_sample"})
-
-    local_maxima: list[dict[str, float]] = []
-    for position in range(1, len(l2) - 1):
-        if l2[position] > l2[position - 1] and l2[position] > l2[position + 1]:
-            local_maxima.append({"time_ps": times_ps[position], "value_A": l2[position]})
-    second_surge = any(
-        local_maxima[right]["time_ps"] - local_maxima[left]["time_ps"] >= SECOND_SURGE_MIN_SEPARATION_PS
-        for left in range(len(local_maxima))
-        for right in range(left + 1, len(local_maxima))
-    )
-    largest_local = max(local_maxima, key=lambda item: item["value_A"]) if local_maxima else None
-    peak_position = max(range(len(l2)), key=l2.__getitem__)
-    return {
-        "status": "DERIVED",
-        "t_BJ1_half_ps": anchor_ps,
-        "anchor_label": "first FINAL-origin BJ1 +0.5-turn timing diagnostic; not an event onset",
-        "post_anchor_window_ps": [anchor_ps, 200.0],
-        "BJ1_max_turns": final_phase.get("max_continuous_relative_phase_turns"),
-        "BJ1_final_turns": final_phase.get("final_continuous_relative_phase_turns"),
-        "BJ1_positive_voltage_area": final_bj1_area.get("positive_V_s"),
-        "BJ1_negative_voltage_area": final_bj1_area.get("negative_V_s"),
-        "L1_post_anchor_min": min(l1),
-        "L1_post_anchor_max": max(l1),
-        "L1_sign_transitions": sign_transitions,
-        "L1_first_negative_to_positive_time_ps": negative_to_positive[0] if negative_to_positive else None,
-        "post_first_bj1_L1_negative_to_positive_candidate": True if negative_to_positive else False,
-        "rearm_label": "MECHANICAL_REARM_PROXY_ONLY",
-        "L2_post_anchor_min": min(l2),
-        "L2_post_anchor_max": max(l2),
-        "L2_post_anchor_peak_time_ps": times_ps[peak_position],
-        "L2_largest_local_maximum": largest_local,
-        "L2_local_maxima": local_maxima,
-        "second_L2_surge_proxy": second_surge,
-        "second_surge_label": "MECHANICAL_SECOND_SURGE_PROXY_ONLY",
-        "second_surge_min_separation_ps": SECOND_SURGE_MIN_SEPARATION_PS,
-        "BJ2_max_turns": final_bj2_phase.get("max_continuous_relative_phase_turns"),
-        "BJ2_final_turns": final_bj2_phase.get("final_continuous_relative_phase_turns"),
-        "BJ2_second_threshold_candidate": final_bj2_phase.get("second_threshold_diagnostic_found", False),
-        "BJ2_second_threshold_timing_diagnostic_ps": final_bj2_phase.get("second_threshold_timing_diagnostic_ps"),
-        "BJ2_second_threshold_label": "MECHANICAL_THRESHOLD_ONLY",
-        "JTL_threshold_diagnostics": {"CONTROL_ORIGIN": None, "FINAL_ORIGIN": "see FINAL_ORIGIN.jtl_progression_diagnostics"},
-        "post_anchor_source_support": {
-            "I(B_JSL8)_max_abs_A": max(abs(float(trace.column("I(B_JSL8)")[index])) for index in indexes),
-            "I(LIN|XBQ1)_max_abs_A": max(abs(float(trace.column("I(LIN|XBQ1)")[index])) for index in indexes),
-            "I(B_JSL8)_signed_area_A_s": area(trace, "I(B_JSL8)", post_window),
-            "I(LIN|XBQ1)_signed_area_A_s": area(trace, "I(LIN|XBQ1)", post_window),
-            "raw_direct": True,
-            "cropped_raw_artifact": False,
-        },
-        "not_event_count": True,
-        "scientific_interpretation_performed": False,
-    }
-
-
 def ratio_record(numerator: float | None, denominator: float | None, *, denominator_abs_area: float | None) -> dict[str, Any]:
     if numerator is None or denominator is None or not math.isfinite(numerator) or not math.isfinite(denominator):
         return {"status": "UNKNOWN", "ratio": None, "reason": "missing_or_nonfinite_operand", "unit": "A_s"}
@@ -555,7 +407,7 @@ def deck_diff() -> dict[str, Any]:
         text = deck_path(run_id).read_text(encoding="utf-8")
         rj1 = RUN_TO_RJ1[run_id]
         mask = RUN_TO_MASK[run_id]
-        for required in (".param L1_VALUE=1.4p", ".param IB_VALUE=260u", f".param RJ1_VALUE={rj1:g}", ".tran 0.1p 200p", "P(BJS|XBQ1) V(BJS|XBQ1) I(BJS|XBQ1)"):
+        for required in (".param L1_VALUE=1.4p", ".param IB_VALUE=270u", f".param RJ1_VALUE={rj1:g}", ".tran 0.1p 200p", "P(BJS|XBQ1) V(BJS|XBQ1) I(BJS|XBQ1)"):
             if required not in text:
                 failures.append(f"{run_id}: missing {required}")
         if any(text.count(f"XBVM{index} ") != 1 for index in range(1, 5)):
@@ -589,7 +441,7 @@ def deck_diff() -> dict[str, Any]:
     if historical_failures:
         failures.append("historical RJ1=12 deck comparability failed: " + ",".join(historical_failures))
     return {
-        "schema": "bjs400-rj1-rearm-deck-diff-qa-v1",
+        "schema": "bjs400-rj1-interaction-deck-diff-qa-v1",
         "status": "PASS" if not failures else "FAIL",
         "new_run_count": len(NEW_RUNS),
         "reused_case_count": len(REUSE_RUNS),
@@ -680,11 +532,6 @@ def main() -> int:
             origin_inputs: dict[str, float | None] = {}
             for origin_name in ORIGINS:
                 origin_records[origin_name], origin_inputs = origin_summary(trace, origin_name)
-            post_rearm = post_first_bj1_rearm_diagnostics(trace)
-            post_rearm["JTL_threshold_diagnostics"] = {
-                origin_name: origin_records[origin_name]["jtl_progression_diagnostics"]
-                for origin_name in ORIGINS
-            }
             cases[case_id] = {
                 "case_id": case_id,
                 "L1_pH": FIXED["L1_pH"],
@@ -697,14 +544,6 @@ def main() -> int:
                 "scientific_interpretation_performed": False,
                 "CONTROL_ORIGIN": origin_records["CONTROL_ORIGIN"],
                 "FINAL_ORIGIN": origin_records["FINAL_ORIGIN"],
-                "POST_FIRST_BJ1_REARM_DIAGNOSTICS": post_rearm,
-                "control_complete_downstream_candidate": {
-                    "value": origin_records["CONTROL_ORIGIN"]["jtl_progression_diagnostics"]["complete_progression_candidate"],
-                    "label": "MECHANICAL_CANDIDATE_ONLY",
-                },
-                "terminal_control_area": origin_records["CONTROL_ORIGIN"]["terminal_diagnostics"],
-                "terminal_final_area": origin_records["FINAL_ORIGIN"]["terminal_diagnostics"],
-                "terminal_whole_run_area": whole_run_terminal(trace),
                 "whole_run_terminal": whole_run_terminal(trace),
                 "notes": [
                     "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
@@ -720,7 +559,7 @@ def main() -> int:
     post_hashes = {case_id: sha256(raw_path(case_id)) for case_id in pre_hashes}
     raw_ok = not raw_failures and len(traces) == len(ALL_CASES) and len(grid_hashes) == 1 and pre_hashes == post_hashes
     raw_qa = {
-        "schema": "bjs400-rj1-rearm-raw-qa-v1",
+        "schema": "bjs400-rj1-interaction-raw-qa-v1",
         "status": "PASS" if raw_ok else "FAIL",
         "artifact_validity": "VALID" if raw_ok else "INVALID",
         "experiment_id": EXP.name,
@@ -746,12 +585,12 @@ def main() -> int:
     ratios = ratio_diagnostics(traces, ratio_inputs) if raw_ok else {}
     mechanical_status = "PASS" if raw_ok and decks["status"] == "PASS" and len(cases) == len(ALL_CASES) else "FAIL"
     mechanical_summary = {
-        "schema": "bjs400-rj1-rearm-mechanical-summary-v2",
+        "schema": "bjs400-rj1-interaction-mechanical-summary-v1",
         "experiment_id": EXP.name,
         "created_at_local": now(),
         "status": mechanical_status,
         "scientific_interpretation_performed": False,
-        "fixed_point": {"L1_pH": 1.4, "IBias_uA": 260.0, "BJS_area": 4, "BJS_Ic_uA": 400.0},
+        "fixed_point": {"L1_pH": 1.4, "IBias_uA": 270.0, "BJS_area": 4, "BJS_Ic_uA": 400.0},
         "rj1_values_ohm": [12.0, 16.0, 24.0, 32.0],
         "masks": list(MASKS),
         "logical_case_count": 8,
@@ -765,44 +604,23 @@ def main() -> int:
         },
         "pre_switch_proxy_window_ps": [110.0, 114.5],
         "area_semantics": "trapezoid on actual stored time grid; half-open windows; no interpolation/resampling",
-        "dedicated_sections": ["CONTROL_ORIGIN", "FINAL_ORIGIN", "POST_FIRST_BJ1_REARM_DIAGNOSTICS"],
-        "post_first_bj1_rearm_policy": {
-            "anchor": "first FINAL-origin BJ1 +0.5-turn timing diagnostic",
-            "l1_label": "MECHANICAL_REARM_PROXY_ONLY",
-            "l2_label": "MECHANICAL_SECOND_SURGE_PROXY_ONLY",
-            "bj2_label": "MECHANICAL_THRESHOLD_ONLY",
-            "jtl_label": "MECHANICAL_CANDIDATE_ONLY",
-            "second_surge_min_separation_ps": SECOND_SURGE_MIN_SEPARATION_PS,
-            "no_event_or_sfq_classification": True,
-        },
         "ratio_policy": {
             "numerator_denominator": "0011 / 0001",
             "signed_area_tolerance_A_s": RATIO_AREA_TOLERANCE_A_S,
             "cancellation_fraction": RATIO_CANCELLATION_FRACTION,
             "ambiguous_status": "UNKNOWN",
         },
-        "post_first_bj1_rearm_diagnostics": {
-            "section_name": "POST_FIRST_BJ1_REARM_DIAGNOSTICS",
-            "anchor": "first FINAL-origin BJ1 +0.5-turn timing diagnostic",
-            "l1_negative_to_positive_label": "MECHANICAL_REARM_PROXY_ONLY",
-            "l2_second_surge_label": "MECHANICAL_SECOND_SURGE_PROXY_ONLY",
-            "bj2_second_threshold_label": "MECHANICAL_THRESHOLD_ONLY",
-            "jtl_candidate_label": "MECHANICAL_CANDIDATE_ONLY",
-            "second_surge_min_separation_ps": SECOND_SURGE_MIN_SEPARATION_PS,
-            "no_event_or_sfq_classification": True,
-        },
         "cases": cases,
         "ratio_diagnostics": ratios,
         "notes": [
             "CONTROL_ORIGIN and FINAL_ORIGIN remain separate; no control response is combined with final response.",
-            "POST_FIRST_BJ1_REARM_DIAGNOSTICS uses a stored-time BJ1 +0.5 navigation anchor and is not proof of physical re-arm.",
             "JTL stage timing candidates use fixed thresholds and are MECHANICAL_CANDIDATE_ONLY.",
             "No field is an event count, SFQ count, control PASS/FAIL, threshold, optimum or mechanism conclusion.",
             "Scientific interpretation is NOT_PERFORMED.",
         ],
     }
     provenance = {
-        "schema": "bjs400-rj1-rearm-provenance-v1",
+        "schema": "bjs400-rj1-interaction-provenance-v1",
         "experiment_id": EXP.name,
         "head_at_qa": relation["head"],
         "preflight": "analysis/preflight.json",
@@ -840,7 +658,7 @@ def main() -> int:
     }
     provenance["runs"] = {**provenance["new_runs"], **provenance["reused_runs"]}
     transformations = {
-        "schema": "bjs400-rj1-rearm-transformation-registry-v1",
+        "schema": "bjs400-rj1-interaction-transformation-registry-v1",
         "raw_immutable": True,
         "scientific_analysis_performed": False,
         "transformations": [

@@ -72,14 +72,14 @@ def head_relation(preflight_head: str) -> dict[str, Any]:
 
 def make_record(run_id: str, head: str, command: list[str], started: str, finished: str, exit_code: int, deck: Path, raw: Path, log: Path) -> dict[str, Any]:
     return {
-        "schema": "bjs400-rj1-rearm-run-metadata-v1",
+        "schema": "bjs400-rj1-interaction-run-metadata-v1",
         "experiment_id": EXP.name,
         "run_id": run_id,
         "topology": "ARRAY",
-        "working_point": {"L1_pH": 1.4, "IBias_uA": 260.0, "RJ1_ohm": RUN_TO_RJ1[run_id]},
+        "working_point": {"L1_pH": 1.4, "IBias_uA": 270.0, "RJ1_ohm": RUN_TO_RJ1[run_id]},
         "rj1_ohm": RUN_TO_RJ1[run_id],
         "mask": RUN_TO_MASK[run_id],
-        "parameters": {"L1_pH": 1.4, "IBias_uA": 260.0, "RJ1_ohm": RUN_TO_RJ1[run_id]},
+        "parameters": {"L1_pH": 1.4, "IBias_uA": 270.0, "RJ1_ohm": RUN_TO_RJ1[run_id]},
         "started_at_local": started,
         "finished_at_local": finished,
         "git_head_before_run": head,
@@ -138,7 +138,7 @@ def main() -> int:
         if record["execution_status"] != "RUN_PASS":
             failures.append(run_id)
     summary = {
-        "schema": "bjs400-rj1-rearm-execution-v1",
+        "schema": "rj1-switched-regime-execution-v1",
         "experiment_id": EXP.name,
         "started_at_local": started_all,
         "finished_at_local": now(),

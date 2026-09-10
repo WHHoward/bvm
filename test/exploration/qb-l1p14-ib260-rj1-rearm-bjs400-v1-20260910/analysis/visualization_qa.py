@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Minimal visualization QA for fixed-point RJ1 re-arm plots."""
+"""Minimal visualization QA for fixed-point RJ1 interaction plots."""
 
 from __future__ import annotations
 
@@ -13,12 +13,12 @@ from typing import Any
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
 NEW_RUNS = (
-    "ARRAY_L1P14_IB260_RJ16_0001", "ARRAY_L1P14_IB260_RJ16_0011",
-    "ARRAY_L1P14_IB260_RJ24_0001", "ARRAY_L1P14_IB260_RJ24_0011",
-    "ARRAY_L1P14_IB260_RJ32_0001", "ARRAY_L1P14_IB260_RJ32_0011",
+    "ARRAY_L1P14_IB270_RJ16_0001", "ARRAY_L1P14_IB270_RJ16_0011",
+    "ARRAY_L1P14_IB270_RJ24_0001", "ARRAY_L1P14_IB270_RJ24_0011",
+    "ARRAY_L1P14_IB270_RJ32_0001", "ARRAY_L1P14_IB270_RJ32_0011",
 )
 STANDALONE_NAMES = ("SIGNAL_PATH.html", "QB_STATE.html", "JTL_CHAIN.html")
-COMPARISON_NAMES = ("RJ1_REARM_0001_COMPARE.html", "RJ1_REARM_0011_COMPARE.html")
+COMPARISON_NAMES = ("RJ1_0001_COMPARE.html", "RJ1_0011_COMPARE.html")
 
 
 def sha256(path: Path) -> str:
@@ -95,7 +95,7 @@ def main() -> int:
     if {entry.get("output_path") for entry in standalone} != expected_standalone:
         failures.append("standalone paths are not exactly 3 per new run")
     if {entry.get("output_path") for entry in comparisons} != expected_comparison:
-        failures.append("comparison paths are not exactly RJ1_REARM_0001/RJ1_REARM_0011")
+        failures.append("comparison paths are not exactly RJ1_0001/RJ1_0011")
     actual_html = {path.relative_to(EXP).as_posix() for path in (EXP / "plots").rglob("*.html")}
     expected_html = {path.removeprefix(prefix + "/") for path in expected_standalone | expected_comparison}
     if actual_html != expected_html:
@@ -108,7 +108,7 @@ def main() -> int:
         if "window" in path.name.casefold() or "category" in path.parts or "v2_1" in path.parts:
             failures.append(f"focused/non-flat plot artifact: {path}")
     qa = {
-        "schema": "bjs400-rj1-rearm-visualization-qa-v1",
+        "schema": "bjs400-rj1-interaction-visualization-qa-v1",
         "experiment_id": EXP.name,
         "created_at_local": now(),
         "status": "PASS" if not failures else "FAIL",

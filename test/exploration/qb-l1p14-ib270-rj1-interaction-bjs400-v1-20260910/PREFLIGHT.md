@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Authority and fixed point
 
 - Experiment: `qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910`
-- Preflight HEAD: `3498294daaa1669dde631fbfab4bb105056f7cba`
+- Preflight HEAD: `cfc794a2c6580a4e586907e90015fc2fff43d63e`
 - Preregistration HEAD: `3498294daaa1669dde631fbfab4bb105056f7cba`
 - Primary authority: `test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910`; source package SHA-256 `7ccb82a479f792a14e8f1e6bbe66f7f8acd51ef133f6fbe23175b74306c0ab18`.
 - Fixed L1=1.4pH, IBias=270uA, BJS area=4 / Ic=400uA, terminal=10ohm.

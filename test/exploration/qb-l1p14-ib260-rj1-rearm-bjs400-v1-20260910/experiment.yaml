@@ -1,0 +1,145 @@
+schema_version: evidence-first-bjs400-rj1-rearm-v1
+id: qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+
+question: >-
+  Record fixed-point RJ1 evidence at L1=1.4pH and IBias=260uA, with separate
+  CONTROL-origin and FINAL-origin diagnostics and a post-first-BJ1 navigation
+  summary. The experiment does not prove re-arm, locate a threshold or rank RJ1.
+motivation: >-
+  This is a registered follow-up to the L1=1.4pH, IBias=270uA RJ1
+  characterization. The lower IBias point is a chosen exploration condition,
+  not an automatic control-clean or success classification.
+interpretation_ceiling: >-
+  Evidence-only observations and registered mechanical arithmetic for this
+  fixed topology, history, solver and stored grid. No re-arm proof, event/SFQ
+  count, population discrimination, RJ1 threshold, optimum, control PASS/FAIL,
+  mechanism or follow-up claim is authorized.
+
+physical_authority:
+  experiment: test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910
+  secondary_topology_reference: test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910
+  role: BJS400 fixture, controls, history, probes, solver and RJ1=12 baseline authority
+  git_head: 3498294daaa1669dde631fbfab4bb105056f7cba
+  source_manifest_sha256: 8166b59ae696a9d22d844f0736e452f354aa32e0a92fbb4d62396998d0c79fa7
+  source_package_sha256: 7ccb82a479f792a14e8f1e6bbe66f7f8acd51ef133f6fbe23175b74306c0ab18
+
+changed:
+  - IBias: fixed point 270uA -> 260uA
+  - RJ1: 12ohm historical baseline -> new 16/24/32ohm cases
+  - no other topology, parameter, control, solver, timestep, load or mask change
+
+frozen:
+  L1: 1.4pH
+  IBias: 260uA
+  BJS: area=4; Ic=400uA
+  topology: four BVMs -> COMMON_SL -> eight-JJ JSL -> QB -> six-stage JTL -> 10ohm terminal
+  history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> mask-selective FINAL READ -> TAIL
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored 0 to 199.9ps at 0.1ps nominal spacing
+  solver: build/josim-cli; hash recorded in SOURCE_MANIFEST.json
+  raw: immutable solver output; no crop, interpolation, smoothing, resampling or sign correction
+
+rj1_matrix:
+  values_ohm: [12, 16, 24, 32]
+  masks: ["0001", "0011"]
+  logical_case_count: 8
+  historical_reuse_count: 2
+  new_physical_solve_count: 6
+  unauthorized_extra_solves: 0
+  new_runs:
+    - runs/ARRAY_L1P14_IB260_RJ16_0001
+    - runs/ARRAY_L1P14_IB260_RJ16_0011
+    - runs/ARRAY_L1P14_IB260_RJ24_0001
+    - runs/ARRAY_L1P14_IB260_RJ24_0011
+    - runs/ARRAY_L1P14_IB260_RJ32_0001
+    - runs/ARRAY_L1P14_IB260_RJ32_0011
+  reused_runs:
+    - references/reused/ARRAY_L1P14_IB260_0001
+    - references/reused/ARRAY_L1P14_IB260_0011
+
+mask_semantics:
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  "0001": BVM4 active during FINAL READ only
+  "0011": BVM3 and BVM4 active simultaneously during FINAL READ only
+
+windows:
+  control_origin_ps: [70.0, 110.0]
+  control_baseline_ps: [61.0, 70.0]
+  final_origin_ps: [110.0, 200.0]
+  final_baseline_ps: [101.0, 110.0]
+  pre_switch_proxy_ps: [110.0, 114.5]
+  semantics: half-open windows over actual stored timestamps
+
+mechanical_metrics:
+  phase: raw P radians; independently continuous-unwrapped then divided by 2*pi for diagnostic turns only
+  first_half_turn: +0.5 relative-turn timing diagnostic, never an event time or count
+  bj1_second_excursion_threshold_turns: 1.5
+  bj1_rollback_drop_threshold_turns: 0.25
+  post_first_bj1_anchor: first FINAL-origin BJ1 +0.5 timing diagnostic; no event-onset claim
+  post_first_l1_rearm: stored-sample negative-to-positive sign transition after anchor; MECHANICAL_REARM_PROXY_ONLY
+  post_first_l2_surge: strict local maxima after anchor, second maximum separated by at least 1.0ps; MECHANICAL_SECOND_SURGE_PROXY_ONLY
+  jtl_thresholds: +0.5 and +1.5 relative turns for P(B01|XJTL1_stage), stage order preserved; MECHANICAL_CANDIDATE_ONLY
+  areas: trapezoid on actual stored time grid, no interpolation
+  rj1_energy: integral(V(RJ1|XBQ1)*I(RJ1|XBQ1)*dt) separately in CONTROL_ORIGIN and FINAL_ORIGIN
+  l1_zero_crossing: exact-zero or stored-sample sign transition time; no interpolated crossing
+  whole_run_terminal_area: label WHOLE_RUN_TOTAL_ONLY; never a population count
+  ratio:
+    numerator_denominator: 0011 / 0001
+    denominator_area_tolerance_A_s: 1.0e-18
+    cancellation_fraction: 0.01
+    ambiguous_status: UNKNOWN
+
+probe_schema:
+  controls: I(I_WL1..4), I(I_BL1..4), I(I_SE1..4)
+  bvm: P/V/I(B_JM1,B_JM2,B_JS1,B_JS2), I/V registered branches and L_SL for XBVM1..4
+  interface: V(COMMON_SL), P/V/I(B_JSL1..8), I(B_JSL8), V(QBIN)
+  qb: V(QBIN), I/V(LIN), P/V/I(BJS), P/V/I(BJ1), I/V(RJ1), I/V(L1), I(IB), I/V(L2), P/V/I(BJ2), I/V(RJ2), I/V(L3), V(QBOUT)
+  jtl: P/V/I(B01), P/V/I(B02), V(stage_OUT) for XJTL1_1..6, V(JTL6_OUT), I(R_TERM)
+  optional_unknown: V(IB|XBQ1) if the solver does not emit it
+  missing_probe_policy: preserve requested probe and mark UNKNOWN; never fabricate
+
+visualization:
+  profile: COMPACT_FLAT_RJ1_REARM
+  renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0.0, 200.0]
+  focused_windows: []
+  standalone_input_policy: raw.csv direct
+  standalone_per_new_run: 3
+  standalone_total: 18
+  comparison_total: 2
+  no_derived_plot_csv: true
+
+package:
+  include_plots: false
+  canonical_path: handoff/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910_raw_handoff.zip
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+  additional_paths:
+    - mechanical_summary.json
+    - references/reused
+    - REUSED_REFERENCE_MANIFEST.json
+    - HANDOFF_README.md
+    - RESULT_BRIEF.md
+    - EVIDENCE_MANIFEST.md
+    - RAW_ANALYSIS_HANDOFF_MANIFEST.json
+    - visualization
+
+final_state: AWAITING_SCIENTIFIC_REVIEW

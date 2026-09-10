@@ -1,0 +1,76 @@
+{
+  "schema": "bjs400-rj2-damping-independent-review-v1",
+  "experiment_id": "qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T16:50:03+08:00",
+  "status": "PASS",
+  "review_type": "stdlib-only numerical cross-check plus bounded adversarial probes",
+  "cases_checked": 8,
+  "raw_hash_count": 8,
+  "raw_hashes_unique": true,
+  "optional_unknown": "V(IB|XBQ1)",
+  "optional_unknown_absent_in_all_cases": true,
+  "window_counts": {
+    "CONTROL_ORIGIN_[70,110)": [
+      400
+    ],
+    "FINAL_ORIGIN_[110,200)": [
+      900
+    ],
+    "PRE_SWITCH_[110,114.5)": [
+      45
+    ]
+  },
+  "phase_anchor_recomputed": {
+    "ARRAY_L1P14_IB260_RJ32_0001": {
+      "bj1": 1202,
+      "bj2": 1235
+    },
+    "ARRAY_L1P14_IB260_RJ32_0011": {
+      "bj1": 1154,
+      "bj2": 1185
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P2_0001": {
+      "bj1": 1219,
+      "bj2": 1258
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P2_0011": {
+      "bj1": 1158,
+      "bj2": 1201
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P3_0001": {
+      "bj1": 1205,
+      "bj2": 1243
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P3_0011": {
+      "bj1": 1156,
+      "bj2": 1190
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001": {
+      "bj1": 1200,
+      "bj2": 1228
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011": {
+      "bj1": 1153,
+      "bj2": 1182
+    }
+  },
+  "adversarial_probes": {
+    "no_op_parameterization": true,
+    "wrong_branch_guard": true,
+    "weak_oracle_differential": true,
+    "boundary_windows": true,
+    "stale_artifact_guard": true,
+    "overclaim_ceiling": true
+  },
+  "execution_head": "f293e7330c49aa7bcb6648cbe466c3e982d61c77",
+  "preflight_head": "18c17f44ad51d69a186149d4618270836c64e179",
+  "metadata_hash_checks": true,
+  "raw_immutable_check": true,
+  "scientific_interpretation_performed": false,
+  "failures": [],
+  "residual_uncertainty": [
+    "No timestep convergence or scientific mechanism interpretation was performed.",
+    "Phase thresholds remain stored-sample navigation diagnostics, not event or SFQ counts.",
+    "Optional V(IB|XBQ1) remains UNKNOWN because the solver did not emit it."
+  ]
+}

@@ -861,7 +861,15 @@ def main() -> int:
     preflight = json.loads((EXP / "analysis/preflight.json").read_text(encoding="utf-8"))
     relation = head_relation(str(preflight["head"]))
     actual_new_count = len(active_new_runs)
-    early_stop_valid = actual_new_count == 6 or (actual_new_count < 6 and isinstance(execution.get("early_stop_reason"), str) and execution.get("registered_unrun_values"))
+    stage_records = execution.get("stage_records", [])
+    in_progress_pair_valid = (
+        actual_new_count < 6
+        and actual_new_count == 2 * len(stage_records)
+        and bool(stage_records)
+        and stage_records[-1].get("execution_status") == "PASS"
+        and execution.get("early_stop_reason") is None
+    )
+    early_stop_valid = actual_new_count == 6 or in_progress_pair_valid or (actual_new_count < 6 and isinstance(execution.get("early_stop_reason"), str) and execution.get("registered_unrun_values"))
     execution_ok = execution.get("status") == "PASS" and execution.get("solver_solve_invocations") == actual_new_count and execution.get("exact_new_physical_solve_count") == actual_new_count and execution.get("reused_physical_case_count") == 2 and execution.get("unauthorized_extra_solves") == 0 and execution.get("failed_runs") == [] and early_stop_valid
     reuse_manifest = json.loads((EXP / "REUSED_REFERENCE_MANIFEST.json").read_text(encoding="utf-8"))
     raw_records: dict[str, Any] = {}

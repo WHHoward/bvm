@@ -1,0 +1,80 @@
+{
+  "schema": "bjs400-rj1-rearm-deck-diff-qa-v1",
+  "status": "PASS",
+  "new_run_count": 6,
+  "reused_case_count": 2,
+  "fixed_L1_pH": 1.4,
+  "fixed_IBias_uA": 260.0,
+  "fixed_BJS_area": 4,
+  "new_RJ1_values_ohm": [
+    16.0,
+    24.0,
+    32.0
+  ],
+  "same_mask_only_RJ1_difference": true,
+  "mask_pair_only_final_read_difference": true,
+  "normalized_new_decks_identical": true,
+  "historical_deck_comparability": "PASS",
+  "pair_checks": {
+    "16": {
+      "mask_pair": [
+        "ARRAY_L1P14_IB260_RJ16_0001",
+        "ARRAY_L1P14_IB260_RJ16_0011"
+      ],
+      "pre_110ps_equal": true
+    },
+    "24": {
+      "mask_pair": [
+        "ARRAY_L1P14_IB260_RJ24_0001",
+        "ARRAY_L1P14_IB260_RJ24_0011"
+      ],
+      "pre_110ps_equal": true
+    },
+    "32": {
+      "mask_pair": [
+        "ARRAY_L1P14_IB260_RJ32_0001",
+        "ARRAY_L1P14_IB260_RJ32_0011"
+      ],
+      "pre_110ps_equal": true
+    }
+  },
+  "runs": {
+    "ARRAY_L1P14_IB260_RJ16_0001": {
+      "rj1_ohm": 16.0,
+      "mask": "0001",
+      "deck_sha256": "db9f0343ac0d936f853b904a79669a81b1a1d8288e51e9702d0d68294ecfca88",
+      "deck_bytes": 7460
+    },
+    "ARRAY_L1P14_IB260_RJ16_0011": {
+      "rj1_ohm": 16.0,
+      "mask": "0011",
+      "deck_sha256": "e567422fa63af9fcc595648bea85814fd1f9a24b96412f235aa608dae55cad4e",
+      "deck_bytes": 7476
+    },
+    "ARRAY_L1P14_IB260_RJ24_0001": {
+      "rj1_ohm": 24.0,
+      "mask": "0001",
+      "deck_sha256": "fb3fcec8e6ae03cbdcbfc6142584a6bc8e55ad5e9f414ca8cd49a00380c750ca",
+      "deck_bytes": 7460
+    },
+    "ARRAY_L1P14_IB260_RJ24_0011": {
+      "rj1_ohm": 24.0,
+      "mask": "0011",
+      "deck_sha256": "0e438eba8cc11526f878b368382d87ba14e473e84860e169f609543ce51e2808",
+      "deck_bytes": 7476
+    },
+    "ARRAY_L1P14_IB260_RJ32_0001": {
+      "rj1_ohm": 32.0,
+      "mask": "0001",
+      "deck_sha256": "b3c2a8083a35b7b9e2e273a0a370ff6808b1f07fd1ba1899bd9ae4ea47bca611",
+      "deck_bytes": 7460
+    },
+    "ARRAY_L1P14_IB260_RJ32_0011": {
+      "rj1_ohm": 32.0,
+      "mask": "0011",
+      "deck_sha256": "82fe14ad85700bddcc4c43b684f3a5b53f337e87439434e40eae5af12772d59c",
+      "deck_bytes": 7476
+    }
+  },
+  "failures": []
+}

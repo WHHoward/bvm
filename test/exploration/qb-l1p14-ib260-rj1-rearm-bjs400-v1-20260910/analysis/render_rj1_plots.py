@@ -279,7 +279,7 @@ def main() -> int:
         "standalone_entry_count": len(standalone),
         "comparison_entry_count": len(comparisons),
         "run_summary_paths": [rel(path) for path in summaries],
-        "rj1_values_new_ohm": [10, 14, 16],
+        "rj1_values_new_ohm": [16, 24, 32],
         "rj1_baseline_reused_ohm": 12,
         "masks": ["0001", "0011"],
         "scientific_analysis_performed": False,

@@ -1,0 +1,40 @@
+{
+  "schema": "bjs400-rj1-rearm-transformation-registry-v1",
+  "raw_immutable": true,
+  "scientific_analysis_performed": false,
+  "transformations": [
+    {
+      "name": "origin_separation",
+      "operation": "separate CONTROL_ORIGIN [70,110) and FINAL_ORIGIN [110,200) windows",
+      "scope": "mechanical navigation only"
+    },
+    {
+      "name": "phase_display",
+      "operation": "continuous_unwrap(raw_rad)/(2*pi)",
+      "scope": "diagnostic/display only",
+      "not_event_count": true
+    },
+    {
+      "name": "jtl_candidate_navigation",
+      "operation": "fixed +0.5 and +1.5 threshold timing across P(B01) stage order",
+      "scope": "MECHANICAL_CANDIDATE_ONLY",
+      "not_event_count": true
+    },
+    {
+      "name": "area_integration",
+      "operation": "trapezoid on actual stored time values; half-open registered windows",
+      "scope": "mechanical arithmetic only",
+      "interpolation": false
+    },
+    {
+      "name": "standalone_plot_input",
+      "operation": "raw.csv direct; no crop/resample/derived CSV",
+      "scope": "visualization"
+    },
+    {
+      "name": "comparison_plot_input",
+      "operation": "temporary full-run merged CSV under /tmp only; deleted after render",
+      "scope": "visualization"
+    }
+  ]
+}

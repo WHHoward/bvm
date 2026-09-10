@@ -165,6 +165,18 @@ def main() -> int:
         "independent_review_status": independent.get("status"),
     }
     (EXP / "qa/oracle_qa.json").write_text(json.dumps(oracle_qa, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    provenance_path = EXP / "qa/provenance.json"
+    if provenance_path.is_file():
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+        provenance["oracle_artifact_sha256"] = {
+            "analysis/second_response_oracle.py": sha256(EXP / "analysis/second_response_oracle.py"),
+            "analysis/oracle_audit.py": sha256(EXP / "analysis/oracle_audit.py"),
+            "analysis/corrected_oracle_snapshot.json": sha256(EXP / "analysis/corrected_oracle_snapshot.json"),
+            "analysis/ORACLE_REVIEW.md": sha256(EXP / "analysis/ORACLE_REVIEW.md"),
+            "qa/oracle_qa.json": sha256(EXP / "qa/oracle_qa.json"),
+        }
+        provenance["oracle_review_marker"] = "ORACLE_REVIEW_COMPLETE"
+        provenance_path.write_text(json.dumps(provenance, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     lines = [
         "# Second-response oracle review",
         "",

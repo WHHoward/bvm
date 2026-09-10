@@ -1,7 +1,7 @@
 {
-  "schema": "bjs400-rj2-highside-second-trigger-mechanical-summary-v3",
+  "schema": "bjs400-rj2-highside-second-trigger-mechanical-summary-v4",
   "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
-  "created_at_local": "2026-09-10T19:31:03+08:00",
+  "created_at_local": "2026-09-10T19:55:28+08:00",
   "status": "PASS",
   "scientific_interpretation_performed": false,
   "fixed_point": {
@@ -226,7 +226,7 @@
   },
   "second_response_oracle": {
     "phase_reference": "FINAL-origin [101,110) baseline",
-    "pulse_threshold": "max(5.5*1.4826*baseline MAD, 0.35*positive FINAL peak)",
+    "pulse_threshold": "max(0.35*positive FINAL peak, min(5.5*1.4826*baseline MAD, 0.8*positive FINAL peak))",
     "cluster_gap_ps": 2.5,
     "split_requires_below_threshold_valley": true,
     "status_semantics": "mechanical candidate only"
@@ -1640,8 +1640,8 @@
               "baseline_center_V": -3.904091e-06,
               "baseline_mad_V": 5.206599e-05,
               "robust_noise_V": 7.719303677399999e-05,
-              "threshold_V": 0.00042456170225699995,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_V": 0.00038859079280000004,
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -1659,11 +1659,11 @@
                   "peak_sample_index": 1215,
                   "peak_time_ps": 121.6,
                   "peak_voltage_V": 0.0004818344,
-                  "left_boundary_time_ps": 119.79999999999998,
+                  "left_boundary_time_ps": 119.60000000000001,
                   "right_boundary_time_ps": 121.80000000000001,
-                  "sample_count": 21,
-                  "signed_area_V_s": 7.60935465000008e-16,
-                  "signed_area_over_phi0": 0.36798675374038464
+                  "sample_count": 23,
+                  "signed_area_V_s": 8.424362850000012e-16,
+                  "signed_area_over_phi0": 0.4074003749454057
                 }
               ],
               "cluster_count": 1,
@@ -1677,7 +1677,7 @@
               "baseline_mad_V": 3.1248225000000005e-05,
               "robust_noise_V": 4.6328618385000007e-05,
               "threshold_V": 0.00036614847827249995,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -1705,7 +1705,7 @@
               "baseline_mad_V": 1.7654603e-05,
               "robust_noise_V": 2.6174714407799998e-05,
               "threshold_V": 0.0002870638638,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -1733,7 +1733,7 @@
               "baseline_mad_V": 1.5804830000000001e-06,
               "robust_noise_V": 2.3432240958e-06,
               "threshold_V": 0.000238198795835,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -1769,7 +1769,7 @@
               "baseline_mad_V": 1.7483385e-07,
               "robust_noise_V": 2.5920866601e-07,
               "threshold_V": 0.00023644850976334,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -1805,7 +1805,7 @@
               "baseline_mad_V": 3.377128e-08,
               "robust_noise_V": 5.0069299728e-08,
               "threshold_V": 0.00023641027827969998,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -1841,7 +1841,7 @@
               "baseline_mad_V": 5.5010694500000006e-09,
               "robust_noise_V": 8.15588556657e-09,
               "threshold_V": 0.00023642532201643247,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -1877,7 +1877,7 @@
               "baseline_mad_V": 6.140708e-10,
               "robust_noise_V": 9.104213680799999e-10,
               "threshold_V": 0.00023712775444412247,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -1913,7 +1913,7 @@
               "baseline_mad_V": 1.3584382000000003e-10,
               "robust_noise_V": 2.0140204753200002e-10,
               "threshold_V": 0.0004354812103822705,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -3986,7 +3986,7 @@
               "baseline_mad_V": 5.206599e-05,
               "robust_noise_V": 7.719303677399999e-05,
               "threshold_V": 0.00042456170225699995,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -4022,7 +4022,7 @@
               "baseline_mad_V": 3.1248225000000005e-05,
               "robust_noise_V": 4.6328618385000007e-05,
               "threshold_V": 0.0003920491782725,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -4050,7 +4050,7 @@
               "baseline_mad_V": 1.7654603e-05,
               "robust_noise_V": 2.6174714407799998e-05,
               "threshold_V": 0.0003044206438,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -4078,7 +4078,7 @@
               "baseline_mad_V": 1.5804830000000001e-06,
               "robust_noise_V": 2.3432240958e-06,
               "threshold_V": 0.000238927040835,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -4114,7 +4114,7 @@
               "baseline_mad_V": 1.7483385e-07,
               "robust_noise_V": 2.5920866601e-07,
               "threshold_V": 0.00023648844476333998,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -4150,7 +4150,7 @@
               "baseline_mad_V": 3.377128e-08,
               "robust_noise_V": 5.0069299728e-08,
               "threshold_V": 0.0002361516282797,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -4186,7 +4186,7 @@
               "baseline_mad_V": 5.5010694500000006e-09,
               "robust_noise_V": 8.15588556657e-09,
               "threshold_V": 0.0002360966720164325,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -4222,7 +4222,7 @@
               "baseline_mad_V": 6.140708e-10,
               "robust_noise_V": 9.104213680799999e-10,
               "threshold_V": 0.00023678027444412248,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -4258,7 +4258,7 @@
               "baseline_mad_V": 1.3584382000000003e-10,
               "robust_noise_V": 2.0140204753200002e-10,
               "threshold_V": 0.00043432131038227044,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -6029,8 +6029,8 @@
               "baseline_center_V": -4.6947900000000005e-06,
               "baseline_mad_V": 5.172644e-05,
               "robust_noise_V": 7.6689619944e-05,
-              "threshold_V": 0.000421792909692,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_V": 0.000367138712,
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -6048,11 +6048,11 @@
                   "peak_sample_index": 1213,
                   "peak_time_ps": 121.39999999999999,
                   "peak_voltage_V": 0.0004542286,
-                  "left_boundary_time_ps": 119.79999999999998,
-                  "right_boundary_time_ps": 121.6,
-                  "sample_count": 19,
-                  "signed_area_V_s": 7.055531800000036e-16,
-                  "signed_area_over_phi0": 0.34120399986798333
+                  "left_boundary_time_ps": 119.39999999999999,
+                  "right_boundary_time_ps": 121.7,
+                  "sample_count": 24,
+                  "signed_area_V_s": 9.070640450000024e-16,
+                  "signed_area_over_phi0": 0.43865422063639725
                 }
               ],
               "cluster_count": 1,
@@ -6066,7 +6066,7 @@
               "baseline_mad_V": 3.3799635e-05,
               "robust_noise_V": 5.0111338851e-05,
               "threshold_V": 0.00038418244208749997,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -6094,7 +6094,7 @@
               "baseline_mad_V": 1.90541145e-05,
               "robust_noise_V": 2.8249630157699998e-05,
               "threshold_V": 0.00029959099257499997,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -6122,7 +6122,7 @@
               "baseline_mad_V": 1.7064215e-06,
               "robust_noise_V": 2.5299405159e-06,
               "threshold_V": 0.00023800479075624997,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -6158,7 +6158,7 @@
               "baseline_mad_V": 1.84103216e-07,
               "robust_noise_V": 2.7295142804159997e-07,
               "threshold_V": 0.00023656226906059997,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -6194,7 +6194,7 @@
               "baseline_mad_V": 3.5347632e-08,
               "robust_noise_V": 5.24063992032e-08,
               "threshold_V": 0.0002365094412107,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -6230,7 +6230,7 @@
               "baseline_mad_V": 5.67827083e-09,
               "robust_noise_V": 8.418604332558e-09,
               "threshold_V": 0.00023652624222249052,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -6266,7 +6266,7 @@
               "baseline_mad_V": 6.365387e-10,
               "robust_noise_V": 9.437322766199998e-10,
               "threshold_V": 0.00023724510764668,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -6302,7 +6302,7 @@
               "baseline_mad_V": 1.38103965e-10,
               "robust_noise_V": 2.04752938509e-10,
               "threshold_V": 0.00043602966230734216,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -8444,7 +8444,7 @@
               "baseline_mad_V": 5.172644e-05,
               "robust_noise_V": 7.6689619944e-05,
               "threshold_V": 0.000421792909692,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8498,7 +8498,7 @@
               "baseline_mad_V": 3.3799635e-05,
               "robust_noise_V": 5.0111338851e-05,
               "threshold_V": 0.0004106739420875,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8545,7 +8545,7 @@
               "baseline_mad_V": 1.90541145e-05,
               "robust_noise_V": 2.8249630157699998e-05,
               "threshold_V": 0.00031692022757499996,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8592,7 +8592,7 @@
               "baseline_mad_V": 1.7064215e-06,
               "robust_noise_V": 2.5299405159e-06,
               "threshold_V": 0.00023854582075624997,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8653,7 +8653,7 @@
               "baseline_mad_V": 1.84103216e-07,
               "robust_noise_V": 2.7295142804159997e-07,
               "threshold_V": 0.00023670643406059996,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8714,7 +8714,7 @@
               "baseline_mad_V": 3.5347632e-08,
               "robust_noise_V": 5.24063992032e-08,
               "threshold_V": 0.0002368892262107,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8775,7 +8775,7 @@
               "baseline_mad_V": 5.67827083e-09,
               "robust_noise_V": 8.418604332558e-09,
               "threshold_V": 0.0002362553422224905,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8836,7 +8836,7 @@
               "baseline_mad_V": 6.365387e-10,
               "robust_noise_V": 9.437322766199998e-10,
               "threshold_V": 0.00023716443264668,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -8897,7 +8897,7 @@
               "baseline_mad_V": 1.38103965e-10,
               "robust_noise_V": 2.04752938509e-10,
               "threshold_V": 0.0004359757623073422,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -10712,8 +10712,8 @@
               "baseline_center_V": -3.4906795e-06,
               "baseline_mad_V": 5.10916245e-05,
               "robust_noise_V": 7.57484424837e-05,
-              "threshold_V": 0.00041661643366035,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_V": 0.00036666846360000003,
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -10731,11 +10731,11 @@
                   "peak_sample_index": 1199,
                   "peak_time_ps": 120.0,
                   "peak_voltage_V": 0.0004548449,
-                  "left_boundary_time_ps": 119.70000000000002,
-                  "right_boundary_time_ps": 121.5,
-                  "sample_count": 19,
-                  "signed_area_V_s": 7.310545349999927e-16,
-                  "signed_area_over_phi0": 0.3535364002804507
+                  "left_boundary_time_ps": 119.3,
+                  "right_boundary_time_ps": 121.6,
+                  "sample_count": 24,
+                  "signed_area_V_s": 9.282167500000023e-16,
+                  "signed_area_over_phi0": 0.44888362326488146
                 }
               ],
               "cluster_count": 1,
@@ -10749,7 +10749,7 @@
               "baseline_mad_V": 3.6536787000000003e-05,
               "robust_noise_V": 5.41694404062e-05,
               "threshold_V": 0.00039609030579999994,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -10777,7 +10777,7 @@
               "baseline_mad_V": 2.038032e-05,
               "robust_noise_V": 3.0215862432e-05,
               "threshold_V": 0.00030838530765,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -10805,7 +10805,7 @@
               "baseline_mad_V": 1.837086895e-06,
               "robust_noise_V": 2.7236650305269996e-06,
               "threshold_V": 0.00023781814301174998,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -10841,7 +10841,7 @@
               "baseline_mad_V": 1.86257567e-07,
               "robust_noise_V": 2.761454688342e-07,
               "threshold_V": 0.00023653651947345,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -10877,7 +10877,7 @@
               "baseline_mad_V": 3.675099e-08,
               "robust_noise_V": 5.4487017774e-08,
               "threshold_V": 0.00023648807279929998,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -10913,7 +10913,7 @@
               "baseline_mad_V": 5.812975e-09,
               "robust_noise_V": 8.618316735e-09,
               "threshold_V": 0.0002365063372294,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -10949,7 +10949,7 @@
               "baseline_mad_V": 6.458537e-10,
               "robust_noise_V": 9.5754269562e-10,
               "threshold_V": 0.00023721605359430998,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -10985,7 +10985,7 @@
               "baseline_mad_V": 1.39599265e-10,
               "robust_noise_V": 2.0696987028899997e-10,
               "threshold_V": 0.0004358315636484022,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -13139,7 +13139,7 @@
               "baseline_mad_V": 5.10916245e-05,
               "robust_noise_V": 7.57484424837e-05,
               "threshold_V": 0.00041661643366035,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13207,7 +13207,7 @@
               "baseline_mad_V": 3.6536787000000003e-05,
               "robust_noise_V": 5.41694404062e-05,
               "threshold_V": 0.00042213625579999993,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13254,7 +13254,7 @@
               "baseline_mad_V": 2.038032e-05,
               "robust_noise_V": 3.0215862432e-05,
               "threshold_V": 0.00032551066765,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13301,7 +13301,7 @@
               "baseline_mad_V": 1.837086895e-06,
               "robust_noise_V": 2.7236650305269996e-06,
               "threshold_V": 0.00023889001801174998,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13362,7 +13362,7 @@
               "baseline_mad_V": 1.86257567e-07,
               "robust_noise_V": 2.761454688342e-07,
               "threshold_V": 0.00023695312447344997,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13423,7 +13423,7 @@
               "baseline_mad_V": 3.675099e-08,
               "robust_noise_V": 5.4487017774e-08,
               "threshold_V": 0.00023655401279930002,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13484,7 +13484,7 @@
               "baseline_mad_V": 5.812975e-09,
               "robust_noise_V": 8.618316735e-09,
               "threshold_V": 0.0002364948922294,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13545,7 +13545,7 @@
               "baseline_mad_V": 6.458537e-10,
               "robust_noise_V": 9.5754269562e-10,
               "threshold_V": 0.00023723757859430995,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -13606,7 +13606,7 @@
               "baseline_mad_V": 1.39599265e-10,
               "robust_noise_V": 2.0696987028899997e-10,
               "threshold_V": 0.0004360489136484022,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -15429,8 +15429,8 @@
               "baseline_center_V": -3.0585741500000003e-06,
               "baseline_mad_V": 5.031264585e-05,
               "robust_noise_V": 7.459352873721e-05,
-              "threshold_V": 0.00041026440805465503,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_V": 0.00037176653932000005,
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -15448,11 +15448,11 @@
                   "peak_sample_index": 1199,
                   "peak_time_ps": 120.0,
                   "peak_voltage_V": 0.0004616496,
-                  "left_boundary_time_ps": 119.60000000000001,
-                  "right_boundary_time_ps": 121.39999999999999,
-                  "sample_count": 19,
-                  "signed_area_V_s": 7.523301449999929e-16,
-                  "signed_area_over_phi0": 0.36382523950250806
+                  "left_boundary_time_ps": 119.3,
+                  "right_boundary_time_ps": 121.5,
+                  "sample_count": 23,
+                  "signed_area_V_s": 9.095252050000005e-16,
+                  "signed_area_over_phi0": 0.43984443231727216
                 }
               ],
               "cluster_count": 1,
@@ -15466,7 +15466,7 @@
               "baseline_mad_V": 3.8503402e-05,
               "robust_noise_V": 5.70851438052e-05,
               "threshold_V": 0.00040644504530000004,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -15494,7 +15494,7 @@
               "baseline_mad_V": 2.1400305e-05,
               "robust_noise_V": 3.1728092193e-05,
               "threshold_V": 0.00031482185245,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -15522,7 +15522,7 @@
               "baseline_mad_V": 1.9464036699999997e-06,
               "robust_noise_V": 2.8857380811419993e-06,
               "threshold_V": 0.00023732982606549996,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -15558,7 +15558,7 @@
               "baseline_mad_V": 1.85673843e-07,
               "robust_noise_V": 2.752800396318e-07,
               "threshold_V": 0.00023608913942004995,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -15594,7 +15594,7 @@
               "baseline_mad_V": 3.833912e-08,
               "robust_noise_V": 5.6841579312e-08,
               "threshold_V": 0.00023605245434382498,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -15630,7 +15630,7 @@
               "baseline_mad_V": 5.9126700000000004e-09,
               "robust_noise_V": 8.766124542e-09,
               "threshold_V": 0.000236071577079625,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -15666,7 +15666,7 @@
               "baseline_mad_V": 6.545503500000001e-10,
               "robust_noise_V": 9.7043634891e-10,
               "threshold_V": 0.00023675692045558,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -15702,7 +15702,7 @@
               "baseline_mad_V": 1.45141415e-10,
               "robust_noise_V": 2.1518666187899998e-10,
               "threshold_V": 0.00043433566339137975,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [],
@@ -17840,7 +17840,7 @@
               "baseline_mad_V": 5.031264585e-05,
               "robust_noise_V": 7.459352873721e-05,
               "threshold_V": 0.00041026440805465503,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -17901,7 +17901,7 @@
               "baseline_mad_V": 3.8503402e-05,
               "robust_noise_V": 5.70851438052e-05,
               "threshold_V": 0.0004338293953,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -17948,7 +17948,7 @@
               "baseline_mad_V": 2.1400305e-05,
               "robust_noise_V": 3.1728092193e-05,
               "threshold_V": 0.00033270706244999994,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -17995,7 +17995,7 @@
               "baseline_mad_V": 1.9464036699999997e-06,
               "robust_noise_V": 2.8857380811419993e-06,
               "threshold_V": 0.00023943738606549997,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -18056,7 +18056,7 @@
               "baseline_mad_V": 1.85673843e-07,
               "robust_noise_V": 2.752800396318e-07,
               "threshold_V": 0.00023890296442004996,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -18117,7 +18117,7 @@
               "baseline_mad_V": 3.833912e-08,
               "robust_noise_V": 5.6841579312e-08,
               "threshold_V": 0.000238957804343825,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -18178,7 +18178,7 @@
               "baseline_mad_V": 5.9126700000000004e-09,
               "robust_noise_V": 8.766124542e-09,
               "threshold_V": 0.00024104542707962498,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -18239,7 +18239,7 @@
               "baseline_mad_V": 6.545503500000001e-10,
               "robust_noise_V": 9.7043634891e-10,
               "threshold_V": 0.00023753367545558,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [
@@ -18300,7 +18300,7 @@
               "baseline_mad_V": 1.45141415e-10,
               "robust_noise_V": 2.1518666187899998e-10,
               "threshold_V": 0.0004360279133913797,
-              "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+              "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
               "cluster_gap_rule_ps": 2.5,
               "valley_required_for_split": true,
               "valley_records": [

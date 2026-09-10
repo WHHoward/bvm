@@ -236,7 +236,7 @@ def independent_voltage_clusters(times: list[float], columns: dict[str, list[flo
     mad = statistics.median(abs(values[index] - center) for index in baseline)
     robust_noise = 1.4826 * mad
     peak_positive = max(values[index] - center for index in origin)
-    threshold = max(5.5 * robust_noise, 0.35 * peak_positive)
+    threshold = max(0.35 * peak_positive, min(5.5 * robust_noise, 0.8 * peak_positive))
     peaks = [index for index in origin if values[index] - center >= threshold and index > 0 and index + 1 < len(values) and values[index] >= values[index - 1] and values[index] > values[index + 1]]
     groups: list[list[int]] = []
     valley_records: list[dict[str, Any]] = []

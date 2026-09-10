@@ -8,6 +8,8 @@ This review used a stdlib-only CSV reader and an independently implemented phase
 - Window cardinalities: CONTROL_ORIGIN=[400], FINAL_ORIGIN=[900], PRE_SWITCH=[45].
 - Optional `V(IB|XBQ1)` is absent in all cases and remains `UNKNOWN`.
 - Differential voltage cumulative landmarks, post-BJ2 anchor arithmetic, required L1-zero proxy, strict L1 re-crossing and early-stop reason, raw hashes and new-run metadata hashes were independently checked.
+- The repaired second-response oracle was independently reimplemented from raw CSV: FINAL-baseline cumulative phase landmarks, direct voltage cluster counts, valley-gated terminal pulse segmentation and ordered second JTL wavefronts.
+- Adversarial oracle tests: the known single-response 0001 case was not classified as two; RJ2=12 / 0011 was explained as two only when all registered phase/voltage/terminal checks passed; the former strongest-L1-reference false-negative was exposed for RJ2=12/14/16 / 0011.
 
 Adversarial probes covered no-op parameterization, wrong-branch routing, weak-oracle disagreement, half-open window boundaries, stale raw artifacts and the scientific overclaim ceiling.
 

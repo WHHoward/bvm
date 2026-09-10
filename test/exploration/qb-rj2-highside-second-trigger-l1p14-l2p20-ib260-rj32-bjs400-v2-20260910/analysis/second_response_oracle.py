@@ -127,7 +127,7 @@ def _voltage_clusters(trace: Any, label: str) -> dict[str, Any]:
     mad = statistics.median(abs(value - center) for value in baseline_values)
     robust_noise = 1.4826 * mad
     peak_positive = max(values[index] - center for index in origin)
-    threshold = max(BASELINE_NOISE_MULTIPLIER * robust_noise, PEAK_FRACTION * peak_positive)
+    threshold = max(PEAK_FRACTION * peak_positive, min(BASELINE_NOISE_MULTIPLIER * robust_noise, 0.8 * peak_positive))
     peaks = [
         index for index in origin
         if values[index] - center >= threshold
@@ -186,7 +186,7 @@ def _voltage_clusters(trace: Any, label: str) -> dict[str, Any]:
         "baseline_mad_V": mad,
         "robust_noise_V": robust_noise,
         "threshold_V": threshold,
-        "threshold_rule": "max(5.5 * 1.4826 * baseline MAD, 0.35 * positive FINAL peak above baseline median)",
+        "threshold_rule": "max(0.35 * positive FINAL peak above baseline median, min(5.5 * 1.4826 * baseline MAD, 0.8 * positive FINAL peak))",
         "cluster_gap_rule_ps": 2.5,
         "valley_required_for_split": True,
         "valley_records": valley_records,

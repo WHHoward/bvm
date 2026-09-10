@@ -577,6 +577,7 @@ def main() -> int:
         "all_24_logical_cases": list(ALL_CASES),
         "scientific_analysis_performed": False,
     }
+    provenance["runs"] = {**provenance["new_runs"], **provenance["reused_runs"]}
     transformations = {
         "schema": "bjs400-l1-ibias-full-grid-transformation-registry-v1",
         "raw_immutable": True,

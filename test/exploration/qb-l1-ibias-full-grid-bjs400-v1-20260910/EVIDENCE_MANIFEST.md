@@ -9,7 +9,8 @@ This is an evidence-only handoff. Scientific interpretation is `NOT PERFORMED`.
 - New run matrix: the ten directories listed in `experiment.yaml`.
 - Mechanical QA: `qa/*.json` and `mechanical_summary.json`.
 - Standard visualization: `visualization/manifest.json` and `visualization/` navigation.
-- Evidence ZIP: `handoff/qb-l1-ibias-full-grid-bjs400-v1-20260910_raw_handoff.zip`
+- Evidence ZIP: `handoff/qb-l1-ibias-full-grid-bjs400-v1-20260910_raw_handoff_v2.zip`
+- Superseded invalid packaging attempt: `handoff/qb-l1-ibias-full-grid-bjs400-v1-20260910_raw_handoff.zip`; see detached `handoff/PACKAGE_QA_v1_INVALID.json`.
 - Evidence ZIP SHA-256: adjacent detached `handoff/PACKAGE_QA.json`.
 - Historical raw/deck provenance: `REUSED_REFERENCE_MANIFEST.json` and `references/reused/`.
 - Unauthorized follow-up: `none`.

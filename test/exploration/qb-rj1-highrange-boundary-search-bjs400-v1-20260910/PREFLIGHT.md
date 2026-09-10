@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Authority
 
 - Primary physical/stimulus authority: test/exploration/qb-rj1-switched-regime-characterization-bjs400-v1-20260910
-- Preflight HEAD: 9f3412453b2f617e39245a34c73af3f0c20881d4
+- Preflight HEAD: 209b812eae93b5565d94d07596ccdd10281df8d7
 - Fixed point: L1=1.6pH, IBias=260uA, BJS area=4, BJS Ic=400uA.
 - READ protocol: UNCHANGED/FROZEN.
 - New RJ1 values: 20/24/32/48ohm.

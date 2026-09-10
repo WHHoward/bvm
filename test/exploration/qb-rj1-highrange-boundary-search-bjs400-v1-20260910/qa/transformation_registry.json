@@ -1,0 +1,29 @@
+{
+  "schema": "rj1-highrange-transformation-registry-v1",
+  "raw_immutable": true,
+  "scientific_analysis_performed": false,
+  "transformations": [
+    {
+      "name": "mechanical_summary",
+      "operation": "actual-grid descriptive extrema, phase diagnostics, positive/negative BJ1 voltage areas and RJ1 power integral",
+      "scope": "registered mechanical arithmetic only"
+    },
+    {
+      "name": "phase_display",
+      "operation": "continuous_unwrap(raw_rad)/(2*pi)",
+      "scope": "diagnostic/display only",
+      "not_event_count": true,
+      "first_half_turn_not_event_time": true
+    },
+    {
+      "name": "standalone_plot_input",
+      "operation": "raw.csv direct; no crop/resample/derived CSV",
+      "scope": "visualization"
+    },
+    {
+      "name": "comparison_plot_input",
+      "operation": "temporary full-run merged CSV under /tmp; deleted after render",
+      "scope": "visualization"
+    }
+  ]
+}

@@ -80,12 +80,12 @@ def write_json(path: Path, value: Any) -> None:
 
 
 def raw_path(case_id: str) -> Path:
-    root = "runs" if case_id in NEW_RUNS else "references/reused"
+    root = "runs" if case_id in REGISTERED_NEW_RUNS else "references/reused"
     return EXP / root / case_id / "raw.csv"
 
 
 def deck_path(case_id: str) -> Path:
-    root = "runs" if case_id in NEW_RUNS else "references/reused"
+    root = "runs" if case_id in REGISTERED_NEW_RUNS else "references/reused"
     return EXP / root / case_id / "deck.cir"
 
 

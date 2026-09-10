@@ -136,6 +136,10 @@ mechanical_summary:
 visualization:
   profile: COMPACT_FLAT_RJ1_SWITCHED_REGIME
   renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
   layout: sep_comb
   color: dark
   phase_option: 2pi
@@ -176,4 +180,3 @@ prohibited_followups:
   - any timestep sweep, optimizer, threshold, event/SFQ counter, mechanism analysis or next experiment
 
 final_state: AWAITING_SCIENTIFIC_REVIEW
-

@@ -1,0 +1,181 @@
+schema_version: evidence-first-bjs400-rj2-highside-second-trigger-v2
+id: qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+
+question: >-
+  At fixed L1=1.4pH, L2=2.0pH, IBias=260uA, RJ1=32ohm and the accepted
+  BJS400 ARRAY history, record the bounded mechanical response as RJ2 is
+  increased through new values 12/14/16ohm, with the exact RJ2=10ohm pair
+  reused from the canonical high-side experiment.  After each RJ2 pair,
+  evaluate the ZERO_STATE_READ_CONTROL, 0001 first-response and second-trigger
+  guardrails before authorizing the next pair.
+motivation: >-
+  This is a staged high-side RJ2 second-trigger exploration.  The prior
+  canonical high-side data supplies an exact RJ2=10ohm reference; the new
+  values are bounded candidates, not a pre-decided threshold search result.
+interpretation_ceiling: >-
+  Preserve OBSERVED, DERIVED, BOUNDED_RESULT and UNKNOWN separately.  No phase
+  turn, voltage area, terminal area, current sign, or threshold is an SFQ count.
+  No mechanism, threshold, optimum, route choice, hardware claim, or follow-up
+  solve is authorized by this evidence-only run.
+
+physical_authority:
+  experiment: test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910
+  git_head: 345d54e6ebf9f0e8b39af616d942ff800ea4e0a7
+  source_manifest_sha256: 31752f9e74b95d1d787d88c146a1a7d650da5d37ac3a4a3a035494a604ef1b4d
+  source_package_sha256: 9b7422ff45a55f002c4b4f9d0501e63f3b4d48d7a1e19f42641c122b8f1fc42a
+  source_package_bytes: 7425003
+  role: exact RJ2=10ohm reusable pair, fixed high-side ARRAY history, probes, solver and grid
+  reuse_rule: exact immutable reuse only after source/archive/hash/deck/protocol verification
+
+changed:
+  - "RJ2: expose the existing QB RJ2 element through the audited parameterized include and use 12/14/16ohm"
+  - "execution: split new values into sequential two-mask stages with a mechanical CONTINUE gate"
+  - no other circuit, stimulus, topology, solver, timestep, load, bias or mask change
+
+frozen:
+  L1: 1.4pH
+  L2: 2.0pH
+  IBias: 260uA
+  RJ1: 32ohm
+  BJS: area=4; Ic=400uA
+  BJ1: current canonical value
+  BJ2: area=2
+  L3: 1.3pH
+  terminal_load: current canonical 10ohm terminal
+  topology: four BVMs -> COMMON_SL -> eight-JJ JSL -> QB -> six-stage JTL -> terminal
+  history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> mask-selective FINAL READ -> TAIL
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored 0 to 199.9ps at nominal 0.1ps spacing
+  solver: build/josim-cli; identity and hash in SOURCE_MANIFEST.json
+  raw: immutable solver output; no interpolation, resampling, smoothing, scaling, time shifting or sign correction
+
+rj2_matrix:
+  values_ohm: [10, 12, 14, 16]
+  new_values_ohm: [12, 14, 16]
+  masks: ["0001", "0011"]
+  logical_case_count: 8
+  historical_reuse_count: 2
+  new_physical_solve_max: 6
+  execution_stages:
+    - stage: 1
+      rj2_ohm: 12
+      pair: [ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001, ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011]
+    - stage: 2
+      rj2_ohm: 14
+      pair: [ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001, ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011]
+    - stage: 3
+      rj2_ohm: 16
+      pair: [ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001, ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011]
+  stop_rule: STOP on control/first-response failure, or on a second multi-evidence candidate only when control and first response are clean; otherwise CONTINUE
+  no_automatic_sweep: true
+  unauthorized_extra_solves: 0
+
+registered_runs:
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011
+authorized_runs:
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001
+  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011
+
+mask_semantics:
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  "0001": BVM4 active during FINAL READ only
+  "0011": BVM3 and BVM4 active simultaneously during FINAL READ only
+
+windows:
+  control_origin_ps: [70.0, 110.0]
+  control_baseline_ps: [61.0, 70.0]
+  final_origin_ps: [110.0, 200.0]
+  final_baseline_ps: [101.0, 110.0]
+  post_first_bj2_anchor: first FINAL-origin BJ2 +0.9 diagnostic turn
+  semantics: half-open windows over actual stored timestamps; dynamic endpoints are stored navigation markers
+
+mechanical_metrics:
+  phase: raw P radians; independently unwrapped then divided by 2*pi for diagnostic turns only
+  thresholds: +0.5, +0.9 and +1.5 relative turns; thresholds are navigation diagnostics only
+  l1_recrossing: only an actual stored negative-to-positive adjacent sample transition is OBSERVED_L1_RECROSSING
+  positive_excursions: first positive L1 segment and strongest later positive L1 segment after the BJ2 navigation anchor
+  response_candidate: BJ1 -> BJ2 -> QBOUT -> ordered JTL1..JTL6 -> terminal, mechanical multi-evidence candidate only
+  integration: trapezoid using actual stored time values; no interpolation or resampling
+
+guardrails:
+  zero_state_read_control: every executed RJ2/mask case separately inspects BJ1, BJ2, QBOUT, ordered JTL1..JTL6 and terminal
+  first_response_0001: retain separately; failure stops before the next RJ2 pair
+  first_response_0011: retain separately; failure stops before the next RJ2 pair
+  second_response: evaluate only after control and first response are clean
+  decision_artifact: qa/stages/stageN_decision.json
+  no_event_or_sfq_counter: true
+  outcome_labels: [OBSERVED, DERIVED, BOUNDED_RESULT, UNKNOWN]
+
+visualization:
+  profile: COMPACT_FLAT_RJ2_HIGHSIDE_SECOND_TRIGGER
+  renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0.0, 200.0]
+  focused_windows: []
+  standalone_input_policy: raw.csv direct
+  standalone_per_new_run: 3
+  comparison_total: 2
+  comparison_names: [RJ2_SECOND_TRIGGER_0001_COMPARE.html, RJ2_SECOND_TRIGGER_0011_COMPARE.html]
+  no_derived_plot_csv: true
+
+package:
+  include_plots: false
+  canonical_path: handoff/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910_raw_handoff.zip
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+  additional_paths:
+    - run.sh
+    - mechanical_summary.json
+    - references/reused
+    - REUSED_REFERENCE_MANIFEST.json
+    - HANDOFF_README.md
+    - RESULT_BRIEF.md
+    - EVIDENCE_MANIFEST.md
+    - RAW_ANALYSIS_HANDOFF_MANIFEST.json
+    - analysis/REVIEW.md
+    - analysis/prepare_experiment.py
+    - analysis/execute_pair.py
+    - analysis/stage_decision.py
+    - analysis/qa_pipeline.py
+    - analysis/independent_review.py
+    - analysis/render_l2_plots.py
+    - analysis/visualization_qa.py
+    - analysis/package_experiment.py
+    - qa/independent_review.json
+    - qa/protocol_audit.json
+    - qa/stages
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/deck.cir
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/deck.cir
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001/deck.cir
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011/deck.cir
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001/deck.cir
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011/deck.cir
+    - visualization
+
+final_state: AWAITING_SCIENTIFIC_REVIEW

@@ -1,0 +1,191 @@
+schema_version: evidence-first-bjs400-l2-highside-second-trigger-v1
+id: qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+
+question: >-
+  At fixed L1=1.4pH, RJ2=10ohm, IBias=260uA, RJ1=32ohm and BJS400 ARRAY
+  history, record whether increasing L2 from the exact reused 2.0pH point to
+  2.4/2.8/3.2pH makes the post-first-BJ2 second positive I(L1) excursion
+  deeper or longer, brings BJ1 closer to a second progression, and produces a
+  second complete downstream multi-evidence response without damaging CONTROL
+  or the 0001 first response. Do not treat L1>0 alone as regeneration.
+motivation: >-
+  This is a bounded high-L2 second-trigger search following the observed
+  RJ2=10ohm L1 re-crossing. The prior observation is authority context, not a
+  pre-decided outcome.
+interpretation_ceiling: >-
+  Preserve OBSERVED, DERIVED, BOUNDED_RESULT and UNKNOWN separately. No phase
+  turn, voltage area, terminal area, current peak or local threshold is an SFQ
+  count. No second-regeneration, damping-mechanism, optimum, route or paper
+  claim is made by this evidence package.
+
+physical_authority:
+  experiment: test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910
+  git_head: 345d54e6ebf9f0e8b39af616d942ff800ea4e0a7
+  source_manifest_sha256: 31752f9e74b95d1d787d88c146a1a7d650da5d37ac3a4a3a035494a604ef1b4d
+  source_package_sha256: 9b7422ff45a55f002c4b4f9d0501e63f3b4d48d7a1e19f42641c122b8f1fc42a
+  source_package_bytes: 7425003
+  role: exact L2=2.0pH/RJ2=10ohm baseline, BJS400 ARRAY fixture, history, controls, probes, solver and time grid
+  reuse_rule: exact immutable reuse only after source/archive/hash/deck/protocol verification
+
+changed:
+  - "L2: [DESIGNED] expose the existing 2.0pH element through a derived parameterized QB include and use 2.4/2.8/3.2pH"
+  - no L1, RJ2, RJ1, IBias, BJS, BJ1, BJ2, L3, topology, controls, solver, timestep, load or mask change
+
+frozen:
+  L1: 1.4pH
+  RJ2: 10ohm
+  IBias: 260uA
+  RJ1: 32ohm
+  BJS: area=4; Ic=400uA
+  BJ1: current canonical value; nominal Ic diagnostic derived from area=0.9 and canonical model
+  BJ2: area=2
+  L3: 1.3pH
+  terminal_load: current canonical 10ohm terminal
+  topology: four BVMs -> COMMON_SL -> eight-JJ JSL -> QB -> six-stage JTL -> terminal
+  history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> mask-selective FINAL READ -> TAIL
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored 0 to 199.9ps at nominal 0.1ps spacing
+  solver: build/josim-cli; identity and hash in SOURCE_MANIFEST.json
+  raw: immutable solver output; no interpolation, resampling, smoothing, scaling, time shifting or sign correction
+
+l2_matrix:
+  values_pH: [2.0, 2.4, 2.8, 3.2]
+  masks: ["0001", "0011"]
+  logical_case_count: 8
+  historical_reuse_count: 2
+  new_physical_solve_max: 6
+  unauthorized_extra_solves: 0
+  execution_order:
+    - L2=2.4pH / 0001
+    - L2=2.4pH / 0011
+    - L2=2.8pH / 0001
+    - L2=2.8pH / 0011
+    - L2=3.2pH / 0001
+    - L2=3.2pH / 0011
+  new_runs:
+    - runs/ARRAY_L1P14_L2P24_IB260_RJ32_RJ2P10_0001
+    - runs/ARRAY_L1P14_L2P24_IB260_RJ32_RJ2P10_0011
+    - runs/ARRAY_L1P14_L2P28_IB260_RJ32_RJ2P10_0001
+    - runs/ARRAY_L1P14_L2P28_IB260_RJ32_RJ2P10_0011
+    - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0001
+    - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0011
+  reused_runs:
+    - references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001
+    - references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011
+
+authorized_runs:
+  - runs/ARRAY_L1P14_L2P24_IB260_RJ32_RJ2P10_0001
+  - runs/ARRAY_L1P14_L2P24_IB260_RJ32_RJ2P10_0011
+  - runs/ARRAY_L1P14_L2P28_IB260_RJ32_RJ2P10_0001
+  - runs/ARRAY_L1P14_L2P28_IB260_RJ32_RJ2P10_0011
+  - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0001
+  - runs/ARRAY_L1P14_L2P32_IB260_RJ32_RJ2P10_0011
+
+early_stop:
+  enabled: true
+  condition: stop after a completed L2 pair if a second BJ1/BJ2/QBOUT/ordered-JTL1-to-JTL6/terminal multi-evidence candidate or a registered first-response/control failure is observed
+  action: preserve all already produced evidence and stop before the next L2 pair; do not add an intermediate point or continue optimization
+  L1_recrossing_alone: does_not_stop
+
+mask_semantics:
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  "0001": BVM4 active during FINAL READ only
+  "0011": BVM3 and BVM4 active simultaneously during FINAL READ only
+
+windows:
+  control_origin_ps: [70.0, 110.0]
+  control_baseline_ps: [61.0, 70.0]
+  final_origin_ps: [110.0, 200.0]
+  final_baseline_ps: [101.0, 110.0]
+  final_read_ps: [110.0, 121.0]
+  post_first_bj2_anchor: first FINAL-origin BJ2 +0.9 diagnostic turn
+  differential_windows:
+    - [110.0, first_BJ1_plus_0p5]
+    - [first_BJ1_plus_0p5, first_BJ2_plus_0p9]
+    - [first_BJ2_plus_0p9, 121.0]
+    - [121.0, 140.0]
+    - [first_BJ2_plus_0p9, 140.0]
+    - [first_BJ2_plus_0p9, 200.0]
+    - [110.0, 121.0]
+    - [110.0, 140.0]
+    - [110.0, 200.0]
+  semantics: half-open windows over actual stored timestamps; dynamic endpoints are stored navigation markers
+
+mechanical_metrics:
+  phase: raw P radians; independently continuous unwrap then divide by 2*pi for diagnostic turns only
+  thresholds: +0.5, +0.9 and +1.5 relative turns; threshold samples are navigation diagnostics only
+  l1_rearm: all stored-sample negative-to-positive transitions and positive dwell after first BJ2 anchor
+  first_vs_second: first positive L1 excursion versus strongest later positive excursion; direct BJ1 current/phase and source/receiver support
+  bj1_load_line: nominal Ic and max|I(BJ1)|/Ic are DERIVED_LOAD_LINE_DIAGNOSTIC only
+  differential_voltage: direct V(BJ1), V(BJ2) and V(BJ1)-V(BJ2) areas on actual stored grid plus cumulative 110-to-t landmarks
+  timing: every first/second marker and strongest excursion classified BEFORE_READ_END, AT_READ_END or AFTER_READ_END relative to 121ps
+  response_candidate: BJ1 -> BJ2 -> QBOUT -> ordered JTL1..JTL6 -> terminal, mechanical multi-evidence candidate only
+  second_response: require all second-chain components; L1>0 alone is insufficient
+  integration: trapezoid using actual stored time values; no interpolation or resampling
+
+guardrails:
+  zero_state_read_control: all L2/mask cases separately inspect BJ1, BJ2, QBOUT, ordered JTL1..JTL6 and terminal
+  control_failure_rule: a complete control-window multi-evidence progression is UNSUITABLE_WORKING_POINT
+  first_response_0001: separately retain its first multi-evidence candidate; missing candidate is first-response failure boundary
+  first_response_0011: separately retain its first progression before any second candidate
+  no_event_or_sfq_counter: true
+  outcome_labels: [OBSERVED, DERIVED, BOUNDED_RESULT, UNKNOWN]
+
+probe_schema:
+  controls: I(I_WL1..4), I(I_BL1..4), I(I_SE1..4)
+  bvm: P/V/I(B_JM1,B_JM2,B_JS1,B_JS2), I/V registered branches and L_SL for XBVM1..4
+  interface: V(COMMON_SL), P/V/I(B_JSL1..8), I(B_JSL8), V(QBIN)
+  qb: V(QBIN), I/V(LIN), P/V/I(BJS), P/V/I(BJ1), I/V(RJ1), I/V(L1), I/V(IB), I/V(L2), P/V/I(BJ2), I/V(RJ2), I/V(L3), V(QBOUT)
+  jtl: P/V/I(B01), P/V/I(B02), V(stage_OUT) for XJTL1_1..6, V(JTL6_OUT), I(R_TERM)
+  optional_unknown: V(IB|XBQ1) if the solver does not emit it
+  missing_probe_policy: preserve requested probe and mark UNKNOWN; never fabricate
+
+visualization:
+  profile: COMPACT_FLAT_L2_SECOND_TRIGGER
+  renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0.0, 200.0]
+  focused_windows: []
+  standalone_input_policy: raw.csv direct
+  standalone_per_new_run: 3
+  standalone_max: 18
+  comparison_total: 2
+  comparison_names: [L2_SECOND_TRIGGER_0001_COMPARE.html, L2_SECOND_TRIGGER_0011_COMPARE.html]
+  no_derived_plot_csv: true
+
+package:
+  include_plots: false
+  canonical_path: handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+  additional_paths:
+    - mechanical_summary.json
+    - references/reused
+    - REUSED_REFERENCE_MANIFEST.json
+    - HANDOFF_README.md
+    - RESULT_BRIEF.md
+    - EVIDENCE_MANIFEST.md
+    - RAW_ANALYSIS_HANDOFF_MANIFEST.json
+    - analysis/REVIEW.md
+    - analysis/independent_review.py
+    - qa/independent_review.json
+    - visualization
+
+final_state: AWAITING_SCIENTIFIC_REVIEW

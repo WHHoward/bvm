@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Identity and authority
 
 - Experiment: `qb-l1-ibias-full-grid-bjs400-v1-20260910`
-- Preflight HEAD: `017a36c3735d34f4e11acb1d1ea69582204aa962`
+- Preflight HEAD: `918626d1310b3fb20add4c5bde575fda3a98b295`
 - Preregistration HEAD: `59d60367b1572994bda195624b90286531d962cd`
 - Physical/stimulus authority: `test/exploration/qb-bjs400-array-population-single-matched-v1-20260909`
 - Historical interaction reuse authority: `test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909`

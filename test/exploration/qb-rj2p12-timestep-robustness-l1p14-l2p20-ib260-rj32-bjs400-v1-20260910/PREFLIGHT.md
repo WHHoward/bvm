@@ -3,7 +3,7 @@
 This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910`
-- Preflight HEAD: `fd1fc5cfe6de95fa9a7e187fb3f5d6ede2dbf53a`
+- Preflight HEAD: `edd55f9899ccb71e0a42a079d4842b1faa6876cc`
 - Phase A oracle repair commit: `fd1fc5cf`; oracle SHA-256 `f5365ba4651cc1828b32a5932eb5c4cab7bda3317c81563e0cbb6571abe7230f`.
 - Canonical timestep remains `.tran=0.1p`; this experiment uses 0.05ps and 0.025ps only as local robustness spot-checks.
 - Fixed L1=1.4pH, L2=2.0pH, IBias=260uA, RJ1=32ohm, RJ2=12ohm, BJS area=4/Ic=400uA, BJ1/BJ2/L3/load/topology/history unchanged.

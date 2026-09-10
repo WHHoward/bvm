@@ -1,0 +1,135 @@
+{
+  "schema": "bjs400-rj2p12-timestep-preflight-v1",
+  "experiment_id": "qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T19:46:35+08:00",
+  "status": "PASS",
+  "head": "fd1fc5cfe6de95fa9a7e187fb3f5d6ede2dbf53a",
+  "head_refresh": false,
+  "preregistration_head": "fd1fc5cfe6de95fa9a7e187fb3f5d6ede2dbf53a",
+  "oracle_repair_commit": "fd1fc5cf",
+  "new_physical_solve_count": 4,
+  "authorized_new_physical_solve_count": 4,
+  "reused_physical_case_count": 2,
+  "logical_case_count": 6,
+  "unauthorized_extra_solves": 0,
+  "fixed_working_point": {
+    "L1_pH": 1.4,
+    "L2_pH": 2.0,
+    "IBias_uA": 260.0,
+    "RJ1_ohm": 32.0,
+    "RJ2_ohm": 12.0,
+    "BJS_area": 4,
+    "BJS_Ic_uA": 400
+  },
+  "new_timestep_ps": [
+    0.05,
+    0.025
+  ],
+  "reused_timestep_ps": 0.1,
+  "authorized_masks": [
+    "0001",
+    "0011"
+  ],
+  "reuse_status": "PASS",
+  "reuse_manifest_sha256": "2b949d71256e7e65c0c0ea04b44804bebb846272aca04fa1611099bd641a4b85",
+  "generated_decks": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001": {
+      "dt_ps": 0.05,
+      "mask": "0001",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "dt_ps": 0.05
+      },
+      "path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001/deck.cir",
+      "sha256": "a0d9aed4e64c33af6c5a08540af8bff1a75d1f1560e1809b8914be6b8e2d8b8c",
+      "bytes": 7485
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011": {
+      "dt_ps": 0.05,
+      "mask": "0011",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "dt_ps": 0.05
+      },
+      "path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011/deck.cir",
+      "sha256": "fb428faa77e37ec3f98a27c58e73614491451ff4200c61e96eec54e7472c521d",
+      "bytes": 7501
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001": {
+      "dt_ps": 0.025,
+      "mask": "0001",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "dt_ps": 0.025
+      },
+      "path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001/deck.cir",
+      "sha256": "6b4bbcbac0c2008a63e0c263c427e98e180cd42a4b61644e48ae60780be84e08",
+      "bytes": 7486
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011": {
+      "dt_ps": 0.025,
+      "mask": "0011",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "dt_ps": 0.025
+      },
+      "path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011/deck.cir",
+      "sha256": "9eeedc05201461043c74af25c54800860a7f9db0dbcd533fc7cc0c1fe4cfc649",
+      "bytes": 7502
+    }
+  },
+  "deck_status": "PASS",
+  "deck_checks": {
+    "schema": "bjs400-rj2p12-timestep-deck-preflight-v1",
+    "status": "PASS",
+    "new_run_count": 4,
+    "reused_case_count": 2,
+    "new_dt_ps": [
+      0.05,
+      0.025
+    ],
+    "only_tran_delta": true,
+    "failures": [],
+    "runs": {
+      "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001": {
+        "dt_ps": 0.05,
+        "mask": "0001",
+        "deck_sha256": "a0d9aed4e64c33af6c5a08540af8bff1a75d1f1560e1809b8914be6b8e2d8b8c"
+      },
+      "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011": {
+        "dt_ps": 0.05,
+        "mask": "0011",
+        "deck_sha256": "fb428faa77e37ec3f98a27c58e73614491451ff4200c61e96eec54e7472c521d"
+      },
+      "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001": {
+        "dt_ps": 0.025,
+        "mask": "0001",
+        "deck_sha256": "6b4bbcbac0c2008a63e0c263c427e98e180cd42a4b61644e48ae60780be84e08"
+      },
+      "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011": {
+        "dt_ps": 0.025,
+        "mask": "0011",
+        "deck_sha256": "9eeedc05201461043c74af25c54800860a7f9db0dbcd533fc7cc0c1fe4cfc649"
+      }
+    }
+  },
+  "oracle_code_sha256": "f5365ba4651cc1828b32a5932eb5c4cab7bda3317c81563e0cbb6571abe7230f",
+  "canonical_timestep_policy": "0.1ps remains standard; 0.05/0.025ps are local robustness spot-checks only",
+  "scientific_analysis_performed": false
+}

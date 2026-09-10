@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Authority and fixed point
 
 - Experiment: `qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910`
-- Preflight HEAD: `e91beb80acd009ce47fbd3a3c70a9315a579d3ad`
+- Preflight HEAD: `314afe6115d488dab68b97a9609e4312763ee2d8`
 - Preregistration HEAD: `e91beb80acd009ce47fbd3a3c70a9315a579d3ad`
 - Primary authority: `test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910`; source package SHA-256 `7ccb82a479f792a14e8f1e6bbe66f7f8acd51ef133f6fbe23175b74306c0ab18`.
 - Fixed L1=1.4pH, IBias=260uA, BJS area=4 / Ic=400uA, terminal=10ohm.
@@ -33,6 +33,8 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 - BJ1/BJ2 phase is independently unwrapped from raw radians and displayed as rad/(2*pi) turns; +0.5 timing is a navigation diagnostic, never an event time/count.
 - JTL progression candidate uses fixed +0.5-turn stage-B01 timing in order across JTL1..JTL6; a second candidate uses fixed +1.5-turn timing. Both are MECHANICAL_CANDIDATE_ONLY, not SFQ/event classifiers.
 - RJ1 I/V extrema and V*I energy are separated for CONTROL_ORIGIN and FINAL_ORIGIN; L1 zero crossings use stored sample transition times only, no interpolation.
+- POST_FIRST_BJ1_REARM_DIAGNOSTICS uses the first FINAL-origin BJ1 +0.5-turn timing diagnostic as t_BJ1_half; L1 negative-to-positive is MECHANICAL_REARM_PROXY_ONLY.
+- Post-anchor L2 local maxima separated by at least 1.0ps are MECHANICAL_SECOND_SURGE_PROXY_ONLY; BJ2 +1.5 and JTL +0.5/+1.5 fields are mechanical threshold/candidate diagnostics only.
 - Terminal V(JTL6_OUT) signed areas are separately recorded in CONTROL_ORIGIN and FINAL_ORIGIN; whole-run area is labeled WHOLE_RUN_TOTAL_ONLY and is not a population count.
 - I(B_JSL8) and I(LIN) [110,114.5) signed-area ratios are labeled MECHANICAL_PRE_SWITCH_PROXY; ambiguous denominators are UNKNOWN.
 

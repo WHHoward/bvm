@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Authority and fixed point
 
 - Experiment: `qb-l2-rearm-sweep-l1p14-ib260-rj32-bjs400-v1-20260910`
-- Preflight HEAD: `d9656152fc2a7f8ac45e0cf53b00e63db9d11266`
+- Preflight HEAD: `04ea8c72e576b3fb4fe6bd76344b42c273cf0f79`
 - Preregistration HEAD: `d9656152fc2a7f8ac45e0cf53b00e63db9d11266`
 - Primary authority: `test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910`; source package SHA-256 `7b8da746829605973e0b8d469deccbf8e254df59d46bca02f4b181e584988ea8`.
 - Fixed L1=1.4pH, IBias=260uA, RJ1=32ohm, BJS area=4 / Ic=400uA, terminal=10ohm.
@@ -45,6 +45,6 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 ## Automatic preflight result
 
-- RJ1=12 reuse comparability: `PASS`.
+- L2=2.0pH reuse comparability: `PASS`.
 - New deck checks: `PASS`.
 - Physical execution has not started at preflight.

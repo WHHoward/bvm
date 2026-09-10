@@ -5,7 +5,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 ## Authority and fixed point
 
 - Experiment: `qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910`
-- Preflight HEAD: `c8fc8c5b6483d65e7b2e04e470e81ca07c95fd3f`
+- Preflight HEAD: `f18f4b43ee3666f650bb8182ffd93a228ab567ec`
 - Preregistration HEAD: `c8fc8c5b6483d65e7b2e04e470e81ca07c95fd3f`
 - Primary authority: `test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910`; source package SHA-256 `897a8c2cbf17f9aba4fdc688a82b62080a1398b4afcacbde30db9411bd9dfb09`.
 - Fixed L1=1.4pH, IBias=260uA, RJ1=32ohm, BJS area=4 / Ic=400uA, terminal=10ohm.

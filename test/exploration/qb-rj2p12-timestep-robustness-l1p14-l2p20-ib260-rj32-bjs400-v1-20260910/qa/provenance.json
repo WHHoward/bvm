@@ -1,0 +1,852 @@
+{
+  "schema": "bjs400-rj2p12-timestep-provenance-v1",
+  "experiment_id": "qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T19:57:15+08:00",
+  "authority_experiment": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+  "authority_package_sha256": "84e1a8654aa16baf2fe81f96f9cdc4ce8af6efbeb5f617a12c8123b8b13a9bde",
+  "oracle_code": "analysis/second_response_oracle.py",
+  "oracle_code_sha256": "4d39bc457e0ea010ac9f312dbc1c40b6e65dea123865608f4ad066a05773e860",
+  "runs": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0001": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0001",
+      "dt_ps": 0.1,
+      "mask": "0001",
+      "rj2_ohm": 12.0,
+      "physical_solve_this_experiment": false,
+      "raw_path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0001/raw.csv",
+      "raw_sha256": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+      "sample_count": 1999,
+      "first_timestamp_s": 0.0,
+      "last_timestamp_s": 1.999e-10,
+      "dt_min_ps": 0.09999999999997898,
+      "dt_max_ps": 0.19999999999999996,
+      "control": {
+        "status": "CLEAN",
+        "markers": {
+          "BJ1_0p5_time_ps": null,
+          "BJ2_0p9_time_ps": null,
+          "JTL_first_time_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          }
+        },
+        "complete_control_progression": false,
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "baseline_ps": [
+          61.0,
+          70.0
+        ],
+        "label": "ZERO_STATE_READ_CONTROL_GUARDRAIL_ONLY"
+      },
+      "oracle_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "first_response_status": "BOUNDED_RESULT",
+      "single_response_status": "BOUNDED_RESULT",
+      "oracle_first_checks": {
+        "first_phase_landmarks_present": true,
+        "first_phase_ordered": true,
+        "first_voltage_cluster_present_per_registered_signal": true,
+        "first_terminal_response_cluster_present": true,
+        "first_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "oracle_second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.067833842668453e-15,
+        "total_final_area_over_phi0": 0.9999999974216752,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 138.4,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 2.067833842668453e-15,
+            "signed_area_over_phi0": 0.9999999974216752
+          }
+        ],
+        "split_performed": false
+      },
+      "timing_metrics": {
+        "first_BJ1_time_ps": 119.79999999999998,
+        "second_BJ1_time_ps": null,
+        "first_BJ2_time_ps": 121.6,
+        "second_BJ2_time_ps": null,
+        "first_QBOUT_time_ps": 120.89999999999999,
+        "second_QBOUT_time_ps": null,
+        "first_JTL_time_ps": {
+          "JTL1": 123.6,
+          "JTL2": 126.60000000000001,
+          "JTL3": 129.6,
+          "JTL4": 132.60000000000002,
+          "JTL5": 135.6,
+          "JTL6": 138.4
+        },
+        "second_JTL_time_ps": {
+          "JTL1": null,
+          "JTL2": null,
+          "JTL3": null,
+          "JTL4": null,
+          "JTL5": null,
+          "JTL6": null
+        },
+        "terminal_pulse_1_time_ps": 138.4,
+        "terminal_pulse_2_time_ps": null,
+        "terminal_pulse_separation_ps": null,
+        "terminal_pulse_1_area_over_phi0": 0.9999999974216752,
+        "terminal_pulse_2_area_over_phi0": null,
+        "terminal_final_area_over_phi0": 0.9999999974216752
+      },
+      "strongest_post_first_L1_positive_excursion": {
+        "status": "DERIVED",
+        "segment_count": 0,
+        "peak_A": null,
+        "peak_time_ps": null,
+        "label": "POST_FIRST_L1_ACTIVITY_ONLY"
+      },
+      "scientific_interpretation_performed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0011": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0011",
+      "dt_ps": 0.1,
+      "mask": "0011",
+      "rj2_ohm": 12.0,
+      "physical_solve_this_experiment": false,
+      "raw_path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0011/raw.csv",
+      "raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "sample_count": 1999,
+      "first_timestamp_s": 0.0,
+      "last_timestamp_s": 1.999e-10,
+      "dt_min_ps": 0.09999999999997898,
+      "dt_max_ps": 0.19999999999999996,
+      "control": {
+        "status": "CLEAN",
+        "markers": {
+          "BJ1_0p5_time_ps": null,
+          "BJ2_0p9_time_ps": null,
+          "JTL_first_time_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          }
+        },
+        "complete_control_progression": false,
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "baseline_ps": [
+          61.0,
+          70.0
+        ],
+        "label": "ZERO_STATE_READ_CONTROL_GUARDRAIL_ONLY"
+      },
+      "oracle_status": "BOUNDED_RESULT",
+      "first_response_status": "BOUNDED_RESULT",
+      "single_response_status": "NO_SINGLE_COMPLETE_RESPONSE_CANDIDATE",
+      "oracle_first_checks": {
+        "first_phase_landmarks_present": true,
+        "first_phase_ordered": true,
+        "first_voltage_cluster_present_per_registered_signal": true,
+        "first_terminal_response_cluster_present": true,
+        "first_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "oracle_second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 2,
+        "V(BJ2|XBQ1)": 2,
+        "V(QBOUT)": 2,
+        "V(JTL1_OUT)": 2,
+        "V(JTL2_OUT)": 2,
+        "V(JTL3_OUT)": 2,
+        "V(JTL4_OUT)": 2,
+        "V(JTL5_OUT)": 2,
+        "V(JTL6_OUT)": 2
+      },
+      "terminal_pulse_analysis": {
+        "status": "TWO_SEPARATED_PULSES",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 4.135667705314759e-15,
+        "total_final_area_over_phi0": 2.000000004504597,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 2,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 133.9,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 135.5,
+            "signed_area_V_s": 2.156406300302307e-15,
+            "signed_area_over_phi0": 1.04283344737198
+          },
+          {
+            "pulse_index": 2,
+            "peak_time_ps": 144.3,
+            "left_boundary_time_ps": 135.5,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 1.9792614050124513e-15,
+            "signed_area_over_phi0": 0.9571665571326169
+          }
+        ],
+        "pulse_separation_ps": 10.400000000000006,
+        "valley_time_ps": 135.5,
+        "valley_value_V": -0.0001208254,
+        "valley_below_threshold": true,
+        "split_performed": true,
+        "area_partition_residual_V_s": 3.944304526105059e-31
+      },
+      "timing_metrics": {
+        "first_BJ1_time_ps": 115.2,
+        "second_BJ1_time_ps": 125.9,
+        "first_BJ2_time_ps": 116.9,
+        "second_BJ2_time_ps": 126.39999999999999,
+        "first_QBOUT_time_ps": 116.39999999999999,
+        "second_QBOUT_time_ps": 126.8,
+        "first_JTL_time_ps": {
+          "JTL1": 119.0,
+          "JTL2": 122.1,
+          "JTL3": 125.10000000000001,
+          "JTL4": 128.1,
+          "JTL5": 131.1,
+          "JTL6": 133.9
+        },
+        "second_JTL_time_ps": {
+          "JTL1": 129.5,
+          "JTL2": 132.5,
+          "JTL3": 135.5,
+          "JTL4": 138.5,
+          "JTL5": 141.5,
+          "JTL6": 144.3
+        },
+        "terminal_pulse_1_time_ps": 133.9,
+        "terminal_pulse_2_time_ps": 144.3,
+        "terminal_pulse_separation_ps": 10.400000000000006,
+        "terminal_pulse_1_area_over_phi0": 1.04283344737198,
+        "terminal_pulse_2_area_over_phi0": 0.9571665571326169,
+        "terminal_final_area_over_phi0": 2.000000004504597
+      },
+      "strongest_post_first_L1_positive_excursion": {
+        "status": "DERIVED",
+        "segment_count": 3,
+        "start_time_ps": 123.9,
+        "end_time_ps": 126.19999999999999,
+        "dwell_ps": 2.2999999999999816,
+        "peak_A": 3.999782e-05,
+        "peak_uA": 39.99782,
+        "peak_time_ps": 124.6,
+        "label": "POST_FIRST_L1_ACTIVITY_ONLY",
+        "not_event_count": true,
+        "not_sfq_count": true
+      },
+      "scientific_interpretation_performed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001",
+      "dt_ps": 0.05,
+      "mask": "0001",
+      "rj2_ohm": 12.0,
+      "physical_solve_this_experiment": true,
+      "raw_path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001/raw.csv",
+      "raw_sha256": "66e2d99e18a3f491a255cd2176cca6b1c81fda99f381b783fd787c6b5935fef2",
+      "sample_count": 3999,
+      "first_timestamp_s": 0.0,
+      "last_timestamp_s": 1.9995e-10,
+      "dt_min_ps": 0.04999999999998949,
+      "dt_max_ps": 0.09999999999999998,
+      "control": {
+        "status": "CLEAN",
+        "markers": {
+          "BJ1_0p5_time_ps": null,
+          "BJ2_0p9_time_ps": null,
+          "JTL_first_time_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          }
+        },
+        "complete_control_progression": false,
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "baseline_ps": [
+          61.0,
+          70.0
+        ],
+        "label": "ZERO_STATE_READ_CONTROL_GUARDRAIL_ONLY"
+      },
+      "oracle_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "first_response_status": "BOUNDED_RESULT",
+      "single_response_status": "BOUNDED_RESULT",
+      "oracle_first_checks": {
+        "first_phase_landmarks_present": true,
+        "first_phase_ordered": true,
+        "first_voltage_cluster_present_per_registered_signal": true,
+        "first_terminal_response_cluster_present": true,
+        "first_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "oracle_second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.0678336698336474e-15,
+        "total_final_area_over_phi0": 0.9999999138391351,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 138.3,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.95,
+            "signed_area_V_s": 2.0678336698336474e-15,
+            "signed_area_over_phi0": 0.9999999138391351
+          }
+        ],
+        "split_performed": false
+      },
+      "timing_metrics": {
+        "first_BJ1_time_ps": 119.64999999999999,
+        "second_BJ1_time_ps": null,
+        "first_BJ2_time_ps": 122.49999999999999,
+        "second_BJ2_time_ps": null,
+        "first_QBOUT_time_ps": 120.80000000000001,
+        "second_QBOUT_time_ps": null,
+        "first_JTL_time_ps": {
+          "JTL1": 123.49999999999999,
+          "JTL2": 126.5,
+          "JTL3": 129.5,
+          "JTL4": 132.5,
+          "JTL5": 135.5,
+          "JTL6": 138.3
+        },
+        "second_JTL_time_ps": {
+          "JTL1": null,
+          "JTL2": null,
+          "JTL3": null,
+          "JTL4": null,
+          "JTL5": null,
+          "JTL6": null
+        },
+        "terminal_pulse_1_time_ps": 138.3,
+        "terminal_pulse_2_time_ps": null,
+        "terminal_pulse_separation_ps": null,
+        "terminal_pulse_1_area_over_phi0": 0.9999999138391351,
+        "terminal_pulse_2_area_over_phi0": null,
+        "terminal_final_area_over_phi0": 0.9999999138391351
+      },
+      "strongest_post_first_L1_positive_excursion": {
+        "status": "DERIVED",
+        "segment_count": 0,
+        "peak_A": null,
+        "peak_time_ps": null,
+        "label": "POST_FIRST_L1_ACTIVITY_ONLY"
+      },
+      "scientific_interpretation_performed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011",
+      "dt_ps": 0.05,
+      "mask": "0011",
+      "rj2_ohm": 12.0,
+      "physical_solve_this_experiment": true,
+      "raw_path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011/raw.csv",
+      "raw_sha256": "17b4b2726e0920b9446d092ac950ab72315c5dbcbe4cec8036aa07e4525f8a17",
+      "sample_count": 3999,
+      "first_timestamp_s": 0.0,
+      "last_timestamp_s": 1.9995e-10,
+      "dt_min_ps": 0.04999999999998949,
+      "dt_max_ps": 0.09999999999999998,
+      "control": {
+        "status": "CLEAN",
+        "markers": {
+          "BJ1_0p5_time_ps": null,
+          "BJ2_0p9_time_ps": null,
+          "JTL_first_time_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          }
+        },
+        "complete_control_progression": false,
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "baseline_ps": [
+          61.0,
+          70.0
+        ],
+        "label": "ZERO_STATE_READ_CONTROL_GUARDRAIL_ONLY"
+      },
+      "oracle_status": "BOUNDED_RESULT",
+      "first_response_status": "BOUNDED_RESULT",
+      "single_response_status": "NO_SINGLE_COMPLETE_RESPONSE_CANDIDATE",
+      "oracle_first_checks": {
+        "first_phase_landmarks_present": true,
+        "first_phase_ordered": true,
+        "first_voltage_cluster_present_per_registered_signal": true,
+        "first_terminal_response_cluster_present": true,
+        "first_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "oracle_second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 2,
+        "V(BJ2|XBQ1)": 2,
+        "V(QBOUT)": 2,
+        "V(JTL1_OUT)": 2,
+        "V(JTL2_OUT)": 2,
+        "V(JTL3_OUT)": 2,
+        "V(JTL4_OUT)": 2,
+        "V(JTL5_OUT)": 2,
+        "V(JTL6_OUT)": 2
+      },
+      "terminal_pulse_analysis": {
+        "status": "TWO_SEPARATED_PULSES",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 4.135667571474278e-15,
+        "total_final_area_over_phi0": 1.9999999397796284,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 2,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 133.75,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 135.45000000000002,
+            "signed_area_V_s": 2.145981815389413e-15,
+            "signed_area_over_phi0": 1.037792188896123
+          },
+          {
+            "pulse_index": 2,
+            "peak_time_ps": 143.35,
+            "left_boundary_time_ps": 135.45000000000002,
+            "right_boundary_time_ps": 199.95,
+            "signed_area_V_s": 1.989685756084865e-15,
+            "signed_area_over_phi0": 0.9622077508835056
+          }
+        ],
+        "pulse_separation_ps": 9.599999999999994,
+        "valley_time_ps": 135.45000000000002,
+        "valley_value_V": -0.0001124633,
+        "valley_below_threshold": true,
+        "split_performed": true,
+        "area_partition_residual_V_s": -3.944304526105059e-31
+      },
+      "timing_metrics": {
+        "first_BJ1_time_ps": 115.1,
+        "second_BJ1_time_ps": 124.75000000000001,
+        "first_BJ2_time_ps": 116.8,
+        "second_BJ2_time_ps": 125.4,
+        "first_QBOUT_time_ps": 116.3,
+        "second_QBOUT_time_ps": 125.8,
+        "first_JTL_time_ps": {
+          "JTL1": 118.94999999999999,
+          "JTL2": 121.95,
+          "JTL3": 124.94999999999999,
+          "JTL4": 127.95,
+          "JTL5": 130.95,
+          "JTL6": 133.75
+        },
+        "second_JTL_time_ps": {
+          "JTL1": 128.45000000000002,
+          "JTL2": 131.5,
+          "JTL3": 134.5,
+          "JTL4": 137.5,
+          "JTL5": 140.5,
+          "JTL6": 143.35
+        },
+        "terminal_pulse_1_time_ps": 133.75,
+        "terminal_pulse_2_time_ps": 143.35,
+        "terminal_pulse_separation_ps": 9.599999999999994,
+        "terminal_pulse_1_area_over_phi0": 1.037792188896123,
+        "terminal_pulse_2_area_over_phi0": 0.9622077508835056,
+        "terminal_final_area_over_phi0": 1.9999999397796284
+      },
+      "strongest_post_first_L1_positive_excursion": {
+        "status": "DERIVED",
+        "segment_count": 3,
+        "start_time_ps": 123.55,
+        "end_time_ps": 125.00000000000001,
+        "dwell_ps": 1.4500000000000053,
+        "peak_A": 4.541332e-05,
+        "peak_uA": 45.413320000000006,
+        "peak_time_ps": 124.3,
+        "label": "POST_FIRST_L1_ACTIVITY_ONLY",
+        "not_event_count": true,
+        "not_sfq_count": true
+      },
+      "scientific_interpretation_performed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001",
+      "dt_ps": 0.025,
+      "mask": "0001",
+      "rj2_ohm": 12.0,
+      "physical_solve_this_experiment": true,
+      "raw_path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001/raw.csv",
+      "raw_sha256": "84166dc62e4eee42a5c230e63dd3201efa7702ab6d0ccf80453cc0c09f838994",
+      "sample_count": 7999,
+      "first_timestamp_s": 0.0,
+      "last_timestamp_s": 1.99975e-10,
+      "dt_min_ps": 0.024999999999981818,
+      "dt_max_ps": 0.04999999999999999,
+      "control": {
+        "status": "CLEAN",
+        "markers": {
+          "BJ1_0p5_time_ps": null,
+          "BJ2_0p9_time_ps": null,
+          "JTL_first_time_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          }
+        },
+        "complete_control_progression": false,
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "baseline_ps": [
+          61.0,
+          70.0
+        ],
+        "label": "ZERO_STATE_READ_CONTROL_GUARDRAIL_ONLY"
+      },
+      "oracle_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "first_response_status": "BOUNDED_RESULT",
+      "single_response_status": "BOUNDED_RESULT",
+      "oracle_first_checks": {
+        "first_phase_landmarks_present": true,
+        "first_phase_ordered": true,
+        "first_voltage_cluster_present_per_registered_signal": true,
+        "first_terminal_response_cluster_present": true,
+        "first_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "oracle_second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.0678337436901537e-15,
+        "total_final_area_over_phi0": 0.9999999495559827,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 138.275,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.975,
+            "signed_area_V_s": 2.0678337436901537e-15,
+            "signed_area_over_phi0": 0.9999999495559827
+          }
+        ],
+        "split_performed": false
+      },
+      "timing_metrics": {
+        "first_BJ1_time_ps": 119.575,
+        "second_BJ1_time_ps": null,
+        "first_BJ2_time_ps": 122.45,
+        "second_BJ2_time_ps": null,
+        "first_QBOUT_time_ps": 120.75,
+        "second_QBOUT_time_ps": null,
+        "first_JTL_time_ps": {
+          "JTL1": 123.45,
+          "JTL2": 126.475,
+          "JTL3": 129.45,
+          "JTL4": 132.45,
+          "JTL5": 135.45000000000002,
+          "JTL6": 138.275
+        },
+        "second_JTL_time_ps": {
+          "JTL1": null,
+          "JTL2": null,
+          "JTL3": null,
+          "JTL4": null,
+          "JTL5": null,
+          "JTL6": null
+        },
+        "terminal_pulse_1_time_ps": 138.275,
+        "terminal_pulse_2_time_ps": null,
+        "terminal_pulse_separation_ps": null,
+        "terminal_pulse_1_area_over_phi0": 0.9999999495559827,
+        "terminal_pulse_2_area_over_phi0": null,
+        "terminal_final_area_over_phi0": 0.9999999495559827
+      },
+      "strongest_post_first_L1_positive_excursion": {
+        "status": "DERIVED",
+        "segment_count": 0,
+        "peak_A": null,
+        "peak_time_ps": null,
+        "label": "POST_FIRST_L1_ACTIVITY_ONLY"
+      },
+      "scientific_interpretation_performed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011",
+      "dt_ps": 0.025,
+      "mask": "0011",
+      "rj2_ohm": 12.0,
+      "physical_solve_this_experiment": true,
+      "raw_path": "test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011/raw.csv",
+      "raw_sha256": "97cbe88eac34015cb78842e69d85c0f1de6d66fb20461a12577e6f358079250c",
+      "sample_count": 7999,
+      "first_timestamp_s": 0.0,
+      "last_timestamp_s": 1.99975e-10,
+      "dt_min_ps": 0.024999999999981818,
+      "dt_max_ps": 0.04999999999999999,
+      "control": {
+        "status": "CLEAN",
+        "markers": {
+          "BJ1_0p5_time_ps": null,
+          "BJ2_0p9_time_ps": null,
+          "JTL_first_time_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          }
+        },
+        "complete_control_progression": false,
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "baseline_ps": [
+          61.0,
+          70.0
+        ],
+        "label": "ZERO_STATE_READ_CONTROL_GUARDRAIL_ONLY"
+      },
+      "oracle_status": "BOUNDED_RESULT",
+      "first_response_status": "BOUNDED_RESULT",
+      "single_response_status": "NO_SINGLE_COMPLETE_RESPONSE_CANDIDATE",
+      "oracle_first_checks": {
+        "first_phase_landmarks_present": true,
+        "first_phase_ordered": true,
+        "first_voltage_cluster_present_per_registered_signal": true,
+        "first_terminal_response_cluster_present": true,
+        "first_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "oracle_second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 2,
+        "V(BJ2|XBQ1)": 2,
+        "V(QBOUT)": 2,
+        "V(JTL1_OUT)": 2,
+        "V(JTL2_OUT)": 2,
+        "V(JTL3_OUT)": 2,
+        "V(JTL4_OUT)": 2,
+        "V(JTL5_OUT)": 2,
+        "V(JTL6_OUT)": 2
+      },
+      "terminal_pulse_analysis": {
+        "status": "TWO_SEPARATED_PULSES",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 4.135667576875202e-15,
+        "total_final_area_over_phi0": 1.9999999423915038,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 2,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 133.75,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 135.425,
+            "signed_area_V_s": 2.1477850892981014e-15,
+            "signed_area_over_phi0": 1.0386642482786659
+          },
+          {
+            "pulse_index": 2,
+            "peak_time_ps": 143.275,
+            "left_boundary_time_ps": 135.425,
+            "right_boundary_time_ps": 199.975,
+            "signed_area_V_s": 1.9878824875771003e-15,
+            "signed_area_over_phi0": 0.9613356941128377
+          }
+        ],
+        "pulse_separation_ps": 9.525000000000006,
+        "valley_time_ps": 135.425,
+        "valley_value_V": -0.000110398,
+        "valley_below_threshold": true,
+        "split_performed": true,
+        "area_partition_residual_V_s": 3.944304526105059e-31
+      },
+      "timing_metrics": {
+        "first_BJ1_time_ps": 115.075,
+        "second_BJ1_time_ps": 124.67500000000001,
+        "first_BJ2_time_ps": 116.8,
+        "second_BJ2_time_ps": 125.325,
+        "first_QBOUT_time_ps": 116.27499999999999,
+        "second_QBOUT_time_ps": 125.75,
+        "first_JTL_time_ps": {
+          "JTL1": 118.94999999999999,
+          "JTL2": 121.95,
+          "JTL3": 124.94999999999999,
+          "JTL4": 127.95,
+          "JTL5": 130.95,
+          "JTL6": 133.75
+        },
+        "second_JTL_time_ps": {
+          "JTL1": 128.39999999999998,
+          "JTL2": 131.45,
+          "JTL3": 134.45000000000002,
+          "JTL4": 137.45,
+          "JTL5": 140.45,
+          "JTL6": 143.275
+        },
+        "terminal_pulse_1_time_ps": 133.75,
+        "terminal_pulse_2_time_ps": 143.275,
+        "terminal_pulse_separation_ps": 9.525000000000006,
+        "terminal_pulse_1_area_over_phi0": 1.0386642482786659,
+        "terminal_pulse_2_area_over_phi0": 0.9613356941128377,
+        "terminal_final_area_over_phi0": 1.9999999423915038
+      },
+      "strongest_post_first_L1_positive_excursion": {
+        "status": "DERIVED",
+        "segment_count": 3,
+        "start_time_ps": 123.47500000000001,
+        "end_time_ps": 124.94999999999999,
+        "dwell_ps": 1.4749999999999872,
+        "peak_A": 4.509261e-05,
+        "peak_uA": 45.09261,
+        "peak_time_ps": 124.27499999999999,
+        "label": "POST_FIRST_L1_ACTIVITY_ONLY",
+        "not_event_count": true,
+        "not_sfq_count": true
+      },
+      "scientific_interpretation_performed": false
+    }
+  },
+  "execution_summary": "qa/execution_summary.json",
+  "timestep_qa": "qa/timestep_qa.json",
+  "raw_files_modified": 0,
+  "scientific_interpretation_performed": false
+}

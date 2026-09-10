@@ -52,21 +52,22 @@ def main() -> int:
         output = REPO / str(entry.get("output_path", ""))
         if not output.is_file() or sha256(output) != entry.get("output_sha256"):
             failures.append(f"output missing/stale: {output}")
-        if entry.get("renderer") != "scripts/josim-plot2.py" or entry.get("layout") != "sep_comb" or entry.get("color") != "dark" or entry.get("phase_option") != "2pi":
-            failures.append(f"style mismatch: {output}")
+        expected_style = ("scripts/josim-plot2.py", "sep_comb") if entry.get("stage") == "standalone" else ("analysis/timestep_analysis.py", "metric_index")
+        if (entry.get("renderer"), entry.get("layout")) != expected_style or entry.get("color") != "dark" or entry.get("phase_option") != "2pi":
+            failures.append(f"style/renderer mismatch: {output}")
         for index, source_name in enumerate(entry.get("source_raw_paths", [])):
             source = REPO / source_name
             if not source.is_file() or sha256(source) != entry.get("source_raw_sha256", [])[index]:
                 failures.append(f"source hash mismatch: {source}")
         if entry.get("stage") == "standalone" and (entry.get("input_mode") != "RAW_DIRECT" or entry.get("source_raw_paths") != [entry.get("input_path")]):
             failures.append(f"standalone is not raw direct: {output}")
-        if entry.get("stage") == "comparison" and (not str(entry.get("input_path", "")).startswith("/tmp/timestep-rj2p12-") or Path(str(entry.get("input_path"))).exists() or entry.get("temporary_input_deleted") is not True):
-            failures.append(f"comparison temporary input retained/malformed: {output}")
+        if entry.get("stage") == "comparison" and (entry.get("input_mode") != "METRIC_COMPARISON_INDEX" or entry.get("input_path") != f"{EXP.relative_to(REPO).as_posix()}/qa/timestep_qa.json" or entry.get("temporary_input_deleted") is not True):
+            failures.append(f"comparison metric index provenance mismatch: {output}")
     actual_html = {path.relative_to(EXP).as_posix() for path in (EXP / "plots").rglob("*.html")}
     expected_html = {path.removeprefix(EXP.relative_to(REPO).as_posix() + "/") for path in expected}
     if actual_html != expected_html or list((EXP / "plots").rglob("*.csv")):
         failures.append("extra/missing HTML or retained plot CSV")
-    result = {"schema": "bjs400-rj2p12-timestep-visualization-qa-v1", "experiment_id": EXP.name, "created_at_local": now(), "status": "PASS" if not failures else "FAIL", "standalone_html_count": len(standalone), "comparison_html_count": len(comparisons), "logical_case_count": len(active), "new_physical_case_count": len(active_new), "reused_case_count": len(REUSE_RUNS), "whole_run_only": True, "standalone_raw_direct": True, "comparison_temp_csv_retained": False, "physics_solve_count": 0, "scientific_analysis_performed": False, "failures": failures}
+    result = {"schema": "bjs400-rj2p12-timestep-visualization-qa-v1", "experiment_id": EXP.name, "created_at_local": now(), "status": "PASS" if not failures else "FAIL", "standalone_html_count": len(standalone), "comparison_html_count": len(comparisons), "logical_case_count": len(active), "new_physical_case_count": len(active_new), "reused_case_count": len(REUSE_RUNS), "whole_run_only": True, "standalone_raw_direct": True, "comparison_metric_index": True, "comparison_pointwise_waveform_subtraction": False, "comparison_temp_csv_retained": False, "physics_solve_count": 0, "scientific_analysis_performed": False, "failures": failures}
     (EXP / "qa/visualization_qa.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({"status": result["status"], "standalone_html": len(standalone), "comparison_html": len(comparisons), "failures": failures[:20], "scientific_analysis_performed": False}, ensure_ascii=False, indent=2))
     return 0 if not failures else 1

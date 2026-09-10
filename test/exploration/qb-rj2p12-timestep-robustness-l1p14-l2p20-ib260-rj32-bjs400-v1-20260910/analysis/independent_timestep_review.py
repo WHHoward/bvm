@@ -108,7 +108,8 @@ def voltage_clusters(times: list[float], columns: dict[str, list[float]], label:
     values = columns[label]
     center = statistics.median(values[index] for index in base)
     mad = statistics.median(abs(values[index] - center) for index in base)
-    threshold = max(5.5 * 1.4826 * mad, 0.35 * max(values[index] - center for index in origin))
+    peak_positive = max(values[index] - center for index in origin)
+    threshold = max(0.35 * peak_positive, min(5.5 * 1.4826 * mad, 0.8 * peak_positive))
     peaks = [index for index in origin if values[index] - center >= threshold and index > 0 and index + 1 < len(values) and values[index] >= values[index - 1] and values[index] > values[index + 1]]
     groups: list[list[int]] = []
     valleys: list[dict[str, Any]] = []

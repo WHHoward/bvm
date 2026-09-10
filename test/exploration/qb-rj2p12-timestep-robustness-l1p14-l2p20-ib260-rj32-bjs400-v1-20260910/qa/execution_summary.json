@@ -1,0 +1,319 @@
+{
+  "schema": "bjs400-rj2p12-timestep-execution-v1",
+  "experiment_id": "qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "started_at_local": "2026-09-10T19:47:17+08:00",
+  "finished_at_local": "2026-09-10T19:47:21+08:00",
+  "head": "c7967fa72c86f1f444a0ab14b5ee00dc6c92d31c",
+  "preflight_head": "edd55f9899ccb71e0a42a079d4842b1faa6876cc",
+  "solver_solve_invocations": 4,
+  "exact_new_physical_solve_count": 4,
+  "authorized_new_physical_solve_count": 4,
+  "reused_physical_case_count": 2,
+  "logical_case_count": 6,
+  "unauthorized_extra_solves": 0,
+  "failed_runs": [],
+  "run_order": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011"
+  ],
+  "reused_cases": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0100_0011"
+  ],
+  "new_timestep_ps": [
+    0.05,
+    0.025
+  ],
+  "runs": [
+    {
+      "schema": "bjs400-rj2p12-timestep-run-metadata-v1",
+      "experiment_id": "qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.05
+      },
+      "rj2_ohm": 12.0,
+      "timestep_ps": 0.05,
+      "mask": "0001",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.05
+      },
+      "started_at_local": "2026-09-10T19:47:17+08:00",
+      "finished_at_local": "2026-09-10T19:47:18+08:00",
+      "git_head_before_run": "c7967fa72c86f1f444a0ab14b5ee00dc6c92d31c",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001/deck.cir",
+          "sha256": "a0d9aed4e64c33af6c5a08540af8bff1a75d1f1560e1809b8914be6b8e2d8b8c",
+          "bytes": 7485
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001/raw.csv",
+          "exists": true,
+          "sha256": "66e2d99e18a3f491a255cd2176cca6b1c81fda99f381b783fd787c6b5935fef2",
+          "bytes": 14197313
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0001/run.log",
+          "sha256": "3e23e3512e4a11c16c31870defd5fe594ac081b61da9157fdb21e6417e977626",
+          "bytes": 423509
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 3999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999500e-10"
+      }
+    },
+    {
+      "schema": "bjs400-rj2p12-timestep-run-metadata-v1",
+      "experiment_id": "qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.05
+      },
+      "rj2_ohm": 12.0,
+      "timestep_ps": 0.05,
+      "mask": "0011",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.05
+      },
+      "started_at_local": "2026-09-10T19:47:18+08:00",
+      "finished_at_local": "2026-09-10T19:47:19+08:00",
+      "git_head_before_run": "c7967fa72c86f1f444a0ab14b5ee00dc6c92d31c",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011/deck.cir",
+          "sha256": "fb428faa77e37ec3f98a27c58e73614491451ff4200c61e96eec54e7472c521d",
+          "bytes": 7501
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011/raw.csv",
+          "exists": true,
+          "sha256": "17b4b2726e0920b9446d092ac950ab72315c5dbcbe4cec8036aa07e4525f8a17",
+          "bytes": 14200650
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0050_0011/run.log",
+          "sha256": "2b8d9baa87202f3c993e0c19d0747a0fdde7a64e3cac5c6ee4e29f96474f73ba",
+          "bytes": 413954
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 3999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999500e-10"
+      }
+    },
+    {
+      "schema": "bjs400-rj2p12-timestep-run-metadata-v1",
+      "experiment_id": "qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.025
+      },
+      "rj2_ohm": 12.0,
+      "timestep_ps": 0.025,
+      "mask": "0001",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.025
+      },
+      "started_at_local": "2026-09-10T19:47:19+08:00",
+      "finished_at_local": "2026-09-10T19:47:20+08:00",
+      "git_head_before_run": "c7967fa72c86f1f444a0ab14b5ee00dc6c92d31c",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001/deck.cir",
+          "sha256": "6b4bbcbac0c2008a63e0c263c427e98e180cd42a4b61644e48ae60780be84e08",
+          "bytes": 7486
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001/raw.csv",
+          "exists": true,
+          "sha256": "84166dc62e4eee42a5c230e63dd3201efa7702ab6d0ccf80453cc0c09f838994",
+          "bytes": 28394280
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0001/run.log",
+          "sha256": "db2bc94ae8808966501bd8c4b5963357b3da1d70222bf849eacb24606ff93c10",
+          "bytes": 812918
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 7999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999750e-10"
+      }
+    },
+    {
+      "schema": "bjs400-rj2p12-timestep-run-metadata-v1",
+      "experiment_id": "qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.025
+      },
+      "rj2_ohm": 12.0,
+      "timestep_ps": 0.025,
+      "mask": "0011",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "timestep_ps": 0.025
+      },
+      "started_at_local": "2026-09-10T19:47:20+08:00",
+      "finished_at_local": "2026-09-10T19:47:21+08:00",
+      "git_head_before_run": "c7967fa72c86f1f444a0ab14b5ee00dc6c92d31c",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011/deck.cir",
+          "sha256": "9eeedc05201461043c74af25c54800860a7f9db0dbcd533fc7cc0c1fe4cfc649",
+          "bytes": 7502
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011/raw.csv",
+          "exists": true,
+          "sha256": "97cbe88eac34015cb78842e69d85c0f1de6d66fb20461a12577e6f358079250c",
+          "bytes": 28400929
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_DT0025_0011/run.log",
+          "sha256": "04fe51732de52e6acd9b143931a4f0fcf800f4f7cbe035569589fd3e53a06877",
+          "bytes": 817999
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 7999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999750e-10"
+      }
+    }
+  ],
+  "raw_files_modified": 0,
+  "scientific_analysis_performed": false,
+  "no_retry_performed": true,
+  "status": "PASS"
+}

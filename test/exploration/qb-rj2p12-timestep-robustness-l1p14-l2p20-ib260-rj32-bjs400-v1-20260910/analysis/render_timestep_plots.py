@@ -78,21 +78,30 @@ def entry(stage: str, run_id: str | None, input_path: Path, output: Path, signal
     return {"stage": stage, "run_id": run_id, "name": output.name, "input_path": rel(input_path) if input_path.is_relative_to(REPO) else str(input_path), "input_sha256": sha256(input_path), "output_path": rel(output), "output_sha256": sha256(output), "labels": signal_labels, "signal_order": signal_labels, "source_raw_paths": [rel(path) for path in sources], "source_raw_sha256": [sha256(path) for path in sources], "command": command, "renderer": "scripts/josim-plot2.py", "layout": "sep_comb", "color": "dark", "phase_option": "2pi", "phase_convention": "raw P radians; plot2 displays rad/(2*pi) turns; never SFQ count", "window_ps": [0.0, 200.0], "window_semantics": "whole-run raw timestamps; no focused window", "input_mode": "RAW_DIRECT" if stage == "standalone" else "TEMPORARY_MERGED_COMPARISON"}
 
 
-def write_comparison(path: Path, run_ids: list[str], signal_labels: list[str]) -> str:
-    traces = [read_csv(raw_path(run_id)) for run_id in run_ids]
-    base_time = traces[0].time
-    if any(trace.time != base_time for trace in traces[1:]):
-        raise RuntimeError("comparison time grids differ")
-    phase_values = {(case, label): continuous_unwrap(tuple(trace.column(label))) for case, trace in enumerate(traces) for label in signal_labels if label.startswith("P(")}
-    with path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.writer(stream, lineterminator="\n")
-        writer.writerow(["time", *(f"{label} [{run_id}]" for label in signal_labels for run_id in run_ids)])
-        for index, timestamp in enumerate(base_time):
-            row: list[Any] = [f"{timestamp:.17g}"]
-            for label in signal_labels:
-                for case, trace in enumerate(traces):
-                    row.append(f"{phase_values[(case, label)][index]:.17g}" if label.startswith("P(") else f"{trace.column(label)[index]:.17g}")
-            writer.writerow(row)
+def write_comparison_index(path: Path, mask: str, run_ids: list[str]) -> str:
+    """Write a raw-linked metric index; never resample unlike timestep grids."""
+    timestep_qa = json.loads((EXP / "qa/timestep_qa.json").read_text(encoding="utf-8"))
+    rows: list[str] = []
+    for run_id in run_ids:
+        case = timestep_qa["raw_records"].get(run_id, {})
+        summary = timestep_qa.get("cases", {}).get(run_id, {})
+        if not summary:
+            # timestep_analysis stores the complete case records in the
+            # mechanical summary, while raw_records stores the grid facts.
+            summary = json.loads((EXP / "mechanical_summary.json").read_text(encoding="utf-8"))["cases"][run_id]
+        rows.append("<tr>" + "".join(f"<td>{value}</td>" for value in (summary.get("dt_ps"), run_id, case.get("sample_count"), summary.get("control", {}).get("status"), summary.get("single_response_status") if mask == "0001" else summary.get("oracle_status"), summary.get("terminal_pulse_analysis", {}).get("status"), summary.get("timing_metrics", {}).get("terminal_final_area_over_phi0"))) + "</tr>")
+    links = "".join(f"<li><a href=\"../cases/{run_id}/SIGNAL_PATH.html\">{run_id} SIGNAL_PATH</a> | <a href=\"../cases/{run_id}/QB_STATE.html\">QB_STATE</a> | <a href=\"../cases/{run_id}/JTL_CHAIN.html\">JTL_CHAIN</a></li>" for run_id in run_ids)
+    html = "\n".join([
+        "<!doctype html><html><head><meta charset=\"utf-8\"><title>TIMESTEP_" + mask + "_COMPARE</title></head><body>",
+        f"<h1>TIMESTEP_{mask}_COMPARE</h1>",
+        "<p>Metric comparison index for raw-direct whole-run pages. The 0.1/0.05/0.025 ps stored time grids differ; no pointwise subtraction, interpolation or resampling is performed.</p>",
+        "<table border=\"1\"><thead><tr><th>dt (ps)</th><th>case</th><th>samples</th><th>control</th><th>response classification</th><th>terminal segmentation</th><th>FINAL terminal area / Phi0</th></tr></thead><tbody>",
+        *rows,
+        "</tbody></table><h2>Raw-direct pages</h2><ul>", links, "</ul>",
+        "<p>Phase values on linked pages are raw radians displayed as rad/(2*pi) turns. Area ratios are derived voltage integrals and are not SFQ counts.</p>",
+        "</body></html>",
+    ])
+    path.write_text(html, encoding="utf-8")
     return sha256(path)
 
 
@@ -116,19 +125,11 @@ def main() -> int:
             command = run_plot(source, output, f"{run_id} — {view}", signal_labels)
             entries.append(entry("standalone", run_id, source, output, signal_labels, [source], command))
     for mask, run_ids in COMPARISON_CASES.items():
-        signal_labels = comparison_labels()
         output = EXP / "plots/comparison" / f"TIMESTEP_{mask}_COMPARE.html"
-        temp = Path(tempfile.mkstemp(prefix="timestep-rj2p12-", suffix=".csv", dir="/tmp")[1])
-        try:
-            temp_hash = write_comparison(temp, run_ids, signal_labels)
-            plot_labels = [f"{label} [{run_id}]" for label in signal_labels for run_id in run_ids]
-            output.parent.mkdir(parents=True, exist_ok=True)
-            command = run_plot(temp, output, f"TIMESTEP_{mask}_COMPARE", plot_labels)
-            record = entry("comparison", None, temp, output, plot_labels, [raw_path(run_id) for run_id in run_ids], command)
-            record.update({"comparison_mask": mask, "comparison_cases": run_ids, "temporary_input_sha256": temp_hash, "temporary_input_deleted": True})
-            entries.append(record)
-        finally:
-            temp.unlink(missing_ok=True)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        input_path = EXP / "qa/timestep_qa.json"
+        output_hash = write_comparison_index(output, mask, run_ids)
+        entries.append({"stage": "comparison", "run_id": None, "name": output.name, "input_path": rel(input_path), "input_sha256": sha256(input_path), "output_path": rel(output), "output_sha256": output_hash, "labels": comparison_labels(), "signal_order": comparison_labels(), "source_raw_paths": [rel(raw_path(run_id)) for run_id in run_ids], "source_raw_sha256": [sha256(raw_path(run_id)) for run_id in run_ids], "command": ["analysis/timestep_analysis.py", "metric-comparison-index", mask], "renderer": "analysis/timestep_analysis.py", "layout": "metric_index", "color": "dark", "phase_option": "2pi", "phase_convention": "raw P radians; linked plot2 pages display rad/(2*pi) turns; never SFQ count", "window_ps": [0.0, 200.0], "window_semantics": "whole-run raw timestamps; metric comparison only", "input_mode": "METRIC_COMPARISON_INDEX", "comparison_mask": mask, "comparison_cases": run_ids, "temporary_input_deleted": True})
     summaries: list[str] = []
     summary_root = EXP / "visualization/run_summaries"
     summary_root.mkdir(parents=True, exist_ok=True)

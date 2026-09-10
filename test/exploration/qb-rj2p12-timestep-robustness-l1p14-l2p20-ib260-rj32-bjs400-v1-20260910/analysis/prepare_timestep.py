@@ -24,7 +24,7 @@ CONTRACT_SENTENCE = "This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 AUTH_SOURCE_MANIFEST_SHA256 = "60d36ef77ec0c7e55493c5c43d93d7fe2c141b117e80cd73b8d8dce0e25710b3"
 AUTH_PACKAGE_SHA256 = "84e1a8654aa16baf2fe81f96f9cdc4ce8af6efbeb5f617a12c8123b8b13a9bde"
 AUTH_PACKAGE_BYTES = 10106003
-AUTH_ORACLE_SHA256 = "f5365ba4651cc1828b32a5932eb5c4cab7bda3317c81563e0cbb6571abe7230f"
+AUTH_ORACLE_SHA256 = "4d39bc457e0ea010ac9f312dbc1c40b6e65dea123865608f4ad066a05773e860"
 SOLVER_SHA256 = "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
 FIXED = {"L1_pH": 1.4, "L2_pH": 2.0, "IBias_uA": 260.0, "RJ1_ohm": 32.0, "RJ2_ohm": 12.0}
 DT_VALUES = (0.05, 0.025)
@@ -231,7 +231,7 @@ def main() -> int:
         raise RuntimeError(f"preflight failed: reuse={reuse.get('exact_reuse_verification')} decks={decks['status']}")
     preflight_path = EXP / "analysis/preflight.json"
     prior = json.loads(preflight_path.read_text(encoding="utf-8")) if preflight_path.is_file() else {}
-    record = {"schema": "bjs400-rj2p12-timestep-preflight-v1", "experiment_id": EXP.name, "created_at_local": now(), "status": "PASS", "head": head(), "head_refresh": args.refresh_head, "preregistration_head": prior.get("preregistration_head", head()), "oracle_repair_commit": "fd1fc5cf", "new_physical_solve_count": 4, "authorized_new_physical_solve_count": 4, "reused_physical_case_count": 2, "logical_case_count": 6, "unauthorized_extra_solves": 0, "fixed_working_point": {**FIXED, "BJS_area": 4, "BJS_Ic_uA": 400}, "new_timestep_ps": list(DT_VALUES), "reused_timestep_ps": 0.1, "authorized_masks": list(MASKS), "reuse_status": "PASS", "reuse_manifest_sha256": sha256(EXP / "REUSED_REFERENCE_MANIFEST.json"), "generated_decks": generated, "deck_status": decks["status"], "deck_checks": decks, "oracle_code_sha256": AUTH_ORACLE_SHA256, "canonical_timestep_policy": "0.1ps remains standard; 0.05/0.025ps are local robustness spot-checks only", "scientific_analysis_performed": False}
+    record = {"schema": "bjs400-rj2p12-timestep-preflight-v1", "experiment_id": EXP.name, "created_at_local": now(), "status": "PASS", "head": head(), "head_refresh": args.refresh_head, "preregistration_head": prior.get("preregistration_head", head()), "oracle_repair_commit": "aefd0e7e044ab18fea2d4792d4b1d2101db83a18", "new_physical_solve_count": 4, "authorized_new_physical_solve_count": 4, "reused_physical_case_count": 2, "logical_case_count": 6, "unauthorized_extra_solves": 0, "fixed_working_point": {**FIXED, "BJS_area": 4, "BJS_Ic_uA": 400}, "new_timestep_ps": list(DT_VALUES), "reused_timestep_ps": 0.1, "authorized_masks": list(MASKS), "reuse_status": "PASS", "reuse_manifest_sha256": sha256(EXP / "REUSED_REFERENCE_MANIFEST.json"), "generated_decks": generated, "deck_status": decks["status"], "deck_checks": decks, "oracle_code_sha256": AUTH_ORACLE_SHA256, "canonical_timestep_policy": "0.1ps remains standard; 0.05/0.025ps are local robustness spot-checks only", "scientific_analysis_performed": False}
     if args.refresh_head:
         preflight_path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         (EXP / "PREFLIGHT.md").write_text(preflight_markdown(record), encoding="utf-8")

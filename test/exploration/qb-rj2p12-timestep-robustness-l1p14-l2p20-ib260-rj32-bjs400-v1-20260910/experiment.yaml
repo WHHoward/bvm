@@ -29,8 +29,8 @@ physical_authority:
   base_stimulus_source_manifest_sha256: 31752f9e74b95d1d787d88c146a1a7d650da5d37ac3a4a3a035494a604ef1b4d
   source_package_sha256: 84e1a8654aa16baf2fe81f96f9cdc4ce8af6efbeb5f617a12c8123b8b13a9bde
   source_package_bytes: 10106003
-  corrected_oracle_commit: fd1fc5cf
-  corrected_oracle_sha256: f5365ba4651cc1828b32a5932eb5c4cab7bda3317c81563e0cbb6571abe7230f
+  corrected_oracle_commit: aefd0e7e044ab18fea2d4792d4b1d2101db83a18
+  corrected_oracle_sha256: 4d39bc457e0ea010ac9f312dbc1c40b6e65dea123865608f4ad066a05773e860
   reuse_rule: exact immutable 0.1ps RJ2=12 pair only; no 0.1ps rerun
 
 changed:
@@ -117,7 +117,7 @@ visualization:
 
 package:
   include_plots: false
-  canonical_path: handoff/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip
+  canonical_path: handoff/qb-rj2p12-timestep-robustness-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_corrected-v2_raw_handoff.zip
   analysis_files:
     raw_qa.json: qa/raw_qa.json
     deck_diff_qa.json: qa/deck_diff_qa.json
@@ -125,6 +125,7 @@ package:
     execution_summary.json: qa/execution_summary.json
     transformation_registry.json: qa/transformation_registry.json
   additional_paths:
+    - mechanical_summary.json
     - run.sh
     - RESULT_BRIEF.md
     - HANDOFF_README.md

@@ -1,0 +1,30 @@
+{
+  "schema": "bjs400-rj2p12-timestep-transformation-registry-v1",
+  "raw_immutable": true,
+  "scientific_analysis_performed": false,
+  "transformations": [
+    {
+      "name": "phase_display",
+      "operation": "continuous_unwrap(raw_rad)/(2*pi)",
+      "scope": "navigation/display only",
+      "not_event_count": true
+    },
+    {
+      "name": "pulse_segmentation",
+      "operation": "adaptive stored-sample threshold plus below-threshold valley; terminal local areas share valley",
+      "scope": "mechanical response cluster only",
+      "forced_split": false
+    },
+    {
+      "name": "timestep_comparison",
+      "operation": "compare actual stored-grid metrics across 0.1/0.05/0.025ps",
+      "scope": "LOCAL_TIMESTEP_ROBUSTNESS_SPOT_CHECK",
+      "canonical_timestep_changed": false
+    },
+    {
+      "name": "area_integration",
+      "operation": "trapezoid using actual stored time values",
+      "scope": "derived diagnostic"
+    }
+  ]
+}

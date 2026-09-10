@@ -1,0 +1,3522 @@
+{
+  "schema": "bjs400-rj1-interaction-mechanical-summary-v1",
+  "experiment_id": "qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T11:57:00+08:00",
+  "status": "PASS",
+  "scientific_interpretation_performed": false,
+  "fixed_point": {
+    "L1_pH": 1.4,
+    "IBias_uA": 270.0,
+    "BJS_area": 4,
+    "BJS_Ic_uA": 400.0
+  },
+  "rj1_values_ohm": [
+    12.0,
+    16.0,
+    24.0,
+    32.0
+  ],
+  "masks": [
+    "0001",
+    "0011"
+  ],
+  "logical_case_count": 8,
+  "historical_reuse_count": 2,
+  "new_physical_solve_count": 6,
+  "case_order": [
+    "ARRAY_L1P14_IB270_0001",
+    "ARRAY_L1P14_IB270_0011",
+    "ARRAY_L1P14_IB270_RJ16_0001",
+    "ARRAY_L1P14_IB270_RJ16_0011",
+    "ARRAY_L1P14_IB270_RJ24_0001",
+    "ARRAY_L1P14_IB270_RJ24_0011",
+    "ARRAY_L1P14_IB270_RJ32_0001",
+    "ARRAY_L1P14_IB270_RJ32_0011"
+  ],
+  "phase_convention": "raw P radians; independently continuous_unwrap(raw)/(2*pi) for diagnostic turns only",
+  "origin_windows": {
+    "CONTROL_ORIGIN": {
+      "window_ps": [
+        70.0,
+        110.0
+      ],
+      "baseline_ps": [
+        60.99999999999999,
+        70.0
+      ]
+    },
+    "FINAL_ORIGIN": {
+      "window_ps": [
+        110.0,
+        200.0
+      ],
+      "baseline_ps": [
+        101.0,
+        110.0
+      ]
+    }
+  },
+  "pre_switch_proxy_window_ps": [
+    110.0,
+    114.5
+  ],
+  "area_semantics": "trapezoid on actual stored time grid; half-open windows; no interpolation/resampling",
+  "ratio_policy": {
+    "numerator_denominator": "0011 / 0001",
+    "signed_area_tolerance_A_s": 1e-18,
+    "cancellation_fraction": 0.01,
+    "ambiguous_status": "UNKNOWN"
+  },
+  "cases": {
+    "ARRAY_L1P14_IB270_0001": {
+      "case_id": "ARRAY_L1P14_IB270_0001",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": null,
+            "first_half_turn_diagnostic_found": false,
+            "max_continuous_relative_phase_turns": 0.17800382215721158,
+            "min_continuous_relative_phase_turns": -0.04149137535417091,
+            "final_continuous_relative_phase_turns": -0.002388597385923151,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": null,
+            "first_half_turn_diagnostic_found": false,
+            "max_continuous_relative_phase_turns": 0.08507815285810114,
+            "min_continuous_relative_phase_turns": -0.015578579210158301,
+            "final_continuous_relative_phase_turns": 0.005423650319696998,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": -2.16661e-05,
+              "min": -0.0001049932,
+              "max_abs": 0.0001049932,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0002483339,
+              "min": 0.0001650068,
+              "max_abs": 0.0002483339
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.180403e-05,
+              "min": -2.297843e-05,
+              "max_abs": 2.297843e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0001416484,
+              "min": -0.0002757412,
+              "max_abs": 0.0002757412
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 9.861327428099999e-16,
+            "negative_V_s": -1.0062752718345e-15,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 1.5654121299689644e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.356118e-05,
+            "min": -3.946129e-05,
+            "max_abs": 3.946129e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.356118e-05,
+            "min": -3.946129e-05,
+            "max_abs": 3.946129e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0002067715,
+            "min": -0.0003378514,
+            "max_abs": 0.0003378514
+          },
+          "V(COMMON_SL)": {
+            "max": 0.000580122,
+            "min": -0.0007679658,
+            "max_abs": 0.0007679658
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": 8.800115281799999e-17,
+            "I(LIN|XBQ1)": 8.800115281799999e-17
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": null,
+          "first_relevant_progression_terminal_ps": null,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": false,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": -1.0655860850000226e-23,
+          "I(R_TERM)_signed_area_A_s": -1.0655850850000187e-24,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 119.79999999999998,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.9765760040514144,
+            "min_continuous_relative_phase_turns": -0.02952785743689626,
+            "final_continuous_relative_phase_turns": 0.9761766842991969,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 120.7,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.9906168122859247,
+            "min_continuous_relative_phase_turns": -0.010802387114453428,
+            "final_continuous_relative_phase_turns": 0.9904783474854347,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 6.014917e-05,
+              "min": -0.0001399836,
+              "max_abs": 0.0001399836,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  117.19999999999999,
+                  120.7
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003301492,
+              "min": 0.0001300164,
+              "max_abs": 0.0003301492
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 3.064957e-05,
+              "min": -6.255703e-06,
+              "max_abs": 3.064957e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0003677949,
+              "min": -7.506843e-05,
+              "max_abs": 0.0003677949
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.2927445709853e-15,
+            "negative_V_s": -2.2066543527619995e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 3.744912983718168e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.180029e-05,
+            "min": -5.298466e-05,
+            "max_abs": 5.298466e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.180029e-05,
+            "min": -5.298466e-05,
+            "max_abs": 5.298466e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0003701322,
+            "min": -9.154202e-05,
+            "max_abs": 0.0003701322
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0006635038,
+            "min": -0.000394286,
+            "max_abs": 0.0006635038
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -1.74438692310078e-16,
+            "I(LIN|XBQ1)": -1.7443869231008802e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 121.89999999999999,
+            "JTL2": 124.8,
+            "JTL3": 127.79999999999998,
+            "JTL4": 130.8,
+            "JTL5": 133.79999999999998,
+            "JTL6": 136.8
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 121.89999999999999,
+          "first_relevant_progression_terminal_ps": 136.8,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.0678338451379986e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678338451379974e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 2.3361734108724202e-15,
+        "I(R_TERM)_signed_area_A_s": 2.336173410872429e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB270_0001/raw.csv",
+        "sha256": "e20284ba4726b371a964c8b3ab40dc1252382f822af4306b37c08a9e38dd6471"
+      }
+    },
+    "ARRAY_L1P14_IB270_0011": {
+      "case_id": "ARRAY_L1P14_IB270_0011",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": null,
+            "first_half_turn_diagnostic_found": false,
+            "max_continuous_relative_phase_turns": 0.17800382215721158,
+            "min_continuous_relative_phase_turns": -0.04149137535417091,
+            "final_continuous_relative_phase_turns": -0.002388597385923151,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": null,
+            "first_half_turn_diagnostic_found": false,
+            "max_continuous_relative_phase_turns": 0.08507815285810114,
+            "min_continuous_relative_phase_turns": -0.015578579210158301,
+            "final_continuous_relative_phase_turns": 0.005423650319696998,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": -2.16661e-05,
+              "min": -0.0001049932,
+              "max_abs": 0.0001049932,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0002483339,
+              "min": 0.0001650068,
+              "max_abs": 0.0002483339
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.180403e-05,
+              "min": -2.297843e-05,
+              "max_abs": 2.297843e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0001416484,
+              "min": -0.0002757412,
+              "max_abs": 0.0002757412
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 9.861327428099999e-16,
+            "negative_V_s": -1.0062752718345e-15,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 1.5654121299689644e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.356118e-05,
+            "min": -3.946129e-05,
+            "max_abs": 3.946129e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.356118e-05,
+            "min": -3.946129e-05,
+            "max_abs": 3.946129e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0002067715,
+            "min": -0.0003378514,
+            "max_abs": 0.0003378514
+          },
+          "V(COMMON_SL)": {
+            "max": 0.000580122,
+            "min": -0.0007679658,
+            "max_abs": 0.0007679658
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": 8.800115281799999e-17,
+            "I(LIN|XBQ1)": 8.800115281799999e-17
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": null,
+          "first_relevant_progression_terminal_ps": null,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": false,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": -1.0655860850000226e-23,
+          "I(R_TERM)_signed_area_A_s": -1.0655850850000187e-24,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 115.8,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0630170325182,
+            "min_continuous_relative_phase_turns": -0.028862430619829047,
+            "final_continuous_relative_phase_turns": 0.9761555166917657,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 116.9,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.030333928334507,
+            "min_continuous_relative_phase_turns": -0.010221423825685083,
+            "final_continuous_relative_phase_turns": 0.9904708672031094,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 9.175487e-05,
+              "min": -9.307848e-05,
+              "max_abs": 9.307848e-05,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  113.7,
+                  117.00000000000001
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003617549,
+              "min": 0.0001769215,
+              "max_abs": 0.0003617549
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 3.991457e-05,
+              "min": -1.171737e-05,
+              "max_abs": 3.991457e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004789748,
+              "min": -0.0001406084,
+              "max_abs": 0.0004789748
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.710363473475669e-15,
+            "negative_V_s": -6.383287150758005e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 5.954504142910063e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 5.742222e-05,
+            "min": -1.418675e-05,
+            "max_abs": 5.742222e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 5.742222e-05,
+            "min": -1.418675e-05,
+            "max_abs": 5.742222e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0004746648,
+            "min": -0.0001226459,
+            "max_abs": 0.0004746648
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0009836559,
+            "min": -0.0008497828,
+            "max_abs": 0.0009836559
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": 3.4251260216676986e-16,
+            "I(LIN|XBQ1)": 3.4251260216676986e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 118.0,
+            "JTL2": 121.0,
+            "JTL3": 124.00000000000001,
+            "JTL4": 127.0,
+            "JTL5": 130.0,
+            "JTL6": 133.0
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 118.0,
+          "first_relevant_progression_terminal_ps": 133.0,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.067833817895039e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678338178950423e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 2.3361733836294607e-15,
+        "I(R_TERM)_signed_area_A_s": 2.3361733836294734e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB270_0011/raw.csv",
+        "sha256": "1f8bdf565792928077bace841e282fe23b920141e0c3821afbf08d083a8139bf"
+      }
+    },
+    "ARRAY_L1P14_IB270_RJ16_0001": {
+      "case_id": "ARRAY_L1P14_IB270_RJ16_0001",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 16.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_RJ16_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 80.4,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0430992688550789,
+            "min_continuous_relative_phase_turns": 0.00679655268979631,
+            "final_continuous_relative_phase_turns": 0.9957194789163939,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 81.39999999999999,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0210289186711452,
+            "min_continuous_relative_phase_turns": 0.003883842160777214,
+            "final_continuous_relative_phase_turns": 1.004155948224315,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 4.203692e-05,
+              "min": -0.0001567888,
+              "max_abs": 0.0001567888,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  76.7,
+                  81.0
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003120369,
+              "min": 0.0001132112,
+              "max_abs": 0.0003120369
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 2.980117e-05,
+              "min": -8.242106e-06,
+              "max_abs": 2.980117e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004768186,
+              "min": -0.0001318737,
+              "max_abs": 0.0004768186
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.6290411315249995e-15,
+            "negative_V_s": -5.84072697658e-16,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 3.1568140775177526e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.302507e-05,
+            "min": -9.901221e-05,
+            "max_abs": 9.901221e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.302507e-05,
+            "min": -9.901221e-05,
+            "max_abs": 9.901221e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0004995735,
+            "min": -0.0001461419,
+            "max_abs": 0.0004995735
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0008632582,
+            "min": -0.0006144889,
+            "max_abs": 0.0008632582
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -5.97604613992e-16,
+            "I(LIN|XBQ1)": -5.97604613992e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 82.5,
+            "JTL2": 85.5,
+            "JTL3": 88.5,
+            "JTL4": 91.5,
+            "JTL5": 94.5,
+            "JTL6": 97.5
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 82.5,
+          "first_relevant_progression_terminal_ps": 97.5,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.0678317889896376e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678317889896378e-16,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 119.5,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.9877792388055393,
+            "min_continuous_relative_phase_turns": -0.020304032710005467,
+            "final_continuous_relative_phase_turns": 0.9870359852213,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 120.5,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.9972696480621089,
+            "min_continuous_relative_phase_turns": -0.004755072234756547,
+            "final_continuous_relative_phase_turns": 0.9970213663508857,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 6.408354e-05,
+              "min": -0.0001339042,
+              "max_abs": 0.0001339042,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  117.1,
+                  120.60000000000001
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003340835,
+              "min": 0.0001360958,
+              "max_abs": 0.0003340835
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 2.049673e-05,
+              "min": -4.076458e-06,
+              "max_abs": 2.049673e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0003279476,
+              "min": -6.522333e-05,
+              "max_abs": 0.0003279476
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.2812541253109305e-15,
+            "negative_V_s": -2.0617097543980024e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 2.7673063102805756e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.115882e-05,
+            "min": -5.121155e-05,
+            "max_abs": 5.121155e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.115882e-05,
+            "min": -5.121155e-05,
+            "max_abs": 5.121155e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0003469601,
+            "min": -7.972132e-05,
+            "max_abs": 0.0003469601
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0006682071,
+            "min": -0.0003865813,
+            "max_abs": 0.0006682071
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -1.7797104838981698e-16,
+            "I(LIN|XBQ1)": -1.7797104838981698e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 121.7,
+            "JTL2": 124.6,
+            "JTL3": 127.60000000000001,
+            "JTL4": 130.6,
+            "JTL5": 133.60000000000002,
+            "JTL6": 136.70000000000002
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 121.7,
+          "first_relevant_progression_terminal_ps": 136.70000000000002,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.0678392606041576e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678392606041605e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 4.404007291631797e-15,
+        "I(R_TERM)_signed_area_A_s": 4.4040072916317994e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_RJ16_0001/raw.csv",
+        "sha256": "27f407460b7a4f83bf60577b38e6c72bc75d4a4e1d73d893c6f3b7331d29e40f"
+      }
+    },
+    "ARRAY_L1P14_IB270_RJ16_0011": {
+      "case_id": "ARRAY_L1P14_IB270_RJ16_0011",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 16.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_RJ16_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 80.4,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0430992688550789,
+            "min_continuous_relative_phase_turns": 0.00679655268979631,
+            "final_continuous_relative_phase_turns": 0.9957194789163939,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 81.39999999999999,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0210289186711452,
+            "min_continuous_relative_phase_turns": 0.003883842160777214,
+            "final_continuous_relative_phase_turns": 1.004155948224315,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 4.203692e-05,
+              "min": -0.0001567888,
+              "max_abs": 0.0001567888,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  76.7,
+                  81.0
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003120369,
+              "min": 0.0001132112,
+              "max_abs": 0.0003120369
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 2.980117e-05,
+              "min": -8.242106e-06,
+              "max_abs": 2.980117e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004768186,
+              "min": -0.0001318737,
+              "max_abs": 0.0004768186
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.6290411315249995e-15,
+            "negative_V_s": -5.84072697658e-16,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 3.1568140775177526e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.302507e-05,
+            "min": -9.901221e-05,
+            "max_abs": 9.901221e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.302507e-05,
+            "min": -9.901221e-05,
+            "max_abs": 9.901221e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0004995735,
+            "min": -0.0001461419,
+            "max_abs": 0.0004995735
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0008632582,
+            "min": -0.0006144889,
+            "max_abs": 0.0008632582
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -5.97604613992e-16,
+            "I(LIN|XBQ1)": -5.97604613992e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 82.5,
+            "JTL2": 85.5,
+            "JTL3": 88.5,
+            "JTL4": 91.5,
+            "JTL5": 94.5,
+            "JTL6": 97.5
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 82.5,
+          "first_relevant_progression_terminal_ps": 97.5,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.0678317889896376e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678317889896378e-16,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 115.7,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0981038538074102,
+            "min_continuous_relative_phase_turns": -0.019538019968904252,
+            "final_continuous_relative_phase_turns": 0.9870121119798363,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 116.9,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.041059539104413,
+            "min_continuous_relative_phase_turns": -0.0041353228863567305,
+            "final_continuous_relative_phase_turns": 0.9970197748014548,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 9.494431e-05,
+              "min": -9.338915e-05,
+              "max_abs": 9.494431e-05,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  113.7,
+                  117.00000000000001
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003649443,
+              "min": 0.0001766108,
+              "max_abs": 0.0003649443
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 2.872016e-05,
+              "min": -1.116433e-05,
+              "max_abs": 2.872016e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004595226,
+              "min": -0.0001786293,
+              "max_abs": 0.0004595226
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.8387826902793982e-15,
+            "negative_V_s": -7.637492422842494e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 4.6903036042826124e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 5.36218e-05,
+            "min": -1.653011e-05,
+            "max_abs": 5.36218e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 5.36218e-05,
+            "min": -1.653011e-05,
+            "max_abs": 5.36218e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0004546777,
+            "min": -0.0001363599,
+            "max_abs": 0.0004546777
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0009967767,
+            "min": -0.0009074366,
+            "max_abs": 0.0009967767
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": 3.3897875750903977e-16,
+            "I(LIN|XBQ1)": 3.3897875750903977e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 118.0,
+            "JTL2": 121.0,
+            "JTL3": 123.9,
+            "JTL4": 126.89999999999999,
+            "JTL5": 129.9,
+            "JTL6": 133.0
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 118.0,
+          "first_relevant_progression_terminal_ps": 133.0,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.067839251369436e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678392513695413e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 4.4040072823970746e-15,
+        "I(R_TERM)_signed_area_A_s": 4.4040072823971806e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_RJ16_0011/raw.csv",
+        "sha256": "38d667f4131e55d138d3b2edd76c7205440008a12267638d9f258d9c3c3cc80e"
+      }
+    },
+    "ARRAY_L1P14_IB270_RJ24_0001": {
+      "case_id": "ARRAY_L1P14_IB270_RJ24_0001",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 24.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_RJ24_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 78.0,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.053044383784062,
+            "min_continuous_relative_phase_turns": 0.006235213205511187,
+            "final_continuous_relative_phase_turns": 0.9963010310784517,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 78.89999999999999,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0244910479792118,
+            "min_continuous_relative_phase_turns": 0.0034906021273857593,
+            "final_continuous_relative_phase_turns": 1.0035761785976196,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 5.252017e-05,
+              "min": -0.0001765146,
+              "max_abs": 0.0001765146,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  75.60000000000001,
+                  78.5
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003225202,
+              "min": 9.348543e-05,
+              "max_abs": 0.0003225202
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.772734e-05,
+              "min": -7.148422e-06,
+              "max_abs": 1.772734e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004254561,
+              "min": -0.0001715621,
+              "max_abs": 0.0004254561
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.7766508583999993e-15,
+            "negative_V_s": -7.292800418999997e-16,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 2.4286458629012905e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.241864e-05,
+            "min": -0.0001114552,
+            "max_abs": 0.0001114552
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.241864e-05,
+            "min": -0.0001114552,
+            "max_abs": 0.0001114552
+          },
+          "V(QBIN)": {
+            "max": 0.0004361969,
+            "min": -0.0003375659,
+            "max_abs": 0.0004361969
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0007721756,
+            "min": -0.0006132502,
+            "max_abs": 0.0007721756
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -5.98337446116e-16,
+            "I(LIN|XBQ1)": -5.98337446116e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 80.0,
+            "JTL2": 83.0,
+            "JTL3": 86.0,
+            "JTL4": 89.0,
+            "JTL5": 92.0,
+            "JTL6": 95.0
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 80.0,
+          "first_relevant_progression_terminal_ps": 95.0,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.067832519606731e-15,
+          "I(R_TERM)_signed_area_A_s": 2.06783251960673e-16,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 119.20000000000002,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.9847140737565325,
+            "min_continuous_relative_phase_turns": -0.022439255426526247,
+            "final_continuous_relative_phase_turns": 0.9835188201339123,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 120.29999999999998,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.999072714412397,
+            "min_continuous_relative_phase_turns": -0.0025873819098448663,
+            "final_continuous_relative_phase_turns": 0.99866209465922,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 6.781102e-05,
+              "min": -0.0001219447,
+              "max_abs": 0.0001219447,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  117.00000000000001,
+                  120.29999999999998
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.000337811,
+              "min": 0.0001480553,
+              "max_abs": 0.000337811
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.669802e-05,
+              "min": -2.243626e-06,
+              "max_abs": 1.669802e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004007525,
+              "min": -5.384702e-05,
+              "max_abs": 0.0004007525
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.2926348088756005e-15,
+            "negative_V_s": -2.196941404662003e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 1.9238097065862078e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 2.935225e-05,
+            "min": -4.598477e-05,
+            "max_abs": 4.598477e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 2.935225e-05,
+            "min": -4.598477e-05,
+            "max_abs": 4.598477e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0003521388,
+            "min": -5.978865e-05,
+            "max_abs": 0.0003521388
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0006733529,
+            "min": -0.000400879,
+            "max_abs": 0.0006733529
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -1.7720302404585594e-16,
+            "I(LIN|XBQ1)": -1.7720302404585493e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 121.39999999999999,
+            "JTL2": 124.4,
+            "JTL3": 127.39999999999999,
+            "JTL4": 130.4,
+            "JTL5": 133.4,
+            "JTL6": 136.39999999999998
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 121.39999999999999,
+          "first_relevant_progression_terminal_ps": 136.39999999999998,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.0678350486070257e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678350486070212e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 4.404007257424543e-15,
+        "I(R_TERM)_signed_area_A_s": 4.404007257424536e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_RJ24_0001/raw.csv",
+        "sha256": "59cbd9f106b9f75831acd90102d902e36908dfa19597a2489a3a96d7eb6caf87"
+      }
+    },
+    "ARRAY_L1P14_IB270_RJ24_0011": {
+      "case_id": "ARRAY_L1P14_IB270_RJ24_0011",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 24.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_RJ24_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 78.0,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.053044383784062,
+            "min_continuous_relative_phase_turns": 0.006235213205511187,
+            "final_continuous_relative_phase_turns": 0.9963010310784517,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 78.89999999999999,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0244910479792118,
+            "min_continuous_relative_phase_turns": 0.0034906021273857593,
+            "final_continuous_relative_phase_turns": 1.0035761785976196,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 5.252017e-05,
+              "min": -0.0001765146,
+              "max_abs": 0.0001765146,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  75.60000000000001,
+                  78.5
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003225202,
+              "min": 9.348543e-05,
+              "max_abs": 0.0003225202
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.772734e-05,
+              "min": -7.148422e-06,
+              "max_abs": 1.772734e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004254561,
+              "min": -0.0001715621,
+              "max_abs": 0.0004254561
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.7766508583999993e-15,
+            "negative_V_s": -7.292800418999997e-16,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 2.4286458629012905e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.241864e-05,
+            "min": -0.0001114552,
+            "max_abs": 0.0001114552
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.241864e-05,
+            "min": -0.0001114552,
+            "max_abs": 0.0001114552
+          },
+          "V(QBIN)": {
+            "max": 0.0004361969,
+            "min": -0.0003375659,
+            "max_abs": 0.0004361969
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0007721756,
+            "min": -0.0006132502,
+            "max_abs": 0.0007721756
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -5.98337446116e-16,
+            "I(LIN|XBQ1)": -5.98337446116e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 80.0,
+            "JTL2": 83.0,
+            "JTL3": 86.0,
+            "JTL4": 89.0,
+            "JTL5": 92.0,
+            "JTL6": 95.0
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 80.0,
+          "first_relevant_progression_terminal_ps": 95.0,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.067832519606731e-15,
+          "I(R_TERM)_signed_area_A_s": 2.06783251960673e-16,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 115.7,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.1299445508773178,
+            "min_continuous_relative_phase_turns": -0.021666558177815227,
+            "final_continuous_relative_phase_turns": 0.9835124539361887,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 116.8,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0518102963553275,
+            "min_continuous_relative_phase_turns": -0.0020228593266978837,
+            "final_continuous_relative_phase_turns": 0.9986668693075128,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 9.768615e-05,
+              "min": -9.247836e-05,
+              "max_abs": 9.768615e-05,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  113.8,
+                  117.00000000000001
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003676861,
+              "min": 0.0001775216,
+              "max_abs": 0.0003676861
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.937248e-05,
+              "min": -9.052728e-06,
+              "max_abs": 1.937248e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004649394,
+              "min": -0.0002172655,
+              "max_abs": 0.0004649394
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.952528912879999e-15,
+            "negative_V_s": -8.7960377883083965e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 3.253862838051038e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 4.881433e-05,
+            "min": -2.006213e-05,
+            "max_abs": 4.881433e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 4.881433e-05,
+            "min": -2.006213e-05,
+            "max_abs": 4.881433e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0004348022,
+            "min": -0.0001571543,
+            "max_abs": 0.0004348022
+          },
+          "V(COMMON_SL)": {
+            "max": 0.001009126,
+            "min": -0.0009525736,
+            "max_abs": 0.001009126
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": 3.397494116376097e-16,
+            "I(LIN|XBQ1)": 3.3974941163772973e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 117.9,
+            "JTL2": 120.89999999999999,
+            "JTL3": 123.9,
+            "JTL4": 126.89999999999999,
+            "JTL5": 129.9,
+            "JTL6": 132.9
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 117.9,
+          "first_relevant_progression_terminal_ps": 132.9,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.067835084780486e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678350847804828e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 4.4040072935980025e-15,
+        "I(R_TERM)_signed_area_A_s": 4.4040072935979977e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_RJ24_0011/raw.csv",
+        "sha256": "402a672a3046d7ee909f179ebb013bb398b42550471a2e72ca9933a2c6ad7383"
+      }
+    },
+    "ARRAY_L1P14_IB270_RJ32_0001": {
+      "case_id": "ARRAY_L1P14_IB270_RJ32_0001",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 32.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_RJ32_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 77.0,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0556148952699391,
+            "min_continuous_relative_phase_turns": 0.005942686420108282,
+            "final_continuous_relative_phase_turns": 0.9966346198391725,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 78.1,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0254504339761699,
+            "min_continuous_relative_phase_turns": 0.0032642678828147605,
+            "final_continuous_relative_phase_turns": 1.0033368095632096,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 5.913594e-05,
+              "min": -0.000149749,
+              "max_abs": 0.000149749,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  73.2,
+                  74.1,
+                  75.10000000000001,
+                  77.80000000000001
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003291359,
+              "min": 0.000120251,
+              "max_abs": 0.0003291359
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.345489e-05,
+              "min": -4.137414e-06,
+              "max_abs": 1.345489e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004305566,
+              "min": -0.0001323973,
+              "max_abs": 0.0004305566
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.664181053599999e-15,
+            "negative_V_s": -6.154920737299999e-16,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 1.648570596829253e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.208099e-05,
+            "min": -9.787402e-05,
+            "max_abs": 9.787402e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.208099e-05,
+            "min": -9.787402e-05,
+            "max_abs": 9.787402e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0004409805,
+            "min": -0.0001805385,
+            "max_abs": 0.0004409805
+          },
+          "V(COMMON_SL)": {
+            "max": 0.000799698,
+            "min": -0.0006639819,
+            "max_abs": 0.000799698
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -5.985186717179e-16,
+            "I(LIN|XBQ1)": -5.985186717179e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 79.19999999999999,
+            "JTL2": 82.2,
+            "JTL3": 85.2,
+            "JTL4": 88.2,
+            "JTL5": 91.2,
+            "JTL6": 94.19999999999999
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 79.19999999999999,
+          "first_relevant_progression_terminal_ps": 94.19999999999999,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.067834355723602e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678343557236028e-16,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 119.0,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.9838890145315441,
+            "min_continuous_relative_phase_turns": -0.02312982872460196,
+            "final_continuous_relative_phase_turns": 0.9823674932755856,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 120.10000000000001,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 0.999819151095498,
+            "min_continuous_relative_phase_turns": -0.0018024297305157548,
+            "final_continuous_relative_phase_turns": 0.9992637003441074,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 6.975165e-05,
+              "min": -0.0001211328,
+              "max_abs": 0.0001211328,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  116.9,
+                  120.0
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003397516,
+              "min": 0.0001488672,
+              "max_abs": 0.0003397516
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.400682e-05,
+              "min": -1.76055e-06,
+              "max_abs": 1.400682e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004482184,
+              "min": -5.63376e-05,
+              "max_abs": 0.0004482184
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.3618694479194006e-15,
+            "negative_V_s": -2.8988581217820024e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 1.5667244335958662e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 2.74217e-05,
+            "min": -4.474015e-05,
+            "max_abs": 4.474015e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 2.74217e-05,
+            "min": -4.474015e-05,
+            "max_abs": 4.474015e-05
+          },
+          "V(QBIN)": {
+            "max": 0.000386939,
+            "min": -9.621068e-05,
+            "max_abs": 0.000386939
+          },
+          "V(COMMON_SL)": {
+            "max": 0.0006733279,
+            "min": -0.0004183511,
+            "max_abs": 0.0006733279
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -1.7699501668162894e-16,
+            "I(LIN|XBQ1)": -1.7699501668163794e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 121.2,
+            "JTL2": 124.19999999999999,
+            "JTL3": 127.20000000000002,
+            "JTL4": 130.2,
+            "JTL5": 133.2,
+            "JTL6": 136.20000000000002
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 121.2,
+          "first_relevant_progression_terminal_ps": 136.20000000000002,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.0678333446941075e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678333446941102e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 4.40400743289517e-15,
+        "I(R_TERM)_signed_area_A_s": 4.404007432895173e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_RJ32_0001/raw.csv",
+        "sha256": "6c7e334b93c219db2384b1a8b4beb964579ec7fe6ff9daee36cb5c8e9a1bdb91"
+      }
+    },
+    "ARRAY_L1P14_IB270_RJ32_0011": {
+      "case_id": "ARRAY_L1P14_IB270_RJ32_0011",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 32.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_RJ32_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "CONTROL_ORIGIN": {
+        "window_ps": [
+          70.0,
+          110.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 77.0,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0556148952699391,
+            "min_continuous_relative_phase_turns": 0.005942686420108282,
+            "final_continuous_relative_phase_turns": 0.9966346198391725,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "CONTROL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              60.99999999999999,
+              70.0
+            ],
+            "origin_window_ps": [
+              70.0,
+              110.0
+            ],
+            "baseline_reference_time_ps": 60.99999999999999,
+            "first_half_turn_timing_diagnostic_ps": 78.1,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0254504339761699,
+            "min_continuous_relative_phase_turns": 0.0032642678828147605,
+            "final_continuous_relative_phase_turns": 1.0033368095632096,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 5.913594e-05,
+              "min": -0.000149749,
+              "max_abs": 0.000149749,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  70.0,
+                  110.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  73.2,
+                  74.1,
+                  75.10000000000001,
+                  77.80000000000001
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003291359,
+              "min": 0.000120251,
+              "max_abs": 0.0003291359
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.345489e-05,
+              "min": -4.137414e-06,
+              "max_abs": 1.345489e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004305566,
+              "min": -0.0001323973,
+              "max_abs": 0.0004305566
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.664181053599999e-15,
+            "negative_V_s": -6.154920737299999e-16,
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 1.648570596829253e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              70.0,
+              110.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 3.208099e-05,
+            "min": -9.787402e-05,
+            "max_abs": 9.787402e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 3.208099e-05,
+            "min": -9.787402e-05,
+            "max_abs": 9.787402e-05
+          },
+          "V(QBIN)": {
+            "max": 0.0004409805,
+            "min": -0.0001805385,
+            "max_abs": 0.0004409805
+          },
+          "V(COMMON_SL)": {
+            "max": 0.000799698,
+            "min": -0.0006639819,
+            "max_abs": 0.000799698
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": -5.985186717179e-16,
+            "I(LIN|XBQ1)": -5.985186717179e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "CONTROL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 79.19999999999999,
+            "JTL2": 82.2,
+            "JTL3": 85.2,
+            "JTL4": 88.2,
+            "JTL5": 91.2,
+            "JTL6": 94.19999999999999
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 79.19999999999999,
+          "first_relevant_progression_terminal_ps": 94.19999999999999,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.067834355723602e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678343557236028e-16,
+          "window_ps": [
+            70.0,
+            110.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "CONTROL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "FINAL_ORIGIN": {
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "phase_diagnostics": {
+          "BJ1": {
+            "status": "DERIVED",
+            "label": "P(BJ1|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 115.6,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.16204387472975,
+            "min_continuous_relative_phase_turns": -0.022314796261028374,
+            "final_continuous_relative_phase_turns": 0.9823579439790001,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          },
+          "BJ2": {
+            "status": "DERIVED",
+            "label": "P(BJ2|XBQ1)",
+            "origin": "FINAL_ORIGIN",
+            "raw_unit": "rad",
+            "display_unit": "turns",
+            "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+            "baseline_window_ps": [
+              101.0,
+              110.0
+            ],
+            "origin_window_ps": [
+              110.0,
+              200.0
+            ],
+            "baseline_reference_time_ps": 101.0,
+            "first_half_turn_timing_diagnostic_ps": 116.69999999999999,
+            "first_half_turn_diagnostic_found": true,
+            "max_continuous_relative_phase_turns": 1.0708754669883056,
+            "min_continuous_relative_phase_turns": -0.00124188602094606,
+            "final_continuous_relative_phase_turns": 0.9992700665418308,
+            "not_event_time": true,
+            "not_event_count": true,
+            "scientific_interpretation_performed": false
+          }
+        },
+        "receiver_diagnostics": {
+          "descriptives": {
+            "I(L1|XBQ1)": {
+              "max": 9.809427e-05,
+              "min": -9.18989e-05,
+              "max_abs": 9.809427e-05,
+              "zero_crossing": {
+                "status": "DERIVED",
+                "label": "I(L1|XBQ1)",
+                "window_ps": [
+                  110.0,
+                  200.0
+                ],
+                "exact_zero_sample_times_ps": [],
+                "sign_transition_stored_sample_times_ps": [
+                  113.7,
+                  116.9
+                ],
+                "interpolation": false
+              }
+            },
+            "I(L2|XBQ1)": {
+              "max": 0.0003680943,
+              "min": 0.0001781011,
+              "max_abs": 0.0003680943
+            },
+            "I(RJ1|XBQ1)": {
+              "max": 1.43163e-05,
+              "min": -6.094098e-06,
+              "max_abs": 1.43163e-05
+            },
+            "V(RJ1|XBQ1)": {
+              "max": 0.0004581215,
+              "min": -0.0001950111,
+              "max_abs": 0.0004581215
+            }
+          },
+          "BJ1_voltage_area": {
+            "positive_V_s": 2.9673605035826986e-15,
+            "negative_V_s": -8.953963841987993e-16,
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "formula": "trapezoid(actual stored grid, max(V,0) or min(V,0))",
+            "status": "DERIVED"
+          },
+          "RJ1_dissipated_energy": {
+            "value_J": 2.4674948810943496e-20,
+            "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+            "orientation": "as emitted by registered branch labels; no sign correction",
+            "window_ps": [
+              110.0,
+              200.0
+            ],
+            "status": "DERIVED"
+          }
+        },
+        "source_side_diagnostics": {
+          "I(B_JSL8)": {
+            "max": 5.019395e-05,
+            "min": -2.589056e-05,
+            "max_abs": 5.019395e-05
+          },
+          "I(LIN|XBQ1)": {
+            "max": 5.019395e-05,
+            "min": -2.589056e-05,
+            "max_abs": 5.019395e-05
+          },
+          "V(QBIN)": {
+            "max": 0.000424393,
+            "min": -0.0001524858,
+            "max_abs": 0.000424393
+          },
+          "V(COMMON_SL)": {
+            "max": 0.001009079,
+            "min": -0.0009409492,
+            "max_abs": 0.001009079
+          },
+          "signed_areas_A_s": {
+            "I(B_JSL8)": 3.399568584985797e-16,
+            "I(LIN|XBQ1)": 3.399568584985797e-16
+          }
+        },
+        "jtl_progression_diagnostics": {
+          "status": "DERIVED",
+          "origin": "FINAL_ORIGIN",
+          "signal": "P(B01|XJTL1_stage)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "first_candidate_threshold_turns": 0.5,
+          "second_candidate_threshold_turns": 1.5,
+          "first_stage_half_turn_timing_ps": {
+            "JTL1": 117.8,
+            "JTL2": 120.80000000000001,
+            "JTL3": 123.8,
+            "JTL4": 126.8,
+            "JTL5": 129.8,
+            "JTL6": 132.79999999999998
+          },
+          "second_stage_threshold_timing_ps": {
+            "JTL1": null,
+            "JTL2": null,
+            "JTL3": null,
+            "JTL4": null,
+            "JTL5": null,
+            "JTL6": null
+          },
+          "first_relevant_progression_start_ps": 117.8,
+          "first_relevant_progression_terminal_ps": 132.79999999999998,
+          "second_progression_start_ps": null,
+          "second_progression_terminal_ps": null,
+          "complete_progression_candidate": true,
+          "second_separated_progression_candidate": false,
+          "candidate_label": "MECHANICAL_CANDIDATE_ONLY",
+          "not_event_count": true,
+          "not_sfq_count": true
+        },
+        "terminal_diagnostics": {
+          "V(JTL6_OUT)_signed_area_V_s": 2.0678330912231243e-15,
+          "I(R_TERM)_signed_area_A_s": 2.0678330912231535e-16,
+          "window_ps": [
+            110.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, signal)",
+          "status": "DERIVED",
+          "label": "FINAL_ORIGIN_SUPPORT_WINDOW"
+        }
+      },
+      "whole_run_terminal": {
+        "V(JTL6_OUT)_signed_area_V_s": 4.404007179424187e-15,
+        "I(R_TERM)_signed_area_A_s": 4.4040071794242163e-16,
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "formula": "trapezoid(actual stored time grid, signal)",
+        "label": "WHOLE_RUN_TOTAL_ONLY",
+        "not_population_count": true,
+        "status": "DERIVED"
+      },
+      "notes": [
+        "CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.",
+        "JTL progression fields are MECHANICAL_CANDIDATE_ONLY, not event/SFQ counts.",
+        "Whole-run terminal area is WHOLE_RUN_TOTAL_ONLY and not a population count.",
+        "Continuous phase turns are not SFQ counts or fluxoid counts."
+      ],
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1p14-ib270-rj1-interaction-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_RJ32_0011/raw.csv",
+        "sha256": "cf4f5d366da449bd23a3bf39f0c78245cfcc31187d4b6b0dc71b058b372929c5"
+      }
+    }
+  },
+  "ratio_diagnostics": {
+    "RJ1_12": {
+      "RJ1_ohm": 12.0,
+      "mask_0001_case_id": "ARRAY_L1P14_IB270_0001",
+      "mask_0011_case_id": "ARRAY_L1P14_IB270_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9442432939430565,
+          "numerator_A_s": 1.1267946662399998e-16,
+          "denominator_A_s": 5.795543539999998e-17,
+          "unit": "A_s"
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9442432939430565,
+          "numerator_A_s": 1.1267946662399998e-16,
+          "denominator_A_s": 5.795543539999998e-17,
+          "unit": "A_s"
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of population scaling"
+      }
+    },
+    "RJ1_16": {
+      "RJ1_ohm": 16.0,
+      "mask_0001_case_id": "ARRAY_L1P14_IB270_RJ16_0001",
+      "mask_0011_case_id": "ARRAY_L1P14_IB270_RJ16_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.930792999760797,
+          "numerator_A_s": 1.0317901085999998e-16,
+          "denominator_A_s": 5.343867046999997e-17,
+          "unit": "A_s"
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.930792999760797,
+          "numerator_A_s": 1.0317901085999998e-16,
+          "denominator_A_s": 5.343867046999997e-17,
+          "unit": "A_s"
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of population scaling"
+      }
+    },
+    "RJ1_24": {
+      "RJ1_ohm": 24.0,
+      "mask_0001_case_id": "ARRAY_L1P14_IB270_RJ24_0001",
+      "mask_0011_case_id": "ARRAY_L1P14_IB270_RJ24_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.8932004711001298,
+          "numerator_A_s": 9.606574767999997e-17,
+          "denominator_A_s": 5.074251202999998e-17,
+          "unit": "A_s"
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.8932004711001298,
+          "numerator_A_s": 9.606574767999997e-17,
+          "denominator_A_s": 5.074251202999998e-17,
+          "unit": "A_s"
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of population scaling"
+      }
+    },
+    "RJ1_32": {
+      "RJ1_ohm": 32.0,
+      "mask_0001_case_id": "ARRAY_L1P14_IB270_RJ32_0001",
+      "mask_0011_case_id": "ARRAY_L1P14_IB270_RJ32_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.8527612478699484,
+          "numerator_A_s": 9.265361083999996e-17,
+          "denominator_A_s": 5.000839203999998e-17,
+          "unit": "A_s"
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.8527612478699484,
+          "numerator_A_s": 9.265361083999996e-17,
+          "denominator_A_s": 5.000839203999998e-17,
+          "unit": "A_s"
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of population scaling"
+      }
+    }
+  },
+  "notes": [
+    "CONTROL_ORIGIN and FINAL_ORIGIN remain separate; no control response is combined with final response.",
+    "JTL stage timing candidates use fixed thresholds and are MECHANICAL_CANDIDATE_ONLY.",
+    "No field is an event count, SFQ count, control PASS/FAIL, threshold, optimum or mechanism conclusion.",
+    "Scientific interpretation is NOT_PERFORMED."
+  ]
+}

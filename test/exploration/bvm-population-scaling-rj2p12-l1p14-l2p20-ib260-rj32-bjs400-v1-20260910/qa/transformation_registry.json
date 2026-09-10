@@ -1,0 +1,42 @@
+{
+  "schema": "bjs400-population-transformation-registry-v1",
+  "raw_immutable": true,
+  "scientific_analysis_performed": false,
+  "transformations": [
+    {
+      "name": "generalized_response_oracle",
+      "operation": "response indices 1..4 from common FINAL baseline cumulative phase plus direct voltage clusters and terminal valleys",
+      "scope": "N_RESPONSE_MULTI_EVIDENCE_ORACLE",
+      "hamming_weight_input": false,
+      "not_event_count": true
+    },
+    {
+      "name": "terminal_local_area",
+      "operation": "actual-grid trapezoid over shared valley boundaries for each separated terminal cluster",
+      "scope": "supporting mechanical evidence",
+      "not_sfq_count": true
+    },
+    {
+      "name": "source_population_metrics",
+      "operation": "extrema and actual-grid signed areas in [110,114.5) ps",
+      "scope": "DERIVED_SOURCE_POPULATION_EVIDENCE"
+    },
+    {
+      "name": "population_comparison",
+      "operation": "Hamming weight and position used only after oracle classification",
+      "scope": "bounded selected-mask comparison"
+    },
+    {
+      "name": "phase_display",
+      "operation": "continuous_unwrap(raw_rad)/(2*pi)",
+      "scope": "diagnostic/display only",
+      "not_event_count": true
+    },
+    {
+      "name": "area_integration",
+      "operation": "trapezoid on actual stored time values",
+      "scope": "mechanical arithmetic",
+      "interpolation": false
+    }
+  ]
+}

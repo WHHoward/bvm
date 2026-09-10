@@ -115,7 +115,7 @@ def population_comparisons(cases: dict[str, dict[str, Any]]) -> dict[str, Any]:
             max_by_weight[str(weight)] = max(values)
     saturation = "DOWNSTREAM_RESPONSE_SATURATION_OBSERVED" if max_by_weight.get("3", 0) <= max_by_weight.get("2", 0) and max_by_weight.get("4", 0) <= max_by_weight.get("3", 0) and max_by_weight.get("3") == max_by_weight.get("2") else "NO_REGISTERED_SATURATION_CLASSIFICATION"
     expected = {"0001": 1, "0011": 2, "0110": 2, "1100": 2, "1110": 3, "0111": 3, "1111": 4}
-    selected_candidate = all(cases[mask]["control"]["status"] == "CLEAN" and cases[mask]["complete_response_count"] == value for mask, value in expected.items())
+    selected_candidate = all(by_mask[mask]["control"]["status"] == "CLEAN" and by_mask[mask]["complete_response_count"] == value for mask, value in expected.items())
     return {"weight2_counts": weight2_counts, "weight3_counts": weight3_counts, "position_dependence_weight2": "POSITION_DEPENDENCE_OBSERVED_AT_WEIGHT_2" if position2 else "NO_POSITION_DEPENDENCE_OBSERVED_AT_WEIGHT_2", "position_dependence_weight3": "POSITION_DEPENDENCE_OBSERVED_AT_WEIGHT_3" if position3 else "NO_POSITION_DEPENDENCE_OBSERVED_AT_WEIGHT_3", "max_response_count_by_weight": max_by_weight, "saturation_classification": saturation, "selected_mask_population_scaling_candidate": "SELECTED_MASK_POPULATION_SCALING_CANDIDATE" if selected_candidate else "SELECTED_MASK_EXPECTED_SCALING_NOT_OBSERVED", "selected_candidate": selected_candidate, "expected_counts_used_only_for_final_comparison": True, "oracle_received_no_hamming_weight": True, "no_universal_all_mask_claim": True}
 
 

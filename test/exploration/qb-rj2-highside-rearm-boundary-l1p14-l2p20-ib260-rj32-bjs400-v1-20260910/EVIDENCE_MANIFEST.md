@@ -5,7 +5,8 @@ This is an evidence-only handoff. Scientific interpretation is `NOT PERFORMED`.
 - Experiment ID: `qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910`
 - Frozen point: L1=1.4pH, L2=2.0pH, IBias=260uA, RJ1=32ohm, BJS=400uA.
 - RJ2 matrix: 6ohm historical reuse; 8/10/12ohm new physical values.
-- Logical cases: 8; maximum new solves: 6; historical reuse: 2.
+- Registered logical cases: 8; actual new solves: 4 of maximum 6; historical reuse: 2.
+- Early-stop record: `OBSERVED_L1_RECROSSING` at completed RJ2=10ohm / 0011; RJ2=12ohm remains unsolved with preserved decks.
 - Mechanical QA: `qa/*.json` and `mechanical_summary.json`.
 - Independent numerical/adversarial review: `analysis/REVIEW.md`.
 - Visualization: `visualization/manifest.json` and per-run navigation.

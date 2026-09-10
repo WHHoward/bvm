@@ -7,6 +7,10 @@ BJS400 ARRAY history fixed. RJ2=6ohm is an exact immutable reuse from the
 previous canonical RJ2 experiment; RJ2=8/10/12ohm are the only newly
 authorized values, with masks 0001 and 0011.
 
+The registered early-stop criterion was observed after the completed
+RJ2=10ohm / 0011 run. Therefore RJ2=12ohm was not solved; its registered
+decks remain preserved, and the actual new-solve count is four.
+
 The evidence records the ZERO_STATE_READ_CONTROL guardrail, separate 0001 and
 0011 first-response candidates, first-FINAL-origin BJ2 +0.9 navigation,
 stored-sample L1 re-crossing and positive dwell, second-response candidate

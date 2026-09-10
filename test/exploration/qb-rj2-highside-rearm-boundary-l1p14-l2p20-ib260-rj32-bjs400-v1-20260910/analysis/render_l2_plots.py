@@ -21,11 +21,12 @@ from bvmtools.phase import continuous_unwrap  # noqa: E402
 from bvmtools.raw import RawTrace, read_csv  # noqa: E402
 
 
-NEW_RUNS = (
+REGISTERED_NEW_RUNS = (
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011",
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011",
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
 )
+NEW_RUNS = REGISTERED_NEW_RUNS
 REUSE_RUNS = ("ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011")
 RUN_PATHS = {run_id: EXP / "runs" / run_id for run_id in NEW_RUNS}
 RUN_PATHS.update({run_id: EXP / "references/reused" / run_id for run_id in REUSE_RUNS})
@@ -254,6 +255,16 @@ def write_run_summaries() -> list[Path]:
 
 
 def main() -> int:
+    execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
+    global NEW_RUNS, COMPARISON_CASES
+    NEW_RUNS = tuple(execution.get("run_order", REGISTERED_NEW_RUNS))
+    COMPARISON_CASES = {
+        mask: [
+            next(run_id for run_id in REUSE_RUNS if run_id.endswith(f"_{mask}")),
+            *(run_id for run_id in NEW_RUNS if run_id.endswith(f"_{mask}")),
+        ]
+        for mask in ("0001", "0011")
+    }
     entries: list[dict[str, object]] = []
     render_standalone(entries)
     render_comparison(entries, "RJ2_HIGHSIDE_0001_COMPARE", COMPARISON_CASES["0001"])
@@ -278,6 +289,9 @@ def main() -> int:
         "comparison_entries": comparisons,
         "standalone_entry_count": len(standalone),
         "comparison_entry_count": len(comparisons),
+        "registered_new_run_count": len(REGISTERED_NEW_RUNS),
+        "executed_new_run_count": len(NEW_RUNS),
+        "unrun_preserved_runs": [run_id for run_id in REGISTERED_NEW_RUNS if run_id not in NEW_RUNS],
         "run_summary_paths": [rel(path) for path in summaries],
         "rj2_values_new_ohm": [8.0, 10.0, 12.0],
         "rj2_baseline_reused_ohm": 6.0,
@@ -285,7 +299,7 @@ def main() -> int:
         "scientific_analysis_performed": False,
         "no_focused_window_plots": True,
         "no_extra_comparison_plots": True,
-        "status": "PASS" if len(standalone) == 18 and len(comparisons) == 2 else "FAIL",
+        "status": "PASS" if len(standalone) == len(NEW_RUNS) * 3 and len(comparisons) == 2 else "FAIL",
     }
     (EXP / "visualization/manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({

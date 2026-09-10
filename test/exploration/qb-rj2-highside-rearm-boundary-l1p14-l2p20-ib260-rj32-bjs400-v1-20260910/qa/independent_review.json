@@ -1,0 +1,109 @@
+{
+  "schema": "bjs400-rj2-highside-independent-review-v1",
+  "experiment_id": "qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T17:36:38+08:00",
+  "status": "PASS",
+  "review_type": "stdlib-only numerical cross-check plus bounded adversarial probes",
+  "cases_checked": 6,
+  "registered_new_case_count": 6,
+  "unrun_preserved_case_ids": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011"
+  ],
+  "raw_hash_count": 6,
+  "raw_hashes_unique": true,
+  "optional_unknown": "V(IB|XBQ1)",
+  "optional_unknown_absent_in_all_cases": true,
+  "window_counts": {
+    "CONTROL_ORIGIN_[70,110)": [
+      400
+    ],
+    "FINAL_ORIGIN_[110,200)": [
+      900
+    ],
+    "PRE_SWITCH_[110,114.5)": [
+      45
+    ]
+  },
+  "phase_anchor_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001": {
+      "bj1": 1200,
+      "bj2": 1228
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011": {
+      "bj1": 1153,
+      "bj2": 1182
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001": {
+      "bj1": 1198,
+      "bj2": 1226
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011": {
+      "bj1": 1152,
+      "bj2": 1180
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "bj1": 1197,
+      "bj2": 1225
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "bj1": 1151,
+      "bj2": 1170
+    }
+  },
+  "recrossing_recomputed": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001": {
+      "anchor_index": 1228,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011": {
+      "anchor_index": 1182,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001": {
+      "anchor_index": 1226,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011": {
+      "anchor_index": 1180,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "anchor_index": 1225,
+      "negative_to_positive_times_ps": [],
+      "observed": false
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "anchor_index": 1170,
+      "negative_to_positive_times_ps": [
+        119.89999999999999,
+        121.89999999999999
+      ],
+      "observed": true
+    }
+  },
+  "adversarial_probes": {
+    "no_op_parameterization": true,
+    "wrong_branch_guard": true,
+    "weak_oracle_differential": true,
+    "boundary_windows": true,
+    "stale_artifact_guard": true,
+    "overclaim_ceiling": true,
+    "strict_recrossing_recomputed": true
+  },
+  "execution_head": "08e40a6b7594fcb73b3c680a6358bcf35362e311",
+  "preflight_head": "f18f4b43ee3666f650bb8182ffd93a228ab567ec",
+  "metadata_hash_checks": true,
+  "raw_immutable_check": true,
+  "scientific_interpretation_performed": false,
+  "failures": [],
+  "residual_uncertainty": [
+    "No timestep convergence or scientific mechanism interpretation was performed.",
+    "Phase thresholds remain stored-sample navigation diagnostics, not event or SFQ counts.",
+    "Optional V(IB|XBQ1) remains UNKNOWN because the solver did not emit it."
+  ]
+}

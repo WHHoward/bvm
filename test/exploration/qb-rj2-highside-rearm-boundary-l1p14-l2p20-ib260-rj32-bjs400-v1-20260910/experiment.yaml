@@ -35,7 +35,7 @@ physical_authority:
   reuse_rule: exact immutable reuse only after source/archive/hash/deck/protocol verification
 
 changed:
-  - RJ2: [DESIGNED] expose the existing RJ2 element through the already audited parameterized QB include and use 8/10/12ohm
+  - "RJ2: [DESIGNED] expose the existing RJ2 element through the already audited parameterized QB include and use 8/10/12ohm"
   - no other circuit, stimulus, topology, solver, timestep, load, bias or mask change
 
 frozen:
@@ -61,6 +61,8 @@ rj2_matrix:
   logical_case_count: 8
   historical_reuse_count: 2
   new_physical_solve_max: 6
+  actual_new_physical_solve_count: 4
+  stop_reason: OBSERVED_L1_RECROSSING:ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011
   unauthorized_extra_solves: 0
   execution_order:
     - RJ2=8ohm / 0001
@@ -79,14 +81,17 @@ rj2_matrix:
   reused_runs:
     - references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001
     - references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011
+  unrun_preserved_decks:
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
 
 authorized_runs:
   - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001
   - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011
   - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001
   - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011
-  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001
-  - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
+  # The remaining RJ2=12ohm pair was not run because the registered early-stop
+  # condition was observed at RJ2=10ohm/0011. Its decks remain preserved above.
 
 early_stop:
   enabled: true
@@ -158,7 +163,8 @@ visualization:
   focused_windows: []
   standalone_input_policy: raw.csv direct
   standalone_per_new_run: 3
-  standalone_total: 18
+  standalone_max: 18
+  standalone_total: 12
   comparison_total: 2
   comparison_names: [RJ2_HIGHSIDE_0001_COMPARE.html, RJ2_HIGHSIDE_0011_COMPARE.html]
   no_derived_plot_csv: true
@@ -183,6 +189,8 @@ package:
     - analysis/REVIEW.md
     - analysis/independent_review.py
     - qa/independent_review.json
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/deck.cir
+    - runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/deck.cir
     - visualization
 
 final_state: AWAITING_SCIENTIFIC_REVIEW

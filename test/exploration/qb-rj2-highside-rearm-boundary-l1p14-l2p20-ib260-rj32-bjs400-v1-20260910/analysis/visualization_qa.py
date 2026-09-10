@@ -12,11 +12,12 @@ from typing import Any
 
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
-NEW_RUNS = (
+REGISTERED_NEW_RUNS = (
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011",
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011",
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
 )
+NEW_RUNS = REGISTERED_NEW_RUNS
 STANDALONE_NAMES = ("SIGNAL_PATH.html", "QB_STATE.html", "JTL_CHAIN.html")
 COMPARISON_NAMES = ("RJ2_HIGHSIDE_0001_COMPARE.html", "RJ2_HIGHSIDE_0011_COMPARE.html")
 
@@ -65,20 +66,24 @@ def check_entry(entry: dict[str, Any], failures: list[str]) -> None:
         input_path = Path(str(entry.get("input_path", "")))
         if not str(input_path).startswith("/tmp/rj2-damping-") or input_path.exists():
             failures.append(f"comparison temporary CSV retained: {entry.get('output_path')}")
-        if entry.get("temporary_input_deleted") is not True or len(entry.get("comparison_cases", [])) != 4:
+        expected_comparison_case_count = len(NEW_RUNS) // 2 + 1
+        if entry.get("temporary_input_deleted") is not True or len(entry.get("comparison_cases", [])) != expected_comparison_case_count:
             failures.append(f"comparison temporary provenance mismatch: {entry.get('output_path')}")
     else:
         failures.append(f"unknown visualization stage: {entry.get('stage')}")
 
 
 def main() -> int:
+    execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
+    global NEW_RUNS
+    NEW_RUNS = tuple(execution.get("run_order", REGISTERED_NEW_RUNS))
     manifest = json.loads((EXP / "visualization/manifest.json").read_text(encoding="utf-8"))
     standalone = manifest.get("standalone_entries", [])
     comparisons = manifest.get("comparison_entries", [])
     failures: list[str] = []
     if manifest.get("status") != "PASS":
         failures.append("manifest status is not PASS")
-    if len(standalone) != 18 or len(comparisons) != 2:
+    if len(standalone) != len(NEW_RUNS) * 3 or len(comparisons) != 2:
         failures.append(f"entry count mismatch: {len(standalone)} standalone, {len(comparisons)} comparison")
     if manifest.get("whole_run_window_ps") != [0.0, 200.0] or manifest.get("focused_windows") != []:
         failures.append("manifest is not whole-run only")
@@ -115,6 +120,9 @@ def main() -> int:
         "standalone_html_count": len(standalone),
         "comparison_html_count": len(comparisons),
         "expected_standalone_html_per_new_run": 3,
+        "registered_new_run_count": len(REGISTERED_NEW_RUNS),
+        "executed_new_run_count": len(NEW_RUNS),
+        "unrun_preserved_runs": [run_id for run_id in REGISTERED_NEW_RUNS if run_id not in NEW_RUNS],
         "expected_comparison_html": 2,
         "whole_run_only": True,
         "focused_window_plots": False,

@@ -1,0 +1,313 @@
+{
+  "schema": "bjs400-rj2-highside-execution-v1",
+  "experiment_id": "qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "started_at_local": "2026-09-10T17:30:46+08:00",
+  "finished_at_local": "2026-09-10T17:30:48+08:00",
+  "head": "08e40a6b7594fcb73b3c680a6358bcf35362e311",
+  "preflight_head": "f18f4b43ee3666f650bb8182ffd93a228ab567ec",
+  "solver_solve_invocations": 4,
+  "exact_new_physical_solve_count": 4,
+  "authorized_new_physical_solve_max": 6,
+  "reused_physical_case_count": 2,
+  "unauthorized_extra_solves": 0,
+  "failed_runs": [],
+  "run_order": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011"
+  ],
+  "reused_cases": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011"
+  ],
+  "new_rj2_values_ohm": [
+    8.0,
+    10.0,
+    12.0
+  ],
+  "runs": [
+    {
+      "schema": "bjs400-rj2-highside-run-metadata-v1",
+      "experiment_id": "qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 8.0
+      },
+      "rj2_ohm": 8.0,
+      "mask": "0001",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 8.0
+      },
+      "started_at_local": "2026-09-10T17:30:46+08:00",
+      "finished_at_local": "2026-09-10T17:30:46+08:00",
+      "git_head_before_run": "08e40a6b7594fcb73b3c680a6358bcf35362e311",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001/deck.cir",
+          "sha256": "e70191c40c9f0fc5e950701b444e03c57695d367867ece1d5f8e2d1579698fcc",
+          "bytes": 7483
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001/raw.csv",
+          "exists": true,
+          "sha256": "3a864ce7dd37c2a7f2c518fa2877897500c0afd79cb8bc1318a8bd9ef7472505",
+          "bytes": 7100004
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001/run.log",
+          "sha256": "6228777a81c63a5b242ac06c0def57c207e6119a66f84f63731a4f26edda2be8",
+          "bytes": 222762
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999000e-10"
+      }
+    },
+    {
+      "schema": "bjs400-rj2-highside-run-metadata-v1",
+      "experiment_id": "qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 8.0
+      },
+      "rj2_ohm": 8.0,
+      "mask": "0011",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 8.0
+      },
+      "started_at_local": "2026-09-10T17:30:46+08:00",
+      "finished_at_local": "2026-09-10T17:30:46+08:00",
+      "git_head_before_run": "08e40a6b7594fcb73b3c680a6358bcf35362e311",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011/deck.cir",
+          "sha256": "51c63e80b3b92f73876fc04d45c621b52e5affc36b4c010cd10878c01013ff99",
+          "bytes": 7499
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011/raw.csv",
+          "exists": true,
+          "sha256": "451a9f2be69b35e83468e86ac3e2913c80ea4de125c432b9ef5cd450805a1ab4",
+          "bytes": 7096643
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011/run.log",
+          "sha256": "e51a4bdd9dc668f8241c04f6c5db1714fbf88e25e9f7f23c744f533d84590e0d",
+          "bytes": 219361
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999000e-10"
+      }
+    },
+    {
+      "schema": "bjs400-rj2-highside-run-metadata-v1",
+      "experiment_id": "qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 10.0
+      },
+      "rj2_ohm": 10.0,
+      "mask": "0001",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 10.0
+      },
+      "started_at_local": "2026-09-10T17:30:47+08:00",
+      "finished_at_local": "2026-09-10T17:30:47+08:00",
+      "git_head_before_run": "08e40a6b7594fcb73b3c680a6358bcf35362e311",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001/deck.cir",
+          "sha256": "79ddc263a47a5a451fae52c5fb95f266912570c917e7b80bc3613dbaf309e7f3",
+          "bytes": 7484
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001/raw.csv",
+          "exists": true,
+          "sha256": "fdf64eba4d265f14ca0817c1bfb4ccb47ca846ae803da9d81ab98cbb795927b1",
+          "bytes": 7100168
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001/run.log",
+          "sha256": "86071f23bb848f44e3fc5f92a810b3532a4d4b31c9bc127b5490cae402268304",
+          "bytes": 221862
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999000e-10"
+      }
+    },
+    {
+      "schema": "bjs400-rj2-highside-run-metadata-v1",
+      "experiment_id": "qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "run_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011",
+      "topology": "ARRAY",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 10.0
+      },
+      "rj2_ohm": 10.0,
+      "mask": "0011",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 10.0
+      },
+      "started_at_local": "2026-09-10T17:30:47+08:00",
+      "finished_at_local": "2026-09-10T17:30:47+08:00",
+      "git_head_before_run": "08e40a6b7594fcb73b3c680a6358bcf35362e311",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/deck.cir"
+      ],
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/deck.cir",
+          "sha256": "6d3f7eb984396dcd845ae8d8af262bc3fef928e1135201a692bb92cd8aa6c24f",
+          "bytes": 7500
+        },
+        "raw": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/raw.csv",
+          "exists": true,
+          "sha256": "cdd816e78b3b93f48c4608154a5d1ad7d2c3b1b7e7e197cc8e189036c828358c",
+          "bytes": 7096627
+        },
+        "log": {
+          "path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/run.log",
+          "sha256": "a67a87261131e853c82be156623153329fa5c97b29e21c2e7eb8b367439841ff",
+          "bytes": 219503
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 265,
+        "sample_count": 1999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999000e-10"
+      }
+    }
+  ],
+  "raw_files_modified": 0,
+  "scientific_analysis_performed": false,
+  "no_retry_performed": true,
+  "early_stop_rule": "stop after a completed RJ2 pair if strict stored-sample post-anchor I(L1) negative-to-positive transition is observed",
+  "early_stop_reason": "OBSERVED_L1_RECROSSING:ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011",
+  "registered_unrun_values": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011"
+  ],
+  "status": "PASS"
+}

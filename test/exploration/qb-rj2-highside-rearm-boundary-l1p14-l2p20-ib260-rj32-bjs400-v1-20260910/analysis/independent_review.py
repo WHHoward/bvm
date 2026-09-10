@@ -21,7 +21,7 @@ from typing import Any
 
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
-NEW_RUNS = (
+REGISTERED_NEW_RUNS = (
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0001",
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P8_0011",
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001",
@@ -29,6 +29,7 @@ NEW_RUNS = (
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
     "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
 )
+NEW_RUNS = REGISTERED_NEW_RUNS
 REUSE_RUNS = ("ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011")
 ALL_RUNS = REUSE_RUNS + NEW_RUNS
 RJ2_BY_RUN = {run_id: float(re.search(r"RJ2P(\d+)", run_id).group(1)) for run_id in NEW_RUNS}
@@ -161,6 +162,11 @@ def main() -> int:
     traces: dict[str, tuple[list[str], list[float], dict[str, list[float]]]] = {}
     raw_hashes: dict[str, str] = {}
     deck_hashes: dict[str, str] = {}
+    recrossing_records: dict[str, dict[str, Any]] = {}
+    execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
+    global NEW_RUNS, ALL_RUNS
+    NEW_RUNS = tuple(execution.get("run_order", REGISTERED_NEW_RUNS))
+    ALL_RUNS = REUSE_RUNS + NEW_RUNS
 
     for run_id in ALL_RUNS:
         raw = raw_path(run_id)
@@ -185,7 +191,7 @@ def main() -> int:
         deck_hashes[run_id] = sha256(deck)
 
     if len(traces) != len(ALL_RUNS):
-        failures.append(f"expected {len(ALL_RUNS)} readable raw files, found {len(traces)}")
+        failures.append(f"expected {len(ALL_RUNS)} readable raw files after the registered stop, found {len(traces)}")
     if len(set(raw_hashes.values())) != len(raw_hashes):
         failures.append("raw hashes are not unique across the eight logical cases")
     if len(set(deck_hashes.values())) != len(deck_hashes):
@@ -194,13 +200,12 @@ def main() -> int:
     window_counts: dict[str, set[int]] = {"CONTROL_ORIGIN_[70,110)": set(), "FINAL_ORIGIN_[110,200)": set(), "PRE_SWITCH_[110,114.5)": set()}
     recorded = json.loads((EXP / "mechanical_summary.json").read_text(encoding="utf-8"))
     raw_qa = json.loads((EXP / "qa/raw_qa.json").read_text(encoding="utf-8"))
-    execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
     preflight = json.loads((EXP / "analysis/preflight.json").read_text(encoding="utf-8"))
     reuse_manifest = json.loads((EXP / "REUSED_REFERENCE_MANIFEST.json").read_text(encoding="utf-8"))
     if raw_qa.get("status") != "PASS" or recorded.get("status") != "PASS":
         failures.append("registered raw/mechanical QA is not PASS")
-    if execution.get("status") != "PASS" or execution.get("solver_solve_invocations") != 6 or execution.get("unauthorized_extra_solves") != 0:
-        failures.append("execution summary is not exact 6-new/0-extra PASS")
+    if execution.get("status") != "PASS" or execution.get("solver_solve_invocations") != len(NEW_RUNS) or execution.get("unauthorized_extra_solves") != 0:
+        failures.append("execution summary is not an exact registered-stop/0-extra PASS")
 
     case_records = recorded.get("cases", {})
     raw_records = raw_qa.get("cases", {})
@@ -226,6 +231,14 @@ def main() -> int:
         compare(failures, f"{run_id} L2 fixed value", 2.0, case.get("L2_pH"))
         compare(failures, f"{run_id} raw hash in mechanical summary", raw_hashes[run_id], case.get("raw_provenance", {}).get("sha256"))
         compare(failures, f"{run_id} raw hash in raw QA", raw_hashes[run_id], raw_records.get(run_id, {}).get("sha256"))
+        transition_times = []
+        if bj2_index is not None:
+            l1 = columns["I(L1|XBQ1)"]
+            transition_times = [times[index] * 1e12 for index in range(bj2_index + 1, len(times)) if l1[index - 1] < 0.0 < l1[index]]
+        recrossing_records[run_id] = {"anchor_index": bj2_index, "negative_to_positive_times_ps": transition_times, "observed": bool(transition_times)}
+        recorded_observation = case.get("POST_FIRST_BJ2_REARM", {}).get("recrossing_observation")
+        expected_observation = "OBSERVED_L1_RECROSSING" if transition_times else "NO_OBSERVED_L1_RECROSSING"
+        compare(failures, f"{run_id} strict L1 recrossing label", expected_observation, recorded_observation)
 
         if bj2_index is not None:
             anchor_time = times[bj2_index]
@@ -278,16 +291,23 @@ def main() -> int:
         compare(failures, f"{run_id} reuse raw hash", raw_hashes[run_id], manifest_entry.get("artifacts", {}).get("raw.csv", {}).get("source_sha256"))
         compare(failures, f"{run_id} reuse deck hash", deck_hashes[run_id], manifest_entry.get("artifacts", {}).get("deck.cir", {}).get("source_sha256"))
 
+    observed_recrossing_cases = [run_id for run_id in ALL_RUNS if recrossing_records.get(run_id, {}).get("observed")]
+    compare(failures, "mechanical summary observed recrossing cases", observed_recrossing_cases, recorded.get("observed_l1_recrossing_cases"))
+    if len(NEW_RUNS) < len(REGISTERED_NEW_RUNS):
+        expected_stop = f"OBSERVED_L1_RECROSSING:{observed_recrossing_cases[-1]}" if observed_recrossing_cases else None
+        compare(failures, "registered early-stop reason", expected_stop, execution.get("early_stop_reason"))
+
     # Adversarial probes: non-no-op parameterization, correct branch routing,
     # independent oracle agreement, boundary discipline, stale-artifact shield,
     # and explicit overclaim ceiling.
     probes.update({
-        "no_op_parameterization": len(set(deck_hashes.values())) == 8 and {RJ2_BY_RUN[run_id] for run_id in NEW_RUNS} == {8.0, 10.0, 12.0},
+        "no_op_parameterization": len(set(deck_hashes.values())) == len(deck_hashes) and {RJ2_BY_RUN[run_id] for run_id in NEW_RUNS} == {8.0, 10.0},
         "wrong_branch_guard": all(case_records.get(run_id, {}).get("RJ2_ohm") == RJ2_BY_RUN[run_id] for run_id in ALL_RUNS),
         "weak_oracle_differential": not any("independent=" in failure for failure in failures),
         "boundary_windows": all(window_counts[name] == {expected} for name, expected in expected_window_counts.items()),
         "stale_artifact_guard": raw_qa.get("pre_analysis_sha256") == raw_qa.get("post_analysis_sha256") and all(raw_hashes.get(run_id) == raw_records.get(run_id, {}).get("sha256") for run_id in ALL_RUNS),
         "overclaim_ceiling": recorded.get("scientific_interpretation_performed") is False and raw_qa.get("scientific_analysis_performed") is False,
+        "strict_recrossing_recomputed": observed_recrossing_cases == recorded.get("observed_l1_recrossing_cases"),
     })
     for name, value in probes.items():
         if value is not True:
@@ -300,12 +320,15 @@ def main() -> int:
         "status": "PASS" if not failures else "FAIL",
         "review_type": "stdlib-only numerical cross-check plus bounded adversarial probes",
         "cases_checked": len(traces),
+        "registered_new_case_count": len(REGISTERED_NEW_RUNS),
+        "unrun_preserved_case_ids": [run_id for run_id in REGISTERED_NEW_RUNS if run_id not in NEW_RUNS],
         "raw_hash_count": len(set(raw_hashes.values())),
         "raw_hashes_unique": len(set(raw_hashes.values())) == len(raw_hashes),
         "optional_unknown": "V(IB|XBQ1)",
         "optional_unknown_absent_in_all_cases": all("V(IB|XBQ1)" not in header for header, _times, _columns in traces.values()),
         "window_counts": {name: sorted(values) for name, values in window_counts.items()},
         "phase_anchor_recomputed": phase_records,
+        "recrossing_recomputed": recrossing_records,
         "adversarial_probes": probes,
         "execution_head": execution.get("head"),
         "preflight_head": preflight.get("head"),
@@ -331,10 +354,10 @@ def main() -> int:
             "",
             "This review used a stdlib-only CSV reader and an independently implemented phase unwrap and trapezoid calculation; it did not import the experiment QA pipeline.",
             "",
-            f"- Logical cases checked: {len(traces)}; unique raw hashes: {len(set(raw_hashes.values()))}.",
+            f"- Logical cases checked after the registered stop: {len(traces)}; unique raw hashes: {len(set(raw_hashes.values()))}.",
             f"- Window cardinalities: CONTROL_ORIGIN={sorted(window_counts['CONTROL_ORIGIN_[70,110)'])}, FINAL_ORIGIN={sorted(window_counts['FINAL_ORIGIN_[110,200)'])}, PRE_SWITCH={sorted(window_counts['PRE_SWITCH_[110,114.5)'])}.",
             "- Optional `V(IB|XBQ1)` is absent in all cases and remains `UNKNOWN`.",
-            "- Differential voltage cumulative landmarks, post-BJ2 anchor arithmetic, required L1-zero proxy, raw hashes and new-run metadata hashes were independently checked.",
+            "- Differential voltage cumulative landmarks, post-BJ2 anchor arithmetic, required L1-zero proxy, strict L1 re-crossing and early-stop reason, raw hashes and new-run metadata hashes were independently checked.",
             "",
             "Adversarial probes covered no-op parameterization, wrong-branch routing, weak-oracle disagreement, half-open window boundaries, stale raw artifacts and the scientific overclaim ceiling.",
             "",

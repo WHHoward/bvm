@@ -309,6 +309,39 @@ def origin_summary(trace: Any, origin_name: str) -> dict[str, Any]:
     }
 
 
+    receiver["I(L1|XBQ1)"]["zero_crossing"] = zero_crossings(trace, "I(L1|XBQ1)", window)
+    voltage_indexes, voltage_times, voltage = selected(trace, "V(RJ1|XBQ1)", window)
+    current = tuple(float(trace.column("I(RJ1|XBQ1)")[index]) for index in voltage_indexes)
+    energy = trapezoid(voltage_times, tuple(v * i for v, i in zip(voltage, current))) if len(voltage_times) >= 2 else None
+    source = {
+        "I(B_JSL8)": extrema(trace, "I(B_JSL8)", window),
+        "I(LIN|XBQ1)": extrema(trace, "I(LIN|XBQ1)", window),
+        "V(QBIN)": extrema(trace, "V(QBIN)", window),
+        "V(COMMON_SL)": extrema(trace, "V(COMMON_SL)", window),
+        "signed_areas_A_s": {"I(B_JSL8)": area(trace, "I(B_JSL8)", window), "I(LIN|XBQ1)": area(trace, "I(LIN|XBQ1)", window)},
+    }
+    return {
+        "window_ps": [window[0] * 1e12, window[1] * 1e12],
+        "phase_diagnostics": {"BJ1": phase_origin_diagnostic(trace, "P(BJ1|XBQ1)", origin_name), "BJ2": phase_origin_diagnostic(trace, "P(BJ2|XBQ1)", origin_name)},
+        "receiver_diagnostics": {
+            "descriptives": receiver,
+            "BJ1_voltage_area": signed_components(trace, "V(BJ1|XBQ1)", window),
+            "RJ1_dissipated_energy": {"value_J": energy, "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))", "orientation": "as emitted; no sign correction", "window_ps": [window[0] * 1e12, window[1] * 1e12], "status": "DERIVED" if energy is not None else "UNKNOWN"},
+            "L2_principal_first_surge": {"value": first_surge, "local_maxima": maxima, "label": "MECHANICAL_DIAGNOSTIC_ONLY"},
+        },
+        "source_side_diagnostics": source,
+        "jtl_progression_diagnostics": jtl_progression(trace, origin_name),
+        "terminal_diagnostics": {
+            "V(JTL6_OUT)_signed_area_V_s": area(trace, "V(JTL6_OUT)", window),
+            "I(R_TERM)_signed_area_A_s": area(trace, "I(R_TERM)", window),
+            "window_ps": [window[0] * 1e12, window[1] * 1e12],
+            "formula": "trapezoid(actual stored time grid, signal)",
+            "label": f"{origin_name}_SUPPORT_WINDOW",
+            "status": "DERIVED",
+        },
+    }
+
+
 def multi_evidence_response(trace: Any, origin_name: str, origin_record: dict[str, Any]) -> dict[str, Any]:
     """Record a bounded multi-signal progression candidate without calling it an event."""
     bj1 = origin_record["phase_diagnostics"]["BJ1"]
@@ -347,37 +380,6 @@ def control_guardrail(origin_record: dict[str, Any], response_record: dict[str, 
         "evidence": response_record,
         "label": "BOUNDED_RESULT_GUARDRAIL_ONLY",
         "scientific_interpretation_performed": False,
-    }
-    receiver["I(L1|XBQ1)"]["zero_crossing"] = zero_crossings(trace, "I(L1|XBQ1)", window)
-    voltage_indexes, voltage_times, voltage = selected(trace, "V(RJ1|XBQ1)", window)
-    current = tuple(float(trace.column("I(RJ1|XBQ1)")[index]) for index in voltage_indexes)
-    energy = trapezoid(voltage_times, tuple(v * i for v, i in zip(voltage, current))) if len(voltage_times) >= 2 else None
-    source = {
-        "I(B_JSL8)": extrema(trace, "I(B_JSL8)", window),
-        "I(LIN|XBQ1)": extrema(trace, "I(LIN|XBQ1)", window),
-        "V(QBIN)": extrema(trace, "V(QBIN)", window),
-        "V(COMMON_SL)": extrema(trace, "V(COMMON_SL)", window),
-        "signed_areas_A_s": {"I(B_JSL8)": area(trace, "I(B_JSL8)", window), "I(LIN|XBQ1)": area(trace, "I(LIN|XBQ1)", window)},
-    }
-    return {
-        "window_ps": [window[0] * 1e12, window[1] * 1e12],
-        "phase_diagnostics": {"BJ1": phase_origin_diagnostic(trace, "P(BJ1|XBQ1)", origin_name), "BJ2": phase_origin_diagnostic(trace, "P(BJ2|XBQ1)", origin_name)},
-        "receiver_diagnostics": {
-            "descriptives": receiver,
-            "BJ1_voltage_area": signed_components(trace, "V(BJ1|XBQ1)", window),
-            "RJ1_dissipated_energy": {"value_J": energy, "formula": "trapezoid(actual stored grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))", "orientation": "as emitted; no sign correction", "window_ps": [window[0] * 1e12, window[1] * 1e12], "status": "DERIVED" if energy is not None else "UNKNOWN"},
-            "L2_principal_first_surge": {"value": first_surge, "local_maxima": maxima, "label": "MECHANICAL_DIAGNOSTIC_ONLY"},
-        },
-        "source_side_diagnostics": source,
-        "jtl_progression_diagnostics": jtl_progression(trace, origin_name),
-        "terminal_diagnostics": {
-            "V(JTL6_OUT)_signed_area_V_s": area(trace, "V(JTL6_OUT)", window),
-            "I(R_TERM)_signed_area_A_s": area(trace, "I(R_TERM)", window),
-            "window_ps": [window[0] * 1e12, window[1] * 1e12],
-            "formula": "trapezoid(actual stored time grid, signal)",
-            "label": f"{origin_name}_SUPPORT_WINDOW",
-            "status": "DERIVED",
-        },
     }
 
 
@@ -448,11 +450,11 @@ def differential_voltage_impulse(trace: Any, final_record: dict[str, Any], l2: f
     )
     component_areas = {
         name: {
-            "BJ1_signed_area_V_s": area(trace, "V(BJ1|XBQ1)", window) if window[0] is not None else None,
-            "BJ2_signed_area_V_s": area(trace, "V(BJ2|XBQ1)", window) if window[0] is not None else None,
+            "BJ1_signed_area_V_s": area(trace, "V(BJ1|XBQ1)", window) if window[0] is not None and window[1] > window[0] else None,
+            "BJ2_signed_area_V_s": area(trace, "V(BJ2|XBQ1)", window) if window[0] is not None and window[1] > window[0] else None,
             "window_ps": [window[0] * 1e12, window[1] * 1e12] if window[0] is not None else None,
             "formula": "trapezoid(actual stored time grid, direct same-direction voltage)",
-            "status": "DERIVED" if window[0] is not None else "UNKNOWN",
+            "status": "DERIVED" if window[0] is not None and window[1] > window[0] else "UNKNOWN",
         }
         for name, window in component_windows.items()
     }
@@ -627,7 +629,8 @@ def absolute_area(trace: Any, label: str, window: tuple[float, float]) -> float 
 
 def pre_switch_ratios(traces: dict[str, Any], ratio_inputs: dict[str, dict[str, float | None]]) -> dict[str, Any]:
     output: dict[str, Any] = OrderedDict()
-    for rj2 in (6.0, *RJ2_VALUES):
+    active_values = sorted({CASE_RJ2[run_id] for run_id in ALL_CASES})
+    for rj2 in active_values:
         mask0001 = next(run_id for run_id in ALL_CASES if CASE_RJ2[run_id] == rj2 and run_id.rsplit("_", 1)[1] == "0001")
         mask0011 = next(run_id for run_id in ALL_CASES if CASE_RJ2[run_id] == rj2 and run_id.rsplit("_", 1)[1] == "0011")
         output[f"RJ2_{rj2:g}"] = {
@@ -710,10 +713,15 @@ def deck_diff() -> dict[str, Any]:
 
 
 def main() -> int:
+    execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
+    global ALL_CASES
+    active_new_runs = tuple(execution.get("run_order", NEW_RUNS))
+    ALL_CASES = tuple(REUSE_RUNS) + active_new_runs
     preflight = json.loads((EXP / "analysis/preflight.json").read_text(encoding="utf-8"))
     relation = head_relation(str(preflight["head"]))
-    execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
-    execution_ok = execution.get("status") == "PASS" and execution.get("solver_solve_invocations") == 6 and execution.get("exact_new_physical_solve_count") == 6 and execution.get("reused_physical_case_count") == 2 and execution.get("unauthorized_extra_solves") == 0 and execution.get("failed_runs") == []
+    actual_new_count = len(active_new_runs)
+    early_stop_valid = actual_new_count == 6 or (actual_new_count < 6 and isinstance(execution.get("early_stop_reason"), str) and execution.get("registered_unrun_values"))
+    execution_ok = execution.get("status") == "PASS" and execution.get("solver_solve_invocations") == actual_new_count and execution.get("exact_new_physical_solve_count") == actual_new_count and execution.get("reused_physical_case_count") == 2 and execution.get("unauthorized_extra_solves") == 0 and execution.get("failed_runs") == [] and early_stop_valid
     reuse_manifest = json.loads((EXP / "REUSED_REFERENCE_MANIFEST.json").read_text(encoding="utf-8"))
     raw_records: dict[str, Any] = {}
     raw_failures: list[str] = []
@@ -763,9 +771,14 @@ def main() -> int:
             cases[case_id] = {"case_id": case_id, "L1_pH": FIXED["L1_pH"], "L2_pH": FIXED["L2_pH"], "RJ2_ohm": CASE_RJ2[case_id], "IBias_uA": FIXED["IBias_uA"], "RJ1_ohm": FIXED["RJ1_ohm"], "mask": case_id.rsplit("_", 1)[1], "source_experiment": source_experiment(case_id), "source_run": source_run(case_id), "physical_solve_this_experiment": case_id in NEW_RUNS, "scientific_interpretation_performed": False, "raw_provenance": {"path": str(path.relative_to(REPO)), "sha256": pre_hashes[case_id]}, "CONTROL_ORIGIN": origin_records["CONTROL_ORIGIN"], "FINAL_ORIGIN": origin_records["FINAL_ORIGIN"], "CONTROL_HARD_GUARDRAIL": control, first_response_name: final_response, "POST_FIRST_BJ2_REARM": post, "SECOND_RESPONSE_AFTER_FIRST_BJ2": second, "DIFFERENTIAL_VOLTAGE_IMPULSE": diff, "terminal_control_area": origin_records["CONTROL_ORIGIN"]["terminal_diagnostics"], "terminal_final_area": origin_records["FINAL_ORIGIN"]["terminal_diagnostics"], "terminal_whole_run_area": whole_run_terminal(trace), "whole_run_terminal": whole_run_terminal(trace), "notes": ["CONTROL_ORIGIN and FINAL_ORIGIN are separate mechanical windows.", "FIRST_RESPONSE is a multi-signal mechanical candidate, not an event/SFQ count.", "POST_FIRST_BJ2_REARM uses a stored navigation anchor, not an event boundary.", "SECOND_RESPONSE_AFTER_FIRST_BJ2 is only a mechanical multi-evidence candidate.", "Differential-voltage integrals and phase thresholds are mechanical/proxy diagnostics, not switching energy or SFQ counts."]}
         except Exception as exc:
             raw_failures.append(f"{case_id}: mechanical arithmetic failure: {exc}")
+    for case_id in NEW_RUNS:
+        if case_id not in active_new_runs:
+            run_dir = EXP / "runs" / case_id
+            if any((run_dir / name).exists() for name in ("raw.csv", "metadata.json", "run.log")):
+                raw_failures.append(f"unrun case has physical artifact after registered early stop: {case_id}")
     post_hashes = {case_id: sha256(raw_path(case_id)) for case_id in pre_hashes}
     raw_ok = not raw_failures and len(traces) == len(ALL_CASES) and len(grid_hashes) == 1 and pre_hashes == post_hashes
-    raw_qa = {"schema": "bjs400-rj2-highside-raw-qa-v1", "status": "PASS" if raw_ok else "FAIL", "artifact_validity": "VALID" if raw_ok else "INVALID", "experiment_id": EXP.name, "created_at_local": now(), "head": relation["head"], "execution_status": "PASS" if execution_ok else "FAIL", "new_physical_solve_count": len(execution.get("run_order", [])), "authorized_new_physical_solve_max": 6, "reused_physical_case_count": 2, "exact_logical_case_count": 8, "unauthorized_extra_solves": 0, "cases": raw_records, "pre_analysis_sha256": pre_hashes, "post_analysis_sha256": post_hashes, "raw_unchanged_pre_to_post": pre_hashes == post_hashes, "common_time_grid": len(grid_hashes) == 1, "stored_grid_hashes": sorted(grid_hashes), "required_probe_missing_is_not_fabricated": True, "raw_files_modified": 0, "scientific_analysis_performed": False, "failures": raw_failures}
+    raw_qa = {"schema": "bjs400-rj2-highside-raw-qa-v1", "status": "PASS" if raw_ok else "FAIL", "artifact_validity": "VALID" if raw_ok else "INVALID", "experiment_id": EXP.name, "created_at_local": now(), "head": relation["head"], "execution_status": "PASS" if execution_ok else "FAIL", "new_physical_solve_count": actual_new_count, "authorized_new_physical_solve_max": 6, "reused_physical_case_count": 2, "registered_logical_case_count": 8, "observed_logical_case_count": len(ALL_CASES), "unrun_preserved_cases": list(set(REUSE_RUNS + tuple(NEW_RUNS)) - set(ALL_CASES)), "unauthorized_extra_solves": 0, "cases": raw_records, "pre_analysis_sha256": pre_hashes, "post_analysis_sha256": post_hashes, "raw_unchanged_pre_to_post": pre_hashes == post_hashes, "common_time_grid": len(grid_hashes) == 1, "stored_grid_hashes": sorted(grid_hashes), "required_probe_missing_is_not_fabricated": True, "raw_files_modified": 0, "scientific_analysis_performed": False, "failures": raw_failures}
     decks = deck_diff()
     ratios = pre_switch_ratios(traces, ratio_inputs) if raw_ok else {}
     control_guardrail_cases = {case_id: cases[case_id]["CONTROL_HARD_GUARDRAIL"]["status"] for case_id in cases}
@@ -783,8 +796,8 @@ def main() -> int:
     else:
         bounded_outcome = "BOUNDED_RESULT_NO_OBSERVED_L1_RECROSSING_IN_REGISTERED_RJ2_MATRIX"
     mechanical_status = "PASS" if raw_ok and decks["status"] == "PASS" and len(cases) == len(ALL_CASES) else "FAIL"
-    mechanical_summary = {"schema": "bjs400-rj2-highside-mechanical-summary-v1", "experiment_id": EXP.name, "created_at_local": now(), "status": mechanical_status, "scientific_interpretation_performed": False, "fixed_point": {"L1_pH": 1.4, "L2_pH": 2.0, "IBias_uA": 260.0, "RJ1_ohm": 32.0, "BJS_area": 4, "BJS_Ic_uA": 400.0}, "rj2_values_ohm": [6.0, *RJ2_VALUES], "masks": list(MASKS), "logical_case_count": 8, "historical_reuse_count": 2, "new_physical_solve_count": len(execution.get("run_order", [])), "authorized_new_physical_solve_max": 6, "case_order": list(ALL_CASES), "dedicated_sections": ["CONTROL_ORIGIN", "FINAL_ORIGIN", "FIRST_RESPONSE_0001", "FIRST_RESPONSE_0011", "POST_FIRST_BJ2_REARM", "SECOND_RESPONSE_AFTER_FIRST_BJ2", "DIFFERENTIAL_VOLTAGE_IMPULSE"], "bounded_outcome": bounded_outcome, "control_guardrail_cases": control_guardrail_cases, "first_response_cases": first_response_cases, "observed_l1_recrossing_cases": recross_cases, "second_response_candidate_cases": second_response_cases, "control_failure_cases": control_failure_cases, "first_response_failure_cases": first_response_failure_cases, "phase_convention": "raw P radians; continuous_unwrap(raw)/(2*pi) for diagnostic turns only", "windows": {name: {"window_ps": [spec["window"][0] * 1e12, spec["window"][1] * 1e12], "baseline_ps": [spec["baseline"][0] * 1e12, spec["baseline"][1] * 1e12]} for name, spec in ORIGINS.items()}, "pre_switch_proxy_window_ps": [110.0, 114.5], "differential_windows": {"A_DIFF_pre_first_BJ1": [110.0, "first BJ1 +0.5 marker"], "A_DIFF_first_BJ1_to_first_BJ2": ["first BJ1 +0.5 marker", "first BJ2 +0.9 marker"], "A_DIFF_post_BJ2_to_121": ["first BJ2 +0.9 marker", 121.0], "A_DIFF_121_to_140": [121.0, 140.0]}, "area_semantics": "trapezoid on actual stored time grid; half-open windows; no interpolation/resampling", "thresholds": {"BJ1_half_turn": 0.5, "BJ2_regeneration_navigation": 0.9, "second_threshold": 1.5, "JTL_first": 0.5, "JTL_second": 1.5}, "post_first_bj2_policy": {"anchor": "first FINAL-origin BJ2 +0.9 timing diagnostic", "l1_label": "MECHANICAL_REARM_PROXY_ONLY", "l2_label": "MECHANICAL_SECOND_SURGE_PROXY_ONLY", "required_impulse_label": "MECHANICAL_PROXY_ONLY", "no_event_or_sfq_classification": True}, "ratio_policy": {"numerator_denominator": "0011 / 0001", "signed_area_tolerance_A_s": RATIO_AREA_TOLERANCE_A_S, "cancellation_fraction": RATIO_CANCELLATION_FRACTION, "ambiguous_status": "UNKNOWN"}, "cases": cases, "ratio_diagnostics": ratios, "notes": ["All metrics are MECHANICAL or DERIVED only.", "No phase threshold, differential impulse, L1 sign transition, L2 surge, terminal area or JTL progression field is an event/SFQ count.", "The bounded outcome is a registered evidence label, not scientific interpretation.", "Scientific interpretation is NOT_PERFORMED."]}
-    provenance = {"schema": "bjs400-rj2-highside-provenance-v1", "experiment_id": EXP.name, "head_at_qa": relation["head"], "preflight": "analysis/preflight.json", "source_manifest": "SOURCE_MANIFEST.json", "reuse_manifest": "REUSED_REFERENCE_MANIFEST.json", "execution_summary": "qa/execution_summary.json", "mechanical_summary": "mechanical_summary.json", "solver": "build/josim-cli", "new_runs": {run_id: {"deck": str(deck_path(run_id).relative_to(REPO)), "deck_sha256": sha256(deck_path(run_id)), "raw": str(raw_path(run_id).relative_to(REPO)), "raw_sha256": pre_hashes.get(run_id), "metadata": str((EXP / "runs" / run_id / "metadata.json").relative_to(REPO)), "run_log": str((EXP / "runs" / run_id / "run.log").relative_to(REPO)), "physical_solve_this_experiment": True} for run_id in NEW_RUNS}, "reused_runs": {run_id: {"reference": str((EXP / "references/reused" / run_id).relative_to(REPO)), "source_experiment": str(AUTHORITY_SOURCE_EXPERIMENT.relative_to(REPO)), "source_run": f"runs/{run_id}", "raw_sha256": pre_hashes.get(run_id), "deck_sha256": sha256(deck_path(run_id)), "physical_solve_this_experiment": False} for run_id in REUSE_RUNS}, "runs": {}, "all_logical_cases": list(ALL_CASES), "scientific_analysis_performed": False}
+    mechanical_summary = {"schema": "bjs400-rj2-highside-mechanical-summary-v1", "experiment_id": EXP.name, "created_at_local": now(), "status": mechanical_status, "scientific_interpretation_performed": False, "fixed_point": {"L1_pH": 1.4, "L2_pH": 2.0, "IBias_uA": 260.0, "RJ1_ohm": 32.0, "BJS_area": 4, "BJS_Ic_uA": 400.0}, "rj2_values_ohm": [6.0, *RJ2_VALUES], "registered_logical_case_count": 8, "observed_logical_case_count": len(ALL_CASES), "masks": list(MASKS), "historical_reuse_count": 2, "new_physical_solve_count": actual_new_count, "authorized_new_physical_solve_max": 6, "unrun_preserved_cases": sorted(set(REUSE_RUNS + tuple(NEW_RUNS)) - set(ALL_CASES)), "case_order": list(ALL_CASES), "dedicated_sections": ["CONTROL_ORIGIN", "FINAL_ORIGIN", "FIRST_RESPONSE_0001", "FIRST_RESPONSE_0011", "POST_FIRST_BJ2_REARM", "SECOND_RESPONSE_AFTER_FIRST_BJ2", "DIFFERENTIAL_VOLTAGE_IMPULSE"], "bounded_outcome": bounded_outcome, "control_guardrail_cases": control_guardrail_cases, "first_response_cases": first_response_cases, "observed_l1_recrossing_cases": recross_cases, "second_response_candidate_cases": second_response_cases, "control_failure_cases": control_failure_cases, "first_response_failure_cases": first_response_failure_cases, "phase_convention": "raw P radians; continuous_unwrap(raw)/(2*pi) for diagnostic turns only", "windows": {name: {"window_ps": [spec["window"][0] * 1e12, spec["window"][1] * 1e12], "baseline_ps": [spec["baseline"][0] * 1e12, spec["baseline"][1] * 1e12]} for name, spec in ORIGINS.items()}, "pre_switch_proxy_window_ps": [110.0, 114.5], "differential_windows": {"A_DIFF_pre_first_BJ1": [110.0, "first BJ1 +0.5 marker"], "A_DIFF_first_BJ1_to_first_BJ2": ["first BJ1 +0.5 marker", "first BJ2 +0.9 marker"], "A_DIFF_post_BJ2_to_121": ["first BJ2 +0.9 marker", 121.0], "A_DIFF_121_to_140": [121.0, 140.0]}, "area_semantics": "trapezoid on actual stored time grid; half-open windows; no interpolation/resampling", "thresholds": {"BJ1_half_turn": 0.5, "BJ2_regeneration_navigation": 0.9, "second_threshold": 1.5, "JTL_first": 0.5, "JTL_second": 1.5}, "post_first_bj2_policy": {"anchor": "first FINAL-origin BJ2 +0.9 timing diagnostic", "l1_label": "MECHANICAL_REARM_PROXY_ONLY", "l2_label": "MECHANICAL_SECOND_SURGE_PROXY_ONLY", "required_impulse_label": "MECHANICAL_PROXY_ONLY", "no_event_or_sfq_classification": True}, "ratio_policy": {"numerator_denominator": "0011 / 0001", "signed_area_tolerance_A_s": RATIO_AREA_TOLERANCE_A_S, "cancellation_fraction": RATIO_CANCELLATION_FRACTION, "ambiguous_status": "UNKNOWN"}, "cases": cases, "ratio_diagnostics": ratios, "notes": ["All metrics are MECHANICAL or DERIVED only.", "No phase threshold, differential impulse, L1 sign transition, L2 surge, terminal area or JTL progression field is an event/SFQ count.", "The bounded outcome is a registered evidence label, not scientific interpretation.", "Scientific interpretation is NOT_PERFORMED."]}
+    provenance = {"schema": "bjs400-rj2-highside-provenance-v1", "experiment_id": EXP.name, "head_at_qa": relation["head"], "preflight": "analysis/preflight.json", "source_manifest": "SOURCE_MANIFEST.json", "reuse_manifest": "REUSED_REFERENCE_MANIFEST.json", "execution_summary": "qa/execution_summary.json", "mechanical_summary": "mechanical_summary.json", "solver": "build/josim-cli", "new_runs": {run_id: {"deck": str(deck_path(run_id).relative_to(REPO)), "deck_sha256": sha256(deck_path(run_id)), "raw": str(raw_path(run_id).relative_to(REPO)), "raw_sha256": pre_hashes.get(run_id), "metadata": str((EXP / "runs" / run_id / "metadata.json").relative_to(REPO)), "run_log": str((EXP / "runs" / run_id / "run.log").relative_to(REPO)), "physical_solve_this_experiment": True} for run_id in active_new_runs}, "reused_runs": {run_id: {"reference": str((EXP / "references/reused" / run_id).relative_to(REPO)), "source_experiment": str(AUTHORITY_SOURCE_EXPERIMENT.relative_to(REPO)), "source_run": f"runs/{run_id}", "raw_sha256": pre_hashes.get(run_id), "deck_sha256": sha256(deck_path(run_id)), "physical_solve_this_experiment": False} for run_id in REUSE_RUNS}, "unrun_preserved_decks": {run_id: {"deck": str(deck_path(run_id).relative_to(REPO)), "deck_sha256": sha256(deck_path(run_id))} for run_id in NEW_RUNS if run_id not in active_new_runs}, "runs": {}, "all_registered_logical_cases": list(REUSE_RUNS) + list(NEW_RUNS), "observed_logical_cases": list(ALL_CASES), "scientific_analysis_performed": False}
     provenance["runs"] = {**provenance["new_runs"], **provenance["reused_runs"]}
     transformations = {"schema": "bjs400-rj2-highside-transformation-registry-v1", "raw_immutable": True, "scientific_analysis_performed": False, "transformations": [{"name": "origin_separation", "operation": "CONTROL_ORIGIN [70,110) and FINAL_ORIGIN [110,200)", "scope": "mechanical navigation"}, {"name": "differential_voltage_impulse", "operation": "V(BJ1)-V(BJ2) and actual-grid cumulative/segment trapezoids", "scope": "DERIVED_DIFFERENTIAL_VOLTAGE_IMPULSE / MECHANICAL_NAVIGATION_ONLY", "not_switching_energy": True}, {"name": "post_first_bj2_rearm", "operation": "stored-anchor L1 transitions and L2 local maxima", "scope": "MECHANICAL_REARM_PROXY_ONLY / MECHANICAL_SECOND_SURGE_PROXY_ONLY"}, {"name": "phase_display", "operation": "continuous_unwrap(raw_rad)/(2*pi)", "scope": "diagnostic/display only", "not_event_count": True}, {"name": "area_integration", "operation": "trapezoid on actual stored time values; half-open windows", "scope": "mechanical arithmetic", "interpolation": False}, {"name": "standalone_plot_input", "operation": "raw.csv direct; no crop/resample/derived CSV", "scope": "visualization"}, {"name": "comparison_plot_input", "operation": "temporary full-run merged CSV under /tmp only; deleted after render", "scope": "visualization"}]}
     write_json(EXP / "qa/raw_qa.json", raw_qa)

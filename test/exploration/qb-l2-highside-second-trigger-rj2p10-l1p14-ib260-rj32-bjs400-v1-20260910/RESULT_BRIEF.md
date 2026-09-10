@@ -22,7 +22,9 @@ terminal area or current ratio is an SFQ count.
 
 If the registered second-complete-response or first-response/control failure
 stop condition occurs, the executed matrix and stop reason are preserved in
-`qa/execution_summary.json`; no unregistered L2 point is added.
+`qa/execution_summary.json`; no unregistered L2 point is added. The original
+v1 package remains immutable; the corrected-v2 package supersedes it for the
+mechanical-analysis snapshot without changing raw bytes.
 
 Bounded guardrail outcome: `OUTCOME_C_FIRST_RESPONSE_OR_CONTROL_GUARDRAIL_FAILURE`,
 with first control-failure boundary L2=2.4pH. Scientific interpretation is

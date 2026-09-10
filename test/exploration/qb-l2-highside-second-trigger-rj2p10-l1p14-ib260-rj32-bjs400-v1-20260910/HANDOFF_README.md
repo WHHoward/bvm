@@ -13,7 +13,8 @@ Evidence-only handoff for
 - Independent review: `analysis/REVIEW.md` and `qa/independent_review.json`.
 - Protocol audit: `qa/protocol_audit.json`.
 - Visualization: 12 whole-run raw-direct pages and two mask-preserving comparisons for the four executed new cases.
-- Canonical ZIP: `handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip`.
+- Corrected-v2 canonical ZIP: `handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_corrected-v2_raw_handoff.zip`.
+- Immutable v1 ZIP is retained as `handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip` and superseded only for the corrected analysis snapshot.
 
 Raw phase is radians. Turns display uses continuous unwrap divided by `2*pi`
 and is diagnostic navigation only, never an SFQ/event count. Scientific

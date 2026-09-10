@@ -571,9 +571,9 @@ def post_first_bj2_rearm(trace: Any, final_record: dict[str, Any], l2: float) ->
     }
 
 
-def post_anchor_progression(trace: Any, final_record: dict[str, Any]) -> dict[str, Any]:
+def post_anchor_progression(trace: Any, final_record: dict[str, Any], start_index: int | None = None) -> dict[str, Any]:
     """Record second-progression evidence after the registered BJ2 anchor."""
-    anchor = final_record["phase_diagnostics"]["BJ2"].get("first_0p9_turn_sample_index")
+    anchor = start_index if start_index is not None else final_record["phase_diagnostics"]["BJ2"].get("first_0p9_turn_sample_index")
     if not isinstance(anchor, int) or anchor < 0 or anchor >= len(trace.time):
         return {"status": "UNKNOWN", "reason": "missing first FINAL-origin BJ2 +0.9 navigation anchor", "label": "MECHANICAL_SECOND_RESPONSE_CANDIDATE_ONLY", "scientific_interpretation_performed": False}
     post_indexes = tuple(index for index in range(anchor, len(trace.time)) if trace.time[index] < 200e-12)
@@ -654,6 +654,8 @@ def positive_segments(trace: Any, anchor_index: int) -> list[dict[str, Any]]:
         segment_end_ps = trace.time[end] * 1e12
         output.append({
             "segment_index": position + 1,
+            "start_sample_index": start,
+            "end_sample_index": end,
             "label": "FIRST_POSITIVE_L1_EXCURSION" if position == 0 else "POST_FIRST_SECOND_POSITIVE_L1_CANDIDATE",
             "start_time_ps": segment_start_ps,
             "end_time_ps": segment_end_ps,
@@ -720,7 +722,8 @@ def second_trigger_analysis(trace: Any, final_record: dict[str, Any]) -> dict[st
         "BJ1_phase_max_first_minus_strongest_second_turns": (first["BJ1_diagnostics"]["max_additional_forward_phase_turns"] - strongest["BJ1_diagnostics"]["max_additional_forward_phase_turns"]) if first and strongest else None,
         "comparison_label": "DERIVED_STATE_GAP; no success threshold implied",
     }
-    second_progression = post_anchor_progression(trace, final_record)
+    second_start_index = strongest.get("start_sample_index") if strongest else None
+    second_progression = post_anchor_progression(trace, final_record, start_index=second_start_index)
     return {
         "status": "DERIVED",
         "anchor_time_ps": trace.time[anchor_index] * 1e12,
@@ -731,6 +734,7 @@ def second_trigger_analysis(trace: Any, final_record: dict[str, Any]) -> dict[st
         "strongest_second_positive_excursion": strongest,
         "state_gap_first_vs_strongest_second": state_gap,
         "second_complete_multi_evidence_candidate": second_progression,
+        "second_progression_anchor_type": "strongest_later_positive_L1_segment_start" if second_start_index is not None else "UNKNOWN",
         "second_trigger_gap_reduced_but_not_closed_candidate": bool(first and strongest and second_progression.get("status") != "BOUNDED_RESULT" and second_max > first_max),
         "label": "SECOND_TRIGGER_DIAGNOSTIC_ONLY",
         "not_event_count": True,
@@ -964,6 +968,8 @@ def main() -> int:
         "executor_run_order": list(active_new_runs),
         "runs_after_first_guardrail_failure": runs_after_first_guardrail_failure,
         "executor_stop_reason": execution.get("early_stop_reason"),
+        "corrected_second_response_candidate_cases": second_response_cases,
+        "executor_stop_probe_consistent_with_corrected_QA": (not isinstance(execution.get("early_stop_reason"), str) or not execution.get("early_stop_reason", "").startswith("SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE:") or bool(second_response_cases)),
         "raw_history_preserved": True,
         "scientific_interpretation_performed": False,
     }

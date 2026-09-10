@@ -10,7 +10,8 @@ This is an evidence-only handoff. Scientific interpretation is `NOT PERFORMED`.
 - Mechanical QA: `qa/*.json` and `mechanical_summary.json`.
 - Independent numerical/adversarial review: `analysis/REVIEW.md`.
 - Visualization: `visualization/manifest.json` and per-run navigation.
-- Evidence ZIP: `handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip`.
+- Corrected-v2 evidence ZIP: `handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_corrected-v2_raw_handoff.zip`.
+- Immutable v1 evidence ZIP remains preserved and is superseded only for the corrected analysis snapshot.
 - Evidence ZIP SHA-256: adjacent detached `handoff/PACKAGE_QA.json`.
 - Unauthorized follow-up: `none`.
 - Scientific interpretation: `NOT PERFORMED`.

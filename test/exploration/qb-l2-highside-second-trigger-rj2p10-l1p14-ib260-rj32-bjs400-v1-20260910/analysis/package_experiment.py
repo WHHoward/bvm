@@ -12,7 +12,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
-PACKAGE_RELATIVE = "handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip"
+PACKAGE_RELATIVE = "handoff/qb-l2-highside-second-trigger-rj2p10-l1p14-ib260-rj32-bjs400-v1-20260910_corrected-v2_raw_handoff.zip"
 sys.path.insert(0, str(REPO / "scripts"))
 from build_experiment_package import build_package  # noqa: E402
 REGISTERED_NEW_RUNS = (
@@ -72,7 +72,7 @@ def main() -> int:
         "qa/transformation_registry.json", "qa/visualization_qa.json",
         "qa/independent_review.json", "analysis/REVIEW.md", "analysis/independent_review.py",
         "qa/protocol_audit.json",
-        "visualization/manifest.json",
+        "visualization/manifest.json", "handoff/PACKAGE_QA_v1.json",
     }
     failures: list[str] = []
     archived_raw: dict[str, str] = {}

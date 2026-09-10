@@ -14,6 +14,7 @@ import hashlib
 import json
 import math
 import re
+import statistics
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -190,6 +191,116 @@ def multi_evidence_candidate(times: list[float], columns: dict[str, list[float]]
     }
 
 
+INDEPENDENT_PHI0 = 2.067833848e-15
+INDEPENDENT_VOLTAGE_SIGNALS = (
+    "V(BJ1|XBQ1)", "V(BJ2|XBQ1)", "V(QBOUT)",
+    "V(JTL1_OUT)", "V(JTL2_OUT)", "V(JTL3_OUT)",
+    "V(JTL4_OUT)", "V(JTL5_OUT)", "V(JTL6_OUT)",
+)
+INDEPENDENT_PHASE_SIGNALS = (
+    "P(BJ1|XBQ1)", "P(BJ2|XBQ1)",
+    "P(B01|XJTL1_1)", "P(B01|XJTL1_2)", "P(B01|XJTL1_3)",
+    "P(B01|XJTL1_4)", "P(B01|XJTL1_5)", "P(B01|XJTL1_6)",
+)
+
+
+def independent_phase_landmarks(times: list[float], columns: dict[str, list[float]], label: str) -> dict[str, Any]:
+    baseline = indexes(times, 101e-12, 110e-12)
+    origin = indexes(times, 110e-12, 200e-12)
+    if not baseline or not origin:
+        return {"status": "UNKNOWN", "first_0p5_time_ps": None, "first_0p9_time_ps": None, "second_1p5_time_ps": None}
+    continuous = unwrap(columns[label])
+    reference = continuous[baseline[0]]
+
+    def find(threshold: float) -> int | None:
+        return next((index for index in origin if (continuous[index] - reference) / PI2 >= threshold), None)
+
+    first = find(0.5)
+    regen = find(0.9)
+    second = find(1.5)
+    return {
+        "status": "DERIVED",
+        "first_0p5_time_ps": times[first] * 1e12 if first is not None else None,
+        "first_0p9_time_ps": times[regen] * 1e12 if regen is not None else None,
+        "second_1p5_time_ps": times[second] * 1e12 if second is not None else None,
+    }
+
+
+def independent_voltage_clusters(times: list[float], columns: dict[str, list[float]], label: str) -> dict[str, Any]:
+    baseline = indexes(times, 101e-12, 110e-12)
+    origin = indexes(times, 110e-12, 200e-12)
+    values = columns[label]
+    if not baseline or not origin:
+        return {"status": "UNKNOWN", "cluster_count": 0, "clusters": []}
+    center = statistics.median(values[index] for index in baseline)
+    mad = statistics.median(abs(values[index] - center) for index in baseline)
+    robust_noise = 1.4826 * mad
+    peak_positive = max(values[index] - center for index in origin)
+    threshold = max(5.5 * robust_noise, 0.35 * peak_positive)
+    peaks = [index for index in origin if values[index] - center >= threshold and index > 0 and index + 1 < len(values) and values[index] >= values[index - 1] and values[index] > values[index + 1]]
+    groups: list[list[int]] = []
+    valley_records: list[dict[str, Any]] = []
+    for index in peaks:
+        if not groups:
+            groups.append([index])
+            continue
+        previous = groups[-1][-1]
+        valley_index = min(range(previous, index + 1), key=lambda candidate: values[candidate] - center)
+        valley_value = values[valley_index] - center
+        split = times[index] - times[previous] > 2.5e-12 and valley_value <= threshold
+        valley_records.append({"valley_time_ps": times[valley_index] * 1e12, "valley_value_V": valley_value, "split": split})
+        if split:
+            groups.append([index])
+        else:
+            groups[-1].append(index)
+    clusters: list[dict[str, Any]] = []
+    for position, group in enumerate(groups):
+        left, right = group[0], group[-1]
+        while left > origin[0] and values[left - 1] - center > threshold:
+            left -= 1
+        while right < origin[-1] and values[right + 1] - center > threshold:
+            right += 1
+        peak = max(range(left, right + 1), key=lambda candidate: values[candidate])
+        clusters.append({"cluster_index": position + 1, "peak_sample_index": peak, "peak_time_ps": times[peak] * 1e12, "peak_voltage_V": values[peak], "left_boundary_time_ps": times[left] * 1e12, "right_boundary_time_ps": times[right] * 1e12, "signed_area_V_s": integrate(times, values, times[left], times[right] + (times[1] - times[0]))})
+    return {"status": "DERIVED", "baseline_center_V": center, "threshold_V": threshold, "valley_records": valley_records, "cluster_count": len(clusters), "clusters": clusters}
+
+
+def independent_terminal_pulses(times: list[float], columns: dict[str, list[float]], terminal: dict[str, Any]) -> dict[str, Any]:
+    origin = indexes(times, 110e-12, 200e-12)
+    values = columns["V(JTL6_OUT)"]
+    total = integrate(times, values, 110e-12, 200e-12)
+    clusters = terminal.get("clusters", [])
+    base = {"total_final_area_V_s": total, "total_final_area_over_phi0": total / INDEPENDENT_PHI0 if total is not None else None, "not_population_count": True}
+    if len(clusters) == 1:
+        return {**base, "status": "ONE_RESPONSE_CLUSTER", "pulse_count": 1, "split_performed": False}
+    if len(clusters) != 2 or not origin:
+        return {**base, "status": "AMBIGUOUS_CLUSTER_COUNT", "pulse_count": len(clusters), "split_performed": False}
+    first = clusters[0]["peak_sample_index"]
+    second = clusters[1]["peak_sample_index"]
+    valley = min(range(first, second + 1), key=lambda index: values[index])
+    if values[valley] - terminal["baseline_center_V"] > terminal["threshold_V"] or times[second] - times[first] <= 2.5e-12:
+        return {**base, "status": "AMBIGUOUS_VALLEY", "pulse_count": 2, "split_performed": False}
+    first_area = trapezoid(times[origin[0]:valley + 1], values[origin[0]:valley + 1])
+    second_area = trapezoid(times[valley:origin[-1] + 1], values[valley:origin[-1] + 1])
+    return {**base, "status": "TWO_SEPARATED_PULSES", "pulse_count": 2, "pulse_separation_ps": times[second] * 1e12 - times[first] * 1e12, "pulses": [{"peak_time_ps": clusters[0]["peak_time_ps"], "signed_area_over_phi0": first_area / INDEPENDENT_PHI0}, {"peak_time_ps": clusters[1]["peak_time_ps"], "signed_area_over_phi0": second_area / INDEPENDENT_PHI0}], "split_performed": True}
+
+
+def repaired_oracle_independent(times: list[float], columns: dict[str, list[float]]) -> dict[str, Any]:
+    phases = {label: independent_phase_landmarks(times, columns, label) for label in INDEPENDENT_PHASE_SIGNALS}
+    first_times = [phases["P(BJ1|XBQ1)"]["first_0p5_time_ps"], phases["P(BJ2|XBQ1)"]["first_0p5_time_ps"], *(phases[f"P(B01|XJTL1_{stage})"]["first_0p5_time_ps"] for stage in range(1, 7))]
+    second_times = [phases["P(BJ1|XBQ1)"]["second_1p5_time_ps"], phases["P(BJ2|XBQ1)"]["second_1p5_time_ps"], *(phases[f"P(B01|XJTL1_{stage})"]["second_1p5_time_ps"] for stage in range(1, 7))]
+    clusters = {label: independent_voltage_clusters(times, columns, label) for label in INDEPENDENT_VOLTAGE_SIGNALS}
+    terminal = independent_terminal_pulses(times, columns, clusters["V(JTL6_OUT)"])
+
+    def cluster_time(label: str, index: int) -> float | None:
+        values = clusters[label].get("clusters", [])
+        return values[index].get("peak_time_ps") if len(values) > index else None
+
+    first_downstream = [cluster_time("V(QBOUT)", 0)] + [cluster_time(f"V(JTL{stage}_OUT)", 0) for stage in range(1, 7)]
+    second_downstream = [cluster_time("V(QBOUT)", 1)] + [cluster_time(f"V(JTL{stage}_OUT)", 1) for stage in range(1, 7)]
+    first_checks = {"first_phase_landmarks_present": all(value is not None for value in first_times), "first_phase_ordered": all(value is not None for value in first_times) and all(left < right for left, right in zip(first_times, first_times[1:])), "first_voltage_cluster_present_per_registered_signal": all(value.get("cluster_count", 0) >= 1 for value in clusters.values()), "first_terminal_response_cluster_present": terminal.get("pulse_count", 0) >= 1, "first_downstream_voltage_ordered_QBOUT_to_terminal": all(value is not None for value in first_downstream) and all(left < right for left, right in zip(first_downstream, first_downstream[1:]))}
+    second_checks = {"second_phase_landmarks_present": all(value is not None for value in second_times), "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": all(value is not None for value in second_times) and all(left < right for left, right in zip(second_times, second_times[1:])), "two_voltage_clusters_per_registered_signal": all(value.get("cluster_count") == 2 for value in clusters.values()), "two_separated_terminal_pulses": terminal.get("status") == "TWO_SEPARATED_PULSES", "second_downstream_voltage_ordered_QBOUT_to_terminal": all(value is not None for value in second_downstream) and all(left < right for left, right in zip(second_downstream, second_downstream[1:]))}
+    return {"status": "BOUNDED_RESULT" if all(second_checks.values()) else "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE", "first_response_status": "BOUNDED_RESULT" if all(first_checks.values()) else "NO_FIRST_COMPLETE_RESPONSE_CANDIDATE", "single_response_status": "BOUNDED_RESULT" if all(first_checks.values()) and all(value.get("cluster_count") == 1 for value in clusters.values()) and terminal.get("status") == "ONE_RESPONSE_CLUSTER" else "NO_SINGLE_COMPLETE_RESPONSE_CANDIDATE", "second_progression_times_ps": second_times, "first_checks": first_checks, "second_checks": second_checks, "voltage_signal_cluster_counts": {label: value.get("cluster_count") for label, value in clusters.items()}, "terminal_pulse_analysis": terminal}
 def diff_values(columns: dict[str, list[float]], indices: list[int]) -> list[float]:
     bj1 = columns["V(BJ1|XBQ1)"]
     bj2 = columns["V(BJ2|XBQ1)"]
@@ -365,20 +476,15 @@ def main() -> int:
             strongest = max(positive[1:], key=lambda item: item["peak_A"]) if len(positive) > 1 else None
             if strongest is not None:
                 compare(failures, f"{run_id} strongest second L1 peak", strongest["peak_A"], strongest_record.get("L1_peak_A"))
-            second_start = None
-            if strongest is not None:
-                second_start = next((index for index, value in enumerate(times) if math.isclose(value * 1e12, strongest["start_time_ps"], rel_tol=0.0, abs_tol=1e-9)), None)
-            independent_second = multi_evidence_candidate(
-                times,
-                columns,
-                baseline_window=(101e-12, 110e-12),
-                origin_window=(110e-12, 200e-12),
-                reference_index=second_start if second_start is not None else bj2_index,
-                start_index=second_start if second_start is not None else bj2_index,
-            )
+            independent_second = repaired_oracle_independent(times, columns)
             second_response_records[run_id] = independent_second
-            independent_second_status = "BOUNDED_RESULT" if independent_second.get("status") == "BOUNDED_RESULT" else "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE"
-            compare(failures, f"{run_id} second response status", independent_second_status, (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("status"))
+            compare(failures, f"{run_id} repaired second response status", independent_second.get("status"), (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("status"))
+            compare(failures, f"{run_id} repaired first response status", independent_second.get("first_response_status"), (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("first_response_status"))
+            compare(failures, f"{run_id} repaired single response status", independent_second.get("single_response_status"), (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("single_response_status"))
+            compare(failures, f"{run_id} repaired phase second landmarks", independent_second.get("second_progression_times_ps"), (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("second_progression_times_ps"))
+            compare(failures, f"{run_id} repaired voltage cluster counts", independent_second.get("voltage_signal_cluster_counts"), (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("voltage_signal_cluster_counts"))
+            recorded_terminal = (second_analysis.get("second_complete_multi_evidence_candidate") or {}).get("terminal_pulse_analysis", {})
+            compare(failures, f"{run_id} repaired terminal pulse status", independent_second.get("terminal_pulse_analysis", {}).get("status"), recorded_terminal.get("status"))
 
     expected_window_counts = {
         "CONTROL_ORIGIN_[70,110)": 400,
@@ -407,6 +513,11 @@ def main() -> int:
         if ".param L2_VALUE" in deck_text:
             failures.append(f"unexpected L2 parameter perturbation: {run_id}")
 
+    known_single = second_response_records.get("ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001", {})
+    known_two = second_response_records.get("ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011", {})
+    repaired_case_ids = {run_id for run_id, value in second_response_records.items() if value.get("status") == "BOUNDED_RESULT"}
+    legacy_false_negative_ids = {run_id for run_id, case in case_records.items() if case.get("SECOND_TRIGGER_ANALYSIS", {}).get("legacy_oracle_false_negative_detected") is True}
+
     for run_id in REUSE_RUNS:
         manifest_entry = reuse_manifest.get("references", {}).get(run_id, {})
         compare(failures, f"{run_id} reuse raw hash", raw_hashes[run_id], manifest_entry.get("artifacts", {}).get("raw.csv", {}).get("source_sha256"))
@@ -433,6 +544,9 @@ def main() -> int:
         "strict_recrossing_recomputed": observed_recrossing_cases == recorded.get("observed_l1_recrossing_cases"),
         "control_first_second_candidates_recomputed": all(run_id in control_records and run_id in first_response_records for run_id in ALL_RUNS) and all(run_id in second_response_records for run_id in positive_records),
         "stage_decision_artifacts_present": bool(execution.get("stage_decisions")) and all((EXP / "qa/stages" / f"stage{item.get('stage')}_decision.json").is_file() for item in execution.get("stage_decisions", [])),
+        "known_single_0001_not_two": known_single.get("status") != "BOUNDED_RESULT" and known_single.get("single_response_status") == "BOUNDED_RESULT" and known_single.get("terminal_pulse_analysis", {}).get("status") == "ONE_RESPONSE_CLUSTER",
+        "known_two_0011_all_evidence_explained": known_two.get("status") == "BOUNDED_RESULT" and all((known_two.get("second_checks") or {}).values()) and known_two.get("terminal_pulse_analysis", {}).get("status") == "TWO_SEPARATED_PULSES",
+        "legacy_strongest_segment_false_negative_exposed": legacy_false_negative_ids == {"ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"} and repaired_case_ids == legacy_false_negative_ids,
     })
     for name, value in probes.items():
         if value is not True:
@@ -458,6 +572,8 @@ def main() -> int:
         "control_candidates_recomputed": control_records,
         "first_response_candidates_recomputed": first_response_records,
         "second_response_candidates_recomputed": second_response_records,
+        "repaired_second_response_case_ids": sorted(repaired_case_ids),
+        "oracle_adversarial_tests": {"known_single_0001_not_two": probes.get("known_single_0001_not_two"), "known_two_0011_all_evidence_explained": probes.get("known_two_0011_all_evidence_explained"), "legacy_strongest_segment_false_negative_exposed": probes.get("legacy_strongest_segment_false_negative_exposed")},
         "stage_decisions_checked": execution.get("stage_decisions", []),
         "adversarial_probes": probes,
         "execution_head": execution.get("head"),
@@ -488,6 +604,8 @@ def main() -> int:
             f"- Window cardinalities: CONTROL_ORIGIN={sorted(window_counts['CONTROL_ORIGIN_[70,110)'])}, FINAL_ORIGIN={sorted(window_counts['FINAL_ORIGIN_[110,200)'])}, PRE_SWITCH={sorted(window_counts['PRE_SWITCH_[110,114.5)'])}.",
             "- Optional `V(IB|XBQ1)` is absent in all cases and remains `UNKNOWN`.",
             "- Differential voltage cumulative landmarks, post-BJ2 anchor arithmetic, required L1-zero proxy, strict L1 re-crossing and early-stop reason, raw hashes and new-run metadata hashes were independently checked.",
+            "- The repaired second-response oracle was independently reimplemented from raw CSV: FINAL-baseline cumulative phase landmarks, direct voltage cluster counts, valley-gated terminal pulse segmentation and ordered second JTL wavefronts.",
+            "- Adversarial oracle tests: the known single-response 0001 case was not classified as two; RJ2=12 / 0011 was explained as two only when all registered phase/voltage/terminal checks passed; the former strongest-L1-reference false-negative was exposed for RJ2=12/14/16 / 0011.",
             "",
             "Adversarial probes covered no-op parameterization, wrong-branch routing, weak-oracle disagreement, half-open window boundaries, stale raw artifacts and the scientific overclaim ceiling.",
             "",

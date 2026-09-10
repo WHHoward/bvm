@@ -1,0 +1,57 @@
+{
+  "schema": "bjs400-rj2-highside-second-trigger-oracle-qa-v1",
+  "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+  "created_at_local": "2026-09-10T19:35:36+08:00",
+  "marker": "ORACLE_REVIEW_COMPLETE",
+  "status": "PASS",
+  "raw_files_modified": 0,
+  "physical_solve_count": 0,
+  "repaired_second_response_cases": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+  ],
+  "legacy_false_negative_cases": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+  ],
+  "adversarial_tests": {
+    "known_single_response_0001": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+      "second_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "terminal_status": "ONE_RESPONSE_CLUSTER",
+      "passes_no_two_response": true
+    },
+    "known_two_response_0011": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+      "second_status": "BOUNDED_RESULT",
+      "second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "terminal_status": "TWO_SEPARATED_PULSES",
+      "passes_two_response_explanation": true
+    },
+    "legacy_strongest_l1_reference_false_negative": {
+      "cases": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+      ],
+      "expected_cases": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+      ],
+      "passes_false_negative_exposure": true
+    }
+  },
+  "failures": [],
+  "scientific_interpretation_performed": false,
+  "oracle_code_sha256": "f5365ba4651cc1828b32a5932eb5c4cab7bda3317c81563e0cbb6571abe7230f",
+  "independent_review_status": "PASS"
+}

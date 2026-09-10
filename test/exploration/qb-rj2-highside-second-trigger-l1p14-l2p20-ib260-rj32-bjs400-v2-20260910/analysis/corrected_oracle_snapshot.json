@@ -1,0 +1,630 @@
+{
+  "schema": "bjs400-rj2-highside-second-trigger-corrected-oracle-snapshot-v1",
+  "experiment_id": "qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910",
+  "created_at_local": "2026-09-10T19:35:36+08:00",
+  "marker": "ORACLE_REVIEW_COMPLETE",
+  "physical_solve_count": 0,
+  "raw_files_modified": 0,
+  "scientific_interpretation_performed": false,
+  "oracle_code_sha256": "f5365ba4651cc1828b32a5932eb5c4cab7bda3317c81563e0cbb6571abe7230f",
+  "independent_review_status": "PASS",
+  "old_oracle_policy": "strongest_later_positive_L1_segment_start was incorrectly used as a new phase reference",
+  "repaired_oracle_policy": "all cumulative phase landmarks use FINAL-origin [101,110) ps baseline; voltage clusters are independently segmented with a stored-sample valley rule",
+  "repaired_oracle_statuses": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": "BOUNDED_RESULT",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": "BOUNDED_RESULT",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": "BOUNDED_RESULT"
+  },
+  "legacy_false_negative_cases": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+  ],
+  "expected_second_response_cases": [
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+  ],
+  "adversarial_tests": {
+    "known_single_response_0001": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001",
+      "second_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "terminal_status": "ONE_RESPONSE_CLUSTER",
+      "passes_no_two_response": true
+    },
+    "known_two_response_0011": {
+      "case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+      "second_status": "BOUNDED_RESULT",
+      "second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "terminal_status": "TWO_SEPARATED_PULSES",
+      "passes_two_response_explanation": true
+    },
+    "legacy_strongest_l1_reference_false_negative": {
+      "cases": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+      ],
+      "expected_cases": [
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011",
+        "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011"
+      ],
+      "passes_false_negative_exposure": true
+    }
+  },
+  "cases": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0001/raw.csv",
+      "raw_sha256": "fdf64eba4d265f14ca0817c1bfb4ccb47ca846ae803da9d81ab98cbb795927b1",
+      "rj2_ohm": 10.0,
+      "mask": "0001",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "BOUNDED_RESULT",
+      "recorded_second_response_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "second_progression_times_ps": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.0678337806170723e-15,
+        "total_final_area_over_phi0": 0.9999999674137611,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 138.5,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 2.0678337806170723e-15,
+            "signed_area_over_phi0": 0.9999999674137611
+          }
+        ],
+        "split_performed": false
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/raw.csv",
+      "raw_sha256": "cdd816e78b3b93f48c4608154a5d1ad7d2c3b1b7e7e197cc8e189036c828358c",
+      "rj2_ohm": 10.0,
+      "mask": "0011",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "BOUNDED_RESULT",
+      "recorded_second_response_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "second_progression_times_ps": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.0678338331941266e-15,
+        "total_final_area_over_phi0": 0.9999999928399114,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 133.9,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 2.0678338331941266e-15,
+            "signed_area_over_phi0": 0.9999999928399114
+          }
+        ],
+        "split_performed": false
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/raw.csv",
+      "raw_sha256": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+      "rj2_ohm": 12.0,
+      "mask": "0001",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "BOUNDED_RESULT",
+      "recorded_second_response_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "second_progression_times_ps": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.067833842668453e-15,
+        "total_final_area_over_phi0": 0.9999999974216752,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 138.4,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 2.067833842668453e-15,
+            "signed_area_over_phi0": 0.9999999974216752
+          }
+        ],
+        "split_performed": false
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/raw.csv",
+      "raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "rj2_ohm": 12.0,
+      "mask": "0011",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "NO_SINGLE_COMPLETE_RESPONSE_CANDIDATE",
+      "recorded_second_response_status": "BOUNDED_RESULT",
+      "second_progression_times_ps": [
+        125.9,
+        126.39999999999999,
+        127.5,
+        130.5,
+        133.5,
+        136.5,
+        139.5,
+        142.5
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 2,
+        "V(BJ2|XBQ1)": 2,
+        "V(QBOUT)": 2,
+        "V(JTL1_OUT)": 2,
+        "V(JTL2_OUT)": 2,
+        "V(JTL3_OUT)": 2,
+        "V(JTL4_OUT)": 2,
+        "V(JTL5_OUT)": 2,
+        "V(JTL6_OUT)": 2
+      },
+      "terminal_pulse_analysis": {
+        "status": "TWO_SEPARATED_PULSES",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 4.135667705314759e-15,
+        "total_final_area_over_phi0": 2.000000004504597,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 2,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 133.9,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 135.5,
+            "signed_area_V_s": 2.156406300302307e-15,
+            "signed_area_over_phi0": 1.04283344737198
+          },
+          {
+            "pulse_index": 2,
+            "peak_time_ps": 144.3,
+            "left_boundary_time_ps": 135.5,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 1.9792614050124513e-15,
+            "signed_area_over_phi0": 0.9571665571326169
+          }
+        ],
+        "pulse_separation_ps": 10.400000000000006,
+        "valley_time_ps": 135.5,
+        "valley_value_V": -0.0001208254,
+        "valley_below_threshold": true,
+        "split_performed": true,
+        "area_partition_residual_V_s": 3.944304526105059e-31
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0001/raw.csv",
+      "raw_sha256": "e83b6cba28ae81c2667e9b1e162aaa5ffed86c2af9dc52a3c435f6990185e182",
+      "rj2_ohm": 14.0,
+      "mask": "0001",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "BOUNDED_RESULT",
+      "recorded_second_response_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "second_progression_times_ps": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.0678337319785977e-15,
+        "total_final_area_over_phi0": 0.9999999438922994,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 138.3,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 2.0678337319785977e-15,
+            "signed_area_over_phi0": 0.9999999438922994
+          }
+        ],
+        "split_performed": false
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P14_0011/raw.csv",
+      "raw_sha256": "5418af37282e9c999ef15699cb70fd8d34448da4c7e03c9104da97bd57280762",
+      "rj2_ohm": 14.0,
+      "mask": "0011",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "NO_SINGLE_COMPLETE_RESPONSE_CANDIDATE",
+      "recorded_second_response_status": "BOUNDED_RESULT",
+      "second_progression_times_ps": [
+        124.50000000000001,
+        125.19999999999999,
+        126.3,
+        129.3,
+        132.3,
+        135.29999999999998,
+        138.3,
+        141.2
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 2,
+        "V(BJ2|XBQ1)": 2,
+        "V(QBOUT)": 2,
+        "V(JTL1_OUT)": 2,
+        "V(JTL2_OUT)": 2,
+        "V(JTL3_OUT)": 2,
+        "V(JTL4_OUT)": 2,
+        "V(JTL5_OUT)": 2,
+        "V(JTL6_OUT)": 2
+      },
+      "terminal_pulse_analysis": {
+        "status": "TWO_SEPARATED_PULSES",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 4.135667864670985e-15,
+        "total_final_area_over_phi0": 2.0000000815689254,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 2,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 133.79999999999998,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 135.5,
+            "signed_area_V_s": 2.1487078940887096e-15,
+            "signed_area_over_phi0": 1.0391105146900126
+          },
+          {
+            "pulse_index": 2,
+            "peak_time_ps": 143.1,
+            "left_boundary_time_ps": 135.5,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 1.9869599705822754e-15,
+            "signed_area_over_phi0": 0.9608895668789127
+          }
+        ],
+        "pulse_separation_ps": 9.300000000000011,
+        "valley_time_ps": 135.5,
+        "valley_value_V": -0.0001206902,
+        "valley_below_threshold": true,
+        "split_performed": true,
+        "area_partition_residual_V_s": 0.0
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0001/raw.csv",
+      "raw_sha256": "907e23a43b23a012e6ba6176b0c19367b23a572fdcc92597957b92a2729283d1",
+      "rj2_ohm": 16.0,
+      "mask": "0001",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "BOUNDED_RESULT",
+      "recorded_second_response_status": "NO_SECOND_COMPLETE_MULTI_EVIDENCE_CANDIDATE",
+      "second_progression_times_ps": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": false,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": false,
+        "two_voltage_clusters_per_registered_signal": false,
+        "two_separated_terminal_pulses": false,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": false
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 1,
+        "V(BJ2|XBQ1)": 1,
+        "V(QBOUT)": 1,
+        "V(JTL1_OUT)": 1,
+        "V(JTL2_OUT)": 1,
+        "V(JTL3_OUT)": 1,
+        "V(JTL4_OUT)": 1,
+        "V(JTL5_OUT)": 1,
+        "V(JTL6_OUT)": 1
+      },
+      "terminal_pulse_analysis": {
+        "status": "ONE_RESPONSE_CLUSTER",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 2.0678338534807817e-15,
+        "total_final_area_over_phi0": 1.0000000026504943,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 1,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 138.3,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 2.0678338534807817e-15,
+            "signed_area_over_phi0": 1.0000000026504943
+          }
+        ],
+        "split_performed": false
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011": {
+      "raw_path": "test/exploration/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P16_0011/raw.csv",
+      "raw_sha256": "d530d4582bfff0b1e8b6825d69b725fa341613809f690a0657e4f601317d588f",
+      "rj2_ohm": 16.0,
+      "mask": "0011",
+      "control_status": "CLEAN",
+      "recorded_first_response_status": "BOUNDED_RESULT",
+      "recorded_single_response_status": "NO_SINGLE_COMPLETE_RESPONSE_CANDIDATE",
+      "recorded_second_response_status": "BOUNDED_RESULT",
+      "second_progression_times_ps": [
+        124.1,
+        124.6,
+        125.69999999999999,
+        128.6,
+        131.6,
+        134.6,
+        137.6,
+        140.60000000000002
+      ],
+      "second_checks": {
+        "second_phase_landmarks_present": true,
+        "second_phase_ordered_BJ1_BJ2_JTL1_to_JTL6": true,
+        "two_voltage_clusters_per_registered_signal": true,
+        "two_separated_terminal_pulses": true,
+        "second_downstream_voltage_ordered_QBOUT_to_terminal": true
+      },
+      "voltage_signal_cluster_counts": {
+        "V(BJ1|XBQ1)": 2,
+        "V(BJ2|XBQ1)": 2,
+        "V(QBOUT)": 2,
+        "V(JTL1_OUT)": 2,
+        "V(JTL2_OUT)": 2,
+        "V(JTL3_OUT)": 2,
+        "V(JTL4_OUT)": 2,
+        "V(JTL5_OUT)": 2,
+        "V(JTL6_OUT)": 2
+      },
+      "terminal_pulse_analysis": {
+        "status": "TWO_SEPARATED_PULSES",
+        "signal": "V(JTL6_OUT)",
+        "window_ps": [
+          110.0,
+          200.0
+        ],
+        "segmentation_rule": "stored-sample significant peaks with adaptive threshold; split only at a below-threshold waveform valley",
+        "total_final_area_V_s": 4.135667613283065e-15,
+        "total_final_area_over_phi0": 1.9999999599982679,
+        "not_population_count": true,
+        "not_sfq_count": true,
+        "pulse_count": 2,
+        "pulses": [
+          {
+            "pulse_index": 1,
+            "peak_time_ps": 133.7,
+            "left_boundary_time_ps": 110.0,
+            "right_boundary_time_ps": 135.4,
+            "signed_area_V_s": 2.155009199489922e-15,
+            "signed_area_over_phi0": 1.0421578124249382
+          },
+          {
+            "pulse_index": 2,
+            "peak_time_ps": 142.4,
+            "left_boundary_time_ps": 135.4,
+            "right_boundary_time_ps": 199.9,
+            "signed_area_V_s": 1.980658413793143e-15,
+            "signed_area_over_phi0": 0.95784214757333
+          }
+        ],
+        "pulse_separation_ps": 8.700000000000017,
+        "valley_time_ps": 135.4,
+        "valley_value_V": -0.0001203867,
+        "valley_below_threshold": true,
+        "split_performed": true,
+        "area_partition_residual_V_s": -3.944304526105059e-31
+      },
+      "phase_reference_policy": "all cumulative landmarks use FINAL-origin baseline [101,110) ps; strongest later L1 segment is never a phase reference",
+      "pulse_reference_policy": "direct voltage clusters are independent of phase landmarks and are split only at a registered below-threshold valley"
+    }
+  },
+  "status": "PASS",
+  "failures": []
+}

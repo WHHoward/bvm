@@ -1,5 +1,5 @@
 {
-  "schema": "bjs400-rj2-highside-second-trigger-transformation-registry-v2",
+  "schema": "bjs400-rj2-highside-second-trigger-transformation-registry-v3",
   "raw_immutable": true,
   "scientific_analysis_performed": false,
   "transformations": [
@@ -12,6 +12,13 @@
       "name": "first_second_positive_excursion",
       "operation": "stored-sample positive L1 segments after first BJ2 +0.9 anchor",
       "scope": "SECOND_TRIGGER_DIAGNOSTIC_ONLY",
+      "not_event_count": true
+    },
+    {
+      "name": "repaired_second_response_oracle",
+      "operation": "cumulative FINAL-origin baseline phase landmarks plus independent voltage cluster/valley analysis",
+      "scope": "ORACLE_REPAIRED_SECOND_RESPONSE / MECHANICAL_CANDIDATE_ONLY",
+      "phase_reference": "[101,110) ps",
       "not_event_count": true
     },
     {

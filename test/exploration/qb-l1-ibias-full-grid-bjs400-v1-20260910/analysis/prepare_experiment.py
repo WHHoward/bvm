@@ -59,6 +59,12 @@ NEW_POINTS = (
     ("L1P16_IB270", 1.6, 270.0),
 )
 NEW_RUNS = tuple(f"ARRAY_{setting}_{mask}" for setting, _l1, _ib in NEW_POINTS for mask in MASKS)
+NEW_RUN_PARAMETERS = {
+    f"ARRAY_{setting}_{mask}": {"L1_pH": l1, "IBias_uA": ibias, "RJ1_ohm": 12.0}
+    for setting, l1, ibias in NEW_POINTS
+    for mask in MASKS
+}
+RUN_TO_MASK = {run_id: run_id.rsplit("_", 1)[1] for run_id in NEW_RUNS}
 
 REUSE_SPECS = OrderedDict(
     (

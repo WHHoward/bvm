@@ -1,0 +1,137 @@
+{
+  "schema": "bjs400-rj2-damping-reuse-manifest-v1",
+  "experiment_id": "qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T16:46:16+08:00",
+  "source_authority": "test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910",
+  "source_authority_git_head": "9e1401021c4247017f5459d2c6c0cd67dcac1c30",
+  "references": {
+    "ARRAY_L1P14_IB260_RJ32_0001": {
+      "logical_case_id": "ARRAY_L1P14_IB260_RJ32_0001",
+      "source_experiment": "test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB260_RJ32_0001",
+      "source_git_head": "ad0782d031f630caeb6a0f852ac5d7d14c094c42",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 4.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact RJ2=4ohm baseline under fixed L1/L2/IBias/RJ1, BJS400 fixture, stored history, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "L1_1p4_L2_2p0_IBias_260_RJ1_32": "PASS",
+        "RJ2_4ohm": "PASS",
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_32ohm": "PASS",
+        "same_ARRAY_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "same_history_and_READ_timing": "PASS",
+        "same_solver_timestep_stop_time": "PASS",
+        "same_deck_structure_and_pre_read_controls": "PASS",
+        "same_raw_grid_and_finite_values": "PASS"
+      },
+      "source_evidence_package": {
+        "path": "test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/handoff/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910_raw_handoff.zip",
+        "sha256": "7b8da746829605973e0b8d469deccbf8e254df59d46bca02f4b181e584988ea8"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0001/raw.csv",
+          "source_sha256": "9b325232a255d57398b2982e83fce0fee49a9612f7cdf7d18254003d7c4f33ae",
+          "archived_sha256": "9b325232a255d57398b2982e83fce0fee49a9612f7cdf7d18254003d7c4f33ae",
+          "bytes": 7098639
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0001/deck.cir",
+          "source_sha256": "b3c2a8083a35b7b9e2e273a0a370ff6808b1f07fd1ba1899bd9ae4ea47bca611",
+          "archived_sha256": "b3c2a8083a35b7b9e2e273a0a370ff6808b1f07fd1ba1899bd9ae4ea47bca611",
+          "bytes": 7460
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0001/metadata.json",
+          "source_sha256": "7b61613ffabb1e6c9dfdbaa8f51993f6d656b7f7350a86ff7d2b003d76d865f7",
+          "archived_sha256": "7b61613ffabb1e6c9dfdbaa8f51993f6d656b7f7350a86ff7d2b003d76d865f7",
+          "bytes": 2438
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0001/run.log",
+          "source_sha256": "f7975b9ed38c230df697ed3a6fbf5a5985f019e24b5af89fc8198bbc32a218ce",
+          "archived_sha256": "f7975b9ed38c230df697ed3a6fbf5a5985f019e24b5af89fc8198bbc32a218ce",
+          "bytes": 221010
+        }
+      }
+    },
+    "ARRAY_L1P14_IB260_RJ32_0011": {
+      "logical_case_id": "ARRAY_L1P14_IB260_RJ32_0011",
+      "source_experiment": "test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB260_RJ32_0011",
+      "source_git_head": "ad0782d031f630caeb6a0f852ac5d7d14c094c42",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 4.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact RJ2=4ohm baseline under fixed L1/L2/IBias/RJ1, BJS400 fixture, stored history, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "L1_1p4_L2_2p0_IBias_260_RJ1_32": "PASS",
+        "RJ2_4ohm": "PASS",
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_32ohm": "PASS",
+        "same_ARRAY_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "same_history_and_READ_timing": "PASS",
+        "same_solver_timestep_stop_time": "PASS",
+        "same_deck_structure_and_pre_read_controls": "PASS",
+        "same_raw_grid_and_finite_values": "PASS"
+      },
+      "source_evidence_package": {
+        "path": "test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/handoff/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910_raw_handoff.zip",
+        "sha256": "7b8da746829605973e0b8d469deccbf8e254df59d46bca02f4b181e584988ea8"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0011/raw.csv",
+          "source_sha256": "ccb96752a1896f4f0992d7d2d75198ff065f3b8c40e1269422da2baa462b35f9",
+          "archived_sha256": "ccb96752a1896f4f0992d7d2d75198ff065f3b8c40e1269422da2baa462b35f9",
+          "bytes": 7096143
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0011/deck.cir",
+          "source_sha256": "82fe14ad85700bddcc4c43b684f3a5b53f337e87439434e40eae5af12772d59c",
+          "archived_sha256": "82fe14ad85700bddcc4c43b684f3a5b53f337e87439434e40eae5af12772d59c",
+          "bytes": 7476
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0011/metadata.json",
+          "source_sha256": "bf73c15e69ff752898bd5ebf8443be87ef2558714edd03cc3a78a8d7550efed0",
+          "archived_sha256": "bf73c15e69ff752898bd5ebf8443be87ef2558714edd03cc3a78a8d7550efed0",
+          "bytes": 2438
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-l1p14-ib260-rj1-rearm-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_RJ32_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_IB260_RJ32_0011/run.log",
+          "source_sha256": "44e0c01fb4eaa76a623ca8c5c8c6806f57133933fc5c2e05950b246f6361bc34",
+          "archived_sha256": "44e0c01fb4eaa76a623ca8c5c8c6806f57133933fc5c2e05950b246f6361bc34",
+          "bytes": 217517
+        }
+      }
+    }
+  },
+  "reused_physical_case_count": 2,
+  "no_reuse_by_filename_only": true,
+  "no_new_historical_solves": true,
+  "exact_reuse_verification": "PASS"
+}

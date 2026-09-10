@@ -1,0 +1,4777 @@
+{
+  "schema": "bjs400-l1-ibias-full-grid-mechanical-summary-v1",
+  "experiment_id": "qb-l1-ibias-full-grid-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T11:06:04+08:00",
+  "status": "PASS",
+  "scientific_interpretation_performed": false,
+  "grid": {
+    "L1_pH": [
+      1.2,
+      1.4,
+      1.6,
+      2.0
+    ],
+    "IBias_uA": [
+      250.0,
+      260.0,
+      270.0
+    ],
+    "masks": [
+      "0001",
+      "0011"
+    ],
+    "logical_case_count": 24,
+    "historical_reuse_count": 14,
+    "new_physical_solve_count": 10,
+    "case_order": [
+      "ARRAY_L1P12_0001",
+      "ARRAY_L1P12_0011",
+      "ARRAY_L1P12_IB260_0001",
+      "ARRAY_L1P12_IB260_0011",
+      "ARRAY_L1P12_IB270_0001",
+      "ARRAY_L1P12_IB270_0011",
+      "ARRAY_L1P14_0001",
+      "ARRAY_L1P14_0011",
+      "ARRAY_L1P14_IB260_0001",
+      "ARRAY_L1P14_IB260_0011",
+      "ARRAY_L1P14_IB270_0001",
+      "ARRAY_L1P14_IB270_0011",
+      "ARRAY_L1P16_IB250_0001",
+      "ARRAY_L1P16_IB250_0011",
+      "ARRAY_L1P16_IB260_0001",
+      "ARRAY_L1P16_IB260_0011",
+      "ARRAY_L1P16_IB270_0001",
+      "ARRAY_L1P16_IB270_0011",
+      "ARRAY_L1P20_IB250_0001",
+      "ARRAY_L1P20_IB250_0011",
+      "ARRAY_IB260_0001",
+      "ARRAY_IB260_0011",
+      "ARRAY_IB270_0001",
+      "ARRAY_IB270_0011"
+    ],
+    "point_case_order": {
+      "L1P12_IB250": [
+        "ARRAY_L1P12_0001",
+        "ARRAY_L1P12_0011"
+      ],
+      "L1P12_IB260": [
+        "ARRAY_L1P12_IB260_0001",
+        "ARRAY_L1P12_IB260_0011"
+      ],
+      "L1P12_IB270": [
+        "ARRAY_L1P12_IB270_0001",
+        "ARRAY_L1P12_IB270_0011"
+      ],
+      "L1P14_IB250": [
+        "ARRAY_L1P14_0001",
+        "ARRAY_L1P14_0011"
+      ],
+      "L1P14_IB260": [
+        "ARRAY_L1P14_IB260_0001",
+        "ARRAY_L1P14_IB260_0011"
+      ],
+      "L1P14_IB270": [
+        "ARRAY_L1P14_IB270_0001",
+        "ARRAY_L1P14_IB270_0011"
+      ],
+      "L1P16_IB250": [
+        "ARRAY_L1P16_IB250_0001",
+        "ARRAY_L1P16_IB250_0011"
+      ],
+      "L1P16_IB260": [
+        "ARRAY_L1P16_IB260_0001",
+        "ARRAY_L1P16_IB260_0011"
+      ],
+      "L1P16_IB270": [
+        "ARRAY_L1P16_IB270_0001",
+        "ARRAY_L1P16_IB270_0011"
+      ],
+      "L1P20_IB250": [
+        "ARRAY_L1P20_IB250_0001",
+        "ARRAY_L1P20_IB250_0011"
+      ],
+      "L1P20_IB260": [
+        "ARRAY_IB260_0001",
+        "ARRAY_IB260_0011"
+      ],
+      "L1P20_IB270": [
+        "ARRAY_IB270_0001",
+        "ARRAY_IB270_0011"
+      ]
+    }
+  },
+  "phase_convention": "raw P radians; continuous_unwrap(raw)/(2*pi) for display/diagnostic only",
+  "first_half_turn_is_not_event_time_or_event_count": true,
+  "windows": {
+    "phase_baseline_ps": [
+      101.0,
+      110.0
+    ],
+    "phase_post_read_ps": [
+      110.0,
+      200.0
+    ],
+    "EARLY_READ_ps": [
+      110.0,
+      121.0
+    ],
+    "TAIL_ps": [
+      121.0,
+      200.0
+    ],
+    "MECHANICAL_PRE_SWITCH_PROXY_ps": [
+      110.0,
+      114.5
+    ],
+    "semantics": "half-open; actual stored timestamps; no interpolation or resampling"
+  },
+  "ratio_policy": {
+    "numerator_denominator": "0011 / 0001",
+    "peak_abs_current_tolerance_A": 1e-12,
+    "signed_area_tolerance_A_s": 1e-18,
+    "cancellation_fraction": 0.01,
+    "ambiguous_ratio_status": "UNKNOWN"
+  },
+  "cases": {
+    "ARRAY_L1P12_0001": {
+      "case_id": "ARRAY_L1P12_0001",
+      "L1_pH": 1.2,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P12_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 125.19999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9906410038372746,
+          "min_continuous_relative_phase_turns": -0.016694398600681278,
+          "final_continuous_relative_phase_turns": 0.9902369094367643,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 126.19999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9939502807379957,
+          "min_continuous_relative_phase_turns": -0.008154128438875847,
+          "final_continuous_relative_phase_turns": 0.9937885793158144,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 4.761924e-05,
+          "min": -0.0001389995,
+          "max_abs": 0.0001389995
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0002976192,
+          "min": 0.0,
+          "max_abs": 0.0002976192
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.481154e-05,
+          "min": -1.673323e-05,
+          "max_abs": 3.481154e-05
+        },
+        "I(B_JSL8)": {
+          "max": 4.859301e-05,
+          "min": -6.603714e-05,
+          "max_abs": 6.603714e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 4.859301e-05,
+          "min": -6.603714e-05,
+          "max_abs": 6.603714e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0003582337,
+          "min": -0.0003166303,
+          "max_abs": 0.0003582337
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0006221416,
+          "min": -0.0007367188,
+          "max_abs": 0.0007367188
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.6460327633999986e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -4.4101695389045996e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.6460327633999986e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -4.4101695389035997e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 5.600552758399996e-16,
+        "negative_A_s": -2.8093968000000125e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 3.877699712204403e-21,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0001/raw.csv",
+        "sha256": "ca7464f0467816b7edd1c3b3dd9a7130aa1b9910c4e2581f151d9c3c26e18282"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P12_0011": {
+      "case_id": "ARRAY_L1P12_0011",
+      "L1_pH": 1.2,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P12_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.69999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0236683601628753,
+          "min_continuous_relative_phase_turns": -0.01621040841873881,
+          "final_continuous_relative_phase_turns": 0.9902147868996747,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 118.10000000000001,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0054361746710518,
+          "min_continuous_relative_phase_turns": -0.007612014871716247,
+          "final_continuous_relative_phase_turns": 0.9937718680467899,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0001098001,
+          "min": -0.0001239528,
+          "max_abs": 0.0001239528
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003598001,
+          "min": 0.0,
+          "max_abs": 0.0003598001
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.487838e-05,
+          "min": -1.673323e-05,
+          "max_abs": 3.487838e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.27368e-05,
+          "min": -4.058538e-05,
+          "max_abs": 6.27368e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.27368e-05,
+          "min": -4.058538e-05,
+          "max_abs": 6.27368e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005660418,
+          "min": -0.0003166303,
+          "max_abs": 0.0005660418
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009722185,
+          "min": -0.0007712952,
+          "max_abs": 0.0009722185
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 3.259052122199997e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 1.3228590189400115e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 3.259052122199997e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 1.3228590188300116e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.085811923799998e-15,
+        "negative_A_s": -1.309649563400017e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 4.9665445006477634e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P12_0011/raw.csv",
+        "sha256": "c1f8b00bc162b7a6e5726a3cbc35b7e629832b0f0bc3aef5345f85e2d7f61e1d"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P12_IB260_0001": {
+      "case_id": "ARRAY_L1P12_IB260_0001",
+      "L1_pH": 1.2,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P12_IB260_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 121.39999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9871803387546845,
+          "min_continuous_relative_phase_turns": -0.020233845380101922,
+          "final_continuous_relative_phase_turns": 0.9866280711021556,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 122.4,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9931869417999384,
+          "min_continuous_relative_phase_turns": -0.008881737092209076,
+          "final_continuous_relative_phase_turns": 0.9929733558663092,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 7.603404e-05,
+          "min": -0.0001343469,
+          "max_abs": 0.0001343469
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.000336034,
+          "min": 0.0,
+          "max_abs": 0.000336034
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.273485e-05,
+          "min": -1.745774e-05,
+          "max_abs": 3.273485e-05
+        },
+        "I(B_JSL8)": {
+          "max": 3.809716e-05,
+          "min": -5.719286e-05,
+          "max_abs": 5.719286e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 3.809716e-05,
+          "min": -5.719286e-05,
+          "max_abs": 5.719286e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0003658408,
+          "min": -0.0003204719,
+          "max_abs": 0.0003658408
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0007323424,
+          "min": -0.0007446821,
+          "max_abs": 0.0007446821
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 1.9717529313000006e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -3.709562145892341e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 1.9717529313000006e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -3.709562145891341e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 1.0140883984999987e-15,
+        "negative_A_s": -1.6102392800000175e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 1.386176614315549e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P12_IB260_0001/raw.csv",
+        "sha256": "324abc4ddd405597eaec2ec03b06027303655492dc88ff831d191e8830a897fc"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P12_IB260_0011": {
+      "case_id": "ARRAY_L1P12_IB260_0011",
+      "L1_pH": 1.2,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P12_IB260_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.2,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0403024390401248,
+          "min_continuous_relative_phase_turns": -0.019697970686711527,
+          "final_continuous_relative_phase_turns": 0.9866064260298951,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 117.4,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.017607835422902,
+          "min_continuous_relative_phase_turns": -0.008329819580554999,
+          "final_continuous_relative_phase_turns": 0.9929596685412032,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0001022323,
+          "min": -0.0001268264,
+          "max_abs": 0.0001268264
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003622323,
+          "min": 0.0,
+          "max_abs": 0.0003622323
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 4.497568e-05,
+          "min": -1.745774e-05,
+          "max_abs": 4.497568e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.054258e-05,
+          "min": -3.850667e-05,
+          "max_abs": 6.054258e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.054258e-05,
+          "min": -3.850667e-05,
+          "max_abs": 6.054258e-05
+        },
+        "V(QBIN)": {
+          "max": 0.000522627,
+          "min": -0.0003204719,
+          "max_abs": 0.000522627
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009654238,
+          "min": -0.0008082373,
+          "max_abs": 0.0009654238
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.8589596607999964e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 5.184964669899815e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.8589596607999964e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 5.184964669899715e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.180858277499998e-15,
+        "negative_A_s": -6.454567870000198e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.3271535353766357e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P12_IB260_0011/raw.csv",
+        "sha256": "28c7d109fd7f6a5443968ab19e4d7758855126c9e1a9a0239cbc9b26355ad5e8"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P12_IB270_0001": {
+      "case_id": "ARRAY_L1P12_IB270_0001",
+      "L1_pH": 1.2,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P12_IB270_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 119.60000000000001,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9874316444098267,
+          "min_continuous_relative_phase_turns": -0.0201297580473198,
+          "final_continuous_relative_phase_turns": 0.9870830950844554,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 120.5,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.996341138124111,
+          "min_continuous_relative_phase_turns": -0.005715254006430014,
+          "final_continuous_relative_phase_turns": 0.9962106310707755,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 5.960923e-05,
+          "min": -0.0001642603,
+          "max_abs": 0.0001642603
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003296092,
+          "min": 0.0,
+          "max_abs": 0.0003296092
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.404442e-05,
+          "min": -8.28079e-06,
+          "max_abs": 3.404442e-05
+        },
+        "I(B_JSL8)": {
+          "max": 3.346878e-05,
+          "min": -0.0001124243,
+          "max_abs": 0.0001124243
+        },
+        "I(LIN|XBQ1)": {
+          "max": 3.346878e-05,
+          "min": -0.0001124243,
+          "max_abs": 0.0001124243
+        },
+        "V(QBIN)": {
+          "max": 0.0003804556,
+          "min": -0.0001441476,
+          "max_abs": 0.0003804556
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0008554647,
+          "min": -0.0005675454,
+          "max_abs": 0.0008554647
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 9.677905274400035e-17,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -2.705886948639401e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 9.677905274400035e-17,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -2.705886948630401e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 1.4840842810999978e-15,
+        "negative_A_s": -6.410635300000146e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 2.6878648680359792e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P12_IB270_0001/raw.csv",
+        "sha256": "f0ab9e653ff5f6505e1865a52aabac1718adc3f7234d28123e05a514f1f534f2"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P12_IB270_0011": {
+      "case_id": "ARRAY_L1P12_IB270_0011",
+      "L1_pH": 1.2,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P12_IB270_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 115.89999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0799993424109346,
+          "min_continuous_relative_phase_turns": -0.019569850957522558,
+          "final_continuous_relative_phase_turns": 0.9870655880407153,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 117.00000000000001,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.035122423107313,
+          "min_continuous_relative_phase_turns": -0.005190201849169826,
+          "final_continuous_relative_phase_turns": 0.9962090395213445,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 9.091664e-05,
+          "min": -0.0001642603,
+          "max_abs": 0.0001642603
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003609166,
+          "min": 0.0,
+          "max_abs": 0.0003609166
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.664291e-05,
+          "min": -1.373409e-05,
+          "max_abs": 3.664291e-05
+        },
+        "I(B_JSL8)": {
+          "max": 5.465802e-05,
+          "min": -0.0001124243,
+          "max_abs": 0.0001124243
+        },
+        "I(LIN|XBQ1)": {
+          "max": 5.465802e-05,
+          "min": -0.0001124243,
+          "max_abs": 0.0001124243
+        },
+        "V(QBIN)": {
+          "max": 0.000459582,
+          "min": -0.0001441476,
+          "max_abs": 0.000459582
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009966102,
+          "min": -0.000914553,
+          "max_abs": 0.0009966102
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.4222044439999943e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 9.315213141809218e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.4222044439999943e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 9.315213141809218e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.221037449102998e-15,
+        "negative_A_s": -1.1789934399999718e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.2689051894736736e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P12_IB270_0011/raw.csv",
+        "sha256": "0c37cb679e0fa116185a88479825c8d3e2100e9d7ed15c9b01ebbeb1a5185146"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P14_0001": {
+      "case_id": "ARRAY_L1P14_0001",
+      "L1_pH": 1.4,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P14_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 127.0,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9905867320016803,
+          "min_continuous_relative_phase_turns": -0.016673867613022416,
+          "final_continuous_relative_phase_turns": 0.9902638066221469,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 128.20000000000002,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9942910633021441,
+          "min_continuous_relative_phase_turns": -0.007607924589678783,
+          "final_continuous_relative_phase_turns": 0.994178222447492,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 4.286993e-05,
+          "min": -0.0001367347,
+          "max_abs": 0.0001367347
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0002928699,
+          "min": 0.0,
+          "max_abs": 0.0002928699
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.254019e-05,
+          "min": -1.684483e-05,
+          "max_abs": 3.254019e-05
+        },
+        "I(B_JSL8)": {
+          "max": 5.036028e-05,
+          "min": -6.336956e-05,
+          "max_abs": 6.336956e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 5.036028e-05,
+          "min": -6.336956e-05,
+          "max_abs": 6.336956e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0004103241,
+          "min": -0.0003177484,
+          "max_abs": 0.0004103241
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0006152916,
+          "min": -0.0007364211,
+          "max_abs": 0.0007364211
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.7095971952999985e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -4.4764122767522e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.7095971952999985e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -4.4764122767522e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 5.200050773999999e-16,
+        "negative_A_s": -3.1171232100000124e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 3.3954881412224225e-21,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0001/raw.csv",
+        "sha256": "a41584282fdc4441deef9867656d4aa24ea7f69204da2abea5c1f5a103bb7ceb"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P14_0011": {
+      "case_id": "ARRAY_L1P14_0011",
+      "L1_pH": 1.4,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_L1P14_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.69999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0237371150982912,
+          "min_continuous_relative_phase_turns": -0.016136083060314898,
+          "final_continuous_relative_phase_turns": 0.9902400925356263,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 118.3,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.003916754260342,
+          "min_continuous_relative_phase_turns": -0.007090161728812218,
+          "final_continuous_relative_phase_turns": 0.9941610337136381,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0001080415,
+          "min": -0.0001225112,
+          "max_abs": 0.0001225112
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003580415,
+          "min": 0.0,
+          "max_abs": 0.0003580415
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.574338e-05,
+          "min": -1.686389e-05,
+          "max_abs": 3.574338e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.286639e-05,
+          "min": -4.070005e-05,
+          "max_abs": 6.286639e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.286639e-05,
+          "min": -4.070005e-05,
+          "max_abs": 6.286639e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005829187,
+          "min": -0.0003177484,
+          "max_abs": 0.0005829187
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009686375,
+          "min": -0.0007765304,
+          "max_abs": 0.0009686375
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 3.3112558489999973e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 8.191340708315112e-18,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 3.3112558489999973e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 8.191340708316112e-18,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.0786148919999982e-15,
+        "negative_A_s": -1.8843464000000446e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 4.968055590403616e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P14_0011/raw.csv",
+        "sha256": "0d178557937293c0b2c6f84c676ccf28873bdca853ac10d642ff08b7e6042406"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P14_IB260_0001": {
+      "case_id": "ARRAY_L1P14_IB260_0001",
+      "L1_pH": 1.4,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB260_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 121.89999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9878820528987766,
+          "min_continuous_relative_phase_turns": -0.019508417149489088,
+          "final_continuous_relative_phase_turns": 0.9873819880675818,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 122.9,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.993809715092257,
+          "min_continuous_relative_phase_turns": -0.008101495899195356,
+          "final_continuous_relative_phase_turns": 0.9936327347955388,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 6.577686e-05,
+          "min": -0.0001380809,
+          "max_abs": 0.0001380809
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003257769,
+          "min": 0.0,
+          "max_abs": 0.0003257769
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.170695e-05,
+          "min": -1.745926e-05,
+          "max_abs": 3.170695e-05
+        },
+        "I(B_JSL8)": {
+          "max": 3.924537e-05,
+          "min": -6.562939e-05,
+          "max_abs": 6.562939e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 3.924537e-05,
+          "min": -6.562939e-05,
+          "max_abs": 6.562939e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0003540968,
+          "min": -0.0003205852,
+          "max_abs": 0.0003540968
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0007102625,
+          "min": -0.000742036,
+          "max_abs": 0.000742036
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.1275039738000004e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -3.868700456982601e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.1275039738000004e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -3.8687004569816005e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 9.262235140099985e-16,
+        "negative_A_s": -1.968527270000016e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 1.1758740212215496e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_0001/raw.csv",
+        "sha256": "e55085549f96607e5cc29c3209928f8dd5862dfbdb71b6aa0236a226f6dd956b"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P14_IB260_0011": {
+      "case_id": "ARRAY_L1P14_IB260_0011",
+      "L1_pH": 1.4,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB260_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.2,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0400560671882186,
+          "min_continuous_relative_phase_turns": -0.018927183297317487,
+          "final_continuous_relative_phase_turns": 0.9873616162348661,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 117.50000000000001,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.014337997117079,
+          "min_continuous_relative_phase_turns": -0.007557042754372299,
+          "final_continuous_relative_phase_turns": 0.9936184108506606,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.000103842,
+          "min": -0.0001228607,
+          "max_abs": 0.0001228607
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.000363842,
+          "min": 0.0,
+          "max_abs": 0.000363842
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 4.39044e-05,
+          "min": -1.745926e-05,
+          "max_abs": 4.39044e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.087916e-05,
+          "min": -3.904508e-05,
+          "max_abs": 6.087916e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.087916e-05,
+          "min": -3.904508e-05,
+          "max_abs": 6.087916e-05
+        },
+        "V(QBIN)": {
+          "max": 0.00051859,
+          "min": -0.0003205852,
+          "max_abs": 0.00051859
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009641816,
+          "min": -0.0007942331,
+          "max_abs": 0.0009641816
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.897350989099996e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 4.811159338089014e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.897350989099996e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 4.8111593380990143e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.168129071999998e-15,
+        "negative_A_s": -6.804100400000201e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.3214542730563725e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P14_IB260_0011/raw.csv",
+        "sha256": "a900ce61b0d54d3dbaa4225d67b4c5feae155ab63e2fbf36a1f312521e7c71a4"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P14_IB270_0001": {
+      "case_id": "ARRAY_L1P14_IB270_0001",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 119.79999999999998,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9765760040514144,
+          "min_continuous_relative_phase_turns": -0.02952785743689626,
+          "final_continuous_relative_phase_turns": 0.9761766842991969,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 120.7,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9906168122859247,
+          "min_continuous_relative_phase_turns": -0.010802387114453428,
+          "final_continuous_relative_phase_turns": 0.9904783474854347,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 6.014917e-05,
+          "min": -0.0001399836,
+          "max_abs": 0.0001399836
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003301492,
+          "min": 0.0,
+          "max_abs": 0.0003301492
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.29707e-05,
+          "min": -2.297843e-05,
+          "max_abs": 3.29707e-05
+        },
+        "I(B_JSL8)": {
+          "max": 3.356118e-05,
+          "min": -5.298466e-05,
+          "max_abs": 5.298466e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 3.356118e-05,
+          "min": -5.298466e-05,
+          "max_abs": 5.298466e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0003701322,
+          "min": -0.0003378514,
+          "max_abs": 0.0003701322
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0006635038,
+          "min": -0.0007679658,
+          "max_abs": 0.0007679658
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 1.1505410706000027e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -2.855310783700781e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 1.1505410706000027e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -2.8553107837008807e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 1.405636036799998e-15,
+        "negative_A_s": -7.955338500000174e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 2.3941174332391216e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_0001/raw.csv",
+        "sha256": "e20284ba4726b371a964c8b3ab40dc1252382f822af4306b37c08a9e38dd6471"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P14_IB270_0011": {
+      "case_id": "ARRAY_L1P14_IB270_0011",
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_IB270_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 115.8,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0630170325182,
+          "min_continuous_relative_phase_turns": -0.028862430619829047,
+          "final_continuous_relative_phase_turns": 0.9761555166917657,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.9,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.030333928334507,
+          "min_continuous_relative_phase_turns": -0.010221423825685083,
+          "final_continuous_relative_phase_turns": 0.9904708672031094,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 9.175487e-05,
+          "min": -0.0001275546,
+          "max_abs": 0.0001275546
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003617549,
+          "min": 0.0,
+          "max_abs": 0.0003617549
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.991457e-05,
+          "min": -2.297843e-05,
+          "max_abs": 3.991457e-05
+        },
+        "I(B_JSL8)": {
+          "max": 5.742222e-05,
+          "min": -3.946129e-05,
+          "max_abs": 5.742222e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 5.742222e-05,
+          "min": -3.946129e-05,
+          "max_abs": 5.742222e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0004746648,
+          "min": -0.0003378514,
+          "max_abs": 0.0004746648
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009836559,
+          "min": -0.0008497828,
+          "max_abs": 0.0009836559
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.561063703239995e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 8.273889884277017e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.561063703239995e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 8.273889884277017e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.2248040706099984e-15,
+        "negative_A_s": -6.709436360000182e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.4095112184027174e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P14_IB270_0011/raw.csv",
+        "sha256": "1f8bdf565792928077bace841e282fe23b920141e0c3821afbf08d083a8139bf"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P16_IB250_0001": {
+      "case_id": "ARRAY_L1P16_IB250_0001",
+      "L1_pH": 1.6,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB250_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": null,
+          "first_half_turn_diagnostic_found": false,
+          "max_continuous_relative_phase_turns": 0.23374624942571703,
+          "min_continuous_relative_phase_turns": -0.016655246484680676,
+          "final_continuous_relative_phase_turns": -0.009732802234898677,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": null,
+          "first_half_turn_diagnostic_found": false,
+          "max_continuous_relative_phase_turns": 0.09396926417645832,
+          "min_continuous_relative_phase_turns": -0.007143128493873205,
+          "final_continuous_relative_phase_turns": -0.005483731310714176,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0,
+          "min": -0.0001209203,
+          "max_abs": 0.0001209203
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0002471602,
+          "min": 0.0,
+          "max_abs": 0.0002471602
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 2.950902e-05,
+          "min": -1.694581e-05,
+          "max_abs": 2.950902e-05
+        },
+        "I(B_JSL8)": {
+          "max": 5.181674e-05,
+          "min": -4.080442e-05,
+          "max_abs": 5.181674e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 5.181674e-05,
+          "min": -4.080442e-05,
+          "max_abs": 5.181674e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0003293435,
+          "min": -0.0003188433,
+          "max_abs": 0.0003293435
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0006162787,
+          "min": -0.0007363205,
+          "max_abs": 0.0007363205
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.764252776799998e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 2.359473692819271e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.764252776799998e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 2.359473692819271e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 4.865073933300001e-16,
+        "negative_A_s": -3.3995854100000135e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 3.0466762200421806e-21,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0001/raw.csv",
+        "sha256": "99ccb857dffc1c080fc122d41ba3a0c1359cd182a6e15a4b25b44f901130282a"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P16_IB250_0011": {
+      "case_id": "ARRAY_L1P16_IB250_0011",
+      "L1_pH": 1.6,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB250_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.69999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0229241516489778,
+          "min_continuous_relative_phase_turns": -0.016069874603988673,
+          "final_continuous_relative_phase_turns": 0.9902477319728944,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 118.4,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0018100680251174,
+          "min_continuous_relative_phase_turns": -0.0066293285910896445,
+          "final_continuous_relative_phase_turns": 0.9945010364185652,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0001058238,
+          "min": -0.0001209203,
+          "max_abs": 0.0001209203
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003558238,
+          "min": 0.0,
+          "max_abs": 0.0003558238
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.805605e-05,
+          "min": -1.694581e-05,
+          "max_abs": 3.805605e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.300306e-05,
+          "min": -4.080442e-05,
+          "max_abs": 6.300306e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.300306e-05,
+          "min": -4.080442e-05,
+          "max_abs": 6.300306e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005835891,
+          "min": -0.0003188433,
+          "max_abs": 0.0005835891
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009632599,
+          "min": -0.0007836332,
+          "max_abs": 0.0009632599
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 3.366026138099998e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 2.8057676929981086e-18,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 3.366026138099998e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 2.8057676929991085e-18,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.0722527001999987e-15,
+        "negative_A_s": -2.1686362100000737e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 4.965438426715106e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB250_0011/raw.csv",
+        "sha256": "acef942ab643b52ec7b927b3da93517da8b3b663747721b1a781fe832f15db0e"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P16_IB260_0001": {
+      "case_id": "ARRAY_L1P16_IB260_0001",
+      "L1_pH": 1.6,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB260_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 122.2,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9883396233601658,
+          "min_continuous_relative_phase_turns": -0.018998803021708813,
+          "final_continuous_relative_phase_turns": 0.987892875434907,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 123.4,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9942925752741035,
+          "min_continuous_relative_phase_turns": -0.007475475846037715,
+          "final_continuous_relative_phase_turns": 0.9941420146979386,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 5.552224e-05,
+          "min": -0.00013946,
+          "max_abs": 0.00013946
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003155222,
+          "min": 0.0,
+          "max_abs": 0.0003155222
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.07249e-05,
+          "min": -1.748133e-05,
+          "max_abs": 3.07249e-05
+        },
+        "I(B_JSL8)": {
+          "max": 4.021116e-05,
+          "min": -6.567731e-05,
+          "max_abs": 6.567731e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 4.021116e-05,
+          "min": -6.567731e-05,
+          "max_abs": 6.567731e-05
+        },
+        "V(QBIN)": {
+          "max": 0.000342902,
+          "min": -0.0003209076,
+          "max_abs": 0.000342902
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0006976887,
+          "min": -0.000740174,
+          "max_abs": 0.000740174
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.2754373442e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -4.021077692398431e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.2754373442e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -4.021077692398431e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 8.302507652899985e-16,
+        "negative_A_s": -2.2874733140000148e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 9.392154862003288e-21,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0001/raw.csv",
+        "sha256": "78ffd2f02bfe1d208334d1359f5f3ae492bfa961d15930443c471cc9cd574f25"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P16_IB260_0011": {
+      "case_id": "ARRAY_L1P16_IB260_0011",
+      "L1_pH": 1.6,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P16_IB260_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.2,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0387056374960841,
+          "min_continuous_relative_phase_turns": -0.018377302968934955,
+          "final_continuous_relative_phase_turns": 0.9878721852923049,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 117.69999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0106204400408443,
+          "min_continuous_relative_phase_turns": -0.006940587913294465,
+          "final_continuous_relative_phase_turns": 0.9941264175135156,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0001049376,
+          "min": -0.0001218155,
+          "max_abs": 0.0001218155
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003649376,
+          "min": 0.0,
+          "max_abs": 0.0003649376
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 4.17576e-05,
+          "min": -1.748133e-05,
+          "max_abs": 4.17576e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.119698e-05,
+          "min": -3.943056e-05,
+          "max_abs": 6.119698e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.119698e-05,
+          "min": -3.943056e-05,
+          "max_abs": 6.119698e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005323841,
+          "min": -0.0003209076,
+          "max_abs": 0.0005323841
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009651235,
+          "min": -0.0007835138,
+          "max_abs": 0.0009651235
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.9389955138999967e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 4.414222474332014e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.9389955138999967e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 4.414222474332114e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.152702833499998e-15,
+        "negative_A_s": -7.100555100000203e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.3208323941404877e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P16_IB260_0011/raw.csv",
+        "sha256": "fb12efab0025e13cfb6ea758f130d33d8f30c72eec8fabb72fa12f817874924b"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P16_IB270_0001": {
+      "case_id": "ARRAY_L1P16_IB270_0001",
+      "L1_pH": 1.6,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P16_IB270_0001",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 120.0,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9823485538373576,
+          "min_continuous_relative_phase_turns": -0.024598192229567883,
+          "final_continuous_relative_phase_turns": 0.9818827073189276,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 121.2,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.992764926552836,
+          "min_continuous_relative_phase_turns": -0.008817868213546309,
+          "final_continuous_relative_phase_turns": 0.9926277349918907,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 6.79592e-05,
+          "min": -0.000138569,
+          "max_abs": 0.000138569
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003379592,
+          "min": 0.0,
+          "max_abs": 0.0003379592
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.634136e-05,
+          "min": -1.916399e-05,
+          "max_abs": 3.634136e-05
+        },
+        "I(B_JSL8)": {
+          "max": 3.398537e-05,
+          "min": -4.933705e-05,
+          "max_abs": 4.933705e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 3.398537e-05,
+          "min": -4.933705e-05,
+          "max_abs": 4.933705e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0004495155,
+          "min": -0.0003300074,
+          "max_abs": 0.0004495155
+        },
+        "V(COMMON_SL)": {
+          "max": 0.000688785,
+          "min": -0.0007594454,
+          "max_abs": 0.0007594454
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 1.3667006726000019e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -3.08688448100824e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 1.3667006726000019e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -3.086884481008239e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 1.3099867600499988e-15,
+        "negative_A_s": -1.0147860600000162e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 2.1763792896305018e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P16_IB270_0001/raw.csv",
+        "sha256": "0b30be3542d78854cb7d6501ae8a8e4db0136f7acaeb71ca35c1ca89b1c32e1c"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P16_IB270_0011": {
+      "case_id": "ARRAY_L1P16_IB270_0011",
+      "L1_pH": 1.6,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P16_IB270_0011",
+      "physical_solve_this_experiment": true,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 115.8,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0585185180517078,
+          "min_continuous_relative_phase_turns": -0.02392512597523225,
+          "final_continuous_relative_phase_turns": 0.9818618580213826,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 117.00000000000001,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0291587282347165,
+          "min_continuous_relative_phase_turns": -0.008259234363293753,
+          "final_continuous_relative_phase_turns": 0.9926175490755328,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 9.245199e-05,
+          "min": -0.000123621,
+          "max_abs": 0.000123621
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.000362452,
+          "min": 0.0,
+          "max_abs": 0.000362452
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 4.257855e-05,
+          "min": -1.916399e-05,
+          "max_abs": 4.257855e-05
+        },
+        "I(B_JSL8)": {
+          "max": 5.84799e-05,
+          "min": -3.48692e-05,
+          "max_abs": 5.84799e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 5.84799e-05,
+          "min": -3.48692e-05,
+          "max_abs": 5.84799e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005018051,
+          "min": -0.0003300074,
+          "max_abs": 0.0005018051
+        },
+        "V(COMMON_SL)": {
+          "max": 0.000974077,
+          "min": -0.0008321524,
+          "max_abs": 0.000974077
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.6150975518699955e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 7.643242928694717e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.6150975518699955e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 7.643242928694817e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.224106133999998e-15,
+        "negative_A_s": -6.972600800000195e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.518373470434294e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/runs/ARRAY_L1P16_IB270_0011/raw.csv",
+        "sha256": "2bc77b40f5e1fdbac94d1ef834058a978420dd290d239302e6b4fe93db78a28c"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P20_IB250_0001": {
+      "case_id": "ARRAY_L1P20_IB250_0001",
+      "L1_pH": 2.0,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P20_IB250_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": null,
+          "first_half_turn_diagnostic_found": false,
+          "max_continuous_relative_phase_turns": 0.17932258001567103,
+          "min_continuous_relative_phase_turns": -0.01661116056544421,
+          "final_continuous_relative_phase_turns": -0.009735348713988151,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": null,
+          "first_half_turn_diagnostic_found": false,
+          "max_continuous_relative_phase_turns": 0.06163553692384058,
+          "min_continuous_relative_phase_turns": -0.006352335328132497,
+          "final_continuous_relative_phase_turns": -0.004914943375092367,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0,
+          "min": -0.0001174684,
+          "max_abs": 0.0001174684
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0002306519,
+          "min": 0.0,
+          "max_abs": 0.0002306519
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 2.775958e-05,
+          "min": -1.711725e-05,
+          "max_abs": 2.775958e-05
+        },
+        "I(B_JSL8)": {
+          "max": 5.396867e-05,
+          "min": -4.098553e-05,
+          "max_abs": 5.396867e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 5.396867e-05,
+          "min": -4.098553e-05,
+          "max_abs": 5.396867e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0003094534,
+          "min": -0.000320896,
+          "max_abs": 0.000320896
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0006182673,
+          "min": -0.0007365403,
+          "max_abs": 0.0007365403
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.8506777002999976e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 2.2698270367981006e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.8506777002999976e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 2.2698270367981006e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 4.386949102200003e-16,
+        "negative_A_s": -4.135772250000017e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 2.6201059640275235e-21,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0001/raw.csv",
+        "sha256": "89691de5428229adfa76beda1e4569990d17334e67dcc25a92e0fa7c846ffaa8"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_L1P20_IB250_0011": {
+      "case_id": "ARRAY_L1P20_IB250_0011",
+      "L1_pH": 2.0,
+      "IBias_uA": 250.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-l1-ibias-interaction-bjs400-v1-20260909",
+      "source_run": "runs/ARRAY_L1P20_IB250_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.9,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.017207624403003,
+          "min_continuous_relative_phase_turns": -0.015947166142864844,
+          "final_continuous_relative_phase_turns": 0.9902424798597725,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 118.69999999999999,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9985270516900064,
+          "min_continuous_relative_phase_turns": -0.005853591482965439,
+          "final_continuous_relative_phase_turns": 0.9950702063260506,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 9.962621e-05,
+          "min": -0.0001174684,
+          "max_abs": 0.0001174684
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003496262,
+          "min": 0.0,
+          "max_abs": 0.0003496262
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 4.102968e-05,
+          "min": -1.711725e-05,
+          "max_abs": 4.102968e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.335122e-05,
+          "min": -4.098553e-05,
+          "max_abs": 6.335122e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.335122e-05,
+          "min": -4.098553e-05,
+          "max_abs": 6.335122e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005477667,
+          "min": -0.000320896,
+          "max_abs": 0.0005477667
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009471382,
+          "min": -0.0007976268,
+          "max_abs": 0.0009471382
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 3.4780134073999975e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -8.446034859279896e-18,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 3.4780134073999975e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -8.446034859279896e-18,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.0550314224999987e-15,
+        "negative_A_s": -1.4065121500000365e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 4.912839305743531e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_L1P20_IB250_0011/raw.csv",
+        "sha256": "90cae8056de67f0a107dd9e6af9ce7c7d20982250cd8c1a6bc46c55aeb5c4e86"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_IB260_0001": {
+      "case_id": "ARRAY_IB260_0001",
+      "L1_pH": 2.0,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB260_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 123.3,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9891088192001288,
+          "min_continuous_relative_phase_turns": -0.01833671845844654,
+          "final_continuous_relative_phase_turns": 0.9885172402766562,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 124.8,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9950677235089384,
+          "min_continuous_relative_phase_turns": -0.006510853651452041,
+          "final_continuous_relative_phase_turns": 0.9948928122264803,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 5.524968e-05,
+          "min": -0.0001223272,
+          "max_abs": 0.0001223272
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003152497,
+          "min": 0.0,
+          "max_abs": 0.0003152497
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 2.889765e-05,
+          "min": -1.754818e-05,
+          "max_abs": 2.889765e-05
+        },
+        "I(B_JSL8)": {
+          "max": 4.510852e-05,
+          "min": -6.596133e-05,
+          "max_abs": 6.596133e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 4.510852e-05,
+          "min": -6.596133e-05,
+          "max_abs": 6.596133e-05
+        },
+        "V(QBIN)": {
+          "max": 0.000322133,
+          "min": -0.0003220392,
+          "max_abs": 0.000322133
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0006788555,
+          "min": -0.0007381175,
+          "max_abs": 0.0007381175
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.520671282249999e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -4.2771186617697e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.520671282249999e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -4.2771186617697e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 6.573377155999991e-16,
+        "negative_A_s": -2.918852360000014e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.611529008340252e-21,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0001/raw.csv",
+        "sha256": "793f9e3a78dc877b7cae4d48e5ffe0d31712a984ce586dc4df7b01781679ee67"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_IB260_0011": {
+      "case_id": "ARRAY_IB260_0011",
+      "L1_pH": 2.0,
+      "IBias_uA": 260.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB260_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 116.3,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0330526130724027,
+          "min_continuous_relative_phase_turns": -0.01764773670980172,
+          "final_continuous_relative_phase_turns": 0.9884903430912738,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 118.0,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0069322470516098,
+          "min_continuous_relative_phase_turns": -0.005998836284031092,
+          "final_continuous_relative_phase_turns": 0.994876737577228,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 0.0001049343,
+          "min": -0.0001191903,
+          "max_abs": 0.0001191903
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003649343,
+          "min": 0.0,
+          "max_abs": 0.0003649343
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.956921e-05,
+          "min": -1.754818e-05,
+          "max_abs": 3.956921e-05
+        },
+        "I(B_JSL8)": {
+          "max": 6.177095e-05,
+          "min": -3.996807e-05,
+          "max_abs": 6.177095e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 6.177095e-05,
+          "min": -3.996807e-05,
+          "max_abs": 6.177095e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005536716,
+          "min": -0.0003220392,
+          "max_abs": 0.0005536716
+        },
+        "V(COMMON_SL)": {
+          "max": 0.000968633,
+          "min": -0.0007748498,
+          "max_abs": 0.000968633
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 3.033748438499997e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 3.515694421643013e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 3.033748438499997e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 3.515694421644013e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.128697703599998e-15,
+        "negative_A_s": -1.495454060000012e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.3421400805135705e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB260_0011/raw.csv",
+        "sha256": "7c1c11f27da06d7a0eae440264b03b2e53cb8a430ba8cacd027441806117f401"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_IB270_0001": {
+      "case_id": "ARRAY_IB270_0001",
+      "L1_pH": 2.0,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0001",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB270_0001",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 120.60000000000001,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.986060683730033,
+          "min_continuous_relative_phase_turns": -0.021460929991340416,
+          "final_continuous_relative_phase_turns": 0.985258861126736,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 122.1,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 0.9945041717709442,
+          "min_continuous_relative_phase_turns": -0.007044086372787141,
+          "final_continuous_relative_phase_turns": 0.994292654851575,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 7.394326e-05,
+          "min": -0.0001250685,
+          "max_abs": 0.0001250685
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003439433,
+          "min": 0.0,
+          "max_abs": 0.0003439433
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 3.310858e-05,
+          "min": -1.83458e-05,
+          "max_abs": 3.310858e-05
+        },
+        "I(B_JSL8)": {
+          "max": 3.75595e-05,
+          "min": -4.973869e-05,
+          "max_abs": 4.973869e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 3.75595e-05,
+          "min": -4.973869e-05,
+          "max_abs": 4.973869e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0003704254,
+          "min": -0.0003252414,
+          "max_abs": 0.0003704254
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0007409646,
+          "min": -0.0007458545,
+          "max_abs": 0.0007458545
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 1.753381228000001e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": -3.484247356177361e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 1.753381228000001e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": -3.484247356177361e-16,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 1.1756732920999988e-15,
+        "negative_A_s": -1.694375670000016e-17,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 1.9729440930684765e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0001/raw.csv",
+        "sha256": "98abb1e3be68587961177fcf7b5c0ad5421b39443f2785cb4eb2d6d98d133fb6"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    },
+    "ARRAY_IB270_0011": {
+      "case_id": "ARRAY_IB270_0011",
+      "L1_pH": 2.0,
+      "IBias_uA": 270.0,
+      "RJ1_ohm": 12.0,
+      "mask": "0011",
+      "source_experiment": "test/exploration/qb-bjs400-array-population-single-matched-v1-20260909",
+      "source_run": "runs/ARRAY_IB270_0011",
+      "physical_solve_this_experiment": false,
+      "scientific_interpretation_performed": false,
+      "phase_diagnostics": {
+        "BJ1": {
+          "status": "DERIVED",
+          "label": "P(BJ1|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 115.8,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0536915077826736,
+          "min_continuous_relative_phase_turns": -0.02074170880350815,
+          "final_continuous_relative_phase_turns": 0.9852333963358413,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        },
+        "BJ2": {
+          "status": "DERIVED",
+          "label": "P(BJ2|XBQ1)",
+          "raw_unit": "rad",
+          "display_unit": "turns",
+          "conversion": "continuous_unwrap(raw_rad)/(2*pi)",
+          "baseline_window_ps": [
+            101.0,
+            110.0
+          ],
+          "post_read_window_ps": [
+            110.0,
+            200.0
+          ],
+          "baseline_reference_time_ps": 101.0,
+          "first_half_turn_timing_diagnostic_ps": 117.3,
+          "first_half_turn_diagnostic_found": true,
+          "max_continuous_relative_phase_turns": 1.0225840375355904,
+          "min_continuous_relative_phase_turns": -0.006518843229595272,
+          "final_continuous_relative_phase_turns": 0.9942800816110708,
+          "not_event_time": true,
+          "not_event_count": true,
+          "scientific_interpretation_performed": false
+        }
+      },
+      "current_voltage_descriptives": {
+        "I(L1|XBQ1)": {
+          "max": 9.470138e-05,
+          "min": -0.0001194586,
+          "max_abs": 0.0001194586
+        },
+        "I(L2|XBQ1)": {
+          "max": 0.0003647014,
+          "min": 0.0,
+          "max_abs": 0.0003647014
+        },
+        "I(RJ1|XBQ1)": {
+          "max": 4.404409e-05,
+          "min": -1.83458e-05,
+          "max_abs": 4.404409e-05
+        },
+        "I(B_JSL8)": {
+          "max": 5.964975e-05,
+          "min": -3.788536e-05,
+          "max_abs": 5.964975e-05
+        },
+        "I(LIN|XBQ1)": {
+          "max": 5.964975e-05,
+          "min": -3.788536e-05,
+          "max_abs": 5.964975e-05
+        },
+        "V(QBIN)": {
+          "max": 0.0005557565,
+          "min": -0.0003252414,
+          "max_abs": 0.0005557565
+        },
+        "V(COMMON_SL)": {
+          "max": 0.0009620665,
+          "min": -0.0008068237,
+          "max_abs": 0.0009620665
+        }
+      },
+      "signed_actual_grid_areas_A_s": {
+        "I(B_JSL8):EARLY_READ": {
+          "value_A_s": 2.698071091809996e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(B_JSL8):TAIL": {
+          "value_A_s": 6.781213760526616e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):EARLY_READ": {
+          "value_A_s": 2.698071091809996e-16,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        },
+        "I(LIN|XBQ1):TAIL": {
+          "value_A_s": 6.781213760525615e-17,
+          "window_ps": [
+            121.0,
+            200.0
+          ],
+          "formula": "trapezoid(actual stored time grid, values)",
+          "status": "DERIVED"
+        }
+      },
+      "BJ1_voltage_final_read_area": {
+        "positive_A_s": 2.206111292999998e-15,
+        "negative_A_s": -7.4367564000002e-18,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, max(V,0) or min(V,0))",
+        "status": "DERIVED"
+      },
+      "RJ1_dissipated_energy_final_read": {
+        "value_J": 5.661858693693371e-20,
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "formula": "trapezoid(actual stored time grid, V(RJ1|XBQ1)*I(RJ1|XBQ1))",
+        "orientation": "as emitted by the registered JoSIM branch labels; no sign correction",
+        "status": "DERIVED"
+      },
+      "raw_provenance": {
+        "path": "test/exploration/qb-l1-ibias-full-grid-bjs400-v1-20260910/references/reused/ARRAY_IB270_0011/raw.csv",
+        "sha256": "93822a1f634818f04ca6613e348009ef24ab4add3d1a518be8ddf384e2a8a12c"
+      },
+      "notes": [
+        "Mechanical arithmetic only.",
+        "First +0.5-turn value is a timing/navigation diagnostic, not an event time.",
+        "Continuous phase displacement is not an SFQ count or fluxoid count.",
+        "Signed areas and energy use the actual stored time grid and half-open windows."
+      ]
+    }
+  },
+  "ratio_diagnostics": {
+    "L1P12_IB250": {
+      "L1_pH": 1.2,
+      "IBias_uA": 250.0,
+      "mask_0001_case_id": "ARRAY_L1P12_0001",
+      "mask_0011_case_id": "ARRAY_L1P12_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 0.9500229719215582,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.27368e-05,
+        "denominator": 6.603714e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.231674893553587,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.259052122199997e-16,
+        "denominator": 2.6460327633999986e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.231674893553587,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.259052122199997e-16,
+        "denominator": 2.6460327633999986e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0579337536185807,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2957496922e-16,
+          "denominator": 6.296362503999997e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0579337536185807,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2957496922e-16,
+          "denominator": 6.296362503999997e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P12_IB260": {
+      "L1_pH": 1.2,
+      "IBias_uA": 260.0,
+      "mask_0001_case_id": "ARRAY_L1P12_IB260_0001",
+      "mask_0011_case_id": "ARRAY_L1P12_IB260_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 1.0585688493283951,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.054258e-05,
+        "denominator": 5.719286e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.4499583672052916,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.8589596607999964e-16,
+        "denominator": 1.9717529313000006e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.4499583672052916,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.8589596607999964e-16,
+        "denominator": 1.9717529313000006e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0140981460845047,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2204169535e-16,
+          "denominator": 6.059371812999998e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0140981460845047,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2204169535e-16,
+          "denominator": 6.059371812999998e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P12_IB270": {
+      "L1_pH": 1.2,
+      "IBias_uA": 270.0,
+      "mask_0001_case_id": "ARRAY_L1P12_IB270_0001",
+      "mask_0011_case_id": "ARRAY_L1P12_IB270_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 1.0,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 0.0001124243,
+        "denominator": 0.0001124243
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 2.502818921370518,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.4222044439999943e-16,
+        "denominator": 9.677905274400035e-17
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 2.502818921370518,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.4222044439999943e-16,
+        "denominator": 9.677905274400035e-17
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.975586029603313,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.0659964326999998e-16,
+          "denominator": 5.3958492149999974e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.975586029603313,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.0659964326999998e-16,
+          "denominator": 5.3958492149999974e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P14_IB250": {
+      "L1_pH": 1.4,
+      "IBias_uA": 250.0,
+      "mask_0001_case_id": "ARRAY_L1P14_0001",
+      "mask_0011_case_id": "ARRAY_L1P14_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 0.992059752347973,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.286639e-05,
+        "denominator": 6.336956e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.222047267669018,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.3112558489999973e-16,
+        "denominator": 2.7095971952999985e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.222047267669018,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.3112558489999973e-16,
+        "denominator": 2.7095971952999985e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0599151912390825,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.301711707e-16,
+          "denominator": 6.319249027999997e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0599151912390825,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.301711707e-16,
+          "denominator": 6.319249027999997e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P14_IB260": {
+      "L1_pH": 1.4,
+      "IBias_uA": 260.0,
+      "mask_0001_case_id": "ARRAY_L1P14_IB260_0001",
+      "mask_0011_case_id": "ARRAY_L1P14_IB260_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 0.927620384708741,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.087916e-05,
+        "denominator": 6.562939e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.3618545604523353,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.897350989099996e-16,
+        "denominator": 2.1275039738000004e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.3618545604523353,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.897350989099996e-16,
+        "denominator": 2.1275039738000004e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0180816890489455,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2318292397e-16,
+          "denominator": 6.103961233999997e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0180816890489455,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2318292397e-16,
+          "denominator": 6.103961233999997e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P14_IB270": {
+      "L1_pH": 1.4,
+      "IBias_uA": 270.0,
+      "mask_0001_case_id": "ARRAY_L1P14_IB270_0001",
+      "mask_0011_case_id": "ARRAY_L1P14_IB270_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 1.0837517877815956,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 5.742222e-05,
+        "denominator": 5.298466e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 2.2259646080295163,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.561063703239995e-16,
+        "denominator": 1.1505410706000027e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 2.2259646080295163,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.561063703239995e-16,
+        "denominator": 1.1505410706000027e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9442432939430565,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.1267946662399998e-16,
+          "denominator": 5.795543539999998e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9442432939430565,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.1267946662399998e-16,
+          "denominator": 5.795543539999998e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P16_IB250": {
+      "L1_pH": 1.6,
+      "IBias_uA": 250.0,
+      "mask_0001_case_id": "ARRAY_L1P16_IB250_0001",
+      "mask_0011_case_id": "ARRAY_L1P16_IB250_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 1.215882357709111,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.300306e-05,
+        "denominator": 5.181674e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.217698383574253,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.366026138099998e-16,
+        "denominator": 2.764252776799998e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.217698383574253,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.366026138099998e-16,
+        "denominator": 2.764252776799998e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0624329059408995,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.3078450241e-16,
+          "denominator": 6.341273067999998e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0624329059408995,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.3078450241e-16,
+          "denominator": 6.341273067999998e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P16_IB260": {
+      "L1_pH": 1.6,
+      "IBias_uA": 260.0,
+      "mask_0001_case_id": "ARRAY_L1P16_IB260_0001",
+      "mask_0011_case_id": "ARRAY_L1P16_IB260_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 0.9317826811116351,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.119698e-05,
+        "denominator": 6.567731e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.2916178603605062,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.9389955138999967e-16,
+        "denominator": 2.2754373442e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.2916178603605062,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.9389955138999967e-16,
+        "denominator": 2.2754373442e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0227484194026966,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2430584479e-16,
+          "denominator": 6.145393247999998e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0227484194026966,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2430584479e-16,
+          "denominator": 6.145393247999998e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P16_IB270": {
+      "L1_pH": 1.6,
+      "IBias_uA": 270.0,
+      "mask_0001_case_id": "ARRAY_L1P16_IB270_0001",
+      "mask_0011_case_id": "ARRAY_L1P16_IB270_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 1.1853140793784793,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 5.84799e-05,
+        "denominator": 4.933705e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.9134384026423665,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.6150975518699955e-16,
+        "denominator": 1.3667006726000019e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.9134384026423665,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.6150975518699955e-16,
+        "denominator": 1.3667006726000019e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9609840509821541,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.1507232358699998e-16,
+          "denominator": 5.868090743999997e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9609840509821541,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.1507232358699998e-16,
+          "denominator": 5.868090743999997e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P20_IB250": {
+      "L1_pH": 2.0,
+      "IBias_uA": 250.0,
+      "mask_0001_case_id": "ARRAY_L1P20_IB250_0001",
+      "mask_0011_case_id": "ARRAY_L1P20_IB250_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 1.173851792160155,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.335122e-05,
+        "denominator": 5.396867e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.2200654626911982,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.4780134073999975e-16,
+        "denominator": 2.8506777002999976e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.2200654626911982,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.4780134073999975e-16,
+        "denominator": 2.8506777002999976e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0684221562741554,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.3200434304e-16,
+          "denominator": 6.381885952999998e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.0684221562741554,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.3200434304e-16,
+          "denominator": 6.381885952999998e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P20_IB260": {
+      "L1_pH": 2.0,
+      "IBias_uA": 260.0,
+      "mask_0001_case_id": "ARRAY_IB260_0001",
+      "mask_0011_case_id": "ARRAY_IB260_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 0.9364721724076819,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 6.177095e-05,
+        "denominator": 6.596133e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.2035478246858178,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.033748438499997e-16,
+        "denominator": 2.520671282249999e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.2035478246858178,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 3.033748438499997e-16,
+        "denominator": 2.520671282249999e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.033226400720132,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2642949295e-16,
+          "denominator": 6.218170927999998e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 2.033226400720132,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.2642949295e-16,
+          "denominator": 6.218170927999998e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    },
+    "L1P20_IB270": {
+      "L1_pH": 2.0,
+      "IBias_uA": 270.0,
+      "mask_0001_case_id": "ARRAY_IB270_0001",
+      "mask_0011_case_id": "ARRAY_IB270_0011",
+      "ratio_semantics": "0011 numerator / 0001 denominator; mechanical diagnostic only",
+      "I(B_JSL8)_peak": {
+        "status": "DERIVED",
+        "ratio": 1.1992625861276203,
+        "metric": "peak_abs_current",
+        "unit": "A",
+        "numerator": 5.964975e-05,
+        "denominator": 4.973869e-05
+      },
+      "I(B_JSL8)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.538781782720212,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.698071091809996e-16,
+        "denominator": 1.753381228000001e-16
+      },
+      "I(LIN)_EARLY_READ_signed_area": {
+        "status": "DERIVED",
+        "ratio": 1.538781782720212,
+        "metric": "signed_area",
+        "unit": "A_s",
+        "numerator": 2.698071091809996e-16,
+        "denominator": 1.753381228000001e-16
+      },
+      "MECHANICAL_PRE_SWITCH_PROXY": {
+        "window_ps": [
+          110.0,
+          114.5
+        ],
+        "I(B_JSL8)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9808846136939218,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.1874254348e-16,
+          "denominator": 5.994420000999998e-17
+        },
+        "I(LIN)_signed_area_ratio": {
+          "status": "DERIVED",
+          "ratio": 1.9808846136939218,
+          "metric": "signed_area",
+          "unit": "A_s",
+          "numerator": 1.1874254348e-16,
+          "denominator": 5.994420000999998e-17
+        },
+        "label": "MECHANICAL_PRE_SWITCH_PROXY; not proof of linear population scaling"
+      }
+    }
+  },
+  "notes": [
+    "All fields are MECHANICAL or DERIVED arithmetic, not scientific classifications.",
+    "No cell is labeled PASS, FAIL, GOOD, BAD, OPTIMAL, under-driven, discriminating or over-driven.",
+    "No phase displacement, voltage area, threshold or current sign is an SFQ count or event classifier.",
+    "Scientific interpretation is NOT_PERFORMED."
+  ]
+}

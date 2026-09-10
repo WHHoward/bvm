@@ -1,0 +1,34 @@
+{
+  "schema": "bjs400-l1-ibias-full-grid-transformation-registry-v1",
+  "raw_immutable": true,
+  "scientific_analysis_performed": false,
+  "transformations": [
+    {
+      "name": "mechanical_summary",
+      "operation": "actual-grid extrema, continuous phase diagnostic, signed components, energy and registered ratios",
+      "scope": "mechanical arithmetic only"
+    },
+    {
+      "name": "phase_display",
+      "operation": "continuous_unwrap(raw_rad)/(2*pi)",
+      "scope": "diagnostic/display only",
+      "not_event_count": true
+    },
+    {
+      "name": "area_integration",
+      "operation": "trapezoid on actual stored time values; half-open registered windows",
+      "scope": "mechanical arithmetic only",
+      "interpolation": false
+    },
+    {
+      "name": "standalone_plot_input",
+      "operation": "raw.csv direct; no crop/resample/derived CSV",
+      "scope": "visualization"
+    },
+    {
+      "name": "comparison_plot_input",
+      "operation": "temporary full-run merged CSV under /tmp only; deleted after render",
+      "scope": "visualization"
+    }
+  ]
+}

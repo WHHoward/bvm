@@ -1,0 +1,137 @@
+{
+  "schema": "bjs400-rj2-highside-reuse-manifest-v1",
+  "experiment_id": "qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "created_at_local": "2026-09-10T17:30:13+08:00",
+  "source_authority": "test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "source_authority_git_head": "c8fc8c5b6483d65e7b2e04e470e81ca07c95fd3f",
+  "references": {
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001": {
+      "logical_case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001",
+      "source_experiment": "test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001",
+      "source_git_head": "f293e7330c49aa7bcb6648cbe466c3e982d61c77",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 6.0
+      },
+      "topology": "ARRAY",
+      "mask": "0001",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact RJ2=6ohm baseline under fixed L1/L2/IBias/RJ1, BJS400 fixture, stored history, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "L1_1p4_L2_2p0_IBias_260_RJ1_32": "PASS",
+        "RJ2_6ohm": "PASS",
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_32ohm": "PASS",
+        "same_ARRAY_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "same_history_and_READ_timing": "PASS",
+        "same_solver_timestep_stop_time": "PASS",
+        "same_deck_structure_and_pre_read_controls": "PASS",
+        "same_raw_grid_and_finite_values": "PASS"
+      },
+      "source_evidence_package": {
+        "path": "test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/handoff/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip",
+        "sha256": "897a8c2cbf17f9aba4fdc688a82b62080a1398b4afcacbde30db9411bd9dfb09"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/raw.csv",
+          "source_sha256": "c7bf93f2f3af752dd89a4535dfd5c0f2a1ed1df5c54ae010dea5e196a9b26fd1",
+          "archived_sha256": "c7bf93f2f3af752dd89a4535dfd5c0f2a1ed1df5c54ae010dea5e196a9b26fd1",
+          "bytes": 7099221
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/deck.cir",
+          "source_sha256": "28c5d38835addc1a87a2eef7782ef3ded4f19e60cdfccfb9cceaedc6c6b2d107",
+          "archived_sha256": "28c5d38835addc1a87a2eef7782ef3ded4f19e60cdfccfb9cceaedc6c6b2d107",
+          "bytes": 7483
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/metadata.json",
+          "source_sha256": "dfab5f56538d39aab2fa358c290104deffbc457e342e754cd1e0055a819b410c",
+          "archived_sha256": "dfab5f56538d39aab2fa358c290104deffbc457e342e754cd1e0055a819b410c",
+          "bytes": 2719
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0001/run.log",
+          "source_sha256": "8110e414ac58093b0dc5d027527d338faa02310eb6a5b73df00a1515e5117082",
+          "archived_sha256": "8110e414ac58093b0dc5d027527d338faa02310eb6a5b73df00a1515e5117082",
+          "bytes": 219449
+        }
+      }
+    },
+    "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011": {
+      "logical_case_id": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011",
+      "source_experiment": "test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+      "source_run": "runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011",
+      "source_git_head": "f293e7330c49aa7bcb6648cbe466c3e982d61c77",
+      "parameters": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "IBias_uA": 260.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 6.0
+      },
+      "topology": "ARRAY",
+      "mask": "0011",
+      "physical_solve_this_experiment": false,
+      "reuse_reason": "exact RJ2=6ohm baseline under fixed L1/L2/IBias/RJ1, BJS400 fixture, stored history, mask semantics, solver/timestep/stop-time and source/archive hashes match",
+      "comparability": {
+        "L1_1p4_L2_2p0_IBias_260_RJ1_32": "PASS",
+        "RJ2_6ohm": "PASS",
+        "BJS_area_4_Ic_400uA": "PASS",
+        "RJ1_32ohm": "PASS",
+        "same_ARRAY_COMMON_SL_JSL_QB_JTL_terminal": "PASS",
+        "same_history_and_READ_timing": "PASS",
+        "same_solver_timestep_stop_time": "PASS",
+        "same_deck_structure_and_pre_read_controls": "PASS",
+        "same_raw_grid_and_finite_values": "PASS"
+      },
+      "source_evidence_package": {
+        "path": "test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/handoff/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip",
+        "sha256": "897a8c2cbf17f9aba4fdc688a82b62080a1398b4afcacbde30db9411bd9dfb09"
+      },
+      "artifacts": {
+        "raw.csv": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/raw.csv",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/raw.csv",
+          "source_sha256": "6a09c9eacfff16bc1ac5f4d847a73c815994d798269ad5589dbcb4206113454e",
+          "archived_sha256": "6a09c9eacfff16bc1ac5f4d847a73c815994d798269ad5589dbcb4206113454e",
+          "bytes": 7096359
+        },
+        "deck.cir": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/deck.cir",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/deck.cir",
+          "source_sha256": "13461b28ff63717d9c6b3e465ef7ec7fedd2f014736da0ac3c3b5a542a792832",
+          "archived_sha256": "13461b28ff63717d9c6b3e465ef7ec7fedd2f014736da0ac3c3b5a542a792832",
+          "bytes": 7499
+        },
+        "metadata.json": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/metadata.json",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/metadata.json",
+          "source_sha256": "fc8f27ca1a0fea71aed92b965590cfd186b754179ca3ed23865c91b0733a00d1",
+          "archived_sha256": "fc8f27ca1a0fea71aed92b965590cfd186b754179ca3ed23865c91b0733a00d1",
+          "bytes": 2719
+        },
+        "run.log": {
+          "source_path": "/home/howard/JoSIM/test/exploration/qb-rj2-post-bj2-damping-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/run.log",
+          "archived_path": "/home/howard/JoSIM/test/exploration/qb-rj2-highside-rearm-boundary-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P6_0011/run.log",
+          "source_sha256": "e090ffe497ea2853e4c906623660a8157d32a7cbfacfec96d1e1180a0f5a7869",
+          "archived_sha256": "e090ffe497ea2853e4c906623660a8157d32a7cbfacfec96d1e1180a0f5a7869",
+          "bytes": 221599
+        }
+      }
+    }
+  },
+  "reused_physical_case_count": 2,
+  "no_reuse_by_filename_only": true,
+  "no_new_historical_solves": true,
+  "exact_reuse_verification": "PASS"
+}

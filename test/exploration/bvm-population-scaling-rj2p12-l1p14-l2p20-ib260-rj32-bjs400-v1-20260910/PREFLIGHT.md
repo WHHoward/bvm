@@ -3,7 +3,7 @@
 This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910`
-- Preflight HEAD: `ddcdfe0309be4b492698a01e15a9ef7d9bb99f1e`
+- Preflight HEAD: `1acdfe30fedce2e24706d8721ccf5919fd16b2f0`
 - Frozen candidate: RJ2=12ohm; canonical `.tran=0.1p 200p`.
 - Generalized oracle regression: required before new runs; code SHA-256 `4d39bc457e0ea010ac9f312dbc1c40b6e65dea123865608f4ad066a05773e860`.
 - Only the FINAL READ BVM mask changes. L1/L2/RJ1/IBias/BJS/BJ1/BJ2/L3/load/JTL/history/timing remain unchanged.

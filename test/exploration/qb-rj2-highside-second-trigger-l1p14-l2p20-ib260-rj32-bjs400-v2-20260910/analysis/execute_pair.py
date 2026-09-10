@@ -67,7 +67,13 @@ def raw_summary(path: Path) -> dict[str, Any] | None:
 
 def head_relation(preflight_head: str) -> dict[str, Any]:
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
-    return {"status": "PASS" if head == preflight_head else "FAIL", "head": head, "preflight_head": preflight_head, "relation": "EXACT" if head == preflight_head else "UNEXPECTED"}
+    if head == preflight_head:
+        return {"status": "PASS", "head": head, "preflight_head": preflight_head, "relation": "EXACT"}
+    changed = set(subprocess.check_output(["git", "diff", "--name-only", f"{preflight_head}..{head}"], cwd=REPO, text=True).splitlines())
+    allowed = {str(EXP.relative_to(REPO) / "PREFLIGHT.md"), str(EXP.relative_to(REPO) / "analysis/preflight.json")}
+    distance = int(subprocess.check_output(["git", "rev-list", "--count", f"{preflight_head}..{head}"], cwd=REPO, text=True).strip())
+    valid = distance == 1 and changed == allowed
+    return {"status": "PASS" if valid else "FAIL", "head": head, "preflight_head": preflight_head, "relation": "PREFLIGHT_ONLY_SEAL_COMMIT" if valid else "UNEXPECTED", "changed_paths": sorted(changed), "commit_distance": distance}
 
 
 def make_record(run_id: str, head: str, command: list[str], started: str, finished: str, exit_code: int, deck: Path, raw: Path, log: Path) -> dict[str, Any]:

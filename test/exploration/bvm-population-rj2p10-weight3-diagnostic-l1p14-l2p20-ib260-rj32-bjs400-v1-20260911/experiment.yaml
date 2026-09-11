@@ -1,0 +1,177 @@
+schema_version: evidence-first-bjs400-rj2p10-weight3-diagnostic-v1
+id: bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911
+study_phase: EXPLORATORY
+mode: EVIDENCE_FIRST_PHYSICAL
+status: PREREGISTERED
+role: Experimental Operator + Evidence Packager
+workflow_policy: EVIDENCE_FIRST_V1
+scientific_analysis_authorization: NOT_GRANTED
+scientific_analysis_performed: false
+
+question: >-
+  At frozen L1=1.4pH, L2=2.0pH, IBias=260uA, RJ1=32ohm and canonical
+  BVM -> COMMON_SL/JSL -> QB -> six-stage JTL protocol, determine from raw
+  waveform evidence whether the single new case RJ2=10ohm, mask=0111 has
+  three or four complete downstream response candidates.
+motivation: >-
+  Existing bounded evidence has RJ2=10ohm/mask=0011 with one response and
+  RJ2=11/12 weight-3 references with post-READ multi-response activity. This
+  one-point diagnostic distinguishes a possible 3-response regime from a
+  persistent fourth response without adding a sweep.
+interpretation_ceiling: >-
+  Raw waveform evidence is the scientific authority for later review. The
+  mechanical oracle only organizes navigation and supporting evidence. Phase
+  turns, terminal areas, pulse areas, current crossings and response
+  candidates are not SFQ counts. No automatic follow-up, mechanism claim,
+  scalar-threshold conclusion or perfect-counter claim is authorized.
+
+physical_authority:
+  latest_remote: WHHoward/bvm
+  latest_remote_head: 47c11aa35d87c5c9b481299a9b90fc02a37060c7
+  local_head_at_registration: 47c11aa35d87c5c9b481299a9b90fc02a37060c7
+  canonical_drive_directory: /mnt/d/BVM_Backages
+  source_packages:
+    rj2p10:
+      path: /mnt/d/BVM_Backages/qb-rj2-highside-second-trigger-l1p14-l2p20-ib260-rj32-bjs400-v2-20260910_raw_handoff.zip
+      sha256: 84e1a8654aa16baf2fe81f96f9cdc4ce8af6efbeb5f617a12c8123b8b13a9bde
+      bytes: 10106003
+      source_manifest_sha256: 60d36ef77ec0c7e55493c5c43d93d7fe2c141b117e80cd73b8d8dce0e25710b3
+    rj2p11:
+      path: /mnt/d/BVM_Backages/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip
+      sha256: 785be4b1d92d9eeea4e3dfa044a70ac55cf47d7a6f2feea860f4b1c3d79566af
+      bytes: 10555946
+      source_manifest_sha256: 7bc0ea090e6c3f36a97b0bbf1128b008fc34a81847379e6aa641d3467b41b403
+    rj2p12:
+      path: /mnt/d/BVM_Backages/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip
+      sha256: 3ceba168be95b7e48cbb77ccb13d4f4133893cb39813c025b7d4a3f631a09dff
+      bytes: 130901740
+      source_manifest_sha256: 99be7c3d7ad62a4ff03684b7d1b127a98d5262b15bfcdb9e5dfecb598f930502
+  reference_policy: exact immutable package bytes; no RJ2=10/11/12 reference is rerun
+
+changed:
+  - "RJ2 physical point is fixed at 10ohm; one new FINAL READ mask=0111 case is solved"
+  - no timestep, topology, load, history, amplitude, timing or other parameter change
+
+frozen:
+  L1: 1.4pH
+  L2: 2.0pH
+  IBias: 260uA
+  RJ1: 32ohm
+  RJ2: 10ohm
+  BJS: area=4; Ic=400uA
+  BJ1: current canonical value
+  BJ2: area=2
+  L3: 1.3pH
+  terminal_load: unchanged canonical 10ohm terminal
+  topology: four BVMs -> COMMON_SL -> eight-JJ JSL -> QB -> six-stage JTL -> terminal
+  history: WRITE0 -> ZERO_STATE_READ_CONTROL -> WRITE1 -> SETTLE -> FINAL READ -> TAIL
+  controls: WL/BL/SE amplitude 100uA; 1ps rise/fall; 9ps plateau
+  timing: .tran 0.1p 200p; stored 0 to 199.9ps at nominal 0.1ps spacing
+  solver: build/josim-cli; identity and hash in SOURCE_MANIFEST.json
+  raw: immutable solver output; no interpolation, resampling, smoothing, scaling, time shifting or sign correction
+
+authorized_solve:
+  run_id: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111
+  mask: "0111"
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  active_bvms: [BVM2, BVM3, BVM4]
+  new_physical_solve_count: 1
+  unauthorized_extra_solves: 0
+  forbidden: [RJ2=9, RJ2=9.5, RJ2=10.5, RJ2=11 rerun, RJ2=12 rerun, any sweep, any other mask, timestep refinement, READ extension]
+
+immutable_references:
+  rj2p10: ["0001", "0011"]
+  rj2p11: ["0011", "0111"]
+  rj2p12: ["0011", "0111"]
+  comparison_only: true
+  physical_solve_this_experiment: false
+
+control_guardrail:
+  baseline_ps: [61.0, 70.0]
+  window_ps: [70.0, 110.0]
+  required_signals: [BJ1, BJ2, QBOUT, JTL1, JTL2, JTL3, JTL4, JTL5, JTL6, terminal]
+  rule: no complete control-origin downstream progression
+  action_on_failure: preserve raw evidence; no parameter modification or follow-up solve
+
+raw_analysis:
+  final_baseline_ps: [101.0, 110.0]
+  final_analysis_ps: [110.0, 200.0]
+  windows_ps: [[110.0, 121.0], [121.0, 124.0], [121.0, 126.0], [121.0, 130.0], [110.0, 140.0], [110.0, 200.0]]
+  source_signals: ["I(B_JSL8)", "V(COMMON_SL)", "V(QBIN)", "I(LIN|XBQ1)", "I(L1|XBQ1)", "I(L2|XBQ1)"]
+  response_signals: ["P(BJ1|XBQ1)", "V(BJ1|XBQ1)", "I(BJ1|XBQ1)", "P(BJ2|XBQ1)", "V(BJ2|XBQ1)", "I(BJ2|XBQ1)", "V(QBOUT)", "V(JTL1_OUT)", "V(JTL2_OUT)", "V(JTL3_OUT)", "V(JTL4_OUT)", "V(JTL5_OUT)", "V(JTL6_OUT)", "I(R_TERM)"]
+  fourth_response_focus: ["BJ1_4", "BJ2_4", "QBOUT_4", "JTL1_4", "JTL2_4", "JTL3_4", "JTL4_4", "JTL5_4", "JTL6_4", "terminal_4"]
+  raw_scientific_authority: true
+  mechanical_checker_subordinate: true
+
+response_evidence:
+  progression: BJ1_k -> BJ2_k -> QBOUT_k -> ordered JTL1_k -> JTL2_k -> JTL3_k -> JTL4_k -> JTL5_k -> JTL6_k -> terminal_k
+  phase_navigation_thresholds_turns: [0.5, 1.5, 2.5, 3.5]
+  phase_navigation_label: PHASE_NAVIGATION_ONLY
+  no_single_metric_count: true
+  no_sfq_count: true
+
+interpretation_categories:
+  three: RJ2P10_WEIGHT3_THREE_RESPONSE_CANDIDATE
+  four: RJ2P10_WEIGHT3_FOURTH_RESPONSE_PERSISTS
+  ambiguous: RJ2P10_WEIGHT3_MULTIPLICITY_AMBIGUOUS
+  scalar_ordering: RJ2_SCALAR_THRESHOLD_ORDERING_UNFAVORABLE_CANDIDATE
+  reporting_rule: category is bounded raw-review input, never final scientific interpretation
+
+visualization:
+  profile: COMPACT_FLAT_WHOLE_RUN
+  renderer: scripts/josim-plot2.py
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0.0, 200.0]
+  focused_windows: []
+  standalone_names: [SIGNAL_PATH.html, BVM_STATE.html, BVM_OUTPUT.html, JSL_CHAIN.html, QB_STATE.html, JTL_CHAIN.html]
+  standalone_new_case_count: 6
+  comparison_required: true
+  comparisons: [RJ2P10_P11_P12_WEIGHT3, RJ2P10_WEIGHT2_VS_WEIGHT3]
+  comparison_input_policy: temporary merged full-run CSV under /tmp; deleted after render
+  no_derived_plot_csv: true
+
+package:
+  include_plots: false
+  canonical_path: handoff/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+  additional_paths:
+    - run.sh
+    - RESULT_BRIEF.md
+    - HANDOFF_README.md
+    - EVIDENCE_MANIFEST.md
+    - REFERENCE_MANIFEST.json
+    - RAW_ANALYSIS_HANDOFF_MANIFEST.json
+    - mechanical_summary.json
+    - analysis/population_oracle.py
+    - analysis/prepare_diagnostic.py
+    - analysis/oracle_regression.py
+    - analysis/execute_diagnostic.py
+    - analysis/response_analysis.py
+    - analysis/independent_diagnostic_review.py
+    - analysis/render_flat_diagnostic.py
+    - analysis/visualization_qa.py
+    - analysis/package_diagnostic.py
+    - analysis/ORACLE_REGRESSION.md
+    - analysis/DIAGNOSTIC_REVIEW.md
+    - analysis/REVIEW.md
+    - qa/oracle_regression.json
+    - qa/response_qa.json
+    - qa/control_qa.json
+    - qa/protocol_audit.json
+    - qa/independent_review.json
+    - visualization
+    - references/rj2p10
+    - references/rj2p11
+    - references/rj2p12
+
+final_state: AWAITING_SCIENTIFIC_REVIEW

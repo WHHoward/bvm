@@ -1,0 +1,67 @@
+{
+  "schema": "bvm-qb-two-parameter-combination-run-metadata-v1",
+  "experiment_id": "bvm-qb-two-parameter-combination-v1-20260911",
+  "run_id": "COMB_C01_0011",
+  "point_id": "C01",
+  "changes": {
+    "L2_pH": 1.6,
+    "L3_pH": 1.6
+  },
+  "mask": "0011",
+  "topology": "BVM1..4 -> COMMON_SL -> 8-JJ JSL -> QB -> six-stage JTL -> R_TERM",
+  "stimulus": {
+    "amplitude_uA": 100.0,
+    "tran": ".tran 0.1p 200p",
+    "history": "0-50 IDLE; 50-61 WRITE0; 61-70 IDLE; 70-81 CONTROL; 81-90 IDLE; 90-101 WRITE1; 101-110 SETTLE; 110-121 FINAL READ; 121-200 TAIL"
+  },
+  "started_at_local": "2026-09-11T15:54:39+08:00",
+  "finished_at_local": "2026-09-11T15:54:39+08:00",
+  "git_head_before_run": "0a6fa70be848a5c22aba397406858145d553bd41",
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-two-parameter-combination-v1-20260911/runs/COMB_C01_0011/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-two-parameter-combination-v1-20260911/runs/COMB_C01_0011/deck.cir"
+  ],
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "deck_source": {
+    "path": "test/exploration/bvm-qb-two-parameter-combination-v1-20260911/screening/decks/C01/0011.cir",
+    "sha256": "238cc0212eeab98d881ba192203c92b1e85dda9cc12f346043bbd39fbce9ebb2"
+  },
+  "artifacts": {
+    "deck": {
+      "path": "test/exploration/bvm-qb-two-parameter-combination-v1-20260911/runs/COMB_C01_0011/deck.cir",
+      "sha256": "238cc0212eeab98d881ba192203c92b1e85dda9cc12f346043bbd39fbce9ebb2",
+      "bytes": 7496
+    },
+    "raw": {
+      "path": "test/exploration/bvm-qb-two-parameter-combination-v1-20260911/runs/COMB_C01_0011/raw.csv",
+      "exists": true,
+      "sha256": "53de20a2917afca39215cf79ca2eaee88f6660cd1d145604edfe3898095100c0",
+      "bytes": 7096663
+    },
+    "log": {
+      "path": "test/exploration/bvm-qb-two-parameter-combination-v1-20260911/runs/COMB_C01_0011/run.log",
+      "sha256": "5c9f1f66fb1245c8a2d55bd3d2416aaa4d40fa55faf968c77c01896c6c71044d",
+      "bytes": 222210
+    }
+  },
+  "exit_code": 0,
+  "execution_status": "RUN_PASS",
+  "physical_solve_this_experiment": true,
+  "raw_immutable": true,
+  "parameter_tuning": false,
+  "scientific_analysis_performed": false,
+  "raw_summary": {
+    "header_count": 265,
+    "sample_count": 1999,
+    "first_timestamp": "0.000000e+00",
+    "last_timestamp": "1.999000e-10"
+  }
+}

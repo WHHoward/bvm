@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-qb-two-parameter-combination-v1-20260911`
 - Registration HEAD: `a669c32fd22317742ccb839983b3618664360ae1`
-- Sealed preflight HEAD: `a669c32fd22317742ccb839983b3618664360ae1`
+- Sealed preflight HEAD: `188241f3c42d075aadda8d5699c19561e536c6e6`
 - Remote `bvm/master`: `a669c32fd22317742ccb839983b3618664360ae1`
 - Status: **PASS**
 - Solver has not been invoked at preflight.

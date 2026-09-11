@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911`
 - Stage A scientific review attachment SHA-256: `441a7707ec2d4c53322601e543c650f98ee8d80023349950c2c1149ee1104c3c`
-- Stage B preflight HEAD: `7eea98476c99c2b6170e39f95a1bfc7143e89689`
+- Stage B preflight HEAD: `d52bdb36355b89dab76c4a358fbd8934ef5306f9`
 - Remote `bvm/master`: `f14124c28a87f643458a00742daa9fe70eb4d938`
 - Status: **PASS**
 - Stage A consumed: `1` physical solve; Stage B authorized: exactly `1` additional solve; total maximum: `2`.

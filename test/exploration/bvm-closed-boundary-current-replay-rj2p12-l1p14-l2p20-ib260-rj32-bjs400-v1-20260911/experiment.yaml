@@ -1,7 +1,7 @@
 id: bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911
 study_phase: EXPLORATORY
 mode: QUICK
-status: STAGE_B_AUTHORIZED_PENDING_PREFLIGHT
+status: STAGE_B_COMPLETE_PENDING_PACKAGE
 role: Experimental Operator + Evidence Packager
 
 question:
@@ -128,7 +128,7 @@ metrics:
 
 visualization:
   manifest_path: visualization/manifest.json
-  qa_path: qa/visualization_qa.json
+  qa_path: qa/visualization_qa_stage_b.json
   navigation_path: visualization/run_summaries
   comparison_required: true
   renderer: scripts/josim-plot2.py
@@ -158,13 +158,18 @@ package:
     - analysis/STAGE_B_AUTHORIZATION.md
     - analysis/STAGE_B_REVIEW.md
     - analysis/analyze_stage_b.py
+    - analysis/finalize_stage_b.py
     - analysis/independent_stage_b.py
+    - analysis/mechanical_summary_stage_b.json
     - analysis/mechanism_metrics_stage_b.json
     - analysis/package_stage_b.py
     - analysis/prepare_stage_b.py
     - analysis/preflight_stage_b.json
     - analysis/render_stage_b.py
     - analysis/run_stage_b.py
+    - analysis/qa_stage_b.py
+    - analysis/visualization_qa_stage_b.py
+    - analysis/stage_b_authorization.json
     - SOURCE_MANIFEST_STAGE_B.json
     - qa
     - data
@@ -172,11 +177,11 @@ package:
     - mechanical_summary.json
     - run.sh
   analysis_files:
-    raw_qa.json: qa/raw_qa.json
-    deck_diff_qa.json: qa/deck_diff_qa.json
-    provenance.json: qa/provenance.json
+    raw_qa.json: qa/raw_qa_stage_b.json
+    deck_diff_qa.json: qa/deck_diff_qa_stage_b.json
+    provenance.json: qa/provenance_stage_b.json
     execution_summary.json: qa/execution_summary_combined.json
-    transformation_registry.json: qa/transformation_registry.json
+    transformation_registry.json: qa/transformation_registry_stage_b.json
 
 stop:
   final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW

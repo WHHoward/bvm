@@ -14,7 +14,7 @@ from typing import Any
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
 MANIFEST = EXP / "visualization/manifest.json"
-STATE = EXP / "screening/l3_state.json"
+STATE = EXP / "screening/target_state.json"
 
 
 def now() -> str:
@@ -65,8 +65,8 @@ def main() -> int:
             if "Phase (turns)" not in html or "rad\\u002f2pi" not in html:
                 failures.append(f"phase conversion label missing: {entry.get('output_path')}")
     for run_id, count in per_run.items():
-        if count == 0:
-            failures.append(f"missing run standalone page: {run_id}")
+        if count != 5:
+            failures.append(f"V2.1 standalone view count is not five: {run_id}={count}")
     for entry in comparisons:
         output = REPO / entry["output_path"]
         if not output.is_file() or entry.get("output_sha256") != sha256(output):

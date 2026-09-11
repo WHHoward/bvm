@@ -80,6 +80,16 @@ def standalone(run_id: str, raw: Path, view: str, labels: tuple[str, ...]) -> di
     return {"stage": "standalone", "semantic_view": view, "run_id": run_id, "input_mode": "RAW_DIRECT", "input_raw": exp_rel(raw), "input_raw_sha256": sha256(raw), "output_path": rel(output), "output_sha256": sha256(output), "labels": list(labels), "signal_order": list(labels), "command": command, "renderer": "scripts/josim-plot2.py", "layout": "sep_comb", "color": "dark", "phase_option": "2pi", "phase_convention": "raw P radians; display rad/(2*pi) turns; never SFQ count", "window_ps": [0.0, 200.0], "temporary_input_sha256": None}
 
 
+def write_navigation(run_id: str) -> None:
+    lines = [f"# {run_id} visualization navigation", "", "Standalone pages read raw.csv directly over 0–200 ps."]
+    for view in VIEW_LABELS:
+        lines.append(f"- [{view}.html](../plots/runs/{run_id}/{view}.html)")
+    lines.extend(["", "P traces are raw radians; rad/(2*pi) is display/navigation only."])
+    path = EXP / "visualization/run_summaries" / f"{run_id}.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def focused_comparison(cases: list[tuple[str, Path]], branch: str) -> dict[str, Any]:
     actual_headers = [header(raw) for _name, raw in cases]
     if any(item != actual_headers[0] for item in actual_headers[1:]):
@@ -133,6 +143,7 @@ def main() -> int:
         run_id = f"TARGET_L3_2_BJ2_2p2_{mask}"
         for view, labels in VIEW_LABELS.items():
             standalone_entries.append(standalone(run_id, raw, view, labels))
+        write_navigation(run_id)
     comparison_entries = []
     for mask, branch in (("0011", "N2"), ("0111", "N3")):
         comparison_cases = [(name, cases[mask]) for name, cases in REFERENCE_CASES.items()]

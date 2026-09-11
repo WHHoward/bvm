@@ -23,7 +23,7 @@ SOLVER_SHA256 = "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b
 MATRIX = EXP / "screening/TARGET_MATRIX.json"
 PREFLIGHT = EXP / "analysis/preflight.json"
 STATE = EXP / "screening/target_state.json"
-RESULT_PATH = EXP / "screening/results/TARGET_L3_2_BJ2_2p2.json"
+RESULT_PATH = EXP / "screening/results/TARGET_L3_2_BJ2_2p2_v2.json"
 VALIDATION_PATH = EXP / "screening/validation_summary.json"
 TABLE_JSON = EXP / "screening/TARGET_RESULTS.json"
 TABLE_MD = EXP / "screening/TARGET_RESULTS.md"
@@ -209,8 +209,8 @@ def run_case(point: dict[str, Any], mask: str, *, run_kind: str) -> dict[str, An
     return {"run_id": run_id, "mask": mask, "run_kind": run_kind, "source_kind": "NEW_PHYSICAL_SOLVE", "physical_solve_this_experiment": True, "raw_path": rel(raw), "deck_path": rel(deck), "metadata_path": rel(metadata_path), "log_path": rel(log), "raw_sha256": sha256(raw), "deck_sha256": sha256(deck), "raw_bytes": raw.stat().st_size, "raw_summary": raw_summary(raw)}
 
 
-def analyse(point: dict[str, Any], cases: dict[str, Any]) -> dict[str, Any]:
-    if not RESULT_PATH.is_file():
+def analyse(point: dict[str, Any], cases: dict[str, Any], *, force: bool = False) -> dict[str, Any]:
+    if force or not RESULT_PATH.is_file():
         command = [sys.executable, str(EXP / "analysis/target_analysis.py"), "--point-id", point["point_id"], "--changes", json.dumps(point["changes"], separators=(",", ":")), "--n2", str(REPO / cases["0011"]["raw_path"]), "--n3", str(REPO / cases["0111"]["raw_path"])]
         completed = subprocess.run(command, cwd=REPO, check=False)
         if completed.returncode != 0 or not RESULT_PATH.is_file():
@@ -325,14 +325,20 @@ def finalize(state: dict[str, Any], result: dict[str, Any], outcome: str, reason
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.parse_args()
+    parser.add_argument("--reclassify-existing", action="store_true", help="recompute the result from completed immutable raw files without running the solver")
+    args = parser.parse_args()
     preflight, matrix, relation = load_gate()
     point = matrix["points"][0]
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.is_file() else state_template(preflight, relation)
-    if state.get("final_marker") and RESULT_PATH.is_file():
+    if not args.reclassify_existing and state.get("final_marker") and RESULT_PATH.is_file():
         write_table(state, json.loads(RESULT_PATH.read_text(encoding="utf-8")))
         write_execution(state)
         return 0
+    if args.reclassify_existing:
+        if set(state.get("screening_cases", {})) != set(SCREENING_MASKS):
+            raise RuntimeError("cannot reclassify without both completed screening cases")
+        result = analyse(point, state["screening_cases"], force=True)
+        return finalize(state, result, OUTCOME_LABELS[result["candidate_class"]], "reclassified existing immutable screening raw after strict ordered-chain logic repair")
     save_state(state)
     screening_cases: dict[str, Any] = {}
     for mask in SCREENING_MASKS:

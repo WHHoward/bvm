@@ -9,3 +9,8 @@ area to 2.2; all other parameters remain canonical.
 conditional validation cases only after a clean ordered 2/3 result. Raw P(...)
 values remain radians; displayed turns are navigation only and are not SFQ
 counts. This handoff stops at `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`.
+
+The two screening cases were CLEAN. `0011` had one ordered complete response;
+`0111` had four raw candidates but ordered vector `{1:true, 2:true, 3:false,
+4:true}`. The final registered outcome is
+`N3_FOURTH_HANDOFF_BOUNDARY_CASE`; `0001/1111` validation was not run.

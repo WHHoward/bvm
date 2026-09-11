@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Raw-first analysis for the registered L3/BJ2 targeted combination."""
+"""Raw-first v2 analysis for the registered L3/BJ2 targeted combination."""
 
 from __future__ import annotations
 
@@ -390,7 +390,7 @@ def classify_case(case: dict[str, Any], *, is_n2: bool) -> dict[str, Any]:
         return {"classification": name, "control_status": "CLEAN", "evidence_status": "BOUNDED_RESULT" if name == "N2_2_COMPLETE" else "INCONCLUSIVE"}
     if count == 3 and all(ordered.get(str(index), False) for index in (1, 2, 3)) and not ordered.get("4", False):
         return {"classification": "N3_3_COMPLETE", "control_status": "CLEAN", "evidence_status": "BOUNDED_RESULT"}
-    if count >= 4 and ordered.get("4", False):
+    if count >= 4 and all(ordered.get(str(index), False) for index in range(1, 5)):
         return {"classification": "N3_4_COMPLETE", "control_status": "CLEAN", "evidence_status": "BOUNDED_RESULT"}
     if count >= 3:
         return {"classification": "N3_MULTIPLICITY_AMBIGUOUS", "control_status": "CLEAN", "evidence_status": "INCONCLUSIVE"}
@@ -406,10 +406,30 @@ def response_record(case: dict[str, Any], ordinal: int) -> dict[str, Any]:
         "BJ2_ps": case["phase_navigation"]["BJ2"]["threshold_navigation_times_ps"].get(threshold),
         "QBOUT_peak_ps": q[ordinal - 1]["peak_time_ps"] if len(q) >= ordinal else None,
         "JTL1_ps": case["phase_navigation"]["JTL1"]["threshold_navigation_times_ps"].get(threshold),
+        "JTL2_ps": case["phase_navigation"]["JTL2"]["threshold_navigation_times_ps"].get(threshold),
+        "JTL3_ps": case["phase_navigation"]["JTL3"]["threshold_navigation_times_ps"].get(threshold),
+        "JTL4_ps": case["phase_navigation"]["JTL4"]["threshold_navigation_times_ps"].get(threshold),
+        "JTL5_ps": case["phase_navigation"]["JTL5"]["threshold_navigation_times_ps"].get(threshold),
         "JTL6_ps": case["phase_navigation"]["JTL6"]["threshold_navigation_times_ps"].get(threshold),
         "terminal_peak_ps": terminal[ordinal - 1]["peak_time_ps"] if len(terminal) >= ordinal else None,
     }
     return {"ordinal": ordinal, "threshold_navigation_level_turns": THRESHOLDS[ordinal - 1], "times_ps": times, "ordered_chain": case["ordered_chain_by_candidate"].get(str(ordinal), False), "phase_navigation_only": True}
+
+
+def fourth_response_record(case: dict[str, Any]) -> dict[str, Any]:
+    item = response_record(case, 4) if case["phase_supported_count"] >= 4 else {"ordinal": 4, "times_ps": {}, "ordered_chain": False, "phase_navigation_only": True}
+    times = item.get("times_ps", {})
+    bj1 = times.get("BJ1_ps")
+    bj2 = times.get("BJ2_ps")
+    item.update({
+        "BJ1_to_BJ2_handoff_latency_ps": bj2 - bj1 if bj1 is not None and bj2 is not None else None,
+        "max_fourth_cycle_BJ1_relative_turns_120_150": case["internal_reset"].get("max_fourth_cycle_BJ1_relative_turns_120_150"),
+        "max_fourth_cycle_BJ2_relative_turns_120_150": case["internal_reset"].get("max_fourth_cycle_BJ2_relative_turns_120_150"),
+        "BJ1_rollback_turns_diagnostic": case["internal_reset"].get("BJ1_rollback_turns_diagnostic"),
+        "BJ2_rollback_turns_diagnostic": case["internal_reset"].get("BJ2_rollback_turns_diagnostic"),
+        "post_third_reset": {key: case["internal_reset"].get(key) for key in ("peak_I_L1_A", "min_I_L1_A", "first_I_L1_zero_or_sign_change_ps", "integral_118_121_V_s", "integral_121_124_V_s", "integral_124_128_V_s")},
+    })
+    return item
 
 
 def case_summary(case: dict[str, Any], *, is_n2: bool) -> dict[str, Any]:
@@ -421,7 +441,7 @@ def case_summary(case: dict[str, Any], *, is_n2: bool) -> dict[str, Any]:
         "control": case["control"],
         "responses": [response_record(case, ordinal) for ordinal in range(1, min(count, 4) + 1)],
         "second_response": response_record(case, 2) if count >= 2 else None,
-        "fourth_response": response_record(case, 4) if count >= 4 and not is_n2 else None,
+        "fourth_response": fourth_response_record(case) if count >= 4 and not is_n2 else None,
         "terminal": {key: case["terminal"].get(key) for key in ("pulse_count", "matched_candidate_count", "peak_separation_ps", "total_area_over_phi0", "not_event_count")},
         "internal_reset": case["internal_reset"],
         "window_currents": case["window_currents"],
@@ -471,9 +491,11 @@ def analyze_pair(point_id: str, changes: dict[str, float], n2_path: Path, n3_pat
         for name, cases in REFERENCE_CASES.items()
     }
     return {
-        "schema": "bvm-qb-l3-bj2-targeted-combination-point-result-v1",
+        "schema": "bvm-qb-l3-bj2-targeted-combination-point-result-v2",
         "experiment_id": EXP.name,
         "created_at_local": now(),
+        "analysis_version": "v2_strict_all_response_ordering",
+        "supersedes_result": "screening/results/TARGET_L3_2_BJ2_2p2.json",
         "point_id": point_id,
         "changes": changes,
         "n2": {"raw_path": n2_path.relative_to(REPO).as_posix(), "raw_sha256": sha256(n2_path), "classification": n2_class, "evidence": candidate_n2_case},
@@ -508,7 +530,7 @@ def main() -> int:
     parser.add_argument("--n3", type=Path, required=True)
     args = parser.parse_args()
     result = analyze_pair(args.point_id, json.loads(args.changes), args.n2.resolve(), args.n3.resolve())
-    output = EXP / "screening/results" / f"{args.point_id}.json"
+    output = EXP / "screening/results" / f"{args.point_id}_v2.json"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": "PASS", "point_id": args.point_id, "candidate_class": result["candidate_class"], "candidate_label": result["candidate_label"], "n2": result["n2"]["classification"]["classification"], "n3": result["n3"]["classification"]["classification"], "control_n2": result["n2"]["classification"]["control_status"], "control_n3": result["n3"]["classification"]["control_status"]}, ensure_ascii=False, indent=2))

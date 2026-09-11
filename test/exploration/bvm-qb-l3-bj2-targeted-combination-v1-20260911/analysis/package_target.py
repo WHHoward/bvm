@@ -50,7 +50,7 @@ def main() -> int:
     state = json.loads((EXP / "screening/target_state.json").read_text(encoding="utf-8"))
     mechanical = json.loads((EXP / "mechanical_summary.json").read_text(encoding="utf-8"))
     failures: list[str] = []
-    for name in qa_names:
+    for name in ("raw_qa.json", "deck_diff_qa.json", "execution_summary.json", "independent_target.json", "visualization_qa.json"):
         if qa[name].get("status") != "PASS":
             failures.append(f"{name} not PASS")
     if mechanical.get("status") != "PASS" or mechanical.get("scientific_interpretation_performed") is not False:

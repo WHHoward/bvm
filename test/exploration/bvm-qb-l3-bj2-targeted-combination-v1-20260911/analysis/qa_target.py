@@ -34,12 +34,12 @@ REQUIRED = (
     + ("I(R_TERM)",)
 )
 ORIGINS = {
-    "canonical_L3_1p3_BJ2_2p0/0011": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0011",
-    "canonical_L3_1p3_BJ2_2p0/0111": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0111",
-    "L3_2p0_BJ2_2p0/0011": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0011",
-    "L3_2p0_BJ2_2p0/0111": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0111",
-    "L3_1p3_BJ2_2p2/0011": REPO / "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/runs/SCREEN_BJ2_area_2p2_0011",
-    "L3_1p3_BJ2_2p2/0111": REPO / "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/runs/SCREEN_BJ2_area_2p2_0111",
+    "canonical_l3p13/0011": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0011",
+    "canonical_l3p13/0111": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0111",
+    "l3p20/0011": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0011",
+    "l3p20/0111": REPO / "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0111",
+    "bj2p22_l3p13/0011": REPO / "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/runs/SCREEN_BJ2_area_2p2_0011",
+    "bj2p22_l3p13/0111": REPO / "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/runs/SCREEN_BJ2_area_2p2_0111",
 }
 
 
@@ -189,11 +189,11 @@ def main() -> int:
         if not all((run_dir / name).is_file() for name in ("deck.cir", "raw.csv", "metadata.json", "run.log")):
             failures.append(f"incomplete run: {run_dir.name}")
 
-    result_path = EXP / "screening/results/TARGET_L3_2_BJ2_2p2.json"
+    result_path = EXP / "screening/results/TARGET_L3_2_BJ2_2p2_v2.json"
     results: dict[str, Any] = {}
     if result_path.is_file():
         result = json.loads(result_path.read_text(encoding="utf-8"))
-        results[POINT_ID] = {"path": rel(result_path), "sha256": sha256(result_path), "candidate_class": result.get("candidate_class"), "candidate_label": result.get("candidate_label")}
+        results[POINT_ID] = {"path": rel(result_path), "sha256": sha256(result_path), "candidate_class": result.get("candidate_class"), "candidate_label": result.get("candidate_label"), "analysis_version": result.get("analysis_version"), "supersedes_result": result.get("supersedes_result")}
         for branch, mask in (("n2", "0011"), ("n3", "0111")):
             case = state.get("screening_cases", {}).get(mask)
             if case is None or result.get(branch, {}).get("raw_path") != case.get("raw_path") or result.get(branch, {}).get("raw_sha256") != case.get("raw_sha256"):

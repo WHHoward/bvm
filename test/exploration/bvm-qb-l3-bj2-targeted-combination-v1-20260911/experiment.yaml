@@ -1,7 +1,7 @@
 id: bvm-qb-l3-bj2-targeted-combination-v1-20260911
 study_phase: EXPLORATORY
 mode: QUICK_TARGETED_COMBINATION
-status: PREREGISTERED_PENDING_PREFLIGHT
+status: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
 role: Experimental Operator + Evidence Packager
 
 question:
@@ -131,9 +131,14 @@ package:
     execution_summary.json: qa/execution_summary.json
     transformation_registry.json: qa/transformation_registry.json
 
-authorized_runs: []
-physics_solve_count: 0
+authorized_runs:
+  - TARGET_L3_2_BJ2_2p2_0011
+  - TARGET_L3_2_BJ2_2p2_0111
+physics_solve_count: 2
 reference_raw_count: 6
+screening_new_physical_solve_count: 2
+conditional_validation_performed: false
+screening_outcome: N3_FOURTH_HANDOFF_BOUNDARY_CASE
 maximum_physics_solve_count_including_conditional_validation: 4
 
 stop:

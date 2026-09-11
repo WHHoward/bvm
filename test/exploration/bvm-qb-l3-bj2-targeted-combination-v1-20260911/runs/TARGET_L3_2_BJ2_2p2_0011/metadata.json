@@ -1,0 +1,68 @@
+{
+  "schema": "bvm-qb-l3-bj2-targeted-combination-run-metadata-v1",
+  "experiment_id": "bvm-qb-l3-bj2-targeted-combination-v1-20260911",
+  "run_id": "TARGET_L3_2_BJ2_2p2_0011",
+  "run_kind": "SCREENING",
+  "point_id": "TARGET_L3_2_BJ2_2p2",
+  "changes": {
+    "L3_pH": 2.0,
+    "BJ2_area": 2.2
+  },
+  "mask": "0011",
+  "topology": "BVM1..4 -> COMMON_SL -> 8-JJ JSL -> QB -> six-stage JTL -> R_TERM",
+  "stimulus": {
+    "amplitude_uA": 100.0,
+    "tran": ".tran 0.1p 200p",
+    "history": "IDLE/WRITE0/ZERO_STATE_READ_CONTROL/IDLE/WRITE1/SETTLE/FINAL_READ/TAIL"
+  },
+  "started_at_local": "2026-09-11T17:42:36+08:00",
+  "finished_at_local": "2026-09-11T17:42:37+08:00",
+  "git_head_before_run": "93d425a37a4edd2f6b851b957439bfefbc5165a1",
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-l3-bj2-targeted-combination-v1-20260911/runs/TARGET_L3_2_BJ2_2p2_0011/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-l3-bj2-targeted-combination-v1-20260911/runs/TARGET_L3_2_BJ2_2p2_0011/deck.cir"
+  ],
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "deck_source": {
+    "path": "test/exploration/bvm-qb-l3-bj2-targeted-combination-v1-20260911/screening/decks/TARGET_L3_2_BJ2_2p2/0011.cir",
+    "sha256": "0db23bfc2c83a1821e43e50627dd2b72f8e102f8df4bfd172431653eb87df909"
+  },
+  "artifacts": {
+    "deck": {
+      "path": "test/exploration/bvm-qb-l3-bj2-targeted-combination-v1-20260911/runs/TARGET_L3_2_BJ2_2p2_0011/deck.cir",
+      "sha256": "0db23bfc2c83a1821e43e50627dd2b72f8e102f8df4bfd172431653eb87df909",
+      "bytes": 7531
+    },
+    "raw": {
+      "path": "test/exploration/bvm-qb-l3-bj2-targeted-combination-v1-20260911/runs/TARGET_L3_2_BJ2_2p2_0011/raw.csv",
+      "exists": true,
+      "sha256": "3d296c8dba94699b4f17987cdfe4e5928c2f212a5bdbd7c91d11e25153e2c525",
+      "bytes": 7097382
+    },
+    "log": {
+      "path": "test/exploration/bvm-qb-l3-bj2-targeted-combination-v1-20260911/runs/TARGET_L3_2_BJ2_2p2_0011/run.log",
+      "sha256": "9b2d2ac4cfd0d4488d0d748a4d9993c100f3c0b9284868906ddd8ce74c949b13",
+      "bytes": 219482
+    }
+  },
+  "exit_code": 0,
+  "execution_status": "RUN_PASS",
+  "physical_solve_this_experiment": true,
+  "raw_immutable": true,
+  "parameter_tuning": false,
+  "scientific_analysis_performed": false,
+  "raw_summary": {
+    "header_count": 265,
+    "sample_count": 1999,
+    "first_timestamp": "0.000000e+00",
+    "last_timestamp": "1.999000e-10"
+  }
+}

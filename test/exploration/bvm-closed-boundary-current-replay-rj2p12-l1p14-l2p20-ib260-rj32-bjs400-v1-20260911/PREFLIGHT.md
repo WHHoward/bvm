@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911`
 - Stage A sealed evidence: `1` physical solve; scientific gate: `PASS` (user review attachment hash-bound).
-- Stage B sealed preflight HEAD: `f14124c28a87f643458a00742daa9fe70eb4d938`
+- Stage B sealed preflight HEAD: `7eea98476c99c2b6170e39f95a1bfc7143e89689`
 - Remote `bvm/master`: `f14124c28a87f643458a00742daa9fe70eb4d938`
 - Status: **PASS**
 - Total authorized solve count: exactly `2`; no third solve.

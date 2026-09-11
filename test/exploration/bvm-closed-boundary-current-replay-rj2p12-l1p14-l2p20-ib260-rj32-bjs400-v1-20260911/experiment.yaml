@@ -1,7 +1,7 @@
 id: bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911
 study_phase: EXPLORATORY
 mode: QUICK
-status: PREREGISTERED_PENDING_PREFLIGHT
+status: STAGE_B_AUTHORIZED_PENDING_PREFLIGHT
 role: Experimental Operator + Evidence Packager
 
 question:
@@ -26,6 +26,8 @@ source_authority:
   source_reference_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
   source_signal: I(B_JSL8)
   source_raw: references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/raw.csv
+  source_n3_reference_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111
+  source_n3_raw: references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111/raw.csv
   qb_include: inputs/BQ_parameterized_bjs400_rj2.cir
   jtl_include: inputs/jtl2.cir
   jj_model_include: inputs/jjmit.cir
@@ -37,15 +39,20 @@ authorized_runs:
     phase: stage_a_n2_calibration
     source_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
     physical_solve: true
+  - id: CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12
+    directory: runs/CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12
+    phase: stage_b_n3_mechanism_diagnostic
+    source_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111
+    physical_solve: true
 
 deferred_runs:
   - id: CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12
     phase: stage_b_n3_mechanism_diagnostic
     source_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111
-    physical_solve: false
-    execution_gate: STAGE_A_PASS_AND_SCIENTIFIC_REVIEW_AUTHORIZED
+    physical_solve: true
+    execution_gate: SATISFIED_BY_CURRENT_USER_STAGE_A_SCIENTIFIC_REVIEW
 
-physics_solve_count: 1
+physics_solve_count: 2
 maximum_user_task_physical_solve_count: 2
 
 stage_protocol:
@@ -58,8 +65,15 @@ stage_protocol:
     case: CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12
     additional_solves: 1
     conditional_on: STAGE_A_PASS_AND_SCIENTIFIC_REVIEW_AUTHORIZED
-    current_turn_status: DEFERRED_PENDING_SCIENTIFIC_REVIEW_AUTHORIZATION
+    current_turn_status: AUTHORIZED_AFTER_STAGE_A_SCIENTIFIC_GATE
   no_extra_solves: true
+
+stage_b_authorization:
+  status: STAGE_B_AUTHORIZED
+  source_attachment_sha256: 441a7707ec2d4c53322601e543c650f98ee8d80023349950c2c1149ee1104c3c
+  statement: "Current user review explicitly records STAGE_A_SCIENTIFIC_GATE=PASS and STAGE_B_AUTHORIZED=TRUE; execute only N3."
+  authorized_additional_physical_solves: 1
+  no_third_solve: true
 
 frozen_receiver:
   L1_pH: 1.4
@@ -141,6 +155,17 @@ package:
     - analysis/visualization_qa.py
     - analysis/package_stage_a.py
     - analysis/STAGE_A_PREFLIGHT.md
+    - analysis/STAGE_B_AUTHORIZATION.md
+    - analysis/STAGE_B_REVIEW.md
+    - analysis/analyze_stage_b.py
+    - analysis/independent_stage_b.py
+    - analysis/mechanism_metrics_stage_b.json
+    - analysis/package_stage_b.py
+    - analysis/prepare_stage_b.py
+    - analysis/preflight_stage_b.json
+    - analysis/render_stage_b.py
+    - analysis/run_stage_b.py
+    - SOURCE_MANIFEST_STAGE_B.json
     - qa
     - data
     - references/closed_loop_rj2p12
@@ -150,7 +175,7 @@ package:
     raw_qa.json: qa/raw_qa.json
     deck_diff_qa.json: qa/deck_diff_qa.json
     provenance.json: qa/provenance.json
-    execution_summary.json: qa/execution_summary.json
+    execution_summary.json: qa/execution_summary_combined.json
     transformation_registry.json: qa/transformation_registry.json
 
 stop:

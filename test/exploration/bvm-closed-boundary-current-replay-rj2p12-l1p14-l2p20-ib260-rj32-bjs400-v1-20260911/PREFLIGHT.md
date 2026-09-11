@@ -3,27 +3,27 @@
 This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911`
-- Initial registration HEAD: `4d810d5c2cc11b93e8fa1dbf00c706165f1aebe4`
-- Sealed preflight HEAD: `a41d84e58036b4a36b9a4a2b2225cb2554d4830e`
-- Remote `bvm/master`: `4d810d5c2cc11b93e8fa1dbf00c706165f1aebe4`
+- Stage A sealed evidence: `1` physical solve; scientific gate: `PASS` (user review attachment hash-bound).
+- Stage B sealed preflight HEAD: `f14124c28a87f643458a00742daa9fe70eb4d938`
+- Remote `bvm/master`: `f14124c28a87f643458a00742daa9fe70eb4d938`
 - Status: **PASS**
-- Current-turn physical solve budget: exactly one Stage A N2 replay; physical solves before preflight: `0`.
+- Total authorized solve count: exactly `2`; no third solve.
 
 ## Stage A
 
-The only current-turn solver case is `CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12`. Its source is the immutable current RJ2=12 `0011` full closed-loop raw `I(B_JSL8)`. The source case is not rerun. The replay deck has only `I_REPLAY 0 QBIN`, the current RJ2=12 QB, six-stage JTL and 10 ohm termination.
+N2 closed-boundary current replay is preserved unchanged in the Stage A package and raw artifacts. The current user has completed direct raw review and explicitly authorized the preregistered Stage B N3 replay.
 
-- Replay deck: `test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/deck.cir`
-- PWL pairs registered: `1999`
+## Stage B
+
+Run exactly `CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12` from the immutable RJ2=12/0111 `I(B_JSL8)` source. The replay contains only the current RJ2=12 QB, six-stage JTL, 10 ohm load and `I_REPLAY 0 QBIN`; no BVM/COMMON_SL/JSL source network. `.tran 0.1p 200p` remains frozen.
+
+- Source raw SHA-256: `1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75`
+- PWL pairs: `1999`
 - Deck QA: `PASS`
-- Orientation: positive `I(B_JSL8)` JSL7→QBIN maps directly to positive `I_REPLAY 0 QBIN`; no sign correction.
-
-## Stage B early-stop boundary
-
-N3 `CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12` is deferred and has no current-turn source copy, deck or solve. The repository contract requires explicit `SCIENTIFIC_REVIEW_AUTHORIZED` before scientific classification can trigger a successor solve. Therefore this turn stops after Stage A evidence and records Stage B as `DEFERRED_PENDING_SCIENTIFIC_REVIEW_AUTHORIZATION`, even if mechanical navigation is complete.
+- No N4/passive/RJ2/timestep/sweep solve is authorized.
 
 ## Evidence ceiling
 
-P values remain raw radians; displays use `rad/(2*pi)` turns. Phase landmarks, threshold activity, voltage area and terminal area are navigation evidence only, not SFQ counts. Replay is ideal current forcing and is not a source-impedance or circuit-equivalent reconstruction.
+Raw is authoritative. Phase is radians; `rad/(2*pi)` turns are navigation only. A closed-loop current replay retains interaction history encoded in the recorded waveform and cannot prove back-action irrelevant. Final scientific outcome remains bounded to the tested replay abstraction.
 
-Machine record: `analysis/preflight.json`.
+Machine records: `analysis/preflight_stage_b.json`, `analysis/stage_b_authorization.json`.

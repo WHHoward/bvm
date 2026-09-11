@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911`
 - Initial registration HEAD: `5a63b4b5d2de478e43e61889a091f2023a969c5d`
-- Sealed preflight HEAD: `e78f23462c4d85a74ed980c08c1dcc94e3360b0a`
+- Sealed preflight HEAD: `fb457ba51149a9ef4e3267f71ae914039f961f63`
 - Remote `bvm/master` observed at preflight: `5a63b4b5d2de478e43e61889a091f2023a969c5d`
 - Status: **PASS**
 - Physical solve count before preflight: `0`.

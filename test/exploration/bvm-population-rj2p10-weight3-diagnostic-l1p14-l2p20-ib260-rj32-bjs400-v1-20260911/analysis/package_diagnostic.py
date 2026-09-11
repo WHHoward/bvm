@@ -12,7 +12,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
-PACKAGE_RELATIVE = "handoff/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip"
+PACKAGE_RELATIVE = "handoff/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_corrected-v2_raw_handoff.zip"
 sys.path.insert(0, str(REPO / "scripts"))
 from build_experiment_package import build_package  # noqa: E402
 
@@ -52,7 +52,7 @@ def main() -> int:
         raise RuntimeError("one or more RJ2=10 diagnostic evidence QA artifacts are not PASS")
     if execution.get("status") != "PASS" or execution.get("exact_new_physical_solve_count") != 1 or execution.get("solver_solve_invocations") != 1 or execution.get("reference_case_count") != 6 or execution.get("unauthorized_extra_solves") != 0 or tuple(execution.get("run_order", ())) != NEW_RUNS:
         raise RuntimeError("execution summary is not exact 1-new/6-reference PASS")
-    package = build_package(EXP, package_path=PACKAGE_RELATIVE, physics_solve_count=4, scientific_analysis_performed=False, include_plots=False)
+    package = build_package(EXP, package_path=PACKAGE_RELATIVE, physics_solve_count=1, scientific_analysis_performed=False, include_plots=False)
     zip_path = EXP / package["package_path"]
     required = {"experiment.yaml", "PREFLIGHT.md", "SOURCE_MANIFEST.json", "REFERENCE_MANIFEST.json", "HANDOFF_README.md", "RESULT_BRIEF.md", "EVIDENCE_MANIFEST.md", "RAW_ANALYSIS_HANDOFF_MANIFEST.json", "mechanical_summary.json", "qa/raw_qa.json", "qa/deck_diff_qa.json", "qa/execution_summary.json", "qa/response_qa.json", "qa/control_qa.json", "qa/provenance.json", "qa/transformation_registry.json", "qa/protocol_audit.json", "qa/visualization_qa.json", "qa/independent_review.json", "qa/oracle_regression.json", "analysis/REVIEW.md", "analysis/DIAGNOSTIC_REVIEW.md", "analysis/ORACLE_REGRESSION.md", "analysis/population_oracle.py", "analysis/prepare_diagnostic.py", "analysis/oracle_regression.py", "analysis/execute_diagnostic.py", "analysis/response_analysis.py", "analysis/independent_diagnostic_review.py", "analysis/render_flat_diagnostic.py", "analysis/visualization_qa.py", "analysis/package_diagnostic.py", "visualization/manifest.json"}
     failures: list[str] = []

@@ -11,7 +11,7 @@ This is an evidence-only handoff. Scientific interpretation is `NOT PERFORMED`.
 - Permanent whole-run plots and comparisons are indexed by
   `visualization/manifest.json`.
 - Evidence ZIP:
-  `handoff/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_corrected-v2_raw_handoff.zip`.
+  `handoff/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip`.
 - Unauthorized follow-up: none.
 - Scientific interpretation: `NOT PERFORMED`.
 - Status: `AWAITING_SCIENTIFIC_REVIEW`.

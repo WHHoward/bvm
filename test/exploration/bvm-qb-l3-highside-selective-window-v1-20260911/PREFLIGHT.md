@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: bvm-qb-l3-highside-selective-window-v1-20260911
 - Registration HEAD: ccde33f50f2bf72a284ecad689fc0f00aed57649
-- Sealed preflight HEAD: ccde33f50f2bf72a284ecad689fc0f00aed57649
+- Sealed preflight HEAD: 512c23a7c93cff7821f0f50024623eb7cf2f5e80
 - Remote bvm/master: ccde33f50f2bf72a284ecad689fc0f00aed57649
 - Status: PASS
 - Solver has not been invoked at preflight.

@@ -47,16 +47,29 @@ def raw_summary(path: Path) -> dict[str, Any] | None:
     return {"header_count": len(header), "sample_count": count, "first_timestamp": first[0], "last_timestamp": last[0]}
 
 
+def preflight_head_relation(preflight_head: str) -> dict[str, Any]:
+    current = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
+    if current == preflight_head:
+        return {"status": "PASS", "head": current, "relation": "EXACT"}
+    changed = set(subprocess.check_output(["git", "diff", "--name-only", f"{preflight_head}..{current}"], cwd=REPO, text=True).splitlines())
+    prefix = str(EXP.relative_to(REPO))
+    allowed = {prefix + "/analysis/REPLAY_PREFLIGHT.md", prefix + "/qa/replay_fidelity_qa.json", prefix + "/qa/replay_preflight.json"}
+    distance = int(subprocess.check_output(["git", "rev-list", "--count", f"{preflight_head}..{current}"], cwd=REPO, text=True).strip())
+    valid = distance == 1 and changed == allowed
+    return {"status": "PASS" if valid else "FAIL", "head": current, "relation": "REPLAY_PREFLIGHT_SEAL_COMMIT" if valid else "UNEXPECTED", "changed_paths": sorted(changed), "commit_distance": distance}
+
+
 def main() -> int:
     preflight = json.loads((EXP / "qa/replay_preflight.json").read_text(encoding="utf-8"))
     execution = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8"))
-    current_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
     if preflight.get("status") != "PASS" or preflight.get("authorized_replay_solve_count") != 3 or preflight.get("physical_solve_count_before_replay") != 3:
         raise RuntimeError("replay execution gate is not a PASS three-solve preflight")
     if execution.get("status") != "PASS" or execution.get("exact_physical_solve_count") != 3:
         raise RuntimeError("passive execution prefix is not PASS")
-    if current_head != preflight.get("head_at_replay_preflight"):
-        raise RuntimeError(f"HEAD changed after replay preflight: {current_head} != {preflight.get('head_at_replay_preflight')}")
+    relation = preflight_head_relation(str(preflight.get("head_at_replay_preflight")))
+    if relation["status"] != "PASS":
+        raise RuntimeError(f"HEAD/replay-preflight relation is not allowed: {relation}")
+    current_head = relation["head"]
     if not SOLVER.is_file() or sha256(SOLVER) != SOLVER_SHA256:
         raise RuntimeError("registered solver identity changed")
     solver = {"path": str(SOLVER.relative_to(REPO)), "sha256": sha256(SOLVER), "version": subprocess.check_output([str(SOLVER), "--version"], cwd=REPO, text=True)}

@@ -53,14 +53,28 @@ def solver_identity() -> dict[str, Any]:
     return {"path": str(SOLVER.relative_to(REPO)), "sha256": sha256(SOLVER), "version": subprocess.check_output([str(SOLVER), "--version"], cwd=REPO, text=True)}
 
 
+def preflight_head_relation(preflight_head: str) -> dict[str, Any]:
+    current = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
+    if current == preflight_head:
+        return {"status": "PASS", "head": current, "relation": "EXACT"}
+    changed = set(subprocess.check_output(["git", "diff", "--name-only", f"{preflight_head}..{current}"], cwd=REPO, text=True).splitlines())
+    prefix = str(EXP.relative_to(REPO))
+    allowed = {prefix + "/PREFLIGHT.md", prefix + "/analysis/preflight.json"}
+    distance_text = subprocess.check_output(["git", "rev-list", "--count", f"{preflight_head}..{current}"], cwd=REPO, text=True).strip()
+    distance = int(distance_text)
+    valid = distance == 1 and changed == allowed
+    return {"status": "PASS" if valid else "FAIL", "head": current, "relation": "PREFLIGHT_SEAL_COMMIT" if valid else "UNEXPECTED", "changed_paths": sorted(changed), "commit_distance": distance}
+
+
 def main() -> int:
     preflight_path = EXP / "analysis/preflight.json"
     preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
-    current_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
     if preflight.get("status") != "PASS" or preflight.get("authorized_physical_solve_count") != 6 or preflight.get("physical_solve_count_before_preflight") != 0:
         raise RuntimeError("passive execution gate is not a PASS six-solve preflight")
-    if current_head != preflight.get("head_at_preflight"):
-        raise RuntimeError(f"HEAD changed after preflight seal: {current_head} != {preflight.get('head_at_preflight')}")
+    relation = preflight_head_relation(str(preflight.get("head_at_preflight")))
+    if relation["status"] != "PASS":
+        raise RuntimeError(f"HEAD/preflight relation is not allowed: {relation}")
+    current_head = relation["head"]
     solver = solver_identity()
     records: list[dict[str, Any]] = []
     failures: list[str] = []

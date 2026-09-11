@@ -1,0 +1,67 @@
+{
+  "schema": "bvm-qb-threshold-ordering-boundary-run-metadata-v1",
+  "experiment_id": "bvm-qb-threshold-ordering-boundary-search-v1-20260911",
+  "run_id": "BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011",
+  "point_id": "STAGE_B_IBIAS_MIDPOINT",
+  "changes": {
+    "IBias_uA": 250.0,
+    "L3_pH": 1.6
+  },
+  "mask": "0011",
+  "topology": "BVM1..4 -> COMMON_SL -> 8-JJ JSL -> QB -> six-stage JTL -> R_TERM",
+  "stimulus": {
+    "amplitude_uA": 100.0,
+    "tran": ".tran 0.1p 200p",
+    "history": "IDLE/WRITE0/ZERO_STATE_READ_CONTROL/IDLE/WRITE1/SETTLE/FINAL_READ/TAIL"
+  },
+  "started_at_local": "2026-09-11T16:22:20+08:00",
+  "finished_at_local": "2026-09-11T16:22:21+08:00",
+  "git_head_before_run": "8b58d8e40f689ab9f19c62335e7fcae746d240c7",
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011/deck.cir"
+  ],
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "deck_source": {
+    "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/screening/decks/STAGE_B_IBIAS_MIDPOINT/0011.cir",
+    "sha256": "5fb8424364150b0d7b5e0b7d1d08df35d8488a85925d041b45a4764b3055e4fb"
+  },
+  "artifacts": {
+    "deck": {
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011/deck.cir",
+      "sha256": "5fb8424364150b0d7b5e0b7d1d08df35d8488a85925d041b45a4764b3055e4fb",
+      "bytes": 7544
+    },
+    "raw": {
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011/raw.csv",
+      "exists": true,
+      "sha256": "67cee583ab031f0a7ac7e5478ecfe0c308d496d9067eb0ec50b28b1d294a6aca",
+      "bytes": 7096990
+    },
+    "log": {
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011/run.log",
+      "sha256": "7549950e00c4fd82f755fe37de5a43e93b76f615c930af6198a1d877b65d3446",
+      "bytes": 222523
+    }
+  },
+  "exit_code": 0,
+  "execution_status": "RUN_PASS",
+  "physical_solve_this_experiment": true,
+  "raw_immutable": true,
+  "parameter_tuning": false,
+  "scientific_analysis_performed": false,
+  "raw_summary": {
+    "header_count": 265,
+    "sample_count": 1999,
+    "first_timestamp": "0.000000e+00",
+    "last_timestamp": "1.999000e-10"
+  }
+}

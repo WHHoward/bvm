@@ -131,7 +131,7 @@ def main() -> int:
     for run_dir in physical_runs:
         entries.extend([standalone(run_dir.name, run_dir / "raw.csv", "SIGNAL_TIMING", SIGNAL_LABELS), standalone(run_dir.name, run_dir / "raw.csv", "QB_STATE", QB_LABELS), standalone(run_dir.name, run_dir / "raw.csv", "JTL_CHAIN", JTL_LABELS)])
     entries.extend([standalone("BASELINE_N2_0011", BASELINE["0011"], "SIGNAL_TIMING", SIGNAL_LABELS), standalone("BASELINE_N2_0011", BASELINE["0011"], "QB_STATE", QB_LABELS), standalone("BASELINE_N2_0011", BASELINE["0011"], "JTL_CHAIN", JTL_LABELS), standalone("BASELINE_N3_0111", BASELINE["0111"], "SIGNAL_TIMING", SIGNAL_LABELS), standalone("BASELINE_N3_0111", BASELINE["0111"], "QB_STATE", QB_LABELS), standalone("BASELINE_N3_0111", BASELINE["0111"], "JTL_CHAIN", JTL_LABELS)])
-    result_cache = {point["point_id"]: json.loads((EXP / "boundary/results" / f"{point['point_id']}.json").read_text(encoding="utf-8")) for point in matrix["points"] if (EXP / "boundary/results" / f"{point['point_id']}.json").is_file()}
+    result_cache = {point["point_id"]: json.loads((EXP / "boundary/results" / f"{point['point_id']}_corrected_v2.json").read_text(encoding="utf-8")) for point in matrix["points"] if (EXP / "boundary/results" / f"{point['point_id']}_corrected_v2.json").is_file()}
     midpoint = {"L2": {"0011": None, "0111": None}, "IBias": {"0011": None, "0111": None}}
     for point_id, result in result_cache.items():
         axis = "L2" if point_id.startswith("STAGE_A") else "IBias"

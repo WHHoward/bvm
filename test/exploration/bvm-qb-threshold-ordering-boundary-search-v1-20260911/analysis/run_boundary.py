@@ -27,6 +27,10 @@ SUMMARY = EXP / "qa/execution_summary.json"
 MASKS = ("0011", "0111")
 
 
+def result_path(point_id: str) -> Path:
+    return RESULT_DIR / f"{point_id}_corrected_v2.json"
+
+
 def now() -> str:
     return datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
 
@@ -135,7 +139,7 @@ def run_case(point: dict[str, Any], mask: str) -> dict[str, Any]:
 
 
 def analyse(point: dict[str, Any], cases: dict[str, Any]) -> dict[str, Any]:
-    output = RESULT_DIR / f"{point['point_id']}.json"
+    output = result_path(point["point_id"])
     expected_hashes = {mask: cases[mask]["raw_sha256"] for mask in MASKS}
     if not output.is_file():
         command = [sys.executable, str(EXP / "analysis/threshold_analysis.py"), "--point-id", point["point_id"], "--changes", json.dumps(point["changes"], separators=(",", ":")), "--n2", str(REPO / cases["0011"]["raw_path"]), "--n3", str(REPO / cases["0111"]["raw_path"])]
@@ -162,9 +166,9 @@ def write_tables(state: dict[str, Any], matrix: dict[str, Any]) -> None:
     rows = []
     for point in matrix["points"]:
         record = state.get("points", {}).get(point["point_id"])
-        row = {"axis": "L2" if "L2_pH" in point["changes"] else "IBias", "point_id": point["point_id"], "changes": point["changes"], "execution_status": "NOT_RUN", "control_status": None, "N2_classification": None, "N3_classification": None, "N2_count": None, "N3_count": None, "threshold_ordering_outcome": None, "N2_BJ1_1_ps": None, "N2_BJ2_1_ps": None, "N2_BJ1_2_ps": None, "N2_BJ2_2_ps": None, "N2_JTL6_2_ps": None, "N2_terminal_2_ps": None, "N3_BJ1_3_ps": None, "N3_BJ2_3_ps": None, "N3_BJ1_4_ps": None, "N3_BJ2_4_ps": None, "N3_JTL6_4_ps": None, "N3_terminal_4_ps": None, "N3_max_BJ1_turns": None, "N3_final_BJ1_turns": None, "N3_max_BJ2_turns": None, "N3_final_BJ2_turns": None, "post_third_peak_I_L1_A": None, "integral_118_121_V_s": None, "integral_121_124_V_s": None, "integral_124_128_V_s": None, "source_110_121_A_s": None, "source_121_124_A_s": None, "notes": []}
-        if record and record.get("status") == "COMPLETE":
-            result = json.loads((RESULT_DIR / f"{point['point_id']}.json").read_text(encoding="utf-8"))
+        row = {"axis": "L2" if "L2_pH" in point["changes"] else "IBias", "point_id": point["point_id"], "changes": point["changes"], "execution_status": "NOT_RUN", "history_control_status": None, "N2_classification": None, "N3_classification": None, "N2_count": None, "N3_count": None, "threshold_ordering_outcome": None, "N2_BJ1_1_ps": None, "N2_BJ2_1_ps": None, "N2_BJ1_2_ps": None, "N2_BJ2_2_ps": None, "N2_JTL6_2_ps": None, "N2_terminal_2_ps": None, "N3_BJ1_3_ps": None, "N3_BJ2_3_ps": None, "N3_BJ1_4_ps": None, "N3_BJ2_4_ps": None, "N3_JTL6_4_ps": None, "N3_terminal_4_ps": None, "N3_max_BJ1_turns": None, "N3_final_BJ1_turns": None, "N3_max_BJ2_turns": None, "N3_final_BJ2_turns": None, "post_third_peak_I_L1_A": None, "integral_118_121_V_s": None, "integral_121_124_V_s": None, "integral_124_128_V_s": None, "source_110_121_A_s": None, "source_121_124_A_s": None, "notes": []}
+        if record and record.get("status") == "COMPLETE" and result_path(point["point_id"]).is_file():
+            result = json.loads(result_path(point["point_id"]).read_text(encoding="utf-8"))
             n2, n3 = result["n2"], result["n3"]
             n2e, n3e = n2["evidence"], n3["evidence"]
             n2c, n3c = n2["classification"], n3["classification"]
@@ -172,7 +176,7 @@ def write_tables(state: dict[str, Any], matrix: dict[str, Any]) -> None:
             n3p = n3e["terminal"].get("matched_candidate_pulses", n3e["terminal"].get("pulses", []))
             def tm(evidence: dict[str, Any], track: str, ordinal: int) -> float | None:
                 return evidence["phase_navigation"][track]["threshold_navigation_times_ps"].get(f"{({1: 0.5, 2: 1.5, 3: 2.5, 4: 3.5}[ordinal]):g}")
-            row.update({"execution_status": "COMPLETE", "control_status": "CLEAN" if n2c["control_status"] == n3c["control_status"] == "CLEAN" else "CONTROL_CONTAMINATED", "N2_classification": n2c["classification"], "N3_classification": n3c["classification"], "N2_count": n2e["complete_response_candidate_count"], "N3_count": n3e["complete_response_candidate_count"], "threshold_ordering_outcome": result.get("threshold_ordering", {}).get("outcome"), "N2_BJ1_1_ps": tm(n2e, "BJ1", 1), "N2_BJ2_1_ps": tm(n2e, "BJ2", 1), "N2_BJ1_2_ps": tm(n2e, "BJ1", 2), "N2_BJ2_2_ps": tm(n2e, "BJ2", 2), "N2_JTL6_2_ps": tm(n2e, "JTL6", 2), "N2_terminal_2_ps": n2p[1]["peak_time_ps"] if len(n2p) >= 2 else None, "N3_BJ1_3_ps": tm(n3e, "BJ1", 3), "N3_BJ2_3_ps": tm(n3e, "BJ2", 3), "N3_BJ1_4_ps": tm(n3e, "BJ1", 4), "N3_BJ2_4_ps": tm(n3e, "BJ2", 4), "N3_JTL6_4_ps": tm(n3e, "JTL6", 4), "N3_terminal_4_ps": n3p[3]["peak_time_ps"] if len(n3p) >= 4 else None, "N3_max_BJ1_turns": n3e["internal_reset"]["BJ1_max_relative_turns"], "N3_final_BJ1_turns": n3e["internal_reset"]["BJ1_final_relative_turns"], "N3_max_BJ2_turns": n3e["internal_reset"]["BJ2_max_relative_turns"], "N3_final_BJ2_turns": n3e["internal_reset"]["BJ2_final_relative_turns"], "post_third_peak_I_L1_A": n3e["internal_reset"]["peak_I_L1_A"], "integral_118_121_V_s": n3e["internal_reset"]["integral_118_121_V_s"], "integral_121_124_V_s": n3e["internal_reset"]["integral_121_124_V_s"], "integral_124_128_V_s": n3e["internal_reset"]["integral_124_128_V_s"], "source_110_121_A_s": n3e["source_feedback"]["I_B_JSL8"]["110_121"]["signed_area_A_s"], "source_121_124_A_s": n3e["source_feedback"]["I_B_JSL8"]["121_124"]["signed_area_A_s"], "notes": result.get("notes", []) + result.get("threshold_ordering", {}).get("outcome", "")})
+            row.update({"execution_status": "COMPLETE", "history_control_status": "CLEAN" if n2c["control_status"] == n3c["control_status"] == "CLEAN" else "CONTROL_CONTAMINATED", "N2_classification": n2c["classification"], "N3_classification": n3c["classification"], "N2_count": n2e["complete_response_candidate_count"], "N3_count": n3e["complete_response_candidate_count"], "threshold_ordering_outcome": result.get("threshold_ordering", {}).get("outcome"), "N2_BJ1_1_ps": tm(n2e, "BJ1", 1), "N2_BJ2_1_ps": tm(n2e, "BJ2", 1), "N2_BJ1_2_ps": tm(n2e, "BJ1", 2), "N2_BJ2_2_ps": tm(n2e, "BJ2", 2), "N2_JTL6_2_ps": tm(n2e, "JTL6", 2), "N2_terminal_2_ps": n2p[1]["peak_time_ps"] if len(n2p) >= 2 else None, "N3_BJ1_3_ps": tm(n3e, "BJ1", 3), "N3_BJ2_3_ps": tm(n3e, "BJ2", 3), "N3_BJ1_4_ps": tm(n3e, "BJ1", 4), "N3_BJ2_4_ps": tm(n3e, "BJ2", 4), "N3_JTL6_4_ps": tm(n3e, "JTL6", 4), "N3_terminal_4_ps": n3p[3]["peak_time_ps"] if len(n3p) >= 4 else None, "N3_max_BJ1_turns": n3e["internal_reset"]["BJ1_max_relative_turns"], "N3_final_BJ1_turns": n3e["internal_reset"]["BJ1_final_relative_turns"], "N3_max_BJ2_turns": n3e["internal_reset"]["BJ2_max_relative_turns"], "N3_final_BJ2_turns": n3e["internal_reset"]["BJ2_final_relative_turns"], "post_third_peak_I_L1_A": n3e["internal_reset"]["peak_I_L1_A"], "integral_118_121_V_s": n3e["internal_reset"]["integral_118_121_V_s"], "integral_121_124_V_s": n3e["internal_reset"]["integral_121_124_V_s"], "integral_124_128_V_s": n3e["internal_reset"]["integral_124_128_V_s"], "source_110_121_A_s": n3e["source_feedback"]["I_B_JSL8"]["110_121"]["signed_area_A_s"], "source_121_124_A_s": n3e["source_feedback"]["I_B_JSL8"]["121_124"]["signed_area_A_s"], "notes": result.get("notes", []) + [result.get("threshold_ordering", {}).get("outcome", "")]})
         rows.append(row)
     write_json(EXP / "boundary/BOUNDARY_RESULTS.json", {"schema": "bvm-qb-threshold-ordering-boundary-results-v1", "experiment_id": EXP.name, "updated_at_local": now(), "rows": rows, "not_sfq_count": True, "phase_semantics": "raw radians; rad/(2*pi) navigation only", "control_semantics": "complete downstream propagation in 70-110 ps history windows only"})
     lines = ["# QB threshold-ordering boundary results", "", "| axis | point | changes | control | N2 | N3 | midpoint outcome | N2 BJ1_2 ps | N3 BJ1_3 ps | N3 BJ1_4 ps | N3 JTL6_4 ps | N3 terminal_4 ps | source 110-121 A_s | source 121-124 A_s |", "|---|---|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|"]
@@ -192,14 +196,15 @@ def write_execution(state: dict[str, Any]) -> None:
 def main() -> int:
     preflight, matrix, relation = load_gate()
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.is_file() else state_template(preflight, relation)
-    if state.get("final_marker"):
+    if state.get("final_marker") and all(result_path(point["point_id"]).is_file() for point in matrix["points"] if state.get("points", {}).get(point["point_id"], {}).get("status") == "COMPLETE"):
+        write_tables(state, matrix)
         write_execution(state)
         return 0
     save_state(state)
     for point in matrix["points"]:
         pid = point["point_id"]
-        if state.get("points", {}).get(pid, {}).get("status") == "COMPLETE":
-            result = json.loads((RESULT_DIR / f"{pid}.json").read_text(encoding="utf-8"))
+        if state.get("points", {}).get(pid, {}).get("status") == "COMPLETE" and result_path(pid).is_file():
+            result = json.loads(result_path(pid).read_text(encoding="utf-8"))
         else:
             cases: dict[str, Any] = {}
             for mask in MASKS:
@@ -210,7 +215,7 @@ def main() -> int:
                     state["run_order"].append(case["run_id"])
                 save_state(state)
             result = analyse(point, cases)
-            state["points"][pid] = {"point_id": pid, "changes": point["changes"], "status": "COMPLETE", "candidate_class": result.get("candidate_class"), "threshold_ordering": result.get("threshold_ordering"), "cases": cases, "result_path": rel(RESULT_DIR / f"{pid}.json")}
+            state["points"][pid] = {"point_id": pid, "changes": point["changes"], "status": "COMPLETE", "candidate_class": result.get("candidate_class"), "threshold_ordering": result.get("threshold_ordering"), "cases": cases, "result_path": rel(result_path(pid))}
             save_state(state)
         write_tables(state, matrix)
         if result.get("threshold_ordering", {}).get("outcome") == "DIRECT_2_TO_3_THRESHOLD_WINDOW_FOUND":
@@ -224,7 +229,7 @@ def main() -> int:
             write_execution(state)
             print(json.dumps({"status": state["status"], "final_marker": state["final_marker"], "new_physical_solves": len(state["run_order"])}, ensure_ascii=False, indent=2))
             return 0
-    state["outcome"] = "NO_DIRECT_2_TO_3_TWO_PARAMETER_COMBINATION" if not any(json.loads(path.read_text(encoding="utf-8")).get("threshold_ordering", {}).get("outcome") == "DIRECT_2_TO_3_THRESHOLD_WINDOW_FOUND" for path in RESULT_DIR.glob("*.json")) else state.get("outcome")
+    state["outcome"] = "NO_DIRECT_2_TO_3_TWO_PARAMETER_COMBINATION" if not any(json.loads(path.read_text(encoding="utf-8")).get("threshold_ordering", {}).get("outcome") == "DIRECT_2_TO_3_THRESHOLD_WINDOW_FOUND" for path in RESULT_DIR.glob("*_corrected_v2.json")) else state.get("outcome")
     state["status"] = state["outcome"]
     state["final_marker"] = "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW"
     save_state(state)

@@ -158,7 +158,7 @@ def main() -> int:
     comparisons: dict[str, Any] = {}
     cache: dict[str, dict[str, Any]] = {}
     for point in matrix["points"]:
-        result_path = EXP / "boundary/results" / f"{point['point_id']}.json"
+        result_path = EXP / "boundary/results" / f"{point['point_id']}_corrected_v2.json"
         if not result_path.is_file():
             continue
         result = json.loads(result_path.read_text(encoding="utf-8"))

@@ -1,0 +1,132 @@
+{
+  "schema": "bvm-qb-threshold-ordering-boundary-independent-review-v1",
+  "experiment_id": "bvm-qb-threshold-ordering-boundary-search-v1-20260911",
+  "created_at_local": "2026-09-11T16:27:42+08:00",
+  "status": "PASS",
+  "raw_authority": true,
+  "independent_raw_re_read": true,
+  "primary_analysis_not_authority": true,
+  "population_oracle_used": false,
+  "boundary_comparisons": {
+    "STAGE_A_L2_MIDPOINT/n2": {
+      "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_A_L2_MIDPOINT_0011/raw.csv",
+      "primary_count": 1,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_A_L2_MIDPOINT_0011/raw.csv",
+        "raw_sha256": "84188279bab970ccadcf39def7ac116d2f4228ae61ee7a1ae59825716cdd0ce5",
+        "phase_supported_count": 1,
+        "matched_qbout_count": 1,
+        "matched_terminal_count": 1,
+        "independent_complete_response_candidate_count": 1,
+        "independent_ordered_chain_by_candidate": {
+          "1": true
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    },
+    "STAGE_A_L2_MIDPOINT/n3": {
+      "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_A_L2_MIDPOINT_0111/raw.csv",
+      "primary_count": 4,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_A_L2_MIDPOINT_0111/raw.csv",
+        "raw_sha256": "16e667f084bf95780be633ed4503abde608a28110126a95328cbfdc2c47853ff",
+        "phase_supported_count": 4,
+        "matched_qbout_count": 4,
+        "matched_terminal_count": 4,
+        "independent_complete_response_candidate_count": 4,
+        "independent_ordered_chain_by_candidate": {
+          "1": true,
+          "2": true,
+          "3": true,
+          "4": true
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    },
+    "STAGE_B_IBIAS_MIDPOINT/n2": {
+      "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011/raw.csv",
+      "primary_count": 1,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0011/raw.csv",
+        "raw_sha256": "67cee583ab031f0a7ac7e5478ecfe0c308d496d9067eb0ec50b28b1d294a6aca",
+        "phase_supported_count": 1,
+        "matched_qbout_count": 1,
+        "matched_terminal_count": 1,
+        "independent_complete_response_candidate_count": 1,
+        "independent_ordered_chain_by_candidate": {
+          "1": true
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    },
+    "STAGE_B_IBIAS_MIDPOINT/n3": {
+      "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0111/raw.csv",
+      "primary_count": 4,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/runs/BOUNDARY_STAGE_B_IBIAS_MIDPOINT_0111/raw.csv",
+        "raw_sha256": "c500346b7798dab360a92242ca0398fc09a858c80f9011ad33bc5afc2cc2f64e",
+        "phase_supported_count": 4,
+        "matched_qbout_count": 4,
+        "matched_terminal_count": 4,
+        "independent_complete_response_candidate_count": 4,
+        "independent_ordered_chain_by_candidate": {
+          "1": true,
+          "2": true,
+          "3": true,
+          "4": true
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    }
+  },
+  "validation_comparisons": {},
+  "baseline_corrected_control": {
+    "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+    "raw_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+    "phase_supported_count": 4,
+    "matched_qbout_count": 4,
+    "matched_terminal_count": 4,
+    "independent_complete_response_candidate_count": 4,
+    "independent_ordered_chain_by_candidate": {
+      "1": true,
+      "2": true,
+      "3": true,
+      "4": true
+    },
+    "independent_control_chain_count": 0,
+    "not_sfq_count": true
+  },
+  "checked_raw_count": 5,
+  "adversarial_checks": {
+    "wrong_branch_binding": "PASS",
+    "stale_result_hash_binding": "PASS",
+    "weak_oracle_not_used": "PASS",
+    "rollback_not_used_for_control": "PASS",
+    "no_extra_parameter": "PASS"
+  },
+  "failures": []
+}

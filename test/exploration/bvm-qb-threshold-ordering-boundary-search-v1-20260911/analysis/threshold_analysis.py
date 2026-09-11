@@ -293,8 +293,8 @@ def main() -> int:
         threshold_outcome = "2_TO_4_MIDPOINT"
     else:
         threshold_outcome = "BOUNDARY_MULTIPLICITY_AMBIGUOUS"
-    result["threshold_ordering"] = {"outcome": threshold_outcome, "axis": "L2" if "L2" in changes else "IBias", "fixed_L3_pH": 1.6, "bounded_only": True, "no_exact_continuous_threshold_inferred": True}
-    output = EXP / "screening/results" / f"{args.point_id}.json"
+    result["threshold_ordering"] = {"outcome": threshold_outcome, "axis": "L2" if "L2_pH" in changes else "IBias", "fixed_L3_pH": 1.6, "bounded_only": True, "no_exact_continuous_threshold_inferred": True}
+    output = EXP / "boundary/results" / f"{args.point_id}_corrected_v2.json"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": "PASS", "point_id": args.point_id, "candidate_class": result["candidate_class"], "n2": result["n2"]["classification"]["classification"], "n3": result["n3"]["classification"]["classification"], "control_n2": result["n2"]["classification"]["control_status"], "control_n3": result["n3"]["classification"]["control_status"]}, ensure_ascii=False, indent=2))

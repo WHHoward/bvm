@@ -54,7 +54,8 @@ def check_entry(entry: dict[str, Any], failures: list[str]) -> None:
     if not isinstance(command, list) or "-t" not in command or command[command.index("-t") + 1] != "sep_comb" or "-c" not in command or command[command.index("-c") + 1] != "dark" or "-j" not in command or command[command.index("-j") + 1] != "2pi":
         failures.append(f"plot command style mismatch: {entry['output_path']}")
     if entry.get("stage") == "standalone":
-        if entry.get("input_mode") != "RAW_DIRECT" or entry.get("input_path") != entry.get("input_raw") or entry.get("source_raw_paths") != [entry.get("input_raw")]:
+        expected_raw = str(entry.get("input_path", "")).removeprefix(EXP.relative_to(REPO).as_posix() + "/")
+        if entry.get("input_mode") != "RAW_DIRECT" or entry.get("input_raw") != expected_raw or entry.get("source_raw_paths") != [entry.get("input_path")]:
             failures.append(f"standalone is not raw-direct: {entry['output_path']}")
         if entry.get("temporary_input_sha256") is not None:
             failures.append(f"standalone has temporary input: {entry['output_path']}")

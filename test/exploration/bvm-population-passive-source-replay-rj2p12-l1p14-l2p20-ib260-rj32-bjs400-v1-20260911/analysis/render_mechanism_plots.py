@@ -116,7 +116,7 @@ def run_plot2(input_path: Path, output_path: Path, title: str, labels: list[str]
 
 
 def standalone_entry(run_id: str, source: Path, name: str, output: Path, labels: list[str], command: list[str]) -> dict[str, Any]:
-    return {"stage": "standalone", "run_id": run_id, "name": name, "input_mode": "RAW_DIRECT", "input_path": rel(source), "input_raw": rel(source), "input_raw_sha256": sha256(source), "output_path": rel(output), "output_sha256": sha256(output), "source_raw_paths": [rel(source)], "source_raw_sha256": [sha256(source)], "labels": labels, "signal_order": labels, "command": command, "renderer": rel(PLOTTER), "layout": "sep_comb", "color": "dark", "phase_option": "2pi", "phase_convention": "raw P radians; plot2 displays rad/(2*pi) turns; never SFQ count", "window_ps": [0.0, 200.0], "window_semantics": "whole-run raw timestamps; no focused window", "temporary_input_sha256": None}
+    return {"stage": "standalone", "run_id": run_id, "name": name, "input_mode": "RAW_DIRECT", "input_path": rel(source), "input_raw": source.relative_to(EXP).as_posix(), "input_raw_sha256": sha256(source), "output_path": rel(output), "output_sha256": sha256(output), "source_raw_paths": [rel(source)], "source_raw_sha256": [sha256(source)], "labels": labels, "signal_order": labels, "command": command, "renderer": rel(PLOTTER), "layout": "sep_comb", "color": "dark", "phase_option": "2pi", "phase_convention": "raw P radians; plot2 displays rad/(2*pi) turns; never SFQ count", "window_ps": [0.0, 200.0], "window_semantics": "whole-run raw timestamps; no focused window", "temporary_input_sha256": None}
 
 
 def write_merged(path: Path, sources: list[tuple[str, Path, dict[str, str]]], semantics: list[str]) -> tuple[list[str], str]:

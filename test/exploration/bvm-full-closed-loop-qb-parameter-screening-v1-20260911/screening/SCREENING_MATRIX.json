@@ -1,0 +1,1328 @@
+{
+  "schema": "bvm-full-closed-loop-qb-screening-matrix-v1",
+  "experiment_id": "bvm-full-closed-loop-qb-parameter-screening-v1-20260911",
+  "created_at_local": "2026-09-11T13:03:42+08:00",
+  "baseline": {
+    "Lin_pH": 1.5,
+    "L1_pH": 1.4,
+    "L2_pH": 2.0,
+    "RJ1_ohm": 32.0,
+    "RJ2_ohm": 12.0,
+    "IBias_uA": 260.0,
+    "BJS_area": 4.0,
+    "BJ1_area": 0.9,
+    "BJ2_area": 2.0,
+    "L3_pH": 1.3
+  },
+  "priority_order": [
+    "BJ2_area",
+    "Lin_pH",
+    "L1_pH",
+    "L2_pH",
+    "RJ1_ohm",
+    "IBias_uA",
+    "BJ1_area",
+    "BJS_area",
+    "RJ2_ohm",
+    "L3_pH"
+  ],
+  "parameters": {
+    "BJ2_area": [
+      1.6,
+      1.8,
+      2.2,
+      2.4
+    ],
+    "Lin_pH": [
+      1.0,
+      1.25,
+      1.75,
+      2.0
+    ],
+    "L1_pH": [
+      1.2,
+      1.6,
+      1.8,
+      2.0
+    ],
+    "L2_pH": [
+      1.6,
+      1.8,
+      2.2,
+      2.4
+    ],
+    "RJ1_ohm": [
+      24,
+      28,
+      36,
+      40
+    ],
+    "IBias_uA": [
+      240,
+      250,
+      270,
+      280
+    ],
+    "BJ1_area": [
+      0.75,
+      0.8,
+      1.0,
+      1.1
+    ],
+    "BJS_area": [
+      3.0,
+      3.5,
+      4.5,
+      5.0
+    ],
+    "RJ2_ohm": [
+      10,
+      14,
+      16
+    ],
+    "L3_pH": [
+      1.0,
+      1.6
+    ]
+  },
+  "masks": [
+    "0011",
+    "0111"
+  ],
+  "logical_point_count": 37,
+  "logical_case_count": 74,
+  "points": [
+    {
+      "parameter": "BJ2_area",
+      "value": 1.6,
+      "point_id": "BJ2_area_1p6",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_1p6.cir",
+      "variant_sha256": "ee09319f6bfea835bdaaa26cb1088d23cc44ed659aa9e225d1bb1dee4576a44d",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_1p6/0011.cir",
+          "sha256": "57aec8083e2f6a8cb8f0bc13763266892ff42fcd279a4fd41829661dc7a948f4",
+          "bytes": 7491,
+          "parameter": "BJ2_area",
+          "value": 1.6,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_1p6/0111.cir",
+          "sha256": "6a6a752f45e22717065d17b14aeed7e7894869e055001aa6ccc2b276aace734a",
+          "bytes": 7507,
+          "parameter": "BJ2_area",
+          "value": 1.6,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJ2_area",
+      "value": 1.8,
+      "point_id": "BJ2_area_1p8",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_1p8.cir",
+      "variant_sha256": "8b85cd5d446ea1f11a2cef11738ce45225fbaafd881b28724f00b4830e785aeb",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_1p8/0011.cir",
+          "sha256": "d25cac2c79053dabb1758a4d04c99a5ec0c185942e033a20df8ed8342abc66ec",
+          "bytes": 7491,
+          "parameter": "BJ2_area",
+          "value": 1.8,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_1p8/0111.cir",
+          "sha256": "ce02d9cada0de995406be3b7d76773f843d07b578a2c3615f06699d0dbc9569e",
+          "bytes": 7507,
+          "parameter": "BJ2_area",
+          "value": 1.8,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJ2_area",
+      "value": 2.2,
+      "point_id": "BJ2_area_2p2",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_2p2.cir",
+      "variant_sha256": "861aa9ab1eae56d183136c3a35871dffbabef9e29a1bea3ca4fb7eaecafb49eb",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_2p2/0011.cir",
+          "sha256": "46e126ade6f54f398e431fe4a7d3a4ad4fdccb8b8d7e6220656aa677dfd397aa",
+          "bytes": 7491,
+          "parameter": "BJ2_area",
+          "value": 2.2,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_2p2/0111.cir",
+          "sha256": "5dfb9253cfaa5c9743097890f35d7956756970a50c834dc5f66b114368dd7924",
+          "bytes": 7507,
+          "parameter": "BJ2_area",
+          "value": 2.2,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJ2_area",
+      "value": 2.4,
+      "point_id": "BJ2_area_2p4",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_2p4.cir",
+      "variant_sha256": "b966251e4390948afb833a5497c6a112b190d7dfd5c7a7dd4747df6cd5c1907b",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_2p4/0011.cir",
+          "sha256": "129be4b307471432136dab003521ec3fec5b5c7bb4328c627a309bd2b8635ca1",
+          "bytes": 7491,
+          "parameter": "BJ2_area",
+          "value": 2.4,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ2_area_2p4/0111.cir",
+          "sha256": "a789dd7bc5e00d0a4f53a9a2a8e766afe1ff4a8fcd0755bcf4f5f2f9e6ffde61",
+          "bytes": 7507,
+          "parameter": "BJ2_area",
+          "value": 2.4,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "Lin_pH",
+      "value": 1.0,
+      "point_id": "Lin_pH_1",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_1.cir",
+      "variant_sha256": "8446f66a931a767714bbd80468a76f74b1621f6edb583d1d8f342a540883adce",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_1/0011.cir",
+          "sha256": "e6ed60acc6a952fc3405424c985f6bf0e5427e45fa6ae31712339ecdfb69e0de",
+          "bytes": 7483,
+          "parameter": "Lin_pH",
+          "value": 1.0,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_1/0111.cir",
+          "sha256": "8c817143331a13cc41e3783ef24746d40a888f0ed2ddd1993af08bf627465d25",
+          "bytes": 7499,
+          "parameter": "Lin_pH",
+          "value": 1.0,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "Lin_pH",
+      "value": 1.25,
+      "point_id": "Lin_pH_1p25",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_1p25.cir",
+      "variant_sha256": "a3a08169c62713509ae3d0a6c99b1bd4dc8394bdcb9720ad15d9cebb27440668",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_1p25/0011.cir",
+          "sha256": "fd549262c223d5177b3651d7ba18df42aeeef73acda5e900d418d06f0c307ed1",
+          "bytes": 7489,
+          "parameter": "Lin_pH",
+          "value": 1.25,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_1p25/0111.cir",
+          "sha256": "347cecc55be5489603ed105981b81dd7564c4fe780374717579d5bd9de7657d3",
+          "bytes": 7505,
+          "parameter": "Lin_pH",
+          "value": 1.25,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "Lin_pH",
+      "value": 1.75,
+      "point_id": "Lin_pH_1p75",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_1p75.cir",
+      "variant_sha256": "4c7a586b82a899ff4f060a1103901b516a99783db93b1316a97f26308a1d6e8c",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_1p75/0011.cir",
+          "sha256": "b39eadc11bbdaca603b3a0f65b6e7fdd5aa8c28e554408631394fa92e6298be1",
+          "bytes": 7489,
+          "parameter": "Lin_pH",
+          "value": 1.75,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_1p75/0111.cir",
+          "sha256": "6c5164283c9e3fcad43d31d51a461893c0cc39b439a85139b762b7baf7c1dffa",
+          "bytes": 7505,
+          "parameter": "Lin_pH",
+          "value": 1.75,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "Lin_pH",
+      "value": 2.0,
+      "point_id": "Lin_pH_2",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_2.cir",
+      "variant_sha256": "4ced1d3d47e76fe5f4c7a64e2f7c6bec69fe31195f76eee4f43ae177ad4df529",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_2/0011.cir",
+          "sha256": "0ac905f1537e87a9a7b5a1e5c4ceae9efd1a60a3d192d9b35add3fb7f749a3a4",
+          "bytes": 7483,
+          "parameter": "Lin_pH",
+          "value": 2.0,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/Lin_pH_2/0111.cir",
+          "sha256": "d6d05b76aacd0d75a76185a440e11d6da841c8d75ca6a1de343c794d904cf628",
+          "bytes": 7499,
+          "parameter": "Lin_pH",
+          "value": 2.0,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L1_pH",
+      "value": 1.2,
+      "point_id": "L1_pH_1p2",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_1p2.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_1p2/0011.cir",
+          "sha256": "59aa22131f1405d6ea30be20441320bbb67d16d39aaa88e413577fa4096d903f",
+          "bytes": 7485,
+          "parameter": "L1_pH",
+          "value": 1.2,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_1p2/0111.cir",
+          "sha256": "eb76f3a4f9208dda1be1ce09b90ce2e237a1b6cc46685c782247c966c3b100da",
+          "bytes": 7501,
+          "parameter": "L1_pH",
+          "value": 1.2,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L1_pH",
+      "value": 1.6,
+      "point_id": "L1_pH_1p6",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_1p6.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_1p6/0011.cir",
+          "sha256": "646710914ab6e0a9ff5f1cd09781a3c1b61d1883c23c9d88bc542687d2c9577b",
+          "bytes": 7485,
+          "parameter": "L1_pH",
+          "value": 1.6,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_1p6/0111.cir",
+          "sha256": "7ce4e734a7d01ecf5169c67573a583667b18e17d6ee670e973e5075a596a2487",
+          "bytes": 7501,
+          "parameter": "L1_pH",
+          "value": 1.6,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L1_pH",
+      "value": 1.8,
+      "point_id": "L1_pH_1p8",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_1p8.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_1p8/0011.cir",
+          "sha256": "bc21bbbcb4078f465d615dd8bdfd9fbeb4d3187d995b76166241e7b5b45fe192",
+          "bytes": 7485,
+          "parameter": "L1_pH",
+          "value": 1.8,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_1p8/0111.cir",
+          "sha256": "90b9c6eeadb543d40c5adc355700fd78ad496ec28b4e6661f04a67d936a31a42",
+          "bytes": 7501,
+          "parameter": "L1_pH",
+          "value": 1.8,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L1_pH",
+      "value": 2.0,
+      "point_id": "L1_pH_2",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_2.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_2/0011.cir",
+          "sha256": "79beb29044925a7a0b1b569d700270a7410084b0636ea5d020b1af31a894f41b",
+          "bytes": 7479,
+          "parameter": "L1_pH",
+          "value": 2.0,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L1_pH_2/0111.cir",
+          "sha256": "34c15175611b1b3097e07602f30275d8af536cd9160db9a56080c02301462340",
+          "bytes": 7495,
+          "parameter": "L1_pH",
+          "value": 2.0,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L2_pH",
+      "value": 1.6,
+      "point_id": "L2_pH_1p6",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_1p6.cir",
+      "variant_sha256": "c5b45588ec4c4bf3d10c2f68655b5718423b2d32347f8474543a40f3022b92c6",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_1p6/0011.cir",
+          "sha256": "2b45874a8a03e19d8863f40727a296cc2bf52b4914b602442b9a709814682361",
+          "bytes": 7485,
+          "parameter": "L2_pH",
+          "value": 1.6,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_1p6/0111.cir",
+          "sha256": "db6dfada6e1501c95bebb0ee2a553990791b8d37603794c8bfa10443b723368d",
+          "bytes": 7501,
+          "parameter": "L2_pH",
+          "value": 1.6,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L2_pH",
+      "value": 1.8,
+      "point_id": "L2_pH_1p8",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_1p8.cir",
+      "variant_sha256": "5b24139ef7cdaada827511dc1eab8af1592a830bc25785005dc68d810394a683",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_1p8/0011.cir",
+          "sha256": "d7585f97c597db1dc7889162f70bca61aa78c8e0ebc81b6c583344a7c136b5ef",
+          "bytes": 7485,
+          "parameter": "L2_pH",
+          "value": 1.8,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_1p8/0111.cir",
+          "sha256": "4550dae5094a66f97d6cbb87692ad45815a96c58269dea29189a5a1f92bcaece",
+          "bytes": 7501,
+          "parameter": "L2_pH",
+          "value": 1.8,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L2_pH",
+      "value": 2.2,
+      "point_id": "L2_pH_2p2",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_2p2.cir",
+      "variant_sha256": "88c0af691f51a1f1beb6b43854a14be942d78dbbf8e53c3e42da06d4622c6b52",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_2p2/0011.cir",
+          "sha256": "21233e926c3d3c9003ca407f038f1549c520335d089d721a24f5ed25e4f9d156",
+          "bytes": 7485,
+          "parameter": "L2_pH",
+          "value": 2.2,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_2p2/0111.cir",
+          "sha256": "3c3783425078ddfe953a6f3677752bf8b5a50ea0bb1220e41489b30966120241",
+          "bytes": 7501,
+          "parameter": "L2_pH",
+          "value": 2.2,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L2_pH",
+      "value": 2.4,
+      "point_id": "L2_pH_2p4",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_2p4.cir",
+      "variant_sha256": "10cb460bec9637c8fb1c8bb4ac9d5af67513c736d6dd373e4dc9d851f32c9302",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_2p4/0011.cir",
+          "sha256": "41a12df8e42ee91842114b0abbd86dacd3c41379dd9e323026c8740825a03cef",
+          "bytes": 7485,
+          "parameter": "L2_pH",
+          "value": 2.4,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L2_pH_2p4/0111.cir",
+          "sha256": "60a4bf5e5fa4d84beb08007fa0bf87d44c27f5d3753a0829dfc12af31beb9d0c",
+          "bytes": 7501,
+          "parameter": "L2_pH",
+          "value": 2.4,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "RJ1_ohm",
+      "value": 24,
+      "point_id": "RJ1_ohm_24",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_24.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_24/0011.cir",
+          "sha256": "0c9c8e7adec32fd7865919247f3abd4b7c253e549af7d94110426bcfd0c2710b",
+          "bytes": 7487,
+          "parameter": "RJ1_ohm",
+          "value": 24,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_24/0111.cir",
+          "sha256": "b284cbc467b3e9d8912950597dee218d1f66fa9fa3f69d84f1bba9e0bc5d67d9",
+          "bytes": 7503,
+          "parameter": "RJ1_ohm",
+          "value": 24,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "RJ1_ohm",
+      "value": 28,
+      "point_id": "RJ1_ohm_28",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_28.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_28/0011.cir",
+          "sha256": "2a8912e52ba0b22cc139e4cd7f9e47edeb70220d343c7c2d75952bb0101c4a3b",
+          "bytes": 7487,
+          "parameter": "RJ1_ohm",
+          "value": 28,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_28/0111.cir",
+          "sha256": "59b5e94c328c7338c2e8abea790852f2afdac0374ef9771bc62ec9f1fd73378e",
+          "bytes": 7503,
+          "parameter": "RJ1_ohm",
+          "value": 28,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "RJ1_ohm",
+      "value": 36,
+      "point_id": "RJ1_ohm_36",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_36.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_36/0011.cir",
+          "sha256": "e6178582d5a1c653819868e7e8cdb8aca77b1dc46ad6350ba4e04a5f681d5cec",
+          "bytes": 7487,
+          "parameter": "RJ1_ohm",
+          "value": 36,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_36/0111.cir",
+          "sha256": "a2dfcca86a9d6a393174ce7dee337d133ee3a89daa70d844362afba78e8cc8c6",
+          "bytes": 7503,
+          "parameter": "RJ1_ohm",
+          "value": 36,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "RJ1_ohm",
+      "value": 40,
+      "point_id": "RJ1_ohm_40",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_40.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_40/0011.cir",
+          "sha256": "8a85ec3987e862c008288fac4b8afd67d72acf91029f2bc2c584f838fcfbf45a",
+          "bytes": 7487,
+          "parameter": "RJ1_ohm",
+          "value": 40,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ1_ohm_40/0111.cir",
+          "sha256": "e56250698475246cd304cffdf6c5548d3fedb23b0eeb094029022f2c737d8e0f",
+          "bytes": 7503,
+          "parameter": "RJ1_ohm",
+          "value": 40,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "IBias_uA",
+      "value": 240,
+      "point_id": "IBias_uA_240",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_240.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_240/0011.cir",
+          "sha256": "d075127883c1df0288c687743b52c834b03b5485065cfbd74363a5281fad26e8",
+          "bytes": 7491,
+          "parameter": "IBias_uA",
+          "value": 240,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_240/0111.cir",
+          "sha256": "d340d8a0c8887882ab2f11c339a9ff7d97945044c88c4db248196cc135265fca",
+          "bytes": 7507,
+          "parameter": "IBias_uA",
+          "value": 240,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "IBias_uA",
+      "value": 250,
+      "point_id": "IBias_uA_250",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_250.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_250/0011.cir",
+          "sha256": "d5357832250d5c2c591fec5311960ec545393c1013528f283b54940a9f33bf03",
+          "bytes": 7491,
+          "parameter": "IBias_uA",
+          "value": 250,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_250/0111.cir",
+          "sha256": "b3e8542442cdacd90626bc14a7f025e0d3e13db8ccb7e5443374d8474143c178",
+          "bytes": 7507,
+          "parameter": "IBias_uA",
+          "value": 250,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "IBias_uA",
+      "value": 270,
+      "point_id": "IBias_uA_270",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_270.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_270/0011.cir",
+          "sha256": "8af6a7bdbae55fb2c5942db22f1aa47476886edea7c77c4cc8077aedbd5fbf27",
+          "bytes": 7491,
+          "parameter": "IBias_uA",
+          "value": 270,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_270/0111.cir",
+          "sha256": "2efeedfec98ca1f8b3d0990b4a95ac29c25da36e545327b46cbd26f4ad09cb93",
+          "bytes": 7507,
+          "parameter": "IBias_uA",
+          "value": 270,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "IBias_uA",
+      "value": 280,
+      "point_id": "IBias_uA_280",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_280.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_280/0011.cir",
+          "sha256": "3934c5fa9a67667f82f4996e762bd89189e5773baf0e7bbb8a1dfbc873446bdc",
+          "bytes": 7491,
+          "parameter": "IBias_uA",
+          "value": 280,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/IBias_uA_280/0111.cir",
+          "sha256": "6b7f6a4bce9db45d16f328328f82a77af7752ff59f639900904a0851805633e2",
+          "bytes": 7507,
+          "parameter": "IBias_uA",
+          "value": 280,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJ1_area",
+      "value": 0.75,
+      "point_id": "BJ1_area_0p75",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_0p75.cir",
+      "variant_sha256": "bec2d7cbd5fe5612b9f34e33a093995dc1673db1bf44de6d56e12432f96419e9",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_0p75/0011.cir",
+          "sha256": "7a341cb8ea10c365d9fba54f6d52677e025ca0b989c5ac5968c92a02f13828bc",
+          "bytes": 7493,
+          "parameter": "BJ1_area",
+          "value": 0.75,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_0p75/0111.cir",
+          "sha256": "4a6623da9e630a4f5b6e6b82fa559e05463897cb74ff416ebaed8982fa341f21",
+          "bytes": 7509,
+          "parameter": "BJ1_area",
+          "value": 0.75,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJ1_area",
+      "value": 0.8,
+      "point_id": "BJ1_area_0p8",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_0p8.cir",
+      "variant_sha256": "8260f4e25a1a8cc0b31d07cfdb4e0244410d3af119d4de73a70c8cfd63c4a1fa",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_0p8/0011.cir",
+          "sha256": "a88feb0412767fa533e3c9deb72141b6e283b78202520c97e23acaaf9f276fad",
+          "bytes": 7491,
+          "parameter": "BJ1_area",
+          "value": 0.8,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_0p8/0111.cir",
+          "sha256": "7ffa37058daab8718e689447f188c010c1736934bae0c8fabeb820bb9d66e104",
+          "bytes": 7507,
+          "parameter": "BJ1_area",
+          "value": 0.8,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJ1_area",
+      "value": 1.0,
+      "point_id": "BJ1_area_1",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_1.cir",
+      "variant_sha256": "5ef99cda0d30690bb8542b6df3deab6f993d47ad954ca5588406e6e33b88d0b9",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_1/0011.cir",
+          "sha256": "4bcc800ce95e1dfadbb04faa34f5bcaa4156e7f7850e18965efe35c1e054ba53",
+          "bytes": 7487,
+          "parameter": "BJ1_area",
+          "value": 1.0,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_1/0111.cir",
+          "sha256": "0562dfd1ff6940fac3697f5573543e9cb0cddefd0b56baef0c3b8aab17d24d52",
+          "bytes": 7503,
+          "parameter": "BJ1_area",
+          "value": 1.0,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJ1_area",
+      "value": 1.1,
+      "point_id": "BJ1_area_1p1",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_1p1.cir",
+      "variant_sha256": "fa4e0bbcbc6eef80322abe0a6bf6f1776a3c7c29fbaf757f5e29836f172374fb",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_1p1/0011.cir",
+          "sha256": "cabb8af43ed8477979d1cf263dcacd03acb1d8c16fa2ed3c2325603b373013ca",
+          "bytes": 7491,
+          "parameter": "BJ1_area",
+          "value": 1.1,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJ1_area_1p1/0111.cir",
+          "sha256": "ab07efe86a162d8cd3f5b0c0f5a7e85abf23d7580515b5e9ebdb670b8eb0854c",
+          "bytes": 7507,
+          "parameter": "BJ1_area",
+          "value": 1.1,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJS_area",
+      "value": 3.0,
+      "point_id": "BJS_area_3",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_3.cir",
+      "variant_sha256": "00e09c62828d1252990bad5a72f781959a468c67dfb569d3f2410a42901ab30a",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_3/0011.cir",
+          "sha256": "751075e7312681f1facafb3a642b78cca5cd43044fbd97e38e7c3d3ea45cf9ea",
+          "bytes": 7487,
+          "parameter": "BJS_area",
+          "value": 3.0,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_3/0111.cir",
+          "sha256": "d00257fd2585e522c25970cf9b9bcab4b4cc343afa382435d44e986724e9652b",
+          "bytes": 7503,
+          "parameter": "BJS_area",
+          "value": 3.0,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJS_area",
+      "value": 3.5,
+      "point_id": "BJS_area_3p5",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_3p5.cir",
+      "variant_sha256": "0ef064c81f3851215731da63b4a997d9cf0866b815dab25d3804142137f6d285",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_3p5/0011.cir",
+          "sha256": "20e5d9af374a71288a33241b30eff88ee957c2baf75fefce12914e5111a89492",
+          "bytes": 7491,
+          "parameter": "BJS_area",
+          "value": 3.5,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_3p5/0111.cir",
+          "sha256": "f7042a7078ee267d888a49fdb533f37b21d51abe51cb366990ae344bf230b5e6",
+          "bytes": 7507,
+          "parameter": "BJS_area",
+          "value": 3.5,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJS_area",
+      "value": 4.5,
+      "point_id": "BJS_area_4p5",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_4p5.cir",
+      "variant_sha256": "14c31433b6ff61cd60d4d679dd981350b2d14f8d57c54482567637ea3d7ffe18",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_4p5/0011.cir",
+          "sha256": "da4d5ce32feb223495f1ab15735da356a79530f9bb4ed32122c2ef68fc033eb6",
+          "bytes": 7491,
+          "parameter": "BJS_area",
+          "value": 4.5,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_4p5/0111.cir",
+          "sha256": "cbcf0780e35caf4864f68b79d983dd564cfc1cab387b95bf4975dac3b9885497",
+          "bytes": 7507,
+          "parameter": "BJS_area",
+          "value": 4.5,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "BJS_area",
+      "value": 5.0,
+      "point_id": "BJS_area_5",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_5.cir",
+      "variant_sha256": "df8edd4d3643f0d4aa1463ea89e8e02c1b72dd63a9e2a885851e612693a870e9",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_5/0011.cir",
+          "sha256": "6fbdc887a3064855f8826c6f0faf203e62be0dc8fb4f23a73b37823154d0fa4f",
+          "bytes": 7487,
+          "parameter": "BJS_area",
+          "value": 5.0,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/BJS_area_5/0111.cir",
+          "sha256": "33e189b0f08eee1c8a4548040621eb18595c4e258c420525b340e5f4c27e5fd4",
+          "bytes": 7503,
+          "parameter": "BJS_area",
+          "value": 5.0,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "RJ2_ohm",
+      "value": 10,
+      "point_id": "RJ2_ohm_10",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ2_ohm_10.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ2_ohm_10/0011.cir",
+          "sha256": "4c6d72df8cd7250ec48f3cc980e0197ee2612fd00774529b4733ddcef1faf37f",
+          "bytes": 7487,
+          "parameter": "RJ2_ohm",
+          "value": 10,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ2_ohm_10/0111.cir",
+          "sha256": "b12ac635eca7e7371016089f6e866409a9c6e8743888796e87a89bef92fbe62b",
+          "bytes": 7503,
+          "parameter": "RJ2_ohm",
+          "value": 10,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "RJ2_ohm",
+      "value": 14,
+      "point_id": "RJ2_ohm_14",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ2_ohm_14.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ2_ohm_14/0011.cir",
+          "sha256": "56106a939bbb4a1d3e20b0c0b7fcbb289c1253c14752b4dd5b4c0b4f81444861",
+          "bytes": 7487,
+          "parameter": "RJ2_ohm",
+          "value": 14,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ2_ohm_14/0111.cir",
+          "sha256": "137752ae7dbc279910f896e9d016b3df039220e588e896d445a48c79609f87a1",
+          "bytes": 7503,
+          "parameter": "RJ2_ohm",
+          "value": 14,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "RJ2_ohm",
+      "value": 16,
+      "point_id": "RJ2_ohm_16",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ2_ohm_16.cir",
+      "variant_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ2_ohm_16/0011.cir",
+          "sha256": "c31bb4b1c50b671ce4076291ab0ab7a1f8a69bb698c75fee4948de23b8cdb934",
+          "bytes": 7487,
+          "parameter": "RJ2_ohm",
+          "value": 16,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/RJ2_ohm_16/0111.cir",
+          "sha256": "c4f648b567bf1ef345ac6a05210f0a1c4126356e20bc981a9bcb40f1049ba4a8",
+          "bytes": 7503,
+          "parameter": "RJ2_ohm",
+          "value": 16,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L3_pH",
+      "value": 1.0,
+      "point_id": "L3_pH_1",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L3_pH_1.cir",
+      "variant_sha256": "dab4674b7a7cd0e7d7a1d692f99fce35e5b2cfafd3ab814aba7bd9de3750a454",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L3_pH_1/0011.cir",
+          "sha256": "a7a34b55115038969d6859e0f6c0e100d4a090200bd3f06b57e7219d4d65cc14",
+          "bytes": 7481,
+          "parameter": "L3_pH",
+          "value": 1.0,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L3_pH_1/0111.cir",
+          "sha256": "2209eeca25d0d7346c5d5c23a1ee3943b348f7bc3302df913e0a1ae6a17cc273",
+          "bytes": 7497,
+          "parameter": "L3_pH",
+          "value": 1.0,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    },
+    {
+      "parameter": "L3_pH",
+      "value": 1.6,
+      "point_id": "L3_pH_1p6",
+      "variant_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L3_pH_1p6.cir",
+      "variant_sha256": "dcb531b24e8653de4f268f0f14f7b39b3ee0725154b8e15e18ac2cccb0e312ca",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L3_pH_1p6/0011.cir",
+          "sha256": "98ea7da63e9c710c38f85b6c9a5307f1d1b2558f9bae0e1053bf39c21cf896ee",
+          "bytes": 7485,
+          "parameter": "L3_pH",
+          "value": 1.6,
+          "mask": "0011",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/screening/decks/L3_pH_1p6/0111.cir",
+          "sha256": "a857c45f54123c9ef4043c5186fb70d4cc973f069c35c934406ebb3815e9f34d",
+          "bytes": 7501,
+          "parameter": "L3_pH",
+          "value": 1.6,
+          "mask": "0111",
+          "bvm_count": 4,
+          "jsl_count": 8,
+          "failures": []
+        }
+      }
+    }
+  ],
+  "reuse_cases": {
+    "RJ2_10_0011": "references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011",
+    "RJ2_10_0111": "references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111"
+  },
+  "candidate_validation_masks": [
+    "0001",
+    "0011",
+    "0111",
+    "1111"
+  ],
+  "failures": []
+}

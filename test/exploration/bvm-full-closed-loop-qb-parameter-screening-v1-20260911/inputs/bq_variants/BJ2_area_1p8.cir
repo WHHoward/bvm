@@ -1,0 +1,38 @@
+
+* DERIVED LOCAL PARAMETERIZED COPY OF BVMSim/BQ.cir
+* Baseline source SHA-256 is recorded in PREFLIGHT.md and provenance.json.
+* Only the active BQ element values for L1, RJ1, RJ2 and IBias are parameter references;
+* topology, all other values, model and subcircuit interface are unchanged.
+
+* .subckt BQ IN OUT IB
+
+* Lin IN 1 0.8p
+* L0 4 OUT 1.323p
+* L1 2 3 3.91p
+* L2 3 4 3.91p
+* BJs 1 2 jjmit area=1.33
+* BJL1 2 0 jjmit area=1.12
+* BJL2 4 0 jjmit area=1.89
+* RB IB 3 8.5
+* * IB 0 IBias pwl(0 0 1p 100u)
+
+* .ends BQ
+
+
+
+.subckt BQ IN OUT
+
+Lin IN 1 1.5p
+L1 2 3 {L1_VALUE}
+L2 3 4 2p
+BJs 1 2 jjmit area=4
+BJ1 2 0 jjmit area=0.9
+RJ1 2 0 {RJ1_VALUE}
+BJ2 4 0 jjmit area=1.8
+RJ2 4 0 {RJ2_VALUE}
+L3 4 OUT 1.3p
+
+* RB IB 3 9
+IB 0 3 pwl(0 0 1p IB_VALUE)
+.model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=160, rN=16, icrit=0.1mA)
+.ends BQ

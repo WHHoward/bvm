@@ -1,0 +1,642 @@
+{
+  "schema": "bvm-full-closed-loop-qb-screening-source-manifest-v1",
+  "experiment_id": "bvm-full-closed-loop-qb-parameter-screening-v1-20260911",
+  "created_at_local": "2026-09-11T13:03:41+08:00",
+  "repository_head_at_registration": "a9a048fd2f48ce727098dfbed14425b84ce77c58",
+  "remote_master_at_registration": "a9a048fd2f48ce727098dfbed14425b84ce77c58",
+  "current_population_source_manifest": {
+    "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/SOURCE_MANIFEST.json",
+    "sha256": "99be7c3d7ad62a4ff03684b7d1b127a98d5262b15bfcdb9e5dfecb598f930502",
+    "bytes": 3632,
+    "role": "current RJ2=12 population source manifest"
+  },
+  "current_population_packages": {
+    "rj2p10": {
+      "path": "test/exploration/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/handoff/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_corrected-v2_raw_handoff.zip",
+      "sha256": "8651e9dd61aad4efedbf5cf5883687af542ab457d106c159e57b6d9435e9bf06",
+      "bytes": 9669747,
+      "role": "latest RJ2=10 evidence"
+    },
+    "rj2p11": {
+      "path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/handoff/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip",
+      "sha256": "785be4b1d92d9eeea4e3dfa044a70ac55cf47d7a6f2feea860f4b1c3d79566af",
+      "bytes": 10555946,
+      "role": "latest RJ2=11 evidence"
+    },
+    "rj2p12": {
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/handoff/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip",
+      "sha256": "3ceba168be95b7e48cbb77ccb13d4f4133893cb39813c025b7d4a3f631a09dff",
+      "bytes": 130901740,
+      "role": "latest RJ2=12 evidence"
+    }
+  },
+  "inputs": [
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/array_fixture_template.cir",
+      "sha256": "8971a82dfbac223b9be139f719afae2eb156f0f68fb2a4811858f0a0b482cf71",
+      "bytes": 5822,
+      "role": "current full closed-loop stimulus template",
+      "origin_path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/array_fixture_template.cir",
+      "origin_sha256": "8971a82dfbac223b9be139f719afae2eb156f0f68fb2a4811858f0a0b482cf71"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "current BVM source include",
+      "origin_path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/bvm_jm2_connected.cir",
+      "origin_sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "current JJ model",
+      "origin_path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/jjmit.cir",
+      "origin_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "current six-stage JTL",
+      "origin_path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/jtl2.cir",
+      "origin_sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/BQ_parameterized_bjs400.cir",
+      "sha256": "883308517d48470cbedab878f9e3c71721cd972db248c6b821ce5dba642ff810",
+      "bytes": 813,
+      "role": "current BQ baseline",
+      "origin_path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/BQ_parameterized_bjs400.cir",
+      "origin_sha256": "883308517d48470cbedab878f9e3c71721cd972db248c6b821ce5dba642ff810"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "current canonical RJ2=12 BQ",
+      "origin_path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "origin_sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42"
+    }
+  ],
+  "variants": [
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_1p6.cir",
+      "sha256": "ee09319f6bfea835bdaaa26cb1088d23cc44ed659aa9e225d1bb1dee4576a44d",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_1p8.cir",
+      "sha256": "8b85cd5d446ea1f11a2cef11738ce45225fbaafd881b28724f00b4830e785aeb",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_2p2.cir",
+      "sha256": "861aa9ab1eae56d183136c3a35871dffbabef9e29a1bea3ca4fb7eaecafb49eb",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ2_area_2p4.cir",
+      "sha256": "b966251e4390948afb833a5497c6a112b190d7dfd5c7a7dd4747df6cd5c1907b",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_1.cir",
+      "sha256": "8446f66a931a767714bbd80468a76f74b1621f6edb583d1d8f342a540883adce",
+      "bytes": 826,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_1p25.cir",
+      "sha256": "a3a08169c62713509ae3d0a6c99b1bd4dc8394bdcb9720ad15d9cebb27440668",
+      "bytes": 829,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_1p75.cir",
+      "sha256": "4c7a586b82a899ff4f060a1103901b516a99783db93b1316a97f26308a1d6e8c",
+      "bytes": 829,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/Lin_pH_2.cir",
+      "sha256": "4ced1d3d47e76fe5f4c7a64e2f7c6bec69fe31195f76eee4f43ae177ad4df529",
+      "bytes": 826,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_1p2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_1p6.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_1p8.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L1_pH_2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_1p6.cir",
+      "sha256": "c5b45588ec4c4bf3d10c2f68655b5718423b2d32347f8474543a40f3022b92c6",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_1p8.cir",
+      "sha256": "5b24139ef7cdaada827511dc1eab8af1592a830bc25785005dc68d810394a683",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_2p2.cir",
+      "sha256": "88c0af691f51a1f1beb6b43854a14be942d78dbbf8e53c3e42da06d4622c6b52",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L2_pH_2p4.cir",
+      "sha256": "10cb460bec9637c8fb1c8bb4ac9d5af67513c736d6dd373e4dc9d851f32c9302",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_24.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_28.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_36.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ1_ohm_40.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_240.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_250.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_270.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/IBias_uA_280.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_0p75.cir",
+      "sha256": "bec2d7cbd5fe5612b9f34e33a093995dc1673db1bf44de6d56e12432f96419e9",
+      "bytes": 829,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_0p8.cir",
+      "sha256": "8260f4e25a1a8cc0b31d07cfdb4e0244410d3af119d4de73a70c8cfd63c4a1fa",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_1.cir",
+      "sha256": "5ef99cda0d30690bb8542b6df3deab6f993d47ad954ca5588406e6e33b88d0b9",
+      "bytes": 826,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJ1_area_1p1.cir",
+      "sha256": "fa4e0bbcbc6eef80322abe0a6bf6f1776a3c7c29fbaf757f5e29836f172374fb",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_3.cir",
+      "sha256": "00e09c62828d1252990bad5a72f781959a468c67dfb569d3f2410a42901ab30a",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_3p5.cir",
+      "sha256": "0ef064c81f3851215731da63b4a997d9cf0866b815dab25d3804142137f6d285",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_4p5.cir",
+      "sha256": "14c31433b6ff61cd60d4d679dd981350b2d14f8d57c54482567637ea3d7ffe18",
+      "bytes": 830,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/BJS_area_5.cir",
+      "sha256": "df8edd4d3643f0d4aa1463ea89e8e02c1b72dd63a9e2a885851e612693a870e9",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ2_ohm_10.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ2_ohm_14.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/RJ2_ohm_16.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L3_pH_1.cir",
+      "sha256": "dab4674b7a7cd0e7d7a1d692f99fce35e5b2cfafd3ab814aba7bd9de3750a454",
+      "bytes": 826,
+      "role": "one-factor QB variant"
+    },
+    {
+      "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/inputs/bq_variants/L3_pH_1p6.cir",
+      "sha256": "dcb531b24e8653de4f268f0f14f7b39b3ee0725154b8e15e18ac2cccb0e312ca",
+      "bytes": 828,
+      "role": "one-factor QB variant"
+    }
+  ],
+  "references": {
+    "references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111": {
+      "raw.csv": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111/raw.csv",
+        "sha256": "b57450ece35bf330bc3f438ea1dbe1a847dfa6fbc23497fcab2f51e0eda60171",
+        "bytes": 7101561,
+        "role": "immutable reuse/reference"
+      },
+      "deck.cir": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111/deck.cir",
+        "sha256": "95257848d13c917f634c28fe95226ce489624cdc732081adce320d43c9d94b82",
+        "bytes": 7516,
+        "role": "immutable reuse/reference"
+      },
+      "metadata.json": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111/metadata.json",
+        "sha256": "a26387c1ebfa955b3a4c245d103e133a3b3820f459b8b04cc4d2cc8ea72aa0bc",
+        "bytes": 2846,
+        "role": "immutable reuse/reference"
+      },
+      "run.log": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111/run.log",
+        "sha256": "aba9774f0d6373f0d0969a82612d7cc01e31d05928a354d713387dd0d09050ee",
+        "bytes": 223931,
+        "role": "immutable reuse/reference"
+      }
+    },
+    "references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011": {
+      "raw.csv": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011/raw.csv",
+        "sha256": "11a9a4f6d4170bf0516d63f09ef25c377b2ea291ee39c757b96ac8ce4ca0b69c",
+        "bytes": 7101964,
+        "role": "immutable reuse/reference"
+      },
+      "deck.cir": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011/deck.cir",
+        "sha256": "577cdc1a208133dfb95e1027880bf9bdad573473bf5bebffef73dfd45c952d35",
+        "bytes": 7500,
+        "role": "immutable reuse/reference"
+      },
+      "metadata.json": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011/metadata.json",
+        "sha256": "1b5a516affb694ee673c0db8f635845b660820111c39bf71b641ee4890e055f0",
+        "bytes": 2846,
+        "role": "immutable reuse/reference"
+      },
+      "run.log": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011/run.log",
+        "sha256": "0a8d4ca8f9184a14e311cbf0acdee08b9f06b8f54ad3f8755c8f32b0fdd01be2",
+        "bytes": 221445,
+        "role": "immutable reuse/reference"
+      }
+    },
+    "references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111": {
+      "raw.csv": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111/raw.csv",
+        "sha256": "20e7de57985495401809cd06814cad73f659f06fabdf7900491b58079bc206b8",
+        "bytes": 7101513,
+        "role": "immutable reuse/reference"
+      },
+      "deck.cir": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111/deck.cir",
+        "sha256": "9bd032cc0ef89297d170b1a75d845d4b23aa6fa81ef86d2e3879566229ff4342",
+        "bytes": 7516,
+        "role": "immutable reuse/reference"
+      },
+      "metadata.json": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111/metadata.json",
+        "sha256": "adfd3a9362c7270b96ca6785e0c1f69f9b8dcdd9d475734f1c84621739ffdb31",
+        "bytes": 2857,
+        "role": "immutable reuse/reference"
+      },
+      "run.log": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111/run.log",
+        "sha256": "cdee6d41a2051488cd72127a22641210832d9112ba8942d09db66913347ffc9c",
+        "bytes": 225704,
+        "role": "immutable reuse/reference"
+      }
+    },
+    "references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011": {
+      "raw.csv": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/raw.csv",
+        "sha256": "cdd816e78b3b93f48c4608154a5d1ad7d2c3b1b7e7e197cc8e189036c828358c",
+        "bytes": 7096627,
+        "role": "immutable reuse/reference"
+      },
+      "deck.cir": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/deck.cir",
+        "sha256": "6d3f7eb984396dcd845ae8d8af262bc3fef928e1135201a692bb92cd8aa6c24f",
+        "bytes": 7500,
+        "role": "immutable reuse/reference"
+      },
+      "metadata.json": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/metadata.json",
+        "sha256": "9ecc42a661f75db12eff2ead45bd971bf163cfc07e7abc714d85abfa4db6fa79",
+        "bytes": 2771,
+        "role": "immutable reuse/reference"
+      },
+      "run.log": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011/run.log",
+        "sha256": "a67a87261131e853c82be156623153329fa5c97b29e21c2e7eb8b367439841ff",
+        "bytes": 219503,
+        "role": "immutable reuse/reference"
+      }
+    },
+    "references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111": {
+      "raw.csv": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111/raw.csv",
+        "sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "bytes": 7101704,
+        "role": "immutable reuse/reference"
+      },
+      "deck.cir": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111/deck.cir",
+        "sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+        "bytes": 7516,
+        "role": "immutable reuse/reference"
+      },
+      "metadata.json": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111/metadata.json",
+        "sha256": "aae65de60e4cda1f3be7755385f6927b61472ca9e6686c382f1b5ee86b032e2f",
+        "bytes": 2792,
+        "role": "immutable reuse/reference"
+      },
+      "run.log": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111/run.log",
+        "sha256": "0004b1cb858f440fc5ed73386cecacdb6a07378fe6c01c2d0f70d9f849073e9c",
+        "bytes": 221561,
+        "role": "immutable reuse/reference"
+      }
+    },
+    "references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+      "raw.csv": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/raw.csv",
+        "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "bytes": 7102297,
+        "role": "immutable reuse/reference"
+      },
+      "deck.cir": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/deck.cir",
+        "sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+        "bytes": 7500,
+        "role": "immutable reuse/reference"
+      },
+      "metadata.json": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/metadata.json",
+        "sha256": "0271dd8e664f855d32727d385c81a473e0353ea79a7f8cdbadec002ec386a6aa",
+        "bytes": 2786,
+        "role": "immutable reuse/reference"
+      },
+      "run.log": {
+        "path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/run.log",
+        "sha256": "1c7f9aa53cb5336458e701a65451f51333881e6af120b62acf940539e9386d1b",
+        "bytes": 222015,
+        "role": "immutable reuse/reference"
+      }
+    }
+  },
+  "reuse_verification": {
+    "status": "PASS",
+    "cases": {
+      "RJ2_10_0011": {
+        "status": "PASS",
+        "source_path": "test/exploration/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/references/rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011",
+        "copied_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0011",
+        "RJ2_ohm": 10.0,
+        "mask": "0011",
+        "physical_solve_this_experiment": false,
+        "artifacts": {
+          "raw.csv": {
+            "source_sha256": "cdd816e78b3b93f48c4608154a5d1ad7d2c3b1b7e7e197cc8e189036c828358c",
+            "copied_sha256": "cdd816e78b3b93f48c4608154a5d1ad7d2c3b1b7e7e197cc8e189036c828358c",
+            "bytes": 7096627,
+            "exact": true
+          },
+          "deck.cir": {
+            "source_sha256": "6d3f7eb984396dcd845ae8d8af262bc3fef928e1135201a692bb92cd8aa6c24f",
+            "copied_sha256": "6d3f7eb984396dcd845ae8d8af262bc3fef928e1135201a692bb92cd8aa6c24f",
+            "bytes": 7500,
+            "exact": true
+          },
+          "metadata.json": {
+            "source_sha256": "9ecc42a661f75db12eff2ead45bd971bf163cfc07e7abc714d85abfa4db6fa79",
+            "copied_sha256": "9ecc42a661f75db12eff2ead45bd971bf163cfc07e7abc714d85abfa4db6fa79",
+            "bytes": 2771,
+            "exact": true
+          },
+          "run.log": {
+            "source_sha256": "a67a87261131e853c82be156623153329fa5c97b29e21c2e7eb8b367439841ff",
+            "copied_sha256": "a67a87261131e853c82be156623153329fa5c97b29e21c2e7eb8b367439841ff",
+            "bytes": 219503,
+            "exact": true
+          }
+        },
+        "topology_structural_signature_matches_baseline": true,
+        "failures": []
+      },
+      "RJ2_10_0111": {
+        "status": "PASS",
+        "source_path": "test/exploration/bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111",
+        "copied_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p10/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P10_0111",
+        "RJ2_ohm": 10.0,
+        "mask": "0111",
+        "physical_solve_this_experiment": false,
+        "artifacts": {
+          "raw.csv": {
+            "source_sha256": "20e7de57985495401809cd06814cad73f659f06fabdf7900491b58079bc206b8",
+            "copied_sha256": "20e7de57985495401809cd06814cad73f659f06fabdf7900491b58079bc206b8",
+            "bytes": 7101513,
+            "exact": true
+          },
+          "deck.cir": {
+            "source_sha256": "9bd032cc0ef89297d170b1a75d845d4b23aa6fa81ef86d2e3879566229ff4342",
+            "copied_sha256": "9bd032cc0ef89297d170b1a75d845d4b23aa6fa81ef86d2e3879566229ff4342",
+            "bytes": 7516,
+            "exact": true
+          },
+          "metadata.json": {
+            "source_sha256": "adfd3a9362c7270b96ca6785e0c1f69f9b8dcdd9d475734f1c84621739ffdb31",
+            "copied_sha256": "adfd3a9362c7270b96ca6785e0c1f69f9b8dcdd9d475734f1c84621739ffdb31",
+            "bytes": 2857,
+            "exact": true
+          },
+          "run.log": {
+            "source_sha256": "cdee6d41a2051488cd72127a22641210832d9112ba8942d09db66913347ffc9c",
+            "copied_sha256": "cdee6d41a2051488cd72127a22641210832d9112ba8942d09db66913347ffc9c",
+            "bytes": 225704,
+            "exact": true
+          }
+        },
+        "topology_structural_signature_matches_baseline": true,
+        "failures": []
+      },
+      "RJ2_11_0011": {
+        "status": "PASS",
+        "source_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011",
+        "copied_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011",
+        "RJ2_ohm": 11.0,
+        "mask": "0011",
+        "physical_solve_this_experiment": false,
+        "artifacts": {
+          "raw.csv": {
+            "source_sha256": "11a9a4f6d4170bf0516d63f09ef25c377b2ea291ee39c757b96ac8ce4ca0b69c",
+            "copied_sha256": "11a9a4f6d4170bf0516d63f09ef25c377b2ea291ee39c757b96ac8ce4ca0b69c",
+            "bytes": 7101964,
+            "exact": true
+          },
+          "deck.cir": {
+            "source_sha256": "577cdc1a208133dfb95e1027880bf9bdad573473bf5bebffef73dfd45c952d35",
+            "copied_sha256": "577cdc1a208133dfb95e1027880bf9bdad573473bf5bebffef73dfd45c952d35",
+            "bytes": 7500,
+            "exact": true
+          },
+          "metadata.json": {
+            "source_sha256": "1b5a516affb694ee673c0db8f635845b660820111c39bf71b641ee4890e055f0",
+            "copied_sha256": "1b5a516affb694ee673c0db8f635845b660820111c39bf71b641ee4890e055f0",
+            "bytes": 2846,
+            "exact": true
+          },
+          "run.log": {
+            "source_sha256": "0a8d4ca8f9184a14e311cbf0acdee08b9f06b8f54ad3f8755c8f32b0fdd01be2",
+            "copied_sha256": "0a8d4ca8f9184a14e311cbf0acdee08b9f06b8f54ad3f8755c8f32b0fdd01be2",
+            "bytes": 221445,
+            "exact": true
+          }
+        },
+        "topology_structural_signature_matches_baseline": true,
+        "failures": []
+      },
+      "RJ2_11_0111": {
+        "status": "PASS",
+        "source_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111",
+        "copied_path": "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111",
+        "RJ2_ohm": 11.0,
+        "mask": "0111",
+        "physical_solve_this_experiment": false,
+        "artifacts": {
+          "raw.csv": {
+            "source_sha256": "b57450ece35bf330bc3f438ea1dbe1a847dfa6fbc23497fcab2f51e0eda60171",
+            "copied_sha256": "b57450ece35bf330bc3f438ea1dbe1a847dfa6fbc23497fcab2f51e0eda60171",
+            "bytes": 7101561,
+            "exact": true
+          },
+          "deck.cir": {
+            "source_sha256": "95257848d13c917f634c28fe95226ce489624cdc732081adce320d43c9d94b82",
+            "copied_sha256": "95257848d13c917f634c28fe95226ce489624cdc732081adce320d43c9d94b82",
+            "bytes": 7516,
+            "exact": true
+          },
+          "metadata.json": {
+            "source_sha256": "a26387c1ebfa955b3a4c245d103e133a3b3820f459b8b04cc4d2cc8ea72aa0bc",
+            "copied_sha256": "a26387c1ebfa955b3a4c245d103e133a3b3820f459b8b04cc4d2cc8ea72aa0bc",
+            "bytes": 2846,
+            "exact": true
+          },
+          "run.log": {
+            "source_sha256": "aba9774f0d6373f0d0969a82612d7cc01e31d05928a354d713387dd0d09050ee",
+            "copied_sha256": "aba9774f0d6373f0d0969a82612d7cc01e31d05928a354d713387dd0d09050ee",
+            "bytes": 223931,
+            "exact": true
+          }
+        },
+        "topology_structural_signature_matches_baseline": true,
+        "failures": []
+      }
+    },
+    "failures": [],
+    "no_reuse_by_filename_only": true,
+    "exact_copy_and_topology_checked": true
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "bytes": 1233976,
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "baseline": {
+    "Lin_pH": 1.5,
+    "L1_pH": 1.4,
+    "L2_pH": 2.0,
+    "RJ1_ohm": 32.0,
+    "RJ2_ohm": 12.0,
+    "IBias_uA": 260.0,
+    "BJS_area": 4.0,
+    "BJ1_area": 0.9,
+    "BJ2_area": 2.0,
+    "L3_pH": 1.3
+  },
+  "logical_screening_point_count": 37,
+  "logical_screening_case_count": 74,
+  "reuse_case_count": 2,
+  "maximum_new_screening_solve_count": 72,
+  "maximum_total_new_solve_count_including_validation": 74,
+  "no_replay": true,
+  "no_passive_capture": true
+}

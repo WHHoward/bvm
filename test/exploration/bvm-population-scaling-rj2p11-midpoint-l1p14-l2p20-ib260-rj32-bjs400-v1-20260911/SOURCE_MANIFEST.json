@@ -1,0 +1,84 @@
+{
+  "schema": "bjs400-rj2p11-midpoint-source-manifest-v1",
+  "experiment_id": "bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911",
+  "created_at_local": "2026-09-11T10:07:15+08:00",
+  "authority_remote": "WHHoward/bvm",
+  "authority_git_head": "93e53d5c703f5cde2cdb5131719cd170d6aeec01",
+  "authority_experiment": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910",
+  "authority_package_sha256": "3ceba168be95b7e48cbb77ccb13d4f4133893cb39813c025b7d4a3f631a09dff",
+  "authority_package_bytes": 130901740,
+  "authority_source_manifest_sha256": "99be7c3d7ad62a4ff03684b7d1b127a98d5262b15bfcdb9e5dfecb598f930502",
+  "local_sources": [
+    {
+      "path": "array_fixture_template.cir",
+      "repo_relative_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/inputs/array_fixture_template.cir",
+      "sha256": "8971a82dfbac223b9be139f719afae2eb156f0f68fb2a4811858f0a0b482cf71",
+      "bytes": 5822,
+      "role": "frozen BJS400 input closure"
+    },
+    {
+      "path": "bvm_jm2_connected.cir",
+      "repo_relative_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "frozen BJS400 input closure"
+    },
+    {
+      "path": "jjmit.cir",
+      "repo_relative_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "frozen BJS400 input closure"
+    },
+    {
+      "path": "jtl2.cir",
+      "repo_relative_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "frozen BJS400 input closure"
+    },
+    {
+      "path": "BQ_parameterized_bjs400.cir",
+      "repo_relative_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/inputs/BQ_parameterized_bjs400.cir",
+      "sha256": "883308517d48470cbedab878f9e3c71721cd972db248c6b821ce5dba642ff810",
+      "bytes": 813,
+      "role": "frozen BJS400 input closure"
+    },
+    {
+      "path": "BQ_parameterized_bjs400_rj2.cir",
+      "repo_relative_path": "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "frozen BJS400 input closure"
+    },
+    {
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "solver identity",
+      "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+    }
+  ],
+  "fixed_working_point": {
+    "L1_pH": 1.4,
+    "L2_pH": 2.0,
+    "IBias_uA": 260.0,
+    "RJ1_ohm": 32.0,
+    "RJ2_ohm": 11.0,
+    "BJS_area": 4,
+    "BJS_Ic_uA": 400
+  },
+  "authorized_new_masks": [
+    "0001",
+    "0011",
+    "0111",
+    "1111"
+  ],
+  "reference_masks": [
+    "0001",
+    "0011",
+    "0111",
+    "1111"
+  ],
+  "only_registered_physical_delta": "RJ2 12ohm -> 11ohm"
+}

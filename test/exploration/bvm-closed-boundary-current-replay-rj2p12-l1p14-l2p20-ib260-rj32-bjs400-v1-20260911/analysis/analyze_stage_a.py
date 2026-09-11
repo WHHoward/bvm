@@ -20,6 +20,7 @@ REPLAY = EXP / "runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/raw.csv"
 WINDOWS = ((70.0, 81.0), (90.0, 101.0), (101.0, 110.0), (110.0, 130.0), (110.0, 200.0))
 THRESHOLDS = (0.5, 1.5, 2.5, 3.5)
 ACTIVITY_THRESHOLD_V = 1.0e-5
+SOURCE_SIGNAL = "I(B_JSL8)"
 REPLAY_REQUIRED = ("I(I_REPLAY)", "I(LIN|XBQ1)", "I(L1|XBQ1)", "I(L2|XBQ1)", "I(BJ1|XBQ1)", "V(BJ1|XBQ1)", "P(BJ1|XBQ1)", "I(BJ2|XBQ1)", "V(BJ2|XBQ1)", "P(BJ2|XBQ1)", "V(QBOUT)", "V(JTL1_OUT)", "V(JTL2_OUT)", "V(JTL3_OUT)", "V(JTL4_OUT)", "V(JTL5_OUT)", "V(JTL6_OUT)", "I(R_TERM)")
 SOURCE_REQUIRED = ("I(B_JSL8)",) + tuple(label for label in REPLAY_REQUIRED if label != "I(I_REPLAY)")
 
@@ -152,7 +153,6 @@ def write_json(path: Path, value: Any) -> None:
 
 
 def write_review(metrics: dict[str, Any]) -> None:
-    source = metrics["source"]
     replay = metrics["replay"]
     lines = ["# Stage A raw review navigation", "", "Scientific interpretation: `NOT_PERFORMED`.", "", "The source is an immutable closed-loop raw current. The replay is ideal current forcing; it does not erase interaction history embedded in the recorded waveform. Phase navigation and activity segments are not SFQ counts.", "", "## Stored-history and source fidelity", "", f"- source raw SHA-256: `{metrics['source_raw_sha256']}`", f"- source snapshot SHA-256: `{metrics['source_snapshot_sha256']}`", f"- replay raw SHA-256: `{metrics['replay_raw_sha256']}`", f"- exact source/replay current mismatch: `{metrics['source_replay_current_exactness']['max_absolute_mismatch_A']}` A", "", "| signal | 109.9 ps closed | 109.9 ps replay | difference |", "|---|---:|---:|---:|"]
     for label in ("I(L1|XBQ1)", "I(L2|XBQ1)", "I(BJ1|XBQ1)", "I(BJ2|XBQ1)", "P(BJ1|XBQ1)", "P(BJ2|XBQ1)"):

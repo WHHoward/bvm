@@ -1,0 +1,253 @@
+{
+  "schema": "bvm-closed-boundary-current-replay-stage-a-provenance-v1",
+  "experiment_id": "bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911",
+  "created_at_local": "2026-09-11T11:50:01+08:00",
+  "repository_head_at_qa": "15f51649a787a887ebaef0ffc1c3edf87b82b5fd",
+  "source_manifest": {
+    "path": "SOURCE_MANIFEST.json",
+    "sha256": "9d1192c4eca2cd4a905ec85f87b12fc4ebe99093d9799b91d69879d32a0d94f3"
+  },
+  "preflight": {
+    "path": "analysis/preflight.json",
+    "sha256": "2735cdf8a961541ec7d4644a74b060e40b4be1c8c3db977c52eb6287785d1d81"
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "raw": {
+    "source_reference": {
+      "status": "PASS",
+      "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/raw.csv",
+      "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "bytes": 7102297,
+      "header_count": 265,
+      "sample_count": 1999,
+      "time_range_s": [
+        0.0,
+        1.999e-10
+      ],
+      "grid": {
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "irregular_vs_0.1ps": 1,
+        "actual_grid_used": true
+      },
+      "required_probes": [
+        "I(B_JSL8)",
+        "I(LIN|XBQ1)",
+        "I(L1|XBQ1)",
+        "I(L2|XBQ1)",
+        "I(BJ1|XBQ1)",
+        "V(BJ1|XBQ1)",
+        "P(BJ1|XBQ1)",
+        "I(BJ2|XBQ1)",
+        "V(BJ2|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "V(QBOUT)",
+        "V(JTL1_OUT)",
+        "V(JTL2_OUT)",
+        "V(JTL3_OUT)",
+        "V(JTL4_OUT)",
+        "V(JTL5_OUT)",
+        "V(JTL6_OUT)",
+        "I(R_TERM)"
+      ],
+      "metadata_raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "raw_immutable": true,
+      "failures": []
+    },
+    "stage_a_replay": {
+      "status": "PASS",
+      "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/raw.csv",
+      "sha256": "2ba9b57a659abafebb8c27650805fe9c3719521d811a442b1c09476d67d3813f",
+      "bytes": 1830401,
+      "header_count": 69,
+      "sample_count": 1999,
+      "time_range_s": [
+        0.0,
+        1.999e-10
+      ],
+      "grid": {
+        "dt_min_ps": 0.09999999999997898,
+        "dt_max_ps": 0.19999999999999996,
+        "irregular_vs_0.1ps": 1,
+        "actual_grid_used": true
+      },
+      "required_probes": [
+        "I(I_REPLAY)",
+        "I(LIN|XBQ1)",
+        "I(L1|XBQ1)",
+        "I(L2|XBQ1)",
+        "I(BJ1|XBQ1)",
+        "V(BJ1|XBQ1)",
+        "P(BJ1|XBQ1)",
+        "I(BJ2|XBQ1)",
+        "V(BJ2|XBQ1)",
+        "P(BJ2|XBQ1)",
+        "V(QBOUT)",
+        "V(JTL1_OUT)",
+        "V(JTL2_OUT)",
+        "V(JTL3_OUT)",
+        "V(JTL4_OUT)",
+        "V(JTL5_OUT)",
+        "V(JTL6_OUT)",
+        "I(R_TERM)"
+      ],
+      "metadata_raw_sha256": "2ba9b57a659abafebb8c27650805fe9c3719521d811a442b1c09476d67d3813f",
+      "raw_immutable": true,
+      "failures": []
+    },
+    "source_artifacts": {
+      "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": {
+        "raw.csv": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/raw.csv",
+          "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+          "bytes": 7102297
+        },
+        "deck.cir": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/deck.cir",
+          "sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+          "bytes": 7500
+        },
+        "metadata.json": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/metadata.json",
+          "sha256": "0271dd8e664f855d32727d385c81a473e0353ea79a7f8cdbadec002ec386a6aa",
+          "bytes": 2786
+        },
+        "run.log": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/run.log",
+          "sha256": "1c7f9aa53cb5336458e701a65451f51333881e6af120b62acf940539e9386d1b",
+          "bytes": 222015
+        }
+      }
+    },
+    "run_artifacts": {
+      "CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12": {
+        "raw.csv": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/raw.csv",
+          "sha256": "2ba9b57a659abafebb8c27650805fe9c3719521d811a442b1c09476d67d3813f",
+          "bytes": 1830401
+        },
+        "deck.cir": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/deck.cir",
+          "sha256": "1a91417f39298142e67e422530deb554f0e29b3cf3af71b9297ef224d5127f1a",
+          "bytes": 41974
+        },
+        "metadata.json": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/metadata.json",
+          "sha256": "2f9dc03a392d80dbd13eb2e05ee7f603fa15b75063d18a2586cacb5eef47f331",
+          "bytes": 2998
+        },
+        "run.log": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/run.log",
+          "sha256": "4ae678fbbfe66392a781f1c14a4da34b17e94d5b2e2bad5536c204005ddf65ad",
+          "bytes": 202920
+        }
+      }
+    }
+  },
+  "execution": {
+    "schema": "bvm-closed-boundary-current-replay-execution-v1",
+    "experiment_id": "bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911",
+    "stage": "A",
+    "started_at_local": "2026-09-11T11:46:24+08:00",
+    "finished_at_local": "2026-09-11T11:46:24+08:00",
+    "head": "15f51649a787a887ebaef0ffc1c3edf87b82b5fd",
+    "preflight_head": "a41d84e58036b4a36b9a4a2b2225cb2554d4830e",
+    "solver_solve_invocations": 1,
+    "exact_physical_solve_count": 1,
+    "authorized_current_turn_physical_solve_count": 1,
+    "maximum_task_physical_solve_count": 2,
+    "run_order": [
+      "CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12"
+    ],
+    "authorized_cases": [
+      "CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12"
+    ],
+    "stage_b_started": false,
+    "stage_b_status": "DEFERRED_PENDING_SCIENTIFIC_REVIEW_AUTHORIZATION",
+    "unauthorized_extra_solves": 0,
+    "failed_runs": [],
+    "raw_files_modified": 0,
+    "scientific_analysis_performed": false,
+    "no_retry_performed": true,
+    "status": "PASS",
+    "run": {
+      "schema": "bvm-closed-boundary-current-replay-run-metadata-v1",
+      "experiment_id": "bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911",
+      "run_id": "CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12",
+      "stage": "A",
+      "source_run": "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
+      "source_signal": "I(B_JSL8)",
+      "source_raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "working_point": {
+        "L1_pH": 1.4,
+        "L2_pH": 2.0,
+        "RJ1_ohm": 32.0,
+        "RJ2_ohm": 12.0,
+        "IBias_uA": 260.0,
+        "BJS_area": 4,
+        "BJ1_area": 0.9,
+        "BJ2_area": 2,
+        "L3_pH": 1.3,
+        "termination_ohm": 10.0
+      },
+      "started_at_local": "2026-09-11T11:46:24+08:00",
+      "finished_at_local": "2026-09-11T11:46:24+08:00",
+      "git_head_before_run": "15f51649a787a887ebaef0ffc1c3edf87b82b5fd",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+      },
+      "artifacts": {
+        "deck": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/deck.cir",
+          "sha256": "1a91417f39298142e67e422530deb554f0e29b3cf3af71b9297ef224d5127f1a",
+          "bytes": 41974
+        },
+        "raw": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/raw.csv",
+          "exists": true,
+          "sha256": "2ba9b57a659abafebb8c27650805fe9c3719521d811a442b1c09476d67d3813f",
+          "bytes": 1830401
+        },
+        "log": {
+          "path": "test/exploration/bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12/run.log",
+          "sha256": "4ae678fbbfe66392a781f1c14a4da34b17e94d5b2e2bad5536c204005ddf65ad",
+          "bytes": 202920
+        }
+      },
+      "exit_code": 0,
+      "execution_status": "RUN_PASS",
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "parameter_tuning": false,
+      "scientific_analysis_performed": false,
+      "raw_summary": {
+        "header_count": 69,
+        "sample_count": 1999,
+        "first_timestamp": "0.000000e+00",
+        "last_timestamp": "1.999000e-10"
+      },
+      "stage_b_started": false,
+      "source_manifest_sha256": "9d1192c4eca2cd4a905ec85f87b12fc4ebe99093d9799b91d69879d32a0d94f3"
+    },
+    "source_manifest_sha256": "9d1192c4eca2cd4a905ec85f87b12fc4ebe99093d9799b91d69879d32a0d94f3"
+  },
+  "stage_b": {
+    "status": "DEFERRED_PENDING_SCIENTIFIC_REVIEW_AUTHORIZATION",
+    "started": false
+  },
+  "raw_authority": true,
+  "scientific_analysis_performed": false
+}

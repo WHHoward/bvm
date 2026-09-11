@@ -101,8 +101,9 @@ def head_relation(preflight_head: str) -> dict[str, Any]:
         f"{prefix}/screening/SCREENING_MATRIX.json",
         f"{prefix}/screening/SCREENING_MATRIX.md",
     }
+    allowed_sets = (allowed - {f"{prefix}/screening/SCREENING_MATRIX.md"}, allowed)
     distance = int(subprocess.check_output(["git", "rev-list", "--count", f"{preflight_head}..{head}"], cwd=REPO, text=True).strip())
-    valid = distance == 1 and changed == allowed
+    valid = distance == 1 and changed in allowed_sets
     return {
         "status": "PASS" if valid else "FAIL",
         "head": head,

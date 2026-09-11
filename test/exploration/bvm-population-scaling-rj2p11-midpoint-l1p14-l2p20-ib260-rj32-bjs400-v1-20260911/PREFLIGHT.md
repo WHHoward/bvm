@@ -3,7 +3,7 @@
 This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911`
-- Preflight HEAD: `93e53d5c703f5cde2cdb5131719cd170d6aeec01`
+- Preflight HEAD: `de853f9dd0acf231a120316bd8566040acd0bda4`
 - Latest remote/source HEAD was rechecked before registration.
 - Frozen working point: L1=1.4pH, L2=2.0pH, IBias=260uA, RJ1=32ohm, RJ2=11ohm, BJS area=4/Ic=400uA.
 - Sole physical parameter delta from the RJ2=12 authority: RJ2 12ohm -> 11ohm.

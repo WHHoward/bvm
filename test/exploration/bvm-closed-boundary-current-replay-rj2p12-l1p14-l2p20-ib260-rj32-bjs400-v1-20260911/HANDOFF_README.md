@@ -15,4 +15,7 @@ Raw CSVs, decks, logs, metadata, exact-fidelity QA, raw navigation, plots and
 the immutable source reference are the review inputs. The replay is ideal
 current forcing, not a Thevenin/Norton or circuit-equivalent source.
 
+Stage B outcome: `CLOSED_BOUNDARY_CURRENT_REPLAY_REPRODUCES_N3_FOUR_RESPONSE`.
+Combined outcome: `CLOSED_BOUNDARY_CURRENT_REPLAY_REPRODUCES_N2_2_AND_N3_4`.
+
 Final state: `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`.

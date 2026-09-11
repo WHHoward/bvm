@@ -14,7 +14,7 @@ from typing import Any
 
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
-PACKAGE_RELATIVE = "handoff/bvm-full-closed-loop-qb-parameter-screening-v1-20260911_raw_handoff.zip"
+PACKAGE_RELATIVE = "handoff/bvm-full-closed-loop-qb-parameter-screening-v1-20260911_raw_handoff_v2.zip"
 sys.path.insert(0, str(REPO / "scripts"))
 from build_experiment_package import build_package  # noqa: E402
 

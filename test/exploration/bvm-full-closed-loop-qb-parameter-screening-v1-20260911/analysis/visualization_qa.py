@@ -48,7 +48,7 @@ def main() -> int:
     checked_outputs: set[Path] = set()
     phase_entries = 0
     for entry in standalone:
-        raw = REPO / entry["input_raw"]
+        raw = EXP / entry["input_raw"]
         output = REPO / entry["output_path"]
         if not raw.is_file() or entry.get("input_raw_sha256") != sha256(raw):
             failures.append(f"stale/missing standalone raw: {entry.get('run_id')}")

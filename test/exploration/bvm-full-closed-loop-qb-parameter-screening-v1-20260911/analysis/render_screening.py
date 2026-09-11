@@ -45,6 +45,10 @@ def rel(path: Path) -> str:
     return path.resolve().relative_to(REPO.resolve()).as_posix()
 
 
+def exp_rel(path: Path) -> str:
+    return path.resolve().relative_to(EXP.resolve()).as_posix()
+
+
 def raw_path_from_result(result: dict[str, Any], branch: str) -> Path:
     return REPO / result[branch]["raw_path"]
 
@@ -74,7 +78,7 @@ def render(raw: Path, output: Path, labels: tuple[str, ...], title: str) -> list
 def standalone_entry(run_id: str, raw: Path, name: str, labels: tuple[str, ...]) -> dict[str, Any]:
     output = EXP / "visualization/plots" / ("baseline" if run_id.startswith("BASELINE_") else "runs") / run_id / f"{name}.html"
     command = render(raw, output, labels, f"{run_id} — {name}")
-    return {"stage": "standalone", "run_id": run_id, "name": name, "input_mode": "RAW_DIRECT", "input_raw": rel(raw), "input_raw_sha256": sha256(raw), "output_path": rel(output), "output_sha256": sha256(output), "labels": list(labels), "signal_order": list(labels), "command": command, "renderer": "scripts/josim-plot2.py", "layout": "sep_comb", "color": "dark", "phase_option": "2pi", "phase_convention": "raw P radians; plot2 displays rad/(2*pi) turns; never SFQ count", "window_ps": [0.0, 200.0], "window_semantics": "whole-run raw timestamps", "temporary_input_sha256": None}
+    return {"stage": "standalone", "run_id": run_id, "name": name, "input_mode": "RAW_DIRECT", "input_raw": exp_rel(raw), "input_raw_sha256": sha256(raw), "output_path": rel(output), "output_sha256": sha256(output), "labels": list(labels), "signal_order": list(labels), "command": command, "renderer": "scripts/josim-plot2.py", "layout": "sep_comb", "color": "dark", "phase_option": "2pi", "phase_convention": "raw P radians; plot2 displays rad/(2*pi) turns; never SFQ count", "window_ps": [0.0, 200.0], "window_semantics": "whole-run raw timestamps", "temporary_input_sha256": None}
 
 
 def focused_merge(baseline: Path, candidate: Path, labels: tuple[str, ...], output: Path, title: str, baseline_name: str, candidate_name: str) -> dict[str, Any]:

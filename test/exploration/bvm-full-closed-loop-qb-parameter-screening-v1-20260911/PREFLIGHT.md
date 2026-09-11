@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-full-closed-loop-qb-parameter-screening-v1-20260911`
 - Initial registration HEAD: `a9a048fd2f48ce727098dfbed14425b84ce77c58`
-- Sealed preflight HEAD: `02a30937066d4c20ae29dd4e0b72238f38e6c4df`
+- Sealed preflight HEAD: `0fd51ae6ab2a56d9024e280ddadf74307105fd32`
 - Remote `bvm/master`: `a9a048fd2f48ce727098dfbed14425b84ce77c58`
 - Status: **PASS**
 - Solver has not been invoked at preflight.

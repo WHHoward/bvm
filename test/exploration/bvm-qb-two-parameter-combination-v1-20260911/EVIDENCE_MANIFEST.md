@@ -4,6 +4,7 @@ This is a full physical closed-loop combination handoff.
 
 - Registered matrix: 9 two-parameter points, 18 logical screening cases.
 - Execution order: `C01 → C02 → C04 → C03 → C05 → C07 → C06 → C08 → C09`.
+- Actual execution: 18 new physical solves; no early-stop candidate and no validation solves.
 - Candidate validation, only after a clean S point: `0001` and `1111`.
 - Canonical evidence ZIP: `handoff/bvm-qb-two-parameter-combination-v1-20260911_raw_handoff.zip`.
 - Scientific claims are bounded to the declared model and raw evidence; no hardware or universal claim.

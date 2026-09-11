@@ -20,7 +20,7 @@ THRESHOLDS = (0.5, 1.5, 2.5, 3.5, 4.5)
 CONTROL_WINDOWS = ((70.0, 81.0), (81.0, 90.0), (90.0, 101.0), (101.0, 110.0))
 PEAK_THRESHOLD_V = 2.0e-4
 PEAK_GAP_PS = 2.5
-REQUIRED = ("V(QBOUT)", "V(JTL6_OUT)", "I(R_TERM)", "P(BJ1|XBQ1)", "P(BJ2|XBQ1)") + tuple(f"P(B01|XJTL1_{stage})" for stage in range(1, 7))
+REQUIRED = ("V(QBOUT)",) + tuple(f"V(JTL{stage}_OUT)" for stage in range(1, 7)) + ("I(R_TERM)", "P(BJ1|XBQ1)", "P(BJ2|XBQ1)") + tuple(f"P(B01|XJTL1_{stage})" for stage in range(1, 7))
 
 
 def now() -> str:

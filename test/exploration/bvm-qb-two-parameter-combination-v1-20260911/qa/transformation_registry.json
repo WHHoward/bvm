@@ -1,0 +1,22 @@
+{
+  "schema": "bvm-qb-two-parameter-combination-transformation-registry-v1",
+  "experiment_id": "bvm-qb-two-parameter-combination-v1-20260911",
+  "created_at_local": "2026-09-11T15:55:24+08:00",
+  "raw_immutable": true,
+  "raw_input_mode": "direct raw CSV",
+  "phase": "independent continuous unwrap then rad/(2*pi) navigation only",
+  "integration": "trapezoid on actual stored time grid without interpolation",
+  "control": "complete downstream chain in registered 70-110 ps windows; final/tail rollback excluded",
+  "source_feedback": "actual-grid signed I(B_JSL8) areas in registered windows",
+  "visualization": "raw direct standalone; temporary same-grid comparison CSV deleted after render",
+  "forbidden": [
+    "replay",
+    "passive capture",
+    "source scaling",
+    "read extension",
+    "JTL change",
+    "timestep change",
+    "raw overwrite"
+  ],
+  "scientific_review_status": "AWAITING_SCIENTIFIC_REVIEW"
+}

@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: bvm-qb-threshold-ordering-boundary-search-v1-20260911
 - Registration HEAD: 0063d54c64ddefb8e10fe5f96af79b1ed9f55dc4
-- Sealed preflight HEAD: 0063d54c64ddefb8e10fe5f96af79b1ed9f55dc4
+- Sealed preflight HEAD: 9e112ce3125cb7ec9fa8a49d93875a498e18d751
 - Remote bvm/master: 0063d54c64ddefb8e10fe5f96af79b1ed9f55dc4
 - Status: PASS
 - Solver has not been invoked at preflight.

@@ -1,0 +1,222 @@
+{
+  "schema": "bvm-qb-l3-highside-provenance-v1",
+  "experiment_id": "bvm-qb-l3-highside-selective-window-v1-20260911",
+  "created_at_local": "2026-09-11T16:55:17+08:00",
+  "repository_head_at_qa": "f4f9df0b808cfce25423152b6adca8ecb49657fd",
+  "preflight": {
+    "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/analysis/preflight.json",
+    "sha256": "34f9f6e062ba1782635dc90d74cd063121e29b38f830577f400217a2db89ffee"
+  },
+  "source_manifest": {
+    "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/SOURCE_MANIFEST.json",
+    "sha256": "aae47ab9ce6c1dcda030d05ba12cceaa895fbbb39d2c2461ed32f909907e7671"
+  },
+  "matrix": {
+    "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/screening/L3_MATRIX.json",
+    "sha256": "0bbc2beb0bd054b9287012a7c935151db6544d99645a43d83a0f1b993e102e47"
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "raw": {
+    "L3_H1_L3_1p8_0011": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/raw.csv",
+      "sha256": "e7259bb4276143e071d1d48afb76ce158ef4a37c6ea527633560f259b396b5b0",
+      "bytes": 7102026
+    },
+    "L3_H1_L3_1p8_0111": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0111/raw.csv",
+      "sha256": "097af26dc9fc93ee5a85963c4181dd2c902cb5ef4384fb4db6b46c6c86db0b43",
+      "bytes": 7102049
+    },
+    "L3_H2_L3_2_0011": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0011/raw.csv",
+      "sha256": "1356be81ccf5e62f6dfa13d0264a5e3d8a70e19539f418d31034f43cf342c1c8",
+      "bytes": 7101848
+    },
+    "L3_H2_L3_2_0111": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0111/raw.csv",
+      "sha256": "8a2d8f0242d52890f14488807be354b881d1940214f83ff05e629ba7d8c69775",
+      "bytes": 7102072
+    }
+  },
+  "reference_artifacts": {
+    "l3_1p6/0011": {
+      "raw.csv": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0011/raw.csv",
+        "sha256": "c52b1e713aaa2ea0b28061bd5c5fdf84ad4a85eeac0165f038547171a543d183",
+        "bytes": 7102365,
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_range_s": [
+          0.0,
+          1.999e-10
+        ],
+        "actual_grid": true,
+        "metadata_raw_sha256": "c52b1e713aaa2ea0b28061bd5c5fdf84ad4a85eeac0165f038547171a543d183",
+        "origin_sha256": "c52b1e713aaa2ea0b28061bd5c5fdf84ad4a85eeac0165f038547171a543d183",
+        "failures": []
+      },
+      "deck.cir": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0011/deck.cir",
+        "sha256": "98ea7da63e9c710c38f85b6c9a5307f1d1b2558f9bae0e1053bf39c21cf896ee",
+        "bytes": 7485
+      },
+      "metadata.json": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0011/metadata.json",
+        "sha256": "1fde99c50eea1330f1b903ac6655d873c2973c1b2adf7b0a168eeb0ddde0fee3",
+        "bytes": 2909
+      },
+      "run.log": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0011/run.log",
+        "sha256": "4ad54428ebc5b64a53dd3b10328d61795b2bfdb5f7f9d6286081cb89a48a716d",
+        "bytes": 223579
+      }
+    },
+    "l3_1p6/0111": {
+      "raw.csv": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0111/raw.csv",
+        "sha256": "1ef81786bcd4f63504b3fbb3a0207a9b546bbfbaab1e76c38911aa3ef40a83ec",
+        "bytes": 7101963,
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_range_s": [
+          0.0,
+          1.999e-10
+        ],
+        "actual_grid": true,
+        "metadata_raw_sha256": "1ef81786bcd4f63504b3fbb3a0207a9b546bbfbaab1e76c38911aa3ef40a83ec",
+        "origin_sha256": "1ef81786bcd4f63504b3fbb3a0207a9b546bbfbaab1e76c38911aa3ef40a83ec",
+        "failures": []
+      },
+      "deck.cir": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0111/deck.cir",
+        "sha256": "a857c45f54123c9ef4043c5186fb70d4cc973f069c35c934406ebb3815e9f34d",
+        "bytes": 7501
+      },
+      "metadata.json": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0111/metadata.json",
+        "sha256": "c60a758625c9bc7340fa178f78e7b8e502c24ce8563510d1eee5c830bf144f38",
+        "bytes": 2909
+      },
+      "run.log": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0111/run.log",
+        "sha256": "a1f99b6d042faf6b7bbad2a0dbecdd15b5394e826804bbdc58980ea93c0ff962",
+        "bytes": 218436
+      }
+    },
+    "canonical_l3p13/0011": {
+      "raw.csv": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0011/raw.csv",
+        "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "bytes": 7102297,
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_range_s": [
+          0.0,
+          1.999e-10
+        ],
+        "actual_grid": true,
+        "metadata_raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "origin_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "failures": []
+      },
+      "deck.cir": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0011/deck.cir",
+        "sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+        "bytes": 7500
+      },
+      "metadata.json": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0011/metadata.json",
+        "sha256": "0271dd8e664f855d32727d385c81a473e0353ea79a7f8cdbadec002ec386a6aa",
+        "bytes": 2786
+      },
+      "run.log": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0011/run.log",
+        "sha256": "1c7f9aa53cb5336458e701a65451f51333881e6af120b62acf940539e9386d1b",
+        "bytes": 222015
+      }
+    },
+    "canonical_l3p13/0111": {
+      "raw.csv": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0111/raw.csv",
+        "sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "bytes": 7101704,
+        "header_count": 265,
+        "sample_count": 1999,
+        "time_range_s": [
+          0.0,
+          1.999e-10
+        ],
+        "actual_grid": true,
+        "metadata_raw_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "origin_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "failures": []
+      },
+      "deck.cir": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0111/deck.cir",
+        "sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+        "bytes": 7516
+      },
+      "metadata.json": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0111/metadata.json",
+        "sha256": "aae65de60e4cda1f3be7755385f6927b61472ca9e6686c382f1b5ee86b032e2f",
+        "bytes": 2792
+      },
+      "run.log": {
+        "status": "PASS",
+        "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/canonical_l3p13/0111/run.log",
+        "sha256": "0004b1cb858f440fc5ed73386cecacdb6a07378fe6c01c2d0f70d9f849073e9c",
+        "bytes": 221561
+      }
+    }
+  },
+  "results": {
+    "H1_L3_1p8": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/screening/results/H1_L3_1p8_corrected_v2.json",
+      "sha256": "38b8b41b73bc7d686bf54531e1e2a3a0a16fc9059169b2670e8cc289ae4c35d4",
+      "candidate_class": "B",
+      "l3_highside": {
+        "tested_L3_pH": 1.8,
+        "reference_L3_pH": 1.6,
+        "classification": "STILL_2_TO_4",
+        "bounded_only": true,
+        "no_exact_optimum_inferred": true
+      }
+    },
+    "H2_L3_2": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/screening/results/H2_L3_2_corrected_v2.json",
+      "sha256": "8a8720dfc53a81971663d6863f32d6c05182e835b9a0ef56925f3b062407ddda",
+      "candidate_class": "B",
+      "l3_highside": {
+        "tested_L3_pH": 2.0,
+        "reference_L3_pH": 1.6,
+        "classification": "STILL_2_TO_4",
+        "bounded_only": true,
+        "no_exact_optimum_inferred": true
+      }
+    }
+  },
+  "raw_authority": true,
+  "corrected_control": true,
+  "l3_reference_pH": 1.6,
+  "no_n1_n4": true,
+  "no_timestep_change": true
+}

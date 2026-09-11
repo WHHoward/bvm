@@ -1,0 +1,66 @@
+{
+  "schema": "bvm-qb-l3-highside-run-metadata-v1",
+  "experiment_id": "bvm-qb-l3-highside-selective-window-v1-20260911",
+  "run_id": "L3_H1_L3_1p8_0011",
+  "point_id": "H1_L3_1p8",
+  "changes": {
+    "L3_pH": 1.8
+  },
+  "mask": "0011",
+  "topology": "BVM1..4 -> COMMON_SL -> 8-JJ JSL -> QB -> six-stage JTL -> R_TERM",
+  "stimulus": {
+    "amplitude_uA": 100.0,
+    "tran": ".tran 0.1p 200p",
+    "history": "IDLE/WRITE0/ZERO_STATE_READ_CONTROL/IDLE/WRITE1/SETTLE/FINAL_READ/TAIL"
+  },
+  "started_at_local": "2026-09-11T16:52:36+08:00",
+  "finished_at_local": "2026-09-11T16:52:36+08:00",
+  "git_head_before_run": "f4f9df0b808cfce25423152b6adca8ecb49657fd",
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/deck.cir"
+  ],
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "deck_source": {
+    "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/screening/decks/H1_L3_1p8/0011.cir",
+    "sha256": "0ea03b65afc8c5075cf4b0d5e5e18b9d1997e106c044a8678df09f7ccfaa84ca"
+  },
+  "artifacts": {
+    "deck": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/deck.cir",
+      "sha256": "0ea03b65afc8c5075cf4b0d5e5e18b9d1997e106c044a8678df09f7ccfaa84ca",
+      "bytes": 7499
+    },
+    "raw": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/raw.csv",
+      "exists": true,
+      "sha256": "e7259bb4276143e071d1d48afb76ce158ef4a37c6ea527633560f259b396b5b0",
+      "bytes": 7102026
+    },
+    "log": {
+      "path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/run.log",
+      "sha256": "dcdfdbc1fb2caea86806646ea0ca00fa358f0ffb604c65832096689b4132f896",
+      "bytes": 221826
+    }
+  },
+  "exit_code": 0,
+  "execution_status": "RUN_PASS",
+  "physical_solve_this_experiment": true,
+  "raw_immutable": true,
+  "parameter_tuning": false,
+  "scientific_analysis_performed": false,
+  "raw_summary": {
+    "header_count": 265,
+    "sample_count": 1999,
+    "first_timestamp": "0.000000e+00",
+    "last_timestamp": "1.999000e-10"
+  }
+}

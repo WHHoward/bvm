@@ -10,3 +10,11 @@ CONTROL/history uses complete downstream propagation only in the registered
 is raw radians; rad/(2*pi) is navigation/display only, never an SFQ count.
 N1/N4 population validation is reserved for later authorization and is not
 automatically executed here.
+
+The completed bounded screening used four new physical solves. H1 (L3=1.8 pH)
+and H2 (L3=2.0 pH) both remained CLEAN with N2=2. Each 0111 run had four raw
+response candidates, while strict full-chain ordering was ambiguous for
+candidates 3 and 4, matching the immutable L3=1.6 pH reference. The registered
+fourth-response diagnostics showed no material weakening, so both points are
+class B (`STILL_2_TO_4`) and the stopping outcome is
+`L3_HIGHSIDE_NO_SELECTIVE_WINDOW_IN_TESTED_RANGE`.

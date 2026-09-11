@@ -1,0 +1,22 @@
+{
+  "schema": "bvm-qb-l3-highside-transformation-registry-v1",
+  "experiment_id": "bvm-qb-l3-highside-selective-window-v1-20260911",
+  "created_at_local": "2026-09-11T16:55:17+08:00",
+  "raw_immutable": true,
+  "phase": "continuous unwrap of raw radians then rad/(2*pi) navigation only",
+  "integration": "actual-grid trapezoid without interpolation",
+  "control": "complete QBOUT->JTL1..6 chain only in 70-110 ps windows; FINAL/Tail rollback excluded",
+  "source_feedback": "actual-grid I(B_JSL8) signed areas",
+  "visualization": "raw-direct standalone and temporary exact-grid focused comparison deleted after render",
+  "forbidden": [
+    "replay",
+    "passive capture",
+    "source modification",
+    "source scaling",
+    "extra L3 point",
+    "third parameter",
+    "timestep change",
+    "N1/N4 before later authorization"
+  ],
+  "scientific_review_status": "AWAITING_SCIENTIFIC_REVIEW"
+}

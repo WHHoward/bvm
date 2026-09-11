@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import csv
+import argparse
 import hashlib
 import json
 import os
@@ -135,9 +136,9 @@ def run_case(point: dict[str, Any], mask: str) -> dict[str, Any]:
     return {"run_id": run_id, "mask": mask, "source_kind": "NEW_PHYSICAL_SOLVE", "physical_solve_this_experiment": True, "raw_path": rel(raw), "deck_path": rel(deck), "metadata_path": rel(metadata_path), "log_path": rel(log), "raw_sha256": sha256(raw), "deck_sha256": sha256(deck), "raw_bytes": raw.stat().st_size, "raw_summary": raw_summary(raw)}
 
 
-def analyse(point: dict[str, Any], cases: dict[str, Any]) -> dict[str, Any]:
+def analyse(point: dict[str, Any], cases: dict[str, Any], *, force: bool = False) -> dict[str, Any]:
     output = result_path(point["point_id"])
-    if not output.is_file():
+    if force or not output.is_file():
         command = [sys.executable, str(EXP / "analysis/l3_analysis.py"), "--point-id", point["point_id"], "--changes", json.dumps(point["changes"], separators=(",", ":")), "--n2", str(REPO / cases["0011"]["raw_path"]), "--n3", str(REPO / cases["0111"]["raw_path"])]
         completed = subprocess.run(command, cwd=REPO, check=False)
         if completed.returncode != 0 or not output.is_file():
@@ -200,9 +201,12 @@ def finalize(state: dict[str, Any], matrix: dict[str, Any], outcome: str, reason
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--reclassify-existing", action="store_true", help="recompute classifications from immutable completed raw files without running the solver")
+    args = parser.parse_args()
     preflight, matrix, relation = load_gate()
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.is_file() else state_template(preflight, relation)
-    if state.get("final_marker") and all(result_path(point["point_id"]).is_file() for point in matrix["points"] if state.get("points", {}).get(point["point_id"], {}).get("status") == "COMPLETE"):
+    if not args.reclassify_existing and state.get("final_marker") and all(result_path(point["point_id"]).is_file() for point in matrix["points"] if state.get("points", {}).get(point["point_id"], {}).get("status") == "COMPLETE"):
         write_table(state, matrix)
         write_execution(state)
         return 0
@@ -210,7 +214,13 @@ def main() -> int:
     for point in matrix["points"]:
         pid = point["point_id"]
         if state.get("points", {}).get(pid, {}).get("status") == "COMPLETE" and result_path(pid).is_file():
-            result = json.loads(result_path(pid).read_text(encoding="utf-8"))
+            if args.reclassify_existing:
+                cases = state["points"][pid]["cases"]
+                result = analyse(point, cases, force=True)
+                state["points"][pid]["candidate_class"] = result.get("candidate_class")
+                save_state(state)
+            else:
+                result = json.loads(result_path(pid).read_text(encoding="utf-8"))
         else:
             cases: dict[str, Any] = {}
             for mask in MASKS:

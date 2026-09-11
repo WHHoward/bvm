@@ -264,10 +264,8 @@ def analyze_pair(point_id: str, changes: dict[str, float], n2_path: Path, n3_pat
         candidate_class = "D"
     elif n2_ok and n3_class["classification"] == "N3_3_COMPLETE":
         candidate_class = "S"
-    elif n2_ok and n3_class["classification"] in {"N3_4_COMPLETE", "N3_MULTIPLICITY_AMBIGUOUS"} and n3_class["fourth_diagnostics"]["materially_weakened_relative_to_l3_1p6"]:
-        candidate_class = "A"
-    elif n2_ok and n3_class["classification"] == "N3_4_COMPLETE":
-        candidate_class = "B"
+    elif n2_ok and n3_class["classification"] in {"N3_4_COMPLETE", "N3_MULTIPLICITY_AMBIGUOUS"}:
+        candidate_class = "A" if n3_class["fourth_diagnostics"]["materially_weakened_relative_to_l3_1p6"] else "B"
     elif not n2_ok:
         candidate_class = "C"
     else:

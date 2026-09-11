@@ -1,7 +1,7 @@
 id: bvm-qb-l3-highside-selective-window-v1-20260911
 study_phase: EXPLORATORY
 mode: QUICK_HIGH_SIDE_SEARCH
-status: PREREGISTERED_PENDING_PREFLIGHT
+status: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
 role: Experimental Operator + Evidence Packager
 
 question:
@@ -89,9 +89,15 @@ validation:
   requires_later_scientific_authorization: true
   no_automatic_positional_or_timestep_validation: true
 
-authorized_runs: []
-physics_solve_count: 0
+authorized_runs:
+  - L3_H1_L3_1p8_0011
+  - L3_H1_L3_1p8_0111
+  - L3_H2_L3_2_0011
+  - L3_H2_L3_2_0111
+physics_solve_count: 4
 reference_l3_1p6_raw_count: 2
+actual_new_physical_solve_count: 4
+screening_outcome: L3_HIGHSIDE_NO_SELECTIVE_WINDOW_IN_TESTED_RANGE
 maximum_physics_solve_count_including_validation: 6
 
 visualization:

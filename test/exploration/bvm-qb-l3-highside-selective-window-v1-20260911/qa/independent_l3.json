@@ -1,0 +1,134 @@
+{
+  "schema": "bvm-qb-l3-highside-independent-review-v1",
+  "experiment_id": "bvm-qb-l3-highside-selective-window-v1-20260911",
+  "created_at_local": "2026-09-11T16:55:16+08:00",
+  "status": "PASS",
+  "raw_authority": true,
+  "independent_raw_re_read": true,
+  "primary_analysis_not_authority": true,
+  "population_oracle_used": false,
+  "l3_comparisons": {
+    "H1_L3_1p8/n2": {
+      "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/raw.csv",
+      "primary_count": 2,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0011/raw.csv",
+        "raw_sha256": "e7259bb4276143e071d1d48afb76ce158ef4a37c6ea527633560f259b396b5b0",
+        "phase_supported_count": 2,
+        "matched_qbout_count": 2,
+        "matched_terminal_count": 2,
+        "independent_complete_response_candidate_count": 2,
+        "independent_ordered_chain_by_candidate": {
+          "1": true,
+          "2": true
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    },
+    "H1_L3_1p8/n3": {
+      "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0111/raw.csv",
+      "primary_count": 4,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H1_L3_1p8_0111/raw.csv",
+        "raw_sha256": "097af26dc9fc93ee5a85963c4181dd2c902cb5ef4384fb4db6b46c6c86db0b43",
+        "phase_supported_count": 4,
+        "matched_qbout_count": 4,
+        "matched_terminal_count": 4,
+        "independent_complete_response_candidate_count": 4,
+        "independent_ordered_chain_by_candidate": {
+          "1": true,
+          "2": true,
+          "3": false,
+          "4": false
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    },
+    "H2_L3_2/n2": {
+      "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0011/raw.csv",
+      "primary_count": 2,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0011/raw.csv",
+        "raw_sha256": "1356be81ccf5e62f6dfa13d0264a5e3d8a70e19539f418d31034f43cf342c1c8",
+        "phase_supported_count": 2,
+        "matched_qbout_count": 2,
+        "matched_terminal_count": 2,
+        "independent_complete_response_candidate_count": 2,
+        "independent_ordered_chain_by_candidate": {
+          "1": true,
+          "2": true
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    },
+    "H2_L3_2/n3": {
+      "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0111/raw.csv",
+      "primary_count": 4,
+      "independent": {
+        "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/runs/L3_H2_L3_2_0111/raw.csv",
+        "raw_sha256": "8a2d8f0242d52890f14488807be354b881d1940214f83ff05e629ba7d8c69775",
+        "phase_supported_count": 4,
+        "matched_qbout_count": 4,
+        "matched_terminal_count": 4,
+        "independent_complete_response_candidate_count": 4,
+        "independent_ordered_chain_by_candidate": {
+          "1": true,
+          "2": true,
+          "3": false,
+          "4": false
+        },
+        "independent_control_chain_count": 0,
+        "not_sfq_count": true
+      },
+      "count_equal": true,
+      "ordered_equal": true,
+      "control_equal": true,
+      "primary_control_chain_count": 0,
+      "independent_control_chain_count": 0
+    }
+  },
+  "validation_comparisons": {},
+  "baseline_l3_1p6_corrected_control": {
+    "raw_path": "test/exploration/bvm-qb-l3-highside-selective-window-v1-20260911/references/l3_1p6/0111/raw.csv",
+    "raw_sha256": "1ef81786bcd4f63504b3fbb3a0207a9b546bbfbaab1e76c38911aa3ef40a83ec",
+    "phase_supported_count": 4,
+    "matched_qbout_count": 4,
+    "matched_terminal_count": 4,
+    "independent_complete_response_candidate_count": 4,
+    "independent_ordered_chain_by_candidate": {
+      "1": true,
+      "2": true,
+      "3": false,
+      "4": false
+    },
+    "independent_control_chain_count": 0,
+    "not_sfq_count": true
+  },
+  "checked_raw_count": 5,
+  "adversarial_checks": {
+    "wrong_branch_binding": "PASS",
+    "stale_result_hash_binding": "PASS",
+    "weak_oracle_not_used": "PASS",
+    "rollback_not_used_for_control": "PASS",
+    "no_extra_parameter": "PASS"
+  },
+  "failures": []
+}

@@ -51,6 +51,7 @@ RESPONSE_SIGNALS = (
     *(f"V(JTL{stage}_OUT)" for stage in range(1, 7)), "I(R_TERM)",
 )
 SOURCE_SIGNALS = ("V(COMMON_SL)", "I(B_JSL8)", "V(QBIN)", "I(LIN|XBQ1)", "I(L1|XBQ1)", "I(L2|XBQ1)")
+FOCUS_SIGNALS = tuple(dict.fromkeys((*RESPONSE_SIGNALS, *SOURCE_SIGNALS)))
 PHASE_LABELS = ("P(BJ1|XBQ1)", "P(BJ2|XBQ1)", *(f"P(B01|XJTL1_{stage})" for stage in range(1, 7)))
 VOLTAGE_LABELS = ("V(QBOUT)", *(f"V(JTL{stage}_OUT)" for stage in range(1, 7)))
 
@@ -136,7 +137,7 @@ def response_focus(oracle: dict[str, Any], trace: Any, focus: str) -> dict[str, 
     result: dict[str, Any] = {"focus": focus, "responses": []}
     for response_index in range(1, 5):
         record = records[response_index - 1]
-        window_metrics = {name: {label: raw_window_metric(trace, label, window) for label in RESPONSE_SIGNALS} for name, window in WINDOWS.items() if name in {"READ", "POST_READ_121_126", "POST_READ_121_130", "EXTENDED_110_140"}}
+        window_metrics = {name: {label: raw_window_metric(trace, label, window) for label in FOCUS_SIGNALS} for name, window in WINDOWS.items() if name in {"READ", "POST_READ_121_126", "POST_READ_121_130", "EXTENDED_110_140"}}
         result["responses"].append({"response_index": response_index, "complete_candidate": record["complete"], "phase_landmark_times_ps": record["phase_landmark_times_ps"], "downstream_voltage_peak_times_ps": record["downstream_voltage_peak_times_ps"], "checks": record["checks"], "window_metrics": window_metrics})
     if focus == "weight2_second":
         result["second_response_relative_to_read_end_ps"] = {"phase_latest_ps": max((value for value in result["responses"][1]["phase_landmark_times_ps"].values() if value is not None), default=None), "downstream_latest_ps": max((value for value in result["responses"][1]["downstream_voltage_peak_times_ps"].values() if value is not None), default=None), "read_end_ps": 121.0}
@@ -241,7 +242,7 @@ def main() -> int:
     for key, value in records.items():
         lines.append(f"| {key} | {value['complete_response_count_candidate']} | {value['control']['status']} | {value['terminal_pulse_analysis']['status']} |")
     lines.extend(["", "The new RJ2=10/0111 case has dedicated first/second/third/fourth navigation, [121,130)ps fourth-candidate records and source/receiver state metrics. The weight-3 RJ2=10/11/12 comparison and same-RJ2 weight-2-vs-weight-3 comparison are stored in `mechanical_summary.json`.", "", "All phase values remain raw radians in the source CSV. Phase navigation, voltage clusters, current/voltage areas, L1 crossings, terminal pulse-local areas and response candidates are supporting evidence and are not SFQ counts. Raw waveform review remains authoritative over any mechanical category.", ""])
-    (EXP / "analysis/MIDPOINT_REVIEW.md").write_text("\n".join(lines), encoding="utf-8")
+    (EXP / "analysis/DIAGNOSTIC_REVIEW.md").write_text("\n".join(lines), encoding="utf-8")
     (EXP / "analysis/REVIEW.md").write_text("\n".join(["# RJ2=10 weight-3 diagnostic evidence review", "", "This is a raw-oriented evidence handoff. Scientific interpretation is `NOT_PERFORMED`.", "", "- Artifact/raw validity and exact protocol execution are recorded separately from the bounded outcome category.", "- RJ2=10/11/12 reference files are comparison-only immutable evidence.", "- Same-time comparisons use the declared windows and actual CSV time grid.", "- No response candidate, phase turn, terminal area or current/voltage metric is an SFQ count.", ""]), encoding="utf-8")
     print(json.dumps({"status": mechanical["status"], "outcome_category": outcome, "new_response_candidates": {"0111": new_case["complete_response_count_candidate"]}, "reference_response_candidates": {key: value["complete_response_count_candidate"] for key, value in reference_records.items()}, "control_failure_cases": control_qa["control_failure_cases"], "raw_files_modified": 0, "scientific_interpretation_performed": False}, ensure_ascii=False, indent=2))
     return 0 if mechanical["status"] == "PASS" else 1

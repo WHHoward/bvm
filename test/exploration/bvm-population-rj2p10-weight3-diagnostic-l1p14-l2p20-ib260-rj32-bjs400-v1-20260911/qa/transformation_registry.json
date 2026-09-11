@@ -1,0 +1,27 @@
+{
+  "schema": "bjs400-rj2p10-weight3-transformation-registry-v1",
+  "raw_immutable": true,
+  "raw_scientific_authority": true,
+  "transformations": [
+    {
+      "name": "actual_grid_window_metrics",
+      "operation": "direct raw-column extrema, stored-sample zero-crossing brackets and trapezoid over CSV time",
+      "not_event_count": true
+    },
+    {
+      "name": "continuous_phase_navigation",
+      "operation": "continuous unwrap(raw P radians)/(2*pi) from FINAL baseline [101,110)ps",
+      "not_sfq_count": true
+    },
+    {
+      "name": "multi_evidence_response_navigation",
+      "operation": "cumulative phase landmarks plus direct voltage clusters, ordered JTL and terminal valleys",
+      "not_sfq_count": true
+    },
+    {
+      "name": "rj2_weight3_comparison",
+      "operation": "same-time descriptive comparisons for RJ2=10/11/12 mask 0111 and RJ2=10 mask 0011 vs 0111",
+      "not_event_count": true
+    }
+  ]
+}

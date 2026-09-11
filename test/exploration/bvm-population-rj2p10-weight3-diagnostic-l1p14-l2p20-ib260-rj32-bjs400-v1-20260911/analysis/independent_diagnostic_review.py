@@ -324,7 +324,22 @@ def main() -> int:
         "terminal_clusters_and_jtl_order_checked": all(all("voltage_ordered_QBOUT_JTL1_to_JTL6" in response.get("checks", {}) for response in record.get("response_records", [])) for record in records.values()),
     }
     failures.extend(f"adversarial probe failed: {name}" for name, value in adversarial.items() if value is not True)
-    result = {"schema": "bjs400-rj2p10-weight3-independent-review-v1", "experiment_id": EXP.name, "created_at_local": now(), "status": "PASS" if not failures else "FAIL", "review_type": "stdlib-only direct raw CSV recheck; no import of primary analyzer or oracle", "cases_checked": len(records), "records": records, "adversarial_probes": adversarial, "primary_recorded_outcome_category": primary_outcome, "new_case_response_candidate": target.get("oracle_count"), "reference_case_response_candidates": {key: value.get("oracle_count") for key, value in records.items() if key != "RJ2P10_0111"}, "raw_files_modified": 0, "scientific_interpretation_performed": False, "failures": failures}
+    result = {
+        "schema": "bjs400-rj2p10-weight3-independent-review-v1",
+        "experiment_id": EXP.name,
+        "created_at_local": now(),
+        "status": "PASS" if not failures else "FAIL",
+        "review_type": "stdlib-only direct raw CSV recheck; no import of primary analyzer or oracle",
+        "cases_checked": len(records),
+        "records": records,
+        "adversarial_probes": adversarial,
+        "primary_recorded_outcome_category": primary_outcome,
+        "new_case_response_candidate": target.get("oracle_count"),
+        "reference_case_response_candidates": {key: value.get("oracle_count") for key, value in records.items() if key != "RJ2P10_0111"},
+        "raw_files_modified": 0,
+        "scientific_interpretation_performed": False,
+        "failures": failures,
+    }
     (EXP / "qa/independent_review.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     review_lines = [
         "# Independent population numerical/adversarial review",

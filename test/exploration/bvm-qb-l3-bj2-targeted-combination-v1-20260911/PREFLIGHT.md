@@ -4,7 +4,7 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: bvm-qb-l3-bj2-targeted-combination-v1-20260911
 - Registration HEAD: 3d8fed33344740585079160d20029fb204537df0
-- Sealed preflight HEAD: 3d8fed33344740585079160d20029fb204537df0
+- Sealed preflight HEAD: 441767d2f1e6e91194517e02d973747812f43d87
 - Remote bvm/master: 3d8fed33344740585079160d20029fb204537df0
 - Status: PASS
 - Solver has not been invoked at preflight.

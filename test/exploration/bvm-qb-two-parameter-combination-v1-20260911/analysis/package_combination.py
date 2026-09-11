@@ -59,7 +59,7 @@ def main() -> int:
         failures.append("final marker missing")
     if failures:
         raise RuntimeError("cannot package: " + "; ".join(failures))
-    execution = qa["execution_summary"]
+    execution = qa["execution_summary.json"]
     package = build_package(EXP, package_path=PACKAGE_RELATIVE, physics_solve_count=int(execution["exact_new_physical_solve_count"]), scientific_analysis_performed=False, include_plots=False)
     zip_path = EXP / package["package_path"]
     required = {"experiment.yaml", "PREFLIGHT.md", "SOURCE_MANIFEST.json", "HANDOFF_README.md", "RESULT_BRIEF.md", "EVIDENCE_MANIFEST.md", "mechanical_summary.json", "qa/raw_qa.json", "qa/deck_diff_qa.json", "qa/provenance.json", "qa/execution_summary.json", "qa/transformation_registry.json", "screening/COMBINATION_MATRIX.json", "screening/COMBINATION_TABLE.json", "screening/COMBINATION_TABLE.md", "visualization/manifest.json", "qa/visualization_qa.json"}

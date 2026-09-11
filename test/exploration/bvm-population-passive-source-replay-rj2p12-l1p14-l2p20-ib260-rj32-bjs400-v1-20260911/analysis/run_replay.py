@@ -148,6 +148,9 @@ def main() -> int:
     combined["schema"] = "bvm-population-passive-source-replay-combined-execution-v1"
     combined["passive_execution_summary"] = "qa/execution_summary.json"
     combined["replay_execution_summary"] = "qa/replay_execution_summary.json"
+    passive_order = json.loads((EXP / "qa/execution_summary.json").read_text(encoding="utf-8")).get("run_order", [])
+    combined["run_order"] = list(passive_order) + list(summary["run_order"])
+    combined["authorized_cases"] = list(passive_order) + list(summary["authorized_cases"])
     combined["total_solver_solve_invocations"] = 3 + len(records)
     combined["total_authorized_physical_solve_count"] = 6
     combined["exact_total_physical_solve_count"] = 3 + len(records)

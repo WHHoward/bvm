@@ -9,7 +9,7 @@ This is an evidence-only handoff. Scientific interpretation is `NOT_PERFORMED`.
 - Raw authority: six new raw CSVs and exact copied reference raw CSVs.
 - Mechanical QA: `qa/*.json`, `mechanical_summary.json` and independent review.
 - Visualization: `visualization/manifest.json` and `visualization/run_summaries/`.
-- Evidence ZIP: `handoff/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip`.
+- Evidence ZIP: `handoff/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_corrected-v2_raw_handoff.zip`.
 - Package SHA-256: recorded in detached `handoff/PACKAGE_QA.json` after package QA.
 - Unauthorized follow-up solve: none.
 - Final state: `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`.

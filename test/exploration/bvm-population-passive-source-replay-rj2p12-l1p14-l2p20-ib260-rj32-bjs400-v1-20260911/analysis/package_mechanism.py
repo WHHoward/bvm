@@ -12,7 +12,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 EXP = Path(__file__).resolve().parents[1]
-PACKAGE_RELATIVE = "handoff/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip"
+PACKAGE_RELATIVE = "handoff/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_corrected-v2_raw_handoff.zip"
 PASSIVE = ("PASSIVE_N2_0011", "PASSIVE_N3_0111", "PASSIVE_N4_1111")
 REPLAY = ("REPLAY_N2_0011_RJ2P12", "REPLAY_N3_0111_RJ2P12", "REPLAY_N4_1111_RJ2P12")
 REFERENCES = ("ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111", "ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111")

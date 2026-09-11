@@ -26,4 +26,4 @@ Read in this order:
 
 `RESULT_BRIEF.md` records the evidence boundary and the final review state.
 The canonical evidence ZIP is
-`handoff/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_raw_handoff.zip`.
+`handoff/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911_corrected-v2_raw_handoff.zip`.

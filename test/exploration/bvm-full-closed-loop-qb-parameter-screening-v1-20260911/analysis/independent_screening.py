@@ -20,7 +20,7 @@ MATRIX = EXP / "screening/SCREENING_MATRIX.json"
 THRESHOLDS = (0.5, 1.5, 2.5, 3.5, 4.5)
 PEAK_THRESHOLD = 2.0e-4
 PEAK_GAP_PS = 2.5
-REQUIRED = ("V(QBOUT)", "V(JTL6_OUT)", "I(R_TERM)", "P(BJ1|XBQ1)", "P(BJ2|XBQ1)")
+REQUIRED = ("V(QBOUT)", "V(JTL6_OUT)", "I(R_TERM)", "P(BJ1|XBQ1)", "P(BJ2|XBQ1)") + tuple(f"P(B01|XJTL1_{stage})" for stage in range(1, 7))
 
 
 def now() -> str:
@@ -120,17 +120,8 @@ def independent_case(path: Path) -> dict[str, Any]:
     times, columns = raw_columns(path)
     phase = {name: threshold_times(times, columns[f"P({name}|XBQ1)"]) for name in ("BJ1", "BJ2")}
     for stage in range(1, 7):
-        # The independently checked count uses the JTL output phase columns
-        # only when they are present; all full screening raws have them.
         label = f"P(B01|XJTL1_{stage})"
-        with path.open(newline="", encoding="utf-8-sig") as stream:
-            reader = csv.reader(stream)
-            header = next(reader)
-            position = {name: index for index, name in enumerate(header)}
-            if label not in position:
-                raise RuntimeError(f"missing JTL phase for independent read: {path}: {label}")
-            vals = [float(row[position[label]]) for row in reader]
-        phase[f"JTL{stage}"] = threshold_times(times, vals)
+        phase[f"JTL{stage}"] = threshold_times(times, columns[label])
     phase_count = min(sum(value is not None for value in item.values()) for item in phase.values())
     q_raw = peaks(times, columns["V(QBOUT)"])
     terminal_raw = peaks(times, columns["V(JTL6_OUT)"])

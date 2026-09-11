@@ -287,11 +287,11 @@ def result_path(point_id: str) -> Path:
 def analyse_point(point: dict[str, Any], cases: dict[str, Any]) -> dict[str, Any]:
     output = result_path(point["point_id"])
     expected_paths = {mask: cases[mask]["raw_path"] for mask in MASKS}
+    expected_hashes = {mask: cases[mask]["raw_sha256"] for mask in MASKS}
     if output.is_file():
         result = json.loads(output.read_text(encoding="utf-8"))
         actual_paths = {"0011": result.get("n2", {}).get("raw_path"), "0111": result.get("n3", {}).get("raw_path")}
         actual_hashes = {"0011": result.get("n2", {}).get("raw_sha256"), "0111": result.get("n3", {}).get("raw_sha256")}
-        expected_hashes = {mask: cases[mask]["raw_sha256"] for mask in MASKS}
         if actual_paths != expected_paths or actual_hashes != expected_hashes:
             raise RuntimeError(f"existing analysis result does not bind to current raw cases: {output}")
         return result
@@ -408,7 +408,7 @@ def write_screening_table(state: dict[str, Any], matrix: dict[str, Any]) -> None
                 "N3_final_BJ2_relative_turns": n3["final_BJ2_relative_turns"],
                 "N3_post_third_peak_I_L1_A": n3["post_third_peak_I_L1_A"],
                 "N3_integral_121_126_V_s": n3["integral_121_126_V_s"],
-                "notes": result.get("notes", []) + n3.get("classification", {}).get("notes", []),
+                "notes": result.get("notes", []) + result.get("n3", {}).get("classification", {}).get("notes", []),
                 "case_paths": {mask: record.get("cases", {}).get(mask, {}).get("raw_path") for mask in MASKS},
             })
         rows.append(row)

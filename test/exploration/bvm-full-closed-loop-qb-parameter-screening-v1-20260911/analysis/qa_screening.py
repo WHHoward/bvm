@@ -28,7 +28,7 @@ REUSE_ORIGINS = {
     "references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011": REPO / "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0011",
     "references/reused_rj2p11/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111": REPO / "test/exploration/bvm-population-scaling-rj2p11-midpoint-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P11_0111",
     "references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011": REPO / "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011",
-    "references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111": REPO / "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111",
+    "references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111": REPO / "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111",
 }
 
 

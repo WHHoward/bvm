@@ -1,0 +1,23 @@
+{
+  "schema": "bvm-full-closed-loop-qb-screening-transformation-registry-v1",
+  "experiment_id": "bvm-full-closed-loop-qb-parameter-screening-v1-20260911",
+  "created_at_local": "2026-09-11T13:23:49+08:00",
+  "raw_immutable": true,
+  "raw_input_mode": "direct raw CSV",
+  "analysis": {
+    "phase": "continuous unwrap of raw P radians; display/navigation turns = rad/(2*pi)",
+    "integration": "trapezoid on actual stored time grid; no interpolation",
+    "peak_navigation": "raw voltage lobe navigation only; not an SFQ count",
+    "terminal_area": "diagnostic only; not a count"
+  },
+  "visualization": "raw.csv direct for standalone; temporary exact-grid merged CSV only for comparisons and deleted after render",
+  "forbidden_transformations": [
+    "replay source",
+    "passive-ground capture",
+    "resampling",
+    "smoothing",
+    "timestep change",
+    "raw overwrite"
+  ],
+  "scientific_review_status": "AWAITING_SCIENTIFIC_REVIEW"
+}

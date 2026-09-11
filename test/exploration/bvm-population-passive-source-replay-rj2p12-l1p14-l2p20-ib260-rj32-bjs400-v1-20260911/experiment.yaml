@@ -177,14 +177,32 @@ visualization:
 package:
   include_plots: false
   additional_paths:
-    - analysis
+    - analysis/REVIEW.md
+    - analysis/MECHANISM_REVIEW.md
+    - analysis/REPLAY_PREFLIGHT.md
+    - analysis/build_replay.py
+    - analysis/independent_mechanism_review.py
+    - analysis/mechanism_metrics.json
+    - analysis/prepare_mechanism.py
+    - analysis/preflight.json
+    - analysis/qa_mechanism.py
+    - analysis/raw_mechanism_analysis.py
+    - analysis/render_mechanism_plots.py
+    - analysis/replay_preflight.py
+    - analysis/replay_source_manifest.json
+    - analysis/run_passive.py
+    - analysis/run_replay.py
+    - analysis/visualization_qa.py
     - qa
+    - data
     - references/closed_loop_rj2p12
+    - mechanical_summary.json
+    - run.sh
   analysis_files:
     raw_qa.json: qa/raw_qa.json
     deck_diff_qa.json: qa/deck_diff_qa.json
     provenance.json: qa/provenance.json
-    execution_summary.json: qa/execution_summary.json
+    execution_summary.json: qa/execution_summary_combined.json
     transformation_registry.json: qa/transformation_registry.json
 
 stop:

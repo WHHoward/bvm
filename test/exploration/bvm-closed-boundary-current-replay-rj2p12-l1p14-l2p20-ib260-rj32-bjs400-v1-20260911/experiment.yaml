@@ -1,0 +1,160 @@
+id: bvm-closed-boundary-current-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911
+study_phase: EXPLORATORY
+mode: QUICK
+status: PREREGISTERED_PENDING_PREFLIGHT
+role: Experimental Operator + Evidence Packager
+
+question:
+  primary: >-
+    Test whether the stored I(B_JSL8)(t) from the current RJ2=12 N2
+    closed-loop raw is sufficient, under ideal current forcing, to reproduce
+    the corresponding isolated QB/JTL receiver behavior.
+  bounded_oracle: >-
+    This is a boundary-current waveform-sufficiency replay. The recorded
+    waveform was formed in closed loop, so the replay is not an intervention
+    that removes the history of source/receiver interaction and is not a
+    circuit-equivalent source reconstruction.
+  interpretation_ceiling: >-
+    Raw evidence and mechanical navigation only unless the user separately
+    authorizes SCIENTIFIC_REVIEW_AUTHORIZED. No SFQ count, mechanism, causal,
+    Gate, hardware or route claim is made by the operator.
+
+source_authority:
+  current_population_experiment: test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910
+  current_population_package: test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/handoff/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910_raw_handoff.zip
+  current_population_source_class: CURRENT_BJS400_POPULATION_CLOSED_LOOP
+  source_reference_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
+  source_signal: I(B_JSL8)
+  source_raw: references/closed_loop_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/raw.csv
+  qb_include: inputs/BQ_parameterized_bjs400_rj2.cir
+  jtl_include: inputs/jtl2.cir
+  jj_model_include: inputs/jjmit.cir
+  solver: build/josim-cli
+
+authorized_runs:
+  - id: CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12
+    directory: runs/CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12
+    phase: stage_a_n2_calibration
+    source_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011
+    physical_solve: true
+
+deferred_runs:
+  - id: CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12
+    phase: stage_b_n3_mechanism_diagnostic
+    source_case: ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111
+    physical_solve: false
+    execution_gate: STAGE_A_PASS_AND_SCIENTIFIC_REVIEW_AUTHORIZED
+
+physics_solve_count: 1
+maximum_user_task_physical_solve_count: 2
+
+stage_protocol:
+  stage_a:
+    case: CLOSED_CURRENT_REPLAY_N2_0011_RJ2P12
+    authorized_new_physical_solves: 1
+    pass_condition: raw multi-evidence review of two complete downstream response candidates
+    failure_stop: STOP_STAGE_A_CALIBRATION_FAILURE
+  stage_b:
+    case: CLOSED_CURRENT_REPLAY_N3_0111_RJ2P12
+    additional_solves: 1
+    conditional_on: STAGE_A_PASS_AND_SCIENTIFIC_REVIEW_AUTHORIZED
+    current_turn_status: DEFERRED_PENDING_SCIENTIFIC_REVIEW_AUTHORIZATION
+  no_extra_solves: true
+
+frozen_receiver:
+  L1_pH: 1.4
+  L2_pH: 2.0
+  RJ1_ohm: 32.0
+  RJ2_ohm: 12.0
+  IBias_uA: 260.0
+  BJS_area: 4
+  BJ1_area: 0.9
+  BJ2_area: 2
+  L3_pH: 1.3
+  jtl_stages: 6
+  termination_ohm: 10.0
+  topology: I_REPLAY -> QB -> JTL1 -> JTL2 -> JTL3 -> JTL4 -> JTL5 -> JTL6 -> R_TERM
+  forbidden_in_replay: [BVM, COMMON_SL, B_JSL1, B_JSL2, B_JSL3, B_JSL4, B_JSL5, B_JSL6, B_JSL7, B_JSL8]
+
+replay_fidelity:
+  source: I(B_JSL8) from immutable closed-loop raw
+  sink: I_REPLAY 0 QBIN
+  orientation: positive I(B_JSL8) is JSL_NODE7 -> QBIN; direct replay has positive current 0 -> QBIN
+  sign_change: false
+  transformations: []
+  pair_rule: one PWL timestamp/current pair per stored source row
+
+windows:
+  semantics: half-open [start_ps,end_ps); actual stored raw grid
+  stored_history_checks: [[70, 81], [90, 101], [101, 110]]
+  pre_final_sample_ps: 109.9
+  phase_navigation_baseline_ps: 101.0
+  phase_navigation_thresholds_turns: [0.5, 1.5, 2.5, 3.5]
+  n3_critical_if_stage_b_runs_ps: [121, 130]
+  terminal_final_ps: [110, 200]
+
+stimulus_and_solver:
+  source_protocol: inherited exactly from immutable closed-loop source raw
+  timestep_ps: 0.1
+  stop_time_ps: 200.0
+  tran: .tran 0.1p 200p
+  replay_has_no_new_control_sources: true
+
+probes:
+  source: [I(B_JSL8)]
+  replay: [I(I_REPLAY), I(LIN|XBQ1), I(L1|XBQ1), I(L2|XBQ1), I(BJ1|XBQ1), V(BJ1|XBQ1), P(BJ1|XBQ1), I(BJ2|XBQ1), V(BJ2|XBQ1), P(BJ2|XBQ1), V(QBOUT), V(JTL1_OUT), V(JTL2_OUT), V(JTL3_OUT), V(JTL4_OUT), V(JTL5_OUT), V(JTL6_OUT), I(R_TERM)]
+  stage_a_pre_final: [I(L1|XBQ1), I(L2|XBQ1), I(BJ1|XBQ1), I(BJ2|XBQ1), P(BJ1|XBQ1), P(BJ2|XBQ1)]
+
+metrics:
+  source_replay_exactness: [source_raw_sha256, source_signal, PWL_pair_count, replay_raw_sample_count, exact_timestamp_match, exact_current_match, max_absolute_current_mismatch, orientation, transformations]
+  phase: raw_radians_and_independent_unwrap_then_rad_over_2pi_navigation
+  activity: contiguous_threshold_support_only
+  terminal: peak_time, valley_boundaries, pulse_local_integral, area_over_phi0, separation, final_integral
+  scientific_response_count: NOT_DEFINED_BY_OPERATOR
+
+visualization:
+  manifest_path: visualization/manifest.json
+  qa_path: qa/visualization_qa.json
+  navigation_path: visualization/run_summaries
+  comparison_required: true
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0, 200]
+  plots_not_in_raw_handoff_zip: true
+
+package:
+  include_plots: false
+  additional_paths:
+    - HANDOFF_README.md
+    - analysis/REVIEW.md
+    - analysis/STAGE_A_REVIEW.md
+    - analysis/mechanism_metrics.json
+    - analysis/prepare_stage_a.py
+    - analysis/preflight.json
+    - analysis/qa_stage_a.py
+    - analysis/analyze_stage_a.py
+    - analysis/run_stage_a.py
+    - analysis/independent_stage_a.py
+    - analysis/render_stage_a.py
+    - analysis/visualization_qa.py
+    - analysis/package_stage_a.py
+    - analysis/STAGE_A_PREFLIGHT.md
+    - qa
+    - data
+    - references/closed_loop_rj2p12
+    - mechanical_summary.json
+    - run.sh
+  analysis_files:
+    raw_qa.json: qa/raw_qa.json
+    deck_diff_qa.json: qa/deck_diff_qa.json
+    provenance.json: qa/provenance.json
+    execution_summary.json: qa/execution_summary.json
+    transformation_registry.json: qa/transformation_registry.json
+
+stop:
+  final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  automatic_followup: false
+  stage_b_automatic_start: false
+  scientific_interpretation: NOT_PERFORMED

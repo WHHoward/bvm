@@ -3,7 +3,7 @@
 This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 - Experiment: `bvm-population-rj2p10-weight3-diagnostic-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911`
-- Preflight HEAD: `47c11aa35d87c5c9b481299a9b90fc02a37060c7`
+- Preflight HEAD: `b8b93640b56eda3cbbaadf54914c9538ccf01492`
 - Latest remote `WHHoward/bvm` and latest Drive canonical packages were rechecked before registration.
 - Frozen point: L1=1.4pH, L2=2.0pH, IBias=260uA, RJ1=32ohm, RJ2=10ohm, BJS area=4/Ic=400uA.
 - Exactly one new physical solve: mask `0111`; no other mask, RJ2, timestep or READ duration.

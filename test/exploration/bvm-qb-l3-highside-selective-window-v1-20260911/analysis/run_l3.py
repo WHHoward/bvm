@@ -154,6 +154,11 @@ def state_template(preflight: dict[str, Any], relation: dict[str, Any]) -> dict[
     return {"schema": "bvm-qb-l3-highside-state-v1", "experiment_id": EXP.name, "created_at_local": now(), "updated_at_local": now(), "status": "RUNNING", "final_marker": None, "preflight_head": preflight["head_at_preflight"], "execution_head": relation["head"], "logical_new_point_count": 2, "logical_new_case_count": 4, "maximum_new_screening_solve_count": 4, "points": {}, "run_order": [], "early_stop_point": None, "outcome": None, "validation": None}
 
 
+def save_state(state: dict[str, Any]) -> None:
+    state["updated_at_local"] = now()
+    write_json(STATE, state)
+
+
 def write_table(state: dict[str, Any], matrix: dict[str, Any]) -> None:
     rows: list[dict[str, Any]] = [{"L3_pH": 1.6, "point_id": "REFERENCE_L3_1p6", "execution_status": "IMMUTABLE_REFERENCE", "control_status": "CLEAN", "N2_count": 2, "N3_count": 4, "N2_BJ1_2_ps": None, "N3_BJ1_4_ps": None, "N3_BJ2_4_ps": None, "N3_JTL6_4_ps": None, "N3_terminal_4_ps": None, "candidate_class": "REFERENCE", "source_110_121_A_s": None, "source_121_124_A_s": None, "notes": ["L3=1.6 reference; reused immutable raw"]}]
     for point in matrix["points"]:

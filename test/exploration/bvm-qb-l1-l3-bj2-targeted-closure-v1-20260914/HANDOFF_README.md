@@ -9,3 +9,8 @@ for a later scientifically authorized validation task and are not run here.
 Raw P(...) values remain radians; displayed turns are navigation only and are
 not SFQ counts. The handoff stops at
 `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`.
+
+T01/T02 were both history/control CLEAN. T01 produced one ordered candidate;
+T02 produced four raw candidates with order `{1:true,2:true,3:false,4:true}`.
+The registered outcome is `N3_FOURTH_HANDOFF_BOUNDARY_CASE`; no validation solve
+was authorized or run.

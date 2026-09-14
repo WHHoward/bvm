@@ -1,0 +1,81 @@
+{
+  "schema": "bvm-qb-l1-l3-bj2-targeted-closure-provenance-v1",
+  "experiment_id": "bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914",
+  "created_at_local": "2026-09-14T10:54:16+08:00",
+  "repository_head_at_qa": "3863741249e05d53eef37bf2a55140597c74d82f",
+  "preflight": {
+    "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/analysis/preflight.json",
+    "sha256": "10b6340c2775027291cf651b9418a02c55731171f3e3e433e0a4b6a248078333"
+  },
+  "source_manifest": {
+    "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/SOURCE_MANIFEST.json",
+    "sha256": "6cc5ccb867477202e69fc4736f3d73d69aba96c0c52d963ec46dab47ff703a5f"
+  },
+  "matrix": {
+    "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/screening/CLOSURE_MATRIX.json",
+    "sha256": "2c1c420a131f80373b8957af93d150bb4eb8e24ab819eb17440ca8c274fecdd6"
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57\n\n"
+  },
+  "runs": {
+    "TARGET_L1_1p2_L3_2_BJ2_2p2_0011": {
+      "raw_sha256": "506cc0605f9d706da8d930b3bc4c19dc1ac099cc085a0d5b14b9ff94da061170",
+      "bytes": 7097375
+    },
+    "TARGET_L1_1p2_L3_2_BJ2_2p2_0111": {
+      "raw_sha256": "4fbf575da91fa4698a7920bcc191656ac434758ccab02e66bd60e9914bab7ee5",
+      "bytes": 7100845
+    }
+  },
+  "references": {
+    "canonical_l3p13/0011": {
+      "raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "bytes": 7102297
+    },
+    "canonical_l3p13/0111": {
+      "raw_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+      "bytes": 7101704
+    },
+    "l1p12_l3p13_bj2p20/0011": {
+      "raw_sha256": "883b4a134c5054b21cd7f23f0a22417c794c1caa60534db3fbfa81cefe35739f",
+      "bytes": 7102351
+    },
+    "l1p12_l3p13_bj2p20/0111": {
+      "raw_sha256": "0289de8b22dfbf0eeb5d564f2f179c4786a1bc16b2ad10ddda9ead99a000f04b",
+      "bytes": 7102057
+    },
+    "l3p20_bj2p22/0011": {
+      "raw_sha256": "3d296c8dba94699b4f17987cdfe4e5928c2f212a5bdbd7c91d11e25153e2c525",
+      "bytes": 7097382
+    },
+    "l3p20_bj2p22/0111": {
+      "raw_sha256": "90913e3f4b5157097f1429f1281ec5e42d667b5649b01c8a3b6d21c39e03f967",
+      "bytes": 7100442
+    }
+  },
+  "results": {
+    "TARGET_L1_1p2_L3_2_BJ2_2p2": {
+      "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/screening/results/TARGET_L1_1p2_L3_2_BJ2_2p2.json",
+      "sha256": "05e4d381752906c0d243b81702a1f0b3d43c535f7cff84c847dc283f5f1e7a99",
+      "candidate_class": "D",
+      "candidate_label": "N3_FOURTH_HANDOFF_BOUNDARY_CASE",
+      "analysis_version": "v1_strict_all_response_ordering"
+    }
+  },
+  "reference_roles": {
+    "R0_canonical": "L1=1.4 L3=1.3 BJ2=2.0",
+    "R1_l1_rescue": "L1=1.2 L3=1.3 BJ2=2.0",
+    "R2_l3_bj2_barrier": "L1=1.4 L3=2.0 BJ2=2.2"
+  },
+  "target": {
+    "L1_pH": 1.2,
+    "L3_pH": 2.0,
+    "BJ2_area": 2.2
+  },
+  "raw_authority": true,
+  "no_extra_parameter": true,
+  "no_timestep_change": true
+}

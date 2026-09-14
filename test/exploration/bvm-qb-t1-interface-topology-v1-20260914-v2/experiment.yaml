@@ -1,0 +1,105 @@
+id: bvm-qb-t1-interface-topology-v1-20260914-v2
+supersedes: bvm-qb-t1-interface-topology-v1-20260914
+study_phase: EXPLORATORY
+mode: FULL_CLOSED_LOOP_INTERFACE_TOPOLOGY
+status: REGISTERED_PENDING_EXECUTION
+role: Experimental Operator + Evidence Packager
+
+supersession:
+  reason: >-
+    The first version's JoSIM logs repeatedly reported Missing model: JJMIT
+    and used the solver default for top-level BVM/JSL/T1 junctions because the
+    exact canonical QB model is local to its BQ subcircuit. The first raw files
+    remain immutable and are artifact-invalid; this version adds the existing
+    global jjmit model closure without changing the canonical QB text or any
+    physical parameter.
+  new_physical_matrix: same 15 topology/mask solves, no retry in the superseded version
+
+question:
+  primary: >-
+    Characterize the population-dependent physical data path from a 4x1 BVM
+    shared-SL array through the frozen canonical QB into T1.I with six JTL
+    stages, two JTL stages, or no JTL stage.
+  interpretation_ceiling: >-
+    This is a bounded population characterization of the registered circuit,
+    stimulus, solver and time grid. It does not establish an SFQ count,
+    interface Gate, T1 truth table, hardware result, mechanism, or route choice.
+
+canonical_qb:
+  path: circuits/qb/bq_parameterized_v1.cir
+  sha256: f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0
+  exact_parameters: Lin=1.5p; L1=1.4p; L2=2.0p; L3=1.3p; BJS=4.0; BJ1=0.9; BJ2=2.0; RJ1=32; RJ2=12; IB plateau=260u
+  deck_redefines_qb_parameters: false
+global_model_closure:
+  path: circuits/models/jjmit.cir
+  purpose: global BVM/JSL/T1 model scope; same nominal values as QB-local model
+
+topologies:
+  jtl6: 4xBVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..6 -> T1.I
+  jtl2: 4xBVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..2 -> T1.I
+  direct: 4xBVM -> COMMON_SL -> JSL1..8 -> canonical QB -> T1.I
+  galvanic_closed_loop: true
+  replay: false
+  passive_capture: false
+  source_replacement_or_scaling: false
+  topology_modification: false
+  extra_matching_resistors: false
+
+stimulus:
+  amplitude_uA: 100
+  rise_ps: 1
+  fall_ps: 1
+  plateau_ps: 9
+  history: IDLE 0-50; WRITE0 50-61; IDLE 61-70; ZERO_STATE_READ_CONTROL 70-81; IDLE 81-90; WRITE1 90-101; SETTLE 101-110; FINAL_READ 110-121; TAIL 121-200
+  final_read_masks: ["0000", "0001", "0011", "0111", "1111"]
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  tran: .tran 0.1p 200p
+
+t1:
+  source: circuits/t1/t1_cell.cir
+  modification: none
+  bias: V_BIAS1=1.67m; V_BIAS2=1.67m; I_BIAS3=35u
+  loads: R_S=12; R_C=12; R_CLK_QUIET=5
+  clock_source: none
+  clock_float: false
+
+registered_runs:
+  topologies: [jtl6, jtl2, direct]
+  masks: ["0000", "0001", "0011", "0111", "1111"]
+  physical_solve_count: 15
+  stage_order: Stage A jtl6; Stage B jtl2; Stage C direct
+  stage_a_stop_on: [JTL6_T1_INTEGRATION_SANITY_FAILED]
+
+sanity_thresholds:
+  voltage_activity_threshold_V: 0.0002
+  phase_activity_threshold_turns: 1.0
+  minimum_activity_samples: 3
+  quiet_windows_ps: [[10, 50], [150, 200]]
+  t1_i_link_voltage_difference_V: 1.0e-9
+  note: >-
+    These are preregistered mechanical sanity flags only. They are not SFQ,
+    switching, Gate, or physical correctness criteria.
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  full_run_window_ps: [0, 200]
+  focused_windows: []
+  comparisons: false
+  png_pdf_image_summary: false
+  per_run_views: [01_bvm_phase, 02_bvm_currents, 03_source_jsl, 04_qb, 05_jtl, 06_t1_jj, 07_t1_io]
+
+layout_override:
+  reason: user explicitly requested a minimal experiment directory
+  forbidden_inside_experiment: [screening, references, qa, handoff, visualization/run_summaries, analysis/archive]
+  run_contents: [deck.cir, raw.csv, run.log, plots]
+  root_evidence: [PREFLIGHT.md, experiment.yaml, RESULT.md, result.json, provenance.json, SOURCE_MANIFEST.json, mechanical_qa.json, visualization_manifest.json, visualization_qa.json]
+  contract_override_recorded: true
+
+stop:
+  final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  scientific_interpretation: NOT_PERFORMED
+  automatic_parameter_change: false
+  automatic_follow_up_solve: false

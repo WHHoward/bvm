@@ -1,0 +1,23 @@
+{
+  "schema": "bvm-qb-t1-visualization-qa-v1",
+  "experiment_id": "bvm-qb-t1-interface-topology-v1-20260914",
+  "generated_at": "2026-09-14T12:31:04+08:00",
+  "status": "SUPERSEDED_ARTIFACT_INVALID",
+  "entry_count": 100,
+  "failures": [],
+  "full_run_only": true,
+  "focused_windows": [],
+  "comparisons": 0,
+  "image_files": [],
+  "raw_hashes_rechecked": true,
+  "phase_unit_note": "raw P values remain radians; -j 2pi is display conversion only",
+  "scientific_interpretation_performed": false,
+  "supersession_defect": {
+    "status": "ARTIFACT_INVALID",
+    "reason": "JoSIM logs reported Missing model: JJMIT and Using default model for top-level BVM/JSL/T1 junctions; the QB-local exact model was not global scope.",
+    "evidence": "runs/*/*/run.log",
+    "raw_and_logs_preserved": true,
+    "superseded_by": "bvm-qb-t1-interface-topology-v1-20260914-v2",
+    "repair": "add existing circuits/models/jjmit.cir as a global include while keeping canonical QB byte-identical"
+  }
+}

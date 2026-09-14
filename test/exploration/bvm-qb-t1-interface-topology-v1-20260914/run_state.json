@@ -1,0 +1,172 @@
+{
+  "schema": "bvm-qb-t1-interface-execution-state-v1",
+  "experiment_id": "bvm-qb-t1-interface-topology-v1-20260914",
+  "created_at": "2026-09-14T12:28:12+08:00",
+  "updated_at": "2026-09-14T12:41:26+08:00",
+  "status": "ARTIFACT_INVALID_SUPERSEDED",
+  "stage_a_sanity": {
+    "schema": "bvm-qb-t1-stage-a-sanity-v1",
+    "control_run": "jtl6_0000",
+    "registered_thresholds": {
+      "voltage_activity_V": 0.0002,
+      "phase_activity_turns": 1.0,
+      "minimum_activity_samples": 3,
+      "link_difference_V": 1e-09
+    },
+    "checks": {
+      "0000_t1_carry_self_activity": {
+        "V(B_J6|XT1)": {
+          "status": "QUIET_BY_REGISTERED_SCREEN",
+          "threshold": {
+            "voltage_V": 0.0002
+          },
+          "sample_count": 500,
+          "activity_sample_count": 0,
+          "minimum_activity_samples": 3,
+          "first_activity_time_ps": null,
+          "last_activity_time_ps": null
+        },
+        "V(B_J10|XT1)": {
+          "status": "QUIET_BY_REGISTERED_SCREEN",
+          "threshold": {
+            "voltage_V": 0.0002
+          },
+          "sample_count": 500,
+          "activity_sample_count": 0,
+          "minimum_activity_samples": 3,
+          "first_activity_time_ps": null,
+          "last_activity_time_ps": null
+        },
+        "V(B_J11|XT1)": {
+          "status": "QUIET_BY_REGISTERED_SCREEN",
+          "threshold": {
+            "voltage_V": 0.0002
+          },
+          "sample_count": 500,
+          "activity_sample_count": 0,
+          "minimum_activity_samples": 3,
+          "first_activity_time_ps": null,
+          "last_activity_time_ps": null
+        },
+        "V(C)": {
+          "status": "QUIET_BY_REGISTERED_SCREEN",
+          "threshold": {
+            "voltage_V": 0.0002
+          },
+          "sample_count": 500,
+          "activity_sample_count": 0,
+          "minimum_activity_samples": 3,
+          "first_activity_time_ps": null,
+          "last_activity_time_ps": null
+        }
+      },
+      "0000_j1_tail_activity_without_final_bvm_input": {
+        "voltage": {
+          "status": "QUIET_BY_REGISTERED_SCREEN",
+          "threshold": {
+            "voltage_V": 0.0002
+          },
+          "sample_count": 500,
+          "activity_sample_count": 0,
+          "minimum_activity_samples": 3,
+          "first_activity_time_ps": null,
+          "last_activity_time_ps": null
+        },
+        "phase": {
+          "status": "QUIET_BY_REGISTERED_SCREEN",
+          "threshold": {
+            "turns": 1.0
+          },
+          "sample_count": 500,
+          "activity_sample_count": 0,
+          "minimum_activity_samples": 3,
+          "first_activity_time_ps": null,
+          "last_activity_time_ps": null
+        }
+      },
+      "t1_bias_or_quiet_branch_activity_without_clock": {
+        "V(B_J2|XT1)": {
+          "10_50": {
+            "status": "QUIET_BY_REGISTERED_SCREEN",
+            "threshold": {
+              "voltage_V": 0.0002
+            },
+            "sample_count": 399,
+            "activity_sample_count": 0,
+            "minimum_activity_samples": 3,
+            "first_activity_time_ps": null,
+            "last_activity_time_ps": null
+          },
+          "150_200": {
+            "status": "QUIET_BY_REGISTERED_SCREEN",
+            "threshold": {
+              "voltage_V": 0.0002
+            },
+            "sample_count": 500,
+            "activity_sample_count": 0,
+            "minimum_activity_samples": 3,
+            "first_activity_time_ps": null,
+            "last_activity_time_ps": null
+          }
+        },
+        "V(B_J3|XT1)": {
+          "10_50": {
+            "status": "QUIET_BY_REGISTERED_SCREEN",
+            "threshold": {
+              "voltage_V": 0.0002
+            },
+            "sample_count": 399,
+            "activity_sample_count": 0,
+            "minimum_activity_samples": 3,
+            "first_activity_time_ps": null,
+            "last_activity_time_ps": null
+          },
+          "150_200": {
+            "status": "QUIET_BY_REGISTERED_SCREEN",
+            "threshold": {
+              "voltage_V": 0.0002
+            },
+            "sample_count": 500,
+            "activity_sample_count": 0,
+            "minimum_activity_samples": 3,
+            "first_activity_time_ps": null,
+            "last_activity_time_ps": null
+          }
+        }
+      },
+      "jtl6_to_t1_i_link": {
+        "source": "V(JTL6_OUT)",
+        "sink": "V(T1_I)",
+        "max_abs_difference_V": 0.0,
+        "time_of_max_difference_ps": 0.0,
+        "declared_tolerance_V": 1e-09,
+        "within_declared_tolerance": true
+      }
+    },
+    "flags": [],
+    "status": "PASS",
+    "stop_marker": null,
+    "scientific_interpretation": "NOT_PERFORMED"
+  },
+  "run_order": [
+    "jtl6_0000",
+    "jtl6_0001",
+    "jtl6_0011",
+    "jtl6_0111",
+    "jtl6_1111",
+    "jtl2_0000",
+    "jtl2_0001",
+    "jtl2_0011",
+    "jtl2_0111",
+    "jtl2_1111",
+    "direct_0000",
+    "direct_0001",
+    "direct_0011",
+    "direct_0111",
+    "direct_1111"
+  ],
+  "authorized_physical_solve_count": 15,
+  "actual_physical_solve_count": 15,
+  "final_marker": "ARTIFACT_INVALID / SUPERSEDED",
+  "superseded_by": "bvm-qb-t1-interface-topology-v1-20260914-v2"
+}

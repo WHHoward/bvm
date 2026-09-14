@@ -1,0 +1,705 @@
+{
+  "schema": "bvm-qb-t1-interface-provenance-v1",
+  "experiment_id": "bvm-qb-t1-interface-topology-v1-20260914-v2",
+  "created_at": "2026-09-14T12:37:11+08:00",
+  "registration_head": "c5b6de3ecdc4acf9f2e41d3845a6ff5d446aed67",
+  "remote_bvm_master": "c5b6de3ecdc4acf9f2e41d3845a6ff5d446aed67",
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "sources": [
+    {
+      "name": "canonical_qb",
+      "path": "circuits/qb/bq_parameterized_v1.cir",
+      "sha256": "f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0",
+      "bytes": 289,
+      "role": "frozen canonical QB include; exact user-registered text"
+    },
+    {
+      "name": "global_jjmit_model",
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "global model closure for BVM/JSL/T1; same values as the QB-local model"
+    },
+    {
+      "name": "t1_cell",
+      "path": "circuits/t1/t1_cell.cir",
+      "sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237",
+      "bytes": 2019,
+      "role": "current T1 cell; no modification"
+    },
+    {
+      "name": "bvm_jm2_connected",
+      "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "current JM2-connected BVM source used by the latest 4x1 closure"
+    },
+    {
+      "name": "jtl2_source",
+      "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "current JTL source used for the six- and two-stage chains"
+    },
+    {
+      "name": "josim_solver",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "recorded solver binary"
+    },
+    {
+      "name": "plotter",
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "bytes": 12245,
+      "role": "standard descriptive visualization renderer"
+    }
+  ],
+  "canonical_qb_exact_text_sha256": "f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0",
+  "t1_j7_verification": {
+    "required": "B_J7 N13 N17 jjmit area=1.0; R_J7 N13 N17 10",
+    "old_definition_absent": true
+  },
+  "contract": {
+    "sentence": "This experiment is governed by docs/EXPERIMENT_CONTRACT.md.",
+    "minimal_layout_override": true,
+    "scientific_analysis_performed": false
+  },
+  "transformations": [
+    {
+      "name": "phase_unwrap_for_navigation",
+      "scope": "analysis only",
+      "raw_mutated": false,
+      "algorithm": "sequential +/-pi correction by adding/subtracting 2*pi"
+    },
+    {
+      "name": "phase_turn_display",
+      "scope": "josim-plot2 display only",
+      "formula": "raw_phase_rad/(2*pi)",
+      "raw_mutated": false
+    },
+    {
+      "name": "actual_grid_trapezoid",
+      "scope": "registered arithmetic",
+      "interpolation": false,
+      "raw_mutated": false
+    }
+  ],
+  "runs": {
+    "jtl6_0000": {
+      "run_id": "jtl6_0000",
+      "topology": "jtl6",
+      "mask": "0000",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0000/deck.cir",
+        "sha256": "7b274c12143c793e2d4109d4f8e17d28c689481fb53b5f2c6b1fee2768494a6f",
+        "bytes": 6483
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0000/raw.csv",
+        "sha256": "8c83fa8357dcf014b6c939efc1e6aeb8cae374f95872bd67b8c021d54075375d",
+        "bytes": 5966719
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0000/run.log",
+        "sha256": "63e96a6b4c125db900c95c7a1cacd796ba51bf7d4f047a936398a82886d8e322",
+        "bytes": 221261
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0000/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0000/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:18+08:00",
+      "finished_at": "2026-09-14T12:37:18+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl6_0001": {
+      "run_id": "jtl6_0001",
+      "topology": "jtl6",
+      "mask": "0001",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0001/deck.cir",
+        "sha256": "c581eb7968a25ff3e6121223477e132ee902a620e55b0e27c639235b99989b11",
+        "bytes": 6499
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0001/raw.csv",
+        "sha256": "79640bcaa191f58d54e75aa97ae61ea54b7720a3b58d54739d97e4f9ded1c255",
+        "bytes": 5965665
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0001/run.log",
+        "sha256": "0ac999662e090a03f2f84cbe22952f557880b139afec56664cb662702a6111c0",
+        "bytes": 223113
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0001/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:18+08:00",
+      "finished_at": "2026-09-14T12:37:18+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl6_0011": {
+      "run_id": "jtl6_0011",
+      "topology": "jtl6",
+      "mask": "0011",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0011/deck.cir",
+        "sha256": "1c8351f7388342ff4ceef6497a0bed063d4d090a73eb3f843ef737d202799db4",
+        "bytes": 6515
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0011/raw.csv",
+        "sha256": "a0f4e199575ab2e8332c3791c8552f959718d097d62eef1d06ae448ab67d27d1",
+        "bytes": 5965969
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0011/run.log",
+        "sha256": "ead57b4aa2b0d8b06fdb707d26a122fc2eb56505075dc2a920f0108d43cd57b7",
+        "bytes": 220606
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0011/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:18+08:00",
+      "finished_at": "2026-09-14T12:37:18+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl6_0111": {
+      "run_id": "jtl6_0111",
+      "topology": "jtl6",
+      "mask": "0111",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0111/deck.cir",
+        "sha256": "9353a2dc084794c0b796887635b5c7c46d07b95beea33d5995c3f34d58e08f2f",
+        "bytes": 6531
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0111/raw.csv",
+        "sha256": "fd8b0f244ff0d3c47f5a15249198631a82349db2d4ed184ce5daf403ecc7a9b0",
+        "bytes": 5965274
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0111/run.log",
+        "sha256": "2793b4fd753a80874e4122584e61df0c912a708515e490a98525045e7b73d062",
+        "bytes": 222415
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0111/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:18+08:00",
+      "finished_at": "2026-09-14T12:37:19+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl6_1111": {
+      "run_id": "jtl6_1111",
+      "topology": "jtl6",
+      "mask": "1111",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/1111/deck.cir",
+        "sha256": "9e6baa4ef7ce9b3174c4701aa3a8feee93e3f9992c984a9204aa2b248432ebf6",
+        "bytes": 6547
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/1111/raw.csv",
+        "sha256": "e630f29049108a9b175b44faff76fef639ee2a4096497d9c77d53712e1c8bcd9",
+        "bytes": 5964642
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/1111/run.log",
+        "sha256": "88b84179cdeedcb9238b8f956f43aa8ca4c8456ef4ca92a4316fb6210f9d0335",
+        "bytes": 223464
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/1111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/1111/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:19+08:00",
+      "finished_at": "2026-09-14T12:37:19+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl2_0000": {
+      "run_id": "jtl2_0000",
+      "topology": "jtl2",
+      "mask": "0000",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0000/deck.cir",
+        "sha256": "0ea304db2aba3565cafcbb0b76d0a3f8a18d9a529b986899593576beee2e0fd7",
+        "bytes": 5955
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0000/raw.csv",
+        "sha256": "b91458c2bbddea7d0038f6c30e5e8aa813ee1625040ac54f4a0aa7dc41781af4",
+        "bytes": 5226755
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0000/run.log",
+        "sha256": "5e774750c7165ee7b0e06aac023562a7d12726478005ae887bc0cd411fcd0601",
+        "bytes": 220511
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0000/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0000/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:19+08:00",
+      "finished_at": "2026-09-14T12:37:19+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl2_0001": {
+      "run_id": "jtl2_0001",
+      "topology": "jtl2",
+      "mask": "0001",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0001/deck.cir",
+        "sha256": "629c6331067abc8969cc4c0e1a77a04c557bd9a5af21ecdd319829de1a31df69",
+        "bytes": 5971
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0001/raw.csv",
+        "sha256": "2fca07ce4b98ed1c0c20a7d3ae6d4e41d3c01cbbbfdc80b1c302bd2b1b8ad581",
+        "bytes": 5227134
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0001/run.log",
+        "sha256": "a5de640b13d4f4da1cdc983427f32a79453ccaf5406731d102c830eeaca85a5b",
+        "bytes": 218316
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0001/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:19+08:00",
+      "finished_at": "2026-09-14T12:37:20+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl2_0011": {
+      "run_id": "jtl2_0011",
+      "topology": "jtl2",
+      "mask": "0011",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0011/deck.cir",
+        "sha256": "abf85f8f5e1bd0e96138fb28d21e9a214b2897021d0c934b300c3dbef4c2b826",
+        "bytes": 5987
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0011/raw.csv",
+        "sha256": "0bb095f25bbf1f2dbefb6fe2d22012bf162354120d2b11a9ee3eaeaf3ba1608c",
+        "bytes": 5227862
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0011/run.log",
+        "sha256": "43b48baae62b9acdee631a5954441865e140df1806df8117be6d2977d3e84916",
+        "bytes": 217668
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0011/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:20+08:00",
+      "finished_at": "2026-09-14T12:37:20+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl2_0111": {
+      "run_id": "jtl2_0111",
+      "topology": "jtl2",
+      "mask": "0111",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0111/deck.cir",
+        "sha256": "6d4387f96cd8d981b2ec5e9c6358a7961e2abaf6f06e047e6d454a1f3a5e33d9",
+        "bytes": 6003
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0111/raw.csv",
+        "sha256": "430b65db0e338c2fe7c4c813530125d27a845d2a3cf4bd3e33e3a6b332763ec6",
+        "bytes": 5227118
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0111/run.log",
+        "sha256": "98427578fd58400eff4abafb92a4683f2d6710fe1cc63cc76641ac931ccf84e9",
+        "bytes": 218066
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/0111/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:20+08:00",
+      "finished_at": "2026-09-14T12:37:21+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "jtl2_1111": {
+      "run_id": "jtl2_1111",
+      "topology": "jtl2",
+      "mask": "1111",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/1111/deck.cir",
+        "sha256": "602fc5363f191f0bb095c83d16156aeb6e97151c602e399d9ef93ff8fd4978f8",
+        "bytes": 6019
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/1111/raw.csv",
+        "sha256": "c2282a4557e648b74440113689be0b2a4a684d6c8367cab46bd81f68c203e63b",
+        "bytes": 5226827
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/1111/run.log",
+        "sha256": "ce077d040a072607f9891e3eaa4da1276a58b4dfe44192d9fe03d3d9c1bbea3e",
+        "bytes": 218255
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/1111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl2/1111/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:21+08:00",
+      "finished_at": "2026-09-14T12:37:21+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "direct_0000": {
+      "run_id": "direct_0000",
+      "topology": "direct",
+      "mask": "0000",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0000/deck.cir",
+        "sha256": "d82dd0b58e20e0bea111bbb3ab7e48ffb9d75371454e61aa296889c35eae5b57",
+        "bytes": 5607
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0000/raw.csv",
+        "sha256": "773202a3e3bd188e42ea4690ce0134d9ae1174649d02d2dfa512cbd8b434dfd7",
+        "bytes": 4867543
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0000/run.log",
+        "sha256": "bbe32e1be1850fe634432206e376b9325c1451e04cd6f09897f98f12b896f6bf",
+        "bytes": 209162
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0000/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0000/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:21+08:00",
+      "finished_at": "2026-09-14T12:37:22+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "direct_0001": {
+      "run_id": "direct_0001",
+      "topology": "direct",
+      "mask": "0001",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0001/deck.cir",
+        "sha256": "f965ee6424a4f7cc9ccfae7374dd2e95cb02902344cbf71064a689a110b9f370",
+        "bytes": 5623
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0001/raw.csv",
+        "sha256": "c58362fac2b54005d81fae5f22a59db36686b40f38ebce07a942ac7d9e431ae7",
+        "bytes": 4867494
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0001/run.log",
+        "sha256": "18af8d0f958fba6b00bd9f377773a3711e9c85d015b27b5858b2dd62155e875c",
+        "bytes": 214572
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0001/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:22+08:00",
+      "finished_at": "2026-09-14T12:37:22+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "direct_0011": {
+      "run_id": "direct_0011",
+      "topology": "direct",
+      "mask": "0011",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0011/deck.cir",
+        "sha256": "ac120441b6fc0f901ba22e2f9f583702cabdde086400faee08c87a95905a52f5",
+        "bytes": 5639
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0011/raw.csv",
+        "sha256": "6dfcf33acf75274e466eee181c93ccc9244a9faed69ab6af18cb33cf59c697aa",
+        "bytes": 4865829
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0011/run.log",
+        "sha256": "05723bd6a4114a8ab5f7ee20688825f612f339f5fd87095b738555d5c9831eec",
+        "bytes": 214662
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0011/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:22+08:00",
+      "finished_at": "2026-09-14T12:37:22+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "direct_0111": {
+      "run_id": "direct_0111",
+      "topology": "direct",
+      "mask": "0111",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0111/deck.cir",
+        "sha256": "31e973454495ae2846202fefd67826d44f26edb7788941f1ec86b266ad3b502f",
+        "bytes": 5655
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0111/raw.csv",
+        "sha256": "d5b0f6b48281941b31ca95432287821c5772ba0b5c436692be941b9fe11d8b04",
+        "bytes": 4864734
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0111/run.log",
+        "sha256": "350122e1ebe8fa74f2a4a326ba46d48039713a9fc659d707c392151653656270",
+        "bytes": 216059
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/0111/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:22+08:00",
+      "finished_at": "2026-09-14T12:37:22+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    },
+    "direct_1111": {
+      "run_id": "direct_1111",
+      "topology": "direct",
+      "mask": "1111",
+      "deck": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/1111/deck.cir",
+        "sha256": "23ff1a69177cbf315d23c52beda699ba346d2c6af5028ca6cd9963400a71f830",
+        "bytes": 5671
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/1111/raw.csv",
+        "sha256": "381a2ddc9bbf06014425b4ff67a8e8543183ebda45e7dc7a016c234c239f68c5",
+        "bytes": 4865647
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/1111/run.log",
+        "sha256": "fe9a6d856569a27474a171f963e0805b9c44548c801dc6ef2f827e0c5627b11b",
+        "bytes": 216209
+      },
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/1111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/direct/1111/deck.cir"
+      ],
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "started_at": "2026-09-14T12:37:22+08:00",
+      "finished_at": "2026-09-14T12:37:22+08:00",
+      "execution_status": "RUN_PASS",
+      "raw_immutable": true,
+      "scientific_analysis_performed": false
+    }
+  },
+  "raw_hash_before_analysis": {
+    "jtl6_0000": "8c83fa8357dcf014b6c939efc1e6aeb8cae374f95872bd67b8c021d54075375d",
+    "jtl6_0001": "79640bcaa191f58d54e75aa97ae61ea54b7720a3b58d54739d97e4f9ded1c255",
+    "jtl6_0011": "a0f4e199575ab2e8332c3791c8552f959718d097d62eef1d06ae448ab67d27d1",
+    "jtl6_0111": "fd8b0f244ff0d3c47f5a15249198631a82349db2d4ed184ce5daf403ecc7a9b0",
+    "jtl6_1111": "e630f29049108a9b175b44faff76fef639ee2a4096497d9c77d53712e1c8bcd9",
+    "jtl2_0000": "b91458c2bbddea7d0038f6c30e5e8aa813ee1625040ac54f4a0aa7dc41781af4",
+    "jtl2_0001": "2fca07ce4b98ed1c0c20a7d3ae6d4e41d3c01cbbbfdc80b1c302bd2b1b8ad581",
+    "jtl2_0011": "0bb095f25bbf1f2dbefb6fe2d22012bf162354120d2b11a9ee3eaeaf3ba1608c",
+    "jtl2_0111": "430b65db0e338c2fe7c4c813530125d27a845d2a3cf4bd3e33e3a6b332763ec6",
+    "jtl2_1111": "c2282a4557e648b74440113689be0b2a4a684d6c8367cab46bd81f68c203e63b",
+    "direct_0000": "773202a3e3bd188e42ea4690ce0134d9ae1174649d02d2dfa512cbd8b434dfd7",
+    "direct_0001": "c58362fac2b54005d81fae5f22a59db36686b40f38ebce07a942ac7d9e431ae7",
+    "direct_0011": "6dfcf33acf75274e466eee181c93ccc9244a9faed69ab6af18cb33cf59c697aa",
+    "direct_0111": "d5b0f6b48281941b31ca95432287821c5772ba0b5c436692be941b9fe11d8b04",
+    "direct_1111": "381a2ddc9bbf06014425b4ff67a8e8543183ebda45e7dc7a016c234c239f68c5"
+  },
+  "raw_hash_after_analysis": {
+    "jtl6_0000": "8c83fa8357dcf014b6c939efc1e6aeb8cae374f95872bd67b8c021d54075375d",
+    "jtl6_0001": "79640bcaa191f58d54e75aa97ae61ea54b7720a3b58d54739d97e4f9ded1c255",
+    "jtl6_0011": "a0f4e199575ab2e8332c3791c8552f959718d097d62eef1d06ae448ab67d27d1",
+    "jtl6_0111": "fd8b0f244ff0d3c47f5a15249198631a82349db2d4ed184ce5daf403ecc7a9b0",
+    "jtl6_1111": "e630f29049108a9b175b44faff76fef639ee2a4096497d9c77d53712e1c8bcd9",
+    "jtl2_0000": "b91458c2bbddea7d0038f6c30e5e8aa813ee1625040ac54f4a0aa7dc41781af4",
+    "jtl2_0001": "2fca07ce4b98ed1c0c20a7d3ae6d4e41d3c01cbbbfdc80b1c302bd2b1b8ad581",
+    "jtl2_0011": "0bb095f25bbf1f2dbefb6fe2d22012bf162354120d2b11a9ee3eaeaf3ba1608c",
+    "jtl2_0111": "430b65db0e338c2fe7c4c813530125d27a845d2a3cf4bd3e33e3a6b332763ec6",
+    "jtl2_1111": "c2282a4557e648b74440113689be0b2a4a684d6c8367cab46bd81f68c203e63b",
+    "direct_0000": "773202a3e3bd188e42ea4690ce0134d9ae1174649d02d2dfa512cbd8b434dfd7",
+    "direct_0001": "c58362fac2b54005d81fae5f22a59db36686b40f38ebce07a942ac7d9e431ae7",
+    "direct_0011": "6dfcf33acf75274e466eee181c93ccc9244a9faed69ab6af18cb33cf59c697aa",
+    "direct_0111": "d5b0f6b48281941b31ca95432287821c5772ba0b5c436692be941b9fe11d8b04",
+    "direct_1111": "381a2ddc9bbf06014425b4ff67a8e8543183ebda45e7dc7a016c234c239f68c5"
+  },
+  "analysis": {
+    "result_path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/result.json",
+    "generated_at": "2026-09-14T12:37:38+08:00",
+    "raw_hashes_equal_before_after": true,
+    "scientific_analysis_performed": false
+  }
+}

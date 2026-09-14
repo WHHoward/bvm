@@ -1,0 +1,67 @@
+{
+  "schema": "bvm-qb-t1-mask-pair-source-manifest-v1",
+  "experiment_id": "bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rj4-4-masks-0111-1111-rerun",
+  "sources": [
+    {
+      "name": "canonical_qb",
+      "path": "circuits/qb/bq_parameterized_v1.cir",
+      "sha256": "f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0",
+      "bytes": 289,
+      "role": "frozen canonical QB"
+    },
+    {
+      "name": "global_jjmit_model",
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "global BVM/JSL/T1 model closure"
+    },
+    {
+      "name": "t1_cell",
+      "path": "circuits/t1/t1_cell.cir",
+      "sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237",
+      "bytes": 2019,
+      "role": "current T1 netlist"
+    },
+    {
+      "name": "bvm_jm2_connected",
+      "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "frozen BVM source"
+    },
+    {
+      "name": "jtl2_source",
+      "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "frozen JTL source"
+    },
+    {
+      "name": "template_deck",
+      "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rj4-4-rerun/runs/jtl6/0011/deck.cir",
+      "sha256": "0d441ec28c3da9c5d55384659b747af17e66a0df6b97725e3b9c966893025c81",
+      "bytes": 6514,
+      "role": "previous bias deck; only final-read mask lines are transformed"
+    },
+    {
+      "name": "josim_solver",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "recorded solver"
+    },
+    {
+      "name": "plotter",
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "bytes": 12245,
+      "role": "standard renderer"
+    }
+  ],
+  "comparison_reference": {
+    "path": "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rj4-4-rerun/runs/jtl6/0011/raw.csv",
+    "sha256": "10bd9d992561714224d77f5448bdb2cfa48c7d9e73605550375eb7e6f4739934",
+    "not_copied": true
+  }
+}

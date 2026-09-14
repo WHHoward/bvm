@@ -1,0 +1,156 @@
+* REGISTERED BVM -> QB -> T1 INTEGRATION DECK; topology=jtl6; mask=0111
+* No replay, passive capture, source scaling/filtering, parameter override, or T1 modification.
+* P(...) is raw phase in radians; -j 2pi is visualization-only display conversion.
+.include ../../../../../../circuits/models/jjmit.cir
+.include ../../../../../../circuits/qb/bq_parameterized_v1.cir
+.include ../../../../bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/bvm_jm2_connected.cir
+.include ../../../../bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/jtl2.cir
+.include ../../../../../../circuits/t1/t1_cell.cir
+
+* Four identical historical JM2-connected BVMs share the physical COMMON_SL node.
+XBVM1 WL1 BL1 SE1 COMMON_SL BVM
+XBVM2 WL2 BL2 SE2 COMMON_SL BVM
+XBVM3 WL3 BL3 SE3 COMMON_SL BVM
+XBVM4 WL4 BL4 SE4 COMMON_SL BVM
+
+B_JSL1 COMMON_SL JSL_NODE1 jjmit area=5.0
+B_JSL2 JSL_NODE1 JSL_NODE2 jjmit area=5.0
+B_JSL3 JSL_NODE2 JSL_NODE3 jjmit area=5.0
+B_JSL4 JSL_NODE3 JSL_NODE4 jjmit area=5.0
+B_JSL5 JSL_NODE4 JSL_NODE5 jjmit area=5.0
+B_JSL6 JSL_NODE5 JSL_NODE6 jjmit area=5.0
+B_JSL7 JSL_NODE6 JSL_NODE7 jjmit area=5.0
+B_JSL8 JSL_NODE7 QBIN jjmit area=5.0
+
+XBQ QBIN QBOUT BQ
+XJTL1 QBOUT JTL1_OUT jtl
+XJTL2 JTL1_OUT JTL2_OUT jtl
+XJTL3 JTL2_OUT JTL3_OUT jtl
+XJTL4 JTL3_OUT JTL4_OUT jtl
+XJTL5 JTL4_OUT JTL5_OUT jtl
+XJTL6 JTL5_OUT JTL6_OUT jtl
+
+* Ideal zero-drop link only exposes the named T1_I terminal: V_T1_LINK JTL6_OUT T1_I 0
+V_T1_LINK JTL6_OUT T1_I 0
+XT1 T1_I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1
+V_BIAS1 N_BIAS1 0 DC 1.8m
+V_BIAS2 N_BIAS2 0 DC 1.8m
+V_BIAS3 N_BIAS3 0 DC 1.8m
+R_S S 0 12
+R_C C 0 12
+R_CLK_QUIET CLK 0 5
+
+I_WL1 0 WL1 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+I_BL1 0 BL1 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 121p 0 200p 0)
+I_SE1 0 SE1 pwl(0p 0 70p 0 81p 0 90p 0 101p 0 110p 0 111p 0 120p 0 121p 0 200p 0)
+I_WL2 0 WL2 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_BL2 0 BL2 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 121p 0 200p 0)
+I_SE2 0 SE2 pwl(0p 0 70p 0 81p 0 90p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_WL3 0 WL3 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_BL3 0 BL3 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 121p 0 200p 0)
+I_SE3 0 SE3 pwl(0p 0 70p 0 81p 0 90p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_WL4 0 WL4 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+I_BL4 0 BL4 pwl(0p 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 121p 0 200p 0)
+I_SE4 0 SE4 pwl(0p 0 70p 0 81p 0 90p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 200p 0)
+
+.tran 0.1p 200p
+
+.print P(B_JM1|XBVM1) V(B_JM1|XBVM1) I(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1) V(B_JM2|XBVM1) I(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1) V(B_JS1|XBVM1) I(B_JS1|XBVM1)
+.print P(B_JS2|XBVM1) V(B_JS2|XBVM1) I(B_JS2|XBVM1)
+.print I(L_M1|XBVM1)
+.print I(L_M2|XBVM1)
+.print I(L_M3|XBVM1)
+.print I(L_PM|XBVM1)
+.print I(L_PSL|XBVM1)
+.print I(L_SL|XBVM1)
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print P(B_JM1|XBVM2) V(B_JM1|XBVM2) I(B_JM1|XBVM2)
+.print P(B_JM2|XBVM2) V(B_JM2|XBVM2) I(B_JM2|XBVM2)
+.print P(B_JS1|XBVM2) V(B_JS1|XBVM2) I(B_JS1|XBVM2)
+.print P(B_JS2|XBVM2) V(B_JS2|XBVM2) I(B_JS2|XBVM2)
+.print I(L_M1|XBVM2)
+.print I(L_M2|XBVM2)
+.print I(L_M3|XBVM2)
+.print I(L_PM|XBVM2)
+.print I(L_PSL|XBVM2)
+.print I(L_SL|XBVM2)
+.print I(I_WL2) I(I_BL2) I(I_SE2)
+.print P(B_JM1|XBVM3) V(B_JM1|XBVM3) I(B_JM1|XBVM3)
+.print P(B_JM2|XBVM3) V(B_JM2|XBVM3) I(B_JM2|XBVM3)
+.print P(B_JS1|XBVM3) V(B_JS1|XBVM3) I(B_JS1|XBVM3)
+.print P(B_JS2|XBVM3) V(B_JS2|XBVM3) I(B_JS2|XBVM3)
+.print I(L_M1|XBVM3)
+.print I(L_M2|XBVM3)
+.print I(L_M3|XBVM3)
+.print I(L_PM|XBVM3)
+.print I(L_PSL|XBVM3)
+.print I(L_SL|XBVM3)
+.print I(I_WL3) I(I_BL3) I(I_SE3)
+.print P(B_JM1|XBVM4) V(B_JM1|XBVM4) I(B_JM1|XBVM4)
+.print P(B_JM2|XBVM4) V(B_JM2|XBVM4) I(B_JM2|XBVM4)
+.print P(B_JS1|XBVM4) V(B_JS1|XBVM4) I(B_JS1|XBVM4)
+.print P(B_JS2|XBVM4) V(B_JS2|XBVM4) I(B_JS2|XBVM4)
+.print I(L_M1|XBVM4)
+.print I(L_M2|XBVM4)
+.print I(L_M3|XBVM4)
+.print I(L_PM|XBVM4)
+.print I(L_PSL|XBVM4)
+.print I(L_SL|XBVM4)
+.print I(I_WL4) I(I_BL4) I(I_SE4)
+.print V(COMMON_SL)
+.print P(B_JSL1) V(B_JSL1) I(B_JSL1)
+.print P(B_JSL2) V(B_JSL2) I(B_JSL2)
+.print P(B_JSL3) V(B_JSL3) I(B_JSL3)
+.print P(B_JSL4) V(B_JSL4) I(B_JSL4)
+.print P(B_JSL5) V(B_JSL5) I(B_JSL5)
+.print P(B_JSL6) V(B_JSL6) I(B_JSL6)
+.print P(B_JSL7) V(B_JSL7) I(B_JSL7)
+.print P(B_JSL8) V(B_JSL8) I(B_JSL8)
+.print V(QBIN)
+.print I(LIN|XBQ) V(LIN|XBQ)
+.print I(L1|XBQ) V(L1|XBQ)
+.print I(L2|XBQ) V(L2|XBQ)
+.print I(L3|XBQ) V(L3|XBQ)
+.print P(BJS|XBQ) V(BJS|XBQ) I(BJS|XBQ)
+.print P(BJ1|XBQ) V(BJ1|XBQ) I(BJ1|XBQ)
+.print P(BJ2|XBQ) V(BJ2|XBQ) I(BJ2|XBQ)
+.print I(RJ1|XBQ) I(RJ2|XBQ)
+.print V(QBOUT)
+.print P(B01|XJTL1) V(B01|XJTL1) I(B01|XJTL1) P(B02|XJTL1) V(B02|XJTL1) I(B02|XJTL1)
+.print V(JTL1_OUT)
+.print P(B01|XJTL2) V(B01|XJTL2) I(B01|XJTL2) P(B02|XJTL2) V(B02|XJTL2) I(B02|XJTL2)
+.print V(JTL2_OUT)
+.print P(B01|XJTL3) V(B01|XJTL3) I(B01|XJTL3) P(B02|XJTL3) V(B02|XJTL3) I(B02|XJTL3)
+.print V(JTL3_OUT)
+.print P(B01|XJTL4) V(B01|XJTL4) I(B01|XJTL4) P(B02|XJTL4) V(B02|XJTL4) I(B02|XJTL4)
+.print V(JTL4_OUT)
+.print P(B01|XJTL5) V(B01|XJTL5) I(B01|XJTL5) P(B02|XJTL5) V(B02|XJTL5) I(B02|XJTL5)
+.print V(JTL5_OUT)
+.print P(B01|XJTL6) V(B01|XJTL6) I(B01|XJTL6) P(B02|XJTL6) V(B02|XJTL6) I(B02|XJTL6)
+.print V(JTL6_OUT)
+.print V(T1_I) V(CLK) V(S) V(C) I(R_S) I(R_C)
+.print P(B_J1|XT1) V(B_J1|XT1) I(B_J1|XT1)
+.print P(B_J2|XT1) V(B_J2|XT1) I(B_J2|XT1)
+.print P(B_J3|XT1) V(B_J3|XT1) I(B_J3|XT1)
+.print P(B_J4|XT1) V(B_J4|XT1) I(B_J4|XT1)
+.print P(B_J5|XT1) V(B_J5|XT1) I(B_J5|XT1)
+.print P(B_J6|XT1) V(B_J6|XT1) I(B_J6|XT1)
+.print P(B_J7|XT1) V(B_J7|XT1) I(B_J7|XT1)
+.print P(B_J8|XT1) V(B_J8|XT1) I(B_J8|XT1)
+.print P(B_J9|XT1) V(B_J9|XT1) I(B_J9|XT1)
+.print P(B_J10|XT1) V(B_J10|XT1) I(B_J10|XT1)
+.print P(B_J11|XT1) V(B_J11|XT1) I(B_J11|XT1)
+.print I(L1|XT1)
+.print I(L3|XT1)
+.print I(L7|XT1)
+.print I(L8|XT1)
+.print I(L9|XT1)
+.print I(L10|XT1)
+.print I(L15|XT1)
+.print I(L16|XT1)
+.print I(L17|XT1)
+.print I(L11|XT1)
+.print I(L13|XT1)
+.end

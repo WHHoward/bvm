@@ -1,0 +1,64 @@
+id: bvm-qb-t1-interface-topology-v1-20260914-t1-rj4-2-rerun
+supersedes_or_compares: bvm-qb-t1-interface-topology-v1-20260914-v2
+study_phase: EXPLORATORY
+mode: SINGLE_POINT_T1_PARAMETER_RERUN
+status: REGISTERED_PENDING_EXECUTION
+role: Experimental Operator + Evidence Packager
+
+question:
+  primary: >-
+    Rerun the registered jtl6 mask 0011 interface case after the user-authored
+    T1 change R_J4 4 -> 2, with all other circuit, stimulus and solver settings
+    held fixed.
+  interpretation_ceiling: >-
+    This is a single bounded parameter rerun. It does not establish an SFQ
+    count, Gate, T1 truth table, mechanism, convergence or route conclusion.
+
+changed:
+  path: circuits/t1/t1_cell.cir
+  element: R_J4
+  before_ohm: 4
+  after_ohm: 2
+  user_authored: true
+  other_t1_changes: none_observed
+
+frozen:
+  canonical_qb: circuits/qb/bq_parameterized_v1.cir
+  topology: 4xBVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..6 -> T1.I
+  mask: "0011"
+  stimulus: IDLE 0-50; WRITE0 50-61; IDLE 61-70; ZERO_STATE_READ_CONTROL 70-81; IDLE 81-90; WRITE1 90-101; SETTLE 101-110; FINAL READ 110-121; TAIL 121-200
+  amplitude_uA: 100
+  rise_ps: 1
+  fall_ps: 1
+  plateau_ps: 9
+  tran: .tran 0.1p 200p
+  t1_bias_load: V_BIAS1=1.67m; V_BIAS2=1.67m; I_BIAS3=35u; R_S=12; R_C=12; R_CLK_QUIET=5
+  clock_source: none
+  replay: false
+  passive_capture: false
+  source_scaling_or_filtering: false
+  retry: false
+
+registered_runs:
+  - run_id: jtl6_0011
+    topology: jtl6
+    mask: "0011"
+    physical_solve_count: 1
+  old_raw_not_overwritten: true
+  old_raw_path: test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2/runs/jtl6/0011/raw.csv
+
+probes:
+  full_registered_probe_set: inherited_from_bvm_qb_t1_interface_topology_v1
+  visualization_views: [01_bvm_phase, 02_bvm_currents, 03_source_jsl, 04_qb, 05_jtl, 06_t1_jj, 07_t1_io]
+  full_run_window_ps: [0, 200]
+  focused_windows: []
+
+layout_override:
+  reason: one authorized rerun with a new run ID and minimal experiment directory
+  forbidden_inside_experiment: [screening, references, qa, handoff, visualization/run_summaries, analysis/archive]
+  run_contents: [deck.cir, raw.csv, run.log, plots]
+
+stop:
+  final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  scientific_interpretation: NOT_PERFORMED
+  automatic_follow_up: false

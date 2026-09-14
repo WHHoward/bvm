@@ -1,0 +1,63 @@
+id: bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rerun
+supersedes_or_compares: bvm-qb-t1-interface-topology-v1-20260914-t1-rj4-2-rerun
+study_phase: EXPLORATORY
+mode: SINGLE_POINT_DECK_BIAS_RERUN
+status: REGISTERED_PENDING_EXECUTION
+role: Experimental Operator + Evidence Packager
+
+question:
+  primary: >-
+    Rerun the registered jtl6 mask 0011 interface case after the user-authored
+    deck bias change, with the current deck copied verbatim and the previous
+    raw preserved.
+  interpretation_ceiling: >-
+    This is a single bounded deck/stimulus rerun. It does not establish an SFQ
+    count, Gate, T1 truth table, mechanism, convergence or route conclusion.
+
+changed_deck_lines:
+  - V_BIAS1 N_BIAS1 0 DC 1.67m -> V_BIAS1 N_BIAS1 0 DC 1.8m
+  - V_BIAS2 N_BIAS2 0 DC 1.67m -> V_BIAS2 N_BIAS2 0 DC 1.8m
+  - I_BIAS3 N_BIAS3 0 DC 35u -> V_BIAS3 N_BIAS3 0 DC 1.8m
+  note: The third change is a source-type change, not silently interpreted as a current value.
+
+frozen:
+  topology: 4xBVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..6 -> T1.I
+  mask: "0011"
+  canonical_qb: circuits/qb/bq_parameterized_v1.cir
+  t1_source: circuits/t1/t1_cell.cir
+  t1_R_J4_ohm: 2
+  stimulus: IDLE 0-50; WRITE0 50-61; IDLE 61-70; ZERO_STATE_READ_CONTROL 70-81; IDLE 81-90; WRITE1 90-101; SETTLE 101-110; FINAL READ 110-121; TAIL 121-200
+  amplitude_uA: 100
+  rise_ps: 1
+  fall_ps: 1
+  plateau_ps: 9
+  tran: .tran 0.1p 200p
+  t1_bias_load: current deck copied verbatim
+  replay: false
+  passive_capture: false
+  retry: false
+
+registered_runs:
+  - run_id: jtl6_0011
+    physical_solve_count: 1
+  previous_raw_not_overwritten: true
+  previous_raw_path: test/exploration/bvm-qb-t1-interface-topology-v1-20260914-t1-rj4-2-rerun/runs/jtl6/0011/raw.csv
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  full_run_window_ps: [0, 200]
+  focused_windows: []
+  views: [01_bvm_phase, 02_bvm_currents, 03_source_jsl, 04_qb, 05_jtl, 06_t1_jj, 07_t1_io]
+
+layout:
+  run_contents: [deck.cir, raw.csv, run.log, plots]
+  no_experiment_local_references: true
+  no_experiment_local_analysis_archive: true
+
+stop:
+  final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  scientific_interpretation: NOT_PERFORMED
+  automatic_follow_up: false

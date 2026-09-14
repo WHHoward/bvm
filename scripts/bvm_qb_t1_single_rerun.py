@@ -60,6 +60,8 @@ RUN = run_dir(TOPOLOGY, MASK)
 OLD_EXP = REPO / "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2"
 OLD_RAW = OLD_EXP / "runs/jtl6/0011/raw.csv"
 PACKAGE = REPO / f"{EXP.name}_raw_evidence.zip"
+DECK_SOURCE_ENV = os.environ.get("BVM_QB_T1_DECK_SOURCE")
+DECK_SOURCE = Path(DECK_SOURCE_ENV).resolve() if DECK_SOURCE_ENV else None
 
 
 def prepare() -> None:
@@ -72,7 +74,12 @@ def prepare() -> None:
         raise RuntimeError(f"missing comparison deck: {old_deck}")
     RUN.mkdir(parents=True, exist_ok=True)
     deck = RUN / "deck.cir"
-    registered = deck_text(TOPOLOGY, MASK, RUN)
+    if DECK_SOURCE is not None:
+        if not DECK_SOURCE.is_file():
+            raise RuntimeError(f"missing registered deck source: {DECK_SOURCE}")
+        registered = DECK_SOURCE.read_text(encoding="utf-8")
+    else:
+        registered = deck_text(TOPOLOGY, MASK, RUN)
     if deck.exists() and deck.read_text(encoding="utf-8") != registered:
         raise RuntimeError(f"refusing to overwrite changed registered deck: {deck}")
     if not deck.exists():
@@ -98,6 +105,7 @@ def prepare() -> None:
         "solver": solver_context(),
         "sources": entries,
         "changed": {"path": rel(T1), "element": "R_J4", "before_ohm": 4, "after_ohm": 2, "t1_sha256": sha256(T1)},
+        "registered_deck": {"path": rel(deck), "sha256": sha256(deck), "source_path": rel(DECK_SOURCE) if DECK_SOURCE is not None else None, "source_sha256": sha256(DECK_SOURCE) if DECK_SOURCE is not None else None},
         "comparison_reference": {"experiment": OLD_EXP.name, "raw": old, "not_copied": True},
         "raw_hash_before_analysis": {},
         "raw_hash_after_analysis": {},
@@ -117,6 +125,12 @@ def execute() -> None:
     provenance = read_json(EXP / "provenance.json")
     if state.get("actual_physical_solve_count") or state.get("final_marker"):
         raise RuntimeError("rerun already executed; refusing overwrite")
+    registered_deck = provenance.get("registered_deck", {}).get("sha256")
+    if registered_deck and sha256(RUN / "deck.cir") != registered_deck:
+        raise RuntimeError("deck changed after preflight; refusing physical solve")
+    registered_t1 = provenance.get("changed", {}).get("t1_sha256")
+    if registered_t1 and sha256(T1) != registered_t1:
+        raise RuntimeError("T1 source changed after preflight; refusing physical solve")
     run_one(TOPOLOGY, MASK, state, provenance)
     state["status"] = "RUN_COMPLETE"
     state["updated_at"] = now()
@@ -192,7 +206,7 @@ def package() -> None:
         raise RuntimeError("QA must pass before packaging")
     if PACKAGE.exists():
         raise RuntimeError(f"refusing overwrite: {PACKAGE}")
-    root_names = ("PREFLIGHT.md", "experiment.yaml", "RESULT.md", "result.json", "provenance.json", "SOURCE_MANIFEST.json", "mechanical_qa.json", "visualization_manifest.json", "visualization_qa.json", "run_state.json")
+    root_names = ("PREFLIGHT.md", "experiment.yaml", "RESULT.md", "run.sh", "result.json", "provenance.json", "SOURCE_MANIFEST.json", "mechanical_qa.json", "visualization_manifest.json", "visualization_qa.json", "run_state.json")
     files = [EXP / name for name in root_names if (EXP / name).is_file()] + [path for path in sorted((EXP / "runs").rglob("*")) if path.is_file()]
     records = [{"path": path.relative_to(EXP).as_posix(), "sha256": sha256(path), "bytes": path.stat().st_size} for path in files]
     with zipfile.ZipFile(PACKAGE, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:

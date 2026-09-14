@@ -57,11 +57,14 @@ from bvm_qb_t1_interface import (  # noqa: E402
 TOPOLOGY = "jtl6"
 MASK = "0011"
 RUN = run_dir(TOPOLOGY, MASK)
-OLD_EXP = REPO / "test/exploration/bvm-qb-t1-interface-topology-v1-20260914-v2"
+OLD_EXP_ID = os.environ.get("BVM_QB_T1_OLD_EXP_ID", "bvm-qb-t1-interface-topology-v1-20260914-v2")
+OLD_EXP = REPO / "test/exploration" / OLD_EXP_ID
 OLD_RAW = OLD_EXP / "runs/jtl6/0011/raw.csv"
 PACKAGE = REPO / f"{EXP.name}_raw_evidence.zip"
 DECK_SOURCE_ENV = os.environ.get("BVM_QB_T1_DECK_SOURCE")
 DECK_SOURCE = Path(DECK_SOURCE_ENV).resolve() if DECK_SOURCE_ENV else None
+T1_CHANGE_BEFORE = int(os.environ.get("BVM_QB_T1_RJ4_BEFORE", "4"))
+T1_CHANGE_AFTER = int(os.environ.get("BVM_QB_T1_RJ4_AFTER", "2"))
 
 
 def prepare() -> None:
@@ -104,7 +107,7 @@ def prepare() -> None:
         "remote_bvm_master": subprocess.check_output(["git", "ls-remote", "bvm", "refs/heads/master"], cwd=REPO, text=True).split()[0],
         "solver": solver_context(),
         "sources": entries,
-        "changed": {"path": rel(T1), "element": "R_J4", "before_ohm": 4, "after_ohm": 2, "t1_sha256": sha256(T1)},
+        "changed": {"path": rel(T1), "element": "R_J4", "before_ohm": T1_CHANGE_BEFORE, "after_ohm": T1_CHANGE_AFTER, "t1_sha256": sha256(T1)},
         "registered_deck": {"path": rel(deck), "sha256": sha256(deck), "source_path": rel(DECK_SOURCE) if DECK_SOURCE is not None else None, "source_sha256": sha256(DECK_SOURCE) if DECK_SOURCE is not None else None},
         "comparison_reference": {"experiment": OLD_EXP.name, "raw": old, "not_copied": True},
         "raw_hash_before_analysis": {},
@@ -149,7 +152,7 @@ def analyze() -> None:
     after = sha256(raw)
     if before != after:
         raise RuntimeError("raw changed during analysis")
-    result = {"schema": "bvm-qb-t1-single-rerun-result-v1", "experiment_id": EXP.name, "generated_at": now(), "artifact_status": "VALID", "execution": {"authorized_physical_solve_count": 1, "actual_physical_solve_count": 1, "completed_runs": [run_id(TOPOLOGY, MASK)]}, "observed": {"t1_change": "R_J4 4 -> 2 ohm", "phase_raw_unit": "radians", "raw_time_unit": "seconds"}, "derived": {"registered_window_arithmetic": metrics}, "comparison_reference": {"path": rel(OLD_RAW), "raw_sha256": sha256(OLD_RAW), "not_copied": True}, "unknown": ["SFQ count/event identity", "JJ switching certification", "interface Gate", "T1 truth table", "mechanism", "convergence", "route selection"], "interpretation": {"scientific_analysis_performed": False, "physical_verdict": "NOT_ASSIGNED", "review_state": "AWAITING_SCIENTIFIC_REVIEW", "phase_turns_are_navigation_only": True}, "stop": {"final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW", "automatic_follow_up": False}}
+    result = {"schema": "bvm-qb-t1-single-rerun-result-v1", "experiment_id": EXP.name, "generated_at": now(), "artifact_status": "VALID", "execution": {"authorized_physical_solve_count": 1, "actual_physical_solve_count": 1, "completed_runs": [run_id(TOPOLOGY, MASK)]}, "observed": {"t1_change": f"R_J4 {T1_CHANGE_BEFORE} -> {T1_CHANGE_AFTER} ohm", "phase_raw_unit": "radians", "raw_time_unit": "seconds"}, "derived": {"registered_window_arithmetic": metrics}, "comparison_reference": {"experiment": OLD_EXP.name, "path": rel(OLD_RAW), "raw_sha256": sha256(OLD_RAW), "not_copied": True}, "unknown": ["SFQ count/event identity", "JJ switching certification", "interface Gate", "T1 truth table", "mechanism", "convergence", "route selection"], "interpretation": {"scientific_analysis_performed": False, "physical_verdict": "NOT_ASSIGNED", "review_state": "AWAITING_SCIENTIFIC_REVIEW", "phase_turns_are_navigation_only": True}, "stop": {"final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW", "automatic_follow_up": False}}
     write_json(EXP / "result.json", result)
     provenance = read_json(EXP / "provenance.json")
     provenance["raw_hash_after_analysis"] = {run_id(TOPOLOGY, MASK): after}
@@ -159,7 +162,7 @@ def analyze() -> None:
     state["final_marker"] = "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW"
     state["updated_at"] = now()
     write_json(EXP / "run_state.json", state)
-    (EXP / "RESULT.md").write_text("\n".join(["# BVM -> QB -> T1 T1-parameter rerun", "", "- Artifact status: `VALID`.", "- Authorized/completed physical solves: `1/1`.", "- Registered change: `R_J4 4 -> 2 ohm`.", "- Scientific interpretation: `NOT_PERFORMED`; physical verdict: `NOT_ASSIGNED`.", "", "The prior v2 `jtl6/0011` raw is preserved and referenced only by path/hash. P(...) remains raw radians; displayed turns are navigation only, not SFQ counts.", "", "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW", ""]), encoding="utf-8")
+    (EXP / "RESULT.md").write_text("\n".join(["# BVM -> QB -> T1 T1-parameter rerun", "", "- Artifact status: `VALID`.", "- Authorized/completed physical solves: `1/1`.", f"- Registered change: `R_J4 {T1_CHANGE_BEFORE} -> {T1_CHANGE_AFTER} ohm`.", "- Scientific interpretation: `NOT_PERFORMED`; physical verdict: `NOT_ASSIGNED`.", "", f"The prior `{OLD_EXP.name}` `jtl6/0011` raw is preserved and referenced only by path/hash. P(...) remains raw radians; displayed turns are navigation only, not SFQ counts.", "", "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW", ""]), encoding="utf-8")
 
 
 def qa() -> None:

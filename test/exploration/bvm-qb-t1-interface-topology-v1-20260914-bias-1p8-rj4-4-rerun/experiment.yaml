@@ -1,0 +1,64 @@
+id: bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rj4-4-rerun
+supersedes_or_compares: bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rerun
+study_phase: EXPLORATORY
+mode: SINGLE_POINT_T1_NETLIST_RERUN
+status: REGISTERED_PENDING_EXECUTION
+role: Experimental Operator + Evidence Packager
+
+question:
+  primary: >-
+    Rerun jtl6 mask 0011 after the user-authored T1 netlist update, while
+    keeping the previous bias deck byte-identical.
+  interpretation_ceiling: >-
+    This is a single bounded T1 netlist rerun. It does not establish an SFQ
+    count, Gate, T1 truth table, mechanism, convergence or route conclusion.
+
+changed_t1:
+  path: circuits/t1/t1_cell.cir
+  element: R_J4
+  before_ohm: 2
+  after_ohm: 4
+  user_authored: true
+
+deck:
+  policy: unchanged_from_previous_bias_rerun
+  source: test/exploration/bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rerun/runs/jtl6/0011/deck.cir
+  copied_to: runs/jtl6/0011/deck.cir
+  sha256: 0d441ec28c3da9c5d55384659b747af17e66a0df6b97725e3b9c966893025c81
+  bias_lines: V_BIAS1=1.8m; V_BIAS2=1.8m; V_BIAS3=1.8m
+  no_deck_edit_in_this_rerun: true
+
+frozen:
+  topology: 4xBVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..6 -> T1.I
+  mask: "0011"
+  canonical_qb: circuits/qb/bq_parameterized_v1.cir
+  stimulus: IDLE 0-50; WRITE0 50-61; IDLE 61-70; ZERO_STATE_READ_CONTROL 70-81; IDLE 81-90; WRITE1 90-101; SETTLE 101-110; FINAL READ 110-121; TAIL 121-200
+  tran: .tran 0.1p 200p
+  replay: false
+  passive_capture: false
+  retry: false
+
+registered_runs:
+  - run_id: jtl6_0011
+    physical_solve_count: 1
+  previous_raw_not_overwritten: true
+  previous_raw_path: test/exploration/bvm-qb-t1-interface-topology-v1-20260914-bias-1p8-rerun/runs/jtl6/0011/raw.csv
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  full_run_window_ps: [0, 200]
+  focused_windows: []
+  views: [01_bvm_phase, 02_bvm_currents, 03_source_jsl, 04_qb, 05_jtl, 06_t1_jj, 07_t1_io]
+
+layout:
+  run_contents: [deck.cir, raw.csv, run.log, plots]
+  no_experiment_local_references: true
+  no_experiment_local_analysis_archive: true
+
+stop:
+  final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  scientific_interpretation: NOT_PERFORMED
+  automatic_follow_up: false

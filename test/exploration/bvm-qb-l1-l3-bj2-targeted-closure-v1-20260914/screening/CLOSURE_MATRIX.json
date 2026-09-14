@@ -1,0 +1,89 @@
+{
+  "schema": "bvm-qb-l1-l3-bj2-targeted-closure-matrix-v1",
+  "experiment_id": "bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914",
+  "created_at_local": "2026-09-14T10:50:37+08:00",
+  "baseline": {
+    "Lin_pH": 1.5,
+    "L1_pH": 1.4,
+    "L2_pH": 2.0,
+    "RJ1_ohm": 32.0,
+    "RJ2_ohm": 12.0,
+    "IBias_uA": 260.0,
+    "BJS_area": 4.0,
+    "BJ1_area": 0.9,
+    "BJ2_area": 2.0,
+    "L3_pH": 1.3
+  },
+  "target_changes": {
+    "L1_pH": 1.2,
+    "L3_pH": 2.0,
+    "BJ2_area": 2.2
+  },
+  "points": [
+    {
+      "point_id": "TARGET_L1_1p2_L3_2_BJ2_2p2",
+      "changes": {
+        "L1_pH": 1.2,
+        "L3_pH": 2.0,
+        "BJ2_area": 2.2
+      },
+      "variant_path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/bq_variants/TARGET_L1_1p2_L3_2_BJ2_2p2_L1_pH1p2_L3_pH2_BJ2_area2p2.cir",
+      "variant_sha256": "217e7e87ee3d67450665299cd931db401cc1d2a6cf9fa494a52f7f1822035974",
+      "cases": {
+        "0011": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/screening/decks/TARGET_L1_1p2_L3_2_BJ2_2p2/0011.cir",
+          "sha256": "b25b0bd0d2bb79eb393068548e544053d470e717c9465b56c728d505aaa6d0d6",
+          "bytes": 7558,
+          "point_id": "TARGET_L1_1p2_L3_2_BJ2_2p2",
+          "mask": "0011",
+          "variant": "TARGET_L1_1p2_L3_2_BJ2_2p2_L1_pH1p2_L3_pH2_BJ2_area2p2.cir",
+          "failures": []
+        },
+        "0111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/screening/decks/TARGET_L1_1p2_L3_2_BJ2_2p2/0111.cir",
+          "sha256": "13aeb2c0dc8e43936484e2538ac4b880cde00ee5118adddc1039f9e30d65589a",
+          "bytes": 7574,
+          "point_id": "TARGET_L1_1p2_L3_2_BJ2_2p2",
+          "mask": "0111",
+          "variant": "TARGET_L1_1p2_L3_2_BJ2_2p2_L1_pH1p2_L3_pH2_BJ2_area2p2.cir",
+          "failures": []
+        },
+        "0001": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/screening/decks/TARGET_L1_1p2_L3_2_BJ2_2p2/0001.cir",
+          "sha256": "1cff613a60ba4b04da4282c59fb5bb55b4d46a8dfd56ea2942cfe3e3792c7d85",
+          "bytes": 7542,
+          "point_id": "TARGET_L1_1p2_L3_2_BJ2_2p2",
+          "mask": "0001",
+          "variant": "TARGET_L1_1p2_L3_2_BJ2_2p2_L1_pH1p2_L3_pH2_BJ2_area2p2.cir",
+          "failures": []
+        },
+        "1111": {
+          "status": "PASS",
+          "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/screening/decks/TARGET_L1_1p2_L3_2_BJ2_2p2/1111.cir",
+          "sha256": "a23b0f7e401443ff658d44acff2a4bb64a19f2bb08c846941feabd6a9e4dff73",
+          "bytes": 7590,
+          "point_id": "TARGET_L1_1p2_L3_2_BJ2_2p2",
+          "mask": "1111",
+          "variant": "TARGET_L1_1p2_L3_2_BJ2_2p2_L1_pH1p2_L3_pH2_BJ2_area2p2.cir",
+          "failures": []
+        }
+      }
+    }
+  ],
+  "masks": [
+    "0011",
+    "0111"
+  ],
+  "logical_new_point_count": 1,
+  "logical_new_case_count": 2,
+  "maximum_new_screening_solve_count": 2,
+  "conditional_validation_masks": [
+    "0001",
+    "1111"
+  ],
+  "validation_condition": "only after explicit scientific review authorization",
+  "failures": []
+}

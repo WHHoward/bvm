@@ -1,0 +1,216 @@
+schema_version: bvm-qb-qbin-shunt-threshold-v1
+id: bvm-qb-qbin-shunt-threshold-v1-20260915
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+scientific_review_authorized: false
+scientific_interpretation_performed: false
+
+question:
+  primary: "Determine the threshold ordering of N2 second-response and N3 fourth-response navigation candidates as QBIN shunt conductance increases."
+  scope: "One bounded conductance ladder; not QB parameter tuning, adaptive sweep, or T1 work."
+  interpretation_ceiling: "Raw waveform and registered scalar/navigation evidence only. Scientific labels remain unassigned until review."
+
+frozen_topology: "4 historical JM2-connected BVM -> COMMON_SL -> 8 JSL -> QBIN -> canonical BQ -> 6 existing JTL -> 10 ohm terminal"
+canonical_qb_source: circuits/qb/bq_parameterized_v1.cir
+canonical_qb_parameters: {Lin_pH: 1.5, L1_pH: 1.4, L2_pH: 2.0, RJ1_ohm: 32.0, RJ2_ohm: 12.0, IB_uA: 260.0, BJS_area: 4.0, BJ1_area: 0.9, BJ2_area: 2.0, L3_pH: 1.3}
+frozen_solver: ".tran 0.1p 200p; stored time 0..199.9 ps"
+frozen_protocol: "IDLE 0-50; WRITE0 50-61; zero-state read control 70-81; WRITE1 90-101; SETTLE 101-110; final read 110-121; TAIL 121-200 ps; amplitude 100uA; 1 ps edges; 9 ps plateau"
+bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+
+stage_a:
+  points:
+    - point_id: r100
+      R_shunt_ohm: 100.0
+      conductance_S: 0.01
+      G_over_G20: 0.2
+      spice_value: 100
+    - point_id: r66p667
+      R_shunt_ohm: 66.6666667
+      conductance_S: 0.015
+      G_over_G20: 0.3
+      spice_value: 66.6666667
+    - point_id: r50
+      R_shunt_ohm: 50.0
+      conductance_S: 0.02
+      G_over_G20: 0.4
+      spice_value: 50
+    - point_id: r40
+      R_shunt_ohm: 40.0
+      conductance_S: 0.025
+      G_over_G20: 0.5
+      spice_value: 40
+    - point_id: r33p333
+      R_shunt_ohm: 33.3333333
+      conductance_S: 0.03
+      G_over_G20: 0.6
+      spice_value: 33.3333333
+    - point_id: r25
+      R_shunt_ohm: 25.0
+      conductance_S: 0.04
+      G_over_G20: 0.8
+      spice_value: 25
+  masks: ["0011", "0111"]
+  authorized_new_physical_solves: 12
+  no_open_or_r20_resolve: true
+
+stage_b:
+  trigger: "At least one Stage A point with mechanical N2 exact two-response candidate and N3 exact three-response candidate, both control-clean."
+  selection: "Choose maximum finite R_shunt among trigger points."
+  masks: ["0000", "0001", "1111"]
+  maximum_additional_solves: 3
+  maximum_total_new_physical_solves: 15
+  no_adaptive_sweep: true
+
+read_only_endpoints:
+  - name: open_0011_raw
+    path: "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv"
+    sha256: 3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c
+    bytes: 7102297
+    role: "read-only open endpoint raw; not copied"
+  - name: open_0011_deck
+    path: "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir"
+    sha256: 8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3
+    bytes: 7500
+    role: "read-only open endpoint deck; not copied"
+  - name: r20_0011_raw
+    path: "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0011/raw.csv"
+    sha256: 778469a262b3252e696c811ec371c82fa77d6b7a89fa7ea411746783bcf8cb9d
+    bytes: 5844644
+    role: "read-only R20 endpoint raw; not copied"
+  - name: r20_0011_deck
+    path: "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0011/deck.cir"
+    sha256: f3811f88eda341d317cb3f0aa8e3258dddd5f04f71f749bd8eb283f81179c213
+    bytes: 6342
+    role: "read-only R20 endpoint deck; not copied"
+  - name: open_0111_raw
+    path: "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv"
+    sha256: 1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75
+    bytes: 7101704
+    role: "read-only open endpoint raw; not copied"
+  - name: open_0111_deck
+    path: "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir"
+    sha256: 98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914
+    bytes: 7516
+    role: "read-only open endpoint deck; not copied"
+  - name: r20_0111_raw
+    path: "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0111/raw.csv"
+    sha256: 88784cded8137affe353a24a9fc78665c34d3484ead835d178ae87af719bf77e
+    bytes: 5845929
+    role: "read-only R20 endpoint raw; not copied"
+  - name: r20_0111_deck
+    path: "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0111/deck.cir"
+    sha256: f2f94a603aac1935515d0fcc0c98bd2ec94baa44a0b8d72286a310da0086ea41
+    bytes: 6358
+    role: "read-only R20 endpoint deck; not copied"
+
+source_closure:
+  - name: runner
+    path: "scripts/bvm_qb_qbin_shunt_threshold.py"
+    sha256: 8b54a83da4a60a7f64b4a6d02f2172b9423d446b2fb68e346ef67b436264d1d7
+    bytes: 101229
+    role: "shared experiment runner and registered mechanical oracle"
+  - name: global_jjmit_model
+    path: "circuits/models/jjmit.cir"
+    sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+    bytes: 504
+    role: "global BVM/JSL model closure"
+  - name: canonical_qb
+    path: "circuits/qb/bq_parameterized_v1.cir"
+    sha256: f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0
+    bytes: 289
+    role: "canonical QB source; no parameter override"
+  - name: bvm_jm2_connected
+    path: "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/bvm_jm2_connected.cir"
+    sha256: 0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54
+    bytes: 2325
+    role: "latest frozen JM2-connected BVM source"
+  - name: jtl2_source
+    path: "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/jtl2.cir"
+    sha256: ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a
+    bytes: 864
+    role: "latest frozen JTL source instantiated six times"
+  - name: josim_solver
+    path: "build/josim-cli"
+    sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+    bytes: 1233976
+    role: "recorded physical solver"
+  - name: plotter
+    path: "scripts/josim-plot2.py"
+    sha256: 0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6
+    bytes: 12245
+    role: "standard JoSIM descriptive renderer"
+  - name: shared_raw_reader
+    path: "scripts/bvmtools/raw.py"
+    sha256: 2b7303fd5f99a61846f24d50c18594d073e858a74e6fa632bc90d7d1dbb1f8e2
+    bytes: 8196
+    role: "duplicate-aware raw reader"
+  - name: shared_phase_tools
+    path: "scripts/bvmtools/phase.py"
+    sha256: ac79f640bc9fae8784f75ef00a6cb978e8fa3606a9938cf0eb131fc728caba3c
+    bytes: 5697
+    role: "phase unwrap and window tools"
+  - name: shared_waveform_tools
+    path: "scripts/bvmtools/waveform.py"
+    sha256: 75ca2f24ff3df4c7706af5cf4bb23880e74100e7f694ab612cb02ad07d0f2af1
+    bytes: 7405
+    role: "actual-grid waveform tools"
+
+registered_decks:
+  - r100_0011: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r100/0011/deck.cir; sha256=5e996fb3e974563249d0a951d3f1a57ddf76c350b51f6b4f7bfdc9a3cb3843bb
+  - r100_0111: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r100/0111/deck.cir; sha256=36669a7279711be2a649fa7b425caf33bebe8e73f212b229bbd4e5fe75f7789d
+  - r66p667_0011: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r66p667/0011/deck.cir; sha256=b99fd4e103afd93a469a976571fd1a8762aa52019a5a7b46e9e216658938a845
+  - r66p667_0111: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r66p667/0111/deck.cir; sha256=a8f3ea7685c5f93ffefceceb4919cb6ff1ced0c2df44cae1654760bc306d3d05
+  - r50_0011: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r50/0011/deck.cir; sha256=8d7a8c1f5738b7d302c04180b5b73a1bb513b917dd3833356b2ec31e5867f3d2
+  - r50_0111: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r50/0111/deck.cir; sha256=737696383537be86d6de0e156189f1786c2759ac02487ec3ceb4598c5ba3ff9c
+  - r40_0011: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r40/0011/deck.cir; sha256=49564bf727aa7431af6604de27999ba7948686e0a9c5ae501a979a46ca77f5b6
+  - r40_0111: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r40/0111/deck.cir; sha256=31559e7f5deafc80a57ab6ce7109e97af50f028b7ee28910f493bec4c078515a
+  - r33p333_0011: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r33p333/0011/deck.cir; sha256=b0aec863dc4d4668f0d2e89b2927daef632048e00af65fdc362deb46da5d845a
+  - r33p333_0111: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r33p333/0111/deck.cir; sha256=0a0dbbee9d86ffc2e332ac8f6c116c01849c7d9dfcd2b663b993e8abfe555213
+  - r25_0011: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r25/0011/deck.cir; sha256=0a8e5dce1f9f2e05304e74e9bb40ec64788abcd73a06053d19fb832dfda03dfa
+  - r25_0111: test/exploration/bvm-qb-qbin-shunt-threshold-v1-20260915/runs/r25/0111/deck.cir; sha256=70f5659466f9197eaf9e58cfed6ccdf8412e426e16a0c4a9415ca1ba657f2b8d
+
+probes:
+  bvm: "P/V/I(B_JM1/B_JM2/B_JS1/B_JS2), I/V(L_M1/L_M2/L_M3/L_S1/L_S2/L_S3/L_PSL/L_SL), and WL/BL/SE source currents for every BVM."
+  boundary: "V(COMMON_SL), P/V/I(B_JSL7/B_JSL8), V(QBIN), I(B_JSL8), I(R_QBIN_SHUNT), I(LIN|XBQ)."
+  qb: "P/V/I(BJS/BJ1/BJ2), I/V(L1/L2/L3), I/V(RJ1/RJ2), V(QBOUT)."
+  downstream: "P/V/I(B01/B02) at JTL1..JTL6, stage output voltages, I(R_TERM)."
+  direction: "B_JSL8 JSL_NODE7->QBIN; shunt QBIN->ground; LIN|XBQ QBIN->QB internal node1."
+
+windows_ps:
+  - [101, 110]
+  - [110, 113]
+  - [113, 117]
+  - [117, 121]
+  - [121, 126]
+  - [126, 140]
+  - [140, 200]
+window_semantics: half-open; actual stored grid; no interpolation or resampling
+phase_semantics: raw radians; independent continuous unwrap then divide by 2*pi for navigation only
+voltage_area_semantics: actual-grid trapezoid on same JJ, endpoints, direction and window; not an SFQ count
+kcl_equation: "I(B_JSL8) - I(R_QBIN_SHUNT) - I(LIN|XBQ)"
+kcl_tolerance_A: 1e-09
+
+mechanical_oracle:
+  name: "complete_response_candidate"
+  definition: "BJ1/BJ2 phase-navigation threshold -> QBOUT positive-lobe navigation -> ordered JTL1..JTL6 B01 thresholds -> terminal positive-lobe navigation"
+  phase_thresholds_turns: [0.5, 1.5, 2.5, 3.5, 4.5]
+  positive_lobe_threshold_V: 0.0002
+  minimum_lobe_gap_ps: 2.5
+  control_window_ps: [70, 110]
+  control_thresholds: "JTL6 voltage 0.2mV; terminal current 20uA; phase rollback 0.5 turns"
+  auxiliary_only: true
+  not_sfq_count: true
+
+layout:
+  root_files_only: [experiment.yaml, RESULT.md, result.json, provenance.json, runs, plots]
+  forbidden_root_dirs: [screening, references, handoff, qa, analysis, inputs, data]
+  run_files_only: [deck.cir, raw.csv, run.log]
+  plot_policy: "HTML only; full 0-200 ps; shared local plots/assets/plotly.min.js; no focused pages; no duplicated runtime"
+  result_json_limit_bytes: 512000
+
+stop:
+  no_2_3_window: LINEAR_SHUNT_WINDOW_NOT_FOUND
+  after_stage_b: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  no_automatic_followup: true

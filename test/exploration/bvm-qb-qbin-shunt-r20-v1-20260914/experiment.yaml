@@ -1,0 +1,142 @@
+schema_version: bvm-qb-qbin-shunt-r20-v1
+id: bvm-qb-qbin-shunt-r20-v1-20260914
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+scientific_review_authorized: false
+scientific_interpretation_performed: false
+
+question:
+  primary: "Under the frozen 4x1 BVM -> COMMON_SL -> 8JSL -> canonical QB -> six-stage JTL closure, does only adding R_QBIN_SHUNT QBIN 0 20 change the registered N2/N3 receiver-boundary waveforms?"
+  scope: "This is a two-case receiver-boundary intervention, not a parameter sweep, QB tuning study, or Gate."
+  interpretation_ceiling: "Record raw observations and registered arithmetic only. Do not assign mechanism, functional success, overdamping, no-effect, pathology, SFQ count, or system Gate without SCIENTIFIC_REVIEW_AUTHORIZED."
+
+changed:
+  exact_component: R_QBIN_SHUNT QBIN 0 20
+  perturbation: "One 20 ohm shunt from QBIN to ground; no BVM/JSL/QB/JTL/model/stimulus/bias/timing changes."
+  candidate_instance_name: XBQ
+
+frozen:
+  topology: "Four historical JM2-connected BVMs -> COMMON_SL -> eight JSL junctions -> canonical QB -> six existing JTL stages -> 10 ohm terminal load"
+  canonical_qb_parameters: {Lin_pH: 1.5, L1_pH: 1.4, L2_pH: 2.0, RJ1_ohm: 32.0, RJ2_ohm: 12.0, IB_uA: 260.0, BJS_area: 4.0, BJ1_area: 0.9, BJ2_area: 2.0, L3_pH: 1.3}
+  jsl_area: 5.0
+  stimulus: "IDLE 0-50; WRITE0 50-61; zero-state read control 70-81; WRITE1 90-101; SETTLE 101-110; mask-selective final read 110-121; TAIL 121-200 ps"
+  stimulus_amplitude_uA: 100.0
+  rise_fall_ps: 1.0
+  plateau_ps: 9.0
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  tran: .tran 0.1p 200p
+  stored_grid_expected: 0 to 199.9 ps at nominal 0.1 ps spacing
+  terminal_load_ohm: 10.0
+
+authorized_runs:
+  masks: ["0011", "0111"]
+  active_cells: {"0011": [BVM3, BVM4], "0111": [BVM2, BVM3, BVM4]}
+  physical_solve_count: 2
+  no_other_masks: true
+  no_retry_or_followup: true
+
+sources:
+  - name: global_jjmit_model
+    path: "circuits/models/jjmit.cir"
+    sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+    bytes: 504
+    role: "global BVM/JSL model closure; required before subcircuits"
+  - name: canonical_qb
+    path: "circuits/qb/bq_parameterized_v1.cir"
+    sha256: f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0
+    bytes: 289
+    role: "canonical QB source; no candidate parameter override"
+  - name: bvm_jm2_connected
+    path: "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/bvm_jm2_connected.cir"
+    sha256: 0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54
+    bytes: 2325
+    role: "latest 4x1 historical JM2-connected BVM source"
+  - name: jtl2_source
+    path: "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/jtl2.cir"
+    sha256: ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a
+    bytes: 864
+    role: "latest standard JTL source instantiated six times"
+  - name: josim_solver
+    path: "build/josim-cli"
+    sha256: 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+    bytes: 1233976
+    role: "recorded physical solver"
+  - name: plotter
+    path: "scripts/josim-plot2.py"
+    sha256: 0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6
+    bytes: 12245
+    role: "standard descriptive renderer"
+read_only_references:
+  - name: baseline_0011_raw
+    path: "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/raw.csv"
+    sha256: 3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c
+    bytes: 7102297
+    role: "read-only baseline raw; not copied"
+  - name: baseline_0011_deck
+    path: "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0011/deck.cir"
+    sha256: 8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3
+    bytes: 7500
+    role: "read-only baseline deck provenance; not copied"
+  - name: passive_0011_raw
+    path: "test/exploration/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/PASSIVE_N2_0011/raw.csv"
+    sha256: 90fd0c3ebeb8f03f2a941bf6bfd576b6af50c14c732df4a098274ddbdc9f7123
+    bytes: 5270599
+    role: "read-only passive counterfactual; not copied"
+  - name: baseline_0111_raw
+    path: "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111/raw.csv"
+    sha256: 1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75
+    bytes: 7101704
+    role: "read-only baseline raw; not copied"
+  - name: baseline_0111_deck
+    path: "test/exploration/bvm-full-closed-loop-qb-parameter-screening-v1-20260911/references/baseline_rj2p12/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0111/deck.cir"
+    sha256: 98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914
+    bytes: 7516
+    role: "read-only baseline deck provenance; not copied"
+  - name: passive_0111_raw
+    path: "test/exploration/bvm-population-passive-source-replay-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260911/runs/PASSIVE_N3_0111/raw.csv"
+    sha256: 55589ac102aba281f5c61f99d587a07c50f5d058308f956d0b52c9c5d9666dbc
+    bytes: 5271605
+    role: "read-only passive counterfactual; not copied"
+baseline_policy: "Baseline raw is referenced by path and SHA-256 only; it is not copied into this experiment. Baseline deck uses a derived BQ include but has the same registered physical values."
+
+probes:
+  bvm: "Every BVM B_JM1/B_JM2/B_JS1/B_JS2 P/V/I; L_M1/L_M2/L_M3/L_S1/L_S2/L_S3/L_PSL/L_SL I/V; I(I_WLn), I(I_BLn), I(I_SEn)."
+  shared_boundary: "V(COMMON_SL); P/V/I B_JSL1..8; V(QBIN); I(B_JSL8); I(R_QBIN_SHUNT); I(LIN|XBQ)."
+  qb: "P/V/I BJS/BJ1/BJ2; I/V LIN/L1/L2/L3; I/V RJ1/RJ2; V(QBOUT). Canonical internal IB source is fixed in the included QB; JoSIM does not expose a reliable hierarchical I(IB) column, so no value is fabricated."
+  jtl: "P/V/I B01/B02 for every XJTL1_1..XJTL1_6; V(JTL1_OUT)..V(JTL6_OUT); I(R_TERM)."
+  direction_convention: "B_JSL8: JSL_NODE7 -> QBIN; R_QBIN_SHUNT: QBIN -> ground; LIN|XBQ: QBIN -> BQ internal node 1. KCL residual = I(B_JSL8) - I(R_QBIN_SHUNT) - I(LIN|XBQ)."
+
+registered_windows_ps:
+  - [101, 110]
+  - [110, 113]
+  - [113, 117]
+  - [117, 121]
+  - [121, 130]
+  - [130, 160]
+  - [160, 200]
+window_semantics: half-open; actual stored timestamps; no interpolation or resampling
+registered_arithmetic:
+  kcl_tolerance_A: 1e-09
+  phase_conversion: raw_phase_rad / (2*pi), after independent continuous unwrap; navigation only
+  voltage_area: actual-grid trapezoid on the same signal, endpoints, direction and registered window
+  comparison: exact same-time pointwise deltas only if candidate and reference grids match
+
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  whole_run_window_ps: [0, 200]
+  standalone_pages: [01_bvm_phase.html, 02_bvm_currents.html, 03_common_jsl.html, 04_qbin_boundary.html, 05_qb.html, 06_jtl.html, 07_terminal.html]
+  focused_pages: none (explicitly not generated)
+  comparison_pages: [comparison_A_0011.html, comparison_B_0111.html, comparison_C_n2_n3.html, comparison_D_passive_reference.html]
+
+references:
+  passive_reference: "Counterfactual BVM/JSL-to-ground runs; descriptive reference only and not topology-equivalent to candidate/baseline."
+  no_raw_copy: true
+
+stop:
+  final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  scientific_interpretation: NOT_PERFORMED
+  automatic_followup: false

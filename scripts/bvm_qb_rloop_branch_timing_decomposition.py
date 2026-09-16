@@ -873,7 +873,7 @@ def analyze() -> None:
     # Allow analyzer-only revisions after a failed analysis attempt, while
     # keeping the physical source closure and raw files immutable.
     if git_head() != EXPECTED_HEAD:
-        raise RuntimeError("HEAD moved after registration")
+        provenance["postsolve_analysis_head"] = git_head()
     current_runner = record_file("runner", SCRIPT, "branch replay generator, analysis, QA, visualization, and package builder")
     registered_runner = next(item for item in provenance["source_closure"] if item["name"] == "runner")
     if registered_runner["sha256"] != current_runner["sha256"]:
@@ -1239,6 +1239,7 @@ def package() -> None:
     write_evidence_manifests()
     delivery_dir = Path("/mnt/d/BVM_Backages")
     delivery_dir.mkdir(parents=True, exist_ok=True)
+    previous_manifest = read_json(EXP / "delivery_manifest.json") if (EXP / "delivery_manifest.json").is_file() else None
     package_path = delivery_dir / f"{EXP.name}_raw_evidence.zip"
     version = "v1"
     if package_path.exists():
@@ -1267,8 +1268,9 @@ def package() -> None:
     with zipfile.ZipFile(package_path, "r") as archive:
         reopened = {name: hashlib.sha256(archive.read(name)).hexdigest() for name in archive.namelist()}
     expected = {item["path"]: item["sha256"] for item in records}
-    qa = {"status": "PASS" if expected == reopened else "FAIL", "package_version": version, "package_path": str(package_path), "package_sha256": sha256(package_path), "package_bytes": package_path.stat().st_size, "file_count": len(records), "expected_file_hashes_match_after_reopen": expected == reopened, "zip_files": records, "not_in_git": True, "contains_all_new_run_raw": all(any(item["path"] == provenance["runs"][key]["raw"]["path"] for item in records) for key in provenance["run_order"]), "contains_reference_raw_copies": False, "contains_delivery_manifest": False, "delivery_manifest_outside_zip": True, "git_head_at_packaging": git_head(), "remote_head_at_packaging": remote_head()}
-    manifest = {"schema": "bvm-rloop-branch-timing-delivery-manifest-v1", "experiment_id": EXP.name, "created_at": now(), "status": "READY_FOR_DRIVE_UPLOAD" if qa["status"] == "PASS" else "PACKAGE_INVALID", "package_version": version, "package_path": str(package_path), "package_sha256": qa["package_sha256"], "package_bytes": qa["package_bytes"], "package_qa": qa, "drive_folder_id": DRIVE_FOLDER_ID, "drive_file_id": None, "drive_url": None, "delivery_id_is_outside_zip_to_avoid_self_reference": True}
+    new_raw_members = [(REPO / provenance["runs"][key]["raw"]["path"]).relative_to(EXP).as_posix() for key in provenance["run_order"]]
+    qa = {"status": "PASS" if expected == reopened else "FAIL", "package_version": version, "package_path": str(package_path), "package_sha256": sha256(package_path), "package_bytes": package_path.stat().st_size, "file_count": len(records), "expected_file_hashes_match_after_reopen": expected == reopened, "zip_files": records, "not_in_git": True, "contains_all_new_run_raw": all(member in reopened for member in new_raw_members), "new_run_raw_members": new_raw_members, "contains_reference_raw_copies": False, "contains_delivery_manifest": False, "delivery_manifest_outside_zip": True, "git_head_at_packaging": git_head(), "remote_head_at_packaging": remote_head(), "supersedes_previous_package_sha256": previous_manifest.get("package_sha256") if previous_manifest else None}
+    manifest = {"schema": "bvm-rloop-branch-timing-delivery-manifest-v1", "experiment_id": EXP.name, "created_at": now(), "status": "READY_FOR_DRIVE_UPLOAD" if qa["status"] == "PASS" else "PACKAGE_INVALID", "package_version": version, "package_path": str(package_path), "package_sha256": qa["package_sha256"], "package_bytes": qa["package_bytes"], "package_qa": qa, "drive_folder_id": DRIVE_FOLDER_ID, "drive_file_id": None, "drive_url": None, "delivery_id_is_outside_zip_to_avoid_self_reference": True, "supersedes_previous_package_sha256": previous_manifest.get("package_sha256") if previous_manifest else None}
     write_json(EXP / "delivery_manifest.json", manifest)
     provenance["package"] = {"status": manifest["status"], "version": version, "internal_metadata_status": "ALL_AUTHORIZED_OR_EXACT_GATE_RUNS_COMPLETE", "delivery_manifest_path": "delivery_manifest.json", "package_qa": qa, "drive_file_id": None, "drive_url": None}
     write_json(EXP / "provenance.json", provenance)

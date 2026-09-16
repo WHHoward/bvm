@@ -19,8 +19,8 @@
     {
       "name": "runner",
       "path": "scripts/bvm_qb_rloop_branch_timing_decomposition.py",
-      "sha256": "7e681d4a3173fe442f5515a63f7edf15ee591a70efcc5217435e32b62faf982e",
-      "bytes": 113507,
+      "sha256": "4d20bdf366ed5813d25dec80a008d9f3d61f628593d375ccb6fa169057c785cc",
+      "bytes": 113957,
       "role": "branch replay generator, analysis, QA, visualization, and package builder"
     },
     {
@@ -2701,7 +2701,7 @@
   },
   "analysis": {
     "status": "COMPLETE",
-    "generated_at": "2026-09-16T19:28:33+08:00",
+    "generated_at": "2026-09-16T19:34:47+08:00",
     "mechanical_analysis_performed": true,
     "bounded_experiment_interpretation_performed": false,
     "independent_scientific_review_performed": false,
@@ -237954,11 +237954,11 @@
   "qa": {
     "schema": "bvm-rloop-branch-timing-mechanical-qa-v1",
     "experiment_id": "bvm-rloop-branch-timing-decomposition-v1-20260916",
-    "generated_at": "2026-09-16T19:28:37+08:00",
+    "generated_at": "2026-09-16T19:34:53+08:00",
     "status": "PASS",
     "artifact_status": "VALID",
-    "head": "7ade840c731bc078eae0c87e42ca983aa74700dd",
-    "remote_bvm_master": "7ade840c731bc078eae0c87e42ca983aa74700dd",
+    "head": "94f69bb06fe5945f793464830b9405b1b3f3cc10",
+    "remote_bvm_master": "94f69bb06fe5945f793464830b9405b1b3f3cc10",
     "run_order": [
       "RS_EXACT_0011",
       "RS_EXACT_0111",
@@ -243724,16 +243724,16 @@
     "visualization_is_descriptive_only": true
   },
   "package": {
-    "status": "UPLOADED",
-    "version": "v1",
+    "status": "READY_FOR_DRIVE_UPLOAD",
+    "version": "v2",
     "internal_metadata_status": "ALL_AUTHORIZED_OR_EXACT_GATE_RUNS_COMPLETE",
     "delivery_manifest_path": "delivery_manifest.json",
     "package_qa": {
       "status": "PASS",
-      "package_version": "v1",
-      "package_path": "/mnt/d/BVM_Backages/bvm-rloop-branch-timing-decomposition-v1-20260916_raw_evidence.zip",
-      "package_sha256": "5a83d9b20d7b3673f29dfec1852403ecdd893a8f953191dbae715a02e7608bce",
-      "package_bytes": 112136787,
+      "package_version": "v2",
+      "package_path": "/mnt/d/BVM_Backages/bvm-rloop-branch-timing-decomposition-v1-20260916_v2_raw_evidence.zip",
+      "package_sha256": "bced310de6670da021aea84142a44762d6bcbabbd6c64ec2bccc70d9e4a473cb",
+      "package_bytes": 112137167,
       "file_count": 162,
       "expected_file_hashes_match_after_reopen": true,
       "zip_files": [
@@ -243754,13 +243754,13 @@
         },
         {
           "path": "result.json",
-          "sha256": "fce539c5c08bf72c398a37afdae6ff3c341f152cf5d7ca86d449bf070a0bab1f",
+          "sha256": "ff36e71491442940f63f7839df22b96a179190abb06658f2044b10b8825f96ad",
           "bytes": 300651
         },
         {
           "path": "provenance.json",
-          "sha256": "5ae6f0a9007dde2099be4801f47b4dc2f783cab93ead456dac8b728be60977a3",
-          "bytes": 10715348
+          "sha256": "b1e90dc46e2e46c0ff4d0813409373bb93ccb86ff1c3587b766cc13b06a2ba00",
+          "bytes": 10715421
         },
         {
           "path": "inputs/replay_sources/LS3_DELAY0P3_0011_branch_current.csv",
@@ -243969,12 +243969,12 @@
         },
         {
           "path": "analysis/EVIDENCE_MANIFEST.md",
-          "sha256": "c904c599fdfb3338a826c763592f69a982d2ac31495013cd00511a4ac59560b1",
-          "bytes": 20375
+          "sha256": "7ec6b477670d0fa6c29ff16da1ce3a965185d7be4825c112898df1693f44ea9e",
+          "bytes": 20615
         },
         {
           "path": "analysis/MECHANICAL_QA.json",
-          "sha256": "e5b490e6a405ebc39c63f0468393276db79a0d64612c82a3644a94ef2de94d56",
+          "sha256": "e6d7f907c5787ec7d0b359e2e823c902b39329bb63ff17901edb0ad377c918b7",
           "bytes": 15185
         },
         {
@@ -243984,12 +243984,12 @@
         },
         {
           "path": "analysis/RAW_ANALYSIS_HANDOFF_MANIFEST.json",
-          "sha256": "060cffa57f97e5ab19ccf4095b86d08810814174aa249f032a93a5955c31b719",
-          "bytes": 28903
+          "sha256": "96b4ef403c69611394cb6250b2c9c01897bfd1bb4b0a69d2183c0a17c7eb240e",
+          "bytes": 29247
         },
         {
           "path": "analysis/SOURCE_MANIFEST.json",
-          "sha256": "032545b9aec204a58af4e12855c05bd89e47d55f1b5456682891f83febc9aab5",
+          "sha256": "7620e7bcd0f7c442a6e5eb41a600d7e85bc8d962ec513c4b0234e565b1e10eef",
           "bytes": 15223
         },
         {
@@ -244544,23 +244544,31 @@
         },
         {
           "path": "executor/bvm_qb_rloop_branch_timing_decomposition.py",
-          "sha256": "7e681d4a3173fe442f5515a63f7edf15ee591a70efcc5217435e32b62faf982e",
-          "bytes": 113507
+          "sha256": "4d20bdf366ed5813d25dec80a008d9f3d61f628593d375ccb6fa169057c785cc",
+          "bytes": 113957
         }
       ],
       "not_in_git": true,
-      "contains_all_new_run_raw": false,
+      "contains_all_new_run_raw": true,
+      "new_run_raw_members": [
+        "runs/RS_EXACT_0011/raw.csv",
+        "runs/RS_EXACT_0111/raw.csv",
+        "runs/LS3_EXACT_0011/raw.csv",
+        "runs/LS3_EXACT_0111/raw.csv",
+        "runs/RS_DELAY0P3_0011/raw.csv",
+        "runs/RS_DELAY0P3_0111/raw.csv",
+        "runs/LS3_DELAY0P3_0011/raw.csv",
+        "runs/LS3_DELAY0P3_0111/raw.csv"
+      ],
       "contains_reference_raw_copies": false,
       "contains_delivery_manifest": false,
       "delivery_manifest_outside_zip": true,
-      "git_head_at_packaging": "7ade840c731bc078eae0c87e42ca983aa74700dd",
-      "remote_head_at_packaging": "7ade840c731bc078eae0c87e42ca983aa74700dd"
+      "git_head_at_packaging": "94f69bb06fe5945f793464830b9405b1b3f3cc10",
+      "remote_head_at_packaging": "94f69bb06fe5945f793464830b9405b1b3f3cc10",
+      "supersedes_previous_package_sha256": "5a83d9b20d7b3673f29dfec1852403ecdd893a8f953191dbae715a02e7608bce"
     },
-    "drive_file_id": "1AHSwC4WGiFhwxMmacvKpDpX59mTMAd4F",
-    "drive_url": "https://drive.google.com/file/d/1AHSwC4WGiFhwxMmacvKpDpX59mTMAd4F/view?usp=drivesdk",
-    "drive_uploaded_at": "2026-09-16T19:32:49+08:00",
-    "delivery_manifest_sha256": "8faa5dcba8cdb3af72ca72b643221a5c6ae3ab81b0b92f08e5d7aa418d4f659f",
-    "drive_sha256_verified": "metadata SHA not supplied by connector"
+    "drive_file_id": null,
+    "drive_url": null
   },
   "stop": {
     "final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW",
@@ -244571,8 +244579,8 @@
   "execution_status": "ANALYSIS_COMPLETE",
   "postsolve_tooling_revision": {
     "path": "scripts/bvm_qb_rloop_branch_timing_decomposition.py",
-    "old_sha256": "37e5ba7d0011f411ea97f7bbc2cc1a7e7fafa0cb23b5a124ab4293d96fe40b34",
-    "new_sha256": "7e681d4a3173fe442f5515a63f7edf15ee591a70efcc5217435e32b62faf982e",
+    "old_sha256": "7e681d4a3173fe442f5515a63f7edf15ee591a70efcc5217435e32b62faf982e",
+    "new_sha256": "4d20bdf366ed5813d25dec80a008d9f3d61f628593d375ccb6fa169057c785cc",
     "reason": "analysis-only repair; no physical rerun",
     "physical_rerun": false,
     "raw_mutated": false
@@ -244663,5 +244671,6 @@
     "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0011/raw.csv",
     "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/EXACT_0111/raw.csv",
     "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0111/raw.csv"
-  ]
+  ],
+  "postsolve_analysis_head": "94f69bb06fe5945f793464830b9405b1b3f3cc10"
 }

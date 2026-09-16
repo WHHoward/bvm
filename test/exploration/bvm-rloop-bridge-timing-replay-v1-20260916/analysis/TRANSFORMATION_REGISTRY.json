@@ -1,0 +1,45 @@
+{
+  "schema": "bvm-rloop-bridge-timing-transformation-registry-v1",
+  "experiment_id": "bvm-rloop-bridge-timing-replay-v1-20260916",
+  "generated_at": "2026-09-16T18:09:48+08:00",
+  "raw_mutation": false,
+  "operations": [
+    {
+      "name": "bridge_current_definition",
+      "input": "I(R_S|XBVMn)+I(L_S3|XBVMn)",
+      "direction": "positive node6 -> node10",
+      "same_instance_only": true,
+      "interpolation": false
+    },
+    {
+      "name": "exact_bridge_replay",
+      "delay_ps": 0.0,
+      "stored_sample_shift": 0,
+      "rule": "canonical bridge current at each exact stored sample"
+    },
+    {
+      "name": "delayed_bridge_replay",
+      "delay_ps": [
+        0.3,
+        0.6
+      ],
+      "stored_sample_shift": [
+        3,
+        6
+      ],
+      "rule": "pre-110 identical, hold at canonical 110 ps, then exact index shift",
+      "interpolation": false,
+      "resampling": false,
+      "amplitude_scaling": false,
+      "sign_change": false
+    },
+    {
+      "name": "phase_navigation",
+      "rule": "independent continuous unwrap(raw radians)/(2*pi); navigation only; not SFQ count"
+    },
+    {
+      "name": "same_jj_phase_area",
+      "rule": "same JJ, direct same-endpoint voltage, same window, actual-grid trapezoid / Phi0"
+    }
+  ]
+}

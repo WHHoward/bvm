@@ -1,0 +1,1815 @@
+{
+  "schema": "bvm-rloop-bridge-timing-replay-result-v1",
+  "experiment_id": "bvm-rloop-bridge-timing-replay-v1-20260916",
+  "generated_at": "2026-09-16T18:14:32+08:00",
+  "status": "ANALYSIS_COMPLETE",
+  "artifact_status": "VALID",
+  "scientific_review_authorized": false,
+  "mechanical_analysis_performed": true,
+  "bounded_experiment_interpretation_performed": false,
+  "independent_scientific_review_performed": false,
+  "scientific_interpretation_performed": false,
+  "execution": {
+    "authorized_physical_solve_count": 6,
+    "actual_physical_solve_count": 6,
+    "solver_invocation_count": 6,
+    "exact_count": 2,
+    "delayed_count": 4
+  },
+  "cases": {
+    "EXACT_0011": {
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/EXACT_0011/raw.csv",
+      "raw_sha256": "b1289e28d3d48ef503711029048f644588e878ceabd9afeffe282edc768522ea"
+    },
+    "EXACT_0111": {
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/EXACT_0111/raw.csv",
+      "raw_sha256": "06c77265e1b4f7321e50d2b92a15a3d1d2f14cc6e7fca7ab0afbf7d82003745f"
+    },
+    "DELAY0P3_0011": {
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0011/raw.csv",
+      "raw_sha256": "4a627a3c7397be486f133256848327788d0a1fdf204a9749e299a0a72261db58"
+    },
+    "DELAY0P3_0111": {
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0111/raw.csv",
+      "raw_sha256": "5709b3115db09ae7a7eb0818a4d487f7432b7cff9ae40c1560ce7cc22da64d08"
+    },
+    "DELAY0P6_0011": {
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P6_0011/raw.csv",
+      "raw_sha256": "8e9a75e61d9419f99a985cefda78453cf000df6c7768878de3098ad41e9fe52d"
+    },
+    "DELAY0P6_0111": {
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P6_0111/raw.csv",
+      "raw_sha256": "b91ec53d9f32c3cc022a8a4050167a7971ad6718f044caa09ff76c0220372da8"
+    }
+  },
+  "fidelity": {
+    "status": "PASS",
+    "by_mask": {
+      "0011": {
+        "status": "PASS",
+        "mask": "0011",
+        "canonical_ordered_candidate_count": 2,
+        "exact_ordered_candidate_count": 2,
+        "criteria": {
+          "grid_equal": true,
+          "candidate_count_equal": true,
+          "first_BJ_timing_within_registered_tolerance": true,
+          "JS_phase_p2p_within_registered_tolerance": true,
+          "major_waveform_normalized_rms_within_registered_tolerance": true,
+          "required_main_trajectory_metrics_present": true
+        },
+        "registered_tolerances": {
+          "timing_ps": 0.2,
+          "phase_p2p_turns": 0.25,
+          "normalized_waveform_rms": 0.5
+        },
+        "QB_timing": {
+          "BJ1": {
+            "canonical_ps": 115.2,
+            "exact_ps": 115.2,
+            "delta_ps": 0.0
+          },
+          "BJ2": {
+            "canonical_ps": 116.10000000000001,
+            "exact_ps": 116.10000000000001,
+            "delta_ps": 0.0
+          }
+        },
+        "phase_p2p": {
+          "P(B_JS1|XBVM1)": {
+            "canonical_focus_p2p_turns": 0.30890494313166134,
+            "exact_focus_p2p_turns": 0.30890499087814427,
+            "absolute_delta_turns": 4.774648293404127e-08,
+            "canonical_endpoint_delta_turns": 0.0978204477429131,
+            "exact_endpoint_delta_turns": 0.09782052732038463
+          },
+          "P(B_JS2|XBVM1)": {
+            "canonical_focus_p2p_turns": 0.24523247758415342,
+            "exact_focus_p2p_turns": 0.24523273223206238,
+            "absolute_delta_turns": 2.5464790895379785e-07,
+            "canonical_endpoint_delta_turns": 0.09638517255061607,
+            "exact_endpoint_delta_turns": 0.09638529987457055
+          },
+          "P(B_JS1|XBVM2)": {
+            "canonical_focus_p2p_turns": 0.30890494313166134,
+            "exact_focus_p2p_turns": 0.30890499087814427,
+            "absolute_delta_turns": 4.774648293404127e-08,
+            "canonical_endpoint_delta_turns": 0.0978204477429131,
+            "exact_endpoint_delta_turns": 0.09782052732038463
+          },
+          "P(B_JS2|XBVM2)": {
+            "canonical_focus_p2p_turns": 0.24523247758415342,
+            "exact_focus_p2p_turns": 0.24523273223206238,
+            "absolute_delta_turns": 2.5464790895379785e-07,
+            "canonical_endpoint_delta_turns": 0.09638517255061607,
+            "exact_endpoint_delta_turns": 0.09638529987457055
+          },
+          "P(B_JS1|XBVM3)": {
+            "canonical_focus_p2p_turns": 3.159822515072695,
+            "exact_focus_p2p_turns": 3.1598209394387577,
+            "absolute_delta_turns": 1.5756339371009176e-06,
+            "canonical_endpoint_delta_turns": -3.1236796211585984,
+            "exact_endpoint_delta_turns": -3.123677950031696
+          },
+          "P(B_JS2|XBVM3)": {
+            "canonical_focus_p2p_turns": 3.162729225460359,
+            "exact_focus_p2p_turns": 3.162729193629371,
+            "absolute_delta_turns": 3.1830988067582666e-08,
+            "canonical_endpoint_delta_turns": -2.841450685785052,
+            "exact_endpoint_delta_turns": -2.841450653954064
+          },
+          "P(B_JS1|XBVM4)": {
+            "canonical_focus_p2p_turns": 3.159822515072695,
+            "exact_focus_p2p_turns": 3.1598209394387577,
+            "absolute_delta_turns": 1.5756339371009176e-06,
+            "canonical_endpoint_delta_turns": -3.1236796211585984,
+            "exact_endpoint_delta_turns": -3.123677950031696
+          },
+          "P(B_JS2|XBVM4)": {
+            "canonical_focus_p2p_turns": 3.162729225460359,
+            "exact_focus_p2p_turns": 3.162729193629371,
+            "absolute_delta_turns": 3.1830988067582666e-08,
+            "canonical_endpoint_delta_turns": -2.841450685785052,
+            "exact_endpoint_delta_turns": -2.841450653954064
+          }
+        },
+        "major_waveform_focus_normalized_rms": {
+          "I(B_JSL8)": 3.191465554554881e-07,
+          "V(COMMON_SL)": 2.3153233325375318e-07,
+          "V(QBIN)": 5.681589838286786e-07,
+          "I(LIN|XBQ1)": 3.191465554554881e-07,
+          "I(L1|XBQ1)": 4.3442057773748043e-07,
+          "I(L2|XBQ1)": 2.711548632463447e-07,
+          "V(QBOUT)": 2.9002137224203215e-07,
+          "V(JTL6_OUT)": 2.0671897000966982e-07,
+          "I(R_TERM)": 2.0666023493862074e-07
+        },
+        "bridge_voltage_focus": {
+          "XBVM1": {
+            "focus_max_abs_delta_V": 1.6280000000017401e-09,
+            "focus_rms_delta_V": 6.211094687586067e-10,
+            "focus_normalized_rms": 2.3362636253647432e-05,
+            "severe_mismatch_screen": false
+          },
+          "XBVM2": {
+            "focus_max_abs_delta_V": 1.6280000000017401e-09,
+            "focus_rms_delta_V": 6.211094687586067e-10,
+            "focus_normalized_rms": 2.3362636253647432e-05,
+            "severe_mismatch_screen": false
+          },
+          "XBVM3": {
+            "focus_max_abs_delta_V": 1.0800000000010129e-08,
+            "focus_rms_delta_V": 3.0866568852553675e-09,
+            "focus_normalized_rms": 2.1841320313803926e-05,
+            "severe_mismatch_screen": false
+          },
+          "XBVM4": {
+            "focus_max_abs_delta_V": 1.0800000000010129e-08,
+            "focus_rms_delta_V": 3.0866568852553675e-09,
+            "focus_normalized_rms": 2.1841320313803926e-05,
+            "severe_mismatch_screen": false
+          }
+        },
+        "maximum_replay_current_error_A": 4.999999998994524e-11,
+        "fidelity_interpretation": "mechanical gate only; no physical-equivalence or current-sufficiency claim"
+      },
+      "0111": {
+        "status": "PASS",
+        "mask": "0111",
+        "canonical_ordered_candidate_count": 4,
+        "exact_ordered_candidate_count": 4,
+        "criteria": {
+          "grid_equal": true,
+          "candidate_count_equal": true,
+          "first_BJ_timing_within_registered_tolerance": true,
+          "JS_phase_p2p_within_registered_tolerance": true,
+          "major_waveform_normalized_rms_within_registered_tolerance": true,
+          "required_main_trajectory_metrics_present": true
+        },
+        "registered_tolerances": {
+          "timing_ps": 0.2,
+          "phase_p2p_turns": 0.25,
+          "normalized_waveform_rms": 0.5
+        },
+        "QB_timing": {
+          "BJ1": {
+            "canonical_ps": 113.8,
+            "exact_ps": 113.8,
+            "delta_ps": 0.0
+          },
+          "BJ2": {
+            "canonical_ps": 114.8,
+            "exact_ps": 114.8,
+            "delta_ps": 0.0
+          }
+        },
+        "phase_p2p": {
+          "P(B_JS1|XBVM1)": {
+            "canonical_focus_p2p_turns": 0.20959822695268457,
+            "exact_focus_p2p_turns": 0.20959829061466181,
+            "absolute_delta_turns": 6.366197724538836e-08,
+            "canonical_endpoint_delta_turns": -0.0022416814579550386,
+            "exact_endpoint_delta_turns": -0.00224157004949488
+          },
+          "P(B_JS2|XBVM1)": {
+            "canonical_focus_p2p_turns": 0.31222884478010315,
+            "exact_focus_p2p_turns": 0.3122286967660062,
+            "absolute_delta_turns": 1.480140969789545e-07,
+            "canonical_endpoint_delta_turns": -0.07104937673728878,
+            "exact_endpoint_delta_turns": -0.07104928124432293
+          },
+          "P(B_JS1|XBVM2)": {
+            "canonical_focus_p2p_turns": 6.386404449053613,
+            "exact_focus_p2p_turns": 6.386406088349526,
+            "absolute_delta_turns": 1.639295913236083e-06,
+            "canonical_endpoint_delta_turns": -6.352845881274454,
+            "exact_endpoint_delta_turns": -6.352847393246413
+          },
+          "P(B_JS2|XBVM2)": {
+            "canonical_focus_p2p_turns": 6.3605665353103245,
+            "exact_focus_p2p_turns": 6.360566503479335,
+            "absolute_delta_turns": 3.1830989399850296e-08,
+            "canonical_endpoint_delta_turns": -6.332321785024635,
+            "exact_endpoint_delta_turns": -6.3323217531936455
+          },
+          "P(B_JS1|XBVM3)": {
+            "canonical_focus_p2p_turns": 6.386404449053613,
+            "exact_focus_p2p_turns": 6.386406088349526,
+            "absolute_delta_turns": 1.639295913236083e-06,
+            "canonical_endpoint_delta_turns": -6.352845881274454,
+            "exact_endpoint_delta_turns": -6.352847393246413
+          },
+          "P(B_JS2|XBVM3)": {
+            "canonical_focus_p2p_turns": 6.3605665353103245,
+            "exact_focus_p2p_turns": 6.360566503479335,
+            "absolute_delta_turns": 3.1830989399850296e-08,
+            "canonical_endpoint_delta_turns": -6.332321785024635,
+            "exact_endpoint_delta_turns": -6.3323217531936455
+          },
+          "P(B_JS1|XBVM4)": {
+            "canonical_focus_p2p_turns": 6.386404449053613,
+            "exact_focus_p2p_turns": 6.386406088349526,
+            "absolute_delta_turns": 1.639295913236083e-06,
+            "canonical_endpoint_delta_turns": -6.352845881274454,
+            "exact_endpoint_delta_turns": -6.352847393246413
+          },
+          "P(B_JS2|XBVM4)": {
+            "canonical_focus_p2p_turns": 6.3605665353103245,
+            "exact_focus_p2p_turns": 6.360566503479335,
+            "absolute_delta_turns": 3.1830989399850296e-08,
+            "canonical_endpoint_delta_turns": -6.332321785024635,
+            "exact_endpoint_delta_turns": -6.3323217531936455
+          }
+        },
+        "major_waveform_focus_normalized_rms": {
+          "I(B_JSL8)": 3.59057075131774e-07,
+          "V(COMMON_SL)": 2.6566598886423526e-07,
+          "V(QBIN)": 3.2971577760698095e-07,
+          "I(LIN|XBQ1)": 3.59057075131774e-07,
+          "I(L1|XBQ1)": 3.298805056301333e-07,
+          "I(L2|XBQ1)": 2.3052245232707407e-07,
+          "V(QBOUT)": 2.8976527402478237e-07,
+          "V(JTL6_OUT)": 9.859738653390462e-08,
+          "I(R_TERM)": 9.860149963156933e-08
+        },
+        "bridge_voltage_focus": {
+          "XBVM1": {
+            "focus_max_abs_delta_V": 1.5060000000047252e-09,
+            "focus_rms_delta_V": 5.990337344401174e-10,
+            "focus_normalized_rms": 1.6483044729550682e-05,
+            "severe_mismatch_screen": false
+          },
+          "XBVM2": {
+            "focus_max_abs_delta_V": 2.1909999999933523e-08,
+            "focus_rms_delta_V": 7.419807873869894e-09,
+            "focus_normalized_rms": 5.8625179248913735e-05,
+            "severe_mismatch_screen": false
+          },
+          "XBVM3": {
+            "focus_max_abs_delta_V": 2.1909999999933523e-08,
+            "focus_rms_delta_V": 7.419807873869894e-09,
+            "focus_normalized_rms": 5.8625179248913735e-05,
+            "severe_mismatch_screen": false
+          },
+          "XBVM4": {
+            "focus_max_abs_delta_V": 2.1909999999933523e-08,
+            "focus_rms_delta_V": 7.419807873869894e-09,
+            "focus_normalized_rms": 5.8625179248913735e-05,
+            "severe_mismatch_screen": false
+          }
+        },
+        "maximum_replay_current_error_A": 5.000000000349777e-11,
+        "fidelity_interpretation": "mechanical gate only; no physical-equivalence or current-sufficiency claim"
+      }
+    },
+    "delayed_authorized": true
+  },
+  "mechanical_comparison": {
+    "status": "DERIVED",
+    "N2": {
+      "EXACT_0011": {
+        "delay_ps": 0.0,
+        "ordered_candidate_count": 2,
+        "first_BJ1_plus_0p5_ps": 115.2,
+        "first_BJ2_plus_0p5_ps": 116.10000000000001,
+        "second_BJ1_plus_1p5_ps": 125.9,
+        "second_BJ2_plus_1p5_ps": 126.39999999999999,
+        "L1_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L1|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -0.0001656956,
+          "maximum": 3.999761e-05,
+          "zero_sign_crossings": 4,
+          "first_negative_to_positive_crossing_ps": 121.7,
+          "first_positive_to_negative_crossing_ps": 122.99999999999999,
+          "first_sustained_negative_to_positive_crossing_ps": 121.7,
+          "positive_dwell_ps": 3.6999999999999718,
+          "negative_dwell_ps": 5.200000000000044,
+          "positive_sample_fraction": 0.4111111111111111,
+          "negative_sample_fraction": 0.5888888888888889,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "L2_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L2|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": 9.430438e-05,
+          "maximum": 0.0002999976,
+          "zero_sign_crossings": 0,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": null,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 8.900000000000016,
+          "negative_dwell_ps": 0,
+          "positive_sample_fraction": 1.0,
+          "negative_sample_fraction": 0.0,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_BJSL8_rearm": {
+          "status": "DERIVED",
+          "signal": "I(B_JSL8)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -8.999099e-05,
+          "maximum": 2.405854e-05,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 121.7,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 0.700000000000008,
+          "negative_dwell_ps": 8.200000000000008,
+          "positive_sample_fraction": 0.07777777777777778,
+          "negative_sample_fraction": 0.9222222222222223,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_LIN_rearm": {
+          "status": "DERIVED",
+          "signal": "I(LIN|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -8.999099e-05,
+          "maximum": 2.405854e-05,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 121.7,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 0.700000000000008,
+          "negative_dwell_ps": 8.200000000000008,
+          "positive_sample_fraction": 0.07777777777777778,
+          "negative_sample_fraction": 0.9222222222222223,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "JS1_JS2_focus_p2p_by_cell": {
+          "XBVM1": {
+            "B_JS1": 0.30890499087814427,
+            "B_JS2": 0.24523273223206238
+          },
+          "XBVM2": {
+            "B_JS1": 0.30890499087814427,
+            "B_JS2": 0.24523273223206238
+          },
+          "XBVM3": {
+            "B_JS1": 3.1598209394387577,
+            "B_JS2": 3.162729193629371
+          },
+          "XBVM4": {
+            "B_JS1": 3.1598209394387577,
+            "B_JS2": 3.162729193629371
+          }
+        },
+        "phase_area_residuals_turns": {
+          "P(B_JS1|XBVM1)": -0.0005730095669147367,
+          "P(B_JS2|XBVM1)": -0.0010033755766873792,
+          "P(B_JS1|XBVM2)": -0.0005730095669147367,
+          "P(B_JS2|XBVM2)": -0.0010033755766873792,
+          "P(B_JS1|XBVM3)": 0.00230483966485151,
+          "P(B_JS2|XBVM3)": -0.003193903163130951,
+          "P(B_JS1|XBVM4)": 0.00230483966485151,
+          "P(B_JS2|XBVM4)": -0.003193903163130951
+        }
+      },
+      "DELAY0P3_0011": {
+        "delay_ps": 0.3,
+        "ordered_candidate_count": 2,
+        "first_BJ1_plus_0p5_ps": 115.1,
+        "first_BJ2_plus_0p5_ps": 115.89999999999999,
+        "second_BJ1_plus_1p5_ps": 124.00000000000001,
+        "second_BJ2_plus_1p5_ps": 124.50000000000001,
+        "L1_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L1|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -0.0001706941,
+          "maximum": 5.737377e-05,
+          "zero_sign_crossings": 4,
+          "first_negative_to_positive_crossing_ps": 121.5,
+          "first_positive_to_negative_crossing_ps": 123.2,
+          "first_sustained_negative_to_positive_crossing_ps": 121.5,
+          "positive_dwell_ps": 2.3999999999999866,
+          "negative_dwell_ps": 6.500000000000029,
+          "positive_sample_fraction": 0.26666666666666666,
+          "negative_sample_fraction": 0.7333333333333333,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "L2_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L2|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": 8.930591e-05,
+          "maximum": 0.0003173738,
+          "zero_sign_crossings": 0,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": null,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 8.900000000000016,
+          "negative_dwell_ps": 0,
+          "positive_sample_fraction": 1.0,
+          "negative_sample_fraction": 0.0,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_BJSL8_rearm": {
+          "status": "DERIVED",
+          "signal": "I(B_JSL8)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -9.239688e-05,
+          "maximum": 4.27921e-05,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 121.89999999999999,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 0.8999999999999917,
+          "negative_dwell_ps": 8.000000000000023,
+          "positive_sample_fraction": 0.1,
+          "negative_sample_fraction": 0.9,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_LIN_rearm": {
+          "status": "DERIVED",
+          "signal": "I(LIN|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -9.239688e-05,
+          "maximum": 4.27921e-05,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 121.89999999999999,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 0.8999999999999917,
+          "negative_dwell_ps": 8.000000000000023,
+          "positive_sample_fraction": 0.1,
+          "negative_sample_fraction": 0.9,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "JS1_JS2_focus_p2p_by_cell": {
+          "XBVM1": {
+            "B_JS1": 0.30777027979587623,
+            "B_JS2": 0.3696666716714445
+          },
+          "XBVM2": {
+            "B_JS1": 0.30777027979587623,
+            "B_JS2": 0.3696666716714445
+          },
+          "XBVM3": {
+            "B_JS1": 4.0500154230566086,
+            "B_JS2": 3.0400574368184947
+          },
+          "XBVM4": {
+            "B_JS1": 4.0500154230566086,
+            "B_JS2": 3.0400574368184947
+          }
+        },
+        "phase_area_residuals_turns": {
+          "P(B_JS1|XBVM1)": 0.0006469592098952634,
+          "P(B_JS2|XBVM1)": 0.000401203727954616,
+          "P(B_JS1|XBVM2)": 0.0006469592098952634,
+          "P(B_JS2|XBVM2)": 0.000401203727954616,
+          "P(B_JS1|XBVM3)": 0.0010543967947853616,
+          "P(B_JS2|XBVM3)": -0.0010246637265272085,
+          "P(B_JS1|XBVM4)": 0.0010543967947853616,
+          "P(B_JS2|XBVM4)": -0.0010246637265272085
+        }
+      },
+      "DELAY0P6_0011": {
+        "delay_ps": 0.6,
+        "ordered_candidate_count": 2,
+        "first_BJ1_plus_0p5_ps": 115.1,
+        "first_BJ2_plus_0p5_ps": 115.8,
+        "second_BJ1_plus_1p5_ps": 123.3,
+        "second_BJ2_plus_1p5_ps": 124.19999999999999,
+        "L1_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L1|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -0.0001525031,
+          "maximum": 8.985003e-05,
+          "zero_sign_crossings": 2,
+          "first_negative_to_positive_crossing_ps": 121.7,
+          "first_positive_to_negative_crossing_ps": 124.4,
+          "first_sustained_negative_to_positive_crossing_ps": 121.7,
+          "positive_dwell_ps": 2.700000000000001,
+          "negative_dwell_ps": 6.200000000000014,
+          "positive_sample_fraction": 0.3,
+          "negative_sample_fraction": 0.7,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "L2_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L2|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": 0.0001074969,
+          "maximum": 0.00034985,
+          "zero_sign_crossings": 0,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": null,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 8.900000000000016,
+          "negative_dwell_ps": 0,
+          "positive_sample_fraction": 1.0,
+          "negative_sample_fraction": 0.0,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_BJSL8_rearm": {
+          "status": "DERIVED",
+          "signal": "I(B_JSL8)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -5.146334e-05,
+          "maximum": 6.483549e-05,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 124.50000000000001,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 3.5000000000000138,
+          "negative_dwell_ps": 5.400000000000002,
+          "positive_sample_fraction": 0.3888888888888889,
+          "negative_sample_fraction": 0.6111111111111112,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_LIN_rearm": {
+          "status": "DERIVED",
+          "signal": "I(LIN|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -5.146334e-05,
+          "maximum": 6.483549e-05,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 124.50000000000001,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 3.5000000000000138,
+          "negative_dwell_ps": 5.400000000000002,
+          "positive_sample_fraction": 0.3888888888888889,
+          "negative_sample_fraction": 0.6111111111111112,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "JS1_JS2_focus_p2p_by_cell": {
+          "XBVM1": {
+            "B_JS1": 0.3035149063359453,
+            "B_JS2": 0.45317363101584807
+          },
+          "XBVM2": {
+            "B_JS1": 0.3035149063359453,
+            "B_JS2": 0.45317363101584807
+          },
+          "XBVM3": {
+            "B_JS1": 6.793086995417506,
+            "B_JS2": 2.673086232361848
+          },
+          "XBVM4": {
+            "B_JS1": 6.793086995417506,
+            "B_JS2": 2.673086232361848
+          }
+        },
+        "phase_area_residuals_turns": {
+          "P(B_JS1|XBVM1)": 0.001664144214526278,
+          "P(B_JS2|XBVM1)": 0.00020772088879112555,
+          "P(B_JS1|XBVM2)": 0.001664144214526278,
+          "P(B_JS2|XBVM2)": 0.00020772088879112555,
+          "P(B_JS1|XBVM3)": -4.910240787925346e-05,
+          "P(B_JS2|XBVM3)": -0.00154235631898203,
+          "P(B_JS1|XBVM4)": -4.910240787925346e-05,
+          "P(B_JS2|XBVM4)": -0.00154235631898203
+        }
+      }
+    },
+    "N3": {
+      "EXACT_0111": {
+        "delay_ps": 0.0,
+        "ordered_candidate_count": 4,
+        "first_BJ1_plus_0p5_ps": 113.8,
+        "first_BJ2_plus_0p5_ps": 114.8,
+        "second_BJ1_plus_1p5_ps": 117.4,
+        "second_BJ2_plus_1p5_ps": 118.3,
+        "L1_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L1|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -0.0001494347,
+          "maximum": 0.0002068353,
+          "zero_sign_crossings": 3,
+          "first_negative_to_positive_crossing_ps": 122.2,
+          "first_positive_to_negative_crossing_ps": 121.39999999999999,
+          "first_sustained_negative_to_positive_crossing_ps": 122.2,
+          "positive_dwell_ps": 2.499999999999991,
+          "negative_dwell_ps": 6.400000000000024,
+          "positive_sample_fraction": 0.2777777777777778,
+          "negative_sample_fraction": 0.7222222222222222,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "L2_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L2|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": 0.0001105653,
+          "maximum": 0.0004668353,
+          "zero_sign_crossings": 0,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": null,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 8.900000000000016,
+          "negative_dwell_ps": 0,
+          "positive_sample_fraction": 1.0,
+          "negative_sample_fraction": 0.0,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_BJSL8_rearm": {
+          "status": "DERIVED",
+          "signal": "I(B_JSL8)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -6.000903e-05,
+          "maximum": 0.0001455117,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 123.8,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 2.8000000000000056,
+          "negative_dwell_ps": 6.100000000000009,
+          "positive_sample_fraction": 0.3111111111111111,
+          "negative_sample_fraction": 0.6888888888888889,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_LIN_rearm": {
+          "status": "DERIVED",
+          "signal": "I(LIN|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -6.000903e-05,
+          "maximum": 0.0001455117,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 123.8,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 2.8000000000000056,
+          "negative_dwell_ps": 6.100000000000009,
+          "positive_sample_fraction": 0.3111111111111111,
+          "negative_sample_fraction": 0.6888888888888889,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "JS1_JS2_focus_p2p_by_cell": {
+          "XBVM1": {
+            "B_JS1": 0.20959829061466181,
+            "B_JS2": 0.3122286967660062
+          },
+          "XBVM2": {
+            "B_JS1": 6.386406088349526,
+            "B_JS2": 6.360566503479335
+          },
+          "XBVM3": {
+            "B_JS1": 6.386406088349526,
+            "B_JS2": 6.360566503479335
+          },
+          "XBVM4": {
+            "B_JS1": 6.386406088349526,
+            "B_JS2": 6.360566503479335
+          }
+        },
+        "phase_area_residuals_turns": {
+          "P(B_JS1|XBVM1)": -0.00036839053666933887,
+          "P(B_JS2|XBVM1)": -0.00013093120288293347,
+          "P(B_JS1|XBVM2)": 0.0022777072592372605,
+          "P(B_JS2|XBVM2)": 0.0017656531364931283,
+          "P(B_JS1|XBVM3)": 0.0022777072592372605,
+          "P(B_JS2|XBVM3)": 0.0017656531364931283,
+          "P(B_JS1|XBVM4)": 0.0022777072592372605,
+          "P(B_JS2|XBVM4)": 0.0017656531364931283
+        }
+      },
+      "DELAY0P3_0111": {
+        "delay_ps": 0.3,
+        "ordered_candidate_count": 4,
+        "first_BJ1_plus_0p5_ps": 113.8,
+        "first_BJ2_plus_0p5_ps": 114.8,
+        "second_BJ1_plus_1p5_ps": 117.9,
+        "second_BJ2_plus_1p5_ps": 119.10000000000001,
+        "L1_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L1|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -0.0001753978,
+          "maximum": 0.0003295302,
+          "zero_sign_crossings": 5,
+          "first_negative_to_positive_crossing_ps": 122.80000000000001,
+          "first_positive_to_negative_crossing_ps": 121.89999999999999,
+          "first_sustained_negative_to_positive_crossing_ps": 122.80000000000001,
+          "positive_dwell_ps": 3.9999999999999862,
+          "negative_dwell_ps": 4.90000000000003,
+          "positive_sample_fraction": 0.4444444444444444,
+          "negative_sample_fraction": 0.5555555555555556,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "L2_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L2|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": 8.46022e-05,
+          "maximum": 0.0005895302,
+          "zero_sign_crossings": 0,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": null,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 8.900000000000016,
+          "negative_dwell_ps": 0,
+          "positive_sample_fraction": 1.0,
+          "negative_sample_fraction": 0.0,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_BJSL8_rearm": {
+          "status": "DERIVED",
+          "signal": "I(B_JSL8)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -7.352133e-05,
+          "maximum": 0.0002132439,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 124.9,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 3.900000000000007,
+          "negative_dwell_ps": 5.000000000000009,
+          "positive_sample_fraction": 0.43333333333333335,
+          "negative_sample_fraction": 0.5666666666666667,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_LIN_rearm": {
+          "status": "DERIVED",
+          "signal": "I(LIN|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -7.352133e-05,
+          "maximum": 0.0002132439,
+          "zero_sign_crossings": 1,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": 124.9,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 3.900000000000007,
+          "negative_dwell_ps": 5.000000000000009,
+          "positive_sample_fraction": 0.43333333333333335,
+          "negative_sample_fraction": 0.5666666666666667,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "JS1_JS2_focus_p2p_by_cell": {
+          "XBVM1": {
+            "B_JS1": 0.2121953013985638,
+            "B_JS2": 0.3863780839355423
+          },
+          "XBVM2": {
+            "B_JS1": 1.4071571930080105,
+            "B_JS2": 6.002965084747888
+          },
+          "XBVM3": {
+            "B_JS1": 1.4071571930080105,
+            "B_JS2": 6.002965084747888
+          },
+          "XBVM4": {
+            "B_JS1": 1.4071571930080105,
+            "B_JS2": 6.002965084747888
+          }
+        },
+        "phase_area_residuals_turns": {
+          "P(B_JS1|XBVM1)": -0.00031777405857880137,
+          "P(B_JS2|XBVM1)": -2.7293213603410416e-05,
+          "P(B_JS1|XBVM2)": 0.0026848965337704644,
+          "P(B_JS2|XBVM2)": -0.00016340741001119596,
+          "P(B_JS1|XBVM3)": 0.0026848965337704644,
+          "P(B_JS2|XBVM3)": -0.00016340741001119596,
+          "P(B_JS1|XBVM4)": 0.0026848965337704644,
+          "P(B_JS2|XBVM4)": -0.00016340741001119596
+        }
+      },
+      "DELAY0P6_0111": {
+        "delay_ps": 0.6,
+        "ordered_candidate_count": 4,
+        "first_BJ1_plus_0p5_ps": 113.9,
+        "first_BJ2_plus_0p5_ps": 114.8,
+        "second_BJ1_plus_1p5_ps": 117.60000000000001,
+        "second_BJ2_plus_1p5_ps": 118.5,
+        "L1_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L1|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -0.0001733723,
+          "maximum": 0.0003442171,
+          "zero_sign_crossings": 7,
+          "first_negative_to_positive_crossing_ps": 121.99999999999999,
+          "first_positive_to_negative_crossing_ps": 121.5,
+          "first_sustained_negative_to_positive_crossing_ps": 121.99999999999999,
+          "positive_dwell_ps": 3.900000000000007,
+          "negative_dwell_ps": 5.000000000000009,
+          "positive_sample_fraction": 0.43333333333333335,
+          "negative_sample_fraction": 0.5666666666666667,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "L2_rearm": {
+          "status": "DERIVED",
+          "signal": "I(L2|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": 8.662768e-05,
+          "maximum": 0.0006042171,
+          "zero_sign_crossings": 0,
+          "first_negative_to_positive_crossing_ps": null,
+          "first_positive_to_negative_crossing_ps": null,
+          "first_sustained_negative_to_positive_crossing_ps": null,
+          "positive_dwell_ps": 8.900000000000016,
+          "negative_dwell_ps": 0,
+          "positive_sample_fraction": 1.0,
+          "negative_sample_fraction": 0.0,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_BJSL8_rearm": {
+          "status": "DERIVED",
+          "signal": "I(B_JSL8)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -1.39796e-05,
+          "maximum": 0.0002549486,
+          "zero_sign_crossings": 6,
+          "first_negative_to_positive_crossing_ps": 127.20000000000002,
+          "first_positive_to_negative_crossing_ps": 126.60000000000001,
+          "first_sustained_negative_to_positive_crossing_ps": 127.20000000000002,
+          "positive_dwell_ps": 7.400000000000021,
+          "negative_dwell_ps": 1.499999999999995,
+          "positive_sample_fraction": 0.8333333333333334,
+          "negative_sample_fraction": 0.16666666666666666,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "source_LIN_rearm": {
+          "status": "DERIVED",
+          "signal": "I(LIN|XBQ1)",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "sample_count": 90,
+          "minimum": -1.39796e-05,
+          "maximum": 0.0002549486,
+          "zero_sign_crossings": 6,
+          "first_negative_to_positive_crossing_ps": 127.20000000000002,
+          "first_positive_to_negative_crossing_ps": 126.60000000000001,
+          "first_sustained_negative_to_positive_crossing_ps": 127.20000000000002,
+          "positive_dwell_ps": 7.400000000000021,
+          "negative_dwell_ps": 1.499999999999995,
+          "positive_sample_fraction": 0.8333333333333334,
+          "negative_sample_fraction": 0.16666666666666666,
+          "actual_grid": true,
+          "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+        },
+        "JS1_JS2_focus_p2p_by_cell": {
+          "XBVM1": {
+            "B_JS1": 0.2123379838050457,
+            "B_JS2": 1.8156466095253323
+          },
+          "XBVM2": {
+            "B_JS1": 5.749413018062923,
+            "B_JS2": 6.5425125681121425
+          },
+          "XBVM3": {
+            "B_JS1": 5.749413018062923,
+            "B_JS2": 6.5425125681121425
+          },
+          "XBVM4": {
+            "B_JS1": 5.749413018062923,
+            "B_JS2": 6.5425125681121425
+          }
+        },
+        "phase_area_residuals_turns": {
+          "P(B_JS1|XBVM1)": 1.8553161955023323e-05,
+          "P(B_JS2|XBVM1)": -0.0008939899216142688,
+          "P(B_JS1|XBVM2)": 0.0005766593959135591,
+          "P(B_JS2|XBVM2)": 5.587775967264008e-06,
+          "P(B_JS1|XBVM3)": 0.0005766593959135591,
+          "P(B_JS2|XBVM3)": 5.587775967264008e-06,
+          "P(B_JS1|XBVM4)": 0.0005766593959135591,
+          "P(B_JS2|XBVM4)": 5.587775967264008e-06
+        }
+      }
+    },
+    "N2_all_delays_preserve_two": true,
+    "N3_directional_p2p_records": {
+      "EXACT_0111": {
+        "B_JS1": 6.386406088349526,
+        "B_JS2": 6.360566503479335
+      },
+      "DELAY0P3_0111": {
+        "B_JS1": 1.4071571930080105,
+        "B_JS2": 6.002965084747888
+      },
+      "DELAY0P6_0111": {
+        "B_JS1": 5.749413018062923,
+        "B_JS2": 6.5425125681121425
+      }
+    },
+    "N2_ordered_candidate_counts": {
+      "EXACT_0011": 2,
+      "DELAY0P3_0011": 2,
+      "DELAY0P6_0011": 2
+    },
+    "scientific_category_assignment": "REVIEW_REQUIRED",
+    "not_an_SFQ_count": true
+  },
+  "classification": {
+    "status": "SCIENTIFIC_REVIEW_REQUIRED",
+    "assigned": null,
+    "mechanical_gate": {
+      "status": "SCIENTIFIC_REVIEW_REQUIRED",
+      "classification": "NOT_ASSIGNED",
+      "interpretation_layer": "mechanical registered comparison complete",
+      "reason": "Exact gate passed and all four delayed cases completed; Outcome A/B/C assignment is reserved for explicit scientific review.",
+      "delayed_cases_authorized": true
+    },
+    "candidate_categories": [
+      "FEEDBACK_PATH_TIMING_SELECTIVITY_SUPPORTED",
+      "BRIDGE_TIMING_NONSELECTIVE",
+      "BRIDGE_CURRENT_TIMING_INSUFFICIENT",
+      "BRIDGE_CURRENT_REPLAY_FIXTURE_INVALID"
+    ]
+  },
+  "unknown": [
+    "scientific interpretation",
+    "mechanism strength",
+    "physical current-source equivalence",
+    "physical delay implementation",
+    "SFQ event identity/count",
+    "timestep/solver convergence"
+  ],
+  "stop": {
+    "final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW",
+    "automatic_follow_up": false,
+    "delayed_cases_run": 4,
+    "sentinel_follow_up": false
+  },
+  "exact_runs": {
+    "EXACT_0011": {
+      "run_id": "EXACT_0011",
+      "mask": "0011",
+      "delay_ps": 0.0,
+      "ordered_candidate_count": 2,
+      "first_BJ1_plus_0p5_ps": 115.2,
+      "first_BJ2_plus_0p5_ps": 116.10000000000001,
+      "second_BJ1_plus_1p5_ps": 125.9,
+      "second_BJ2_plus_1p5_ps": 126.39999999999999,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001656956,
+        "maximum": 3.999761e-05,
+        "zero_sign_crossings": 4,
+        "first_negative_to_positive_crossing_ps": 121.7,
+        "first_positive_to_negative_crossing_ps": 122.99999999999999,
+        "first_sustained_negative_to_positive_crossing_ps": 121.7,
+        "positive_dwell_ps": 3.6999999999999718,
+        "negative_dwell_ps": 5.200000000000044,
+        "positive_sample_fraction": 0.4111111111111111,
+        "negative_sample_fraction": 0.5888888888888889,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 9.430438e-05,
+        "maximum": 0.0002999976,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -8.999099e-05,
+        "maximum": 2.405854e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 121.7,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0.700000000000008,
+        "negative_dwell_ps": 8.200000000000008,
+        "positive_sample_fraction": 0.07777777777777778,
+        "negative_sample_fraction": 0.9222222222222223,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -8.999099e-05,
+        "maximum": 2.405854e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 121.7,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0.700000000000008,
+        "negative_dwell_ps": 8.200000000000008,
+        "positive_sample_fraction": 0.07777777777777778,
+        "negative_sample_fraction": 0.9222222222222223,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/EXACT_0011/raw.csv",
+      "raw_sha256": "b1289e28d3d48ef503711029048f644588e878ceabd9afeffe282edc768522ea"
+    },
+    "EXACT_0111": {
+      "run_id": "EXACT_0111",
+      "mask": "0111",
+      "delay_ps": 0.0,
+      "ordered_candidate_count": 4,
+      "first_BJ1_plus_0p5_ps": 113.8,
+      "first_BJ2_plus_0p5_ps": 114.8,
+      "second_BJ1_plus_1p5_ps": 117.4,
+      "second_BJ2_plus_1p5_ps": 118.3,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001494347,
+        "maximum": 0.0002068353,
+        "zero_sign_crossings": 3,
+        "first_negative_to_positive_crossing_ps": 122.2,
+        "first_positive_to_negative_crossing_ps": 121.39999999999999,
+        "first_sustained_negative_to_positive_crossing_ps": 122.2,
+        "positive_dwell_ps": 2.499999999999991,
+        "negative_dwell_ps": 6.400000000000024,
+        "positive_sample_fraction": 0.2777777777777778,
+        "negative_sample_fraction": 0.7222222222222222,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 0.0001105653,
+        "maximum": 0.0004668353,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -6.000903e-05,
+        "maximum": 0.0001455117,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 123.8,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 2.8000000000000056,
+        "negative_dwell_ps": 6.100000000000009,
+        "positive_sample_fraction": 0.3111111111111111,
+        "negative_sample_fraction": 0.6888888888888889,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -6.000903e-05,
+        "maximum": 0.0001455117,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 123.8,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 2.8000000000000056,
+        "negative_dwell_ps": 6.100000000000009,
+        "positive_sample_fraction": 0.3111111111111111,
+        "negative_sample_fraction": 0.6888888888888889,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/EXACT_0111/raw.csv",
+      "raw_sha256": "06c77265e1b4f7321e50d2b92a15a3d1d2f14cc6e7fca7ab0afbf7d82003745f"
+    }
+  },
+  "independent_numerical_recalculation": {
+    "status": "PASS",
+    "method": "fresh csv.DictReader, independent unwrap and actual-grid trapezoid",
+    "grid": {
+      "CANONICAL_0011": true,
+      "CANONICAL_0111": true,
+      "EXACT_0011": true,
+      "EXACT_0111": true,
+      "DELAY0P3_0011": true,
+      "DELAY0P3_0111": true,
+      "DELAY0P6_0011": true,
+      "DELAY0P6_0111": true
+    },
+    "ordered_navigation_candidate_count": {
+      "CANONICAL_0011": 2,
+      "CANONICAL_0111": 4,
+      "EXACT_0011": 2,
+      "EXACT_0111": 4,
+      "DELAY0P3_0011": 2,
+      "DELAY0P3_0111": 4,
+      "DELAY0P6_0011": 2,
+      "DELAY0P6_0111": 4
+    },
+    "phase_area": {
+      "CANONICAL_0011": {
+        "B_JS1": {
+          "phase_delta_turns": -3.1236796211585984,
+          "voltage_area_over_Phi0_turns": -3.125983718591295,
+          "residual_turns": 0.0023040974326966612
+        },
+        "B_JS2": {
+          "phase_delta_turns": -2.841450685785052,
+          "voltage_area_over_Phi0_turns": -2.8382570658549313,
+          "residual_turns": -0.0031936199301205725
+        }
+      },
+      "CANONICAL_0111": {
+        "B_JS1": {
+          "phase_delta_turns": -6.352845881274454,
+          "voltage_area_over_Phi0_turns": -6.355123887303728,
+          "residual_turns": 0.0022780060292744153
+        },
+        "B_JS2": {
+          "phase_delta_turns": -6.332321785024635,
+          "voltage_area_over_Phi0_turns": -6.334087598802083,
+          "residual_turns": 0.0017658137774478888
+        }
+      },
+      "EXACT_0011": {
+        "B_JS1": {
+          "phase_delta_turns": -3.123677950031696,
+          "voltage_area_over_Phi0_turns": -3.1259827896965473,
+          "residual_turns": 0.00230483966485151
+        },
+        "B_JS2": {
+          "phase_delta_turns": -2.841450653954064,
+          "voltage_area_over_Phi0_turns": -2.838256750790933,
+          "residual_turns": -0.003193903163130951
+        }
+      },
+      "EXACT_0111": {
+        "B_JS1": {
+          "phase_delta_turns": -6.352847393246413,
+          "voltage_area_over_Phi0_turns": -6.35512510050565,
+          "residual_turns": 0.0022777072592372605
+        },
+        "B_JS2": {
+          "phase_delta_turns": -6.3323217531936455,
+          "voltage_area_over_Phi0_turns": -6.334087406330139,
+          "residual_turns": 0.0017656531364931283
+        }
+      },
+      "DELAY0P3_0011": {
+        "B_JS1": {
+          "phase_delta_turns": -4.0500154230566086,
+          "voltage_area_over_Phi0_turns": -4.051069819851394,
+          "residual_turns": 0.0010543967947853616
+        },
+        "B_JS2": {
+          "phase_delta_turns": -2.959290565368734,
+          "voltage_area_over_Phi0_turns": -2.9582659016422066,
+          "residual_turns": -0.0010246637265272085
+        }
+      },
+      "DELAY0P3_0111": {
+        "B_JS1": {
+          "phase_delta_turns": -1.2509469346732012,
+          "voltage_area_over_Phi0_turns": -1.2536318312069716,
+          "residual_turns": 0.0026848965337704644
+        },
+        "B_JS2": {
+          "phase_delta_turns": -5.9490416361408816,
+          "voltage_area_over_Phi0_turns": -5.94887822873087,
+          "residual_turns": -0.00016340741001119596
+        }
+      },
+      "DELAY0P6_0011": {
+        "B_JS1": {
+          "phase_delta_turns": -6.779011809715288,
+          "voltage_area_over_Phi0_turns": -6.778962707307409,
+          "residual_turns": -4.910240787925346e-05
+        },
+        "B_JS2": {
+          "phase_delta_turns": -2.601561182879943,
+          "voltage_area_over_Phi0_turns": -2.600018826560961,
+          "residual_turns": -0.00154235631898203
+        }
+      },
+      "DELAY0P6_0111": {
+        "B_JS1": {
+          "phase_delta_turns": -5.749413018062923,
+          "voltage_area_over_Phi0_turns": -5.749989677458837,
+          "residual_turns": 0.0005766593959135591
+        },
+        "B_JS2": {
+          "phase_delta_turns": -6.472131412952722,
+          "voltage_area_over_Phi0_turns": -6.472137000728689,
+          "residual_turns": 5.587775967264008e-06
+        }
+      }
+    },
+    "all_grids_valid": true
+  },
+  "delayed_runs": {
+    "DELAY0P3_0011": {
+      "run_id": "DELAY0P3_0011",
+      "mask": "0011",
+      "delay_ps": 0.3,
+      "ordered_candidate_count": 2,
+      "first_BJ1_plus_0p5_ps": 115.1,
+      "first_BJ2_plus_0p5_ps": 115.89999999999999,
+      "second_BJ1_plus_1p5_ps": 124.00000000000001,
+      "second_BJ2_plus_1p5_ps": 124.50000000000001,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001706941,
+        "maximum": 5.737377e-05,
+        "zero_sign_crossings": 4,
+        "first_negative_to_positive_crossing_ps": 121.5,
+        "first_positive_to_negative_crossing_ps": 123.2,
+        "first_sustained_negative_to_positive_crossing_ps": 121.5,
+        "positive_dwell_ps": 2.3999999999999866,
+        "negative_dwell_ps": 6.500000000000029,
+        "positive_sample_fraction": 0.26666666666666666,
+        "negative_sample_fraction": 0.7333333333333333,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 8.930591e-05,
+        "maximum": 0.0003173738,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -9.239688e-05,
+        "maximum": 4.27921e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 121.89999999999999,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0.8999999999999917,
+        "negative_dwell_ps": 8.000000000000023,
+        "positive_sample_fraction": 0.1,
+        "negative_sample_fraction": 0.9,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -9.239688e-05,
+        "maximum": 4.27921e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 121.89999999999999,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0.8999999999999917,
+        "negative_dwell_ps": 8.000000000000023,
+        "positive_sample_fraction": 0.1,
+        "negative_sample_fraction": 0.9,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0011/raw.csv",
+      "raw_sha256": "4a627a3c7397be486f133256848327788d0a1fdf204a9749e299a0a72261db58"
+    },
+    "DELAY0P3_0111": {
+      "run_id": "DELAY0P3_0111",
+      "mask": "0111",
+      "delay_ps": 0.3,
+      "ordered_candidate_count": 4,
+      "first_BJ1_plus_0p5_ps": 113.8,
+      "first_BJ2_plus_0p5_ps": 114.8,
+      "second_BJ1_plus_1p5_ps": 117.9,
+      "second_BJ2_plus_1p5_ps": 119.10000000000001,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001753978,
+        "maximum": 0.0003295302,
+        "zero_sign_crossings": 5,
+        "first_negative_to_positive_crossing_ps": 122.80000000000001,
+        "first_positive_to_negative_crossing_ps": 121.89999999999999,
+        "first_sustained_negative_to_positive_crossing_ps": 122.80000000000001,
+        "positive_dwell_ps": 3.9999999999999862,
+        "negative_dwell_ps": 4.90000000000003,
+        "positive_sample_fraction": 0.4444444444444444,
+        "negative_sample_fraction": 0.5555555555555556,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 8.46022e-05,
+        "maximum": 0.0005895302,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -7.352133e-05,
+        "maximum": 0.0002132439,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 124.9,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 3.900000000000007,
+        "negative_dwell_ps": 5.000000000000009,
+        "positive_sample_fraction": 0.43333333333333335,
+        "negative_sample_fraction": 0.5666666666666667,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -7.352133e-05,
+        "maximum": 0.0002132439,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 124.9,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 3.900000000000007,
+        "negative_dwell_ps": 5.000000000000009,
+        "positive_sample_fraction": 0.43333333333333335,
+        "negative_sample_fraction": 0.5666666666666667,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0111/raw.csv",
+      "raw_sha256": "5709b3115db09ae7a7eb0818a4d487f7432b7cff9ae40c1560ce7cc22da64d08"
+    },
+    "DELAY0P6_0011": {
+      "run_id": "DELAY0P6_0011",
+      "mask": "0011",
+      "delay_ps": 0.6,
+      "ordered_candidate_count": 2,
+      "first_BJ1_plus_0p5_ps": 115.1,
+      "first_BJ2_plus_0p5_ps": 115.8,
+      "second_BJ1_plus_1p5_ps": 123.3,
+      "second_BJ2_plus_1p5_ps": 124.19999999999999,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001525031,
+        "maximum": 8.985003e-05,
+        "zero_sign_crossings": 2,
+        "first_negative_to_positive_crossing_ps": 121.7,
+        "first_positive_to_negative_crossing_ps": 124.4,
+        "first_sustained_negative_to_positive_crossing_ps": 121.7,
+        "positive_dwell_ps": 2.700000000000001,
+        "negative_dwell_ps": 6.200000000000014,
+        "positive_sample_fraction": 0.3,
+        "negative_sample_fraction": 0.7,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 0.0001074969,
+        "maximum": 0.00034985,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -5.146334e-05,
+        "maximum": 6.483549e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 124.50000000000001,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 3.5000000000000138,
+        "negative_dwell_ps": 5.400000000000002,
+        "positive_sample_fraction": 0.3888888888888889,
+        "negative_sample_fraction": 0.6111111111111112,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -5.146334e-05,
+        "maximum": 6.483549e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 124.50000000000001,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 3.5000000000000138,
+        "negative_dwell_ps": 5.400000000000002,
+        "positive_sample_fraction": 0.3888888888888889,
+        "negative_sample_fraction": 0.6111111111111112,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P6_0011/raw.csv",
+      "raw_sha256": "8e9a75e61d9419f99a985cefda78453cf000df6c7768878de3098ad41e9fe52d"
+    },
+    "DELAY0P6_0111": {
+      "run_id": "DELAY0P6_0111",
+      "mask": "0111",
+      "delay_ps": 0.6,
+      "ordered_candidate_count": 4,
+      "first_BJ1_plus_0p5_ps": 113.9,
+      "first_BJ2_plus_0p5_ps": 114.8,
+      "second_BJ1_plus_1p5_ps": 117.60000000000001,
+      "second_BJ2_plus_1p5_ps": 118.5,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001733723,
+        "maximum": 0.0003442171,
+        "zero_sign_crossings": 7,
+        "first_negative_to_positive_crossing_ps": 121.99999999999999,
+        "first_positive_to_negative_crossing_ps": 121.5,
+        "first_sustained_negative_to_positive_crossing_ps": 121.99999999999999,
+        "positive_dwell_ps": 3.900000000000007,
+        "negative_dwell_ps": 5.000000000000009,
+        "positive_sample_fraction": 0.43333333333333335,
+        "negative_sample_fraction": 0.5666666666666667,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 8.662768e-05,
+        "maximum": 0.0006042171,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -1.39796e-05,
+        "maximum": 0.0002549486,
+        "zero_sign_crossings": 6,
+        "first_negative_to_positive_crossing_ps": 127.20000000000002,
+        "first_positive_to_negative_crossing_ps": 126.60000000000001,
+        "first_sustained_negative_to_positive_crossing_ps": 127.20000000000002,
+        "positive_dwell_ps": 7.400000000000021,
+        "negative_dwell_ps": 1.499999999999995,
+        "positive_sample_fraction": 0.8333333333333334,
+        "negative_sample_fraction": 0.16666666666666666,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -1.39796e-05,
+        "maximum": 0.0002549486,
+        "zero_sign_crossings": 6,
+        "first_negative_to_positive_crossing_ps": 127.20000000000002,
+        "first_positive_to_negative_crossing_ps": 126.60000000000001,
+        "first_sustained_negative_to_positive_crossing_ps": 127.20000000000002,
+        "positive_dwell_ps": 7.400000000000021,
+        "negative_dwell_ps": 1.499999999999995,
+        "positive_sample_fraction": 0.8333333333333334,
+        "negative_sample_fraction": 0.16666666666666666,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "raw_path": "test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P6_0111/raw.csv",
+      "raw_sha256": "b91ec53d9f32c3cc022a8a4050167a7971ad6718f044caa09ff76c0220372da8"
+    }
+  },
+  "qa_summary": {
+    "status": "PASS",
+    "artifact_status": "VALID"
+  },
+  "visualization_summary": {
+    "status": "PASS",
+    "standalone_count": 66,
+    "comparison_count": 18,
+    "focused_window_entries": 36
+  },
+  "package_summary": {
+    "status": "READY_FOR_DRIVE_UPLOAD",
+    "version": "v1",
+    "package_sha256": "04d6bf5835bfe61854bb0a0462408898feda0fce1369d06a0eb4ddcbe73c3227",
+    "package_bytes": 59935765,
+    "file_count": 130,
+    "delivery_manifest_path": "delivery_manifest.json",
+    "drive_file_id": null
+  }
+}

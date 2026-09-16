@@ -1,0 +1,182 @@
+schema_version: bvm-rloop-bridge-timing-replay-v1
+id: bvm-rloop-bridge-timing-replay-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+registration_head: 3523c8c6edfaeb2b880302cf2281857134501774
+remote_bvm_master_at_registration: 3523c8c6edfaeb2b880302cf2281857134501774
+scientific_review_authorized: false
+mechanical_analysis_performed: false
+bounded_experiment_interpretation_performed: false
+independent_scientific_review_performed: false
+
+question:
+  primary: "Can timing-only replay of canonical per-instance R_S//L_S3 bridge current preserve N2=2 while suppressing N3 retrigger/runaway?"
+  scope: "Counterfactual ideal current forcing; canonical BVM-to-QB forward path and canonical QB/JTL remain loaded."
+  interpretation_ceiling: "Mechanical raw fidelity and registered arithmetic only until explicit scientific review."
+
+source_fixture:
+  canonical_n2_raw: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv
+  canonical_n3_raw: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv
+  topology: "canonical 4xBVM -> COMMON_SL -> JSL1..8 -> QB -> JTL1..6 -> 10 ohm terminal"
+  intervention: "per-instance R_S 6 10 3.0 and L_S3 6 10 0.5P removed from cloned BVM and replaced by I_BRIDGE_REPLAY 6 10 PWL"
+  bridge_definition: "I_BRIDGE(t)=I(R_S|XBVMn)(t)+I(L_S3|XBVMn)(t)"
+  bridge_positive_direction: "node6 -> node10"
+  bridge_voltage_replay_observable: "V(6|XBVMn)-V(10|XBVMn)"
+  canonical_bridge_voltage_observable: "V(R_S|XBVMn)=V(L_S3|XBVMn)"
+  source_is_per_instance: true
+  canonical_QB_JTL_terminal_unchanged: true
+
+frozen:
+  TD_ps_exact: 0.0
+  delayed_ps: [0.3, 0.6]
+  delayed_stored_sample_shift: [3, 6]
+  intervention_start_ps: 110.0
+  tran: ".tran 0.1p 200p"
+  stored_grid: "actual canonical stored timestamps, expected 1999 samples 0 to 199.9 ps"
+  windows_ps:
+    full: [0, 200]
+    control: [70, 110]
+    focus: [110, 121]
+    rearm: [121, 130]
+  window_semantics: "half-open actual stored timestamps"
+  no_interpolation: true
+  no_resampling: true
+  no_amplitude_scaling: true
+  no_sign_change: true
+  no_QB_change: true
+  no_JSL_change: true
+  no_JTL_change: true
+  no_terminal_change: true
+  no_stimulus_change: true
+  no_timestep_sweep: true
+  no_sentinel: true
+
+authorized_matrix:
+  exact:
+    - run_id: EXACT_0011
+      mask: "0011"
+      delay_ps: 0.0
+      stored_sample_shift: 0
+    - run_id: EXACT_0111
+      mask: "0111"
+      delay_ps: 0.0
+      stored_sample_shift: 0
+  delayed:
+    - run_id: DELAY0P3_0011
+      mask: "0011"
+      delay_ps: 0.3
+      stored_sample_shift: 3
+    - run_id: DELAY0P3_0111
+      mask: "0111"
+      delay_ps: 0.3
+      stored_sample_shift: 3
+    - run_id: DELAY0P6_0011
+      mask: "0011"
+      delay_ps: 0.6
+      stored_sample_shift: 6
+    - run_id: DELAY0P6_0111
+      mask: "0111"
+      delay_ps: 0.6
+      stored_sample_shift: 6
+  delayed_gate: "both exact cases pass mechanical fidelity screen"
+  maximum_new_physical_solves: 6
+  no_other_delay_points: true
+
+exact_fidelity_screen:
+  timing_tolerance_ps: 0.2
+  JS1_JS2_focus_p2p_tolerance_turns: 0.25
+  key_focus_waveform_normalized_RMS_tolerance: 0.50
+  required_N2_ordered_candidates: 2
+  required_N3_ordered_candidates: 4
+  bridge_voltage_is_reported_separately: true
+  1e-9_V_identity_required: false
+
+metrics:
+  qb: "first/second BJ1/BJ2, ordered BJ1->BJ2->JTL1..6, terminal corroboration"
+  rearm: "I(L1), I(L2), phase recovery, actual-grid reset voltage integrals in [121,130) ps"
+  source: "I(B_JSL8), I(LIN|XBQ1), signed area, positive-to-negative crossing, negative dwell/min"
+  rloop: "active JS1/JS2 phase p2p, same-JJ voltage-area, JM1/JM2, L_S3/R_S canonical references, replay bridge current/voltage"
+  phase: "raw radians; independent unwrap then rad/(2*pi) navigation only; not SFQ count"
+  area: "same JJ/endpoints/direction/window; actual-grid trapezoid / Phi0; not an SFQ count"
+
+probes:
+  bvm: "all BVM storage/R-loop/output P/V/I and quiet branches for XBVM1..4"
+  bridge: "I(I_BRIDGE_REPLAY|XBVMn), V(6|XBVMn), V(10|XBVMn); canonical direction audit from R_S/L_S3"
+  boundary: "V(COMMON_SL), P/V/I(B_JSL1..8), V(QBIN), I(LIN|XBQ1), V(LIN|XBQ1)"
+  qb: "P/V/I(BJS/BJ1/BJ2), I/V(L1/L2/L3/RJ1/RJ2), V(QBOUT)"
+  downstream: "P/V/I(B01/B02) for JTL1..6, stage outputs, I(R_TERM)"
+  directions: "bridge 6->10; B_JSL8 JSL_NODE7->QBIN; LIN QBIN->QB internal node"
+
+output:
+  root_files: [experiment.yaml, PREFLIGHT.md, RESULT.md, result.json, provenance.json, inputs, runs, analysis, plots]
+  raw_zip: Drive only
+  delivery_manifest: delivery_manifest.json outside ZIP
+  no_png_svg: true
+
+interpretation:
+  scientific_labels: "not assigned in executor artifact; Outcome A/B/C require explicit scientific review"
+  forbidden: ["physical delay line claim", "current-only sufficiency claim", "R_S/L_S3 equivalent claim", "SFQ count", "root cause", "hardware extrapolation", "2*TD measured return delay"]
+
+stop:
+  final_marker: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  automatic_follow_up: false
+
+exact_deck_registration:
+  - run_id: EXACT_0011
+    path: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/EXACT_0011/deck.cir
+    sha256: 8f8b2cd5109a82b194f59026cec57f89a1d3abe005e2c128c2a27f8ccbd947c2
+    bytes: 318145
+    mask: "0011"
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    source_csv: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/inputs/replay_sources/EXACT_0011_bridge_current.csv
+    source_csv_sha256: 86550473fa01b9c8ae3c355a76d347bba717115edf5496a37b5e5a99be7bdc98
+  - run_id: EXACT_0111
+    path: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/EXACT_0111/deck.cir
+    sha256: 5344b6b0280cb31e18946ba7b364e250626b3c0c287c9b4ddeb7386fe863f616
+    bytes: 318134
+    mask: "0111"
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    source_csv: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/inputs/replay_sources/EXACT_0111_bridge_current.csv
+    source_csv_sha256: c599fbc3aef47dc1ddd42e9b292dfcb1152c7be1f31334a22875c457291e09b3
+
+delayed_deck_registration:
+  - run_id: DELAY0P3_0011
+    path: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0011/deck.cir
+    sha256: 1e325b3f4cdc2caf0c83688b1190e8c75b74bb840df78981a00ae61679977848
+    bytes: 318061
+    mask: "0011"
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    source_csv: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/inputs/replay_sources/DELAY0P3_0011_bridge_current.csv
+    source_csv_sha256: 5ebfc1ef857a2b1dc877cf1f77b21119d8f1fc54bc484dce02f743056dad59cf
+  - run_id: DELAY0P3_0111
+    path: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P3_0111/deck.cir
+    sha256: 907b8b13d1de368ee567a8ec8710de3d8b0355ca9fb9fde565a6b8b4708fe624
+    bytes: 318054
+    mask: "0111"
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    source_csv: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/inputs/replay_sources/DELAY0P3_0111_bridge_current.csv
+    source_csv_sha256: c41e1e2171f1efea5de7e5eae5e4b1b0275b4b6f6bed6db62559fdfc0a2c21d0
+  - run_id: DELAY0P6_0011
+    path: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P6_0011/deck.cir
+    sha256: 4d37fdb5f7cf15e5101fcfd325c9bc6e26d026f98954180b4df52c631120189a
+    bytes: 317989
+    mask: "0011"
+    delay_ps: 0.6
+    stored_sample_shift: 6
+    source_csv: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/inputs/replay_sources/DELAY0P6_0011_bridge_current.csv
+    source_csv_sha256: 1a4cb46d67fbe3191c456b4b604bd377e3ee55039fc212f155dce899cfa0624e
+  - run_id: DELAY0P6_0111
+    path: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/runs/DELAY0P6_0111/deck.cir
+    sha256: 60755ee8d75218f3d1b9ecde7d44cfbf21fe1058897132de9d3c4c574b90ba1e
+    bytes: 317956
+    mask: "0111"
+    delay_ps: 0.6
+    stored_sample_shift: 6
+    source_csv: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916/inputs/replay_sources/DELAY0P6_0111_bridge_current.csv
+    source_csv_sha256: a2cde54fb594635b0d06899247d566a442d4d37a6dca158301d6b67cdae19a32

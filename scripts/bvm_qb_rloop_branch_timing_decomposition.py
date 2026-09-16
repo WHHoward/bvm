@@ -1232,6 +1232,17 @@ def write_evidence_manifests() -> None:
     (EXP / "analysis" / "EVIDENCE_MANIFEST.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def package_plot_selected(path: Path) -> bool:
+    """Keep the Drive evidence package below the connector's 100 MiB limit.
+
+    The repository retains every standard whole-run page.  The Drive package
+    carries all focused pages and the shared runtime, which are the compact
+    review set; raw/deck/log/source/analysis artifacts are all included.
+    """
+    relative = path.relative_to(EXP / "plots").as_posix()
+    return path.name == "plotly.min.js" or "focus_110_121" in relative or "focus_121_130" in relative
+
+
 def package() -> None:
     provenance = read_json(EXP / "provenance.json")
     if provenance.get("qa", {}).get("status") != "PASS" or provenance.get("visualization", {}).get("status") != "PASS":
@@ -1243,8 +1254,13 @@ def package() -> None:
     package_path = delivery_dir / f"{EXP.name}_raw_evidence.zip"
     version = "v1"
     if package_path.exists():
-        version = "v2"
-        package_path = delivery_dir / f"{EXP.name}_{version}_raw_evidence.zip"
+        version_number = 2
+        while True:
+            version = f"v{version_number}"
+            package_path = delivery_dir / f"{EXP.name}_{version}_raw_evidence.zip"
+            if not package_path.exists():
+                break
+            version_number += 1
     if package_path.exists():
         raise RuntimeError(f"refusing overwrite existing package: {package_path}")
     result = read_json(EXP / "result.json")
@@ -1256,10 +1272,15 @@ def package() -> None:
     files: list[tuple[Path, str]] = []
     for name in ("experiment.yaml", "PREFLIGHT.md", "RESULT.md", "result.json", "provenance.json"):
         files.append((EXP / name, name))
+    packaged_plot_paths: list[str] = []
     for dirname in ("inputs", "runs", "analysis", "plots"):
         for path in sorted((EXP / dirname).rglob("*")):
             if path.is_file():
+                if dirname == "plots" and not package_plot_selected(path):
+                    continue
                 files.append((path, path.relative_to(EXP).as_posix()))
+                if dirname == "plots":
+                    packaged_plot_paths.append(path.relative_to(EXP).as_posix())
     files.append((SCRIPT, "executor/bvm_qb_rloop_branch_timing_decomposition.py"))
     records = [{"path": archive_name, "sha256": sha256(path), "bytes": path.stat().st_size} for path, archive_name in files]
     with zipfile.ZipFile(package_path, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
@@ -1269,7 +1290,7 @@ def package() -> None:
         reopened = {name: hashlib.sha256(archive.read(name)).hexdigest() for name in archive.namelist()}
     expected = {item["path"]: item["sha256"] for item in records}
     new_raw_members = [(REPO / provenance["runs"][key]["raw"]["path"]).relative_to(EXP).as_posix() for key in provenance["run_order"]]
-    qa = {"status": "PASS" if expected == reopened else "FAIL", "package_version": version, "package_path": str(package_path), "package_sha256": sha256(package_path), "package_bytes": package_path.stat().st_size, "file_count": len(records), "expected_file_hashes_match_after_reopen": expected == reopened, "zip_files": records, "not_in_git": True, "contains_all_new_run_raw": all(member in reopened for member in new_raw_members), "new_run_raw_members": new_raw_members, "contains_reference_raw_copies": False, "contains_delivery_manifest": False, "delivery_manifest_outside_zip": True, "git_head_at_packaging": git_head(), "remote_head_at_packaging": remote_head(), "supersedes_previous_package_sha256": previous_manifest.get("package_sha256") if previous_manifest else None}
+    qa = {"status": "PASS" if expected == reopened else "FAIL", "package_version": version, "package_path": str(package_path), "package_sha256": sha256(package_path), "package_bytes": package_path.stat().st_size, "file_count": len(records), "expected_file_hashes_match_after_reopen": expected == reopened, "zip_files": records, "not_in_git": True, "contains_all_new_run_raw": all(member in reopened for member in new_raw_members), "new_run_raw_members": new_raw_members, "contains_reference_raw_copies": False, "contains_delivery_manifest": False, "delivery_manifest_outside_zip": True, "package_plot_policy": "focused pages only plus shared Plotly runtime; full repository visualization remains committed", "packaged_plot_file_count": len(packaged_plot_paths), "packaged_plot_paths": packaged_plot_paths, "git_head_at_packaging": git_head(), "remote_head_at_packaging": remote_head(), "supersedes_previous_package_sha256": previous_manifest.get("package_sha256") if previous_manifest else None}
     manifest = {"schema": "bvm-rloop-branch-timing-delivery-manifest-v1", "experiment_id": EXP.name, "created_at": now(), "status": "READY_FOR_DRIVE_UPLOAD" if qa["status"] == "PASS" else "PACKAGE_INVALID", "package_version": version, "package_path": str(package_path), "package_sha256": qa["package_sha256"], "package_bytes": qa["package_bytes"], "package_qa": qa, "drive_folder_id": DRIVE_FOLDER_ID, "drive_file_id": None, "drive_url": None, "delivery_id_is_outside_zip_to_avoid_self_reference": True, "supersedes_previous_package_sha256": previous_manifest.get("package_sha256") if previous_manifest else None}
     write_json(EXP / "delivery_manifest.json", manifest)
     provenance["package"] = {"status": manifest["status"], "version": version, "internal_metadata_status": "ALL_AUTHORIZED_OR_EXACT_GATE_RUNS_COMPLETE", "delivery_manifest_path": "delivery_manifest.json", "package_qa": qa, "drive_file_id": None, "drive_url": None}

@@ -1,0 +1,804 @@
+{
+  "schema": "bvm-rloop-branch-timing-raw-analysis-handoff-v1",
+  "experiment_id": "bvm-rloop-branch-timing-decomposition-v1-20260916",
+  "generated_at": "2026-09-16T19:30:30+08:00",
+  "raw_is_immutable_solver_output": true,
+  "processed_crops_are_not_raw_substitutes": true,
+  "files_excluding_delivery_manifest": [
+    {
+      "path": "PREFLIGHT.md",
+      "sha256": "08902232343b38d6d7c996f893819640133e5bb1925d8a9e3d50b82d79b325a0",
+      "bytes": 5680
+    },
+    {
+      "path": "RESULT.md",
+      "sha256": "dba3d6129bdd5419054f5995177054835ce8e906c3f7c1c4282f35ee45173a30",
+      "bytes": 2989
+    },
+    {
+      "path": "analysis/ADVERSARIAL_REVIEW.md",
+      "sha256": "372feddc13fa7085382bafc339b6de5c305f0bb58567d2f308b6b68439383f30",
+      "bytes": 635
+    },
+    {
+      "path": "analysis/MECHANICAL_QA.json",
+      "sha256": "e5b490e6a405ebc39c63f0468393276db79a0d64612c82a3644a94ef2de94d56",
+      "bytes": 15185
+    },
+    {
+      "path": "analysis/NUMERICAL_REVIEW.md",
+      "sha256": "1e2e6971c1367593b73221cfd1ac5b82701dad199608cf06e30d3ca2764b0a61",
+      "bytes": 606
+    },
+    {
+      "path": "analysis/SOURCE_MANIFEST.json",
+      "sha256": "032545b9aec204a58af4e12855c05bd89e47d55f1b5456682891f83febc9aab5",
+      "bytes": 15223
+    },
+    {
+      "path": "analysis/TRANSFORMATION_REGISTRY.json",
+      "sha256": "108f90df6cad43f607471279b2bcea34c9d34786f2e7763ec6232c25d0135f8e",
+      "bytes": 1066
+    },
+    {
+      "path": "analysis/VISUALIZATION_MANIFEST.json",
+      "sha256": "51aec2776d708b9bf336ed949bffde351b78ed291018c6b51c98143bd7064e93",
+      "bytes": 162200
+    },
+    {
+      "path": "analysis/VISUALIZATION_QA.json",
+      "sha256": "4112dc644b8e213719979457a852830c392804530e21371cec756a590cf2b740",
+      "bytes": 170
+    },
+    {
+      "path": "experiment.yaml",
+      "sha256": "6a00f8f8f7db1d890365094518f1869c656815ed8511f827526b4f98b60d4207",
+      "bytes": 9536
+    },
+    {
+      "path": "inputs/replay_sources/LS3_DELAY0P3_0011_branch_current.csv",
+      "sha256": "1c578087878683144c52925087c3f05bd015af7ae2b7e2edeb58b51f25302fd3",
+      "bytes": 388953
+    },
+    {
+      "path": "inputs/replay_sources/LS3_DELAY0P3_0111_branch_current.csv",
+      "sha256": "41dfb42b0a497b0dfcf0508326f488577551cab3039478d833ac8c91e3930822",
+      "bytes": 389589
+    },
+    {
+      "path": "inputs/replay_sources/LS3_EXACT_0011_branch_current.csv",
+      "sha256": "1685a807b8426fecca4623fea6ab69d6e43dd9096c1701ac14d0ad435035738e",
+      "bytes": 388913
+    },
+    {
+      "path": "inputs/replay_sources/LS3_EXACT_0111_branch_current.csv",
+      "sha256": "ad22bac4bca753de1819216b2dbfc863ea5d969b988beebf753293bd376af286",
+      "bytes": 389519
+    },
+    {
+      "path": "inputs/replay_sources/RS_DELAY0P3_0011_branch_current.csv",
+      "sha256": "e22a2fec217702d9b69e9285df1ac0563aba6aef2bbd4955117738d6f51728b1",
+      "bytes": 397705
+    },
+    {
+      "path": "inputs/replay_sources/RS_DELAY0P3_0111_branch_current.csv",
+      "sha256": "500d3b3a0e6ef56ef94441c52968ac03f750559dbcaaf39b26d7c488a03508c8",
+      "bytes": 395735
+    },
+    {
+      "path": "inputs/replay_sources/RS_EXACT_0011_branch_current.csv",
+      "sha256": "a4760f80cadc6eace48a6b2317105b7d2527de3889a71139cee12e2f064d1952",
+      "bytes": 397705
+    },
+    {
+      "path": "inputs/replay_sources/RS_EXACT_0111_branch_current.csv",
+      "sha256": "c0ca9490a0049957b0065ce3e8ec9c6f55467620407d83ad0358c5e9720767e9",
+      "bytes": 395643
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/01_SIGNAL_TIMING.html",
+      "sha256": "0323d6adfbdd5153df0a14deb09b71ff0c4775e60e4030f6c11d824f91d6421d",
+      "bytes": 241699
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "29b9eeea661f5ab008dadbcca05978ff12621f528d5e806e1bdc9b7c8dbd542c",
+      "bytes": 22197
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/02_BVM_STATE.html",
+      "sha256": "ca377fb9f2cfa4a92fcb68dae6d5514386ec32b2060045d2ddbb535484b9f8b5",
+      "bytes": 3799505
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "5544ba18dd5eb6ce981f37f4ea898b147768bf9a4b0caa02c863d30641ec02e0",
+      "bytes": 234618
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/03_JSL_CHAIN.html",
+      "sha256": "b754cf03a4b11098b86db06fe5779027725c66c5436801fa5941fe810ba0f1cd",
+      "bytes": 1138498
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "8e75157df1a3a7c87a886479a67c21b4b651f98918c993fc1e69cb91263656e8",
+      "bytes": 74832
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/04_QB_STATE.html",
+      "sha256": "3dba254e6e6035169608370e4ad5cfab8931515f51033eab20c7b5cb14aff959",
+      "bytes": 1096387
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "c353d52e2c99075d0fe502890e8a30f0d75d2d73aefc8e8793e2be2a7a0ed02d",
+      "bytes": 73242
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/04_QB_STATE_focus_121_130.html",
+      "sha256": "c94dbb6737c0689e56039f6a31594f0655c2022fc6b29ec181095d7aedbbb4c7",
+      "bytes": 22152
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/05_JTL_CHAIN.html",
+      "sha256": "ebb6766dd326088d3f1bb34d6c9e1f00b86c3e27773ae477274870c9f91dfebb",
+      "bytes": 2089898
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "317dcf73350d46c0977bf85825670bd546a2c714a369edbb3b88775ca8b433e0",
+      "bytes": 129473
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/01_SIGNAL_TIMING.html",
+      "sha256": "fc5973d95182e0a86dcba76a360e41f20f204fd81cf02f6376c88f4c33cb3c99",
+      "bytes": 242294
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "0291fc2459a43d68a3cb35d4e89c6586e95ab2096c4ed59fd229ac7c0da173b7",
+      "bytes": 22532
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/02_BVM_STATE.html",
+      "sha256": "b7677bd5af34f1592e82f2f1bd440a58229609422bee5521b49ad56cda954d71",
+      "bytes": 3798270
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "1255145095d8d07a1d37a96566c6e7ce16d708f57f4183715dcdd47c77a59990",
+      "bytes": 235058
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/03_JSL_CHAIN.html",
+      "sha256": "df923532bf8b1f947fb2bfc68f7e4c2e2cd46f1fc3d96e08fcbc92d2f1ef123f",
+      "bytes": 1142378
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "2b4c27f6db6a913299734b56970b502b155c1aa96895cd18bc5d7a79b289e421",
+      "bytes": 75632
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/04_QB_STATE.html",
+      "sha256": "fe244b798811907f604a9986b56abb1a0e652b734ac808eeb369706ae3a3041f",
+      "bytes": 1095627
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "dcc1889b602521683483e515bccf1a1e95eebbb767116d9574b6fece21b98ecc",
+      "bytes": 73792
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/04_QB_STATE_focus_121_130.html",
+      "sha256": "4d395a2b4301f84b3588f15fa953dbd244f244151210c23c5ea6eca461389232",
+      "bytes": 22187
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/05_JTL_CHAIN.html",
+      "sha256": "cd846b4f12a58062cdcb69e3d53d174df6e4576a5664dc4c57acb5886d15c8ab",
+      "bytes": 2088558
+    },
+    {
+      "path": "plots/LS3_DELAY0P3_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "4ecefd5a3ffd555da3f21e0d9b002f78c2fe97564e3f80500796269434e64a3d",
+      "bytes": 129543
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/01_SIGNAL_TIMING.html",
+      "sha256": "bc85696b36016d866056d81474d5a4add5b841dc7b2277962f86f01816be7443",
+      "bytes": 241501
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "e6ee3b0bc2ddc03b6bb0f7eb0c574d83a5a227846bb5a28b5344c54856a0eb7f",
+      "bytes": 22164
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/02_BVM_STATE.html",
+      "sha256": "0216649696c97c4a8d24ea764cec956ee8087fb021e92a578f51630164ad06b4",
+      "bytes": 3797847
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "85a1323c6c30d9aeee74a64653a412452e8b500bf50c3062f45ae3215c5e47ca",
+      "bytes": 234715
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/03_JSL_CHAIN.html",
+      "sha256": "9235131957818f193eb2b48794d8caa2eed189c3702d13d5d1e60177cd78af78",
+      "bytes": 1139055
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "fff8ca8b552efe9cfa6e014a660a9041dbcf36e65f956eef09e1a670fe40cbb7",
+      "bytes": 75709
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/04_QB_STATE.html",
+      "sha256": "a0271e9c83ce12e1157d6fb98cb093ddd57d733a5c49e02dcfb6e04cc2c35540",
+      "bytes": 1095869
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "49781268d52172dbabe801fdc88d2f13c8d7e373dafa0f8784f2180d01838fad",
+      "bytes": 73274
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/04_QB_STATE_focus_121_130.html",
+      "sha256": "75812ef5c01642b3543bcec33c1733c930cc43a336b5b2fa56c90cf68f6ef48f",
+      "bytes": 22199
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/05_JTL_CHAIN.html",
+      "sha256": "c156dc5e46d0eec7f2b5c25cc28cec90fad313bc6a8382ffcde22ac030efb5ba",
+      "bytes": 2089740
+    },
+    {
+      "path": "plots/LS3_EXACT_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "5494b9213a971709b70028c3a59de35f7fc2fc6af51f9a598e5cd300007876f6",
+      "bytes": 129405
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/01_SIGNAL_TIMING.html",
+      "sha256": "36f5fb1c01473eaad9455749202c3ad20b3eb396276ff2e5bdd0c386723ab6d4",
+      "bytes": 242256
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "f9c0dfdd10d5df79565ff323f4b2cf97f284bac9288e19aff4e7f1a245beaff5",
+      "bytes": 22484
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/02_BVM_STATE.html",
+      "sha256": "c862d7517dc9fada0cfae23f1bb791a488592575ab79990876d737e4b7ed6aaa",
+      "bytes": 3795822
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "e8207b6e0f3e571de264dcc50a19d6328bcd737236dcc7efee3fad61a5af9181",
+      "bytes": 234880
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/03_JSL_CHAIN.html",
+      "sha256": "96ab3965f9611f717bdd1b5f8814532fec91a899db1a89c9e16acf75ac36b9fe",
+      "bytes": 1140375
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "28951cb6f1af46313978c5c8abe70e3cd5d958aaf9c30e96cc2b3598597382df",
+      "bytes": 76069
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/04_QB_STATE.html",
+      "sha256": "d86a3761d7af989deee95fb2bcf669ce160cec793e791bbf9a9a43dd3f84ad6e",
+      "bytes": 1095869
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "b406451b5398ad5e664551aa6efb5329145cca54a14688f21fe0368be9cdc6ff",
+      "bytes": 73824
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/04_QB_STATE_focus_121_130.html",
+      "sha256": "871b438439b221d3bfffb7c03a8e2376105e582a4e2e4e69833aa7a994ccc5bd",
+      "bytes": 22354
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/05_JTL_CHAIN.html",
+      "sha256": "bfb6f421837f71409bfeaa3ba7a2229a4f557df6a9b1a42738ea6f8fa4552daa",
+      "bytes": 2076670
+    },
+    {
+      "path": "plots/LS3_EXACT_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "4cbb109108b87459facdebc40d847c7833dbe175923daccac23c5829260381b6",
+      "bytes": 129540
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/01_SIGNAL_TIMING.html",
+      "sha256": "cfed7cad03eb01d52e4ddd1b95b339405f24b0c70c60e331e3c583d03de23783",
+      "bytes": 241808
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "23e511d6f8a45afb7ed516bb216c48b526b59c3f65dcbf2a2148ec97a68c06af",
+      "bytes": 22451
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/02_BVM_STATE.html",
+      "sha256": "80728711eaa482d98d34699f7870060c62e493e9cb8ebf395a190a385e075e70",
+      "bytes": 3798889
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "92443ac2b3ec78bbda113b394b0da0ea26c80e54c4506a5f5e412b75d835254c",
+      "bytes": 234307
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/03_JSL_CHAIN.html",
+      "sha256": "561956b2276d3b277b6fe584f0ecc838aeae565006ea2eacec038c56458161a7",
+      "bytes": 1139127
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "c6455c55b676bbac2a58ffd83bc5b4f0eadde62511381d3d5bcf9e263ff5ded2",
+      "bytes": 76111
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/04_QB_STATE.html",
+      "sha256": "a908fc8cdb522a84d8c8ef79d946a5a5dac4ebf579c45dbf7f72d3bcb2f57644",
+      "bytes": 1096421
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "93398ad855e7a12f12b0cc444d60f5e5bebff61085c0361020c90abf91508977",
+      "bytes": 73621
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/04_QB_STATE_focus_121_130.html",
+      "sha256": "70c1154967f2285cfdb59016ee67bff4e1930618029e05984f9e0c8818d67625",
+      "bytes": 22336
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/05_JTL_CHAIN.html",
+      "sha256": "c72d93e9026a998794eccfd63d98fb76f0927f35d87b6eda6228e1ad06cc01b1",
+      "bytes": 2090542
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "5b3bdbab5767526978c6ecbf08e99d547cb5f2547469331003dca11f0da72165",
+      "bytes": 129667
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/01_SIGNAL_TIMING.html",
+      "sha256": "dcc23f28972532a9da173ab02e13c1dd2d342c66b063cc959860e38fd1f23468",
+      "bytes": 242338
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "778d9e336773342ffacbc1d6743f3322ad450dc464e3a664b7d711a901d88f77",
+      "bytes": 22586
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/02_BVM_STATE.html",
+      "sha256": "ab32247bb1ce7c58a7007244c609da3b764485553e24841360b52a4fafc4e89a",
+      "bytes": 3796019
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "f2cd69a3e900ef173a15b9bc951eddd1045e0d293c07bff0ed8b270c50dc6552",
+      "bytes": 234842
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/03_JSL_CHAIN.html",
+      "sha256": "e2ab7aafd8c1645a6ee35d3e81cf33456611605066184d07480253c076f400a7",
+      "bytes": 1141727
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "af5c68b8596d3f235556edaf467d44967ebba7624ecfc8997b82b1cf94af5249",
+      "bytes": 76471
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/04_QB_STATE.html",
+      "sha256": "349724ba73d5f3734501815a672accf9e2cc923542c0dd484092235ddc826b78",
+      "bytes": 1095361
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "84654057fe7ea24c3ed7a85086991db54248dc60f8f215253e914b1e929868d9",
+      "bytes": 73791
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/04_QB_STATE_focus_121_130.html",
+      "sha256": "8f6ae1e40ca5eec81ae667eed385f7b74b42c650036da57af9a84a7c229a9d7a",
+      "bytes": 22286
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/05_JTL_CHAIN.html",
+      "sha256": "a32817fb116d232c9145bfc2e207c7102caf7b117b6a0c7c38d9ebf3bf5a3dc7",
+      "bytes": 2076107
+    },
+    {
+      "path": "plots/RS_DELAY0P3_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "4797c96b70b8ce0fee92f69a18798bcbab5cdd604e9a48cd7150434207a8f156",
+      "bytes": 129712
+    },
+    {
+      "path": "plots/RS_EXACT_0011/01_SIGNAL_TIMING.html",
+      "sha256": "0d4007be1cbdffb8b6401b1158e831eac9ad2d779800a1e739a85caf8c11ed41",
+      "bytes": 241770
+    },
+    {
+      "path": "plots/RS_EXACT_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "9b607bcc4760b8a1ca4cf1d5c16f20f65c879b3a1730c6fde4ba30f5f4b8b005",
+      "bytes": 22153
+    },
+    {
+      "path": "plots/RS_EXACT_0011/02_BVM_STATE.html",
+      "sha256": "9c3d222311ef0f957bc90a082ee8f8dd78b0f9c7e25bcff6bf777eb1742064ac",
+      "bytes": 3796981
+    },
+    {
+      "path": "plots/RS_EXACT_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "989e41ceb218a23d095044dbc1d0c1b442f9a334c2ed131366e76116ca8a94c8",
+      "bytes": 234564
+    },
+    {
+      "path": "plots/RS_EXACT_0011/03_JSL_CHAIN.html",
+      "sha256": "ddf397242ee4e746c11305a42def8b069cf269bbfc8820d3ecde16f27372d649",
+      "bytes": 1139724
+    },
+    {
+      "path": "plots/RS_EXACT_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "04f7e41381c8696fa7c249b83b71493ecfe8061adac0113bfbbb9f019dcaa393",
+      "bytes": 75828
+    },
+    {
+      "path": "plots/RS_EXACT_0011/04_QB_STATE.html",
+      "sha256": "e837e6801a9402f1a783cde44104d5ea88617c68b0843b5dc24a73b4c7f53662",
+      "bytes": 1096048
+    },
+    {
+      "path": "plots/RS_EXACT_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "01c3e7c719ecc0a9d6f556c53b4cd601b38ecd11147a263bb63db547f4a7f556",
+      "bytes": 73183
+    },
+    {
+      "path": "plots/RS_EXACT_0011/04_QB_STATE_focus_121_130.html",
+      "sha256": "12880e2ff90076117d674776cf9aa6c06d5f4b6bd681ac50070aea24c36e7c73",
+      "bytes": 22283
+    },
+    {
+      "path": "plots/RS_EXACT_0011/05_JTL_CHAIN.html",
+      "sha256": "d5849da83c79ac882d0b2941769c62d8609ef619821d811b2626efd04cbdedd7",
+      "bytes": 2089479
+    },
+    {
+      "path": "plots/RS_EXACT_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "990ff5597e039236e43f8064d59ca2424aa791f48409efee46d9664356a80d63",
+      "bytes": 129444
+    },
+    {
+      "path": "plots/RS_EXACT_0111/01_SIGNAL_TIMING.html",
+      "sha256": "bfd188de98787ffdbfcd20fb509fb763122cd66f622b1c4d8beff2b1606cc400",
+      "bytes": 242230
+    },
+    {
+      "path": "plots/RS_EXACT_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "609935a84018cd4dfd128ea625a59dc897ea2704cab075cda9108c61c8d97e75",
+      "bytes": 22443
+    },
+    {
+      "path": "plots/RS_EXACT_0111/02_BVM_STATE.html",
+      "sha256": "0dc6f0fbc9356ae9e3db1de9b823732bf88144a862fa7aa80f986b2fbca96188",
+      "bytes": 3795586
+    },
+    {
+      "path": "plots/RS_EXACT_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "7583ad58781edca3cc12636aba46894fd2c3e69bb6486493cd0d97cadbe879b3",
+      "bytes": 234859
+    },
+    {
+      "path": "plots/RS_EXACT_0111/03_JSL_CHAIN.html",
+      "sha256": "ed3acae6c606a28247e113f314b4640dd3f1eb8a01d0cb96f17fc7b1136fa45f",
+      "bytes": 1141084
+    },
+    {
+      "path": "plots/RS_EXACT_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "afad5df378b4847b015152809e70b2169b52b39a13e1025a66af29a3a9cbd4b3",
+      "bytes": 76108
+    },
+    {
+      "path": "plots/RS_EXACT_0111/04_QB_STATE.html",
+      "sha256": "06f26e2e9c8656a46da918418d2ec566eedaa13afaf129952b6b12b81565f13c",
+      "bytes": 1095863
+    },
+    {
+      "path": "plots/RS_EXACT_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "7fc42a1a80345a04210c00a014d7834ed81d0e38c3d90779e65a2fd1ff51a657",
+      "bytes": 73733
+    },
+    {
+      "path": "plots/RS_EXACT_0111/04_QB_STATE_focus_121_130.html",
+      "sha256": "78afc36f982f7586565b71580070b919d08ab8e89ba6250d381c73d2e46c0fdb",
+      "bytes": 22328
+    },
+    {
+      "path": "plots/RS_EXACT_0111/05_JTL_CHAIN.html",
+      "sha256": "82e75ceb86fc16cd94158a71c9194ff8eb19db42d40d1524be910253a320b664",
+      "bytes": 2076544
+    },
+    {
+      "path": "plots/RS_EXACT_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "f03c8a43f251f224354a765f36b9ee806693b7ca48780938bcf8273ab600fffa",
+      "bytes": 129499
+    },
+    {
+      "path": "plots/assets/plotly.min.js",
+      "sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "bytes": 4763993
+    },
+    {
+      "path": "plots/comparisons/0011_01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "af07cbe14f7481a3bf243985583760d40e5268fdd202bda5c7a53be4c8742e6e",
+      "bytes": 106472
+    },
+    {
+      "path": "plots/comparisons/0011_01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "6272aa712d82576cd8a7500d3ff7decebaabb9f6a08dcfea301a03623d4b5489",
+      "bytes": 1642584
+    },
+    {
+      "path": "plots/comparisons/0011_02_BVM_STATE_focus_110_121.html",
+      "sha256": "8d9bbd198edc35ed0181d140f4eb4e766d8748a67f0130aed33ad04cb5697e23",
+      "bytes": 1600181
+    },
+    {
+      "path": "plots/comparisons/0011_02_BVM_STATE_full_0_200.html",
+      "sha256": "cb57c8a846f681ab0446b4fa6c0c7bdd7cdffbe66aa1ef431c36ebae86dd52de",
+      "bytes": 26540508
+    },
+    {
+      "path": "plots/comparisons/0011_03_JSL_CHAIN_full_0_200.html",
+      "sha256": "cad2984de50a1b2c6db9bdbe7b9965186644fc17ead5964c8ca325915e5efe8f",
+      "bytes": 1333118
+    },
+    {
+      "path": "plots/comparisons/0011_04_QB_STATE_focus_110_121.html",
+      "sha256": "2f2442cd86382a718a019fd508731c61fc4d7c0abfe0d09515ff0cbcb2476b43",
+      "bytes": 148515
+    },
+    {
+      "path": "plots/comparisons/0011_04_QB_STATE_full_0_200.html",
+      "sha256": "6102d86424ca32ac74b1d23086bdeef0fd6886595ab32cdb37adef8458cb02ae",
+      "bytes": 2356381
+    },
+    {
+      "path": "plots/comparisons/0011_05_JTL_CHAIN_full_0_200.html",
+      "sha256": "d2e49d8431ace8731a99dbdbabbd55345eeeeeb92de7d02612c23a19b850963e",
+      "bytes": 14579552
+    },
+    {
+      "path": "plots/comparisons/0011_BRIDGE_VOLTAGE_focus_110_121.html",
+      "sha256": "93ed1fe8b0575e89b27383a7565deda2eaba7f7c5073aa3ea2ea579148750155",
+      "bytes": 86611
+    },
+    {
+      "path": "plots/comparisons/0111_01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "3f5edd69ac8f8a8b3eabeeefc683158fd28f095cda4c85cc46aec1eb0faaca2d",
+      "bytes": 108342
+    },
+    {
+      "path": "plots/comparisons/0111_01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "10bcf3de177612042803cee76373a0d9841faf392a469faefa653b22cfdbcc6f",
+      "bytes": 1645989
+    },
+    {
+      "path": "plots/comparisons/0111_02_BVM_STATE_focus_110_121.html",
+      "sha256": "0566dbab7b169a5fa698abc291ca80c583a68e629c3bb2b10ecc4b7d030870d4",
+      "bytes": 1602376
+    },
+    {
+      "path": "plots/comparisons/0111_02_BVM_STATE_full_0_200.html",
+      "sha256": "769f5a4d4233070483477da9be6999bee3ad505c9957e5172fcc4f0bcf1e47ba",
+      "bytes": 26524893
+    },
+    {
+      "path": "plots/comparisons/0111_03_JSL_CHAIN_full_0_200.html",
+      "sha256": "600c7d346ba005cf1f8c8bd9fb8e90d3a28826792a86ab0444ddbdbe4d71b957",
+      "bytes": 1337138
+    },
+    {
+      "path": "plots/comparisons/0111_04_QB_STATE_focus_110_121.html",
+      "sha256": "bd2cc69aba0b9ef666b9fd498e9944c5c089dc17b5026eed185200c4bf6eb47f",
+      "bytes": 148615
+    },
+    {
+      "path": "plots/comparisons/0111_04_QB_STATE_full_0_200.html",
+      "sha256": "ad03aeb9f8c4f99f3778e4689537753bfbe96ea24ebfc90ee346884a079e0d94",
+      "bytes": 2355331
+    },
+    {
+      "path": "plots/comparisons/0111_05_JTL_CHAIN_full_0_200.html",
+      "sha256": "421ce186c069ba4488904e1a0abd1c1d472fe9d643a03d77fb284412ba3723b3",
+      "bytes": 14498712
+    },
+    {
+      "path": "plots/comparisons/0111_BRIDGE_VOLTAGE_focus_110_121.html",
+      "sha256": "ddd0a7311265acfff7a22dc25783141484b5e854e4898321242a47171da22ca2",
+      "bytes": 86781
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "e6818da81b0f5777e9d35aa67aefa6842b21a1e682cb935197baada78a74bb81",
+      "bytes": 10715179
+    },
+    {
+      "path": "result.json",
+      "sha256": "d894d5ecd3d23595698ec9029fc207a64ad2bcd536b487b455c1405aa4235c1b",
+      "bytes": 300481
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0011/deck.cir",
+      "sha256": "89bf32c122a6332981864e03860a48425628dd949076f069ca49e25f2702a19e",
+      "bytes": 311359
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0011/metadata.json",
+      "sha256": "7d1494c62c3dbabe63809e66ee95994c7efde70500b5ba703c1050cd26c3393d",
+      "bytes": 1153
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0011/raw.csv",
+      "sha256": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+      "bytes": 7210093
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0011/run.log",
+      "sha256": "1448a97f8c639b7baa9d41922ac1cd231b8668e38933b1218cd0cca416c0c0f3",
+      "bytes": 221800
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0111/deck.cir",
+      "sha256": "3cb4e37554a3956373389fc4c6f8fd388ba7ce51143ff3eec22cfd60777db4f0",
+      "bytes": 311708
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0111/metadata.json",
+      "sha256": "8af1d95668590281292858470f032e14b6e443e82731f235f484a2d1e5aebff2",
+      "bytes": 1153
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0111/raw.csv",
+      "sha256": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37",
+      "bytes": 7206400
+    },
+    {
+      "path": "runs/LS3_DELAY0P3_0111/run.log",
+      "sha256": "e5969df3acffcec090e0b402f47f5e041c3d272034a951099c37a5ed1ce8019c",
+      "bytes": 221928
+    },
+    {
+      "path": "runs/LS3_EXACT_0011/deck.cir",
+      "sha256": "7fda2ef5deda76de1bd6cde13d2bc716b798db3d9bf5f9af0c5947418f1e9f8f",
+      "bytes": 311319
+    },
+    {
+      "path": "runs/LS3_EXACT_0011/metadata.json",
+      "sha256": "fa54b848f8f20ba905478a9b598e15025caca0e219fa963432d31b1fcdbb1bb9",
+      "bytes": 1147
+    },
+    {
+      "path": "runs/LS3_EXACT_0011/raw.csv",
+      "sha256": "8416225dae6edf23cc125e18bb90cb96ef481860865a94f6e444d44fc6465246",
+      "bytes": 7210137
+    },
+    {
+      "path": "runs/LS3_EXACT_0011/run.log",
+      "sha256": "cc66027fae4cf9429ff539ffdc2f07d1565a876d37690063194b776523e4f712",
+      "bytes": 222360
+    },
+    {
+      "path": "runs/LS3_EXACT_0111/deck.cir",
+      "sha256": "5a0770008037b9c79c51318c12c4921f1db30239c658c14a52deda61ce21088f",
+      "bytes": 311638
+    },
+    {
+      "path": "runs/LS3_EXACT_0111/metadata.json",
+      "sha256": "fa064f077014a381eb36c3e4b3d419a956d7c8cd43732b710915a881e08a5fd1",
+      "bytes": 1147
+    },
+    {
+      "path": "runs/LS3_EXACT_0111/raw.csv",
+      "sha256": "a4f1f8f014f8048e19594da43acc7c4d41e1e5bfbb0bde320edaa513763cb3ef",
+      "bytes": 7209242
+    },
+    {
+      "path": "runs/LS3_EXACT_0111/run.log",
+      "sha256": "23325d732aeae02d4000c58016ce9d073da38ad1f066e62fec8d5d75be98c7ce",
+      "bytes": 223197
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0011/deck.cir",
+      "sha256": "582feb432cdba4e965a91c8cec8b0b2a1dd27234b23f1ca0c4022137bab3dbd5",
+      "bytes": 315703
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0011/metadata.json",
+      "sha256": "69b9bb459fe38b687a031966479c2ad81c34f3ebc6addbdf49f6741ffcbc554b",
+      "bytes": 1148
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0011/raw.csv",
+      "sha256": "04bb716af9c6bc8d8c7c5b04f9f5049a79f1f7e1335e95ef1e4bc37766b1b3ba",
+      "bytes": 7209635
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0011/run.log",
+      "sha256": "e574c29f7cfd5ec0e94b7f3e32ed66bd409b6ce9aec444e56226c315ef1d0817",
+      "bytes": 223508
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0111/deck.cir",
+      "sha256": "5c0a873bed5fb2b352e97114c45316223476e976e4386a56a4fa06e7ec8479e6",
+      "bytes": 314780
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0111/metadata.json",
+      "sha256": "a9a365725c5078156ca50478d285fbd0dd5e2a023773a56a039ebbde50b68db3",
+      "bytes": 1148
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0111/raw.csv",
+      "sha256": "cf4c7fa6dab304d5b8640bfe595acadb5c6c69b56771e74bca0e038222a52a0c",
+      "bytes": 7209174
+    },
+    {
+      "path": "runs/RS_DELAY0P3_0111/run.log",
+      "sha256": "918bbc29aad2ba5314682e20255c97a9e27c8cb9059e6063d510d748ebfc30ff",
+      "bytes": 220565
+    },
+    {
+      "path": "runs/RS_EXACT_0011/deck.cir",
+      "sha256": "988c81550f88ef42f321fc4eafba519ab9a0b7cf3e138421a6f46fa4cdc6e689",
+      "bytes": 315703
+    },
+    {
+      "path": "runs/RS_EXACT_0011/metadata.json",
+      "sha256": "226f0476b861abbebc03b4810efb28f333a7a68f05388be7f8de1b42a0760f2a",
+      "bytes": 1142
+    },
+    {
+      "path": "runs/RS_EXACT_0011/raw.csv",
+      "sha256": "d955f2cce522814fa054c1786eea73b1bf99fdccb3962cbbcc437500ab6521a0",
+      "bytes": 7210135
+    },
+    {
+      "path": "runs/RS_EXACT_0011/run.log",
+      "sha256": "46278dced2b35ad36521ef5a3dc75047f24117e164b5968236283c518880094f",
+      "bytes": 221374
+    },
+    {
+      "path": "runs/RS_EXACT_0111/deck.cir",
+      "sha256": "353c4bbbe8ad0119232df739912a231e970631d4a217394bd7a799e1f4e1998c",
+      "bytes": 314688
+    },
+    {
+      "path": "runs/RS_EXACT_0111/metadata.json",
+      "sha256": "3f3a60bc4cc47639de6511af82d7f68797961fbea727eda041ab6bfab229aec7",
+      "bytes": 1142
+    },
+    {
+      "path": "runs/RS_EXACT_0111/raw.csv",
+      "sha256": "9dfc46730ef97d3bc92b6631cf67cd1a0556767cc9d6ff68bbca0d94c64a369c",
+      "bytes": 7209235
+    },
+    {
+      "path": "runs/RS_EXACT_0111/run.log",
+      "sha256": "e5e904a9e7ad65a2ba0ca31e867d7ce9957bf75422fb9fa97ba29227e27903fc",
+      "bytes": 222236
+    }
+  ]
+}

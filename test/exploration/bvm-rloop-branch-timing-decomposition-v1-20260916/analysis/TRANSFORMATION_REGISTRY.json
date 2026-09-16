@@ -1,0 +1,37 @@
+{
+  "schema": "bvm-rloop-branch-timing-transformation-registry-v1",
+  "experiment_id": "bvm-rloop-branch-timing-decomposition-v1-20260916",
+  "generated_at": "2026-09-16T19:25:13+08:00",
+  "raw_mutation": false,
+  "operations": [
+    {
+      "name": "branch_current_source",
+      "definition": "I(R_S) or I(L_S3) from same canonical BVM instance",
+      "positive_direction": "node6 -> node10",
+      "per_instance": true
+    },
+    {
+      "name": "exact",
+      "delay_ps": 0.0,
+      "stored_sample_shift": 0
+    },
+    {
+      "name": "delay",
+      "delay_ps": 0.3,
+      "stored_sample_shift": 3,
+      "rule": "pre-110 same sample, [110,110.3) hold 110-ps sample, post exact index shift",
+      "interpolation": false,
+      "resampling": false,
+      "amplitude_scaling": false,
+      "sign_change": false
+    },
+    {
+      "name": "phase_navigation",
+      "rule": "independent unwrap(raw radians)/(2*pi), navigation only"
+    },
+    {
+      "name": "phase_area",
+      "rule": "same JJ/endpoints/direction/window, actual-grid trapezoid/Phi0"
+    }
+  ]
+}

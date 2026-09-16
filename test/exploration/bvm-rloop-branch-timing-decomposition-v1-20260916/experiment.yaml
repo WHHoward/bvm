@@ -1,0 +1,224 @@
+schema_version: bvm-rloop-branch-timing-decomposition-v1
+id: bvm-rloop-branch-timing-decomposition-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+registration_head: 7ade840c731bc078eae0c87e42ca983aa74700dd
+remote_bvm_master_at_registration: 7ade840c731bc078eae0c87e42ca983aa74700dd
+scientific_review_authorized: false
+mechanical_analysis_performed: false
+bounded_experiment_interpretation_performed: false
+independent_scientific_review_performed: false
+
+question:
+  primary: "Does the prior 0.3-ps total bridge-current effect decompose into R_S-only timing, L_S3-only timing, or coordinated branch timing/current sharing?"
+  scope: "Two per-instance branch-current replay families, exact gate first, one 0.3-ps delay only."
+  interpretation_ceiling: "Mechanical raw evidence and registered arithmetic; scientific categories remain review-gated."
+
+source_fixture:
+  forward_topology: "canonical BVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..6 -> 10 ohm terminal"
+  canonical_bridge: ["R_S 6 10 3.0", "L_S3 6 10 0.5P"]
+  bridge_positive_direction: "node6 -> node10"
+  total_current_definition: "I(R_S)+I(L_S3)"
+  RS_family: "remove R_S; physical L_S3; replay per-instance I(R_S)"
+  LS3_family: "physical R_S; remove L_S3; replay per-instance I(L_S3)"
+  canonical_QB_JTL_terminal_unchanged: true
+  previous_total_reference: test/exploration/bvm-rloop-bridge-timing-replay-v1-20260916
+
+frozen:
+  exact_delay_ps: 0.0
+  delayed_delay_ps: 0.3
+  delayed_stored_sample_shift: 3
+  intervention_start_ps: 110.0
+  tran: ".tran 0.1p 200p"
+  stored_grid: "actual canonical stored timestamps, expected 1999 samples, 0 to 199.9 ps"
+  windows_ps:
+    full: [0, 200]
+    control: [70, 110]
+    focus: [110, 121]
+    rearm: [121, 130]
+  window_semantics: "half-open actual stored timestamps"
+  no_interpolation: true
+  no_resampling: true
+  no_amplitude_scaling: true
+  no_sign_modification: true
+  no_QB_change: true
+  no_JSL_change: true
+  no_JTL_change: true
+  no_terminal_change: true
+  no_stimulus_change: true
+  no_timestep_sweep: true
+  no_sentinel: true
+
+authorized_matrix:
+  exact:
+    - run_id: RS_EXACT_0011
+      family: RS
+      mask: "0011"
+      delay_ps: 0.0
+      stored_sample_shift: 0
+    - run_id: RS_EXACT_0111
+      family: RS
+      mask: "0111"
+      delay_ps: 0.0
+      stored_sample_shift: 0
+    - run_id: LS3_EXACT_0011
+      family: LS3
+      mask: "0011"
+      delay_ps: 0.0
+      stored_sample_shift: 0
+    - run_id: LS3_EXACT_0111
+      family: LS3
+      mask: "0111"
+      delay_ps: 0.0
+      stored_sample_shift: 0
+  delayed:
+    - run_id: RS_DELAY0P3_0011
+      family: RS
+      mask: "0011"
+      delay_ps: 0.3
+      stored_sample_shift: 3
+    - run_id: RS_DELAY0P3_0111
+      family: RS
+      mask: "0111"
+      delay_ps: 0.3
+      stored_sample_shift: 3
+    - run_id: LS3_DELAY0P3_0011
+      family: LS3
+      mask: "0011"
+      delay_ps: 0.3
+      stored_sample_shift: 3
+    - run_id: LS3_DELAY0P3_0111
+      family: LS3
+      mask: "0111"
+      delay_ps: 0.3
+      stored_sample_shift: 3
+  delayed_gate: "both EXACT masks of that family pass"
+  maximum_new_physical_solves: 8
+  no_other_delay_points: true
+
+exact_fidelity_screen:
+  first_BJ_timing_tolerance_ps: 0.2
+  JS1_JS2_focus_p2p_tolerance_turns: 0.25
+  key_waveform_normalized_RMS_tolerance: 0.50
+  required_N2_candidates: 2
+  required_N3_candidates: 4
+  actual_errors_retained: true
+
+metrics:
+  phase: "P raw radians; independent unwrap/(2*pi) navigation only; not SFQ count"
+  phase_area: "same JJ/endpoints/direction/window; actual-grid trapezoid/Phi0; not SFQ count"
+  N2: "ordered BJ1->BJ2->JTL1..6, first/second timing, L1/L2 re-arm, source recovery"
+  N3: "active JS1/JS2 p2p, endpoint/landmarks, phase-area, JSL8 source, QB/JTL chronology"
+  branch_constitution: "imposed branch, physical branch, resultant I_TOTAL, Vbridge"
+  energy: "P_absorb=Vbridge*I_source; signed and absolute energy in [110,121) and [110,130)"
+  effect_fraction: "F_B=(C-P_B)/(C-T), descriptive with no threshold interpretation"
+  total_reference: "canonical, previous total EXACT, previous total DELAY0P3, branch EXACT/DELAY"
+
+probes:
+  branch_RS: "I(I_RS_REPLAY|XBVMn), I(L_S3|XBVMn), V(L_S3|XBVMn), V(6|XBVMn), V(10|XBVMn)"
+  branch_LS3: "I(R_S|XBVMn), V(R_S|XBVMn), I(I_LS3_REPLAY|XBVMn), V(6|XBVMn), V(10|XBVMn)"
+  bvm: "all BVM storage/R-loop/output P/V/I and quiet branches XBVM1..4"
+  boundary: "V(COMMON_SL), P/V/I(B_JSL1..8), V(QBIN), I(LIN|XBQ1), V(LIN|XBQ1)"
+  qb: "P/V/I(BJS/BJ1/BJ2), I/V(L1/L2/L3/RJ1/RJ2), V(QBOUT)"
+  downstream: "P/V/I(B01/B02) for every JTL1..6, stage outputs, I(R_TERM)"
+
+prohibited:
+  - "0.6 ps or other delay"
+  - "transformer, mutual coupling, LC/all-pass network"
+  - "sentinel follow-up"
+  - "QB parameter sweep"
+  - "LS3 parameter sweep"
+  - "timestep sweep"
+  - "raw mutation or processed raw substitution"
+
+output:
+  root_files: [experiment.yaml, PREFLIGHT.md, RESULT.md, result.json, provenance.json, inputs, runs, analysis, plots]
+  raw_zip: Drive only
+  delivery_manifest: delivery_manifest.json outside ZIP
+  contains_reference_raw_copies: false
+
+exact_deck_registration:
+  - run_id: RS_EXACT_0011
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/RS_EXACT_0011/deck.cir
+    sha256: 988c81550f88ef42f321fc4eafba519ab9a0b7cf3e138421a6f46fa4cdc6e689
+    bytes: 315703
+    family: RS
+    mask: "0011"
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/RS_EXACT_0011_branch_current.csv
+    source_csv_sha256: a4760f80cadc6eace48a6b2317105b7d2527de3889a71139cee12e2f064d1952
+  - run_id: RS_EXACT_0111
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/RS_EXACT_0111/deck.cir
+    sha256: 353c4bbbe8ad0119232df739912a231e970631d4a217394bd7a799e1f4e1998c
+    bytes: 314688
+    family: RS
+    mask: "0111"
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/RS_EXACT_0111_branch_current.csv
+    source_csv_sha256: c0ca9490a0049957b0065ce3e8ec9c6f55467620407d83ad0358c5e9720767e9
+  - run_id: LS3_EXACT_0011
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_EXACT_0011/deck.cir
+    sha256: 7fda2ef5deda76de1bd6cde13d2bc716b798db3d9bf5f9af0c5947418f1e9f8f
+    bytes: 311319
+    family: LS3
+    mask: "0011"
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/LS3_EXACT_0011_branch_current.csv
+    source_csv_sha256: 1685a807b8426fecca4623fea6ab69d6e43dd9096c1701ac14d0ad435035738e
+  - run_id: LS3_EXACT_0111
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_EXACT_0111/deck.cir
+    sha256: 5a0770008037b9c79c51318c12c4921f1db30239c658c14a52deda61ce21088f
+    bytes: 311638
+    family: LS3
+    mask: "0111"
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/LS3_EXACT_0111_branch_current.csv
+    source_csv_sha256: ad22bac4bca753de1819216b2dbfc863ea5d969b988beebf753293bd376af286
+
+delayed_deck_registration:
+  - run_id: RS_DELAY0P3_0011
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/RS_DELAY0P3_0011/deck.cir
+    sha256: 582feb432cdba4e965a91c8cec8b0b2a1dd27234b23f1ca0c4022137bab3dbd5
+    bytes: 315703
+    family: RS
+    mask: "0011"
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/RS_DELAY0P3_0011_branch_current.csv
+    source_csv_sha256: e22a2fec217702d9b69e9285df1ac0563aba6aef2bbd4955117738d6f51728b1
+  - run_id: RS_DELAY0P3_0111
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/RS_DELAY0P3_0111/deck.cir
+    sha256: 5c0a873bed5fb2b352e97114c45316223476e976e4386a56a4fa06e7ec8479e6
+    bytes: 314780
+    family: RS
+    mask: "0111"
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/RS_DELAY0P3_0111_branch_current.csv
+    source_csv_sha256: 500d3b3a0e6ef56ef94441c52968ac03f750559dbcaaf39b26d7c488a03508c8
+  - run_id: LS3_DELAY0P3_0011
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/deck.cir
+    sha256: 89bf32c122a6332981864e03860a48425628dd949076f069ca49e25f2702a19e
+    bytes: 311359
+    family: LS3
+    mask: "0011"
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/LS3_DELAY0P3_0011_branch_current.csv
+    source_csv_sha256: 1c578087878683144c52925087c3f05bd015af7ae2b7e2edeb58b51f25302fd3
+  - run_id: LS3_DELAY0P3_0111
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/deck.cir
+    sha256: 3cb4e37554a3956373389fc4c6f8fd388ba7ce51143ff3eec22cfd60777db4f0
+    bytes: 311708
+    family: LS3
+    mask: "0111"
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    source_csv: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/inputs/replay_sources/LS3_DELAY0P3_0111_branch_current.csv
+    source_csv_sha256: 41dfb42b0a497b0dfcf0508326f488577551cab3039478d833ac8c91e3930822

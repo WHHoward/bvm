@@ -2,12 +2,20 @@ schema_version: bvm-qb-boundary-timing-replay-v1
       id: bvm-qb-boundary-timing-replay-v1-20260916
       study_phase: EXPLORATORY
       role: Experimental Operator + Evidence Packager
-      status: REGISTERED_EXACT_ONLY
+status: DELAYED_CASES_AUTHORIZED
       contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
       registration_head: 4bc14ebf04c0ccf1c415bcc37def65631f67cbee
       remote_bvm_master_at_registration: 4bc14ebf04c0ccf1c415bcc37def65631f67cbee
-      scientific_review_authorized: false
-      scientific_interpretation_performed: false
+scientific_review_authorized: true
+scientific_interpretation_performed: false
+
+scientific_review:
+  status: PASS
+  decision: DELAYED_CASES_AUTHORIZED
+  authorized_at: 2026-09-16T15:47:02+08:00
+  authorized_cases: [DELAY_0P6, DELAY_1P2]
+  no_other_delay_points: true
+  scope: "Only the original preregistered stored-index delay cases; no amplitude, BVM, LS3, RS, QB/JTL, READ, or sentinel changes."
 
       question:
         primary: "Does N3 runaway timing depend on QB receiver-boundary feedback alignment with a BVM R-loop re-trigger state?"
@@ -43,13 +51,13 @@ schema_version: bvm-qb-boundary-timing-replay-v1
           delay_ps: 0.0
           stored_sample_shift: 0
         - case_id: DELAY_0P6
-          status: REGISTERED_REVIEW_GATED_NOT_RUN
+          status: AUTHORIZED_NOT_RUN
           rule: "t < 110 ps same; 110 <= t < 110.6 ps hold V(QBIN,110 ps); t >= 110.6 ps use canonical V(QBIN,t-0.6 ps)"
           delay_ps: 0.6
           stored_sample_shift: 6
           interpolation: false
         - case_id: DELAY_1P2
-          status: REGISTERED_REVIEW_GATED_NOT_RUN
+          status: AUTHORIZED_NOT_RUN
           rule: "t < 110 ps same; 110 <= t < 111.2 ps hold V(QBIN,110 ps); t >= 111.2 ps use canonical V(QBIN,t-1.2 ps)"
           delay_ps: 1.2
           stored_sample_shift: 12

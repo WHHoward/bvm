@@ -1,15 +1,17 @@
 {
   "schema": "bvm-qb-boundary-timing-replay-result-v1",
   "experiment_id": "bvm-qb-boundary-timing-replay-v1-20260916",
-  "generated_at": "2026-09-16T15:27:40+08:00",
-  "status": "EXACT_ONLY_COMPLETE_REVIEW_GATED",
+  "generated_at": "2026-09-16T15:53:47+08:00",
+  "status": "DELAYED_CASES_ANALYZED",
   "artifact_status": "VALID",
-  "scientific_interpretation_performed": false,
+  "scientific_interpretation_performed": true,
   "execution": {
-    "authorized_physical_solve_count": 1,
-    "actual_physical_solve_count": 1,
+    "authorized_physical_solve_count": 3,
+    "actual_physical_solve_count": 3,
     "authorized_run_order": [
-      "EXACT_N3"
+      "EXACT_N3",
+      "DELAY_0P6",
+      "DELAY_1P2"
     ],
     "registered_but_not_run": [
       "DELAY_0P6",
@@ -19,14 +21,18 @@
   "cases": {
     "EXACT_N3": {
       "status": "RUN_PASS",
-      "raw_path": "runs/EXACT_N3/raw.csv",
+      "raw_path": "test/exploration/bvm-qb-boundary-timing-replay-v1-20260916/runs/EXACT_N3/raw.csv",
       "raw_sha256": "b9c4a0755a399cbabde264a01e19ad765f3100e66052caf798c6f93e5a4dab5c"
     },
     "DELAY_0P6": {
-      "status": "REVIEW_GATED_NOT_RUN"
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-qb-boundary-timing-replay-v1-20260916/runs/DELAY_0P6/raw.csv",
+      "raw_sha256": "1dedceb0b4fc84bb9dd9854233c8ca46706f62237255c655388d941fd6fcaf67"
     },
     "DELAY_1P2": {
-      "status": "REVIEW_GATED_NOT_RUN"
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-qb-boundary-timing-replay-v1-20260916/runs/DELAY_1P2/raw.csv",
+      "raw_sha256": "2defddc4281e67ebe9cbece719b5766e2717b6d07e24c85edd87a29cc277a8d8"
     }
   },
   "fidelity": {
@@ -6392,37 +6398,3539 @@
     "JM1/JM2 later-follower ordering"
   ],
   "unknown": [
-    "whether replay fidelity is scientifically sufficient",
-    "mechanism or root cause",
-    "physical equivalence of ideal voltage replay",
-    "SFQ event identity or count",
-    "timestep/solver convergence",
-    "delayed-case outcome"
+    "physical equivalence to a finite-impedance QB receiver boundary",
+    "SFQ event identity/count or JTL delivery",
+    "timestep/solver convergence and sensitivity",
+    "generalization beyond this fixed N3 replay fixture"
   ],
   "stop": {
     "final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW",
     "automatic_follow_up": false,
-    "delayed_cases_run": false
+    "delayed_cases_run": true,
+    "additional_delay_points_run": 0,
+    "sentinel_follow_up": false
   },
   "qa_summary": {
     "status": "PASS",
     "artifact_status": "VALID",
-    "raw_hash_match": true,
-    "result_json_under_limit": true
+    "actual_physical_solve_count": 3,
+    "raw_hash_before_after_equal": true
   },
   "visualization_summary": {
     "status": "PASS",
-    "standalone_count": 5,
-    "comparison_count": 2,
+    "standalone_count": 15,
+    "comparison_count": 5,
     "full_window_only": true,
     "asset": "test/exploration/bvm-qb-boundary-timing-replay-v1-20260916/plots/assets/plotly.min.js"
   },
   "package_summary": {
-    "status": "UPLOADED",
-    "package_sha256": "41351502209eaeb5e44831cd903d3011ba142e9f0d94b32b51c5867c02b408b8",
-    "package_bytes": 13458139,
-    "file_count": 16,
-    "drive_file_id": "1RTOIaBS5h_v09MIIRUR2pbmjhMv0YkQH",
-    "drive_url": "https://drive.google.com/file/d/1RTOIaBS5h_v09MIIRUR2pbmjhMv0YkQH/view?usp=drivesdk"
+    "status": "READY_FOR_DRIVE_UPLOAD",
+    "version": "v2_delayed_cases",
+    "package_sha256": "71dbc2bb1d68d61554b3a281d274841a3e9c1333a1b7232bc498c3353a2f05b3",
+    "package_bytes": 36107496,
+    "file_count": 35,
+    "drive_file_id": null
+  },
+  "scientific_review_authorized": true,
+  "scientific_review": {
+    "status": "PASS",
+    "decision": "DELAYED_CASES_AUTHORIZED",
+    "authorized_at": "2026-09-16T15:46:49+08:00",
+    "authorized_cases": [
+      "DELAY_0P6",
+      "DELAY_1P2"
+    ],
+    "authorization_scope": "Only DELAY_0P6 and DELAY_1P2 from the original preregistration.",
+    "no_other_delay_points": true,
+    "no_amplitude_scaling": true,
+    "no_LS3_RS_change": true,
+    "no_BVM_change": true,
+    "no_QB_JTL_restore": true,
+    "no_read_extension": true,
+    "no_sentinel_follow_up": true,
+    "basis": [
+      "exact stored grid match",
+      "canonical V(QBIN) and replay V(QBIN) pointwise agreement",
+      "active BVM2/3/4 JS1/JS2 phase p2p and landmark chronology agreement",
+      "same-JJ phase/voltage-area cross-check agreement",
+      "110-121 ps JSL, COMMON_SL, RS//LS3 and upstream differences at numerical-noise/output-precision scale"
+    ],
+    "reviewed_exact_raw_sha256": "b9c4a0755a399cbabde264a01e19ad765f3100e66052caf798c6f93e5a4dab5c",
+    "reviewed_exact_fidelity_status": "PASS"
+  },
+  "analysis": {
+    "focus_window_ps": [
+      110.0,
+      121.0
+    ],
+    "landmark_window_ps": [
+      113.5,
+      115.5
+    ],
+    "actual_stored_grid_match": {
+      "EXACT_N3": true,
+      "DELAY_0P6": true,
+      "DELAY_1P2": true
+    },
+    "interpolation_used": false,
+    "delay_mappings": {
+      "DELAY_0P6": {
+        "case_id": "DELAY_0P6",
+        "delay_ps": 0.6,
+        "shift_samples": 6,
+        "hold_interval_ps": [
+          110.0,
+          110.6
+        ],
+        "hold_source_index": 1099,
+        "hold_source_time_ps": 110.0,
+        "target_first_shifted_index": 1105,
+        "target_first_shifted_time_ps": 110.6,
+        "mapping_sha256": "66ca387df99058b3d14b3f27be9a4055b85eb375004581744900e8e36bf6bbdd",
+        "payload_sha256": "fecd7f8a2e3e6d004aff2720d5b00a03050b06bd4f5742ae69fe5fc78f759f62",
+        "payload_bytes": 59960,
+        "point_count": 1999,
+        "interpolation": false,
+        "resampling": false,
+        "time_shift_operation": "stored-index shift in source values only; target timestamps unchanged"
+      },
+      "DELAY_1P2": {
+        "case_id": "DELAY_1P2",
+        "delay_ps": 1.2,
+        "shift_samples": 12,
+        "hold_interval_ps": [
+          110.0,
+          111.2
+        ],
+        "hold_source_index": 1099,
+        "hold_source_time_ps": 110.0,
+        "target_first_shifted_index": 1111,
+        "target_first_shifted_time_ps": 111.2,
+        "mapping_sha256": "fe8e99cb987625214a3e1b3f666d78d5a33c6fedb5bda090ddb6cf492c6c0eda",
+        "payload_sha256": "62480a45378892fafa317724fd520d9b95b1fc8a3ea9787121056fc0e4ed3dea",
+        "payload_bytes": 59960,
+        "point_count": 1999,
+        "interpolation": false,
+        "resampling": false,
+        "time_shift_operation": "stored-index shift in source values only; target timestamps unchanged"
+      }
+    },
+    "input_boundary_checks": {
+      "EXACT_N3": {
+        "status": "EXACT_N3_SOURCE_IDENTITY",
+        "source_column": "V(QBIN)",
+        "output_signal": "V(QBIN)"
+      },
+      "DELAY_0P6": {
+        "case_id": "DELAY_0P6",
+        "source_column": "V(QBIN)",
+        "output_signal": "V(QBIN)",
+        "point_count": 1999,
+        "max_abs_output_minus_registered_pwl_V": 0.0,
+        "rms_output_minus_registered_pwl_V": 0.0,
+        "hold_sample_count": 6,
+        "hold_target_index_range": [
+          1099,
+          1104
+        ],
+        "hold_output_values_unique": true,
+        "first_shifted_source_index": 1099,
+        "exact_stored_index_shift": true,
+        "interpolation": false,
+        "resampling": false
+      },
+      "DELAY_1P2": {
+        "case_id": "DELAY_1P2",
+        "source_column": "V(QBIN)",
+        "output_signal": "V(QBIN)",
+        "point_count": 1999,
+        "max_abs_output_minus_registered_pwl_V": 0.0,
+        "rms_output_minus_registered_pwl_V": 0.0,
+        "hold_sample_count": 12,
+        "hold_target_index_range": [
+          1099,
+          1110
+        ],
+        "hold_output_values_unique": true,
+        "first_shifted_source_index": 1099,
+        "exact_stored_index_shift": true,
+        "interpolation": false,
+        "resampling": false
+      }
+    },
+    "navigation": {
+      "EXACT_N3": {
+        "P(B_JS1|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": 113.4,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.4,
+            "-1.5": 114.7,
+            "-2.5": 116.8,
+            "-3.5": 117.69999999999999,
+            "-4.5": 118.89999999999999,
+            "-5.5": 120.0,
+            "-6.5": 121.1
+          },
+          "focus_110_121_p2p_turns": 6.386404449053613,
+          "focus_110_121_endpoint_delta_turns": -6.352845881274454,
+          "largest_abs_one_sample_phase_step_turns": 0.10387915811653536,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.2,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": 112.39999999999999,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.39999999999999,
+            "-1.5": 115.30000000000001,
+            "-2.5": 116.3,
+            "-3.5": 117.8,
+            "-4.5": 118.69999999999999,
+            "-5.5": 119.89999999999999,
+            "-6.5": 121.39999999999999
+          },
+          "focus_110_121_p2p_turns": 6.3605665353103245,
+          "focus_110_121_endpoint_delta_turns": -6.332321785024635,
+          "largest_abs_one_sample_phase_step_turns": 0.10063367051700554,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.13574038617410192,
+          "focus_110_121_endpoint_delta_turns": 0.056731734394764595,
+          "largest_abs_one_sample_phase_step_turns": 0.005110783532566895,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.8,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.24461435161617312,
+          "focus_110_121_endpoint_delta_turns": -0.0548539129677063,
+          "largest_abs_one_sample_phase_step_turns": 0.014219634728568152,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.9,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": 113.4,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.4,
+            "-1.5": 114.7,
+            "-2.5": 116.8,
+            "-3.5": 117.69999999999999,
+            "-4.5": 118.89999999999999,
+            "-5.5": 120.0,
+            "-6.5": 121.1
+          },
+          "focus_110_121_p2p_turns": 6.386404449053613,
+          "focus_110_121_endpoint_delta_turns": -6.352845881274454,
+          "largest_abs_one_sample_phase_step_turns": 0.10387915811653536,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.2,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": 112.39999999999999,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.39999999999999,
+            "-1.5": 115.30000000000001,
+            "-2.5": 116.3,
+            "-3.5": 117.8,
+            "-4.5": 118.69999999999999,
+            "-5.5": 119.89999999999999,
+            "-6.5": 121.39999999999999
+          },
+          "focus_110_121_p2p_turns": 6.3605665353103245,
+          "focus_110_121_endpoint_delta_turns": -6.332321785024635,
+          "largest_abs_one_sample_phase_step_turns": 0.10063367051700554,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.13574038617410192,
+          "focus_110_121_endpoint_delta_turns": 0.056731734394764595,
+          "largest_abs_one_sample_phase_step_turns": 0.005110783532566895,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.8,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.24461435161617312,
+          "focus_110_121_endpoint_delta_turns": -0.0548539129677063,
+          "largest_abs_one_sample_phase_step_turns": 0.014219634728568152,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.9,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": 113.4,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.4,
+            "-1.5": 114.7,
+            "-2.5": 116.8,
+            "-3.5": 117.69999999999999,
+            "-4.5": 118.89999999999999,
+            "-5.5": 120.0,
+            "-6.5": 121.1
+          },
+          "focus_110_121_p2p_turns": 6.386404449053613,
+          "focus_110_121_endpoint_delta_turns": -6.352845881274454,
+          "largest_abs_one_sample_phase_step_turns": 0.10387915811653536,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.2,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": 112.39999999999999,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.39999999999999,
+            "-1.5": 115.30000000000001,
+            "-2.5": 116.3,
+            "-3.5": 117.8,
+            "-4.5": 118.69999999999999,
+            "-5.5": 119.89999999999999,
+            "-6.5": 121.39999999999999
+          },
+          "focus_110_121_p2p_turns": 6.3605665353103245,
+          "focus_110_121_endpoint_delta_turns": -6.332321785024635,
+          "largest_abs_one_sample_phase_step_turns": 0.10063367051700554,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.13574038617410192,
+          "focus_110_121_endpoint_delta_turns": 0.056731734394764595,
+          "largest_abs_one_sample_phase_step_turns": 0.005110783532566895,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.8,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.24461435161617312,
+          "focus_110_121_endpoint_delta_turns": -0.0548539129677063,
+          "largest_abs_one_sample_phase_step_turns": 0.014219634728568152,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.9,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        }
+      },
+      "DELAY_0P6": {
+        "P(B_JS1|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": 113.6,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.6,
+            "-1.5": 114.9,
+            "-2.5": 117.60000000000001,
+            "-3.5": 119.60000000000001,
+            "-4.5": 120.5,
+            "-5.5": 121.6,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 4.9673700160229775,
+          "focus_110_121_endpoint_delta_turns": -4.931146605623171,
+          "largest_abs_one_sample_phase_step_turns": 0.101569979047215,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.3,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": 112.5,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.5,
+            "-1.5": 115.5,
+            "-2.5": 118.19999999999999,
+            "-3.5": 119.0,
+            "-4.5": 120.39999999999999,
+            "-5.5": 122.1,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 4.870189546221731,
+          "focus_110_121_endpoint_delta_turns": -4.840530672435682,
+          "largest_abs_one_sample_phase_step_turns": 0.07728341219622104,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.15312392567837096,
+          "focus_110_121_endpoint_delta_turns": 0.07576077685566092,
+          "largest_abs_one_sample_phase_step_turns": 0.005123197618128102,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.9,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.3863539719616638,
+          "focus_110_121_endpoint_delta_turns": -0.15928680296224695,
+          "largest_abs_one_sample_phase_step_turns": 0.014035508374905135,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": 113.6,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.6,
+            "-1.5": 114.9,
+            "-2.5": 117.60000000000001,
+            "-3.5": 119.60000000000001,
+            "-4.5": 120.5,
+            "-5.5": 121.6,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 4.9673700160229775,
+          "focus_110_121_endpoint_delta_turns": -4.931146605623171,
+          "largest_abs_one_sample_phase_step_turns": 0.101569979047215,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.3,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": 112.5,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.5,
+            "-1.5": 115.5,
+            "-2.5": 118.19999999999999,
+            "-3.5": 119.0,
+            "-4.5": 120.39999999999999,
+            "-5.5": 122.1,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 4.870189546221731,
+          "focus_110_121_endpoint_delta_turns": -4.840530672435682,
+          "largest_abs_one_sample_phase_step_turns": 0.07728341219622104,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.15312392567837096,
+          "focus_110_121_endpoint_delta_turns": 0.07576077685566092,
+          "largest_abs_one_sample_phase_step_turns": 0.005123197618128102,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.9,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.3863539719616638,
+          "focus_110_121_endpoint_delta_turns": -0.15928680296224695,
+          "largest_abs_one_sample_phase_step_turns": 0.014035508374905135,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": 113.6,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.6,
+            "-1.5": 114.9,
+            "-2.5": 117.60000000000001,
+            "-3.5": 119.60000000000001,
+            "-4.5": 120.5,
+            "-5.5": 121.6,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 4.9673700160229775,
+          "focus_110_121_endpoint_delta_turns": -4.931146605623171,
+          "largest_abs_one_sample_phase_step_turns": 0.101569979047215,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.3,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": 112.5,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.5,
+            "-1.5": 115.5,
+            "-2.5": 118.19999999999999,
+            "-3.5": 119.0,
+            "-4.5": 120.39999999999999,
+            "-5.5": 122.1,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 4.870189546221731,
+          "focus_110_121_endpoint_delta_turns": -4.840530672435682,
+          "largest_abs_one_sample_phase_step_turns": 0.07728341219622104,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.15312392567837096,
+          "focus_110_121_endpoint_delta_turns": 0.07576077685566092,
+          "largest_abs_one_sample_phase_step_turns": 0.005123197618128102,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.9,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.3863539719616638,
+          "focus_110_121_endpoint_delta_turns": -0.15928680296224695,
+          "largest_abs_one_sample_phase_step_turns": 0.014035508374905135,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        }
+      },
+      "DELAY_1P2": {
+        "P(B_JS1|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": 113.7,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.7,
+            "-1.5": 117.00000000000001,
+            "-2.5": 119.79999999999998,
+            "-3.5": 120.60000000000001,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 3.6979326351317976,
+          "focus_110_121_endpoint_delta_turns": -3.6612365822974913,
+          "largest_abs_one_sample_phase_step_turns": 0.09770012660593562,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.4,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": 112.60000000000001,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.60000000000001,
+            "-1.5": 115.6,
+            "-2.5": 118.60000000000001,
+            "-3.5": 121.7,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 3.3915287164378594,
+          "focus_110_121_endpoint_delta_turns": -3.186525658748607,
+          "largest_abs_one_sample_phase_step_turns": 0.0653864210451589,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.17513218951900447,
+          "focus_110_121_endpoint_delta_turns": 0.071826148352543,
+          "largest_abs_one_sample_phase_step_turns": 0.005136248323461623,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM2)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.3839986538743412,
+          "focus_110_121_endpoint_delta_turns": -0.1444221928267989,
+          "largest_abs_one_sample_phase_step_turns": 0.013819630610095283,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": 113.7,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.7,
+            "-1.5": 117.00000000000001,
+            "-2.5": 119.79999999999998,
+            "-3.5": 120.60000000000001,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 3.6979326351317976,
+          "focus_110_121_endpoint_delta_turns": -3.6612365822974913,
+          "largest_abs_one_sample_phase_step_turns": 0.09770012660593562,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.4,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": 112.60000000000001,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.60000000000001,
+            "-1.5": 115.6,
+            "-2.5": 118.60000000000001,
+            "-3.5": 121.7,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 3.3915287164378594,
+          "focus_110_121_endpoint_delta_turns": -3.186525658748607,
+          "largest_abs_one_sample_phase_step_turns": 0.0653864210451589,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.17513218951900447,
+          "focus_110_121_endpoint_delta_turns": 0.071826148352543,
+          "largest_abs_one_sample_phase_step_turns": 0.005136248323461623,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM3)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.3839986538743412,
+          "focus_110_121_endpoint_delta_turns": -0.1444221928267989,
+          "largest_abs_one_sample_phase_step_turns": 0.013819630610095283,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": 113.7,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 113.7,
+            "-1.5": 117.00000000000001,
+            "-2.5": 119.79999999999998,
+            "-3.5": 120.60000000000001,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 3.6979326351317976,
+          "focus_110_121_endpoint_delta_turns": -3.6612365822974913,
+          "largest_abs_one_sample_phase_step_turns": 0.09770012660593562,
+          "time_of_largest_abs_one_sample_phase_step_ps": 114.4,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": 112.60000000000001,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": 112.60000000000001,
+            "-1.5": 115.6,
+            "-2.5": 118.60000000000001,
+            "-3.5": 121.7,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 3.3915287164378594,
+          "focus_110_121_endpoint_delta_turns": -3.186525658748607,
+          "largest_abs_one_sample_phase_step_turns": 0.0653864210451589,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.39999999999999,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM1|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.17513218951900447,
+          "focus_110_121_endpoint_delta_turns": 0.071826148352543,
+          "largest_abs_one_sample_phase_step_turns": 0.005136248323461623,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        },
+        "P(B_JM2|XBVM4)": {
+          "first_abs_0p5_turn_navigation_ps": null,
+          "negative_threshold_navigation_times_ps": {
+            "-0.5": null,
+            "-1.5": null,
+            "-2.5": null,
+            "-3.5": null,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null
+          },
+          "focus_110_121_p2p_turns": 0.3839986538743412,
+          "focus_110_121_endpoint_delta_turns": -0.1444221928267989,
+          "largest_abs_one_sample_phase_step_turns": 0.013819630610095283,
+          "time_of_largest_abs_one_sample_phase_step_ps": 115.0,
+          "semantic_role": "PHASE_NAVIGATION_ONLY; not an SFQ count"
+        }
+      }
+    },
+    "sample_landmarks": {
+      "EXACT_N3": {
+        "P(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": -9.215287,
+            "relative_turns_from_101ps": -1.5637001806668474,
+            "value": -9.215287,
+            "unit": "rad"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": -9.488164,
+            "relative_turns_from_101ps": -1.6071299040729343,
+            "value": -9.488164,
+            "unit": "rad"
+          }
+        },
+        "P(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": -8.242561,
+            "relative_turns_from_101ps": -1.2338539961795236,
+            "value": -8.242561,
+            "unit": "rad"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": -8.866171,
+            "relative_turns_from_101ps": -1.3331046102410602,
+            "value": -8.866171,
+            "unit": "rad"
+          }
+        },
+        "I(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": 9.721815e-05,
+            "unit": "A"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": 8.086437e-05,
+            "unit": "A"
+          }
+        },
+        "I(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0001708217,
+            "unit": "A"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0001543428,
+            "unit": "A"
+          }
+        },
+        "V(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0006361617,
+            "unit": "V"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0002637885,
+            "unit": "V"
+          }
+        },
+        "V(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0008271517,
+            "unit": "V"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.001226297,
+            "unit": "V"
+          }
+        }
+      },
+      "DELAY_0P6": {
+        "P(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": -8.672955,
+            "relative_turns_from_101ps": -1.4773853620699335,
+            "value": -8.672955,
+            "unit": "rad"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": -9.041361,
+            "relative_turns_from_101ps": -1.5360189980346464,
+            "value": -9.041361,
+            "unit": "rad"
+          }
+        },
+        "P(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": -7.713719,
+            "relative_turns_from_101ps": -1.1496861777649197,
+            "value": -7.713719,
+            "unit": "rad"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": -8.198551,
+            "relative_turns_from_101ps": -1.2268495871340495,
+            "value": -8.198551,
+            "unit": "rad"
+          }
+        },
+        "I(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": 9.810667e-05,
+            "unit": "A"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": 9.100535e-05,
+            "unit": "A"
+          }
+        },
+        "I(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.000170899,
+            "unit": "A"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0001605733,
+            "unit": "A"
+          }
+        },
+        "V(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0008709069,
+            "unit": "V"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0003471392,
+            "unit": "V"
+          }
+        },
+        "V(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0006232112,
+            "unit": "V"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0009703357,
+            "unit": "V"
+          }
+        }
+      },
+      "DELAY_1P2": {
+        "P(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": -7.993123,
+            "relative_turns_from_101ps": -1.3691867387978842,
+            "value": -7.993123,
+            "unit": "rad"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": -8.556493,
+            "relative_turns_from_101ps": -1.4588498590875651,
+            "value": -8.556493,
+            "unit": "rad"
+          }
+        },
+        "P(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": -7.249278,
+            "relative_turns_from_101ps": -1.0757680968403767,
+            "value": -7.249278,
+            "unit": "rad"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "P(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": -7.623238,
+            "relative_turns_from_101ps": -1.1352856793590218,
+            "value": -7.623238,
+            "unit": "rad"
+          }
+        },
+        "I(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": 9.087628e-05,
+            "unit": "A"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": 9.55371e-05,
+            "unit": "A"
+          }
+        },
+        "I(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0001659685,
+            "unit": "A"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "I(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0001706111,
+            "unit": "A"
+          }
+        },
+        "V(B_JS1|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS1|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.001244223,
+            "unit": "V"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS1|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0006224731,
+            "unit": "V"
+          }
+        },
+        "V(B_JS2|XBVM2)": {
+          "at_114p8_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS2|XBVM2)",
+            "time_ps": 114.8,
+            "sample_index": 1147,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0004218641,
+            "unit": "V"
+          },
+          "at_115p0_ps": {
+            "status": "DERIVED",
+            "signal": "V(B_JS2|XBVM2)",
+            "time_ps": 115.0,
+            "sample_index": 1149,
+            "raw_value_rad": null,
+            "relative_turns_from_101ps": null,
+            "value": -0.0008029873,
+            "unit": "V"
+          }
+        }
+      }
+    },
+    "same_jj_phase_area": {
+      "EXACT_N3": {
+        "P(B_JS1|XBVM1)": {
+          "phase_delta_turns": -0.0022416814579550386,
+          "voltage_area_over_Phi0_turns": -0.001873291659166598,
+          "phase_minus_area_turns": -0.00036838979878844056,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM1)": {
+          "phase_delta_turns": -0.07104936082179449,
+          "voltage_area_over_Phi0_turns": -0.07091842399322297,
+          "phase_minus_area_turns": -0.00013093682857151512,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM2)": {
+          "phase_delta_turns": -6.352845881274454,
+          "voltage_area_over_Phi0_turns": -6.355123852291244,
+          "phase_minus_area_turns": 0.002277971016789948,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "phase_delta_turns": -6.332321785024635,
+          "voltage_area_over_Phi0_turns": -6.334087610408431,
+          "phase_minus_area_turns": 0.0017658253837957716,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "phase_delta_turns": -6.352845881274454,
+          "voltage_area_over_Phi0_turns": -6.355123852291244,
+          "phase_minus_area_turns": 0.002277971016789948,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "phase_delta_turns": -6.332321785024635,
+          "voltage_area_over_Phi0_turns": -6.334087610408431,
+          "phase_minus_area_turns": 0.0017658253837957716,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "phase_delta_turns": -6.352845881274454,
+          "voltage_area_over_Phi0_turns": -6.355123852291244,
+          "phase_minus_area_turns": 0.002277971016789948,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "phase_delta_turns": -6.332321785024635,
+          "voltage_area_over_Phi0_turns": -6.334087610408431,
+          "phase_minus_area_turns": 0.0017658253837957716,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "DELAY_0P6": {
+        "P(B_JS1|XBVM1)": {
+          "phase_delta_turns": -0.32940376557651696,
+          "voltage_area_over_Phi0_turns": -0.3289768761440648,
+          "phase_minus_area_turns": -0.00042688943245217104,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM1)": {
+          "phase_delta_turns": -0.8007087096812573,
+          "voltage_area_over_Phi0_turns": -0.8010205580308272,
+          "phase_minus_area_turns": 0.0003118483495698765,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM2)": {
+          "phase_delta_turns": -4.931146605623171,
+          "voltage_area_over_Phi0_turns": -4.931344226937125,
+          "phase_minus_area_turns": 0.00019762131395406612,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "phase_delta_turns": -4.840530672435682,
+          "voltage_area_over_Phi0_turns": -4.838603812717925,
+          "phase_minus_area_turns": -0.001926859717756635,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "phase_delta_turns": -4.931146605623171,
+          "voltage_area_over_Phi0_turns": -4.931344226937125,
+          "phase_minus_area_turns": 0.00019762131395406612,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "phase_delta_turns": -4.840530672435682,
+          "voltage_area_over_Phi0_turns": -4.838603812717925,
+          "phase_minus_area_turns": -0.001926859717756635,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "phase_delta_turns": -4.931146605623171,
+          "voltage_area_over_Phi0_turns": -4.931344226937125,
+          "phase_minus_area_turns": 0.00019762131395406612,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "phase_delta_turns": -4.840530672435682,
+          "voltage_area_over_Phi0_turns": -4.838603812717925,
+          "phase_minus_area_turns": -0.001926859717756635,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "DELAY_1P2": {
+        "P(B_JS1|XBVM1)": {
+          "phase_delta_turns": -0.16982539075852562,
+          "voltage_area_over_Phi0_turns": -0.1706261110588074,
+          "phase_minus_area_turns": 0.0008007203002817764,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM1)": {
+          "phase_delta_turns": -0.36677800945432654,
+          "voltage_area_over_Phi0_turns": -0.36715327478283943,
+          "phase_minus_area_turns": 0.00037526532851289707,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM2)": {
+          "phase_delta_turns": -3.6612365822974913,
+          "voltage_area_over_Phi0_turns": -3.6638981519370075,
+          "phase_minus_area_turns": 0.002661569639516248,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "phase_delta_turns": -3.186525658748607,
+          "voltage_area_over_Phi0_turns": -3.184140732761617,
+          "phase_minus_area_turns": -0.0023849259869899164,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "phase_delta_turns": -3.6612365822974913,
+          "voltage_area_over_Phi0_turns": -3.6638981519370075,
+          "phase_minus_area_turns": 0.002661569639516248,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "phase_delta_turns": -3.186525658748607,
+          "voltage_area_over_Phi0_turns": -3.184140732761617,
+          "phase_minus_area_turns": -0.0023849259869899164,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "phase_delta_turns": -3.6612365822974913,
+          "voltage_area_over_Phi0_turns": -3.6638981519370075,
+          "phase_minus_area_turns": 0.002661569639516248,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "phase_delta_turns": -3.186525658748607,
+          "voltage_area_over_Phi0_turns": -3.184140732761617,
+          "phase_minus_area_turns": -0.0023849259869899164,
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      }
+    },
+    "waveform_focus_summary": {
+      "EXACT_N3": {
+        "LS3_RS_active_BVMs": {
+          "I(L_S3|XBVM2)": {
+            "signal": "I(L_S3|XBVM2)",
+            "unit": "A",
+            "minimum": -1.662706e-05,
+            "maximum": 0.0001914046,
+            "p2p": 0.00020803165999999998,
+            "peak_abs": 0.0001914046,
+            "time_of_peak_abs_ps": 114.9,
+            "signed_area": 7.992587669999996e-16
+          },
+          "V(L_S3|XBVM2)": {
+            "signal": "V(L_S3|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0001265635,
+            "maximum": 0.0001261446,
+            "p2p": 0.0002527081,
+            "peak_abs": 0.0001265635,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 1.9135399410000434e-17
+          },
+          "I(R_S|XBVM2)": {
+            "signal": "I(R_S|XBVM2)",
+            "unit": "A",
+            "minimum": -4.218783e-05,
+            "maximum": 4.204819e-05,
+            "p2p": 8.423602e-05,
+            "peak_abs": 4.218783e-05,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 6.378467579000145e-18
+          },
+          "V(R_S|XBVM2)": {
+            "signal": "V(R_S|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0001265635,
+            "maximum": 0.0001261446,
+            "p2p": 0.0002527081,
+            "peak_abs": 0.0001265635,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 1.9135399410000434e-17
+          },
+          "I(L_S3|XBVM3)": {
+            "signal": "I(L_S3|XBVM3)",
+            "unit": "A",
+            "minimum": -1.662706e-05,
+            "maximum": 0.0001914046,
+            "p2p": 0.00020803165999999998,
+            "peak_abs": 0.0001914046,
+            "time_of_peak_abs_ps": 114.9,
+            "signed_area": 7.992587669999996e-16
+          },
+          "V(L_S3|XBVM3)": {
+            "signal": "V(L_S3|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0001265635,
+            "maximum": 0.0001261446,
+            "p2p": 0.0002527081,
+            "peak_abs": 0.0001265635,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 1.9135399410000434e-17
+          },
+          "I(R_S|XBVM3)": {
+            "signal": "I(R_S|XBVM3)",
+            "unit": "A",
+            "minimum": -4.218783e-05,
+            "maximum": 4.204819e-05,
+            "p2p": 8.423602e-05,
+            "peak_abs": 4.218783e-05,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 6.378467579000145e-18
+          },
+          "V(R_S|XBVM3)": {
+            "signal": "V(R_S|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0001265635,
+            "maximum": 0.0001261446,
+            "p2p": 0.0002527081,
+            "peak_abs": 0.0001265635,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 1.9135399410000434e-17
+          },
+          "I(L_S3|XBVM4)": {
+            "signal": "I(L_S3|XBVM4)",
+            "unit": "A",
+            "minimum": -1.662706e-05,
+            "maximum": 0.0001914046,
+            "p2p": 0.00020803165999999998,
+            "peak_abs": 0.0001914046,
+            "time_of_peak_abs_ps": 114.9,
+            "signed_area": 7.992587669999996e-16
+          },
+          "V(L_S3|XBVM4)": {
+            "signal": "V(L_S3|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0001265635,
+            "maximum": 0.0001261446,
+            "p2p": 0.0002527081,
+            "peak_abs": 0.0001265635,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 1.9135399410000434e-17
+          },
+          "I(R_S|XBVM4)": {
+            "signal": "I(R_S|XBVM4)",
+            "unit": "A",
+            "minimum": -4.218783e-05,
+            "maximum": 4.204819e-05,
+            "p2p": 8.423602e-05,
+            "peak_abs": 4.218783e-05,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 6.378467579000145e-18
+          },
+          "V(R_S|XBVM4)": {
+            "signal": "V(R_S|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0001265635,
+            "maximum": 0.0001261446,
+            "p2p": 0.0002527081,
+            "peak_abs": 0.0001265635,
+            "time_of_peak_abs_ps": 115.6,
+            "signed_area": 1.9135399410000434e-17
+          }
+        },
+        "COMMON_SL": {
+          "signal": "V(COMMON_SL)",
+          "unit": "V",
+          "minimum": -0.0001979826,
+          "maximum": 0.001600609,
+          "p2p": 0.0017985916,
+          "peak_abs": 0.001600609,
+          "time_of_peak_abs_ps": 115.6,
+          "signed_area": 6.946590126999999e-15
+        },
+        "QBIN": {
+          "signal": "V(QBIN)",
+          "unit": "V",
+          "minimum": -0.0002840478,
+          "maximum": 0.001347575,
+          "p2p": 0.0016316228,
+          "peak_abs": 0.001347575,
+          "time_of_peak_abs_ps": 120.0,
+          "signed_area": 6.2152977420000025e-15
+        },
+        "replay_source_current": {
+          "signal": "I(V_REPLAY)",
+          "unit": "A",
+          "minimum": -4.300288e-06,
+          "maximum": 0.0002202255,
+          "p2p": 0.00022452578800000002,
+          "peak_abs": 0.0002202255,
+          "time_of_peak_abs_ps": 118.19999999999999,
+          "signed_area": 9.505714529899985e-16
+        },
+        "JSL": {
+          "P(B_JSL1)": {
+            "signal": "P(B_JSL1)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL1)": {
+            "signal": "V(B_JSL1)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL1)": {
+            "signal": "I(B_JSL1)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          },
+          "P(B_JSL2)": {
+            "signal": "P(B_JSL2)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL2)": {
+            "signal": "V(B_JSL2)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL2)": {
+            "signal": "I(B_JSL2)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          },
+          "P(B_JSL3)": {
+            "signal": "P(B_JSL3)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL3)": {
+            "signal": "V(B_JSL3)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL3)": {
+            "signal": "I(B_JSL3)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          },
+          "P(B_JSL4)": {
+            "signal": "P(B_JSL4)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL4)": {
+            "signal": "V(B_JSL4)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL4)": {
+            "signal": "I(B_JSL4)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          },
+          "P(B_JSL5)": {
+            "signal": "P(B_JSL5)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL5)": {
+            "signal": "V(B_JSL5)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL5)": {
+            "signal": "I(B_JSL5)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          },
+          "P(B_JSL6)": {
+            "signal": "P(B_JSL6)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL6)": {
+            "signal": "V(B_JSL6)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL6)": {
+            "signal": "I(B_JSL6)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          },
+          "P(B_JSL7)": {
+            "signal": "P(B_JSL7)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL7)": {
+            "signal": "V(B_JSL7)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL7)": {
+            "signal": "I(B_JSL7)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          },
+          "P(B_JSL8)": {
+            "signal": "P(B_JSL8)",
+            "unit": "rad",
+            "minimum": -0.02480175,
+            "maximum": 0.4422186,
+            "p2p": 0.46702035000000003,
+            "peak_abs": 0.4422186,
+            "time_of_peak_abs_ps": 119.3,
+            "signed_area": 1.8670730902999973e-12
+          },
+          "V(B_JSL8)": {
+            "signal": "V(B_JSL8)",
+            "unit": "V",
+            "minimum": -8.507722e-05,
+            "maximum": 0.000106553,
+            "p2p": 0.00019163022,
+            "peak_abs": 0.000106553,
+            "time_of_peak_abs_ps": 118.60000000000001,
+            "signed_area": 9.141153419999958e-17
+          },
+          "I(B_JSL8)": {
+            "signal": "I(B_JSL8)",
+            "unit": "A",
+            "minimum": -4.300288e-06,
+            "maximum": 0.0002202255,
+            "p2p": 0.00022452578800000002,
+            "peak_abs": 0.0002202255,
+            "time_of_peak_abs_ps": 118.19999999999999,
+            "signed_area": 9.505714529899985e-16
+          }
+        },
+        "JM1_JM2": {
+          "P(B_JM1|XBVM2)": {
+            "signal": "P(B_JM1|XBVM2)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 6.773844,
+            "p2p": 0.8528820000000001,
+            "peak_abs": 6.773844,
+            "time_of_peak_abs_ps": 116.8,
+            "signed_area": 7.109319199999998e-11
+          },
+          "V(B_JM1|XBVM2)": {
+            "signal": "V(B_JM1|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0002467845,
+            "maximum": 0.0002072962,
+            "p2p": 0.0004540807,
+            "peak_abs": 0.0002467845,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.1767719153100222e-16
+          },
+          "I(B_JM1|XBVM2)": {
+            "signal": "I(B_JM1|XBVM2)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.211413e-05,
+            "p2p": 9.660041e-05,
+            "peak_abs": 5.211413e-05,
+            "time_of_peak_abs_ps": 113.19999999999999,
+            "signed_area": 2.841304267699999e-16
+          },
+          "P(B_JM2|XBVM2)": {
+            "signal": "P(B_JM2|XBVM2)",
+            "unit": "rad",
+            "minimum": -0.2010823,
+            "maximum": 1.335875,
+            "p2p": 1.5369572999999999,
+            "peak_abs": 1.335875,
+            "time_of_peak_abs_ps": 118.8,
+            "signed_area": 5.3622822588999994e-12
+          },
+          "V(B_JM2|XBVM2)": {
+            "signal": "V(B_JM2|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0005072486,
+            "maximum": 0.0004816323,
+            "p2p": 0.0009888809,
+            "peak_abs": 0.0005072486,
+            "time_of_peak_abs_ps": 119.60000000000001,
+            "signed_area": -1.152356784000034e-16
+          },
+          "I(B_JM2|XBVM2)": {
+            "signal": "I(B_JM2|XBVM2)",
+            "unit": "A",
+            "minimum": 4.215115e-05,
+            "maximum": 8.757166e-05,
+            "p2p": 4.542051e-05,
+            "peak_abs": 8.757166e-05,
+            "time_of_peak_abs_ps": 114.6,
+            "signed_area": 7.006599294999998e-16
+          },
+          "P(B_JM1|XBVM3)": {
+            "signal": "P(B_JM1|XBVM3)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 6.773844,
+            "p2p": 0.8528820000000001,
+            "peak_abs": 6.773844,
+            "time_of_peak_abs_ps": 116.8,
+            "signed_area": 7.109319199999998e-11
+          },
+          "V(B_JM1|XBVM3)": {
+            "signal": "V(B_JM1|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0002467845,
+            "maximum": 0.0002072962,
+            "p2p": 0.0004540807,
+            "peak_abs": 0.0002467845,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.1767719153100222e-16
+          },
+          "I(B_JM1|XBVM3)": {
+            "signal": "I(B_JM1|XBVM3)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.211413e-05,
+            "p2p": 9.660041e-05,
+            "peak_abs": 5.211413e-05,
+            "time_of_peak_abs_ps": 113.19999999999999,
+            "signed_area": 2.841304267699999e-16
+          },
+          "P(B_JM2|XBVM3)": {
+            "signal": "P(B_JM2|XBVM3)",
+            "unit": "rad",
+            "minimum": -0.2010823,
+            "maximum": 1.335875,
+            "p2p": 1.5369572999999999,
+            "peak_abs": 1.335875,
+            "time_of_peak_abs_ps": 118.8,
+            "signed_area": 5.3622822588999994e-12
+          },
+          "V(B_JM2|XBVM3)": {
+            "signal": "V(B_JM2|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0005072486,
+            "maximum": 0.0004816323,
+            "p2p": 0.0009888809,
+            "peak_abs": 0.0005072486,
+            "time_of_peak_abs_ps": 119.60000000000001,
+            "signed_area": -1.152356784000034e-16
+          },
+          "I(B_JM2|XBVM3)": {
+            "signal": "I(B_JM2|XBVM3)",
+            "unit": "A",
+            "minimum": 4.215115e-05,
+            "maximum": 8.757166e-05,
+            "p2p": 4.542051e-05,
+            "peak_abs": 8.757166e-05,
+            "time_of_peak_abs_ps": 114.6,
+            "signed_area": 7.006599294999998e-16
+          },
+          "P(B_JM1|XBVM4)": {
+            "signal": "P(B_JM1|XBVM4)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 6.773844,
+            "p2p": 0.8528820000000001,
+            "peak_abs": 6.773844,
+            "time_of_peak_abs_ps": 116.8,
+            "signed_area": 7.109319199999998e-11
+          },
+          "V(B_JM1|XBVM4)": {
+            "signal": "V(B_JM1|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0002467845,
+            "maximum": 0.0002072962,
+            "p2p": 0.0004540807,
+            "peak_abs": 0.0002467845,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.1767719153100222e-16
+          },
+          "I(B_JM1|XBVM4)": {
+            "signal": "I(B_JM1|XBVM4)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.211413e-05,
+            "p2p": 9.660041e-05,
+            "peak_abs": 5.211413e-05,
+            "time_of_peak_abs_ps": 113.19999999999999,
+            "signed_area": 2.841304267699999e-16
+          },
+          "P(B_JM2|XBVM4)": {
+            "signal": "P(B_JM2|XBVM4)",
+            "unit": "rad",
+            "minimum": -0.2010823,
+            "maximum": 1.335875,
+            "p2p": 1.5369572999999999,
+            "peak_abs": 1.335875,
+            "time_of_peak_abs_ps": 118.8,
+            "signed_area": 5.3622822588999994e-12
+          },
+          "V(B_JM2|XBVM4)": {
+            "signal": "V(B_JM2|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0005072486,
+            "maximum": 0.0004816323,
+            "p2p": 0.0009888809,
+            "peak_abs": 0.0005072486,
+            "time_of_peak_abs_ps": 119.60000000000001,
+            "signed_area": -1.152356784000034e-16
+          },
+          "I(B_JM2|XBVM4)": {
+            "signal": "I(B_JM2|XBVM4)",
+            "unit": "A",
+            "minimum": 4.215115e-05,
+            "maximum": 8.757166e-05,
+            "p2p": 4.542051e-05,
+            "peak_abs": 8.757166e-05,
+            "time_of_peak_abs_ps": 114.6,
+            "signed_area": 7.006599294999998e-16
+          }
+        }
+      },
+      "DELAY_0P6": {
+        "LS3_RS_active_BVMs": {
+          "I(L_S3|XBVM2)": {
+            "signal": "I(L_S3|XBVM2)",
+            "unit": "A",
+            "minimum": -7.864405e-05,
+            "maximum": 0.0002202707,
+            "p2p": 0.00029891475,
+            "peak_abs": 0.0002202707,
+            "time_of_peak_abs_ps": 118.0,
+            "signed_area": 7.114113689999994e-16
+          },
+          "V(L_S3|XBVM2)": {
+            "signal": "V(L_S3|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0001455967,
+            "maximum": 0.0001677044,
+            "p2p": 0.0003133011,
+            "peak_abs": 0.0001677044,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 2.7444566370000812e-17
+          },
+          "I(R_S|XBVM2)": {
+            "signal": "I(R_S|XBVM2)",
+            "unit": "A",
+            "minimum": -4.853223e-05,
+            "maximum": 5.590145e-05,
+            "p2p": 0.00010443368,
+            "peak_abs": 5.590145e-05,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 9.148189261000269e-18
+          },
+          "V(R_S|XBVM2)": {
+            "signal": "V(R_S|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0001455967,
+            "maximum": 0.0001677044,
+            "p2p": 0.0003133011,
+            "peak_abs": 0.0001677044,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 2.7444566370000812e-17
+          },
+          "I(L_S3|XBVM3)": {
+            "signal": "I(L_S3|XBVM3)",
+            "unit": "A",
+            "minimum": -7.864405e-05,
+            "maximum": 0.0002202707,
+            "p2p": 0.00029891475,
+            "peak_abs": 0.0002202707,
+            "time_of_peak_abs_ps": 118.0,
+            "signed_area": 7.114113689999994e-16
+          },
+          "V(L_S3|XBVM3)": {
+            "signal": "V(L_S3|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0001455967,
+            "maximum": 0.0001677044,
+            "p2p": 0.0003133011,
+            "peak_abs": 0.0001677044,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 2.7444566370000812e-17
+          },
+          "I(R_S|XBVM3)": {
+            "signal": "I(R_S|XBVM3)",
+            "unit": "A",
+            "minimum": -4.853223e-05,
+            "maximum": 5.590145e-05,
+            "p2p": 0.00010443368,
+            "peak_abs": 5.590145e-05,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 9.148189261000269e-18
+          },
+          "V(R_S|XBVM3)": {
+            "signal": "V(R_S|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0001455967,
+            "maximum": 0.0001677044,
+            "p2p": 0.0003133011,
+            "peak_abs": 0.0001677044,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 2.7444566370000812e-17
+          },
+          "I(L_S3|XBVM4)": {
+            "signal": "I(L_S3|XBVM4)",
+            "unit": "A",
+            "minimum": -7.864405e-05,
+            "maximum": 0.0002202707,
+            "p2p": 0.00029891475,
+            "peak_abs": 0.0002202707,
+            "time_of_peak_abs_ps": 118.0,
+            "signed_area": 7.114113689999994e-16
+          },
+          "V(L_S3|XBVM4)": {
+            "signal": "V(L_S3|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0001455967,
+            "maximum": 0.0001677044,
+            "p2p": 0.0003133011,
+            "peak_abs": 0.0001677044,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 2.7444566370000812e-17
+          },
+          "I(R_S|XBVM4)": {
+            "signal": "I(R_S|XBVM4)",
+            "unit": "A",
+            "minimum": -4.853223e-05,
+            "maximum": 5.590145e-05,
+            "p2p": 0.00010443368,
+            "peak_abs": 5.590145e-05,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 9.148189261000269e-18
+          },
+          "V(R_S|XBVM4)": {
+            "signal": "V(R_S|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0001455967,
+            "maximum": 0.0001677044,
+            "p2p": 0.0003133011,
+            "peak_abs": 0.0001677044,
+            "time_of_peak_abs_ps": 117.19999999999999,
+            "signed_area": 2.7444566370000812e-17
+          }
+        },
+        "COMMON_SL": {
+          "signal": "V(COMMON_SL)",
+          "unit": "V",
+          "minimum": -0.0002617452,
+          "maximum": 0.002048408,
+          "p2p": 0.0023101531999999998,
+          "peak_abs": 0.002048408,
+          "time_of_peak_abs_ps": 118.60000000000001,
+          "signed_area": 6.329597834499988e-15
+        },
+        "QBIN": {
+          "signal": "V(QBIN)",
+          "unit": "V",
+          "minimum": -5.365604e-05,
+          "maximum": 0.001347575,
+          "p2p": 0.00140123104,
+          "peak_abs": 0.001347575,
+          "time_of_peak_abs_ps": 120.60000000000001,
+          "signed_area": 5.9920043479999895e-15
+        },
+        "replay_source_current": {
+          "signal": "I(V_REPLAY)",
+          "unit": "A",
+          "minimum": -2.346696e-05,
+          "maximum": 0.0001545159,
+          "p2p": 0.00017798285999999998,
+          "peak_abs": 0.0001545159,
+          "time_of_peak_abs_ps": 120.89999999999999,
+          "signed_area": 5.086849428999986e-16
+        },
+        "JSL": {
+          "P(B_JSL1)": {
+            "signal": "P(B_JSL1)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL1)": {
+            "signal": "V(B_JSL1)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL1)": {
+            "signal": "I(B_JSL1)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          },
+          "P(B_JSL2)": {
+            "signal": "P(B_JSL2)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL2)": {
+            "signal": "V(B_JSL2)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL2)": {
+            "signal": "I(B_JSL2)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          },
+          "P(B_JSL3)": {
+            "signal": "P(B_JSL3)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL3)": {
+            "signal": "V(B_JSL3)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL3)": {
+            "signal": "I(B_JSL3)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          },
+          "P(B_JSL4)": {
+            "signal": "P(B_JSL4)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL4)": {
+            "signal": "V(B_JSL4)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL4)": {
+            "signal": "I(B_JSL4)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          },
+          "P(B_JSL5)": {
+            "signal": "P(B_JSL5)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL5)": {
+            "signal": "V(B_JSL5)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL5)": {
+            "signal": "I(B_JSL5)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          },
+          "P(B_JSL6)": {
+            "signal": "P(B_JSL6)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL6)": {
+            "signal": "V(B_JSL6)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL6)": {
+            "signal": "I(B_JSL6)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          },
+          "P(B_JSL7)": {
+            "signal": "P(B_JSL7)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL7)": {
+            "signal": "V(B_JSL7)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL7)": {
+            "signal": "I(B_JSL7)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          },
+          "P(B_JSL8)": {
+            "signal": "P(B_JSL8)",
+            "unit": "rad",
+            "minimum": -0.1904779,
+            "maximum": 0.3791846,
+            "p2p": 0.5696625,
+            "peak_abs": 0.3791846,
+            "time_of_peak_abs_ps": 119.79999999999998,
+            "signed_area": 1.0424765680299985e-12
+          },
+          "V(B_JSL8)": {
+            "signal": "V(B_JSL8)",
+            "unit": "V",
+            "minimum": -0.0001222484,
+            "maximum": 0.0001550943,
+            "p2p": 0.0002773427,
+            "peak_abs": 0.0001550943,
+            "time_of_peak_abs_ps": 119.20000000000002,
+            "signed_area": 4.2199184399999833e-17
+          },
+          "I(B_JSL8)": {
+            "signal": "I(B_JSL8)",
+            "unit": "A",
+            "minimum": -2.346696e-05,
+            "maximum": 0.0001545159,
+            "p2p": 0.00017798285999999998,
+            "peak_abs": 0.0001545159,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 5.086849428999986e-16
+          }
+        },
+        "JM1_JM2": {
+          "P(B_JM1|XBVM2)": {
+            "signal": "P(B_JM1|XBVM2)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 6.883068,
+            "p2p": 0.9621059999999995,
+            "peak_abs": 6.883068,
+            "time_of_peak_abs_ps": 120.10000000000001,
+            "signed_area": 7.132883964999997e-11
+          },
+          "V(B_JM1|XBVM2)": {
+            "signal": "V(B_JM1|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0003686236,
+            "maximum": 0.0002067398,
+            "p2p": 0.0005753634,
+            "peak_abs": 0.0003686236,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.5739105468000347e-16
+          },
+          "I(B_JM1|XBVM2)": {
+            "signal": "I(B_JM1|XBVM2)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.160932e-05,
+            "p2p": 9.60956e-05,
+            "peak_abs": 5.160932e-05,
+            "time_of_peak_abs_ps": 113.19999999999999,
+            "signed_area": 2.985204123899998e-16
+          },
+          "P(B_JM2|XBVM2)": {
+            "signal": "P(B_JM2|XBVM2)",
+            "unit": "rad",
+            "minimum": -0.6324116,
+            "maximum": 1.795122,
+            "p2p": 2.4275336000000003,
+            "peak_abs": 1.795122,
+            "time_of_peak_abs_ps": 119.0,
+            "signed_area": 5.797831969000004e-12
+          },
+          "V(B_JM2|XBVM2)": {
+            "signal": "V(B_JM2|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0007693922,
+            "maximum": 0.0006421397,
+            "p2p": 0.0014115319,
+            "peak_abs": 0.0007693922,
+            "time_of_peak_abs_ps": 119.89999999999999,
+            "signed_area": -3.334756990000038e-16
+          },
+          "I(B_JM2|XBVM2)": {
+            "signal": "I(B_JM2|XBVM2)",
+            "unit": "A",
+            "minimum": 3.459526e-05,
+            "maximum": 9.523264e-05,
+            "p2p": 6.063738e-05,
+            "peak_abs": 9.523264e-05,
+            "time_of_peak_abs_ps": 117.69999999999999,
+            "signed_area": 6.813057084999997e-16
+          },
+          "P(B_JM1|XBVM3)": {
+            "signal": "P(B_JM1|XBVM3)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 6.883068,
+            "p2p": 0.9621059999999995,
+            "peak_abs": 6.883068,
+            "time_of_peak_abs_ps": 120.10000000000001,
+            "signed_area": 7.132883964999997e-11
+          },
+          "V(B_JM1|XBVM3)": {
+            "signal": "V(B_JM1|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0003686236,
+            "maximum": 0.0002067398,
+            "p2p": 0.0005753634,
+            "peak_abs": 0.0003686236,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.5739105468000347e-16
+          },
+          "I(B_JM1|XBVM3)": {
+            "signal": "I(B_JM1|XBVM3)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.160932e-05,
+            "p2p": 9.60956e-05,
+            "peak_abs": 5.160932e-05,
+            "time_of_peak_abs_ps": 113.19999999999999,
+            "signed_area": 2.985204123899998e-16
+          },
+          "P(B_JM2|XBVM3)": {
+            "signal": "P(B_JM2|XBVM3)",
+            "unit": "rad",
+            "minimum": -0.6324116,
+            "maximum": 1.795122,
+            "p2p": 2.4275336000000003,
+            "peak_abs": 1.795122,
+            "time_of_peak_abs_ps": 119.0,
+            "signed_area": 5.797831969000004e-12
+          },
+          "V(B_JM2|XBVM3)": {
+            "signal": "V(B_JM2|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0007693922,
+            "maximum": 0.0006421397,
+            "p2p": 0.0014115319,
+            "peak_abs": 0.0007693922,
+            "time_of_peak_abs_ps": 119.89999999999999,
+            "signed_area": -3.334756990000038e-16
+          },
+          "I(B_JM2|XBVM3)": {
+            "signal": "I(B_JM2|XBVM3)",
+            "unit": "A",
+            "minimum": 3.459526e-05,
+            "maximum": 9.523264e-05,
+            "p2p": 6.063738e-05,
+            "peak_abs": 9.523264e-05,
+            "time_of_peak_abs_ps": 117.69999999999999,
+            "signed_area": 6.813057084999997e-16
+          },
+          "P(B_JM1|XBVM4)": {
+            "signal": "P(B_JM1|XBVM4)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 6.883068,
+            "p2p": 0.9621059999999995,
+            "peak_abs": 6.883068,
+            "time_of_peak_abs_ps": 120.10000000000001,
+            "signed_area": 7.132883964999997e-11
+          },
+          "V(B_JM1|XBVM4)": {
+            "signal": "V(B_JM1|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0003686236,
+            "maximum": 0.0002067398,
+            "p2p": 0.0005753634,
+            "peak_abs": 0.0003686236,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.5739105468000347e-16
+          },
+          "I(B_JM1|XBVM4)": {
+            "signal": "I(B_JM1|XBVM4)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.160932e-05,
+            "p2p": 9.60956e-05,
+            "peak_abs": 5.160932e-05,
+            "time_of_peak_abs_ps": 113.19999999999999,
+            "signed_area": 2.985204123899998e-16
+          },
+          "P(B_JM2|XBVM4)": {
+            "signal": "P(B_JM2|XBVM4)",
+            "unit": "rad",
+            "minimum": -0.6324116,
+            "maximum": 1.795122,
+            "p2p": 2.4275336000000003,
+            "peak_abs": 1.795122,
+            "time_of_peak_abs_ps": 119.0,
+            "signed_area": 5.797831969000004e-12
+          },
+          "V(B_JM2|XBVM4)": {
+            "signal": "V(B_JM2|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0007693922,
+            "maximum": 0.0006421397,
+            "p2p": 0.0014115319,
+            "peak_abs": 0.0007693922,
+            "time_of_peak_abs_ps": 119.89999999999999,
+            "signed_area": -3.334756990000038e-16
+          },
+          "I(B_JM2|XBVM4)": {
+            "signal": "I(B_JM2|XBVM4)",
+            "unit": "A",
+            "minimum": 3.459526e-05,
+            "maximum": 9.523264e-05,
+            "p2p": 6.063738e-05,
+            "peak_abs": 9.523264e-05,
+            "time_of_peak_abs_ps": 117.69999999999999,
+            "signed_area": 6.813057084999997e-16
+          }
+        }
+      },
+      "DELAY_1P2": {
+        "LS3_RS_active_BVMs": {
+          "I(L_S3|XBVM2)": {
+            "signal": "I(L_S3|XBVM2)",
+            "unit": "A",
+            "minimum": -0.0001172761,
+            "maximum": 0.0002009792,
+            "p2p": 0.0003182553,
+            "peak_abs": 0.0002009792,
+            "time_of_peak_abs_ps": 118.10000000000001,
+            "signed_area": 5.606915829499986e-16
+          },
+          "V(L_S3|XBVM2)": {
+            "signal": "V(L_S3|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0001728293,
+            "maximum": 0.0001646242,
+            "p2p": 0.0003374535,
+            "peak_abs": 0.0001728293,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 6.778876998000032e-17
+          },
+          "I(R_S|XBVM2)": {
+            "signal": "I(R_S|XBVM2)",
+            "unit": "A",
+            "minimum": -5.760976e-05,
+            "maximum": 5.487475e-05,
+            "p2p": 0.00011248451000000001,
+            "peak_abs": 5.760976e-05,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 2.2596259420000104e-17
+          },
+          "V(R_S|XBVM2)": {
+            "signal": "V(R_S|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0001728293,
+            "maximum": 0.0001646242,
+            "p2p": 0.0003374535,
+            "peak_abs": 0.0001728293,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 6.778876998000032e-17
+          },
+          "I(L_S3|XBVM3)": {
+            "signal": "I(L_S3|XBVM3)",
+            "unit": "A",
+            "minimum": -0.0001172761,
+            "maximum": 0.0002009792,
+            "p2p": 0.0003182553,
+            "peak_abs": 0.0002009792,
+            "time_of_peak_abs_ps": 118.10000000000001,
+            "signed_area": 5.606915829499986e-16
+          },
+          "V(L_S3|XBVM3)": {
+            "signal": "V(L_S3|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0001728293,
+            "maximum": 0.0001646242,
+            "p2p": 0.0003374535,
+            "peak_abs": 0.0001728293,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 6.778876998000032e-17
+          },
+          "I(R_S|XBVM3)": {
+            "signal": "I(R_S|XBVM3)",
+            "unit": "A",
+            "minimum": -5.760976e-05,
+            "maximum": 5.487475e-05,
+            "p2p": 0.00011248451000000001,
+            "peak_abs": 5.760976e-05,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 2.2596259420000104e-17
+          },
+          "V(R_S|XBVM3)": {
+            "signal": "V(R_S|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0001728293,
+            "maximum": 0.0001646242,
+            "p2p": 0.0003374535,
+            "peak_abs": 0.0001728293,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 6.778876998000032e-17
+          },
+          "I(L_S3|XBVM4)": {
+            "signal": "I(L_S3|XBVM4)",
+            "unit": "A",
+            "minimum": -0.0001172761,
+            "maximum": 0.0002009792,
+            "p2p": 0.0003182553,
+            "peak_abs": 0.0002009792,
+            "time_of_peak_abs_ps": 118.10000000000001,
+            "signed_area": 5.606915829499986e-16
+          },
+          "V(L_S3|XBVM4)": {
+            "signal": "V(L_S3|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0001728293,
+            "maximum": 0.0001646242,
+            "p2p": 0.0003374535,
+            "peak_abs": 0.0001728293,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 6.778876998000032e-17
+          },
+          "I(R_S|XBVM4)": {
+            "signal": "I(R_S|XBVM4)",
+            "unit": "A",
+            "minimum": -5.760976e-05,
+            "maximum": 5.487475e-05,
+            "p2p": 0.00011248451000000001,
+            "peak_abs": 5.760976e-05,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 2.2596259420000104e-17
+          },
+          "V(R_S|XBVM4)": {
+            "signal": "V(R_S|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0001728293,
+            "maximum": 0.0001646242,
+            "p2p": 0.0003374535,
+            "peak_abs": 0.0001728293,
+            "time_of_peak_abs_ps": 118.89999999999999,
+            "signed_area": 6.778876998000032e-17
+          }
+        },
+        "COMMON_SL": {
+          "signal": "V(COMMON_SL)",
+          "unit": "V",
+          "minimum": -0.0008086863,
+          "maximum": 0.001975397,
+          "p2p": 0.0027840833,
+          "peak_abs": 0.001975397,
+          "time_of_peak_abs_ps": 118.8,
+          "signed_area": 4.522843158399991e-15
+        },
+        "QBIN": {
+          "signal": "V(QBIN)",
+          "unit": "V",
+          "minimum": -5.365604e-05,
+          "maximum": 0.00115519,
+          "p2p": 0.00120884604,
+          "peak_abs": 0.00115519,
+          "time_of_peak_abs_ps": 119.0,
+          "signed_area": 5.221860973999991e-15
+        },
+        "replay_source_current": {
+          "signal": "I(V_REPLAY)",
+          "unit": "A",
+          "minimum": -9.55187e-05,
+          "maximum": 0.0001219229,
+          "p2p": 0.0002174416,
+          "peak_abs": 0.0001219229,
+          "time_of_peak_abs_ps": 113.0,
+          "signed_area": 2.327018139000013e-16
+        },
+        "JSL": {
+          "P(B_JSL1)": {
+            "signal": "P(B_JSL1)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL1)": {
+            "signal": "V(B_JSL1)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL1)": {
+            "signal": "I(B_JSL1)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          },
+          "P(B_JSL2)": {
+            "signal": "P(B_JSL2)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL2)": {
+            "signal": "V(B_JSL2)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL2)": {
+            "signal": "I(B_JSL2)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          },
+          "P(B_JSL3)": {
+            "signal": "P(B_JSL3)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL3)": {
+            "signal": "V(B_JSL3)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL3)": {
+            "signal": "I(B_JSL3)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          },
+          "P(B_JSL4)": {
+            "signal": "P(B_JSL4)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL4)": {
+            "signal": "V(B_JSL4)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL4)": {
+            "signal": "I(B_JSL4)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          },
+          "P(B_JSL5)": {
+            "signal": "P(B_JSL5)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL5)": {
+            "signal": "V(B_JSL5)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL5)": {
+            "signal": "I(B_JSL5)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          },
+          "P(B_JSL6)": {
+            "signal": "P(B_JSL6)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL6)": {
+            "signal": "V(B_JSL6)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL6)": {
+            "signal": "I(B_JSL6)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          },
+          "P(B_JSL7)": {
+            "signal": "P(B_JSL7)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL7)": {
+            "signal": "V(B_JSL7)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL7)": {
+            "signal": "I(B_JSL7)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          },
+          "P(B_JSL8)": {
+            "signal": "P(B_JSL8)",
+            "unit": "rad",
+            "minimum": -0.2805173,
+            "maximum": 0.2613073,
+            "p2p": 0.5418246,
+            "peak_abs": 0.2805173,
+            "time_of_peak_abs_ps": 117.9,
+            "signed_area": 5.146322276600024e-13
+          },
+          "V(B_JSL8)": {
+            "signal": "V(B_JSL8)",
+            "unit": "V",
+            "minimum": -0.0001946914,
+            "maximum": 0.0001287617,
+            "p2p": 0.0003234531,
+            "peak_abs": 0.0001946914,
+            "time_of_peak_abs_ps": 117.1,
+            "signed_area": -8.737720725000003e-17
+          },
+          "I(B_JSL8)": {
+            "signal": "I(B_JSL8)",
+            "unit": "A",
+            "minimum": -9.55187e-05,
+            "maximum": 0.0001219229,
+            "p2p": 0.0002174416,
+            "peak_abs": 0.0001219229,
+            "time_of_peak_abs_ps": 113.0,
+            "signed_area": 2.327018139000013e-16
+          }
+        },
+        "JM1_JM2": {
+          "P(B_JM1|XBVM2)": {
+            "signal": "P(B_JM1|XBVM2)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 7.02135,
+            "p2p": 1.1003879999999997,
+            "peak_abs": 7.02135,
+            "time_of_peak_abs_ps": 120.10000000000001,
+            "signed_area": 7.161502274999997e-11
+          },
+          "V(B_JM1|XBVM2)": {
+            "signal": "V(B_JM1|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0004695047,
+            "maximum": 0.0002491132,
+            "p2p": 0.0007186179,
+            "peak_abs": 0.0004695047,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.4932308678000437e-16
+          },
+          "I(B_JM1|XBVM2)": {
+            "signal": "I(B_JM1|XBVM2)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.105513e-05,
+            "p2p": 9.554141e-05,
+            "peak_abs": 5.105513e-05,
+            "time_of_peak_abs_ps": 113.3,
+            "signed_area": 3.205166124399999e-16
+          },
+          "P(B_JM2|XBVM2)": {
+            "signal": "P(B_JM2|XBVM2)",
+            "unit": "rad",
+            "minimum": -0.7005157,
+            "maximum": 1.712219,
+            "p2p": 2.4127346999999997,
+            "peak_abs": 1.712219,
+            "time_of_peak_abs_ps": 119.0,
+            "signed_area": 5.290105660000003e-12
+          },
+          "V(B_JM2|XBVM2)": {
+            "signal": "V(B_JM2|XBVM2)",
+            "unit": "V",
+            "minimum": -0.0008164213,
+            "maximum": 0.0006548426,
+            "p2p": 0.0014712638999999999,
+            "peak_abs": 0.0008164213,
+            "time_of_peak_abs_ps": 119.89999999999999,
+            "signed_area": -3.029675562000058e-16
+          },
+          "I(B_JM2|XBVM2)": {
+            "signal": "I(B_JM2|XBVM2)",
+            "unit": "A",
+            "minimum": 2.081934e-05,
+            "maximum": 9.296549e-05,
+            "p2p": 7.214615e-05,
+            "peak_abs": 9.296549e-05,
+            "time_of_peak_abs_ps": 117.8,
+            "signed_area": 6.603179954999996e-16
+          },
+          "P(B_JM1|XBVM3)": {
+            "signal": "P(B_JM1|XBVM3)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 7.02135,
+            "p2p": 1.1003879999999997,
+            "peak_abs": 7.02135,
+            "time_of_peak_abs_ps": 120.10000000000001,
+            "signed_area": 7.161502274999997e-11
+          },
+          "V(B_JM1|XBVM3)": {
+            "signal": "V(B_JM1|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0004695047,
+            "maximum": 0.0002491132,
+            "p2p": 0.0007186179,
+            "peak_abs": 0.0004695047,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.4932308678000437e-16
+          },
+          "I(B_JM1|XBVM3)": {
+            "signal": "I(B_JM1|XBVM3)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.105513e-05,
+            "p2p": 9.554141e-05,
+            "peak_abs": 5.105513e-05,
+            "time_of_peak_abs_ps": 113.3,
+            "signed_area": 3.205166124399999e-16
+          },
+          "P(B_JM2|XBVM3)": {
+            "signal": "P(B_JM2|XBVM3)",
+            "unit": "rad",
+            "minimum": -0.7005157,
+            "maximum": 1.712219,
+            "p2p": 2.4127346999999997,
+            "peak_abs": 1.712219,
+            "time_of_peak_abs_ps": 119.0,
+            "signed_area": 5.290105660000003e-12
+          },
+          "V(B_JM2|XBVM3)": {
+            "signal": "V(B_JM2|XBVM3)",
+            "unit": "V",
+            "minimum": -0.0008164213,
+            "maximum": 0.0006548426,
+            "p2p": 0.0014712638999999999,
+            "peak_abs": 0.0008164213,
+            "time_of_peak_abs_ps": 119.89999999999999,
+            "signed_area": -3.029675562000058e-16
+          },
+          "I(B_JM2|XBVM3)": {
+            "signal": "I(B_JM2|XBVM3)",
+            "unit": "A",
+            "minimum": 2.081934e-05,
+            "maximum": 9.296549e-05,
+            "p2p": 7.214615e-05,
+            "peak_abs": 9.296549e-05,
+            "time_of_peak_abs_ps": 117.8,
+            "signed_area": 6.603179954999996e-16
+          },
+          "P(B_JM1|XBVM4)": {
+            "signal": "P(B_JM1|XBVM4)",
+            "unit": "rad",
+            "minimum": 5.920962,
+            "maximum": 7.02135,
+            "p2p": 1.1003879999999997,
+            "peak_abs": 7.02135,
+            "time_of_peak_abs_ps": 120.10000000000001,
+            "signed_area": 7.161502274999997e-11
+          },
+          "V(B_JM1|XBVM4)": {
+            "signal": "V(B_JM1|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0004695047,
+            "maximum": 0.0002491132,
+            "p2p": 0.0007186179,
+            "peak_abs": 0.0004695047,
+            "time_of_peak_abs_ps": 120.89999999999999,
+            "signed_area": 1.4932308678000437e-16
+          },
+          "I(B_JM1|XBVM4)": {
+            "signal": "I(B_JM1|XBVM4)",
+            "unit": "A",
+            "minimum": -4.448628e-05,
+            "maximum": 5.105513e-05,
+            "p2p": 9.554141e-05,
+            "peak_abs": 5.105513e-05,
+            "time_of_peak_abs_ps": 113.3,
+            "signed_area": 3.205166124399999e-16
+          },
+          "P(B_JM2|XBVM4)": {
+            "signal": "P(B_JM2|XBVM4)",
+            "unit": "rad",
+            "minimum": -0.7005157,
+            "maximum": 1.712219,
+            "p2p": 2.4127346999999997,
+            "peak_abs": 1.712219,
+            "time_of_peak_abs_ps": 119.0,
+            "signed_area": 5.290105660000003e-12
+          },
+          "V(B_JM2|XBVM4)": {
+            "signal": "V(B_JM2|XBVM4)",
+            "unit": "V",
+            "minimum": -0.0008164213,
+            "maximum": 0.0006548426,
+            "p2p": 0.0014712638999999999,
+            "peak_abs": 0.0008164213,
+            "time_of_peak_abs_ps": 119.89999999999999,
+            "signed_area": -3.029675562000058e-16
+          },
+          "I(B_JM2|XBVM4)": {
+            "signal": "I(B_JM2|XBVM4)",
+            "unit": "A",
+            "minimum": 2.081934e-05,
+            "maximum": 9.296549e-05,
+            "p2p": 7.214615e-05,
+            "peak_abs": 9.296549e-05,
+            "time_of_peak_abs_ps": 117.8,
+            "signed_area": 6.603179954999996e-16
+          }
+        }
+      }
+    },
+    "pre_110_nonanticipation_summary": {
+      "DELAY_0P6": {
+        "P(B_JS1|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "rad"
+        },
+        "P(B_JS2|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "rad"
+        },
+        "I(L_S3|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "A"
+        },
+        "I(R_S|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "A"
+        },
+        "V(COMMON_SL)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "V"
+        },
+        "P(B_JSL8)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "rad"
+        },
+        "V(QBIN)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "V"
+        }
+      },
+      "DELAY_1P2": {
+        "P(B_JS1|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "rad"
+        },
+        "P(B_JS2|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "rad"
+        },
+        "I(L_S3|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "A"
+        },
+        "I(R_S|XBVM2)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "A"
+        },
+        "V(COMMON_SL)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "V"
+        },
+        "P(B_JSL8)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "rad"
+        },
+        "V(QBIN)": {
+          "max_abs_delta": 0.0,
+          "rms_delta": 0.0,
+          "unit": "V"
+        }
+      }
+    },
+    "timing_assessment": {
+      "question": "At fixed N3 population, boundary amplitude/shape and BVM/R-loop parameters, does delaying QBIN boundary evolution delay or suppress the N3 runaway trajectory?",
+      "scope": "Only the two preregistered ideal-voltage boundary delays; this is a causal replay counterfactual, not physical source/load equivalence.",
+      "comparison_basis": "active BVM2/3/4 JS1/JS2 navigation, same-JJ phase/area, JSL/COMMON_SL/LS3/RS trajectories, source branch current, and JM1/JM2 timing",
+      "no_terminal_or_checker_substitute": true,
+      "classification": "BOUNDED_TIMING_EFFECT_OBSERVED",
+      "case_observations": {
+        "DELAY_0P6": {
+          "js1_focus_p2p_turns": 4.9673700160229775,
+          "js2_focus_p2p_turns": 4.870189546221731,
+          "js1_focus_p2p_delta_vs_exact_turns": -1.4190344330306353,
+          "js2_focus_p2p_delta_vs_exact_turns": -1.4903769890885936,
+          "js1_negative_crossings_vs_exact_ps": {
+            "-0.5": 0.19999999999998863,
+            "-1.5": 0.20000000000000284,
+            "-2.5": 0.8000000000000114,
+            "-3.5": 1.90000000000002,
+            "-4.5": 1.6000000000000085,
+            "-5.5": 1.5999999999999943,
+            "-6.5": null,
+            "-7.5": null
+          },
+          "js2_negative_crossings_vs_exact_ps": {
+            "-0.5": 0.10000000000000853,
+            "-1.5": 0.19999999999998863,
+            "-2.5": 1.8999999999999915,
+            "-3.5": 1.2000000000000028,
+            "-4.5": 1.7000000000000028,
+            "-5.5": 2.200000000000003,
+            "-6.5": null,
+            "-7.5": null
+          },
+          "landmark_114p8_raw_and_navigation_samples_recorded": true,
+          "js1_114p8_relative_turns": -1.4773853620699335,
+          "js1_minus_1p5_turn_navigation_ps": 114.9,
+          "js1_minus_1p5_turn_delta_vs_exact_ps": 0.20000000000000284,
+          "js2_later_navigation_landmarks_ps": {
+            "-1.5": 115.5,
+            "-2.5": 118.19999999999999,
+            "-3.5": 119.0,
+            "-4.5": 120.39999999999999,
+            "-5.5": 122.1
+          },
+          "js2_later_navigation_landmark_delta_vs_exact_ps": {
+            "-1.5": 0.19999999999998863,
+            "-2.5": 1.8999999999999915,
+            "-3.5": 1.2000000000000028,
+            "-4.5": 1.7000000000000028,
+            "-5.5": 2.200000000000003
+          },
+          "full_window_most_negative_relative_turns": {
+            "JS1": -6.329632034655394,
+            "JS2": -6.2491141642971995
+          },
+          "full_window_most_negative_delta_vs_exact_turns": {
+            "JS1": 0.9308893043973416,
+            "JS2": 0.9895442671244279
+          }
+        },
+        "DELAY_1P2": {
+          "js1_focus_p2p_turns": 3.6979326351317976,
+          "js2_focus_p2p_turns": 3.3915287164378594,
+          "js1_focus_p2p_delta_vs_exact_turns": -2.688471813921815,
+          "js2_focus_p2p_delta_vs_exact_turns": -2.969037818872465,
+          "js1_negative_crossings_vs_exact_ps": {
+            "-0.5": 0.29999999999999716,
+            "-1.5": 2.3000000000000114,
+            "-2.5": 2.999999999999986,
+            "-3.5": 2.90000000000002,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null,
+            "-7.5": null
+          },
+          "js2_negative_crossings_vs_exact_ps": {
+            "-0.5": 0.20000000000001705,
+            "-1.5": 0.29999999999998295,
+            "-2.5": 2.3000000000000114,
+            "-3.5": 3.9000000000000057,
+            "-4.5": null,
+            "-5.5": null,
+            "-6.5": null,
+            "-7.5": null
+          },
+          "landmark_114p8_raw_and_navigation_samples_recorded": true,
+          "js1_114p8_relative_turns": -1.3691867387978842,
+          "js1_minus_1p5_turn_navigation_ps": 117.00000000000001,
+          "js1_minus_1p5_turn_delta_vs_exact_ps": 2.3000000000000114,
+          "js2_later_navigation_landmarks_ps": {
+            "-1.5": 115.6,
+            "-2.5": 118.60000000000001,
+            "-3.5": 121.7,
+            "-4.5": null,
+            "-5.5": null
+          },
+          "js2_later_navigation_landmark_delta_vs_exact_ps": {
+            "-1.5": 0.29999999999998295,
+            "-2.5": 2.3000000000000114,
+            "-3.5": 3.9000000000000057,
+            "-4.5": null,
+            "-5.5": null
+          },
+          "full_window_most_negative_relative_turns": {
+            "JS1": -4.4119311535065115,
+            "JS2": -4.426912615201179
+          },
+          "full_window_most_negative_delta_vs_exact_turns": {
+            "JS1": 2.8485901855462243,
+            "JS2": 2.8117458162204487
+          }
+        }
+      },
+      "bounded_answer": "PASS: within this fixed ideal-voltage causal replay, delaying only the QBIN boundary evolution delays selected JS1/JS2 navigation landmarks and reduces the active-BVM JS1/JS2 trajectory excursion; the 1.2 ps delay produces the stronger bounded suppression.",
+      "directional_rule": "Both delayed cases show lower JS1 and JS2 [110,121) p2p than EXACT and less-negative full-window relative minima; no post-hoc magnitude threshold is used for this descriptive timing answer.",
+      "not_shown": [
+        "physical-equivalent QB receiver feedback mechanism",
+        "exclusive necessity of boundary timing",
+        "SFQ event count or JTL delivery",
+        "behavior outside this fixed N3 replay fixture"
+      ]
+    }
+  },
+  "reviews": {
+    "numerical_review": {
+      "status": "PASS",
+      "checks": {
+        "units_and_phase_conversion": "PASS: P raw radians; turns only independent unwrap/(2*pi)",
+        "sign_and_direction": "PASS: same BVM JJ branch labels and registered BVM/JSL directions retained",
+        "actual_grid_integration": "PASS: same-JJ voltage areas use actual CSV timestamps",
+        "delay_boundary_indices": "PASS: hold and shifts verified at registered stored indices",
+        "finite_monotone_raw": "PASS",
+        "convergence_and_sensitivity": "UNKNOWN: not authorized"
+      },
+      "independent_recalculation_required": true,
+      "independent_recalculation": {
+        "status": "PASS",
+        "method": "raw.csv csv.DictReader, independent unwrap loop, actual-time trapezoid",
+        "p2p_focus_turns": {
+          "CANONICAL": {
+            "B_JS1": 6.386404449053613,
+            "B_JS2": 6.3605665353103245
+          },
+          "EXACT_N3": {
+            "B_JS1": 6.386404449053613,
+            "B_JS2": 6.3605665353103245
+          },
+          "DELAY_0P6": {
+            "B_JS1": 4.9673700160229775,
+            "B_JS2": 4.870189546221731
+          },
+          "DELAY_1P2": {
+            "B_JS1": 3.6979326351317976,
+            "B_JS2": 3.3915287164378594
+          }
+        },
+        "phase_area_focus": {
+          "CANONICAL": {
+            "B_JS1": {
+              "phase_delta_turns": -6.352845881274454,
+              "voltage_area_over_Phi0_turns": -6.355123887303728,
+              "residual_turns": 0.0022780060292744153
+            },
+            "B_JS2": {
+              "phase_delta_turns": -6.332321785024635,
+              "voltage_area_over_Phi0_turns": -6.334087598802083,
+              "residual_turns": 0.0017658137774478888
+            }
+          },
+          "EXACT_N3": {
+            "B_JS1": {
+              "phase_delta_turns": -6.352845881274454,
+              "voltage_area_over_Phi0_turns": -6.355123852291244,
+              "residual_turns": 0.002277971016789948
+            },
+            "B_JS2": {
+              "phase_delta_turns": -6.332321785024635,
+              "voltage_area_over_Phi0_turns": -6.334087610408431,
+              "residual_turns": 0.0017658253837957716
+            }
+          },
+          "DELAY_0P6": {
+            "B_JS1": {
+              "phase_delta_turns": -4.931146605623171,
+              "voltage_area_over_Phi0_turns": -4.931344226937125,
+              "residual_turns": 0.00019762131395406612
+            },
+            "B_JS2": {
+              "phase_delta_turns": -4.840530672435682,
+              "voltage_area_over_Phi0_turns": -4.838603812717925,
+              "residual_turns": -0.001926859717756635
+            }
+          },
+          "DELAY_1P2": {
+            "B_JS1": {
+              "phase_delta_turns": -3.6612365822974913,
+              "voltage_area_over_Phi0_turns": -3.6638981519370075,
+              "residual_turns": 0.002661569639516248
+            },
+            "B_JS2": {
+              "phase_delta_turns": -3.186525658748607,
+              "voltage_area_over_Phi0_turns": -3.184140732761617,
+              "residual_turns": -0.0023849259869899164
+            }
+          }
+        },
+        "pre_110_max_abs_delta": {
+          "DELAY_0P6": {
+            "P(B_JS1|XBVM2)": 0.0,
+            "P(B_JS2|XBVM2)": 0.0,
+            "V(COMMON_SL)": 0.0,
+            "I(L_S3|XBVM2)": 0.0,
+            "V(L_S3|XBVM2)": 0.0,
+            "I(R_S|XBVM2)": 0.0,
+            "V(R_S|XBVM2)": 0.0,
+            "P(B_JSL8)": 0.0,
+            "V(B_JSL8)": 0.0,
+            "I(B_JSL8)": 0.0,
+            "V(QBIN)": 0.0
+          },
+          "DELAY_1P2": {
+            "P(B_JS1|XBVM2)": 0.0,
+            "P(B_JS2|XBVM2)": 0.0,
+            "V(COMMON_SL)": 0.0,
+            "I(L_S3|XBVM2)": 0.0,
+            "V(L_S3|XBVM2)": 0.0,
+            "I(R_S|XBVM2)": 0.0,
+            "V(R_S|XBVM2)": 0.0,
+            "P(B_JSL8)": 0.0,
+            "V(B_JSL8)": 0.0,
+            "I(B_JSL8)": 0.0,
+            "V(QBIN)": 0.0
+          }
+        },
+        "delay_input": {
+          "DELAY_0P6": {
+            "point_count": 1999,
+            "max_abs_output_minus_registered_pwl_V": 0.0,
+            "hold_value_count": 1,
+            "stored_shift_samples": 6
+          },
+          "DELAY_1P2": {
+            "point_count": 1999,
+            "max_abs_output_minus_registered_pwl_V": 0.0,
+            "hold_value_count": 1,
+            "stored_shift_samples": 12
+          }
+        },
+        "no_interpolation": true
+      }
+    },
+    "adversarial_review": {
+      "status": "PASS_WITH_RESIDUAL_UNCERTAINTY",
+      "probes": {
+        "no_op": "PASS: delayed payload hashes differ from EXACT after 110 ps",
+        "wrong_branch": "PASS: deck remains B_JSL8 -> QBIN and V_REPLAY drives QBIN; QB/JTL/terminal absent",
+        "boundary": "PASS: hold interval and first shifted sample are explicit stored indices",
+        "stale_artifact": "PASS: canonical/exact/delayed raw hashes rechecked before and after analysis",
+        "pre_110_coupling": "RECORDED: exact-vs-delayed pre-110 deltas retained for every key shared signal",
+        "overclaim": "PASS: conclusion limited to ideal voltage replay counterfactual; no SFQ/JTL/hardware claim"
+      },
+      "residual_uncertainty": [
+        "ideal replay removes finite source impedance and self-consistent boundary back-action",
+        "no timestep convergence or solver sensitivity was run",
+        "no QB/JTL downstream evidence exists in this fixture"
+      ]
+    }
   }
 }

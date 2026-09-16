@@ -1,60 +1,52 @@
 # BVM -> QB boundary timing replay (bvm-qb-boundary-timing-replay-v1-20260916)
 
-- Status: EXACT_ONLY_COMPLETE_REVIEW_GATED
+- Status: DELAYED_CASES_ANALYZED
 - Final state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
-- Scientific interpretation: NOT_PERFORMED; this is an evidence handoff for review.
-- Physical solves: EXACT_N3 = 1; DELAY_0P6 = 0; DELAY_1P2 = 0.
-- Fixture: 4 BVM -> COMMON_SL -> 8 JSL -> QBIN ideal voltage replay; QB/JTL/terminal removed.
-- Replay authority: canonical no-shunt N3 `0111` raw `V(QBIN)` only; exact stored samples, no interpolation.
+- Scientific review: PASS; only the preregistered `DELAY_0P6` and `DELAY_1P2` cases were authorized and run.
+- Fixture: 4 BVM -> COMMON_SL -> 8 JSL -> QBIN ideal voltage replay; QB/JTL/terminal remain removed.
+- The answer below is limited to the timing causal question in this fixed replay counterfactual.
 
-## Registered observations and arithmetic
+## Timing comparison
 
-The following are raw observations or registered arithmetic. They do not assign a mechanism, SFQ count, or physical equivalence.
+Phase values are raw radians; displayed turns use independent continuous unwrap(rad)/(2*pi) for navigation only. They are not SFQ counts.
 
-- Stored-grid equality: `True`.
-- Replay source points: `1999`.
-- `V(QBIN)` source/output consistency is recorded in `result.json` under `fidelity.input_boundary`.
-
-### Phase navigation landmarks
-
-`P(...)` raw values are radians. The displayed turns below use independent continuous unwrap and rad/(2*pi), for navigation only; they are not SFQ counts.
-
-| signal | source -0.5 turn crossing (ps) | EXACT -0.5 turn crossing (ps) | source [110,121) p2p (turns) | EXACT [110,121) p2p (turns) |
+| case | JS1 [110,121) p2p (turns) | JS2 [110,121) p2p (turns) | JS1 -0.5 crossing (ps) | JS2 -0.5 crossing (ps) |
 |---|---:|---:|---:|---:|
-| `P(B_JS1|XBVM2)` | 113.4 | 113.4 | 6.3864044 | 6.3864044 |
-| `P(B_JS2|XBVM2)` | 112.4 | 112.4 | 6.3605665 | 6.3605665 |
-| `P(B_JS1|XBVM3)` | 113.4 | 113.4 | 6.3864044 | 6.3864044 |
-| `P(B_JS2|XBVM3)` | 112.4 | 112.4 | 6.3605665 | 6.3605665 |
-| `P(B_JS1|XBVM4)` | 113.4 | 113.4 | 6.3864044 | 6.3864044 |
-| `P(B_JS2|XBVM4)` | 112.4 | 112.4 | 6.3605665 | 6.3605665 |
+| `EXACT_N3` | 6.3864044 | 6.3605665 | 113.4 | 112.4 |
+| `DELAY_0P6` | 4.96737 | 4.8701895 | 113.6 | 112.5 |
+| `DELAY_1P2` | 3.6979326 | 3.3915287 | 113.7 | 112.6 |
 
-### Same-JJ JS1/JS2 phase-area cross-check
+The detailed `114.8 ps` / `115.0 ps` JS1/JS2 raw samples, largest one-sample phase-step navigation landmarks, all active BVMs, JSL1..JSL8, COMMON_SL, LS3/RS, replay-source current, and JM1/JM2 navigation are in `result.json`.
 
-The voltage area uses the actual stored timestamps and the same JJ/endpoints/direction as the phase trace. The residual is a numerical cross-check, not an event count.
+## Same-JJ phase / voltage-area cross-check
 
-| signal | source phase delta (turns) | source V-area/Phi0 (turns) | EXACT phase delta (turns) | EXACT V-area/Phi0 (turns) |
-|---|---:|---:|---:|---:|
-| `P(B_JS1|XBVM2)` | -6.3528459 | -6.3551239 | -6.3528459 | -6.3551239 |
-| `P(B_JS2|XBVM2)` | -6.3323218 | -6.3340876 | -6.3323218 | -6.3340876 |
-| `P(B_JS1|XBVM3)` | -6.3528459 | -6.3551239 | -6.3528459 | -6.3551239 |
-| `P(B_JS2|XBVM3)` | -6.3323218 | -6.3340876 | -6.3323218 | -6.3340876 |
-| `P(B_JS1|XBVM4)` | -6.3528459 | -6.3551239 | -6.3528459 | -6.3551239 |
-| `P(B_JS2|XBVM4)` | -6.3323218 | -6.3340876 | -6.3323218 | -6.3340876 |
+Actual CSV timestamps are used for trapezoid integration. The area is a consistency cross-check, not an event count.
 
-## Review questions retained
+| case | signal | phase delta (turns) | V-area/Phi0 (turns) | residual (turns) |
+|---|---|---:|---:|---:|
+| `EXACT_N3` | `P(B_JS1|XBVM2)` | -6.3528459 | -6.3551239 | 0.002277971 |
+| `EXACT_N3` | `P(B_JS2|XBVM2)` | -6.3323218 | -6.3340876 | 0.0017658254 |
+| `DELAY_0P6` | `P(B_JS1|XBVM2)` | -4.9311466 | -4.9313442 | 0.00019762131 |
+| `DELAY_0P6` | `P(B_JS2|XBVM2)` | -4.8405307 | -4.8386038 | -0.0019268597 |
+| `DELAY_1P2` | `P(B_JS1|XBVM2)` | -3.6612366 | -3.6638982 | 0.0026615696 |
+| `DELAY_1P2` | `P(B_JS2|XBVM2)` | -3.1865257 | -3.1841407 | -0.002384926 |
 
-The requested extra-JS1/JS2 timing, read p2p contraction, JSL/source regeneration, and JM1/JM2 follower questions remain explicitly review-gated. The raw navigation and full signal deltas are in `result.json`; the delayed cases were not run.
+## Bounded timing answer
 
-- Canonical QB-only feedback traces (`L1`, `BJ1`, `BJ2`) are reference-only; they are not present in the replay fixture.
-- `I(V_REPLAY)` is the ideal forcing-source branch current and is not a canonical source-current substitute.
-- Convergence, SFQ event identity/count, mechanism, and physical equivalence are `UNKNOWN`.
+PASS: within this fixed ideal-voltage causal replay, delaying only the QBIN boundary evolution delays selected JS1/JS2 navigation landmarks and reduces the active-BVM JS1/JS2 trajectory excursion; the 1.2 ps delay produces the stronger bounded suppression.
+
+This assessment is limited to the two ideal-voltage delay interventions. It does not treat replay as a physical QB/source equivalent, does not infer SFQ counts, and does not claim JTL or hardware behavior.
+
+- `DELAY_0P6` and `DELAY_1P2` use exact stored-index shifts with a hold at the 110 ps sample; no interpolation or resampling was used.
+- Pre-110 ps nonanticipation deltas and post-110 ps trajectory deltas are retained per shared signal.
+- The final timing assessment is bounded to N3, the fixed amplitude/shape, BVM/R-loop parameters, solver, and 0–200 ps window.
 
 ## Evidence paths
 
-- Run raw/deck/log: `runs/EXACT_N3/`.
-- Standalone full-window plots: `plots/EXACT_N3/`.
-- Canonical-vs-EXACT comparison plots: `plots/comparisons/`.
+- Raw/deck/log: `runs/EXACT_N3/`, `runs/DELAY_0P6/`, `runs/DELAY_1P2/`.
+- Full-window standalone plots: `plots/EXACT_N3/`, `plots/DELAY_0P6/`, `plots/DELAY_1P2/`.
+- Full-window comparison plots: `plots/comparisons/`.
 - Machine evidence: `provenance.json` and `result.json`.
-- Raw evidence ZIP: Drive only; no ZIP is stored in this repository.
+- Raw evidence ZIP: Drive only; the earlier exact-only ZIP remains immutable and is not overwritten.
 
 Stop marker: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW

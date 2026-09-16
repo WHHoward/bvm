@@ -1,0 +1,123 @@
+schema_version: bvm-qb-rloop-ls3-causality-v1
+id: bvm-qb-rloop-ls3-causality-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+scientific_review_authorized: false
+scientific_interpretation_performed: false
+
+question:
+  primary: "Test whether the R_S // L_S3 bridge is a causal internal path for the N3/N4 extra BVM R-loop rotations."
+  scope: "Only L_S3 changes; this is not QB tuning and does not force a target turn count."
+  interpretation_ceiling: "Raw, phase/area, branch-current, timing and scalar observations only; mechanism labels remain review-gated."
+
+frozen:
+  topology: "4 historical JM2-connected BVM -> COMMON_SL -> 8 JSL -> canonical QB -> 6 existing JTL -> 10 ohm terminal"
+  canonical_qb_source: circuits/qb/bq_parameterized_v1.cir
+  canonical_qb_parameters: {Lin_pH: 1.5, L1_pH: 1.4, L2_pH: 2.0, RJ1_ohm: 32.0, RJ2_ohm: 12.0, IB_uA: 260.0, BJS_area: 4.0, BJ1_area: 0.9, BJ2_area: 2.0, L3_pH: 1.3}
+  canonical_bvm_source: test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/bvm_jm2_connected.cir
+  canonical_R_S_ohm: 3.0
+  canonical_L_S3_pH: 0.5
+  stimulus: "same as accepted population baseline and R20 experiment; 100uA, 1ps edges, 9ps plateau, final masks 0011/0111"
+  tran: ".tran 0.1p 200p"
+  terminal_load_ohm: 10.0
+  bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+
+stage_a:
+  points:
+    - point_id: ls3_0p75
+      L_S3_pH: 0.75
+      spice_value: 0.75P
+    - point_id: ls3_1p00
+      L_S3_pH: 1.0
+      spice_value: 1.00P
+    - point_id: ls3_1p50
+      L_S3_pH: 1.5
+      spice_value: 1.50P
+  masks: ["0011", "0111"]
+  authorized_new_physical_solves: 6
+  no_other_L_S3_values: true
+  no_canonical_source_mutation: true
+
+stage_b:
+  status: REVIEW_GATED
+  conditional_masks: ["0000", "0001", "1111"]
+  maximum_additional_solves: 3
+  selection: "smallest L_S3 only if a separately authorized review accepts the preregistered mechanism-success predicate"
+  qualitative_predicate_not_numerically_frozen: true
+
+read_only_endpoints:
+  - r20_0011_raw: test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0011/raw.csv; sha256=778469a262b3252e696c811ec371c82fa77d6b7a89fa7ea411746783bcf8cb9d
+  - r20_0011_deck: test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0011/deck.cir; sha256=f3811f88eda341d317cb3f0aa8e3258dddd5f04f71f749bd8eb283f81179c213
+  - r20_0111_raw: test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0111/raw.csv; sha256=88784cded8137affe353a24a9fc78665c34d3484ead835d178ae87af719bf77e
+  - r20_0111_deck: test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0111/deck.cir; sha256=f2f94a603aac1935515d0fcc0c98bd2ec94baa44a0b8d72286a310da0086ea41
+
+source_closure:
+  - runner: scripts/bvm_qb_rloop_ls3_causality.py; sha256=7707ebe33183d0196966b166611c3914b71a08c8b125c490f42e25be57abc098
+  - global_jjmit_model: circuits/models/jjmit.cir; sha256=19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  - canonical_qb: circuits/qb/bq_parameterized_v1.cir; sha256=f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0
+  - canonical_bvm_template: test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/bvm_jm2_connected.cir; sha256=0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54
+  - canonical_jtl: test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/inputs/jtl2.cir; sha256=ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a
+  - josim_solver: build/josim-cli; sha256=48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  - plotter: scripts/josim-plot2.py; sha256=0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6
+  - shared_raw_reader: scripts/bvmtools/raw.py; sha256=2b7303fd5f99a61846f24d50c18594d073e858a74e6fa632bc90d7d1dbb1f8e2
+  - shared_phase_tools: scripts/bvmtools/phase.py; sha256=ac79f640bc9fae8784f75ef00a6cb978e8fa3606a9938cf0eb131fc728caba3c
+  - shared_waveform_tools: scripts/bvmtools/waveform.py; sha256=75ca2f24ff3df4c7706af5cf4bb23880e74100e7f694ab612cb02ad07d0f2af1
+
+registered_decks:
+  - ls3_0p75_0011: test/exploration/bvm-qb-rloop-ls3-causality-v1-20260916/runs/ls3_0p75/0011/deck.cir; sha256=eadf7818accf7f2de83d873ebdc3d298273a9fb344297e2bcfad6faca999c85d
+  - ls3_0p75_0111: test/exploration/bvm-qb-rloop-ls3-causality-v1-20260916/runs/ls3_0p75/0111/deck.cir; sha256=ff0e9ef2d5cb611d2687a203a1a2e9475d7d4371197ac697af6f2ae34808dacb
+  - ls3_1p00_0011: test/exploration/bvm-qb-rloop-ls3-causality-v1-20260916/runs/ls3_1p00/0011/deck.cir; sha256=3b2a6ae089b61afeb584058e2327005a0d2a2b92a3ce5f3cc1674c590487ccd2
+  - ls3_1p00_0111: test/exploration/bvm-qb-rloop-ls3-causality-v1-20260916/runs/ls3_1p00/0111/deck.cir; sha256=393f7edd6060a0f5ebcda69e14b1b758fdc4d2ae66732e81be4032b85323f9e1
+  - ls3_1p50_0011: test/exploration/bvm-qb-rloop-ls3-causality-v1-20260916/runs/ls3_1p50/0011/deck.cir; sha256=a24ad21ba5e40190fb42aab2240211b6309c2f7225f048c5ee29b36eef760221
+  - ls3_1p50_0111: test/exploration/bvm-qb-rloop-ls3-causality-v1-20260916/runs/ls3_1p50/0111/deck.cir; sha256=d27b5329afefe190409a50e4c63454d8e0c17ebd6567cfcb0f9f10b525c16115
+
+probes:
+  bvm: "P/V/I(B_JM1/B_JM2/B_JS1/B_JS2); I/V(L_M1/L_M2/L_M3/L_PM/L_S1/L_S2/L_S3/R_S/L_PSL/R_SL/L_SL); WL/BL/SE currents; V(COMMON_SL)."
+  bridge: "I/V(L_S3|XBVMn), I/V(R_S|XBVMn), and actual branch endpoints are local BVM nodes 6 and 10 as confirmed from the canonical source."
+  qb_boundary: "P/V/I(B_JSL1..8), V(QBIN), I(B_JSL8), I/V(LIN|XBQ), P/V/I(BJS/BJ1/BJ2), L1/L2/L3, RJ1/RJ2, V(QBOUT)."
+  downstream: "JTL1..6 B01/B02 P/V/I, stage output voltage, terminal voltage/current."
+  direction: "R_S and L_S3 both use canonical branch orientation 6 -> 10; B_JSL8 JSL_NODE7 -> QBIN; LIN|XBQ QBIN -> QB node1."
+
+windows_ps:
+  - [101, 110]
+  - [110, 113]
+  - [113, 115]
+  - [115, 117]
+  - [117, 121]
+  - [121, 126]
+  - [126, 140]
+  - [140, 200]
+window_semantics: half-open; actual stored timestamps; no interpolation/resampling
+phase_semantics: raw radians; independent continuous unwrap then rad/(2*pi) navigation
+voltage_area_semantics: same JJ, same endpoints, same direction and actual grid; not an SFQ count
+phase_area_window_ps: [110, 121]
+divergence_thresholds: {phase_turns: 0.1, current_A: 5e-06, voltage_V: 5e-05}
+
+mechanical_vs_scientific:
+  mechanical_outputs: "branch min/max/mean/signed and absolute area, phase/area residuals, sign-change timestamps, exact-grid deltas, storage/symmetry scalars"
+  scientific_labels: "RLOOP_BRIDGE_MECHANISM_STRONGLY_SUPPORTED, RLOOP_BRIDGE_MECHANISM_PARTIALLY_SUPPORTED, LS3_ROUTE_WEAK_OR_NOT_CAUSAL, LS3_OVERDAMPED_NORMAL_READ, and Stage B authorization remain unassigned"
+
+visualization:
+  pages_per_run: [01_storage.html, 02_js_phase_voltage.html, 03_rloop_bridge.html, 04_output_common_sl.html, 05_jsl_qbin.html, 06_qb.html, 07_jtl_terminal.html]
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_option: 2pi
+  window_ps: [0, 200]
+  focused_pages: none
+  shared_asset: plots/assets/plotly.min.js
+  no_png_svg: true
+
+layout:
+  root_files_only: [experiment.yaml, RESULT.md, result.json, provenance.json, runs, plots]
+  forbidden_dirs: [screening, references, handoff, qa, analysis, inputs, data]
+  run_files_only: [deck.cir, raw.csv, run.log]
+  zip_policy: Drive only; do not commit ZIP
+  result_json_limit_bytes: 512000
+
+stop:
+  final_state: EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW
+  stage_b_without_scientific_review: false
+  automatic_followup: false

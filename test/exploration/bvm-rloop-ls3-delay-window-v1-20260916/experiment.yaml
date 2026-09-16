@@ -1,0 +1,108 @@
+schema_version: bvm-rloop-ls3-delay-window-v1
+id: bvm-rloop-ls3-delay-window-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
+registration_head: b904851be588ca88d40cf1700d5fef7ce3d889ed
+remote_bvm_master_at_registration: b904851be588ca88d40cf1700d5fef7ce3d889ed
+scientific_review_authorized: false
+mechanical_analysis_performed: false
+bounded_experiment_interpretation_performed: false
+independent_scientific_review_performed: false
+scientific_interpretation_performed: false
+
+question:
+  primary: "Is the registered 0.3-ps LS3 timing effect a finite timing window?"
+  scope: "Only N2=0011 and N3=0111 at 0.2 ps and 0.4 ps; 0.3 ps is reused."
+  interpretation_ceiling: "Mechanical candidate labels only; no scientific classification."
+
+frozen:
+  L1_pH: 1.4
+  L2_pH: 2.0
+  IBias_uA: 260
+  RJ1_ohm: 32
+  RJ2_ohm: 12
+  BJS_area: 4
+  timestep_ps: 0.1
+  stop_time_ps: 200
+  t0_ps: 110.0
+  actual_grid: true
+  interpolation: false
+  resampling: false
+  amplitude_scaling: false
+  sign_modification: false
+  no_N1_N4: true
+  no_other_delay: true
+
+authorized_matrix:
+  - run_id: LS3_DELAY0P2_0011
+    mask: "0011"
+    delay_ps: 0.2
+    stored_sample_shift: 2
+    execution_order: 1
+  - run_id: LS3_DELAY0P2_0111
+    mask: "0111"
+    delay_ps: 0.2
+    stored_sample_shift: 2
+    execution_order: 2
+  - run_id: LS3_DELAY0P4_0011
+    mask: "0011"
+    delay_ps: 0.4
+    stored_sample_shift: 4
+    execution_order: 3
+  - run_id: LS3_DELAY0P4_0111
+    mask: "0111"
+    delay_ps: 0.4
+    stored_sample_shift: 4
+    execution_order: 4
+  maximum_new_physical_solves: 4
+  no_N1_N4: true
+  no_0p3_rerun: true
+
+read_only_0p3_reference:
+  experiment: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916
+  - run_id: LS3_EXACT_0011
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_EXACT_0011/raw.csv
+    sha256: 8416225dae6edf23cc125e18bb90cb96ef481860865a94f6e444d44fc6465246
+  - run_id: LS3_DELAY0P3_0011
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/raw.csv
+    sha256: 86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d
+  - run_id: LS3_EXACT_0111
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_EXACT_0111/raw.csv
+    sha256: a4f1f8f014f8048e19594da43acc7c4d41e1e5bfbb0bde320edaa513763cb3ef
+  - run_id: LS3_DELAY0P3_0111
+    path: test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/raw.csv
+    sha256: 93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37
+
+new_deck_registration:
+  - run_id: LS3_DELAY0P2_0011
+    path: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0011/deck.cir
+    sha256: 87443422595b3309472669c5de5f1d4fc2bc7ae00b59050565657d420cec73c4
+    bytes: 311359
+    source_csv: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/inputs/replay_sources/LS3_DELAY0P2_0011_branch_current.csv
+    source_csv_sha256: 360a8be56bdc40394cabda83ca39490b18c6fc3148249efc86ce5e817770c0f5
+  - run_id: LS3_DELAY0P2_0111
+    path: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0111/deck.cir
+    sha256: b639f756c8625a578f6607b5fa851b61d9bae91164faeaf4c8bbe02802594537
+    bytes: 311708
+    source_csv: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/inputs/replay_sources/LS3_DELAY0P2_0111_branch_current.csv
+    source_csv_sha256: 2c9e0dc5eb682d52588d2ab7437f2c5b1ac786838c7d78585a3095821bf1cc19
+  - run_id: LS3_DELAY0P4_0011
+    path: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0011/deck.cir
+    sha256: 31b02e328322da85f1a00b2d50c23206c14681f4edacaaa1223d14aa7d6eb127
+    bytes: 311379
+    source_csv: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/inputs/replay_sources/LS3_DELAY0P4_0011_branch_current.csv
+    source_csv_sha256: a4b1fcb09b9aceedc1484e61895c0389596660814cfb6f3c71f1c309a9df39d0
+  - run_id: LS3_DELAY0P4_0111
+    path: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0111/deck.cir
+    sha256: 3799bd31583716110fcae676ce7a4e81e1063322d2babbbb18130a1ea08bc7e1
+    bytes: 311738
+    source_csv: test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/inputs/replay_sources/LS3_DELAY0P4_0111_branch_current.csv
+    source_csv_sha256: 4203fcf50638cf328c7a0061542fb8822c7bbc64c22dcf161b50578c673222eb
+
+oracle:
+  phase: raw radians; independent unwrap/(2*pi) turns navigation only
+  n2_n3: ordered phase chain plus JTL6/terminal corroboration
+  integration: actual stored time values
+  scientific_classification: NOT_ASSIGNED_SCIENTIFIC_REVIEW_REQUIRED

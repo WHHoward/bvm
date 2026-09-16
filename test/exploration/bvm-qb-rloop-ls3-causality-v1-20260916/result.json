@@ -21,7 +21,32 @@
     "stage_b_physical_solve_count": 0
   },
   "read_only_reference": {
-    "name": "canonical_L_S3_0.5pH_R20",
+    "name": "canonical_no_shunt_reference_20260910",
+    "role": "True canonical reference for LS3 metadata: 9/10 no-shunt raw; the previous R20 records are retained below as noncanonical shunt references.",
+    "metadata_only_correction": true,
+    "simulation_rerun": false,
+    "cases": {
+      "0011": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+        "raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "deck_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir",
+        "deck_sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+        "mask": "0011",
+        "source_role": "canonical no-shunt reference"
+      },
+      "0111": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+        "raw_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "deck_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir",
+        "deck_sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+        "mask": "0111",
+        "source_role": "canonical no-shunt reference"
+      }
+    }
+  },
+  "previous_r20_shunt_reference": {
+    "name": "r20_qbin_shunt_reference_not_canonical",
+    "role": "Retained read-only R20 shunt records; not canonical no-shunt L_S3=0.5 endpoint.",
     "cases": {
       "0011": {
         "raw_path": "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0011/raw.csv",

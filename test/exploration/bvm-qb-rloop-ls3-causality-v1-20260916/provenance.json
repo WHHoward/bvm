@@ -91,28 +91,28 @@
       "path": "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0011/raw.csv",
       "sha256": "778469a262b3252e696c811ec371c82fa77d6b7a89fa7ea411746783bcf8cb9d",
       "bytes": 5844644,
-      "role": "read-only canonical L_S3=0.5pH endpoint raw; not copied"
+      "role": "read-only R20 shunt reference raw; not canonical no-shunt L_S3 endpoint; not copied"
     },
     {
       "name": "r20_0011_deck",
       "path": "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0011/deck.cir",
       "sha256": "f3811f88eda341d317cb3f0aa8e3258dddd5f04f71f749bd8eb283f81179c213",
       "bytes": 6342,
-      "role": "read-only canonical endpoint deck; not copied"
+      "role": "read-only R20 shunt endpoint deck; not canonical no-shunt endpoint; not copied"
     },
     {
       "name": "r20_0111_raw",
       "path": "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0111/raw.csv",
       "sha256": "88784cded8137affe353a24a9fc78665c34d3484ead835d178ae87af719bf77e",
       "bytes": 5845929,
-      "role": "read-only canonical L_S3=0.5pH endpoint raw; not copied"
+      "role": "read-only R20 shunt reference raw; not canonical no-shunt L_S3 endpoint; not copied"
     },
     {
       "name": "r20_0111_deck",
       "path": "test/exploration/bvm-qb-qbin-shunt-r20-v1-20260914/runs/0111/deck.cir",
       "sha256": "f2f94a603aac1935515d0fcc0c98bd2ec94baa44a0b8d72286a310da0086ea41",
       "bytes": 6358,
-      "role": "read-only canonical endpoint deck; not copied"
+      "role": "read-only R20 shunt endpoint deck; not canonical no-shunt endpoint; not copied"
     }
   ],
   "registered_decks": [
@@ -4969,6 +4969,32 @@
     "shared_runtime": true,
     "raw_hashes_rechecked": true,
     "scientific_interpretation_performed": false
+  },
+  "metadata_correction": {
+    "status": "APPLIED_METADATA_ONLY",
+    "corrected_at": "2026-09-16T15:29:27+08:00",
+    "old_label": "canonical_L_S3=0.5 endpoint / R20 shunt raw",
+    "new_label": "canonical no-shunt reference / 9-10 raw",
+    "canonical_no_shunt_reference": {
+      "0011": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+        "raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "deck_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir",
+        "deck_sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3"
+      },
+      "0111": {
+        "raw_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+        "raw_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "deck_path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir",
+        "deck_sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914"
+      }
+    },
+    "r20_shunt_records_preserved": true,
+    "simulation_rerun": false,
+    "raw_mutated": false,
+    "package_not_rewritten": true,
+    "immutable_package_sha256": "5e607ec3d4ec85a777eee78a444f4fd623499a00fe8bc3027a91b166a5230dc9",
+    "note": "The already uploaded LS3 ZIP remains an immutable snapshot; the repository metadata now distinguishes its R20 shunt references from the true canonical no-shunt reference."
   },
   "package": {
     "status": "UPLOADED",

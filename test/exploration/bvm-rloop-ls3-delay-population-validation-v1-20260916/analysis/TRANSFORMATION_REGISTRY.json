@@ -1,0 +1,31 @@
+{
+  "schema": "bvm-rloop-ls3-population-transformation-registry-v1",
+  "raw_mutation": false,
+  "operations": [
+    {
+      "name": "LS3_exact",
+      "rule": "same-instance canonical I(L_S3) at every stored sample"
+    },
+    {
+      "name": "LS3_delay0p3",
+      "rule": "pre-110 same; [110,110.3) hold sample 110; post exact index i-3",
+      "interpolation": false,
+      "resampling": false,
+      "amplitude_scaling": false,
+      "sign_change": false
+    },
+    {
+      "name": "n4_multi_evidence",
+      "rule": "phase landmarks, ordered JTL chains, historical valley-separated JTL6/terminal clusters, terminal area",
+      "old_strict_field": "retained contextual only"
+    },
+    {
+      "name": "phase_display",
+      "rule": "unwrap(raw radians)/(2*pi), navigation only"
+    },
+    {
+      "name": "area",
+      "rule": "same JJ/endpoints/direction/window actual-grid trapezoid; not SFQ count"
+    }
+  ]
+}

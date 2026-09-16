@@ -1,0 +1,339 @@
+{
+  "schema": "bvm-rloop-ls3-population-source-manifest-v1",
+  "experiment_id": "bvm-rloop-ls3-delay-population-validation-v1-20260916",
+  "generated_at": "2026-09-16T20:20:27+08:00",
+  "source_closure": [
+    {
+      "name": "runner",
+      "path": "scripts/bvm_qb_rloop_ls3_population_validation.py",
+      "sha256": "d41e1fee91fa8a9bd78ef34f731576cc09697b08f412cb1344e935cb6ea9aadb",
+      "bytes": 98506,
+      "role": "LS3 population validation generator, executor, mechanical analysis, visualization, and packager"
+    },
+    {
+      "name": "global_jjmit_model",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "canonical global JJ model"
+    },
+    {
+      "name": "canonical_bvm_template",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "canonical BVM clone template"
+    },
+    {
+      "name": "canonical_qb_include",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "canonical QB include"
+    },
+    {
+      "name": "canonical_jtl_include",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "canonical six-stage JTL include"
+    },
+    {
+      "name": "public_qb_hash_guard",
+      "path": "circuits/qb/bq_parameterized_v1.cir",
+      "sha256": "f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0",
+      "bytes": 289,
+      "role": "canonical QB guard"
+    },
+    {
+      "name": "josim_solver",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "recorded JoSIM solver"
+    },
+    {
+      "name": "plotter",
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "bytes": 12245,
+      "role": "standard descriptive JoSIM renderer"
+    },
+    {
+      "name": "branch_replay_helper",
+      "path": "scripts/bvm_qb_rloop_branch_timing_decomposition.py",
+      "sha256": "871140804ddbb7973b6a6bf03050951423ab70120713dd4cd781ec07c324a4c4",
+      "bytes": 115127,
+      "role": "read-only validated LS3 topology and arithmetic helper"
+    },
+    {
+      "name": "total_replay_helper",
+      "path": "scripts/bvm_qb_rloop_bridge_timing_replay.py",
+      "sha256": "3cd1a2d65df7b62dfd3559dd28606337556d1cab0db5a4c4f7f4405d8a2e8806",
+      "bytes": 115626,
+      "role": "read-only raw/grid/source helper"
+    },
+    {
+      "name": "z0_metrics_helper",
+      "path": "scripts/bvm_qb_tline_z0_rescue_gate.py",
+      "sha256": "c8e199f45f81b57b739b589b77140719bdf93004cf886101c3de97f1a61547f6",
+      "bytes": 106292,
+      "role": "read-only waveform, phase, QB/JTL helper"
+    },
+    {
+      "name": "boundary_replay_helper",
+      "path": "scripts/bvm_qb_boundary_timing_replay.py",
+      "sha256": "54005b7a638851c0c09d2dc138735b0f06eee4518ac99553273a5a8ad56099a4",
+      "bytes": 75638,
+      "role": "read-only actual-grid helper"
+    },
+    {
+      "name": "historical_multi_evidence_oracle",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/analysis/population_oracle.py",
+      "sha256": "b07056580cdd913efcf5317a8856c9a8023c8c9499ede89d236e837d20950166",
+      "bytes": 14341,
+      "role": "read-only historical voltage-cluster segmentation and strict comparison oracle"
+    },
+    {
+      "name": "previous_branch_result",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/result.json",
+      "sha256": "30f3ac56b7374c24dea63aa2b613f0c0c4b5e9d6ebe55673e75e12e91dcf6fdb",
+      "bytes": 301020,
+      "role": "read-only accepted N2/N3 context"
+    },
+    {
+      "name": "previous_branch_provenance",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/provenance.json",
+      "sha256": "6c2b93f4177edd083aef4b27da033cf0fa04acf3b0dbe9354e85e4c946bb5b46",
+      "bytes": 10743272,
+      "role": "read-only accepted N2/N3 provenance"
+    },
+    {
+      "name": "previous_branch_source_manifest",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/analysis/SOURCE_MANIFEST.json",
+      "sha256": "8d3b7c679263f7c2ecdf04b81386b864c590967f881e982a4371e9bbfc21be7e",
+      "bytes": 15223,
+      "role": "read-only previous source closure"
+    },
+    {
+      "name": "canonical_0001_raw",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/raw.csv",
+      "sha256": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+      "bytes": 7099946,
+      "role": "read-only population source raw"
+    },
+    {
+      "name": "canonical_0001_deck",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/deck.cir",
+      "sha256": "81a9b7e75437a5cb9ccd173b9db3bf93697ea6dd6017bb1d8dbf4bd4008d70fb",
+      "bytes": 7484,
+      "role": "read-only population source deck"
+    },
+    {
+      "name": "canonical_1111_raw",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/raw.csv",
+      "sha256": "0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c",
+      "bytes": 7100700,
+      "role": "read-only population source raw"
+    },
+    {
+      "name": "canonical_1111_deck",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/deck.cir",
+      "sha256": "892295ddd6599ba6cfa17a28a62528b6d891e0b7dc1c2105649dc25e5e3043c3",
+      "bytes": 7532,
+      "role": "read-only population source deck"
+    },
+    {
+      "name": "reused_n2_canonical",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+      "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "bytes": 7102297,
+      "role": "read-only N2/N3 population context raw; not copied into package"
+    },
+    {
+      "name": "reused_n2_ls3_delay0p3",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/raw.csv",
+      "sha256": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+      "bytes": 7210093,
+      "role": "read-only N2/N3 population context raw; not copied into package"
+    },
+    {
+      "name": "reused_n3_canonical",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+      "sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+      "bytes": 7101704,
+      "role": "read-only N2/N3 population context raw; not copied into package"
+    },
+    {
+      "name": "reused_n3_ls3_delay0p3",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/raw.csv",
+      "sha256": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37",
+      "bytes": 7206400,
+      "role": "read-only N2/N3 population context raw; not copied into package"
+    }
+  ],
+  "canonical_source_raw_hashes": {
+    "0001": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+    "1111": "0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c"
+  },
+  "reused_context_raw_hashes": {
+    "N2_CANONICAL": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "N2_LS3_DELAY0P3": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+    "N3_CANONICAL": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+    "N3_LS3_DELAY0P3": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37"
+  },
+  "branch_direction_audit": {
+    "0001": {
+      "status": "PASS",
+      "positive_direction": "node6 -> node10",
+      "mask": "0001",
+      "instances": {
+        "XBVM1": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 1.0000000001546586e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0001",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM2": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 1.0000000001546586e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0001",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM3": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 1.0000000001546586e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0001",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM4": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.0000000017050295e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 5.000000000349777e-11,
+          "node10_kcl_max_abs_A": 7.000000001167314e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0001",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        }
+      },
+      "all_instances_pass": true
+    },
+    "1111": {
+      "status": "PASS",
+      "positive_direction": "node6 -> node10",
+      "mask": "1111",
+      "instances": {
+        "XBVM1": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 5.000000000349777e-11,
+          "node10_kcl_max_abs_A": 1.0000000001715993e-10,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "1111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM2": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 5.000000000349777e-11,
+          "node10_kcl_max_abs_A": 1.0000000001715993e-10,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "1111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM3": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 5.000000000349777e-11,
+          "node10_kcl_max_abs_A": 1.0000000001715993e-10,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "1111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM4": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 5.000000000349777e-11,
+          "node10_kcl_max_abs_A": 1.0000000001715993e-10,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "1111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        }
+      },
+      "all_instances_pass": true
+    }
+  }
+}

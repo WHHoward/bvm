@@ -1,0 +1,125 @@
+schema_version: bvm-rloop-ls3-delay-population-validation-v1
+id: bvm-rloop-ls3-delay-population-validation-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
+registration_head: 2099471a24f7938056ac762ff60c89636dcafa7d
+remote_bvm_master_at_registration: 2099471a24f7938056ac762ff60c89636dcafa7d
+scientific_review_authorized: false
+mechanical_analysis_performed: false
+bounded_experiment_interpretation_performed: false
+independent_scientific_review_performed: false
+scientific_interpretation_performed: false
+
+question:
+  primary: "Does LS3-only 0.3-ps timing preserve N1≈1 and N4≈4 while retaining established N2=2 / N3=3 behavior?"
+  scope: "N1/N4 validation only; N2/N3 are reused read-only context."
+  interpretation_ceiling: "Mechanical evidence package; final labels and mechanism remain scientific-review gated."
+
+source_fixture:
+  forward_topology: "canonical BVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..6 -> 10 ohm terminal"
+  physical_bridge: ["R_S 6 10 3.0 retained", "L_S3 removed"]
+  replay_branch: "same-instance canonical I(L_S3), positive node6 -> node10"
+  canonical_qb_jsl_jtl_terminal_unchanged: true
+  shared_waveform: false
+
+frozen:
+  L1_pH: 1.4
+  L2_pH: 2.0
+  IBias_uA: 260
+  RJ1_ohm: 32
+  RJ2_ohm: 12
+  BJS_area: 4
+  time_step_ps: 0.1
+  stop_time_ps: 200
+  intervention_start_ps: 110.0
+  delayed_ps: 0.3
+  delayed_stored_samples: 3
+  actual_grid: true
+  interpolation: false
+  resampling: false
+  amplitude_scaling: false
+  sign_modification: false
+  no_read_extension: true
+  no_sentinel: true
+
+authorized_matrix:
+  - run_id: LS3_EXACT_0001
+    mask: "0001"
+    stage: EXACT
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    execution_order: 1
+    status: registered_exact_deck
+  - run_id: LS3_DELAY0P3_0001
+    mask: "0001"
+    stage: DELAY0P3
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    execution_order: 2
+    status: registered_deferred_until_mask_exact_gate
+  - run_id: LS3_EXACT_1111
+    mask: "1111"
+    stage: EXACT
+    delay_ps: 0.0
+    stored_sample_shift: 0
+    execution_order: 3
+    status: registered_exact_deck
+  - run_id: LS3_DELAY0P3_1111
+    mask: "1111"
+    stage: DELAY0P3
+    delay_ps: 0.3
+    stored_sample_shift: 3
+    execution_order: 4
+    status: registered_deferred_until_mask_exact_gate
+  maximum_new_physical_solves: 4
+  no_other_solve: true
+
+source_raw_registration:
+  - mask: "0001"
+    path: test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/raw.csv
+    sha256: 7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3
+  - mask: "1111"
+    path: test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/raw.csv
+    sha256: 0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c
+
+exact_deck_registration:
+  - run_id: LS3_EXACT_0001
+    path: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/runs/LS3_EXACT_0001/deck.cir
+    sha256: 7be2c11847b4b6306c82d0f52e9697f80a4e0ea98f3cf358dd513c79623ead94
+    bytes: 310376
+    source_csv: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/inputs/replay_sources/LS3_EXACT_0001_branch_current.csv
+    source_csv_sha256: ca7feacc78f746463d13c6bc1df0572feb3d7819afd9e0a70ccbf8ba552e6666
+  - run_id: LS3_EXACT_1111
+    path: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/runs/LS3_EXACT_1111/deck.cir
+    sha256: 0e88458977148f472e1077bf841898138f16bf1ac6ec8697433a86679971e3da
+    bytes: 312591
+    source_csv: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/inputs/replay_sources/LS3_EXACT_1111_branch_current.csv
+    source_csv_sha256: f002e04a05aabea6dabe86ee8a700a65a8b6b3b8b0ce3851419fdc842335e511
+
+replay_semantics:
+  phase_unit: raw radians; turns only independent unwrap/(2*pi) navigation
+  area: same JJ/endpoints/direction/window actual-grid trapezoid; not SFQ count
+  terminal: corroboration only
+  delayed_cases_interpretation: mask-specific exact gate required
+
+delayed_deck_registration_0001:
+  - run_id: LS3_DELAY0P3_0001
+    path: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/runs/LS3_DELAY0P3_0001/deck.cir
+    sha256: 8221e49ecbaecf7fe6b909c28fd83a4447d32ebc1bcd14a9084122b63aa24168
+    bytes: 310376
+    source_csv: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/inputs/replay_sources/LS3_DELAY0P3_0001_branch_current.csv
+    source_csv_sha256: da55948bc8491695b41d0a0a1ba8c758d17fd0c17de57116ec2f180e896b0057
+    exact_gate_status: PASS
+    interpretation_allowed: true
+
+delayed_deck_registration_1111:
+  - run_id: LS3_DELAY0P3_1111
+    path: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/runs/LS3_DELAY0P3_1111/deck.cir
+    sha256: 49c160a15d259c7f015bd6ba0d3639afb89e8220da7130bc6638496dad2e8ad3
+    bytes: 312591
+    source_csv: test/exploration/bvm-rloop-ls3-delay-population-validation-v1-20260916/inputs/replay_sources/LS3_DELAY0P3_1111_branch_current.csv
+    source_csv_sha256: 0bb65543de64259db52c350cfedac5a86aea20f84e883198c117b840df7f67b8
+    exact_gate_status: PASS
+    interpretation_allowed: true

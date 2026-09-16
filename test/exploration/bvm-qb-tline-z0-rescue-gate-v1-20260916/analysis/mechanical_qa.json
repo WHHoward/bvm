@@ -1,0 +1,126 @@
+{
+  "schema": "bvm-qb-tline-z0-rescue-gate-mechanical-qa-v1",
+  "experiment_id": "bvm-qb-tline-z0-rescue-gate-v1-20260916",
+  "generated_at": "2026-09-16T17:30:47+08:00",
+  "status": "PASS",
+  "artifact_status": "VALID",
+  "head": "ad15dc5abd26d12b618451f9358211ef90b3fa80",
+  "remote_bvm_master": "ad15dc5abd26d12b618451f9358211ef90b3fa80",
+  "source_hashes_match": true,
+  "reference_hashes_match": true,
+  "run_order": [
+    "Z0_12_0011",
+    "Z0_24_0011"
+  ],
+  "expected_run_order_shape": true,
+  "actual_new_physical_solve_count": 2,
+  "stage1_count": 2,
+  "stage2_count": 0,
+  "max_new_physical_solves": 3,
+  "no_extra_Z0_or_delay": true,
+  "no_canonical_mutation": true,
+  "no_read_extension": true,
+  "no_sentinel_follow_up": true,
+  "known_nonfatal_probe_warning_policy": "inherited IB|XBQ1 lookup is unavailable and excluded from required metrics",
+  "raw_hash_before_after_analysis_equal": true,
+  "root_unexpected_entries": [],
+  "conditional_consistency": true,
+  "runs": {
+    "Z0_12_0011": {
+      "status": "PASS",
+      "deck": {
+        "path": "test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_12/0011/deck.cir",
+        "sha256": "12eb1694b8279d774fe966be59e97adb0283a699dd055c14d15d0899fa55f1e9",
+        "registered_sha256": "12eb1694b8279d774fe966be59e97adb0283a699dd055c14d15d0899fa55f1e9",
+        "only_registered_Z0_change": true,
+        "forbidden_tokens": []
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_12/0011/raw.csv",
+        "sha256": "ed16ba43c8b95a52d4c17fb28bbfbad209e7316e268b19126f69785ee04c3132",
+        "recorded_sha256": "ed16ba43c8b95a52d4c17fb28bbfbad209e7316e268b19126f69785ee04c3132",
+        "missing_required_probes": [],
+        "known_unavailable_probes": [
+          "V(IB|XBQ1)"
+        ],
+        "duplicate_columns": {},
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 267,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        }
+      },
+      "solver_warning_lines": [
+        "Unknown device/node IB|XBQ1",
+        "Cannot store results for this device/node."
+      ],
+      "known_nonfatal_probe_warnings": [
+        "Unknown device/node IB|XBQ1",
+        "Cannot store results for this device/node."
+      ],
+      "unexpected_solver_warning_lines": []
+    },
+    "Z0_24_0011": {
+      "status": "PASS",
+      "deck": {
+        "path": "test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_24/0011/deck.cir",
+        "sha256": "8c9f2a58f2e5885e0cce1640d077ba370365bb361d4223d99109245b94ecb5df",
+        "registered_sha256": "8c9f2a58f2e5885e0cce1640d077ba370365bb361d4223d99109245b94ecb5df",
+        "only_registered_Z0_change": true,
+        "forbidden_tokens": []
+      },
+      "raw": {
+        "path": "test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_24/0011/raw.csv",
+        "sha256": "a87b0014ed9586919ac161ed45762b60cfc9135bbeb41c9b49ca3cbaa1221d58",
+        "recorded_sha256": "a87b0014ed9586919ac161ed45762b60cfc9135bbeb41c9b49ca3cbaa1221d58",
+        "missing_required_probes": [],
+        "known_unavailable_probes": [
+          "V(IB|XBQ1)"
+        ],
+        "duplicate_columns": {},
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 267,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        }
+      },
+      "solver_warning_lines": [
+        "Unknown device/node IB|XBQ1",
+        "Cannot store results for this device/node."
+      ],
+      "known_nonfatal_probe_warnings": [
+        "Unknown device/node IB|XBQ1",
+        "Cannot store results for this device/node."
+      ],
+      "unexpected_solver_warning_lines": []
+    }
+  },
+  "result_json_bytes": 37593,
+  "result_json_under_limit": true,
+  "mechanical_analysis_performed": true,
+  "bounded_experiment_interpretation_performed": true,
+  "independent_scientific_review_performed": false,
+  "failures": []
+}

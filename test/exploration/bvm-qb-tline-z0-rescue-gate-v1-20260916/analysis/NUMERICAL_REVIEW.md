@@ -1,0 +1,9 @@
+# Numerical review (mechanical independent recalculation)
+
+This is a fresh CSV-reader check, not an independent scientific review.
+
+- `grid_match`: `True`; actual stored time values were used.
+- `ordered_navigation_candidate_count`: `{"CANONICAL_0011": 2, "CANONICAL_0111": 4, "Z0_12_0011": 1, "Z0_24_0011": 1}`.
+- `phase_area`: `{"CANONICAL_0011": {"B_JS1": {"phase_delta_turns": -3.1236796211585984, "voltage_area_over_Phi0_turns": -3.125983718591295, "residual_turns": 0.0023040974326966612}, "B_JS2": {"phase_delta_turns": -2.841450685785052, "voltage_area_over_Phi0_turns": -2.8382570658549313, "residual_turns": -0.0031936199301205725}}, "CANONICAL_0111": {"B_JS1": {"phase_delta_turns": -6.352845881274454, "voltage_area_over_Phi0_turns": -6.355123887303728, "residual_turns": 0.0022780060292744153}, "B_JS2": {"phase_delta_turns": -6.332321785024635, "voltage_area_over_Phi0_turns": -6.334087598802083, "residual_turns": 0.0017658137774478888}}, "Z0_12_0011": {"B_JS1": {"phase_delta_turns": -3.163976108946518, "voltage_area_over_Phi0_turns": -3.1667479053181586, "residual_turns": 0.0027717963716407112}, "B_JS2": {"phase_delta_turns": -2.852637177439164, "voltage_area_over_Phi0_turns": -2.8495116661810216, "residual_turns": -0.0031255112581423106}}, "Z0_24_0011": {"B_JS1": {"phase_delta_turns": -3.145053063677721, "voltage_area_over_Phi0_turns": -3.147397925029026, "residual_turns": 0.00234486135130485}, "B_JS2": {"phase_delta_turns": -2.8651520558257917, "voltage_area_over_Phi0_turns": -2.862248516932098, "residual_turns": -0.002903538893693547}}}`; phase is raw radians and area uses actual-grid trapezoids.
+- Unit/sign/window check: PASS for registered windows `[110,121)` and `[121,130)` ps; no absolute-value replacement was used for signed recovery metrics.
+- Convergence/sensitivity: UNKNOWN; no timestep sweep was authorized or performed.

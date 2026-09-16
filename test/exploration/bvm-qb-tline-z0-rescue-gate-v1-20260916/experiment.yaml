@@ -1,0 +1,125 @@
+schema_version: bvm-qb-tline-z0-rescue-gate-v1
+id: bvm-qb-tline-z0-rescue-gate-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+registration_head: ad15dc5abd26d12b618451f9358211ef90b3fa80
+remote_bvm_master_at_registration: ad15dc5abd26d12b618451f9358211ef90b3fa80
+scientific_review_authorized: false
+mechanical_analysis_performed: false
+bounded_experiment_interpretation_performed: false
+independent_scientific_review_performed: false
+
+question:
+  primary: "Is the prior N2 failure mainly caused by the Z0=6 ohm TLINE interface condition?"
+  scope: "Fixed TD=0.3 ps, prior TLINE topology, two registered engineering diagnostic Z0 values, N2 first."
+  interpretation_ceiling: "Bounded raw trajectory and rescue-gate evidence only; no physical matching or hardware claim."
+
+source_fixture:
+  topology: "BVM + COMMON_SL + 8xJSL + ideal lossless TLINE + canonical QB + JTL1..6 + 10 ohm terminal"
+  intervention: "Only T_BVM_QB Z0 token changes from prior Z0=6 deck."
+  tline_syntax: "Tlabel Vi+ Vi- Vo+ Vo- TD=value Z0=value"
+  TD_ps: 0.3
+  previous_Z0_ohm: 6
+  diagnostic_Z0_ohm: [12, 24]
+  Z0_semantics: "engineering diagnostic values, not matching values or measured characteristic impedance"
+  canonical_QB_parameters: unchanged
+  canonical_BVM_parameters: unchanged
+  canonical_JTL_terminal: unchanged
+
+frozen:
+  mask_bit_order: b3b2b1b0 = BVM1/BVM2/BVM3/BVM4
+  stage1_mask: "0011"
+  conditional_stage2_mask: "0111"
+  tran: ".tran 0.1p 200p"
+  stored_grid: "actual JoSIM CSV timestamps, expected 1999 samples, 0 to 199.9 ps"
+  windows_ps:
+    full: [0, 200]
+    control: [70, 110]
+    focus: [110, 121]
+    rearm: [121, 130]
+  window_semantics: "half-open actual stored timestamps"
+  no_interpolation: true
+  no_resampling: true
+  no_amplitude_scaling: true
+  no_read_extension: true
+  no_timestep_sweep: true
+  no_sentinel: true
+
+authorized_matrix:
+  stage1_max_new_physical_solves: 2
+  stage1:
+    - run_id: Z0_12_0011
+      mask: "0011"
+      TD_ps: 0.3
+      Z0_ohm: 12
+    - run_id: Z0_24_0011
+      mask: "0011"
+      TD_ps: 0.3
+      Z0_ohm: 24
+  conditional_stage2_max_new_physical_solves: 1
+  conditional_stage2: "one 0111 run only at closest-to-canonical rescue Z0"
+  absolute_max_new_physical_solves: 3
+  no_other_Z0_or_delay_points: true
+
+rescue_gate:
+  canonical_reference: "canonical N2 no-shunt raw"
+  prior_reference: "previous Z0=6, TD=0.3 TLINE N2 raw"
+  ordered_oracle: "BJ1 -> BJ2 -> JTL1..JTL6 phase-navigation chain"
+  thresholds_turns: [0.5, 1.5]
+  first_response: "BJ1/BJ2 +0.5 chain present and ordered"
+  second_response: "BJ1/BJ2 +1.5 chain present and ordered; full ordered candidate count equals canonical 2"
+  rearm_window_ps: [121, 130]
+  sustained_rearm_definition: "negative-to-positive sign crossing followed by 3 consecutive stored samples > 0"
+  terminal_role: "downstream corroboration only, never sole oracle"
+  rescue_pass: "first response, second ordered response, L1 re-arm, and descriptive no-fake-ringing screen"
+  rescue_fail: "both Z0=12 and Z0=24 fail; record TLINE_Z0_RESCUE_FAILED and stop"
+  selection: "smallest normalized actual-grid recovery/re-arm distance to canonical among rescue-pass cases"
+
+metrics:
+  phase: "P raw radians; independent continuous unwrap then rad/(2*pi) navigation only"
+  phase_area: "same JJ/endpoints/direction/window; actual-grid trapezoid divided by Phi0; not an SFQ count"
+  source_recovery: "I(B_JSL8), I(T_BVM_QB), I(LIN|XBQ1), COMMON_SL, QBIN"
+  bvm_rloop: "active JS1/JS2 focus p2p and phase-area plus LS3/R_S/LM3/L_SL and JM1/JM2"
+  tline: "near-port/far-side direct waveform features; no incident/reflected decomposition"
+  two_TD: "2*TD is not a measured return delay and is not used as a metric"
+
+probes:
+  required: "full BVM storage/R-loop/output, P/V/I JSL1..8, TLINE near port, QB boundary/internal, all JTL stages, terminal"
+  known_unavailable: ["I(IB|XBQ1)", "V(IB|XBQ1)"]
+  known_unavailable_policy: "record UNKNOWN/NOT_SUPPORTED; no metric uses these probes"
+
+prohibited:
+  - "QB parameter changes"
+  - "BVM/LS3/RS changes"
+  - "JTL/capture/terminal changes"
+  - "amplitude scaling"
+  - "matching network or transformer"
+  - "extra Z0 or delay points"
+  - "TD=0.6 ps"
+  - "N3 before rescue PASS"
+  - "sentinel follow-up"
+  - "READ extension"
+  - "timestep sweep"
+
+output:
+  root_files: [experiment.yaml, PREFLIGHT.md, RESULT.md, result.json, provenance.json, runs, plots, analysis]
+  raw_zip: Drive only
+  delivery_manifest: delivery_manifest.json outside ZIP
+
+stage1_deck_registration:
+  - run_id: Z0_12_0011
+    path: test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_12/0011/deck.cir
+    sha256: 12eb1694b8279d774fe966be59e97adb0283a699dd055c14d15d0899fa55f1e9
+    bytes: 7818
+    Z0_ohm: 12
+    TD_ps: 0.3
+    mask: 0011
+  - run_id: Z0_24_0011
+    path: test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_24/0011/deck.cir
+    sha256: 8c9f2a58f2e5885e0cce1640d077ba370365bb361d4223d99109245b94ecb5df
+    bytes: 7818
+    Z0_ohm: 24
+    TD_ps: 0.3
+    mask: 0011

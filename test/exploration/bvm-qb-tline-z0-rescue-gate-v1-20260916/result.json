@@ -1,0 +1,1090 @@
+{
+  "schema": "bvm-qb-tline-z0-rescue-gate-result-v1",
+  "experiment_id": "bvm-qb-tline-z0-rescue-gate-v1-20260916",
+  "generated_at": "2026-09-16T17:30:28+08:00",
+  "status": "ANALYSIS_COMPLETE",
+  "artifact_status": "VALID",
+  "scientific_review_authorized": false,
+  "mechanical_analysis_performed": true,
+  "bounded_experiment_interpretation_performed": true,
+  "independent_scientific_review_performed": false,
+  "execution": {
+    "new_physical_solve_authorized": 3,
+    "actual_new_physical_solve_count": 2,
+    "solver_invocation_count": 2,
+    "stage1_count": 2,
+    "stage2_count": 0
+  },
+  "runs": {
+    "Z0_12_0011": {
+      "stage": 1,
+      "Z0_ohm": 12,
+      "TD_ps": 0.3,
+      "mask": "0011",
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_12/0011/raw.csv",
+      "raw_sha256": "ed16ba43c8b95a52d4c17fb28bbfbad209e7316e268b19126f69785ee04c3132",
+      "grid": {
+        "status": "VALID",
+        "sample_count": 1999,
+        "header_count": 267,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "strictly_increasing_time": true,
+        "finite_values": true,
+        "dt_ps_min": 0.09999999999997898,
+        "dt_ps_max": 0.19999999999999996,
+        "dt_ps_counts": {
+          "0.1": 1997,
+          "0.2": 1
+        },
+        "duplicate_columns": {}
+      }
+    },
+    "Z0_24_0011": {
+      "stage": 1,
+      "Z0_ohm": 24,
+      "TD_ps": 0.3,
+      "mask": "0011",
+      "status": "RUN_PASS",
+      "raw_path": "test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/runs/Z0_24/0011/raw.csv",
+      "raw_sha256": "a87b0014ed9586919ac161ed45762b60cfc9135bbeb41c9b49ca3cbaa1221d58",
+      "grid": {
+        "status": "VALID",
+        "sample_count": 1999,
+        "header_count": 267,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "strictly_increasing_time": true,
+        "finite_values": true,
+        "dt_ps_min": 0.09999999999997898,
+        "dt_ps_max": 0.19999999999999996,
+        "dt_ps_counts": {
+          "0.1": 1997,
+          "0.2": 1
+        },
+        "duplicate_columns": {}
+      }
+    }
+  },
+  "outcome": {
+    "status": "FAIL",
+    "classification": "TLINE_Z0_RESCUE_FAILED",
+    "canonical_n2_ordered_candidate_count": 2,
+    "entries": {
+      "Z0_12_0011": {
+        "Z0_ohm": 12,
+        "canonical_ordered_candidate_count": 2,
+        "ordered_candidate_count": 1,
+        "first_response_intact": true,
+        "second_response_recovered": false,
+        "first_bj1_plus_0p5_ps": 115.7,
+        "first_bj2_plus_0p5_ps": 116.50000000000001,
+        "second_bj1_plus_1p5_ps": null,
+        "second_bj2_plus_1p5_ps": null,
+        "rearm_l1_sustained_negative_to_positive_ps": null,
+        "rearm_l1_positive_dwell_ps": 0,
+        "rearm_l1_zero_sign_crossings": 0,
+        "source_bjsl8_positive_to_negative_ps": 121.80000000000001,
+        "source_bjsl8_negative_dwell_ps": 3.399999999999983,
+        "terminal_corrob_signal_present": true,
+        "not_terminal_only_oracle": true,
+        "ringing_or_new_switching_screen": {
+          "status": "FAIL_OR_UNKNOWN",
+          "basis": "second response is required to be internally ordered BJ1->BJ2->JTL1..6 and accompanied by L1 re-arm; terminal is corroboration only",
+          "not_a_switching_or_SFQ_certification": true
+        },
+        "recovery_distance": {
+          "status": "DERIVED",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "signals": {
+            "I(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 6.832172296725831e-05,
+              "reference_scale_raw": 0.00020569272000000002,
+              "normalized_rms": 0.3321543074896297,
+              "actual_grid": true
+            },
+            "I(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 6.832172485024295e-05,
+              "reference_scale_raw": 0.0002999978,
+              "normalized_rms": 0.22774075293299803,
+              "actual_grid": true
+            },
+            "V(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.0001352086331523156,
+              "reference_scale_raw": 0.0004272897,
+              "normalized_rms": 0.31643316736236704,
+              "actual_grid": true
+            },
+            "V(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00019315518603057154,
+              "reference_scale_raw": 0.0006104138,
+              "normalized_rms": 0.31643319012540594,
+              "actual_grid": true
+            },
+            "I(B_JSL8)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.4849384177152116e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.48092545104608037,
+              "actual_grid": true
+            },
+            "I(LIN|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.517487110198643e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.4837793563083522,
+              "actual_grid": true
+            },
+            "V(COMMON_SL)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00017318493370832553,
+              "reference_scale_raw": 0.0010923397000000001,
+              "normalized_rms": 0.15854494138437475,
+              "actual_grid": true
+            },
+            "V(QBIN)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00025346244813548064,
+              "reference_scale_raw": 0.000559589,
+              "normalized_rms": 0.4529439430286883,
+              "actual_grid": true
+            }
+          },
+          "mean_normalized_rms": 0.346119388709737,
+          "signal_count": 8,
+          "selection_role": "closest-to-canonical recovery/re-arm trajectory"
+        },
+        "rescue_pass": false,
+        "previous_Z0_6_ordered_candidate_count": 1
+      },
+      "Z0_24_0011": {
+        "Z0_ohm": 24,
+        "canonical_ordered_candidate_count": 2,
+        "ordered_candidate_count": 1,
+        "first_response_intact": true,
+        "second_response_recovered": false,
+        "first_bj1_plus_0p5_ps": 116.10000000000001,
+        "first_bj2_plus_0p5_ps": 116.9,
+        "second_bj1_plus_1p5_ps": null,
+        "second_bj2_plus_1p5_ps": null,
+        "rearm_l1_sustained_negative_to_positive_ps": null,
+        "rearm_l1_positive_dwell_ps": 0,
+        "rearm_l1_zero_sign_crossings": 0,
+        "source_bjsl8_positive_to_negative_ps": 122.1,
+        "source_bjsl8_negative_dwell_ps": 3.5999999999999925,
+        "terminal_corrob_signal_present": true,
+        "not_terminal_only_oracle": true,
+        "ringing_or_new_switching_screen": {
+          "status": "FAIL_OR_UNKNOWN",
+          "basis": "second response is required to be internally ordered BJ1->BJ2->JTL1..6 and accompanied by L1 re-arm; terminal is corroboration only",
+          "not_a_switching_or_SFQ_certification": true
+        },
+        "recovery_distance": {
+          "status": "DERIVED",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "signals": {
+            "I(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 7.705119818368965e-05,
+              "reference_scale_raw": 0.00020569272000000002,
+              "normalized_rms": 0.37459370552195353,
+              "actual_grid": true
+            },
+            "I(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 7.705119664717995e-05,
+              "reference_scale_raw": 0.0002999978,
+              "normalized_rms": 0.2568392056447746,
+              "actual_grid": true
+            },
+            "V(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00016452624282134023,
+              "reference_scale_raw": 0.0004272897,
+              "normalized_rms": 0.38504612402625255,
+              "actual_grid": true
+            },
+            "V(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00023503747820027412,
+              "reference_scale_raw": 0.0006104138,
+              "normalized_rms": 0.3850461411591188,
+              "actual_grid": true
+            },
+            "I(B_JSL8)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.618339554960517e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.4926222099180757,
+              "actual_grid": true
+            },
+            "I(LIN|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.763156824445301e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.5053199478582663,
+              "actual_grid": true
+            },
+            "V(COMMON_SL)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00019292412811307784,
+              "reference_scale_raw": 0.0010923397000000001,
+              "normalized_rms": 0.17661550533508744,
+              "actual_grid": true
+            },
+            "V(QBIN)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.0002813908288252682,
+              "reference_scale_raw": 0.000559589,
+              "normalized_rms": 0.5028526808519613,
+              "actual_grid": true
+            }
+          },
+          "mean_normalized_rms": 0.3848669400394363,
+          "signal_count": 8,
+          "selection_role": "closest-to-canonical recovery/re-arm trajectory"
+        },
+        "rescue_pass": false,
+        "previous_Z0_6_ordered_candidate_count": 1
+      }
+    },
+    "rescue_pass_keys": [],
+    "selected_Z0_ohm": null,
+    "selection_rule": "smallest mean normalized actual-grid recovery/re-arm distance to canonical among rescue-pass cases",
+    "hard_stop_if_no_rescue": true,
+    "reason": "Both registered Z0=12 and Z0=24 N2 cases fail the preregistered rescue gate; no additional Z0 point or N3 case is authorized.",
+    "bounded_scope": "canonical and prior Z0=6 TD=0.3 references plus new Z0=12/24 TD=0.3 N2; at most one conditional N3; ideal lossless TLINE; dt=0.1 ps; 0-200 ps",
+    "no_SFQ_or_terminal_count_substitution": true,
+    "physical_matching_claim": "UNKNOWN / not asserted"
+  },
+  "unknown": [
+    "timestep/solver convergence",
+    "physical characteristic impedance or matching",
+    "incident/reflected wave decomposition",
+    "SFQ event identity/count",
+    "hardware behavior"
+  ],
+  "stop": {
+    "final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW",
+    "automatic_follow_up": false,
+    "additional_Z0_points_run": 0,
+    "additional_delay_points_run": 0,
+    "sentinel_follow_up": false
+  },
+  "scientific_interpretation_performed": true,
+  "rescue_gate": {
+    "status": "FAIL",
+    "classification": "TLINE_Z0_RESCUE_FAILED",
+    "canonical_n2_ordered_candidate_count": 2,
+    "entries": {
+      "Z0_12_0011": {
+        "Z0_ohm": 12,
+        "canonical_ordered_candidate_count": 2,
+        "ordered_candidate_count": 1,
+        "first_response_intact": true,
+        "second_response_recovered": false,
+        "first_bj1_plus_0p5_ps": 115.7,
+        "first_bj2_plus_0p5_ps": 116.50000000000001,
+        "second_bj1_plus_1p5_ps": null,
+        "second_bj2_plus_1p5_ps": null,
+        "rearm_l1_sustained_negative_to_positive_ps": null,
+        "rearm_l1_positive_dwell_ps": 0,
+        "rearm_l1_zero_sign_crossings": 0,
+        "source_bjsl8_positive_to_negative_ps": 121.80000000000001,
+        "source_bjsl8_negative_dwell_ps": 3.399999999999983,
+        "terminal_corrob_signal_present": true,
+        "not_terminal_only_oracle": true,
+        "ringing_or_new_switching_screen": {
+          "status": "FAIL_OR_UNKNOWN",
+          "basis": "second response is required to be internally ordered BJ1->BJ2->JTL1..6 and accompanied by L1 re-arm; terminal is corroboration only",
+          "not_a_switching_or_SFQ_certification": true
+        },
+        "recovery_distance": {
+          "status": "DERIVED",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "signals": {
+            "I(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 6.832172296725831e-05,
+              "reference_scale_raw": 0.00020569272000000002,
+              "normalized_rms": 0.3321543074896297,
+              "actual_grid": true
+            },
+            "I(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 6.832172485024295e-05,
+              "reference_scale_raw": 0.0002999978,
+              "normalized_rms": 0.22774075293299803,
+              "actual_grid": true
+            },
+            "V(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.0001352086331523156,
+              "reference_scale_raw": 0.0004272897,
+              "normalized_rms": 0.31643316736236704,
+              "actual_grid": true
+            },
+            "V(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00019315518603057154,
+              "reference_scale_raw": 0.0006104138,
+              "normalized_rms": 0.31643319012540594,
+              "actual_grid": true
+            },
+            "I(B_JSL8)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.4849384177152116e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.48092545104608037,
+              "actual_grid": true
+            },
+            "I(LIN|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.517487110198643e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.4837793563083522,
+              "actual_grid": true
+            },
+            "V(COMMON_SL)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00017318493370832553,
+              "reference_scale_raw": 0.0010923397000000001,
+              "normalized_rms": 0.15854494138437475,
+              "actual_grid": true
+            },
+            "V(QBIN)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00025346244813548064,
+              "reference_scale_raw": 0.000559589,
+              "normalized_rms": 0.4529439430286883,
+              "actual_grid": true
+            }
+          },
+          "mean_normalized_rms": 0.346119388709737,
+          "signal_count": 8,
+          "selection_role": "closest-to-canonical recovery/re-arm trajectory"
+        },
+        "rescue_pass": false,
+        "previous_Z0_6_ordered_candidate_count": 1
+      },
+      "Z0_24_0011": {
+        "Z0_ohm": 24,
+        "canonical_ordered_candidate_count": 2,
+        "ordered_candidate_count": 1,
+        "first_response_intact": true,
+        "second_response_recovered": false,
+        "first_bj1_plus_0p5_ps": 116.10000000000001,
+        "first_bj2_plus_0p5_ps": 116.9,
+        "second_bj1_plus_1p5_ps": null,
+        "second_bj2_plus_1p5_ps": null,
+        "rearm_l1_sustained_negative_to_positive_ps": null,
+        "rearm_l1_positive_dwell_ps": 0,
+        "rearm_l1_zero_sign_crossings": 0,
+        "source_bjsl8_positive_to_negative_ps": 122.1,
+        "source_bjsl8_negative_dwell_ps": 3.5999999999999925,
+        "terminal_corrob_signal_present": true,
+        "not_terminal_only_oracle": true,
+        "ringing_or_new_switching_screen": {
+          "status": "FAIL_OR_UNKNOWN",
+          "basis": "second response is required to be internally ordered BJ1->BJ2->JTL1..6 and accompanied by L1 re-arm; terminal is corroboration only",
+          "not_a_switching_or_SFQ_certification": true
+        },
+        "recovery_distance": {
+          "status": "DERIVED",
+          "window_ps": [
+            121.0,
+            130.0
+          ],
+          "signals": {
+            "I(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 7.705119818368965e-05,
+              "reference_scale_raw": 0.00020569272000000002,
+              "normalized_rms": 0.37459370552195353,
+              "actual_grid": true
+            },
+            "I(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 7.705119664717995e-05,
+              "reference_scale_raw": 0.0002999978,
+              "normalized_rms": 0.2568392056447746,
+              "actual_grid": true
+            },
+            "V(L1|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00016452624282134023,
+              "reference_scale_raw": 0.0004272897,
+              "normalized_rms": 0.38504612402625255,
+              "actual_grid": true
+            },
+            "V(L2|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00023503747820027412,
+              "reference_scale_raw": 0.0006104138,
+              "normalized_rms": 0.3850461411591188,
+              "actual_grid": true
+            },
+            "I(B_JSL8)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.618339554960517e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.4926222099180757,
+              "actual_grid": true
+            },
+            "I(LIN|XBQ1)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 5.763156824445301e-05,
+              "reference_scale_raw": 0.00011404966000000001,
+              "normalized_rms": 0.5053199478582663,
+              "actual_grid": true
+            },
+            "V(COMMON_SL)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.00019292412811307784,
+              "reference_scale_raw": 0.0010923397000000001,
+              "normalized_rms": 0.17661550533508744,
+              "actual_grid": true
+            },
+            "V(QBIN)": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "rms_raw": 0.0002813908288252682,
+              "reference_scale_raw": 0.000559589,
+              "normalized_rms": 0.5028526808519613,
+              "actual_grid": true
+            }
+          },
+          "mean_normalized_rms": 0.3848669400394363,
+          "signal_count": 8,
+          "selection_role": "closest-to-canonical recovery/re-arm trajectory"
+        },
+        "rescue_pass": false,
+        "previous_Z0_6_ordered_candidate_count": 1
+      }
+    },
+    "rescue_pass_keys": [],
+    "selected_Z0_ohm": null,
+    "selection_rule": "smallest mean normalized actual-grid recovery/re-arm distance to canonical among rescue-pass cases",
+    "hard_stop_if_no_rescue": true
+  },
+  "n2_summary": {
+    "canonical": {
+      "run_id": "CANONICAL_0011",
+      "Z0_ohm": null,
+      "first_BJ1_plus_0p5_ps": 115.2,
+      "first_BJ2_plus_0p5_ps": 116.10000000000001,
+      "second_BJ1_plus_1p5_ps": 125.9,
+      "second_BJ2_plus_1p5_ps": 126.39999999999999,
+      "ordered_candidate_count": 2,
+      "second_response_present": true,
+      "L1_rearm": {
+        "minimum": -0.0001656949,
+        "maximum": 3.999782e-05,
+        "zero_sign_crossings": 4,
+        "first_negative_to_positive_crossing_ps": 121.7,
+        "first_sustained_negative_to_positive_crossing_ps": 121.7,
+        "positive_dwell_ps": 3.6999999999999718,
+        "negative_dwell_ps": 5.200000000000044
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 9.430515e-05,
+        "maximum": 0.0002999978,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -8.999109e-05,
+        "maximum": 2.405857e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 121.7,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0.700000000000008,
+        "negative_dwell_ps": 8.200000000000008,
+        "positive_sample_fraction": 0.07777777777777778,
+        "negative_sample_fraction": 0.9222222222222223,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -8.999109e-05,
+        "maximum": 2.405857e-05,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 121.7,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0.700000000000008,
+        "negative_dwell_ps": 8.200000000000008,
+        "positive_sample_fraction": 0.07777777777777778,
+        "negative_sample_fraction": 0.9222222222222223,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "phase_area_residuals_turns": {
+        "P(B_JS1|XBVM3)": 0.0023040974326966612,
+        "P(B_JS2|XBVM3)": -0.0031936199301205725,
+        "P(B_JS1|XBVM4)": 0.0023040974326966612,
+        "P(B_JS2|XBVM4)": -0.0031936199301205725
+      }
+    },
+    "previous_Z0_6_TD_0P3": {
+      "run_id": "Z0_6_TD_0P3_0011",
+      "Z0_ohm": 6,
+      "first_BJ1_plus_0p5_ps": 115.5,
+      "first_BJ2_plus_0p5_ps": 116.39999999999999,
+      "second_BJ1_plus_1p5_ps": null,
+      "second_BJ2_plus_1p5_ps": null,
+      "ordered_candidate_count": 1,
+      "second_response_present": false,
+      "L1_rearm": {
+        "minimum": -8.833229e-05,
+        "maximum": -1.299447e-06,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0,
+        "negative_dwell_ps": 8.900000000000016
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 0.0001716677,
+        "maximum": 0.0002587006,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -2.112032e-05,
+        "maximum": 3.688102e-05,
+        "zero_sign_crossings": 8,
+        "first_negative_to_positive_crossing_ps": 122.99999999999999,
+        "first_positive_to_negative_crossing_ps": 121.80000000000001,
+        "first_sustained_negative_to_positive_crossing_ps": 122.99999999999999,
+        "positive_dwell_ps": 6.000000000000031,
+        "negative_dwell_ps": 2.899999999999985,
+        "positive_sample_fraction": 0.6777777777777778,
+        "negative_sample_fraction": 0.32222222222222224,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -1.855364e-05,
+        "maximum": 2.585975e-05,
+        "zero_sign_crossings": 4,
+        "first_negative_to_positive_crossing_ps": 123.1,
+        "first_positive_to_negative_crossing_ps": 121.89999999999999,
+        "first_sustained_negative_to_positive_crossing_ps": 123.1,
+        "positive_dwell_ps": 6.800000000000018,
+        "negative_dwell_ps": 2.099999999999998,
+        "positive_sample_fraction": 0.7666666666666667,
+        "negative_sample_fraction": 0.23333333333333334,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "phase_area_residuals_turns": {
+        "P(B_JS1|XBVM3)": 0.0028894883928054504,
+        "P(B_JS2|XBVM3)": -0.003285580082729833,
+        "P(B_JS1|XBVM4)": 0.0028894883928054504,
+        "P(B_JS2|XBVM4)": -0.003285580082729833
+      }
+    },
+    "Z0_12_0011": {
+      "run_id": "Z0_12_0011",
+      "Z0_ohm": 12,
+      "first_BJ1_plus_0p5_ps": 115.7,
+      "first_BJ2_plus_0p5_ps": 116.50000000000001,
+      "second_BJ1_plus_1p5_ps": null,
+      "second_BJ2_plus_1p5_ps": null,
+      "ordered_candidate_count": 1,
+      "second_response_present": false,
+      "L1_rearm": {
+        "minimum": -0.000105232,
+        "maximum": -3.050257e-05,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0,
+        "negative_dwell_ps": 8.900000000000016
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 0.000154768,
+        "maximum": 0.0002294974,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -1.502511e-05,
+        "maximum": 4.009367e-05,
+        "zero_sign_crossings": 8,
+        "first_negative_to_positive_crossing_ps": 122.9,
+        "first_positive_to_negative_crossing_ps": 121.80000000000001,
+        "first_sustained_negative_to_positive_crossing_ps": 122.9,
+        "positive_dwell_ps": 5.500000000000033,
+        "negative_dwell_ps": 3.399999999999983,
+        "positive_sample_fraction": 0.6222222222222222,
+        "negative_sample_fraction": 0.37777777777777777,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -1.238417e-05,
+        "maximum": 3.804433e-05,
+        "zero_sign_crossings": 8,
+        "first_negative_to_positive_crossing_ps": 122.4,
+        "first_positive_to_negative_crossing_ps": 121.7,
+        "first_sustained_negative_to_positive_crossing_ps": 122.4,
+        "positive_dwell_ps": 5.99999999999998,
+        "negative_dwell_ps": 2.9000000000000363,
+        "positive_sample_fraction": 0.6777777777777778,
+        "negative_sample_fraction": 0.32222222222222224,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "phase_area_residuals_turns": {
+        "P(B_JS1|XBVM3)": 0.0027717963716407112,
+        "P(B_JS2|XBVM3)": -0.0031255112581423106,
+        "P(B_JS1|XBVM4)": 0.0027717963716407112,
+        "P(B_JS2|XBVM4)": -0.0031255112581423106
+      }
+    },
+    "Z0_24_0011": {
+      "run_id": "Z0_24_0011",
+      "Z0_ohm": 24,
+      "first_BJ1_plus_0p5_ps": 116.10000000000001,
+      "first_BJ2_plus_0p5_ps": 116.9,
+      "second_BJ1_plus_1p5_ps": null,
+      "second_BJ2_plus_1p5_ps": null,
+      "ordered_candidate_count": 1,
+      "second_response_present": false,
+      "L1_rearm": {
+        "minimum": -0.0001185805,
+        "maximum": -3.517712e-05,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 0,
+        "negative_dwell_ps": 8.900000000000016
+      },
+      "L2_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L2|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": 0.0001414195,
+        "maximum": 0.0002248229,
+        "zero_sign_crossings": 0,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": null,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 8.900000000000016,
+        "negative_dwell_ps": 0,
+        "positive_sample_fraction": 1.0,
+        "negative_sample_fraction": 0.0,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_BJSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -2.574085e-05,
+        "maximum": 5.340125e-05,
+        "zero_sign_crossings": 7,
+        "first_negative_to_positive_crossing_ps": 123.1,
+        "first_positive_to_negative_crossing_ps": 122.1,
+        "first_sustained_negative_to_positive_crossing_ps": 123.1,
+        "positive_dwell_ps": 5.300000000000023,
+        "negative_dwell_ps": 3.5999999999999925,
+        "positive_sample_fraction": 0.5888888888888889,
+        "negative_sample_fraction": 0.4111111111111111,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "source_LIN_rearm": {
+        "status": "DERIVED",
+        "signal": "I(LIN|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -2.855837e-05,
+        "maximum": 5.334944e-05,
+        "zero_sign_crossings": 7,
+        "first_negative_to_positive_crossing_ps": 123.1,
+        "first_positive_to_negative_crossing_ps": 122.1,
+        "first_sustained_negative_to_positive_crossing_ps": 123.1,
+        "positive_dwell_ps": 5.200000000000018,
+        "negative_dwell_ps": 3.6999999999999975,
+        "positive_sample_fraction": 0.5777777777777777,
+        "negative_sample_fraction": 0.4222222222222222,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "phase_area_residuals_turns": {
+        "P(B_JS1|XBVM3)": 0.00234486135130485,
+        "P(B_JS2|XBVM3)": -0.002903538893693547,
+        "P(B_JS1|XBVM4)": 0.00234486135130485,
+        "P(B_JS2|XBVM4)": -0.002903538893693547
+      }
+    }
+  },
+  "n3_summary": null,
+  "independent_numerical_recalculation": {
+    "status": "PASS",
+    "method": "fresh csv.DictReader + independent unwrap/trapezoid/order loops",
+    "grid_match": {
+      "CANONICAL_0011": true,
+      "CANONICAL_0111": true,
+      "Z0_12_0011": true,
+      "Z0_24_0011": true
+    },
+    "ordered_navigation_candidate_count": {
+      "CANONICAL_0011": 2,
+      "CANONICAL_0111": 4,
+      "Z0_12_0011": 1,
+      "Z0_24_0011": 1
+    },
+    "phase_area": {
+      "CANONICAL_0011": {
+        "B_JS1": {
+          "phase_delta_turns": -3.1236796211585984,
+          "voltage_area_over_Phi0_turns": -3.125983718591295,
+          "residual_turns": 0.0023040974326966612
+        },
+        "B_JS2": {
+          "phase_delta_turns": -2.841450685785052,
+          "voltage_area_over_Phi0_turns": -2.8382570658549313,
+          "residual_turns": -0.0031936199301205725
+        }
+      },
+      "CANONICAL_0111": {
+        "B_JS1": {
+          "phase_delta_turns": -6.352845881274454,
+          "voltage_area_over_Phi0_turns": -6.355123887303728,
+          "residual_turns": 0.0022780060292744153
+        },
+        "B_JS2": {
+          "phase_delta_turns": -6.332321785024635,
+          "voltage_area_over_Phi0_turns": -6.334087598802083,
+          "residual_turns": 0.0017658137774478888
+        }
+      },
+      "Z0_12_0011": {
+        "B_JS1": {
+          "phase_delta_turns": -3.163976108946518,
+          "voltage_area_over_Phi0_turns": -3.1667479053181586,
+          "residual_turns": 0.0027717963716407112
+        },
+        "B_JS2": {
+          "phase_delta_turns": -2.852637177439164,
+          "voltage_area_over_Phi0_turns": -2.8495116661810216,
+          "residual_turns": -0.0031255112581423106
+        }
+      },
+      "Z0_24_0011": {
+        "B_JS1": {
+          "phase_delta_turns": -3.145053063677721,
+          "voltage_area_over_Phi0_turns": -3.147397925029026,
+          "residual_turns": 0.00234486135130485
+        },
+        "B_JS2": {
+          "phase_delta_turns": -2.8651520558257917,
+          "voltage_area_over_Phi0_turns": -2.862248516932098,
+          "residual_turns": -0.002903538893693547
+        }
+      }
+    },
+    "all_grids_match_expected": true
+  },
+  "qa_summary": {
+    "status": "PASS",
+    "artifact_status": "VALID",
+    "result_json_under_limit": true
+  },
+  "visualization_summary": {
+    "status": "PASS",
+    "standalone_count": 22,
+    "comparison_count": 8,
+    "focused_window_entries": 12,
+    "asset": {
+      "path": "test/exploration/bvm-qb-tline-z0-rescue-gate-v1-20260916/plots/assets/plotly.min.js",
+      "sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "bytes": 4763993
+    }
+  },
+  "package_summary": {
+    "status": "READY_FOR_DRIVE_UPLOAD",
+    "version": "v1",
+    "package_sha256": "c770814a996e650def9bc0df4a606d735a7f63c8a611c67379ada088f9975a19",
+    "package_bytes": 19721177,
+    "file_count": 50,
+    "delivery_manifest_path": "delivery_manifest.json",
+    "drive_file_id": null
+  }
+}

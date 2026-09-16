@@ -1,0 +1,26 @@
+{
+  "schema": "bvm-rloop-ls3-delay-window-transformation-registry-v1",
+  "raw_mutation": false,
+  "operations": [
+    {
+      "name": "delay0p2",
+      "stored_shift": 2,
+      "rule": "pre-110 same; [110,110.2) hold 110 sample; post i-2",
+      "interpolation": false
+    },
+    {
+      "name": "delay0p4",
+      "stored_shift": 4,
+      "rule": "pre-110 same; [110,110.4) hold 110 sample; post i-4",
+      "interpolation": false
+    },
+    {
+      "name": "phase_display",
+      "rule": "independent unwrap(raw radians)/(2*pi), navigation only"
+    },
+    {
+      "name": "area",
+      "rule": "same JJ/endpoints/direction actual-grid trapezoid; not SFQ count"
+    }
+  ]
+}

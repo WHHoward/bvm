@@ -1,0 +1,157 @@
+{
+  "schema": "bvm-rloop-ls3-delay-window-source-manifest-v1",
+  "experiment_id": "bvm-rloop-ls3-delay-window-v1-20260916",
+  "generated_at": "2026-09-16T20:40:36+08:00",
+  "source_closure": [
+    {
+      "name": "runner",
+      "path": "scripts/bvm_qb_rloop_ls3_delay_window.py",
+      "sha256": "1359e959987410f18a940ab38cd5009e072869247f823e9fcbf5f64132d62708",
+      "bytes": 61159,
+      "role": "LS3 timing-window generator, executor, mechanical analysis, visualization, and package builder"
+    },
+    {
+      "name": "canonical_jjmit",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "canonical global JJ model"
+    },
+    {
+      "name": "canonical_bvm",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "canonical BVM clone template"
+    },
+    {
+      "name": "canonical_qb",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "canonical QB include"
+    },
+    {
+      "name": "canonical_jtl",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "canonical six-stage JTL include"
+    },
+    {
+      "name": "josim_solver",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "recorded JoSIM binary"
+    },
+    {
+      "name": "plotter",
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "bytes": 12245,
+      "role": "standard JoSIM descriptive plotter"
+    },
+    {
+      "name": "branch_helper",
+      "path": "scripts/bvm_qb_rloop_branch_timing_decomposition.py",
+      "sha256": "871140804ddbb7973b6a6bf03050951423ab70120713dd4cd781ec07c324a4c4",
+      "bytes": 115127,
+      "role": "validated LS3-only topology helper"
+    },
+    {
+      "name": "population_helper",
+      "path": "scripts/bvm_qb_rloop_ls3_population_validation.py",
+      "sha256": "d41e1fee91fa8a9bd78ef34f731576cc09697b08f412cb1344e935cb6ea9aadb",
+      "bytes": 98506,
+      "role": "read-only metric/oracle helper"
+    },
+    {
+      "name": "historical_population_oracle",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/analysis/population_oracle.py",
+      "sha256": "b07056580cdd913efcf5317a8856c9a8023c8c9499ede89d236e837d20950166",
+      "bytes": 14341,
+      "role": "historical bounded phase/cluster oracle"
+    },
+    {
+      "name": "previous_branch_result",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/result.json",
+      "sha256": "30f3ac56b7374c24dea63aa2b613f0c0c4b5e9d6ebe55673e75e12e91dcf6fdb",
+      "bytes": 301020,
+      "role": "read-only 0.3-ps context"
+    },
+    {
+      "name": "previous_branch_provenance",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/provenance.json",
+      "sha256": "6c2b93f4177edd083aef4b27da033cf0fa04acf3b0dbe9354e85e4c946bb5b46",
+      "bytes": 10743272,
+      "role": "read-only 0.3-ps provenance"
+    },
+    {
+      "name": "canonical_0011_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+      "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "bytes": 7102297,
+      "role": "read-only canonical raw source"
+    },
+    {
+      "name": "canonical_0011_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir",
+      "sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+      "bytes": 7500,
+      "role": "read-only canonical deck source"
+    },
+    {
+      "name": "canonical_0111_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+      "sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+      "bytes": 7101704,
+      "role": "read-only canonical raw source"
+    },
+    {
+      "name": "canonical_0111_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir",
+      "sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+      "bytes": 7516,
+      "role": "read-only canonical deck source"
+    },
+    {
+      "name": "previous_ls3_exact_0011",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_EXACT_0011/raw.csv",
+      "sha256": "8416225dae6edf23cc125e18bb90cb96ef481860865a94f6e444d44fc6465246",
+      "bytes": 7210137,
+      "role": "read-only prior branch raw; not copied"
+    },
+    {
+      "name": "previous_ls3_delay0p3_0011",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/raw.csv",
+      "sha256": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+      "bytes": 7210093,
+      "role": "read-only prior branch raw; not copied"
+    },
+    {
+      "name": "previous_ls3_exact_0111",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_EXACT_0111/raw.csv",
+      "sha256": "a4f1f8f014f8048e19594da43acc7c4d41e1e5bfbb0bde320edaa513763cb3ef",
+      "bytes": 7209242,
+      "role": "read-only prior branch raw; not copied"
+    },
+    {
+      "name": "previous_ls3_delay0p3_0111",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/raw.csv",
+      "sha256": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37",
+      "bytes": 7206400,
+      "role": "read-only prior branch raw; not copied"
+    }
+  ],
+  "canonical_hashes": {
+    "0011": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "0111": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75"
+  },
+  "previous_hashes": {
+    "LS3_EXACT_0011": "8416225dae6edf23cc125e18bb90cb96ef481860865a94f6e444d44fc6465246",
+    "LS3_DELAY0P3_0011": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+    "LS3_EXACT_0111": "a4f1f8f014f8048e19594da43acc7c4d41e1e5bfbb0bde320edaa513763cb3ef",
+    "LS3_DELAY0P3_0111": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37"
+  }
+}

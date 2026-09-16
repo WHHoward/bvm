@@ -1,0 +1,684 @@
+{
+  "schema": "bvm-qb-lin-mutual-rl-aux-raw-analysis-handoff-v1",
+  "experiment_id": "bvm-qb-lin-mutual-rl-aux-v1-20260916",
+  "generated_at": "2026-09-16T20:55:13+08:00",
+  "raw_is_immutable_solver_output": true,
+  "processed_crops_are_not_raw_substitutes": true,
+  "files_excluding_delivery_manifest": [
+    {
+      "path": "PREFLIGHT.md",
+      "sha256": "c0166a72dc5ad8bc5745a3d32c4a3f5f8708f5b67ef56101762c0070f4709c97",
+      "bytes": 3407
+    },
+    {
+      "path": "RESULT.md",
+      "sha256": "bdb4bc21f8e6e0407aa85d4ac45fb84f8f338233e45555df9e200c0413f84766",
+      "bytes": 1795
+    },
+    {
+      "path": "analysis/ADVERSARIAL_REVIEW.md",
+      "sha256": "b08410e9f4034088179a4e5e29005f36d6714bafdc76f48eda073b95b6839bf6",
+      "bytes": 639
+    },
+    {
+      "path": "analysis/K0_GATE.json",
+      "sha256": "96c2f5ef47d4bc1fd53e0b54e51a186f558409b59cc42b47d3bc00b9b0ef7915",
+      "bytes": 100130
+    },
+    {
+      "path": "analysis/MECHANICAL_QA.json",
+      "sha256": "7a277b436674e0d1fa8e597498c18ba68e7ce965cfb4e49625165b76169af69e",
+      "bytes": 6625
+    },
+    {
+      "path": "analysis/NUMERICAL_REVIEW.md",
+      "sha256": "35dc5706f3f429f1d7d11e2041acb1ac659bb32c30d9bd9c4cb18cc1cbbffbc3",
+      "bytes": 513
+    },
+    {
+      "path": "analysis/SOURCE_MANIFEST.json",
+      "sha256": "128e55ce17450f3a0ce4186299e96872564faff5bd863eff2c8dfff4d5479416",
+      "bytes": 7665
+    },
+    {
+      "path": "analysis/TRANSFORMATION_REGISTRY.json",
+      "sha256": "7b177bc0a13d589fb3e2a318dad527b17f21c8a42b7f3c9025fa978e7deb2ac0",
+      "bytes": 844
+    },
+    {
+      "path": "analysis/VISUALIZATION_MANIFEST.json",
+      "sha256": "0e32524235e3843738f06f9b5e4633a9b6a7ee7a8088f149024c0e4f04d66c50",
+      "bytes": 119363
+    },
+    {
+      "path": "analysis/VISUALIZATION_QA.json",
+      "sha256": "0ff6a438f42392ab188a5ab8c33e0da89c3500740807acae7e59ca4378c54ec5",
+      "bytes": 169
+    },
+    {
+      "path": "analysis/mechanical_analysis.json",
+      "sha256": "6bd4da4efd21dbbd9ae240183cef12423ce8f6e6c0ac193dc3af10e0dd02c421",
+      "bytes": 9220711
+    },
+    {
+      "path": "experiment.yaml",
+      "sha256": "a0000badbcd89c864976518c8f83a9f296f192140cb7fc2949cb13270e1835b0",
+      "bytes": 3257
+    },
+    {
+      "path": "plots/K000_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "51802c07553ada761e46ea240697dbf65973274955ae65be1f66e1091c0f4c7c",
+      "bytes": 22145
+    },
+    {
+      "path": "plots/K000_0011/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "a486de83b7e89992414ee5d323ffd1dfcd9c5d41440424521a75df2a5079cdb3",
+      "bytes": 241804
+    },
+    {
+      "path": "plots/K000_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "908726b8369afeae0ba0dd593a875bc73d67c3e90928a7270a00a2e81d80f0e9",
+      "bytes": 145403
+    },
+    {
+      "path": "plots/K000_0011/02_BVM_STATE_full_0_200.html",
+      "sha256": "940eb80f02ebc433407a2e901c23c11b133dcbecaa5a194b23d1b94979ca6aff",
+      "bytes": 2311885
+    },
+    {
+      "path": "plots/K000_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "0087a5592b97044fbe001bc05380baf03a3c16613f8ba0dcb299f5f86832d0f9",
+      "bytes": 75745
+    },
+    {
+      "path": "plots/K000_0011/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "ab788e87d0f22c5f9fe92389b6775fdf507b67e78fb4792408c597ebc094df6b",
+      "bytes": 1139763
+    },
+    {
+      "path": "plots/K000_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "3b028e4199eb011716c5f892c80f32872867b1f990a44bdc4e97e142a95e2375",
+      "bytes": 61035
+    },
+    {
+      "path": "plots/K000_0011/04_QB_STATE_full_0_200.html",
+      "sha256": "68d45107eb3bfb42a7323ebdba7518d798c99adb2b195c2a672ea041756521bf",
+      "bytes": 898628
+    },
+    {
+      "path": "plots/K000_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "c46aafc16f15edffa7ba9fd4480243edc76581d9d3ef9248a788f1cc820e03f0",
+      "bytes": 129451
+    },
+    {
+      "path": "plots/K000_0011/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "ba57972d533727acf853a04fb8b9e091cc4d6194135588fc54c72d7097c00b4f",
+      "bytes": 2089873
+    },
+    {
+      "path": "plots/K000_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "af52812dc534d3e0ef755f7a218b1649231892e3e97c31c5a82f2d90ad808799",
+      "bytes": 22445
+    },
+    {
+      "path": "plots/K000_0111/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "4066e5b8c2dd32781c8ba1bc7d791fac361506fad5004ac0c72d096658f989bb",
+      "bytes": 242289
+    },
+    {
+      "path": "plots/K000_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "fac52a8036f459b163e2fa4194be95420192111acc2cf05c632fd10ae36dbce6",
+      "bytes": 145263
+    },
+    {
+      "path": "plots/K000_0111/02_BVM_STATE_full_0_200.html",
+      "sha256": "2cd8139d417ac4d3fc66acc51ff4df77b5ce57fed3795e8980f3d0caa37c3d14",
+      "bytes": 2312180
+    },
+    {
+      "path": "plots/K000_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "ec3dc3b7cccf8d1fbc763cc56cc1702ec60d58737e78d9e508c704eb6b67c78e",
+      "bytes": 75945
+    },
+    {
+      "path": "plots/K000_0111/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "8be05cb734f504090b65806deb7fb3e3f3f75eeaeccbe64647cf9f0a7328d046",
+      "bytes": 1140763
+    },
+    {
+      "path": "plots/K000_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "5b296d74357b74068d6506aad888436603e10dfc00c1563325026aa0dc4b1d77",
+      "bytes": 61260
+    },
+    {
+      "path": "plots/K000_0111/04_QB_STATE_full_0_200.html",
+      "sha256": "115529d8df6a9e194d675df5286b8fbeffe0e8b66c9dcff229aa4f40a784e158",
+      "bytes": 898123
+    },
+    {
+      "path": "plots/K000_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "1a94f3c3f8751b3c4cb517ad533783cfa5873712cff34e8b0cea12dd29bcc4e1",
+      "bytes": 129496
+    },
+    {
+      "path": "plots/K000_0111/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "1bcc615514dc43427be0c0f31c57902eabd48eaa56dad36c1570c49d90d2cfbf",
+      "bytes": 2076978
+    },
+    {
+      "path": "plots/K010_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "42f852c038eaf733b231a903cd31d3dcb6b07d179d0c004d55ff3cdf429ac6bb",
+      "bytes": 22285
+    },
+    {
+      "path": "plots/K010_0011/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "269e67990473784ff8b890817960605edfbde2e19c72376bb93aec878f315586",
+      "bytes": 241294
+    },
+    {
+      "path": "plots/K010_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "485fad6dd55a61d14b33360a722a35818924fe88fe83b605f5a53e5c4ef803ff",
+      "bytes": 145243
+    },
+    {
+      "path": "plots/K010_0011/02_BVM_STATE_full_0_200.html",
+      "sha256": "1c36bd414a82e9adbea13ab46c7f206bb90e73d3ada0221ca3fa93e0547ca552",
+      "bytes": 2313265
+    },
+    {
+      "path": "plots/K010_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "a099acf4b09befcc3a690d3983c1d63dd48c7742b49cd88fafc0046fb199064e",
+      "bytes": 75425
+    },
+    {
+      "path": "plots/K010_0011/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "f2588b71122bb6e44b848a7ff3501a81ad4ed6cc13c79a309ea182550234a5fe",
+      "bytes": 1137548
+    },
+    {
+      "path": "plots/K010_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "9cffc3b1ea5a2a023c82f16edf477ffd6be5e0d75441756195d7da9666345ff8",
+      "bytes": 61445
+    },
+    {
+      "path": "plots/K010_0011/04_QB_STATE_full_0_200.html",
+      "sha256": "e501453756a247829922ec56e75d2bf537fb8c4909076071b4200b4407511a82",
+      "bytes": 904723
+    },
+    {
+      "path": "plots/K010_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "af545b1c6edd32570c5717b5cf06d6555f8e63d5c7fd1222249287d1e485fc58",
+      "bytes": 129831
+    },
+    {
+      "path": "plots/K010_0011/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "1d1737bb9abab04f00e89dcc4968cbbbd8ff405753b7098790c59b058ff83741",
+      "bytes": 2089573
+    },
+    {
+      "path": "plots/K010_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "840b5f3ac3e0420739927ca1ca72819e538a333acfd518fa1a3eb23335252130",
+      "bytes": 22555
+    },
+    {
+      "path": "plots/K010_0111/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "43c59413289eeb7ddbdcf6fffab85c6f1033be4ed29d99ff8dad1a1caf925c18",
+      "bytes": 242304
+    },
+    {
+      "path": "plots/K010_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "7735aec407fd0c239f1d14d50209fba7ee2baaff2e1b7d25d81ad58c6dcb444b",
+      "bytes": 145378
+    },
+    {
+      "path": "plots/K010_0111/02_BVM_STATE_full_0_200.html",
+      "sha256": "987891d7a7a46583c5bcfd044171239a52c149a4ac3d666ab94d2d215a28bf9a",
+      "bytes": 2313455
+    },
+    {
+      "path": "plots/K010_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "e73b3d6593147e750d1ff5a23dfcfbae21bca0271b6212c81507d70df9daaf41",
+      "bytes": 76425
+    },
+    {
+      "path": "plots/K010_0111/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "5a51f50ff255d5c5775e8bc883704f1692041bf421a99dc5ccfda117aac98bff",
+      "bytes": 1140988
+    },
+    {
+      "path": "plots/K010_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "fc1fa1130a7d284544e13a86809e8ebc2a0350d07623573e032ab6ddd16c2022",
+      "bytes": 61865
+    },
+    {
+      "path": "plots/K010_0111/04_QB_STATE_full_0_200.html",
+      "sha256": "10daa703b08e970d348ed700cebc36de8737f7c9995a52d03c38591f2ab4159e",
+      "bytes": 904168
+    },
+    {
+      "path": "plots/K010_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "80d6e0b241482241208bdfb2fe51f75c48a4904a57b1c1e5be27b3d249f56cd4",
+      "bytes": 129741
+    },
+    {
+      "path": "plots/K010_0111/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "80ddf741906001085b7b4528088617c9f64c0047be0134dda3d06de7324a1df3",
+      "bytes": 2076088
+    },
+    {
+      "path": "plots/K020_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "52630b21f514b97dd2ffafa0fc7c2592180f805a63509ad5ebcf61fc32a1abf1",
+      "bytes": 22340
+    },
+    {
+      "path": "plots/K020_0011/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "8ab8e5aadea622cf10c3b90bdbd646fc13573f7b46d60bceff4af9792a73699d",
+      "bytes": 241689
+    },
+    {
+      "path": "plots/K020_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "f27fb434d1ad70e9967a3bdee905b7c0c206b469da6bf9532af9ee5adcb0bdd8",
+      "bytes": 145163
+    },
+    {
+      "path": "plots/K020_0011/02_BVM_STATE_full_0_200.html",
+      "sha256": "fa97c8f1fbd80ea0c7b3fdc574682319580628d7d9bcbb29697b708c8930cac6",
+      "bytes": 2310335
+    },
+    {
+      "path": "plots/K020_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "ea6d4b5649d625391a697b8e27d2a9b025832649e44e0b48bd8320a7e5ca0d61",
+      "bytes": 75465
+    },
+    {
+      "path": "plots/K020_0011/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "cee53d1a4edf417cdeab7608680ae8dce1fd91d660390d1fdf1d6824577b2937",
+      "bytes": 1136843
+    },
+    {
+      "path": "plots/K020_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "681e00b34a1355dbdab0442def12893f4fb75e08cb685338575312e1538697df",
+      "bytes": 61535
+    },
+    {
+      "path": "plots/K020_0011/04_QB_STATE_full_0_200.html",
+      "sha256": "7da306af80b195c7b893bab37ebe42d483c57edb6742126ffa37b388c63a9dd4",
+      "bytes": 904613
+    },
+    {
+      "path": "plots/K020_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "7ad55ad46b3f37430ec2ff5f1673b5568377b5eefcdda94a3a785e8013cd4a86",
+      "bytes": 129371
+    },
+    {
+      "path": "plots/K020_0011/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "de4ef78653f569b2aa023cdc589f34f11b5c463e45a12cf634804843c172fc95",
+      "bytes": 2089393
+    },
+    {
+      "path": "plots/K020_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "519024e244ee57fa89dd5eca7e8426a5183b73949ca8a3394220e1abcb1f1abd",
+      "bytes": 22530
+    },
+    {
+      "path": "plots/K020_0111/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "9b3422d7dd72d27ef6d0c8cfedcf758e7459523d67b88c60b38376a52487ca48",
+      "bytes": 242414
+    },
+    {
+      "path": "plots/K020_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "a4f2c4bca83fe6f50be9ab978da7086ec4316777f2159423da3c0f05ecf19c3e",
+      "bytes": 144583
+    },
+    {
+      "path": "plots/K020_0111/02_BVM_STATE_full_0_200.html",
+      "sha256": "25b22e52331bd6e636d5b277c405510549ba7ce9000fed3c4e3525d3aa168fe8",
+      "bytes": 2310105
+    },
+    {
+      "path": "plots/K020_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "0e9476719609e4aead0e68cc947c22e8db1030920ee693f06ec4ff31ca568a5d",
+      "bytes": 76425
+    },
+    {
+      "path": "plots/K020_0111/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "53657522264f34acd4252c63ba218ba03c8133d4007f04e118c621823a840a37",
+      "bytes": 1138563
+    },
+    {
+      "path": "plots/K020_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "7c6ed6fc24cba39fdf9d5d34a7f5efcf3239046527efa352107d2e6cffd999cf",
+      "bytes": 61860
+    },
+    {
+      "path": "plots/K020_0111/04_QB_STATE_full_0_200.html",
+      "sha256": "1d9f308650b6db6c4cb722fd35fc1e97d6f55ec17b5260e33143ce95d0a2f35d",
+      "bytes": 904568
+    },
+    {
+      "path": "plots/K020_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "0788ca05b17c4ae2818a5d299e08bff9e7d3deed81567f40f6f6178993f1e554",
+      "bytes": 129591
+    },
+    {
+      "path": "plots/K020_0111/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "af06fd60c67f271af3eff319d2b10ef784c84efbd46559648e78ef29b662c769",
+      "bytes": 2075503
+    },
+    {
+      "path": "plots/K030_0011/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "fa62ad6b92c61d18c6eb013137946e54c453363e62529e8c38b363a86e6e4944",
+      "bytes": 22285
+    },
+    {
+      "path": "plots/K030_0011/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "9daaf85279d4a08f6481ab4cbd1f8efdde78b3cf1c16603d5121cb7bfa81b364",
+      "bytes": 241339
+    },
+    {
+      "path": "plots/K030_0011/02_BVM_STATE_focus_110_121.html",
+      "sha256": "79db4d8eeecac0c49ee4bacb4b10b49237125971f795998fbd8cd7484a66d4ab",
+      "bytes": 145253
+    },
+    {
+      "path": "plots/K030_0011/02_BVM_STATE_full_0_200.html",
+      "sha256": "d4209a083347b0a808e98697e04ff1fb9775936642e61773716a0d8cefc69164",
+      "bytes": 2311455
+    },
+    {
+      "path": "plots/K030_0011/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "0a003de4e14449226c9c77f94097cd7543f76a3f7c542168735f0296ef1b7326",
+      "bytes": 75745
+    },
+    {
+      "path": "plots/K030_0011/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "8925d4e1b0679d73e0650afd578ff055b06c3fc854682c84fbe956fc9b5341f8",
+      "bytes": 1137233
+    },
+    {
+      "path": "plots/K030_0011/04_QB_STATE_focus_110_121.html",
+      "sha256": "ab59dfb9d7f61b9a258eef58beee7211473f0fafc6acae01c971b63bb7adada0",
+      "bytes": 61830
+    },
+    {
+      "path": "plots/K030_0011/04_QB_STATE_full_0_200.html",
+      "sha256": "38f9dcbbea185b7730b784a40d6cf287d7aa9150eb7fc551a0e0628f1ee3701b",
+      "bytes": 905878
+    },
+    {
+      "path": "plots/K030_0011/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "d22199ba14f0b8f5df252b20702e14d9bcf466ee1f78562eb0ae634a25dd69d3",
+      "bytes": 129441
+    },
+    {
+      "path": "plots/K030_0011/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "d90fda905f29afa34ccd884c345d00c7771570c0a577c5903514a92964a57861",
+      "bytes": 2089458
+    },
+    {
+      "path": "plots/K030_0111/01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "039727dd8e5ea50856cb12770840651e19e2b92486d2cf79fee670bc54a4f746",
+      "bytes": 22630
+    },
+    {
+      "path": "plots/K030_0111/01_SIGNAL_TIMING_full_0_200.html",
+      "sha256": "a4d68f3dcc5c72292ac1d9a1bceaeaf80b8eeb904d432ab1aeb80e5d551dbd86",
+      "bytes": 242034
+    },
+    {
+      "path": "plots/K030_0111/02_BVM_STATE_focus_110_121.html",
+      "sha256": "f2d88e34dc1462d3aca648d08d1c98fab1694f997438ae630c82e1f5ff8821d6",
+      "bytes": 144798
+    },
+    {
+      "path": "plots/K030_0111/02_BVM_STATE_full_0_200.html",
+      "sha256": "b6079c5a6ad38a3bfa8ccb623120b4de42c5c369b65b7314f6518f2faa8cda0b",
+      "bytes": 2311050
+    },
+    {
+      "path": "plots/K030_0111/03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "a62998d2197c7bfdf4bb05013c0246bcd82ab64e0857e3ee005df8e653a165de",
+      "bytes": 76945
+    },
+    {
+      "path": "plots/K030_0111/03_JSL_CHAIN_full_0_200.html",
+      "sha256": "01ab94cdd82bad4f484df80db659fb9f2943d8f645b84dcdd2265bbf2f4808c4",
+      "bytes": 1139523
+    },
+    {
+      "path": "plots/K030_0111/04_QB_STATE_focus_110_121.html",
+      "sha256": "7dd2c1109eba23b4cc5511535dc5510da1259bb4cf821c1a1e31e9983c598686",
+      "bytes": 62195
+    },
+    {
+      "path": "plots/K030_0111/04_QB_STATE_full_0_200.html",
+      "sha256": "77751d1917a6fdfa9b388086cc2ca0cc9ec25e7081d862e9212fb80f4fe73ccb",
+      "bytes": 904308
+    },
+    {
+      "path": "plots/K030_0111/05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "e7f3d827da2d22b498e5a8dbd40945cd9e874582fa173b225aa72cb8a51adfbd",
+      "bytes": 129726
+    },
+    {
+      "path": "plots/K030_0111/05_JTL_CHAIN_full_0_200.html",
+      "sha256": "34e54165c196e6472fea6839f08541bcfdb5c0b3eb168241ee7dd6cb4690efe1",
+      "bytes": 2075678
+    },
+    {
+      "path": "plots/assets/plotly.min.js",
+      "sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "bytes": 4763993
+    },
+    {
+      "path": "plots/comparisons/0011_01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "9e118eb0db38d8ebd0f3a9b0d39307442dcebc57904f1d5a0e26796cec6c4fb4",
+      "bytes": 78356
+    },
+    {
+      "path": "plots/comparisons/0011_03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "5c47ccb744530d3e8ea8c09dfd1baf95b358532c04e50f281a57889e7ca65eb0",
+      "bytes": 345664
+    },
+    {
+      "path": "plots/comparisons/0011_04_QB_STATE_focus_110_121.html",
+      "sha256": "30d7335228ea5b76627d87800a9e68839a570fbd463b1e60a4c29556a3981f57",
+      "bytes": 208253
+    },
+    {
+      "path": "plots/comparisons/0011_05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "42d7ce61d40ba7bf93a4834ecfeeb565c3e92ee571cc54fb21c4a586c6a0997a",
+      "bytes": 616129
+    },
+    {
+      "path": "plots/comparisons/0111_01_SIGNAL_TIMING_focus_110_121.html",
+      "sha256": "3d7ec076150a00d04d0031859996bb828bd23cba14057aaa002c8dbc80992e9e",
+      "bytes": 79786
+    },
+    {
+      "path": "plots/comparisons/0111_03_JSL_CHAIN_focus_110_121.html",
+      "sha256": "3390c29aa284b1f91b8cde7337f4f9e5680d45ab80c5be39cc8965eede240ef1",
+      "bytes": 349424
+    },
+    {
+      "path": "plots/comparisons/0111_04_QB_STATE_focus_110_121.html",
+      "sha256": "078c8813e5114915129c5e1730e27c7d1f5b27740f88da1d0e8c9b1372a38050",
+      "bytes": 208998
+    },
+    {
+      "path": "plots/comparisons/0111_05_JTL_CHAIN_focus_110_121.html",
+      "sha256": "d38986e5a1c0dbd26e6bb5f6b82eb10553d4499e6bc4b532dc3c8d3ccc5ed47e",
+      "bytes": 616544
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "4e4fe5084295dbfb59c72eb560d331a942045ca39d2fa846310870482c48d569",
+      "bytes": 297700
+    },
+    {
+      "path": "result.json",
+      "sha256": "ec99ffd82f87a5dfd4b3a8a3f7bcb49e70cdeb37a2d0b38f696c10242d68bdce",
+      "bytes": 126847
+    },
+    {
+      "path": "runs/K000_0011/deck.cir",
+      "sha256": "271cfbd10435b1212398f9afdb0c7bc5530dedc57c519974f1f116a3b54eb780",
+      "bytes": 8156
+    },
+    {
+      "path": "runs/K000_0011/metadata.json",
+      "sha256": "d304f094a5bc7bc8ba33535d58bb55a70dab2f4e9de0de32a3a4809effce8acc",
+      "bytes": 435
+    },
+    {
+      "path": "runs/K000_0011/raw.csv",
+      "sha256": "e9d2dc993b25a9767effea433ae1410f144ca7169a9f299fd2cf8cedaac6e36c",
+      "bytes": 7232310
+    },
+    {
+      "path": "runs/K000_0011/run.log",
+      "sha256": "1ce7f479d4679ef74777a503684dc7f0908c6305f51768509868fd744010d428",
+      "bytes": 226711
+    },
+    {
+      "path": "runs/K000_0111/deck.cir",
+      "sha256": "416392f0cba5ab05437a43085c453d29a13b40afc61e5541a4707cb405ee1d9d",
+      "bytes": 8172
+    },
+    {
+      "path": "runs/K000_0111/metadata.json",
+      "sha256": "d8c9a0224d4ef43c6c588d9c2a61ac60c2e733a98e15b368a644648929a23fc9",
+      "bytes": 435
+    },
+    {
+      "path": "runs/K000_0111/raw.csv",
+      "sha256": "159bd558cd0425bf299fcb7e11946e3401023466d1a02d949ac4518c19cdc2a7",
+      "bytes": 7231717
+    },
+    {
+      "path": "runs/K000_0111/run.log",
+      "sha256": "d322df9b2f5ad36272f7b30552462139eb11d2916d76dfed7d317eca174fdd3d",
+      "bytes": 227045
+    },
+    {
+      "path": "runs/K010_0011/deck.cir",
+      "sha256": "a01f72b77bb0d5cf4657582c48d834c1b700da42f35f34e1267cf7f20a03ef37",
+      "bytes": 8174
+    },
+    {
+      "path": "runs/K010_0011/metadata.json",
+      "sha256": "468b6808ec9a640260b434cc7a93dbfd53a6d310d72e9d11285b08b9fe7b08ec",
+      "bytes": 450
+    },
+    {
+      "path": "runs/K010_0011/raw.csv",
+      "sha256": "a24d2f119ae213bf8d75b0d3ef6efd5d7e25304c1133966fec314d7d359c3b7d",
+      "bytes": 7237414
+    },
+    {
+      "path": "runs/K010_0011/run.log",
+      "sha256": "36c5a6462da82f955f618a37939f7000e948c346a9dc4a233351ad59e45bb42e",
+      "bytes": 226324
+    },
+    {
+      "path": "runs/K010_0111/deck.cir",
+      "sha256": "c5ea9227d21d634b970881bb8d3ad9eadfd0a9af5fd39824221172e94cc55f9c",
+      "bytes": 8190
+    },
+    {
+      "path": "runs/K010_0111/metadata.json",
+      "sha256": "a580e5eb05982ce7a82f50773dae3be231ab1800e0378300216d9f9a7ee945c3",
+      "bytes": 450
+    },
+    {
+      "path": "runs/K010_0111/raw.csv",
+      "sha256": "999152bd9d5c1bf3d80c37b277c6ea9822bee34ce3e8e55e043d3a65dfb79281",
+      "bytes": 7236788
+    },
+    {
+      "path": "runs/K010_0111/run.log",
+      "sha256": "bfdf11dd7271d5b5218f36a9600e5b413a3f9ce4b9a2830c2ef0fabdc3e20f76",
+      "bytes": 226761
+    },
+    {
+      "path": "runs/K020_0011/deck.cir",
+      "sha256": "ab8a39f7120a7affa596c047ea0548c5af4e75d01664a4263b0b08b6ad0cb979",
+      "bytes": 8174
+    },
+    {
+      "path": "runs/K020_0011/metadata.json",
+      "sha256": "355d4cfe3757a17232982d8915b9fbaf02fccff556bd2ac55b6ea36103084041",
+      "bytes": 450
+    },
+    {
+      "path": "runs/K020_0011/raw.csv",
+      "sha256": "6c2a932c2d3265755b898732dbd96936ebf5f65cc691c75c307738119f191ab0",
+      "bytes": 7237477
+    },
+    {
+      "path": "runs/K020_0011/run.log",
+      "sha256": "18b6ee9a1e99cfd7bf02dd0a043d3be4560689d88344ab08df4195aacdfce342",
+      "bytes": 226698
+    },
+    {
+      "path": "runs/K020_0111/deck.cir",
+      "sha256": "9e178769d44409d9ba628e68e49a7462c459f38c6e4efb02c1421ee70b89b39d",
+      "bytes": 8190
+    },
+    {
+      "path": "runs/K020_0111/metadata.json",
+      "sha256": "92a3544b044816edc0878f6ed3a0c2e2befe4a8e6bd0d4a13198bf8f5ed8a769",
+      "bytes": 450
+    },
+    {
+      "path": "runs/K020_0111/raw.csv",
+      "sha256": "005ab38d4adec00eb5ba1980b6e2bfc286f91b7483a451a2864b15d4ff39f577",
+      "bytes": 7236711
+    },
+    {
+      "path": "runs/K020_0111/run.log",
+      "sha256": "1fe71d27dafcc0014c9cac40b7982b3cb35a05a3aa137665146aea0ab98015a7",
+      "bytes": 226722
+    },
+    {
+      "path": "runs/K030_0011/deck.cir",
+      "sha256": "57a75abfc9da1b158b7dd79931dd0917c1c53567af0ba16d4018944fc8064ed1",
+      "bytes": 8174
+    },
+    {
+      "path": "runs/K030_0011/metadata.json",
+      "sha256": "49b5babebaf3d8c08311ba51f30a2984aa28fece35a980c5d2880b2b6f3aa7f2",
+      "bytes": 449
+    },
+    {
+      "path": "runs/K030_0011/raw.csv",
+      "sha256": "3f5b2c70c326c24c7cce41b2dc0e4db535be3192652c2b1c4d75ebdc1a56e1e1",
+      "bytes": 7237450
+    },
+    {
+      "path": "runs/K030_0011/run.log",
+      "sha256": "f40b4e1a56c36845cf2bbdf0fe00313eb5676dc37db81af0085020457f4f9457",
+      "bytes": 225824
+    },
+    {
+      "path": "runs/K030_0111/deck.cir",
+      "sha256": "5a51c341f94d999d6f1a1deb0620a8b7477553ba11b2995a21fb8fd0b8d07fe4",
+      "bytes": 8190
+    },
+    {
+      "path": "runs/K030_0111/metadata.json",
+      "sha256": "c94c61fcbe473471c5a050760e46f12e96af7c98d40a0eb0c5fc46ab70fa40c9",
+      "bytes": 449
+    },
+    {
+      "path": "runs/K030_0111/raw.csv",
+      "sha256": "1eb40527943dfeb99a726b24c3e289af4c5426ff3137b922cb453296982e705f",
+      "bytes": 7236735
+    },
+    {
+      "path": "runs/K030_0111/run.log",
+      "sha256": "df22d0fe3b56a6e1f6dd6516fe3804f4ca6779adaead1871c3a4a949f46ee271",
+      "bytes": 227582
+    }
+  ]
+}

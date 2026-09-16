@@ -1,0 +1,33 @@
+{
+  "schema": "bvm-qb-lin-mutual-rl-aux-transformation-registry-v1",
+  "raw_mutation": false,
+  "operations": [
+    {
+      "name": "experimental_qb_clone",
+      "rule": "canonical BQ cloned; only grounded L_AUX/R_AUX/K_AUX added inside clone; canonical QB source untouched"
+    },
+    {
+      "name": "K_values",
+      "values": {
+        "K000": 0.0,
+        "K010": 0.1,
+        "K020": 0.2,
+        "K030": 0.3
+      },
+      "M_formula": "K*sqrt(1.5*10) pH",
+      "positive_K_only": true
+    },
+    {
+      "name": "aux_energy",
+      "rule": "actual-grid integral of I(R_AUX)^2*20 and V(R_AUX)*I(R_AUX)"
+    },
+    {
+      "name": "phase_display",
+      "rule": "unwrap(raw radians)/(2*pi), navigation only"
+    },
+    {
+      "name": "area",
+      "rule": "same JJ/endpoints/direction actual-grid trapezoid; not SFQ count"
+    }
+  ]
+}

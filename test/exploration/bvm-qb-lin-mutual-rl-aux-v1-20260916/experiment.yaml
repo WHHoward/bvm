@@ -1,0 +1,107 @@
+schema_version: bvm-qb-lin-mutual-rl-aux-v1
+id: bvm-qb-lin-mutual-rl-aux-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS_K0_ONLY
+contract_sentence: "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
+registration_head: b904851be588ca88d40cf1700d5fef7ce3d889ed
+remote_bvm_master_at_registration: b904851be588ca88d40cf1700d5fef7ce3d889ed
+scientific_review_authorized: false
+mechanical_analysis_performed: false
+bounded_experiment_interpretation_performed: false
+independent_scientific_review_performed: false
+scientific_interpretation_performed: false
+
+question:
+  primary: "Can a minimal passive Lin-coupled mutual-RL auxiliary reshape N3 while preserving N2?"
+  scope: "K=0/.1/.2/.3 at fixed Laux/Raux, then one smallest-K conditional N1/N4 pair only if mechanical 2/3 appears."
+  interpretation_ceiling: "Mechanical candidate labels only; no physical solution or winner assignment."
+
+frozen:
+  Lin_pH: 1.5
+  Laux_pH: 10
+  Raux_ohm: 20
+  K_points: [0.0, 0.1, 0.2, 0.3]
+  positive_K_only: true
+  timestep_ps: 0.1
+  stop_time_ps: 200
+  actual_grid: true
+  interpolation: false
+  no_QB_parameter_change: true
+  no_new_JJ: true
+  no_capacitor: true
+  no_PTL: true
+
+authorized_matrix:
+  - run_id: K000_0011
+    K: 0.0
+    M_pH: 0.0
+    mask: "0011"
+    execution_order: 1
+    status: K0_gate_or_conditional_after_K0
+  - run_id: K000_0111
+    K: 0.0
+    M_pH: 0.0
+    mask: "0111"
+    execution_order: 2
+    status: K0_gate_or_conditional_after_K0
+  - run_id: K010_0011
+    K: 0.1
+    M_pH: 0.3872983346207417
+    mask: "0011"
+    execution_order: 3
+    status: K0_gate_or_conditional_after_K0
+  - run_id: K010_0111
+    K: 0.1
+    M_pH: 0.3872983346207417
+    mask: "0111"
+    execution_order: 4
+    status: K0_gate_or_conditional_after_K0
+  - run_id: K020_0011
+    K: 0.2
+    M_pH: 0.7745966692414834
+    mask: "0011"
+    execution_order: 5
+    status: K0_gate_or_conditional_after_K0
+  - run_id: K020_0111
+    K: 0.2
+    M_pH: 0.7745966692414834
+    mask: "0111"
+    execution_order: 6
+    status: K0_gate_or_conditional_after_K0
+  - run_id: K030_0011
+    K: 0.3
+    M_pH: 1.161895003862225
+    mask: "0011"
+    execution_order: 7
+    status: K0_gate_or_conditional_after_K0
+  - run_id: K030_0111
+    K: 0.3
+    M_pH: 1.161895003862225
+    mask: "0111"
+    execution_order: 8
+    status: K0_gate_or_conditional_after_K0
+  maximum_fixed_solves: 8
+  conditional_N1_N4_max_solves: 2
+  absolute_max_new_physical_solves: 10
+
+K_matrix_audit:
+  status: PASS
+  syntax_fixture: test/comp/mutual.cir
+  positive_definite_for_registered_points: true
+
+K0_deck_registration:
+  - run_id: K000_0011
+    path: test/exploration/bvm-qb-lin-mutual-rl-aux-v1-20260916/runs/K000_0011/deck.cir
+    sha256: 271cfbd10435b1212398f9afdb0c7bc5530dedc57c519974f1f116a3b54eb780
+    bytes: 8156
+  - run_id: K000_0111
+    path: test/exploration/bvm-qb-lin-mutual-rl-aux-v1-20260916/runs/K000_0111/deck.cir
+    sha256: 416392f0cba5ab05437a43085c453d29a13b40afc61e5541a4707cb405ee1d9d
+    bytes: 8172
+
+conditional_rule:
+  selection: smallest positive K with mechanical N2=2 and N3=3 candidate
+  added_masks: [0001, 1111]
+  no_subjective_waveform_ranking: true
+  scientific_assignment: NOT_ASSIGNED_SCIENTIFIC_REVIEW_REQUIRED

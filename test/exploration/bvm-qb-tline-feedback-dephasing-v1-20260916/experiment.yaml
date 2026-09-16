@@ -1,0 +1,170 @@
+schema_version: bvm-qb-tline-feedback-dephasing-v1
+id: bvm-qb-tline-feedback-dephasing-v1-20260916
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+registration_head: cdd916a35ee3f28eea8b7d3524a5751fda6f6efd
+remote_bvm_master_at_registration: cdd916a35ee3f28eea8b7d3524a5751fda6f6efd
+scientific_review_authorized: false
+scientific_interpretation_performed: false
+
+question:
+  primary: "Can a finite one-way propagation delay in the BVM->QB boundary path dephase the N3 BVM<->QB closed-loop timing while preserving N2?"
+  scope: "One fixed ideal lossless TLINE impedance and two preregistered delays; no QB internal parameter change."
+  interpretation_ceiling: "Measured TLINE port timing, waveform distortion, BVM/QB/JTL raw trajectories, and bounded outcome logic only."
+
+syntax_gate:
+  syntax: "Tlabel Vi+ Vi- Vo+ Vo- TD=value Z0=value"
+  source_parser: src/TransmissionLine.cpp
+  header: include/JoSIM/TransmissionLine.hpp
+  documentation: docs/comp_stamps.md
+  repository_example: test/comp/tx.cir
+  smoke_deck: smoke/tline_syntax/deck.cir
+  smoke_status: PASS
+  smoke_raw_sha256: ca6da2b9b408c389f8f448118dede1dfafbdabb58217554f14635f62085d7f21
+  smoke_deck_sha256: d4b3080f86cad1fbf7bb011ec21c9003d99bf279bfb85f256c1c6a77a1c89493
+  measured_td_0p3_ps: 0.3
+  measured_td_0p3_samples: 3
+  formal_decks_blocked_until_smoke_pass: true
+  formal_decks_registered: true
+
+source_fixture:
+  canonical_n2_raw: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv
+  canonical_n3_raw: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv
+  canonical_topology: "BVM + COMMON_SL + 8xJSL + canonical QB + JTL1..6 + 10 ohm terminal"
+  intervention: "B_JSL8 near port -> ideal lossless four-node TLINE -> QBIN"
+  TLINE: "T_BVM_QB TLINE_IN 0 QBIN 0 TD=<case> Z0=6"
+  source_impedance_claim: "Z0=6 ohm is a causal-probe engineering value, not a physical characteristic-impedance claim."
+
+frozen:
+  BVM_count: 4
+  JSL_count: 8
+  JSL_area: 5.0
+  mask_cases: [0011, 0111]
+  active_masks: "0011=N2, 0111=N3"
+  bit_order: "b3b2b1b0 = BVM1/BVM2/BVM3/BVM4"
+  canonical_qb: circuits/qb/bq_parameterized_v1.cir
+  canonical_QB_parameters: "unchanged from canonical reference decks"
+  Z0_ohm: 6.0
+  tran: ".tran 0.1p 200p"
+  stored_grid: "JoSIM CSV actual stored timestamps; expected 1999 samples from 0 to 199.9 ps"
+  analysis_windows_ps: [[0, 200], [101, 110], [110, 121], [121, 200]]
+  focus_window_ps: [110, 121]
+  window_semantics: "half-open; actual stored timestamps; no interpolation/resampling"
+  no_read_extension: true
+
+authorized_cases:
+  - case_id: TLINE_TD_0P3
+    TD_ps: 0.3
+    expected_stored_delay_samples: 3
+    Z0_ohm: 6.0
+    masks: [0011, 0111]
+  - case_id: TLINE_TD_0P6
+    TD_ps: 0.6
+    expected_stored_delay_samples: 6
+    Z0_ohm: 6.0
+    masks: [0011, 0111]
+authorized_formal_solve_count: 4
+no_other_delay_points: true
+no_Z0_sweep: true
+
+probes:
+  upstream: "V(COMMON_SL); P/V/I(B_JSL1..8); V(TLINE_IN,0); I(T_BVM_QB)"
+  receiver_boundary: "V(QBIN); I(LIN|XBQ1); V(LIN|XBQ1)"
+  qb: "P/V/I(BJS|XBQ1); P/V/I(BJ1|XBQ1); P/V/I(BJ2|XBQ1); I/V(L1|XBQ1); I/V(L2|XBQ1); I/V(L3|XBQ1); I/V(RJ1|XBQ1); I/V(RJ2|XBQ1); V(QBOUT)"
+  bvm: "active BVM JS1/JS2 P/V/I; LS1/LS2/LS3/R_S/LM3/L_SL I/V; JM1/JM2 P/V/I"
+  downstream: "all JTL1..6 B01/B02 P/V/I and stage outputs; terminal voltage/current"
+  tline_current_boundary_note: "I(T_BVM_QB) is the exposed first-port TLINE branch; I(LIN|XBQ1) is the receiver-side KCL current at QBIN because the second internal TLINE branch has no independent public print label."
+
+registered_metrics:
+  N2: "history/control CLEAN; first and second QB response; ordered BJS/BJ1/BJ2/JTL/terminal chronology; measured forward delay"
+  N3: "JS1/JS2 focus p2p; same-JJ voltage-area; 114.8 ps JS1 navigation landmark; later JS2 activity; JSL8/source current; LS3/RS; COMMON_SL; QBIN; first BJ1/BJ2"
+  tline_timing: "forward upstream-port to downstream-port landmark; receiver-generated downstream-to-upstream feature; overall chronology shift"
+  distortion: "peak/current area; QBIN voltage; TLINE port waveform features; overshoot/ringing; zero crossings; width"
+  phase_semantics: "P raw radians; continuous unwrap then rad/(2*pi) navigation only; not SFQ count"
+  area_semantics: "same JJ, same endpoints/direction/window, actual-grid trapezoid; not an SFQ count"
+  mechanism_guard: "Do not call timing dephasing confirmed if impedance/reflection/amplitude distortion dominates."
+
+forbidden:
+  - QB parameter changes
+  - JTL/capture-stage changes
+  - BVM/LS3/RS changes
+  - amplitude scaling
+  - extra delay points
+  - extra Z0 values
+  - timestep sweep
+  - impedance matching network
+  - sentinel follow-up
+  - READ extension
+
+output:
+  root_files: [experiment.yaml, PREFLIGHT.md, RESULT.md, result.json, provenance.json, runs, plots]
+  raw_zip: "Drive only; do not commit ZIP"
+  package_delivery_manifest: delivery_manifest.json
+
+formal_deck_registration:
+  - run_id: TLINE_TD_0P3_0011
+    path: test/exploration/bvm-qb-tline-feedback-dephasing-v1-20260916/runs/TLINE_TD_0P3/0011/deck.cir
+    sha256: befe685ba517dbebf73c7b12e7f9f11804a5985677a5235fab7e58e24e4ca117
+    bytes: 7817
+  - run_id: TLINE_TD_0P3_0111
+    path: test/exploration/bvm-qb-tline-feedback-dephasing-v1-20260916/runs/TLINE_TD_0P3/0111/deck.cir
+    sha256: 48a3a4bc7253c88a1f192774808d7d16cf6404f6b4a699a8843374873f6c8640
+    bytes: 7833
+  - run_id: TLINE_TD_0P6_0011
+    path: test/exploration/bvm-qb-tline-feedback-dephasing-v1-20260916/runs/TLINE_TD_0P6/0011/deck.cir
+    sha256: b6cf2351978a3a713bfb04b8e54510efdf70dce268d77a1897f454cccd9e2c4e
+    bytes: 7817
+  - run_id: TLINE_TD_0P6_0111
+    path: test/exploration/bvm-qb-tline-feedback-dephasing-v1-20260916/runs/TLINE_TD_0P6/0111/deck.cir
+    sha256: bbf9daea971ad5a8488890ec6fc24c1c4c4c78a25e951860803a797cc9ab08e6
+    bytes: 7833
+
+source_closure_hashes:
+  - runner: scripts/bvm_qb_tline_feedback_dephasing.py; sha256=1c92eef4277487dd06de649f1fd6b48cb837160106c5b5a4e30a480c8c32b70c
+  - global_jjmit_model: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir; sha256=19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  - canonical_bvm: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir; sha256=0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54
+  - canonical_qb_include: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir; sha256=43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42
+  - canonical_jtl_include: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir; sha256=ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a
+  - public_qb_hash_guard: circuits/qb/bq_parameterized_v1.cir; sha256=f676ba1ecb9b2607631a5cfc2f99b7d67e09b9e821457015fba375b8a39f13b0
+  - transmission_line_source: src/TransmissionLine.cpp; sha256=a26adbd8c48dc384d33e625528a7bd4a18e111c7bf3415ab4077c117bb60a575
+  - transmission_line_header: include/JoSIM/TransmissionLine.hpp; sha256=4e1c30b2736a76c83c8a6acbce41ee78cc0ac4bc4cceede9be2c80a9bdfe66d9
+  - transmission_line_docs: docs/comp_stamps.md; sha256=0e50119a3cac23bdf998ee0561afce48a0acf481a72a7e86ebe10ac09cc7904b
+  - transmission_line_example: test/comp/tx.cir; sha256=c0a5e75f3ccf04f9635187eea1672b3b377bde7c4e9589b5324b188fd53c7488
+  - josim_solver: build/josim-cli; sha256=48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2
+  - plotter: scripts/josim-plot2.py; sha256=0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6
+  - shared_raw_reader: scripts/bvmtools/raw.py; sha256=2b7303fd5f99a61846f24d50c18594d073e858a74e6fa632bc90d7d1dbb1f8e2
+  - shared_phase_tools: scripts/bvmtools/phase.py; sha256=ac79f640bc9fae8784f75ef00a6cb978e8fa3606a9938cf0eb131fc728caba3c
+  - shared_waveform_tools: scripts/bvmtools/waveform.py; sha256=75ca2f24ff3df4c7706af5cf4bb23880e74100e7f694ab612cb02ad07d0f2af1
+  - smoke_deck: test/exploration/bvm-qb-tline-feedback-dephasing-v1-20260916/smoke/tline_syntax/deck.cir; sha256=d4b3080f86cad1fbf7bb011ec21c9003d99bf279bfb85f256c1c6a77a1c89493
+  - smoke_raw: test/exploration/bvm-qb-tline-feedback-dephasing-v1-20260916/smoke/tline_syntax/raw.csv; sha256=ca6da2b9b408c389f8f448118dede1dfafbdabb58217554f14635f62085d7f21
+  - smoke_log: test/exploration/bvm-qb-tline-feedback-dephasing-v1-20260916/smoke/tline_syntax/run.log; sha256=7d59f7de1f6f8f159c58d510a97b17c396539e39624d3f3b7bb7e4b1a3bfa8da
+  - canonical_0011_raw: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv; sha256=3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c
+  - canonical_0011_deck: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir; sha256=8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3
+  - canonical_0111_raw: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv; sha256=1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75
+  - canonical_0111_deck: test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir; sha256=98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914
+
+smoke_evidence:
+  status: PASS
+  measured_delay_ps: 0.30000000000000004
+  measured_delay_samples: 3
+  formal_deck_creation_after_smoke: true
+
+postsolve_tooling_revision:
+  path: scripts/bvm_qb_tline_feedback_dephasing.py
+  old_sha256: f918c98a72e6074630212a7e08136b9127a61cca2075e2a2213c3f23f8e8e00f
+  new_sha256: a05ccd412101cad10393d57631e2a1f3e161dfcae5b65e52339361d051d8d47a
+  reason: "analysis/reporting enhancement after the four formal solves; no physical rerun"
+
+postsolve_tooling_revision_2:
+  path: scripts/bvm_qb_tline_feedback_dephasing.py
+  old_sha256: a05ccd412101cad10393d57631e2a1f3e161dfcae5b65e52339361d051d8d47a
+  new_sha256: 6e89ac272457aeb870f80201e65acaea29578ee369a92c84eeb9bdff455b5d75
+  reason: "canonical reference and independent review reporting enhancement after the four formal solves; no physical rerun"
+
+postsolve_tooling_revision_3:
+  path: scripts/bvm_qb_tline_feedback_dephasing.py
+  old_sha256: 6e89ac272457aeb870f80201e65acaea29578ee369a92c84eeb9bdff455b5d75
+  new_sha256: 1c92eef4277487dd06de649f1fd6b48cb837160106c5b5a4e30a480c8c32b70c
+  reason: "final delivery versioning and independent critical review enhancement after the four formal solves; no physical rerun"

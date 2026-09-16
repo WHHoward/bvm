@@ -1,0 +1,8 @@
+* Registered JoSIM ideal lossless TLINE syntax/delay smoke test.
+* The line has two grounded return nodes: IN/0 and OUT/0.
+VDRIVE IN 0 PWL(0 0 0.5p 0 0.6p 1m 1.0p 1m 1.1p 0 2p 0)
+T_SMOKE IN 0 OUT 0 TD=0.3p Z0=6
+RLOAD OUT 0 6
+.tran 0.1p 2p
+.print V(IN) V(OUT) I(T_SMOKE) I(RLOAD)
+.end

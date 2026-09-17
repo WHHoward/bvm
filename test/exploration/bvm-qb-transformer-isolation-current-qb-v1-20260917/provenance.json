@@ -1,0 +1,2321 @@
+{
+  "schema": "bvm-qb-transformer-isolation-current-qb-provenance-v1",
+  "experiment_id": "bvm-qb-transformer-isolation-current-qb-v1-20260917",
+  "created_at": "2026-09-17T11:27:21+08:00",
+  "registration_head": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+  "remote_bvm_master_at_registration": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+  "contract_sentence": "This experiment is governed by docs/EXPERIMENT_CONTRACT.md.",
+  "scientific_review_authorized": false,
+  "mechanical_analysis_performed": true,
+  "bounded_experiment_interpretation_performed": false,
+  "independent_scientific_review_performed": false,
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "source_closure": [
+    {
+      "name": "runner",
+      "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/generator.py",
+      "sha256": "95b86dd9c00f3747ad2905ec57dbceb2d0a24b4d96e75c8c3ec13ab199e47d8f",
+      "bytes": 59152,
+      "role": "transformer generator/executor/analyzer/plotter/packager"
+    },
+    {
+      "name": "run_sh",
+      "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/run.sh",
+      "sha256": "39f60bf59bacc25380fdb4d7bfb93486704fe36027fab101d8509e08177ed696",
+      "bytes": 1008,
+      "role": "user-facing runner"
+    },
+    {
+      "name": "jjmit",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "canonical JJ model"
+    },
+    {
+      "name": "bvm",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "canonical BVM"
+    },
+    {
+      "name": "qb",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "canonical current QB"
+    },
+    {
+      "name": "jtl",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "canonical JTL"
+    },
+    {
+      "name": "solver",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "recorded solver"
+    },
+    {
+      "name": "plotter",
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "bytes": 12245,
+      "role": "standard renderer"
+    },
+    {
+      "name": "branch_helper",
+      "path": "scripts/bvm_qb_rloop_branch_timing_decomposition.py",
+      "sha256": "871140804ddbb7973b6a6bf03050951423ab70120713dd4cd781ec07c324a4c4",
+      "bytes": 115127,
+      "role": "read-only metrics helper"
+    },
+    {
+      "name": "population_helper",
+      "path": "scripts/bvm_qb_rloop_ls3_population_validation.py",
+      "sha256": "d41e1fee91fa8a9bd78ef34f731576cc09697b08f412cb1344e935cb6ea9aadb",
+      "bytes": 98506,
+      "role": "read-only oracle helper"
+    },
+    {
+      "name": "oracle",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/analysis/population_oracle.py",
+      "sha256": "b07056580cdd913efcf5317a8856c9a8023c8c9499ede89d236e837d20950166",
+      "bytes": 14341,
+      "role": "historical multi-evidence oracle"
+    },
+    {
+      "name": "canonical_0011_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+      "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "bytes": 7102297,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0111_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+      "sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+      "bytes": 7101704,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0001_raw",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/raw.csv",
+      "sha256": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+      "bytes": 7099946,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_1111_raw",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/raw.csv",
+      "sha256": "0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c",
+      "bytes": 7100700,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0011_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir",
+      "sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+      "bytes": 7500,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "canonical_0111_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir",
+      "sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+      "bytes": 7516,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "canonical_0001_deck",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/deck.cir",
+      "sha256": "81a9b7e75437a5cb9ccd173b9db3bf93697ea6dd6017bb1d8dbf4bd4008d70fb",
+      "bytes": 7484,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "canonical_1111_deck",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/deck.cir",
+      "sha256": "892295ddd6599ba6cfa17a28a62528b6d891e0b7dc1c2105649dc25e5e3043c3",
+      "bytes": 7532,
+      "role": "read-only canonical deck"
+    }
+  ],
+  "frozen": {
+    "question": "apply R6-A-scale transformer isolation to current canonical population QB",
+    "topology": "JSL8 source -> R_PRI -> L_PRI; K_ISO; L_SEC -> QBIN; canonical QB/JTL retained",
+    "L_PRI_pH": 0.2,
+    "L_SEC_pH": 2.0,
+    "K_ISO": 0.5,
+    "R_PRI_ohm": 12.0,
+    "M_pH": 0.31622776601683794,
+    "windows_ps": [
+      [
+        0.0,
+        200.0
+      ],
+      [
+        110.0,
+        121.0
+      ],
+      [
+        121.0,
+        130.0
+      ]
+    ],
+    "no_R6B": true,
+    "no_parameter_sweep": true
+  },
+  "matrix_audit": {
+    "status": "PASS",
+    "syntax_fixture": "test/comp/mutual.cir",
+    "syntax_examples": [
+      "K L1 L2 0.693"
+    ],
+    "L_PRI_pH": 0.2,
+    "L_SEC_pH": 2.0,
+    "K_ISO": 0.5,
+    "M_pH": 0.31622776601683794,
+    "determinant_pH2": 0.30000000000000004,
+    "eigenvalues_pH": [
+      0.14606079858305443,
+      2.053939201416946
+    ],
+    "abs_K_lt_1": true,
+    "matrix_positive_definite": true
+  },
+  "branch_direction_audit": {
+    "0011": {
+      "status": "PASS",
+      "positive_direction": "node6 -> node10",
+      "mask": "0011",
+      "instances": {
+        "XBVM1": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 1.0000000007475817e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM2": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 1.0000000007475817e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM3": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 6.100000000020152e-11,
+          "node10_kcl_max_abs_A": 9.000000001307224e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM4": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 6.100000000020152e-11,
+          "node10_kcl_max_abs_A": 9.000000001307224e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        }
+      },
+      "all_instances_pass": true
+    },
+    "0111": {
+      "status": "PASS",
+      "positive_direction": "node6 -> node10",
+      "mask": "0111",
+      "instances": {
+        "XBVM1": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 3.599999999167637e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM2": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 4.999999998994524e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 4.999999998994524e-11,
+          "node10_kcl_max_abs_A": 6.000000000419732e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM3": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 4.999999998994524e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 4.999999998994524e-11,
+          "node10_kcl_max_abs_A": 6.000000000419732e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM4": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 4.999999998994524e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 4.999999998994524e-11,
+          "node10_kcl_max_abs_A": 6.000000000419732e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        }
+      },
+      "all_instances_pass": true
+    }
+  },
+  "authorized_matrix": {
+    "fixed": [
+      "ISO_R6A_0011",
+      "ISO_R6A_0111"
+    ],
+    "conditional": [
+      "ISO_R6A_0001",
+      "ISO_R6A_1111"
+    ],
+    "maximum": 4,
+    "no_other_solve": true
+  },
+  "registered_decks": {
+    "ISO_R6A_0011": {
+      "case_id": "ISO_R6A_0011",
+      "mask": "0011",
+      "L_PRI_pH": 0.2,
+      "L_SEC_pH": 2.0,
+      "K_ISO": 0.5,
+      "R_PRI_ohm": 12.0,
+      "M_pH": 0.31622776601683794,
+      "conditional_population_validation": false,
+      "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/deck.cir",
+      "sha256": "42f4d78017ae2a861dcd70f9db3b32a8a1c3d00a2ea014ae22fc0ce896ff5ae6",
+      "bytes": 7913,
+      "topology": "JSL8 source-side BVM endpoint -> R_PRI -> L_PRI, coupled by K_ISO to L_SEC -> QBIN; canonical QB/JTL retained"
+    },
+    "ISO_R6A_0111": {
+      "case_id": "ISO_R6A_0111",
+      "mask": "0111",
+      "L_PRI_pH": 0.2,
+      "L_SEC_pH": 2.0,
+      "K_ISO": 0.5,
+      "R_PRI_ohm": 12.0,
+      "M_pH": 0.31622776601683794,
+      "conditional_population_validation": false,
+      "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/deck.cir",
+      "sha256": "9fe67b28ef5774bce1860477ac664695bb3b9bf12b70c1fe56ebc92d0ea0d84d",
+      "bytes": 7929,
+      "topology": "JSL8 source-side BVM endpoint -> R_PRI -> L_PRI, coupled by K_ISO to L_SEC -> QBIN; canonical QB/JTL retained"
+    }
+  },
+  "runs": {
+    "ISO_R6A_0011": {
+      "run_id": "ISO_R6A_0011",
+      "case_id": "ISO_R6A_0011",
+      "mask": "0011",
+      "L_PRI_pH": 0.2,
+      "L_SEC_pH": 2.0,
+      "K_ISO": 0.5,
+      "R_PRI_ohm": 12.0,
+      "M_pH": 0.31622776601683794,
+      "conditional_population_validation": false,
+      "parent_commit": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/deck.cir"
+      ],
+      "runtime_seconds": 0.2352351260001342,
+      "started_at": "2026-09-17T11:27:21+08:00",
+      "finished_at": "2026-09-17T11:27:21+08:00",
+      "deck": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/deck.cir",
+        "sha256": "42f4d78017ae2a861dcd70f9db3b32a8a1c3d00a2ea014ae22fc0ce896ff5ae6",
+        "bytes": 7913
+      },
+      "stdout": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/stdout.txt",
+        "sha256": "413cb0648e61bb272a024b3f32c77ed29dbfc5b84507631c4a288205f6ee8e6f",
+        "bytes": 222798
+      },
+      "stderr": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/stderr.txt",
+        "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+        "bytes": 114
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/run.log",
+        "sha256": "040458bdfce5fc5f41ade1d60bf4e17307bc3e36982f90ed674864635921fe2b",
+        "bytes": 223474
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+      },
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "mechanical_analysis_performed": true,
+      "scientific_interpretation_performed": false,
+      "solver_warning_lines": [
+        "Unknown device/node IB|XBQ1",
+        "Cannot store results for this device/node."
+      ],
+      "raw": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "bytes": 7285162,
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 272,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "missing_required_probes": []
+      },
+      "execution_status": "RUN_PASS",
+      "metadata": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/metadata.json",
+        "sha256": "db97194b9142e90be5e1343b28754031503f8491c67d5788d7c538f39ef4f2bc",
+        "bytes": 729
+      },
+      "bounded_experiment_interpretation_performed": false,
+      "independent_scientific_review_performed": false
+    },
+    "ISO_R6A_0111": {
+      "run_id": "ISO_R6A_0111",
+      "case_id": "ISO_R6A_0111",
+      "mask": "0111",
+      "L_PRI_pH": 0.2,
+      "L_SEC_pH": 2.0,
+      "K_ISO": 0.5,
+      "R_PRI_ohm": 12.0,
+      "M_pH": 0.31622776601683794,
+      "conditional_population_validation": false,
+      "parent_commit": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/deck.cir"
+      ],
+      "runtime_seconds": 0.24963168500016764,
+      "started_at": "2026-09-17T11:27:22+08:00",
+      "finished_at": "2026-09-17T11:27:22+08:00",
+      "deck": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/deck.cir",
+        "sha256": "9fe67b28ef5774bce1860477ac664695bb3b9bf12b70c1fe56ebc92d0ea0d84d",
+        "bytes": 7929
+      },
+      "stdout": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/stdout.txt",
+        "sha256": "aa8cb7c7642fe468cfdd5bdefe6600d1aaefb9f8404c271b0fbb2adfcba1b62f",
+        "bytes": 222014
+      },
+      "stderr": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/stderr.txt",
+        "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+        "bytes": 114
+      },
+      "log": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/run.log",
+        "sha256": "61eb67d8c859e03035fec6df0dd5e4bf93e3d4fb307748bc8c30bcff7a932af0",
+        "bytes": 222690
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+      },
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "mechanical_analysis_performed": true,
+      "scientific_interpretation_performed": false,
+      "solver_warning_lines": [
+        "Unknown device/node IB|XBQ1",
+        "Cannot store results for this device/node."
+      ],
+      "raw": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "bytes": 7286175,
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 272,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "missing_required_probes": []
+      },
+      "execution_status": "RUN_PASS",
+      "metadata": {
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/metadata.json",
+        "sha256": "1651d205d8c9ba1d60d6b5437203d1403d6c799a5f6814521fe9bd1814c65265",
+        "bytes": 729
+      },
+      "bounded_experiment_interpretation_performed": false,
+      "independent_scientific_review_performed": false
+    }
+  },
+  "run_order": [
+    "ISO_R6A_0011",
+    "ISO_R6A_0111"
+  ],
+  "execution": {
+    "authorized_physical_solve_count": 4,
+    "actual_physical_solve_count": 2,
+    "solver_invocation_count": 2,
+    "run_order": [
+      "ISO_R6A_0011",
+      "ISO_R6A_0111"
+    ]
+  },
+  "conditional_selection": {
+    "status": "FAIL",
+    "selected_cases": [],
+    "N2_ordered_phase_chain_count": 0,
+    "N3_ordered_phase_chain_count": 0,
+    "conditional_N1_N4_allowed": false,
+    "scientific_interpretation_performed": false
+  },
+  "analysis": {
+    "status": "COMPLETE",
+    "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/analysis/mechanical_analysis.json"
+  },
+  "qa": {
+    "schema": "bvm-qb-transformer-isolation-current-qb-mechanical-qa-v1",
+    "status": "PASS",
+    "artifact_status": "VALID",
+    "run_order": [
+      "ISO_R6A_0011",
+      "ISO_R6A_0111"
+    ],
+    "expected_run_order": [
+      "ISO_R6A_0011",
+      "ISO_R6A_0111"
+    ],
+    "actual_physical_solve_count": 2,
+    "max_physical_solves": 4,
+    "source_hashes_match": true,
+    "raw_hash_before_after_equal": true,
+    "source_hash_before_after_equal": true,
+    "contains_reference_raw_copies": false,
+    "contains_delivery_manifest": false,
+    "runs": {
+      "ISO_R6A_0011": {
+        "status": "PASS",
+        "topology_ok": true,
+        "missing_required_probes": [],
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 272,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "unexpected_solver_warning_lines": [],
+        "raw_sha256_matches": true
+      },
+      "ISO_R6A_0111": {
+        "status": "PASS",
+        "topology_ok": true,
+        "missing_required_probes": [],
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 272,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "unexpected_solver_warning_lines": [],
+        "raw_sha256_matches": true
+      }
+    },
+    "failures": [],
+    "mechanical_analysis_performed": true,
+    "scientific_interpretation_performed": false
+  },
+  "visualization": {
+    "schema": "bvm-qb-transformer-isolation-current-qb-visualization-v1",
+    "status": "PASS",
+    "renderer": "scripts/josim-plot2.py",
+    "layout": "sep_comb",
+    "color": "dark",
+    "phase_option": "2pi",
+    "entries": [
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/01_SIGNAL_TIMING_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "7816cb602783b4444554d102b2fa3a7372c6713f8ac321cb7a3d08fbf3cb18a2",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/01_SIGNAL_TIMING_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "d3592486e4bbfe5afc73bdf45f8c3c939aa745184f01380a7c885cee7dc7171e",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/02_BVM_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "967010203c180d2ee237938c5899c3832bc265e168c6bb9ab5ba8ebf742aaf1f",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "V(L_S3|XBVM1)",
+          "I(L_S3|XBVM1)",
+          "V(R_S|XBVM1)",
+          "I(R_S|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "V(L_S3|XBVM2)",
+          "I(L_S3|XBVM2)",
+          "V(R_S|XBVM2)",
+          "I(R_S|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "V(L_S3|XBVM3)",
+          "I(L_S3|XBVM3)",
+          "V(R_S|XBVM3)",
+          "I(R_S|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)",
+          "V(L_S3|XBVM4)",
+          "I(L_S3|XBVM4)",
+          "V(R_S|XBVM4)",
+          "I(R_S|XBVM4)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/02_BVM_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "373779b8aacd918e77855caf5bdb4daa79cb931146828700a59d02216ce7e280",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "V(L_S3|XBVM1)",
+          "I(L_S3|XBVM1)",
+          "V(R_S|XBVM1)",
+          "I(R_S|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "V(L_S3|XBVM2)",
+          "I(L_S3|XBVM2)",
+          "V(R_S|XBVM2)",
+          "I(R_S|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "V(L_S3|XBVM3)",
+          "I(L_S3|XBVM3)",
+          "V(R_S|XBVM3)",
+          "I(R_S|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)",
+          "V(L_S3|XBVM4)",
+          "I(L_S3|XBVM4)",
+          "V(R_S|XBVM4)",
+          "I(R_S|XBVM4)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/03_JSL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "caf8eb431d35499360553d1ffa813f3ab478c05aaac582860491b349b02f818e",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/03_JSL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "df300b06cc1dd4d41417ccc2260fe50300b4ee92dee5a81b91defb992bd23dbf",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/04_QB_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "0dbd9e3f9180dd6f8e8b1989d81f54e4fcf2a4659e07469016d455443de2170f",
+        "signals": [
+          "V(QBIN)",
+          "V(ISO_SOURCE_OUT)",
+          "I(R_PRI)",
+          "V(R_PRI)",
+          "I(L_PRI)",
+          "V(L_PRI)",
+          "I(L_SEC)",
+          "V(L_SEC)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "I(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/04_QB_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "ac39dfea0a7cd8fe542fe578c6af755b34fbc2c8783a85827e7040f7c7fec723",
+        "signals": [
+          "V(QBIN)",
+          "V(ISO_SOURCE_OUT)",
+          "I(R_PRI)",
+          "V(R_PRI)",
+          "I(L_PRI)",
+          "V(L_PRI)",
+          "I(L_SEC)",
+          "V(L_SEC)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "I(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/05_JTL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "f485f778dc308ffc6cec925bd1a7728cc11dac73c523e2e00bc180d8ff2be886",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "I(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "I(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "I(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "I(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "I(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "I(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0011/05_JTL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+        "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+        "sha256": "7f6ddbddc6e3806db71ebd20872fdef824c2fe8ec11a0c7d2fec62fa08e24e3f",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "I(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "I(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "I(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "I(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "I(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "I(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/01_SIGNAL_TIMING_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "e211868592160abd52cc09e38910a591eb81bc049626d57116e7b70413caa706",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/01_SIGNAL_TIMING_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "a22d0cd627316a315a35c440316943621935acbf3ad00653139c1e5e2a6f728d",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/02_BVM_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "60ee47669f4ecd1179f4d9b2a72775c0eb99704c70ea91adbf2f770ee7a76d26",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "V(L_S3|XBVM1)",
+          "I(L_S3|XBVM1)",
+          "V(R_S|XBVM1)",
+          "I(R_S|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "V(L_S3|XBVM2)",
+          "I(L_S3|XBVM2)",
+          "V(R_S|XBVM2)",
+          "I(R_S|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "V(L_S3|XBVM3)",
+          "I(L_S3|XBVM3)",
+          "V(R_S|XBVM3)",
+          "I(R_S|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)",
+          "V(L_S3|XBVM4)",
+          "I(L_S3|XBVM4)",
+          "V(R_S|XBVM4)",
+          "I(R_S|XBVM4)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/02_BVM_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "911f6c5a977d4b47c78c361af18ed1d46face7c2fb9cbcceea38d9646b973542",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "V(L_S3|XBVM1)",
+          "I(L_S3|XBVM1)",
+          "V(R_S|XBVM1)",
+          "I(R_S|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "V(L_S3|XBVM2)",
+          "I(L_S3|XBVM2)",
+          "V(R_S|XBVM2)",
+          "I(R_S|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "V(L_S3|XBVM3)",
+          "I(L_S3|XBVM3)",
+          "V(R_S|XBVM3)",
+          "I(R_S|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)",
+          "V(L_S3|XBVM4)",
+          "I(L_S3|XBVM4)",
+          "V(R_S|XBVM4)",
+          "I(R_S|XBVM4)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/03_JSL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "0a83701494712ea8a5c6fb74edd44e43100da8964376dd5e1abc34a772e43e13",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/03_JSL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "37a2a5552ce0d66a66a9d2bbf19134e9a4815303a86e04d2512f6cca938c44de",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/04_QB_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "bc0358bc21c9683a8e9d482a002afa4ab1f49ea07d12f6569f5a9822f3254155",
+        "signals": [
+          "V(QBIN)",
+          "V(ISO_SOURCE_OUT)",
+          "I(R_PRI)",
+          "V(R_PRI)",
+          "I(L_PRI)",
+          "V(L_PRI)",
+          "I(L_SEC)",
+          "V(L_SEC)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "I(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/04_QB_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "97563bae8a33c3bd5d9902c9a7412e731333ce6ffd5ef46abe44268daaa5d123",
+        "signals": [
+          "V(QBIN)",
+          "V(ISO_SOURCE_OUT)",
+          "I(R_PRI)",
+          "V(R_PRI)",
+          "I(L_PRI)",
+          "V(L_PRI)",
+          "I(L_SEC)",
+          "V(L_SEC)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "I(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/05_JTL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "2559a7212f8ff295b31a08d1fd46a821b0d4ff0b38dfa042c171cbbb8103334b",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "I(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "I(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "I(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "I(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "I(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "I(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false,
+        "descriptive_only": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "ISO_R6A_0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/ISO_R6A_0111/05_JTL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+        "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+        "sha256": "a5f5c8ff5d8fc5e1919dbf2363a9c2ab05437953340bcce56979a3c4b6d94a05",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "I(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "I(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "I(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "I(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "I(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "I(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0011_01_SIGNAL_TIMING_focus_110_121.html",
+        "sha256": "a126c10d12a3c3ffa7059981feb8f5b2464cdfd630638cb289ab4350e0ce8c7d",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "ISO_R6A_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0011_02_BVM_STATE_focus_110_121.html",
+        "sha256": "0744928a8a5ffe2c12cbef4824f031bece7935ad4d8a2cf7e6850424e6339781",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "V(L_S3|XBVM1)",
+          "I(L_S3|XBVM1)",
+          "V(R_S|XBVM1)",
+          "I(R_S|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "V(L_S3|XBVM2)",
+          "I(L_S3|XBVM2)",
+          "V(R_S|XBVM2)",
+          "I(R_S|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "V(L_S3|XBVM3)",
+          "I(L_S3|XBVM3)",
+          "V(R_S|XBVM3)",
+          "I(R_S|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)",
+          "V(L_S3|XBVM4)",
+          "I(L_S3|XBVM4)",
+          "V(R_S|XBVM4)",
+          "I(R_S|XBVM4)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "ISO_R6A_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0011_03_JSL_CHAIN_focus_110_121.html",
+        "sha256": "aefc0dab2b7db7aaf7b3af5a326be89228e5b396ed6bd9abc07e477fcfc2baad",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "ISO_R6A_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0011_04_QB_STATE_focus_110_121.html",
+        "sha256": "5e7c31a7b70b658588212d1b8c82224491ea9cdd77bae138c8726d755fb42f47",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "ISO_R6A_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0011_05_JTL_CHAIN_focus_110_121.html",
+        "sha256": "e0555ed514ace443468e841bd07b8e984de0d257a1c3a06aff85d128cab65418",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "I(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "I(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "I(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "I(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "I(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "I(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "ISO_R6A_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0111_01_SIGNAL_TIMING_focus_110_121.html",
+        "sha256": "1d1f353e63b75b9c918ab1db30b2bc1d81b645b83e4501d0dbbc8568bdac20fd",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "ISO_R6A_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0111_02_BVM_STATE_focus_110_121.html",
+        "sha256": "644cba6a36da352b9338430b957c48251b285fb0b1a5e6b0091cf833661a8d60",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "V(L_S3|XBVM1)",
+          "I(L_S3|XBVM1)",
+          "V(R_S|XBVM1)",
+          "I(R_S|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "V(L_S3|XBVM2)",
+          "I(L_S3|XBVM2)",
+          "V(R_S|XBVM2)",
+          "I(R_S|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "V(L_S3|XBVM3)",
+          "I(L_S3|XBVM3)",
+          "V(R_S|XBVM3)",
+          "I(R_S|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)",
+          "V(L_S3|XBVM4)",
+          "I(L_S3|XBVM4)",
+          "V(R_S|XBVM4)",
+          "I(R_S|XBVM4)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "ISO_R6A_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0111_03_JSL_CHAIN_focus_110_121.html",
+        "sha256": "9a88860b6b1d37346b78e3ee2bd8705ccb13e26a32918f8968e06223ae27b7e3",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "ISO_R6A_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0111_04_QB_STATE_focus_110_121.html",
+        "sha256": "58148c206b8588a50e99d2cd3e575ec6830a23bab0fcfab3d1df6d89a06f1303",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "ISO_R6A_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/comparisons/0111_05_JTL_CHAIN_focus_110_121.html",
+        "sha256": "489f36e5c627985457cc9ffd4f717c302a2fa37f46db1927dd9901da72c9a4e6",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "I(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "I(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "I(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "I(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "I(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "I(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "ISO_R6A_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true,
+        "descriptive_only": true
+      }
+    ],
+    "standalone_count": 20,
+    "comparison_count": 10,
+    "focused_window_entries": 20,
+    "asset": {
+      "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/plots/assets/plotly.min.js",
+      "sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770"
+    },
+    "invalid_runtime_pages": [],
+    "raw_hashes_rechecked": true,
+    "descriptive_only": true
+  },
+  "package": {
+    "status": "UPLOADED",
+    "package_qa": {
+      "status": "PASS",
+      "package_version": "v1",
+      "package_path": "/mnt/d/BVM_Backages/bvm-qb-transformer-isolation-current-qb-v1-20260917_raw_evidence.zip",
+      "package_sha256": "3f9a6856b547d32b4dc092c12183a5d76e3b982337596815290349ff251a2e2d",
+      "package_bytes": 4512582,
+      "file_count": 51,
+      "expected_file_hashes_match_after_reopen": true,
+      "contains_all_new_run_raw": true,
+      "new_run_raw_members": [
+        "runs/ISO_R6A_0011/raw.csv",
+        "runs/ISO_R6A_0111/raw.csv"
+      ],
+      "contains_reference_raw_copies": false,
+      "contains_delivery_manifest": false,
+      "delivery_manifest_outside_zip": true,
+      "not_in_git": true,
+      "zip_files": [
+        {
+          "path": "PREFLIGHT.md",
+          "sha256": "9bb95f7cdecd6329ee86df2742146ad444023d8ff33ef3c34861f51dc3b4bdc2",
+          "bytes": 1597
+        },
+        {
+          "path": "README.md",
+          "sha256": "ee6e42286f8d2653958efc1c015121bff0083ec2ac403d40dca253453d7eab79",
+          "bytes": 396
+        },
+        {
+          "path": "experiment.yaml",
+          "sha256": "5e9b4bb2e47bd202f574ee59ed9eb7186da8396d1c602594477d8e0fac17dd17",
+          "bytes": 1337
+        },
+        {
+          "path": "RESULT.md",
+          "sha256": "98d159de6592b04bef1c29da52056a7d3e5e5b58281825e36873a2d181997974",
+          "bytes": 1201
+        },
+        {
+          "path": "result.json",
+          "sha256": "49b41d89b5fa566d05a7885ae417b1e080df59c35d79c2ec97b6911281c56aa5",
+          "bytes": 81006
+        },
+        {
+          "path": "provenance.json",
+          "sha256": "a2f6a7023c9212c0388286f81497df9328e2af31449d3973f7c14152296415cd",
+          "bytes": 73101
+        },
+        {
+          "path": "runs/ISO_R6A_0011/deck.cir",
+          "sha256": "42f4d78017ae2a861dcd70f9db3b32a8a1c3d00a2ea014ae22fc0ce896ff5ae6",
+          "bytes": 7913
+        },
+        {
+          "path": "runs/ISO_R6A_0011/metadata.json",
+          "sha256": "db97194b9142e90be5e1343b28754031503f8491c67d5788d7c538f39ef4f2bc",
+          "bytes": 729
+        },
+        {
+          "path": "runs/ISO_R6A_0011/raw.csv",
+          "sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+          "bytes": 7285162
+        },
+        {
+          "path": "runs/ISO_R6A_0011/run.log",
+          "sha256": "040458bdfce5fc5f41ade1d60bf4e17307bc3e36982f90ed674864635921fe2b",
+          "bytes": 223474
+        },
+        {
+          "path": "runs/ISO_R6A_0011/stderr.txt",
+          "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+          "bytes": 114
+        },
+        {
+          "path": "runs/ISO_R6A_0011/stdout.txt",
+          "sha256": "413cb0648e61bb272a024b3f32c77ed29dbfc5b84507631c4a288205f6ee8e6f",
+          "bytes": 222798
+        },
+        {
+          "path": "runs/ISO_R6A_0111/deck.cir",
+          "sha256": "9fe67b28ef5774bce1860477ac664695bb3b9bf12b70c1fe56ebc92d0ea0d84d",
+          "bytes": 7929
+        },
+        {
+          "path": "runs/ISO_R6A_0111/metadata.json",
+          "sha256": "1651d205d8c9ba1d60d6b5437203d1403d6c799a5f6814521fe9bd1814c65265",
+          "bytes": 729
+        },
+        {
+          "path": "runs/ISO_R6A_0111/raw.csv",
+          "sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014",
+          "bytes": 7286175
+        },
+        {
+          "path": "runs/ISO_R6A_0111/run.log",
+          "sha256": "61eb67d8c859e03035fec6df0dd5e4bf93e3d4fb307748bc8c30bcff7a932af0",
+          "bytes": 222690
+        },
+        {
+          "path": "runs/ISO_R6A_0111/stderr.txt",
+          "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+          "bytes": 114
+        },
+        {
+          "path": "runs/ISO_R6A_0111/stdout.txt",
+          "sha256": "aa8cb7c7642fe468cfdd5bdefe6600d1aaefb9f8404c271b0fbb2adfcba1b62f",
+          "bytes": 222014
+        },
+        {
+          "path": "analysis/ADVERSARIAL_REVIEW.md",
+          "sha256": "48e6cfa128ae5a846738b40e713ae432ec589a78cc53e77a7cd57f90c24f58ba",
+          "bytes": 456
+        },
+        {
+          "path": "analysis/EVIDENCE_MANIFEST.md",
+          "sha256": "224717ca4f9f2176f695c79fd4b01c9919c92a6c6c44c0a48ff7434d07f35dc6",
+          "bytes": 7367
+        },
+        {
+          "path": "analysis/MECHANICAL_QA.json",
+          "sha256": "0b7244d7941413a91fa139602e6c850dffeae893273af273af54840c2cd67635",
+          "bytes": 1904
+        },
+        {
+          "path": "analysis/NUMERICAL_REVIEW.md",
+          "sha256": "96129f214a81c0f3560fc1ec8955045ee2663f17b5ad04f3a9800af18018a1fa",
+          "bytes": 407
+        },
+        {
+          "path": "analysis/RAW_ANALYSIS_HANDOFF_MANIFEST.json",
+          "sha256": "7b60a9179a2709da2616651dda12047d95ea42d85ab68b13fb581a779d8a98a8",
+          "bytes": 10668
+        },
+        {
+          "path": "analysis/SOURCE_MANIFEST.json",
+          "sha256": "002a8e76c2f8c849ed60839c1d230c2259a1cb08304f647a020b96c0d241a974",
+          "bytes": 6219
+        },
+        {
+          "path": "analysis/TRANSFORMATION_REGISTRY.json",
+          "sha256": "1580572010d466e35a4db62f3a4b7359782e5fe5e9e9da181a62a53626b3423d",
+          "bytes": 425
+        },
+        {
+          "path": "analysis/VISUALIZATION_MANIFEST.json",
+          "sha256": "b990434af158ea7d6f04786b9db96e162c04e652891eb2dad6ff45595ea5bdec",
+          "bytes": 37247
+        },
+        {
+          "path": "analysis/VISUALIZATION_QA.json",
+          "sha256": "792592b5b0055cd0550214f15d316fb1811c0f8f92db43a47ac62806af44af9a",
+          "bytes": 170
+        },
+        {
+          "path": "analysis/mechanical_analysis.json",
+          "sha256": "071fe29d8283fe185af16289b259db8f0eba8cec9fc267a66dbc1afa41b9486b",
+          "bytes": 325340
+        },
+        {
+          "path": "plots/ISO_R6A_0011/01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "d3592486e4bbfe5afc73bdf45f8c3c939aa745184f01380a7c885cee7dc7171e",
+          "bytes": 22075
+        },
+        {
+          "path": "plots/ISO_R6A_0011/02_BVM_STATE_focus_110_121.html",
+          "sha256": "373779b8aacd918e77855caf5bdb4daa79cb931146828700a59d02216ce7e280",
+          "bytes": 189199
+        },
+        {
+          "path": "plots/ISO_R6A_0011/03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "df300b06cc1dd4d41417ccc2260fe50300b4ee92dee5a81b91defb992bd23dbf",
+          "bytes": 75225
+        },
+        {
+          "path": "plots/ISO_R6A_0011/04_QB_STATE_focus_110_121.html",
+          "sha256": "ac39dfea0a7cd8fe542fe578c6af755b34fbc2c8783a85827e7040f7c7fec723",
+          "bytes": 55750
+        },
+        {
+          "path": "plots/ISO_R6A_0011/05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "7f6ddbddc6e3806db71ebd20872fdef824c2fe8ec11a0c7d2fec62fa08e24e3f",
+          "bytes": 77955
+        },
+        {
+          "path": "plots/ISO_R6A_0111/01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "a22d0cd627316a315a35c440316943621935acbf3ad00653139c1e5e2a6f728d",
+          "bytes": 22150
+        },
+        {
+          "path": "plots/ISO_R6A_0111/02_BVM_STATE_focus_110_121.html",
+          "sha256": "911f6c5a977d4b47c78c361af18ed1d46face7c2fb9cbcceea38d9646b973542",
+          "bytes": 189304
+        },
+        {
+          "path": "plots/ISO_R6A_0111/03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "37a2a5552ce0d66a66a9d2bbf19134e9a4815303a86e04d2512f6cca938c44de",
+          "bytes": 76065
+        },
+        {
+          "path": "plots/ISO_R6A_0111/04_QB_STATE_focus_110_121.html",
+          "sha256": "97563bae8a33c3bd5d9902c9a7412e731333ce6ffd5ef46abe44268daaa5d123",
+          "bytes": 55860
+        },
+        {
+          "path": "plots/ISO_R6A_0111/05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "a5f5c8ff5d8fc5e1919dbf2363a9c2ab05437953340bcce56979a3c4b6d94a05",
+          "bytes": 77900
+        },
+        {
+          "path": "plots/assets/plotly.min.js",
+          "sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+          "bytes": 4763993
+        },
+        {
+          "path": "plots/comparisons/0011_01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "a126c10d12a3c3ffa7059981feb8f5b2464cdfd630638cb289ab4350e0ce8c7d",
+          "bytes": 36089
+        },
+        {
+          "path": "plots/comparisons/0011_02_BVM_STATE_focus_110_121.html",
+          "sha256": "0744928a8a5ffe2c12cbef4824f031bece7935ad4d8a2cf7e6850424e6339781",
+          "bytes": 371491
+        },
+        {
+          "path": "plots/comparisons/0011_03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "aefc0dab2b7db7aaf7b3af5a326be89228e5b396ed6bd9abc07e477fcfc2baad",
+          "bytes": 143273
+        },
+        {
+          "path": "plots/comparisons/0011_04_QB_STATE_focus_110_121.html",
+          "sha256": "5e7c31a7b70b658588212d1b8c82224491ea9cdd77bae138c8726d755fb42f47",
+          "bytes": 24837
+        },
+        {
+          "path": "plots/comparisons/0011_05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "e0555ed514ace443468e841bd07b8e984de0d257a1c3a06aff85d128cab65418",
+          "bytes": 148486
+        },
+        {
+          "path": "plots/comparisons/0111_01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "1d1f353e63b75b9c918ab1db30b2bc1d81b645b83e4501d0dbbc8568bdac20fd",
+          "bytes": 36474
+        },
+        {
+          "path": "plots/comparisons/0111_02_BVM_STATE_focus_110_121.html",
+          "sha256": "644cba6a36da352b9338430b957c48251b285fb0b1a5e6b0091cf833661a8d60",
+          "bytes": 371841
+        },
+        {
+          "path": "plots/comparisons/0111_03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "9a88860b6b1d37346b78e3ee2bd8705ccb13e26a32918f8968e06223ae27b7e3",
+          "bytes": 144353
+        },
+        {
+          "path": "plots/comparisons/0111_04_QB_STATE_focus_110_121.html",
+          "sha256": "58148c206b8588a50e99d2cd3e575ec6830a23bab0fcfab3d1df6d89a06f1303",
+          "bytes": 24997
+        },
+        {
+          "path": "plots/comparisons/0111_05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "489f36e5c627985457cc9ffd4f717c302a2fa37f46db1927dd9901da72c9a4e6",
+          "bytes": 148351
+        },
+        {
+          "path": "executor/generator.py",
+          "sha256": "95b86dd9c00f3747ad2905ec57dbceb2d0a24b4d96e75c8c3ec13ab199e47d8f",
+          "bytes": 59152
+        },
+        {
+          "path": "executor/run.sh",
+          "sha256": "39f60bf59bacc25380fdb4d7bfb93486704fe36027fab101d8509e08177ed696",
+          "bytes": 1008
+        }
+      ],
+      "git_head_at_packaging": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "remote_head_at_packaging": "1348140f17f0d9467dc42238eaa1e252e877e07a"
+    },
+    "delivery_manifest_path": "delivery_manifest.json",
+    "drive_file_id": "1FTa6YccPWPLlnjeHKsOz_h-TUYq8KWVQ",
+    "drive_url": "https://drive.google.com/file/d/1FTa6YccPWPLlnjeHKsOz_h-TUYq8KWVQ/view?usp=drivesdk",
+    "drive_uploaded_at": "2026-09-17T11:29:19+08:00",
+    "delivery_manifest_sha256": "262e4917a5cf53a60ecd0d6e15498918f4d105ba336b45d98e6be567015fc7c6",
+    "drive_sha256_verified": "metadata SHA not supplied by connector"
+  },
+  "stop": {
+    "final_marker": null,
+    "automatic_follow_up": false
+  },
+  "raw_hash_before_analysis": {
+    "ISO_R6A_0011": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+    "ISO_R6A_0111": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014"
+  },
+  "raw_hash_after_analysis": {
+    "ISO_R6A_0011": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b",
+    "ISO_R6A_0111": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014"
+  },
+  "source_hashes_before_analysis": {
+    "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/generator.py": "95b86dd9c00f3747ad2905ec57dbceb2d0a24b4d96e75c8c3ec13ab199e47d8f",
+    "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/run.sh": "39f60bf59bacc25380fdb4d7bfb93486704fe36027fab101d8509e08177ed696",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "build/josim-cli": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "scripts/josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "scripts/bvm_qb_rloop_branch_timing_decomposition.py": "871140804ddbb7973b6a6bf03050951423ab70120713dd4cd781ec07c324a4c4",
+    "scripts/bvm_qb_rloop_ls3_population_validation.py": "d41e1fee91fa8a9bd78ef34f731576cc09697b08f412cb1344e935cb6ea9aadb",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/analysis/population_oracle.py": "b07056580cdd913efcf5317a8856c9a8023c8c9499ede89d236e837d20950166",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/raw.csv": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/raw.csv": "0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/deck.cir": "81a9b7e75437a5cb9ccd173b9db3bf93697ea6dd6017bb1d8dbf4bd4008d70fb",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/deck.cir": "892295ddd6599ba6cfa17a28a62528b6d891e0b7dc1c2105649dc25e5e3043c3"
+  },
+  "source_hashes_after_analysis": {
+    "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/generator.py": "95b86dd9c00f3747ad2905ec57dbceb2d0a24b4d96e75c8c3ec13ab199e47d8f",
+    "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/run.sh": "39f60bf59bacc25380fdb4d7bfb93486704fe36027fab101d8509e08177ed696",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "build/josim-cli": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "scripts/josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "scripts/bvm_qb_rloop_branch_timing_decomposition.py": "871140804ddbb7973b6a6bf03050951423ab70120713dd4cd781ec07c324a4c4",
+    "scripts/bvm_qb_rloop_ls3_population_validation.py": "d41e1fee91fa8a9bd78ef34f731576cc09697b08f412cb1344e935cb6ea9aadb",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/analysis/population_oracle.py": "b07056580cdd913efcf5317a8856c9a8023c8c9499ede89d236e837d20950166",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/raw.csv": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/raw.csv": "0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/deck.cir": "81a9b7e75437a5cb9ccd173b9db3bf93697ea6dd6017bb1d8dbf4bd4008d70fb",
+    "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/deck.cir": "892295ddd6599ba6cfa17a28a62528b6d891e0b7dc1c2105649dc25e5e3043c3"
+  },
+  "execution_status": "ANALYSIS_COMPLETE",
+  "postsolve_tooling_revision": {
+    "path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/generator.py",
+    "old_sha256": "d3eae23294691e40f7651995b841a019bc4b909096216d2ee46af1b664840348",
+    "new_sha256": "95b86dd9c00f3747ad2905ec57dbceb2d0a24b4d96e75c8c3ec13ab199e47d8f",
+    "reason": "analysis-only runner repair",
+    "physical_rerun": false,
+    "raw_mutated": false
+  }
+}

@@ -1,0 +1,2128 @@
+{
+  "schema": "bvm-qb-transformer-isolation-current-qb-result-v1",
+  "experiment_id": "bvm-qb-transformer-isolation-current-qb-v1-20260917",
+  "generated_at": "2026-09-17T11:27:51+08:00",
+  "status": "ANALYSIS_COMPLETE_AWAITING_SCIENTIFIC_REVIEW",
+  "artifact_status": "VALID",
+  "scientific_review_authorized": false,
+  "mechanical_analysis_performed": true,
+  "bounded_experiment_interpretation_performed": false,
+  "independent_scientific_review_performed": false,
+  "scientific_interpretation_performed": false,
+  "execution": {
+    "authorized_physical_solve_count": 4,
+    "actual_physical_solve_count": 2,
+    "solver_invocation_count": 2,
+    "run_order": [
+      "ISO_R6A_0011",
+      "ISO_R6A_0111"
+    ]
+  },
+  "cases": {
+    "ISO_R6A_0011": {
+      "run_id": "ISO_R6A_0011",
+      "mask": "0011",
+      "M_pH": 0.31622776601683794,
+      "ordered_phase_chain_count": 0,
+      "old_strict_complete_response_count": 0,
+      "terminal_pulse_count": 3,
+      "BJ1_landmarks_ps": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "BJ2_landmarks_ps": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "mechanical_candidate_label": "ISOLATION_EFFECTIVE_FORWARD_MARGIN_INSUFFICIENT",
+      "active_phase_area": {
+        "P(B_JS1|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM3)",
+          "voltage_signal": "V(B_JS1|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -19.7558527,
+          "phase_delta_turns": -3.1442416122003665,
+          "voltage_area_V_s": -6.506733715899988e-15,
+          "voltage_area_over_Phi0_turns": -3.146642425934401,
+          "phase_minus_area_turns": 0.002400813734034557,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM3)",
+          "voltage_signal": "V(B_JS2|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.9800658,
+          "phase_delta_turns": -2.8616163491875333,
+          "voltage_area_V_s": -5.910979213849993e-15,
+          "voltage_area_over_Phi0_turns": -2.8585368304939327,
+          "phase_minus_area_turns": -0.003079518693600569,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM4)",
+          "voltage_signal": "V(B_JS1|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -19.7558527,
+          "phase_delta_turns": -3.1442416122003665,
+          "voltage_area_V_s": -6.506733715899988e-15,
+          "voltage_area_over_Phi0_turns": -3.146642425934401,
+          "phase_minus_area_turns": 0.002400813734034557,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM4)",
+          "voltage_signal": "V(B_JS2|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.9800658,
+          "phase_delta_turns": -2.8616163491875333,
+          "voltage_area_V_s": -5.910979213849993e-15,
+          "voltage_area_over_Phi0_turns": -2.8585368304939327,
+          "phase_minus_area_turns": -0.003079518693600569,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "transformer": {
+        "status": "DERIVED",
+        "signals": [
+          "V(ISO_SOURCE_OUT)",
+          "I(R_PRI)",
+          "V(R_PRI)",
+          "I(L_PRI)",
+          "V(L_PRI)",
+          "I(L_SEC)",
+          "V(L_SEC)"
+        ],
+        "measurements": {
+          "focus_110_121": {
+            "V(ISO_SOURCE_OUT)": {
+              "status": "DERIVED",
+              "signal": "V(ISO_SOURCE_OUT)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -4.028489e-05,
+              "maximum": 0.0004706528,
+              "p2p": 0.00051093769,
+              "mean": 0.00023340128436363637,
+              "rms": 0.0002673598296854375,
+              "peak_abs": 0.0004706528,
+              "peak_value": 0.0004706528,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.563915402499998e-15,
+              "absolute_area": 2.5679438914999983e-15,
+              "positive_area": 2.565929646999998e-15,
+              "negative_area": -2.014244500000097e-18,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0002353264,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "I(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(R_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "A",
+              "minimum": -3.442605e-06,
+              "maximum": 3.913503e-05,
+              "p2p": 4.2577635e-05,
+              "mean": 1.9433853772727272e-05,
+              "rms": 2.2258184468198216e-05,
+              "peak_abs": 3.913503e-05,
+              "peak_value": 3.913503e-05,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.1348785819999983e-16,
+              "absolute_area": 2.1383211869999983e-16,
+              "positive_area": 2.1365998844999983e-16,
+              "negative_area": -1.721302500000083e-19,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.9567515e-05,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "V(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(R_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -4.131127e-05,
+              "maximum": 0.0004696204,
+              "p2p": 0.00051093167,
+              "mean": 0.00023320624572727272,
+              "rms": 0.0002670982146848525,
+              "peak_abs": 0.0004696204,
+              "peak_value": 0.0004696204,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.5618543014999977e-15,
+              "absolute_area": 2.565985428499998e-15,
+              "positive_area": 2.563919864999998e-15,
+              "negative_area": -2.0655635000001e-18,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0002348102,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "I(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(L_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "A",
+              "minimum": -3.442605e-06,
+              "maximum": 3.913503e-05,
+              "p2p": 4.2577635e-05,
+              "mean": 1.9433853772727272e-05,
+              "rms": 2.2258184468198216e-05,
+              "peak_abs": 3.913503e-05,
+              "peak_value": 3.913503e-05,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.1348785819999983e-16,
+              "absolute_area": 2.1383211869999983e-16,
+              "positive_area": 2.1365998844999983e-16,
+              "negative_area": -1.721302500000083e-19,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.9567515e-05,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "V(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(L_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -1.342301e-05,
+              "maximum": 1.137561e-05,
+              "p2p": 2.479862e-05,
+              "mean": 1.9503328272727272e-07,
+              "rms": 5.079629697497686e-06,
+              "peak_abs": 1.342301e-05,
+              "peak_value": -1.342301e-05,
+              "time_of_peak_abs_ps": 120.10000000000001,
+              "signed_area": 2.061037780000079e-18,
+              "absolute_area": 4.586902899200026e-17,
+              "positive_area": 2.3965033386000173e-17,
+              "negative_area": -2.1903995606000092e-17,
+              "positive_sample_fraction": 0.5545454545454546,
+              "negative_sample_fraction": 0.44545454545454544,
+              "zero_crossing_count": 14,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 6.711505e-06,
+                "start_ps": 120.10000000000001,
+                "end_ps": 120.10000000000001,
+                "width_ps": 0.0,
+                "peak_time_ps": 120.10000000000001
+              }
+            },
+            "I(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "I(L_SEC)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "A",
+              "minimum": 6.4365e-05,
+              "maximum": 6.760625e-05,
+              "p2p": 3.2412499999999954e-06,
+              "mean": 6.610008790909092e-05,
+              "rms": 6.610529301313633e-05,
+              "peak_abs": 6.760625e-05,
+              "peak_value": 6.760625e-05,
+              "time_of_peak_abs_ps": 118.60000000000001,
+              "signed_area": 7.204713464999998e-16,
+              "absolute_area": 7.204713464999998e-16,
+              "positive_area": 7.204713464999998e-16,
+              "negative_area": 0.0,
+              "positive_sample_fraction": 1.0,
+              "negative_sample_fraction": 0.0,
+              "zero_crossing_count": 0,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 3.3803125e-05,
+                "start_ps": 110.0,
+                "end_ps": 120.89999999999999,
+                "width_ps": 10.899999999999997,
+                "peak_time_ps": 118.60000000000001
+              }
+            },
+            "V(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "V(L_SEC)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -1.358724e-05,
+              "maximum": 1.163741e-05,
+              "p2p": 2.522465e-05,
+              "mean": 9.613480709090908e-08,
+              "rms": 6.294066716778041e-06,
+              "peak_abs": 1.358724e-05,
+              "peak_value": -1.358724e-05,
+              "time_of_peak_abs_ps": 120.10000000000001,
+              "signed_area": 1.0315234439999574e-18,
+              "absolute_area": 5.636047968399999e-17,
+              "positive_area": 2.869600156399997e-17,
+              "negative_area": -2.7664478120000018e-17,
+              "positive_sample_fraction": 0.509090909090909,
+              "negative_sample_fraction": 0.4909090909090909,
+              "zero_crossing_count": 12,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 6.79362e-06,
+                "start_ps": 120.10000000000001,
+                "end_ps": 120.10000000000001,
+                "width_ps": 0.0,
+                "peak_time_ps": 120.10000000000001
+              }
+            },
+            "primary_resistor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "voltage_signal": "V(R_PRI)",
+              "current_signal": "I(R_PRI)",
+              "sample_count": 110,
+              "power_peak_abs_W": 1.8378608442612e-08,
+              "signed_power_energy_J": 6.53391737447512e-20,
+              "signed_power_energy_fJ": 6.53391737447512e-05,
+              "actual_grid_trapezoid": true,
+              "I2R_energy_J": 6.533917350727757e-20,
+              "I2R_energy_fJ": 6.533917350727758e-05,
+              "passivity_nonnegative": true,
+              "resistance_ohm": 12.0
+            },
+            "primary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "voltage_signal": "V(L_PRI)",
+              "current_signal": "I(L_PRI)",
+              "sample_count": 110,
+              "power_peak_abs_W": 2.6258589814805e-10,
+              "signed_power_energy_J": 5.2132573186584045e-23,
+              "signed_power_energy_fJ": 5.213257318658405e-08,
+              "actual_grid_trapezoid": true
+            },
+            "secondary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "voltage_signal": "V(L_SEC)",
+              "current_signal": "I(L_SEC)",
+              "sample_count": 110,
+              "power_peak_abs_W": 9.140016780288e-10,
+              "signed_power_energy_J": 2.834535336725145e-23,
+              "signed_power_energy_fJ": 2.834535336725145e-08,
+              "actual_grid_trapezoid": true
+            }
+          },
+          "rearm_121_130": {
+            "V(ISO_SOURCE_OUT)": {
+              "status": "DERIVED",
+              "signal": "V(ISO_SOURCE_OUT)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -0.0002297019,
+              "maximum": 0.0002098748,
+              "p2p": 0.00043957670000000003,
+              "mean": -1.2557354536666665e-05,
+              "rms": 0.00013480225941055527,
+              "peak_abs": 0.0002297019,
+              "peak_value": -0.0002297019,
+              "time_of_peak_abs_ps": 122.49999999999999,
+              "signed_area": -1.1955497432999921e-16,
+              "absolute_area": 1.0644876316699993e-15,
+              "positive_area": 4.724663286700001e-16,
+              "negative_area": -5.920213029999992e-16,
+              "positive_sample_fraction": 0.4666666666666667,
+              "negative_sample_fraction": 0.5333333333333333,
+              "zero_crossing_count": 8,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.00011485095,
+                "start_ps": 121.99999999999999,
+                "end_ps": 122.9,
+                "width_ps": 0.9000000000000176,
+                "peak_time_ps": 122.49999999999999
+              }
+            },
+            "I(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(R_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "A",
+              "minimum": -1.907757e-05,
+              "maximum": 1.742428e-05,
+              "p2p": 3.650185e-05,
+              "mean": -1.036164321111111e-06,
+              "rms": 1.1173727062675867e-05,
+              "peak_abs": 1.907757e-05,
+              "peak_value": -1.907757e-05,
+              "time_of_peak_abs_ps": 122.49999999999999,
+              "signed_area": -9.847250539999941e-18,
+              "absolute_area": 8.839260085999996e-17,
+              "positive_area": 3.927267516000001e-17,
+              "negative_area": -4.911992569999995e-17,
+              "positive_sample_fraction": 0.4666666666666667,
+              "negative_sample_fraction": 0.5333333333333333,
+              "zero_crossing_count": 8,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 9.538785e-06,
+                "start_ps": 121.99999999999999,
+                "end_ps": 122.9,
+                "width_ps": 0.9000000000000176,
+                "peak_time_ps": 122.49999999999999
+              }
+            },
+            "V(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(R_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -0.0002289308,
+              "maximum": 0.0002090914,
+              "p2p": 0.0004380222,
+              "mean": -1.2433965566666665e-05,
+              "rms": 0.0001340847273777117,
+              "peak_abs": 0.0002289308,
+              "peak_value": -0.0002289308,
+              "time_of_peak_abs_ps": 122.49999999999999,
+              "signed_area": -1.1816694909999925e-16,
+              "absolute_area": 1.0607112268999995e-15,
+              "positive_area": 4.712721389000001e-16,
+              "negative_area": -5.894390879999994e-16,
+              "positive_sample_fraction": 0.4666666666666667,
+              "negative_sample_fraction": 0.5333333333333333,
+              "zero_crossing_count": 8,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0001144654,
+                "start_ps": 121.99999999999999,
+                "end_ps": 122.9,
+                "width_ps": 0.9000000000000176,
+                "peak_time_ps": 122.49999999999999
+              }
+            },
+            "I(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(L_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "A",
+              "minimum": -1.907757e-05,
+              "maximum": 1.742428e-05,
+              "p2p": 3.650185e-05,
+              "mean": -1.036164321111111e-06,
+              "rms": 1.1173727062675867e-05,
+              "peak_abs": 1.907757e-05,
+              "peak_value": -1.907757e-05,
+              "time_of_peak_abs_ps": 122.49999999999999,
+              "signed_area": -9.847250539999941e-18,
+              "absolute_area": 8.839260085999996e-17,
+              "positive_area": 3.927267516000001e-17,
+              "negative_area": -4.911992569999995e-17,
+              "positive_sample_fraction": 0.4666666666666667,
+              "negative_sample_fraction": 0.5333333333333333,
+              "zero_crossing_count": 8,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 9.538785e-06,
+                "start_ps": 121.99999999999999,
+                "end_ps": 122.9,
+                "width_ps": 0.9000000000000176,
+                "peak_time_ps": 122.49999999999999
+              }
+            },
+            "V(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(L_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -9.90209e-06,
+              "maximum": 1.036061e-05,
+              "p2p": 2.0262699999999998e-05,
+              "mean": -1.233889588888889e-07,
+              "rms": 5.7769592854459175e-06,
+              "peak_abs": 1.036061e-05,
+              "peak_value": 1.036061e-05,
+              "time_of_peak_abs_ps": 123.2,
+              "signed_area": -1.388023259999919e-18,
+              "absolute_area": 4.547081296e-17,
+              "positive_area": 2.2041394850000042e-17,
+              "negative_area": -2.342941810999996e-17,
+              "positive_sample_fraction": 0.4666666666666667,
+              "negative_sample_fraction": 0.5333333333333333,
+              "zero_crossing_count": 8,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 5.180305e-06,
+                "start_ps": 122.9,
+                "end_ps": 123.49999999999999,
+                "width_ps": 0.5999999999999772,
+                "peak_time_ps": 123.2
+              }
+            },
+            "I(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "I(L_SEC)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "A",
+              "minimum": 6.547363e-05,
+              "maximum": 6.870866e-05,
+              "p2p": 3.235029999999994e-06,
+              "mean": 6.704252811111112e-05,
+              "rms": 6.704830808362995e-05,
+              "peak_abs": 6.870866e-05,
+              "peak_value": 6.870866e-05,
+              "time_of_peak_abs_ps": 121.89999999999999,
+              "signed_area": 5.96782899000001e-16,
+              "absolute_area": 5.96782899000001e-16,
+              "positive_area": 5.96782899000001e-16,
+              "negative_area": 0.0,
+              "positive_sample_fraction": 1.0,
+              "negative_sample_fraction": 0.0,
+              "zero_crossing_count": 0,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 3.435433e-05,
+                "start_ps": 121.0,
+                "end_ps": 129.9,
+                "width_ps": 8.900000000000016,
+                "peak_time_ps": 121.89999999999999
+              }
+            },
+            "V(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "V(L_SEC)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -1.399391e-05,
+              "maximum": 1.613157e-05,
+              "p2p": 3.012548e-05,
+              "mean": -6.166295888888885e-08,
+              "rms": 8.367652645492537e-06,
+              "peak_abs": 1.613157e-05,
+              "peak_value": 1.613157e-05,
+              "time_of_peak_abs_ps": 123.2,
+              "signed_area": -1.0014885799999404e-18,
+              "absolute_area": 6.515419268000008e-17,
+              "positive_area": 3.207635205000007e-17,
+              "negative_area": -3.307784063000001e-17,
+              "positive_sample_fraction": 0.5111111111111111,
+              "negative_sample_fraction": 0.4888888888888889,
+              "zero_crossing_count": 8,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 8.065785e-06,
+                "start_ps": 122.9,
+                "end_ps": 123.6,
+                "width_ps": 0.6999999999999821,
+                "peak_time_ps": 123.2
+              }
+            },
+            "primary_resistor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "voltage_signal": "V(R_PRI)",
+              "current_signal": "I(R_PRI)",
+              "sample_count": 90,
+              "power_peak_abs_W": 4.367443362156e-09,
+              "signed_power_energy_J": 1.3431641664430683e-20,
+              "signed_power_energy_fJ": 1.3431641664430683e-05,
+              "actual_grid_trapezoid": true,
+              "I2R_energy_J": 1.3431641389730339e-20,
+              "I2R_energy_fJ": 1.343164138973034e-05,
+              "passivity_nonnegative": true,
+              "resistance_ohm": 12.0
+            },
+            "primary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "voltage_signal": "V(L_PRI)",
+              "current_signal": "I(L_PRI)",
+              "sample_count": 90,
+              "power_peak_abs_W": 1.199536123968e-10,
+              "signed_power_energy_J": 5.93553032133448e-23,
+              "signed_power_energy_fJ": 5.9355303213344794e-08,
+              "actual_grid_trapezoid": true
+            },
+            "secondary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "voltage_signal": "V(L_SEC)",
+              "current_signal": "I(L_SEC)",
+              "sample_count": 90,
+              "power_peak_abs_W": 1.0651138489719002e-09,
+              "signed_power_energy_J": -1.286795269304967e-22,
+              "signed_power_energy_fJ": -1.286795269304967e-07,
+              "actual_grid_trapezoid": true
+            }
+          },
+          "full_0_200": {
+            "V(ISO_SOURCE_OUT)": {
+              "status": "DERIVED",
+              "signal": "V(ISO_SOURCE_OUT)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -0.0004297928,
+              "maximum": 0.0004706528,
+              "p2p": 0.0009004456,
+              "mean": 1.2911318391984592e-05,
+              "rms": 8.853200428106756e-05,
+              "peak_abs": 0.0004706528,
+              "peak_value": 0.0004706528,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.581067408567219e-15,
+              "absolute_area": 8.947327210554559e-15,
+              "positive_area": 5.764197309560889e-15,
+              "negative_area": -3.18312990099367e-15,
+              "positive_sample_fraction": 0.5322661330665333,
+              "negative_sample_fraction": 0.4672336168084042,
+              "zero_crossing_count": 146,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0002353264,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "I(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(R_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "A",
+              "minimum": -3.526013e-05,
+              "maximum": 3.913503e-05,
+              "p2p": 7.439516e-05,
+              "mean": 1.0671573979849124e-06,
+              "rms": 7.359937001844877e-06,
+              "peak_abs": 3.913503e-05,
+              "peak_value": 3.913503e-05,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.1332372182253395e-16,
+              "absolute_area": 7.415038586290739e-16,
+              "positive_area": 4.774137902258039e-16,
+              "negative_area": -2.6409006840327e-16,
+              "positive_sample_fraction": 0.5297648824412207,
+              "negative_sample_fraction": 0.46973486743371684,
+              "zero_crossing_count": 159,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.9567515e-05,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "V(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(R_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -0.0004231215,
+              "maximum": 0.0004696204,
+              "p2p": 0.0008927418999999999,
+              "mean": 1.280588907043837e-05,
+              "rms": 8.831924460482921e-05,
+              "peak_abs": 0.0004696204,
+              "peak_value": 0.0004696204,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.5598847207646295e-15,
+              "absolute_area": 8.89804636365819e-15,
+              "positive_area": 5.7289655422114095e-15,
+              "negative_area": -3.1690808214467796e-15,
+              "positive_sample_fraction": 0.5297648824412207,
+              "negative_sample_fraction": 0.46973486743371684,
+              "zero_crossing_count": 159,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0002348102,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "I(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(L_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "A",
+              "minimum": -3.526013e-05,
+              "maximum": 3.913503e-05,
+              "p2p": 7.439516e-05,
+              "mean": 1.0671573979849124e-06,
+              "rms": 7.359937001844877e-06,
+              "peak_abs": 3.913503e-05,
+              "peak_value": 3.913503e-05,
+              "time_of_peak_abs_ps": 113.10000000000001,
+              "signed_area": 2.1332372182253395e-16,
+              "absolute_area": 7.415038586290739e-16,
+              "positive_area": 4.774137902258039e-16,
+              "negative_area": -2.6409006840327e-16,
+              "positive_sample_fraction": 0.5297648824412207,
+              "negative_sample_fraction": 0.46973486743371684,
+              "zero_crossing_count": 159,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.9567515e-05,
+                "start_ps": 112.39999999999999,
+                "end_ps": 113.6,
+                "width_ps": 1.2000000000000062,
+                "peak_time_ps": 113.10000000000001
+              }
+            },
+            "V(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(L_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -2.027654e-05,
+              "maximum": 3.022623e-05,
+              "p2p": 5.050277e-05,
+              "mean": 1.0542898541295647e-07,
+              "rms": 3.3404927411586678e-06,
+              "peak_abs": 3.022623e-05,
+              "peak_value": 3.022623e-05,
+              "time_of_peak_abs_ps": 1.0,
+              "signed_area": 2.118262060034984e-17,
+              "absolute_area": 3.569342142118504e-16,
+              "positive_area": 1.890584174061001e-16,
+              "negative_area": -1.6787579680575026e-16,
+              "positive_sample_fraction": 0.5072536268134067,
+              "negative_sample_fraction": 0.49224612306153076,
+              "zero_crossing_count": 184,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.5113115e-05,
+                "start_ps": 0.5,
+                "end_ps": 1.2999999999999998,
+                "width_ps": 0.7999999999999999,
+                "peak_time_ps": 1.0
+              }
+            },
+            "I(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "I(L_SEC)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "A",
+              "minimum": 0.0,
+              "maximum": 8.20599e-05,
+              "p2p": 8.20599e-05,
+              "mean": 6.666488202756378e-05,
+              "rms": 6.678810705497055e-05,
+              "peak_abs": 8.20599e-05,
+              "peak_value": 8.20599e-05,
+              "time_of_peak_abs_ps": 1.5,
+              "signed_area": 1.332975826331e-14,
+              "absolute_area": 1.332975826331e-14,
+              "positive_area": 1.332975826331e-14,
+              "negative_area": 0.0,
+              "positive_sample_fraction": 0.9994997498749375,
+              "negative_sample_fraction": 0.0,
+              "zero_crossing_count": 0,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 4.102995e-05,
+                "start_ps": 0.9,
+                "end_ps": 199.9,
+                "width_ps": 199.0,
+                "peak_time_ps": 1.5
+              }
+            },
+            "V(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "V(L_SEC)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -9.322284e-05,
+              "maximum": 0.0001906548,
+              "p2p": 0.00028387764,
+              "mean": 6.667716171227965e-07,
+              "rms": 1.3214377298183448e-05,
+              "peak_abs": 0.0001906548,
+              "peak_value": 0.0001906548,
+              "time_of_peak_abs_ps": 0.9,
+              "signed_area": 1.3396586010034677e-16,
+              "absolute_area": 8.098997227120931e-16,
+              "positive_area": 4.719327914062199e-16,
+              "negative_area": -3.3796693130587315e-16,
+              "positive_sample_fraction": 0.4992496248124062,
+              "negative_sample_fraction": 0.5002501250625313,
+              "zero_crossing_count": 184,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 9.53274e-05,
+                "start_ps": 0.5,
+                "end_ps": 1.2999999999999998,
+                "width_ps": 0.7999999999999999,
+                "peak_time_ps": 0.9
+              }
+            },
+            "primary_resistor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "voltage_signal": "V(R_PRI)",
+              "current_signal": "I(R_PRI)",
+              "sample_count": 1999,
+              "power_peak_abs_W": 1.8378608442612e-08,
+              "signed_power_energy_J": 1.2993981292824751e-19,
+              "signed_power_energy_fJ": 0.0001299398129282475,
+              "actual_grid_trapezoid": true,
+              "I2R_energy_J": 1.2993981207096513e-19,
+              "I2R_energy_fJ": 0.00012993981207096514,
+              "passivity_nonnegative": true,
+              "resistance_ohm": 12.0
+            },
+            "primary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "voltage_signal": "V(L_PRI)",
+              "current_signal": "I(L_PRI)",
+              "sample_count": 1999,
+              "power_peak_abs_W": 4.5570297340599996e-10,
+              "signed_power_energy_J": 2.2045452297221488e-22,
+              "signed_power_energy_fJ": 2.2045452297221487e-07,
+              "actual_grid_trapezoid": true
+            },
+            "secondary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "voltage_signal": "V(L_SEC)",
+              "current_signal": "I(L_SEC)",
+              "sample_count": 1999,
+              "power_peak_abs_W": 1.0924547687311001e-08,
+              "signed_power_energy_J": 4.327613815697976e-21,
+              "signed_power_energy_fJ": 4.327613815697976e-06,
+              "actual_grid_trapezoid": true
+            }
+          }
+        },
+        "timing": {
+          "V(ISO_SOURCE_OUT)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 113.10000000000001,
+            "focus_peak_abs_value": 0.0004706528,
+            "actual_grid": true
+          },
+          "I(R_PRI)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 113.10000000000001,
+            "focus_peak_abs_value": 3.913503e-05,
+            "actual_grid": true
+          },
+          "I(L_PRI)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 113.10000000000001,
+            "focus_peak_abs_value": 3.913503e-05,
+            "actual_grid": true
+          },
+          "I(L_SEC)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 118.60000000000001,
+            "focus_peak_abs_value": 6.760625e-05,
+            "actual_grid": true
+          }
+        },
+        "passive_interface_only": true,
+        "transfer_interpretation": "descriptive primary/secondary timing and power records only; no directional-isolation claim"
+      },
+      "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/raw.csv",
+      "raw_sha256": "1a1e769cac7e431cabb1668d879a370ddb2850d133df16a567e8a0b3c2c1176b"
+    },
+    "ISO_R6A_0111": {
+      "run_id": "ISO_R6A_0111",
+      "mask": "0111",
+      "M_pH": 0.31622776601683794,
+      "ordered_phase_chain_count": 0,
+      "old_strict_complete_response_count": 0,
+      "terminal_pulse_count": 2,
+      "BJ1_landmarks_ps": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "BJ2_landmarks_ps": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "mechanical_candidate_label": "ISOLATION_EFFECTIVE_FORWARD_MARGIN_INSUFFICIENT",
+      "active_phase_area": {
+        "P(B_JS1|XBVM2)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM2)",
+          "voltage_signal": "V(B_JS1|XBVM2)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -43.4913327,
+          "phase_delta_turns": -6.921860580859187,
+          "voltage_area_V_s": -1.4312020568499973e-14,
+          "voltage_area_over_Phi0_turns": -6.9212623549723284,
+          "phase_minus_area_turns": -0.0005982258868586499,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM2)",
+          "voltage_signal": "V(B_JS2|XBVM2)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -43.7540058,
+          "phase_delta_turns": -6.963666303141459,
+          "voltage_area_V_s": -1.4399456466499978e-14,
+          "voltage_area_over_Phi0_turns": -6.9635461671289836,
+          "phase_minus_area_turns": -0.0001201360124758466,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM3)",
+          "voltage_signal": "V(B_JS1|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -43.4913327,
+          "phase_delta_turns": -6.921860580859187,
+          "voltage_area_V_s": -1.4312020568499973e-14,
+          "voltage_area_over_Phi0_turns": -6.9212623549723284,
+          "phase_minus_area_turns": -0.0005982258868586499,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM3)",
+          "voltage_signal": "V(B_JS2|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -43.7540058,
+          "phase_delta_turns": -6.963666303141459,
+          "voltage_area_V_s": -1.4399456466499978e-14,
+          "voltage_area_over_Phi0_turns": -6.9635461671289836,
+          "phase_minus_area_turns": -0.0001201360124758466,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM4)",
+          "voltage_signal": "V(B_JS1|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -43.4913327,
+          "phase_delta_turns": -6.921860580859187,
+          "voltage_area_V_s": -1.4312020568499973e-14,
+          "voltage_area_over_Phi0_turns": -6.9212623549723284,
+          "phase_minus_area_turns": -0.0005982258868586499,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM4)",
+          "voltage_signal": "V(B_JS2|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -43.7540058,
+          "phase_delta_turns": -6.963666303141459,
+          "voltage_area_V_s": -1.4399456466499978e-14,
+          "voltage_area_over_Phi0_turns": -6.9635461671289836,
+          "phase_minus_area_turns": -0.0001201360124758466,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "transformer": {
+        "status": "DERIVED",
+        "signals": [
+          "V(ISO_SOURCE_OUT)",
+          "I(R_PRI)",
+          "V(R_PRI)",
+          "I(L_PRI)",
+          "V(L_PRI)",
+          "I(L_SEC)",
+          "V(L_SEC)"
+        ],
+        "measurements": {
+          "focus_110_121": {
+            "V(ISO_SOURCE_OUT)": {
+              "status": "DERIVED",
+              "signal": "V(ISO_SOURCE_OUT)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -4.028489e-05,
+              "maximum": 0.001564191,
+              "p2p": 0.0016044758899999999,
+              "mean": 0.0007861081633636364,
+              "rms": 0.0009087028313498468,
+              "peak_abs": 0.001564191,
+              "peak_value": 0.001564191,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 8.582202591499988e-15,
+              "absolute_area": 8.586231080499988e-15,
+              "positive_area": 8.584216835999987e-15,
+              "negative_area": -2.014244500000097e-18,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0007820955,
+                "start_ps": 116.3,
+                "end_ps": 120.89999999999999,
+                "width_ps": 4.599999999999989,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "I(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(R_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "A",
+              "minimum": -3.442605e-06,
+              "maximum": 0.0001301001,
+              "p2p": 0.000133542705,
+              "mean": 6.53467154090909e-05,
+              "rms": 7.559891850898907e-05,
+              "peak_abs": 0.0001301001,
+              "peak_value": 0.0001301001,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 7.133568197499989e-16,
+              "absolute_area": 7.137010802499989e-16,
+              "positive_area": 7.13528949999999e-16,
+              "negative_area": -1.721302500000083e-19,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 6.505005e-05,
+                "start_ps": 116.3,
+                "end_ps": 120.89999999999999,
+                "width_ps": 4.599999999999989,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "V(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(R_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -4.131127e-05,
+              "maximum": 0.001561201,
+              "p2p": 0.00160251227,
+              "mean": 0.0007841606237272727,
+              "rms": 0.000907187081150819,
+              "peak_abs": 0.001561201,
+              "peak_value": 0.001561201,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 8.560282224499988e-15,
+              "absolute_area": 8.564413351499988e-15,
+              "positive_area": 8.562347787999987e-15,
+              "negative_area": -2.0655635000001e-18,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0007806005,
+                "start_ps": 116.3,
+                "end_ps": 120.89999999999999,
+                "width_ps": 4.599999999999989,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "I(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(L_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "A",
+              "minimum": -3.442605e-06,
+              "maximum": 0.0001301001,
+              "p2p": 0.000133542705,
+              "mean": 6.53467154090909e-05,
+              "rms": 7.559891850898907e-05,
+              "peak_abs": 0.0001301001,
+              "peak_value": 0.0001301001,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 7.133568197499989e-16,
+              "absolute_area": 7.137010802499989e-16,
+              "positive_area": 7.13528949999999e-16,
+              "negative_area": -1.721302500000083e-19,
+              "positive_sample_fraction": 0.990909090909091,
+              "negative_sample_fraction": 0.00909090909090909,
+              "zero_crossing_count": 1,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 6.505005e-05,
+                "start_ps": 116.3,
+                "end_ps": 120.89999999999999,
+                "width_ps": 4.599999999999989,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "V(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(L_PRI)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -2.059404e-05,
+              "maximum": 1.672704e-05,
+              "p2p": 3.7321079999999996e-05,
+              "mean": 1.947572857272727e-06,
+              "rms": 8.071101362278649e-06,
+              "peak_abs": 2.059404e-05,
+              "peak_value": -2.059404e-05,
+              "time_of_peak_abs_ps": 120.10000000000001,
+              "signed_area": 2.1920702380000076e-17,
+              "absolute_area": 7.357475313399979e-17,
+              "positive_area": 4.774772775699994e-17,
+              "negative_area": -2.5827025376999864e-17,
+              "positive_sample_fraction": 0.6454545454545455,
+              "negative_sample_fraction": 0.35454545454545455,
+              "zero_crossing_count": 17,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.029702e-05,
+                "start_ps": 120.10000000000001,
+                "end_ps": 120.10000000000001,
+                "width_ps": 0.0,
+                "peak_time_ps": 120.10000000000001
+              }
+            },
+            "I(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "I(L_SEC)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "A",
+              "minimum": 5.973956e-05,
+              "maximum": 6.724322e-05,
+              "p2p": 7.503659999999998e-06,
+              "mean": 6.403153027272727e-05,
+              "rms": 6.405831483970364e-05,
+              "peak_abs": 6.724322e-05,
+              "peak_value": 6.724322e-05,
+              "time_of_peak_abs_ps": 113.6,
+              "signed_area": 6.978761384999997e-16,
+              "absolute_area": 6.978761384999997e-16,
+              "positive_area": 6.978761384999997e-16,
+              "negative_area": 0.0,
+              "positive_sample_fraction": 1.0,
+              "negative_sample_fraction": 0.0,
+              "zero_crossing_count": 0,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 3.362161e-05,
+                "start_ps": 110.0,
+                "end_ps": 120.89999999999999,
+                "width_ps": 10.899999999999997,
+                "peak_time_ps": 113.6
+              }
+            },
+            "V(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "V(L_SEC)",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "sample_count": 110,
+              "unit": "V",
+              "minimum": -1.6914e-05,
+              "maximum": 1.476013e-05,
+              "p2p": 3.1674130000000004e-05,
+              "mean": 2.4448701597272726e-06,
+              "rms": 8.41522465886021e-06,
+              "peak_abs": 1.6914e-05,
+              "peak_value": -1.6914e-05,
+              "time_of_peak_abs_ps": 113.6,
+              "signed_area": 2.7595840608000095e-17,
+              "absolute_area": 7.670202397399974e-17,
+              "positive_area": 5.2148932290999915e-17,
+              "negative_area": -2.4553091682999823e-17,
+              "positive_sample_fraction": 0.6636363636363637,
+              "negative_sample_fraction": 0.33636363636363636,
+              "zero_crossing_count": 17,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 8.457e-06,
+                "start_ps": 113.3,
+                "end_ps": 113.9,
+                "width_ps": 0.6000000000000031,
+                "peak_time_ps": 113.6
+              }
+            },
+            "primary_resistor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "voltage_signal": "V(R_PRI)",
+              "current_signal": "I(R_PRI)",
+              "sample_count": 110,
+              "power_peak_abs_W": 2.031124062201e-07,
+              "signed_power_energy_J": 7.467938288076294e-19,
+              "signed_power_energy_fJ": 0.0007467938288076295,
+              "actual_grid_trapezoid": true,
+              "I2R_energy_J": 7.467937842133088e-19,
+              "I2R_energy_fJ": 0.0007467937842133087,
+              "passivity_nonnegative": true,
+              "resistance_ohm": 12.0
+            },
+            "primary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "voltage_signal": "V(L_PRI)",
+              "current_signal": "I(L_PRI)",
+              "sample_count": 110,
+              "power_peak_abs_W": 2.482026651264e-09,
+              "signed_power_energy_J": 1.2936722288121139e-21,
+              "signed_power_energy_fJ": 1.2936722288121139e-06,
+              "actual_grid_trapezoid": true
+            },
+            "secondary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                110.0,
+                121.0
+              ],
+              "voltage_signal": "V(L_SEC)",
+              "current_signal": "I(L_SEC)",
+              "sample_count": 110,
+              "power_peak_abs_W": 1.13735182308e-09,
+              "signed_power_energy_J": 1.7201335405230898e-21,
+              "signed_power_energy_fJ": 1.7201335405230898e-06,
+              "actual_grid_trapezoid": true
+            }
+          },
+          "rearm_121_130": {
+            "V(ISO_SOURCE_OUT)": {
+              "status": "DERIVED",
+              "signal": "V(ISO_SOURCE_OUT)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -0.0003534658,
+              "maximum": 0.001239578,
+              "p2p": 0.0015930438,
+              "mean": 0.00036167429604444447,
+              "rms": 0.000567899900185978,
+              "peak_abs": 0.001239578,
+              "peak_value": 0.001239578,
+              "time_of_peak_abs_ps": 121.0,
+              "signed_area": 3.204878884400004e-15,
+              "absolute_area": 3.8187135708000125e-15,
+              "positive_area": 3.5117962276000085e-15,
+              "negative_area": -3.069173432000041e-16,
+              "positive_sample_fraction": 0.7666666666666667,
+              "negative_sample_fraction": 0.23333333333333334,
+              "zero_crossing_count": 3,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.000619789,
+                "start_ps": 121.0,
+                "end_ps": 123.7,
+                "width_ps": 2.700000000000001,
+                "peak_time_ps": 121.0
+              }
+            },
+            "I(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(R_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "A",
+              "minimum": -2.928626e-05,
+              "maximum": 0.0001047765,
+              "p2p": 0.00013406276,
+              "mean": 3.0366028526e-05,
+              "rms": 4.752777040833914e-05,
+              "peak_abs": 0.0001047765,
+              "peak_value": 0.0001047765,
+              "time_of_peak_abs_ps": 121.0,
+              "signed_area": 2.6907065923400036e-16,
+              "absolute_area": 3.1946674303400104e-16,
+              "positive_area": 2.942687011340007e-16,
+              "negative_area": -2.519804190000035e-17,
+              "positive_sample_fraction": 0.7777777777777778,
+              "negative_sample_fraction": 0.2222222222222222,
+              "zero_crossing_count": 3,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 5.238825e-05,
+                "start_ps": 121.0,
+                "end_ps": 123.7,
+                "width_ps": 2.700000000000001,
+                "peak_time_ps": 121.0
+              }
+            },
+            "V(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(R_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -0.0003514351,
+              "maximum": 0.001257319,
+              "p2p": 0.0016087541,
+              "mean": 0.0003643923611933333,
+              "rms": 0.000570333267641849,
+              "peak_abs": 0.001257319,
+              "peak_value": 0.001257319,
+              "time_of_peak_abs_ps": 121.0,
+              "signed_area": 3.2288480307400043e-15,
+              "absolute_area": 3.833600960740013e-15,
+              "positive_area": 3.5312244957400085e-15,
+              "negative_area": -3.023764650000042e-16,
+              "positive_sample_fraction": 0.7777777777777778,
+              "negative_sample_fraction": 0.2222222222222222,
+              "zero_crossing_count": 3,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0006286595,
+                "start_ps": 121.0,
+                "end_ps": 123.7,
+                "width_ps": 2.700000000000001,
+                "peak_time_ps": 121.0
+              }
+            },
+            "I(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(L_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "A",
+              "minimum": -2.928626e-05,
+              "maximum": 0.0001047765,
+              "p2p": 0.00013406276,
+              "mean": 3.0366028526e-05,
+              "rms": 4.752777040833914e-05,
+              "peak_abs": 0.0001047765,
+              "peak_value": 0.0001047765,
+              "time_of_peak_abs_ps": 121.0,
+              "signed_area": 2.6907065923400036e-16,
+              "absolute_area": 3.1946674303400104e-16,
+              "positive_area": 2.942687011340007e-16,
+              "negative_area": -2.519804190000035e-17,
+              "positive_sample_fraction": 0.7777777777777778,
+              "negative_sample_fraction": 0.2222222222222222,
+              "zero_crossing_count": 3,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 5.238825e-05,
+                "start_ps": 121.0,
+                "end_ps": 123.7,
+                "width_ps": 2.700000000000001,
+                "peak_time_ps": 121.0
+              }
+            },
+            "V(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(L_PRI)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -2.125987e-05,
+              "maximum": 1.139005e-05,
+              "p2p": 3.264992e-05,
+              "mean": -2.718044398888889e-06,
+              "rms": 7.315026273669697e-06,
+              "peak_abs": 2.125987e-05,
+              "peak_value": -2.125987e-05,
+              "time_of_peak_abs_ps": 121.2,
+              "signed_area": -2.396899653999987e-17,
+              "absolute_area": 5.0731971199999934e-17,
+              "positive_area": 1.3381487330000033e-17,
+              "negative_area": -3.7350483869999905e-17,
+              "positive_sample_fraction": 0.37777777777777777,
+              "negative_sample_fraction": 0.6222222222222222,
+              "zero_crossing_count": 7,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.0629935e-05,
+                "start_ps": 121.2,
+                "end_ps": 121.30000000000001,
+                "width_ps": 0.10000000000000482,
+                "peak_time_ps": 121.2
+              }
+            },
+            "I(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "I(L_SEC)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "A",
+              "minimum": 6.094344e-05,
+              "maximum": 6.858465e-05,
+              "p2p": 7.641209999999998e-06,
+              "mean": 6.563736188888889e-05,
+              "rms": 6.566338885545189e-05,
+              "peak_abs": 6.858465e-05,
+              "peak_value": 6.858465e-05,
+              "time_of_peak_abs_ps": 129.3,
+              "signed_area": 5.84257910000001e-16,
+              "absolute_area": 5.84257910000001e-16,
+              "positive_area": 5.84257910000001e-16,
+              "negative_area": 0.0,
+              "positive_sample_fraction": 1.0,
+              "negative_sample_fraction": 0.0,
+              "zero_crossing_count": 0,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 3.4292325e-05,
+                "start_ps": 121.0,
+                "end_ps": 129.9,
+                "width_ps": 8.900000000000016,
+                "peak_time_ps": 129.3
+              }
+            },
+            "V(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "V(L_SEC)",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "sample_count": 90,
+              "unit": "V",
+              "minimum": -2.275332e-05,
+              "maximum": 1.091935e-05,
+              "p2p": 3.367267e-05,
+              "mean": -3.602623562888889e-06,
+              "rms": 8.794889111050054e-06,
+              "peak_abs": 2.275332e-05,
+              "peak_value": -2.275332e-05,
+              "time_of_peak_abs_ps": 121.2,
+              "signed_area": -3.177433251599993e-17,
+              "absolute_area": 6.182742084199995e-17,
+              "positive_area": 1.5026544163000014e-17,
+              "negative_area": -4.680087667899994e-17,
+              "positive_sample_fraction": 0.37777777777777777,
+              "negative_sample_fraction": 0.6222222222222222,
+              "zero_crossing_count": 7,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.137666e-05,
+                "start_ps": 121.2,
+                "end_ps": 121.39999999999999,
+                "width_ps": 0.1999999999999838,
+                "peak_time_ps": 121.2
+              }
+            },
+            "primary_resistor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "voltage_signal": "V(R_PRI)",
+              "current_signal": "I(R_PRI)",
+              "sample_count": 90,
+              "power_peak_abs_W": 1.317374842035e-07,
+              "signed_power_energy_J": 2.371257783458742e-19,
+              "signed_power_energy_fJ": 0.00023712577834587422,
+              "actual_grid_trapezoid": true,
+              "I2R_energy_J": 2.371257738569117e-19,
+              "I2R_energy_fJ": 0.0002371257738569117,
+              "passivity_nonnegative": true,
+              "resistance_ohm": 12.0
+            },
+            "primary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "voltage_signal": "V(L_PRI)",
+              "current_signal": "I(L_PRI)",
+              "sample_count": 90,
+              "power_peak_abs_W": 1.9308460548492e-09,
+              "signed_power_energy_J": -9.577731171463103e-22,
+              "signed_power_energy_fJ": -9.577731171463103e-07,
+              "actual_grid_trapezoid": true
+            },
+            "secondary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                121.0,
+                130.0
+              ],
+              "voltage_signal": "V(L_SEC)",
+              "current_signal": "I(L_SEC)",
+              "sample_count": 90,
+              "power_peak_abs_W": 1.442046262968e-09,
+              "signed_power_energy_J": -2.1152215227901546e-21,
+              "signed_power_energy_fJ": -2.1152215227901547e-06,
+              "actual_grid_trapezoid": true
+            }
+          },
+          "full_0_200": {
+            "V(ISO_SOURCE_OUT)": {
+              "status": "DERIVED",
+              "signal": "V(ISO_SOURCE_OUT)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -0.0004297928,
+              "maximum": 0.001564191,
+              "p2p": 0.0019939838,
+              "mean": 6.0494345807491644e-05,
+              "rms": 0.000251365308352997,
+              "peak_abs": 0.001564191,
+              "peak_value": 0.001564191,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 1.2092909385492582e-14,
+              "absolute_area": 1.8033909445605005e-14,
+              "positive_area": 1.5063409415548792e-14,
+              "negative_area": -2.9705000300562115e-15,
+              "positive_sample_fraction": 0.5437718859429714,
+              "negative_sample_fraction": 0.45572786393196596,
+              "zero_crossing_count": 132,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0007820955,
+                "start_ps": 116.3,
+                "end_ps": 122.7,
+                "width_ps": 6.399999999999999,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "I(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(R_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "A",
+              "minimum": -3.526013e-05,
+              "maximum": 0.0001301001,
+              "p2p": 0.00016536023,
+              "mean": 5.032408743145493e-06,
+              "rms": 2.093975656911127e-05,
+              "peak_abs": 0.0001301001,
+              "peak_value": 0.0001301001,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 1.0059770774267842e-15,
+              "absolute_area": 1.4991635242283643e-15,
+              "positive_area": 1.2525703008275742e-15,
+              "negative_area": -2.465932234007901e-16,
+              "positive_sample_fraction": 0.5412706353176588,
+              "negative_sample_fraction": 0.45822911455727866,
+              "zero_crossing_count": 145,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 6.505005e-05,
+                "start_ps": 116.3,
+                "end_ps": 122.7,
+                "width_ps": 6.399999999999999,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "V(R_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(R_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -0.0004231215,
+              "maximum": 0.001561201,
+              "p2p": 0.0019843225,
+              "mean": 6.03889079105079e-05,
+              "rms": 0.00025127709296857755,
+              "peak_abs": 0.001561201,
+              "peak_value": 0.001561201,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 1.2071725527371532e-14,
+              "absolute_area": 1.7989962847022495e-14,
+              "positive_area": 1.5030844187197014e-14,
+              "negative_area": -2.959118659825481e-15,
+              "positive_sample_fraction": 0.5412706353176588,
+              "negative_sample_fraction": 0.45822911455727866,
+              "zero_crossing_count": 145,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 0.0007806005,
+                "start_ps": 116.3,
+                "end_ps": 122.7,
+                "width_ps": 6.399999999999999,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "I(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "I(L_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "A",
+              "minimum": -3.526013e-05,
+              "maximum": 0.0001301001,
+              "p2p": 0.00016536023,
+              "mean": 5.032408743145493e-06,
+              "rms": 2.093975656911127e-05,
+              "peak_abs": 0.0001301001,
+              "peak_value": 0.0001301001,
+              "time_of_peak_abs_ps": 119.89999999999999,
+              "signed_area": 1.0059770774267842e-15,
+              "absolute_area": 1.4991635242283643e-15,
+              "positive_area": 1.2525703008275742e-15,
+              "negative_area": -2.465932234007901e-16,
+              "positive_sample_fraction": 0.5412706353176588,
+              "negative_sample_fraction": 0.45822911455727866,
+              "zero_crossing_count": 145,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 6.505005e-05,
+                "start_ps": 116.3,
+                "end_ps": 122.7,
+                "width_ps": 6.399999999999999,
+                "peak_time_ps": 119.89999999999999
+              }
+            },
+            "V(L_PRI)": {
+              "status": "DERIVED",
+              "signal": "V(L_PRI)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -2.125987e-05,
+              "maximum": 3.022623e-05,
+              "p2p": 5.14861e-05,
+              "mean": 1.0544065081740871e-07,
+              "rms": 3.8009150167149514e-06,
+              "peak_abs": 3.022623e-05,
+              "peak_value": 3.022623e-05,
+              "time_of_peak_abs_ps": 1.0,
+              "signed_area": 2.11844086003998e-17,
+              "absolute_area": 3.955362917445239e-16,
+              "positive_area": 2.0836035017246184e-16,
+              "negative_area": -1.8717594157206204e-16,
+              "positive_sample_fraction": 0.512256128064032,
+              "negative_sample_fraction": 0.48724362181090547,
+              "zero_crossing_count": 180,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 1.5113115e-05,
+                "start_ps": 0.5,
+                "end_ps": 1.2999999999999998,
+                "width_ps": 0.7999999999999999,
+                "peak_time_ps": 1.0
+              }
+            },
+            "I(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "I(L_SEC)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "A",
+              "minimum": 0.0,
+              "maximum": 8.20599e-05,
+              "p2p": 8.20599e-05,
+              "mean": 6.648602759534768e-05,
+              "rms": 6.661442296038714e-05,
+              "peak_abs": 8.20599e-05,
+              "peak_value": 8.20599e-05,
+              "time_of_peak_abs_ps": 1.5,
+              "signed_area": 1.329400522731e-14,
+              "absolute_area": 1.329400522731e-14,
+              "positive_area": 1.329400522731e-14,
+              "negative_area": 0.0,
+              "positive_sample_fraction": 0.9994997498749375,
+              "negative_sample_fraction": 0.0,
+              "zero_crossing_count": 0,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 4.102995e-05,
+                "start_ps": 0.9,
+                "end_ps": 199.9,
+                "width_ps": 199.0,
+                "peak_time_ps": 1.5
+              }
+            },
+            "V(L_SEC)": {
+              "status": "DERIVED",
+              "signal": "V(L_SEC)",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "sample_count": 1999,
+              "unit": "V",
+              "minimum": -9.322284e-05,
+              "maximum": 0.0001906548,
+              "p2p": 0.00028387764,
+              "mean": 6.667959024787894e-07,
+              "rms": 1.3317779472064166e-05,
+              "peak_abs": 0.0001906548,
+              "peak_value": 0.0001906548,
+              "time_of_peak_abs_ps": 0.9,
+              "signed_area": 1.339697654510099e-16,
+              "absolute_area": 8.370044563245499e-16,
+              "positive_area": 4.854871108877799e-16,
+              "negative_area": -3.5151734543676997e-16,
+              "positive_sample_fraction": 0.5027513756878439,
+              "negative_sample_fraction": 0.49674837418709356,
+              "zero_crossing_count": 180,
+              "half_abs_peak_width": {
+                "status": "DERIVED",
+                "threshold": "0.5 * absolute peak",
+                "threshold_value": 9.53274e-05,
+                "start_ps": 0.5,
+                "end_ps": 1.2999999999999998,
+                "width_ps": 0.7999999999999999,
+                "peak_time_ps": 0.9
+              }
+            },
+            "primary_resistor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "voltage_signal": "V(R_PRI)",
+              "current_signal": "I(R_PRI)",
+              "sample_count": 1999,
+              "power_peak_abs_W": 2.031124062201e-07,
+              "signed_power_energy_J": 1.0518100634979925e-18,
+              "signed_power_energy_fJ": 0.0010518100634979925,
+              "actual_grid_trapezoid": true,
+              "I2R_energy_J": 1.0518100043131785e-18,
+              "I2R_energy_fJ": 0.0010518100043131785,
+              "passivity_nonnegative": true,
+              "resistance_ohm": 12.0
+            },
+            "primary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "voltage_signal": "V(L_PRI)",
+              "current_signal": "I(L_PRI)",
+              "sample_count": 1999,
+              "power_peak_abs_W": 2.482026651264e-09,
+              "signed_power_energy_J": 2.490481130761267e-22,
+              "signed_power_energy_fJ": 2.490481130761267e-07,
+              "actual_grid_trapezoid": true
+            },
+            "secondary_inductor_power": {
+              "status": "DERIVED",
+              "window_ps": [
+                0.0,
+                200.0
+              ],
+              "voltage_signal": "V(L_SEC)",
+              "current_signal": "I(L_SEC)",
+              "sample_count": 1999,
+              "power_peak_abs_W": 1.0924547687311001e-08,
+              "signed_power_energy_J": 4.3196299934172044e-21,
+              "signed_power_energy_fJ": 4.319629993417204e-06,
+              "actual_grid_trapezoid": true
+            }
+          }
+        },
+        "timing": {
+          "V(ISO_SOURCE_OUT)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 119.89999999999999,
+            "focus_peak_abs_value": 0.001564191,
+            "actual_grid": true
+          },
+          "I(R_PRI)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 119.89999999999999,
+            "focus_peak_abs_value": 0.0001301001,
+            "actual_grid": true
+          },
+          "I(L_PRI)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 119.89999999999999,
+            "focus_peak_abs_value": 0.0001301001,
+            "actual_grid": true
+          },
+          "I(L_SEC)": {
+            "status": "DERIVED",
+            "focus_peak_abs_time_ps": 113.6,
+            "focus_peak_abs_value": 6.724322e-05,
+            "actual_grid": true
+          }
+        },
+        "passive_interface_only": true,
+        "transfer_interpretation": "descriptive primary/secondary timing and power records only; no directional-isolation claim"
+      },
+      "raw_path": "test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/raw.csv",
+      "raw_sha256": "d292aff0307bdfe4cda7ef051c7cd07df30c13f969987eb008d8a089a3907014"
+    }
+  },
+  "matrix_audit": {
+    "status": "PASS",
+    "syntax_fixture": "test/comp/mutual.cir",
+    "syntax_examples": [
+      "K L1 L2 0.693"
+    ],
+    "L_PRI_pH": 0.2,
+    "L_SEC_pH": 2.0,
+    "K_ISO": 0.5,
+    "M_pH": 0.31622776601683794,
+    "determinant_pH2": 0.30000000000000004,
+    "eigenvalues_pH": [
+      0.14606079858305443,
+      2.053939201416946
+    ],
+    "abs_K_lt_1": true,
+    "matrix_positive_definite": true
+  },
+  "conditional_population_validation": {
+    "status": "NOT_AUTHORIZED"
+  },
+  "classification": {
+    "status": "SCIENTIFIC_REVIEW_REQUIRED",
+    "assigned": null,
+    "candidate_label": "MECHANICAL_ONLY"
+  },
+  "stop": {
+    "final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW",
+    "automatic_follow_up": false
+  },
+  "conditional_selection": {
+    "status": "FAIL",
+    "selected_cases": [],
+    "N2_ordered_phase_chain_count": 0,
+    "N3_ordered_phase_chain_count": 0,
+    "conditional_N1_N4_allowed": false,
+    "scientific_interpretation_performed": false
+  },
+  "gate": {
+    "status": "FAIL",
+    "N2_ordered_phase_chain_count": 0,
+    "N3_ordered_phase_chain_count": 0,
+    "conditional_N1_N4_allowed": false,
+    "scientific_interpretation_performed": false
+  },
+  "qa_summary": {
+    "status": "PASS",
+    "artifact_status": "VALID"
+  },
+  "visualization_summary": {
+    "status": "PASS",
+    "standalone_count": 20,
+    "comparison_count": 10,
+    "focused_window_entries": 20
+  },
+  "package_summary": {
+    "status": "UPLOADED",
+    "package_version": "v1",
+    "package_sha256": "3f9a6856b547d32b4dc092c12183a5d76e3b982337596815290349ff251a2e2d",
+    "package_bytes": 4512582,
+    "file_count": 51,
+    "delivery_manifest_path": "delivery_manifest.json",
+    "drive_file_id": "1FTa6YccPWPLlnjeHKsOz_h-TUYq8KWVQ",
+    "drive_url": "https://drive.google.com/file/d/1FTa6YccPWPLlnjeHKsOz_h-TUYq8KWVQ/view?usp=drivesdk"
+  }
+}

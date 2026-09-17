@@ -1,0 +1,36 @@
+schema_version: bvm-qb-transformer-isolation-current-qb-v1
+id: bvm-qb-transformer-isolation-current-qb-v1-20260917
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+registration_head: 1348140f17f0d9467dc42238eaa1e252e877e07a
+remote_bvm_master_at_registration: 1348140f17f0d9467dc42238eaa1e252e877e07a
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+scientific_review_authorized: false
+
+frozen:
+  L_PRI_pH: 0.20
+  L_SEC_pH: 2.00
+  K_ISO: 0.50
+  R_PRI_ohm: 12.0
+  M_pH: 0.31622776601683794
+  timestep_ps: 0.1
+  stop_time_ps: 200
+
+authorized_matrix:
+  fixed: [ISO_R6A_0011, ISO_R6A_0111]
+  conditional: [ISO_R6A_0001, ISO_R6A_1111]
+  maximum_new_physical_solves: 4
+
+fixed_deck_registration:
+  - run_id: ISO_R6A_0011
+    path: test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0011/deck.cir
+    sha256: 42f4d78017ae2a861dcd70f9db3b32a8a1c3d00a2ea014ae22fc0ce896ff5ae6
+    bytes: 7913
+  - run_id: ISO_R6A_0111
+    path: test/exploration/bvm-qb-transformer-isolation-current-qb-v1-20260917/runs/ISO_R6A_0111/deck.cir
+    sha256: 9fe67b28ef5774bce1860477ac664695bb3b9bf12b70c1fe56ebc92d0ea0d84d
+    bytes: 7929
+
+conditional_rule: fixed N2=2/N3=3 mechanical label only
+scientific_classification: NOT_ASSIGNED_SCIENTIFIC_REVIEW_REQUIRED

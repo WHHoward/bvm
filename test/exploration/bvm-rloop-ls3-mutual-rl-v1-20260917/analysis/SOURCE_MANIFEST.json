@@ -1,0 +1,208 @@
+{
+  "schema": "bvm-rloop-ls3-mutual-rl-source-manifest-v1",
+  "source_closure": [
+    {
+      "name": "runner",
+      "path": "test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/generator.py",
+      "sha256": "0f19b777218b192aff4bd95b8bfbf8ab2777499fd282d2381c5554d732ea691b",
+      "bytes": 69534,
+      "role": "physical-LS3 mutual-RL generator/executor/analyzer/plotter/packager"
+    },
+    {
+      "name": "run_sh",
+      "path": "test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/run.sh",
+      "sha256": "3402bc395dab3146f8f4e8fe272d72c7e6dd165297f62bb2b13898bbd8487d30",
+      "bytes": 1015,
+      "role": "user-facing runner"
+    },
+    {
+      "name": "jjmit",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "canonical JJ model"
+    },
+    {
+      "name": "bvm",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "canonical BVM template; read-only"
+    },
+    {
+      "name": "qb",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "canonical QB include; read-only"
+    },
+    {
+      "name": "jtl",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "canonical JTL include; read-only"
+    },
+    {
+      "name": "solver",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "recorded JoSIM solver"
+    },
+    {
+      "name": "plotter",
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "bytes": 12245,
+      "role": "standard descriptive renderer"
+    },
+    {
+      "name": "branch_helper",
+      "path": "scripts/bvm_qb_rloop_branch_timing_decomposition.py",
+      "sha256": "871140804ddbb7973b6a6bf03050951423ab70120713dd4cd781ec07c324a4c4",
+      "bytes": 115127,
+      "role": "read-only metrics/topology helper"
+    },
+    {
+      "name": "population_helper",
+      "path": "scripts/bvm_qb_rloop_ls3_population_validation.py",
+      "sha256": "d41e1fee91fa8a9bd78ef34f731576cc09697b08f412cb1344e935cb6ea9aadb",
+      "bytes": 98506,
+      "role": "read-only multi-evidence helper"
+    },
+    {
+      "name": "oracle",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/analysis/population_oracle.py",
+      "sha256": "b07056580cdd913efcf5317a8856c9a8023c8c9499ede89d236e837d20950166",
+      "bytes": 14341,
+      "role": "read-only historical oracle"
+    },
+    {
+      "name": "mutual_syntax_fixture",
+      "path": "test/comp/mutual.cir",
+      "sha256": "667a28adb982061d04501812b0606cb5e0b22377a69eb7bcbdd64de1ffc598e4",
+      "bytes": 169,
+      "role": "read-only K syntax fixture"
+    },
+    {
+      "name": "canonical_0011_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+      "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "bytes": 7102297,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0011_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir",
+      "sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+      "bytes": 7500,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "canonical_0111_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+      "sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+      "bytes": 7101704,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0111_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir",
+      "sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+      "bytes": 7516,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "canonical_0001_raw",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/raw.csv",
+      "sha256": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+      "bytes": 7099946,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0001_deck",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/references/reused/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_0001/deck.cir",
+      "sha256": "81a9b7e75437a5cb9ccd173b9db3bf93697ea6dd6017bb1d8dbf4bd4008d70fb",
+      "bytes": 7484,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "canonical_1111_raw",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/raw.csv",
+      "sha256": "0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c",
+      "bytes": 7100700,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_1111_deck",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/runs/ARRAY_L1P14_L2P20_IB260_RJ32_RJ2P12_1111/deck.cir",
+      "sha256": "892295ddd6599ba6cfa17a28a62528b6d891e0b7dc1c2105649dc25e5e3043c3",
+      "bytes": 7532,
+      "role": "read-only canonical deck"
+    }
+  ],
+  "canonical_hashes": {
+    "0011": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "0111": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+    "0001": "7411226d2231dca0e1a3948660a82d7d88112baab8c18349cd83f4f94e6cf1b3",
+    "1111": "0497b2d6822378c5b7491ab00abdfcf00d624ba9dd7e7a1c02046b5d4c3ed48c"
+  },
+  "matrix_audit": {
+    "status": "PASS",
+    "syntax_fixture": "test/comp/mutual.cir",
+    "syntax_examples": [
+      "K L1 L2 0.693"
+    ],
+    "L_S3_pH": 0.5,
+    "L_AUX_pH": 10.0,
+    "matrix": {
+      "M0P00": {
+        "M_pH": 0.0,
+        "K": 0.0,
+        "determinant_pH2": 5.0,
+        "eigenvalues_pH": [
+          0.5,
+          10.0
+        ],
+        "abs_K_lt_1": true,
+        "matrix_positive_definite": true
+      },
+      "M0P25": {
+        "M_pH": 0.25,
+        "K": 0.11180339887498948,
+        "determinant_pH2": 4.9375,
+        "eigenvalues_pH": [
+          0.4934256023898884,
+          10.006574397610112
+        ],
+        "abs_K_lt_1": true,
+        "matrix_positive_definite": true
+      },
+      "M0P50": {
+        "M_pH": 0.5,
+        "K": 0.22360679774997896,
+        "determinant_pH2": 4.75,
+        "eigenvalues_pH": [
+          0.47375670636430023,
+          10.0262432936357
+        ],
+        "abs_K_lt_1": true,
+        "matrix_positive_definite": true
+      },
+      "M0P75": {
+        "M_pH": 0.75,
+        "K": 0.33541019662496846,
+        "determinant_pH2": 4.4375,
+        "eigenvalues_pH": [
+          0.44115398458216415,
+          10.058846015417835
+        ],
+        "abs_K_lt_1": true,
+        "matrix_positive_definite": true
+      }
+    },
+    "formula": "K=M/sqrt(L_S3*L_AUX)",
+    "scope": "M=0.00/0.25/0.50/0.75 pH only"
+  }
+}

@@ -1,0 +1,87 @@
+schema_version: bvm-rloop-ls3-mutual-rl-v1
+id: bvm-rloop-ls3-mutual-rl-v1-20260917
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS_M0_GATE_FIRST
+registration_head: 1348140f17f0d9467dc42238eaa1e252e877e07a
+remote_bvm_master_at_registration: 1348140f17f0d9467dc42238eaa1e252e877e07a
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+scientific_review_authorized: false
+
+frozen:
+  R_S_ohm: 3.0
+  L_S3_pH: 0.5
+  L_AUX_pH: 10.0
+  R_AUX_ohm: 20.0
+  M_values_pH: [0.00, 0.25, 0.50, 0.75]
+  timestep_ps: 0.1
+  stop_time_ps: 200.0
+  actual_grid: true
+  interpolation: false
+  resampling: false
+  no_QB_change: true
+  no_negative_M: true
+
+authorized_matrix:
+  fixed: [LS3_MUTUAL_M0P00_0011, LS3_MUTUAL_M0P00_0111, LS3_MUTUAL_M0P25_0011, LS3_MUTUAL_M0P25_0111, LS3_MUTUAL_M0P50_0011, LS3_MUTUAL_M0P50_0111, LS3_MUTUAL_M0P75_0011, LS3_MUTUAL_M0P75_0111]
+  conditional: [smallest_positive_M x 0001, smallest_positive_M x 1111]
+  maximum_new_physical_solves: 10
+
+M_matrix_audit:
+  status: PASS
+  formula: K=M/sqrt(L_S3*L_AUX)
+
+initial_M0_deck_registration:
+  - run_id: LS3_MUTUAL_M0P00_0011
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P00_0011/deck.cir
+    sha256: 8ef5a974a92d0705e19f42f3b318a7285f7e26d8de937ec655149b7e57918d9a
+    bytes: 9678
+    M_pH: 0.0
+    K: 0
+  - run_id: LS3_MUTUAL_M0P00_0111
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P00_0111/deck.cir
+    sha256: 29dc22ae8be4e8c74ce58fdb515bf0e1a4e98f53fa1d5ccfca5aa0a980d21084
+    bytes: 9694
+    M_pH: 0.0
+    K: 0
+
+conditional_rule: smallest positive M with mechanical N2=2/N3=3 only
+scientific_classification: NOT_ASSIGNED_SCIENTIFIC_REVIEW_REQUIRED
+
+positive_M_deck_registration:
+  - run_id: LS3_MUTUAL_M0P25_0011
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P25_0011/deck.cir
+    sha256: 2f83fc7d030a24200c303cd8c2cf5f6a007228c8282c884984a9522cc62a62d5
+    bytes: 9696
+    M_pH: 0.25
+    K: 0.11180339887498948
+  - run_id: LS3_MUTUAL_M0P25_0111
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P25_0111/deck.cir
+    sha256: 0d73145af77c65282cac5449cb9f03998d13eea2e43d94cfbce73d857a59302a
+    bytes: 9712
+    M_pH: 0.25
+    K: 0.11180339887498948
+  - run_id: LS3_MUTUAL_M0P50_0011
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P50_0011/deck.cir
+    sha256: 1696ddbde7939c145101866afd39daaaabff8fdba796aa03780a15040416f08a
+    bytes: 9696
+    M_pH: 0.5
+    K: 0.22360679774997896
+  - run_id: LS3_MUTUAL_M0P50_0111
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P50_0111/deck.cir
+    sha256: 54b1c61ab7289d1934b85bae68f7938c5104cce1fd5323909ddb4bc2d34ff944
+    bytes: 9712
+    M_pH: 0.5
+    K: 0.22360679774997896
+  - run_id: LS3_MUTUAL_M0P75_0011
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P75_0011/deck.cir
+    sha256: e5aefc9073bc1dc7d15401bcf1d1eb433b955c9b7588f69d28b114729b4e6292
+    bytes: 9696
+    M_pH: 0.75
+    K: 0.33541019662496846
+  - run_id: LS3_MUTUAL_M0P75_0111
+    path: test/exploration/bvm-rloop-ls3-mutual-rl-v1-20260917/runs/LS3_MUTUAL_M0P75_0111/deck.cir
+    sha256: 2cf14471c35bfa6799bd30acafd91277d6e6f9415cac359e0234c8fc1d32c0c7
+    bytes: 9712
+    M_pH: 0.75
+    K: 0.33541019662496846

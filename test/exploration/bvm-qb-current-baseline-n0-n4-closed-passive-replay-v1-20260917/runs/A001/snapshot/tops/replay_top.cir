@@ -1,0 +1,19 @@
+* TOP DECK TEMPLATE: exact passive B_JSL8-current replay -> current QB -> six-stage JTL -> terminal
+* The replay source is generated from this experiment's PASSIVE raw, never from a historical raw.
+{{JJ_INCLUDE}}
+{{QB_INCLUDE}}
+{{JTL_INCLUDE}}
+{{STIMULUS_INCLUDE}}
+
+XBQ1 QBIN QBOUT BQ
+XJTL1_1 QBOUT JTL1_OUT jtl
+XJTL1_2 JTL1_OUT JTL2_OUT jtl
+XJTL1_3 JTL2_OUT JTL3_OUT jtl
+XJTL1_4 JTL3_OUT JTL4_OUT jtl
+XJTL1_5 JTL4_OUT JTL5_OUT jtl
+XJTL1_6 JTL5_OUT JTL6_OUT jtl
+R_TERM JTL6_OUT 0 10
+
+{{PROBES}}
+.tran {{DT}} {{STOP_TIME}}
+.end

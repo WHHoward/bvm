@@ -1,0 +1,37 @@
+* TOP DECK TEMPLATE: exact passive B_JSL8-current replay -> current QB -> six-stage JTL -> terminal
+* The replay source is generated from this experiment's PASSIVE raw, never from a historical raw.
+.include ../../snapshot/sources/jjmit.cir
+.include ../../snapshot/sources/bq_parameterized_v1.cir
+.include ../../snapshot/sources/jtl2.cir
+.include stimulus.inc
+
+XBQ1 QBIN QBOUT BQ
+XJTL1_1 QBOUT JTL1_OUT jtl
+XJTL1_2 JTL1_OUT JTL2_OUT jtl
+XJTL1_3 JTL2_OUT JTL3_OUT jtl
+XJTL1_4 JTL3_OUT JTL4_OUT jtl
+XJTL1_5 JTL4_OUT JTL5_OUT jtl
+XJTL1_6 JTL5_OUT JTL6_OUT jtl
+R_TERM JTL6_OUT 0 10
+
+.print V(QBIN) V(QBOUT) I(I_REPLAY)
+.print I(LIN|XBQ1) V(LIN|XBQ1) I(L1|XBQ1) V(L1|XBQ1) I(L2|XBQ1) V(L2|XBQ1) I(L3|XBQ1) V(L3|XBQ1)
+.print I(RJ1|XBQ1) V(RJ1|XBQ1) I(RJ2|XBQ1) V(RJ2|XBQ1) I(IB|XBQ1) V(IB|XBQ1)
+.print P(BJS|XBQ1) V(BJS|XBQ1) I(BJS|XBQ1)
+.print P(BJ1|XBQ1) V(BJ1|XBQ1) I(BJ1|XBQ1)
+.print P(BJ2|XBQ1) V(BJ2|XBQ1) I(BJ2|XBQ1)
+.print P(B01|XJTL1_1) V(B01|XJTL1_1) I(B01|XJTL1_1) P(B02|XJTL1_1) V(B02|XJTL1_1) I(B02|XJTL1_1)
+.print V(JTL1_OUT)
+.print P(B01|XJTL1_2) V(B01|XJTL1_2) I(B01|XJTL1_2) P(B02|XJTL1_2) V(B02|XJTL1_2) I(B02|XJTL1_2)
+.print V(JTL2_OUT)
+.print P(B01|XJTL1_3) V(B01|XJTL1_3) I(B01|XJTL1_3) P(B02|XJTL1_3) V(B02|XJTL1_3) I(B02|XJTL1_3)
+.print V(JTL3_OUT)
+.print P(B01|XJTL1_4) V(B01|XJTL1_4) I(B01|XJTL1_4) P(B02|XJTL1_4) V(B02|XJTL1_4) I(B02|XJTL1_4)
+.print V(JTL4_OUT)
+.print P(B01|XJTL1_5) V(B01|XJTL1_5) I(B01|XJTL1_5) P(B02|XJTL1_5) V(B02|XJTL1_5) I(B02|XJTL1_5)
+.print V(JTL5_OUT)
+.print P(B01|XJTL1_6) V(B01|XJTL1_6) I(B01|XJTL1_6) P(B02|XJTL1_6) V(B02|XJTL1_6) I(B02|XJTL1_6)
+.print V(JTL6_OUT)
+.print I(R_TERM) V(R_TERM)
+.tran 0.1p 200p
+.end

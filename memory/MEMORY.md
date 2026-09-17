@@ -37,3 +37,4 @@
 - **BVM 链状态（2026-08-17）**：S0/S1/S2 已有独立裁决；workflow MAINT-005 C01 为 `REWORK_REQUIRED`（snapshot byte identity 与 bundle逐项重算未满足），等待用户决定；未启动新科学任务。[详情](bvm-chain-status-20260817.md)
 - **mailbox 全量检查（2026-08-17）**：用户两次强调必须检查全量（所有方向/所有消息），曾漏看 A02 指令。[详情](mailbox-full-scan.md)
 - **不更新 now.md（2026-08-17）**：不要向 `.remember/now.md` 写入或 append，该文件由用户/remember 系统管理；记忆只写 `memory/`。[详情](no-update-remember-now.md)
+- **解读层过度断言（2026-09-17）**：BVM 物理解读上连续 9 处被纠正，全部错在 interpretation、算术全对；写 mechanism claim 前须先做判别性测量并自带自查。[详情](feedback-interpretation-overreach.md)

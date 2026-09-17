@@ -1,0 +1,3210 @@
+{
+  "schema": "bvm-rloop-ls3-delay-upper-bound-provenance-v1",
+  "experiment_id": "bvm-rloop-ls3-delay-upper-bound-v1-20260917",
+  "created_at": "2026-09-17T11:22:43+08:00",
+  "registration_head": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+  "remote_bvm_master_at_registration": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+  "contract_sentence": "This experiment is governed by docs/EXPERIMENT_CONTRACT.md.",
+  "scientific_review_authorized": false,
+  "mechanical_analysis_performed": true,
+  "bounded_experiment_interpretation_performed": false,
+  "independent_scientific_review_performed": false,
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "source_closure": [
+    {
+      "name": "runner",
+      "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/generator.py",
+      "sha256": "57e0f5f5c5922cde7f793120ab46ddbdff8c313321cdecffb3da713e8f4ab6e8",
+      "bytes": 53344,
+      "role": "upper-bound generator/analyzer/plotter/packager"
+    },
+    {
+      "name": "run_sh",
+      "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/run.sh",
+      "sha256": "fee1129c38d7c9095a36f89d4ba0bbd8a16450c82ead72030d6d9c6ffb9b7fa0",
+      "bytes": 913,
+      "role": "user-facing runner"
+    },
+    {
+      "name": "jjmit",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504,
+      "role": "canonical JJ model"
+    },
+    {
+      "name": "bvm",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/bvm_jm2_connected.cir",
+      "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54",
+      "bytes": 2325,
+      "role": "canonical BVM template"
+    },
+    {
+      "name": "qb",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/BQ_parameterized_bjs400_rj2.cir",
+      "sha256": "43468c49eb56090e586428a8ca26d17d8bbf107fbd9e535bbac7a72ed1200d42",
+      "bytes": 828,
+      "role": "canonical QB include"
+    },
+    {
+      "name": "jtl",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864,
+      "role": "canonical JTL include"
+    },
+    {
+      "name": "solver",
+      "path": "build/josim-cli",
+      "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+      "bytes": 1233976,
+      "role": "recorded JoSIM solver"
+    },
+    {
+      "name": "plotter",
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "bytes": 12245,
+      "role": "standard renderer"
+    },
+    {
+      "name": "branch_helper",
+      "path": "scripts/bvm_qb_rloop_branch_timing_decomposition.py",
+      "sha256": "871140804ddbb7973b6a6bf03050951423ab70120713dd4cd781ec07c324a4c4",
+      "bytes": 115127,
+      "role": "validated LS3 topology/metrics"
+    },
+    {
+      "name": "population_helper",
+      "path": "scripts/bvm_qb_rloop_ls3_population_validation.py",
+      "sha256": "d41e1fee91fa8a9bd78ef34f731576cc09697b08f412cb1344e935cb6ea9aadb",
+      "bytes": 98506,
+      "role": "read-only oracle helper"
+    },
+    {
+      "name": "oracle",
+      "path": "test/exploration/bvm-population-scaling-rj2p12-l1p14-l2p20-ib260-rj32-bjs400-v1-20260910/analysis/population_oracle.py",
+      "sha256": "b07056580cdd913efcf5317a8856c9a8023c8c9499ede89d236e837d20950166",
+      "bytes": 14341,
+      "role": "historical multi-evidence oracle"
+    },
+    {
+      "name": "previous_branch_result",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/result.json",
+      "sha256": "30f3ac56b7374c24dea63aa2b613f0c0c4b5e9d6ebe55673e75e12e91dcf6fdb",
+      "bytes": 301020,
+      "role": "read-only 0.3 context"
+    },
+    {
+      "name": "previous_window_result",
+      "path": "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/result.json",
+      "sha256": "3b6b9536d785464db76ffbe385f1f9cf1cdeec482c977c00aede165bdfd156b9",
+      "bytes": 32082,
+      "role": "read-only 0.2/0.4 context"
+    },
+    {
+      "name": "canonical_0011_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+      "sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+      "bytes": 7102297,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0011_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir",
+      "sha256": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+      "bytes": 7500,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "canonical_0111_raw",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+      "sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+      "bytes": 7101704,
+      "role": "read-only canonical raw"
+    },
+    {
+      "name": "canonical_0111_deck",
+      "path": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir",
+      "sha256": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+      "bytes": 7516,
+      "role": "read-only canonical deck"
+    },
+    {
+      "name": "reference_0P2_0011",
+      "path": "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0011/raw.csv",
+      "sha256": "9e4ec84a53bc3deb879587d27f2a912967f5cdd403f3209c90dcefb962082306",
+      "bytes": 7210043,
+      "role": "read-only delay reference; not copied"
+    },
+    {
+      "name": "reference_0P2_0111",
+      "path": "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0111/raw.csv",
+      "sha256": "7d1295bb898674aa4ed6604a6f1e1f74d954e44693256119800bf8a110e55dba",
+      "bytes": 7208697,
+      "role": "read-only delay reference; not copied"
+    },
+    {
+      "name": "reference_0P3_0011",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/raw.csv",
+      "sha256": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+      "bytes": 7210093,
+      "role": "read-only delay reference; not copied"
+    },
+    {
+      "name": "reference_0P3_0111",
+      "path": "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/raw.csv",
+      "sha256": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37",
+      "bytes": 7206400,
+      "role": "read-only delay reference; not copied"
+    },
+    {
+      "name": "reference_0P4_0011",
+      "path": "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0011/raw.csv",
+      "sha256": "c82be3694db07b2af438886e7a932638721902f986ff4f42afa9e59933d172cd",
+      "bytes": 7210011,
+      "role": "read-only delay reference; not copied"
+    },
+    {
+      "name": "reference_0P4_0111",
+      "path": "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0111/raw.csv",
+      "sha256": "6f037c58bab944af553a9f2d4db550527316bd1d02ba232a77ae571ecb7ad89b",
+      "bytes": 7206025,
+      "role": "read-only delay reference; not copied"
+    }
+  ],
+  "canonical_raw_hashes": {
+    "0011": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "0111": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75"
+  },
+  "previous_reference_hashes": {
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0011/raw.csv": "9e4ec84a53bc3deb879587d27f2a912967f5cdd403f3209c90dcefb962082306",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0111/raw.csv": "7d1295bb898674aa4ed6604a6f1e1f74d954e44693256119800bf8a110e55dba",
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/raw.csv": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/raw.csv": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0011/raw.csv": "c82be3694db07b2af438886e7a932638721902f986ff4f42afa9e59933d172cd",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0111/raw.csv": "6f037c58bab944af553a9f2d4db550527316bd1d02ba232a77ae571ecb7ad89b",
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/result.json": "30f3ac56b7374c24dea63aa2b613f0c0c4b5e9d6ebe55673e75e12e91dcf6fdb",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/result.json": "3b6b9536d785464db76ffbe385f1f9cf1cdeec482c977c00aede165bdfd156b9"
+  },
+  "branch_direction_audit": {
+    "0011": {
+      "status": "PASS",
+      "positive_direction": "node6 -> node10",
+      "mask": "0011",
+      "instances": {
+        "XBVM1": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 1.0000000007475817e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM2": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 1.0000000007475817e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM3": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 6.100000000020152e-11,
+          "node10_kcl_max_abs_A": 9.000000001307224e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM4": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 5.000000000349777e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 6.100000000020152e-11,
+          "node10_kcl_max_abs_A": 9.000000001307224e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0011",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        }
+      },
+      "all_instances_pass": true
+    },
+    "0111": {
+      "status": "PASS",
+      "positive_direction": "node6 -> node10",
+      "mask": "0111",
+      "instances": {
+        "XBVM1": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 1.0000000007475817e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 1.0000000004087685e-11,
+          "node10_kcl_max_abs_A": 3.599999999167637e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM2": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 4.999999998994524e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 4.999999998994524e-11,
+          "node10_kcl_max_abs_A": 6.000000000419732e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM3": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 4.999999998994524e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 4.999999998994524e-11,
+          "node10_kcl_max_abs_A": 6.000000000419732e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        },
+        "XBVM4": {
+          "status": "PASS",
+          "positive_direction": "node6 -> node10",
+          "R_S_endpoint_order": "6 -> 10",
+          "L_S3_endpoint_order": "6 -> 10",
+          "R_S_law_max_abs_V": 4.999999998994524e-11,
+          "parallel_voltage_max_abs_V": 0.0,
+          "node6_kcl_max_abs_A": 4.999999998994524e-11,
+          "node10_kcl_max_abs_A": 6.000000000419732e-11,
+          "R_S_sign_agreement": 1.0,
+          "bridge_current_definition": "I(R_S)+I(L_S3)",
+          "mask": "0111",
+          "KCL_equations": {
+            "node6": "I(R_S)+I(L_S3)-I(B_JS1)-I(L_PSE)=0",
+            "node10": "I(R_S)+I(L_S3)+I(B_JS2)-I(L_PSL)=0"
+          }
+        }
+      },
+      "all_instances_pass": true
+    }
+  },
+  "frozen": {
+    "topology": "canonical BVM -> COMMON_SL -> JSL1..8 -> canonical QB -> JTL1..6 -> terminal",
+    "intervention": "same-instance ideal I(L_S3) replay; physical R_S",
+    "t0_ps": 110.0,
+    "delays_ps": [
+      0.5,
+      0.6
+    ],
+    "stored_shifts": [
+      5,
+      6
+    ],
+    "dt_ps": 0.1,
+    "stop_ps": 200.0,
+    "windows_ps": [
+      [
+        0.0,
+        200.0
+      ],
+      [
+        110.0,
+        121.0
+      ],
+      [
+        121.0,
+        130.0
+      ]
+    ],
+    "no_interpolation": true,
+    "no_resampling": true,
+    "no_amplitude_scaling": true
+  },
+  "authorized_matrix": {
+    "fixed": [
+      "LS3_DELAY0P5_0011",
+      "LS3_DELAY0P5_0111"
+    ],
+    "conditional": [
+      "LS3_DELAY0P6_0011",
+      "LS3_DELAY0P6_0111"
+    ],
+    "maximum_physical_solves": 4,
+    "conditional_gate": "fixed N2=2/N3=3 and N2 second response/re-arm present",
+    "no_other_solve": true
+  },
+  "registered_decks": {
+    "LS3_DELAY0P5_0011": {
+      "case_id": "LS3_DELAY0P5_0011",
+      "point": "0P5",
+      "mask": "0011",
+      "delay_ps": 0.5,
+      "stored_sample_shift": 5,
+      "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/deck.cir",
+      "sha256": "d2b28e888404c53198e09662394805ebf299b9b199ff2042b2344f50ce889a1d",
+      "bytes": 311399,
+      "source": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P5_0011_branch_current.csv",
+        "sha256": "f63bd5c05d87bd0387140eeb014c976b52050fda8482a141ed2b296918fb460e",
+        "bytes": 388985,
+        "authority_raw": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+        "authority_raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "authority_columns": [
+          "I(L_S3|XBVM1)",
+          "I(L_S3|XBVM2)",
+          "I(L_S3|XBVM3)",
+          "I(L_S3|XBVM4)"
+        ],
+        "source_column_sha256": {
+          "XBVM1": "e532bf756d5386366f9f7f5feed8d77765783e013bffad2286155e69aac49b6e",
+          "XBVM2": "e532bf756d5386366f9f7f5feed8d77765783e013bffad2286155e69aac49b6e",
+          "XBVM3": "911343d82561c5538acf17658ed628b18677a484ed0fa20db4c7e4b3885beaa4",
+          "XBVM4": "911343d82561c5538acf17658ed628b18677a484ed0fa20db4c7e4b3885beaa4"
+        },
+        "point_count": 1999,
+        "start_sample_index": 1099,
+        "start_time_ps": 110.0,
+        "delay_ps": 0.5,
+        "stored_sample_shift": 5,
+        "pre_110_nonanticipation": true,
+        "hold_rule_check": true,
+        "post_shift_rule_check": true,
+        "interpolation": false,
+        "resampling": false,
+        "amplitude_scaling": false,
+        "sign_change": false,
+        "positive_direction": "node6 -> node10"
+      },
+      "payload_sha256": {
+        "XBVM1": "2c350109692a9b0cc8e6a4ba943c0f4147e44e410d64769511c91d9f3928d528",
+        "XBVM2": "2c350109692a9b0cc8e6a4ba943c0f4147e44e410d64769511c91d9f3928d528",
+        "XBVM3": "581c60ea393e98b37649435263743672f4cf49a630c29922363fbac5aeb9f16e",
+        "XBVM4": "581c60ea393e98b37649435263743672f4cf49a630c29922363fbac5aeb9f16e"
+      },
+      "topology": "validated LS3-only replay; canonical QB/JSL/JTL/terminal unchanged"
+    },
+    "LS3_DELAY0P5_0111": {
+      "case_id": "LS3_DELAY0P5_0111",
+      "point": "0P5",
+      "mask": "0111",
+      "delay_ps": 0.5,
+      "stored_sample_shift": 5,
+      "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/deck.cir",
+      "sha256": "4d8c9ad5dc6e607acfae013b172f74b912ead6f6ef5152943550a710837a475b",
+      "bytes": 311738,
+      "source": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P5_0111_branch_current.csv",
+        "sha256": "31ffe77b1d085b8ec75d9844080c330bfd7725ec52d37fb9ab618a2f863d400f",
+        "bytes": 389611,
+        "authority_raw": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+        "authority_raw_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "authority_columns": [
+          "I(L_S3|XBVM1)",
+          "I(L_S3|XBVM2)",
+          "I(L_S3|XBVM3)",
+          "I(L_S3|XBVM4)"
+        ],
+        "source_column_sha256": {
+          "XBVM1": "07a12aa3cf243dcea274afa633aa1a0b44279e2931885c5d62104690286740db",
+          "XBVM2": "79b25cb18d78fcc99f21328dc3df9cdc93b6de1db1e312195671dd6a234529cb",
+          "XBVM3": "79b25cb18d78fcc99f21328dc3df9cdc93b6de1db1e312195671dd6a234529cb",
+          "XBVM4": "79b25cb18d78fcc99f21328dc3df9cdc93b6de1db1e312195671dd6a234529cb"
+        },
+        "point_count": 1999,
+        "start_sample_index": 1099,
+        "start_time_ps": 110.0,
+        "delay_ps": 0.5,
+        "stored_sample_shift": 5,
+        "pre_110_nonanticipation": true,
+        "hold_rule_check": true,
+        "post_shift_rule_check": true,
+        "interpolation": false,
+        "resampling": false,
+        "amplitude_scaling": false,
+        "sign_change": false,
+        "positive_direction": "node6 -> node10"
+      },
+      "payload_sha256": {
+        "XBVM1": "69843422d58be5983ed4bf564794bf530c1fe5180c5815064da239eb99a59ea2",
+        "XBVM2": "82670cae458fd9888bfb69cb83fba525584a57982e4f480df76294836765d784",
+        "XBVM3": "82670cae458fd9888bfb69cb83fba525584a57982e4f480df76294836765d784",
+        "XBVM4": "82670cae458fd9888bfb69cb83fba525584a57982e4f480df76294836765d784"
+      },
+      "topology": "validated LS3-only replay; canonical QB/JSL/JTL/terminal unchanged"
+    },
+    "LS3_DELAY0P6_0011": {
+      "case_id": "LS3_DELAY0P6_0011",
+      "point": "0P6",
+      "mask": "0011",
+      "delay_ps": 0.6,
+      "stored_sample_shift": 6,
+      "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/deck.cir",
+      "sha256": "d54e8ccd4ec9e7e026ffe2122b1e2cdecf5356cdfcf35ceb172b0fc5e05c34cd",
+      "bytes": 311399,
+      "source": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P6_0011_branch_current.csv",
+        "sha256": "320be3f4281190eb03e81468eb7b9c7f519dc4d692388cda9c491b43089b6225",
+        "bytes": 388985,
+        "authority_raw": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv",
+        "authority_raw_sha256": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+        "authority_columns": [
+          "I(L_S3|XBVM1)",
+          "I(L_S3|XBVM2)",
+          "I(L_S3|XBVM3)",
+          "I(L_S3|XBVM4)"
+        ],
+        "source_column_sha256": {
+          "XBVM1": "e532bf756d5386366f9f7f5feed8d77765783e013bffad2286155e69aac49b6e",
+          "XBVM2": "e532bf756d5386366f9f7f5feed8d77765783e013bffad2286155e69aac49b6e",
+          "XBVM3": "911343d82561c5538acf17658ed628b18677a484ed0fa20db4c7e4b3885beaa4",
+          "XBVM4": "911343d82561c5538acf17658ed628b18677a484ed0fa20db4c7e4b3885beaa4"
+        },
+        "point_count": 1999,
+        "start_sample_index": 1099,
+        "start_time_ps": 110.0,
+        "delay_ps": 0.6,
+        "stored_sample_shift": 6,
+        "pre_110_nonanticipation": true,
+        "hold_rule_check": true,
+        "post_shift_rule_check": true,
+        "interpolation": false,
+        "resampling": false,
+        "amplitude_scaling": false,
+        "sign_change": false,
+        "positive_direction": "node6 -> node10"
+      },
+      "payload_sha256": {
+        "XBVM1": "bbdda11f0f50754be28a77ba0fe7cc212746e555f45dcfec6e5fc34bebf6898a",
+        "XBVM2": "bbdda11f0f50754be28a77ba0fe7cc212746e555f45dcfec6e5fc34bebf6898a",
+        "XBVM3": "4cf57cbfa07a646b1fb95ba563f99a209f1767aa281db1ff42be28a123f1ab07",
+        "XBVM4": "4cf57cbfa07a646b1fb95ba563f99a209f1767aa281db1ff42be28a123f1ab07"
+      },
+      "topology": "validated LS3-only replay; canonical QB/JSL/JTL/terminal unchanged"
+    },
+    "LS3_DELAY0P6_0111": {
+      "case_id": "LS3_DELAY0P6_0111",
+      "point": "0P6",
+      "mask": "0111",
+      "delay_ps": 0.6,
+      "stored_sample_shift": 6,
+      "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/deck.cir",
+      "sha256": "e925f1e6f143c6dcee1e03f079ec11568ed93d7ada07b5e0719d4fc23308caa5",
+      "bytes": 311748,
+      "source": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P6_0111_branch_current.csv",
+        "sha256": "6422fd07a9492db25f00bd6499b91cb3529d3282010560d061f8b5b59ed8bf4a",
+        "bytes": 389621,
+        "authority_raw": "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv",
+        "authority_raw_sha256": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+        "authority_columns": [
+          "I(L_S3|XBVM1)",
+          "I(L_S3|XBVM2)",
+          "I(L_S3|XBVM3)",
+          "I(L_S3|XBVM4)"
+        ],
+        "source_column_sha256": {
+          "XBVM1": "07a12aa3cf243dcea274afa633aa1a0b44279e2931885c5d62104690286740db",
+          "XBVM2": "79b25cb18d78fcc99f21328dc3df9cdc93b6de1db1e312195671dd6a234529cb",
+          "XBVM3": "79b25cb18d78fcc99f21328dc3df9cdc93b6de1db1e312195671dd6a234529cb",
+          "XBVM4": "79b25cb18d78fcc99f21328dc3df9cdc93b6de1db1e312195671dd6a234529cb"
+        },
+        "point_count": 1999,
+        "start_sample_index": 1099,
+        "start_time_ps": 110.0,
+        "delay_ps": 0.6,
+        "stored_sample_shift": 6,
+        "pre_110_nonanticipation": true,
+        "hold_rule_check": true,
+        "post_shift_rule_check": true,
+        "interpolation": false,
+        "resampling": false,
+        "amplitude_scaling": false,
+        "sign_change": false,
+        "positive_direction": "node6 -> node10"
+      },
+      "payload_sha256": {
+        "XBVM1": "8a3a0a01dc9eb17be50f0a8e3f861064e4893bee0b762bfb01c8224198531ba1",
+        "XBVM2": "0e3c32e88d7aeec90c47c9c24682665ece7356b8d686c9f277bf73f1315d13ea",
+        "XBVM3": "0e3c32e88d7aeec90c47c9c24682665ece7356b8d686c9f277bf73f1315d13ea",
+        "XBVM4": "0e3c32e88d7aeec90c47c9c24682665ece7356b8d686c9f277bf73f1315d13ea"
+      },
+      "topology": "validated LS3-only replay; canonical QB/JSL/JTL/terminal unchanged"
+    }
+  },
+  "runs": {
+    "LS3_DELAY0P5_0011": {
+      "run_id": "LS3_DELAY0P5_0011",
+      "case_id": "LS3_DELAY0P5_0011",
+      "point": "0P5",
+      "mask": "0011",
+      "delay_ps": 0.5,
+      "stored_sample_shift": 5,
+      "parent_commit": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/deck.cir"
+      ],
+      "runtime_seconds": 0.43645280000009734,
+      "started_at": "2026-09-17T11:22:43+08:00",
+      "finished_at": "2026-09-17T11:22:44+08:00",
+      "deck": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/deck.cir",
+        "sha256": "d2b28e888404c53198e09662394805ebf299b9b199ff2042b2344f50ce889a1d",
+        "bytes": 311399
+      },
+      "stdout": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/stdout.txt",
+        "sha256": "a1a00766651f926c13e340cdfea62db7882da575ecc066b6c09bca1e3ce4f993",
+        "bytes": 222333
+      },
+      "stderr": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/stderr.txt",
+        "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+        "bytes": 114
+      },
+      "log": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/run.log",
+        "sha256": "bec133ecf5f6dd6478936bc2a7c3cd2367bb57915f33ce490da2a6bcaa97e98c",
+        "bytes": 735
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+      },
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "mechanical_analysis_performed": true,
+      "scientific_interpretation_performed": false,
+      "raw": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "bytes": 7210571,
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 269,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "missing_required_probes": []
+      },
+      "solver_warning_lines": [],
+      "execution_status": "RUN_PASS",
+      "metadata": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/metadata.json",
+        "deck_sha256": "d2b28e888404c53198e09662394805ebf299b9b199ff2042b2344f50ce889a1d",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "log_sha256": "bec133ecf5f6dd6478936bc2a7c3cd2367bb57915f33ce490da2a6bcaa97e98c",
+        "stdout_sha256": "a1a00766651f926c13e340cdfea62db7882da575ecc066b6c09bca1e3ce4f993",
+        "stderr_sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8"
+      },
+      "bounded_experiment_interpretation_performed": false,
+      "independent_scientific_review_performed": false
+    },
+    "LS3_DELAY0P5_0111": {
+      "run_id": "LS3_DELAY0P5_0111",
+      "case_id": "LS3_DELAY0P5_0111",
+      "point": "0P5",
+      "mask": "0111",
+      "delay_ps": 0.5,
+      "stored_sample_shift": 5,
+      "parent_commit": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/deck.cir"
+      ],
+      "runtime_seconds": 0.4192655429997103,
+      "started_at": "2026-09-17T11:22:44+08:00",
+      "finished_at": "2026-09-17T11:22:45+08:00",
+      "deck": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/deck.cir",
+        "sha256": "4d8c9ad5dc6e607acfae013b172f74b912ead6f6ef5152943550a710837a475b",
+        "bytes": 311738
+      },
+      "stdout": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/stdout.txt",
+        "sha256": "f06c25dec0243eb0f5658284cde4992aa2c66585c84a8d0579b294a14a7bf40d",
+        "bytes": 219047
+      },
+      "stderr": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/stderr.txt",
+        "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+        "bytes": 114
+      },
+      "log": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/run.log",
+        "sha256": "f292b14d31d92e435630fd4c2803173ab6274ecaed69eda1314cb45ade54d11d",
+        "bytes": 735
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+      },
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "mechanical_analysis_performed": true,
+      "scientific_interpretation_performed": false,
+      "raw": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "bytes": 7209034,
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 269,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "missing_required_probes": []
+      },
+      "solver_warning_lines": [],
+      "execution_status": "RUN_PASS",
+      "metadata": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/metadata.json",
+        "deck_sha256": "4d8c9ad5dc6e607acfae013b172f74b912ead6f6ef5152943550a710837a475b",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "log_sha256": "f292b14d31d92e435630fd4c2803173ab6274ecaed69eda1314cb45ade54d11d",
+        "stdout_sha256": "f06c25dec0243eb0f5658284cde4992aa2c66585c84a8d0579b294a14a7bf40d",
+        "stderr_sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8"
+      },
+      "bounded_experiment_interpretation_performed": false,
+      "independent_scientific_review_performed": false
+    },
+    "LS3_DELAY0P6_0011": {
+      "run_id": "LS3_DELAY0P6_0011",
+      "case_id": "LS3_DELAY0P6_0011",
+      "point": "0P6",
+      "mask": "0011",
+      "delay_ps": 0.6,
+      "stored_sample_shift": 6,
+      "parent_commit": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/deck.cir"
+      ],
+      "runtime_seconds": 0.3016452960000606,
+      "started_at": "2026-09-17T11:24:15+08:00",
+      "finished_at": "2026-09-17T11:24:15+08:00",
+      "deck": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/deck.cir",
+        "sha256": "d54e8ccd4ec9e7e026ffe2122b1e2cdecf5356cdfcf35ceb172b0fc5e05c34cd",
+        "bytes": 311399
+      },
+      "stdout": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/stdout.txt",
+        "sha256": "c9980eae2b8e92873f182cfe77c90e416799972ee59d2279643e60761c67ffbd",
+        "bytes": 223169
+      },
+      "stderr": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/stderr.txt",
+        "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+        "bytes": 114
+      },
+      "log": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/run.log",
+        "sha256": "dfa6cd4b5ab72921a500c53bda67647b64479ddc1e466d879627e271cbe39797",
+        "bytes": 735
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+      },
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "mechanical_analysis_performed": true,
+      "scientific_interpretation_performed": false,
+      "raw": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "bytes": 7204607,
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 269,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "missing_required_probes": []
+      },
+      "solver_warning_lines": [],
+      "execution_status": "RUN_PASS",
+      "metadata": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/metadata.json",
+        "deck_sha256": "d54e8ccd4ec9e7e026ffe2122b1e2cdecf5356cdfcf35ceb172b0fc5e05c34cd",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "log_sha256": "dfa6cd4b5ab72921a500c53bda67647b64479ddc1e466d879627e271cbe39797",
+        "stdout_sha256": "c9980eae2b8e92873f182cfe77c90e416799972ee59d2279643e60761c67ffbd",
+        "stderr_sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8"
+      },
+      "bounded_experiment_interpretation_performed": false,
+      "independent_scientific_review_performed": false
+    },
+    "LS3_DELAY0P6_0111": {
+      "run_id": "LS3_DELAY0P6_0111",
+      "case_id": "LS3_DELAY0P6_0111",
+      "point": "0P6",
+      "mask": "0111",
+      "delay_ps": 0.6,
+      "stored_sample_shift": 6,
+      "parent_commit": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/deck.cir"
+      ],
+      "runtime_seconds": 0.3183043290000569,
+      "started_at": "2026-09-17T11:24:16+08:00",
+      "finished_at": "2026-09-17T11:24:19+08:00",
+      "deck": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/deck.cir",
+        "sha256": "e925f1e6f143c6dcee1e03f079ec11568ed93d7ada07b5e0719d4fc23308caa5",
+        "bytes": 311748
+      },
+      "stdout": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/stdout.txt",
+        "sha256": "c52b1ce8e0828d88569f89ade152f12d1e60a4a82dc77446454bc8ade79849df",
+        "bytes": 223875
+      },
+      "stderr": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/stderr.txt",
+        "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+        "bytes": 114
+      },
+      "log": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/run.log",
+        "sha256": "f16dd8c81dc50e2d8248d598556c38295da5485c26409ae30802d13ed39fc894",
+        "bytes": 735
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+      },
+      "physical_solve_this_experiment": true,
+      "raw_immutable": true,
+      "mechanical_analysis_performed": true,
+      "scientific_interpretation_performed": false,
+      "raw": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "bytes": 7207900,
+        "sample_count": 1999,
+        "time_start_ps": 0.0,
+        "time_end_ps": 199.9,
+        "grid": {
+          "status": "VALID",
+          "sample_count": 1999,
+          "header_count": 269,
+          "time_start_ps": 0.0,
+          "time_end_ps": 199.9,
+          "strictly_increasing_time": true,
+          "finite_values": true,
+          "dt_ps_min": 0.09999999999997898,
+          "dt_ps_max": 0.19999999999999996,
+          "dt_ps_counts": {
+            "0.1": 1997,
+            "0.2": 1
+          },
+          "duplicate_columns": {}
+        },
+        "missing_required_probes": []
+      },
+      "solver_warning_lines": [],
+      "execution_status": "RUN_PASS",
+      "metadata": {
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/metadata.json",
+        "deck_sha256": "e925f1e6f143c6dcee1e03f079ec11568ed93d7ada07b5e0719d4fc23308caa5",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "log_sha256": "f16dd8c81dc50e2d8248d598556c38295da5485c26409ae30802d13ed39fc894",
+        "stdout_sha256": "c52b1ce8e0828d88569f89ade152f12d1e60a4a82dc77446454bc8ade79849df",
+        "stderr_sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8"
+      },
+      "bounded_experiment_interpretation_performed": false,
+      "independent_scientific_review_performed": false
+    }
+  },
+  "run_order": [
+    "LS3_DELAY0P5_0011",
+    "LS3_DELAY0P5_0111",
+    "LS3_DELAY0P6_0011",
+    "LS3_DELAY0P6_0111"
+  ],
+  "execution": {
+    "authorized_physical_solve_count": 4,
+    "actual_physical_solve_count": 4,
+    "solver_invocation_count": 4,
+    "run_order": [
+      "LS3_DELAY0P5_0011",
+      "LS3_DELAY0P5_0111",
+      "LS3_DELAY0P6_0011",
+      "LS3_DELAY0P6_0111"
+    ]
+  },
+  "conditional_0p6": {
+    "status": "PASS",
+    "N2_ordered_phase_chain_count": 2,
+    "N3_ordered_phase_chain_count": 3,
+    "N2_second_response_present": true,
+    "N2_rearm_present": true,
+    "conditional_0p6_allowed": true,
+    "scientific_interpretation_performed": false
+  },
+  "analysis": {
+    "status": "COMPLETE",
+    "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/analysis/mechanical_analysis.json"
+  },
+  "qa": {
+    "schema": "bvm-rloop-ls3-delay-upper-bound-mechanical-qa-v1",
+    "status": "PASS",
+    "artifact_status": "VALID",
+    "run_order": [
+      "LS3_DELAY0P5_0011",
+      "LS3_DELAY0P5_0111",
+      "LS3_DELAY0P6_0011",
+      "LS3_DELAY0P6_0111"
+    ],
+    "actual_physical_solve_count": 4,
+    "max_physical_solves": 4,
+    "source_hashes_match": true,
+    "raw_hash_before_after_equal": true,
+    "reference_hash_before_after_equal": true,
+    "contains_all_new_run_raw": null,
+    "contains_reference_raw_copies": false,
+    "contains_delivery_manifest": false,
+    "failures": [],
+    "mechanical_analysis_performed": true,
+    "scientific_interpretation_performed": false
+  },
+  "visualization": {
+    "schema": "bvm-rloop-ls3-delay-upper-bound-visualization-v1",
+    "status": "PASS",
+    "renderer": "scripts/josim-plot2.py",
+    "layout": "sep_comb",
+    "color": "dark",
+    "phase_option": "2pi",
+    "entries": [
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/01_SIGNAL_TIMING_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "46573a519d5298cdd48461471f6c3e11bb03ba0248248628b5da4e10e5b8200a",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/01_SIGNAL_TIMING_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "a246661f66072307a0f4469a6424bb1382c4467f6d2ca0c3d1956d3f76df8057",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/02_BVM_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "63e6118fe6c056311189899239ee7fb7a657794302abdce8ce5c34b92e901760",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/02_BVM_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "77b96c7cb70dcc5ca20caf55bdde4b8d58832053825ced13d9ec4bce7e930c79",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/03_JSL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "4604fc7b0b93ed60677873fa2bf5fefb98df1496c520e479535e108715cfaa57",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/03_JSL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "af76c0f7dce60fd5f09ac1624230564630190d805ce4cd6ca93cdbeb3a8b8afe",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/04_QB_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "83aed291617fce7ca08a83cb07c3d20ca6f91e9f95547682a50454dcc5741bf2",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/04_QB_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "22ddf20f96d42308d472a415d02cfbd0f94af452a81e0ce0d9ee2bb4acf166d5",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/05_JTL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "10afafe17662fc616216696c79fc4b5548ec293698e0d78db81a700cb4de3cb6",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0011/05_JTL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+        "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+        "sha256": "a639baecc04b24fa0ed8e2b8d0252bc40e6823f3372cedcffc2f5f1a8d9348c7",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/01_SIGNAL_TIMING_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "b7281c9e904f0793537f7effa66e8c747ec787b10ad80538b6b33140bb26fa8c",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/01_SIGNAL_TIMING_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "28753e0563dffa37eedd11445da20b2f3c2c63a953dffa4576114b41dd4a223a",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/02_BVM_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "e50a9b44cca64683d40b850b3e237915646bab3736f6afd57a6f3441409259a6",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/02_BVM_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "e0d0f7f47cdef715903b843bde0e4139e2c8b06986f6d92b4b9c07271011e39f",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/03_JSL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "b5ddf6ec4a6dce59d896b1f29dd9f6dbe24888dda74f357778777195bbd4be49",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/03_JSL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "79f360b88bf41f3b573940d167c0af43614f455c9c7f0dd333eb3698c64b992e",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/04_QB_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "20ed726303828e4ec5a79e9b6876738e7d86e89bb3a6863543b03d50b40cc49a",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/04_QB_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "9f116fc0008daa0f56377cc6099820f03dc1c1e43e5e9a8c50c0644be323468c",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/05_JTL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "c756b96a19dbe415eba42634e717c2aa083da76e71f9f503a90c41f1a8d53d0c",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P5_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P5_0111/05_JTL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+        "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+        "sha256": "d69c6d176178c9c2cb79a106c5a3619ecf282f079e9d7f2cb6dbacc73978a8ae",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/01_SIGNAL_TIMING_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "fb7676019f284f5f8306ef9dcafd5680599baca25a9e1a18006f7ab76d1ff4c6",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/01_SIGNAL_TIMING_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "7470109ddb4119899944a65de285a57dd9fb5183f64c8ddd3c3cc262bf0ebe0e",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/02_BVM_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "3e68a1ce24c0f2784a84b56363f691a0d02bae0adbe7166296571fa6c81ed247",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/02_BVM_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "645dcb94704409945c503a7700e0af8891d254cf55ae7a2a037e72c232d7d20c",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/03_JSL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "b7e49a8c6c7c7b136865b04b9783134aff5d9bec129d0088f5f4b49ed21e1eab",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/03_JSL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "9d71075d966fd87daf54e41784eea1f379f41232d6b03ae79011afe35458d58c",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/04_QB_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "9e3cc7551e2ac5c5a5b32a111a704165847636cdf85b7c08fa2ead3df2e543fb",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/04_QB_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "77ca5597c3d0d3b2ac5a216fcf18c20c8c3a2ad3215a4f98bbb9646378e643ab",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/05_JTL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "679289d2021cfbc63866f05d8ba9cad20e558a73b0f8b80a406b68b5029a4202",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0011/05_JTL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+        "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+        "sha256": "762a54b0da391fdb20f29eac7cfc7eb48aefa82f8a1555659c4f8966a616b12a",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/01_SIGNAL_TIMING_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "8fb614b359e31ebe32b59ea6291f8cd14eea1f841956b8fb0e3a8b73bfb9028b",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/01_SIGNAL_TIMING_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "06a7346af625ba5a68f4702c4f7097b5fae3ec7cf06ee4da248987609653ab9e",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/02_BVM_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "3bb0380b4777e5acc02e0bdae59b4cfc00aedabb605911bfedc1593d04c5544d",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/02_BVM_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "100732f0af0dc9c287379b1fe1dc1ba380dec61c2e47da6ef4c513982dc1019f",
+        "signals": [
+          "P(B_JS1|XBVM1)",
+          "V(B_JS1|XBVM1)",
+          "I(B_JS1|XBVM1)",
+          "P(B_JS2|XBVM1)",
+          "V(B_JS2|XBVM1)",
+          "I(B_JS2|XBVM1)",
+          "P(B_JM1|XBVM1)",
+          "V(B_JM1|XBVM1)",
+          "I(B_JM1|XBVM1)",
+          "P(B_JM2|XBVM1)",
+          "V(B_JM2|XBVM1)",
+          "I(B_JM2|XBVM1)",
+          "P(B_JS1|XBVM2)",
+          "V(B_JS1|XBVM2)",
+          "I(B_JS1|XBVM2)",
+          "P(B_JS2|XBVM2)",
+          "V(B_JS2|XBVM2)",
+          "I(B_JS2|XBVM2)",
+          "P(B_JM1|XBVM2)",
+          "V(B_JM1|XBVM2)",
+          "I(B_JM1|XBVM2)",
+          "P(B_JM2|XBVM2)",
+          "V(B_JM2|XBVM2)",
+          "I(B_JM2|XBVM2)",
+          "P(B_JS1|XBVM3)",
+          "V(B_JS1|XBVM3)",
+          "I(B_JS1|XBVM3)",
+          "P(B_JS2|XBVM3)",
+          "V(B_JS2|XBVM3)",
+          "I(B_JS2|XBVM3)",
+          "P(B_JM1|XBVM3)",
+          "V(B_JM1|XBVM3)",
+          "I(B_JM1|XBVM3)",
+          "P(B_JM2|XBVM3)",
+          "V(B_JM2|XBVM3)",
+          "I(B_JM2|XBVM3)",
+          "P(B_JS1|XBVM4)",
+          "V(B_JS1|XBVM4)",
+          "I(B_JS1|XBVM4)",
+          "P(B_JS2|XBVM4)",
+          "V(B_JS2|XBVM4)",
+          "I(B_JS2|XBVM4)",
+          "P(B_JM1|XBVM4)",
+          "V(B_JM1|XBVM4)",
+          "I(B_JM1|XBVM4)",
+          "P(B_JM2|XBVM4)",
+          "V(B_JM2|XBVM4)",
+          "I(B_JM2|XBVM4)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/03_JSL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "8f5b29608e51c393faa08f73d4cdc5bea8456416bffdf0d67b593f7b9b99e71b",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/03_JSL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "cc611e4223161e62caf3ac7f7eb1e04792773f3e8ec354eaa1e1aecdb85f90c8",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/04_QB_STATE_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "51cbf164f1eebccf032c4d4973deb46611edcb61ef824d4ff9e4f618292ee40a",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/04_QB_STATE_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "8f5c8e55accbc68b56160cb0bf46cecdd59328252acc8126a26bf25d3054b354",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/05_JTL_CHAIN_full_0_200.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "73dbd3d5bba828a429cefe2e5a7aed00d09821bd153a35e7a979aea6ed962fc6",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          0.0,
+          200.0
+        ],
+        "focused": false
+      },
+      {
+        "kind": "standalone",
+        "run_id": "LS3_DELAY0P6_0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/LS3_DELAY0P6_0111/05_JTL_CHAIN_focus_110_121.html",
+        "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+        "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+        "sha256": "530f9393a634c1329bead62c6c0e7235b686f568f62f6ecddc75e33961fcab40",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0011_01_SIGNAL_TIMING_focus_110_121.html",
+        "sha256": "53630e4922e38153d4e08f436e07d15282dc10f15107a4f85e29e6a9303d805c",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "REF_0P2_0011",
+          "REF_0P3_0011",
+          "REF_0P4_0011",
+          "LS3_DELAY0P5_0011",
+          "LS3_DELAY0P6_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0011_03_JSL_CHAIN_focus_110_121.html",
+        "sha256": "15b78383a23f0dbf98abc25c8118e55ab724850303475c92392e1632745af193",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "REF_0P2_0011",
+          "REF_0P3_0011",
+          "REF_0P4_0011",
+          "LS3_DELAY0P5_0011",
+          "LS3_DELAY0P6_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0011_04_QB_STATE_focus_110_121.html",
+        "sha256": "9e10bd85b3ae21102a89a13fe8cd0b494d6c726fb42e04a36a59010cc7163afc",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "REF_0P2_0011",
+          "REF_0P3_0011",
+          "REF_0P4_0011",
+          "LS3_DELAY0P5_0011",
+          "LS3_DELAY0P6_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0011",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0011_05_JTL_CHAIN_focus_110_121.html",
+        "sha256": "4bb001f0afe6a17aa64bb7ba1fe44890164964382bb3fd7fae3e2bbbc9ab4862",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "cases": [
+          "CANONICAL_0011",
+          "REF_0P2_0011",
+          "REF_0P3_0011",
+          "REF_0P4_0011",
+          "LS3_DELAY0P5_0011",
+          "LS3_DELAY0P6_0011"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0111_01_SIGNAL_TIMING_focus_110_121.html",
+        "sha256": "20ef46a14fc94783abd472313a347c76ec4d96d4fb4afff1ed5db7c8356cb9d8",
+        "signals": [
+          "V(COMMON_SL)",
+          "I(B_JSL8)",
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "REF_0P2_0111",
+          "REF_0P3_0111",
+          "REF_0P4_0111",
+          "LS3_DELAY0P5_0111",
+          "LS3_DELAY0P6_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0111_03_JSL_CHAIN_focus_110_121.html",
+        "sha256": "67236540dbd1217a91f2492aaa422a6335dd862633f8335c6d3111208de00a9a",
+        "signals": [
+          "P(B_JSL1)",
+          "V(B_JSL1)",
+          "I(B_JSL1)",
+          "P(B_JSL2)",
+          "V(B_JSL2)",
+          "I(B_JSL2)",
+          "P(B_JSL3)",
+          "V(B_JSL3)",
+          "I(B_JSL3)",
+          "P(B_JSL4)",
+          "V(B_JSL4)",
+          "I(B_JSL4)",
+          "P(B_JSL5)",
+          "V(B_JSL5)",
+          "I(B_JSL5)",
+          "P(B_JSL6)",
+          "V(B_JSL6)",
+          "I(B_JSL6)",
+          "P(B_JSL7)",
+          "V(B_JSL7)",
+          "I(B_JSL7)",
+          "P(B_JSL8)",
+          "V(B_JSL8)",
+          "I(B_JSL8)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "REF_0P2_0111",
+          "REF_0P3_0111",
+          "REF_0P4_0111",
+          "LS3_DELAY0P5_0111",
+          "LS3_DELAY0P6_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0111_04_QB_STATE_focus_110_121.html",
+        "sha256": "e404227c8bcf358bd6d6e591245f364a1bb453d3a52065d52efec15368e29511",
+        "signals": [
+          "V(QBIN)",
+          "I(LIN|XBQ1)",
+          "P(BJ1|XBQ1)",
+          "V(BJ1|XBQ1)",
+          "P(BJ2|XBQ1)",
+          "V(BJ2|XBQ1)",
+          "I(L1|XBQ1)",
+          "I(L2|XBQ1)",
+          "V(QBOUT)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "REF_0P2_0111",
+          "REF_0P3_0111",
+          "REF_0P4_0111",
+          "LS3_DELAY0P5_0111",
+          "LS3_DELAY0P6_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      },
+      {
+        "kind": "comparison",
+        "mask": "0111",
+        "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/comparisons/0111_05_JTL_CHAIN_focus_110_121.html",
+        "sha256": "93f069f480c743b3f173eb738c50ec61a0442c7c11bfce0d36b19755d3f0c6d3",
+        "signals": [
+          "P(B01|XJTL1_1)",
+          "V(B01|XJTL1_1)",
+          "V(JTL1_OUT)",
+          "P(B01|XJTL1_2)",
+          "V(B01|XJTL1_2)",
+          "V(JTL2_OUT)",
+          "P(B01|XJTL1_3)",
+          "V(B01|XJTL1_3)",
+          "V(JTL3_OUT)",
+          "P(B01|XJTL1_4)",
+          "V(B01|XJTL1_4)",
+          "V(JTL4_OUT)",
+          "P(B01|XJTL1_5)",
+          "V(B01|XJTL1_5)",
+          "V(JTL5_OUT)",
+          "P(B01|XJTL1_6)",
+          "V(B01|XJTL1_6)",
+          "V(JTL6_OUT)",
+          "I(R_TERM)"
+        ],
+        "cases": [
+          "CANONICAL_0111",
+          "REF_0P2_0111",
+          "REF_0P3_0111",
+          "REF_0P4_0111",
+          "LS3_DELAY0P5_0111",
+          "LS3_DELAY0P6_0111"
+        ],
+        "window_ps": [
+          110.0,
+          121.0
+        ],
+        "focused": true
+      }
+    ],
+    "standalone_count": 40,
+    "comparison_count": 8,
+    "focused_window_entries": 28,
+    "asset": {
+      "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/plots/assets/plotly.min.js",
+      "sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770"
+    },
+    "invalid_runtime_pages": [],
+    "raw_hashes_rechecked": true,
+    "descriptive_only": true
+  },
+  "package": {
+    "status": "UPLOADED",
+    "package_qa": {
+      "status": "PASS",
+      "package_version": "v2",
+      "package_path": "/mnt/d/BVM_Backages/bvm-rloop-ls3-delay-upper-bound-v1-20260917_v2_raw_evidence.zip",
+      "package_sha256": "073ce076acd1f316d48dbe7379d26551e6340b21d6ebae093561c0e1c2dde93c",
+      "package_bytes": 7904784,
+      "file_count": 76,
+      "expected_file_hashes_match_after_reopen": true,
+      "zip_files": [
+        {
+          "path": "PREFLIGHT.md",
+          "sha256": "38bbb76487e3ce94251165f6ceff719d3d7e5aab99a833e2235e99a0f54029a9",
+          "bytes": 1557
+        },
+        {
+          "path": "README.md",
+          "sha256": "fd0031fb2c5795df8e733ecbabcb9daf612b4044c257ffedeecf055c467e19a4",
+          "bytes": 351
+        },
+        {
+          "path": "experiment.yaml",
+          "sha256": "a69ee6657fc238483aa07d1e8c70b6cb0ce5a801f4e8bc23f95ca7ea7c842da1",
+          "bytes": 2741
+        },
+        {
+          "path": "RESULT.md",
+          "sha256": "61976de93ee5ee01d63e4f161784ab661603bda84ac98d40ef7109d89f74ceee",
+          "bytes": 1538
+        },
+        {
+          "path": "result.json",
+          "sha256": "29df4c40241c5bdd1459b7b8b18cd300a6c426094fb6fc378b9f7a693aba6ba5",
+          "bytes": 27267
+        },
+        {
+          "path": "provenance.json",
+          "sha256": "287cde939a14bc98be1cdd55a8bb1b01c2e8ec5dda4270986011d97d39b7f672",
+          "bytes": 115409
+        },
+        {
+          "path": "inputs/replay_sources/LS3_DELAY0P5_0011_branch_current.csv",
+          "sha256": "f63bd5c05d87bd0387140eeb014c976b52050fda8482a141ed2b296918fb460e",
+          "bytes": 388985
+        },
+        {
+          "path": "inputs/replay_sources/LS3_DELAY0P5_0111_branch_current.csv",
+          "sha256": "31ffe77b1d085b8ec75d9844080c330bfd7725ec52d37fb9ab618a2f863d400f",
+          "bytes": 389611
+        },
+        {
+          "path": "inputs/replay_sources/LS3_DELAY0P6_0011_branch_current.csv",
+          "sha256": "320be3f4281190eb03e81468eb7b9c7f519dc4d692388cda9c491b43089b6225",
+          "bytes": 388985
+        },
+        {
+          "path": "inputs/replay_sources/LS3_DELAY0P6_0111_branch_current.csv",
+          "sha256": "6422fd07a9492db25f00bd6499b91cb3529d3282010560d061f8b5b59ed8bf4a",
+          "bytes": 389621
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0011/deck.cir",
+          "sha256": "d2b28e888404c53198e09662394805ebf299b9b199ff2042b2344f50ce889a1d",
+          "bytes": 311399
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0011/metadata.json",
+          "sha256": "6ce0c531b2f2d62ebbbd25dec0b446061f5fecad81cecebac16919febab06280",
+          "bytes": 541
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0011/raw.csv",
+          "sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+          "bytes": 7210571
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0011/run.log",
+          "sha256": "bec133ecf5f6dd6478936bc2a7c3cd2367bb57915f33ce490da2a6bcaa97e98c",
+          "bytes": 735
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0011/stderr.txt",
+          "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+          "bytes": 114
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0011/stdout.txt",
+          "sha256": "a1a00766651f926c13e340cdfea62db7882da575ecc066b6c09bca1e3ce4f993",
+          "bytes": 222333
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0111/deck.cir",
+          "sha256": "4d8c9ad5dc6e607acfae013b172f74b912ead6f6ef5152943550a710837a475b",
+          "bytes": 311738
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0111/metadata.json",
+          "sha256": "489c3b2822ed36526e705842906b6212181cd7aa5c60caa5347405dded992448",
+          "bytes": 541
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0111/raw.csv",
+          "sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+          "bytes": 7209034
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0111/run.log",
+          "sha256": "f292b14d31d92e435630fd4c2803173ab6274ecaed69eda1314cb45ade54d11d",
+          "bytes": 735
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0111/stderr.txt",
+          "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+          "bytes": 114
+        },
+        {
+          "path": "runs/LS3_DELAY0P5_0111/stdout.txt",
+          "sha256": "f06c25dec0243eb0f5658284cde4992aa2c66585c84a8d0579b294a14a7bf40d",
+          "bytes": 219047
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0011/deck.cir",
+          "sha256": "d54e8ccd4ec9e7e026ffe2122b1e2cdecf5356cdfcf35ceb172b0fc5e05c34cd",
+          "bytes": 311399
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0011/metadata.json",
+          "sha256": "ef2783f52449fdbadc6a97f0ca85a3666f9544d21a2753850837ee4d630bc24c",
+          "bytes": 541
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0011/raw.csv",
+          "sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+          "bytes": 7204607
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0011/run.log",
+          "sha256": "dfa6cd4b5ab72921a500c53bda67647b64479ddc1e466d879627e271cbe39797",
+          "bytes": 735
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0011/stderr.txt",
+          "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+          "bytes": 114
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0011/stdout.txt",
+          "sha256": "c9980eae2b8e92873f182cfe77c90e416799972ee59d2279643e60761c67ffbd",
+          "bytes": 223169
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0111/deck.cir",
+          "sha256": "e925f1e6f143c6dcee1e03f079ec11568ed93d7ada07b5e0719d4fc23308caa5",
+          "bytes": 311748
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0111/metadata.json",
+          "sha256": "821652546116ea177c7178c410e46946b1a3946e40e3742bf198ccab0369cd42",
+          "bytes": 541
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0111/raw.csv",
+          "sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913",
+          "bytes": 7207900
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0111/run.log",
+          "sha256": "f16dd8c81dc50e2d8248d598556c38295da5485c26409ae30802d13ed39fc894",
+          "bytes": 735
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0111/stderr.txt",
+          "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8",
+          "bytes": 114
+        },
+        {
+          "path": "runs/LS3_DELAY0P6_0111/stdout.txt",
+          "sha256": "c52b1ce8e0828d88569f89ade152f12d1e60a4a82dc77446454bc8ade79849df",
+          "bytes": 223875
+        },
+        {
+          "path": "analysis/ADVERSARIAL_REVIEW.md",
+          "sha256": "75594b29c11bd4dec6600097314b715f4f498a6a098c00960209eed2255b01e3",
+          "bytes": 380
+        },
+        {
+          "path": "analysis/EVIDENCE_MANIFEST.md",
+          "sha256": "6d7b2297965a8b6e15f01501ddf57f1bf3519e68a9bac76670e9cf7572ee06e6",
+          "bytes": 11946
+        },
+        {
+          "path": "analysis/MECHANICAL_QA.json",
+          "sha256": "9b1af3185e0109d895157693a68973978e2b59d9221728c826655a672a3e76de",
+          "bytes": 641
+        },
+        {
+          "path": "analysis/NUMERICAL_REVIEW.md",
+          "sha256": "b5559ec0f7472a9381dd6dc8964c3d4931c6e92f0b896aeabef4462a49b4ddff",
+          "bytes": 360
+        },
+        {
+          "path": "analysis/PACKAGE_QA.json",
+          "sha256": "d4cf11cf9aaa6f30f27fd22df2447093faa8fd7e4e8018f1f2e691f42abde296",
+          "bytes": 9670
+        },
+        {
+          "path": "analysis/RAW_ANALYSIS_HANDOFF_MANIFEST.json",
+          "sha256": "58616843585fdb7d2d1d43686863d86b1b0ee3a79bce70fdb7e979266ff8aefa",
+          "bytes": 17542
+        },
+        {
+          "path": "analysis/SOURCE_MANIFEST.json",
+          "sha256": "2a0fd5b9cd7b1c8e4d2fb0ebb75dfb6f0d109932cb5a443d6fe69e097c74b977",
+          "bytes": 8420
+        },
+        {
+          "path": "analysis/TRANSFORMATION_REGISTRY.json",
+          "sha256": "627186a17e5a5927aade3780aede09fea9743f388461bc664461f70bb7d94d28",
+          "bytes": 508
+        },
+        {
+          "path": "analysis/VISUALIZATION_MANIFEST.json",
+          "sha256": "462760646093daa87966dbc41bc3e3bf1cea1e815e6cec81920c1f9535b29685",
+          "bytes": 52076
+        },
+        {
+          "path": "analysis/VISUALIZATION_QA.json",
+          "sha256": "81c108c4566d265b111b26b246f8725bced9e1f5257c6790aff76adc0186541d",
+          "bytes": 169
+        },
+        {
+          "path": "analysis/mechanical_analysis.json",
+          "sha256": "8aa9c06f6a3b423ad87865b0d478514d952de34437149f8af7b8abe7f1b1c241",
+          "bytes": 3364663
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0011/01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "a246661f66072307a0f4469a6424bb1382c4467f6d2ca0c3d1956d3f76df8057",
+          "bytes": 22273
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0011/02_BVM_STATE_focus_110_121.html",
+          "sha256": "77b96c7cb70dcc5ca20caf55bdde4b8d58832053825ced13d9ec4bce7e930c79",
+          "bytes": 145141
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0011/03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "af76c0f7dce60fd5f09ac1624230564630190d805ce4cd6ca93cdbeb3a8b8afe",
+          "bytes": 75273
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0011/04_QB_STATE_focus_110_121.html",
+          "sha256": "22ddf20f96d42308d472a415d02cfbd0f94af452a81e0ce0d9ee2bb4acf166d5",
+          "bytes": 34099
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0011/05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "a639baecc04b24fa0ed8e2b8d0252bc40e6823f3372cedcffc2f5f1a8d9348c7",
+          "bytes": 61107
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0111/01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "28753e0563dffa37eedd11445da20b2f3c2c63a953dffa4576114b41dd4a223a",
+          "bytes": 22578
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0111/02_BVM_STATE_focus_110_121.html",
+          "sha256": "e0d0f7f47cdef715903b843bde0e4139e2c8b06986f6d92b4b9c07271011e39f",
+          "bytes": 145481
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0111/03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "79f360b88bf41f3b573940d167c0af43614f455c9c7f0dd333eb3698c64b992e",
+          "bytes": 76633
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0111/04_QB_STATE_focus_110_121.html",
+          "sha256": "9f116fc0008daa0f56377cc6099820f03dc1c1e43e5e9a8c50c0644be323468c",
+          "bytes": 34154
+        },
+        {
+          "path": "plots/LS3_DELAY0P5_0111/05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "d69c6d176178c9c2cb79a106c5a3619ecf282f079e9d7f2cb6dbacc73978a8ae",
+          "bytes": 61217
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0011/01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "7470109ddb4119899944a65de285a57dd9fb5183f64c8ddd3c3cc262bf0ebe0e",
+          "bytes": 22258
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0011/02_BVM_STATE_focus_110_121.html",
+          "sha256": "645dcb94704409945c503a7700e0af8891d254cf55ae7a2a037e72c232d7d20c",
+          "bytes": 145491
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0011/03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "9d71075d966fd87daf54e41784eea1f379f41232d6b03ae79011afe35458d58c",
+          "bytes": 75233
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0011/04_QB_STATE_focus_110_121.html",
+          "sha256": "77ca5597c3d0d3b2ac5a216fcf18c20c8c3a2ad3215a4f98bbb9646378e643ab",
+          "bytes": 34144
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0011/05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "762a54b0da391fdb20f29eac7cfc7eb48aefa82f8a1555659c4f8966a616b12a",
+          "bytes": 61162
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0111/01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "06a7346af625ba5a68f4702c4f7097b5fae3ec7cf06ee4da248987609653ab9e",
+          "bytes": 22438
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0111/02_BVM_STATE_focus_110_121.html",
+          "sha256": "100732f0af0dc9c287379b1fe1dc1ba380dec61c2e47da6ef4c513982dc1019f",
+          "bytes": 144916
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0111/03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "cc611e4223161e62caf3ac7f7eb1e04792773f3e8ec354eaa1e1aecdb85f90c8",
+          "bytes": 76273
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0111/04_QB_STATE_focus_110_121.html",
+          "sha256": "8f5c8e55accbc68b56160cb0bf46cecdd59328252acc8126a26bf25d3054b354",
+          "bytes": 34144
+        },
+        {
+          "path": "plots/LS3_DELAY0P6_0111/05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "530f9393a634c1329bead62c6c0e7235b686f568f62f6ecddc75e33961fcab40",
+          "bytes": 61257
+        },
+        {
+          "path": "plots/assets/plotly.min.js",
+          "sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+          "bytes": 4763993
+        },
+        {
+          "path": "plots/comparisons/0011_01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "53630e4922e38153d4e08f436e07d15282dc10f15107a4f85e29e6a9303d805c",
+          "bytes": 78343
+        },
+        {
+          "path": "plots/comparisons/0011_03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "15b78383a23f0dbf98abc25c8118e55ab724850303475c92392e1632745af193",
+          "bytes": 344624
+        },
+        {
+          "path": "plots/comparisons/0011_04_QB_STATE_focus_110_121.html",
+          "sha256": "9e10bd85b3ae21102a89a13fe8cd0b494d6c726fb42e04a36a59010cc7163afc",
+          "bytes": 136933
+        },
+        {
+          "path": "plots/comparisons/0011_05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "4bb001f0afe6a17aa64bb7ba1fe44890164964382bb3fd7fae3e2bbbc9ab4862",
+          "bytes": 273319
+        },
+        {
+          "path": "plots/comparisons/0111_01_SIGNAL_TIMING_focus_110_121.html",
+          "sha256": "20ef46a14fc94783abd472313a347c76ec4d96d4fb4afff1ed5db7c8356cb9d8",
+          "bytes": 79758
+        },
+        {
+          "path": "plots/comparisons/0111_03_JSL_CHAIN_focus_110_121.html",
+          "sha256": "67236540dbd1217a91f2492aaa422a6335dd862633f8335c6d3111208de00a9a",
+          "bytes": 348304
+        },
+        {
+          "path": "plots/comparisons/0111_04_QB_STATE_focus_110_121.html",
+          "sha256": "e404227c8bcf358bd6d6e591245f364a1bb453d3a52065d52efec15368e29511",
+          "bytes": 137458
+        },
+        {
+          "path": "plots/comparisons/0111_05_JTL_CHAIN_focus_110_121.html",
+          "sha256": "93f069f480c743b3f173eb738c50ec61a0442c7c11bfce0d36b19755d3f0c6d3",
+          "bytes": 273924
+        },
+        {
+          "path": "executor/generator.py",
+          "sha256": "57e0f5f5c5922cde7f793120ab46ddbdff8c313321cdecffb3da713e8f4ab6e8",
+          "bytes": 53344
+        },
+        {
+          "path": "executor/run.sh",
+          "sha256": "fee1129c38d7c9095a36f89d4ba0bbd8a16450c82ead72030d6d9c6ffb9b7fa0",
+          "bytes": 913
+        }
+      ],
+      "contains_all_new_run_raw": true,
+      "new_run_raw_members": [
+        "runs/LS3_DELAY0P5_0011/raw.csv",
+        "runs/LS3_DELAY0P5_0111/raw.csv",
+        "runs/LS3_DELAY0P6_0011/raw.csv",
+        "runs/LS3_DELAY0P6_0111/raw.csv"
+      ],
+      "contains_reference_raw_copies": false,
+      "contains_delivery_manifest": false,
+      "delivery_manifest_outside_zip": true,
+      "not_in_git": true,
+      "git_head_at_packaging": "1348140f17f0d9467dc42238eaa1e252e877e07a",
+      "remote_head_at_packaging": "1348140f17f0d9467dc42238eaa1e252e877e07a"
+    },
+    "delivery_manifest_path": "delivery_manifest.json",
+    "drive_file_id": "1RrKvbGsFpwC6vvvzOLa74t4jrdpLu0bL",
+    "drive_url": "https://drive.google.com/file/d/1RrKvbGsFpwC6vvvzOLa74t4jrdpLu0bL/view?usp=drivesdk",
+    "drive_uploaded_at": "2026-09-17T11:29:19+08:00",
+    "delivery_manifest_sha256": "e3f20357cd0aff13805c90c92c1bf0e04ca0e1e1fee0a342d68123d0b270049b",
+    "drive_sha256_verified": "metadata SHA not supplied by connector"
+  },
+  "stop": {
+    "final_marker": null,
+    "automatic_follow_up": false
+  },
+  "raw_hash_before_analysis": {
+    "LS3_DELAY0P5_0011": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+    "LS3_DELAY0P5_0111": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+    "LS3_DELAY0P6_0011": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+    "LS3_DELAY0P6_0111": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913"
+  },
+  "raw_hash_after_analysis": {
+    "LS3_DELAY0P5_0011": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580",
+    "LS3_DELAY0P5_0111": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da",
+    "LS3_DELAY0P6_0011": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5",
+    "LS3_DELAY0P6_0111": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913"
+  },
+  "reference_hashes_before_analysis": {
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/result.json": "30f3ac56b7374c24dea63aa2b613f0c0c4b5e9d6ebe55673e75e12e91dcf6fdb",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/result.json": "3b6b9536d785464db76ffbe385f1f9cf1cdeec482c977c00aede165bdfd156b9",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0011/raw.csv": "9e4ec84a53bc3deb879587d27f2a912967f5cdd403f3209c90dcefb962082306",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0111/raw.csv": "7d1295bb898674aa4ed6604a6f1e1f74d954e44693256119800bf8a110e55dba",
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/raw.csv": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/raw.csv": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0011/raw.csv": "c82be3694db07b2af438886e7a932638721902f986ff4f42afa9e59933d172cd",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0111/raw.csv": "6f037c58bab944af553a9f2d4db550527316bd1d02ba232a77ae571ecb7ad89b"
+  },
+  "reference_hashes_after_analysis": {
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/result.json": "30f3ac56b7374c24dea63aa2b613f0c0c4b5e9d6ebe55673e75e12e91dcf6fdb",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/result.json": "3b6b9536d785464db76ffbe385f1f9cf1cdeec482c977c00aede165bdfd156b9",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/raw.csv": "3da7b754c990316ff8e5981692afa958d8056a61020a1912548bf6f2b7e0249c",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0011/deck.cir": "8699459443fb2a1664de711951455298bf296c6365d9194195b478217b8909e3",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/raw.csv": "1ca15a938b23d4ed08eb964713f91476256c4caf0677d1bfd3dc43020271ec75",
+    "test/exploration/bvm-qb-threshold-ordering-boundary-search-v1-20260911/references/canonical_baseline/0111/deck.cir": "98953fc7e14b107b255f6ce6ca4a4a0b0e56aa1b13292f372fb7df6b7cd73914",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0011/raw.csv": "9e4ec84a53bc3deb879587d27f2a912967f5cdd403f3209c90dcefb962082306",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P2_0111/raw.csv": "7d1295bb898674aa4ed6604a6f1e1f74d954e44693256119800bf8a110e55dba",
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0011/raw.csv": "86bdf260882804948c830a4d885b7465d0ab8e479d4adb57830ed0deb8573d8d",
+    "test/exploration/bvm-rloop-branch-timing-decomposition-v1-20260916/runs/LS3_DELAY0P3_0111/raw.csv": "93e5672abfe9e0489c056a07f6d4a80b71a618c17e361dccace5a8a33bd91b37",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0011/raw.csv": "c82be3694db07b2af438886e7a932638721902f986ff4f42afa9e59933d172cd",
+    "test/exploration/bvm-rloop-ls3-delay-window-v1-20260916/runs/LS3_DELAY0P4_0111/raw.csv": "6f037c58bab944af553a9f2d4db550527316bd1d02ba232a77ae571ecb7ad89b"
+  },
+  "execution_status": "ANALYSIS_COMPLETE",
+  "conditional_materialization": {
+    "status": "PASS",
+    "cases": [
+      "LS3_DELAY0P6_0011",
+      "LS3_DELAY0P6_0111"
+    ],
+    "materialized_at": "2026-09-17T11:24:15+08:00"
+  },
+  "postsolve_tooling_revision": {
+    "path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/generator.py",
+    "old_sha256": "458b822be712c02e4ca219ed70df9b3ee693170453471701e73975df0e7f35a3",
+    "new_sha256": "57e0f5f5c5922cde7f793120ab46ddbdff8c313321cdecffb3da713e8f4ab6e8",
+    "reason": "analysis-only runner repair",
+    "physical_rerun": false,
+    "raw_mutated": false
+  }
+}

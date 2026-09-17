@@ -1,0 +1,755 @@
+{
+  "schema": "bvm-rloop-ls3-delay-upper-bound-result-v1",
+  "experiment_id": "bvm-rloop-ls3-delay-upper-bound-v1-20260917",
+  "generated_at": "2026-09-17T11:24:23+08:00",
+  "status": "ANALYSIS_COMPLETE_AWAITING_SCIENTIFIC_REVIEW",
+  "artifact_status": "VALID",
+  "scientific_review_authorized": false,
+  "mechanical_analysis_performed": true,
+  "bounded_experiment_interpretation_performed": false,
+  "independent_scientific_review_performed": false,
+  "scientific_interpretation_performed": false,
+  "execution": {
+    "authorized_physical_solve_count": 4,
+    "actual_physical_solve_count": 4,
+    "solver_invocation_count": 4,
+    "run_order": [
+      "LS3_DELAY0P5_0011",
+      "LS3_DELAY0P5_0111",
+      "LS3_DELAY0P6_0011",
+      "LS3_DELAY0P6_0111"
+    ]
+  },
+  "cases": {
+    "LS3_DELAY0P5_0011": {
+      "run_id": "LS3_DELAY0P5_0011",
+      "mask": "0011",
+      "delay_ps": 0.5,
+      "ordered_phase_chain_count": 2,
+      "old_strict_complete_response_count": 2,
+      "jtl6_cluster_count": 2,
+      "terminal_pulse_count": 2,
+      "terminal_total_area_over_phi0": 1.9999999540652666,
+      "descriptive_candidate_label": "2_ORDERED_RESPONSE_LIKE_WITH_TERMINAL_CORROBORATION",
+      "BJ1_landmarks_ps": [
+        115.6,
+        129.3,
+        null,
+        null
+      ],
+      "BJ2_landmarks_ps": [
+        116.39999999999999,
+        130.0,
+        null,
+        null
+      ],
+      "timing_drift_max_ps": 3.6000000000000085,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -7.675461e-05,
+        "maximum": 4.046114e-05,
+        "zero_sign_crossings": 6,
+        "first_negative_to_positive_crossing_ps": 122.2,
+        "first_positive_to_negative_crossing_ps": 123.1,
+        "first_sustained_negative_to_positive_crossing_ps": 122.2,
+        "positive_dwell_ps": 5.099999999999987,
+        "negative_dwell_ps": 3.8000000000000282,
+        "positive_sample_fraction": 0.5666666666666667,
+        "negative_sample_fraction": 0.43333333333333335,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "JSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -5.552045e-05,
+        "maximum": 3.101397e-05,
+        "zero_sign_crossings": 5,
+        "first_negative_to_positive_crossing_ps": 123.7,
+        "first_positive_to_negative_crossing_ps": 122.30000000000001,
+        "first_sustained_negative_to_positive_crossing_ps": 123.7,
+        "positive_dwell_ps": 2.800000000000032,
+        "negative_dwell_ps": 6.099999999999984,
+        "positive_sample_fraction": 0.3111111111111111,
+        "negative_sample_fraction": 0.6888888888888889,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "active_phase_area": {
+        "P(B_JS1|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM3)",
+          "voltage_signal": "V(B_JS1|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.0395879,
+          "phase_delta_turns": -2.7119346425338486,
+          "voltage_area_V_s": -5.605256467299982e-15,
+          "voltage_area_over_Phi0_turns": -2.7106899680171894,
+          "phase_minus_area_turns": -0.0012446745166592166,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM3)",
+          "voltage_signal": "V(B_JS2|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.8548412,
+          "phase_delta_turns": -2.8416862351008283,
+          "voltage_area_V_s": -5.873776960000001e-15,
+          "voltage_area_over_Phi0_turns": -2.840545900571795,
+          "phase_minus_area_turns": -0.0011403345290332823,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM4)",
+          "voltage_signal": "V(B_JS1|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.0395879,
+          "phase_delta_turns": -2.7119346425338486,
+          "voltage_area_V_s": -5.605256467299982e-15,
+          "voltage_area_over_Phi0_turns": -2.7106899680171894,
+          "phase_minus_area_turns": -0.0012446745166592166,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM4)",
+          "voltage_signal": "V(B_JS2|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.8548412,
+          "phase_delta_turns": -2.8416862351008283,
+          "voltage_area_V_s": -5.873776960000001e-15,
+          "voltage_area_over_Phi0_turns": -2.840545900571795,
+          "phase_minus_area_turns": -0.0011403345290332823,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/raw.csv",
+      "raw_sha256": "8f102ee357d91d182817b19df6c718ba0e1c4fc491a0a5cdd945f5144fbed580"
+    },
+    "LS3_DELAY0P5_0111": {
+      "run_id": "LS3_DELAY0P5_0111",
+      "mask": "0111",
+      "delay_ps": 0.5,
+      "ordered_phase_chain_count": 3,
+      "old_strict_complete_response_count": 2,
+      "jtl6_cluster_count": 3,
+      "terminal_pulse_count": 3,
+      "terminal_total_area_over_phi0": 2.9999999194177924,
+      "descriptive_candidate_label": "3_ORDERED_RESPONSE_LIKE_WITH_TERMINAL_CORROBORATION",
+      "BJ1_landmarks_ps": [
+        114.0,
+        118.60000000000001,
+        121.39999999999999,
+        null
+      ],
+      "BJ2_landmarks_ps": [
+        115.0,
+        119.79999999999998,
+        122.7,
+        null
+      ],
+      "timing_drift_max_ps": 2.0,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001875245,
+        "maximum": 0.0002818101,
+        "zero_sign_crossings": 3,
+        "first_negative_to_positive_crossing_ps": 123.9,
+        "first_positive_to_negative_crossing_ps": 122.7,
+        "first_sustained_negative_to_positive_crossing_ps": 123.9,
+        "positive_dwell_ps": 2.099999999999998,
+        "negative_dwell_ps": 6.800000000000018,
+        "positive_sample_fraction": 0.23333333333333334,
+        "negative_sample_fraction": 0.7666666666666667,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "JSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -8.138378e-05,
+        "maximum": 0.0001758226,
+        "zero_sign_crossings": 3,
+        "first_negative_to_positive_crossing_ps": 123.3,
+        "first_positive_to_negative_crossing_ps": 122.9,
+        "first_sustained_negative_to_positive_crossing_ps": 123.3,
+        "positive_dwell_ps": 2.8000000000000056,
+        "negative_dwell_ps": 6.100000000000009,
+        "positive_sample_fraction": 0.3111111111111111,
+        "negative_sample_fraction": 0.6888888888888889,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "active_phase_area": {
+        "P(B_JS1|XBVM2)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM2)",
+          "voltage_signal": "V(B_JS1|XBVM2)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -29.9225979,
+          "phase_delta_turns": -4.762329365936167,
+          "voltage_area_V_s": -9.848394605699986e-15,
+          "voltage_area_over_Phi0_turns": -4.7626624427418625,
+          "phase_minus_area_turns": 0.000333076805695498,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM2)",
+          "voltage_signal": "V(B_JS2|XBVM2)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -29.9650012,
+          "phase_delta_turns": -4.769078060734576,
+          "voltage_area_V_s": -9.858040154999981e-15,
+          "voltage_area_over_Phi0_turns": -4.767327009631182,
+          "phase_minus_area_turns": -0.001751051103394019,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM3)",
+          "voltage_signal": "V(B_JS1|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -29.9225979,
+          "phase_delta_turns": -4.762329365936167,
+          "voltage_area_V_s": -9.848394605699986e-15,
+          "voltage_area_over_Phi0_turns": -4.7626624427418625,
+          "phase_minus_area_turns": 0.000333076805695498,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM3)",
+          "voltage_signal": "V(B_JS2|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -29.9650012,
+          "phase_delta_turns": -4.769078060734576,
+          "voltage_area_V_s": -9.858040154999981e-15,
+          "voltage_area_over_Phi0_turns": -4.767327009631182,
+          "phase_minus_area_turns": -0.001751051103394019,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM4)",
+          "voltage_signal": "V(B_JS1|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -29.9225979,
+          "phase_delta_turns": -4.762329365936167,
+          "voltage_area_V_s": -9.848394605699986e-15,
+          "voltage_area_over_Phi0_turns": -4.7626624427418625,
+          "phase_minus_area_turns": 0.000333076805695498,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM4)",
+          "voltage_signal": "V(B_JS2|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -29.9650012,
+          "phase_delta_turns": -4.769078060734576,
+          "voltage_area_V_s": -9.858040154999981e-15,
+          "voltage_area_over_Phi0_turns": -4.767327009631182,
+          "phase_minus_area_turns": -0.001751051103394019,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/raw.csv",
+      "raw_sha256": "85608ee5da10d1346eb6892162aa5383838d37860752b21e8c48ec3a613751da"
+    },
+    "LS3_DELAY0P6_0011": {
+      "run_id": "LS3_DELAY0P6_0011",
+      "mask": "0011",
+      "delay_ps": 0.6,
+      "ordered_phase_chain_count": 1,
+      "old_strict_complete_response_count": 1,
+      "jtl6_cluster_count": 1,
+      "terminal_pulse_count": 1,
+      "terminal_total_area_over_phi0": 0.9999999580290301,
+      "descriptive_candidate_label": "1_ORDERED_RESPONSE_LIKE_WITH_TERMINAL_CORROBORATION",
+      "BJ1_landmarks_ps": [
+        115.7,
+        null,
+        null,
+        null
+      ],
+      "BJ2_landmarks_ps": [
+        116.50000000000001,
+        null,
+        null,
+        null
+      ],
+      "timing_drift_max_ps": 0.5000000000000142,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -8.047855e-05,
+        "maximum": 1.747398e-05,
+        "zero_sign_crossings": 4,
+        "first_negative_to_positive_crossing_ps": 122.30000000000001,
+        "first_positive_to_negative_crossing_ps": 123.1,
+        "first_sustained_negative_to_positive_crossing_ps": 122.30000000000001,
+        "positive_dwell_ps": 1.1000000000000014,
+        "negative_dwell_ps": 7.800000000000014,
+        "positive_sample_fraction": 0.12222222222222222,
+        "negative_sample_fraction": 0.8777777777777778,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "JSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -2.594634e-05,
+        "maximum": 3.215007e-05,
+        "zero_sign_crossings": 6,
+        "first_negative_to_positive_crossing_ps": 123.1,
+        "first_positive_to_negative_crossing_ps": 122.49999999999999,
+        "first_sustained_negative_to_positive_crossing_ps": 123.1,
+        "positive_dwell_ps": 6.899999999999997,
+        "negative_dwell_ps": 2.000000000000019,
+        "positive_sample_fraction": 0.7777777777777778,
+        "negative_sample_fraction": 0.2222222222222222,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "active_phase_area": {
+        "P(B_JS1|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM3)",
+          "voltage_signal": "V(B_JS1|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -16.5514879,
+          "phase_delta_turns": -2.6342511148106946,
+          "voltage_area_V_s": -5.4447199343999836e-15,
+          "voltage_area_over_Phi0_turns": -2.633054846097085,
+          "phase_minus_area_turns": -0.0011962687136097827,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM3)",
+          "voltage_signal": "V(B_JS2|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.9736112,
+          "phase_delta_turns": -2.8605890676918526,
+          "voltage_area_V_s": -5.914302376000004e-15,
+          "voltage_area_over_Phi0_turns": -2.8601439045599775,
+          "phase_minus_area_turns": -0.0004451631318751481,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM4)",
+          "voltage_signal": "V(B_JS1|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -16.5514879,
+          "phase_delta_turns": -2.6342511148106946,
+          "voltage_area_V_s": -5.4447199343999836e-15,
+          "voltage_area_over_Phi0_turns": -2.633054846097085,
+          "phase_minus_area_turns": -0.0011962687136097827,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM4)",
+          "voltage_signal": "V(B_JS2|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -17.9736112,
+          "phase_delta_turns": -2.8605890676918526,
+          "voltage_area_V_s": -5.914302376000004e-15,
+          "voltage_area_over_Phi0_turns": -2.8601439045599775,
+          "phase_minus_area_turns": -0.0004451631318751481,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/raw.csv",
+      "raw_sha256": "07f94965f73358a014948098c154bc609c2b517a04078050f63721027f568ea5"
+    },
+    "LS3_DELAY0P6_0111": {
+      "run_id": "LS3_DELAY0P6_0111",
+      "mask": "0111",
+      "delay_ps": 0.6,
+      "ordered_phase_chain_count": 3,
+      "old_strict_complete_response_count": 2,
+      "jtl6_cluster_count": 3,
+      "terminal_pulse_count": 3,
+      "terminal_total_area_over_phi0": 2.9999999888867226,
+      "descriptive_candidate_label": "3_ORDERED_RESPONSE_LIKE_WITH_TERMINAL_CORROBORATION",
+      "BJ1_landmarks_ps": [
+        114.1,
+        119.0,
+        122.30000000000001,
+        null
+      ],
+      "BJ2_landmarks_ps": [
+        115.0,
+        120.2,
+        123.4,
+        null
+      ],
+      "timing_drift_max_ps": 2.3000000000000114,
+      "L1_rearm": {
+        "status": "DERIVED",
+        "signal": "I(L1|XBQ1)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -0.0001473674,
+        "maximum": 0.0001768286,
+        "zero_sign_crossings": 1,
+        "first_negative_to_positive_crossing_ps": null,
+        "first_positive_to_negative_crossing_ps": 123.6,
+        "first_sustained_negative_to_positive_crossing_ps": null,
+        "positive_dwell_ps": 2.599999999999996,
+        "negative_dwell_ps": 6.300000000000019,
+        "positive_sample_fraction": 0.28888888888888886,
+        "negative_sample_fraction": 0.7111111111111111,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "JSL8_rearm": {
+        "status": "DERIVED",
+        "signal": "I(B_JSL8)",
+        "window_ps": [
+          121.0,
+          130.0
+        ],
+        "sample_count": 90,
+        "minimum": -4.512416e-05,
+        "maximum": 9.904095e-05,
+        "zero_sign_crossings": 3,
+        "first_negative_to_positive_crossing_ps": 126.89999999999999,
+        "first_positive_to_negative_crossing_ps": 124.1,
+        "first_sustained_negative_to_positive_crossing_ps": 126.89999999999999,
+        "positive_dwell_ps": 3.5999999999999925,
+        "negative_dwell_ps": 5.300000000000023,
+        "positive_sample_fraction": 0.4,
+        "negative_sample_fraction": 0.6,
+        "actual_grid": true,
+        "sustained_definition": "crossing followed by 3 consecutive stored samples > 0"
+      },
+      "active_phase_area": {
+        "P(B_JS1|XBVM2)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM2)",
+          "voltage_signal": "V(B_JS1|XBVM2)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -26.0626779,
+          "phase_delta_turns": -4.148004017996898,
+          "voltage_area_V_s": -8.580181388799982e-15,
+          "voltage_area_over_Phi0_turns": -4.149357259578034,
+          "phase_minus_area_turns": 0.001353241581135478,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM2)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM2)",
+          "voltage_signal": "V(B_JS2|XBVM2)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -26.4094212,
+          "phase_delta_turns": -4.203189928175894,
+          "voltage_area_V_s": -8.693998069399994e-15,
+          "voltage_area_over_Phi0_turns": -4.204398761442459,
+          "phase_minus_area_turns": 0.001208833266564291,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM3)",
+          "voltage_signal": "V(B_JS1|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -26.0626779,
+          "phase_delta_turns": -4.148004017996898,
+          "voltage_area_V_s": -8.580181388799982e-15,
+          "voltage_area_over_Phi0_turns": -4.149357259578034,
+          "phase_minus_area_turns": 0.001353241581135478,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM3)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM3)",
+          "voltage_signal": "V(B_JS2|XBVM3)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -26.4094212,
+          "phase_delta_turns": -4.203189928175894,
+          "voltage_area_V_s": -8.693998069399994e-15,
+          "voltage_area_over_Phi0_turns": -4.204398761442459,
+          "phase_minus_area_turns": 0.001208833266564291,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS1|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS1|XBVM4)",
+          "voltage_signal": "V(B_JS1|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -26.0626779,
+          "phase_delta_turns": -4.148004017996898,
+          "voltage_area_V_s": -8.580181388799982e-15,
+          "voltage_area_over_Phi0_turns": -4.149357259578034,
+          "phase_minus_area_turns": 0.001353241581135478,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        },
+        "P(B_JS2|XBVM4)": {
+          "status": "DERIVED",
+          "phase_signal": "P(B_JS2|XBVM4)",
+          "voltage_signal": "V(B_JS2|XBVM4)",
+          "raw_phase_unit": "radians",
+          "window_ps": [
+            110.0,
+            121.0
+          ],
+          "sample_count": 110,
+          "delta_phase_rad": -26.4094212,
+          "phase_delta_turns": -4.203189928175894,
+          "voltage_area_V_s": -8.693998069399994e-15,
+          "voltage_area_over_Phi0_turns": -4.204398761442459,
+          "phase_minus_area_turns": 0.001208833266564291,
+          "actual_grid_trapezoid": true,
+          "same_jj_same_endpoints_same_direction": true,
+          "semantic_role": "phase/area cross-check; not an SFQ count"
+        }
+      },
+      "raw_path": "test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/raw.csv",
+      "raw_sha256": "855d8e37b1285d09909c65e6444ce4bc9f664d1913cbc29e2c841202151da913"
+    }
+  },
+  "timing_window": {
+    "table": {
+      "0.2": {
+        "N2": 2,
+        "N3": 4
+      },
+      "0.3": {
+        "N2": 2,
+        "N3": 3
+      },
+      "0.4": {
+        "N2": 2,
+        "N3": 3
+      },
+      "0.5": {
+        "N2": 2,
+        "N3": 3
+      },
+      "0.6": {
+        "N2": 1,
+        "N3": 3
+      }
+    },
+    "candidate_label": "LS3_DELAY0P5_MECHANICAL_GATE_PASS",
+    "classification": "NOT_ASSIGNED_SCIENTIFIC_REVIEW_REQUIRED"
+  },
+  "classification": {
+    "status": "SCIENTIFIC_REVIEW_REQUIRED",
+    "assigned": null
+  },
+  "stop": {
+    "final_marker": "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW",
+    "automatic_follow_up": false
+  },
+  "conditional_gate": {
+    "status": "PASS",
+    "N2_ordered_phase_chain_count": 2,
+    "N3_ordered_phase_chain_count": 3,
+    "N2_second_response_present": true,
+    "N2_rearm_present": true,
+    "conditional_0p6_allowed": true,
+    "scientific_interpretation_performed": false
+  },
+  "conditional_0p6": {
+    "status": "AUTHORIZED",
+    "cases": [
+      "LS3_DELAY0P6_0011",
+      "LS3_DELAY0P6_0111"
+    ]
+  },
+  "qa_summary": {
+    "status": "PASS",
+    "artifact_status": "VALID"
+  },
+  "visualization_summary": {
+    "status": "PASS",
+    "standalone_count": 40,
+    "comparison_count": 8,
+    "focused_window_entries": 28
+  },
+  "package_summary": {
+    "status": "UPLOADED",
+    "package_version": "v2",
+    "package_sha256": "073ce076acd1f316d48dbe7379d26551e6340b21d6ebae093561c0e1c2dde93c",
+    "package_bytes": 7904784,
+    "file_count": 76,
+    "delivery_manifest_path": "delivery_manifest.json",
+    "drive_file_id": "1RrKvbGsFpwC6vvvzOLa74t4jrdpLu0bL",
+    "drive_url": "https://drive.google.com/file/d/1RrKvbGsFpwC6vvvzOLa74t4jrdpLu0bL/view?usp=drivesdk"
+  }
+}

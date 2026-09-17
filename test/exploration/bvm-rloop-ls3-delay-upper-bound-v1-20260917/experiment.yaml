@@ -1,0 +1,50 @@
+schema_version: bvm-rloop-ls3-delay-upper-bound-v1
+id: bvm-rloop-ls3-delay-upper-bound-v1-20260917
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+status: PREFLIGHT_PASS
+registration_head: 1348140f17f0d9467dc42238eaa1e252e877e07a
+remote_bvm_master_at_registration: 1348140f17f0d9467dc42238eaa1e252e877e07a
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+scientific_review_authorized: false
+authorized_matrix:
+  fixed: [LS3_DELAY0P5_0011, LS3_DELAY0P5_0111]
+  conditional: [LS3_DELAY0P6_0011, LS3_DELAY0P6_0111]
+  maximum_new_physical_solves: 4
+frozen:
+  t0_ps: 110.0
+  dt_ps: 0.1
+  fixed_delay_ps: 0.5
+  conditional_delay_ps: 0.6
+  fixed_shift_samples: 5
+  conditional_shift_samples: 6
+  stop_time_ps: 200.0
+  no_interpolation: true
+  no_scaling: true
+
+fixed_deck_registration:
+  - run_id: LS3_DELAY0P5_0011
+    path: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0011/deck.cir
+    sha256: d2b28e888404c53198e09662394805ebf299b9b199ff2042b2344f50ce889a1d
+    source_csv: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P5_0011_branch_current.csv
+    source_csv_sha256: f63bd5c05d87bd0387140eeb014c976b52050fda8482a141ed2b296918fb460e
+  - run_id: LS3_DELAY0P5_0111
+    path: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P5_0111/deck.cir
+    sha256: 4d8c9ad5dc6e607acfae013b172f74b912ead6f6ef5152943550a710837a475b
+    source_csv: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P5_0111_branch_current.csv
+    source_csv_sha256: 31ffe77b1d085b8ec75d9844080c330bfd7725ec52d37fb9ab618a2f863d400f
+
+reference_policy: accepted 0.2/0.3/0.4 raw referenced by hash only
+scientific_classification: NOT_ASSIGNED_SCIENTIFIC_REVIEW_REQUIRED
+
+conditional_0p6_deck_registration:
+  - run_id: LS3_DELAY0P6_0011
+    path: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0011/deck.cir
+    sha256: d54e8ccd4ec9e7e026ffe2122b1e2cdecf5356cdfcf35ceb172b0fc5e05c34cd
+    source_csv: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P6_0011_branch_current.csv
+    source_csv_sha256: 320be3f4281190eb03e81468eb7b9c7f519dc4d692388cda9c491b43089b6225
+  - run_id: LS3_DELAY0P6_0111
+    path: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/runs/LS3_DELAY0P6_0111/deck.cir
+    sha256: e925f1e6f143c6dcee1e03f079ec11568ed93d7ada07b5e0719d4fc23308caa5
+    source_csv: test/exploration/bvm-rloop-ls3-delay-upper-bound-v1-20260917/inputs/replay_sources/LS3_DELAY0P6_0111_branch_current.csv
+    source_csv_sha256: 6422fd07a9492db25f00bd6499b91cb3529d3282010560d061f8b5b59ed8bf4a

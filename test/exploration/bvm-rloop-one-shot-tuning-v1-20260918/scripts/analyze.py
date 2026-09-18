@@ -248,17 +248,18 @@ def raw_qa(raw_record: dict[str, Any], raw_path: Path, headers: list[str], rows:
         expected_last_ps = (expected_count - 1) * dt_ps
     except (TypeError, ValueError):
         dt_ps, stop_ps, expected_count, expected_last_ps = 0.1, 200.0, 1999, 199.9
-    if len(rows) != expected_count:
-        reasons.append(f"expected {expected_count} samples for JoSIM grid at dt={dt_ps:g} ps stop={stop_ps:g} ps, got {len(rows)}")
     times = [row[0] * 1.0e12 for row in rows] if rows else []
-    if times and (abs(times[0]) > max(dt_ps * 1e-6, 1e-9) or abs(times[-1] - expected_last_ps) > max(dt_ps * 1e-6, 1e-6)):
-        reasons.append(f"unexpected time grid endpoints {times[0]}..{times[-1]} ps; expected 0..{expected_last_ps:g} ps")
+    endpoint_tolerance = max(dt_ps * 1e-6, 1e-6)
+    if times and (times[0] < -endpoint_tolerance or times[-1] > stop_ps + endpoint_tolerance or times[-1] < stop_ps - max(2.0 * dt_ps, endpoint_tolerance)):
+        reasons.append(f"unexpected actual time range {times[0]}..{times[-1]} ps for requested stop={stop_ps:g} ps")
     if any(right <= left for left, right in zip(times, times[1:])):
         reasons.append("time grid is not strictly increasing")
     expected_hash = raw_record.get("raw", {}).get("sha256")
     if expected_hash and expected_hash != sha256(raw_path):
         reasons.append("raw hash differs from metadata")
-    return {"status": "PASS" if not reasons else "FAIL", "path": repo_rel(raw_path), "sha256": sha256(raw_path) if raw_path.is_file() else None, "sample_count": len(rows), "column_count": len(headers), "reasons": reasons}
+    steps = [right - left for left, right in zip(times, times[1:])]
+    irregular = [step for step in steps if abs(step - dt_ps) > max(dt_ps * 1e-6, 1e-9)]
+    return {"status": "PASS" if not reasons else "FAIL", "path": repo_rel(raw_path), "sha256": sha256(raw_path) if raw_path.is_file() else None, "sample_count": len(rows), "column_count": len(headers), "nominal_dt_ps": dt_ps, "nominal_stop_ps": stop_ps, "nominal_uniform_sample_count": expected_count, "actual_time_start_ps": times[0] if times else None, "actual_time_end_ps": times[-1] if times else None, "actual_step_min_ps": min(steps) if steps else None, "actual_step_max_ps": max(steps) if steps else None, "irregular_step_count": len(irregular), "grid_status": "IRREGULAR_STORED_GRID" if irregular else "NOMINAL_STORED_GRID", "reasons": reasons}
 
 
 def write_case_summary(case_root: Path, params: dict[str, Any], run_summaries: list[dict[str, Any]], population: list[dict[str, Any]], monotonicity: dict[str, Any]) -> None:

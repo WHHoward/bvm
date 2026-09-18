@@ -1,0 +1,24 @@
+schema_version: bvm-rloop-one-shot-tuning-v1
+id: bvm-rloop-one-shot-tuning-v1-20260918
+study_phase: EXPLORATORY
+role: Experimental Operator + Evidence Packager
+parent_head: a80302e44a75a42991a00f0175fb93ac580dd42
+remote_master_at_registration: a80302e44a75a42991a00f0175fb93ac580dd42
+contract_sentence: This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+scientific_review_authorized: false
+scientific_interpretation: NOT_PERFORMED
+automatic_follow_up: NONE
+bit_order: b3b2b1b0=BVM1/BVM2/BVM3/BVM4
+stage_a_case_order: [A000_CANONICAL, A001, A002, A003]
+stage_a_modes: [passive, passive, passive, passive]
+stage_a_masks: [0000, 0001, 0011, 0111, 1111]
+authorized_solve_count: 20
+stimulus: IDLE=0-50ps, WRITE0=50-61ps, ZERO_READ=70-81ps, WRITE1=90-101ps, SETTLE=101-110ps, FINAL_READ=110-121ps, RECOVERY=121-130ps, TAIL=150-200ps
+amplitude_uA: 100
+edge_ps: 1
+plateau_ps: 9
+dt: 0.1p
+stop_time: 200p
+visualization: compact_review_only_no_exhaustive_atlas
+scientific_classification: NOT_ASSIGNED_SCIENTIFIC_REVIEW_REQUIRED
+

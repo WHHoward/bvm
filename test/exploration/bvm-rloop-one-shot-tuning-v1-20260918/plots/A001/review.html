@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset='utf-8'><title>A001 review</title><style>body{font-family:Arial,sans-serif;background:#111;color:#eee;margin:24px;line-height:1.45}a{color:#8ecbff}table{border-collapse:collapse;width:100%;margin:12px 0 28px}th,td{border:1px solid #555;padding:6px 8px;text-align:left;font-size:13px}th{background:#262626}code{color:#ffd580}section{margin:28px 0;padding:14px;border:1px solid #444;border-radius:6px}small{color:#aaa}</style></head><body>
+<h1>A001</h1>
+<p>Compact descriptive review page. Scientific interpretation is not performed; phase turns are navigation only, not formal SFQ counts.</p>
+<h2>Case</h2>
+<ul>
+<li>Mode: <code>passive</code></li>
+<li>JS1/JS2 area: <code>0.74</code> / <code>0.74</code></li>
+<li>JS1/JS2 shunt: <code>20</code> / <code>20</code> ohm</li>
+<li>LS1/LS2/LS3: <code>0.5p</code> / <code>0.5p</code> / <code>0.5p</code></li>
+</ul>
+<section><h2>Page 1 — stimulus + S-loop</h2><p>Windowed JM1/JM2 and LM1/LM2/LM3/LPM metrics are in <code>analysis/per_signal_window_metrics.csv</code>.</p>
+<table><tr><th>mask</th><th>representative active BVM</th><th>JM1 WRITE0 turns</th><th>JM1 control turns</th><th>JM1 WRITE1 turns</th><th>JM1 pre-read turns</th><th>grouped plots</th></tr>
+<tr><td>0000</td><td>none (BVM1 diagnostic)</td><td>-1.06058</td><td>0.115241</td><td>2.00969</td><td>-0.112261</td><td><a href="groups/PASSIVE_N0_0000_s_loop_junctions.html">PASSIVE_N0_0000_s_loop_junctions</a> · <a href="groups/PASSIVE_N0_0000_s_loop_branches.html">PASSIVE_N0_0000_s_loop_branches</a></td></tr>
+<tr><td>0001</td><td>BVM4</td><td>-1.06058</td><td>0.115241</td><td>2.00969</td><td>-0.112261</td><td><a href="groups/PASSIVE_N1_0001_s_loop_junctions.html">PASSIVE_N1_0001_s_loop_junctions</a> · <a href="groups/PASSIVE_N1_0001_s_loop_branches.html">PASSIVE_N1_0001_s_loop_branches</a></td></tr>
+<tr><td>0011</td><td>BVM3</td><td>-1.06058</td><td>0.115241</td><td>2.00969</td><td>-0.112261</td><td><a href="groups/PASSIVE_N2_0011_s_loop_junctions.html">PASSIVE_N2_0011_s_loop_junctions</a> · <a href="groups/PASSIVE_N2_0011_s_loop_branches.html">PASSIVE_N2_0011_s_loop_branches</a></td></tr>
+<tr><td>0111</td><td>BVM2</td><td>-1.06058</td><td>0.115241</td><td>2.00969</td><td>-0.112261</td><td><a href="groups/PASSIVE_N3_0111_s_loop_junctions.html">PASSIVE_N3_0111_s_loop_junctions</a> · <a href="groups/PASSIVE_N3_0111_s_loop_branches.html">PASSIVE_N3_0111_s_loop_branches</a></td></tr>
+<tr><td>1111</td><td>BVM1</td><td>-1.06058</td><td>0.115241</td><td>2.00969</td><td>-0.112261</td><td><a href="groups/PASSIVE_N4_1111_s_loop_junctions.html">PASSIVE_N4_1111_s_loop_junctions</a> · <a href="groups/PASSIVE_N4_1111_s_loop_branches.html">PASSIVE_N4_1111_s_loop_branches</a></td></tr>
+</table><p>Gate-S: <b>REVIEW_REQUIRED</b>. No fixed percentage threshold or automatic functional-family decision is applied.</p></section>
+<section><h2>Page 2 — R-loop</h2><table><tr><th>mask</th><th>BVM</th><th>JS1 110→121 turns</th><th>JS1 p2p turns</th><th>JS2 110→121 turns</th><th>JS2 p2p turns</th><th>label</th><th>grouped plots</th></tr>
+<tr><td>0001</td><td>BVM4</td><td>-1.1622</td><td>1.17279</td><td>-1.44301</td><td>1.44669</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N1_0001_r_loop_junctions.html">PASSIVE_N1_0001_r_loop_junctions</a> · <a href="groups/PASSIVE_N1_0001_r_loop_branches.html">PASSIVE_N1_0001_r_loop_branches</a></td></tr>
+<tr><td>0011</td><td>BVM3</td><td>-1.19398</td><td>1.20384</td><td>-1.55098</td><td>1.55098</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N2_0011_r_loop_junctions.html">PASSIVE_N2_0011_r_loop_junctions</a> · <a href="groups/PASSIVE_N2_0011_r_loop_branches.html">PASSIVE_N2_0011_r_loop_branches</a></td></tr>
+<tr><td>0011</td><td>BVM4</td><td>-1.19398</td><td>1.20384</td><td>-1.55098</td><td>1.55098</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N2_0011_r_loop_junctions.html">PASSIVE_N2_0011_r_loop_junctions</a> · <a href="groups/PASSIVE_N2_0011_r_loop_branches.html">PASSIVE_N2_0011_r_loop_branches</a></td></tr>
+<tr><td>0111</td><td>BVM2</td><td>-1.24531</td><td>1.25445</td><td>-1.72962</td><td>1.72962</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N3_0111_r_loop_junctions.html">PASSIVE_N3_0111_r_loop_junctions</a> · <a href="groups/PASSIVE_N3_0111_r_loop_branches.html">PASSIVE_N3_0111_r_loop_branches</a></td></tr>
+<tr><td>0111</td><td>BVM3</td><td>-1.24531</td><td>1.25445</td><td>-1.72962</td><td>1.72962</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N3_0111_r_loop_junctions.html">PASSIVE_N3_0111_r_loop_junctions</a> · <a href="groups/PASSIVE_N3_0111_r_loop_branches.html">PASSIVE_N3_0111_r_loop_branches</a></td></tr>
+<tr><td>0111</td><td>BVM4</td><td>-1.24531</td><td>1.25445</td><td>-1.72962</td><td>1.72962</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N3_0111_r_loop_junctions.html">PASSIVE_N3_0111_r_loop_junctions</a> · <a href="groups/PASSIVE_N3_0111_r_loop_branches.html">PASSIVE_N3_0111_r_loop_branches</a></td></tr>
+<tr><td>1111</td><td>BVM1</td><td>-1.34251</td><td>1.35093</td><td>-1.88465</td><td>1.8853</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N4_1111_r_loop_junctions.html">PASSIVE_N4_1111_r_loop_junctions</a> · <a href="groups/PASSIVE_N4_1111_r_loop_branches.html">PASSIVE_N4_1111_r_loop_branches</a></td></tr>
+<tr><td>1111</td><td>BVM2</td><td>-1.34251</td><td>1.35093</td><td>-1.88465</td><td>1.8853</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N4_1111_r_loop_junctions.html">PASSIVE_N4_1111_r_loop_junctions</a> · <a href="groups/PASSIVE_N4_1111_r_loop_branches.html">PASSIVE_N4_1111_r_loop_branches</a></td></tr>
+<tr><td>1111</td><td>BVM3</td><td>-1.34251</td><td>1.35093</td><td>-1.88465</td><td>1.8853</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N4_1111_r_loop_junctions.html">PASSIVE_N4_1111_r_loop_junctions</a> · <a href="groups/PASSIVE_N4_1111_r_loop_branches.html">PASSIVE_N4_1111_r_loop_branches</a></td></tr>
+<tr><td>1111</td><td>BVM4</td><td>-1.34251</td><td>1.35093</td><td>-1.88465</td><td>1.8853</td><td>AMBIGUOUS</td><td><a href="groups/PASSIVE_N4_1111_r_loop_junctions.html">PASSIVE_N4_1111_r_loop_junctions</a> · <a href="groups/PASSIVE_N4_1111_r_loop_branches.html">PASSIVE_N4_1111_r_loop_branches</a></td></tr>
+</table><p>Gate-R: <b>AMBIGUOUS</b>. Activity clusters and crossings are descriptive navigation metrics, not a formal classifier.</p></section>
+<section><h2>Page 3 — output</h2><table><tr><th>mask</th><th>peak positive I(B_JSL8) [A]</th><th>peak negative [A]</th><th>signed area [Phi0]</th><th>absolute area [Phi0]</th><th>zero crossings</th><th>grouped plots</th></tr>
+<tr><td>0000</td><td>0</td><td>-3.47994e-07</td><td>-0.000327772</td><td>0.000327772</td><td>0</td><td><a href="groups/PASSIVE_N0_0000_output.html">PASSIVE_N0_0000_output</a></td></tr>
+<tr><td>0001</td><td>2.92442e-05</td><td>-3.47994e-07</td><td>0.104548</td><td>0.104565</td><td>1</td><td><a href="groups/PASSIVE_N1_0001_output.html">PASSIVE_N1_0001_output</a></td></tr>
+<tr><td>0011</td><td>5.92518e-05</td><td>-3.47994e-07</td><td>0.219748</td><td>0.219765</td><td>1</td><td><a href="groups/PASSIVE_N2_0011_output.html">PASSIVE_N2_0011_output</a></td></tr>
+<tr><td>0111</td><td>9.07115e-05</td><td>-3.47994e-07</td><td>0.35216</td><td>0.352177</td><td>1</td><td><a href="groups/PASSIVE_N3_0111_output.html">PASSIVE_N3_0111_output</a></td></tr>
+<tr><td>1111</td><td>0.000139398</td><td>-3.47994e-07</td><td>0.500731</td><td>0.500748</td><td>1</td><td><a href="groups/PASSIVE_N4_1111_output.html">PASSIVE_N4_1111_output</a></td></tr>
+</table><p>Population monotonicity is reported numerically only; no strict 1:2:3:4 condition is imposed.</p></section>
+<section><h2>Page 4 — state summary</h2><p>Registered windows: WRITE0, zero-state control read, WRITE1, pre-final-read, recovery, and 150–200 ps tail. See the case summary and machine-readable metrics for JM2 and LM branch values.</p><p><a href='../../analysis/case_metrics.json'>case_metrics.json</a> · <a href='../../analysis/gate_s_comparison.json'>gate_s_comparison.json</a> · <a href='../../analysis/per_signal_window_metrics.csv'>per_signal_window_metrics.csv</a> · <a href='../../runs/A001/REVIEW_SUMMARY.md'>REVIEW_SUMMARY.md</a></p></section>
+<section><h2>Page 5 — one-shot summary</h2><p>JS1/JS2 first activity, possible subsequent activity, LS3 recovery, settling estimator, crossings, and same-JJ voltage-area cross-checks are retained in <code>case_metrics.json</code>. No event count or one-shot verdict is assigned.</p></section>
+<h2>Raw evidence</h2><ul>
+<li><a href='../../runs/A001/cases/PASSIVE_N0_0000/raw.csv'>PASSIVE_N0_0000/raw.csv</a></li>
+<li><a href='../../runs/A001/cases/PASSIVE_N1_0001/raw.csv'>PASSIVE_N1_0001/raw.csv</a></li>
+<li><a href='../../runs/A001/cases/PASSIVE_N2_0011/raw.csv'>PASSIVE_N2_0011/raw.csv</a></li>
+<li><a href='../../runs/A001/cases/PASSIVE_N3_0111/raw.csv'>PASSIVE_N3_0111/raw.csv</a></li>
+<li><a href='../../runs/A001/cases/PASSIVE_N4_1111/raw.csv'>PASSIVE_N4_1111/raw.csv</a></li>
+</ul><small>Renderer: scripts/josim-plot2.py, sep_comb/dark/-j 2pi. Raw P(...) is radians.</small></body></html>

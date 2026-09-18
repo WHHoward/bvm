@@ -1,0 +1,82 @@
+{
+  "run_id": "PASSIVE_N2_0011",
+  "mode": "passive",
+  "mask": "0011",
+  "bit_order": "b3b2b1b0=BVM1/BVM2/BVM3/BVM4",
+  "parameters": {
+    "CASE_ID": "A003",
+    "MODE": "passive",
+    "MASKS": [
+      "0000",
+      "0001",
+      "0011",
+      "0111",
+      "1111"
+    ],
+    "JS1_AREA": "0.74",
+    "JS2_AREA": "0.74",
+    "RSH_JS1": "8",
+    "RSH_JS2": "8",
+    "LS1": "0.5p",
+    "LS2": "0.5p",
+    "LS3": "0.5p",
+    "RS": "3.0",
+    "LPSL": "0.5p",
+    "RSL": "12.0",
+    "LSL": "0.4p",
+    "DT": "0.1p",
+    "STOP": "200p"
+  },
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/actual_deck.cir"
+  ],
+  "started_at": "2026-09-18T16:38:10+08:00",
+  "finished_at": "2026-09-18T16:38:10+08:00",
+  "runtime_seconds": 0.14666159699845593,
+  "execution_status": "RUN_PASS",
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "deck": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/actual_deck.cir",
+    "sha256": "3ac19c06271084451ffe8dacde6156096de072e4b3f5f869068c8ca063fda1b8",
+    "bytes": 4290
+  },
+  "stimulus": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/stimulus.inc",
+    "sha256": "cf426b7df2023399d1c271c80f8b66480fb6be5ca36fe36916623b3cdb84b86c",
+    "bytes": 2003
+  },
+  "raw": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/raw.csv",
+    "sha256": "e122f6de5881bff1e452ffd8ffa69de4cd8bea31e69d98570e0e431fa9179bb4",
+    "bytes": 5697881,
+    "headers": 214
+  },
+  "signal_manifest": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/signal_manifest.csv",
+    "sha256": "7f2a0e99301dc03baef37180f9b112fcdba6473686d75a3763b4f695b5db59c8",
+    "requested": 213,
+    "present": 213,
+    "unsupported_or_not_emitted": 0
+  },
+  "stdout": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/stdout.txt",
+    "sha256": "b8cd054417ccfe6db33eba01e15874705db9593335b7156dae3db191ba875dd7"
+  },
+  "stderr": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/stderr.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "run_log": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/A003/cases/PASSIVE_N2_0011/run.log",
+    "sha256": "9be8e2b39d0a8926257339892a8f61d15d6ea5145c5fa1b187d97418763691f1"
+  }
+}

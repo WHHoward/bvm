@@ -57,6 +57,15 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def spice_number(token: str) -> float:
+    import re
+    match = re.fullmatch(r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)([munpfk]?)\s*", token, flags=re.IGNORECASE)
+    if not match:
+        raise ValueError(token)
+    scale = {"": 1.0, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3, "f": 1e-15, "k": 1e3}[match.group(2).lower()]
+    return float(match.group(1)) * scale
+
+
 def repo_rel(path: Path) -> str:
     repo = next(item for item in (SERIES, *SERIES.parents) if (item / ".git").exists())
     try:
@@ -231,11 +240,19 @@ def raw_qa(raw_record: dict[str, Any], raw_path: Path, headers: list[str], rows:
         reasons.append("raw missing or empty")
     if len(headers) < 2:
         reasons.append("raw header has fewer than two columns")
-    if len(rows) != 1999:
-        reasons.append(f"expected 1999 samples for JoSIM grid 0..199.9 ps at 0.1 ps, got {len(rows)}")
+    parameters = raw_record.get("parameters", {})
+    try:
+        dt_ps = spice_number(str(parameters.get("DT", "0.1p"))) * 1e12
+        stop_ps = spice_number(str(parameters.get("STOP", "200p"))) * 1e12
+        expected_count = max(1, int(round(stop_ps / dt_ps)))
+        expected_last_ps = (expected_count - 1) * dt_ps
+    except (TypeError, ValueError):
+        dt_ps, stop_ps, expected_count, expected_last_ps = 0.1, 200.0, 1999, 199.9
+    if len(rows) != expected_count:
+        reasons.append(f"expected {expected_count} samples for JoSIM grid at dt={dt_ps:g} ps stop={stop_ps:g} ps, got {len(rows)}")
     times = [row[0] * 1.0e12 for row in rows] if rows else []
-    if times and (abs(times[0]) > 1.0e-9 or abs(times[-1] - 199.9) > 1.0e-6):
-        reasons.append(f"unexpected time grid endpoints {times[0]}..{times[-1]} ps")
+    if times and (abs(times[0]) > max(dt_ps * 1e-6, 1e-9) or abs(times[-1] - expected_last_ps) > max(dt_ps * 1e-6, 1e-6)):
+        reasons.append(f"unexpected time grid endpoints {times[0]}..{times[-1]} ps; expected 0..{expected_last_ps:g} ps")
     if any(right <= left for left, right in zip(times, times[1:])):
         reasons.append("time grid is not strictly increasing")
     expected_hash = raw_record.get("raw", {}).get("sha256")

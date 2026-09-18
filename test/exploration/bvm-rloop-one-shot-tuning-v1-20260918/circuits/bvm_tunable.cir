@@ -1,26 +1,28 @@
 * Parameterized BVM clone for bvm-rloop-one-shot-tuning-v1.
-* Topology is copied from the current canonical BVM source. The only
-* first-stage additions are optional parallel R-loop shunts R_JS1_SHUNT and
-* R_JS2_SHUNT. Values are rendered by scripts/run_candidate.py.
+* Topology is copied from the current canonical BVM source. Values are
+* rendered from USER_CASE.env by scripts/try_candidate.py. The registered
+* Stage-A perturbation was limited to optional parallel R-loop shunts, while
+* the remaining canonical values stay visible for later authorized rounds.
 
 .subckt BVM WL BL SE SL
 
 * === WL+BL merge at Node '2' ===
-R_BL    BL      1       20.0
-L_PBL   1       2       0.5P
-R_WL    WL      13      20.0
-L_PWL   13      2       0.5P
+R_BL    BL      1       {{RBL}}
+L_PBL   1       2       {{LPBL}}
+R_WL    WL      13      {{RWL}}
+L_PWL   13      2       {{LPWL}}
 
 * === S-loop ===
-B_JM1   2       7       jjmit area=1.2
-R_JM1   2       7       8
-L_M1    7       0       12.5P
+B_JM1   2       7       jjmit area={{JM1_AREA}}
+{{RJM1_LINE}}
+L_M1    7       0       {{LM1}}
 
-L_M2    2       3       24.5P
-B_JM2   3       4       jjmit area=1.4
+L_M2    2       3       {{LM2}}
+B_JM2   3       4       jjmit area={{JM2_AREA}}
+{{RJM2_LINE}}
 
-L_M3    4       8       8.5P
-L_PM    8       0       0.5P
+L_M3    4       8       {{LM3}}
+L_PM    8       0       {{LPM}}
 
 * === R-loop upper branch ===
 L_S1    4       5       {{LS1}}
@@ -28,8 +30,8 @@ B_JS1   5       6       jjmit area={{JS1_AREA}}
 {{R_JS1_SHUNT}}
 
 * === SE into N3 ===
-R_SE    SE      14      20.0
-L_PSE   14      6       0.5P
+R_SE    SE      14      {{RSE}}
+L_PSE   14      6       {{LPSE}}
 
 * === R-loop bridge network ===
 R_S     6       10      {{RS}}
@@ -46,4 +48,3 @@ R_SL    11      12      {{RSL}}
 L_SL    12      SL      {{LSL}}
 
 .ends BVM
-

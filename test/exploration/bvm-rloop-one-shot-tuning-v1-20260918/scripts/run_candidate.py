@@ -237,7 +237,23 @@ def probe_lines(mode: str, params: dict[str, Any]) -> list[str]:
 
 def render_bvm(params: dict[str, Any]) -> str:
     text = TUNABLE_TEMPLATE.read_text(encoding="utf-8")
+    rjm1 = str(params.get("RJM1", "8"))
+    rjm2 = str(params.get("RJM2", "OPEN"))
     replacements = {
+        "{{JM1_AREA}}": str(params.get("JM1_AREA", "1.2")),
+        "{{JM2_AREA}}": str(params.get("JM2_AREA", "1.4")),
+        "{{RJM1_LINE}}": "* RJM1 OPEN" if rjm1.upper() == "OPEN" else f"R_JM1 2 7 {rjm1}",
+        "{{RJM2_LINE}}": "* RJM2 OPEN" if rjm2.upper() == "OPEN" else f"R_JM2 3 4 {rjm2}",
+        "{{LM1}}": str(params.get("LM1", "12.5p")),
+        "{{LM2}}": str(params.get("LM2", "24.5p")),
+        "{{LM3}}": str(params.get("LM3", "8.5p")),
+        "{{LPM}}": str(params.get("LPM", "0.5p")),
+        "{{RBL}}": str(params.get("RBL", "20.0")),
+        "{{LPBL}}": str(params.get("LPBL", "0.5p")),
+        "{{RWL}}": str(params.get("RWL", "20.0")),
+        "{{LPWL}}": str(params.get("LPWL", "0.5p")),
+        "{{RSE}}": str(params.get("RSE", "20.0")),
+        "{{LPSE}}": str(params.get("LPSE", "0.5p")),
         "{{JS1_AREA}}": params["JS1_AREA"],
         "{{JS2_AREA}}": params["JS2_AREA"],
         "{{LS1}}": params["LS1"],
@@ -470,4 +486,3 @@ if __name__ == "__main__":
     except RuntimeError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         raise SystemExit(2)
-

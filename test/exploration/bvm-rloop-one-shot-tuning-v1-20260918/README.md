@@ -1,5 +1,19 @@
 # BVM R-loop one-shot readout tuning v1
 
+## Daily user workflow
+
+1. Edit [`USER_CASE.env`](USER_CASE.env).
+2. Preview: `./try.sh --dry-run`.
+3. Run: `./try.sh`.
+4. Open [`LATEST_REVIEW.html`](LATEST_REVIEW.html).
+
+`MASKS=quick` means N1/N2/N3; `MASKS=full` means N0/N1/N2/N3/N4. An explicit
+mask such as `MASKS=0111` or list such as `MASKS=0001,0111` is also supported.
+
+The old `run.sh`/`analyze.sh`/`plot.sh` path remains as the preserved Stage-A
+backend interface. It is not required for the normal manual workflow. This
+platform refactor itself performs no physical solve and creates no U case.
+
 This is an independent, exploratory, manually operated platform. It does not
 modify canonical BVM/QB sources or historical raw artifacts.
 
@@ -34,4 +48,3 @@ Scientific interpretation is not performed by this platform. Gate-S is left
 `REVIEW_REQUIRED` unless a later authorized scientific review changes that
 status. Gate-R labels are descriptive navigation labels only, not SFQ counts or
 a formal classifier.
-

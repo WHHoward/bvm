@@ -1,0 +1,960 @@
+{
+  "schema": "bvm-rloop-user-case-provenance-v1",
+  "case_id": "U101_b013_s1_rsl12_closed",
+  "parent": {
+    "head": "aced463d7fc5c0db10e9398db46c2181e177d3af",
+    "remote_bvm_master": "f4206e2d330e171964521c8884421695d07d8518",
+    "working_tree_dirty": true,
+    "status_porcelain": " M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/LATEST_REVIEW.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B013_high_current_low_rsl_crossover/logs/S1-R6-PASSIVE.stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B013_high_current_low_rsl_crossover/logs/S1-R6-PASSIVE.stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B013_high_current_low_rsl_crossover/logs/S2-R6-PASSIVE.stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B013_high_current_low_rsl_crossover/logs/S2-R6-PASSIVE.stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U099_b013_s1_rsl6_passive/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U100_b013_s2_rsl6_passive/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/cases/PASSIVE_N4_1111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/snapshot/sources/bq_parameterized_v1.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U099_b013_s1_rsl6_passive/stimulus_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/cases/PASSIVE_N4_1111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/snapshot/sources/bq_parameterized_v1.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U100_b013_s2_rsl6_passive/stimulus_snapshot.env\n"
+  },
+  "run_order": [
+    "CLOSED_N1_0001",
+    "CLOSED_N2_0011",
+    "CLOSED_N4_1111"
+  ],
+  "runs": {
+    "CLOSED_N1_0001": {
+      "run_id": "CLOSED_N1_0001",
+      "mode": "closed",
+      "mask": "0001",
+      "parameters": {
+        "NAME": "b013_s1_rsl12_closed",
+        "MODE": "closed",
+        "MASKS": [
+          "0001",
+          "0011",
+          "1111"
+        ],
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.74",
+        "JS2_AREA": "0.90",
+        "RSH_JS1": "12",
+        "RSH_JS2": "20",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "DT": "0.1p",
+        "STOP": "200p",
+        "IDLE_START": "0p",
+        "IDLE_END": "50p",
+        "RECOVERY_END": "130p",
+        "TAIL_START": "150p",
+        "WRITE0_START": "50p",
+        "WRITE0_END": "61p",
+        "WRITE0_WL_AMP": "-100u",
+        "WRITE0_BL_AMP": "-100u",
+        "WRITE0_SE_AMP": "0u",
+        "WRITE0_WL_RISE": "1p",
+        "WRITE0_WL_FALL": "1p",
+        "WRITE0_BL_RISE": "1p",
+        "WRITE0_BL_FALL": "1p",
+        "WRITE0_SE_RISE": "1p",
+        "WRITE0_SE_FALL": "1p",
+        "CONTROL_READ_START": "70p",
+        "CONTROL_READ_END": "81p",
+        "CONTROL_WL_AMP": "100u",
+        "CONTROL_BL_AMP": "0u",
+        "CONTROL_SE_AMP": "110u",
+        "CONTROL_WL_RISE": "1p",
+        "CONTROL_WL_FALL": "1p",
+        "CONTROL_BL_RISE": "1p",
+        "CONTROL_BL_FALL": "1p",
+        "CONTROL_SE_RISE": "1p",
+        "CONTROL_SE_FALL": "1p",
+        "WRITE1_START": "90p",
+        "WRITE1_END": "101p",
+        "WRITE1_WL_AMP": "100u",
+        "WRITE1_BL_AMP": "100u",
+        "WRITE1_SE_AMP": "0u",
+        "WRITE1_WL_RISE": "1p",
+        "WRITE1_WL_FALL": "1p",
+        "WRITE1_BL_RISE": "1p",
+        "WRITE1_BL_FALL": "1p",
+        "WRITE1_SE_RISE": "1p",
+        "WRITE1_SE_FALL": "1p",
+        "FINAL_READ_START": "110p",
+        "FINAL_READ_END": "121p",
+        "READ_WL_AMP": "100u",
+        "READ_BL_AMP": "0u",
+        "READ_SE_AMP": "110u",
+        "READ_WL_RISE": "1p",
+        "READ_WL_FALL": "1p",
+        "READ_BL_RISE": "1p",
+        "READ_BL_FALL": "1p",
+        "READ_SE_RISE": "1p",
+        "READ_SE_FALL": "1p",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "SWEEP_REUSE_EXISTING": "no",
+        "CASE_ID": "U101_b013_s1_rsl12_closed",
+        "windows": {
+          "idle_0_50": [
+            0.0,
+            50.0
+          ],
+          "write0_50_61": [
+            50.0,
+            60.99999999999999
+          ],
+          "settle0_61_70": [
+            60.99999999999999,
+            70.0
+          ],
+          "zero_read_control_70_81": [
+            70.0,
+            81.0
+          ],
+          "settle1_81_90": [
+            81.0,
+            90.0
+          ],
+          "write1_90_101": [
+            90.0,
+            101.0
+          ],
+          "settle_101_110": [
+            101.0,
+            110.0
+          ],
+          "final_read_110_121": [
+            110.0,
+            121.0
+          ],
+          "recovery_121_130": [
+            121.0,
+            130.0
+          ],
+          "tail_150_200": [
+            150.0,
+            200.0
+          ],
+          "whole_0_200": [
+            0.0,
+            200.0
+          ]
+        },
+        "time_ps": {
+          "IDLE_START": 0.0,
+          "IDLE_END": 50.0,
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "WRITE1_START": 90.0,
+          "WRITE1_END": 101.0,
+          "FINAL_READ_START": 110.0,
+          "FINAL_READ_END": 121.0,
+          "RECOVERY_END": 130.0,
+          "TAIL_START": 150.0,
+          "STOP": 200.0
+        },
+        "config_changes": [
+          {
+            "key": "JS2_AREA",
+            "from": "0.74",
+            "to": "0.90",
+            "section": "circuit"
+          },
+          {
+            "key": "RSH_JS1",
+            "from": "OPEN",
+            "to": "12",
+            "section": "circuit"
+          },
+          {
+            "key": "RSH_JS2",
+            "from": "OPEN",
+            "to": "20",
+            "section": "circuit"
+          },
+          {
+            "key": "CONTROL_SE_AMP",
+            "from": "100u",
+            "to": "110u",
+            "section": "stimulus"
+          },
+          {
+            "key": "READ_SE_AMP",
+            "from": "100u",
+            "to": "110u",
+            "section": "stimulus"
+          }
+        ]
+      },
+      "windows": {
+        "idle_0_50": [
+          0.0,
+          50.0
+        ],
+        "write0_50_61": [
+          50.0,
+          60.99999999999999
+        ],
+        "settle0_61_70": [
+          60.99999999999999,
+          70.0
+        ],
+        "zero_read_control_70_81": [
+          70.0,
+          81.0
+        ],
+        "settle1_81_90": [
+          81.0,
+          90.0
+        ],
+        "write1_90_101": [
+          90.0,
+          101.0
+        ],
+        "settle_101_110": [
+          101.0,
+          110.0
+        ],
+        "final_read_110_121": [
+          110.0,
+          121.0
+        ],
+        "recovery_121_130": [
+          121.0,
+          130.0
+        ],
+        "tail_150_200": [
+          150.0,
+          200.0
+        ],
+        "whole_0_200": [
+          0.0,
+          200.0
+        ]
+      },
+      "config_changes": [
+        {
+          "key": "JS2_AREA",
+          "from": "0.74",
+          "to": "0.90",
+          "section": "circuit"
+        },
+        {
+          "key": "RSH_JS1",
+          "from": "OPEN",
+          "to": "12",
+          "section": "circuit"
+        },
+        {
+          "key": "RSH_JS2",
+          "from": "OPEN",
+          "to": "20",
+          "section": "circuit"
+        },
+        {
+          "key": "CONTROL_SE_AMP",
+          "from": "100u",
+          "to": "110u",
+          "section": "stimulus"
+        },
+        {
+          "key": "READ_SE_AMP",
+          "from": "100u",
+          "to": "110u",
+          "section": "stimulus"
+        }
+      ],
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N1_0001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N1_0001/actual_deck.cir"
+      ],
+      "started_at": "2026-09-21T03:08:11+08:00",
+      "finished_at": "2026-09-21T03:08:11+08:00",
+      "runtime_seconds": 0.21922939299838617,
+      "execution_status": "RUN_PASS",
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N1_0001/actual_deck.cir",
+        "sha256": "19f0c893964fe573ccfb1aa8e73d02ad5cfd82aa7e55d7228545ddeeacd8ddeb"
+      },
+      "stimulus": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N1_0001/stimulus.inc",
+        "sha256": "ca737757da3cd2825438aa8a2a58273b6a7b53a9149358043c85548845d671b6"
+      },
+      "raw": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N1_0001/raw.csv",
+        "sha256": "2d641397c00ca95962228bcd0dbe100e7c206fd273968187317bbc112ae68cec",
+        "bytes": 7549969,
+        "headers": 282
+      },
+      "signal_manifest": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N1_0001/signal_manifest.csv",
+        "sha256": "8ff59acadca14abd38d7ae121cbf4c8d490a548d1fadbfc31556c9582ab30af3",
+        "requested": 282,
+        "present": 281,
+        "unsupported_or_not_emitted": 1
+      }
+    },
+    "CLOSED_N2_0011": {
+      "run_id": "CLOSED_N2_0011",
+      "mode": "closed",
+      "mask": "0011",
+      "parameters": {
+        "NAME": "b013_s1_rsl12_closed",
+        "MODE": "closed",
+        "MASKS": [
+          "0001",
+          "0011",
+          "1111"
+        ],
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.74",
+        "JS2_AREA": "0.90",
+        "RSH_JS1": "12",
+        "RSH_JS2": "20",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "DT": "0.1p",
+        "STOP": "200p",
+        "IDLE_START": "0p",
+        "IDLE_END": "50p",
+        "RECOVERY_END": "130p",
+        "TAIL_START": "150p",
+        "WRITE0_START": "50p",
+        "WRITE0_END": "61p",
+        "WRITE0_WL_AMP": "-100u",
+        "WRITE0_BL_AMP": "-100u",
+        "WRITE0_SE_AMP": "0u",
+        "WRITE0_WL_RISE": "1p",
+        "WRITE0_WL_FALL": "1p",
+        "WRITE0_BL_RISE": "1p",
+        "WRITE0_BL_FALL": "1p",
+        "WRITE0_SE_RISE": "1p",
+        "WRITE0_SE_FALL": "1p",
+        "CONTROL_READ_START": "70p",
+        "CONTROL_READ_END": "81p",
+        "CONTROL_WL_AMP": "100u",
+        "CONTROL_BL_AMP": "0u",
+        "CONTROL_SE_AMP": "110u",
+        "CONTROL_WL_RISE": "1p",
+        "CONTROL_WL_FALL": "1p",
+        "CONTROL_BL_RISE": "1p",
+        "CONTROL_BL_FALL": "1p",
+        "CONTROL_SE_RISE": "1p",
+        "CONTROL_SE_FALL": "1p",
+        "WRITE1_START": "90p",
+        "WRITE1_END": "101p",
+        "WRITE1_WL_AMP": "100u",
+        "WRITE1_BL_AMP": "100u",
+        "WRITE1_SE_AMP": "0u",
+        "WRITE1_WL_RISE": "1p",
+        "WRITE1_WL_FALL": "1p",
+        "WRITE1_BL_RISE": "1p",
+        "WRITE1_BL_FALL": "1p",
+        "WRITE1_SE_RISE": "1p",
+        "WRITE1_SE_FALL": "1p",
+        "FINAL_READ_START": "110p",
+        "FINAL_READ_END": "121p",
+        "READ_WL_AMP": "100u",
+        "READ_BL_AMP": "0u",
+        "READ_SE_AMP": "110u",
+        "READ_WL_RISE": "1p",
+        "READ_WL_FALL": "1p",
+        "READ_BL_RISE": "1p",
+        "READ_BL_FALL": "1p",
+        "READ_SE_RISE": "1p",
+        "READ_SE_FALL": "1p",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "SWEEP_REUSE_EXISTING": "no",
+        "CASE_ID": "U101_b013_s1_rsl12_closed",
+        "windows": {
+          "idle_0_50": [
+            0.0,
+            50.0
+          ],
+          "write0_50_61": [
+            50.0,
+            60.99999999999999
+          ],
+          "settle0_61_70": [
+            60.99999999999999,
+            70.0
+          ],
+          "zero_read_control_70_81": [
+            70.0,
+            81.0
+          ],
+          "settle1_81_90": [
+            81.0,
+            90.0
+          ],
+          "write1_90_101": [
+            90.0,
+            101.0
+          ],
+          "settle_101_110": [
+            101.0,
+            110.0
+          ],
+          "final_read_110_121": [
+            110.0,
+            121.0
+          ],
+          "recovery_121_130": [
+            121.0,
+            130.0
+          ],
+          "tail_150_200": [
+            150.0,
+            200.0
+          ],
+          "whole_0_200": [
+            0.0,
+            200.0
+          ]
+        },
+        "time_ps": {
+          "IDLE_START": 0.0,
+          "IDLE_END": 50.0,
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "WRITE1_START": 90.0,
+          "WRITE1_END": 101.0,
+          "FINAL_READ_START": 110.0,
+          "FINAL_READ_END": 121.0,
+          "RECOVERY_END": 130.0,
+          "TAIL_START": 150.0,
+          "STOP": 200.0
+        },
+        "config_changes": [
+          {
+            "key": "JS2_AREA",
+            "from": "0.74",
+            "to": "0.90",
+            "section": "circuit"
+          },
+          {
+            "key": "RSH_JS1",
+            "from": "OPEN",
+            "to": "12",
+            "section": "circuit"
+          },
+          {
+            "key": "RSH_JS2",
+            "from": "OPEN",
+            "to": "20",
+            "section": "circuit"
+          },
+          {
+            "key": "CONTROL_SE_AMP",
+            "from": "100u",
+            "to": "110u",
+            "section": "stimulus"
+          },
+          {
+            "key": "READ_SE_AMP",
+            "from": "100u",
+            "to": "110u",
+            "section": "stimulus"
+          }
+        ]
+      },
+      "windows": {
+        "idle_0_50": [
+          0.0,
+          50.0
+        ],
+        "write0_50_61": [
+          50.0,
+          60.99999999999999
+        ],
+        "settle0_61_70": [
+          60.99999999999999,
+          70.0
+        ],
+        "zero_read_control_70_81": [
+          70.0,
+          81.0
+        ],
+        "settle1_81_90": [
+          81.0,
+          90.0
+        ],
+        "write1_90_101": [
+          90.0,
+          101.0
+        ],
+        "settle_101_110": [
+          101.0,
+          110.0
+        ],
+        "final_read_110_121": [
+          110.0,
+          121.0
+        ],
+        "recovery_121_130": [
+          121.0,
+          130.0
+        ],
+        "tail_150_200": [
+          150.0,
+          200.0
+        ],
+        "whole_0_200": [
+          0.0,
+          200.0
+        ]
+      },
+      "config_changes": [
+        {
+          "key": "JS2_AREA",
+          "from": "0.74",
+          "to": "0.90",
+          "section": "circuit"
+        },
+        {
+          "key": "RSH_JS1",
+          "from": "OPEN",
+          "to": "12",
+          "section": "circuit"
+        },
+        {
+          "key": "RSH_JS2",
+          "from": "OPEN",
+          "to": "20",
+          "section": "circuit"
+        },
+        {
+          "key": "CONTROL_SE_AMP",
+          "from": "100u",
+          "to": "110u",
+          "section": "stimulus"
+        },
+        {
+          "key": "READ_SE_AMP",
+          "from": "100u",
+          "to": "110u",
+          "section": "stimulus"
+        }
+      ],
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N2_0011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N2_0011/actual_deck.cir"
+      ],
+      "started_at": "2026-09-21T03:08:11+08:00",
+      "finished_at": "2026-09-21T03:08:12+08:00",
+      "runtime_seconds": 0.20883539699934772,
+      "execution_status": "RUN_PASS",
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N2_0011/actual_deck.cir",
+        "sha256": "19f0c893964fe573ccfb1aa8e73d02ad5cfd82aa7e55d7228545ddeeacd8ddeb"
+      },
+      "stimulus": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N2_0011/stimulus.inc",
+        "sha256": "eab52bfdc34a0cddbddd8911de7251f54c291e0398095ef4d87d7ffe1ce2c223"
+      },
+      "raw": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N2_0011/raw.csv",
+        "sha256": "909f0342ec02ac4393247bd28c77e6447e0bae2c4a8522beb13544fc74692be7",
+        "bytes": 7556487,
+        "headers": 282
+      },
+      "signal_manifest": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N2_0011/signal_manifest.csv",
+        "sha256": "8ff59acadca14abd38d7ae121cbf4c8d490a548d1fadbfc31556c9582ab30af3",
+        "requested": 282,
+        "present": 281,
+        "unsupported_or_not_emitted": 1
+      }
+    },
+    "CLOSED_N4_1111": {
+      "run_id": "CLOSED_N4_1111",
+      "mode": "closed",
+      "mask": "1111",
+      "parameters": {
+        "NAME": "b013_s1_rsl12_closed",
+        "MODE": "closed",
+        "MASKS": [
+          "0001",
+          "0011",
+          "1111"
+        ],
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.74",
+        "JS2_AREA": "0.90",
+        "RSH_JS1": "12",
+        "RSH_JS2": "20",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "DT": "0.1p",
+        "STOP": "200p",
+        "IDLE_START": "0p",
+        "IDLE_END": "50p",
+        "RECOVERY_END": "130p",
+        "TAIL_START": "150p",
+        "WRITE0_START": "50p",
+        "WRITE0_END": "61p",
+        "WRITE0_WL_AMP": "-100u",
+        "WRITE0_BL_AMP": "-100u",
+        "WRITE0_SE_AMP": "0u",
+        "WRITE0_WL_RISE": "1p",
+        "WRITE0_WL_FALL": "1p",
+        "WRITE0_BL_RISE": "1p",
+        "WRITE0_BL_FALL": "1p",
+        "WRITE0_SE_RISE": "1p",
+        "WRITE0_SE_FALL": "1p",
+        "CONTROL_READ_START": "70p",
+        "CONTROL_READ_END": "81p",
+        "CONTROL_WL_AMP": "100u",
+        "CONTROL_BL_AMP": "0u",
+        "CONTROL_SE_AMP": "110u",
+        "CONTROL_WL_RISE": "1p",
+        "CONTROL_WL_FALL": "1p",
+        "CONTROL_BL_RISE": "1p",
+        "CONTROL_BL_FALL": "1p",
+        "CONTROL_SE_RISE": "1p",
+        "CONTROL_SE_FALL": "1p",
+        "WRITE1_START": "90p",
+        "WRITE1_END": "101p",
+        "WRITE1_WL_AMP": "100u",
+        "WRITE1_BL_AMP": "100u",
+        "WRITE1_SE_AMP": "0u",
+        "WRITE1_WL_RISE": "1p",
+        "WRITE1_WL_FALL": "1p",
+        "WRITE1_BL_RISE": "1p",
+        "WRITE1_BL_FALL": "1p",
+        "WRITE1_SE_RISE": "1p",
+        "WRITE1_SE_FALL": "1p",
+        "FINAL_READ_START": "110p",
+        "FINAL_READ_END": "121p",
+        "READ_WL_AMP": "100u",
+        "READ_BL_AMP": "0u",
+        "READ_SE_AMP": "110u",
+        "READ_WL_RISE": "1p",
+        "READ_WL_FALL": "1p",
+        "READ_BL_RISE": "1p",
+        "READ_BL_FALL": "1p",
+        "READ_SE_RISE": "1p",
+        "READ_SE_FALL": "1p",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "SWEEP_REUSE_EXISTING": "no",
+        "CASE_ID": "U101_b013_s1_rsl12_closed",
+        "windows": {
+          "idle_0_50": [
+            0.0,
+            50.0
+          ],
+          "write0_50_61": [
+            50.0,
+            60.99999999999999
+          ],
+          "settle0_61_70": [
+            60.99999999999999,
+            70.0
+          ],
+          "zero_read_control_70_81": [
+            70.0,
+            81.0
+          ],
+          "settle1_81_90": [
+            81.0,
+            90.0
+          ],
+          "write1_90_101": [
+            90.0,
+            101.0
+          ],
+          "settle_101_110": [
+            101.0,
+            110.0
+          ],
+          "final_read_110_121": [
+            110.0,
+            121.0
+          ],
+          "recovery_121_130": [
+            121.0,
+            130.0
+          ],
+          "tail_150_200": [
+            150.0,
+            200.0
+          ],
+          "whole_0_200": [
+            0.0,
+            200.0
+          ]
+        },
+        "time_ps": {
+          "IDLE_START": 0.0,
+          "IDLE_END": 50.0,
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "WRITE1_START": 90.0,
+          "WRITE1_END": 101.0,
+          "FINAL_READ_START": 110.0,
+          "FINAL_READ_END": 121.0,
+          "RECOVERY_END": 130.0,
+          "TAIL_START": 150.0,
+          "STOP": 200.0
+        },
+        "config_changes": [
+          {
+            "key": "JS2_AREA",
+            "from": "0.74",
+            "to": "0.90",
+            "section": "circuit"
+          },
+          {
+            "key": "RSH_JS1",
+            "from": "OPEN",
+            "to": "12",
+            "section": "circuit"
+          },
+          {
+            "key": "RSH_JS2",
+            "from": "OPEN",
+            "to": "20",
+            "section": "circuit"
+          },
+          {
+            "key": "CONTROL_SE_AMP",
+            "from": "100u",
+            "to": "110u",
+            "section": "stimulus"
+          },
+          {
+            "key": "READ_SE_AMP",
+            "from": "100u",
+            "to": "110u",
+            "section": "stimulus"
+          }
+        ]
+      },
+      "windows": {
+        "idle_0_50": [
+          0.0,
+          50.0
+        ],
+        "write0_50_61": [
+          50.0,
+          60.99999999999999
+        ],
+        "settle0_61_70": [
+          60.99999999999999,
+          70.0
+        ],
+        "zero_read_control_70_81": [
+          70.0,
+          81.0
+        ],
+        "settle1_81_90": [
+          81.0,
+          90.0
+        ],
+        "write1_90_101": [
+          90.0,
+          101.0
+        ],
+        "settle_101_110": [
+          101.0,
+          110.0
+        ],
+        "final_read_110_121": [
+          110.0,
+          121.0
+        ],
+        "recovery_121_130": [
+          121.0,
+          130.0
+        ],
+        "tail_150_200": [
+          150.0,
+          200.0
+        ],
+        "whole_0_200": [
+          0.0,
+          200.0
+        ]
+      },
+      "config_changes": [
+        {
+          "key": "JS2_AREA",
+          "from": "0.74",
+          "to": "0.90",
+          "section": "circuit"
+        },
+        {
+          "key": "RSH_JS1",
+          "from": "OPEN",
+          "to": "12",
+          "section": "circuit"
+        },
+        {
+          "key": "RSH_JS2",
+          "from": "OPEN",
+          "to": "20",
+          "section": "circuit"
+        },
+        {
+          "key": "CONTROL_SE_AMP",
+          "from": "100u",
+          "to": "110u",
+          "section": "stimulus"
+        },
+        {
+          "key": "READ_SE_AMP",
+          "from": "100u",
+          "to": "110u",
+          "section": "stimulus"
+        }
+      ],
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N4_1111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N4_1111/actual_deck.cir"
+      ],
+      "started_at": "2026-09-21T03:08:12+08:00",
+      "finished_at": "2026-09-21T03:08:12+08:00",
+      "runtime_seconds": 0.21057488400037983,
+      "execution_status": "RUN_PASS",
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N4_1111/actual_deck.cir",
+        "sha256": "19f0c893964fe573ccfb1aa8e73d02ad5cfd82aa7e55d7228545ddeeacd8ddeb"
+      },
+      "stimulus": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N4_1111/stimulus.inc",
+        "sha256": "d5299f5e16b19e91b36479909c5819b899c5e39932f999f7183fd6b338e97fe8"
+      },
+      "raw": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N4_1111/raw.csv",
+        "sha256": "afc12beb507031c1f4294f6d8e44a048a7627453d4ee5f91f37b89b556e9ea4d",
+        "bytes": 7559380,
+        "headers": 282
+      },
+      "signal_manifest": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U101_b013_s1_rsl12_closed/cases/CLOSED_N4_1111/signal_manifest.csv",
+        "sha256": "8ff59acadca14abd38d7ae121cbf4c8d490a548d1fadbfc31556c9582ab30af3",
+        "requested": 282,
+        "present": 281,
+        "unsupported_or_not_emitted": 1
+      }
+    }
+  },
+  "config_changes": [
+    {
+      "key": "JS2_AREA",
+      "from": "0.74",
+      "to": "0.90",
+      "section": "circuit"
+    },
+    {
+      "key": "RSH_JS1",
+      "from": "OPEN",
+      "to": "12",
+      "section": "circuit"
+    },
+    {
+      "key": "RSH_JS2",
+      "from": "OPEN",
+      "to": "20",
+      "section": "circuit"
+    },
+    {
+      "key": "CONTROL_SE_AMP",
+      "from": "100u",
+      "to": "110u",
+      "section": "stimulus"
+    },
+    {
+      "key": "READ_SE_AMP",
+      "from": "100u",
+      "to": "110u",
+      "section": "stimulus"
+    }
+  ],
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

@@ -16,6 +16,21 @@ must be inspected before `./try.sh`; existing points are reused only after
 deck/config/stimulus/source/raw-QA/hash verification. Sweep output is stored
 under `batches/` and does not change the meaning of `LATEST_REVIEW.html`.
 
+Evidence packaging defaults to DELTA mode:
+
+```bash
+python3 scripts/package.py --mode delta --tag B004
+```
+
+Use FULL only for an explicit checkpoint:
+
+```bash
+python3 scripts/package.py --mode full --tag checkpoint_name
+```
+
+Delta base selection is checkpoint-manifest based and hard-stops when the base
+package identity cannot be verified. Use `--dry-run` before creating an archive.
+
 The old `run.sh`/`analyze.sh`/`plot.sh` path remains as the preserved Stage-A
 backend interface. It is not required for the normal manual workflow. This
 platform refactor itself performs no physical solve and creates no U case.

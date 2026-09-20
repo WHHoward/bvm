@@ -10,6 +10,12 @@
 `MASKS=quick` means N1/N2/N3; `MASKS=full` means N0/N1/N2/N3/N4. An explicit
 mask such as `MASKS=0111` or list such as `MASKS=0001,0111` is also supported.
 
+For the optional one-dimensional sweep, set `SWEEP_ENABLED=yes`, choose one
+`SWEEP_KEY`, and provide comma-separated `SWEEP_VALUES`. `./try.sh --dry-run`
+must be inspected before `./try.sh`; existing points are reused only after
+deck/config/stimulus/source/raw-QA/hash verification. Sweep output is stored
+under `batches/` and does not change the meaning of `LATEST_REVIEW.html`.
+
 The old `run.sh`/`analyze.sh`/`plot.sh` path remains as the preserved Stage-A
 backend interface. It is not required for the normal manual workflow. This
 platform refactor itself performs no physical solve and creates no U case.

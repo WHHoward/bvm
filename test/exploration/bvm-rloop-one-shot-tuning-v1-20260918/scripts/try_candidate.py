@@ -328,6 +328,9 @@ def main() -> int:
         key, value = override.split("=", 1)
         values[key] = value
     reference = load_env(REFERENCE_CONFIG)
+    if values.get("SWEEP_ENABLED", "no").strip().lower() == "yes":
+        from sweep_candidate import execute_sweep
+        return execute_sweep(values, reference, args)
     params = validate(values, reference)
     changes = change_rows(values, reference)
     params["config_changes"] = changes
@@ -385,4 +388,3 @@ if __name__ == "__main__":
     except RuntimeError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         raise SystemExit(2)
-

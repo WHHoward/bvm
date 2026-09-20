@@ -103,6 +103,23 @@ def main() -> int:
             "s_loop": [f"{quantity}(B_JM{junction}|XBVM{bvm})" for junction in (1, 2) for quantity in ("P", "V", "I")] + [f"{quantity}({branch}|XBVM{bvm})" for branch in ("L_M1", "L_M2", "L_M3", "L_PM") for quantity in ("I", "V")],
             "r_loop": [f"{quantity}(B_JS{junction}|XBVM{bvm})" for junction in (1, 2) for quantity in ("P", "V", "I")] + [f"{quantity}({branch}|XBVM{bvm})" for branch in ("L_S1", "L_S2", "L_S3", "R_S") for quantity in ("I", "V")],
             "output": ["V(COMMON_SL)", "I(B_JSL8)", "V(B_JSL8)", f"I(L_SL|XBVM{bvm})", f"V(L_SL|XBVM{bvm})"],
+            "qb_boundary": ["V(COMMON_SL)", "I(B_JSL8)", "V(B_JSL8)", "V(QBIN)", "V(QBOUT)"],
+            "qb_state": [
+                "I(LIN|XBQ1)", "V(LIN|XBQ1)", "I(L1|XBQ1)", "V(L1|XBQ1)",
+                "I(L2|XBQ1)", "V(L2|XBQ1)", "I(L3|XBQ1)", "V(L3|XBQ1)",
+                "P(BJS|XBQ1)", "V(BJS|XBQ1)", "I(BJS|XBQ1)",
+                "P(BJ1|XBQ1)", "V(BJ1|XBQ1)", "I(BJ1|XBQ1)",
+                "P(BJ2|XBQ1)", "V(BJ2|XBQ1)", "I(BJ2|XBQ1)",
+            ],
+            "jtl_1_3": [
+                f"{quantity}(B0{bit}|XJTL1_{stage})" for stage in (1, 2, 3)
+                for bit in (1, 2) for quantity in ("P", "V", "I")
+            ] + [f"V(JTL{stage}_OUT)" for stage in (1, 2, 3)],
+            "jtl_4_6": [
+                f"{quantity}(B0{bit}|XJTL1_{stage})" for stage in (4, 5, 6)
+                for bit in (1, 2) for quantity in ("P", "V", "I")
+            ] + [f"V(JTL{stage}_OUT)" for stage in (4, 5, 6)],
+            "terminal_output": ["V(JTL1_OUT)", "V(JTL2_OUT)", "V(JTL3_OUT)", "V(JTL4_OUT)", "V(JTL5_OUT)", "V(JTL6_OUT)", "I(R_TERM)", "V(R_TERM)"],
         }
         run_plot_links[run["run_id"]] = []
         for prefix, requested in selections.items():
@@ -114,7 +131,7 @@ def main() -> int:
     if first_raw is None or first_headers is None or first_rows is None:
         raise RuntimeError("no raw run found")
     stimulus_svg = svg_panel(first_headers, first_rows, ["I(I_WL1)", "I(I_BL1)", "I(I_SE1)"], windows, "Actual stimulus source branches — representative raw run")
-    overview_signals = ["I(I_WL1)", "I(I_BL1)", "I(I_SE1)", "V(B_JS1|XBVM1)", "V(B_JS2|XBVM1)", "I(L_S3|XBVM1)", "V(L_S3|XBVM1)", "I(L_SL|XBVM1)", "V(L_SL|XBVM1)", "V(COMMON_SL)", "I(B_JSL8)"]
+    overview_signals = ["I(I_WL1)", "I(I_BL1)", "I(I_SE1)", "V(B_JS1|XBVM1)", "V(B_JS2|XBVM1)", "I(L_S3|XBVM1)", "V(L_S3|XBVM1)", "I(L_SL|XBVM1)", "V(L_SL|XBVM1)", "V(COMMON_SL)", "I(B_JSL8)", "V(QBIN)", "V(QBOUT)", "V(JTL6_OUT)", "I(R_TERM)", "V(R_TERM)"]
     overview_svg = svg_panel(first_headers, first_rows, [signal for signal in overview_signals if signal in first_headers], windows, "Stimulus + response overview — representative raw run", panel_height=95)
     review = plot_root / "review.html"
     params = manifest["parameters"]
@@ -129,9 +146,10 @@ def main() -> int:
         return " · ".join(link(REPO / path, base, Path(path).stem) for path in run_plot_links[run_id] if f"_{prefix}.html" in path) or "—"
     body.append("<section><h2>Page 3 — S-loop</h2><p>JM1/JM2 P/V/I and LM1/LM2/LM3/LPM I/V grouped plots:</p><ul>" + "".join(f"<li>{html.escape(run['run_id'])}: {grouped_links(run['run_id'], 's_loop')}</li>" for run in metrics["runs"]) + "</ul><p>Gate-S: <b>REVIEW_REQUIRED</b>; no fixed percentage threshold.</p></section>")
     body.append("<section><h2>Page 4 — R-loop</h2><p>JS1/JS2 P/V/I and LS1/LS2/LS3/RS I/V grouped plots:</p><ul>" + "".join(f"<li>{html.escape(run['run_id'])}: {grouped_links(run['run_id'], 'r_loop')}</li>" for run in metrics["runs"]) + "</ul><p>Gate-R: <b>AMBIGUOUS</b>; navigation labels are not formal SFQ counts.</p></section>")
-    body.append("<section><h2>Page 5 — output</h2><ul>" + "".join(f"<li>{html.escape(run['run_id'])}: {grouped_links(run['run_id'], 'output')}</li>" for run in metrics["runs"]) + "</ul><p>Output includes COMMON_SL, JSL8, LSL and actual timing windows.</p></section>")
-    body.append("<section><h2>Page 6 — numeric state summary</h2><p>Dynamic windows: " + ", ".join(f"{name}=[{bounds[0]:g},{bounds[1]:g}) ps" for name, bounds in windows.items()) + f".</p><p>{link(case_root / 'REVIEW_SUMMARY.md', base, 'REVIEW_SUMMARY.md')} · {link(case_root / 'analysis' / 'case_metrics.json', base, 'case_metrics.json')} · {link(case_root / 'analysis' / 'per_signal_window_metrics.csv', base, 'per_signal_window_metrics.csv')}</p></section>")
-    body.append("<section><h2>Page 7 — one-shot summary</h2><table><tr><th>run</th><th>BVM</th><th>JS1 read turns</th><th>JS1 p2p</th><th>JS2 read turns</th><th>JS2 p2p</th><th>first activity absolute ps</th><th>relative to read start ps</th></tr>" + "".join(f"<tr><td>{html.escape(run['run_id'])}</td><td>BVM{bvm}</td><td>{q(run['r_loop'][str(bvm)]['B_JS1'].get('net_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS1'].get('p2p_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS2'].get('net_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS2'].get('p2p_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS1'].get('activity', {}).get('first_activity_ps'))}</td><td>{q((run['r_loop'][str(bvm)]['B_JS1'].get('activity', {}).get('first_activity_ps') or 0) - windows['final_read_110_121'][0] if run['r_loop'][str(bvm)]['B_JS1'].get('activity', {}).get('first_activity_ps') is not None else None)}</td></tr>" for run in metrics["runs"] for bvm in (run["active_bvms"] or [1])) + "</table></section>")
+    body.append("<section><h2>Page 5 — shared boundary and QB</h2><ul>" + "".join(f"<li>{html.escape(run['run_id'])}: boundary {grouped_links(run['run_id'], 'qb_boundary')} · internal {grouped_links(run['run_id'], 'qb_state')}</li>" for run in metrics["runs"]) + "</ul><p>QB boundary plots include COMMON_SL/JSL8, QBIN and QBOUT; internal plots include LIN/L1/L2/L3 and BJS/BJ1/BJ2 P/V/I. All traces are descriptive raw evidence.</p></section>")
+    body.append("<section><h2>Page 6 — JTL chain and terminal output</h2><ul>" + "".join(f"<li>{html.escape(run['run_id'])}: JTL1–3 {grouped_links(run['run_id'], 'jtl_1_3')} · JTL4–6 {grouped_links(run['run_id'], 'jtl_4_6')} · terminal {grouped_links(run['run_id'], 'terminal_output')}</li>" for run in metrics["runs"]) + "</ul><p>All six JTL stages and R_TERM are shown from the raw columns; plots do not certify transport or SFQ events.</p></section>")
+    body.append("<section><h2>Page 7 — numeric state summary</h2><p>Dynamic windows: " + ", ".join(f"{name}=[{bounds[0]:g},{bounds[1]:g}) ps" for name, bounds in windows.items()) + f".</p><p>{link(case_root / 'REVIEW_SUMMARY.md', base, 'REVIEW_SUMMARY.md')} · {link(case_root / 'analysis' / 'case_metrics.json', base, 'case_metrics.json')} · {link(case_root / 'analysis' / 'per_signal_window_metrics.csv', base, 'per_signal_window_metrics.csv')}</p></section>")
+    body.append("<section><h2>Page 8 — one-shot summary</h2><table><tr><th>run</th><th>BVM</th><th>JS1 read turns</th><th>JS1 p2p</th><th>JS2 read turns</th><th>JS2 p2p</th><th>first activity absolute ps</th><th>relative to read start ps</th></tr>" + "".join(f"<tr><td>{html.escape(run['run_id'])}</td><td>BVM{bvm}</td><td>{q(run['r_loop'][str(bvm)]['B_JS1'].get('net_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS1'].get('p2p_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS2'].get('net_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS2'].get('p2p_turns_110_121'))}</td><td>{q(run['r_loop'][str(bvm)]['B_JS1'].get('activity', {}).get('first_activity_ps'))}</td><td>{q((run['r_loop'][str(bvm)]['B_JS1'].get('activity', {}).get('first_activity_ps') or 0) - windows['final_read_110_121'][0] if run['r_loop'][str(bvm)]['B_JS1'].get('activity', {}).get('first_activity_ps') is not None else None)}</td></tr>" for run in metrics["runs"] for bvm in (run["active_bvms"] or [1])) + "</table></section>")
     body.append("<h2>Raw evidence</h2><ul>" + "".join(f"<li>{link(case_root / 'cases' / run['run_id'] / 'raw.csv', base, run['run_id'] + '/raw.csv')}</li>" for run in metrics["runs"]) + "</ul><small>Phase P(...) is raw radians; turns are navigation only. No scientific interpretation performed.</small></body></html>")
     review.parent.mkdir(parents=True, exist_ok=True)
     review.write_text("\n".join(body), encoding="utf-8")
@@ -144,4 +162,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

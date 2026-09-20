@@ -23,3 +23,9 @@ Phase plots show raw radians and `rad/(2*pi)` navigation only; they are not form
 
 - [review.html](A003/review.html)
 - [REVIEW_SUMMARY.md](../runs/A003/REVIEW_SUMMARY.md)
+
+## CLOSED candidate QB/output comparison
+
+- [QB/output comparison](CLOSED_CANDIDATE_QB_OUTPUT_COMPARISON.html)
+- [U038 performance review](U038_closed_perf_14_20_full/review.html)
+- [U039 conservative review](U039_closed_cons_12_20_full/review.html)

@@ -172,10 +172,17 @@ def strict_existing_match(case_root: Path, params: dict[str, Any]) -> tuple[bool
     return not reasons, reasons, manifest
 
 
-def find_existing(params: dict[str, Any]) -> tuple[Path | None, list[str]]:
+def present_at_commit(case_root: Path, commit: str) -> bool:
+    rel = case_root.resolve().relative_to(REPO.resolve()).as_posix()
+    return subprocess.run(["git", "cat-file", "-e", f"{commit}:{rel}/case_manifest.json"], cwd=REPO, capture_output=True, check=False).returncode == 0
+
+
+def find_existing(params: dict[str, Any], base_commit: str) -> tuple[Path | None, list[str]]:
     candidates = sorted((SERIES / "runs").glob("U*_*"))
     rejected = []
     for case in candidates:
+        if not present_at_commit(case, base_commit):
+            continue
         matched, reasons, _ = strict_existing_match(case, params)
         if matched:
             return case, []
@@ -189,6 +196,7 @@ def case_record(item: dict[str, Any], config_path: Path, case_root: Path, source
     rows = {row["run_id"]: row for row in raw_qa.get("rows", [])}
     return {
         "group": item["group"], "variant": item["variant"], "name": item["name"], "case_id": case_root.name,
+        "case_path": str(case_root.relative_to(SERIES)),
         "source_type": source_type, "config_path": str(config_path.relative_to(SERIES)),
         "runs": [{"run_id": mask, "raw_path": str((case_root / "cases" / mask / "raw.csv").relative_to(SERIES)), "raw_sha256": rows.get(mask, {}).get("sha256"), "raw_qa_status": rows.get(mask, {}).get("status")} for mask in MASKS],
         "physical_solve_count": 0 if source_type == "REUSED_EXISTING" else len(MASKS),
@@ -201,25 +209,35 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     plan = load_json(PLAN)
+    base_commit = plan["preflight_commit"]
     variants = flatten_variants(plan)
     config_paths = prepare_configs(variants)
     planned = []
     for item, config_path in zip(variants, config_paths):
         params = expected_params(config_path)
-        existing, rejected = find_existing(params)
+        existing, rejected = find_existing(params, base_commit)
         named = sorted((SERIES / "runs").glob(f"U*_{item['name']}"))
-        if named and existing is None:
+        completed = None
+        for candidate in named:
+            matched, _, _ = strict_existing_match(candidate, params)
+            if matched and not present_at_commit(candidate, base_commit):
+                completed = candidate
+                break
+        if named and existing is None and completed is None:
             raise RuntimeError(f"existing case name has no strict match: {named[0]}; rejected={rejected[:5]}")
-        planned.append({"item": item, "config_path": config_path, "params": params, "existing": existing, "rejected": rejected})
+        planned.append({"item": item, "config_path": config_path, "params": params, "existing": existing, "completed": completed, "rejected": rejected})
     if args.dry_run:
         for entry in planned:
-            print(json.dumps({"variant": entry["item"]["variant"], "name": entry["item"]["name"], "reuse": entry["existing"].name if entry["existing"] else None, "new_physical_solve_count": 0 if entry["existing"] else 2}, ensure_ascii=False))
+            print(json.dumps({"variant": entry["item"]["variant"], "name": entry["item"]["name"], "reuse": entry["existing"].name if entry["existing"] else None, "already_completed": entry["completed"].name if entry["completed"] else None, "new_physical_solve_count": 0 if entry["existing"] or entry["completed"] else 2}, ensure_ascii=False))
         return 0
     records = []
     for entry in planned:
-        item, config_path, existing = entry["item"], entry["config_path"], entry["existing"]
+        item, config_path, existing, completed = entry["item"], entry["config_path"], entry["existing"], entry["completed"]
         if existing:
             records.append(case_record(item, config_path, existing, "REUSED_EXISTING"))
+            continue
+        if completed:
+            records.append(case_record(item, config_path, completed, "NEW_PHYSICAL"))
             continue
         completed = subprocess.run([sys.executable, str(SERIES / "scripts" / "try_candidate.py"), "--config", str(config_path)], cwd=REPO, text=True, capture_output=True, check=False)
         (BATCH / "logs").mkdir(parents=True, exist_ok=True)

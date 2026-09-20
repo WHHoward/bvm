@@ -31,6 +31,18 @@ python3 scripts/package.py --mode full --tag checkpoint_name
 Delta base selection is checkpoint-manifest based and hard-stops when the base
 package identity cannot be verified. Use `--dry-run` before creating an archive.
 
+After a completed experiment, the resumable submission workflow is:
+
+```bash
+./submit.sh B005 --dry-run
+./submit.sh B005 --no-push
+./submit.sh B005
+```
+
+`submit.sh` never runs `try.sh` or JoSIM. It commits experiment evidence first,
+creates a delta package, registers its checkpoint, commits package metadata, and
+pushes only after all local steps pass.
+
 The old `run.sh`/`analyze.sh`/`plot.sh` path remains as the preserved Stage-A
 backend interface. It is not required for the normal manual workflow. This
 platform refactor itself performs no physical solve and creates no U case.

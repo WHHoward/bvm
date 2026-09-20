@@ -125,6 +125,15 @@ def verify_existing(case_root: Path, params: dict[str, Any], value: str) -> dict
             if key in snapshot_values and key in expected_params and not equal_value(snapshot_values[key], expected_params[key]):
                 result["reasons"].append(f"config snapshot mismatch: {key}")
     result.update({"raw_path": platform.repo_rel(raw_path), "raw_sha256": actual_hash, "run_id": metadata.get("run_id"), "grid_status": qa.get("grid_status") if qa else None})
+    if result["grid_status"] is None:
+        try:
+            with raw_path.open("r", encoding="utf-8", newline="") as stream:
+                reader=csv.reader(stream); next(reader); stored_times=[float(row[0])*1e12 for row in reader]
+            nominal_dt=platform.parse_number(str(metadata.get("parameters", {}).get("DT", "0.1p")), "DT")*1e12
+            irregular=any(abs(right-left-nominal_dt)>max(nominal_dt*1e-6,1e-9) for left,right in zip(stored_times,stored_times[1:]))
+            result["grid_status"]="IRREGULAR_STORED_GRID" if irregular else "NOMINAL_STORED_GRID"
+        except Exception:  # noqa: BLE001
+            result["grid_status"]="UNKNOWN_STORED_GRID"
     if not result["reasons"]:
         result["status"] = "REUSE"
         result["source_type"] = "REUSED_EXISTING"
@@ -199,7 +208,8 @@ def render_svg_chart(rows: list[dict[str, Any]], x_key: str, y_keys: list[tuple[
 
 
 def load_point_metrics(point: dict[str, Any], sweep: dict[str, Any]) -> dict[str, Any]:
-    case_root = REPO / point["case_path"]
+    case_path = Path(point["case_path"])
+    case_root = case_path if case_path.is_absolute() else (REPO / case_path if case_path.parts and case_path.parts[0] == "test" else SERIES / "runs" / case_path)
     run_dir = case_root / "cases" / "PASSIVE_N4_1111"
     raw = run_dir / "raw.csv"
     with raw.open("r", encoding="utf-8", newline="") as stream:
@@ -245,7 +255,7 @@ def load_point_metrics(point: dict[str, Any], sweep: dict[str, Any]) -> dict[str
             pass
     for name in ("write0_50_61","zero_read_control_70_81","write1_90_101","settle_101_110","final_read_110_121","recovery_121_130","tail_150_200"):
         start,end=windows[name]; state[name]={"JM1":phase_range("B_JM1|XBVM4",start,end)["net_turns"],"JM2":phase_range("B_JM2|XBVM4",start,end)["net_turns"]}
-    return {"JS1_AREA":params[sweep["key"]],"source_type":point["source_type"],"source_case":point.get("source_case",point.get("case_path")),"physical_solve_new":point.get("physical_solve_new",False),"raw_sha256":point["raw_sha256"],"raw_qa_status":point["raw_qa_status"],"grid_status":point.get("grid_status"),"JS1_read_net":js["JS1"]["net_turns"],"JS1_read_recovery_net":js["JS1"]["net_turns_110_130"],"JS1_to_200_net":js["JS1"]["net_turns_110_200"],"JS1_p2p":js["JS1"]["p2p_turns"],"JS1_t_minus_0p5":js["JS1"]["crossings_rel_ps"]["0.5"],"JS1_t_minus_1":js["JS1"]["crossings_rel_ps"]["1.0"],"JS1_t_minus_1p5":js["JS1"]["crossings_rel_ps"]["1.5"],"JS1_t_minus_2":js["JS1"]["crossings_rel_ps"]["2.0"],"JS2_read_net":js["JS2"]["net_turns"],"JS2_read_recovery_net":js["JS2"]["net_turns_110_130"],"JS2_to_200_net":js["JS2"]["net_turns_110_200"],"JS2_p2p":js["JS2"]["p2p_turns"],"JS2_t_minus_0p5":js["JS2"]["crossings_rel_ps"]["0.5"],"JS2_t_minus_1":js["JS2"]["crossings_rel_ps"]["1.0"],"JS2_t_minus_1p5":js["JS2"]["crossings_rel_ps"]["1.5"],"JS2_t_minus_2":js["JS2"]["crossings_rel_ps"]["2.0"],"JS1_Vmin":js["JS1"]["voltage_min"],"JS2_Vmin":js["JS2"]["voltage_min"],"LS3_positive_peak":ls3i_desc["positive_peak"],"LS3_positive_peak_time":ls3i_desc["positive_peak_time"],"LS3_zero_cross":ls3i_desc["zero_cross"],"LS3_negative_trough":ls3i_desc["negative_peak"],"LS3_negative_trough_time":ls3i_desc["negative_peak_time"],"FINAL_JSL8_peak_positive":output_final_desc["positive_peak"],"FINAL_JSL8_peak_time":output_final_desc["positive_peak_time"],"FINAL_JSL8_signed_area":output_final_desc["signed_area"]/2.067833848e-15,"FINAL_JSL8_absolute_area":output_final_desc["absolute_area"]/2.067833848e-15,"FINAL_JSL8_RMS":output_final_desc["rms"],"FINAL_JSL8_positive_duration_ps":output_final_desc["positive_support_ps"],"FINAL_JSL8_negative_duration_ps":output_final_desc["negative_support_ps"],"CONTROL_JSL8_peak_positive":output_control_desc["positive_peak"],"CONTROL_JSL8_peak_negative":output_control_desc["negative_peak"],"CONTROL_JSL8_signed_area":output_control_desc["signed_area"]/2.067833848e-15,"CONTROL_JSL8_absolute_area":output_control_desc["absolute_area"]/2.067833848e-15,"CONTROL_JSL8_RMS":output_control_desc["rms"],"CONTROL_JSL8_positive_duration_ps":output_control_desc["positive_support_ps"],"CONTROL_JSL8_negative_duration_ps":output_control_desc["negative_support_ps"],"CONTROL90_JSL8_peak_positive":max(0.0,output_control90["max"] or 0.0),"peak_discrimination_ratio":(output_final_desc["positive_peak"]/max(1e-30,output_control_desc["positive_peak"])),"area_discrimination_ratio":(abs(output_final_desc["signed_area"])/max(1e-30,abs(output_control_desc["signed_area"]))),"JM1_WRITE0_net":state["write0_50_61"]["JM1"],"JM1_WRITE1_net":state["write1_90_101"]["JM1"],"JM1_PRE_READ":state["settle_101_110"]["JM1"],"JM1_TAIL":state["tail_150_200"]["JM1"],"JM2_WRITE0_net":state["write0_50_61"]["JM2"],"JM2_WRITE1_net":state["write1_90_101"]["JM2"],"JM2_PRE_READ":state["settle_101_110"]["JM2"],"JM2_TAIL":state["tail_150_200"]["JM2"],"mechanical_progression_label":js["JS1"]["mechanical_label"],"JS1_mechanical_label":js["JS1"]["mechanical_label"],"JS2_mechanical_label":js["JS2"]["mechanical_label"],"JS1_activity":js["JS1"].get("first_major_voltage_activity"),"JS2_activity":js["JS2"].get("first_major_voltage_activity")}
+    return {"JS1_AREA":params[sweep["key"]],"source_type":point["source_type"],"source_case":point.get("source_case",point.get("case_path")),"physical_solve_new":point.get("physical_solve_new",False),"raw_sha256":point["raw_sha256"],"raw_qa_status":point["raw_qa_status"],"grid_status":point.get("grid_status"),"JS1_read_net":js["JS1"]["net_turns"],"JS1_read_recovery_net":js["JS1"]["net_turns_110_130"],"JS1_to_200_net":js["JS1"]["net_turns_110_200"],"JS1_p2p":js["JS1"]["p2p_turns"],"JS1_t_minus_0p5":js["JS1"]["crossings_rel_ps"]["0.5"],"JS1_t_minus_1":js["JS1"]["crossings_rel_ps"]["1.0"],"JS1_t_minus_1p5":js["JS1"]["crossings_rel_ps"]["1.5"],"JS1_t_minus_2":js["JS1"]["crossings_rel_ps"]["2.0"],"JS2_read_net":js["JS2"]["net_turns"],"JS2_read_recovery_net":js["JS2"]["net_turns_110_130"],"JS2_to_200_net":js["JS2"]["net_turns_110_200"],"JS2_p2p":js["JS2"]["p2p_turns"],"JS2_t_minus_0p5":js["JS2"]["crossings_rel_ps"]["0.5"],"JS2_t_minus_1":js["JS2"]["crossings_rel_ps"]["1.0"],"JS2_t_minus_1p5":js["JS2"]["crossings_rel_ps"]["1.5"],"JS2_t_minus_2":js["JS2"]["crossings_rel_ps"]["2.0"],"JS1_Vmin":js["JS1"]["voltage_min"],"JS1_Vmax":js["JS1"]["voltage_max"],"JS1_VRMS":js["JS1"]["voltage_rms"],"JS1_Varea_phi0":js["JS1"]["voltage_area_phi0"],"JS2_Vmin":js["JS2"]["voltage_min"],"JS2_Vmax":js["JS2"]["voltage_max"],"JS2_VRMS":js["JS2"]["voltage_rms"],"JS2_Varea_phi0":js["JS2"]["voltage_area_phi0"],"LS3_positive_peak":ls3i_desc["positive_peak"],"LS3_positive_peak_time":ls3i_desc["positive_peak_time"],"LS3_zero_cross":ls3i_desc["zero_cross"],"LS3_negative_trough":ls3i_desc["negative_peak"],"LS3_negative_trough_time":ls3i_desc["negative_peak_time"],"LS3_V_positive_peak":max(0.0,ls3v["max"] or 0.0),"LS3_V_negative_peak":min(0.0,ls3v["min"] or 0.0),"RS_peak_positive":max(0.0,rs["max"] or 0.0),"RS_peak_negative":min(0.0,rs["min"] or 0.0),"FINAL_JSL8_peak_positive":output_final_desc["positive_peak"],"FINAL_JSL8_peak_negative":output_final_desc["negative_peak"],"FINAL_JSL8_peak_time":output_final_desc["positive_peak_time"],"FINAL_JSL8_negative_peak_time":output_final_desc["negative_peak_time"],"FINAL_JSL8_signed_area":output_final_desc["signed_area"]/2.067833848e-15,"FINAL_JSL8_absolute_area":output_final_desc["absolute_area"]/2.067833848e-15,"FINAL_JSL8_RMS":output_final_desc["rms"],"FINAL_JSL8_positive_duration_ps":output_final_desc["positive_support_ps"],"FINAL_JSL8_negative_duration_ps":output_final_desc["negative_support_ps"],"CONTROL_JSL8_peak_positive":output_control_desc["positive_peak"],"CONTROL_JSL8_peak_negative":output_control_desc["negative_peak"],"CONTROL_JSL8_signed_area":output_control_desc["signed_area"]/2.067833848e-15,"CONTROL_JSL8_absolute_area":output_control_desc["absolute_area"]/2.067833848e-15,"CONTROL_JSL8_RMS":output_control_desc["rms"],"CONTROL_JSL8_positive_duration_ps":output_control_desc["positive_support_ps"],"CONTROL_JSL8_negative_duration_ps":output_control_desc["negative_support_ps"],"CONTROL90_JSL8_peak_positive":max(0.0,output_control90["max"] or 0.0),"CONTROL90_JSL8_peak_negative":min(0.0,output_control90["min"] or 0.0),"CONTROL90_JSL8_signed_area":output_control90["integral_si"]/2.067833848e-15,"CONTROL90_JSL8_absolute_area":waveform_descriptor("I(B_JSL8)",control_start,windows["settle1_81_90"][1])["absolute_area"]/2.067833848e-15,"CONTROL90_JSL8_RMS":output_control90["rms"],"peak_discrimination_ratio":(output_final_desc["positive_peak"]/max(1e-30,output_control_desc["positive_peak"])),"area_discrimination_ratio":(abs(output_final_desc["signed_area"])/max(1e-30,abs(output_control_desc["signed_area"]))),"JM1_WRITE0_net":state["write0_50_61"]["JM1"],"JM1_WRITE1_net":state["write1_90_101"]["JM1"],"JM1_PRE_READ":state["settle_101_110"]["JM1"],"JM1_TAIL":state["tail_150_200"]["JM1"],"JM2_WRITE0_net":state["write0_50_61"]["JM2"],"JM2_WRITE1_net":state["write1_90_101"]["JM2"],"JM2_PRE_READ":state["settle_101_110"]["JM2"],"JM2_TAIL":state["tail_150_200"]["JM2"],"mechanical_progression_label":js["JS1"]["mechanical_label"],"JS1_mechanical_label":js["JS1"]["mechanical_label"],"JS2_mechanical_label":js["JS2"]["mechanical_label"],"JS1_activity":js["JS1"].get("first_major_voltage_activity"),"JS2_activity":js["JS2"].get("first_major_voltage_activity")}
 
 
 def write_batch_review(batch_root: Path, sweep: dict[str, Any], rows: list[dict[str, Any]], reused: list[dict[str, Any]], new_cases: list[str], failed: list[dict[str, Any]]) -> None:
@@ -266,7 +276,12 @@ def write_batch_review(batch_root: Path, sweep: dict[str, Any], rows: list[dict[
 def execute_sweep(values: dict[str, str], reference: dict[str, str], args: Any) -> int:
     sweep, points, _ = sweep_setup(values, reference)
     existing_batches = list((SERIES / "batches").iterdir()) if (SERIES / "batches").is_dir() else []
-    batch_id = f"B{max([int(m.group(1)) for p in existing_batches if (m:=re.match(r'^B(\d{{3}})_', p.name))] or [0])+1:03d}"
+    batch_numbers = []
+    for batch_path in existing_batches:
+        match = re.match(r"^B(\d{3})_", batch_path.name)
+        if match:
+            batch_numbers.append(int(match.group(1)))
+    batch_id = f"B{max(batch_numbers, default=0) + 1:03d}"
     batch_name=f"{batch_id}_{sweep['name']}"
     if args.dry_run:
         print("BATCH PREVIEW\n\nNAME\n"+sweep["name"]+"\n\nSWEEP\n"+sweep["key"]+"\n\nVALUES\n"+"\n".join(sweep["values"])+"\n\nFIXED CIRCUIT\n"+"\n".join(f"{k} = {values[k]}" for k in sorted(platform.CIRCUIT_KEYS-{sweep['key']}))+"\n\nMODE\n"+sweep["mode"].upper()+"\n\nMASKS\nN4 / 1111\n\nLOGICAL POINTS\n"+str(len(points))+"\n\nREUSE CANDIDATES")
@@ -277,7 +292,7 @@ def execute_sweep(values: dict[str, str], reference: dict[str, str], args: Any) 
         return 0
     batch_root=SERIES/'batches'/batch_name; batch_root.mkdir(parents=True,exist_ok=False)
     manifest={"schema":"bvm-rloop-sweep-batch-v1","batch_id":batch_name,"sweep_key":sweep['key'],"values":sweep['values'],"mode":sweep['mode'],"target_mask":MASK,"fixed_parameters":{k:values[k] for k in sorted(platform.CIRCUIT_KEYS|platform.STIMULUS_KEYS) if k!=sweep['key']},"reuse_enabled":sweep['reuse_enabled'],"physical_solve_count_authorized":sum(1 for p in points if p['reuse']['status']!='REUSE'),"points":[]}
-    write_json(batch_root/'BATCH_MANIFEST.json',manifest)
+    platform.write_json(batch_root/'BATCH_MANIFEST.json',manifest)
     point_records=[]; new_cases=[]; failed=[]
     for point in points:
         reuse=point['reuse']; record={"value":point['value'],"source_type":reuse.get('source_type'),"source_case":reuse.get('case_id'),"physical_solve_new":False,"reuse_rejected_reason":reuse.get('reasons',[])}
@@ -299,7 +314,7 @@ def execute_sweep(values: dict[str, str], reference: dict[str, str], args: Any) 
     for record in point_records:
         if record.get('raw_qa_status')!='PASS':
             continue
-        params=dict(values); params[sweep['key']]=str(record['value']); params['MASKS']=[MASK]; params=platform.validate(params,reference)
+        params=dict(values); params[sweep['key']]=str(record['value']); params['MASKS']=MASK; params=platform.validate(params,reference)
         metric_rows.append({"point":record,"params":params})
     flat=[]
     for item in metric_rows:
@@ -314,7 +329,7 @@ def execute_sweep(values: dict[str, str], reference: dict[str, str], args: Any) 
         writer=csv.DictWriter(stream,fieldnames=fields); writer.writeheader(); writer.writerows(flat)
     write_batch_review(batch_root,sweep,flat,[r for r in point_records if r.get('source_type')=='REUSED_EXISTING'],new_cases,failed)
     qa={"schema":"bvm-rloop-sweep-batch-qa-v1","status":"PASS" if len(flat)==len(points) and not failed and all(r.get('raw_qa_status')=='PASS' for r in point_records) else "FAIL","logical_points":len(points),"reused_points":sum(r.get('source_type')=='REUSED_EXISTING' for r in point_records),"new_physical_solve_count":len(new_cases),"failed_points":failed,"raw_hashes_rechecked":all(r.get('raw_qa_status')=='PASS' for r in point_records)}
-    write_json(batch_root/'BATCH_QA.json',qa); write_json(batch_root/'BATCH_MANIFEST.json',{**manifest,"points":point_records,"qa":qa})
+    platform.write_json(batch_root/'BATCH_QA.json',qa); platform.write_json(batch_root/'BATCH_MANIFEST.json',{**manifest,"points":point_records,"qa":qa})
     (SERIES/'LATEST_BATCH_REVIEW.html').write_text(f"<!doctype html><html><head><meta http-equiv='refresh' content='0; url=batches/{batch_name}/BATCH_REVIEW.html'></head><body><a href='batches/{batch_name}/BATCH_REVIEW.html'>{batch_name}</a></body></html>\n",encoding='utf-8')
     print(json.dumps({"status":qa['status'],"batch_id":batch_name,"logical_points":len(points),"reused_points":qa['reused_points'],"new_physical_solve_count":len(new_cases),"failed_points":len(failed)},ensure_ascii=False,indent=2))
     return 0 if qa['status']=='PASS' else 2

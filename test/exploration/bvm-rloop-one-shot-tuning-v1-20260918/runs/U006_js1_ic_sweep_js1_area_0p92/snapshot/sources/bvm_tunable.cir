@@ -1,0 +1,50 @@
+* Parameterized BVM clone for bvm-rloop-one-shot-tuning-v1.
+* Topology is copied from the current canonical BVM source. Values are
+* rendered from USER_CASE.env by scripts/try_candidate.py. The registered
+* Stage-A perturbation was limited to optional parallel R-loop shunts, while
+* the remaining canonical values stay visible for later authorized rounds.
+
+.subckt BVM WL BL SE SL
+
+* === WL+BL merge at Node '2' ===
+R_BL    BL      1       20.0
+L_PBL   1       2       0.5p
+R_WL    WL      13      20.0
+L_PWL   13      2       0.5p
+
+* === S-loop ===
+B_JM1   2       7       jjmit area=1.2
+R_JM1 2 7 8
+L_M1    7       0       12.5p
+
+L_M2    2       3       24.5p
+B_JM2   3       4       jjmit area=1.4
+* RJM2 OPEN
+
+L_M3    4       8       8.5p
+L_PM    8       0       0.5p
+
+* === R-loop upper branch ===
+L_S1    4       5       0.5p
+B_JS1   5       6       jjmit area=0.92
+R_JS1_SHUNT 5 6 12
+
+* === SE into N3 ===
+R_SE    SE      14      20.0
+L_PSE   14      6       0.5p
+
+* === R-loop bridge network ===
+R_S     6       10      3.0
+L_S3    6       10      0.5p
+
+* === R-loop lower branch ===
+L_S2    8       9       0.5p
+B_JS2   9       10      jjmit area=0.74
+R_JS2_SHUNT 9 10 12
+
+* === Output chain ===
+L_PSL   10      11      0.5p
+R_SL    11      12      12.0
+L_SL    12      SL      0.4p
+
+.ends BVM

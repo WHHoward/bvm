@@ -79,6 +79,15 @@ def verify_existing(case_root: Path, params: dict[str, Any], value: str) -> dict
         return result
     if str(manifest.get("parameters", {}).get("MODE", "")).lower() != params["MODE"]:
         result["reasons"].append("MODE mismatch")
+    case_params = manifest.get("parameters", {})
+    if params["MODE"] == "closed":
+        for key in platform.QB_AREA_KEYS + platform.QB_RESISTANCE_KEYS + platform.QB_INDUCTANCE_KEYS + platform.QB_CURRENT_KEYS:
+            if key not in case_params:
+                result["reasons"].append(f"QB parameter fingerprint missing: {key}")
+            elif not equal_value(str(case_params[key]), str(params[key])):
+                result["reasons"].append(f"QB parameter mismatch: {key}")
+        if not source_manifest.get("qb_rendered_snapshot"):
+            result["reasons"].append("QB rendered snapshot/fingerprint missing")
     expected_run_id = f"{params['MODE'].upper()}_N4_{MASK}"
     if expected_run_id not in manifest.get("run_order", []):
         result["reasons"].append("requested mask 1111 is absent")
@@ -104,13 +113,22 @@ def verify_existing(case_root: Path, params: dict[str, Any], value: str) -> dict
     if not qa or qa.get("status") != "PASS":
         result["reasons"].append("raw QA missing or not PASS")
     snapshot_bvm = None
+    snapshot_qb = None
     for item in source_manifest.get("sources", []):
         if item.get("role") == "BVM":
             snapshot_bvm = REPO / item["path"]
+        if item.get("role") == "QB":
+            snapshot_qb = REPO / item["path"]
     expected_params = dict(params)
     expected_bvm = netlist_body(platform.legacy.render_bvm(expected_params))
     if not snapshot_bvm or not snapshot_bvm.is_file() or netlist_body(snapshot_bvm.read_text(encoding="utf-8")) != expected_bvm:
         result["reasons"].append("rendered BVM/source snapshot does not exactly match target parameters")
+    if params["MODE"] == "closed":
+        expected_qb = netlist_body(platform.legacy.render_qb(expected_params))
+        if not snapshot_qb or not snapshot_qb.is_file() or netlist_body(snapshot_qb.read_text(encoding="utf-8")) != expected_qb:
+            result["reasons"].append("rendered QB/source snapshot does not exactly match target parameters")
+        elif source_role_hash(source_manifest, "QB") != platform.sha256(snapshot_qb):
+            result["reasons"].append("QB snapshot hash does not match source manifest")
     stimulus_path = run_dir / "stimulus.inc"
     expected_stimulus = stimulus_body(platform.stimulus_text(expected_params, MASK))
     if not stimulus_path.is_file() or stimulus_body(stimulus_path.read_text(encoding="utf-8")) != expected_stimulus:

@@ -26,9 +26,15 @@ CANONICAL_BVM = REPO / "test" / "exploration" / "bvm-qb-l1-l3-bj2-targeted-closu
 QB_SOURCE = REPO / "circuits" / "qb" / "bq_parameterized_v1.cir"
 JTL_SOURCE = REPO / "test" / "exploration" / "bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914" / "inputs" / "jtl2.cir"
 TUNABLE_TEMPLATE = SERIES / "circuits" / "bvm_tunable.cir"
+QB_TUNABLE_TEMPLATE = SERIES / "circuits" / "bq_tunable.cir"
 MASK_ORDER = ("0000", "0001", "0011", "0111", "1111")
 BIT_ORDER = "b3b2b1b0=BVM1/BVM2/BVM3/BVM4"
 CONTRACT = "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
+QB_AREA_KEYS = ("QB_BJS_AREA", "QB_BJ1_AREA", "QB_BJ2_AREA")
+QB_RESISTANCE_KEYS = ("QB_RJ1", "QB_RJ2")
+QB_INDUCTANCE_KEYS = ("QB_LIN", "QB_L1", "QB_L2", "QB_L3")
+QB_CURRENT_KEYS = ("QB_IB",)
+CIRCUIT_KEYS = set(("JM1_AREA", "JM2_AREA", "RJM1", "RJM2", "JS1_AREA", "JS2_AREA", "RSH_JS1", "RSH_JS2", "LS1", "LS2", "LS3", "RS", "LPSL", "RSL", "LSL", "RBL", "LPBL", "RWL", "LPWL", "RSE", "LPSE") + QB_AREA_KEYS + QB_RESISTANCE_KEYS + QB_INDUCTANCE_KEYS + QB_CURRENT_KEYS)
 FINAL_MARKER = "EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW"
 STAGE_A = {
     "A000_CANONICAL": ("OPEN", "OPEN"),
@@ -126,6 +132,14 @@ def normalize_shunt(value: str) -> str:
     return value
 
 
+def parse_number(token: str, label: str) -> float:
+    match = re.fullmatch(r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)([munpfk]?)\s*", token, re.IGNORECASE)
+    if not match:
+        raise RuntimeError(f"{label}: invalid numeric token {token!r}")
+    scale = {"": 1.0, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3, "f": 1e-15, "k": 1e3}[match.group(2).lower()]
+    return float(match.group(1)) * scale
+
+
 def required_config(values: dict[str, str], key: str) -> str:
     if key not in values or not values[key]:
         raise RuntimeError(f"missing {key} in {CONFIG}")
@@ -153,9 +167,25 @@ def effective_config(raw: dict[str, str], args: argparse.Namespace) -> dict[str,
         "LPSL": required_config(raw, "LPSL"),
         "RSL": required_config(raw, "RSL"),
         "LSL": required_config(raw, "LSL"),
+        "QB_LIN": required_config(raw, "QB_LIN"),
+        "QB_BJS_AREA": required_config(raw, "QB_BJS_AREA"),
+        "QB_L1": required_config(raw, "QB_L1"),
+        "QB_L2": required_config(raw, "QB_L2"),
+        "QB_BJ1_AREA": required_config(raw, "QB_BJ1_AREA"),
+        "QB_RJ1": required_config(raw, "QB_RJ1"),
+        "QB_BJ2_AREA": required_config(raw, "QB_BJ2_AREA"),
+        "QB_RJ2": required_config(raw, "QB_RJ2"),
+        "QB_L3": required_config(raw, "QB_L3"),
+        "QB_IB": required_config(raw, "QB_IB"),
         "DT": required_config(raw, "DT"),
         "STOP": required_config(raw, "STOP"),
     }
+    for key in QB_AREA_KEYS + QB_INDUCTANCE_KEYS + QB_CURRENT_KEYS:
+        if parse_number(params[key], key) <= 0:
+            raise RuntimeError(f"{key} must be positive")
+    for key in QB_RESISTANCE_KEYS:
+        if parse_number(params[key], key) <= 0:
+            raise RuntimeError(f"{key} must be positive")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", case_id):
         raise RuntimeError(f"invalid CASE_ID {case_id!r}")
     return params
@@ -273,6 +303,20 @@ def render_bvm(params: dict[str, Any]) -> str:
     return text
 
 
+def render_qb(params: dict[str, Any]) -> str:
+    """Render the experiment-local QB template from explicit case parameters."""
+    text = QB_TUNABLE_TEMPLATE.read_text(encoding="utf-8")
+    replacements = {f"{{{{{key}}}}}": str(params[key]) for key in (
+        "QB_LIN", "QB_BJS_AREA", "QB_L1", "QB_L2", "QB_BJ1_AREA",
+        "QB_RJ1", "QB_BJ2_AREA", "QB_RJ2", "QB_L3", "QB_IB",
+    )}
+    for marker, value in replacements.items():
+        text = text.replace(marker, value)
+    if "{{" in text:
+        raise RuntimeError("unresolved marker in rendered QB")
+    return text
+
+
 def include_line(source: Path, case_dir: Path, label: str) -> str:
     return f".include {Path(os.path.relpath(source, case_dir)).as_posix()}" if source else f"* {label}: absent"
 
@@ -361,13 +405,17 @@ def snapshot_sources(case_root: Path, params: dict[str, Any]) -> dict[str, Path]
     source_dir = case_root / "snapshot" / "sources"
     source_dir.mkdir(parents=True, exist_ok=False)
     sources: dict[str, Path] = {}
-    for role, source in (("JJ_MODEL", JJ_SOURCE), ("QB", QB_SOURCE), ("JTL", JTL_SOURCE)):
+    for role, source in (("JJ_MODEL", JJ_SOURCE), ("JTL", JTL_SOURCE)):
         target = source_dir / source.name
         shutil.copy2(source, target)
         sources[role] = target
     bvm_target = source_dir / "bvm_tunable.cir"
     bvm_target.write_text(render_bvm(params), encoding="utf-8")
     sources["BVM"] = bvm_target
+    if params["MODE"] == "closed":
+        qb_target = source_dir / "bq_tunable.cir"
+        qb_target.write_text(render_qb(params), encoding="utf-8")
+        sources["QB"] = qb_target
     return sources
 
 
@@ -376,7 +424,11 @@ def source_manifest(case_root: Path, sources: dict[str, Path], params: dict[str,
     records.extend(file_record(role, SERIES / "circuits" / filename) for role, filename in (("TOP_PASSIVE", "passive_top.cir"), ("TOP_CLOSED", "closed_top.cir")))
     records.append(file_record("CONFIG", CONFIG))
     records.append(file_record("TUNABLE_TEMPLATE", TUNABLE_TEMPLATE))
-    return {"schema": "bvm-rloop-one-shot-source-manifest-v1", "created_at": now(), "parent": parent, "contract_sentence": CONTRACT, "case_parameters": params, "sources": records, "canonical_bvm_source": file_record("CANONICAL_BVM_REFERENCE", CANONICAL_BVM), "raw_not_copied_from_history": True}
+    records.append(file_record("QB_TUNABLE_TEMPLATE", QB_TUNABLE_TEMPLATE))
+    if (SERIES / "USER_CASE.env").is_file():
+        records.append(file_record("USER_CASE", SERIES / "USER_CASE.env"))
+    by_role = {record["role"]: record for record in records}
+    return {"schema": "bvm-rloop-one-shot-source-manifest-v1", "created_at": now(), "parent": parent, "contract_sentence": CONTRACT, "case_parameters": params, "sources": records, "bvm_rendered_snapshot": by_role.get("BVM"), "qb_rendered_snapshot": by_role.get("QB") if params["MODE"] == "closed" else None, "jj_model_snapshot": by_role.get("JJ_MODEL"), "jtl_snapshot": by_role.get("JTL"), "user_case_config": by_role.get("USER_CASE"), "canonical_bvm_source": file_record("CANONICAL_BVM_REFERENCE", CANONICAL_BVM), "raw_not_copied_from_history": True}
 
 
 def solve_one(case_dir: Path, mode: str, mask: str, params: dict[str, Any], sources: dict[str, Path]) -> dict[str, Any]:

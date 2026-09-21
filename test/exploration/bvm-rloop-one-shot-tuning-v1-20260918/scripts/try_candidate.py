@@ -40,7 +40,11 @@ TIME_KEYS = ("IDLE_START", "IDLE_END", "WRITE0_START", "WRITE0_END", "CONTROL_RE
 RESISTANCE_KEYS = ("RJM1", "RJM2", "RSH_JS1", "RSH_JS2", "RBL", "RWL", "RSE", "RS", "RSL")
 INDUCTANCE_KEYS = ("LM1", "LM2", "LM3", "LPM", "LS1", "LS2", "LS3", "LPSL", "LSL", "LPBL", "LPWL", "LPSE")
 AREA_KEYS = ("JM1_AREA", "JM2_AREA", "JS1_AREA", "JS2_AREA")
-CIRCUIT_KEYS = set(AREA_KEYS + RESISTANCE_KEYS + INDUCTANCE_KEYS)
+QB_AREA_KEYS = ("QB_BJS_AREA", "QB_BJ1_AREA", "QB_BJ2_AREA")
+QB_RESISTANCE_KEYS = ("QB_RJ1", "QB_RJ2")
+QB_INDUCTANCE_KEYS = ("QB_LIN", "QB_L1", "QB_L2", "QB_L3")
+QB_CURRENT_KEYS = ("QB_IB",)
+CIRCUIT_KEYS = set(AREA_KEYS + RESISTANCE_KEYS + INDUCTANCE_KEYS + QB_AREA_KEYS + QB_RESISTANCE_KEYS + QB_INDUCTANCE_KEYS + QB_CURRENT_KEYS)
 STIMULUS_KEYS = {key for key in (
     *TIME_KEYS, "DT", "WRITE0_WL_AMP", "WRITE0_BL_AMP", "WRITE0_SE_AMP",
     "CONTROL_WL_AMP", "CONTROL_BL_AMP", "CONTROL_SE_AMP", "WRITE1_WL_AMP",
@@ -147,6 +151,12 @@ def validate(values: dict[str, str], reference: dict[str, str]) -> dict[str, Any
         raise RuntimeError("MODE must be passive or closed")
     masks = resolve_masks(required(values, "MASKS"))
     for key in AREA_KEYS:
+        if parse_number(required(values, key), key) <= 0:
+            raise RuntimeError(f"{key} must be positive")
+    for key in QB_AREA_KEYS + QB_INDUCTANCE_KEYS + QB_CURRENT_KEYS:
+        if parse_number(required(values, key), key) <= 0:
+            raise RuntimeError(f"{key} must be positive")
+    for key in QB_RESISTANCE_KEYS:
         if parse_number(required(values, key), key) <= 0:
             raise RuntimeError(f"{key} must be positive")
     for key in RESISTANCE_KEYS:
@@ -256,13 +266,17 @@ def render_case_sources(case_root: Path, params: dict[str, Any]) -> dict[str, Pa
     source_dir = case_root / "snapshot" / "sources"
     source_dir.mkdir(parents=True, exist_ok=False)
     sources: dict[str, Path] = {}
-    for role, source in (("JJ_MODEL", legacy.JJ_SOURCE), ("QB", legacy.QB_SOURCE), ("JTL", legacy.JTL_SOURCE)):
+    for role, source in (("JJ_MODEL", legacy.JJ_SOURCE), ("JTL", legacy.JTL_SOURCE)):
         target = source_dir / source.name
         shutil.copy2(source, target)
         sources[role] = target
     target = source_dir / "bvm_tunable.cir"
     target.write_text(legacy.render_bvm(params), encoding="utf-8")
     sources["BVM"] = target
+    if params["MODE"] == "closed":
+        target = source_dir / "bq_tunable.cir"
+        target.write_text(legacy.render_qb(params), encoding="utf-8")
+        sources["QB"] = target
     return sources
 
 
@@ -294,7 +308,7 @@ def render_one(case_root: Path, params: dict[str, Any], sources: dict[str, Path]
     return metadata
 
 
-def dry_run(params: dict[str, Any], changes: list[dict[str, str]], case_id: str, preview: str) -> None:
+def dry_run(params: dict[str, Any], changes: list[dict[str, str]], case_id: str, preview: str, qb_preview: str | None = None) -> None:
     print("NEW CASE")
     print(f"{case_id}_{params['NAME']}")
     print("\nMODE")
@@ -310,7 +324,9 @@ def dry_run(params: dict[str, Any], changes: list[dict[str, str]], case_id: str,
     print("\nWINDOWS")
     for name, window in params["windows"].items():
         print(f"{name:<24} [{window[0]:g}, {window[1]:g}) ps")
-    print(f"\nPREVIEW: generated stimulus/deck validation PASS ({len(preview.splitlines())} stimulus lines)")
+    print(f"\nPREVIEW: generated BVM/stimulus validation PASS ({len(preview.splitlines())} stimulus lines)")
+    if qb_preview is not None:
+        print(f"PREVIEW: rendered QB snapshot validation PASS ({len(qb_preview.splitlines())} netlist lines)")
     print("No solve executed.")
 
 
@@ -340,11 +356,18 @@ def main() -> int:
         preview_root = Path(temp)
         preview_bvm = preview_root / "bvm_tunable.cir"
         preview_bvm.write_text(legacy.render_bvm(params), encoding="utf-8")
+        preview_qb_text = None
+        if params["MODE"] == "closed":
+            preview_qb = preview_root / "bq_tunable.cir"
+            preview_qb_text = legacy.render_qb(params)
+            preview_qb.write_text(preview_qb_text, encoding="utf-8")
+            if "{{" in preview_qb.read_text(encoding="utf-8"):
+                raise RuntimeError("unresolved QB marker in preview")
         preview = stimulus_text(params, params["MASKS"][0])
         if "{{" in preview_bvm.read_text(encoding="utf-8"):
             raise RuntimeError("unresolved BVM marker in preview")
     if args.dry_run:
-        dry_run(params, changes, case_id, preview)
+        dry_run(params, changes, case_id, preview, preview_qb_text)
         return 0
     # A physical run is allowed only for a new U case and only after all validation above.
     legacy_hashes = json.loads(LEGACY_HASHES.read_text(encoding="utf-8"))
@@ -362,7 +385,11 @@ def main() -> int:
     stimulus_snapshot = "# Stimulus snapshot generated from USER_CASE.env\n" + "\n".join(f"{key}={values[key]}" for key in sorted(STIMULUS_KEYS | set(TIME_KEYS) | {"DT", "STOP", "MASKS", "MODE", "NAME"}) if key in values) + "\n"
     (case_root / "stimulus_snapshot.env").write_text(stimulus_snapshot, encoding="utf-8")
     sources = render_case_sources(case_root, params)
-    source_manifest = {"schema": "bvm-rloop-user-case-source-manifest-v1", "created_at": now(), "parent": parent, "case_id": case_root.name, "canonical_bvm_reference": {"path": legacy.repo_rel(CANONICAL_BVM), "sha256": sha256(CANONICAL_BVM)}, "sources": [{"role": role, "path": legacy.repo_rel(path), "sha256": sha256(path), "bytes": path.stat().st_size} for role, path in sources.items()], "user_config": {"path": legacy.repo_rel(config_path), "sha256": sha256(config_path)}, "reference_config": {"path": legacy.repo_rel(REFERENCE_CONFIG), "sha256": sha256(REFERENCE_CONFIG)}, "config_changes": changes}
+    source_records = [{"role": role, "path": legacy.repo_rel(path), "sha256": sha256(path), "bytes": path.stat().st_size} for role, path in sources.items()]
+    by_role = {record["role"]: record for record in source_records}
+    user_case_record = {"path": legacy.repo_rel(USER_CONFIG), "sha256": sha256(USER_CONFIG)}
+    effective_config_record = {"path": legacy.repo_rel(config_path), "sha256": sha256(config_path)}
+    source_manifest = {"schema": "bvm-rloop-user-case-source-manifest-v1", "created_at": now(), "parent": parent, "case_id": case_root.name, "canonical_bvm_reference": {"path": legacy.repo_rel(CANONICAL_BVM), "sha256": sha256(CANONICAL_BVM)}, "sources": source_records, "bvm_rendered_snapshot": by_role.get("BVM"), "qb_rendered_snapshot": by_role.get("QB") if params["MODE"] == "closed" else None, "jj_model_snapshot": by_role.get("JJ_MODEL"), "jtl_snapshot": by_role.get("JTL"), "user_config": effective_config_record, "user_case_config": user_case_record, "reference_config": {"path": legacy.repo_rel(REFERENCE_CONFIG), "sha256": sha256(REFERENCE_CONFIG)}, "config_changes": changes}
     write_json(case_root / "source_manifest.json", source_manifest)
     records = []
     for mask in params["MASKS"]:

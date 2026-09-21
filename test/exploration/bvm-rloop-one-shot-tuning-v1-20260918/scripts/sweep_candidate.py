@@ -87,7 +87,8 @@ def verify_existing(case_root: Path, params: dict[str, Any], value: str) -> dict
         result["reasons"].append("canonical BVM source hash mismatch or missing")
     if source_role_hash(source_manifest, "JJ_MODEL") != platform.sha256(platform.legacy.JJ_SOURCE):
         result["reasons"].append("JJ model hash mismatch")
-    run_dir = case_root / "cases" / f"PASSIVE_N4_{MASK}"
+    run_id = f"{params['MODE'].upper()}_N4_{MASK}"
+    run_dir = case_root / "cases" / run_id
     raw_path = run_dir / "raw.csv"
     metadata_path = run_dir / "metadata.json"
     if not raw_path.is_file() or not metadata_path.is_file():
@@ -210,12 +211,13 @@ def render_svg_chart(rows: list[dict[str, Any]], x_key: str, y_keys: list[tuple[
 def load_point_metrics(point: dict[str, Any], sweep: dict[str, Any]) -> dict[str, Any]:
     case_path = Path(point["case_path"])
     case_root = case_path if case_path.is_absolute() else (REPO / case_path if case_path.parts and case_path.parts[0] == "test" else SERIES / "runs" / case_path)
-    run_dir = case_root / "cases" / "PASSIVE_N4_1111"
+    params = point["params"]
+    run_id = f"{params['MODE'].upper()}_N4_{MASK}"
+    run_dir = case_root / "cases" / run_id
     raw = run_dir / "raw.csv"
     with raw.open("r", encoding="utf-8", newline="") as stream:
         reader=csv.reader(stream); headers=next(reader); rows=[[float(x) for x in row] for row in reader]
     times=[row[0]*1e12 for row in rows]
-    params=point["params"]
     windows=params["windows"]
     engine.WINDOWS={name:(float(bounds[0]),float(bounds[1])) for name,bounds in windows.items()}
     engine.STATE_WINDOWS=tuple(name for name in ("write0_50_61","zero_read_control_70_81","write1_90_101","settle_101_110","final_read_110_121","recovery_121_130","tail_150_200") if name in engine.WINDOWS)
@@ -307,7 +309,7 @@ def execute_sweep(values: dict[str, str], reference: dict[str, str], args: Any) 
             after={p.name for p in (SERIES/'runs').iterdir() if p.is_dir()}; created=sorted(after-before)
             if completed.returncode!=0 or not created:
                 failed.append({"value":point['value'],"reason":completed.stderr[-2000:]}); record.update({"source_type":"NEW_FAILED","physical_solve_new":True,"status":"FAILED"}); point_records.append(record); continue
-            case_name=created[-1]; new_cases.append(case_name); record.update({"source_type":"NEW_PHYSICAL","source_case":case_name,"case_path":case_name,"run_id":"PASSIVE_N4_1111","physical_solve_new":True})
+            case_name=created[-1]; new_cases.append(case_name); record.update({"source_type":"NEW_PHYSICAL","source_case":case_name,"case_path":case_name,"run_id":f"{sweep['mode'].upper()}_N4_{MASK}","physical_solve_new":True})
             case_root=SERIES/'runs'/case_name; qa=json.loads((case_root/'qa'/'raw_qa.json').read_text()); row=qa['rows'][0]; record.update({"raw_sha256":row.get('sha256'),"raw_qa_status":row.get('status'),"grid_status":row.get('grid_status')})
         point_records.append(record)
     metric_rows=[]
@@ -321,7 +323,7 @@ def execute_sweep(values: dict[str, str], reference: dict[str, str], args: Any) 
         row=load_point_metrics({**item['point'],"params":item['params']},sweep)
         case_name=item['point'].get('case_path')
         row['case_review_path']=f"../../plots/{case_name}/review.html" if case_name else None
-        row['raw_path']=f"../../runs/{case_name}/cases/PASSIVE_N4_1111/raw.csv" if case_name else None
+        row['raw_path']=f"../../runs/{case_name}/cases/{item['params']['MODE'].upper()}_N4_{MASK}/raw.csv" if case_name else None
         row['config_path']=f"../../runs/{case_name}/config_snapshot.env" if case_name else None
         flat.append(row)
     fields=sorted({key for row in flat for key in row})

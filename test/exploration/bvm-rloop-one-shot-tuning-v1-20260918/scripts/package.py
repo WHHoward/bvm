@@ -141,12 +141,25 @@ def exists_at_commit(commit: str, path: Path) -> bool:
 
 
 def batch_counts(base_commit: str, files: list[Path]) -> tuple[int, int]:
+    batch_case_ids: set[str] = set()
+    for path in files:
+        if path.name != "BATCH_MANIFEST.json":
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        for point in data.get("points", []):
+            for key in ("case_id", "source_case", "case_path"):
+                value = point.get(key)
+                if value:
+                    batch_case_ids.add(Path(str(value)).name)
     new_solves = reused = 0
     for path in files:
         if path.name != "BATCH_QA.json":
             relative = path.relative_to(SERIES)
             is_user_result = len(relative.parts) == 3 and relative.parts[0] == "runs" and relative.parts[2] == "result.json"
-            if not is_user_result or exists_at_commit(base_commit, path):
+            if not is_user_result or exists_at_commit(base_commit, path) or relative.parts[1] in batch_case_ids:
                 continue
             try:
                 data = json.loads(path.read_text(encoding="utf-8"))

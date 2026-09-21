@@ -23,6 +23,10 @@ POINT_CASES = {
     "0.80": "U004_js1_ic_sweep_js1_area_0p80",
     "0.86": "U005_js1_ic_sweep_js1_area_0p86",
     "0.92": "U006_js1_ic_sweep_js1_area_0p92",
+    "12": "U120_U118_full_rsl_rsl_12",
+    "10": "U121_U118_full_rsl_rsl_10",
+    "8": "U122_U118_full_rsl_rsl_8",
+    "6": "U123_U118_full_rsl_rsl_6",
 }
 
 
@@ -47,15 +51,16 @@ def main() -> int:
         verification=sweep.verify_existing(case_root,params,value)
         if verification.get("status") != "REUSE":
             raise RuntimeError(f"strict artifact verification failed for {value}: {verification.get('reasons')}")
-        raw_path=case_root / "cases" / "PASSIVE_N4_1111" / "raw.csv"
-        qa=sweep.raw_qa_for(case_root,"PASSIVE_N4_1111") or {}
-        record={"value":value,"source_type":"REUSED_EXISTING" if case_name in {"U001_js1_area_70","A002"} else "NEW_PHYSICAL","source_case":case_name,"case_path":case_name,"run_id":"PASSIVE_N4_1111","physical_solve_new":case_name not in {"U001_js1_area_70","A002"},"raw_sha256":verification["raw_sha256"],"raw_qa_status":"PASS","grid_status":verification.get("grid_status") or qa.get("grid_status")}
+        run_id=f"{params['MODE'].upper()}_N4_{sweep.MASK}"
+        raw_path=case_root / "cases" / run_id / "raw.csv"
+        qa=sweep.raw_qa_for(case_root,run_id) or {}
+        record={"value":value,"source_type":"REUSED_EXISTING" if case_name in {"U001_js1_area_70","A002"} else "NEW_PHYSICAL","source_case":case_name,"case_path":case_name,"run_id":run_id,"physical_solve_new":case_name not in {"U001_js1_area_70","A002"},"raw_sha256":verification["raw_sha256"],"raw_qa_status":"PASS","grid_status":verification.get("grid_status") or qa.get("grid_status")}
         if record["physical_solve_new"]: new_cases.append(case_name)
         else: reused.append(record)
         point_records.append(record)
         row=sweep.load_point_metrics({**record,"params":params},config)
         row["case_review_path"]=f"../../plots/{case_name}/review.html"
-        row["raw_path"]=f"../../runs/{case_name}/cases/PASSIVE_N4_1111/raw.csv"
+        row["raw_path"]=f"../../runs/{case_name}/cases/{run_id}/raw.csv"
         row["config_path"]=f"../../runs/{case_name}/config_snapshot.env"
         flat.append(row)
     fields=sorted({key for row in flat for key in row})

@@ -131,8 +131,13 @@ def existing_references(files: list[Path]) -> list[dict[str, Any]]:
             continue
         for point in data.get("points", []):
             if point.get("source_type") == "REUSED_EXISTING":
-                refs.append({"source_case": point.get("source_case"), "raw_path": point.get("raw_path"), "raw_sha256": point.get("raw_sha256"), "source_batch": data.get("batch_id")})
-    unique = {(item.get("source_case"), item.get("raw_sha256")): item for item in refs}
+                runs = point.get("runs") or {}
+                if runs:
+                    for mask, run in runs.items():
+                        refs.append({"source_case": point.get("source_case"), "mask": mask, "run_id": run.get("run_id"), "raw_path": run.get("raw_path"), "raw_sha256": run.get("raw_sha256"), "source_batch": data.get("batch_id")})
+                else:
+                    refs.append({"source_case": point.get("source_case"), "raw_path": point.get("raw_path"), "raw_sha256": point.get("raw_sha256"), "source_batch": data.get("batch_id")})
+    unique = {(item.get("source_case"), item.get("mask"), item.get("raw_sha256")): item for item in refs}
     return list(unique.values())
 
 

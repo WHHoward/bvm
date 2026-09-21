@@ -313,7 +313,7 @@ def load_point_metrics(point: dict[str, Any], sweep: dict[str, Any], mask: str) 
     cbj1 = forward("P(BJ1|XBQ1)", control_start, control_end)
     cbj2 = forward("P(BJ2|XBQ1)", control_start, control_end)
     cl1 = metric("I(L1|XBQ1)", control_start, control_end)
-    term = terminal(read_start, recovery_end)
+    term = terminal(read_start, engine.WINDOWS["whole_0_200"][1])
     cterm = terminal(control_start, control_end)
     row: dict[str, Any] = {"SWEEP_VALUE_RAW": str(point["value"]), "SWEEP_VALUE_SI": sweep_numeric(str(point["value"])), "MASK": mask, "POPULATION": f"N{mask.count('1')}", "RUN_ID": rid, "source_type": point["source_type"], "source_case": point.get("source_case", point.get("case_path")), "physical_solve_new": point.get("physical_solve_new", False), "raw_sha256": point.get("runs", {}).get(mask, {}).get("raw_sha256", point.get("raw_sha256")), "raw_qa_status": point.get("runs", {}).get(mask, {}).get("raw_qa_status", point.get("raw_qa_status", "PASS")), "grid_status": point.get("runs", {}).get(mask, {}).get("grid_status", point.get("grid_status"))}
     for index in (1, 2):

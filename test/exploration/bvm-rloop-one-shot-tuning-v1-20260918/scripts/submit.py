@@ -68,6 +68,7 @@ def series_status(lines: list[str]) -> tuple[list[str], list[str]]:
 
 def latest_result() -> dict[str, Any]:
     candidates = (SERIES / "LATEST_BATCH_REVIEW.html", SERIES / "LATEST_REVIEW.html")
+    valid: list[dict[str, Any]] = []
     for pointer in candidates:
         if not pointer.is_file():
             continue
@@ -87,9 +88,23 @@ def latest_result() -> dict[str, Any]:
             qa = json.loads(qa_path.read_text(encoding="utf-8"))
             if qa.get("status") != "PASS":
                 raise RuntimeError(f"latest batch QA is not PASS: {batch_root}")
-            return {"kind": "batch", "pointer": rel(pointer), "review": rel(target), "root": batch_root, "qa": qa, "manifest": json.loads(manifest_path.read_text(encoding="utf-8"))}
-        return {"kind": "single", "pointer": rel(pointer), "review": rel(target), "root": target.parent}
+            valid.append({"kind": "batch", "pointer": rel(pointer), "review": rel(target), "root": batch_root, "qa": qa, "manifest": json.loads(manifest_path.read_text(encoding="utf-8")), "pointer_changed": run(["git", "diff", "--quiet", "HEAD", "--", rel(pointer)], check=False).returncode != 0, "pointer_commit_time": pointer_commit_time(pointer)})
+        else:
+            valid.append({"kind": "single", "pointer": rel(pointer), "review": rel(target), "root": target.parent, "pointer_changed": run(["git", "diff", "--quiet", "HEAD", "--", rel(pointer)], check=False).returncode != 0, "pointer_commit_time": pointer_commit_time(pointer)})
+    if valid:
+        # A newly changed pointer is the active evidence entry point. If both
+        # pointers are clean, use the one updated by the newest Git commit;
+        # filesystem mtime is deliberately not used as authority.
+        return max(valid, key=lambda item: (item["pointer_changed"], item["pointer_commit_time"]))
     raise RuntimeError("no valid LATEST_BATCH_REVIEW.html or LATEST_REVIEW.html points to an existing result")
+
+
+def pointer_commit_time(pointer: Path) -> int:
+    result = run(["git", "log", "-1", "--format=%ct", "--", rel(pointer)], check=False, capture=True)
+    try:
+        return int(result.stdout.strip())
+    except ValueError:
+        return 0
 
 
 def verify_legacy_raw() -> None:
@@ -280,4 +295,3 @@ if __name__ == "__main__":
     except RuntimeError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         raise SystemExit(2)
-

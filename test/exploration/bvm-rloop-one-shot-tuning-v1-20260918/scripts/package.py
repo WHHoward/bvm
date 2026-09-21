@@ -136,10 +136,23 @@ def existing_references(files: list[Path]) -> list[dict[str, Any]]:
     return list(unique.values())
 
 
-def batch_counts(files: list[Path]) -> tuple[int, int]:
+def exists_at_commit(commit: str, path: Path) -> bool:
+    return subprocess.run(["git", "cat-file", "-e", f"{commit}:{repo_rel(path)}"], cwd=REPO, capture_output=True, check=False).returncode == 0
+
+
+def batch_counts(base_commit: str, files: list[Path]) -> tuple[int, int]:
     new_solves = reused = 0
     for path in files:
         if path.name != "BATCH_QA.json":
+            relative = path.relative_to(SERIES)
+            is_user_result = len(relative.parts) == 3 and relative.parts[0] == "runs" and relative.parts[2] == "result.json"
+            if not is_user_result or exists_at_commit(base_commit, path):
+                continue
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                continue
+            new_solves += int(data.get("physical_solve_count", 0))
             continue
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
@@ -163,7 +176,7 @@ def delta_manifest(base: dict[str, Any], head: str, files: list[Path], statuses:
             new_files.append(rel)
         else:
             modified_files.append(rel)
-    new_solves, reused = batch_counts(files)
+    new_solves, reused = batch_counts(base["base_commit"], files)
     return {"schema": "bvm-rloop-delta-manifest-v1", "package_type": "delta", "base_package_name": base["base_package_name"], "base_package_sha256": base["base_package_sha256"], "base_commit": base["base_commit"], "head_commit": head, "included_files": [repo_rel(path) for path in files], "included_file_sha256": file_hashes(files), "new_files": sorted(new_files), "modified_files": sorted(modified_files), "referenced_existing_cases": existing_references(files), "new_physical_solve_count": new_solves, "reused_point_count": reused}
 
 
@@ -229,4 +242,3 @@ if __name__ == "__main__":
     except RuntimeError as exc:
         print(f"ERROR: {exc}")
         raise SystemExit(2)
-

@@ -1,0 +1,97 @@
+{
+  "schema": "bvm-rloop-user-case-source-manifest-v1",
+  "created_at": "2026-09-21T16:36:26+08:00",
+  "parent": {
+    "head": "2b8e7c2bb77968c42a335ba5a87ff1a77f460952",
+    "remote_bvm_master": "2b8e7c2bb77968c42a335ba5a87ff1a77f460952",
+    "working_tree_dirty": true,
+    "status_porcelain": " M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env\n"
+  },
+  "case_id": "U124_QB_LIN_baseline",
+  "canonical_bvm_reference": {
+    "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/bvm_jm2_connected.cir",
+    "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+  },
+  "sources": [
+    {
+      "role": "JJ_MODEL",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504
+    },
+    {
+      "role": "JTL",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864
+    },
+    {
+      "role": "BVM",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/bvm_tunable.cir",
+      "sha256": "1e12bdb6eb78349849f4ed457e2a4524399194dfa38cf7f6fb8eba12ad35253e",
+      "bytes": 1304
+    },
+    {
+      "role": "QB",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/bq_tunable.cir",
+      "sha256": "8c2a8fe7aacabf316b33d5fd9110191bb343e54c1bb2634996d1103f63cf6efe",
+      "bytes": 410
+    }
+  ],
+  "bvm_rendered_snapshot": {
+    "role": "BVM",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/bvm_tunable.cir",
+    "sha256": "1e12bdb6eb78349849f4ed457e2a4524399194dfa38cf7f6fb8eba12ad35253e",
+    "bytes": 1304
+  },
+  "qb_rendered_snapshot": {
+    "role": "QB",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/bq_tunable.cir",
+    "sha256": "8c2a8fe7aacabf316b33d5fd9110191bb343e54c1bb2634996d1103f63cf6efe",
+    "bytes": 410
+  },
+  "jj_model_snapshot": {
+    "role": "JJ_MODEL",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/jjmit.cir",
+    "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "bytes": 504
+  },
+  "jtl_snapshot": {
+    "role": "JTL",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U124_QB_LIN_baseline/snapshot/sources/jtl2.cir",
+    "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "bytes": 864
+  },
+  "user_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env",
+    "sha256": "cbd88eefd8893c4b017f6b7c7c502da8c17df99fad48324d3ae95a1530a8655a"
+  },
+  "user_case_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env",
+    "sha256": "cbd88eefd8893c4b017f6b7c7c502da8c17df99fad48324d3ae95a1530a8655a"
+  },
+  "reference_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/config/canonical_reference.env",
+    "sha256": "45e805089a7a83c5910e5159f74dbb51a425a94c2069846fe1d5b13f89feab4c"
+  },
+  "config_changes": [
+    {
+      "key": "JS1_AREA",
+      "from": "0.74",
+      "to": "0.52",
+      "section": "circuit"
+    },
+    {
+      "key": "RSH_JS1",
+      "from": "OPEN",
+      "to": "12",
+      "section": "circuit"
+    },
+    {
+      "key": "RSH_JS2",
+      "from": "OPEN",
+      "to": "20",
+      "section": "circuit"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "bvm-rloop-user-case-source-manifest-v1",
+  "created_at": "2026-09-22T17:59:31+08:00",
+  "parent": {
+    "head": "d44e76e011dfeef5ab0f36aec47ec2c883b6760b",
+    "remote_bvm_master": "d44e76e011dfeef5ab0f36aec47ec2c883b6760b",
+    "working_tree_dirty": true,
+    "status_porcelain": " M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B022_3bvm_rloop_shots_tunning_qb_L1_sweep/BATCH_MANIFEST.json\n"
+  },
+  "case_id": "U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p",
+  "array_size": 3,
+  "bit_order": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+  "canonical_bvm_reference": {
+    "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/bvm_jm2_connected.cir",
+    "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+  },
+  "sources": [
+    {
+      "role": "JJ_MODEL",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504
+    },
+    {
+      "role": "JTL",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864
+    },
+    {
+      "role": "BVM",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/bvm_tunable.cir",
+      "sha256": "4ac966958dd9184e02ec45e9089a7136884722529dda7f02811a42f1c0657e3e",
+      "bytes": 1303
+    },
+    {
+      "role": "QB",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/bq_tunable.cir",
+      "sha256": "91dbcba1a886910629044d8e5c9e398dbc0b0fc0e58803d0f5d8960d9132a403",
+      "bytes": 411
+    }
+  ],
+  "bvm_rendered_snapshot": {
+    "role": "BVM",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/bvm_tunable.cir",
+    "sha256": "4ac966958dd9184e02ec45e9089a7136884722529dda7f02811a42f1c0657e3e",
+    "bytes": 1303
+  },
+  "qb_rendered_snapshot": {
+    "role": "QB",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/bq_tunable.cir",
+    "sha256": "91dbcba1a886910629044d8e5c9e398dbc0b0fc0e58803d0f5d8960d9132a403",
+    "bytes": 411
+  },
+  "jj_model_snapshot": {
+    "role": "JJ_MODEL",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/jjmit.cir",
+    "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "bytes": 504
+  },
+  "jtl_snapshot": {
+    "role": "JTL",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U195_3bvm_rloop_shots_tunning_qb_L1_sweep_qb_l1_1p0p/snapshot/sources/jtl2.cir",
+    "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "bytes": 864
+  },
+  "user_config": {
+    "path": "/tmp/bvm_sweep_pn6_1tt_.env",
+    "sha256": "54e313debcb26f5d94050ccc25dab6915c75c1416d1fff4206836b6e888aeac1"
+  },
+  "user_case_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env",
+    "sha256": "cdf63f953b22e62d4d33ff590ef12f8ef21b659145bc10d7674097c939e09491"
+  },
+  "reference_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/config/canonical_reference.env",
+    "sha256": "10f49e8b42ce156e61581ffa1682ce77e6ca1f280762f926f74284af78246fba"
+  },
+  "config_changes": [
+    {
+      "key": "ARRAY_SIZE",
+      "from": "4",
+      "to": "3",
+      "section": "other"
+    },
+    {
+      "key": "JS1_AREA",
+      "from": "0.74",
+      "to": "0.87",
+      "section": "circuit"
+    },
+    {
+      "key": "JS2_AREA",
+      "from": "0.74",
+      "to": "0.87",
+      "section": "circuit"
+    },
+    {
+      "key": "QB_L1",
+      "from": "1.4p",
+      "to": "1.0p",
+      "section": "circuit"
+    },
+    {
+      "key": "QB_BJ1_AREA",
+      "from": "0.9",
+      "to": "0.85",
+      "section": "circuit"
+    }
+  ]
+}

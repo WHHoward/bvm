@@ -1,0 +1,105 @@
+{
+  "schema": "bvm-rloop-user-case-source-manifest-v1",
+  "created_at": "2026-09-22T17:18:44+08:00",
+  "parent": {
+    "head": "aa34aa6f4ace7b394aef2ee025414e3d0ada355d",
+    "remote_bvm_master": "aa34aa6f4ace7b394aef2ee025414e3d0ada355d",
+    "working_tree_dirty": true,
+    "status_porcelain": " M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env\n"
+  },
+  "case_id": "U191_3bvm_rloop_shots_tunning",
+  "array_size": 3,
+  "bit_order": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+  "canonical_bvm_reference": {
+    "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/bvm_jm2_connected.cir",
+    "sha256": "0093a45cc3910448b484d8bd004c6df8c22358bacc8b3ed5e23912dcab805d54"
+  },
+  "sources": [
+    {
+      "role": "JJ_MODEL",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504
+    },
+    {
+      "role": "JTL",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+      "bytes": 864
+    },
+    {
+      "role": "BVM",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir",
+      "sha256": "2035f70ed332797efedeee456e6b248a2142a3a46587899ee71c6fb012223267",
+      "bytes": 1303
+    },
+    {
+      "role": "QB",
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/bq_tunable.cir",
+      "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90",
+      "bytes": 411
+    }
+  ],
+  "bvm_rendered_snapshot": {
+    "role": "BVM",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir",
+    "sha256": "2035f70ed332797efedeee456e6b248a2142a3a46587899ee71c6fb012223267",
+    "bytes": 1303
+  },
+  "qb_rendered_snapshot": {
+    "role": "QB",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/bq_tunable.cir",
+    "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90",
+    "bytes": 411
+  },
+  "jj_model_snapshot": {
+    "role": "JJ_MODEL",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir",
+    "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "bytes": 504
+  },
+  "jtl_snapshot": {
+    "role": "JTL",
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir",
+    "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+    "bytes": 864
+  },
+  "user_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env",
+    "sha256": "20e0372e10dfbc8c3ea5828ad347bc3cc99757856120a1f9e8cc014a99321a26"
+  },
+  "user_case_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env",
+    "sha256": "20e0372e10dfbc8c3ea5828ad347bc3cc99757856120a1f9e8cc014a99321a26"
+  },
+  "reference_config": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/config/canonical_reference.env",
+    "sha256": "10f49e8b42ce156e61581ffa1682ce77e6ca1f280762f926f74284af78246fba"
+  },
+  "config_changes": [
+    {
+      "key": "ARRAY_SIZE",
+      "from": "4",
+      "to": "3",
+      "section": "other"
+    },
+    {
+      "key": "JS1_AREA",
+      "from": "0.74",
+      "to": "0.84",
+      "section": "circuit"
+    },
+    {
+      "key": "JS2_AREA",
+      "from": "0.74",
+      "to": "0.84",
+      "section": "circuit"
+    },
+    {
+      "key": "QB_BJ1_AREA",
+      "from": "0.9",
+      "to": "0.85",
+      "section": "circuit"
+    }
+  ]
+}

@@ -1,0 +1,1396 @@
+{
+  "schema": "bvm-rloop-user-case-provenance-v1",
+  "case_id": "U192_3bvm_rloop_shots_tunning",
+  "array_size": 3,
+  "bit_order": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+  "parent": {
+    "head": "aa34aa6f4ace7b394aef2ee025414e3d0ada355d",
+    "remote_bvm_master": "aa34aa6f4ace7b394aef2ee025414e3d0ada355d",
+    "working_tree_dirty": true,
+    "status_porcelain": " M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/LATEST_REVIEW.html\n M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U191_3bvm_rloop_shots_tunning/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/bq_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U191_3bvm_rloop_shots_tunning/stimulus_snapshot.env\n"
+  },
+  "run_order": [
+    "CLOSED_N0_000",
+    "CLOSED_N1_001",
+    "CLOSED_N2_011",
+    "CLOSED_N3_111"
+  ],
+  "runs": {
+    "CLOSED_N0_000": {
+      "run_id": "CLOSED_N0_000",
+      "mode": "closed",
+      "mask": "000",
+      "array_size": 3,
+      "parameters": {
+        "NAME": "3bvm_rloop_shots_tunning",
+        "MODE": "closed",
+        "ARRAY_SIZE": 3,
+        "MASKS": [
+          "000",
+          "001",
+          "011",
+          "111"
+        ],
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.86",
+        "JS2_AREA": "0.86",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "DT": "0.1p",
+        "STOP": "200p",
+        "CONTROL_ONLY_STOP": "120p",
+        "IDLE_START": "0p",
+        "IDLE_END": "50p",
+        "RECOVERY_END": "130p",
+        "TAIL_START": "150p",
+        "WRITE0_START": "50p",
+        "WRITE0_END": "61p",
+        "WRITE0_WL_AMP": "-100u",
+        "WRITE0_BL_AMP": "-100u",
+        "WRITE0_SE_AMP": "0u",
+        "WRITE0_WL_RISE": "1p",
+        "WRITE0_WL_FALL": "1p",
+        "WRITE0_BL_RISE": "1p",
+        "WRITE0_BL_FALL": "1p",
+        "WRITE0_SE_RISE": "1p",
+        "WRITE0_SE_FALL": "1p",
+        "CONTROL_READ_START": "70p",
+        "CONTROL_READ_END": "81p",
+        "CONTROL_WL_AMP": "100u",
+        "CONTROL_BL_AMP": "0u",
+        "CONTROL_SE_AMP": "100u",
+        "CONTROL_WL_RISE": "1p",
+        "CONTROL_WL_FALL": "1p",
+        "CONTROL_BL_RISE": "1p",
+        "CONTROL_BL_FALL": "1p",
+        "CONTROL_SE_RISE": "1p",
+        "CONTROL_SE_FALL": "1p",
+        "WRITE1_START": "90p",
+        "WRITE1_END": "101p",
+        "WRITE1_WL_AMP": "100u",
+        "WRITE1_BL_AMP": "100u",
+        "WRITE1_SE_AMP": "0u",
+        "WRITE1_WL_RISE": "1p",
+        "WRITE1_WL_FALL": "1p",
+        "WRITE1_BL_RISE": "1p",
+        "WRITE1_BL_FALL": "1p",
+        "WRITE1_SE_RISE": "1p",
+        "WRITE1_SE_FALL": "1p",
+        "FINAL_READ_START": "110p",
+        "FINAL_READ_END": "121p",
+        "READ_WL_AMP": "100u",
+        "READ_BL_AMP": "0u",
+        "READ_SE_AMP": "100u",
+        "READ_WL_RISE": "1p",
+        "READ_WL_FALL": "1p",
+        "READ_BL_RISE": "1p",
+        "READ_BL_FALL": "1p",
+        "READ_SE_RISE": "1p",
+        "READ_SE_FALL": "1p",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "SWEEP_REUSE_EXISTING": "yes",
+        "CASE_ID": "U192_3bvm_rloop_shots_tunning",
+        "BIT_ORDER": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+        "windows": {
+          "idle_0_50": [
+            0.0,
+            50.0
+          ],
+          "write0_50_61": [
+            50.0,
+            60.99999999999999
+          ],
+          "settle0_61_70": [
+            60.99999999999999,
+            70.0
+          ],
+          "zero_read_control_70_81": [
+            70.0,
+            81.0
+          ],
+          "settle1_81_90": [
+            81.0,
+            90.0
+          ],
+          "write1_90_101": [
+            90.0,
+            101.0
+          ],
+          "settle_101_110": [
+            101.0,
+            110.0
+          ],
+          "final_read_110_121": [
+            110.0,
+            121.0
+          ],
+          "recovery_121_130": [
+            121.0,
+            130.0
+          ],
+          "tail_150_200": [
+            150.0,
+            200.0
+          ],
+          "whole_0_200": [
+            0.0,
+            200.0
+          ]
+        },
+        "time_ps": {
+          "IDLE_START": 0.0,
+          "IDLE_END": 50.0,
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "WRITE1_START": 90.0,
+          "WRITE1_END": 101.0,
+          "FINAL_READ_START": 110.0,
+          "FINAL_READ_END": 121.0,
+          "RECOVERY_END": 130.0,
+          "TAIL_START": 150.0,
+          "STOP": 200.0
+        },
+        "config_changes": [
+          {
+            "key": "ARRAY_SIZE",
+            "from": "4",
+            "to": "3",
+            "section": "other"
+          },
+          {
+            "key": "JS1_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "JS2_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "QB_BJ1_AREA",
+            "from": "0.9",
+            "to": "0.85",
+            "section": "circuit"
+          }
+        ]
+      },
+      "windows": {
+        "idle_0_50": [
+          0.0,
+          50.0
+        ],
+        "write0_50_61": [
+          50.0,
+          60.99999999999999
+        ],
+        "settle0_61_70": [
+          60.99999999999999,
+          70.0
+        ],
+        "zero_read_control_70_81": [
+          70.0,
+          81.0
+        ],
+        "settle1_81_90": [
+          81.0,
+          90.0
+        ],
+        "write1_90_101": [
+          90.0,
+          101.0
+        ],
+        "settle_101_110": [
+          101.0,
+          110.0
+        ],
+        "final_read_110_121": [
+          110.0,
+          121.0
+        ],
+        "recovery_121_130": [
+          121.0,
+          130.0
+        ],
+        "tail_150_200": [
+          150.0,
+          200.0
+        ],
+        "whole_0_200": [
+          0.0,
+          200.0
+        ]
+      },
+      "config_changes": [
+        {
+          "key": "ARRAY_SIZE",
+          "from": "4",
+          "to": "3",
+          "section": "other"
+        },
+        {
+          "key": "JS1_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "JS2_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "QB_BJ1_AREA",
+          "from": "0.9",
+          "to": "0.85",
+          "section": "circuit"
+        }
+      ],
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/actual_deck.cir"
+      ],
+      "started_at": "2026-09-22T17:20:40+08:00",
+      "finished_at": "2026-09-22T17:20:40+08:00",
+      "runtime_seconds": 0.17470852499900502,
+      "execution_status": "RUN_PASS",
+      "stimulus_qa": {
+        "status": "PASS",
+        "array_size": 3,
+        "expected_group_count": 9,
+        "actual_group_count": 9,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/actual_deck.cir",
+        "sha256": "3b27f77f6bb2eb56a20f17907b1a02a2b87b102e7c4e4958b37df70cb35154ee"
+      },
+      "stimulus": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/stimulus.inc",
+        "sha256": "5675aec1ccd812fd8f574fb9c51656c8698f10102064cbc231967ac55f8f72cc"
+      },
+      "raw": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/raw.csv",
+        "sha256": "1c2043bb68bd1c863c4ffd039c170e4c26e72f7dbf15df83d80eb69c3ea9210b",
+        "bytes": 5968660,
+        "headers": 223
+      },
+      "signal_manifest": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N0_000/signal_manifest.csv",
+        "sha256": "f37785df652c19e841ec841c41bdc428b95783bba2e208a2d50f4d73438400eb",
+        "requested": 223,
+        "present": 222,
+        "unsupported_or_not_emitted": 1
+      }
+    },
+    "CLOSED_N1_001": {
+      "run_id": "CLOSED_N1_001",
+      "mode": "closed",
+      "mask": "001",
+      "array_size": 3,
+      "parameters": {
+        "NAME": "3bvm_rloop_shots_tunning",
+        "MODE": "closed",
+        "ARRAY_SIZE": 3,
+        "MASKS": [
+          "000",
+          "001",
+          "011",
+          "111"
+        ],
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.86",
+        "JS2_AREA": "0.86",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "DT": "0.1p",
+        "STOP": "200p",
+        "CONTROL_ONLY_STOP": "120p",
+        "IDLE_START": "0p",
+        "IDLE_END": "50p",
+        "RECOVERY_END": "130p",
+        "TAIL_START": "150p",
+        "WRITE0_START": "50p",
+        "WRITE0_END": "61p",
+        "WRITE0_WL_AMP": "-100u",
+        "WRITE0_BL_AMP": "-100u",
+        "WRITE0_SE_AMP": "0u",
+        "WRITE0_WL_RISE": "1p",
+        "WRITE0_WL_FALL": "1p",
+        "WRITE0_BL_RISE": "1p",
+        "WRITE0_BL_FALL": "1p",
+        "WRITE0_SE_RISE": "1p",
+        "WRITE0_SE_FALL": "1p",
+        "CONTROL_READ_START": "70p",
+        "CONTROL_READ_END": "81p",
+        "CONTROL_WL_AMP": "100u",
+        "CONTROL_BL_AMP": "0u",
+        "CONTROL_SE_AMP": "100u",
+        "CONTROL_WL_RISE": "1p",
+        "CONTROL_WL_FALL": "1p",
+        "CONTROL_BL_RISE": "1p",
+        "CONTROL_BL_FALL": "1p",
+        "CONTROL_SE_RISE": "1p",
+        "CONTROL_SE_FALL": "1p",
+        "WRITE1_START": "90p",
+        "WRITE1_END": "101p",
+        "WRITE1_WL_AMP": "100u",
+        "WRITE1_BL_AMP": "100u",
+        "WRITE1_SE_AMP": "0u",
+        "WRITE1_WL_RISE": "1p",
+        "WRITE1_WL_FALL": "1p",
+        "WRITE1_BL_RISE": "1p",
+        "WRITE1_BL_FALL": "1p",
+        "WRITE1_SE_RISE": "1p",
+        "WRITE1_SE_FALL": "1p",
+        "FINAL_READ_START": "110p",
+        "FINAL_READ_END": "121p",
+        "READ_WL_AMP": "100u",
+        "READ_BL_AMP": "0u",
+        "READ_SE_AMP": "100u",
+        "READ_WL_RISE": "1p",
+        "READ_WL_FALL": "1p",
+        "READ_BL_RISE": "1p",
+        "READ_BL_FALL": "1p",
+        "READ_SE_RISE": "1p",
+        "READ_SE_FALL": "1p",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "SWEEP_REUSE_EXISTING": "yes",
+        "CASE_ID": "U192_3bvm_rloop_shots_tunning",
+        "BIT_ORDER": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+        "windows": {
+          "idle_0_50": [
+            0.0,
+            50.0
+          ],
+          "write0_50_61": [
+            50.0,
+            60.99999999999999
+          ],
+          "settle0_61_70": [
+            60.99999999999999,
+            70.0
+          ],
+          "zero_read_control_70_81": [
+            70.0,
+            81.0
+          ],
+          "settle1_81_90": [
+            81.0,
+            90.0
+          ],
+          "write1_90_101": [
+            90.0,
+            101.0
+          ],
+          "settle_101_110": [
+            101.0,
+            110.0
+          ],
+          "final_read_110_121": [
+            110.0,
+            121.0
+          ],
+          "recovery_121_130": [
+            121.0,
+            130.0
+          ],
+          "tail_150_200": [
+            150.0,
+            200.0
+          ],
+          "whole_0_200": [
+            0.0,
+            200.0
+          ]
+        },
+        "time_ps": {
+          "IDLE_START": 0.0,
+          "IDLE_END": 50.0,
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "WRITE1_START": 90.0,
+          "WRITE1_END": 101.0,
+          "FINAL_READ_START": 110.0,
+          "FINAL_READ_END": 121.0,
+          "RECOVERY_END": 130.0,
+          "TAIL_START": 150.0,
+          "STOP": 200.0
+        },
+        "config_changes": [
+          {
+            "key": "ARRAY_SIZE",
+            "from": "4",
+            "to": "3",
+            "section": "other"
+          },
+          {
+            "key": "JS1_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "JS2_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "QB_BJ1_AREA",
+            "from": "0.9",
+            "to": "0.85",
+            "section": "circuit"
+          }
+        ]
+      },
+      "windows": {
+        "idle_0_50": [
+          0.0,
+          50.0
+        ],
+        "write0_50_61": [
+          50.0,
+          60.99999999999999
+        ],
+        "settle0_61_70": [
+          60.99999999999999,
+          70.0
+        ],
+        "zero_read_control_70_81": [
+          70.0,
+          81.0
+        ],
+        "settle1_81_90": [
+          81.0,
+          90.0
+        ],
+        "write1_90_101": [
+          90.0,
+          101.0
+        ],
+        "settle_101_110": [
+          101.0,
+          110.0
+        ],
+        "final_read_110_121": [
+          110.0,
+          121.0
+        ],
+        "recovery_121_130": [
+          121.0,
+          130.0
+        ],
+        "tail_150_200": [
+          150.0,
+          200.0
+        ],
+        "whole_0_200": [
+          0.0,
+          200.0
+        ]
+      },
+      "config_changes": [
+        {
+          "key": "ARRAY_SIZE",
+          "from": "4",
+          "to": "3",
+          "section": "other"
+        },
+        {
+          "key": "JS1_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "JS2_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "QB_BJ1_AREA",
+          "from": "0.9",
+          "to": "0.85",
+          "section": "circuit"
+        }
+      ],
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/actual_deck.cir"
+      ],
+      "started_at": "2026-09-22T17:20:40+08:00",
+      "finished_at": "2026-09-22T17:20:40+08:00",
+      "runtime_seconds": 0.1643526540028688,
+      "execution_status": "RUN_PASS",
+      "stimulus_qa": {
+        "status": "PASS",
+        "array_size": 3,
+        "expected_group_count": 9,
+        "actual_group_count": 9,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/actual_deck.cir",
+        "sha256": "3b27f77f6bb2eb56a20f17907b1a02a2b87b102e7c4e4958b37df70cb35154ee"
+      },
+      "stimulus": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/stimulus.inc",
+        "sha256": "0437191ed51b4cf9e2ba9006fa7941aa7189f2405d80f25ae2fcb4a8f2facdde"
+      },
+      "raw": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/raw.csv",
+        "sha256": "eca91d9f473008bab1a4d901e27c80ecb675a55d3e3d980ce5f4f52f47d901b7",
+        "bytes": 5968376,
+        "headers": 223
+      },
+      "signal_manifest": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N1_001/signal_manifest.csv",
+        "sha256": "f37785df652c19e841ec841c41bdc428b95783bba2e208a2d50f4d73438400eb",
+        "requested": 223,
+        "present": 222,
+        "unsupported_or_not_emitted": 1
+      }
+    },
+    "CLOSED_N2_011": {
+      "run_id": "CLOSED_N2_011",
+      "mode": "closed",
+      "mask": "011",
+      "array_size": 3,
+      "parameters": {
+        "NAME": "3bvm_rloop_shots_tunning",
+        "MODE": "closed",
+        "ARRAY_SIZE": 3,
+        "MASKS": [
+          "000",
+          "001",
+          "011",
+          "111"
+        ],
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.86",
+        "JS2_AREA": "0.86",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "DT": "0.1p",
+        "STOP": "200p",
+        "CONTROL_ONLY_STOP": "120p",
+        "IDLE_START": "0p",
+        "IDLE_END": "50p",
+        "RECOVERY_END": "130p",
+        "TAIL_START": "150p",
+        "WRITE0_START": "50p",
+        "WRITE0_END": "61p",
+        "WRITE0_WL_AMP": "-100u",
+        "WRITE0_BL_AMP": "-100u",
+        "WRITE0_SE_AMP": "0u",
+        "WRITE0_WL_RISE": "1p",
+        "WRITE0_WL_FALL": "1p",
+        "WRITE0_BL_RISE": "1p",
+        "WRITE0_BL_FALL": "1p",
+        "WRITE0_SE_RISE": "1p",
+        "WRITE0_SE_FALL": "1p",
+        "CONTROL_READ_START": "70p",
+        "CONTROL_READ_END": "81p",
+        "CONTROL_WL_AMP": "100u",
+        "CONTROL_BL_AMP": "0u",
+        "CONTROL_SE_AMP": "100u",
+        "CONTROL_WL_RISE": "1p",
+        "CONTROL_WL_FALL": "1p",
+        "CONTROL_BL_RISE": "1p",
+        "CONTROL_BL_FALL": "1p",
+        "CONTROL_SE_RISE": "1p",
+        "CONTROL_SE_FALL": "1p",
+        "WRITE1_START": "90p",
+        "WRITE1_END": "101p",
+        "WRITE1_WL_AMP": "100u",
+        "WRITE1_BL_AMP": "100u",
+        "WRITE1_SE_AMP": "0u",
+        "WRITE1_WL_RISE": "1p",
+        "WRITE1_WL_FALL": "1p",
+        "WRITE1_BL_RISE": "1p",
+        "WRITE1_BL_FALL": "1p",
+        "WRITE1_SE_RISE": "1p",
+        "WRITE1_SE_FALL": "1p",
+        "FINAL_READ_START": "110p",
+        "FINAL_READ_END": "121p",
+        "READ_WL_AMP": "100u",
+        "READ_BL_AMP": "0u",
+        "READ_SE_AMP": "100u",
+        "READ_WL_RISE": "1p",
+        "READ_WL_FALL": "1p",
+        "READ_BL_RISE": "1p",
+        "READ_BL_FALL": "1p",
+        "READ_SE_RISE": "1p",
+        "READ_SE_FALL": "1p",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "SWEEP_REUSE_EXISTING": "yes",
+        "CASE_ID": "U192_3bvm_rloop_shots_tunning",
+        "BIT_ORDER": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+        "windows": {
+          "idle_0_50": [
+            0.0,
+            50.0
+          ],
+          "write0_50_61": [
+            50.0,
+            60.99999999999999
+          ],
+          "settle0_61_70": [
+            60.99999999999999,
+            70.0
+          ],
+          "zero_read_control_70_81": [
+            70.0,
+            81.0
+          ],
+          "settle1_81_90": [
+            81.0,
+            90.0
+          ],
+          "write1_90_101": [
+            90.0,
+            101.0
+          ],
+          "settle_101_110": [
+            101.0,
+            110.0
+          ],
+          "final_read_110_121": [
+            110.0,
+            121.0
+          ],
+          "recovery_121_130": [
+            121.0,
+            130.0
+          ],
+          "tail_150_200": [
+            150.0,
+            200.0
+          ],
+          "whole_0_200": [
+            0.0,
+            200.0
+          ]
+        },
+        "time_ps": {
+          "IDLE_START": 0.0,
+          "IDLE_END": 50.0,
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "WRITE1_START": 90.0,
+          "WRITE1_END": 101.0,
+          "FINAL_READ_START": 110.0,
+          "FINAL_READ_END": 121.0,
+          "RECOVERY_END": 130.0,
+          "TAIL_START": 150.0,
+          "STOP": 200.0
+        },
+        "config_changes": [
+          {
+            "key": "ARRAY_SIZE",
+            "from": "4",
+            "to": "3",
+            "section": "other"
+          },
+          {
+            "key": "JS1_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "JS2_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "QB_BJ1_AREA",
+            "from": "0.9",
+            "to": "0.85",
+            "section": "circuit"
+          }
+        ]
+      },
+      "windows": {
+        "idle_0_50": [
+          0.0,
+          50.0
+        ],
+        "write0_50_61": [
+          50.0,
+          60.99999999999999
+        ],
+        "settle0_61_70": [
+          60.99999999999999,
+          70.0
+        ],
+        "zero_read_control_70_81": [
+          70.0,
+          81.0
+        ],
+        "settle1_81_90": [
+          81.0,
+          90.0
+        ],
+        "write1_90_101": [
+          90.0,
+          101.0
+        ],
+        "settle_101_110": [
+          101.0,
+          110.0
+        ],
+        "final_read_110_121": [
+          110.0,
+          121.0
+        ],
+        "recovery_121_130": [
+          121.0,
+          130.0
+        ],
+        "tail_150_200": [
+          150.0,
+          200.0
+        ],
+        "whole_0_200": [
+          0.0,
+          200.0
+        ]
+      },
+      "config_changes": [
+        {
+          "key": "ARRAY_SIZE",
+          "from": "4",
+          "to": "3",
+          "section": "other"
+        },
+        {
+          "key": "JS1_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "JS2_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "QB_BJ1_AREA",
+          "from": "0.9",
+          "to": "0.85",
+          "section": "circuit"
+        }
+      ],
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/actual_deck.cir"
+      ],
+      "started_at": "2026-09-22T17:20:40+08:00",
+      "finished_at": "2026-09-22T17:20:40+08:00",
+      "runtime_seconds": 0.17191895799987833,
+      "execution_status": "RUN_PASS",
+      "stimulus_qa": {
+        "status": "PASS",
+        "array_size": 3,
+        "expected_group_count": 9,
+        "actual_group_count": 9,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/actual_deck.cir",
+        "sha256": "3b27f77f6bb2eb56a20f17907b1a02a2b87b102e7c4e4958b37df70cb35154ee"
+      },
+      "stimulus": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/stimulus.inc",
+        "sha256": "8ea73b22f75a05116de9fafa753296a5a2c25addad5775abadee3b49db008408"
+      },
+      "raw": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/raw.csv",
+        "sha256": "209eaf6036d3f95a9e58cdfcef10a6d41465b54308af225d6cc4178235654d95",
+        "bytes": 5969331,
+        "headers": 223
+      },
+      "signal_manifest": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N2_011/signal_manifest.csv",
+        "sha256": "f37785df652c19e841ec841c41bdc428b95783bba2e208a2d50f4d73438400eb",
+        "requested": 223,
+        "present": 222,
+        "unsupported_or_not_emitted": 1
+      }
+    },
+    "CLOSED_N3_111": {
+      "run_id": "CLOSED_N3_111",
+      "mode": "closed",
+      "mask": "111",
+      "array_size": 3,
+      "parameters": {
+        "NAME": "3bvm_rloop_shots_tunning",
+        "MODE": "closed",
+        "ARRAY_SIZE": 3,
+        "MASKS": [
+          "000",
+          "001",
+          "011",
+          "111"
+        ],
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.86",
+        "JS2_AREA": "0.86",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "DT": "0.1p",
+        "STOP": "200p",
+        "CONTROL_ONLY_STOP": "120p",
+        "IDLE_START": "0p",
+        "IDLE_END": "50p",
+        "RECOVERY_END": "130p",
+        "TAIL_START": "150p",
+        "WRITE0_START": "50p",
+        "WRITE0_END": "61p",
+        "WRITE0_WL_AMP": "-100u",
+        "WRITE0_BL_AMP": "-100u",
+        "WRITE0_SE_AMP": "0u",
+        "WRITE0_WL_RISE": "1p",
+        "WRITE0_WL_FALL": "1p",
+        "WRITE0_BL_RISE": "1p",
+        "WRITE0_BL_FALL": "1p",
+        "WRITE0_SE_RISE": "1p",
+        "WRITE0_SE_FALL": "1p",
+        "CONTROL_READ_START": "70p",
+        "CONTROL_READ_END": "81p",
+        "CONTROL_WL_AMP": "100u",
+        "CONTROL_BL_AMP": "0u",
+        "CONTROL_SE_AMP": "100u",
+        "CONTROL_WL_RISE": "1p",
+        "CONTROL_WL_FALL": "1p",
+        "CONTROL_BL_RISE": "1p",
+        "CONTROL_BL_FALL": "1p",
+        "CONTROL_SE_RISE": "1p",
+        "CONTROL_SE_FALL": "1p",
+        "WRITE1_START": "90p",
+        "WRITE1_END": "101p",
+        "WRITE1_WL_AMP": "100u",
+        "WRITE1_BL_AMP": "100u",
+        "WRITE1_SE_AMP": "0u",
+        "WRITE1_WL_RISE": "1p",
+        "WRITE1_WL_FALL": "1p",
+        "WRITE1_BL_RISE": "1p",
+        "WRITE1_BL_FALL": "1p",
+        "WRITE1_SE_RISE": "1p",
+        "WRITE1_SE_FALL": "1p",
+        "FINAL_READ_START": "110p",
+        "FINAL_READ_END": "121p",
+        "READ_WL_AMP": "100u",
+        "READ_BL_AMP": "0u",
+        "READ_SE_AMP": "100u",
+        "READ_WL_RISE": "1p",
+        "READ_WL_FALL": "1p",
+        "READ_BL_RISE": "1p",
+        "READ_BL_FALL": "1p",
+        "READ_SE_RISE": "1p",
+        "READ_SE_FALL": "1p",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "SWEEP_REUSE_EXISTING": "yes",
+        "CASE_ID": "U192_3bvm_rloop_shots_tunning",
+        "BIT_ORDER": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+        "windows": {
+          "idle_0_50": [
+            0.0,
+            50.0
+          ],
+          "write0_50_61": [
+            50.0,
+            60.99999999999999
+          ],
+          "settle0_61_70": [
+            60.99999999999999,
+            70.0
+          ],
+          "zero_read_control_70_81": [
+            70.0,
+            81.0
+          ],
+          "settle1_81_90": [
+            81.0,
+            90.0
+          ],
+          "write1_90_101": [
+            90.0,
+            101.0
+          ],
+          "settle_101_110": [
+            101.0,
+            110.0
+          ],
+          "final_read_110_121": [
+            110.0,
+            121.0
+          ],
+          "recovery_121_130": [
+            121.0,
+            130.0
+          ],
+          "tail_150_200": [
+            150.0,
+            200.0
+          ],
+          "whole_0_200": [
+            0.0,
+            200.0
+          ]
+        },
+        "time_ps": {
+          "IDLE_START": 0.0,
+          "IDLE_END": 50.0,
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "WRITE1_START": 90.0,
+          "WRITE1_END": 101.0,
+          "FINAL_READ_START": 110.0,
+          "FINAL_READ_END": 121.0,
+          "RECOVERY_END": 130.0,
+          "TAIL_START": 150.0,
+          "STOP": 200.0
+        },
+        "config_changes": [
+          {
+            "key": "ARRAY_SIZE",
+            "from": "4",
+            "to": "3",
+            "section": "other"
+          },
+          {
+            "key": "JS1_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "JS2_AREA",
+            "from": "0.74",
+            "to": "0.86",
+            "section": "circuit"
+          },
+          {
+            "key": "QB_BJ1_AREA",
+            "from": "0.9",
+            "to": "0.85",
+            "section": "circuit"
+          }
+        ]
+      },
+      "windows": {
+        "idle_0_50": [
+          0.0,
+          50.0
+        ],
+        "write0_50_61": [
+          50.0,
+          60.99999999999999
+        ],
+        "settle0_61_70": [
+          60.99999999999999,
+          70.0
+        ],
+        "zero_read_control_70_81": [
+          70.0,
+          81.0
+        ],
+        "settle1_81_90": [
+          81.0,
+          90.0
+        ],
+        "write1_90_101": [
+          90.0,
+          101.0
+        ],
+        "settle_101_110": [
+          101.0,
+          110.0
+        ],
+        "final_read_110_121": [
+          110.0,
+          121.0
+        ],
+        "recovery_121_130": [
+          121.0,
+          130.0
+        ],
+        "tail_150_200": [
+          150.0,
+          200.0
+        ],
+        "whole_0_200": [
+          0.0,
+          200.0
+        ]
+      },
+      "config_changes": [
+        {
+          "key": "ARRAY_SIZE",
+          "from": "4",
+          "to": "3",
+          "section": "other"
+        },
+        {
+          "key": "JS1_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "JS2_AREA",
+          "from": "0.74",
+          "to": "0.86",
+          "section": "circuit"
+        },
+        {
+          "key": "QB_BJ1_AREA",
+          "from": "0.9",
+          "to": "0.85",
+          "section": "circuit"
+        }
+      ],
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "-a",
+        "1",
+        "-o",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/actual_deck.cir"
+      ],
+      "started_at": "2026-09-22T17:20:40+08:00",
+      "finished_at": "2026-09-22T17:20:40+08:00",
+      "runtime_seconds": 0.18544135100091808,
+      "execution_status": "RUN_PASS",
+      "stimulus_qa": {
+        "status": "PASS",
+        "array_size": 3,
+        "expected_group_count": 9,
+        "actual_group_count": 9,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/actual_deck.cir",
+        "sha256": "3b27f77f6bb2eb56a20f17907b1a02a2b87b102e7c4e4958b37df70cb35154ee"
+      },
+      "stimulus": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/stimulus.inc",
+        "sha256": "47bda69864d4a4747148c1e18246ca5aade1bd69c7c42b6c8be6486299d78f95"
+      },
+      "raw": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/raw.csv",
+        "sha256": "ed40f35c5360d8a545934f924ba01a755217ad4abac774ce7f83b7ba005d19e2",
+        "bytes": 5970699,
+        "headers": 223
+      },
+      "signal_manifest": {
+        "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U192_3bvm_rloop_shots_tunning/cases/CLOSED_N3_111/signal_manifest.csv",
+        "sha256": "f37785df652c19e841ec841c41bdc428b95783bba2e208a2d50f4d73438400eb",
+        "requested": 223,
+        "present": 222,
+        "unsupported_or_not_emitted": 1
+      }
+    }
+  },
+  "config_changes": [
+    {
+      "key": "ARRAY_SIZE",
+      "from": "4",
+      "to": "3",
+      "section": "other"
+    },
+    {
+      "key": "JS1_AREA",
+      "from": "0.74",
+      "to": "0.86",
+      "section": "circuit"
+    },
+    {
+      "key": "JS2_AREA",
+      "from": "0.74",
+      "to": "0.86",
+      "section": "circuit"
+    },
+    {
+      "key": "QB_BJ1_AREA",
+      "from": "0.9",
+      "to": "0.85",
+      "section": "circuit"
+    }
+  ],
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

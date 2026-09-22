@@ -1,0 +1,131 @@
+{
+  "parameters": {
+    "NAME": "bvm_qb_50ghz_merge",
+    "MODE": "closed",
+    "JM1_AREA": "1.2",
+    "JM2_AREA": "1.4",
+    "RJM1": "8",
+    "RJM2": "OPEN",
+    "LM1": "12.5p",
+    "LM2": "24.5p",
+    "LM3": "8.5p",
+    "LPM": "0.5p",
+    "RSH_JS1": "OPEN",
+    "RSH_JS2": "OPEN",
+    "LS1": "0.5p",
+    "LS2": "0.5p",
+    "LS3": "0.5p",
+    "RS": "3.0",
+    "LPSL": "0.5p",
+    "RSL": "12.0",
+    "LSL": "0.4p",
+    "RBL": "20.0",
+    "LPBL": "0.5p",
+    "RWL": "20.0",
+    "LPWL": "0.5p",
+    "RSE": "20.0",
+    "LPSE": "0.5p",
+    "QB_LIN": "1.5p",
+    "QB_BJS_AREA": "4.0",
+    "QB_L1": "1.4p",
+    "QB_L2": "2.0p",
+    "QB_RJ1": "32",
+    "QB_BJ2_AREA": "2.0",
+    "QB_RJ2": "12",
+    "QB_L3": "1.3p",
+    "QB_IB": "260u",
+    "DT": "0.1p",
+    "ARRAY_SIZE": 1,
+    "JS1_AREA": "0.90",
+    "JS2_AREA": "0.90",
+    "QB_BJ1_AREA": "1.0",
+    "BIT_ORDER": "mask left-to-right: b0=BVM1 (rightmost bit is highest-index BVM)",
+    "MASKS": [],
+    "STOP": "240p",
+    "CANDIDATE": "QB_1X1"
+  },
+  "expected": {
+    "candidate": "QB_1X1",
+    "sequence": [
+      {
+        "mask": "0",
+        "population": 0,
+        "read": {
+          "start_ps": 95.0,
+          "end_ps": 106.0
+        }
+      },
+      {
+        "mask": "1",
+        "population": 1,
+        "read": {
+          "start_ps": 165.0,
+          "end_ps": 176.0
+        }
+      },
+      {
+        "mask": "0",
+        "population": 0,
+        "read": {
+          "start_ps": 235.0,
+          "end_ps": 246.0
+        }
+      },
+      {
+        "mask": "1",
+        "population": 1,
+        "read": {
+          "start_ps": 305.0,
+          "end_ps": 316.0
+        }
+      }
+    ],
+    "parameters": {
+      "NAME": "bvm_qb_50ghz_merge",
+      "MODE": "closed",
+      "JM1_AREA": "1.2",
+      "JM2_AREA": "1.4",
+      "RJM1": "8",
+      "RJM2": "OPEN",
+      "LM1": "12.5p",
+      "LM2": "24.5p",
+      "LM3": "8.5p",
+      "LPM": "0.5p",
+      "RSH_JS1": "OPEN",
+      "RSH_JS2": "OPEN",
+      "LS1": "0.5p",
+      "LS2": "0.5p",
+      "LS3": "0.5p",
+      "RS": "3.0",
+      "LPSL": "0.5p",
+      "RSL": "12.0",
+      "LSL": "0.4p",
+      "RBL": "20.0",
+      "LPBL": "0.5p",
+      "RWL": "20.0",
+      "LPWL": "0.5p",
+      "RSE": "20.0",
+      "LPSE": "0.5p",
+      "QB_LIN": "1.5p",
+      "QB_BJS_AREA": "4.0",
+      "QB_L1": "1.4p",
+      "QB_L2": "2.0p",
+      "QB_RJ1": "32",
+      "QB_BJ2_AREA": "2.0",
+      "QB_RJ2": "12",
+      "QB_L3": "1.3p",
+      "QB_IB": "260u",
+      "DT": "0.1p",
+      "ARRAY_SIZE": 1,
+      "JS1_AREA": "0.90",
+      "JS2_AREA": "0.90",
+      "QB_BJ1_AREA": "1.0",
+      "BIT_ORDER": "mask left-to-right: b0=BVM1 (rightmost bit is highest-index BVM)",
+      "MASKS": [],
+      "STOP": "240p",
+      "CANDIDATE": "QB_1X1"
+    }
+  },
+  "parent_head": "57241ff6d837b679b2cc2c2008991619fb56d429",
+  "phase": "phase_b_rewrite_read"
+}

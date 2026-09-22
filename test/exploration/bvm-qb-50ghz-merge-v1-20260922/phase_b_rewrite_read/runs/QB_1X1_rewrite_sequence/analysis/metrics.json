@@ -1,0 +1,181 @@
+{
+  "schema": "bvm-qb-50ghz-run-metrics-v1",
+  "phase": "phase_b_rewrite_read",
+  "run_id": "QB_1X1_rewrite_sequence",
+  "expected": {
+    "candidate": "QB_1X1",
+    "sequence": [
+      {
+        "mask": "0",
+        "population": 0,
+        "read": {
+          "start_ps": 95.0,
+          "end_ps": 106.0
+        }
+      },
+      {
+        "mask": "1",
+        "population": 1,
+        "read": {
+          "start_ps": 165.0,
+          "end_ps": 176.0
+        }
+      },
+      {
+        "mask": "0",
+        "population": 0,
+        "read": {
+          "start_ps": 235.0,
+          "end_ps": 246.0
+        }
+      },
+      {
+        "mask": "1",
+        "population": 1,
+        "read": {
+          "start_ps": 305.0,
+          "end_ps": 316.0
+        }
+      }
+    ],
+    "parameters": {
+      "NAME": "bvm_qb_50ghz_merge",
+      "MODE": "closed",
+      "JM1_AREA": "1.2",
+      "JM2_AREA": "1.4",
+      "RJM1": "8",
+      "RJM2": "OPEN",
+      "LM1": "12.5p",
+      "LM2": "24.5p",
+      "LM3": "8.5p",
+      "LPM": "0.5p",
+      "RSH_JS1": "OPEN",
+      "RSH_JS2": "OPEN",
+      "LS1": "0.5p",
+      "LS2": "0.5p",
+      "LS3": "0.5p",
+      "RS": "3.0",
+      "LPSL": "0.5p",
+      "RSL": "12.0",
+      "LSL": "0.4p",
+      "RBL": "20.0",
+      "LPBL": "0.5p",
+      "RWL": "20.0",
+      "LPWL": "0.5p",
+      "RSE": "20.0",
+      "LPSE": "0.5p",
+      "QB_LIN": "1.5p",
+      "QB_BJS_AREA": "4.0",
+      "QB_L1": "1.4p",
+      "QB_L2": "2.0p",
+      "QB_RJ1": "32",
+      "QB_BJ2_AREA": "2.0",
+      "QB_RJ2": "12",
+      "QB_L3": "1.3p",
+      "QB_IB": "260u",
+      "DT": "0.1p",
+      "ARRAY_SIZE": 1,
+      "JS1_AREA": "0.90",
+      "JS2_AREA": "0.90",
+      "QB_BJ1_AREA": "1.0",
+      "BIT_ORDER": "mask left-to-right: b0=BVM1 (rightmost bit is highest-index BVM)",
+      "MASKS": [],
+      "STOP": "240p",
+      "CANDIDATE": "QB_1X1"
+    }
+  },
+  "terminal_response_candidates": [
+    {
+      "start_ps": 189.0,
+      "end_ps": 192.5,
+      "peak_ps": 191.5,
+      "peak_v": 0.001245807,
+      "sample_count": 36
+    }
+  ],
+  "terminal_candidate_count": 1,
+  "phase_area_cross_checks": {
+    "BJ1": [
+      {
+        "status": "RECORDED",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "window_ps": [
+          95.0,
+          106.0
+        ],
+        "delta_phase_rad": 0.0002629999999999022,
+        "delta_phase_turns_navigation": 4.185775003315291e-05,
+        "voltage_area_phi0": 4.23635136762671e-05,
+        "sample_count": 110
+      },
+      {
+        "status": "RECORDED",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "window_ps": [
+          165.0,
+          176.0
+        ],
+        "delta_phase_rad": 6.928236999999999,
+        "delta_phase_turns_navigation": 1.1026631654621637,
+        "voltage_area_phi0": 1.1027672589388822,
+        "sample_count": 110
+      },
+      {
+        "status": "RECORDED",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "window_ps": [
+          235.0,
+          246.0
+        ],
+        "delta_phase_rad": -0.0007500000000000284,
+        "delta_phase_turns_navigation": -0.00011936620731892603,
+        "voltage_area_phi0": -0.00012059592168935368,
+        "sample_count": 50
+      },
+      {
+        "status": "UNKNOWN",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "sample_count": 0
+      }
+    ]
+  },
+  "state_cycle_metrics": [
+    {
+      "state": "0",
+      "expected_population": 0,
+      "read_start_ps": 95.0,
+      "terminal_response_candidate_count": 0,
+      "first_response_ps": null,
+      "last_response_ps": null
+    },
+    {
+      "state": "1",
+      "expected_population": 1,
+      "read_start_ps": 165.0,
+      "terminal_response_candidate_count": 1,
+      "first_response_ps": 191.5,
+      "last_response_ps": 191.5
+    },
+    {
+      "state": "0",
+      "expected_population": 0,
+      "read_start_ps": 235.0,
+      "terminal_response_candidate_count": 0,
+      "first_response_ps": null,
+      "last_response_ps": null
+    },
+    {
+      "state": "1",
+      "expected_population": 1,
+      "read_start_ps": 305.0,
+      "terminal_response_candidate_count": 0,
+      "first_response_ps": null,
+      "last_response_ps": null
+    }
+  ],
+  "gate_candidate": false
+}

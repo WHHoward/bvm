@@ -1,0 +1,103 @@
+{
+  "schema": "bvm-qb-50ghz-stimulus-plot-manifest-v1",
+  "run_id": "QB_3X1_100",
+  "entries": [
+    {
+      "status": "PASS",
+      "input": "phase_a_repeated_read/runs/QB_3X1_100/raw.csv",
+      "output": "phase_a_repeated_read/runs/QB_3X1_100/plots/stimulus/stimulus_WL.html",
+      "signals": [
+        "I(I_WL1)",
+        "I(I_WL2)",
+        "I(I_WL3)"
+      ],
+      "input_sha256": "1a95aa79a5bb1d49c9f0e8bef3d9731e57e18c7531787bb47eadde3aed5cf206",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_100/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_100/plots/stimulus/stimulus_WL.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered stimulus WL — QB_3X1_100",
+        "-s",
+        "I(I_WL1)",
+        "I(I_WL2)",
+        "I(I_WL3)"
+      ],
+      "origin": "raw.csv",
+      "label": "I(I_WL*) direct solver output"
+    },
+    {
+      "status": "PASS",
+      "input": "phase_a_repeated_read/runs/QB_3X1_100/raw.csv",
+      "output": "phase_a_repeated_read/runs/QB_3X1_100/plots/stimulus/stimulus_BL.html",
+      "signals": [
+        "I(I_BL1)",
+        "I(I_BL2)",
+        "I(I_BL3)"
+      ],
+      "input_sha256": "1a95aa79a5bb1d49c9f0e8bef3d9731e57e18c7531787bb47eadde3aed5cf206",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_100/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_100/plots/stimulus/stimulus_BL.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered stimulus BL — QB_3X1_100",
+        "-s",
+        "I(I_BL1)",
+        "I(I_BL2)",
+        "I(I_BL3)"
+      ],
+      "origin": "raw.csv",
+      "label": "I(I_BL*) direct solver output"
+    },
+    {
+      "status": "PASS",
+      "input": "phase_a_repeated_read/runs/QB_3X1_100/raw.csv",
+      "output": "phase_a_repeated_read/runs/QB_3X1_100/plots/stimulus/stimulus_SE.html",
+      "signals": [
+        "I(I_SE1)",
+        "I(I_SE2)",
+        "I(I_SE3)"
+      ],
+      "input_sha256": "1a95aa79a5bb1d49c9f0e8bef3d9731e57e18c7531787bb47eadde3aed5cf206",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_100/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_100/plots/stimulus/stimulus_SE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered stimulus SE — QB_3X1_100",
+        "-s",
+        "I(I_SE1)",
+        "I(I_SE2)",
+        "I(I_SE3)"
+      ],
+      "origin": "raw.csv",
+      "label": "I(I_SE*) direct solver output"
+    }
+  ],
+  "origin_note": "Raw source-current plots are direct CSV tracks. MERGE input plots are exact registered PWL definitions because INA/INB were not requested in raw probes."
+}

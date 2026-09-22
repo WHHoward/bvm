@@ -1,0 +1,39 @@
+{
+  "schema": "bvm-qb-50ghz-stimulus-plot-manifest-v1",
+  "run_id": "collision_m4ps",
+  "entries": [
+    {
+      "status": "PASS",
+      "input": "phase_c_merge_collision/runs/collision_m4ps/plots/stimulus/stimulus_definition.csv",
+      "output": "phase_c_merge_collision/runs/collision_m4ps/plots/stimulus/stimulus_definition_MERGE_INPUT.html",
+      "signals": [
+        "V(INA)",
+        "V(INB)"
+      ],
+      "input_sha256": "e3c1db4dabc2bc395d2169fa3a535e070624ca13534155c4ff9e2767db12e747",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_c_merge_collision/runs/collision_m4ps/plots/stimulus/stimulus_definition.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_c_merge_collision/runs/collision_m4ps/plots/stimulus/stimulus_definition_MERGE_INPUT.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered PWL stimulus definition MERGE_INPUT — collision_m4ps",
+        "-s",
+        "V(INA)",
+        "V(INB)"
+      ],
+      "origin": "stimulus.inc PWL definition",
+      "label": "source definition; not solver raw",
+      "stimulus_sha256": "7d884b4098b905a755e624c4a55ba8d5292de35c2505d5a8c4a77921327a1210",
+      "derived_trace_sha256": "e3c1db4dabc2bc395d2169fa3a535e070624ca13534155c4ff9e2767db12e747"
+    }
+  ],
+  "origin_note": "Raw source-current plots are direct CSV tracks. MERGE input plots are exact registered PWL definitions because INA/INB were not requested in raw probes."
+}

@@ -1,0 +1,203 @@
+{
+  "schema": "bvm-qb-50ghz-run-metrics-v1",
+  "phase": "phase_b_rewrite_read",
+  "run_id": "QB_3X1_rewrite_sequence",
+  "expected": {
+    "candidate": "QB_3X1",
+    "sequence": [
+      {
+        "mask": "000",
+        "population": 0,
+        "read": {
+          "start_ps": 95.0,
+          "end_ps": 106.0
+        }
+      },
+      {
+        "mask": "001",
+        "population": 1,
+        "read": {
+          "start_ps": 165.0,
+          "end_ps": 176.0
+        }
+      },
+      {
+        "mask": "011",
+        "population": 2,
+        "read": {
+          "start_ps": 235.0,
+          "end_ps": 246.0
+        }
+      },
+      {
+        "mask": "111",
+        "population": 3,
+        "read": {
+          "start_ps": 305.0,
+          "end_ps": 316.0
+        }
+      },
+      {
+        "mask": "000",
+        "population": 0,
+        "read": {
+          "start_ps": 375.0,
+          "end_ps": 386.0
+        }
+      }
+    ],
+    "parameters": {
+      "NAME": "bvm_qb_50ghz_merge",
+      "MODE": "closed",
+      "JM1_AREA": "1.2",
+      "JM2_AREA": "1.4",
+      "RJM1": "8",
+      "RJM2": "OPEN",
+      "LM1": "12.5p",
+      "LM2": "24.5p",
+      "LM3": "8.5p",
+      "LPM": "0.5p",
+      "RSH_JS1": "OPEN",
+      "RSH_JS2": "OPEN",
+      "LS1": "0.5p",
+      "LS2": "0.5p",
+      "LS3": "0.5p",
+      "RS": "3.0",
+      "LPSL": "0.5p",
+      "RSL": "12.0",
+      "LSL": "0.4p",
+      "RBL": "20.0",
+      "LPBL": "0.5p",
+      "RWL": "20.0",
+      "LPWL": "0.5p",
+      "RSE": "20.0",
+      "LPSE": "0.5p",
+      "QB_LIN": "1.5p",
+      "QB_BJS_AREA": "4.0",
+      "QB_L1": "1.4p",
+      "QB_L2": "2.0p",
+      "QB_RJ1": "32",
+      "QB_BJ2_AREA": "2.0",
+      "QB_RJ2": "12",
+      "QB_L3": "1.3p",
+      "QB_IB": "260u",
+      "DT": "0.1p",
+      "ARRAY_SIZE": 3,
+      "JS1_AREA": "0.86",
+      "JS2_AREA": "0.86",
+      "QB_BJ1_AREA": "0.85",
+      "BIT_ORDER": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+      "MASKS": [],
+      "STOP": "240p",
+      "CANDIDATE": "QB_3X1"
+    }
+  },
+  "terminal_response_candidates": [
+    {
+      "start_ps": 190.0,
+      "end_ps": 193.5,
+      "peak_ps": 192.5,
+      "peak_v": 0.001245804,
+      "sample_count": 36
+    }
+  ],
+  "terminal_candidate_count": 1,
+  "phase_area_cross_checks": {
+    "BJ1": [
+      {
+        "status": "RECORDED",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "window_ps": [
+          95.0,
+          106.0
+        ],
+        "delta_phase_rad": 6.600000000012152e-05,
+        "delta_phase_turns_navigation": 1.0504226244084432e-05,
+        "voltage_area_phi0": 1.279641714232762e-05,
+        "sample_count": 110
+      },
+      {
+        "status": "RECORDED",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "window_ps": [
+          165.0,
+          176.0
+        ],
+        "delta_phase_rad": 5.93901,
+        "delta_phase_turns_navigation": 0.9452227985721973,
+        "voltage_area_phi0": 0.945907470318188,
+        "sample_count": 110
+      },
+      {
+        "status": "RECORDED",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "window_ps": [
+          235.0,
+          246.0
+        ],
+        "delta_phase_rad": 3.265834,
+        "delta_phase_turns_navigation": 0.5197736244175769,
+        "voltage_area_phi0": 0.5198550422171087,
+        "sample_count": 50
+      },
+      {
+        "status": "UNKNOWN",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "sample_count": 0
+      },
+      {
+        "status": "UNKNOWN",
+        "phase_key": "P(BJ1|XBQ1)",
+        "voltage_key": "V(BJ1|XBQ1)",
+        "sample_count": 0
+      }
+    ]
+  },
+  "state_cycle_metrics": [
+    {
+      "state": "000",
+      "expected_population": 0,
+      "read_start_ps": 95.0,
+      "terminal_response_candidate_count": 0,
+      "first_response_ps": null,
+      "last_response_ps": null
+    },
+    {
+      "state": "001",
+      "expected_population": 1,
+      "read_start_ps": 165.0,
+      "terminal_response_candidate_count": 1,
+      "first_response_ps": 192.5,
+      "last_response_ps": 192.5
+    },
+    {
+      "state": "011",
+      "expected_population": 2,
+      "read_start_ps": 235.0,
+      "terminal_response_candidate_count": 0,
+      "first_response_ps": null,
+      "last_response_ps": null
+    },
+    {
+      "state": "111",
+      "expected_population": 3,
+      "read_start_ps": 305.0,
+      "terminal_response_candidate_count": 0,
+      "first_response_ps": null,
+      "last_response_ps": null
+    },
+    {
+      "state": "000",
+      "expected_population": 0,
+      "read_start_ps": 375.0,
+      "terminal_response_candidate_count": 0,
+      "first_response_ps": null,
+      "last_response_ps": null
+    }
+  ],
+  "gate_candidate": false
+}

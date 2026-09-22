@@ -1,0 +1,102 @@
+{
+  "schema": "bvm-qb-50ghz-stimulus-plot-qa-v1",
+  "status": "PASS",
+  "run_id": "QB_2X1_rewrite_sequence",
+  "source_stimulus": "phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/stimulus.inc",
+  "source_stimulus_sha256": "d3b59c9f73726191ae48890a86ac8765e6c884f138319eeef13dc56e51666aa8",
+  "raw_sha256": "89b3091a061f0fc2cce0180519790509394ba0b7382497bc476e909189232e49",
+  "entries": [
+    {
+      "status": "PASS",
+      "input": "phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/raw.csv",
+      "output": "phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/plots/stimulus/stimulus_WL.html",
+      "signals": [
+        "I(I_WL1)",
+        "I(I_WL2)"
+      ],
+      "input_sha256": "89b3091a061f0fc2cce0180519790509394ba0b7382497bc476e909189232e49",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/plots/stimulus/stimulus_WL.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered stimulus WL — QB_2X1_rewrite_sequence",
+        "-s",
+        "I(I_WL1)",
+        "I(I_WL2)"
+      ],
+      "origin": "raw.csv",
+      "label": "I(I_WL*) direct solver output"
+    },
+    {
+      "status": "PASS",
+      "input": "phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/raw.csv",
+      "output": "phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/plots/stimulus/stimulus_BL.html",
+      "signals": [
+        "I(I_BL1)",
+        "I(I_BL2)"
+      ],
+      "input_sha256": "89b3091a061f0fc2cce0180519790509394ba0b7382497bc476e909189232e49",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/plots/stimulus/stimulus_BL.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered stimulus BL — QB_2X1_rewrite_sequence",
+        "-s",
+        "I(I_BL1)",
+        "I(I_BL2)"
+      ],
+      "origin": "raw.csv",
+      "label": "I(I_BL*) direct solver output"
+    },
+    {
+      "status": "PASS",
+      "input": "phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/raw.csv",
+      "output": "phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/plots/stimulus/stimulus_SE.html",
+      "signals": [
+        "I(I_SE1)",
+        "I(I_SE2)"
+      ],
+      "input_sha256": "89b3091a061f0fc2cce0180519790509394ba0b7382497bc476e909189232e49",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/raw.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_b_rewrite_read/runs/QB_2X1_rewrite_sequence/plots/stimulus/stimulus_SE.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered stimulus SE — QB_2X1_rewrite_sequence",
+        "-s",
+        "I(I_SE1)",
+        "I(I_SE2)"
+      ],
+      "origin": "raw.csv",
+      "label": "I(I_SE*) direct solver output"
+    }
+  ],
+  "raw_untouched": true,
+  "descriptive_only": true
+}

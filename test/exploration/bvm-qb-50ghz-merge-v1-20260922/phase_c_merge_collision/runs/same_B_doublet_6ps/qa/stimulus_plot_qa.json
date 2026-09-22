@@ -1,0 +1,44 @@
+{
+  "schema": "bvm-qb-50ghz-stimulus-plot-qa-v1",
+  "status": "PASS",
+  "run_id": "same_B_doublet_6ps",
+  "source_stimulus": "phase_c_merge_collision/runs/same_B_doublet_6ps/stimulus.inc",
+  "source_stimulus_sha256": "4f73007d0676202129ca4c3946975ffa9dad1ed36bbdfc749bd495579b9bb117",
+  "raw_sha256": "6a46e0fa1ddacdee319af8b5c81707e8ff63a24b13029a006808be11a6091535",
+  "entries": [
+    {
+      "status": "PASS",
+      "input": "phase_c_merge_collision/runs/same_B_doublet_6ps/plots/stimulus/stimulus_definition.csv",
+      "output": "phase_c_merge_collision/runs/same_B_doublet_6ps/plots/stimulus/stimulus_definition_MERGE_INPUT.html",
+      "signals": [
+        "V(INA)",
+        "V(INB)"
+      ],
+      "input_sha256": "2025767d479c197e994de1a05d8d54af0a104625110aef97e84614db0bb562fc",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/scripts/josim-plot2.py",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_c_merge_collision/runs/same_B_doublet_6ps/plots/stimulus/stimulus_definition.csv",
+        "-x",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_c_merge_collision/runs/same_B_doublet_6ps/plots/stimulus/stimulus_definition_MERGE_INPUT.html",
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi",
+        "-w",
+        "Registered PWL stimulus definition MERGE_INPUT — same_B_doublet_6ps",
+        "-s",
+        "V(INA)",
+        "V(INB)"
+      ],
+      "origin": "stimulus.inc PWL definition",
+      "label": "source definition; not solver raw",
+      "stimulus_sha256": "4f73007d0676202129ca4c3946975ffa9dad1ed36bbdfc749bd495579b9bb117",
+      "derived_trace_sha256": "2025767d479c197e994de1a05d8d54af0a104625110aef97e84614db0bb562fc"
+    }
+  ],
+  "raw_untouched": true,
+  "descriptive_only": true
+}

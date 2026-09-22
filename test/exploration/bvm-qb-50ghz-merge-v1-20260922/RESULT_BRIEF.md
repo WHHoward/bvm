@@ -42,3 +42,10 @@
 - `phase_c_merge_collision/analysis/merge_gate.json`
 - `RAW_ANALYSIS_HANDOFF_MANIFEST.json`,
 - per-run `raw.csv`, decks, logs, source manifests, QA and review HTML under `phase_a_repeated_read/`, `phase_b_rewrite_read/`, and `phase_c_merge_collision/`.
+
+## Stimulus visualization update
+
+- `plots/STIMULUS_INDEX.html` links every run's registered excitation plots.
+- BVM/QB runs show direct raw `I(I_WL*)`, `I(I_BL*)`, and `I(I_SE*)` tracks in separate plots.
+- MERGE runs show `INA/INB` from the exact registered `stimulus.inc` PWL definition; these are labeled source-definition plots, not solver raw tracks.
+- Stimulus visualization QA: `analysis/STIMULUS_VIZ_QA.json` = PASS; raw hashes were not changed.

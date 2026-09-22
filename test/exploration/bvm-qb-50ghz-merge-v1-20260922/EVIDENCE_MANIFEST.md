@@ -11,3 +11,5 @@ All files below are append-only evidence generated from the registered A/B/C mat
 - `analysis/summary.csv`
 - `analysis/provenance.json`
 - `RAW_ANALYSIS_HANDOFF_MANIFEST.json`
+- `analysis/STIMULUS_VIZ_QA.json`
+- `plots/STIMULUS_INDEX.html` and per-run `plots/stimulus/` pages

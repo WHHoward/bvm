@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Any
 
 SERIES = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SERIES / "scripts"))
+import fan_in  # noqa: E402
 PHI0 = 2.067833848e-15
 TWO_PI = 2.0 * math.pi
 WINDOWS = {
@@ -263,7 +265,7 @@ def raw_qa(raw_record: dict[str, Any], raw_path: Path, headers: list[str], rows:
 
 
 def write_case_summary(case_root: Path, params: dict[str, Any], run_summaries: list[dict[str, Any]], population: list[dict[str, Any]], monotonicity: dict[str, Any]) -> None:
-    lines = [f"# {params['CASE_ID']} review summary", "", "No scientific interpretation performed.", "", "## CASE", "", f"- Parameters: JS1_AREA={params['JS1_AREA']}, JS2_AREA={params['JS2_AREA']}, RSH_JS1={params['RSH_JS1']}, RSH_JS2={params['RSH_JS2']}", f"- Mode: {params['MODE']}", f"- Masks: {', '.join(params['MASKS'])}", "- Phase output: raw radians; turns are navigation only.", "", "## S-LOOP", "", "| mask | BVM | WRITE0 JM1 turns | control JM1 turns | WRITE1 JM1 turns | pre-read JM1 turns | Gate-S |", "|---|---:|---:|---:|---:|---:|---|"]
+    lines = [f"# {params['CASE_ID']} review summary", "", "No scientific interpretation performed.", "", "## CASE", "", f"- ARRAY_SIZE={params.get('ARRAY_SIZE', 4)}; bit order: {params.get('BIT_ORDER', 'legacy 4-cell')}", f"- Parameters: JS1_AREA={params['JS1_AREA']}, JS2_AREA={params['JS2_AREA']}, RSH_JS1={params['RSH_JS1']}, RSH_JS2={params['RSH_JS2']}", f"- Mode: {params['MODE']}", f"- Masks: {', '.join(params['MASKS'])}", "- Phase output: raw radians; turns are navigation only.", "", "## S-LOOP", "", "| mask | BVM | WRITE0 JM1 turns | control JM1 turns | WRITE1 JM1 turns | pre-read JM1 turns | Gate-S |", "|---|---:|---:|---:|---:|---:|---|"]
     for item in run_summaries:
         mask = item["mask"]
         for bvm in item["active_bvms"] or [1]:
@@ -285,6 +287,7 @@ def write_case_summary(case_root: Path, params: dict[str, Any], run_summaries: l
 def analyze_case(case_root: Path) -> dict[str, Any]:
     case_manifest = read_json(case_root / "case_manifest.json")
     params = case_manifest["parameters"]
+    array_size = fan_in.parse_array_size(params.get("ARRAY_SIZE", 4))
     run_summaries: list[dict[str, Any]] = []
     qa_rows: list[dict[str, Any]] = []
     window_rows: list[dict[str, Any]] = []
@@ -297,27 +300,28 @@ def analyze_case(case_root: Path) -> dict[str, Any]:
         times_ps = [row[0] * 1.0e12 for row in rows]
         qa = raw_qa(metadata, raw_path, headers, rows)
         qa_rows.append({"run_id": run_id, **qa})
-        state = {str(index): bvm_state_metrics(headers, rows, times_ps, index) for index in range(1, 5)}
-        r_loop = {str(index): {"B_JS1": r_loop_metric(headers, rows, times_ps, f"B_JS1|XBVM{index}"), "B_JS2": r_loop_metric(headers, rows, times_ps, f"B_JS2|XBVM{index}")} for index in range(1, 5)}
-        for index in range(1, 5):
+        state = {str(index): bvm_state_metrics(headers, rows, times_ps, index) for index in range(1, array_size + 1)}
+        r_loop = {str(index): {"B_JS1": r_loop_metric(headers, rows, times_ps, f"B_JS1|XBVM{index}"), "B_JS2": r_loop_metric(headers, rows, times_ps, f"B_JS2|XBVM{index}")} for index in range(1, array_size + 1)}
+        for index in range(1, array_size + 1):
             for signal in (f"P(B_JM1|XBVM{index})", f"V(B_JM1|XBVM{index})", f"I(B_JM1|XBVM{index})", f"P(B_JM2|XBVM{index})", f"V(B_JM2|XBVM{index})", f"I(B_JM2|XBVM{index})", f"P(B_JS1|XBVM{index})", f"V(B_JS1|XBVM{index})", f"I(B_JS1|XBVM{index})", f"P(B_JS2|XBVM{index})", f"V(B_JS2|XBVM{index})", f"I(B_JS2|XBVM{index})", f"I(L_S1|XBVM{index})", f"V(L_S1|XBVM{index})", f"I(L_S2|XBVM{index})", f"V(L_S2|XBVM{index})", f"I(L_S3|XBVM{index})", f"V(L_S3|XBVM{index})", f"I(R_S|XBVM{index})", f"V(R_S|XBVM{index})", f"I(L_M1|XBVM{index})", f"V(L_M1|XBVM{index})", f"I(L_M2|XBVM{index})", f"V(L_M2|XBVM{index})", f"I(L_M3|XBVM{index})", f"V(L_M3|XBVM{index})", f"I(L_PM|XBVM{index})", f"V(L_PM|XBVM{index})"):
                 for window_name in WINDOWS:
                     metric = signal_metric(headers, rows, times_ps, signal, window_name)
                     window_rows.append({"run_id": run_id, "mask": metadata["mask"], "bvm": index, **metric})
         population_rows.append({"run_id": run_id, "mask": metadata["mask"], "metrics": population_metric(headers, rows, times_ps)})
-        run_summaries.append({"run_id": run_id, "mask": metadata["mask"], "active_bvms": [index for index in range(1, 5) if metadata["mask"][index - 1] == "1"], "state": state, "r_loop": r_loop, "population": population_rows[-1]["metrics"], "qa": qa})
-    monotonicity = population_monotonicity(population_rows)
+        run_summaries.append({"run_id": run_id, "mask": metadata["mask"], "array_size": array_size, "active_bvms": [index for index in range(1, array_size + 1) if metadata["mask"][index - 1] == "1"], "state": state, "r_loop": r_loop, "population": population_rows[-1]["metrics"], "qa": qa})
+    monotonicity = population_monotonicity(population_rows, array_size)
     write_case_summary(case_root, params, run_summaries, population_rows, monotonicity)
     return {"case_id": params["CASE_ID"], "parameters": params, "run_order": case_manifest["run_order"], "runs": run_summaries, "population": population_rows, "population_monotonicity": monotonicity, "window_rows": window_rows, "qa": qa_rows, "status": "PASS" if all(row["status"] == "PASS" for row in qa_rows) else "FAIL"}
 
 
-def population_monotonicity(population_rows: list[dict[str, Any]]) -> dict[str, Any]:
+def population_monotonicity(population_rows: list[dict[str, Any]], array_size: int = 4) -> dict[str, Any]:
     by_mask = {item["mask"]: item["metrics"] for item in population_rows}
-    ordered = [by_mask[mask] for mask in MASK_ORDER if mask in by_mask]
+    ordered_masks = fan_in.population_masks(array_size)
+    ordered = [by_mask[mask] for mask in ordered_masks if mask in by_mask]
     checks: dict[str, Any] = {}
     for field in ("peak_positive_a", "signed_area_phi0", "absolute_area_phi0"):
         values = [row.get(field) for row in ordered]
-        checks[field] = {"masks": [mask for mask in MASK_ORDER if mask in by_mask], "values": values, "nondecreasing": all(left <= right for left, right in zip(values, values[1:])) if values else None}
+        checks[field] = {"masks": [mask for mask in ordered_masks if mask in by_mask], "values": values, "nondecreasing": all(left <= right for left, right in zip(values, values[1:])) if values else None}
     return checks
 
 
@@ -341,7 +345,8 @@ def gate_s_comparison(results: list[dict[str, Any]]) -> dict[str, Any]:
             if ref_run is None:
                 continue
             bvm_rows = []
-            for bvm in range(1, 5):
+            array_size = fan_in.parse_array_size(candidate["parameters"].get("ARRAY_SIZE", 4))
+            for bvm in range(1, array_size + 1):
                 state_diffs: dict[str, Any] = {}
                 for junction in ("B_JM1", "B_JM2"):
                     state_diffs[junction] = {}

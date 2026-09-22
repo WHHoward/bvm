@@ -29,12 +29,12 @@ SERIES = Path(__file__).resolve().parents[1]
 REPO = next(path for path in (SERIES, *SERIES.parents) if (path / ".git").exists())
 sys.path.insert(0, str(SERIES / "scripts"))
 import run_candidate as legacy  # noqa: E402
+import fan_in  # noqa: E402
 
 USER_CONFIG = SERIES / "USER_CASE.env"
 REFERENCE_CONFIG = SERIES / "config" / "canonical_reference.env"
 CANONICAL_BVM = REPO / "test" / "exploration" / "bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914" / "inputs" / "bvm_jm2_connected.cir"
 LEGACY_HASHES = SERIES / "analysis" / "legacy_raw_hashes.json"
-MASKS = {"quick": ["0001", "0011", "0111"], "full": ["0000", "0001", "0011", "0111", "1111"]}
 NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
 TIME_KEYS = ("IDLE_START", "IDLE_END", "WRITE0_START", "WRITE0_END", "CONTROL_READ_START", "CONTROL_READ_END", "WRITE1_START", "WRITE1_END", "FINAL_READ_START", "FINAL_READ_END", "RECOVERY_END", "TAIL_START", "STOP")
 RESISTANCE_KEYS = ("RJM1", "RJM2", "RSH_JS1", "RSH_JS2", "RBL", "RWL", "RSE", "RS", "RSL")
@@ -118,14 +118,12 @@ def format_current(value_a: float) -> str:
     return f"{value_a * 1e6:+g}u"
 
 
-def resolve_masks(value: str) -> list[str]:
-    key = value.strip().lower()
-    if key in MASKS:
-        return list(MASKS[key])
-    result = [item.strip() for item in value.split(",") if item.strip()]
-    if not result or any(not re.fullmatch(r"[01]{4}", item) for item in result) or len(set(result)) != len(result):
-        raise RuntimeError("MASKS must be quick, full, one four-bit mask, or a comma-separated list of unique four-bit masks")
-    return result
+def resolve_masks(value: str, array_size: int = 4) -> list[str]:
+    return fan_in.resolve_masks(value, array_size)
+
+
+def resolve_masks_for_array(value: str, array_size: int) -> list[str]:
+    return resolve_masks(value, array_size)
 
 
 def required(values: dict[str, str], key: str) -> str:
@@ -149,7 +147,8 @@ def validate(values: dict[str, str], reference: dict[str, str]) -> dict[str, Any
     mode = required(values, "MODE").lower()
     if mode not in {"passive", "closed"}:
         raise RuntimeError("MODE must be passive or closed")
-    masks = resolve_masks(required(values, "MASKS"))
+    array_size = fan_in.parse_array_size(required(values, "ARRAY_SIZE"))
+    masks = resolve_masks_for_array(required(values, "MASKS"), array_size)
     for key in AREA_KEYS:
         if parse_number(required(values, key), key) <= 0:
             raise RuntimeError(f"{key} must be positive")
@@ -185,7 +184,7 @@ def validate(values: dict[str, str], reference: dict[str, str]) -> dict[str, Any
     for key in STIMULUS_KEYS - set(TIME_KEYS) - {"DT", "STOP"}:
         parse_number(required(values, key), key)
     params = dict(values)
-    params.update({"MODE": mode, "MASKS": masks, "NAME": name, "CASE_ID": ""})
+    params.update({"MODE": mode, "ARRAY_SIZE": array_size, "MASKS": masks, "NAME": name, "CASE_ID": "", "BIT_ORDER": fan_in.bit_order(array_size)})
     params["windows"] = dynamic_windows(times)
     params["time_ps"] = times
     return params
@@ -227,6 +226,8 @@ def next_case_id() -> str:
 
 
 def source_points(params: dict[str, str], mask: str, index: int, signal: str) -> list[tuple[float, float]]:
+    if not 1 <= index <= int(params["ARRAY_SIZE"]):
+        raise RuntimeError(f"BVM index {index} is outside ARRAY_SIZE={params['ARRAY_SIZE']}")
     active = mask[index - 1] == "1"
     stages = [
         ("WRITE0", "WRITE0_START", "WRITE0_END", f"WRITE0_{signal}_AMP", f"WRITE0_{signal}_RISE", f"WRITE0_{signal}_FALL", True),
@@ -252,8 +253,8 @@ def source_points(params: dict[str, str], mask: str, index: int, signal: str) ->
 
 
 def stimulus_text(params: dict[str, str], mask: str) -> str:
-    lines = [f"* GENERATED user case stimulus; mask={mask}; {legacy.BIT_ORDER}", "* Timing is generated from USER_CASE.env; analysis windows use the same snapshot."]
-    for index in range(1, 5):
+    lines = [f"* GENERATED user case stimulus; ARRAY_SIZE={params['ARRAY_SIZE']}; mask={mask}; {params['BIT_ORDER']}", "* Timing is generated from USER_CASE.env; analysis windows use the same snapshot."]
+    for index in range(1, int(params["ARRAY_SIZE"]) + 1):
         for signal in ("WL", "BL", "SE"):
             values = []
             for time_value, current in source_points(params, mask, index, signal):
@@ -311,6 +312,8 @@ def render_one(case_root: Path, params: dict[str, Any], sources: dict[str, Path]
 def dry_run(params: dict[str, Any], changes: list[dict[str, str]], case_id: str, preview: str, qb_preview: str | None = None) -> None:
     print("NEW CASE")
     print(f"{case_id}_{params['NAME']}")
+    print("\nARRAY_SIZE")
+    print(params["ARRAY_SIZE"])
     print("\nMODE")
     print(params["MODE"].upper())
     print("\nMASKS")
@@ -382,14 +385,14 @@ def main() -> int:
     parent = legacy.git_snapshot()
     case_root.mkdir(parents=True, exist_ok=False)
     (case_root / "config_snapshot.env").write_text(config_path.read_text(encoding="utf-8"), encoding="utf-8")
-    stimulus_snapshot = "# Stimulus snapshot generated from USER_CASE.env\n" + "\n".join(f"{key}={values[key]}" for key in sorted(STIMULUS_KEYS | set(TIME_KEYS) | {"DT", "STOP", "MASKS", "MODE", "NAME"}) if key in values) + "\n"
+    stimulus_snapshot = "# Stimulus snapshot generated from USER_CASE.env\n" + "\n".join(f"{key}={values[key]}" for key in sorted(STIMULUS_KEYS | set(TIME_KEYS) | {"ARRAY_SIZE", "DT", "STOP", "MASKS", "MODE", "NAME"}) if key in values) + "\n"
     (case_root / "stimulus_snapshot.env").write_text(stimulus_snapshot, encoding="utf-8")
     sources = render_case_sources(case_root, params)
     source_records = [{"role": role, "path": legacy.repo_rel(path), "sha256": sha256(path), "bytes": path.stat().st_size} for role, path in sources.items()]
     by_role = {record["role"]: record for record in source_records}
     user_case_record = {"path": legacy.repo_rel(USER_CONFIG), "sha256": sha256(USER_CONFIG)}
     effective_config_record = {"path": legacy.repo_rel(config_path), "sha256": sha256(config_path)}
-    source_manifest = {"schema": "bvm-rloop-user-case-source-manifest-v1", "created_at": now(), "parent": parent, "case_id": case_root.name, "canonical_bvm_reference": {"path": legacy.repo_rel(CANONICAL_BVM), "sha256": sha256(CANONICAL_BVM)}, "sources": source_records, "bvm_rendered_snapshot": by_role.get("BVM"), "qb_rendered_snapshot": by_role.get("QB") if params["MODE"] == "closed" else None, "jj_model_snapshot": by_role.get("JJ_MODEL"), "jtl_snapshot": by_role.get("JTL"), "user_config": effective_config_record, "user_case_config": user_case_record, "reference_config": {"path": legacy.repo_rel(REFERENCE_CONFIG), "sha256": sha256(REFERENCE_CONFIG)}, "config_changes": changes}
+    source_manifest = {"schema": "bvm-rloop-user-case-source-manifest-v1", "created_at": now(), "parent": parent, "case_id": case_root.name, "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "canonical_bvm_reference": {"path": legacy.repo_rel(CANONICAL_BVM), "sha256": sha256(CANONICAL_BVM)}, "sources": source_records, "bvm_rendered_snapshot": by_role.get("BVM"), "qb_rendered_snapshot": by_role.get("QB") if params["MODE"] == "closed" else None, "jj_model_snapshot": by_role.get("JJ_MODEL"), "jtl_snapshot": by_role.get("JTL"), "user_config": effective_config_record, "user_case_config": user_case_record, "reference_config": {"path": legacy.repo_rel(REFERENCE_CONFIG), "sha256": sha256(REFERENCE_CONFIG)}, "config_changes": changes}
     write_json(case_root / "source_manifest.json", source_manifest)
     records = []
     for mask in params["MASKS"]:
@@ -398,9 +401,9 @@ def main() -> int:
     first_run = case_root / "cases" / records[0]["run_id"]
     shutil.copy2(first_run / "actual_deck.cir", case_root / "actual_deck.cir")
     shutil.copy2(first_run / "stimulus.inc", case_root / "stimulus.inc")
-    case_manifest = {"schema": "bvm-rloop-user-case-v1", "case_id": case_root.name, "name": params["NAME"], "parameters": params, "windows": params["windows"], "parent": parent, "source_manifest": {"path": legacy.repo_rel(case_root / "source_manifest.json"), "sha256": sha256(case_root / "source_manifest.json")}, "run_order": [record["run_id"] for record in records], "physical_solve_count": len(records), "config_changes": changes, "scientific_interpretation_performed": False, "automatic_follow_up": False}
+    case_manifest = {"schema": "bvm-rloop-user-case-v1", "case_id": case_root.name, "name": params["NAME"], "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "parameters": params, "windows": params["windows"], "parent": parent, "source_manifest": {"path": legacy.repo_rel(case_root / "source_manifest.json"), "sha256": sha256(case_root / "source_manifest.json")}, "run_order": [record["run_id"] for record in records], "physical_solve_count": len(records), "config_changes": changes, "scientific_interpretation_performed": False, "automatic_follow_up": False}
     write_json(case_root / "case_manifest.json", case_manifest)
-    write_json(case_root / "provenance.json", {"schema": "bvm-rloop-user-case-provenance-v1", "case_id": case_root.name, "parent": parent, "run_order": [record["run_id"] for record in records], "runs": {record["run_id"]: record for record in records}, "config_changes": changes, "scientific_interpretation_performed": False, "automatic_follow_up": False})
+    write_json(case_root / "provenance.json", {"schema": "bvm-rloop-user-case-provenance-v1", "case_id": case_root.name, "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "parent": parent, "run_order": [record["run_id"] for record in records], "runs": {record["run_id"]: record for record in records}, "config_changes": changes, "scientific_interpretation_performed": False, "automatic_follow_up": False})
     subprocess.run([sys.executable, str(SERIES / "scripts" / "user_analyze.py"), "--case-root", str(case_root)], cwd=REPO, check=True)
     subprocess.run([sys.executable, str(SERIES / "scripts" / "user_plot.py"), "--case-root", str(case_root)], cwd=REPO, check=True)
     latest = SERIES / "LATEST_REVIEW.html"

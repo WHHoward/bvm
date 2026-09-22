@@ -88,6 +88,8 @@ def verify_existing(case_root: Path, params: dict[str, Any], value: str) -> dict
     case_params = manifest.get("parameters", {})
     if str(case_params.get("MODE", "")).lower() != params["MODE"]:
         result["reasons"].append("MODE mismatch")
+    if int(case_params.get("ARRAY_SIZE", 4)) != int(params["ARRAY_SIZE"]):
+        result["reasons"].append("ARRAY_SIZE mismatch")
     requested_masks = list(params["MASKS"])
     requested_runs = [run_id(params["MODE"], mask) for mask in requested_masks]
     missing = [rid for rid in requested_runs if rid not in manifest.get("run_order", [])]
@@ -123,6 +125,8 @@ def verify_existing(case_root: Path, params: dict[str, Any], value: str) -> dict
         result["reasons"].append("config snapshot missing")
     else:
         snapshot_values = platform.load_env(config_snapshot)
+        if snapshot_values.get("ARRAY_SIZE", "4") != str(params["ARRAY_SIZE"]):
+            result["reasons"].append("config snapshot ARRAY_SIZE mismatch")
         for key in platform.CIRCUIT_KEYS | platform.STIMULUS_KEYS:
             if key not in snapshot_values:
                 result["reasons"].append(f"config snapshot missing: {key}")
@@ -187,7 +191,7 @@ def sweep_setup(values: dict[str, str], reference: dict[str, str]) -> tuple[dict
         params["config_changes"] = platform.change_rows(point_values, reference)
         reuse = find_reuse(params, value) if values.get("SWEEP_REUSE_EXISTING", "yes").lower() == "yes" else {"value": value, "status": "REUSE_DISABLED", "source_type": "NEW_REQUIRED", "reasons": [], "runs": {}}
         points.append({"value": value, "params": params, "reuse": reuse})
-    return {"key": key, "values": raw_values, "name": values.get("NAME", "sweep"), "mode": values.get("MODE", "passive"), "masks": platform.resolve_masks(values.get("MASKS", "full")), "reuse_enabled": values.get("SWEEP_REUSE_EXISTING", "yes").lower() == "yes"}, points, raw_values
+    return {"key": key, "values": raw_values, "name": values.get("NAME", "sweep"), "mode": values.get("MODE", "passive"), "array_size": params["ARRAY_SIZE"], "masks": platform.resolve_masks(values.get("MASKS", "full"), params["ARRAY_SIZE"]), "reuse_enabled": values.get("SWEEP_REUSE_EXISTING", "yes").lower() == "yes"}, points, raw_values
 
 
 def write_temp_config(values: dict[str, str], path: Path, name: str, masks: list[str]) -> None:

@@ -18,6 +18,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+import fan_in
+
 SERIES = Path(__file__).resolve().parents[1]
 REPO = next(path for path in (SERIES, *SERIES.parents) if (path / ".git").exists())
 CONFIG = SERIES / "config" / "current_candidate.env"
@@ -28,7 +30,6 @@ JTL_SOURCE = REPO / "test" / "exploration" / "bvm-qb-l1-l3-bj2-targeted-closure-
 TUNABLE_TEMPLATE = SERIES / "circuits" / "bvm_tunable.cir"
 QB_TUNABLE_TEMPLATE = SERIES / "circuits" / "bq_tunable.cir"
 MASK_ORDER = ("0000", "0001", "0011", "0111", "1111")
-BIT_ORDER = "b3b2b1b0=BVM1/BVM2/BVM3/BVM4"
 CONTRACT = "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
 QB_AREA_KEYS = ("QB_BJS_AREA", "QB_BJ1_AREA", "QB_BJ2_AREA")
 QB_RESISTANCE_KEYS = ("QB_RJ1", "QB_RJ2")
@@ -111,16 +112,8 @@ def file_record(role: str, path: Path) -> dict[str, Any]:
     return {"role": role, "path": repo_rel(path), "sha256": sha256(path), "bytes": path.stat().st_size}
 
 
-def parse_masks(value: str) -> list[str]:
-    masks = [item.strip() for item in value.split(",") if item.strip()]
-    if not masks:
-        raise RuntimeError("MASKS must contain at least one binary mask")
-    for mask in masks:
-        if not re.fullmatch(r"[01]{4}", mask):
-            raise RuntimeError(f"invalid mask {mask!r}; expected four bits")
-    if len(set(masks)) != len(masks):
-        raise RuntimeError("MASKS contains a duplicate")
-    return masks
+def parse_masks(value: str, array_size: int = 4) -> list[str]:
+    return fan_in.resolve_masks(value, array_size)
 
 
 def normalize_shunt(value: str) -> str:
@@ -151,11 +144,14 @@ def effective_config(raw: dict[str, str], args: argparse.Namespace) -> dict[str,
     mode = (args.mode or required_config(raw, "MODE")).lower()
     if mode not in {"passive", "closed"}:
         raise RuntimeError(f"MODE must be passive or closed, got {mode!r}")
-    masks = parse_masks(args.masks if args.masks is not None else required_config(raw, "MASKS"))
+    array_size = fan_in.parse_array_size(raw.get("ARRAY_SIZE", "4"))
+    masks = parse_masks(args.masks if args.masks is not None else required_config(raw, "MASKS"), array_size)
     params = {
         "CASE_ID": case_id,
         "MODE": mode,
+        "ARRAY_SIZE": array_size,
         "MASKS": masks,
+        "BIT_ORDER": fan_in.bit_order(array_size),
         "JS1_AREA": required_config(raw, "JS1_AREA"),
         "JS2_AREA": required_config(raw, "JS2_AREA"),
         "RSH_JS1": normalize_shunt(required_config(raw, "RSH_JS1")),
@@ -204,7 +200,10 @@ def validate_stage_a(params: dict[str, Any]) -> None:
         )
 
 
-def source_points(mask: str, index: int, name: str) -> list[tuple[float, float]]:
+def source_points(mask: str, index: int, name: str, array_size: int = 4) -> list[tuple[float, float]]:
+    fan_in.resolve_masks(mask, array_size)
+    if not 1 <= index <= array_size:
+        raise RuntimeError(f"BVM index {index} is outside ARRAY_SIZE={array_size}")
     active = mask[index - 1] == "1"
     amplitude = 100.0
     final = amplitude if active and name in {"WL", "SE"} else 0.0
@@ -223,24 +222,25 @@ def pwl(name: str, node: str, points: list[tuple[float, float]]) -> str:
     return f"I_{name} 0 {node} pwl(" + " ".join(values) + ")"
 
 
-def stimulus(mask: str) -> str:
+def stimulus(mask: str, array_size: int = 4) -> str:
     lines = [
-        f"* GENERATED one-shot tuning stimulus; mask={mask}; {BIT_ORDER}",
+        f"* GENERATED one-shot tuning stimulus; ARRAY_SIZE={array_size}; mask={mask}; {fan_in.bit_order(array_size)}",
         "* IDLE 0-50; WRITE0 50-61; zero-state read control 70-81; WRITE1 90-101; SETTLE 101-110; final READ 110-121; RECOVERY 121-130; TAIL 150-200.",
     ]
-    for index in range(1, 5):
+    for index in range(1, array_size + 1):
         for name in ("WL", "BL", "SE"):
-            lines.append(pwl(f"{name}{index}", f"{name}{index}", source_points(mask, index, name)))
+            lines.append(pwl(f"{name}{index}", f"{name}{index}", source_points(mask, index, name, array_size)))
     return "\n".join(lines) + "\n"
 
 
 def probe_lines(mode: str, params: dict[str, Any]) -> list[str]:
+    array_size = int(params["ARRAY_SIZE"])
     lines = [
-        ".print " + " ".join(f"I(I_{name}{index})" for index in range(1, 5) for name in ("WL", "BL", "SE")),
+        ".print " + " ".join(f"I(I_{name}{index})" for index in range(1, array_size + 1) for name in ("WL", "BL", "SE")),
     ]
     junctions = ("B_JM1", "B_JM2", "B_JS1", "B_JS2")
     branches = ("L_M1", "L_M2", "L_M3", "L_PM", "L_S1", "L_S2", "L_S3", "R_S", "L_PSL", "R_SL", "L_SL", "R_JM1", "R_SE", "L_PSE")
-    for index in range(1, 5):
+    for index in range(1, array_size + 1):
         for element in junctions:
             lines.append(f".print P({element}|XBVM{index}) V({element}|XBVM{index}) I({element}|XBVM{index})")
         for element in branches:
@@ -330,6 +330,7 @@ def render_deck(mode: str, params: dict[str, Any], sources: dict[str, Path], sti
         "{{QB_INCLUDE}}": include_line(sources["QB"], case_dir, "QB") if mode == "closed" else "* QB: intentionally absent in PASSIVE",
         "{{JTL_INCLUDE}}": include_line(sources["JTL"], case_dir, "JTL") if mode == "closed" else "* JTL: intentionally absent in PASSIVE",
         "{{STIMULUS_INCLUDE}}": include_line(stimulus_path, case_dir, "STIMULUS"),
+        "{{BVM_INSTANCES}}": fan_in.bvm_instances(params["ARRAY_SIZE"]),
         "{{PROBES}}": "\n".join(probe_lines(mode, params)),
         "{{DT}}": params["DT"],
         "{{STOP_TIME}}": params["STOP"],
@@ -342,6 +343,11 @@ def render_deck(mode: str, params: dict[str, Any], sources: dict[str, Path], sti
         raise RuntimeError("PASSIVE deck contains QB/JTL/terminal")
     if mode == "closed" and any(token not in text for token in ("XBQ1 QBIN QBOUT BQ", "XJTL1_6 JTL5_OUT JTL6_OUT jtl", "R_TERM JTL6_OUT 0 10")):
         raise RuntimeError("CLOSED deck is missing the registered downstream path")
+    instance_lines = [line.strip() for line in text.splitlines() if re.match(r"^XBVM\d+\s", line.strip())]
+    if len(instance_lines) != int(params["ARRAY_SIZE"]):
+        raise RuntimeError(f"actual deck has {len(instance_lines)} BVM instances, expected ARRAY_SIZE={params['ARRAY_SIZE']}")
+    if any(int(re.match(r"^XBVM(\d+)", line).group(1)) > int(params["ARRAY_SIZE"]) for line in instance_lines):
+        raise RuntimeError("actual deck contains a BVM instance outside ARRAY_SIZE")
     return text
 
 
@@ -352,7 +358,7 @@ def read_header(path: Path) -> list[str]:
 
 def requested_signals(mode: str, params: dict[str, Any]) -> list[tuple[str, str, str]]:
     requested: list[tuple[str, str, str]] = []
-    for index in range(1, 5):
+    for index in range(1, int(params["ARRAY_SIZE"]) + 1):
         for name in ("WL", "BL", "SE"):
             requested.append((f"I(I_{name}{index})", "stimulus", "current"))
         for junction in ("B_JM1", "B_JM2", "B_JS1", "B_JS2"):
@@ -428,7 +434,7 @@ def source_manifest(case_root: Path, sources: dict[str, Path], params: dict[str,
     if (SERIES / "USER_CASE.env").is_file():
         records.append(file_record("USER_CASE", SERIES / "USER_CASE.env"))
     by_role = {record["role"]: record for record in records}
-    return {"schema": "bvm-rloop-one-shot-source-manifest-v1", "created_at": now(), "parent": parent, "contract_sentence": CONTRACT, "case_parameters": params, "sources": records, "bvm_rendered_snapshot": by_role.get("BVM"), "qb_rendered_snapshot": by_role.get("QB") if params["MODE"] == "closed" else None, "jj_model_snapshot": by_role.get("JJ_MODEL"), "jtl_snapshot": by_role.get("JTL"), "user_case_config": by_role.get("USER_CASE"), "canonical_bvm_source": file_record("CANONICAL_BVM_REFERENCE", CANONICAL_BVM), "raw_not_copied_from_history": True}
+    return {"schema": "bvm-rloop-one-shot-source-manifest-v1", "created_at": now(), "parent": parent, "contract_sentence": CONTRACT, "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "case_parameters": params, "sources": records, "bvm_rendered_snapshot": by_role.get("BVM"), "qb_rendered_snapshot": by_role.get("QB") if params["MODE"] == "closed" else None, "jj_model_snapshot": by_role.get("JJ_MODEL"), "jtl_snapshot": by_role.get("JTL"), "user_case_config": by_role.get("USER_CASE"), "canonical_bvm_source": file_record("CANONICAL_BVM_REFERENCE", CANONICAL_BVM), "raw_not_copied_from_history": True}
 
 
 def solve_one(case_dir: Path, mode: str, mask: str, params: dict[str, Any], sources: dict[str, Path]) -> dict[str, Any]:
@@ -436,7 +442,7 @@ def solve_one(case_dir: Path, mode: str, mask: str, params: dict[str, Any], sour
     solve_dir = case_dir / "cases" / run_id
     solve_dir.mkdir(parents=True, exist_ok=False)
     stimulus_path = solve_dir / "stimulus.inc"
-    stimulus_path.write_text(stimulus(mask), encoding="utf-8")
+    stimulus_path.write_text(stimulus(mask, int(params["ARRAY_SIZE"])), encoding="utf-8")
     deck_text = render_deck(mode, params, sources, stimulus_path, solve_dir)
     deck_path = solve_dir / "actual_deck.cir"
     deck_path.write_text(deck_text, encoding="utf-8")
@@ -458,7 +464,7 @@ def solve_one(case_dir: Path, mode: str, mask: str, params: dict[str, Any], sour
         raise RuntimeError(f"JoSIM failed for {run_id}; preserved {solve_dir}")
     headers = read_header(raw_path)
     manifest = write_signal_manifest(solve_dir, mode, params, headers)
-    metadata = {"run_id": run_id, "mode": mode, "mask": mask, "bit_order": BIT_ORDER, "parameters": params, "command": command, "started_at": started, "finished_at": finished, "runtime_seconds": runtime, "execution_status": "RUN_PASS", "solver": {"path": repo_rel(REPO / "build" / "josim-cli"), "sha256": sha256(REPO / "build" / "josim-cli"), "version": subprocess.check_output([str(REPO / "build" / "josim-cli"), "--version"], text=True).strip()}, "deck": {"path": repo_rel(deck_path), "sha256": sha256(deck_path), "bytes": deck_path.stat().st_size}, "stimulus": {"path": repo_rel(stimulus_path), "sha256": sha256(stimulus_path), "bytes": stimulus_path.stat().st_size}, "raw": {"path": repo_rel(raw_path), "sha256": sha256(raw_path), "bytes": raw_path.stat().st_size, "headers": len(headers)}, "signal_manifest": manifest, "stdout": {"path": repo_rel(solve_dir / "stdout.txt"), "sha256": sha256(solve_dir / "stdout.txt")}, "stderr": {"path": repo_rel(solve_dir / "stderr.txt"), "sha256": sha256(solve_dir / "stderr.txt")}, "run_log": {"path": repo_rel(solve_dir / "run.log"), "sha256": sha256(solve_dir / "run.log")}}
+    metadata = {"run_id": run_id, "mode": mode, "mask": mask, "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "parameters": params, "command": command, "started_at": started, "finished_at": finished, "runtime_seconds": runtime, "execution_status": "RUN_PASS", "solver": {"path": repo_rel(REPO / "build" / "josim-cli"), "sha256": sha256(REPO / "build" / "josim-cli"), "version": subprocess.check_output([str(REPO / "build" / "josim-cli"), "--version"], text=True).strip()}, "deck": {"path": repo_rel(deck_path), "sha256": sha256(deck_path), "bytes": deck_path.stat().st_size}, "stimulus": {"path": repo_rel(stimulus_path), "sha256": sha256(stimulus_path), "bytes": stimulus_path.stat().st_size}, "raw": {"path": repo_rel(raw_path), "sha256": sha256(raw_path), "bytes": raw_path.stat().st_size, "headers": len(headers)}, "signal_manifest": manifest, "stdout": {"path": repo_rel(solve_dir / "stdout.txt"), "sha256": sha256(solve_dir / "stdout.txt")}, "stderr": {"path": repo_rel(solve_dir / "stderr.txt"), "sha256": sha256(solve_dir / "stderr.txt")}, "run_log": {"path": repo_rel(solve_dir / "run.log"), "sha256": sha256(solve_dir / "run.log")}}
     write_json(solve_dir / "metadata.json", metadata)
     metadata["metadata"] = {"path": repo_rel(solve_dir / "metadata.json"), "sha256": sha256(solve_dir / "metadata.json")}
     return metadata
@@ -487,6 +493,8 @@ def dry_run(params: dict[str, Any]) -> None:
     print(f"REMOTE_HEAD: {remote_head()}")
     print(f"CASE_ID: {params['CASE_ID']}")
     print(f"MODE: {params['MODE']}")
+    print(f"ARRAY_SIZE: {params['ARRAY_SIZE']}")
+    print(f"BIT_ORDER: {params['BIT_ORDER']}")
     print(f"MASKS: {','.join(params['MASKS'])}")
     print(f"SHUNTS: JS1={params['RSH_JS1']} ohm; JS2={params['RSH_JS2']} ohm")
     print(f"TRAN: dt={params['DT']} stop={params['STOP']}")
@@ -525,7 +533,7 @@ def main() -> int:
     records = []
     for mask in params["MASKS"]:
         records.append(solve_one(case_root, params["MODE"], mask, params, sources))
-    case_manifest = {"schema": "bvm-rloop-one-shot-case-v1", "case_id": params["CASE_ID"], "parameters": params, "parent": parent, "source_manifest": {"path": repo_rel(case_root / "source_manifest.json"), "sha256": sha256(case_root / "source_manifest.json")}, "run_order": [record["run_id"] for record in records], "physical_solve_count": len(records), "automatic_follow_up": False, "scientific_interpretation_performed": False}
+    case_manifest = {"schema": "bvm-rloop-one-shot-case-v1", "case_id": params["CASE_ID"], "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "parameters": params, "parent": parent, "source_manifest": {"path": repo_rel(case_root / "source_manifest.json"), "sha256": sha256(case_root / "source_manifest.json")}, "run_order": [record["run_id"] for record in records], "physical_solve_count": len(records), "automatic_follow_up": False, "scientific_interpretation_performed": False}
     write_json(case_root / "case_manifest.json", case_manifest)
     update_root(case_root, params, parent, source_info, records)
     print(json.dumps({"status": "CASE_SOLVES_COMPLETE", "case_id": params["CASE_ID"], "mode": params["MODE"], "masks": params["MASKS"], "physical_solve_count": len(records), "case_path": repo_rel(case_root)}, ensure_ascii=False, indent=2))

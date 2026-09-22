@@ -27,7 +27,7 @@ Cj_WS = 0.7
 # Critical current (uA)
 Ic = 200
 # Parallel Shuted R
-R_p = 12
+R_p = 30
 ######################
 
 Rn = Rn_MIT #!!!!

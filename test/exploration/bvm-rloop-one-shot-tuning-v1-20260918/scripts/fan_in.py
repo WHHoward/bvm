@@ -57,8 +57,9 @@ def resolve_masks(value: str, array_size: int) -> list[str]:
 def bit_order(array_size: int) -> str:
     size = parse_array_size(array_size)
     if size == 1:
-        return "b0=BVM1; rightmost bit maps to highest-numbered BVM"
-    return f"b{size - 1}..b0=BVM1/BVM2/.../BVM{size}; rightmost bit maps to highest-numbered BVM"
+        return "mask left-to-right: b0=BVM1 (rightmost bit is highest-index BVM)"
+    mapping = ", ".join(f"b{size - index}=BVM{index}" for index in range(1, size + 1))
+    return f"mask left-to-right: {mapping}; rightmost bit is highest-index BVM"
 
 
 def bvm_instances(array_size: int) -> str:
@@ -73,3 +74,26 @@ def active_indices(mask: str, array_size: int | None = None) -> list[int]:
     # as the sole element for a one-mask input.
     actual = masks[0] if len(masks) == 1 else mask
     return [index for index, bit in enumerate(actual, start=1) if bit == "1"]
+
+
+def stimulus_source_inventory(text: str, array_size: int) -> dict[str, Any]:
+    """Validate real stimulus source groups against ARRAY_SIZE."""
+    size = parse_array_size(array_size)
+    matches = re.findall(r"^I_(WL|BL|SE)(\d+)\s", text, flags=re.MULTILINE)
+    groups = [(signal, int(index)) for signal, index in matches]
+    expected = {(signal, index) for index in range(1, size + 1) for signal in ("WL", "BL", "SE")}
+    actual = set(groups)
+    high = sorted({index for _signal, index in groups if index > size})
+    duplicate_groups = sorted(f"{signal}{index}" for signal, index in groups if groups.count((signal, index)) > 1)
+    missing = sorted(f"{signal}{index}" for signal, index in expected - actual)
+    return {
+        "status": "PASS" if len(groups) == 3 * size and actual == expected and not high and not duplicate_groups else "FAIL",
+        "array_size": size,
+        "expected_group_count": 3 * size,
+        "actual_group_count": len(groups),
+        "expected_groups": sorted(f"{signal}{index}" for signal, index in expected),
+        "actual_groups": sorted(f"{signal}{index}" for signal, index in actual),
+        "missing_groups": missing,
+        "high_numbered_sources": high,
+        "duplicate_groups": sorted(set(duplicate_groups)),
+    }

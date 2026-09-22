@@ -29,7 +29,7 @@ def write_json(path: Path, value: object) -> None:
 
 def base_values() -> dict[str, str]:
     values = platform.load_env(REFERENCE_CASE)
-    values.update({"NAME": "fan_in_smoke", "MODE": "closed", "SWEEP_ENABLED": "no", "SWEEP_KEY": "NONE", "SWEEP_VALUES": ""})
+    values.update({"NAME": "fan_in_smoke", "MODE": "closed", "CONTROL_ONLY_STOP": "120p", "SWEEP_ENABLED": "no", "SWEEP_KEY": "NONE", "SWEEP_VALUES": ""})
     return values
 
 

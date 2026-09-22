@@ -287,7 +287,11 @@ def render_one(case_root: Path, params: dict[str, Any], sources: dict[str, Path]
     run_dir = case_root / "cases" / run_id
     run_dir.mkdir(parents=True, exist_ok=False)
     stimulus_path = run_dir / "stimulus.inc"
-    stimulus_path.write_text(stimulus_text(params, mask), encoding="utf-8")
+    stimulus_content = stimulus_text(params, mask)
+    stimulus_qa = fan_in.stimulus_source_inventory(stimulus_content, int(params["ARRAY_SIZE"]))
+    if stimulus_qa["status"] != "PASS":
+        raise RuntimeError(f"normal stimulus source invariant failed for {run_id}: {stimulus_qa}")
+    stimulus_path.write_text(stimulus_content, encoding="utf-8")
     deck_text = legacy.render_deck(mode, params, sources, stimulus_path, run_dir)
     deck_path = run_dir / "actual_deck.cir"
     deck_path.write_text(deck_text, encoding="utf-8")
@@ -304,7 +308,7 @@ def render_one(case_root: Path, params: dict[str, Any], sources: dict[str, Path]
         raise RuntimeError(f"JoSIM failed for {run_id}; raw/deck/log preserved at {run_dir}")
     headers = legacy.read_header(raw_path)
     manifest = legacy.write_signal_manifest(run_dir, mode, params, headers)
-    metadata = {"run_id": run_id, "mode": mode, "mask": mask, "parameters": params, "windows": params["windows"], "config_changes": params["config_changes"], "command": command, "started_at": started, "finished_at": finished, "runtime_seconds": runtime, "execution_status": "RUN_PASS", "solver": {"path": legacy.repo_rel(REPO / "build" / "josim-cli"), "sha256": legacy.sha256(REPO / "build" / "josim-cli"), "version": subprocess.check_output([str(REPO / "build" / "josim-cli"), "--version"], text=True).strip()}, "deck": {"path": legacy.repo_rel(deck_path), "sha256": legacy.sha256(deck_path)}, "stimulus": {"path": legacy.repo_rel(stimulus_path), "sha256": legacy.sha256(stimulus_path)}, "raw": {"path": legacy.repo_rel(raw_path), "sha256": legacy.sha256(raw_path), "bytes": raw_path.stat().st_size, "headers": len(headers)}, "signal_manifest": manifest}
+    metadata = {"run_id": run_id, "mode": mode, "mask": mask, "array_size": params["ARRAY_SIZE"], "parameters": params, "windows": params["windows"], "config_changes": params["config_changes"], "command": command, "started_at": started, "finished_at": finished, "runtime_seconds": runtime, "execution_status": "RUN_PASS", "stimulus_qa": stimulus_qa, "solver": {"path": legacy.repo_rel(REPO / "build" / "josim-cli"), "sha256": legacy.sha256(REPO / "build" / "josim-cli"), "version": subprocess.check_output([str(REPO / "build" / "josim-cli"), "--version"], text=True).strip()}, "deck": {"path": legacy.repo_rel(deck_path), "sha256": legacy.sha256(deck_path)}, "stimulus": {"path": legacy.repo_rel(stimulus_path), "sha256": legacy.sha256(stimulus_path)}, "raw": {"path": legacy.repo_rel(raw_path), "sha256": legacy.sha256(raw_path), "bytes": raw_path.stat().st_size, "headers": len(headers)}, "signal_manifest": manifest}
     write_json(run_dir / "metadata.json", metadata)
     return metadata
 
@@ -327,7 +331,7 @@ def dry_run(params: dict[str, Any], changes: list[dict[str, str]], case_id: str,
     print("\nWINDOWS")
     for name, window in params["windows"].items():
         print(f"{name:<24} [{window[0]:g}, {window[1]:g}) ps")
-    print(f"\nPREVIEW: generated BVM/stimulus validation PASS ({len(preview.splitlines())} stimulus lines)")
+    print(f"\nPREVIEW: generated BVM/stimulus validation PASS ({len(preview.splitlines())} stimulus lines; {3 * int(params['ARRAY_SIZE'])} source groups)")
     if qb_preview is not None:
         print(f"PREVIEW: rendered QB snapshot validation PASS ({len(qb_preview.splitlines())} netlist lines)")
     print("No solve executed.")
@@ -367,6 +371,9 @@ def main() -> int:
             if "{{" in preview_qb.read_text(encoding="utf-8"):
                 raise RuntimeError("unresolved QB marker in preview")
         preview = stimulus_text(params, params["MASKS"][0])
+        preview_qa = fan_in.stimulus_source_inventory(preview, int(params["ARRAY_SIZE"]))
+        if preview_qa["status"] != "PASS":
+            raise RuntimeError(f"normal stimulus source invariant failed in dry-run: {preview_qa}")
         if "{{" in preview_bvm.read_text(encoding="utf-8"):
             raise RuntimeError("unresolved BVM marker in preview")
     if args.dry_run:

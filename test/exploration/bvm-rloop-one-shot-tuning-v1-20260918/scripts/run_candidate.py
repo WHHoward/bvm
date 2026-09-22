@@ -442,7 +442,11 @@ def solve_one(case_dir: Path, mode: str, mask: str, params: dict[str, Any], sour
     solve_dir = case_dir / "cases" / run_id
     solve_dir.mkdir(parents=True, exist_ok=False)
     stimulus_path = solve_dir / "stimulus.inc"
-    stimulus_path.write_text(stimulus(mask, int(params["ARRAY_SIZE"])), encoding="utf-8")
+    stimulus_content = stimulus(mask, int(params["ARRAY_SIZE"]))
+    stimulus_qa = fan_in.stimulus_source_inventory(stimulus_content, int(params["ARRAY_SIZE"]))
+    if stimulus_qa["status"] != "PASS":
+        raise RuntimeError(f"normal stimulus source invariant failed for {run_id}: {stimulus_qa}")
+    stimulus_path.write_text(stimulus_content, encoding="utf-8")
     deck_text = render_deck(mode, params, sources, stimulus_path, solve_dir)
     deck_path = solve_dir / "actual_deck.cir"
     deck_path.write_text(deck_text, encoding="utf-8")
@@ -464,7 +468,7 @@ def solve_one(case_dir: Path, mode: str, mask: str, params: dict[str, Any], sour
         raise RuntimeError(f"JoSIM failed for {run_id}; preserved {solve_dir}")
     headers = read_header(raw_path)
     manifest = write_signal_manifest(solve_dir, mode, params, headers)
-    metadata = {"run_id": run_id, "mode": mode, "mask": mask, "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "parameters": params, "command": command, "started_at": started, "finished_at": finished, "runtime_seconds": runtime, "execution_status": "RUN_PASS", "solver": {"path": repo_rel(REPO / "build" / "josim-cli"), "sha256": sha256(REPO / "build" / "josim-cli"), "version": subprocess.check_output([str(REPO / "build" / "josim-cli"), "--version"], text=True).strip()}, "deck": {"path": repo_rel(deck_path), "sha256": sha256(deck_path), "bytes": deck_path.stat().st_size}, "stimulus": {"path": repo_rel(stimulus_path), "sha256": sha256(stimulus_path), "bytes": stimulus_path.stat().st_size}, "raw": {"path": repo_rel(raw_path), "sha256": sha256(raw_path), "bytes": raw_path.stat().st_size, "headers": len(headers)}, "signal_manifest": manifest, "stdout": {"path": repo_rel(solve_dir / "stdout.txt"), "sha256": sha256(solve_dir / "stdout.txt")}, "stderr": {"path": repo_rel(solve_dir / "stderr.txt"), "sha256": sha256(solve_dir / "stderr.txt")}, "run_log": {"path": repo_rel(solve_dir / "run.log"), "sha256": sha256(solve_dir / "run.log")}}
+    metadata = {"run_id": run_id, "mode": mode, "mask": mask, "array_size": params["ARRAY_SIZE"], "bit_order": params["BIT_ORDER"], "parameters": params, "command": command, "started_at": started, "finished_at": finished, "runtime_seconds": runtime, "execution_status": "RUN_PASS", "stimulus_qa": stimulus_qa, "solver": {"path": repo_rel(REPO / "build" / "josim-cli"), "sha256": sha256(REPO / "build" / "josim-cli"), "version": subprocess.check_output([str(REPO / "build" / "josim-cli"), "--version"], text=True).strip()}, "deck": {"path": repo_rel(deck_path), "sha256": sha256(deck_path), "bytes": deck_path.stat().st_size}, "stimulus": {"path": repo_rel(stimulus_path), "sha256": sha256(stimulus_path), "bytes": stimulus_path.stat().st_size}, "raw": {"path": repo_rel(raw_path), "sha256": sha256(raw_path), "bytes": raw_path.stat().st_size, "headers": len(headers)}, "signal_manifest": manifest, "stdout": {"path": repo_rel(solve_dir / "stdout.txt"), "sha256": sha256(solve_dir / "stdout.txt")}, "stderr": {"path": repo_rel(solve_dir / "stderr.txt"), "sha256": sha256(solve_dir / "stderr.txt")}, "run_log": {"path": repo_rel(solve_dir / "run.log"), "sha256": sha256(solve_dir / "run.log")}}
     write_json(solve_dir / "metadata.json", metadata)
     metadata["metadata"] = {"path": repo_rel(solve_dir / "metadata.json"), "sha256": sha256(solve_dir / "metadata.json")}
     return metadata

@@ -21,15 +21,39 @@
       "control_only_render": {
         "array_size": 1,
         "mask": "0",
+        "effective_timing": {
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "STOP": 120.0
+        },
         "bvm_instance_count": 1,
-        "stimulus_source_group_count": 3,
-        "expected_stimulus_source_group_count": 3,
-        "forbidden_write1_or_final_markers": [],
+        "stimulus_source_inventory": {
+          "status": "PASS",
+          "array_size": 1,
+          "expected_group_count": 3,
+          "actual_group_count": 3,
+          "expected_groups": [
+            "BL1",
+            "SE1",
+            "WL1"
+          ],
+          "actual_groups": [
+            "BL1",
+            "SE1",
+            "WL1"
+          ],
+          "missing_groups": [],
+          "high_numbered_sources": [],
+          "duplicate_groups": []
+        },
+        "forbidden_write1_or_final_times": [],
         "requested_signal_count": 141,
         "deck_has_qb_jtl_terminal": true,
         "status": "PASS",
         "array_size_recorded": 1,
-        "bit_order": "b0=BVM1; rightmost bit maps to highest-numbered BVM",
+        "bit_order": "mask left-to-right: b0=BVM1 (rightmost bit is highest-index BVM)",
         "requested_array_size": 1,
         "requested_size_static_check": true
       },
@@ -54,15 +78,45 @@
       "control_only_render": {
         "array_size": 2,
         "mask": "00",
+        "effective_timing": {
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "STOP": 120.0
+        },
         "bvm_instance_count": 2,
-        "stimulus_source_group_count": 6,
-        "expected_stimulus_source_group_count": 6,
-        "forbidden_write1_or_final_markers": [],
+        "stimulus_source_inventory": {
+          "status": "PASS",
+          "array_size": 2,
+          "expected_group_count": 6,
+          "actual_group_count": 6,
+          "expected_groups": [
+            "BL1",
+            "BL2",
+            "SE1",
+            "SE2",
+            "WL1",
+            "WL2"
+          ],
+          "actual_groups": [
+            "BL1",
+            "BL2",
+            "SE1",
+            "SE2",
+            "WL1",
+            "WL2"
+          ],
+          "missing_groups": [],
+          "high_numbered_sources": [],
+          "duplicate_groups": []
+        },
+        "forbidden_write1_or_final_times": [],
         "requested_signal_count": 188,
         "deck_has_qb_jtl_terminal": true,
         "status": "PASS",
         "array_size_recorded": 2,
-        "bit_order": "b1..b0=BVM1/BVM2/.../BVM2; rightmost bit maps to highest-numbered BVM",
+        "bit_order": "mask left-to-right: b1=BVM1, b0=BVM2; rightmost bit is highest-index BVM",
         "requested_array_size": 2,
         "requested_size_static_check": true
       },
@@ -90,15 +144,51 @@
       "control_only_render": {
         "array_size": 3,
         "mask": "000",
+        "effective_timing": {
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "STOP": 120.0
+        },
         "bvm_instance_count": 3,
-        "stimulus_source_group_count": 9,
-        "expected_stimulus_source_group_count": 9,
-        "forbidden_write1_or_final_markers": [],
+        "stimulus_source_inventory": {
+          "status": "PASS",
+          "array_size": 3,
+          "expected_group_count": 9,
+          "actual_group_count": 9,
+          "expected_groups": [
+            "BL1",
+            "BL2",
+            "BL3",
+            "SE1",
+            "SE2",
+            "SE3",
+            "WL1",
+            "WL2",
+            "WL3"
+          ],
+          "actual_groups": [
+            "BL1",
+            "BL2",
+            "BL3",
+            "SE1",
+            "SE2",
+            "SE3",
+            "WL1",
+            "WL2",
+            "WL3"
+          ],
+          "missing_groups": [],
+          "high_numbered_sources": [],
+          "duplicate_groups": []
+        },
+        "forbidden_write1_or_final_times": [],
         "requested_signal_count": 235,
         "deck_has_qb_jtl_terminal": true,
         "status": "PASS",
         "array_size_recorded": 3,
-        "bit_order": "b2..b0=BVM1/BVM2/.../BVM3; rightmost bit maps to highest-numbered BVM",
+        "bit_order": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
         "requested_array_size": 3,
         "requested_size_static_check": true
       },
@@ -126,15 +216,57 @@
       "control_only_render": {
         "array_size": 4,
         "mask": "0000",
+        "effective_timing": {
+          "WRITE0_START": 50.0,
+          "WRITE0_END": 60.99999999999999,
+          "CONTROL_READ_START": 70.0,
+          "CONTROL_READ_END": 81.0,
+          "STOP": 120.0
+        },
         "bvm_instance_count": 4,
-        "stimulus_source_group_count": 12,
-        "expected_stimulus_source_group_count": 12,
-        "forbidden_write1_or_final_markers": [],
+        "stimulus_source_inventory": {
+          "status": "PASS",
+          "array_size": 4,
+          "expected_group_count": 12,
+          "actual_group_count": 12,
+          "expected_groups": [
+            "BL1",
+            "BL2",
+            "BL3",
+            "BL4",
+            "SE1",
+            "SE2",
+            "SE3",
+            "SE4",
+            "WL1",
+            "WL2",
+            "WL3",
+            "WL4"
+          ],
+          "actual_groups": [
+            "BL1",
+            "BL2",
+            "BL3",
+            "BL4",
+            "SE1",
+            "SE2",
+            "SE3",
+            "SE4",
+            "WL1",
+            "WL2",
+            "WL3",
+            "WL4"
+          ],
+          "missing_groups": [],
+          "high_numbered_sources": [],
+          "duplicate_groups": []
+        },
+        "forbidden_write1_or_final_times": [],
         "requested_signal_count": 282,
         "deck_has_qb_jtl_terminal": true,
         "status": "PASS",
         "array_size_recorded": 4,
-        "bit_order": "b3..b0=BVM1/BVM2/.../BVM4; rightmost bit maps to highest-numbered BVM",
+        "bit_order": "mask left-to-right: b3=BVM1, b2=BVM2, b1=BVM3, b0=BVM4; rightmost bit is highest-index BVM",
         "requested_array_size": 4,
         "requested_size_static_check": true
       },

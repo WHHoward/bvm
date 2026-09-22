@@ -1,0 +1,32 @@
+* Experiment-local parameterized QB template.
+* Topology and default values mirror circuits/qb/bq_parameterized_v1.cir.
+
+.subckt BQ IN OUT
+
+Lin IN 1 1.5p
+
+L1 2 3 1.4p
+L2 3 4 2.0p
+
+BJS 1 2 jjmit area=4.0
+
+BJ1 2 0 jjmit area=0.75
+RJ1 2 0 32
+
+BJ2 4 0 jjmit area=2.0
+RJ2 4 0 12
+
+L3 4 OUT 1.3p
+
+IB 0 3 pwl(0 0 1p 258u)
+
+.model jjmit jj(
++ rtype=1
++ vg=2.8mV
++ cap=0.07pF
++ r0=160
++ rN=16
++ icrit=0.1mA
++ )
+
+.ends BQ

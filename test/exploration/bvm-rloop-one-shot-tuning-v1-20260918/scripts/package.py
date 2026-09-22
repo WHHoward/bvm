@@ -177,7 +177,7 @@ def batch_counts(base_commit: str, files: list[Path]) -> tuple[int, int]:
         except Exception:  # noqa: BLE001
             continue
         new_solves += int(data.get("new_physical_solve_count", 0))
-        reused += int(data.get("reused_points", 0))
+        reused += int(data.get("reused_parameter_points", data.get("reused_points", 0)))
     return new_solves, reused
 
 

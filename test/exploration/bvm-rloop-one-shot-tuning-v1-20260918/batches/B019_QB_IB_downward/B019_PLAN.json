@@ -1,0 +1,62 @@
+{
+  "schema": "bvm-rloop-b019-plan-v1",
+  "experiment_id": "B019_QB_IB_downward",
+  "study_phase": "EXPLORATORY",
+  "question": "At fixed U039 BVM and QB_BJ1_AREA=0.75, does a one-dimensional QB_IB decrease produce a bounded Control OFF / N0 OFF / N1 ON / N2 ON window?",
+  "parent_head": "8fcd69f1ead0861dc5c1e7c32659a21cc3a369df",
+  "mode": "closed",
+  "masks": ["0000", "0001", "0011"],
+  "sweep": {
+    "key": "QB_IB",
+    "values": ["220u", "230u", "240u", "250u", "260u"],
+    "reuse_existing": true,
+    "logical_parameter_points": 5,
+    "logical_run_count": 15
+  },
+  "control_only": {
+    "fixture_mode": "CONTROL_ONLY",
+    "mask": "0000",
+    "cases": [
+      {"label": "C0", "QB_BJ1_AREA": "0.90", "QB_RJ1": "32", "QB_IB": "260u"},
+      {"label": "C1", "QB_BJ1_AREA": "0.75", "QB_RJ1": "32", "QB_IB": "260u"}
+    ],
+    "stimulus": {
+      "idle": "[0,50) ps",
+      "write0": "[50,61) ps; WL=-100u, BL=-100u, SE=0u",
+      "settle": "[61,70) ps",
+      "control_read": "[70,81) ps; WL=100u, BL=0u, SE=100u; rise/fall=1p",
+      "zero_after_control": "[81,120) ps",
+      "stop": "120p",
+      "dt": "0.1p",
+      "no_write1": true,
+      "no_final_read": true
+    },
+    "terminal_locator": {
+      "signal": "I(R_TERM)",
+      "window": "[70,120) ps",
+      "positive_peak_threshold_A": 0.00005,
+      "minimum_separation_ps": 2.5,
+      "label": "terminal_candidate"
+    },
+    "metrics": [
+      "CONTROL_BJ1_forward_max_turn",
+      "CONTROL_BJ1_t_plus_0p5_ps",
+      "CONTROL_BJ2_forward_max_turn",
+      "CONTROL_BJ2_t_plus_0p5_ps",
+      "CONTROL_L1_I_min",
+      "CONTROL_L1_I_max",
+      "CONTROL_L1_zero_cross_up_ps",
+      "CONTROL_terminal_candidate_count",
+      "CONTROL_terminal_first_peak_ps",
+      "CONTROL_terminal_max_peak_A"
+    ]
+  },
+  "frozen": [
+    "BVM topology and all U039 BVM parameters",
+    "QB topology, all QB parameters except QB_IB sweep and registered C0/C1 BJ1 area",
+    "JTL topology and model",
+    "DT=0.1p and standard closed protocol stop=200p",
+    "raw evidence and historical cases"
+  ],
+  "interpretation_ceiling": "Mechanical/raw evidence only; no scientific interpretation, operating-window verdict, mechanism claim, or automatic follow-up without SCIENTIFIC_REVIEW_AUTHORIZED."
+}

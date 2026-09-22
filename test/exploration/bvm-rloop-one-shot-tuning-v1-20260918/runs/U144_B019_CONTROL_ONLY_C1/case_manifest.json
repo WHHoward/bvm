@@ -1,0 +1,182 @@
+{
+  "schema": "bvm-rloop-control-only-case-v1",
+  "case_id": "U144_B019_CONTROL_ONLY_C1",
+  "fixture_mode": "CONTROL_ONLY",
+  "parameters": {
+    "NAME": "B019_CONTROL_ONLY_C1",
+    "MODE": "closed",
+    "MASKS": [
+      "0000"
+    ],
+    "JM1_AREA": "1.2",
+    "JM2_AREA": "1.4",
+    "RJM1": "8",
+    "RJM2": "OPEN",
+    "LM1": "12.5p",
+    "LM2": "24.5p",
+    "LM3": "8.5p",
+    "LPM": "0.5p",
+    "JS1_AREA": "0.52",
+    "JS2_AREA": "0.74",
+    "RSH_JS1": "12",
+    "RSH_JS2": "20",
+    "LS1": "0.5p",
+    "LS2": "0.5p",
+    "LS3": "0.5p",
+    "RS": "3.0",
+    "LPSL": "0.5p",
+    "RSL": "12.0",
+    "LSL": "0.4p",
+    "RBL": "20.0",
+    "LPBL": "0.5p",
+    "RWL": "20.0",
+    "LPWL": "0.5p",
+    "RSE": "20.0",
+    "LPSE": "0.5p",
+    "QB_LIN": "1.5p",
+    "QB_BJS_AREA": "4.0",
+    "QB_L1": "1.4p",
+    "QB_L2": "2.0p",
+    "QB_BJ1_AREA": "0.75",
+    "QB_RJ1": "32",
+    "QB_BJ2_AREA": "2.0",
+    "QB_RJ2": "12",
+    "QB_L3": "1.3p",
+    "QB_IB": "260u",
+    "DT": "0.1p",
+    "STOP": "120p",
+    "IDLE_START": "0p",
+    "IDLE_END": "50p",
+    "RECOVERY_END": "120p",
+    "TAIL_START": "81p",
+    "WRITE0_START": "50p",
+    "WRITE0_END": "61p",
+    "WRITE0_WL_AMP": "-100u",
+    "WRITE0_BL_AMP": "-100u",
+    "WRITE0_SE_AMP": "0u",
+    "WRITE0_WL_RISE": "1p",
+    "WRITE0_WL_FALL": "1p",
+    "WRITE0_BL_RISE": "1p",
+    "WRITE0_BL_FALL": "1p",
+    "WRITE0_SE_RISE": "1p",
+    "WRITE0_SE_FALL": "1p",
+    "CONTROL_READ_START": "70p",
+    "CONTROL_READ_END": "81p",
+    "CONTROL_WL_AMP": "100u",
+    "CONTROL_BL_AMP": "0u",
+    "CONTROL_SE_AMP": "100u",
+    "CONTROL_WL_RISE": "1p",
+    "CONTROL_WL_FALL": "1p",
+    "CONTROL_BL_RISE": "1p",
+    "CONTROL_BL_FALL": "1p",
+    "CONTROL_SE_RISE": "1p",
+    "CONTROL_SE_FALL": "1p",
+    "WRITE1_START": "90p",
+    "WRITE1_END": "101p",
+    "WRITE1_WL_AMP": "100u",
+    "WRITE1_BL_AMP": "100u",
+    "WRITE1_SE_AMP": "0u",
+    "WRITE1_WL_RISE": "1p",
+    "WRITE1_WL_FALL": "1p",
+    "WRITE1_BL_RISE": "1p",
+    "WRITE1_BL_FALL": "1p",
+    "WRITE1_SE_RISE": "1p",
+    "WRITE1_SE_FALL": "1p",
+    "FINAL_READ_START": "110p",
+    "FINAL_READ_END": "121p",
+    "READ_WL_AMP": "100u",
+    "READ_BL_AMP": "0u",
+    "READ_SE_AMP": "100u",
+    "READ_WL_RISE": "1p",
+    "READ_WL_FALL": "1p",
+    "READ_BL_RISE": "1p",
+    "READ_BL_FALL": "1p",
+    "READ_SE_RISE": "1p",
+    "READ_SE_FALL": "1p",
+    "SWEEP_ENABLED": "no",
+    "SWEEP_KEY": "NONE",
+    "SWEEP_VALUES": "",
+    "SWEEP_REUSE_EXISTING": "yes",
+    "CASE_ID": "U144_B019_CONTROL_ONLY_C1",
+    "windows": {
+      "idle_0_50": [
+        0.0,
+        50.0
+      ],
+      "write0_50_61": [
+        50.0,
+        61.0
+      ],
+      "settle0_61_70": [
+        61.0,
+        70.0
+      ],
+      "control_70_81": [
+        70.0,
+        81.0
+      ],
+      "tail_81_120": [
+        81.0,
+        120.0
+      ],
+      "control_observation_70_120": [
+        70.0,
+        120.0
+      ],
+      "whole_0_120": [
+        0.0,
+        120.0
+      ]
+    },
+    "time_ps": {
+      "DT": 0.1,
+      "STOP": 120.0,
+      "CONTROL_START": 70.0,
+      "CONTROL_END": 81.0
+    },
+    "control_only": true,
+    "control_only_label": "C1",
+    "config_changes": [
+      {
+        "key": "JS1_AREA",
+        "from": "0.74",
+        "to": "0.52",
+        "section": "circuit"
+      },
+      {
+        "key": "RSH_JS1",
+        "from": "OPEN",
+        "to": "12",
+        "section": "circuit"
+      },
+      {
+        "key": "RSH_JS2",
+        "from": "OPEN",
+        "to": "20",
+        "section": "circuit"
+      },
+      {
+        "key": "QB_BJ1_AREA",
+        "from": "0.9",
+        "to": "0.75",
+        "section": "circuit"
+      }
+    ]
+  },
+  "parent": {
+    "head": "8fcd69f1ead0861dc5c1e7c32659a21cc3a369df",
+    "remote_bvm_master": "8fcd69f1ead0861dc5c1e7c32659a21cc3a369df",
+    "working_tree_dirty": true,
+    "status_porcelain": "?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B019_QB_IB_downward/B019_PLAN.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B019_QB_IB_downward/C0_CONTROL_ONLY_RESULT.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/batches/B019_QB_IB_downward/PREFLIGHT.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U143_B019_CONTROL_ONLY_C0/control_only/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/analysis/control_only_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/analysis/control_only_validation.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/analysis/control_only_visualization.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/analysis/visualization_source_70_120.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/cases/CONTROL_ONLY_N0_0000/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/qa/control_only_plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/snapshot/sources/bq_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U143_B019_CONTROL_ONLY_C0/stimulus_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/scripts/run_b019.py\n"
+  },
+  "source_manifest": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U144_B019_CONTROL_ONLY_C1/source_manifest.json",
+    "sha256": "4f56b1c3182dc924acd7c295baa455ccacdc0781ad855a093cce8bc668075eaa"
+  },
+  "run_order": [
+    "CONTROL_ONLY_N0_0000"
+  ],
+  "physical_solve_count": 1,
+  "automatic_follow_up": false,
+  "scientific_interpretation_performed": false
+}

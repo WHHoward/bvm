@@ -1,0 +1,281 @@
+{
+  "schema": "bvm-rloop-user-case-v1",
+  "case_id": "U159_bvm_rloop_shots_tunning",
+  "name": "bvm_rloop_shots_tunning",
+  "parameters": {
+    "NAME": "bvm_rloop_shots_tunning",
+    "MODE": "closed",
+    "MASKS": [
+      "0001",
+      "0011",
+      "0111"
+    ],
+    "JM1_AREA": "1.2",
+    "JM2_AREA": "1.4",
+    "RJM1": "8",
+    "RJM2": "OPEN",
+    "LM1": "12.5p",
+    "LM2": "24.5p",
+    "LM3": "8.5p",
+    "LPM": "0.5p",
+    "JS1_AREA": "0.9",
+    "JS2_AREA": "0.9",
+    "RSH_JS1": "OPEN",
+    "RSH_JS2": "OPEN",
+    "LS1": "0.5p",
+    "LS2": "0.5p",
+    "LS3": "0.5p",
+    "RS": "3.0",
+    "LPSL": "0.5p",
+    "RSL": "12.0",
+    "LSL": "0.4p",
+    "RBL": "20.0",
+    "LPBL": "0.5p",
+    "RWL": "20.0",
+    "LPWL": "0.5p",
+    "RSE": "20.0",
+    "LPSE": "0.5p",
+    "QB_LIN": "1.5p",
+    "QB_BJS_AREA": "4.0",
+    "QB_L1": "1.4p",
+    "QB_L2": "2.0p",
+    "QB_BJ1_AREA": "0.8",
+    "QB_RJ1": "40",
+    "QB_BJ2_AREA": "2.0",
+    "QB_RJ2": "12",
+    "QB_L3": "1.3p",
+    "QB_IB": "260u",
+    "DT": "0.1p",
+    "STOP": "200p",
+    "IDLE_START": "0p",
+    "IDLE_END": "50p",
+    "RECOVERY_END": "130p",
+    "TAIL_START": "150p",
+    "WRITE0_START": "50p",
+    "WRITE0_END": "61p",
+    "WRITE0_WL_AMP": "-100u",
+    "WRITE0_BL_AMP": "-100u",
+    "WRITE0_SE_AMP": "0u",
+    "WRITE0_WL_RISE": "1p",
+    "WRITE0_WL_FALL": "1p",
+    "WRITE0_BL_RISE": "1p",
+    "WRITE0_BL_FALL": "1p",
+    "WRITE0_SE_RISE": "1p",
+    "WRITE0_SE_FALL": "1p",
+    "CONTROL_READ_START": "70p",
+    "CONTROL_READ_END": "81p",
+    "CONTROL_WL_AMP": "100u",
+    "CONTROL_BL_AMP": "0u",
+    "CONTROL_SE_AMP": "100u",
+    "CONTROL_WL_RISE": "1p",
+    "CONTROL_WL_FALL": "1p",
+    "CONTROL_BL_RISE": "1p",
+    "CONTROL_BL_FALL": "1p",
+    "CONTROL_SE_RISE": "1p",
+    "CONTROL_SE_FALL": "1p",
+    "WRITE1_START": "90p",
+    "WRITE1_END": "101p",
+    "WRITE1_WL_AMP": "100u",
+    "WRITE1_BL_AMP": "100u",
+    "WRITE1_SE_AMP": "0u",
+    "WRITE1_WL_RISE": "1p",
+    "WRITE1_WL_FALL": "1p",
+    "WRITE1_BL_RISE": "1p",
+    "WRITE1_BL_FALL": "1p",
+    "WRITE1_SE_RISE": "1p",
+    "WRITE1_SE_FALL": "1p",
+    "FINAL_READ_START": "110p",
+    "FINAL_READ_END": "121p",
+    "READ_WL_AMP": "100u",
+    "READ_BL_AMP": "0u",
+    "READ_SE_AMP": "100u",
+    "READ_WL_RISE": "1p",
+    "READ_WL_FALL": "1p",
+    "READ_BL_RISE": "1p",
+    "READ_BL_FALL": "1p",
+    "READ_SE_RISE": "1p",
+    "READ_SE_FALL": "1p",
+    "SWEEP_ENABLED": "no",
+    "SWEEP_KEY": "NONE",
+    "SWEEP_VALUES": "",
+    "SWEEP_REUSE_EXISTING": "yes",
+    "CASE_ID": "U159_bvm_rloop_shots_tunning",
+    "windows": {
+      "idle_0_50": [
+        0.0,
+        50.0
+      ],
+      "write0_50_61": [
+        50.0,
+        60.99999999999999
+      ],
+      "settle0_61_70": [
+        60.99999999999999,
+        70.0
+      ],
+      "zero_read_control_70_81": [
+        70.0,
+        81.0
+      ],
+      "settle1_81_90": [
+        81.0,
+        90.0
+      ],
+      "write1_90_101": [
+        90.0,
+        101.0
+      ],
+      "settle_101_110": [
+        101.0,
+        110.0
+      ],
+      "final_read_110_121": [
+        110.0,
+        121.0
+      ],
+      "recovery_121_130": [
+        121.0,
+        130.0
+      ],
+      "tail_150_200": [
+        150.0,
+        200.0
+      ],
+      "whole_0_200": [
+        0.0,
+        200.0
+      ]
+    },
+    "time_ps": {
+      "IDLE_START": 0.0,
+      "IDLE_END": 50.0,
+      "WRITE0_START": 50.0,
+      "WRITE0_END": 60.99999999999999,
+      "CONTROL_READ_START": 70.0,
+      "CONTROL_READ_END": 81.0,
+      "WRITE1_START": 90.0,
+      "WRITE1_END": 101.0,
+      "FINAL_READ_START": 110.0,
+      "FINAL_READ_END": 121.0,
+      "RECOVERY_END": 130.0,
+      "TAIL_START": 150.0,
+      "STOP": 200.0
+    },
+    "config_changes": [
+      {
+        "key": "JS1_AREA",
+        "from": "0.74",
+        "to": "0.9",
+        "section": "circuit"
+      },
+      {
+        "key": "JS2_AREA",
+        "from": "0.74",
+        "to": "0.9",
+        "section": "circuit"
+      },
+      {
+        "key": "QB_BJ1_AREA",
+        "from": "0.9",
+        "to": "0.8",
+        "section": "circuit"
+      },
+      {
+        "key": "QB_RJ1",
+        "from": "32",
+        "to": "40",
+        "section": "circuit"
+      }
+    ]
+  },
+  "windows": {
+    "idle_0_50": [
+      0.0,
+      50.0
+    ],
+    "write0_50_61": [
+      50.0,
+      60.99999999999999
+    ],
+    "settle0_61_70": [
+      60.99999999999999,
+      70.0
+    ],
+    "zero_read_control_70_81": [
+      70.0,
+      81.0
+    ],
+    "settle1_81_90": [
+      81.0,
+      90.0
+    ],
+    "write1_90_101": [
+      90.0,
+      101.0
+    ],
+    "settle_101_110": [
+      101.0,
+      110.0
+    ],
+    "final_read_110_121": [
+      110.0,
+      121.0
+    ],
+    "recovery_121_130": [
+      121.0,
+      130.0
+    ],
+    "tail_150_200": [
+      150.0,
+      200.0
+    ],
+    "whole_0_200": [
+      0.0,
+      200.0
+    ]
+  },
+  "parent": {
+    "head": "2fb55085f00a2a98984db340b4b7b5d7acfedb35",
+    "remote_bvm_master": "2fb55085f00a2a98984db340b4b7b5d7acfedb35",
+    "working_tree_dirty": true,
+    "status_porcelain": " M scripts/MC_conclu.py\n M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/LATEST_REVIEW.html\n M test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/USER_CASE.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U153_bvm_rloop_shots_tunning/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U154_bvm_rloop_shots_tunning/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U155_bvm_rloop_shots_tunning/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U156_bvm_rloop_shots_tunning/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U157_bvm_rloop_shots_tunning/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/plots/U158_bvm_rloop_shots_tunning/review.html\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U153_bvm_rloop_shots_tunning/stimulus_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U154_bvm_rloop_shots_tunning/stimulus_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U155_bvm_rloop_shots_tunning/stimulus_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N2_0011/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/cases/PASSIVE_N4_1111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U156_bvm_rloop_shots_tunning/stimulus_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/snapshot/sources/bq_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U157_bvm_rloop_shots_tunning/stimulus_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/REVIEW_SUMMARY.md\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/analysis/analysis_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/analysis/case_metrics.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/analysis/per_signal_window_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/analysis/plot_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/analysis/population_metrics.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/case_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N1_0001/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N2_0011/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/actual_deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/deck.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/metadata.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/raw.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/signal_manifest.csv\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/stderr.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/stdout.txt\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/cases/CLOSED_N3_0111/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/config_snapshot.env\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/provenance.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/qa/plot_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/qa/raw_qa.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/result.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/snapshot/sources/bq_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/source_manifest.json\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/stimulus.inc\n?? test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U158_bvm_rloop_shots_tunning/stimulus_snapshot.env\n"
+  },
+  "source_manifest": {
+    "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/runs/U159_bvm_rloop_shots_tunning/source_manifest.json",
+    "sha256": "0528bddcb754cf5cef3ed3fbfe7f24c984e1d1778fe1fe2e26f9ba5dcb2af42c"
+  },
+  "run_order": [
+    "CLOSED_N1_0001",
+    "CLOSED_N2_0011",
+    "CLOSED_N3_0111"
+  ],
+  "physical_solve_count": 3,
+  "config_changes": [
+    {
+      "key": "JS1_AREA",
+      "from": "0.74",
+      "to": "0.9",
+      "section": "circuit"
+    },
+    {
+      "key": "JS2_AREA",
+      "from": "0.74",
+      "to": "0.9",
+      "section": "circuit"
+    },
+    {
+      "key": "QB_BJ1_AREA",
+      "from": "0.9",
+      "to": "0.8",
+      "section": "circuit"
+    },
+    {
+      "key": "QB_RJ1",
+      "from": "32",
+      "to": "40",
+      "section": "circuit"
+    }
+  ],
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

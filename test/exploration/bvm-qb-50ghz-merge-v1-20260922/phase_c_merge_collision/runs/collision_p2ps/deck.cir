@@ -1,0 +1,13 @@
+.include snapshot/sources/jjmit.cir
+.include snapshot/sources/MERGE.cir
+.include snapshot/sources/JTL.cir
+.include stimulus.inc
+XMERGE SFQ_A SFQ_B SFQ_Q THmitll_MERGE
+XLOAD SFQ_Q SFQ_OUT THmitll_JTL
+R_TERM SFQ_OUT 0 1
+.tran 0.1p 120p
+.print V(SFQ_A) V(SFQ_B) V(SFQ_Q) V(SFQ_OUT) V(R_TERM)
+.print P(B1|XMERGE) P(B2|XMERGE) P(B3|XMERGE) P(B4|XMERGE) P(B5|XMERGE) P(B6|XMERGE) P(B7|XMERGE)
+.print I(L1|XMERGE) I(L2|XMERGE) I(L3|XMERGE) I(L4|XMERGE) I(L5|XMERGE) I(L6|XMERGE) I(L7|XMERGE) I(L8|XMERGE) I(L9|XMERGE) I(L10|XMERGE)
+.print P(B1|XLOAD) P(B2|XLOAD)
+.end

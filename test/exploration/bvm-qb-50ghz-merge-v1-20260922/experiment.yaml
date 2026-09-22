@@ -1,0 +1,27 @@
+experiment_id: bvm-qb-50ghz-merge-v1-20260922
+study_phase: EXPLORATORY
+question: >-
+  Under the frozen 1x1, 2x1, and 3x1 BVM/QB candidates, do repeated 20 ps
+  reads and registered rewrite/read sequences preserve the expected response
+  candidate multiplicity, and can the existing standard MERGE preserve two
+  input pulse streams without count collapse before a conditional 4-BVM
+  integration?
+changed:
+  - read cadence for Phase A is fixed at 20 ps (50 GHz)
+  - Phase B uses registered rewrite/read state sequences
+  - Phase C uses synthetic SFQ injection into existing circuits/standard/MERGE.cir
+  - Phase D is conditional on the registered direct-MERGE mechanical gate
+frozen:
+  - BVM/QB candidate values in PREFLIGHT.md
+  - BVM write pulse width and amplitude
+  - QB topology and parameters per fan-in
+  - standard MERGE.cir source without modification
+  - JJ model, JTL model, solver, dt=0.1 ps
+  - raw immutability and no interpolation/resampling
+prohibited:
+  - broad QB sweep
+  - modifying historical raw or circuits/standard/MERGE.cir
+  - using circuits/standard/MERGET.cir
+  - interpreting phase turns as SFQ count
+  - integration after a failed direct-MERGE gate
+  - unregistered threshold or follow-up solve

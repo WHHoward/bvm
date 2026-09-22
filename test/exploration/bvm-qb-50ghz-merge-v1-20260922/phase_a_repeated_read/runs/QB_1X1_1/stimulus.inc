@@ -1,0 +1,5 @@
+* Phase A repeated-read; candidate=QB_1X1; mask=1; mask left-to-right: b0=BVM1 (rightmost bit is highest-index BVM)
+* five reads at 20 ps cadence; no rewrite after WRITE1.
+I_WL1 0 WL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p +100u 120p +100u 121p 0 130p 0 131p +100u 140p +100u 141p 0 150p 0 151p +100u 160p +100u 161p 0 170p 0 171p +100u 180p +100u 181p 0 190p 0 191p +100u 200p +100u 201p 0 240p 0)
+I_BL1 0 BL1 pwl(0 0 50p 0 51p -100u 60p -100u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p +100u 100p +100u 101p 0 110p 0 111p 0 120p 0 121p 0 130p 0 131p 0 140p 0 141p 0 150p 0 151p 0 160p 0 161p 0 170p 0 171p 0 180p 0 181p 0 190p 0 191p 0 200p 0 201p 0 240p 0)
+I_SE1 0 SE1 pwl(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p +100u 80p +100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p +100u 120p +100u 121p 0 130p 0 131p +100u 140p +100u 141p 0 150p 0 151p +100u 160p +100u 161p 0 170p 0 171p +100u 180p +100u 181p 0 190p 0 191p +100u 200p +100u 201p 0 240p 0)

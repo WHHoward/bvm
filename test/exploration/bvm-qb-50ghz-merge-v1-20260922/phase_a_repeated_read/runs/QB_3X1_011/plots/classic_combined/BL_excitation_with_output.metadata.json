@@ -1,0 +1,43 @@
+{
+  "schema": "bvm-qb-50ghz-classic-combined-plot-v1",
+  "run_id": "QB_3X1_011",
+  "plot_kind": "BL_EXCITATION_WITH_OUTPUT",
+  "renderer": "scripts/josim-plot2.py",
+  "layout": "sep_comb",
+  "color": "dark",
+  "phase_option": "2pi",
+  "input_mode": "RAW_DIRECT",
+  "input_raw_path": "phase_a_repeated_read/runs/QB_3X1_011/raw.csv",
+  "input_raw_sha256": "91fc07884e7f3ba51a5f0f9a55ec18941390b3b308504db5c00352dbfe9af19f",
+  "output_path": "phase_a_repeated_read/runs/QB_3X1_011/plots/classic_combined/BL_excitation_with_output.html",
+  "output_sha256": "e2122c497aa89f9e55620d6fed56e34a98bf2a21ebf79586227ad3f241a6113b",
+  "selected_raw_columns": [
+    "I(I_BL1)",
+    "I(I_BL2)",
+    "I(I_BL3)",
+    "V(QBOUT)",
+    "V(R_TERM)"
+  ],
+  "command": [
+    "/home/howard/anaconda3/bin/python3",
+    "/home/howard/JoSIM/scripts/josim-plot2.py",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_011/raw.csv",
+    "-x",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_011/plots/classic_combined/BL_excitation_with_output.html",
+    "-t",
+    "sep_comb",
+    "-c",
+    "dark",
+    "-j",
+    "2pi",
+    "-w",
+    "QB_3X1_011 | BL excitation + QBOUT/terminal | raw",
+    "-s",
+    "I(I_BL1)",
+    "I(I_BL2)",
+    "I(I_BL3)",
+    "V(QBOUT)",
+    "V(R_TERM)"
+  ],
+  "scientific_interpretation_performed": false
+}

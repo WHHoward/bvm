@@ -46,7 +46,7 @@
 ## Stimulus visualization update
 
 - `plots/STIMULUS_INDEX.html` links every run's registered excitation plots.
-- `plots/COMBINED_INDEX.html` links per-run pages with excitation and output displayed together.
-- BVM/QB runs show direct raw `I(I_WL*)`, `I(I_BL*)`, and `I(I_SE*)` tracks in separate plots.
-- MERGE runs show `INA/INB` from the exact registered `stimulus.inc` PWL definition; these are labeled source-definition plots, not solver raw tracks.
-- Combined visualization QA: `analysis/COMBINED_VIZ_QA.json` = PASS for 43 valid runs; the preserved failed solver attempt has no output raw and is listed separately. Raw hashes were not changed.
+- `plots/COMBINED_INDEX.html` now links classic `josim-plot2.py -t sep_comb` figures where excitation and output traces are selected into the same plot invocation.
+- Each BVM/QB run has one figure for each WL, BL, and SE source-current group. Each figure also includes `V(QBOUT)` and `V(R_TERM)` from the same `raw.csv`.
+- Each MERGE run has one figure containing raw input-pin `V(SFQ_A/B)` and output `V(SFQ_Q)`, `V(SFQ_OUT)`, and `V(R_TERM)`.
+- Combined visualization QA: `analysis/CLASSIC_COMBINED_VIZ_QA.json` = PASS for 43 valid runs and 77 classic figures. All selected traces are direct columns from the same run's raw CSV; raw hashes were not changed. The preserved failed solver attempt has no output raw and is listed separately.

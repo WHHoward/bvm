@@ -1,0 +1,43 @@
+{
+  "schema": "bvm-qb-50ghz-classic-combined-plot-v1",
+  "run_id": "B_only",
+  "plot_kind": "MERGE_INPUTS_AND_OUTPUT",
+  "renderer": "scripts/josim-plot2.py",
+  "layout": "sep_comb",
+  "color": "dark",
+  "phase_option": "2pi",
+  "input_mode": "RAW_DIRECT",
+  "input_raw_path": "phase_c_merge_collision/runs/B_only/raw.csv",
+  "input_raw_sha256": "e871690724dafe4cae39ba88e050e9adb47c8359e1fbaf512838d4d7e357e043",
+  "output_path": "phase_c_merge_collision/runs/B_only/plots/classic_combined/MERGE_inputs_and_output.html",
+  "output_sha256": "0e6f3658cb810d48e6003bed1db73928f243c81bc35f58143249913edd13da25",
+  "selected_raw_columns": [
+    "V(SFQ_A)",
+    "V(SFQ_B)",
+    "V(SFQ_Q)",
+    "V(SFQ_OUT)",
+    "V(R_TERM)"
+  ],
+  "command": [
+    "/home/howard/anaconda3/bin/python3",
+    "/home/howard/JoSIM/scripts/josim-plot2.py",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_c_merge_collision/runs/B_only/raw.csv",
+    "-x",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_c_merge_collision/runs/B_only/plots/classic_combined/MERGE_inputs_and_output.html",
+    "-t",
+    "sep_comb",
+    "-c",
+    "dark",
+    "-j",
+    "2pi",
+    "-w",
+    "B_only | MERGE inputs + JTL/terminal outputs | raw",
+    "-s",
+    "V(SFQ_A)",
+    "V(SFQ_B)",
+    "V(SFQ_Q)",
+    "V(SFQ_OUT)",
+    "V(R_TERM)"
+  ],
+  "scientific_interpretation_performed": false
+}

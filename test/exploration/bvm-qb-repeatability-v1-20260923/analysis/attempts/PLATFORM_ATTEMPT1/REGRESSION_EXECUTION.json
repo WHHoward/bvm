@@ -1,0 +1,44 @@
+{
+  "schema": "bvm-qb-repeatability-regression-execution-v1",
+  "preflight_status": "PASS",
+  "preflight_head": "9b6cd885e0e030d742191122475d0fdda114353d",
+  "preflight_qa_sha256": "82c13f50ec68c8b10eecbfe8585b0c19bfe9a00ae91d6d7600fba43842fce728",
+  "authorized_solve_count": 5,
+  "completed_solve_count": 0,
+  "automatic_retry": false,
+  "scientific_interpretation_performed": false,
+  "runs": [
+    {
+      "case_id": "REG_A_QB2X1_N1",
+      "command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_case.py",
+        "--registered-case",
+        "REG_A_QB2X1_N1",
+        "--set",
+        "NAME=REG_A_QB2X1_N1",
+        "--set",
+        "TEST_MODE=REPEAT_READ",
+        "--set",
+        "CANDIDATE=QB_2X1",
+        "--set",
+        "ARRAY_SIZE=2",
+        "--set",
+        "MASK=01",
+        "--set",
+        "READ_PERIOD_PS=20",
+        "--set",
+        "READ_COUNT=5",
+        "--reference-run",
+        "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01"
+      ],
+      "exit_code": 2,
+      "receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_A_QB2X1_N1.json",
+      "receipt_sha256": "cdf8d6bd4ee9230105d5fb645afe4ff20b4114b598376c31a5c375696cd7e783",
+      "physical_solve_count": 1,
+      "raw_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd",
+      "status": "STOPPED_ON_FAILURE"
+    }
+  ],
+  "status": "STOPPED_ON_FAILURE"
+}

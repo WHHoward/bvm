@@ -160,6 +160,11 @@ def unexpected_registered_worktree_paths(status_porcelain: str, case_ids: set[st
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/REGRESSION_EXECUTION.json",
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/REG_A_QB2X1_N1_solver_receipt.json",
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/archive_manifest.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/PREFLIGHT_QA.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/REGRESSION_EXECUTION.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/REG_A_QB2X1_N1_solver_receipt.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/archive_manifest.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/runner_error.json",
                f"{prefix}/plots/assets/plotly.min.js"}
     allowed.update(f"{prefix}/analysis/receipts/{case_id}.json" for case_id in case_ids)
     run_prefix = f"{prefix}/runs/"

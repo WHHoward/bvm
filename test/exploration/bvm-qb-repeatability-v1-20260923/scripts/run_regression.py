@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -42,12 +43,27 @@ def write_exclusive_json(path: Path, value: dict) -> None:
 
 def archive_previous_attempt() -> dict[str, dict[str, str]]:
     attempt_dir = ROOT / "analysis" / "attempts" / "PLATFORM_ATTEMPT1"
-    attempt_dir.mkdir(parents=True, exist_ok=False)
     sources = {
         "PREFLIGHT_QA.json": ROOT / "analysis" / "PREFLIGHT_QA.json",
         "REGRESSION_EXECUTION.json": ROOT / "analysis" / "REGRESSION_EXECUTION.json",
         "REG_A_QB2X1_N1_solver_receipt.json": ROOT / "analysis" / "receipts" / "REG_A_QB2X1_N1.json",
     }
+    if attempt_dir.is_dir():
+        manifest_path = attempt_dir / "archive_manifest.json"
+        if not manifest_path.is_file():
+            raise RuntimeError("existing PLATFORM_ATTEMPT1 archive has no manifest; refusing reuse or overwrite")
+        manifest = read_json(manifest_path)
+        saved = manifest.get("files", {})
+        if set(saved) != set(sources):
+            raise RuntimeError("existing PLATFORM_ATTEMPT1 manifest has an unexpected file set")
+        for name, source in sources.items():
+            archived = attempt_dir / name
+            digest = saved[name].get("sha256")
+            if (not source.is_file() or not archived.is_file() or
+                    sha256(source) != digest or sha256(archived) != digest):
+                raise RuntimeError(f"existing PLATFORM_ATTEMPT1 cannot be reused against current prior evidence: {name}")
+        return saved
+    attempt_dir.mkdir(parents=True, exist_ok=False)
     saved = {}
     for name, source in sources.items():
         if not source.is_file():
@@ -62,6 +78,123 @@ def archive_previous_attempt() -> dict[str, dict[str, str]]:
         "scientific_interpretation_performed": False,
     })
     return saved
+
+
+def repair_interrupted_resume_startup(dry_run: bool = False) -> int:
+    """Archive a validated pre-solve runner crash and restore the original A-stop ledgers."""
+    attempt1 = ROOT / "analysis" / "attempts" / "PLATFORM_ATTEMPT1"
+    attempt2 = ROOT / "analysis" / "attempts" / "PLATFORM_ATTEMPT2"
+    original_names = ("PREFLIGHT_QA.json", "REGRESSION_EXECUTION.json",
+                     "REG_A_QB2X1_N1_solver_receipt.json")
+    if not attempt1.is_dir() or attempt2.exists():
+        raise RuntimeError("repair requires a verified PLATFORM_ATTEMPT1 and no existing PLATFORM_ATTEMPT2")
+    first_manifest = read_json(attempt1 / "archive_manifest.json")
+    first_files = first_manifest.get("files", {})
+    if set(first_files) != set(original_names):
+        raise RuntimeError("PLATFORM_ATTEMPT1 archive file set is invalid")
+    for name in original_names:
+        archived = attempt1 / name
+        if not archived.is_file() or sha256(archived) != first_files[name].get("sha256"):
+            raise RuntimeError(f"PLATFORM_ATTEMPT1 archive hash mismatch: {name}")
+
+    original_preflight = read_json(attempt1 / "PREFLIGHT_QA.json")
+    original_execution = read_json(attempt1 / "REGRESSION_EXECUTION.json")
+    original_receipt = read_json(attempt1 / "REG_A_QB2X1_N1_solver_receipt.json")
+    old_ledger = original_execution.get("runs", [{}])[0]
+    root_receipt_path = ROOT / "analysis" / "receipts" / "REG_A_QB2X1_N1.json"
+    original_root_paths = {
+        "PREFLIGHT_QA.json": ROOT / "analysis" / "PREFLIGHT_QA.json",
+        "REGRESSION_EXECUTION.json": ROOT / "analysis" / "REGRESSION_EXECUTION.json",
+        "REG_A_QB2X1_N1_solver_receipt.json": root_receipt_path,
+    }
+    if (original_preflight.get("status") != "PASS" or
+            original_execution.get("status") != "STOPPED_ON_FAILURE" or
+            len(original_execution.get("runs", [])) != 1 or
+            old_ledger.get("case_id") != "REG_A_QB2X1_N1" or
+            old_ledger.get("receipt_sha256") != sha256(attempt1 / "REG_A_QB2X1_N1_solver_receipt.json") or
+            original_execution.get("preflight_qa_sha256") != sha256(attempt1 / "PREFLIGHT_QA.json") or
+            original_receipt.get("artifact_status") != "INVALID" or
+            original_receipt.get("physical_solve_count") != 1):
+        raise RuntimeError("PLATFORM_ATTEMPT1 is not the original recoverable A analysis failure")
+
+    current_preflight = read_json(original_root_paths["PREFLIGHT_QA.json"])
+    current_execution = read_json(original_root_paths["REGRESSION_EXECUTION.json"])
+    if (current_preflight.get("status") != "PASS" or current_preflight.get("resume_existing_a") is not True or
+            current_preflight.get("git", {}).get("head") != current_execution.get("preflight_head") or
+            current_execution.get("preflight_qa_sha256") != sha256(original_root_paths["PREFLIGHT_QA.json"]) or
+            current_execution.get("preflight_head") != subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=ROOT.parents[2], text=True).strip() or
+            current_execution.get("status") != "IN_PROGRESS" or current_execution.get("runs") != [] or
+            current_execution.get("completed_solve_count") != 0 or
+            current_execution.get("physical_solve_count") != 0 or
+            current_execution.get("new_physical_solve_count") != 0 or
+            current_execution.get("existing_physical_solve_count") != 1):
+        raise RuntimeError("current root ledgers are not the known pre-solve interrupted resume state")
+    case_ids = [item["case_id"] for item in read_json(REGRESSION_MATRIX)["cases"]]
+    if any((ROOT / "runs" / case_id).exists() for case_id in case_ids[1:]):
+        raise RuntimeError("a later registered run exists; cannot classify this as a pre-solve startup interruption")
+    run_a = ROOT / "runs" / "REG_A_QB2X1_N1"
+    if (not root_receipt_path.is_file() or sha256(root_receipt_path) != first_files["REG_A_QB2X1_N1_solver_receipt.json"]["sha256"] or
+            sha256(run_a / "raw.csv") != original_receipt.get("artifact_sha256", {}).get("raw") or
+            run_tree_hashes(run_a) != original_receipt.get("run_tree_file_sha256", {})):
+        raise RuntimeError("original A receipt/raw changed; cannot restore its stopped ledgers")
+    if (run_a / "analysis" / "attempts" / "ANALYSIS_ATTEMPT1").exists():
+        raise RuntimeError("A analysis recovery has already begun; refusing to classify the failure as pre-solve")
+
+    if dry_run:
+        print(json.dumps({"status": "REPAIR_PREFLIGHT_PASS", "no_files_written": True,
+                          "preserved_attempt": repo_rel(attempt1),
+                          "to_archive": repo_rel(attempt2),
+                          "restore_from": [repo_rel(attempt1 / "PREFLIGHT_QA.json"),
+                                           repo_rel(attempt1 / "REGRESSION_EXECUTION.json")],
+                          "physical_solve_count_during_interrupted_attempt": 0,
+                          "a_raw_sha256": original_receipt["artifact_sha256"]["raw"]},
+                         ensure_ascii=False, indent=2))
+        return 0
+
+    attempt2.mkdir(parents=True, exist_ok=False)
+    saved: dict[str, dict[str, str]] = {}
+    for name, source in original_root_paths.items():
+        target = attempt2 / name
+        target.write_bytes(source.read_bytes())
+        saved[name] = {"path": repo_rel(target), "sha256": sha256(target)}
+    error_record = {
+        "schema": "bvm-qb-repeatability-runner-startup-failure-v1",
+        "created_at": __import__("datetime").datetime.now().astimezone().isoformat(timespec="seconds"),
+        "failure": "KeyError: 0 while indexing REGRESSION_MATRIX.json as a list instead of using its cases member",
+        "detected_at": "run_regression.py before recover_existing_a invocation",
+        "physical_solve_count_during_interrupted_attempt": 0,
+        "registered_cases_started": [], "later_cases_started": [],
+        "original_a_raw_mutated": False,
+        "scientific_interpretation_performed": False,
+    }
+    write_exclusive_json(attempt2 / "runner_error.json", error_record)
+    write_exclusive_json(attempt2 / "archive_manifest.json", {
+        "schema": "bvm-qb-repeatability-prior-platform-attempt-archive-v1",
+        "attempt": "PLATFORM_ATTEMPT2", "files": saved,
+        "runner_error_sha256": sha256(attempt2 / "runner_error.json"),
+        "physical_solve_count_during_attempt": 0,
+        "purpose": "preserve the failed resume-manager startup before restoring the prior A-stop ledgers",
+        "scientific_interpretation_performed": False,
+    })
+    for name in ("PREFLIGHT_QA.json", "REGRESSION_EXECUTION.json"):
+        shutil.copy2(attempt1 / name, original_root_paths[name])
+    if any(sha256(original_root_paths[name]) != first_files[name]["sha256"]
+           for name in ("PREFLIGHT_QA.json", "REGRESSION_EXECUTION.json")):
+        raise RuntimeError("restored original A-stop ledgers failed hash verification")
+    print(json.dumps({"status": "RESTORED_ORIGINAL_A_STOP",
+                      "archived_interrupted_attempt": repo_rel(attempt2),
+                      "new_physical_solve_count": 0,
+                      "original_a_raw_sha256": original_receipt["artifact_sha256"]["raw"],
+                      "restored_preflight_sha256": sha256(original_root_paths["PREFLIGHT_QA.json"]),
+                      "restored_execution_sha256": sha256(original_root_paths["REGRESSION_EXECUTION.json"])},
+                     ensure_ascii=False, indent=2))
+    return 0
+
+
+def registered_cases_for_execution(matrix: dict, resume: bool) -> list[dict]:
+    cases = matrix["cases"]
+    return cases[1:] if resume else cases
 
 
 def recover_existing_a(case: dict, gate: dict, execution: dict) -> int:
@@ -174,7 +307,13 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="show exact cases without creating runs or solving")
     parser.add_argument("--resume", action="store_true",
                         help="preserve and reanalyze only the registered A raw, then execute B–E once")
+    parser.add_argument("--repair-interrupted-resume", action="store_true",
+                        help="archive and restore the validated pre-solve manager crash; never runs JoSIM")
     args = parser.parse_args()
+    if args.repair_interrupted_resume:
+        if args.resume:
+            raise RuntimeError("--repair-interrupted-resume cannot be combined with --resume")
+        return repair_interrupted_resume_startup(dry_run=args.dry_run)
     gate = build_gate(require_clean=not args.dry_run, resume_existing_a=args.resume)
     if args.dry_run:
         print(json.dumps({"preflight_status": gate["status"], "authorized_solve_count": gate["authorized_solve_count"],
@@ -219,12 +358,10 @@ def main() -> int:
                  "prior_attempt_archive": archived, "runs": []}
     write_json(ROOT / "analysis" / "REGRESSION_EXECUTION.json", execution)
     if args.resume:
-        recovery_status = recover_existing_a(matrix[0], gate, execution)
+        recovery_status = recover_existing_a(matrix["cases"][0], gate, execution)
         if recovery_status != 0:
             return recovery_status
-        cases_to_run = matrix[1:]
-    else:
-        cases_to_run = matrix
+    cases_to_run = registered_cases_for_execution(matrix, args.resume)
     for case in cases_to_run:
         case_status = run_physical_case(case, gate, execution)
         if case_status != 0:

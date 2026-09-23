@@ -34,6 +34,14 @@ read-current pulses. The preserved repeated-read preamble writes all BVMs to
 the same WRITE1 state before applying that read mask. Rewrite mode instead
 resets all cells and writes each listed target state.
 
+The frozen A–E regression batch is launched with
+`python3 scripts/run_regression.py`. A validated recovery of the already-solved
+A case uses `--resume`; it reanalyzes that raw without JoSIM, then runs only B–E.
+If and only if the manager crashes before starting A reanalysis, the guarded
+`--repair-interrupted-resume` command preserves that no-solve attempt and
+restores the previous stopped-at-A ledgers; it refuses any case where a raw,
+later run, or A recovery has already changed.
+
 `STOP_PS` is never a user-entered solver limit. It is computed from the last
 stimulus endpoint and tail policy; recovery mode uses READ end plus recovery
 tail. A preflight hard-stops if any stimulus or configured terminal candidate

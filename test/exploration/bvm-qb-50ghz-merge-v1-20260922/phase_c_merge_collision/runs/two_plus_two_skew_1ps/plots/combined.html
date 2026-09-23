@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Combined stimulus and output</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#111827;color:#e5e7eb}
+body{margin:0;padding:18px}h1{margin:.15em 0}.sub{color:#bac6d7;margin:.2em 0 1em}
+.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(360px,1fr);gap:14px;align-items:stretch}
+.result-card{grid-row:1 / span 3}.card{background:#1f2937;border:1px solid #374151;border-radius:10px;padding:10px;min-width:0}
+header h2{font-size:1rem;margin:.15em 0}.card p{font-size:.83rem;color:#cbd5e1;margin:.15em 0 .5em}
+iframe{display:block;width:100%;height:290px;border:0;background:#fff;border-radius:6px}.result-card iframe{height:calc(100% - 54px);min-height:890px}
+.open{margin:.35em 0 0!important}.open a{color:#93c5fd}.note{color:#cbd5e1;font-size:.9rem;margin:12px 0}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.result-card{grid-row:auto}.result-card iframe{height:620px;min-height:0}.stimulus-card iframe{height:360px}}
+</style></head><body>
+<h1>two_plus_two_skew_1ps</h1><p class='sub'>Phase: phase_c_merge_collision · One page shows the experiment output beside its registered excitation.</p><p class='note'>BVM excitation traces are direct raw.csv source-current tracks. MERGE INA/INB traces are the registered PWL source definition because those source voltages were not probed into solver raw.</p><main class='layout'><section class='card result-card'><header><h2>Experiment output</h2><p>Direct run visualization from raw.csv</p></header><iframe loading='eager' title='Experiment output two_plus_two_skew_1ps' src='review.html'></iframe><p class='open'><a target='_blank' rel='noopener' href='review.html'>Open output plot</a></p></section><section class='card stimulus-card'><header><h2>source definition; not solver raw</h2><p>V(INA), V(INB)</p></header><iframe loading='eager' title='source definition; not solver raw two_plus_two_skew_1ps' src='stimulus/stimulus_definition_MERGE_INPUT.html'></iframe><p class='open'><a target='_blank' rel='noopener' href='stimulus/stimulus_definition_MERGE_INPUT.html'>Open stimulus plot</a></p></section></main></body></html>

@@ -46,6 +46,7 @@
 ## Stimulus visualization update
 
 - `plots/STIMULUS_INDEX.html` links every run's registered excitation plots.
+- `plots/COMBINED_INDEX.html` links per-run pages with excitation and output displayed together.
 - BVM/QB runs show direct raw `I(I_WL*)`, `I(I_BL*)`, and `I(I_SE*)` tracks in separate plots.
 - MERGE runs show `INA/INB` from the exact registered `stimulus.inc` PWL definition; these are labeled source-definition plots, not solver raw tracks.
-- Stimulus visualization QA: `analysis/STIMULUS_VIZ_QA.json` = PASS; raw hashes were not changed.
+- Combined visualization QA: `analysis/COMBINED_VIZ_QA.json` = PASS for 43 valid runs; the preserved failed solver attempt has no output raw and is listed separately. Raw hashes were not changed.

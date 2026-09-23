@@ -1,0 +1,28 @@
+{
+  "schema": "bvm-bq-cb-gap-phase-area-mapping-v1",
+  "metric_spec": {
+    "path": "docs/research/METRIC_SPEC_V2.md",
+    "version": "2.0.0",
+    "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"
+  },
+  "reporting_direction": 1,
+  "voltage_to_phase_sign": 1,
+  "mapping_status": "REGISTERED_FROM_DIRECT_BRANCH_AND_SOURCE_PIN_ORDER; NOT_ACCEPTED_AS_A_GLOBAL_BQ_OR_JTL_MAPPING",
+  "tolerance": null,
+  "tolerance_status": "UNFROZEN; residuals are descriptive only",
+  "mappings": [
+    {"stage": "BQ1_BJ3", "instance": "XBQ1", "phase_column": "P(BJ3|XBQ1)", "voltage_column": "V(BJ3|XBQ1)", "source_path": "circuits/qb/BQ_0923.cir", "source_sha256": "76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2", "element_line": "BJ3 4 0 jjmit area=2", "subcircuit_pin_order": ["4", "0"], "branch_endpoints": ["subckt node 4 of XBQ1", "ground node 0"], "voltage_to_phase_sign": 1, "reporting_direction": 1},
+    {"stage": "BQ2_BJ3", "instance": "XBQ2", "phase_column": "P(BJ3|XBQ2)", "voltage_column": "V(BJ3|XBQ2)", "source_path": "circuits/qb/BQ_0923.cir", "source_sha256": "76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2", "element_line": "BJ3 4 0 jjmit area=2", "subcircuit_pin_order": ["4", "0"], "branch_endpoints": ["subckt node 4 of XBQ2", "ground node 0"], "voltage_to_phase_sign": 1, "reporting_direction": 1},
+    {"stage": "CB1_BJ2", "instance": "XCB1", "phase_column": "P(BJ2|XCB1)", "voltage_column": "V(BJ2|XCB1)", "source_path": "circuits/CB/CB_0923.cir", "source_sha256": "f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216", "element_line": "BJ2 2 3 jjmit area=2.2", "subcircuit_pin_order": ["2", "3"], "branch_endpoints": ["subckt node 2 of XCB1", "subckt node 3 of XCB1"], "voltage_to_phase_sign": 1, "reporting_direction": 1},
+    {"stage": "CB2_BJ2", "instance": "XCB2", "phase_column": "P(BJ2|XCB2)", "voltage_column": "V(BJ2|XCB2)", "source_path": "circuits/CB/CB_0923.cir", "source_sha256": "f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216", "element_line": "BJ2 2 3 jjmit area=2.2", "subcircuit_pin_order": ["2", "3"], "branch_endpoints": ["subckt node 2 of XCB2", "subckt node 3 of XCB2"], "voltage_to_phase_sign": 1, "reporting_direction": 1},
+    {"stage": "ACC1_BJ1", "instance": "XACC1", "phase_column": "P(BJ1|XACC1)", "voltage_column": "V(BJ1|XACC1)", "source_path": "circuits/sJTL_0923.cir", "source_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688", "element_line": "BJ1 1 0 jjmit area=2.5", "subcircuit_pin_order": ["1", "0"], "branch_endpoints": ["subckt node 1 of XACC1", "ground node 0"], "voltage_to_phase_sign": 1, "reporting_direction": 1},
+    {"stage": "ACC2_BJ1", "instance": "XACC2", "phase_column": "P(BJ1|XACC2)", "voltage_column": "V(BJ1|XACC2)", "source_path": "circuits/sJTL_0923.cir", "source_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688", "element_line": "BJ1 1 0 jjmit area=2.5", "subcircuit_pin_order": ["1", "0"], "branch_endpoints": ["subckt node 1 of XACC2", "ground node 0"], "voltage_to_phase_sign": 1, "reporting_direction": 1},
+    {"stage": "GAP1_BJ1", "instance": "XGAP1", "phase_column": "P(BJ1|XGAP1)", "voltage_column": "V(BJ1|XGAP1)", "source_path": "circuits/sJTL_0923.cir", "source_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688", "element_line": "BJ1 1 0 jjmit area=2.5", "subcircuit_pin_order": ["1", "0"], "branch_endpoints": ["subckt node 1 of XGAP1", "ground node 0"], "voltage_to_phase_sign": 1, "reporting_direction": 1},
+    {"stage": "GAP2_BJ1", "instance": "XGAP2", "phase_column": "P(BJ1|XGAP2)", "voltage_column": "V(BJ1|XGAP2)", "source_path": "circuits/sJTL_0923.cir", "source_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688", "element_line": "BJ1 1 0 jjmit area=2.5", "subcircuit_pin_order": ["1", "0"], "branch_endpoints": ["subckt node 1 of XGAP2", "ground node 0"], "voltage_to_phase_sign": 1, "reporting_direction": 1}
+  ],
+  "raw_phase_unit": "radians",
+  "actual_grid_only": true,
+  "interpolation": false,
+  "resampling": false,
+  "scientific_interpretation_performed": false
+}

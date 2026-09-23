@@ -1,0 +1,27 @@
+* Frozen 2x1 BVM/BQ/CB/ACC/GAP topology.
+* Match jjmit model used by bvm_0923/test_bvm.cir.
+.model jjmit jj(rtype=1, vg=2.8m, cap=0.07p, r0=160, rn=16, icrit=0.1m)
+.include snapshot/sources/bvm_cell_0923.cir
+.include snapshot/sources/BQ_0923.cir
+.include snapshot/sources/CB_0923.cir
+.include snapshot/sources/sJTL_0923.cir
+.include stimulus.inc
+
+XBVM1 WL1 BL1 SE1 BVM1_SL BVM
+XBQ1 BVM1_SL QB1_OUT BQ
+XCB1 QB1_OUT CB1_OUT CB
+XACC1 CB1_OUT ACC1_OUT sJTL
+XGAP1 ACC1_OUT GAP2_IN sJTL
+
+XBVM2 WL2 BL2 SE2 BVM2_SL BVM
+XBQ2 BVM2_SL QB2_OUT BQ
+XCB2 QB2_OUT CB2_OUT CB
+* XACC2 output is directly the shared node; there is no separate ACC2_OUT.
+XACC2 CB2_OUT GAP2_IN sJTL
+
+XGAP2 GAP2_IN FINAL_OUT sJTL
+R_TERM FINAL_OUT 0 2
+
+{{PRINTS}}
+.tran 0.01p 200p 0p
+.end

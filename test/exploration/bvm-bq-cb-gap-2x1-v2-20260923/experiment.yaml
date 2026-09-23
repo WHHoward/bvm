@@ -1,0 +1,83 @@
+schema: bvm-bq-cb-gap-experiment-v2
+experiment_id: bvm-bq-cb-gap-2x1-v2-20260923
+study_phase: EXPLORATORY
+execution_status: PREREGISTERED_PENDING_PREFLIGHT
+supersedes_aborted_experiment: test/exploration/bvm-bq-cb-gap-2x1-v1-20260923/
+authorization_context: >-
+  Following the v1 preflight incident, the user authorized a fresh versioned v2
+  preregistration and the complete four-run matrix at DT=0.01p. One prior
+  temporary transient invocation occurred in v1; it is excluded from all v2
+  evidence and does not replace any registered v2 run.
+authorized_new_physical_solves: 4
+cumulative_solver_invocations_including_v1_incident: 5
+parent_head: 286eeaadf92b34c4d6550e6ff748cca3b3841726
+supporting_references:
+  - path: references/METRIC_SPEC_V2.md
+    sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+  - path: references/V1_INCIDENT_REPORT.md
+    source_path: test/exploration/bvm-bq-cb-gap-2x1-v1-20260923/analysis/INCIDENT_REPORT.md
+    sha256: c1837603a632951099c091322f7682a5a2befc61b3f245c390d4867ce76b6e38
+question: >-
+  Under the fixed 2x1 BVM→BQ→CB→ACC→GAP topology, record how the four final-read
+  masks traverse the local ACC branches and the shared GAP2 accumulation node.
+  The user-provided target truth table is a hypothesis, not a pre-authorized
+  scientific verdict.
+architecture: BVM → BQ → CB → ACC; GAP_i input = ACC_i + GAP_(i-1)
+scope:
+  array_size: 2
+  authorized_physical_run_count: 4
+  masks: ["00", "01", "10", "11"]
+  t1: excluded
+  repeated_read: excluded
+  sweep: excluded
+  follow_up: excluded
+  scientific_interpretation: not_authorized
+  metric_spec:
+    path: docs/research/METRIC_SPEC_V2.md
+    version: 2.0.0
+    sha256: f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470
+topology:
+  local_branches:
+    - "XBVM1 → XBQ1 → XCB1 → XACC1"
+    - "XBVM2 → XBQ2 → XCB2 → XACC2"
+  accumulation:
+    - "XACC1.OUT → XGAP1.IN"
+    - "XGAP1.OUT = XACC2.OUT = XGAP2.IN = GAP2_IN"
+    - "XGAP2.OUT → R_TERM(2 Ω)"
+  gap_counts:
+    inter_bvm: 1
+    final_accumulator: 1
+  shared_accumulator_node: GAP2_IN
+  no_link_inductance: true
+  forbidden: [MERGE, MERGET, COMMON_SL, JSL, T1, old_jtl2, XGAP1_EXTRA]
+sources:
+  - path: circuits/bvm/bvm_cell_0923.cir
+    sha256: ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7
+    provenance: AUTHOR_PROVIDED
+  - path: circuits/qb/BQ_0923.cir
+    sha256: 76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2
+    provenance: AUTHOR_PROVIDED
+  - path: circuits/CB/CB_0923.cir
+    sha256: f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216
+    provenance: AUTHOR_PROVIDED
+  - path: circuits/sJTL_0923.cir
+    sha256: 3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688
+    provenance: AUTHOR_PROVIDED
+settings:
+  dt: 0.01p
+  stop: 200p
+  save_start: 0p
+  r_term: 2
+  write0_start_ps: 50
+  control_start_ps: 70
+  write1_start_ps: 90
+  final_read_start_ps: 110
+  pulse_width_ps: 11
+  rise_ps: 1
+  fall_ps: 1
+  plateau_ps: 9
+  current_amplitude: 100u
+  bit_order: "mask=b1b0; b1=BVM1; b0=BVM2"
+authorized_run_ids: [N0_00, N1_01, N1_10, N2_11]
+interpretation_ceiling: MECHANICAL_QA_ONLY_AWAITING_SCIENTIFIC_REVIEW
+automatic_follow_up: false

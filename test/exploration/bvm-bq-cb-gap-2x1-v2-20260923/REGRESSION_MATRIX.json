@@ -1,0 +1,82 @@
+{
+  "schema": "bvm-bq-cb-gap-2x1-matrix-v2",
+  "experiment_id": "bvm-bq-cb-gap-2x1-v2-20260923",
+  "supersedes_aborted_experiment": "bvm-bq-cb-gap-2x1-v1-20260923",
+  "prior_incident_transient_invocation_excluded_from_evidence": true,
+  "cumulative_solver_invocations_including_prior_incident": 5,
+  "metric_spec": {"path": "docs/research/METRIC_SPEC_V2.md", "version": "2.0.0",
+                   "sha256": "f88a36f4d310b2572efdc7408d734640f25dd5aea2246b74fbb8b7bb7f0be470"},
+  "authorized_physical_solve_count": 4,
+  "dt": "0.01p",
+  "stop": "200p",
+  "save_start": "0p",
+  "read_protocol": {
+    "write0_start_ps": 50,
+    "control_start_ps": 70,
+    "write1_start_ps": 90,
+    "final_read_start_ps": 110,
+    "pulse_end_offset_ps": 11,
+    "rise_ps": 1,
+    "plateau_ps": 9,
+    "fall_ps": 1,
+    "write0_wl_bl_ua": -100,
+    "control_wl_se_ua": 100,
+    "write1_wl_bl_ua": 100,
+    "active_read_wl_se_ua": 100,
+    "read_bl_ua": 0,
+    "all_cells_written_before_read": true,
+    "bit_order": "mask=b1b0; b1=BVM1; b0=BVM2"
+  },
+  "windows_ps": {
+    "pre_read": [101, 110],
+    "final_read": [110, 121],
+    "post_read": [121, 200],
+    "read_response": [110, 200]
+  },
+  "actual_grid_contract": {
+    "time_column_unit": "seconds",
+    "required_start_ps": 0.0,
+    "minimum_end_ps": 199.99,
+    "minimum_end_basis": "STOP-DT, retaining the final stored step under .tran 0.01p 200p 0p",
+    "window_membership": "exact Decimal parse of stored time token; half-open [start,end)"
+  },
+  "cases": [
+    {"run_id": "N0_00", "mask": "00", "population": 0, "active_bvms": [], "purpose": "no-active-read false-positive control"},
+    {"run_id": "N1_01", "mask": "01", "population": 1, "active_bvms": [2], "purpose": "local ACC2 to GAP2 path"},
+    {"run_id": "N1_10", "mask": "10", "population": 1, "active_bvms": [1], "purpose": "upstream ACC1 to GAP1 to GAP2 path"},
+    {"run_id": "N2_11", "mask": "11", "population": 2, "active_bvms": [1, 2], "purpose": "two input contributions at shared GAP2_IN"}
+  ],
+  "topology": {
+    "instances": ["XBVM1", "XBQ1", "XCB1", "XACC1", "XGAP1", "XBVM2", "XBQ2", "XCB2", "XACC2", "XGAP2"],
+    "inter_bvm_gap_sjtl_count": 1,
+    "shared_node": "GAP2_IN",
+    "shared_outputs": ["XGAP1.OUT", "XACC2.OUT", "XGAP2.IN"],
+    "r_term_ohm": 2,
+    "no_link_inductance": true,
+    "forbidden_architectures": ["T1", "MERGE", "MERGET", "COMMON_SL", "JSL", "old_jtl2", "XGAP1_EXTRA"]
+  },
+  "arithmetic_windows": "half-open [start,end); only actual stored timestamps, no interpolation/resampling",
+  "phase_area_semantics": "same JJ, same registered reporting direction and voltage-to-phase sign, same actual first/last samples; use direct JoSIM raw unwrapped radians without modulo or extra unwrap",
+  "terminal_area_semantics": "signed trapezoidal integral of V(R_TERM) over [110,200) and exact-grid pointwise delta versus N0_00",
+  "terminal_pointwise_delta_direction": "V(R_TERM)_case - V(R_TERM)_N0_00",
+  "event_classification": "not authorized; voltage extrema are direct observations, not event/SFQ counts",
+  "phase_area_mapping": {
+    "phase_unit": "raw radians",
+    "reporting_direction": 1,
+    "voltage_to_phase_sign": 1,
+    "orientation_basis": "same direct hierarchical JJ P/V branch; literal device terminal order recorded in analysis/PHASE_AREA_MAPPING.json",
+    "acceptance_tolerance": "UNFROZEN; residuals descriptive only, no pass/fail classification"
+  },
+  "mechanical_arithmetic_reproduction": {
+    "purpose": "independent Decimal recomputation QA of implementation outputs only; not a physical or acceptance tolerance",
+    "tolerances": {
+      "phase_delta_rad_abs": 1e-12,
+      "phase_turns_abs": 1e-12,
+      "voltage_area_v_s_abs": 1e-27,
+      "voltage_area_phi0_abs": 1e-10,
+      "terminal_area_phi0_abs": 1e-10
+    }
+  },
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

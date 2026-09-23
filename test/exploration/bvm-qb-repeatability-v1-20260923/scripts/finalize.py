@@ -302,6 +302,11 @@ def finalize() -> dict[str, Any]:
         checks.append("independent A–E execution receipt does not record exactly five completed runs")
     if execution.get("authorized_solve_count") != 5 or execution.get("preflight_status") != "PASS":
         checks.append("execution receipt is not bound to the authorized five-solve preflight")
+    expected_new_solves = 4 if execution.get("existing_physical_solve_count") == 1 else 5
+    new_physical_solve_count = int(execution.get("new_physical_solve_count", -1))
+    if (execution.get("physical_solve_count") != 5 or
+            new_physical_solve_count != expected_new_solves):
+        checks.append("execution ledger physical/new solve totals do not match the registered A–E matrix")
     if execution.get("preflight_head") != preflight.get("git", {}).get("head"):
         checks.append("execution receipt and persisted preflight HEAD differ")
     if not preflight_path.is_file() or execution.get("preflight_qa_sha256") != sha256(preflight_path):
@@ -325,6 +330,11 @@ def finalize() -> dict[str, Any]:
     expected_case_order = [item["case_id"] for item in matrix["cases"]]
     if [item.get("case_id") for item in execution.get("runs", [])] != expected_case_order:
         checks.append("independent execution receipt case order differs from registered A–E matrix")
+    expected_actions = (["REANALYZED_EXISTING_RAW", *(["NEW_PHYSICAL_SOLVE"] * 4)]
+                        if execution.get("existing_physical_solve_count") == 1 else
+                        ["NEW_PHYSICAL_SOLVE"] * 5)
+    if [item.get("action") for item in execution.get("runs", [])] != expected_actions:
+        checks.append("execution actions do not match either a fresh A–E batch or the registered A-recovery/B–E resume")
     for case in matrix["cases"]:
         run_id = case["case_id"]
         run_dir = ROOT / "runs" / run_id
@@ -342,35 +352,115 @@ def finalize() -> dict[str, Any]:
             if (not execution_record or execution_record.get("receipt_path") != repo_rel(receipt_path) or
                     execution_record.get("receipt_sha256") != sha256(receipt_path)):
                 checks.append(f"independent receipt hash does not match execution ledger: {run_id}")
-            if (receipt.get("preflight_head") != execution.get("preflight_head") or
-                    receipt.get("preflight_qa_sha256") != execution.get("preflight_qa_sha256") or
-                    receipt.get("runner_exit_code") != 0 or receipt.get("execution_status") != "RUN_PASS" or
-                    receipt.get("artifact_status") != "VALID" or receipt.get("physical_solve_count") != 1):
-                checks.append(f"independent solve receipt is incomplete/invalid: {run_id}")
             if (receipt.get("parameters") != metadata.get("parameters") or
                     receipt.get("solver") != metadata.get("solver")):
                 checks.append(f"independent receipt parameters/solver differ from run metadata: {run_id}")
-            for key, path in (("metadata", run_dir / "metadata.json"), ("result", run_dir / "result.json"),
-                              ("raw", run_dir / "raw.csv"), ("deck", run_dir / "actual_deck.cir"),
-                              ("stimulus", run_dir / "stimulus.inc"), ("config_snapshot", run_dir / "config_snapshot.env"),
-                              ("stimulus_snapshot", run_dir / "stimulus_snapshot.json"),
-                              ("source_manifest", run_dir / "source_manifest.json")):
-                if receipt.get("artifact_sha256", {}).get(key) != sha256(path):
-                    checks.append(f"independent receipt artifact hash differs: {run_id}/{key}")
             current_tree = {repo_rel(path): sha256(path) for path in sorted(run_dir.rglob("*"))
                             if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"}
-            if current_tree != receipt.get("run_tree_file_sha256", {}):
-                checks.append(f"entire run directory differs from its independent completion receipt: {run_id}")
+            artifact_paths = {"metadata": run_dir / "metadata.json", "result": run_dir / "result.json",
+                              "raw": run_dir / "raw.csv", "deck": run_dir / "actual_deck.cir",
+                              "stimulus": run_dir / "stimulus.inc", "config_snapshot": run_dir / "config_snapshot.env",
+                              "stimulus_snapshot": run_dir / "stimulus_snapshot.json",
+                              "source_manifest": run_dir / "source_manifest.json",
+                              "stdout": run_dir / "stdout.txt", "stderr": run_dir / "stderr.txt",
+                              "run_log": run_dir / "run.log"}
+            if execution_record.get("action") == "REANALYZED_EXISTING_RAW":
+                recovery_path = ROOT / "analysis" / "receipts" / f"{run_id}_reanalysis.json"
+                recovery = read_json(recovery_path) if recovery_path.is_file() else {}
+                if (execution_record.get("analysis_recovery_receipt_path") != repo_rel(recovery_path) or
+                        execution_record.get("analysis_recovery_receipt_sha256") != (sha256(recovery_path) if recovery_path.is_file() else None)):
+                    checks.append(f"analysis recovery receipt hash does not match execution ledger: {run_id}")
+                if (receipt.get("execution_status") != "RUN_PASS" or receipt.get("physical_solve_count") != 1 or
+                        receipt.get("artifact_status") != "INVALID" or receipt.get("runner_exit_code") == 0 or
+                        receipt.get("artifact_sha256", {}).get("raw") != metadata.get("raw", {}).get("sha256")):
+                    checks.append(f"original solve receipt does not preserve the failed analyzer/valid solve attempt: {run_id}")
+                if (recovery.get("action") != "REANALYZED_EXISTING_RAW_NO_SOLVE" or
+                        recovery.get("preflight_head") != execution.get("preflight_head") or
+                        recovery.get("preflight_qa_sha256") != execution.get("preflight_qa_sha256") or
+                        recovery.get("runner_exit_code") != 0 or recovery.get("artifact_status") != "VALID" or
+                        recovery.get("physical_solve_count") != 1 or recovery.get("new_physical_solve_count") != 0 or
+                        recovery.get("raw_sha256") != metadata.get("raw", {}).get("sha256") or
+                        recovery.get("parameters") != metadata.get("parameters") or
+                        recovery.get("solver") != metadata.get("solver") or
+                        recovery.get("run_tree_file_sha256") != current_tree):
+                    checks.append(f"analysis-only recovery receipt is incomplete or mismatched: {run_id}")
+                stable_keys = ("metadata", "raw", "deck", "stimulus", "config_snapshot", "stimulus_snapshot",
+                               "source_manifest", "stdout", "stderr", "run_log")
+                for key in stable_keys:
+                    path = artifact_paths[key]
+                    if receipt.get("artifact_sha256", {}).get(key) != sha256(path):
+                        checks.append(f"original solve-time artifact changed after reanalysis: {run_id}/{key}")
+                for key, path in artifact_paths.items():
+                    if recovery.get("artifact_sha256", {}).get(key) != sha256(path):
+                        checks.append(f"reanalysis receipt artifact hash differs: {run_id}/{key}")
+                archive_root = ROOT / "analysis" / "attempts" / "PLATFORM_ATTEMPT1"
+                old_pref = archive_root / "PREFLIGHT_QA.json"
+                old_exec = archive_root / "REGRESSION_EXECUTION.json"
+                old_receipt = archive_root / f"{run_id}_solver_receipt.json"
+                old_result = run_dir / "analysis" / "attempts" / "ANALYSIS_ATTEMPT1" / "result.json"
+                if not all(path.is_file() for path in (old_pref, old_exec, old_receipt, old_result)):
+                    checks.append("original stopped-at-A analysis/solve records were not archived")
+                else:
+                    old_pref_data, old_exec_data = read_json(old_pref), read_json(old_exec)
+                    old_receipt_data = read_json(old_receipt)
+                    old_ledger = old_exec_data.get("runs", [{}])[0]
+                    manifest_path = archive_root / "archive_manifest.json"
+                    manifest = read_json(manifest_path) if manifest_path.is_file() else {}
+                    if (sha256(old_receipt) != sha256(receipt_path) or
+                            sha256(old_result) != receipt.get("artifact_sha256", {}).get("result") or
+                            old_exec_data.get("status") != "STOPPED_ON_FAILURE" or
+                            old_pref_data.get("status") != "PASS" or
+                            old_pref_data.get("git", {}).get("head") != old_exec_data.get("preflight_head") or
+                            old_exec_data.get("preflight_qa_sha256") != sha256(old_pref) or
+                            old_ledger.get("receipt_sha256") != sha256(receipt_path) or
+                            old_receipt_data.get("preflight_head") != old_exec_data.get("preflight_head") or
+                            old_receipt_data.get("preflight_qa_sha256") != old_exec_data.get("preflight_qa_sha256") or
+                            manifest.get("files", {}).get("REG_A_QB2X1_N1_solver_receipt.json", {}).get("sha256") != sha256(old_receipt)):
+                        checks.append("archived original A attempt chain/hash validation failed")
+            else:
+                if (receipt.get("preflight_head") != execution.get("preflight_head") or
+                        receipt.get("preflight_qa_sha256") != execution.get("preflight_qa_sha256") or
+                        receipt.get("runner_exit_code") != 0 or receipt.get("execution_status") != "RUN_PASS" or
+                        receipt.get("artifact_status") != "VALID" or receipt.get("physical_solve_count") != 1):
+                    checks.append(f"independent solve receipt is incomplete/invalid: {run_id}")
+                for key, path in artifact_paths.items():
+                    if receipt.get("artifact_sha256", {}).get(key) != sha256(path):
+                        checks.append(f"independent receipt artifact hash differs: {run_id}/{key}")
+                if current_tree != receipt.get("run_tree_file_sha256", {}):
+                    checks.append(f"entire run directory differs from its independent completion receipt: {run_id}")
         analysis_qa = read_json(run_dir / "analysis" / "analysis_qa.json")
         plot_qa = read_json(run_dir / "plots" / "plot_qa.json")
         raw_qa = read_json(run_dir / "analysis" / "raw_qa.json")
+        warning_qa = read_json(run_dir / "analysis" / "solver_warning_qa.json")
+        signal_manifest_path = run_dir / "analysis" / "signal_manifest.csv"
+        if (warning_qa.get("status") != "PASS" or
+                warning_qa.get("stderr_sha256") != metadata.get("stderr", {}).get("sha256")):
+            checks.append(f"solver-warning/unsupported-probe QA failed or changed: {run_id}")
+        if (not signal_manifest_path.is_file() or
+                sha256(signal_manifest_path) != analysis_qa.get("signal_manifest_sha256")):
+            checks.append(f"signal manifest hash missing/mismatched: {run_id}")
+        else:
+            with signal_manifest_path.open("r", encoding="utf-8", newline="") as stream:
+                signal_rows = list(csv.DictReader(stream))
+            unknown_rows = [row for row in signal_rows if row.get("status") == "UNKNOWN"]
+            if (len(unknown_rows) != 1 or unknown_rows[0].get("raw_column") != "V(IB|XBQ1)" or
+                    unknown_rows[0].get("physical_quantity") != "voltage"):
+                checks.append(f"known unsupported probe is not explicitly recorded UNKNOWN: {run_id}")
         current_raw_sha = sha256(run_dir / "raw.csv")
         if result.get("artifact_status") != "VALID" or analysis_qa.get("status") != "PASS" or plot_qa.get("status") != "PASS" or raw_qa.get("status") != "PASS":
             checks.append(f"run QA not PASS: {run_id}")
+        if (plot_qa.get("all_excitation_and_output_signals_share_classic_plot") is not True or
+                plot_qa.get("no_custom_svg_or_iframe_visual_shell") is not True):
+            checks.append(f"one-shot-style combined classic stimulus/output visualization QA failed: {run_id}")
         if metadata.get("execution_status") != "RUN_PASS":
             checks.append(f"solver status not PASS: {run_id}")
-        for artifact_key in ("config_snapshot", "stimulus_snapshot", "stimulus", "deck", "source_manifest"):
+        for artifact_key in ("config_snapshot", "stimulus_snapshot", "stimulus", "deck", "source_manifest",
+                             "stdout", "stderr", "run_log"):
             record = metadata.get(artifact_key, {})
+            if not record and artifact_key in {"stdout", "stderr", "run_log"}:
+                # The first registered A solve predates log-hash fields in metadata; its
+                # immutable parent receipt carries those logs' whole-run tree hash.
+                continue
             artifact_path = REPO / str(record.get("path", ""))
             if not artifact_path.is_file() or not record.get("sha256") or sha256(artifact_path) != record.get("sha256"):
                 checks.append(f"solve-time provenance hash mismatch for {artifact_key}: {run_id}")
@@ -388,15 +478,18 @@ def finalize() -> dict[str, Any]:
             checks.append(f"raw hash lineage mismatch across solve/analyze/plot/finalize: {run_id}")
         plot_manifest_path = run_dir / "plots" / "plot_manifest.json"
         plot_manifest = read_json(plot_manifest_path)
+        metadata_plot_hash = metadata.get("plots", {}).get("plot_manifest_sha256")
         if (plot_manifest.get("raw_sha256") != current_raw_sha or
                 plot_qa.get("plot_manifest_sha256") != sha256(plot_manifest_path) or
-                metadata.get("plots", {}).get("plot_manifest_sha256") != sha256(plot_manifest_path)):
+                (metadata_plot_hash is not None and metadata_plot_hash != sha256(plot_manifest_path))):
             checks.append(f"plot manifest/raw hash lineage mismatch: {run_id}")
         for key, field in (("review_page", "review_page_sha256"), ("stimulus_page", "stimulus_page_sha256")):
             page_path = REPO / plot_manifest.get(key, "")
             expected_page_sha = plot_manifest.get(field)
+            metadata_page_sha = metadata.get("plots", {}).get(field)
             if (not page_path.is_file() or not expected_page_sha or sha256(page_path) != expected_page_sha or
-                    plot_qa.get(field) != expected_page_sha or metadata.get("plots", {}).get(field) != expected_page_sha):
+                    plot_qa.get(field) != expected_page_sha or
+                    (metadata_page_sha is not None and metadata_page_sha != expected_page_sha)):
                 checks.append(f"plot page provenance hash mismatch ({key}): {run_id}")
         for plot_entry in plot_manifest.get("entries", []):
             page_path = REPO / plot_entry.get("path", "")
@@ -559,7 +652,10 @@ def finalize() -> dict[str, Any]:
     final_qa = {
         "schema": "bvm-qb-repeatability-final-qa-v1", "status": status,
         "execution_status": "ALL_REGISTERED_RUNS_COMPLETE" if registered_raw_count == 5 and total_physical_solve_count == 5 else "INCOMPLETE",
-        "physical_solve_count": total_physical_solve_count, "registered_cases_with_raw": registered_raw_count,
+        "physical_solve_count": total_physical_solve_count,
+        "existing_physical_solve_count": int(execution.get("existing_physical_solve_count", 0)),
+        "new_physical_solve_count": new_physical_solve_count,
+        "registered_cases_with_raw": registered_raw_count,
         "unexpected_run_ids": unexpected_run_ids, "authorized_solve_count": 5,
         "raw_artifact_qa": "PASS" if all(row["raw_qa"] == "PASS" for row in runs) and len(runs) == 5 else "FAIL",
         "analysis_qa": "PASS" if all(row["analysis_qa"] == "PASS" for row in runs) and len(runs) == 5 else "FAIL",
@@ -581,7 +677,7 @@ def finalize() -> dict[str, Any]:
     brief = [
         "# BVM-QB repeatability platform — run summary", "",
         "## OBSERVED", "",
-        f"- Physical solves found: {total_physical_solve_count}; registered A–E cases with raw: {registered_raw_count}/5.",
+        f"- Physical solves found: {total_physical_solve_count} total ({new_physical_solve_count} new in this execution); registered A–E cases with raw: {registered_raw_count}/5.",
         "- Every per-run raw is hash-bound; analyses use actual stored-grid samples only.",
         "- A/B/C historical raw prefix equality and input/deck comparison are recorded in `REGRESSION_COMPARISON.json`.",
         "- D writes a single-read-to-STOP recovery trace; E's complete sequence schedule and computed STOP are recorded in snapshots.",
@@ -592,10 +688,11 @@ def finalize() -> dict[str, Any]:
         "- Component deltas and same-unit vector distances are relative to the median PRE_1 window; no recovery threshold is defined.",
         "", "## PLATFORM LIMITATIONS", "",
         "- P(...) is raw radians; turns are `rad/(2*pi)` navigation only, not SFQ counts.",
+        "- `V(IB|XBQ1)` is a known unsupported current-source branch voltage in this JoSIM build; it is recorded as `UNKNOWN` in each signal manifest while `I(IB|XBQ1)` remains probed.",
         "- Voltage candidates and terminal assignments do not establish an event count, SFQ transmission, physical recovery, state retention, or population-preserving quantization.",
         "- No timestep convergence, parameter sensitivity, hardware inference, or physical mechanism review was performed.",
         "", "## REGRESSION STATUS", "",
-        f"- Mechanical final QA: `{status}`; physical solve count={total_physical_solve_count}, authorized=5.",
+        f"- Mechanical final QA: `{status}`; physical solve count={total_physical_solve_count} total, {new_physical_solve_count} new; authorized=5.",
         f"- A/B/C descriptive raw-prefix compatibility: `{historical_compatibility}` (not a physical verdict).",
         "- See `analysis/FINAL_QA.json`, `analysis/summary.csv`, and `plots/REGRESSION_COMPARISON.html`.",
         "", "## NEXT SCIENTIFIC EXPERIMENTS NOT YET RUN", "",
@@ -612,7 +709,9 @@ def finalize() -> dict[str, Any]:
     write_json(ROOT / "result.json", {"schema": "bvm-qb-repeatability-result-v1",
                                       "status": result_status,
                                       "artifact_status": "VALID" if status == "PASS" else "INVALID",
-                                      "physical_solve_count": total_physical_solve_count, "authorized_solve_count": 5,
+                                      "physical_solve_count": total_physical_solve_count,
+                                      "new_physical_solve_count": new_physical_solve_count,
+                                      "authorized_solve_count": 5,
                                       "historical_compatibility_status": historical_compatibility,
                                       "scientific_interpretation_performed": False,
                                       "automatic_follow_up": False,

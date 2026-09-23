@@ -66,8 +66,12 @@ python3 scripts/package.py --tag A-E --complete-mirror
 
 Each run gets an independent `plots/review.html` in the compact style of the
 one-shot tuning platform, with links to classic `josim-plot2.py` grouped plots.
-Inputs and QB/JTL outputs are also overlaid in the same classic figure for each
-BVM source. The series `plots/RESULT_OVERVIEW.html` links the run pages, and
+For each BVM, its `I(I_WL*)`, `I(I_BL*)`, and `I(I_SE*)` excitations are plotted
+in the same classic `sep_comb` figure as `V(QBOUT)` and `V(R_TERM)`; focused
+READ-cycle plots likewise put the active excitation beside those outputs.
+`plots/stimulus.html` is a page of links to those same plots, not a separate
+custom chart. There are no visualization cards or custom SVG plots. The series
+`plots/RESULT_OVERVIEW.html` links the run pages, and
 `plots/REGRESSION_COMPARISON.html` shows only descriptive regression/QA
 records. Plots are not cards, a custom chart renderer, or scientific gates.
 

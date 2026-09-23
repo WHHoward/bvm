@@ -116,21 +116,27 @@ def build_finalization_fixture(root: Path) -> None:
                    "artifact_sha256": artifact_hashes}
         receipt_path = receipts / f"{case_id}.json"
         receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
-        entries.append({"case_id": case_id, "receipt_path": package.repo_rel(receipt_path),
+        entries.append({"case_id": case_id, "action": "NEW_PHYSICAL_SOLVE",
+                        "receipt_path": package.repo_rel(receipt_path),
                         "receipt_sha256": analyze_case.sha256(receipt_path)})
         cases.append(run_dir)
     execution = {"status": "ALL_REGISTERED_RUNS_COMPLETE", "completed_solve_count": 5,
-                 "authorized_solve_count": 5, "preflight_status": "PASS",
+                 "authorized_solve_count": 5, "physical_solve_count": 5,
+                 "new_physical_solve_count": 5, "existing_physical_solve_count": 0,
+                 "preflight_status": "PASS",
                  "preflight_qa_sha256": analyze_case.sha256(preflight_path),
                  "runs": entries}
     execution_path = analysis / "REGRESSION_EXECUTION.json"
     execution_path.write_text(json.dumps(execution), encoding="utf-8")
-    final_result = {"artifact_status": "VALID", "physical_solve_count": 5}
+    final_result = {"artifact_status": "VALID", "physical_solve_count": 5,
+                    "new_physical_solve_count": 5}
     (root / "result.json").write_text(json.dumps(final_result), encoding="utf-8")
     sealed = {package.repo_rel(path): analyze_case.sha256(path)
               for path in root.rglob("*")
               if path.is_file() and not package.excluded_from_finalization_seal(path)}
-    final_qa = {"status": "PASS", "physical_solve_count": 5, "authorized_solve_count": 5,
+    final_qa = {"status": "PASS", "physical_solve_count": 5,
+                "new_physical_solve_count": 5, "existing_physical_solve_count": 0,
+                "authorized_solve_count": 5,
                 "sealed_file_sha256": sealed}
     final_path = analysis / "FINAL_QA.json"
     final_path.write_text(json.dumps(final_qa), encoding="utf-8")
@@ -217,7 +223,8 @@ class PlatformTest(unittest.TestCase):
 
     def test_analysis_and_classic_plot_smoke_on_temporary_nonphysical_fixture(self):
         params, plan = resolve_params({"NAME": "temporary_analysis_smoke", "TEST_MODE": "REPEAT_READ"})
-        signals = list(dict.fromkeys(row[0] for row in legacy.requested_signals("closed", params)))
+        signals = [signal for signal in dict.fromkeys(row[0] for row in legacy.requested_signals("closed", params))
+                   if signal != "V(IB|XBQ1)"]
         with tempfile.TemporaryDirectory(prefix="bvm_repeat_analysis_test_", dir=SERIES / "runs") as temporary:
             run_dir = Path(temporary)
             fields = ["time", *signals]
@@ -233,6 +240,7 @@ class PlatformTest(unittest.TestCase):
             (run_dir / "metadata.json").write_text(json.dumps({"run_id": run_id,
                                                                "parameters": public_params(params),
                                                                "raw": {"sha256": analyze_case.sha256(raw)}}), encoding="utf-8")
+            (run_dir / "stderr.txt").write_text("W: Controls\nUnknown device/node IB|XBQ1\nCannot store results for this device/node.\nIgnoring this store request.\n", encoding="utf-8")
             (run_dir / "stimulus_snapshot.json").write_text(json.dumps({
                 "registered_windows": plan["cycles"], "read_schedule": plan["schedule"],
                 "last_stimulus_time_ps": plan["last_stimulus_time_ps"]}), encoding="utf-8")
@@ -241,6 +249,14 @@ class PlatformTest(unittest.TestCase):
             self.assertTrue((run_dir / "analysis" / "recovery_trace.csv").is_file())
             self.assertTrue((run_dir / "analysis" / "event_assignment.csv").is_file())
             self.assertTrue(qa["raw_unchanged"])
+            raw_qa = json.loads((run_dir / "analysis" / "raw_qa.json").read_text(encoding="utf-8"))
+            self.assertEqual(raw_qa["known_unsupported_probe_columns"], ["V(IB|XBQ1)"])
+            with (run_dir / "analysis" / "signal_manifest.csv").open("r", encoding="utf-8", newline="") as stream:
+                signal_rows = list(csv.DictReader(stream))
+            unknown_rows = [row for row in signal_rows if row["raw_column"] == "V(IB|XBQ1)"]
+            self.assertEqual(len(unknown_rows), 1)
+            self.assertEqual(unknown_rows[0]["physical_quantity"], "voltage")
+            self.assertEqual(unknown_rows[0]["status"], "UNKNOWN")
             comparison = run_dir / "temporary_plot_input.csv"
             with comparison.open("w", encoding="utf-8", newline="") as stream:
                 writer = csv.writer(stream)
@@ -329,6 +345,12 @@ class PlatformTest(unittest.TestCase):
                 missing = [signal for rows in groups.values() for _stem, signals, _window in rows
                            for signal in signals if signal not in headers]
                 self.assertEqual(missing, [])
+                timing = {stem: signals for stem, signals, _window in groups["01_SIGNAL_TIMING"]}
+                for index in range(1, int(size) + 1):
+                    expected = [f"I(I_WL{index})", f"I(I_BL{index})", f"I(I_SE{index})",
+                                "V(QBOUT)", "V(R_TERM)"]
+                    self.assertEqual(timing[f"input_to_output_BVM{index}"], expected)
+                    self.assertTrue(all(signal in headers for signal in expected))
 
     def test_delta_base_is_hash_bound_and_ancestral(self):
         import subprocess
@@ -401,7 +423,10 @@ class PlatformTest(unittest.TestCase):
 
     def test_registered_child_allows_only_generated_runtime_paths(self):
         prefix = SERIES.relative_to(SERIES.parents[2]).as_posix()
-        allowed = "?? " + prefix + "/runs/REG_A_QB2X1_N1/raw.csv\n?? " + prefix + "/analysis/PREFLIGHT_QA.json\n"
+        allowed = ("?? " + prefix + "/runs/REG_A_QB2X1_N1/raw.csv\n" +
+                   "?? " + prefix + "/analysis/PREFLIGHT_QA.json\n" +
+                   "?? " + prefix + "/analysis/receipts/REG_A_QB2X1_N1_reanalysis.json\n" +
+                   "?? " + prefix + "/analysis/attempts/PLATFORM_ATTEMPT1/archive_manifest.json\n")
         self.assertEqual(unexpected_registered_worktree_paths(allowed, {"REG_A_QB2X1_N1"}), [])
         extra = allowed + "?? " + prefix + "/scripts/unregistered.py\n"
         self.assertEqual(unexpected_registered_worktree_paths(extra, {"REG_A_QB2X1_N1"}), [prefix + "/scripts/unregistered.py"])

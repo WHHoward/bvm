@@ -158,6 +158,8 @@ def verify_finalization_seal() -> dict[str, Any]:
     source_lock = read_json(lock_path)
     if (preflight.get("status") != "PASS" or execution.get("status") != "ALL_REGISTERED_RUNS_COMPLETE" or
             execution.get("completed_solve_count") != 5 or execution.get("authorized_solve_count") != 5 or
+            execution.get("physical_solve_count") != 5 or
+            execution.get("new_physical_solve_count") != (4 if execution.get("existing_physical_solve_count") == 1 else 5) or
             execution.get("preflight_qa_sha256") != sha256(preflight_path) or
             preflight.get("platform_source_lock_sha256") != sha256(lock_path)):
         raise RuntimeError("delta package refuses stale or incomplete preflight/execution receipts")
@@ -167,6 +169,11 @@ def verify_finalization_seal() -> dict[str, Any]:
     expected_ids = [case["case_id"] for case in read_json(ROOT / "REGRESSION_MATRIX.json")["cases"]]
     if [item.get("case_id") for item in execution.get("runs", [])] != expected_ids:
         raise RuntimeError("execution receipt order/case IDs differ from the frozen A–E matrix")
+    expected_actions = (["REANALYZED_EXISTING_RAW", *(["NEW_PHYSICAL_SOLVE"] * 4)]
+                        if execution.get("existing_physical_solve_count") == 1 else
+                        ["NEW_PHYSICAL_SOLVE"] * 5)
+    if [item.get("action") for item in execution.get("runs", [])] != expected_actions:
+        raise RuntimeError("execution actions do not match a fresh A–E batch or registered A-recovery/B–E resume")
     for item in execution["runs"]:
         expected_receipt = ROOT / "analysis" / "receipts" / f"{item['case_id']}.json"
         if item.get("receipt_path") != repo_rel(expected_receipt):
@@ -179,15 +186,53 @@ def verify_finalization_seal() -> dict[str, Any]:
         if receipt.get("run_dir") != repo_rel(expected_run):
             raise RuntimeError(f"receipt run path escapes/does not match case ID: {item.get('case_id')}")
         run = expected_run
-        if receipt.get("runner_exit_code") != 0 or receipt.get("artifact_status") != "VALID" or receipt.get("physical_solve_count") != 1:
-            raise RuntimeError(f"invalid physical run receipt: {item.get('case_id')}")
-        for key, path in (("raw", run / "raw.csv"), ("deck", run / "actual_deck.cir"),
-                          ("stimulus", run / "stimulus.inc"), ("config_snapshot", run / "config_snapshot.env"),
-                          ("stimulus_snapshot", run / "stimulus_snapshot.json"),
-                          ("metadata", run / "metadata.json"), ("result", run / "result.json"),
-                          ("source_manifest", run / "source_manifest.json")):
-            if not path.is_file() or sha256(path) != receipt.get("artifact_sha256", {}).get(key):
-                raise RuntimeError(f"solve receipt artifact changed: {item.get('case_id')}/{key}")
+        if item.get("action") == "REANALYZED_EXISTING_RAW":
+            if (receipt.get("execution_status") != "RUN_PASS" or
+                    receipt.get("artifact_status") != "INVALID" or
+                    receipt.get("runner_exit_code") == 0 or
+                    receipt.get("physical_solve_count") != 1):
+                raise RuntimeError(f"original recovered-A solve receipt is not preserved: {item.get('case_id')}")
+            recovery_path = ROOT / "analysis" / "receipts" / f"{item['case_id']}_reanalysis.json"
+            if (item.get("analysis_recovery_receipt_path") != repo_rel(recovery_path) or
+                    not recovery_path.is_file() or
+                    sha256(recovery_path) != item.get("analysis_recovery_receipt_sha256")):
+                raise RuntimeError(f"A reanalysis receipt is missing or changed: {item.get('case_id')}")
+            recovery = read_json(recovery_path)
+            current_tree = {repo_rel(path): sha256(path) for path in sorted(run.rglob("*"))
+                            if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"}
+            if (recovery.get("action") != "REANALYZED_EXISTING_RAW_NO_SOLVE" or
+                    recovery.get("artifact_status") != "VALID" or
+                    recovery.get("physical_solve_count") != 1 or
+                    recovery.get("new_physical_solve_count") != 0 or
+                    recovery.get("raw_sha256") != receipt.get("artifact_sha256", {}).get("raw") or
+                    recovery.get("run_tree_file_sha256") != current_tree):
+                raise RuntimeError(f"A analysis-recovery receipt does not bind the current run: {item.get('case_id')}")
+            stable_keys = ("raw", "deck", "stimulus", "config_snapshot", "stimulus_snapshot",
+                           "metadata", "source_manifest")
+            for key in stable_keys:
+                path = {"raw": run / "raw.csv", "deck": run / "actual_deck.cir",
+                        "stimulus": run / "stimulus.inc", "config_snapshot": run / "config_snapshot.env",
+                        "stimulus_snapshot": run / "stimulus_snapshot.json", "metadata": run / "metadata.json",
+                        "source_manifest": run / "source_manifest.json"}[key]
+                if not path.is_file() or sha256(path) != receipt.get("artifact_sha256", {}).get(key):
+                    raise RuntimeError(f"original A solve input/provenance changed: {item.get('case_id')}/{key}")
+            for key, path in (("raw", run / "raw.csv"), ("deck", run / "actual_deck.cir"),
+                              ("stimulus", run / "stimulus.inc"), ("config_snapshot", run / "config_snapshot.env"),
+                              ("stimulus_snapshot", run / "stimulus_snapshot.json"),
+                              ("metadata", run / "metadata.json"), ("result", run / "result.json"),
+                              ("source_manifest", run / "source_manifest.json")):
+                if not path.is_file() or sha256(path) != recovery.get("artifact_sha256", {}).get(key):
+                    raise RuntimeError(f"reanalyzed A artifact changed: {item.get('case_id')}/{key}")
+        else:
+            if receipt.get("runner_exit_code") != 0 or receipt.get("artifact_status") != "VALID" or receipt.get("physical_solve_count") != 1:
+                raise RuntimeError(f"invalid physical run receipt: {item.get('case_id')}")
+            for key, path in (("raw", run / "raw.csv"), ("deck", run / "actual_deck.cir"),
+                              ("stimulus", run / "stimulus.inc"), ("config_snapshot", run / "config_snapshot.env"),
+                              ("stimulus_snapshot", run / "stimulus_snapshot.json"),
+                              ("metadata", run / "metadata.json"), ("result", run / "result.json"),
+                              ("source_manifest", run / "source_manifest.json")):
+                if not path.is_file() or sha256(path) != receipt.get("artifact_sha256", {}).get(key):
+                    raise RuntimeError(f"solve receipt artifact changed: {item.get('case_id')}/{key}")
     sealed = final.get("sealed_file_sha256", {})
     actual_files = {repo_rel(path): path for path in ROOT.rglob("*")
                     if path.is_file() and not excluded_from_finalization_seal(path)}
@@ -203,7 +248,8 @@ def verify_finalization_seal() -> dict[str, Any]:
         if not path.is_file() or sha256(path) != expected_hash:
             raise RuntimeError(f"evidence changed after finalization: {relative}")
     result = read_json(ROOT / "result.json")
-    if result.get("artifact_status") != "VALID" or result.get("physical_solve_count") != 5:
+    if (result.get("artifact_status") != "VALID" or result.get("physical_solve_count") != 5 or
+            result.get("new_physical_solve_count") != final.get("new_physical_solve_count")):
         raise RuntimeError("root result.json is not bound to five valid artifacts")
     return final
 
@@ -234,6 +280,7 @@ def make_manifest(base: dict[str, Any], head: str, files: list[Path], statuses: 
         (modified_files if exists else new_files).append(rel)
     final_qa = verify_finalization_seal()
     solve_count = int(final_qa.get("physical_solve_count", -1))
+    new_solve_count = int(final_qa.get("new_physical_solve_count", -1))
     if final_qa.get("status") != "PASS" or solve_count != int(final_qa.get("authorized_solve_count", -2)) or solve_count != 5:
         raise RuntimeError("evidence delta requires FINAL_QA PASS with exactly five authorized solves")
     return {
@@ -247,7 +294,9 @@ def make_manifest(base: dict[str, Any], head: str, files: list[Path], statuses: 
         "new_files": sorted(new_files), "modified_files": sorted(modified_files),
         "referenced_existing_cases": reference_records(base),
         "referenced_existing_raw_sha256": {item["raw_path"]: item["raw_sha256"] for item in reference_records(base)},
-        "new_physical_solve_count": solve_count, "reused_point_count": 0,
+        "physical_solve_count": solve_count,
+        "existing_physical_solve_count": int(final_qa.get("existing_physical_solve_count", 0)),
+        "new_physical_solve_count": new_solve_count, "reused_point_count": 0,
         "scientific_interpretation_performed": False,
     }
 

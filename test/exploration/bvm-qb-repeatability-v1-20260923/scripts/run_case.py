@@ -95,14 +95,40 @@ def validate_registered_invocation(case_id: str | None, overrides: dict[str, str
     for record in execution_runs:
         prior_id = record["case_id"]
         prior_receipt = ROOT / "analysis" / "receipts" / f"{prior_id}.json"
-        if not prior_receipt.is_file() or sha256(prior_receipt) != record.get("receipt_sha256"):
+        if (record.get("receipt_path") != repo_rel(prior_receipt) or not prior_receipt.is_file() or
+                sha256(prior_receipt) != record.get("receipt_sha256")):
             raise ValueError(f"completed-case receipt changed: {prior_id}")
         receipt = read_json(prior_receipt)
         prior_dir = ROOT / "runs" / prior_id
-        expected_tree = receipt.get("run_tree_file_sha256", {})
         current_tree = {repo_rel(path): sha256(path) for path in sorted(prior_dir.rglob("*"))
                         if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"}
-        if current_tree != expected_tree:
+        if record.get("action") == "REANALYZED_EXISTING_RAW":
+            recovery_path = ROOT / "analysis" / "receipts" / f"{prior_id}_reanalysis.json"
+            if (record.get("analysis_recovery_receipt_path") != repo_rel(recovery_path) or
+                    not recovery_path.is_file() or
+                    sha256(recovery_path) != record.get("analysis_recovery_receipt_sha256")):
+                raise ValueError(f"analysis recovery receipt changed: {prior_id}")
+            recovery = read_json(recovery_path)
+            stable_keys = ("raw", "deck", "stimulus", "config_snapshot", "stimulus_snapshot",
+                           "source_manifest", "stdout", "stderr", "run_log")
+            if (recovery.get("action") != "REANALYZED_EXISTING_RAW_NO_SOLVE" or
+                    recovery.get("new_physical_solve_count") != 0 or
+                    recovery.get("raw_sha256") != receipt.get("artifact_sha256", {}).get("raw") or
+                    recovery.get("run_tree_file_sha256") != current_tree):
+                raise ValueError(f"analysis-only recovery receipt does not bind current run: {prior_id}")
+            paths = {"raw": prior_dir / "raw.csv", "deck": prior_dir / "actual_deck.cir",
+                     "stimulus": prior_dir / "stimulus.inc",
+                     "config_snapshot": prior_dir / "config_snapshot.env",
+                     "stimulus_snapshot": prior_dir / "stimulus_snapshot.json",
+                     "source_manifest": prior_dir / "source_manifest.json",
+                     "stdout": prior_dir / "stdout.txt", "stderr": prior_dir / "stderr.txt",
+                     "run_log": prior_dir / "run.log"}
+            for key in stable_keys:
+                path = paths.get(key)
+                if (path is None or not path.is_file() or
+                        receipt.get("artifact_sha256", {}).get(key) != sha256(path)):
+                    raise ValueError(f"solve-time artifact changed after analysis recovery: {prior_id}/{key}")
+        elif current_tree != receipt.get("run_tree_file_sha256", {}):
             raise ValueError(f"completed run directory changed after its solve receipt: {prior_id}")
     runs_root = ROOT / "runs"
     prior_ids = [path.name for path in runs_root.iterdir() if path.is_dir()
@@ -129,6 +155,11 @@ def unexpected_registered_worktree_paths(status_porcelain: str, case_ids: set[st
     prefix = repo_rel(ROOT)
     allowed = {f"{prefix}/analysis/PREFLIGHT_QA.json",
                f"{prefix}/analysis/REGRESSION_EXECUTION.json",
+               f"{prefix}/analysis/receipts/REG_A_QB2X1_N1_reanalysis.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/PREFLIGHT_QA.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/REGRESSION_EXECUTION.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/REG_A_QB2X1_N1_solver_receipt.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/archive_manifest.json",
                f"{prefix}/plots/assets/plotly.min.js"}
     allowed.update(f"{prefix}/analysis/receipts/{case_id}.json" for case_id in case_ids)
     run_prefix = f"{prefix}/runs/"
@@ -260,6 +291,9 @@ def make_run(params: dict[str, Any], plan: dict[str, Any], reference_run: Path |
         "deck": {"path": repo_rel(actual_deck), "sha256": sha256(actual_deck)},
         "source_manifest": {"path": repo_rel(run_dir / "source_manifest.json"),
                             "sha256": sha256(run_dir / "source_manifest.json")},
+        "stdout": {"path": repo_rel(run_dir / "stdout.txt"), "sha256": sha256(run_dir / "stdout.txt")},
+        "stderr": {"path": repo_rel(run_dir / "stderr.txt"), "sha256": sha256(run_dir / "stderr.txt")},
+        "run_log": {"path": repo_rel(run_dir / "run.log"), "sha256": sha256(run_dir / "run.log")},
         "raw": {"path": repo_rel(raw), "sha256": sha256(raw) if raw.is_file() else None,
                 "bytes": raw.stat().st_size if raw.is_file() else 0},
         "raw_not_copied_from_history": True,
@@ -321,6 +355,16 @@ def analyze_existing(run_id: str) -> int:
     run_dir = resolve_run_path(run_id)
     if not (run_dir / "raw.csv").is_file():
         raise ValueError(f"raw.csv not found for {run_id}")
+    prior_result_path = run_dir / "result.json"
+    prior_result = read_json(prior_result_path) if prior_result_path.is_file() else {}
+    archived_failure = prior_result.get("artifact_status") == "INVALID"
+    if archived_failure:
+        archive_dir = run_dir / "analysis" / "attempts" / "ANALYSIS_ATTEMPT1"
+        archive_dir.mkdir(parents=True, exist_ok=False)
+        archive_dir.joinpath("result.json").write_bytes(prior_result_path.read_bytes())
+        previous_error = run_dir / "analysis" / "analysis_error.txt"
+        if previous_error.is_file():
+            archive_dir.joinpath("analysis_error.txt").write_bytes(previous_error.read_bytes())
     try:
         import analyze_case
         analysis = analyze_case.analyze_run(run_dir)
@@ -345,7 +389,16 @@ def analyze_existing(run_id: str) -> int:
               "plot_raw_sha256": plots.get("raw_sha256"),
               "analysis_status": analysis.get("status"),
               "plot_status": plots.get("status"), "scientific_interpretation_performed": False,
-              "automatic_follow_up": False, "analysis_only": True}
+              "automatic_follow_up": False, "analysis_only": True,
+              "reanalyzed_existing_raw": True, "new_physical_solve_count": 0,
+              "prior_analysis_failure_preserved": archived_failure}
+    if archived_failure:
+        (run_dir / "analysis" / "ANALYSIS_RECOVERY.md").write_text(
+            "# Analysis recovery record\n\n"
+            "This run reuses its solve-time raw without another JoSIM invocation. "
+            "The prior analyzer failure and prior result are preserved under `analysis/attempts/ANALYSIS_ATTEMPT1/`. "
+            "Raw SHA-256 is checked against solve-time metadata before reanalysis.\n",
+            encoding="utf-8")
     write_json(run_dir / "result.json", result)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["artifact_status"] == "VALID" else 2

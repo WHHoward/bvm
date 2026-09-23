@@ -37,6 +37,16 @@ QB_KEYS = (
     "QB_LIN", "QB_BJS_AREA", "QB_L1", "QB_L2", "QB_BJ1_AREA", "QB_RJ1",
     "QB_BJ2_AREA", "QB_RJ2", "QB_L3", "QB_IB",
 )
+KNOWN_UNSUPPORTED_RAW_SIGNALS = {
+    "V(IB|XBQ1)": {
+        "reason": "JoSIM v2.7.2837d13 reports Unknown device/node IB|XBQ1 for the voltage of the internal PWL current-source branch; no raw column is emitted.",
+        "expected_warning_lines": [
+            "Unknown device/node IB|XBQ1",
+            "Cannot store results for this device/node.",
+            "Ignoring this store request.",
+        ],
+    }
+}
 CIRCUIT_KEYS = BVM_KEYS + QB_KEYS
 CONFIG_KEYS = {
     "NAME", "EXECUTION_SCOPE", "TEST_MODE", "CANDIDATE", "ARRAY_SIZE", "MASK",
@@ -345,6 +355,7 @@ def source_manifest(run_dir: Path, params: dict[str, Any], sources: dict[str, Pa
         "created_at": now(), "run_id": run_dir.name,
         "git": git_snapshot(), "raw_not_copied_from_history": True,
         "parameters": public_params(params), "sources": records,
+        "known_unsupported_raw_signals": KNOWN_UNSUPPORTED_RAW_SIGNALS,
         "rendered_bvm_snapshot": next((x for x in records if x["role"] == "BVM"), None),
         "rendered_qb_snapshot": next((x for x in records if x["role"] == "QB"), None),
         "jj_model_snapshot": next((x for x in records if x["role"] == "JJ_MODEL"), None),

@@ -233,6 +233,9 @@ def render_pages(run_dir: Path, metadata: dict[str, Any], plot_entries: list[dic
             "<li><a href='../config_snapshot.env'>config_snapshot.env</a> · <a href='../stimulus_snapshot.json'>stimulus_snapshot.json</a> · <a href='../source_manifest.json'>source_manifest.json</a></li>",
             "</ul><small>Renderer: scripts/josim-plot2.py, sep_comb/dark/-j 2pi. The plotted raw P(...) unit is radians; conversion to turns is navigation only.</small>",
             "</body></html>"]
+    if (run_dir / "analysis" / "ANALYSIS_RECOVERY.md").is_file():
+        body.insert(-1, "<section><h2>Analysis recovery</h2><p>This immutable raw was reanalyzed without another solver run. "
+                          "The prior failed analysis record is preserved under <a href='../analysis/attempts/ANALYSIS_ATTEMPT1/'>analysis/attempts/ANALYSIS_ATTEMPT1/</a>.</p></section>")
     review = run_dir / "plots" / "review.html"
     review.write_text("\n".join(body), encoding="utf-8")
 
@@ -314,19 +317,44 @@ def render_run(run_dir: Path) -> dict[str, Any]:
     stimulus_text = stimulus_path.read_text(encoding="utf-8") if stimulus_path.is_file() else ""
     required_sections = ("01_SIGNAL_TIMING", "02_BVM_STATE", "03_JSL_CHAIN", "04_QB_STATE", "05_JTL_CHAIN")
     missing_sections = [section for section in required_sections if section not in review_text]
-    page_links_present = "input/output figure" in stimulus_text and all(section in review_text for section in required_sections)
+    stimulus_entries = [item for item in entries if item["section"] == "01_SIGNAL_TIMING" and
+                        item["stem"].startswith("input_to_output_BVM")]
+    combined_signal_coverage = {}
+    for index in range(1, int(params["ARRAY_SIZE"]) + 1):
+        stem = f"input_to_output_BVM{index}"
+        entry = next((item for item in stimulus_entries if item["stem"] == stem), None)
+        expected = [f"I(I_WL{index})", f"I(I_BL{index})", f"I(I_SE{index})", "V(QBOUT)", "V(R_TERM)"]
+        combined_signal_coverage[stem] = {
+            "expected_signals": expected,
+            "present_signals": [signal for signal in expected if entry and signal in entry["signals"]],
+            "same_classic_plot": bool(entry and all(signal in entry["signals"] for signal in expected)),
+            "renderer": entry.get("renderer") if entry else None,
+            "renderer_arguments": entry.get("renderer_arguments") if entry else None,
+        }
+    combined_plots_pass = (len(stimulus_entries) == int(params["ARRAY_SIZE"]) and
+                           all(item["same_classic_plot"] and
+                               item["renderer_arguments"] == ["-t", "sep_comb", "-c", "dark", "-j", "2pi"]
+                               for item in combined_signal_coverage.values()))
+    page_links_present = ("input/output figure" in stimulus_text and
+                          all(section in review_text for section in required_sections) and
+                          all(item["title"] in stimulus_text for item in stimulus_entries))
+    no_custom_visual_shell = "<iframe" not in review_text.lower() and "<svg" not in review_text.lower()
     qa = {"schema": "bvm-qb-repeatability-plot-qa-v1",
-          "status": "PASS" if entries and not invalid_pages and not invalid_entries and not missing_sections and page_links_present and sha256(raw) == raw_before else "FAIL",
+          "status": "PASS" if entries and not invalid_pages and not invalid_entries and not missing_sections and page_links_present and combined_plots_pass and no_custom_visual_shell and sha256(raw) == raw_before else "FAIL",
           "run_id": run_dir.name, "plot_count": len(entries), "raw_sha256": raw_before,
           "raw_hash_unchanged": sha256(raw) == raw_before,
           "renderer": repo_rel(PLOTTER), "layout": "sep_comb/dark/-j 2pi",
           "invalid_pages": invalid_pages, "invalid_plot_entries": invalid_entries,
           "missing_semantic_sections": missing_sections, "review_page_exists": review_path.is_file(),
           "stimulus_page_exists": stimulus_path.is_file(), "input_output_combined_page": page_links_present,
+          "combined_excitation_and_output_plot_count": len(stimulus_entries),
+          "combined_excitation_output_signal_coverage": combined_signal_coverage,
+          "all_excitation_and_output_signals_share_classic_plot": combined_plots_pass,
           "review_page_sha256": manifest["review_page_sha256"],
           "stimulus_page_sha256": manifest["stimulus_page_sha256"],
           "plot_manifest_sha256": sha256(plot_root / "plot_manifest.json"),
           "separate_review_and_stimulus_pages": True,
+          "no_custom_svg_or_iframe_visual_shell": no_custom_visual_shell,
           "classic_figures_only_no_cards_or_iframes": True,
           "phase_turns_are_navigation_only": True, "descriptive_only": True}
     write_json(plot_root / "plot_qa.json", qa)

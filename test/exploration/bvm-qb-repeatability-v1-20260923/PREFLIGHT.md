@@ -88,6 +88,11 @@ and plot provenance. Raw analysis uses actual stored times only. BJ1/BJ2 phase
 and voltage-area values use the same junction, direction, stored-grid
 endpoints, and half-open cycle region.
 
+Known probe limitation: this locked JoSIM build does not emit
+`V(IB|XBQ1)` for the internal PWL current-source branch (it reports
+`Unknown device/node IB|XBQ1`). `I(IB|XBQ1)` remains required; the missing voltage
+column is explicitly `UNKNOWN` in `signal_manifest.csv` and is not substituted.
+
 Candidate attribution is a navigation report only. It must be chronological,
 one-to-one, never assign a terminal candidate twice, and emit `AMBIGUOUS`
 where uniqueness is absent. Phase turns and candidate matches are not SFQ

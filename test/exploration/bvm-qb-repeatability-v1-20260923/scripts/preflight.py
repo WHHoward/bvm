@@ -13,9 +13,9 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from common import (JJ_SOURCE, JTL_SOURCE, PLOTTER, PROFILES, REFERENCE,
+from common import (JJ_SOURCE, JTL_SOURCE, KNOWN_UNSUPPORTED_RAW_SIGNALS, PLOTTER, PROFILES, REFERENCE,
                     REGRESSION_MATRIX, REPO, ROOT, SOLVER, USER_CASE, legacy,
-                    file_record, git_snapshot, read_json, render_deck,
+                    file_record, git_snapshot, public_params, read_json, render_deck,
                     resolve_params, sha256, snapshot_sources, solver_identity,
                     write_json)
 LOCK_PATH = ROOT / "analysis" / "PLATFORM_SOURCE_LOCK.json"
@@ -110,10 +110,91 @@ def freeze_source_lock() -> dict[str, Any]:
     return lock
 
 
-def build_gate(require_clean: bool = False) -> dict[str, Any]:
+def validate_existing_analysis_recovery(case_id: str, params: dict[str, Any], plan: dict[str, Any],
+                                        expected_deck_sha: str,
+                                        expected_sources: dict[str, str]) -> dict[str, Any]:
+    run_dir = ROOT / "runs" / case_id
+    metadata_path = run_dir / "metadata.json"
+    result_path = run_dir / "result.json"
+    raw_path = run_dir / "raw.csv"
+    if not all(path.is_file() for path in (metadata_path, result_path, raw_path,
+                                           run_dir / "actual_deck.cir", run_dir / "stimulus.inc",
+                                           run_dir / "source_manifest.json")):
+        raise ValueError("existing case lacks immutable solve artifacts")
+    metadata = read_json(metadata_path)
+    result = read_json(result_path)
+    if metadata.get("execution_status") != "RUN_PASS" or int(metadata.get("physical_solve_count", 0)) != 1:
+        raise ValueError("existing case was not a successful single physical solve")
+    if metadata.get("parameters") != public_params(params):
+        raise ValueError("existing solve parameters differ from the registered A case")
+    current_solver = solver_identity()
+    if metadata.get("solver", {}).get("sha256") != current_solver.get("sha256") or metadata.get("solver", {}).get("version") != current_solver.get("version"):
+        raise ValueError("existing A raw was produced by a different solver build")
+    raw_sha = sha256(raw_path)
+    if raw_sha != metadata.get("raw", {}).get("sha256") or result.get("raw_sha256") != raw_sha:
+        raise ValueError("existing raw does not match solve-time metadata/result SHA")
+    if sha256(run_dir / "actual_deck.cir") != expected_deck_sha:
+        raise ValueError("existing A deck differs from the repaired platform's registered rendering")
+    expected_stimulus_sha = hashlib.sha256(plan["text"].encode("utf-8")).hexdigest()
+    if sha256(run_dir / "stimulus.inc") != expected_stimulus_sha:
+        raise ValueError("existing A stimulus differs from its registered exact PWL plan")
+    for key, path in (("config_snapshot", run_dir / "config_snapshot.env"),
+                      ("stimulus_snapshot", run_dir / "stimulus_snapshot.json"),
+                      ("stimulus", run_dir / "stimulus.inc"), ("deck", run_dir / "actual_deck.cir"),
+                      ("source_manifest", run_dir / "source_manifest.json")):
+        record = metadata.get(key, {})
+        if not path.is_file() or record.get("sha256") != sha256(path):
+            raise ValueError(f"existing A solve-time artifact changed: {key}")
+    stimulus_snapshot = read_json(run_dir / "stimulus_snapshot.json")
+    if ([float(item["read_start_ps"]) for item in stimulus_snapshot.get("read_schedule", [])] !=
+            [float(item["read_start_ps"]) for item in plan["schedule"]] or
+            float(stimulus_snapshot.get("stop_ps", -1)) != float(plan["stop_ps"])):
+        raise ValueError("existing A stimulus snapshot schedule/STOP differs from the registered plan")
+    source_manifest = read_json(run_dir / "source_manifest.json")
+    actual_sources = {item["role"]: item["sha256"] for item in source_manifest.get("sources", [])}
+    if any(actual_sources.get(role) != digest for role, digest in expected_sources.items()):
+        raise ValueError("existing A rendered snapshots differ from the registered candidate source closure")
+    for item in source_manifest.get("sources", []):
+        path = ROOT.parents[2] / item["path"]
+        if not path.is_file() or sha256(path) != item["sha256"]:
+            raise ValueError(f"existing A source snapshot changed: {item['role']}")
+    error_path = run_dir / "analysis" / "analysis_error.txt"
+    error_text = error_path.read_text(encoding="utf-8", errors="replace") if error_path.is_file() else ""
+    signal = "V(IB|XBQ1)"
+    if result.get("artifact_status") != "INVALID" or signal not in error_text or "required probe columns absent" not in error_text:
+        raise ValueError("existing A artifact is not the registered, recoverable missing-V(IB) analyzer failure")
+    execution = read_json(ROOT / "analysis" / "REGRESSION_EXECUTION.json")
+    if execution.get("status") != "STOPPED_ON_FAILURE" or len(execution.get("runs", [])) != 1:
+        raise ValueError("existing A is not the sole stopped first attempt")
+    prior_preflight_path = ROOT / "analysis" / "PREFLIGHT_QA.json"
+    if (not prior_preflight_path.is_file() or read_json(prior_preflight_path).get("status") != "PASS" or
+            execution.get("preflight_qa_sha256") != sha256(prior_preflight_path)):
+        raise ValueError("existing A is not bound to its prior passing machine preflight")
+    ledger = execution["runs"][0]
+    receipt_path = ROOT / "analysis" / "receipts" / f"{case_id}.json"
+    if (ledger.get("case_id") != case_id or ledger.get("exit_code") == 0 or
+            ledger.get("receipt_path") != receipt_path.relative_to(ROOT.parents[2]).as_posix() or
+            not receipt_path.is_file() or sha256(receipt_path) != ledger.get("receipt_sha256")):
+        raise ValueError("existing A failure receipt does not match the interrupted execution ledger")
+    receipt = read_json(receipt_path)
+    if (receipt.get("physical_solve_count") != 1 or receipt.get("artifact_status") != "INVALID" or
+            receipt.get("artifact_sha256", {}).get("raw") != raw_sha):
+        raise ValueError("existing A receipt does not bind exactly one preserved raw solve")
+    run_tree = {path.relative_to(REPO).as_posix(): sha256(path) for path in sorted(run_dir.rglob("*"))
+                if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"}
+    if run_tree != receipt.get("run_tree_file_sha256"):
+        raise ValueError("existing A run directory differs from its first-solve receipt")
+    return {"action": "REANALYZE_EXISTING_RAW", "existing_raw_sha256": raw_sha,
+            "existing_solve_receipt_sha256": sha256(receipt_path),
+            "original_execution_status": execution["status"],
+            "new_physical_solve_count": 0, "existing_physical_solve_count": 1}
+
+
+def build_gate(require_clean: bool = False, resume_existing_a: bool = False) -> dict[str, Any]:
     errors: list[str] = []
     matrix = read_json(REGRESSION_MATRIX)
     cases = matrix.get("cases", [])
+    accepted_existing_ids: set[str] = set()
     authorized = int(matrix.get("authorized_solve_count", -1))
     if authorized != 5 or len(cases) != 5:
         errors.append(f"exact A–E matrix must contain five cases, got declared={authorized}, actual={len(cases)}")
@@ -208,16 +289,29 @@ def build_gate(require_clean: bool = False) -> dict[str, Any]:
                     errors.append(f"{case_id}: only A/B/C may bind a Phase-A reference raw")
             elif params["TEST_MODE"] == "REPEAT_READ" and case_id in {"REG_A_QB2X1_N1", "REG_B_QB2X1_N2", "REG_C_QB3X1_N3"}:
                 errors.append(f"{case_id}: required historical raw reference missing")
+            existing_action = None
+            existing_dir = ROOT / "runs" / case_id
+            if existing_dir.exists():
+                if resume_existing_a and case_id == "REG_A_QB2X1_N1":
+                    existing_action = validate_existing_analysis_recovery(case_id, params, plan, deck_hash, rendered_sources)
+                    accepted_existing_ids.add(case_id)
+                else:
+                    errors.append(f"{case_id}: run ID already exists; preflight will not overwrite it")
+            elif resume_existing_a and case_id == "REG_A_QB2X1_N1":
+                errors.append("--resume requires the preserved REG_A_QB2X1_N1 raw and solve receipt")
             planned.append({"case_id": case_id, "purpose": case.get("purpose"),
+                            "action": existing_action["action"] if existing_action else "RUN_NEW_PHYSICAL_SOLVE",
+                            "existing_raw_sha256": existing_action.get("existing_raw_sha256") if existing_action else None,
+                            "existing_physical_solve_count": existing_action.get("existing_physical_solve_count", 0) if existing_action else 0,
+                            "new_physical_solve_count": existing_action.get("new_physical_solve_count", 1) if existing_action else 1,
                             "parameters": {k: v for k, v in params.items() if not k.startswith("_")},
                             "schedule": plan["schedule"], "cycle_windows": plan["cycles"],
                             "last_stimulus_time_ps": plan["last_stimulus_time_ps"],
                             "tail_margin_ps": plan["tail_margin_ps"], "stop_ps": plan["stop_ps"],
                             "stimulus_sha256": __import__("hashlib").sha256(plan["text"].encode("utf-8")).hexdigest(),
                             "rendered_deck_sha256": deck_hash, "rendered_source_sha256": rendered_sources,
-                            "source_inventory": source_qa, "reference_raw": reference_raw})
-            if (ROOT / "runs" / case_id).exists():
-                errors.append(f"{case_id}: run ID already exists; preflight will not overwrite it")
+                            "source_inventory": source_qa, "reference_raw": reference_raw,
+                            "known_unsupported_raw_signals": KNOWN_UNSUPPORTED_RAW_SIGNALS})
         except Exception as exc:  # preserve all gate diagnostics in one report
             errors.append(f"{case_id}: {type(exc).__name__}: {exc}")
 
@@ -225,13 +319,21 @@ def build_gate(require_clean: bool = False) -> dict[str, Any]:
     if require_clean and parent["working_tree_dirty"]:
         errors.append("execution preflight requires committed sources and a clean worktree")
     if require_clean:
-        existing = [path.name for path in (ROOT / "runs").iterdir()
-                    if path.is_dir() and ((path / "metadata.json").exists() or (path / "raw.csv").exists())]
-        if existing:
-            errors.append(f"registered execution preflight requires an empty runs/ directory: {existing}")
-        if (ROOT / "analysis" / "REGRESSION_EXECUTION.json").exists() or (
-                ROOT / "analysis" / "receipts").exists() and any((ROOT / "analysis" / "receipts").iterdir()):
+        existing = {path.name for path in (ROOT / "runs").iterdir()
+                    if path.is_dir() and ((path / "metadata.json").exists() or (path / "raw.csv").exists())}
+        expected_existing = {"REG_A_QB2X1_N1"} if resume_existing_a else set()
+        if existing != expected_existing or existing != accepted_existing_ids:
+            errors.append(f"existing run directory set differs from allowed preflight mode: {sorted(existing)}")
+        if not resume_existing_a and ((ROOT / "analysis" / "REGRESSION_EXECUTION.json").exists() or (
+                (ROOT / "analysis" / "receipts").exists() and any((ROOT / "analysis" / "receipts").iterdir()))):
             errors.append("registered execution receipts already exist; refusing a second regression execution")
+        if resume_existing_a and not (ROOT / "analysis" / "REGRESSION_EXECUTION.json").is_file():
+            errors.append("resume requires the previous stopped execution ledger")
+        if resume_existing_a:
+            receipt_dir = ROOT / "analysis" / "receipts"
+            observed_receipts = {path.name for path in receipt_dir.iterdir() if path.is_file()} if receipt_dir.is_dir() else set()
+            if observed_receipts != {"REG_A_QB2X1_N1.json"}:
+                errors.append(f"resume permits only the original A solve receipt, got: {sorted(observed_receipts)}")
     solver = solver_identity() if SOLVER.is_file() else {"path": str(SOLVER), "status": "MISSING"}
     if solver.get("status") == "MISSING":
         errors.append(f"solver missing: {SOLVER}")
@@ -273,7 +375,11 @@ def build_gate(require_clean: bool = False) -> dict[str, Any]:
         "git": parent, "solver": solver, "source_hashes": source_hashes,
         "platform_source_lock_sha256": sha256(LOCK_PATH) if LOCK_PATH.is_file() else None,
         "authorized_solve_count": authorized, "planned_case_count": len(planned),
+        "existing_physical_solve_count": sum(int(item.get("existing_physical_solve_count", 0)) for item in planned),
+        "new_physical_solve_count": sum(int(item.get("new_physical_solve_count", 0)) for item in planned),
+        "resume_existing_a": resume_existing_a,
         "cases": planned, "historical_reference_raw_checks": reference_records,
+        "known_unsupported_raw_signals": KNOWN_UNSUPPORTED_RAW_SIGNALS,
         "errors": errors, "no_solve_executed": True,
         "scientific_interpretation_performed": False,
     }
@@ -283,12 +389,22 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Preflight the exact registered five-run matrix")
     parser.add_argument("--write", action="store_true", help="persist analysis/PREFLIGHT_QA.json")
     parser.add_argument("--freeze-source-lock", action="store_true", help="freeze source hashes before committing the platform; no solver runs")
+    parser.add_argument("--resume", action="store_true", help="permit only the registered recoverable REG_A raw to be reanalyzed without solving")
     args = parser.parse_args()
+    if args.resume and args.write:
+        print("ERROR: use scripts/run_regression.py --resume; it archives the prior attempt before updating root preflight evidence.", file=sys.stderr)
+        return 2
+    if args.write:
+        execution_path = ROOT / "analysis" / "REGRESSION_EXECUTION.json"
+        receipt_dir = ROOT / "analysis" / "receipts"
+        if execution_path.is_file() or (receipt_dir.is_dir() and any(receipt_dir.iterdir())):
+            print("ERROR: prior regression execution evidence exists; run_regression.py owns safe resume/archive and preflight updates.", file=sys.stderr)
+            return 2
     if args.freeze_source_lock:
         lock = freeze_source_lock()
         print(json.dumps(lock, ensure_ascii=False, indent=2))
         return 0
-    qa = build_gate(require_clean=args.write)
+    qa = build_gate(require_clean=args.write, resume_existing_a=args.resume)
     if args.write:
         write_json(ROOT / "analysis" / "PREFLIGHT_QA.json", qa)
     print(json.dumps(qa, ensure_ascii=False, indent=2))

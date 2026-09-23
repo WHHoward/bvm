@@ -12,7 +12,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from common import ROOT, legacy, read_json, resolve_run_dir, sha256, write_json
+from common import (KNOWN_UNSUPPORTED_RAW_SIGNALS, ROOT, legacy, read_json,
+                    resolve_run_dir, sha256, write_json)
 
 PHI0 = 2.067833848e-15
 
@@ -397,9 +398,43 @@ def analyze_run(run_dir: Path) -> dict[str, Any]:
 
     requested = legacy.requested_signals("closed", params)
     requested_names = list(dict.fromkeys(item[0] for item in requested))
-    missing = [signal for signal in requested_names if signal not in headers]
+    unsupported = {signal: info for signal, info in KNOWN_UNSUPPORTED_RAW_SIGNALS.items()
+                   if signal in requested_names and signal not in headers}
+    missing = [signal for signal in requested_names if signal not in headers and signal not in unsupported]
     if missing:
         raise ValueError(f"required probe columns absent from raw: {missing[:12]}")
+    signal_descriptions = {signal: {"component_group": subsystem, "physical_quantity": quantity}
+                           for signal, subsystem, quantity in requested}
+    signal_manifest_rows = []
+    for signal in requested_names:
+        status = "PRESENT" if signal in headers else "UNKNOWN"
+        signal_manifest_rows.append({"raw_column": signal,
+                                     **signal_descriptions.get(signal, {}),
+                                     "status": status,
+                                     "reason": unsupported.get(signal, {}).get("reason", "")})
+    stderr_path = run_dir / "stderr.txt"
+    stderr_text = stderr_path.read_text(encoding="utf-8", errors="replace") if stderr_path.is_file() else ""
+    warning_lines = [line.strip() for line in stderr_text.splitlines()
+                     if any(token in line for token in ("Unknown device/node", "Cannot store results for this device/node.",
+                                                        "Ignoring this store request."))]
+    expected_warning_lines = {line for item in KNOWN_UNSUPPORTED_RAW_SIGNALS.values()
+                              for line in item["expected_warning_lines"]}
+    unexpected_warning_lines = [line for line in warning_lines if line not in expected_warning_lines]
+    expected_unknown_nodes = [signal[2:-1] for signal in unsupported]
+    if any(not any(node in line for node in expected_unknown_nodes) for line in warning_lines if "Unknown device/node" in line):
+        unexpected_warning_lines.extend(line for line in warning_lines
+                                        if "Unknown device/node" in line and line not in unexpected_warning_lines)
+    solver_warning_qa = {
+        "schema": "bvm-qb-repeatability-solver-warning-qa-v1",
+        "status": "PASS" if not unexpected_warning_lines else "FAIL",
+        "stderr_path": str(stderr_path),
+        "stderr_sha256": sha256(stderr_path) if stderr_path.is_file() else None,
+        "observed_probe_warning_lines": warning_lines,
+        "known_unsupported_raw_columns": sorted(unsupported),
+        "unsupported_columns_are_explicit_unknown": True,
+        "unexpected_warning_lines": sorted(set(unexpected_warning_lines)),
+        "scientific_interpretation_performed": False,
+    }
 
     definitions = signal_definitions(params)
     definitions = {key: val for key, val in definitions.items() if key in headers}
@@ -515,17 +550,28 @@ def analyze_run(run_dir: Path) -> dict[str, Any]:
     assignment_qa["assigned_terminal_candidates_never_reused"] = len(terminal_ids) == len(set(terminal_ids))
     assignment_qa["status"] = "PASS" if assignment_qa["status"] == "PASS" and assignment_qa["assigned_terminal_candidates_never_reused"] else "FAIL"
 
+    analysis_dir = run_dir / "analysis"
+    analysis_dir.mkdir(exist_ok=True)
+    signal_manifest_path = analysis_dir / "signal_manifest.csv"
+    write_csv(signal_manifest_path,
+              ["raw_column", "component_group", "physical_quantity", "status", "reason"],
+              signal_manifest_rows)
+    write_json(analysis_dir / "solver_warning_qa.json", solver_warning_qa)
+
     raw_qa = {
         "schema": "bvm-qb-repeatability-raw-qa-v1", "status": "PASS",
         "raw_sha256": before_sha, "sample_count": len(rows), "column_count": len(headers),
         "time_start_ps": times_ps[0], "time_end_ps": times_ps[-1],
         "planned_stop_ps": actual_stop_ps, "median_dt_ps": median_dt,
         "irregular_step_count": irregular_count, "finite_values": True,
-        "strictly_increasing_time": True, "required_probe_count": len(requested_names),
-        "missing_required_probes": [], "raw_immutable": True,
+        "strictly_increasing_time": True, "requested_probe_count": len(requested_names),
+        "required_probe_count": len(requested_names) - len(unsupported),
+        "missing_required_probes": [],
+        "known_unsupported_probe_columns": sorted(unsupported),
+        "raw_immutable": True,
     }
     analysis_qa = {"schema": "bvm-qb-repeatability-analysis-qa-v1",
-                   "status": "PASS" if assignment_qa["status"] == "PASS" and jtl_path_qa["invariant_status"] == "PASS" and len(cycle_results) == len(cycles) else "FAIL",
+                   "status": "PASS" if assignment_qa["status"] == "PASS" and jtl_path_qa["invariant_status"] == "PASS" and solver_warning_qa["status"] == "PASS" and len(cycle_results) == len(cycles) else "FAIL",
                    "raw_sha256_before_after": {"before": before_sha, "after": sha256(raw)},
                    "raw_unchanged": before_sha == sha256(raw),
                    "cycles_nonoverlapping": all(cycles[i]["cycle_window_ps"][1] <= cycles[i + 1]["cycle_window_ps"][0]
@@ -534,13 +580,14 @@ def analyze_run(run_dir: Path) -> dict[str, Any]:
                    "interpolation_or_resampling": False,
                    "candidate_assignment": assignment_qa,
                    "jtl_candidate_path_qa": jtl_path_qa,
+                   "solver_warning_qa": solver_warning_qa["status"],
+                   "unsupported_probe_columns_recorded_unknown": sorted(unsupported),
+                   "signal_manifest_sha256": sha256(analysis_dir / "signal_manifest.csv"),
                    "scientific_interpretation_performed": False,
                    "phase_turns_are_navigation_only": True}
     if not analysis_qa["raw_unchanged"]:
         analysis_qa["status"] = "FAIL"
 
-    analysis_dir = run_dir / "analysis"
-    analysis_dir.mkdir(exist_ok=True)
     write_json(analysis_dir / "raw_qa.json", raw_qa)
     write_json(analysis_dir / "cycle_metrics.json", {
         "schema": "bvm-qb-repeatability-cycle-metrics-v1", "run_id": run_dir.name,

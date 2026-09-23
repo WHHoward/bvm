@@ -1,45 +1,47 @@
 {
   "schema": "bvm-qb-repeatability-regression-execution-v1",
-  "status": "STOPPED_ON_FAILURE",
+  "status": "ALL_REGISTERED_RUNS_COMPLETE",
   "preflight_status": "PASS",
-  "preflight_head": "b86ffd69de0cff1b2d084dcfe53812c9b64b740d",
-  "preflight_qa_sha256": "76bf34fcaee064737071a8c92574ea9df2319828a53740d9f12daaf13e5fc819",
+  "preflight_head": "6767c6e3bd6774e367a4cfc8f814cfe54158af20",
+  "preflight_qa_sha256": "9a970406825f98315ef13c3d2d9179bf72a72a232453dabd9cf008afb70bd057",
   "authorized_solve_count": 5,
-  "completed_solve_count": 2,
-  "physical_solve_count": 1,
-  "new_physical_solve_count": 0,
+  "completed_solve_count": 5,
+  "physical_solve_count": 5,
+  "new_physical_solve_count": 4,
   "existing_physical_solve_count": 1,
   "automatic_retry": false,
   "scientific_interpretation_performed": false,
   "prior_attempt_archive": {
     "PREFLIGHT_QA.json": {
-      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT1/PREFLIGHT_QA.json",
-      "sha256": "82c13f50ec68c8b10eecbfe8585b0c19bfe9a00ae91d6d7600fba43842fce728"
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT3/PREFLIGHT_QA.json",
+      "sha256": "76bf34fcaee064737071a8c92574ea9df2319828a53740d9f12daaf13e5fc819"
     },
     "REGRESSION_EXECUTION.json": {
-      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT1/REGRESSION_EXECUTION.json",
-      "sha256": "b6b372d8fa888e6afc6759a11e9e15d8ebea9de65e5cf3c9cf86b7d1d05451ae"
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT3/REGRESSION_EXECUTION.json",
+      "sha256": "42eefa8f2a9c39a53aeb5a127bcb751832091e0f9594e4dc10bb39e922621f63"
     },
-    "REG_A_QB2X1_N1_solver_receipt.json": {
-      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT1/REG_A_QB2X1_N1_solver_receipt.json",
+    "receipts/REG_A_QB2X1_N1.json": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT3/receipts/REG_A_QB2X1_N1.json",
       "sha256": "cdf8d6bd4ee9230105d5fb645afe4ff20b4114b598376c31a5c375696cd7e783"
+    },
+    "receipts/REG_A_QB2X1_N1_reanalysis.json": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT3/receipts/REG_A_QB2X1_N1_reanalysis.json",
+      "sha256": "630be07c34bf16e80994e99311f02f77f27a0b09fcc9a5b2165e783e07923895"
+    },
+    "receipts/REG_B_QB2X1_N2.json": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/attempts/PLATFORM_ATTEMPT3/receipts/REG_B_QB2X1_N2.json",
+      "sha256": "b9e9939fafd7f3e7a75a702f704f9fed97402f81c765413a2bcf284528a559cd"
     }
   },
   "runs": [
     {
       "case_id": "REG_A_QB2X1_N1",
-      "action": "REANALYZED_EXISTING_RAW",
-      "runner_command": [
-        "/home/howard/anaconda3/bin/python3",
-        "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_case.py",
-        "--analyze-only",
-        "REG_A_QB2X1_N1"
-      ],
+      "action": "REUSED_EXISTING_ANALYSIS",
       "runner_exit_code": 0,
       "receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_A_QB2X1_N1.json",
       "receipt_sha256": "cdf8d6bd4ee9230105d5fb645afe4ff20b4114b598376c31a5c375696cd7e783",
-      "analysis_recovery_receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_A_QB2X1_N1_reanalysis.json",
-      "analysis_recovery_receipt_sha256": "630be07c34bf16e80994e99311f02f77f27a0b09fcc9a5b2165e783e07923895",
+      "analysis_recovery_receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_A_QB2X1_N1_revalidation_attempt2.json",
+      "analysis_recovery_receipt_sha256": "dd7f307d336b1056a8991bd6680f91124b44a7a797530a641cfa6912e2911e4f",
       "physical_solve_count": 1,
       "new_physical_solve_count": 0,
       "raw_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd",
@@ -70,13 +72,110 @@
         "--reference-run",
         "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11"
       ],
-      "runner_exit_code": 2,
-      "receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_B_QB2X1_N2.json",
-      "receipt_sha256": "b9e9939fafd7f3e7a75a702f704f9fed97402f81c765413a2bcf284528a559cd",
-      "physical_solve_count": 0,
-      "new_physical_solve_count": 0,
-      "raw_sha256": null,
-      "status": "STOPPED_ON_FAILURE"
+      "runner_exit_code": 0,
+      "receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_B_QB2X1_N2_attempt2.json",
+      "receipt_sha256": "41b9146ba17c482e03d73967720715b3dcf3cb2533cd754f0ecceb5689dae84a",
+      "physical_solve_count": 1,
+      "new_physical_solve_count": 1,
+      "raw_sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+      "status": "COMPLETE"
+    },
+    {
+      "case_id": "REG_C_QB3X1_N3",
+      "action": "NEW_PHYSICAL_SOLVE",
+      "runner_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_case.py",
+        "--registered-case",
+        "REG_C_QB3X1_N3",
+        "--set",
+        "NAME=REG_C_QB3X1_N3",
+        "--set",
+        "TEST_MODE=REPEAT_READ",
+        "--set",
+        "CANDIDATE=QB_3X1",
+        "--set",
+        "ARRAY_SIZE=3",
+        "--set",
+        "MASK=111",
+        "--set",
+        "READ_PERIOD_PS=20",
+        "--set",
+        "READ_COUNT=5",
+        "--reference-run",
+        "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111"
+      ],
+      "runner_exit_code": 0,
+      "receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_C_QB3X1_N3.json",
+      "receipt_sha256": "850e0bf12b31af03c132c7704135c70c995f1c1ecead07c4ba70066a2f1cedba",
+      "physical_solve_count": 1,
+      "new_physical_solve_count": 1,
+      "raw_sha256": "f1f6c798cdb0e7ca6f6fa29ed98595ff06ac0c516a99faf59a327d4b12a7a4e9",
+      "status": "COMPLETE"
+    },
+    {
+      "case_id": "REG_D_QB2X1_RECOVERY",
+      "action": "NEW_PHYSICAL_SOLVE",
+      "runner_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_case.py",
+        "--registered-case",
+        "REG_D_QB2X1_RECOVERY",
+        "--set",
+        "NAME=REG_D_QB2X1_RECOVERY",
+        "--set",
+        "TEST_MODE=RECOVERY_PROBE",
+        "--set",
+        "CANDIDATE=QB_2X1",
+        "--set",
+        "ARRAY_SIZE=2",
+        "--set",
+        "MASK=11",
+        "--set",
+        "READ_PERIOD_PS=20",
+        "--set",
+        "READ_COUNT=1",
+        "--set",
+        "RECOVERY_TAIL_PS=100"
+      ],
+      "runner_exit_code": 0,
+      "receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_D_QB2X1_RECOVERY.json",
+      "receipt_sha256": "b1028e315bfbaaf0d60a6b86cddd71910e6ddaf2e8b903d799f6c3f3bdbba70d",
+      "physical_solve_count": 1,
+      "new_physical_solve_count": 1,
+      "raw_sha256": "33a85187a2d9a814391a5abd9df22ad5aa1c8d2bdd7cc55977262da3b3f476c2",
+      "status": "COMPLETE"
+    },
+    {
+      "case_id": "REG_E_QB2X1_REWRITE_SMOKE",
+      "action": "NEW_PHYSICAL_SOLVE",
+      "runner_command": [
+        "/home/howard/anaconda3/bin/python3",
+        "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_case.py",
+        "--registered-case",
+        "REG_E_QB2X1_REWRITE_SMOKE",
+        "--set",
+        "NAME=REG_E_QB2X1_REWRITE_SMOKE",
+        "--set",
+        "TEST_MODE=REWRITE_READ",
+        "--set",
+        "CANDIDATE=QB_2X1",
+        "--set",
+        "ARRAY_SIZE=2",
+        "--set",
+        "MASK=11",
+        "--set",
+        "STATE_SEQUENCE=00,01,11",
+        "--set",
+        "STATE_INTERVAL_PS=70"
+      ],
+      "runner_exit_code": 0,
+      "receipt_path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/receipts/REG_E_QB2X1_REWRITE_SMOKE.json",
+      "receipt_sha256": "dc9a19fbdc384bcde86b505e5e7ed8ae7cf61563b0fd87f215a2e26b7dd2a86f",
+      "physical_solve_count": 1,
+      "new_physical_solve_count": 1,
+      "raw_sha256": "085738a00bb3d16fca1ace7bdabbc3a1f1d70de210a3f720b40a528e33295b01",
+      "status": "COMPLETE"
     }
   ]
 }

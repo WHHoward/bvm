@@ -1,0 +1,44 @@
+{
+  "schema": "bvm-qb-repeatability-exact-grid-comparison-input-v1",
+  "run_id": "REG_A_QB2X1_N1",
+  "window_ps": [
+    0.0,
+    240.0
+  ],
+  "window_semantics": "[start,end)",
+  "actual_sample_count": 2399,
+  "actual_first_sample_ps": 0.0,
+  "actual_last_sample_ps": 239.9,
+  "old_raw_path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+  "old_raw_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482",
+  "new_raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/raw.csv",
+  "new_raw_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd",
+  "derived_csv": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_A_QB2X1_N1_raw_prefix_exact_grid.csv",
+  "derived_csv_sha256": "034afb3c8b71b34a2441134be6ed9e795d5b9512604eae936bf2c741558c2c70",
+  "column_mapping": {
+    "P(BJ2|XBQ1) [historical]": {
+      "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+      "source_column": "P(BJ2|XBQ1)",
+      "source_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482"
+    },
+    "P(BJ2|XBQ1) [new]": {
+      "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/raw.csv",
+      "source_column": "P(BJ2|XBQ1)",
+      "source_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd"
+    },
+    "V(R_TERM) [historical]": {
+      "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+      "source_column": "V(R_TERM)",
+      "source_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482"
+    },
+    "V(R_TERM) [new]": {
+      "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/raw.csv",
+      "source_column": "V(R_TERM)",
+      "source_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd"
+    }
+  },
+  "transformation": "exact-time-grid row join and direct-column projection only",
+  "interpolation": false,
+  "resampling": false,
+  "smoothing": false
+}

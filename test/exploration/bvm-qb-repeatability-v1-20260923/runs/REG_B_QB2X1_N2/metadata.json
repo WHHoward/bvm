@@ -1,0 +1,174 @@
+{
+  "schema": "bvm-qb-repeatability-run-metadata-v1",
+  "experiment": "bvm-qb-repeatability-v1-20260923",
+  "run_id": "REG_B_QB2X1_N2",
+  "execution_status": "RUN_PASS",
+  "created_at": "2026-09-23T13:25:34+08:00",
+  "finished_at": "2026-09-23T13:25:35+08:00",
+  "runtime_seconds": 0.22093392600072548,
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/actual_deck.cir"
+  ],
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "git": {
+    "head": "6767c6e3bd6774e367a4cfc8f814cfe54158af20",
+    "working_tree_dirty": true,
+    "status_porcelain": " M test/exploration/bvm-qb-repeatability-v1-20260923/analysis/PREFLIGHT_QA.json\n M test/exploration/bvm-qb-repeatability-v1-20260923/analysis/REGRESSION_EXECUTION.json\n?? test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/actual_deck.cir\n?? test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/config_snapshot.env\n?? test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/snapshot/sources/bq_tunable.cir\n?? test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/snapshot/sources/bvm_tunable.cir\n?? test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/snapshot/sources/jjmit.cir\n?? test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/snapshot/sources/jtl2.cir\n?? test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/stimulus.inc\n"
+  },
+  "parameters": {
+    "JM1_AREA": "1.2",
+    "JM2_AREA": "1.4",
+    "RJM1": "8",
+    "RJM2": "OPEN",
+    "LM1": "12.5p",
+    "LM2": "24.5p",
+    "LM3": "8.5p",
+    "LPM": "0.5p",
+    "JS1_AREA": "0.90",
+    "JS2_AREA": "0.90",
+    "RSH_JS1": "OPEN",
+    "RSH_JS2": "OPEN",
+    "LS1": "0.5p",
+    "LS2": "0.5p",
+    "LS3": "0.5p",
+    "RS": "3.0",
+    "LPSL": "0.5p",
+    "RSL": "12.0",
+    "LSL": "0.4p",
+    "RBL": "20.0",
+    "LPBL": "0.5p",
+    "RWL": "20.0",
+    "LPWL": "0.5p",
+    "RSE": "20.0",
+    "LPSE": "0.5p",
+    "QB_LIN": "1.5p",
+    "QB_BJS_AREA": "4.0",
+    "QB_L1": "1.4p",
+    "QB_L2": "2.0p",
+    "QB_BJ1_AREA": "0.85",
+    "QB_RJ1": "32",
+    "QB_BJ2_AREA": "2.0",
+    "QB_RJ2": "12",
+    "QB_L3": "1.3p",
+    "QB_IB": "260u",
+    "ARRAY_SIZE": 2,
+    "NAME": "REG_B_QB2X1_N2",
+    "EXECUTION_SCOPE": "REGRESSION_MATRIX",
+    "TEST_MODE": "REPEAT_READ",
+    "CANDIDATE": "QB_2X1",
+    "MASK": "11",
+    "READ_START_PS": "110",
+    "READ_PERIOD_PS": "20",
+    "READ_COUNT": "5",
+    "READ_WIDTH_PS": "11",
+    "READ_RISE_PS": "1",
+    "READ_FALL_PS": "1",
+    "READ_AMP_UA": "100",
+    "RECOVERY_TAIL_PS": "100",
+    "WRITE0_START_PS": "50",
+    "CONTROL_START_PS": "70",
+    "WRITE1_START_PS": "90",
+    "WRITE_WIDTH_PS": "11",
+    "WRITE_RISE_PS": "1",
+    "WRITE_FALL_PS": "1",
+    "WRITE_AMP_UA": "100",
+    "CONTROL_WIDTH_PS": "11",
+    "CONTROL_RISE_PS": "1",
+    "CONTROL_FALL_PS": "1",
+    "CONTROL_WL_AMP_UA": "100",
+    "CONTROL_BL_AMP_UA": "0",
+    "CONTROL_SE_AMP_UA": "100",
+    "REWRITE_START_PS": "50",
+    "STATE_SEQUENCE": "00,01,11",
+    "STATE_INTERVAL_PS": "70",
+    "RESET_TO_WRITE_DELAY_PS": "20",
+    "WRITE_TO_READ_DELAY_PS": "25",
+    "READ_TO_NEXT_RESET_DELAY_PS": "14",
+    "DT": "0.1p",
+    "TAIL_MARGIN_MIN_PS": "40",
+    "TAIL_MARGIN_PERIODS": "2",
+    "BJ2_CANDIDATE_THRESHOLD_UV": "100",
+    "BJ2_CANDIDATE_GAP_PS": "0.5",
+    "TERMINAL_CANDIDATE_THRESHOLD_UV": "100",
+    "TERMINAL_CANDIDATE_GAP_PS": "0.5",
+    "LATENCY_MIN_PS": "0",
+    "LATENCY_MAX_PS": "25",
+    "PRE_WINDOW_PS": "1",
+    "POST_OFFSET_PS": "2",
+    "POST_WINDOW_PS": "3",
+    "SWEEP_ENABLED": "no",
+    "SWEEP_KEY": "NONE",
+    "SWEEP_VALUES": "",
+    "MODE": "closed",
+    "MASKS": [
+      "11"
+    ],
+    "BIT_ORDER": "mask left-to-right: b1=BVM1, b0=BVM2; rightmost bit is highest-index BVM",
+    "STOP_PS": 241.0,
+    "STOP": "241p"
+  },
+  "config_snapshot": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/config_snapshot.env",
+    "sha256": "c65fb8c4804cd1f5ee2939243816802f16a9ee9fac31660cd1728a5e32327a7c"
+  },
+  "stimulus_snapshot": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/stimulus_snapshot.json",
+    "sha256": "c705915280070eddac44e734896b6c29e47182eecaa762c8d54fec6cce4b046f"
+  },
+  "stimulus": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/stimulus.inc",
+    "sha256": "9f6ac9d554fa4a3a34e9c8de769e1859d1d276dcfb54f226b5ee431c710de166"
+  },
+  "deck": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/actual_deck.cir",
+    "sha256": "912ebaff7ebea0c398035c93c4f0ab8249e128088c1ceb49bb059c47f2528264"
+  },
+  "source_manifest": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/source_manifest.json",
+    "sha256": "15705b22246c3f173fd0d97e98065b4bea4a4b1c974cc7430418a546706a0f8c"
+  },
+  "stdout": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/stdout.txt",
+    "sha256": "18c46220d9cb31920a7564a6a09485c260e132c1166d03e5d39f6747a7984b50"
+  },
+  "stderr": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/stderr.txt",
+    "sha256": "61c350b70b5da9b2ca25802da20360f1a65908b749c2fb3be966fd11ccd802e8"
+  },
+  "run_log": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/run.log",
+    "sha256": "510aa07408111e1e0f8b7648a67b142f9b5578d9e94231a2bcd14528f492017a"
+  },
+  "raw": {
+    "path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/raw.csv",
+    "sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+    "bytes": 5796526
+  },
+  "raw_not_copied_from_history": true,
+  "physical_solve_count": 1,
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false,
+  "analysis": {
+    "status": "PASS",
+    "raw_sha256_before_after": {
+      "before": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+      "after": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f"
+    }
+  },
+  "plots": {
+    "status": "PASS",
+    "raw_sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+    "plot_manifest_sha256": "8ea379ea5eb7fae655bd25911816ee7d9128e6c83994cc3ab39eddbe9f35200a",
+    "review_page_sha256": "116ceea1897f3e21f00584956580960e9e7ad3670782cd981367971935c4c8b3",
+    "stimulus_page_sha256": "590ba16fe7fa4e56c432c6f7e9349bd27893d16a5b880edfdd5caafba7270085"
+  }
+}

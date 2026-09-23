@@ -1,0 +1,228 @@
+{
+  "schema": "bvm-qb-repeatability-series-plot-manifest-v1",
+  "renderer": "scripts/josim-plot2.py",
+  "layout": "sep_comb/dark/-j 2pi",
+  "run_manifests": [
+    "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/plots/plot_manifest.json",
+    "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/plots/plot_manifest.json",
+    "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_C_QB3X1_N3/plots/plot_manifest.json",
+    "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_D_QB2X1_RECOVERY/plots/plot_manifest.json",
+    "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_E_QB2X1_REWRITE_SMOKE/plots/plot_manifest.json"
+  ],
+  "comparison_figures": [
+    {
+      "title": "REG_A_QB2X1_N1 — historical raw prefix comparison",
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_A_QB2X1_N1_historical_raw_prefix.html",
+      "sha256": "e15919519ab0c6008f74c5625bc7e0c13562d43b94dfff6de6a8386196443bb6",
+      "raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/raw.csv",
+      "raw_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd",
+      "plot_input_path": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_A_QB2X1_N1_raw_prefix_exact_grid.csv",
+      "plot_input_sha256": "034afb3c8b71b34a2441134be6ed9e795d5b9512604eae936bf2c741558c2c70",
+      "signals": [
+        "P(BJ2|XBQ1) [historical]",
+        "P(BJ2|XBQ1) [new]",
+        "V(R_TERM) [historical]",
+        "V(R_TERM) [new]"
+      ],
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_arguments": [
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi"
+      ],
+      "phase_display": "raw P(...) is radians; -j 2pi displays navigation turns only",
+      "descriptive_only": true,
+      "stored_grid_subset": {
+        "schema": "bvm-qb-repeatability-exact-grid-comparison-input-v1",
+        "run_id": "REG_A_QB2X1_N1",
+        "window_ps": [
+          0.0,
+          240.0
+        ],
+        "window_semantics": "[start,end)",
+        "actual_sample_count": 2399,
+        "actual_first_sample_ps": 0.0,
+        "actual_last_sample_ps": 239.9,
+        "old_raw_path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+        "old_raw_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482",
+        "new_raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/raw.csv",
+        "new_raw_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd",
+        "derived_csv": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_A_QB2X1_N1_raw_prefix_exact_grid.csv",
+        "derived_csv_sha256": "034afb3c8b71b34a2441134be6ed9e795d5b9512604eae936bf2c741558c2c70",
+        "column_mapping": {
+          "P(BJ2|XBQ1) [historical]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+            "source_column": "P(BJ2|XBQ1)",
+            "source_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482"
+          },
+          "P(BJ2|XBQ1) [new]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/raw.csv",
+            "source_column": "P(BJ2|XBQ1)",
+            "source_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd"
+          },
+          "V(R_TERM) [historical]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+            "source_column": "V(R_TERM)",
+            "source_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482"
+          },
+          "V(R_TERM) [new]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_A_QB2X1_N1/raw.csv",
+            "source_column": "V(R_TERM)",
+            "source_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd"
+          }
+        },
+        "transformation": "exact-time-grid row join and direct-column projection only",
+        "interpolation": false,
+        "resampling": false,
+        "smoothing": false
+      }
+    },
+    {
+      "title": "REG_B_QB2X1_N2 — historical raw prefix comparison",
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_B_QB2X1_N2_historical_raw_prefix.html",
+      "sha256": "7f936d47ea2f0770c0811e5bd7e80a0b3fbc11c970f684c523c89f6a2aec6938",
+      "raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/raw.csv",
+      "raw_sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+      "plot_input_path": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_B_QB2X1_N2_raw_prefix_exact_grid.csv",
+      "plot_input_sha256": "b7a5d63f5d50010cee3f01b40d1fe5ec265a6c6911eff2d60103bed4e72f57f2",
+      "signals": [
+        "P(BJ2|XBQ1) [historical]",
+        "P(BJ2|XBQ1) [new]",
+        "V(R_TERM) [historical]",
+        "V(R_TERM) [new]"
+      ],
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_arguments": [
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi"
+      ],
+      "phase_display": "raw P(...) is radians; -j 2pi displays navigation turns only",
+      "descriptive_only": true,
+      "stored_grid_subset": {
+        "schema": "bvm-qb-repeatability-exact-grid-comparison-input-v1",
+        "run_id": "REG_B_QB2X1_N2",
+        "window_ps": [
+          0.0,
+          240.0
+        ],
+        "window_semantics": "[start,end)",
+        "actual_sample_count": 2399,
+        "actual_first_sample_ps": 0.0,
+        "actual_last_sample_ps": 239.9,
+        "old_raw_path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/raw.csv",
+        "old_raw_sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c",
+        "new_raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/raw.csv",
+        "new_raw_sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+        "derived_csv": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_B_QB2X1_N2_raw_prefix_exact_grid.csv",
+        "derived_csv_sha256": "b7a5d63f5d50010cee3f01b40d1fe5ec265a6c6911eff2d60103bed4e72f57f2",
+        "column_mapping": {
+          "P(BJ2|XBQ1) [historical]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/raw.csv",
+            "source_column": "P(BJ2|XBQ1)",
+            "source_sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c"
+          },
+          "P(BJ2|XBQ1) [new]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/raw.csv",
+            "source_column": "P(BJ2|XBQ1)",
+            "source_sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f"
+          },
+          "V(R_TERM) [historical]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/raw.csv",
+            "source_column": "V(R_TERM)",
+            "source_sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c"
+          },
+          "V(R_TERM) [new]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/raw.csv",
+            "source_column": "V(R_TERM)",
+            "source_sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f"
+          }
+        },
+        "transformation": "exact-time-grid row join and direct-column projection only",
+        "interpolation": false,
+        "resampling": false,
+        "smoothing": false
+      }
+    },
+    {
+      "title": "REG_C_QB3X1_N3 — historical raw prefix comparison",
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_C_QB3X1_N3_historical_raw_prefix.html",
+      "sha256": "f258655b92b4c7957a6aab39fce22c4f115f7f43aeec559189d4adaab9a4bea3",
+      "raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_C_QB3X1_N3/raw.csv",
+      "raw_sha256": "f1f6c798cdb0e7ca6f6fa29ed98595ff06ac0c516a99faf59a327d4b12a7a4e9",
+      "plot_input_path": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_C_QB3X1_N3_raw_prefix_exact_grid.csv",
+      "plot_input_sha256": "55dfbcf93ce8ea4c5bd773ce9fefa31f16db17f03550025b70840dc366160f5b",
+      "signals": [
+        "P(BJ2|XBQ1) [historical]",
+        "P(BJ2|XBQ1) [new]",
+        "V(R_TERM) [historical]",
+        "V(R_TERM) [new]"
+      ],
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_arguments": [
+        "-t",
+        "sep_comb",
+        "-c",
+        "dark",
+        "-j",
+        "2pi"
+      ],
+      "phase_display": "raw P(...) is radians; -j 2pi displays navigation turns only",
+      "descriptive_only": true,
+      "stored_grid_subset": {
+        "schema": "bvm-qb-repeatability-exact-grid-comparison-input-v1",
+        "run_id": "REG_C_QB3X1_N3",
+        "window_ps": [
+          0.0,
+          240.0
+        ],
+        "window_semantics": "[start,end)",
+        "actual_sample_count": 2399,
+        "actual_first_sample_ps": 0.0,
+        "actual_last_sample_ps": 239.9,
+        "old_raw_path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/raw.csv",
+        "old_raw_sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6",
+        "new_raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_C_QB3X1_N3/raw.csv",
+        "new_raw_sha256": "f1f6c798cdb0e7ca6f6fa29ed98595ff06ac0c516a99faf59a327d4b12a7a4e9",
+        "derived_csv": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/comparisons/REG_C_QB3X1_N3_raw_prefix_exact_grid.csv",
+        "derived_csv_sha256": "55dfbcf93ce8ea4c5bd773ce9fefa31f16db17f03550025b70840dc366160f5b",
+        "column_mapping": {
+          "P(BJ2|XBQ1) [historical]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/raw.csv",
+            "source_column": "P(BJ2|XBQ1)",
+            "source_sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6"
+          },
+          "P(BJ2|XBQ1) [new]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_C_QB3X1_N3/raw.csv",
+            "source_column": "P(BJ2|XBQ1)",
+            "source_sha256": "f1f6c798cdb0e7ca6f6fa29ed98595ff06ac0c516a99faf59a327d4b12a7a4e9"
+          },
+          "V(R_TERM) [historical]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/raw.csv",
+            "source_column": "V(R_TERM)",
+            "source_sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6"
+          },
+          "V(R_TERM) [new]": {
+            "source_raw": "/home/howard/JoSIM/test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_C_QB3X1_N3/raw.csv",
+            "source_column": "V(R_TERM)",
+            "source_sha256": "f1f6c798cdb0e7ca6f6fa29ed98595ff06ac0c516a99faf59a327d4b12a7a4e9"
+          }
+        },
+        "transformation": "exact-time-grid row join and direct-column projection only",
+        "interpolation": false,
+        "resampling": false,
+        "smoothing": false
+      }
+    }
+  ],
+  "result_overview": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/RESULT_OVERVIEW.html",
+  "regression_comparison": "test/exploration/bvm-qb-repeatability-v1-20260923/plots/REGRESSION_COMPARISON.html",
+  "raw_immutable": true,
+  "scientific_interpretation_performed": false
+}

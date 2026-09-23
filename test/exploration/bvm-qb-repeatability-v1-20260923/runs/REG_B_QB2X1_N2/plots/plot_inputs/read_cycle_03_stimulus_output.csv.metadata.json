@@ -1,0 +1,26 @@
+{
+  "schema": "bvm-qb-repeatability-plot-grid-subset-v1",
+  "run_id": "REG_B_QB2X1_N2",
+  "source_raw_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/raw.csv",
+  "source_raw_sha256": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+  "derived_input_path": "test/exploration/bvm-qb-repeatability-v1-20260923/runs/REG_B_QB2X1_N2/plots/plot_inputs/read_cycle_03_stimulus_output.csv",
+  "derived_input_sha256": "76d9ca38d034a57d1080789f8019cf946885776530463df5e3b2216832c421f9",
+  "registered_window_ps": [
+    150.0,
+    170.0
+  ],
+  "window_semantics": "[start,end)",
+  "actual_first_sample_ps": 150.0,
+  "actual_last_sample_ps": 169.9,
+  "sample_count": 200,
+  "selected_raw_signals": [
+    "I(I_SE1)",
+    "I(I_SE2)",
+    "V(QBOUT)",
+    "V(R_TERM)"
+  ],
+  "transformation": "project selected direct raw columns and retain only actual stored rows in a half-open time window",
+  "interpolation": false,
+  "resampling": false,
+  "smoothing": false
+}

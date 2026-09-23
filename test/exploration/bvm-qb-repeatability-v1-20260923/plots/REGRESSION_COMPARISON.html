@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Repeatability regression comparison</title><style>body{font-family:Arial,sans-serif;background:#111;color:#eee;margin:24px;line-height:1.45}a{color:#8ecbff}table{border-collapse:collapse;width:100%;margin:12px 0 26px}th,td{border:1px solid #555;padding:6px 8px;text-align:left;font-size:13px}th{background:#262626}small{color:#aaa}</style></head><body>
+<h1>Platform regression comparison</h1>
+<p>Descriptive compatibility only. Historical/current raw overlays are shown only on an exactly matching stored time grid in [0,240) ps, covering the full historical stored prefix. No interpolation or physical verdict is used.</p>
+<h2>A/B/C historical references</h2>
+<table><tr><th>case</th><th>reference</th><th>parameters</th><th>PWL points</th><th>netlist</th><th>samples old/new</th><th>exact raw prefix</th><th>plot</th></tr>
+<tr><td>REG_A_QB2X1_N1</td><td>QB_2X1_01</td><td>yes</td><td>yes</td><td>yes</td><td>2399 / 2399</td><td>yes</td><td><a href='comparisons/REG_A_QB2X1_N1_historical_raw_prefix.html'>classic raw-prefix plot</a></td></tr>
+<tr><td>REG_B_QB2X1_N2</td><td>QB_2X1_11</td><td>yes</td><td>yes</td><td>yes</td><td>2399 / 2399</td><td>yes</td><td><a href='comparisons/REG_B_QB2X1_N2_historical_raw_prefix.html'>classic raw-prefix plot</a></td></tr>
+<tr><td>REG_C_QB3X1_N3</td><td>QB_3X1_111</td><td>yes</td><td>yes</td><td>yes</td><td>2399 / 2399</td><td>yes</td><td><a href='comparisons/REG_C_QB3X1_N3_historical_raw_prefix.html'>classic raw-prefix plot</a></td></tr>
+</table><h2>A–E run index</h2>
+<table><tr><th>run</th><th>mode</th><th>candidate</th><th>mask</th><th>reads</th><th>STOP ps</th><th>page</th></tr>
+<tr><td>REG_A_QB2X1_N1</td><td>REPEAT_READ</td><td>QB_2X1</td><td>01</td><td>5</td><td>241.0</td><td><a href='../REG_A_QB2X1_N1/plots/review.html'>run review</a></td></tr><tr><td>REG_B_QB2X1_N2</td><td>REPEAT_READ</td><td>QB_2X1</td><td>11</td><td>5</td><td>241.0</td><td><a href='../REG_B_QB2X1_N2/plots/review.html'>run review</a></td></tr><tr><td>REG_C_QB3X1_N3</td><td>REPEAT_READ</td><td>QB_3X1</td><td>111</td><td>5</td><td>241.0</td><td><a href='../REG_C_QB3X1_N3/plots/review.html'>run review</a></td></tr><tr><td>REG_D_QB2X1_RECOVERY</td><td>RECOVERY_PROBE</td><td>QB_2X1</td><td>11</td><td>1</td><td>221.0</td><td><a href='../REG_D_QB2X1_RECOVERY/plots/review.html'>run review</a></td></tr><tr><td>REG_E_QB2X1_REWRITE_SMOKE</td><td>REWRITE_READ</td><td>QB_2X1</td><td>11</td><td>3</td><td>386.0</td><td><a href='../REG_E_QB2X1_REWRITE_SMOKE/plots/review.html'>run review</a></td></tr>
+</table><small>Phase turns and threshold-based candidate assignments are navigation records only, not SFQ counts or physical acceptance criteria.</small>
+</body></html>

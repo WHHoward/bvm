@@ -1,0 +1,4629 @@
+{
+  "schema": "bvm-qb-repeatability-cycle-metrics-v1",
+  "run_id": "REG_D_QB2X1_RECOVERY",
+  "cycles": [
+    {
+      "cycle_index": 1,
+      "read_start_ps": 110.0,
+      "read_end_ps": 121.0,
+      "upstream_cycle_window_ps": [
+        110.0,
+        221.0
+      ],
+      "upstream_cycle_window_semantics": "[start,STOP)",
+      "cycle_sample_count": 1110,
+      "actual_first_sample_ps": 110.0,
+      "actual_last_sample_ps": 220.9,
+      "phase_area_crosschecks": {
+        "BJ1": {
+          "status": "RECORDED",
+          "phase_signal": "P(BJ1|XBQ1)",
+          "voltage_signal": "V(BJ1|XBQ1)",
+          "registered_window_ps": [
+            110.0,
+            221.0
+          ],
+          "actual_first_sample_ps": 110.0,
+          "actual_last_sample_ps": 220.9,
+          "sample_count": 1110,
+          "delta_phase_rad": 12.55261,
+          "phase_delta_turns_navigation": 1.9978099302047563,
+          "voltage_area_v_s": 4.131016730917099e-15,
+          "voltage_area_phi0": 1.9977508032923441,
+          "phase_area_residual_turns_navigation": 5.912691241216628e-05,
+          "integration_grid": "actual stored rows; no interpolation"
+        },
+        "BJ2": {
+          "status": "RECORDED",
+          "phase_signal": "P(BJ2|XBQ1)",
+          "voltage_signal": "V(BJ2|XBQ1)",
+          "registered_window_ps": [
+            110.0,
+            221.0
+          ],
+          "actual_first_sample_ps": 110.0,
+          "actual_last_sample_ps": 220.9,
+          "sample_count": 1110,
+          "delta_phase_rad": 12.5641446,
+          "phase_delta_turns_navigation": 1.9996457188113443,
+          "voltage_area_v_s": 4.134938046589891e-15,
+          "voltage_area_phi0": 1.9996471431150937,
+          "phase_area_residual_turns_navigation": -1.424303749386624e-06,
+          "integration_grid": "actual stored rows; no interpolation"
+        }
+      },
+      "state_windows": {
+        "PRE": {
+          "name": "PRE_1",
+          "registered_window_ps": [
+            109.0,
+            110.0
+          ],
+          "semantics": "half-open; actual stored samples only",
+          "sample_count": 10,
+          "actual_first_sample_ps": 109.0,
+          "actual_last_sample_ps": 109.9,
+          "signals": {
+            "P(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 5.8955044999999995,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.95651265e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.3390479999999996e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.4247818,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.4023785e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.3115365e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.3115365e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.8341715e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.3115365e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -9.474974000000001e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.155115e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.248808000000001e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.2765489999999995e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -9.524964e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.2222907,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 8.5799565e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.1564215e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.23337760000000002,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.885066e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.1154915e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.1564215e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.0806515e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.1154915e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 5.1159005e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.372414e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.4401945e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -1.813398e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "V(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.4401945e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.0930125000000003e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.156976e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.0930125000000003e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.911615e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.0930125000000003e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -9.255807499999999e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 5.8955044999999995,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.95651265e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.3390479999999996e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.4247818,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.4023785e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.3115365e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.3115365e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.8341715e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.3115365e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -9.474974000000001e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.155115e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.248808000000001e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.2765489999999995e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -9.524964e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.2222907,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 8.5799565e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.1564215e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.23337760000000002,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.885066e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.1154915e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.1564215e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.0806515e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.1154915e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 5.1159005e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.372414e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.4401945e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -1.813398e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "V(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.4401945e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.0930125000000003e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.156976e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.0930125000000003e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.911615e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.0930125000000003e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -9.255807499999999e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(COMMON_SL)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.532575e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.005057526,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.954111e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(QBIN)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.610033e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "P(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.006314162,
+              "delta_from_PRE1": 0.0
+            },
+            "V(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.1221514999999999e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 1.6890990000000001,
+              "delta_from_PRE1": 0.0
+            },
+            "V(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.539696e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.2208165e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "P(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.9580528500000001,
+              "delta_from_PRE1": 0.0
+            },
+            "V(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.056934e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00016848225,
+              "delta_from_PRE1": 0.0
+            },
+            "I(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.1860235e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.9418555e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -8.235294499999999e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.669422e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00017764704999999998,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.670603e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.5760565e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "V(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.5290505e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.8115495e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.539696e-05,
+              "delta_from_PRE1": 0.0
+            },
+            "I(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.3807785e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "V(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.056934e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(IB|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00026,
+              "delta_from_PRE1": 0.0
+            },
+            "V(QBOUT)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -4.721174e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.8313611000000001,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.1235034999999995e-06,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001474453,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7899923,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 8.585119e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001413235,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL1_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.172191e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.78066515,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.6493375e-07,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014089385,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7749426500000001,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.647672e-08,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00013997100000000002,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL2_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.8123865e-09,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7771261,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.0746965e-08,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001402318,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7740488999999999,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.917142e-08,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00013981105,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL3_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.0463215e-09,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7768107,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.616658e-09,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014020435,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.77400325,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.1048325e-09,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001398009,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL4_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.523339e-09,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.77681285,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -9.5612505e-10,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001402022,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7740414,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.708666499999999e-10,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001398062,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL5_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -4.3941420000000003e-10,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7769466,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.9660325e-10,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.000140221,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7745564,
+              "delta_from_PRE1": 0.0
+            },
+            "V(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.1444240000000001e-10,
+              "delta_from_PRE1": 0.0
+            },
+            "I(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001398798,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL6_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.2105765e-10,
+              "delta_from_PRE1": 0.0
+            },
+            "I(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.2105765e-11,
+              "delta_from_PRE1": 0.0
+            },
+            "V(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.2105765e-10,
+              "delta_from_PRE1": 0.0
+            }
+          },
+          "read_cycle_index": 1,
+          "virtual_next_read_anchor": false
+        },
+        "READ": {
+          "name": "READ_1",
+          "registered_window_ps": [
+            110.0,
+            121.0
+          ],
+          "semantics": "half-open; actual stored samples only",
+          "sample_count": 110,
+          "actual_first_sample_ps": 110.0,
+          "actual_last_sample_ps": 120.89999999999999,
+          "signals": {
+            "P(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.636934500000001,
+              "delta_from_PRE1": 0.7414300000000011
+            },
+            "V(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.368821e-05,
+              "delta_from_PRE1": 2.173169735e-05
+            },
+            "I(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.7412224999999996e-05,
+              "delta_from_PRE1": 8.080270499999999e-05
+            },
+            "P(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.4739487,
+              "delta_from_PRE1": 0.04916690000000001
+            },
+            "V(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.4578141499999999e-05,
+              "delta_from_PRE1": -8.86019265e-05
+            },
+            "I(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.9499704999999996e-05,
+              "delta_from_PRE1": 1.6384339999999994e-05
+            },
+            "I(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.5460305000000004e-05,
+              "delta_from_PRE1": 7.857567e-05
+            },
+            "V(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 8.886745e-05,
+              "delta_from_PRE1": 4.0525735000000006e-05
+            },
+            "I(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.9499704999999996e-05,
+              "delta_from_PRE1": 1.6384339999999994e-05
+            },
+            "V(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00012557655,
+              "delta_from_PRE1": -3.082680999999998e-05
+            },
+            "I(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 9.908998e-05,
+              "delta_from_PRE1": 7.753883e-05
+            },
+            "V(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00023943995,
+              "delta_from_PRE1": 0.00016695187
+            },
+            "I(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001428061,
+              "delta_from_PRE1": 0.00010004061
+            },
+            "V(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.2468655e-06,
+              "delta_from_PRE1": -4.2943691e-06
+            },
+            "P(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -6.8441005,
+              "delta_from_PRE1": -7.0663912
+            },
+            "V(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00023322354999999998,
+              "delta_from_PRE1": -0.00031902311499999996
+            },
+            "I(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.6103925e-05,
+              "delta_from_PRE1": -5.766814e-05
+            },
+            "P(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -7.428903999999999,
+              "delta_from_PRE1": -7.195526399999999
+            },
+            "V(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0005223139,
+              "delta_from_PRE1": -0.0005194288340000001
+            },
+            "I(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.8469024999999995e-05,
+              "delta_from_PRE1": -1.7314109999999995e-05
+            },
+            "I(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.6103925e-05,
+              "delta_from_PRE1": -5.766814e-05
+            },
+            "V(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.4407234999999999e-05,
+              "delta_from_PRE1": -8.326583499999999e-06
+            },
+            "I(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.8469024999999995e-05,
+              "delta_from_PRE1": -1.7314109999999995e-05
+            },
+            "V(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.5260905000000002e-05,
+              "delta_from_PRE1": 1.0145004500000001e-05
+            },
+            "I(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.3398235e-05,
+              "delta_from_PRE1": 2.9674095e-05
+            },
+            "V(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.3732915e-05,
+              "delta_from_PRE1": -8.292720499999999e-06
+            },
+            "I(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.577639e-06,
+              "delta_from_PRE1": -2.7642410000000002e-06
+            },
+            "V(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.3732915e-05,
+              "delta_from_PRE1": -8.292720499999999e-06
+            },
+            "I(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.347883e-05,
+              "delta_from_PRE1": 1.306952875e-05
+            },
+            "V(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.736116e-06,
+              "delta_from_PRE1": 4.893092e-06
+            },
+            "I(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.347883e-05,
+              "delta_from_PRE1": 1.306952875e-05
+            },
+            "V(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00016174595,
+              "delta_from_PRE1": 0.000156834335
+            },
+            "I(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.347883e-05,
+              "delta_from_PRE1": 1.306952875e-05
+            },
+            "V(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.9888930000000003e-06,
+              "delta_from_PRE1": 3.91447375e-06
+            },
+            "P(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.636934500000001,
+              "delta_from_PRE1": 0.7414300000000011
+            },
+            "V(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.368821e-05,
+              "delta_from_PRE1": 2.173169735e-05
+            },
+            "I(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.7412224999999996e-05,
+              "delta_from_PRE1": 8.080270499999999e-05
+            },
+            "P(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.4739487,
+              "delta_from_PRE1": 0.04916690000000001
+            },
+            "V(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.4578141499999999e-05,
+              "delta_from_PRE1": -8.86019265e-05
+            },
+            "I(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.9499704999999996e-05,
+              "delta_from_PRE1": 1.6384339999999994e-05
+            },
+            "I(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.5460305000000004e-05,
+              "delta_from_PRE1": 7.857567e-05
+            },
+            "V(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 8.886745e-05,
+              "delta_from_PRE1": 4.0525735000000006e-05
+            },
+            "I(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.9499704999999996e-05,
+              "delta_from_PRE1": 1.6384339999999994e-05
+            },
+            "V(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00012557655,
+              "delta_from_PRE1": -3.082680999999998e-05
+            },
+            "I(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 9.908998e-05,
+              "delta_from_PRE1": 7.753883e-05
+            },
+            "V(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00023943995,
+              "delta_from_PRE1": 0.00016695187
+            },
+            "I(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001428061,
+              "delta_from_PRE1": 0.00010004061
+            },
+            "V(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.2468655e-06,
+              "delta_from_PRE1": -4.2943691e-06
+            },
+            "P(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -6.8441005,
+              "delta_from_PRE1": -7.0663912
+            },
+            "V(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00023322354999999998,
+              "delta_from_PRE1": -0.00031902311499999996
+            },
+            "I(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.6103925e-05,
+              "delta_from_PRE1": -5.766814e-05
+            },
+            "P(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -7.428903999999999,
+              "delta_from_PRE1": -7.195526399999999
+            },
+            "V(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0005223139,
+              "delta_from_PRE1": -0.0005194288340000001
+            },
+            "I(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.8469024999999995e-05,
+              "delta_from_PRE1": -1.7314109999999995e-05
+            },
+            "I(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.6103925e-05,
+              "delta_from_PRE1": -5.766814e-05
+            },
+            "V(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.4407234999999999e-05,
+              "delta_from_PRE1": -8.326583499999999e-06
+            },
+            "I(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.8469024999999995e-05,
+              "delta_from_PRE1": -1.7314109999999995e-05
+            },
+            "V(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.5260905000000002e-05,
+              "delta_from_PRE1": 1.0145004500000001e-05
+            },
+            "I(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.3398235e-05,
+              "delta_from_PRE1": 2.9674095e-05
+            },
+            "V(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.3732915e-05,
+              "delta_from_PRE1": -8.292720499999999e-06
+            },
+            "I(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.577639e-06,
+              "delta_from_PRE1": -2.7642410000000002e-06
+            },
+            "V(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.3732915e-05,
+              "delta_from_PRE1": -8.292720499999999e-06
+            },
+            "I(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.347883e-05,
+              "delta_from_PRE1": 1.306952875e-05
+            },
+            "V(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.736116e-06,
+              "delta_from_PRE1": 4.893092e-06
+            },
+            "I(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.347883e-05,
+              "delta_from_PRE1": 1.306952875e-05
+            },
+            "V(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00016174595,
+              "delta_from_PRE1": 0.000156834335
+            },
+            "I(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.347883e-05,
+              "delta_from_PRE1": 1.306952875e-05
+            },
+            "V(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.9888930000000003e-06,
+              "delta_from_PRE1": 3.91447375e-06
+            },
+            "V(COMMON_SL)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00034814125000000003,
+              "delta_from_PRE1": 0.0003486945075
+            },
+            "P(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.082162165,
+              "delta_from_PRE1": 0.08721969099999999
+            },
+            "V(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.501908e-06,
+              "delta_from_PRE1": 1.03973191e-05
+            },
+            "I(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "V(QBIN)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00030088165,
+              "delta_from_PRE1": 0.000294271617
+            },
+            "P(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.10361334999999999,
+              "delta_from_PRE1": 0.10992751199999999
+            },
+            "V(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.1892259999999999e-05,
+              "delta_from_PRE1": 1.3014411499999998e-05
+            },
+            "I(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "P(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.644855,
+              "delta_from_PRE1": 4.955755999999999
+            },
+            "V(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00031296060000000003,
+              "delta_from_PRE1": 0.00029756364000000003
+            },
+            "I(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.3532580000000003e-05,
+              "delta_from_PRE1": -4.8675585e-05
+            },
+            "P(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 5.9792685,
+              "delta_from_PRE1": 5.02121565
+            },
+            "V(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0001918616,
+              "delta_from_PRE1": 0.000187804666
+            },
+            "I(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00017592604999999999,
+              "delta_from_PRE1": 7.443799999999991e-06
+            },
+            "I(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.6957655e-05,
+              "delta_from_PRE1": 2.6139052650000003e-05
+            },
+            "V(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.2416694999999998e-05,
+              "delta_from_PRE1": 2.93585505e-05
+            },
+            "I(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.1337685000000003e-07,
+              "delta_from_PRE1": 8.246632184999999e-05
+            },
+            "V(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.2337850000000004e-05,
+              "delta_from_PRE1": 2.7668428000000004e-05
+            },
+            "I(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0002601134,
+              "delta_from_PRE1": 8.246635000000002e-05
+            },
+            "V(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.619693e-05,
+              "delta_from_PRE1": 3.9526327e-05
+            },
+            "I(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 7.632185000000001e-05,
+              "delta_from_PRE1": 6.774579350000001e-05
+            },
+            "V(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.1803304999999995e-05,
+              "delta_from_PRE1": 2.7274254499999996e-05
+            },
+            "I(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 9.780019e-06,
+              "delta_from_PRE1": 9.29886405e-06
+            },
+            "V(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00031296060000000003,
+              "delta_from_PRE1": 0.00029756364000000003
+            },
+            "I(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.5988465000000002e-05,
+              "delta_from_PRE1": 1.5650387150000004e-05
+            },
+            "V(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0001918616,
+              "delta_from_PRE1": 0.000187804666
+            },
+            "I(IB|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00026,
+              "delta_from_PRE1": 0.0
+            },
+            "V(QBOUT)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00019703245,
+              "delta_from_PRE1": 0.0001975045674
+            },
+            "P(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 2.5041960000000003,
+              "delta_from_PRE1": 1.6728349000000002
+            },
+            "V(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.612002e-05,
+              "delta_from_PRE1": 7.22435235e-05
+            },
+            "I(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00015910405,
+              "delta_from_PRE1": 1.1658749999999987e-05
+            },
+            "P(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 1.0633595,
+              "delta_from_PRE1": 0.27336720000000003
+            },
+            "V(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.7610305e-05,
+              "delta_from_PRE1": 3.67517931e-05
+            },
+            "I(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001422634,
+              "delta_from_PRE1": 9.398999999999942e-07
+            },
+            "V(JTL1_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.1575185e-05,
+              "delta_from_PRE1": 3.0857965900000004e-05
+            },
+            "P(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.8360079,
+              "delta_from_PRE1": 0.055342749999999996
+            },
+            "V(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.148958000000001e-06,
+              "delta_from_PRE1": 6.484024250000001e-06
+            },
+            "I(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001417235,
+              "delta_from_PRE1": 8.29649999999993e-07
+            },
+            "P(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.78485175,
+              "delta_from_PRE1": 0.009909099999999893
+            },
+            "V(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.2398370000000003e-06,
+              "delta_from_PRE1": 3.2963137200000003e-06
+            },
+            "I(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014071325000000002,
+              "delta_from_PRE1": 7.422500000000046e-07
+            },
+            "V(JTL2_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.1259725000000003e-06,
+              "delta_from_PRE1": 2.1297848865e-06
+            },
+            "P(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7793069,
+              "delta_from_PRE1": 0.0021807999999999828
+            },
+            "V(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.6511645e-07,
+              "delta_from_PRE1": 6.44369485e-07
+            },
+            "I(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014066695,
+              "delta_from_PRE1": 4.3515000000001565e-07
+            },
+            "P(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7745066,
+              "delta_from_PRE1": 0.00045770000000011635
+            },
+            "V(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.146432e-07,
+              "delta_from_PRE1": 9.547177999999999e-08
+            },
+            "I(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00013988895,
+              "delta_from_PRE1": 7.79000000000014e-08
+            },
+            "V(JTL3_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.777275e-08,
+              "delta_from_PRE1": 6.87264285e-08
+            },
+            "P(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7769321,
+              "delta_from_PRE1": 0.00012140000000004925
+            },
+            "V(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.0542630000000005e-08,
+              "delta_from_PRE1": 3.3159288000000005e-08
+            },
+            "I(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014022005,
+              "delta_from_PRE1": 1.5699999999986992e-08
+            },
+            "P(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.77402485,
+              "delta_from_PRE1": 2.159999999995499e-05
+            },
+            "V(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 8.9750855e-09,
+              "delta_from_PRE1": 1.1079918000000001e-08
+            },
+            "I(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00013980429999999999,
+              "delta_from_PRE1": 3.3999999999939027e-09
+            },
+            "V(JTL4_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 5.731765499999999e-09,
+              "delta_from_PRE1": 7.2551045e-09
+            },
+            "P(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.77681645,
+              "delta_from_PRE1": 3.599999999992498e-06
+            },
+            "V(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.141532e-09,
+              "delta_from_PRE1": 3.0976570499999997e-09
+            },
+            "I(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014020295000000002,
+              "delta_from_PRE1": 7.500000000118089e-10
+            },
+            "P(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7740415,
+              "delta_from_PRE1": 1.0000000005838672e-07
+            },
+            "V(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.3081374999999997e-10,
+              "delta_from_PRE1": 1.0016804e-09
+            },
+            "I(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001398062,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL5_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.5060299999999997e-10,
+              "delta_from_PRE1": 6.900172e-10
+            },
+            "P(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7769462,
+              "delta_from_PRE1": -4.0000000001150227e-07
+            },
+            "V(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.484268e-10,
+              "delta_from_PRE1": 3.4503005e-10
+            },
+            "I(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.000140221,
+              "delta_from_PRE1": 0.0
+            },
+            "P(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7745563,
+              "delta_from_PRE1": -1.0000000005838672e-07
+            },
+            "V(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.9051379999999997e-11,
+              "delta_from_PRE1": -6.539102000000001e-11
+            },
+            "I(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001398798,
+              "delta_from_PRE1": 0.0
+            },
+            "V(JTL6_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.4671815e-11,
+              "delta_from_PRE1": -7.638583499999999e-11
+            },
+            "I(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.4671815e-12,
+              "delta_from_PRE1": -7.6385835e-12
+            },
+            "V(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.4671815e-11,
+              "delta_from_PRE1": -7.638583499999999e-11
+            }
+          },
+          "read_cycle_index": 1,
+          "virtual_next_read_anchor": false
+        },
+        "POST": {
+          "name": "POST_1",
+          "registered_window_ps": [
+            123.0,
+            126.0
+          ],
+          "semantics": "half-open; actual stored samples only",
+          "sample_count": 29,
+          "actual_first_sample_ps": 123.1,
+          "actual_last_sample_ps": 125.9,
+          "signals": {
+            "P(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 5.93466,
+              "delta_from_PRE1": 0.039155500000000565
+            },
+            "V(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.41996e-06,
+              "delta_from_PRE1": -8.37647265e-06
+            },
+            "I(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.009459e-05,
+              "delta_from_PRE1": 3.295889999999996e-06
+            },
+            "P(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.2577199,
+              "delta_from_PRE1": -0.16706189999999999
+            },
+            "V(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0001915745,
+              "delta_from_PRE1": -0.000265598285
+            },
+            "I(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.997719e-05,
+              "delta_from_PRE1": -3.1381750000000015e-06
+            },
+            "I(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.997719e-05,
+              "delta_from_PRE1": 3.1381750000000015e-06
+            },
+            "V(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.232071e-06,
+              "delta_from_PRE1": -4.9573786e-05
+            },
+            "I(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.997719e-05,
+              "delta_from_PRE1": -3.1381750000000015e-06
+            },
+            "V(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.414859e-06,
+              "delta_from_PRE1": 9.716459900000001e-05
+            },
+            "I(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.959263e-05,
+              "delta_from_PRE1": 2.8041479999999998e-05
+            },
+            "V(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0001254756,
+              "delta_from_PRE1": -0.00019796368
+            },
+            "I(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.96156e-05,
+              "delta_from_PRE1": 6.850110000000005e-06
+            },
+            "V(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -4.480265e-06,
+              "delta_from_PRE1": -3.5277686000000004e-06
+            },
+            "P(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -18.82483,
+              "delta_from_PRE1": -19.047120699999997
+            },
+            "V(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0004388182,
+              "delta_from_PRE1": 0.00035301863500000004
+            },
+            "I(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -1.327319e-05,
+              "delta_from_PRE1": -3.4837405e-05
+            },
+            "P(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -19.45429,
+              "delta_from_PRE1": -19.2209124
+            },
+            "V(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0002777044,
+              "delta_from_PRE1": 0.000280589466
+            },
+            "I(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.344992e-06,
+              "delta_from_PRE1": 2.2499907e-05
+            },
+            "I(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -1.327319e-05,
+              "delta_from_PRE1": -3.4837405e-05
+            },
+            "V(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.673439e-06,
+              "delta_from_PRE1": 1.2754090500000001e-05
+            },
+            "I(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.344992e-06,
+              "delta_from_PRE1": 2.2499907e-05
+            },
+            "V(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.337087e-06,
+              "delta_from_PRE1": -7.788135000000003e-07
+            },
+            "I(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.107079e-06,
+              "delta_from_PRE1": -2.7831219e-05
+            },
+            "V(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.437682e-06,
+              "delta_from_PRE1": 3.0025125e-06
+            },
+            "I(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -8.125607e-07,
+              "delta_from_PRE1": 1.0008373e-06
+            },
+            "V(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.437682e-06,
+              "delta_from_PRE1": 3.0025125e-06
+            },
+            "I(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.427179e-06,
+              "delta_from_PRE1": 5.017877750000001e-06
+            },
+            "V(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.316895e-06,
+              "delta_from_PRE1": -2.1599189999999997e-06
+            },
+            "I(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.427179e-06,
+              "delta_from_PRE1": 5.017877750000001e-06
+            },
+            "V(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.512614e-05,
+              "delta_from_PRE1": 6.021452499999999e-05
+            },
+            "I(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.427179e-06,
+              "delta_from_PRE1": 5.017877750000001e-06
+            },
+            "V(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.653516e-06,
+              "delta_from_PRE1": -1.7279352500000002e-06
+            },
+            "P(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 5.93466,
+              "delta_from_PRE1": 0.039155500000000565
+            },
+            "V(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.41996e-06,
+              "delta_from_PRE1": -8.37647265e-06
+            },
+            "I(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.009459e-05,
+              "delta_from_PRE1": 3.295889999999996e-06
+            },
+            "P(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.2577199,
+              "delta_from_PRE1": -0.16706189999999999
+            },
+            "V(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0001915745,
+              "delta_from_PRE1": -0.000265598285
+            },
+            "I(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.997719e-05,
+              "delta_from_PRE1": -3.1381750000000015e-06
+            },
+            "I(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.997719e-05,
+              "delta_from_PRE1": 3.1381750000000015e-06
+            },
+            "V(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.232071e-06,
+              "delta_from_PRE1": -4.9573786e-05
+            },
+            "I(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.997719e-05,
+              "delta_from_PRE1": -3.1381750000000015e-06
+            },
+            "V(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.414859e-06,
+              "delta_from_PRE1": 9.716459900000001e-05
+            },
+            "I(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.959263e-05,
+              "delta_from_PRE1": 2.8041479999999998e-05
+            },
+            "V(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0001254756,
+              "delta_from_PRE1": -0.00019796368
+            },
+            "I(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.96156e-05,
+              "delta_from_PRE1": 6.850110000000005e-06
+            },
+            "V(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -4.480265e-06,
+              "delta_from_PRE1": -3.5277686000000004e-06
+            },
+            "P(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -18.82483,
+              "delta_from_PRE1": -19.047120699999997
+            },
+            "V(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0004388182,
+              "delta_from_PRE1": 0.00035301863500000004
+            },
+            "I(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -1.327319e-05,
+              "delta_from_PRE1": -3.4837405e-05
+            },
+            "P(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -19.45429,
+              "delta_from_PRE1": -19.2209124
+            },
+            "V(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0002777044,
+              "delta_from_PRE1": 0.000280589466
+            },
+            "I(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.344992e-06,
+              "delta_from_PRE1": 2.2499907e-05
+            },
+            "I(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -1.327319e-05,
+              "delta_from_PRE1": -3.4837405e-05
+            },
+            "V(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.673439e-06,
+              "delta_from_PRE1": 1.2754090500000001e-05
+            },
+            "I(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.344992e-06,
+              "delta_from_PRE1": 2.2499907e-05
+            },
+            "V(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.337087e-06,
+              "delta_from_PRE1": -7.788135000000003e-07
+            },
+            "I(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.107079e-06,
+              "delta_from_PRE1": -2.7831219e-05
+            },
+            "V(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.437682e-06,
+              "delta_from_PRE1": 3.0025125e-06
+            },
+            "I(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -8.125607e-07,
+              "delta_from_PRE1": 1.0008373e-06
+            },
+            "V(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.437682e-06,
+              "delta_from_PRE1": 3.0025125e-06
+            },
+            "I(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.427179e-06,
+              "delta_from_PRE1": 5.017877750000001e-06
+            },
+            "V(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.316895e-06,
+              "delta_from_PRE1": -2.1599189999999997e-06
+            },
+            "I(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.427179e-06,
+              "delta_from_PRE1": 5.017877750000001e-06
+            },
+            "V(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.512614e-05,
+              "delta_from_PRE1": 6.021452499999999e-05
+            },
+            "I(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.427179e-06,
+              "delta_from_PRE1": 5.017877750000001e-06
+            },
+            "V(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.653516e-06,
+              "delta_from_PRE1": -1.7279352500000002e-06
+            },
+            "V(COMMON_SL)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0001916582,
+              "delta_from_PRE1": -0.0001911049425
+            },
+            "P(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.003840853,
+              "delta_from_PRE1": 0.0012166729999999997
+            },
+            "V(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.141028e-05,
+              "delta_from_PRE1": -1.05148689e-05
+            },
+            "I(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "V(QBIN)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.380158e-05,
+              "delta_from_PRE1": -7.041161299999999e-05
+            },
+            "P(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.01528859,
+              "delta_from_PRE1": -0.008974428
+            },
+            "V(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -7.591797e-06,
+              "delta_from_PRE1": -6.4696455e-06
+            },
+            "I(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "P(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 14.11741,
+              "delta_from_PRE1": 12.428310999999999
+            },
+            "V(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.665226e-05,
+              "delta_from_PRE1": -3.204922e-05
+            },
+            "I(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.168914e-05,
+              "delta_from_PRE1": -5.190249999999946e-07
+            },
+            "P(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.58399,
+              "delta_from_PRE1": 12.62593715
+            },
+            "V(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.467999e-05,
+              "delta_from_PRE1": -5.8736923999999996e-05
+            },
+            "I(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001224685,
+              "delta_from_PRE1": -4.6013750000000006e-05
+            },
+            "I(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.085436e-05,
+              "delta_from_PRE1": 1.003575765e-05
+            },
+            "V(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.990137e-05,
+              "delta_from_PRE1": -1.29595145e-05
+            },
+            "I(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -0.0001080303,
+              "delta_from_PRE1": -2.567735500000001e-05
+            },
+            "V(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.580715e-05,
+              "delta_from_PRE1": 1.1137728e-05
+            },
+            "I(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001519697,
+              "delta_from_PRE1": -2.5677349999999975e-05
+            },
+            "V(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.258164e-05,
+              "delta_from_PRE1": 1.5911037e-05
+            },
+            "I(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.454557e-05,
+              "delta_from_PRE1": 2.5969513500000003e-05
+            },
+            "V(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -4.109157e-05,
+              "delta_from_PRE1": -4.56206205e-05
+            },
+            "I(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -5.203831e-07,
+              "delta_from_PRE1": -1.00153805e-06
+            },
+            "V(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.665226e-05,
+              "delta_from_PRE1": -3.204922e-05
+            },
+            "I(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.556666e-06,
+              "delta_from_PRE1": -4.89474385e-06
+            },
+            "V(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.467999e-05,
+              "delta_from_PRE1": -5.8736923999999996e-05
+            },
+            "I(IB|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00026,
+              "delta_from_PRE1": 0.0
+            },
+            "V(QBOUT)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.226187e-06,
+              "delta_from_PRE1": -5.7540696e-06
+            },
+            "P(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.24707,
+              "delta_from_PRE1": 12.4157089
+            },
+            "V(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.446514e-05,
+              "delta_from_PRE1": 5.05886435e-05
+            },
+            "I(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001192929,
+              "delta_from_PRE1": -2.81524e-05
+            },
+            "P(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 12.67718,
+              "delta_from_PRE1": 11.8871877
+            },
+            "V(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0002625909,
+              "delta_from_PRE1": 0.0002617323881
+            },
+            "I(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.845604e-05,
+              "delta_from_PRE1": -0.00016977954
+            },
+            "V(JTL1_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0005170336,
+              "delta_from_PRE1": 0.0005163163809
+            },
+            "P(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 10.0666,
+              "delta_from_PRE1": 9.285934849999999
+            },
+            "V(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0006101927,
+              "delta_from_PRE1": 0.00060952776625
+            },
+            "I(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": -1.238935e-05,
+              "delta_from_PRE1": -0.0001532832
+            },
+            "P(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 7.38421,
+              "delta_from_PRE1": 6.6092673500000005
+            },
+            "V(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0002299478,
+              "delta_from_PRE1": 0.00023000427671999998
+            },
+            "I(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001853759,
+              "delta_from_PRE1": 4.540489999999998e-05
+            },
+            "V(JTL2_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0002360117,
+              "delta_from_PRE1": 0.0002360155123865
+            },
+            "P(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.781735,
+              "delta_from_PRE1": 6.0046089
+            },
+            "V(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 8.760175e-05,
+              "delta_from_PRE1": 8.7581003035e-05
+            },
+            "I(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001123837,
+              "delta_from_PRE1": -2.784809999999999e-05
+            },
+            "P(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.422123,
+              "delta_from_PRE1": 5.6480741000000005
+            },
+            "V(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0002948482,
+              "delta_from_PRE1": 0.00029482902858
+            },
+            "I(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.19894e-05,
+              "delta_from_PRE1": -0.00016180045000000002
+            },
+            "V(JTL3_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0005345576,
+              "delta_from_PRE1": 0.0005345485536785001
+            },
+            "P(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 3.004402,
+              "delta_from_PRE1": 2.2275913
+            },
+            "V(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0005655541,
+              "delta_from_PRE1": 0.000565556716658
+            },
+            "I(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001421802,
+              "delta_from_PRE1": 1.975849999999999e-06
+            },
+            "P(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 1.180205,
+              "delta_from_PRE1": 0.4062017499999999
+            },
+            "V(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00014446,
+              "delta_from_PRE1": 0.0001444621048325
+            },
+            "I(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001983672,
+              "delta_from_PRE1": 5.8566300000000016e-05
+            },
+            "V(JTL4_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 9.273284e-05,
+              "delta_from_PRE1": 9.2734363339e-05
+            },
+            "P(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.8636047,
+              "delta_from_PRE1": 0.08679185
+            },
+            "V(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.098177e-05,
+              "delta_from_PRE1": 3.098272612505e-05
+            },
+            "I(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001570978,
+              "delta_from_PRE1": 1.6895599999999995e-05
+            },
+            "P(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7893481,
+              "delta_from_PRE1": 0.015306700000000006
+            },
+            "V(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 5.512736e-06,
+              "delta_from_PRE1": 5.51340686665e-06
+            },
+            "I(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.000142878,
+              "delta_from_PRE1": 3.0718e-06
+            },
+            "V(JTL5_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 3.578235e-06,
+              "delta_from_PRE1": 3.5786744141999996e-06
+            },
+            "P(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7801836,
+              "delta_from_PRE1": 0.0032369999999999344
+            },
+            "V(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.172318e-06,
+              "delta_from_PRE1": 1.17251460325e-06
+            },
+            "I(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001408759,
+              "delta_from_PRE1": 6.549000000000062e-07
+            },
+            "P(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7751813,
+              "delta_from_PRE1": 0.0006248999999999283
+            },
+            "V(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.261501e-07,
+              "delta_from_PRE1": 2.260356576e-07
+            },
+            "I(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001400068,
+              "delta_from_PRE1": 1.2699999999999387e-07
+            },
+            "V(JTL6_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.993704e-07,
+              "delta_from_PRE1": 1.9924934235e-07
+            },
+            "I(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.993704e-08,
+              "delta_from_PRE1": 1.9924934235e-08
+            },
+            "V(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.993704e-07,
+              "delta_from_PRE1": 1.9924934235e-07
+            }
+          },
+          "read_cycle_index": 1,
+          "virtual_next_read_anchor": false
+        },
+        "NEXT_PRE": {
+          "name": "NEXT_PRE_1",
+          "registered_window_ps": [
+            129.0,
+            130.0
+          ],
+          "semantics": "half-open; actual stored samples only",
+          "sample_count": 10,
+          "actual_first_sample_ps": 129.0,
+          "actual_last_sample_ps": 129.9,
+          "signals": {
+            "P(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.1199425000000005,
+              "delta_from_PRE1": 0.22443800000000103
+            },
+            "V(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.8225485e-05,
+              "delta_from_PRE1": 4.626897235e-05
+            },
+            "I(B_JM1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.7019485e-05,
+              "delta_from_PRE1": 6.370994999999997e-06
+            },
+            "P(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7382449,
+              "delta_from_PRE1": 0.3134631
+            },
+            "V(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.0718574999999997e-05,
+              "delta_from_PRE1": -0.00013474236
+            },
+            "I(B_JM2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.0991299999999996e-05,
+              "delta_from_PRE1": -1.2124065000000006e-05
+            },
+            "I(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.0991299999999996e-05,
+              "delta_from_PRE1": 1.2124065000000006e-05
+            },
+            "V(L_M1|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0003669197,
+              "delta_from_PRE1": -0.000415261415
+            },
+            "I(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.0991299999999996e-05,
+              "delta_from_PRE1": -1.2124065000000006e-05
+            },
+            "V(L_M2|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00071916265,
+              "delta_from_PRE1": 0.0008139123899999999
+            },
+            "I(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 6.843986e-05,
+              "delta_from_PRE1": 4.6888710000000005e-05
+            },
+            "V(L_M3|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0009919939500000001,
+              "delta_from_PRE1": -0.0010644820300000002
+            },
+            "I(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.1486475e-05,
+              "delta_from_PRE1": 8.720985000000006e-06
+            },
+            "V(L_PM|XBVM1)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.9521050000000002e-05,
+              "delta_from_PRE1": 2.0473546400000002e-05
+            },
+            "P(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -13.52469,
+              "delta_from_PRE1": -13.7469807
+            },
+            "V(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00063750695,
+              "delta_from_PRE1": -0.0007233065150000001
+            },
+            "I(B_JS1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.7448555e-05,
+              "delta_from_PRE1": -5.901277e-05
+            },
+            "P(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -15.46873,
+              "delta_from_PRE1": -15.2353524
+            },
+            "V(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00059860885,
+              "delta_from_PRE1": 0.000601493916
+            },
+            "I(B_JS2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.6953382e-05,
+              "delta_from_PRE1": 3.8108297e-05
+            },
+            "I(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.7448555e-05,
+              "delta_from_PRE1": -5.901277e-05
+            },
+            "V(L_S1|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.266788000000001e-05,
+              "delta_from_PRE1": 7.87485315e-05
+            },
+            "I(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.6953382e-05,
+              "delta_from_PRE1": 3.8108297e-05
+            },
+            "V(L_S2|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -7.7521025e-05,
+              "delta_from_PRE1": -8.26369255e-05
+            },
+            "I(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -6.171026e-05,
+              "delta_from_PRE1": -8.54344e-05
+            },
+            "V(L_S3|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.9376185e-05,
+              "delta_from_PRE1": 7.48163795e-05
+            },
+            "I(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.3125395e-05,
+              "delta_from_PRE1": 2.4938793e-05
+            },
+            "V(R_S|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.9376185e-05,
+              "delta_from_PRE1": 7.48163795e-05
+            },
+            "I(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.0495174999999998e-05,
+              "delta_from_PRE1": -2.090447625e-05
+            },
+            "V(L_PSL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.4743574999999997e-06,
+              "delta_from_PRE1": -2.3173814999999994e-06
+            },
+            "I(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.0495174999999998e-05,
+              "delta_from_PRE1": -2.090447625e-05
+            },
+            "V(R_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00024594205,
+              "delta_from_PRE1": -0.000250853665
+            },
+            "I(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.0495174999999998e-05,
+              "delta_from_PRE1": -2.090447625e-05
+            },
+            "V(L_SL|XBVM1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.7794860000000003e-06,
+              "delta_from_PRE1": -1.8539052500000004e-06
+            },
+            "P(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.1199425000000005,
+              "delta_from_PRE1": 0.22443800000000103
+            },
+            "V(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.8225485e-05,
+              "delta_from_PRE1": 4.626897235e-05
+            },
+            "I(B_JM1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.7019485e-05,
+              "delta_from_PRE1": 6.370994999999997e-06
+            },
+            "P(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.7382449,
+              "delta_from_PRE1": 0.3134631
+            },
+            "V(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -6.0718574999999997e-05,
+              "delta_from_PRE1": -0.00013474236
+            },
+            "I(B_JM2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.0991299999999996e-05,
+              "delta_from_PRE1": -1.2124065000000006e-05
+            },
+            "I(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.0991299999999996e-05,
+              "delta_from_PRE1": 1.2124065000000006e-05
+            },
+            "V(L_M1|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0003669197,
+              "delta_from_PRE1": -0.000415261415
+            },
+            "I(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 3.0991299999999996e-05,
+              "delta_from_PRE1": -1.2124065000000006e-05
+            },
+            "V(L_M2|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00071916265,
+              "delta_from_PRE1": 0.0008139123899999999
+            },
+            "I(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 6.843986e-05,
+              "delta_from_PRE1": 4.6888710000000005e-05
+            },
+            "V(L_M3|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0009919939500000001,
+              "delta_from_PRE1": -0.0010644820300000002
+            },
+            "I(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "current",
+              "unit": "A",
+              "median": 5.1486475e-05,
+              "delta_from_PRE1": 8.720985000000006e-06
+            },
+            "V(L_PM|XBVM2)": {
+              "component_group": "storage",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.9521050000000002e-05,
+              "delta_from_PRE1": 2.0473546400000002e-05
+            },
+            "P(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -13.52469,
+              "delta_from_PRE1": -13.7469807
+            },
+            "V(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00063750695,
+              "delta_from_PRE1": -0.0007233065150000001
+            },
+            "I(B_JS1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.7448555e-05,
+              "delta_from_PRE1": -5.901277e-05
+            },
+            "P(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -15.46873,
+              "delta_from_PRE1": -15.2353524
+            },
+            "V(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00059860885,
+              "delta_from_PRE1": 0.000601493916
+            },
+            "I(B_JS2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.6953382e-05,
+              "delta_from_PRE1": 3.8108297e-05
+            },
+            "I(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -3.7448555e-05,
+              "delta_from_PRE1": -5.901277e-05
+            },
+            "V(L_S1|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 7.266788000000001e-05,
+              "delta_from_PRE1": 7.87485315e-05
+            },
+            "I(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.6953382e-05,
+              "delta_from_PRE1": 3.8108297e-05
+            },
+            "V(L_S2|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -7.7521025e-05,
+              "delta_from_PRE1": -8.26369255e-05
+            },
+            "I(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -6.171026e-05,
+              "delta_from_PRE1": -8.54344e-05
+            },
+            "V(L_S3|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.9376185e-05,
+              "delta_from_PRE1": 7.48163795e-05
+            },
+            "I(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": 2.3125395e-05,
+              "delta_from_PRE1": 2.4938793e-05
+            },
+            "V(R_S|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.9376185e-05,
+              "delta_from_PRE1": 7.48163795e-05
+            },
+            "I(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.0495174999999998e-05,
+              "delta_from_PRE1": -2.090447625e-05
+            },
+            "V(L_PSL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.4743574999999997e-06,
+              "delta_from_PRE1": -2.3173814999999994e-06
+            },
+            "I(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.0495174999999998e-05,
+              "delta_from_PRE1": -2.090447625e-05
+            },
+            "V(R_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00024594205,
+              "delta_from_PRE1": -0.000250853665
+            },
+            "I(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.0495174999999998e-05,
+              "delta_from_PRE1": -2.090447625e-05
+            },
+            "V(L_SL|XBVM2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.7794860000000003e-06,
+              "delta_from_PRE1": -1.8539052500000004e-06
+            },
+            "V(COMMON_SL)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0002427807,
+              "delta_from_PRE1": -0.0002422274425
+            },
+            "P(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL1)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL2)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL3)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL4)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL5)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL6)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL7)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.059101015,
+              "delta_from_PRE1": -0.054043489
+            },
+            "V(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3740965e-05,
+              "delta_from_PRE1": -2.28455539e-05
+            },
+            "I(B_JSL8)": {
+              "component_group": "boundary",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "V(QBIN)": {
+              "component_group": "boundary",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -5.285294e-05,
+              "delta_from_PRE1": -5.9462972999999996e-05
+            },
+            "P(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": -0.0727236,
+              "delta_from_PRE1": -0.066409438
+            },
+            "V(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3628840000000003e-05,
+              "delta_from_PRE1": -2.2506688500000004e-05
+            },
+            "I(BJS|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "P(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.708919999999999,
+              "delta_from_PRE1": 12.019820999999999
+            },
+            "V(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.632906500000001e-06,
+              "delta_from_PRE1": -2.40298665e-05
+            },
+            "I(BJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 7.6587485e-05,
+              "delta_from_PRE1": -5.620679999999997e-06
+            },
+            "P(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.348435,
+              "delta_from_PRE1": 12.39038215
+            },
+            "V(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.5467305e-05,
+              "delta_from_PRE1": 1.1410371e-05
+            },
+            "I(BJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014613,
+              "delta_from_PRE1": -2.2352249999999982e-05
+            },
+            "I(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -4.0990345e-05,
+              "delta_from_PRE1": -4.1808947350000005e-05
+            },
+            "V(LIN|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.0846145e-05,
+              "delta_from_PRE1": -1.39042895e-05
+            },
+            "I(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -0.00011804785,
+              "delta_from_PRE1": -3.5694905e-05
+            },
+            "V(L1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.2058815e-05,
+              "delta_from_PRE1": -1.6728237e-05
+            },
+            "I(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014195214999999998,
+              "delta_from_PRE1": -3.5694899999999996e-05
+            },
+            "V(L2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -1.7226875e-05,
+              "delta_from_PRE1": -2.3897478e-05
+            },
+            "I(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -5.920156e-06,
+              "delta_from_PRE1": -1.44962125e-05
+            },
+            "V(L3|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.7829295000000002e-05,
+              "delta_from_PRE1": 1.3300244500000002e-05
+            },
+            "I(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": -2.697783e-07,
+              "delta_from_PRE1": -7.5093325e-07
+            },
+            "V(RJ1|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -8.632906500000001e-06,
+              "delta_from_PRE1": -2.40298665e-05
+            },
+            "I(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 1.2889425e-06,
+              "delta_from_PRE1": 9.508646500000001e-07
+            },
+            "V(RJ2|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.5467305e-05,
+              "delta_from_PRE1": 1.1410371e-05
+            },
+            "I(IB|XBQ1)": {
+              "component_group": "qb",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00026,
+              "delta_from_PRE1": 0.0
+            },
+            "V(QBOUT)": {
+              "component_group": "qb",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.3619890000000003e-06,
+              "delta_from_PRE1": -1.8898716000000002e-06
+            },
+            "P(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.373249999999999,
+              "delta_from_PRE1": 12.541888899999998
+            },
+            "V(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.1004125e-05,
+              "delta_from_PRE1": -2.48806215e-05
+            },
+            "I(B01|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00013902265,
+              "delta_from_PRE1": -8.422650000000013e-06
+            },
+            "P(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.340225,
+              "delta_from_PRE1": 12.5502327
+            },
+            "V(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.301043e-05,
+              "delta_from_PRE1": -3.38689419e-05
+            },
+            "I(B02|XJTL1_1)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00014405009999999998,
+              "delta_from_PRE1": 2.726599999999975e-06
+            },
+            "V(JTL1_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 1.6336700000000002e-05,
+              "delta_from_PRE1": 1.56194809e-05
+            },
+            "P(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.270955,
+              "delta_from_PRE1": 12.49028985
+            },
+            "V(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 6.213575e-05,
+              "delta_from_PRE1": 6.147081625e-05
+            },
+            "I(B01|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.0001347136,
+              "delta_from_PRE1": -6.180250000000002e-06
+            },
+            "P(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 13.305219999999998,
+              "delta_from_PRE1": 12.530277349999999
+            },
+            "V(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 2.24705325e-05,
+              "delta_from_PRE1": 2.252700922e-05
+            },
+            "I(B02|XJTL1_2)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 7.352654e-05,
+              "delta_from_PRE1": -6.644446000000002e-05
+            },
+            "V(JTL2_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -3.1792905e-05,
+              "delta_from_PRE1": -3.1789092613499996e-05
+            },
+            "P(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 12.640605,
+              "delta_from_PRE1": 11.8634789
+            },
+            "V(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.0001329358,
+              "delta_from_PRE1": -0.00013295654696499998
+            },
+            "I(B01|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 8.0002875e-05,
+              "delta_from_PRE1": -6.0228925e-05
+            },
+            "P(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 10.399329999999999,
+              "delta_from_PRE1": 9.625281099999999
+            },
+            "V(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0008913311,
+              "delta_from_PRE1": 0.00089131192858
+            },
+            "I(B02|XJTL1_3)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": -9.6686865e-05,
+              "delta_from_PRE1": -0.000236497915
+            },
+            "V(JTL3_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00059061395,
+              "delta_from_PRE1": 0.0005906049036785001
+            },
+            "P(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 7.7054285,
+              "delta_from_PRE1": 6.9286178
+            },
+            "V(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00029840065,
+              "delta_from_PRE1": 0.00029840326665799997
+            },
+            "I(B01|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00025602335,
+              "delta_from_PRE1": 0.00011581899999999997
+            },
+            "P(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 7.181409,
+              "delta_from_PRE1": 6.407405750000001
+            },
+            "V(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00013985635,
+              "delta_from_PRE1": 0.0001398584548325
+            },
+            "I(B02|XJTL1_4)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 9.83066e-05,
+              "delta_from_PRE1": -4.1494299999999987e-05
+            },
+            "V(JTL4_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -2.309738e-06,
+              "delta_from_PRE1": -2.308214661e-06
+            },
+            "P(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 6.4776165,
+              "delta_from_PRE1": 5.70080365
+            },
+            "V(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": -0.00014452790000000002,
+              "delta_from_PRE1": -0.00014452694387495
+            },
+            "I(B01|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 7.210482999999999e-05,
+              "delta_from_PRE1": -6.809737000000002e-05
+            },
+            "P(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 3.918311,
+              "delta_from_PRE1": 3.1442696000000003
+            },
+            "V(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.000910938,
+              "delta_from_PRE1": 0.00091093867086665
+            },
+            "I(B02|XJTL1_5)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": -5.2869405000000006e-05,
+              "delta_from_PRE1": -0.00019267560500000003
+            },
+            "V(JTL5_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.0005705552,
+              "delta_from_PRE1": 0.0005705556394142
+            },
+            "P(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 1.5235115000000001,
+              "delta_from_PRE1": 0.7465649000000001
+            },
+            "V(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 0.00026142229999999997,
+              "delta_from_PRE1": 0.00026142249660325
+            },
+            "I(B01|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00024053915,
+              "delta_from_PRE1": 0.00010031815000000001
+            },
+            "P(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "phase",
+              "unit": "rad",
+              "median": 0.9211088000000001,
+              "delta_from_PRE1": 0.14655240000000003
+            },
+            "V(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 5.3037129999999996e-05,
+              "delta_from_PRE1": 5.3037015557599995e-05
+            },
+            "I(B02|XJTL1_6)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 0.00016786969999999998,
+              "delta_from_PRE1": 2.7989899999999974e-05
+            },
+            "V(JTL6_OUT)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.6592705e-05,
+              "delta_from_PRE1": 4.659258394235e-05
+            },
+            "I(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "current",
+              "unit": "A",
+              "median": 4.6592705e-06,
+              "delta_from_PRE1": 4.659258394235e-06
+            },
+            "V(R_TERM)": {
+              "component_group": "jtl",
+              "quantity": "voltage",
+              "unit": "V",
+              "median": 4.6592705e-05,
+              "delta_from_PRE1": 4.659258394235e-05
+            }
+          },
+          "read_cycle_index": 1,
+          "virtual_next_read_anchor": true
+        }
+      }
+    }
+  ],
+  "phase_area_semantics": "same JJ, same half-open cycle window, actual stored grid; no interpolation",
+  "phase_turns_are_navigation_only": true
+}

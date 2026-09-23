@@ -1,0 +1,1728 @@
+{
+  "schema": "bvm-qb-repeatability-preflight-qa-v1",
+  "status": "PASS",
+  "created_at": "2026-09-23T13:11:14+08:00",
+  "git": {
+    "head": "b86ffd69de0cff1b2d084dcfe53812c9b64b740d",
+    "working_tree_dirty": false,
+    "status_porcelain": ""
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "source_hashes": {
+    "USER_CASE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/USER_CASE.env",
+      "sha256": "5cbc50e541eaeb631583aedd9cb86ef9d1980c32ab050009211b180acf1d5ee6"
+    },
+    "REFERENCE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/REFERENCE.env",
+      "sha256": "70023628a2d3992805b38696b50390947c51c2ff128edba26d5698021912f278"
+    },
+    "CANDIDATE_PROFILES": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/candidate_profiles.json",
+      "sha256": "134c00ff684197d194219bb2f5e3052a2a13d2225b1c24cfebed4a666786890b"
+    },
+    "REGRESSION_MATRIX": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/REGRESSION_MATRIX.json",
+      "sha256": "54595542217bb15d5107c3367b11a393afb1cb35510d214478fba84a59574156"
+    },
+    "PREFLIGHT_SCOPE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/REFERENCE_ANALYSIS_SCOPE.json",
+      "sha256": "d0b95b344f8b492719f7c26f7dfbe0f5982bc24d14688f6bc72d86bc25194a4f"
+    },
+    "PACKAGE_CHECKPOINTS": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/PACKAGE_CHECKPOINTS.json",
+      "sha256": "4e04cab8dccd369ed30456e8b7e904341f41f1d3518a0ede5a92ecd63036b259"
+    },
+    "PLATFORM_NUMERICAL_QA": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/PLATFORM_NUMERICAL_QA.json",
+      "sha256": "bb42c42ee81cebe116a1060736b18a95f2baae255773381ee63b88dba92a3f43"
+    },
+    "PACKAGE_BASE_ARCHIVE": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/handoff/bvm-qb-50ghz-merge-v1-20260922_raw_handoff_classic-v4.zip",
+      "sha256": "e965bac4653748faa6761fd29fcb991043a800065ffad4f66cedc508e8af5c8a"
+    },
+    "EXPERIMENT": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/experiment.yaml",
+      "sha256": "2087a4850d6e19bf5f664cae530dd4d1206e15fc410f30eae4099e4f7c51393c"
+    },
+    "PREFLIGHT_MARKDOWN": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/PREFLIGHT.md",
+      "sha256": "444549c240d83b997343649e9a4f62d3fa985dfc37c991bf7ffd352355f09b51"
+    },
+    "README": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/README.md",
+      "sha256": "9392dad5b955c501beb091f1df35bfb7e5726342b4d5c84e17581d89799a7f9f"
+    },
+    "GIT_ATTRIBUTES": {
+      "path": ".gitattributes",
+      "sha256": "23d1a3161857cb1d2e84e18bc4573c57250a5495174bb72a60dd2c88810250c3"
+    },
+    "BVM_TEMPLATE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/circuits/bvm_tunable.cir",
+      "sha256": "fdf1d2f247bfb1d5aad1ee043b552c5119f7a6b5504e62f161adaa6a10312d48"
+    },
+    "QB_TEMPLATE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/circuits/bq_tunable.cir",
+      "sha256": "17ffc7732deeeccb1c31c284237fabac5fdb682914fcf9117ea4f13bc62bd61d"
+    },
+    "TOP_TEMPLATE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/circuits/top_template.cir",
+      "sha256": "64df73e866d5ae7da425e2bf24cf85071cafa52cb68d8272e1333a3df5fd2179"
+    },
+    "JJ_MODEL": {
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "JTL": {
+      "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "PLOTTER": {
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6"
+    },
+    "RUNNER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_case.py",
+      "sha256": "4f9bcd7e8bcc0f0ebd14c5ada2459d65524bff2f40ba53b0de663c8ce195063a"
+    },
+    "COMMON": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/common.py",
+      "sha256": "2241e3fce5701b1467c7a5f120fc9fe55bec614281b1cefd029ea58ae50a652f"
+    },
+    "STIMULUS": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/stimulus.py",
+      "sha256": "bf23fdf581385f9e20d59e64b32f7e224584aed9b9e26fd88f897f2101214b6a"
+    },
+    "ANALYZER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/analyze_case.py",
+      "sha256": "f73b9d1ddf754670429fc0df216ead4788692f49eb9823e675e2ff72eebf9af7"
+    },
+    "PLOT_CASE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/plot_case.py",
+      "sha256": "77962dc2050067229d3c6ff06495d86ee869b390ecf93b20f4caed4464b267be"
+    },
+    "PREFLIGHT": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/preflight.py",
+      "sha256": "3a164b1f678a696467c009038ca87d0a65b7c16c1296dd906cab2be9a9841a50"
+    },
+    "REGRESSION_RUNNER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_regression.py",
+      "sha256": "5c251921984c443a4cec6cac85fafde22fa1d8f331b87d9cefe132a08f6b989c"
+    },
+    "SWEEP_RUNNER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_sweep.py",
+      "sha256": "d81c2fbcffad8b1cdbc9a9fbb5a4ef5434c8705a71bfc04cd0f45fdccc863d50"
+    },
+    "FINALIZER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/finalize.py",
+      "sha256": "a146acd66abd7e6384d7bf8833d0afba2cf15b563a5171ee7ccc72df0fea00dd"
+    },
+    "PACKAGER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/package.py",
+      "sha256": "6add9d27db45d47f89102415f81a77001b4635eaae10f63e05e8121ec065387a"
+    },
+    "PLATFORM_TESTS": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/tests/test_platform.py",
+      "sha256": "620bbeb103163edbc30d205f6bd30e4bd6170da4b5b5553a4ad36bb8707e9436"
+    },
+    "ONE_SHOT_RENDERER": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/scripts/run_candidate.py",
+      "sha256": "d46c485f7c952a615e014c47323194b3d2a7415de4e37ae8d23c1b3c527b0737"
+    },
+    "ONE_SHOT_ARRAY_MASK_HELPER": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/scripts/fan_in.py",
+      "sha256": "d4b48b40626aa613e1a9197f6aaa3093b3210c586689d0ef8e77c1dd243a1cf4"
+    },
+    "ONE_SHOT_BVM_TEMPLATE": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/circuits/bvm_tunable.cir",
+      "sha256": "1b0431c5c06616bc04e3c1c21187a74e7e1dd0805552905e0c4e609849c95c66"
+    },
+    "ONE_SHOT_QB_TEMPLATE": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/circuits/bq_tunable.cir",
+      "sha256": "140154e3375a76de07b55c218f5069b27fdbacea23308485124422ece5163eda"
+    },
+    "ONE_SHOT_TOP_TEMPLATE": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/circuits/closed_top.cir",
+      "sha256": "fbab4846fc6fd1079ee0e48b97b777973ffe8a93ba9e1a652dde9a93e95203d7"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_METADATA": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/metadata.json",
+      "sha256": "fa3e1b4f14b5c7d92f8e4408c84d1043f67e1b5c746576d6998c6a572b1a6dff"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_DECK": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/actual_deck.cir",
+      "sha256": "931f1a76b45859debb00d57c22760cb04585da44338198f560e2c86ca7bba131"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_STIMULUS": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/stimulus.inc",
+      "sha256": "ab62a6644cc104ebfa53bab3d7c6070e700af800fe126d148f806970eea6f562"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_SOURCE_MANIFEST": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/source_manifest.json",
+      "sha256": "68647908483e9d238800b9edada6c44fce6b46bb9ef144a31622a30b675f3b3f"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_BVM": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/bvm_tunable.cir",
+      "sha256": "9d5e94adc089b8c032a19d5ac7a3ba0276d9dea498960c9dc098c12699799fee"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_QB": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/bq_tunable.cir",
+      "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_JJ": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_JTL": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_METADATA": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/metadata.json",
+      "sha256": "ab302127ded2872f2048b85a20fb9dbd75b40461aff976b2cee0865a1af380db"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_DECK": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/actual_deck.cir",
+      "sha256": "931f1a76b45859debb00d57c22760cb04585da44338198f560e2c86ca7bba131"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_STIMULUS": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/stimulus.inc",
+      "sha256": "0abdc2af5e52ee5850da4c0e713d58b475a33e9d46760ec16b8d720dcac73c43"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_SOURCE_MANIFEST": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/source_manifest.json",
+      "sha256": "820c14a7d6f893d6baa9f905ce1e0b3bfa0c7cd1686ed903d8a739af9cf655a8"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_BVM": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/bvm_tunable.cir",
+      "sha256": "9d5e94adc089b8c032a19d5ac7a3ba0276d9dea498960c9dc098c12699799fee"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_QB": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/bq_tunable.cir",
+      "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_JJ": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_JTL": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_METADATA": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/metadata.json",
+      "sha256": "c5246afcbc4be8c13acaa32631a2fc7116448e58c39ed4b627bb4c4a05258a1f"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_DECK": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/actual_deck.cir",
+      "sha256": "87efb64a68f38f81b010c54d43d3ad04ddf08f966c86171e03b04bc86ae15dd4"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_STIMULUS": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/stimulus.inc",
+      "sha256": "1f928090c208d101f3d086340b2406eb4ba0e712900608b5ba69d5daef1996ff"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_SOURCE_MANIFEST": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/source_manifest.json",
+      "sha256": "dd0819512fa847fe68567f1393672f372f963e7cb8909c3614d64c26753085de"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_BVM": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/bvm_tunable.cir",
+      "sha256": "65dc39ab22bda99bb5d2f9a30d0bd9263d713df6cbe53dd16efc1f58a65c7bc9"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_QB": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/bq_tunable.cir",
+      "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_JJ": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_JTL": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    }
+  },
+  "platform_source_lock_sha256": "7a89f236111170c3c73fdb6fde2a07ad3b66bb6b7e745c2de26f2f0dc40e12d9",
+  "authorized_solve_count": 5,
+  "planned_case_count": 5,
+  "existing_physical_solve_count": 1,
+  "new_physical_solve_count": 4,
+  "resume_existing_a": true,
+  "cases": [
+    {
+      "case_id": "REG_A_QB2X1_N1",
+      "purpose": "descriptive regression compatibility with the historical 2x1 N1 repeated-read raw",
+      "action": "REANALYZE_EXISTING_RAW",
+      "existing_raw_sha256": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd",
+      "existing_physical_solve_count": 1,
+      "new_physical_solve_count": 0,
+      "parameters": {
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.90",
+        "JS2_AREA": "0.90",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "ARRAY_SIZE": 2,
+        "NAME": "REG_A_QB2X1_N1",
+        "EXECUTION_SCOPE": "REGRESSION_MATRIX",
+        "TEST_MODE": "REPEAT_READ",
+        "CANDIDATE": "QB_2X1",
+        "MASK": "01",
+        "READ_START_PS": "110",
+        "READ_PERIOD_PS": "20",
+        "READ_COUNT": "5",
+        "READ_WIDTH_PS": "11",
+        "READ_RISE_PS": "1",
+        "READ_FALL_PS": "1",
+        "READ_AMP_UA": "100",
+        "RECOVERY_TAIL_PS": "100",
+        "WRITE0_START_PS": "50",
+        "CONTROL_START_PS": "70",
+        "WRITE1_START_PS": "90",
+        "WRITE_WIDTH_PS": "11",
+        "WRITE_RISE_PS": "1",
+        "WRITE_FALL_PS": "1",
+        "WRITE_AMP_UA": "100",
+        "CONTROL_WIDTH_PS": "11",
+        "CONTROL_RISE_PS": "1",
+        "CONTROL_FALL_PS": "1",
+        "CONTROL_WL_AMP_UA": "100",
+        "CONTROL_BL_AMP_UA": "0",
+        "CONTROL_SE_AMP_UA": "100",
+        "REWRITE_START_PS": "50",
+        "STATE_SEQUENCE": "00,01,11",
+        "STATE_INTERVAL_PS": "70",
+        "RESET_TO_WRITE_DELAY_PS": "20",
+        "WRITE_TO_READ_DELAY_PS": "25",
+        "READ_TO_NEXT_RESET_DELAY_PS": "14",
+        "DT": "0.1p",
+        "TAIL_MARGIN_MIN_PS": "40",
+        "TAIL_MARGIN_PERIODS": "2",
+        "BJ2_CANDIDATE_THRESHOLD_UV": "100",
+        "BJ2_CANDIDATE_GAP_PS": "0.5",
+        "TERMINAL_CANDIDATE_THRESHOLD_UV": "100",
+        "TERMINAL_CANDIDATE_GAP_PS": "0.5",
+        "LATENCY_MIN_PS": "0",
+        "LATENCY_MAX_PS": "25",
+        "PRE_WINDOW_PS": "1",
+        "POST_OFFSET_PS": "2",
+        "POST_WINDOW_PS": "3",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "MODE": "closed",
+        "MASKS": [
+          "01"
+        ],
+        "BIT_ORDER": "mask left-to-right: b1=BVM1, b0=BVM2; rightmost bit is highest-index BVM",
+        "STOP_PS": 241.0,
+        "STOP": "241p"
+      },
+      "schedule": [
+        {
+          "ordinal": 1,
+          "state": "01",
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 2,
+          "state": "01",
+          "read_start_ps": 130.0,
+          "read_end_ps": 141.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 3,
+          "state": "01",
+          "read_start_ps": 150.0,
+          "read_end_ps": 161.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 4,
+          "state": "01",
+          "read_start_ps": 170.0,
+          "read_end_ps": 181.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 5,
+          "state": "01",
+          "read_start_ps": 190.0,
+          "read_end_ps": 201.0,
+          "source": "USER_CASE.env"
+        }
+      ],
+      "cycle_windows": [
+        {
+          "cycle_index": 1,
+          "cycle_window_ps": [
+            110.0,
+            130.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            109.0,
+            110.0
+          ],
+          "read_window_ps": [
+            110.0,
+            121.0
+          ],
+          "post_window_ps": [
+            123.0,
+            126.0
+          ],
+          "next_pre_window_ps": [
+            129.0,
+            130.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "state": "01"
+        },
+        {
+          "cycle_index": 2,
+          "cycle_window_ps": [
+            130.0,
+            150.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            129.0,
+            130.0
+          ],
+          "read_window_ps": [
+            130.0,
+            141.0
+          ],
+          "post_window_ps": [
+            143.0,
+            146.0
+          ],
+          "next_pre_window_ps": [
+            149.0,
+            150.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 130.0,
+          "read_end_ps": 141.0,
+          "state": "01"
+        },
+        {
+          "cycle_index": 3,
+          "cycle_window_ps": [
+            150.0,
+            170.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            149.0,
+            150.0
+          ],
+          "read_window_ps": [
+            150.0,
+            161.0
+          ],
+          "post_window_ps": [
+            163.0,
+            166.0
+          ],
+          "next_pre_window_ps": [
+            169.0,
+            170.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 150.0,
+          "read_end_ps": 161.0,
+          "state": "01"
+        },
+        {
+          "cycle_index": 4,
+          "cycle_window_ps": [
+            170.0,
+            190.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            169.0,
+            170.0
+          ],
+          "read_window_ps": [
+            170.0,
+            181.0
+          ],
+          "post_window_ps": [
+            183.0,
+            186.0
+          ],
+          "next_pre_window_ps": [
+            189.0,
+            190.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 170.0,
+          "read_end_ps": 181.0,
+          "state": "01"
+        },
+        {
+          "cycle_index": 5,
+          "cycle_window_ps": [
+            190.0,
+            241.0
+          ],
+          "cycle_window_semantics": "[start,STOP)",
+          "pre_window_ps": [
+            189.0,
+            190.0
+          ],
+          "read_window_ps": [
+            190.0,
+            201.0
+          ],
+          "post_window_ps": [
+            203.0,
+            206.0
+          ],
+          "next_pre_window_ps": [
+            209.0,
+            210.0
+          ],
+          "next_pre_is_virtual": true,
+          "read_start_ps": 190.0,
+          "read_end_ps": 201.0,
+          "state": "01"
+        }
+      ],
+      "last_stimulus_time_ps": 201.0,
+      "tail_margin_ps": 40.0,
+      "stop_ps": 241.0,
+      "stimulus_sha256": "e1dec35f2efe25ee086ad2d7b9fb0bff42cf12a404964fc0022f690f3d37fc22",
+      "rendered_deck_sha256": "912ebaff7ebea0c398035c93c4f0ab8249e128088c1ceb49bb059c47f2528264",
+      "rendered_source_sha256": {
+        "JJ_MODEL": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "JTL": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+        "BVM": "c7517dbb435d2d9b334daed99cd7e54a81e27bc41b32850f08acb84568e71934",
+        "QB": "5a66d45ec3b8d3b4728c46113ed83273ed418efa5e1035f306b965250401dbd7"
+      },
+      "source_inventory": {
+        "status": "PASS",
+        "array_size": 2,
+        "expected_group_count": 6,
+        "actual_group_count": 6,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "reference_raw": {
+        "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+        "sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482"
+      },
+      "known_unsupported_raw_signals": {
+        "V(IB|XBQ1)": {
+          "reason": "JoSIM v2.7.2837d13 reports Unknown device/node IB|XBQ1 for the voltage of the internal PWL current-source branch; no raw column is emitted.",
+          "expected_warning_lines": [
+            "Unknown device/node IB|XBQ1",
+            "Cannot store results for this device/node.",
+            "Ignoring this store request."
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "REG_B_QB2X1_N2",
+      "purpose": "descriptive regression compatibility with the historical 2x1 N2 repeated-read raw",
+      "action": "RUN_NEW_PHYSICAL_SOLVE",
+      "existing_raw_sha256": null,
+      "existing_physical_solve_count": 0,
+      "new_physical_solve_count": 1,
+      "parameters": {
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.90",
+        "JS2_AREA": "0.90",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "ARRAY_SIZE": 2,
+        "NAME": "REG_B_QB2X1_N2",
+        "EXECUTION_SCOPE": "REGRESSION_MATRIX",
+        "TEST_MODE": "REPEAT_READ",
+        "CANDIDATE": "QB_2X1",
+        "MASK": "11",
+        "READ_START_PS": "110",
+        "READ_PERIOD_PS": "20",
+        "READ_COUNT": "5",
+        "READ_WIDTH_PS": "11",
+        "READ_RISE_PS": "1",
+        "READ_FALL_PS": "1",
+        "READ_AMP_UA": "100",
+        "RECOVERY_TAIL_PS": "100",
+        "WRITE0_START_PS": "50",
+        "CONTROL_START_PS": "70",
+        "WRITE1_START_PS": "90",
+        "WRITE_WIDTH_PS": "11",
+        "WRITE_RISE_PS": "1",
+        "WRITE_FALL_PS": "1",
+        "WRITE_AMP_UA": "100",
+        "CONTROL_WIDTH_PS": "11",
+        "CONTROL_RISE_PS": "1",
+        "CONTROL_FALL_PS": "1",
+        "CONTROL_WL_AMP_UA": "100",
+        "CONTROL_BL_AMP_UA": "0",
+        "CONTROL_SE_AMP_UA": "100",
+        "REWRITE_START_PS": "50",
+        "STATE_SEQUENCE": "00,01,11",
+        "STATE_INTERVAL_PS": "70",
+        "RESET_TO_WRITE_DELAY_PS": "20",
+        "WRITE_TO_READ_DELAY_PS": "25",
+        "READ_TO_NEXT_RESET_DELAY_PS": "14",
+        "DT": "0.1p",
+        "TAIL_MARGIN_MIN_PS": "40",
+        "TAIL_MARGIN_PERIODS": "2",
+        "BJ2_CANDIDATE_THRESHOLD_UV": "100",
+        "BJ2_CANDIDATE_GAP_PS": "0.5",
+        "TERMINAL_CANDIDATE_THRESHOLD_UV": "100",
+        "TERMINAL_CANDIDATE_GAP_PS": "0.5",
+        "LATENCY_MIN_PS": "0",
+        "LATENCY_MAX_PS": "25",
+        "PRE_WINDOW_PS": "1",
+        "POST_OFFSET_PS": "2",
+        "POST_WINDOW_PS": "3",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "MODE": "closed",
+        "MASKS": [
+          "11"
+        ],
+        "BIT_ORDER": "mask left-to-right: b1=BVM1, b0=BVM2; rightmost bit is highest-index BVM",
+        "STOP_PS": 241.0,
+        "STOP": "241p"
+      },
+      "schedule": [
+        {
+          "ordinal": 1,
+          "state": "11",
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 2,
+          "state": "11",
+          "read_start_ps": 130.0,
+          "read_end_ps": 141.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 3,
+          "state": "11",
+          "read_start_ps": 150.0,
+          "read_end_ps": 161.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 4,
+          "state": "11",
+          "read_start_ps": 170.0,
+          "read_end_ps": 181.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 5,
+          "state": "11",
+          "read_start_ps": 190.0,
+          "read_end_ps": 201.0,
+          "source": "USER_CASE.env"
+        }
+      ],
+      "cycle_windows": [
+        {
+          "cycle_index": 1,
+          "cycle_window_ps": [
+            110.0,
+            130.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            109.0,
+            110.0
+          ],
+          "read_window_ps": [
+            110.0,
+            121.0
+          ],
+          "post_window_ps": [
+            123.0,
+            126.0
+          ],
+          "next_pre_window_ps": [
+            129.0,
+            130.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "state": "11"
+        },
+        {
+          "cycle_index": 2,
+          "cycle_window_ps": [
+            130.0,
+            150.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            129.0,
+            130.0
+          ],
+          "read_window_ps": [
+            130.0,
+            141.0
+          ],
+          "post_window_ps": [
+            143.0,
+            146.0
+          ],
+          "next_pre_window_ps": [
+            149.0,
+            150.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 130.0,
+          "read_end_ps": 141.0,
+          "state": "11"
+        },
+        {
+          "cycle_index": 3,
+          "cycle_window_ps": [
+            150.0,
+            170.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            149.0,
+            150.0
+          ],
+          "read_window_ps": [
+            150.0,
+            161.0
+          ],
+          "post_window_ps": [
+            163.0,
+            166.0
+          ],
+          "next_pre_window_ps": [
+            169.0,
+            170.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 150.0,
+          "read_end_ps": 161.0,
+          "state": "11"
+        },
+        {
+          "cycle_index": 4,
+          "cycle_window_ps": [
+            170.0,
+            190.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            169.0,
+            170.0
+          ],
+          "read_window_ps": [
+            170.0,
+            181.0
+          ],
+          "post_window_ps": [
+            183.0,
+            186.0
+          ],
+          "next_pre_window_ps": [
+            189.0,
+            190.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 170.0,
+          "read_end_ps": 181.0,
+          "state": "11"
+        },
+        {
+          "cycle_index": 5,
+          "cycle_window_ps": [
+            190.0,
+            241.0
+          ],
+          "cycle_window_semantics": "[start,STOP)",
+          "pre_window_ps": [
+            189.0,
+            190.0
+          ],
+          "read_window_ps": [
+            190.0,
+            201.0
+          ],
+          "post_window_ps": [
+            203.0,
+            206.0
+          ],
+          "next_pre_window_ps": [
+            209.0,
+            210.0
+          ],
+          "next_pre_is_virtual": true,
+          "read_start_ps": 190.0,
+          "read_end_ps": 201.0,
+          "state": "11"
+        }
+      ],
+      "last_stimulus_time_ps": 201.0,
+      "tail_margin_ps": 40.0,
+      "stop_ps": 241.0,
+      "stimulus_sha256": "9f6ac9d554fa4a3a34e9c8de769e1859d1d276dcfb54f226b5ee431c710de166",
+      "rendered_deck_sha256": "912ebaff7ebea0c398035c93c4f0ab8249e128088c1ceb49bb059c47f2528264",
+      "rendered_source_sha256": {
+        "JJ_MODEL": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "JTL": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+        "BVM": "c7517dbb435d2d9b334daed99cd7e54a81e27bc41b32850f08acb84568e71934",
+        "QB": "5a66d45ec3b8d3b4728c46113ed83273ed418efa5e1035f306b965250401dbd7"
+      },
+      "source_inventory": {
+        "status": "PASS",
+        "array_size": 2,
+        "expected_group_count": 6,
+        "actual_group_count": 6,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "reference_raw": {
+        "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/raw.csv",
+        "sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c"
+      },
+      "known_unsupported_raw_signals": {
+        "V(IB|XBQ1)": {
+          "reason": "JoSIM v2.7.2837d13 reports Unknown device/node IB|XBQ1 for the voltage of the internal PWL current-source branch; no raw column is emitted.",
+          "expected_warning_lines": [
+            "Unknown device/node IB|XBQ1",
+            "Cannot store results for this device/node.",
+            "Ignoring this store request."
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "REG_C_QB3X1_N3",
+      "purpose": "descriptive regression compatibility with the historical 3x1 N3 repeated-read raw",
+      "action": "RUN_NEW_PHYSICAL_SOLVE",
+      "existing_raw_sha256": null,
+      "existing_physical_solve_count": 0,
+      "new_physical_solve_count": 1,
+      "parameters": {
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.86",
+        "JS2_AREA": "0.86",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "ARRAY_SIZE": 3,
+        "NAME": "REG_C_QB3X1_N3",
+        "EXECUTION_SCOPE": "REGRESSION_MATRIX",
+        "TEST_MODE": "REPEAT_READ",
+        "CANDIDATE": "QB_3X1",
+        "MASK": "111",
+        "READ_START_PS": "110",
+        "READ_PERIOD_PS": "20",
+        "READ_COUNT": "5",
+        "READ_WIDTH_PS": "11",
+        "READ_RISE_PS": "1",
+        "READ_FALL_PS": "1",
+        "READ_AMP_UA": "100",
+        "RECOVERY_TAIL_PS": "100",
+        "WRITE0_START_PS": "50",
+        "CONTROL_START_PS": "70",
+        "WRITE1_START_PS": "90",
+        "WRITE_WIDTH_PS": "11",
+        "WRITE_RISE_PS": "1",
+        "WRITE_FALL_PS": "1",
+        "WRITE_AMP_UA": "100",
+        "CONTROL_WIDTH_PS": "11",
+        "CONTROL_RISE_PS": "1",
+        "CONTROL_FALL_PS": "1",
+        "CONTROL_WL_AMP_UA": "100",
+        "CONTROL_BL_AMP_UA": "0",
+        "CONTROL_SE_AMP_UA": "100",
+        "REWRITE_START_PS": "50",
+        "STATE_SEQUENCE": "00,01,11",
+        "STATE_INTERVAL_PS": "70",
+        "RESET_TO_WRITE_DELAY_PS": "20",
+        "WRITE_TO_READ_DELAY_PS": "25",
+        "READ_TO_NEXT_RESET_DELAY_PS": "14",
+        "DT": "0.1p",
+        "TAIL_MARGIN_MIN_PS": "40",
+        "TAIL_MARGIN_PERIODS": "2",
+        "BJ2_CANDIDATE_THRESHOLD_UV": "100",
+        "BJ2_CANDIDATE_GAP_PS": "0.5",
+        "TERMINAL_CANDIDATE_THRESHOLD_UV": "100",
+        "TERMINAL_CANDIDATE_GAP_PS": "0.5",
+        "LATENCY_MIN_PS": "0",
+        "LATENCY_MAX_PS": "25",
+        "PRE_WINDOW_PS": "1",
+        "POST_OFFSET_PS": "2",
+        "POST_WINDOW_PS": "3",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "MODE": "closed",
+        "MASKS": [
+          "111"
+        ],
+        "BIT_ORDER": "mask left-to-right: b2=BVM1, b1=BVM2, b0=BVM3; rightmost bit is highest-index BVM",
+        "STOP_PS": 241.0,
+        "STOP": "241p"
+      },
+      "schedule": [
+        {
+          "ordinal": 1,
+          "state": "111",
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 2,
+          "state": "111",
+          "read_start_ps": 130.0,
+          "read_end_ps": 141.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 3,
+          "state": "111",
+          "read_start_ps": 150.0,
+          "read_end_ps": 161.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 4,
+          "state": "111",
+          "read_start_ps": 170.0,
+          "read_end_ps": 181.0,
+          "source": "USER_CASE.env"
+        },
+        {
+          "ordinal": 5,
+          "state": "111",
+          "read_start_ps": 190.0,
+          "read_end_ps": 201.0,
+          "source": "USER_CASE.env"
+        }
+      ],
+      "cycle_windows": [
+        {
+          "cycle_index": 1,
+          "cycle_window_ps": [
+            110.0,
+            130.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            109.0,
+            110.0
+          ],
+          "read_window_ps": [
+            110.0,
+            121.0
+          ],
+          "post_window_ps": [
+            123.0,
+            126.0
+          ],
+          "next_pre_window_ps": [
+            129.0,
+            130.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "state": "111"
+        },
+        {
+          "cycle_index": 2,
+          "cycle_window_ps": [
+            130.0,
+            150.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            129.0,
+            130.0
+          ],
+          "read_window_ps": [
+            130.0,
+            141.0
+          ],
+          "post_window_ps": [
+            143.0,
+            146.0
+          ],
+          "next_pre_window_ps": [
+            149.0,
+            150.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 130.0,
+          "read_end_ps": 141.0,
+          "state": "111"
+        },
+        {
+          "cycle_index": 3,
+          "cycle_window_ps": [
+            150.0,
+            170.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            149.0,
+            150.0
+          ],
+          "read_window_ps": [
+            150.0,
+            161.0
+          ],
+          "post_window_ps": [
+            163.0,
+            166.0
+          ],
+          "next_pre_window_ps": [
+            169.0,
+            170.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 150.0,
+          "read_end_ps": 161.0,
+          "state": "111"
+        },
+        {
+          "cycle_index": 4,
+          "cycle_window_ps": [
+            170.0,
+            190.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            169.0,
+            170.0
+          ],
+          "read_window_ps": [
+            170.0,
+            181.0
+          ],
+          "post_window_ps": [
+            183.0,
+            186.0
+          ],
+          "next_pre_window_ps": [
+            189.0,
+            190.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 170.0,
+          "read_end_ps": 181.0,
+          "state": "111"
+        },
+        {
+          "cycle_index": 5,
+          "cycle_window_ps": [
+            190.0,
+            241.0
+          ],
+          "cycle_window_semantics": "[start,STOP)",
+          "pre_window_ps": [
+            189.0,
+            190.0
+          ],
+          "read_window_ps": [
+            190.0,
+            201.0
+          ],
+          "post_window_ps": [
+            203.0,
+            206.0
+          ],
+          "next_pre_window_ps": [
+            209.0,
+            210.0
+          ],
+          "next_pre_is_virtual": true,
+          "read_start_ps": 190.0,
+          "read_end_ps": 201.0,
+          "state": "111"
+        }
+      ],
+      "last_stimulus_time_ps": 201.0,
+      "tail_margin_ps": 40.0,
+      "stop_ps": 241.0,
+      "stimulus_sha256": "d695338e20ff4023ffb522d5a93582dd9f3b95a296031ebaa38fc33bfae08c63",
+      "rendered_deck_sha256": "f7a32f147a07dd8c0cf3a7cb79768efdcbf44125b80188795337d92723a88e0c",
+      "rendered_source_sha256": {
+        "JJ_MODEL": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "JTL": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+        "BVM": "bb1269225ca0be622eb5424a7fc99a7a9a55205c91ce902f3624a4e918c3f676",
+        "QB": "5a66d45ec3b8d3b4728c46113ed83273ed418efa5e1035f306b965250401dbd7"
+      },
+      "source_inventory": {
+        "status": "PASS",
+        "array_size": 3,
+        "expected_group_count": 9,
+        "actual_group_count": 9,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "BL3",
+          "SE1",
+          "SE2",
+          "SE3",
+          "WL1",
+          "WL2",
+          "WL3"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "reference_raw": {
+        "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/raw.csv",
+        "sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6"
+      },
+      "known_unsupported_raw_signals": {
+        "V(IB|XBQ1)": {
+          "reason": "JoSIM v2.7.2837d13 reports Unknown device/node IB|XBQ1 for the voltage of the internal PWL current-source branch; no raw column is emitted.",
+          "expected_warning_lines": [
+            "Unknown device/node IB|XBQ1",
+            "Cannot store results for this device/node.",
+            "Ignoring this store request."
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "REG_D_QB2X1_RECOVERY",
+      "purpose": "platform smoke: one read followed by the registered free-recovery tail",
+      "action": "RUN_NEW_PHYSICAL_SOLVE",
+      "existing_raw_sha256": null,
+      "existing_physical_solve_count": 0,
+      "new_physical_solve_count": 1,
+      "parameters": {
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.90",
+        "JS2_AREA": "0.90",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "ARRAY_SIZE": 2,
+        "NAME": "REG_D_QB2X1_RECOVERY",
+        "EXECUTION_SCOPE": "REGRESSION_MATRIX",
+        "TEST_MODE": "RECOVERY_PROBE",
+        "CANDIDATE": "QB_2X1",
+        "MASK": "11",
+        "READ_START_PS": "110",
+        "READ_PERIOD_PS": "20",
+        "READ_COUNT": "1",
+        "READ_WIDTH_PS": "11",
+        "READ_RISE_PS": "1",
+        "READ_FALL_PS": "1",
+        "READ_AMP_UA": "100",
+        "RECOVERY_TAIL_PS": "100",
+        "WRITE0_START_PS": "50",
+        "CONTROL_START_PS": "70",
+        "WRITE1_START_PS": "90",
+        "WRITE_WIDTH_PS": "11",
+        "WRITE_RISE_PS": "1",
+        "WRITE_FALL_PS": "1",
+        "WRITE_AMP_UA": "100",
+        "CONTROL_WIDTH_PS": "11",
+        "CONTROL_RISE_PS": "1",
+        "CONTROL_FALL_PS": "1",
+        "CONTROL_WL_AMP_UA": "100",
+        "CONTROL_BL_AMP_UA": "0",
+        "CONTROL_SE_AMP_UA": "100",
+        "REWRITE_START_PS": "50",
+        "STATE_SEQUENCE": "00,01,11",
+        "STATE_INTERVAL_PS": "70",
+        "RESET_TO_WRITE_DELAY_PS": "20",
+        "WRITE_TO_READ_DELAY_PS": "25",
+        "READ_TO_NEXT_RESET_DELAY_PS": "14",
+        "DT": "0.1p",
+        "TAIL_MARGIN_MIN_PS": "40",
+        "TAIL_MARGIN_PERIODS": "2",
+        "BJ2_CANDIDATE_THRESHOLD_UV": "100",
+        "BJ2_CANDIDATE_GAP_PS": "0.5",
+        "TERMINAL_CANDIDATE_THRESHOLD_UV": "100",
+        "TERMINAL_CANDIDATE_GAP_PS": "0.5",
+        "LATENCY_MIN_PS": "0",
+        "LATENCY_MAX_PS": "25",
+        "PRE_WINDOW_PS": "1",
+        "POST_OFFSET_PS": "2",
+        "POST_WINDOW_PS": "3",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "MODE": "closed",
+        "MASKS": [
+          "11"
+        ],
+        "BIT_ORDER": "mask left-to-right: b1=BVM1, b0=BVM2; rightmost bit is highest-index BVM",
+        "STOP_PS": 221.0,
+        "STOP": "221p"
+      },
+      "schedule": [
+        {
+          "ordinal": 1,
+          "state": "11",
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "source": "USER_CASE.env"
+        }
+      ],
+      "cycle_windows": [
+        {
+          "cycle_index": 1,
+          "cycle_window_ps": [
+            110.0,
+            221.0
+          ],
+          "cycle_window_semantics": "[start,STOP)",
+          "pre_window_ps": [
+            109.0,
+            110.0
+          ],
+          "read_window_ps": [
+            110.0,
+            121.0
+          ],
+          "post_window_ps": [
+            123.0,
+            126.0
+          ],
+          "next_pre_window_ps": [
+            129.0,
+            130.0
+          ],
+          "next_pre_is_virtual": true,
+          "read_start_ps": 110.0,
+          "read_end_ps": 121.0,
+          "state": "11"
+        }
+      ],
+      "last_stimulus_time_ps": 121.0,
+      "tail_margin_ps": 100.0,
+      "stop_ps": 221.0,
+      "stimulus_sha256": "874eda837b1809d9d640f8ba7f679e7d0dbccab9607c6f8ce55c3086ec7c8079",
+      "rendered_deck_sha256": "89ad7558a85c87676dfc18434fbb464a2dd5f5ad4b326fd8840b6e158753dc72",
+      "rendered_source_sha256": {
+        "JJ_MODEL": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "JTL": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+        "BVM": "c7517dbb435d2d9b334daed99cd7e54a81e27bc41b32850f08acb84568e71934",
+        "QB": "5a66d45ec3b8d3b4728c46113ed83273ed418efa5e1035f306b965250401dbd7"
+      },
+      "source_inventory": {
+        "status": "PASS",
+        "array_size": 2,
+        "expected_group_count": 6,
+        "actual_group_count": 6,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "reference_raw": null,
+      "known_unsupported_raw_signals": {
+        "V(IB|XBQ1)": {
+          "reason": "JoSIM v2.7.2837d13 reports Unknown device/node IB|XBQ1 for the voltage of the internal PWL current-source branch; no raw column is emitted.",
+          "expected_warning_lines": [
+            "Unknown device/node IB|XBQ1",
+            "Cannot store results for this device/node.",
+            "Ignoring this store request."
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "REG_E_QB2X1_REWRITE_SMOKE",
+      "purpose": "platform smoke: all three registered rewrite states and final read are inside STOP",
+      "action": "RUN_NEW_PHYSICAL_SOLVE",
+      "existing_raw_sha256": null,
+      "existing_physical_solve_count": 0,
+      "new_physical_solve_count": 1,
+      "parameters": {
+        "JM1_AREA": "1.2",
+        "JM2_AREA": "1.4",
+        "RJM1": "8",
+        "RJM2": "OPEN",
+        "LM1": "12.5p",
+        "LM2": "24.5p",
+        "LM3": "8.5p",
+        "LPM": "0.5p",
+        "JS1_AREA": "0.90",
+        "JS2_AREA": "0.90",
+        "RSH_JS1": "OPEN",
+        "RSH_JS2": "OPEN",
+        "LS1": "0.5p",
+        "LS2": "0.5p",
+        "LS3": "0.5p",
+        "RS": "3.0",
+        "LPSL": "0.5p",
+        "RSL": "12.0",
+        "LSL": "0.4p",
+        "RBL": "20.0",
+        "LPBL": "0.5p",
+        "RWL": "20.0",
+        "LPWL": "0.5p",
+        "RSE": "20.0",
+        "LPSE": "0.5p",
+        "QB_LIN": "1.5p",
+        "QB_BJS_AREA": "4.0",
+        "QB_L1": "1.4p",
+        "QB_L2": "2.0p",
+        "QB_BJ1_AREA": "0.85",
+        "QB_RJ1": "32",
+        "QB_BJ2_AREA": "2.0",
+        "QB_RJ2": "12",
+        "QB_L3": "1.3p",
+        "QB_IB": "260u",
+        "ARRAY_SIZE": 2,
+        "NAME": "REG_E_QB2X1_REWRITE_SMOKE",
+        "EXECUTION_SCOPE": "REGRESSION_MATRIX",
+        "TEST_MODE": "REWRITE_READ",
+        "CANDIDATE": "QB_2X1",
+        "MASK": "11",
+        "READ_START_PS": "110",
+        "READ_PERIOD_PS": "20",
+        "READ_COUNT": 3,
+        "READ_WIDTH_PS": "11",
+        "READ_RISE_PS": "1",
+        "READ_FALL_PS": "1",
+        "READ_AMP_UA": "100",
+        "RECOVERY_TAIL_PS": "100",
+        "WRITE0_START_PS": "50",
+        "CONTROL_START_PS": "70",
+        "WRITE1_START_PS": "90",
+        "WRITE_WIDTH_PS": "11",
+        "WRITE_RISE_PS": "1",
+        "WRITE_FALL_PS": "1",
+        "WRITE_AMP_UA": "100",
+        "CONTROL_WIDTH_PS": "11",
+        "CONTROL_RISE_PS": "1",
+        "CONTROL_FALL_PS": "1",
+        "CONTROL_WL_AMP_UA": "100",
+        "CONTROL_BL_AMP_UA": "0",
+        "CONTROL_SE_AMP_UA": "100",
+        "REWRITE_START_PS": "50",
+        "STATE_SEQUENCE": "00,01,11",
+        "STATE_INTERVAL_PS": "70",
+        "RESET_TO_WRITE_DELAY_PS": "20",
+        "WRITE_TO_READ_DELAY_PS": "25",
+        "READ_TO_NEXT_RESET_DELAY_PS": "14",
+        "DT": "0.1p",
+        "TAIL_MARGIN_MIN_PS": "40",
+        "TAIL_MARGIN_PERIODS": "2",
+        "BJ2_CANDIDATE_THRESHOLD_UV": "100",
+        "BJ2_CANDIDATE_GAP_PS": "0.5",
+        "TERMINAL_CANDIDATE_THRESHOLD_UV": "100",
+        "TERMINAL_CANDIDATE_GAP_PS": "0.5",
+        "LATENCY_MIN_PS": "0",
+        "LATENCY_MAX_PS": "25",
+        "PRE_WINDOW_PS": "1",
+        "POST_OFFSET_PS": "2",
+        "POST_WINDOW_PS": "3",
+        "SWEEP_ENABLED": "no",
+        "SWEEP_KEY": "NONE",
+        "SWEEP_VALUES": "",
+        "MODE": "closed",
+        "MASKS": [
+          "11"
+        ],
+        "BIT_ORDER": "mask left-to-right: b1=BVM1, b0=BVM2; rightmost bit is highest-index BVM",
+        "STOP_PS": 386.0,
+        "STOP": "386p"
+      },
+      "schedule": [
+        {
+          "ordinal": 1,
+          "state": "00",
+          "read_start_ps": 95.0,
+          "read_end_ps": 106.0,
+          "reset_start_ps": 50.0,
+          "write1_start_ps": 70.0,
+          "source": "STATE_SEQUENCE"
+        },
+        {
+          "ordinal": 2,
+          "state": "01",
+          "read_start_ps": 165.0,
+          "read_end_ps": 176.0,
+          "reset_start_ps": 120.0,
+          "write1_start_ps": 140.0,
+          "source": "STATE_SEQUENCE"
+        },
+        {
+          "ordinal": 3,
+          "state": "11",
+          "read_start_ps": 235.0,
+          "read_end_ps": 246.0,
+          "reset_start_ps": 190.0,
+          "write1_start_ps": 210.0,
+          "source": "STATE_SEQUENCE"
+        }
+      ],
+      "cycle_windows": [
+        {
+          "cycle_index": 1,
+          "cycle_window_ps": [
+            95.0,
+            165.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            94.0,
+            95.0
+          ],
+          "read_window_ps": [
+            95.0,
+            106.0
+          ],
+          "post_window_ps": [
+            108.0,
+            111.0
+          ],
+          "next_pre_window_ps": [
+            164.0,
+            165.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 95.0,
+          "read_end_ps": 106.0,
+          "state": "00"
+        },
+        {
+          "cycle_index": 2,
+          "cycle_window_ps": [
+            165.0,
+            235.0
+          ],
+          "cycle_window_semantics": "[start,next_read_start)",
+          "pre_window_ps": [
+            164.0,
+            165.0
+          ],
+          "read_window_ps": [
+            165.0,
+            176.0
+          ],
+          "post_window_ps": [
+            178.0,
+            181.0
+          ],
+          "next_pre_window_ps": [
+            234.0,
+            235.0
+          ],
+          "next_pre_is_virtual": false,
+          "read_start_ps": 165.0,
+          "read_end_ps": 176.0,
+          "state": "01"
+        },
+        {
+          "cycle_index": 3,
+          "cycle_window_ps": [
+            235.0,
+            386.0
+          ],
+          "cycle_window_semantics": "[start,STOP)",
+          "pre_window_ps": [
+            234.0,
+            235.0
+          ],
+          "read_window_ps": [
+            235.0,
+            246.0
+          ],
+          "post_window_ps": [
+            248.0,
+            251.0
+          ],
+          "next_pre_window_ps": [
+            304.0,
+            305.0
+          ],
+          "next_pre_is_virtual": true,
+          "read_start_ps": 235.0,
+          "read_end_ps": 246.0,
+          "state": "11"
+        }
+      ],
+      "last_stimulus_time_ps": 246.0,
+      "tail_margin_ps": 140.0,
+      "stop_ps": 386.0,
+      "stimulus_sha256": "68958e1f49d3cca912efcd320a368b72f9231745cb94f0b3d9ed91b3b43d65a5",
+      "rendered_deck_sha256": "98c050a6f76bb86b5dada4b14137db3c2d6758cc82481aa27dcdf3fcff25281a",
+      "rendered_source_sha256": {
+        "JJ_MODEL": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+        "JTL": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a",
+        "BVM": "c7517dbb435d2d9b334daed99cd7e54a81e27bc41b32850f08acb84568e71934",
+        "QB": "5a66d45ec3b8d3b4728c46113ed83273ed418efa5e1035f306b965250401dbd7"
+      },
+      "source_inventory": {
+        "status": "PASS",
+        "array_size": 2,
+        "expected_group_count": 6,
+        "actual_group_count": 6,
+        "expected_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "actual_groups": [
+          "BL1",
+          "BL2",
+          "SE1",
+          "SE2",
+          "WL1",
+          "WL2"
+        ],
+        "missing_groups": [],
+        "high_numbered_sources": [],
+        "duplicate_groups": []
+      },
+      "reference_raw": null,
+      "known_unsupported_raw_signals": {
+        "V(IB|XBQ1)": {
+          "reason": "JoSIM v2.7.2837d13 reports Unknown device/node IB|XBQ1 for the voltage of the internal PWL current-source branch; no raw column is emitted.",
+          "expected_warning_lines": [
+            "Unknown device/node IB|XBQ1",
+            "Cannot store results for this device/node.",
+            "Ignoring this store request."
+          ]
+        }
+      }
+    }
+  ],
+  "historical_reference_raw_checks": [
+    {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+      "expected_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482",
+      "actual_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482"
+    },
+    {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/raw.csv",
+      "expected_sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c",
+      "actual_sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c"
+    },
+    {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/raw.csv",
+      "expected_sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6",
+      "actual_sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6"
+    }
+  ],
+  "known_unsupported_raw_signals": {
+    "V(IB|XBQ1)": {
+      "reason": "JoSIM v2.7.2837d13 reports Unknown device/node IB|XBQ1 for the voltage of the internal PWL current-source branch; no raw column is emitted.",
+      "expected_warning_lines": [
+        "Unknown device/node IB|XBQ1",
+        "Cannot store results for this device/node.",
+        "Ignoring this store request."
+      ]
+    }
+  },
+  "errors": [],
+  "no_solve_executed": true,
+  "scientific_interpretation_performed": false
+}

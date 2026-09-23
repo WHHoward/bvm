@@ -1,0 +1,30 @@
+{
+  "schema": "bvm-qb-repeatability-postsolve-tool-repair-v1",
+  "repair_id": "POSTSOLVE_STDERR_HASH_COMPAT_V1",
+  "created_at": "2026-09-23T13:30:09+08:00",
+  "changed_role": "FINALIZER",
+  "changed_path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/finalize.py",
+  "preflight_head": "6767c6e3bd6774e367a4cfc8f814cfe54158af20",
+  "preflight_qa_sha256": "9a970406825f98315ef13c3d2d9179bf72a72a232453dabd9cf008afb70bd057",
+  "source_lock_sha256": "a996c82cf7074d2505554e8a5b40415ef4259d2987b52b6e23844f87f1de69f8",
+  "previous_finalizer_sha256": "2d369c0e148cda87a9e7e27cd2fc19985dcfcf60bd26604244516e3fd86dd672",
+  "current_finalizer_sha256": "1969b0b750ac41589fd827b618b7a4bba9742173a972e325ca2caf4e7524e138",
+  "prior_final_qa_sha256": "cc1315bf359c3a22aaf431f7ecb26558fd6b05ea0355cdb328083a7ccf1f746f",
+  "prior_final_qa_status": "FAIL",
+  "prior_final_qa_check": "solver-warning/unsupported-probe QA failed or changed: REG_A_QB2X1_N1",
+  "change_summary": "Compare solver-warning stderr hash directly with immutable stderr.txt; compare metadata.stderr.sha256 only when legacy metadata contains it.",
+  "raw_sha256_by_case": {
+    "REG_A_QB2X1_N1": "becb723995662de5c182c19db0596711972b21adf37cd29c6d9b116349a9c1fd",
+    "REG_B_QB2X1_N2": "335711036ef70c3b410ea8d790edc15694fc8b5ec05fa467ef155c7bac73126f",
+    "REG_C_QB3X1_N3": "f1f6c798cdb0e7ca6f6fa29ed98595ff06ac0c516a99faf59a327d4b12a7a4e9",
+    "REG_D_QB2X1_RECOVERY": "33a85187a2d9a814391a5abd9df22ad5aa1c8d2bdd7cc55977262da3b3f476c2",
+    "REG_E_QB2X1_REWRITE_SMOKE": "085738a00bb3d16fca1ace7bdabbc3a1f1d70de210a3f720b40a528e33295b01"
+  },
+  "physical_solve_count": 5,
+  "new_physical_solve_count": 0,
+  "raw_mutated": false,
+  "deck_mutated": false,
+  "stimulus_mutated": false,
+  "parameters_mutated": false,
+  "scientific_interpretation_performed": false
+}

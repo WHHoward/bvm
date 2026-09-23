@@ -1,0 +1,269 @@
+{
+  "schema": "bvm-qb-repeatability-stimulus-snapshot-v1",
+  "test_mode": "RECOVERY_PROBE",
+  "candidate": "QB_2X1",
+  "array_size": 2,
+  "mask": "11",
+  "bit_order": "mask left-to-right: b1=BVM1, b0=BVM2; rightmost bit is highest-index BVM",
+  "read_schedule": [
+    {
+      "ordinal": 1,
+      "state": "11",
+      "read_start_ps": 110.0,
+      "read_end_ps": 121.0,
+      "source": "USER_CASE.env"
+    }
+  ],
+  "registered_windows": [
+    {
+      "cycle_index": 1,
+      "cycle_window_ps": [
+        110.0,
+        221.0
+      ],
+      "cycle_window_semantics": "[start,STOP)",
+      "pre_window_ps": [
+        109.0,
+        110.0
+      ],
+      "read_window_ps": [
+        110.0,
+        121.0
+      ],
+      "post_window_ps": [
+        123.0,
+        126.0
+      ],
+      "next_pre_window_ps": [
+        129.0,
+        130.0
+      ],
+      "next_pre_is_virtual": true,
+      "read_start_ps": 110.0,
+      "read_end_ps": 121.0,
+      "state": "11"
+    }
+  ],
+  "last_stimulus_time_ps": 121.0,
+  "tail_margin_ps": 100.0,
+  "stop_ps": 221.0,
+  "pwl_source_count": 6,
+  "pulses": [
+    {
+      "source": "WL1",
+      "label": "WRITE0",
+      "start_ps": 50.0,
+      "end_ps": 61.0,
+      "amplitude_uA": -100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL1",
+      "label": "WRITE0",
+      "start_ps": 50.0,
+      "end_ps": 61.0,
+      "amplitude_uA": -100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE1",
+      "label": "WRITE0",
+      "start_ps": 50.0,
+      "end_ps": 61.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "WL2",
+      "label": "WRITE0",
+      "start_ps": 50.0,
+      "end_ps": 61.0,
+      "amplitude_uA": -100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL2",
+      "label": "WRITE0",
+      "start_ps": 50.0,
+      "end_ps": 61.0,
+      "amplitude_uA": -100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE2",
+      "label": "WRITE0",
+      "start_ps": 50.0,
+      "end_ps": 61.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "WL1",
+      "label": "CONTROL",
+      "start_ps": 70.0,
+      "end_ps": 81.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL1",
+      "label": "CONTROL",
+      "start_ps": 70.0,
+      "end_ps": 81.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE1",
+      "label": "CONTROL",
+      "start_ps": 70.0,
+      "end_ps": 81.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "WL2",
+      "label": "CONTROL",
+      "start_ps": 70.0,
+      "end_ps": 81.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL2",
+      "label": "CONTROL",
+      "start_ps": 70.0,
+      "end_ps": 81.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE2",
+      "label": "CONTROL",
+      "start_ps": 70.0,
+      "end_ps": 81.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "WL1",
+      "label": "WRITE1",
+      "start_ps": 90.0,
+      "end_ps": 101.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL1",
+      "label": "WRITE1",
+      "start_ps": 90.0,
+      "end_ps": 101.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE1",
+      "label": "WRITE1",
+      "start_ps": 90.0,
+      "end_ps": 101.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "WL2",
+      "label": "WRITE1",
+      "start_ps": 90.0,
+      "end_ps": 101.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL2",
+      "label": "WRITE1",
+      "start_ps": 90.0,
+      "end_ps": 101.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE2",
+      "label": "WRITE1",
+      "start_ps": 90.0,
+      "end_ps": 101.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "WL1",
+      "label": "READ1",
+      "start_ps": 110.0,
+      "end_ps": 121.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL1",
+      "label": "READ1",
+      "start_ps": 110.0,
+      "end_ps": 121.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE1",
+      "label": "READ1",
+      "start_ps": 110.0,
+      "end_ps": 121.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "WL2",
+      "label": "READ1",
+      "start_ps": 110.0,
+      "end_ps": 121.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "BL2",
+      "label": "READ1",
+      "start_ps": 110.0,
+      "end_ps": 121.0,
+      "amplitude_uA": 0.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    },
+    {
+      "source": "SE2",
+      "label": "READ1",
+      "start_ps": 110.0,
+      "end_ps": 121.0,
+      "amplitude_uA": 100.0,
+      "rise_ps": 1.0,
+      "fall_ps": 1.0
+    }
+  ]
+}

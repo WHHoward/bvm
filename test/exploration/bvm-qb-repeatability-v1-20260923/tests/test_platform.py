@@ -24,6 +24,7 @@ import run_regression  # noqa: E402
 from run_regression import next_solve_receipt_path, registered_cases_for_execution  # noqa: E402
 import analyze_case  # noqa: E402
 import plot_case  # noqa: E402
+import finalize as finalize_module  # noqa: E402
 _package_spec = importlib.util.spec_from_file_location("repeatability_package_test", SERIES / "scripts" / "package.py")
 package = importlib.util.module_from_spec(_package_spec)
 _package_spec.loader.exec_module(package)
@@ -179,6 +180,18 @@ class PlatformTest(unittest.TestCase):
         self.assertEqual([case["case_id"] for case in resumed],
                          ["REG_B_QB2X1_N2", "REG_C_QB3X1_N3",
                           "REG_D_QB2X1_RECOVERY", "REG_E_QB2X1_REWRITE_SMOKE"])
+
+    def test_solver_warning_qa_uses_immutable_stderr_when_legacy_metadata_omits_hash(self):
+        with tempfile.TemporaryDirectory(prefix="bvm_repeat_stderr_qa_") as temporary:
+            stderr = Path(temporary) / "stderr.txt"
+            stderr.write_text("known unsupported node warning\n", encoding="utf-8")
+            digest = analyze_case.sha256(stderr)
+            warning_qa = {"status": "PASS", "stderr_sha256": digest}
+            self.assertTrue(finalize_module.solver_warning_stderr_matches(warning_qa, {}, stderr))
+            self.assertFalse(finalize_module.solver_warning_stderr_matches(
+                warning_qa, {"stderr": {"sha256": "wrong"}}, stderr))
+            self.assertFalse(finalize_module.solver_warning_stderr_matches(
+                {"status": "PASS", "stderr_sha256": "wrong"}, {}, stderr))
 
     def test_retry_receipt_is_append_only_after_prior_zero_solve_attempt(self):
         original_root = run_regression.ROOT

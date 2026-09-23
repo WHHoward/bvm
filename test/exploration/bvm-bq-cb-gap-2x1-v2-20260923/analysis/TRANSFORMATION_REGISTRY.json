@@ -1,0 +1,59 @@
+{
+  "schema": "bvm-bq-cb-gap-transformations-v1",
+  "raw_mutation": false,
+  "transformations": [
+    {
+      "id": "DIRECT_RAW_PHASE_ENDPOINT_ARITHMETIC",
+      "purpose": "compute registered phase endpoint progression",
+      "input": "immutable JoSIM P(...) raw unwrapped radians",
+      "operation": "direct last-minus-first stored endpoint subtraction; no modulo or re-unwrapping",
+      "unit_conversion": "divide by 2*pi only for navigation value",
+      "interpolation": false
+    },
+    {
+      "id": "SAME_JJ_SIGNED_VOLTAGE_AREA",
+      "purpose": "mechanical phase/area cross-check",
+      "operation": "trapezoidal integration of same JJ voltage over actual stored timestamps in same half-open window; dt from exact stored seconds tokens",
+      "interpolation": false,
+      "resampling": false
+    },
+    {
+      "id": "PLOT_COLUMN_AND_WINDOW_PROJECTION",
+      "purpose": "classic josim-plot2 views",
+      "operation": "select registered source columns and optionally stored rows where start_ps <= time_ps < end_ps; preserve original CSV text tokens",
+      "windows_ps": {
+        "final_read": [
+          110,
+          121
+        ],
+        "post_read": [
+          121,
+          200
+        ],
+        "read_response": [
+          110,
+          200
+        ]
+      },
+      "interpolation": false,
+      "resampling": false,
+      "raw_overwrite": false
+    },
+    {
+      "id": "FOUR_CASE_PLOT_UNION_GRID",
+      "purpose": "descriptive comparison overlay",
+      "operation": "exact timestamp union; absent case samples represented as blank cells",
+      "interpolation": false,
+      "resampling": false
+    },
+    {
+      "id": "TERMINAL_DELTA_VERSUS_N0_00",
+      "purpose": "registered paired terminal voltage comparison",
+      "operation": "subtract V(R_TERM) pointwise only when parsed stored time grids are exactly identical",
+      "otherwise": "UNKNOWN_GRID_MISMATCH",
+      "interpolation": false,
+      "resampling": false
+    }
+  ],
+  "scientific_interpretation_performed": false
+}

@@ -1,0 +1,1417 @@
+{
+  "schema": "bvm-bq-cb-independent-arithmetic-qa-v1",
+  "run_id": "N1_10",
+  "status": "PASS",
+  "raw_sha256_before_after": {
+    "before": "cebce73fe814d065e7a203e1c8568751a898db5daeaeb4c6c1b29b8f1f360b37",
+    "after": "cebce73fe814d065e7a203e1c8568751a898db5daeaeb4c6c1b29b8f1f360b37"
+  },
+  "independent_method": "Decimal raw seconds, raw voltage and raw phase; no analyzer imports",
+  "mechanical_reproduction_tolerances": {
+    "phase_delta_rad_abs": 1e-12,
+    "phase_turns_abs": 1e-12,
+    "voltage_area_v_s_abs": 1e-27,
+    "voltage_area_phi0_abs": 1e-10,
+    "terminal_area_phi0_abs": 1e-10
+  },
+  "raw_header_aliases": {},
+  "these_tolerances_are_not_physical_or_acceptance_tolerances": true,
+  "checks": [
+    {
+      "stage": "BQ1_BJ3",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.007686,
+          "pipeline_value": 0.007686000000000082,
+          "absolute_difference": 8.153200337090993e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.0012232648926043077,
+          "pipeline_value": 0.0012232648926043207,
+          "absolute_difference": 1.3010426069826053e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.52924419221e-18,
+          "pipeline_value": 2.52924419221e-18,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.001223137049747142,
+          "pipeline_value": 0.0012231370497471417,
+          "absolute_difference": 2.168404344971009e-19,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "BQ1_BJ3",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 1.185128,
+          "pipeline_value": 1.1851279999999997,
+          "absolute_difference": 2.220446049250313e-16,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.18861897939661174,
+          "pipeline_value": 0.1886189793966117,
+          "absolute_difference": 2.7755575615628914e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 3.900386440129e-16,
+          "pipeline_value": 3.900386440129e-16,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.18862184908625212,
+          "pipeline_value": 0.1886218490862521,
+          "absolute_difference": 2.7755575615628914e-17,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "BQ1_BJ3",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 5.213427,
+          "pipeline_value": 5.213427,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.8297426774987507,
+          "pipeline_value": 0.8297426774987507,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 1.71576746044558e-15,
+          "pipeline_value": 1.71576746044558e-15,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.8297414524407088,
+          "pipeline_value": 0.8297414524407087,
+          "absolute_difference": 1.1102230246251565e-16,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "BQ1_BJ3",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 6.400941,
+          "pipeline_value": 6.4009409999999995,
+          "absolute_difference": 8.881784197001252e-16,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 1.0187414005895796,
+          "pipeline_value": 1.0187414005895796,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.10659132235848e-15,
+          "pipeline_value": 2.10659132235848e-15,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 1.0187430312140242,
+          "pipeline_value": 1.0187430312140242,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "BQ2_BJ3",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.007701,
+          "pipeline_value": 0.007700999999999958,
+          "absolute_difference": 4.2500725161431774e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.001225652216750686,
+          "pipeline_value": 0.0012256522167506793,
+          "absolute_difference": 6.7220534694101275e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.53393124001e-18,
+          "pipeline_value": 2.53393124001e-18,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.001225403695979156,
+          "pipeline_value": 0.0012254036959791557,
+          "absolute_difference": 2.168404344971009e-19,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "BQ2_BJ3",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.000944,
+          "pipeline_value": 0.0009440000000000559,
+          "absolute_difference": 5.594483210025203e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.0001502422662787492,
+          "pipeline_value": 0.0001502422662787581,
+          "absolute_difference": 8.917562868693274e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 3.10530612916e-19,
+          "pipeline_value": 3.10530612916e-19,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.00015017193630733141,
+          "pipeline_value": 0.0001501719363073314,
+          "absolute_difference": 2.710505431213761e-20,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "BQ2_BJ3",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.543055,
+          "pipeline_value": 0.5430549999999998,
+          "absolute_difference": 1.1102230246251565e-16,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.08642988762076922,
+          "pipeline_value": 0.0864298876207692,
+          "absolute_difference": 2.7755575615628914e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 1.7872360011213e-16,
+          "pipeline_value": 1.7872360011213e-16,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.08643034849487095,
+          "pipeline_value": 0.08643034849487094,
+          "absolute_difference": 1.3877787807814457e-17,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "BQ2_BJ3",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.543999,
+          "pipeline_value": 0.5439989999999999,
+          "absolute_difference": 1.1102230246251565e-16,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.08658012988704798,
+          "pipeline_value": 0.08658012988704795,
+          "absolute_difference": 2.7755575615628914e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 1.79034147054611e-16,
+          "pipeline_value": 1.79034147054611e-16,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.08658052832812078,
+          "pipeline_value": 0.08658052832812077,
+          "absolute_difference": 1.3877787807814457e-17,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB1_BJ2",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -0.0018495,
+          "pipeline_value": -0.0018495000000000594,
+          "absolute_difference": 5.941427905220564e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -0.00029435706724846046,
+          "pipeline_value": -0.0002943570672484699,
+          "absolute_difference": 9.432558900623889e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -6.08760134589e-19,
+          "pipeline_value": -6.087601345889999e-19,
+          "absolute_difference": 9.62964972193618e-35,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -0.0002943950913550381,
+          "pipeline_value": -0.00029439509135503804,
+          "absolute_difference": 5.421010862427522e-20,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB1_BJ2",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.0445791,
+          "pipeline_value": 0.04457909999999998,
+          "absolute_difference": 2.0816681711721685e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.007094984123587912,
+          "pipeline_value": 0.0070949841235879085,
+          "absolute_difference": 3.469446951953614e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 1.467039515127e-17,
+          "pipeline_value": 1.467039515127e-17,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.007094571532165963,
+          "pipeline_value": 0.007094571532165963,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB1_BJ2",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -76.0443659,
+          "pipeline_value": -76.0443659,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -12.102836727273766,
+          "pipeline_value": -12.102836727273766,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -2.50266728107712e-14,
+          "pipeline_value": -2.50266728107712e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -12.102845127028408,
+          "pipeline_value": -12.102845127028406,
+          "absolute_difference": 1.7763568394002505e-15,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB1_BJ2",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -75.9987164,
+          "pipeline_value": -75.9987164,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -12.095571383699093,
+          "pipeline_value": -12.095571383699093,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -2.501165011616993e-14,
+          "pipeline_value": -2.501165011616993e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -12.095580184240184,
+          "pipeline_value": -12.095580184240184,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB2_BJ2",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -0.0019137,
+          "pipeline_value": -0.0019137000000000182,
+          "absolute_difference": 1.8214596497756474e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -0.0003045748145949601,
+          "pipeline_value": -0.000304574814594963,
+          "absolute_difference": 2.8731357570865868e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -6.2989267708e-19,
+          "pipeline_value": -6.298926770800001e-19,
+          "absolute_difference": 9.62964972193618e-35,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -0.00030461474343754913,
+          "pipeline_value": -0.00030461474343754913,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB2_BJ2",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -0.0033141,
+          "pipeline_value": -0.0033140999999999865,
+          "absolute_difference": 1.3444106938820255e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -0.0005274553969008503,
+          "pipeline_value": -0.0005274553969008483,
+          "absolute_difference": 2.0599841277224584e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -1.09078834124e-18,
+          "pipeline_value": -1.0907883412399999e-18,
+          "absolute_difference": 1.925929944387236e-34,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -0.0005275028950198323,
+          "pipeline_value": -0.0005275028950198322,
+          "absolute_difference": 1.0842021724855044e-19,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB2_BJ2",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -78.2660662,
+          "pipeline_value": -78.2660662,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -12.456431312087513,
+          "pipeline_value": -12.456431312087513,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -2.5757783086880048e-14,
+          "pipeline_value": -2.5757783086880048e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -12.456408483589176,
+          "pipeline_value": -12.456408483589174,
+          "absolute_difference": 1.7763568394002505e-15,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "CB2_BJ2",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -78.2693703,
+          "pipeline_value": -78.2693703,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -12.456957175934985,
+          "pipeline_value": -12.456957175934985,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -2.575887057397129e-14,
+          "pipeline_value": -2.575887057397129e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -12.456934390006797,
+          "pipeline_value": -12.456934390006797,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC1_BJ1",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -0.000122,
+          "pipeline_value": -0.00012199999999995548,
+          "absolute_difference": 4.4520051707686026e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -1.941690305721123e-05,
+          "pipeline_value": -1.9416903057204145e-05,
+          "absolute_difference": 7.084583570834968e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -4.0192503e-20,
+          "pipeline_value": -4.0192503000000004e-20,
+          "absolute_difference": 6.018531076210112e-36,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -1.9437007977635154e-05,
+          "pipeline_value": -1.9437007977635154e-05,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC1_BJ1",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.054695,
+          "pipeline_value": 0.05469499999999994,
+          "absolute_difference": 6.245004513516506e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.008704979612411215,
+          "pipeline_value": 0.008704979612411207,
+          "absolute_difference": 8.673617379884035e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 1.800043265978e-17,
+          "pipeline_value": 1.800043265978e-17,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.008704970506788996,
+          "pipeline_value": 0.008704970506788996,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC1_BJ1",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 81.333344,
+          "pipeline_value": 81.333344,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.944603735793548,
+          "pipeline_value": 12.944603735793548,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.67672866914915e-14,
+          "pipeline_value": 2.67672866914915e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.94460225485752,
+          "pipeline_value": 12.944602254857518,
+          "absolute_difference": 1.7763568394002505e-15,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC1_BJ1",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 81.388437,
+          "pipeline_value": 81.388437,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.953372059073308,
+          "pipeline_value": 12.953372059073308,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.678541802415128e-14,
+          "pipeline_value": 2.678541802415128e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.95337052832268,
+          "pipeline_value": 12.95337052832268,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC2_BJ1",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": -0.000195,
+          "pipeline_value": -0.00019499999999994522,
+          "absolute_difference": 5.477931476483011e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": -3.103521390291959e-05,
+          "pipeline_value": -3.103521390291087e-05,
+          "absolute_difference": 8.721051224930276e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": -6.440244567e-20,
+          "pipeline_value": -6.440244567e-20,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": -3.114488416576108e-05,
+          "pipeline_value": -3.114488416576108e-05,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC2_BJ1",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.002467,
+          "pipeline_value": 0.002466999999999997,
+          "absolute_difference": 3.0357660829594124e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.0003926352446077058,
+          "pipeline_value": 0.0003926352446077053,
+          "absolute_difference": 4.87890977618477e-19,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 8.119334579793e-19,
+          "pipeline_value": 8.119334579793e-19,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.00039264927342426404,
+          "pipeline_value": 0.000392649273424264,
+          "absolute_difference": 5.421010862427522e-20,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC2_BJ1",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 80.958324,
+          "pipeline_value": 80.958324,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.884917449035225,
+          "pipeline_value": 12.884917449035225,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.664386343864836e-14,
+          "pipeline_value": 2.664386343864836e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.884915035324617,
+          "pipeline_value": 12.884915035324616,
+          "absolute_difference": 1.7763568394002505e-15,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "ACC2_BJ1",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 80.960786,
+          "pipeline_value": 80.960786,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.885309288505116,
+          "pipeline_value": 12.885309288505116,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.664467368718984e-14,
+          "pipeline_value": 2.664467368718984e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.885306869776047,
+          "pipeline_value": 12.885306869776047,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP1_BJ1",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.0002436,
+          "pipeline_value": 0.00024360000000001047,
+          "absolute_difference": 1.0462550964485118e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 3.877014413718571e-05,
+          "pipeline_value": 3.877014413718737e-05,
+          "absolute_difference": 1.6601845766184287e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 8.01914818066e-20,
+          "pipeline_value": 8.01914818066e-20,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 3.878042807170453e-05,
+          "pipeline_value": 3.8780428071704526e-05,
+          "absolute_difference": 6.776263578034403e-21,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP1_BJ1",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.007565,
+          "pipeline_value": 0.007565000000000044,
+          "absolute_difference": 4.423544863740858e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.0012040071444901883,
+          "pipeline_value": 0.0012040071444901952,
+          "absolute_difference": 6.938893903907228e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.48953234418e-18,
+          "pipeline_value": 2.48953234418e-18,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.0012039324854788817,
+          "pipeline_value": 0.0012039324854788817,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP1_BJ1",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 81.2493843,
+          "pipeline_value": 81.24938429999999,
+          "absolute_difference": 1.4210854715202004e-14,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.931241134518036,
+          "pipeline_value": 12.931241134518032,
+          "absolute_difference": 3.552713678800501e-15,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.6739661771907e-14,
+          "pipeline_value": 2.6739661771907e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.931242903180777,
+          "pipeline_value": 12.931242903180777,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP1_BJ1",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 81.2570065,
+          "pipeline_value": 81.25700649999999,
+          "absolute_difference": 1.4210854715202004e-14,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.932454245325271,
+          "pipeline_value": 12.932454245325268,
+          "absolute_difference": 3.552713678800501e-15,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.674217014340618e-14,
+          "pipeline_value": 2.674217014340618e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.932455946241083,
+          "pipeline_value": 12.932455946241083,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP2_BJ1",
+      "window": "pre_read",
+      "actual_first_time_s_token": "1.010000e-10",
+      "actual_last_time_s_token": "1.099900e-10",
+      "sample_count": 900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 5.03e-05,
+          "pipeline_value": 5.029999999994761e-05,
+          "absolute_difference": 5.2394069985362e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 8.005493637522337e-06,
+          "pipeline_value": 8.005493637513997e-06,
+          "absolute_difference": 8.339886398665841e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 1.6554039293e-20,
+          "pipeline_value": 1.6554039293e-20,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 8.005497786493337e-06,
+          "pipeline_value": 8.005497786493337e-06,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP2_BJ1",
+      "window": "final_read",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.209900e-10",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 0.0013756,
+          "pipeline_value": 0.0013756000000000324,
+          "absolute_difference": 3.230922474006803e-17,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 0.00021893353971721123,
+          "pipeline_value": 0.00021893353971721638,
+          "absolute_difference": 5.149960319306146e-18,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 4.52722341477e-19,
+          "pipeline_value": 4.52722341477e-19,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 0.00021893555031748374,
+          "pipeline_value": 0.0002189355503174837,
+          "absolute_difference": 2.710505431213761e-20,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP2_BJ1",
+      "window": "post_read",
+      "actual_first_time_s_token": "1.210000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 80.0054763,
+          "pipeline_value": 80.0054763,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.73326702756648,
+          "pipeline_value": 12.73326702756648,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.633029624648945e-14,
+          "pipeline_value": 2.633029624648945e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.73327461582854,
+          "pipeline_value": 12.733274615828538,
+          "absolute_difference": 1.7763568394002505e-15,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "GAP2_BJ1",
+      "window": "read_response",
+      "actual_first_time_s_token": "1.100000e-10",
+      "actual_last_time_s_token": "1.999900e-10",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "delta_phase_rad",
+          "independent_value": 80.0068496,
+          "pipeline_value": 80.00684960000001,
+          "absolute_difference": 1.4210854715202004e-14,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "phase_reported_turns",
+          "independent_value": 12.733485595049828,
+          "pipeline_value": 12.733485595049832,
+          "absolute_difference": 3.552713678800501e-15,
+          "registered_implementation_tolerance": 1e-12,
+          "status": "PASS"
+        },
+        {
+          "quantity": "voltage_area_v_s",
+          "independent_value": 2.6330748195327777e-14,
+          "pipeline_value": 2.6330748195327777e-14,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-27,
+          "status": "PASS"
+        },
+        {
+          "quantity": "area_reported_phi0",
+          "independent_value": 12.733493177314397,
+          "pipeline_value": 12.733493177314397,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "R_TERM",
+      "window": "final_read",
+      "sample_count": 1100,
+      "checks": [
+        {
+          "quantity": "terminal_signed_area_phi0",
+          "independent_value": 0.00023697828043698314,
+          "pipeline_value": 0.00023697828043698312,
+          "absolute_difference": 2.710505431213761e-20,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "R_TERM",
+      "window": "post_read",
+      "sample_count": 7900,
+      "checks": [
+        {
+          "quantity": "terminal_signed_area_phi0",
+          "independent_value": 12.342719799366394,
+          "pipeline_value": 12.342719799366394,
+          "absolute_difference": 0.0,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "stage": "R_TERM",
+      "window": "read_response",
+      "sample_count": 9000,
+      "checks": [
+        {
+          "quantity": "terminal_signed_area_phi0",
+          "independent_value": 12.342956931713998,
+          "pipeline_value": 12.342956931713996,
+          "absolute_difference": 1.7763568394002505e-15,
+          "registered_implementation_tolerance": 1e-10,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "interpolation": false,
+  "resampling": false,
+  "raw_unchanged": true,
+  "scientific_interpretation_performed": false
+}

@@ -1,0 +1,203 @@
+.include ./Subckt/bvm_cell.cir
+.include ./Subckt/BQ.cir
+.include ./Subckt/CB.cir
+.include ./Subckt/sJTL.cir
+.include ../library_josim/jtl2.cir
+
+
+
+
+XBVM1 WL1 BL1 SE1 SL1 BVM
+* XBVM2 WL2 BL2 SE2 SL2 BVM
+* XBVM3 WL3 BL3 SE3 SL3 BVM
+* XBVM4 WL4 BL4 SE4 SL4 BVM
+
+
+xBQ1 SL1 QBo1 BQ
+* xBQ2 SL2 QBo2 BQ
+* xBQ3 SL3 QBo3 BQ
+* xBQ4 SL4 QBo4 BQ
+
+xCB1 QBo1 CBo1 CB
+
+
+xsJTL1 CBo1 sJo1 sJTL
+xsJTL2 sJo1 sJo2 sJTL
+
+
+
+xjtl1_1 sJo2 o1 jtl
+xjtl1_2 o1 o2 jtl
+xjtl1_3 o2 o3 jtl
+xjtl1_4 o3 o4 jtl
+xjtl1_5 o4 o5 jtl
+xjtl1_6 o5 o6 jtl
+RBQ1 o6 0 2
+
+
+
+
+
+
+.param ID=100u
+
+
+***** 1 ****
+.param tsWL1_2=50p
+.param tsWL1_3=70p
+.param tsWL1_4=90p
+.param tsWL1_5=110p
+.param delay1_1 = 0
+.param vol1 = 100u
+I_WL1 0 WL1 pwl(0 0
++ {tsWL1_2} 0 {tsWL1_2+1p} -ID {tsWL1_2+10p} -ID {tsWL1_2+11p} 0
++ {tsWL1_3} 0 {tsWL1_3+1p} ID {tsWL1_3+10p} ID {tsWL1_3+11p} 0
+** W1 **
++ {tsWL1_4} 0 {tsWL1_4+1p} ID {tsWL1_4+10p} ID {tsWL1_4+11p} 0
++ {tsWL1_5} 0 {tsWL1_5+1p} ID {tsWL1_5+10p} ID {tsWL1_5+11p} 0
++ )
+.param tsBL1_1=50p
+.param tsBL1_2=90p
+I_BL1 0 BL1 pwl(0 0
++ {tsBL1_1} 0 {tsBL1_1+1p} -ID {tsBL1_1+10p} -ID {tsBL1_1+11p} 0
+** W1 **
++ {tsBL1_2} 0 {tsBL1_2+1p} ID {tsBL1_2+10p} ID {tsBL1_2+11p} 0
++ )
+.param tsSE1_1=70p
+.param tsSE1_2=110p
+I_SE1 0 SE1 pwl(0 0
++ {tsSE1_1} 0 {tsSE1_1+1p} ID {tsSE1_1+10p} ID {tsSE1_1+11p} 0
++ {tsSE1_2} 0 {tsSE1_2+1p} ID {tsSE1_2+10p} ID {tsSE1_2+11p} 0
++ )
+
+
+
+* ***** 2 ****
+* .param tsWL2_2=50p
+* .param tsWL2_3=70p
+* .param tsWL2_4=90p
+* .param tsWL2_5=110p
+* .param delay2_1 = 0
+* I_WL2 0 WL2 pwl(0 0
+* + {tsWL2_2} 0 {tsWL2_2+1p} -ID {tsWL2_2+10p} -ID {tsWL2_2+11p} 0
+* + {tsWL2_3} 0 {tsWL2_3+1p}  ID {tsWL2_3+10p}  ID {tsWL2_3+11p} 0
+* ** W1 **
+* + {tsWL2_4} 0 {tsWL2_4+1p}  0 {tsWL2_4+10p}  0 {tsWL2_4+11p} 0
+* + {tsWL2_5} 0 {tsWL2_5+1p}  ID {tsWL2_5+10p}  ID {tsWL2_5+11p} 0
+* + )
+* .param tsBL2_1=50p
+* .param tsBL2_2=90p
+* I_BL2 0 BL2 pwl(0 0
+* + {tsBL2_1} 0 {tsBL2_1+1p} -ID {tsBL2_1+10p} -ID {tsBL2_1+11p} 0
+* ** W1 **
+* + {tsBL2_2} 0 {tsBL2_2+1p}  0 {tsBL2_2+10p}  0 {tsBL2_2+11p} 0
+* + )
+* .param tsSE2_1=70p
+* .param tsSE2_2=110p
+* I_SE2 0 SE2 pwl(0 0
+* + {tsSE2_1} 0 {tsSE2_1+1p} ID {tsSE2_1+10p} ID {tsSE2_1+11p} 0
+* + {tsSE2_2} 0 {tsSE2_2+1p} ID {tsSE2_2+10p} ID {tsSE2_2+11p} 0
+* + )
+
+
+* ***** 3 ****
+* .param tsWL3_2=50p
+* .param tsWL3_3=70p
+* .param tsWL3_4=90p
+* .param tsWL3_5=110p
+* .param delay3_1 = 0
+* I_WL3 0 WL3 pwl(0 0
+* + {tsWL3_2} 0 {tsWL3_2+1p} -ID {tsWL3_2+10p} -ID {tsWL3_2+11p} 0
+* + {tsWL3_3} 0 {tsWL3_3+1p}  ID {tsWL3_3+10p}  ID {tsWL3_3+11p} 0
+* ** W1 **
+* + {tsWL3_4} 0 {tsWL3_4+1p}  0 {tsWL3_4+10p}  0 {tsWL3_4+11p} 0
+* + {tsWL3_5} 0 {tsWL3_5+1p}  ID {tsWL3_5+10p}  ID {tsWL3_5+11p} 0
+* + )
+* .param tsBL3_1=50p
+* .param tsBL3_2=90p
+* I_BL3 0 BL3 pwl(0 0
+* + {tsBL3_1} 0 {tsBL3_1+1p} -ID {tsBL3_1+10p} -ID {tsBL3_1+11p} 0
+* ** W1 **
+* + {tsBL3_2} 0 {tsBL3_2+1p}  0 {tsBL3_2+10p}  0 {tsBL3_2+11p} 0
+* + )
+* .param tsSE3_1=70p
+* .param tsSE3_2=110p
+* I_SE3 0 SE3 pwl(0 0
+* + {tsSE3_1} 0 {tsSE3_1+1p} ID {tsSE3_1+10p} ID {tsSE3_1+11p} 0
+* + {tsSE3_2} 0 {tsSE3_2+1p} ID {tsSE3_2+10p} ID {tsSE3_2+11p} 0
+* + )
+
+
+
+* ***** 4 ****
+* .param tsWL4_2=50p
+* .param tsWL4_3=70p
+* .param tsWL4_4=90p
+* .param tsWL4_5=110p
+* .param delay4_1 = 0
+* I_WL4 0 WL4 pwl(0 0
+* + {tsWL4_2} 0 {tsWL4_2+1p} -ID {tsWL4_2+10p} -ID {tsWL4_2+11p} 0
+* + {tsWL4_3} 0 {tsWL4_3+1p}  ID {tsWL4_3+10p}  ID {tsWL4_3+11p} 0
+* ** W1 **
+* + {tsWL4_4} 0 {tsWL4_4+1p}  ID {tsWL4_4+10p}  ID {tsWL4_4+11p} 0
+* + {tsWL4_5} 0 {tsWL4_5+1p}  ID {tsWL4_5+10p}  ID {tsWL4_5+11p} 0
+* + )
+* .param tsBL4_1=50p
+* .param tsBL4_2=90p
+* I_BL4 0 BL4 pwl(0 0
+* + {tsBL4_1} 0 {tsBL4_1+1p} -ID {tsBL4_1+10p} -ID {tsBL4_1+11p} 0
+* ** W1 **
+* + {tsBL4_2} 0 {tsBL4_2+1p}  ID {tsBL4_2+10p}  ID {tsBL4_2+11p} 0
+* + )
+* .param tsSE4_1=70p
+* .param tsSE4_2=110p
+* I_SE4 0 SE4 pwl(0 0
+* + {tsSE4_1} 0 {tsSE4_1+1p} ID {tsSE4_1+10p} ID {tsSE4_1+11p} 0
+* + {tsSE4_2} 0 {tsSE4_2+1p} ID {tsSE4_2+10p} ID {tsSE4_2+11p} 0
+* + )
+
+
+
+
+
+
+.model jjmit  jj(rtype=1, VG=2.8m, CAP=0.07p, r0=160, rn=16, icrit=0.1m)
+.tran 0.001p 200p 45p
+
+
+
+.print I(I_WL1) I(I_BL1) I(I_SE1)
+.print I(I_WL2) I(I_WL3) I(I_WL4)
+
+.print v(QBo1) v(CBo1) v(sJo1)
+* .print v(o1) v(o2)
+* .print v(o2) v(o3) v(o4) v(o5)
+.print v(o6)
+
+
+.print p(BJ1|XBQ1) p(BJ2|XBQ1) p(BJ3|XBQ1)
+
+.print p(BJ1|XCB1) p(BJ2|XCB1)
+.print i(BJ1|XCB1) i(BJ2|XCB1)
+
+.print p(BJ1|xsJTL1)
+.print i(BJ1|xsJTL1)
+
+* .print p(B01|xjtl1_1) p(B01|xjtl1_2)
+
+* .print I(L_M1|XBVM1) I(L_M1|XBVM2) I(L_M1|XBVM3) I(L_M1|XBVM4)
+* .print p(B_JS1|XBVM1) p(B_JS1|XBVM2) p(B_JS1|XBVM3) p(B_JS1|XBVM4)
+* .print p(B_JS2|XBVM1) p(B_JS2|XBVM2) p(B_JS2|XBVM3) p(B_JS2|XBVM4)
+
+
+* .print i(Lin|XBQ1) i(L1|XBQ1) i(L2|XBQ1) i(L3|XBQ1)
+* .print p(BJ1|XBQ1) p(BJ2|XBQ1) p(BJ3|XBQ1) p(BJ4|XBQ1)
+* .print p(BJ1|XBQ2) p(BJ2|XBQ2) p(BJ3|XBQ2) p(BJ4|XBQ2)
+* .print p(BJ1|XBQ3) p(BJ2|XBQ3) p(BJ3|XBQ3) p(BJ4|XBQ3)
+* .print p(BJ1|XBQ4) p(BJ2|XBQ4) p(BJ3|XBQ4) p(BJ4|XBQ4)
+
+
+
+
+
+.end

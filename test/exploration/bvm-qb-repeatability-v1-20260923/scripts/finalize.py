@@ -333,6 +333,10 @@ def finalize() -> dict[str, Any]:
     expected_actions = (["REANALYZED_EXISTING_RAW", *(["NEW_PHYSICAL_SOLVE"] * 4)]
                         if execution.get("existing_physical_solve_count") == 1 else
                         ["NEW_PHYSICAL_SOLVE"] * 5)
+    if execution.get("existing_physical_solve_count") == 1 and execution.get("runs"):
+        first_resume_action = execution["runs"][0].get("action")
+        if first_resume_action in {"REANALYZED_EXISTING_RAW", "REUSED_EXISTING_ANALYSIS"}:
+            expected_actions = [first_resume_action, *(["NEW_PHYSICAL_SOLVE"] * 4)]
     if [item.get("action") for item in execution.get("runs", [])] != expected_actions:
         checks.append("execution actions do not match either a fresh A–E batch or the registered A-recovery/B–E resume")
     for case in matrix["cases"]:
@@ -343,9 +347,16 @@ def finalize() -> dict[str, Any]:
             continue
         metadata = read_json(run_dir / "metadata.json")
         result = read_json(run_dir / "result.json")
-        receipt_path = ROOT / "analysis" / "receipts" / f"{run_id}.json"
-        receipt = read_json(receipt_path) if receipt_path.is_file() else {}
         execution_record = execution_records.get(run_id, {})
+        receipt_rel = execution_record.get("receipt_path", "")
+        receipt_leaf = Path(receipt_rel).name
+        allowed_receipt_names = {f"{run_id}.json", *(f"{run_id}_attempt{n}.json" for n in range(2, 100))}
+        receipt_path = REPO / receipt_rel
+        if (Path(receipt_rel).parent.as_posix() != repo_rel(ROOT / "analysis" / "receipts") or
+                receipt_leaf not in allowed_receipt_names):
+            checks.append(f"execution receipt path is not a registered immutable attempt path: {run_id}")
+            receipt_path = ROOT / "analysis" / "receipts" / f"{run_id}.json"
+        receipt = read_json(receipt_path) if receipt_path.is_file() else {}
         if not receipt:
             checks.append(f"independent execution receipt missing: {run_id}")
         else:
@@ -364,8 +375,17 @@ def finalize() -> dict[str, Any]:
                               "source_manifest": run_dir / "source_manifest.json",
                               "stdout": run_dir / "stdout.txt", "stderr": run_dir / "stderr.txt",
                               "run_log": run_dir / "run.log"}
-            if execution_record.get("action") == "REANALYZED_EXISTING_RAW":
-                recovery_path = ROOT / "analysis" / "receipts" / f"{run_id}_reanalysis.json"
+            if execution_record.get("action") in {"REANALYZED_EXISTING_RAW", "REUSED_EXISTING_ANALYSIS"}:
+                recovery_rel = execution_record.get("analysis_recovery_receipt_path", "")
+                recovery_leaf = Path(recovery_rel).name
+                allowed_recovery_names = {f"{run_id}_reanalysis.json",
+                                          *(f"{run_id}_reanalysis_attempt{n}.json" for n in range(2, 100)),
+                                          *(f"{run_id}_revalidation_attempt{n}.json" for n in range(2, 100))}
+                recovery_path = REPO / recovery_rel
+                if (Path(recovery_rel).parent.as_posix() != repo_rel(ROOT / "analysis" / "receipts") or
+                        recovery_leaf not in allowed_recovery_names):
+                    checks.append(f"analysis recovery receipt path is not allowed: {run_id}")
+                    recovery_path = ROOT / "analysis" / "receipts" / f"{run_id}_reanalysis.json"
                 recovery = read_json(recovery_path) if recovery_path.is_file() else {}
                 if (execution_record.get("analysis_recovery_receipt_path") != repo_rel(recovery_path) or
                         execution_record.get("analysis_recovery_receipt_sha256") != (sha256(recovery_path) if recovery_path.is_file() else None)):
@@ -374,7 +394,8 @@ def finalize() -> dict[str, Any]:
                         receipt.get("artifact_status") != "INVALID" or receipt.get("runner_exit_code") == 0 or
                         receipt.get("artifact_sha256", {}).get("raw") != metadata.get("raw", {}).get("sha256")):
                     checks.append(f"original solve receipt does not preserve the failed analyzer/valid solve attempt: {run_id}")
-                if (recovery.get("action") != "REANALYZED_EXISTING_RAW_NO_SOLVE" or
+                if (recovery.get("action") not in {"REANALYZED_EXISTING_RAW_NO_SOLVE",
+                                                    "REVALIDATED_EXISTING_ANALYSIS_NO_SOLVE"} or
                         recovery.get("preflight_head") != execution.get("preflight_head") or
                         recovery.get("preflight_qa_sha256") != execution.get("preflight_qa_sha256") or
                         recovery.get("runner_exit_code") != 0 or recovery.get("artifact_status") != "VALID" or
@@ -384,12 +405,18 @@ def finalize() -> dict[str, Any]:
                         recovery.get("solver") != metadata.get("solver") or
                         recovery.get("run_tree_file_sha256") != current_tree):
                     checks.append(f"analysis-only recovery receipt is incomplete or mismatched: {run_id}")
-                stable_keys = ("metadata", "raw", "deck", "stimulus", "config_snapshot", "stimulus_snapshot",
-                               "source_manifest", "stdout", "stderr", "run_log")
-                for key in stable_keys:
-                    path = artifact_paths[key]
-                    if receipt.get("artifact_sha256", {}).get(key) != sha256(path):
-                        checks.append(f"original solve-time artifact changed after reanalysis: {run_id}/{key}")
+                original_tree = receipt.get("run_tree_file_sha256", {})
+                original_result_rel = repo_rel(run_dir / "result.json")
+                for original_rel, expected_hash in original_tree.items():
+                    path = (run_dir / "analysis" / "attempts" / "ANALYSIS_ATTEMPT1" / "result.json"
+                            if original_rel == original_result_rel else REPO / original_rel)
+                    if not path.is_file() or sha256(path) != expected_hash:
+                        checks.append(f"original solve-time artifact changed or was not archived: {run_id}/{original_rel}")
+                if recovery.get("action") == "REVALIDATED_EXISTING_ANALYSIS_NO_SOLVE":
+                    prior_analysis = ROOT / "analysis" / "receipts" / f"{run_id}_reanalysis.json"
+                    if (recovery.get("validated_existing_analysis_receipt_path") != repo_rel(prior_analysis) or
+                            recovery.get("validated_existing_analysis_receipt_sha256") != (sha256(prior_analysis) if prior_analysis.is_file() else None)):
+                        checks.append(f"A reused-analysis receipt does not bind the prior successful reanalysis: {run_id}")
                 for key, path in artifact_paths.items():
                     if recovery.get("artifact_sha256", {}).get(key) != sha256(path):
                         checks.append(f"reanalysis receipt artifact hash differs: {run_id}/{key}")

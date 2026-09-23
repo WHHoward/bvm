@@ -20,7 +20,8 @@ from common import REPO, legacy, public_params, render_deck, resolve_params, sha
 from run_case import (resolve_reference_path, resolve_run_path,
                       unexpected_registered_worktree_paths,
                       validate_registered_invocation)  # noqa: E402
-from run_regression import registered_cases_for_execution  # noqa: E402
+import run_regression  # noqa: E402
+from run_regression import next_solve_receipt_path, registered_cases_for_execution  # noqa: E402
 import analyze_case  # noqa: E402
 import plot_case  # noqa: E402
 _package_spec = importlib.util.spec_from_file_location("repeatability_package_test", SERIES / "scripts" / "package.py")
@@ -178,6 +179,19 @@ class PlatformTest(unittest.TestCase):
         self.assertEqual([case["case_id"] for case in resumed],
                          ["REG_B_QB2X1_N2", "REG_C_QB3X1_N3",
                           "REG_D_QB2X1_RECOVERY", "REG_E_QB2X1_REWRITE_SMOKE"])
+
+    def test_retry_receipt_is_append_only_after_prior_zero_solve_attempt(self):
+        original_root = run_regression.ROOT
+        try:
+            with tempfile.TemporaryDirectory(prefix="bvm_repeat_receipt_attempt_") as temporary:
+                run_regression.ROOT = Path(temporary)
+                receipt_dir = Path(temporary) / "analysis" / "receipts"
+                receipt_dir.mkdir(parents=True)
+                (receipt_dir / "REG_B_QB2X1_N2.json").write_text("prior zero-solve receipt\n", encoding="utf-8")
+                self.assertEqual(next_solve_receipt_path("REG_B_QB2X1_N2").name,
+                                 "REG_B_QB2X1_N2_attempt2.json")
+        finally:
+            run_regression.ROOT = original_root
 
     def test_pwl_source_count_and_no_high_numbered_source(self):
         for candidate, size, mask in (("QB_2X1", 2, "11"), ("QB_3X1", 3, "111")):
@@ -437,8 +451,11 @@ class PlatformTest(unittest.TestCase):
         allowed = ("?? " + prefix + "/runs/REG_A_QB2X1_N1/raw.csv\n" +
                    "?? " + prefix + "/analysis/PREFLIGHT_QA.json\n" +
                    "?? " + prefix + "/analysis/receipts/REG_A_QB2X1_N1_reanalysis.json\n" +
+                   "?? " + prefix + "/analysis/receipts/REG_A_QB2X1_N1_revalidation_attempt2.json\n" +
+                   "?? " + prefix + "/analysis/receipts/REG_B_QB2X1_N2_attempt2.json\n" +
                    "?? " + prefix + "/analysis/attempts/PLATFORM_ATTEMPT1/archive_manifest.json\n" +
-                   "?? " + prefix + "/analysis/attempts/PLATFORM_ATTEMPT2/runner_error.json\n")
+                   "?? " + prefix + "/analysis/attempts/PLATFORM_ATTEMPT2/runner_error.json\n" +
+                   "?? " + prefix + "/analysis/attempts/PLATFORM_ATTEMPT3/archive_manifest.json\n")
         self.assertEqual(unexpected_registered_worktree_paths(allowed, {"REG_A_QB2X1_N1"}), [])
         extra = allowed + "?? " + prefix + "/scripts/unregistered.py\n"
         self.assertEqual(unexpected_registered_worktree_paths(extra, {"REG_A_QB2X1_N1"}), [prefix + "/scripts/unregistered.py"])

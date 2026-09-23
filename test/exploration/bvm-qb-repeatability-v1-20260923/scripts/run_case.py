@@ -94,40 +94,50 @@ def validate_registered_invocation(case_id: str | None, overrides: dict[str, str
         raise ValueError(f"run directory set differs from completed matrix prefix: {observed_run_dirs}")
     for record in execution_runs:
         prior_id = record["case_id"]
-        prior_receipt = ROOT / "analysis" / "receipts" / f"{prior_id}.json"
-        if (record.get("receipt_path") != repo_rel(prior_receipt) or not prior_receipt.is_file() or
+        receipt_rel = record.get("receipt_path", "")
+        receipt_leaf = Path(receipt_rel).name
+        allowed_receipt_names = {f"{prior_id}.json", *(
+            f"{prior_id}_attempt{number}.json" for number in range(2, 100))}
+        prior_receipt = REPO / receipt_rel
+        if (Path(receipt_rel).parent.as_posix() != repo_rel(ROOT / "analysis" / "receipts") or
+                receipt_leaf not in allowed_receipt_names or not prior_receipt.is_file() or
                 sha256(prior_receipt) != record.get("receipt_sha256")):
             raise ValueError(f"completed-case receipt changed: {prior_id}")
         receipt = read_json(prior_receipt)
         prior_dir = ROOT / "runs" / prior_id
         current_tree = {repo_rel(path): sha256(path) for path in sorted(prior_dir.rglob("*"))
                         if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"}
-        if record.get("action") == "REANALYZED_EXISTING_RAW":
-            recovery_path = ROOT / "analysis" / "receipts" / f"{prior_id}_reanalysis.json"
-            if (record.get("analysis_recovery_receipt_path") != repo_rel(recovery_path) or
+        if record.get("action") in {"REANALYZED_EXISTING_RAW", "REUSED_EXISTING_ANALYSIS"}:
+            recovery_rel = record.get("analysis_recovery_receipt_path", "")
+            recovery_leaf = Path(recovery_rel).name
+            allowed_recovery_names = {
+                f"{prior_id}_reanalysis.json",
+                *(f"{prior_id}_reanalysis_attempt{number}.json" for number in range(2, 100)),
+                *(f"{prior_id}_revalidation_attempt{number}.json" for number in range(2, 100)),
+            }
+            recovery_path = REPO / recovery_rel
+            if (Path(recovery_rel).parent.as_posix() != repo_rel(ROOT / "analysis" / "receipts") or
+                    recovery_leaf not in allowed_recovery_names or
                     not recovery_path.is_file() or
                     sha256(recovery_path) != record.get("analysis_recovery_receipt_sha256")):
                 raise ValueError(f"analysis recovery receipt changed: {prior_id}")
             recovery = read_json(recovery_path)
-            stable_keys = ("raw", "deck", "stimulus", "config_snapshot", "stimulus_snapshot",
-                           "source_manifest", "stdout", "stderr", "run_log")
-            if (recovery.get("action") != "REANALYZED_EXISTING_RAW_NO_SOLVE" or
+            allowed_recovery_actions = {"REANALYZED_EXISTING_RAW_NO_SOLVE",
+                                        "REVALIDATED_EXISTING_ANALYSIS_NO_SOLVE"}
+            if (recovery.get("action") not in allowed_recovery_actions or
                     recovery.get("new_physical_solve_count") != 0 or
+                    recovery.get("preflight_head") != current_head or
+                    recovery.get("preflight_qa_sha256") != sha256(preflight_path) or
                     recovery.get("raw_sha256") != receipt.get("artifact_sha256", {}).get("raw") or
                     recovery.get("run_tree_file_sha256") != current_tree):
                 raise ValueError(f"analysis-only recovery receipt does not bind current run: {prior_id}")
-            paths = {"raw": prior_dir / "raw.csv", "deck": prior_dir / "actual_deck.cir",
-                     "stimulus": prior_dir / "stimulus.inc",
-                     "config_snapshot": prior_dir / "config_snapshot.env",
-                     "stimulus_snapshot": prior_dir / "stimulus_snapshot.json",
-                     "source_manifest": prior_dir / "source_manifest.json",
-                     "stdout": prior_dir / "stdout.txt", "stderr": prior_dir / "stderr.txt",
-                     "run_log": prior_dir / "run.log"}
-            for key in stable_keys:
-                path = paths.get(key)
-                if (path is None or not path.is_file() or
-                        receipt.get("artifact_sha256", {}).get(key) != sha256(path)):
-                    raise ValueError(f"solve-time artifact changed after analysis recovery: {prior_id}/{key}")
+            original_tree = receipt.get("run_tree_file_sha256", {})
+            original_result_rel = repo_rel(prior_dir / "result.json")
+            for original_rel, expected_hash in original_tree.items():
+                path = (prior_dir / "analysis" / "attempts" / "ANALYSIS_ATTEMPT1" / "result.json"
+                        if original_rel == original_result_rel else REPO / original_rel)
+                if not path.is_file() or sha256(path) != expected_hash:
+                    raise ValueError(f"original solve-time artifact changed or was not archived: {prior_id}/{original_rel}")
         elif current_tree != receipt.get("run_tree_file_sha256", {}):
             raise ValueError(f"completed run directory changed after its solve receipt: {prior_id}")
     runs_root = ROOT / "runs"
@@ -156,6 +166,8 @@ def unexpected_registered_worktree_paths(status_porcelain: str, case_ids: set[st
     allowed = {f"{prefix}/analysis/PREFLIGHT_QA.json",
                f"{prefix}/analysis/REGRESSION_EXECUTION.json",
                f"{prefix}/analysis/receipts/REG_A_QB2X1_N1_reanalysis.json",
+               f"{prefix}/analysis/receipts/REG_A_QB2X1_N1_revalidation_attempt2.json",
+               f"{prefix}/analysis/receipts/REG_B_QB2X1_N2_attempt2.json",
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/PREFLIGHT_QA.json",
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/REGRESSION_EXECUTION.json",
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT1/REG_A_QB2X1_N1_solver_receipt.json",
@@ -165,6 +177,12 @@ def unexpected_registered_worktree_paths(status_porcelain: str, case_ids: set[st
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/REG_A_QB2X1_N1_solver_receipt.json",
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/archive_manifest.json",
                f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT2/runner_error.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT3/PREFLIGHT_QA.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT3/REGRESSION_EXECUTION.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT3/receipts/REG_A_QB2X1_N1.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT3/receipts/REG_A_QB2X1_N1_reanalysis.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT3/receipts/REG_B_QB2X1_N2.json",
+               f"{prefix}/analysis/attempts/PLATFORM_ATTEMPT3/archive_manifest.json",
                f"{prefix}/plots/assets/plotly.min.js"}
     allowed.update(f"{prefix}/analysis/receipts/{case_id}.json" for case_id in case_ids)
     run_prefix = f"{prefix}/runs/"

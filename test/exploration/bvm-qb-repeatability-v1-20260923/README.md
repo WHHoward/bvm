@@ -41,6 +41,11 @@ If and only if the manager crashes before starting A reanalysis, the guarded
 `--repair-interrupted-resume` command preserves that no-solve attempt and
 restores the previous stopped-at-A ledgers; it refuses any case where a raw,
 later run, or A recovery has already changed.
+If a registered later case is rejected before solver launch after A is already
+valid, `--resume-after-a` is a separate guarded path: it verifies that exact
+zero-solve failure, preserves its receipt, revalidates A without changing its
+run tree, then continues the still-authorized B–E matrix. Retried receipt names
+are suffixed rather than overwriting the failed attempt.
 
 `STOP_PS` is never a user-entered solver limit. It is computed from the last
 stimulus endpoint and tail policy; recovery mode uses READ end plus recovery

@@ -80,6 +80,91 @@ def archive_previous_attempt() -> dict[str, dict[str, str]]:
     return saved
 
 
+def archive_stopped_attempt(attempt_name: str) -> dict[str, dict[str, str]]:
+    attempt_dir = ROOT / "analysis" / "attempts" / attempt_name
+    attempt_dir.mkdir(parents=True, exist_ok=False)
+    sources = {"PREFLIGHT_QA.json": ROOT / "analysis" / "PREFLIGHT_QA.json",
+               "REGRESSION_EXECUTION.json": ROOT / "analysis" / "REGRESSION_EXECUTION.json"}
+    receipt_dir = ROOT / "analysis" / "receipts"
+    sources.update({f"receipts/{path.name}": path for path in sorted(receipt_dir.glob("*.json"))})
+    saved: dict[str, dict[str, str]] = {}
+    for name, source in sources.items():
+        if not source.is_file():
+            raise RuntimeError(f"cannot archive stopped attempt; prior artifact missing: {source}")
+        target = attempt_dir / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(source.read_bytes())
+        saved[name] = {"path": repo_rel(target), "sha256": sha256(target)}
+    write_exclusive_json(attempt_dir / "archive_manifest.json", {
+        "schema": "bvm-qb-repeatability-prior-platform-attempt-archive-v1",
+        "attempt": attempt_name, "files": saved,
+        "purpose": "preserve the stopped A-reanalysis/B-zero-solve attempt before refreshing preflight",
+        "scientific_interpretation_performed": False,
+    })
+    return saved
+
+
+def revalidate_existing_a(case: dict, gate: dict, execution: dict) -> None:
+    case_id = case["case_id"]
+    run_dir = ROOT / "runs" / case_id
+    metadata, result = read_json(run_dir / "metadata.json"), read_json(run_dir / "result.json")
+    solve_receipt = ROOT / "analysis" / "receipts" / f"{case_id}.json"
+    reanalysis_receipt = ROOT / "analysis" / "receipts" / f"{case_id}_reanalysis.json"
+    raw_sha = sha256(run_dir / "raw.csv")
+    recovery_path = ROOT / "analysis" / "receipts" / f"{case_id}_revalidation_attempt2.json"
+    if recovery_path.exists():
+        raise RuntimeError(f"refusing to overwrite existing A revalidation receipt: {recovery_path.name}")
+    if (result.get("artifact_status") != "VALID" or result.get("analysis_status") != "PASS" or
+            result.get("plot_status") != "PASS" or result.get("raw_sha256") != raw_sha or
+            metadata.get("raw", {}).get("sha256") != raw_sha):
+        raise RuntimeError("A's previously reanalyzed raw/analysis/plots are no longer mechanically valid")
+    receipt = {
+        "schema": "bvm-qb-repeatability-analysis-revalidation-receipt-v1",
+        "case_id": case_id, "action": "REVALIDATED_EXISTING_ANALYSIS_NO_SOLVE",
+        "preflight_head": gate["git"]["head"],
+        "preflight_qa_sha256": execution["preflight_qa_sha256"],
+        "runner_command": [], "runner_exit_code": 0,
+        "run_dir": repo_rel(run_dir), "physical_solve_count": 1,
+        "new_physical_solve_count": 0, "artifact_status": "VALID",
+        "analysis_status": result.get("analysis_status"), "plot_status": result.get("plot_status"),
+        "raw_sha256": raw_sha, "solver": metadata.get("solver"),
+        "parameters": metadata.get("parameters"),
+        "validated_existing_analysis_receipt_path": repo_rel(reanalysis_receipt),
+        "validated_existing_analysis_receipt_sha256": sha256(reanalysis_receipt),
+        "supersedes_preflight_binding_only": True,
+        "artifact_sha256": artifact_hashes(run_dir),
+        "run_tree_file_sha256": run_tree_hashes(run_dir),
+        "scientific_interpretation_performed": False,
+    }
+    write_exclusive_json(recovery_path, receipt)
+    execution["runs"].append({
+        "case_id": case_id, "action": "REUSED_EXISTING_ANALYSIS",
+        "runner_exit_code": 0,
+        "receipt_path": repo_rel(solve_receipt), "receipt_sha256": sha256(solve_receipt),
+        "analysis_recovery_receipt_path": repo_rel(recovery_path),
+        "analysis_recovery_receipt_sha256": sha256(recovery_path),
+        "physical_solve_count": 1, "new_physical_solve_count": 0,
+        "raw_sha256": raw_sha, "status": "COMPLETE_EXISTING_SOLVE",
+    })
+    execution["completed_solve_count"] = 1
+    execution["physical_solve_count"] = 1
+    execution["new_physical_solve_count"] = 0
+    write_json(ROOT / "analysis" / "REGRESSION_EXECUTION.json", execution)
+
+
+def next_solve_receipt_path(case_id: str) -> Path:
+    receipts = ROOT / "analysis" / "receipts"
+    primary = receipts / f"{case_id}.json"
+    if not primary.exists():
+        return primary
+    attempt = 2
+    while True:
+        candidate = receipts / f"{case_id}_attempt{attempt}.json"
+        if not candidate.exists():
+            return candidate
+        attempt += 1
+
+
 def repair_interrupted_resume_startup(dry_run: bool = False) -> int:
     """Archive a validated pre-solve runner crash and restore the original A-stop ledgers."""
     attempt1 = ROOT / "analysis" / "attempts" / "PLATFORM_ATTEMPT1"
@@ -283,7 +368,7 @@ def run_physical_case(case: dict, gate: dict, execution: dict) -> int:
                "artifact_sha256": hashes,
                "run_tree_file_sha256": run_tree_hashes(run_dir) if run_dir.is_dir() else {},
                "scientific_interpretation_performed": False, "automatic_follow_up": False}
-    receipt_path = ROOT / "analysis" / "receipts" / f"{case['case_id']}.json"
+    receipt_path = next_solve_receipt_path(case["case_id"])
     write_exclusive_json(receipt_path, receipt)
     execution["runs"].append({"case_id": case["case_id"], "action": "NEW_PHYSICAL_SOLVE",
                               "runner_command": command, "runner_exit_code": completed.returncode,
@@ -307,17 +392,23 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="show exact cases without creating runs or solving")
     parser.add_argument("--resume", action="store_true",
                         help="preserve and reanalyze only the registered A raw, then execute B–E once")
+    parser.add_argument("--resume-after-a", action="store_true",
+                        help="reuse valid A analysis after a recorded zero-solve B tooling stop; then run B–E")
     parser.add_argument("--repair-interrupted-resume", action="store_true",
                         help="archive and restore the validated pre-solve manager crash; never runs JoSIM")
     args = parser.parse_args()
     if args.repair_interrupted_resume:
-        if args.resume:
-            raise RuntimeError("--repair-interrupted-resume cannot be combined with --resume")
+        if args.resume or args.resume_after_a:
+            raise RuntimeError("--repair-interrupted-resume cannot be combined with solve/resume options")
         return repair_interrupted_resume_startup(dry_run=args.dry_run)
-    gate = build_gate(require_clean=not args.dry_run, resume_existing_a=args.resume)
+    if args.resume and args.resume_after_a:
+        raise RuntimeError("--resume and --resume-after-a are mutually exclusive")
+    gate = build_gate(require_clean=not args.dry_run, resume_existing_a=args.resume,
+                      resume_after_a=args.resume_after_a)
     if args.dry_run:
         print(json.dumps({"preflight_status": gate["status"], "authorized_solve_count": gate["authorized_solve_count"],
                           "resume_existing_a": args.resume,
+                          "resume_after_a": args.resume_after_a,
                           "existing_physical_solve_count": gate.get("existing_physical_solve_count", 0),
                           "new_physical_solve_count": gate.get("new_physical_solve_count", 0),
                           "cases": [{"case_id": item["case_id"], "action": item.get("action"),
@@ -331,7 +422,7 @@ def main() -> int:
         prior_execution_exists = (ROOT / "analysis" / "REGRESSION_EXECUTION.json").exists()
         prior_receipts_exist = ((ROOT / "analysis" / "receipts").is_dir() and
                                 any((ROOT / "analysis" / "receipts").iterdir()))
-        if not args.resume and not prior_execution_exists and not prior_receipts_exist:
+        if not args.resume and not args.resume_after_a and not prior_execution_exists and not prior_receipts_exist:
             write_json(ROOT / "analysis" / "PREFLIGHT_QA.json", gate)
         print(json.dumps(gate, ensure_ascii=False, indent=2), file=sys.stderr)
         return 2
@@ -343,6 +434,8 @@ def main() -> int:
         # build_gate has validated the original stopped attempt and clean HEAD.
         # Archive before replacing either root ledger; creation is exclusive.
         archived = archive_previous_attempt()
+    elif args.resume_after_a:
+        archived = archive_stopped_attempt("PLATFORM_ATTEMPT3")
     elif execution_path.exists() or (receipts_dir.exists() and any(receipts_dir.iterdir())):
         raise RuntimeError("registered regression execution/receipt evidence already exists; refusing restart/overwrite")
 
@@ -351,7 +444,8 @@ def main() -> int:
                  "status": "IN_PROGRESS", "preflight_status": "PASS", "preflight_head": gate["git"]["head"],
                  "preflight_qa_sha256": sha256(ROOT / "analysis" / "PREFLIGHT_QA.json"),
                  "authorized_solve_count": int(matrix["authorized_solve_count"]),
-                 "completed_solve_count": 0, "physical_solve_count": 0,
+                 "completed_solve_count": 1 if args.resume_after_a else 0,
+                 "physical_solve_count": 1 if args.resume_after_a else 0,
                  "new_physical_solve_count": 0,
                  "existing_physical_solve_count": int(gate.get("existing_physical_solve_count", 0)),
                  "automatic_retry": False, "scientific_interpretation_performed": False,
@@ -361,7 +455,9 @@ def main() -> int:
         recovery_status = recover_existing_a(matrix["cases"][0], gate, execution)
         if recovery_status != 0:
             return recovery_status
-    cases_to_run = registered_cases_for_execution(matrix, args.resume)
+    elif args.resume_after_a:
+        revalidate_existing_a(matrix["cases"][0], gate, execution)
+    cases_to_run = registered_cases_for_execution(matrix, args.resume or args.resume_after_a)
     for case in cases_to_run:
         case_status = run_physical_case(case, gate, execution)
         if case_status != 0:

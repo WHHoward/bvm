@@ -172,13 +172,21 @@ def verify_finalization_seal() -> dict[str, Any]:
     expected_actions = (["REANALYZED_EXISTING_RAW", *(["NEW_PHYSICAL_SOLVE"] * 4)]
                         if execution.get("existing_physical_solve_count") == 1 else
                         ["NEW_PHYSICAL_SOLVE"] * 5)
+    if execution.get("existing_physical_solve_count") == 1 and execution.get("runs"):
+        first_resume_action = execution["runs"][0].get("action")
+        if first_resume_action in {"REANALYZED_EXISTING_RAW", "REUSED_EXISTING_ANALYSIS"}:
+            expected_actions = [first_resume_action, *(["NEW_PHYSICAL_SOLVE"] * 4)]
     if [item.get("action") for item in execution.get("runs", [])] != expected_actions:
         raise RuntimeError("execution actions do not match a fresh A–E batch or registered A-recovery/B–E resume")
     for item in execution["runs"]:
-        expected_receipt = ROOT / "analysis" / "receipts" / f"{item['case_id']}.json"
-        if item.get("receipt_path") != repo_rel(expected_receipt):
+        case_id = item["case_id"]
+        receipt_rel = item.get("receipt_path", "")
+        receipt_leaf = Path(receipt_rel).name
+        allowed_receipt_names = {f"{case_id}.json", *(f"{case_id}_attempt{n}.json" for n in range(2, 100))}
+        receipt_path = REPO / receipt_rel
+        if (Path(receipt_rel).parent.as_posix() != repo_rel(ROOT / "analysis" / "receipts") or
+                receipt_leaf not in allowed_receipt_names):
             raise RuntimeError(f"execution receipt path escapes/does not match case ID: {item.get('case_id')}")
-        receipt_path = expected_receipt
         if not receipt_path.is_file() or sha256(receipt_path) != item.get("receipt_sha256"):
             raise RuntimeError(f"independent execution receipt changed: {item.get('case_id')}")
         receipt = read_json(receipt_path)
@@ -186,27 +194,46 @@ def verify_finalization_seal() -> dict[str, Any]:
         if receipt.get("run_dir") != repo_rel(expected_run):
             raise RuntimeError(f"receipt run path escapes/does not match case ID: {item.get('case_id')}")
         run = expected_run
-        if item.get("action") == "REANALYZED_EXISTING_RAW":
+        if item.get("action") in {"REANALYZED_EXISTING_RAW", "REUSED_EXISTING_ANALYSIS"}:
             if (receipt.get("execution_status") != "RUN_PASS" or
                     receipt.get("artifact_status") != "INVALID" or
                     receipt.get("runner_exit_code") == 0 or
                     receipt.get("physical_solve_count") != 1):
                 raise RuntimeError(f"original recovered-A solve receipt is not preserved: {item.get('case_id')}")
-            recovery_path = ROOT / "analysis" / "receipts" / f"{item['case_id']}_reanalysis.json"
-            if (item.get("analysis_recovery_receipt_path") != repo_rel(recovery_path) or
-                    not recovery_path.is_file() or
+            recovery_rel = item.get("analysis_recovery_receipt_path", "")
+            recovery_leaf = Path(recovery_rel).name
+            allowed_recovery_names = {f"{item['case_id']}_reanalysis.json",
+                                      *(f"{item['case_id']}_reanalysis_attempt{n}.json" for n in range(2, 100)),
+                                      *(f"{item['case_id']}_revalidation_attempt{n}.json" for n in range(2, 100))}
+            recovery_path = REPO / recovery_rel
+            if (Path(recovery_rel).parent.as_posix() != repo_rel(ROOT / "analysis" / "receipts") or
+                    recovery_leaf not in allowed_recovery_names or not recovery_path.is_file() or
                     sha256(recovery_path) != item.get("analysis_recovery_receipt_sha256")):
                 raise RuntimeError(f"A reanalysis receipt is missing or changed: {item.get('case_id')}")
             recovery = read_json(recovery_path)
             current_tree = {repo_rel(path): sha256(path) for path in sorted(run.rglob("*"))
                             if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"}
-            if (recovery.get("action") != "REANALYZED_EXISTING_RAW_NO_SOLVE" or
+            if (recovery.get("action") not in {"REANALYZED_EXISTING_RAW_NO_SOLVE",
+                                                "REVALIDATED_EXISTING_ANALYSIS_NO_SOLVE"} or
+                    recovery.get("preflight_head") != execution.get("preflight_head") or
+                    recovery.get("preflight_qa_sha256") != execution.get("preflight_qa_sha256") or
                     recovery.get("artifact_status") != "VALID" or
                     recovery.get("physical_solve_count") != 1 or
                     recovery.get("new_physical_solve_count") != 0 or
                     recovery.get("raw_sha256") != receipt.get("artifact_sha256", {}).get("raw") or
                     recovery.get("run_tree_file_sha256") != current_tree):
                 raise RuntimeError(f"A analysis-recovery receipt does not bind the current run: {item.get('case_id')}")
+            original_result_rel = repo_rel(run / "result.json")
+            original_result_archive = run / "analysis" / "attempts" / "ANALYSIS_ATTEMPT1" / "result.json"
+            for original_rel, digest in receipt.get("run_tree_file_sha256", {}).items():
+                original_path = original_result_archive if original_rel == original_result_rel else REPO / original_rel
+                if not original_path.is_file() or sha256(original_path) != digest:
+                    raise RuntimeError(f"original A solve artifact changed/not archived: {item.get('case_id')}/{original_rel}")
+            if recovery.get("action") == "REVALIDATED_EXISTING_ANALYSIS_NO_SOLVE":
+                prior_analysis = ROOT / "analysis" / "receipts" / f"{item['case_id']}_reanalysis.json"
+                if (recovery.get("validated_existing_analysis_receipt_path") != repo_rel(prior_analysis) or
+                        recovery.get("validated_existing_analysis_receipt_sha256") != (sha256(prior_analysis) if prior_analysis.is_file() else None)):
+                    raise RuntimeError("revalidated A analysis does not bind the prior successful analysis receipt")
             stable_keys = ("raw", "deck", "stimulus", "config_snapshot", "stimulus_snapshot",
                            "metadata", "source_manifest")
             for key in stable_keys:

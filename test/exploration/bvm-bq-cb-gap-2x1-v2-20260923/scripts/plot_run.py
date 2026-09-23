@@ -60,24 +60,35 @@ def headers_and_rows(raw: Path, signals: list[str], bounds: tuple[float, float] 
         fields = reader.fieldnames or []
         if len(fields) != len(set(fields)):
             raise ValueError(f"duplicate headers in {raw}")
-        missing = sorted(set(signals) - set(fields))
+        folded = [field.casefold() for field in fields]
+        if len(folded) != len(set(folded)):
+            raise ValueError(f"headers collide under JoSIM case normalization in {raw}")
+        actual = {field.casefold(): field for field in fields}
+        missing = sorted(signal for signal in signals if signal.casefold() not in actual)
         if missing:
             raise ValueError(f"required plot signals missing from {raw}: {missing}")
+        actual_time = actual.get("time")
+        if actual_time is None:
+            raise ValueError(f"raw time column missing from {raw}")
+        aliases = {signal: actual[signal.casefold()] for signal in signals
+                   if signal != actual[signal.casefold()]}
         selected = ["time", *signals]
         rows = []
         times_ps = []
         time_tokens = []
         for row in reader:
-            token = row["time"]
+            token = row[actual_time]
             time_ps = raw_time_ps(token)
             if bounds is not None and not in_half_open_window(token, bounds):
                 continue
-            rows.append({key: row[key] for key in selected})
+            projected_row = {"time": token}
+            projected_row.update({signal: row[actual[signal.casefold()]] for signal in signals})
+            rows.append(projected_row)
             times_ps.append(float(time_ps))
             time_tokens.append(token)
     if len(rows) < 2:
         raise ValueError(f"plot selection has fewer than two stored samples: {raw} {bounds}")
-    return selected, rows, times_ps, time_tokens
+    return selected, rows, times_ps, time_tokens, aliases
 
 
 def externalize(html_path: Path) -> None:
@@ -104,7 +115,7 @@ def externalize(html_path: Path) -> None:
 
 def render_one(run_id: str, raw: Path, raw_hash: str, category: str,
                signals: list[str], window: str, bounds: tuple[float, float] | None) -> dict[str, Any]:
-    fields, rows, times_ps, time_tokens = headers_and_rows(raw, signals, bounds)
+    fields, rows, times_ps, time_tokens, header_aliases = headers_and_rows(raw, signals, bounds)
     run_plot_dir = PLOT_ROOT / run_id
     run_plot_dir.mkdir(parents=True, exist_ok=True)
     output = run_plot_dir / f"{category}__{window}.html"
@@ -131,6 +142,7 @@ def render_one(run_id: str, raw: Path, raw_hash: str, category: str,
             "window_semantics": "[start,end), selected existing raw timestamps only",
             "actual_first_sample_ps": times_ps[0], "actual_last_sample_ps": times_ps[-1],
             "actual_first_sample_s_token": time_tokens[0], "actual_last_sample_s_token": time_tokens[-1],
+            "raw_header_aliases": header_aliases,
             "sample_count": len(rows), "interpolation": False, "resampling": False,
             "renderer": "scripts/josim-plot2.py", "renderer_arguments": command[1:],
             "plot_type": "sep_comb", "theme": "dark", "phase_display": "raw P radians; -j 2pi navigation only",

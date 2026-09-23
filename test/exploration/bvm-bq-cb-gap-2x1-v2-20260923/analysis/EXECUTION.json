@@ -1,0 +1,99 @@
+{
+  "schema": "bvm-bq-cb-gap-execution-v2",
+  "experiment_id": "bvm-bq-cb-gap-2x1-v2-20260923",
+  "preflight_sha256": "c3b3bcba985c3369019a1b6893a52ab7f138a52cc8be448876fb33e8b81663df",
+  "preflight_md_sha256": "be42b252048c3a7941ecfc7edf868645a56b2802e4c590072fe6ff68b6e42655",
+  "head": "4e790ca0edf3bb9aa29b78e7ab723798efbaa7ee",
+  "authorized_solve_count": 4,
+  "physical_solve_count_started": 1,
+  "status": "N0_SAME_RAW_QA_REPAIRED_WAITING_REMAINING_CASES",
+  "scientific_interpretation_performed": false,
+  "runs": [
+    {
+      "run_id": "N0_00",
+      "command": [
+        "/home/howard/JoSIM/build/josim-cli",
+        "--output",
+        "/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/runs/N0_00/raw.csv",
+        "/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/runs/N0_00/actual_deck.cir"
+      ],
+      "cwd": "test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/runs/N0_00",
+      "started_at": "2026-09-23T18:46:31+08:00",
+      "head": "4e790ca0edf3bb9aa29b78e7ab723798efbaa7ee",
+      "solver": {
+        "path": "build/josim-cli",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+      },
+      "deck_sha256": "7e920f16834a4382ae824dc370550464848af19d0a39e723be2aa80d34e20a1e",
+      "stimulus_sha256": "0df75c3e5a050a2a9fc75b4d622cc8f5d42535a6a3071686c4212d3d9d528f5d",
+      "solve_started": true,
+      "status": "RAW_QA_PASS_AFTER_SAME_RAW_REANALYSIS",
+      "completed_at": "2026-09-23T18:46:33+08:00",
+      "returncode": 0,
+      "stdout_sha256": "bdfbae3c4aa0aef138aed761c0c3ef710b4c9dfe99f17b06eba04125cbc2ec58",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "run_log_sha256": "2442f1b3e2a1382fcf89ff0eb5d352d0a2f9c49f4e5f1c26f296fea114405736",
+      "raw_exists": true,
+      "raw": {
+        "sha256": "3b364522d769bc500f7d5aeddfb6f41cc5e2eed1d90ea1c2214aa115da1740a9",
+        "bytes": 59955700
+      },
+      "mechanical_qa_returncode": 1,
+      "mechanical_qa_stdout": "",
+      "mechanical_qa_stderr": "Traceback (most recent call last):\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 321, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 315, in main\n    qa = analyze(args.run_id)\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 254, in analyze\n    time_tokens_s, times_s, values, raw_qa = load_selected_raw(raw)\n                                             ~~~~~~~~~~~~~~~~~^^^^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 60, in load_selected_raw\n    raise ValueError(f\"required raw probes absent: {missing[:20]}\")\nValueError: required raw probes absent: ['I(Lin|XBQ1)', 'I(Lin|XBQ2)', 'V(Lin|XBQ1)', 'V(Lin|XBQ2)']\n",
+      "status_history": [
+        "RAW_QA_FAIL_STOP",
+        "RAW_QA_PASS_AFTER_SAME_RAW_REANALYSIS"
+      ],
+      "analysis_repair_attempt_path": "analysis/REPAIR_ATTEMPT_001.json",
+      "analysis_repair_attempt_sha256": "a34d459395ea7f5696402cb991ca35e15b05b31a35a5efe9e981159a1a9a08a2"
+    }
+  ],
+  "repair_history": [
+    {
+      "schema": "bvm-bq-cb-analysis-repair-attempt-v1",
+      "attempt_id": "REPAIR_001",
+      "run_id": "N0_00",
+      "created_at": "2026-09-23T18:59:36+08:00",
+      "failure_kind": "ANALYZER_RAW_HEADER_CASE_ALIAS",
+      "initial_solver_returncode": 0,
+      "initial_analyzer_returncode": 1,
+      "initial_analyzer_stderr": "Traceback (most recent call last):\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 321, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 315, in main\n    qa = analyze(args.run_id)\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 254, in analyze\n    time_tokens_s, times_s, values, raw_qa = load_selected_raw(raw)\n                                             ~~~~~~~~~~~~~~~~~^^^^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 60, in load_selected_raw\n    raise ValueError(f\"required raw probes absent: {missing[:20]}\")\nValueError: required raw probes absent: ['I(Lin|XBQ1)', 'I(Lin|XBQ2)', 'V(Lin|XBQ1)', 'V(Lin|XBQ2)']\n",
+      "raw_sha256": "3b364522d769bc500f7d5aeddfb6f41cc5e2eed1d90ea1c2214aa115da1740a9",
+      "same_raw_mechanical_qa": "PASS",
+      "same_raw_independent_arithmetic_qa": "PASS",
+      "raw_unchanged": true,
+      "physical_solve_executed": false,
+      "next_authorized_run_ids": [
+        "N1_01",
+        "N1_10",
+        "N2_11"
+      ]
+    },
+    {
+      "schema": "bvm-bq-cb-analysis-repair-attempt-v2",
+      "attempt_id": "REPAIR_002",
+      "status": "PASS",
+      "prior_repair_record_sha256": "61e5283c2bdb8f0ad21564a17ecedfd28512f8ab3da0a9cd77edff65a3009ecc",
+      "resume_runner_sha256": "761a87bebd084003014dc549648b4b2c3fe50c4fa69be3073e5df16a53acfce7",
+      "script_hashes": {
+        "SCRIPT_ANALYZE_RUN": "f768595686deb28ff1ac847765ea00dc68e169f343d45f1e865dd379e9841885",
+        "SCRIPT_INDEPENDENT_VERIFY": "9bdf022aad2c1ff489e465fe6b9411bfecfcde902c5cf0434f88e3f1bd919051",
+        "SCRIPT_PLOT_RUN": "98f7d182bb77a1bb0df5403a1072fa179950b42d41f957f556f8b33c5c75b796",
+        "SCRIPT_TEST_PLATFORM": "f68d66de683be1408fe758ebba3eb66a99efe7de93c39edef0de0af461cf2652"
+      },
+      "raw_sha256_before_after": "3b364522d769bc500f7d5aeddfb6f41cc5e2eed1d90ea1c2214aa115da1740a9",
+      "physical_solve_executed": false,
+      "remaining_registered_run_ids": [
+        "N1_01",
+        "N1_10",
+        "N2_11"
+      ]
+    }
+  ],
+  "tool_repair_record_path": "analysis/TOOL_REPAIR.json",
+  "tool_repair_record_sha256": "61e5283c2bdb8f0ad21564a17ecedfd28512f8ab3da0a9cd77edff65a3009ecc",
+  "tool_repair_record_v2_path": "analysis/TOOL_REPAIR_002.json",
+  "tool_repair_record_v2_sha256": "1d8a8583fc49ab59d4c83122f7d740778d4233c46c7b1aa53a56bee86ccccd66"
+}

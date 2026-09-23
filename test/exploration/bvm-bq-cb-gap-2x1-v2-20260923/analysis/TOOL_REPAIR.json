@@ -1,0 +1,42 @@
+{
+  "schema": "bvm-bq-cb-tool-repair-v1",
+  "status": "SAME_RAW_QA_PASS_REMAINING_MATRIX_AUTHORIZED",
+  "created_at": "2026-09-23T18:59:36+08:00",
+  "experiment_id": "bvm-bq-cb-gap-2x1-v2-20260923",
+  "original_preflight_sha256": "c3b3bcba985c3369019a1b6893a52ab7f138a52cc8be448876fb33e8b81663df",
+  "original_source_lock_sha256": "656eb3f97672b125abff9446646278687827a2a040f5d5c16238250e9eccdb01",
+  "original_parent_head": "286eeaadf92b34c4d6550e6ff748cca3b3841726",
+  "current_head_before_repair_commit": "4e790ca0edf3bb9aa29b78e7ab723798efbaa7ee",
+  "prior_execution_count_started": 1,
+  "remaining_registered_run_ids": [
+    "N1_01",
+    "N1_10",
+    "N2_11"
+  ],
+  "v2_authorized_solve_count": 4,
+  "cumulative_solver_invocations_including_v1_incident": 5,
+  "prior_solver_returncode": 0,
+  "prior_solver_stderr": "Traceback (most recent call last):\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 321, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 315, in main\n    qa = analyze(args.run_id)\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 254, in analyze\n    time_tokens_s, times_s, values, raw_qa = load_selected_raw(raw)\n                                             ~~~~~~~~~~~~~~~~~^^^^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 60, in load_selected_raw\n    raise ValueError(f\"required raw probes absent: {missing[:20]}\")\nValueError: required raw probes absent: ['I(Lin|XBQ1)', 'I(Lin|XBQ2)', 'V(Lin|XBQ1)', 'V(Lin|XBQ2)']\n",
+  "prior_analysis_error": "Traceback (most recent call last):\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 321, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 315, in main\n    qa = analyze(args.run_id)\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 254, in analyze\n    time_tokens_s, times_s, values, raw_qa = load_selected_raw(raw)\n                                             ~~~~~~~~~~~~~~~~~^^^^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 60, in load_selected_raw\n    raise ValueError(f\"required raw probes absent: {missing[:20]}\")\nValueError: required raw probes absent: ['I(Lin|XBQ1)', 'I(Lin|XBQ2)', 'V(Lin|XBQ1)', 'V(Lin|XBQ2)']\n",
+  "raw_sha256_before_reanalysis": "3b364522d769bc500f7d5aeddfb6f41cc5e2eed1d90ea1c2214aa115da1740a9",
+  "raw_sha256_after_reanalysis": "3b364522d769bc500f7d5aeddfb6f41cc5e2eed1d90ea1c2214aa115da1740a9",
+  "header_aliases": {
+    "I(Lin|XBQ1)": "I(LIN|XBQ1)",
+    "I(Lin|XBQ2)": "I(LIN|XBQ2)",
+    "V(Lin|XBQ1)": "V(LIN|XBQ1)",
+    "V(Lin|XBQ2)": "V(LIN|XBQ2)"
+  },
+  "tool_repair": "Resolve JoSIM case-normalized raw header labels case-insensitively while preserving canonical probe labels; do not modify raw, deck, stimulus, topology, solver settings, or physics.",
+  "same_raw_mechanical_qa": "PASS",
+  "same_raw_independent_arithmetic_qa": "PASS",
+  "raw_or_physical_rerun": false,
+  "updated_script_sha256": {
+    "SCRIPT_ANALYZE_RUN": "f768595686deb28ff1ac847765ea00dc68e169f343d45f1e865dd379e9841885",
+    "SCRIPT_INDEPENDENT_VERIFY": "9bdf022aad2c1ff489e465fe6b9411bfecfcde902c5cf0434f88e3f1bd919051",
+    "SCRIPT_PLOT_RUN": "98f7d182bb77a1bb0df5403a1072fa179950b42d41f957f556f8b33c5c75b796",
+    "SCRIPT_TEST_PLATFORM": "f68d66de683be1408fe758ebba3eb66a99efe7de93c39edef0de0af461cf2652"
+  },
+  "resume_runner_sha256": "192a315a40d8814ade2242538a66d6bfb98ad2c464af5088aba8f93b8b1612ab",
+  "source_lock_physics_closure_unchanged": true,
+  "scientific_interpretation_performed": false
+}

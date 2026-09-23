@@ -136,12 +136,23 @@ class ExperimentPlatformTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             raw = Path(temp) / "raw.csv"
             raw.write_text("time,V(A)\n0,0.0\n1.1e-10,1.2500000000000000\n1.209999e-10,-2\n1.21e-10,9\n", encoding="utf-8")
-            fields, rows, times, tokens = headers_and_rows(raw, ["V(A)"], (110.0, 121.0))
+            fields, rows, times, tokens, aliases = headers_and_rows(raw, ["V(A)"], (110.0, 121.0))
             self.assertEqual(fields, ["time", "V(A)"])
             self.assertEqual(rows, [{"time": "1.1e-10", "V(A)": "1.2500000000000000"},
                                     {"time": "1.209999e-10", "V(A)": "-2"}])
             self.assertEqual(times, [110.0, 120.9999])
             self.assertEqual(tokens, ["1.1e-10", "1.209999e-10"])
+            self.assertEqual(aliases, {})
+
+    def test_josim_component_header_case_alias(self):
+        with tempfile.TemporaryDirectory() as temp:
+            raw = Path(temp) / "raw.csv"
+            raw.write_text("time,I(LIN|XBQ1)\n0,0\n1e-12,3e-6\n", encoding="utf-8")
+            fields, rows, _times, _tokens, aliases = headers_and_rows(
+                raw, ["I(Lin|XBQ1)"], None)
+            self.assertEqual(fields, ["time", "I(Lin|XBQ1)"])
+            self.assertEqual(rows[1]["I(Lin|XBQ1)"], "3e-6")
+            self.assertEqual(aliases, {"I(Lin|XBQ1)": "I(LIN|XBQ1)"})
 
     def test_classic_plotter_phase_conversion_and_axis_qa(self):
         with tempfile.TemporaryDirectory(prefix="josim_plot2_smoke_") as temp:
@@ -177,20 +188,21 @@ class ExperimentPlatformTests(unittest.TestCase):
             tokens = ["0", "1.01e-10", "1.0999e-10", "1.1e-10",
                       "1.2e-10", "1.21e-10", "1.9999e-10"]
             signals = probe_signals()
+            raw_headers = {signal: signal.replace("Lin|XBQ", "LIN|XBQ") for signal in signals}
             voltage = PHI0 / (2.0 * 3.141592653589793) * 1e11
             with raw.open("w", encoding="utf-8", newline="") as stream:
-                writer = csv.DictWriter(stream, fieldnames=["time", *signals])
+                writer = csv.DictWriter(stream, fieldnames=["time", *[raw_headers[signal] for signal in signals]])
                 writer.writeheader()
                 for token in tokens:
                     time_ps = float(raw_time_ps(token))
                     row = {"time": token}
                     for signal in signals:
                         if signal.startswith("P("):
-                            row[signal] = repr(time_ps * 0.1)
+                            row[raw_headers[signal]] = repr(time_ps * 0.1)
                         elif signal.startswith("V("):
-                            row[signal] = repr(voltage)
+                            row[raw_headers[signal]] = repr(voltage)
                         else:
-                            row[signal] = "0"
+                            row[raw_headers[signal]] = "0"
                     writer.writerow(row)
             write_json(run_root / "metadata.json", {"parameters": {"MASK": "00"},
                         "raw": {"sha256": sha256(raw)}})
@@ -201,6 +213,11 @@ class ExperimentPlatformTests(unittest.TestCase):
             self.assertEqual(mechanical["status"], "PASS")
             self.assertEqual(independent["status"], "PASS")
             self.assertEqual(len(independent["checks"]), 35)
+            aliases = analyze_run.load_selected_raw(raw)[-1]["raw_header_aliases"]
+            self.assertEqual(aliases, {"I(Lin|XBQ1)": "I(LIN|XBQ1)",
+                                       "I(Lin|XBQ2)": "I(LIN|XBQ2)",
+                                       "V(Lin|XBQ1)": "V(LIN|XBQ1)",
+                                       "V(Lin|XBQ2)": "V(LIN|XBQ2)"})
 
 
 if __name__ == "__main__":

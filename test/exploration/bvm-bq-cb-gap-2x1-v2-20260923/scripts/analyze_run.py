@@ -53,11 +53,21 @@ def load_selected_raw(raw: Path) -> tuple[list[str], list[float], dict[str, list
         headers = reader.fieldnames or []
         if not headers or len(headers) != len(set(headers)):
             raise ValueError("raw CSV has empty or duplicate headers")
+        folded_headers = [header.casefold() for header in headers]
+        if len(folded_headers) != len(set(folded_headers)):
+            raise ValueError("raw CSV contains headers ambiguous under JoSIM case normalization")
         if headers[0].strip().lower() != "time":
             raise ValueError("raw CSV first column must be the stored time in seconds")
-        missing = sorted(set(requested) - set(headers))
+        actual_header_by_casefold = {header.casefold(): header for header in headers}
+        missing = sorted(signal for signal in requested
+                         if signal.casefold() not in actual_header_by_casefold)
         if missing:
             raise ValueError(f"required raw probes absent: {missing[:20]}")
+        raw_header_aliases = {signal: actual_header_by_casefold[signal.casefold()]
+                              for signal in requested
+                              if signal != actual_header_by_casefold[signal.casefold()]}
+        canonical_by_raw_header = {actual_header_by_casefold[signal.casefold()]: signal
+                                   for signal in requested}
         time_tokens_s: list[str] = []
         times_s: list[float] = []
         times_ps: list[Decimal] = []
@@ -80,8 +90,9 @@ def load_selected_raw(raw: Path) -> tuple[list[str], list[float], dict[str, list
                     if not math.isfinite(value):
                         finite_values = False
                         raise ValueError(f"non-finite {header}")
-                    if header in values:
-                        values[header].append(value)
+                    canonical_header = canonical_by_raw_header.get(header)
+                    if canonical_header in values:
+                        values[canonical_header].append(value)
             except (KeyError, TypeError, ValueError, ArithmeticError) as exc:
                 raise ValueError(f"invalid raw value at line {line_no}: {exc}") from exc
     if len(times_ps) < 2 or any(right <= left for left, right in zip(times_ps, times_ps[1:])):
@@ -98,6 +109,7 @@ def load_selected_raw(raw: Path) -> tuple[list[str], list[float], dict[str, list
           "raw_sha256_before": before, "raw_sha256_after": None,
           "sample_count": len(times_s), "column_count": len(headers),
           "requested_probe_count": len(requested), "missing_required_probes": [],
+          "raw_header_aliases": raw_header_aliases,
           "finite_values": finite_values, "strictly_increasing_time": True,
           "time_start_s_token": time_tokens_s[0], "time_end_s_token": time_tokens_s[-1],
           "time_start_ps": float(times_ps[0]), "time_end_ps": float(times_ps[-1]),

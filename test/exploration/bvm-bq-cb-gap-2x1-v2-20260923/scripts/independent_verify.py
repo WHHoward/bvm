@@ -11,7 +11,7 @@ from decimal import Decimal, localcontext
 from pathlib import Path
 from typing import Any
 
-from common import MATRIX, read_json, run_dir, sha256, write_json
+from common import MATRIX, PHI0, read_json, run_dir, sha256, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
 MAPPING = read_json(ROOT / "analysis" / "PHASE_AREA_MAPPING.json")
@@ -61,18 +61,26 @@ def verify(run_id: str) -> dict[str, Any]:
         headers = reader.fieldnames or []
         if len(headers) != len(set(headers)):
             raise ValueError("duplicate raw CSV columns")
-        missing = sorted(required - set(headers))
+        folded_headers = [header.casefold() for header in headers]
+        if len(folded_headers) != len(set(folded_headers)):
+            raise ValueError("raw headers collide under JoSIM case normalization")
+        actual_header = {header.casefold(): header for header in headers}
+        missing = sorted(name for name in required if name != "time" and name.casefold() not in actual_header)
+        if "time" not in actual_header:
+            missing.append("time")
         if missing:
             raise ValueError(f"independent check missing required raw columns: {missing}")
+        raw_header_aliases = {name: actual_header[name.casefold()] for name in required
+                              if name != "time" and name != actual_header[name.casefold()]}
         time_tokens_s: list[str] = []
         selected = {name: [] for name in required if name != "time"}
         for line_no, row in enumerate(reader, start=2):
-            token = row["time"]
+            token = row[actual_header["time"]]
             if not Decimal(token).is_finite():
                 raise ValueError(f"non-finite time token at line {line_no}")
             time_tokens_s.append(token)
             for signal in selected:
-                value = Decimal(row[signal])
+                value = Decimal(row[actual_header[signal.casefold()]])
                 if not value.is_finite():
                     raise ValueError(f"non-finite {signal} at line {line_no}")
                 selected[signal].append(value)
@@ -144,6 +152,7 @@ def verify(run_id: str) -> dict[str, Any]:
           "status": status, "raw_sha256_before_after": {"before": before, "after": after},
           "independent_method": "Decimal raw seconds, raw voltage and raw phase; no analyzer imports",
           "mechanical_reproduction_tolerances": TOLERANCES,
+          "raw_header_aliases": raw_header_aliases,
           "these_tolerances_are_not_physical_or_acceptance_tolerances": True,
           "checks": comparisons, "interpolation": False, "resampling": False,
           "raw_unchanged": True, "scientific_interpretation_performed": False}

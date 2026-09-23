@@ -1,0 +1,228 @@
+{
+  "schema": "bvm-bq-cb-gap-preflight-v1",
+  "status": "PASS",
+  "created_at": "2026-09-23T18:46:27+08:00",
+  "head": "4e790ca0edf3bb9aa29b78e7ab723798efbaa7ee",
+  "parent_head": "286eeaadf92b34c4d6550e6ff748cca3b3841726",
+  "git_dirty": false,
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "source_lock_sha256": "656eb3f97672b125abff9446646278687827a2a040f5d5c16238250e9eccdb01",
+  "authorized_solve_count": 4,
+  "matrix_sha256": "175d1fa3c4605c8ba6503a9a56e4c49de163f3aae8d511d1501ce8e2b927fdb1",
+  "cases": [
+    {
+      "run_id": "N0_00",
+      "mask": "00",
+      "active_bvms": [],
+      "purpose": "no-active-read false-positive control",
+      "probe_count": 223,
+      "pwl_source_count": 6,
+      "stimulus_sha256": "0df75c3e5a050a2a9fc75b4d622cc8f5d42535a6a3071686c4212d3d9d528f5d",
+      "rendered_deck_sha256": "7e920f16834a4382ae824dc370550464848af19d0a39e723be2aa80d34e20a1e",
+      "rendered_source_sha256": {
+        "BVM_0923": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+        "BQ_0923": "76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2",
+        "CB_0923": "f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216",
+        "sJTL_0923": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+      },
+      "read_schedule_ps": [
+        {
+          "start": 110,
+          "end": 121
+        }
+      ],
+      "registered_windows_ps": {
+        "pre_read": [
+          101,
+          110
+        ],
+        "final_read": [
+          110,
+          121
+        ],
+        "post_read": [
+          121,
+          200
+        ],
+        "read_response": [
+          110,
+          200
+        ]
+      },
+      "actual_grid_contract": {
+        "time_column_unit": "seconds",
+        "required_start_ps": 0.0,
+        "minimum_end_ps": 199.99,
+        "minimum_end_basis": "STOP-DT, retaining the final stored step under .tran 0.01p 200p 0p",
+        "window_membership": "exact Decimal parse of stored time token; half-open [start,end)"
+      },
+      "dt": "0.01p",
+      "stop": "200p",
+      "no_solver_executed": true
+    },
+    {
+      "run_id": "N1_01",
+      "mask": "01",
+      "active_bvms": [
+        2
+      ],
+      "purpose": "local ACC2 to GAP2 path",
+      "probe_count": 223,
+      "pwl_source_count": 6,
+      "stimulus_sha256": "0cde8f0d347534333c1addee56c1d29dc1e70bedf850b287fa629cf06161ce56",
+      "rendered_deck_sha256": "7e920f16834a4382ae824dc370550464848af19d0a39e723be2aa80d34e20a1e",
+      "rendered_source_sha256": {
+        "BVM_0923": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+        "BQ_0923": "76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2",
+        "CB_0923": "f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216",
+        "sJTL_0923": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+      },
+      "read_schedule_ps": [
+        {
+          "start": 110,
+          "end": 121
+        }
+      ],
+      "registered_windows_ps": {
+        "pre_read": [
+          101,
+          110
+        ],
+        "final_read": [
+          110,
+          121
+        ],
+        "post_read": [
+          121,
+          200
+        ],
+        "read_response": [
+          110,
+          200
+        ]
+      },
+      "actual_grid_contract": {
+        "time_column_unit": "seconds",
+        "required_start_ps": 0.0,
+        "minimum_end_ps": 199.99,
+        "minimum_end_basis": "STOP-DT, retaining the final stored step under .tran 0.01p 200p 0p",
+        "window_membership": "exact Decimal parse of stored time token; half-open [start,end)"
+      },
+      "dt": "0.01p",
+      "stop": "200p",
+      "no_solver_executed": true
+    },
+    {
+      "run_id": "N1_10",
+      "mask": "10",
+      "active_bvms": [
+        1
+      ],
+      "purpose": "upstream ACC1 to GAP1 to GAP2 path",
+      "probe_count": 223,
+      "pwl_source_count": 6,
+      "stimulus_sha256": "c9dbf16559c38d065939dca1a5a5dce5c4f37e7fce7483f464101a1b56d5921a",
+      "rendered_deck_sha256": "7e920f16834a4382ae824dc370550464848af19d0a39e723be2aa80d34e20a1e",
+      "rendered_source_sha256": {
+        "BVM_0923": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+        "BQ_0923": "76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2",
+        "CB_0923": "f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216",
+        "sJTL_0923": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+      },
+      "read_schedule_ps": [
+        {
+          "start": 110,
+          "end": 121
+        }
+      ],
+      "registered_windows_ps": {
+        "pre_read": [
+          101,
+          110
+        ],
+        "final_read": [
+          110,
+          121
+        ],
+        "post_read": [
+          121,
+          200
+        ],
+        "read_response": [
+          110,
+          200
+        ]
+      },
+      "actual_grid_contract": {
+        "time_column_unit": "seconds",
+        "required_start_ps": 0.0,
+        "minimum_end_ps": 199.99,
+        "minimum_end_basis": "STOP-DT, retaining the final stored step under .tran 0.01p 200p 0p",
+        "window_membership": "exact Decimal parse of stored time token; half-open [start,end)"
+      },
+      "dt": "0.01p",
+      "stop": "200p",
+      "no_solver_executed": true
+    },
+    {
+      "run_id": "N2_11",
+      "mask": "11",
+      "active_bvms": [
+        1,
+        2
+      ],
+      "purpose": "two input contributions at shared GAP2_IN",
+      "probe_count": 223,
+      "pwl_source_count": 6,
+      "stimulus_sha256": "67ce62a6dc69466c56880bb19e93e3bc11ef4462a4c347e2016f523d06f81cea",
+      "rendered_deck_sha256": "7e920f16834a4382ae824dc370550464848af19d0a39e723be2aa80d34e20a1e",
+      "rendered_source_sha256": {
+        "BVM_0923": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+        "BQ_0923": "76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2",
+        "CB_0923": "f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216",
+        "sJTL_0923": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+      },
+      "read_schedule_ps": [
+        {
+          "start": 110,
+          "end": 121
+        }
+      ],
+      "registered_windows_ps": {
+        "pre_read": [
+          101,
+          110
+        ],
+        "final_read": [
+          110,
+          121
+        ],
+        "post_read": [
+          121,
+          200
+        ],
+        "read_response": [
+          110,
+          200
+        ]
+      },
+      "actual_grid_contract": {
+        "time_column_unit": "seconds",
+        "required_start_ps": 0.0,
+        "minimum_end_ps": 199.99,
+        "minimum_end_basis": "STOP-DT, retaining the final stored step under .tran 0.01p 200p 0p",
+        "window_membership": "exact Decimal parse of stored time token; half-open [start,end)"
+      },
+      "dt": "0.01p",
+      "stop": "200p",
+      "no_solver_executed": true
+    }
+  ],
+  "errors": [],
+  "scientific_interpretation_performed": false,
+  "no_solve_executed": true
+}

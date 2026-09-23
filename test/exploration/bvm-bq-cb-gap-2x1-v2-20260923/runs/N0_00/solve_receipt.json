@@ -1,0 +1,34 @@
+{
+  "run_id": "N0_00",
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "--output",
+    "/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/runs/N0_00/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/runs/N0_00/actual_deck.cir"
+  ],
+  "cwd": "test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/runs/N0_00",
+  "started_at": "2026-09-23T18:46:31+08:00",
+  "head": "4e790ca0edf3bb9aa29b78e7ab723798efbaa7ee",
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "deck_sha256": "7e920f16834a4382ae824dc370550464848af19d0a39e723be2aa80d34e20a1e",
+  "stimulus_sha256": "0df75c3e5a050a2a9fc75b4d622cc8f5d42535a6a3071686c4212d3d9d528f5d",
+  "solve_started": true,
+  "status": "RAW_QA_FAIL_STOP",
+  "completed_at": "2026-09-23T18:46:33+08:00",
+  "returncode": 0,
+  "stdout_sha256": "bdfbae3c4aa0aef138aed761c0c3ef710b4c9dfe99f17b06eba04125cbc2ec58",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "run_log_sha256": "2442f1b3e2a1382fcf89ff0eb5d352d0a2f9c49f4e5f1c26f296fea114405736",
+  "raw_exists": true,
+  "raw": {
+    "sha256": "3b364522d769bc500f7d5aeddfb6f41cc5e2eed1d90ea1c2214aa115da1740a9",
+    "bytes": 59955700
+  },
+  "mechanical_qa_returncode": 1,
+  "mechanical_qa_stdout": "",
+  "mechanical_qa_stderr": "Traceback (most recent call last):\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 321, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 315, in main\n    qa = analyze(args.run_id)\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 254, in analyze\n    time_tokens_s, times_s, values, raw_qa = load_selected_raw(raw)\n                                             ~~~~~~~~~~~~~~~~~^^^^^\n  File \"/home/howard/JoSIM/test/exploration/bvm-bq-cb-gap-2x1-v2-20260923/scripts/analyze_run.py\", line 60, in load_selected_raw\n    raise ValueError(f\"required raw probes absent: {missing[:20]}\")\nValueError: required raw probes absent: ['I(Lin|XBQ1)', 'I(Lin|XBQ2)', 'V(Lin|XBQ1)', 'V(Lin|XBQ2)']\n"
+}

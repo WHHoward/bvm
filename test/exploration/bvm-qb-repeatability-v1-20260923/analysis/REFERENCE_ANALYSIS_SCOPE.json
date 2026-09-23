@@ -1,0 +1,55 @@
+{
+  "schema": "bvm-qb-repeatability-readonly-reference-scope-v1",
+  "scope_status": "RETROSPECTIVELY_DOCUMENTED_PRELIMINARY_INSPECTION",
+  "purpose": "Set a navigation-only terminal candidate latency bracket before registering the new platform preflight.",
+  "authorized_inputs": [
+    {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/raw.csv",
+      "sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482"
+    },
+    {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/raw.csv",
+      "sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c"
+    },
+    {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/raw.csv",
+      "sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6"
+    }
+  ],
+  "authorized_comparison_artifacts": [
+    "For each of REG_A_QB2X1_N1, REG_B_QB2X1_N2, and REG_C_QB3X1_N3 only: the named historical run's metadata.json, actual_deck.cir, stimulus.inc, source_manifest.json, and snapshot/sources/* files.",
+    "The authorized new-run artifacts are the corresponding immutable config_snapshot.env, actual_deck.cir, stimulus.inc, source_manifest.json, and snapshot/sources/* files.",
+    "Allowed comparisons: resolved circuit parameters, normalized netlist body/topology, PWL source points through the final registered stimulus endpoint, solver/source hashes, and exact shared raw time-grid prefix through [0,240) ps (the complete historical stored prefix including READ5 and its available tail)."
+  ],
+  "read_only_operations": [
+    "Read V(BJ2|XBQ1) and V(R_TERM) from stored samples.",
+    "Form positive-voltage navigation clusters at 100 uV with a 0.5 ps gap, then print candidate peak timestamps and their forward timestamp differences.",
+    "Inspect only the existing repeated-read time range; do not change solver, raw, deck, parameter, topology, or timing.",
+    "Compare only the explicitly named A/B/C run artifact closures above; calculate direct equality and descriptive differences without inventing an acceptance tolerance."
+  ],
+  "operation_record": {
+    "no_solver_run": true,
+    "raw_mutation": false,
+    "circuit_or_parameter_change": false,
+    "interpolation_or_resampling": false,
+    "scientific_interpretation": false,
+    "preflight_created_before_this_initial_inspection": false,
+    "transparency_note": "This scope record was added after the preliminary timestamp inspection. The inspection only informed a descriptive candidate-search bracket and is not a physical acceptance rule. Future historical-raw analysis requires a pre-existing machine-readable scope."
+  },
+  "scoped_revalidation": {
+    "started_at": "2026-09-23T11:33:35+08:00",
+    "operation": "Repeat the same positive BJ2/terminal candidate peak timestamp check on the same hash-bound A/B/C references after scope creation; no output files, circuit changes, parameter changes, or solves.",
+    "purpose": "Verify only that the frozen navigation search interval contains the first historical candidate peak separation; not a physical acceptance criterion."
+  },
+  "scoped_revalidation_results": [
+    {"case_id": "QB_2X1_01", "raw_sha256": "b9e7e4856c80901c35b7d54d29b3f61629482be2e752d4c5c5b7c2630d611482", "bj2_peak_ps": 118.6, "terminal_peak_ps": 136.2, "latency_ps": 17.6, "raw_hash_unchanged": true},
+    {"case_id": "QB_2X1_11", "raw_sha256": "b362134afbb163ae30fd9adffb23f77f3f1a17c7722a8a0775ee90e1171d181c", "bj2_peak_ps": 115.1, "terminal_peak_ps": 132.7, "latency_ps": 17.6, "raw_hash_unchanged": true},
+    {"case_id": "QB_3X1_111", "raw_sha256": "1d4590670b7c0ac6f71bb0a800d1b5040893e955043aa1c82edaf7811b7b22a6", "bj2_peak_ps": 114.6, "terminal_peak_ps": 132.1, "latency_ps": 17.5, "raw_hash_unchanged": true}
+  ],
+  "derived_navigation_setting": {
+    "latency_min_ps": 0,
+    "latency_max_ps": 25,
+    "basis": "First positive BJ2 and terminal candidate peak separations in the three listed references were about 17.5 ps; the wider bracket is only for candidate association and may yield AMBIGUOUS.",
+    "not_a_gate_or_event_count": true
+  }
+}

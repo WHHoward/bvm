@@ -1,0 +1,35 @@
+{
+  "schema": "bvm-qb-repeatability-regression-matrix-v1",
+  "authorized_solve_count": 5,
+  "scientific_interpretation_performed": false,
+  "cases": [
+    {
+      "case_id": "REG_A_QB2X1_N1",
+      "purpose": "descriptive regression compatibility with the historical 2x1 N1 repeated-read raw",
+      "reference_run": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01",
+      "overrides": {"TEST_MODE": "REPEAT_READ", "CANDIDATE": "QB_2X1", "ARRAY_SIZE": "2", "MASK": "01", "READ_PERIOD_PS": "20", "READ_COUNT": "5"}
+    },
+    {
+      "case_id": "REG_B_QB2X1_N2",
+      "purpose": "descriptive regression compatibility with the historical 2x1 N2 repeated-read raw",
+      "reference_run": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11",
+      "overrides": {"TEST_MODE": "REPEAT_READ", "CANDIDATE": "QB_2X1", "ARRAY_SIZE": "2", "MASK": "11", "READ_PERIOD_PS": "20", "READ_COUNT": "5"}
+    },
+    {
+      "case_id": "REG_C_QB3X1_N3",
+      "purpose": "descriptive regression compatibility with the historical 3x1 N3 repeated-read raw",
+      "reference_run": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111",
+      "overrides": {"TEST_MODE": "REPEAT_READ", "CANDIDATE": "QB_3X1", "ARRAY_SIZE": "3", "MASK": "111", "READ_PERIOD_PS": "20", "READ_COUNT": "5"}
+    },
+    {
+      "case_id": "REG_D_QB2X1_RECOVERY",
+      "purpose": "platform smoke: one read followed by the registered free-recovery tail",
+      "overrides": {"TEST_MODE": "RECOVERY_PROBE", "CANDIDATE": "QB_2X1", "ARRAY_SIZE": "2", "MASK": "11", "READ_PERIOD_PS": "20", "READ_COUNT": "1", "RECOVERY_TAIL_PS": "100"}
+    },
+    {
+      "case_id": "REG_E_QB2X1_REWRITE_SMOKE",
+      "purpose": "platform smoke: all three registered rewrite states and final read are inside STOP",
+      "overrides": {"TEST_MODE": "REWRITE_READ", "CANDIDATE": "QB_2X1", "ARRAY_SIZE": "2", "MASK": "11", "STATE_SEQUENCE": "00,01,11", "STATE_INTERVAL_PS": "70"}
+    }
+  ]
+}

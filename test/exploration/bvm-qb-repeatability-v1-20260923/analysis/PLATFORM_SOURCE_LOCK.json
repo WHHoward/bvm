@@ -1,0 +1,254 @@
+{
+  "schema": "bvm-qb-repeatability-platform-source-lock-v1",
+  "created_at": "2026-09-23T12:30:09+08:00",
+  "initial_parent_head": "01ea983cbf56d10083124c834a8c99097f41aa25",
+  "authorized_case_ids": [
+    "REG_A_QB2X1_N1",
+    "REG_B_QB2X1_N2",
+    "REG_C_QB3X1_N3",
+    "REG_D_QB2X1_RECOVERY",
+    "REG_E_QB2X1_REWRITE_SMOKE"
+  ],
+  "authorized_solve_count": 5,
+  "regression_matrix_sha256": "54595542217bb15d5107c3367b11a393afb1cb35510d214478fba84a59574156",
+  "source_hashes": {
+    "USER_CASE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/USER_CASE.env",
+      "sha256": "5cbc50e541eaeb631583aedd9cb86ef9d1980c32ab050009211b180acf1d5ee6"
+    },
+    "REFERENCE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/REFERENCE.env",
+      "sha256": "70023628a2d3992805b38696b50390947c51c2ff128edba26d5698021912f278"
+    },
+    "CANDIDATE_PROFILES": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/candidate_profiles.json",
+      "sha256": "134c00ff684197d194219bb2f5e3052a2a13d2225b1c24cfebed4a666786890b"
+    },
+    "REGRESSION_MATRIX": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/REGRESSION_MATRIX.json",
+      "sha256": "54595542217bb15d5107c3367b11a393afb1cb35510d214478fba84a59574156"
+    },
+    "PREFLIGHT_SCOPE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/REFERENCE_ANALYSIS_SCOPE.json",
+      "sha256": "d0b95b344f8b492719f7c26f7dfbe0f5982bc24d14688f6bc72d86bc25194a4f"
+    },
+    "PACKAGE_CHECKPOINTS": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/PACKAGE_CHECKPOINTS.json",
+      "sha256": "4e04cab8dccd369ed30456e8b7e904341f41f1d3518a0ede5a92ecd63036b259"
+    },
+    "PLATFORM_NUMERICAL_QA": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/analysis/PLATFORM_NUMERICAL_QA.json",
+      "sha256": "bb42c42ee81cebe116a1060736b18a95f2baae255773381ee63b88dba92a3f43"
+    },
+    "PACKAGE_BASE_ARCHIVE": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/handoff/bvm-qb-50ghz-merge-v1-20260922_raw_handoff_classic-v4.zip",
+      "sha256": "e965bac4653748faa6761fd29fcb991043a800065ffad4f66cedc508e8af5c8a"
+    },
+    "EXPERIMENT": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/experiment.yaml",
+      "sha256": "2087a4850d6e19bf5f664cae530dd4d1206e15fc410f30eae4099e4f7c51393c"
+    },
+    "PREFLIGHT_MARKDOWN": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/PREFLIGHT.md",
+      "sha256": "2d3ab40cc9b9a9df3a4ec650abc891c543ef85c2da7f759f3fb35b6baee3a60e"
+    },
+    "README": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/README.md",
+      "sha256": "fc6317d43a3e861b0ba2574b9fbaf9f09980c6c3993070b1aee4f89698b8ed9c"
+    },
+    "GIT_ATTRIBUTES": {
+      "path": ".gitattributes",
+      "sha256": "23d1a3161857cb1d2e84e18bc4573c57250a5495174bb72a60dd2c88810250c3"
+    },
+    "BVM_TEMPLATE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/circuits/bvm_tunable.cir",
+      "sha256": "fdf1d2f247bfb1d5aad1ee043b552c5119f7a6b5504e62f161adaa6a10312d48"
+    },
+    "QB_TEMPLATE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/circuits/bq_tunable.cir",
+      "sha256": "17ffc7732deeeccb1c31c284237fabac5fdb682914fcf9117ea4f13bc62bd61d"
+    },
+    "TOP_TEMPLATE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/circuits/top_template.cir",
+      "sha256": "64df73e866d5ae7da425e2bf24cf85071cafa52cb68d8272e1333a3df5fd2179"
+    },
+    "JJ_MODEL": {
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "JTL": {
+      "path": "test/exploration/bvm-qb-l1-l3-bj2-targeted-closure-v1-20260914/inputs/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "PLOTTER": {
+      "path": "scripts/josim-plot2.py",
+      "sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6"
+    },
+    "RUNNER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_case.py",
+      "sha256": "926d4fb52e9f53b16b11df2f63c797b7e14e6b0ebf9882a9d6d75b3fd215196a"
+    },
+    "COMMON": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/common.py",
+      "sha256": "b1f1f30ef34c3c72c89f6e51916240280cd846916b17f484e6c9e98e5160c747"
+    },
+    "STIMULUS": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/stimulus.py",
+      "sha256": "bf23fdf581385f9e20d59e64b32f7e224584aed9b9e26fd88f897f2101214b6a"
+    },
+    "ANALYZER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/analyze_case.py",
+      "sha256": "68563435f4668003a4c2fcb6ac7625934dcaaf4fdf092fbacd6735c1d97d998e"
+    },
+    "PLOT_CASE": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/plot_case.py",
+      "sha256": "b7f2d5cfeb4c01b163d6be15ec4982d4de88d74509c6971b321b97bddc36f98e"
+    },
+    "PREFLIGHT": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/preflight.py",
+      "sha256": "5247f3ef46b4b45595bc23e3ba9349d6640765dcb7d27c9f3841989a988e6462"
+    },
+    "REGRESSION_RUNNER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_regression.py",
+      "sha256": "b337b36a513aa90ae4bf2f51cae72faf0ce9401ac7ba2e34679c267303eb34ef"
+    },
+    "SWEEP_RUNNER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/run_sweep.py",
+      "sha256": "d81c2fbcffad8b1cdbc9a9fbb5a4ef5434c8705a71bfc04cd0f45fdccc863d50"
+    },
+    "FINALIZER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/finalize.py",
+      "sha256": "9571975351532d144efb95ad5d4e2afe364309297cdf360a87eda906a2a7ff0f"
+    },
+    "PACKAGER": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/scripts/package.py",
+      "sha256": "882e1227cc2e5773b982bf30c42b73842628d97eca40dcf136725518d36682f8"
+    },
+    "PLATFORM_TESTS": {
+      "path": "test/exploration/bvm-qb-repeatability-v1-20260923/tests/test_platform.py",
+      "sha256": "879e82a85ae558e10b980fced1a963062162fcfa77c9f99b7ce390ff490b5a94"
+    },
+    "ONE_SHOT_RENDERER": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/scripts/run_candidate.py",
+      "sha256": "d46c485f7c952a615e014c47323194b3d2a7415de4e37ae8d23c1b3c527b0737"
+    },
+    "ONE_SHOT_ARRAY_MASK_HELPER": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/scripts/fan_in.py",
+      "sha256": "d4b48b40626aa613e1a9197f6aaa3093b3210c586689d0ef8e77c1dd243a1cf4"
+    },
+    "ONE_SHOT_BVM_TEMPLATE": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/circuits/bvm_tunable.cir",
+      "sha256": "1b0431c5c06616bc04e3c1c21187a74e7e1dd0805552905e0c4e609849c95c66"
+    },
+    "ONE_SHOT_QB_TEMPLATE": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/circuits/bq_tunable.cir",
+      "sha256": "140154e3375a76de07b55c218f5069b27fdbacea23308485124422ece5163eda"
+    },
+    "ONE_SHOT_TOP_TEMPLATE": {
+      "path": "test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/circuits/closed_top.cir",
+      "sha256": "fbab4846fc6fd1079ee0e48b97b777973ffe8a93ba9e1a652dde9a93e95203d7"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_METADATA": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/metadata.json",
+      "sha256": "fa3e1b4f14b5c7d92f8e4408c84d1043f67e1b5c746576d6998c6a572b1a6dff"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_DECK": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/actual_deck.cir",
+      "sha256": "931f1a76b45859debb00d57c22760cb04585da44338198f560e2c86ca7bba131"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_STIMULUS": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/stimulus.inc",
+      "sha256": "ab62a6644cc104ebfa53bab3d7c6070e700af800fe126d148f806970eea6f562"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_SOURCE_MANIFEST": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/source_manifest.json",
+      "sha256": "68647908483e9d238800b9edada6c44fce6b46bb9ef144a31622a30b675f3b3f"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_BVM": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/bvm_tunable.cir",
+      "sha256": "9d5e94adc089b8c032a19d5ac7a3ba0276d9dea498960c9dc098c12699799fee"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_QB": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/bq_tunable.cir",
+      "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_JJ": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "REG_A_QB2X1_N1_REFERENCE_JTL": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_01/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_METADATA": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/metadata.json",
+      "sha256": "ab302127ded2872f2048b85a20fb9dbd75b40461aff976b2cee0865a1af380db"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_DECK": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/actual_deck.cir",
+      "sha256": "931f1a76b45859debb00d57c22760cb04585da44338198f560e2c86ca7bba131"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_STIMULUS": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/stimulus.inc",
+      "sha256": "0abdc2af5e52ee5850da4c0e713d58b475a33e9d46760ec16b8d720dcac73c43"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_SOURCE_MANIFEST": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/source_manifest.json",
+      "sha256": "820c14a7d6f893d6baa9f905ce1e0b3bfa0c7cd1686ed903d8a739af9cf655a8"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_BVM": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/bvm_tunable.cir",
+      "sha256": "9d5e94adc089b8c032a19d5ac7a3ba0276d9dea498960c9dc098c12699799fee"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_QB": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/bq_tunable.cir",
+      "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_JJ": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "REG_B_QB2X1_N2_REFERENCE_JTL": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_2X1_11/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_METADATA": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/metadata.json",
+      "sha256": "c5246afcbc4be8c13acaa32631a2fc7116448e58c39ed4b627bb4c4a05258a1f"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_DECK": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/actual_deck.cir",
+      "sha256": "87efb64a68f38f81b010c54d43d3ad04ddf08f966c86171e03b04bc86ae15dd4"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_STIMULUS": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/stimulus.inc",
+      "sha256": "1f928090c208d101f3d086340b2406eb4ba0e712900608b5ba69d5daef1996ff"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_SOURCE_MANIFEST": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/source_manifest.json",
+      "sha256": "dd0819512fa847fe68567f1393672f372f963e7cb8909c3614d64c26753085de"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_BVM": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/bvm_tunable.cir",
+      "sha256": "65dc39ab22bda99bb5d2f9a30d0bd9263d713df6cbe53dd16efc1f58a65c7bc9"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_QB": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/bq_tunable.cir",
+      "sha256": "16c209fee3acd2358bbef99291117655c34a22f95a60f0d63dd43489aaaeee90"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_JJ": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "REG_C_QB3X1_N3_REFERENCE_JTL": {
+      "path": "test/exploration/bvm-qb-50ghz-merge-v1-20260922/phase_a_repeated_read/runs/QB_3X1_111/snapshot/sources/jtl2.cir",
+      "sha256": "ffd31f8eda2a86ca0133342be1ce678831b7237a53911eda046d2bff8454855a"
+    }
+  },
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "scientific_interpretation_performed": false
+}

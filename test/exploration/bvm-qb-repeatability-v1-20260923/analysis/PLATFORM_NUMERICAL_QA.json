@@ -1,0 +1,53 @@
+{
+  "schema": "bvm-qb-repeatability-platform-numerical-qa-v1",
+  "status": "PASS",
+  "scope": "software-semantic tests only; temporary nonphysical CSV fixture plus exact stored-grid source/unit checks",
+  "checks": [
+    {
+      "id": "PHASE_UNWRAP_RAD",
+      "observed": "P(...) remains radians; [3.0,-3.0] rad unwraps to +0.283185307179586 rad delta",
+      "status": "PASS",
+      "physical_claim": false
+    },
+    {
+      "id": "CSV_TIME_SECONDS_TO_PS",
+      "observed": "time is converted from stored CSV seconds by multiplying by 1e12 for ps windows",
+      "status": "PASS",
+      "physical_claim": false
+    },
+    {
+      "id": "ACTUAL_GRID_TRAPEZOID",
+      "observed": "irregular stored time points [0,0.1,0.3] ps with V=[0,2,2] V integrate to 0.5e-12 V*s",
+      "status": "PASS",
+      "physical_claim": false
+    },
+    {
+      "id": "HALF_OPEN_WINDOW",
+      "observed": "window [0.1,0.2) ps includes 0.1 ps and excludes 0.2 ps",
+      "status": "PASS",
+      "physical_claim": false
+    },
+    {
+      "id": "CANDIDATE_THRESHOLD_BOUNDARY",
+      "observed": "voltage exactly equal to the configured threshold is included; the candidate remains navigation-only",
+      "status": "PASS",
+      "physical_claim": false
+    },
+    {
+      "id": "SAME_JJ_PHASE_AREA",
+      "observed": "BJ1 and BJ2 each use their own unwrapped phase, same stored row set, same half-open cycle, and actual time-column trapezoid",
+      "status": "PASS",
+      "physical_claim": false
+    },
+    {
+      "id": "MIXED_UNIT_STATE_DISTANCE",
+      "observed": "phase/current/voltage vector norms are kept in separate homogeneous units; no recovered threshold is defined",
+      "status": "PASS",
+      "physical_claim": false
+    }
+  ],
+  "timestep_convergence": "UNKNOWN_NOT_RUN",
+  "parameter_sensitivity": "UNKNOWN_NOT_RUN",
+  "scientific_interpretation_performed": false,
+  "physical_solve_count": 0
+}

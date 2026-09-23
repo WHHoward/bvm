@@ -1,0 +1,31 @@
+experiment_id: bvm-qb-repeatability-v1-20260923
+study_phase: EXPLORATORY
+parent_head: 01ea983cbf56d10083124c834a8c99097f41aa25
+question: >-
+  Establish an environment-driven, immutable-run platform for repeated reads,
+  free recovery probes, and rewrite/read sequences on the BVM-array to JSL to
+  QB to six-stage JTL path.
+changed:
+  - environment-controlled TEST_MODE, array mask, candidate profile, read cadence and sequence
+  - automatic stimulus-derived STOP with mode-specific recovery tail
+  - non-overlapping cycle metrics and one-to-one candidate attribution
+frozen:
+  - BVM/JSL/QB/JTL topology and device models
+  - candidate profiles as listed in candidate_profiles.json
+  - existing WRITE0/CONTROL/WRITE1 waveform protocol
+  - DT=0.1p for the five registered platform regressions
+  - raw immutability, exact stored-grid analysis, no interpolation
+prohibited:
+  - parameter sweep during this platform build
+  - unregistered physical solve, 4x1, or next-phase run
+  - topology/canonical circuit changes
+  - interpretation of phase turns or voltage candidates as SFQ counts
+authorized_regression_cases:
+  - REG_A_QB2X1_N1
+  - REG_B_QB2X1_N2
+  - REG_C_QB3X1_N3
+  - REG_D_QB2X1_RECOVERY
+  - REG_E_QB2X1_REWRITE_SMOKE
+authorized_physical_solve_count: 5
+automatic_follow_up: false
+scientific_interpretation_performed: false

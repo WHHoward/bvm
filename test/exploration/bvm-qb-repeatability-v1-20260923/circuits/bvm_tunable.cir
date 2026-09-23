@@ -1,0 +1,28 @@
+* Parameterized BVM source from bvm-rloop-one-shot-tuning-v1.
+.subckt BVM WL BL SE SL
+R_BL BL 1 {{RBL}}
+L_PBL 1 2 {{LPBL}}
+R_WL WL 13 {{RWL}}
+L_PWL 13 2 {{LPWL}}
+B_JM1 2 7 jjmit area={{JM1_AREA}}
+{{RJM1_LINE}}
+L_M1 7 0 {{LM1}}
+L_M2 2 3 {{LM2}}
+B_JM2 3 4 jjmit area={{JM2_AREA}}
+{{RJM2_LINE}}
+L_M3 4 8 {{LM3}}
+L_PM 8 0 {{LPM}}
+L_S1 4 5 {{LS1}}
+B_JS1 5 6 jjmit area={{JS1_AREA}}
+{{R_JS1_SHUNT}}
+R_SE SE 14 {{RSE}}
+L_PSE 14 6 {{LPSE}}
+R_S 6 10 {{RS}}
+L_S3 6 10 {{LS3}}
+L_S2 8 9 {{LS2}}
+B_JS2 9 10 jjmit area={{JS2_AREA}}
+{{R_JS2_SHUNT}}
+L_PSL 10 11 {{LPSL}}
+R_SL 11 12 {{RSL}}
+L_SL 12 SL {{LSL}}
+.ends BVM

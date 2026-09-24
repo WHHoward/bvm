@@ -93,6 +93,7 @@ docs/research/COMPACT_WORKFLOW_V2.md.
 | Skill | Use for |
 |---|---|
 | josim-experiment | Default Compact Quick, or an explicitly requested Formal experiment |
+| josim-submit | Submit/package completed evidence using the active series-local workflow, then stop |
 | josim-evidence-audit | Interpret phase, voltage area, SFQ claims, JTL reception and Gate evidence |
 | josim-viz | Focused waveform/topology visualization and classic result indexes |
 | josim-handoff | Explicit Codex↔Claude contracts, ACK/receipt, or delegated audit only |

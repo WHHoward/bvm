@@ -5,6 +5,26 @@ description: Design or run a reproducible JoSIM/BVM Quick or explicitly requeste
 
 # JoSIM/BVM 实验
 
+## 普通 BVM executor bootstrap
+
+开始普通 BVM experiment execution 前先读取：
+
+1. `memory/LUNA_EXECUTOR_MEMORY.md`
+2. `memory/BVM_CURRENT_CONTEXT.md`
+3. active experiment 的 README 与 env/config
+
+先复用已有 platform，优先用现有 `USER_CASE.env` / env / config 驱动参数；
+不要只为一个 case 重建 runner。默认只执行用户明确要求的 physical solve。
+已有 valid raw 时，parser、analysis、report 或 plot 修复针对同一 raw 完成，
+不得因此自动重跑。物理执行与 scientific interpretation 分开；普通 executor
+不解释机制、不选择下一拓扑，完成后停在 user review。
+
+普通执行默认不加载 `josim-evidence-audit`、`reviewer-adversarial`、
+`reviewer-numerical` 或 `josim-handoff`；只有请求实际需要相应的科学解释、
+独立复核或 Codex–Claude contract 时才加载。用户请求提交/打包时使用
+`josim-submit`；active experiment contract 明确要求提交/打包时也按其要求
+路由。本技能不复制提交流程。
+
 ## 默认：Compact Quick
 
 普通研究默认是 QUICK，先回答一个问题、改变一个中心变量，并只运行足够

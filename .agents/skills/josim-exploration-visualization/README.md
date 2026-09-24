@@ -1,4 +1,4 @@
-# Retired skill path
+# RETIRED / COMPATIBILITY ONLY
 
 `josim-exploration-visualization` is no longer an active skill in V2. Its
 maintained visualization and topology helpers now live under

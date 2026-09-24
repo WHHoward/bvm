@@ -6,11 +6,12 @@ description: Render or inspect JoSIM waveform and netlist-derived topology evide
 # JoSIM 波形与拓扑可视化
 
 这是项目唯一的可视化技能，统一负责 waveform、comparison、netlist-derived
-topology 和相关索引。普通 Quick 默认只展示回答问题所需的关键数据：
-CLASSIC_LOCKED、sep_comb、dark、phase rad/(2π) turns。
+topology 和相关索引。普通实验按用户指定的图集和信号集合生成；对所选信号
+默认覆盖 raw 的完整 stored time range，只有用户要求或任务确实需要时才另加
+zoom/window 图。保持 CLASSIC_LOCKED、sep_comb、dark、phase rad/(2π) turns。
 
-默认调用 scripts/josim-plot2.py，只选择输入、被审计结、输出或加载后 JTL
-中的 2–5 条精确标签。full 或其他视觉风格必须由用户明确要求。绘图前
+默认调用 scripts/josim-plot2.py，只选择用户指定的输入、被审计结、输出或加载后 JTL
+中的精确标签；不要自行扩展成全信号 atlas。full 视觉风格或其他风格必须由用户明确要求。绘图前
 读取 CSV 表头；重复标签必须显式选择 occurrence，classic CLI 无法安全选择时
 拒绝隐式取第一列。
 
@@ -20,7 +21,8 @@ CLASSIC_LOCKED、sep_comb、dark、phase rad/(2π) turns。
   phase turns (rad/2π)，不能写成 SFQ count。
 - 图只描述 raw 中直接存在的信号；不能用图形峰值或相位阶跃替代
   josim-evidence-audit 的同 JJ phase/area、控制和传播证据。
-- plot 不运行 JoSIM、不改变 raw、不改变分类；只生成可再生的
+- plot 不运行 JoSIM、不改变 raw、不改变分类；如果 plot/renderer 失败且 raw
+  仍有效，修复并重画同一 raw，不重新 solve。只生成可再生的
   plots/RESULT_OVERVIEW.html 或明确的 comparison 页面。
 
 ## 拓扑图边界

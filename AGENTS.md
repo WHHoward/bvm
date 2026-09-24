@@ -4,9 +4,25 @@ These rules apply to the whole repository.
 
 ## Project context
 
-- For BVM/BQ/DCSFQ/JTL/T1 research, read `docs/HANDOVER.md` before changing experiments or making physical claims.
-- Treat `memory/project-todo.md` as the task authority and its completion criteria as binding.
+- Read `docs/HANDOVER.md` when the requested task needs historical scientific context, route/status reconciliation, or physical claims; do not load it as a ritual for ordinary execution.
+- Treat `memory/project-todo.md` as task authority when the active request places it in scope; an explicit user task does not authorize unrelated work from the todo.
 - Use repository-local skills from `.agents/skills/`; choose the smallest skill set that covers the request.
+
+## BVM experiment executor bootstrap
+
+For ordinary BVM/JoSIM execution, read first:
+
+1. `memory/LUNA_EXECUTOR_MEMORY.md`
+2. `memory/BVM_CURRENT_CONTEXT.md`
+3. the active experiment's README and env/config
+
+Read `docs/HANDOVER.md` only when the task needs historical scientific context,
+route/status reconciliation, or physical claims. Do not load scientific,
+reviewer, or handoff skills for routine execution unless the request needs
+them. Reuse the existing platform and stop after the requested bounded
+delivery; do not start unrelated work from `memory/project-todo.md`.
+Active experiment contracts still determine mandatory QA/package/commit stages;
+this bootstrap narrows routing, not evidence-integrity requirements.
 
 ## Experimental Work — Mandatory Contract
 

@@ -40,14 +40,14 @@ XACC1_12 ACC1_OUT1_12 ACC1_OUT1_13 sJTL
 * XACC1_27 ACC1_OUT1_27 ACC1_OUT1_28 sJTL
 
 * XGAP21 ACC1_OUT1_28 CB2_OUT sJTL
-XCB12 ACC1_OUT1_13 CB2_OUT CB
+XCB12 ACC1_OUT1_13 QB2_OUT CB
 
-XBVM22 WL2 BL2 SE2 BVM2_SL BVM
+XBVM2 WL2 BL2 SE2 BVM2_SL BVM
 XBQ22 BVM2_SL QB2_OUT BQ
 *XACC22 QB2_OUT CB2_IN sJTL
-XCB22 QB2_OUT CB2_OUT CB
+*XCB22 QB2_OUT CB2_OUT CB
 *XACC2 output is directly the shared node; there is no separate ACC2_OUT.
-XACC23 CB2_OUT GAP2_IN sJTL
+XACC23 QB2_OUT GAP2_IN sJTL
 
 XGAP22 GAP2_IN FINAL_OUT sJTL
 R_TERM FINAL_OUT 0 2
@@ -55,12 +55,11 @@ R_TERM FINAL_OUT 0 2
 .print P(BJ1|XBQ22) P(BJ2|XBQ22) P(BJ3|XBQ22)
 
 
-.print P(BJ1|XGAP21)
-.print P(BJ1|XCB22) P(BJ2|XCB22)
-.print P(BJ1|XACC22)
-.print v(ACC1_OUT1_28) v(CB2_OUT)
-.print p(BJ2|XCB12) p(BJ2|XCB22)
-.print P(BJ1|XCB12)
+*.print P(BJ1|XGAP21)
+*.print P(BJ1|XACC22)
+*.print v(ACC1_OUT1_28) v(CB2_OUT)
+*.print p(BJ2|XCB12) p(BJ2|XCB22)
+*.print P(BJ1|XCB12)
 
 
 
@@ -70,10 +69,10 @@ R_TERM FINAL_OUT 0 2
 * .print P(B_JM2|XBVM1)
 * .print V(B_JM2|XBVM1)
 * .print I(B_JM2|XBVM1)
-* .print P(B_JS1|XBVM1)
+.print P(B_JS1|XBVM1)
 * .print V(B_JS1|XBVM1)
 * .print I(B_JS1|XBVM1)
-* .print P(B_JS2|XBVM1)
+.print P(B_JS2|XBVM1)
 * .print V(B_JS2|XBVM1)
 * .print I(B_JS2|XBVM1)
 * .print I(L_M1|XBVM1)
@@ -105,18 +104,18 @@ R_TERM FINAL_OUT 0 2
 * .print I(R_S|XBVM1)
 * .print V(R_S|XBVM1)
 .print I(R_SL|XBVM1)
-.print V(R_SL|XBVM1)
-.print V(BVM1_SL)
+*.print V(R_SL|XBVM1)
+*.print V(BVM1_SL)
 * .print P(B_JM1|XBVM2)
 * .print V(B_JM1|XBVM2)
 * .print I(B_JM1|XBVM2)
 * .print P(B_JM2|XBVM2)
 * .print V(B_JM2|XBVM2)
 * .print I(B_JM2|XBVM2)
-* .print P(B_JS1|XBVM2)
+.print P(B_JS1|XBVM2)
 * .print V(B_JS1|XBVM2)
 * .print I(B_JS1|XBVM2)
-* .print P(B_JS2|XBVM2)
+.print P(B_JS2|XBVM2)
 * .print V(B_JS2|XBVM2)
 * .print I(B_JS2|XBVM2)
 * .print I(L_M1|XBVM2)
@@ -150,10 +149,10 @@ R_TERM FINAL_OUT 0 2
 .print I(R_SL|XBVM2)
 .print V(R_SL|XBVM2)
 .print V(BVM2_SL)
-* .print P(BJ1|XBQ1)
+.print P(BJ1|XBQ1)
 * .print V(BJ1|XBQ1)
 * .print I(BJ1|XBQ1)
-* .print P(BJ2|XBQ1)
+.print P(BJ2|XBQ1)
 * .print V(BJ2|XBQ1)
 * .print I(BJ2|XBQ1)
 .print P(BJ3|XBQ1)
@@ -175,10 +174,10 @@ R_TERM FINAL_OUT 0 2
 * .print V(RJ3|XBQ1)
 * .print I(IB2|XBQ1)
 .print V(QB1_OUT)
-* .print P(BJ1|XBQ2)
+.print P(BJ1|XBQ2)
 * .print V(BJ1|XBQ2)
 * .print I(BJ1|XBQ2)
-* .print P(BJ2|XBQ2)
+.print P(BJ2|XBQ2)
 * .print V(BJ2|XBQ2)
 * .print I(BJ2|XBQ2)
 .print P(BJ3|XBQ2)
@@ -282,11 +281,11 @@ R_TERM FINAL_OUT 0 2
 .print V(FINAL_OUT)
 * .print V(R_TERM)
 * .print I(R_TERM)
-* .print I(I_WL1)
-* .print I(I_BL1)
-* .print I(I_SE1)
-* .print I(I_WL2)
-* .print I(I_BL2)
-* .print I(I_SE2)
+.print I(I_WL1)
+.print I(I_BL1)
+.print I(I_SE1)
+.print I(I_WL2)
+.print I(I_BL2)
+.print I(I_SE2)
 .tran 0.01p 400p 0p
 .end

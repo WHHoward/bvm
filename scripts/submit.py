@@ -178,6 +178,18 @@ def scoped_delta(base: str, tip: str, scopes: list[Path]) -> dict[str, str]:
             if in_scope(path, scopes) and not is_package_output(path, scopes)}
 
 
+def source_bundle_candidates(scope: Path) -> list[Path]:
+    """Return only the immutable source bundle whose identity matches this scope."""
+    package = scope / "handoff" / f"{scope.name}_source_bundle_v1.zip"
+    return [package] if package.is_file() else []
+
+
+def scope_has_source_changes(scope: Path, changes: dict[str, str]) -> bool:
+    """Whether source/evidence changed in this scope, excluding generated packages."""
+    return any(in_scope(path, [scope]) and not is_package_output(path, [scope])
+               and not generated_cache_path(path) for path in changes)
+
+
 def source_stage_paths(scopes: list[Path]) -> list[str]:
     paths = [path for path, status in working_changes().items()
              if status != "??" and in_scope(path, scopes) and not is_package_output(path, scopes)]
@@ -217,6 +229,8 @@ def verify_existing_bundle(package: Path, qa_path: Path) -> dict[str, Any]:
     if not package.is_file() or not qa_path.is_file():
         raise RuntimeError(f"incomplete prebuilt bundle/QA pair: {package}")
     qa = json.loads(qa_path.read_text(encoding="utf-8"))
+    if qa.get("package_path") and qa["package_path"] != rel(package):
+        raise RuntimeError(f"prebuilt bundle QA names a different package path: {package}")
     if qa.get("status") != "PASS" or qa.get("package_sha256") != sha256(package):
         raise RuntimeError(f"prebuilt bundle QA/SHA mismatch: {package}")
     if qa.get("package_bytes") != package.stat().st_size or package.stat().st_size >= MAX_GIT_FILE_BYTES:
@@ -371,8 +385,10 @@ def build_generic_snapshot(scope: Path, tag: str) -> dict[str, Any]:
 def package_specs(scopes: list[Path], tag: str, retire_flag: bool) -> tuple[list[dict[str, Any]], list[tuple[Path, Path]]]:
     specs: list[dict[str, Any]] = []
     retire: list[tuple[Path, Path]] = []
+    remote_commit = git(["rev-parse", upstream()]).stdout.strip()
+    changes = scoped_delta(remote_commit, head(), scopes)
     for scope in scopes:
-        existing = sorted((scope / "handoff").glob("*_source_bundle_v1.zip")) if (scope / "handoff").is_dir() else []
+        existing = source_bundle_candidates(scope)
         if existing:
             for package in existing:
                 qa_path = package.with_name(f"{package.stem}_PACKAGE_QA.json")
@@ -393,7 +409,7 @@ def package_specs(scopes: list[Path], tag: str, retire_flag: bool) -> tuple[list
                 if not retire_flag:
                     raise RuntimeError(f"over-limit aggregate requires explicit replacement authorization: {old[0]}")
                 retire.append(old)
-        elif not existing:
+        elif scope_has_source_changes(scope, changes) or not existing:
             specs.append(build_generic_snapshot(scope, tag))
     return specs, retire
 
@@ -636,7 +652,7 @@ def main() -> int:
     retire_candidates: list[tuple[Path, Path]] = []
     reused_packages: list[dict[str, Any]] = []
     for scope in scopes:
-        prebuilt = sorted((scope / "handoff").glob("*_source_bundle_v1.zip")) if (scope / "handoff").is_dir() else []
+        prebuilt = source_bundle_candidates(scope)
         if prebuilt:
             for package in prebuilt:
                 qa_path = package.with_name(package.stem + "_PACKAGE_QA.json")
@@ -653,7 +669,7 @@ def main() -> int:
             old = legacy_oversize(scope)
             if old:
                 retire_candidates.append(old)
-        elif not prebuilt:
+        elif scope_has_source_changes(scope, changes) or not prebuilt:
             generic = build_generic_snapshot(scope, args.tag)
             specs.append(generic)
 

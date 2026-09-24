@@ -42,6 +42,18 @@ class SubmitWorkflowTests(unittest.TestCase):
         result = submit.verify_existing_bundle(package, qa)
         self.assertEqual(result["status"], "PASS")
 
+    def test_source_bundle_must_match_scope_identity(self) -> None:
+        copied_scope = submit.REPO / "test/exploration/2x1-bvm-qb-cb-series"
+        self.assertEqual(submit.source_bundle_candidates(copied_scope), [])
+
+    def test_changed_sources_get_fresh_snapshot_despite_base_bundle(self) -> None:
+        scope = submit.REPO / "test/exploration/2x1-bvm-qb-c-sim1-v2"
+        self.assertTrue(submit.source_bundle_candidates(scope))
+        changed = {"test/exploration/2x1-bvm-qb-c-sim1-v2/deck.cir": "M"}
+        package_only = {"test/exploration/2x1-bvm-qb-c-sim1-v2/handoff/archive.zip": "A"}
+        self.assertTrue(submit.scope_has_source_changes(scope, changed))
+        self.assertFalse(submit.scope_has_source_changes(scope, package_only))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

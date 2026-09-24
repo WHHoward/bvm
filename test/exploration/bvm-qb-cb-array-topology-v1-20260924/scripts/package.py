@@ -113,7 +113,15 @@ def select_base(explicit: str | None, current_head: str) -> dict[str, Any]:
 
 
 def worktree_changes() -> dict[str, str]:
-    raw = git("status", "--short", "--untracked-files=all", "--", rel(SERIES))
+    result = subprocess.run(
+        ["git", "status", "--short", "--untracked-files=all", "--", rel(SERIES)],
+        cwd=REPO, check=True, capture_output=True, text=True,
+    )
+    raw = result.stdout
+    return parse_worktree_changes(raw)
+
+
+def parse_worktree_changes(raw: str) -> dict[str, str]:
     changed: dict[str, str] = {}
     for line in raw.splitlines():
         if len(line) < 4:

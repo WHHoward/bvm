@@ -44,6 +44,13 @@ def digest_tree(root: Path) -> dict[str, str]:
 
 
 class PlatformStaticTests(unittest.TestCase):
+    def test_package_git_status_parser_preserves_first_path_character(self):
+        self.assertEqual(
+            package.parse_worktree_changes(
+                " M test/exploration/bvm-qb-cb-array-topology-v1-20260924/scripts/package.py\n"),
+            {"test/exploration/bvm-qb-cb-array-topology-v1-20260924/scripts/package.py": "M"},
+        )
+
     def test_plot_only_result_edit_does_not_count_as_new_physical_solve(self):
         self.assertEqual(package._new_solve_count({"physical_solve_count": 1}, existed_at_base=True), 0)
         self.assertEqual(package._new_solve_count({"physical_solve_count": 1}, existed_at_base=False), 1)
@@ -51,47 +58,53 @@ class PlatformStaticTests(unittest.TestCase):
 
     def test_three_render_fixtures_are_deterministic_and_non_experimental(self):
         stimulus = load_stimulus(SERIES / "STIMULUS.env")
-        for name, size, mask, qb, sjtl, post in CASES:
-            user = values_for(size, mask, qb, sjtl, post)
-            result = run_case.render_fixture(user, stimulus, mask, name)
-            fixture = Path(result["output_dir"])
-            plot_manifest = plot_run.plan_only(fixture)
-            self.assertEqual(result["status"], "RENDER_FIXTURE_ONLY")
-            self.assertEqual(result["physical_solve_count"], 0)
-            self.assertEqual(len(plot_manifest["pages"]), 5)
-            self.assertEqual(plot_manifest["render_status"], "RENDER_FIXTURE_ONLY")
-            self.assertIsNone(plot_manifest["raw_sha256"])
-            if name == "2x1_M01":
-                cb_page = next(page for page in plot_manifest["pages"] if page["page"] == "cb")
-                self.assertEqual([item["role"] for item in cb_page["component_roles"]],
-                                 ["Level 1 post-sJTL CB", "Level 2 QB-side CB"])
-            self.assertFalse((fixture / "raw.csv").exists())
-            self.assertFalse(list(fixture.rglob("*.html")))
-            self.assertIn("RENDER_FIXTURE_ONLY", (fixture / "actual_deck.cir").read_text())
-            self.assertIn("RENDER_FIXTURE_ONLY", (fixture / "stimulus.inc").read_text())
-            for manifest_name in ("topology_manifest.json", "source_manifest.json",
-                                  "probe_manifest.json"):
-                manifest = json.loads((fixture / manifest_name).read_text())
-                self.assertEqual(manifest["render_status"], "RENDER_FIXTURE_ONLY")
-            deck_text = (fixture / "actual_deck.cir").read_text()
-            self.assertRegex(deck_text, r"(?m)^R_TERM FINAL_OUT 0 2$")
-            self.assertRegex(deck_text, r"(?m)^\.tran 0.01p 200p$")
-            for source_name in ("bvm_cell_0923.cir", "BQ_0923.cir", "CB_0923.cir", "sJTL_0923.cir"):
-                self.assertIn(f'.include "snapshot/sources/{source_name}"', deck_text)
-            top_level_elements = [line.split()[0].casefold() for line in deck_text.splitlines()
-                                  if line.strip() and not line.lstrip().startswith(("*", "."))]
-            self.assertEqual(len(top_level_elements), len(set(top_level_elements)))
-            before = digest_tree(fixture)
-            rerendered = run_case.render_fixture(user, stimulus, mask, name)
-            plot_run.plan_only(fixture)
-            self.assertEqual(before, digest_tree(fixture))
-            self.assertEqual(rerendered["status"], "RENDER_FIXTURE_ONLY")
+        with tempfile.TemporaryDirectory(prefix="render-fixture-test-") as tmp:
+            for name, size, mask, qb, sjtl, post in CASES:
+                user = values_for(size, mask, qb, sjtl, post)
+                fixture = Path(tmp) / name
+                result = run_case.render_case(user, stimulus, mask, fixture, fixture_only=True)
+                plot_manifest = plot_run.plan_only(fixture)
+                self.assertEqual(result["status"], "RENDER_FIXTURE_ONLY")
+                self.assertEqual(result["physical_solve_count"], 0)
+                self.assertEqual(len(plot_manifest["pages"]), 5)
+                self.assertEqual(plot_manifest["render_status"], "RENDER_FIXTURE_ONLY")
+                self.assertIsNone(plot_manifest["raw_sha256"])
+                if name == "2x1_M01":
+                    cb_page = next(page for page in plot_manifest["pages"] if page["page"] == "cb")
+                    self.assertEqual([item["role"] for item in cb_page["component_roles"]],
+                                     ["Level 1 post-sJTL CB", "Level 2 QB-side CB"])
+                self.assertFalse((fixture / "raw.csv").exists())
+                self.assertFalse(list(fixture.rglob("*.html")))
+                self.assertIn("RENDER_FIXTURE_ONLY", (fixture / "actual_deck.cir").read_text())
+                self.assertIn("RENDER_FIXTURE_ONLY", (fixture / "stimulus.inc").read_text())
+                for manifest_name in ("topology_manifest.json", "source_manifest.json",
+                                      "probe_manifest.json"):
+                    manifest = json.loads((fixture / manifest_name).read_text())
+                    self.assertEqual(manifest["render_status"], "RENDER_FIXTURE_ONLY")
+                deck_text = (fixture / "actual_deck.cir").read_text()
+                self.assertRegex(deck_text, r"(?m)^R_TERM FINAL_OUT 0 2$")
+                self.assertRegex(deck_text, r"(?m)^\.tran 0.01p 200p$")
+                for source_name in ("bvm_cell_0923.cir", "BQ_0923.cir", "CB_0923.cir", "sJTL_0923.cir"):
+                    self.assertIn(f'.include "snapshot/sources/{source_name}"', deck_text)
+                top_level_elements = [line.split()[0].casefold() for line in deck_text.splitlines()
+                                      if line.strip() and not line.lstrip().startswith(("*", "."))]
+                self.assertEqual(len(top_level_elements), len(set(top_level_elements)))
+                before = digest_tree(fixture)
+                rerendered = run_case.render_case(user, stimulus, mask, fixture, fixture_only=True)
+                plot_run.plan_only(fixture)
+                self.assertEqual(before, digest_tree(fixture))
+                self.assertEqual(rerendered["status"], "RENDER_FIXTURE_ONLY")
         assets = list((SERIES / "plots").rglob("plotly.min.js"))
         self.assertEqual(assets, [SERIES / "plots" / "assets" / "plotly.min.js"])
 
     def test_render_only_cli_never_calls_subprocess(self):
         with patch.object(run_case.subprocess, "run", side_effect=AssertionError("solver/process called")):
-            rc = run_case.main(["--render-only", "--mask", "01"])
+            with tempfile.TemporaryDirectory(
+                    prefix="render-only-cli-test-", dir=SERIES / "tests" / "fixtures") as tmp:
+                output_dir = Path(tmp) / "rendered"
+                rc = run_case.main(["--render-only", "--mask", "01",
+                                    "--output-dir", str(output_dir)])
+                self.assertFalse((output_dir / "raw.csv").exists())
         self.assertEqual(rc, 0)
         self.assertFalse((SERIES / "tests/fixtures/rendered/2x1_M01/raw.csv").exists())
 

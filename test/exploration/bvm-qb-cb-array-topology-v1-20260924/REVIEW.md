@@ -11,6 +11,7 @@ was performed.
 | Probe labels are invented rather than resolved from included component sources | Parse all four source snapshots and validate each instance, pin count, and internal element during probe generation | PASS for T1–T4 fixtures. |
 | MASK affects pre-final stimulus or bit order is reversed | Evaluate generated PWL at WRITE0, READ0, WRITE1, and FINAL READ for 00/01/10/11 | PASS; only FINAL READ changes, leftmost bit maps to BVM1. |
 | A dry-run silently creates evidence ZIPs or reaches a solver | Package creation is patched to fail in package preview; submit subprocess/package creation patched to fail in submit preview | PASS; no archive, mirror, commit, or physical process. |
+| A dirty-tree package preview truncates the first path character or rewrites checked-in render fixtures | Regression-test the porcelain status parser; render deterministic fixtures only in temporary directories | PASS; dirty paths are preserved and tracked fixtures remain unchanged. |
 | Direct documented CLI is broken despite unit imports passing | Ran `python3 scripts/run_case.py --render-only --mask 01` and `inspect_runs.py` from the series directory | PASS after renaming `inspect.py`, which had shadowed Python's stdlib module. |
 
 All three fixture trees are deterministic and marked `RENDER_FIXTURE_ONLY`;

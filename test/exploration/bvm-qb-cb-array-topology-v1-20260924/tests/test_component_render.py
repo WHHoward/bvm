@@ -12,7 +12,7 @@ sys.path.insert(0, str(SERIES / "scripts"))
 
 from components import (SNAPSHOT_NAMES, load_reference, render_components,
                         verify_reference_sources)  # noqa: E402
-from config import ConfigError, USER_CASE_KEYS, load_env  # noqa: E402
+from config import COMPONENT_KEYS, ConfigError, USER_CASE_KEYS, load_env  # noqa: E402
 from topology import SOURCE_FILES  # noqa: E402
 from run_case import render_case  # noqa: E402
 from stimulus import load_stimulus  # noqa: E402
@@ -25,6 +25,14 @@ def digest(path: Path) -> str:
 class ComponentRenderTests(unittest.TestCase):
     def setUp(self):
         self.values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
+        reference = load_reference()
+        self.values.update({key: reference[key] for key in COMPONENT_KEYS})
+        self.values.update({
+            "NAME": "component_render_fixture", "ARRAY_SIZE": "2",
+            "MASKS": "00,01,10,11", "QB_CB": "0,1", "SJTL_COUNT": "13,2",
+            "POST_SJTL_CB": "1,0", "OUTPUT_MODE": "TERMINAL", "TERM_R": "2",
+            "DT": "0.01p", "STOP": "200p",
+        })
         self.source_hashes = {role: digest(REPO / path) for role, path in SOURCE_FILES.items()}
 
     def render(self, root: Path, values: dict[str, str] | None = None):

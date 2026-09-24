@@ -16,7 +16,7 @@ sys.path.insert(0, str(SERIES / "scripts"))
 
 import try_case  # noqa: E402
 import submit  # noqa: E402
-from config import USER_CASE_KEYS, load_env  # noqa: E402
+from config import COMPONENT_KEYS, USER_CASE_KEYS, load_env  # noqa: E402
 from stimulus import load_stimulus  # noqa: E402
 
 
@@ -33,9 +33,18 @@ class TryCaseTests(unittest.TestCase):
                   sorted(path.name for path in (SERIES / "batches").iterdir())
                   if (SERIES / "batches").exists() else [])
         output, error = io.StringIO(), io.StringIO()
-        with patch.object(try_case.subprocess, "run", side_effect=AssertionError("process invoked")), \
-             contextlib.redirect_stdout(output), contextlib.redirect_stderr(error):
-            rc = try_case.main(["--dry-run", "--set", "QB_BJ3_AREA=2.2"])
+        baseline = load_env(user_path, USER_CASE_KEYS)
+        reference = try_case.load_reference()
+        baseline.update({key: reference[key] for key in COMPONENT_KEYS})
+        baseline.update({"NAME": "dry_run_test", "ARRAY_SIZE": "2", "MASKS": "00,01,10,11",
+                         "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
+        with tempfile.TemporaryDirectory() as tmp:
+            user_fixture = Path(tmp) / "USER_CASE.env"
+            user_fixture.write_text(try_case.stable_env(baseline), encoding="utf-8")
+            with patch.object(try_case.subprocess, "run", side_effect=AssertionError("process invoked")), \
+                 contextlib.redirect_stdout(output), contextlib.redirect_stderr(error):
+                rc = try_case.main(["--dry-run", "--user-case", str(user_fixture),
+                                    "--set", "QB_BJ3_AREA=2.2"])
         self.assertEqual(rc, 0, error.getvalue())
         self.assertIn("QB_BJ3_AREA 2 -> 2.2", output.getvalue())
         self.assertIn("physical_solve_count = 4", output.getvalue())
@@ -53,11 +62,14 @@ class TryCaseTests(unittest.TestCase):
         self.assertEqual(rc, 2)
         self.assertIn("unknown --set key", errors.getvalue())
 
+        current = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
+        zeros, ones = "0" * int(current["ARRAY_SIZE"]), "1" * int(current["ARRAY_SIZE"])
+        mask_override = f"MASKS={zeros},{ones}"
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            rc = try_case.main(["--dry-run", "--set", "MASKS=01,11"])
+            rc = try_case.main(["--dry-run", "--set", mask_override])
         self.assertEqual(rc, 0)
-        self.assertIn("MASKS=01,11", output.getvalue())
+        self.assertIn(mask_override, output.getvalue())
         self.assertIn("physical_solve_count = 2", output.getvalue())
 
     def test_actual_batch_model_executes_each_requested_mask_once_with_stubbed_runner(self):
@@ -68,7 +80,8 @@ class TryCaseTests(unittest.TestCase):
             user_path = SERIES / "USER_CASE.env"
             stimulus_path = SERIES / "STIMULUS.env"
             user_values = load_env(user_path, USER_CASE_KEYS)
-            user_values.update({"NAME": "stub_batch", "MASKS": "01,11"})
+            user_values.update({"NAME": "stub_batch", "ARRAY_SIZE": "2", "MASKS": "01,11",
+                                "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
             stimulus_values = load_stimulus(stimulus_path)
             params = try_case.validate_user_case(user_values)
             user_text = try_case.stable_env(user_values)
@@ -134,7 +147,8 @@ class TryCaseTests(unittest.TestCase):
             (series / "tests" / "fixtures").mkdir(parents=True)
             (series / "runs").mkdir()
             user_values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
-            user_values.update({"NAME": "failed_batch", "MASKS": "01,11"})
+            user_values.update({"NAME": "failed_batch", "ARRAY_SIZE": "2", "MASKS": "01,11",
+                                "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
             stimulus_values = load_stimulus(SERIES / "STIMULUS.env")
             params = try_case.validate_user_case(user_values)
             calls: list[str] = []

@@ -14,6 +14,8 @@ Drive operation was performed.
 | A partial mask batch or plot failure is accepted by submit | Synthetic batch with mask 10 absent, then with one plot QA FAIL; invoke mechanical validation with subprocess patched to fail | PASS; both are rejected as `BATCH_INCOMPLETE`; no solver retry. |
 | A physical failure silently retries or continues to later masks | Stub the first requested mask as solver failure and inspect the batch/run records | PASS; the failed run is preserved, remaining masks stop, and no retry occurs. |
 | Repaired plots require rerunning physics or leave stale batch metadata | Change only synthetic same-raw plot QA to PASS, refresh batch closure, and run submit validation | PASS; batch becomes `COMPLETE_MECHANICAL` and validates without invoking JoSIM. |
+| Actual run preflight loses the selected mask after render-only validation | Execute the runner with provenance stubbed and intercept the solver call; inspect generated PREFLIGHT | PASS after fix; PREFLIGHT includes the requested mask, and the solver stub prevents any physical invocation. |
+| User-edited USER_CASE values make canonical-default tests fail spuriously | Run the suite with the user's changed QB/CB values and bind default-render assertions to `component_reference.env` | PASS after test isolation; user configuration remains untouched. |
 | Submit dry-run creates a package while validating a complete batch | Mock package creator to fail; execute submit dry-run over a complete synthetic batch | PASS; preview is allowed, package/mirror/commit/push are not performed. |
 
 All platform unit tests pass. Static 2×1, 3×1 and 4×1 topology fixtures remain

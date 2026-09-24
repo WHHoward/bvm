@@ -261,6 +261,7 @@ def execute_run(
     params = validate_user_case(user_values)
     if mask not in params["MASKS"]:
         raise ConfigError(f"mask {mask!r} is not listed in USER_CASE.env MASKS")
+    params["MASK"] = mask
     # Full topology/stimulus/source/probe validation occurs before a solver process is possible.
     validate_stimulus(stimulus_values, params["STOP_SECONDS"])
     signature = topology_signature(params)

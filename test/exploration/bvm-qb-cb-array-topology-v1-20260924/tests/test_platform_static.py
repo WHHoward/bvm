@@ -17,7 +17,8 @@ sys.path.insert(0, str(SERIES / "scripts"))
 import package  # noqa: E402
 import plot_run  # noqa: E402
 import run_case  # noqa: E402
-from config import USER_CASE_KEYS, load_env  # noqa: E402
+from config import COMPONENT_KEYS, USER_CASE_KEYS, load_env  # noqa: E402
+from components import load_reference  # noqa: E402
 from stimulus import load_stimulus  # noqa: E402
 
 
@@ -30,6 +31,10 @@ CASES = (
 
 def values_for(size: int, mask: str, qb: str, sjtl: str, post: str) -> dict[str, str]:
     values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
+    reference = load_reference()
+    values.update({key: reference[key] for key in COMPONENT_KEYS})
+    values.update({"NAME": "static_render_fixture", "OUTPUT_MODE": "TERMINAL",
+                   "TERM_R": "2", "DT": "0.01p", "STOP": "200p"})
     masks = "00,01,10,11" if size == 2 else mask
     values.update({"ARRAY_SIZE": str(size), "MASKS": masks, "QB_CB": qb,
                    "SJTL_COUNT": sjtl, "POST_SJTL_CB": post})
@@ -107,7 +112,10 @@ class PlatformStaticTests(unittest.TestCase):
             with tempfile.TemporaryDirectory(
                     prefix="render-only-cli-test-", dir=SERIES / "tests" / "fixtures") as tmp:
                 output_dir = Path(tmp) / "rendered"
-                rc = run_case.main(["--render-only", "--mask", "01",
+                user_fixture = Path(tmp) / "USER_CASE.env"
+                user_fixture.write_text(run_case.stable_env(values_for(2, "01", "0,1", "1,1", "0,0")),
+                                        encoding="utf-8")
+                rc = run_case.main(["--user-case", str(user_fixture), "--render-only", "--mask", "01",
                                     "--output-dir", str(output_dir)])
                 self.assertFalse((output_dir / "raw.csv").exists())
         self.assertEqual(rc, 0)

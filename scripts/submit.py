@@ -183,7 +183,9 @@ def source_stage_paths(scopes: list[Path]) -> list[str]:
              if status != "??" and in_scope(path, scopes) and not is_package_output(path, scopes)]
     paths.extend(path for path in untracked_files()
                  if in_scope(path, scopes) and not is_package_output(path, scopes) and not generated_cache_path(path))
-    paths.extend(("scripts/test_submit.py",) if (REPO / "scripts/test_submit.py").is_file() else ())
+    for support_path in ("scripts/test_submit.py", "scripts/SUBMIT_REVIEW.md"):
+        if (REPO / support_path).is_file():
+            paths.append(support_path)
     script_rel = rel(Path(__file__))
     if Path(__file__).exists():
         paths.append(script_rel)
@@ -277,8 +279,8 @@ def component_bundle_specs(scope: Path, tag: str) -> list[dict[str, Any]]:
                   "Rendered by classic josim-plot2.py; no scientific interpretation.\n").encode("utf-8")
         specs.append({"name": package_name, "kind": "component_views_delta", "scope": scope,
                       "target": target, "qa_path": qa_target, "sources": sources,
-                      "extra_members": {"COMPONENT_INDEX.html": index_bytes,
-                                        "README_BUNDLE.txt": readme},
+                      "extra_members": {"COMPONENT_INDEX.html": index_bytes},
+                      "readme": readme,
                       "base_name": base_zip.name, "base_sha": base_qa["package_sha256"],
                       "raw_by_run": raw_by_run, "component": component})
     return specs
@@ -311,10 +313,11 @@ def snapshot_bundle_spec(scope: Path, tag: str, base_qa: dict[str, Any]) -> dict
     qa_path = scope / "handoff" / f"{scope.name}_N1_10_snapshots_{tag}_PACKAGE_QA.json"
     return {"name": target.name, "kind": "source_snapshot_attachments", "scope": scope,
             "target": target, "qa_path": qa_path, "sources": sources,
-            "extra_members": {"README_BUNDLE.txt": (
+            "extra_members": {},
+            "readme": (
                 f"N1_10 source snapshot ZIP attachments, preserved exactly.\n"
                 f"Base raw handoff SHA-256: {base_qa['package_sha256']}\n"
-                f"N1_10 raw SHA-256: {raw_hash}\nNo new simulation or interpretation.\n").encode("utf-8")},
+                f"N1_10 raw SHA-256: {raw_hash}\nNo new simulation or interpretation.\n").encode("utf-8"),
             "base_name": Path(base_qa["package_path"]).name,
             "base_sha": base_qa["package_sha256"], "raw_by_run": {"N1_10": raw_hash}}
 
@@ -357,11 +360,11 @@ def build_generic_snapshot(scope: Path, tag: str) -> dict[str, Any]:
     qa_path = scope / "handoff" / f"{scope.name}_snapshot_{tag}_PACKAGE_QA.json"
     return {"name": target.name, "kind": "directory_snapshot", "scope": scope,
             "target": target, "qa_path": qa_path, "sources": sources,
-            "extra_members": {"README_BUNDLE.txt": (
+            "extra_members": {},
+            "readme": (
                 f"Byte-preserving snapshot of {scope.name}.\n"
                 "Archive integrity and member hashes are checked; this package does not certify\n"
                 "solver identity, raw semantics, or scientific validity.\n").encode("utf-8"),
-            },
             "base_name": None, "base_sha": None, "raw_by_run": {}}
 
 
@@ -484,7 +487,9 @@ def archive_bundle(spec: dict[str, Any], source_commit: str) -> dict[str, Any]:
                 "scientific_interpretation_performed": False,
                 "included_files": records,
                 "additional_members": {name: hashlib.sha256(data).hexdigest() for name, data in extras.items()}}
-    if spec["kind"] == "component_views_delta":
+    if spec.get("readme") is not None:
+        readme = spec["readme"]
+    elif spec["kind"] == "component_views_delta":
         readme = (f"Full-run {spec['component']} component plots.\nBase raw handoff SHA-256: {base_sha}\n"
                   "All raw samples are in the referenced base handoff; this bundle contains plots, QA, and renderer.\n"
                   "No new simulation or scientific interpretation.\n").encode("utf-8")

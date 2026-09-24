@@ -17,6 +17,7 @@ Drive operation was performed.
 | Actual run preflight loses the selected mask after render-only validation | Execute the runner with provenance stubbed and intercept the solver call; inspect generated PREFLIGHT | PASS after fix; PREFLIGHT includes the requested mask, and the solver stub prevents any physical invocation. |
 | User-edited USER_CASE values make canonical-default tests fail spuriously | Run the suite with the user's changed QB/CB values and bind default-render assertions to `component_reference.env` | PASS after test isolation; user configuration remains untouched. |
 | JoSIM treats quotes in `.include` as filename characters | Compare U002 stderr's requested path with the existing unquoted deck syntax; assert generated include directives are unquoted | PASS after fix; the deck renderer emits relative unquoted includes. |
+| JoSIM rejects `.title` as an unknown control after input parsing | U003 stderr identifies the control; assert rendered decks contain no `.title` directive | PASS after fix; the descriptive title is an SPICE comment. |
 | Submit dry-run creates a package while validating a complete batch | Mock package creator to fail; execute submit dry-run over a complete synthetic batch | PASS; preview is allowed, package/mirror/commit/push are not performed. |
 
 All platform unit tests pass. Static 2×1, 3×1 and 4×1 topology fixtures remain

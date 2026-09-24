@@ -89,6 +89,7 @@ class PlatformStaticTests(unittest.TestCase):
                 deck_text = (fixture / "actual_deck.cir").read_text()
                 self.assertRegex(deck_text, r"(?m)^R_TERM FINAL_OUT 0 2$")
                 self.assertRegex(deck_text, r"(?m)^\.tran 0.01p 200p$")
+                self.assertNotRegex(deck_text, r"(?mi)^\s*\.title\b")
                 expected_includes = [
                     ".include snapshot/sources/bvm_tunable.cir",
                     ".include snapshot/sources/BQ_tunable.cir",

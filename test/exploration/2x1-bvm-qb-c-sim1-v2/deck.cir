@@ -1,0 +1,292 @@
+* Frozen 2x1 BVM/BQ/CB/ACC/GAP topology.
+* Match jjmit model used by bvm_0923/test_bvm.cir.
+.model jjmit jj(rtype=1, vg=2.8m, cap=0.07p, r0=160, rn=16, icrit=0.1m)
+.include snapshot/sources/bvm_cell_0923.cir
+.include snapshot/sources/BQ_0923.cir
+.include snapshot/sources/CB_0923.cir
+.include snapshot/sources/sJTL_0923.cir
+.include stimulus.inc
+
+XBVM1 WL1 BL1 SE1 BVM1_SL BVM
+XBQ1 BVM1_SL QB1_OUT BQ
+*XCB1 QB1_OUT CB1_OUT CB
+XACC11 QB1_OUT  ACC1_OUT1_01 sJTL
+XACC1_01 ACC1_OUT1_01 ACC1_OUT1_02 sJTL
+XACC1_02 ACC1_OUT1_02 ACC1_OUT1_03 sJTL
+XACC1_03 ACC1_OUT1_03 ACC1_OUT1_04 sJTL
+XACC1_04 ACC1_OUT1_04 ACC1_OUT1_05 sJTL
+XACC1_05 ACC1_OUT1_05 ACC1_OUT1_06 sJTL
+XACC1_06 ACC1_OUT1_06 ACC1_OUT1_07 sJTL
+XACC1_07 ACC1_OUT1_07 ACC1_OUT1_08 sJTL
+XACC1_08 ACC1_OUT1_08 ACC1_OUT1_09 sJTL
+XACC1_09 ACC1_OUT1_09 ACC1_OUT1_10 sJTL
+XACC1_10 ACC1_OUT1_10 ACC1_OUT1_11 sJTL
+XACC1_11 ACC1_OUT1_11 ACC1_OUT1_12 sJTL
+XACC1_12 ACC1_OUT1_12 ACC1_OUT1_13 sJTL
+* XACC1_13 ACC1_OUT1_13 ACC1_OUT1_14 sJTL
+* XACC1_14 ACC1_OUT1_14 ACC1_OUT1_15 sJTL
+* XACC1_15 ACC1_OUT1_15 ACC1_OUT1_16 sJTL
+* XACC1_16 ACC1_OUT1_16 ACC1_OUT1_17 sJTL
+* XACC1_17 ACC1_OUT1_17 ACC1_OUT1_18 sJTL
+* XACC1_18 ACC1_OUT1_18 ACC1_OUT1_19 sJTL
+* XACC1_19 ACC1_OUT1_19 ACC1_OUT1_20 sJTL
+* XACC1_20 ACC1_OUT1_20 ACC1_OUT1_21 sJTL
+* XACC1_21 ACC1_OUT1_21 ACC1_OUT1_22 sJTL
+* XACC1_22 ACC1_OUT1_22 ACC1_OUT1_23 sJTL
+* XACC1_23 ACC1_OUT1_23 ACC1_OUT1_24 sJTL
+* XACC1_24 ACC1_OUT1_24 ACC1_OUT1_25 sJTL
+* XACC1_25 ACC1_OUT1_25 ACC1_OUT1_26 sJTL
+* XACC1_26 ACC1_OUT1_26 ACC1_OUT1_27 sJTL
+* XACC1_27 ACC1_OUT1_27 ACC1_OUT1_28 sJTL
+
+* XGAP21 ACC1_OUT1_28 CB2_OUT sJTL
+XCB12 ACC1_OUT1_13 CB2_OUT CB
+
+XBVM22 WL2 BL2 SE2 BVM2_SL BVM
+XBQ22 BVM2_SL QB2_OUT BQ
+*XACC22 QB2_OUT CB2_IN sJTL
+XCB22 QB2_OUT CB2_OUT CB
+*XACC2 output is directly the shared node; there is no separate ACC2_OUT.
+XACC23 CB2_OUT GAP2_IN sJTL
+
+XGAP22 GAP2_IN FINAL_OUT sJTL
+R_TERM FINAL_OUT 0 2
+
+.print P(BJ1|XBQ22) P(BJ2|XBQ22) P(BJ3|XBQ22)
+
+
+.print P(BJ1|XGAP21)
+.print P(BJ1|XCB22) P(BJ2|XCB22)
+.print P(BJ1|XACC22)
+.print v(ACC1_OUT1_28) v(CB2_OUT)
+.print p(BJ2|XCB12) p(BJ2|XCB22)
+.print P(BJ1|XCB12)
+
+
+
+* .print P(B_JM1|XBVM1)
+* .print V(B_JM1|XBVM1)
+* .print I(B_JM1|XBVM1)
+* .print P(B_JM2|XBVM1)
+* .print V(B_JM2|XBVM1)
+* .print I(B_JM2|XBVM1)
+* .print P(B_JS1|XBVM1)
+* .print V(B_JS1|XBVM1)
+* .print I(B_JS1|XBVM1)
+* .print P(B_JS2|XBVM1)
+* .print V(B_JS2|XBVM1)
+* .print I(B_JS2|XBVM1)
+* .print I(L_M1|XBVM1)
+* .print V(L_M1|XBVM1)
+* .print I(L_M2|XBVM1)
+* .print V(L_M2|XBVM1)
+* .print I(L_M3|XBVM1)
+* .print V(L_M3|XBVM1)
+* .print I(L_PM|XBVM1)
+* .print V(L_PM|XBVM1)
+* .print I(L_S1|XBVM1)
+* .print V(L_S1|XBVM1)
+* .print I(L_S2|XBVM1)
+* .print V(L_S2|XBVM1)
+* .print I(L_S3|XBVM1)
+* .print V(L_S3|XBVM1)
+* .print I(L_PSL|XBVM1)
+* .print V(L_PSL|XBVM1)
+* .print I(L_SL|XBVM1)
+* .print V(L_SL|XBVM1)
+* .print I(R_BL|XBVM1)
+* .print V(R_BL|XBVM1)
+* .print I(R_WL|XBVM1)
+* .print V(R_WL|XBVM1)
+* .print I(R_SE|XBVM1)
+* .print V(R_SE|XBVM1)
+* .print I(R_JM1|XBVM1)
+* .print V(R_JM1|XBVM1)
+* .print I(R_S|XBVM1)
+* .print V(R_S|XBVM1)
+.print I(R_SL|XBVM1)
+.print V(R_SL|XBVM1)
+.print V(BVM1_SL)
+* .print P(B_JM1|XBVM2)
+* .print V(B_JM1|XBVM2)
+* .print I(B_JM1|XBVM2)
+* .print P(B_JM2|XBVM2)
+* .print V(B_JM2|XBVM2)
+* .print I(B_JM2|XBVM2)
+* .print P(B_JS1|XBVM2)
+* .print V(B_JS1|XBVM2)
+* .print I(B_JS1|XBVM2)
+* .print P(B_JS2|XBVM2)
+* .print V(B_JS2|XBVM2)
+* .print I(B_JS2|XBVM2)
+* .print I(L_M1|XBVM2)
+* .print V(L_M1|XBVM2)
+* .print I(L_M2|XBVM2)
+* .print V(L_M2|XBVM2)
+* .print I(L_M3|XBVM2)
+* .print V(L_M3|XBVM2)
+* .print I(L_PM|XBVM2)
+* .print V(L_PM|XBVM2)
+* .print I(L_S1|XBVM2)
+* .print V(L_S1|XBVM2)
+* .print I(L_S2|XBVM2)
+* .print V(L_S2|XBVM2)
+* .print I(L_S3|XBVM2)
+* .print V(L_S3|XBVM2)
+* .print I(L_PSL|XBVM2)
+* .print V(L_PSL|XBVM2)
+* .print I(L_SL|XBVM2)
+* .print V(L_SL|XBVM2)
+* .print I(R_BL|XBVM2)
+* .print V(R_BL|XBVM2)
+* .print I(R_WL|XBVM2)
+* .print V(R_WL|XBVM2)
+* .print I(R_SE|XBVM2)
+* .print V(R_SE|XBVM2)
+* .print I(R_JM1|XBVM2)
+* .print V(R_JM1|XBVM2)
+* .print I(R_S|XBVM2)
+* .print V(R_S|XBVM2)
+.print I(R_SL|XBVM2)
+.print V(R_SL|XBVM2)
+.print V(BVM2_SL)
+* .print P(BJ1|XBQ1)
+* .print V(BJ1|XBQ1)
+* .print I(BJ1|XBQ1)
+* .print P(BJ2|XBQ1)
+* .print V(BJ2|XBQ1)
+* .print I(BJ2|XBQ1)
+.print P(BJ3|XBQ1)
+* .print V(BJ3|XBQ1)
+* .print I(BJ3|XBQ1)
+* .print I(Lin|XBQ1)
+* .print V(Lin|XBQ1)
+* .print I(L1|XBQ1)
+* .print V(L1|XBQ1)
+* .print I(L2|XBQ1)
+* .print V(L2|XBQ1)
+* .print I(L3|XBQ1)
+* .print V(L3|XBQ1)
+* .print I(RJ1|XBQ1)
+* .print V(RJ1|XBQ1)
+* .print I(RJ2|XBQ1)
+* .print V(RJ2|XBQ1)
+* .print I(RJ3|XBQ1)
+* .print V(RJ3|XBQ1)
+* .print I(IB2|XBQ1)
+.print V(QB1_OUT)
+* .print P(BJ1|XBQ2)
+* .print V(BJ1|XBQ2)
+* .print I(BJ1|XBQ2)
+* .print P(BJ2|XBQ2)
+* .print V(BJ2|XBQ2)
+* .print I(BJ2|XBQ2)
+.print P(BJ3|XBQ2)
+* .print V(BJ3|XBQ2)
+* .print I(BJ3|XBQ2)
+* .print I(Lin|XBQ2)
+* .print V(Lin|XBQ2)
+* .print I(L1|XBQ2)
+* .print V(L1|XBQ2)
+* .print I(L2|XBQ2)
+* .print V(L2|XBQ2)
+* .print I(L3|XBQ2)
+* .print V(L3|XBQ2)
+* .print I(RJ1|XBQ2)
+* .print V(RJ1|XBQ2)
+* .print I(RJ2|XBQ2)
+* .print V(RJ2|XBQ2)
+* .print I(RJ3|XBQ2)
+* .print V(RJ3|XBQ2)
+* .print I(IB2|XBQ2)
+.print V(QB2_OUT)
+.print P(BJ1|XCB1)
+* .print V(BJ1|XCB1)
+* .print I(BJ1|XCB1)
+.print P(BJ2|XCB1)
+* .print V(BJ2|XCB1)
+* .print I(BJ2|XCB1)
+* .print I(L1|XCB1)
+* .print V(L1|XCB1)
+* .print I(L2|XCB1)
+* .print V(L2|XCB1)
+* .print I(L3|XCB1)
+* .print V(L3|XCB1)
+* .print I(L4|XCB1)
+* .print V(L4|XCB1)
+* .print I(RJ1|XCB1)
+* .print V(RJ1|XCB1)
+* .print I(IB1|XCB1)
+.print V(CB1_OUT)
+.print P(BJ1|XCB2)
+* .print V(BJ1|XCB2)
+* .print I(BJ1|XCB2)
+.print P(BJ2|XCB2)
+* .print V(BJ2|XCB2)
+* .print I(BJ2|XCB2)
+* .print I(L1|XCB2)
+* .print V(L1|XCB2)
+* .print I(L2|XCB2)
+* .print V(L2|XCB2)
+* .print I(L3|XCB2)
+* .print V(L3|XCB2)
+* .print I(L4|XCB2)
+* .print V(L4|XCB2)
+* .print I(RJ1|XCB2)
+* .print V(RJ1|XCB2)
+* .print I(IB1|XCB2)
+.print V(CB2_OUT)
+.print P(BJ1|XACC1)
+* .print V(BJ1|XACC1)
+* .print I(BJ1|XACC1)
+* .print I(L1|XACC1)
+* .print V(L1|XACC1)
+* .print I(L2|XACC1)
+* .print V(L2|XACC1)
+* .print I(RJ1|XACC1)
+* .print V(RJ1|XACC1)
+* .print I(IB1|XACC1)
+.print V(ACC1_OUT1_01)
+.print V(ACC1_OUT1_27)
+.print P(BJ1|XACC2)
+* .print V(BJ1|XACC2)
+* .print I(BJ1|XACC2)
+.print I(L1|XACC2)
+* .print V(L1|XACC2)
+.print I(L2|XACC2)
+* .print V(L2|XACC2)
+* .print I(RJ1|XACC2)
+* .print V(RJ1|XACC2)
+* .print I(IB1|XACC2)
+* .print P(BJ1|XGAP1)
+* .print V(BJ1|XGAP1)
+* .print I(BJ1|XGAP1)
+* .print I(L1|XGAP1)
+* .print V(L1|XGAP1)
+* .print I(L2|XGAP1)
+* .print V(L2|XGAP1)
+* .print I(RJ1|XGAP1)
+* .print V(RJ1|XGAP1)
+* .print I(IB1|XGAP1)
+* .print V(GAP2_IN)
+.print P(BJ1|XGAP22)
+* .print V(BJ1|XGAP2)
+* .print I(BJ1|XGAP2)
+* .print I(L1|XGAP2)
+.print V(L1|XGAP22)
+* .print I(L2|XGAP2)
+.print V(L2|XGAP22)
+* .print I(RJ1|XGAP2)
+* .print V(RJ1|XGAP2)
+* .print I(IB1|XGAP2)
+.print V(FINAL_OUT)
+* .print V(R_TERM)
+* .print I(R_TERM)
+* .print I(I_WL1)
+* .print I(I_BL1)
+* .print I(I_SE1)
+* .print I(I_WL2)
+* .print I(I_BL2)
+* .print I(I_SE2)
+.tran 0.01p 400p 0p
+.end

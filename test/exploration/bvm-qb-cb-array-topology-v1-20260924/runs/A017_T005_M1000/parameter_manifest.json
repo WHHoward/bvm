@@ -1,0 +1,135 @@
+{
+  "bvm": {
+    "BVM_JM1_AREA": "1.2",
+    "BVM_JM2_AREA": "1.4",
+    "BVM_JS1_AREA": "0.74",
+    "BVM_JS2_AREA": "0.74",
+    "BVM_LM1": "12.5p",
+    "BVM_LM2": "24.5p",
+    "BVM_LM3": "8.5p",
+    "BVM_LPBL": "0.5p",
+    "BVM_LPM": "0.5p",
+    "BVM_LPSE": "0.5p",
+    "BVM_LPSL": "0.5p",
+    "BVM_LPWL": "0.5p",
+    "BVM_LS1": "0.5p",
+    "BVM_LS2": "0.5p",
+    "BVM_LS3": "0.5p",
+    "BVM_LSL": "0.4p",
+    "BVM_RBL": "20",
+    "BVM_RJM1": "8",
+    "BVM_RJM2": "OPEN",
+    "BVM_RJS1": "OPEN",
+    "BVM_RJS2": "OPEN",
+    "BVM_RS": "3.0",
+    "BVM_RSE": "20",
+    "BVM_RSL": "12",
+    "BVM_RWL": "20"
+  },
+  "cb": {
+    "CB_BIAS_RISE": "5p",
+    "CB_BJ1_AREA": "2.2",
+    "CB_BJ2_AREA": "1.8",
+    "CB_IB": "160u",
+    "CB_L1": "1.5p",
+    "CB_L2": "0.5p",
+    "CB_L3": "0.5p",
+    "CB_L4": "3.5p",
+    "CB_RJ1": "5",
+    "CB_RJ2": "6"
+  },
+  "mask": "1000",
+  "overrides": [],
+  "qb": {
+    "QB_BIAS_RISE": "5p",
+    "QB_BJ1_AREA": "0.55",
+    "QB_BJ2_AREA": "0.45",
+    "QB_BJ3_AREA": "2",
+    "QB_IB": "240u",
+    "QB_L1": "1p",
+    "QB_L2": "1.5p",
+    "QB_L3": "1.5p",
+    "QB_LIN": "2p",
+    "QB_RJ1": "14",
+    "QB_RJ2": "12",
+    "QB_RJ3": "4"
+  },
+  "schema": "bvm-qb-cb-array-parameter-manifest-v1",
+  "sjtl": {
+    "SJTL_BIAS_RISE": "5p",
+    "SJTL_BJ1_AREA": "2.5",
+    "SJTL_IB": "190u",
+    "SJTL_L1": "2.5p",
+    "SJTL_L2": "2.5p",
+    "SJTL_RJ1": "4"
+  },
+  "solver": {
+    "DT": "0.01p",
+    "OUTPUT_MODE": "TERMINAL",
+    "STOP": "200p",
+    "TERM_R": "2"
+  },
+  "stimulus_reference": {
+    "sha256": "b49ba232fee95723011370d3c2889596785e531cb6da2f2fb34738161192134a",
+    "values": {
+      "READ0_BL": "0",
+      "READ0_FALL": "1p",
+      "READ0_HOLD": "9p",
+      "READ0_RISE": "1p",
+      "READ0_SE": "100u",
+      "READ0_START": "70p",
+      "READ0_WL": "100u",
+      "READ_ACTIVE_BL": "0",
+      "READ_ACTIVE_SE": "100u",
+      "READ_ACTIVE_WL": "100u",
+      "READ_FALL": "1p",
+      "READ_HOLD": "9p",
+      "READ_INACTIVE_BL": "0",
+      "READ_INACTIVE_SE": "0",
+      "READ_INACTIVE_WL": "0",
+      "READ_RISE": "1p",
+      "READ_START": "110p",
+      "WRITE0_BL": "-100u",
+      "WRITE0_FALL": "1p",
+      "WRITE0_HOLD": "9p",
+      "WRITE0_RISE": "1p",
+      "WRITE0_SE": "0",
+      "WRITE0_START": "50p",
+      "WRITE0_WL": "-100u",
+      "WRITE1_BL": "100u",
+      "WRITE1_FALL": "1p",
+      "WRITE1_HOLD": "9p",
+      "WRITE1_RISE": "1p",
+      "WRITE1_SE": "0",
+      "WRITE1_START": "90p",
+      "WRITE1_WL": "100u"
+    }
+  },
+  "topology": {
+    "ARRAY_SIZE": 4,
+    "MASKS": [
+      "1000",
+      "1100",
+      "1110",
+      "1111"
+    ],
+    "POST_SJTL_CB": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "QB_CB": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "SJTL_COUNT": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+}

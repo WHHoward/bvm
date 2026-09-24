@@ -33,8 +33,8 @@ GROUP_KEYS = {
     "SJTL": SJTL_AREA_KEYS | SJTL_INDUCTANCE_KEYS | SJTL_RESISTANCE_KEYS | SJTL_CURRENT_KEYS | {"SJTL_BIAS_RISE"},
 }
 
-# Map canonical element designators to USER_CASE parameters. The model cards are
-# deliberately absent: jjmit parameters remain source-defined/frozen.
+# Map canonical element designators to USER_CASE parameters. The shared jjmit
+# model is frozen in templates/base.cir, not parameterized per component.
 ELEMENT_PARAMETERS: dict[str, dict[str, tuple[str, str]]] = {
     "BVM": {
         "R_BL": ("BVM_RBL", "resistance"), "L_PBL": ("BVM_LPBL", "inductance"),

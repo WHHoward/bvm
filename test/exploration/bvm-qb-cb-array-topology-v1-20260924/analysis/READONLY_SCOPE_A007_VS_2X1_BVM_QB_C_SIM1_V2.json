@@ -1,0 +1,62 @@
+{
+  "schema": "josim-read-only-analysis-scope-v1",
+  "analysis_id": "A007_vs_2x1-bvm-qb-c-sim1-v2",
+  "created_from_head": "d0464843b0ce74cfc4ac6210b0172b4d36079e2a",
+  "authorization": "SCIENTIFIC_REVIEW_AUTHORIZED",
+  "question": "Compare observed BVM input and internal/output trajectories between A007 and the prior 2x1-bvm-qb-c-sim1-v2 run; identify configuration and artifact differences without treating unmatched runs as a causal control.",
+  "read_only": true,
+  "no_solver": true,
+  "no_raw_mutation": true,
+  "no_circuit_or_parameter_change": true,
+  "no_timing_change": true,
+  "no_interpolation_or_resampling": true,
+  "no_new_runs_or_sweeps": true,
+  "inputs": [
+    {
+      "role": "A007 current platform raw",
+      "path": "test/exploration/bvm-qb-cb-array-topology-v1-20260924/runs/A007_T001_M11/raw.csv",
+      "sha256": "073ed582951a5d59c20e180d5a8c8f1487bd067fb2bb1d6c34c337a6d53facfd"
+    },
+    {
+      "role": "legacy experiment raw",
+      "path": "test/exploration/2x1-bvm-qb-c-sim1-v2/data_tran.csv",
+      "sha256": "c80bad36d653d38bde8e38f45f2a5670bb229f6989a79721cbb0b3f396c017b4"
+    }
+  ],
+  "input_deck_authority": {
+    "legacy_run_command_source": "test/exploration/2x1-bvm-qb-c-sim1-v2/run.sh",
+    "legacy_executed_deck": "test/exploration/2x1-bvm-qb-c-sim1-v2/deck.cir",
+    "legacy_actual_deck.cir_is_not_assumed_to_have_generated_data_tran_csv": true,
+    "A007_deck": "test/exploration/bvm-qb-cb-array-topology-v1-20260924/runs/A007_T001_M11/actual_deck.cir"
+  },
+  "comparison_plan": {
+    "common_time_extent_ps": [0, 200],
+    "time_window_convention": "half-open",
+    "registered_windows_ps": {
+      "idle": [0, 50],
+      "write0": [50, 61],
+      "read0_control": [70, 81],
+      "write1": [90, 101],
+      "final_read": [110, 121]
+    },
+    "signals": [
+      "I(I_WL1)", "I(I_BL1)", "I(I_SE1)",
+      "I(I_WL2)", "I(I_BL2)", "I(I_SE2)",
+      "P(B_JS1|XBVM1)", "P(B_JS2|XBVM1)", "I(R_SL|XBVM1)",
+      "P(B_JS1|XBVM2)", "P(B_JS2|XBVM2)", "I(R_SL|XBVM2)",
+      "V(R_SL|XBVM2)", "V(BVM2_SL)"
+    ],
+    "grid_rule": "Use actual stored time values. Pointwise comparison only at exactly shared timestamps; otherwise report separate per-run window descriptors without interpolation.",
+    "phase_rule": "Preserve raw radians; independently unwrap each trace before any phase comparison. rad/(2*pi) may be shown for navigation only and is not an SFQ count.",
+    "area_crosscheck_rule": "Only for the same JJ, endpoints, direction, run, and window; if a raw lacks direct matching V(JS1/JS2), mark the cross-check UNKNOWN."
+  },
+  "known_probe_limitations_to_verify": [
+    "The legacy data_tran.csv header does not list BVM JM1/JM2 phase/voltage/current probes.",
+    "The legacy data_tran.csv header does not list direct V(B_JS1|XBVM*) or V(B_JS2|XBVM*) probes."
+  ],
+  "excluded": [
+    "test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U005_1x1_topology_test",
+    "test/exploration/bvm-qb-cb-array-topology-v1-20260924/runs/A008_T002_M1"
+  ],
+  "interpretation_ceiling": "OBSERVED and explicitly DERIVED comparison only; unmatched topology/parameter/toolchain differences must not be described as proven root cause or universal BVM functionality. No parameter recommendation or follow-up experiment is authorized."
+}

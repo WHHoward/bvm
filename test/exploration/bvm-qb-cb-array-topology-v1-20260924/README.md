@@ -73,13 +73,15 @@ snapshot/sources/CB_tunable.cir
 snapshot/sources/sJTL_tunable.cir
 ```
 
-The rendered deck includes those snapshots, not the canonical sources.
-`source_manifest.json` records canonical and rendered hashes plus effective
-role parameters. `parameter_manifest.json` groups BVM, QB, CB, sJTL, topology,
-solver, and stimulus-reference values. The `jjmit` model card stays frozen in
-the source. Resistor value `OPEN` means the branch is commented/open, not a
-large-resistance approximation. All component overrides are shared by every
-instance of that role; per-instance overrides are not supported.
+The rendered deck includes those snapshots, not the canonical sources. It also
+defines the frozen shared `jjmit` model at top level before the includes, so the
+BVM subcircuit resolves the model; its parameters match the QB/CB/sJTL local
+cards. `source_manifest.json` records canonical and rendered hashes plus
+effective role parameters. `parameter_manifest.json` groups BVM, QB, CB, sJTL,
+topology, solver, and stimulus-reference values. The model is not
+user-parameterized. Resistor value `OPEN` means the branch is commented/open,
+not a large-resistance approximation. All component overrides are shared by
+every instance of that role; per-instance overrides are not supported.
 
 ## Batch and immutable run model
 

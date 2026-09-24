@@ -1,0 +1,108 @@
+* Generated top-level deck; component parameters live only in source snapshots.
+* BVM array -> QB/CB/sJTL topology fixture
+* Shared frozen junction model; needed by BVM and identical to component-local cards.
+.model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=160, rN=16, icrit=0.1mA)
+
+.include snapshot/sources/bvm_tunable.cir
+.include snapshot/sources/BQ_tunable.cir
+.include snapshot/sources/CB_tunable.cir
+.include snapshot/sources/sJTL_tunable.cir
+.include stimulus.inc
+
+XBVM1 WL1 BL1 SE1 BVM1_SL BVM
+XBQ1 BVM1_SL QB1_RAW BQ
+XQBCB1 QB1_RAW MERGE1 CB
+XSJTL1_01 MERGE1 L1_01 sJTL
+XSJTL1_02 L1_01 L1_02 sJTL
+XSJTL1_03 L1_02 FINAL_OUT sJTL
+
+R_TERM FINAL_OUT 0 2
+.print I(I_WL1)
+.print I(I_BL1)
+.print I(I_SE1)
+.print P(B_JM1|XBVM1)
+.print V(B_JM1|XBVM1)
+.print I(B_JM1|XBVM1)
+.print P(B_JM2|XBVM1)
+.print V(B_JM2|XBVM1)
+.print I(B_JM2|XBVM1)
+.print P(B_JS1|XBVM1)
+.print V(B_JS1|XBVM1)
+.print I(B_JS1|XBVM1)
+.print P(B_JS2|XBVM1)
+.print V(B_JS2|XBVM1)
+.print I(B_JS2|XBVM1)
+.print I(L_M1|XBVM1)
+.print V(L_M1|XBVM1)
+.print I(L_M2|XBVM1)
+.print V(L_M2|XBVM1)
+.print I(L_M3|XBVM1)
+.print V(L_M3|XBVM1)
+.print I(L_PM|XBVM1)
+.print V(L_PM|XBVM1)
+.print I(L_SL|XBVM1)
+.print V(L_SL|XBVM1)
+.print I(R_SL|XBVM1)
+.print V(R_SL|XBVM1)
+.print V(BVM1_SL)
+.print P(BJ1|XBQ1)
+.print V(BJ1|XBQ1)
+.print I(BJ1|XBQ1)
+.print P(BJ2|XBQ1)
+.print V(BJ2|XBQ1)
+.print I(BJ2|XBQ1)
+.print P(BJ3|XBQ1)
+.print V(BJ3|XBQ1)
+.print I(BJ3|XBQ1)
+.print I(LIN|XBQ1)
+.print V(LIN|XBQ1)
+.print I(L1|XBQ1)
+.print V(L1|XBQ1)
+.print I(L2|XBQ1)
+.print V(L2|XBQ1)
+.print I(L3|XBQ1)
+.print V(L3|XBQ1)
+.print V(QB1_RAW)
+.print P(BJ1|XQBCB1)
+.print V(BJ1|XQBCB1)
+.print I(BJ1|XQBCB1)
+.print P(BJ2|XQBCB1)
+.print V(BJ2|XQBCB1)
+.print I(BJ2|XQBCB1)
+.print I(L1|XQBCB1)
+.print V(L1|XQBCB1)
+.print I(L2|XQBCB1)
+.print V(L2|XQBCB1)
+.print I(L3|XQBCB1)
+.print V(L3|XQBCB1)
+.print I(L4|XQBCB1)
+.print V(L4|XQBCB1)
+.print V(MERGE1)
+.print V(FINAL_OUT)
+.print P(BJ1|XSJTL1_01)
+.print V(BJ1|XSJTL1_01)
+.print I(BJ1|XSJTL1_01)
+.print I(L1|XSJTL1_01)
+.print V(L1|XSJTL1_01)
+.print I(L2|XSJTL1_01)
+.print V(L2|XSJTL1_01)
+.print V(L1_01)
+.print P(BJ1|XSJTL1_02)
+.print V(BJ1|XSJTL1_02)
+.print I(BJ1|XSJTL1_02)
+.print I(L1|XSJTL1_02)
+.print V(L1|XSJTL1_02)
+.print I(L2|XSJTL1_02)
+.print V(L2|XSJTL1_02)
+.print V(L1_02)
+.print P(BJ1|XSJTL1_03)
+.print V(BJ1|XSJTL1_03)
+.print I(BJ1|XSJTL1_03)
+.print I(L1|XSJTL1_03)
+.print V(L1|XSJTL1_03)
+.print I(L2|XSJTL1_03)
+.print V(L2|XSJTL1_03)
+.print V(R_TERM)
+.print I(R_TERM)
+.tran 0.01p 200p
+.end

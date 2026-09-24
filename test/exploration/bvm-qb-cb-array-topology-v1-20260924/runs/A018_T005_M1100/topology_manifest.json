@@ -1,0 +1,375 @@
+{
+  "array_size": 4,
+  "automatic_follow_up": false,
+  "carry_aliases": {
+    "CARRY1": "MERGE2",
+    "CARRY2": "MERGE3",
+    "CARRY3": "MERGE4",
+    "CARRY4": "FINAL_OUT"
+  },
+  "instances": [
+    {
+      "instance": "XBVM1",
+      "pins": [
+        "WL1",
+        "BL1",
+        "SE1",
+        "BVM1_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ1",
+      "pins": [
+        "BVM1_SL",
+        "QB1_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB1",
+      "pins": [
+        "QB1_RAW",
+        "MERGE1"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL1_01",
+      "pins": [
+        "MERGE1",
+        "L1_01"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XPOSTCB1",
+      "pins": [
+        "L1_01",
+        "MERGE2"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XBVM2",
+      "pins": [
+        "WL2",
+        "BL2",
+        "SE2",
+        "BVM2_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ2",
+      "pins": [
+        "BVM2_SL",
+        "QB2_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB2",
+      "pins": [
+        "QB2_RAW",
+        "MERGE2"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL2_01",
+      "pins": [
+        "MERGE2",
+        "L2_01"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XPOSTCB2",
+      "pins": [
+        "L2_01",
+        "MERGE3"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XBVM3",
+      "pins": [
+        "WL3",
+        "BL3",
+        "SE3",
+        "BVM3_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ3",
+      "pins": [
+        "BVM3_SL",
+        "QB3_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB3",
+      "pins": [
+        "QB3_RAW",
+        "MERGE3"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL3_01",
+      "pins": [
+        "MERGE3",
+        "L3_01"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XPOSTCB3",
+      "pins": [
+        "L3_01",
+        "MERGE4"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XBVM4",
+      "pins": [
+        "WL4",
+        "BL4",
+        "SE4",
+        "BVM4_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ4",
+      "pins": [
+        "BVM4_SL",
+        "QB4_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB4",
+      "pins": [
+        "QB4_RAW",
+        "MERGE4"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL4_01",
+      "pins": [
+        "MERGE4",
+        "FINAL_OUT"
+      ],
+      "subcircuit": "sJTL"
+    }
+  ],
+  "levels": [
+    {
+      "bvm": "XBVM1",
+      "bvm_output_node": "BVM1_SL",
+      "carry_label": "CARRY1",
+      "carry_node": "MERGE2",
+      "carry_output": {
+        "element": "L4",
+        "instance": "XPOSTCB1",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB1)",
+        "status": "AVAILABLE"
+      },
+      "level": 1,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB1",
+        "signal": "I(L4|XQBCB1)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE1",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB1)",
+        "upstream_signal": null,
+        "upstream_status": "NOT_APPLICABLE"
+      },
+      "merge_node": "MERGE1",
+      "post_sjtl_cb": "XPOSTCB1",
+      "qb": "XBQ1",
+      "qb_raw_node": "QB1_RAW",
+      "qb_side_cb": "XQBCB1",
+      "sjtl_instances": [
+        "XSJTL1_01"
+      ],
+      "upstream_output": {
+        "element": null,
+        "instance": null,
+        "reason": "level 1 has no previous carry",
+        "signal": null,
+        "status": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "bvm": "XBVM2",
+      "bvm_output_node": "BVM2_SL",
+      "carry_label": "CARRY2",
+      "carry_node": "MERGE3",
+      "carry_output": {
+        "element": "L4",
+        "instance": "XPOSTCB2",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB2)",
+        "status": "AVAILABLE"
+      },
+      "level": 2,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB2",
+        "signal": "I(L4|XQBCB2)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE2",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB2)",
+        "upstream_signal": "I(L4|XPOSTCB1)",
+        "upstream_status": "AVAILABLE"
+      },
+      "merge_node": "MERGE2",
+      "post_sjtl_cb": "XPOSTCB2",
+      "qb": "XBQ2",
+      "qb_raw_node": "QB2_RAW",
+      "qb_side_cb": "XQBCB2",
+      "sjtl_instances": [
+        "XSJTL2_01"
+      ],
+      "upstream_output": {
+        "element": "L4",
+        "instance": "XPOSTCB1",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB1)",
+        "status": "AVAILABLE"
+      }
+    },
+    {
+      "bvm": "XBVM3",
+      "bvm_output_node": "BVM3_SL",
+      "carry_label": "CARRY3",
+      "carry_node": "MERGE4",
+      "carry_output": {
+        "element": "L4",
+        "instance": "XPOSTCB3",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB3)",
+        "status": "AVAILABLE"
+      },
+      "level": 3,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB3",
+        "signal": "I(L4|XQBCB3)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE3",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB3)",
+        "upstream_signal": "I(L4|XPOSTCB2)",
+        "upstream_status": "AVAILABLE"
+      },
+      "merge_node": "MERGE3",
+      "post_sjtl_cb": "XPOSTCB3",
+      "qb": "XBQ3",
+      "qb_raw_node": "QB3_RAW",
+      "qb_side_cb": "XQBCB3",
+      "sjtl_instances": [
+        "XSJTL3_01"
+      ],
+      "upstream_output": {
+        "element": "L4",
+        "instance": "XPOSTCB2",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB2)",
+        "status": "AVAILABLE"
+      }
+    },
+    {
+      "bvm": "XBVM4",
+      "bvm_output_node": "BVM4_SL",
+      "carry_label": "CARRY4",
+      "carry_node": "FINAL_OUT",
+      "carry_output": {
+        "element": "L2",
+        "instance": "XSJTL4_01",
+        "reason": null,
+        "signal": "I(L2|XSJTL4_01)",
+        "status": "AVAILABLE"
+      },
+      "level": 4,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB4",
+        "signal": "I(L4|XQBCB4)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE4",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB4)",
+        "upstream_signal": "I(L4|XPOSTCB3)",
+        "upstream_status": "AVAILABLE"
+      },
+      "merge_node": "MERGE4",
+      "post_sjtl_cb": null,
+      "qb": "XBQ4",
+      "qb_raw_node": "QB4_RAW",
+      "qb_side_cb": "XQBCB4",
+      "sjtl_instances": [
+        "XSJTL4_01"
+      ],
+      "upstream_output": {
+        "element": "L4",
+        "instance": "XPOSTCB3",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB3)",
+        "status": "AVAILABLE"
+      }
+    }
+  ],
+  "logical_node_aliases": {},
+  "mask": "1100",
+  "render_status": "RUN",
+  "run_id": "A018_T005_M1100",
+  "schema": "bvm-qb-cb-array-topology-v1",
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "analysis": "transient",
+    "dt": "0.01p",
+    "stop": "200p"
+  },
+  "terminal": {
+    "output_node": "FINAL_OUT",
+    "resistance": "2",
+    "resistor": "R_TERM"
+  },
+  "topology": {
+    "POST_SJTL_CB": [
+      1,
+      1,
+      1,
+      0
+    ],
+    "QB_CB": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "SJTL_COUNT": [
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "topology_signature": "18b1979c756d0b85e99fcf0bd3696675d7204ed3c37f47e56d904d1b6e034c76"
+}

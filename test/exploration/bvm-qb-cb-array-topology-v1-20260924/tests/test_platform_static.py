@@ -97,6 +97,12 @@ class PlatformStaticTests(unittest.TestCase):
                     ".include snapshot/sources/sJTL_tunable.cir",
                     ".include stimulus.inc",
                 ]
+                jjmit_card = (
+                    ".model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, "
+                    "r0=160, rN=16, icrit=0.1mA)"
+                )
+                self.assertEqual(deck_text.count(jjmit_card), 1)
+                self.assertLess(deck_text.index(jjmit_card), deck_text.index(expected_includes[0]))
                 include_lines = [line for line in deck_text.splitlines()
                                  if line.lstrip().startswith(".include")]
                 self.assertEqual(include_lines, expected_includes)

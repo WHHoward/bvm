@@ -47,6 +47,12 @@ class ComponentRenderTests(unittest.TestCase):
                 self.assertEqual(record["canonical_source_sha256"], self.source_hashes[role])
                 self.assertEqual(record["rendered_snapshot_sha256"], digest(sources[role]))
                 self.assertTrue(record["rendered_snapshot_path"].endswith(SNAPSHOT_NAMES[role]))
+            shared_model = (
+                ".model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, "
+                "r0=160, rN=16, icrit=0.1mA)"
+            )
+            for role in ("QB", "CB", "SJTL"):
+                self.assertIn(shared_model, sources[role].read_text())
         self.assertEqual({role: digest(REPO / path) for role, path in SOURCE_FILES.items()},
                          self.source_hashes)
 

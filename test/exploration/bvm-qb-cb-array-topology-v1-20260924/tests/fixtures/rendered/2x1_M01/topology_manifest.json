@@ -1,0 +1,309 @@
+{
+  "array_size": 2,
+  "automatic_follow_up": false,
+  "carry_aliases": {
+    "CARRY1": "MERGE2",
+    "CARRY2": "FINAL_OUT"
+  },
+  "instances": [
+    {
+      "instance": "XBVM1",
+      "pins": [
+        "WL1",
+        "BL1",
+        "SE1",
+        "BVM1_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ1",
+      "pins": [
+        "BVM1_SL",
+        "MERGE1"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XSJTL1_01",
+      "pins": [
+        "MERGE1",
+        "L1_01"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_02",
+      "pins": [
+        "L1_01",
+        "L1_02"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_03",
+      "pins": [
+        "L1_02",
+        "L1_03"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_04",
+      "pins": [
+        "L1_03",
+        "L1_04"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_05",
+      "pins": [
+        "L1_04",
+        "L1_05"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_06",
+      "pins": [
+        "L1_05",
+        "L1_06"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_07",
+      "pins": [
+        "L1_06",
+        "L1_07"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_08",
+      "pins": [
+        "L1_07",
+        "L1_08"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_09",
+      "pins": [
+        "L1_08",
+        "L1_09"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_10",
+      "pins": [
+        "L1_09",
+        "L1_10"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_11",
+      "pins": [
+        "L1_10",
+        "L1_11"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_12",
+      "pins": [
+        "L1_11",
+        "L1_12"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_13",
+      "pins": [
+        "L1_12",
+        "L1_13"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XPOSTCB1",
+      "pins": [
+        "L1_13",
+        "MERGE2"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XBVM2",
+      "pins": [
+        "WL2",
+        "BL2",
+        "SE2",
+        "BVM2_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ2",
+      "pins": [
+        "BVM2_SL",
+        "QB2_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB2",
+      "pins": [
+        "QB2_RAW",
+        "MERGE2"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL2_01",
+      "pins": [
+        "MERGE2",
+        "L2_01"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL2_02",
+      "pins": [
+        "L2_01",
+        "FINAL_OUT"
+      ],
+      "subcircuit": "sJTL"
+    }
+  ],
+  "levels": [
+    {
+      "bvm": "XBVM1",
+      "bvm_output_node": "BVM1_SL",
+      "carry_label": "CARRY1",
+      "carry_node": "MERGE2",
+      "carry_output": {
+        "element": "L4",
+        "instance": "XPOSTCB1",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB1)",
+        "status": "AVAILABLE"
+      },
+      "level": 1,
+      "local_output": {
+        "element": "L3",
+        "instance": "XBQ1",
+        "signal": "I(L3|XBQ1)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE1",
+      "merge_inputs": {
+        "local_signal": "I(L3|XBQ1)",
+        "upstream_signal": null,
+        "upstream_status": "NOT_APPLICABLE"
+      },
+      "merge_node": "MERGE1",
+      "post_sjtl_cb": "XPOSTCB1",
+      "qb": "XBQ1",
+      "qb_raw_node": null,
+      "qb_side_cb": null,
+      "sjtl_instances": [
+        "XSJTL1_01",
+        "XSJTL1_02",
+        "XSJTL1_03",
+        "XSJTL1_04",
+        "XSJTL1_05",
+        "XSJTL1_06",
+        "XSJTL1_07",
+        "XSJTL1_08",
+        "XSJTL1_09",
+        "XSJTL1_10",
+        "XSJTL1_11",
+        "XSJTL1_12",
+        "XSJTL1_13"
+      ],
+      "upstream_output": {
+        "element": null,
+        "instance": null,
+        "reason": "level 1 has no previous carry",
+        "signal": null,
+        "status": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "bvm": "XBVM2",
+      "bvm_output_node": "BVM2_SL",
+      "carry_label": "CARRY2",
+      "carry_node": "FINAL_OUT",
+      "carry_output": {
+        "element": "L2",
+        "instance": "XSJTL2_02",
+        "reason": null,
+        "signal": "I(L2|XSJTL2_02)",
+        "status": "AVAILABLE"
+      },
+      "level": 2,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB2",
+        "signal": "I(L4|XQBCB2)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE2",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB2)",
+        "upstream_signal": "I(L4|XPOSTCB1)",
+        "upstream_status": "AVAILABLE"
+      },
+      "merge_node": "MERGE2",
+      "post_sjtl_cb": null,
+      "qb": "XBQ2",
+      "qb_raw_node": "QB2_RAW",
+      "qb_side_cb": "XQBCB2",
+      "sjtl_instances": [
+        "XSJTL2_01",
+        "XSJTL2_02"
+      ],
+      "upstream_output": {
+        "element": "L4",
+        "instance": "XPOSTCB1",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB1)",
+        "status": "AVAILABLE"
+      }
+    }
+  ],
+  "logical_node_aliases": {},
+  "mask": "01",
+  "render_status": "RENDER_FIXTURE_ONLY",
+  "schema": "bvm-qb-cb-array-topology-v1",
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "analysis": "transient",
+    "dt": "0.01p",
+    "stop": "200p"
+  },
+  "terminal": {
+    "output_node": "FINAL_OUT",
+    "resistance": "2",
+    "resistor": "R_TERM"
+  },
+  "topology": {
+    "POST_SJTL_CB": [
+      1,
+      0
+    ],
+    "QB_CB": [
+      0,
+      1
+    ],
+    "SJTL_COUNT": [
+      13,
+      2
+    ]
+  },
+  "topology_signature": "f3b74df06e5b506acceca2ea82e0106259b8c61a3e0386155f343d3c6ee993ee"
+}

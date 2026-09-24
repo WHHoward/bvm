@@ -1,0 +1,281 @@
+{
+  "array_size": 3,
+  "automatic_follow_up": false,
+  "carry_aliases": {
+    "CARRY1": "MERGE1",
+    "CARRY2": "MERGE3",
+    "CARRY3": "FINAL_OUT"
+  },
+  "instances": [
+    {
+      "instance": "XBVM1",
+      "pins": [
+        "WL1",
+        "BL1",
+        "SE1",
+        "BVM1_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ1",
+      "pins": [
+        "BVM1_SL",
+        "QB1_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB1",
+      "pins": [
+        "QB1_RAW",
+        "MERGE1"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XBVM2",
+      "pins": [
+        "WL2",
+        "BL2",
+        "SE2",
+        "BVM2_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ2",
+      "pins": [
+        "BVM2_SL",
+        "MERGE1"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XSJTL2_01",
+      "pins": [
+        "MERGE1",
+        "L2_01"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL2_02",
+      "pins": [
+        "L2_01",
+        "L2_02"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL2_03",
+      "pins": [
+        "L2_02",
+        "L2_03"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XPOSTCB2",
+      "pins": [
+        "L2_03",
+        "MERGE3"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XBVM3",
+      "pins": [
+        "WL3",
+        "BL3",
+        "SE3",
+        "BVM3_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ3",
+      "pins": [
+        "BVM3_SL",
+        "QB3_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB3",
+      "pins": [
+        "QB3_RAW",
+        "MERGE3"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL3_01",
+      "pins": [
+        "MERGE3",
+        "FINAL_OUT"
+      ],
+      "subcircuit": "sJTL"
+    }
+  ],
+  "levels": [
+    {
+      "bvm": "XBVM1",
+      "bvm_output_node": "BVM1_SL",
+      "carry_label": "CARRY1",
+      "carry_node": "MERGE1",
+      "carry_output": {
+        "element": null,
+        "instance": null,
+        "reason": "zero sJTL and no post-CB: carry has no distinct branch element",
+        "signal": null,
+        "status": "UNAVAILABLE"
+      },
+      "level": 1,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB1",
+        "signal": "I(L4|XQBCB1)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE1",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB1)",
+        "upstream_signal": null,
+        "upstream_status": "NOT_APPLICABLE"
+      },
+      "merge_node": "MERGE1",
+      "post_sjtl_cb": null,
+      "qb": "XBQ1",
+      "qb_raw_node": "QB1_RAW",
+      "qb_side_cb": "XQBCB1",
+      "sjtl_instances": [],
+      "upstream_output": {
+        "element": null,
+        "instance": null,
+        "reason": "level 1 has no previous carry",
+        "signal": null,
+        "status": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "bvm": "XBVM2",
+      "bvm_output_node": "BVM2_SL",
+      "carry_label": "CARRY2",
+      "carry_node": "MERGE3",
+      "carry_output": {
+        "element": "L4",
+        "instance": "XPOSTCB2",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB2)",
+        "status": "AVAILABLE"
+      },
+      "level": 2,
+      "local_output": {
+        "element": "L3",
+        "instance": "XBQ2",
+        "signal": "I(L3|XBQ2)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE2",
+      "merge_inputs": {
+        "local_signal": "I(L3|XBQ2)",
+        "upstream_signal": null,
+        "upstream_status": "UNAVAILABLE"
+      },
+      "merge_node": "MERGE1",
+      "post_sjtl_cb": "XPOSTCB2",
+      "qb": "XBQ2",
+      "qb_raw_node": null,
+      "qb_side_cb": null,
+      "sjtl_instances": [
+        "XSJTL2_01",
+        "XSJTL2_02",
+        "XSJTL2_03"
+      ],
+      "upstream_output": {
+        "element": null,
+        "instance": null,
+        "reason": "previous carry is a direct wire with no distinct branch element",
+        "signal": null,
+        "status": "UNAVAILABLE"
+      }
+    },
+    {
+      "bvm": "XBVM3",
+      "bvm_output_node": "BVM3_SL",
+      "carry_label": "CARRY3",
+      "carry_node": "FINAL_OUT",
+      "carry_output": {
+        "element": "L2",
+        "instance": "XSJTL3_01",
+        "reason": null,
+        "signal": "I(L2|XSJTL3_01)",
+        "status": "AVAILABLE"
+      },
+      "level": 3,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB3",
+        "signal": "I(L4|XQBCB3)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE3",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB3)",
+        "upstream_signal": "I(L4|XPOSTCB2)",
+        "upstream_status": "AVAILABLE"
+      },
+      "merge_node": "MERGE3",
+      "post_sjtl_cb": null,
+      "qb": "XBQ3",
+      "qb_raw_node": "QB3_RAW",
+      "qb_side_cb": "XQBCB3",
+      "sjtl_instances": [
+        "XSJTL3_01"
+      ],
+      "upstream_output": {
+        "element": "L4",
+        "instance": "XPOSTCB2",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB2)",
+        "status": "AVAILABLE"
+      }
+    }
+  ],
+  "logical_node_aliases": {
+    "MERGE2": "MERGE1"
+  },
+  "mask": "011",
+  "render_status": "RENDER_FIXTURE_ONLY",
+  "schema": "bvm-qb-cb-array-topology-v1",
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "analysis": "transient",
+    "dt": "0.01p",
+    "stop": "200p"
+  },
+  "terminal": {
+    "output_node": "FINAL_OUT",
+    "resistance": "2",
+    "resistor": "R_TERM"
+  },
+  "topology": {
+    "POST_SJTL_CB": [
+      0,
+      1,
+      0
+    ],
+    "QB_CB": [
+      1,
+      0,
+      1
+    ],
+    "SJTL_COUNT": [
+      0,
+      3,
+      1
+    ]
+  },
+  "topology_signature": "71984d4e4db92aff485fc8b5731a5c95e845484592d3cabe7d17863ee2e96b66"
+}

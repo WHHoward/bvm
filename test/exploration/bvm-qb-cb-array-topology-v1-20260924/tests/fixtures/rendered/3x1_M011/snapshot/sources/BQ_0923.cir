@@ -1,0 +1,26 @@
+
+** BQ with Single direction **
+
+
+
+.subckt BQ IN OUT
+
+Lin IN 1 2p
+L1 2 3 1p
+L2 3 4 1.5p
+L3 4 OUT 1.5p
+BJ1 1 0 jjmit area=0.6
+RJ1 1 0 14
+BJ2 1 2 jjmit area=0.6
+RJ2 1 2 14
+BJ3 4 0 jjmit area=2
+RJ3 4 0 5
+* BJ4 4 5 jjmit area=2
+* RJ4 4 5 5
+
+
+* RB IB 3 9
+* IB1 0 2 pwl(0 0 1p 40u)
+IB2 0 3 pwl(0 0 5p 250u)
+.model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=160, rN=16, icrit=0.1mA)
+.ends BQ

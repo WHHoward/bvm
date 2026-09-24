@@ -89,8 +89,17 @@ class PlatformStaticTests(unittest.TestCase):
                 deck_text = (fixture / "actual_deck.cir").read_text()
                 self.assertRegex(deck_text, r"(?m)^R_TERM FINAL_OUT 0 2$")
                 self.assertRegex(deck_text, r"(?m)^\.tran 0.01p 200p$")
-                for source_name in ("bvm_tunable.cir", "BQ_tunable.cir", "CB_tunable.cir", "sJTL_tunable.cir"):
-                    self.assertIn(f'.include "snapshot/sources/{source_name}"', deck_text)
+                expected_includes = [
+                    ".include snapshot/sources/bvm_tunable.cir",
+                    ".include snapshot/sources/BQ_tunable.cir",
+                    ".include snapshot/sources/CB_tunable.cir",
+                    ".include snapshot/sources/sJTL_tunable.cir",
+                    ".include stimulus.inc",
+                ]
+                include_lines = [line for line in deck_text.splitlines()
+                                 if line.lstrip().startswith(".include")]
+                self.assertEqual(include_lines, expected_includes)
+                self.assertFalse(any('"' in line for line in include_lines))
                 parameter_data = json.loads((fixture / "parameter_manifest.json").read_text())
                 self.assertEqual(set(parameter_data), {
                     "schema", "bvm", "qb", "cb", "sjtl", "topology", "solver",

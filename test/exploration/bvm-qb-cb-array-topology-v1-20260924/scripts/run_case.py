@@ -100,13 +100,13 @@ def render_deck(
     *, fixture_only: bool,
 ) -> str:
     include_lines = [
-        f'.include "snapshot/sources/{ROLE_FILENAMES[role]}"'
+        f'.include snapshot/sources/{ROLE_FILENAMES[role]}'
         for role in ("BVM", "QB", "CB", "SJTL")
     ]
     template = TEMPLATE.read_text(encoding="utf-8")
     replacements = {
         "{{SOURCE_INCLUDES}}": "\n".join(include_lines),
-        "{{STIMULUS_INCLUDE}}": '.include "stimulus.inc"',
+        "{{STIMULUS_INCLUDE}}": ".include stimulus.inc",
         "{{TOPOLOGY_BLOCK}}": "\n".join(topology_lines),
         "{{TERM_R}}": str(params["TERM_R"]),
         "{{PROBE_BLOCK}}": "\n".join(probe_lines),

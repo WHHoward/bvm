@@ -84,8 +84,13 @@ class PlatformStaticTests(unittest.TestCase):
                 deck_text = (fixture / "actual_deck.cir").read_text()
                 self.assertRegex(deck_text, r"(?m)^R_TERM FINAL_OUT 0 2$")
                 self.assertRegex(deck_text, r"(?m)^\.tran 0.01p 200p$")
-                for source_name in ("bvm_cell_0923.cir", "BQ_0923.cir", "CB_0923.cir", "sJTL_0923.cir"):
+                for source_name in ("bvm_tunable.cir", "BQ_tunable.cir", "CB_tunable.cir", "sJTL_tunable.cir"):
                     self.assertIn(f'.include "snapshot/sources/{source_name}"', deck_text)
+                parameter_data = json.loads((fixture / "parameter_manifest.json").read_text())
+                self.assertEqual(set(parameter_data), {
+                    "schema", "bvm", "qb", "cb", "sjtl", "topology", "solver",
+                    "stimulus_reference", "mask", "overrides",
+                })
                 top_level_elements = [line.split()[0].casefold() for line in deck_text.splitlines()
                                       if line.strip() and not line.lstrip().startswith(("*", "."))]
                 self.assertEqual(len(top_level_elements), len(set(top_level_elements)))
@@ -139,7 +144,10 @@ class PlatformStaticTests(unittest.TestCase):
             "manifest": {"new_physical_solve_count": 1},
         }
         with patch.object(submit, "staged_outside_series", return_value=[]), \
-             patch.object(submit, "completed_runs", return_value=[{"run_id": "fixture", "physical_solve_count": 1}]), \
+             patch.object(submit, "completed_runs", return_value=([], {
+                 "batch_id": "fixture-batch", "status": "COMPLETE_MECHANICAL",
+                 "requested_masks": ["01"], "total_physical_solve_count": 1,
+             })), \
              patch.object(submit, "series_changes", return_value=["runs/fixture/result.json"]), \
              patch.object(submit, "current_head", return_value="fixture-head"), \
              patch.object(submit.package, "build_plan", return_value=package_plan), \

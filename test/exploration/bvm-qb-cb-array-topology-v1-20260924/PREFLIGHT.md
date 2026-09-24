@@ -11,10 +11,20 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 - Authoritative component sources are the four `0923` circuits listed in
   `README.md`; this task does not edit those source files.
 - Output mode is terminal-only; no T1 is connected.
-- The source files contain their own `.model jjmit` definitions; the solver's
+- QB/CB/sJTL sources contain their own `.model jjmit` definitions; the solver's
   acceptance of repeated definitions across included subcircuits remains
-  UNKNOWN until a separately authorized real run. No source edits or workaround
-  are made here.
+  UNKNOWN until a separately authorized real run. No canonical source edits or
+  model-card workaround are made here.
+
+## Engineering-only extension (2026-09-24)
+
+- Parent platform commit: `a78be0a256ffbdb39d621edffae021a82ba2ccfb`.
+- Extend `USER_CASE.env` with hash-bound BVM/QB/CB/sJTL parameters; render
+  per-run component snapshots without modifying the four canonical 0923 files.
+- Add `try.sh` multi-mask batch preview/run interface, immutable batch metadata,
+  and `submit.sh` mechanical completeness validation.
+- Static preview, stubbed batch, and synthetic submit-gate tests only. No real
+  batch, run, raw, waveform HTML, package, mirror, or push is authorized here.
 
 ## Authorized this turn
 

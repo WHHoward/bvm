@@ -19,10 +19,38 @@ SCALE = {
     "t": Decimal("1e12"),
 }
 
-USER_CASE_KEYS = {
-    "ARRAY_SIZE", "MASKS", "QB_CB", "SJTL_COUNT", "POST_SJTL_CB",
+BVM_AREA_KEYS = {"BVM_JM1_AREA", "BVM_JM2_AREA", "BVM_JS1_AREA", "BVM_JS2_AREA"}
+BVM_RESISTANCE_KEYS = {
+    "BVM_RJM1", "BVM_RJM2", "BVM_RJS1", "BVM_RJS2", "BVM_RS", "BVM_RSL",
+    "BVM_RBL", "BVM_RWL", "BVM_RSE",
+}
+BVM_INDUCTANCE_KEYS = {
+    "BVM_LM1", "BVM_LM2", "BVM_LM3", "BVM_LPM", "BVM_LS1", "BVM_LS2",
+    "BVM_LS3", "BVM_LPSL", "BVM_LSL", "BVM_LPBL", "BVM_LPWL", "BVM_LPSE",
+}
+QB_AREA_KEYS = {"QB_BJ1_AREA", "QB_BJ2_AREA", "QB_BJ3_AREA"}
+QB_RESISTANCE_KEYS = {"QB_RJ1", "QB_RJ2", "QB_RJ3"}
+QB_INDUCTANCE_KEYS = {"QB_LIN", "QB_L1", "QB_L2", "QB_L3"}
+QB_CURRENT_KEYS = {"QB_IB"}
+CB_AREA_KEYS = {"CB_BJ1_AREA", "CB_BJ2_AREA"}
+CB_RESISTANCE_KEYS = {"CB_RJ1", "CB_RJ2"}
+CB_INDUCTANCE_KEYS = {"CB_L1", "CB_L2", "CB_L3", "CB_L4"}
+CB_CURRENT_KEYS = {"CB_IB"}
+SJTL_AREA_KEYS = {"SJTL_BJ1_AREA"}
+SJTL_RESISTANCE_KEYS = {"SJTL_RJ1"}
+SJTL_INDUCTANCE_KEYS = {"SJTL_L1", "SJTL_L2"}
+SJTL_CURRENT_KEYS = {"SJTL_IB"}
+BIAS_RISE_KEYS = {"QB_BIAS_RISE", "CB_BIAS_RISE", "SJTL_BIAS_RISE"}
+COMPONENT_KEYS = (BVM_AREA_KEYS | BVM_RESISTANCE_KEYS | BVM_INDUCTANCE_KEYS
+                  | QB_AREA_KEYS | QB_RESISTANCE_KEYS | QB_INDUCTANCE_KEYS | QB_CURRENT_KEYS
+                  | CB_AREA_KEYS | CB_RESISTANCE_KEYS | CB_INDUCTANCE_KEYS | CB_CURRENT_KEYS
+                  | SJTL_AREA_KEYS | SJTL_RESISTANCE_KEYS | SJTL_INDUCTANCE_KEYS
+                  | SJTL_CURRENT_KEYS | BIAS_RISE_KEYS)
+TOPOLOGY_SOLVER_KEYS = {
+    "NAME", "ARRAY_SIZE", "MASKS", "QB_CB", "SJTL_COUNT", "POST_SJTL_CB",
     "OUTPUT_MODE", "TERM_R", "DT", "STOP",
 }
+USER_CASE_KEYS = TOPOLOGY_SOLVER_KEYS | COMPONENT_KEYS
 STIMULUS_KEYS = {
     f"{stage}_{field}"
     for stage, fields in {
@@ -79,6 +107,8 @@ def parse_array(value: str, *, label: str, size: int) -> list[str]:
 
 
 def validate_user_case(values: dict[str, str]) -> dict[str, object]:
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", values.get("NAME", "")):
+        raise ConfigError("NAME must match [A-Za-z0-9_-]+")
     try:
         size = int(values["ARRAY_SIZE"])
     except (ValueError, KeyError) as exc:
@@ -114,7 +144,27 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
     stop = parse_quantity(values["STOP"], label="STOP")
     if term <= 0 or dt <= 0 or stop <= 0:
         raise ConfigError("TERM_R, DT, and STOP must be positive")
+    for key in sorted(BVM_AREA_KEYS | QB_AREA_KEYS | CB_AREA_KEYS | SJTL_AREA_KEYS):
+        _parse_positive_scalar(values[key], key)
+    for key in sorted(BVM_INDUCTANCE_KEYS | QB_INDUCTANCE_KEYS
+                      | CB_INDUCTANCE_KEYS | SJTL_INDUCTANCE_KEYS):
+        quantity = parse_quantity(values[key], label=key)
+        if quantity <= 0:
+            raise ConfigError(f"{key}: must be positive")
+    for key in sorted(BVM_RESISTANCE_KEYS | QB_RESISTANCE_KEYS
+                      | CB_RESISTANCE_KEYS | SJTL_RESISTANCE_KEYS):
+        if values[key] != "OPEN":
+            quantity = parse_quantity(values[key], label=key)
+            if quantity <= 0:
+                raise ConfigError(f"{key}: must be positive or OPEN")
+    for key in sorted(QB_CURRENT_KEYS | CB_CURRENT_KEYS | SJTL_CURRENT_KEYS):
+        parse_quantity(values[key], label=key)
+    for key in sorted(BIAS_RISE_KEYS):
+        quantity = parse_quantity(values[key], label=key)
+        if quantity <= 0:
+            raise ConfigError(f"{key}: must be positive")
     return {
+        "NAME": values["NAME"],
         "ARRAY_SIZE": size, "MASKS": masks,
         "QB_CB": [int(value) for value in qb_cb],
         "SJTL_COUNT": counts,
@@ -125,6 +175,16 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
         "DT_SECONDS": dt,
         "STOP_SECONDS": stop,
     }
+
+
+def _parse_positive_scalar(token: str, label: str) -> Decimal:
+    match = NUMBER_RE.fullmatch(token.strip())
+    if not match or match.group(2):
+        raise ConfigError(f"{label}: expected a positive unitless number, got {token!r}")
+    number = Decimal(match.group(1))
+    if not number.is_finite() or number <= 0:
+        raise ConfigError(f"{label}: must be positive and finite")
+    return number
 
 
 def format_time(seconds: Decimal) -> str:

@@ -8,7 +8,6 @@ import hashlib
 import json
 import re
 import shlex
-import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -16,9 +15,10 @@ from pathlib import Path
 from typing import Any
 
 from config import ConfigError, USER_CASE_KEYS, load_env, validate_user_case
+from components import parameter_manifest as make_parameter_manifest, render_components
 from probes import generate_probes, validate_probe_lines
 from stimulus import load_stimulus, render_stimulus, validate_stimulus
-from topology import SOURCE_FILES, parse_subcircuits, render_topology
+from topology import render_topology
 
 
 SERIES = Path(__file__).resolve().parents[1]
@@ -27,8 +27,8 @@ SCRIPTS = SERIES / "scripts"
 TEMPLATE = SERIES / "templates" / "base.cir"
 RUN_ID_RE = re.compile(r"^A\d{3,}_T\d{3,}_M[01]+$")
 ROLE_FILENAMES = {
-    "BVM": "bvm_cell_0923.cir", "QB": "BQ_0923.cir",
-    "CB": "CB_0923.cir", "SJTL": "sJTL_0923.cir",
+    "BVM": "bvm_tunable.cir", "QB": "BQ_tunable.cir",
+    "CB": "CB_tunable.cir", "SJTL": "sJTL_tunable.cir",
 }
 
 
@@ -95,30 +95,6 @@ def allocate_run_id(runs_root: Path, mask: str, signature: str) -> str:
     return f"A{attempt:03d}_T{topology_id:03d}_M{mask}"
 
 
-def snapshot_sources(output_dir: Path) -> tuple[dict[str, Path], list[dict[str, object]]]:
-    destination = output_dir / "snapshot" / "sources"
-    destination.mkdir(parents=True, exist_ok=True)
-    sources: dict[str, Path] = {}
-    records: list[dict[str, object]] = []
-    for role, relative in SOURCE_FILES.items():
-        original = REPO / relative
-        if not original.is_file():
-            raise ConfigError(f"component source is missing: {relative}")
-        snapshot = destination / ROLE_FILENAMES[role]
-        shutil.copyfile(original, snapshot)
-        sources[role] = snapshot
-        records.append({
-            "role": role,
-            "source_path": relative.as_posix(),
-            "snapshot_path": snapshot.relative_to(output_dir).as_posix(),
-            "sha256": sha256(snapshot),
-            "bytes": snapshot.stat().st_size,
-        })
-    # Validate subcircuit definitions from the byte-for-byte snapshots used by the deck.
-    parse_subcircuits(sources)
-    return sources, records
-
-
 def render_deck(
     params: dict[str, object], topology_lines: list[str], probe_lines: list[str],
     *, fixture_only: bool,
@@ -151,6 +127,7 @@ def render_case(
     output_dir: str | Path, *, fixture_only: bool,
     user_snapshot_text: str | None = None,
     stimulus_snapshot_text: str | None = None,
+    overrides: list[str] | None = None,
 ) -> dict[str, object]:
     params = validate_user_case(user_values)
     if mask not in params["MASKS"]:
@@ -161,7 +138,7 @@ def render_case(
 
     case_dir = Path(output_dir)
     case_dir.mkdir(parents=True, exist_ok=True)
-    sources, source_records = snapshot_sources(case_dir)
+    sources, source_records = render_components(user_values, case_dir / "snapshot" / "sources")
     topology_lines, topology_manifest = render_topology(params, sources)
     probe_lines, probe_manifest = generate_probes(topology_manifest, sources)
     validate_probe_lines(probe_lines, probe_manifest)
@@ -175,6 +152,9 @@ def render_case(
     topology_manifest["render_status"] = "RENDER_FIXTURE_ONLY" if fixture_only else "STATIC_RENDER"
     user_snapshot_text = user_snapshot_text or stable_env(user_values)
     stimulus_snapshot_text = stimulus_snapshot_text or stable_env(stimulus_values)
+    parameters = make_parameter_manifest(user_values, params, stimulus_values, stimulus_snapshot_text)
+    parameters["mask"] = mask
+    parameters["overrides"] = list(overrides or [])
     source_manifest = {
         "schema": "bvm-qb-cb-array-source-manifest-v1",
         "render_status": "RENDER_FIXTURE_ONLY" if fixture_only else "STATIC_RENDER",
@@ -182,6 +162,7 @@ def render_case(
         "user_case_sha256": hashlib.sha256(user_snapshot_text.encode()).hexdigest(),
         "stimulus_sha256": hashlib.sha256(stimulus_snapshot_text.encode()).hexdigest(),
         "topology_signature": signature,
+        "overrides": list(overrides or []),
     }
     output = {
         "USER_CASE.snapshot.env": user_snapshot_text,
@@ -189,6 +170,7 @@ def render_case(
         "topology_manifest.json": json_text(topology_manifest),
         "source_manifest.json": json_text(source_manifest),
         "probe_manifest.json": json_text(probe_manifest),
+        "parameter_manifest.json": json_text(parameters),
         "stimulus.inc": stimulus,
         "actual_deck.cir": deck,
     }
@@ -203,6 +185,7 @@ def render_case(
         "topology_manifest": topology_manifest,
         "source_manifest": source_manifest,
         "probe_manifest": probe_manifest,
+        "parameter_manifest": parameters,
     }
 
 
@@ -236,7 +219,8 @@ def _write_run_preflight(run_dir: Path, run_id: str, params: dict[str, object],
                          topology: dict[str, Any], probes: dict[str, Any],
                          sources: dict[str, Any], solver: dict[str, Any], head: str) -> None:
     probe_labels = [str(item["label"]) for item in probes["signals"]]
-    source_rows = [f"- `{item['source_path']}` → `{item['snapshot_path']}` SHA-256 `{item['sha256']}`"
+    source_rows = [f"- `{item['canonical_source_path']}` ({item['canonical_source_sha256']}) → "
+                   f"`{item['rendered_snapshot_path']}` SHA-256 `{item['rendered_snapshot_sha256']}`"
                    for item in sources["sources"]]
     lines = [
         "# Physical run preflight", "",
@@ -260,7 +244,7 @@ def _write_run_preflight(run_dir: Path, run_id: str, params: dict[str, object],
         "", "## Registered probes", "", *[f"- `{label}`" for label in probe_labels],
         "", "## Required output artifacts", "",
         "`actual_deck.cir`, `stimulus.inc`, `topology_manifest.json`, `source_manifest.json`,",
-        "`probe_manifest.json`, `raw.csv`, stdout/stderr, mechanical raw QA/metrics, and",
+        "`probe_manifest.json`, `parameter_manifest.json`, `raw.csv`, stdout/stderr, mechanical raw QA/metrics, and",
         "the five requested plot pages. A failed attempt remains in this run directory.", "",
     ]
     (run_dir / "PREFLIGHT.md").write_text("\n".join(lines), encoding="utf-8")
@@ -271,6 +255,7 @@ def execute_run(
     *, run_id: str | None = None, solver: Path | None = None,
     user_snapshot_text: str | None = None,
     stimulus_snapshot_text: str | None = None,
+    overrides: list[str] | None = None,
 ) -> int:
     """Execute exactly one future-authorized run; never called by render-only."""
     params = validate_user_case(user_values)
@@ -294,6 +279,7 @@ def execute_run(
         user_values, stimulus_values, mask, run_dir, fixture_only=False,
         user_snapshot_text=user_snapshot_text,
         stimulus_snapshot_text=stimulus_snapshot_text,
+        overrides=overrides,
     )
     topology_manifest = render_result["topology_manifest"]
     topology_manifest["run_id"] = run_id
@@ -335,6 +321,8 @@ def execute_run(
                              "sha256": sha256(run_dir / "source_manifest.json")},
         "probe_manifest": {"path": "probe_manifest.json",
                             "sha256": sha256(run_dir / "probe_manifest.json")},
+        "parameter_manifest": {"path": "parameter_manifest.json",
+                               "sha256": sha256(run_dir / "parameter_manifest.json")},
         "scientific_interpretation_performed": False, "automatic_follow_up": False,
         "physical_solve_count": 1,
     }

@@ -130,6 +130,13 @@ class TopologyRenderTests(unittest.TestCase):
             invalid[key] = value
             with self.subTest(key=key, value=value), self.assertRaises(ConfigError):
                 validate_user_case(invalid)
+        for key, value in (("BVM_JM1_AREA", "0"), ("QB_LIN", "0p"),
+                           ("CB_RJ1", "0"), ("SJTL_BIAS_RISE", "0p"),
+                           ("BVM_RJM2", "opened"), ("NAME", "bad/name")):
+            invalid = dict(values)
+            invalid[key] = value
+            with self.subTest(key=key, value=value), self.assertRaises(ConfigError):
+                validate_user_case(invalid)
         from run_case import validate_run_id
         with self.assertRaises(ConfigError):
             validate_run_id("A1_T1_M1", "01")

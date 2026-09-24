@@ -64,8 +64,9 @@ def generate_probes(
         for element in ("L_M1", "L_M2", "L_M3", "L_PM", "L_SL"):
             for quantity in ("I", "V"):
                 add(f"{quantity}({element}|{bvm})", f"bvm{index}", instance=bvm, element=element)
-        for quantity in ("I", "V"):
-            add(f"{quantity}(R_SL|{bvm})", f"bvm{index}", instance=bvm, element="R_SL")
+        if "R_SL".casefold() in {name.casefold() for name in subcircuits["BVM"].elements}:
+            for quantity in ("I", "V"):
+                add(f"{quantity}(R_SL|{bvm})", f"bvm{index}", instance=bvm, element="R_SL")
         add(f"V(BVM{index}_SL)", f"bvm{index}", node=f"BVM{index}_SL")
 
         qb = f"XBQ{index}"

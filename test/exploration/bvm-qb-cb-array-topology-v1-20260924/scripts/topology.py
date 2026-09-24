@@ -23,7 +23,7 @@ EXPECTED_PINS = {
     "SJTL": ("IN", "OUT"),
 }
 REQUIRED_ELEMENTS = {
-    "BVM": ("B_JM1", "B_JM2", "B_JS1", "B_JS2", "L_M1", "L_M2", "L_M3", "L_PM", "R_SL", "L_SL"),
+    "BVM": ("B_JM1", "B_JM2", "B_JS1", "B_JS2", "L_M1", "L_M2", "L_M3", "L_PM", "L_SL"),
     "QB": ("BJ1", "BJ2", "BJ3", "Lin", "L1", "L2", "L3"),
     "CB": ("BJ1", "BJ2", "L1", "L2", "L3", "L4"),
     "SJTL": ("BJ1", "L1", "L2"),

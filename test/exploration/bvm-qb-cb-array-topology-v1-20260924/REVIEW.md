@@ -1,25 +1,26 @@
-# Static implementation review
+# Static implementation adversarial review
 
-Scope: platform source and render-only fixtures. Review started from
-`3874aca666361696b319f682ed09ed195d9d9f30`. No JoSIM/raw/package/mirror action
-was performed.
+Scope: USER_CASE component rendering, user preview/batch flow, and submit closure.
+No JoSIM process, real batch/run, raw, waveform HTML, package ZIP, mirror, or
+Drive operation was performed.
 
 | Hidden-error hypothesis | Probe | Result |
 |---|---|---|
-| Render-only follows a solver/process branch | Unit test patches `run_case.subprocess.run` to fail and invokes render-only | PASS; returns `josim_invoked: false`. |
-| A zero-stage carry is left dangling or represented by an inserted device | T2/T3/zero-terminal renders; inspect actual instance connections and manifest aliases | PASS; direct wires share the mapped merge node; no merge or measurement element is added. |
-| Probe labels are invented rather than resolved from included component sources | Parse all four source snapshots and validate each instance, pin count, and internal element during probe generation | PASS for T1–T4 fixtures. |
-| MASK affects pre-final stimulus or bit order is reversed | Evaluate generated PWL at WRITE0, READ0, WRITE1, and FINAL READ for 00/01/10/11 | PASS; only FINAL READ changes, leftmost bit maps to BVM1. |
-| A dry-run silently creates evidence ZIPs or reaches a solver | Package creation is patched to fail in package preview; submit subprocess/package creation patched to fail in submit preview | PASS; no archive, mirror, commit, or physical process. |
-| A dirty-tree package preview truncates the first path character or rewrites checked-in render fixtures | Regression-test the porcelain status parser; render deterministic fixtures only in temporary directories | PASS; dirty paths are preserved and tracked fixtures remain unchanged. |
-| Direct documented CLI is broken despite unit imports passing | Ran `python3 scripts/run_case.py --render-only --mask 01` and `inspect_runs.py` from the series directory | PASS after renaming `inspect.py`, which had shadowed Python's stdlib module. |
+| Default renderer is a no-op with stale or guessed defaults | Render each default component and compare byte-for-byte to its hash-bound canonical 0923 source | PASS; all four snapshots are byte-identical; all canonical hashes remain unchanged. |
+| A QB override silently changes another component or source field | Set only `QB_BJ3_AREA=2.2`; diff rendered QB against canonical and compare BVM/CB/sJTL | PASS; the only changed line is BJ3 area. |
+| OPEN becomes a large resistor, or reopening does not reactivate the branch | Render BVM/CB OPEN defaults and numeric overrides; render with `BVM_RSL=OPEN` and validate probes | PASS; OPEN branches are comments, numeric values reactivate them, and absent RSL probes are omitted. |
+| Stale canonical input is silently accepted | Alter a temporary copy while retaining the reference hash and call the source verifier | PASS; it hard-stops with `REFERENCE_SOURCE_CHANGED`. |
+| Dry-run reaches the solver or leaves a batch/run/snapshot behind | Invoke `./try.sh --dry-run`, `--set` variants, and mask subset; compare config and runs/batches before/after; process call patched to fail in unit test | PASS; 4/2 planned solves are shown, override diff is explicit, no persistent preview artifact or solver call. |
+| A partial mask batch or plot failure is accepted by submit | Synthetic batch with mask 10 absent, then with one plot QA FAIL; invoke mechanical validation with subprocess patched to fail | PASS; both are rejected as `BATCH_INCOMPLETE`; no solver retry. |
+| A physical failure silently retries or continues to later masks | Stub the first requested mask as solver failure and inspect the batch/run records | PASS; the failed run is preserved, remaining masks stop, and no retry occurs. |
+| Repaired plots require rerunning physics or leave stale batch metadata | Change only synthetic same-raw plot QA to PASS, refresh batch closure, and run submit validation | PASS; batch becomes `COMPLETE_MECHANICAL` and validates without invoking JoSIM. |
+| Submit dry-run creates a package while validating a complete batch | Mock package creator to fail; execute submit dry-run over a complete synthetic batch | PASS; preview is allowed, package/mirror/commit/push are not performed. |
 
-All three fixture trees are deterministic and marked `RENDER_FIXTURE_ONLY`;
-their source snapshots match the canonical component files by SHA-256. There are
-zero `raw.csv`, real plot HTML, ZIP, or Axxx run directories.
+All platform unit tests pass. Static 2×1, 3×1 and 4×1 topology fixtures remain
+`RENDER_FIXTURE_ONLY`; automated tests render into temporary directories and
+do not rewrite checked-in fixtures.
 
-Residuals: JoSIM parsing/include resolution and the solver's handling of the
-repeated `.model jjmit` definitions in the supplied QB/CB/sJTL sources remain
-UNKNOWN because this task explicitly forbids a physical solve. Real-raw Plotly
-rendering is implemented but not exercised without raw; only its five-page plan
-is statically checked.
+Residual uncertainty: actual JoSIM parsing/include resolution, the solver's
+handling of repeated `.model jjmit` cards, and real-raw classic plot rendering
+remain UNKNOWN because the user explicitly prohibited physical solves and raw
+generation in this task.

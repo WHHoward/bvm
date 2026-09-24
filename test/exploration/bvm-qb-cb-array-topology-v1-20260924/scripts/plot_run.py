@@ -241,6 +241,11 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
                 latest["status"] = result["status"]
                 latest_path.write_text(json.dumps(latest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
                                        encoding="utf-8")
+    try:
+        from try_case import refresh_batch_for_run
+        refresh_batch_for_run(root)
+    except (OSError, ValueError, RuntimeError) as exc:
+        raise RuntimeError(f"plot QA completed but batch revalidation failed: {exc}") from exc
     return qa
 
 

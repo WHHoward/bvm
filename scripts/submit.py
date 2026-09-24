@@ -707,7 +707,9 @@ def main() -> int:
         zip_paths = [path for path in unique_paths if path.suffix.lower() == ".zip"]
         if not args.no_push:
             verify_mirror_targets(zip_paths, mirror_dir)
-        git(["add", "--", *[rel(path) for path in unique_paths]], capture=False)
+        # Package paths are explicit; force-add is required for detached QA files
+        # ignored by repository-wide patterns, without staging unrelated ignored data.
+        git(["add", "-f", "--", *[rel(path) for path in unique_paths]], capture=False)
         if git(["diff", "--cached", "--quiet"], check=False).returncode != 0:
             git(["commit", "-m", f"package: archive {args.tag} additions"], capture=False)
 

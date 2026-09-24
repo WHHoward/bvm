@@ -156,6 +156,7 @@ def create_bundle(*, name: str, output: Path, qa_path: Path, kind: str,
     internal_manifest = "BUNDLE_MANIFEST.json"
     internal_readme = "README_BUNDLE.txt"
 
+    output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
         for record, (source, _) in zip(records, sources, strict=True):
             archive.write(source, record["archive_path"])

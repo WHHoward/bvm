@@ -1,0 +1,219 @@
+{
+  "array_size": 2,
+  "automatic_follow_up": false,
+  "carry_aliases": {
+    "CARRY1": "MERGE2",
+    "CARRY2": "FINAL_OUT"
+  },
+  "instances": [
+    {
+      "instance": "XBVM1",
+      "pins": [
+        "WL1",
+        "BL1",
+        "SE1",
+        "BVM1_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ1",
+      "pins": [
+        "BVM1_SL",
+        "QB1_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB1",
+      "pins": [
+        "QB1_RAW",
+        "MERGE1"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL1_01",
+      "pins": [
+        "MERGE1",
+        "L1_01"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_02",
+      "pins": [
+        "L1_01",
+        "L1_02"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XSJTL1_03",
+      "pins": [
+        "L1_02",
+        "L1_03"
+      ],
+      "subcircuit": "sJTL"
+    },
+    {
+      "instance": "XPOSTCB1",
+      "pins": [
+        "L1_03",
+        "MERGE2"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XBVM2",
+      "pins": [
+        "WL2",
+        "BL2",
+        "SE2",
+        "BVM2_SL"
+      ],
+      "subcircuit": "BVM"
+    },
+    {
+      "instance": "XBQ2",
+      "pins": [
+        "BVM2_SL",
+        "QB2_RAW"
+      ],
+      "subcircuit": "BQ"
+    },
+    {
+      "instance": "XQBCB2",
+      "pins": [
+        "QB2_RAW",
+        "MERGE2"
+      ],
+      "subcircuit": "CB"
+    },
+    {
+      "instance": "XSJTL2_01",
+      "pins": [
+        "MERGE2",
+        "FINAL_OUT"
+      ],
+      "subcircuit": "sJTL"
+    }
+  ],
+  "levels": [
+    {
+      "bvm": "XBVM1",
+      "bvm_output_node": "BVM1_SL",
+      "carry_label": "CARRY1",
+      "carry_node": "MERGE2",
+      "carry_output": {
+        "element": "L4",
+        "instance": "XPOSTCB1",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB1)",
+        "status": "AVAILABLE"
+      },
+      "level": 1,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB1",
+        "signal": "I(L4|XQBCB1)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE1",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB1)",
+        "upstream_signal": null,
+        "upstream_status": "NOT_APPLICABLE"
+      },
+      "merge_node": "MERGE1",
+      "post_sjtl_cb": "XPOSTCB1",
+      "qb": "XBQ1",
+      "qb_raw_node": "QB1_RAW",
+      "qb_side_cb": "XQBCB1",
+      "sjtl_instances": [
+        "XSJTL1_01",
+        "XSJTL1_02",
+        "XSJTL1_03"
+      ],
+      "upstream_output": {
+        "element": null,
+        "instance": null,
+        "reason": "level 1 has no previous carry",
+        "signal": null,
+        "status": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "bvm": "XBVM2",
+      "bvm_output_node": "BVM2_SL",
+      "carry_label": "CARRY2",
+      "carry_node": "FINAL_OUT",
+      "carry_output": {
+        "element": "L2",
+        "instance": "XSJTL2_01",
+        "reason": null,
+        "signal": "I(L2|XSJTL2_01)",
+        "status": "AVAILABLE"
+      },
+      "level": 2,
+      "local_output": {
+        "element": "L4",
+        "instance": "XQBCB2",
+        "signal": "I(L4|XQBCB2)",
+        "status": "AVAILABLE"
+      },
+      "logical_merge_node": "MERGE2",
+      "merge_inputs": {
+        "local_signal": "I(L4|XQBCB2)",
+        "upstream_signal": "I(L4|XPOSTCB1)",
+        "upstream_status": "AVAILABLE"
+      },
+      "merge_node": "MERGE2",
+      "post_sjtl_cb": null,
+      "qb": "XBQ2",
+      "qb_raw_node": "QB2_RAW",
+      "qb_side_cb": "XQBCB2",
+      "sjtl_instances": [
+        "XSJTL2_01"
+      ],
+      "upstream_output": {
+        "element": "L4",
+        "instance": "XPOSTCB1",
+        "reason": null,
+        "signal": "I(L4|XPOSTCB1)",
+        "status": "AVAILABLE"
+      }
+    }
+  ],
+  "logical_node_aliases": {},
+  "mask": "01",
+  "render_status": "RUN",
+  "run_id": "A005_T001_M01",
+  "schema": "bvm-qb-cb-array-topology-v1",
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "analysis": "transient",
+    "dt": "0.01p",
+    "stop": "200p"
+  },
+  "terminal": {
+    "output_node": "FINAL_OUT",
+    "resistance": "2",
+    "resistor": "R_TERM"
+  },
+  "topology": {
+    "POST_SJTL_CB": [
+      1,
+      0
+    ],
+    "QB_CB": [
+      1,
+      1
+    ],
+    "SJTL_COUNT": [
+      3,
+      1
+    ]
+  },
+  "topology_signature": "ce19e5bf3d994d810ca797218ece0bc2dae3430baf878bf86e8db0d001b991ed"
+}

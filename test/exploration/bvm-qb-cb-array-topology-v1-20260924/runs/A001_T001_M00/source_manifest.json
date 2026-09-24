@@ -1,0 +1,106 @@
+{
+  "overrides": [],
+  "parent": {
+    "dirty": true,
+    "head": "c5e04673523ed002ddf427af9b64144247b8b696",
+    "repo": "/home/howard/JoSIM",
+    "status_porcelain": "M test/exploration/bvm-qb-cb-array-topology-v1-20260924/USER_CASE.env\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U001_2x1_topology_baseline/STIMULUS.effective.env\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U001_2x1_topology_baseline/USER_CASE.effective.env\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U001_2x1_topology_baseline/batch_manifest.json\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U001_2x1_topology_baseline/parameter_manifest.json"
+  },
+  "render_status": "RUN",
+  "run_id": "A001_T001_M00",
+  "schema": "bvm-qb-cb-array-source-manifest-v1",
+  "sources": [
+    {
+      "canonical_source_path": "circuits/bvm/bvm_cell_0923.cir",
+      "canonical_source_sha256": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+      "effective_parameters": {
+        "BVM_JM1_AREA": "1.2",
+        "BVM_JM2_AREA": "1.4",
+        "BVM_JS1_AREA": "0.74",
+        "BVM_JS2_AREA": "0.74",
+        "BVM_LM1": "12.5p",
+        "BVM_LM2": "24.5p",
+        "BVM_LM3": "8.5p",
+        "BVM_LPBL": "0.5p",
+        "BVM_LPM": "0.5p",
+        "BVM_LPSE": "0.5p",
+        "BVM_LPSL": "0.5p",
+        "BVM_LPWL": "0.5p",
+        "BVM_LS1": "0.5p",
+        "BVM_LS2": "0.5p",
+        "BVM_LS3": "0.5p",
+        "BVM_LSL": "0.4p",
+        "BVM_RBL": "20",
+        "BVM_RJM1": "8",
+        "BVM_RJM2": "OPEN",
+        "BVM_RJS1": "OPEN",
+        "BVM_RJS2": "OPEN",
+        "BVM_RS": "3.0",
+        "BVM_RSE": "20",
+        "BVM_RSL": "12",
+        "BVM_RWL": "20"
+      },
+      "rendered_snapshot_path": "snapshot/sources/bvm_tunable.cir",
+      "rendered_snapshot_sha256": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+      "role": "BVM"
+    },
+    {
+      "canonical_source_path": "circuits/qb/BQ_0923.cir",
+      "canonical_source_sha256": "76a8b5acf5fb23c29f338e6b71ac69e2dae261f2b0b6d1f103b653a4ad6f92d2",
+      "effective_parameters": {
+        "QB_BIAS_RISE": "5p",
+        "QB_BJ1_AREA": "0.55",
+        "QB_BJ2_AREA": "0.45",
+        "QB_BJ3_AREA": "2",
+        "QB_IB": "240u",
+        "QB_L1": "1p",
+        "QB_L2": "1.5p",
+        "QB_L3": "1.5p",
+        "QB_LIN": "2p",
+        "QB_RJ1": "14",
+        "QB_RJ2": "12",
+        "QB_RJ3": "5"
+      },
+      "rendered_snapshot_path": "snapshot/sources/BQ_tunable.cir",
+      "rendered_snapshot_sha256": "8c0bfa584616ff7544772f582a1083cc7297552ac9b0f05fa791adc3ed52afa2",
+      "role": "QB"
+    },
+    {
+      "canonical_source_path": "circuits/CB/CB_0923.cir",
+      "canonical_source_sha256": "f2dd43a5177cbecc0abcc1125a7479659e21a8cbe46b88cabcb790e1036b4216",
+      "effective_parameters": {
+        "CB_BIAS_RISE": "5p",
+        "CB_BJ1_AREA": "2.2",
+        "CB_BJ2_AREA": "1.8",
+        "CB_IB": "160u",
+        "CB_L1": "1.5p",
+        "CB_L2": "0.5p",
+        "CB_L3": "0.5p",
+        "CB_L4": "3.5p",
+        "CB_RJ1": "5",
+        "CB_RJ2": "6"
+      },
+      "rendered_snapshot_path": "snapshot/sources/CB_tunable.cir",
+      "rendered_snapshot_sha256": "c542e2437967ee5fbfd801fe77947518ea54e0d1ce4da8313263b7b4799dc375",
+      "role": "CB"
+    },
+    {
+      "canonical_source_path": "circuits/sJTL_0923.cir",
+      "canonical_source_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+      "effective_parameters": {
+        "SJTL_BIAS_RISE": "5p",
+        "SJTL_BJ1_AREA": "2.5",
+        "SJTL_IB": "190u",
+        "SJTL_L1": "2.5p",
+        "SJTL_L2": "2.5p",
+        "SJTL_RJ1": "4"
+      },
+      "rendered_snapshot_path": "snapshot/sources/sJTL_tunable.cir",
+      "rendered_snapshot_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+      "role": "SJTL"
+    }
+  ],
+  "stimulus_sha256": "b49ba232fee95723011370d3c2889596785e531cb6da2f2fb34738161192134a",
+  "topology_signature": "ce19e5bf3d994d810ca797218ece0bc2dae3430baf878bf86e8db0d001b991ed",
+  "user_case_sha256": "881b339b35b6f105aed385828fe33d4a1a211a55cb8de81e248f6ffac24b5803"
+}

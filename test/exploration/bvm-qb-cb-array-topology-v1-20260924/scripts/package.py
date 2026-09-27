@@ -16,12 +16,30 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
+from evidence import EvidenceError, PackageMember, discover_batch_manifests, validate_complete_batch
+
 SERIES = Path(__file__).resolve().parents[1]
 REPO = next(path for path in (SERIES, *SERIES.parents) if (path / ".git").exists())
 CHECKPOINTS = SERIES / "analysis" / "PACKAGE_CHECKPOINTS.json"
 PACKAGE_QA = SERIES / "analysis" / "PACKAGE_QA.json"
 MIRROR = Path("/mnt/d/BVM_Backages")
 TAG_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
+SERIES_REL = SERIES.relative_to(REPO).as_posix()
+PLATFORM_PATHS = {
+    ".gitattributes", ".gitignore", "README.md", "PREFLIGHT.md",
+    "USER_CASE.env", "STIMULUS.env", "config/component_reference.env",
+    "scripts/components.py", "scripts/config.py", "scripts/evidence.py",
+    "scripts/inspect_runs.py", "scripts/package.py", "scripts/plot_run.py",
+    "scripts/probes.py", "scripts/run_case.py", "scripts/stimulus.py",
+    "scripts/submit.py", "scripts/topology.py", "scripts/try_case.py",
+    "submit.sh", "try.sh", "templates/base.cir",
+}
+CATEGORIES = (
+    "raw", "plots", "run_manifests_qa", "source_snapshots", "batch_metadata",
+    "platform_reproduction_metadata", "other",
+)
+PLOTTER = REPO / "scripts" / "josim-plot2.py"
+PLOTLY_ASSET = SERIES / "plots" / "assets" / "plotly.min.js"
 
 
 def sha256(path: str | Path) -> str:
@@ -108,6 +126,7 @@ def select_base(explicit: str | None, current_head: str) -> dict[str, Any]:
         "base_package_name": base["package_name"],
         "base_package_path": base["package_path"],
         "base_package_sha256": base["package_sha256"],
+        "base_package_type": base["package_type"],
         "base_commit": commit,
     }
 
@@ -142,98 +161,239 @@ def committed_changes(base: str, head: str) -> dict[str, str]:
     return result
 
 
-def changed_files(base: str | None, head: str) -> tuple[list[Path], dict[str, str]]:
+def _series_relative(repo_path: str) -> str | None:
+    prefix = SERIES_REL.rstrip("/") + "/"
+    if repo_path.startswith(prefix):
+        return repo_path[len(prefix):]
+    if repo_path.startswith(("batches/", "runs/")):
+        return repo_path
+    return None
+
+
+def _read_archive_manifest(entry: dict[str, Any]) -> tuple[dict[str, Any], set[str]]:
+    package_path = (REPO / str(entry["package_path"])).resolve()
+    if sha256(package_path) != entry.get("package_sha256"):
+        raise RuntimeError(f"checkpoint package SHA mismatch: {package_path}")
+    with zipfile.ZipFile(package_path, "r") as archive:
+        candidates = ("FULL_MANIFEST.json", "DELTA_MANIFEST.json")
+        manifest_name = next((name for name in candidates if name in archive.namelist()), None)
+        if manifest_name is None:
+            raise RuntimeError(f"checkpoint has no package manifest: {package_path}")
+        try:
+            manifest = json.loads(archive.read(manifest_name))
+        except (KeyError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"checkpoint package manifest is invalid: {package_path}") from exc
+        return manifest, set(archive.namelist())
+
+
+def _checkpoint_evidence(base: dict[str, Any]) -> tuple[
+    set[str], dict[str, dict[str, str]], dict[str, str]
+]:
+    """Resolve all verified package ancestors to find cases/raw already in the base chain."""
+    entries = checkpoint_entries()
+    current = next((entry for entry in entries
+                    if entry.get("package_name") == base.get("base_package_name")
+                    and entry.get("package_sha256") == base.get("base_package_sha256")), None)
+    if current is None:
+        raise RuntimeError("selected DELTA base is absent from the checkpoint registry")
+    chain: list[tuple[dict[str, Any], dict[str, Any]]] = []
+    seen: set[str] = set()
+    while current:
+        digest = str(current.get("package_sha256", ""))
+        if not digest or digest in seen:
+            raise RuntimeError("package checkpoint ancestry contains a cycle or missing SHA")
+        seen.add(digest)
+        if not _verified_entry(current):
+            raise RuntimeError(f"unverified package in DELTA base ancestry: {current.get('package_name')}")
+        manifest, _ = _read_archive_manifest(current)
+        chain.append((current, manifest))
+        parent_sha = manifest.get("base_package_sha256")
+        if not parent_sha:
+            break
+        parent = next((entry for entry in entries if entry.get("package_sha256") == parent_sha), None)
+        if parent is None or parent.get("package_name") != manifest.get("base_package_name"):
+            raise RuntimeError(f"DELTA base ancestry is unregistered or ambiguous: {parent_sha}")
+        current = parent
+
+    known_batches: set[str] = set()
+    known_batch_hashes: dict[str, str] = {}
+    known_cases: dict[str, dict[str, str]] = {}
+    for entry, manifest in reversed(chain):
+        package_path = (REPO / str(entry["package_path"])).resolve()
+        names = set(manifest.get("included_files", []))
+        file_hashes = manifest.get("included_file_sha256", {})
+        with zipfile.ZipFile(package_path, "r") as archive:
+            for member in sorted(names):
+                series_path = _series_relative(str(member))
+                if series_path is None:
+                    continue
+                if series_path.endswith("/raw.csv") and series_path.startswith("runs/"):
+                    digest = file_hashes.get(member)
+                    if isinstance(digest, str):
+                        run_id = Path(series_path).parts[1]
+                        record = {"raw_sha256": digest, "source_package": str(entry["package_name"])}
+                        known_cases[series_path] = record
+                        known_cases[run_id] = record
+                if series_path.startswith("batches/") and series_path.endswith("/batch_manifest.json"):
+                    try:
+                        batch_data = json.loads(archive.read(member))
+                    except (KeyError, json.JSONDecodeError) as exc:
+                        raise RuntimeError(f"invalid packaged batch manifest: {member}") from exc
+                    if batch_data.get("status") == "COMPLETE_MECHANICAL":
+                        batch_id = str(batch_data.get("batch_id", ""))
+                        if batch_id:
+                            known_batches.add(batch_id)
+                            digest = file_hashes.get(member)
+                            if isinstance(digest, str):
+                                known_batch_hashes[batch_id] = digest
+        for reference in manifest.get("referenced_existing_cases", []):
+            if not isinstance(reference, dict):
+                continue
+            raw_path = _series_relative(str(reference.get("raw_path", "")))
+            raw_sha = reference.get("raw_sha256")
+            if raw_path and isinstance(raw_sha, str):
+                source_package = str(reference.get("source_package", entry["package_name"]))
+                record = {"raw_sha256": raw_sha, "source_package": source_package}
+                known_cases[raw_path] = record
+                known_cases[Path(raw_path).parts[1]] = record
+    return known_batches, known_cases, known_batch_hashes
+
+
+def _platform_members(mode: str, base: dict[str, Any] | None,
+                      head: str) -> tuple[list[PackageMember], dict[str, str]]:
+    changes: dict[str, str] = {}
     if base:
-        statuses = committed_changes(base, head)
-    else:
-        statuses = {}
-    statuses.update(worktree_changes())
-    paths = []
-    for relative in statuses:
-        path = REPO / relative
-        if path.is_file() and not excluded(path):
-            paths.append(path)
-    return sorted(set(paths)), statuses
-
-
-def all_full_files() -> list[Path]:
-    return [path for path in sorted(SERIES.rglob("*"))
-            if path.is_file() and not excluded(path)]
-
-
-def hash_map(files: list[Path]) -> dict[str, str]:
-    return {rel(path): sha256(path) for path in files}
-
-
-def _exists_at_commit(commit: str, path: Path) -> bool:
-    return subprocess.run(
-        ["git", "cat-file", "-e", f"{commit}:{rel(path)}"], cwd=REPO,
-        capture_output=True, check=False,
-    ).returncode == 0
-
-
-def _new_solve_count(result: dict[str, Any], existed_at_base: bool) -> int:
-    return 0 if existed_at_base else int(result.get("physical_solve_count", 0))
-
-
-def _run_counts(files: list[Path], base_commit: str | None) -> tuple[int, int]:
-    solves = reused = 0
-    for path in files:
-        if path.name != "result.json":
+        changes.update(committed_changes(str(base["base_commit"]), head))
+    changes.update(worktree_changes())
+    members: list[PackageMember] = []
+    statuses: dict[str, str] = {}
+    for local_path in sorted(PLATFORM_PATHS):
+        source = SERIES / local_path
+        if not source.is_file() or source.is_symlink():
             continue
-        existed_at_base = base_commit is not None and _exists_at_commit(base_commit, path)
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            continue
-        solves += _new_solve_count(data, existed_at_base)
-        reused += int(data.get("reused_point_count", 0))
-    return solves, reused
+        repo_path = rel(source)
+        if mode == "full" or repo_path in changes:
+            members.append(PackageMember(source, repo_path, "platform_reproduction_metadata"))
+            if base:
+                exists = subprocess.run(
+                    ["git", "cat-file", "-e", f"{base['base_commit']}:{repo_path}"],
+                    cwd=REPO, capture_output=True, check=False,
+                ).returncode == 0
+                statuses[repo_path] = "M" if exists else "A"
+    for source, archive_path in ((PLOTTER, "reproduction/scripts/josim-plot2.py"),
+                                 (PLOTLY_ASSET, "reproduction/plotly.min.js")):
+        if not source.is_file() or source.is_symlink():
+            raise RuntimeError(f"required plot reproduction tool is missing: {source}")
+        members.append(PackageMember(source, archive_path, "platform_reproduction_metadata"))
+    return members, statuses
 
 
-def _existing_references(files: list[Path]) -> list[dict[str, Any]]:
-    references: list[dict[str, Any]] = []
-    for path in files:
-        if path.suffix != ".json":
-            continue
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            continue
-        for item in data.get("referenced_existing_cases", []):
-            if isinstance(item, dict) and item.get("raw_path") and item.get("raw_sha256"):
-                references.append(item)
-    unique = {(item.get("source_case"), item.get("raw_path"), item.get("raw_sha256")): item
-              for item in references}
-    return [unique[key] for key in sorted(unique, key=lambda value: tuple(str(part) for part in value))]
+def _member_record(member: PackageMember) -> dict[str, Any]:
+    return {
+        "source_path": rel(member.source),
+        "archive_path": member.archive_path,
+        "category": member.category,
+        "bytes": member.source.stat().st_size,
+        "sha256": sha256(member.source),
+    }
 
 
-def package_manifest(mode: str, tag: str, head: str, files: list[Path],
-                     base: dict[str, Any] | None, statuses: dict[str, str]) -> dict[str, Any]:
-    hashes = hash_map(files)
+def _size_breakdown(records: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    total = sum(int(item["bytes"]) for item in records)
+    result = {}
+    for category in CATEGORIES:
+        selected = [item for item in records if item["category"] == category]
+        size = sum(int(item["bytes"]) for item in selected)
+        result[category] = {
+            "file_count": len(selected),
+            "uncompressed_bytes": size,
+            "percentage": round((100.0 * size / total), 2) if total else 0.0,
+        }
+    return result
+
+
+def _plotter_version() -> str:
+    source = PLOTTER.read_text(encoding="utf-8")
+    match = re.search(r"^\s*vers\s*=\s*['\"]([^'\"]+)['\"]", source, flags=re.MULTILINE)
+    return match.group(1) if match else "unversioned"
+
+
+def package_manifest(mode: str, tag: str, head: str, records: list[dict[str, Any]],
+                     base: dict[str, Any] | None, *, selected_batches: list[dict[str, Any]],
+                     selected_runs: list[dict[str, Any]], excluded_batches: list[dict[str, str]],
+                     references: list[dict[str, str]], include_plots: bool,
+                     statuses: dict[str, str]) -> dict[str, Any]:
     new_files: list[str] = []
     modified_files: list[str] = []
     if base:
-        for path in files:
-            relative = rel(path)
-            exists = subprocess.run(
-                ["git", "cat-file", "-e", f"{base['base_commit']}:{relative}"],
-                cwd=REPO, capture_output=True, check=False,
-            ).returncode == 0
-            (modified_files if exists else new_files).append(relative)
-    solves, reused = _run_counts(files, base["base_commit"] if base else None)
+        for record in records:
+            path = str(record["source_path"])
+            if not path.startswith(SERIES_REL + "/"):
+                continue
+            status = statuses.get(path)
+            if status in {"A", "?"}:
+                new_files.append(str(record["archive_path"]))
+            elif status == "M":
+                modified_files.append(str(record["archive_path"]))
+            else:
+                exists = subprocess.run(
+                    ["git", "cat-file", "-e", f"{base['base_commit']}:{path}"],
+                    cwd=REPO, capture_output=True, check=False,
+                ).returncode == 0
+                (modified_files if exists else new_files).append(str(record["archive_path"]))
+    hashes = {str(item["archive_path"]): str(item["sha256"]) for item in records}
+    total_bytes = sum(int(item["bytes"]) for item in records)
+    categories = _size_breakdown(records)
+    tools = [
+        {"name": "josim-plot2.py", "version": _plotter_version(),
+         "path": rel(PLOTTER), "archive_path": "reproduction/scripts/josim-plot2.py",
+         "sha256": sha256(PLOTTER)},
+        {"name": "shared Plotly runtime", "version": "series-pinned asset",
+         "path": rel(PLOTLY_ASSET), "archive_path": "reproduction/plotly.min.js",
+         "sha256": sha256(PLOTLY_ASSET)},
+    ]
+    normalized_references = []
+    for item in references:
+        raw_path = str(item["raw_path"])
+        if not raw_path.startswith(SERIES_REL + "/"):
+            raw_path = f"{SERIES_REL}/{raw_path.lstrip('/')}"
+        normalized_references.append({**item, "raw_path": raw_path})
     manifest: dict[str, Any] = {
-        "schema": "bvm-qb-cb-array-package-manifest-v1",
+        "schema": "bvm-qb-cb-array-package-manifest-v2",
         "package_type": mode,
         "tag": tag,
         "head_commit": head,
-        "included_files": [rel(path) for path in files],
+        "include_plots": include_plots,
+        "plot_inclusion_policy": (
+            "USER_DIRECTED: derived HTML excluded by default; plot manifest/QA, raw hashes, "
+            "plotter version/hash and shared asset reference retained; use --include-plots to add HTML"
+        ),
+        "included_files": [str(item["archive_path"]) for item in records],
         "included_file_sha256": hashes,
+        "included_file_records": records,
         "new_files": sorted(new_files),
         "modified_files": sorted(modified_files),
-        "new_physical_solve_count": solves,
-        "reused_point_count": reused,
-        "referenced_existing_cases": _existing_references(files),
+        "uncompressed_payload_bytes": total_bytes,
+        "size_breakdown": categories,
+        "top_20_largest_members": sorted(
+            ({"archive_path": item["archive_path"], "category": item["category"],
+              "bytes": item["bytes"], "sha256": item["sha256"]} for item in records),
+            key=lambda item: (-int(item["bytes"]), str(item["archive_path"])),
+        )[:20],
+        "selected_batches": selected_batches,
+        "included_runs": selected_runs,
+        "referenced_existing_cases": normalized_references,
+        "reproduction_tools": tools,
+        "new_physical_solve_count": sum(
+            int(batch["new_physical_solve_count"]) for batch in selected_batches
+        ),
+        "reused_point_count": len(normalized_references),
+        "excluded_batches": excluded_batches,
+        "excluded_file_categories": [
+            "tests/**", "tests/fixtures/**", "__pycache__", "*.pyc",
+            "incomplete/failed batches", "unreferenced run directories",
+            "derived plots/*.html unless --include-plots", "historical handoff ZIPs",
+        ],
         "scientific_interpretation_performed": False,
     }
     if base:
@@ -241,22 +401,90 @@ def package_manifest(mode: str, tag: str, head: str, files: list[Path],
     return manifest
 
 
-def build_plan(mode: str, tag: str, base_commit: str | None = None) -> dict[str, Any]:
+def _select_batches(mode: str, base: dict[str, Any] | None,
+                    include_plots: bool) -> tuple[list[PackageMember], list[dict[str, Any]],
+                                                  list[dict[str, Any]], list[dict[str, str]],
+                                                  list[dict[str, str]]]:
+    known_batches, known_cases, known_batch_hashes = (
+        _checkpoint_evidence(base) if base else (set(), {}, {})
+    )
+    members: dict[str, PackageMember] = {}
+    selected_batches: list[dict[str, Any]] = []
+    selected_runs: list[dict[str, Any]] = []
+    excluded_batches: list[dict[str, str]] = []
+    references: list[dict[str, str]] = []
+    for manifest_path in discover_batch_manifests(SERIES):
+        batch_dir = manifest_path.parent
+        try:
+            raw_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"cannot read candidate batch manifest: {manifest_path}") from exc
+        batch_id = str(raw_manifest.get("batch_id", batch_dir.name))
+        status = str(raw_manifest.get("status", "UNKNOWN"))
+        if status != "COMPLETE_MECHANICAL":
+            excluded_batches.append({"batch_id": batch_id, "status": status,
+                                     "reason": "not COMPLETE_MECHANICAL"})
+            continue
+        if mode == "delta" and batch_id in known_batches:
+            raw_hash = sha256(manifest_path)
+            old_hash = known_batch_hashes.get(batch_id)
+            if old_hash and old_hash != raw_hash:
+                raise RuntimeError(f"accepted batch manifest changed after checkpoint: {batch_id}")
+            excluded_batches.append({"batch_id": batch_id, "status": status,
+                                     "reason": "already represented by verified base chain"})
+            continue
+        selection = validate_complete_batch(batch_dir, SERIES, include_plots=include_plots,
+                                            known_cases=known_cases)
+        if selection is None:
+            continue
+        for member in selection["members"]:
+            archive_path = f"{SERIES_REL}/{member.archive_path}"
+            if archive_path in members and members[archive_path].source != member.source:
+                raise RuntimeError(f"conflicting package source for {archive_path}")
+            members[archive_path] = PackageMember(member.source, archive_path, member.category)
+        solve_count = sum(1 for row in selection["runs"] if not row.get("reused"))
+        selected_batches.append({
+            "batch_id": selection["batch_id"], "status": "COMPLETE_MECHANICAL",
+            "array_size": selection["array_size"],
+            "requested_masks": selection["requested_masks"],
+            "probe_profile": selection["probe_profile"],
+            "run_ids": [run["run_id"] for run in selection["runs"]],
+            "new_physical_solve_count": solve_count,
+        })
+        for run in selection["runs"]:
+            raw_path = str(run["raw_path"])
+            selected_runs.append({**run, "raw_path": f"{SERIES_REL}/{raw_path}"})
+        references.extend(selection["referenced_existing_cases"])
+    return list(members.values()), selected_batches, selected_runs, excluded_batches, references
+
+
+def build_plan(mode: str, tag: str, base_commit: str | None = None,
+               include_plots: bool = False) -> dict[str, Any]:
     if mode not in {"full", "delta"}:
         raise RuntimeError(f"unsupported package mode: {mode}")
     if not TAG_RE.fullmatch(tag):
         raise RuntimeError(f"invalid package tag: {tag!r}")
     head = head_commit()
     base = select_base(base_commit, head) if mode == "delta" else None
-    if mode == "full":
-        files = all_full_files()
-        statuses: dict[str, str] = {}
-        package_manifest_path = "FULL_MANIFEST.json"
-    else:
-        assert base is not None
-        files, statuses = changed_files(base["base_commit"], head)
-        package_manifest_path = "DELTA_MANIFEST.json"
-    manifest = package_manifest(mode, tag, head, files, base, statuses)
+    evidence_members, selected_batches, selected_runs, excluded_batches, references = \
+        _select_batches(mode, base, include_plots)
+    platform_members, statuses = _platform_members(mode, base, head)
+    members_by_path: dict[str, PackageMember] = {}
+    for member in (*evidence_members, *platform_members):
+        if member.archive_path in members_by_path:
+            previous = members_by_path[member.archive_path]
+            if previous.source != member.source:
+                raise RuntimeError(f"duplicate package archive member path: {member.archive_path}")
+            continue
+        members_by_path[member.archive_path] = member
+    members = [members_by_path[path] for path in sorted(members_by_path)]
+    records = [_member_record(member) for member in members]
+    manifest = package_manifest(
+        mode, tag, head, records, base, selected_batches=selected_batches,
+        selected_runs=selected_runs, excluded_batches=excluded_batches,
+        references=references, include_plots=include_plots, statuses=statuses,
+    )
+    manifest_path = "FULL_MANIFEST.json" if mode == "full" else "DELTA_MANIFEST.json"
     package_name = f"{SERIES.name}_{mode}_{tag}.zip"
     package_path = SERIES / "handoff" / package_name
     mirror_path = MIRROR / package_name
@@ -265,14 +493,15 @@ def build_plan(mode: str, tag: str, base_commit: str | None = None) -> dict[str,
     if mirror_path.exists():
         raise RuntimeError(f"refusing to overwrite mirror target: {mirror_path}")
     dirty_paths = [path for path in worktree_changes()
-                   if not excluded(REPO / path)]
+                   if not excluded(REPO / path) and not path.endswith("/PACKAGE_QA.json")]
+    uncompressed_bytes = sum(member.source.stat().st_size for member in members)
     return {
-        "mode": mode, "tag": tag, "head_commit": head,
-        "base": base, "files": files, "statuses": statuses,
-        "dirty_source_paths": dirty_paths,
-        "manifest": manifest, "manifest_path": package_manifest_path,
+        "mode": mode, "tag": tag, "head_commit": head, "base": base,
+        "members": members, "records": records, "dirty_source_paths": dirty_paths,
+        "manifest": manifest, "manifest_path": manifest_path,
         "package_path": package_path, "mirror_path": mirror_path,
-        "estimated_uncompressed_bytes": sum(path.stat().st_size for path in files),
+        "estimated_uncompressed_bytes": uncompressed_bytes,
+        "include_plots": include_plots,
     }
 
 
@@ -281,19 +510,24 @@ def print_plan(plan: dict[str, Any]) -> None:
     print(json.dumps({
         "status": "PACKAGE_DRY_RUN_PASS",
         "mode": plan["mode"], "tag": plan["tag"],
-        "head_commit": plan["head_commit"],
-        "base": plan["base"],
-        "new_files": manifest["new_files"],
-        "modified_files": manifest["modified_files"],
-        "included_file_count": len(plan["files"]),
-        "estimated_uncompressed_bytes": plan["estimated_uncompressed_bytes"],
-        "package_path": rel(plan["package_path"]),
-        "mirror_path": str(plan["mirror_path"]),
+        "head_commit": plan["head_commit"], "base": plan["base"],
+        "included_file_count": len(plan["members"]),
+        "uncompressed_bytes": plan["estimated_uncompressed_bytes"],
+        "size_breakdown": manifest["size_breakdown"],
+        "top_20_largest_members": manifest["top_20_largest_members"],
+        "selected_batches": manifest["selected_batches"],
+        "included_run_count": len(manifest["included_runs"]),
         "new_physical_solve_count": manifest["new_physical_solve_count"],
         "reused_point_count": manifest["reused_point_count"],
+        "referenced_existing_cases": manifest["referenced_existing_cases"],
+        "excluded_batches": manifest["excluded_batches"],
+        "excluded_file_categories": manifest["excluded_file_categories"],
+        "include_plots": plan["include_plots"],
+        "expected_package_contents": manifest["included_files"],
+        "package_path": rel(plan["package_path"]),
+        "mirror_path": str(plan["mirror_path"]),
         "dirty_source_paths": plan["dirty_source_paths"],
-        "archive_created": False,
-        "mirror_created": False,
+        "archive_created": False, "mirror_created": False,
     }, ensure_ascii=False, indent=2))
 
 
@@ -320,8 +554,8 @@ def create_package(plan: dict[str, Any]) -> dict[str, Any]:
         temp_path = Path(stream.name)
     try:
         with zipfile.ZipFile(temp_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
-            for path in plan["files"]:
-                archive.write(path, rel(path))
+            for member in plan["members"]:
+                archive.write(member.source, member.archive_path)
             archive.writestr(manifest_name, manifest_bytes)
         with zipfile.ZipFile(temp_path, "r") as archive:
             if archive.testzip() is not None:
@@ -337,6 +571,11 @@ def create_package(plan: dict[str, Any]) -> dict[str, Any]:
             temp_path.unlink(missing_ok=True)
 
     package_sha = sha256(package_path)
+    with zipfile.ZipFile(package_path, "r") as archive:
+        infos = [entry for entry in archive.infolist() if not entry.is_dir()]
+    uncompressed_bytes = sum(entry.file_size for entry in infos)
+    compressed_bytes = sum(entry.compress_size for entry in infos)
+    compression_ratio = compressed_bytes / uncompressed_bytes if uncompressed_bytes else 0.0
     shutil.copyfile(package_path, mirror_path)
     mirror_sha = sha256(mirror_path)
     qa = {
@@ -345,6 +584,11 @@ def create_package(plan: dict[str, Any]) -> dict[str, Any]:
         "package_type": plan["mode"], "package_name": package_path.name,
         "package_path": rel(package_path), "package_sha256": package_sha,
         "package_bytes": package_path.stat().st_size,
+        "uncompressed_bytes": uncompressed_bytes,
+        "compressed_bytes": compressed_bytes,
+        "compression_ratio": compression_ratio,
+        "payload_size_breakdown": plan["manifest"]["size_breakdown"],
+        "archive_member_count": len(infos),
         "mirror_path": str(mirror_path), "mirror_sha256": mirror_sha,
         "mirror_bytes": mirror_path.stat().st_size,
         "head_commit": plan["head_commit"],
@@ -357,6 +601,9 @@ def create_package(plan: dict[str, Any]) -> dict[str, Any]:
     qa["new_physical_solve_count"] = plan["manifest"]["new_physical_solve_count"]
     qa["reused_point_count"] = plan["manifest"]["reused_point_count"]
     qa["referenced_existing_cases"] = plan["manifest"]["referenced_existing_cases"]
+    qa["included_runs"] = plan["manifest"]["included_runs"]
+    qa["selected_batches"] = plan["manifest"]["selected_batches"]
+    qa["include_plots"] = plan["include_plots"]
     PACKAGE_QA.write_text(json.dumps(qa, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
                           encoding="utf-8")
     return qa
@@ -368,9 +615,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--tag", required=True)
     parser.add_argument("--base-commit")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--include-plots", action="store_true",
+                        help="include five QA-verified derived HTML pages for each selected run")
     args = parser.parse_args(argv)
     try:
-        plan = build_plan(args.mode, args.tag, args.base_commit)
+        plan = build_plan(args.mode, args.tag, args.base_commit, args.include_plots)
         if args.dry_run:
             print_plan(plan)
             return 0

@@ -77,15 +77,20 @@ def load_effective(user_path: Path, stimulus_path: Path, override_items: list[st
 
 def _render_preflight(user_values: dict[str, str], stimulus_values: dict[str, str],
                       masks: list[str], user_text: str, stimulus_text: str,
-                      overrides: list[str], fixtures_root: Path) -> None:
+                      overrides: list[str], fixtures_root: Path) -> list[dict[str, Any]]:
+    summaries: list[dict[str, Any]] = []
     fixtures_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="try-preflight-", dir=fixtures_root) as tmp:
         for mask in masks:
-            render_case(
+            rendered = render_case(
                 user_values, stimulus_values, mask, Path(tmp) / f"M{mask}",
                 fixture_only=True, user_snapshot_text=user_text,
                 stimulus_snapshot_text=stimulus_text, overrides=overrides,
             )
+            probe_manifest = rendered["probe_manifest"]
+            summaries.append({"mask": mask, "profile": probe_manifest["profile"],
+                              "probe_count": probe_manifest["signal_count"]})
+    return summaries
 
 
 def _parameter_changes(values: dict[str, str], reference: dict[str, str], role: str) -> list[str]:
@@ -94,13 +99,15 @@ def _parameter_changes(values: dict[str, str], reference: dict[str, str], role: 
 
 
 def preview_text(user_values: dict[str, str], stimulus_values: dict[str, str],
-                 params: dict[str, object], reference: dict[str, str]) -> str:
+                 params: dict[str, object], reference: dict[str, str],
+                 probe_summaries: list[dict[str, Any]] | None = None) -> str:
     name = user_values["NAME"]
     masks = params["MASKS"]
     assert isinstance(masks, list)
     lines = [
         "CASE", name, "",
         "ARRAY", f"ARRAY_SIZE={params['ARRAY_SIZE']}", f"MASKS={','.join(masks)}",
+        f"PROBE_PROFILE={params['PROBE_PROFILE']}",
         "BIT_ORDER=leftmost bit is BVM1; mask affects FINAL READ only", "",
         "TOPOLOGY", f"QB_CB={user_values['QB_CB']}",
         f"SJTL_COUNT={user_values['SJTL_COUNT']}",
@@ -124,6 +131,9 @@ def preview_text(user_values: dict[str, str], stimulus_values: dict[str, str],
                      f"hold={stimulus_values[f'{prefix}_HOLD']} "
                      f"fall={stimulus_values[f'{prefix}_FALL']}; {amp}")
     lines.extend([
+        "PROBE ACQUISITION",
+        *[f"mask={row['mask']} profile={row['profile']} probe_count={row['probe_count']}"
+          for row in (probe_summaries or [])],
         "", "SOLVER", f"path={REPO / 'build' / 'josim-cli'} (not invoked)",
         f"DT={user_values['DT']}", f"STOP={user_values['STOP']}", "",
         "PLANNED PHYSICAL SOLVES", *masks, f"physical_solve_count = {len(masks)}", "",
@@ -190,6 +200,7 @@ def _write_batch_summary(batch_dir: Path, manifest: dict[str, Any]) -> None:
         f"- name: `{manifest['name']}`",
         f"- status: `{manifest['status']}` (mechanical completeness only)",
         f"- requested masks: `{', '.join(manifest['requested_masks'])}`",
+        f"- probe profile: `{manifest.get('probe_profile', 'debug')}`",
         f"- physical solves: `{manifest['total_physical_solve_count']}` / "
         f"{len(manifest['requested_masks'])}",
         "- scientific interpretation performed: `false`",
@@ -297,6 +308,7 @@ def execute_batch(user_values: dict[str, str], stimulus_values: dict[str, str],
         "name": user_values["NAME"], "created_at": datetime.now().astimezone().isoformat(timespec="seconds"),
         "parent_head": head or current_head(), "array_size": params["ARRAY_SIZE"],
         "bit_order": "leftmost bit is BVM1; rightmost bit is BVMN",
+        "probe_profile": params["PROBE_PROFILE"],
         "topology_signature": topology_signature(params),
         "effective_user_case_sha256": sha256_text(user_text),
         "effective_stimulus_sha256": sha256_text(stimulus_text),
@@ -376,9 +388,10 @@ def main(argv: list[str] | None = None) -> int:
         masks = params["MASKS"]
         assert isinstance(masks, list)
         if args.dry_run:
-            _render_preflight(user_values, stimulus_values, masks, user_text, stimulus_text,
-                              overrides, SERIES / "tests" / "fixtures")
-            print(preview_text(user_values, stimulus_values, params, reference))
+            probe_summaries = _render_preflight(
+                user_values, stimulus_values, masks, user_text, stimulus_text,
+                overrides, SERIES / "tests" / "fixtures")
+            print(preview_text(user_values, stimulus_values, params, reference, probe_summaries))
             return 0
         manifest = execute_batch(
             user_values, stimulus_values, params, user_text, stimulus_text, overrides,

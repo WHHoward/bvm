@@ -56,10 +56,16 @@ class PlatformStaticTests(unittest.TestCase):
             {"test/exploration/bvm-qb-cb-array-topology-v1-20260924/scripts/package.py": "M"},
         )
 
-    def test_plot_only_result_edit_does_not_count_as_new_physical_solve(self):
-        self.assertEqual(package._new_solve_count({"physical_solve_count": 1}, existed_at_base=True), 0)
-        self.assertEqual(package._new_solve_count({"physical_solve_count": 1}, existed_at_base=False), 1)
-        self.assertEqual(package._new_solve_count({"physical_solve_count": 0}, existed_at_base=False), 0)
+    def test_size_breakdown_is_complete_and_uses_member_bytes(self):
+        records = [
+            {"archive_path": "run/raw.csv", "category": "raw", "bytes": 100},
+            {"archive_path": "run/plot.html", "category": "plots", "bytes": 50},
+        ]
+        breakdown = package._size_breakdown(records)
+        self.assertEqual(breakdown["raw"]["file_count"], 1)
+        self.assertEqual(breakdown["raw"]["uncompressed_bytes"], 100)
+        self.assertEqual(breakdown["raw"]["percentage"], 66.67)
+        self.assertEqual(sum(item["uncompressed_bytes"] for item in breakdown.values()), 150)
 
     def test_three_render_fixtures_are_deterministic_and_non_experimental(self):
         stimulus = load_stimulus(SERIES / "STIMULUS.env")
@@ -109,8 +115,8 @@ class PlatformStaticTests(unittest.TestCase):
                 self.assertFalse(any('"' in line for line in include_lines))
                 parameter_data = json.loads((fixture / "parameter_manifest.json").read_text())
                 self.assertEqual(set(parameter_data), {
-                    "schema", "bvm", "qb", "cb", "sjtl", "topology", "solver",
-                    "stimulus_reference", "mask", "overrides",
+                    "schema", "bvm", "qb", "cb", "sjtl", "topology", "solver", "acquisition",
+                    "stimulus_reference", "mask", "overrides", "probe_profile",
                 })
                 top_level_elements = [line.split()[0].casefold() for line in deck_text.splitlines()
                                       if line.strip() and not line.lstrip().startswith(("*", "."))]
@@ -139,7 +145,22 @@ class PlatformStaticTests(unittest.TestCase):
 
     def test_package_and_submit_dry_run_logic_is_pure(self):
         output = io.StringIO()
-        with patch.object(package, "create_package", side_effect=AssertionError("package created")):
+        package_plan = {
+            "mode": "full", "tag": "STATIC-SMOKE", "head_commit": "fixture-head", "base": None,
+            "members": [], "records": [], "dirty_source_paths": [], "include_plots": False,
+            "estimated_uncompressed_bytes": 0, "manifest_path": "FULL_MANIFEST.json",
+            "package_path": SERIES / "handoff" / "not-created.zip",
+            "mirror_path": Path("/mnt/d/BVM_Backages/not-created.zip"),
+            "manifest": {
+                "included_files": [], "size_breakdown": package._size_breakdown([]),
+                "top_20_largest_members": [], "selected_batches": [], "included_runs": [],
+                "new_physical_solve_count": 0, "reused_point_count": 0,
+                "referenced_existing_cases": [], "excluded_batches": [],
+                "excluded_file_categories": [],
+            },
+        }
+        with patch.object(package, "build_plan", return_value=package_plan), \
+             patch.object(package, "create_package", side_effect=AssertionError("package created")):
             with contextlib.redirect_stdout(output):
                 rc = package.main(["--mode", "full", "--tag", "STATIC-SMOKE", "--dry-run"])
         self.assertEqual(rc, 0)
@@ -162,10 +183,15 @@ class PlatformStaticTests(unittest.TestCase):
         self.assertFalse(plan["mirror_written"])
 
         package_plan = {
-            "head_commit": "fixture-head", "base": None, "files": [],
+            "head_commit": "fixture-head", "base": None, "members": [],
+            "manifest": {"size_breakdown": {}, "top_20_largest_members": [],
+                         "selected_batches": [], "included_runs": [], "included_files": [],
+                         "new_physical_solve_count": 0, "reused_point_count": 0,
+                         "referenced_existing_cases": [], "excluded_batches": [],
+                         "excluded_file_categories": []},
+            "estimated_uncompressed_bytes": 0, "include_plots": False,
             "package_path": SERIES / "handoff" / "not-created.zip",
             "mirror_path": Path("/mnt/d/BVM_Backages/not-created.zip"),
-            "manifest": {"new_physical_solve_count": 1},
         }
         with patch.object(submit, "staged_outside_series", return_value=[]), \
              patch.object(submit, "completed_runs", return_value=([], {
@@ -184,6 +210,34 @@ class PlatformStaticTests(unittest.TestCase):
         submission = json.loads(preview.getvalue())
         self.assertFalse(submission["package_created"])
         self.assertFalse(submission["solver_invoked"])
+
+    def test_package_cli_include_plots_flag_is_explicit_and_dry_run_only(self):
+        planned = []
+        fixture_plan = {
+            "mode": "full", "tag": "PLOT-FLAG", "head_commit": "fixture-head",
+            "base": None, "members": [], "records": [], "dirty_source_paths": [],
+            "manifest_path": "FULL_MANIFEST.json", "package_path": SERIES / "handoff/not-created.zip",
+            "mirror_path": Path("/mnt/d/BVM_Backages/not-created.zip"),
+            "estimated_uncompressed_bytes": 0, "include_plots": True,
+            "manifest": {"included_files": [], "size_breakdown": package._size_breakdown([]),
+                         "top_20_largest_members": [], "selected_batches": [], "included_runs": [],
+                         "new_physical_solve_count": 0, "reused_point_count": 0,
+                         "referenced_existing_cases": [], "excluded_batches": [],
+                         "excluded_file_categories": []},
+        }
+
+        def fake_plan(mode, tag, base_commit=None, include_plots=False):
+            planned.append(include_plots)
+            fixture_plan["include_plots"] = include_plots
+            return fixture_plan
+
+        with patch.object(package, "build_plan", side_effect=fake_plan), \
+             patch.object(package, "create_package", side_effect=AssertionError("ZIP created")), \
+             contextlib.redirect_stdout(io.StringIO()):
+            rc = package.main(["--mode", "full", "--tag", "PLOT-FLAG",
+                               "--include-plots", "--dry-run"])
+        self.assertEqual(rc, 0)
+        self.assertEqual(planned, [True])
 
 
 if __name__ == "__main__":

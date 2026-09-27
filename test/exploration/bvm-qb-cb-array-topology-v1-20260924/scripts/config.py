@@ -48,7 +48,7 @@ COMPONENT_KEYS = (BVM_AREA_KEYS | BVM_RESISTANCE_KEYS | BVM_INDUCTANCE_KEYS
                   | SJTL_CURRENT_KEYS | BIAS_RISE_KEYS)
 TOPOLOGY_SOLVER_KEYS = {
     "NAME", "ARRAY_SIZE", "MASKS", "QB_CB", "SJTL_COUNT", "POST_SJTL_CB",
-    "OUTPUT_MODE", "TERM_R", "DT", "STOP",
+    "OUTPUT_MODE", "TERM_R", "DT", "STOP", "PROBE_PROFILE",
 }
 USER_CASE_KEYS = TOPOLOGY_SOLVER_KEYS | COMPONENT_KEYS
 STIMULUS_KEYS = {
@@ -139,6 +139,9 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
 
     if values["OUTPUT_MODE"] != "TERMINAL":
         raise ConfigError("OUTPUT_MODE must be TERMINAL in platform v1")
+    probe_profile = values.get("PROBE_PROFILE")
+    if probe_profile not in {"core", "debug"}:
+        raise ConfigError("PROBE_PROFILE must be exactly 'core' or 'debug'")
     term = parse_quantity(values["TERM_R"], label="TERM_R")
     dt = parse_quantity(values["DT"], label="DT")
     stop = parse_quantity(values["STOP"], label="STOP")
@@ -171,10 +174,34 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
         "POST_SJTL_CB": [int(value) for value in post_cb],
         "OUTPUT_MODE": values["OUTPUT_MODE"], "TERM_R": values["TERM_R"],
         "DT": values["DT"], "STOP": values["STOP"],
+        "PROBE_PROFILE": probe_profile,
         "TERM_R_OHM": term,
         "DT_SECONDS": dt,
         "STOP_SECONDS": stop,
     }
+
+
+def load_user_case_snapshot(path: str | Path, *, legacy_profile: str = "debug") -> dict[str, str]:
+    """Load a run/batch snapshot, mapping pre-profile snapshots to their old detail mode.
+
+    Live USER_CASE.env is loaded strictly with load_env(USER_CASE_KEYS); this
+    compatibility helper is only for immutable historical snapshots.
+    """
+    profile_present = any(
+        line.strip().partition("=")[0].strip() == "PROBE_PROFILE"
+        for line in Path(path).read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    )
+    if profile_present:
+        values = load_env(path, USER_CASE_KEYS)
+        validate_user_case(values)
+        return values
+    values = load_env(path, USER_CASE_KEYS - {"PROBE_PROFILE"})
+    if legacy_profile not in {"core", "debug"}:
+        raise ConfigError(f"invalid legacy probe profile {legacy_profile!r}")
+    values["PROBE_PROFILE"] = legacy_profile
+    validate_user_case(values)
+    return values
 
 
 def _parse_positive_scalar(token: str, label: str) -> Decimal:

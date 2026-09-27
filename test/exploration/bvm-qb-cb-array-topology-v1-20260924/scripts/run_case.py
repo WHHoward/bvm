@@ -140,7 +140,10 @@ def render_case(
     case_dir.mkdir(parents=True, exist_ok=True)
     sources, source_records = render_components(user_values, case_dir / "snapshot" / "sources")
     topology_lines, topology_manifest = render_topology(params, sources)
-    probe_lines, probe_manifest = generate_probes(topology_manifest, sources)
+    topology_manifest["probe_profile"] = str(params["PROBE_PROFILE"])
+    probe_lines, probe_manifest = generate_probes(
+        topology_manifest, sources, profile=str(params["PROBE_PROFILE"])
+    )
     validate_probe_lines(probe_lines, probe_manifest)
     deck = render_deck(params, topology_lines, probe_lines, fixture_only=fixture_only)
     stimulus = render_stimulus(stimulus_values, params, mask)
@@ -154,6 +157,7 @@ def render_case(
     stimulus_snapshot_text = stimulus_snapshot_text or stable_env(stimulus_values)
     parameters = make_parameter_manifest(user_values, params, stimulus_values, stimulus_snapshot_text)
     parameters["mask"] = mask
+    parameters["probe_profile"] = str(params["PROBE_PROFILE"])
     parameters["overrides"] = list(overrides or [])
     source_manifest = {
         "schema": "bvm-qb-cb-array-source-manifest-v1",
@@ -161,6 +165,7 @@ def render_case(
         "sources": source_records,
         "user_case_sha256": hashlib.sha256(user_snapshot_text.encode()).hexdigest(),
         "stimulus_sha256": hashlib.sha256(stimulus_snapshot_text.encode()).hexdigest(),
+        "probe_profile": str(params["PROBE_PROFILE"]),
         "topology_signature": signature,
         "overrides": list(overrides or []),
     }
@@ -233,6 +238,7 @@ def _write_run_preflight(run_dir: Path, run_id: str, params: dict[str, object],
         f"- solver SHA-256: `{solver.get('sha256')}`",
         f"- solver version: `{solver.get('version_stdout')}`",
         f"- ARRAY_SIZE: `{params['ARRAY_SIZE']}`",
+        f"- probe profile: `{params['PROBE_PROFILE']}` ({len(probe_labels)} probes)",
         f"- FINAL READ MASK: `{params['MASK']}` (leftmost bit is BVM1)",
         f"- topology: `{json.dumps(topology['topology'], sort_keys=True)}`",
         f"- DT: `{params['DT']}`; STOP: `{params['STOP']}`",
@@ -322,6 +328,7 @@ def execute_run(
                              "sha256": sha256(run_dir / "source_manifest.json")},
         "probe_manifest": {"path": "probe_manifest.json",
                             "sha256": sha256(run_dir / "probe_manifest.json")},
+        "probe_profile": params["PROBE_PROFILE"],
         "parameter_manifest": {"path": "parameter_manifest.json",
                                "sha256": sha256(run_dir / "parameter_manifest.json")},
         "scientific_interpretation_performed": False, "automatic_follow_up": False,

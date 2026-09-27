@@ -264,6 +264,7 @@ def parameter_manifest(values: dict[str, str], parsed: dict[str, object],
             "POST_SJTL_CB": parsed["POST_SJTL_CB"],
         },
         "solver": {key: values[key] for key in ("OUTPUT_MODE", "TERM_R", "DT", "STOP")},
+        "acquisition": {"probe_profile": parsed["PROBE_PROFILE"]},
         "stimulus_reference": {
             "sha256": sha256_bytes(stimulus_snapshot_text.encode()),
             "values": dict(sorted(stimulus_values.items())),

@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import package
-from config import USER_CASE_KEYS, load_env
+from config import USER_CASE_KEYS, load_user_case_snapshot
 
 SERIES = Path(__file__).resolve().parents[1]
 REPO = next(path for path in (SERIES, *SERIES.parents) if (path / ".git").exists())
@@ -134,14 +134,18 @@ def validate_batch(series_root: Path = SERIES) -> tuple[list[dict[str, Any]], di
             errors.append(f"batch artifact is missing: {filename}")
         elif hashlib.sha256(artifact.read_bytes()).hexdigest() != manifest.get(field):
             errors.append(f"batch artifact hash mismatch: {filename}")
+    effective_probe_profile = "debug"
     try:
-        effective_user = load_env(batch_dir / "USER_CASE.effective.env", USER_CASE_KEYS)
+        effective_user = load_user_case_snapshot(batch_dir / "USER_CASE.effective.env")
         effective_size = int(effective_user["ARRAY_SIZE"])
         effective_masks = [item.strip() for item in effective_user["MASKS"].split(",")]
         if effective_user["NAME"] != manifest.get("name"):
             errors.append("effective USER_CASE NAME disagrees with batch manifest")
         if effective_size != manifest.get("array_size") or effective_masks != manifest.get("requested_masks"):
             errors.append("effective USER_CASE ARRAY_SIZE/MASKS disagree with batch manifest")
+        effective_probe_profile = effective_user["PROBE_PROFILE"]
+        if manifest.get("probe_profile", "debug") != effective_probe_profile:
+            errors.append("effective USER_CASE PROBE_PROFILE disagrees with batch manifest")
     except (OSError, ValueError, RuntimeError) as exc:
         errors.append(f"effective USER_CASE snapshot is invalid: {exc}")
     parameter_path = batch_dir / "parameter_manifest.json"
@@ -150,6 +154,9 @@ def validate_batch(series_root: Path = SERIES) -> tuple[list[dict[str, Any]], di
         required_parameter_groups = {"bvm", "qb", "cb", "sjtl", "topology", "solver", "stimulus_reference"}
         if not required_parameter_groups.issubset(parameter_data):
             errors.append("batch parameter_manifest.json is missing required parameter groups")
+        acquisition = parameter_data.get("acquisition", {})
+        if isinstance(acquisition, dict) and acquisition.get("probe_profile", "debug") != effective_probe_profile:
+            errors.append("batch parameter manifest PROBE_PROFILE disagrees with effective USER_CASE")
     if manifest.get("batch_id") != latest.get("batch_id") or batch_dir.name != latest.get("batch_id"):
         errors.append("latest batch identity does not match its manifest/path")
     if manifest.get("status") != "COMPLETE_MECHANICAL":
@@ -209,12 +216,16 @@ def validate_batch(series_root: Path = SERIES) -> tuple[list[dict[str, Any]], di
         provenance_path = run_dir / "provenance.json"
         raw_path = run_dir / "raw.csv"
         parameter_path = run_dir / "parameter_manifest.json"
+        probe_manifest_path = run_dir / "probe_manifest.json"
         if (not result_path.is_file() or not provenance_path.is_file() or not raw_path.is_file()
-                or not parameter_path.is_file()):
-            errors.append(f"mask {mask}: result/provenance/parameter/raw artifact is missing")
+                or not parameter_path.is_file() or not probe_manifest_path.is_file()):
+            errors.append(f"mask {mask}: result/provenance/parameter/probe/raw artifact is missing")
             continue
         result = _read_json(result_path, f"{run_id}/result.json")
         provenance = _read_json(provenance_path, f"{run_id}/provenance.json")
+        probe_manifest = _read_json(probe_manifest_path, f"{run_id}/probe_manifest.json")
+        if probe_manifest.get("profile", "debug") != effective_probe_profile:
+            errors.append(f"mask {mask}: probe manifest profile disagrees with batch configuration")
         parameter_record = provenance.get("parameter_manifest", {})
         parameter_sha = hashlib.sha256(parameter_path.read_bytes()).hexdigest()
         if not isinstance(parameter_record, dict) or parameter_record.get("sha256") != parameter_sha:
@@ -334,6 +345,12 @@ def append_checkpoint(qa: dict[str, Any], tag: str) -> None:
                            encoding="utf-8")
 
 
+def package_commit_message(tag: str, mode: str) -> str:
+    if mode not in {"full", "delta"}:
+        raise RuntimeError(f"invalid resolved package mode: {mode}")
+    return f"package: archive {tag} {mode} evidence"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Submit completed BVM array evidence")
     parser.add_argument("tag")
@@ -342,6 +359,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--base-commit")
     parser.add_argument("--no-push", action="store_true")
     parser.add_argument("--package-only", action="store_true")
+    parser.add_argument("--include-plots", action="store_true",
+                        help="add the five QA-verified derived HTML pages to the scientific package")
     args = parser.parse_args(argv)
     try:
         if not TAG_RE.fullmatch(args.tag):
@@ -355,14 +374,20 @@ def main(argv: list[str] | None = None) -> int:
             raise RuntimeError("no new series changes to commit")
         head = current_head()
         mode = args.mode or ("delta" if package.checkpoint_entries() else "full")
-        package_plan = package.build_plan(mode, args.tag, args.base_commit)
+        package_plan = package.build_plan(mode, args.tag, args.base_commit, args.include_plots)
         plan = build_submission_plan(args.tag, mode, changes, {
             "head_commit": package_plan["head_commit"],
             "base": package_plan["base"],
-            "files": [package.rel(path) for path in package_plan["files"]],
+            "files": [member.archive_path for member in package_plan["members"]],
+            "size_breakdown": package_plan["manifest"]["size_breakdown"],
+            "top_20_largest_members": package_plan["manifest"]["top_20_largest_members"],
+            "selected_batches": package_plan["manifest"]["selected_batches"],
+            "included_runs": package_plan["manifest"]["included_runs"],
+            "uncompressed_bytes": package_plan["estimated_uncompressed_bytes"],
+            "new_physical_solve_count": package_plan["manifest"]["new_physical_solve_count"],
             "package_path": package.rel(package_plan["package_path"]),
             "mirror_path": str(package_plan["mirror_path"]),
-            "physical_solve_count": sum(item["physical_solve_count"] for item in runs),
+            "include_plots": package_plan["include_plots"],
         }, package_only=args.package_only, no_push=args.no_push,
             batch_validation=batch_validation)
         plan["current_head"] = head
@@ -380,6 +405,8 @@ def main(argv: list[str] | None = None) -> int:
                        "--mode", mode, "--tag", args.tag]
         if args.base_commit:
             package_cmd.extend(["--base-commit", args.base_commit])
+        if args.include_plots:
+            package_cmd.append("--include-plots")
         subprocess.run(package_cmd, cwd=REPO, check=True)
         qa = json.loads(PACKAGE_QA.read_text(encoding="utf-8"))
         if (qa.get("status") != "PASS" or qa.get("package_type") != mode
@@ -389,7 +416,7 @@ def main(argv: list[str] | None = None) -> int:
         append_checkpoint(qa, args.tag)
         git("add", "--", CHECKPOINTS.relative_to(REPO).as_posix(),
             PACKAGE_QA.relative_to(REPO).as_posix())
-        git("commit", "-m", f"package: archive {args.tag} {args.mode} evidence", capture=False)
+        git("commit", "-m", package_commit_message(args.tag, mode), capture=False)
         if not args.no_push:
             git("push", capture=False)
         print(json.dumps({"status": "SUBMIT_COMPLETE", "experiment_commit": experiment_commit,

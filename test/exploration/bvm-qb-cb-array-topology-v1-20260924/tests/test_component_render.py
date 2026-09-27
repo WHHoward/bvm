@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -14,6 +15,7 @@ from components import (SNAPSHOT_NAMES, load_reference, render_components,
                         verify_reference_sources)  # noqa: E402
 from config import COMPONENT_KEYS, ConfigError, USER_CASE_KEYS, load_env  # noqa: E402
 from topology import SOURCE_FILES  # noqa: E402
+from config import load_user_case_snapshot  # noqa: E402
 from run_case import render_case  # noqa: E402
 from stimulus import load_stimulus  # noqa: E402
 
@@ -105,6 +107,38 @@ class ComponentRenderTests(unittest.TestCase):
             sjtl = sources["SJTL"].read_text()
             self.assertRegex(sjtl, r"(?m)^L1 IN 1 3p$")
             self.assertIn("pwl(0 0 8p 205u)", sjtl)
+
+    def test_core_and_debug_profiles_render_without_circuit_or_source_changes(self):
+        historical = SERIES / "runs" / "A025_T006_M1111" / "USER_CASE.snapshot.env"
+        values = load_user_case_snapshot(historical)
+        self.assertEqual(values["PROBE_PROFILE"], "debug")
+        values["PROBE_PROFILE"] = "core"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            stimulus = load_stimulus(SERIES / "STIMULUS.env")
+            core_result = render_case(values, stimulus, "1111", root / "core", fixture_only=True)
+            debug_values = dict(values, PROBE_PROFILE="debug")
+            debug_result = render_case(debug_values, stimulus, "1111", root / "debug", fixture_only=True)
+            core_deck = (root / "core" / "actual_deck.cir").read_text()
+            debug_deck = (root / "debug" / "actual_deck.cir").read_text()
+            for source in SOURCE_FILES:
+                self.assertEqual(core_result["source_manifest"]["sources"]
+                                 [list(SOURCE_FILES).index(source)]["rendered_snapshot_sha256"],
+                                 debug_result["source_manifest"]["sources"]
+                                 [list(SOURCE_FILES).index(source)]["rendered_snapshot_sha256"])
+            self.assertIn("PROBE_PROFILE=core", (root / "core" / "USER_CASE.snapshot.env").read_text())
+            core_probe = core_result["probe_manifest"]
+            debug_probe = debug_result["probe_manifest"]
+            old_probe = json.loads((SERIES / "runs" / "A025_T006_M1111" / "probe_manifest.json").read_text())
+            self.assertEqual(core_probe["profile"], "core")
+            self.assertEqual(debug_probe["profile"], "debug")
+            self.assertEqual({item["label"] for item in debug_probe["signals"]},
+                             {item["label"] for item in old_probe["signals"]})
+            self.assertLess(core_probe["signal_count"], debug_probe["signal_count"])
+            strip_prints = lambda deck: "\n".join(
+                line for line in deck.splitlines() if not line.startswith(".print ")
+            )
+            self.assertEqual(strip_prints(core_deck), strip_prints(debug_deck))
 
     def test_changed_canonical_hash_hard_stops_for_human_reference_review(self):
         reference = load_reference()

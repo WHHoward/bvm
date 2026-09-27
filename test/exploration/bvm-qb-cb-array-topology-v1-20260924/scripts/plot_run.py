@@ -43,6 +43,8 @@ def _unique(values: list[str]) -> list[str]:
 def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
                         raw_sha256: str | None = None) -> dict[str, object]:
     signals = probes.get("signals", [])
+    profile = str(probes.get("profile", topology.get("probe_profile", "debug")))
+    signal_labels = {str(item["label"]) for item in signals}
     by_group: dict[str, list[str]] = {}
     for item in signals:
         by_group.setdefault(str(item["group"]), []).append(str(item["label"]))
@@ -66,17 +68,42 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         for instance, role in probes.get("component_roles", {}).items()
     ]
     acc_gap: list[str] = []
+    instance_pins = {
+        str(item["instance"]).casefold(): [str(pin) for pin in item["pins"]]
+        for item in topology.get("instances", [])
+    }
     for level in topology["levels"]:
-        for field in ("local_output", "upstream_output", "carry_output"):
+        for field in ("local_output", "upstream_output"):
             output = level.get(field, {})
             if output.get("signal"):
                 acc_gap.append(str(output["signal"]))
-        acc_gap.extend((f"V({level['merge_node']})", f"V({level['carry_node']})"))
+        merge_label = f"V({level['merge_node']})"
+        carry_label = f"V({level['carry_node']})"
+        if merge_label in signal_labels:
+            acc_gap.append(merge_label)
         for instance in level.get("sjtl_instances", []):
-            acc_gap.extend(by_group.get(f"sjtl:{instance}", []))
-        for instance in (level.get("qb_side_cb"), level.get("post_sjtl_cb")):
-            if instance:
-                acc_gap.extend(by_group.get(f"cb:{instance}", []))
+            for quantity in ("P", "V"):
+                label = f"{quantity}(BJ1|{instance})"
+                if label in signal_labels:
+                    acc_gap.append(label)
+            pins = instance_pins.get(str(instance).casefold(), [])
+            if len(pins) == 2:
+                output_label = f"V({pins[1]})"
+                if output_label in signal_labels:
+                    acc_gap.append(output_label)
+        post_cb = level.get("post_sjtl_cb")
+        if post_cb:
+            for quantity in ("P", "V"):
+                label = f"{quantity}(BJ2|{post_cb})"
+                if label in signal_labels:
+                    acc_gap.append(label)
+            pins = instance_pins.get(str(post_cb).casefold(), [])
+            if len(pins) == 2:
+                output_label = f"V({pins[1]})"
+                if output_label in signal_labels:
+                    acc_gap.append(output_label)
+        if carry_label in signal_labels:
+            acc_gap.append(carry_label)
     acc_gap.append("V(FINAL_OUT)")
 
     selected = {
@@ -86,6 +113,10 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         "cb": _unique(cb),
         "acc_gap": _unique(acc_gap),
     }
+    for page, labels in selected.items():
+        missing = sorted(set(labels) - signal_labels)
+        if missing:
+            raise RuntimeError(f"{page} plot plan references probes absent from manifest: {missing}")
     pages = []
     for filename, key in PAGES:
         if key == "overview":
@@ -105,6 +136,7 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
             "title": title,
             "component_roles": cb_roles if key == "cb" else [],
             "signals": selected[key],
+            "trace_count": len(selected[key]),
             "status": "NO_COMPONENT_PRESENT" if key == "cb" and not selected[key] else "PLANNED",
             "time_range": "FULL_STORED_TIME_RANGE",
         })
@@ -113,7 +145,11 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         "render_status": topology.get("render_status", "STATIC_RENDER"),
         "run_id": topology.get("run_id"),
         "mask": topology["mask"],
+        "probe_profile": profile,
         "plotter": str(PLOTTER.relative_to(REPO)),
+        "plotter_sha256": sha256(PLOTTER) if PLOTTER.is_file() else None,
+        "shared_plotly_asset": str(ASSET.relative_to(REPO)),
+        "shared_plotly_asset_sha256": sha256(ASSET) if ASSET.is_file() else None,
         "layout": "josim-plot2.py sep_comb dark",
         "phase_display": "turns (rad/2pi); raw phase remains radians",
         "raw_sha256": raw_sha256,
@@ -187,7 +223,7 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
                 encoding="utf-8",
             )
             outputs.append({"path": target.relative_to(root).as_posix(), "sha256": sha256(target),
-                            "status": "NO_COMPONENT_PRESENT"})
+                            "status": "NO_COMPONENT_PRESENT", "trace_count": 0})
             continue
         args = SimpleNamespace(subset=labels, jump="2pi")
         figure = plotter.seperate_combined_layout(frame, args)
@@ -198,7 +234,7 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
         if external_asset not in target.read_text(encoding="utf-8"):
             shared_asset_reference_pass = False
         outputs.append({"path": target.relative_to(root).as_posix(), "sha256": sha256(target),
-                        "status": "PASS"})
+                        "status": "PASS", "trace_count": len(labels)})
     after = sha256(raw)
     qa = {
         "schema": "bvm-qb-cb-array-plot-qa-v1",
@@ -208,6 +244,9 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
         "raw_immutable": raw_before == after,
         "page_count": len(outputs), "pages": outputs,
         "plotly_asset_sha256": sha256(ASSET),
+        "plotter_path": str(PLOTTER.relative_to(REPO)),
+        "plotter_sha256": sha256(PLOTTER),
+        "probe_profile": plan["probe_profile"],
         "shared_asset_reference_pass": shared_asset_reference_pass,
         "full_stored_time_range": True,
         "scientific_interpretation_performed": False,

@@ -32,7 +32,8 @@ def make_batch(root: Path, *, omit: str | None = None,
     batch_id = "U001_test_batch"
     batch_dir = root / "batches" / batch_id
     user_values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
-    user_values.update({"NAME": "test_batch", "MASKS": ",".join(MASKS)})
+    user_values.update({"NAME": "test_batch", "ARRAY_SIZE": "2", "MASKS": ",".join(MASKS),
+                        "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
     user_bytes = "".join(f"{key}={user_values[key]}\n" for key in sorted(user_values)).encode()
     stimulus_values = load_stimulus(SERIES / "STIMULUS.env")
     stimulus_bytes = "".join(f"{key}={stimulus_values[key]}\n" for key in sorted(stimulus_values)).encode()
@@ -41,6 +42,7 @@ def make_batch(root: Path, *, omit: str | None = None,
     (batch_dir / "STIMULUS.effective.env").write_bytes(stimulus_bytes)
     write_json(batch_dir / "parameter_manifest.json", {
         "bvm": {}, "qb": {}, "cb": {}, "sjtl": {}, "topology": {}, "solver": {},
+        "acquisition": {"probe_profile": user_values["PROBE_PROFILE"]},
         "stimulus_reference": {},
     })
     parameter_batch_sha = hashlib.sha256((batch_dir / "parameter_manifest.json").read_bytes()).hexdigest()
@@ -71,6 +73,9 @@ def make_batch(root: Path, *, omit: str | None = None,
             "plot_qa": {"status": plot_status}, "physical_solve_count": 1,
         }
         write_json(run_dir / "result.json", result)
+        write_json(run_dir / "probe_manifest.json", {
+            "profile": user_values["PROBE_PROFILE"], "signals": [],
+        })
         write_json(run_dir / "analysis" / "plot_qa.json", {
             "status": plot_status, "page_count": 5, "pages": plot_pages,
             "raw_sha256_before": raw_sha, "raw_sha256_after": raw_sha,
@@ -92,6 +97,7 @@ def make_batch(root: Path, *, omit: str | None = None,
     manifest = {
         "schema": "bvm-qb-cb-array-batch-v1", "batch_id": batch_id,
         "name": "test_batch",
+        "probe_profile": user_values["PROBE_PROFILE"],
         "array_size": 2, "requested_masks": MASKS, "runs": rows,
         "effective_user_case_sha256": hashlib.sha256(user_bytes).hexdigest(),
         "effective_stimulus_sha256": hashlib.sha256(stimulus_bytes).hexdigest(),
@@ -106,6 +112,13 @@ def make_batch(root: Path, *, omit: str | None = None,
 
 
 class BatchSubmitTests(unittest.TestCase):
+    def test_package_commit_message_uses_resolved_mode_not_cli_none(self):
+        self.assertEqual(
+            submit.package_commit_message("U013_fixture", "delta"),
+            "package: archive U013_fixture delta evidence",
+        )
+        self.assertNotIn("None evidence", submit.package_commit_message("U013_fixture", "full"))
+
     def test_missing_requested_mask_is_rejected_as_incomplete(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -129,7 +142,16 @@ class BatchSubmitTests(unittest.TestCase):
             self.assertEqual(plan["batch_validation"]["total_physical_solve_count"], 4)
 
             package_plan = {
-                "head_commit": "fixture-head", "base": None, "files": [],
+                "head_commit": "fixture-head", "base": None, "members": [],
+                "records": [], "dirty_source_paths": [], "include_plots": False,
+                "estimated_uncompressed_bytes": 0,
+                "manifest_path": "DELTA_MANIFEST.json",
+                "manifest": {"size_breakdown": {}, "top_20_largest_members": [],
+                             "selected_batches": [], "included_runs": [],
+                             "included_files": [], "new_physical_solve_count": 0,
+                             "reused_point_count": 0, "referenced_existing_cases": [],
+                             "excluded_batches": [],
+                             "excluded_file_categories": []},
                 "package_path": SERIES / "handoff" / "preview-only.zip",
                 "mirror_path": Path("/mnt/d/BVM_Backages/preview-only.zip"),
             }

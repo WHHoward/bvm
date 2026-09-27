@@ -37,7 +37,8 @@ class TryCaseTests(unittest.TestCase):
         reference = try_case.load_reference()
         baseline.update({key: reference[key] for key in COMPONENT_KEYS})
         baseline.update({"NAME": "dry_run_test", "ARRAY_SIZE": "2", "MASKS": "00,01,10,11",
-                         "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
+                         "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
+                         "PROBE_PROFILE": "core"})
         with tempfile.TemporaryDirectory() as tmp:
             user_fixture = Path(tmp) / "USER_CASE.env"
             user_fixture.write_text(try_case.stable_env(baseline), encoding="utf-8")
@@ -47,6 +48,8 @@ class TryCaseTests(unittest.TestCase):
                                     "--set", "QB_BJ3_AREA=2.2"])
         self.assertEqual(rc, 0, error.getvalue())
         self.assertIn("QB_BJ3_AREA 2 -> 2.2", output.getvalue())
+        self.assertIn("PROBE_PROFILE=core", output.getvalue())
+        self.assertRegex(output.getvalue(), r"mask=01 profile=core probe_count=\d+")
         self.assertIn("physical_solve_count = 4", output.getvalue())
         self.assertIn("No physical solve executed.", output.getvalue())
         after = (sha(user_path), sha(stimulus_path),
@@ -81,7 +84,8 @@ class TryCaseTests(unittest.TestCase):
             stimulus_path = SERIES / "STIMULUS.env"
             user_values = load_env(user_path, USER_CASE_KEYS)
             user_values.update({"NAME": "stub_batch", "ARRAY_SIZE": "2", "MASKS": "01,11",
-                                "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
+                                "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
+                                "PROBE_PROFILE": "core"})
             stimulus_values = load_stimulus(stimulus_path)
             params = try_case.validate_user_case(user_values)
             user_text = try_case.stable_env(user_values)
@@ -111,6 +115,9 @@ class TryCaseTests(unittest.TestCase):
                 result = {"run_id": run_id, "mask": mask, "solver_exit_code": 0,
                           "artifact_status": "VALID", "raw_sha256": raw_sha,
                           "plot_qa": {"status": "PASS"}, "physical_solve_count": 1}
+                (run_dir / "probe_manifest.json").write_text(json.dumps({
+                    "profile": values["PROBE_PROFILE"], "signals": [],
+                }), encoding="utf-8")
                 provenance = {"physical_solve_count": 1, "raw": {"sha256": raw_sha},
                               "parameter_manifest": {"sha256": parameter_sha}}
                 (run_dir / "result.json").write_text(json.dumps(result), encoding="utf-8")
@@ -127,7 +134,8 @@ class TryCaseTests(unittest.TestCase):
             manifest = try_case.execute_batch(
                 user_values, stimulus_values, params, user_text, stimulus_text, [], {
                     "bvm": {}, "qb": {}, "cb": {}, "sjtl": {}, "topology": {},
-                    "solver": {}, "stimulus_reference": {},
+                    "solver": {}, "acquisition": {"probe_profile": "core"},
+                    "stimulus_reference": {},
                 },
                 series_root=series, head="fixture-head", runner=fake_runner,
             )
@@ -148,7 +156,8 @@ class TryCaseTests(unittest.TestCase):
             (series / "runs").mkdir()
             user_values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
             user_values.update({"NAME": "failed_batch", "ARRAY_SIZE": "2", "MASKS": "01,11",
-                                "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
+                                "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
+                                "PROBE_PROFILE": "core"})
             stimulus_values = load_stimulus(SERIES / "STIMULUS.env")
             params = try_case.validate_user_case(user_values)
             calls: list[str] = []
@@ -171,7 +180,8 @@ class TryCaseTests(unittest.TestCase):
                 user_values, stimulus_values, params, try_case.stable_env(user_values),
                 try_case.stable_env(stimulus_values), [], {
                     "bvm": {}, "qb": {}, "cb": {}, "sjtl": {}, "topology": {},
-                    "solver": {}, "stimulus_reference": {},
+                    "solver": {}, "acquisition": {"probe_profile": "core"},
+                    "stimulus_reference": {},
                 }, series_root=series, head="fixture-head", runner=failed_runner,
             )
             self.assertEqual(calls, ["01"])

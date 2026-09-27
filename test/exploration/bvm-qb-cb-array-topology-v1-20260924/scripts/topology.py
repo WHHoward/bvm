@@ -264,6 +264,7 @@ def render_topology(params: dict[str, object], sources: dict[str, str | Path]) -
         "instances": instances,
         "terminal": {"output_node": aliases["FINAL_OUT"], "resistor": "R_TERM", "resistance": params["TERM_R"]},
         "solver": {"analysis": "transient", "dt": params["DT"], "stop": params["STOP"]},
+        "probe_profile": params.get("PROBE_PROFILE", "core"),
         "scientific_interpretation_performed": False,
         "automatic_follow_up": False,
     }

@@ -16,7 +16,9 @@ from stimulus import load_stimulus, render_stimulus  # noqa: E402
 
 def default_params(mask: str):
     values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
-    values["MASKS"] = ",".join(("00", "01", "10", "11"))
+    values.update({"ARRAY_SIZE": "2", "MASKS": "00,01,10,11",
+                   "QB_CB": "0,1", "SJTL_COUNT": "1,1",
+                   "POST_SJTL_CB": "0,0"})
     params = validate_user_case(values)
     params["MASK"] = mask
     return params

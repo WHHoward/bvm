@@ -46,6 +46,7 @@ without editing either file:
 ```bash
 ./try.sh --dry-run --set QB_BJ3_AREA=2.2
 ./try.sh --dry-run --set QB_BJ3_AREA=2.2 --set READ_ACTIVE_SE=110u
+./try.sh --dry-run --set PROBE_PROFILE=debug
 ```
 
 Overrides are validated, shown relative to the frozen component baseline when
@@ -83,6 +84,29 @@ user-parameterized. Resistor value `OPEN` means the branch is commented/open,
 not a large-resistance approximation. All component overrides are shared by
 every instance of that role; per-instance overrides are not supported.
 
+### Probe profiles
+
+`PROBE_PROFILE` is part of the effective case snapshot, acquisition/parameter
+manifest, source provenance, probe manifest, and dry-run summary. Only `core`
+and `debug` are accepted. The default is `core`:
+
+- BVM/QB/CB/sJTL JJ phase and voltage; selected inductor currents; required
+  component boundaries and write/read stimulus branches.
+- No default JJ current, inductor voltage, or `V(R_TERM)` probe.
+- `debug` restores the historical detailed JJ P/V/I and inductor I/V probe set.
+
+Old immutable snapshots without the profile field are interpreted as `debug`
+for mechanical validation; they are not edited. Profile changes do not alter
+the circuit topology or component parameters. Phase plots continue to show
+`phase turns = raw phase / (2*pi)`, never an SFQ count.
+
+The `core` default is the project owner's explicit acquisition-policy override
+for future runs through this platform relative to the broader full-probe
+preference in `docs/EXPERIMENT_CONTRACT.md` §V. It intentionally limits
+after-the-fact internal diagnostics; each physical-run preflight records the
+selected profile and exact probe list. This maintenance change does not rewrite
+historical run snapshots or raw data.
+
 ## Batch and immutable run model
 
 Each real `./try.sh` creates one `batches/Uxxx_NAME/` with effective config
@@ -113,6 +137,33 @@ python3 scripts/run_case.py --mask 01
 Use `python3 scripts/run_case.py --render-only --mask 01` only for a static
 fixture preview. Real waveforms use the five classic per-run pages above; no
 batch atlas or comparison dashboard is generated.
+
+`05_acc_gap.html` is a focused propagation view: per-level local/upstream
+contributions → `MERGE_i` → sJTL JJ P/V and stage output → optional post-CB
+representative output JJ/output → `CARRY_i` → `FINAL_OUT`. It does not repeat
+the complete `cb:*` or `sjtl:*` internal groups already shown on pages 04/03.
+All five pages use the full stored time range.
+
+## Scientific package selection
+
+Packages are selected from direct `batches/*/batch_manifest.json` references,
+not by walking the working tree. Only `COMPLETE_MECHANICAL` batches and their
+referenced VALID runs enter the scientific evidence set. `FULL` is a
+self-contained checkpoint of those batches/runs, not a copy of the whole
+series; `DELTA` adds only newly referenced batches/runs after its verified
+checkpoint and records reused raw by source case/path/SHA instead of copying
+it again. Incomplete/failed batches, unreferenced runs, tests/fixtures, caches,
+and historical ZIPs are excluded.
+
+By project-owner instruction, derived HTML is excluded from scientific ZIPs by
+default, while every referenced run still requires and verifies its five-page
+plot manifest/QA and raw SHA. The package carries the versioned `josim-plot2.py`
+and shared Plotly asset plus their hashes so plots can be regenerated. Use
+`./submit.sh <tag> --include-plots` or
+`python3 scripts/package.py --mode delta --tag <tag> --include-plots` only when
+the HTML itself is needed in the archive. The dry-run reports per-category
+file counts/bytes/percentages and the 20 largest members; PACKAGE_QA records
+actual compressed/uncompressed sizes and compression ratio.
 
 ## Platform boundaries
 

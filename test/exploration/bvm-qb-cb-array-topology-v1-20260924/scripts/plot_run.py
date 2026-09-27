@@ -61,12 +61,83 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
     overview.append("V(FINAL_OUT)")
 
     bvm = [label for group, items in by_group.items() if group.startswith("bvm") for label in items]
-    qb = [label for group, items in by_group.items() if group.startswith("qb") for label in items]
-    cb = [label for group, items in by_group.items() if group.startswith("cb:") for label in items]
-    cb_roles = [
-        {"instance": str(instance), "role": role}
+    instance_records = {
+        str(item["instance"]).casefold(): item for item in topology.get("instances", [])
+    }
+
+    def require_probe(label: str, context: str) -> str:
+        if label not in signal_labels:
+            raise RuntimeError(f"{context} requires probe absent from manifest: {label}")
+        return label
+
+    # Probe groups are acquisition/storage ownership, not plot membership:
+    # labels are globally deduplicated when the probe manifest is built.
+    qb: list[str] = []
+    for level in topology["levels"]:
+        input_node = str(level["bvm_output_node"])
+        output_node = str(
+            (level.get("qb_raw_node") or level["merge_node"])
+            if level.get("qb_side_cb") else level["merge_node"]
+        )
+        candidates = [
+            item for item in topology.get("instances", [])
+            if str(item.get("subcircuit", "")).casefold() in {"bq", "qb"}
+            and len(item.get("pins", [])) == 2
+            and str(item["pins"][0]).casefold() == input_node.casefold()
+            and str(item["pins"][1]).casefold() == output_node.casefold()
+        ]
+        if len(candidates) != 1:
+            raise RuntimeError(
+                f"cannot uniquely map QB pins {input_node}->{output_node} from topology instances"
+            )
+        instance = str(candidates[0]["instance"])
+        for element in ("BJ1", "BJ2", "BJ3"):
+            for quantity in ("P", "V"):
+                qb.append(require_probe(
+                    f"{quantity}({element}|{instance})", f"QB {instance} internal state"
+                ))
+        for element in ("LIN", "L1", "L2", "L3"):
+            qb.append(require_probe(f"I({element}|{instance})", f"QB {instance} branch state"))
+        # Boundary labels are optional for legacy/custom probe manifests, but
+        # are included regardless of which component first declared the probe.
+        for node in (input_node, output_node):
+            label = f"V({node})"
+            if label in signal_labels:
+                qb.append(label)
+
+    cb: list[str] = []
+    cb_roles: list[dict[str, str]] = []
+    role_by_instance = {
+        str(instance).casefold(): str(role)
         for instance, role in probes.get("component_roles", {}).items()
-    ]
+    }
+    seen_cb_instances: set[str] = set()
+    for level in topology["levels"]:
+        for field in ("qb_side_cb", "post_sjtl_cb"):
+            instance_value = level.get(field)
+            if not instance_value:
+                continue
+            instance = str(instance_value)
+            folded = instance.casefold()
+            if folded in seen_cb_instances:
+                continue
+            seen_cb_instances.add(folded)
+            record = instance_records.get(folded)
+            if (record is None or str(record.get("subcircuit", "")).casefold() != "cb"
+                    or len(record.get("pins", [])) != 2):
+                raise RuntimeError(f"topology does not define two-pin CB instance {instance}")
+            role = role_by_instance.get(folded, f"CB instance {instance}")
+            cb_roles.append({"instance": instance, "role": role})
+            for element in ("BJ1", "BJ2"):
+                for quantity in ("P", "V"):
+                    cb.append(require_probe(
+                        f"{quantity}({element}|{instance})", f"CB {instance} internal state"
+                    ))
+            for element in ("L1", "L4"):
+                cb.append(require_probe(f"I({element}|{instance})", f"CB {instance} branch state"))
+            for pin in record["pins"]:
+                cb.append(require_probe(f"V({pin})", f"CB {instance} boundary"))
+
     acc_gap: list[str] = []
     instance_pins = {
         str(item["instance"]).casefold(): [str(pin) for pin in item["pins"]]

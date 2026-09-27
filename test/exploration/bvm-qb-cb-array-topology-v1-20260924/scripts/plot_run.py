@@ -72,6 +72,8 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
 
     # Probe groups are acquisition/storage ownership, not plot membership:
     # labels are globally deduplicated when the probe manifest is built.
+    internal_junction_quantities = ("P", "V", "I") if profile == "debug" else ("P", "V")
+    internal_inductor_quantities = ("I", "V") if profile == "debug" else ("I",)
     qb: list[str] = []
     for level in topology["levels"]:
         input_node = str(level["bvm_output_node"])
@@ -92,17 +94,22 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
             )
         instance = str(candidates[0]["instance"])
         for element in ("BJ1", "BJ2", "BJ3"):
-            for quantity in ("P", "V"):
+            for quantity in internal_junction_quantities:
                 qb.append(require_probe(
                     f"{quantity}({element}|{instance})", f"QB {instance} internal state"
                 ))
         for element in ("LIN", "L1", "L2", "L3"):
-            qb.append(require_probe(f"I({element}|{instance})", f"QB {instance} branch state"))
-        # Boundary labels are optional for legacy/custom probe manifests, but
-        # are included regardless of which component first declared the probe.
+            for quantity in internal_inductor_quantities:
+                qb.append(require_probe(
+                    f"{quantity}({element}|{instance})", f"QB {instance} branch state"
+                ))
+        # Keep CORE's historical optional-boundary behavior. DEBUG promises a
+        # complete diagnostic set, so every boundary must be present there.
         for node in (input_node, output_node):
             label = f"V({node})"
-            if label in signal_labels:
+            if profile == "debug":
+                qb.append(require_probe(label, f"QB {instance} boundary"))
+            elif label in signal_labels:
                 qb.append(label)
 
     cb: list[str] = []
@@ -129,12 +136,16 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
             role = role_by_instance.get(folded, f"CB instance {instance}")
             cb_roles.append({"instance": instance, "role": role})
             for element in ("BJ1", "BJ2"):
-                for quantity in ("P", "V"):
+                for quantity in internal_junction_quantities:
                     cb.append(require_probe(
                         f"{quantity}({element}|{instance})", f"CB {instance} internal state"
                     ))
-            for element in ("L1", "L4"):
-                cb.append(require_probe(f"I({element}|{instance})", f"CB {instance} branch state"))
+            cb_inductors = ("L1", "L2", "L3", "L4") if profile == "debug" else ("L1", "L4")
+            for element in cb_inductors:
+                for quantity in internal_inductor_quantities:
+                    cb.append(require_probe(
+                        f"{quantity}({element}|{instance})", f"CB {instance} branch state"
+                    ))
             for pin in record["pins"]:
                 cb.append(require_probe(f"V({pin})", f"CB {instance} boundary"))
 

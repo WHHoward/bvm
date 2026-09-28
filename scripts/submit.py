@@ -364,10 +364,14 @@ def parse_component_metadata(scope: Path, base_qa: dict[str, Any]) -> list[dict[
     return component_bundle_specs(scope, json.loads(component_manifest.read_text(encoding="utf-8")))
 
 
-def build_generic_snapshot(scope: Path, tag: str) -> dict[str, Any]:
+def build_generic_snapshot(scope: Path, tag: str, *, exclude_html: bool = False) -> dict[str, Any]:
     sources = []
+    excluded_files = []
     for path in sorted(scope.rglob("*")):
         if not path.is_file() or path.is_symlink() or "handoff" in path.relative_to(scope).parts or "__pycache__" in path.parts or path.suffix == ".pyc":
+            continue
+        if exclude_html and path.suffix.lower() == ".html":
+            excluded_files.append(path.relative_to(scope).as_posix())
             continue
         sources.append((path, path.relative_to(scope).as_posix()))
     target = scope / "handoff" / f"{scope.name}_snapshot_{tag}.zip"
@@ -377,12 +381,16 @@ def build_generic_snapshot(scope: Path, tag: str) -> dict[str, Any]:
             "extra_members": {},
             "readme": (
                 f"Byte-preserving snapshot of {scope.name}.\n"
-                "Archive integrity and member hashes are checked; this package does not certify\n"
-                "solver identity, raw semantics, or scientific validity.\n").encode("utf-8"),
+                + ("Generated HTML was explicitly excluded by --exclude-html; local HTML files were left untouched.\n"
+                   if exclude_html else "")
+                + "Archive integrity and member hashes are checked; this package does not certify\n"
+                + "solver identity, raw semantics, or scientific validity.\n").encode("utf-8"),
+            "excluded_files": excluded_files,
             "base_name": None, "base_sha": None, "raw_by_run": {}}
 
 
-def package_specs(scopes: list[Path], tag: str, retire_flag: bool) -> tuple[list[dict[str, Any]], list[tuple[Path, Path]]]:
+def package_specs(scopes: list[Path], tag: str, retire_flag: bool, *,
+                  exclude_html: bool = False) -> tuple[list[dict[str, Any]], list[tuple[Path, Path]]]:
     specs: list[dict[str, Any]] = []
     retire: list[tuple[Path, Path]] = []
     remote_commit = git(["rev-parse", upstream()]).stdout.strip()
@@ -410,7 +418,7 @@ def package_specs(scopes: list[Path], tag: str, retire_flag: bool) -> tuple[list
                     raise RuntimeError(f"over-limit aggregate requires explicit replacement authorization: {old[0]}")
                 retire.append(old)
         elif scope_has_source_changes(scope, changes) or not existing:
-            specs.append(build_generic_snapshot(scope, tag))
+            specs.append(build_generic_snapshot(scope, tag, exclude_html=exclude_html))
     return specs, retire
 
 
@@ -461,6 +469,7 @@ def bundle_plan(scopes: list[Path], specs: list[dict[str, Any]], retire: list[tu
             raise RuntimeError(f"bundle inputs exceed the 100MB safety threshold; split the scope: {spec['name']} ({source_bytes} bytes)")
         package_plan.append({"path": rel(spec["target"]), "status": "CREATE", "file_count": len(records)+len(spec.get("extra_members", {}))+2,
                              "uncompressed_source_bytes": source_bytes,
+                             "excluded_files": spec.get("excluded_files", []),
                              "qa_path": rel(spec["qa_path"])})
     return {"source_paths": source_paths, "packages": package_plan,
             "retire": [rel(pkg) for pkg, _ in retire]}
@@ -501,6 +510,7 @@ def archive_bundle(spec: dict[str, Any], source_commit: str) -> dict[str, Any]:
                 "parent_package_name": base_name, "parent_package_sha256": base_sha,
                 "raw_sha256_by_run": raw_by_run,
                 "scientific_interpretation_performed": False,
+                "excluded_files": spec.get("excluded_files", []),
                 "included_files": records,
                 "additional_members": {name: hashlib.sha256(data).hexdigest() for name, data in extras.items()}}
     if spec.get("readme") is not None:
@@ -621,6 +631,8 @@ def main() -> int:
     parser.add_argument("--message", help="source commit message")
     parser.add_argument("--retire-overlimit-generated", action="store_true",
                         help="remove the exact uncommitted oversized aggregate after QA-passed split packages exist")
+    parser.add_argument("--exclude-html", action="store_true",
+                        help="for generic snapshots only, exclude generated .html files while leaving them untouched locally")
     parser.add_argument("--mirror-dir", default=str(MIRROR_DEFAULT))
     args = parser.parse_args()
     if not TAG_RE.fullmatch(args.tag):
@@ -631,6 +643,8 @@ def main() -> int:
     scopes = normalize_scopes(args.scope, remote_commit, head())
     local_submit_scopes = [scope for scope in scopes if (scope / "scripts" / "submit.py").is_file()]
     if local_submit_scopes:
+        if args.exclude_html:
+            raise RuntimeError("--exclude-html is implemented for generic snapshots; use the scope's local submit workflow")
         if len(scopes) != 1:
             raise RuntimeError("a scope with its own submit.py must be submitted separately")
         local = local_submit_scopes[0] / "scripts" / "submit.py"
@@ -670,7 +684,7 @@ def main() -> int:
             if old:
                 retire_candidates.append(old)
         elif scope_has_source_changes(scope, changes) or not prebuilt:
-            generic = build_generic_snapshot(scope, args.tag)
+            generic = build_generic_snapshot(scope, args.tag, exclude_html=args.exclude_html)
             specs.append(generic)
 
     plans = bundle_plan(scopes, specs, retire_candidates)
@@ -685,8 +699,10 @@ def main() -> int:
                           "worktree_source_paths": work_paths,
                           "reused_packages": reused_packages,
                           "new_package_plan": plans["packages"],
+                          "exclude_html": args.exclude_html,
                           "retired_overlimit_candidates": plans["retire"],
                           "retire_flag": args.retire_overlimit_generated,
+                          "exclude_html": args.exclude_html,
                           "push": "SKIPPED" if args.no_push else remote,
                           "mirror_dir": str(mirror_dir), "no_files_modified": True},
                          ensure_ascii=False, indent=2))

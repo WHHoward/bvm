@@ -22,6 +22,23 @@ class SubmitWorkflowTests(unittest.TestCase):
         self.assertFalse(submit.package_output_path("test/exploration/x/runs/N1/snapshot.zip"))
         self.assertFalse(submit.generated_cache_path("test/exploration/x/runs/N1/run.log"))
 
+    def test_generic_snapshot_excludes_only_html_when_explicitly_requested(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            scope = Path(temp) / "fixture"
+            (scope / "runs/A001/plots").mkdir(parents=True)
+            (scope / "runs/A001/raw.csv").write_text("time,V(X)\n0,0\n", encoding="utf-8")
+            (scope / "runs/A001/result.json").write_text("{}\n", encoding="utf-8")
+            (scope / "runs/A001/plots/view.html").write_text("plot\n", encoding="utf-8")
+            default = submit.build_generic_snapshot(scope, "default")
+            filtered = submit.build_generic_snapshot(scope, "without-html", exclude_html=True)
+            default_members = {member for _, member in default["sources"]}
+            filtered_members = {member for _, member in filtered["sources"]}
+            self.assertIn("runs/A001/plots/view.html", default_members)
+            self.assertNotIn("runs/A001/plots/view.html", filtered_members)
+            self.assertEqual(filtered["excluded_files"], ["runs/A001/plots/view.html"])
+            self.assertTrue({"runs/A001/raw.csv", "runs/A001/result.json"}.issubset(filtered_members))
+            self.assertTrue((scope / "runs/A001/plots/view.html").is_file())
+
     def test_scope_cannot_escape_repository(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             with self.assertRaises(RuntimeError):

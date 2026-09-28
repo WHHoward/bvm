@@ -1,0 +1,50 @@
+schema: bvm-2x2-rowcol-selection-v1
+experiment_id: bvm-2x2-rowcol-selection-v1-20260928
+parent_head: a155b7f820efbad4447c8d1985a66e4192b7e614
+purpose: static platform construction and dry-run validation only
+physical_solves_authorized_in_this_task: 0
+manual_run_policy: one fresh run per ./try.sh invocation; no automatic A/B/C batch
+grid:
+  rows: [1, 2]
+  columns: [1, 2]
+  row_bit_order: leftmost bit is row 1
+  column_bit_order: leftmost bit is column 1
+  output_merge: none
+  t1: none
+drive_modes:
+  - INDEPENDENT
+  - SHARED
+shared_nodes:
+  row_wl: [WL_R1, WL_R2]
+  column_bl: [BL_C1, BL_C2]
+  column_se: [SE_C1, SE_C2]
+  independent_driver_count: 6
+frozen_load:
+  per_cell: BVM_SL -> BQ -> one sJTL -> one CB -> independent VOUT -> R_TERM
+  R_TERM_ohm: 2
+sources:
+  BVM: circuits/bvm/bvm_cell_0923.cir
+  QB: circuits/qb/BQ_0928.cir
+  sJTL: circuits/sJTL_0923.cir
+  post_CB: circuits/CB/CB_0928.cir
+  jjmit: circuits/models/jjmit.cir
+source_sha256:
+  BVM: ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7
+  QB: 82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a
+  sJTL: 3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688
+  post_CB: 70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370
+  jjmit: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+registered_presets:
+  - A_INDEPENDENT_10_10
+  - B_SHARED_10_10
+  - C_SHARED_11_11
+analysis_windows:
+  post_READ0: [81p, 90p]
+  post_WRITE1: [101p, 110p]
+  final_read: [110p, 121p]
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_display: rad/(2*pi)
+  full_stored_time_range: true

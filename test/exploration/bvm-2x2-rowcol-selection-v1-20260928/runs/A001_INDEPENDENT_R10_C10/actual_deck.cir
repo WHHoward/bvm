@@ -1,0 +1,193 @@
+* 2x2 BVM row/column selection platform; no output merging or T1.
+* Canonical component sources are direct includes and remain unchanged.
+.include ../../../../../circuits/models/jjmit.cir
+.include ../../../../../circuits/bvm/bvm_cell_0923.cir
+.include ../../../../../circuits/qb/BQ_0928.cir
+.include ../../../../../circuits/sJTL_0923.cir
+.include ../../../../../circuits/CB/CB_0928.cir
+
+* One PWL current driver for each independent input line.
+.include stimulus.inc
+
+* BVM.SL -> BQ -> one sJTL -> one post-CB -> independent VOUT -> R_TERM=2 ohm.
+* FINAL READ has zero BL drive.
+XBVM_R1C1 WL_R1C1 BL_R1C1 SE_R1C1 SL_R1C1 BVM
+XBQ_R1C1 SL_R1C1 QBOUT_R1C1 BQ
+XSJTL_R1C1 QBOUT_R1C1 SJTL_OUT_R1C1 sJTL
+XCB_R1C1 SJTL_OUT_R1C1 VOUT_R1C1 CB
+R_TERM_R1C1 VOUT_R1C1 0 2
+XBVM_R1C2 WL_R1C2 BL_R1C2 SE_R1C2 SL_R1C2 BVM
+XBQ_R1C2 SL_R1C2 QBOUT_R1C2 BQ
+XSJTL_R1C2 QBOUT_R1C2 SJTL_OUT_R1C2 sJTL
+XCB_R1C2 SJTL_OUT_R1C2 VOUT_R1C2 CB
+R_TERM_R1C2 VOUT_R1C2 0 2
+XBVM_R2C1 WL_R2C1 BL_R2C1 SE_R2C1 SL_R2C1 BVM
+XBQ_R2C1 SL_R2C1 QBOUT_R2C1 BQ
+XSJTL_R2C1 QBOUT_R2C1 SJTL_OUT_R2C1 sJTL
+XCB_R2C1 SJTL_OUT_R2C1 VOUT_R2C1 CB
+R_TERM_R2C1 VOUT_R2C1 0 2
+XBVM_R2C2 WL_R2C2 BL_R2C2 SE_R2C2 SL_R2C2 BVM
+XBQ_R2C2 SL_R2C2 QBOUT_R2C2 BQ
+XSJTL_R2C2 QBOUT_R2C2 SJTL_OUT_R2C2 sJTL
+XCB_R2C2 SJTL_OUT_R2C2 VOUT_R2C2 CB
+R_TERM_R2C2 VOUT_R2C2 0 2
+
+* Registered raw probes.
+.print I(I_WL_R1C1)
+.print V(WL_R1C1)
+.print I(I_BL_R1C1)
+.print V(BL_R1C1)
+.print I(I_SE_R1C1)
+.print V(SE_R1C1)
+.print I(I_WL_R1C2)
+.print V(WL_R1C2)
+.print I(I_BL_R1C2)
+.print V(BL_R1C2)
+.print I(I_SE_R1C2)
+.print V(SE_R1C2)
+.print I(I_WL_R2C1)
+.print V(WL_R2C1)
+.print I(I_BL_R2C1)
+.print V(BL_R2C1)
+.print I(I_SE_R2C1)
+.print V(SE_R2C1)
+.print I(I_WL_R2C2)
+.print V(WL_R2C2)
+.print I(I_BL_R2C2)
+.print V(BL_R2C2)
+.print I(I_SE_R2C2)
+.print V(SE_R2C2)
+.print I(R_WL|XBVM_R1C1)
+.print I(R_BL|XBVM_R1C1)
+.print I(R_SE|XBVM_R1C1)
+.print V(SL_R1C1)
+.print I(L_SL|XBVM_R1C1)
+.print P(B_JM1|XBVM_R1C1)
+.print V(B_JM1|XBVM_R1C1)
+.print P(B_JM2|XBVM_R1C1)
+.print V(B_JM2|XBVM_R1C1)
+.print P(B_JS1|XBVM_R1C1)
+.print V(B_JS1|XBVM_R1C1)
+.print P(B_JS2|XBVM_R1C1)
+.print V(B_JS2|XBVM_R1C1)
+.print P(BJ1|XBQ_R1C1)
+.print V(BJ1|XBQ_R1C1)
+.print P(BJ2|XBQ_R1C1)
+.print V(BJ2|XBQ_R1C1)
+.print P(BJ3|XBQ_R1C1)
+.print V(BJ3|XBQ_R1C1)
+.print I(LIN|XBQ_R1C1)
+.print I(IB2|XBQ_R1C1)
+.print V(QBOUT_R1C1)
+.print P(BJ1|XSJTL_R1C1)
+.print V(BJ1|XSJTL_R1C1)
+.print I(IB1|XSJTL_R1C1)
+.print V(SJTL_OUT_R1C1)
+.print P(BJ1|XCB_R1C1)
+.print V(BJ1|XCB_R1C1)
+.print P(BJ2|XCB_R1C1)
+.print V(BJ2|XCB_R1C1)
+.print I(IB1|XCB_R1C1)
+.print V(VOUT_R1C1)
+.print I(R_TERM_R1C1)
+.print I(R_WL|XBVM_R1C2)
+.print I(R_BL|XBVM_R1C2)
+.print I(R_SE|XBVM_R1C2)
+.print V(SL_R1C2)
+.print I(L_SL|XBVM_R1C2)
+.print P(B_JM1|XBVM_R1C2)
+.print V(B_JM1|XBVM_R1C2)
+.print P(B_JM2|XBVM_R1C2)
+.print V(B_JM2|XBVM_R1C2)
+.print P(B_JS1|XBVM_R1C2)
+.print V(B_JS1|XBVM_R1C2)
+.print P(B_JS2|XBVM_R1C2)
+.print V(B_JS2|XBVM_R1C2)
+.print P(BJ1|XBQ_R1C2)
+.print V(BJ1|XBQ_R1C2)
+.print P(BJ2|XBQ_R1C2)
+.print V(BJ2|XBQ_R1C2)
+.print P(BJ3|XBQ_R1C2)
+.print V(BJ3|XBQ_R1C2)
+.print I(LIN|XBQ_R1C2)
+.print I(IB2|XBQ_R1C2)
+.print V(QBOUT_R1C2)
+.print P(BJ1|XSJTL_R1C2)
+.print V(BJ1|XSJTL_R1C2)
+.print I(IB1|XSJTL_R1C2)
+.print V(SJTL_OUT_R1C2)
+.print P(BJ1|XCB_R1C2)
+.print V(BJ1|XCB_R1C2)
+.print P(BJ2|XCB_R1C2)
+.print V(BJ2|XCB_R1C2)
+.print I(IB1|XCB_R1C2)
+.print V(VOUT_R1C2)
+.print I(R_TERM_R1C2)
+.print I(R_WL|XBVM_R2C1)
+.print I(R_BL|XBVM_R2C1)
+.print I(R_SE|XBVM_R2C1)
+.print V(SL_R2C1)
+.print I(L_SL|XBVM_R2C1)
+.print P(B_JM1|XBVM_R2C1)
+.print V(B_JM1|XBVM_R2C1)
+.print P(B_JM2|XBVM_R2C1)
+.print V(B_JM2|XBVM_R2C1)
+.print P(B_JS1|XBVM_R2C1)
+.print V(B_JS1|XBVM_R2C1)
+.print P(B_JS2|XBVM_R2C1)
+.print V(B_JS2|XBVM_R2C1)
+.print P(BJ1|XBQ_R2C1)
+.print V(BJ1|XBQ_R2C1)
+.print P(BJ2|XBQ_R2C1)
+.print V(BJ2|XBQ_R2C1)
+.print P(BJ3|XBQ_R2C1)
+.print V(BJ3|XBQ_R2C1)
+.print I(LIN|XBQ_R2C1)
+.print I(IB2|XBQ_R2C1)
+.print V(QBOUT_R2C1)
+.print P(BJ1|XSJTL_R2C1)
+.print V(BJ1|XSJTL_R2C1)
+.print I(IB1|XSJTL_R2C1)
+.print V(SJTL_OUT_R2C1)
+.print P(BJ1|XCB_R2C1)
+.print V(BJ1|XCB_R2C1)
+.print P(BJ2|XCB_R2C1)
+.print V(BJ2|XCB_R2C1)
+.print I(IB1|XCB_R2C1)
+.print V(VOUT_R2C1)
+.print I(R_TERM_R2C1)
+.print I(R_WL|XBVM_R2C2)
+.print I(R_BL|XBVM_R2C2)
+.print I(R_SE|XBVM_R2C2)
+.print V(SL_R2C2)
+.print I(L_SL|XBVM_R2C2)
+.print P(B_JM1|XBVM_R2C2)
+.print V(B_JM1|XBVM_R2C2)
+.print P(B_JM2|XBVM_R2C2)
+.print V(B_JM2|XBVM_R2C2)
+.print P(B_JS1|XBVM_R2C2)
+.print V(B_JS1|XBVM_R2C2)
+.print P(B_JS2|XBVM_R2C2)
+.print V(B_JS2|XBVM_R2C2)
+.print P(BJ1|XBQ_R2C2)
+.print V(BJ1|XBQ_R2C2)
+.print P(BJ2|XBQ_R2C2)
+.print V(BJ2|XBQ_R2C2)
+.print P(BJ3|XBQ_R2C2)
+.print V(BJ3|XBQ_R2C2)
+.print I(LIN|XBQ_R2C2)
+.print I(IB2|XBQ_R2C2)
+.print V(QBOUT_R2C2)
+.print P(BJ1|XSJTL_R2C2)
+.print V(BJ1|XSJTL_R2C2)
+.print I(IB1|XSJTL_R2C2)
+.print V(SJTL_OUT_R2C2)
+.print P(BJ1|XCB_R2C2)
+.print V(BJ1|XCB_R2C2)
+.print P(BJ2|XCB_R2C2)
+.print V(BJ2|XCB_R2C2)
+.print I(IB1|XCB_R2C2)
+.print V(VOUT_R2C2)
+.print I(R_TERM_R2C2)
+.tran 0.01p 250p
+.end

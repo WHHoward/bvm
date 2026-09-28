@@ -2,6 +2,19 @@
 
 Scope: `scripts/submit.py` and the 2026-09-24 scoped commit/package run. No JoSIM execution or raw modification was performed.
 
+## Generic snapshot HTML exclusion
+
+`--exclude-html` is an explicit option for generic directory-snapshot bundles.
+It omits only `.html` members, records their scope-relative names in
+`BUNDLE_MANIFEST.json` and the dry-run plan, and never deletes or moves local
+HTML. The default remains unchanged. Specialized component-plot bundles are
+not affected; raw, QA, manifests, decks, source files, and renderer code remain
+eligible members.
+
+Adversarial probe: `scripts/test_submit.py::test_generic_snapshot_excludes_only_html_when_explicitly_requested`
+checks both the unchanged default and opt-in behavior, confirms raw/JSON remain,
+and confirms the local HTML file still exists.
+
 ## Highest-risk probes
 
 | Hidden-error hypothesis | Probe | Result |

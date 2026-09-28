@@ -1,0 +1,107 @@
+{
+  "actual_deck": {
+    "path": "actual_deck.cir",
+    "sha256": "ffd50fdfe6fc12a9b3fd8c517f35a14cb935191dae053be7d00411d35ca6d3f2"
+  },
+  "automatic_follow_up": false,
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-cb-array-topology-v1-20260924/runs/A039_T010_M1000/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-qb-cb-array-topology-v1-20260924/runs/A039_T010_M1000/actual_deck.cir"
+  ],
+  "finished_at": "2026-09-28T17:13:31+08:00",
+  "mechanical_metrics": {
+    "path": "analysis/mechanical_metrics.json",
+    "sha256": "b44088605b282481d8cefead1e8a74afe09783b60d8fbced1b07ae5e7023203f"
+  },
+  "output_mode": "T1",
+  "parameter_manifest": {
+    "path": "parameter_manifest.json",
+    "sha256": "8141b9f6148096cb25d24e0f43a183f155f06e7ed39e0123fbb4c3b5c9e6c5b2"
+  },
+  "parent": {
+    "dirty": true,
+    "head": "41654a0a575a36baedd999255a27229bcd3dc05a",
+    "repo": "/home/howard/JoSIM",
+    "status_porcelain": "M test/exploration/bvm-qb-cb-array-topology-v1-20260924/USER_CASE.env\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U020_t1_receiver_biasB_quiet/STIMULUS.effective.env\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U020_t1_receiver_biasB_quiet/USER_CASE.effective.env\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U020_t1_receiver_biasB_quiet/batch_manifest.json\n?? test/exploration/bvm-qb-cb-array-topology-v1-20260924/batches/U020_t1_receiver_biasB_quiet/parameter_manifest.json"
+  },
+  "physical_solve_count": 1,
+  "probe_manifest": {
+    "path": "probe_manifest.json",
+    "sha256": "6d84c9fbbfdd2ccc3d231f01291a445d4d533d310f0be0a0ed9dbee8e3c7a9be"
+  },
+  "probe_profile": "core",
+  "raw": {
+    "bytes": 49304079,
+    "path": "raw.csv",
+    "sample_count": 19999,
+    "sha256": "27cb8453daa956f7527ed7bcaddee42b4dd2384f6d3156d25e7f881a09331c7f"
+  },
+  "run_id": "A039_T010_M1000",
+  "schema": "bvm-qb-cb-array-provenance-v1",
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "exists": true,
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version_returncode": 0,
+    "version_stderr": "",
+    "version_stdout": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "source_manifest": {
+    "path": "source_manifest.json",
+    "sha256": "22f002cd748a9425f28cbd52f760cbbde3081cfd8c2978d6bc3778ac3ed80535"
+  },
+  "started_at": "2026-09-28T17:13:25+08:00",
+  "stimulus": {
+    "path": "stimulus.inc",
+    "sha256": "37feca760b5d4acf107ceddc0445e7dc7a09e2e2eea35908543faa69a11071cb"
+  },
+  "t1_clock_drive": {
+    "input_node": "CLK",
+    "mode": "PULSE",
+    "parameters": {
+      "T1_CLK_AMPLITUDE": "1.2m",
+      "T1_CLK_FALL": "1p",
+      "T1_CLK_PERIOD": "50p",
+      "T1_CLK_RISE": "1p",
+      "T1_CLK_R_SERIES": "5",
+      "T1_CLK_START": "170p",
+      "T1_CLK_WIDTH": "2p"
+    },
+    "quiet_shunt_resistor": null,
+    "series_resistor": "R_TRIG_CLK",
+    "source_element": "V_TRIG_CLK",
+    "source_node": "CLK_RAW"
+  },
+  "t1_parameters": {
+    "T1_BIAS1": "1.8m",
+    "T1_BIAS2": "1.8m",
+    "T1_BIAS3": "1.8m",
+    "T1_BIAS3_SOURCE": "VOLTAGE",
+    "T1_CLK_AMPLITUDE": "1.2m",
+    "T1_CLK_FALL": "1p",
+    "T1_CLK_MODE": "PULSE",
+    "T1_CLK_PERIOD": "50p",
+    "T1_CLK_R": "5",
+    "T1_CLK_RISE": "1p",
+    "T1_CLK_R_SERIES": "5",
+    "T1_CLK_START": "170p",
+    "T1_CLK_WIDTH": "2p",
+    "T1_R_C": "12",
+    "T1_R_S": "12"
+  },
+  "t1_source": {
+    "deck_include_path": "../../../../../circuits/t1/t1_cell.cir",
+    "include_mode": "DIRECT_CANONICAL_INCLUDE",
+    "path": "circuits/t1/t1_cell.cir",
+    "sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237"
+  },
+  "topology_manifest": {
+    "path": "topology_manifest.json",
+    "sha256": "37691c109f3ce9d49e97e9b3da894b02dba9855fb338e63463f53edbe3290433"
+  }
+}

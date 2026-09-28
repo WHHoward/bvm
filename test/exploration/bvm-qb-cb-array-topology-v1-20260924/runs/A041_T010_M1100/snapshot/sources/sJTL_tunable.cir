@@ -1,0 +1,15 @@
+
+** BQ with Single direction **
+
+
+
+.subckt sJTL IN OUT
+
+L1 IN 1 2.5p
+L2 1 OUT 2.5p
+BJ1 1 0 jjmit area=2.5
+RJ1 1 0 4
+
+IB1 0 1 pwl(0 0 5p 190u)
+.model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=160, rN=16, icrit=0.1mA)
+.ends sJTL

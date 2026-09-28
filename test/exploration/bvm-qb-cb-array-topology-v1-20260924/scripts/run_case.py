@@ -15,7 +15,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from config import ConfigError, USER_CASE_KEYS, load_env, validate_user_case
+from config import ConfigError, T1_KEYS, USER_CASE_KEYS, load_env, validate_user_case
 from components import (
     load_reference, parameter_manifest as make_parameter_manifest, render_components,
     verify_reference_sources,
@@ -320,14 +320,22 @@ def _write_run_preflight(run_dir: Path, run_id: str, params: dict[str, object],
             f"STIMULUS snapshot SHA-256: `{sources['stimulus_sha256']}`.",
             "- T1 zero-drop link: report `max |V(FINAL_OUT)-V(T1_I)|` over all exact stored raw rows.",
             "- No interpolation/resampling; this is report-only with no pass/fail voltage threshold.",
-            f"- T1 config: BIAS1=`{params['T1_BIAS1']}`, BIAS2=`{params['T1_BIAS2']}`, "
-            f"BIAS3 source=`{params['T1_BIAS3_SOURCE']}` value=`{params['T1_BIAS3']}`, "
-            f"R_S=`{params['T1_R_S']}`, "
-            f"R_C=`{params['T1_R_C']}`, CLK_MODE=`{params['T1_CLK_MODE']}`, "
-            f"CLK_R=`{params['T1_CLK_R']}`.",
+        f"- T1 config: BIAS1=`{params['T1_BIAS1']}`, BIAS2=`{params['T1_BIAS2']}`, "
+        f"BIAS3 source=`{params['T1_BIAS3_SOURCE']}` value=`{params['T1_BIAS3']}`, "
+        f"R_S=`{params['T1_R_S']}`, "
+        f"R_C=`{params['T1_R_C']}`, CLK_MODE=`{params['T1_CLK_MODE']}`, "
+        f"CLK_R=`{params['T1_CLK_R']}`.",
+        *(["- T1 periodic drive: "
+           f"PULSE(0 {params['T1_CLK_AMPLITUDE']} {params['T1_CLK_START']} "
+           f"{params['T1_CLK_RISE']} {params['T1_CLK_FALL']} "
+           f"{params['T1_CLK_WIDTH']} {params['T1_CLK_PERIOD']}); "
+           f"R_TRIG_CLK={params['T1_CLK_R_SERIES']}Ω."]
+          if t1_mode and params["T1_CLK_MODE"] == "PULSE" else []),
+        *(["- Quiet clock mode: `R_CLK_QUIET` shunt only; no pulse source."]
+          if t1_mode and params["T1_CLK_MODE"] == "QUIET" else []),
             "- This single run is not a matched-load causal comparison; A029 remains a reference for later user review.",
             "- Timestep, parameter, and solver sensitivity are UNKNOWN; no additional solve is authorized.",
-            "- No clock pulse, additional mask, retry, sweep, or Phase 2 run is authorized.",
+            "- No additional mask, retry, sweep, or Phase 2 run is authorized.",
         ] if t1_mode else []),
         "", "## Required output artifacts", "",
         "`actual_deck.cir`, `stimulus.inc`, `topology_manifest.json`, `source_manifest.json`,",
@@ -425,10 +433,8 @@ def execute_run(
             "include_mode": t1_source["source_mode"],
             "deck_include_path": t1_source["deck_include_path"],
         }
-        provenance["t1_parameters"] = {key: params[key] for key in (
-            "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_BIAS3_SOURCE",
-            "T1_R_S", "T1_R_C", "T1_CLK_MODE", "T1_CLK_R",
-        )}
+        provenance["t1_parameters"] = {key: params[key] for key in sorted(T1_KEYS)}
+        provenance["t1_clock_drive"] = topology_manifest.get("receiver", {}).get("clock")
     _save_json(run_dir / "provenance.json", provenance)
     if completed.returncode != 0 or not (run_dir / "raw.csv").is_file():
         _save_json(run_dir / "result.json", {
@@ -513,6 +519,7 @@ def execute_run(
     }
     if params["OUTPUT_MODE"] == "T1":
         result["output_mode"] = "T1"
+        result["clock_mode"] = params["T1_CLK_MODE"]
     _save_json(run_dir / "result.json", result)
     provenance["finished_at"] = datetime.now().astimezone().isoformat(timespec="seconds")
     provenance["raw"] = {"path": "raw.csv", "sha256": raw_hash_after,
@@ -542,6 +549,7 @@ def execute_run(
                          f"{link_metric.get('max_abs_difference_v', 'UNAVAILABLE')}` V "
                          "(report-only; no registered threshold)")
         brief.insert(6, f"- T1 source SHA-256: `{provenance['t1_source']['sha256']}`")
+        brief.insert(7, f"- T1 clock mode: `{params['T1_CLK_MODE']}`")
     (run_dir / "RESULT_BRIEF.md").write_text("\n".join(brief), encoding="utf-8")
     return 0 if (artifact_status == "VALID" and plot_status.get("status") == "PASS"
                  and t1_metric_ok) else 2

@@ -43,11 +43,18 @@ SJTL_CURRENT_KEYS = {"SJTL_IB"}
 BIAS_RISE_KEYS = {"QB_BIAS_RISE", "CB_BIAS_RISE", "SJTL_BIAS_RISE"}
 T1_BIAS_KEYS = {"T1_BIAS1", "T1_BIAS2", "T1_BIAS3"}
 T1_LOAD_KEYS = {"T1_R_S", "T1_R_C", "T1_CLK_R"}
-T1_KEYS = T1_BIAS_KEYS | T1_LOAD_KEYS | {"T1_CLK_MODE", "T1_BIAS3_SOURCE"}
+T1_PULSE_KEYS = {
+    "T1_CLK_START", "T1_CLK_PERIOD", "T1_CLK_AMPLITUDE", "T1_CLK_RISE",
+    "T1_CLK_WIDTH", "T1_CLK_FALL", "T1_CLK_R_SERIES",
+}
+T1_KEYS = T1_BIAS_KEYS | T1_LOAD_KEYS | T1_PULSE_KEYS | {"T1_CLK_MODE", "T1_BIAS3_SOURCE"}
 T1_DEFAULTS = {
     "T1_BIAS1": "1.67m", "T1_BIAS2": "1.67m", "T1_BIAS3": "35u",
     "T1_BIAS3_SOURCE": "CURRENT", "T1_R_S": "12", "T1_R_C": "12",
     "T1_CLK_MODE": "QUIET", "T1_CLK_R": "5",
+    "T1_CLK_START": "170p", "T1_CLK_PERIOD": "50p",
+    "T1_CLK_AMPLITUDE": "1.2m", "T1_CLK_RISE": "1p",
+    "T1_CLK_WIDTH": "2p", "T1_CLK_FALL": "1p", "T1_CLK_R_SERIES": "5",
 }
 COMPONENT_KEYS = (BVM_AREA_KEYS | BVM_RESISTANCE_KEYS | BVM_INDUCTANCE_KEYS
                   | QB_AREA_KEYS | QB_RESISTANCE_KEYS | QB_INDUCTANCE_KEYS | QB_CURRENT_KEYS
@@ -89,6 +96,14 @@ def load_env(path: str | Path, expected_keys: set[str]) -> dict[str, str]:
             raise ConfigError(f"{path}:{line_no}: empty value for {key}")
         values[key] = value
     missing = sorted(expected_keys - values.keys())
+    # Keep legacy/live QUIET USER_CASE files valid without editing the frozen
+    # baseline. The first PULSE override uses these preregistered candidates;
+    # a snapshot already in PULSE mode must explicitly contain every field.
+    if (values.get("T1_CLK_MODE") == "QUIET"
+            and expected_keys.issuperset(T1_PULSE_KEYS)):
+        optional_missing = set(missing) & T1_PULSE_KEYS
+        values.update({key: T1_DEFAULTS[key] for key in optional_missing})
+        missing = sorted(set(missing) - optional_missing)
     if missing:
         raise ConfigError(f"{path}: missing required keys: {', '.join(missing)}")
     return values
@@ -105,6 +120,35 @@ def parse_quantity(token: str, *, label: str) -> Decimal:
     if not number.is_finite():
         raise ConfigError(f"{label}: value must be finite")
     return number * SCALE[suffix]
+
+
+def validate_t1_clock(values: dict[str, str], stop_seconds: Decimal) -> dict[str, Decimal | str]:
+    """Validate and SI-normalize the T1 clock boundary for platform or CLK-only use."""
+    mode = values.get("T1_CLK_MODE")
+    if mode == "QUIET":
+        return {"mode": "QUIET"}
+    if mode != "PULSE":
+        raise ConfigError("T1_CLK_MODE must be exactly 'QUIET' or 'PULSE'")
+    units = {
+        "start_s": "T1_CLK_START", "period_s": "T1_CLK_PERIOD",
+        "amplitude_v": "T1_CLK_AMPLITUDE", "rise_s": "T1_CLK_RISE",
+        "width_s": "T1_CLK_WIDTH", "fall_s": "T1_CLK_FALL",
+        "series_resistance_ohm": "T1_CLK_R_SERIES",
+    }
+    quantities = {name: parse_quantity(values[key], label=key)
+                  for name, key in units.items()}
+    if quantities["start_s"] < 0:
+        raise ConfigError("T1_CLK_START must be nonnegative")
+    for name in ("period_s", "amplitude_v", "rise_s", "width_s", "fall_s",
+                 "series_resistance_ohm"):
+        if quantities[name] <= 0:
+            raise ConfigError(f"{units[name]} must be positive")
+    pulse_duration = quantities["rise_s"] + quantities["width_s"] + quantities["fall_s"]
+    if pulse_duration > quantities["period_s"]:
+        raise ConfigError("T1_CLK_RISE + T1_CLK_WIDTH + T1_CLK_FALL must not exceed T1_CLK_PERIOD")
+    if quantities["start_s"] + pulse_duration > stop_seconds:
+        raise ConfigError("the first T1 clock pulse must finish by STOP")
+    return {"mode": "PULSE", **quantities}
 
 
 def parse_array(value: str, *, label: str, size: int) -> list[str]:
@@ -159,12 +203,11 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
     if (output_mode == "TERMINAL" and term <= 0) or dt <= 0 or stop <= 0:
         raise ConfigError("TERM_R must be positive in TERMINAL mode; DT and STOP must be positive")
     if output_mode == "T1":
-        if values["T1_CLK_MODE"] != "QUIET":
-            raise ConfigError("T1_CLK_MODE currently supports only 'QUIET'; clock pulses are not implemented")
         for key in ("T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_R_S", "T1_R_C", "T1_CLK_R"):
             quantity = parse_quantity(values[key], label=key)
             if quantity <= 0:
                 raise ConfigError(f"{key}: must be positive")
+        validate_t1_clock(values, stop)
     for key in sorted(BVM_AREA_KEYS | QB_AREA_KEYS | CB_AREA_KEYS | SJTL_AREA_KEYS):
         _parse_positive_scalar(values[key], key)
     for key in sorted(BVM_INDUCTANCE_KEYS | QB_INDUCTANCE_KEYS
@@ -215,11 +258,15 @@ def load_user_case_snapshot(path: str | Path, *, legacy_profile: str = "debug") 
     output_mode = next((line.split("=", 1)[1].strip() for line in snapshot_lines
                         if line.partition("=")[0].strip() == "OUTPUT_MODE"), None)
     missing_t1 = T1_KEYS - present_keys
-    # Historical T1 Scheme-A snapshots predate the explicit source selector.
-    # Their recorded 35u BIAS3 is unambiguously CURRENT; only that key gets a
-    # compatibility default. Other missing T1 fields remain invalid in T1 mode.
-    legacy_source_key = {"T1_BIAS3_SOURCE"}
-    missing_required_t1 = missing_t1 - legacy_source_key
+    # Historical T1 snapshots predate the explicit BIAS3 source selector and
+    # periodic-clock fields. Scheme-A snapshots record 35u and were QUIET;
+    # only the source selector and dormant QUIET pulse candidates are defaulted.
+    legacy_compatible_keys = {"T1_BIAS3_SOURCE"}
+    clock_mode = next((line.split("=", 1)[1].strip() for line in snapshot_lines
+                       if line.partition("=")[0].strip() == "T1_CLK_MODE"), None)
+    if clock_mode == "QUIET":
+        legacy_compatible_keys |= T1_PULSE_KEYS
+    missing_required_t1 = missing_t1 - legacy_compatible_keys
     if missing_required_t1 and output_mode != "TERMINAL":
         raise ConfigError(
             f"{path}: T1 snapshots are missing required keys: {', '.join(sorted(missing_required_t1))}"

@@ -40,9 +40,12 @@ PLATFORM_PATHS = {
 EXTERNAL_PLATFORM_PATHS = {
     "circuits/qb/BQ_0928.cir", "circuits/CB/CB_0928.cir",
 }
+EXTERNAL_EXPERIMENT_PATHS = {
+    "test/exploration/t1-periodic-clock-20ghz-20260928",
+}
 CATEGORIES = (
     "raw", "plots", "run_manifests_qa", "source_snapshots", "batch_metadata",
-    "platform_reproduction_metadata", "other",
+    "platform_reproduction_metadata", "standalone_experiment_metadata", "other",
 )
 PLOTTER = REPO / "scripts" / "josim-plot2.py"
 PLOTLY_ASSET = SERIES / "plots" / "assets" / "plotly.min.js"
@@ -143,7 +146,8 @@ def select_base(explicit: str | None, current_head: str) -> dict[str, Any]:
 
 
 def worktree_changes() -> dict[str, str]:
-    pathspecs = [rel(SERIES), *sorted(EXTERNAL_PLATFORM_PATHS)]
+    pathspecs = [rel(SERIES), *sorted(EXTERNAL_PLATFORM_PATHS),
+                 *sorted(EXTERNAL_EXPERIMENT_PATHS)]
     result = subprocess.run(
         ["git", "status", "--short", "--untracked-files=all", "--", *pathspecs],
         cwd=REPO, check=True, capture_output=True, text=True,
@@ -164,7 +168,7 @@ def parse_worktree_changes(raw: str) -> dict[str, str]:
 
 def committed_changes(base: str, head: str) -> dict[str, str]:
     raw = git("diff", "--name-status", base, head, "--", rel(SERIES),
-              *sorted(EXTERNAL_PLATFORM_PATHS))
+              *sorted(EXTERNAL_PLATFORM_PATHS), *sorted(EXTERNAL_EXPERIMENT_PATHS))
     result: dict[str, str] = {}
     for line in raw.splitlines():
         if not line.strip():
@@ -180,7 +184,19 @@ def _series_relative(repo_path: str) -> str | None:
         return repo_path[len(prefix):]
     if repo_path.startswith(("batches/", "runs/")):
         return repo_path
+    for experiment_root in EXTERNAL_EXPERIMENT_PATHS:
+        prefix = experiment_root.rstrip("/") + "/"
+        if repo_path.startswith(prefix):
+            return repo_path
     return None
+
+
+def _raw_case_id(raw_path: str) -> str:
+    for experiment_root in EXTERNAL_EXPERIMENT_PATHS:
+        prefix = experiment_root.rstrip("/") + "/runs/"
+        if raw_path.startswith(prefix):
+            return Path(raw_path[len(prefix):]).parts[0]
+    return Path(raw_path).parts[1]
 
 
 def _read_archive_manifest(entry: dict[str, Any]) -> tuple[dict[str, Any], set[str]]:
@@ -240,10 +256,15 @@ def _checkpoint_evidence(base: dict[str, Any]) -> tuple[
                 series_path = _series_relative(str(member))
                 if series_path is None:
                     continue
-                if series_path.endswith("/raw.csv") and series_path.startswith("runs/"):
+                is_run_raw = series_path.endswith("/raw.csv") and (
+                    series_path.startswith("runs/")
+                    or any(series_path.startswith(root.rstrip("/") + "/runs/")
+                           for root in EXTERNAL_EXPERIMENT_PATHS)
+                )
+                if is_run_raw:
                     digest = file_hashes.get(member)
                     if isinstance(digest, str):
-                        run_id = Path(series_path).parts[1]
+                        run_id = _raw_case_id(series_path)
                         record = {"raw_sha256": digest, "source_package": str(entry["package_name"])}
                         known_cases[series_path] = record
                         known_cases[run_id] = record
@@ -268,7 +289,7 @@ def _checkpoint_evidence(base: dict[str, Any]) -> tuple[
                 source_package = str(reference.get("source_package", entry["package_name"]))
                 record = {"raw_sha256": raw_sha, "source_package": source_package}
                 known_cases[raw_path] = record
-                known_cases[Path(raw_path).parts[1]] = record
+                known_cases[_raw_case_id(raw_path)] = record
     return known_batches, known_cases, known_batch_hashes
 
 
@@ -316,6 +337,251 @@ def _platform_members(mode: str, base: dict[str, Any] | None,
     return members, statuses
 
 
+def _standalone_experiment_members(
+    mode: str, changes: dict[str, str], known_cases: dict[str, dict[str, str]],
+    include_plots: bool,
+) -> tuple[list[PackageMember], list[dict[str, Any]], list[dict[str, Any]],
+           list[dict[str, str]], dict[str, str]]:
+    members: list[PackageMember] = []
+    experiments: list[dict[str, Any]] = []
+    runs: list[dict[str, Any]] = []
+    references: list[dict[str, str]] = []
+    statuses: dict[str, str] = {}
+
+    for root_relative in sorted(EXTERNAL_EXPERIMENT_PATHS):
+        root = REPO / root_relative
+        root_prefix = root_relative.rstrip("/") + "/"
+        root_changes = {path: status for path, status in changes.items()
+                        if path.startswith(root_prefix)}
+        if not root.exists():
+            if root_changes:
+                raise RuntimeError(f"standalone experiment path disappeared: {root_relative}")
+            continue
+        if root.is_symlink() or not root.is_dir():
+            raise RuntimeError(f"standalone experiment root must be a real directory: {root_relative}")
+        if mode == "delta" and not root_changes:
+            continue
+        for name in ("README.md", "PREFLIGHT.md", "experiment.yaml", "USER_CASE.env",
+                     "analysis/metric_spec.json"):
+            if not (root / name).is_file():
+                raise RuntimeError(f"standalone experiment definition is missing: {root / name}")
+        manifest_path = root / "experiment_manifest.json"
+        if not manifest_path.is_file():
+            raise RuntimeError(f"standalone experiment manifest is missing: {manifest_path}")
+        experiment = json.loads(manifest_path.read_text(encoding="utf-8"))
+        experiment_id = str(experiment.get("experiment_id", ""))
+        rows = experiment.get("runs")
+        if (experiment.get("status") != "COMPLETE_MECHANICAL"
+                or experiment.get("authorized_solve_count") != 1
+                or not experiment_id or not isinstance(rows, list) or len(rows) != 1):
+            raise RuntimeError(f"standalone experiment is not mechanically complete: {root_relative}")
+        preflight = root / "PREFLIGHT.md"
+        if (not preflight.is_file()
+                or "This experiment is governed by docs/EXPERIMENT_CONTRACT.md."
+                not in preflight.read_text(encoding="utf-8")):
+            raise RuntimeError(f"standalone PREFLIGHT is missing or invalid: {root_relative}")
+
+        experiment_new_solves = 0
+        experiment_run_ids: list[str] = []
+        for row in rows:
+            if not isinstance(row, dict):
+                raise RuntimeError(f"malformed standalone run entry in {root_relative}")
+            run_id = str(row.get("run_id", ""))
+            relative_run = str(row.get("path", ""))
+            if (not run_id or Path(relative_run).parts != ("runs", run_id)
+                    or run_id != "A001_T1_CLK_ONLY"):
+                raise RuntimeError(f"unsafe/unexpected standalone run identity: {run_id!r}")
+            run_dir = (root / relative_run).resolve()
+            try:
+                run_dir.relative_to((root / "runs").resolve())
+            except ValueError as exc:
+                raise RuntimeError(f"standalone run path escapes runs/: {relative_run}") from exc
+            raw_path = run_dir / "raw.csv"
+            result_path = run_dir / "result.json"
+            provenance_path = run_dir / "provenance.json"
+            metadata_path = run_dir / "metadata.json"
+            raw_qa_path = run_dir / "analysis/raw_qa.json"
+            metric_path = run_dir / "analysis/clock_cycle_metrics.json"
+            plot_manifest_path = run_dir / "analysis/plot_manifest.json"
+            plot_qa_path = run_dir / "analysis/plot_qa.json"
+            probe_path = run_dir / "probe_manifest.json"
+            parameter_path = run_dir / "parameter_manifest.json"
+            topology_path = run_dir / "topology_manifest.json"
+            source_path = run_dir / "source_manifest.json"
+            deck_path = run_dir / "actual_deck.cir"
+            required = (raw_path, result_path, provenance_path, metadata_path, raw_qa_path,
+                        metric_path, run_dir / "analysis/clock_cycle_metrics.csv",
+                        plot_manifest_path, plot_qa_path, probe_path, source_path, deck_path,
+                        parameter_path, topology_path,
+                        run_dir / "PREFLIGHT.md", run_dir / "USER_CASE.snapshot.env",
+                        run_dir / "USER_CASE.snapshot.json", run_dir / "RESULT_BRIEF.md",
+                        run_dir / "run.log")
+            missing = [str(path) for path in required if not path.is_file()]
+            if missing:
+                raise RuntimeError(f"standalone run {run_id} is missing required evidence: {missing}")
+
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+            provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+            raw_qa = json.loads(raw_qa_path.read_text(encoding="utf-8"))
+            metrics = json.loads(metric_path.read_text(encoding="utf-8"))
+            plot_manifest = json.loads(plot_manifest_path.read_text(encoding="utf-8"))
+            plot_qa = json.loads(plot_qa_path.read_text(encoding="utf-8"))
+            probe = json.loads(probe_path.read_text(encoding="utf-8"))
+            source_manifest = json.loads(source_path.read_text(encoding="utf-8"))
+            parameters = json.loads(parameter_path.read_text(encoding="utf-8"))
+            topology = json.loads(topology_path.read_text(encoding="utf-8"))
+            raw_sha = sha256(raw_path)
+            deck_text = deck_path.read_text(encoding="utf-8")
+            expected_clock_lines = (
+                "V_TRIG_CLK CLK_RAW 0 PULSE(0 1.2m 170p 1p 1p 2p 50p)",
+                "R_TRIG_CLK CLK_RAW CLK 5",
+                "V_BIAS1 N_BIAS1 0 DC 1.8m", "V_BIAS2 N_BIAS2 0 DC 1.8m",
+                "V_BIAS3 N_BIAS3 0 DC 1.8m",
+                "XT1 0 CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1",
+            )
+            expected_probes = {
+                "V(CLK_RAW)", "V(CLK)", "I(R_TRIG_CLK)", "V(S)", "V(C)",
+                *{f"{quantity}({jj}|XT1)" for jj in ("B_J2", "B_J3", "B_J7", "B_J9", "B_J11")
+                  for quantity in ("P", "V")},
+            }
+            source_rows = source_manifest.get("sources", [])
+            source_roles = {str(item.get("role")) for item in source_rows
+                            if isinstance(item, dict)}
+            if (row.get("physical_solve_count") != 1
+                    or row.get("artifact_status") != "VALID"
+                    or row.get("solver_exit_code") != 0
+                    or row.get("raw_sha256") != raw_sha
+                    or result.get("run_id") != run_id
+                    or result.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW"
+                    or result.get("artifact_status") != "VALID"
+                    or result.get("solver_exit_code") != 0
+                    or result.get("physical_solve_count") != 1
+                    or result.get("raw_sha256") != raw_sha
+                    or provenance.get("run_id") != run_id
+                    or provenance.get("physical_solve_count") != 1
+                    or provenance.get("raw", {}).get("sha256") != raw_sha
+                    or provenance.get("actual_deck", {}).get("sha256") != sha256(deck_path)
+                    or provenance.get("parameter_manifest", {}).get("sha256") != sha256(parameter_path)
+                    or provenance.get("topology_manifest", {}).get("sha256") != sha256(topology_path)
+                    or metadata.get("run_id") != run_id
+                    or metadata.get("physical_solve_count") != 1
+                    or metadata.get("raw_sha256") != raw_sha
+                    or provenance.get("source_manifest", {}).get("sha256") != sha256(source_path)
+                    or raw_qa.get("status") != "PASS"
+                    or raw_qa.get("sha256") != raw_sha
+                    or raw_qa.get("sha256_after_plot") != raw_sha
+                    or raw_qa.get("raw_immutable") is not True
+                    or metrics.get("status") != "DERIVED_ARITHMETIC_ONLY"
+                    or metrics.get("raw_sha256") != raw_sha
+                    or len(metrics.get("cycles", [])) != 4
+                    or plot_qa.get("status") != "PASS"
+                    or plot_qa.get("raw_sha256_before") != raw_sha
+                    or plot_qa.get("raw_sha256_after") != raw_sha
+                    or plot_manifest.get("raw_sha256") != raw_sha
+                    or parameters.get("t1", {}).get("T1_CLK_MODE") != "PULSE"
+                    or topology.get("clock_mode") != "PULSE"
+                    or topology.get("data_input", {}).get("node") != "0"
+                    or probe.get("profile") != "debug"):
+                raise RuntimeError(f"standalone run mechanical closure failed: {run_id}")
+            if (any(line not in deck_text for line in expected_clock_lines)
+                    or "R_CLK_QUIET" in deck_text
+                    or source_roles != {"T1", "JJMIT_MODEL"}
+                    or not expected_probes.issubset({str(item.get("label"))
+                                                     for item in probe.get("signals", [])} ) ):
+                raise RuntimeError(f"standalone run deck/source/probe closure failed: {run_id}")
+            raw_headers = raw_qa.get("headers", [])
+            probe_labels = [str(item.get("label")) for item in probe.get("signals", [])]
+            if (not isinstance(raw_headers, list) or len(probe_labels) != len(set(probe_labels))
+                    or not set(probe_labels).issubset(set(raw_headers))):
+                raise RuntimeError(f"standalone run probe manifest does not close against raw: {run_id}")
+            plot_pages = plot_qa.get("pages", [])
+            manifest_pages = plot_manifest.get("pages", [])
+            if not isinstance(plot_pages, list) or len(plot_pages) != 5 or len(manifest_pages) != 5:
+                raise RuntimeError(f"standalone run plot page inventory is incomplete: {run_id}")
+            qa_by_path = {str(page.get("path")): page for page in plot_pages if isinstance(page, dict)}
+            for page in manifest_pages:
+                relative_page = str(page.get("file", ""))
+                qa_page = qa_by_path.get(f"plots/{relative_page}")
+                plot_file = (run_dir / "plots" / relative_page).resolve()
+                try:
+                    plot_file.relative_to((run_dir / "plots").resolve())
+                except ValueError as exc:
+                    raise RuntimeError(f"plot path escapes standalone plots/: {relative_page}") from exc
+                if (qa_page is None or not plot_file.is_file()
+                        or qa_page.get("status") != "PASS"
+                        or qa_page.get("sha256") != sha256(plot_file)):
+                    raise RuntimeError(f"standalone plot QA/hash mismatch: {relative_page}")
+            source_rows = source_manifest.get("sources", [])
+            if not isinstance(source_rows, list) or len(source_rows) != 2:
+                raise RuntimeError(f"standalone source closure is incomplete: {run_id}")
+            for source in source_rows:
+                if not isinstance(source, dict):
+                    raise RuntimeError(f"malformed standalone source entry in {run_id}")
+                canonical = REPO / str(source.get("path", ""))
+                if not canonical.is_file() or sha256(canonical) != source.get("sha256"):
+                    raise RuntimeError(f"standalone source hash mismatch: {canonical}")
+
+            raw_repo_path = f"{root_relative}/{relative_run}/raw.csv"
+            known = known_cases.get(raw_repo_path) or known_cases.get(run_id)
+            reused = mode == "delta" and known is not None
+            if reused and known.get("raw_sha256") != raw_sha:
+                raise RuntimeError(f"standalone raw conflicts with verified base package: {run_id}")
+            if reused:
+                references.append({"source_case": run_id, "raw_path": raw_repo_path,
+                                   "raw_sha256": raw_sha,
+                                   "source_package": str(known.get("source_package", "verified base chain"))})
+            else:
+                experiment_new_solves += 1
+            experiment_run_ids.append(run_id)
+            runs.append({"experiment_id": experiment_id, "run_id": run_id,
+                         "raw_path": raw_repo_path, "raw_sha256": raw_sha,
+                         "reused": reused})
+
+        experiments.append({"experiment_id": experiment_id, "path": root_relative,
+                            "status": "COMPLETE_MECHANICAL", "run_ids": experiment_run_ids,
+                            "new_physical_solve_count": experiment_new_solves})
+        for path in sorted(item for item in root.rglob("*") if item.is_file()):
+            if path.is_symlink():
+                raise RuntimeError(f"standalone experiment contains a symlink: {path}")
+            relative = path.relative_to(root).as_posix()
+            repo_path = f"{root_relative}/{relative}"
+            if "__pycache__" in path.parts or path.suffix == ".pyc":
+                continue
+            if path.parent.name == "handoff" and path.suffix.lower() == ".zip":
+                continue
+            if path.suffix.lower() == ".html" and not include_plots:
+                continue
+            if mode == "delta" and repo_path not in root_changes:
+                continue
+            if path.suffix.lower() == ".html":
+                category = "plots"
+            elif relative.endswith("/raw.csv"):
+                category = "raw"
+            elif "/snapshot/sources/" in relative:
+                category = "source_snapshots"
+            elif relative.startswith("runs/"):
+                category = "run_manifests_qa"
+            else:
+                category = "standalone_experiment_metadata"
+            members.append(PackageMember(path, repo_path, category))
+            if mode == "delta":
+                status = root_changes.get(repo_path)
+                if status in {"A", "?"}:
+                    statuses[repo_path] = "A"
+                elif status == "M":
+                    statuses[repo_path] = "M"
+                else:
+                    exists = subprocess.run(
+                        ["git", "cat-file", "-e", f"{base['base_commit']}:{repo_path}"],
+                        cwd=REPO, capture_output=True, check=False,
+                    ).returncode == 0
+                    statuses[repo_path] = "M" if exists else "A"
+
+    return members, experiments, runs, references, statuses
+
+
+
 def _member_record(member: PackageMember) -> dict[str, Any]:
     return {
         "source_path": rel(member.source),
@@ -350,13 +616,19 @@ def package_manifest(mode: str, tag: str, head: str, records: list[dict[str, Any
                      base: dict[str, Any] | None, *, selected_batches: list[dict[str, Any]],
                      selected_runs: list[dict[str, Any]], excluded_batches: list[dict[str, str]],
                      references: list[dict[str, str]], include_plots: bool,
-                     statuses: dict[str, str]) -> dict[str, Any]:
+                     statuses: dict[str, str],
+                     standalone_experiments: list[dict[str, Any]],
+                     standalone_solve_count: int) -> dict[str, Any]:
     new_files: list[str] = []
     modified_files: list[str] = []
     if base:
         for record in records:
             path = str(record["source_path"])
-            if not path.startswith(SERIES_REL + "/"):
+            in_scope = (path.startswith(SERIES_REL + "/")
+                        or path in EXTERNAL_PLATFORM_PATHS
+                        or any(path.startswith(root.rstrip("/") + "/")
+                               for root in EXTERNAL_EXPERIMENT_PATHS))
+            if not in_scope:
                 continue
             status = statuses.get(path)
             if status in {"A", "?"}:
@@ -383,7 +655,9 @@ def package_manifest(mode: str, tag: str, head: str, records: list[dict[str, Any
     normalized_references = []
     for item in references:
         raw_path = str(item["raw_path"])
-        if not raw_path.startswith(SERIES_REL + "/"):
+        external_path = any(raw_path.startswith(root.rstrip("/") + "/")
+                            for root in EXTERNAL_EXPERIMENT_PATHS)
+        if not raw_path.startswith(SERIES_REL + "/") and not external_path:
             raw_path = f"{SERIES_REL}/{raw_path.lstrip('/')}"
         normalized_references.append({**item, "raw_path": raw_path})
     manifest: dict[str, Any] = {
@@ -409,11 +683,13 @@ def package_manifest(mode: str, tag: str, head: str, records: list[dict[str, Any
             key=lambda item: (-int(item["bytes"]), str(item["archive_path"])),
         )[:20],
         "selected_batches": selected_batches,
+        "standalone_experiments": standalone_experiments,
         "included_runs": selected_runs,
         "referenced_existing_cases": normalized_references,
         "reproduction_tools": tools,
-        "new_physical_solve_count": sum(
-            int(batch["new_physical_solve_count"]) for batch in selected_batches
+        "new_physical_solve_count": (
+            sum(int(batch["new_physical_solve_count"]) for batch in selected_batches)
+            + int(standalone_solve_count)
         ),
         "reused_point_count": len(normalized_references),
         "excluded_batches": excluded_batches,
@@ -432,7 +708,7 @@ def package_manifest(mode: str, tag: str, head: str, records: list[dict[str, Any
 def _select_batches(mode: str, base: dict[str, Any] | None,
                     include_plots: bool) -> tuple[list[PackageMember], list[dict[str, Any]],
                                                   list[dict[str, Any]], list[dict[str, str]],
-                                                  list[dict[str, str]]]:
+                                                  list[dict[str, str]], dict[str, dict[str, str]]]:
     known_batches, known_cases, known_batch_hashes = (
         _checkpoint_evidence(base) if base else (set(), {}, {})
     )
@@ -483,7 +759,8 @@ def _select_batches(mode: str, base: dict[str, Any] | None,
             raw_path = str(run["raw_path"])
             selected_runs.append({**run, "raw_path": f"{SERIES_REL}/{raw_path}"})
         references.extend(selection["referenced_existing_cases"])
-    return list(members.values()), selected_batches, selected_runs, excluded_batches, references
+    return (list(members.values()), selected_batches, selected_runs, excluded_batches,
+            references, known_cases)
 
 
 def build_plan(mode: str, tag: str, base_commit: str | None = None,
@@ -494,11 +771,25 @@ def build_plan(mode: str, tag: str, base_commit: str | None = None,
         raise RuntimeError(f"invalid package tag: {tag!r}")
     head = head_commit()
     base = select_base(base_commit, head) if mode == "delta" else None
-    evidence_members, selected_batches, selected_runs, excluded_batches, references = \
+    evidence_members, selected_batches, selected_runs, excluded_batches, references, known_cases = \
         _select_batches(mode, base, include_plots)
     platform_members, statuses = _platform_members(mode, base, head)
+    changes: dict[str, str] = {}
+    if base:
+        changes.update(committed_changes(str(base["base_commit"]), head))
+    changes.update(worktree_changes())
+    standalone_members, standalone_experiments, standalone_runs, standalone_references, \
+        standalone_statuses = _standalone_experiment_members(
+            mode, changes, known_cases, include_plots
+        )
+    statuses.update(standalone_statuses)
+    references.extend(standalone_references)
+    selected_runs.extend(standalone_runs)
+    standalone_solve_count = sum(
+        int(item["new_physical_solve_count"]) for item in standalone_experiments
+    )
     members_by_path: dict[str, PackageMember] = {}
-    for member in (*evidence_members, *platform_members):
+    for member in (*evidence_members, *platform_members, *standalone_members):
         if member.archive_path in members_by_path:
             previous = members_by_path[member.archive_path]
             if previous.source != member.source:
@@ -511,6 +802,8 @@ def build_plan(mode: str, tag: str, base_commit: str | None = None,
         mode, tag, head, records, base, selected_batches=selected_batches,
         selected_runs=selected_runs, excluded_batches=excluded_batches,
         references=references, include_plots=include_plots, statuses=statuses,
+        standalone_experiments=standalone_experiments,
+        standalone_solve_count=standalone_solve_count,
     )
     manifest_path = "FULL_MANIFEST.json" if mode == "full" else "DELTA_MANIFEST.json"
     package_name = f"{SERIES.name}_{mode}_{tag}.zip"
@@ -544,6 +837,7 @@ def print_plan(plan: dict[str, Any]) -> None:
         "size_breakdown": manifest["size_breakdown"],
         "top_20_largest_members": manifest["top_20_largest_members"],
         "selected_batches": manifest["selected_batches"],
+        "standalone_experiments": manifest.get("standalone_experiments", []),
         "included_run_count": len(manifest["included_runs"]),
         "new_physical_solve_count": manifest["new_physical_solve_count"],
         "reused_point_count": manifest["reused_point_count"],
@@ -631,6 +925,7 @@ def create_package(plan: dict[str, Any]) -> dict[str, Any]:
     qa["referenced_existing_cases"] = plan["manifest"]["referenced_existing_cases"]
     qa["included_runs"] = plan["manifest"]["included_runs"]
     qa["selected_batches"] = plan["manifest"]["selected_batches"]
+    qa["standalone_experiments"] = plan["manifest"].get("standalone_experiments", [])
     qa["include_plots"] = plan["include_plots"]
     PACKAGE_QA.write_text(json.dumps(qa, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
                           encoding="utf-8")

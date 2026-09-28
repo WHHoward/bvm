@@ -60,8 +60,14 @@ configuration for every requested mask in that batch.
 parameters for all BVM, QB, CB, and sJTL instances, and explicit T1 parameters.
 `OUTPUT_MODE=TERMINAL` preserves the resistive `FINAL_OUT` termination;
 `OUTPUT_MODE=T1` connects `FINAL_OUT` to `T1_I` through `V_T1_LINK` and renders
-the actual `circuits/t1/t1_cell.cir` source directly. T1 currently accepts only
-`T1_CLK_MODE=QUIET`. `STIMULUS.env` remains separate and defines WRITE0,
+the actual `circuits/t1/t1_cell.cir` source directly. T1 accepts
+`T1_CLK_MODE=QUIET` or `PULSE`. The checked-in live case remains QUIET. QUIET
+continues to place only `R_CLK_QUIET` from CLK to ground. PULSE instead renders
+`V_TRIG_CLK` at `CLK_RAW` and `R_TRIG_CLK` in series to CLK; it never adds the
+QUIET shunt. PULSE accepts configurable start, period, amplitude, rise, width,
+fall, and series resistance. The live QUIET env may omit these dormant
+candidate keys; their values are supplied from frozen platform defaults. A
+PULSE config must explicitly include them. `STIMULUS.env` remains separate and defines WRITE0,
 READ0/CONTROL, WRITE1, and FINAL READ. MASK only changes the FINAL READ. The
 leftmost mask bit is BVM1; a zero suppresses that BVM's WL/BL/SE only during
 FINAL READ.
@@ -110,7 +116,8 @@ and `debug` are accepted. The default is `core`:
 - BVM/QB/CB/sJTL JJ phase and voltage; selected inductor currents; required
   component boundaries and write/read stimulus branches. In T1 mode CORE also
   retains receiver input/clock voltages and representative junction voltages
-  in raw, even when omitted from compact HTML pages.
+  in raw, even when omitted from compact HTML pages. PULSE adds CLK_RAW, the
+  series-drive current, and J2/J3 P/V evidence without changing QUIET CORE.
 - No default JJ current, inductor voltage, or `V(R_TERM)` probe.
 - `debug` restores the historical detailed JJ P/V/I and inductor I/V probe set.
 
@@ -164,10 +171,12 @@ the complete `cb:*` or `sjtl:*` internal groups already shown on pages 04/03.
 All generated pages use the full stored time range. `06_t1.html` is emitted only
 in T1 mode and keeps receiver internals separate from the propagation page.
 CORE `01_overview.html` is a compact 4×1 propagation view (WL current, BVM
-output, MERGE, FINAL_OUT, S and C); CORE `06_t1.html` shows FINAL_OUT, S/C,
-four selected junction phases and four branch currents. Receiver input/clock
-and JJ-voltage evidence remains in raw but is not duplicated in these CORE
-pages. DEBUG keeps the full receiver/load-current page.
+output, MERGE, FINAL_OUT, S and C); PULSE adds V(CLK). QUIET CORE
+`06_t1.html` shows FINAL_OUT, S/C, four selected junction phases and four
+branch currents. PULSE CORE adds CLK/CLK_RAW and J2/J3 P/V while retaining the
+data path and S/C outputs. Other receiver inputs and JJ-voltage evidence remain
+in raw rather than expanding compact pages. DEBUG keeps the full
+receiver/load-current page.
 
 ## Scientific package selection
 
@@ -197,6 +206,7 @@ requested configurations under a temporary fixture directory and removes it
 on exit; it does not create a batch/run, call JoSIM, generate raw, package,
 commit, or update pointers. The ordinary `./try.sh` command is the sole
 multi-mask solve entry point and performs no retry, sweep, next topology,
-repeated read, or rewrite read. T1 mode is a receiver output boundary; this
-platform version supports QUIET clock mode only. The executor records
-mechanical outputs only; scientific interpretation remains separate.
+repeated read, or rewrite read. T1 mode is a receiver output boundary; clock
+mode changes are rendered but do not authorize an integrated physical run.
+The executor records mechanical outputs only; scientific interpretation remains
+separate.

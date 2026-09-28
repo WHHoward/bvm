@@ -144,6 +144,10 @@ def preview_text(user_values: dict[str, str], stimulus_values: dict[str, str],
             *[f"{key}={user_values[key]}" for key in sorted(T1_KEYS) if key != "T1_BIAS3"],
             f"T1_BIAS3={user_values['T1_BIAS3']} (DC {bias3_source.lower()} source {bias3_element})", "",
         ])
+        if user_values["T1_CLK_MODE"] == "QUIET":
+            lines.insert(-1, "CLOCK_TOPOLOGY=R_CLK_QUIET from CLK to ground; no pulse source")
+        else:
+            lines.insert(-1, "CLOCK_TOPOLOGY=V_TRIG_CLK -> R_TRIG_CLK -> CLK; no R_CLK_QUIET")
     stimulus_qa = validate_stimulus(stimulus_values, params["STOP_SECONDS"])
     lines.extend(["STIMULUS SUMMARY"])
     for interval, (stage, fields) in zip(stimulus_qa["stage_intervals_seconds"], (

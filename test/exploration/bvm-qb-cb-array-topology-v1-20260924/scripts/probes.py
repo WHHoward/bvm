@@ -35,10 +35,12 @@ def generate_probes(
     if output_mode == "T1":
         receiver = topology.get("receiver", {})
         bias3 = "I_BIAS3" if receiver.get("bias3_source") == "CURRENT" else "V_BIAS3"
-        top_level_elements.update({"R_S", "R_C", "R_CLK_QUIET", "V_T1_LINK",
-                                   "V_BIAS1", "V_BIAS2", bias3})
-        if profile == "debug":
-            top_level_elements.update({"R_S", "R_C"})
+        top_level_elements.update({"R_S", "R_C", "V_T1_LINK", "V_BIAS1", "V_BIAS2", bias3})
+        if receiver.get("clock_mode") == "PULSE":
+            nodes.add("CLK_RAW")
+            top_level_elements.update({"V_TRIG_CLK", "R_TRIG_CLK"})
+        else:
+            top_level_elements.add("R_CLK_QUIET")
     for index in range(1, int(topology["array_size"]) + 1):
         top_level_elements.update({f"I_WL{index}", f"I_BL{index}", f"I_SE{index}"})
     for item in topology["instances"]:
@@ -183,6 +185,10 @@ def generate_probes(
         component_roles[str(t1["instance"])] = "T1 receiver"
         for node in ("T1_I", "CLK", "S", "C"):
             add(f"V({node})", "t1_boundary", node=node)
+        clock_mode = str(receiver.get("clock_mode", "QUIET"))
+        if clock_mode == "PULSE":
+            add("V(CLK_RAW)", "t1_clock", node="CLK_RAW")
+            add("I(R_TRIG_CLK)", "t1_clock", element="R_TRIG_CLK")
         if profile == "debug":
             for element in ("R_S", "R_C"):
                 add(f"I({element})", "t1_load", element=element)
@@ -201,6 +207,11 @@ def generate_probes(
         for element in junctions:
             for quantity in junction_quantities:
                 add(f"{quantity}({element}|XT1)", "t1", instance="XT1", element=element)
+        if clock_mode == "PULSE" and profile != "debug":
+            for element in ("B_J2", "B_J3"):
+                for quantity in ("P", "V"):
+                    add(f"{quantity}({element}|XT1)", "t1_clock", instance="XT1",
+                        element=element)
         for element in inductors:
             for quantity in inductor_quantities:
                 add(f"{quantity}({element}|XT1)", "t1", instance="XT1", element=element)
@@ -232,6 +243,7 @@ def generate_probes(
     }
     if output_mode == "T1":
         manifest["output_mode"] = "T1"
+        manifest["clock_mode"] = str(topology.get("receiver", {}).get("clock_mode", "QUIET"))
     return lines, manifest
 
 

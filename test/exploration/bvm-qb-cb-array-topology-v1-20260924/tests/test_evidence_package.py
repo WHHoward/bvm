@@ -188,7 +188,7 @@ class EvidencePackageTests(unittest.TestCase):
                 default = package._select_batches("full", None, False)
                 plotted = package._select_batches("full", None, True)
 
-            default_members, batches, runs, excluded, _ = default
+            default_members, batches, runs, excluded, _, _ = default
             paths = {member.archive_path for member in default_members}
             self.assertEqual([batch["batch_id"] for batch in batches], ["U001_accepted"])
             self.assertEqual([run["run_id"] for run in runs], ["A001_T001_M1"])
@@ -302,12 +302,158 @@ class EvidencePackageTests(unittest.TestCase):
                  patch.object(package, "_checkpoint_evidence", return_value=(
                      {"U001_base"}, known, {"U001_base": known["U001_base"]["manifest_sha256"]}
                  )):
-                members, batches, runs, _, references = package._select_batches("delta", {"base_commit": "fixture"}, False)
+                members, batches, runs, _, references, _ = package._select_batches(
+                    "delta", {"base_commit": "fixture"}, False)
             paths = {member.archive_path for member in members}
             self.assertEqual([batch["batch_id"] for batch in batches], ["U002_reuse"])
             self.assertEqual(runs[0]["reused"], True)
             self.assertEqual(references[0]["source_package"], "base.zip")
             self.assertFalse(any(path.endswith("/raw.csv") for path in paths))
+
+    def test_standalone_clock_experiment_is_closed_once_and_delta_references_existing_raw(self):
+        with tempfile.TemporaryDirectory(prefix="standalone-clock-package-") as temp:
+            repo = Path(temp)
+            relative_root = "test/exploration/t1-periodic-clock-20ghz-20260928"
+            root = repo / relative_root
+            run_id = "A001_T1_CLK_ONLY"
+            run = root / "runs" / run_id
+            analysis = run / "analysis"
+            plots = run / "plots"
+            analysis.mkdir(parents=True)
+            plots.mkdir()
+            for name, text in (("README.md", "standalone\n"), ("PREFLIGHT.md",
+                    "This experiment is governed by docs/EXPERIMENT_CONTRACT.md.\n"),
+                    ("experiment.yaml", "experiment_id: fixture\n"),
+                    ("USER_CASE.env", "T1_CLK_MODE=PULSE\n")):
+                (root / name).write_text(text, encoding="utf-8")
+            (root / "analysis").mkdir(exist_ok=True)
+            (root / "analysis/metric_spec.json").write_text("{}\n", encoding="utf-8")
+            t1 = repo / "circuits/t1/t1_cell.cir"
+            model = repo / "circuits/models/jjmit.cir"
+            t1.parent.mkdir(parents=True)
+            model.parent.mkdir(parents=True)
+            t1.write_text(".subckt T1 I CLK S C N_BIAS1 N_BIAS2 N_BIAS3\n.ends T1\n",
+                          encoding="utf-8")
+            model.write_text(".model jjmit jj()\n", encoding="utf-8")
+            deck = run / "actual_deck.cir"
+            deck.write_text(
+                "V_BIAS1 N_BIAS1 0 DC 1.8m\nV_BIAS2 N_BIAS2 0 DC 1.8m\n"
+                "V_BIAS3 N_BIAS3 0 DC 1.8m\n"
+                "V_TRIG_CLK CLK_RAW 0 PULSE(0 1.2m 170p 1p 1p 2p 50p)\n"
+                "R_TRIG_CLK CLK_RAW CLK 5\nXT1 0 CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1\n",
+                encoding="utf-8")
+            raw = run / "raw.csv"
+            required_probe_labels = [
+                "V(CLK_RAW)", "V(CLK)", "I(R_TRIG_CLK)", "V(S)", "V(C)",
+                *[f"{quantity}({jj}|XT1)" for jj in
+                  ("B_J2", "B_J3", "B_J7", "B_J9", "B_J11") for quantity in ("P", "V")],
+            ]
+            raw.write_text(
+                ",".join(("time", *required_probe_labels)) + "\n"
+                + ",".join(("0", *(["0"] * len(required_probe_labels)))) + "\n"
+                + ",".join(("1e-12", *(["1e-3"] * len(required_probe_labels)))) + "\n",
+                encoding="utf-8")
+            raw_sha = digest_bytes(raw.read_bytes())
+            (run / "PREFLIGHT.md").write_text(
+                "This experiment is governed by docs/EXPERIMENT_CONTRACT.md.\n", encoding="utf-8")
+            (run / "USER_CASE.snapshot.env").write_text("T1_CLK_MODE=PULSE\n", encoding="utf-8")
+            write_json(run / "USER_CASE.snapshot.json", {"T1_CLK_PERIOD_S": 50e-12})
+            (run / "RESULT_BRIEF.md").write_text("fixture result\n", encoding="utf-8")
+            write_json(run / "result.json", {
+                "run_id": run_id, "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+                "artifact_status": "VALID", "solver_exit_code": 0,
+                "physical_solve_count": 1, "raw_sha256": raw_sha,
+            })
+            write_json(run / "metadata.json", {
+                "run_id": run_id, "physical_solve_count": 1, "raw_sha256": raw_sha,
+            })
+            write_json(analysis / "raw_qa.json", {
+                "status": "PASS", "sha256": raw_sha, "sha256_after_plot": raw_sha,
+                "raw_immutable": True,
+                "headers": ["time", *required_probe_labels],
+            })
+            write_json(analysis / "clock_cycle_metrics.json", {
+                "status": "DERIVED_ARITHMETIC_ONLY", "raw_sha256": raw_sha,
+                "cycles": [{"index": index} for index in range(1, 5)],
+            })
+            (analysis / "clock_cycle_metrics.csv").write_text(
+                "cycle_index,signal\n1,V(CLK)\n", encoding="utf-8")
+            pages = []
+            qa_pages = []
+            for index in range(5):
+                filename = f"page_{index + 1}.html"
+                content = f"fixture plot {index}\n".encode()
+                (plots / filename).write_bytes(content)
+                page_sha = digest_bytes(content)
+                pages.append({"file": filename, "signals": ["V(CLK)"],
+                              "trace_count": 1, "time_range": "FULL_OR_REGISTERED_WINDOW"})
+                qa_pages.append({"path": f"plots/{filename}", "sha256": page_sha,
+                                 "status": "PASS", "trace_count": 1})
+            write_json(analysis / "plot_manifest.json", {"raw_sha256": raw_sha, "pages": pages})
+            write_json(analysis / "plot_qa.json", {
+                "status": "PASS", "raw_sha256_before": raw_sha,
+                "raw_sha256_after": raw_sha, "pages": qa_pages,
+            })
+            write_json(run / "probe_manifest.json", {
+                "profile": "debug", "signals": [{"label": label}
+                                                  for label in required_probe_labels],
+            })
+            parameter_bytes = write_json(run / "parameter_manifest.json", {
+                "t1": {"T1_CLK_MODE": "PULSE", "T1_BIAS3_SOURCE": "VOLTAGE"},
+                "solver": {"DT": "0.01p", "STOP": "370p"},
+            })
+            topology_bytes = write_json(run / "topology_manifest.json", {
+                "output_mode": "T1_CLK_ONLY", "clock_mode": "PULSE",
+                "data_input": {"signal": "I", "node": "0"},
+            })
+            source_bytes = write_json(run / "source_manifest.json", {"sources": [
+                {"role": "T1", "path": "circuits/t1/t1_cell.cir",
+                 "sha256": digest_bytes(t1.read_bytes())},
+                {"role": "JJMIT_MODEL", "path": "circuits/models/jjmit.cir",
+                 "sha256": digest_bytes(model.read_bytes())},
+            ]})
+            write_json(run / "provenance.json", {
+                "run_id": run_id, "physical_solve_count": 1,
+                "actual_deck": {"sha256": digest_bytes(deck.read_bytes())},
+                "source_manifest": {"sha256": digest_bytes(source_bytes)},
+                "parameter_manifest": {"sha256": digest_bytes(parameter_bytes)},
+                "topology_manifest": {"sha256": digest_bytes(topology_bytes)},
+                "raw": {"sha256": raw_sha},
+            })
+            (run / "run.log").write_text("exit_code=0\n", encoding="utf-8")
+            write_json(root / "experiment_manifest.json", {
+                "experiment_id": "t1-periodic-clock-20ghz-20260928",
+                "status": "COMPLETE_MECHANICAL", "authorized_solve_count": 1,
+                "runs": [{"run_id": run_id, "path": f"runs/{run_id}",
+                          "physical_solve_count": 1, "artifact_status": "VALID",
+                          "solver_exit_code": 0, "raw_sha256": raw_sha}],
+            })
+
+            with patch.object(package, "REPO", repo), \
+                 patch.object(package, "EXTERNAL_EXPERIMENT_PATHS", {relative_root}):
+                no_html = package._standalone_experiment_members(
+                    "full", {}, {}, False)
+                with_html = package._standalone_experiment_members(
+                    "full", {}, {}, True)
+                reused = package._standalone_experiment_members(
+                    "delta", {f"{relative_root}/README.md": "M"},
+                    {f"{relative_root}/runs/{run_id}/raw.csv": {
+                        "raw_sha256": raw_sha, "source_package": "base.zip"}}, False)
+
+            members, experiments, runs, refs, _ = no_html
+            paths = {member.archive_path for member in members}
+            self.assertEqual(experiments[0]["new_physical_solve_count"], 1)
+            self.assertEqual(runs[0]["raw_sha256"], raw_sha)
+            self.assertIn(f"{relative_root}/runs/{run_id}/raw.csv", paths)
+            self.assertFalse(any(path.endswith(".html") for path in paths))
+            self.assertEqual(sum(member.archive_path.endswith(".html")
+                                 for member in with_html[0]), 5)
+            reused_members, reused_experiments, reused_runs, reused_refs, _ = reused
+            self.assertEqual(reused_experiments[0]["new_physical_solve_count"], 0)
+            self.assertTrue(reused_runs[0]["reused"])
+            self.assertEqual(reused_refs[0]["source_package"], "base.zip")
+            self.assertFalse(any(member.archive_path.endswith("/raw.csv")
+                                 for member in reused_members))
 
     def test_package_zip_qa_records_sizes_crc_member_hashes_and_mirror_sha(self):
         with tempfile.TemporaryDirectory() as temp:

@@ -174,14 +174,20 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
     if output_mode == "T1":
         receiver = topology.get("receiver")
         t1_instance = instance_records.get("xt1")
+        clock_mode = str(receiver.get("clock_mode", "QUIET")) if isinstance(receiver, dict) else "QUIET"
         if (not isinstance(receiver, dict) or t1_instance is None
                 or str(t1_instance.get("subcircuit", "")).casefold() != "t1"):
             raise RuntimeError("T1 plot page requires a topology-backed XT1 receiver")
         if profile == "debug":
-            for node in ("FINAL_OUT", str(receiver["input_node"]), "CLK", "S", "C"):
+            nodes = ["FINAL_OUT", str(receiver["input_node"]), "CLK", "S", "C"]
+            if clock_mode == "PULSE":
+                nodes.append("CLK_RAW")
+            for node in nodes:
                 t1.append(require_probe(f"V({node})", f"T1 {node} boundary"))
             for element in ("R_S", "R_C"):
                 t1.append(require_probe(f"I({element})", f"T1 {element} output load"))
+            if clock_mode == "PULSE":
+                t1.append(require_probe("I(R_TRIG_CLK)", "T1 clock-drive branch"))
             receiver_junctions = list(receiver["junction_elements"])
             receiver_inductors = list(receiver["inductor_elements"])
             for element in receiver_junctions:
@@ -197,8 +203,17 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         else:
             for node in ("FINAL_OUT", "S", "C"):
                 t1.append(require_probe(f"V({node})", f"T1 {node} boundary"))
+            if clock_mode == "PULSE":
+                for node in ("CLK_RAW", "CLK"):
+                    t1.append(require_probe(f"V({node})", f"T1 clock {node}"))
             for element in T1_CORE_JUNCTIONS:
                 t1.append(require_probe(f"P({element}|XT1)", f"T1 XT1 junction phase {element}"))
+            if clock_mode == "PULSE":
+                for element in ("B_J2", "B_J3"):
+                    for quantity in ("P", "V"):
+                        t1.append(require_probe(
+                            f"{quantity}({element}|XT1)", f"T1 XT1 clock-junction {element}"
+                        ))
             for element in ("L3", "L11", "L14", "L17"):
                 t1.append(require_probe(f"I({element}|XT1)", f"T1 XT1 branch current {element}"))
 
@@ -266,7 +281,10 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
             title = ("CB components — " + "; ".join(item["role"] for item in cb_roles)
                      if cb_roles else "No CB components in this topology")
         elif key == "t1":
-            title = "T1 receiver — FINAL_OUT, selected phases/branches, S/C outputs"
+            clock_mode = str(topology.get("receiver", {}).get("clock_mode", "QUIET"))
+            title = ("T1 receiver — CLK, J2/J3, data path and S/C outputs"
+                     if clock_mode == "PULSE" else
+                     "T1 receiver — FINAL_OUT, selected phases/branches, S/C outputs")
         else:
             title = "Per-level local/upstream contribution, MERGE, sJTL, post-CB, CARRY, FINAL_OUT"
         pages.append({
@@ -295,6 +313,8 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         "pages": pages,
         "scientific_interpretation_performed": False,
         **({"output_mode": "T1"} if output_mode == "T1" else {}),
+        **({"clock_mode": topology.get("receiver", {}).get("clock_mode", "QUIET")}
+           if output_mode == "T1" else {}),
     }
 
 
@@ -393,6 +413,7 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
     }
     if plan.get("output_mode") == "T1":
         qa["output_mode"] = "T1"
+        qa["clock_mode"] = plan.get("clock_mode", "QUIET")
     (root / "analysis" / "plot_manifest.json").write_text(
         json.dumps(plan, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (root / "analysis" / "plot_qa.json").write_text(

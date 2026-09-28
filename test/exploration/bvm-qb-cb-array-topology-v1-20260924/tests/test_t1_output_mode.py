@@ -50,8 +50,12 @@ def values_from_a029(output_mode: str, profile: str = "core") -> dict[str, str]:
     return values
 
 
-def render_fixture(root: Path, mode: str, profile: str = "core") -> dict:
+def render_fixture(root: Path, mode: str, profile: str = "core",
+                   clock_mode: str = "QUIET", stop: str | None = None) -> dict:
     values = values_from_a029(mode, profile)
+    values["T1_CLK_MODE"] = clock_mode
+    if stop is not None:
+        values["STOP"] = stop
     stimulus_path = A029 / "STIMULUS.snapshot.env"
     stimulus = load_stimulus(stimulus_path)
     old_user_text = (A029 / "USER_CASE.snapshot.env").read_text(encoding="utf-8")
@@ -88,19 +92,32 @@ class T1OutputModeTests(unittest.TestCase):
                                               "USER_CASE.snapshot.env")
         self.assertEqual(legacy_a030["T1_BIAS3_SOURCE"], "CURRENT")
         self.assertEqual(legacy_a030["T1_BIAS3"], "35u")
+        legacy_scheme_b_quiet = load_user_case_snapshot(
+            SERIES / "runs" / "A038_T010_M0101" / "USER_CASE.snapshot.env")
+        self.assertEqual(legacy_scheme_b_quiet["T1_BIAS3_SOURCE"], "VOLTAGE")
+        self.assertEqual(legacy_scheme_b_quiet["T1_CLK_MODE"], "QUIET")
+        self.assertEqual(legacy_scheme_b_quiet["T1_CLK_PERIOD"], "50p")
 
     def test_live_scheme_b_preserves_a030_front_end_and_stimulus(self):
         live = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
         a030 = load_user_case_snapshot(SERIES / "runs" / "A030_T010_M1111" /
                                        "USER_CASE.snapshot.env")
         self.assertEqual(live["NAME"], "t1_receiver_biasB_quiet")
-        self.assertEqual(live["MASKS"], "1111")
+        self.assertEqual(live["MASKS"], "1000,0011,0101")
         self.assertEqual(live["OUTPUT_MODE"], "T1")
         self.assertEqual(live["T1_BIAS3_SOURCE"], "VOLTAGE")
         self.assertEqual((live["T1_BIAS1"], live["T1_BIAS2"], live["T1_BIAS3"]),
                          ("1.8m", "1.8m", "1.8m"))
         self.assertEqual(live["T1_CLK_MODE"], "QUIET")
-        excluded = {"NAME", *T1_KEYS}
+        self.assertEqual((live["T1_CLK_START"], live["T1_CLK_PERIOD"],
+                          live["T1_CLK_AMPLITUDE"], live["T1_CLK_RISE"],
+                          live["T1_CLK_WIDTH"], live["T1_CLK_FALL"],
+                          live["T1_CLK_R_SERIES"]),
+                         ("170p", "50p", "1.2m", "1p", "2p", "1p", "5"))
+        live_text = (SERIES / "USER_CASE.env").read_text(encoding="utf-8")
+        self.assertNotIn("T1_CLK_START=", live_text)
+        self.assertNotIn("T1_CLK_PERIOD=", live_text)
+        excluded = {"NAME", "MASKS", *T1_KEYS}
         self.assertEqual({key: value for key, value in live.items() if key not in excluded},
                          {key: value for key, value in a030.items() if key not in excluded})
         self.assertEqual(load_stimulus(SERIES / "STIMULUS.env"),
@@ -212,11 +229,62 @@ class T1OutputModeTests(unittest.TestCase):
             "V_BIAS3 N_BIAS3 0 DC 1.8m",
         ):
             self.assertIn(line, deck)
-        self.assertNotRegex(deck, r"(?m)^I_BIAS3\\b")
+        self.assertNotRegex(deck, r"(?m)^I_BIAS3\b")
         self.assertNotRegex(deck, r"(?m)^R_TERM\\b")
         self.assertIn("T1_BIAS3_SOURCE=VOLTAGE", user_snapshot)
         self.assertEqual(result["topology_manifest"]["receiver"]["bias3_source"], "VOLTAGE")
         self.assertEqual(result["parameter_manifest"]["t1"]["T1_BIAS3_SOURCE"], "VOLTAGE")
+
+    def test_pulse_mode_renders_source_manifest_probes_and_compact_pages(self):
+        with tempfile.TemporaryDirectory(prefix="t1-pulse-render-") as temp:
+            root = Path(temp) / "pulse"
+            result = render_fixture(root, "T1", "core", "PULSE", "370p")
+            deck = (root / "actual_deck.cir").read_text(encoding="utf-8")
+            snapshot = (root / "USER_CASE.snapshot.env").read_text(encoding="utf-8")
+        self.assertIn(
+            "V_TRIG_CLK CLK_RAW 0 PULSE(0 1.2m 170p 1p 1p 2p 50p)", deck)
+        self.assertIn("R_TRIG_CLK CLK_RAW CLK 5", deck)
+        self.assertNotIn("R_CLK_QUIET", deck)
+        self.assertNotIn("R_TERM FINAL_OUT", deck)
+        self.assertIn("T1_CLK_MODE=PULSE", snapshot)
+        receiver = result["topology_manifest"]["receiver"]
+        self.assertEqual(receiver["clock_mode"], "PULSE")
+        self.assertEqual(receiver["clock"], {
+            "mode": "PULSE", "input_node": "CLK", "source_element": "V_TRIG_CLK",
+            "source_node": "CLK_RAW", "series_resistor": "R_TRIG_CLK",
+            "quiet_shunt_resistor": None,
+            "parameters": {
+                "T1_CLK_START": "170p", "T1_CLK_PERIOD": "50p",
+                "T1_CLK_AMPLITUDE": "1.2m", "T1_CLK_RISE": "1p",
+                "T1_CLK_WIDTH": "2p", "T1_CLK_FALL": "1p",
+                "T1_CLK_R_SERIES": "5",
+            },
+        })
+        for key in T1_KEYS:
+            self.assertIn(f"{key}={result['parameter_manifest']['t1'][key]}", snapshot)
+        labels = {item["label"] for item in result["probe_manifest"]["signals"]}
+        for signal in (
+            "V(CLK_RAW)", "V(CLK)", "I(R_TRIG_CLK)",
+            "P(B_J2|XT1)", "V(B_J2|XT1)", "P(B_J3|XT1)", "V(B_J3|XT1)",
+            "P(B_J1|XT1)", "V(B_J1|XT1)", "P(B_J7|XT1)", "V(B_J7|XT1)",
+            "P(B_J9|XT1)", "V(B_J9|XT1)", "P(B_J11|XT1)", "V(B_J11|XT1)",
+            "V(S)", "V(C)",
+        ):
+            self.assertIn(signal, labels)
+        self.assertEqual(result["probe_manifest"]["signal_count"], 184)
+        manifest = result["plan"]
+        self.assertEqual(manifest["clock_mode"], "PULSE")
+        overview = manifest["pages"][0]["signals"]
+        self.assertIn("V(CLK)", overview)
+        self.assertEqual(len(overview), 16)
+        t1_page = manifest["pages"][-1]["signals"]
+        self.assertEqual(len(t1_page), 17)
+        self.assertIn("V(CLK)", t1_page)
+        for signal in ("P(B_J2|XT1)", "V(B_J2|XT1)",
+                       "P(B_J3|XT1)", "V(B_J3|XT1)", "V(S)", "V(C)"):
+            self.assertIn(signal, t1_page)
+        acc_gap = manifest["pages"][4]["signals"]
+        self.assertFalse(any("XT1" in signal for signal in acc_gap))
 
     def test_t1_front_end_stimulus_and_first_five_pages_are_invariant(self):
         with tempfile.TemporaryDirectory(prefix="t1-topology-invariance-") as temp:
@@ -258,6 +326,10 @@ class T1OutputModeTests(unittest.TestCase):
             debug_labels = set(debug_page["signals"])
             core_raw_labels = {item["label"] for item in core["probe_manifest"]["signals"]}
             debug_raw_labels = {item["label"] for item in debug["probe_manifest"]["signals"]}
+            u019_probe = json.loads((SERIES / "runs" / "A038_T010_M0101" /
+                                     "probe_manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual(core_raw_labels,
+                             {item["label"] for item in u019_probe["signals"]})
             t1 = parse_subcircuits({"T1": T1_SOURCE})["T1"]
             junctions = [name for name in t1.elements if name.startswith("B_J")]
             inductors = [name for name in t1.elements
@@ -323,8 +395,11 @@ class T1OutputModeTests(unittest.TestCase):
         terminal = values_from_a029("TERMINAL")
         with self.assertRaisesRegex(ConfigError, "OUTPUT_MODE"):
             validate_user_case(dict(terminal, OUTPUT_MODE="T!"))
+        pulse = values_from_a029("T1")
+        pulse.update({"T1_CLK_MODE": "PULSE", "STOP": "370p"})
+        self.assertEqual(validate_user_case(pulse)["T1_CLK_MODE"], "PULSE")
         with self.assertRaisesRegex(ConfigError, "T1_CLK_MODE"):
-            validate_user_case(dict(values_from_a029("T1"), T1_CLK_MODE="PULSE"))
+            validate_user_case(dict(pulse, T1_CLK_MODE="WAVE"))
         with self.assertRaisesRegex(ConfigError, "TERM_R"):
             validate_user_case(dict(terminal, TERM_R="0"))
         self.assertEqual(validate_user_case(dict(values_from_a029("T1"), TERM_R="0"))[
@@ -333,6 +408,38 @@ class T1OutputModeTests(unittest.TestCase):
             validate_user_case(dict(values_from_a029("T1"), T1_BIAS3="0u"))
         with self.assertRaisesRegex(ConfigError, "T1_BIAS3_SOURCE"):
             validate_user_case(dict(values_from_a029("T1"), T1_BIAS3_SOURCE="MAYBE"))
+        with tempfile.TemporaryDirectory(prefix="t1-quiet-optional-clock-fields-") as temp:
+            source = (SERIES / "USER_CASE.env").read_text(encoding="utf-8")
+            self.assertNotIn("T1_CLK_START=", source)
+            quiet_path = Path(temp) / "quiet.env"
+            quiet_path.write_text(source, encoding="utf-8")
+            loaded = load_env(quiet_path, USER_CASE_KEYS)
+            self.assertEqual(loaded["T1_CLK_MODE"], "QUIET")
+            pulse_path = Path(temp) / "pulse-missing-fields.env"
+            pulse_path.write_text(source.replace("T1_CLK_MODE=QUIET", "T1_CLK_MODE=PULSE"),
+                                  encoding="utf-8")
+            with self.assertRaisesRegex(ConfigError, "T1_CLK_START"):
+                load_env(pulse_path, USER_CASE_KEYS)
+
+    def test_pulse_config_validation_rejects_invalid_values_and_incompatible_width(self):
+        pulse = values_from_a029("T1")
+        pulse.update({"T1_CLK_MODE": "PULSE", "STOP": "370p"})
+        self.assertEqual(validate_user_case(pulse)["T1_CLK_MODE"], "PULSE")
+        invalid = (
+            ("T1_CLK_START", "-1p"),
+            ("T1_CLK_PERIOD", "0p"),
+            ("T1_CLK_AMPLITUDE", "0m"),
+            ("T1_CLK_RISE", "0p"),
+            ("T1_CLK_WIDTH", "0p"),
+            ("T1_CLK_FALL", "0p"),
+            ("T1_CLK_R_SERIES", "0"),
+            ("T1_CLK_PERIOD", "3p"),
+            ("STOP", "172p"),
+        )
+        for key, value in invalid:
+            with self.subTest(key=key, value=value):
+                with self.assertRaises(ConfigError):
+                    validate_user_case(dict(pulse, **{key: value}))
 
     def test_link_metric_is_raw_grid_report_only_arithmetic(self):
         trace = SimpleNamespace(

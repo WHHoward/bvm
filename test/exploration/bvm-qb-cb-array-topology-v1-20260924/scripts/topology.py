@@ -286,6 +286,7 @@ def render_topology(params: dict[str, object], sources: dict[str, str | Path]) -
         instances.append({"instance": "XT1", "subcircuit": "T1", "pins": receiver_pins})
         manifest["output_mode"] = "T1"
         manifest["front_end_output_node"] = "FINAL_OUT"
+        pulse_clock = params["T1_CLK_MODE"] == "PULSE"
         manifest["receiver"] = {
             "instance": "XT1", "subcircuit": "T1", "source_pins": list(t1.pins),
             "pins": receiver_pins, "input_node": "T1_I",
@@ -300,9 +301,25 @@ def render_topology(params: dict[str, object], sources: dict[str, str | Path]) -
             "link": {"instance": "V_T1_LINK", "positive_node": "FINAL_OUT",
                      "negative_node": "T1_I", "voltage": "0"},
             "clock_mode": params["T1_CLK_MODE"],
+            "clock": {
+                "mode": params["T1_CLK_MODE"],
+                "input_node": "CLK",
+                "source_element": "V_TRIG_CLK" if pulse_clock else None,
+                "source_node": "CLK_RAW" if pulse_clock else None,
+                "series_resistor": "R_TRIG_CLK" if pulse_clock else None,
+                "quiet_shunt_resistor": None if pulse_clock else "R_CLK_QUIET",
+                "parameters": ({key: params[key] for key in (
+                    "T1_CLK_START", "T1_CLK_PERIOD", "T1_CLK_AMPLITUDE",
+                    "T1_CLK_RISE", "T1_CLK_WIDTH", "T1_CLK_FALL",
+                    "T1_CLK_R_SERIES",
+                )} if pulse_clock else {"T1_CLK_R": params["T1_CLK_R"]}),
+            },
             "bias": {key: params[key] for key in ("T1_BIAS1", "T1_BIAS2", "T1_BIAS3")},
             "bias3_source": params["T1_BIAS3_SOURCE"],
-            "loads": {key: params[key] for key in ("T1_R_S", "T1_R_C", "T1_CLK_R")},
+            "loads": {
+                **{key: params[key] for key in ("T1_R_S", "T1_R_C")},
+                **({"T1_CLK_R": params["T1_CLK_R"]} if not pulse_clock else {}),
+            },
         }
         manifest.pop("terminal")
     return lines, manifest
@@ -318,13 +335,27 @@ def render_output_block(params: dict[str, object], topology: dict[str, object]) 
     if not isinstance(receiver, dict) or receiver.get("instance") != "XT1":
         raise ConfigError("T1 output boundary is missing source-verified XT1 topology")
     bias3_prefix = "I" if params["T1_BIAS3_SOURCE"] == "CURRENT" else "V"
-    return [
+    lines = [
         f"V_BIAS1 N_BIAS1 0 DC {params['T1_BIAS1']}",
         f"V_BIAS2 N_BIAS2 0 DC {params['T1_BIAS2']}",
         f"{bias3_prefix}_BIAS3 N_BIAS3 0 DC {params['T1_BIAS3']}",
         f"R_S S 0 {params['T1_R_S']}",
         f"R_C C 0 {params['T1_R_C']}",
-        f"R_CLK_QUIET CLK 0 {params['T1_CLK_R']}",
+    ]
+    if params["T1_CLK_MODE"] == "QUIET":
+        lines.append(f"R_CLK_QUIET CLK 0 {params['T1_CLK_R']}")
+    elif params["T1_CLK_MODE"] == "PULSE":
+        lines.extend((
+            "V_TRIG_CLK CLK_RAW 0 "
+            f"PULSE(0 {params['T1_CLK_AMPLITUDE']} {params['T1_CLK_START']} "
+            f"{params['T1_CLK_RISE']} {params['T1_CLK_FALL']} "
+            f"{params['T1_CLK_WIDTH']} {params['T1_CLK_PERIOD']})",
+            f"R_TRIG_CLK CLK_RAW CLK {params['T1_CLK_R_SERIES']}",
+        ))
+    else:
+        raise ConfigError(f"unsupported T1 clock mode {params['T1_CLK_MODE']!r}")
+    lines.extend((
         "V_T1_LINK FINAL_OUT T1_I 0",
         f"XT1 {' '.join(str(pin) for pin in receiver['pins'])} T1",
-    ]
+    ))
+    return lines

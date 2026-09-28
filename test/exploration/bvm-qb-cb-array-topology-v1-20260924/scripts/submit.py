@@ -26,6 +26,7 @@ REQUIRED_PLOT_FILES = {
 }
 T1_REQUIRED_PLOT_FILES = REQUIRED_PLOT_FILES | {"plots/06_t1.html"}
 EXTERNAL_PLATFORM_PATHS = ("circuits/qb/BQ_0928.cir", "circuits/CB/CB_0928.cir")
+EXTERNAL_EXPERIMENT_PATHS = ("test/exploration/t1-periodic-clock-20ghz-20260928",)
 
 
 def plot_files_for_mode(output_mode: str) -> set[str]:
@@ -46,7 +47,8 @@ def current_head() -> str:
 
 def series_changes() -> list[str]:
     output = git("status", "--short", "--untracked-files=all", "--",
-                 SERIES.relative_to(REPO).as_posix(), *EXTERNAL_PLATFORM_PATHS).stdout
+                 SERIES.relative_to(REPO).as_posix(), *EXTERNAL_PLATFORM_PATHS,
+                 *EXTERNAL_EXPERIMENT_PATHS).stdout
     paths = []
     for line in output.splitlines():
         if len(line) < 4:
@@ -64,8 +66,10 @@ def series_changes() -> list[str]:
 def staged_outside_series() -> list[str]:
     output = git("diff", "--cached", "--name-only", "-z").stdout
     prefix = SERIES.relative_to(REPO).as_posix().rstrip("/") + "/"
+    external_roots = tuple(path.rstrip("/") + "/" for path in EXTERNAL_EXPERIMENT_PATHS)
     return sorted(path for path in output.split("\0")
-                  if path and not path.startswith(prefix) and path not in EXTERNAL_PLATFORM_PATHS)
+                  if path and not path.startswith(prefix) and path not in EXTERNAL_PLATFORM_PATHS
+                  and not any(path.startswith(root) for root in external_roots))
 
 
 def _read_json(path: Path, label: str) -> dict[str, Any]:
@@ -88,6 +92,24 @@ def _validate_plot_artifacts(run_dir: Path, expected_raw_sha: str,
         return str(exc)
     if str(topology.get("output_mode", "TERMINAL")) != output_mode:
         return "topology manifest output mode disagrees with requested page set"
+    expected_clock_mode = None
+    pulse_params_explicit = False
+    if output_mode == "T1":
+        receiver = topology.get("receiver", {})
+        expected_clock_mode = str(receiver.get("clock_mode", ""))
+        if expected_clock_mode not in {"QUIET", "PULSE"}:
+            return "topology manifest has an unsupported T1 clock mode"
+        snapshot = run_dir / "USER_CASE.snapshot.env"
+        if snapshot.is_file():
+            present_keys = {
+                line.partition("=")[0].strip()
+                for line in snapshot.read_text(encoding="utf-8").splitlines()
+                if "=" in line and not line.lstrip().startswith("#")
+            }
+            pulse_params_explicit = {
+                "T1_CLK_START", "T1_CLK_PERIOD", "T1_CLK_AMPLITUDE", "T1_CLK_RISE",
+                "T1_CLK_WIDTH", "T1_CLK_FALL", "T1_CLK_R_SERIES",
+            }.issubset(present_keys)
     qa_path = run_dir / "analysis" / "plot_qa.json"
     if not qa_path.is_file():
         return "analysis/plot_qa.json is missing"
@@ -101,7 +123,10 @@ def _validate_plot_artifacts(run_dir: Path, expected_raw_sha: str,
             or qa.get("shared_asset_reference_pass") is not True
             or qa.get("full_stored_time_range") is not True
             or qa.get("raw_sha256_before") != expected_raw_sha
-            or qa.get("raw_sha256_after") != expected_raw_sha):
+            or qa.get("raw_sha256_after") != expected_raw_sha
+            or (output_mode == "T1" and qa.get("clock_mode") != expected_clock_mode
+                and not (qa.get("clock_mode") is None and expected_clock_mode == "QUIET"
+                         and not pulse_params_explicit))):
         return f"plot QA does not certify {len(required_plot_files)} pages and unchanged raw"
     pages = qa.get("pages")
     if not isinstance(pages, list) or len(pages) != len(required_plot_files):
@@ -413,6 +438,7 @@ def main(argv: list[str] | None = None) -> int:
             "size_breakdown": package_plan["manifest"]["size_breakdown"],
             "top_20_largest_members": package_plan["manifest"]["top_20_largest_members"],
             "selected_batches": package_plan["manifest"]["selected_batches"],
+            "standalone_experiments": package_plan["manifest"].get("standalone_experiments", []),
             "included_runs": package_plan["manifest"]["included_runs"],
             "uncompressed_bytes": package_plan["estimated_uncompressed_bytes"],
             "new_physical_solve_count": package_plan["manifest"]["new_physical_solve_count"],
@@ -428,7 +454,7 @@ def main(argv: list[str] | None = None) -> int:
 
         if not args.package_only:
             git("add", "-A", "--", SERIES.relative_to(REPO).as_posix(),
-                *EXTERNAL_PLATFORM_PATHS)
+                *EXTERNAL_PLATFORM_PATHS, *EXTERNAL_EXPERIMENT_PATHS)
             git("reset", "--", (SERIES / "handoff").relative_to(REPO).as_posix(), check=False)
             git("commit", "-m", f"experiment: complete {args.tag}", capture=False)
         experiment_commit = current_head()

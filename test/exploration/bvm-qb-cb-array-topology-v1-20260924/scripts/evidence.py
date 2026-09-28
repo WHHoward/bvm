@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from config import ConfigError, load_user_case_snapshot, validate_user_case
+from config import ConfigError, T1_KEYS, load_user_case_snapshot, validate_user_case
 
 
 PLOT_PATHS = {
@@ -211,19 +211,14 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
     if not required_groups.issubset(parameter_data):
         raise EvidenceError(f"{batch_id}: parameter manifest is missing required groups")
     if output_mode == "T1":
-        expected_t1 = {key: user[key] for key in sorted({
-            "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_BIAS3_SOURCE",
-            "T1_R_S", "T1_R_C", "T1_CLK_MODE", "T1_CLK_R",
-        })}
-        actual_t1 = parameter_data.get("t1")
-        effective_has_source = any(
-            line.partition("=")[0].strip() == "T1_BIAS3_SOURCE"
+        snapshot_keys = {
+            line.partition("=")[0].strip()
             for line in user_path.read_text(encoding="utf-8").splitlines()
-        )
-        legacy_t1 = {key: value for key, value in expected_t1.items()
-                     if key != "T1_BIAS3_SOURCE"}
-        allowed_t1 = (expected_t1,) if effective_has_source else (legacy_t1, expected_t1)
-        if not isinstance(actual_t1, dict) or actual_t1 not in allowed_t1:
+            if "=" in line and not line.lstrip().startswith("#")
+        }
+        expected_t1 = {key: user[key] for key in sorted(T1_KEYS & snapshot_keys)}
+        actual_t1 = parameter_data.get("t1")
+        if not isinstance(actual_t1, dict) or actual_t1 != expected_t1:
             raise EvidenceError(f"{batch_id}: T1 parameter manifest disagrees with effective USER_CASE")
 
     members: dict[str, PackageMember] = {}
@@ -306,10 +301,22 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
         if run_output_mode != output_mode:
             raise EvidenceError(f"{batch_id}/{run_id}: topology output mode disagrees with batch")
         if output_mode == "T1":
+            pulse_configured = all(key in snapshot_keys for key in {
+                "T1_CLK_START", "T1_CLK_PERIOD", "T1_CLK_AMPLITUDE", "T1_CLK_RISE",
+                "T1_CLK_WIDTH", "T1_CLK_FALL", "T1_CLK_R_SERIES",
+            })
+            clock_fields = (probe.get("clock_mode"), plot_manifest.get("clock_mode"),
+                            plot_qa.get("clock_mode"), result.get("clock_mode"))
+            clock_metadata_ok = all(
+                value == user["T1_CLK_MODE"]
+                or (value is None and user["T1_CLK_MODE"] == "QUIET" and not pulse_configured)
+                for value in clock_fields
+            )
             if (result.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW"
                     or result.get("output_mode") != "T1" or probe.get("output_mode") != "T1"
                     or plot_manifest.get("output_mode") != "T1"
-                    or plot_qa.get("output_mode") != "T1"):
+                    or plot_qa.get("output_mode") != "T1"
+                    or not clock_metadata_ok):
                 raise EvidenceError(f"{batch_id}/{run_id}: T1 output-mode metadata is incomplete")
             link = mechanical_metrics.get("t1_link_consistency", {})
             if (not isinstance(link, dict) or link.get("status") != "MEASURED_REPORT_ONLY"

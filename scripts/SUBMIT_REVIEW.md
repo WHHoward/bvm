@@ -15,6 +15,23 @@ Adversarial probe: `scripts/test_submit.py::test_generic_snapshot_excludes_only_
 checks both the unchanged default and opt-in behavior, confirms raw/JSON remain,
 and confirms the local HTML file still exists.
 
+## Generic snapshot deltas
+
+When a scope already has a QA-passed `directory_snapshot` package reachable from
+the current upstream, later generic submissions compare scope-relative SHA-256
+members against the newest such base (selected by Git ancestry distance, never
+file timestamps). The first submission remains a full snapshot. Later packages
+include only additions/modifications, record removals and unchanged raw references
+in `DELTA_MANIFEST.json`, and bind base package name/hash plus base/head commits.
+Changed run directories are separated by run ID; non-run changes form a metadata
+delta. Each group is independently size-checked against the ordinary Git limit.
+The delta verifier reopens the base package, validates its QA/member hashes, and
+checks all referenced raw hashes against that base. No existing bundle is
+overwritten or removed.
+
+Adversarial probe: `scripts/test_submit.py::test_generic_delta_classifies_changes_and_groups_by_run`
+checks additions, modifications, removals, and run-vs-metadata grouping.
+
 ## Highest-risk probes
 
 | Hidden-error hypothesis | Probe | Result |

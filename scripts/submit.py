@@ -2,8 +2,8 @@
 """Global submit workflow: scoped source commit -> QA'd bundles -> package commit -> optional push.
 
 For a single scope that already owns scripts/submit.py, this command delegates to that
-series-specific workflow. Otherwise it snapshots new directories, splits full component
-plots into per-family bundles, and preserves the canonical raw handoff as the base.
+series-specific workflow. Otherwise it snapshots new directories, emits lineage-bound
+deltas after a full snapshot, splits large deltas by run, and splits full component plots.
 """
 
 from __future__ import annotations
@@ -242,6 +242,26 @@ def verify_existing_bundle(package: Path, qa_path: Path) -> dict[str, Any]:
         for member, digest in expected.items():
             if hashlib.sha256(archive.read(member)).hexdigest() != digest:
                 raise RuntimeError(f"prebuilt package member hash mismatch: {package}!/{member}")
+        if qa.get("bundle_type") == "directory_snapshot_delta":
+            try:
+                manifest = json.loads(archive.read("DELTA_MANIFEST.json"))
+            except (KeyError, json.JSONDecodeError) as exc:
+                raise RuntimeError(f"delta package has no valid DELTA_MANIFEST.json: {package}") from exc
+            if (manifest.get("base_package_name") != qa.get("base_package_name") or
+                    manifest.get("base_package_sha256") != qa.get("base_package_sha256") or
+                    manifest.get("base_commit") != qa.get("base_commit") or
+                    manifest.get("head_commit") != qa.get("source_commit")):
+                raise RuntimeError(f"delta package/base identity mismatch: {package}")
+            base_package = package.with_name(manifest["base_package_name"])
+            base_qa_path = base_package.with_name(f"{base_package.stem}_PACKAGE_QA.json")
+            base_qa = verify_existing_bundle(base_package, base_qa_path)
+            if base_qa.get("package_sha256") != manifest["base_package_sha256"]:
+                raise RuntimeError(f"delta package references a different base identity: {package}")
+            base_hashes = base_qa.get("included_file_sha256", {})
+            for reference in manifest.get("referenced_existing_raw_sha256", []):
+                if (reference.get("source_package_sha256") != base_qa["package_sha256"] or
+                        base_hashes.get(reference.get("raw_path")) != reference.get("raw_sha256")):
+                    raise RuntimeError(f"delta package existing-raw reference mismatch: {package}")
     return qa
 
 
@@ -389,6 +409,146 @@ def build_generic_snapshot(scope: Path, tag: str, *, exclude_html: bool = False)
             "base_name": None, "base_sha": None, "raw_by_run": {}}
 
 
+def latest_generic_snapshot(scope: Path, ancestor: str) -> tuple[Path, Path, dict[str, Any]] | None:
+    """Select the newest QA-passed full snapshot reachable from the current upstream."""
+    candidates = []
+    for package in sorted((scope / "handoff").glob(f"{scope.name}_snapshot_*.zip")):
+        qa_path = package.with_name(f"{package.stem}_PACKAGE_QA.json")
+        qa = verify_existing_bundle(package, qa_path)
+        if qa.get("bundle_type") != "directory_snapshot":
+            continue
+        source_commit = qa.get("source_commit")
+        if not source_commit or git(["merge-base", "--is-ancestor", source_commit, ancestor], check=False).returncode:
+            continue
+        distance = int(git(["rev-list", "--count", f"{source_commit}..{ancestor}"]).stdout.strip())
+        candidates.append((distance, package, qa_path, qa))
+    if not candidates:
+        return None
+    nearest = min(item[0] for item in candidates)
+    newest = [item for item in candidates if item[0] == nearest]
+    if len({item[3]["package_sha256"] for item in newest}) > 1:
+        raise RuntimeError(f"ambiguous newest full-snapshot base packages in {scope}")
+    _, package, qa_path, qa = sorted(newest, key=lambda item: item[1].name)[0]
+    return package, qa_path, qa
+
+
+def classify_delta_members(current: list[dict[str, Any]], base_hashes: dict[str, str]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
+    """Return added, modified, and removed paths by comparing scope-relative hashes."""
+    current_by_path = {item["archive_path"]: item for item in current}
+    added = [item for path, item in current_by_path.items() if path not in base_hashes]
+    modified = [item for path, item in current_by_path.items()
+                if path in base_hashes and item["sha256"] != base_hashes[path]]
+    removed = sorted(path for path in base_hashes
+                     if path not in {"BUNDLE_MANIFEST.json", "README_BUNDLE.txt"} and path not in current_by_path)
+    return (sorted(added, key=lambda item: item["archive_path"]),
+            sorted(modified, key=lambda item: item["archive_path"]), removed)
+
+
+def delta_group(path: str) -> str:
+    parts = Path(path).parts
+    if len(parts) >= 3 and parts[0] == "runs":
+        return parts[1]
+    return "metadata"
+
+
+def build_generic_delta_specs(scope: Path, tag: str, base_package: Path, base_qa: dict[str, Any],
+                              *, exclude_html: bool = False) -> list[dict[str, Any]]:
+    current_sources: list[tuple[Path, str]] = []
+    excluded_files = []
+    for path in sorted(scope.rglob("*")):
+        relative = path.relative_to(scope)
+        if (not path.is_file() or path.is_symlink() or "handoff" in relative.parts or
+                "__pycache__" in relative.parts or path.suffix == ".pyc"):
+            continue
+        if exclude_html and path.suffix.lower() == ".html":
+            excluded_files.append(relative.as_posix())
+            continue
+        current_sources.append((path, relative.as_posix()))
+
+    current_records = file_records(current_sources)
+    base_hashes = {name: digest for name, digest in base_qa.get("included_file_sha256", {}).items()
+                   if name not in {"BUNDLE_MANIFEST.json", "README_BUNDLE.txt"}}
+    added, modified, removed = classify_delta_members(current_records, base_hashes)
+    deleted_raw = [path for path in removed if path.startswith("runs/") and path.endswith("/raw.csv")]
+    if deleted_raw:
+        raise RuntimeError("refusing to package a deletion of historical raw evidence: " + ", ".join(deleted_raw))
+    for item in modified:
+        if item["archive_path"].startswith("runs/") and item["archive_path"].endswith("/raw.csv"):
+            raise RuntimeError(f"refusing to package a modified historical raw: {item['archive_path']}")
+    if not added and not modified and not removed:
+        return []
+
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for item in added + modified:
+        grouped.setdefault(delta_group(item["archive_path"]), []).append(item)
+    references = []
+    for raw_path, digest in sorted(base_hashes.items()):
+        if raw_path.endswith("raw.csv"):
+            references.append({"raw_path": raw_path, "raw_sha256": digest,
+                               "source_package_name": base_package.name,
+                               "source_package_sha256": base_qa["package_sha256"]})
+
+    specs = []
+    source_commit = base_qa["source_commit"]
+    for group, items in sorted(grouped.items()):
+        sources = [(REPO / item["source_repo_path"], item["archive_path"]) for item in items]
+        payload_bytes = sum(item["bytes"] for item in items)
+        if payload_bytes >= MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"delta group exceeds the 100MB safety threshold; split further: {group} ({payload_bytes} bytes)")
+        included_hashes = {item["archive_path"]: item["sha256"] for item in items}
+        new_files = [item["archive_path"] for item in items if item["archive_path"] not in base_hashes]
+        modified_files = [item["archive_path"] for item in items if item["archive_path"] in base_hashes]
+        run_ids = sorted({Path(item["archive_path"]).parts[1] for item in items
+                          if len(Path(item["archive_path"]).parts) >= 3 and Path(item["archive_path"]).parts[0] == "runs"})
+        physical_solves = 0
+        for run_id in run_ids:
+            result_path = scope / "runs" / run_id / "result.json"
+            raw_path = scope / "runs" / run_id / "raw.csv"
+            if raw_path.is_file() and "runs/" + run_id + "/raw.csv" in included_hashes and result_path.is_file():
+                result = json.loads(result_path.read_text(encoding="utf-8"))
+                physical_solves += int(result.get("physical_solve_count", 0))
+
+        package_name = f"{scope.name}_delta_{tag}_{group}.zip"
+        target = scope / "handoff" / package_name
+        qa_target = scope / "handoff" / f"{scope.name}_delta_{tag}_{group}_PACKAGE_QA.json"
+        manifest = {
+            "schema": "josim-submit-delta-v1",
+            "package_type": "directory_snapshot_delta",
+            "base_package_name": base_package.name,
+            "base_package_sha256": base_qa["package_sha256"],
+            "base_commit": base_qa["source_commit"],
+            "head_commit": "PENDING_SOURCE_COMMIT",
+            "included_files": items,
+            "included_file_sha256": included_hashes,
+            "new_files": new_files,
+            "modified_files": modified_files,
+            "deleted_files": removed,
+            "referenced_existing_cases": references,
+            "referenced_existing_raw_sha256": references,
+            "new_physical_solve_count": physical_solves,
+            "reused_point_count": 0,
+            "excluded_files": excluded_files,
+        }
+        delta_bytes = (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        readme = (f"Incremental evidence for {scope.name}; group={group}.\n"
+                  f"Base package: {base_package.name} ({base_qa['package_sha256']})\n"
+                  f"Base commit: {base_qa['source_commit']}\n"
+                  "Only new/modified evidence is included; unchanged evidence is hash-referenced.\n"
+                  + ("Generated HTML was explicitly excluded and remains local.\n" if exclude_html else "")
+                  + "No solver execution or scientific interpretation was performed by this package step.\n").encode("utf-8")
+        specs.append({"name": package_name, "kind": "directory_snapshot_delta", "scope": scope,
+                      "target": target, "qa_path": qa_target, "sources": sources,
+                      "extra_members": {"DELTA_MANIFEST.json": delta_bytes},
+                      "readme": readme, "excluded_files": excluded_files,
+                      "base_name": base_package.name, "base_sha": base_qa["package_sha256"],
+                      "raw_by_run": {Path(item["archive_path"]).parts[1]: included_hashes[item["archive_path"]]
+                                     for item in items if item["archive_path"].endswith("/raw.csv")},
+                      "delta_manifest": manifest, "delta_group": group})
+    if removed and not grouped:
+        raise RuntimeError("delta contains only deletions; refusing an empty evidence archive")
+    return specs
+
+
 def package_specs(scopes: list[Path], tag: str, retire_flag: bool, *,
                   exclude_html: bool = False) -> tuple[list[dict[str, Any]], list[tuple[Path, Path]]]:
     specs: list[dict[str, Any]] = []
@@ -463,6 +623,8 @@ def bundle_plan(scopes: list[Path], specs: list[dict[str, Any]], retire: list[tu
             package_plan.append({"path": rel(spec["target"]), "status": "REUSE_QA_PASS",
                                  "bytes": spec["target"].stat().st_size})
             continue
+        if spec["target"].exists() or spec["qa_path"].exists():
+            raise FileExistsError(f"refusing to overwrite immutable package/QA target: {spec['target']}")
         records = file_records(spec["sources"])
         source_bytes = sum(item["bytes"] for item in records)
         if source_bytes >= MAX_GIT_FILE_BYTES:
@@ -470,6 +632,9 @@ def bundle_plan(scopes: list[Path], specs: list[dict[str, Any]], retire: list[tu
         package_plan.append({"path": rel(spec["target"]), "status": "CREATE", "file_count": len(records)+len(spec.get("extra_members", {}))+2,
                              "uncompressed_source_bytes": source_bytes,
                              "excluded_files": spec.get("excluded_files", []),
+                             "base_package_name": spec.get("base_name"),
+                             "base_package_sha256": spec.get("base_sha"),
+                             "delta_group": spec.get("delta_group"),
                              "qa_path": rel(spec["qa_path"])})
     return {"source_paths": source_paths, "packages": package_plan,
             "retire": [rel(pkg) for pkg, _ in retire]}
@@ -498,7 +663,11 @@ def archive_bundle(spec: dict[str, Any], source_commit: str) -> dict[str, Any]:
                     "bytes": qa["package_bytes"], "status": "REUSE_QA_PASS"}
         raise FileExistsError(f"refusing to overwrite incomplete/immutable bundle: {target}")
     records = file_records(spec["sources"])
-    extras = spec.get("extra_members", {})
+    extras = dict(spec.get("extra_members", {}))
+    if "DELTA_MANIFEST.json" in extras:
+        delta_manifest = dict(spec["delta_manifest"])
+        delta_manifest["head_commit"] = source_commit
+        extras["DELTA_MANIFEST.json"] = (json.dumps(delta_manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     if sum(item["bytes"] for item in records) + sum(len(value) for value in extras.values()) >= MAX_GIT_FILE_BYTES:
         raise RuntimeError(f"bundle exceeds ordinary Git size threshold before compression: {spec['name']}")
     base_name, base_sha = spec.get("base_name"), spec.get("base_sha")
@@ -567,6 +736,12 @@ def archive_bundle(spec: dict[str, Any], source_commit: str) -> dict[str, Any]:
           "parent_package_sha256": base_sha, "raw_sha256_by_run": raw_by_run,
           "included_file_sha256": included_hashes,
           "reopened_zip_crc_and_member_hashes_pass": True}
+    if spec.get("delta_manifest"):
+        qa.update({key: spec["delta_manifest"][key] for key in (
+            "base_package_name", "base_package_sha256", "base_commit", "new_files",
+            "modified_files", "deleted_files", "referenced_existing_raw_sha256",
+            "new_physical_solve_count", "reused_point_count")})
+        qa["head_commit"] = source_commit
     qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return {"path": rel(target), "qa_path": rel(qa_path), "sha256": qa["package_sha256"],
             "bytes": qa["package_bytes"], "status": qa["status"]}
@@ -684,8 +859,13 @@ def main() -> int:
             if old:
                 retire_candidates.append(old)
         elif scope_has_source_changes(scope, changes) or not prebuilt:
-            generic = build_generic_snapshot(scope, args.tag, exclude_html=args.exclude_html)
-            specs.append(generic)
+            base = latest_generic_snapshot(scope, remote_commit)
+            if base:
+                base_package, _, base_qa = base
+                specs.extend(build_generic_delta_specs(scope, args.tag, base_package, base_qa,
+                                                       exclude_html=args.exclude_html))
+            else:
+                specs.append(build_generic_snapshot(scope, args.tag, exclude_html=args.exclude_html))
 
     plans = bundle_plan(scopes, specs, retire_candidates)
     mirror_dir = Path(args.mirror_dir).expanduser().resolve()

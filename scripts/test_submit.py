@@ -39,6 +39,22 @@ class SubmitWorkflowTests(unittest.TestCase):
             self.assertTrue({"runs/A001/raw.csv", "runs/A001/result.json"}.issubset(filtered_members))
             self.assertTrue((scope / "runs/A001/plots/view.html").is_file())
 
+    def test_generic_delta_classifies_changes_and_groups_by_run(self) -> None:
+        current = [
+            {"archive_path": "runs/A002/raw.csv", "sha256": "new-raw"},
+            {"archive_path": "runs/A002/result.json", "sha256": "new-result"},
+            {"archive_path": "USER_CASE.env", "sha256": "changed-config"},
+        ]
+        base = {"runs/A001/raw.csv": "old-raw", "USER_CASE.env": "old-config",
+                "README.md": "same-readme", "BUNDLE_MANIFEST.json": "internal"}
+        added, modified, removed = submit.classify_delta_members(current, base)
+        self.assertEqual({item["archive_path"] for item in added},
+                         {"runs/A002/raw.csv", "runs/A002/result.json"})
+        self.assertEqual([item["archive_path"] for item in modified], ["USER_CASE.env"])
+        self.assertEqual(removed, ["README.md", "runs/A001/raw.csv"])
+        self.assertEqual(submit.delta_group("runs/A002/raw.csv"), "A002")
+        self.assertEqual(submit.delta_group("USER_CASE.env"), "metadata")
+
     def test_scope_cannot_escape_repository(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             with self.assertRaises(RuntimeError):

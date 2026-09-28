@@ -24,6 +24,11 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def active_netlist_lines(path: Path) -> list[str]:
+    return [line.strip() for line in path.read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("*")]
+
+
 class ComponentRenderTests(unittest.TestCase):
     def setUp(self):
         self.values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
@@ -58,6 +63,26 @@ class ComponentRenderTests(unittest.TestCase):
         self.assertEqual({role: digest(REPO / path) for role, path in SOURCE_FILES.items()},
                          self.source_hashes)
 
+    def test_0928_sources_freeze_a030_working_electrical_body_without_copying_other_roles(self):
+        self.assertEqual(SOURCE_FILES["BVM"], Path("circuits/bvm/bvm_cell_0923.cir"))
+        self.assertEqual(SOURCE_FILES["QB"], Path("circuits/qb/BQ_0928.cir"))
+        self.assertEqual(SOURCE_FILES["CB"], Path("circuits/CB/CB_0928.cir"))
+        self.assertEqual(SOURCE_FILES["SJTL"], Path("circuits/sJTL_0923.cir"))
+        a030 = SERIES / "runs" / "A030_T010_M1111" / "snapshot" / "sources"
+        with tempfile.TemporaryDirectory() as tmp:
+            values = load_user_case_snapshot(SERIES / "runs" / "A030_T010_M1111" /
+                                             "USER_CASE.snapshot.env")
+            rendered, _ = self.render(Path(tmp), values)
+            for role, filename in (("QB", "BQ_tunable.cir"), ("CB", "CB_tunable.cir")):
+                self.assertEqual(active_netlist_lines(rendered[role]),
+                                 active_netlist_lines(a030 / filename))
+        self.assertEqual((REPO / SOURCE_FILES["BVM"]).read_bytes(),
+                         (a030 / "bvm_tunable.cir").read_bytes())
+        self.assertEqual((REPO / SOURCE_FILES["SJTL"]).read_bytes(),
+                         (a030 / "sJTL_tunable.cir").read_bytes())
+        self.assertNotEqual(SOURCE_FILES["QB"], Path("circuits/qb/BQ_0923.cir"))
+        self.assertNotEqual(SOURCE_FILES["CB"], Path("circuits/CB/CB_0923.cir"))
+
     def test_qb_area_override_changes_only_the_selected_junction(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -76,11 +101,11 @@ class ComponentRenderTests(unittest.TestCase):
     def test_open_and_numeric_resistor_branches(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            baseline, _ = self.render(root / "baseline")
+            baseline, _ = self.render(root / "baseline", dict(self.values, CB_RJ2="OPEN"))
             bvm_open = baseline["BVM"].read_text()
             cb_open = baseline["CB"].read_text()
             self.assertRegex(bvm_open, r"(?m)^\* R_JM2\s+3\s+4\s+8$")
-            self.assertRegex(cb_open, r"(?m)^\* RJ2\s+2\s+3\s+14$")
+            self.assertRegex(cb_open, r"(?m)^\* RJ2\s+2\s+3\s+6$")
 
             bvm_active, _ = self.render(root / "bvm-active", dict(self.values, BVM_RJM2="8"))
             cb_active, _ = self.render(root / "cb-active", dict(self.values, CB_RJ2="14"))

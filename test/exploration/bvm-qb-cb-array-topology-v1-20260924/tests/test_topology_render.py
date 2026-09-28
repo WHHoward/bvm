@@ -198,7 +198,7 @@ class TopologyRenderTests(unittest.TestCase):
                 self.assertNotIn("V(R_TERM)", labels)
                 counts.append(len(labels))
         self.assertTrue(all(left < right for left, right in zip(counts, counts[1:])))
-        self.assertEqual(counts, [51, 97, 189])
+        self.assertEqual(counts, [48, 93, 183])
 
     def test_a025_debug_preserves_legacy_labels_and_core_acc_gap_is_compact(self):
         from plot_run import build_plot_manifest
@@ -218,7 +218,7 @@ class TopologyRenderTests(unittest.TestCase):
         self.assertEqual({item["label"] for item in debug["signals"]}, old_labels)
         self.assertEqual(len(debug_lines), len(old_labels))
         self.assertLess(len(core_lines), len(debug_lines))
-        self.assertEqual(len(core_lines), 189)
+        self.assertEqual(len(core_lines), 183)
         core_labels = {item["label"] for item in core["signals"]}
         self.assertFalse(any(label.startswith("I(B") for label in core_labels))
         self.assertFalse(any(label.startswith("V(L") and "|" in label for label in core_labels))
@@ -280,7 +280,7 @@ class TopologyRenderTests(unittest.TestCase):
             elif instance["subcircuit"] == "sJTL":
                 self.assertIn(f"P(BJ1|{name})", labels)
                 self.assertIn(f"V(BJ1|{name})", labels)
-                self.assertIn(f"I(L1|{name})", labels)
+                self.assertNotIn(f"I(L1|{name})", labels)
                 self.assertIn(f"I(L2|{name})", labels)
                 self.assertIn(f"V({instance['pins'][1]})", labels)
         self.assertIn("V(FINAL_OUT)", labels)

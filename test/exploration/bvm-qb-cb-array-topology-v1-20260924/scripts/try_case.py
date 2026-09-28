@@ -135,12 +135,14 @@ def preview_text(user_values: dict[str, str], stimulus_values: dict[str, str],
         lines.extend(changed or ["none"])
         lines.append("")
     if params["OUTPUT_MODE"] == "T1":
+        bias3_source = user_values["T1_BIAS3_SOURCE"]
+        bias3_element = "I_BIAS3" if bias3_source == "CURRENT" else "V_BIAS3"
         lines.extend([
             "T1 RECEIVER", "FINAL_OUT -> T1_I",
             f"T1_SOURCE={T1_SOURCE_FILE.as_posix()}",
             f"T1_SOURCE_SHA256={reference['SOURCE_T1_SHA256']}",
             *[f"{key}={user_values[key]}" for key in sorted(T1_KEYS) if key != "T1_BIAS3"],
-            f"T1_BIAS3={user_values['T1_BIAS3']} (DC current source I_BIAS3)", "",
+            f"T1_BIAS3={user_values['T1_BIAS3']} (DC {bias3_source.lower()} source {bias3_element})", "",
         ])
     stimulus_qa = validate_stimulus(stimulus_values, params["STOP_SECONDS"])
     lines.extend(["STIMULUS SUMMARY"])

@@ -33,8 +33,12 @@ def generate_probes(
     nodes: set[str] = {"FINAL_OUT"}
     top_level_elements = {"R_TERM"}
     if output_mode == "T1":
+        receiver = topology.get("receiver", {})
+        bias3 = "I_BIAS3" if receiver.get("bias3_source") == "CURRENT" else "V_BIAS3"
         top_level_elements.update({"R_S", "R_C", "R_CLK_QUIET", "V_T1_LINK",
-                                   "V_BIAS1", "V_BIAS2", "I_BIAS3"})
+                                   "V_BIAS1", "V_BIAS2", bias3})
+        if profile == "debug":
+            top_level_elements.update({"R_S", "R_C"})
     for index in range(1, int(topology["array_size"]) + 1):
         top_level_elements.update({f"I_WL{index}", f"I_BL{index}", f"I_SE{index}"})
     for item in topology["instances"]:
@@ -147,7 +151,8 @@ def generate_probes(
             for quantity in junction_quantities:
                 add(f"{quantity}(BJ1|{instance})", group,
                     instance=instance, element="BJ1")
-            for element in ("L1", "L2"):
+            sjtl_inductors = ("L1", "L2") if profile == "debug" else ("L2",)
+            for element in sjtl_inductors:
                 for quantity in inductor_quantities:
                     add(f"{quantity}({element}|{instance})", group,
                         instance=instance, element=element)
@@ -178,8 +183,9 @@ def generate_probes(
         component_roles[str(t1["instance"])] = "T1 receiver"
         for node in ("T1_I", "CLK", "S", "C"):
             add(f"V({node})", "t1_boundary", node=node)
-        for element in ("R_S", "R_C"):
-            add(f"I({element})", "t1_load", element=element)
+        if profile == "debug":
+            for element in ("R_S", "R_C"):
+                add(f"I({element})", "t1_load", element=element)
 
         t1_elements = subcircuits["T1"].elements
         def numbered(prefix: str) -> list[str]:

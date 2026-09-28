@@ -14,7 +14,7 @@ sys.path.insert(0, str(SERIES / "scripts"))
 
 from components import SNAPSHOT_NAMES, load_reference  # noqa: E402
 from config import (ConfigError, T1_DEFAULTS, T1_KEYS, USER_CASE_KEYS,
-                    load_user_case_snapshot, validate_user_case)  # noqa: E402
+                    load_env, load_user_case_snapshot, validate_user_case)  # noqa: E402
 from evidence import _independent_t1_link_metric, plot_paths_for_mode  # noqa: E402
 from plot_run import build_plot_manifest  # noqa: E402
 from probes import generate_probes  # noqa: E402
@@ -35,6 +35,11 @@ T1_PAGES = TERMINAL_PAGES + ["06_t1.html"]
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def active_circuit_lines(path: Path) -> list[str]:
+    return [line.strip() for line in path.read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("*")]
 
 
 def values_from_a029(output_mode: str, profile: str = "core") -> dict[str, str]:
@@ -79,14 +84,40 @@ class T1OutputModeTests(unittest.TestCase):
         self.assertEqual(len([item for item in t1.elements if item.startswith("L")]), 17)
         reference = load_reference()
         self.assertEqual(reference["SOURCE_T1_SHA256"], digest(T1_SOURCE))
+        legacy_a030 = load_user_case_snapshot(SERIES / "runs" / "A030_T010_M1111" /
+                                              "USER_CASE.snapshot.env")
+        self.assertEqual(legacy_a030["T1_BIAS3_SOURCE"], "CURRENT")
+        self.assertEqual(legacy_a030["T1_BIAS3"], "35u")
+
+    def test_live_scheme_b_preserves_a030_front_end_and_stimulus(self):
+        live = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
+        a030 = load_user_case_snapshot(SERIES / "runs" / "A030_T010_M1111" /
+                                       "USER_CASE.snapshot.env")
+        self.assertEqual(live["NAME"], "t1_receiver_biasB_quiet")
+        self.assertEqual(live["MASKS"], "1111")
+        self.assertEqual(live["OUTPUT_MODE"], "T1")
+        self.assertEqual(live["T1_BIAS3_SOURCE"], "VOLTAGE")
+        self.assertEqual((live["T1_BIAS1"], live["T1_BIAS2"], live["T1_BIAS3"]),
+                         ("1.8m", "1.8m", "1.8m"))
+        self.assertEqual(live["T1_CLK_MODE"], "QUIET")
+        excluded = {"NAME", *T1_KEYS}
+        self.assertEqual({key: value for key, value in live.items() if key not in excluded},
+                         {key: value for key, value in a030.items() if key not in excluded})
+        self.assertEqual(load_stimulus(SERIES / "STIMULUS.env"),
+                         load_stimulus(SERIES / "runs" / "A030_T010_M1111" /
+                                       "STIMULUS.snapshot.env"))
 
     def test_terminal_output_is_regression_identical_to_a029(self):
         with tempfile.TemporaryDirectory(prefix="t1-terminal-regression-") as temp:
             root = Path(temp) / "terminal"
             result = render_fixture(root, "TERMINAL")
             old_deck = A029 / "actual_deck.cir"
-            self.assertEqual(strip_fixture_banner(root / "actual_deck.cir"),
-                             old_deck.read_text(encoding="utf-8"))
+            current_deck = strip_fixture_banner(root / "actual_deck.cir")
+            old_deck_text = old_deck.read_text(encoding="utf-8")
+            without_probes = lambda value: "\n".join(
+                line for line in value.splitlines() if not line.startswith(".print ")
+            ) + "\n"
+            self.assertEqual(without_probes(current_deck), without_probes(old_deck_text))
             self.assertEqual(strip_fixture_banner(root / "stimulus.inc"),
                              (A029 / "stimulus.inc").read_text(encoding="utf-8"))
             self.assertRegex((root / "actual_deck.cir").read_text(encoding="utf-8"),
@@ -101,18 +132,24 @@ class T1OutputModeTests(unittest.TestCase):
             self.assertEqual(result["topology_manifest"]["topology"], old_topology["topology"])
             self.assertEqual(result["topology_manifest"]["levels"], old_topology["levels"])
             self.assertEqual(result["topology_manifest"]["instances"], old_topology["instances"])
-            self.assertEqual([item["label"] for item in result["probe_manifest"]["signals"]],
-                             [item["label"] for item in old_probes["signals"]])
-            self.assertEqual(result["probe_manifest"]["signal_count"], 168)
+            old_core_labels = {item["label"] for item in old_probes["signals"]}
+            expected_removed = {f"I(L1|{instance})" for instance in (
+                "XSJTL1_01", "XSJTL2_01", "XSJTL2_02", "XSJTL3_01", "XSJTL3_02", "XSJTL4_01")}
+            current_core_labels = {item["label"] for item in result["probe_manifest"]["signals"]}
+            self.assertEqual(current_core_labels, old_core_labels - expected_removed)
+            self.assertEqual(result["probe_manifest"]["signal_count"], 162)
             self.assertEqual([page["file"] for page in result["plan"]["pages"]], TERMINAL_PAGES)
             self.assertEqual([page["signals"] for page in result["plan"]["pages"]],
                              [page["signals"] for page in old_plots["pages"]])
             for role, filename in SNAPSHOT_NAMES.items():
-                self.assertEqual(
-                    (root / "snapshot" / "sources" / filename).read_bytes(),
-                    (A029 / "snapshot" / "sources" / filename).read_bytes(),
-                    role,
-                )
+                rendered_source = root / "snapshot" / "sources" / filename
+                historical_source = A029 / "snapshot" / "sources" / filename
+                if role in {"QB", "CB"}:
+                    self.assertEqual(active_circuit_lines(rendered_source),
+                                     active_circuit_lines(historical_source), role)
+                else:
+                    self.assertEqual(rendered_source.read_bytes(),
+                                     historical_source.read_bytes(), role)
             self.assertEqual({item["role"] for item in result["source_manifest"]["sources"]},
                              set(SOURCE_FILES))
 
@@ -155,6 +192,32 @@ class T1OutputModeTests(unittest.TestCase):
                 key: values_from_a029("T1")[key] for key in sorted(T1_KEYS)
             })
 
+    def test_scheme_b_voltage_bias_is_explicit_and_excludes_current_source(self):
+        values = values_from_a029("T1")
+        values.update({"T1_BIAS1": "1.8m", "T1_BIAS2": "1.8m",
+                       "T1_BIAS3": "1.8m", "T1_BIAS3_SOURCE": "VOLTAGE"})
+        with tempfile.TemporaryDirectory(prefix="t1-scheme-b-") as temp:
+            root = Path(temp) / "scheme-b"
+            stimulus_path = A029 / "STIMULUS.snapshot.env"
+            result = render_case(
+                values, load_stimulus(stimulus_path), "1111", root, fixture_only=True,
+                user_snapshot_text=stable_env(values),
+                stimulus_snapshot_text=stimulus_path.read_text(encoding="utf-8"),
+            )
+            deck = (root / "actual_deck.cir").read_text(encoding="utf-8")
+            user_snapshot = (root / "USER_CASE.snapshot.env").read_text(encoding="utf-8")
+        for line in (
+            "V_BIAS1 N_BIAS1 0 DC 1.8m",
+            "V_BIAS2 N_BIAS2 0 DC 1.8m",
+            "V_BIAS3 N_BIAS3 0 DC 1.8m",
+        ):
+            self.assertIn(line, deck)
+        self.assertNotRegex(deck, r"(?m)^I_BIAS3\\b")
+        self.assertNotRegex(deck, r"(?m)^R_TERM\\b")
+        self.assertIn("T1_BIAS3_SOURCE=VOLTAGE", user_snapshot)
+        self.assertEqual(result["topology_manifest"]["receiver"]["bias3_source"], "VOLTAGE")
+        self.assertEqual(result["parameter_manifest"]["t1"]["T1_BIAS3_SOURCE"], "VOLTAGE")
+
     def test_t1_front_end_stimulus_and_first_five_pages_are_invariant(self):
         with tempfile.TemporaryDirectory(prefix="t1-topology-invariance-") as temp:
             root = Path(temp)
@@ -181,8 +244,9 @@ class T1OutputModeTests(unittest.TestCase):
             t1_pages = t1["plan"]["pages"]
             self.assertEqual([page["file"] for page in terminal_pages], TERMINAL_PAGES)
             self.assertEqual([page["file"] for page in t1_pages], T1_PAGES)
-            self.assertEqual([page["signals"] for page in terminal_pages],
-                             [page["signals"] for page in t1_pages[:5]])
+            self.assertEqual([page["signals"] for page in terminal_pages[1:]],
+                             [page["signals"] for page in t1_pages[1:5]])
+            self.assertEqual(len(t1_pages[0]["signals"]), 15)
 
     def test_t1_core_is_compact_debug_is_source_complete_and_page_qa_is_mode_specific(self):
         with tempfile.TemporaryDirectory(prefix="t1-probe-profile-") as temp:
@@ -192,6 +256,8 @@ class T1OutputModeTests(unittest.TestCase):
             debug_page = debug["plan"]["pages"][-1]
             core_labels = set(core_page["signals"])
             debug_labels = set(debug_page["signals"])
+            core_raw_labels = {item["label"] for item in core["probe_manifest"]["signals"]}
+            debug_raw_labels = {item["label"] for item in debug["probe_manifest"]["signals"]}
             t1 = parse_subcircuits({"T1": T1_SOURCE})["T1"]
             junctions = [name for name in t1.elements if name.startswith("B_J")]
             inductors = [name for name in t1.elements
@@ -208,18 +274,43 @@ class T1OutputModeTests(unittest.TestCase):
                 self.assertNotIn(f"V({element}|XT1)", core_labels)
             for signal in ("V(FINAL_OUT)", "V(T1_I)", "V(CLK)", "V(S)", "V(C)",
                            "I(R_S)", "I(R_C)"):
-                self.assertIn(signal, core_labels)
-                self.assertIn(signal, debug_labels)
+                self.assertIn(signal, core_raw_labels if signal not in {"I(R_S)", "I(R_C)"}
+                              else debug_raw_labels)
+                self.assertIn(signal, debug_raw_labels)
+            self.assertNotIn("I(R_S)", core_raw_labels)
+            self.assertNotIn("I(R_C)", core_raw_labels)
+            self.assertNotIn("V(T1_I)", core_labels)
+            self.assertNotIn("V(CLK)", core_labels)
+            self.assertNotIn("I(R_S)", core_labels)
+            self.assertNotIn("I(R_C)", core_labels)
             for element in T1_CORE_JUNCTIONS:
-                for quantity in ("P", "V"):
-                    self.assertIn(f"{quantity}({element}|XT1)", core_labels)
+                self.assertIn(f"P({element}|XT1)", core_raw_labels)
+                self.assertIn(f"V({element}|XT1)", core_raw_labels)
+                self.assertIn(f"P({element}|XT1)", core_labels)
+                self.assertNotIn(f"V({element}|XT1)", core_labels)
             for element in T1_CORE_INDUCTORS:
-                self.assertIn(f"I({element}|XT1)", core_labels)
-            self.assertEqual(core["probe_manifest"]["signal_count"], 186)
+                self.assertIn(f"I({element}|XT1)", core_raw_labels)
+            for instance in ("XSJTL1_01", "XSJTL2_01", "XSJTL2_02",
+                             "XSJTL3_01", "XSJTL3_02", "XSJTL4_01"):
+                self.assertNotIn(f"I(L1|{instance})", core_raw_labels)
+                self.assertIn(f"I(L2|{instance})", core_raw_labels)
+                self.assertIn(f"I(L1|{instance})", debug_raw_labels)
+            self.assertEqual(core["probe_manifest"]["signal_count"], 178)
             self.assertGreater(debug["probe_manifest"]["signal_count"],
                                core["probe_manifest"]["signal_count"])
-            self.assertEqual(core_page["trace_count"], 20)
+            self.assertEqual(core_page["trace_count"], 11)
             self.assertEqual(debug_page["trace_count"], 74)
+            overview = core["plan"]["pages"][0]["signals"]
+            self.assertEqual(len(overview), 15)
+            self.assertEqual(overview[:4], [f"I(I_WL{index})" for index in range(1, 5)])
+            self.assertEqual(overview[4:8], [f"V(BVM{index}_SL)" for index in range(1, 5)])
+            self.assertEqual(overview[8:12], [f"V(MERGE{index})" for index in range(1, 5)])
+            self.assertEqual(overview[12:], ["V(FINAL_OUT)", "V(S)", "V(C)"])
+            self.assertNotIn("V(T1_I)", overview)
+            self.assertNotIn("V(CLK)", overview)
+            acc_gap = core["plan"]["pages"][4]["signals"]
+            self.assertFalse(any("XT1" in label or label in {"V(T1_I)", "V(CLK)", "V(S)", "V(C)"}
+                                 for label in acc_gap))
             for fixture in (core, debug):
                 labels = {item["label"] for item in fixture["probe_manifest"]["signals"]}
                 for page in fixture["plan"]["pages"]:
@@ -240,6 +331,8 @@ class T1OutputModeTests(unittest.TestCase):
                          "OUTPUT_MODE"], "T1")
         with self.assertRaisesRegex(ConfigError, "T1_BIAS3"):
             validate_user_case(dict(values_from_a029("T1"), T1_BIAS3="0u"))
+        with self.assertRaisesRegex(ConfigError, "T1_BIAS3_SOURCE"):
+            validate_user_case(dict(values_from_a029("T1"), T1_BIAS3_SOURCE="MAYBE"))
 
     def test_link_metric_is_raw_grid_report_only_arithmetic(self):
         trace = SimpleNamespace(

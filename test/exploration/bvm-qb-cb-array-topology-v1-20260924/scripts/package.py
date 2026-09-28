@@ -33,6 +33,12 @@ PLATFORM_PATHS = {
     "scripts/probes.py", "scripts/run_case.py", "scripts/stimulus.py",
     "scripts/submit.py", "scripts/topology.py", "scripts/try_case.py",
     "submit.sh", "try.sh", "templates/base.cir",
+    "tests/test_component_render.py", "tests/test_evidence_package.py",
+    "tests/test_plot_run.py", "tests/test_t1_output_mode.py",
+    "tests/test_topology_render.py",
+}
+EXTERNAL_PLATFORM_PATHS = {
+    "circuits/qb/BQ_0928.cir", "circuits/CB/CB_0928.cir",
 }
 CATEGORIES = (
     "raw", "plots", "run_manifests_qa", "source_snapshots", "batch_metadata",
@@ -65,7 +71,12 @@ def head_commit() -> str:
 
 
 def excluded(path: Path) -> bool:
-    relative = path.relative_to(SERIES)
+    try:
+        relative = path.relative_to(SERIES)
+    except ValueError:
+        # The two explicitly managed 0928 canonical component sources live at
+        # repository scope rather than below this experiment series.
+        relative = path.relative_to(REPO)
     return (
         "__pycache__" in relative.parts
         or path.suffix == ".pyc"
@@ -132,8 +143,9 @@ def select_base(explicit: str | None, current_head: str) -> dict[str, Any]:
 
 
 def worktree_changes() -> dict[str, str]:
+    pathspecs = [rel(SERIES), *sorted(EXTERNAL_PLATFORM_PATHS)]
     result = subprocess.run(
-        ["git", "status", "--short", "--untracked-files=all", "--", rel(SERIES)],
+        ["git", "status", "--short", "--untracked-files=all", "--", *pathspecs],
         cwd=REPO, check=True, capture_output=True, text=True,
     )
     raw = result.stdout
@@ -151,7 +163,8 @@ def parse_worktree_changes(raw: str) -> dict[str, str]:
 
 
 def committed_changes(base: str, head: str) -> dict[str, str]:
-    raw = git("diff", "--name-status", base, head, "--", rel(SERIES))
+    raw = git("diff", "--name-status", base, head, "--", rel(SERIES),
+              *sorted(EXTERNAL_PLATFORM_PATHS))
     result: dict[str, str] = {}
     for line in raw.splitlines():
         if not line.strip():
@@ -274,6 +287,21 @@ def _platform_members(mode: str, base: dict[str, Any] | None,
         repo_path = rel(source)
         if mode == "full" or repo_path in changes:
             members.append(PackageMember(source, repo_path, "platform_reproduction_metadata"))
+            if base:
+                exists = subprocess.run(
+                    ["git", "cat-file", "-e", f"{base['base_commit']}:{repo_path}"],
+                    cwd=REPO, capture_output=True, check=False,
+                ).returncode == 0
+                statuses[repo_path] = "M" if exists else "A"
+    for repo_path in sorted(EXTERNAL_PLATFORM_PATHS):
+        source = REPO / repo_path
+        if not source.is_file() or source.is_symlink():
+            if mode == "full":
+                raise RuntimeError(f"required canonical component source is missing: {repo_path}")
+            continue
+        if mode == "full" or repo_path in changes:
+            members.append(PackageMember(source, repo_path,
+                                         "platform_reproduction_metadata"))
             if base:
                 exists = subprocess.run(
                     ["git", "cat-file", "-e", f"{base['base_commit']}:{repo_path}"],
@@ -616,7 +644,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--base-commit")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--include-plots", action="store_true",
-                        help="include five QA-verified derived HTML pages for each selected run")
+                        help="include mode-specific QA-verified derived HTML pages")
     args = parser.parse_args(argv)
     try:
         plan = build_plan(args.mode, args.tag, args.base_commit, args.include_plots)

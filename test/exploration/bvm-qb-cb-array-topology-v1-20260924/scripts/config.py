@@ -43,10 +43,11 @@ SJTL_CURRENT_KEYS = {"SJTL_IB"}
 BIAS_RISE_KEYS = {"QB_BIAS_RISE", "CB_BIAS_RISE", "SJTL_BIAS_RISE"}
 T1_BIAS_KEYS = {"T1_BIAS1", "T1_BIAS2", "T1_BIAS3"}
 T1_LOAD_KEYS = {"T1_R_S", "T1_R_C", "T1_CLK_R"}
-T1_KEYS = T1_BIAS_KEYS | T1_LOAD_KEYS | {"T1_CLK_MODE"}
+T1_KEYS = T1_BIAS_KEYS | T1_LOAD_KEYS | {"T1_CLK_MODE", "T1_BIAS3_SOURCE"}
 T1_DEFAULTS = {
     "T1_BIAS1": "1.67m", "T1_BIAS2": "1.67m", "T1_BIAS3": "35u",
-    "T1_R_S": "12", "T1_R_C": "12", "T1_CLK_MODE": "QUIET", "T1_CLK_R": "5",
+    "T1_BIAS3_SOURCE": "CURRENT", "T1_R_S": "12", "T1_R_C": "12",
+    "T1_CLK_MODE": "QUIET", "T1_CLK_R": "5",
 }
 COMPONENT_KEYS = (BVM_AREA_KEYS | BVM_RESISTANCE_KEYS | BVM_INDUCTANCE_KEYS
                   | QB_AREA_KEYS | QB_RESISTANCE_KEYS | QB_INDUCTANCE_KEYS | QB_CURRENT_KEYS
@@ -150,6 +151,8 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
     probe_profile = values.get("PROBE_PROFILE")
     if probe_profile not in {"core", "debug"}:
         raise ConfigError("PROBE_PROFILE must be exactly 'core' or 'debug'")
+    if values["T1_BIAS3_SOURCE"] not in {"CURRENT", "VOLTAGE"}:
+        raise ConfigError("T1_BIAS3_SOURCE must be exactly 'CURRENT' or 'VOLTAGE'")
     term = parse_quantity(values["TERM_R"], label="TERM_R")
     dt = parse_quantity(values["DT"], label="DT")
     stop = parse_quantity(values["STOP"], label="STOP")
@@ -158,7 +161,7 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
     if output_mode == "T1":
         if values["T1_CLK_MODE"] != "QUIET":
             raise ConfigError("T1_CLK_MODE currently supports only 'QUIET'; clock pulses are not implemented")
-        for key in sorted(T1_BIAS_KEYS | T1_LOAD_KEYS):
+        for key in ("T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_R_S", "T1_R_C", "T1_CLK_R"):
             quantity = parse_quantity(values[key], label=key)
             if quantity <= 0:
                 raise ConfigError(f"{key}: must be positive")
@@ -212,8 +215,15 @@ def load_user_case_snapshot(path: str | Path, *, legacy_profile: str = "debug") 
     output_mode = next((line.split("=", 1)[1].strip() for line in snapshot_lines
                         if line.partition("=")[0].strip() == "OUTPUT_MODE"), None)
     missing_t1 = T1_KEYS - present_keys
-    if missing_t1 and output_mode != "TERMINAL":
-        raise ConfigError(f"{path}: T1 snapshots are missing required keys: {', '.join(sorted(missing_t1))}")
+    # Historical T1 Scheme-A snapshots predate the explicit source selector.
+    # Their recorded 35u BIAS3 is unambiguously CURRENT; only that key gets a
+    # compatibility default. Other missing T1 fields remain invalid in T1 mode.
+    legacy_source_key = {"T1_BIAS3_SOURCE"}
+    missing_required_t1 = missing_t1 - legacy_source_key
+    if missing_required_t1 and output_mode != "TERMINAL":
+        raise ConfigError(
+            f"{path}: T1 snapshots are missing required keys: {', '.join(sorted(missing_required_t1))}"
+        )
     expected = USER_CASE_KEYS - missing_t1
     if not profile_present:
         expected = expected - {"PROBE_PROFILE"}

@@ -221,7 +221,7 @@ class PlotBoundarySelectionTests(unittest.TestCase):
         debug = self.fixtures["debug"]["probes"]
         legacy_labels = {item["label"] for item in self.legacy_debug["signals"]}
         debug_labels = {item["label"] for item in debug["signals"]}
-        self.assertEqual(core["signal_count"], 189)
+        self.assertEqual(core["signal_count"], 183)
         self.assertEqual(debug["signal_count"], 336)
         self.assertEqual(len(self.legacy_debug["signals"]), 336)
         self.assertEqual(debug_labels, legacy_labels)

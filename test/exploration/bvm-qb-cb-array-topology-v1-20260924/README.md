@@ -66,11 +66,16 @@ READ0/CONTROL, WRITE1, and FINAL READ. MASK only changes the FINAL READ. The
 leftmost mask bit is BVM1; a zero suppresses that BVM's WL/BL/SE only during
 FINAL READ.
 
-`config/component_reference.env` records parameter defaults and SHA-256 hashes
-for the four canonical 0923 front-end sources and the canonical T1 source. If
-a canonical source hash
-changes, preview stops with `REFERENCE_SOURCE_CHANGED`; update the reference
-only after explicit human review. The renderer writes per-run snapshots:
+`config/component_reference.env` records the current BVM/QB/CB/sJTL working
+parameters and SHA-256 hashes for BVM 0923, QB/CB 0928, sJTL 0923, and the
+canonical T1 source. The 0928 QB and CB files freeze the live working values
+already used in A030; this is source canonicalization, not a parameter change.
+The current source map is `BVM → circuits/bvm/bvm_cell_0923.cir`,
+`QB → circuits/qb/BQ_0928.cir`, `CB → circuits/CB/CB_0928.cir`,
+`sJTL → circuits/sJTL_0923.cir`, and `T1 → circuits/t1/t1_cell.cir`.
+If a canonical source hash changes, preview stops with
+`REFERENCE_SOURCE_CHANGED`; update the reference only after explicit human
+review. The renderer writes per-run snapshots:
 
 ```text
 snapshot/sources/bvm_tunable.cir
@@ -81,7 +86,10 @@ snapshot/sources/sJTL_tunable.cir
 
 The T1 netlist is intentionally not copied or parameter-patched. In T1 mode the
 deck directly includes `circuits/t1/t1_cell.cir`; its parsed pin order and
-SHA-256 are recorded in topology/source provenance.
+SHA-256 are recorded in topology/source provenance. `T1_BIAS3_SOURCE` is
+required in live configuration and accepts `CURRENT` or `VOLTAGE`; historical
+Scheme-A snapshots without that key are interpreted as `CURRENT` only by the
+snapshot compatibility loader.
 
 The rendered deck includes those snapshots, not the canonical sources. It also
 defines the frozen shared `jjmit` model at top level before the includes, so the
@@ -100,7 +108,9 @@ manifest, source provenance, probe manifest, and dry-run summary. Only `core`
 and `debug` are accepted. The default is `core`:
 
 - BVM/QB/CB/sJTL JJ phase and voltage; selected inductor currents; required
-  component boundaries and write/read stimulus branches.
+  component boundaries and write/read stimulus branches. In T1 mode CORE also
+  retains receiver input/clock voltages and representative junction voltages
+  in raw, even when omitted from compact HTML pages.
 - No default JJ current, inductor voltage, or `V(R_TERM)` probe.
 - `debug` restores the historical detailed JJ P/V/I and inductor I/V probe set.
 
@@ -153,6 +163,11 @@ representative output JJ/output → `CARRY_i` → `FINAL_OUT`. It does not repea
 the complete `cb:*` or `sjtl:*` internal groups already shown on pages 04/03.
 All generated pages use the full stored time range. `06_t1.html` is emitted only
 in T1 mode and keeps receiver internals separate from the propagation page.
+CORE `01_overview.html` is a compact 4×1 propagation view (WL current, BVM
+output, MERGE, FINAL_OUT, S and C); CORE `06_t1.html` shows FINAL_OUT, S/C,
+four selected junction phases and four branch currents. Receiver input/clock
+and JJ-voltage evidence remains in raw but is not duplicated in these CORE
+pages. DEBUG keeps the full receiver/load-current page.
 
 ## Scientific package selection
 

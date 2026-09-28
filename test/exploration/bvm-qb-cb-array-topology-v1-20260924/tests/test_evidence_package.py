@@ -206,6 +206,10 @@ class EvidencePackageTests(unittest.TestCase):
             root = Path(temp)
             series = root / "test" / "series"
             series.mkdir(parents=True)
+            for relative in package.EXTERNAL_PLATFORM_PATHS:
+                external = root / relative
+                external.parent.mkdir(parents=True, exist_ok=True)
+                external.write_text(f"* fixture source {relative}\n", encoding="utf-8")
             mirror = root / "mirror"
             mirror.mkdir()
             make_batch(series, "U001_accepted")
@@ -247,6 +251,8 @@ class EvidencePackageTests(unittest.TestCase):
             self.assertEqual(plan["manifest"]["reproduction_tools"][0]["version"], "fixture-plotter")
             self.assertIn("reproduction/scripts/josim-plot2.py", files)
             self.assertIn("reproduction/plotly.min.js", files)
+            self.assertIn("circuits/qb/BQ_0928.cir", files)
+            self.assertIn("circuits/CB/CB_0928.cir", files)
             self.assertEqual(sum(item["file_count"] for item in plan["manifest"]["size_breakdown"].values()),
                              len(plan["members"]))
             self.assertEqual(sum(item["uncompressed_bytes"]

@@ -25,6 +25,7 @@ REQUIRED_PLOT_FILES = {
     "plots/04_cb.html", "plots/05_acc_gap.html",
 }
 T1_REQUIRED_PLOT_FILES = REQUIRED_PLOT_FILES | {"plots/06_t1.html"}
+EXTERNAL_PLATFORM_PATHS = ("circuits/qb/BQ_0928.cir", "circuits/CB/CB_0928.cir")
 
 
 def plot_files_for_mode(output_mode: str) -> set[str]:
@@ -44,7 +45,8 @@ def current_head() -> str:
 
 
 def series_changes() -> list[str]:
-    output = git("status", "--short", "--untracked-files=all", "--", SERIES.relative_to(REPO).as_posix()).stdout
+    output = git("status", "--short", "--untracked-files=all", "--",
+                 SERIES.relative_to(REPO).as_posix(), *EXTERNAL_PLATFORM_PATHS).stdout
     paths = []
     for line in output.splitlines():
         if len(line) < 4:
@@ -62,7 +64,8 @@ def series_changes() -> list[str]:
 def staged_outside_series() -> list[str]:
     output = git("diff", "--cached", "--name-only", "-z").stdout
     prefix = SERIES.relative_to(REPO).as_posix().rstrip("/") + "/"
-    return sorted(path for path in output.split("\0") if path and not path.startswith(prefix))
+    return sorted(path for path in output.split("\0")
+                  if path and not path.startswith(prefix) and path not in EXTERNAL_PLATFORM_PATHS)
 
 
 def _read_json(path: Path, label: str) -> dict[str, Any]:
@@ -388,7 +391,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--no-push", action="store_true")
     parser.add_argument("--package-only", action="store_true")
     parser.add_argument("--include-plots", action="store_true",
-                        help="add the five QA-verified derived HTML pages to the scientific package")
+                        help="add mode-specific QA-verified derived HTML pages to the scientific package")
     args = parser.parse_args(argv)
     try:
         if not TAG_RE.fullmatch(args.tag):
@@ -424,7 +427,8 @@ def main(argv: list[str] | None = None) -> int:
             return 0
 
         if not args.package_only:
-            git("add", "-A", "--", SERIES.relative_to(REPO).as_posix())
+            git("add", "-A", "--", SERIES.relative_to(REPO).as_posix(),
+                *EXTERNAL_PLATFORM_PATHS)
             git("reset", "--", (SERIES / "handoff").relative_to(REPO).as_posix(), check=False)
             git("commit", "-m", f"experiment: complete {args.tag}", capture=False)
         experiment_commit = current_head()

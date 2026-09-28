@@ -55,16 +55,31 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
     for item in signals:
         by_group.setdefault(str(item["group"]), []).append(str(item["label"]))
     overview: list[str] = []
-    overview.extend(by_group.get("stimulus", []))
-    for level in topology["levels"]:
-        for key in ("bvm_output_node", "merge_node", "carry_node"):
-            node = level.get(key)
-            if node:
-                overview.append(f"V({node})")
-        qb_node = level.get("qb_raw_node") or level.get("merge_node")
-        if qb_node:
-            overview.append(f"V({qb_node})")
-    overview.append("V(FINAL_OUT)")
+    if output_mode == "T1":
+        # Receiver-integrated overview is a compact propagation view. Keep the
+        # four WL drives, BVM outputs, merge boundaries, and T1 outputs; detailed
+        # BL/SE and receiver internals remain available in raw or focused pages.
+        for index in range(1, int(topology["array_size"]) + 1):
+            overview.append(f"I(I_WL{index})")
+        for level in topology["levels"]:
+            overview.append(f"V({level['bvm_output_node']})")
+        for level in topology["levels"]:
+            overview.append(f"V({level['merge_node']})")
+        overview.extend(("V(FINAL_OUT)", "V(S)", "V(C)"))
+        receiver = topology.get("receiver", {})
+        if receiver.get("clock_mode") != "QUIET":
+            overview.append("V(CLK)")
+    else:
+        overview.extend(by_group.get("stimulus", []))
+        for level in topology["levels"]:
+            for key in ("bvm_output_node", "merge_node", "carry_node"):
+                node = level.get(key)
+                if node:
+                    overview.append(f"V({node})")
+            qb_node = level.get("qb_raw_node") or level.get("merge_node")
+            if qb_node:
+                overview.append(f"V({qb_node})")
+        overview.append("V(FINAL_OUT)")
 
     bvm = [label for group, items in by_group.items() if group.startswith("bvm") for label in items]
     instance_records = {
@@ -162,26 +177,30 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         if (not isinstance(receiver, dict) or t1_instance is None
                 or str(t1_instance.get("subcircuit", "")).casefold() != "t1"):
             raise RuntimeError("T1 plot page requires a topology-backed XT1 receiver")
-        for node in ("FINAL_OUT", str(receiver["input_node"]), "CLK", "S", "C"):
-            t1.append(require_probe(f"V({node})", f"T1 {node} boundary"))
-        for element in ("R_S", "R_C"):
-            t1.append(require_probe(f"I({element})", f"T1 {element} output load"))
-        receiver_junctions = list(receiver["junction_elements"])
-        receiver_inductors = list(receiver["inductor_elements"])
-        junctions = receiver_junctions if profile == "debug" else list(T1_CORE_JUNCTIONS)
-        inductors = receiver_inductors if profile == "debug" else list(T1_CORE_INDUCTORS)
-        junction_quantities = ("P", "V", "I") if profile == "debug" else ("P", "V")
-        inductor_quantities = ("I", "V") if profile == "debug" else ("I",)
-        for element in junctions:
-            for quantity in junction_quantities:
-                t1.append(require_probe(
-                    f"{quantity}({element}|XT1)", f"T1 XT1 junction {element}"
-                ))
-        for element in inductors:
-            for quantity in inductor_quantities:
-                t1.append(require_probe(
-                    f"{quantity}({element}|XT1)", f"T1 XT1 inductor {element}"
-                ))
+        if profile == "debug":
+            for node in ("FINAL_OUT", str(receiver["input_node"]), "CLK", "S", "C"):
+                t1.append(require_probe(f"V({node})", f"T1 {node} boundary"))
+            for element in ("R_S", "R_C"):
+                t1.append(require_probe(f"I({element})", f"T1 {element} output load"))
+            receiver_junctions = list(receiver["junction_elements"])
+            receiver_inductors = list(receiver["inductor_elements"])
+            for element in receiver_junctions:
+                for quantity in ("P", "V", "I"):
+                    t1.append(require_probe(
+                        f"{quantity}({element}|XT1)", f"T1 XT1 junction {element}"
+                    ))
+            for element in receiver_inductors:
+                for quantity in ("I", "V"):
+                    t1.append(require_probe(
+                        f"{quantity}({element}|XT1)", f"T1 XT1 inductor {element}"
+                    ))
+        else:
+            for node in ("FINAL_OUT", "S", "C"):
+                t1.append(require_probe(f"V({node})", f"T1 {node} boundary"))
+            for element in T1_CORE_JUNCTIONS:
+                t1.append(require_probe(f"P({element}|XT1)", f"T1 XT1 junction phase {element}"))
+            for element in ("L3", "L11", "L14", "L17"):
+                t1.append(require_probe(f"I({element}|XT1)", f"T1 XT1 branch current {element}"))
 
     acc_gap: list[str] = []
     instance_pins = {
@@ -247,7 +266,7 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
             title = ("CB components — " + "; ".join(item["role"] for item in cb_roles)
                      if cb_roles else "No CB components in this topology")
         elif key == "t1":
-            title = "T1 receiver — FINAL_OUT/T1_I, internal state, S/C outputs"
+            title = "T1 receiver — FINAL_OUT, selected phases/branches, S/C outputs"
         else:
             title = "Per-level local/upstream contribution, MERGE, sJTL, post-CB, CARRY, FINAL_OUT"
         pages.append({

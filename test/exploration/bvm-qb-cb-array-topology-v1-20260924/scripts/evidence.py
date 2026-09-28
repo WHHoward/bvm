@@ -210,12 +210,21 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
         required_groups.add("t1")
     if not required_groups.issubset(parameter_data):
         raise EvidenceError(f"{batch_id}: parameter manifest is missing required groups")
-    if output_mode == "T1" and parameter_data.get("t1") != {
-            key: user[key] for key in sorted({
-                "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_R_S", "T1_R_C",
-                "T1_CLK_MODE", "T1_CLK_R",
-            })}:
-        raise EvidenceError(f"{batch_id}: T1 parameter manifest disagrees with effective USER_CASE")
+    if output_mode == "T1":
+        expected_t1 = {key: user[key] for key in sorted({
+            "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_BIAS3_SOURCE",
+            "T1_R_S", "T1_R_C", "T1_CLK_MODE", "T1_CLK_R",
+        })}
+        actual_t1 = parameter_data.get("t1")
+        effective_has_source = any(
+            line.partition("=")[0].strip() == "T1_BIAS3_SOURCE"
+            for line in user_path.read_text(encoding="utf-8").splitlines()
+        )
+        legacy_t1 = {key: value for key, value in expected_t1.items()
+                     if key != "T1_BIAS3_SOURCE"}
+        allowed_t1 = (expected_t1,) if effective_has_source else (legacy_t1, expected_t1)
+        if not isinstance(actual_t1, dict) or actual_t1 not in allowed_t1:
+            raise EvidenceError(f"{batch_id}: T1 parameter manifest disagrees with effective USER_CASE")
 
     members: dict[str, PackageMember] = {}
     for filename in BATCH_FILES:

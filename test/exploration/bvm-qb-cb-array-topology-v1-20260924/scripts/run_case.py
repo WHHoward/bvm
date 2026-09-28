@@ -321,7 +321,8 @@ def _write_run_preflight(run_dir: Path, run_id: str, params: dict[str, object],
             "- T1 zero-drop link: report `max |V(FINAL_OUT)-V(T1_I)|` over all exact stored raw rows.",
             "- No interpolation/resampling; this is report-only with no pass/fail voltage threshold.",
             f"- T1 config: BIAS1=`{params['T1_BIAS1']}`, BIAS2=`{params['T1_BIAS2']}`, "
-            f"BIAS3 current=`{params['T1_BIAS3']}`, R_S=`{params['T1_R_S']}`, "
+            f"BIAS3 source=`{params['T1_BIAS3_SOURCE']}` value=`{params['T1_BIAS3']}`, "
+            f"R_S=`{params['T1_R_S']}`, "
             f"R_C=`{params['T1_R_C']}`, CLK_MODE=`{params['T1_CLK_MODE']}`, "
             f"CLK_R=`{params['T1_CLK_R']}`.",
             "- This single run is not a matched-load causal comparison; A029 remains a reference for later user review.",
@@ -425,8 +426,8 @@ def execute_run(
             "deck_include_path": t1_source["deck_include_path"],
         }
         provenance["t1_parameters"] = {key: params[key] for key in (
-            "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_R_S", "T1_R_C",
-            "T1_CLK_MODE", "T1_CLK_R",
+            "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_BIAS3_SOURCE",
+            "T1_R_S", "T1_R_C", "T1_CLK_MODE", "T1_CLK_R",
         )}
     _save_json(run_dir / "provenance.json", provenance)
     if completed.returncode != 0 or not (run_dir / "raw.csv").is_file():

@@ -12,8 +12,8 @@ from config import ConfigError
 
 SOURCE_FILES = {
     "BVM": Path("circuits/bvm/bvm_cell_0923.cir"),
-    "QB": Path("circuits/qb/BQ_0923.cir"),
-    "CB": Path("circuits/CB/CB_0923.cir"),
+    "QB": Path("circuits/qb/BQ_0928.cir"),
+    "CB": Path("circuits/CB/CB_0928.cir"),
     "SJTL": Path("circuits/sJTL_0923.cir"),
 }
 T1_SOURCE_FILE = Path("circuits/t1/t1_cell.cir")
@@ -301,6 +301,7 @@ def render_topology(params: dict[str, object], sources: dict[str, str | Path]) -
                      "negative_node": "T1_I", "voltage": "0"},
             "clock_mode": params["T1_CLK_MODE"],
             "bias": {key: params[key] for key in ("T1_BIAS1", "T1_BIAS2", "T1_BIAS3")},
+            "bias3_source": params["T1_BIAS3_SOURCE"],
             "loads": {key: params[key] for key in ("T1_R_S", "T1_R_C", "T1_CLK_R")},
         }
         manifest.pop("terminal")
@@ -316,10 +317,11 @@ def render_output_block(params: dict[str, object], topology: dict[str, object]) 
     receiver = topology.get("receiver")
     if not isinstance(receiver, dict) or receiver.get("instance") != "XT1":
         raise ConfigError("T1 output boundary is missing source-verified XT1 topology")
+    bias3_prefix = "I" if params["T1_BIAS3_SOURCE"] == "CURRENT" else "V"
     return [
         f"V_BIAS1 N_BIAS1 0 DC {params['T1_BIAS1']}",
         f"V_BIAS2 N_BIAS2 0 DC {params['T1_BIAS2']}",
-        f"I_BIAS3 N_BIAS3 0 DC {params['T1_BIAS3']}",
+        f"{bias3_prefix}_BIAS3 N_BIAS3 0 DC {params['T1_BIAS3']}",
         f"R_S S 0 {params['T1_R_S']}",
         f"R_C C 0 {params['T1_R_C']}",
         f"R_CLK_QUIET CLK 0 {params['T1_CLK_R']}",

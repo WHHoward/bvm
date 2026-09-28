@@ -56,6 +56,30 @@ class PlatformStaticTests(unittest.TestCase):
             {"test/exploration/bvm-qb-cb-array-topology-v1-20260924/scripts/package.py": "M"},
         )
 
+    def test_submit_inventory_includes_ignored_standalone_json_and_log_but_not_html(self):
+        from types import SimpleNamespace
+        import submit  # noqa: E402
+
+        root = "test/exploration/t1-periodic-clock-20ghz-20260928"
+
+        def fake_git(*args, **_kwargs):
+            if args[0] == "status":
+                return SimpleNamespace(stdout=f"?? {root}/README.md\n")
+            if args[0] == "ls-files":
+                return SimpleNamespace(stdout=(
+                    f"{root}/experiment_manifest.json\0"
+                    f"{root}/runs/A001/run.log\0"
+                    f"{root}/runs/A001/plots/plot.html\0"
+                ))
+            raise AssertionError(f"unexpected git call: {args}")
+
+        with patch.object(submit, "git", side_effect=fake_git):
+            changes = set(submit.series_changes())
+        self.assertIn(f"{root}/README.md", changes)
+        self.assertIn(f"{root}/experiment_manifest.json", changes)
+        self.assertIn(f"{root}/runs/A001/run.log", changes)
+        self.assertNotIn(f"{root}/runs/A001/plots/plot.html", changes)
+
     def test_size_breakdown_is_complete_and_uses_member_bytes(self):
         records = [
             {"archive_path": "run/raw.csv", "category": "raw", "bytes": 100},

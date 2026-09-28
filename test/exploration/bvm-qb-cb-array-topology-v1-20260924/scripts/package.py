@@ -431,6 +431,15 @@ def _standalone_experiment_members(
             source_manifest = json.loads(source_path.read_text(encoding="utf-8"))
             parameters = json.loads(parameter_path.read_text(encoding="utf-8"))
             topology = json.loads(topology_path.read_text(encoding="utf-8"))
+            effective_t1_parameters = parameters.get("t1")
+            if not isinstance(effective_t1_parameters, dict):
+                effective_t1_parameters = parameters.get("parameters")
+            if not isinstance(effective_t1_parameters, dict):
+                effective_t1_parameters = {}
+            topology_clock = topology.get("clock", {})
+            topology_clock_mode = topology.get("clock_mode")
+            if topology_clock_mode is None and isinstance(topology_clock, dict):
+                topology_clock_mode = topology_clock.get("mode")
             raw_sha = sha256(raw_path)
             deck_text = deck_path.read_text(encoding="utf-8")
             expected_clock_lines = (
@@ -479,8 +488,8 @@ def _standalone_experiment_members(
                     or plot_qa.get("raw_sha256_before") != raw_sha
                     or plot_qa.get("raw_sha256_after") != raw_sha
                     or plot_manifest.get("raw_sha256") != raw_sha
-                    or parameters.get("t1", {}).get("T1_CLK_MODE") != "PULSE"
-                    or topology.get("clock_mode") != "PULSE"
+                    or effective_t1_parameters.get("T1_CLK_MODE") != "PULSE"
+                    or topology_clock_mode != "PULSE"
                     or topology.get("data_input", {}).get("node") != "0"
                     or probe.get("profile") != "debug"):
                 raise RuntimeError(f"standalone run mechanical closure failed: {run_id}")
@@ -552,7 +561,12 @@ def _standalone_experiment_members(
                 continue
             if path.suffix.lower() == ".html" and not include_plots:
                 continue
-            if mode == "delta" and repo_path not in root_changes:
+            # A newly authorized standalone run is a self-contained evidence
+            # unit. Include all of its non-HTML members, including required
+            # JSON manifests ignored by the repository-wide *.json rule.
+            # Later deltas reference that run and include only changed files.
+            if (mode == "delta" and repo_path not in root_changes
+                    and experiment_new_solves == 0):
                 continue
             if path.suffix.lower() == ".html":
                 category = "plots"
@@ -571,12 +585,12 @@ def _standalone_experiment_members(
                     statuses[repo_path] = "A"
                 elif status == "M":
                     statuses[repo_path] = "M"
+                elif experiment_new_solves > 0:
+                    statuses[repo_path] = "A"
                 else:
-                    exists = subprocess.run(
-                        ["git", "cat-file", "-e", f"{base['base_commit']}:{repo_path}"],
-                        cwd=REPO, capture_output=True, check=False,
-                    ).returncode == 0
-                    statuses[repo_path] = "M" if exists else "A"
+                    raise RuntimeError(
+                        f"standalone changed member has no git-diff status: {repo_path}"
+                    )
 
     return members, experiments, runs, references, statuses
 

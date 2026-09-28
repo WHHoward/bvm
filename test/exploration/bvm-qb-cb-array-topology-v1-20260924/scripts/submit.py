@@ -60,6 +60,15 @@ def series_changes() -> list[str]:
         if candidate.parent.name == "handoff" and candidate.suffix.lower() == ".zip":
             continue
         paths.append(path)
+    ignored = git("ls-files", "--others", "--ignored", "--exclude-standard", "-z", "--",
+                  *EXTERNAL_EXPERIMENT_PATHS).stdout
+    for path in ignored.split("\0"):
+        if not path or Path(path).suffix.lower() not in {".json", ".log"}:
+            continue
+        candidate = REPO / path
+        if "__pycache__" in candidate.parts or candidate.suffix == ".pyc":
+            continue
+        paths.append(path)
     return sorted(set(paths))
 
 
@@ -455,6 +464,14 @@ def main(argv: list[str] | None = None) -> int:
         if not args.package_only:
             git("add", "-A", "--", SERIES.relative_to(REPO).as_posix(),
                 *EXTERNAL_PLATFORM_PATHS, *EXTERNAL_EXPERIMENT_PATHS)
+            ignored_json = [
+                path for path in changes
+                if any(path.startswith(root.rstrip("/") + "/")
+                       for root in EXTERNAL_EXPERIMENT_PATHS)
+                and Path(path).suffix.lower() in {".json", ".log"}
+            ]
+            if ignored_json:
+                git("add", "-f", "--", *ignored_json)
             git("reset", "--", (SERIES / "handoff").relative_to(REPO).as_posix(), check=False)
             git("commit", "-m", f"experiment: complete {args.tag}", capture=False)
         experiment_commit = current_head()

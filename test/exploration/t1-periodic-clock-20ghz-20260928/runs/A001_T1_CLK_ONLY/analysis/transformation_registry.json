@@ -1,0 +1,86 @@
+{
+  "interpolation": false,
+  "operations": [
+    {
+      "operation": "full-trace phase unwrap",
+      "purpose": "same-window endpoint phase arithmetic only",
+      "signals": [
+        "P(B_J2|XT1)",
+        "P(B_J3|XT1)",
+        "P(B_J7|XT1)",
+        "P(B_J9|XT1)",
+        "P(B_J11|XT1)"
+      ]
+    },
+    {
+      "operation": "half-open stored-row selection using exact decimal raw-time tokens",
+      "windows": [
+        [
+          1.5e-10,
+          1.7e-10
+        ],
+        [
+          1.7e-10,
+          2.2e-10
+        ],
+        [
+          2.2e-10,
+          2.7e-10
+        ],
+        [
+          2.7e-10,
+          3.2e-10
+        ],
+        [
+          3.2e-10,
+          3.7e-10
+        ]
+      ]
+    },
+    {
+      "operation": "trapezoid integration",
+      "signal_pairs": [
+        {
+          "phase": "P(B_J2|XT1)",
+          "voltage": "V(B_J2|XT1)"
+        },
+        {
+          "phase": "P(B_J3|XT1)",
+          "voltage": "V(B_J3|XT1)"
+        },
+        {
+          "phase": "P(B_J7|XT1)",
+          "voltage": "V(B_J7|XT1)"
+        },
+        {
+          "phase": "P(B_J9|XT1)",
+          "voltage": "V(B_J9|XT1)"
+        },
+        {
+          "phase": "P(B_J11|XT1)",
+          "voltage": "V(B_J11|XT1)"
+        },
+        {
+          "voltage": "V(S)"
+        },
+        {
+          "voltage": "V(C)"
+        }
+      ],
+      "time_source": "raw.csv time column"
+    },
+    {
+      "operation": "plot window row selection using exact decimal raw-time tokens",
+      "raw_rows_interpolated": false
+    }
+  ],
+  "raw_modified": false,
+  "raw_sha256": "d834fc11ff719ed15b20b55690e149e64deca4ac6fca2c4ff2758556d184834b",
+  "resampling": false,
+  "scaling": false,
+  "schema": "t1-clock-only-transformation-registry-v1",
+  "scientific_interpretation_performed": false,
+  "sign_correction": false,
+  "smoothing": false,
+  "time_shift": false
+}

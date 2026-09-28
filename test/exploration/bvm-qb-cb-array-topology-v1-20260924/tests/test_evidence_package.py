@@ -399,11 +399,11 @@ class EvidencePackageTests(unittest.TestCase):
                                                   for label in required_probe_labels],
             })
             parameter_bytes = write_json(run / "parameter_manifest.json", {
-                "t1": {"T1_CLK_MODE": "PULSE", "T1_BIAS3_SOURCE": "VOLTAGE"},
+                "parameters": {"T1_CLK_MODE": "PULSE", "T1_BIAS3_SOURCE": "VOLTAGE"},
                 "solver": {"DT": "0.01p", "STOP": "370p"},
             })
             topology_bytes = write_json(run / "topology_manifest.json", {
-                "output_mode": "T1_CLK_ONLY", "clock_mode": "PULSE",
+                "output_mode": "T1_CLK_ONLY", "clock": {"mode": "PULSE"},
                 "data_input": {"signal": "I", "node": "0"},
             })
             source_bytes = write_json(run / "source_manifest.json", {"sources": [
@@ -435,6 +435,8 @@ class EvidencePackageTests(unittest.TestCase):
                     "full", {}, {}, False)
                 with_html = package._standalone_experiment_members(
                     "full", {}, {}, True)
+                new_delta = package._standalone_experiment_members(
+                    "delta", {f"{relative_root}/README.md": "A"}, {}, False)
                 reused = package._standalone_experiment_members(
                     "delta", {f"{relative_root}/README.md": "M"},
                     {f"{relative_root}/runs/{run_id}/raw.csv": {
@@ -448,6 +450,13 @@ class EvidencePackageTests(unittest.TestCase):
             self.assertFalse(any(path.endswith(".html") for path in paths))
             self.assertEqual(sum(member.archive_path.endswith(".html")
                                  for member in with_html[0]), 5)
+            new_delta_paths = {member.archive_path for member in new_delta[0]}
+            self.assertIn(f"{relative_root}/experiment_manifest.json", new_delta_paths)
+            self.assertIn(f"{relative_root}/runs/{run_id}/result.json", new_delta_paths)
+            self.assertIn(f"{relative_root}/runs/{run_id}/provenance.json", new_delta_paths)
+            self.assertIn(f"{relative_root}/runs/{run_id}/analysis/clock_cycle_metrics.json",
+                          new_delta_paths)
+            self.assertFalse(any(path.endswith(".html") for path in new_delta_paths))
             reused_members, reused_experiments, reused_runs, reused_refs, _ = reused
             self.assertEqual(reused_experiments[0]["new_physical_solve_count"], 0)
             self.assertTrue(reused_runs[0]["reused"])

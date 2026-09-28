@@ -1,0 +1,129 @@
+{
+  "actual_deck": {
+    "path": "actual_deck.cir",
+    "sha256": "acff07218f597020bdb04252a2f2502e163d0a491a9334295ed45788730831b0"
+  },
+  "analysis_revisions": [
+    {
+      "executor_sources": {
+        "clock_metrics.py": "420bc4a65c670f879eb6177a3022ee0c9947e2b25ac7208ca338039bf04ab555",
+        "plot_clock_only.py": "0769a540c48c238b5691fec0cfcc77f2efe4c95af6b98b826abfbf47039e4315"
+      },
+      "physical_solve_count": 0,
+      "raw_sha256": "d834fc11ff719ed15b20b55690e149e64deca4ac6fca2c4ff2758556d184834b",
+      "reason": "Use exact decimal raw-time tokens so a sample exactly at a cycle boundary belongs only to the next half-open cycle.",
+      "revision_id": "exact-decimal-half-open-time-windows-v1",
+      "scientific_interpretation_performed": false
+    }
+  ],
+  "automatic_follow_up": false,
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/t1-periodic-clock-20ghz-20260928/runs/A001_T1_CLK_ONLY/raw.csv",
+    "/home/howard/JoSIM/test/exploration/t1-periodic-clock-20ghz-20260928/runs/A001_T1_CLK_ONLY/actual_deck.cir"
+  ],
+  "executor_sources": {
+    "clock_metrics.py": "3d6ed35111df0394b831f635b37b037500eb713e69665228c2f78fc54b591333",
+    "plot_clock_only.py": "48e68ba1b3945f276bd27e604dab4f16d1bc77ba9412331bb94debecfa57e0d5",
+    "run_clock_only.py": "5a1302d5d30893756a4ce7040a49f38a6208f230e3b60ae6f9f1457c53e72941"
+  },
+  "experiment_definition": {
+    "path": "../../experiment.yaml",
+    "sha256": "42bbcc5e84ac9ce9433e5b10409e3fa9ae0d5aa69135fe6193cf247087667412"
+  },
+  "experiment_id": "t1-periodic-clock-20ghz-20260928",
+  "finished_at_utc": "2026-09-28T08:35:53.052769+00:00",
+  "mechanical_metrics": {
+    "path": "analysis/clock_cycle_metrics.json",
+    "sha256": "bc38a632ccfe5920ddb8d6f66998ad27de41b9d9b935c1c372eedf77a8d69e46"
+  },
+  "mechanical_qa": {
+    "path": "analysis/mechanical_qa.json",
+    "sha256": "8c44e991600b06555d0ea794ee7bf0e05a375f507425bd166e02443d8a33a92a"
+  },
+  "metric_spec": {
+    "path": "../../analysis/metric_spec.json",
+    "sha256": "5d6073756f8a0b8bc039b48f2eccbee4416968a224059a8471f64b75880cf4d6"
+  },
+  "parameter_manifest": {
+    "path": "parameter_manifest.json",
+    "sha256": "a401dd87619096c04cf2254ddcd33f23da6059cffd78cff88f82dee533bcaec4"
+  },
+  "parent_head": "e1b7355f39ce7b9e8cb7d4c216bdbb398a99cc3c",
+  "physical_solve_count": 1,
+  "plot_qa": {
+    "path": "analysis/plot_qa.json",
+    "sha256": "2ca4ee9baf40f37ea5810d7dcb6c338c7fcefd6ed49be26ec151e2593d93d5d9"
+  },
+  "preflight": {
+    "path": "PREFLIGHT.md",
+    "sha256": "3ca13ef45e9d5ce5f2af42dd1ca9a60b96b35a9047c15f7b5cd5cc9a7ed8dc30"
+  },
+  "probe_manifest": {
+    "path": "probe_manifest.json",
+    "sha256": "7f4c1b8854f25a58e61359e54cb01c016fa4d36abeaa7e3eebb23c4167fa04df"
+  },
+  "provenance_qa": {
+    "path": "analysis/provenance_qa.json",
+    "sha256": "36ad76652fc492065aa5a0a607ea80536d447e35e2130fe514d7ec2aa26b12aa"
+  },
+  "raw": {
+    "bytes": 50564308,
+    "path": "raw.csv",
+    "sample_count": 36999,
+    "sha256": "d834fc11ff719ed15b20b55690e149e64deca4ac6fca2c4ff2758556d184834b"
+  },
+  "raw_qa": {
+    "path": "analysis/raw_qa.json",
+    "sha256": "754768c367aa83cb04b32fd99f84e01ecdb3d76794b5696c0d3440774e9850a7"
+  },
+  "run_id": "A001_T1_CLK_ONLY",
+  "schema": "t1-clock-only-provenance-v1",
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "path": "build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "version_exit": 0
+  },
+  "source_manifest": {
+    "path": "source_manifest.json",
+    "sha256": "59549572454b4a4e594ed31e7db0516adc3729993c0653837da510560d86661c"
+  },
+  "started_at_utc": "2026-09-28T08:35:47.338192+00:00",
+  "topology_manifest": {
+    "path": "topology_manifest.json",
+    "sha256": "0f932ec711f51d0f2b5a7d2c1380aa9c4388b53809af09fe7f5826a1eac72256"
+  },
+  "transformation_registry": {
+    "path": "analysis/transformation_registry.json",
+    "sha256": "ba00e5b6cac81329e4fa53d5b52ad1b209bea09d326ba28418d39561b19a9253"
+  },
+  "user_case": {
+    "parameters": {
+      "DT": "0.01p",
+      "EXPERIMENT_ID": "t1-periodic-clock-20ghz-20260928",
+      "PROBE_PROFILE": "debug",
+      "STOP": "370p",
+      "T1_BIAS1": "1.8m",
+      "T1_BIAS2": "1.8m",
+      "T1_BIAS3": "1.8m",
+      "T1_BIAS3_SOURCE": "VOLTAGE",
+      "T1_CLK_AMPLITUDE": "1.2m",
+      "T1_CLK_FALL": "1p",
+      "T1_CLK_MODE": "PULSE",
+      "T1_CLK_PERIOD": "50p",
+      "T1_CLK_RISE": "1p",
+      "T1_CLK_R_SERIES": "5",
+      "T1_CLK_START": "170p",
+      "T1_CLK_WIDTH": "2p",
+      "T1_R_C": "12",
+      "T1_R_S": "12"
+    },
+    "path": "USER_CASE.snapshot.env",
+    "sha256": "d2f39c068a6dd474b2bacae004fa65ec3d6e5d02fb8c32c0a701295bedec7cdd"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "t1-clock-only-metric-spec-v1",
+  "physical_solve_count": 1,
+  "time_column_units": "seconds",
+  "raw_phase_units": "radians",
+  "registered_preclock_window": {
+    "start": "150p",
+    "end": "170p",
+    "boundary_rule": "[start,end)"
+  },
+  "registered_cycles": [
+    {"index": 1, "start": "170p", "end": "220p", "boundary_rule": "[start,end)"},
+    {"index": 2, "start": "220p", "end": "270p", "boundary_rule": "[start,end)"},
+    {"index": 3, "start": "270p", "end": "320p", "boundary_rule": "[start,end)"},
+    {"index": 4, "start": "320p", "end": "370p", "boundary_rule": "[start,end)"}
+  ],
+  "clock_arrival_marker": {
+    "rule": "first stored sample at or above baseline + 0.5*(cycle peak-baseline)",
+    "baseline_window": "[cycle_start-20p,cycle_start)",
+    "report": "stored-sample bracket only; no interpolation; navigation marker, not event classification"
+  },
+  "integrations": {
+    "method": "trapezoid",
+    "grid": "actual stored raw time values",
+    "interpolation_or_resampling": false,
+    "phase_unwrap": "independent unwrap over each full raw phase trace before same-window endpoint delta"
+  },
+  "phase_voltage_checks": ["B_J2", "B_J3", "B_J7", "B_J9", "B_J11"],
+  "output_voltage_integrals": ["V(S)", "V(C)"],
+  "inter_pulse_tail": "[cycle_start+4p,cycle_end)",
+  "phi0_for_arithmetic_v_s": 2.067833848e-15,
+  "scientific_interpretation_performed": false
+}

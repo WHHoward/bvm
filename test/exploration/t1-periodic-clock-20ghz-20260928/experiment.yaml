@@ -1,0 +1,45 @@
+schema: t1-clock-only-experiment-v1
+experiment_id: t1-periodic-clock-20ghz-20260928
+question: Verify one fixed 20 GHz periodic voltage drive on an isolated Scheme-B T1 cell with I grounded.
+mode: CLK_ONLY
+interpretation: MECHANICAL_AND_REGISTERED_ARITHMETIC_ONLY
+parent_head: e1b7355f39ce7b9e8cb7d4c216bdbb398a99cc3c
+physical_solve_count_authorized: 1
+run_matrix:
+  - run_id: A001_T1_CLK_ONLY
+    input_data: GROUND
+    clock_mode: PULSE
+    start: 170p
+    period: 50p
+    amplitude: 1.2m
+    rise: 1p
+    width: 2p
+    fall: 1p
+    series_resistance: 5
+t1:
+  source: circuits/t1/t1_cell.cir
+  source_is_copied_or_modified: false
+  R_J4: 4
+  input_I: GROUND
+  bias_source: VOLTAGE
+  V_BIAS1: 1.8m
+  V_BIAS2: 1.8m
+  V_BIAS3: 1.8m
+  R_S: 12
+  R_C: 12
+solver:
+  path: build/josim-cli
+  dt: 0.01p
+  stop: 370p
+visualization:
+  renderer: scripts/josim-plot2.py
+  type: sep_comb
+  color: dark
+  phase_jump: 2pi
+  archive_html: false
+prohibited:
+  - integrated BVM/QB/CB/sJTL physical solve
+  - additional masks or runs
+  - clock amplitude, phase, frequency, or timestep sweep
+  - T1 internal netlist or bias modification
+  - interpretation as SFQ count, truth table, or system throughput

@@ -14,11 +14,24 @@ grid:
 drive_modes:
   - INDEPENDENT
   - SHARED
+se_topologies:
+  - SHARED_COLUMN
+  - CELL
+se_gate_modes:
+  - COLUMN
+  - CROSSPOINT
 shared_nodes:
   row_wl: [WL_R1, WL_R2]
   column_bl: [BL_C1, BL_C2]
   column_se: [SE_C1, SE_C2]
-  independent_driver_count: 6
+  column_se_applies_when: SE_TOPOLOGY=SHARED_COLUMN and DRIVE_MODE=SHARED
+  shared_column_driver_count: 6
+  shared_wl_bl_cell_se_driver_count: 8
+  independent_driver_count: 12
+se_compatibility:
+  missing_setting_defaults: [SHARED_COLUMN, COLUMN]
+  crosspoint_requires: CELL
+  independent_drive_effective_se_topology: CELL
 frozen_load:
   per_cell: BVM_SL -> BQ -> one sJTL -> one CB -> independent VOUT -> R_TERM
   R_TERM_ohm: 2
@@ -38,6 +51,8 @@ registered_presets:
   - A_INDEPENDENT_10_10
   - B_SHARED_10_10
   - C_SHARED_11_11
+  - D0_CELL_SE_COLUMN_10_10
+  - D1_CELL_SE_CROSSPOINT_10_10
 analysis_windows:
   post_READ0: [81p, 90p]
   post_WRITE1: [101p, 110p]

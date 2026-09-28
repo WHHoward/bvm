@@ -225,7 +225,93 @@ def file_records(sources: list[tuple[Path, str]]) -> list[dict[str, Any]]:
     return records
 
 
-def verify_existing_bundle(package: Path, qa_path: Path) -> dict[str, Any]:
+def _read_delta_manifest(package: Path) -> dict[str, Any]:
+    try:
+        with zipfile.ZipFile(package, "r") as archive:
+            return json.loads(archive.read("DELTA_MANIFEST.json"))
+    except (KeyError, json.JSONDecodeError, zipfile.BadZipFile) as exc:
+        raise RuntimeError(f"delta package has no valid DELTA_MANIFEST.json: {package}") from exc
+
+
+def _delta_payload_hashes(manifest: dict[str, Any], package: Path) -> dict[str, str]:
+    hashes = manifest.get("included_file_sha256")
+    records = manifest.get("included_files")
+    if not isinstance(hashes, dict) or not isinstance(records, list):
+        raise RuntimeError(f"delta manifest has no file/hash closure: {package}")
+    record_hashes = {}
+    for record in records:
+        member, digest = record.get("archive_path"), record.get("sha256")
+        if not member or not digest or member in record_hashes:
+            raise RuntimeError(f"delta manifest has duplicate/incomplete included file records: {package}")
+        record_hashes[member] = digest
+    if record_hashes != hashes:
+        raise RuntimeError(f"delta manifest included file list/hash map disagree: {package}")
+    return hashes
+
+
+def _source_hashes_from_qa(qa: dict[str, Any]) -> dict[str, str]:
+    return {path: digest for path, digest in qa.get("included_file_sha256", {}).items()
+            if path not in {"BUNDLE_MANIFEST.json", "README_BUNDLE.txt"}}
+
+
+def _compose_delta_layers(base_package: Path, base_qa: dict[str, Any],
+                          layers: list[dict[str, Any]], *,
+                          seen: set[Path] | None = None
+                          ) -> tuple[dict[str, str], dict[str, dict[str, str]], set[str]]:
+    hashes = _source_hashes_from_qa(base_qa)
+    raw_sources = {
+        path: {"source_package_name": base_package.name,
+               "source_package_sha256": base_qa["package_sha256"]}
+        for path in hashes if path.endswith("raw.csv")
+    }
+    deleted_paths: set[str] = set()
+    same_head_paths: dict[str, set[str]] = {}
+    for entry in layers:
+        package_name = entry.get("package_name")
+        package_sha = entry.get("package_sha256")
+        package_head = entry.get("head_commit")
+        if (not package_name or Path(package_name).name != package_name or
+                not package_name.endswith(".zip") or not package_sha or not package_head):
+            raise RuntimeError("delta checkpoint contains an incomplete package identity")
+        package = base_package.with_name(package_name)
+        qa_path = package.with_name(f"{package.stem}_PACKAGE_QA.json")
+        qa = verify_existing_bundle(package, qa_path, _seen=seen)
+        if (qa.get("bundle_type") != "directory_snapshot_delta" or
+                qa.get("package_sha256") != package_sha or qa.get("head_commit") != package_head or
+                qa.get("base_package_name") != base_package.name or
+                qa.get("base_package_sha256") != base_qa["package_sha256"]):
+            raise RuntimeError(f"delta checkpoint package identity mismatch: {package}")
+        manifest = _read_delta_manifest(package)
+        if manifest.get("base_commit") != base_qa.get("source_commit"):
+            raise RuntimeError(f"delta checkpoint points at a different full-base commit: {package}")
+        layer_hashes = _delta_payload_hashes(manifest, package)
+        paths_for_head = same_head_paths.setdefault(package_head, set())
+        overlap = paths_for_head.intersection(layer_hashes)
+        if overlap:
+            raise RuntimeError(f"delta checkpoint duplicates members within one head: {sorted(overlap)}")
+        paths_for_head.update(layer_hashes)
+        for path, digest in layer_hashes.items():
+            hashes[path] = digest
+            deleted_paths.discard(path)
+            if path.endswith("raw.csv"):
+                raw_sources[path] = {"source_package_name": package.name,
+                                     "source_package_sha256": package_sha}
+        for path in manifest.get("deleted_files", []):
+            if path.startswith("runs/") and path.endswith("/raw.csv"):
+                raise RuntimeError(f"delta checkpoint deletes historical raw evidence: {path}")
+            hashes.pop(path, None)
+            raw_sources.pop(path, None)
+            deleted_paths.add(path)
+    return hashes, raw_sources, deleted_paths
+
+
+def verify_existing_bundle(package: Path, qa_path: Path, *,
+                           _seen: set[Path] | None = None) -> dict[str, Any]:
+    seen = set(_seen or ())
+    package_resolved = package.resolve()
+    if package_resolved in seen:
+        raise RuntimeError(f"cyclic delta package lineage detected: {package}")
+    seen.add(package_resolved)
     if not package.is_file() or not qa_path.is_file():
         raise RuntimeError(f"incomplete prebuilt bundle/QA pair: {package}")
     qa = json.loads(qa_path.read_text(encoding="utf-8"))
@@ -243,24 +329,52 @@ def verify_existing_bundle(package: Path, qa_path: Path) -> dict[str, Any]:
             if hashlib.sha256(archive.read(member)).hexdigest() != digest:
                 raise RuntimeError(f"prebuilt package member hash mismatch: {package}!/{member}")
         if qa.get("bundle_type") == "directory_snapshot_delta":
-            try:
-                manifest = json.loads(archive.read("DELTA_MANIFEST.json"))
-            except (KeyError, json.JSONDecodeError) as exc:
-                raise RuntimeError(f"delta package has no valid DELTA_MANIFEST.json: {package}") from exc
+            manifest = json.loads(archive.read("DELTA_MANIFEST.json"))
             if (manifest.get("base_package_name") != qa.get("base_package_name") or
                     manifest.get("base_package_sha256") != qa.get("base_package_sha256") or
                     manifest.get("base_commit") != qa.get("base_commit") or
-                    manifest.get("head_commit") != qa.get("source_commit")):
+                    manifest.get("head_commit") != qa.get("source_commit") or
+                    manifest.get("prior_delta_head_commit") != qa.get("prior_delta_head_commit") or
+                    (manifest.get("base_delta_packages") or []) !=
+                    (qa.get("base_delta_packages") or [])):
                 raise RuntimeError(f"delta package/base identity mismatch: {package}")
+            payload_hashes = _delta_payload_hashes(manifest, package)
+            if any(expected.get(path) != digest for path, digest in payload_hashes.items()):
+                raise RuntimeError(f"delta payload hashes disagree with package QA: {package}")
             base_package = package.with_name(manifest["base_package_name"])
             base_qa_path = base_package.with_name(f"{base_package.stem}_PACKAGE_QA.json")
-            base_qa = verify_existing_bundle(base_package, base_qa_path)
-            if base_qa.get("package_sha256") != manifest["base_package_sha256"]:
+            base_qa = verify_existing_bundle(base_package, base_qa_path, _seen=seen)
+            if (base_qa.get("package_sha256") != manifest["base_package_sha256"] or
+                    base_qa.get("source_commit") != manifest.get("base_commit")):
                 raise RuntimeError(f"delta package references a different base identity: {package}")
-            base_hashes = base_qa.get("included_file_sha256", {})
+            prior_layers = manifest.get("base_delta_packages") or []
+            prior_heads = [entry.get("head_commit") for entry in prior_layers]
+            package_names = [entry.get("package_name") for entry in prior_layers]
+            if (any(not isinstance(head, str) or not head for head in prior_heads) or
+                    None in package_names or len(package_names) != len(set(package_names))):
+                raise RuntimeError(f"delta checkpoint has malformed package ordering: {package}")
+            distinct_heads = list(dict.fromkeys(prior_heads))
+            for previous, current in zip(distinct_heads, distinct_heads[1:]):
+                if git(["merge-base", "--is-ancestor", previous, current], check=False).returncode:
+                    raise RuntimeError(f"delta checkpoint heads are not in ancestry order: {package}")
+            expected_prior_head = prior_heads[-1] if prior_heads else None
+            if manifest.get("prior_delta_head_commit") != expected_prior_head:
+                raise RuntimeError(f"delta package prior-checkpoint head mismatch: {package}")
+            # A sibling delta package shares the same complete prior package set.
+            # Remove the full package from the recursion stack before verifying
+            # sibling layers, since each independently references that same base.
+            layer_seen = set(seen)
+            layer_seen.discard(base_package.resolve())
+            base_hashes, raw_sources, _base_deleted = _compose_delta_layers(
+                base_package, base_qa, prior_layers, seen=layer_seen)
+            if (manifest.get("base_delta_packages") or []) != prior_layers:
+                raise RuntimeError(f"delta package checkpoint list mismatch: {package}")
             for reference in manifest.get("referenced_existing_raw_sha256", []):
-                if (reference.get("source_package_sha256") != base_qa["package_sha256"] or
-                        base_hashes.get(reference.get("raw_path")) != reference.get("raw_sha256")):
+                source = raw_sources.get(reference.get("raw_path"))
+                if (base_hashes.get(reference.get("raw_path")) != reference.get("raw_sha256") or
+                        not source or
+                        source.get("source_package_name") != reference.get("source_package_name") or
+                        source.get("source_package_sha256") != reference.get("source_package_sha256")):
                     raise RuntimeError(f"delta package existing-raw reference mismatch: {package}")
     return qa
 
@@ -432,6 +546,102 @@ def latest_generic_snapshot(scope: Path, ancestor: str) -> tuple[Path, Path, dic
     return package, qa_path, qa
 
 
+def _git_blob_sha256(commit: str, repo_path: str) -> str | None:
+    result = subprocess.run(["git", "show", f"{commit}:{repo_path}"], cwd=REPO,
+                            capture_output=True, check=False)
+    if result.returncode:
+        return None
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
+def _delta_source_checkpoint(scope: Path, base_package: Path, base_qa: dict[str, Any],
+                             head_commit: str, package_set: list[dict[str, Any]],
+                             *, ancestor: str) -> dict[str, Any]:
+    hashes, raw_sources, deleted = _compose_delta_layers(base_package, base_qa, package_set)
+    full_commit = base_qa["source_commit"]
+    changes = committed_changes(full_commit, head_commit)
+    for repo_path, status in changes.items():
+        if (not in_scope(repo_path, [scope]) or is_package_output(repo_path, [scope]) or
+                generated_cache_path(repo_path)):
+            continue
+        member = Path(repo_path).relative_to(scope.relative_to(REPO)).as_posix()
+        if status == "D":
+            if member not in deleted:
+                raise RuntimeError(f"previous delta checkpoint omits deleted member: {member}")
+            continue
+        expected = _git_blob_sha256(head_commit, repo_path)
+        if expected is None or hashes.get(member) != expected:
+            raise RuntimeError(f"previous delta checkpoint does not cover committed member/hash: {repo_path}")
+    if git(["merge-base", "--is-ancestor", head_commit, ancestor], check=False).returncode:
+        raise RuntimeError(f"delta checkpoint head is not an ancestor of upstream: {head_commit}")
+    return {"head_commit": head_commit, "base_hashes": hashes, "raw_sources": raw_sources,
+            "deleted_files": deleted, "base_delta_packages": package_set}
+
+
+def latest_generic_delta_checkpoint(scope: Path, base_package: Path, base_qa: dict[str, Any],
+                                    ancestor: str) -> dict[str, Any]:
+    """Return the newest complete QA-passed delta set layered over a full snapshot."""
+    groups: dict[str, list[tuple[Path, dict[str, Any], dict[str, Any]]]] = {}
+    for package in sorted((scope / "handoff").glob(f"{scope.name}_delta_*.zip")):
+        qa_path = package.with_name(f"{package.stem}_PACKAGE_QA.json")
+        qa = verify_existing_bundle(package, qa_path)
+        if qa.get("bundle_type") != "directory_snapshot_delta":
+            continue
+        manifest = _read_delta_manifest(package)
+        if (manifest.get("base_package_name") != base_package.name or
+                manifest.get("base_package_sha256") != base_qa.get("package_sha256") or
+                manifest.get("base_commit") != base_qa.get("source_commit")):
+            continue
+        checkpoint_head = manifest.get("head_commit")
+        if not checkpoint_head or qa.get("head_commit") != checkpoint_head:
+            raise RuntimeError(f"delta QA head does not match its manifest: {package}")
+        if git(["merge-base", "--is-ancestor", checkpoint_head, ancestor], check=False).returncode:
+            continue
+        for package_file in (package, qa_path):
+            if git(["cat-file", "-e", f"{ancestor}:{rel(package_file)}"], check=False).returncode:
+                raise RuntimeError(f"delta checkpoint artifact is not committed at upstream: {package_file}")
+        groups.setdefault(checkpoint_head, []).append((package, qa, manifest))
+    if not groups:
+        return {"head_commit": base_qa["source_commit"],
+                "base_hashes": _source_hashes_from_qa(base_qa),
+                "raw_sources": {
+                    path: {"source_package_name": base_package.name,
+                           "source_package_sha256": base_qa["package_sha256"]}
+                    for path in _source_hashes_from_qa(base_qa) if path.endswith("raw.csv")},
+                "deleted_files": set(), "base_delta_packages": []}
+
+    distance_by_head = {
+        commit: int(git(["rev-list", "--count", f"{commit}..{ancestor}"]).stdout.strip())
+        for commit in groups
+    }
+    nearest_distance = min(distance_by_head.values())
+    newest = [commit for commit, distance in distance_by_head.items() if distance == nearest_distance]
+    if len(newest) != 1:
+        raise RuntimeError(f"ambiguous newest delta checkpoint heads in {scope}: {sorted(newest)}")
+    head_commit = newest[0]
+    selected = sorted(groups[head_commit], key=lambda item: item[0].name)
+    inherited_sets = [item[2].get("base_delta_packages") or [] for item in selected]
+    inherited_heads = [item[2].get("prior_delta_head_commit") for item in selected]
+    if any(value != inherited_sets[0] for value in inherited_sets[1:]) or any(
+            value != inherited_heads[0] for value in inherited_heads[1:]):
+        raise RuntimeError(f"delta packages at {head_commit} disagree on their prior checkpoint")
+    inherited = list(inherited_sets[0])
+    current_entries = [{"package_name": package.name, "package_sha256": qa["package_sha256"],
+                        "head_commit": head_commit}
+                       for package, qa, _ in selected]
+    package_set = inherited + current_entries
+    seen_names = [entry["package_name"] for entry in package_set]
+    if len(seen_names) != len(set(seen_names)):
+        raise RuntimeError(f"delta checkpoint repeats a package identity in {scope}")
+    prior_head = inherited_heads[0]
+    if inherited and prior_head != inherited[-1]["head_commit"]:
+        raise RuntimeError(f"delta checkpoint prior-head metadata is inconsistent in {scope}")
+    if not inherited and prior_head is not None:
+        raise RuntimeError(f"delta checkpoint names a prior head but no prior packages in {scope}")
+    return _delta_source_checkpoint(scope, base_package, base_qa, head_commit,
+                                    package_set, ancestor=ancestor)
+
+
 def classify_delta_members(current: list[dict[str, Any]], base_hashes: dict[str, str]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
     """Return added, modified, and removed paths by comparing scope-relative hashes."""
     current_by_path = {item["archive_path"]: item for item in current}
@@ -452,7 +662,8 @@ def delta_group(path: str) -> str:
 
 
 def build_generic_delta_specs(scope: Path, tag: str, base_package: Path, base_qa: dict[str, Any],
-                              *, exclude_html: bool = False) -> list[dict[str, Any]]:
+                              *, exclude_html: bool = False,
+                              checkpoint: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     current_sources: list[tuple[Path, str]] = []
     excluded_files = []
     for path in sorted(scope.rglob("*")):
@@ -466,8 +677,14 @@ def build_generic_delta_specs(scope: Path, tag: str, base_package: Path, base_qa
         current_sources.append((path, relative.as_posix()))
 
     current_records = file_records(current_sources)
-    base_hashes = {name: digest for name, digest in base_qa.get("included_file_sha256", {}).items()
-                   if name not in {"BUNDLE_MANIFEST.json", "README_BUNDLE.txt"}}
+    base_hashes = (checkpoint["base_hashes"] if checkpoint else
+                   _source_hashes_from_qa(base_qa))
+    raw_sources = (checkpoint["raw_sources"] if checkpoint else {
+        path: {"source_package_name": base_package.name,
+               "source_package_sha256": base_qa["package_sha256"]}
+        for path in base_hashes if path.endswith("raw.csv")})
+    prior_delta_packages = checkpoint["base_delta_packages"] if checkpoint else []
+    prior_delta_head = checkpoint["head_commit"] if prior_delta_packages else None
     added, modified, removed = classify_delta_members(current_records, base_hashes)
     deleted_raw = [path for path in removed if path.startswith("runs/") and path.endswith("/raw.csv")]
     if deleted_raw:
@@ -482,14 +699,13 @@ def build_generic_delta_specs(scope: Path, tag: str, base_package: Path, base_qa
     for item in added + modified:
         grouped.setdefault(delta_group(item["archive_path"]), []).append(item)
     references = []
-    for raw_path, digest in sorted(base_hashes.items()):
-        if raw_path.endswith("raw.csv"):
+    for raw_path, source in sorted(raw_sources.items()):
+        digest = base_hashes.get(raw_path)
+        if digest is not None:
             references.append({"raw_path": raw_path, "raw_sha256": digest,
-                               "source_package_name": base_package.name,
-                               "source_package_sha256": base_qa["package_sha256"]})
+                               **source})
 
     specs = []
-    source_commit = base_qa["source_commit"]
     for group, items in sorted(grouped.items()):
         sources = [(REPO / item["source_repo_path"], item["archive_path"]) for item in items]
         payload_bytes = sum(item["bytes"] for item in items)
@@ -517,6 +733,8 @@ def build_generic_delta_specs(scope: Path, tag: str, base_package: Path, base_qa
             "base_package_name": base_package.name,
             "base_package_sha256": base_qa["package_sha256"],
             "base_commit": base_qa["source_commit"],
+            "prior_delta_head_commit": prior_delta_head,
+            "base_delta_packages": prior_delta_packages,
             "head_commit": "PENDING_SOURCE_COMMIT",
             "included_files": items,
             "included_file_sha256": included_hashes,
@@ -532,8 +750,10 @@ def build_generic_delta_specs(scope: Path, tag: str, base_package: Path, base_qa
         delta_bytes = (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
         readme = (f"Incremental evidence for {scope.name}; group={group}.\n"
                   f"Base package: {base_package.name} ({base_qa['package_sha256']})\n"
-                  f"Base commit: {base_qa['source_commit']}\n"
-                  "Only new/modified evidence is included; unchanged evidence is hash-referenced.\n"
+                  f"Full-base commit: {base_qa['source_commit']}\n"
+                  + (f"Prior delta checkpoint: {prior_delta_head}; {len(prior_delta_packages)} package(s).\n"
+                     if prior_delta_packages else "No prior delta checkpoint.\n")
+                  + "Only new/modified evidence is included; unchanged evidence is hash-referenced.\n"
                   + ("Generated HTML was explicitly excluded and remains local.\n" if exclude_html else "")
                   + "No solver execution or scientific interpretation was performed by this package step.\n").encode("utf-8")
         specs.append({"name": package_name, "kind": "directory_snapshot_delta", "scope": scope,
@@ -541,6 +761,8 @@ def build_generic_delta_specs(scope: Path, tag: str, base_package: Path, base_qa
                       "extra_members": {"DELTA_MANIFEST.json": delta_bytes},
                       "readme": readme, "excluded_files": excluded_files,
                       "base_name": base_package.name, "base_sha": base_qa["package_sha256"],
+                      "base_delta_packages": prior_delta_packages,
+                      "prior_delta_head_commit": prior_delta_head,
                       "raw_by_run": {Path(item["archive_path"]).parts[1]: included_hashes[item["archive_path"]]
                                      for item in items if item["archive_path"].endswith("/raw.csv")},
                       "delta_manifest": manifest, "delta_group": group})
@@ -634,6 +856,8 @@ def bundle_plan(scopes: list[Path], specs: list[dict[str, Any]], retire: list[tu
                              "excluded_files": spec.get("excluded_files", []),
                              "base_package_name": spec.get("base_name"),
                              "base_package_sha256": spec.get("base_sha"),
+                             "prior_delta_head_commit": spec.get("prior_delta_head_commit"),
+                             "base_delta_packages": spec.get("base_delta_packages", []),
                              "delta_group": spec.get("delta_group"),
                              "qa_path": rel(spec["qa_path"])})
     return {"source_paths": source_paths, "packages": package_plan,
@@ -741,6 +965,8 @@ def archive_bundle(spec: dict[str, Any], source_commit: str) -> dict[str, Any]:
             "base_package_name", "base_package_sha256", "base_commit", "new_files",
             "modified_files", "deleted_files", "referenced_existing_raw_sha256",
             "new_physical_solve_count", "reused_point_count")})
+        qa["prior_delta_head_commit"] = spec["delta_manifest"].get("prior_delta_head_commit")
+        qa["base_delta_packages"] = spec["delta_manifest"].get("base_delta_packages", [])
         qa["head_commit"] = source_commit
     qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return {"path": rel(target), "qa_path": rel(qa_path), "sha256": qa["package_sha256"],
@@ -862,8 +1088,11 @@ def main() -> int:
             base = latest_generic_snapshot(scope, remote_commit)
             if base:
                 base_package, _, base_qa = base
+                checkpoint = latest_generic_delta_checkpoint(
+                    scope, base_package, base_qa, remote_commit)
                 specs.extend(build_generic_delta_specs(scope, args.tag, base_package, base_qa,
-                                                       exclude_html=args.exclude_html))
+                                                       exclude_html=args.exclude_html,
+                                                       checkpoint=checkpoint))
             else:
                 specs.append(build_generic_snapshot(scope, args.tag, exclude_html=args.exclude_html))
 

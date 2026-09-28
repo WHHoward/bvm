@@ -54,3 +54,47 @@ Scope: platform construction only. No JoSIM invocation or physical run occurred.
   repository run evidence.
 - Python compile, `bash -n try.sh`, and `git diff --check`: PASS.
 - Physical solve count for this platform-build task: **0**.
+
+## Incremental CELL-SE platform review
+
+Base HEAD: `3d12e5c5252f02748f880f09027e70c8d0cfc3d8`.
+
+### Adversarial probes
+
+- **Wrong-branch/default:** old A/B/C presets omit both new fields. The loader
+  supplies `SHARED_COLUMN/COLUMN`, and byte-for-byte rerender checks against
+  A001–A003 `actual_deck.cir` and `stimulus.inc` pass.
+- **Name-only fake independence:** D0/D1 each render four distinct
+  `SE_RxCy` nodes and four source lines; all four exact `XBVM_*` port lines
+  connect to the corresponding cell node. Static QA parses the eight source
+  endpoints and checks the source/node map against topology metadata.
+- **D0/D1 coupling:** their deck and all preparation-stage PWLs are identical.
+  The sole PWL delta is the FINAL_READ segment on `I_SE_R2C1`: 100 µA for D0,
+  zero for D1. D0 final SE is R1C1+R2C1 by column; D1 is R1C1 only.
+- **Stale/raw overwrite:** all three historic manifest raw hashes still match,
+  every existing package reopens with valid CRC and matching detached QA SHA,
+  and the runner's temporary allocation test advances past existing run IDs
+  without touching their directories.
+- **Canonical source drift:** all five canonical source SHA-256 values are
+  checked against frozen constants for both D presets.
+
+### Residual uncertainty
+
+- Static PWL values are ideal current-source setpoints only. Actual source and
+  BVM branch-current sharing requires a future user-authorized physical solve.
+- JoSIM parsing/solving was intentionally not performed. No physical outcome
+  or selection claim is made.
+- The pre-existing mocked-runner test was included once in an earlier full
+  suite and generated a zero-filled synthetic CSV inside a disposable
+  `TemporaryDirectory`; cleanup removed it. No synthetic file entered
+  `runs/`, Git, or the preserved historical evidence. The final 19-test pass
+  omitted that mock test per the no-fake-run-artifact boundary.
+
+### Incremental acceptance
+
+- 19 static/regression tests passed after the final code edits; the one excluded
+  test is the temporary synthetic-raw mocked-runner test described above.
+- D0/D1 dry-runs: topology/probe/static QA PASS; no run directory, solver call,
+  or raw created.
+- Legacy A/B/C regression and historic run deck/stimulus snapshot checks: PASS.
+- Physical solve count for this platform-only extension: **0**.

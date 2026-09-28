@@ -32,6 +32,24 @@ overwritten or removed.
 Adversarial probe: `scripts/test_submit.py::test_generic_delta_classifies_changes_and_groups_by_run`
 checks additions, modifications, removals, and run-vs-metadata grouping.
 
+## Chained delta checkpoints
+
+If QA-passed deltas already exist after the selected full snapshot, the submit
+workflow groups them by their committed `head_commit`, verifies the newest
+reachable complete set, and proves its member closure against the Git diff from
+the full snapshot's source commit. The next delta records that prior package set
+and references the raw path/hash plus the exact package that owns each raw.
+Composition rejects missing/altered prior members, conflicting same-head
+members, raw deletion, cyclic lineage, and stale/uncommitted package bases.
+Run groups are then formed only from files that are new or changed relative to
+the composed checkpoint; prior raw files are not copied again.
+
+Adversarial probes:
+`scripts/test_submit.py::test_generic_delta_uses_latest_complete_delta_set_and_raw_owners`
+checks the live A002/A003 package checkpoint; and
+`scripts/test_submit.py::test_generic_delta_only_contains_files_new_since_composed_checkpoint`
+checks that the next package plan does not duplicate those raw files.
+
 ## Highest-risk probes
 
 | Hidden-error hypothesis | Probe | Result |

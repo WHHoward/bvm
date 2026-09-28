@@ -52,15 +52,21 @@ SOURCE_SHA256 = {
 CASE_KEYS = {
     "NAME", "DRIVE_MODE", "ROW_BITS", "COL_BITS", "ROW_WL_READ_AMPLITUDE",
     "COL_SE_READ_AMPLITUDE", "ROW_WL_WRITE_AMPLITUDE", "COL_BL_WRITE_AMPLITUDE",
-    "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R", "DT", "STOP", "PROBE_PROFILE",
+    "SE_TOPOLOGY", "SE_GATE_MODE", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
+    "DT", "STOP", "PROBE_PROFILE",
 }
+OPTIONAL_SE_KEYS = {"SE_TOPOLOGY", "SE_GATE_MODE"}
+LEGACY_SE_DEFAULTS = {"SE_TOPOLOGY": "SHARED_COLUMN", "SE_GATE_MODE": "COLUMN"}
 STIMULUS_KEYS = {
     f"{stage}_{field}"
     for stage in ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
     for field in ("START", "RISE", "HOLD", "FALL")
 }
 DEFAULT_PRESET = "A_INDEPENDENT_10_10"
-PRESET_NAMES = {"A_INDEPENDENT_10_10", "B_SHARED_10_10", "C_SHARED_11_11"}
+PRESET_NAMES = {
+    "A_INDEPENDENT_10_10", "B_SHARED_10_10", "C_SHARED_11_11",
+    "D0_CELL_SE_COLUMN_10_10", "D1_CELL_SE_CROSSPOINT_10_10",
+}
 ROWS = (1, 2)
 COLS = (1, 2)
 CELL_JJS = ("B_JM1", "B_JM2", "B_JS1", "B_JS2")
@@ -144,20 +150,33 @@ def fmt_time(seconds: Decimal) -> str:
 
 
 def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, str]]:
-    case = parse_env(USER_CASE, CASE_KEYS, required=CASE_KEYS)
+    case = parse_env(USER_CASE, CASE_KEYS, required=CASE_KEYS - OPTIONAL_SE_KEYS)
+    case = _with_se_defaults(case)
     if preset is not None:
         if preset not in PRESET_NAMES:
             raise ConfigError(f"unknown preset {preset!r}; choose one of {sorted(PRESET_NAMES)}")
         preset_path = PRESETS_DIR / f"{preset}.env"
-        overrides = parse_env(preset_path, CASE_KEYS - {"NAME", "SJTL_PER_CELL", "POST_CB_PER_CELL",
-                                                          "TERM_R", "DT", "STOP", "PROBE_PROFILE"},
-                              required=CASE_KEYS - {"NAME", "SJTL_PER_CELL", "POST_CB_PER_CELL",
-                                                   "TERM_R", "DT", "STOP", "PROBE_PROFILE"})
+        preset_fixed_keys = {"NAME", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
+                             "DT", "STOP", "PROBE_PROFILE"}
+        overrides = parse_env(preset_path, CASE_KEYS - preset_fixed_keys,
+                              required=CASE_KEYS - preset_fixed_keys - OPTIONAL_SE_KEYS)
         case.update(overrides)
+        # Legacy A/B/C presets intentionally retain their original SE behavior,
+        # even when the editable USER_CASE now selects a new CELL topology.
+        for key, value in LEGACY_SE_DEFAULTS.items():
+            if key not in overrides:
+                case[key] = value
     stimulus = parse_env(STIMULUS, STIMULUS_KEYS, required=STIMULUS_KEYS)
     validate_config(case, stimulus)
     verify_sources()
     return case, stimulus
+
+
+def _with_se_defaults(case: dict[str, str]) -> dict[str, str]:
+    effective = dict(case)
+    for key, value in LEGACY_SE_DEFAULTS.items():
+        effective.setdefault(key, value)
+    return effective
 
 
 def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
@@ -165,6 +184,12 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
         raise ConfigError("NAME must contain only letters, digits, underscore, or hyphen")
     if case["DRIVE_MODE"] not in {"INDEPENDENT", "SHARED"}:
         raise ConfigError("DRIVE_MODE must be INDEPENDENT or SHARED")
+    if case["SE_TOPOLOGY"] not in {"SHARED_COLUMN", "CELL"}:
+        raise ConfigError("SE_TOPOLOGY must be SHARED_COLUMN or CELL")
+    if case["SE_GATE_MODE"] not in {"COLUMN", "CROSSPOINT"}:
+        raise ConfigError("SE_GATE_MODE must be COLUMN or CROSSPOINT")
+    if case["SE_GATE_MODE"] == "CROSSPOINT" and _effective_se_topology(case) != "CELL":
+        raise ConfigError("SE_GATE_MODE=CROSSPOINT requires independent per-cell SE nodes")
     for key in ("ROW_BITS", "COL_BITS"):
         if not re.fullmatch(r"[01]{2}", case[key]):
             raise ConfigError(f"{key} must be exactly two bits; leftmost bit selects index 1")
@@ -259,6 +284,17 @@ def cell_selected(case: dict[str, str], row: int, col: int) -> bool:
     return case["ROW_BITS"][row - 1] == "1" and case["COL_BITS"][col - 1] == "1"
 
 
+def _effective_se_topology(case: dict[str, str]) -> str:
+    # INDEPENDENT drive has always provided a separate SE source per cell.
+    return "CELL" if case["DRIVE_MODE"] == "INDEPENDENT" else case["SE_TOPOLOGY"]
+
+
+def _final_read_se_enabled(case: dict[str, str], row: int, col: int) -> bool:
+    if case["SE_GATE_MODE"] == "CROSSPOINT":
+        return cell_selected(case, row, col)
+    return case["COL_BITS"][col - 1] == "1"
+
+
 def cell_selection_groups(case: dict[str, str]) -> dict[str, list[str]]:
     selected: list[str] = []
     half_selected: list[str] = []
@@ -290,10 +326,17 @@ def _driver_layout(case: dict[str, str]) -> list[dict[str, Any]]:
             records.append({"source": f"I_BL_C{col}", "branch": "BL",
                             "line": f"COL{col}", "node": f"BL_C{col}",
                             "cells": [cell_id(row, col) for row in ROWS]})
-        for col in COLS:
-            records.append({"source": f"I_SE_C{col}", "branch": "SE",
-                            "line": f"COL{col}", "node": f"SE_C{col}",
-                            "cells": [cell_id(row, col) for row in ROWS]})
+        if _effective_se_topology(case) == "SHARED_COLUMN":
+            for col in COLS:
+                records.append({"source": f"I_SE_C{col}", "branch": "SE",
+                                "line": f"COL{col}", "node": f"SE_C{col}",
+                                "cells": [cell_id(row, col) for row in ROWS]})
+        else:
+            for row in ROWS:
+                for col in COLS:
+                    name = cell_id(row, col)
+                    records.append({"source": f"I_SE_{name}", "branch": "SE",
+                                    "line": name, "node": f"SE_{name}", "cells": [name]})
     else:
         for row in ROWS:
             for col in COLS:
@@ -319,7 +362,14 @@ def _branch_amplitude(case: dict[str, str], branch: str, stage: str,
         if stage in {"WRITE0", "WRITE1"}:
             return "0"
         amplitude = case["COL_SE_READ_AMPLITUDE"]
-        enabled = True if stage == "READ0" else case["COL_BITS"][int(col) - 1] == "1"
+        if stage == "READ0":
+            enabled = True
+        elif case["SE_GATE_MODE"] == "COLUMN":
+            enabled = case["COL_BITS"][int(col) - 1] == "1"
+        else:
+            if row is None:
+                raise ConfigError("CROSSPOINT SE driver must identify a single cell row")
+            enabled = cell_selected(case, int(row), int(col))
     if not enabled:
         return "0"
     if stage == "WRITE0" and branch in {"WL", "BL"}:
@@ -337,7 +387,7 @@ def _stimulus_for_driver(case: dict[str, str], stimulus: dict[str, str],
         if driver["branch"] == "WL":
             row = int(driver["line"][-1])
             col = None
-        else:
+        elif driver["branch"] == "BL" or _effective_se_topology(case) == "SHARED_COLUMN":
             col = int(driver["line"][-1])
             row = None
 
@@ -418,7 +468,7 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
                 "row_bit": case["ROW_BITS"][row - 1],
                 "column_bit": case["COL_BITS"][col - 1],
                 "final_read_wl_enabled": case["ROW_BITS"][row - 1] == "1",
-                "final_read_se_enabled": case["COL_BITS"][col - 1] == "1",
+                "final_read_se_enabled": _final_read_se_enabled(case, row, col),
                 "final_read_crosspoint_active": cell_selected(case, row, col),
                 "input_nodes": input_nodes,
                 "sl_node": sl_node, "qb_output_node": qb_node,
@@ -436,11 +486,17 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
     if len(outputs) != len(set(outputs)):
         raise ConfigError("cell output nodes are not independent")
     if case["DRIVE_MODE"] == "SHARED":
-        buses = [driver["node"] for driver in drivers]
-        if len(buses) != 6 or len(buses) != len(set(buses)):
-            raise ConfigError("SHARED must have six electrically distinct buses")
-        if len(drivers) != 6 or any(len(driver["cells"]) != 2 for driver in drivers):
-            raise ConfigError("SHARED must have one source per row/column line, each feeding two cells")
+        se_count = 2 if _effective_se_topology(case) == "SHARED_COLUMN" else 4
+        expected_count = 4 + se_count
+        nodes = [driver["node"] for driver in drivers]
+        if len(nodes) != expected_count or len(nodes) != len(set(nodes)):
+            raise ConfigError(f"SHARED requires {expected_count} electrically distinct driver nodes")
+        if any(len(driver["cells"]) != 2 for driver in drivers if driver["branch"] in {"WL", "BL"}):
+            raise ConfigError("SHARED WL/BL sources must each feed exactly their two row/column cells")
+        se_drivers = [driver for driver in drivers if driver["branch"] == "SE"]
+        expected_se_cells = 2 if _effective_se_topology(case) == "SHARED_COLUMN" else 1
+        if len(se_drivers) != se_count or any(len(driver["cells"]) != expected_se_cells for driver in se_drivers):
+            raise ConfigError("SHARED SE source cardinality disagrees with SE_TOPOLOGY")
     elif len(drivers) != 12 or any(len(driver["cells"]) != 1 for driver in drivers):
         raise ConfigError("INDEPENDENT must have exactly three independent drivers per cell")
 
@@ -460,19 +516,34 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
         "* FINAL READ has zero BL drive.",
         *instance_lines,
     ]
+    shared_nodes = {}
+    if case["DRIVE_MODE"] == "SHARED":
+        shared_nodes = {
+            "WL": {f"ROW{row}": f"WL_R{row}" for row in ROWS},
+            "BL": {f"COL{col}": f"BL_C{col}" for col in COLS},
+        }
+        if _effective_se_topology(case) == "SHARED_COLUMN":
+            shared_nodes["SE"] = {f"COL{col}": f"SE_C{col}" for col in COLS}
     topology = {
         "schema": "bvm-2x2-rowcol-topology-v1",
         "drive_mode": case["DRIVE_MODE"],
+        "se_configuration": {
+            "configured_topology": case["SE_TOPOLOGY"],
+            "effective_topology": _effective_se_topology(case),
+            "gate_mode": case["SE_GATE_MODE"],
+            "shared_column_nodes": ({f"COL{col}": f"SE_C{col}" for col in COLS}
+                                    if case["DRIVE_MODE"] == "SHARED" and
+                                    _effective_se_topology(case) == "SHARED_COLUMN" else {}),
+            "cell_nodes": {cell["cell"]: cell["input_nodes"]["SE"] for cell in cell_records},
+            "final_read_enabled_by_cell": {
+                cell["cell"]: cell["final_read_se_enabled"] for cell in cell_records},
+        },
         "grid": {"rows": 2, "columns": 2,
                  "row_bits": case["ROW_BITS"], "column_bits": case["COL_BITS"],
                  "row_bit_order": "leftmost bit selects row 1; rightmost selects row 2",
                  "column_bit_order": "leftmost bit selects column 1; rightmost selects column 2"},
         "cell_selection": cell_selection_groups(case),
-        "shared_nodes": ({
-            "WL": {f"ROW{row}": f"WL_R{row}" for row in ROWS},
-            "BL": {f"COL{col}": f"BL_C{col}" for col in COLS},
-            "SE": {f"COL{col}": f"SE_C{col}" for col in COLS},
-        } if case["DRIVE_MODE"] == "SHARED" else {}),
+        "shared_nodes": shared_nodes,
         "input_lines": drivers,
         "driver_count": len(drivers),
         "driver_count_by_branch": {branch: sum(item["branch"] == branch for item in drivers)
@@ -580,6 +651,9 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
         "schema": "bvm-2x2-rowcol-probes-v1",
         "profile": case["PROBE_PROFILE"],
         "drive_mode": case["DRIVE_MODE"],
+        "se_topology": case["SE_TOPOLOGY"],
+        "effective_se_topology": _effective_se_topology(case),
+        "se_gate_mode": case["SE_GATE_MODE"],
         "row_bits": case["ROW_BITS"], "column_bits": case["COL_BITS"],
         "active_crosspoints": topology["cell_selection"]["active_crosspoints"],
         "half_selected": topology["cell_selection"]["half_selected"],
@@ -613,11 +687,22 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
     if len(outputs) != 4 or len(set(outputs)) != 4:
         raise ConfigError("all four cell outputs must be independent")
     drivers = topology["input_lines"]
-    expected_count = 6 if case["DRIVE_MODE"] == "SHARED" else 12
+    expected_by_branch = ({"WL": 2, "BL": 2,
+                           "SE": 2 if _effective_se_topology(case) == "SHARED_COLUMN" else 4}
+                          if case["DRIVE_MODE"] == "SHARED"
+                          else {"WL": 4, "BL": 4, "SE": 4})
+    expected_count = sum(expected_by_branch.values())
     if topology["driver_count"] != expected_count:
         raise ConfigError(f"{case['DRIVE_MODE']} needs {expected_count} drivers, got {topology['driver_count']}")
+    actual_by_branch = {branch: sum(driver["branch"] == branch for driver in drivers)
+                        for branch in ("WL", "BL", "SE")}
+    if actual_by_branch != expected_by_branch or topology["driver_count_by_branch"] != expected_by_branch:
+        raise ConfigError(f"driver counts {actual_by_branch} do not match expected {expected_by_branch}")
+    all_driver_nodes = [driver["node"] for driver in drivers]
+    if len(all_driver_nodes) != len(set(all_driver_nodes)):
+        raise ConfigError("input current sources must terminate on distinct source nodes")
     if case["DRIVE_MODE"] == "SHARED":
-        for branch in ("WL", "BL", "SE"):
+        for branch in ("WL", "BL"):
             branch_drivers = [driver for driver in drivers if driver["branch"] == branch]
             if len(branch_drivers) != 2 or any(len(driver["cells"]) != 2 for driver in branch_drivers):
                 raise ConfigError(f"SHARED {branch} must contain exactly two buses with two cells each")
@@ -626,6 +711,19 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
         se_nodes = {item["node"] for item in drivers if item["branch"] == "SE"}
         if wl_nodes & bl_nodes or wl_nodes & se_nodes or bl_nodes & se_nodes:
             raise ConfigError("WL, BL, and SE buses must be electrically distinct")
+        if _effective_se_topology(case) == "SHARED_COLUMN":
+            for col in COLS:
+                record = next(item for item in drivers
+                              if item["branch"] == "SE" and item["line"] == f"COL{col}")
+                if set(record["cells"]) != {cell_id(row, col) for row in ROWS}:
+                    raise ConfigError(f"shared column SE{col} does not attach to exactly its two cells")
+        else:
+            se_by_cell = {driver["cells"][0]: driver for driver in drivers if driver["branch"] == "SE"}
+            if set(se_by_cell) != {cell_id(row, col) for row in ROWS for col in COLS}:
+                raise ConfigError("CELL SE topology must have one driver and node per BVM")
+            if len(se_nodes) != 4 or any(driver["node"] != f"SE_{name}"
+                                         for name, driver in se_by_cell.items()):
+                raise ConfigError("CELL SE nodes are not four separate cell-specific electrical nodes")
     else:
         if any(len(driver["cells"]) != 1 for driver in drivers):
             raise ConfigError("INDEPENDENT sources may feed only one cell input each")
@@ -635,6 +733,17 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
     generated_driver_lines = [line for line in drive_lines if line.startswith("I_")]
     if len(generated_driver_lines) != expected_count:
         raise ConfigError(f"deck contains {len(generated_driver_lines)} driver sources, expected {expected_count}")
+    rendered_source_nodes: dict[str, str] = {}
+    for line in generated_driver_lines:
+        fields = line.split(maxsplit=3)
+        if len(fields) != 4 or fields[1] != "0" or not fields[3].startswith("PWL("):
+            raise ConfigError(f"malformed generated current source line: {line}")
+        if fields[0] in rendered_source_nodes:
+            raise ConfigError(f"duplicate generated source {fields[0]}")
+        rendered_source_nodes[fields[0]] = fields[2]
+    expected_source_nodes = {driver["source"]: driver["node"] for driver in drivers}
+    if rendered_source_nodes != expected_source_nodes:
+        raise ConfigError("rendered PWL source endpoints do not match topology input_lines")
     source_records = {driver["source"]: driver for driver in drivers}
     for cell in cell_records:
         name, row, col = cell["cell"], cell["row"], cell["column"]
@@ -646,7 +755,8 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
             "BL": {"WRITE0": f"-{case['COL_BL_WRITE_AMPLITUDE']}", "READ0": "0",
                    "WRITE1": case["COL_BL_WRITE_AMPLITUDE"], "FINAL_READ": "0"},
             "SE": {"WRITE0": "0", "READ0": case["COL_SE_READ_AMPLITUDE"], "WRITE1": "0",
-                   "FINAL_READ": case["COL_SE_READ_AMPLITUDE"] if case["COL_BITS"][col - 1] == "1" else "0"},
+                   "FINAL_READ": case["COL_SE_READ_AMPLITUDE"]
+                   if _final_read_se_enabled(case, row, col) else "0"},
         }
         for branch, expected in expected_values.items():
             source = cell["source_for_each_input"][branch]
@@ -662,12 +772,11 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
             record = next(item for item in drivers if item["source"] == f"I_WL_R{row}")
             if set(record["cells"]) != {cell_id(row, col) for col in COLS}:
                 raise ConfigError(f"shared row WL{row} does not attach to exactly its two cells")
-        for branch in ("BL", "SE"):
-            for col in COLS:
-                record = next(item for item in drivers
-                              if item["branch"] == branch and item["line"] == f"COL{col}")
-                if set(record["cells"]) != {cell_id(row, col) for row in ROWS}:
-                    raise ConfigError(f"shared column {branch}{col} does not attach to exactly its two cells")
+        for col in COLS:
+            record = next(item for item in drivers
+                          if item["branch"] == "BL" and item["line"] == f"COL{col}")
+            if set(record["cells"]) != {cell_id(row, col) for row in ROWS}:
+                raise ConfigError(f"shared column BL{col} does not attach to exactly its two cells")
     probe_labels = [item["label"] for item in probes["signals"]]
     if len(probe_labels) != len(set(probe_labels)) or probes["signal_count"] != len(probe_labels):
         raise ConfigError("probe manifest contains duplicates or inconsistent signal_count")
@@ -705,9 +814,14 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
                                     for role in ("BVM", "QB", "SJTL", "POST_CB")},
         "drive_mode": case["DRIVE_MODE"],
         "source_count_by_branch": topology["driver_count_by_branch"],
+        "driver_source_node_map_matches": True,
         "four_cell_load_chains_match": True,
         "four_outputs_unique": len(set(outputs)) == 4,
         "row_column_bit_mapping_match": True,
+        "se_topology": case["SE_TOPOLOGY"],
+        "effective_se_topology": _effective_se_topology(case),
+        "se_gate_mode": case["SE_GATE_MODE"],
+        "cell_se_nodes_independent": len({cell["input_nodes"]["SE"] for cell in cell_records}) == 4,
         "final_read_bl_zero": True,
         "deck_print_set_matches_probe_manifest": True,
         "t1_count": 0, "output_merge": False,
@@ -750,6 +864,17 @@ def parameter_manifest(case: dict[str, str], stimulus: dict[str, str], records: 
     }
 
 
+def _run_config_identity(case: dict[str, str]) -> dict[str, str]:
+    return {
+        "drive_mode": case["DRIVE_MODE"],
+        "se_topology": case["SE_TOPOLOGY"],
+        "effective_se_topology": _effective_se_topology(case),
+        "se_gate_mode": case["SE_GATE_MODE"],
+        "row_bits": case["ROW_BITS"],
+        "column_bits": case["COL_BITS"],
+    }
+
+
 def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
                         stimulus: dict[str, str], rendered: dict[str, Any],
                         solver_info: dict[str, Any]) -> str:
@@ -763,14 +888,15 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- Parameter/topology/probe manifest SHA-256: `{sha256(run_dir / 'parameter_manifest.json')}` / "
         f"`{sha256(run_dir / 'topology_manifest.json')}` / `{sha256(run_dir / 'probe_manifest.json')}`.",
         f"- Drive mode: `{case['DRIVE_MODE']}`; ROW_BITS=`{case['ROW_BITS']}`; COL_BITS=`{case['COL_BITS']}`.",
+        f"- SE topology: configured `{case['SE_TOPOLOGY']}`, effective `{_effective_se_topology(case)}`; gate `{case['SE_GATE_MODE']}`.",
         "- Leftmost row bit is row 1; leftmost column bit is column 1.",
         f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",
         f"- Half-selected cells: `{', '.join(rendered['topology']['cell_selection']['half_selected']) or 'none'}`.",
         f"- Unselected cells: `{', '.join(rendered['topology']['cell_selection']['unselected']) or 'none'}`.",
         "- Four BVM cells use the same WRITE0 / READ0 / WRITE1 stimulus; row/column bits gate FINAL READ only.",
-        "- FINAL READ BL sources are zero. ROW WL and COL SE independently determine each effective crosspoint.",
+        "- FINAL READ BL sources are zero. CELL/CROSSPOINT SE is independently enabled only where both row and column bits are active.",
         "- Load per cell: BVM → canonical QB → one canonical sJTL → one canonical CB → separate VOUT → 2 Ω.",
-        "- SHARED drive uses six distinct real buses and one driver per bus; no per-cell duplicate drivers.",
+        "- SHARED drive uses two shared row-WL sources, two shared column-BL sources, and either two shared-column or four cell-local SE sources.",
         "- Shared 200 µA and independent 100 µA are candidate drive settings, not assumed equivalent.",
         f"- DT=`{case['DT']}`, STOP=`{case['STOP']}`; P(...) raw unit is radians.",
         "- Registered half-open windows: WRITE0, READ0, WRITE1, FINAL READ; exact windows are in stimulus_qa.json.",
@@ -837,7 +963,9 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
     groups = rendered["topology"]["cell_selection"]
     row_bits, col_bits = case["ROW_BITS"], case["COL_BITS"]
     if case["DRIVE_MODE"] == "SHARED":
-        driver_label = "6 line sources (WL/BL/SE = 2/2/2); amplitudes are per-line candidates"
+        se_count = 2 if _effective_se_topology(case) == "SHARED_COLUMN" else 4
+        driver_label = (f"{4 + se_count} sources (WL/BL/SE = 2/2/{se_count}); "
+                        "WL/BL are per-line; SE topology shown below")
     else:
         driver_label = "12 cell sources (WL/BL/SE = 4/4/4); amplitudes are per-cell"
     windows = _stage_windows(case, stimulus)
@@ -850,20 +978,27 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
     print(f"Case: {case['NAME']} | next run if executed: {run_id}")
     print(f"Topology: {case['DRIVE_MODE']} | ROW_BITS={row_bits} | COL_BITS={col_bits} "
           "(leftmost bit is index 1)")
+    print(f"SE: configured={case['SE_TOPOLOGY']} | effective={_effective_se_topology(case)} "
+          f"| gate={case['SE_GATE_MODE']}")
     print("FINAL READ: active=" + ",".join(groups["active_crosspoints"] or ["none"])
           + " | half-selected=" + ",".join(groups["half_selected"] or ["none"])
           + " | off=" + ",".join(groups["unselected"] or ["none"]))
     print(f"Drivers: {driver_label}; write WL/BL={case['ROW_WL_WRITE_AMPLITUDE']}/"
           f"{case['COL_BL_WRITE_AMPLITUDE']}, read WL/SE={case['ROW_WL_READ_AMPLITUDE']}/"
           f"{case['COL_SE_READ_AMPLITUDE']}")
-    print("Final-read cell drives (WL, BL, SE):")
+    print("FINAL_READ programmed source values per cell (WL, BL, SE; not measured branch currents):")
     for cell in rendered["cell_records"]:
         values = {branch: rendered["driver_stages"][source]["FINAL_READ"]
                   for branch, source in cell["source_for_each_input"].items()}
         print(f"  {cell['cell']}: {values['WL']}, {values['BL']}, {values['SE']}")
     print(f"Stimulus windows: {times}")
+    final_se_gate = "column bits" if case["SE_GATE_MODE"] == "COLUMN" else "row AND column bits"
     print("PWL phases: WRITE0 −WL/−BL; READ0 +WL/+SE; WRITE1 +WL/+BL; "
-          "FINAL_READ +WL(row bits)/+SE(column bits), BL=0")
+          f"FINAL_READ +WL(row bits)/+SE({final_se_gate}), BL=0")
+    if case["DRIVE_MODE"] == "SHARED" and _effective_se_topology(case) == "CELL":
+        for driver in rendered["drivers"]:
+            if driver["branch"] == "SE":
+                print(f"  {driver['source']} → {driver['node']} → {','.join(driver['cells'])}")
     print("All four cells receive the same WRITE0/READ0/WRITE1 sequence.")
     print("Output/load: 4 independent chains, BVM→QB→1×sJTL→1×CB→VOUT→2Ω")
     print(f"Solver settings: DT={case['DT']}, STOP={case['STOP']}; planned solves if run=1")
@@ -1173,6 +1308,9 @@ def _write_root_manifest(run_id: str, run_dir: Path, result: dict[str, Any]) -> 
     rows = [item for item in manifest["runs"] if item.get("run_id") != run_id]
     rows.append({"run_id": run_id, "path": str(run_dir.relative_to(SERIES)),
                  "physical_solve_count": 1,
+                 **{key: result[key] for key in ("drive_mode", "se_topology",
+                                                   "effective_se_topology", "se_gate_mode",
+                                                   "row_bits", "column_bits")},
                  "status": result.get("status"), "artifact_status": result.get("artifact_status"),
                  "raw_sha256": result.get("raw_sha256")})
     manifest["runs"] = rows
@@ -1204,6 +1342,7 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
     _json(run_dir / "analysis" / "static_qa.json", rendered["static_qa"])
     _json(run_dir / "stimulus_manifest.json", {
         "schema": "bvm-2x2-rowcol-stimulus-v1",
+        **_run_config_identity(case),
         "timing_windows": {name: {"start": stimulus[f"{name}_START"],
                                    "rise": stimulus[f"{name}_RISE"],
                                    "hold": stimulus[f"{name}_HOLD"],
@@ -1211,6 +1350,9 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
                            for name in ("WRITE0", "READ0", "WRITE1", "FINAL_READ")},
         "line_sources": rendered["drivers"],
         "source_stage_values": rendered["driver_stages"],
+        "final_read_se_enabled_by_cell": {
+            cell["cell"]: cell["final_read_se_enabled"]
+            for cell in rendered["topology"]["cell_instances"]},
         "final_read_bl_zero": True,
     })
     (run_dir / "analysis" / "metric_spec.json").write_bytes(
@@ -1253,6 +1395,7 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
     verify_sources()
     if completed.returncode != 0 or not (run_dir / "raw.csv").is_file():
         result = {"schema": "bvm-2x2-rowcol-result-v1", "run_id": run_id,
+                  **_run_config_identity(case),
                   "status": "SOLVER_FAILURE", "artifact_status": "INVALID",
                   "solver_exit_code": completed.returncode, "physical_solve_count": 1,
                   "automatic_follow_up": False, "scientific_interpretation_performed": False}
@@ -1279,8 +1422,13 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
                                              for driver in rendered["drivers"])
                                      and "stimulus.inc" in deck
                                      and all(driver["node"] in deck for driver in rendered["drivers"])) else "FAIL",
-            "drive_mode": case["DRIVE_MODE"], "driver_count": len(rendered["drivers"]),
+            **_run_config_identity(case),
+            "driver_count": len(rendered["drivers"]),
+            "source_count_by_branch": rendered["topology"]["driver_count_by_branch"],
             "drivers": rendered["drivers"], "stage_values": driver_stages,
+            "final_read_se_enabled_by_cell": {
+                cell["cell"]: cell["final_read_se_enabled"]
+                for cell in rendered["topology"]["cell_instances"]},
             "pwl_source_count": len(rendered["drive_lines"]),
             "final_read_bl_zero": all(item["FINAL_READ"] == "0" for source, item in driver_stages.items()
                                        if source.startswith("I_BL_")),
@@ -1359,6 +1507,7 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
         _json(run_dir / "provenance.json", provenance)
         result = {
             "schema": "bvm-2x2-rowcol-result-v1", "run_id": run_id,
+            **_run_config_identity(case),
             "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" if qa_pass else "ARTIFACT_INVALID",
             "artifact_status": "VALID" if qa_pass else "INVALID",
             "solver_exit_code": 0, "physical_solve_count": 1,
@@ -1384,6 +1533,7 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
         return 0 if qa_pass else 2
     except Exception as exc:
         result = {"schema": "bvm-2x2-rowcol-result-v1", "run_id": run_id,
+                  **_run_config_identity(case),
                   "status": "POSTPROCESS_FAILURE_RAW_PRESERVED", "artifact_status": "INVALID",
                   "solver_exit_code": 0, "physical_solve_count": 1,
                   "raw_sha256": sha256(run_dir / "raw.csv"),

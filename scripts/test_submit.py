@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -54,6 +55,48 @@ class SubmitWorkflowTests(unittest.TestCase):
         self.assertEqual(removed, ["README.md", "runs/A001/raw.csv"])
         self.assertEqual(submit.delta_group("runs/A002/raw.csv"), "A002")
         self.assertEqual(submit.delta_group("USER_CASE.env"), "metadata")
+
+    def test_generic_delta_uses_latest_complete_delta_set_and_raw_owners(self) -> None:
+        scope = submit.REPO / "test/exploration/bvm-2x2-rowcol-selection-v1-20260928"
+        upstream = submit.git(["rev-parse", submit.upstream()]).stdout.strip()
+        base = submit.latest_generic_snapshot(scope, upstream)
+        self.assertIsNotNone(base)
+        base_package, _base_qa_path, base_qa = base
+        checkpoint = submit.latest_generic_delta_checkpoint(scope, base_package, base_qa, upstream)
+        self.assertTrue(checkpoint["base_delta_packages"])
+        self.assertFalse(submit.git(["merge-base", "--is-ancestor", checkpoint["head_commit"], upstream],
+                                    check=False).returncode)
+        for run_id in ("A002_SHARED_R10_C10", "A003_SHARED_R10_C10"):
+            raw_member = f"runs/{run_id}/raw.csv"
+            result = json.loads((scope / "runs" / run_id / "result.json").read_text(encoding="utf-8"))
+            self.assertEqual(checkpoint["base_hashes"][raw_member], result["raw_sha256"])
+            owner = checkpoint["raw_sources"][raw_member]
+            self.assertIn(run_id, owner["source_package_name"])
+            self.assertEqual(len(owner["source_package_sha256"]), 64)
+
+    def test_generic_delta_only_contains_files_new_since_composed_checkpoint(self) -> None:
+        scope = submit.REPO / "test/exploration/bvm-2x2-rowcol-selection-v1-20260928"
+        upstream = submit.git(["rev-parse", submit.upstream()]).stdout.strip()
+        base = submit.latest_generic_snapshot(scope, upstream)
+        self.assertIsNotNone(base)
+        base_package, _base_qa_path, base_qa = base
+        checkpoint = submit.latest_generic_delta_checkpoint(scope, base_package, base_qa, upstream)
+        specs = submit.build_generic_delta_specs(
+            scope, "submit-test", base_package, base_qa,
+            exclude_html=True, checkpoint=checkpoint)
+        included_raws = set()
+        for spec in specs:
+            for source, member in spec["sources"]:
+                self.assertNotEqual(checkpoint["base_hashes"].get(member), submit.sha256(source),
+                                   f"unchanged member was repeated: {member}")
+                if member.endswith("/raw.csv"):
+                    included_raws.add(member)
+        self.assertFalse({"runs/A002_SHARED_R10_C10/raw.csv",
+                          "runs/A003_SHARED_R10_C10/raw.csv"} & included_raws)
+        if (scope / "runs/A004_SHARED_R10_C10/raw.csv").is_file():
+            self.assertIn("runs/A004_SHARED_R10_C10/raw.csv", included_raws)
+        if (scope / "runs/A005_SHARED_R10_C10/raw.csv").is_file():
+            self.assertIn("runs/A005_SHARED_R10_C10/raw.csv", included_raws)
 
     def test_scope_cannot_escape_repository(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

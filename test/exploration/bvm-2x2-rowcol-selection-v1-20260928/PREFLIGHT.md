@@ -20,3 +20,20 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
   immutable run ID and invokes the solver once for the current config only.
 - No physical result, equivalence claim, or scientific interpretation is
   produced by this static-platform task.
+
+## Incremental CELL-SE platform extension
+
+- Compatibility base: `3d12e5c5252f02748f880f09027e70c8d0cfc3d8`.
+- This extension changes only the existing runner/configuration/tests/docs.
+  A001–A003 raw, run manifests, QA, and existing ZIP archives remain immutable.
+- Missing `SE_TOPOLOGY`/`SE_GATE_MODE` defaults to
+  `SHARED_COLUMN/COLUMN`; the existing A/B/C presets explicitly retain the
+  legacy generated deck and stimulus behavior.
+- `SHARED + CELL` uses two shared row-WL, two shared column-BL, and four
+  electrically independent cell-SE sources. D0 gates final SE by column;
+  D1 gates it by row AND column. Both retain the four canonical load chains.
+- Scope remains static topology/stimulus/probe QA, regression tests, and
+  dry-runs only. No JoSIM invocation, experiment run raw, or physical claim.
+  One legacy mock-runner test in an earlier full test pass wrote a synthetic
+  CSV only inside an automatically cleaned `TemporaryDirectory`; it did not
+  enter this experiment's `runs/` tree or Git.

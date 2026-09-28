@@ -1,4 +1,4 @@
-* Generated top-level deck; component parameters live only in source snapshots.
+{{DECK_DESCRIPTION}}
 * BVM array -> QB/CB/sJTL topology fixture
 * Shared frozen junction model; needed by BVM and identical to component-local cards.
 .model jjmit jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=160, rN=16, icrit=0.1mA)
@@ -8,7 +8,7 @@
 
 {{TOPOLOGY_BLOCK}}
 
-R_TERM FINAL_OUT 0 {{TERM_R}}
+{{OUTPUT_BLOCK}}
 {{PROBE_BLOCK}}
 .tran {{DT}} {{STOP}}
 .end

@@ -12,9 +12,9 @@ from config import (
     CB_AREA_KEYS, CB_CURRENT_KEYS, CB_INDUCTANCE_KEYS, CB_RESISTANCE_KEYS,
     COMPONENT_KEYS, ConfigError, QB_AREA_KEYS, QB_CURRENT_KEYS, QB_INDUCTANCE_KEYS,
     QB_RESISTANCE_KEYS, SJTL_AREA_KEYS, SJTL_CURRENT_KEYS, SJTL_INDUCTANCE_KEYS,
-    SJTL_RESISTANCE_KEYS, parse_quantity, validate_user_case,
+    SJTL_RESISTANCE_KEYS, T1_KEYS, parse_quantity, validate_user_case,
 )
-from topology import SOURCE_FILES, parse_subcircuits
+from topology import SOURCE_FILES, T1_SOURCE_FILE, parse_subcircuits
 
 
 SERIES = Path(__file__).resolve().parents[1]
@@ -25,6 +25,8 @@ SNAPSHOT_NAMES = {
     "CB": "CB_tunable.cir", "SJTL": "sJTL_tunable.cir",
 }
 SOURCE_HASH_KEYS = {role: f"SOURCE_{role}_SHA256" for role in SOURCE_FILES}
+SOURCE_HASH_KEYS["T1"] = "SOURCE_T1_SHA256"
+CANONICAL_SOURCE_FILES = {**SOURCE_FILES, "T1": T1_SOURCE_FILE}
 REFERENCE_KEYS = COMPONENT_KEYS | set(SOURCE_HASH_KEYS.values())
 GROUP_KEYS = {
     "BVM": BVM_AREA_KEYS | BVM_INDUCTANCE_KEYS | BVM_RESISTANCE_KEYS,
@@ -109,10 +111,17 @@ def load_reference(path: str | Path = REFERENCE_PATH) -> dict[str, str]:
     return _load_env(Path(path), REFERENCE_KEYS)
 
 
-def verify_reference_sources(reference: dict[str, str], repo_root: str | Path = REPO) -> dict[str, dict[str, str]]:
+def verify_reference_sources(
+    reference: dict[str, str], repo_root: str | Path = REPO,
+    roles: tuple[str, ...] | None = None,
+) -> dict[str, dict[str, str]]:
     root = Path(repo_root)
     records = {}
-    for role, relative in SOURCE_FILES.items():
+    selected = roles or tuple(SOURCE_FILES)
+    for role in selected:
+        if role not in CANONICAL_SOURCE_FILES:
+            raise ConfigError(f"unknown canonical source role: {role}")
+        relative = CANONICAL_SOURCE_FILES[role]
         source = root / relative
         expected = reference[SOURCE_HASH_KEYS[role]]
         try:
@@ -252,7 +261,7 @@ def render_components(values: dict[str, str], output_dir: str | Path, *,
 
 def parameter_manifest(values: dict[str, str], parsed: dict[str, object],
                        stimulus_values: dict[str, str], stimulus_snapshot_text: str) -> dict[str, Any]:
-    return {
+    manifest = {
         "schema": "bvm-qb-cb-array-parameter-manifest-v1",
         "bvm": {key: values[key] for key in sorted(GROUP_KEYS["BVM"])},
         "qb": {key: values[key] for key in sorted(GROUP_KEYS["QB"])},
@@ -270,3 +279,6 @@ def parameter_manifest(values: dict[str, str], parsed: dict[str, object],
             "values": dict(sorted(stimulus_values.items())),
         },
     }
+    if parsed["OUTPUT_MODE"] == "T1":
+        manifest["t1"] = {key: values[key] for key in sorted(T1_KEYS)}
+    return manifest

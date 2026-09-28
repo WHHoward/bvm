@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shlex
 import subprocess
@@ -15,10 +16,13 @@ from pathlib import Path
 from typing import Any
 
 from config import ConfigError, USER_CASE_KEYS, load_env, validate_user_case
-from components import parameter_manifest as make_parameter_manifest, render_components
+from components import (
+    load_reference, parameter_manifest as make_parameter_manifest, render_components,
+    verify_reference_sources,
+)
 from probes import generate_probes, validate_probe_lines
 from stimulus import load_stimulus, render_stimulus, validate_stimulus
-from topology import render_topology
+from topology import T1_SOURCE_FILE, render_output_block, render_topology
 
 
 SERIES = Path(__file__).resolve().parents[1]
@@ -40,6 +44,25 @@ def sha256(path: str | Path) -> str:
     return digest.hexdigest()
 
 
+def t1_link_consistency(trace: Any) -> dict[str, object]:
+    """Report zero-drop link difference over the exact stored raw rows; no threshold is applied."""
+    final_out = trace.column("V(FINAL_OUT)")
+    receiver_in = trace.column("V(T1_I)")
+    if len(final_out) != trace.sample_count or len(receiver_in) != trace.sample_count:
+        raise ConfigError("T1 link voltage columns do not span the complete stored raw grid")
+    maximum = max(abs(left - right) for left, right in zip(final_out, receiver_in))
+    return {
+        "status": "MEASURED_REPORT_ONLY",
+        "quantity": "max_abs_voltage_difference",
+        "left_signal": "V(FINAL_OUT)", "right_signal": "V(T1_I)",
+        "units": "V", "max_abs_difference_v": maximum,
+        "sample_count": trace.sample_count,
+        "time_start_s": trace.time[0], "time_end_s": trace.time[-1],
+        "uses_exact_stored_rows": True, "interpolation_or_resampling": False,
+        "pass_fail_threshold_v": None,
+    }
+
+
 def json_text(value: object) -> str:
     return json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
 
@@ -51,6 +74,8 @@ def stable_env(values: dict[str, str]) -> str:
 def topology_signature(params: dict[str, object]) -> str:
     key = {name: params[name] for name in
            ("ARRAY_SIZE", "QB_CB", "SJTL_COUNT", "POST_SJTL_CB")}
+    if params.get("OUTPUT_MODE") == "T1":
+        key["OUTPUT_MODE"] = "T1"
     return hashlib.sha256(json.dumps(key, sort_keys=True).encode()).hexdigest()
 
 
@@ -97,18 +122,26 @@ def allocate_run_id(runs_root: Path, mask: str, signature: str) -> str:
 
 def render_deck(
     params: dict[str, object], topology_lines: list[str], probe_lines: list[str],
-    *, fixture_only: bool,
+    *, fixture_only: bool, output_lines: list[str], t1_include_path: str | None,
 ) -> str:
     include_lines = [
         f'.include snapshot/sources/{ROLE_FILENAMES[role]}'
         for role in ("BVM", "QB", "CB", "SJTL")
     ]
+    if t1_include_path is not None:
+        include_lines.append(f".include {t1_include_path}")
     template = TEMPLATE.read_text(encoding="utf-8")
+    description = (
+        "* Generated top-level deck; component parameters live only in source snapshots."
+        if params["OUTPUT_MODE"] == "TERMINAL" else
+        "* Generated top-level deck; front-end snapshots and USER_CASE T1 output boundary."
+    )
     replacements = {
+        "{{DECK_DESCRIPTION}}": description,
         "{{SOURCE_INCLUDES}}": "\n".join(include_lines),
         "{{STIMULUS_INCLUDE}}": ".include stimulus.inc",
         "{{TOPOLOGY_BLOCK}}": "\n".join(topology_lines),
-        "{{TERM_R}}": str(params["TERM_R"]),
+        "{{OUTPUT_BLOCK}}": "\n".join(output_lines),
         "{{PROBE_BLOCK}}": "\n".join(probe_lines),
         "{{DT}}": str(params["DT"]),
         "{{STOP}}": str(params["STOP"]),
@@ -139,13 +172,30 @@ def render_case(
     case_dir = Path(output_dir)
     case_dir.mkdir(parents=True, exist_ok=True)
     sources, source_records = render_components(user_values, case_dir / "snapshot" / "sources")
+    t1_include_path = None
+    if params["OUTPUT_MODE"] == "T1":
+        canonical = (REPO / T1_SOURCE_FILE).resolve()
+        t1_record = verify_reference_sources(load_reference(), roles=("T1",))["T1"]
+        t1_include_path = Path(os.path.relpath(canonical, case_dir.resolve())).as_posix()
+        sources["T1"] = canonical
+        source_records.append({
+            "role": "T1",
+            "source_mode": "DIRECT_CANONICAL_INCLUDE",
+            "canonical_source_path": t1_record["path"],
+            "canonical_source_sha256": t1_record["sha256"],
+            "rendered_snapshot_path": None,
+            "rendered_snapshot_sha256": None,
+            "deck_include_path": t1_include_path,
+        })
     topology_lines, topology_manifest = render_topology(params, sources)
+    output_lines = render_output_block(params, topology_manifest)
     topology_manifest["probe_profile"] = str(params["PROBE_PROFILE"])
     probe_lines, probe_manifest = generate_probes(
         topology_manifest, sources, profile=str(params["PROBE_PROFILE"])
     )
     validate_probe_lines(probe_lines, probe_manifest)
-    deck = render_deck(params, topology_lines, probe_lines, fixture_only=fixture_only)
+    deck = render_deck(params, topology_lines, probe_lines, fixture_only=fixture_only,
+                       output_lines=output_lines, t1_include_path=t1_include_path)
     stimulus = render_stimulus(stimulus_values, params, mask)
     if fixture_only:
         stimulus = "* RENDER_FIXTURE_ONLY — not JoSIM experiment evidence\n" + stimulus
@@ -224,9 +274,22 @@ def _write_run_preflight(run_dir: Path, run_id: str, params: dict[str, object],
                          topology: dict[str, Any], probes: dict[str, Any],
                          sources: dict[str, Any], solver: dict[str, Any], head: str) -> None:
     probe_labels = [str(item["label"]) for item in probes["signals"]]
-    source_rows = [f"- `{item['canonical_source_path']}` ({item['canonical_source_sha256']}) → "
-                   f"`{item['rendered_snapshot_path']}` SHA-256 `{item['rendered_snapshot_sha256']}`"
-                   for item in sources["sources"]]
+    source_rows = []
+    for item in sources["sources"]:
+        if item.get("source_mode") == "DIRECT_CANONICAL_INCLUDE":
+            source_rows.append(
+                f"- direct include `{item['canonical_source_path']}` "
+                f"SHA-256 `{item['canonical_source_sha256']}` as `"
+                f"{item['deck_include_path']}` (no copied or patched T1 source)"
+            )
+        else:
+            source_rows.append(
+                f"- `{item['canonical_source_path']}` ({item['canonical_source_sha256']}) → "
+                f"`{item['rendered_snapshot_path']}` SHA-256 `{item['rendered_snapshot_sha256']}`"
+            )
+    t1_mode = params["OUTPUT_MODE"] == "T1"
+    expected_pages = ["01_overview.html", "02_bvm.html", "03_qb.html", "04_cb.html",
+                      "05_acc_gap.html"] + (["06_t1.html"] if t1_mode else [])
     lines = [
         "# Physical run preflight", "",
         "This experiment is governed by docs/EXPERIMENT_CONTRACT.md.", "",
@@ -239,19 +302,37 @@ def _write_run_preflight(run_dir: Path, run_id: str, params: dict[str, object],
         f"- solver version: `{solver.get('version_stdout')}`",
         f"- ARRAY_SIZE: `{params['ARRAY_SIZE']}`",
         f"- probe profile: `{params['PROBE_PROFILE']}` ({len(probe_labels)} probes)",
+        *([f"- OUTPUT_MODE: `{params['OUTPUT_MODE']}`"] if t1_mode else []),
         f"- FINAL READ MASK: `{params['MASK']}` (leftmost bit is BVM1)",
         f"- topology: `{json.dumps(topology['topology'], sort_keys=True)}`",
         f"- DT: `{params['DT']}`; STOP: `{params['STOP']}`",
         f"- run matrix: exactly `{run_id}` / mask `{params['MASK']}`",
         f"- expected raw: `{(run_dir / 'raw.csv').relative_to(SERIES).as_posix()}`",
         "- interpretation ceiling: mechanical QA and requested descriptive plots only",
-        "- follow-up solves, sweeps, T1, repeated-read, and rewrite-read: prohibited",
+        *([] if t1_mode else [
+            "- follow-up solves, sweeps, T1, repeated-read, and rewrite-read: prohibited",
+        ]),
         "", "## Source snapshots", "", *source_rows,
         "", "## Registered probes", "", *[f"- `{label}`" for label in probe_labels],
+        *([
+            "", "## Registered mechanical arithmetic", "",
+            f"- USER_CASE snapshot SHA-256: `{sources['user_case_sha256']}`; "
+            f"STIMULUS snapshot SHA-256: `{sources['stimulus_sha256']}`.",
+            "- T1 zero-drop link: report `max |V(FINAL_OUT)-V(T1_I)|` over all exact stored raw rows.",
+            "- No interpolation/resampling; this is report-only with no pass/fail voltage threshold.",
+            f"- T1 config: BIAS1=`{params['T1_BIAS1']}`, BIAS2=`{params['T1_BIAS2']}`, "
+            f"BIAS3 current=`{params['T1_BIAS3']}`, R_S=`{params['T1_R_S']}`, "
+            f"R_C=`{params['T1_R_C']}`, CLK_MODE=`{params['T1_CLK_MODE']}`, "
+            f"CLK_R=`{params['T1_CLK_R']}`.",
+            "- This single run is not a matched-load causal comparison; A029 remains a reference for later user review.",
+            "- Timestep, parameter, and solver sensitivity are UNKNOWN; no additional solve is authorized.",
+            "- No clock pulse, additional mask, retry, sweep, or Phase 2 run is authorized.",
+        ] if t1_mode else []),
         "", "## Required output artifacts", "",
         "`actual_deck.cir`, `stimulus.inc`, `topology_manifest.json`, `source_manifest.json`,",
         "`probe_manifest.json`, `parameter_manifest.json`, `raw.csv`, stdout/stderr, mechanical raw QA/metrics, and",
-        "the five requested plot pages. A failed attempt remains in this run directory.", "",
+        (f"the requested plot pages: `{', '.join(expected_pages)}`. A failed attempt remains in this run directory."
+         if t1_mode else "the five requested plot pages. A failed attempt remains in this run directory."), "",
     ]
     (run_dir / "PREFLIGHT.md").write_text("\n".join(lines), encoding="utf-8")
 
@@ -334,6 +415,19 @@ def execute_run(
         "scientific_interpretation_performed": False, "automatic_follow_up": False,
         "physical_solve_count": 1,
     }
+    if params["OUTPUT_MODE"] == "T1":
+        t1_source = next(item for item in source_manifest["sources"] if item.get("role") == "T1")
+        provenance["output_mode"] = "T1"
+        provenance["t1_source"] = {
+            "path": t1_source["canonical_source_path"],
+            "sha256": t1_source["canonical_source_sha256"],
+            "include_mode": t1_source["source_mode"],
+            "deck_include_path": t1_source["deck_include_path"],
+        }
+        provenance["t1_parameters"] = {key: params[key] for key in (
+            "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_R_S", "T1_R_C",
+            "T1_CLK_MODE", "T1_CLK_R",
+        )}
     _save_json(run_dir / "provenance.json", provenance)
     if completed.returncode != 0 or not (run_dir / "raw.csv").is_file():
         _save_json(run_dir / "result.json", {
@@ -378,6 +472,14 @@ def execute_run(
         "uniform_time_grid": trace.qa()["uniform_time_grid"],
         "scientific_interpretation_performed": False,
     }
+    if params["OUTPUT_MODE"] == "T1":
+        try:
+            mechanical["t1_link_consistency"] = t1_link_consistency(trace)
+        except (KeyError, ValueError, IndexError) as exc:
+            mechanical["t1_link_consistency"] = {
+                "status": "FAIL", "error": f"{type(exc).__name__}: {exc}",
+                "scientific_interpretation_performed": False,
+            }
     _save_json(run_dir / "analysis" / "mechanical_metrics.json", mechanical)
     plot_status: dict[str, object]
     try:
@@ -392,10 +494,12 @@ def execute_run(
     raw_qa["status"] = "PASS" if raw_qa["raw_immutable"] else "FAIL"
     _save_json(run_dir / "analysis" / "raw_qa.json", raw_qa)
     artifact_status = "VALID" if raw_qa["status"] == "PASS" else "INVALID"
+    t1_metric_ok = (params["OUTPUT_MODE"] != "T1"
+                    or mechanical.get("t1_link_consistency", {}).get("status") == "MEASURED_REPORT_ONLY")
     result = {
         "schema": "bvm-qb-cb-array-result-v1", "run_id": run_id,
         "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW"
-        if artifact_status == "VALID" and plot_status.get("status") == "PASS"
+        if artifact_status == "VALID" and plot_status.get("status") == "PASS" and t1_metric_ok
         else "MECHANICAL_QA_FAIL_AWAITING_USER_REVIEW",
         "mask": mask, "topology": topology_manifest["topology"],
         "solver_exit_code": completed.returncode,
@@ -406,15 +510,23 @@ def execute_run(
         "scientific_interpretation_performed": False,
         "automatic_follow_up": False,
     }
+    if params["OUTPUT_MODE"] == "T1":
+        result["output_mode"] = "T1"
     _save_json(run_dir / "result.json", result)
     provenance["finished_at"] = datetime.now().astimezone().isoformat(timespec="seconds")
     provenance["raw"] = {"path": "raw.csv", "sha256": raw_hash_after,
                          "bytes": raw_path.stat().st_size,
                          "sample_count": trace.sample_count}
+    if params["OUTPUT_MODE"] == "T1":
+        provenance["mechanical_metrics"] = {
+            "path": "analysis/mechanical_metrics.json",
+            "sha256": sha256(run_dir / "analysis" / "mechanical_metrics.json"),
+        }
     _save_json(run_dir / "provenance.json", provenance)
     _update_latest_run(run_id, result["status"])
     brief = [
         f"# {run_id}", "", f"- mask: `{mask}`",
+        f"- output mode: `{params['OUTPUT_MODE']}`",
         f"- topology: `{json.dumps(topology_manifest['topology'], sort_keys=True)}`",
         f"- solver exit: `{completed.returncode}`",
         f"- raw QA: `{raw_qa['status']}`; SHA-256 `{raw_hash_after}`",
@@ -423,8 +535,15 @@ def execute_run(
         "- scientific_interpretation_performed: `false`",
         "- automatic_follow_up: `false`", "",
     ]
+    if params["OUTPUT_MODE"] == "T1":
+        link_metric = mechanical["t1_link_consistency"]
+        brief.insert(5, f"- T1 link max |V(FINAL_OUT)-V(T1_I)|: `"
+                         f"{link_metric.get('max_abs_difference_v', 'UNAVAILABLE')}` V "
+                         "(report-only; no registered threshold)")
+        brief.insert(6, f"- T1 source SHA-256: `{provenance['t1_source']['sha256']}`")
     (run_dir / "RESULT_BRIEF.md").write_text("\n".join(brief), encoding="utf-8")
-    return 0 if artifact_status == "VALID" and plot_status.get("status") == "PASS" else 2
+    return 0 if (artifact_status == "VALID" and plot_status.get("status") == "PASS"
+                 and t1_metric_ok) else 2
 
 
 def main(argv: list[str] | None = None) -> int:

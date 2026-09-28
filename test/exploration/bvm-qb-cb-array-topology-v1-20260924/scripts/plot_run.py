@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a five-page plot plan or render a real raw with classic josim-plot2."""
+"""Build the selected-mode plot plan or render a real raw with classic josim-plot2."""
 
 from __future__ import annotations
 
@@ -10,6 +10,8 @@ import json
 import sys
 from pathlib import Path
 from typing import Any
+
+from topology import T1_CORE_INDUCTORS, T1_CORE_JUNCTIONS
 
 SERIES = Path(__file__).resolve().parents[1]
 REPO = next(path for path in (SERIES, *SERIES.parents) if (path / ".git").exists())
@@ -44,6 +46,10 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
                         raw_sha256: str | None = None) -> dict[str, object]:
     signals = probes.get("signals", [])
     profile = str(probes.get("profile", topology.get("probe_profile", "debug")))
+    output_mode = str(topology.get("output_mode", "TERMINAL"))
+    if output_mode not in {"TERMINAL", "T1"}:
+        raise RuntimeError(f"unsupported output mode in topology manifest: {output_mode!r}")
+    page_defs = PAGES + (("06_t1.html", "t1"),) if output_mode == "T1" else PAGES
     signal_labels = {str(item["label"]) for item in signals}
     by_group: dict[str, list[str]] = {}
     for item in signals:
@@ -149,6 +155,34 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
             for pin in record["pins"]:
                 cb.append(require_probe(f"V({pin})", f"CB {instance} boundary"))
 
+    t1: list[str] = []
+    if output_mode == "T1":
+        receiver = topology.get("receiver")
+        t1_instance = instance_records.get("xt1")
+        if (not isinstance(receiver, dict) or t1_instance is None
+                or str(t1_instance.get("subcircuit", "")).casefold() != "t1"):
+            raise RuntimeError("T1 plot page requires a topology-backed XT1 receiver")
+        for node in ("FINAL_OUT", str(receiver["input_node"]), "CLK", "S", "C"):
+            t1.append(require_probe(f"V({node})", f"T1 {node} boundary"))
+        for element in ("R_S", "R_C"):
+            t1.append(require_probe(f"I({element})", f"T1 {element} output load"))
+        receiver_junctions = list(receiver["junction_elements"])
+        receiver_inductors = list(receiver["inductor_elements"])
+        junctions = receiver_junctions if profile == "debug" else list(T1_CORE_JUNCTIONS)
+        inductors = receiver_inductors if profile == "debug" else list(T1_CORE_INDUCTORS)
+        junction_quantities = ("P", "V", "I") if profile == "debug" else ("P", "V")
+        inductor_quantities = ("I", "V") if profile == "debug" else ("I",)
+        for element in junctions:
+            for quantity in junction_quantities:
+                t1.append(require_probe(
+                    f"{quantity}({element}|XT1)", f"T1 XT1 junction {element}"
+                ))
+        for element in inductors:
+            for quantity in inductor_quantities:
+                t1.append(require_probe(
+                    f"{quantity}({element}|XT1)", f"T1 XT1 inductor {element}"
+                ))
+
     acc_gap: list[str] = []
     instance_pins = {
         str(item["instance"]).casefold(): [str(pin) for pin in item["pins"]]
@@ -195,12 +229,14 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         "cb": _unique(cb),
         "acc_gap": _unique(acc_gap),
     }
+    if output_mode == "T1":
+        selected["t1"] = _unique(t1)
     for page, labels in selected.items():
         missing = sorted(set(labels) - signal_labels)
         if missing:
             raise RuntimeError(f"{page} plot plan references probes absent from manifest: {missing}")
     pages = []
-    for filename, key in PAGES:
+    for filename, key in page_defs:
         if key == "overview":
             title = "System overview — stimulus, boundaries, merge/carry, FINAL_OUT"
         elif key == "bvm":
@@ -210,6 +246,8 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         elif key == "cb":
             title = ("CB components — " + "; ".join(item["role"] for item in cb_roles)
                      if cb_roles else "No CB components in this topology")
+        elif key == "t1":
+            title = "T1 receiver — FINAL_OUT/T1_I, internal state, S/C outputs"
         else:
             title = "Per-level local/upstream contribution, MERGE, sJTL, post-CB, CARRY, FINAL_OUT"
         pages.append({
@@ -237,6 +275,7 @@ def build_plot_manifest(topology: dict[str, Any], probes: dict[str, Any],
         "raw_sha256": raw_sha256,
         "pages": pages,
         "scientific_interpretation_performed": False,
+        **({"output_mode": "T1"} if output_mode == "T1" else {}),
     }
 
 
@@ -320,7 +359,7 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
     after = sha256(raw)
     qa = {
         "schema": "bvm-qb-cb-array-plot-qa-v1",
-        "status": "PASS" if raw_before == after and len(outputs) == 5
+        "status": "PASS" if raw_before == after and len(outputs) == len(plan["pages"])
         and shared_asset_reference_pass else "FAIL",
         "raw_sha256_before": raw_before, "raw_sha256_after": after,
         "raw_immutable": raw_before == after,
@@ -333,6 +372,8 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
         "full_stored_time_range": True,
         "scientific_interpretation_performed": False,
     }
+    if plan.get("output_mode") == "T1":
+        qa["output_mode"] = "T1"
     (root / "analysis" / "plot_manifest.json").write_text(
         json.dumps(plan, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (root / "analysis" / "plot_qa.json").write_text(
@@ -341,9 +382,15 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
     if result_path.is_file():
         result = json.loads(result_path.read_text(encoding="utf-8"))
         result["plot_qa"] = qa
+        link_metric = result.get("mechanical_metrics", {}).get("t1_link_consistency", {})
+        t1_mechanical_pass = (
+            plan.get("output_mode") != "T1"
+            or link_metric.get("status") == "MEASURED_REPORT_ONLY"
+        )
         result["status"] = (
             "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW"
             if result.get("artifact_status") == "VALID" and qa["status"] == "PASS"
+            and t1_mechanical_pass
             else "MECHANICAL_QA_FAIL_AWAITING_USER_REVIEW"
         )
         result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
@@ -371,7 +418,7 @@ def render_run(run_dir: str | Path) -> dict[str, object]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Render five classic JoSIM plot pages")
+    parser = argparse.ArgumentParser(description="Render classic JoSIM pages for the selected output mode")
     parser.add_argument("run_dir")
     parser.add_argument("--plan-only", action="store_true",
                         help="write signal/page manifest without reading raw or rendering HTML")

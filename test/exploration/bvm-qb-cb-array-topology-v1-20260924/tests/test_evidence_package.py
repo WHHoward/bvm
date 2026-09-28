@@ -41,7 +41,8 @@ def write_json(path: Path, value: dict) -> bytes:
 def fixture_config(name: str, profile: str) -> tuple[dict[str, str], str, str, dict]:
     values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
     values.update({"NAME": name, "ARRAY_SIZE": "1", "MASKS": "1", "QB_CB": "0",
-                   "SJTL_COUNT": "0", "POST_SJTL_CB": "0", "PROBE_PROFILE": profile})
+                   "SJTL_COUNT": "0", "POST_SJTL_CB": "0", "PROBE_PROFILE": profile,
+                   "OUTPUT_MODE": "TERMINAL"})
     user_text = "".join(f"{key}={values[key]}\n" for key in sorted(values))
     stimulus = load_stimulus(SERIES / "STIMULUS.env")
     stimulus_text = "".join(f"{key}={stimulus[key]}\n" for key in sorted(stimulus))

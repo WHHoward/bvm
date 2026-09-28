@@ -24,6 +24,15 @@ REQUIRED_PLOT_FILES = {
     "plots/01_overview.html", "plots/02_bvm.html", "plots/03_qb.html",
     "plots/04_cb.html", "plots/05_acc_gap.html",
 }
+T1_REQUIRED_PLOT_FILES = REQUIRED_PLOT_FILES | {"plots/06_t1.html"}
+
+
+def plot_files_for_mode(output_mode: str) -> set[str]:
+    if output_mode == "TERMINAL":
+        return set(REQUIRED_PLOT_FILES)
+    if output_mode == "T1":
+        return set(T1_REQUIRED_PLOT_FILES)
+    raise RuntimeError(f"unsupported OUTPUT_MODE for plot validation: {output_mode!r}")
 
 
 def git(*args: str, check: bool = True, capture: bool = True) -> subprocess.CompletedProcess[str]:
@@ -66,7 +75,16 @@ def _read_json(path: Path, label: str) -> dict[str, Any]:
     return value
 
 
-def _validate_plot_artifacts(run_dir: Path, expected_raw_sha: str) -> str | None:
+def _validate_plot_artifacts(run_dir: Path, expected_raw_sha: str,
+                             output_mode: str = "TERMINAL") -> str | None:
+    required_plot_files = plot_files_for_mode(output_mode)
+    topology_path = run_dir / "topology_manifest.json"
+    try:
+        topology = _read_json(topology_path, "topology_manifest.json")
+    except RuntimeError as exc:
+        return str(exc)
+    if str(topology.get("output_mode", "TERMINAL")) != output_mode:
+        return "topology manifest output mode disagrees with requested page set"
     qa_path = run_dir / "analysis" / "plot_qa.json"
     if not qa_path.is_file():
         return "analysis/plot_qa.json is missing"
@@ -74,22 +92,23 @@ def _validate_plot_artifacts(run_dir: Path, expected_raw_sha: str) -> str | None
         qa = _read_json(qa_path, "plot_qa.json")
     except RuntimeError as exc:
         return str(exc)
-    if (qa.get("status") != "PASS" or qa.get("page_count") != 5
+    if (qa.get("status") != "PASS" or qa.get("page_count") != len(required_plot_files)
+            or (output_mode == "T1" and qa.get("output_mode") != "T1")
             or qa.get("raw_immutable") is not True
             or qa.get("shared_asset_reference_pass") is not True
             or qa.get("full_stored_time_range") is not True
             or qa.get("raw_sha256_before") != expected_raw_sha
             or qa.get("raw_sha256_after") != expected_raw_sha):
-        return "plot QA does not certify five pages and unchanged raw"
+        return f"plot QA does not certify {len(required_plot_files)} pages and unchanged raw"
     pages = qa.get("pages")
-    if not isinstance(pages, list) or len(pages) != 5:
+    if not isinstance(pages, list) or len(pages) != len(required_plot_files):
         return "plot QA page inventory is incomplete"
     observed: set[str] = set()
     for page in pages:
         if not isinstance(page, dict):
             return "plot QA page entry is malformed"
         relative = str(page.get("path", ""))
-        if relative not in REQUIRED_PLOT_FILES:
+        if relative not in required_plot_files:
             return f"unexpected plot page path {relative!r}"
         if page.get("status") not in {"PASS", "NO_COMPONENT_PRESENT"}:
             return f"plot page did not pass: {relative}"
@@ -104,8 +123,8 @@ def _validate_plot_artifacts(run_dir: Path, expected_raw_sha: str) -> str | None
         if page.get("sha256") != digest:
             return f"plot page SHA-256 mismatch: {relative}"
         observed.add(relative)
-    if observed != REQUIRED_PLOT_FILES:
-        return "plot QA does not list the exact five required pages"
+    if observed != required_plot_files:
+        return "plot QA does not list the exact mode-specific required pages"
     return None
 
 
@@ -135,6 +154,7 @@ def validate_batch(series_root: Path = SERIES) -> tuple[list[dict[str, Any]], di
         elif hashlib.sha256(artifact.read_bytes()).hexdigest() != manifest.get(field):
             errors.append(f"batch artifact hash mismatch: {filename}")
     effective_probe_profile = "debug"
+    effective_output_mode = "TERMINAL"
     try:
         effective_user = load_user_case_snapshot(batch_dir / "USER_CASE.effective.env")
         effective_size = int(effective_user["ARRAY_SIZE"])
@@ -144,14 +164,19 @@ def validate_batch(series_root: Path = SERIES) -> tuple[list[dict[str, Any]], di
         if effective_size != manifest.get("array_size") or effective_masks != manifest.get("requested_masks"):
             errors.append("effective USER_CASE ARRAY_SIZE/MASKS disagree with batch manifest")
         effective_probe_profile = effective_user["PROBE_PROFILE"]
+        effective_output_mode = effective_user["OUTPUT_MODE"]
         if manifest.get("probe_profile", "debug") != effective_probe_profile:
             errors.append("effective USER_CASE PROBE_PROFILE disagrees with batch manifest")
+        if manifest.get("output_mode", "TERMINAL") != effective_output_mode:
+            errors.append("effective USER_CASE OUTPUT_MODE disagrees with batch manifest")
     except (OSError, ValueError, RuntimeError) as exc:
         errors.append(f"effective USER_CASE snapshot is invalid: {exc}")
     parameter_path = batch_dir / "parameter_manifest.json"
     if parameter_path.is_file():
         parameter_data = _read_json(parameter_path, "batch parameter_manifest.json")
         required_parameter_groups = {"bvm", "qb", "cb", "sjtl", "topology", "solver", "stimulus_reference"}
+        if effective_output_mode == "T1":
+            required_parameter_groups.add("t1")
         if not required_parameter_groups.issubset(parameter_data):
             errors.append("batch parameter_manifest.json is missing required parameter groups")
         acquisition = parameter_data.get("acquisition", {})
@@ -226,6 +251,9 @@ def validate_batch(series_root: Path = SERIES) -> tuple[list[dict[str, Any]], di
         probe_manifest = _read_json(probe_manifest_path, f"{run_id}/probe_manifest.json")
         if probe_manifest.get("profile", "debug") != effective_probe_profile:
             errors.append(f"mask {mask}: probe manifest profile disagrees with batch configuration")
+        if effective_output_mode == "T1" and (
+                result.get("output_mode") != "T1" or probe_manifest.get("output_mode") != "T1"):
+            errors.append(f"mask {mask}: T1 output-mode metadata is missing")
         parameter_record = provenance.get("parameter_manifest", {})
         parameter_sha = hashlib.sha256(parameter_path.read_bytes()).hexdigest()
         if not isinstance(parameter_record, dict) or parameter_record.get("sha256") != parameter_sha:
@@ -246,7 +274,7 @@ def validate_batch(series_root: Path = SERIES) -> tuple[list[dict[str, Any]], di
         if not (isinstance(row_plot, dict) and row_plot.get("status") == "PASS"
                 and isinstance(result_plot, dict) and result_plot.get("status") == "PASS"):
             errors.append(f"mask {mask}: plot QA is not PASS")
-        plot_error = _validate_plot_artifacts(run_dir, actual_raw_sha)
+        plot_error = _validate_plot_artifacts(run_dir, actual_raw_sha, effective_output_mode)
         if plot_error:
             errors.append(f"mask {mask}: {plot_error}")
         if row.get("solver_exit") != 0 or result.get("solver_exit_code") != 0:

@@ -18,12 +18,13 @@ from components import (
     GROUP_KEYS, load_reference, parameter_manifest as make_parameter_manifest,
     verify_reference_sources,
 )
-from config import ConfigError, STIMULUS_KEYS, USER_CASE_KEYS, load_env, validate_user_case
+from config import ConfigError, STIMULUS_KEYS, T1_KEYS, USER_CASE_KEYS, load_env, validate_user_case
 from run_case import (
     allocate_run_id, json_text, render_case, stable_env, topology_signature,
     execute_run,
 )
 from stimulus import load_stimulus, validate_stimulus
+from topology import SOURCE_FILES, T1_SOURCE_FILE
 
 
 SERIES = Path(__file__).resolve().parents[1]
@@ -66,7 +67,10 @@ def load_effective(user_path: Path, stimulus_path: Path, override_items: list[st
     params = validate_user_case(user_values)
     validate_stimulus(stimulus_values, params["STOP_SECONDS"])
     reference = load_reference()
-    verify_reference_sources(reference)
+    source_roles = list(SOURCE_FILES)
+    if params["OUTPUT_MODE"] == "T1":
+        source_roles.append("T1")
+    verify_reference_sources(reference, roles=tuple(source_roles))
     user_text = stable_env(user_values)
     stimulus_text = stable_env(stimulus_values)
     parameter_data = make_parameter_manifest(user_values, params, stimulus_values, stimulus_text)
@@ -80,6 +84,8 @@ def _render_preflight(user_values: dict[str, str], stimulus_values: dict[str, st
                       overrides: list[str], fixtures_root: Path) -> list[dict[str, Any]]:
     summaries: list[dict[str, Any]] = []
     fixtures_root.mkdir(parents=True, exist_ok=True)
+    from plot_run import build_plot_manifest
+
     with tempfile.TemporaryDirectory(prefix="try-preflight-", dir=fixtures_root) as tmp:
         for mask in masks:
             rendered = render_case(
@@ -88,8 +94,17 @@ def _render_preflight(user_values: dict[str, str], stimulus_values: dict[str, st
                 stimulus_snapshot_text=stimulus_text, overrides=overrides,
             )
             probe_manifest = rendered["probe_manifest"]
-            summaries.append({"mask": mask, "profile": probe_manifest["profile"],
-                              "probe_count": probe_manifest["signal_count"]})
+            plot_manifest = build_plot_manifest(
+                rendered["topology_manifest"], probe_manifest
+            )
+            summary = {"mask": mask, "profile": probe_manifest["profile"],
+                       "probe_count": probe_manifest["signal_count"]}
+            if user_values["OUTPUT_MODE"] == "T1":
+                t1_source = next(source for source in rendered["source_manifest"]["sources"]
+                                 if source.get("role") == "T1")
+                summary["plot_pages"] = [page["file"] for page in plot_manifest["pages"]]
+                summary["t1_source_sha256"] = t1_source["canonical_source_sha256"]
+            summaries.append(summary)
     return summaries
 
 
@@ -108,6 +123,7 @@ def preview_text(user_values: dict[str, str], stimulus_values: dict[str, str],
         "CASE", name, "",
         "ARRAY", f"ARRAY_SIZE={params['ARRAY_SIZE']}", f"MASKS={','.join(masks)}",
         f"PROBE_PROFILE={params['PROBE_PROFILE']}",
+        *([f"OUTPUT_MODE={params['OUTPUT_MODE']}"] if params["OUTPUT_MODE"] == "T1" else []),
         "BIT_ORDER=leftmost bit is BVM1; mask affects FINAL READ only", "",
         "TOPOLOGY", f"QB_CB={user_values['QB_CB']}",
         f"SJTL_COUNT={user_values['SJTL_COUNT']}",
@@ -118,6 +134,14 @@ def preview_text(user_values: dict[str, str], stimulus_values: dict[str, str],
         changed = _parameter_changes(user_values, reference, role)
         lines.extend(changed or ["none"])
         lines.append("")
+    if params["OUTPUT_MODE"] == "T1":
+        lines.extend([
+            "T1 RECEIVER", "FINAL_OUT -> T1_I",
+            f"T1_SOURCE={T1_SOURCE_FILE.as_posix()}",
+            f"T1_SOURCE_SHA256={reference['SOURCE_T1_SHA256']}",
+            *[f"{key}={user_values[key]}" for key in sorted(T1_KEYS) if key != "T1_BIAS3"],
+            f"T1_BIAS3={user_values['T1_BIAS3']} (DC current source I_BIAS3)", "",
+        ])
     stimulus_qa = validate_stimulus(stimulus_values, params["STOP_SECONDS"])
     lines.extend(["STIMULUS SUMMARY"])
     for interval, (stage, fields) in zip(stimulus_qa["stage_intervals_seconds"], (
@@ -132,7 +156,9 @@ def preview_text(user_values: dict[str, str], stimulus_values: dict[str, str],
                      f"fall={stimulus_values[f'{prefix}_FALL']}; {amp}")
     lines.extend([
         "PROBE ACQUISITION",
-        *[f"mask={row['mask']} profile={row['profile']} probe_count={row['probe_count']}"
+        *[f"mask={row['mask']} profile={row['profile']} probe_count={row['probe_count']} "
+          f"plot_pages={','.join(row['plot_pages'])}" if "plot_pages" in row else
+          f"mask={row['mask']} profile={row['profile']} probe_count={row['probe_count']}"
           for row in (probe_summaries or [])],
         "", "SOLVER", f"path={REPO / 'build' / 'josim-cli'} (not invoked)",
         f"DT={user_values['DT']}", f"STOP={user_values['STOP']}", "",
@@ -207,6 +233,11 @@ def _write_batch_summary(batch_dir: Path, manifest: dict[str, Any]) -> None:
         "- automatic follow-up: `false`", "", "| Mask | Run | Solver exit | Artifact | Plot QA | Solves |",
         "|---|---|---:|---|---|---:|",
     ]
+    if manifest.get("output_mode") == "T1":
+        lines[6:6] = [
+            "- output mode: `T1`",
+            f"- expected plot pages: `{', '.join(manifest['expected_plot_pages'])}`",
+        ]
     for run in manifest["runs"]:
         plot = run["plot_qa"].get("status", "UNKNOWN") if isinstance(run["plot_qa"], dict) else run["plot_qa"]
         lines.append(f"| {run['mask']} | {run['run_id']} | {run['solver_exit']} | "
@@ -274,6 +305,8 @@ def refresh_batch_for_run(run_dir: str | Path, series_root: Path = SERIES) -> st
                      for entry in manifest.get("runs", []))
     runs_valid = all(entry.get("solver_exit") == 0 and entry.get("artifact_status") == "VALID"
                      and entry.get("physical_solve_count") == 1
+                     and (manifest.get("output_mode", "TERMINAL") != "T1"
+                          or entry.get("run_status") == "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW")
                      for entry in manifest.get("runs", []))
     manifest["status"] = (
         "SOLVER_FAILURE" if hard_failure else
@@ -318,6 +351,12 @@ def execute_batch(user_values: dict[str, str], stimulus_values: dict[str, str],
         "overrides": list(overrides),
         "scientific_interpretation_performed": False, "automatic_follow_up": False,
     }
+    if params["OUTPUT_MODE"] == "T1":
+        manifest["output_mode"] = "T1"
+        manifest["expected_plot_pages"] = [
+            "01_overview.html", "02_bvm.html", "03_qb.html", "04_cb.html",
+            "05_acc_gap.html", "06_t1.html",
+        ]
     (batch_dir / "USER_CASE.effective.env").write_text(user_text, encoding="utf-8")
     (batch_dir / "STIMULUS.effective.env").write_text(stimulus_text, encoding="utf-8")
     (batch_dir / "parameter_manifest.json").write_text(parameter_text, encoding="utf-8")
@@ -360,7 +399,10 @@ def execute_batch(user_values: dict[str, str], stimulus_values: dict[str, str],
     plots_pass = all(isinstance(run["plot_qa"], dict) and run["plot_qa"].get("status") == "PASS"
                      for run in manifest["runs"])
     runs_valid = all(run["solver_exit"] == 0 and run["artifact_status"] == "VALID"
-                     and run["physical_solve_count"] == 1 for run in manifest["runs"])
+                     and run["physical_solve_count"] == 1
+                     and (params["OUTPUT_MODE"] != "T1"
+                          or run["run_status"] == "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW")
+                     for run in manifest["runs"])
     manifest["status"] = ("SOLVER_FAILURE" if hard_failure else
                           "COMPLETE_MECHANICAL" if all_requested and runs_valid and plots_pass
                           and manifest["total_physical_solve_count"] == len(masks)

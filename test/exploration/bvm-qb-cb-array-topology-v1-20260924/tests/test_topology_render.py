@@ -23,7 +23,7 @@ def base_values():
     values.update({
         "ARRAY_SIZE": "2", "MASKS": "00,01,10,11",
         "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
-        "PROBE_PROFILE": "core",
+        "OUTPUT_MODE": "TERMINAL", "PROBE_PROFILE": "core",
     })
     return values
 
@@ -134,7 +134,7 @@ class TopologyRenderTests(unittest.TestCase):
             with self.subTest(masks=mask_value), self.assertRaises(ConfigError):
                 validate_user_case(invalid)
         for key, value in (("QB_CB", "0,2"), ("POST_SJTL_CB", "1,x"),
-                           ("SJTL_COUNT", "1,-1"), ("OUTPUT_MODE", "T1")):
+                           ("SJTL_COUNT", "1,-1"), ("OUTPUT_MODE", "T1x")):
             invalid = dict(values)
             invalid[key] = value
             with self.subTest(key=key, value=value), self.assertRaises(ConfigError):

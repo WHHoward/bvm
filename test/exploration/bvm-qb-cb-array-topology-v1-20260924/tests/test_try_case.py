@@ -38,7 +38,7 @@ class TryCaseTests(unittest.TestCase):
         baseline.update({key: reference[key] for key in COMPONENT_KEYS})
         baseline.update({"NAME": "dry_run_test", "ARRAY_SIZE": "2", "MASKS": "00,01,10,11",
                          "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
-                         "PROBE_PROFILE": "core"})
+                         "OUTPUT_MODE": "TERMINAL", "PROBE_PROFILE": "core"})
         with tempfile.TemporaryDirectory() as tmp:
             user_fixture = Path(tmp) / "USER_CASE.env"
             user_fixture.write_text(try_case.stable_env(baseline), encoding="utf-8")
@@ -85,7 +85,7 @@ class TryCaseTests(unittest.TestCase):
             user_values = load_env(user_path, USER_CASE_KEYS)
             user_values.update({"NAME": "stub_batch", "ARRAY_SIZE": "2", "MASKS": "01,11",
                                 "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
-                                "PROBE_PROFILE": "core"})
+                                "OUTPUT_MODE": "TERMINAL", "PROBE_PROFILE": "core"})
             stimulus_values = load_stimulus(stimulus_path)
             params = try_case.validate_user_case(user_values)
             user_text = try_case.stable_env(user_values)
@@ -117,6 +117,9 @@ class TryCaseTests(unittest.TestCase):
                           "plot_qa": {"status": "PASS"}, "physical_solve_count": 1}
                 (run_dir / "probe_manifest.json").write_text(json.dumps({
                     "profile": values["PROBE_PROFILE"], "signals": [],
+                }), encoding="utf-8")
+                (run_dir / "topology_manifest.json").write_text(json.dumps({
+                    "output_mode": "TERMINAL",
                 }), encoding="utf-8")
                 provenance = {"physical_solve_count": 1, "raw": {"sha256": raw_sha},
                               "parameter_manifest": {"sha256": parameter_sha}}
@@ -157,7 +160,7 @@ class TryCaseTests(unittest.TestCase):
             user_values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
             user_values.update({"NAME": "failed_batch", "ARRAY_SIZE": "2", "MASKS": "01,11",
                                 "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
-                                "PROBE_PROFILE": "core"})
+                                "OUTPUT_MODE": "TERMINAL", "PROBE_PROFILE": "core"})
             stimulus_values = load_stimulus(SERIES / "STIMULUS.env")
             params = try_case.validate_user_case(user_values)
             calls: list[str] = []

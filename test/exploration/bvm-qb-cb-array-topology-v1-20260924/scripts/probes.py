@@ -8,7 +8,9 @@ from pathlib import Path
 from typing import Any
 
 from config import ConfigError
-from topology import Subcircuit, parse_subcircuits
+from topology import (
+    T1_CORE_INDUCTORS, T1_CORE_JUNCTIONS, Subcircuit, parse_subcircuits,
+)
 
 
 PROBE_PROFILES = {"core", "debug"}
@@ -22,11 +24,17 @@ def generate_probes(
     profile = profile or str(topology.get("probe_profile", "core"))
     if profile not in PROBE_PROFILES:
         raise ConfigError(f"unknown probe profile {profile!r}; expected core or debug")
+    output_mode = str(topology.get("output_mode", "TERMINAL"))
+    if output_mode not in {"TERMINAL", "T1"}:
+        raise ConfigError(f"unknown output mode {output_mode!r}; expected TERMINAL or T1")
 
     subcircuits = parse_subcircuits(source_paths)
     instances = {item["instance"].casefold(): item for item in topology["instances"]}
     nodes: set[str] = {"FINAL_OUT"}
     top_level_elements = {"R_TERM"}
+    if output_mode == "T1":
+        top_level_elements.update({"R_S", "R_C", "R_CLK_QUIET", "V_T1_LINK",
+                                   "V_BIAS1", "V_BIAS2", "I_BIAS3"})
     for index in range(1, int(topology["array_size"]) + 1):
         top_level_elements.update({f"I_WL{index}", f"I_BL{index}", f"I_SE{index}"})
     for item in topology["instances"]:
@@ -36,6 +44,10 @@ def generate_probes(
         "BVM": subcircuits["BVM"], "BQ": subcircuits["QB"],
         "CB": subcircuits["CB"], "sJTL": subcircuits["SJTL"],
     }
+    if output_mode == "T1":
+        if "T1" not in subcircuits:
+            raise ConfigError("OUTPUT_MODE=T1 requires the source-verified T1 subcircuit")
+        available_by_role["T1"] = subcircuits["T1"]
     specs: OrderedDict[str, dict[str, Any]] = OrderedDict()
     component_roles: dict[str, str] = {}
 
@@ -154,10 +166,44 @@ def generate_probes(
     for node in sorted({str(level["merge_node"]) for level in topology["levels"]} |
                        {str(level["carry_node"]) for level in topology["levels"]}):
         add(f"V({node})", "acc_gap", node=node)
-    add("V(FINAL_OUT)", "terminal", node="FINAL_OUT")
-    if profile == "debug":
-        add("V(R_TERM)", "terminal", element="R_TERM")
-    add("I(R_TERM)", "terminal", element="R_TERM")
+    if output_mode == "T1":
+        receiver = topology.get("receiver", {})
+        t1 = instances.get("xt1")
+        if (not isinstance(receiver, dict) or t1 is None
+                or str(t1.get("subcircuit", "")).casefold() != "t1"):
+            raise ConfigError("T1 probe generation requires the XT1 topology manifest instance")
+        if (receiver.get("instance") != t1["instance"]
+                or receiver.get("input_node") != t1["pins"][0]):
+            raise ConfigError("T1 receiver manifest disagrees with actual XT1 pins")
+        component_roles[str(t1["instance"])] = "T1 receiver"
+        for node in ("T1_I", "CLK", "S", "C"):
+            add(f"V({node})", "t1_boundary", node=node)
+        for element in ("R_S", "R_C"):
+            add(f"I({element})", "t1_load", element=element)
+
+        t1_elements = subcircuits["T1"].elements
+        def numbered(prefix: str) -> list[str]:
+            matches = [name for name in t1_elements
+                       if name.casefold().startswith(prefix.casefold())
+                       and name[len(prefix):].isdigit()]
+            return sorted(matches, key=lambda name: int(name[len(prefix):]))
+
+        junctions = numbered("B_J") if profile == "debug" else list(T1_CORE_JUNCTIONS)
+        inductors = numbered("L") if profile == "debug" else list(T1_CORE_INDUCTORS)
+        junction_quantities = ("P", "V", "I") if profile == "debug" else ("P", "V")
+        inductor_quantities = ("I", "V") if profile == "debug" else ("I",)
+        for element in junctions:
+            for quantity in junction_quantities:
+                add(f"{quantity}({element}|XT1)", "t1", instance="XT1", element=element)
+        for element in inductors:
+            for quantity in inductor_quantities:
+                add(f"{quantity}({element}|XT1)", "t1", instance="XT1", element=element)
+        add("V(FINAL_OUT)", "t1_boundary", node="FINAL_OUT")
+    else:
+        add("V(FINAL_OUT)", "terminal", node="FINAL_OUT")
+        if profile == "debug":
+            add("V(R_TERM)", "terminal", element="R_TERM")
+        add("I(R_TERM)", "terminal", element="R_TERM")
 
     lines = [f".print {label}" for label in specs]
     counts = Counter(str(item["group"]) for item in specs.values())
@@ -178,6 +224,8 @@ def generate_probes(
         ],
         "scientific_classification_performed": False,
     }
+    if output_mode == "T1":
+        manifest["output_mode"] = "T1"
     return lines, manifest
 
 

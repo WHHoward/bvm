@@ -16,17 +16,23 @@ SOURCE_FILES = {
     "CB": Path("circuits/CB/CB_0923.cir"),
     "SJTL": Path("circuits/sJTL_0923.cir"),
 }
+T1_SOURCE_FILE = Path("circuits/t1/t1_cell.cir")
+T1_EXPECTED_PINS = ("I", "CLK", "S", "C", "N_BIAS1", "N_BIAS2", "N_BIAS3")
+T1_CORE_JUNCTIONS = ("B_J1", "B_J7", "B_J9", "B_J11")
+T1_CORE_INDUCTORS = ("L1", "L3", "L11", "L14", "L17")
 EXPECTED_PINS = {
     "BVM": ("WL", "BL", "SE", "SL"),
     "QB": ("IN", "OUT"),
     "CB": ("IN", "OUT"),
     "SJTL": ("IN", "OUT"),
+    "T1": T1_EXPECTED_PINS,
 }
 REQUIRED_ELEMENTS = {
     "BVM": ("B_JM1", "B_JM2", "B_JS1", "B_JS2", "L_M1", "L_M2", "L_M3", "L_PM", "L_SL"),
     "QB": ("BJ1", "BJ2", "BJ3", "Lin", "L1", "L2", "L3"),
     "CB": ("BJ1", "BJ2", "L1", "L2", "L3", "L4"),
     "SJTL": ("BJ1", "L1", "L2"),
+    "T1": T1_CORE_JUNCTIONS + T1_CORE_INDUCTORS,
 }
 
 
@@ -75,7 +81,8 @@ def parse_subcircuits(paths: dict[str, str | Path]) -> dict[str, Subcircuit]:
                     elements.add(element)
         if active_name is not None:
             raise ConfigError(f"{path}: unterminated .subckt {active_name}")
-        target_name = {"BVM": "BVM", "QB": "BQ", "CB": "CB", "SJTL": "sJTL"}[role]
+        target_name = {"BVM": "BVM", "QB": "BQ", "CB": "CB", "SJTL": "sJTL",
+                       "T1": "T1"}[role]
         matches = [item for item in found if item.name.casefold() == target_name.casefold()]
         if len(matches) != 1:
             raise ConfigError(f"{path}: expected exactly one .subckt {target_name}, found {len(matches)}")
@@ -268,4 +275,54 @@ def render_topology(params: dict[str, object], sources: dict[str, str | Path]) -
         "scientific_interpretation_performed": False,
         "automatic_follow_up": False,
     }
+    if params["OUTPUT_MODE"] == "T1":
+        t1 = parsed.get("T1")
+        if t1 is None or tuple(pin.casefold() for pin in t1.pins) != tuple(
+                pin.casefold() for pin in T1_EXPECTED_PINS):
+            raise ConfigError("T1 output mode requires the source-verified T1 pin order")
+        if any(str(item["instance"]).casefold() == "xt1" for item in instances):
+            raise ConfigError("generated receiver instance name XT1 is already in use")
+        receiver_pins = ["T1_I", "CLK", "S", "C", "N_BIAS1", "N_BIAS2", "N_BIAS3"]
+        instances.append({"instance": "XT1", "subcircuit": "T1", "pins": receiver_pins})
+        manifest["output_mode"] = "T1"
+        manifest["front_end_output_node"] = "FINAL_OUT"
+        manifest["receiver"] = {
+            "instance": "XT1", "subcircuit": "T1", "source_pins": list(t1.pins),
+            "pins": receiver_pins, "input_node": "T1_I",
+            "junction_elements": sorted(
+                (name for name in t1.elements if re.fullmatch(r"B_J\d+", name, re.IGNORECASE)),
+                key=lambda name: int(re.search(r"\d+", name).group(0)),
+            ),
+            "inductor_elements": sorted(
+                (name for name in t1.elements if re.fullmatch(r"L\d+", name, re.IGNORECASE)),
+                key=lambda name: int(re.search(r"\d+", name).group(0)),
+            ),
+            "link": {"instance": "V_T1_LINK", "positive_node": "FINAL_OUT",
+                     "negative_node": "T1_I", "voltage": "0"},
+            "clock_mode": params["T1_CLK_MODE"],
+            "bias": {key: params[key] for key in ("T1_BIAS1", "T1_BIAS2", "T1_BIAS3")},
+            "loads": {key: params[key] for key in ("T1_R_S", "T1_R_C", "T1_CLK_R")},
+        }
+        manifest.pop("terminal")
     return lines, manifest
+
+
+def render_output_block(params: dict[str, object], topology: dict[str, object]) -> list[str]:
+    """Render only the selected output boundary; leave the front-end topology intact."""
+    if params["OUTPUT_MODE"] == "TERMINAL":
+        return [f"R_TERM FINAL_OUT 0 {params['TERM_R']}"]
+    if params["OUTPUT_MODE"] != "T1":
+        raise ConfigError(f"unsupported output mode {params['OUTPUT_MODE']!r}")
+    receiver = topology.get("receiver")
+    if not isinstance(receiver, dict) or receiver.get("instance") != "XT1":
+        raise ConfigError("T1 output boundary is missing source-verified XT1 topology")
+    return [
+        f"V_BIAS1 N_BIAS1 0 DC {params['T1_BIAS1']}",
+        f"V_BIAS2 N_BIAS2 0 DC {params['T1_BIAS2']}",
+        f"I_BIAS3 N_BIAS3 0 DC {params['T1_BIAS3']}",
+        f"R_S S 0 {params['T1_R_S']}",
+        f"R_C C 0 {params['T1_R_C']}",
+        f"R_CLK_QUIET CLK 0 {params['T1_CLK_R']}",
+        "V_T1_LINK FINAL_OUT T1_I 0",
+        f"XT1 {' '.join(str(pin) for pin in receiver['pins'])} T1",
+    ]

@@ -41,6 +41,13 @@ SJTL_RESISTANCE_KEYS = {"SJTL_RJ1"}
 SJTL_INDUCTANCE_KEYS = {"SJTL_L1", "SJTL_L2"}
 SJTL_CURRENT_KEYS = {"SJTL_IB"}
 BIAS_RISE_KEYS = {"QB_BIAS_RISE", "CB_BIAS_RISE", "SJTL_BIAS_RISE"}
+T1_BIAS_KEYS = {"T1_BIAS1", "T1_BIAS2", "T1_BIAS3"}
+T1_LOAD_KEYS = {"T1_R_S", "T1_R_C", "T1_CLK_R"}
+T1_KEYS = T1_BIAS_KEYS | T1_LOAD_KEYS | {"T1_CLK_MODE"}
+T1_DEFAULTS = {
+    "T1_BIAS1": "1.67m", "T1_BIAS2": "1.67m", "T1_BIAS3": "35u",
+    "T1_R_S": "12", "T1_R_C": "12", "T1_CLK_MODE": "QUIET", "T1_CLK_R": "5",
+}
 COMPONENT_KEYS = (BVM_AREA_KEYS | BVM_RESISTANCE_KEYS | BVM_INDUCTANCE_KEYS
                   | QB_AREA_KEYS | QB_RESISTANCE_KEYS | QB_INDUCTANCE_KEYS | QB_CURRENT_KEYS
                   | CB_AREA_KEYS | CB_RESISTANCE_KEYS | CB_INDUCTANCE_KEYS | CB_CURRENT_KEYS
@@ -50,7 +57,7 @@ TOPOLOGY_SOLVER_KEYS = {
     "NAME", "ARRAY_SIZE", "MASKS", "QB_CB", "SJTL_COUNT", "POST_SJTL_CB",
     "OUTPUT_MODE", "TERM_R", "DT", "STOP", "PROBE_PROFILE",
 }
-USER_CASE_KEYS = TOPOLOGY_SOLVER_KEYS | COMPONENT_KEYS
+USER_CASE_KEYS = TOPOLOGY_SOLVER_KEYS | COMPONENT_KEYS | T1_KEYS
 STIMULUS_KEYS = {
     f"{stage}_{field}"
     for stage, fields in {
@@ -137,16 +144,24 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
             raise ConfigError(f"SJTL_COUNT[{index}] must be a nonnegative integer")
         counts.append(int(token))
 
-    if values["OUTPUT_MODE"] != "TERMINAL":
-        raise ConfigError("OUTPUT_MODE must be TERMINAL in platform v1")
+    output_mode = values["OUTPUT_MODE"]
+    if output_mode not in {"TERMINAL", "T1"}:
+        raise ConfigError("OUTPUT_MODE must be exactly 'TERMINAL' or 'T1'")
     probe_profile = values.get("PROBE_PROFILE")
     if probe_profile not in {"core", "debug"}:
         raise ConfigError("PROBE_PROFILE must be exactly 'core' or 'debug'")
     term = parse_quantity(values["TERM_R"], label="TERM_R")
     dt = parse_quantity(values["DT"], label="DT")
     stop = parse_quantity(values["STOP"], label="STOP")
-    if term <= 0 or dt <= 0 or stop <= 0:
-        raise ConfigError("TERM_R, DT, and STOP must be positive")
+    if (output_mode == "TERMINAL" and term <= 0) or dt <= 0 or stop <= 0:
+        raise ConfigError("TERM_R must be positive in TERMINAL mode; DT and STOP must be positive")
+    if output_mode == "T1":
+        if values["T1_CLK_MODE"] != "QUIET":
+            raise ConfigError("T1_CLK_MODE currently supports only 'QUIET'; clock pulses are not implemented")
+        for key in sorted(T1_BIAS_KEYS | T1_LOAD_KEYS):
+            quantity = parse_quantity(values[key], label=key)
+            if quantity <= 0:
+                raise ConfigError(f"{key}: must be positive")
     for key in sorted(BVM_AREA_KEYS | QB_AREA_KEYS | CB_AREA_KEYS | SJTL_AREA_KEYS):
         _parse_positive_scalar(values[key], key)
     for key in sorted(BVM_INDUCTANCE_KEYS | QB_INDUCTANCE_KEYS
@@ -172,9 +187,10 @@ def validate_user_case(values: dict[str, str]) -> dict[str, object]:
         "QB_CB": [int(value) for value in qb_cb],
         "SJTL_COUNT": counts,
         "POST_SJTL_CB": [int(value) for value in post_cb],
-        "OUTPUT_MODE": values["OUTPUT_MODE"], "TERM_R": values["TERM_R"],
+        "OUTPUT_MODE": output_mode, "TERM_R": values["TERM_R"],
         "DT": values["DT"], "STOP": values["STOP"],
         "PROBE_PROFILE": probe_profile,
+        **{key: values[key] for key in T1_KEYS},
         "TERM_R_OHM": term,
         "DT_SECONDS": dt,
         "STOP_SECONDS": stop,
@@ -187,19 +203,27 @@ def load_user_case_snapshot(path: str | Path, *, legacy_profile: str = "debug") 
     Live USER_CASE.env is loaded strictly with load_env(USER_CASE_KEYS); this
     compatibility helper is only for immutable historical snapshots.
     """
-    profile_present = any(
-        line.strip().partition("=")[0].strip() == "PROBE_PROFILE"
-        for line in Path(path).read_text(encoding="utf-8").splitlines()
+    snapshot_lines = [
+        line.strip() for line in Path(path).read_text(encoding="utf-8").splitlines()
         if line.strip() and not line.lstrip().startswith("#")
-    )
-    if profile_present:
-        values = load_env(path, USER_CASE_KEYS)
-        validate_user_case(values)
-        return values
-    values = load_env(path, USER_CASE_KEYS - {"PROBE_PROFILE"})
+    ]
+    present_keys = {line.partition("=")[0].strip() for line in snapshot_lines}
+    profile_present = "PROBE_PROFILE" in present_keys
+    output_mode = next((line.split("=", 1)[1].strip() for line in snapshot_lines
+                        if line.partition("=")[0].strip() == "OUTPUT_MODE"), None)
+    missing_t1 = T1_KEYS - present_keys
+    if missing_t1 and output_mode != "TERMINAL":
+        raise ConfigError(f"{path}: T1 snapshots are missing required keys: {', '.join(sorted(missing_t1))}")
+    expected = USER_CASE_KEYS - missing_t1
+    if not profile_present:
+        expected = expected - {"PROBE_PROFILE"}
+    values = load_env(path, expected)
+    for key in missing_t1:
+        values[key] = T1_DEFAULTS[key]
     if legacy_profile not in {"core", "debug"}:
         raise ConfigError(f"invalid legacy probe profile {legacy_profile!r}")
-    values["PROBE_PROFILE"] = legacy_profile
+    if not profile_present:
+        values["PROBE_PROFILE"] = legacy_profile
     validate_user_case(values)
     return values
 

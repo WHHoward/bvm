@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import hashlib
+import csv
 import json
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -15,6 +17,15 @@ PLOT_PATHS = {
     "plots/01_overview.html", "plots/02_bvm.html", "plots/03_qb.html",
     "plots/04_cb.html", "plots/05_acc_gap.html",
 }
+T1_PLOT_PATHS = PLOT_PATHS | {"plots/06_t1.html"}
+
+
+def plot_paths_for_mode(output_mode: str) -> set[str]:
+    if output_mode == "TERMINAL":
+        return set(PLOT_PATHS)
+    if output_mode == "T1":
+        return set(T1_PLOT_PATHS)
+    raise EvidenceError(f"unsupported output mode for plot closure: {output_mode!r}")
 BATCH_FILES = (
     "batch_manifest.json", "parameter_manifest.json", "USER_CASE.effective.env",
     "STIMULUS.effective.env", "BATCH_SUMMARY.md",
@@ -96,6 +107,39 @@ def _verify_hash(path: Path, expected: Any, label: str) -> str:
     return actual
 
 
+def _independent_t1_link_metric(raw_path: Path) -> tuple[float, int]:
+    """Independently reproduce the report-only link max directly from CSV rows."""
+    with raw_path.open("r", encoding="utf-8-sig", newline="") as stream:
+        reader = csv.reader(stream)
+        try:
+            headers = next(reader)
+        except StopIteration as exc:
+            raise EvidenceError("T1 raw CSV is empty") from exc
+        final_matches = [index for index, value in enumerate(headers) if value == "V(FINAL_OUT)"]
+        input_matches = [index for index, value in enumerate(headers) if value == "V(T1_I)"]
+        if len(final_matches) != 1 or len(input_matches) != 1:
+            raise EvidenceError("T1 raw requires unique V(FINAL_OUT) and V(T1_I) columns")
+        max_difference = 0.0
+        count = 0
+        for line_number, row in enumerate(reader, start=2):
+            if not row or not any(cell.strip() for cell in row):
+                continue
+            if len(row) != len(headers):
+                raise EvidenceError(f"T1 raw row {line_number} has an inconsistent field count")
+            try:
+                final_value = float(row[final_matches[0]])
+                input_value = float(row[input_matches[0]])
+            except ValueError as exc:
+                raise EvidenceError(f"T1 link voltage is non-numeric at raw row {line_number}") from exc
+            if not math.isfinite(final_value) or not math.isfinite(input_value):
+                raise EvidenceError(f"T1 link voltage is non-finite at raw row {line_number}")
+            max_difference = max(max_difference, abs(final_value - input_value))
+            count += 1
+    if count < 2:
+        raise EvidenceError("T1 raw link metric requires at least two stored rows")
+    return max_difference, count
+
+
 def _normalize_raw_reference(series_root: Path, raw_path: str) -> str:
     value = raw_path.replace("\\", "/").lstrip("/")
     prefixes = (f"test/exploration/{series_root.name}/", f"{series_root.name}/")
@@ -145,6 +189,10 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
     if (user.get("NAME") != manifest.get("name") or parsed["ARRAY_SIZE"] != size
             or parsed["MASKS"] != masks or user["PROBE_PROFILE"] != manifest.get("probe_profile", "debug")):
         raise EvidenceError(f"{batch_id}: manifest disagrees with effective USER_CASE snapshot")
+    output_mode = str(parsed["OUTPUT_MODE"])
+    expected_plot_paths = plot_paths_for_mode(output_mode)
+    if manifest.get("output_mode", "TERMINAL") != output_mode:
+        raise EvidenceError(f"{batch_id}: batch output mode disagrees with effective USER_CASE snapshot")
 
     for filename, hash_key in (
         ("USER_CASE.effective.env", "effective_user_case_sha256"),
@@ -158,8 +206,16 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
     if isinstance(acquisition, dict) and acquisition.get("probe_profile", "debug") != user["PROBE_PROFILE"]:
         raise EvidenceError(f"{batch_id}: parameter manifest PROBE_PROFILE mismatch")
     required_groups = {"bvm", "qb", "cb", "sjtl", "topology", "solver", "stimulus_reference"}
+    if output_mode == "T1":
+        required_groups.add("t1")
     if not required_groups.issubset(parameter_data):
         raise EvidenceError(f"{batch_id}: parameter manifest is missing required groups")
+    if output_mode == "T1" and parameter_data.get("t1") != {
+            key: user[key] for key in sorted({
+                "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_R_S", "T1_R_C",
+                "T1_CLK_MODE", "T1_CLK_R",
+            })}:
+        raise EvidenceError(f"{batch_id}: T1 parameter manifest disagrees with effective USER_CASE")
 
     members: dict[str, PackageMember] = {}
     for filename in BATCH_FILES:
@@ -227,6 +283,9 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
         plot_manifest = read_json(run_dir / "analysis/plot_manifest.json", f"{run_id}/plot_manifest.json")
         plot_qa = read_json(run_dir / "analysis/plot_qa.json", f"{run_id}/plot_qa.json")
         source_manifest = read_json(run_dir / "source_manifest.json", f"{run_id}/source_manifest.json")
+        topology_manifest = read_json(run_dir / "topology_manifest.json", f"{run_id}/topology_manifest.json")
+        mechanical_metrics = read_json(run_dir / "analysis" / "mechanical_metrics.json",
+                                       f"{run_id}/mechanical_metrics.json")
         run_profile = str(probe.get("profile", "debug"))
         if run_profile != user["PROBE_PROFILE"]:
             raise EvidenceError(f"{batch_id}/{run_id}: run probe profile mismatch")
@@ -234,6 +293,67 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
             raise EvidenceError(f"{batch_id}/{run_id}: result identity mismatch")
         if result.get("artifact_status") != "VALID" or result.get("solver_exit_code") != 0:
             raise EvidenceError(f"{batch_id}/{run_id}: result is not artifact-valid")
+        run_output_mode = str(topology_manifest.get("output_mode", "TERMINAL"))
+        if run_output_mode != output_mode:
+            raise EvidenceError(f"{batch_id}/{run_id}: topology output mode disagrees with batch")
+        if output_mode == "T1":
+            if (result.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW"
+                    or result.get("output_mode") != "T1" or probe.get("output_mode") != "T1"
+                    or plot_manifest.get("output_mode") != "T1"
+                    or plot_qa.get("output_mode") != "T1"):
+                raise EvidenceError(f"{batch_id}/{run_id}: T1 output-mode metadata is incomplete")
+            link = mechanical_metrics.get("t1_link_consistency", {})
+            if (not isinstance(link, dict) or link.get("status") != "MEASURED_REPORT_ONLY"
+                    or link.get("left_signal") != "V(FINAL_OUT)"
+                    or link.get("right_signal") != "V(T1_I)"
+                    or link.get("units") != "V"
+                    or link.get("uses_exact_stored_rows") is not True
+                    or link.get("interpolation_or_resampling") is not False
+                    or link.get("pass_fail_threshold_v") is not None
+                    or not isinstance(link.get("max_abs_difference_v"), (float, int))
+                    or isinstance(link.get("max_abs_difference_v"), bool)
+                    or not math.isfinite(float(link.get("max_abs_difference_v")))
+                    or float(link.get("max_abs_difference_v")) < 0
+                    or link.get("sample_count") != raw_qa.get("sample_count")
+                    or link.get("time_start_s") != raw_qa.get("time_start")
+                    or link.get("time_end_s") != raw_qa.get("time_end")):
+                raise EvidenceError(f"{batch_id}/{run_id}: T1 link arithmetic record is incomplete")
+            mechanical_pointer = provenance.get("mechanical_metrics", {})
+            mechanical_path = safe_file(run_dir, "analysis/mechanical_metrics.json",
+                                        f"{run_id} mechanical metrics")
+            if (not isinstance(mechanical_pointer, dict)
+                    or mechanical_pointer.get("sha256") != sha256(mechanical_path)):
+                raise EvidenceError(f"{batch_id}/{run_id}: mechanical metric provenance hash mismatch")
+            raw_for_link = safe_file(run_dir, "raw.csv", f"{run_id} raw")
+            independently_computed, independent_count = _independent_t1_link_metric(raw_for_link)
+            if (independent_count != link.get("sample_count")
+                    or independently_computed != float(link["max_abs_difference_v"])):
+                raise EvidenceError(f"{batch_id}/{run_id}: T1 link metric does not reproduce from raw CSV")
+            t1_pointer = provenance.get("t1_source", {})
+            t1_rows = [item for item in source_manifest.get("sources", [])
+                       if isinstance(item, dict) and item.get("role") == "T1"]
+            if (len(t1_rows) != 1 or not isinstance(t1_pointer, dict)
+                    or t1_pointer.get("sha256") != t1_rows[0].get("canonical_source_sha256")
+                    or t1_rows[0].get("source_mode") != "DIRECT_CANONICAL_INCLUDE"):
+                raise EvidenceError(f"{batch_id}/{run_id}: T1 direct-source provenance is incomplete")
+            repository = next(
+                (candidate for candidate in (series_root, *series_root.parents)
+                 if (candidate / ".git").exists()), None
+            )
+            if repository is None:
+                raise EvidenceError(f"{run_id}: cannot locate repository root for T1 source")
+            t1_relative = Path(str(t1_rows[0].get("canonical_source_path", "")))
+            if t1_relative.is_absolute() or ".." in t1_relative.parts:
+                raise EvidenceError(f"{run_id}: unsafe T1 source path {t1_relative}")
+            t1_path = safe_file(repository, t1_relative.as_posix(), f"{run_id} direct T1 source")
+            _verify_hash(t1_path, t1_rows[0].get("canonical_source_sha256"),
+                         f"{run_id}/{t1_relative.as_posix()}")
+            if t1_pointer.get("sha256") != sha256(t1_path):
+                raise EvidenceError(f"{run_id}: direct T1 source hash disagrees with provenance")
+            deck = safe_file(run_dir, "actual_deck.cir", f"{run_id} deck")
+            include_line = f".include {t1_rows[0].get('deck_include_path', '')}"
+            if include_line not in deck.read_text(encoding="utf-8").splitlines():
+                raise EvidenceError(f"{run_id}: actual deck does not directly include T1 source")
         physical = int(row.get("physical_solve_count", 0))
         if physical != int(result.get("physical_solve_count", 0)) or physical != int(provenance.get("physical_solve_count", 0)):
             raise EvidenceError(f"{batch_id}/{run_id}: physical_solve_count disagrees across manifests")
@@ -256,7 +376,7 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
                 or raw_qa.get("sha256_after_plot", raw_sha) != raw_sha
                 or raw_qa.get("status") != "PASS" or raw_qa.get("raw_immutable") is not True):
             raise EvidenceError(f"{batch_id}/{run_id}: raw hash/immutability QA mismatch")
-        if (plot_qa.get("status") != "PASS" or plot_qa.get("page_count") != 5
+        if (plot_qa.get("status") != "PASS" or plot_qa.get("page_count") != len(expected_plot_paths)
                 or plot_qa.get("raw_sha256_before") != raw_sha
                 or plot_qa.get("raw_sha256_after") != raw_sha
                 or plot_qa.get("raw_immutable") is not True
@@ -267,19 +387,21 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
             raise EvidenceError(f"{batch_id}/{run_id}: result.json does not record plot QA PASS")
         plot_pages = plot_qa.get("pages")
         manifest_pages = plot_manifest.get("pages")
-        if not isinstance(plot_pages, list) or not isinstance(manifest_pages, list) or len(plot_pages) != 5 or len(manifest_pages) != 5:
-            raise EvidenceError(f"{batch_id}/{run_id}: expected five plot manifest/QA entries")
+        if (not isinstance(plot_pages, list) or not isinstance(manifest_pages, list)
+                or len(plot_pages) != len(expected_plot_paths)
+                or len(manifest_pages) != len(expected_plot_paths)):
+            raise EvidenceError(f"{batch_id}/{run_id}: mode-specific plot manifest/QA entries are incomplete")
         plot_qa_by_path = {str(page.get("path")): page for page in plot_pages if isinstance(page, dict)}
-        if set(plot_qa_by_path) != PLOT_PATHS:
+        if set(plot_qa_by_path) != expected_plot_paths:
             raise EvidenceError(f"{batch_id}/{run_id}: plot QA page inventory is not canonical")
         if {str(page.get("file")) for page in manifest_pages if isinstance(page, dict)} != {
-            path.removeprefix("plots/") for path in PLOT_PATHS
+            path.removeprefix("plots/") for path in expected_plot_paths
         }:
             raise EvidenceError(f"{batch_id}/{run_id}: plot manifest page inventory is not canonical")
         if any(page.get("time_range") != "FULL_STORED_TIME_RANGE"
                for page in manifest_pages if isinstance(page, dict)):
             raise EvidenceError(f"{batch_id}/{run_id}: plot manifest does not use full stored time range")
-        for plot_path in sorted(PLOT_PATHS):
+        for plot_path in sorted(expected_plot_paths):
             qa_page = plot_qa_by_path[plot_path]
             if qa_page.get("status") not in {"PASS", "NO_COMPONENT_PRESENT"}:
                 raise EvidenceError(f"{batch_id}/{run_id}: plot page QA failed for {plot_path}")
@@ -315,12 +437,30 @@ def validate_complete_batch(batch_dir: Path, series_root: Path, *, include_plots
         for source in source_manifest.get("sources", []):
             if not isinstance(source, dict):
                 raise EvidenceError(f"{run_id}: malformed source manifest entry")
+            if source.get("source_mode") == "DIRECT_CANONICAL_INCLUDE":
+                relative_source = Path(str(source.get("canonical_source_path", "")))
+                if relative_source.is_absolute() or ".." in relative_source.parts:
+                    raise EvidenceError(f"{run_id}: unsafe direct source path {relative_source}")
+                repository = next(
+                    (candidate for candidate in (series_root, *series_root.parents)
+                     if (candidate / ".git").exists()), None
+                )
+                if repository is None:
+                    raise EvidenceError(f"{run_id}: cannot locate repository root for direct source")
+                direct_source = safe_file(repository, relative_source.as_posix(), f"{run_id} direct source")
+                _verify_hash(direct_source, source.get("canonical_source_sha256"),
+                             f"{run_id}/{relative_source.as_posix()}")
+                deck = safe_file(run_dir, "actual_deck.cir", f"{run_id} deck")
+                include_line = f".include {source.get('deck_include_path', '')}"
+                if include_line not in deck.read_text(encoding="utf-8").splitlines():
+                    raise EvidenceError(f"{run_id}: direct source include is absent from actual deck")
+                continue
             snapshot_relative = str(source.get("rendered_snapshot_path", ""))
             snapshot = safe_file(run_dir, snapshot_relative, f"{run_id} source snapshot")
             _verify_hash(snapshot, source.get("rendered_snapshot_sha256"), f"{run_id}/{snapshot_relative}")
             _add_member(members, series_root, f"{relative_run}/{snapshot_relative}", "source_snapshots")
         if include_plots:
-            for plot_path in sorted(PLOT_PATHS):
+            for plot_path in sorted(expected_plot_paths):
                 _add_member(members, series_root, f"{relative_run}/{plot_path}", "plots")
         solve_count += int(row.get("physical_solve_count", 0))
         run_records.append({"batch_id": batch_id, "run_id": run_id,

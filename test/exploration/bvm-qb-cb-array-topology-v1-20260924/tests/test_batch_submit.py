@@ -33,7 +33,8 @@ def make_batch(root: Path, *, omit: str | None = None,
     batch_dir = root / "batches" / batch_id
     user_values = load_env(SERIES / "USER_CASE.env", USER_CASE_KEYS)
     user_values.update({"NAME": "test_batch", "ARRAY_SIZE": "2", "MASKS": ",".join(MASKS),
-                        "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0"})
+                        "QB_CB": "0,1", "SJTL_COUNT": "1,1", "POST_SJTL_CB": "0,0",
+                        "OUTPUT_MODE": "TERMINAL"})
     user_bytes = "".join(f"{key}={user_values[key]}\n" for key in sorted(user_values)).encode()
     stimulus_values = load_stimulus(SERIES / "STIMULUS.env")
     stimulus_bytes = "".join(f"{key}={stimulus_values[key]}\n" for key in sorted(stimulus_values)).encode()
@@ -75,6 +76,9 @@ def make_batch(root: Path, *, omit: str | None = None,
         write_json(run_dir / "result.json", result)
         write_json(run_dir / "probe_manifest.json", {
             "profile": user_values["PROBE_PROFILE"], "signals": [],
+        })
+        write_json(run_dir / "topology_manifest.json", {
+            "output_mode": "TERMINAL", "array_size": 2,
         })
         write_json(run_dir / "analysis" / "plot_qa.json", {
             "status": plot_status, "page_count": 5, "pages": plot_pages,

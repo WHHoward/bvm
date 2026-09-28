@@ -24,9 +24,9 @@
    ```
 
 5. Inspect `analysis/LATEST_BATCH.json`, then its
-   `batches/Uxxx_NAME/BATCH_SUMMARY.md`. Each completed run has five pages:
-   `plots/01_overview.html`, `02_bvm.html`, `03_qb.html`, `04_cb.html`, and
-   `05_acc_gap.html`.
+   `batches/Uxxx_NAME/BATCH_SUMMARY.md`. TERMINAL runs have the five front-end
+   pages `plots/01_overview.html` through `05_acc_gap.html`; T1 runs add
+   `plots/06_t1.html` without changing the first five pages.
 6. Before submission, check the complete batch gate:
 
    ```bash
@@ -56,14 +56,19 @@ configuration for every requested mask in that batch.
 
 ## Configuration and component rendering
 
-`USER_CASE.env` contains case identity, topology, solver settings, and shared
-parameters for all BVM, QB, CB, and sJTL instances. `STIMULUS.env` remains
-separate and defines WRITE0, READ0/CONTROL, WRITE1, and FINAL READ. MASK only
-changes the FINAL READ. The leftmost mask bit is BVM1; a zero suppresses that
-BVM's WL/BL/SE only during FINAL READ.
+`USER_CASE.env` contains case identity, topology, solver settings, shared
+parameters for all BVM, QB, CB, and sJTL instances, and explicit T1 parameters.
+`OUTPUT_MODE=TERMINAL` preserves the resistive `FINAL_OUT` termination;
+`OUTPUT_MODE=T1` connects `FINAL_OUT` to `T1_I` through `V_T1_LINK` and renders
+the actual `circuits/t1/t1_cell.cir` source directly. T1 currently accepts only
+`T1_CLK_MODE=QUIET`. `STIMULUS.env` remains separate and defines WRITE0,
+READ0/CONTROL, WRITE1, and FINAL READ. MASK only changes the FINAL READ. The
+leftmost mask bit is BVM1; a zero suppresses that BVM's WL/BL/SE only during
+FINAL READ.
 
 `config/component_reference.env` records parameter defaults and SHA-256 hashes
-for the four canonical 0923 component sources. If a canonical source hash
+for the four canonical 0923 front-end sources and the canonical T1 source. If
+a canonical source hash
 changes, preview stops with `REFERENCE_SOURCE_CHANGED`; update the reference
 only after explicit human review. The renderer writes per-run snapshots:
 
@@ -73,6 +78,10 @@ snapshot/sources/BQ_tunable.cir
 snapshot/sources/CB_tunable.cir
 snapshot/sources/sJTL_tunable.cir
 ```
+
+The T1 netlist is intentionally not copied or parameter-patched. In T1 mode the
+deck directly includes `circuits/t1/t1_cell.cir`; its parsed pin order and
+SHA-256 are recorded in topology/source provenance.
 
 The rendered deck includes those snapshots, not the canonical sources. It also
 defines the frozen shared `jjmit` model at top level before the includes, so the
@@ -125,8 +134,8 @@ refreshes the batch mechanical status; the batch cannot be submitted until
 that plot/evidence validation passes.
 
 `./submit.sh` prioritizes `LATEST_BATCH.json` and verifies every requested mask
-has exactly one run, each run/raw exists, artifact status is VALID, plot QA is
-PASS, recorded/raw SHA-256 values agree, and physical-solve totals match. It
+has exactly one run, each run/raw exists, artifact status is VALID, mode-specific
+plot QA passes, recorded/raw SHA-256 values agree, and physical-solve totals match. It
 checks artifact completeness, not whether the physical result meets an expected
 value. The advanced single-mask command remains available:
 
@@ -142,7 +151,8 @@ batch atlas or comparison dashboard is generated.
 contributions → `MERGE_i` → sJTL JJ P/V and stage output → optional post-CB
 representative output JJ/output → `CARRY_i` → `FINAL_OUT`. It does not repeat
 the complete `cb:*` or `sjtl:*` internal groups already shown on pages 04/03.
-All five pages use the full stored time range.
+All generated pages use the full stored time range. `06_t1.html` is emitted only
+in T1 mode and keeps receiver internals separate from the propagation page.
 
 ## Scientific package selection
 
@@ -156,8 +166,8 @@ it again. Incomplete/failed batches, unreferenced runs, tests/fixtures, caches,
 and historical ZIPs are excluded.
 
 By project-owner instruction, derived HTML is excluded from scientific ZIPs by
-default, while every referenced run still requires and verifies its five-page
-plot manifest/QA and raw SHA. The package carries the versioned `josim-plot2.py`
+default, while every referenced run still requires and verifies its
+mode-specific plot manifest/QA and raw SHA. The package carries the versioned `josim-plot2.py`
 and shared Plotly asset plus their hashes so plots can be regenerated. Use
 `./submit.sh <tag> --include-plots` or
 `python3 scripts/package.py --mode delta --tag <tag> --include-plots` only when
@@ -172,5 +182,6 @@ requested configurations under a temporary fixture directory and removes it
 on exit; it does not create a batch/run, call JoSIM, generate raw, package,
 commit, or update pointers. The ordinary `./try.sh` command is the sole
 multi-mask solve entry point and performs no retry, sweep, next topology,
-repeated read, rewrite read, or T1 work. The executor records mechanical
-outputs only; scientific interpretation remains separate.
+repeated read, or rewrite read. T1 mode is a receiver output boundary; this
+platform version supports QUIET clock mode only. The executor records
+mechanical outputs only; scientific interpretation remains separate.

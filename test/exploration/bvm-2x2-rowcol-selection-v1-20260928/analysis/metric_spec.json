@@ -12,7 +12,20 @@
     "WRITE1": {"start": "90p", "end": "101p", "boundary_rule": "[start,end)"},
     "POST_WRITE1": {"start": "101p", "end": "110p", "boundary_rule": "[start,end)"},
     "FINAL_READ": {"start": "110p", "end": "121p", "boundary_rule": "[start,end)"},
-    "TAIL": {"start": "121p", "end": "STOP", "boundary_rule": "[start,end)"}
+    "TAIL": {"start": "121p", "end": "STOP", "boundary_rule": "[start,end)", "enabled_when": "SECOND_READ_ENABLE=0"}
+  },
+  "optional_second_read": {
+    "enabled_by": "USER_CASE.env SECOND_READ_ENABLE=1",
+    "second_read_se_gate": "SECOND_ROW_BITS AND SECOND_COL_BITS; independent of SE_GATE_MODE",
+    "windows_when_enabled": {
+      "FINAL_READ": {"start": "110p", "end": "121p", "boundary_rule": "[start,end)", "read_cycle": "FIRST_READ"},
+      "RECOVERY_BEFORE_SECOND_READ": {"start": "121p", "end": "SECOND_READ_START", "boundary_rule": "[start,end)"},
+      "SECOND_READ": {"start": "SECOND_READ_START", "end": "SECOND_READ_START+RISE+HOLD+FALL", "boundary_rule": "[start,end)", "read_cycle": "SECOND_READ"},
+      "POST_SECOND_READ": {"start": "SECOND_READ_END", "end": "STOP", "boundary_rule": "[start,end)"}
+    },
+    "combined_final_read_to_stop_window": false,
+    "integration_grid": "actual stored raw rows only",
+    "interpolation_or_resampling": false
   },
   "derived_arithmetic": {
     "current": ["min", "max", "peak_to_peak", "max_abs", "trapezoid_charge_on_actual_stored_time_rows"],

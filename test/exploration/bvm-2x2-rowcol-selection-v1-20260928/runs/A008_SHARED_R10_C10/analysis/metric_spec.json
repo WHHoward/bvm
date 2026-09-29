@@ -1,0 +1,39 @@
+{
+  "schema": "bvm-2x2-rowcol-selection-metric-spec-v1",
+  "physical_solve_count_authorized_in_platform_build_task": 0,
+  "manual_runner_policy": "one current configuration per invocation; no preset batch",
+  "time_column_units": "seconds",
+  "raw_phase_units": "radians",
+  "windows": {
+    "WRITE0": {"start": "50p", "end": "61p", "boundary_rule": "[start,end)"},
+    "POST_WRITE0": {"start": "61p", "end": "70p", "boundary_rule": "[start,end)"},
+    "READ0": {"start": "70p", "end": "81p", "boundary_rule": "[start,end)"},
+    "POST_READ0": {"start": "81p", "end": "90p", "boundary_rule": "[start,end)"},
+    "WRITE1": {"start": "90p", "end": "101p", "boundary_rule": "[start,end)"},
+    "POST_WRITE1": {"start": "101p", "end": "110p", "boundary_rule": "[start,end)"},
+    "FINAL_READ": {"start": "110p", "end": "121p", "boundary_rule": "[start,end)"},
+    "TAIL": {"start": "121p", "end": "STOP", "boundary_rule": "[start,end)", "enabled_when": "SECOND_READ_ENABLE=0"}
+  },
+  "optional_second_read": {
+    "enabled_by": "USER_CASE.env SECOND_READ_ENABLE=1",
+    "second_read_se_gate": "SECOND_ROW_BITS AND SECOND_COL_BITS; independent of SE_GATE_MODE",
+    "windows_when_enabled": {
+      "FINAL_READ": {"start": "110p", "end": "121p", "boundary_rule": "[start,end)", "read_cycle": "FIRST_READ"},
+      "RECOVERY_BEFORE_SECOND_READ": {"start": "121p", "end": "SECOND_READ_START", "boundary_rule": "[start,end)"},
+      "SECOND_READ": {"start": "SECOND_READ_START", "end": "SECOND_READ_START+RISE+HOLD+FALL", "boundary_rule": "[start,end)", "read_cycle": "SECOND_READ"},
+      "POST_SECOND_READ": {"start": "SECOND_READ_END", "end": "STOP", "boundary_rule": "[start,end)"}
+    },
+    "combined_final_read_to_stop_window": false,
+    "integration_grid": "actual stored raw rows only",
+    "interpolation_or_resampling": false
+  },
+  "derived_arithmetic": {
+    "current": ["min", "max", "peak_to_peak", "max_abs", "trapezoid_charge_on_actual_stored_time_rows"],
+    "junction": ["full_trace_unwrap", "same_junction_phase_endpoint_delta", "same_junction_voltage_trapezoid", "phase_delta_rad_over_2pi_navigation_arithmetic"],
+    "output": ["min", "max", "peak_to_peak", "trapezoid_voltage_area_on_actual_stored_time_rows"],
+    "interpolation_or_resampling": false,
+    "thresholds_or_classifiers": "none"
+  },
+  "interpretation_boundary": "No physical results exist until a user manually runs a selected configuration. Phase/rad/(2*pi) and voltage-area arithmetic are not SFQ event counts.",
+  "scientific_interpretation_performed": false
+}

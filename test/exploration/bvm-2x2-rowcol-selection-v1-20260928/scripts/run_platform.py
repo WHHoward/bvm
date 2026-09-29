@@ -53,19 +53,29 @@ CASE_KEYS = {
     "NAME", "DRIVE_MODE", "ROW_BITS", "COL_BITS", "ROW_WL_READ_AMPLITUDE",
     "COL_SE_READ_AMPLITUDE", "ROW_WL_WRITE_AMPLITUDE", "COL_BL_WRITE_AMPLITUDE",
     "SE_TOPOLOGY", "SE_GATE_MODE", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
-    "DT", "STOP", "PROBE_PROFILE",
+    "DT", "STOP", "PROBE_PROFILE", "SECOND_READ_ENABLE", "SECOND_ROW_BITS",
+    "SECOND_COL_BITS",
 }
 OPTIONAL_SE_KEYS = {"SE_TOPOLOGY", "SE_GATE_MODE"}
 LEGACY_SE_DEFAULTS = {"SE_TOPOLOGY": "SHARED_COLUMN", "SE_GATE_MODE": "COLUMN"}
-STIMULUS_KEYS = {
+OPTIONAL_SECOND_CASE_KEYS = {"SECOND_READ_ENABLE", "SECOND_ROW_BITS", "SECOND_COL_BITS"}
+SECOND_READ_DEFAULTS = {
+    "SECOND_READ_ENABLE": "0", "SECOND_ROW_BITS": "01", "SECOND_COL_BITS": "10",
+}
+BASE_STIMULUS_KEYS = {
     f"{stage}_{field}"
     for stage in ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
     for field in ("START", "RISE", "HOLD", "FALL")
 }
+SECOND_READ_STIMULUS_KEYS = {
+    f"SECOND_READ_{field}" for field in ("START", "RISE", "HOLD", "FALL")
+}
+STIMULUS_KEYS = BASE_STIMULUS_KEYS | SECOND_READ_STIMULUS_KEYS
 DEFAULT_PRESET = "A_INDEPENDENT_10_10"
 PRESET_NAMES = {
     "A_INDEPENDENT_10_10", "B_SHARED_10_10", "C_SHARED_11_11",
     "D0_CELL_SE_COLUMN_10_10", "D1_CELL_SE_CROSSPOINT_10_10",
+    "E0_A005_CROSSPOINT_SECOND_READ", "E1_A006_COLUMN_SECOND_READ",
 }
 ROWS = (1, 2)
 COLS = (1, 2)
@@ -150,23 +160,29 @@ def fmt_time(seconds: Decimal) -> str:
 
 
 def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, str]]:
-    case = parse_env(USER_CASE, CASE_KEYS, required=CASE_KEYS - OPTIONAL_SE_KEYS)
+    optional_case_keys = OPTIONAL_SE_KEYS | OPTIONAL_SECOND_CASE_KEYS
+    case = parse_env(USER_CASE, CASE_KEYS, required=CASE_KEYS - optional_case_keys)
     case = _with_se_defaults(case)
+    case = _with_second_read_defaults(case)
     if preset is not None:
         if preset not in PRESET_NAMES:
             raise ConfigError(f"unknown preset {preset!r}; choose one of {sorted(PRESET_NAMES)}")
         preset_path = PRESETS_DIR / f"{preset}.env"
         preset_fixed_keys = {"NAME", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
-                             "DT", "STOP", "PROBE_PROFILE"}
+                             "PROBE_PROFILE"}
+        optional_preset_keys = optional_case_keys | {"DT", "STOP"}
         overrides = parse_env(preset_path, CASE_KEYS - preset_fixed_keys,
-                              required=CASE_KEYS - preset_fixed_keys - OPTIONAL_SE_KEYS)
+                              required=CASE_KEYS - preset_fixed_keys - optional_preset_keys)
         case.update(overrides)
         # Legacy A/B/C presets intentionally retain their original SE behavior,
         # even when the editable USER_CASE now selects a new CELL topology.
         for key, value in LEGACY_SE_DEFAULTS.items():
             if key not in overrides:
                 case[key] = value
-    stimulus = parse_env(STIMULUS, STIMULUS_KEYS, required=STIMULUS_KEYS)
+        for key, value in SECOND_READ_DEFAULTS.items():
+            if key not in overrides:
+                case[key] = value
+    stimulus = parse_env(STIMULUS, STIMULUS_KEYS, required=BASE_STIMULUS_KEYS)
     validate_config(case, stimulus)
     verify_sources()
     return case, stimulus
@@ -175,6 +191,13 @@ def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, st
 def _with_se_defaults(case: dict[str, str]) -> dict[str, str]:
     effective = dict(case)
     for key, value in LEGACY_SE_DEFAULTS.items():
+        effective.setdefault(key, value)
+    return effective
+
+
+def _with_second_read_defaults(case: dict[str, str]) -> dict[str, str]:
+    effective = dict(case)
+    for key, value in SECOND_READ_DEFAULTS.items():
         effective.setdefault(key, value)
     return effective
 
@@ -190,6 +213,14 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
         raise ConfigError("SE_GATE_MODE must be COLUMN or CROSSPOINT")
     if case["SE_GATE_MODE"] == "CROSSPOINT" and _effective_se_topology(case) != "CELL":
         raise ConfigError("SE_GATE_MODE=CROSSPOINT requires independent per-cell SE nodes")
+    if case["SECOND_READ_ENABLE"] not in {"0", "1"}:
+        raise ConfigError("SECOND_READ_ENABLE must be 0 or 1")
+    for key in ("SECOND_ROW_BITS", "SECOND_COL_BITS"):
+        if not re.fullmatch(r"[01]{2}", case[key]):
+            raise ConfigError(f"{key} must be exactly two bits; leftmost bit selects index 1")
+    second_read_enabled = case["SECOND_READ_ENABLE"] == "1"
+    if second_read_enabled and _effective_se_topology(case) != "CELL":
+        raise ConfigError("SECOND_READ_ENABLE=1 requires independent per-cell SE nodes")
     for key in ("ROW_BITS", "COL_BITS"):
         if not re.fullmatch(r"[01]{2}", case[key]):
             raise ConfigError(f"{key} must be exactly two bits; leftmost bit selects index 1")
@@ -218,6 +249,21 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
             raise ConfigError(f"stimulus stages overlap: {previous[0]} / {current[0]}")
     if windows[-1][2] > quantity(case["STOP"], "STOP"):
         raise ConfigError("FINAL_READ ends after STOP")
+    provided_second_timing = SECOND_READ_STIMULUS_KEYS & stimulus.keys()
+    if second_read_enabled and provided_second_timing != SECOND_READ_STIMULUS_KEYS:
+        missing = sorted(SECOND_READ_STIMULUS_KEYS - stimulus.keys())
+        raise ConfigError(f"SECOND_READ is enabled but timing fields are missing: {', '.join(missing)}")
+    if second_read_enabled:
+        start = quantity(stimulus["SECOND_READ_START"], "SECOND_READ_START")
+        rise = quantity(stimulus["SECOND_READ_RISE"], "SECOND_READ_RISE")
+        hold = quantity(stimulus["SECOND_READ_HOLD"], "SECOND_READ_HOLD")
+        fall = quantity(stimulus["SECOND_READ_FALL"], "SECOND_READ_FALL")
+        if start < 0 or rise <= 0 or hold < 0 or fall <= 0:
+            raise ConfigError("SECOND_READ: start/hold must be nonnegative; rise/fall must be positive")
+        if start < windows[-1][2]:
+            raise ConfigError("SECOND_READ overlaps FINAL_READ")
+        if start + rise + hold + fall > quantity(case["STOP"], "STOP"):
+            raise ConfigError("SECOND_READ ends after STOP")
 
 
 def verify_sources() -> dict[str, dict[str, str]]:
@@ -295,6 +341,21 @@ def _final_read_se_enabled(case: dict[str, str], row: int, col: int) -> bool:
     return case["COL_BITS"][col - 1] == "1"
 
 
+def _second_read_enabled(case: dict[str, str]) -> bool:
+    return case["SECOND_READ_ENABLE"] == "1"
+
+
+def _second_read_se_enabled(case: dict[str, str], row: int, col: int) -> bool:
+    return (_second_read_enabled(case) and
+            case["SECOND_ROW_BITS"][row - 1] == "1" and
+            case["SECOND_COL_BITS"][col - 1] == "1")
+
+
+def _active_stages(case: dict[str, str]) -> tuple[str, ...]:
+    base = ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
+    return base + (("SECOND_READ",) if _second_read_enabled(case) else ())
+
+
 def cell_selection_groups(case: dict[str, str]) -> dict[str, list[str]]:
     selected: list[str] = []
     half_selected: list[str] = []
@@ -352,7 +413,12 @@ def _branch_amplitude(case: dict[str, str], branch: str, stage: str,
     if branch == "WL":
         amplitude = case["ROW_WL_WRITE_AMPLITUDE"] if stage in {"WRITE0", "WRITE1"} \
             else case["ROW_WL_READ_AMPLITUDE"]
-        enabled = True if stage != "FINAL_READ" else case["ROW_BITS"][int(row) - 1] == "1"
+        if stage == "FINAL_READ":
+            enabled = case["ROW_BITS"][int(row) - 1] == "1"
+        elif stage == "SECOND_READ":
+            enabled = case["SECOND_ROW_BITS"][int(row) - 1] == "1"
+        else:
+            enabled = True
     elif branch == "BL":
         if stage not in {"WRITE0", "WRITE1"}:
             return "0"
@@ -364,6 +430,10 @@ def _branch_amplitude(case: dict[str, str], branch: str, stage: str,
         amplitude = case["COL_SE_READ_AMPLITUDE"]
         if stage == "READ0":
             enabled = True
+        elif stage == "SECOND_READ":
+            if row is None:
+                raise ConfigError("SECOND_READ requires independent per-cell SE sources")
+            enabled = _second_read_se_enabled(case, int(row), int(col))
         elif case["SE_GATE_MODE"] == "COLUMN":
             enabled = case["COL_BITS"][int(col) - 1] == "1"
         else:
@@ -393,7 +463,7 @@ def _stimulus_for_driver(case: dict[str, str], stimulus: dict[str, str],
 
     points: list[tuple[Decimal, str]] = [(Decimal(0), "0")]
     stage_values: dict[str, str] = {}
-    for stage in ("WRITE0", "READ0", "WRITE1", "FINAL_READ"):
+    for stage in _active_stages(case):
         start = quantity(stimulus[f"{stage}_START"], f"{stage}_START")
         rise = quantity(stimulus[f"{stage}_RISE"], f"{stage}_RISE")
         hold = quantity(stimulus[f"{stage}_HOLD"], f"{stage}_HOLD")
@@ -470,6 +540,10 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
                 "final_read_wl_enabled": case["ROW_BITS"][row - 1] == "1",
                 "final_read_se_enabled": _final_read_se_enabled(case, row, col),
                 "final_read_crosspoint_active": cell_selected(case, row, col),
+                "second_read_wl_enabled": (_second_read_enabled(case) and
+                                           case["SECOND_ROW_BITS"][row - 1] == "1"),
+                "second_read_se_enabled": _second_read_se_enabled(case, row, col),
+                "second_read_crosspoint_active": _second_read_se_enabled(case, row, col),
                 "input_nodes": input_nodes,
                 "sl_node": sl_node, "qb_output_node": qb_node,
                 "sjtl_output_node": sjtl_node, "output_node": vout,
@@ -543,6 +617,16 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
                  "row_bit_order": "leftmost bit selects row 1; rightmost selects row 2",
                  "column_bit_order": "leftmost bit selects column 1; rightmost selects column 2"},
         "cell_selection": cell_selection_groups(case),
+        "second_read": {
+            "enabled": _second_read_enabled(case),
+            "row_bits": case["SECOND_ROW_BITS"],
+            "column_bits": case["SECOND_COL_BITS"],
+            "se_gate_mode": "CELL_CROSSPOINT" if _second_read_enabled(case) else "DISABLED",
+            "active_crosspoints": [
+                cell["cell"] for cell in cell_records if cell["second_read_crosspoint_active"]],
+            "enabled_by_cell": {
+                cell["cell"]: cell["second_read_se_enabled"] for cell in cell_records},
+        },
         "shared_nodes": shared_nodes,
         "input_lines": drivers,
         "driver_count": len(drivers),
@@ -654,6 +738,10 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
+        "second_read_enabled": case["SECOND_READ_ENABLE"],
+        "second_row_bits": case["SECOND_ROW_BITS"],
+        "second_column_bits": case["SECOND_COL_BITS"],
+        "second_read_se_gate_mode": "CELL_CROSSPOINT" if _second_read_enabled(case) else "DISABLED",
         "row_bits": case["ROW_BITS"], "column_bits": case["COL_BITS"],
         "active_crosspoints": topology["cell_selection"]["active_crosspoints"],
         "half_selected": topology["cell_selection"]["half_selected"],
@@ -758,6 +846,14 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
                    "FINAL_READ": case["COL_SE_READ_AMPLITUDE"]
                    if _final_read_se_enabled(case, row, col) else "0"},
         }
+        if _second_read_enabled(case):
+            expected_values["WL"]["SECOND_READ"] = (
+                case["ROW_WL_READ_AMPLITUDE"]
+                if case["SECOND_ROW_BITS"][row - 1] == "1" else "0")
+            expected_values["BL"]["SECOND_READ"] = "0"
+            expected_values["SE"]["SECOND_READ"] = (
+                case["COL_SE_READ_AMPLITUDE"]
+                if _second_read_se_enabled(case, row, col) else "0")
         for branch, expected in expected_values.items():
             source = cell["source_for_each_input"][branch]
             if source not in source_records or source not in driver_stages:
@@ -767,6 +863,9 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
                 raise ConfigError(f"{name}: {branch} connection is not backed by its registered source")
             if driver_stages[source] != expected:
                 raise ConfigError(f"{name}: {branch} stage waveform disagrees with row/column mapping")
+    second_read_stage_present = all("SECOND_READ" in values for values in driver_stages.values())
+    if second_read_stage_present != _second_read_enabled(case):
+        raise ConfigError("SECOND_READ PWL presence disagrees with SECOND_READ_ENABLE")
     if case["DRIVE_MODE"] == "SHARED":
         for row in ROWS:
             record = next(item for item in drivers if item["source"] == f"I_WL_R{row}")
@@ -804,6 +903,10 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
     if any(stages.get("FINAL_READ") != "0" for source, stages in driver_stages.items()
            if branch_by_source[source] == "BL"):
         raise ConfigError("BL must be zero during FINAL READ for every independent driver")
+    if _second_read_enabled(case) and any(
+            stages.get("SECOND_READ") != "0" for source, stages in driver_stages.items()
+            if branch_by_source[source] == "BL"):
+        raise ConfigError("BL must be zero during SECOND_READ for every independent driver")
     if set(cell["cell"] for cell in cell_records) != {"R1C1", "R1C2", "R2C1", "R2C2"}:
         raise ConfigError("cell grid identity is incomplete")
     return {
@@ -823,6 +926,19 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
         "se_gate_mode": case["SE_GATE_MODE"],
         "cell_se_nodes_independent": len({cell["input_nodes"]["SE"] for cell in cell_records}) == 4,
         "final_read_bl_zero": True,
+        "second_read_enabled": _second_read_enabled(case),
+        "second_read_row_bits": case["SECOND_ROW_BITS"],
+        "second_read_column_bits": case["SECOND_COL_BITS"],
+        "second_read_se_gate_mode": "CELL_CROSSPOINT" if _second_read_enabled(case) else "DISABLED",
+        "second_read_crosspoint_gate_exact": (
+            not _second_read_enabled(case) or
+            topology["second_read"]["enabled_by_cell"] == {
+                cell["cell"]: (case["SECOND_ROW_BITS"][cell["row"] - 1] == "1" and
+                               case["SECOND_COL_BITS"][cell["column"] - 1] == "1")
+                for cell in cell_records}),
+        "second_read_bl_zero": (not _second_read_enabled(case) or all(
+            values.get("SECOND_READ") == "0" for source, values in driver_stages.items()
+            if branch_by_source[source] == "BL")),
         "deck_print_set_matches_probe_manifest": True,
         "t1_count": 0, "output_merge": False,
         "scientific_interpretation_performed": False,
@@ -855,6 +971,12 @@ def parameter_manifest(case: dict[str, str], stimulus: dict[str, str], records: 
         "schema": "bvm-2x2-rowcol-parameters-v1",
         "drive_mode": case["DRIVE_MODE"],
         "USER_CASE": dict(case), "STIMULUS": dict(stimulus),
+        "second_read": {
+            "enabled": _second_read_enabled(case),
+            "row_bits": case["SECOND_ROW_BITS"],
+            "column_bits": case["SECOND_COL_BITS"],
+            "se_gate_mode": "CELL_CROSSPOINT" if _second_read_enabled(case) else "DISABLED",
+        },
         "component_source_sha256": {role: record["sha256"] for role, record in records.items()},
         "frozen_output_load": {"SJTL_PER_CELL": 1, "POST_CB_PER_CELL": 1,
                                "TERM_R_OHM": case["TERM_R"]},
@@ -870,6 +992,10 @@ def _run_config_identity(case: dict[str, str]) -> dict[str, str]:
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
+        "second_read_enabled": case["SECOND_READ_ENABLE"],
+        "second_row_bits": case["SECOND_ROW_BITS"],
+        "second_column_bits": case["SECOND_COL_BITS"],
+        "second_read_se_gate_mode": "CELL_CROSSPOINT" if _second_read_enabled(case) else "DISABLED",
         "row_bits": case["ROW_BITS"],
         "column_bits": case["COL_BITS"],
     }
@@ -898,13 +1024,20 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         "- Load per cell: BVM → canonical QB → one canonical sJTL → one canonical CB → separate VOUT → 2 Ω.",
         "- SHARED drive uses two shared row-WL sources, two shared column-BL sources, and either two shared-column or four cell-local SE sources.",
         "- Shared 200 µA and independent 100 µA are candidate drive settings, not assumed equivalent.",
+        f"- SECOND_READ: enabled={_second_read_enabled(case)}; row bits=`{case['SECOND_ROW_BITS']}`; "
+        f"column bits=`{case['SECOND_COL_BITS']}`; SE gate is fixed to CELL_CROSSPOINT.",
         f"- DT=`{case['DT']}`, STOP=`{case['STOP']}`; P(...) raw unit is radians.",
-        "- Registered half-open windows: WRITE0, READ0, WRITE1, FINAL READ; exact windows are in stimulus_qa.json.",
+        "- Registered half-open windows and read/recovery windows are listed in stimulus_qa.json and cell_metrics.json.",
         "- Branch-current analysis reports raw extrema/actual-grid charge only; no decision threshold is registered.",
         "- No multi-mask/batch, sweep, follow-up, T1, output merge, or 4×4 extension is authorized.",
         "- Interpretation ceiling: artifact/mechanical QA and registered arithmetic only.",
         "", "## Canonical source hashes", "",
     ]
+    if _second_read_enabled(case):
+        for window_name in ("FINAL_READ", "RECOVERY_BEFORE_SECOND_READ", "SECOND_READ",
+                            "POST_SECOND_READ"):
+            start, end = _stage_windows(case, stimulus)[window_name]
+            lines.insert(-2, f"- {window_name}: [{fmt_time(start)}, {fmt_time(end)}) using stored-grid samples.")
     for role, source in rendered["sources"].items():
         lines.append(f"- {role}: `{source['path']}` SHA-256 `{source['sha256']}`")
     lines.extend(("", "## Registered probes", ""))
@@ -947,6 +1080,33 @@ def plot_page_plan(topology: dict[str, Any], probes: dict[str, Any]) -> list[dic
         ]
         page_plan.append({"file": f"cells/{name}.html", "title": f"Cell {name}: BVM → QB → sJTL → CB",
                           "signals": signals})
+    if topology["second_read"]["enabled"]:
+        cell = next(item for item in topology["cell_instances"] if item["cell"] == "R2C1")
+        instance = cell["instances"]
+        focus_signals = [
+            f"I(R_WL|{instance['BVM']})", f"I(R_BL|{instance['BVM']})",
+            f"I(R_SE|{instance['BVM']})",
+            *[signal for jj in CELL_JJS
+              for signal in (f"P({jj}|{instance['BVM']})", f"V({jj}|{instance['BVM']})")],
+            f"V({cell['sl_node']})", f"V({cell['qb_output_node']})",
+            *[signal for jj in QB_JJS
+              for signal in (f"P({jj}|{instance['QB']})", f"V({jj}|{instance['QB']})")],
+            f"V({cell['sjtl_output_node']})",
+            *[signal for jj in SJTL_JJS
+              for signal in (f"P({jj}|{instance['SJTL']})", f"V({jj}|{instance['SJTL']})")],
+            *[signal for jj in CB_JJS
+              for signal in (f"P({jj}|{instance['POST_CB']})", f"V({jj}|{instance['POST_CB']})")],
+            f"V({cell['output_node']})",
+        ]
+        window_pages = (
+            ("FINAL_READ", "windows/01_first_read_r2c1.html", "First read / FINAL_READ — R2C1"),
+            ("RECOVERY_BEFORE_SECOND_READ", "windows/02_recovery_r2c1.html",
+             "Recovery before SECOND_READ — R2C1"),
+            ("SECOND_READ", "windows/03_second_read_r2c1.html", "SECOND_READ — R2C1"),
+        )
+        for window_name, filename, title in window_pages:
+            page_plan.append({"file": filename, "title": title,
+                              "signals": focus_signals, "window_name": window_name})
     for page in page_plan:
         missing = [label for label in page["signals"] if label not in available]
         if missing:
@@ -972,7 +1132,8 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
     times = " | ".join(
         f"{stage} {fmt_decimal(start / Decimal('1e-12'))}–{fmt_decimal(end / Decimal('1e-12'))}ps"
         for stage, (start, end) in windows.items()
-        if stage in {"WRITE0", "READ0", "WRITE1", "FINAL_READ"}
+        if stage in {"WRITE0", "READ0", "WRITE1", "FINAL_READ",
+                     "RECOVERY_BEFORE_SECOND_READ", "SECOND_READ"}
     )
     print("DRY RUN PASS — no solver call; physical_solve_count=0")
     print(f"Case: {case['NAME']} | next run if executed: {run_id}")
@@ -995,6 +1156,14 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
     final_se_gate = "column bits" if case["SE_GATE_MODE"] == "COLUMN" else "row AND column bits"
     print("PWL phases: WRITE0 −WL/−BL; READ0 +WL/+SE; WRITE1 +WL/+BL; "
           f"FINAL_READ +WL(row bits)/+SE({final_se_gate}), BL=0")
+    if _second_read_enabled(case):
+        print(f"SECOND_READ: row bits={case['SECOND_ROW_BITS']}; column bits={case['SECOND_COL_BITS']}; "
+              "SE gate=CELL_CROSSPOINT; BL=0")
+        print("SECOND_READ programmed source values per cell (WL, BL, SE; not measured branch currents):")
+        for cell in rendered["cell_records"]:
+            values = {branch: rendered["driver_stages"][source]["SECOND_READ"]
+                      for branch, source in cell["source_for_each_input"].items()}
+            print(f"  {cell['cell']}: {values['WL']}, {values['BL']}, {values['SE']}")
     if case["DRIVE_MODE"] == "SHARED" and _effective_se_topology(case) == "CELL":
         for driver in rendered["drivers"]:
             if driver["branch"] == "SE":
@@ -1049,7 +1218,16 @@ def _stage_windows(case: dict[str, str], stimulus: dict[str, str]) -> dict[str, 
                                     ("READ0", "WRITE1", "POST_READ0"),
                                     ("WRITE1", "FINAL_READ", "POST_WRITE1")):
         windows[name] = (windows[previous][1], windows[current][0])
-    windows["TAIL"] = (windows["FINAL_READ"][1], quantity(case["STOP"], "STOP"))
+    if _second_read_enabled(case):
+        second_start = quantity(stimulus["SECOND_READ_START"], "SECOND_READ_START")
+        second_end = second_start + sum(
+            (quantity(stimulus[f"SECOND_READ_{field}"], f"SECOND_READ_{field}")
+             for field in ("RISE", "HOLD", "FALL")), Decimal(0))
+        windows["RECOVERY_BEFORE_SECOND_READ"] = (windows["FINAL_READ"][1], second_start)
+        windows["SECOND_READ"] = (second_start, second_end)
+        windows["POST_SECOND_READ"] = (second_end, quantity(case["STOP"], "STOP"))
+    else:
+        windows["TAIL"] = (windows["FINAL_READ"][1], quantity(case["STOP"], "STOP"))
     return windows
 
 
@@ -1161,14 +1339,18 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                 voltage_signal = f"V({jj}|{instance})"
                 phase = _unwrap(trace.column(phase_signal))
                 voltage = trace.column(voltage_signal)
-                for window_name in ("POST_READ0", "POST_WRITE1", "FINAL_READ"):
+                jj_windows = ["POST_READ0", "POST_WRITE1", "FINAL_READ"]
+                if _second_read_enabled(case):
+                    jj_windows.extend(("RECOVERY_BEFORE_SECOND_READ", "SECOND_READ",
+                                       "POST_SECOND_READ"))
+                for window_name in jj_windows:
                     indexes = _indices(exact_times, windows[window_name])
                     if len(indexes) < 2:
                         continue
                     start, end = indexes[0], indexes[-1]
                     delta_rad = phase[end] - phase[start]
                     area = _trapz(trace.time, voltage, indexes)
-                    jj_metrics.append({
+                    metric = {
                         "cell": cell["cell"], "role": role, "instance": instance,
                         "junction": jj, "window": window_name,
                         "phase_signal": phase_signal, "voltage_signal": voltage_signal,
@@ -1179,24 +1361,45 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                         "voltage_area_phi0_arithmetic": area / PHI0_VS,
                         "phase_minus_area_turns_arithmetic": delta_rad / (2 * math.pi) - area / PHI0_VS,
                         "interpolation_or_resampling": False,
-                    })
+                    }
+                    if _second_read_enabled(case):
+                        metric["phase_start_rad"] = phase[start]
+                        metric["phase_end_rad"] = phase[end]
+                        metric["read_cycle"] = (
+                            "FIRST_READ" if window_name == "FINAL_READ" else
+                            "SECOND_READ" if window_name == "SECOND_READ" else None)
+                    jj_metrics.append(metric)
     outputs: list[dict[str, Any]] = []
     for cell in topology["cell_instances"]:
-        for node_role, node in (("QB_OUT", cell["qb_output_node"]),
+        output_boundaries = [("QB_OUT", cell["qb_output_node"]),
                                 ("SJTL_OUT", cell["sjtl_output_node"]),
-                                ("VOUT", cell["output_node"])):
+                                ("VOUT", cell["output_node"])]
+        if _second_read_enabled(case):
+            output_boundaries.insert(0, ("BVM_SL", cell["sl_node"]))
+        for node_role, node in output_boundaries:
             signal = f"V({node})"
             values = trace.column(signal)
-            for window_name in ("POST_READ0", "POST_WRITE1", "FINAL_READ"):
+            output_windows = ["POST_READ0", "POST_WRITE1", "FINAL_READ"]
+            if _second_read_enabled(case):
+                output_windows.extend(("RECOVERY_BEFORE_SECOND_READ", "SECOND_READ",
+                                       "POST_SECOND_READ"))
+            for window_name in output_windows:
                 indexes = _indices(exact_times, windows[window_name])
                 if len(indexes) < 2:
                     continue
                 selected = [values[index] for index in indexes]
-                outputs.append({"cell": cell["cell"], "boundary": node_role,
-                                "signal": signal, "window": window_name,
-                                "sample_count": len(indexes), "min_v": min(selected),
-                                "max_v": max(selected), "peak_to_peak_v": max(selected) - min(selected),
-                                "area_v_s": _trapz(trace.time, values, indexes)})
+                metric = {"cell": cell["cell"], "boundary": node_role,
+                          "signal": signal, "window": window_name,
+                          "sample_count": len(indexes), "min_v": min(selected),
+                          "max_v": max(selected), "peak_to_peak_v": max(selected) - min(selected),
+                          "area_v_s": _trapz(trace.time, values, indexes)}
+                if _second_read_enabled(case):
+                    metric["first_sample_v"] = values[indexes[0]]
+                    metric["last_sample_v"] = values[indexes[-1]]
+                    metric["read_cycle"] = (
+                        "FIRST_READ" if window_name == "FINAL_READ" else
+                        "SECOND_READ" if window_name == "SECOND_READ" else None)
+                outputs.append(metric)
     return {
         "schema": "bvm-2x2-rowcol-cell-metrics-v1",
         "status": "DERIVED_ARITHMETIC_ONLY",
@@ -1241,7 +1444,8 @@ def _plotter_module() -> Any:
     return module
 
 
-def render_plots(run_dir: Path, topology: dict[str, Any], probes: dict[str, Any]) -> dict[str, Any]:
+def render_plots(run_dir: Path, topology: dict[str, Any], probes: dict[str, Any],
+                 case: dict[str, str], stimulus: dict[str, str]) -> dict[str, Any]:
     import pandas as pd
     from bvmtools.raw import read_csv
 
@@ -1259,6 +1463,10 @@ def render_plots(run_dir: Path, topology: dict[str, Any], probes: dict[str, Any]
     if not PLOTLY_ASSET.is_file():
         raise ConfigError(f"shared Plotly asset missing: {PLOTLY_ASSET}")
     frame = pd.read_csv(raw)
+    exact_times = exact_raw_times(raw)
+    if len(frame) != len(exact_times):
+        raise ConfigError("plot frame row count disagrees with exact raw time rows")
+    windows = _stage_windows(case, stimulus)
     plotter = _plotter_module()
     plot_root = run_dir / "plots"
     qa_pages: list[dict[str, Any]] = []
@@ -1266,17 +1474,39 @@ def render_plots(run_dir: Path, topology: dict[str, Any], probes: dict[str, Any]
         target = plot_root / page["file"]
         target.parent.mkdir(parents=True, exist_ok=True)
         asset_ref = Path(os.path.relpath(PLOTLY_ASSET, target.parent)).as_posix()
+        page_frame = frame
+        window_qa = None
+        if page.get("window_name"):
+            window_name = page["window_name"]
+            if window_name not in windows:
+                raise ConfigError(f"plot page names an unregistered analysis window: {window_name}")
+            indices = _indices(exact_times, windows[window_name])
+            if len(indices) < 2:
+                raise ConfigError(f"plot window {window_name} has fewer than two actual stored rows")
+            page_frame = frame.iloc[indices]
+            window_qa = {
+                "name": window_name,
+                "start_seconds": str(windows[window_name][0]),
+                "end_seconds": str(windows[window_name][1]),
+                "boundary_rule": "[start,end)",
+                "first_stored_time_seconds": str(exact_times[indices[0]]),
+                "last_stored_time_seconds": str(exact_times[indices[-1]]),
+            }
         fig = plotter.seperate_combined_layout(
-            frame, SimpleNamespace(subset=page["signals"], jump="2pi"))
+            page_frame, SimpleNamespace(subset=page["signals"], jump="2pi"))
         fig.update_layout(title=f"{run_dir.name} — {page['title']}",
                           title_font_size=22, template="plotly_dark")
         fig.write_html(target, include_plotlyjs=asset_ref, full_html=True, auto_open=False)
         if asset_ref not in target.read_text(encoding="utf-8"):
             raise ConfigError(f"classic plot page does not reference shared asset: {target}")
-        qa_pages.append({"path": target.relative_to(run_dir).as_posix(),
-                         "sha256": sha256(target), "status": "PASS",
-                         "trace_count": len(page["signals"]),
-                         "sample_count": len(frame), "full_stored_time_range": True})
+        page_qa = {"path": target.relative_to(run_dir).as_posix(),
+                   "sha256": sha256(target), "status": "PASS",
+                   "trace_count": len(page["signals"]),
+                   "sample_count": len(page_frame),
+                   "full_stored_time_range": window_qa is None}
+        if window_qa is not None:
+            page_qa["window"] = window_qa
+        qa_pages.append(page_qa)
     after = sha256(raw)
     qa = {"schema": "bvm-2x2-rowcol-plot-qa-v1",
           "status": "PASS" if before == after and len(qa_pages) == len(pages) else "FAIL",
@@ -1310,6 +1540,8 @@ def _write_root_manifest(run_id: str, run_dir: Path, result: dict[str, Any]) -> 
                  "physical_solve_count": 1,
                  **{key: result[key] for key in ("drive_mode", "se_topology",
                                                    "effective_se_topology", "se_gate_mode",
+                                                   "second_read_enabled", "second_row_bits",
+                                                   "second_column_bits", "second_read_se_gate_mode",
                                                    "row_bits", "column_bits")},
                  "status": result.get("status"), "artifact_status": result.get("artifact_status"),
                  "raw_sha256": result.get("raw_sha256")})
@@ -1340,6 +1572,9 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
           parameter_manifest(case, stimulus, rendered["sources"]))
     _json(run_dir / "source_manifest.json", source_manifest(rendered["sources"]))
     _json(run_dir / "analysis" / "static_qa.json", rendered["static_qa"])
+    timing_stages = ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
+    if _second_read_enabled(case):
+        timing_stages += ("SECOND_READ",)
     _json(run_dir / "stimulus_manifest.json", {
         "schema": "bvm-2x2-rowcol-stimulus-v1",
         **_run_config_identity(case),
@@ -1347,11 +1582,18 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
                                    "rise": stimulus[f"{name}_RISE"],
                                    "hold": stimulus[f"{name}_HOLD"],
                                    "fall": stimulus[f"{name}_FALL"]}
-                           for name in ("WRITE0", "READ0", "WRITE1", "FINAL_READ")},
+                           for name in timing_stages},
+        "analysis_windows": {
+            name: {"start_seconds": str(start), "end_seconds": str(end),
+                   "boundary_rule": "[start,end)"}
+            for name, (start, end) in _stage_windows(case, stimulus).items()},
         "line_sources": rendered["drivers"],
         "source_stage_values": rendered["driver_stages"],
         "final_read_se_enabled_by_cell": {
             cell["cell"]: cell["final_read_se_enabled"]
+            for cell in rendered["topology"]["cell_instances"]},
+        "second_read_se_enabled_by_cell": {
+            cell["cell"]: cell["second_read_se_enabled"]
             for cell in rendered["topology"]["cell_instances"]},
         "final_read_bl_zero": True,
     })
@@ -1414,10 +1656,18 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
         stage_metrics = analyze_raw(run_dir / "raw.csv", case, stimulus, rendered["topology"])
         _json(run_dir / "analysis" / "cell_metrics.json", stage_metrics)
         driver_stages = rendered["driver_stages"]
+        second_read_stage_ok = (
+            not _second_read_enabled(case) or
+            (all("SECOND_READ" in values for values in driver_stages.values())
+             and all(values.get("SECOND_READ") == "0" for source, values in driver_stages.items()
+                     if source.startswith("I_BL_"))))
+        second_read_gate_ok = rendered["static_qa"]["second_read_crosspoint_gate_exact"]
         stimulus_qa = {
             "schema": "bvm-2x2-rowcol-stimulus-qa-v1",
             "status": "PASS" if (len(rendered["drivers"]) == rendered["topology"]["driver_count"]
                                      and all("FINAL_READ" in item for item in driver_stages.values())
+                                     and second_read_stage_ok
+                                     and second_read_gate_ok
                                      and all(driver["source"] in rendered["stimulus_text"]
                                              for driver in rendered["drivers"])
                                      and "stimulus.inc" in deck
@@ -1429,6 +1679,11 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
             "final_read_se_enabled_by_cell": {
                 cell["cell"]: cell["final_read_se_enabled"]
                 for cell in rendered["topology"]["cell_instances"]},
+            "second_read_se_enabled_by_cell": {
+                cell["cell"]: cell["second_read_se_enabled"]
+                for cell in rendered["topology"]["cell_instances"]},
+            "second_read_crosspoint_gate_exact": second_read_gate_ok,
+            "second_read_bl_zero": second_read_stage_ok,
             "pwl_source_count": len(rendered["drive_lines"]),
             "final_read_bl_zero": all(item["FINAL_READ"] == "0" for source, item in driver_stages.items()
                                        if source.startswith("I_BL_")),
@@ -1438,7 +1693,7 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
             "physical_solve_count": 1, "scientific_interpretation_performed": False,
         }
         _json(run_dir / "analysis" / "stimulus_qa.json", stimulus_qa)
-        plot_qa = render_plots(run_dir, rendered["topology"], rendered["probes"])
+        plot_qa = render_plots(run_dir, rendered["topology"], rendered["probes"], case, stimulus)
         raw_hash_after = sha256(run_dir / "raw.csv")
         raw_qa = _raw_qa(run_dir / "raw.csv", rendered["probes"], raw_hash_before, raw_hash_after)
         _json(run_dir / "analysis" / "raw_qa.json", raw_qa)
@@ -1522,7 +1777,11 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
         _json(run_dir / "result.json", result)
         brief = [f"# {run_id}", "",
                  f"- DRIVE_MODE: `{case['DRIVE_MODE']}`; ROW_BITS=`{case['ROW_BITS']}`; COL_BITS=`{case['COL_BITS']}`.",
+                 f"- SE_TOPOLOGY: `{case['SE_TOPOLOGY']}`; SE_GATE_MODE: `{case['SE_GATE_MODE']}`.",
+                 f"- SECOND_READ_ENABLE: `{case['SECOND_READ_ENABLE']}`; bits=`{case['SECOND_ROW_BITS']}/"
+                 f"{case['SECOND_COL_BITS']}`; second-read SE gate is CELL_CROSSPOINT.",
                  f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",
+                 f"- Analysis windows: `{', '.join(_stage_windows(case, stimulus))}` (half-open; actual stored rows).",
                  f"- Half-selected: `{', '.join(rendered['topology']['cell_selection']['half_selected']) or 'none'}`; unselected: `{', '.join(rendered['topology']['cell_selection']['unselected']) or 'none'}`.",
                  f"- physical_solve_count: `1`; artifact status: `{result['artifact_status']}`.",
                  f"- raw SHA-256: `{raw_hash_after}`; samples: `{raw_qa['sample_count']}`.",

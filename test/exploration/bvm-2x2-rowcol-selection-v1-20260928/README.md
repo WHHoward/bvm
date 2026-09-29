@@ -20,10 +20,13 @@ half-selected, `R2C1` is column-only half-selected, and `R2C2` is unselected.
 The two column BL buses and two column SE buses are distinct electrical nodes
 in the legacy `SE_TOPOLOGY=SHARED_COLUMN` mode.
 
-Every cell gets the same pre-final sequence: WRITE0, READ0 control, WRITE1,
-then FINAL READ. Row/column bits affect only FINAL READ. BL is zero throughout
-FINAL READ; a cell is at an active crosspoint only when its row WL and column
-SE are both enabled.
+Every cell gets the same sequence: WRITE0, READ0 control, WRITE1, then FINAL
+READ. Row/column bits affect only FINAL READ. When enabled, SECOND_READ is
+appended after a recovery interval; it uses its own row/column bits and always
+uses per-cell crosspoint SE gating, independent of the first-read
+`SE_GATE_MODE`. BL is zero in both reads.
+`SECOND_READ_ENABLE` defaults to `0` (also when omitted in legacy configs or
+presets), preserving the old netlist/PWL stage sequence.
 
 The four amplitude fields are positive magnitudes. WRITE0 applies negative WL
 and BL pulses; WRITE1 applies positive WL and BL pulses; READ0 applies positive
@@ -31,6 +34,8 @@ WL and SE pulses to all rows/columns; FINAL READ keeps BL at zero. SE gating is
 selected by `SE_GATE_MODE`: `COLUMN` enables SE on each selected column,
 whereas `CROSSPOINT` enables a cell-local SE source only when both its row and
 column bits are 1. The read amplitude fields are used for READ0 and FINAL READ.
+The optional second-read SE gate ignores `SE_GATE_MODE` and always uses the
+intersection of `SECOND_ROW_BITS` and `SECOND_COL_BITS`.
 
 `INDEPENDENT` retains four cell-level WL/BL/SE driver triplets. In `SHARED`,
 `SE_TOPOLOGY=SHARED_COLUMN` retains the legacy two row-WL, two column-BL, and
@@ -61,6 +66,8 @@ Available presets:
 ./try.sh --preset C_SHARED_11_11 --dry-run
 ./try.sh --preset D0_CELL_SE_COLUMN_10_10 --dry-run
 ./try.sh --preset D1_CELL_SE_CROSSPOINT_10_10 --dry-run
+./try.sh --preset E0_A005_CROSSPOINT_SECOND_READ --dry-run
+./try.sh --preset E1_A006_COLUMN_SECOND_READ --dry-run
 ```
 
 To execute exactly one current configuration manually, omit `--dry-run`:
@@ -70,15 +77,17 @@ To execute exactly one current configuration manually, omit `--dry-run`:
 ./try.sh --preset B_SHARED_10_10
 ./try.sh --preset D0_CELL_SE_COLUMN_10_10
 ./try.sh --preset D1_CELL_SE_CROSSPOINT_10_10
+./try.sh --preset E0_A005_CROSSPOINT_SECOND_READ
+./try.sh --preset E1_A006_COLUMN_SECOND_READ
 ```
 
 Each invocation executes at most one physical solve, allocates a fresh
 `runs/Axxx_<MODE>_R<bits>_C<bits>/` directory, and refuses to overwrite an
 existing run. This platform does not automatically execute A/B/C as a batch.
 Dry-run does not reserve a number, so repeated previews may show the same next
-ID. Actual invocations scan all existing Axxx directories; running D0 then D1
-allocates distinct successive IDs (currently A004 then A005 if no other run is
-added).
+ID. Actual invocations scan all existing Axxx directories. With A001–A006
+already present, the next run is A007 if no other run is added; E0 then E1
+would receive A007 and A008 when run in that order.
 The default dry-run is compact: it shows topology, row/column mapping, the four
 cells' final-read WL/BL/SE levels, source counts/amplitudes, timing, load chain,
 probe count, and static-QA result. It creates no run directory and never
@@ -86,9 +95,18 @@ invokes JoSIM. Use `./try.sh --dry-run --verbose` only when you want the full
 manifests, every PWL line, all probe names, and the complete rendered deck.
 
 The initial stage schedule mirrors the current array platform: WRITE0
-50–61 ps, READ0 70–81 ps, WRITE1 90–101 ps, FINAL READ 110–121 ps. Default
-`DT=0.01p`, `STOP=250p`. Edit `USER_CASE.env` and `STIMULUS.env`, or edit one
+50–61 ps, READ0 70–81 ps, WRITE1 90–101 ps, FINAL READ 110–121 ps. E0/E1 add
+SECOND_READ 170–181 ps. `SECOND_READ_ENABLE` defaults to `0`; the first four
+stages and the rendered netlist/stimulus remain the legacy behavior when the
+new fields are omitted or disabled. Default `DT=0.01p`, `STOP=250p`; E0/E1
+override STOP to 300p. Edit `USER_CASE.env` and `STIMULUS.env`, or edit one
 of the preset files, before a manual run.
+
+For a manual configuration, set `SECOND_READ_ENABLE=1`,
+`SECOND_ROW_BITS=01`, and `SECOND_COL_BITS=10` in `USER_CASE.env`; set
+`SECOND_READ_START=170p`, `SECOND_READ_RISE=1p`, `SECOND_READ_HOLD=9p`,
+and `SECOND_READ_FALL=1p` in `STIMULUS.env`. Enabling SECOND_READ requires
+effective `SE_TOPOLOGY=CELL`.
 
 ## D0/D1 cell-local SE conditions
 
@@ -107,9 +125,34 @@ cell SE sources. FINAL READ uses 200 µA on selected row WL, zero BL, and a
 
 Every BVM's SE pin is connected to its own node `SE_RxCy` and its own source;
 CELL mode does not merely rename a shared column node: the four SE nodes are
-electrically distinct. D0/D1 raw and QA will
-be added under this same `runs/` tree and the root experiment manifest when
-you manually execute each preset. This platform task performs dry-runs only.
+electrically distinct. Existing A001–A006 evidence is preserved.
+
+## E0/E1 repeat-read conditions
+
+E0 reuses A005's first-read CROSSPOINT gating; E1 reuses A006's first-read
+COLUMN gating. Their first-read settings and all preparation stages are
+otherwise identical. Both then perform a second, normal read of R2C1:
+
+| Stage | Window | WL row sources (R1/R2) | BL column sources (C1/C2) | Cell SE sources (R1C1, R1C2, R2C1, R2C2) |
+|---|---|---|---|---|
+| WRITE0 | 50–61 ps | −200/−200 µA | −200/−200 µA | 0/0/0/0 |
+| READ0 | 70–81 ps | +200/+200 µA | 0/0 | +100/+100/+100/+100 µA |
+| WRITE1 | 90–101 ps | +200/+200 µA | +200/+200 µA | 0/0/0/0 |
+| FINAL_READ (first read) | 110–121 ps | +200/0 µA | 0/0 | E0: 100/0/0/0; E1: 100/0/100/0 µA |
+| Recovery | 121–170 ps | 0 | 0 | 0/0/0/0 |
+| SECOND_READ | 170–181 ps | 0/+200 µA | 0/0 | 0/0/+100/0 µA |
+
+These are programmed ideal-source PWL setpoints, not measured BVM branch
+currents. Raw probes retain each BVM's actual WL, BL, and SE input currents.
+The second-read SE gate is fixed to CELL_CROSSPOINT, so only R2C1 receives SE
+in both E0 and E1 regardless of their first-read SE_GATE_MODE.
+
+For a manual run, inspect FINAL_READ, RECOVERY_BEFORE_SECOND_READ, and
+SECOND_READ as separate half-open windows. The runner computes per-window
+same-JJ phase/voltage arithmetic and boundary metrics on actual stored rows;
+it never treats 110–300 ps as one read area. Three focused R2C1 pages use the
+existing classic `josim-plot2.py` renderer. Dry-run does not reserve a run
+number; if no other run intervenes, E0 then E1 allocate A007 and A008.
 
 After an authorized manual run, the runner preserves deck, PWL stimulus,
 snapshots, raw, stdout/stderr, solver log, manifests, actual-grid raw QA,

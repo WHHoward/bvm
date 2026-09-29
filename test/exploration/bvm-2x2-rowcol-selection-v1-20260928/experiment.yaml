@@ -53,6 +53,29 @@ registered_presets:
   - C_SHARED_11_11
   - D0_CELL_SE_COLUMN_10_10
   - D1_CELL_SE_CROSSPOINT_10_10
+  - E0_A005_CROSSPOINT_SECOND_READ
+  - E1_A006_COLUMN_SECOND_READ
+optional_second_read:
+  default_enabled: false
+  row_bit_order: leftmost bit is row 1
+  column_bit_order: leftmost bit is column 1
+  se_gate: CELL_CROSSPOINT, independent of first-read SE_GATE_MODE
+  row_bits: "01"
+  column_bits: "10"
+  timing: [170p, 181p]
+  timing_boundary_rule: "[start,end)"
+  dt: 0.01p
+  stop: 300p
+  first_read_baseline:
+    E0: A005 first-read CROSSPOINT; compare PWL prefix [0,170p)
+    E1: A006 first-read COLUMN; compare PWL prefix [0,170p)
+  analysis_windows:
+    first_read: [110p, 121p]
+    recovery_before_second_read: [121p, 170p]
+    second_read: [170p, 181p]
+    post_second_read: [181p, 300p]
+  analysis_window_boundary_rule: "[start,end)"
+  requires_effective_se_topology: CELL
 analysis_windows:
   post_READ0: [81p, 90p]
   post_WRITE1: [101p, 110p]

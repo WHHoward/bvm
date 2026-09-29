@@ -171,3 +171,40 @@ Base HEAD: `f554cbc7aff90e9eb3a9cd8a07d99444ac1ea503`.
 - Static/history regression and E0/E1 dry-run results are recorded after the
   final implementation; the mocked-runner synthetic-raw test was not run.
 - Physical solve count for this platform-only task: **0**.
+
+## Authorized A/B/C batch — implementation adversarial review
+
+Parent HEAD: 5447f08ebbe367dd9d4f2ff2f072fa17c2cc1aac.
+
+### Tested failure hypotheses
+
+- **Legacy no-op/default drift:** rerender saved A001–A009 snapshots after filling only absent compatibility defaults; actual_deck.cir and stimulus.inc remain byte-identical. RESULT: PASS.
+- **Wrong cell/bit order:** A's ROW_BITS=11/COL_BITS=10 selects R1C1 and R2C1; SECOND_ROW_BITS=10/SECOND_COL_BITS=10 selects R1C1 only. The source-stage matrix is checked on all eight actual current-source nodes. RESULT: PASS.
+- **Fake shared write / hidden independent line:** C still has exactly 2 WL + 2 BL + 4 SE sources on the canonical shared row/column nodes. Target 1 drives only WL_R1 and BL_C1; target 2 only WL_R2 and BL_C2. Per-cell expected WL-only, BL-only, target, and unselected values are statically asserted. RESULT: PASS.
+- **Wrong selective timing or overlap:** C's PWL source knots are 90/91/100/101 ps and 120/121/130/131 ps; FINAL_READ is 170–181 ps. Static validation rejects overlaps and STOP truncation. RESULT: PASS.
+- **Incomplete output window / stale read metric:** terminal and boundary arithmetic is separately registered for first/second read response; C's full response is 170–300 ps. Peak timestamps and signed areas use actual stored rows; no single combined A read-area is emitted. RESULT: PASS at static-spec level.
+- **Weak event oracle / overclaim:** no pulse/SFQ threshold or classifier was registered. Dry-run, local maxima, phase turns, and voltage area will not be called an event count. RESULT: PASS for the interpretation boundary.
+
+### Static residuals before solves
+
+- The measured branch-current distribution and physical effects of row/column half-selection are unknown until the authorized raw runs exist.
+- Whether the intended mixed state is physically obtained in C is unknown; only source/topology mapping has passed static validation.
+- Pulse/SFQ event classification and timestep convergence are not authorized/registered and remain UNKNOWN.
+
+### Acceptance
+
+- 29 static/history tests passed, excluding the test that writes a temporary synthetic raw CSV.
+- Existing A/B/C/D/E and new A/B/C preset dry-runs report static QA PASS and zero solve count.
+- A/B/C exact PWL and four BVM shared input-node lines were manually inspected from verbose dry-runs.
+- No JoSIM solve was run during this implementation review.
+
+## Authorized A/B/C batch — mechanical and numerical review
+
+- A010, A011, and A012 each report artifact VALID and raw/static/stimulus/plot/provenance/mechanical QA PASS; each has exactly one physical solve and its raw SHA agrees with result.json and experiment_manifest.json.
+- A010/A009 first-response overlay used 6,000 exact common stored timestamps over [110,170) ps. A010/A011/A012 output overlay used 24,999 exact common stored timestamps over [0,250) ps. Both comparison QA records PASS; no interpolation/resampling.
+- Independent Decimal-time arithmetic audit is analysis/independent_batch_arithmetic_v2.json. It verified raw SHA before/after, per-cell branch currents, response-window output peak times/areas, and same-JJ phase/voltage arithmetic directly from raw.
+- Runner-vs-independent audit: zero output peak-time mismatches; maximum VOUT-area arithmetic differences 4.25e-34, 2.62e-31, 9.76e-32 V·s for A010/A011/A012; max same-JJ phase-delta discrepancies below 4.8e-13 rad.
+- The initial independent arithmetic serialization lacked an explicit cell key on output rows. The numeric values were unchanged; it is preserved as independent_batch_arithmetic.json and explicitly superseded by v2 with cell identity. All raw hashes remained unchanged.
+- C's static and actual PWLs retain exactly shared WL_R1/WL_R2 and BL_C1/BL_C2 buses plus four cell-SE sources. Raw branch-current arithmetic records nonzero current on WL-only, BL-only, and nominally unselected branches during the selective writes; no logical-state classification is made.
+- No pulse/SFQ event threshold or classifier was registered, and no SCIENTIFIC_REVIEW_AUTHORIZED token was supplied. Event count, logical storage verdict, physical Gate status, and mechanism interpretation remain NOT PERFORMED; timestep convergence remains UNKNOWN.
+- Exactly three registered physical solves were run; no follow-up was performed.

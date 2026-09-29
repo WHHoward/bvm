@@ -55,6 +55,9 @@ registered_presets:
   - D1_CELL_SE_CROSSPOINT_10_10
   - E0_A005_CROSSPOINT_SECOND_READ
   - E1_A006_COLUMN_SECOND_READ
+  - A_SAME_COLUMN_DUAL_CROSSPOINT
+  - B_ALL_CELL_CROSSPOINT
+  - C_MIXED_STORAGE_SEQUENTIAL_WRITE
 optional_second_read:
   default_enabled: false
   row_bit_order: leftmost bit is row 1
@@ -76,6 +79,53 @@ optional_second_read:
     post_second_read: [181p, 300p]
   analysis_window_boundary_rule: "[start,end)"
   requires_effective_se_topology: CELL
+authorized_batch_20260929:
+  parent_head: 5447f08ebbe367dd9d4f2ff2f072fa17c2cc1aac
+  physical_solve_count: 3
+  execution_order: [A_SAME_COLUMN_DUAL_CROSSPOINT, B_ALL_CELL_CROSSPOINT, C_MIXED_STORAGE_SEQUENTIAL_WRITE]
+  serial_run_ids_expected: [A010_SHARED_R11_C10, A011_SHARED_R11_C11, A012_SHARED_R11_C11]
+  frozen:
+    canonical_sources: unchanged; use existing source_sha256 above
+    topology: SHARED, two row-WL buses, two column-BL buses, four independent cell-SE sources
+    load_per_cell: BVM -> independent QB -> 1 sJTL -> 1 CB -> 2 ohm VOUT
+    dt: 0.01p
+    write_amplitudes: WL and BL 200u
+    read_amplitudes: WL 200u; SE 100u
+    output_merge: none
+    t1: none
+  cases:
+    A:
+      preset: A_SAME_COLUMN_DUAL_CROSSPOINT
+      row_bits: "11"
+      column_bits: "10"
+      first_read_se: cell crosspoint
+      second_read: {enabled: true, row_bits: "10", column_bits: "10", window: [170p, 181p]}
+      stop: 250p
+      comparator: A009 same-row first response [110p, 170p), common stored timestamps only
+    B:
+      preset: B_ALL_CELL_CROSSPOINT
+      row_bits: "11"
+      column_bits: "11"
+      second_read: {enabled: false}
+      stop: 250p
+    C:
+      preset: C_MIXED_STORAGE_SEQUENTIAL_WRITE
+      target_state_map: {R1C1: 1, R1C2: 0, R2C1: 0, R2C2: 1}
+      read0_enabled: false
+      write0: {window: [50p, 61p], all_shared_rows_and_columns: true}
+      selective_write1:
+        - {target: R1C1, start: 90p, end: 101p}
+        - {target: R2C2, start: 120p, end: 131p}
+      final_read: {start: 170p, end: 181p, row_bits: "11", column_bits: "11"}
+      read_response_window: [170p, 300p]
+      stop: 300p
+      half_select_policy: measure actual WL/BL/SE branch currents; no independent WL/BL drivers
+  metric_boundary:
+    output_arithmetic: [BVM_SL, QB_OUT, SJTL_OUT, VOUT min/max/p2p, positive peak time, signed area on raw grid]
+    same_jj_phase_voltage_crosscheck: [BVM, QB, sJTL, CB]
+    pulse_count_or_sfq_classification: not registered; scientific review required
+    interpolation_or_resampling: false
+  interpretation_status: NOT_PERFORMED
 analysis_windows:
   post_READ0: [81p, 90p]
   post_WRITE1: [101p, 110p]

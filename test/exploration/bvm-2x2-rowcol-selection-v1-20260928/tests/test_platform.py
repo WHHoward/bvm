@@ -17,6 +17,7 @@ SERIES = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SERIES / "scripts"))
 
 import run_platform as platform  # noqa: E402
+import build_batch_comparison as batch_compare  # noqa: E402
 
 OPTIONAL_E_CASE_FIELDS = {
     "SECOND_READ_ENABLE", "SECOND_ROW_BITS", "SECOND_COL_BITS",
@@ -103,6 +104,9 @@ class RowColumnPlatformTests(unittest.TestCase):
             "A004_SHARED_R10_C10",
             "A005_SHARED_R10_C10",
             "A006_SHARED_R10_C10",
+            "A007_SHARED_R10_C10",
+            "A008_SHARED_R10_C10",
+            "A009_SHARED_R10_C11",
         )
         for run_id in run_ids:
             with self.subTest(run_id=run_id):
@@ -110,6 +114,7 @@ class RowColumnPlatformTests(unittest.TestCase):
                 case = platform.parse_env(run_dir / "USER_CASE.snapshot.env", platform.CASE_KEYS)
                 case = platform._with_se_defaults(case)
                 case = platform._with_second_read_defaults(case)
+                case = platform._with_write_sequence_defaults(case)
                 stimulus = platform.parse_env(run_dir / "STIMULUS.snapshot.env",
                                               platform.STIMULUS_KEYS,
                                               required=platform.BASE_STIMULUS_KEYS)
@@ -222,6 +227,7 @@ class RowColumnPlatformTests(unittest.TestCase):
                 case = platform._with_second_read_defaults(
                     platform._with_se_defaults(
                         platform.parse_env(run_dir / "USER_CASE.snapshot.env", platform.CASE_KEYS)))
+                case = platform._with_write_sequence_defaults(case)
                 stimulus = platform.parse_env(run_dir / "STIMULUS.snapshot.env",
                                               platform.STIMULUS_KEYS,
                                               required=platform.BASE_STIMULUS_KEYS)
@@ -372,6 +378,142 @@ class RowColumnPlatformTests(unittest.TestCase):
              if Decimal("170e-12") <= time <= Decimal("181e-12")],
             r2c1_second)
 
+    def test_registered_a_b_c_batch_configs_and_shared_selective_write_truth_table(self):
+        case_a, _stimulus_a, a = render("A_SAME_COLUMN_DUAL_CROSSPOINT")
+        case_b, _stimulus_b, b = render("B_ALL_CELL_CROSSPOINT")
+        case_c, stimulus_c, c = render("C_MIXED_STORAGE_SEQUENTIAL_WRITE")
+        for case, rendered in ((case_a, a), (case_b, b), (case_c, c)):
+            self.assertEqual(case["DRIVE_MODE"], "SHARED")
+            self.assertEqual(case["SE_TOPOLOGY"], "CELL")
+            self.assertEqual(case["SE_GATE_MODE"], "CROSSPOINT")
+            self.assertEqual(case["ROW_WL_READ_AMPLITUDE"], "200u")
+            self.assertEqual(case["COL_SE_READ_AMPLITUDE"], "100u")
+            self.assertEqual(case["ROW_WL_WRITE_AMPLITUDE"], "200u")
+            self.assertEqual(case["COL_BL_WRITE_AMPLITUDE"], "200u")
+            self.assertEqual(rendered["topology"]["driver_count_by_branch"],
+                             {"WL": 2, "BL": 2, "SE": 4})
+            self.assertEqual(rendered["static_qa"]["status"], "PASS")
+            self.assertEqual({role: item["sha256"]
+                              for role, item in rendered["sources"].items()},
+                             platform.SOURCE_SHA256)
+        self.assertEqual((case_a["ROW_BITS"], case_a["COL_BITS"],
+                          case_a["SECOND_READ_ENABLE"], case_a["SECOND_ROW_BITS"],
+                          case_a["SECOND_COL_BITS"], case_a["DT"], case_a["STOP"]),
+                         ("11", "10", "1", "10", "10", "0.01p", "250p"))
+        self.assertEqual(a["driver_stages"]["I_SE_R1C1"]["FINAL_READ"], "100u")
+        self.assertEqual(a["driver_stages"]["I_SE_R2C1"]["FINAL_READ"], "100u")
+        self.assertEqual(a["driver_stages"]["I_SE_R1C2"]["FINAL_READ"], "0")
+        self.assertEqual(a["driver_stages"]["I_SE_R2C2"]["FINAL_READ"], "0")
+        self.assertEqual(a["driver_stages"]["I_SE_R1C1"]["SECOND_READ"], "100u")
+        self.assertEqual(a["driver_stages"]["I_SE_R2C1"]["SECOND_READ"], "0")
+        self.assertEqual((case_b["ROW_BITS"], case_b["COL_BITS"],
+                          case_b["SECOND_READ_ENABLE"], case_b["STOP"]),
+                         ("11", "11", "0", "250p"))
+        for driver in b["drivers"]:
+            expected = ("100u" if driver["branch"] == "SE" else
+                        "200u" if driver["branch"] == "WL" else "0")
+            self.assertEqual(b["driver_stages"][driver["source"]]["FINAL_READ"], expected)
+
+        self.assertEqual((case_c["READ0_ENABLE"], case_c["WRITE1_MODE"],
+                          case_c["WRITE1_TARGET_1"], case_c["WRITE1_TARGET_2"],
+                          case_c["SECOND_READ_ENABLE"], case_c["DT"], case_c["STOP"]),
+                         ("0", "SEQUENTIAL_CROSSPOINT", "R1C1", "R2C2", "0", "0.01p", "300p"))
+        self.assertEqual(stimulus_c["FINAL_READ_START"], "170p")
+        self.assertTrue(c["static_qa"]["selective_write_keeps_shared_wl_bl"])
+        events = c["topology"]["write1_sequence"]["events"]
+        self.assertEqual([(event["target_cell"], event["wl_only_cells"],
+                           event["bl_only_cells"], event["unselected_cells"])
+                          for event in events], [
+            ("R1C1", ["R1C2"], ["R2C1"], ["R2C2"]),
+            ("R2C2", ["R2C1"], ["R1C2"], ["R1C1"]),
+        ])
+        expected = {
+            "R1C1": {"WRITE1_TARGET_1": ("200u", "200u"), "WRITE1_TARGET_2": ("0", "0")},
+            "R1C2": {"WRITE1_TARGET_1": ("200u", "0"), "WRITE1_TARGET_2": ("0", "200u")},
+            "R2C1": {"WRITE1_TARGET_1": ("0", "200u"), "WRITE1_TARGET_2": ("200u", "0")},
+            "R2C2": {"WRITE1_TARGET_1": ("0", "0"), "WRITE1_TARGET_2": ("200u", "200u")},
+        }
+        for cell in c["topology"]["cell_instances"]:
+            sources = cell["source_for_each_input"]
+            for stage, (wl, bl) in expected[cell["cell"]].items():
+                self.assertEqual(c["driver_stages"][sources["WL"]][stage], wl)
+                self.assertEqual(c["driver_stages"][sources["BL"]][stage], bl)
+                self.assertEqual(c["driver_stages"][sources["SE"]][stage], "0")
+        self.assertTrue(all("READ0" not in values for values in c["driver_stages"].values()))
+        self.assertTrue(all(values["FINAL_READ"] == "200u"
+                            for source, values in c["driver_stages"].items()
+                            if source.startswith("I_WL_")))
+        self.assertTrue(all(values["FINAL_READ"] == "100u"
+                            for source, values in c["driver_stages"].items()
+                            if source.startswith("I_SE_")))
+        pwls = parse_pwl_sources(c["stimulus_text"])
+        first_edges = [(Decimal("90e-12"), "0"), (Decimal("91e-12"), "200u"),
+                       (Decimal("100e-12"), "200u"), (Decimal("101e-12"), "0")]
+        second_edges = [(Decimal("120e-12"), "0"), (Decimal("121e-12"), "200u"),
+                        (Decimal("130e-12"), "200u"), (Decimal("131e-12"), "0")]
+        for source in ("I_WL_R1", "I_BL_C1"):
+            self.assertTrue(all(edge in pwls[source]["points"] for edge in first_edges))
+        for source in ("I_WL_R2", "I_BL_C2"):
+            self.assertTrue(all(edge in pwls[source]["points"] for edge in second_edges))
+        self.assertEqual(platform._stage_windows(case_c, stimulus_c)["FINAL_READ"],
+                         (Decimal("170e-12"), Decimal("181e-12")))
+        self.assertEqual(platform._stage_windows(case_c, stimulus_c)["READ_RESPONSE"],
+                         (Decimal("170e-12"), Decimal("300e-12")))
+        c_windows = [page for page in platform.plot_page_plan(c["topology"], c["probes"])
+                     if page.get("window_name") == "READ_RESPONSE"]
+        self.assertEqual({page["file"] for page in c_windows}, {
+            f"windows/first_read_response_{cell}.html"
+            for cell in ("R1C1", "R1C2", "R2C1", "R2C2")})
+        a_windows = [page for page in platform.plot_page_plan(a["topology"], a["probes"])
+                     if page.get("window_name")]
+        self.assertEqual({page["file"] for page in a_windows}, {
+            "windows/first_read_response_R1C1.html",
+            "windows/first_read_response_R2C1.html",
+            "windows/recovery_R1C1.html",
+            "windows/second_read_response_R1C1.html",
+        })
+
+    def test_registered_batch_dry_runs_are_static_and_show_half_selects(self):
+        original_runs = platform.RUNS
+        try:
+            with tempfile.TemporaryDirectory(prefix="rowcol-batch-dry-run-") as temp:
+                platform.RUNS = Path(temp) / "runs"
+                for preset in ("A_SAME_COLUMN_DUAL_CROSSPOINT", "B_ALL_CELL_CROSSPOINT",
+                               "C_MIXED_STORAGE_SEQUENTIAL_WRITE"):
+                    output = io.StringIO()
+                    with patch.object(platform.subprocess, "run",
+                                      side_effect=AssertionError("process invoked")):
+                        with contextlib.redirect_stdout(output):
+                            result = platform.main(["--dry-run", "--preset", preset])
+                    self.assertEqual(result, 0)
+                    self.assertFalse(platform.RUNS.exists())
+                    self.assertIn("physical_solve_count=0", output.getvalue())
+                    self.assertIn("static QA=PASS", output.getvalue())
+                text = output.getvalue()
+                self.assertIn("WRITE1_TARGET_1 at 90p, target=R1C1", text)
+                self.assertIn("R1C2: 200u, 0, 0", text)
+                self.assertIn("R2C1: 0, 200u, 0", text)
+                self.assertIn("WRITE1_TARGET_2 at 120p, target=R2C2", text)
+                self.assertIn("R2C1: 200u, 0, 0", text)
+                self.assertIn("R1C2: 0, 200u, 0", text)
+        finally:
+            platform.RUNS = original_runs
+
+    def test_batch_comparison_alignment_uses_exact_common_rows_only(self):
+        series = {
+            "left": {Decimal("0"): ("1",), Decimal("1"): ("2",), Decimal("2"): ("3",)},
+            "right": {Decimal("0"): ("4",), Decimal("2"): ("6",), Decimal("3"): ("7",)},
+        }
+        times, selected = batch_compare.align_exact_rows(
+            series, (Decimal("0"), Decimal("3")))
+        self.assertEqual(times, [Decimal("0"), Decimal("2")])
+        self.assertEqual(selected["left"][Decimal("2")], ("3",))
+        self.assertEqual(selected["right"][Decimal("2")], ("6",))
+        with self.assertRaisesRegex(ValueError, "fewer than two exact common"):
+            batch_compare.align_exact_rows(
+                {"left": series["left"], "right": {Decimal("1"): ("5",)}},
+                (Decimal("0"), Decimal("3")))
+
     def test_second_read_requires_cell_se_and_valid_nonoverlapping_window(self):
         case, stimulus, _rendered = render("E1_A006_COLUMN_SECOND_READ")
         bad_topology = dict(case, SE_TOPOLOGY="SHARED_COLUMN")
@@ -413,7 +555,7 @@ class RowColumnPlatformTests(unittest.TestCase):
         finally:
             platform.RUNS = original_runs
 
-    def test_second_read_probe_and_separate_plot_windows_cover_r2c1_paths(self):
+    def test_second_read_probe_and_separate_plot_windows_cover_selected_read_cells(self):
         _case, _stimulus, rendered = render("E0_A005_CROSSPOINT_SECOND_READ")
         labels = {item["label"] for item in rendered["probes"]["signals"]}
         instance = "XBVM_R2C1"
@@ -428,21 +570,26 @@ class RowColumnPlatformTests(unittest.TestCase):
         pages = platform.plot_page_plan(rendered["topology"], rendered["probes"])
         windows = [page for page in pages if page.get("window_name")]
         self.assertEqual([page["window_name"] for page in windows],
-                         ["FINAL_READ", "RECOVERY_BEFORE_SECOND_READ", "SECOND_READ"])
-        self.assertTrue(all("I(R_SE|XBVM_R2C1)" in page["signals"] for page in windows))
-        for jj in platform.CELL_JJS:
-            self.assertTrue(all(f"P({jj}|XBVM_R2C1)" in page["signals"] and
-                                f"V({jj}|XBVM_R2C1)" in page["signals"] for page in windows))
-        self.assertTrue(all("P(BJ1|XBQ_R2C1)" in page["signals"] for page in windows))
-        self.assertTrue(all("P(BJ1|XSJTL_R2C1)" in page["signals"] for page in windows))
-        self.assertTrue(all("P(BJ1|XCB_R2C1)" in page["signals"] for page in windows))
-        for boundary in ("V(SL_R2C1)", "V(QBOUT_R2C1)", "V(SJTL_OUT_R2C1)",
-                         "V(VOUT_R2C1)"):
-            self.assertTrue(all(boundary in page["signals"] for page in windows))
+                         ["FIRST_READ_RESPONSE", "RECOVERY_BEFORE_SECOND_READ",
+                          "SECOND_READ_RESPONSE"])
+        self.assertIn("windows/first_read_response_R1C1.html", {page["file"] for page in windows})
+        self.assertTrue(all("I(R_SE|XBVM_R2C1)" in page["signals"]
+                            for page in windows if "R2C1" in page["file"]))
+        first_page = next(page for page in windows if "first_read_response" in page["file"])
+        self.assertTrue(all(f"P({jj}|XBVM_R1C1)" in first_page["signals"] for jj in platform.CELL_JJS))
+        for page in windows:
+            cell = "R1C1" if "first_read_response" in page["file"] else "R2C1"
+            for jj in platform.CELL_JJS:
+                self.assertIn(f"P({jj}|XBVM_{cell})", page["signals"])
+                self.assertIn(f"V({jj}|XBVM_{cell})", page["signals"])
+            for signal in (f"P(BJ1|XBQ_{cell})", f"P(BJ1|XSJTL_{cell})",
+                           f"P(BJ1|XCB_{cell})", f"V(SL_{cell})", f"V(QBOUT_{cell})",
+                           f"V(SJTL_OUT_{cell})", f"V(VOUT_{cell})"):
+                self.assertIn(signal, page["signals"])
         self.assertEqual(rendered["static_qa"]["physical_solve_count"], 0)
 
     def test_second_read_disabled_is_noop_and_cell_gate_requires_cell_se_topology(self):
-        case, stimulus = platform.load_config()
+        case, stimulus = platform.load_config("D1_CELL_SE_CROSSPOINT_10_10")
         self.assertEqual(case["SECOND_READ_ENABLE"], "0")
         _case, _stimulus, rendered = render("D1_CELL_SE_CROSSPOINT_10_10")
         self.assertFalse(rendered["topology"]["second_read"]["enabled"])
@@ -586,7 +733,7 @@ class RowColumnPlatformTests(unittest.TestCase):
                 self.assertIn(f"P({jj}|XBQ_{cell})", labels)
                 self.assertIn(f"V({jj}|XBQ_{cell})", labels)
         pages = platform.plot_page_plan(rendered["topology"], rendered["probes"])
-        self.assertEqual(len(pages), 6)
+        self.assertEqual(len(pages), 7)
         outputs = next(page for page in pages if page["file"] == "01_outputs.html")["signals"]
         self.assertEqual({label for label in outputs if label.startswith("V(VOUT_")},
                          {f"V(VOUT_{cell})" for cell in ("R1C1", "R1C2", "R2C1", "R2C2")})

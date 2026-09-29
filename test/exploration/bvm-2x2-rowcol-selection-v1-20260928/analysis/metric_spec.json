@@ -27,13 +27,63 @@
     "integration_grid": "actual stored raw rows only",
     "interpolation_or_resampling": false
   },
+  "authorized_batch_20260929": {
+    "parent_head": "5447f08ebbe367dd9d4f2ff2f072fa17c2cc1aac",
+    "physical_solves_authorized": [
+      "A_SAME_COLUMN_DUAL_CROSSPOINT",
+      "B_ALL_CELL_CROSSPOINT",
+      "C_MIXED_STORAGE_SEQUENTIAL_WRITE"
+    ],
+    "maximum_physical_solve_count": 3,
+    "run_execution": "serial; each invocation allocates a fresh Axxx",
+    "A": {
+      "row_bits": "11", "column_bits": "10", "first_read": "110p-121p",
+      "first_read_response": "[110p,170p)", "second_read": "170p-181p",
+      "second_read_response": "[170p,250p)", "second_read_bits": "10/10",
+      "read0_enabled": true
+    },
+    "B": {
+      "row_bits": "11", "column_bits": "11", "first_read": "110p-121p",
+      "read_response": "[110p,250p)", "second_read_enabled": false,
+      "read0_enabled": true
+    },
+    "C": {
+      "row_bits": "11", "column_bits": "11", "write0": "50p-61p all shared lines",
+      "read0_enabled": false,
+      "selective_write1_events": [
+        {"target": "R1C1", "window": "[90p,101p)", "active_buses": ["WL_R1", "BL_C1"]},
+        {"target": "R2C2", "window": "[120p,131p)", "active_buses": ["WL_R2", "BL_C2"]}
+      ],
+      "final_read": "170p-181p", "read_response": "[170p,300p)",
+      "required_bus_topology": "two shared row WL, two shared column BL, four independent cell SE"
+    },
+    "read_output_windows": {
+      "A_vs_A009": "[110p,170p); exact common stored timestamps only",
+      "A": {"first_read": "[110p,170p)", "second_read": "[170p,250p)"},
+      "B": "[110p,250p)",
+      "C": "[170p,300p)"
+    },
+    "comparison_visual_windows": {
+      "A009_vs_A010_orientation": "[110p,170p)",
+      "A010_A011_A012_output_overlay": "[0,250p); exact common stored timestamps; A012 standalone pages retain [0,300p)"
+    },
+    "output_arithmetic": [
+      "BVM_SL/QB_OUT/SJTL_OUT/VOUT signed min, max, peak-to-peak",
+      "signed voltage-time area on actual stored rows",
+      "time token of positive maximum, negative minimum and maximum absolute sample"
+    ],
+    "same_junction_crosscheck": "P radians endpoint delta/(2*pi) versus same JJ V integral/Phi0 on identical run/window/direction for BVM, QB, sJTL and CB JJ probes",
+    "pulse_or_sfq_event_count": "NOT_REGISTERED; peak timing and area are arithmetic only",
+    "interpolation_or_resampling": false,
+    "scientific_interpretation_performed": false
+  },
   "derived_arithmetic": {
     "current": ["min", "max", "peak_to_peak", "max_abs", "trapezoid_charge_on_actual_stored_time_rows"],
     "junction": ["full_trace_unwrap", "same_junction_phase_endpoint_delta", "same_junction_voltage_trapezoid", "phase_delta_rad_over_2pi_navigation_arithmetic"],
-    "output": ["min", "max", "peak_to_peak", "trapezoid_voltage_area_on_actual_stored_time_rows"],
+    "output": ["min", "max", "peak_to_peak", "peak sample timestamps", "trapezoid_voltage_area_on_actual_stored_time_rows"],
     "interpolation_or_resampling": false,
     "thresholds_or_classifiers": "none"
   },
-  "interpretation_boundary": "No physical results exist until a user manually runs a selected configuration. Phase/rad/(2*pi) and voltage-area arithmetic are not SFQ event counts.",
+  "interpretation_boundary": "This batch authorizes A/B/C physical solves, but does not authorize scientific classification. Phase/rad/(2*pi), voltage-area arithmetic, or local peaks are not SFQ event counts.",
   "scientific_interpretation_performed": false
 }

@@ -54,13 +54,21 @@ CASE_KEYS = {
     "COL_SE_READ_AMPLITUDE", "ROW_WL_WRITE_AMPLITUDE", "COL_BL_WRITE_AMPLITUDE",
     "SE_TOPOLOGY", "SE_GATE_MODE", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
     "DT", "STOP", "PROBE_PROFILE", "SECOND_READ_ENABLE", "SECOND_ROW_BITS",
-    "SECOND_COL_BITS",
+    "SECOND_COL_BITS", "READ0_ENABLE", "WRITE1_MODE", "WRITE1_TARGET_1",
+    "WRITE1_TARGET_2",
 }
 OPTIONAL_SE_KEYS = {"SE_TOPOLOGY", "SE_GATE_MODE"}
 LEGACY_SE_DEFAULTS = {"SE_TOPOLOGY": "SHARED_COLUMN", "SE_GATE_MODE": "COLUMN"}
 OPTIONAL_SECOND_CASE_KEYS = {"SECOND_READ_ENABLE", "SECOND_ROW_BITS", "SECOND_COL_BITS"}
+OPTIONAL_WRITE_SEQUENCE_KEYS = {
+    "READ0_ENABLE", "WRITE1_MODE", "WRITE1_TARGET_1", "WRITE1_TARGET_2",
+}
 SECOND_READ_DEFAULTS = {
     "SECOND_READ_ENABLE": "0", "SECOND_ROW_BITS": "01", "SECOND_COL_BITS": "10",
+}
+WRITE_SEQUENCE_DEFAULTS = {
+    "READ0_ENABLE": "1", "WRITE1_MODE": "SIMULTANEOUS",
+    "WRITE1_TARGET_1": "NONE", "WRITE1_TARGET_2": "NONE",
 }
 BASE_STIMULUS_KEYS = {
     f"{stage}_{field}"
@@ -70,12 +78,15 @@ BASE_STIMULUS_KEYS = {
 SECOND_READ_STIMULUS_KEYS = {
     f"SECOND_READ_{field}" for field in ("START", "RISE", "HOLD", "FALL")
 }
-STIMULUS_KEYS = BASE_STIMULUS_KEYS | SECOND_READ_STIMULUS_KEYS
+SELECTIVE_WRITE_STIMULUS_KEYS = {"WRITE1_TARGET_1_START", "WRITE1_TARGET_2_START"}
+STIMULUS_KEYS = BASE_STIMULUS_KEYS | SECOND_READ_STIMULUS_KEYS | SELECTIVE_WRITE_STIMULUS_KEYS
 DEFAULT_PRESET = "A_INDEPENDENT_10_10"
 PRESET_NAMES = {
     "A_INDEPENDENT_10_10", "B_SHARED_10_10", "C_SHARED_11_11",
     "D0_CELL_SE_COLUMN_10_10", "D1_CELL_SE_CROSSPOINT_10_10",
     "E0_A005_CROSSPOINT_SECOND_READ", "E1_A006_COLUMN_SECOND_READ",
+    "A_SAME_COLUMN_DUAL_CROSSPOINT", "B_ALL_CELL_CROSSPOINT",
+    "C_MIXED_STORAGE_SEQUENTIAL_WRITE",
 }
 ROWS = (1, 2)
 COLS = (1, 2)
@@ -160,10 +171,13 @@ def fmt_time(seconds: Decimal) -> str:
 
 
 def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, str]]:
-    optional_case_keys = OPTIONAL_SE_KEYS | OPTIONAL_SECOND_CASE_KEYS
+    optional_case_keys = (OPTIONAL_SE_KEYS | OPTIONAL_SECOND_CASE_KEYS |
+                          OPTIONAL_WRITE_SEQUENCE_KEYS)
     case = parse_env(USER_CASE, CASE_KEYS, required=CASE_KEYS - optional_case_keys)
     case = _with_se_defaults(case)
     case = _with_second_read_defaults(case)
+    case = _with_write_sequence_defaults(case)
+    stimulus_overrides: dict[str, str] = {}
     if preset is not None:
         if preset not in PRESET_NAMES:
             raise ConfigError(f"unknown preset {preset!r}; choose one of {sorted(PRESET_NAMES)}")
@@ -171,9 +185,10 @@ def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, st
         preset_fixed_keys = {"NAME", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
                              "PROBE_PROFILE"}
         optional_preset_keys = optional_case_keys | {"DT", "STOP"}
-        overrides = parse_env(preset_path, CASE_KEYS - preset_fixed_keys,
+        overrides = parse_env(preset_path, (CASE_KEYS | STIMULUS_KEYS) - preset_fixed_keys,
                               required=CASE_KEYS - preset_fixed_keys - optional_preset_keys)
-        case.update(overrides)
+        case.update({key: value for key, value in overrides.items() if key in CASE_KEYS})
+        stimulus_overrides = {key: value for key, value in overrides.items() if key in STIMULUS_KEYS}
         # Legacy A/B/C presets intentionally retain their original SE behavior,
         # even when the editable USER_CASE now selects a new CELL topology.
         for key, value in LEGACY_SE_DEFAULTS.items():
@@ -182,7 +197,11 @@ def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, st
         for key, value in SECOND_READ_DEFAULTS.items():
             if key not in overrides:
                 case[key] = value
+        for key, value in WRITE_SEQUENCE_DEFAULTS.items():
+            if key not in overrides:
+                case[key] = value
     stimulus = parse_env(STIMULUS, STIMULUS_KEYS, required=BASE_STIMULUS_KEYS)
+    stimulus.update(stimulus_overrides)
     validate_config(case, stimulus)
     verify_sources()
     return case, stimulus
@@ -202,6 +221,13 @@ def _with_second_read_defaults(case: dict[str, str]) -> dict[str, str]:
     return effective
 
 
+def _with_write_sequence_defaults(case: dict[str, str]) -> dict[str, str]:
+    effective = dict(case)
+    for key, value in WRITE_SEQUENCE_DEFAULTS.items():
+        effective.setdefault(key, value)
+    return effective
+
+
 def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", case["NAME"]):
         raise ConfigError("NAME must contain only letters, digits, underscore, or hyphen")
@@ -215,6 +241,10 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
         raise ConfigError("SE_GATE_MODE=CROSSPOINT requires independent per-cell SE nodes")
     if case["SECOND_READ_ENABLE"] not in {"0", "1"}:
         raise ConfigError("SECOND_READ_ENABLE must be 0 or 1")
+    if case["READ0_ENABLE"] not in {"0", "1"}:
+        raise ConfigError("READ0_ENABLE must be 0 or 1")
+    if case["WRITE1_MODE"] not in {"SIMULTANEOUS", "SEQUENTIAL_CROSSPOINT"}:
+        raise ConfigError("WRITE1_MODE must be SIMULTANEOUS or SEQUENTIAL_CROSSPOINT")
     for key in ("SECOND_ROW_BITS", "SECOND_COL_BITS"):
         if not re.fullmatch(r"[01]{2}", case[key]):
             raise ConfigError(f"{key} must be exactly two bits; leftmost bit selects index 1")
@@ -235,35 +265,43 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
     if quantity(case["TERM_R"], "TERM_R") != Decimal("2"):
         raise ConfigError("TERM_R is frozen at 2 ohm for a matched output load")
 
+    if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
+        if (case["DRIVE_MODE"] != "SHARED" or case["SE_TOPOLOGY"] != "CELL" or
+                case["SE_GATE_MODE"] != "CROSSPOINT"):
+            raise ConfigError("SEQUENTIAL_CROSSPOINT requires SHARED + CELL + CROSSPOINT")
+        target_pattern = re.compile(r"R[12]C[12]")
+        targets = [case["WRITE1_TARGET_1"], case["WRITE1_TARGET_2"]]
+        if any(not target_pattern.fullmatch(target) for target in targets):
+            raise ConfigError("selective WRITE1 targets must be R1C1/R1C2/R2C1/R2C2")
+        if targets[0] == targets[1]:
+            raise ConfigError("selective WRITE1 targets must be distinct")
+        if case["SECOND_READ_ENABLE"] == "1":
+            raise ConfigError("SEQUENTIAL_CROSSPOINT preset forbids SECOND_READ")
+        if not SELECTIVE_WRITE_STIMULUS_KEYS.issubset(stimulus):
+            raise ConfigError("sequential WRITE1 requires both per-target start times")
+
     windows: list[tuple[str, Decimal, Decimal]] = []
-    for stage in ("WRITE0", "READ0", "WRITE1", "FINAL_READ"):
-        start = quantity(stimulus[f"{stage}_START"], f"{stage}_START")
-        rise = quantity(stimulus[f"{stage}_RISE"], f"{stage}_RISE")
-        hold = quantity(stimulus[f"{stage}_HOLD"], f"{stage}_HOLD")
-        fall = quantity(stimulus[f"{stage}_FALL"], f"{stage}_FALL")
+    for stage in _active_stages(case):
+        start, rise, hold, fall = _stage_timing(stage, stimulus)
         if start < 0 or rise <= 0 or hold < 0 or fall <= 0:
             raise ConfigError(f"{stage}: start/hold must be nonnegative; rise/fall must be positive")
         windows.append((stage, start, start + rise + hold + fall))
     for previous, current in zip(windows, windows[1:]):
         if current[1] < previous[2]:
+            if previous[0] == "FINAL_READ" and current[0] == "SECOND_READ":
+                raise ConfigError("SECOND_READ overlaps FINAL_READ")
             raise ConfigError(f"stimulus stages overlap: {previous[0]} / {current[0]}")
     if windows[-1][2] > quantity(case["STOP"], "STOP"):
-        raise ConfigError("FINAL_READ ends after STOP")
+        raise ConfigError(f"{windows[-1][0]} ends after STOP")
     provided_second_timing = SECOND_READ_STIMULUS_KEYS & stimulus.keys()
     if second_read_enabled and provided_second_timing != SECOND_READ_STIMULUS_KEYS:
         missing = sorted(SECOND_READ_STIMULUS_KEYS - stimulus.keys())
         raise ConfigError(f"SECOND_READ is enabled but timing fields are missing: {', '.join(missing)}")
-    if second_read_enabled:
-        start = quantity(stimulus["SECOND_READ_START"], "SECOND_READ_START")
-        rise = quantity(stimulus["SECOND_READ_RISE"], "SECOND_READ_RISE")
-        hold = quantity(stimulus["SECOND_READ_HOLD"], "SECOND_READ_HOLD")
-        fall = quantity(stimulus["SECOND_READ_FALL"], "SECOND_READ_FALL")
-        if start < 0 or rise <= 0 or hold < 0 or fall <= 0:
-            raise ConfigError("SECOND_READ: start/hold must be nonnegative; rise/fall must be positive")
-        if start < windows[-1][2]:
-            raise ConfigError("SECOND_READ overlaps FINAL_READ")
-        if start + rise + hold + fall > quantity(case["STOP"], "STOP"):
-            raise ConfigError("SECOND_READ ends after STOP")
+    if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
+        first = _stage_timing("WRITE1_TARGET_1", stimulus)
+        second = _stage_timing("WRITE1_TARGET_2", stimulus)
+        if second[0] < first[0] + first[1] + first[2] + first[3]:
+            raise ConfigError("selective WRITE1 target pulses must not overlap")
 
 
 def verify_sources() -> dict[str, dict[str, str]]:
@@ -352,8 +390,34 @@ def _second_read_se_enabled(case: dict[str, str], row: int, col: int) -> bool:
 
 
 def _active_stages(case: dict[str, str]) -> tuple[str, ...]:
-    base = ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
-    return base + (("SECOND_READ",) if _second_read_enabled(case) else ())
+    base = ["WRITE0"]
+    if case["READ0_ENABLE"] == "1":
+        base.append("READ0")
+    if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
+        base.extend(("WRITE1_TARGET_1", "WRITE1_TARGET_2"))
+    else:
+        base.append("WRITE1")
+    base.append("FINAL_READ")
+    return tuple(base) + (("SECOND_READ",) if _second_read_enabled(case) else ())
+
+
+def _stage_timing(stage: str, stimulus: dict[str, str]
+                  ) -> tuple[Decimal, Decimal, Decimal, Decimal]:
+    if stage.startswith("WRITE1_TARGET_"):
+        width_prefix = "WRITE1"
+        start_key = f"{stage}_START"
+    else:
+        width_prefix = stage
+        start_key = f"{stage}_START"
+    try:
+        return (
+            quantity(stimulus[start_key], start_key),
+            quantity(stimulus[f"{width_prefix}_RISE"], f"{width_prefix}_RISE"),
+            quantity(stimulus[f"{width_prefix}_HOLD"], f"{width_prefix}_HOLD"),
+            quantity(stimulus[f"{width_prefix}_FALL"], f"{width_prefix}_FALL"),
+        )
+    except KeyError as exc:
+        raise ConfigError(f"missing timing field for stage {stage}: {exc.args[0]}") from exc
 
 
 def cell_selection_groups(case: dict[str, str]) -> dict[str, list[str]]:
@@ -410,6 +474,15 @@ def _driver_layout(case: dict[str, str]) -> list[dict[str, Any]]:
 
 def _branch_amplitude(case: dict[str, str], branch: str, stage: str,
                       row: int | None, col: int | None) -> str:
+    if stage.startswith("WRITE1_TARGET_"):
+        slot = stage.removeprefix("WRITE1_TARGET_")
+        target = case[f"WRITE1_TARGET_{slot}"]
+        target_row, target_col = int(target[1]), int(target[3])
+        if branch == "WL":
+            return case["ROW_WL_WRITE_AMPLITUDE"] if row == target_row else "0"
+        if branch == "BL":
+            return case["COL_BL_WRITE_AMPLITUDE"] if col == target_col else "0"
+        return "0"
     if branch == "WL":
         amplitude = case["ROW_WL_WRITE_AMPLITUDE"] if stage in {"WRITE0", "WRITE1"} \
             else case["ROW_WL_READ_AMPLITUDE"]
@@ -464,10 +537,7 @@ def _stimulus_for_driver(case: dict[str, str], stimulus: dict[str, str],
     points: list[tuple[Decimal, str]] = [(Decimal(0), "0")]
     stage_values: dict[str, str] = {}
     for stage in _active_stages(case):
-        start = quantity(stimulus[f"{stage}_START"], f"{stage}_START")
-        rise = quantity(stimulus[f"{stage}_RISE"], f"{stage}_RISE")
-        hold = quantity(stimulus[f"{stage}_HOLD"], f"{stage}_HOLD")
-        fall = quantity(stimulus[f"{stage}_FALL"], f"{stage}_FALL")
+        start, rise, hold, fall = _stage_timing(stage, stimulus)
         value = _branch_amplitude(case, driver["branch"], stage, row, col)
         stage_values[stage] = value
         for timestamp, signal in ((start, "0"), (start + rise, value),
@@ -598,6 +668,26 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
         }
         if _effective_se_topology(case) == "SHARED_COLUMN":
             shared_nodes["SE"] = {f"COL{col}": f"SE_C{col}" for col in COLS}
+    selective_write_events = []
+    if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
+        for slot in ("1", "2"):
+            target = case[f"WRITE1_TARGET_{slot}"]
+            target_row, target_col = int(target[1]), int(target[3])
+            target_cell_ids = [cell_id(target_row, target_col)]
+            row_only = [cell_id(target_row, col) for col in COLS if col != target_col]
+            column_only = [cell_id(row, target_col) for row in ROWS if row != target_row]
+            neither = [cell_id(row, col) for row in ROWS for col in COLS
+                       if row != target_row and col != target_col]
+            start, rise, hold, fall = _stage_timing(f"WRITE1_TARGET_{slot}", stimulus)
+            selective_write_events.append({
+                "stage": f"WRITE1_TARGET_{slot}", "target_cell": target,
+                "start_seconds": str(start), "end_seconds": str(start + rise + hold + fall),
+                "row_wl_node": f"WL_R{target_row}", "column_bl_node": f"BL_C{target_col}",
+                "target_crosspoint_cells": target_cell_ids,
+                "wl_only_cells": row_only, "bl_only_cells": column_only,
+                "unselected_cells": neither,
+                "driver_topology": "two shared row-WL plus two shared column-BL buses",
+            })
     topology = {
         "schema": "bvm-2x2-rowcol-topology-v1",
         "drive_mode": case["DRIVE_MODE"],
@@ -617,6 +707,11 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
                  "row_bit_order": "leftmost bit selects row 1; rightmost selects row 2",
                  "column_bit_order": "leftmost bit selects column 1; rightmost selects column 2"},
         "cell_selection": cell_selection_groups(case),
+        "write1_sequence": {
+            "mode": case["WRITE1_MODE"],
+            "read0_enabled": case["READ0_ENABLE"] == "1",
+            "events": selective_write_events,
+        },
         "second_read": {
             "enabled": _second_read_enabled(case),
             "row_bits": case["SECOND_ROW_BITS"],
@@ -738,6 +833,10 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
+        "read0_enabled": case["READ0_ENABLE"],
+        "write1_mode": case["WRITE1_MODE"],
+        "write1_target_1": case["WRITE1_TARGET_1"],
+        "write1_target_2": case["WRITE1_TARGET_2"],
         "second_read_enabled": case["SECOND_READ_ENABLE"],
         "second_row_bits": case["SECOND_ROW_BITS"],
         "second_column_bits": case["SECOND_COL_BITS"],
@@ -837,15 +936,28 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
         name, row, col = cell["cell"], cell["row"], cell["column"]
         expected_values = {
             "WL": {"WRITE0": f"-{case['ROW_WL_WRITE_AMPLITUDE']}",
-                   "READ0": case["ROW_WL_READ_AMPLITUDE"],
-                   "WRITE1": case["ROW_WL_WRITE_AMPLITUDE"],
                    "FINAL_READ": case["ROW_WL_READ_AMPLITUDE"] if case["ROW_BITS"][row - 1] == "1" else "0"},
-            "BL": {"WRITE0": f"-{case['COL_BL_WRITE_AMPLITUDE']}", "READ0": "0",
-                   "WRITE1": case["COL_BL_WRITE_AMPLITUDE"], "FINAL_READ": "0"},
-            "SE": {"WRITE0": "0", "READ0": case["COL_SE_READ_AMPLITUDE"], "WRITE1": "0",
-                   "FINAL_READ": case["COL_SE_READ_AMPLITUDE"]
+            "BL": {"WRITE0": f"-{case['COL_BL_WRITE_AMPLITUDE']}", "FINAL_READ": "0"},
+            "SE": {"WRITE0": "0", "FINAL_READ": case["COL_SE_READ_AMPLITUDE"]
                    if _final_read_se_enabled(case, row, col) else "0"},
         }
+        if case["READ0_ENABLE"] == "1":
+            expected_values["WL"]["READ0"] = case["ROW_WL_READ_AMPLITUDE"]
+            expected_values["BL"]["READ0"] = "0"
+            expected_values["SE"]["READ0"] = case["COL_SE_READ_AMPLITUDE"]
+        if case["WRITE1_MODE"] == "SIMULTANEOUS":
+            expected_values["WL"]["WRITE1"] = case["ROW_WL_WRITE_AMPLITUDE"]
+            expected_values["BL"]["WRITE1"] = case["COL_BL_WRITE_AMPLITUDE"]
+            expected_values["SE"]["WRITE1"] = "0"
+        else:
+            for slot in ("1", "2"):
+                target = case[f"WRITE1_TARGET_{slot}"]
+                target_row, target_col = int(target[1]), int(target[3])
+                expected_values["WL"][f"WRITE1_TARGET_{slot}"] = (
+                    case["ROW_WL_WRITE_AMPLITUDE"] if row == target_row else "0")
+                expected_values["BL"][f"WRITE1_TARGET_{slot}"] = (
+                    case["COL_BL_WRITE_AMPLITUDE"] if col == target_col else "0")
+                expected_values["SE"][f"WRITE1_TARGET_{slot}"] = "0"
         if _second_read_enabled(case):
             expected_values["WL"]["SECOND_READ"] = (
                 case["ROW_WL_READ_AMPLITUDE"]
@@ -866,6 +978,13 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
     second_read_stage_present = all("SECOND_READ" in values for values in driver_stages.values())
     if second_read_stage_present != _second_read_enabled(case):
         raise ConfigError("SECOND_READ PWL presence disagrees with SECOND_READ_ENABLE")
+    selective_stages = {"WRITE1_TARGET_1", "WRITE1_TARGET_2"}
+    selective_present = all(selective_stages.issubset(values) for values in driver_stages.values())
+    if selective_present != (case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT"):
+        raise ConfigError("selective WRITE1 PWL stages disagree with WRITE1_MODE")
+    read0_present = all("READ0" in values for values in driver_stages.values())
+    if read0_present != (case["READ0_ENABLE"] == "1"):
+        raise ConfigError("READ0 PWL presence disagrees with READ0_ENABLE")
     if case["DRIVE_MODE"] == "SHARED":
         for row in ROWS:
             record = next(item for item in drivers if item["source"] == f"I_WL_R{row}")
@@ -924,6 +1043,13 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
+        "read0_enabled": case["READ0_ENABLE"] == "1",
+        "write1_mode": case["WRITE1_MODE"],
+        "selective_write_targets": ([case["WRITE1_TARGET_1"], case["WRITE1_TARGET_2"]]
+                                     if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT" else []),
+        "selective_write_keeps_shared_wl_bl": case["WRITE1_MODE"] != "SEQUENTIAL_CROSSPOINT" or (
+            case["DRIVE_MODE"] == "SHARED" and len([d for d in drivers if d["branch"] == "WL"]) == 2
+            and len([d for d in drivers if d["branch"] == "BL"]) == 2),
         "cell_se_nodes_independent": len({cell["input_nodes"]["SE"] for cell in cell_records}) == 4,
         "final_read_bl_zero": True,
         "second_read_enabled": _second_read_enabled(case),
@@ -992,6 +1118,10 @@ def _run_config_identity(case: dict[str, str]) -> dict[str, str]:
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
+        "read0_enabled": case["READ0_ENABLE"],
+        "write1_mode": case["WRITE1_MODE"],
+        "write1_target_1": case["WRITE1_TARGET_1"],
+        "write1_target_2": case["WRITE1_TARGET_2"],
         "second_read_enabled": case["SECOND_READ_ENABLE"],
         "second_row_bits": case["SECOND_ROW_BITS"],
         "second_column_bits": case["SECOND_COL_BITS"],
@@ -1019,7 +1149,8 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",
         f"- Half-selected cells: `{', '.join(rendered['topology']['cell_selection']['half_selected']) or 'none'}`.",
         f"- Unselected cells: `{', '.join(rendered['topology']['cell_selection']['unselected']) or 'none'}`.",
-        "- Four BVM cells use the same WRITE0 / READ0 / WRITE1 stimulus; row/column bits gate FINAL READ only.",
+        f"- READ0_ENABLE=`{case['READ0_ENABLE']}`; WRITE1_MODE=`{case['WRITE1_MODE']}`.",
+        "- Row/column bits gate FINAL READ only; they do not implement mixed storage by themselves.",
         "- FINAL READ BL sources are zero. CELL/CROSSPOINT SE is independently enabled only where both row and column bits are active.",
         "- Load per cell: BVM → canonical QB → one canonical sJTL → one canonical CB → separate VOUT → 2 Ω.",
         "- SHARED drive uses two shared row-WL sources, two shared column-BL sources, and either two shared-column or four cell-local SE sources.",
@@ -1029,10 +1160,26 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- DT=`{case['DT']}`, STOP=`{case['STOP']}`; P(...) raw unit is radians.",
         "- Registered half-open windows and read/recovery windows are listed in stimulus_qa.json and cell_metrics.json.",
         "- Branch-current analysis reports raw extrema/actual-grid charge only; no decision threshold is registered.",
-        "- No multi-mask/batch, sweep, follow-up, T1, output merge, or 4×4 extension is authorized.",
+        "- Only the registered run is authorized; no sweep, follow-up, T1, output merge, or 4×4 extension.",
         "- Interpretation ceiling: artifact/mechanical QA and registered arithmetic only.",
         "", "## Canonical source hashes", "",
     ]
+    if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
+        lines.extend((
+            f"- Selective WRITE1 targets: `{case['WRITE1_TARGET_1']}` then `{case['WRITE1_TARGET_2']}`.",
+            "- Each target pulse drives its shared row WL and shared column BL; all row-only, column-only, and unselected cells remain exposed to those bus waveforms and are probed.",
+            "- No per-cell WL/BL sources are introduced; source count remains 8 (2 WL + 2 BL + 4 SE).",
+        ))
+        for event in rendered["topology"]["write1_sequence"]["events"]:
+            lines.append(f"- {event['stage']}: [{fmt_time(Decimal(event['start_seconds']))}, "
+                         f"{fmt_time(Decimal(event['end_seconds']))}); target={event['target_cell']}; "
+                         f"WL-only={','.join(event['wl_only_cells'])}; "
+                         f"BL-only={','.join(event['bl_only_cells'])}; "
+                         f"unselected={','.join(event['unselected_cells'])}.")
+    if not _second_read_enabled(case):
+        windows = _stage_windows(case, stimulus)
+        start, end = windows["READ_RESPONSE"]
+        lines.append(f"- Full read response window: [{fmt_time(start)}, {fmt_time(end)}) using stored-grid samples.")
     if _second_read_enabled(case):
         for window_name in ("FINAL_READ", "RECOVERY_BEFORE_SECOND_READ", "SECOND_READ",
                             "POST_SECOND_READ"):
@@ -1080,10 +1227,9 @@ def plot_page_plan(topology: dict[str, Any], probes: dict[str, Any]) -> list[dic
         ]
         page_plan.append({"file": f"cells/{name}.html", "title": f"Cell {name}: BVM → QB → sJTL → CB",
                           "signals": signals})
-    if topology["second_read"]["enabled"]:
-        cell = next(item for item in topology["cell_instances"] if item["cell"] == "R2C1")
+    def focused_cell_signals(cell: dict[str, Any]) -> list[str]:
         instance = cell["instances"]
-        focus_signals = [
+        return [
             f"I(R_WL|{instance['BVM']})", f"I(R_BL|{instance['BVM']})",
             f"I(R_SE|{instance['BVM']})",
             *[signal for jj in CELL_JJS
@@ -1098,15 +1244,28 @@ def plot_page_plan(topology: dict[str, Any], probes: dict[str, Any]) -> list[dic
               for signal in (f"P({jj}|{instance['POST_CB']})", f"V({jj}|{instance['POST_CB']})")],
             f"V({cell['output_node']})",
         ]
-        window_pages = (
-            ("FINAL_READ", "windows/01_first_read_r2c1.html", "First read / FINAL_READ — R2C1"),
-            ("RECOVERY_BEFORE_SECOND_READ", "windows/02_recovery_r2c1.html",
-             "Recovery before SECOND_READ — R2C1"),
-            ("SECOND_READ", "windows/03_second_read_r2c1.html", "SECOND_READ — R2C1"),
-        )
-        for window_name, filename, title in window_pages:
-            page_plan.append({"file": filename, "title": title,
-                              "signals": focus_signals, "window_name": window_name})
+    first_window = ("FIRST_READ_RESPONSE" if topology["second_read"]["enabled"]
+                    else "READ_RESPONSE")
+    for cell in topology["cell_instances"]:
+        if cell["final_read_crosspoint_active"]:
+            name = cell["cell"]
+            page_plan.append({
+                "file": f"windows/first_read_response_{name}.html",
+                "title": f"First read full response — {name}",
+                "signals": focused_cell_signals(cell), "window_name": first_window,
+            })
+        if topology["second_read"]["enabled"] and cell["second_read_crosspoint_active"]:
+            name = cell["cell"]
+            page_plan.extend((
+                {"file": f"windows/recovery_{name}.html",
+                 "title": f"Recovery before second read — {name}",
+                 "signals": focused_cell_signals(cell),
+                 "window_name": "RECOVERY_BEFORE_SECOND_READ"},
+                {"file": f"windows/second_read_response_{name}.html",
+                 "title": f"Second read full response — {name}",
+                 "signals": focused_cell_signals(cell),
+                 "window_name": "SECOND_READ_RESPONSE"},
+            ))
     for page in page_plan:
         missing = [label for label in page["signals"] if label not in available]
         if missing:
@@ -1132,8 +1291,9 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
     times = " | ".join(
         f"{stage} {fmt_decimal(start / Decimal('1e-12'))}–{fmt_decimal(end / Decimal('1e-12'))}ps"
         for stage, (start, end) in windows.items()
-        if stage in {"WRITE0", "READ0", "WRITE1", "FINAL_READ",
-                     "RECOVERY_BEFORE_SECOND_READ", "SECOND_READ"}
+        if stage in set(_active_stages(case)) | {
+            "RECOVERY_BEFORE_SECOND_READ", "FIRST_READ_RESPONSE",
+            "SECOND_READ_RESPONSE", "READ_RESPONSE"}
     )
     print("DRY RUN PASS — no solver call; physical_solve_count=0")
     print(f"Case: {case['NAME']} | next run if executed: {run_id}")
@@ -1154,8 +1314,22 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
         print(f"  {cell['cell']}: {values['WL']}, {values['BL']}, {values['SE']}")
     print(f"Stimulus windows: {times}")
     final_se_gate = "column bits" if case["SE_GATE_MODE"] == "COLUMN" else "row AND column bits"
-    print("PWL phases: WRITE0 −WL/−BL; READ0 +WL/+SE; WRITE1 +WL/+BL; "
-          f"FINAL_READ +WL(row bits)/+SE({final_se_gate}), BL=0")
+    read0_text = "; READ0 +WL/+SE" if case["READ0_ENABLE"] == "1" else "; READ0 omitted"
+    write1_text = (f"; selective WRITE1 {case['WRITE1_TARGET_1']} then {case['WRITE1_TARGET_2']} "
+                   "via shared row-WL/column-BL buses"
+                   if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT"
+                   else "; WRITE1 +WL/+BL on all shared lines")
+    print("PWL phases: WRITE0 −WL/−BL" + read0_text + write1_text +
+          f"; FINAL_READ +WL(row bits)/+SE({final_se_gate}), BL=0")
+    if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
+        print("Selective WRITE1 programmed source values per cell (WL, BL, SE; not measured branch currents):")
+        for stage in ("WRITE1_TARGET_1", "WRITE1_TARGET_2"):
+            print(f"  {stage} at {fmt_time(_stage_timing(stage, stimulus)[0])}, target="
+                  f"{case[stage]}:")
+            for cell in rendered["cell_records"]:
+                values = {branch: rendered["driver_stages"][source][stage]
+                          for branch, source in cell["source_for_each_input"].items()}
+                print(f"    {cell['cell']}: {values['WL']}, {values['BL']}, {values['SE']}")
     if _second_read_enabled(case):
         print(f"SECOND_READ: row bits={case['SECOND_ROW_BITS']}; column bits={case['SECOND_COL_BITS']}; "
               "SE gate=CELL_CROSSPOINT; BL=0")
@@ -1168,7 +1342,10 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
         for driver in rendered["drivers"]:
             if driver["branch"] == "SE":
                 print(f"  {driver['source']} → {driver['node']} → {','.join(driver['cells'])}")
-    print("All four cells receive the same WRITE0/READ0/WRITE1 sequence.")
+    if case["WRITE1_MODE"] == "SIMULTANEOUS":
+        print("All four cells receive the same configured preparation/write sequence.")
+    else:
+        print("Selective write targets share row WL and column BL; half-selected cell inputs are explicitly listed above.")
     print("Output/load: 4 independent chains, BVM→QB→1×sJTL→1×CB→VOUT→2Ω")
     print(f"Solver settings: DT={case['DT']}, STOP={case['STOP']}; planned solves if run=1")
     print(f"Probes: {rendered['probes']['signal_count']} ({case['PROBE_PROFILE']}); "
@@ -1209,24 +1386,27 @@ def _git_head() -> str:
 
 def _stage_windows(case: dict[str, str], stimulus: dict[str, str]) -> dict[str, tuple[Decimal, Decimal]]:
     windows: dict[str, tuple[Decimal, Decimal]] = {}
-    for stage in ("WRITE0", "READ0", "WRITE1", "FINAL_READ"):
-        start = quantity(stimulus[f"{stage}_START"], f"{stage}_START")
-        duration = sum((quantity(stimulus[f"{stage}_{field}"], f"{stage}_{field}")
-                        for field in ("RISE", "HOLD", "FALL")), Decimal(0))
+    for stage in _active_stages(case):
+        start, rise, hold, fall = _stage_timing(stage, stimulus)
+        duration = rise + hold + fall
         windows[stage] = (start, start + duration)
-    for previous, current, name in (("WRITE0", "READ0", "POST_WRITE0"),
-                                    ("READ0", "WRITE1", "POST_READ0"),
-                                    ("WRITE1", "FINAL_READ", "POST_WRITE1")):
-        windows[name] = (windows[previous][1], windows[current][0])
+    active = list(_active_stages(case))
+    for previous, current in zip(active, active[1:]):
+        windows[f"POST_{previous}"] = (windows[previous][1], windows[current][0])
+    if "WRITE1" in windows and "FINAL_READ" in windows:
+        windows["POST_WRITE1"] = (windows["WRITE1"][1], windows["FINAL_READ"][0])
+    if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
+        windows["POST_WRITE1"] = (windows["WRITE1_TARGET_2"][1], windows["FINAL_READ"][0])
     if _second_read_enabled(case):
-        second_start = quantity(stimulus["SECOND_READ_START"], "SECOND_READ_START")
-        second_end = second_start + sum(
-            (quantity(stimulus[f"SECOND_READ_{field}"], f"SECOND_READ_{field}")
-             for field in ("RISE", "HOLD", "FALL")), Decimal(0))
+        second_start, _rise, _hold, _fall = _stage_timing("SECOND_READ", stimulus)
+        second_end = windows["SECOND_READ"][1]
+        final_start = windows["FINAL_READ"][0]
         windows["RECOVERY_BEFORE_SECOND_READ"] = (windows["FINAL_READ"][1], second_start)
-        windows["SECOND_READ"] = (second_start, second_end)
+        windows["FIRST_READ_RESPONSE"] = (final_start, second_start)
+        windows["SECOND_READ_RESPONSE"] = (second_start, quantity(case["STOP"], "STOP"))
         windows["POST_SECOND_READ"] = (second_end, quantity(case["STOP"], "STOP"))
     else:
+        windows["READ_RESPONSE"] = (windows["FINAL_READ"][0], quantity(case["STOP"], "STOP"))
         windows["TAIL"] = (windows["FINAL_READ"][1], quantity(case["STOP"], "STOP"))
     return windows
 
@@ -1339,10 +1519,20 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                 voltage_signal = f"V({jj}|{instance})"
                 phase = _unwrap(trace.column(phase_signal))
                 voltage = trace.column(voltage_signal)
-                jj_windows = ["POST_READ0", "POST_WRITE1", "FINAL_READ"]
+                jj_windows = ["FINAL_READ"]
+                if case["READ0_ENABLE"] == "1":
+                    jj_windows.append("POST_READ0")
+                if case["WRITE1_MODE"] == "SIMULTANEOUS":
+                    jj_windows.append("POST_WRITE1")
+                else:
+                    jj_windows.extend(("POST_WRITE0", "WRITE1_TARGET_1",
+                                       "POST_WRITE1_TARGET_1", "WRITE1_TARGET_2",
+                                       "POST_WRITE1_TARGET_2", "POST_WRITE1"))
                 if _second_read_enabled(case):
-                    jj_windows.extend(("RECOVERY_BEFORE_SECOND_READ", "SECOND_READ",
-                                       "POST_SECOND_READ"))
+                    jj_windows.extend(("FIRST_READ_RESPONSE", "RECOVERY_BEFORE_SECOND_READ",
+                                       "SECOND_READ", "SECOND_READ_RESPONSE", "POST_SECOND_READ"))
+                else:
+                    jj_windows.extend(("READ_RESPONSE", "TAIL"))
                 for window_name in jj_windows:
                     indexes = _indices(exact_times, windows[window_name])
                     if len(indexes) < 2:
@@ -1360,6 +1550,7 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                         "voltage_area_v_s_same_jj_same_rows": area,
                         "voltage_area_phi0_arithmetic": area / PHI0_VS,
                         "phase_minus_area_turns_arithmetic": delta_rad / (2 * math.pi) - area / PHI0_VS,
+                        "sample_count": len(indexes),
                         "interpolation_or_resampling": False,
                     }
                     if _second_read_enabled(case):
@@ -1371,28 +1562,42 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                     jj_metrics.append(metric)
     outputs: list[dict[str, Any]] = []
     for cell in topology["cell_instances"]:
-        output_boundaries = [("QB_OUT", cell["qb_output_node"]),
+        output_boundaries = [("BVM_SL", cell["sl_node"]),
+                             ("QB_OUT", cell["qb_output_node"]),
                                 ("SJTL_OUT", cell["sjtl_output_node"]),
                                 ("VOUT", cell["output_node"])]
-        if _second_read_enabled(case):
-            output_boundaries.insert(0, ("BVM_SL", cell["sl_node"]))
         for node_role, node in output_boundaries:
             signal = f"V({node})"
             values = trace.column(signal)
-            output_windows = ["POST_READ0", "POST_WRITE1", "FINAL_READ"]
+            output_windows = ["FINAL_READ"]
+            if case["READ0_ENABLE"] == "1":
+                output_windows.append("POST_READ0")
+            if case["WRITE1_MODE"] == "SIMULTANEOUS":
+                output_windows.append("POST_WRITE1")
+            else:
+                output_windows.extend(("POST_WRITE0", "POST_WRITE1_TARGET_1",
+                                       "POST_WRITE1_TARGET_2", "POST_WRITE1"))
             if _second_read_enabled(case):
-                output_windows.extend(("RECOVERY_BEFORE_SECOND_READ", "SECOND_READ",
-                                       "POST_SECOND_READ"))
+                output_windows.extend(("FIRST_READ_RESPONSE", "RECOVERY_BEFORE_SECOND_READ",
+                                       "SECOND_READ", "SECOND_READ_RESPONSE", "POST_SECOND_READ"))
+            else:
+                output_windows.extend(("READ_RESPONSE", "TAIL"))
             for window_name in output_windows:
                 indexes = _indices(exact_times, windows[window_name])
                 if len(indexes) < 2:
                     continue
                 selected = [values[index] for index in indexes]
+                max_index = max(indexes, key=lambda index: values[index])
+                min_index = min(indexes, key=lambda index: values[index])
+                max_abs_index = max(indexes, key=lambda index: abs(values[index]))
                 metric = {"cell": cell["cell"], "boundary": node_role,
                           "signal": signal, "window": window_name,
                           "sample_count": len(indexes), "min_v": min(selected),
                           "max_v": max(selected), "peak_to_peak_v": max(selected) - min(selected),
-                          "area_v_s": _trapz(trace.time, values, indexes)}
+                          "area_v_s": _trapz(trace.time, values, indexes),
+                          "time_of_max_v_s": str(exact_times[max_index]),
+                          "time_of_min_v_s": str(exact_times[min_index]),
+                          "time_of_max_abs_v_s": str(exact_times[max_abs_index])}
                 if _second_read_enabled(case):
                     metric["first_sample_v"] = values[indexes[0]]
                     metric["last_sample_v"] = values[indexes[-1]]
@@ -1540,6 +1745,8 @@ def _write_root_manifest(run_id: str, run_dir: Path, result: dict[str, Any]) -> 
                  "physical_solve_count": 1,
                  **{key: result[key] for key in ("drive_mode", "se_topology",
                                                    "effective_se_topology", "se_gate_mode",
+                                                   "read0_enabled", "write1_mode",
+                                                   "write1_target_1", "write1_target_2",
                                                    "second_read_enabled", "second_row_bits",
                                                    "second_column_bits", "second_read_se_gate_mode",
                                                    "row_bits", "column_bits")},
@@ -1572,17 +1779,19 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
           parameter_manifest(case, stimulus, rendered["sources"]))
     _json(run_dir / "source_manifest.json", source_manifest(rendered["sources"]))
     _json(run_dir / "analysis" / "static_qa.json", rendered["static_qa"])
-    timing_stages = ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
-    if _second_read_enabled(case):
-        timing_stages += ("SECOND_READ",)
+    timing_windows = {}
+    for stage in _active_stages(case):
+        start, rise, hold, fall = _stage_timing(stage, stimulus)
+        timing_windows[stage] = {
+            "start": fmt_time(start), "rise": fmt_time(rise),
+            "hold": fmt_time(hold), "fall": fmt_time(fall),
+            "width_source": ("WRITE1_RISE/HOLD/FALL" if stage.startswith("WRITE1_TARGET_")
+                             else stage),
+        }
     _json(run_dir / "stimulus_manifest.json", {
         "schema": "bvm-2x2-rowcol-stimulus-v1",
         **_run_config_identity(case),
-        "timing_windows": {name: {"start": stimulus[f"{name}_START"],
-                                   "rise": stimulus[f"{name}_RISE"],
-                                   "hold": stimulus[f"{name}_HOLD"],
-                                   "fall": stimulus[f"{name}_FALL"]}
-                           for name in timing_stages},
+        "timing_windows": timing_windows,
         "analysis_windows": {
             name: {"start_seconds": str(start), "end_seconds": str(end),
                    "boundary_rule": "[start,end)"}
@@ -1662,12 +1871,20 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
              and all(values.get("SECOND_READ") == "0" for source, values in driver_stages.items()
                      if source.startswith("I_BL_"))))
         second_read_gate_ok = rendered["static_qa"]["second_read_crosspoint_gate_exact"]
+        selective_write_ok = (
+            case["WRITE1_MODE"] != "SEQUENTIAL_CROSSPOINT" or
+            (rendered["static_qa"]["selective_write_keeps_shared_wl_bl"]
+             and all({"WRITE1_TARGET_1", "WRITE1_TARGET_2"}.issubset(values)
+                     for values in driver_stages.values())))
+        read0_stage_ok = all("READ0" in values for values in driver_stages.values()) == (
+            case["READ0_ENABLE"] == "1")
         stimulus_qa = {
             "schema": "bvm-2x2-rowcol-stimulus-qa-v1",
             "status": "PASS" if (len(rendered["drivers"]) == rendered["topology"]["driver_count"]
                                      and all("FINAL_READ" in item for item in driver_stages.values())
                                      and second_read_stage_ok
                                      and second_read_gate_ok
+                                     and selective_write_ok and read0_stage_ok
                                      and all(driver["source"] in rendered["stimulus_text"]
                                              for driver in rendered["drivers"])
                                      and "stimulus.inc" in deck
@@ -1684,6 +1901,8 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
                 for cell in rendered["topology"]["cell_instances"]},
             "second_read_crosspoint_gate_exact": second_read_gate_ok,
             "second_read_bl_zero": second_read_stage_ok,
+            "selective_write_stage_values_exact": selective_write_ok,
+            "read0_enable_matches_pwl_presence": read0_stage_ok,
             "pwl_source_count": len(rendered["drive_lines"]),
             "final_read_bl_zero": all(item["FINAL_READ"] == "0" for source, item in driver_stages.items()
                                        if source.startswith("I_BL_")),
@@ -1778,6 +1997,8 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
         brief = [f"# {run_id}", "",
                  f"- DRIVE_MODE: `{case['DRIVE_MODE']}`; ROW_BITS=`{case['ROW_BITS']}`; COL_BITS=`{case['COL_BITS']}`.",
                  f"- SE_TOPOLOGY: `{case['SE_TOPOLOGY']}`; SE_GATE_MODE: `{case['SE_GATE_MODE']}`.",
+                 f"- READ0_ENABLE: `{case['READ0_ENABLE']}`; WRITE1_MODE: `{case['WRITE1_MODE']}`; "
+                 f"selective targets: `{case['WRITE1_TARGET_1']}`, `{case['WRITE1_TARGET_2']}`.",
                  f"- SECOND_READ_ENABLE: `{case['SECOND_READ_ENABLE']}`; bits=`{case['SECOND_ROW_BITS']}/"
                  f"{case['SECOND_COL_BITS']}`; second-read SE gate is CELL_CROSSPOINT.",
                  f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",

@@ -68,6 +68,9 @@ Available presets:
 ./try.sh --preset D1_CELL_SE_CROSSPOINT_10_10 --dry-run
 ./try.sh --preset E0_A005_CROSSPOINT_SECOND_READ --dry-run
 ./try.sh --preset E1_A006_COLUMN_SECOND_READ --dry-run
+./try.sh --preset A_SAME_COLUMN_DUAL_CROSSPOINT --dry-run
+./try.sh --preset B_ALL_CELL_CROSSPOINT --dry-run
+./try.sh --preset C_MIXED_STORAGE_SEQUENTIAL_WRITE --dry-run
 ```
 
 To execute exactly one current configuration manually, omit `--dry-run`:
@@ -79,15 +82,18 @@ To execute exactly one current configuration manually, omit `--dry-run`:
 ./try.sh --preset D1_CELL_SE_CROSSPOINT_10_10
 ./try.sh --preset E0_A005_CROSSPOINT_SECOND_READ
 ./try.sh --preset E1_A006_COLUMN_SECOND_READ
+./try.sh --preset A_SAME_COLUMN_DUAL_CROSSPOINT
+./try.sh --preset B_ALL_CELL_CROSSPOINT
+./try.sh --preset C_MIXED_STORAGE_SEQUENTIAL_WRITE
 ```
 
 Each invocation executes at most one physical solve, allocates a fresh
 `runs/Axxx_<MODE>_R<bits>_C<bits>/` directory, and refuses to overwrite an
 existing run. This platform does not automatically execute A/B/C as a batch.
 Dry-run does not reserve a number, so repeated previews may show the same next
-ID. Actual invocations scan all existing Axxx directories. With A001–A006
-already present, the next run is A007 if no other run is added; E0 then E1
-would receive A007 and A008 when run in that order.
+ID. Actual invocations scan all existing Axxx directories. At the 2026-09-29
+batch parent, A001–A009 were present, so the newly authorized A/B/C cases are
+allocated A010, A011, and A012 in serial order.
 The default dry-run is compact: it shows topology, row/column mapping, the four
 cells' final-read WL/BL/SE levels, source counts/amplitudes, timing, load chain,
 probe count, and static-QA result. It creates no run directory and never
@@ -100,7 +106,8 @@ SECOND_READ 170–181 ps. `SECOND_READ_ENABLE` defaults to `0`; the first four
 stages and the rendered netlist/stimulus remain the legacy behavior when the
 new fields are omitted or disabled. Default `DT=0.01p`, `STOP=250p`; E0/E1
 override STOP to 300p. Edit `USER_CASE.env` and `STIMULUS.env`, or edit one
-of the preset files, before a manual run.
+of the preset files, before a manual run. The 2026-09-29 E0/E1/A/B/C cases all
+use preset-specific settings and do not require changing this editable file.
 
 For a manual configuration, set `SECOND_READ_ENABLE=1`,
 `SECOND_ROW_BITS=01`, and `SECOND_COL_BITS=10` in `USER_CASE.env`; set
@@ -154,9 +161,51 @@ it never treats 110–300 ps as one read area. Three focused R2C1 pages use the
 existing classic `josim-plot2.py` renderer. Dry-run does not reserve a run
 number; if no other run intervenes, E0 then E1 allocate A007 and A008.
 
+## Authorized 2026-09-29 A/B/C batch
+
+All three new presets preserve the eight-driver SHARED/CELL topology, canonical
+source hashes, four independent BVM→QB→1 sJTL→1 CB→2 Ω VOUT chains, 200 µA
+write amplitudes, 200 µA WL read amplitude, 100 µA cell-SE read amplitude, and
+DT=0.01 ps. Run them serially so the non-overwriting allocator assigns A010–A012.
+
+| Run | Read selection | Extra sequence | STOP |
+|---|---|---|---:|
+| A — `A_SAME_COLUMN_DUAL_CROSSPOINT` | first: rows 11 / columns 10; second: R1C1 only at 170–181 ps | A009 comparison uses first response [110,170) ps | 250 ps |
+| B — `B_ALL_CELL_CROSSPOINT` | all four at 110–121 ps | no second read | 250 ps |
+| C — `C_MIXED_STORAGE_SEQUENTIAL_WRITE` | all four at 170–181 ps | WRITE0 all lines; then R1C1 via WL_R1+BL_C1 at 90 ps and R2C2 via WL_R2+BL_C2 at 120 ps; READ0 omitted | 300 ps |
+
+C intentionally keeps shared WL/BL buses. Its registered per-write map lists
+the simultaneously exposed WL-only, BL-only, and unselected cells; no per-cell
+WL/BL drivers are created. Actual input-branch currents are raw evidence, not
+assumed from source setpoints. The whole response window is [170,300) ps.
+
+Read-response arithmetic reports signed output min/max/p2p, positive-maximum
+time, and signed V(t) area for BVM_SL, QB_OUT, SJTL_OUT, and VOUT using stored
+raw rows. Same-JJ phase-radian delta and voltage-area/Phi0 arithmetic are
+retained for BVM, QB, sJTL, and CB junctions. No pulse/SFQ event classifier or
+threshold is registered; scientific interpretation remains NOT PERFORMED.
+Per-run full-range classic `josim-plot2.py` pages and focused full-response
+pages are generated locally. The registered exact-grid comparisons and
+independent arithmetic audit are rebuilt with:
+
+```bash
+python3 scripts/build_batch_comparison.py
+python3 scripts/audit_batch_arithmetic.py
+```
+
+This writes A009/A010 first-response and A010/A011/A012 full-output comparisons
+under `plots/comparison/`, plus source-hash/alignment QA under `analysis/`.
+Only exact common stored timestamps are retained; no interpolation occurs. The
+arithmetic audit independently recomputes branch currents, output peak times
+and signed areas, and same-JJ phase/voltage arithmetic from raw tokens; it does
+not classify SFQ/pulse event counts. Generated HTML is excluded from evidence
+ZIPs.
+
 After an authorized manual run, the runner preserves deck, PWL stimulus,
 snapshots, raw, stdout/stderr, solver log, manifests, actual-grid raw QA,
 branch-current and per-cell arithmetic metrics, and a concise set of classic
 `josim-plot2.py` HTML pages. Phase is raw radians; displayed phase turns are
-`rad/(2*pi)` navigation arithmetic, never an SFQ count. The current task
-creates no experiment run/raw evidence and makes no physical claim.
+`rad/(2*pi)` navigation arithmetic, never an SFQ count. The earlier static
+platform update created no run/raw; the later authorized A010–A012 runs are
+listed in `experiment_manifest.json`. Their event-count and physical
+interpretation remain for scientific review.

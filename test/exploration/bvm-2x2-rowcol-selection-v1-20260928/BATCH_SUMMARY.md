@@ -141,9 +141,26 @@ voltage extrema/areas are retained in `analysis/cell_metrics.json`.
   ZIP was reopened or historical raw rehashed for this targeted plan.
 - Drive archive folder:
   [BVM_Backages](https://drive.google.com/drive/folders/1--nlY7Nq5ArVPydJNrnQf-EGmwN-undh).
-  Eight per-run ZIPs will be listed with size/SHA after creation. The metadata
-  ZIP's own checksum is necessarily detached in its `PACKAGE_QA.json` to avoid
-  a self-referential archive hash.
+  All nine archives passed full ZIP CRC and included-member SHA-256 QA:
+
+| Archive group | ZIP bytes | ZIP SHA-256 |
+|---|---:|---|
+| A019_T1_C1_Q0 | 10,885,806 | `baf52d1884b9f9a75db960a3facc6fe8ebd5f4d1190ceac5fb0ec5f28cfe0ea0` |
+| A020_T1_C1_Q1 | 11,977,302 | `e132744c0f67fd7affd7f7488c1a97f007c0c22404a3ed1f792cebb52a04a6cd` |
+| A021_T1_C1_Q2 | 11,885,320 | `3a6901fce2b32c6d130d756980ccd2018bad2baadb9f82114c6b12e7704c4cf6` |
+| A022_T1_C1_Q3 | 12,100,388 | `fce7989c235ba8ddaad875bc61b0378a1cc41fb2ef20f2f5cb01309445a83c6f` |
+| A023_T1_C1_P0 | 12,652,826 | `d9298b6860cf1b4003308df07cb3ba296464396f0c0ce3321670bf32aba2989e` |
+| A024_T1_C1_P1 | 13,290,687 | `5d89518be97d393e4470128b0cbb6ee767bb8d7ff089b78b517218f6e475fc85` |
+| A025_T1_C1_P2 | 13,207,731 | `142bb8d7d2e59af00a868f8fa757881dc8ab73f03718adb1e182d19beae76af0` |
+| A026_T1_C1_P3 | 13,255,000 | `b097650af7e1bb2b4f7759320474fa26e55f1f81b267d9394a9e9c23a2800520` |
+| metadata | 224,778 | `3ef24f8fa3ed318fe677fbe3ba4afac74fb7d98e72db3facf17ca4974f97e592` |
+
+Total compressed package bytes: **99,479,838**. The metadata ZIP's own hash
+is repeated here only in the Git/Drive summary; its detached
+`PACKAGE_QA.json` is the checksum authority. The metadata ZIP contains the
+source-commit summary snapshot from before package identities were known; this
+final post-package summary is committed separately and uploaded to the same
+Drive folder. The raw/data bundles are unchanged by that summary update.
 
 ## Interpretation boundary
 

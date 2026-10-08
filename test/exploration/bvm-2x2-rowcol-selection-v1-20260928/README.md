@@ -209,3 +209,57 @@ branch-current and per-cell arithmetic metrics, and a concise set of classic
 platform update created no run/raw; the later authorized A010–A012 runs are
 listed in `experiment_manifest.json`. Their event-count and physical
 interpretation remain for scientific review.
+
+## Authorized 2026-10-08 column MERGE batch
+
+The existing A001–A012 independent-output evidence is immutable. The six new
+presets use the same runner and input buses but set `OUTPUT_TOPOLOGY=COLUMN_MERGE`.
+Each column is rendered from the existing parameterized topology generator with
+`QB_CB=0,0`, `SJTL_COUNT=1,1`, `POST_SJTL_CB=1,1`; no new component source or
+parameter is introduced.
+
+```text
+R1C1.SL → QB_R1C1 → MERGE_C1_L1 → sJTL_C1_L1 → CB_C1_L1 → MERGE_C1_L2
+R2C1.SL → QB_R2C1 ────────────────────────────────────────┘
+MERGE_C1_L2 → sJTL_C1_L2 → CB_C1_L2 → VOUT_C1 → R_TERM_C1=2Ω
+
+R1C2.SL → QB_R1C2 → MERGE_C2_L1 → sJTL_C2_L1 → CB_C2_L1 → MERGE_C2_L2
+R2C2.SL → QB_R2C2 ────────────────────────────────────────┘
+MERGE_C2_L2 → sJTL_C2_L2 → CB_C2_L2 → VOUT_C2 → R_TERM_C2=2Ω
+```
+
+`MERGE_Cn_Lm` are electrical nodes, not MERGE subcircuit instances. `MERGE_C1_*`
+and `MERGE_C2_*` are disjoint. Every BVM has its own SL and QB. Each column
+has exactly two sJTLs, two CBs, and one 2Ω terminal. There is no T1.
+
+| Preset | ROW_BITS | COL_BITS | Active FINAL READ cells |
+|---|---|---|---|
+| `M_T0_NO_READ_MERGED_COLUMNS` | 00 | 00 | none |
+| `M_T1_R1C1_MERGED_COLUMNS` | 10 | 10 | R1C1 |
+| `M_T2_R2C1_MERGED_COLUMNS` | 01 | 10 | R2C1 |
+| `M_T3_C1_DUAL_MERGED_COLUMNS` | 11 | 10 | R1C1, R2C1 |
+| `M_T4_ROW_DUAL_MERGED_COLUMNS` | 10 | 11 | R1C1, R1C2 |
+| `M_T5_ALL_FOUR_MERGED_COLUMNS` | 11 | 11 | all four |
+
+All six use the same WRITE0/READ0/WRITE1 preparation, 200µA WL/BL write,
+200µA WL read, 100µA cell-SE read, `SECOND_READ_ENABLE=0`, `DT=0.01p`,
+`STOP=250p`, and 2Ω per column. New run IDs are allocated serially as
+A013–A018 in table order. Full per-run views are `01_overview.html`, `02_bvm.html`,
+`03_qb.html`, `04_column1.html`, and `05_column2.html`; raw probes retain
+per-cell BVM JJ P/V, full QB JJ/passive I/V, both column chains' JJ/passive
+evidence, actual per-cell input currents, MERGE-node voltages, merge-input
+QB/CB currents, and VOUT_C1/C2. The 284-probe estimate from A011 row widths is
+about 95.2 MB per raw, below the 100 MB Git single-file ceiling; actual raw
+size is checked before submission. No event-count threshold is registered.
+
+After all six runs pass artifact QA, build the registered T0–T5 overlay with
+the classic plotter:
+
+```bash
+python3 scripts/build_merge_batch_comparison.py
+```
+
+It overlays both column outputs from all six runs on exact common stored raw
+timestamps in `[0,250)` ps, writes a derived CSV and a local HTML page, records
+the input raw hashes, and refuses to interpolate or overwrite prior comparison
+artifacts. Generated HTML remains local and is excluded from evidence ZIPs.

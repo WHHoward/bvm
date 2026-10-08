@@ -18,6 +18,7 @@ sys.path.insert(0, str(SERIES / "scripts"))
 
 import run_platform as platform  # noqa: E402
 import build_batch_comparison as batch_compare  # noqa: E402
+import build_merge_batch_comparison as merge_batch_compare  # noqa: E402
 
 OPTIONAL_E_CASE_FIELDS = {
     "SECOND_READ_ENABLE", "SECOND_ROW_BITS", "SECOND_COL_BITS",
@@ -107,6 +108,9 @@ class RowColumnPlatformTests(unittest.TestCase):
             "A007_SHARED_R10_C10",
             "A008_SHARED_R10_C10",
             "A009_SHARED_R10_C11",
+            "A010_SHARED_R11_C10",
+            "A011_SHARED_R11_C11",
+            "A012_SHARED_R11_C11",
         )
         for run_id in run_ids:
             with self.subTest(run_id=run_id):
@@ -115,6 +119,7 @@ class RowColumnPlatformTests(unittest.TestCase):
                 case = platform._with_se_defaults(case)
                 case = platform._with_second_read_defaults(case)
                 case = platform._with_write_sequence_defaults(case)
+                case = platform._with_output_topology_defaults(case)
                 stimulus = platform.parse_env(run_dir / "STIMULUS.snapshot.env",
                                               platform.STIMULUS_KEYS,
                                               required=platform.BASE_STIMULUS_KEYS)
@@ -228,6 +233,7 @@ class RowColumnPlatformTests(unittest.TestCase):
                     platform._with_se_defaults(
                         platform.parse_env(run_dir / "USER_CASE.snapshot.env", platform.CASE_KEYS)))
                 case = platform._with_write_sequence_defaults(case)
+                case = platform._with_output_topology_defaults(case)
                 stimulus = platform.parse_env(run_dir / "STIMULUS.snapshot.env",
                                               platform.STIMULUS_KEYS,
                                               required=platform.BASE_STIMULUS_KEYS)
@@ -336,6 +342,8 @@ class RowColumnPlatformTests(unittest.TestCase):
                 base_case = platform._with_second_read_defaults(
                     platform._with_se_defaults(
                         platform.parse_env(run_dir / "USER_CASE.snapshot.env", platform.CASE_KEYS)))
+                base_case = platform._with_write_sequence_defaults(base_case)
+                base_case = platform._with_output_topology_defaults(base_case)
                 base_stimulus = platform.parse_env(
                     run_dir / "STIMULUS.snapshot.env", platform.STIMULUS_KEYS,
                     required=platform.BASE_STIMULUS_KEYS)
@@ -514,6 +522,21 @@ class RowColumnPlatformTests(unittest.TestCase):
                 {"left": series["left"], "right": {Decimal("1"): ("5",)}},
                 (Decimal("0"), Decimal("3")))
 
+    def test_merge_batch_comparison_uses_exact_common_rows_without_interpolation(self):
+        series = {
+            "T0": {Decimal("0"): ("1", "2"), Decimal("1"): ("3", "4")},
+            "T5": {Decimal("0"): ("5", "6"), Decimal("1"): ("7", "8")},
+        }
+        times, selected = merge_batch_compare.align_exact_rows(
+            series, (Decimal("0"), Decimal("2")))
+        self.assertEqual(times, [Decimal("0"), Decimal("1")])
+        self.assertEqual(selected["T0"][Decimal("0")], ("1", "2"))
+        self.assertEqual(selected["T5"][Decimal("0")], ("5", "6"))
+        with self.assertRaisesRegex(ValueError, "fewer than two exact common"):
+            merge_batch_compare.align_exact_rows(
+                {"T0": series["T0"], "T5": {Decimal("2"): ("7", "8")}},
+                (Decimal("0"), Decimal("2")))
+
     def test_second_read_requires_cell_se_and_valid_nonoverlapping_window(self):
         case, stimulus, _rendered = render("E1_A006_COLUMN_SECOND_READ")
         bad_topology = dict(case, SE_TOPOLOGY="SHARED_COLUMN")
@@ -526,6 +549,183 @@ class RowColumnPlatformTests(unittest.TestCase):
         case_late = dict(case, STOP="180p")
         with self.assertRaisesRegex(platform.ConfigError, "ends after STOP"):
             platform.validate_config(case_late, too_late)
+
+    def test_column_merge_presets_match_two_level_netlist_and_full_probe_contract(self):
+        cases = (
+            ("M_T0_NO_READ_MERGED_COLUMNS", "00", "00", []),
+            ("M_T1_R1C1_MERGED_COLUMNS", "10", "10", ["R1C1"]),
+            ("M_T2_R2C1_MERGED_COLUMNS", "01", "10", ["R2C1"]),
+            ("M_T3_C1_DUAL_MERGED_COLUMNS", "11", "10", ["R1C1", "R2C1"]),
+            ("M_T4_ROW_DUAL_MERGED_COLUMNS", "10", "11", ["R1C1", "R1C2"]),
+            ("M_T5_ALL_FOUR_MERGED_COLUMNS", "11", "11", ["R1C1", "R1C2", "R2C1", "R2C2"]),
+        )
+        expected_column_lines = {
+            "XBVM_R1C1 WL_R1 BL_C1 SE_R1C1 SL_R1C1 BVM",
+            "XBQ_R1C1 SL_R1C1 MERGE_C1_L1 BQ",
+            "XSJTL_C1_L1 MERGE_C1_L1 SJTL_OUT_C1_L1 sJTL",
+            "XCB_C1_L1 SJTL_OUT_C1_L1 MERGE_C1_L2 CB",
+            "XBVM_R2C1 WL_R2 BL_C1 SE_R2C1 SL_R2C1 BVM",
+            "XBQ_R2C1 SL_R2C1 MERGE_C1_L2 BQ",
+            "XSJTL_C1_L2 MERGE_C1_L2 SJTL_OUT_C1_L2 sJTL",
+            "XCB_C1_L2 SJTL_OUT_C1_L2 VOUT_C1 CB",
+            "R_TERM_C1 VOUT_C1 0 2",
+            "XBVM_R1C2 WL_R1 BL_C2 SE_R1C2 SL_R1C2 BVM",
+            "XBQ_R1C2 SL_R1C2 MERGE_C2_L1 BQ",
+            "XSJTL_C2_L1 MERGE_C2_L1 SJTL_OUT_C2_L1 sJTL",
+            "XCB_C2_L1 SJTL_OUT_C2_L1 MERGE_C2_L2 CB",
+            "XBVM_R2C2 WL_R2 BL_C2 SE_R2C2 SL_R2C2 BVM",
+            "XBQ_R2C2 SL_R2C2 MERGE_C2_L2 BQ",
+            "XSJTL_C2_L2 MERGE_C2_L2 SJTL_OUT_C2_L2 sJTL",
+            "XCB_C2_L2 SJTL_OUT_C2_L2 VOUT_C2 CB",
+            "R_TERM_C2 VOUT_C2 0 2",
+        }
+        for preset, rows, cols, active in cases:
+            with self.subTest(preset=preset):
+                case, _stimulus, rendered = render(preset)
+                self.assertEqual(case["OUTPUT_TOPOLOGY"], "COLUMN_MERGE")
+                self.assertEqual(case["ROW_BITS"], rows)
+                self.assertEqual(case["COL_BITS"], cols)
+                self.assertEqual(case["SECOND_READ_ENABLE"], "0")
+                self.assertEqual(case["DT"], "0.01p")
+                self.assertEqual(case["STOP"], "250p")
+                self.assertEqual(rendered["static_qa"]["status"], "PASS")
+                self.assertEqual(rendered["static_qa"]["physical_solve_count"], 0)
+                self.assertEqual(rendered["topology"]["cell_selection"]["active_crosspoints"], active)
+                self.assertEqual(rendered["topology"]["output_nodes"], ["VOUT_C1", "VOUT_C2"])
+                self.assertEqual(rendered["topology"]["merge_configuration"]["reference_topology_parameters"],
+                                 {"QB_CB": [0, 0], "SJTL_COUNT": [1, 1], "POST_SJTL_CB": [1, 1]})
+                deck_instances = {line for line in rendered["deck"].splitlines()
+                                  if line.startswith(("XBVM_", "XBQ_", "XSJTL_", "XCB_", "R_TERM_C"))}
+                self.assertEqual(deck_instances, expected_column_lines)
+                self.assertNotIn("XQBCB", rendered["deck"])
+                self.assertNotIn("XT1", rendered["deck"])
+                self.assertEqual(sum(line.split()[-1] == "BVM" for line in deck_instances), 4)
+                self.assertEqual(sum(line.split()[-1] == "BQ" for line in deck_instances), 4)
+                self.assertEqual(sum(line.split()[-1] == "sJTL" for line in deck_instances), 4)
+                self.assertEqual(sum(line.split()[-1] == "CB" for line in deck_instances), 4)
+                self.assertEqual(sum(line.startswith("R_TERM_C") for line in deck_instances), 2)
+                self.assertEqual(rendered["sources"], platform.verify_sources())
+
+        _case, _stimulus, rendered = render("M_T3_C1_DUAL_MERGED_COLUMNS")
+        labels = {item["label"] for item in rendered["probes"]["signals"]}
+        required = {
+            "V(MERGE_C1_L1)", "V(MERGE_C1_L2)", "V(MERGE_C2_L1)", "V(MERGE_C2_L2)",
+            "V(VOUT_C1)", "V(VOUT_C2)", "I(R_TERM_C1)", "I(R_TERM_C2)",
+            "I(L3|XBQ_R2C1)", "I(L4|XCB_C1_L1)", "I(L3|XBQ_R2C2)", "I(L4|XCB_C2_L1)",
+            "I(R_WL|XBVM_R1C1)", "I(R_BL|XBVM_R1C1)", "I(R_SE|XBVM_R1C1)",
+            "I(L1|XSJTL_C1_L1)", "I(L2|XSJTL_C1_L1)",
+            "V(BJ1|XCB_C1_L1)", "V(BJ2|XCB_C1_L1)", "V(BJ1|XCB_C1_L2)",
+            "V(BJ2|XCB_C1_L2)", "I(L4|XCB_C1_L1)", "I(L4|XCB_C1_L2)",
+        }
+        self.assertTrue(required.issubset(labels), sorted(required-labels))
+        self.assertEqual([page["file"] for page in platform.plot_page_plan(
+            rendered["topology"], rendered["probes"])], [
+            "01_overview.html", "02_bvm.html", "03_qb.html",
+            "04_column1.html", "05_column2.html",
+        ])
+
+    def test_six_merge_batch_masks_and_reference_wiring_are_static_only(self):
+        cases = (
+            ("M_T0_NO_READ_MERGED_COLUMNS", "00", "00", []),
+            ("M_T1_R1C1_MERGED_COLUMNS", "10", "10", ["R1C1"]),
+            ("M_T2_R2C1_MERGED_COLUMNS", "01", "10", ["R2C1"]),
+            ("M_T3_C1_DUAL_MERGED_COLUMNS", "11", "10", ["R1C1", "R2C1"]),
+            ("M_T4_ROW_DUAL_MERGED_COLUMNS", "10", "11", ["R1C1", "R1C2"]),
+            ("M_T5_ALL_FOUR_MERGED_COLUMNS", "11", "11",
+             ["R1C1", "R1C2", "R2C1", "R2C2"]),
+        )
+        expected = {
+            "XBQ_R1C1 SL_R1C1 MERGE_C1_L1 BQ",
+            "XSJTL_C1_L1 MERGE_C1_L1 SJTL_OUT_C1_L1 sJTL",
+            "XCB_C1_L1 SJTL_OUT_C1_L1 MERGE_C1_L2 CB",
+            "XBQ_R2C1 SL_R2C1 MERGE_C1_L2 BQ",
+            "XSJTL_C1_L2 MERGE_C1_L2 SJTL_OUT_C1_L2 sJTL",
+            "XCB_C1_L2 SJTL_OUT_C1_L2 VOUT_C1 CB",
+            "R_TERM_C1 VOUT_C1 0 2",
+            "XBQ_R1C2 SL_R1C2 MERGE_C2_L1 BQ",
+            "XSJTL_C2_L1 MERGE_C2_L1 SJTL_OUT_C2_L1 sJTL",
+            "XCB_C2_L1 SJTL_OUT_C2_L1 MERGE_C2_L2 CB",
+            "XBQ_R2C2 SL_R2C2 MERGE_C2_L2 BQ",
+            "XSJTL_C2_L2 MERGE_C2_L2 SJTL_OUT_C2_L2 sJTL",
+            "XCB_C2_L2 SJTL_OUT_C2_L2 VOUT_C2 CB",
+            "R_TERM_C2 VOUT_C2 0 2",
+        }
+        for preset, row_bits, col_bits, active in cases:
+            case, stimulus, rendered = render(preset)
+            with self.subTest(preset=preset):
+                self.assertEqual((case["OUTPUT_TOPOLOGY"], case["ROW_BITS"], case["COL_BITS"]),
+                                 ("COLUMN_MERGE", row_bits, col_bits))
+                self.assertEqual(case["SECOND_READ_ENABLE"], "0")
+                self.assertEqual(case["STOP"], "250p")
+                self.assertEqual(case["DT"], "0.01p")
+                self.assertEqual(case["ROW_WL_WRITE_AMPLITUDE"], "200u")
+                self.assertEqual(case["COL_BL_WRITE_AMPLITUDE"], "200u")
+                self.assertEqual(case["ROW_WL_READ_AMPLITUDE"], "200u")
+                self.assertEqual(case["COL_SE_READ_AMPLITUDE"], "100u")
+                self.assertEqual(rendered["static_qa"]["status"], "PASS")
+                self.assertEqual(rendered["static_qa"]["physical_solve_count"], 0)
+                self.assertEqual(rendered["topology"]["cell_selection"]["active_crosspoints"], active)
+                self.assertEqual(rendered["topology"]["merge_configuration"]["reference_topology_parameters"],
+                                 {"QB_CB": [0, 0], "SJTL_COUNT": [1, 1], "POST_SJTL_CB": [1, 1]})
+                instance_lines = {line for line in rendered["deck"].splitlines()
+                                  if line.startswith(("XBVM_", "XBQ_", "XSJTL_", "XCB_", "R_TERM_C"))}
+                expected_with_bvm = expected | {
+                    "XBVM_R1C1 WL_R1 BL_C1 SE_R1C1 SL_R1C1 BVM",
+                    "XBVM_R2C1 WL_R2 BL_C1 SE_R2C1 SL_R2C1 BVM",
+                    "XBVM_R1C2 WL_R1 BL_C2 SE_R1C2 SL_R1C2 BVM",
+                    "XBVM_R2C2 WL_R2 BL_C2 SE_R2C2 SL_R2C2 BVM",
+                }
+                self.assertEqual(instance_lines, expected_with_bvm)
+                self.assertNotIn("XQBCB", rendered["deck"])
+                self.assertNotIn("XT1", rendered["deck"])
+                self.assertFalse(any(line.split()[-1].casefold() == "merge"
+                                     for line in rendered["deck"].splitlines()
+                                     if line.startswith("X")))
+                self.assertFalse(rendered["topology"]["cross_column_merge"])
+                self.assertEqual(rendered["topology"]["output_nodes"], ["VOUT_C1", "VOUT_C2"])
+                self.assertTrue(all("SECOND_READ" not in values
+                                    for values in rendered["driver_stages"].values()))
+                self.assertIn("I(L3|XBQ_R2C1)", {item["label"] for item in rendered["probes"]["signals"]})
+                self.assertIn("I(L4|XCB_C1_L1)", {item["label"] for item in rendered["probes"]["signals"]})
+                self.assertEqual(rendered["probes"]["signal_count"], 284)
+                labels = {item["label"] for item in rendered["probes"]["signals"]}
+                for cell in ("R1C1", "R1C2", "R2C1", "R2C2"):
+                    qb = f"XBQ_{cell}"
+                    for jj in platform.QB_JJS:
+                        for quantity in ("P", "V", "I"):
+                            self.assertIn(f"{quantity}({jj}|{qb})", labels)
+                    for element in ("LIN", "L1", "L2", "L3", "RJ1", "RJ2", "RJ3"):
+                        self.assertIn(f"I({element}|{qb})", labels)
+                        self.assertIn(f"V({element}|{qb})", labels)
+                c1_l2 = rendered["topology"]["column_chains"][0]["levels"][1]
+                self.assertEqual(c1_l2["merge_inputs"]["local_qb"], "I(L3|XBQ_R2C1)")
+                self.assertEqual(c1_l2["merge_inputs"]["upstream_cb"], "I(L4|XCB_C1_L1)")
+                self.assertEqual(len(platform.plot_page_plan(rendered["topology"], rendered["probes"])), 5)
+
+    def test_six_merge_preset_dry_runs_never_allocate_or_invoke_solver(self):
+        original_runs = platform.RUNS
+        presets = (
+            "M_T0_NO_READ_MERGED_COLUMNS", "M_T1_R1C1_MERGED_COLUMNS",
+            "M_T2_R2C1_MERGED_COLUMNS", "M_T3_C1_DUAL_MERGED_COLUMNS",
+            "M_T4_ROW_DUAL_MERGED_COLUMNS", "M_T5_ALL_FOUR_MERGED_COLUMNS",
+        )
+        try:
+            with tempfile.TemporaryDirectory(prefix="rowcol-merge-dry-run-") as temp:
+                platform.RUNS = Path(temp) / "runs"
+                for preset in presets:
+                    out = io.StringIO()
+                    with patch.object(platform.subprocess, "run",
+                                      side_effect=AssertionError("solver/process invoked")):
+                        with contextlib.redirect_stdout(out):
+                            status = platform.main(["--dry-run", "--preset", preset])
+                    self.assertEqual(status, 0)
+                    self.assertIn("DRY RUN PASS — no solver call; physical_solve_count=0", out.getvalue())
+                    self.assertIn("OUTPUT_TOPOLOGY=COLUMN_MERGE", out.getvalue())
+                    self.assertIn("2 isolated column chains", out.getvalue())
+                    self.assertIn("static QA=PASS", out.getvalue())
+                    self.assertFalse(platform.RUNS.exists())
+        finally:
+            platform.RUNS = original_runs
 
     def test_e0_e1_dry_runs_are_static_show_windows_and_do_not_allocate(self):
         original_runs = platform.RUNS

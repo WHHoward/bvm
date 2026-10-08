@@ -1,0 +1,185 @@
+{
+  "actual_crosspoints": {
+    "active_crosspoints": [],
+    "half_selected": [],
+    "unselected": [
+      "R1C1",
+      "R1C2",
+      "R2C1",
+      "R2C2"
+    ]
+  },
+  "column_bits": "00",
+  "deck_sha256": "9555e2059a075cc0546e3b8c49c1bda18425a39e42de225a373758b44f16dccc",
+  "drive_mode": "SHARED",
+  "driver_count": 8,
+  "drivers": [
+    {
+      "branch": "WL",
+      "cells": [
+        "R1C1",
+        "R1C2"
+      ],
+      "line": "ROW1",
+      "node": "WL_R1",
+      "source": "I_WL_R1"
+    },
+    {
+      "branch": "WL",
+      "cells": [
+        "R2C1",
+        "R2C2"
+      ],
+      "line": "ROW2",
+      "node": "WL_R2",
+      "source": "I_WL_R2"
+    },
+    {
+      "branch": "BL",
+      "cells": [
+        "R1C1",
+        "R2C1"
+      ],
+      "line": "COL1",
+      "node": "BL_C1",
+      "source": "I_BL_C1"
+    },
+    {
+      "branch": "BL",
+      "cells": [
+        "R1C2",
+        "R2C2"
+      ],
+      "line": "COL2",
+      "node": "BL_C2",
+      "source": "I_BL_C2"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R1C1"
+      ],
+      "line": "R1C1",
+      "node": "SE_R1C1",
+      "source": "I_SE_R1C1"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R1C2"
+      ],
+      "line": "R1C2",
+      "node": "SE_R1C2",
+      "source": "I_SE_R1C2"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R2C1"
+      ],
+      "line": "R2C1",
+      "node": "SE_R2C1",
+      "source": "I_SE_R2C1"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R2C2"
+      ],
+      "line": "R2C2",
+      "node": "SE_R2C2",
+      "source": "I_SE_R2C2"
+    }
+  ],
+  "effective_se_topology": "CELL",
+  "final_read_bl_zero": true,
+  "final_read_se_enabled_by_cell": {
+    "R1C1": false,
+    "R1C2": false,
+    "R2C1": false,
+    "R2C2": false
+  },
+  "output_topology": "COLUMN_MERGE",
+  "physical_solve_count": 1,
+  "pwl_source_count": 8,
+  "read0_enable_matches_pwl_presence": true,
+  "read0_enabled": "1",
+  "row_bits": "00",
+  "schema": "bvm-2x2-rowcol-stimulus-qa-v1",
+  "scientific_interpretation_performed": false,
+  "se_gate_mode": "CROSSPOINT",
+  "se_topology": "CELL",
+  "second_column_bits": "10",
+  "second_read_bl_zero": true,
+  "second_read_crosspoint_gate_exact": true,
+  "second_read_enabled": "0",
+  "second_read_se_enabled_by_cell": {
+    "R1C1": false,
+    "R1C2": false,
+    "R2C1": false,
+    "R2C2": false
+  },
+  "second_read_se_gate_mode": "DISABLED",
+  "second_row_bits": "01",
+  "selective_write_stage_values_exact": true,
+  "source_count_by_branch": {
+    "BL": 2,
+    "SE": 4,
+    "WL": 2
+  },
+  "stage_values": {
+    "I_BL_C1": {
+      "FINAL_READ": "0",
+      "READ0": "0",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    },
+    "I_BL_C2": {
+      "FINAL_READ": "0",
+      "READ0": "0",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    },
+    "I_SE_R1C1": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_SE_R1C2": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_SE_R2C1": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_SE_R2C2": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_WL_R1": {
+      "FINAL_READ": "0",
+      "READ0": "200u",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    },
+    "I_WL_R2": {
+      "FINAL_READ": "0",
+      "READ0": "200u",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    }
+  },
+  "status": "PASS",
+  "stimulus_include_sha256": "a3dc0a1981c1bef915181dc823809ac3c46e71188493947af88448debc59760a",
+  "write1_mode": "SIMULTANEOUS",
+  "write1_target_1": "NONE",
+  "write1_target_2": "NONE"
+}

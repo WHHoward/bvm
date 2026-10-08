@@ -1,0 +1,335 @@
+# 2×2 BVM row/column run preflight
+
+This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+
+- Parent HEAD: `511f19b637c4e7f42712b0545f41ef0cb7d3909d`
+- Run ID: `A014_SHARED_R10_C10`; exactly one solver invocation is planned.
+- Solver: `/home/howard/JoSIM/build/josim-cli`; version `JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator
+Copyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)
+v2.7.2837d13 compiled on May 30 2026 at 20:37:57`; SHA-256 `48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2`.
+- Deck SHA-256: `9555e2059a075cc0546e3b8c49c1bda18425a39e42de225a373758b44f16dccc`; stimulus.inc SHA-256: `aff6a87d3e3ee3d81ae8477f1b5f5f3f504257ad931004d462a2a57c33f02a06`.
+- Parameter/topology/probe manifest SHA-256: `6adb8817c32ecc195cd2e0adde62e1933e6f5ab4e7e37041787983ca691b4061` / `5d3fd322566413c64a4662833302ac9cc6416ab000f116eb9688f95ebbc6fced` / `c8bccb0c457a97b160762816efe677961b5083f06698e38be36f2c3eed84ec2c`.
+- Drive mode: `SHARED`; ROW_BITS=`10`; COL_BITS=`10`.
+- Output topology: `COLUMN_MERGE`.
+- SE topology: configured `CELL`, effective `CELL`; gate `CROSSPOINT`.
+- Leftmost row bit is row 1; leftmost column bit is column 1.
+- Active crosspoints: `R1C1`.
+- Half-selected cells: `R1C2, R2C1`.
+- Unselected cells: `R2C2`.
+- READ0_ENABLE=`1`; WRITE1_MODE=`SIMULTANEOUS`.
+- Row/column bits gate FINAL READ only; they do not implement mixed storage by themselves.
+- FINAL READ BL sources are zero. CELL/CROSSPOINT SE is independently enabled only where both row and column bits are active.
+- Output chain: each column has two physical MERGE nodes and two QB→sJTL→CB levels; only VOUT_C1/VOUT_C2 are terminated at 2 Ω.
+- SHARED drive uses two shared row-WL sources, two shared column-BL sources, and either two shared-column or four cell-local SE sources.
+- Shared 200 µA and independent 100 µA are candidate drive settings, not assumed equivalent.
+- SECOND_READ: enabled=False; row bits=`01`; column bits=`10`; SE gate is fixed to CELL_CROSSPOINT.
+- DT=`0.01p`, STOP=`250p`; P(...) raw unit is radians.
+- Registered half-open windows and read/recovery windows are listed in stimulus_qa.json and cell_metrics.json.
+- Branch-current analysis reports raw extrema/actual-grid charge only; no decision threshold is registered.
+- Only the registered run is authorized; no sweep/follow-up, cross-column merge, T1, or 4×4 extension.
+- Interpretation ceiling: artifact/mechanical QA and registered arithmetic only.
+
+## Canonical source hashes
+
+- MERGE1/MERGE2 are named electrical nodes only; no MERGE subcircuit or extra active element is instantiated.
+- Reference generator: test/exploration/bvm-qb-cb-array-topology-v1-20260924/scripts/topology.py; flags QB_CB=0,0; SJTL_COUNT=1,1; POST_SJTL_CB=1,1.
+- C1: R1C1.QB -> MERGE_C1_L1 -> XSJTL_C1_L1 -> XCB_C1_L1 -> MERGE_C1_L2 == MERGE_C1_L2 (also R2C1.QB output); then XSJTL_C1_L2 -> XCB_C1_L2 -> VOUT_C1 -> R_TERM_C1 (2 Ω).
+- C2: R1C2.QB -> MERGE_C2_L1 -> XSJTL_C2_L1 -> XCB_C2_L1 -> MERGE_C2_L2 == MERGE_C2_L2 (also R2C2.QB output); then XSJTL_C2_L2 -> XCB_C2_L2 -> VOUT_C2 -> R_TERM_C2 (2 Ω).
+- Full read response window: [110p, 250p) using stored-grid samples.
+- JJMIT: `circuits/models/jjmit.cir` SHA-256 `19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336`
+- BVM: `circuits/bvm/bvm_cell_0923.cir` SHA-256 `ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7`
+- QB: `circuits/qb/BQ_0928.cir` SHA-256 `82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a`
+- SJTL: `circuits/sJTL_0923.cir` SHA-256 `3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688`
+- POST_CB: `circuits/CB/CB_0928.cir` SHA-256 `70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370`
+
+## Registered probes
+
+- `I(I_WL_R1)` — A — drive:WL
+- `I(I_WL_R2)` — A — drive:WL
+- `I(I_BL_C1)` — A — drive:BL
+- `I(I_BL_C2)` — A — drive:BL
+- `I(I_SE_R1C1)` — A — drive:SE
+- `I(I_SE_R1C2)` — A — drive:SE
+- `I(I_SE_R2C1)` — A — drive:SE
+- `I(I_SE_R2C2)` — A — drive:SE
+- `I(R_WL|XBVM_R1C1)` — A — cell:R1C1:input
+- `I(R_BL|XBVM_R1C1)` — A — cell:R1C1:input
+- `I(R_SE|XBVM_R1C1)` — A — cell:R1C1:input
+- `V(SL_R1C1)` — V — cell:R1C1:bvm_output
+- `I(L_SL|XBVM_R1C1)` — A — cell:R1C1:bvm_output
+- `P(B_JM1|XBVM_R1C1)` — rad — cell:R1C1:bvm_state
+- `V(B_JM1|XBVM_R1C1)` — V — cell:R1C1:bvm_state
+- `P(B_JM2|XBVM_R1C1)` — rad — cell:R1C1:bvm_state
+- `V(B_JM2|XBVM_R1C1)` — V — cell:R1C1:bvm_state
+- `P(B_JS1|XBVM_R1C1)` — rad — cell:R1C1:bvm_state
+- `V(B_JS1|XBVM_R1C1)` — V — cell:R1C1:bvm_state
+- `P(B_JS2|XBVM_R1C1)` — rad — cell:R1C1:bvm_state
+- `V(B_JS2|XBVM_R1C1)` — V — cell:R1C1:bvm_state
+- `P(BJ1|XBQ_R1C1)` — rad — cell:R1C1:qb
+- `V(BJ1|XBQ_R1C1)` — V — cell:R1C1:qb
+- `P(BJ2|XBQ_R1C1)` — rad — cell:R1C1:qb
+- `V(BJ2|XBQ_R1C1)` — V — cell:R1C1:qb
+- `P(BJ3|XBQ_R1C1)` — rad — cell:R1C1:qb
+- `V(BJ3|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(BJ1|XBQ_R1C1)` — A — cell:R1C1:qb
+- `I(BJ2|XBQ_R1C1)` — A — cell:R1C1:qb
+- `I(BJ3|XBQ_R1C1)` — A — cell:R1C1:qb
+- `I(LIN|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(LIN|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(L1|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(L1|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(L2|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(L2|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(L3|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(L3|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(RJ1|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(RJ1|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(RJ2|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(RJ2|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(RJ3|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(RJ3|XBQ_R1C1)` — V — cell:R1C1:qb
+- `I(IB2|XBQ_R1C1)` — A — cell:R1C1:qb
+- `V(MERGE_C1_L1)` — V — cell:R1C1:qb_boundary
+- `P(BJ1|XSJTL_C1_L1)` — rad — cell:R1C1:sjtl
+- `V(BJ1|XSJTL_C1_L1)` — V — cell:R1C1:sjtl
+- `I(BJ1|XSJTL_C1_L1)` — A — cell:R1C1:sjtl
+- `I(L1|XSJTL_C1_L1)` — A — cell:R1C1:sjtl
+- `V(L1|XSJTL_C1_L1)` — V — cell:R1C1:sjtl
+- `I(L2|XSJTL_C1_L1)` — A — cell:R1C1:sjtl
+- `V(L2|XSJTL_C1_L1)` — V — cell:R1C1:sjtl
+- `I(RJ1|XSJTL_C1_L1)` — A — cell:R1C1:sjtl
+- `V(RJ1|XSJTL_C1_L1)` — V — cell:R1C1:sjtl
+- `I(IB1|XSJTL_C1_L1)` — A — cell:R1C1:sjtl
+- `V(SJTL_OUT_C1_L1)` — V — cell:R1C1:sjtl_boundary
+- `P(BJ1|XCB_C1_L1)` — rad — cell:R1C1:post_cb
+- `V(BJ1|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `P(BJ2|XCB_C1_L1)` — rad — cell:R1C1:post_cb
+- `V(BJ2|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `I(BJ1|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `I(BJ2|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `I(L1|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `V(L1|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `I(L2|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `V(L2|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `I(L3|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `V(L3|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `I(L4|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `V(L4|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `I(RJ1|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `V(RJ1|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `I(RJ2|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `V(RJ2|XCB_C1_L1)` — V — cell:R1C1:post_cb
+- `I(IB1|XCB_C1_L1)` — A — cell:R1C1:post_cb
+- `V(VOUT_C1)` — V — cell:R1C1:output
+- `I(R_TERM_C1)` — A — cell:R1C1:output
+- `I(R_WL|XBVM_R1C2)` — A — cell:R1C2:input
+- `I(R_BL|XBVM_R1C2)` — A — cell:R1C2:input
+- `I(R_SE|XBVM_R1C2)` — A — cell:R1C2:input
+- `V(SL_R1C2)` — V — cell:R1C2:bvm_output
+- `I(L_SL|XBVM_R1C2)` — A — cell:R1C2:bvm_output
+- `P(B_JM1|XBVM_R1C2)` — rad — cell:R1C2:bvm_state
+- `V(B_JM1|XBVM_R1C2)` — V — cell:R1C2:bvm_state
+- `P(B_JM2|XBVM_R1C2)` — rad — cell:R1C2:bvm_state
+- `V(B_JM2|XBVM_R1C2)` — V — cell:R1C2:bvm_state
+- `P(B_JS1|XBVM_R1C2)` — rad — cell:R1C2:bvm_state
+- `V(B_JS1|XBVM_R1C2)` — V — cell:R1C2:bvm_state
+- `P(B_JS2|XBVM_R1C2)` — rad — cell:R1C2:bvm_state
+- `V(B_JS2|XBVM_R1C2)` — V — cell:R1C2:bvm_state
+- `P(BJ1|XBQ_R1C2)` — rad — cell:R1C2:qb
+- `V(BJ1|XBQ_R1C2)` — V — cell:R1C2:qb
+- `P(BJ2|XBQ_R1C2)` — rad — cell:R1C2:qb
+- `V(BJ2|XBQ_R1C2)` — V — cell:R1C2:qb
+- `P(BJ3|XBQ_R1C2)` — rad — cell:R1C2:qb
+- `V(BJ3|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(BJ1|XBQ_R1C2)` — A — cell:R1C2:qb
+- `I(BJ2|XBQ_R1C2)` — A — cell:R1C2:qb
+- `I(BJ3|XBQ_R1C2)` — A — cell:R1C2:qb
+- `I(LIN|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(LIN|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(L1|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(L1|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(L2|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(L2|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(L3|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(L3|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(RJ1|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(RJ1|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(RJ2|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(RJ2|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(RJ3|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(RJ3|XBQ_R1C2)` — V — cell:R1C2:qb
+- `I(IB2|XBQ_R1C2)` — A — cell:R1C2:qb
+- `V(MERGE_C2_L1)` — V — cell:R1C2:qb_boundary
+- `P(BJ1|XSJTL_C2_L1)` — rad — cell:R1C2:sjtl
+- `V(BJ1|XSJTL_C2_L1)` — V — cell:R1C2:sjtl
+- `I(BJ1|XSJTL_C2_L1)` — A — cell:R1C2:sjtl
+- `I(L1|XSJTL_C2_L1)` — A — cell:R1C2:sjtl
+- `V(L1|XSJTL_C2_L1)` — V — cell:R1C2:sjtl
+- `I(L2|XSJTL_C2_L1)` — A — cell:R1C2:sjtl
+- `V(L2|XSJTL_C2_L1)` — V — cell:R1C2:sjtl
+- `I(RJ1|XSJTL_C2_L1)` — A — cell:R1C2:sjtl
+- `V(RJ1|XSJTL_C2_L1)` — V — cell:R1C2:sjtl
+- `I(IB1|XSJTL_C2_L1)` — A — cell:R1C2:sjtl
+- `V(SJTL_OUT_C2_L1)` — V — cell:R1C2:sjtl_boundary
+- `P(BJ1|XCB_C2_L1)` — rad — cell:R1C2:post_cb
+- `V(BJ1|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `P(BJ2|XCB_C2_L1)` — rad — cell:R1C2:post_cb
+- `V(BJ2|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `I(BJ1|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `I(BJ2|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `I(L1|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `V(L1|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `I(L2|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `V(L2|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `I(L3|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `V(L3|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `I(L4|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `V(L4|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `I(RJ1|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `V(RJ1|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `I(RJ2|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `V(RJ2|XCB_C2_L1)` — V — cell:R1C2:post_cb
+- `I(IB1|XCB_C2_L1)` — A — cell:R1C2:post_cb
+- `V(VOUT_C2)` — V — cell:R1C2:output
+- `I(R_TERM_C2)` — A — cell:R1C2:output
+- `I(R_WL|XBVM_R2C1)` — A — cell:R2C1:input
+- `I(R_BL|XBVM_R2C1)` — A — cell:R2C1:input
+- `I(R_SE|XBVM_R2C1)` — A — cell:R2C1:input
+- `V(SL_R2C1)` — V — cell:R2C1:bvm_output
+- `I(L_SL|XBVM_R2C1)` — A — cell:R2C1:bvm_output
+- `P(B_JM1|XBVM_R2C1)` — rad — cell:R2C1:bvm_state
+- `V(B_JM1|XBVM_R2C1)` — V — cell:R2C1:bvm_state
+- `P(B_JM2|XBVM_R2C1)` — rad — cell:R2C1:bvm_state
+- `V(B_JM2|XBVM_R2C1)` — V — cell:R2C1:bvm_state
+- `P(B_JS1|XBVM_R2C1)` — rad — cell:R2C1:bvm_state
+- `V(B_JS1|XBVM_R2C1)` — V — cell:R2C1:bvm_state
+- `P(B_JS2|XBVM_R2C1)` — rad — cell:R2C1:bvm_state
+- `V(B_JS2|XBVM_R2C1)` — V — cell:R2C1:bvm_state
+- `P(BJ1|XBQ_R2C1)` — rad — cell:R2C1:qb
+- `V(BJ1|XBQ_R2C1)` — V — cell:R2C1:qb
+- `P(BJ2|XBQ_R2C1)` — rad — cell:R2C1:qb
+- `V(BJ2|XBQ_R2C1)` — V — cell:R2C1:qb
+- `P(BJ3|XBQ_R2C1)` — rad — cell:R2C1:qb
+- `V(BJ3|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(BJ1|XBQ_R2C1)` — A — cell:R2C1:qb
+- `I(BJ2|XBQ_R2C1)` — A — cell:R2C1:qb
+- `I(BJ3|XBQ_R2C1)` — A — cell:R2C1:qb
+- `I(LIN|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(LIN|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(L1|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(L1|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(L2|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(L2|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(L3|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(L3|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(RJ1|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(RJ1|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(RJ2|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(RJ2|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(RJ3|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(RJ3|XBQ_R2C1)` — V — cell:R2C1:qb
+- `I(IB2|XBQ_R2C1)` — A — cell:R2C1:qb
+- `V(MERGE_C1_L2)` — V — cell:R2C1:qb_boundary
+- `P(BJ1|XSJTL_C1_L2)` — rad — cell:R2C1:sjtl
+- `V(BJ1|XSJTL_C1_L2)` — V — cell:R2C1:sjtl
+- `I(BJ1|XSJTL_C1_L2)` — A — cell:R2C1:sjtl
+- `I(L1|XSJTL_C1_L2)` — A — cell:R2C1:sjtl
+- `V(L1|XSJTL_C1_L2)` — V — cell:R2C1:sjtl
+- `I(L2|XSJTL_C1_L2)` — A — cell:R2C1:sjtl
+- `V(L2|XSJTL_C1_L2)` — V — cell:R2C1:sjtl
+- `I(RJ1|XSJTL_C1_L2)` — A — cell:R2C1:sjtl
+- `V(RJ1|XSJTL_C1_L2)` — V — cell:R2C1:sjtl
+- `I(IB1|XSJTL_C1_L2)` — A — cell:R2C1:sjtl
+- `V(SJTL_OUT_C1_L2)` — V — cell:R2C1:sjtl_boundary
+- `P(BJ1|XCB_C1_L2)` — rad — cell:R2C1:post_cb
+- `V(BJ1|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `P(BJ2|XCB_C1_L2)` — rad — cell:R2C1:post_cb
+- `V(BJ2|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `I(BJ1|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `I(BJ2|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `I(L1|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `V(L1|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `I(L2|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `V(L2|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `I(L3|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `V(L3|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `I(L4|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `V(L4|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `I(RJ1|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `V(RJ1|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `I(RJ2|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `V(RJ2|XCB_C1_L2)` — V — cell:R2C1:post_cb
+- `I(IB1|XCB_C1_L2)` — A — cell:R2C1:post_cb
+- `I(R_WL|XBVM_R2C2)` — A — cell:R2C2:input
+- `I(R_BL|XBVM_R2C2)` — A — cell:R2C2:input
+- `I(R_SE|XBVM_R2C2)` — A — cell:R2C2:input
+- `V(SL_R2C2)` — V — cell:R2C2:bvm_output
+- `I(L_SL|XBVM_R2C2)` — A — cell:R2C2:bvm_output
+- `P(B_JM1|XBVM_R2C2)` — rad — cell:R2C2:bvm_state
+- `V(B_JM1|XBVM_R2C2)` — V — cell:R2C2:bvm_state
+- `P(B_JM2|XBVM_R2C2)` — rad — cell:R2C2:bvm_state
+- `V(B_JM2|XBVM_R2C2)` — V — cell:R2C2:bvm_state
+- `P(B_JS1|XBVM_R2C2)` — rad — cell:R2C2:bvm_state
+- `V(B_JS1|XBVM_R2C2)` — V — cell:R2C2:bvm_state
+- `P(B_JS2|XBVM_R2C2)` — rad — cell:R2C2:bvm_state
+- `V(B_JS2|XBVM_R2C2)` — V — cell:R2C2:bvm_state
+- `P(BJ1|XBQ_R2C2)` — rad — cell:R2C2:qb
+- `V(BJ1|XBQ_R2C2)` — V — cell:R2C2:qb
+- `P(BJ2|XBQ_R2C2)` — rad — cell:R2C2:qb
+- `V(BJ2|XBQ_R2C2)` — V — cell:R2C2:qb
+- `P(BJ3|XBQ_R2C2)` — rad — cell:R2C2:qb
+- `V(BJ3|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(BJ1|XBQ_R2C2)` — A — cell:R2C2:qb
+- `I(BJ2|XBQ_R2C2)` — A — cell:R2C2:qb
+- `I(BJ3|XBQ_R2C2)` — A — cell:R2C2:qb
+- `I(LIN|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(LIN|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(L1|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(L1|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(L2|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(L2|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(L3|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(L3|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(RJ1|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(RJ1|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(RJ2|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(RJ2|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(RJ3|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(RJ3|XBQ_R2C2)` — V — cell:R2C2:qb
+- `I(IB2|XBQ_R2C2)` — A — cell:R2C2:qb
+- `V(MERGE_C2_L2)` — V — cell:R2C2:qb_boundary
+- `P(BJ1|XSJTL_C2_L2)` — rad — cell:R2C2:sjtl
+- `V(BJ1|XSJTL_C2_L2)` — V — cell:R2C2:sjtl
+- `I(BJ1|XSJTL_C2_L2)` — A — cell:R2C2:sjtl
+- `I(L1|XSJTL_C2_L2)` — A — cell:R2C2:sjtl
+- `V(L1|XSJTL_C2_L2)` — V — cell:R2C2:sjtl
+- `I(L2|XSJTL_C2_L2)` — A — cell:R2C2:sjtl
+- `V(L2|XSJTL_C2_L2)` — V — cell:R2C2:sjtl
+- `I(RJ1|XSJTL_C2_L2)` — A — cell:R2C2:sjtl
+- `V(RJ1|XSJTL_C2_L2)` — V — cell:R2C2:sjtl
+- `I(IB1|XSJTL_C2_L2)` — A — cell:R2C2:sjtl
+- `V(SJTL_OUT_C2_L2)` — V — cell:R2C2:sjtl_boundary
+- `P(BJ1|XCB_C2_L2)` — rad — cell:R2C2:post_cb
+- `V(BJ1|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `P(BJ2|XCB_C2_L2)` — rad — cell:R2C2:post_cb
+- `V(BJ2|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `I(BJ1|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `I(BJ2|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `I(L1|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `V(L1|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `I(L2|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `V(L2|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `I(L3|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `V(L3|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `I(L4|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `V(L4|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `I(RJ1|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `V(RJ1|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `I(RJ2|XCB_C2_L2)` — A — cell:R2C2:post_cb
+- `V(RJ2|XCB_C2_L2)` — V — cell:R2C2:post_cb
+- `I(IB1|XCB_C2_L2)` — A — cell:R2C2:post_cb
+
+## Required run artifacts
+
+`deck.cir`, `raw.csv`, `run.log`, `stdout.txt`, `stderr.txt`, snapshots, topology/source/probe/parameter manifests,
+static_qa.json, raw_qa.json, stimulus_qa.json, cell_metrics.json, plot_manifest.json, plot_qa.json, RESULT_BRIEF.md.

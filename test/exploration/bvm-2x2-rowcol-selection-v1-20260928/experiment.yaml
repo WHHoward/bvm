@@ -1,8 +1,9 @@
 schema: bvm-2x2-rowcol-selection-v1
 experiment_id: bvm-2x2-rowcol-selection-v1-20260928
 parent_head: a155b7f820efbad4447c8d1985a66e4192b7e614
-purpose: static platform construction and dry-run validation only
-physical_solves_authorized_in_this_task: 0
+purpose: parameterized BVM 2x2 shared-selection platform and registered bounded batches
+physical_solves_authorized_in_initial_platform_build_task: 0
+physical_solves_authorized_in_current_task_20261008: 6
 manual_run_policy: one fresh run per ./try.sh invocation; no automatic A/B/C batch
 grid:
   rows: [1, 2]
@@ -14,6 +15,9 @@ grid:
 drive_modes:
   - INDEPENDENT
   - SHARED
+output_topologies:
+  - INDEPENDENT
+  - COLUMN_MERGE
 se_topologies:
   - SHARED_COLUMN
   - CELL
@@ -58,6 +62,12 @@ registered_presets:
   - A_SAME_COLUMN_DUAL_CROSSPOINT
   - B_ALL_CELL_CROSSPOINT
   - C_MIXED_STORAGE_SEQUENTIAL_WRITE
+  - M_T0_NO_READ_MERGED_COLUMNS
+  - M_T1_R1C1_MERGED_COLUMNS
+  - M_T2_R2C1_MERGED_COLUMNS
+  - M_T3_C1_DUAL_MERGED_COLUMNS
+  - M_T4_ROW_DUAL_MERGED_COLUMNS
+  - M_T5_ALL_FOUR_MERGED_COLUMNS
 optional_second_read:
   default_enabled: false
   row_bit_order: leftmost bit is row 1
@@ -126,6 +136,57 @@ authorized_batch_20260929:
     pulse_count_or_sfq_classification: not registered; scientific review required
     interpolation_or_resampling: false
   interpretation_status: NOT_PERFORMED
+authorized_batch_20261008:
+  parent_head: 511f19b637c4e7f42712b0545f41ef0cb7d3909d
+  physical_solve_count: 6
+  execution_order: [M_T0_NO_READ_MERGED_COLUMNS, M_T1_R1C1_MERGED_COLUMNS, M_T2_R2C1_MERGED_COLUMNS, M_T3_C1_DUAL_MERGED_COLUMNS, M_T4_ROW_DUAL_MERGED_COLUMNS, M_T5_ALL_FOUR_MERGED_COLUMNS]
+  expected_run_ids:
+    - A013_SHARED_R00_C00
+    - A014_SHARED_R10_C10
+    - A015_SHARED_R01_C10
+    - A016_SHARED_R11_C10
+    - A017_SHARED_R10_C11
+    - A018_SHARED_R11_C11
+  frozen:
+    canonical_source_sha256: use source_sha256 above without changes
+    output_topology: COLUMN_MERGE
+    topology_parameters: {QB_CB: [0, 0], SJTL_COUNT: [1, 1], POST_SJTL_CB: [1, 1]}
+    per_column_levels: 2
+    per_column_output: [VOUT_C1, VOUT_C2]
+    bvm_sl_nodes: [SL_R1C1, SL_R1C2, SL_R2C1, SL_R2C2]
+    qb_instances: 4
+    shared_inputs: {WL: [WL_R1, WL_R2], BL: [BL_C1, BL_C2]}
+    independent_se_nodes: [SE_R1C1, SE_R1C2, SE_R2C1, SE_R2C2]
+    write_read_preparation: [WRITE0, READ0, WRITE1]
+    row_wl_write: 200u
+    column_bl_write: 200u
+    row_wl_read: 200u
+    cell_se_read: 100u
+    second_read_enable: 0
+    dt: 0.01p
+    stop: 250p
+    output_termination: 2 ohm per column
+    t1: none
+    cross_column_connection: none
+  masks:
+    T0: {rows: "00", columns: "00", active_cells: []}
+    T1: {rows: "10", columns: "10", active_cells: [R1C1]}
+    T2: {rows: "01", columns: "10", active_cells: [R2C1]}
+    T3: {rows: "11", columns: "10", active_cells: [R1C1, R2C1]}
+    T4: {rows: "10", columns: "11", active_cells: [R1C1, R1C2]}
+    T5: {rows: "11", columns: "11", active_cells: [R1C1, R1C2, R2C1, R2C2]}
+  registered_analysis:
+    final_read_window: [110p, 121p]
+    terminal_response_window: [110p, 250p]
+    integration: actual raw time grid, half-open windows
+    qb_merge2_inputs: [I(L3|XBQ_R2C1_or_R2C2), I(L4|XCB_column_L1)]
+    event_classifier_or_threshold: none
+    interpretation: NOT_PERFORMED
+  raw_size_preflight:
+    estimated_core_probe_count: 284
+    estimated_raw_bytes_per_run: 95187175
+    git_single_file_hard_limit_bytes: 100000000
+    actual_raw_size_must_be_checked: true
 analysis_windows:
   post_READ0: [81p, 90p]
   post_WRITE1: [101p, 110p]

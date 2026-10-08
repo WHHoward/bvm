@@ -33,6 +33,9 @@ SOLVER = REPO / "build" / "josim-cli"
 PLOTTER = REPO / "scripts" / "josim-plot2.py"
 PLOTLY_ASSET = (REPO / "test/exploration/bvm-qb-cb-array-topology-v1-20260924"
                 / "plots/assets/plotly.min.js")
+REFERENCE_TOPOLOGY = (REPO / "test/exploration/bvm-qb-cb-array-topology-v1-20260924"
+                      / "scripts/topology.py")
+REFERENCE_TOPOLOGY_SCRIPTS = REFERENCE_TOPOLOGY.parent
 
 SOURCE_PATHS = {
     "JJMIT": "circuits/models/jjmit.cir",
@@ -55,7 +58,7 @@ CASE_KEYS = {
     "SE_TOPOLOGY", "SE_GATE_MODE", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
     "DT", "STOP", "PROBE_PROFILE", "SECOND_READ_ENABLE", "SECOND_ROW_BITS",
     "SECOND_COL_BITS", "READ0_ENABLE", "WRITE1_MODE", "WRITE1_TARGET_1",
-    "WRITE1_TARGET_2",
+    "WRITE1_TARGET_2", "OUTPUT_TOPOLOGY",
 }
 OPTIONAL_SE_KEYS = {"SE_TOPOLOGY", "SE_GATE_MODE"}
 LEGACY_SE_DEFAULTS = {"SE_TOPOLOGY": "SHARED_COLUMN", "SE_GATE_MODE": "COLUMN"}
@@ -63,6 +66,7 @@ OPTIONAL_SECOND_CASE_KEYS = {"SECOND_READ_ENABLE", "SECOND_ROW_BITS", "SECOND_CO
 OPTIONAL_WRITE_SEQUENCE_KEYS = {
     "READ0_ENABLE", "WRITE1_MODE", "WRITE1_TARGET_1", "WRITE1_TARGET_2",
 }
+OPTIONAL_TOPOLOGY_KEYS = {"OUTPUT_TOPOLOGY"}
 SECOND_READ_DEFAULTS = {
     "SECOND_READ_ENABLE": "0", "SECOND_ROW_BITS": "01", "SECOND_COL_BITS": "10",
 }
@@ -70,6 +74,7 @@ WRITE_SEQUENCE_DEFAULTS = {
     "READ0_ENABLE": "1", "WRITE1_MODE": "SIMULTANEOUS",
     "WRITE1_TARGET_1": "NONE", "WRITE1_TARGET_2": "NONE",
 }
+OUTPUT_TOPOLOGY_DEFAULTS = {"OUTPUT_TOPOLOGY": "INDEPENDENT"}
 BASE_STIMULUS_KEYS = {
     f"{stage}_{field}"
     for stage in ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
@@ -87,6 +92,9 @@ PRESET_NAMES = {
     "E0_A005_CROSSPOINT_SECOND_READ", "E1_A006_COLUMN_SECOND_READ",
     "A_SAME_COLUMN_DUAL_CROSSPOINT", "B_ALL_CELL_CROSSPOINT",
     "C_MIXED_STORAGE_SEQUENTIAL_WRITE",
+    "M_T0_NO_READ_MERGED_COLUMNS", "M_T1_R1C1_MERGED_COLUMNS",
+    "M_T2_R2C1_MERGED_COLUMNS", "M_T3_C1_DUAL_MERGED_COLUMNS",
+    "M_T4_ROW_DUAL_MERGED_COLUMNS", "M_T5_ALL_FOUR_MERGED_COLUMNS",
 }
 ROWS = (1, 2)
 COLS = (1, 2)
@@ -172,11 +180,12 @@ def fmt_time(seconds: Decimal) -> str:
 
 def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, str]]:
     optional_case_keys = (OPTIONAL_SE_KEYS | OPTIONAL_SECOND_CASE_KEYS |
-                          OPTIONAL_WRITE_SEQUENCE_KEYS)
+                          OPTIONAL_WRITE_SEQUENCE_KEYS | OPTIONAL_TOPOLOGY_KEYS)
     case = parse_env(USER_CASE, CASE_KEYS, required=CASE_KEYS - optional_case_keys)
     case = _with_se_defaults(case)
     case = _with_second_read_defaults(case)
     case = _with_write_sequence_defaults(case)
+    case = _with_output_topology_defaults(case)
     stimulus_overrides: dict[str, str] = {}
     if preset is not None:
         if preset not in PRESET_NAMES:
@@ -198,6 +207,9 @@ def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, st
             if key not in overrides:
                 case[key] = value
         for key, value in WRITE_SEQUENCE_DEFAULTS.items():
+            if key not in overrides:
+                case[key] = value
+        for key, value in OUTPUT_TOPOLOGY_DEFAULTS.items():
             if key not in overrides:
                 case[key] = value
     stimulus = parse_env(STIMULUS, STIMULUS_KEYS, required=BASE_STIMULUS_KEYS)
@@ -228,6 +240,13 @@ def _with_write_sequence_defaults(case: dict[str, str]) -> dict[str, str]:
     return effective
 
 
+def _with_output_topology_defaults(case: dict[str, str]) -> dict[str, str]:
+    effective = dict(case)
+    for key, value in OUTPUT_TOPOLOGY_DEFAULTS.items():
+        effective.setdefault(key, value)
+    return effective
+
+
 def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", case["NAME"]):
         raise ConfigError("NAME must contain only letters, digits, underscore, or hyphen")
@@ -245,6 +264,8 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
         raise ConfigError("READ0_ENABLE must be 0 or 1")
     if case["WRITE1_MODE"] not in {"SIMULTANEOUS", "SEQUENTIAL_CROSSPOINT"}:
         raise ConfigError("WRITE1_MODE must be SIMULTANEOUS or SEQUENTIAL_CROSSPOINT")
+    if case["OUTPUT_TOPOLOGY"] not in {"INDEPENDENT", "COLUMN_MERGE"}:
+        raise ConfigError("OUTPUT_TOPOLOGY must be INDEPENDENT or COLUMN_MERGE")
     for key in ("SECOND_ROW_BITS", "SECOND_COL_BITS"):
         if not re.fullmatch(r"[01]{2}", case[key]):
             raise ConfigError(f"{key} must be exactly two bits; leftmost bit selects index 1")
@@ -264,6 +285,40 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
         raise ConfigError("this platform freezes exactly one sJTL and one post-CB per cell")
     if quantity(case["TERM_R"], "TERM_R") != Decimal("2"):
         raise ConfigError("TERM_R is frozen at 2 ohm for a matched output load")
+
+    if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+        if (case["DRIVE_MODE"] != "SHARED" or case["SE_TOPOLOGY"] != "CELL" or
+                case["SE_GATE_MODE"] != "CROSSPOINT"):
+            raise ConfigError("COLUMN_MERGE requires SHARED + CELL + CROSSPOINT inputs")
+        if case["WRITE1_MODE"] != "SIMULTANEOUS" or case["READ0_ENABLE"] != "1":
+            raise ConfigError("COLUMN_MERGE batch freezes the standard WRITE0/READ0/WRITE1 preparation")
+        if case["SECOND_READ_ENABLE"] != "0":
+            raise ConfigError("COLUMN_MERGE batch requires SECOND_READ_ENABLE=0")
+        if case["PROBE_PROFILE"] != "core":
+            raise ConfigError("COLUMN_MERGE batch freezes PROBE_PROFILE=core")
+        frozen_amplitudes = {
+            "ROW_WL_READ_AMPLITUDE": Decimal("200e-6"),
+            "COL_SE_READ_AMPLITUDE": Decimal("100e-6"),
+            "ROW_WL_WRITE_AMPLITUDE": Decimal("200e-6"),
+            "COL_BL_WRITE_AMPLITUDE": Decimal("200e-6"),
+        }
+        for key, expected in frozen_amplitudes.items():
+            if quantity(case[key], key) != expected:
+                raise ConfigError(f"COLUMN_MERGE freezes {key} at {expected} A")
+        if quantity(case["DT"], "DT") != Decimal("0.01e-12"):
+            raise ConfigError("COLUMN_MERGE batch freezes DT=0.01p")
+        frozen_stimulus = {
+            "WRITE0": (50, 1, 9, 1), "READ0": (70, 1, 9, 1),
+            "WRITE1": (90, 1, 9, 1), "FINAL_READ": (110, 1, 9, 1),
+        }
+        for stage, expected_ps in frozen_stimulus.items():
+            actual = tuple(quantity(stimulus[f"{stage}_{field}"], f"{stage}_{field}")
+                           for field in ("START", "RISE", "HOLD", "FALL"))
+            expected = tuple(Decimal(value) * Decimal("1e-12") for value in expected_ps)
+            if actual != expected:
+                raise ConfigError(f"COLUMN_MERGE batch freezes {stage} timing at {expected_ps} ps tuple")
+        if quantity(case["STOP"], "STOP") != Decimal("250e-12"):
+            raise ConfigError("COLUMN_MERGE batch freezes STOP=250p for matched output/recovery coverage")
 
     if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
         if (case["DRIVE_MODE"] != "SHARED" or case["SE_TOPOLOGY"] != "CELL" or
@@ -358,6 +413,150 @@ def source_elements(role: str) -> list[str]:
             if element not in elements:
                 elements.append(element)
     return elements
+
+
+_REFERENCE_TOPOLOGY_MODULE: Any = None
+
+
+def _reference_topology_module() -> Any:
+    global _REFERENCE_TOPOLOGY_MODULE
+    if _REFERENCE_TOPOLOGY_MODULE is not None:
+        return _REFERENCE_TOPOLOGY_MODULE
+    if not REFERENCE_TOPOLOGY.is_file():
+        raise ConfigError(f"parameterized reference topology is missing: {REFERENCE_TOPOLOGY}")
+    spec = importlib.util.spec_from_file_location("bvm_qb_cb_reference_topology", REFERENCE_TOPOLOGY)
+    if spec is None or spec.loader is None:
+        raise ConfigError(f"cannot load reference topology generator: {REFERENCE_TOPOLOGY}")
+    module = importlib.util.module_from_spec(spec)
+    prior_path = list(sys.path)
+    prior_config = sys.modules.pop("config", None)
+    sys.path.insert(0, str(REFERENCE_TOPOLOGY_SCRIPTS))
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+    except Exception as exc:
+        sys.modules.pop(spec.name, None)
+        raise ConfigError(f"reference topology import failed: {type(exc).__name__}: {exc}") from exc
+    finally:
+        sys.path[:] = prior_path
+        if prior_config is not None:
+            sys.modules["config"] = prior_config
+        else:
+            sys.modules.pop("config", None)
+    _REFERENCE_TOPOLOGY_MODULE = module
+    return module
+
+
+def _rename_reference_signal(signal: str | None, names: dict[str, str]) -> str | None:
+    if signal is None:
+        return None
+    match = re.fullmatch(r"I\(([^|]+)\|([^)]+)\)", signal, re.IGNORECASE)
+    if match is None:
+        raise ConfigError(f"unsupported reference branch signal: {signal}")
+    element, instance = match.groups()
+    mapped = names.get(instance)
+    if mapped is None:
+        raise ConfigError(f"reference branch signal names unknown instance {instance}")
+    return f"I({element.upper()}|{mapped})"
+
+
+def _render_column_merge_topology(case: dict[str, str], sources: dict[str, dict[str, str]]) -> dict[str, Any]:
+    """Reuse the source-verified array topology generator for one 2x1 column."""
+    reference = _reference_topology_module()
+    reference_sources = {
+        "BVM": REPO / SOURCE_PATHS["BVM"],
+        "QB": REPO / SOURCE_PATHS["QB"],
+        "SJTL": REPO / SOURCE_PATHS["SJTL"],
+        "CB": REPO / SOURCE_PATHS["POST_CB"],
+    }
+    params = {
+        "ARRAY_SIZE": 2, "MASK": case["ROW_BITS"],
+        "QB_CB": [0, 0], "SJTL_COUNT": [1, 1], "POST_SJTL_CB": [1, 1],
+        "TERM_R": case["TERM_R"], "DT": case["DT"], "STOP": case["STOP"],
+        "OUTPUT_MODE": "TERMINAL", "PROBE_PROFILE": case["PROBE_PROFILE"],
+    }
+    column_records: list[dict[str, Any]] = []
+    instance_lines: list[str] = []
+    for col in COLS:
+        names = {
+            "XBVM1": f"XBVM_R1C{col}", "XBVM2": f"XBVM_R2C{col}",
+            "XBQ1": f"XBQ_R1C{col}", "XBQ2": f"XBQ_R2C{col}",
+            "XSJTL1_01": f"XSJTL_C{col}_L1", "XSJTL2_01": f"XSJTL_C{col}_L2",
+            "XPOSTCB1": f"XCB_C{col}_L1", "XPOSTCB2": f"XCB_C{col}_L2",
+            "WL1": "WL_R1", "WL2": "WL_R2",
+            "BL1": f"BL_C{col}", "BL2": f"BL_C{col}",
+            "SE1": f"SE_R1C{col}", "SE2": f"SE_R2C{col}",
+            "BVM1_SL": f"SL_R1C{col}", "BVM2_SL": f"SL_R2C{col}",
+            "MERGE1": f"MERGE_C{col}_L1", "MERGE2": f"MERGE_C{col}_L2",
+            "L1_01": f"SJTL_OUT_C{col}_L1", "L2_01": f"SJTL_OUT_C{col}_L2",
+            "FINAL_OUT": f"VOUT_C{col}",
+        }
+        try:
+            ref_lines, ref_manifest = reference.render_topology(params, reference_sources)
+        except Exception as exc:
+            raise ConfigError(f"reference renderer rejected column {col}: {type(exc).__name__}: {exc}") from exc
+        mapped_lines = []
+        for line in ref_lines:
+            tokens = line.split()
+            mapped_lines.append(" ".join(names.get(token, token) for token in tokens))
+        # The reference renderer emits two levels of QB -> MERGE -> sJTL -> CB.
+        # Output termination is added once per physical column, not once per BVM.
+        mapped_lines.append(f"R_TERM_C{col} VOUT_C{col} 0 {case['TERM_R']}")
+        instance_lines.extend(mapped_lines)
+
+        levels = []
+        for level in ref_manifest["levels"]:
+            number = int(level["level"])
+            row = number
+            upstream = level["upstream_output"]
+            carry = level["carry_output"]
+            levels.append({
+                "level": number, "cell": cell_id(row, col),
+                "logical_merge_node": f"MERGE{number}",
+                "merge_node": names[level["merge_node"]],
+                "qb_instance": names[level["qb"]],
+                "qb_output_signal": _rename_reference_signal(level["local_output"]["signal"], names),
+                "merge_inputs": {
+                    "local_qb": _rename_reference_signal(level["merge_inputs"]["local_signal"], names),
+                    "local_status": "AVAILABLE",
+                    "upstream_cb": _rename_reference_signal(upstream.get("signal"), names),
+                    "upstream_status": upstream.get("status"),
+                    "upstream_reason": upstream.get("reason"),
+                },
+                "sjtl_instances": [names[item] for item in level["sjtl_instances"]],
+                "sjtl_input_node": names[f"MERGE{number}"],
+                "sjtl_output_node": names[f"L{number}_01"],
+                "post_sjtl_cb_instance": names[level["post_sjtl_cb"]],
+                "carry_node": names[level["carry_node"]],
+                "carry_output_signal": _rename_reference_signal(carry.get("signal"), names),
+            })
+        column_records.append({
+            "column": col, "cell_order": [cell_id(1, col), cell_id(2, col)],
+            "output_node": "VOUT_C" + str(col), "termination_instance": f"R_TERM_C{col}",
+            "termination_ohm": case["TERM_R"],
+            "reference_topology_parameters": ref_manifest["topology"],
+            "reference_topology_sha256": sha256(REFERENCE_TOPOLOGY),
+            "reference_generated_instances": [
+                {"instance": names[item["instance"]],
+                 "subcircuit": item["subcircuit"],
+                 "pins": [names.get(pin, pin) for pin in item["pins"]]}
+                for item in ref_manifest["instances"]
+            ],
+            "levels": levels,
+            "carry_aliases": {"CARRY1": names["MERGE2"], "CARRY2": names["FINAL_OUT"]},
+            "actual_instance_lines": mapped_lines,
+        })
+    if len(instance_lines) != 18:
+        raise ConfigError(f"COLUMN_MERGE needs 16 subcircuit lines plus two terminations, got {len(instance_lines)}")
+    if any("XQBCB" in line for line in instance_lines):
+        raise ConfigError("QB_CB=0,0 forbids a QB-side CB instance")
+    return {"instance_lines": instance_lines, "column_chains": column_records,
+            "reference_topology_path": REFERENCE_TOPOLOGY.relative_to(REPO).as_posix(),
+            "reference_topology_sha256": sha256(REFERENCE_TOPOLOGY),
+            "reference_topology_parameters": {
+                "QB_CB": [0, 0], "SJTL_COUNT": [1, 1], "POST_SJTL_CB": [1, 1]},
+            "column_outputs": ["VOUT_C1", "VOUT_C2"],
+            "cross_column_merge": False, "t1_instance_count": 0}
 
 
 def cell_id(row: int, col: int) -> str:
@@ -565,6 +764,8 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
     sources = verify_sources()
     for role in ("BVM", "QB", "SJTL", "POST_CB"):
         parse_subckt(role)
+    column_merge = case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE"
+    merge_design = _render_column_merge_topology(case, sources) if column_merge else None
     drivers = _driver_layout(case)
     driver_points: dict[str, list[tuple[Decimal, str]]] = {}
     driver_stages: dict[str, dict[str, str]] = {}
@@ -589,20 +790,29 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
             input_nodes = {branch: driver_by_cell_branch[(name, branch)]["node"]
                            for branch in ("WL", "BL", "SE")}
             sl_node = f"SL_{name}"
-            qb_node = f"QBOUT_{name}"
-            sjtl_node = f"SJTL_OUT_{name}"
-            vout = f"VOUT_{name}"
-            instances = {"BVM": f"XBVM_{name}", "QB": f"XBQ_{name}",
-                         "SJTL": f"XSJTL_{name}", "POST_CB": f"XCB_{name}",
-                         "TERMINATION": f"R_TERM_{name}"}
-            instance_lines.extend((
-                f"{instances['BVM']} {input_nodes['WL']} {input_nodes['BL']} "
-                f"{input_nodes['SE']} {sl_node} BVM",
-                f"{instances['QB']} {sl_node} {qb_node} BQ",
-                f"{instances['SJTL']} {qb_node} {sjtl_node} sJTL",
-                f"{instances['POST_CB']} {sjtl_node} {vout} CB",
-                f"{instances['TERMINATION']} {vout} 0 {case['TERM_R']}",
-            ))
+            if column_merge:
+                qb_node = f"MERGE_C{col}_L{row}"
+                sjtl_node = f"SJTL_OUT_C{col}_L{row}"
+                vout = f"VOUT_C{col}"
+                instances = {"BVM": f"XBVM_{name}", "QB": f"XBQ_{name}",
+                             "SJTL": f"XSJTL_C{col}_L{row}",
+                             "POST_CB": f"XCB_C{col}_L{row}",
+                             "TERMINATION": f"R_TERM_C{col}"}
+            else:
+                qb_node = f"QBOUT_{name}"
+                sjtl_node = f"SJTL_OUT_{name}"
+                vout = f"VOUT_{name}"
+                instances = {"BVM": f"XBVM_{name}", "QB": f"XBQ_{name}",
+                             "SJTL": f"XSJTL_{name}", "POST_CB": f"XCB_{name}",
+                             "TERMINATION": f"R_TERM_{name}"}
+                instance_lines.extend((
+                    f"{instances['BVM']} {input_nodes['WL']} {input_nodes['BL']} "
+                    f"{input_nodes['SE']} {sl_node} BVM",
+                    f"{instances['QB']} {sl_node} {qb_node} BQ",
+                    f"{instances['SJTL']} {qb_node} {sjtl_node} sJTL",
+                    f"{instances['POST_CB']} {sjtl_node} {vout} CB",
+                    f"{instances['TERMINATION']} {vout} 0 {case['TERM_R']}",
+                ))
             cell_records.append({
                 "cell": name, "row": row, "column": col,
                 "row_bit": case["ROW_BITS"][row - 1],
@@ -618,16 +828,26 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
                 "sl_node": sl_node, "qb_output_node": qb_node,
                 "sjtl_output_node": sjtl_node, "output_node": vout,
                 "instances": instances,
-                "load_chain": [instances["BVM"], instances["QB"], instances["SJTL"],
-                               instances["POST_CB"], instances["TERMINATION"]],
+                "load_chain": (["column-chain", f"C{col}", "level", row]
+                               if column_merge else
+                               [instances["BVM"], instances["QB"], instances["SJTL"],
+                                instances["POST_CB"], instances["TERMINATION"]]),
                 "source_for_each_input": {
                     branch: driver_by_cell_branch[(name, branch)]["source"]
                     for branch in ("WL", "BL", "SE")
                 },
             })
 
+    if column_merge:
+        assert merge_design is not None
+        instance_lines.extend(merge_design["instance_lines"])
+
     outputs = [record["output_node"] for record in cell_records]
-    if len(outputs) != len(set(outputs)):
+    output_nodes = sorted(set(outputs)) if column_merge else outputs
+    if column_merge:
+        if output_nodes != ["VOUT_C1", "VOUT_C2"]:
+            raise ConfigError("COLUMN_MERGE must produce exactly two independent column outputs")
+    elif len(outputs) != len(set(outputs)):
         raise ConfigError("cell output nodes are not independent")
     if case["DRIVE_MODE"] == "SHARED":
         se_count = 2 if _effective_se_topology(case) == "SHARED_COLUMN" else 4
@@ -648,15 +868,25 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
     for role in ("JJMIT", "BVM", "QB", "SJTL", "POST_CB"):
         source_path = REPO / SOURCE_PATHS[role]
         includes.append(f".include {Path(os.path.relpath(source_path, run_dir)).as_posix()}")
+    if column_merge:
+        topology_comments = [
+            "* 2x2 BVM row/column selection platform; two isolated column merge chains; no T1.",
+            "* MERGE_Cn_Lm names are electrical shared nodes, not MERGE subcircuit instances.",
+            "* Per column: QB1->MERGE1->sJTL1->CB1->MERGE2; QB2 also feeds MERGE2->sJTL2->CB2->VOUT.",
+        ]
+        load_comment = "* One 2-ohm termination per independent column VOUT."
+    else:
+        topology_comments = ["* 2x2 BVM row/column selection platform; no output merging or T1."]
+        load_comment = "* BVM.SL -> BQ -> one sJTL -> one post-CB -> independent VOUT -> R_TERM=2 ohm."
     deck_lines = [
-        "* 2x2 BVM row/column selection platform; no output merging or T1.",
+        *topology_comments,
         "* Canonical component sources are direct includes and remain unchanged.",
         *includes,
         "",
         "* One PWL current driver for each independent input line.",
         ".include stimulus.inc",
         "",
-        "* BVM.SL -> BQ -> one sJTL -> one post-CB -> independent VOUT -> R_TERM=2 ohm.",
+        load_comment,
         "* FINAL READ has zero BL drive.",
         *instance_lines,
     ]
@@ -691,6 +921,7 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
     topology = {
         "schema": "bvm-2x2-rowcol-topology-v1",
         "drive_mode": case["DRIVE_MODE"],
+        "output_topology": case["OUTPUT_TOPOLOGY"],
         "se_configuration": {
             "configured_topology": case["SE_TOPOLOGY"],
             "effective_topology": _effective_se_topology(case),
@@ -712,6 +943,8 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
             "read0_enabled": case["READ0_ENABLE"] == "1",
             "events": selective_write_events,
         },
+        "merge_configuration": (merge_design if column_merge else None),
+        "column_chains": (merge_design["column_chains"] if column_merge and merge_design else []),
         "second_read": {
             "enabled": _second_read_enabled(case),
             "row_bits": case["SECOND_ROW_BITS"],
@@ -728,12 +961,15 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
         "driver_count_by_branch": {branch: sum(item["branch"] == branch for item in drivers)
                                    for branch in ("WL", "BL", "SE")},
         "cell_instances": cell_records,
-        "output_nodes": outputs,
-        "four_outputs_independent": True,
-        "output_merge": False,
+        "output_nodes": output_nodes,
+        "four_outputs_independent": not column_merge,
+        "column_outputs_independent": column_merge,
+        "output_merge": column_merge,
+        "cross_column_merge": False,
         "t1_instance_count": 0,
         "uniform_load": {"sJTL_per_cell": 1, "post_cb_per_cell": 1,
-                         "termination_ohm": case["TERM_R"]},
+                         "termination_ohm": case["TERM_R"],
+                         "termination_count": 2 if column_merge else 4},
         "source_sha256": {role: item["sha256"] for role, item in sources.items()},
     }
     probes = make_probe_manifest(case, topology)
@@ -765,8 +1001,9 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
     for driver in topology["input_lines"]:
         add(f"I({driver['source']})", f"drive:{driver['branch']}", "A",
             element=driver["source"], node=driver["node"], cells=driver["cells"])
-        add(f"V({driver['node']})", f"drive:{driver['branch']}", "V",
-            node=driver["node"], cells=driver["cells"])
+        if case["OUTPUT_TOPOLOGY"] != "COLUMN_MERGE":
+            add(f"V({driver['node']})", f"drive:{driver['branch']}", "V",
+                node=driver["node"], cells=driver["cells"])
 
     for cell in topology["cell_instances"]:
         name, inst = cell["cell"], cell["instances"]
@@ -784,26 +1021,73 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
             for quantity_name, unit in (("P", "rad"), ("V", "V")):
                 add(f"{quantity_name}({jj}|{inst['QB']})", f"cell:{name}:qb", unit,
                     instance=inst["QB"], element=jj)
+        if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+            for jj in QB_JJS:
+                add(f"I({jj}|{inst['QB']})", f"cell:{name}:qb", "A",
+                    instance=inst["QB"], element=jj)
+            for element in ("LIN", "L1", "L2", "L3"):
+                for quantity_name, unit in (("I", "A"), ("V", "V")):
+                    add(f"{quantity_name}({element}|{inst['QB']})", f"cell:{name}:qb", unit,
+                        instance=inst["QB"], element=element)
+            for element in ("RJ1", "RJ2", "RJ3"):
+                for quantity_name, unit in (("I", "A"), ("V", "V")):
+                    add(f"{quantity_name}({element}|{inst['QB']})", f"cell:{name}:qb", unit,
+                        instance=inst["QB"], element=element)
         add(f"I(LIN|{inst['QB']})", f"cell:{name}:qb", "A",
             instance=inst["QB"], element="Lin")
         add(f"I(IB2|{inst['QB']})", f"cell:{name}:qb", "A",
             instance=inst["QB"], element="IB2")
+        if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+            add(f"I(L3|{inst['QB']})", f"cell:{name}:qb_merge_input", "A",
+                instance=inst["QB"], element="L3")
         add(f"V({cell['qb_output_node']})", f"cell:{name}:qb_boundary", "V",
             node=cell["qb_output_node"])
         for jj in SJTL_JJS:
             for quantity_name, unit in (("P", "rad"), ("V", "V")):
                 add(f"{quantity_name}({jj}|{inst['SJTL']})", f"cell:{name}:sjtl", unit,
                     instance=inst["SJTL"], element=jj)
+        if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+            for jj in SJTL_JJS:
+                add(f"I({jj}|{inst['SJTL']})", f"cell:{name}:sjtl", "A",
+                    instance=inst["SJTL"], element=jj)
+            for element in ("L1", "L2"):
+                for quantity_name, unit in (("I", "A"), ("V", "V")):
+                    add(f"{quantity_name}({element}|{inst['SJTL']})", f"cell:{name}:sjtl", unit,
+                        instance=inst["SJTL"], element=element)
+            for element in ("RJ1",):
+                for quantity_name, unit in (("I", "A"), ("V", "V")):
+                    add(f"{quantity_name}({element}|{inst['SJTL']})", f"cell:{name}:sjtl", unit,
+                        instance=inst["SJTL"], element=element)
         add(f"I(IB1|{inst['SJTL']})", f"cell:{name}:sjtl", "A",
             instance=inst["SJTL"], element="IB1")
+        if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+            for element in ("L1", "L2"):
+                add(f"I({element}|{inst['SJTL']})", f"cell:{name}:sjtl", "A",
+                    instance=inst["SJTL"], element=element)
         add(f"V({cell['sjtl_output_node']})", f"cell:{name}:sjtl_boundary", "V",
             node=cell["sjtl_output_node"])
         for jj in CB_JJS:
             for quantity_name, unit in (("P", "rad"), ("V", "V")):
                 add(f"{quantity_name}({jj}|{inst['POST_CB']})", f"cell:{name}:post_cb", unit,
                     instance=inst["POST_CB"], element=jj)
+        if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+            for jj in CB_JJS:
+                add(f"I({jj}|{inst['POST_CB']})", f"cell:{name}:post_cb", "A",
+                    instance=inst["POST_CB"], element=jj)
+            for element in ("L1", "L2", "L3", "L4"):
+                for quantity_name, unit in (("I", "A"), ("V", "V")):
+                    add(f"{quantity_name}({element}|{inst['POST_CB']})", f"cell:{name}:post_cb", unit,
+                        instance=inst["POST_CB"], element=element)
+            for element in ("RJ1", "RJ2"):
+                for quantity_name, unit in (("I", "A"), ("V", "V")):
+                    add(f"{quantity_name}({element}|{inst['POST_CB']})", f"cell:{name}:post_cb", unit,
+                        instance=inst["POST_CB"], element=element)
         add(f"I(IB1|{inst['POST_CB']})", f"cell:{name}:post_cb", "A",
             instance=inst["POST_CB"], element="IB1")
+        if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+            for element in ("L1", "L4"):
+                add(f"I({element}|{inst['POST_CB']})", f"cell:{name}:post_cb", "A",
+                    instance=inst["POST_CB"], element=element)
         add(f"V({cell['output_node']})", f"cell:{name}:output", "V", node=cell["output_node"])
         add(f"I({inst['TERMINATION']})", f"cell:{name}:output", "A",
             element=inst["TERMINATION"])
@@ -833,6 +1117,7 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
+        "output_topology": case["OUTPUT_TOPOLOGY"],
         "read0_enabled": case["READ0_ENABLE"],
         "write1_mode": case["WRITE1_MODE"],
         "write1_target_1": case["WRITE1_TARGET_1"],
@@ -856,22 +1141,34 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
 def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: list[str],
                     drive_lines: list[str], probes: dict[str, Any],
                     driver_stages: dict[str, dict[str, str]]) -> dict[str, Any]:
+    column_merge = case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE"
     cell_records = topology["cell_instances"]
-    for role, prefix, count in (("BVM", "XBVM_", 4), ("QB", "XBQ_", 4),
-                                ("SJTL", "XSJTL_", 4), ("POST_CB", "XCB_", 4),
-                                ("TERMINATION", "R_TERM_", 4)):
+    expected_instances = (("BVM", "XBVM_", 4), ("QB", "XBQ_", 4),
+                          ("SJTL", "XSJTL_", 4), ("POST_CB", "XCB_", 4),
+                          ("TERMINATION", "R_TERM_", 2 if column_merge else 4))
+    for role, prefix, count in expected_instances:
         found = [cell["instances"][role] for cell in cell_records
                  if cell["instances"][role].startswith(prefix)]
-        if len(found) != count or len(found) != len(set(found)):
+        unique_required = count if not column_merge or role != "TERMINATION" else 2
+        if len(set(found)) != unique_required or (not column_merge and len(found) != count):
             raise ConfigError(f"expected four unique {role} instances, found {found}")
     deck = "\n".join(deck_lines)
     instance_lines = [line for line in deck_lines if line.startswith(("XBVM_", "XBQ_", "XSJTL_", "XCB_"))]
     if len(instance_lines) != 16:
         raise ConfigError(f"expected 16 subcircuit instances, found {len(instance_lines)}")
-    if any("MERGE" in line.upper() or "XT1" in line.upper() for line in instance_lines):
-        raise ConfigError("output merge or T1 instance is prohibited")
+    if any(line.split()[-1].casefold() == "merge" or "XT1" in line.upper()
+           for line in instance_lines):
+        raise ConfigError("MERGE subcircuit and T1 instances are prohibited; MERGE labels are electrical nodes")
     outputs = [cell["output_node"] for cell in cell_records]
-    if len(outputs) != 4 or len(set(outputs)) != 4:
+    if column_merge:
+        if sorted(set(outputs)) != ["VOUT_C1", "VOUT_C2"] or len(topology["output_nodes"]) != 2:
+            raise ConfigError("COLUMN_MERGE requires exactly two independent column terminal nodes")
+        terminations = [line for line in deck_lines if line.startswith("R_TERM_C")]
+        if sorted(terminations) != [
+                f"R_TERM_C1 VOUT_C1 0 {case['TERM_R']}",
+                f"R_TERM_C2 VOUT_C2 0 {case['TERM_R']}"]:
+            raise ConfigError("COLUMN_MERGE requires exactly one 2-ohm termination per column output")
+    elif len(outputs) != 4 or len(set(outputs)) != 4:
         raise ConfigError("all four cell outputs must be independent")
     drivers = topology["input_lines"]
     expected_by_branch = ({"WL": 2, "BL": 2,
@@ -998,26 +1295,81 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
     probe_labels = [item["label"] for item in probes["signals"]]
     if len(probe_labels) != len(set(probe_labels)) or probes["signal_count"] != len(probe_labels):
         raise ConfigError("probe manifest contains duplicates or inconsistent signal_count")
-    required_substrings = (
+    required_substrings = ((
+        "two isolated column merge chains",
+        "MERGE_Cn_Lm names are electrical shared nodes, not MERGE subcircuit instances",
+        "FINAL READ has zero BL drive",
+    ) if column_merge else (
         "BVM.SL -> BQ -> one sJTL -> one post-CB",
         "FINAL READ has zero BL drive",
-    )
+    ))
     if not all(item in deck for item in required_substrings):
         raise ConfigError("deck is missing its output-load or final-read boundary declaration")
     printed = {line.split(None, 1)[1] for line in deck_lines if line.startswith(".print ")}
     if printed != set(probe_labels):
         raise ConfigError("deck .print probes do not match probe_manifest signals exactly")
     for cell in cell_records:
-        expected_instances = (
+        core_instances = (
             f"{cell['instances']['BVM']} {cell['input_nodes']['WL']} {cell['input_nodes']['BL']} "
             f"{cell['input_nodes']['SE']} {cell['sl_node']} BVM",
             f"{cell['instances']['QB']} {cell['sl_node']} {cell['qb_output_node']} BQ",
-            f"{cell['instances']['SJTL']} {cell['qb_output_node']} {cell['sjtl_output_node']} sJTL",
-            f"{cell['instances']['POST_CB']} {cell['sjtl_output_node']} {cell['output_node']} CB",
-            f"{cell['instances']['TERMINATION']} {cell['output_node']} 0 {case['TERM_R']}",
         )
+        if column_merge:
+            expected_instances = core_instances
+        else:
+            expected_instances = core_instances + (
+                f"{cell['instances']['SJTL']} {cell['qb_output_node']} {cell['sjtl_output_node']} sJTL",
+                f"{cell['instances']['POST_CB']} {cell['sjtl_output_node']} {cell['output_node']} CB",
+                f"{cell['instances']['TERMINATION']} {cell['output_node']} 0 {case['TERM_R']}",
+            )
         if any(line not in deck_lines for line in expected_instances):
             raise ConfigError(f"{cell['cell']}: rendered port wiring/load chain differs from topology manifest")
+    if column_merge:
+        if topology["merge_configuration"]["reference_topology_parameters"] != {
+                "QB_CB": [0, 0], "SJTL_COUNT": [1, 1], "POST_SJTL_CB": [1, 1]}:
+            raise ConfigError("COLUMN_MERGE flags differ from the registered two-level topology")
+        if len(topology["column_chains"]) != 2:
+            raise ConfigError("COLUMN_MERGE must contain exactly two isolated column chains")
+        for column in topology["column_chains"]:
+            col = column["column"]
+            expected_lines = (
+                f"XSJTL_C{col}_L1 MERGE_C{col}_L1 SJTL_OUT_C{col}_L1 sJTL",
+                f"XCB_C{col}_L1 SJTL_OUT_C{col}_L1 MERGE_C{col}_L2 CB",
+                f"XSJTL_C{col}_L2 MERGE_C{col}_L2 SJTL_OUT_C{col}_L2 sJTL",
+                f"XCB_C{col}_L2 SJTL_OUT_C{col}_L2 VOUT_C{col} CB",
+                f"R_TERM_C{col} VOUT_C{col} 0 {case['TERM_R']}",
+            )
+            if any(line not in deck_lines for line in expected_lines):
+                raise ConfigError(f"column C{col}: actual two-level MERGE/sJTL/CB wiring is incorrect")
+            for token in (f"MERGE_C{col}_L1", f"MERGE_C{col}_L2",
+                          f"VOUT_C{col}"):
+                if token not in deck:
+                    raise ConfigError(f"column C{col}: required boundary node {token} is absent")
+        if any("MERGE_C1" in line and "MERGE_C2" in line or
+               "MERGE_C2" in line and "MERGE_C1" in line for line in instance_lines):
+            raise ConfigError("a subcircuit instance bridges MERGE nodes across columns")
+        if any("XQBCB" in line for line in instance_lines):
+            raise ConfigError("QB_CB=0,0 forbids QB-side CB instances")
+        for cell in cell_records:
+            row, col = cell["row"], cell["column"]
+            expected_bvm = (f"XBVM_{cell['cell']} {cell['input_nodes']['WL']} "
+                            f"{cell['input_nodes']['BL']} {cell['input_nodes']['SE']} "
+                            f"{cell['sl_node']} BVM")
+            expected_qb = (f"XBQ_{cell['cell']} {cell['sl_node']} "
+                           f"MERGE_C{col}_L{row} BQ")
+            if expected_bvm not in deck_lines or expected_qb not in deck_lines:
+                raise ConfigError(f"{cell['cell']}: BVM/QB endpoint is not connected to its assigned MERGE level")
+        expected_subcircuits = {
+            *(f"XBVM_R{row}C{col}" for row in ROWS for col in COLS),
+            *(f"XBQ_R{row}C{col}" for row in ROWS for col in COLS),
+            *(f"XSJTL_C{col}_L{level}" for col in COLS for level in (1, 2)),
+            *(f"XCB_C{col}_L{level}" for col in COLS for level in (1, 2)),
+        }
+        if {line.split()[0] for line in instance_lines} != expected_subcircuits:
+            raise ConfigError("COLUMN_MERGE subcircuit instance set differs from four BVM/QB and four sJTL/CB instances")
+        if any("MERGE_C1" in line and "MERGE_C2" in line for line in instance_lines) or any(
+                "MERGE_C2" in line and "MERGE_C1" in line for line in instance_lines):
+            raise ConfigError("a subcircuit electrically bridges the two column merge chains")
     branch_by_source = {driver["source"]: driver["branch"] for driver in topology["input_lines"]}
     if any(stages.get("FINAL_READ") != "0" for source, stages in driver_stages.items()
            if branch_by_source[source] == "BL"):
@@ -1035,10 +1387,19 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
         "source_pin_orders_match": {role: list(parse_subckt(role))
                                     for role in ("BVM", "QB", "SJTL", "POST_CB")},
         "drive_mode": case["DRIVE_MODE"],
+        "output_topology": case["OUTPUT_TOPOLOGY"],
         "source_count_by_branch": topology["driver_count_by_branch"],
         "driver_source_node_map_matches": True,
-        "four_cell_load_chains_match": True,
-        "four_outputs_unique": len(set(outputs)) == 4,
+        "four_cell_load_chains_match": not column_merge,
+        "four_outputs_unique": len(set(outputs)) == 4 if not column_merge else False,
+        "two_column_outputs_unique": column_merge and topology["output_nodes"] == ["VOUT_C1", "VOUT_C2"],
+        "two_level_column_merge_matches": column_merge and len(topology["column_chains"]) == 2,
+        "column_chains_match": column_merge and len(topology["column_chains"]) == 2,
+        "cross_column_merge": False,
+        "merge_subcircuit_count": 0,
+        "merge_shared_nodes": ([node for col in (1, 2) for node in
+                                (f"MERGE_C{col}_L1", f"MERGE_C{col}_L2")]
+                               if column_merge else []),
         "row_column_bit_mapping_match": True,
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
@@ -1066,7 +1427,7 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
             values.get("SECOND_READ") == "0" for source, values in driver_stages.items()
             if branch_by_source[source] == "BL")),
         "deck_print_set_matches_probe_manifest": True,
-        "t1_count": 0, "output_merge": False,
+        "t1_count": 0, "output_merge": column_merge,
         "scientific_interpretation_performed": False,
     }
 
@@ -1096,6 +1457,10 @@ def parameter_manifest(case: dict[str, str], stimulus: dict[str, str], records: 
     return {
         "schema": "bvm-2x2-rowcol-parameters-v1",
         "drive_mode": case["DRIVE_MODE"],
+        "output_topology": case["OUTPUT_TOPOLOGY"],
+        "merge_topology_parameters": ({"QB_CB": [0, 0], "SJTL_COUNT": [1, 1],
+                                        "POST_SJTL_CB": [1, 1]}
+                                       if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE" else None),
         "USER_CASE": dict(case), "STIMULUS": dict(stimulus),
         "second_read": {
             "enabled": _second_read_enabled(case),
@@ -1115,6 +1480,7 @@ def parameter_manifest(case: dict[str, str], stimulus: dict[str, str], records: 
 def _run_config_identity(case: dict[str, str]) -> dict[str, str]:
     return {
         "drive_mode": case["DRIVE_MODE"],
+        "output_topology": case["OUTPUT_TOPOLOGY"],
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
@@ -1144,6 +1510,7 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- Parameter/topology/probe manifest SHA-256: `{sha256(run_dir / 'parameter_manifest.json')}` / "
         f"`{sha256(run_dir / 'topology_manifest.json')}` / `{sha256(run_dir / 'probe_manifest.json')}`.",
         f"- Drive mode: `{case['DRIVE_MODE']}`; ROW_BITS=`{case['ROW_BITS']}`; COL_BITS=`{case['COL_BITS']}`.",
+        f"- Output topology: `{case['OUTPUT_TOPOLOGY']}`.",
         f"- SE topology: configured `{case['SE_TOPOLOGY']}`, effective `{_effective_se_topology(case)}`; gate `{case['SE_GATE_MODE']}`.",
         "- Leftmost row bit is row 1; leftmost column bit is column 1.",
         f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",
@@ -1152,7 +1519,9 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- READ0_ENABLE=`{case['READ0_ENABLE']}`; WRITE1_MODE=`{case['WRITE1_MODE']}`.",
         "- Row/column bits gate FINAL READ only; they do not implement mixed storage by themselves.",
         "- FINAL READ BL sources are zero. CELL/CROSSPOINT SE is independently enabled only where both row and column bits are active.",
-        "- Load per cell: BVM → canonical QB → one canonical sJTL → one canonical CB → separate VOUT → 2 Ω.",
+        ("- Output chain: each column has two physical MERGE nodes and two QB→sJTL→CB levels; only VOUT_C1/VOUT_C2 are terminated at 2 Ω."
+         if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE" else
+         "- Load per cell: BVM → canonical QB → one canonical sJTL → one canonical CB → separate VOUT → 2 Ω."),
         "- SHARED drive uses two shared row-WL sources, two shared column-BL sources, and either two shared-column or four cell-local SE sources.",
         "- Shared 200 µA and independent 100 µA are candidate drive settings, not assumed equivalent.",
         f"- SECOND_READ: enabled={_second_read_enabled(case)}; row bits=`{case['SECOND_ROW_BITS']}`; "
@@ -1160,10 +1529,24 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- DT=`{case['DT']}`, STOP=`{case['STOP']}`; P(...) raw unit is radians.",
         "- Registered half-open windows and read/recovery windows are listed in stimulus_qa.json and cell_metrics.json.",
         "- Branch-current analysis reports raw extrema/actual-grid charge only; no decision threshold is registered.",
-        "- Only the registered run is authorized; no sweep, follow-up, T1, output merge, or 4×4 extension.",
+        ("- Only the registered run is authorized; no sweep/follow-up, cross-column merge, T1, or 4×4 extension."
+         if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE" else
+         "- Only the registered run is authorized; no sweep, follow-up, T1, output merge, or 4×4 extension."),
         "- Interpretation ceiling: artifact/mechanical QA and registered arithmetic only.",
         "", "## Canonical source hashes", "",
     ]
+    if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+        lines.extend((
+            "- MERGE1/MERGE2 are named electrical nodes only; no MERGE subcircuit or extra active element is instantiated.",
+            "- Reference generator: test/exploration/bvm-qb-cb-array-topology-v1-20260924/scripts/topology.py; flags QB_CB=0,0; SJTL_COUNT=1,1; POST_SJTL_CB=1,1.",
+        ))
+        for column in rendered["topology"]["column_chains"]:
+            level1, level2 = column["levels"]
+            lines.append(f"- C{column['column']}: {level1['cell']}.QB -> {level1['merge_node']} -> "
+                         f"{level1['sjtl_instances'][0]} -> {level1['post_sjtl_cb_instance']} -> "
+                         f"{level1['carry_node']} == {level2['merge_node']} (also {level2['cell']}.QB output); "
+                         f"then {level2['sjtl_instances'][0]} -> {level2['post_sjtl_cb_instance']} -> "
+                         f"{column['output_node']} -> {column['termination_instance']} ({column['termination_ohm']} Ω).")
     if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
         lines.extend((
             f"- Selective WRITE1 targets: `{case['WRITE1_TARGET_1']}` then `{case['WRITE1_TARGET_2']}`.",
@@ -1204,6 +1587,83 @@ def _cell_jj(role: str, cell: dict[str, Any]) -> list[str]:
 
 def plot_page_plan(topology: dict[str, Any], probes: dict[str, Any]) -> list[dict[str, Any]]:
     available = {entry["label"] for entry in probes["signals"]}
+    if topology.get("output_topology") == "COLUMN_MERGE":
+        cells = {cell["cell"]: cell for cell in topology["cell_instances"]}
+        source_signals = [f"I({item['source']})" for item in topology["input_lines"]]
+        overview_signals = list(source_signals)
+        overview_signals.extend(f"V({cell['sl_node']})" for cell in topology["cell_instances"])
+        overview_signals.extend(f"I(L3|{cell['instances']['QB']})"
+                                for cell in topology["cell_instances"])
+        overview_signals.extend(f"V({cell['qb_output_node']})"
+                                for cell in topology["cell_instances"])
+        overview_signals.extend(f"V({node})" for col in COLS for node in
+                                (f"MERGE_C{col}_L1", f"MERGE_C{col}_L2", f"VOUT_C{col}"))
+
+        bvm_signals = []
+        qb_signals = []
+        for cell in topology["cell_instances"]:
+            name, inst = cell["cell"], cell["instances"]
+            bvm_signals.extend((f"I(R_WL|{inst['BVM']})", f"I(R_BL|{inst['BVM']})",
+                                f"I(R_SE|{inst['BVM']})", f"I(L_SL|{inst['BVM']})",
+                                f"V({cell['sl_node']})"))
+            bvm_signals.extend(signal for jj in CELL_JJS
+                               for signal in (f"P({jj}|{inst['BVM']})", f"V({jj}|{inst['BVM']})"))
+            qb_signals.extend((f"V({cell['sl_node']})", f"V({cell['qb_output_node']})",
+                               f"I(LIN|{inst['QB']})", f"I(IB2|{inst['QB']})",
+                               f"I(L3|{inst['QB']})"))
+            qb_signals.extend(signal for jj in QB_JJS
+                              for signal in (f"P({jj}|{inst['QB']})", f"V({jj}|{inst['QB']})",
+                                             f"I({jj}|{inst['QB']})"))
+            for element in ("LIN", "L1", "L2", "L3"):
+                qb_signals.extend((f"I({element}|{inst['QB']})", f"V({element}|{inst['QB']})"))
+            for element in ("RJ1", "RJ2", "RJ3"):
+                qb_signals.extend((f"I({element}|{inst['QB']})", f"V({element}|{inst['QB']})"))
+
+        page_plan = [
+            {"file": "01_overview.html", "title": "Shared inputs → four BVM SL/QB merge boundaries → two column outputs",
+             "signals": list(dict.fromkeys(overview_signals))},
+            {"file": "02_bvm.html", "title": "Four BVM inputs, storage JJ state and SL output",
+             "signals": list(dict.fromkeys(bvm_signals))},
+            {"file": "03_qb.html", "title": "Four QB input/internal/output boundaries",
+             "signals": list(dict.fromkeys(qb_signals))},
+        ]
+        for col in COLS:
+            chain = next(item for item in topology["column_chains"] if item["column"] == col)
+            signals = []
+            for level in chain["levels"]:
+                cell = cells[level["cell"]]
+                instances = cell["instances"]
+                signals.extend((f"V({level['merge_node']})", f"V({level['sjtl_output_node']})",
+                                f"I(L3|{instances['QB']})", f"V({cell['sl_node']})",
+                                f"V({cell['qb_output_node']})"))
+                if level["merge_inputs"]["upstream_cb"]:
+                    signals.append(level["merge_inputs"]["upstream_cb"])
+                signals.extend(signal for jj in CELL_JJS
+                               for signal in (f"P({jj}|{instances['BVM']})",
+                                              f"V({jj}|{instances['BVM']})"))
+                signals.extend(signal for jj in QB_JJS
+                               for signal in (f"P({jj}|{instances['QB']})",
+                                              f"V({jj}|{instances['QB']})"))
+                sjtl = instances["SJTL"]
+                signals.extend((f"P(BJ1|{sjtl})", f"V(BJ1|{sjtl})",
+                                f"I(L1|{sjtl})", f"V(L1|{sjtl})",
+                                f"I(L2|{sjtl})", f"V(L2|{sjtl})"))
+                cb = instances["POST_CB"]
+                signals.extend(signal for jj in CB_JJS
+                               for signal in (f"P({jj}|{cb})", f"V({jj}|{cb})"))
+                signals.extend(f"{quantity}({element}|{cb})"
+                               for element in ("L1", "L2", "L3", "L4", "RJ1", "RJ2")
+                               for quantity in ("I", "V"))
+            signals.extend((f"V({chain['output_node']})", f"I({chain['termination_instance']})"))
+            page_plan.append({"file": f"0{3+col}_column{col}.html",
+                              "title": f"Column {col}: QB → MERGE1 → sJTL1 → CB1 → MERGE2 → sJTL2 → CB2 → VOUT",
+                              "signals": list(dict.fromkeys(signals))})
+        for page in page_plan:
+            missing = [label for label in page["signals"] if label not in available]
+            if missing:
+                raise ConfigError(f"merge plot page {page['file']} uses unregistered probes: {missing}")
+        return page_plan
+
     drive_labels = [entry["label"] for entry in probes["signals"]
                     if entry["group"].startswith("drive:")
                     or entry["group"].endswith(":input")]
@@ -1299,6 +1759,7 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
     print(f"Case: {case['NAME']} | next run if executed: {run_id}")
     print(f"Topology: {case['DRIVE_MODE']} | ROW_BITS={row_bits} | COL_BITS={col_bits} "
           "(leftmost bit is index 1)")
+    print(f"OUTPUT_TOPOLOGY={case['OUTPUT_TOPOLOGY']}")
     print(f"SE: configured={case['SE_TOPOLOGY']} | effective={_effective_se_topology(case)} "
           f"| gate={case['SE_GATE_MODE']}")
     print("FINAL READ: active=" + ",".join(groups["active_crosspoints"] or ["none"])
@@ -1346,7 +1807,18 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
         print("All four cells receive the same configured preparation/write sequence.")
     else:
         print("Selective write targets share row WL and column BL; half-selected cell inputs are explicitly listed above.")
-    print("Output/load: 4 independent chains, BVM→QB→1×sJTL→1×CB→VOUT→2Ω")
+    if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
+        print("Topology flags: QB_CB=0,0 | SJTL_COUNT=1,1 | POST_SJTL_CB=1,1")
+        for chain in rendered["topology"]["column_chains"]:
+            level1, level2 = chain["levels"]
+            print(f"  C{chain['column']}: QB({level1['cell']})→{level1['merge_node']}→"
+                  f"{level1['sjtl_instances'][0]}→{level1['post_sjtl_cb_instance']}→"
+                  f"{level1['carry_node']} (QB({level2['cell']}) also connects)→"
+                  f"{level2['sjtl_instances'][0]}→{level2['post_sjtl_cb_instance']}→"
+                  f"{chain['output_node']}→{chain['termination_instance']} {chain['termination_ohm']}Ω")
+        print("Output/load: 2 isolated column chains, 4 BVM/4 QB, 2Ω per column; no inter-column connection or T1")
+    else:
+        print("Output/load: 4 independent chains, BVM→QB→1×sJTL→1×CB→VOUT→2Ω")
     print(f"Solver settings: DT={case['DT']}, STOP={case['STOP']}; planned solves if run=1")
     print(f"Probes: {rendered['probes']['signal_count']} ({case['PROBE_PROFILE']}); "
           f"HTML pages if run={len(plan)}; static QA={rendered['static_qa']['status']}")
@@ -1461,6 +1933,7 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                 topology: dict[str, Any]) -> dict[str, Any]:
     from bvmtools.raw import read_csv
 
+    column_merge = case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE"
     trace = read_csv(raw_path)
     if trace.duplicate_columns:
         raise ConfigError(f"raw CSV contains duplicate signal labels: {trace.duplicate_columns}")
@@ -1492,6 +1965,31 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                              "peak_to_peak_a": max(selected) - min(selected),
                              "max_abs_a": max(abs(value) for value in selected),
                              "charge_c": _trapz(trace.time, source_values, indexes)})
+    if column_merge:
+        for column in topology["column_chains"]:
+            for level in column["levels"]:
+                merge_inputs = [("QB_LOCAL", level["merge_inputs"]["local_qb"])]
+                upstream_signal = level["merge_inputs"]["upstream_cb"]
+                if upstream_signal:
+                    merge_inputs.append(("PREVIOUS_CB_CARRY", upstream_signal))
+                for role, signal in merge_inputs:
+                    values = trace.column(signal)
+                    for window_name, window in windows.items():
+                        indexes = _indices(exact_times, window)
+                        if len(indexes) < 2:
+                            continue
+                        selected = [values[index] for index in indexes]
+                        peak_index = max(indexes, key=lambda index: abs(values[index]))
+                        currents.append({
+                            "scope": "merge_input", "column": column["column"],
+                            "level": level["level"], "input_role": role,
+                            "signal": signal, "window": window_name,
+                            "sample_count": len(indexes), "min_a": min(selected),
+                            "max_a": max(selected), "peak_to_peak_a": max(selected)-min(selected),
+                            "max_abs_a": abs(values[peak_index]),
+                            "time_of_max_abs_a_s": str(exact_times[peak_index]),
+                            "charge_c": _trapz(trace.time, values, indexes),
+                        })
     for cell in topology["cell_instances"]:
         bvm = cell["instances"]["BVM"]
         for branch, element in (("WL", "R_WL"), ("BL", "R_BL"), ("SE", "R_SE")):
@@ -1561,50 +2059,58 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                             "SECOND_READ" if window_name == "SECOND_READ" else None)
                     jj_metrics.append(metric)
     outputs: list[dict[str, Any]] = []
-    for cell in topology["cell_instances"]:
-        output_boundaries = [("BVM_SL", cell["sl_node"]),
-                             ("QB_OUT", cell["qb_output_node"]),
-                                ("SJTL_OUT", cell["sjtl_output_node"]),
-                                ("VOUT", cell["output_node"])]
-        for node_role, node in output_boundaries:
-            signal = f"V({node})"
-            values = trace.column(signal)
-            output_windows = ["FINAL_READ"]
-            if case["READ0_ENABLE"] == "1":
-                output_windows.append("POST_READ0")
-            if case["WRITE1_MODE"] == "SIMULTANEOUS":
-                output_windows.append("POST_WRITE1")
-            else:
-                output_windows.extend(("POST_WRITE0", "POST_WRITE1_TARGET_1",
-                                       "POST_WRITE1_TARGET_2", "POST_WRITE1"))
+    output_windows = ["FINAL_READ"]
+    if case["READ0_ENABLE"] == "1":
+        output_windows.append("POST_READ0")
+    if case["WRITE1_MODE"] == "SIMULTANEOUS":
+        output_windows.append("POST_WRITE1")
+    else:
+        output_windows.extend(("POST_WRITE0", "POST_WRITE1_TARGET_1",
+                               "POST_WRITE1_TARGET_2", "POST_WRITE1"))
+    if _second_read_enabled(case):
+        output_windows.extend(("FIRST_READ_RESPONSE", "RECOVERY_BEFORE_SECOND_READ",
+                               "SECOND_READ", "SECOND_READ_RESPONSE", "POST_SECOND_READ"))
+    else:
+        output_windows.extend(("READ_RESPONSE", "TAIL"))
+
+    def add_output_metrics(boundary: str, node: str, *, cell: str | None = None,
+                           column: int | None = None) -> None:
+        signal = f"V({node})"
+        values = trace.column(signal)
+        for window_name in output_windows:
+            indexes = _indices(exact_times, windows[window_name])
+            if len(indexes) < 2:
+                continue
+            selected = [values[index] for index in indexes]
+            max_index = max(indexes, key=lambda index: values[index])
+            min_index = min(indexes, key=lambda index: values[index])
+            max_abs_index = max(indexes, key=lambda index: abs(values[index]))
+            metric = {"cell": cell, "column": column, "boundary": boundary,
+                      "signal": signal, "window": window_name,
+                      "sample_count": len(indexes), "min_v": min(selected),
+                      "max_v": max(selected), "peak_to_peak_v": max(selected) - min(selected),
+                      "area_v_s": _trapz(trace.time, values, indexes),
+                      "time_of_max_v_s": str(exact_times[max_index]),
+                      "time_of_min_v_s": str(exact_times[min_index]),
+                      "time_of_max_abs_v_s": str(exact_times[max_abs_index])}
             if _second_read_enabled(case):
-                output_windows.extend(("FIRST_READ_RESPONSE", "RECOVERY_BEFORE_SECOND_READ",
-                                       "SECOND_READ", "SECOND_READ_RESPONSE", "POST_SECOND_READ"))
-            else:
-                output_windows.extend(("READ_RESPONSE", "TAIL"))
-            for window_name in output_windows:
-                indexes = _indices(exact_times, windows[window_name])
-                if len(indexes) < 2:
-                    continue
-                selected = [values[index] for index in indexes]
-                max_index = max(indexes, key=lambda index: values[index])
-                min_index = min(indexes, key=lambda index: values[index])
-                max_abs_index = max(indexes, key=lambda index: abs(values[index]))
-                metric = {"cell": cell["cell"], "boundary": node_role,
-                          "signal": signal, "window": window_name,
-                          "sample_count": len(indexes), "min_v": min(selected),
-                          "max_v": max(selected), "peak_to_peak_v": max(selected) - min(selected),
-                          "area_v_s": _trapz(trace.time, values, indexes),
-                          "time_of_max_v_s": str(exact_times[max_index]),
-                          "time_of_min_v_s": str(exact_times[min_index]),
-                          "time_of_max_abs_v_s": str(exact_times[max_abs_index])}
-                if _second_read_enabled(case):
-                    metric["first_sample_v"] = values[indexes[0]]
-                    metric["last_sample_v"] = values[indexes[-1]]
-                    metric["read_cycle"] = (
-                        "FIRST_READ" if window_name == "FINAL_READ" else
-                        "SECOND_READ" if window_name == "SECOND_READ" else None)
-                outputs.append(metric)
+                metric["first_sample_v"] = values[indexes[0]]
+                metric["last_sample_v"] = values[indexes[-1]]
+                metric["read_cycle"] = (
+                    "FIRST_READ" if window_name == "FINAL_READ" else
+                    "SECOND_READ" if window_name == "SECOND_READ" else None)
+            outputs.append(metric)
+
+    for cell in topology["cell_instances"]:
+        for boundary, node in (("BVM_SL", cell["sl_node"]),
+                               ("QB_OUT", cell["qb_output_node"]),
+                               ("SJTL_OUT", cell["sjtl_output_node"])):
+            add_output_metrics(boundary, node, cell=cell["cell"])
+        if not column_merge:
+            add_output_metrics("VOUT", cell["output_node"], cell=cell["cell"])
+    if column_merge:
+        for chain in topology["column_chains"]:
+            add_output_metrics("VOUT", chain["output_node"], column=chain["column"])
     return {
         "schema": "bvm-2x2-rowcol-cell-metrics-v1",
         "status": "DERIVED_ARITHMETIC_ONLY",
@@ -1744,6 +2250,7 @@ def _write_root_manifest(run_id: str, run_dir: Path, result: dict[str, Any]) -> 
     rows.append({"run_id": run_id, "path": str(run_dir.relative_to(SERIES)),
                  "physical_solve_count": 1,
                  **{key: result[key] for key in ("drive_mode", "se_topology",
+                                                   "output_topology",
                                                    "effective_se_topology", "se_gate_mode",
                                                    "read0_enabled", "write1_mode",
                                                    "write1_target_1", "write1_target_2",

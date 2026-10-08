@@ -48,3 +48,97 @@ The repository submit workflow creates the per-run and metadata DELTA ZIPs for
 this revision. Exact package/mirror SHA-256 values are authoritative in the
 detached PACKAGE_QA sidecars and submit record. Generated HTML stays local and
 is excluded from ZIP members; the mirror target is /mnt/d/BVM_Backages.
+
+## Authorized two-column two-level MERGE batch — 2026-10-08
+
+Status: `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`
+Physical solve count: **6** (T0–T5, serial A013–A018).
+Scientific interpretation, event-count classification, and mechanism verdict: **NOT PERFORMED**.
+
+All six runs used the same SHARED/CELL/CROSSPOINT preparation and canonical
+sources, with `QB_CB=0,0`, `SJTL_COUNT=1,1`, `POST_SJTL_CB=1,1`, four separate
+BVM SL/QB branches, two electrically separate two-level column chains, and
+one 2 Ω output termination per column. No T1 or cross-column path was added.
+Their exact instantiated nodes and source hashes are in each immutable run
+deck/provenance/topology manifest. A013–A018 each contain 24,999 raw samples;
+observed stored intervals range from about 0.01 to 0.02 ps, so all arithmetic
+uses the actual raw timestamp sequence. Timestep convergence is UNKNOWN.
+
+| Run | ROW/COL | Active FINAL READ cells | Raw SHA-256 | Raw bytes | Artifact / mechanical QA |
+|---|---|---|---|---:|---|
+| A013_SHARED_R00_C00 | 00/00 | none | `2e9f8f9fcc322f2d95a49f91f4d5d2136dcff8f7dc3880b9b237e6ed9a84654e` | 95,267,778 | VALID / PASS |
+| A014_SHARED_R10_C10 | 10/10 | R1C1 | `079a6f731c4ececb625665f2aed8a20aa202f8764a9c85d8fb2ea56a681b99dd` | 95,346,875 | VALID / PASS |
+| A015_SHARED_R01_C10 | 01/10 | R2C1 | `12865d0e7a5046f9c62a9b48f893bb5da74fef3ae839d8a38b51d9262cbd79b7` | 95,351,167 | VALID / PASS |
+| A016_SHARED_R11_C10 | 11/10 | R1C1, R2C1 | `3a23533a3d8286bfd138e7a517ecb17fb7352c12e1aedd1c7c43741a0eb1fe66` | 95,355,420 | VALID / PASS |
+| A017_SHARED_R10_C11 | 10/11 | R1C1, R1C2 | `35bac0500aef70973c043db2d419ae580ccfc5b20548e235fad503b2f0e83a07` | 95,363,027 | VALID / PASS |
+| A018_SHARED_R11_C11 | 11/11 | all four | `5ce1430420117479ba3581b8f2f0234b00e545770ad9348b0bba81c07846dfe7` | 95,388,793 | VALID / PASS |
+
+For every run, static, stimulus, raw, provenance, plot, and mechanical QA passed;
+raw SHA before/after plot generation matched. Each run has 284 probes, all five
+classic per-run HTML pages, deck/stimulus/config snapshots, solver logs, and
+current/phase/output arithmetic. Solver output logs contain no warning/error
+matches. Canonical SHA-256 values are identical to the frozen values in
+experiment.yaml: BVM `ddf90076…3456b7`, QB `82e6f6c7…eed988a`, sJTL
+`3cbc6889…1040688`, post-CB `70a6af05…d6d370`, JJMIT
+`19862d1f…312a336`. Solver is `build/josim-cli v2.7.2837d13`, SHA-256
+`48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2`.
+
+### Derived output arithmetic
+
+Peak is the positive maximum sample; signed area is trapezoidal integration over
+`[110,250)` ps on each run's actual stored grid. These are voltage arithmetic,
+not event counts.
+
+| Run | VOUT_C1 peak / time / signed area | VOUT_C2 peak / time / signed area |
+|---|---|---|
+| A013 | 0.033082 µV / 111.780 ps / −2.20137e−20 V·s | 0.033082 µV / 111.780 ps / −2.20137e−20 V·s |
+| A014 | 465.457 µV / 130.630 ps / 2.067812e−15 V·s | 0.040753 µV / 112.040 ps / −2.20137e−20 V·s |
+| A015 | 452.045 µV / 123.310 ps / 2.067812e−15 V·s | 0.099019 µV / 124.320 ps / −2.20137e−20 V·s |
+| A016 | 512.381 µV / 130.270 ps / 4.135646e−15 V·s | 0.134142 µV / 124.220 ps / −2.20137e−20 V·s |
+| A017 | 465.457 µV / 130.670 ps / 2.067812e−15 V·s | 465.457 µV / 130.670 ps / 2.067812e−15 V·s |
+| A018 | 512.194 µV / 130.290 ps / 4.135646e−15 V·s | 512.194 µV / 130.290 ps / 4.135646e−15 V·s |
+
+For the T3/A016 double input, the recorded absolute-current maxima into the
+second merge were: local QB branch `I(L3|XBQ_R2C1)` 326.679 µA at 120.400 ps;
+previous-CB carry `I(L4|XCB_C1_L1)` 276.551 µA at 125.960 ps. The first-level
+local QB branch `I(L3|XBQ_R1C1)` peaked at 233.940 µA at 122.930 ps. T5/A018
+corresponding values were 327.133 µA at 120.400 ps, 276.542 µA at 125.980 ps,
+and 234.276 µA at 122.950 ps for each column. These identify sampled branch
+current extrema only; they do not classify reception or events.
+
+Actual input branch currents were not assumed equal to source setpoints. For
+example, during T3 FINAL READ, selected-cell WL branch maxima were 109.096 and
+109.171 µA and SE maxima were 100 µA; WL-only cells reached 110.966 and
+111.200 µA with SE source set to zero. During T5, each cell WL/SE branch maximum
+was 100 µA; BL resistor branches showed nonzero extrema up to 5.706 µA even
+though FINAL READ BL sources were set to zero. Full signed per-cell/stage
+current tables are in each `analysis/cell_metrics.json`.
+
+The maximum absolute same-JJ phase-delta/(2π) minus voltage-area/Φ0 arithmetic
+residual across the `[110,250)` phase/voltage comparisons was 7.41e−7 for A013,
+7.40e−7 for A014, 7.41e−7 for A015, 7.42e−7 for A016, 7.27e−7 for A017, and
+6.41e−7 for A018. No acceptance tolerance was registered for this residual;
+phase is stored in radians, and these arithmetic values are not event counts.
+
+### Historical context, not a single-variable causal comparison
+
+Exact-common-grid output arithmetic was checked over the corresponding raw
+windows: A009 versus T4/A017 and A010 versus T3/A016 on `[110,170)` ps (6,000
+common timestamps each), and A011 versus T5/A018 on `[110,250)` ps (14,000
+common timestamps). A009's independent per-cell outputs peaked at 0.455483 mV
+at 125.570 ps; T4's two column outputs peaked at 0.465457 mV at 130.670 ps.
+A010's two selected independent outputs peaked at 0.455457 mV at 125.500 ps;
+T3's merged C1 output peaked at 0.512381 mV at 130.270 ps. A011's four
+independent outputs peaked at 0.455406 mV at 125.520 ps; T5's two merged
+column outputs peaked at 0.512194 mV at 130.290 ps. The topologies and
+downstream loading differ (four independent one-level outputs versus two
+two-level merged outputs), so these figures are not strict causal contrasts.
+A012 used sequential mixed-state writes and a 170 ps final-read start; it is
+not a matched timing/preparation comparator for this batch. Its raw and prior
+report remain unchanged.
+
+T0–T5 comparison QA passed for both VOUT traces using 24,999 exact common raw
+timestamps over `[0,250)` ps with no interpolation/resampling. Its classic
+comparison HTML and CSV are under `plots/comparison/`; generated HTML remains
+local and excluded from packages. No scientific verdict, event count, or
+mechanism interpretation is made here.

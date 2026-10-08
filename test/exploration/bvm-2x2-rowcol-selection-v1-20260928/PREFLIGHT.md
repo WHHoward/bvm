@@ -98,3 +98,38 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 - Artifact outcomes distinguish solver/artifact invalidity from physical behavior. If a raw is valid but post-processing fails, preserve that raw and repair only its analysis/plots; never rerun solely to repair analysis.
 
 No additional masks, amplitude points, parameter sweep, altered topology, canonical source changes, or T1/4×4 work are authorized.
+
+## Authorized two-column two-level MERGE batch (2026-10-08)
+
+This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+
+- Parent HEAD: 511f19b637c4e7f42712b0545f41ef0cb7d3909d; fetched bvm/master is identical; initial worktree was clean.
+- Exactly six physical solves are authorized, serially: T0/A013, T1/A014, T2/A015, T3/A016, T4/A017, T5/A018. Each run gets a fresh immutable directory; no parallel ID allocation.
+- No existing A001–A012 evidence is modified or re-solved. At preflight, all 12 manifest/raw/result hashes agree. All 17 handoff ZIPs have PASS QA and matching copies in /mnt/d/BVM_Backages.
+- Frozen canonical sources are the active BVM 0923, QB 0928, sJTL 0923, CB 0928 and jjmit files with SHA values in experiment.yaml. No component parameter or source changes are allowed.
+- The existing reference generator test/exploration/bvm-qb-cb-array-topology-v1-20260924/scripts/topology.py is called for each 2×1 column. Its SHA-256 is 81bebf3e15eb575554227f8fc13a1174fee234adc42485c75d785eeefe7d5275. Registered topology flags are QB_CB=0,0; SJTL_COUNT=1,1; POST_SJTL_CB=1,1.
+- Exact topology per column: row-1 QB output -> MERGE_Cn_L1 -> sJTL_Cn_L1 -> CB_Cn_L1 -> MERGE_Cn_L2; row-2 QB output also lands on MERGE_Cn_L2; then sJTL_Cn_L2 -> CB_Cn_L2 -> VOUT_Cn -> one 2 Ω termination. MERGE labels are electrical nodes, not components. C1/C2 merge nodes and terminal outputs are disjoint. No QB-side CB, inter-column connection, T1 or other element is present.
+- Shared excitation: WL_R1/R2 each connect to their two row cells; BL_C1/C2 each connect to their two column cells; SE_R1C1, SE_R1C2, SE_R2C1, SE_R2C2 are four separate sources/nodes. Only ROW_BITS AND COL_BITS crosspoints receive active FINAL_READ SE. Passive shared-line/merge-coupled currents are retained as measurements, not assumed zero.
+- All six cases preserve WRITE0 [50,61) ps, READ0 [70,81) ps, WRITE1 [90,101) ps and FINAL_READ [110,121) ps, 200 µA WL/BL writes, 200 µA WL read, 100 µA per-cell SE read, SECOND_READ_ENABLE=0, DT=0.01 ps, STOP=250 ps and two independent 2 Ω terminal loads.
+- Mask map: T0=00/00; T1=10/10; T2=01/10; T3=11/10; T4=10/11; T5=11/11 (row bits / column bits; leftmost bit is index 1).
+- Static acceptance requires four unique BVM SL nodes, four QB instances, exactly two isolated two-level chains, exactly four sJTL plus four post-sJTL CB instances, two termination resistors, the expected MERGE1/MERGE2 endpoint pins and no cross-column path. Six preset dry-runs and A001–A012 deck/stimulus regressions pass before solving.
+- Core acquisition is expanded only for COLUMN_MERGE to preserve BVM input branch currents and P/V state, full QB JJ/passive I/V, each sJTL/CB stage, MERGE voltages, QB/previous-CB currents into MERGE2, and VOUT_C1/C2. Probe count is 284. A011 raw row-width scaling predicts about 95,187,175 bytes per 250 ps raw (<100,000,000-byte Git hard limit); actual sizes must be checked. No LFS/storage-policy change is authorized.
+- Solver: build/josim-cli v2.7.2837d13, compiled 2026-05-30; binary SHA-256 48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2.
+- Registered metric windows: FINAL_READ [110,121) ps; terminal response [110,250) ps. Per-run figures are 01_overview, 02_bvm, 03_qb, 04_column1, 05_column2, classic josim-plot2 sep_comb/dark/-j 2pi. The six-run comparison overlay uses exact common stored timestamps only; interpolation/resampling is prohibited.
+- Required arithmetic: per-cell actual WL/BL/SE branch currents; BVM SL; QB input/output; MERGE1/MERGE2 values and both merge-input branch currents; every sJTL/CB JJ phase/P/V; VOUT_C1/C2 peak time and signed area over actual raw rows. Same-JJ phase-radian delta and voltage integral/Phi0 arithmetic are recorded. No pulse/SFQ threshold/count classifier is registered; event count, functional Gate and mechanism conclusions remain NOT PERFORMED. Timestep convergence is UNKNOWN.
+- Stop after these six solves, per-run QA, classic plots, comparison QA, raw/package SHA audit, delta package, GitHub push and mirror. No additional mask, topology, parameter, timing or T1 experiment is authorized.
+- Final frozen executor SHA-256: `scripts/run_platform.py` `d79293236cc688a5d9c7addf3a81408e6e86d030676c841aad5e7067b5ea91f4`.
+- Registered T0–T5 exact-grid comparison builder SHA-256: `scripts/build_merge_batch_comparison.py` `14b64503167b63b7983e32e0978057f7de926cd13703f04b77cae00490ad1f61`. It overlays VOUT_C1/C2 on exact common raw timestamps only and retains the source raw hashes; no interpolation/resampling.
+- Solver reverified before execution: `build/josim-cli v2.7.2837d13`, binary SHA-256 `48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2`.
+- Acceptance completed before any solve: all six actual `./try.sh --preset M_T* --dry-run` commands returned `DRY RUN PASS`, static QA PASS, 284 probes, and no run directory creation; 34 platform regression tests passed; `py_compile` and `git diff --check` passed. Historical A001–A012 deck/stimulus byte-regression and evidence-hash checks passed.
+- Exactly six physical solves remain authorized; execute serially in the registered order. No run exists for A013–A018 at this freeze point.
+
+### Execution receipt — 2026-10-08
+
+- Exactly the authorized six solves completed serially: A013–A018. No retry or follow-up solve was run.
+- All six returned `MECHANICAL_QA_PASS_AWAITING_USER_REVIEW`, `artifact_status=VALID`, and PASS static/stimulus/raw/provenance/plot/mechanical QA. Raw SHA before/after plotting is identical for each run.
+- Each raw contains 24,999 samples and 284 probes. Raw sizes are 95,267,778–95,388,793 bytes; all are below 100,000,000 bytes. Observed stored dt range is approximately 0.01–0.02 ps; timestep convergence remains UNKNOWN.
+- The registered exact-grid T0–T5 output comparison passed with 24,999 common timestamps in `[0,250)` ps, no interpolation/resampling, and immutable source raw hashes.
+- All per-run classic plot pages and arithmetic are present. Scientific interpretation, SFQ/event classification, mechanism claims, and functional Gate judgment were not performed.
+- Packaging checkpoint was reviewed per the user's instruction not to repeat full historical ZIP decompression/member verification: the prior full snapshot and 16 delta ZIP identities match their previously PASSed QA sidecars; delta manifests have consistent base/file-hash closure and ancestry. Current delta base is `bvm-2x2-rowcol-selection-v1-20260928_snapshot_bvm2x2-rowcol-a001.zip` (SHA-256 `90b174f0f7ea71c6d41bcf85db1d999af9c173c0b0ecbb8de31f1c96bb4e3f50`, base commit `4035a3d6adcc841f4bd4269fbc32b9a3c897746a`), with prior checkpoint head `1e74b4df60a4490e8dd85dc6a84671eaa4b46d0e`; current source HEAD before submission is its descendant `511f19b637c4e7f42712b0545f41ef0cb7d3909d`.
+- Fast delta inventory: 172 new files, 8 modified files, no non-HTML deletions, 12 referenced existing raw files, and 126 generated HTML files excluded from the new archive (left local). Seven package groups are planned (A013–A018 plus metadata); the largest uncompressed group is 98,281,550 bytes, below 100,000,000 bytes. Each new package will still receive full ZIP CRC and included-member SHA verification before commit/push/mirror.

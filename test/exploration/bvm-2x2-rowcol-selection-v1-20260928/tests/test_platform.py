@@ -19,6 +19,8 @@ sys.path.insert(0, str(SERIES / "scripts"))
 import run_platform as platform  # noqa: E402
 import build_batch_comparison as batch_compare  # noqa: E402
 import build_merge_batch_comparison as merge_batch_compare  # noqa: E402
+import build_t1_batch_comparison as t1_batch_compare  # noqa: E402
+import audit_t1_batch as t1_batch_audit  # noqa: E402
 
 OPTIONAL_E_CASE_FIELDS = {
     "SECOND_READ_ENABLE", "SECOND_ROW_BITS", "SECOND_COL_BITS",
@@ -111,6 +113,12 @@ class RowColumnPlatformTests(unittest.TestCase):
             "A010_SHARED_R11_C10",
             "A011_SHARED_R11_C11",
             "A012_SHARED_R11_C11",
+            "A013_SHARED_R00_C00",
+            "A014_SHARED_R10_C10",
+            "A015_SHARED_R01_C10",
+            "A016_SHARED_R11_C10",
+            "A017_SHARED_R10_C11",
+            "A018_SHARED_R11_C11",
         )
         for run_id in run_ids:
             with self.subTest(run_id=run_id):
@@ -537,6 +545,21 @@ class RowColumnPlatformTests(unittest.TestCase):
                 {"T0": series["T0"], "T5": {Decimal("2"): ("7", "8")}},
                 (Decimal("0"), Decimal("2")))
 
+    def test_t1_batch_comparison_uses_exact_common_stored_timestamps(self):
+        series = {
+            "quiet": {Decimal("0"): ("1",), Decimal("1"): ("2",), Decimal("3"): ("4",)},
+            "pulse": {Decimal("0"): ("5",), Decimal("2"): ("6",), Decimal("3"): ("7",)},
+        }
+        times, aligned = t1_batch_compare.align_exact_rows(
+            series, (Decimal("0"), Decimal("4")))
+        self.assertEqual(times, [Decimal("0"), Decimal("3")])
+        self.assertEqual(aligned["quiet"][Decimal("3")], ("4",))
+        self.assertEqual(aligned["pulse"][Decimal("3")], ("7",))
+        with self.assertRaisesRegex(ValueError, "fewer than two exact common"):
+            t1_batch_compare.align_exact_rows(
+                {"quiet": series["quiet"], "pulse": {Decimal("2"): ("6",)}},
+                (Decimal("0"), Decimal("4")))
+
     def test_second_read_requires_cell_se_and_valid_nonoverlapping_window(self):
         case, stimulus, _rendered = render("E1_A006_COLUMN_SECOND_READ")
         bad_topology = dict(case, SE_TOPOLOGY="SHARED_COLUMN")
@@ -723,6 +746,225 @@ class RowColumnPlatformTests(unittest.TestCase):
                     self.assertIn("OUTPUT_TOPOLOGY=COLUMN_MERGE", out.getvalue())
                     self.assertIn("2 isolated column chains", out.getvalue())
                     self.assertIn("static QA=PASS", out.getvalue())
+                    self.assertFalse(platform.RUNS.exists())
+        finally:
+            platform.RUNS = original_runs
+
+    def test_t1_c1_presets_preserve_frontend_and_render_exact_receiver_and_clock(self):
+        matrix = (
+            ("T1_C1_Q0", "00", "00", "QUIET", "A013_SHARED_R00_C00", []),
+            ("T1_C1_Q1", "10", "10", "QUIET", "A014_SHARED_R10_C10", ["R1C1"]),
+            ("T1_C1_Q2", "01", "10", "QUIET", "A015_SHARED_R01_C10", ["R2C1"]),
+            ("T1_C1_Q3", "11", "10", "QUIET", "A016_SHARED_R11_C10", ["R1C1", "R2C1"]),
+            ("T1_C1_P0", "00", "00", "PULSE", "A013_SHARED_R00_C00", []),
+            ("T1_C1_P1", "10", "10", "PULSE", "A014_SHARED_R10_C10", ["R1C1"]),
+            ("T1_C1_P2", "01", "10", "PULSE", "A015_SHARED_R01_C10", ["R2C1"]),
+            ("T1_C1_P3", "11", "10", "PULSE", "A016_SHARED_R11_C10", ["R1C1", "R2C1"]),
+        )
+        effective_cases = {}
+        for preset, rows, cols, clock_mode, baseline_id, active in matrix:
+            with self.subTest(preset=preset):
+                case, _stimulus, rendered = render(preset)
+                effective_cases[preset] = case
+                deck = rendered["deck"]
+                self.assertEqual(case["OUTPUT_MODE"], "T1_C1")
+                self.assertEqual(case["OUTPUT_TOPOLOGY"], "COLUMN_MERGE")
+                self.assertEqual((case["ROW_BITS"], case["COL_BITS"]), (rows, cols))
+                self.assertEqual(case["T1_CLK_MODE"], clock_mode)
+                self.assertEqual(rendered["topology"]["cell_selection"]["active_crosspoints"], active)
+                self.assertEqual(case["DT"], "0.01p")
+                self.assertEqual(case["STOP"], "250p")
+                self.assertEqual(case["PROBE_PROFILE"], "t1_focus")
+                self.assertEqual(rendered["static_qa"]["status"], "PASS")
+                self.assertTrue(rendered["static_qa"]["t1_clock_mode_exclusive"])
+                self.assertEqual(rendered["topology"]["t1_instance_count"], 1)
+                self.assertEqual(rendered["topology"]["column_output_loads"],
+                                 {"C1": "T1 input through V_T1_LINK", "C2": "2 ohm"})
+                self.assertEqual(deck.count("XT1 T1_I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1"), 1)
+                self.assertEqual(deck.count("V_T1_LINK VOUT_C1 T1_I 0"), 1)
+                self.assertNotIn("R_TERM_C1 VOUT_C1", deck)
+                self.assertIn("R_TERM_C2 VOUT_C2 0 2", deck)
+                expected_instances = {
+                    "XBVM_R1C1 WL_R1 BL_C1 SE_R1C1 SL_R1C1 BVM",
+                    "XBQ_R1C1 SL_R1C1 MERGE_C1_L1 BQ",
+                    "XSJTL_C1_L1 MERGE_C1_L1 SJTL_OUT_C1_L1 sJTL",
+                    "XCB_C1_L1 SJTL_OUT_C1_L1 MERGE_C1_L2 CB",
+                    "XBVM_R2C1 WL_R2 BL_C1 SE_R2C1 SL_R2C1 BVM",
+                    "XBQ_R2C1 SL_R2C1 MERGE_C1_L2 BQ",
+                    "XSJTL_C1_L2 MERGE_C1_L2 SJTL_OUT_C1_L2 sJTL",
+                    "XCB_C1_L2 SJTL_OUT_C1_L2 VOUT_C1 CB",
+                    "XBVM_R1C2 WL_R1 BL_C2 SE_R1C2 SL_R1C2 BVM",
+                    "XBQ_R1C2 SL_R1C2 MERGE_C2_L1 BQ",
+                    "XSJTL_C2_L1 MERGE_C2_L1 SJTL_OUT_C2_L1 sJTL",
+                    "XCB_C2_L1 SJTL_OUT_C2_L1 MERGE_C2_L2 CB",
+                    "XBVM_R2C2 WL_R2 BL_C2 SE_R2C2 SL_R2C2 BVM",
+                    "XBQ_R2C2 SL_R2C2 MERGE_C2_L2 BQ",
+                    "XSJTL_C2_L2 MERGE_C2_L2 SJTL_OUT_C2_L2 sJTL",
+                    "XCB_C2_L2 SJTL_OUT_C2_L2 VOUT_C2 CB",
+                }
+                actual_instances = {line for line in deck.splitlines()
+                                    if line.startswith(("XBVM_", "XBQ_", "XSJTL_", "XCB_"))}
+                self.assertEqual(actual_instances, expected_instances)
+                self.assertFalse(any("MERGE_C1" in line and "MERGE_C2" in line
+                                     for line in deck.splitlines()))
+                self.assertFalse(rendered["topology"]["cross_column_merge"])
+                self.assertEqual(rendered["sources"]["T1"]["sha256"], platform.T1_SOURCE_SHA256)
+                self.assertIn(f".include ../../../../../{platform.T1_SOURCE_PATH}", deck)
+                self.assertEqual(rendered["stimulus_text"],
+                                 (SERIES / "runs" / baseline_id / "stimulus.inc").read_text())
+                if clock_mode == "QUIET":
+                    self.assertIn("R_CLK_QUIET CLK 0 5", deck)
+                    self.assertNotIn("V_TRIG_CLK", deck)
+                    self.assertNotIn("R_TRIG_CLK", deck)
+                else:
+                    self.assertIn("V_TRIG_CLK CLK_RAW 0 PULSE(0 1.2m 170p 1p 1p 2p 50p)", deck)
+                    self.assertIn("R_TRIG_CLK CLK_RAW CLK 2", deck)
+                    self.assertNotIn("R_CLK_QUIET", deck)
+                labels = {item["label"] for item in rendered["probes"]["signals"]}
+                for jj in platform.T1_JJS:
+                    self.assertIn(f"P({jj}|XT1)", labels)
+                    self.assertIn(f"V({jj}|XT1)", labels)
+                for element in platform.T1_INDUCTORS:
+                    self.assertIn(f"I({element}|XT1)", labels)
+                self.assertIn("I(L3|XBQ_R2C1)", labels)
+                self.assertIn("I(L4|XCB_C1_L1)", labels)
+                self.assertIn("V(MERGE_C1_L1)", labels)
+                self.assertIn("V(MERGE_C1_L2)", labels)
+                self.assertEqual("V(CLK_RAW)" in labels, clock_mode == "PULSE")
+                self.assertEqual(rendered["probes"]["signal_count"], 152 if clock_mode == "PULSE" else 151)
+                self.assertLess(platform.estimate_raw_bytes(rendered["probes"]["signal_count"]),
+                                100_000_000)
+                pages = platform.plot_page_plan(rendered["topology"], rendered["probes"])
+                self.assertEqual([page["file"] for page in pages], [
+                    "01_overview.html", "02_frontend_c1.html", "03_t1.html", "04_t1_output.html"])
+                self.assertEqual([window["name"] for window in pages[3]["window_sections"]],
+                                 ["T1_PRE_CLOCK", "T1_CLOCK_1", "T1_CLOCK_2"])
+
+        for index in range(4):
+            quiet = effective_cases[f"T1_C1_Q{index}"]
+            pulse = effective_cases[f"T1_C1_P{index}"]
+            self.assertEqual({key for key in quiet if quiet[key] != pulse[key]}, {"T1_CLK_MODE"})
+        base = effective_cases["T1_C1_Q0"]
+        for index in range(1, 4):
+            case = effective_cases[f"T1_C1_Q{index}"]
+            self.assertEqual({key for key in base if base[key] != case[key]},
+                             {"ROW_BITS", "COL_BITS"})
+
+        for index in range(4):
+            quiet_case, quiet_stimulus = platform.load_config(f"T1_C1_Q{index}")
+            pulse_case, pulse_stimulus = platform.load_config(f"T1_C1_P{index}")
+            changed = {key for key in quiet_case if quiet_case[key] != pulse_case[key]}
+            self.assertEqual(changed, {"T1_CLK_MODE"})
+            self.assertEqual(quiet_stimulus, pulse_stimulus)
+
+    def test_t1_independent_audit_run_matrix_keeps_path_and_ids_distinct(self):
+        self.assertEqual(t1_batch_audit.RUNS_DIR, SERIES / "runs")
+        self.assertEqual(t1_batch_audit.RUN_IDS, tuple(
+            [f"A{index:03d}_T1_C1_Q{mask}" for mask, index in enumerate(range(19, 23))]
+            + [f"A{index:03d}_T1_C1_P{mask}" for mask, index in enumerate(range(23, 27))]
+        ))
+
+    def test_t1_configuration_rejects_invalid_clock_and_incompatible_output_profile(self):
+        case, stimulus, _rendered = render("T1_C1_P1")
+        with self.assertRaisesRegex(platform.ConfigError, "requires PROBE_PROFILE=t1_focus"):
+            platform.validate_config({**case, "PROBE_PROFILE": "core"}, stimulus)
+        with self.assertRaisesRegex(platform.ConfigError, "requires the existing COLUMN_MERGE"):
+            platform.validate_config({**case, "OUTPUT_TOPOLOGY": "INDEPENDENT"}, stimulus)
+        with self.assertRaisesRegex(platform.ConfigError, "shorter than its period"):
+            platform.validate_config({**case, "T1_CLK_PERIOD": "4p"}, stimulus)
+        with self.assertRaisesRegex(platform.ConfigError, "must be QUIET or PULSE"):
+            platform.validate_config({**case, "T1_CLK_MODE": "CONTINUOUS"}, stimulus)
+
+    def test_t1_metrics_use_registered_half_open_windows_and_actual_raw_grid(self):
+        case, stimulus, rendered = render("T1_C1_P1")
+        times = [Decimal(value) * Decimal("1e-12") for value in
+                 ("110", "120", "170", "171", "220", "221", "249")]
+        with tempfile.TemporaryDirectory(prefix="t1-metric-grid-") as temp:
+            raw = Path(temp) / "raw.csv"
+            (Path(temp) / "probe_manifest.json").write_text(
+                json.dumps(rendered["probes"]), encoding="utf-8")
+            labels = [entry["label"] for entry in rendered["probes"]["signals"]]
+            with raw.open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.writer(stream, lineterminator="\n")
+                writer.writerow(["time", *labels])
+                for index, stamp in enumerate(times):
+                    values = []
+                    for label in labels:
+                        if label == "P(B_J1|XT1)":
+                            values.append(str(index / 10))
+                        elif label == "V(B_J1|XT1)":
+                            values.append("1")
+                        else:
+                            values.append("0")
+                    writer.writerow([str(stamp), *values])
+            metrics = platform.analyze_raw(raw, case, stimulus, rendered["topology"])
+        t1 = metrics["t1_metrics"]
+        self.assertEqual(t1["schema"], "bvm-2x2-t1-c1-mechanical-metrics-v1")
+        self.assertEqual(len(t1["junctions"]), 11 * 3)
+        j1 = {item["window"]: item for item in t1["junctions"]
+              if item["junction"] == "B_J1"}
+        self.assertAlmostEqual(j1["T1_PRE_CLOCK"]["phase_delta_rad"], 0.1)
+        self.assertAlmostEqual(j1["T1_CLOCK_1"]["phase_delta_rad"], 0.1)
+        self.assertAlmostEqual(j1["T1_CLOCK_2"]["phase_delta_rad"], 0.2)
+        self.assertAlmostEqual(j1["T1_PRE_CLOCK"]["voltage_area_v_s_same_jj_same_rows"], 10e-12)
+        self.assertAlmostEqual(j1["T1_CLOCK_1"]["voltage_area_v_s_same_jj_same_rows"], 1e-12)
+        self.assertAlmostEqual(j1["T1_CLOCK_2"]["voltage_area_v_s_same_jj_same_rows"], 29e-12)
+        self.assertEqual([t1["windows"][name]["boundary_rule"] for name in (
+            "T1_PRE_CLOCK", "T1_CLOCK_1", "T1_CLOCK_2")], ["[start,end)"] * 3)
+        self.assertFalse(t1["interpolation_or_resampling"])
+        self.assertFalse(t1["scientific_interpretation_performed"])
+
+    def test_t1_four_page_renderer_shares_asset_and_embeds_three_window_views(self):
+        case, stimulus, rendered = render("T1_C1_P1")
+        with tempfile.TemporaryDirectory(prefix="t1-plot-fixture-") as temp:
+            run_dir = Path(temp) / "A_TEST_T1"
+            run_dir.mkdir()
+            (run_dir / "probe_manifest.json").write_text(
+                json.dumps(rendered["probes"]), encoding="utf-8")
+            raw = run_dir / "raw.csv"
+            labels = [item["label"] for item in rendered["probes"]["signals"]]
+            stamps = ("0", "1.1e-10", "1.2e-10", "1.7e-10", "1.71e-10",
+                      "2.2e-10", "2.21e-10", "2.49e-10", "2.5e-10")
+            with raw.open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.writer(stream, lineterminator="\n")
+                writer.writerow(["time", *labels])
+                for _stamp in stamps:
+                    writer.writerow([_stamp, *["0" for _ in labels]])
+            before = hashlib.sha256(raw.read_bytes()).hexdigest()
+            qa = platform.render_plots(run_dir, rendered["topology"], rendered["probes"],
+                                       case, stimulus)
+            after = hashlib.sha256(raw.read_bytes()).hexdigest()
+            self.assertEqual(qa["status"], "PASS")
+            self.assertEqual(qa["page_count"], 4)
+            self.assertEqual(before, after)
+            self.assertEqual({item["path"] for item in qa["pages"]}, {
+                "plots/01_overview.html", "plots/02_frontend_c1.html",
+                "plots/03_t1.html", "plots/04_t1_output.html"})
+            output_html = (run_dir / "plots/04_t1_output.html").read_text(encoding="utf-8")
+            self.assertEqual(output_html.count("Plotly.newPlot"), 3)
+            self.assertEqual(output_html.count("plotly.min.js"), 1)
+            self.assertEqual(len(qa["pages"][-1]["window_sections"]), 3)
+
+    def test_t1_eight_preset_dry_runs_do_not_allocate_or_invoke_solver(self):
+        original_runs = platform.RUNS
+        names = tuple(f"T1_C1_{clock}{index}"
+                      for clock in ("Q", "P") for index in range(4))
+        try:
+            with tempfile.TemporaryDirectory(prefix="rowcol-t1-dry-run-") as temp:
+                platform.RUNS = Path(temp) / "runs"
+                for preset in names:
+                    output = io.StringIO()
+                    with patch.object(platform.subprocess, "run",
+                                      side_effect=AssertionError("solver/process invoked")):
+                        with contextlib.redirect_stdout(output):
+                            status = platform.main(["--dry-run", "--preset", preset])
+                    text = output.getvalue()
+                    self.assertEqual(status, 0, text)
+                    self.assertIn("physical_solve_count=0", text)
+                    self.assertIn("OUTPUT_MODE=T1_C1", text)
+                    self.assertIn("Probes: 151", text) if "_Q" in preset else self.assertIn("Probes: 152", text)
+                    self.assertIn("static QA=PASS", text)
+                    self.assertIn("C1 feeds one XT1; C2 retains 2Ω", text)
                     self.assertFalse(platform.RUNS.exists())
         finally:
             platform.RUNS = original_runs

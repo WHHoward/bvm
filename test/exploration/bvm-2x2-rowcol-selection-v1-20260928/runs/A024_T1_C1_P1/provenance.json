@@ -1,0 +1,134 @@
+{
+  "automatic_follow_up": false,
+  "cell_metrics": {
+    "path": "analysis/cell_metrics.json",
+    "sha256": "190eae6085122a85fdd281441d591325e4971839d1997efeb3511e390ab55433"
+  },
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "/home/howard/JoSIM/test/exploration/bvm-2x2-rowcol-selection-v1-20260928/runs/A024_T1_C1_P1/raw.csv",
+    "/home/howard/JoSIM/test/exploration/bvm-2x2-rowcol-selection-v1-20260928/runs/A024_T1_C1_P1/deck.cir"
+  ],
+  "deck": {
+    "path": "deck.cir",
+    "sha256": "185dbb54320015be2c1c02e45920ab1b6da833953752f66078bbc522f95c5cb5"
+  },
+  "executor_sha256": "0bd448b2c78573a52a8b75d30bcaff5127d355781f8eacfa3531bec7e348676b",
+  "experiment_id": "bvm-2x2-rowcol-selection-v1-20260928",
+  "mechanical_qa": {
+    "path": "analysis/mechanical_qa.json",
+    "sha256": "2eb55ec342123655eea497501db63fd3748ee3985f3e11770baf104580cd17a4"
+  },
+  "metric_spec": {
+    "path": "analysis/metric_spec.json",
+    "sha256": "73937eba48626d2cfa0017ea9d2ce5da6d61553782ff4805309ad4e492b06fbf"
+  },
+  "parameter_manifest": {
+    "path": "parameter_manifest.json",
+    "sha256": "261b8dddc06b789869b206d85b69b775374efdb91ab6601f06fa75b53dca72f6"
+  },
+  "parent_head": "7eb7983c8091a3933e871246754a47d199cabd67",
+  "physical_solve_count": 1,
+  "plot_qa": {
+    "path": "analysis/plot_qa.json",
+    "sha256": "66c2f1447621285de3da3698c372f3f8c901d858269d191ff1ed452f8824936d"
+  },
+  "preflight": {
+    "path": "PREFLIGHT.md",
+    "sha256": "beb2c0c1499749a27be782866b02956d20ed036880b9c216cf7ed3faf0533d54"
+  },
+  "probe_manifest": {
+    "path": "probe_manifest.json",
+    "sha256": "8f4c899d6decd0d177a6474b658f20c270537b802f0d78b5002ec4d6865b3823"
+  },
+  "provenance_qa": {
+    "path": "analysis/provenance_qa.json",
+    "sha256": "bc610c524880fcef0f16bb179191eeb103ff903c931f88712c9c4f3f08a777c1"
+  },
+  "raw": {
+    "bytes": 51083593,
+    "path": "raw.csv",
+    "sha256": "45a0dddf579adbfa8ff0ada085185f9983dba8448609a76286987b2d45d8498c"
+  },
+  "raw_qa": {
+    "path": "analysis/raw_qa.json",
+    "sha256": "765a347f764f8f2dafd821952fa8dea2c96bf9b331b6360a8b5efb0d90e0ac99"
+  },
+  "run_id": "A024_T1_C1_P1",
+  "schema": "bvm-2x2-rowcol-provenance-v1",
+  "scientific_interpretation_performed": false,
+  "solver": {
+    "parent_head": "7eb7983c8091a3933e871246754a47d199cabd67",
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "source_manifest": {
+    "path": "source_manifest.json",
+    "sha256": "adb66310819b5d3dcdfba5e506992391b16e81c17476dde14e0b9c4be6e28550"
+  },
+  "sources": {
+    "BVM": {
+      "mode": "DIRECT_CANONICAL_INCLUDE",
+      "path": "circuits/bvm/bvm_cell_0923.cir",
+      "sha256": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7"
+    },
+    "JJMIT": {
+      "mode": "DIRECT_CANONICAL_INCLUDE",
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    "POST_CB": {
+      "mode": "DIRECT_CANONICAL_INCLUDE",
+      "path": "circuits/CB/CB_0928.cir",
+      "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"
+    },
+    "QB": {
+      "mode": "DIRECT_CANONICAL_INCLUDE",
+      "path": "circuits/qb/BQ_0928.cir",
+      "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"
+    },
+    "SJTL": {
+      "mode": "DIRECT_CANONICAL_INCLUDE",
+      "path": "circuits/sJTL_0923.cir",
+      "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+    },
+    "T1": {
+      "mode": "DIRECT_CANONICAL_INCLUDE",
+      "path": "circuits/t1/t1_cell.cir",
+      "sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237"
+    }
+  },
+  "started_at_utc": "2026-10-08T13:14:58.097711+00:00",
+  "static_qa": {
+    "path": "analysis/static_qa.json",
+    "sha256": "9639a1a07893a3946a169123e3467a4eb69e4bef04c7ca3fefe87ba5da2e9dff"
+  },
+  "stimulus": {
+    "path": "STIMULUS.snapshot.env",
+    "sha256": "767592e3a2f4b5afb160f5c2ee5d344b2f5df60f91c26001a13a1ecdd68046f3"
+  },
+  "stimulus_include": {
+    "path": "stimulus.inc",
+    "sha256": "aff6a87d3e3ee3d81ae8477f1b5f5f3f504257ad931004d462a2a57c33f02a06"
+  },
+  "stimulus_manifest": {
+    "path": "stimulus_manifest.json",
+    "sha256": "b5e4ca05977219d3896bee5a9cee48aab06f4a9adcfe5c2dcbb02cd1960c998b"
+  },
+  "stimulus_qa": {
+    "path": "analysis/stimulus_qa.json",
+    "sha256": "b4795334def271e620321d5ee33f2467e01907c7618f88ba6f77ca7a5ceffe27"
+  },
+  "topology_manifest": {
+    "path": "topology_manifest.json",
+    "sha256": "18d2a44e2500614b9cf7faa134f8bc00a8645f90190715d19ac3659055494264"
+  },
+  "user_case": {
+    "path": "USER_CASE.snapshot.env",
+    "sha256": "7dbf5ed0f2d0158665b725c14a84f58d24587ce660d257c8c28b0cac2596ccc3"
+  }
+}

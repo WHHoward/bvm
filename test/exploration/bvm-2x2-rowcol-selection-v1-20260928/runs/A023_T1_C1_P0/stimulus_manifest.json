@@ -1,0 +1,277 @@
+{
+  "analysis_windows": {
+    "FINAL_READ": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "1.21E-10",
+      "start_seconds": "1.10E-10"
+    },
+    "POST_READ0": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "9.0E-11",
+      "start_seconds": "8.1E-11"
+    },
+    "POST_WRITE0": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "7.0E-11",
+      "start_seconds": "6.1E-11"
+    },
+    "POST_WRITE1": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "1.10E-10",
+      "start_seconds": "1.01E-10"
+    },
+    "READ0": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "8.1E-11",
+      "start_seconds": "7.0E-11"
+    },
+    "READ_RESPONSE": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "2.50E-10",
+      "start_seconds": "1.10E-10"
+    },
+    "T1_CLOCK_1": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "2.20E-10",
+      "start_seconds": "1.70E-10"
+    },
+    "T1_CLOCK_2": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "2.50E-10",
+      "start_seconds": "2.20E-10"
+    },
+    "T1_PRE_CLOCK": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "1.70E-10",
+      "start_seconds": "1.10E-10"
+    },
+    "TAIL": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "2.50E-10",
+      "start_seconds": "1.21E-10"
+    },
+    "WRITE0": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "6.1E-11",
+      "start_seconds": "5.0E-11"
+    },
+    "WRITE1": {
+      "boundary_rule": "[start,end)",
+      "end_seconds": "1.01E-10",
+      "start_seconds": "9.0E-11"
+    }
+  },
+  "column_bits": "00",
+  "drive_mode": "SHARED",
+  "effective_se_topology": "CELL",
+  "final_read_bl_zero": true,
+  "final_read_se_enabled_by_cell": {
+    "R1C1": false,
+    "R1C2": false,
+    "R2C1": false,
+    "R2C2": false
+  },
+  "line_sources": [
+    {
+      "branch": "WL",
+      "cells": [
+        "R1C1",
+        "R1C2"
+      ],
+      "line": "ROW1",
+      "node": "WL_R1",
+      "source": "I_WL_R1"
+    },
+    {
+      "branch": "WL",
+      "cells": [
+        "R2C1",
+        "R2C2"
+      ],
+      "line": "ROW2",
+      "node": "WL_R2",
+      "source": "I_WL_R2"
+    },
+    {
+      "branch": "BL",
+      "cells": [
+        "R1C1",
+        "R2C1"
+      ],
+      "line": "COL1",
+      "node": "BL_C1",
+      "source": "I_BL_C1"
+    },
+    {
+      "branch": "BL",
+      "cells": [
+        "R1C2",
+        "R2C2"
+      ],
+      "line": "COL2",
+      "node": "BL_C2",
+      "source": "I_BL_C2"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R1C1"
+      ],
+      "line": "R1C1",
+      "node": "SE_R1C1",
+      "source": "I_SE_R1C1"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R1C2"
+      ],
+      "line": "R1C2",
+      "node": "SE_R1C2",
+      "source": "I_SE_R1C2"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R2C1"
+      ],
+      "line": "R2C1",
+      "node": "SE_R2C1",
+      "source": "I_SE_R2C1"
+    },
+    {
+      "branch": "SE",
+      "cells": [
+        "R2C2"
+      ],
+      "line": "R2C2",
+      "node": "SE_R2C2",
+      "source": "I_SE_R2C2"
+    }
+  ],
+  "output_mode": "T1_C1",
+  "output_topology": "COLUMN_MERGE",
+  "read0_enabled": "1",
+  "row_bits": "00",
+  "schema": "bvm-2x2-rowcol-stimulus-v1",
+  "se_gate_mode": "CROSSPOINT",
+  "se_topology": "CELL",
+  "second_column_bits": "10",
+  "second_read_enabled": "0",
+  "second_read_se_enabled_by_cell": {
+    "R1C1": false,
+    "R1C2": false,
+    "R2C1": false,
+    "R2C2": false
+  },
+  "second_read_se_gate_mode": "DISABLED",
+  "second_row_bits": "01",
+  "source_stage_values": {
+    "I_BL_C1": {
+      "FINAL_READ": "0",
+      "READ0": "0",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    },
+    "I_BL_C2": {
+      "FINAL_READ": "0",
+      "READ0": "0",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    },
+    "I_SE_R1C1": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_SE_R1C2": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_SE_R2C1": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_SE_R2C2": {
+      "FINAL_READ": "0",
+      "READ0": "100u",
+      "WRITE0": "0",
+      "WRITE1": "0"
+    },
+    "I_WL_R1": {
+      "FINAL_READ": "0",
+      "READ0": "200u",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    },
+    "I_WL_R2": {
+      "FINAL_READ": "0",
+      "READ0": "200u",
+      "WRITE0": "-200u",
+      "WRITE1": "200u"
+    }
+  },
+  "t1_clock_configuration": {
+    "bias3_source": "VOLTAGE",
+    "bias_v": {
+      "BIAS1": "1.8m",
+      "BIAS2": "1.8m",
+      "BIAS3": "1.8m"
+    },
+    "clock": {
+      "amplitude": "1.2m",
+      "fall": "1p",
+      "period": "50p",
+      "rise": "1p",
+      "series_r_ohm": "2",
+      "start": "170p",
+      "width": "2p"
+    },
+    "clock_mode": "PULSE",
+    "input_node": "T1_I",
+    "instance": "XT1",
+    "r_c_ohm": "12",
+    "r_s_ohm": "12",
+    "source_path": "circuits/t1/t1_cell.cir",
+    "source_sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237"
+  },
+  "t1_clock_mode": "PULSE",
+  "timing_windows": {
+    "FINAL_READ": {
+      "fall": "1p",
+      "hold": "9p",
+      "rise": "1p",
+      "start": "110p",
+      "width_source": "FINAL_READ"
+    },
+    "READ0": {
+      "fall": "1p",
+      "hold": "9p",
+      "rise": "1p",
+      "start": "70p",
+      "width_source": "READ0"
+    },
+    "WRITE0": {
+      "fall": "1p",
+      "hold": "9p",
+      "rise": "1p",
+      "start": "50p",
+      "width_source": "WRITE0"
+    },
+    "WRITE1": {
+      "fall": "1p",
+      "hold": "9p",
+      "rise": "1p",
+      "start": "90p",
+      "width_source": "WRITE1"
+    }
+  },
+  "write1_mode": "SIMULTANEOUS",
+  "write1_target_1": "NONE",
+  "write1_target_2": "NONE"
+}

@@ -208,3 +208,58 @@ Parent HEAD: 5447f08ebbe367dd9d4f2ff2f072fa17c2cc1aac.
 - C's static and actual PWLs retain exactly shared WL_R1/WL_R2 and BL_C1/BL_C2 buses plus four cell-SE sources. Raw branch-current arithmetic records nonzero current on WL-only, BL-only, and nominally unselected branches during the selective writes; no logical-state classification is made.
 - No pulse/SFQ event threshold or classifier was registered, and no SCIENTIFIC_REVIEW_AUTHORIZED token was supplied. Event count, logical storage verdict, physical Gate status, and mechanism interpretation remain NOT PERFORMED; timestep convergence remains UNKNOWN.
 - Exactly three registered physical solves were run; no follow-up was performed.
+
+## Authorized T1_C1 batch — pre-solve engineering review (2026-10-08)
+
+### Adversarial checks
+
+- **Wrong output/load mode:** all eight rendered candidates contain exactly one
+  canonical XT1 on C1, the VOUT_C1→T1_I 0 V link, no C1 2 Ω shunt, and the
+  unchanged C2 2 Ω terminal. The two column chains remain separate.
+- **Wrong front-end condition:** each QUIET/PULSE pair differs only in
+  `T1_CLK_MODE`; each mask differs only in ROW_BITS/COL_BITS. Exact generated
+  `stimulus.inc` equality with A013–A016 is covered by regression tests.
+- **Clock source overlap/model drift:** QUIET contains only the historical
+  5 Ω CLK resistor; PULSE contains the registered 1.2 mV/170 ps/50 ps source
+  and 2 Ω series resistor, with no quiet resistor. T1 and shared jjmit include
+  hashes match their registered canonical values.
+- **Probe omission/raw growth:** the T1 profile statically requires every
+  T1 J1–J11 P/V pair, registered T1 inductor currents, C1 full BVM/QB/MERGE/
+  sJTL/CB path, each cell's input currents/state, and C2 control. It is 151
+  QUIET or 152 PULSE signals versus A018's 284; raw estimates remain below
+  100,000,000 bytes per run.
+- **Window collapse/false event semantics:** T1 output arithmetic is split into
+  `[110,170)`, `[170,220)`, and `[220,250)` ps on actual stored rows. Phase is
+  radians; neither phase turns nor voltage-area/Φ0 is an event count.
+- **Misleading handoff brief:** review found the generic RESULT_BRIEF would
+  omit the T1-specific mode/windows/arithmetic status. The writer now emits
+  Bias B, clock mode, registered windows, and T1 mechanical status for T1_C1
+  runs; it makes no functional or mechanism claim.
+
+### Acceptance before physical execution
+
+- `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q
+  test/exploration/bvm-2x2-rowcol-selection-v1-20260928/tests`: 40 passed.
+- Python compile and `git diff --check`: PASS.
+- All eight CLI dry-runs: static QA PASS, 151 QUIET/152 PULSE probes, four
+  planned classic pages, estimated 58.3/58.7 MB, no run directory or solver.
+- Historical A001–A018 render regression and A013–A016 stimulus equivalence:
+  PASS; old run data has not been modified.
+- Independent mechanical raw audit and comparison pages are registered but
+  await the eight authorized raws. No physical solve or scientific
+  interpretation has occurred at this pre-solve review point.
+
+### Post-solve arithmetic QA correction
+
+- The independent batch-audit launcher initially had a run-ID formatting
+  `NameError`; the first fix exposed a name collision between the run-ID tuple
+  and runs-directory path. Both attempts stopped before opening raw or writing
+  outputs. The corrected implementation separates `RUNS_DIR`/`RUN_IDS` and
+  adds a regression test for the exact A019–A026 sequence.
+- After correction, the suite passed 41 tests and the independent Decimal-grid
+  audit passed all eight runs with zero cross-check errors. The audit records
+  raw SHA before/after equality, actual-grid area arithmetic, phase/area
+  cross-checks, output extrema and peak-time tokens. See
+  `analysis/t1_audit_patch_record.json` for the exact before/after hashes.
+- The correction was limited to postprocessing code. No simulation was
+  repeated, and no raw or scientific conclusion was changed.

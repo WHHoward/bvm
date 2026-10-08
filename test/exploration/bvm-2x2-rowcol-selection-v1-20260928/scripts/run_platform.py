@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import html
 import hashlib
 import importlib.util
 import json
@@ -44,6 +45,8 @@ SOURCE_PATHS = {
     "SJTL": "circuits/sJTL_0923.cir",
     "POST_CB": "circuits/CB/CB_0928.cir",
 }
+T1_SOURCE_PATH = "circuits/t1/t1_cell.cir"
+T1_SOURCE_SHA256 = "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237"
 SOURCE_SHA256 = {
     "JJMIT": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
     "BVM": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
@@ -58,7 +61,10 @@ CASE_KEYS = {
     "SE_TOPOLOGY", "SE_GATE_MODE", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
     "DT", "STOP", "PROBE_PROFILE", "SECOND_READ_ENABLE", "SECOND_ROW_BITS",
     "SECOND_COL_BITS", "READ0_ENABLE", "WRITE1_MODE", "WRITE1_TARGET_1",
-    "WRITE1_TARGET_2", "OUTPUT_TOPOLOGY",
+    "WRITE1_TARGET_2", "OUTPUT_TOPOLOGY", "OUTPUT_MODE", "T1_CLK_MODE",
+    "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_BIAS3_SOURCE", "T1_R_S", "T1_R_C",
+    "T1_CLK_AMPLITUDE", "T1_CLK_START", "T1_CLK_PERIOD", "T1_CLK_RISE",
+    "T1_CLK_WIDTH", "T1_CLK_FALL", "T1_CLK_R_SERIES",
 }
 OPTIONAL_SE_KEYS = {"SE_TOPOLOGY", "SE_GATE_MODE"}
 LEGACY_SE_DEFAULTS = {"SE_TOPOLOGY": "SHARED_COLUMN", "SE_GATE_MODE": "COLUMN"}
@@ -75,6 +81,18 @@ WRITE_SEQUENCE_DEFAULTS = {
     "WRITE1_TARGET_1": "NONE", "WRITE1_TARGET_2": "NONE",
 }
 OUTPUT_TOPOLOGY_DEFAULTS = {"OUTPUT_TOPOLOGY": "INDEPENDENT"}
+T1_DEFAULTS = {
+    "OUTPUT_MODE": "TERMINAL",
+    "T1_CLK_MODE": "QUIET",
+    "T1_BIAS1": "1.8m", "T1_BIAS2": "1.8m", "T1_BIAS3": "1.8m",
+    "T1_BIAS3_SOURCE": "VOLTAGE", "T1_R_S": "12", "T1_R_C": "12",
+    "T1_CLK_AMPLITUDE": "1.2m", "T1_CLK_START": "170p",
+    "T1_CLK_PERIOD": "50p", "T1_CLK_RISE": "1p", "T1_CLK_WIDTH": "2p",
+    "T1_CLK_FALL": "1p", "T1_CLK_R_SERIES": "2",
+}
+T1_JJS = tuple(f"B_J{index}" for index in range(1, 12))
+T1_INDUCTORS = ("L1", "L3", "L11", "L14", "L17")
+T1_METRIC_WINDOWS = ("T1_PRE_CLOCK", "T1_CLOCK_1", "T1_CLOCK_2")
 BASE_STIMULUS_KEYS = {
     f"{stage}_{field}"
     for stage in ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
@@ -95,6 +113,8 @@ PRESET_NAMES = {
     "M_T0_NO_READ_MERGED_COLUMNS", "M_T1_R1C1_MERGED_COLUMNS",
     "M_T2_R2C1_MERGED_COLUMNS", "M_T3_C1_DUAL_MERGED_COLUMNS",
     "M_T4_ROW_DUAL_MERGED_COLUMNS", "M_T5_ALL_FOUR_MERGED_COLUMNS",
+    "T1_C1_Q0", "T1_C1_Q1", "T1_C1_Q2", "T1_C1_Q3",
+    "T1_C1_P0", "T1_C1_P1", "T1_C1_P2", "T1_C1_P3",
 }
 ROWS = (1, 2)
 COLS = (1, 2)
@@ -180,20 +200,21 @@ def fmt_time(seconds: Decimal) -> str:
 
 def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, str]]:
     optional_case_keys = (OPTIONAL_SE_KEYS | OPTIONAL_SECOND_CASE_KEYS |
-                          OPTIONAL_WRITE_SEQUENCE_KEYS | OPTIONAL_TOPOLOGY_KEYS)
+                          OPTIONAL_WRITE_SEQUENCE_KEYS | OPTIONAL_TOPOLOGY_KEYS |
+                          set(T1_DEFAULTS))
     case = parse_env(USER_CASE, CASE_KEYS, required=CASE_KEYS - optional_case_keys)
     case = _with_se_defaults(case)
     case = _with_second_read_defaults(case)
     case = _with_write_sequence_defaults(case)
     case = _with_output_topology_defaults(case)
+    case = _with_t1_defaults(case)
     stimulus_overrides: dict[str, str] = {}
     if preset is not None:
         if preset not in PRESET_NAMES:
             raise ConfigError(f"unknown preset {preset!r}; choose one of {sorted(PRESET_NAMES)}")
         preset_path = PRESETS_DIR / f"{preset}.env"
-        preset_fixed_keys = {"NAME", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R",
-                             "PROBE_PROFILE"}
-        optional_preset_keys = optional_case_keys | {"DT", "STOP"}
+        preset_fixed_keys = {"NAME", "SJTL_PER_CELL", "POST_CB_PER_CELL", "TERM_R"}
+        optional_preset_keys = optional_case_keys | {"DT", "STOP", "PROBE_PROFILE"}
         overrides = parse_env(preset_path, (CASE_KEYS | STIMULUS_KEYS) - preset_fixed_keys,
                               required=CASE_KEYS - preset_fixed_keys - optional_preset_keys)
         case.update({key: value for key, value in overrides.items() if key in CASE_KEYS})
@@ -210,6 +231,13 @@ def load_config(preset: str | None = None) -> tuple[dict[str, str], dict[str, st
             if key not in overrides:
                 case[key] = value
         for key, value in OUTPUT_TOPOLOGY_DEFAULTS.items():
+            if key not in overrides:
+                case[key] = value
+        if "OUTPUT_MODE" not in overrides:
+            case["OUTPUT_MODE"] = "TERMINAL"
+        if "PROBE_PROFILE" not in overrides:
+            case["PROBE_PROFILE"] = "core"
+        for key, value in T1_DEFAULTS.items():
             if key not in overrides:
                 case[key] = value
     stimulus = parse_env(STIMULUS, STIMULUS_KEYS, required=BASE_STIMULUS_KEYS)
@@ -247,7 +275,15 @@ def _with_output_topology_defaults(case: dict[str, str]) -> dict[str, str]:
     return effective
 
 
+def _with_t1_defaults(case: dict[str, str]) -> dict[str, str]:
+    effective = dict(case)
+    for key, value in T1_DEFAULTS.items():
+        effective.setdefault(key, value)
+    return effective
+
+
 def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
+    case = _with_t1_defaults(case)
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", case["NAME"]):
         raise ConfigError("NAME must contain only letters, digits, underscore, or hyphen")
     if case["DRIVE_MODE"] not in {"INDEPENDENT", "SHARED"}:
@@ -279,8 +315,32 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
                 "ROW_WL_WRITE_AMPLITUDE", "COL_BL_WRITE_AMPLITUDE", "DT", "STOP", "TERM_R"):
         if quantity(case[key], key) <= 0:
             raise ConfigError(f"{key} must be positive")
-    if case["PROBE_PROFILE"] not in {"core", "debug"}:
-        raise ConfigError("PROBE_PROFILE must be core or debug")
+    if case["OUTPUT_MODE"] not in {"TERMINAL", "T1_C1"}:
+        raise ConfigError("OUTPUT_MODE must be TERMINAL or T1_C1")
+    if case["PROBE_PROFILE"] not in {"core", "debug", "t1_focus"}:
+        raise ConfigError("PROBE_PROFILE must be core, debug, or t1_focus")
+    if case["OUTPUT_MODE"] == "T1_C1":
+        if case["OUTPUT_TOPOLOGY"] != "COLUMN_MERGE":
+            raise ConfigError("OUTPUT_MODE=T1_C1 requires the existing COLUMN_MERGE topology")
+        if case["PROBE_PROFILE"] != "t1_focus":
+            raise ConfigError("OUTPUT_MODE=T1_C1 requires PROBE_PROFILE=t1_focus")
+        if case["T1_CLK_MODE"] not in {"QUIET", "PULSE"}:
+            raise ConfigError("T1_CLK_MODE must be QUIET or PULSE")
+        if case["T1_BIAS3_SOURCE"] != "VOLTAGE":
+            raise ConfigError("T1_BIAS3_SOURCE is frozen to VOLTAGE")
+        for key in ("T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_R_S", "T1_R_C",
+                    "T1_CLK_AMPLITUDE", "T1_CLK_PERIOD", "T1_CLK_RISE",
+                    "T1_CLK_WIDTH", "T1_CLK_FALL", "T1_CLK_R_SERIES"):
+            if quantity(case[key], key) <= 0:
+                raise ConfigError(f"{key} must be positive")
+        if quantity(case["T1_CLK_START"], "T1_CLK_START") < 0:
+            raise ConfigError("T1_CLK_START must be nonnegative")
+        pulse_duration = sum((quantity(case[key], key) for key in
+                              ("T1_CLK_RISE", "T1_CLK_WIDTH", "T1_CLK_FALL")), Decimal(0))
+        if pulse_duration >= quantity(case["T1_CLK_PERIOD"], "T1_CLK_PERIOD"):
+            raise ConfigError("T1 pulse edge+width duration must be shorter than its period")
+    elif case["PROBE_PROFILE"] == "t1_focus":
+        raise ConfigError("PROBE_PROFILE=t1_focus is reserved for OUTPUT_MODE=T1_C1")
     if case["SJTL_PER_CELL"] != "1" or case["POST_CB_PER_CELL"] != "1":
         raise ConfigError("this platform freezes exactly one sJTL and one post-CB per cell")
     if quantity(case["TERM_R"], "TERM_R") != Decimal("2"):
@@ -294,8 +354,9 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str]) -> None:
             raise ConfigError("COLUMN_MERGE batch freezes the standard WRITE0/READ0/WRITE1 preparation")
         if case["SECOND_READ_ENABLE"] != "0":
             raise ConfigError("COLUMN_MERGE batch requires SECOND_READ_ENABLE=0")
-        if case["PROBE_PROFILE"] != "core":
-            raise ConfigError("COLUMN_MERGE batch freezes PROBE_PROFILE=core")
+        expected_profile = "t1_focus" if case["OUTPUT_MODE"] == "T1_C1" else "core"
+        if case["PROBE_PROFILE"] != expected_profile:
+            raise ConfigError(f"COLUMN_MERGE freezes PROBE_PROFILE={expected_profile} for this output mode")
         frozen_amplitudes = {
             "ROW_WL_READ_AMPLITUDE": Decimal("200e-6"),
             "COL_SE_READ_AMPLITUDE": Decimal("100e-6"),
@@ -371,6 +432,49 @@ def verify_sources() -> dict[str, dict[str, str]]:
         records[role] = {"path": relative, "sha256": digest,
                          "mode": "DIRECT_CANONICAL_INCLUDE"}
     return records
+
+
+def parse_t1_subckt() -> tuple[str, ...]:
+    path = REPO / T1_SOURCE_PATH
+    inside = False
+    pins: tuple[str, ...] | None = None
+    jjs: set[str] = set()
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("*"):
+            continue
+        fields = line.split()
+        if (fields[0].casefold() == ".subckt" and len(fields) >= 3
+                and fields[1].upper() == "T1"):
+            if inside or pins is not None:
+                raise ConfigError("canonical T1 source contains repeated .subckt T1 declarations")
+            pins = tuple(fields[2:])
+            inside = True
+        elif inside and fields[0].casefold() == ".ends":
+            inside = False
+        elif inside:
+            match = re.fullmatch(r"B_J(\d+)", fields[0].upper())
+            if match:
+                if len(fields) < 4 or fields[3].casefold() != "jjmit":
+                    raise ConfigError(f"T1 {fields[0]} does not use the shared jjmit model")
+                jjs.add(fields[0].upper())
+    expected_pins = ("I", "CLK", "S", "C", "N_BIAS1", "N_BIAS2", "N_BIAS3")
+    expected_jjs = {f"B_J{index}" for index in range(1, 12)}
+    if inside or pins != expected_pins or jjs != expected_jjs:
+        raise ConfigError(f"canonical T1 source pins/JJ inventory changed: pins={pins}, JJs={sorted(jjs)}")
+    return pins
+
+
+def verify_t1_source() -> dict[str, str]:
+    path = REPO / T1_SOURCE_PATH
+    if not path.is_file():
+        raise ConfigError(f"canonical T1 source is missing: {T1_SOURCE_PATH}")
+    digest = sha256(path)
+    if digest != T1_SOURCE_SHA256:
+        raise ConfigError(f"canonical T1 source hash changed; human review required: {T1_SOURCE_PATH}")
+    parse_t1_subckt()
+    return {"path": T1_SOURCE_PATH, "sha256": digest,
+            "mode": "DIRECT_CANONICAL_INCLUDE"}
 
 
 def parse_subckt(role: str) -> tuple[str, ...]:
@@ -473,7 +577,8 @@ def _render_column_merge_topology(case: dict[str, str], sources: dict[str, dict[
         "ARRAY_SIZE": 2, "MASK": case["ROW_BITS"],
         "QB_CB": [0, 0], "SJTL_COUNT": [1, 1], "POST_SJTL_CB": [1, 1],
         "TERM_R": case["TERM_R"], "DT": case["DT"], "STOP": case["STOP"],
-        "OUTPUT_MODE": "TERMINAL", "PROBE_PROFILE": case["PROBE_PROFILE"],
+        "OUTPUT_MODE": "TERMINAL",
+        "PROBE_PROFILE": "core" if case["PROBE_PROFILE"] == "t1_focus" else case["PROBE_PROFILE"],
     }
     column_records: list[dict[str, Any]] = []
     instance_lines: list[str] = []
@@ -761,11 +866,35 @@ def _source_target(role: str) -> str:
 
 
 def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dict[str, Any]:
+    case = _with_t1_defaults(case)
     sources = verify_sources()
     for role in ("BVM", "QB", "SJTL", "POST_CB"):
         parse_subckt(role)
+    if case["OUTPUT_MODE"] == "T1_C1":
+        sources["T1"] = verify_t1_source()
     column_merge = case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE"
+    t1_enabled = case["OUTPUT_MODE"] == "T1_C1"
     merge_design = _render_column_merge_topology(case, sources) if column_merge else None
+    if t1_enabled:
+        if merge_design is None:
+            raise ConfigError("T1_C1 requires the rendered two-column merge topology")
+        merge_design["instance_lines"] = [
+            line for line in merge_design["instance_lines"]
+            if line != f"R_TERM_C1 VOUT_C1 0 {case['TERM_R']}"
+        ]
+        for chain in merge_design["column_chains"]:
+            if chain["column"] == 1:
+                chain["termination_instance"] = None
+                chain["termination_ohm"] = None
+                chain["receiver_instance"] = "XT1"
+                chain["actual_instance_lines"] = [
+                    line for line in chain["actual_instance_lines"]
+                    if not line.startswith("R_TERM_C1 ")
+                ]
+            else:
+                chain["receiver_instance"] = chain["termination_instance"]
+        merge_design["t1_instance_count"] = 1
+        merge_design["column_output_loads"] = {"C1": "T1 input via V_T1_LINK", "C2": "2 ohm"}
     drivers = _driver_layout(case)
     driver_points: dict[str, list[tuple[Decimal, str]]] = {}
     driver_stages: dict[str, dict[str, str]] = {}
@@ -797,7 +926,8 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
                 instances = {"BVM": f"XBVM_{name}", "QB": f"XBQ_{name}",
                              "SJTL": f"XSJTL_C{col}_L{row}",
                              "POST_CB": f"XCB_C{col}_L{row}",
-                             "TERMINATION": f"R_TERM_C{col}"}
+                             "TERMINATION": (None if t1_enabled and col == 1
+                                             else f"R_TERM_C{col}")}
             else:
                 qb_node = f"QBOUT_{name}"
                 sjtl_node = f"SJTL_OUT_{name}"
@@ -828,7 +958,8 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
                 "sl_node": sl_node, "qb_output_node": qb_node,
                 "sjtl_output_node": sjtl_node, "output_node": vout,
                 "instances": instances,
-                "load_chain": (["column-chain", f"C{col}", "level", row]
+                "load_chain": (["column-chain", f"C{col}", "level", row,
+                                "T1_C1" if t1_enabled and col == 1 else "terminal"]
                                if column_merge else
                                [instances["BVM"], instances["QB"], instances["SJTL"],
                                 instances["POST_CB"], instances["TERMINATION"]]),
@@ -868,16 +999,43 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
     for role in ("JJMIT", "BVM", "QB", "SJTL", "POST_CB"):
         source_path = REPO / SOURCE_PATHS[role]
         includes.append(f".include {Path(os.path.relpath(source_path, run_dir)).as_posix()}")
+    if t1_enabled:
+        includes.append(f".include {Path(os.path.relpath(REPO / T1_SOURCE_PATH, run_dir)).as_posix()}")
     if column_merge:
         topology_comments = [
-            "* 2x2 BVM row/column selection platform; two isolated column merge chains; no T1.",
+            ("* 2x2 BVM row/column selection platform; two isolated column merge chains; T1 only on C1."
+             if t1_enabled else
+             "* 2x2 BVM row/column selection platform; two isolated column merge chains; no T1."),
             "* MERGE_Cn_Lm names are electrical shared nodes, not MERGE subcircuit instances.",
             "* Per column: QB1->MERGE1->sJTL1->CB1->MERGE2; QB2 also feeds MERGE2->sJTL2->CB2->VOUT.",
         ]
-        load_comment = "* One 2-ohm termination per independent column VOUT."
+        load_comment = ("* C1 VOUT connects only to T1 input; C2 retains its 2-ohm termination."
+                        if t1_enabled else "* One 2-ohm termination per independent column VOUT.")
     else:
         topology_comments = ["* 2x2 BVM row/column selection platform; no output merging or T1."]
         load_comment = "* BVM.SL -> BQ -> one sJTL -> one post-CB -> independent VOUT -> R_TERM=2 ohm."
+    t1_deck_lines: list[str] = []
+    if t1_enabled:
+        t1_deck_lines.extend((
+            "", "* T1 Bias B; canonical T1 source and shared jjmit model.",
+            f"V_BIAS1 N_BIAS1 0 DC {case['T1_BIAS1']}",
+            f"V_BIAS2 N_BIAS2 0 DC {case['T1_BIAS2']}",
+            f"V_BIAS3 N_BIAS3 0 DC {case['T1_BIAS3']}",
+            f"R_S S 0 {case['T1_R_S']}", f"R_C C 0 {case['T1_R_C']}",
+        ))
+        if case["T1_CLK_MODE"] == "QUIET":
+            t1_deck_lines.append("R_CLK_QUIET CLK 0 5")
+        else:
+            t1_deck_lines.extend((
+                f"V_TRIG_CLK CLK_RAW 0 PULSE(0 {case['T1_CLK_AMPLITUDE']} "
+                f"{case['T1_CLK_START']} {case['T1_CLK_RISE']} {case['T1_CLK_FALL']} "
+                f"{case['T1_CLK_WIDTH']} {case['T1_CLK_PERIOD']})",
+                f"R_TRIG_CLK CLK_RAW CLK {case['T1_CLK_R_SERIES']}",
+            ))
+        t1_deck_lines.extend((
+            "V_T1_LINK VOUT_C1 T1_I 0",
+            "XT1 T1_I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1",
+        ))
     deck_lines = [
         *topology_comments,
         "* Canonical component sources are direct includes and remain unchanged.",
@@ -889,6 +1047,7 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
         load_comment,
         "* FINAL READ has zero BL drive.",
         *instance_lines,
+        *t1_deck_lines,
     ]
     shared_nodes = {}
     if case["DRIVE_MODE"] == "SHARED":
@@ -922,6 +1081,7 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
         "schema": "bvm-2x2-rowcol-topology-v1",
         "drive_mode": case["DRIVE_MODE"],
         "output_topology": case["OUTPUT_TOPOLOGY"],
+        "output_mode": case["OUTPUT_MODE"],
         "se_configuration": {
             "configured_topology": case["SE_TOPOLOGY"],
             "effective_topology": _effective_se_topology(case),
@@ -966,10 +1126,28 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
         "column_outputs_independent": column_merge,
         "output_merge": column_merge,
         "cross_column_merge": False,
-        "t1_instance_count": 0,
-        "uniform_load": {"sJTL_per_cell": 1, "post_cb_per_cell": 1,
-                         "termination_ohm": case["TERM_R"],
-                         "termination_count": 2 if column_merge else 4},
+        "t1_instance_count": 1 if t1_enabled else 0,
+        "t1": ({"instance": "XT1", "source_path": T1_SOURCE_PATH,
+                "source_sha256": sources["T1"]["sha256"],
+                "input_node": "T1_I", "clock_mode": case["T1_CLK_MODE"],
+                "bias_v": {f"BIAS{index}": case[f"T1_BIAS{index}"] for index in (1, 2, 3)},
+                "bias3_source": case["T1_BIAS3_SOURCE"],
+                "r_s_ohm": case["T1_R_S"], "r_c_ohm": case["T1_R_C"],
+                "clock": ({"amplitude": case["T1_CLK_AMPLITUDE"],
+                           "start": case["T1_CLK_START"], "period": case["T1_CLK_PERIOD"],
+                           "rise": case["T1_CLK_RISE"], "width": case["T1_CLK_WIDTH"],
+                           "fall": case["T1_CLK_FALL"], "series_r_ohm": case["T1_CLK_R_SERIES"]}
+                          if case["T1_CLK_MODE"] == "PULSE" else
+                          {"quiet_resistor_ohm": "5"})}
+               if t1_enabled else None),
+        "column_output_loads": ({"C1": "T1 input through V_T1_LINK", "C2": f"{case['TERM_R']} ohm"}
+                                if t1_enabled else
+                                {"C1": f"{case['TERM_R']} ohm", "C2": f"{case['TERM_R']} ohm"}),
+        "uniform_load": (None if t1_enabled else
+                         {"sJTL_per_cell": 1, "post_cb_per_cell": 1,
+                          "termination_ohm": case["TERM_R"],
+                          "termination_count": 2 if column_merge else 4}),
+        "termination_count": (1 if t1_enabled else (2 if column_merge else 4)),
         "source_sha256": {role: item["sha256"] for role, item in sources.items()},
     }
     probes = make_probe_manifest(case, topology)
@@ -979,7 +1157,8 @@ def render(case: dict[str, str], stimulus: dict[str, str], run_dir: Path) -> dic
         f".tran {case['DT']} {case['STOP']}",
         ".end",
     ))
-    static_qa = static_validate(case, topology, deck_lines, drive_lines, probes, driver_stages)
+    static_qa = static_validate(case, topology, deck_lines, drive_lines, probes,
+                                driver_stages, run_dir=run_dir)
     deck = "\n".join(deck_lines) + "\n"
     return {"deck": deck, "topology": topology, "probes": probes,
             "sources": sources, "drivers": drivers, "driver_points": driver_points,
@@ -997,6 +1176,106 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
             return
         seen.add(label)
         signals.append({"label": label, "group": group, "unit": unit, **meta})
+
+    if case["PROBE_PROFILE"] == "t1_focus":
+        for driver in topology["input_lines"]:
+            add(f"I({driver['source']})", f"drive:{driver['branch']}", "A",
+                element=driver["source"], node=driver["node"], cells=driver["cells"])
+        for cell in topology["cell_instances"]:
+            name, inst = cell["cell"], cell["instances"]
+            for branch, element in (("WL", "R_WL"), ("BL", "R_BL"), ("SE", "R_SE")):
+                add(f"I({element}|{inst['BVM']})", f"cell:{name}:input", "A",
+                    instance=inst["BVM"], element=element, branch=branch)
+            add(f"V({cell['sl_node']})", f"cell:{name}:bvm_output", "V", node=cell["sl_node"])
+            add(f"I(L_SL|{inst['BVM']})", f"cell:{name}:bvm_output", "A",
+                instance=inst["BVM"], element="L_SL")
+            for jj in CELL_JJS:
+                add(f"P({jj}|{inst['BVM']})", f"cell:{name}:bvm_state", "rad",
+                    instance=inst["BVM"], element=jj)
+                add(f"V({jj}|{inst['BVM']})", f"cell:{name}:bvm_state", "V",
+                    instance=inst["BVM"], element=jj)
+
+            # C2 is retained as a bounded control: cell inputs/state and its
+            # terminal are kept, while its passive QB/JTL/CB internals are omitted.
+            if cell["column"] != 1:
+                continue
+            for jj in QB_JJS:
+                add(f"P({jj}|{inst['QB']})", f"frontend_c1:{name}:qb", "rad",
+                    instance=inst["QB"], element=jj)
+                add(f"V({jj}|{inst['QB']})", f"frontend_c1:{name}:qb", "V",
+                    instance=inst["QB"], element=jj)
+            for element in ("LIN", "L1", "L2", "L3", "IB2"):
+                add(f"I({element}|{inst['QB']})", f"frontend_c1:{name}:qb", "A",
+                    instance=inst["QB"], element=element)
+            add(f"V({cell['qb_output_node']})", f"frontend_c1:{name}:qb_boundary", "V",
+                node=cell["qb_output_node"])
+
+        for level in topology["column_chains"][0]["levels"]:
+            add(f"V({level['merge_node']})", f"frontend_c1:merge{level['level']}", "V",
+                node=level["merge_node"])
+            add(f"V({level['sjtl_output_node']})", f"frontend_c1:sjtl{level['level']}", "V",
+                node=level["sjtl_output_node"])
+            sjtl = level["sjtl_instances"][0]
+            add(f"P(BJ1|{sjtl})", f"frontend_c1:sjtl{level['level']}", "rad",
+                instance=sjtl, element="BJ1")
+            add(f"V(BJ1|{sjtl})", f"frontend_c1:sjtl{level['level']}", "V",
+                instance=sjtl, element="BJ1")
+            for element in ("L1", "L2"):
+                add(f"I({element}|{sjtl})", f"frontend_c1:sjtl{level['level']}", "A",
+                    instance=sjtl, element=element)
+            cb = level["post_sjtl_cb_instance"]
+            for jj in CB_JJS:
+                add(f"P({jj}|{cb})", f"frontend_c1:cb{level['level']}", "rad",
+                    instance=cb, element=jj)
+                add(f"V({jj}|{cb})", f"frontend_c1:cb{level['level']}", "V",
+                    instance=cb, element=jj)
+            for element in ("L1", "L2", "L3", "L4"):
+                add(f"I({element}|{cb})", f"frontend_c1:cb{level['level']}", "A",
+                    instance=cb, element=element)
+
+        for jj in T1_JJS:
+            add(f"P({jj}|XT1)", "t1:junction_phase", "rad", instance="XT1", element=jj)
+            add(f"V({jj}|XT1)", "t1:junction_voltage", "V", instance="XT1", element=jj)
+        for element in T1_INDUCTORS:
+            add(f"I({element}|XT1)", "t1:inductor_current", "A",
+                instance="XT1", element=element)
+        add("V(T1_I)", "t1:input_boundary", "V", node="T1_I")
+        add("I(V_T1_LINK)", "t1:input_boundary", "A", element="V_T1_LINK",
+            direction="VOUT_C1 to T1_I")
+        add("V(VOUT_C1)", "frontend_c1:output_boundary", "V", node="VOUT_C1")
+        add("V(VOUT_C2)", "column_c2:output_control", "V", node="VOUT_C2")
+        add("V(S)", "t1:sum_output", "V", node="S")
+        add("V(C)", "t1:carry_output", "V", node="C")
+        add("I(R_S)", "t1:sum_load_current", "A", element="R_S")
+        add("I(R_C)", "t1:carry_load_current", "A", element="R_C")
+        add("I(V_BIAS1)", "t1:bias_current", "A", element="V_BIAS1")
+        add("I(V_BIAS2)", "t1:bias_current", "A", element="V_BIAS2")
+        add("I(V_BIAS3)", "t1:bias_current", "A", element="V_BIAS3")
+        add("V(CLK)", "t1:clock", "V", node="CLK")
+        if case["T1_CLK_MODE"] == "PULSE":
+            add("V(CLK_RAW)", "t1:clock", "V", node="CLK_RAW")
+            add("I(R_TRIG_CLK)", "t1:clock_branch_current", "A", element="R_TRIG_CLK")
+        else:
+            add("I(R_CLK_QUIET)", "t1:clock_branch_current", "A", element="R_CLK_QUIET")
+        add("I(R_TERM_C2)", "column_c2:terminal_load_current", "A", element="R_TERM_C2")
+        return {
+            "schema": "bvm-2x2-rowcol-probes-v1", "profile": case["PROBE_PROFILE"],
+            "drive_mode": case["DRIVE_MODE"], "se_topology": case["SE_TOPOLOGY"],
+            "effective_se_topology": _effective_se_topology(case),
+            "se_gate_mode": case["SE_GATE_MODE"], "output_topology": case["OUTPUT_TOPOLOGY"],
+            "output_mode": case["OUTPUT_MODE"], "read0_enabled": case["READ0_ENABLE"],
+            "write1_mode": case["WRITE1_MODE"], "second_read_enabled": case["SECOND_READ_ENABLE"],
+            "row_bits": case["ROW_BITS"], "column_bits": case["COL_BITS"],
+            "active_crosspoints": topology["cell_selection"]["active_crosspoints"],
+            "t1_junctions": list(T1_JJS), "t1_inductors": list(T1_INDUCTORS),
+            "clock_mode": case["T1_CLK_MODE"], "signals": signals,
+            "signal_count": len(signals), "raw_phase_unit": "P(...) radians",
+            "display_phase_unit": "turns = radians/(2*pi); navigation only, not an SFQ count",
+            "reduction_basis": ["all BVM input branches and state JJ P/V", "C1 full BVM/QB/MERGE/sJTL/CB path",
+                                "all T1 JJ P/V", "five registered T1 inductor currents",
+                                "C2 BVM input/state and terminal control"],
+            "scientific_interpretation_performed": False,
+        }
 
     for driver in topology["input_lines"]:
         add(f"I({driver['source']})", f"drive:{driver['branch']}", "A",
@@ -1140,34 +1419,38 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
 
 def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: list[str],
                     drive_lines: list[str], probes: dict[str, Any],
-                    driver_stages: dict[str, dict[str, str]]) -> dict[str, Any]:
+                    driver_stages: dict[str, dict[str, str]], *, run_dir: Path) -> dict[str, Any]:
     column_merge = case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE"
+    t1_enabled = case["OUTPUT_MODE"] == "T1_C1"
     cell_records = topology["cell_instances"]
     expected_instances = (("BVM", "XBVM_", 4), ("QB", "XBQ_", 4),
                           ("SJTL", "XSJTL_", 4), ("POST_CB", "XCB_", 4),
-                          ("TERMINATION", "R_TERM_", 2 if column_merge else 4))
+                          ("TERMINATION", "R_TERM_",
+                           1 if t1_enabled else (2 if column_merge else 4)))
     for role, prefix, count in expected_instances:
         found = [cell["instances"][role] for cell in cell_records
-                 if cell["instances"][role].startswith(prefix)]
-        unique_required = count if not column_merge or role != "TERMINATION" else 2
+                 if isinstance(cell["instances"][role], str)
+                 and cell["instances"][role].startswith(prefix)]
+        unique_required = count
         if len(set(found)) != unique_required or (not column_merge and len(found) != count):
             raise ConfigError(f"expected four unique {role} instances, found {found}")
     deck = "\n".join(deck_lines)
     instance_lines = [line for line in deck_lines if line.startswith(("XBVM_", "XBQ_", "XSJTL_", "XCB_"))]
     if len(instance_lines) != 16:
         raise ConfigError(f"expected 16 subcircuit instances, found {len(instance_lines)}")
-    if any(line.split()[-1].casefold() == "merge" or "XT1" in line.upper()
+    if any(line.split()[-1].casefold() == "merge"
            for line in instance_lines):
-        raise ConfigError("MERGE subcircuit and T1 instances are prohibited; MERGE labels are electrical nodes")
+        raise ConfigError("MERGE subcircuit instances are prohibited; MERGE labels are electrical nodes")
     outputs = [cell["output_node"] for cell in cell_records]
     if column_merge:
         if sorted(set(outputs)) != ["VOUT_C1", "VOUT_C2"] or len(topology["output_nodes"]) != 2:
             raise ConfigError("COLUMN_MERGE requires exactly two independent column terminal nodes")
         terminations = [line for line in deck_lines if line.startswith("R_TERM_C")]
-        if sorted(terminations) != [
-                f"R_TERM_C1 VOUT_C1 0 {case['TERM_R']}",
-                f"R_TERM_C2 VOUT_C2 0 {case['TERM_R']}"]:
-            raise ConfigError("COLUMN_MERGE requires exactly one 2-ohm termination per column output")
+        expected_terminations = [f"R_TERM_C2 VOUT_C2 0 {case['TERM_R']}"]
+        if not t1_enabled:
+            expected_terminations.insert(0, f"R_TERM_C1 VOUT_C1 0 {case['TERM_R']}")
+        if sorted(terminations) != sorted(expected_terminations):
+            raise ConfigError("COLUMN_MERGE termination set disagrees with OUTPUT_MODE")
     elif len(outputs) != 4 or len(set(outputs)) != 4:
         raise ConfigError("all four cell outputs must be independent")
     drivers = topology["input_lines"]
@@ -1332,13 +1615,14 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
             raise ConfigError("COLUMN_MERGE must contain exactly two isolated column chains")
         for column in topology["column_chains"]:
             col = column["column"]
-            expected_lines = (
+            expected_lines = [
                 f"XSJTL_C{col}_L1 MERGE_C{col}_L1 SJTL_OUT_C{col}_L1 sJTL",
                 f"XCB_C{col}_L1 SJTL_OUT_C{col}_L1 MERGE_C{col}_L2 CB",
                 f"XSJTL_C{col}_L2 MERGE_C{col}_L2 SJTL_OUT_C{col}_L2 sJTL",
                 f"XCB_C{col}_L2 SJTL_OUT_C{col}_L2 VOUT_C{col} CB",
-                f"R_TERM_C{col} VOUT_C{col} 0 {case['TERM_R']}",
-            )
+            ]
+            if not (t1_enabled and col == 1):
+                expected_lines.append(f"R_TERM_C{col} VOUT_C{col} 0 {case['TERM_R']}")
             if any(line not in deck_lines for line in expected_lines):
                 raise ConfigError(f"column C{col}: actual two-level MERGE/sJTL/CB wiring is incorrect")
             for token in (f"MERGE_C{col}_L1", f"MERGE_C{col}_L2",
@@ -1370,6 +1654,70 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
         if any("MERGE_C1" in line and "MERGE_C2" in line for line in instance_lines) or any(
                 "MERGE_C2" in line and "MERGE_C1" in line for line in instance_lines):
             raise ConfigError("a subcircuit electrically bridges the two column merge chains")
+    if t1_enabled:
+        expected_t1_include = ".include " + Path(os.path.relpath(
+            REPO / T1_SOURCE_PATH, run_dir)).as_posix()
+        t1_includes = [line for line in deck_lines if line.casefold().endswith("circuits/t1/t1_cell.cir")]
+        if t1_includes != [expected_t1_include]:
+            raise ConfigError("T1_C1 must use exactly one direct include of canonical t1_cell.cir")
+        jjmit_includes = [line for line in deck_lines if line.casefold().endswith("circuits/models/jjmit.cir")]
+        model_lines = [line.strip() for line in (REPO / SOURCE_PATHS["JJMIT"]).read_text(
+            encoding="utf-8").splitlines() if line.strip().lower().startswith(".model jjmit")]
+        if len(jjmit_includes) != 1 or len(model_lines) != 1:
+            raise ConfigError("T1 model closure requires exactly one shared canonical jjmit definition")
+        if deck_lines.index(jjmit_includes[0]) >= deck_lines.index(t1_includes[0]):
+            raise ConfigError("shared jjmit model include must precede the T1 subcircuit include")
+        if topology["source_sha256"].get("T1") != T1_SOURCE_SHA256:
+            raise ConfigError("T1 source manifest SHA differs from the canonical T1 file")
+        expected_t1 = {
+            f"V_BIAS1 N_BIAS1 0 DC {case['T1_BIAS1']}",
+            f"V_BIAS2 N_BIAS2 0 DC {case['T1_BIAS2']}",
+            f"V_BIAS3 N_BIAS3 0 DC {case['T1_BIAS3']}",
+            f"R_S S 0 {case['T1_R_S']}", f"R_C C 0 {case['T1_R_C']}",
+            "V_T1_LINK VOUT_C1 T1_I 0",
+            "XT1 T1_I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1",
+            f"R_TERM_C2 VOUT_C2 0 {case['TERM_R']}",
+        }
+        if not expected_t1.issubset(set(deck_lines)):
+            raise ConfigError("T1_C1 Bias B, load, terminal, or input wiring differs from config")
+        if sum(line.startswith("XT1 ") for line in deck_lines) != 1:
+            raise ConfigError("T1_C1 must instantiate exactly one canonical T1")
+        if any(line.startswith("R_TERM_C1 ") for line in deck_lines):
+            raise ConfigError("T1_C1 must remove R_TERM_C1; parallel first-column load is forbidden")
+        if case["T1_CLK_MODE"] == "QUIET":
+            if "R_CLK_QUIET CLK 0 5" not in deck_lines:
+                raise ConfigError("QUIET clock mode requires the historical 5-ohm CLK termination")
+            if any(line.startswith(("V_TRIG_CLK ", "R_TRIG_CLK ")) for line in deck_lines):
+                raise ConfigError("QUIET mode may not include a pulse clock source or series resistor")
+        else:
+            expected_clock = (
+                f"V_TRIG_CLK CLK_RAW 0 PULSE(0 {case['T1_CLK_AMPLITUDE']} "
+                f"{case['T1_CLK_START']} {case['T1_CLK_RISE']} {case['T1_CLK_FALL']} "
+                f"{case['T1_CLK_WIDTH']} {case['T1_CLK_PERIOD']})",
+                f"R_TRIG_CLK CLK_RAW CLK {case['T1_CLK_R_SERIES']}",
+            )
+            if not all(line in deck_lines for line in expected_clock):
+                raise ConfigError("PULSE source/series resistance differ from effective T1 clock config")
+            if any(line.startswith("R_CLK_QUIET ") for line in deck_lines):
+                raise ConfigError("PULSE mode may not include the QUIET shunt")
+        labels = {entry["label"] for entry in probes["signals"]}
+        required_t1 = {f"{quantity}({jj}|XT1)" for jj in T1_JJS for quantity in ("P", "V")}
+        required_t1.update(f"I({element}|XT1)" for element in T1_INDUCTORS)
+        required_t1.update({"V(T1_I)", "I(V_T1_LINK)", "V(CLK)", "V(S)", "V(C)",
+                            "I(R_S)", "I(R_C)", "I(V_BIAS1)", "I(V_BIAS2)",
+                            "I(V_BIAS3)", "V(VOUT_C1)", "V(VOUT_C2)"})
+        if case["T1_CLK_MODE"] == "PULSE":
+            required_t1.update({"V(CLK_RAW)", "I(R_TRIG_CLK)"})
+        else:
+            required_t1.add("I(R_CLK_QUIET)")
+        if not required_t1.issubset(labels):
+            raise ConfigError(f"t1_focus is missing required probes: {sorted(required_t1 - labels)}")
+    elif any(line.startswith(("XT1 ", "V_T1_LINK ", "V_BIAS1 ", "V_BIAS2 ", "V_BIAS3 ",
+                              "R_S ", "R_C ", "R_CLK_QUIET ", "V_TRIG_CLK ", "R_TRIG_CLK "))
+             for line in deck_lines):
+        raise ConfigError("TERMINAL mode must not instantiate T1, Bias B, clock, or T1 loads")
+    elif any(line.casefold().endswith("circuits/t1/t1_cell.cir") for line in deck_lines):
+        raise ConfigError("TERMINAL mode must not include the T1 subcircuit source")
     branch_by_source = {driver["source"]: driver["branch"] for driver in topology["input_lines"]}
     if any(stages.get("FINAL_READ") != "0" for source, stages in driver_stages.items()
            if branch_by_source[source] == "BL"):
@@ -1386,8 +1734,10 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
         "canonical_source_hashes_match": True,
         "source_pin_orders_match": {role: list(parse_subckt(role))
                                     for role in ("BVM", "QB", "SJTL", "POST_CB")},
+        "t1_source_pin_order": list(parse_t1_subckt()) if t1_enabled else None,
         "drive_mode": case["DRIVE_MODE"],
         "output_topology": case["OUTPUT_TOPOLOGY"],
+        "output_mode": case["OUTPUT_MODE"],
         "source_count_by_branch": topology["driver_count_by_branch"],
         "driver_source_node_map_matches": True,
         "four_cell_load_chains_match": not column_merge,
@@ -1427,7 +1777,9 @@ def static_validate(case: dict[str, str], topology: dict[str, Any], deck_lines: 
             values.get("SECOND_READ") == "0" for source, values in driver_stages.items()
             if branch_by_source[source] == "BL")),
         "deck_print_set_matches_probe_manifest": True,
-        "t1_count": 0, "output_merge": column_merge,
+        "t1_count": 1 if t1_enabled else 0, "output_merge": column_merge,
+        "t1_model_closure_match": t1_enabled,
+        "t1_clock_mode_exclusive": True if t1_enabled else None,
         "scientific_interpretation_performed": False,
     }
 
@@ -1443,13 +1795,24 @@ def next_run_path(case: dict[str, str]) -> tuple[str, Path]:
         if match:
             existing.append(int(match.group(1)))
     index = max(existing, default=0) + 1
-    run_id = f"A{index:03d}_{case['DRIVE_MODE']}_R{case['ROW_BITS']}_C{case['COL_BITS']}"
+    if case["OUTPUT_MODE"] == "T1_C1":
+        preset_masks = {("00", "00"): "0", ("10", "10"): "1",
+                        ("01", "10"): "2", ("11", "10"): "3"}
+        number = preset_masks.get((case["ROW_BITS"], case["COL_BITS"]))
+        clock = "Q" if case["T1_CLK_MODE"] == "QUIET" else "P"
+        suffix = (f"T1_C1_{clock}{number}" if number is not None else
+                  f"T1_C1_{case['T1_CLK_MODE']}_R{case['ROW_BITS']}_C{case['COL_BITS']}")
+        run_id = f"A{index:03d}_{suffix}"
+    else:
+        run_id = f"A{index:03d}_{case['DRIVE_MODE']}_R{case['ROW_BITS']}_C{case['COL_BITS']}"
     return run_id, RUNS / run_id
 
 
 def source_manifest(records: dict[str, dict[str, str]]) -> dict[str, Any]:
     return {"schema": "bvm-2x2-rowcol-sources-v1", "sources": [
-        {"role": role, **records[role]} for role in ("JJMIT", "BVM", "QB", "SJTL", "POST_CB")
+        {"role": role, **records[role]}
+        for role in ("JJMIT", "BVM", "QB", "SJTL", "POST_CB", "T1")
+        if role in records
     ], "canonical_sources_modified": False, "scientific_interpretation_performed": False}
 
 
@@ -1458,6 +1821,7 @@ def parameter_manifest(case: dict[str, str], stimulus: dict[str, str], records: 
         "schema": "bvm-2x2-rowcol-parameters-v1",
         "drive_mode": case["DRIVE_MODE"],
         "output_topology": case["OUTPUT_TOPOLOGY"],
+        "output_mode": case["OUTPUT_MODE"],
         "merge_topology_parameters": ({"QB_CB": [0, 0], "SJTL_COUNT": [1, 1],
                                         "POST_SJTL_CB": [1, 1]}
                                        if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE" else None),
@@ -1469,18 +1833,26 @@ def parameter_manifest(case: dict[str, str], stimulus: dict[str, str], records: 
             "se_gate_mode": "CELL_CROSSPOINT" if _second_read_enabled(case) else "DISABLED",
         },
         "component_source_sha256": {role: record["sha256"] for role, record in records.items()},
-        "frozen_output_load": {"SJTL_PER_CELL": 1, "POST_CB_PER_CELL": 1,
-                               "TERM_R_OHM": case["TERM_R"]},
+        "t1": ({key: case[key] for key in T1_DEFAULTS if key != "OUTPUT_MODE"}
+               if case["OUTPUT_MODE"] == "T1_C1" else None),
+        "frozen_output_load": ({"SJTL_PER_CELL": 1, "POST_CB_PER_CELL": 1,
+                                "C1": "T1 input through V_T1_LINK",
+                                "C2_TERM_R_OHM": case["TERM_R"]}
+                               if case["OUTPUT_MODE"] == "T1_C1" else
+                               {"SJTL_PER_CELL": 1, "POST_CB_PER_CELL": 1,
+                                "TERM_R_OHM": case["TERM_R"]}),
         "bit_order": {"rows": "leftmost bit is R1", "columns": "leftmost bit is C1"},
         "physical_solve_count": 1,
         "scientific_interpretation_performed": False,
     }
 
 
-def _run_config_identity(case: dict[str, str]) -> dict[str, str]:
+def _run_config_identity(case: dict[str, str]) -> dict[str, Any]:
     return {
         "drive_mode": case["DRIVE_MODE"],
         "output_topology": case["OUTPUT_TOPOLOGY"],
+        "output_mode": case["OUTPUT_MODE"],
+        "t1_clock_mode": case["T1_CLK_MODE"] if case["OUTPUT_MODE"] == "T1_C1" else "DISABLED",
         "se_topology": case["SE_TOPOLOGY"],
         "effective_se_topology": _effective_se_topology(case),
         "se_gate_mode": case["SE_GATE_MODE"],
@@ -1511,6 +1883,7 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"`{sha256(run_dir / 'topology_manifest.json')}` / `{sha256(run_dir / 'probe_manifest.json')}`.",
         f"- Drive mode: `{case['DRIVE_MODE']}`; ROW_BITS=`{case['ROW_BITS']}`; COL_BITS=`{case['COL_BITS']}`.",
         f"- Output topology: `{case['OUTPUT_TOPOLOGY']}`.",
+        f"- Output mode: `{case['OUTPUT_MODE']}`.",
         f"- SE topology: configured `{case['SE_TOPOLOGY']}`, effective `{_effective_se_topology(case)}`; gate `{case['SE_GATE_MODE']}`.",
         "- Leftmost row bit is row 1; leftmost column bit is column 1.",
         f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",
@@ -1519,8 +1892,10 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- READ0_ENABLE=`{case['READ0_ENABLE']}`; WRITE1_MODE=`{case['WRITE1_MODE']}`.",
         "- Row/column bits gate FINAL READ only; they do not implement mixed storage by themselves.",
         "- FINAL READ BL sources are zero. CELL/CROSSPOINT SE is independently enabled only where both row and column bits are active.",
-        ("- Output chain: each column has two physical MERGE nodes and two QB→sJTL→CB levels; only VOUT_C1/VOUT_C2 are terminated at 2 Ω."
-         if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE" else
+        ("- Output chain: each column has two physical MERGE nodes and two QB→sJTL→CB levels; both column VOUTs are terminal outputs."
+         if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE" and case["OUTPUT_MODE"] == "TERMINAL" else
+         "- Output chain: C1 has two MERGE/QB→sJTL→CB levels and feeds XT1; C2 remains a separate 2 Ω terminal."
+         if case["OUTPUT_MODE"] == "T1_C1" else
          "- Load per cell: BVM → canonical QB → one canonical sJTL → one canonical CB → separate VOUT → 2 Ω."),
         "- SHARED drive uses two shared row-WL sources, two shared column-BL sources, and either two shared-column or four cell-local SE sources.",
         "- Shared 200 µA and independent 100 µA are candidate drive settings, not assumed equivalent.",
@@ -1529,12 +1904,25 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         f"- DT=`{case['DT']}`, STOP=`{case['STOP']}`; P(...) raw unit is radians.",
         "- Registered half-open windows and read/recovery windows are listed in stimulus_qa.json and cell_metrics.json.",
         "- Branch-current analysis reports raw extrema/actual-grid charge only; no decision threshold is registered.",
-        ("- Only the registered run is authorized; no sweep/follow-up, cross-column merge, T1, or 4×4 extension."
-         if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE" else
+        ("- Only the registered run is authorized; no sweep/follow-up, cross-column merge, or 4×4 extension."
+         if case["OUTPUT_MODE"] == "T1_C1" else
          "- Only the registered run is authorized; no sweep, follow-up, T1, output merge, or 4×4 extension."),
         "- Interpretation ceiling: artifact/mechanical QA and registered arithmetic only.",
         "", "## Canonical source hashes", "",
     ]
+    if case["OUTPUT_MODE"] == "T1_C1":
+        lines.extend((
+            "- C1 R_TERM is removed; `V_T1_LINK VOUT_C1 T1_I 0` feeds one canonical XT1. C2 remains isolated with its 2-ohm terminal.",
+            f"- T1 source: `{T1_SOURCE_PATH}` SHA-256 `{rendered['sources']['T1']['sha256']}`; JJ model is the shared canonical jjmit include.",
+            f"- T1 Bias B: {case['T1_BIAS1']}, {case['T1_BIAS2']}, {case['T1_BIAS3']} ({case['T1_BIAS3_SOURCE']}); R_S={case['T1_R_S']} Ω; R_C={case['T1_R_C']} Ω.",
+            ("- T1 clock mode: `QUIET`; R_CLK_QUIET=5 Ω and no pulse source."
+             if case["T1_CLK_MODE"] == "QUIET" else
+             f"- T1 clock mode: `PULSE`; PULSE(0 {case['T1_CLK_AMPLITUDE']} {case['T1_CLK_START']} "
+             f"{case['T1_CLK_RISE']} {case['T1_CLK_FALL']} {case['T1_CLK_WIDTH']} {case['T1_CLK_PERIOD']}) "
+             f"through {case['T1_CLK_R_SERIES']} Ω; no R_CLK_QUIET."),
+            "- T1 probes include J1–J11 P/V (phase radians), registered inductor currents, T1_I/clock, S/C/load currents, C1 front-end and C2 control.",
+            "- Registered T1 windows: [110,170), [170,220), and [220,250) ps; actual stored samples only; no event threshold or SFQ classifier.",
+        ))
     if case["OUTPUT_TOPOLOGY"] == "COLUMN_MERGE":
         lines.extend((
             "- MERGE1/MERGE2 are named electrical nodes only; no MERGE subcircuit or extra active element is instantiated.",
@@ -1542,11 +1930,14 @@ def write_run_preflight(run_dir: Path, run_id: str, case: dict[str, str],
         ))
         for column in rendered["topology"]["column_chains"]:
             level1, level2 = column["levels"]
+            output_receiver = ("T1 input via V_T1_LINK/XT1" if
+                               case["OUTPUT_MODE"] == "T1_C1" and column["column"] == 1 else
+                               f"{column['termination_instance']} ({column['termination_ohm']} Ω)")
             lines.append(f"- C{column['column']}: {level1['cell']}.QB -> {level1['merge_node']} -> "
                          f"{level1['sjtl_instances'][0]} -> {level1['post_sjtl_cb_instance']} -> "
                          f"{level1['carry_node']} == {level2['merge_node']} (also {level2['cell']}.QB output); "
                          f"then {level2['sjtl_instances'][0]} -> {level2['post_sjtl_cb_instance']} -> "
-                         f"{column['output_node']} -> {column['termination_instance']} ({column['termination_ohm']} Ω).")
+                         f"{column['output_node']} -> {output_receiver}.")
     if case["WRITE1_MODE"] == "SEQUENTIAL_CROSSPOINT":
         lines.extend((
             f"- Selective WRITE1 targets: `{case['WRITE1_TARGET_1']}` then `{case['WRITE1_TARGET_2']}`.",
@@ -1587,6 +1978,65 @@ def _cell_jj(role: str, cell: dict[str, Any]) -> list[str]:
 
 def plot_page_plan(topology: dict[str, Any], probes: dict[str, Any]) -> list[dict[str, Any]]:
     available = {entry["label"] for entry in probes["signals"]}
+    if topology.get("output_mode") == "T1_C1":
+        groups = {entry["label"]: entry["group"] for entry in probes["signals"]}
+        def selected(predicate) -> list[str]:
+            return [label for label, group in groups.items() if predicate(label, group)]
+
+        overview = selected(lambda _label, group:
+                            group.startswith("drive:") or group.endswith(":input") or
+                            group.endswith(":bvm_output") or group.startswith("frontend_c1:merge") or
+                            group.startswith("frontend_c1:output_boundary") or
+                            group.startswith("t1:input_boundary") or group.startswith("t1:clock") or
+                            group.startswith("t1:sum_output") or group.startswith("t1:carry_output") or
+                            group.startswith("column_c2:output_control"))
+        overview.extend(("I(L3|XBQ_R1C1)", "I(L3|XBQ_R2C1)",
+                         "V(SJTL_OUT_C1_L1)", "V(SJTL_OUT_C1_L2)"))
+        frontend = selected(lambda _label, group:
+                            group.startswith("cell:R1C1:") or group.startswith("cell:R2C1:") or
+                            group.startswith("frontend_c1:"))
+        frontend.extend(("V(T1_I)", "I(V_T1_LINK)"))
+        t1_internal = selected(lambda _label, group:
+                              group.startswith("t1:junction_") or
+                              group.startswith("t1:inductor_current") or
+                              group.startswith("t1:clock") or
+                              group.startswith("t1:input_boundary") or
+                              group.startswith("t1:bias_current"))
+        output_signals = [
+            "V(CLK)", "V(T1_I)", "V(S)", "V(C)", "I(R_S)", "I(R_C)",
+            "V(VOUT_C1)", "V(VOUT_C2)", "I(V_T1_LINK)",
+        ]
+        for jj in ("B_J2", "B_J3", "B_J7", "B_J9", "B_J10", "B_J11"):
+            output_signals.extend((f"P({jj}|XT1)", f"V({jj}|XT1)"))
+        if probes.get("clock_mode") == "PULSE":
+            output_signals.append("V(CLK_RAW)")
+        windows = [
+            {"name": "T1_PRE_CLOCK", "start_seconds": "110e-12", "end_seconds": "170e-12",
+             "boundary_rule": "[start,end)"},
+            {"name": "T1_CLOCK_1", "start_seconds": "170e-12", "end_seconds": "220e-12",
+             "boundary_rule": "[start,end)"},
+            {"name": "T1_CLOCK_2", "start_seconds": "220e-12", "end_seconds": "250e-12",
+             "boundary_rule": "[start,end)"},
+        ]
+        page_plan = [
+            {"file": "01_overview.html",
+             "title": "Shared WL/SE → BVM/QB/column-C1 frontend → T1_I/CLK → S/C; C2 control",
+             "semantic_views": ["SIGNAL_TIMING"], "signals": list(dict.fromkeys(overview))},
+            {"file": "02_frontend_c1.html",
+             "title": "C1 BVM state → QB → MERGE1/sJTL1/CB1 → MERGE2/sJTL2/CB2 → T1 input",
+             "semantic_views": ["BVM_STATE", "QB_STATE", "JSL_CHAIN", "JTL_CHAIN"],
+             "signals": list(dict.fromkeys(frontend))},
+            {"file": "03_t1.html", "title": "T1 CLK, all J1–J11 phase/voltage and registered inductor currents",
+             "semantic_views": ["T1_INTERNAL_STATE"], "signals": list(dict.fromkeys(t1_internal))},
+            {"file": "04_t1_output.html", "title": "T1 input, clock alignment and S/C outputs in registered windows",
+             "semantic_views": ["T1_OUTPUT"], "signals": list(dict.fromkeys(output_signals)),
+             "window_sections": windows},
+        ]
+        for page in page_plan:
+            missing = [label for label in page["signals"] if label not in available]
+            if missing:
+                raise ConfigError(f"T1 plot page {page['file']} uses unregistered probes: {missing}")
+        return page_plan
     if topology.get("output_topology") == "COLUMN_MERGE":
         cells = {cell["cell"]: cell for cell in topology["cell_instances"]}
         source_signals = [f"I({item['source']})" for item in topology["input_lines"]]
@@ -1735,6 +2185,19 @@ def plot_page_plan(topology: dict[str, Any], probes: dict[str, Any]) -> list[dic
     return page_plan
 
 
+def estimate_raw_bytes(probe_count: int) -> int:
+    reference_run = RUNS / "A018_SHARED_R11_C11"
+    reference_raw = reference_run / "raw.csv"
+    reference_manifest = reference_run / "probe_manifest.json"
+    if reference_raw.is_file() and reference_manifest.is_file():
+        reference_count = int(json.loads(reference_manifest.read_text(encoding="utf-8"))["signal_count"])
+        reference_bytes = reference_raw.stat().st_size
+    else:
+        reference_count, reference_bytes = 284, 95_388_793
+    # Add 15% for signal-label/value-width differences; this is only a preflight estimate.
+    return math.ceil(reference_bytes * probe_count / reference_count * 1.15)
+
+
 def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = False) -> int:
     run_id, candidate_path = next_run_path(case)
     rendered = render(case, stimulus, candidate_path)
@@ -1760,6 +2223,7 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
     print(f"Topology: {case['DRIVE_MODE']} | ROW_BITS={row_bits} | COL_BITS={col_bits} "
           "(leftmost bit is index 1)")
     print(f"OUTPUT_TOPOLOGY={case['OUTPUT_TOPOLOGY']}")
+    print(f"OUTPUT_MODE={case['OUTPUT_MODE']}")
     print(f"SE: configured={case['SE_TOPOLOGY']} | effective={_effective_se_topology(case)} "
           f"| gate={case['SE_GATE_MODE']}")
     print("FINAL READ: active=" + ",".join(groups["active_crosspoints"] or ["none"])
@@ -1811,14 +2275,32 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], *, verbose: bool = F
         print("Topology flags: QB_CB=0,0 | SJTL_COUNT=1,1 | POST_SJTL_CB=1,1")
         for chain in rendered["topology"]["column_chains"]:
             level1, level2 = chain["levels"]
+            receiver = ("T1 via V_T1_LINK (no R_TERM_C1)"
+                        if case["OUTPUT_MODE"] == "T1_C1" and chain["column"] == 1
+                        else f"{chain['termination_instance']} {chain['termination_ohm']}Ω")
             print(f"  C{chain['column']}: QB({level1['cell']})→{level1['merge_node']}→"
                   f"{level1['sjtl_instances'][0]}→{level1['post_sjtl_cb_instance']}→"
                   f"{level1['carry_node']} (QB({level2['cell']}) also connects)→"
                   f"{level2['sjtl_instances'][0]}→{level2['post_sjtl_cb_instance']}→"
-                  f"{chain['output_node']}→{chain['termination_instance']} {chain['termination_ohm']}Ω")
-        print("Output/load: 2 isolated column chains, 4 BVM/4 QB, 2Ω per column; no inter-column connection or T1")
+                  f"{chain['output_node']}→{receiver}")
+        if case["OUTPUT_MODE"] == "T1_C1":
+            print("Output/load: C1 feeds one XT1; C2 retains 2Ω; columns remain electrically isolated")
+        else:
+            print("Output/load: 2 isolated column chains, 4 BVM/4 QB, 2Ω per column; no T1")
     else:
         print("Output/load: 4 independent chains, BVM→QB→1×sJTL→1×CB→VOUT→2Ω")
+    if case["OUTPUT_MODE"] == "T1_C1":
+        print(f"T1: Bias B={case['T1_BIAS1']}/{case['T1_BIAS2']}/{case['T1_BIAS3']} V; "
+              f"R_S/R_C={case['T1_R_S']}/{case['T1_R_C']}Ω; CLK={case['T1_CLK_MODE']}")
+        print(f"  Source: {T1_SOURCE_PATH} SHA-256={rendered['sources']['T1']['sha256']}; "
+              f"jjmit SHA-256={rendered['sources']['JJMIT']['sha256']}")
+        if case["T1_CLK_MODE"] == "PULSE":
+            print(f"  PULSE(0 {case['T1_CLK_AMPLITUDE']} {case['T1_CLK_START']} "
+                  f"{case['T1_CLK_RISE']} {case['T1_CLK_FALL']} {case['T1_CLK_WIDTH']} "
+                  f"{case['T1_CLK_PERIOD']}) via R={case['T1_CLK_R_SERIES']}Ω")
+        print("T1 analysis windows: pre-clock [110,170)ps | first-clock [170,220)ps | second-clock [220,250)ps")
+        estimate = estimate_raw_bytes(rendered["probes"]["signal_count"])
+        print(f"Raw size estimate: ~{estimate / 1e6:.1f} MB/run from A018 probe/byte ratio + 15% width margin; actual size is verified after each solve")
     print(f"Solver settings: DT={case['DT']}, STOP={case['STOP']}; planned solves if run=1")
     print(f"Probes: {rendered['probes']['signal_count']} ({case['PROBE_PROFILE']}); "
           f"HTML pages if run={len(plan)}; static QA={rendered['static_qa']['status']}")
@@ -1880,6 +2362,12 @@ def _stage_windows(case: dict[str, str], stimulus: dict[str, str]) -> dict[str, 
     else:
         windows["READ_RESPONSE"] = (windows["FINAL_READ"][0], quantity(case["STOP"], "STOP"))
         windows["TAIL"] = (windows["FINAL_READ"][1], quantity(case["STOP"], "STOP"))
+    if case.get("OUTPUT_MODE") == "T1_C1":
+        windows.update({
+            "T1_PRE_CLOCK": (Decimal("110e-12"), Decimal("170e-12")),
+            "T1_CLOCK_1": (Decimal("170e-12"), Decimal("220e-12")),
+            "T1_CLOCK_2": (Decimal("220e-12"), Decimal("250e-12")),
+        })
     return windows
 
 
@@ -1973,6 +2461,8 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                 if upstream_signal:
                     merge_inputs.append(("PREVIOUS_CB_CARRY", upstream_signal))
                 for role, signal in merge_inputs:
+                    if signal not in trace.headers:
+                        continue
                     values = trace.column(signal)
                     for window_name, window in windows.items():
                         indexes = _indices(exact_times, window)
@@ -2015,6 +2505,8 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
             for jj in jjs:
                 phase_signal = f"P({jj}|{instance})"
                 voltage_signal = f"V({jj}|{instance})"
+                if phase_signal not in trace.headers or voltage_signal not in trace.headers:
+                    continue
                 phase = _unwrap(trace.column(phase_signal))
                 voltage = trace.column(voltage_signal)
                 jj_windows = ["FINAL_READ"]
@@ -2031,6 +2523,8 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                                        "SECOND_READ", "SECOND_READ_RESPONSE", "POST_SECOND_READ"))
                 else:
                     jj_windows.extend(("READ_RESPONSE", "TAIL"))
+                if case["OUTPUT_MODE"] == "T1_C1":
+                    jj_windows.extend(T1_METRIC_WINDOWS)
                 for window_name in jj_windows:
                     indexes = _indices(exact_times, windows[window_name])
                     if len(indexes) < 2:
@@ -2072,10 +2566,14 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
                                "SECOND_READ", "SECOND_READ_RESPONSE", "POST_SECOND_READ"))
     else:
         output_windows.extend(("READ_RESPONSE", "TAIL"))
+    if case["OUTPUT_MODE"] == "T1_C1":
+        output_windows.extend(T1_METRIC_WINDOWS)
 
     def add_output_metrics(boundary: str, node: str, *, cell: str | None = None,
                            column: int | None = None) -> None:
         signal = f"V({node})"
+        if signal not in trace.headers:
+            return
         values = trace.column(signal)
         for window_name in output_windows:
             indexes = _indices(exact_times, windows[window_name])
@@ -2111,6 +2609,101 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
     if column_merge:
         for chain in topology["column_chains"]:
             add_output_metrics("VOUT", chain["output_node"], column=chain["column"])
+    t1_metrics = None
+    if case["OUTPUT_MODE"] == "T1_C1":
+        registered_t1_windows = {
+            name: {"start_seconds": str(windows[name][0]),
+                   "end_seconds": str(windows[name][1]),
+                   "boundary_rule": "[start,end)"}
+            for name in T1_METRIC_WINDOWS
+        }
+        t1_junctions: list[dict[str, Any]] = []
+        for jj in T1_JJS:
+            phase_signal = f"P({jj}|XT1)"
+            voltage_signal = f"V({jj}|XT1)"
+            phase = _unwrap(trace.column(phase_signal))
+            voltage = trace.column(voltage_signal)
+            for window_name in T1_METRIC_WINDOWS:
+                indexes = _indices(exact_times, windows[window_name])
+                if len(indexes) < 2:
+                    raise ConfigError(f"T1 analysis window {window_name} has fewer than two stored samples")
+                start, end = indexes[0], indexes[-1]
+                area = _trapz(trace.time, voltage, indexes)
+                max_index = max(indexes, key=lambda i: voltage[i])
+                min_index = min(indexes, key=lambda i: voltage[i])
+                max_abs_index = max(indexes, key=lambda i: abs(voltage[i]))
+                delta = phase[end] - phase[start]
+                t1_junctions.append({
+                    "junction": jj, "phase_signal": phase_signal,
+                    "voltage_signal": voltage_signal, "window": window_name,
+                    "first_sample_seconds": str(exact_times[start]),
+                    "last_sample_seconds": str(exact_times[end]),
+                    "sample_count": len(indexes), "phase_start_rad": phase[start],
+                    "phase_end_rad": phase[end], "phase_delta_rad": delta,
+                    "phase_delta_rad_over_2pi_navigation": delta / (2 * math.pi),
+                    "voltage_area_v_s_same_jj_same_rows": area,
+                    "voltage_area_phi0_arithmetic": area / PHI0_VS,
+                    "phase_minus_area_turn_arithmetic": delta / (2 * math.pi) - area / PHI0_VS,
+                    "voltage_min_v": min(voltage[i] for i in indexes),
+                    "voltage_max_v": max(voltage[i] for i in indexes),
+                    "time_of_voltage_max_seconds": str(exact_times[max_index]),
+                    "time_of_voltage_min_seconds": str(exact_times[min_index]),
+                    "time_of_max_abs_voltage_seconds": str(exact_times[max_abs_index]),
+                    "interpolation_or_resampling": False,
+                })
+        t1_outputs: list[dict[str, Any]] = []
+        t1_output_signals = ["V(T1_I)", "V(CLK)", "V(S)", "V(C)"]
+        if "V(CLK_RAW)" in trace.headers:
+            t1_output_signals.append("V(CLK_RAW)")
+        for signal in t1_output_signals:
+            values = trace.column(signal)
+            for window_name in T1_METRIC_WINDOWS:
+                indexes = _indices(exact_times, windows[window_name])
+                if len(indexes) < 2:
+                    raise ConfigError(f"T1 output window {window_name} has fewer than two samples")
+                peak_index = max(indexes, key=lambda i: values[i])
+                min_index = min(indexes, key=lambda i: values[i])
+                max_abs_index = max(indexes, key=lambda i: abs(values[i]))
+                t1_outputs.append({
+                    "signal": signal, "window": window_name, "sample_count": len(indexes),
+                    "min_v": min(values[i] for i in indexes),
+                    "max_v": max(values[i] for i in indexes),
+                    "peak_to_peak_v": max(values[i] for i in indexes) - min(values[i] for i in indexes),
+                    "time_of_positive_max_seconds": str(exact_times[peak_index]),
+                    "time_of_min_seconds": str(exact_times[min_index]),
+                    "time_of_max_abs_seconds": str(exact_times[max_abs_index]),
+                    "signed_area_v_s": _trapz(trace.time, values, indexes),
+                    "interpolation_or_resampling": False,
+                })
+        t1_currents: list[dict[str, Any]] = []
+        for entry in probes["signals"]:
+            signal = entry["label"]
+            if entry["unit"] != "A" or not entry["group"].startswith("t1:"):
+                continue
+            values = trace.column(signal)
+            for window_name in T1_METRIC_WINDOWS:
+                indexes = _indices(exact_times, windows[window_name])
+                selected = [values[i] for i in indexes]
+                peak_index = max(indexes, key=lambda i: abs(values[i]))
+                t1_currents.append({
+                    "signal": signal, "window": window_name, "sample_count": len(indexes),
+                    "min_a": min(selected), "max_a": max(selected),
+                    "peak_to_peak_a": max(selected) - min(selected),
+                    "max_abs_a": abs(values[peak_index]),
+                    "time_of_max_abs_seconds": str(exact_times[peak_index]),
+                    "signed_charge_c": _trapz(trace.time, values, indexes),
+                })
+        t1_metrics = {
+            "schema": "bvm-2x2-t1-c1-mechanical-metrics-v1",
+            "raw_sha256": sha256(raw_path), "windows": registered_t1_windows,
+            "junctions": t1_junctions, "outputs": t1_outputs, "currents": t1_currents,
+            "phase_raw_unit": "radians",
+            "phase_delta_rad_over_2pi_navigation_is_not_event_count": True,
+            "voltage_area_phi0_is_arithmetic_not_event_count": True,
+            "integration_method": "trapezoid using actual stored raw time values",
+            "interpolation_or_resampling": False,
+            "scientific_interpretation_performed": False,
+        }
     return {
         "schema": "bvm-2x2-rowcol-cell-metrics-v1",
         "status": "DERIVED_ARITHMETIC_ONLY",
@@ -2123,6 +2716,7 @@ def analyze_raw(raw_path: Path, case: dict[str, str], stimulus: dict[str, str],
         "current_metrics": currents,
         "junction_metrics": jj_metrics,
         "output_metrics": outputs,
+        "t1_metrics": t1_metrics,
         "phase_raw_units": "radians",
         "phase_turns_definition": "full raw trace unwrapped independently, then delta/(2*pi); not an SFQ count",
         "integration_method": "trapezoid over actual stored raw time rows selected by exact decimal half-open windows",
@@ -2185,6 +2779,46 @@ def render_plots(run_dir: Path, topology: dict[str, Any], probes: dict[str, Any]
         target = plot_root / page["file"]
         target.parent.mkdir(parents=True, exist_ok=True)
         asset_ref = Path(os.path.relpath(PLOTLY_ASSET, target.parent)).as_posix()
+        if page.get("window_sections"):
+            section_qa = []
+            figures_html = []
+            for section in page["window_sections"]:
+                window = (Decimal(section["start_seconds"]), Decimal(section["end_seconds"]))
+                indices = _indices(exact_times, window)
+                if len(indices) < 2:
+                    raise ConfigError(f"T1 window {section['name']} has fewer than two actual stored rows")
+                page_frame = frame.iloc[indices]
+                figure = plotter.seperate_combined_layout(
+                    page_frame, SimpleNamespace(subset=page["signals"], jump="2pi"))
+                title = f"{run_dir.name} — {page['title']} — {section['name']} [start,end)"
+                figure.update_layout(title=title, title_font_size=20, template="plotly_dark")
+                figures_html.append(
+                    f"<section><h2>{html.escape(section['name'])} — "
+                    f"[{html.escape(section['start_seconds'])}, {html.escape(section['end_seconds'])}) s</h2>"
+                    f"{figure.to_html(full_html=False, include_plotlyjs=False)}</section>")
+                section_qa.append({
+                    **section, "sample_count": len(indices),
+                    "first_stored_time_seconds": str(exact_times[indices[0]]),
+                    "last_stored_time_seconds": str(exact_times[indices[-1]]),
+                })
+            html_text = (
+                "<!doctype html><html><head><meta charset=\"utf-8\">"
+                f"<script src=\"{html.escape(asset_ref)}\"></script></head><body>"
+                f"<h1>{html.escape(run_dir.name)} — {html.escape(page['title'])}</h1>"
+                "<p>Classic josim-plot2 sep_comb/dark/-j 2pi; P is radians and turns are rad/(2*pi) navigation only.</p>"
+                + "\n".join(figures_html) + "</body></html>\n"
+            )
+            target.write_text(html_text, encoding="utf-8")
+            if html_text.count(asset_ref) != 1 or html_text.count("Plotly.newPlot") != len(section_qa):
+                raise ConfigError(f"T1 window page must use one shared Plotly asset and render each section once: {target}")
+            qa_pages.append({
+                "path": target.relative_to(run_dir).as_posix(), "sha256": sha256(target),
+                "status": "PASS", "trace_count": len(page["signals"]),
+                "sample_count": sum(item["sample_count"] for item in section_qa),
+                "full_stored_time_range": False, "window_sections": section_qa,
+                "shared_plotly_asset_count": 1,
+            })
+            continue
         page_frame = frame
         window_qa = None
         if page.get("window_name"):
@@ -2250,7 +2884,8 @@ def _write_root_manifest(run_id: str, run_dir: Path, result: dict[str, Any]) -> 
     rows.append({"run_id": run_id, "path": str(run_dir.relative_to(SERIES)),
                  "physical_solve_count": 1,
                  **{key: result[key] for key in ("drive_mode", "se_topology",
-                                                   "output_topology",
+                                                   "output_topology", "output_mode",
+                                                   "t1_clock_mode",
                                                    "effective_se_topology", "se_gate_mode",
                                                    "read0_enabled", "write1_mode",
                                                    "write1_target_1", "write1_target_2",
@@ -2298,6 +2933,7 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
     _json(run_dir / "stimulus_manifest.json", {
         "schema": "bvm-2x2-rowcol-stimulus-v1",
         **_run_config_identity(case),
+        "t1_clock_configuration": rendered["topology"].get("t1"),
         "timing_windows": timing_windows,
         "analysis_windows": {
             name: {"start_seconds": str(start), "end_seconds": str(end),
@@ -2371,6 +3007,13 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
         _json(run_dir / "analysis" / "raw_qa.json", raw_qa)
         stage_metrics = analyze_raw(run_dir / "raw.csv", case, stimulus, rendered["topology"])
         _json(run_dir / "analysis" / "cell_metrics.json", stage_metrics)
+        t1_metrics_ok = (case["OUTPUT_MODE"] != "T1_C1" or
+                         (stage_metrics.get("t1_metrics", {}).get("schema") ==
+                          "bvm-2x2-t1-c1-mechanical-metrics-v1" and
+                          len(stage_metrics["t1_metrics"].get("junctions", [])) == 33 and
+                          len(stage_metrics["t1_metrics"].get("outputs", [])) >= 12))
+        t1_metrics_status = ("NOT_APPLICABLE" if case["OUTPUT_MODE"] != "T1_C1" else
+                             "PASS" if t1_metrics_ok else "FAIL")
         driver_stages = rendered["driver_stages"]
         second_read_stage_ok = (
             not _second_read_enabled(case) or
@@ -2385,13 +3028,18 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
                      for values in driver_stages.values())))
         read0_stage_ok = all("READ0" in values for values in driver_stages.values()) == (
             case["READ0_ENABLE"] == "1")
+        t1_mode_ok = (case["OUTPUT_MODE"] != "T1_C1" or
+                      (rendered["static_qa"]["t1_clock_mode_exclusive"] is True and
+                       rendered["sources"].get("T1", {}).get("sha256") == T1_SOURCE_SHA256 and
+                       "V_T1_LINK VOUT_C1 T1_I 0" in deck and
+                       "XT1 T1_I CLK S C N_BIAS1 N_BIAS2 N_BIAS3 T1" in deck))
         stimulus_qa = {
             "schema": "bvm-2x2-rowcol-stimulus-qa-v1",
             "status": "PASS" if (len(rendered["drivers"]) == rendered["topology"]["driver_count"]
                                      and all("FINAL_READ" in item for item in driver_stages.values())
                                      and second_read_stage_ok
                                      and second_read_gate_ok
-                                     and selective_write_ok and read0_stage_ok
+                                     and selective_write_ok and read0_stage_ok and t1_mode_ok
                                      and all(driver["source"] in rendered["stimulus_text"]
                                              for driver in rendered["drivers"])
                                      and "stimulus.inc" in deck
@@ -2399,6 +3047,10 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
             **_run_config_identity(case),
             "driver_count": len(rendered["drivers"]),
             "source_count_by_branch": rendered["topology"]["driver_count_by_branch"],
+            "t1_mode_static_boundary_qa": t1_mode_ok,
+            "t1_clock_mode": case["T1_CLK_MODE"] if case["OUTPUT_MODE"] == "T1_C1" else "DISABLED",
+            "t1_clock_lines": [line for line in deck.splitlines()
+                                if line.startswith(("R_CLK_QUIET ", "V_TRIG_CLK ", "R_TRIG_CLK "))],
             "drivers": rendered["drivers"], "stage_values": driver_stages,
             "final_read_se_enabled_by_cell": {
                 cell["cell"]: cell["final_read_se_enabled"]
@@ -2424,7 +3076,7 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
         raw_qa = _raw_qa(run_dir / "raw.csv", rendered["probes"], raw_hash_before, raw_hash_after)
         _json(run_dir / "analysis" / "raw_qa.json", raw_qa)
         qa_pass = (raw_qa["status"] == "PASS" and stimulus_qa["status"] == "PASS"
-                   and plot_qa["status"] == "PASS")
+                   and plot_qa["status"] == "PASS" and t1_metrics_ok)
         mechanical_qa = {
             "schema": "bvm-2x2-rowcol-mechanical-qa-v1",
             "status": "PASS" if qa_pass else "FAIL",
@@ -2438,6 +3090,9 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
             "dt_min_s": raw_qa["dt_min"], "dt_max_s": raw_qa["dt_max"],
             "uniform_time_grid": raw_qa["uniform_time_grid"],
             "probe_count": rendered["probes"]["signal_count"],
+            "t1_metrics_status": t1_metrics_status,
+            "t1_junction_metric_count": (len(stage_metrics.get("t1_metrics", {}).get("junctions", []))
+                                         if t1_metrics_ok and case["OUTPUT_MODE"] == "T1_C1" else 0),
             "static_qa_status": rendered["static_qa"]["status"],
             "scientific_interpretation_performed": False,
         }
@@ -2468,6 +3123,11 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
             and provenance["preflight"]["sha256"] == sha256(run_dir / "PREFLIGHT.md")
             and provenance["metric_spec"]["sha256"] == sha256(run_dir / "analysis" / "metric_spec.json")
             and provenance["static_qa"]["sha256"] == sha256(run_dir / "analysis" / "static_qa.json")
+            and provenance["cell_metrics"]["sha256"] == sha256(run_dir / "analysis" / "cell_metrics.json")
+            and provenance["raw_qa"]["sha256"] == sha256(run_dir / "analysis" / "raw_qa.json")
+            and provenance["stimulus_qa"]["sha256"] == sha256(run_dir / "analysis" / "stimulus_qa.json")
+            and provenance["plot_qa"]["sha256"] == sha256(run_dir / "analysis" / "plot_qa.json")
+            and provenance["mechanical_qa"]["sha256"] == sha256(run_dir / "analysis" / "mechanical_qa.json")
             and provenance["raw"]["sha256"] == raw_hash_after
             else "FAIL",
             "source_hashes_match": provenance_checks,
@@ -2498,23 +3158,40 @@ def _execute(case: dict[str, str], stimulus: dict[str, str]) -> int:
             "plot_qa_status": plot_qa["status"],
             "mechanical_qa_status": mechanical_qa["status"],
             "provenance_qa_status": provenance_qa["status"],
+            "t1_metrics_status": mechanical_qa["t1_metrics_status"],
+            "t1_junction_metric_count": mechanical_qa["t1_junction_metric_count"],
             "scientific_interpretation_performed": False, "automatic_follow_up": False,
         }
         _json(run_dir / "result.json", result)
         brief = [f"# {run_id}", "",
                  f"- DRIVE_MODE: `{case['DRIVE_MODE']}`; ROW_BITS=`{case['ROW_BITS']}`; COL_BITS=`{case['COL_BITS']}`.",
-                 f"- SE_TOPOLOGY: `{case['SE_TOPOLOGY']}`; SE_GATE_MODE: `{case['SE_GATE_MODE']}`.",
-                 f"- READ0_ENABLE: `{case['READ0_ENABLE']}`; WRITE1_MODE: `{case['WRITE1_MODE']}`; "
-                 f"selective targets: `{case['WRITE1_TARGET_1']}`, `{case['WRITE1_TARGET_2']}`.",
-                 f"- SECOND_READ_ENABLE: `{case['SECOND_READ_ENABLE']}`; bits=`{case['SECOND_ROW_BITS']}/"
-                 f"{case['SECOND_COL_BITS']}`; second-read SE gate is CELL_CROSSPOINT.",
-                 f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",
-                 f"- Analysis windows: `{', '.join(_stage_windows(case, stimulus))}` (half-open; actual stored rows).",
-                 f"- Half-selected: `{', '.join(rendered['topology']['cell_selection']['half_selected']) or 'none'}`; unselected: `{', '.join(rendered['topology']['cell_selection']['unselected']) or 'none'}`.",
-                 f"- physical_solve_count: `1`; artifact status: `{result['artifact_status']}`.",
-                 f"- raw SHA-256: `{raw_hash_after}`; samples: `{raw_qa['sample_count']}`.",
-                 f"- raw/stimulus/plot QA: `{raw_qa['status']}` / `{stimulus_qa['status']}` / `{plot_qa['status']}`.",
-                 "- Scientific interpretation: `NOT_PERFORMED`; phase turns are not SFQ counts.", ""]
+                 f"- OUTPUT_MODE: `{case['OUTPUT_MODE']}`; SE_TOPOLOGY: `{case['SE_TOPOLOGY']}`; "
+                 f"SE_GATE_MODE: `{case['SE_GATE_MODE']}`."]
+        if case["OUTPUT_MODE"] == "T1_C1":
+            brief.extend((
+                f"- C1 → T1: Bias B `{case['T1_BIAS1']}/{case['T1_BIAS2']}/{case['T1_BIAS3']}`; "
+                f"R_S/R_C `{case['T1_R_S']}/{case['T1_R_C']} Ω`; clock `{case['T1_CLK_MODE']}`.",
+                f"- T1 windows: `{', '.join(T1_METRIC_WINDOWS)}`; half-open, actual stored rows.",
+                f"- T1 mechanical arithmetic: `{mechanical_qa['t1_metrics_status']}`; "
+                f"junction-window rows `{mechanical_qa['t1_junction_metric_count']}`; "
+                "phase is radians and phase turns/Φ0 area are not event counts.",
+            ))
+        else:
+            brief.extend((
+                f"- READ0_ENABLE: `{case['READ0_ENABLE']}`; WRITE1_MODE: `{case['WRITE1_MODE']}`; "
+                f"selective targets: `{case['WRITE1_TARGET_1']}`, `{case['WRITE1_TARGET_2']}`.",
+                f"- SECOND_READ_ENABLE: `{case['SECOND_READ_ENABLE']}`; bits=`{case['SECOND_ROW_BITS']}/"
+                f"{case['SECOND_COL_BITS']}`; second-read SE gate is CELL_CROSSPOINT.",
+                f"- Active crosspoints: `{', '.join(rendered['topology']['cell_selection']['active_crosspoints']) or 'none'}`.",
+                f"- Analysis windows: `{', '.join(_stage_windows(case, stimulus))}` (half-open; actual stored rows).",
+                f"- Half-selected: `{', '.join(rendered['topology']['cell_selection']['half_selected']) or 'none'}`; "
+                f"unselected: `{', '.join(rendered['topology']['cell_selection']['unselected']) or 'none'}`.",
+            ))
+        brief.extend((
+            f"- physical_solve_count: `1`; artifact status: `{result['artifact_status']}`.",
+            f"- raw SHA-256: `{raw_hash_after}`; samples: `{raw_qa['sample_count']}`.",
+            f"- raw/stimulus/plot QA: `{raw_qa['status']}` / `{stimulus_qa['status']}` / `{plot_qa['status']}`.",
+            "- Scientific interpretation: `NOT_PERFORMED`; no mechanism or logic-function verdict.", ""))
         (run_dir / "RESULT_BRIEF.md").write_text("\n".join(brief), encoding="utf-8")
         _write_root_manifest(run_id, run_dir, result)
         return 0 if qa_pass else 2

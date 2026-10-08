@@ -1,0 +1,1126 @@
+{
+  "active_crosspoints": [],
+  "clock_mode": "QUIET",
+  "column_bits": "00",
+  "display_phase_unit": "turns = radians/(2*pi); navigation only, not an SFQ count",
+  "drive_mode": "SHARED",
+  "effective_se_topology": "CELL",
+  "output_mode": "T1_C1",
+  "output_topology": "COLUMN_MERGE",
+  "profile": "t1_focus",
+  "raw_phase_unit": "P(...) radians",
+  "read0_enabled": "1",
+  "reduction_basis": [
+    "all BVM input branches and state JJ P/V",
+    "C1 full BVM/QB/MERGE/sJTL/CB path",
+    "all T1 JJ P/V",
+    "five registered T1 inductor currents",
+    "C2 BVM input/state and terminal control"
+  ],
+  "row_bits": "00",
+  "schema": "bvm-2x2-rowcol-probes-v1",
+  "scientific_interpretation_performed": false,
+  "se_gate_mode": "CROSSPOINT",
+  "se_topology": "CELL",
+  "second_read_enabled": "0",
+  "signal_count": 151,
+  "signals": [
+    {
+      "cells": [
+        "R1C1",
+        "R1C2"
+      ],
+      "element": "I_WL_R1",
+      "group": "drive:WL",
+      "label": "I(I_WL_R1)",
+      "node": "WL_R1",
+      "unit": "A"
+    },
+    {
+      "cells": [
+        "R2C1",
+        "R2C2"
+      ],
+      "element": "I_WL_R2",
+      "group": "drive:WL",
+      "label": "I(I_WL_R2)",
+      "node": "WL_R2",
+      "unit": "A"
+    },
+    {
+      "cells": [
+        "R1C1",
+        "R2C1"
+      ],
+      "element": "I_BL_C1",
+      "group": "drive:BL",
+      "label": "I(I_BL_C1)",
+      "node": "BL_C1",
+      "unit": "A"
+    },
+    {
+      "cells": [
+        "R1C2",
+        "R2C2"
+      ],
+      "element": "I_BL_C2",
+      "group": "drive:BL",
+      "label": "I(I_BL_C2)",
+      "node": "BL_C2",
+      "unit": "A"
+    },
+    {
+      "cells": [
+        "R1C1"
+      ],
+      "element": "I_SE_R1C1",
+      "group": "drive:SE",
+      "label": "I(I_SE_R1C1)",
+      "node": "SE_R1C1",
+      "unit": "A"
+    },
+    {
+      "cells": [
+        "R1C2"
+      ],
+      "element": "I_SE_R1C2",
+      "group": "drive:SE",
+      "label": "I(I_SE_R1C2)",
+      "node": "SE_R1C2",
+      "unit": "A"
+    },
+    {
+      "cells": [
+        "R2C1"
+      ],
+      "element": "I_SE_R2C1",
+      "group": "drive:SE",
+      "label": "I(I_SE_R2C1)",
+      "node": "SE_R2C1",
+      "unit": "A"
+    },
+    {
+      "cells": [
+        "R2C2"
+      ],
+      "element": "I_SE_R2C2",
+      "group": "drive:SE",
+      "label": "I(I_SE_R2C2)",
+      "node": "SE_R2C2",
+      "unit": "A"
+    },
+    {
+      "branch": "WL",
+      "element": "R_WL",
+      "group": "cell:R1C1:input",
+      "instance": "XBVM_R1C1",
+      "label": "I(R_WL|XBVM_R1C1)",
+      "unit": "A"
+    },
+    {
+      "branch": "BL",
+      "element": "R_BL",
+      "group": "cell:R1C1:input",
+      "instance": "XBVM_R1C1",
+      "label": "I(R_BL|XBVM_R1C1)",
+      "unit": "A"
+    },
+    {
+      "branch": "SE",
+      "element": "R_SE",
+      "group": "cell:R1C1:input",
+      "instance": "XBVM_R1C1",
+      "label": "I(R_SE|XBVM_R1C1)",
+      "unit": "A"
+    },
+    {
+      "group": "cell:R1C1:bvm_output",
+      "label": "V(SL_R1C1)",
+      "node": "SL_R1C1",
+      "unit": "V"
+    },
+    {
+      "element": "L_SL",
+      "group": "cell:R1C1:bvm_output",
+      "instance": "XBVM_R1C1",
+      "label": "I(L_SL|XBVM_R1C1)",
+      "unit": "A"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "P(B_JM1|XBVM_R1C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "V(B_JM1|XBVM_R1C1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "P(B_JM2|XBVM_R1C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "V(B_JM2|XBVM_R1C1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "P(B_JS1|XBVM_R1C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "V(B_JS1|XBVM_R1C1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "P(B_JS2|XBVM_R1C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R1C1:bvm_state",
+      "instance": "XBVM_R1C1",
+      "label": "V(B_JS2|XBVM_R1C1)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "P(BJ1|XBQ_R1C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "V(BJ1|XBQ_R1C1)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "P(BJ2|XBQ_R1C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "V(BJ2|XBQ_R1C1)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ3",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "P(BJ3|XBQ_R1C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ3",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "V(BJ3|XBQ_R1C1)",
+      "unit": "V"
+    },
+    {
+      "element": "LIN",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "I(LIN|XBQ_R1C1)",
+      "unit": "A"
+    },
+    {
+      "element": "L1",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "I(L1|XBQ_R1C1)",
+      "unit": "A"
+    },
+    {
+      "element": "L2",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "I(L2|XBQ_R1C1)",
+      "unit": "A"
+    },
+    {
+      "element": "L3",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "I(L3|XBQ_R1C1)",
+      "unit": "A"
+    },
+    {
+      "element": "IB2",
+      "group": "frontend_c1:R1C1:qb",
+      "instance": "XBQ_R1C1",
+      "label": "I(IB2|XBQ_R1C1)",
+      "unit": "A"
+    },
+    {
+      "group": "frontend_c1:R1C1:qb_boundary",
+      "label": "V(MERGE_C1_L1)",
+      "node": "MERGE_C1_L1",
+      "unit": "V"
+    },
+    {
+      "branch": "WL",
+      "element": "R_WL",
+      "group": "cell:R1C2:input",
+      "instance": "XBVM_R1C2",
+      "label": "I(R_WL|XBVM_R1C2)",
+      "unit": "A"
+    },
+    {
+      "branch": "BL",
+      "element": "R_BL",
+      "group": "cell:R1C2:input",
+      "instance": "XBVM_R1C2",
+      "label": "I(R_BL|XBVM_R1C2)",
+      "unit": "A"
+    },
+    {
+      "branch": "SE",
+      "element": "R_SE",
+      "group": "cell:R1C2:input",
+      "instance": "XBVM_R1C2",
+      "label": "I(R_SE|XBVM_R1C2)",
+      "unit": "A"
+    },
+    {
+      "group": "cell:R1C2:bvm_output",
+      "label": "V(SL_R1C2)",
+      "node": "SL_R1C2",
+      "unit": "V"
+    },
+    {
+      "element": "L_SL",
+      "group": "cell:R1C2:bvm_output",
+      "instance": "XBVM_R1C2",
+      "label": "I(L_SL|XBVM_R1C2)",
+      "unit": "A"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "P(B_JM1|XBVM_R1C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "V(B_JM1|XBVM_R1C2)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "P(B_JM2|XBVM_R1C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "V(B_JM2|XBVM_R1C2)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "P(B_JS1|XBVM_R1C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "V(B_JS1|XBVM_R1C2)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "P(B_JS2|XBVM_R1C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R1C2:bvm_state",
+      "instance": "XBVM_R1C2",
+      "label": "V(B_JS2|XBVM_R1C2)",
+      "unit": "V"
+    },
+    {
+      "branch": "WL",
+      "element": "R_WL",
+      "group": "cell:R2C1:input",
+      "instance": "XBVM_R2C1",
+      "label": "I(R_WL|XBVM_R2C1)",
+      "unit": "A"
+    },
+    {
+      "branch": "BL",
+      "element": "R_BL",
+      "group": "cell:R2C1:input",
+      "instance": "XBVM_R2C1",
+      "label": "I(R_BL|XBVM_R2C1)",
+      "unit": "A"
+    },
+    {
+      "branch": "SE",
+      "element": "R_SE",
+      "group": "cell:R2C1:input",
+      "instance": "XBVM_R2C1",
+      "label": "I(R_SE|XBVM_R2C1)",
+      "unit": "A"
+    },
+    {
+      "group": "cell:R2C1:bvm_output",
+      "label": "V(SL_R2C1)",
+      "node": "SL_R2C1",
+      "unit": "V"
+    },
+    {
+      "element": "L_SL",
+      "group": "cell:R2C1:bvm_output",
+      "instance": "XBVM_R2C1",
+      "label": "I(L_SL|XBVM_R2C1)",
+      "unit": "A"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "P(B_JM1|XBVM_R2C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "V(B_JM1|XBVM_R2C1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "P(B_JM2|XBVM_R2C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "V(B_JM2|XBVM_R2C1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "P(B_JS1|XBVM_R2C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "V(B_JS1|XBVM_R2C1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "P(B_JS2|XBVM_R2C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R2C1:bvm_state",
+      "instance": "XBVM_R2C1",
+      "label": "V(B_JS2|XBVM_R2C1)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "P(BJ1|XBQ_R2C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "V(BJ1|XBQ_R2C1)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "P(BJ2|XBQ_R2C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "V(BJ2|XBQ_R2C1)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ3",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "P(BJ3|XBQ_R2C1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ3",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "V(BJ3|XBQ_R2C1)",
+      "unit": "V"
+    },
+    {
+      "element": "LIN",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "I(LIN|XBQ_R2C1)",
+      "unit": "A"
+    },
+    {
+      "element": "L1",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "I(L1|XBQ_R2C1)",
+      "unit": "A"
+    },
+    {
+      "element": "L2",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "I(L2|XBQ_R2C1)",
+      "unit": "A"
+    },
+    {
+      "element": "L3",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "I(L3|XBQ_R2C1)",
+      "unit": "A"
+    },
+    {
+      "element": "IB2",
+      "group": "frontend_c1:R2C1:qb",
+      "instance": "XBQ_R2C1",
+      "label": "I(IB2|XBQ_R2C1)",
+      "unit": "A"
+    },
+    {
+      "group": "frontend_c1:R2C1:qb_boundary",
+      "label": "V(MERGE_C1_L2)",
+      "node": "MERGE_C1_L2",
+      "unit": "V"
+    },
+    {
+      "branch": "WL",
+      "element": "R_WL",
+      "group": "cell:R2C2:input",
+      "instance": "XBVM_R2C2",
+      "label": "I(R_WL|XBVM_R2C2)",
+      "unit": "A"
+    },
+    {
+      "branch": "BL",
+      "element": "R_BL",
+      "group": "cell:R2C2:input",
+      "instance": "XBVM_R2C2",
+      "label": "I(R_BL|XBVM_R2C2)",
+      "unit": "A"
+    },
+    {
+      "branch": "SE",
+      "element": "R_SE",
+      "group": "cell:R2C2:input",
+      "instance": "XBVM_R2C2",
+      "label": "I(R_SE|XBVM_R2C2)",
+      "unit": "A"
+    },
+    {
+      "group": "cell:R2C2:bvm_output",
+      "label": "V(SL_R2C2)",
+      "node": "SL_R2C2",
+      "unit": "V"
+    },
+    {
+      "element": "L_SL",
+      "group": "cell:R2C2:bvm_output",
+      "instance": "XBVM_R2C2",
+      "label": "I(L_SL|XBVM_R2C2)",
+      "unit": "A"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "P(B_JM1|XBVM_R2C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM1",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "V(B_JM1|XBVM_R2C2)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "P(B_JM2|XBVM_R2C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JM2",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "V(B_JM2|XBVM_R2C2)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "P(B_JS1|XBVM_R2C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS1",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "V(B_JS1|XBVM_R2C2)",
+      "unit": "V"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "P(B_JS2|XBVM_R2C2)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_JS2",
+      "group": "cell:R2C2:bvm_state",
+      "instance": "XBVM_R2C2",
+      "label": "V(B_JS2|XBVM_R2C2)",
+      "unit": "V"
+    },
+    {
+      "group": "frontend_c1:sjtl1",
+      "label": "V(SJTL_OUT_C1_L1)",
+      "node": "SJTL_OUT_C1_L1",
+      "unit": "V"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:sjtl1",
+      "instance": "XSJTL_C1_L1",
+      "label": "P(BJ1|XSJTL_C1_L1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:sjtl1",
+      "instance": "XSJTL_C1_L1",
+      "label": "V(BJ1|XSJTL_C1_L1)",
+      "unit": "V"
+    },
+    {
+      "element": "L1",
+      "group": "frontend_c1:sjtl1",
+      "instance": "XSJTL_C1_L1",
+      "label": "I(L1|XSJTL_C1_L1)",
+      "unit": "A"
+    },
+    {
+      "element": "L2",
+      "group": "frontend_c1:sjtl1",
+      "instance": "XSJTL_C1_L1",
+      "label": "I(L2|XSJTL_C1_L1)",
+      "unit": "A"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "P(BJ1|XCB_C1_L1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "V(BJ1|XCB_C1_L1)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "P(BJ2|XCB_C1_L1)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "V(BJ2|XCB_C1_L1)",
+      "unit": "V"
+    },
+    {
+      "element": "L1",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "I(L1|XCB_C1_L1)",
+      "unit": "A"
+    },
+    {
+      "element": "L2",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "I(L2|XCB_C1_L1)",
+      "unit": "A"
+    },
+    {
+      "element": "L3",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "I(L3|XCB_C1_L1)",
+      "unit": "A"
+    },
+    {
+      "element": "L4",
+      "group": "frontend_c1:cb1",
+      "instance": "XCB_C1_L1",
+      "label": "I(L4|XCB_C1_L1)",
+      "unit": "A"
+    },
+    {
+      "group": "frontend_c1:sjtl2",
+      "label": "V(SJTL_OUT_C1_L2)",
+      "node": "SJTL_OUT_C1_L2",
+      "unit": "V"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:sjtl2",
+      "instance": "XSJTL_C1_L2",
+      "label": "P(BJ1|XSJTL_C1_L2)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:sjtl2",
+      "instance": "XSJTL_C1_L2",
+      "label": "V(BJ1|XSJTL_C1_L2)",
+      "unit": "V"
+    },
+    {
+      "element": "L1",
+      "group": "frontend_c1:sjtl2",
+      "instance": "XSJTL_C1_L2",
+      "label": "I(L1|XSJTL_C1_L2)",
+      "unit": "A"
+    },
+    {
+      "element": "L2",
+      "group": "frontend_c1:sjtl2",
+      "instance": "XSJTL_C1_L2",
+      "label": "I(L2|XSJTL_C1_L2)",
+      "unit": "A"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "P(BJ1|XCB_C1_L2)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ1",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "V(BJ1|XCB_C1_L2)",
+      "unit": "V"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "P(BJ2|XCB_C1_L2)",
+      "unit": "rad"
+    },
+    {
+      "element": "BJ2",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "V(BJ2|XCB_C1_L2)",
+      "unit": "V"
+    },
+    {
+      "element": "L1",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "I(L1|XCB_C1_L2)",
+      "unit": "A"
+    },
+    {
+      "element": "L2",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "I(L2|XCB_C1_L2)",
+      "unit": "A"
+    },
+    {
+      "element": "L3",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "I(L3|XCB_C1_L2)",
+      "unit": "A"
+    },
+    {
+      "element": "L4",
+      "group": "frontend_c1:cb2",
+      "instance": "XCB_C1_L2",
+      "label": "I(L4|XCB_C1_L2)",
+      "unit": "A"
+    },
+    {
+      "element": "B_J1",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J1|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J1",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J1|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J2",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J2|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J2",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J2|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J3",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J3|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J3",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J3|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J4",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J4|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J4",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J4|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J5",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J5|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J5",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J5|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J6",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J6|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J6",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J6|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J7",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J7|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J7",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J7|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J8",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J8|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J8",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J8|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J9",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J9|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J9",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J9|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J10",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J10|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J10",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J10|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "B_J11",
+      "group": "t1:junction_phase",
+      "instance": "XT1",
+      "label": "P(B_J11|XT1)",
+      "unit": "rad"
+    },
+    {
+      "element": "B_J11",
+      "group": "t1:junction_voltage",
+      "instance": "XT1",
+      "label": "V(B_J11|XT1)",
+      "unit": "V"
+    },
+    {
+      "element": "L1",
+      "group": "t1:inductor_current",
+      "instance": "XT1",
+      "label": "I(L1|XT1)",
+      "unit": "A"
+    },
+    {
+      "element": "L3",
+      "group": "t1:inductor_current",
+      "instance": "XT1",
+      "label": "I(L3|XT1)",
+      "unit": "A"
+    },
+    {
+      "element": "L11",
+      "group": "t1:inductor_current",
+      "instance": "XT1",
+      "label": "I(L11|XT1)",
+      "unit": "A"
+    },
+    {
+      "element": "L14",
+      "group": "t1:inductor_current",
+      "instance": "XT1",
+      "label": "I(L14|XT1)",
+      "unit": "A"
+    },
+    {
+      "element": "L17",
+      "group": "t1:inductor_current",
+      "instance": "XT1",
+      "label": "I(L17|XT1)",
+      "unit": "A"
+    },
+    {
+      "group": "t1:input_boundary",
+      "label": "V(T1_I)",
+      "node": "T1_I",
+      "unit": "V"
+    },
+    {
+      "direction": "VOUT_C1 to T1_I",
+      "element": "V_T1_LINK",
+      "group": "t1:input_boundary",
+      "label": "I(V_T1_LINK)",
+      "unit": "A"
+    },
+    {
+      "group": "frontend_c1:output_boundary",
+      "label": "V(VOUT_C1)",
+      "node": "VOUT_C1",
+      "unit": "V"
+    },
+    {
+      "group": "column_c2:output_control",
+      "label": "V(VOUT_C2)",
+      "node": "VOUT_C2",
+      "unit": "V"
+    },
+    {
+      "group": "t1:sum_output",
+      "label": "V(S)",
+      "node": "S",
+      "unit": "V"
+    },
+    {
+      "group": "t1:carry_output",
+      "label": "V(C)",
+      "node": "C",
+      "unit": "V"
+    },
+    {
+      "element": "R_S",
+      "group": "t1:sum_load_current",
+      "label": "I(R_S)",
+      "unit": "A"
+    },
+    {
+      "element": "R_C",
+      "group": "t1:carry_load_current",
+      "label": "I(R_C)",
+      "unit": "A"
+    },
+    {
+      "element": "V_BIAS1",
+      "group": "t1:bias_current",
+      "label": "I(V_BIAS1)",
+      "unit": "A"
+    },
+    {
+      "element": "V_BIAS2",
+      "group": "t1:bias_current",
+      "label": "I(V_BIAS2)",
+      "unit": "A"
+    },
+    {
+      "element": "V_BIAS3",
+      "group": "t1:bias_current",
+      "label": "I(V_BIAS3)",
+      "unit": "A"
+    },
+    {
+      "group": "t1:clock",
+      "label": "V(CLK)",
+      "node": "CLK",
+      "unit": "V"
+    },
+    {
+      "element": "R_CLK_QUIET",
+      "group": "t1:clock_branch_current",
+      "label": "I(R_CLK_QUIET)",
+      "unit": "A"
+    },
+    {
+      "element": "R_TERM_C2",
+      "group": "column_c2:terminal_load_current",
+      "label": "I(R_TERM_C2)",
+      "unit": "A"
+    }
+  ],
+  "t1_inductors": [
+    "L1",
+    "L3",
+    "L11",
+    "L14",
+    "L17"
+  ],
+  "t1_junctions": [
+    "B_J1",
+    "B_J2",
+    "B_J3",
+    "B_J4",
+    "B_J5",
+    "B_J6",
+    "B_J7",
+    "B_J8",
+    "B_J9",
+    "B_J10",
+    "B_J11"
+  ],
+  "write1_mode": "SIMULTANEOUS"
+}

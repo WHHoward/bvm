@@ -1,9 +1,10 @@
 # 2×2 BVM shared row/column selection platform v1
 
-This is a render-first 2×2 BVM → independent QB → sJTL → post-CB platform.
-The four outputs are separate; there is no diagonal merge and no T1. Canonical
-BVM/QB/CB/sJTL source files are included read-only and their SHA-256 values are
-checked before every preview or run.
+This is a render-first 2×2 BVM → independent QB array with four independent
+output chains or two-level per-column MERGE chains. `OUTPUT_MODE=TERMINAL`
+remains the default for historical A001–A018; optional `T1_C1` is described below.
+Canonical BVM/QB/CB/sJTL sources are included read-only and their SHA-256 values
+are checked before every preview or run.
 
 Each cell uses the same frozen load chain:
 
@@ -263,3 +264,70 @@ It overlays both column outputs from all six runs on exact common stored raw
 timestamps in `[0,250)` ps, writes a derived CSV and a local HTML page, records
 the input raw hashes, and refuses to interpolate or overwrite prior comparison
 artifacts. Generated HTML remains local and is excluded from evidence ZIPs.
+
+## Authorized T1_C1 integration batch — 2026-10-08
+
+`OUTPUT_MODE` defaults to `TERMINAL`, preserving A001–A018. `T1_C1` removes
+only `R_TERM_C1`, connects `VOUT_C1` to the canonical `XT1` through
+`V_T1_LINK VOUT_C1 T1_I 0`, and keeps the independent C2 chain plus its 2 Ω
+termination. The canonical `circuits/t1/t1_cell.cir` is read-only; all T1 JJs
+use the shared canonical `jjmit` model include.
+
+The eight registered conditions run serially, one solve per invocation:
+
+| Preset | ROW/COL | Active cells | T1 clock |
+|---|---|---|---|
+| `T1_C1_Q0` | 00/00 | none | QUIET |
+| `T1_C1_Q1` | 10/10 | R1C1 | QUIET |
+| `T1_C1_Q2` | 01/10 | R2C1 | QUIET |
+| `T1_C1_Q3` | 11/10 | R1C1, R2C1 | QUIET |
+| `T1_C1_P0` | 00/00 | none | PULSE |
+| `T1_C1_P1` | 10/10 | R1C1 | PULSE |
+| `T1_C1_P2` | 01/10 | R2C1 | PULSE |
+| `T1_C1_P3` | 11/10 | R1C1, R2C1 | PULSE |
+
+Bias B is fixed for this batch: 1.8 mV on all three bias sources, `R_S=12 Ω`,
+`R_C=12 Ω`. QUIET uses only `R_CLK_QUIET CLK 0 5`; PULSE uses the A041
+candidate `PULSE(0 1.2m 170p 1p 1p 2p 50p)` with 2 Ω series resistance. The
+modes are mutually exclusive. `DT=0.01p`, `STOP=250p`; registered windows are
+`[110,170)`, `[170,220)`, and `[220,250)` ps.
+
+For manual editing, set `OUTPUT_TOPOLOGY=COLUMN_MERGE`, `OUTPUT_MODE=T1_C1`,
+`PROBE_PROFILE=t1_focus`, and the desired `ROW_BITS`, `COL_BITS`,
+`T1_CLK_MODE`, bias and clock values in `USER_CASE.env`; then run:
+
+```bash
+./try.sh --dry-run
+./try.sh
+```
+
+The T1 presets are directly runnable, for example:
+
+```bash
+./try.sh --preset T1_C1_P3 --dry-run
+./try.sh --preset T1_C1_P3
+```
+
+`t1_focus` retains all eleven T1 junction P/V traces, the five registered T1
+inductor currents, C1 BVM→QB→MERGE→sJTL→CB evidence, actual BVM input branch
+currents, T1 input/clock/S/C, and C2 BVM/output control while omitting C2's
+redundant passive receiver internals. The profile estimates about 58.3 MB per
+QUIET raw and 58.7 MB per PULSE raw, versus the A018 95.4 MB / 284-probe core;
+these are estimates, not storage guarantees. Each run generates four classic
+`josim-plot2.py` pages; HTML stays local and out of DELTA archives. The exact
+matrix and evidence boundary are in `PREFLIGHT.md` and
+`analysis/metric_spec.json`. No SFQ count, T1 function, or mechanism conclusion
+is inferred from execution or mechanical QA. After the authorized raws are
+complete, run the read-only arithmetic audit and exact-grid comparison builder
+on those immutable raws:
+
+```bash
+python3 scripts/build_t1_batch_comparison.py
+python3 scripts/audit_t1_batch.py
+```
+
+The audit independently reproduces T1 JJ phase/voltage arithmetic on the three
+registered half-open windows. The comparison builder writes two compact classic
+pages: QUIET/PULSE pairs and the pre-clock A013–A016 terminal reference; the
+terminal-vs-T1 load difference is explicitly marked as unmatched. Neither
+command invokes JoSIM or modifies raw CSVs.

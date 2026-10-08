@@ -4,6 +4,7 @@ parent_head: a155b7f820efbad4447c8d1985a66e4192b7e614
 purpose: parameterized BVM 2x2 shared-selection platform and registered bounded batches
 physical_solves_authorized_in_initial_platform_build_task: 0
 physical_solves_authorized_in_current_task_20261008: 6
+physical_solves_authorized_in_current_task_20261008_t1_c1: 8
 manual_run_policy: one fresh run per ./try.sh invocation; no automatic A/B/C batch
 grid:
   rows: [1, 2]
@@ -18,6 +19,9 @@ drive_modes:
 output_topologies:
   - INDEPENDENT
   - COLUMN_MERGE
+output_modes:
+  - TERMINAL
+  - T1_C1
 se_topologies:
   - SHARED_COLUMN
   - CELL
@@ -45,12 +49,14 @@ sources:
   sJTL: circuits/sJTL_0923.cir
   post_CB: circuits/CB/CB_0928.cir
   jjmit: circuits/models/jjmit.cir
+  T1: circuits/t1/t1_cell.cir
 source_sha256:
   BVM: ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7
   QB: 82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a
   sJTL: 3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688
   post_CB: 70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370
   jjmit: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  T1: 828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237
 registered_presets:
   - A_INDEPENDENT_10_10
   - B_SHARED_10_10
@@ -68,6 +74,14 @@ registered_presets:
   - M_T3_C1_DUAL_MERGED_COLUMNS
   - M_T4_ROW_DUAL_MERGED_COLUMNS
   - M_T5_ALL_FOUR_MERGED_COLUMNS
+  - T1_C1_Q0
+  - T1_C1_Q1
+  - T1_C1_Q2
+  - T1_C1_Q3
+  - T1_C1_P0
+  - T1_C1_P1
+  - T1_C1_P2
+  - T1_C1_P3
 optional_second_read:
   default_enabled: false
   row_bit_order: leftmost bit is row 1
@@ -197,3 +211,48 @@ visualization:
   color: dark
   phase_display: rad/(2*pi)
   full_stored_time_range: true
+
+authorized_batch_20261008_t1_c1:
+  parent_head: 7eb7983c8091a3933e871246754a47d199cabd67
+  physical_solve_count: 8
+  execution_order: [T1_C1_Q0, T1_C1_Q1, T1_C1_Q2, T1_C1_Q3, T1_C1_P0, T1_C1_P1, T1_C1_P2, T1_C1_P3]
+  expected_run_ids: [A019_T1_C1_Q0, A020_T1_C1_Q1, A021_T1_C1_Q2, A022_T1_C1_Q3, A023_T1_C1_P0, A024_T1_C1_P1, A025_T1_C1_P2, A026_T1_C1_P3]
+  frozen:
+    output_mode: T1_C1
+    terminal_baseline_mode: TERMINAL
+    topology: COLUMN_MERGE
+    topology_parameters: {QB_CB: [0, 0], SJTL_COUNT: [1, 1], POST_SJTL_CB: [1, 1]}
+    first_column: VOUT_C1 -> V_T1_LINK -> XT1
+    second_column: VOUT_C2 -> R_TERM_C2 2ohm; isolated from T1
+    removed_load: R_TERM_C1
+    canonical_sources: {BVM: unchanged, QB: unchanged, sJTL: unchanged, CB: unchanged, T1: circuits/t1/t1_cell.cir}
+    t1_bias: {source: A041_T010_M1100, BIAS1: 1.8m, BIAS2: 1.8m, BIAS3: 1.8m, BIAS3_SOURCE: VOLTAGE, R_S: 12ohm, R_C: 12ohm}
+    quiet_clock: {R_CLK_QUIET: 5ohm, pulse_source: absent}
+    pulse_clock: {amplitude: 1.2m, start: 170p, period: 50p, rise: 1p, width: 2p, fall: 1p, series_R: 2ohm, quiet_resistor: absent}
+    dt: 0.01p
+    stop: 250p
+    bvm_preparation: [WRITE0, READ0, WRITE1, FINAL_READ]
+    read_amplitudes: {WL: 200u, SE: 100u}
+    write_amplitudes: {WL: 200u, BL: 200u}
+    second_read_enabled: false
+    probe_profile: t1_focus
+    estimated_raw_bytes_per_run: {QUIET: 58324873, PULSE: 58711131}
+    estimated_batch_raw_bytes: 468144016
+    package_strategy: per-run DELTA ZIPs plus one metadata ZIP; aggregate source payload exceeds the existing 100MB DELTA group safety limit
+  cases:
+    Q0: {preset: T1_C1_Q0, rows: "00", columns: "00", clock: QUIET, active_cells: []}
+    Q1: {preset: T1_C1_Q1, rows: "10", columns: "10", clock: QUIET, active_cells: [R1C1]}
+    Q2: {preset: T1_C1_Q2, rows: "01", columns: "10", clock: QUIET, active_cells: [R2C1]}
+    Q3: {preset: T1_C1_Q3, rows: "11", columns: "10", clock: QUIET, active_cells: [R1C1, R2C1]}
+    P0: {preset: T1_C1_P0, rows: "00", columns: "00", clock: PULSE, active_cells: []}
+    P1: {preset: T1_C1_P1, rows: "10", columns: "10", clock: PULSE, active_cells: [R1C1]}
+    P2: {preset: T1_C1_P2, rows: "01", columns: "10", clock: PULSE, active_cells: [R2C1]}
+    P3: {preset: T1_C1_P3, rows: "11", columns: "10", clock: PULSE, active_cells: [R1C1, R2C1]}
+  analysis_windows:
+    pre_clock_response: [110p, 170p]
+    after_first_clock: [170p, 220p]
+    after_second_clock: [220p, 250p]
+    boundary_rule: "[start,end)"
+  comparison_map: {Q0_P0: A013, Q1_P1: A014, Q2_P2: A015, Q3_P3: A016}
+  convergence: UNKNOWN
+  scientific_interpretation_performed: false

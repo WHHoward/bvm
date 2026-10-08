@@ -1,0 +1,15 @@
+{
+  "schema": "bvm-2x2-t1-audit-script-correction-v1",
+  "batch_id": "BVM2X2_T1_C1_20261008",
+  "frozen_preflight_manifest_sha256": "3bd2350583c43e0b4e1a256dc2f362227fa64b8ba1390e77af34a4cb740e2fc4",
+  "preflight_audit_script_sha256": "172ba73d02d42dbacbe1ba574de1700dcf68c8d7cfa4b5349a33f4239a42b8d4",
+  "corrected_audit_script_sha256": "0230243a55a919655377d43ce63f3ca6f5f77de71894deb0d370e0c49529fbe2",
+  "corrected_test_sha256": "da75fa40a84c3fc79b960b7193c49b9a511de92c0b1569da6fea04cbd15a717d",
+  "cause": "The first audit launch found an undefined run-id format variable; the next found that the run-id tuple shadowed the runs-directory path. Both failures occurred before raw files were opened and before audit outputs were written.",
+  "correction": "Separated RUNS_DIR from RUN_IDS, generated the exact A019-A026 order, added an import-level regression test, and added the corrected audit script hash to the arithmetic report and batch manifest.",
+  "physical_solve_count_changed": false,
+  "raw_files_modified": false,
+  "corrected_regression_tests": "41 passed",
+  "corrected_independent_audit_status": "PASS",
+  "scientific_interpretation_performed": false
+}

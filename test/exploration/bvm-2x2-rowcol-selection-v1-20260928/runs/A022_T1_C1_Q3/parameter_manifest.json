@@ -1,0 +1,125 @@
+{
+  "STIMULUS": {
+    "FINAL_READ_FALL": "1p",
+    "FINAL_READ_HOLD": "9p",
+    "FINAL_READ_RISE": "1p",
+    "FINAL_READ_START": "110p",
+    "READ0_FALL": "1p",
+    "READ0_HOLD": "9p",
+    "READ0_RISE": "1p",
+    "READ0_START": "70p",
+    "SECOND_READ_FALL": "1p",
+    "SECOND_READ_HOLD": "9p",
+    "SECOND_READ_RISE": "1p",
+    "SECOND_READ_START": "170p",
+    "WRITE0_FALL": "1p",
+    "WRITE0_HOLD": "9p",
+    "WRITE0_RISE": "1p",
+    "WRITE0_START": "50p",
+    "WRITE1_FALL": "1p",
+    "WRITE1_HOLD": "9p",
+    "WRITE1_RISE": "1p",
+    "WRITE1_START": "90p"
+  },
+  "USER_CASE": {
+    "COL_BITS": "10",
+    "COL_BL_WRITE_AMPLITUDE": "200u",
+    "COL_SE_READ_AMPLITUDE": "100u",
+    "DRIVE_MODE": "SHARED",
+    "DT": "0.01p",
+    "NAME": "bvm_2x2_rowcol_selection",
+    "OUTPUT_MODE": "T1_C1",
+    "OUTPUT_TOPOLOGY": "COLUMN_MERGE",
+    "POST_CB_PER_CELL": "1",
+    "PROBE_PROFILE": "t1_focus",
+    "READ0_ENABLE": "1",
+    "ROW_BITS": "11",
+    "ROW_WL_READ_AMPLITUDE": "200u",
+    "ROW_WL_WRITE_AMPLITUDE": "200u",
+    "SECOND_COL_BITS": "10",
+    "SECOND_READ_ENABLE": "0",
+    "SECOND_ROW_BITS": "01",
+    "SE_GATE_MODE": "CROSSPOINT",
+    "SE_TOPOLOGY": "CELL",
+    "SJTL_PER_CELL": "1",
+    "STOP": "250p",
+    "T1_BIAS1": "1.8m",
+    "T1_BIAS2": "1.8m",
+    "T1_BIAS3": "1.8m",
+    "T1_BIAS3_SOURCE": "VOLTAGE",
+    "T1_CLK_AMPLITUDE": "1.2m",
+    "T1_CLK_FALL": "1p",
+    "T1_CLK_MODE": "QUIET",
+    "T1_CLK_PERIOD": "50p",
+    "T1_CLK_RISE": "1p",
+    "T1_CLK_R_SERIES": "2",
+    "T1_CLK_START": "170p",
+    "T1_CLK_WIDTH": "2p",
+    "T1_R_C": "12",
+    "T1_R_S": "12",
+    "TERM_R": "2",
+    "WRITE1_MODE": "SIMULTANEOUS",
+    "WRITE1_TARGET_1": "NONE",
+    "WRITE1_TARGET_2": "NONE"
+  },
+  "bit_order": {
+    "columns": "leftmost bit is C1",
+    "rows": "leftmost bit is R1"
+  },
+  "component_source_sha256": {
+    "BVM": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+    "JJMIT": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "POST_CB": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+    "QB": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+    "SJTL": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+    "T1": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237"
+  },
+  "drive_mode": "SHARED",
+  "frozen_output_load": {
+    "C1": "T1 input through V_T1_LINK",
+    "C2_TERM_R_OHM": "2",
+    "POST_CB_PER_CELL": 1,
+    "SJTL_PER_CELL": 1
+  },
+  "merge_topology_parameters": {
+    "POST_SJTL_CB": [
+      1,
+      1
+    ],
+    "QB_CB": [
+      0,
+      0
+    ],
+    "SJTL_COUNT": [
+      1,
+      1
+    ]
+  },
+  "output_mode": "T1_C1",
+  "output_topology": "COLUMN_MERGE",
+  "physical_solve_count": 1,
+  "schema": "bvm-2x2-rowcol-parameters-v1",
+  "scientific_interpretation_performed": false,
+  "second_read": {
+    "column_bits": "10",
+    "enabled": false,
+    "row_bits": "01",
+    "se_gate_mode": "DISABLED"
+  },
+  "t1": {
+    "T1_BIAS1": "1.8m",
+    "T1_BIAS2": "1.8m",
+    "T1_BIAS3": "1.8m",
+    "T1_BIAS3_SOURCE": "VOLTAGE",
+    "T1_CLK_AMPLITUDE": "1.2m",
+    "T1_CLK_FALL": "1p",
+    "T1_CLK_MODE": "QUIET",
+    "T1_CLK_PERIOD": "50p",
+    "T1_CLK_RISE": "1p",
+    "T1_CLK_R_SERIES": "2",
+    "T1_CLK_START": "170p",
+    "T1_CLK_WIDTH": "2p",
+    "T1_R_C": "12",
+    "T1_R_S": "12"
+  }
+}

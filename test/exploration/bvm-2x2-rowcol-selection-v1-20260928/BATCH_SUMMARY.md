@@ -162,6 +162,21 @@ source-commit summary snapshot from before package identities were known; this
 final post-package summary is committed separately and uploaded to the same
 Drive folder. The raw/data bundles are unchanged by that summary update.
 
+Commit trail: source/evidence `fed7287b5347864dc7372f847c12a75fd0eaa756`;
+summary with package identities `41e7f7eaa7e5153058e1a95c57dcae72d3eb74d6`;
+ZIP/QA archive commit and pushed master `ac5c540926bf14f66e98a52ad91ab61768c26e04`.
+The current remote HEAD is reported in the final handoff.
+
+Drive readback metadata sizes match all nine local ZIP byte sizes. The Drive
+metadata connector did not expose a remote MD5/SHA field; local ZIP SHA and
+full CRC/member-hash QA are in the table/sidecars, and `/mnt/d/BVM_Backages`
+copies were independently SHA-verified. The upload connector created extra
+same-name copies of A019–A021; these were moved, not deleted, to the recoverable
+[upload-retry duplicate folder](https://drive.google.com/drive/folders/1UUfzFftGKC9U5Yup6dy-QdJoDwfvrKv2).
+The primary [BVM_Backages folder](https://drive.google.com/drive/folders/1--nlY7Nq5ArVPydJNrnQf-EGmwN-undh)
+contains the nine canonical ZIPs and this summary (`BATCH_SUMMARY.md`, Drive
+file ID `1OvoDsAxSVXTSSetGnAoS3M25Fo6qXk-V`).
+
 ## Interpretation boundary
 
 This is simulated raw evidence plus arithmetic, not a hardware measurement.

@@ -1,0 +1,70 @@
+experiment_id: bvm-4x4-cb-carry-buffer-d1-20261009
+experiment_risk_level: NORMAL
+question: >-
+  With the existing array-side D1 final CB unchanged, what stored-grid D0/D1
+  boundary and JJ arithmetic is observed when C_D0 first passes through one
+  canonical CB_0928 and its output then joins DOUT_D1 directly at T1_D1.I?
+source_class: canonical_components_exploratory_topology
+authority_boundary:
+  evidence: [A021, A022, A023, A024, A025, A026 raw, deck, provenance, QA]
+  not_proven: [CB isolation, SFQ event count, full multiplier function, hardware behavior]
+run_set:
+  - run_id: A025_CARRY_CB_D1_ALL_CLOCK
+    condition: CARRY_CB_D1_ALL_CLOCK
+    row_bits: "1111"
+    column_bits: "1111"
+    clock: GLOBAL_ONESHOT@200p
+    matched_baseline: A021_CHAIN_ALL_GLOBAL_CLOCK
+    matched_direct_candidate: A023_CB_DIRECT_D1_ALL_CLOCK
+  - run_id: A026_CARRY_CB_D1_PAPER_CLOCK
+    condition: CARRY_CB_D1_PAPER_CLOCK
+    row_bits: "1101"
+    column_bits: "1101"
+    clock: GLOBAL_ONESHOT@200p
+    matched_baseline: A022_CHAIN_PAPER_GLOBAL_CLOCK
+    matched_direct_candidate: A024_CB_DIRECT_D1_PAPER_CLOCK
+changed:
+  - D1 carry-side branch inserts one canonical CB_0928 between C_D0 and the D1 join
+frozen:
+  - BVM/QB/array-CB/sJTL sources and parameters
+  - DOUT_D1 array final CB and D0 entrance JTL
+  - D2-D6 THmitll_MERGE stages, seven T1s, DFF, loads, biases, and clocks
+  - shared WL/BL 400u, independent SE 100u, DT=0.01p, STOP=300p
+  - WRITE0/READ0/WRITE1/FINAL_READ timing and polarity
+topology:
+  d0_carry_branch: C_D0 -> V_CARRY_IN_D1 -> XCB_CARRY_D1(CB_0928) -> V_CBU_B_D1 -> CBU_JOIN_D1
+  array_branch: DOUT_D1 -> V_CBU_A_D1 -> CBU_JOIN_D1
+  output: CBU_JOIN_D1 -> V_T1_LINK_D1 -> T1_D1.I
+  added_jtl_or_sjtl: false
+  canonical_cb_0928_sha256: 70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370
+windows:
+  ARRAY_FINAL_READ: "[110,121) ps"
+  PRE_CLOCK: "[121,200) ps"
+  CLOCK_EDGE: "[200,205) ps"
+  POST_CLOCK: "[205,300) ps"
+  TOTAL: "[0,300) ps"
+probes:
+  profile: t1_chain_focus, carry-buffer D1 specialization
+  required: [D0/D1 input and T1 boundaries, D0/D1 T1 critical JJ P/V, D1 array final CB BJ1/BJ2 P/V, carry-CB input/output/BJ1/BJ2 P/V, both join branches and current sensors, D2-D6 boundaries]
+  raw_phase_unit: radians
+  phase_turns: independent unwrap then delta/(2*pi), navigation only
+  integration: trapezoid on actual stored timestamps and same half-open samples
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase: 2pi
+  standalone: three classic pages per run
+  paired: common-signal triplet comparison for A021/A023/A025 and A022/A024/A026
+  html_in_package: false
+interpretation_ceiling: >-
+  Artifact validity and registered mechanical arithmetic only. No physical
+  function, event count, isolation, or mechanism verdict is performed.
+prohibited_followups: [parameter tuning, added sJTL, clock changes, expansion beyond D1]
+scientific_review_authorization: NOT_GRANTED
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

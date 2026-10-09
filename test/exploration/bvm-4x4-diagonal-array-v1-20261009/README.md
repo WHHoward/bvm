@@ -227,6 +227,9 @@ the default for D2-D6:
 - `CB_DIRECT`: DOUT_D1 and T1_D0.C each connect through their own 0-V current
   sensor to `CBU_JOIN_D1`; one canonical `CB_0928` (`IN,OUT`) feeds T1_D1.
   There is no isolator or added sJTL. The shared node permits reverse coupling.
+- `CB_CARRY_BUFFER`: only C_D0 passes through one canonical `CB_0928`; its
+  output and the existing array DOUT_D1 CB output join at `CBU_JOIN_D1` and
+  directly feed T1_D1. No additional sJTL/JTL is inserted.
 
 The two exact presets are:
 
@@ -252,6 +255,34 @@ analysis and A023/A024 evidence; A001-A022 raw are referenced by exact hashes,
 not recopied. This study uses a single active D1 source branch per matched
 condition and does not test two simultaneously active D1 inputs or decide
 functional success.
+
+### D1 carry-side CB_0928 buffer (A025/A026)
+
+Preview the two exact registered cases with:
+
+```bash
+./try.sh --dry-run --preset CARRY_CB_D1_ALL_CLOCK
+./try.sh --dry-run --preset CARRY_CB_D1_PAPER_CLOCK
+```
+
+The bounded A025/A026 batch is preflighted and run by:
+
+```bash
+python3 scripts/cb_carry_buffer_d1_batch.py --prepare-preflight
+# Commit the platform/preflight changes; then execute only the two registered runs.
+python3 scripts/cb_carry_buffer_d1_batch.py --run-batch
+./submit.sh A025_A026_20261009 --delta --dry-run
+./submit.sh A025_A026_20261009 --delta
+```
+
+The D1 focus captures both incoming branches, the new CB input/output and
+BJ1/BJ2 P/V, the D1 array final-CB BJ1/BJ2 P/V, and the downstream T1. All
+seven T1 external boundaries and D2-D6 CBU boundaries remain; T1 internal
+P/V is retained for D0/D1 only in this focused batch to keep each raw under
+the existing single-file size guard without changing DT or sampling. Reports
+contain registered actual-grid arithmetic and paired values only; scientific
+interpretation remains with the user. Generated HTML is local and excluded
+from the DELTA ZIP.
 
 ## Evidence and plots
 

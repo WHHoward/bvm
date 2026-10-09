@@ -11,9 +11,11 @@
     "PAPER_1101_1101",
     "CHAIN_ALL_QUIET",
     "CHAIN_ALL_GLOBAL_CLOCK",
-    "CHAIN_PAPER_GLOBAL_CLOCK"
+    "CHAIN_PAPER_GLOBAL_CLOCK",
+    "CARRY_CB_D1_ALL_CLOCK",
+    "CARRY_CB_D1_PAPER_CLOCK"
   ],
-  "maximum_physical_solve_count": 8,
+  "maximum_physical_solve_count": 26,
   "physical_solve_count": 24,
   "runs": [
     {
@@ -633,6 +635,26 @@
       "execution_preflight_attempt": 2,
       "execution_preflight_sha256": "44005f59cb63700e0fbefc7f99e184c8851a9b189aa4905f89eb8bd6251d8a04",
       "execution_static_qa_sha256": "caaf3360f0ab74c2d579ff2a2e4ff5d747a2abb5476c4e1abb51ca2b00ba4746"
+    },
+    {
+      "batch_id": "BVM4X4_CB_CARRY_BUFFER_D1_20261009",
+      "risk_level": "NORMAL",
+      "authorized_cases": [
+        "CARRY_CB_D1_ALL_CLOCK",
+        "CARRY_CB_D1_PAPER_CLOCK"
+      ],
+      "run_ids": [
+        "A025_CARRY_CB_D1_ALL_CLOCK",
+        "A026_CARRY_CB_D1_PAPER_CLOCK"
+      ],
+      "authorized_physical_solve_count": 2,
+      "physical_solve_count_completed": 0,
+      "preflight_parent_head": "e0155de0c19e95d8c909550c67097db65695c842",
+      "preflight_path": "analysis/cb-carry-buffer-d1-20261009/PREFLIGHT.md",
+      "preflight_sha256": "b5d804fe93afa7a13f2ed0ef2185edea6224d5fb13b80955d34ec6eadcf78f67",
+      "static_qa_sha256": "618c581eb27c9bb4ca3d36efb8c70b2aabfbc3fbbc9ca1342fcab54be2f9d5cc",
+      "scientific_interpretation_performed": false,
+      "automatic_follow_up": false
     }
   ]
 }

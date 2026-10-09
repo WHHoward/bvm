@@ -1,0 +1,42 @@
+{
+  "schema": "bvm-4x4-cb-carry-buffer-d1-metric-spec-v1",
+  "status": "FROZEN_BEFORE_SOLVE",
+  "physical_solve_count": 0,
+  "windows_ps": {
+    "ARRAY_FINAL_READ": [110.0, 121.0],
+    "PRE_CLOCK": [121.0, 200.0],
+    "CLOCK_EDGE": [200.0, 205.0],
+    "POST_CLOCK": [205.0, 300.0],
+    "TOTAL": [0.0, 300.0]
+  },
+  "window_boundary": "half-open [start,end); use only actual stored samples",
+  "integration": "trapezoid using actual raw time values in seconds; no interpolation/resampling",
+  "waveform_metrics": ["min", "max", "peak_to_peak", "time_of_min", "time_of_max", "signed_voltage_area", "signed_voltage_area_over_phi0_arithmetic"],
+  "current_metrics": ["min", "max", "peak_to_peak", "signed_charge"],
+  "phase_metrics": ["raw_phase_radians", "independently_unwrapped_delta_radians", "delta_over_2pi_navigation", "same_jj_same_rows_voltage_area", "voltage_area_over_phi0_arithmetic", "phase_area_residual_turns_arithmetic"],
+  "paired_comparisons": {
+    "ALL": ["A021_CHAIN_ALL_GLOBAL_CLOCK", "A023_CB_DIRECT_D1_ALL_CLOCK", "A025_CARRY_CB_D1_ALL_CLOCK"],
+    "PAPER": ["A022_CHAIN_PAPER_GLOBAL_CLOCK", "A024_CB_DIRECT_D1_PAPER_CLOCK", "A026_CARRY_CB_D1_PAPER_CLOCK"],
+    "exact_grid_required_for_pointwise_comparison": true,
+    "common_signal_schema": "same labels, directions, units and windows for each three-run group",
+    "common_signals": [
+      "V(DOUT_D0)", "V(T1_I_D0)", "V(S_D0)", "V(C_D0)",
+      "P(B_J1|XT1_D0)", "V(B_J1|XT1_D0)", "P(B_J9|XT1_D0)", "V(B_J9|XT1_D0)",
+      "P(B_J10|XT1_D0)", "V(B_J10|XT1_D0)", "P(B_J11|XT1_D0)", "V(B_J11|XT1_D0)",
+      "V(DOUT_D1)", "P(BJ1|XCB_D1_L2)", "V(BJ1|XCB_D1_L2)",
+      "V(T1_I_D1)", "V(S_D1)", "V(C_D1)",
+      "P(B_J1|XT1_D1)", "V(B_J1|XT1_D1)", "P(B_J9|XT1_D1)", "V(B_J9|XT1_D1)",
+      "P(B_J10|XT1_D1)", "V(B_J10|XT1_D1)", "P(B_J11|XT1_D1)", "V(B_J11|XT1_D1)",
+      "V(CLK_D1)", "V(DOUT_D2)", "V(T1_I_D2)", "V(S_D2)", "V(C_D2)", "V(CLK_D2)"
+    ]
+  },
+  "event_classifier": null,
+  "sfq_count_inference": "PROHIBITED",
+  "registered_descriptive_lobe_rule": {
+    "method": "platform local relative-extrema candidate descriptor",
+    "relative_threshold": 0.25,
+    "minimum_peak_separation_ps": 1.0,
+    "meaning": "waveform navigation only; not event/SFQ count"
+  },
+  "scientific_interpretation_performed": false
+}

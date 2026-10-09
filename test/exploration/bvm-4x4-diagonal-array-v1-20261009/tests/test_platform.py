@@ -387,6 +387,87 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(output["topology"]["cbu_type_by_stage"]["D2"], "THmitll_MERGE")
         self.assertEqual(output["static_qa"]["status"], "PASS")
 
+    def test_cb_carry_buffer_d1_uses_canonical_cb_only_on_carry_branch(self):
+        case, stimulus, params, output = rendered("CARRY_CB_D1_ALL_CLOCK")
+        deck = output["deck"].splitlines()
+        expected = {
+            "V_CBU_A_D1 DOUT_D1 CBU_JOIN_D1 0",
+            "V_CARRY_IN_D1 C_D0 CARRY_CB_IN_D1 0",
+            "XCB_CARRY_D1 CARRY_CB_IN_D1 CARRY_CB_OUT_D1 CB",
+            "V_CBU_B_D1 CARRY_CB_OUT_D1 CBU_JOIN_D1 0",
+            "V_T1_LINK_D1 CBU_JOIN_D1 T1_I_D1 0",
+        }
+        self.assertTrue(expected.issubset(set(deck)))
+        self.assertFalse(any(line.startswith("XCBU_D1 ") for line in deck))
+        self.assertEqual(len([line for line in deck if line.startswith("XCB_CARRY_D1 ")]), 1)
+        self.assertFalse(any(line.startswith(("XSJTL_CBU_D1", "XJTL_CBU_D1")) for line in deck))
+        self.assertIn("V_CARRY_IN_D1 C_D0 CARRY_CB_IN_D1 0", deck)
+        self.assertIn("XCB_CARRY_D1 CARRY_CB_IN_D1 CARRY_CB_OUT_D1 CB", deck)
+        self.assertIn("V_CBU_B_D1 CARRY_CB_OUT_D1 CBU_JOIN_D1 0", deck)
+        self.assertEqual(sum("CBU_JOIN_D1" in line for line in deck
+                             if not line.startswith(("*", ".print"))), 3)
+        self.assertEqual(platform.subckt_pins(platform.REPO / platform.SOURCE_PATHS["CB"], "CB"),
+                         ("IN", "OUT"))
+        self.assertEqual(output["sources"]["CBU_D1_CARRY_BUFFER"]["sha256"],
+                         platform.SOURCE_SHA256["CB"])
+        self.assertEqual(output["topology"]["cbu_type_by_stage"]["D1"], "CB_CARRY_BUFFER")
+        self.assertEqual(output["topology"]["cbu_type_by_stage"]["D2"], "THmitll_MERGE")
+        self.assertFalse(any(line.startswith("R_TERM_D") or line.startswith("R_C_D") for line in deck))
+        self.assertIn("XJTL_D0_1 D0_JTL_IN_1 D0_JTL_OUT_1 D0_JTL", deck)
+        self.assertIn("V_DFF_DATA C_D6 DFF_IN 0", deck)
+        self.assertEqual(output["static_qa"]["status"], "PASS")
+        self.assertLess(output["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
+        self.assertEqual(case["DT"], "0.01p")
+        self.assertEqual(case["STOP"], "300p")
+        self.assertEqual(params["T1_CLK_SERIES_R"], "2")
+
+        labels = {item["label"] for item in output["probes"]["signals"]}
+        for label in (
+                "V(C_D0)", "P(B_J1|XT1_D0)", "V(B_J11|XT1_D0)",
+                "V(CARRY_CB_IN_D1)", "I(V_CARRY_IN_D1)",
+                "P(BJ1|XCB_CARRY_D1)", "V(BJ2|XCB_CARRY_D1)",
+                "V(CARRY_CB_OUT_D1)", "I(V_CBU_B_D1)", "V(CBU_JOIN_D1)",
+                "I(V_CBU_A_D1)", "P(BJ2|XCB_D1_L2)", "V(T1_I_D1)",
+                "P(B_J1|XT1_D1)", "V(B_J11|XT1_D1)", "V(S_D1)",
+                "V(C_D1)", "V(CLK_D1)", "V(T1_I_D2)", "V(C_D2)"):
+            self.assertIn(label, labels)
+        for diagonal in ("D2", "D3", "D4", "D5", "D6"):
+            self.assertNotIn(f"P(B_J1|XT1_{diagonal})", labels)
+            self.assertIn(f"V(T1_I_{diagonal})", labels)
+
+        pages = platform.plot_signals(output["probes"])
+        self.assertEqual([page["file"] for page in pages], [
+            "01_full_chain_overview.html", "02_carry_propagation.html", "03_stage_focus.html"])
+        self.assertIn("V(CARRY_CB_OUT_D1)", pages[1]["signals"])
+        self.assertIn("P(BJ1|XCB_CARRY_D1)", pages[2]["signals"])
+
+    def test_cb_carry_buffer_can_be_selected_with_set_and_preserves_paper_mask(self):
+        case, _stimulus, _params, output = rendered_with_set(
+            "CHAIN_PAPER_GLOBAL_CLOCK", "CBU_OVERRIDE_D1=CB_CARRY_BUFFER")
+        self.assertEqual(case["ROW_BITS"], "1101")
+        self.assertEqual(case["COL_BITS"], "1101")
+        self.assertIn("XCB_CARRY_D1 CARRY_CB_IN_D1 CARRY_CB_OUT_D1 CB", output["deck"].splitlines())
+        self.assertEqual(output["static_qa"]["status"], "PASS")
+
+    def test_carry_buffer_presets_match_a021_a022_except_registered_case_and_d1_override(self):
+        pairs = (("CHAIN_ALL_GLOBAL_CLOCK", "CARRY_CB_D1_ALL_CLOCK", "1111"),
+                 ("CHAIN_PAPER_GLOBAL_CLOCK", "CARRY_CB_D1_PAPER_CLOCK", "1101"))
+        for baseline_name, candidate_name, bits in pairs:
+            base, base_stim, base_params, base_render = rendered(baseline_name)
+            cand, cand_stim, cand_params, cand_render = rendered(candidate_name)
+            allowed = {"CASE", "CBU_OVERRIDE_D1", "FOCUS_STAGE"}
+            diffs = {key for key in base if base.get(key) != cand.get(key)}
+            self.assertLessEqual(diffs, allowed)
+            self.assertEqual(cand["ROW_BITS"], bits)
+            self.assertEqual(cand["COL_BITS"], bits)
+            self.assertEqual(base_stim, cand_stim)
+            self.assertEqual(base_params, cand_params)
+            self.assertEqual(base_render["stimulus_text"], cand_render["stimulus_text"])
+            self.assertEqual(cand["T1_CHAIN_CLOCK_START"] if "T1_CHAIN_CLOCK_START" in cand else
+                             cand["T1_CHAIN_CLK_START"], "200p")
+            self.assertEqual(cand["DT"], "0.01p")
+            self.assertEqual(cand["STOP"], "300p")
+
     def test_cbu_override_d1_is_selectable_by_set_and_rejects_unknown_values(self):
         case, _stimulus, _params, output = rendered_with_set(
             "CHAIN_ALL_GLOBAL_CLOCK", "CBU_OVERRIDE_D1=CB_DIRECT")

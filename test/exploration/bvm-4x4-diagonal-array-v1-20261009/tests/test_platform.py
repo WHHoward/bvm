@@ -215,6 +215,26 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(windows["FINAL_READ"], (110.0, 121.0))
         self.assertEqual(windows["FINAL_READ_RESPONSE"], (110.0, 250.0))
 
+    def test_user_case_label_matches_the_live_paper_like_mask(self):
+        case = platform.parse_env(platform.USER_CASE)
+        preset = platform.parse_env(SERIES / "presets" / "PAPER_1101_1101.env")
+        self.assertEqual(case["CASE"], "PAPER_1101_1101")
+        for key in ("ROW_BITS", "COL_BITS", "SE_ENABLE_MASK"):
+            self.assertEqual(case[key], preset[key])
+        self.assertEqual(platform._active_cells(case), [
+            "R1C1", "R1C2", "R1C4", "R2C1", "R2C2", "R2C4", "R4C1", "R4C2", "R4C4"
+        ])
+
+    def test_plot_height_tracks_sep_comb_signal_groups_and_browser_width(self):
+        two_groups = platform.plot_layout_metrics(["I(A)", "V(B)"])
+        three_groups = platform.plot_layout_metrics(["V(A)", "P(B)", "I(C)"])
+        four_groups = platform.plot_layout_metrics(["V(A)", "P(B)", "I(C)", "X(D)"])
+        self.assertEqual(two_groups["height_px"], 780)
+        self.assertEqual(three_groups["height_px"], 1080)
+        self.assertEqual(four_groups["height_px"], 1100)
+        self.assertTrue(all(item["width_mode"] == "responsive_full_width"
+                            for item in (two_groups, three_groups, four_groups)))
+
     def test_raw_reader_allows_focus_subset_but_can_enforce_exact_registered_header(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             raw = Path(temp_dir) / "subset.csv"

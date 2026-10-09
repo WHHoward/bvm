@@ -65,6 +65,7 @@ CELLS = tuple(f"R{row}C{col}" for row in range(1, 5) for col in range(1, 5))
 REGISTERED_CASES = ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4",
                     "PAPER_1101_1101")
 BUS400_CASES = ("BUS400_D3_N0", "BUS400_D3_N1")
+BUS400_RUN_IDS = ("A007_BUS400_D3_N0", "A008_BUS400_D3_N1")
 PRESET_CASES = REGISTERED_CASES + BUS400_CASES
 BUS400_BATCH_ID = "BVM4X4_BUS400_20261009"
 BUS400_PARENT_HEAD = "3de08ba0fd5997b253269849dbc1a535786c8fd6"
@@ -916,10 +917,13 @@ def _register_bus400_batch(cases: list[dict[str, Any]], solver_info: dict[str, A
     _json(EXPERIMENT_MANIFEST, data)
 
 
-def build_bus400_comparison(run_ids: list[str]) -> dict[str, Any]:
+def build_bus400_comparison(run_ids: list[str], *, version_suffix: str = "") -> dict[str, Any]:
     import pandas as pd
     plotter = _plotter_module()
-    target = PLOTS / "comparison" / "BUS400_D3_matched.html"
+    suffix = f"_{version_suffix}" if version_suffix else ""
+    target = PLOTS / "comparison" / f"BUS400_D3_matched{suffix}.html"
+    if not PLOTLY_ASSET.is_file():
+        raise ConfigError(f"shared Plotly JS asset is missing: {PLOTLY_ASSET}")
     if target.exists():
         raise FileExistsError(f"refusing to overwrite BUS400 comparison plot {target}")
     signals = ["I(R_SE|XBVM_R1C1)", "V(DOUT_D3)"]
@@ -932,10 +936,13 @@ def build_bus400_comparison(run_ids: list[str]) -> dict[str, Any]:
         times, columns, _header = read_raw(raw, set(signals))
         frame = pd.DataFrame({"time": times, **{key: list(columns[key]) for key in signals}})
         fig = plotter.seperate_combined_layout(frame, SimpleNamespace(subset=signals, jump="2pi"))
+        layout = plot_layout_metrics(signals)
         fig.update_layout(title=f"{run_id} — matched BUS400 signals", title_font_size=18,
-                          template="plotly_dark")
+                          template="plotly_dark", autosize=True, width=None,
+                          height=layout["height_px"])
         sections.append(f"<section><h2>{html.escape(run_id)}</h2>" +
-                        fig.to_html(full_html=False, include_plotlyjs=False) + "</section>")
+                        fig.to_html(full_html=False, include_plotlyjs=False,
+                                    config={"responsive": True}) + "</section>")
         after = sha256(raw)
         if before != after:
             raise ConfigError(f"raw changed during paired visualization: {run_id}")
@@ -946,22 +953,29 @@ def build_bus400_comparison(run_ids: list[str]) -> dict[str, Any]:
     target.parent.mkdir(parents=True, exist_ok=True)
     asset_ref = Path(os.path.relpath(PLOTLY_ASSET, target.parent)).as_posix()
     page = ("<!doctype html><html><head><meta charset=\"utf-8\">"
+            "<style>html,body,main{width:100%;margin:0;padding:0;}"
+            "body{background:#111;overflow-x:hidden;}main{max-width:none;}</style>"
             f"<script src=\"{html.escape(asset_ref)}\"></script></head><body>"
+            "<main style=\"width:100%;max-width:none;\">"
             "<h1>BUS400 D3 matched comparison</h1>"
             "<p>Classic josim-plot2 sep_comb/dark/-j 2pi; native stored grids, no interpolation. "
             "Descriptive only; phase turns are navigation arithmetic, not event counts.</p>" +
-            "\n".join(sections) + "</body></html>\n")
+            "\n".join(sections) + "</main></body></html>\n")
+    if "Plotly.newPlot" not in page or '"responsive": true' not in page or asset_ref not in page or "staticPlot" in page:
+        raise ConfigError("responsive interactive Plotly comparison HTML QA failed")
     target.write_text(page, encoding="utf-8")
-    qa = {"schema": "bvm-4x4-bus400-comparison-qa-v1", "status": "PASS",
+    qa = {"schema": "bvm-4x4-bus400-comparison-qa-v2", "status": "PASS",
           "path": target.relative_to(SERIES).as_posix(), "sha256": sha256(target),
           "runs": run_records, "signals": signals,
           "raws_immutable": all(item["raw_sha256_before"] == item["raw_sha256_after"] for item in run_records),
           "interpolation_or_resampling": False, "plotter_sha256": sha256(PLOTTER),
+          "layout": plot_layout_metrics(signals), "responsive": True,
+          "zoom_hover_legend_interactive": True, "version_suffix": version_suffix or None,
           "comparison_generator_path": Path(__file__).resolve().relative_to(REPO).as_posix(),
           "comparison_generator_sha256": sha256(Path(__file__).resolve()),
           "plotly_asset_sha256": sha256(PLOTLY_ASSET),
           "scientific_interpretation_performed": False}
-    _json(SERIES / "analysis" / "BUS400_comparison_qa.json", qa)
+    _json(SERIES / "analysis" / f"BUS400_comparison_qa{suffix}.json", qa)
     return qa
 
 
@@ -1317,7 +1331,18 @@ def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
     return plan
 
 
-def render_plots(run_dir: Path, probes: dict[str, Any]) -> dict[str, Any]:
+def plot_layout_metrics(signals: list[str]) -> dict[str, Any]:
+    counts = {kind: sum(label.startswith(f"{kind}(") for label in signals)
+              for kind in ("V", "P", "I")}
+    counts["U"] = sum(not label.startswith(("V(", "P(", "I(")) for label in signals)
+    group_count = sum(value > 0 for value in counts.values())
+    height_px = min(1100, max(750, 180 + 300 * group_count))
+    return {"group_counts": counts, "group_count": group_count,
+            "height_px": height_px, "width_mode": "responsive_full_width"}
+
+
+def render_plots(run_dir: Path, probes: dict[str, Any], *,
+                 version_suffix: str = "") -> dict[str, Any]:
     import pandas as pd
     raw = run_dir / "raw.csv"
     before = sha256(raw)
@@ -1327,42 +1352,131 @@ def render_plots(run_dir: Path, probes: dict[str, Any]) -> dict[str, Any]:
     plotter = _plotter_module()
     plot_root = PLOTS / "runs" / run_dir.name
     asset_ref = Path(os.path.relpath(PLOTLY_ASSET, plot_root)).as_posix()
+    if not PLOTLY_ASSET.is_file():
+        raise ConfigError(f"shared Plotly JS asset is missing: {PLOTLY_ASSET}")
     page_records = []
     for page in plot_signals(probes):
-        target = plot_root / page["file"]
+        page_path = Path(page["file"])
+        suffix = f"_{version_suffix}" if version_suffix else ""
+        target = plot_root / f"{page_path.stem}{suffix}{page_path.suffix}"
         target.parent.mkdir(parents=True, exist_ok=True)
         if target.exists():
             raise FileExistsError(f"refusing to overwrite plot {target}")
         fig = plotter.seperate_combined_layout(frame, SimpleNamespace(subset=page["signals"], jump="2pi"))
-        fig.update_layout(title=f"{run_dir.name} — {page['title']}", title_font_size=20, template="plotly_dark")
-        body = fig.to_html(full_html=False, include_plotlyjs=False)
+        layout = plot_layout_metrics(page["signals"])
+        fig.update_layout(title=f"{run_dir.name} — {page['title']}", title_font_size=20,
+                          template="plotly_dark", autosize=True, width=None,
+                          height=layout["height_px"])
+        body = fig.to_html(full_html=False, include_plotlyjs=False,
+                           config={"responsive": True})
         content = ("<!doctype html><html><head><meta charset=\"utf-8\">"
+                   "<style>html,body,main{width:100%;margin:0;padding:0;}"
+                   "body{background:#111;overflow-x:hidden;}main{max-width:none;}</style>"
                    f"<script src=\"{html.escape(asset_ref)}\"></script></head><body>"
+                   "<main style=\"width:100%;max-width:none;\">"
                    f"<h1>{html.escape(run_dir.name)} — {html.escape(page['title'])}</h1>"
                    "<p>Classic josim-plot2 sep_comb/dark/-j 2pi; full stored time range; "
                    "P is radians and displayed turns are rad/(2*pi), not event counts.</p>"
-                   f"{body}</body></html>\n")
+                   f"{body}</main></body></html>\n")
+        page_html = content
+        if ("Plotly.newPlot" not in page_html or '"responsive": true' not in page_html or
+                asset_ref not in page_html or "staticPlot" in page_html):
+            raise ConfigError(f"responsive interactive Plotly HTML QA failed: {target}")
         target.write_text(content, encoding="utf-8")
         page_records.append({"path": target.relative_to(SERIES).as_posix(), "sha256": sha256(target),
                              "status": "PASS", "trace_count": len(page["signals"]),
                              "sample_count": len(times), "full_stored_time_range": True,
-                             "signals": page["signals"], "shared_plotly_asset_count": 1})
+                             "signals": page["signals"], "shared_plotly_asset_count": 1,
+                             **layout, "responsive": True, "zoom_hover_legend_interactive": True})
     after = sha256(raw)
     if before != after:
         raise ConfigError("raw changed during plot generation")
-    qa = {"schema": "bvm-4x4-diagonal-plot-qa-v1", "status": "PASS",
+    qa = {"schema": "bvm-4x4-diagonal-plot-qa-v2", "status": "PASS",
           "raw_sha256_before": before, "raw_sha256_after": after,
           "raw_immutable": True, "plotter_path": PLOTTER.relative_to(REPO).as_posix(),
           "plotter_sha256": sha256(PLOTTER), "plotly_asset_path": PLOTLY_ASSET.relative_to(REPO).as_posix(),
           "plotly_asset_sha256": sha256(PLOTLY_ASSET), "layout": "josim-plot2 sep_comb dark -j 2pi",
+          "version_suffix": version_suffix or None,
+          "responsive": True, "html_uses_external_shared_plotly_js": True,
           "pages": page_records, "page_count": len(page_records),
           "scientific_interpretation_performed": False}
-    _json(run_dir / "plot_manifest.json", {"schema": "bvm-4x4-diagonal-plot-manifest-v1",
-                                          "raw_sha256": before, "pages": page_records,
-                                          "plotter_sha256": qa["plotter_sha256"],
-                                          "plotly_asset_sha256": qa["plotly_asset_sha256"]})
-    _json(run_dir / "plot_qa.json", qa)
+    suffix = f"_{version_suffix}" if version_suffix else ""
+    _json(run_dir / f"plot_manifest{suffix}.json", {"schema": "bvm-4x4-diagonal-plot-manifest-v2",
+                                                    "raw_sha256": before, "pages": page_records,
+                                                    "plotter_sha256": qa["plotter_sha256"],
+                                                    "plotly_asset_sha256": qa["plotly_asset_sha256"],
+                                                    "responsive": True})
+    _json(run_dir / f"plot_qa{suffix}.json", qa)
     return qa
+
+
+def repair_bus400_run_html(run_id: str) -> dict[str, Any]:
+    if run_id not in BUS400_RUN_IDS:
+        raise ConfigError(f"HTML-only repair is scoped to {BUS400_RUN_IDS}; got {run_id}")
+    run_dir = RUNS / run_id
+    raw = run_dir / "raw.csv"
+    result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+    old_manifest_path = run_dir / "plot_manifest.json"
+    repair_path = run_dir / "visualization_repair_responsive_v2.json"
+    if not raw.is_file() or not old_manifest_path.is_file() or repair_path.exists():
+        raise ConfigError(f"missing source evidence or refusing to overwrite prior visualization repair: {run_id}")
+    raw_before = sha256(raw)
+    if raw_before != result.get("raw_sha256"):
+        raise ConfigError(f"immutable raw identity mismatch; refusing HTML repair: {run_id}")
+    old_manifest = json.loads(old_manifest_path.read_text(encoding="utf-8"))
+    probe = json.loads((run_dir / "probe_manifest.json").read_text(encoding="utf-8"))
+    plot_qa = render_plots(run_dir, probe, version_suffix="responsive_v2")
+    raw_after = sha256(raw)
+    if raw_after != raw_before or plot_qa["raw_sha256_before"] != raw_before:
+        raise ConfigError(f"raw changed during visualization repair: {run_id}")
+    record = {"schema": "bvm-4x4-html-repair-v1", "run_id": run_id,
+              "solver_invoked": False, "physical_solve_count": 0,
+              "raw_sha256_before": raw_before, "raw_sha256_after": raw_after,
+              "old_plot_manifest_sha256": sha256(old_manifest_path),
+              "old_pages": old_manifest.get("pages", []),
+              "new_manifest_path": (run_dir / "plot_manifest_responsive_v2.json").relative_to(SERIES).as_posix(),
+              "new_qa_path": (run_dir / "plot_qa_responsive_v2.json").relative_to(SERIES).as_posix(),
+              "new_plot_qa": plot_qa, "scientific_interpretation_performed": False}
+    _json(repair_path, record)
+    return record
+
+
+def repair_bus400_html_batch() -> int:
+    summary_path = SERIES / "analysis" / "BUS400_html_repair_summary.json"
+    if summary_path.exists():
+        raise FileExistsError(f"refusing to overwrite HTML repair summary: {summary_path}")
+    for run_id in BUS400_RUN_IDS:
+        run_dir = RUNS / run_id
+        repair_path = run_dir / "visualization_repair_responsive_v2.json"
+        page_paths = [PLOTS / "runs" / run_id / f"{Path(page['file']).stem}_responsive_v2.html"
+                      for page in plot_signals(json.loads((run_dir / "probe_manifest.json").read_text(encoding="utf-8")))]
+        if repair_path.exists() or any(path.exists() for path in page_paths):
+            raise FileExistsError(f"refusing to overwrite existing responsive-v2 visualization for {run_id}")
+    compare_path = PLOTS / "comparison" / "BUS400_D3_matched_responsive_v2.html"
+    compare_qa_path = SERIES / "analysis" / "BUS400_comparison_qa_responsive_v2.json"
+    if compare_path.exists() or compare_qa_path.exists():
+        raise FileExistsError("refusing to overwrite existing responsive-v2 comparison artifacts")
+    run_records = [repair_bus400_run_html(run_id) for run_id in BUS400_RUN_IDS]
+    comparison = build_bus400_comparison(list(BUS400_RUN_IDS), version_suffix="responsive_v2")
+    if comparison["status"] != "PASS" or not comparison["raws_immutable"]:
+        raise ConfigError("versioned BUS400 comparison visualization QA failed")
+    _json(summary_path, {"schema": "bvm-4x4-html-repair-summary-v1",
+                         "batch_id": BUS400_BATCH_ID, "physical_solve_count": 0,
+                         "runs": run_records, "comparison_qa": comparison,
+                         "plotter": "scripts/josim-plot2.py", "layout": "sep_comb/dark/-j 2pi",
+                         "responsive_width": True, "dynamic_height": True,
+                         "shared_plotly_js_external": True,
+                         "scientific_interpretation_performed": False})
+    print(json.dumps({"status": "HTML_REPAIR_PASS", "physical_solve_count": 0,
+                      "runs": [{"run_id": item["run_id"],
+                                "pages": [page["path"] for page in item["new_plot_qa"]["pages"]],
+                                "raw_sha256": item["raw_sha256_after"]}
+                               for item in run_records],
+                      "comparison": comparison["path"],
+                      "summary": summary_path.relative_to(SERIES).as_posix(),
+                      "shared_plotly_js": PLOTLY_ASSET.relative_to(REPO).as_posix()},
+                     ensure_ascii=False, indent=2))
+    return 0
 
 
 def _write_experiment_manifest(run_record: dict[str, Any] | None = None) -> None:
@@ -1729,11 +1843,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--bus400-batch", action="store_true",
                         help="run only BUS400_D3_N0 then BUS400_D3_N1, or add --dry-run for its static gate")
     parser.add_argument("--postprocess", metavar="RUN_ID")
+    parser.add_argument("--repair-bus400-html", action="store_true",
+                        help="rebuild responsive classic plots from A007/A008 raw only; never invokes JoSIM")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args(argv)
     try:
         if args.postprocess:
             return repair_existing(args.postprocess)
+        if args.repair_bus400_html:
+            return repair_bus400_html_batch()
         if args.registered_batch:
             return run_registered_batch()
         if args.bus400_batch:

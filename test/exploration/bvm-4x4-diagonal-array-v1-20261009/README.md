@@ -80,6 +80,13 @@ mechanical, or standalone-plot failure in the first case stops the batch; no
 retry or follow-up is automatic. The original six-run command is historical and
 must not be rerun over A001–A006.
 
+An additional manually completed run, when recorded in `experiment_manifest.json`
+as A009, is included only by the explicit delta submission path. The incremental
+delta uses the existing immutable BUS400 package as its base: A007/A008 raw is
+not copied again, while their later visualization QA sidecars and A009 evidence
+are included. A001–A006 remain referenced by their original package/raw hashes;
+generated HTML stays local.
+
 ```bash
 ./try.sh --registered-batch
 ```
@@ -93,9 +100,9 @@ not copied. HTML stays local:
 ./submit.sh BVM4X4_BUS400_20261009 --delta
 ```
 
-The batch package contains only changed/new evidence, exact prior package/raw
-references, and one detached PACKAGE_QA record. Generated HTML and Plotly JS are
-excluded from the ZIP.
+The delta package contains only changes since the verified BUS400 checkpoint,
+exact prior package/raw references, and a detached PACKAGE_QA. Generated HTML
+and Plotly JS are excluded from the ZIP.
 
 The six presets are `D3_N0` through `D3_N4` and `PAPER_1101_1101`. The latter
 uses ROW/COL `1101/1101` with all SE mask bits on. The preregistered diagonal

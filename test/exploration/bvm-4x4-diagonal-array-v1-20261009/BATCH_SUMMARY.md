@@ -89,10 +89,17 @@ the one scoped submit operation:
 | `bvm-4x4-diagonal-array-v1-20261009_raw_handoff_A006_PAPER_1101_1101_BVM4X4_20261009.zip` | 20384318 | `c3cd4bd7477b3b5b43b78313a9392808d78da9949d3a8feb593ca72bfbf28c46` |
 
 Six per-run ZIP total: **117,196,515 bytes**.
-| metadata | 43,299 | `b707abbba18f9381ed60be0425ea5373630ad609cc48d1c46c8e38551891d30d` |
+| metadata v1 — superseded | 43,299 | `b707abbba18f9381ed60be0425ea5373630ad609cc48d1c46c8e38551891d30d` |
 
-Total compressed ZIP bytes (7 archives): **117,239,814**.
-The metadata ZIP's internal summary predates this self-identity row; its detached QA sidecar is authoritative.
+`metadata v1` is retained but **SUPERSEDED**: its embedded BATCH_SUMMARY hash
+does not match the summary at its declared source commit. The six per-run ZIPs
+and their raw hashes remain valid and unchanged. A bound
+`bvm-4x4-diagonal-array-v1-20261009_metadata_v2_BVM4X4_20261009.zip` is being
+created from a new metadata-only commit; its bytes/SHA are in its detached
+PACKAGE_QA sidecar (the archive cannot contain its own hash). See
+`analysis/PACKAGE_SUPERSESSION.json`. The v1 ZIP remains in Git and the local
+mirror; it is not a canonical package base and will not be uploaded as the
+current Drive metadata archive.
 
 The metadata ZIP carries this run-package table; its own identity is appended below after creation.
 Each ZIP's detached PACKAGE_QA.json is the member/CRC/SHA authority.

@@ -16,7 +16,6 @@ REPO = SERIES.parents[2]
 RUNS = SERIES / "runs"
 HANDOFF = SERIES / "handoff"
 MIRROR_DEFAULT = Path("/mnt/d/BVM_Backages")
-MIRROR_DEFAULT = Path("/mnt/d/BVM_Backages")
 ROOT_SUBMIT_PATH = REPO / "scripts" / "submit.py"
 
 
@@ -160,17 +159,49 @@ def update_summary_with_packages(results: list[dict[str, Any]], package_table_ma
     summary.write_text(text.replace(package_table_marker, replacement), encoding="utf-8")
 
 
-def append_metadata_package(result: dict[str, Any], all_results: list[dict[str, Any]]) -> None:
+def submit_metadata_v2(args: argparse.Namespace, root: Any) -> int:
     summary = SERIES / "BATCH_SUMMARY.md"
-    text = summary.read_text(encoding="utf-8")
-    marker = "<!-- METADATA_PACKAGE -->"
-    total_bytes = sum(int(item["bytes"]) for item in all_results)
-    replacement = (f"| metadata | {result['bytes']:,} | `{result['sha256']}` |\n\n"
-                   f"Total compressed ZIP bytes (7 archives): **{total_bytes:,}**.\n"
-                   "The metadata ZIP's internal summary predates this self-identity row; its detached QA sidecar is authoritative.\n")
-    if marker not in text:
-        raise RuntimeError("BATCH_SUMMARY metadata package marker is missing")
-    summary.write_text(text.replace(marker, replacement), encoding="utf-8")
+    package_name = f"{SERIES.name}_metadata_v2_{args.tag}.zip"
+    target = HANDOFF / package_name
+    qa_target = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+    if target.exists() or qa_target.exists():
+        raise FileExistsError(f"refusing to overwrite immutable metadata-v2 package {package_name}")
+    metadata_paths = [path for path in included_files(SERIES)
+                      if path.relative_to(SERIES).parts[0] not in {"runs", "plots"}]
+    source_bytes = sum(path.stat().st_size for path in metadata_paths)
+    if source_bytes >= root.MAX_GIT_FILE_BYTES:
+        raise RuntimeError(f"metadata-v2 input exceeds 100MB guard: {source_bytes}")
+    rel_paths = [path.relative_to(REPO).as_posix() for path in metadata_paths]
+    if rel_paths:
+        subprocess.run(["git", "add", "-A", "-f", "--", *rel_paths], cwd=REPO, check=True)
+    staged_empty = subprocess.run(["git", "diff", "--cached", "--quiet"],
+                                   cwd=REPO, check=False).returncode == 0
+    if not staged_empty:
+        subprocess.run(["git", "commit", "-m", "docs: supersede unbound 4x4 metadata archive"],
+                       cwd=REPO, check=True)
+    source_commit = git("rev-parse", "HEAD")
+    raw_by_run = {d.name: json.loads((d / "result.json").read_text(encoding="utf-8"))["raw_sha256"]
+                  for d in sorted(RUNS.iterdir()) if d.is_dir() and d.name.startswith("A")}
+    sources = [(path, path.relative_to(SERIES).as_posix()) for path in metadata_paths]
+    spec = {"name": package_name, "kind": "directory_snapshot", "scope": SERIES,
+            "target": target, "qa_path": qa_target, "sources": sources,
+            "extra_members": {}, "excluded_files": [],
+            "readme": (f"Bound shared metadata v2 for {SERIES.name}.\n"
+                       f"Source commit: {source_commit}\n"
+                       "Supersedes only the unbound first metadata snapshot; all six raw-run ZIPs are unchanged.\n"
+                       "No new physical solve or scientific interpretation.\n").encode(),
+            "base_name": None, "base_sha": None, "raw_by_run": raw_by_run}
+    result = root.archive_bundle(spec, source_commit)
+    subprocess.run(["git", "add", "-f", "--", result["path"], result["qa_path"]], cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", "package: add bound 4x4 metadata v2"], cwd=REPO, check=True)
+    if not args.no_push:
+        subprocess.run(["git", "push"], cwd=REPO, check=True)
+    mirror = root.copy_mirror([target], Path(args.mirror_dir).expanduser().resolve())
+    print(json.dumps({"status": "METADATA_V2_COMPLETE", "source_commit": source_commit,
+                      "final_commit": git("rev-parse", "HEAD"), "push": "SKIPPED" if args.no_push else "PASS",
+                      "supersedes": "metadata_BVM4X4_20261009.zip",
+                      "package": result, "mirror": mirror}, ensure_ascii=False, indent=2))
+    return 0
 
 
 def main() -> int:
@@ -178,12 +209,16 @@ def main() -> int:
     parser.add_argument("tag")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--no-push", action="store_true")
+    parser.add_argument("--metadata-v2", action="store_true",
+                        help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message", default="experiment: add BVM 4x4 diagonal batch")
     parser.add_argument("--mirror-dir", default=str(MIRROR_DEFAULT))
     args = parser.parse_args()
     try:
         validate_scope()
         root = load_root_submit()
+        if args.metadata_v2:
+            return submit_metadata_v2(args, root)
         specs, _plan = package_specs(args.tag, root, dry_run=args.dry_run)
         mirror_dir = Path(args.mirror_dir).expanduser().resolve()
         if not mirror_dir.is_dir():
@@ -209,11 +244,11 @@ def main() -> int:
         update_summary_with_packages(package_results)
         subprocess.run(["git", "add", "--", (SERIES / "BATCH_SUMMARY.md").relative_to(REPO).as_posix()],
                        cwd=REPO, check=True)
-        if git("diff", "--cached", "--quiet", check=False) != "":
+        if subprocess.run(["git", "diff", "--cached", "--quiet"],
+                          cwd=REPO, check=False).returncode != 0:
             subprocess.run(["git", "commit", "-m", "docs: record 4x4 run package hashes"], cwd=REPO, check=True)
         summary_commit = git("rev-parse", "HEAD")
         package_results.append(root.archive_bundle(specs[-1], summary_commit))
-        append_metadata_package(package_results[-1], package_results)
         package_paths = []
         for result in package_results:
             package_paths.extend((REPO / result["path"], REPO / result["qa_path"]))

@@ -313,6 +313,8 @@ def load_config(preset: str | None = None, sets: list[str] | None = None
             t1_params[key] = value
         else:
             raise ConfigError(f"unknown --set key {key!r}")
+    if "T1_CLK_MODE" in case:
+        t1_params["T1_CLK_MODE"] = case["T1_CLK_MODE"]
     validate_config(case, stimulus, t1_params)
     return case, stimulus, t1_params
 
@@ -329,13 +331,20 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str],
     if not ((output_mode == "DIAGONAL_TERMINAL" and t1_mode == "OFF") or
             (output_mode == "DIAGONAL_T1_INDEPENDENT" and t1_mode == "ALL_INDEPENDENT")):
         raise ConfigError("use DIAGONAL_TERMINAL/T1_MODE=OFF or DIAGONAL_T1_INDEPENDENT/T1_MODE=ALL_INDEPENDENT")
+    if ("T1_CLK_MODE" in case and
+            case["T1_CLK_MODE"] != t1_params.get("T1_CLK_MODE")):
+        raise ConfigError("USER_CASE.env T1_CLK_MODE and effective T1 clock mode disagree")
     if case.get("CBU_MODE") != "OFF":
         raise ConfigError("CBU/JTL/DFF carry modes are reserved and not implemented in this experiment")
     if case.get("CARRY_MODE", "NONE") != "NONE":
         raise ConfigError("future carry-mode interfaces are reserved and fail closed")
-    allowed_profiles = {"compact", "focus", "debug"}
     if output_mode == "DIAGONAL_T1_INDEPENDENT":
-        allowed_profiles.add("t1_array_focus")
+        if _profile(case) != "t1_array_focus":
+            raise ConfigError("DIAGONAL_T1_INDEPENDENT requires PROBE_PROFILE=t1_array_focus; "
+                              "standard focus probes request R_TERM loads and do not capture T1 outputs")
+        allowed_profiles = {"t1_array_focus"}
+    else:
+        allowed_profiles = {"compact", "focus", "debug"}
     if _profile(case) not in allowed_profiles:
         raise ConfigError(f"PROBE_PROFILE must be one of {sorted(allowed_profiles)}")
     if case.get("FOCUS_DIAGONAL") not in DIAGONALS:
@@ -905,6 +914,8 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
     lines = deck.splitlines()
     stimulus_lines = [line for line in stimulus_text.splitlines() if line.startswith("I_")]
     t1_active = case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT"
+    if t1_active and _profile(case) != "t1_array_focus":
+        raise ConfigError("T1 topology requires its dedicated t1_array_focus probe set")
     expected_pin_orders = {
         "BVM": ("WL", "BL", "SE", "SL"),
         "QB": ("IN", "OUT"),
@@ -1120,7 +1131,10 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
     print("Active FINAL_READ crosspoints: " + (", ".join(static["active_final_crosspoints"]) or "none"))
     print("Diagonal lengths: " + ", ".join(f"{name}={len(cells)}" for name, cells in DIAGONALS.items()))
     print(f"Drivers: 4 WL + 4 BL + 16 independent SE = {len(rendered['drivers'])}")
-    print(f"Sources SHA verified: {len(rendered['sources'])}; T1 instance=0; CBU=0; DFF=0")
+    print(f"Sources SHA verified: {len(rendered['sources'])}; "
+          f"T1 instances={static.get('t1_count', 0)}; CBU=0; DFF=0")
+    if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT":
+        print(f"T1 clock mode: {t1_params['T1_CLK_MODE']} (USER_CASE.env override)")
     print(f"Probes: {rendered['probes']['signal_count']} ({case['PROBE_PROFILE']}); "
           f"raw estimate ~{static['raw_estimate_bytes']/1e6:.1f} MB/run")
     print(f"Solver: {SOLVER} (not invoked); DT={case['DT']}; STOP={case['STOP']}; static QA={static['status']}")
@@ -1833,8 +1847,10 @@ def build_t1_array_summary(run_ids: list[str]) -> dict[str, Any]:
         quiet_case = run_cases[quiet_id]
         pulse_case = run_cases[pulse_id]
         if (quiet_case["stimulus"] != pulse_case["stimulus"] or
-                {key: value for key, value in quiet_case["case"].items() if key != "CASE"} !=
-                {key: value for key, value in pulse_case["case"].items() if key != "CASE"} or
+                {key: value for key, value in quiet_case["case"].items()
+                 if key not in {"CASE", "T1_CLK_MODE"}} !=
+                {key: value for key, value in pulse_case["case"].items()
+                 if key not in {"CASE", "T1_CLK_MODE"}} or
                 {key: value for key, value in quiet_case["t1_params"].items() if key != "T1_CLK_MODE"} !=
                 {key: value for key, value in pulse_case["t1_params"].items() if key != "T1_CLK_MODE"}):
             raise ConfigError(f"saved QUIET/PULSE run snapshots differ beyond T1_CLK_MODE for {population}")
@@ -2059,13 +2075,14 @@ def plot_layout_metrics(signals: list[str]) -> dict[str, Any]:
               for kind in ("V", "P", "I")}
     counts["U"] = sum(not label.startswith(("V(", "P(", "I(")) for label in signals)
     group_count = sum(value > 0 for value in counts.values())
-    height_px = min(2600, max(750, 180 + 300 * group_count, 320 + 44 * len(signals)))
     return {"group_counts": counts, "group_count": group_count,
-            "height_px": height_px, "width_mode": "responsive_full_width"}
+            "height_px": None, "height_mode": "classic_plotly_default",
+            "width_mode": "responsive_full_width"}
 
 
 def render_plots(run_dir: Path, probes: dict[str, Any], *,
-                 version_suffix: str = "") -> dict[str, Any]:
+                 version_suffix: str = "", plot_root_override: Path | None = None,
+                 write_run_manifests: bool = True) -> dict[str, Any]:
     import pandas as pd
     raw = run_dir / "raw.csv"
     before = sha256(raw)
@@ -2073,7 +2090,7 @@ def render_plots(run_dir: Path, probes: dict[str, Any], *,
     times, columns, _ = read_raw(raw, required, exact_header=True)
     frame = pd.DataFrame({"time": times, **{key: list(value) for key, value in columns.items()}})
     plotter = _plotter_module()
-    plot_root = PLOTS / "runs" / run_dir.name
+    plot_root = plot_root_override or (PLOTS / "runs" / run_dir.name)
     asset_ref = Path(os.path.relpath(PLOTLY_ASSET, plot_root)).as_posix()
     if not PLOTLY_ASSET.is_file():
         raise ConfigError(f"shared Plotly JS asset is missing: {PLOTLY_ASSET}")
@@ -2087,25 +2104,16 @@ def render_plots(run_dir: Path, probes: dict[str, Any], *,
             raise FileExistsError(f"refusing to overwrite plot {target}")
         fig = plotter.seperate_combined_layout(frame, SimpleNamespace(subset=page["signals"], jump="2pi"))
         layout = plot_layout_metrics(page["signals"])
-        fig.update_layout(title=f"{run_dir.name} — {page['title']}", title_font_size=20,
-                          template="plotly_dark", autosize=True, width=None,
-                          height=layout["height_px"])
-        body = fig.to_html(full_html=False, include_plotlyjs=False,
-                           config={"responsive": True})
-        content = ("<!doctype html><html><head><meta charset=\"utf-8\">"
-                   "<style>html,body,main{width:100%;margin:0;padding:0;}"
-                   "body{background:#111;overflow-x:hidden;}main{max-width:none;}</style>"
-                   f"<script src=\"{html.escape(asset_ref)}\"></script></head><body>"
-                   "<main style=\"width:100%;max-width:none;\">"
-                   f"<h1>{html.escape(run_dir.name)} — {html.escape(page['title'])}</h1>"
-                   "<p>Classic josim-plot2 sep_comb/dark/-j 2pi; full stored time range; "
-                   "P is radians and displayed turns are rad/(2*pi), not event counts.</p>"
-                   f"{body}</main></body></html>\n")
-        page_html = content
+        fig.update_layout(title=f"{run_dir.name} — {page['title']}", title_font_size=22,
+                          template="plotly_dark")
+        fig.write_html(target, include_plotlyjs=asset_ref, full_html=True, auto_open=False)
+        page_html = target.read_text(encoding="utf-8")
+        graph_div = re.search(r'<div[^>]*class="plotly-graph-div"[^>]*>', page_html)
         if ("Plotly.newPlot" not in page_html or '"responsive": true' not in page_html or
-                asset_ref not in page_html or "staticPlot" in page_html):
+                page_html.count(asset_ref) != 1 or "staticPlot" in page_html or
+                graph_div is None or "height:100%" not in graph_div.group(0) or
+                "width:100%" not in graph_div.group(0)):
             raise ConfigError(f"responsive interactive Plotly HTML QA failed: {target}")
-        target.write_text(content, encoding="utf-8")
         page_records.append({"path": target.relative_to(SERIES).as_posix(), "sha256": sha256(target),
                              "status": "PASS", "trace_count": len(page["signals"]),
                              "sample_count": len(times), "full_stored_time_range": True,
@@ -2124,13 +2132,76 @@ def render_plots(run_dir: Path, probes: dict[str, Any], *,
           "pages": page_records, "page_count": len(page_records),
           "scientific_interpretation_performed": False}
     suffix = f"_{version_suffix}" if version_suffix else ""
-    _json(run_dir / f"plot_manifest{suffix}.json", {"schema": "bvm-4x4-diagonal-plot-manifest-v2",
-                                                    "raw_sha256": before, "pages": page_records,
-                                                    "plotter_sha256": qa["plotter_sha256"],
-                                                    "plotly_asset_sha256": qa["plotly_asset_sha256"],
-                                                    "responsive": True})
-    _json(run_dir / f"plot_qa{suffix}.json", qa)
+    if write_run_manifests:
+        _json(run_dir / f"plot_manifest{suffix}.json", {"schema": "bvm-4x4-diagonal-plot-manifest-v2",
+                                                        "raw_sha256": before, "pages": page_records,
+                                                        "plotter_sha256": qa["plotter_sha256"],
+                                                        "plotly_asset_sha256": qa["plotly_asset_sha256"],
+                                                        "responsive": True})
+        _json(run_dir / f"plot_qa{suffix}.json", qa)
     return qa
+
+
+def repair_t1_classic_plots() -> int:
+    """Regenerate A013-A016 HTML with the historical Plotly canvas defaults only."""
+    run_ids = [item[0] for item in T1_ARRAY_RUN_MATRIX]
+    repair_path = T1_ARRAY_ANALYSIS / "VISUALIZATION_REPAIR_CLASSIC.json"
+    output_root = PLOTS / "t1-classic-v1"
+    if repair_path.exists():
+        raise ConfigError(f"refusing to overwrite visualization repair record: {repair_path}")
+    runs = []
+    for run_id in run_ids:
+        run_dir = RUNS / run_id
+        raw = run_dir / "raw.csv"
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        t1_qa = json.loads((run_dir / "t1_array_qa.json").read_text(encoding="utf-8"))
+        probe = json.loads((run_dir / "probe_manifest.json").read_text(encoding="utf-8"))
+        original_plot_qa = json.loads((run_dir / "plot_qa.json").read_text(encoding="utf-8"))
+        raw_before = sha256(raw)
+        if (result.get("artifact_status") != "VALID" or qa.get("status") != "PASS" or
+                t1_qa.get("status") != "PASS" or result.get("raw_sha256") != raw_before or
+                t1_qa.get("raw_sha256_after_analysis") != raw_before or
+                probe.get("profile") != "t1_array_focus"):
+            raise ConfigError(f"cannot regenerate classic T1 plots from an invalid/non-T1 run: {run_id}")
+        original_pages = original_plot_qa.get("pages", [])
+        for page in original_pages:
+            old_path = SERIES / page["path"]
+            if not old_path.is_file() or sha256(old_path) != page.get("sha256"):
+                raise ConfigError(f"original plot identity mismatch; refusing repair: {old_path}")
+        regenerated = render_plots(run_dir, probe, plot_root_override=output_root / run_id,
+                                   write_run_manifests=False)
+        raw_after = sha256(raw)
+        if raw_after != raw_before or regenerated["raw_sha256_after"] != raw_before:
+            raise ConfigError(f"raw changed during T1 HTML-only repair: {run_id}")
+        if regenerated["page_count"] != 3:
+            raise ConfigError(f"T1 classic plot repair did not produce exactly three pages: {run_id}")
+        for page in original_pages:
+            old_path = SERIES / page["path"]
+            if sha256(old_path) != page["sha256"]:
+                raise ConfigError(f"original plot changed during repair: {old_path}")
+        runs.append({"run_id": run_id, "raw_sha256": raw_before,
+                     "physical_solve_count": 0,
+                     "original_pages_unchanged": True,
+                     "original_pages": original_pages,
+                     "regenerated_plot_qa": regenerated})
+
+    repair = {"schema": "bvm-4x4-t1-classic-visualization-repair-v1",
+              "status": "PASS", "renderer": PLOTTER.relative_to(REPO).as_posix(),
+              "layout": "historical josim-plot2 sep_comb/dark/-j 2pi; no forced height or width",
+              "shared_plotly_asset": PLOTLY_ASSET.relative_to(REPO).as_posix(),
+              "output_root": output_root.relative_to(SERIES).as_posix(),
+              "physical_solve_count": 0, "raw_modified": False,
+              "original_html_overwritten": False, "html_in_package": False,
+              "runs": runs, "scientific_interpretation_performed": False}
+    _json(repair_path, repair)
+    print(json.dumps({"status": repair["status"], "physical_solve_count": 0,
+                      "output_root": repair["output_root"],
+                      "runs": [{"run_id": item["run_id"],
+                                "pages": [page["path"] for page in item["regenerated_plot_qa"]["pages"]],
+                                "raw_sha256": item["raw_sha256"]}
+                               for item in runs]}, ensure_ascii=False, indent=2))
+    return 0
 
 
 def repair_bus400_run_html(run_id: str) -> dict[str, Any]:
@@ -2628,6 +2699,7 @@ def _t1_array_case_matrix() -> list[dict[str, Any]]:
         case.update({"CASE": label, "ROW_BITS": row_bits, "COL_BITS": col_bits,
                      "SE_ENABLE_MASK": "ALL", "OUTPUT_MODE": "DIAGONAL_T1_INDEPENDENT",
                      "T1_MODE": "ALL_INDEPENDENT", "CBU_MODE": "OFF", "CARRY_MODE": "NONE",
+                     "T1_CLK_MODE": clock_mode,
                      "PROBE_PROFILE": "t1_array_focus", "FOCUS_DIAGONAL": "D3",
                      **fixed_case})
         t1 = dict(base_t1)
@@ -2652,8 +2724,10 @@ def _t1_array_case_matrix() -> list[dict[str, Any]]:
     for quiet_index, pulse_index in ((0, 1), (2, 3)):
         quiet, pulse = cases[quiet_index], cases[pulse_index]
         if (quiet["stimulus"] != pulse["stimulus"] or
-                {k: v for k, v in quiet["case"].items() if k != "CASE"} !=
-                {k: v for k, v in pulse["case"].items() if k != "CASE"} or
+                {k: v for k, v in quiet["case"].items()
+                 if k not in {"CASE", "T1_CLK_MODE"}} !=
+                {k: v for k, v in pulse["case"].items()
+                 if k not in {"CASE", "T1_CLK_MODE"}} or
                 {k: v for k, v in quiet["t1_params"].items() if k != "T1_CLK_MODE"} !=
                 {k: v for k, v in pulse["t1_params"].items() if k != "T1_CLK_MODE"}):
             raise ConfigError(f"matched QUIET/PULSE pair differs beyond T1_CLK_MODE: {quiet['label']}/{pulse['label']}")
@@ -2786,6 +2860,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--postprocess", metavar="RUN_ID")
     parser.add_argument("--repair-bus400-html", action="store_true",
                         help="rebuild responsive classic plots from A007/A008 raw only; never invokes JoSIM")
+    parser.add_argument("--repair-t1-classic-plots", action="store_true",
+                        help="regenerate A013-A016 T1 HTML with classic josim-plot2 canvas defaults; no solver")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args(argv)
     try:
@@ -2793,6 +2869,8 @@ def main(argv: list[str] | None = None) -> int:
             return repair_existing(args.postprocess)
         if args.repair_bus400_html:
             return repair_bus400_html_batch()
+        if args.repair_t1_classic_plots:
+            return repair_t1_classic_plots()
         if args.finalize_t1_array_batch:
             return finalize_t1_array_batch()
         if args.t1_array_batch:

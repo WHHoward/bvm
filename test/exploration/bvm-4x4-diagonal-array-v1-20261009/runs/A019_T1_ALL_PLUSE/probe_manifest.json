@@ -1,0 +1,1453 @@
+{
+  "schema": "bvm-4x4-t1-array-probe-manifest-v1",
+  "profile": "t1_array_focus",
+  "focus_diagonal": "D3",
+  "signal_count": 189,
+  "raw_phase_unit": "P(...) radians",
+  "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
+  "signals": [
+    {
+      "label": "V(DOUT_D0)",
+      "group": "t1_input:D0:upstream",
+      "unit": "V",
+      "node": "DOUT_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(T1_I_D0)",
+      "group": "t1_input:D0:loaded_input",
+      "unit": "V",
+      "node": "T1_I_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(V_T1_LINK_D0)",
+      "group": "t1_input:D0:link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D0",
+      "diagonal": "D0",
+      "direction": "DOUT_D0 to T1_I_D0"
+    },
+    {
+      "label": "V(S_D0)",
+      "group": "t1_output:D0:sum",
+      "unit": "V",
+      "node": "S_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(R_S_D0)",
+      "group": "t1_load:D0:sum",
+      "unit": "A",
+      "element": "R_S_D0",
+      "diagonal": "D0",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "V(C_D0)",
+      "group": "t1_output:D0:carry",
+      "unit": "V",
+      "node": "C_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(R_C_D0)",
+      "group": "t1_load:D0:carry",
+      "unit": "A",
+      "element": "R_C_D0",
+      "diagonal": "D0",
+      "direction": "C node to ground"
+    },
+    {
+      "label": "V(CLK_D0)",
+      "group": "t1_clock:D0:loaded",
+      "unit": "V",
+      "node": "CLK_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(CLK_RAW_D0)",
+      "group": "t1_clock:D0:source",
+      "unit": "V",
+      "node": "CLK_RAW_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D0)",
+      "group": "t1_clock:D0:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(V_BIAS1_D0)",
+      "group": "t1_bias:D0",
+      "unit": "A",
+      "element": "V_BIAS1_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(V_BIAS2_D0)",
+      "group": "t1_bias:D0",
+      "unit": "A",
+      "element": "V_BIAS2_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(V_BIAS3_D0)",
+      "group": "t1_bias:D0",
+      "unit": "A",
+      "element": "V_BIAS3_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "P(BJ1|XCB_D0_L1)",
+      "group": "t1_upstream_cb:D0",
+      "unit": "rad",
+      "instance": "XCB_D0_L1",
+      "element": "BJ1",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(BJ1|XCB_D0_L1)",
+      "group": "t1_upstream_cb:D0",
+      "unit": "V",
+      "instance": "XCB_D0_L1",
+      "element": "BJ1",
+      "diagonal": "D0"
+    },
+    {
+      "label": "P(BJ2|XCB_D0_L1)",
+      "group": "t1_upstream_cb:D0",
+      "unit": "rad",
+      "instance": "XCB_D0_L1",
+      "element": "BJ2",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(BJ2|XCB_D0_L1)",
+      "group": "t1_upstream_cb:D0",
+      "unit": "V",
+      "instance": "XCB_D0_L1",
+      "element": "BJ2",
+      "diagonal": "D0"
+    },
+    {
+      "label": "P(B_J1|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "rad",
+      "instance": "XT1_D0",
+      "element": "B_J1",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(B_J1|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "V",
+      "instance": "XT1_D0",
+      "element": "B_J1",
+      "diagonal": "D0"
+    },
+    {
+      "label": "P(B_J2|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "rad",
+      "instance": "XT1_D0",
+      "element": "B_J2",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(B_J2|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "V",
+      "instance": "XT1_D0",
+      "element": "B_J2",
+      "diagonal": "D0"
+    },
+    {
+      "label": "P(B_J9|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "rad",
+      "instance": "XT1_D0",
+      "element": "B_J9",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(B_J9|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "V",
+      "instance": "XT1_D0",
+      "element": "B_J9",
+      "diagonal": "D0"
+    },
+    {
+      "label": "P(B_J10|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "rad",
+      "instance": "XT1_D0",
+      "element": "B_J10",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(B_J10|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "V",
+      "instance": "XT1_D0",
+      "element": "B_J10",
+      "diagonal": "D0"
+    },
+    {
+      "label": "P(B_J11|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "rad",
+      "instance": "XT1_D0",
+      "element": "B_J11",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(B_J11|XT1_D0)",
+      "group": "t1_internal:D0",
+      "unit": "V",
+      "instance": "XT1_D0",
+      "element": "B_J11",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(DOUT_D1)",
+      "group": "t1_input:D1:upstream",
+      "unit": "V",
+      "node": "DOUT_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(T1_I_D1)",
+      "group": "t1_input:D1:loaded_input",
+      "unit": "V",
+      "node": "T1_I_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(V_T1_LINK_D1)",
+      "group": "t1_input:D1:link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D1",
+      "diagonal": "D1",
+      "direction": "DOUT_D1 to T1_I_D1"
+    },
+    {
+      "label": "V(S_D1)",
+      "group": "t1_output:D1:sum",
+      "unit": "V",
+      "node": "S_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(R_S_D1)",
+      "group": "t1_load:D1:sum",
+      "unit": "A",
+      "element": "R_S_D1",
+      "diagonal": "D1",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "V(C_D1)",
+      "group": "t1_output:D1:carry",
+      "unit": "V",
+      "node": "C_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(R_C_D1)",
+      "group": "t1_load:D1:carry",
+      "unit": "A",
+      "element": "R_C_D1",
+      "diagonal": "D1",
+      "direction": "C node to ground"
+    },
+    {
+      "label": "V(CLK_D1)",
+      "group": "t1_clock:D1:loaded",
+      "unit": "V",
+      "node": "CLK_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(CLK_RAW_D1)",
+      "group": "t1_clock:D1:source",
+      "unit": "V",
+      "node": "CLK_RAW_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D1)",
+      "group": "t1_clock:D1:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(V_BIAS1_D1)",
+      "group": "t1_bias:D1",
+      "unit": "A",
+      "element": "V_BIAS1_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(V_BIAS2_D1)",
+      "group": "t1_bias:D1",
+      "unit": "A",
+      "element": "V_BIAS2_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(V_BIAS3_D1)",
+      "group": "t1_bias:D1",
+      "unit": "A",
+      "element": "V_BIAS3_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "P(BJ1|XCB_D1_L2)",
+      "group": "t1_upstream_cb:D1",
+      "unit": "rad",
+      "instance": "XCB_D1_L2",
+      "element": "BJ1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(BJ1|XCB_D1_L2)",
+      "group": "t1_upstream_cb:D1",
+      "unit": "V",
+      "instance": "XCB_D1_L2",
+      "element": "BJ1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "P(BJ2|XCB_D1_L2)",
+      "group": "t1_upstream_cb:D1",
+      "unit": "rad",
+      "instance": "XCB_D1_L2",
+      "element": "BJ2",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(BJ2|XCB_D1_L2)",
+      "group": "t1_upstream_cb:D1",
+      "unit": "V",
+      "instance": "XCB_D1_L2",
+      "element": "BJ2",
+      "diagonal": "D1"
+    },
+    {
+      "label": "P(B_J1|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "rad",
+      "instance": "XT1_D1",
+      "element": "B_J1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(B_J1|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "V",
+      "instance": "XT1_D1",
+      "element": "B_J1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "P(B_J2|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "rad",
+      "instance": "XT1_D1",
+      "element": "B_J2",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(B_J2|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "V",
+      "instance": "XT1_D1",
+      "element": "B_J2",
+      "diagonal": "D1"
+    },
+    {
+      "label": "P(B_J9|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "rad",
+      "instance": "XT1_D1",
+      "element": "B_J9",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(B_J9|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "V",
+      "instance": "XT1_D1",
+      "element": "B_J9",
+      "diagonal": "D1"
+    },
+    {
+      "label": "P(B_J10|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "rad",
+      "instance": "XT1_D1",
+      "element": "B_J10",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(B_J10|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "V",
+      "instance": "XT1_D1",
+      "element": "B_J10",
+      "diagonal": "D1"
+    },
+    {
+      "label": "P(B_J11|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "rad",
+      "instance": "XT1_D1",
+      "element": "B_J11",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(B_J11|XT1_D1)",
+      "group": "t1_internal:D1",
+      "unit": "V",
+      "instance": "XT1_D1",
+      "element": "B_J11",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(DOUT_D2)",
+      "group": "t1_input:D2:upstream",
+      "unit": "V",
+      "node": "DOUT_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(T1_I_D2)",
+      "group": "t1_input:D2:loaded_input",
+      "unit": "V",
+      "node": "T1_I_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(V_T1_LINK_D2)",
+      "group": "t1_input:D2:link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D2",
+      "diagonal": "D2",
+      "direction": "DOUT_D2 to T1_I_D2"
+    },
+    {
+      "label": "V(S_D2)",
+      "group": "t1_output:D2:sum",
+      "unit": "V",
+      "node": "S_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(R_S_D2)",
+      "group": "t1_load:D2:sum",
+      "unit": "A",
+      "element": "R_S_D2",
+      "diagonal": "D2",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "V(C_D2)",
+      "group": "t1_output:D2:carry",
+      "unit": "V",
+      "node": "C_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(R_C_D2)",
+      "group": "t1_load:D2:carry",
+      "unit": "A",
+      "element": "R_C_D2",
+      "diagonal": "D2",
+      "direction": "C node to ground"
+    },
+    {
+      "label": "V(CLK_D2)",
+      "group": "t1_clock:D2:loaded",
+      "unit": "V",
+      "node": "CLK_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(CLK_RAW_D2)",
+      "group": "t1_clock:D2:source",
+      "unit": "V",
+      "node": "CLK_RAW_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D2)",
+      "group": "t1_clock:D2:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(V_BIAS1_D2)",
+      "group": "t1_bias:D2",
+      "unit": "A",
+      "element": "V_BIAS1_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(V_BIAS2_D2)",
+      "group": "t1_bias:D2",
+      "unit": "A",
+      "element": "V_BIAS2_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(V_BIAS3_D2)",
+      "group": "t1_bias:D2",
+      "unit": "A",
+      "element": "V_BIAS3_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "P(BJ1|XCB_D2_L3)",
+      "group": "t1_upstream_cb:D2",
+      "unit": "rad",
+      "instance": "XCB_D2_L3",
+      "element": "BJ1",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(BJ1|XCB_D2_L3)",
+      "group": "t1_upstream_cb:D2",
+      "unit": "V",
+      "instance": "XCB_D2_L3",
+      "element": "BJ1",
+      "diagonal": "D2"
+    },
+    {
+      "label": "P(BJ2|XCB_D2_L3)",
+      "group": "t1_upstream_cb:D2",
+      "unit": "rad",
+      "instance": "XCB_D2_L3",
+      "element": "BJ2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(BJ2|XCB_D2_L3)",
+      "group": "t1_upstream_cb:D2",
+      "unit": "V",
+      "instance": "XCB_D2_L3",
+      "element": "BJ2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "P(B_J1|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J1",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(B_J1|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J1",
+      "diagonal": "D2"
+    },
+    {
+      "label": "P(B_J2|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(B_J2|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "P(B_J9|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J9",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(B_J9|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J9",
+      "diagonal": "D2"
+    },
+    {
+      "label": "P(B_J10|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J10",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(B_J10|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J10",
+      "diagonal": "D2"
+    },
+    {
+      "label": "P(B_J11|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J11",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(B_J11|XT1_D2)",
+      "group": "t1_internal:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J11",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(DOUT_D3)",
+      "group": "t1_input:D3:upstream",
+      "unit": "V",
+      "node": "DOUT_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(T1_I_D3)",
+      "group": "t1_input:D3:loaded_input",
+      "unit": "V",
+      "node": "T1_I_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(V_T1_LINK_D3)",
+      "group": "t1_input:D3:link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D3",
+      "diagonal": "D3",
+      "direction": "DOUT_D3 to T1_I_D3"
+    },
+    {
+      "label": "V(S_D3)",
+      "group": "t1_output:D3:sum",
+      "unit": "V",
+      "node": "S_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(R_S_D3)",
+      "group": "t1_load:D3:sum",
+      "unit": "A",
+      "element": "R_S_D3",
+      "diagonal": "D3",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "V(C_D3)",
+      "group": "t1_output:D3:carry",
+      "unit": "V",
+      "node": "C_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(R_C_D3)",
+      "group": "t1_load:D3:carry",
+      "unit": "A",
+      "element": "R_C_D3",
+      "diagonal": "D3",
+      "direction": "C node to ground"
+    },
+    {
+      "label": "V(CLK_D3)",
+      "group": "t1_clock:D3:loaded",
+      "unit": "V",
+      "node": "CLK_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(CLK_RAW_D3)",
+      "group": "t1_clock:D3:source",
+      "unit": "V",
+      "node": "CLK_RAW_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D3)",
+      "group": "t1_clock:D3:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(V_BIAS1_D3)",
+      "group": "t1_bias:D3",
+      "unit": "A",
+      "element": "V_BIAS1_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(V_BIAS2_D3)",
+      "group": "t1_bias:D3",
+      "unit": "A",
+      "element": "V_BIAS2_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(V_BIAS3_D3)",
+      "group": "t1_bias:D3",
+      "unit": "A",
+      "element": "V_BIAS3_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "P(BJ1|XCB_D3_L4)",
+      "group": "t1_upstream_cb:D3",
+      "unit": "rad",
+      "instance": "XCB_D3_L4",
+      "element": "BJ1",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(BJ1|XCB_D3_L4)",
+      "group": "t1_upstream_cb:D3",
+      "unit": "V",
+      "instance": "XCB_D3_L4",
+      "element": "BJ1",
+      "diagonal": "D3"
+    },
+    {
+      "label": "P(BJ2|XCB_D3_L4)",
+      "group": "t1_upstream_cb:D3",
+      "unit": "rad",
+      "instance": "XCB_D3_L4",
+      "element": "BJ2",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(BJ2|XCB_D3_L4)",
+      "group": "t1_upstream_cb:D3",
+      "unit": "V",
+      "instance": "XCB_D3_L4",
+      "element": "BJ2",
+      "diagonal": "D3"
+    },
+    {
+      "label": "P(B_J1|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "rad",
+      "instance": "XT1_D3",
+      "element": "B_J1",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(B_J1|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "V",
+      "instance": "XT1_D3",
+      "element": "B_J1",
+      "diagonal": "D3"
+    },
+    {
+      "label": "P(B_J2|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "rad",
+      "instance": "XT1_D3",
+      "element": "B_J2",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(B_J2|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "V",
+      "instance": "XT1_D3",
+      "element": "B_J2",
+      "diagonal": "D3"
+    },
+    {
+      "label": "P(B_J9|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "rad",
+      "instance": "XT1_D3",
+      "element": "B_J9",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(B_J9|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "V",
+      "instance": "XT1_D3",
+      "element": "B_J9",
+      "diagonal": "D3"
+    },
+    {
+      "label": "P(B_J10|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "rad",
+      "instance": "XT1_D3",
+      "element": "B_J10",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(B_J10|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "V",
+      "instance": "XT1_D3",
+      "element": "B_J10",
+      "diagonal": "D3"
+    },
+    {
+      "label": "P(B_J11|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "rad",
+      "instance": "XT1_D3",
+      "element": "B_J11",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(B_J11|XT1_D3)",
+      "group": "t1_internal:D3",
+      "unit": "V",
+      "instance": "XT1_D3",
+      "element": "B_J11",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(DOUT_D4)",
+      "group": "t1_input:D4:upstream",
+      "unit": "V",
+      "node": "DOUT_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(T1_I_D4)",
+      "group": "t1_input:D4:loaded_input",
+      "unit": "V",
+      "node": "T1_I_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(V_T1_LINK_D4)",
+      "group": "t1_input:D4:link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D4",
+      "diagonal": "D4",
+      "direction": "DOUT_D4 to T1_I_D4"
+    },
+    {
+      "label": "V(S_D4)",
+      "group": "t1_output:D4:sum",
+      "unit": "V",
+      "node": "S_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(R_S_D4)",
+      "group": "t1_load:D4:sum",
+      "unit": "A",
+      "element": "R_S_D4",
+      "diagonal": "D4",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "V(C_D4)",
+      "group": "t1_output:D4:carry",
+      "unit": "V",
+      "node": "C_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(R_C_D4)",
+      "group": "t1_load:D4:carry",
+      "unit": "A",
+      "element": "R_C_D4",
+      "diagonal": "D4",
+      "direction": "C node to ground"
+    },
+    {
+      "label": "V(CLK_D4)",
+      "group": "t1_clock:D4:loaded",
+      "unit": "V",
+      "node": "CLK_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(CLK_RAW_D4)",
+      "group": "t1_clock:D4:source",
+      "unit": "V",
+      "node": "CLK_RAW_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D4)",
+      "group": "t1_clock:D4:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(V_BIAS1_D4)",
+      "group": "t1_bias:D4",
+      "unit": "A",
+      "element": "V_BIAS1_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(V_BIAS2_D4)",
+      "group": "t1_bias:D4",
+      "unit": "A",
+      "element": "V_BIAS2_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(V_BIAS3_D4)",
+      "group": "t1_bias:D4",
+      "unit": "A",
+      "element": "V_BIAS3_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "P(BJ1|XCB_D4_L3)",
+      "group": "t1_upstream_cb:D4",
+      "unit": "rad",
+      "instance": "XCB_D4_L3",
+      "element": "BJ1",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(BJ1|XCB_D4_L3)",
+      "group": "t1_upstream_cb:D4",
+      "unit": "V",
+      "instance": "XCB_D4_L3",
+      "element": "BJ1",
+      "diagonal": "D4"
+    },
+    {
+      "label": "P(BJ2|XCB_D4_L3)",
+      "group": "t1_upstream_cb:D4",
+      "unit": "rad",
+      "instance": "XCB_D4_L3",
+      "element": "BJ2",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(BJ2|XCB_D4_L3)",
+      "group": "t1_upstream_cb:D4",
+      "unit": "V",
+      "instance": "XCB_D4_L3",
+      "element": "BJ2",
+      "diagonal": "D4"
+    },
+    {
+      "label": "P(B_J1|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "rad",
+      "instance": "XT1_D4",
+      "element": "B_J1",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(B_J1|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "V",
+      "instance": "XT1_D4",
+      "element": "B_J1",
+      "diagonal": "D4"
+    },
+    {
+      "label": "P(B_J2|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "rad",
+      "instance": "XT1_D4",
+      "element": "B_J2",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(B_J2|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "V",
+      "instance": "XT1_D4",
+      "element": "B_J2",
+      "diagonal": "D4"
+    },
+    {
+      "label": "P(B_J9|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "rad",
+      "instance": "XT1_D4",
+      "element": "B_J9",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(B_J9|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "V",
+      "instance": "XT1_D4",
+      "element": "B_J9",
+      "diagonal": "D4"
+    },
+    {
+      "label": "P(B_J10|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "rad",
+      "instance": "XT1_D4",
+      "element": "B_J10",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(B_J10|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "V",
+      "instance": "XT1_D4",
+      "element": "B_J10",
+      "diagonal": "D4"
+    },
+    {
+      "label": "P(B_J11|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "rad",
+      "instance": "XT1_D4",
+      "element": "B_J11",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(B_J11|XT1_D4)",
+      "group": "t1_internal:D4",
+      "unit": "V",
+      "instance": "XT1_D4",
+      "element": "B_J11",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(DOUT_D5)",
+      "group": "t1_input:D5:upstream",
+      "unit": "V",
+      "node": "DOUT_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(T1_I_D5)",
+      "group": "t1_input:D5:loaded_input",
+      "unit": "V",
+      "node": "T1_I_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(V_T1_LINK_D5)",
+      "group": "t1_input:D5:link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D5",
+      "diagonal": "D5",
+      "direction": "DOUT_D5 to T1_I_D5"
+    },
+    {
+      "label": "V(S_D5)",
+      "group": "t1_output:D5:sum",
+      "unit": "V",
+      "node": "S_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(R_S_D5)",
+      "group": "t1_load:D5:sum",
+      "unit": "A",
+      "element": "R_S_D5",
+      "diagonal": "D5",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "V(C_D5)",
+      "group": "t1_output:D5:carry",
+      "unit": "V",
+      "node": "C_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(R_C_D5)",
+      "group": "t1_load:D5:carry",
+      "unit": "A",
+      "element": "R_C_D5",
+      "diagonal": "D5",
+      "direction": "C node to ground"
+    },
+    {
+      "label": "V(CLK_D5)",
+      "group": "t1_clock:D5:loaded",
+      "unit": "V",
+      "node": "CLK_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(CLK_RAW_D5)",
+      "group": "t1_clock:D5:source",
+      "unit": "V",
+      "node": "CLK_RAW_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D5)",
+      "group": "t1_clock:D5:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(V_BIAS1_D5)",
+      "group": "t1_bias:D5",
+      "unit": "A",
+      "element": "V_BIAS1_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(V_BIAS2_D5)",
+      "group": "t1_bias:D5",
+      "unit": "A",
+      "element": "V_BIAS2_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(V_BIAS3_D5)",
+      "group": "t1_bias:D5",
+      "unit": "A",
+      "element": "V_BIAS3_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "P(BJ1|XCB_D5_L2)",
+      "group": "t1_upstream_cb:D5",
+      "unit": "rad",
+      "instance": "XCB_D5_L2",
+      "element": "BJ1",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(BJ1|XCB_D5_L2)",
+      "group": "t1_upstream_cb:D5",
+      "unit": "V",
+      "instance": "XCB_D5_L2",
+      "element": "BJ1",
+      "diagonal": "D5"
+    },
+    {
+      "label": "P(BJ2|XCB_D5_L2)",
+      "group": "t1_upstream_cb:D5",
+      "unit": "rad",
+      "instance": "XCB_D5_L2",
+      "element": "BJ2",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(BJ2|XCB_D5_L2)",
+      "group": "t1_upstream_cb:D5",
+      "unit": "V",
+      "instance": "XCB_D5_L2",
+      "element": "BJ2",
+      "diagonal": "D5"
+    },
+    {
+      "label": "P(B_J1|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "rad",
+      "instance": "XT1_D5",
+      "element": "B_J1",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(B_J1|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "V",
+      "instance": "XT1_D5",
+      "element": "B_J1",
+      "diagonal": "D5"
+    },
+    {
+      "label": "P(B_J2|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "rad",
+      "instance": "XT1_D5",
+      "element": "B_J2",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(B_J2|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "V",
+      "instance": "XT1_D5",
+      "element": "B_J2",
+      "diagonal": "D5"
+    },
+    {
+      "label": "P(B_J9|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "rad",
+      "instance": "XT1_D5",
+      "element": "B_J9",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(B_J9|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "V",
+      "instance": "XT1_D5",
+      "element": "B_J9",
+      "diagonal": "D5"
+    },
+    {
+      "label": "P(B_J10|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "rad",
+      "instance": "XT1_D5",
+      "element": "B_J10",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(B_J10|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "V",
+      "instance": "XT1_D5",
+      "element": "B_J10",
+      "diagonal": "D5"
+    },
+    {
+      "label": "P(B_J11|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "rad",
+      "instance": "XT1_D5",
+      "element": "B_J11",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(B_J11|XT1_D5)",
+      "group": "t1_internal:D5",
+      "unit": "V",
+      "instance": "XT1_D5",
+      "element": "B_J11",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(DOUT_D6)",
+      "group": "t1_input:D6:upstream",
+      "unit": "V",
+      "node": "DOUT_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(T1_I_D6)",
+      "group": "t1_input:D6:loaded_input",
+      "unit": "V",
+      "node": "T1_I_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(V_T1_LINK_D6)",
+      "group": "t1_input:D6:link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D6",
+      "diagonal": "D6",
+      "direction": "DOUT_D6 to T1_I_D6"
+    },
+    {
+      "label": "V(S_D6)",
+      "group": "t1_output:D6:sum",
+      "unit": "V",
+      "node": "S_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(R_S_D6)",
+      "group": "t1_load:D6:sum",
+      "unit": "A",
+      "element": "R_S_D6",
+      "diagonal": "D6",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "V(C_D6)",
+      "group": "t1_output:D6:carry",
+      "unit": "V",
+      "node": "C_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(R_C_D6)",
+      "group": "t1_load:D6:carry",
+      "unit": "A",
+      "element": "R_C_D6",
+      "diagonal": "D6",
+      "direction": "C node to ground"
+    },
+    {
+      "label": "V(CLK_D6)",
+      "group": "t1_clock:D6:loaded",
+      "unit": "V",
+      "node": "CLK_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(CLK_RAW_D6)",
+      "group": "t1_clock:D6:source",
+      "unit": "V",
+      "node": "CLK_RAW_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D6)",
+      "group": "t1_clock:D6:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(V_BIAS1_D6)",
+      "group": "t1_bias:D6",
+      "unit": "A",
+      "element": "V_BIAS1_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(V_BIAS2_D6)",
+      "group": "t1_bias:D6",
+      "unit": "A",
+      "element": "V_BIAS2_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(V_BIAS3_D6)",
+      "group": "t1_bias:D6",
+      "unit": "A",
+      "element": "V_BIAS3_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "P(BJ1|XCB_D6_L1)",
+      "group": "t1_upstream_cb:D6",
+      "unit": "rad",
+      "instance": "XCB_D6_L1",
+      "element": "BJ1",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(BJ1|XCB_D6_L1)",
+      "group": "t1_upstream_cb:D6",
+      "unit": "V",
+      "instance": "XCB_D6_L1",
+      "element": "BJ1",
+      "diagonal": "D6"
+    },
+    {
+      "label": "P(BJ2|XCB_D6_L1)",
+      "group": "t1_upstream_cb:D6",
+      "unit": "rad",
+      "instance": "XCB_D6_L1",
+      "element": "BJ2",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(BJ2|XCB_D6_L1)",
+      "group": "t1_upstream_cb:D6",
+      "unit": "V",
+      "instance": "XCB_D6_L1",
+      "element": "BJ2",
+      "diagonal": "D6"
+    },
+    {
+      "label": "P(B_J1|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "rad",
+      "instance": "XT1_D6",
+      "element": "B_J1",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(B_J1|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "V",
+      "instance": "XT1_D6",
+      "element": "B_J1",
+      "diagonal": "D6"
+    },
+    {
+      "label": "P(B_J2|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "rad",
+      "instance": "XT1_D6",
+      "element": "B_J2",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(B_J2|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "V",
+      "instance": "XT1_D6",
+      "element": "B_J2",
+      "diagonal": "D6"
+    },
+    {
+      "label": "P(B_J9|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "rad",
+      "instance": "XT1_D6",
+      "element": "B_J9",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(B_J9|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "V",
+      "instance": "XT1_D6",
+      "element": "B_J9",
+      "diagonal": "D6"
+    },
+    {
+      "label": "P(B_J10|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "rad",
+      "instance": "XT1_D6",
+      "element": "B_J10",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(B_J10|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "V",
+      "instance": "XT1_D6",
+      "element": "B_J10",
+      "diagonal": "D6"
+    },
+    {
+      "label": "P(B_J11|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "rad",
+      "instance": "XT1_D6",
+      "element": "B_J11",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(B_J11|XT1_D6)",
+      "group": "t1_internal:D6",
+      "unit": "V",
+      "instance": "XT1_D6",
+      "element": "B_J11",
+      "diagonal": "D6"
+    }
+  ],
+  "scientific_interpretation_performed": false
+}

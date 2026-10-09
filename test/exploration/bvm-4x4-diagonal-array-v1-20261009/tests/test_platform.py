@@ -53,7 +53,11 @@ class DiagonalPlatformTests(unittest.TestCase):
                          ["R1C1", "R1C2", "R1C4", "R2C1", "R2C2", "R2C4", "R4C1", "R4C2", "R4C4"])
 
     def test_render_has_shared_rows_columns_independent_cell_se_and_serial_chains(self):
-        case, _stim, _t1, output = rendered("D3_N4", ["SJTL_COUNT_D3=1,1,1,1"])
+        case, _stim, _t1, output = rendered("D3_N4", [
+            "SJTL_COUNT_D0=1", "SJTL_COUNT_D1=1,1", "SJTL_COUNT_D2=1,1,1",
+            "SJTL_COUNT_D3=1,1,1,1", "SJTL_COUNT_D4=1,1,1",
+            "SJTL_COUNT_D5=1,1", "SJTL_COUNT_D6=1",
+        ])
         deck = output["deck"].splitlines()
         self.assertEqual(len([line for line in deck if line.startswith("XBVM_")]), 16)
         self.assertEqual(len([line for line in deck if line.startswith("XBQ_")]), 16)
@@ -216,23 +220,26 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(windows["FINAL_READ"], (110.0, 121.0))
         self.assertEqual(windows["FINAL_READ_RESPONSE"], (110.0, 250.0))
 
-    def test_user_case_label_matches_the_live_paper_like_mask(self):
-        case = platform.parse_env(platform.USER_CASE)
-        preset = platform.parse_env(SERIES / "presets" / "PAPER_1101_1101.env")
+    def test_paper_preset_keeps_terminal_mode_independent_of_manual_user_case(self):
+        case, _stimulus, _t1 = platform.load_config("PAPER_1101_1101")
         self.assertEqual(case["CASE"], "PAPER_1101_1101")
+        self.assertEqual(case["OUTPUT_MODE"], "DIAGONAL_TERMINAL")
+        self.assertEqual(case["T1_MODE"], "OFF")
         for key in ("ROW_BITS", "COL_BITS", "SE_ENABLE_MASK"):
-            self.assertEqual(case[key], preset[key])
+            self.assertEqual(case[key], {"ROW_BITS": "1101", "COL_BITS": "1101",
+                                         "SE_ENABLE_MASK": "ALL"}[key])
         self.assertEqual(platform._active_cells(case), [
             "R1C1", "R1C2", "R1C4", "R2C1", "R2C2", "R2C4", "R4C1", "R4C2", "R4C4"
         ])
 
-    def test_plot_height_tracks_sep_comb_signal_groups_and_browser_width(self):
+    def test_classic_sep_comb_canvas_does_not_scale_height_by_trace_count(self):
         two_groups = platform.plot_layout_metrics(["I(A)", "V(B)"])
         three_groups = platform.plot_layout_metrics(["V(A)", "P(B)", "I(C)"])
         four_groups = platform.plot_layout_metrics(["V(A)", "P(B)", "I(C)", "X(D)"])
-        self.assertEqual(two_groups["height_px"], 780)
-        self.assertEqual(three_groups["height_px"], 1080)
-        self.assertEqual(four_groups["height_px"], 1380)
+        self.assertEqual([item["group_count"] for item in (two_groups, three_groups, four_groups)], [2, 3, 4])
+        self.assertTrue(all(item["height_px"] is None and
+                            item["height_mode"] == "classic_plotly_default"
+                            for item in (two_groups, three_groups, four_groups)))
         self.assertTrue(all(item["width_mode"] == "responsive_full_width"
                             for item in (two_groups, three_groups, four_groups)))
 
@@ -240,7 +247,8 @@ class DiagonalPlatformTests(unittest.TestCase):
         case, stimulus, t1 = platform.load_config()
         case.update({"CASE": f"T1_STATIC_{clock_mode}", "ROW_BITS": "1111", "COL_BITS": "1111",
                      "SE_ENABLE_MASK": "ALL", "OUTPUT_MODE": "DIAGONAL_T1_INDEPENDENT",
-                     "T1_MODE": "ALL_INDEPENDENT", "CBU_MODE": "OFF", "CARRY_MODE": "NONE",
+                     "T1_MODE": "ALL_INDEPENDENT", "T1_CLK_MODE": clock_mode,
+                     "CBU_MODE": "OFF", "CARRY_MODE": "NONE",
                      "PROBE_PROFILE": "t1_array_focus", "FOCUS_DIAGONAL": "D3",
                      "ROW_WL_WRITE_AMPLITUDE": "400u", "COL_BL_WRITE_AMPLITUDE": "400u",
                      "ROW_WL_READ_AMPLITUDE": "400u", "COL_SE_READ_AMPLITUDE": "100u",
@@ -266,6 +274,15 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertFalse(changed_info["default_body_equivalent_to_canonical"])
         self.assertIn("B_J1 N2 0 jjmit area=3.6", changed_rendered)
 
+    def test_user_case_clock_mode_overrides_t1_params_default(self):
+        quiet_case, _stimulus, quiet_t1 = platform.load_config()
+        pulse_case, _stimulus, pulse_t1 = platform.load_config(sets=["T1_CLK_MODE=PULSE"])
+        configured_mode = platform.parse_env(platform.USER_CASE)["T1_CLK_MODE"]
+        self.assertEqual(quiet_case["T1_CLK_MODE"], configured_mode)
+        self.assertEqual(quiet_t1["T1_CLK_MODE"], configured_mode)
+        self.assertEqual(pulse_case["T1_CLK_MODE"], "PULSE")
+        self.assertEqual(pulse_t1["T1_CLK_MODE"], "PULSE")
+
     def test_t1_array_static_topology_quiet_and_pulse_are_seven_independent_channels(self):
         quiet = self._render_t1_array_case("QUIET")
         pulse = self._render_t1_array_case("PULSE")
@@ -290,6 +307,27 @@ class DiagonalPlatformTests(unittest.TestCase):
                 self.assertEqual(len([line for line in deck if line.startswith("V_TRIG_CLK_D")]), 7)
                 self.assertEqual(len([line for line in deck if line.startswith("R_TRIG_CLK_D")]), 7)
                 self.assertFalse(any(line.startswith("R_CLK_QUIET_D") for line in deck))
+
+    def test_t1_mode_fails_closed_without_t1_probe_profile(self):
+        case, stimulus, t1 = platform.load_config()
+        case.update({"OUTPUT_MODE": "DIAGONAL_T1_INDEPENDENT", "T1_MODE": "ALL_INDEPENDENT",
+                     "PROBE_PROFILE": "focus"})
+        with self.assertRaisesRegex(platform.ConfigError, "requires PROBE_PROFILE=t1_array_focus"):
+            platform.validate_config(case, stimulus, t1)
+
+    def test_t1_dry_run_reports_actual_rendered_instance_count(self):
+        case, stimulus, t1 = platform.load_config()
+        case.update({"CASE": "T1_DRY_RUN_TEST", "ROW_BITS": "1111", "COL_BITS": "1111",
+                     "SE_ENABLE_MASK": "ALL", "OUTPUT_MODE": "DIAGONAL_T1_INDEPENDENT",
+                     "T1_MODE": "ALL_INDEPENDENT", "PROBE_PROFILE": "t1_array_focus"})
+        import contextlib
+        import io
+        captured = io.StringIO()
+        with contextlib.redirect_stdout(captured):
+            status = platform.dry_run(case, stimulus, t1)
+        self.assertEqual(status, 0)
+        self.assertIn("T1 instances=7", captured.getvalue())
+        self.assertNotIn("T1 instance=0", captured.getvalue())
 
     def test_raw_reader_allows_focus_subset_but_can_enforce_exact_registered_header(self):
         with tempfile.TemporaryDirectory() as temp_dir:

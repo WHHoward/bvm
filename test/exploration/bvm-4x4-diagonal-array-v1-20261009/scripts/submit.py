@@ -39,13 +39,29 @@ A010_A012_RUN_PACKAGES = {
     "A012_PAPER_1101_1101": ("960e1325dbcf89331425a482cd78b1f83341922532cf72ac61efe2e5ee3f1d30",
                              "b5d96f8191506ccce430396458d1dbb7313e9860c39d4984c472b3a34e9a4f0a"),
 }
-DELTA_BASE_COMMIT = "c42ad75d39cf796cfe863b836f6f8154388a048a"
-DELTA_BASE_PACKAGE_NAME = A010_A012_SOURCE_NAME
-DELTA_BASE_PACKAGE_SHA256 = A010_A012_SOURCE_SHA256
-DELTA_BASE_PACKAGE_SOURCE_HEAD = A010_A012_SOURCE_HEAD
-PREVIOUS_DELTA_RUN_IDS = tuple(A010_A012_RUN_PACKAGES)
-DELTA_RUN_IDS = ("A013_T1_ALL_QUIET", "A014_T1_ALL_CLOCK",
-                 "A015_T1_PAPER_QUIET", "A016_T1_PAPER_CLOCK")
+A010_A012_RUN_IDS = tuple(A010_A012_RUN_PACKAGES)
+T1_A013_A016_TAG = "T1_7WAY_20261009"
+T1_A013_A016_SOURCE_NAME = f"{SERIES.name}_delta_{T1_A013_A016_TAG}_source.zip"
+T1_A013_A016_SOURCE_SHA256 = "2e18febe15b39a926484cf53bd4242ac51d261710ef41c2543f4fc656411af2e"
+T1_A013_A016_SOURCE_HEAD = "1c2e2e913c690cc613b2f232d3877e7c1b0b58cb"
+T1_A013_A016_RUN_PACKAGES = {
+    "A013_T1_ALL_QUIET": ("541fe5d9e5fbc86bf91cd49ccd52ade34af08e49e376c2528d0e157439ea96cb",
+                          "447bc455892109221a8931a02de4e846f5ae764824a343bce9e2918e02c5153f"),
+    "A014_T1_ALL_CLOCK": ("65aed4d7f05f24df9fe9a2cb813ff66027ccacd2f58db0f42e65aa0a901be0ae",
+                          "fade41f8071be1db53ad5ba9299c6274dbaf69b2b40d24d37af3c07b59782f03"),
+    "A015_T1_PAPER_QUIET": ("199ef479f85863617385e69e2d497a71d7f53f0e8603792fa7f2988c01b2caa8",
+                            "6d0d63b72aa12332fd2d2f53313b2f244f78013ffbd0d50740b6bd2c9905c0df"),
+    "A016_T1_PAPER_CLOCK": ("210ac40931a721e1d9c3c443613737f3572e46fc778988637373edb5f6db8b6c",
+                            "a7a4c9d87c07bc6fc02e66090dc64168e88c80c9d937824842210c785b8cc864"),
+}
+T1_A013_A016_RUN_IDS = tuple(T1_A013_A016_RUN_PACKAGES)
+DELTA_BASE_COMMIT = "684531519dda6e0a1e8ffec24d0711ee08adf6d1"
+DELTA_BASE_PACKAGE_NAME = T1_A013_A016_SOURCE_NAME
+DELTA_BASE_PACKAGE_SHA256 = T1_A013_A016_SOURCE_SHA256
+DELTA_BASE_PACKAGE_SOURCE_HEAD = T1_A013_A016_SOURCE_HEAD
+PREVIOUS_DELTA_RUN_IDS = T1_A013_A016_RUN_IDS
+DELTA_RUN_IDS = ("A017_PAPER_1101_1101", "A018_T1_ALL_QUIET", "A019_T1_ALL_PLUSE")
+INVALID_PRESERVED_DELTA_RUN_IDS = {"A017_PAPER_1101_1101"}
 LEGACY_RUN_IDS = tuple(f"A{i:03d}_{case}" for i, case in enumerate(
     ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4", "PAPER_1101_1101"), start=1))
 BASE_METADATA_NAME = f"{SERIES.name}_metadata_v2_BVM4X4_20261009.zip"
@@ -299,9 +315,91 @@ def verify_prior_a010_a012_checkpoint(root: Any, prior_refs: list[dict[str, Any]
         package_set.append({"package_name": package_name, "package_sha256": expected_package_sha,
                             "source_commit": A010_A012_SOURCE_HEAD, "package_group": group})
 
-    if {item["run_id"] for item in prior_run_refs} != set(PREVIOUS_DELTA_RUN_IDS):
+    if {item["run_id"] for item in prior_run_refs} != set(A010_A012_RUN_IDS):
         raise RuntimeError("A010-A012 raw reference closure is incomplete")
     return package_set, prior_refs + prior_run_refs, combined_hashes
+
+
+def verify_prior_t1_a013_a016_checkpoint(root: Any,
+                                         prior_packages: list[dict[str, Any]],
+                                         prior_refs: list[dict[str, Any]],
+                                         prior_hashes: dict[str, str]) -> tuple[
+        list[dict[str, Any]], list[dict[str, Any]], dict[str, str]]:
+    """Verify the five-package A013-A016 checkpoint and extend exact raw/member closure."""
+    expected_prior = {(item["run_id"], item["raw_sha256"], item["source_package_name"],
+                       item["source_package_sha256"]) for item in prior_refs}
+    manifest_rows = {item.get("run_id"): item for item in
+                     json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8")).get("runs", [])}
+    package_items = [("source", T1_A013_A016_SOURCE_NAME, T1_A013_A016_SOURCE_SHA256)]
+    for run_id, (package_sha, _raw_sha) in T1_A013_A016_RUN_PACKAGES.items():
+        package_items.append((run_id, f"{SERIES.name}_delta_{T1_A013_A016_TAG}_{run_id}.zip", package_sha))
+
+    checkpoint_packages = []
+    checkpoint_hashes: dict[str, str] = {}
+    added_raw_refs = []
+    for group, package_name, expected_package_sha in package_items:
+        package = HANDOFF / package_name
+        qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(package, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != expected_package_sha or
+                qa.get("source_commit") != T1_A013_A016_SOURCE_HEAD or
+                qa.get("package_bytes") != package.stat().st_size):
+            raise RuntimeError(f"A013-A016 checkpoint package identity/QA mismatch: {package_name}")
+        with zipfile.ZipFile(package, "r") as archive:
+            manifest = json.loads(archive.read("DELTA_MANIFEST.json"))
+        if (manifest.get("head_commit") != T1_A013_A016_SOURCE_HEAD or
+                manifest.get("base_commit") != "c42ad75d39cf796cfe863b836f6f8154388a048a" or
+                manifest.get("base_package_name") != A010_A012_SOURCE_NAME or
+                manifest.get("base_package_sha256") != A010_A012_SOURCE_SHA256 or
+                manifest.get("package_group") != group or
+                manifest.get("base_delta_packages") != prior_packages):
+            raise RuntimeError(f"A013-A016 checkpoint lineage mismatch: {package_name}")
+
+        included = manifest.get("included_files", [])
+        member_hashes = manifest.get("included_file_sha256", {})
+        if {item.get("archive_path"): item.get("sha256") for item in included} != member_hashes:
+            raise RuntimeError(f"A013-A016 checkpoint member/hash closure mismatch: {package_name}")
+        for member, digest in member_hashes.items():
+            previous = checkpoint_hashes.setdefault(member, digest)
+            if previous != digest:
+                raise RuntimeError(f"A013-A016 checkpoint has conflicting member hashes: {member}")
+
+        recorded_refs = manifest.get("referenced_existing_raw_sha256", [])
+        identities = {(item.get("run_id"), item.get("raw_sha256"), item.get("source_package_name"),
+                       item.get("source_package_sha256")) for item in recorded_refs}
+        if identities != expected_prior or len(identities) != len(recorded_refs):
+            raise RuntimeError(f"A013-A016 checkpoint existing-raw references mismatch: {package_name}")
+        if manifest.get("base_run_packages") != prior_refs:
+            raise RuntimeError(f"A013-A016 checkpoint base-run package references mismatch: {package_name}")
+
+        if group in T1_A013_A016_RUN_PACKAGES:
+            expected_raw_sha = T1_A013_A016_RUN_PACKAGES[group][1]
+            raw_map = manifest.get("raw_sha256_by_run", {})
+            result = json.loads((RUNS / group / "result.json").read_text(encoding="utf-8"))
+            raw = RUNS / group / "raw.csv"
+            row = manifest_rows.get(group)
+            qa_raw = qa.get("raw_sha256_by_run", {}).get(group)
+            raw_member = f"test/exploration/{SERIES.name}/runs/{group}/raw.csv"
+            if (set(raw_map) != {group} or raw_map.get(group) != expected_raw_sha or
+                    result.get("raw_sha256") != expected_raw_sha or qa_raw != expected_raw_sha or
+                    not row or row.get("raw_sha256") != expected_raw_sha or
+                    member_hashes.get(raw_member) != expected_raw_sha or
+                    root.sha256(raw) != expected_raw_sha):
+                raise RuntimeError(f"A013-A016 raw/package identity mismatch: {group}")
+            added_raw_refs.append({"run_id": group, "raw_path": f"runs/{group}/raw.csv",
+                                   "raw_sha256": expected_raw_sha,
+                                   "source_package_name": package_name,
+                                   "source_package_sha256": expected_package_sha})
+        elif manifest.get("raw_sha256_by_run") != {}:
+            raise RuntimeError("A013-A016 source checkpoint unexpectedly includes a run raw")
+
+        checkpoint_packages.append({"package_name": package_name, "package_sha256": expected_package_sha,
+                                    "source_commit": T1_A013_A016_SOURCE_HEAD, "package_group": group})
+
+    if {item["run_id"] for item in added_raw_refs} != set(T1_A013_A016_RUN_IDS):
+        raise RuntimeError("A013-A016 raw reference closure is incomplete")
+    combined_hashes = {**prior_hashes, **checkpoint_hashes}
+    return checkpoint_packages, prior_refs + added_raw_refs, combined_hashes
 
 
 def partition_delta_sources(sources: list[tuple[Path, str]]) -> tuple[
@@ -378,16 +476,28 @@ def _delta_sources(root: Any) -> tuple[list[tuple[Path, str]], list[str], list[s
         sources[rel_path] = path
         changed_paths.add(rel_path)
 
-    required_run_files = {"deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt",
-                          "USER_CASE.snapshot.env", "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env",
-                          "stimulus.inc", "case_manifest.json", "metadata.json", "provenance.json",
-                          "source_manifest.json", "topology_manifest.json", "probe_manifest.json",
-                          "static_qa.json", "stimulus_manifest.json", "metrics.json", "raw_qa.json",
-                          "qa.json", "t1_array_qa.json", "plot_manifest.json", "plot_qa.json", "result.json",
-                          "RESULT_BRIEF.md"}
+    required_valid_run_files = {"deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt",
+                                "USER_CASE.snapshot.env", "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env",
+                                "stimulus.inc", "case_manifest.json", "metadata.json", "provenance.json",
+                                "source_manifest.json", "topology_manifest.json", "probe_manifest.json",
+                                "static_qa.json", "stimulus_manifest.json", "metrics.json", "raw_qa.json",
+                                "qa.json", "t1_array_qa.json", "plot_manifest.json", "plot_qa.json",
+                                "result.json", "RESULT_BRIEF.md"}
+    required_invalid_run_files = {"deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt",
+                                  "USER_CASE.snapshot.env", "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env",
+                                  "stimulus.inc", "case_manifest.json", "source_manifest.json",
+                                  "topology_manifest.json", "probe_manifest.json", "static_qa.json",
+                                  "stimulus_manifest.json", "result.json"}
     for run_id in DELTA_RUN_IDS:
-        have = {Path(item).name for item in sources if Path(item).parts[-2:-1] == (run_id,)}
-        missing = required_run_files - have
+        run_prefix = ("test", "exploration", SERIES.name, "runs", run_id)
+        run_members = {item for item in sources if Path(item).parts[:5] == run_prefix}
+        have = {Path(item).name for item in run_members}
+        required = (required_invalid_run_files if run_id in INVALID_PRESERVED_DELTA_RUN_IDS
+                    else required_valid_run_files)
+        missing = required - have
+        if (run_id in INVALID_PRESERVED_DELTA_RUN_IDS and
+                f"test/exploration/{SERIES.name}/runs/{run_id}/sources/t1_cell_tunable.cir" not in run_members):
+            missing.add("sources/t1_cell_tunable.cir")
         if missing:
             raise RuntimeError(f"{run_id} delta evidence is incomplete: {sorted(missing)}")
 
@@ -411,9 +521,10 @@ def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, An
         raise RuntimeError(f"invalid delta tag: {tag!r}")
     metadata, legacy_raw_refs = base_records(root)
     bus400_qa, _bus400_manifest, bus400_refs = verify_prior_bus400_delta(root, legacy_raw_refs)
-    prior_delta_qa, prior_delta_manifest, existing_raw_refs = verify_prior_a009_delta(root, bus400_refs)
-    checkpoint_packages, existing_raw_refs, prior_hashes = verify_prior_a010_a012_checkpoint(
-        root, existing_raw_refs)
+    _prior_delta_qa, _prior_delta_manifest, a009_raw_refs = verify_prior_a009_delta(root, bus400_refs)
+    a010_packages, a012_raw_refs, a012_hashes = verify_prior_a010_a012_checkpoint(root, a009_raw_refs)
+    checkpoint_packages, existing_raw_refs, prior_hashes = verify_prior_t1_a013_a016_checkpoint(
+        root, a010_packages, a012_raw_refs, a012_hashes)
     if git("rev-parse", "HEAD") != DELTA_BASE_COMMIT:
         raise RuntimeError(f"T1 delta requires exact checkpoint HEAD {DELTA_BASE_COMMIT}")
     sources, changed_paths, excluded_html = _delta_sources(root)
@@ -423,13 +534,17 @@ def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, An
         if prior_hashes.get(member) != digest:
             current_sources.append((source, member))
     if not current_sources:
-        raise RuntimeError("delta has no source or evidence changes since the A009 checkpoint")
+        raise RuntimeError("delta has no source or evidence changes since the A013-A016 checkpoint")
     per_run_sources, shared_sources = partition_delta_sources(current_sources)
     current_head = git("rev-parse", "HEAD")
     run_raw_sha = {}
+    run_artifact_status = {}
     for run_id in DELTA_RUN_IDS:
         result = json.loads((RUNS / run_id / "result.json").read_text(encoding="utf-8"))
         run_raw_sha[run_id] = result["raw_sha256"]
+        run_artifact_status[run_id] = {"status": result.get("status"),
+                                       "artifact_status": result.get("artifact_status"),
+                                       "physical_solve_count": result.get("physical_solve_count")}
     experiment_manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
     manifest_limit_audit = {
         "recorded_physical_solve_count": experiment_manifest.get("physical_solve_count"),
@@ -486,6 +601,8 @@ def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, An
             "new_physical_solve_count": solve_count,
             "reused_point_count": 0,
             "raw_sha256_by_run": package_raw_sha,
+            "run_artifact_status_by_run": ({run_id: run_artifact_status[run_id]} if run_id else
+                                            run_artifact_status),
             "preexisting_experiment_manifest_limit_audit": manifest_limit_audit,
             "excluded_html": excluded_html,
             "generated_from_head": current_head,
@@ -500,7 +617,8 @@ def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, An
                            f"Base delta: {DELTA_BASE_PACKAGE_NAME} ({DELTA_BASE_PACKAGE_SHA256})\n"
                            f"Base source HEAD: {DELTA_BASE_COMMIT}\n"
                            f"Batch additions: {', '.join(DELTA_RUN_IDS)}.\n"
-                           "A001-A009 raw is referenced by exact package/raw SHA; no previous raw is copied again.\n"
+                           "A001-A016 raw is referenced by exact package/raw SHA; no previous raw is copied again.\n"
+                           "A017 postprocess-invalid raw is preserved and clearly tagged INVALID in the manifest.\n"
                            "Generated HTML is excluded. No scientific interpretation.\n").encode(),
                 "excluded_files": excluded_html, "base_name": DELTA_BASE_PACKAGE_NAME,
                 "base_sha": DELTA_BASE_PACKAGE_SHA256, "raw_by_run": package_raw_sha}
@@ -508,6 +626,8 @@ def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, An
         plans.append({"package": package_name, "group": label,
                       "new_raw_files": [f"runs/{run_id}/raw.csv"] if run_id else [],
                       "raw_sha256_by_run": package_raw_sha,
+                      "run_artifact_status_by_run": ({run_id: run_artifact_status[run_id]} if run_id else
+                                                      run_artifact_status),
                       "raw_bytes_by_run": {run_id: (RUNS / run_id / "raw.csv").stat().st_size} if run_id else {},
                       "new_physical_solve_count": solve_count,
                       "source_file_count": len(group_sources),
@@ -522,6 +642,7 @@ def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, An
             "base_metadata_package": BASE_METADATA_NAME,
             "base_metadata_sha256": metadata["package_sha256"],
             "packages": plans,
+            "run_artifact_status_by_run": run_artifact_status,
             "referenced_existing_cases": existing_raw_refs,
             "new_physical_solve_count": len(DELTA_RUN_IDS),
             "reused_point_count": 0,
@@ -549,27 +670,42 @@ def validate_scope(*, delta: bool = False) -> None:
     if not RUNS.is_dir():
         raise RuntimeError("runs/ is missing; no completed physical batch found")
     run_dirs = sorted(path for path in RUNS.iterdir() if path.is_dir() and path.name.startswith("A"))
-    expected = (list(LEGACY_RUN_IDS + BUS400_RUN_IDS + A009_RUN_IDS +
+    expected = (list(LEGACY_RUN_IDS + BUS400_RUN_IDS + A009_RUN_IDS + A010_A012_RUN_IDS +
                      PREVIOUS_DELTA_RUN_IDS + DELTA_RUN_IDS) if delta else list(LEGACY_RUN_IDS))
     if [path.name for path in run_dirs] != expected:
         raise RuntimeError(f"run closure mismatch; expected {expected}, found {[p.name for p in run_dirs]}")
     check_dirs = [RUNS / run_id for run_id in DELTA_RUN_IDS] if delta else run_dirs
     for path in check_dirs:
         result = json.loads((path / "result.json").read_text(encoding="utf-8"))
-        qa = json.loads((path / "qa.json").read_text(encoding="utf-8"))
-        t1_qa = json.loads((path / "t1_array_qa.json").read_text(encoding="utf-8"))
-        if result.get("run_id") != path.name or qa.get("raw_sha256_before_analysis") != result.get("raw_sha256"):
-            raise RuntimeError(f"run/result/QA identity mismatch: {path.name}")
-        if (result.get("artifact_status") != "VALID" or qa.get("status") != "PASS" or
-                t1_qa.get("status") != "PASS" or
-                t1_qa.get("raw_sha256_after_analysis") != result.get("raw_sha256")):
-            raise RuntimeError(f"run is not mechanically valid: {path.name}")
+        if result.get("run_id") != path.name:
+            raise RuntimeError(f"run/result identity mismatch: {path.name}")
         if int(result.get("physical_solve_count", 0)) != 1:
             raise RuntimeError(f"run physical_solve_count is not one: {path.name}")
         raw = path / "raw.csv"
-        if (not raw.is_file() or raw.stat().st_size != result.get("raw_bytes") or
-                root.sha256(raw) != result.get("raw_sha256")):
+        if not raw.is_file() or root.sha256(raw) != result.get("raw_sha256"):
             raise RuntimeError(f"new raw does not match its result identity: {path.name}")
+        if path.name in INVALID_PRESERVED_DELTA_RUN_IDS:
+            static_qa = json.loads((path / "static_qa.json").read_text(encoding="utf-8"))
+            probe = json.loads((path / "probe_manifest.json").read_text(encoding="utf-8"))
+            log_text = (path / "run.log").read_text(encoding="utf-8")
+            if (result.get("status") != "POSTPROCESS_FAILURE_RAW_PRESERVED" or
+                    result.get("artifact_status") != "INVALID" or
+                    "raw is missing required probes" not in result.get("error", "") or
+                    static_qa.get("status") != "PASS" or
+                    probe.get("profile") != "focus" or
+                    "I(R_TERM_D0)" not in {item.get("label") for item in probe.get("signals", [])} or
+                    "solver_exit_code=0" not in log_text or
+                    f"raw_sha256={result['raw_sha256']}" not in log_text):
+                raise RuntimeError("A017 invalid raw is not the expected preserved postprocess-failure artifact")
+        else:
+            qa = json.loads((path / "qa.json").read_text(encoding="utf-8"))
+            t1_qa = json.loads((path / "t1_array_qa.json").read_text(encoding="utf-8"))
+            if (result.get("artifact_status") != "VALID" or qa.get("status") != "PASS" or
+                    t1_qa.get("status") != "PASS" or
+                    qa.get("raw_sha256_before_analysis") != result.get("raw_sha256") or
+                    t1_qa.get("raw_sha256_after_analysis") != result.get("raw_sha256") or
+                    raw.stat().st_size != result.get("raw_bytes")):
+                raise RuntimeError(f"run is not mechanically valid: {path.name}")
     manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
     recorded = {item.get("run_id"): item for item in manifest.get("runs", [])}
     for path in check_dirs:
@@ -580,9 +716,9 @@ def validate_scope(*, delta: bool = False) -> None:
     if delta:
         batch = json.loads((SERIES / "analysis/t1-array-20261009/BATCH_MANIFEST.json").read_text(encoding="utf-8"))
         if (batch.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
-                batch.get("authorized_run_ids") != list(DELTA_RUN_IDS) or
-                batch.get("physical_solve_count_completed") != len(DELTA_RUN_IDS)):
-            raise RuntimeError("T1-array batch manifest is not closed at the four-run authorized boundary")
+                batch.get("authorized_run_ids") != list(T1_A013_A016_RUN_IDS) or
+                batch.get("physical_solve_count_completed") != len(T1_A013_A016_RUN_IDS)):
+            raise RuntimeError("registered A013-A016 T1 batch checkpoint is not closed")
 
 
 def package_specs(tag: str, root: Any, *, dry_run: bool) -> tuple[list[dict[str, Any]], dict[str, Any]]:
@@ -746,7 +882,7 @@ def submit_delta(args: argparse.Namespace, root: Any) -> int:
     if stage_paths:
         subprocess.run(["git", "add", "-A", "-f", "--", *stage_paths], cwd=REPO, check=True)
     if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO, check=False).returncode != 0:
-        subprocess.run(["git", "commit", "-m", args.message or "experiment: record BVM4x4 BUS400 diagnostic batch"],
+        subprocess.run(["git", "commit", "-m", args.message or "experiment: record BVM4x4 T1 A017-A019 evidence"],
                        cwd=REPO, check=True)
     source_commit = git("rev-parse", "HEAD")
 
@@ -775,6 +911,7 @@ def submit_delta(args: argparse.Namespace, root: Any) -> int:
                    "reused_point_count": manifest["reused_point_count"],
                    "html_included": False,
                    "package_group": manifest["package_group"],
+                   "run_artifact_status_by_run": manifest["run_artifact_status_by_run"],
                    "preexisting_experiment_manifest_limit_audit": manifest["preexisting_experiment_manifest_limit_audit"],
                    "raw_sha256_by_run": manifest["raw_sha256_by_run"]})
         if (qa.get("status") != "PASS" or qa.get("package_sha256") != root.sha256(spec["target"]) or
@@ -785,7 +922,7 @@ def submit_delta(args: argparse.Namespace, root: Any) -> int:
 
     package_paths = [path for result in package_results for path in (result["path"], result["qa_path"])]
     subprocess.run(["git", "add", "-f", "--", *package_paths], cwd=REPO, check=True)
-    subprocess.run(["git", "commit", "-m", f"package: archive BVM4x4 T1 A013-A016 delta {args.tag}"],
+    subprocess.run(["git", "commit", "-m", f"package: archive BVM4x4 T1 A017-A019 delta {args.tag}"],
                    cwd=REPO, check=True)
     push_status = "SKIPPED"
     if not args.no_push:
@@ -810,7 +947,7 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--no-push", action="store_true")
     parser.add_argument("--delta", action="store_true",
-                        help="append A013-A016 to the verified A010-A012 checkpoint, split per run")
+                        help="append A017-A019 to the verified A013-A016 checkpoint, split per run")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")

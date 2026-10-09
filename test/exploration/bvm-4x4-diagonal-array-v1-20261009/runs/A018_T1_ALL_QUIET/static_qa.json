@@ -1,0 +1,185 @@
+{
+  "schema": "bvm-4x4-diagonal-static-qa-v2",
+  "status": "PASS",
+  "physical_solve_count": 0,
+  "bvm_count": 16,
+  "qb_count": 16,
+  "sjtl_count": 20,
+  "sjtl_count_by_diagonal": {
+    "D0": [
+      1
+    ],
+    "D1": [
+      1,
+      1
+    ],
+    "D2": [
+      1,
+      2,
+      1
+    ],
+    "D3": [
+      1,
+      2,
+      2,
+      1
+    ],
+    "D4": [
+      1,
+      2,
+      1
+    ],
+    "D5": [
+      1,
+      1
+    ],
+    "D6": [
+      1
+    ]
+  },
+  "cb_count": 16,
+  "terminal_count": 0,
+  "input_driver_count": 24,
+  "driver_count_by_branch": {
+    "WL": 4,
+    "BL": 4,
+    "SE": 16
+  },
+  "diagonal_mapping_exact": true,
+  "unique_outputs": true,
+  "active_final_crosspoints": [
+    "R1C1",
+    "R1C2",
+    "R1C3",
+    "R1C4",
+    "R2C1",
+    "R2C2",
+    "R2C3",
+    "R2C4",
+    "R3C1",
+    "R3C2",
+    "R3C3",
+    "R3C4",
+    "R4C1",
+    "R4C2",
+    "R4C3",
+    "R4C4"
+  ],
+  "canonical_source_hashes_match": {
+    "JJMIT": true,
+    "BVM": true,
+    "QB": true,
+    "SJTL": true,
+    "CB": true,
+    "T1_REFERENCE": true
+  },
+  "component_pin_orders": {
+    "BVM": [
+      "WL",
+      "BL",
+      "SE",
+      "SL"
+    ],
+    "QB": [
+      "IN",
+      "OUT"
+    ],
+    "SJTL": [
+      "IN",
+      "OUT"
+    ],
+    "CB": [
+      "IN",
+      "OUT"
+    ]
+  },
+  "stimulus_source_count": 24,
+  "stimulus_source_lines": [
+    "I_WL_R1 0 WL_R1 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 400u 120p 400u 121p 0 250p 0)",
+    "I_WL_R2 0 WL_R2 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 400u 120p 400u 121p 0 250p 0)",
+    "I_WL_R3 0 WL_R3 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 400u 120p 400u 121p 0 250p 0)",
+    "I_WL_R4 0 WL_R4 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 400u 120p 400u 121p 0 250p 0)",
+    "I_BL_C1 0 BL_C1 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_BL_C2 0 BL_C2 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_BL_C3 0 BL_C3 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_BL_C4 0 BL_C4 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R1C1 0 SE_R1C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R1C2 0 SE_R1C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R1C3 0 SE_R1C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R1C4 0 SE_R1C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R2C1 0 SE_R2C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R2C2 0 SE_R2C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R2C3 0 SE_R2C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R2C4 0 SE_R2C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R3C1 0 SE_R3C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R3C2 0 SE_R3C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R3C3 0 SE_R3C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R3C4 0 SE_R3C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R4C1 0 SE_R4C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R4C2 0 SE_R4C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R4C3 0 SE_R4C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R4C4 0 SE_R4C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)"
+  ],
+  "probe_count": 182,
+  "raw_estimate_bytes": 70298854,
+  "storage_guard": "PASS",
+  "scientific_interpretation_performed": false,
+  "t1_count": 7,
+  "independent_t1_links": 7,
+  "independent_sum_loads": 7,
+  "independent_carry_loads": 7,
+  "independent_bias_sets": 7,
+  "independent_clock_branches": 7,
+  "t1_clock_mode": "QUIET",
+  "t1_tunable_source": {
+    "path": "sources/t1_cell_tunable.cir",
+    "canonical_path": "circuits/t1/t1_cell.cir",
+    "canonical_sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237",
+    "rendered_sha256": "dee8da3d0e02f580ffb171d330f771e0b226c2fe383226c32f6123080f1a4fec",
+    "topology_equivalent": true,
+    "default_body_equivalent_to_canonical": true,
+    "parameters_consumed": [
+      "T1_J10_AREA",
+      "T1_J11_AREA",
+      "T1_J1_AREA",
+      "T1_J2_AREA",
+      "T1_J3_AREA",
+      "T1_J4_AREA",
+      "T1_J5_AREA",
+      "T1_J6_AREA",
+      "T1_J7_AREA",
+      "T1_J8_AREA",
+      "T1_J9_AREA",
+      "T1_L1",
+      "T1_L10",
+      "T1_L11",
+      "T1_L12",
+      "T1_L13",
+      "T1_L14",
+      "T1_L15",
+      "T1_L16",
+      "T1_L17",
+      "T1_L2",
+      "T1_L3",
+      "T1_L4",
+      "T1_L5",
+      "T1_L6",
+      "T1_L7",
+      "T1_L8",
+      "T1_L9",
+      "T1_RB1",
+      "T1_RB2",
+      "T1_RB3",
+      "T1_RJ10",
+      "T1_RJ11",
+      "T1_RJ3",
+      "T1_RJ4",
+      "T1_RJ5",
+      "T1_RJ6",
+      "T1_RJ7",
+      "T1_RJ8",
+      "T1_RJ9"
+    ]
+  },
+  "t1_source_default_body_equivalent": true
+}

@@ -2,10 +2,12 @@
 
 This render-first platform maps 16 independent `BVM → QB` cells onto seven
 ascending-row serial diagonal chains. It uses the canonical BVM, QB, sJTL, CB,
-and shared jjmit model without modifying their sources. In the default
+and shared jjmit model without modifying their sources. In
 `DIAGONAL_TERMINAL` mode, each diagonal output has its own 2 Ω resistor and T1,
 CBU and DFF are not instantiated. `DIAGONAL_T1_INDEPENDENT` replaces those
-terminal loads with seven isolated T1 channels.
+terminal loads with seven isolated T1 channels. The current manual
+`USER_CASE.env` selects `T1_ALL_QUIET`; D3/PAPER presets explicitly pin
+`DIAGONAL_TERMINAL` so they remain independent of that manual selection.
 
 ## Cell and diagonal mapping
 
@@ -108,6 +110,12 @@ The A010–A012 append-only delta uses the A009 delta package as its base and
 splits the changed source/manifest from one package per new raw. A001–A009 raw
 is referenced by package/raw SHA and is not copied again.
 
+The A017–A019 append-only delta uses the A013–A016 T1 checkpoint as its base.
+A017's solver raw is preserved with `artifact_status=INVALID` because its
+post-processing probe set mismatched the T1-loaded topology; A018/A019 have
+mechanical QA PASS. Each new raw is packaged once, and A001–A016 raw is
+referenced by exact package/raw SHA rather than recopied.
+
 The registered T1 integration batch connects all seven DOUTs to independent T1
 channels, removes the seven DOUT 2 Ω terminations, and preserves the serial
 BVM/QB/sJTL/CB topology. Each T1 has its own `V_T1_LINK`, Bias1/2/3, CLK, S and
@@ -125,6 +133,16 @@ run and remain local. T1 internal values are rendered from
 `config/T1_PARAMS.env` into each run's `sources/t1_cell_tunable.cir`; the
 canonical `circuits/t1/t1_cell.cir` remains unchanged and default-body
 equivalence is checked.
+
+For a manual `DIAGONAL_T1_INDEPENDENT` run, set
+`PROBE_PROFILE=t1_array_focus`. The terminal-mode `focus`/`compact`/`debug`
+probe sets request `R_TERM_D0…D6` and do not collect T1 inputs, clocks, S/C or
+internal JJ signals; the runner rejects that mismatch before invoking JoSIM.
+Select the manual T1 clock directly with `T1_CLK_MODE=QUIET` or `PULSE` in
+`USER_CASE.env`; pulse start/period/amplitude/edge/series-resistance settings
+remain in `config/T1_PARAMS.env`.
+T1 pages use the historical `josim-plot2.py` canvas defaults (no per-trace
+height override), with a shared relative Plotly JS asset and responsive width.
 
 The six presets are `D3_N0` through `D3_N4` and `PAPER_1101_1101`. The latter
 uses ROW/COL `1101/1101` with all SE mask bits on. The preregistered diagonal

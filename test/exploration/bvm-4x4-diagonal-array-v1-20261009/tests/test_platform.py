@@ -468,6 +468,91 @@ class DiagonalPlatformTests(unittest.TestCase):
             self.assertEqual(cand["DT"], "0.01p")
             self.assertEqual(cand["STOP"], "300p")
 
+    def test_cb_carry_buffer_all_wires_six_isolated_stages_and_captures_full_chain(self):
+        case, _stimulus, _params, output = rendered("FULL_CB_CHAIN_ALL_CLOCK")
+        deck = output["deck"].splitlines()
+        expected_carry = set()
+        for index in range(1, 7):
+            expected_carry.update({
+                f"V_CBU_A_D{index} DOUT_D{index} CBU_JOIN_D{index} 0",
+                f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
+                f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
+                f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0",
+                f"V_T1_LINK_D{index} CBU_JOIN_D{index} T1_I_D{index} 0",
+            })
+        self.assertTrue(expected_carry.issubset(set(deck)))
+        self.assertEqual(len([line for line in deck if line.startswith("XCB_CARRY_D")]), 6)
+        self.assertFalse(any(line.startswith("XCBU_D") for line in deck))
+        self.assertFalse(any(line.startswith(("XJTL_CBU_D", "XSJTL_CBU_D")) for line in deck))
+        self.assertFalse(any(line.startswith(("R_TERM_D", "R_C_D")) for line in deck))
+        self.assertEqual(len([line for line in deck if line.startswith("XBVM_")]), 16)
+        self.assertEqual(len([line for line in deck if line.startswith("XBQ_")]), 16)
+        self.assertEqual(len([line for line in deck if line.startswith("XCB_D")]), 16)
+        self.assertEqual(len([line for line in deck if line.startswith("XSJTL_")]), 20)
+        self.assertEqual(len([line for line in deck if line.startswith("XT1_D")]), 7)
+        self.assertEqual(len([line for line in deck if line.startswith("XDFF ")]), 1)
+        self.assertIn("XJTL_D0_1 D0_JTL_IN_1 D0_JTL_OUT_1 D0_JTL", deck)
+        self.assertIn("V_DFF_DATA C_D6 DFF_IN 0", deck)
+        self.assertEqual(output["static_qa"]["status"], "PASS")
+        self.assertEqual(output["static_qa"]["cbu_carry_buffer_count"], 6)
+        self.assertTrue(output["static_qa"]["cbu_carry_buffer_all"])
+        self.assertLess(output["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
+        self.assertEqual(output["topology"]["cbu_type_by_stage"], {
+            f"D{index}": "CB_CARRY_BUFFER" for index in range(1, 7)})
+        self.assertEqual(output["topology"]["carry_links"], {
+            "C_D0": "V_CARRY_IN_D1 -> XCB_CARRY_D1 -> V_CBU_B_D1 -> CBU_JOIN_D1",
+            "C_D1": "V_CARRY_IN_D2 -> XCB_CARRY_D2 -> V_CBU_B_D2 -> CBU_JOIN_D2",
+            "C_D2": "V_CARRY_IN_D3 -> XCB_CARRY_D3 -> V_CBU_B_D3 -> CBU_JOIN_D3",
+            "C_D3": "V_CARRY_IN_D4 -> XCB_CARRY_D4 -> V_CBU_B_D4 -> CBU_JOIN_D4",
+            "C_D4": "V_CARRY_IN_D5 -> XCB_CARRY_D5 -> V_CBU_B_D5 -> CBU_JOIN_D5",
+            "C_D5": "V_CARRY_IN_D6 -> XCB_CARRY_D6 -> V_CBU_B_D6 -> CBU_JOIN_D6",
+            "C_D6": "DFF_IN"})
+
+        labels = {item["label"] for item in output["probes"]["signals"]}
+        for diagonal, cells in platform.DIAGONALS.items():
+            array_cb = f"XCB_{diagonal}_L{len(cells)}"
+            self.assertIn(f"P(BJ1|{array_cb})", labels)
+            self.assertIn(f"V(BJ1|{array_cb})", labels)
+        for index in range(1, 7):
+            instance = f"XCB_CARRY_D{index}"
+            for label in (f"V(DOUT_D{index})", f"V(C_D{index-1})",
+                          f"V(CARRY_CB_IN_D{index})", f"V(CARRY_CB_OUT_D{index})",
+                          f"V(CBU_JOIN_D{index})", f"I(V_CBU_A_D{index})",
+                          f"I(V_CARRY_IN_D{index})", f"I(V_CBU_B_D{index})",
+                          f"I(V_T1_LINK_D{index})", f"P(BJ1|{instance})", f"V(BJ1|{instance})",
+                          f"P(BJ2|{instance})", f"V(BJ2|{instance})"):
+                self.assertIn(label, labels)
+        for diagonal in platform.DIAGONALS:
+            self.assertIn(f"P(B_J11|XT1_{diagonal})", labels)
+            self.assertIn(f"V(B_J11|XT1_{diagonal})", labels)
+            self.assertIn(f"V(CLK_{diagonal})", labels)
+        for label in ("V(DFF_IN)", "V(CLK_DFF)", "V(DFF_O)",
+                      "P(B1|XDFF)", "V(B1|XDFF)", "I(V_DFF_DATA)"):
+            self.assertIn(label, labels)
+        pages = platform.plot_signals(output["probes"])
+        self.assertEqual([page["file"] for page in pages], [
+            "01_full_chain_overview.html", "02_carry_propagation.html",
+            "03_stage_D1_focus.html", "04_stage_D2_focus.html", "05_stage_D3_focus.html",
+            "06_stage_D4_focus.html", "07_stage_D5_focus.html", "08_stage_D6_focus.html"])
+
+    def test_cb_carry_buffer_all_three_masks_match_existing_diagonal_map_and_fail_closed(self):
+        expected = {
+            "FULL_CB_CHAIN_ALL_CLOCK": ("1111", "1111", [1, 2, 3, 4, 3, 2, 1]),
+            "FULL_CB_CHAIN_PAPER_CLOCK": ("1101", "1101", [1, 1, 1, 3, 1, 1, 1]),
+            "FULL_CB_CHAIN_3X3_CLOCK": ("1100", "0011", [1, 2, 1, 0, 0, 0, 0]),
+        }
+        for preset, (rows, cols, counts) in expected.items():
+            case, _stimulus, _params, output = rendered(preset)
+            actual = [sum(cell in platform._active_cells(case) for cell in group)
+                      for group in platform.DIAGONALS.values()]
+            self.assertEqual((case["ROW_BITS"], case["COL_BITS"]), (rows, cols))
+            self.assertEqual(actual, counts)
+            self.assertEqual(case["CBU_CHAIN_TOPOLOGY"], "CB_CARRY_BUFFER_ALL")
+            self.assertEqual(case["CBU_OVERRIDE_D1"], "NONE")
+            self.assertEqual(output["static_qa"]["status"], "PASS")
+        with self.assertRaisesRegex(platform.ConfigError, "CBU_OVERRIDE_D1=NONE"):
+            platform.load_config("FULL_CB_CHAIN_ALL_CLOCK", ["CBU_OVERRIDE_D1=CB_DIRECT"])
+
     def test_cbu_override_d1_is_selectable_by_set_and_rejects_unknown_values(self):
         case, _stimulus, _params, output = rendered_with_set(
             "CHAIN_ALL_GLOBAL_CLOCK", "CBU_OVERRIDE_D1=CB_DIRECT")

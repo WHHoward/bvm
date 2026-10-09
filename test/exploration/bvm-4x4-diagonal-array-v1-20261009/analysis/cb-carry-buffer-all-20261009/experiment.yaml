@@ -1,0 +1,91 @@
+experiment_id: bvm-4x4-cb-carry-buffer-all-20261009
+experiment_risk_level: NORMAL
+question: >-
+  Under fixed A025/A026 array, T1, load, and synchronous-clock conditions,
+  what raw boundary and same-JJ arithmetic is observed when all six D1-D6
+  previous-Carry branches pass through one canonical CB_0928 before direct
+  JOIN with their existing array DOUT outputs?
+source_class: canonical_components_exploratory_topology
+authority_boundary:
+  evidence: [A021, A022, A025, A026, A027, A028, A029 raw, deck, provenance, QA]
+  not_proven: [SFQ counts, gate correctness, full multiplier success, isolation, hardware behavior]
+run_set:
+  - run_id: A027_FULL_CB_CHAIN_ALL_CLOCK
+    condition: FULL_CB_CHAIN_ALL_CLOCK
+    row_bits: "1111"
+    column_bits: "1111"
+    theoretical_diagonal_population_reference: [1, 2, 3, 4, 3, 2, 1]
+    theoretical_stage_inputs_reference: [1, 2, 4, 6, 6, 5, 3]
+    theoretical_carry_reference: [0, 1, 2, 3, 3, 2, 1]
+    theoretical_product_reference: 225
+    theoretical_bits_lsb_to_msb_reference: [1, 0, 0, 0, 0, 1, 1, 1]
+    reference_run: A025_CARRY_CB_D1_ALL_CLOCK
+  - run_id: A028_FULL_CB_CHAIN_PAPER_CLOCK
+    condition: FULL_CB_CHAIN_PAPER_CLOCK
+    row_bits: "1101"
+    column_bits: "1101"
+    theoretical_diagonal_population_reference: [1, 1, 1, 3, 1, 1, 1]
+    theoretical_stage_inputs_reference: [1, 1, 1, 3, 2, 2, 2]
+    theoretical_carry_reference: [0, 0, 0, 1, 1, 1, 1]
+    theoretical_product_reference: 143
+    theoretical_bits_lsb_to_msb_reference: [1, 1, 1, 1, 0, 0, 0, 1]
+    reference_run: A026_CARRY_CB_D1_PAPER_CLOCK
+  - run_id: A029_FULL_CB_CHAIN_3X3_CLOCK
+    condition: FULL_CB_CHAIN_3X3_CLOCK
+    row_bits: "1100"
+    column_bits: "0011"
+    theoretical_diagonal_population_reference: [1, 2, 1, 0, 0, 0, 0]
+    theoretical_stage_inputs_reference: [1, 2, 2, 1, 0, 0, 0]
+    theoretical_carry_reference: [0, 1, 1, 0, 0, 0, 0]
+    theoretical_product_reference: 9
+    theoretical_bits_lsb_to_msb_reference: [1, 0, 0, 1, 0, 0, 0, 0]
+    reference_run: null
+changed:
+  - CBU_CHAIN_TOPOLOGY=CB_CARRY_BUFFER_ALL replaces only the six D1-D6 CBU-stage input topologies
+frozen:
+  - BVM/QB/array-CB/sJTL/T1/DFF/JJ model sources and all component parameters
+  - 400u shared WL/BL source setpoints, 100u cell-local SE, and original four stimulus phases
+  - all array sJTL counts, D0 entrance JTL, seven T1s, DFF, loads, biases, and clocks
+  - GLOBAL_ONESHOT at 200 ps, DT=0.01p, STOP=300p
+  - no added sJTL/JTL/MERGE, no join-output CB, no carry/DOUT terminal loads
+topology:
+  d0: DOUT_D0 -> original D0 entrance JTL -> T1_D0.I
+  d1_d6: DOUT_Dk -> V_CBU_A_Dk -> JOIN_Dk; C_D(k-1) -> V_CARRY_IN_Dk -> canonical CB_0928 -> V_CBU_B_Dk -> same JOIN_Dk -> V_T1_LINK_Dk -> T1_Dk.I
+  carry_chain: C_D0..C_D5 each feeds exactly the corresponding new CB_CARRY_D(k+1)
+  final_carry: C_D6 -> DFF_IN -> DFF.O
+  canonical_cb_sha256: 70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370
+  added_carry_cb_count: 6
+windows_ps:
+  ARRAY_FINAL_READ: [110, 121]
+  PRE_CLOCK: [121, 200]
+  CLOCK_EDGE: [200, 205]
+  POST_CLOCK: [205, 300]
+  TOTAL: [0, 300]
+  boundary: "half-open [start,end)"
+probes:
+  profile: t1_chain_focus / CB_CARRY_BUFFER_ALL
+  per_stage: [DOUT and array-final-CB P/V, Carry-CB input/output, CB BJ1/BJ2 P/V, both JOIN branch currents and T1-link current, JOIN voltage, T1 I/CLK/S/C, T1 B_J1/B_J2/B_J9/B_J10/B_J11 P/V]
+  dff: [DFF_IN, CLK_DFF, DFF_O, key JJ P/V, data/clock branch currents]
+  raw_phase_unit: radians
+  turns_semantics: delta/(2*pi) navigation only, never event count
+  current_semantics: zero-volt sensor direction as netlisted
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase: 2pi
+  standalone_pages: full chain, propagation, D1-D6 stage focus per run
+  paired_comparisons: A025/A027 D1 and A026/A028 D1 on same common signal schema
+  html_in_package: false
+interpretation_ceiling: >-
+  Artifact validity and registered mechanical arithmetic only. The theoretical
+  population/input/carry/output vectors are references, not event classifiers.
+  No bit decode, mechanism, isolation, or multiplier-function verdict is made.
+prohibited_followups: [clock changes, CB/T1 parameter changes, new sJTL, extra case, parameter sweep]
+scientific_review_authorization: NOT_GRANTED
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

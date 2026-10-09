@@ -284,6 +284,40 @@ contain registered actual-grid arithmetic and paired values only; scientific
 interpretation remains with the user. Generated HTML is local and excluded
 from the DELTA ZIP.
 
+### Full six-stage CB-only Carry chain (A027-A029)
+
+`CBU_CHAIN_TOPOLOGY=CB_CARRY_BUFFER_ALL` replaces every D1-D6 two-input CBU
+stage with two sensed branches: the existing array `DOUT_Dk` goes directly to
+`JOIN_Dk`; `C_D(k-1)` passes through exactly one canonical `CB_0928`, whose
+output joins at `JOIN_Dk`; the join directly feeds `T1_Dk.I`. D0's entrance
+JTL and C6-to-DFF connection remain unchanged. No ColdFlux MERGE instance,
+extra sJTL/JTL, or post-JOIN CB is instantiated. The selector conflicts with
+any non-`NONE` `CBU_OVERRIDE_D1` and fails closed.
+
+Preview each registered full-chain case without solving:
+
+```bash
+./try.sh --dry-run --preset FULL_CB_CHAIN_ALL_CLOCK
+./try.sh --dry-run --preset FULL_CB_CHAIN_PAPER_CLOCK
+./try.sh --dry-run --preset FULL_CB_CHAIN_3X3_CLOCK
+```
+
+The exact three-run static gate and physical batch are managed by:
+
+```bash
+python3 scripts/cb_carry_buffer_all_batch.py --prepare-preflight
+# Commit the locked preflight/source changes; then run exactly A027-A029.
+python3 scripts/cb_carry_buffer_all_batch.py --run-batch
+./submit.sh A027_A029_20261009 --delta --dry-run
+./submit.sh A027_A029_20261009 --delta
+```
+
+Each run keeps the full chain boundaries, all T1 critical JJ P/V, all six
+Carry-CB BJ1/BJ2 P/V and branch sensors. Eight classic pages are generated per
+run: full-chain overview, carry propagation, and a focused page for each
+D1-D6 stage. All HTML stays local; the DELTA references A001-A026 raw SHA and
+contains only A027-A029 raw/evidence.
+
 ## Evidence and plots
 
 Each run records actual deck, exact PWL stimulus, effective topology/config

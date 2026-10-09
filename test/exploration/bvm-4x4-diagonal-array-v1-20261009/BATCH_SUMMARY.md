@@ -79,6 +79,24 @@ detached in `PACKAGE_QA.json` files. Package identities will be filled here by
 the one scoped submit operation:
 
 <!-- PACKAGE_TABLE -->
+| Archive | Bytes | SHA-256 |
+|---|---:|---|
+| `bvm-4x4-diagonal-array-v1-20261009_raw_handoff_A001_D3_N0_BVM4X4_20261009.zip` | 19097542 | `a720b89bfc318937c22e8c456cad80000b5aa47527d1470e4577b2413c851585` |
+| `bvm-4x4-diagonal-array-v1-20261009_raw_handoff_A002_D3_N1_BVM4X4_20261009.zip` | 19238492 | `8e3d18c8ca9d24c4c88a2cd7bb34826154a2556d8d4b034a81d3bdf78c7ee063` |
+| `bvm-4x4-diagonal-array-v1-20261009_raw_handoff_A003_D3_N2_BVM4X4_20261009.zip` | 19385661 | `a41e44a10b6021560a329047490b2b79b18a2f49d5d6bef145d81b46bba8a306` |
+| `bvm-4x4-diagonal-array-v1-20261009_raw_handoff_A004_D3_N3_BVM4X4_20261009.zip` | 19517181 | `b8af1acc2241e56c77374734336f49719f1e476717c5b1337592c1409bb874f9` |
+| `bvm-4x4-diagonal-array-v1-20261009_raw_handoff_A005_D3_N4_BVM4X4_20261009.zip` | 19573321 | `83e7d33b8ea44af3e80a7254596a93bf2b73ce51315add066a3f14a8dde1ec4d` |
+| `bvm-4x4-diagonal-array-v1-20261009_raw_handoff_A006_PAPER_1101_1101_BVM4X4_20261009.zip` | 20384318 | `c3cd4bd7477b3b5b43b78313a9392808d78da9949d3a8feb593ca72bfbf28c46` |
+
+Six per-run ZIP total: **117,196,515 bytes**.
+| metadata | 43,299 | `b707abbba18f9381ed60be0425ea5373630ad609cc48d1c46c8e38551891d30d` |
+
+Total compressed ZIP bytes (7 archives): **117,239,814**.
+The metadata ZIP's internal summary predates this self-identity row; its detached QA sidecar is authoritative.
+
+The metadata ZIP carries this run-package table; its own identity is appended below after creation.
+Each ZIP's detached PACKAGE_QA.json is the member/CRC/SHA authority.
+
 Package creation pending.
 
 Drive target: [BVM_Backages](https://drive.google.com/drive/folders/1--nlY7Nq5ArVPydJNrnQf-EGmwN-undh).

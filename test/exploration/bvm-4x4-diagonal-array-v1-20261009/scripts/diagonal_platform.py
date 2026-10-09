@@ -73,6 +73,8 @@ BUS400_RUN_IDS = ("A007_BUS400_D3_N0", "A008_BUS400_D3_N1")
 PRESET_CASES = REGISTERED_CASES + BUS400_CASES
 CHAIN_PRESET_CASES = ("CHAIN_ALL_QUIET", "CHAIN_ALL_GLOBAL_CLOCK", "CHAIN_PAPER_GLOBAL_CLOCK")
 PRESET_CASES = PRESET_CASES + CHAIN_PRESET_CASES
+CB_DIRECT_D1_PRESET_CASES = ("CB_DIRECT_D1_ALL_CLOCK", "CB_DIRECT_D1_PAPER_CLOCK")
+PRESET_CASES = PRESET_CASES + CB_DIRECT_D1_PRESET_CASES
 BUS400_BATCH_ID = "BVM4X4_BUS400_20261009"
 BUS400_PARENT_HEAD = "3de08ba0fd5997b253269849dbc1a535786c8fd6"
 STIMULUS_STAGES = ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
@@ -95,6 +97,9 @@ T1_ARRAY_BATCH_MANIFEST = T1_ARRAY_ANALYSIS / "BATCH_MANIFEST.json"
 T1_ARRAY_RESULTS = T1_ARRAY_ANALYSIS / "T1_ARRAY_RESULTS.json"
 T1_ARRAY_TABLE = T1_ARRAY_ANALYSIS / "T1_ARRAY_TABLE.csv"
 T1_CHAIN_BATCH_ID = "BVM4X4_T1_CHAIN_GLOBAL_20261009"
+CB_DIRECT_D1_BATCH_ID = "BVM4X4_CB_DIRECT_D1_20261009"
+CB_DIRECT_D1_ANALYSIS = SERIES / "analysis" / "cb-direct-d1-20261009"
+CB_DIRECT_D1_RUN_IDS = ("A023_CB_DIRECT_D1_ALL_CLOCK", "A024_CB_DIRECT_D1_PAPER_CLOCK")
 T1_CHAIN_ANALYSIS = SERIES / "analysis" / "t1-chain-20261009"
 T1_CHAIN_PREFLIGHT = T1_CHAIN_ANALYSIS / "PREFLIGHT.md"
 T1_CHAIN_SCOPE = T1_CHAIN_ANALYSIS / "WORK_UNIT.json"
@@ -333,6 +338,8 @@ def validate_chain_parameters(case: dict[str, str], params: dict[str, str]) -> N
         raise ConfigError("DFF_TYPE currently supports only the inspected THmitll_DFF candidate")
     if case.get("D0_JTL_TYPE") != "D0_SJTL":
         raise ConfigError("D0_JTL_TYPE currently supports only the canonical-derived D0_SJTL candidate")
+    if case.get("CBU_OVERRIDE_D1", "NONE") not in {"NONE", "CB_DIRECT"}:
+        raise ConfigError("CBU_OVERRIDE_D1 must be NONE or CB_DIRECT")
     count = case.get("D0_JTL_COUNT", "")
     if not re.fullmatch(r"[1-9][0-9]*", count):
         raise ConfigError("D0_JTL_COUNT must be a positive integer")
@@ -454,8 +461,12 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str],
     if output_mode == "DIAGONAL_T1_CHAIN":
         if case.get("CBU_MODE") != "PHYSICAL_TWO_INPUT" or case.get("CARRY_MODE") != "RIPPLE":
             raise ConfigError("DIAGONAL_T1_CHAIN requires CBU_MODE=PHYSICAL_TWO_INPUT and CARRY_MODE=RIPPLE")
+        if case.get("CBU_OVERRIDE_D1", "NONE") not in {"NONE", "CB_DIRECT"}:
+            raise ConfigError("CBU_OVERRIDE_D1 must be NONE or CB_DIRECT")
     elif case.get("CBU_MODE") != "OFF" or case.get("CARRY_MODE", "NONE") != "NONE":
         raise ConfigError("terminal and independent-T1 modes require CBU_MODE=OFF and CARRY_MODE=NONE")
+    elif case.get("CBU_OVERRIDE_D1", "NONE") != "NONE":
+        raise ConfigError("CBU_OVERRIDE_D1 is supported only in DIAGONAL_T1_CHAIN mode")
     if output_mode == "DIAGONAL_T1_INDEPENDENT":
         if _profile(case) != "t1_array_focus":
             raise ConfigError("DIAGONAL_T1_INDEPENDENT requires PROBE_PROFILE=t1_array_focus; "
@@ -857,11 +868,26 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
         result.update({
             "carry_mode": case["CARRY_MODE"],
             "cbu_type": case["CBU_TYPE"],
+            "cbu_override_d1": case.get("CBU_OVERRIDE_D1", "NONE"),
             "cbu_count": 6,
             "cbu_instances": [f"XCBU_D{index}" for index in range(1, 7)],
-            "cbu_input_nodes": {f"D{index}": {"A": f"DOUT_D{index}", "B": f"C_D{index-1}",
-                                                  "OUT": f"CBU_OUT_D{index}"}
-                                for index in range(1, 7)},
+            "cbu_type_by_stage": {f"D{index}": ("CB" if index == 1 and
+                                                  case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT"
+                                                  else case["CBU_TYPE"])
+                                  for index in range(1, 7)},
+            "cbu_input_nodes": {
+                f"D{index}": ({"A": f"DOUT_D{index}", "B": f"C_D{index-1}",
+                               "JOIN": "CBU_JOIN_D1", "IN": "CBU_JOIN_D1",
+                               "OUT": "CBU_OUT_D1", "input_semantics": "two sensed branches share one physical CB input node"}
+                              if index == 1 and case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT"
+                              else {"A": f"DOUT_D{index}", "B": f"C_D{index-1}",
+                                    "OUT": f"CBU_OUT_D{index}"})
+                for index in range(1, 7)},
+            "cbu_d1_canonical_cb": ({"instance": "XCBU_D1", "source_path": SOURCE_PATHS["CB"],
+                                     "source_sha256": sources["CBU_D1_DIRECT"]["sha256"], "ports": ["IN", "OUT"],
+                                     "intermediate_jtl_or_sjtl": False,
+                                     "physical_input_node": "CBU_JOIN_D1"}
+                                    if case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT" else None),
             "d0_jtl_type": case["D0_JTL_TYPE"],
             "d0_jtl_count": int(case["D0_JTL_COUNT"]),
             "d0_jtl_instances": [f"XJTL_D0_{index}" for index in range(1, int(case["D0_JTL_COUNT"])+1)],
@@ -874,7 +900,9 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
             "dff_output_load_ohm": (t1_params or {}).get("DFF_R_OUT"),
             "carry_bit_map": {f"S_D{index}": f"product_bit_{index}" for index in range(7)} |
                              {"DFF_O": "product_bit_7"},
-            "carry_links": {f"C_D{index}": f"CBU_D{index+1}.B" for index in range(6)} |
+            "carry_links": {f"C_D{index}": ("V_CBU_B_D1 -> CBU_JOIN_D1" if index == 0 and
+                                                case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT"
+                                                else f"CBU_D{index+1}.B") for index in range(6)} |
                             {"C_D6": "DFF_IN"},
             "clock_drivers": [*(f"CLK_D{index}" for index in range(7)), "CLK_DFF"],
             "clock_repeat": False,
@@ -928,8 +956,19 @@ def _render_chain_network(case: dict[str, str], params: dict[str, str]) -> list[
         lines.append(f"XJTL_D0_{stage} {input_node} {output_node} D0_JTL")
         lines.append(f"{output_link} {output_node} {downstream} 0")
 
-    lines.extend(("", "* Two-input physical CBU candidate is distinct from array XCB_* single-input CB."))
+    if case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT":
+        lines.extend(("", "* D1 shared-node CB_0928 candidate; D2-D6 remain configured THmitll_MERGE."))
+    else:
+        lines.extend(("", "* Two-input physical CBU candidate is distinct from array XCB_* single-input CB."))
     for index in range(1, 7):
+        if index == 1 and case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT":
+            lines.extend((
+                "V_CBU_A_D1 DOUT_D1 CBU_JOIN_D1 0",
+                "V_CBU_B_D1 C_D0 CBU_JOIN_D1 0",
+                "XCBU_D1 CBU_JOIN_D1 CBU_OUT_D1 CB",
+                "V_T1_LINK_D1 CBU_OUT_D1 T1_I_D1 0",
+            ))
+            continue
         lines.append(f"V_CBU_A_D{index} DOUT_D{index} CBU_A_D{index} 0")
         lines.append(f"V_CBU_B_D{index} C_D{index-1} CBU_B_D{index} 0")
         lines.append(f"XCBU_D{index} CBU_A_D{index} CBU_B_D{index} CBU_OUT_D{index} {case['CBU_TYPE']}")
@@ -1068,21 +1107,29 @@ def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
 
     for index in range(1, 7):
         instance = f"XCBU_D{index}"
-        nodes = {"A": f"CBU_A_D{index}", "B": f"CBU_B_D{index}", "OUT": f"CBU_OUT_D{index}"}
+        direct_cb_d1 = index == 1 and case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT"
+        nodes = ({"JOIN": "CBU_JOIN_D1", "OUT": "CBU_OUT_D1"} if direct_cb_d1 else
+                 {"A": f"CBU_A_D{index}", "B": f"CBU_B_D{index}", "OUT": f"CBU_OUT_D{index}"})
         for port, node in nodes.items():
             add(f"V({node})", f"chain_cbu:D{index}:{port.lower()}", "V", instance=instance,
                 port=port, node=node)
         for port in ("A", "B"):
             element = f"V_CBU_{port}_D{index}"
             add(f"I({element})", f"chain_cbu:D{index}:{port.lower()}_current", "A",
-                instance=instance, port=port, element=element)
+                instance=instance, port=port, element=element,
+                direction=(f"{'DOUT_D1' if port == 'A' else 'C_D0'} -> CBU_JOIN_D1"
+                           if direct_cb_d1 else
+                           f"{'DOUT_D' + str(index) if port == 'A' else 'C_D' + str(index-1)} -> CBU_{port}_D{index}"))
         add(f"I(V_T1_LINK_D{index})", f"chain_cbu:D{index}:output_current", "A",
             instance=instance, port="OUT", element=f"V_T1_LINK_D{index}")
-        for jj in ("B1", "B4", "B7"):
-            add(f"P({jj}|{instance})", f"chain_cbu_jj:D{index}", "rad", instance=instance, element=jj)
-            add(f"V({jj}|{instance})", f"chain_cbu_jj:D{index}", "V", instance=instance, element=jj)
+        jj_names = ("BJ1", "BJ2") if direct_cb_d1 else ("B1", "B4", "B7")
+        for jj in jj_names:
+            group = "chain_cbu_cb_direct:D1" if direct_cb_d1 else f"chain_cbu_jj:D{index}"
+            add(f"P({jj}|{instance})", group, "rad", instance=instance, element=jj)
+            add(f"V({jj}|{instance})", group, "V", instance=instance, element=jj)
         add(f"I(IB1|{instance})", f"chain_bias:cbu:D{index}", "A", instance=instance,
-            element="IB1", note="representative internal bias-source branch; values pinned in CBU_PARAMS")
+            element="IB1", note=("canonical CB_0928 internal bias branch" if direct_cb_d1 else
+                                  "representative internal MERGE bias-source branch; values pinned in CBU_PARAMS"))
 
     for stage in range(1, int(case["D0_JTL_COUNT"]) + 1):
         instance = f"XJTL_D0_{stage}"
@@ -1115,6 +1162,7 @@ def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
 
     return {"schema": "bvm-4x4-t1-chain-probe-manifest-v1", "profile": "t1_chain_focus",
             "focus_stage": case["FOCUS_STAGE"], "d0_jtl_count": int(case["D0_JTL_COUNT"]),
+            "cbu_override_d1": case.get("CBU_OVERRIDE_D1", "NONE"),
             "signal_count": len(signals),
             "raw_phase_unit": "P(...) radians",
             "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
@@ -1327,6 +1375,11 @@ def render(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str, 
     sources = verify_sources()
     chain_active = case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN"
     t1_active = case["OUTPUT_MODE"] in {"DIAGONAL_T1_INDEPENDENT", "DIAGONAL_T1_CHAIN"}
+    if chain_active and case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT":
+        cb_path = REPO / SOURCE_PATHS["CB"]
+        sources["CBU_D1_DIRECT"] = {"path": SOURCE_PATHS["CB"], "sha256": sha256(cb_path),
+                                    "mode": "CANONICAL_CB_0928_DIRECT_SHARED_NODE",
+                                    "subcircuit": "CB", "ports": ["IN", "OUT"]}
     t1_source_text = None
     t1_source_info = None
     chain_source_texts: dict[str, str] = {}
@@ -1458,6 +1511,7 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
         raise ConfigError(f"chain source closure incomplete: {sorted(chain_source_texts)}")
     if not t1_source_info or not t1_source_info.get("topology_equivalent") or not t1_source_text:
         raise ConfigError("chain requires a topology-equivalent rendered T1 source")
+    direct_cb_d1 = case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT"
     cbu_text = chain_source_texts["sources/cbu_tunable.cir"]
     dff_text = chain_source_texts["sources/dff_tunable.cir"]
     jtl_text = chain_source_texts["sources/d0_jtl_tunable.cir"]
@@ -1479,12 +1533,35 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
     if t1_lines != expected_t1 or len(t1_lines) != 7:
         raise ConfigError("chain requires exactly seven correctly pinned T1 instances")
     cbu_lines = {line for line in lines if line.startswith("XCBU_D")}
-    expected_cbu = {f"XCBU_D{index} CBU_A_D{index} CBU_B_D{index} CBU_OUT_D{index} {case['CBU_TYPE']}"
-                    for index in range(1, 7)}
+    expected_cbu = {
+        ("XCBU_D1 CBU_JOIN_D1 CBU_OUT_D1 CB" if index == 1 and direct_cb_d1 else
+         f"XCBU_D{index} CBU_A_D{index} CBU_B_D{index} CBU_OUT_D{index} {case['CBU_TYPE']}")
+        for index in range(1, 7)}
     if cbu_lines != expected_cbu or len(cbu_lines) != 6:
-        raise ConfigError("chain requires exactly six two-input CBU instances with separate A/B nodes")
-    if len({line.split()[2] for line in cbu_lines}) != 6 or len({line.split()[3] for line in cbu_lines}) != 6:
-        raise ConfigError("CBU input or output nodes are not unique by stage")
+        raise ConfigError("chain requires exactly six stage CBU instances with the registered D1 override")
+    cbu_output_nodes = {line.split()[2] if line.split()[-1] == "CB" else line.split()[3]
+                        for line in cbu_lines}
+    if len(cbu_output_nodes) != 6:
+        raise ConfigError("CBU output nodes are not unique by stage")
+    if direct_cb_d1:
+        if tuple(pin.casefold() for pin in subckt_pins(REPO / SOURCE_PATHS["CB"], "CB")) != ("in", "out"):
+            raise ConfigError("CB_DIRECT D1 requires canonical CB_0928 ports IN,OUT in that order")
+        if sha256(REPO / SOURCE_PATHS["CB"]) != SOURCE_SHA256["CB"]:
+            raise ConfigError("CB_DIRECT D1 canonical CB_0928 SHA differs from the pinned source")
+        direct_lines = {
+            "V_CBU_A_D1 DOUT_D1 CBU_JOIN_D1 0",
+            "V_CBU_B_D1 C_D0 CBU_JOIN_D1 0",
+            "XCBU_D1 CBU_JOIN_D1 CBU_OUT_D1 CB",
+            "V_T1_LINK_D1 CBU_OUT_D1 T1_I_D1 0",
+        }
+        if any(line.startswith(("V_CBU_A_D1 ", "V_CBU_B_D1 ", "XCBU_D1 ", "V_T1_LINK_D1 "))
+               and line not in direct_lines for line in lines):
+            raise ConfigError("D1 CB_DIRECT has an unexpected branch, instance, or output connection")
+        if any(any(node in line.split()[1:] for node in ("CBU_A_D1", "CBU_B_D1"))
+               for line in lines if line and not line.startswith(("*", "."))):
+            raise ConfigError("CBU_DIRECT D1 must use only the physical common node CBU_JOIN_D1")
+        if sum("CBU_JOIN_D1" in line for line in lines if not line.startswith(("*", ".print"))) != 3:
+            raise ConfigError("CBU_JOIN_D1 must occur only on the two input sensors and CB input")
     if any(line.startswith("R_TERM_D") for line in lines):
         raise ConfigError("chain mode forbids legacy 2-ohm DOUT terminations")
     if any(line.startswith("R_C_D") for line in lines):
@@ -1511,15 +1588,24 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
         raise ConfigError("D0 physical JTL chain wiring/count is inconsistent")
 
     for index in range(1, 7):
-        expected = {
-            f"V_CBU_A_D{index} DOUT_D{index} CBU_A_D{index} 0",
-            f"V_CBU_B_D{index} C_D{index-1} CBU_B_D{index} 0",
-            f"V_T1_LINK_D{index} CBU_OUT_D{index} T1_I_D{index} 0",
-        }
+        if index == 1 and direct_cb_d1:
+            expected = {
+                "V_CBU_A_D1 DOUT_D1 CBU_JOIN_D1 0",
+                "V_CBU_B_D1 C_D0 CBU_JOIN_D1 0",
+                "XCBU_D1 CBU_JOIN_D1 CBU_OUT_D1 CB",
+                "V_T1_LINK_D1 CBU_OUT_D1 T1_I_D1 0",
+            }
+        else:
+            expected = {
+                f"V_CBU_A_D{index} DOUT_D{index} CBU_A_D{index} 0",
+                f"V_CBU_B_D{index} C_D{index-1} CBU_B_D{index} 0",
+                f"XCBU_D{index} CBU_A_D{index} CBU_B_D{index} CBU_OUT_D{index} {case['CBU_TYPE']}",
+                f"V_T1_LINK_D{index} CBU_OUT_D{index} T1_I_D{index} 0",
+            }
         actual = {line for line in lines if line.startswith((f"V_CBU_A_D{index} ", f"V_CBU_B_D{index} ",
-                                                              f"V_T1_LINK_D{index} "))}
+                                                              f"XCBU_D{index} ", f"V_T1_LINK_D{index} "))}
         if actual != expected:
-            raise ConfigError(f"D{index} A/B/OUT path is not connected to the preregistered nodes")
+            raise ConfigError(f"D{index} CBU and sensed input/output paths differ from the registered topology")
     if "V_DFF_DATA C_D6 DFF_IN 0" not in lines or f"XDFF DFF_IN CLK_DFF DFF_O {case['DFF_TYPE']}" not in lines:
         raise ConfigError("C6 must feed the DFF data input and DFF.O must be the bit7 node")
     if any(line.startswith("R_C_") for line in lines):
@@ -1604,7 +1690,12 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
                     raise ConfigError(f"probe target element does not exist at top level: {label}")
                 if label.startswith("V(") and target not in {node.upper() for node in top_nodes}:
                     raise ConfigError(f"probe target node does not exist at top level: {label}")
-    return {"t1_count": 7, "cbu_count": 6, "d0_jtl_count": count, "dff_count": 1,
+    return {"t1_count": 7, "cbu_count": 6,
+            "cbu_type_by_stage": {f"D{index}": ("CB" if index == 1 and direct_cb_d1
+                                                  else case["CBU_TYPE"])
+                                  for index in range(1, 7)},
+            "cbu_direct_d1": direct_cb_d1,
+            "d0_jtl_count": count, "dff_count": 1,
             "clock_mode": case["T1_CHAIN_CLOCK_MODE"], "clock_driver_count": 8,
             "pulse_clock_count": pulse_count, "quiet_clock_count": quiet_count,
             "carry_load_count": 0, "sum_load_count": 7, "dff_output_load_ohm": params["DFF_R_OUT"],
@@ -1862,6 +1953,11 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
         print(f"Case: {case['CASE']} | ROW/COL={case['ROW_BITS']}/{case['COL_BITS']} | SE mask={case['SE_ENABLE_MASK']}")
         print(f"Topology: 16 BVM→QB; 7 diagonal CB chains; D0→{case['D0_JTL_COUNT']} sJTL→T1_D0; "
               "D1..D6 + prior Carry→6 physical CBU→T1; C6→DFF.O")
+        if case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT":
+            print("D1 override: CB_DIRECT — DOUT_D1 and C_D0 share CBU_JOIN_D1 via two 0V sensors; "
+                  "one canonical CB_0928 feeds T1_D1; D2-D6 remain THmitll_MERGE; no added sJTL")
+        else:
+            print(f"D1 override: NONE — all six CBU stages use {case['CBU_TYPE']}")
         print(f"Independent stages: T1=7 | CBU=6 | D0 JTL={case['D0_JTL_COUNT']} | DFF=1; "
               f"DOUT terminals=0; C0-C6 loads=0; Sum loads={t1_params['T1_R_S']}Ω; "
               f"DFF.O load={t1_params['DFF_R_OUT']}Ω")
@@ -2918,8 +3014,11 @@ def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
         overview.extend(("V(DFF_O)", *(f"V(CLK_{name})" for name in DIAGONALS), "V(CLK_DFF)"))
         propagation = []
         for index in range(1, 7):
-            propagation.extend((f"V(CBU_A_D{index})", f"V(CBU_B_D{index})",
-                                f"V(CBU_OUT_D{index})", f"V(T1_I_D{index})", f"V(C_D{index})"))
+            if index == 1 and probes.get("cbu_override_d1") == "CB_DIRECT":
+                propagation.append("V(CBU_JOIN_D1)")
+            else:
+                propagation.extend((f"V(CBU_A_D{index})", f"V(CBU_B_D{index})"))
+            propagation.extend((f"V(CBU_OUT_D{index})", f"V(T1_I_D{index})", f"V(C_D{index})"))
         propagation.extend((f"V(DOUT_D0)", "V(T1_I_D0)", "V(C_D0)"))
         propagation.extend(f"V(CLK_{name})" for name in DIAGONALS)
         propagation.append("V(CLK_DFF)")
@@ -2927,11 +3026,18 @@ def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
         index = int(stage[1])
         focus = [f"V(DOUT_{stage})"]
         if index:
-            focus.extend((f"V(C_D{index-1})", f"V(CBU_A_{stage})", f"V(CBU_B_{stage})",
-                          f"V(CBU_OUT_{stage})"))
-            cbu = f"XCBU_{stage}"
-            for jj in ("B1", "B4", "B7"):
-                focus.extend((f"P({jj}|{cbu})", f"V({jj}|{cbu})"))
+            if index == 1 and probes.get("cbu_override_d1") == "CB_DIRECT":
+                focus.extend(("P(BJ1|XCB_D1_L2)", "V(BJ1|XCB_D1_L2)", "V(C_D0)",
+                              "V(CBU_JOIN_D1)", "I(V_CBU_A_D1)", "I(V_CBU_B_D1)",
+                              "V(CBU_OUT_D1)", "I(V_T1_LINK_D1)"))
+                for jj in ("BJ1", "BJ2"):
+                    focus.extend((f"P({jj}|XCBU_D1)", f"V({jj}|XCBU_D1)"))
+            else:
+                focus.extend((f"V(C_D{index-1})", f"V(CBU_A_{stage})", f"V(CBU_B_{stage})",
+                              f"V(CBU_OUT_{stage})"))
+                cbu = f"XCBU_{stage}"
+                for jj in ("B1", "B4", "B7"):
+                    focus.extend((f"P({jj}|{cbu})", f"V({jj}|{cbu})"))
         else:
             for instance in range(1, int(probes.get("d0_jtl_count", 1)) + 1):
                 jtl = f"XJTL_D0_{instance}"
@@ -3440,6 +3546,7 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                   "t1_mode": case["T1_MODE"], "t1_clk_mode": t1_params["T1_CLK_MODE"],
                   "t1_chain_clock_mode": case.get("T1_CHAIN_CLOCK_MODE"),
                   "t1_chain_clock_start": case.get("T1_CHAIN_CLK_START"),
+                  "cbu_override_d1": case.get("CBU_OVERRIDE_D1", "NONE"),
                   "row_bits": case["ROW_BITS"],
                   "column_bits": case["COL_BITS"], "se_enable_mask": case["SE_ENABLE_MASK"],
                   "batch_id": batch_id,
@@ -3466,7 +3573,8 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
             "deck_sha256": deck_hash, "stimulus_sha256": stimulus_hash,
             "raw_sha256": raw_hash, "source_sha256": source_hashes,
             "probe_count": rendered["probes"]["signal_count"],
-            "risk_level": "NORMAL" if batch_id in {BUS400_BATCH_ID, T1_ARRAY_BATCH_ID, T1_CHAIN_BATCH_ID}
+            "risk_level": "NORMAL" if batch_id in {BUS400_BATCH_ID, T1_ARRAY_BATCH_ID, T1_CHAIN_BATCH_ID,
+                                                       CB_DIRECT_D1_BATCH_ID}
             else ("NORMAL" if case["CASE"] in BUS400_CASES else "historical registration unchanged"),
             "artifact_status": "VALID", "qa_status": "PASS",
             "scientific_interpretation_performed": False,
@@ -3478,6 +3586,7 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                                     "t1_clk_mode": t1_params["T1_CLK_MODE"],
                                     "t1_chain_clock_mode": case.get("T1_CHAIN_CLOCK_MODE"),
                                     "t1_chain_clock_start": case.get("T1_CHAIN_CLK_START"),
+                                    "cbu_override_d1": case.get("CBU_OVERRIDE_D1", "NONE"),
                                     "active_final_crosspoints": _active_cells(case),
                                     "status": result["status"], "physical_solve_count": 1,
                                     "raw_sha256": raw_hash, "raw_bytes": raw.stat().st_size,

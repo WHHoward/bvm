@@ -1,0 +1,76 @@
+schema: bvm-experiment-v1
+experiment_id: bvm-4x4-cb-direct-d1-20261009
+experiment_risk_level: NORMAL
+source_class: exploratory
+question: Can canonical CB_0928, connected to a shared D1 input node through two measured zero-volt branches, pass the registered single-active-branch D1 input waveform to T1_D1 under the A021/A022 global-clock conditions?
+authority_boundary:
+  evidence:
+    - immutable raw from A021/A022 and A023/A024
+    - rendered decks and probe manifests
+    - artifact and mechanical QA
+    - actual-grid voltage, current, and same-JJ phase/area arithmetic
+  not_proven:
+    - two-simultaneous-SFQ merge capability
+    - SFQ/event count or functional success
+    - electrical isolation between the shared input branches
+    - general multiplier or system correctness
+    - timestep convergence or parameter robustness
+run_set:
+  - run_id: A023_CB_DIRECT_D1_ALL_CLOCK
+    condition: CB_DIRECT_D1_ALL_CLOCK
+    baseline: A021_CHAIN_ALL_GLOBAL_CLOCK
+    row_bits: "1111"
+    col_bits: "1111"
+    cbu_override_d1: CB_DIRECT
+  - run_id: A024_CB_DIRECT_D1_PAPER_CLOCK
+    condition: CB_DIRECT_D1_PAPER_CLOCK
+    baseline: A022_CHAIN_PAPER_GLOBAL_CLOCK
+    row_bits: "1101"
+    col_bits: "1101"
+    cbu_override_d1: CB_DIRECT
+changed:
+  - D1 CBU implementation only: THmitll_MERGE replaced by the existing canonical CB_0928 on CBU_JOIN_D1.
+frozen:
+  - BVM, QB, array CB, shared jjmit, all canonical source hashes
+  - array CB/sJTL topology and all SJTL_COUNT_D0..D6 values
+  - D0 entry sJTL, D2-D6 THmitll_MERGE, all seven T1 and the DFF
+  - shared WL/BL 400u and independent SE 100u settings
+  - T1/CBU/DFF biases, loads, internal parameters, and all existing CBU params
+  - global one-shot clock at 200p with original 1.2m, 1p/2p/1p, 2-ohm series branch
+  - stimulus, DT=0.01p, STOP=300p
+  - exactly two physical solves; no retry, added sJTL, sweep, or follow-up
+windows_ps_half_open:
+  ARRAY_FINAL_READ: [110, 121]
+  PRE_CLOCK: [121, 200]
+  CLOCK_EDGE: [200, 205]
+  POST_CLOCK: [205, 300]
+  TOTAL: [0, 300]
+probe_registry: analysis/cb-direct-d1-20261009/PROBE_MANIFEST.json
+expected_qa:
+  - preflight and exact A021/A022 raw identities
+  - static topology/source/probe validation and JoSIM -s syntax checks only
+  - solver exit, raw header, stored grid, finite values, required probes, immutable SHA
+  - actual-grid trapezoidal current/voltage integrals and same-JJ phase/area records
+  - classic josim-plot2 standalone and paired descriptive plot QA
+  - ZIP member hashes, CRC, package/raw identities, and exact Drive-mirror SHA
+interpretation_ceiling: Mechanical evidence only. Report local junction and boundary arithmetic; do not classify SFQ counts or decide whether the candidate functionally succeeds.
+prohibited_followups:
+  - any additional solve, retry, sweep, or CBU stage replacement
+  - any added JTL/sJTL, parameter or clock adjustment
+  - any scientific mechanism or event-count conclusion before user review
+scientific_review_authorization: NOT_GRANTED
+package:
+  mode: delta
+  html_in_zip: false
+  commit_by_default: true
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase: 2pi
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

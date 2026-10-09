@@ -218,6 +218,41 @@ The six presets are `D3_N0` through `D3_N4` and `PAPER_1101_1101`. The latter
 uses ROW/COL `1101/1101` with all SE mask bits on. The preregistered diagonal
 target vector is `[1,1,1,3,1,1,1]`; it is not an event classifier or a result.
 
+### D1 shared-node canonical CB candidate (A023/A024)
+
+`CBU_OVERRIDE_D1` selects a local D1 implementation while `CBU_TYPE` remains
+the default for D2-D6:
+
+- `NONE`: all six CBU stages use `CBU_TYPE` (`THmitll_MERGE` by default).
+- `CB_DIRECT`: DOUT_D1 and T1_D0.C each connect through their own 0-V current
+  sensor to `CBU_JOIN_D1`; one canonical `CB_0928` (`IN,OUT`) feeds T1_D1.
+  There is no isolator or added sJTL. The shared node permits reverse coupling.
+
+The two exact presets are:
+
+```bash
+./try.sh --dry-run --preset CB_DIRECT_D1_ALL_CLOCK
+./try.sh --dry-run --preset CB_DIRECT_D1_PAPER_CLOCK
+./try.sh --dry-run --preset CHAIN_ALL_GLOBAL_CLOCK --set CBU_OVERRIDE_D1=CB_DIRECT
+```
+
+The registered two-run workflow is bounded to A023/A024 and first performs
+static deck, source, probe and JoSIM `-s` checks without a transient solve:
+
+```bash
+python3 scripts/cb_direct_d1_batch.py --prepare-preflight
+# Commit the platform/preflight changes; then, on the clean preflight commit:
+python3 scripts/cb_direct_d1_batch.py --run-batch
+python3 scripts/submit.py 20261009 --delta --dry-run
+```
+
+It pairs A023 with A021 and A024 with A022. Per-run focus pages and two paired
+classic `josim-plot2.py` pages stay local. The DELTA contains only new platform,
+analysis and A023/A024 evidence; A001-A022 raw are referenced by exact hashes,
+not recopied. This study uses a single active D1 source branch per matched
+condition and does not test two simultaneously active D1 inputs or decide
+functional success.
+
 ## Evidence and plots
 
 Each run records actual deck, exact PWL stimulus, effective topology/config

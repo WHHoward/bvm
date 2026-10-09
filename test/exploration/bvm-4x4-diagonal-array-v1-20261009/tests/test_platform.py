@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import sys
 import tempfile
 import unittest
@@ -339,6 +340,58 @@ class DiagonalPlatformTests(unittest.TestCase):
                          (7, 6, 1, 1))
         self.assertEqual(rendered["static_qa"]["terminal_count"], 0)
         self.assertLess(rendered["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
+
+    def test_default_cbu_override_preserves_a021_a022_deck_bytes(self):
+        expected = {
+            "CHAIN_ALL_GLOBAL_CLOCK": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
+            "CHAIN_PAPER_GLOBAL_CLOCK": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
+        }
+        for preset, digest in expected.items():
+            case, stimulus, params, output = rendered(preset)
+            self.assertEqual(case["CBU_OVERRIDE_D1"], "NONE")
+            self.assertEqual(hashlib.sha256(output["deck"].encode("utf-8")).hexdigest(), digest)
+            self.assertEqual(output["static_qa"]["status"], "PASS")
+
+    def test_cb_direct_d1_uses_exact_shared_node_sensor_and_canonical_cb_ports(self):
+        case, _stimulus, _params, output = rendered("CB_DIRECT_D1_ALL_CLOCK")
+        deck = output["deck"].splitlines()
+        self.assertEqual(case["CBU_TYPE"], "THmitll_MERGE")
+        self.assertEqual(case["CBU_OVERRIDE_D1"], "CB_DIRECT")
+        self.assertEqual(sum(line.startswith("XCBU_D1 ") for line in deck), 1)
+        self.assertIn("V_CBU_A_D1 DOUT_D1 CBU_JOIN_D1 0", deck)
+        self.assertIn("V_CBU_B_D1 C_D0 CBU_JOIN_D1 0", deck)
+        self.assertIn("XCBU_D1 CBU_JOIN_D1 CBU_OUT_D1 CB", deck)
+        self.assertIn("V_T1_LINK_D1 CBU_OUT_D1 T1_I_D1 0", deck)
+        self.assertFalse(any(line.startswith("XCBU_D1 ") and line.endswith("THmitll_MERGE") for line in deck))
+        for index in range(2, 7):
+            self.assertIn(f"XCBU_D{index} CBU_A_D{index} CBU_B_D{index} CBU_OUT_D{index} THmitll_MERGE", deck)
+        self.assertEqual(sum(line.startswith("XSJTL_D1_") for line in deck), 2)
+        self.assertFalse(any(line.startswith("XSJTL_CBU_D1") for line in deck))
+        self.assertEqual(platform.subckt_pins(platform.REPO / platform.SOURCE_PATHS["CB"], "CB"),
+                         ("IN", "OUT"))
+        probes = {item["label"] for item in output["probes"]["signals"]}
+        for label in ("V(DOUT_D1)", "P(BJ1|XCB_D1_L2)", "V(BJ1|XCB_D1_L2)",
+                      "V(C_D0)", "P(B_J11|XT1_D0)", "V(B_J11|XT1_D0)",
+                      "V(CBU_JOIN_D1)", "I(V_CBU_A_D1)", "I(V_CBU_B_D1)",
+                      "P(BJ1|XCBU_D1)", "V(BJ1|XCBU_D1)",
+                      "P(BJ2|XCBU_D1)", "V(BJ2|XCBU_D1)", "V(CBU_OUT_D1)",
+                      "I(V_T1_LINK_D1)", "V(T1_I_D1)", "P(B_J1|XT1_D1)",
+                      "P(B_J9|XT1_D1)", "P(B_J10|XT1_D1)", "P(B_J11|XT1_D1)",
+                      "V(S_D1)", "V(C_D1)", "V(CLK_D1)"):
+            self.assertIn(label, probes)
+        page_signals = {label for page in platform.plot_signals(output["probes"]) for label in page["signals"]}
+        self.assertIn("V(CBU_JOIN_D1)", page_signals)
+        self.assertIn("P(BJ2|XCBU_D1)", page_signals)
+        self.assertEqual(output["topology"]["cbu_type_by_stage"]["D1"], "CB")
+        self.assertEqual(output["topology"]["cbu_type_by_stage"]["D2"], "THmitll_MERGE")
+        self.assertEqual(output["static_qa"]["status"], "PASS")
+
+    def test_cbu_override_d1_is_selectable_by_set_and_rejects_unknown_values(self):
+        case, _stimulus, _params, output = rendered_with_set(
+            "CHAIN_ALL_GLOBAL_CLOCK", "CBU_OVERRIDE_D1=CB_DIRECT")
+        self.assertIn("XCBU_D1 CBU_JOIN_D1 CBU_OUT_D1 CB", output["deck"].splitlines())
+        with self.assertRaisesRegex(platform.ConfigError, "CBU_OVERRIDE_D1"):
+            platform.load_config("CHAIN_ALL_GLOBAL_CLOCK", ["CBU_OVERRIDE_D1=INVALID"])
 
     def test_global_chain_clock_is_one_shot_on_eight_independent_branches(self):
         case, stimulus, params, rendered_output = rendered("CHAIN_ALL_GLOBAL_CLOCK")

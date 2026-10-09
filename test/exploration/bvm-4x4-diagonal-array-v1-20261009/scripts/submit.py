@@ -255,6 +255,7 @@ def delta_spec(tag: str, root: Any) -> tuple[dict[str, Any], dict[str, Any]]:
     spec = {"name": package_name, "kind": "bvm_4x4_evidence_delta_v1", "scope": SERIES,
             "target": target, "qa_path": qa_target, "sources": sources,
             "extra_members": extra,
+            "delta_manifest": manifest,
             "readme": (f"Incremental evidence delta for {SERIES.name}; tag={tag}.\n"
                        f"Git base: {BUS400_PARENT_HEAD}\n"
                        f"Metadata checkpoint: {BASE_METADATA_NAME} ({metadata['package_sha256']})\n"
@@ -464,10 +465,9 @@ def submit_delta(args: argparse.Namespace, root: Any) -> int:
     stage_paths = context["source_paths"]
     if stage_paths:
         subprocess.run(["git", "add", "-A", "-f", "--", *stage_paths], cwd=REPO, check=True)
-    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO, check=False).returncode == 0:
-        raise RuntimeError("delta evidence has no new worktree files to commit")
-    subprocess.run(["git", "commit", "-m", args.message or "experiment: record BVM4x4 BUS400 diagnostic batch"],
-                   cwd=REPO, check=True)
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO, check=False).returncode != 0:
+        subprocess.run(["git", "commit", "-m", args.message or "experiment: record BVM4x4 BUS400 diagnostic batch"],
+                       cwd=REPO, check=True)
     source_commit = git("rev-parse", "HEAD")
 
     # Bind the precomputed, hash-listed source set to the evidence commit.

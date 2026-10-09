@@ -90,21 +90,25 @@ the one scoped submit operation:
 
 Six per-run ZIP total: **117,196,515 bytes**.
 | metadata v1 — superseded | 43,299 | `b707abbba18f9381ed60be0425ea5373630ad609cc48d1c46c8e38551891d30d` |
+| metadata v2 — canonical | 44,789 | `19af77800333d2c596b25606c26ac84fbd0ae4101b5b14f83fefc121c5975be1` |
 
 `metadata v1` is retained but **SUPERSEDED**: its embedded BATCH_SUMMARY hash
 does not match the summary at its declared source commit. The six per-run ZIPs
-and their raw hashes remain valid and unchanged. A bound
-`bvm-4x4-diagonal-array-v1-20261009_metadata_v2_BVM4X4_20261009.zip` is being
-created from a new metadata-only commit; its bytes/SHA are in its detached
-PACKAGE_QA sidecar (the archive cannot contain its own hash). See
-`analysis/PACKAGE_SUPERSESSION.json`. The v1 ZIP remains in Git and the local
-mirror; it is not a canonical package base and will not be uploaded as the
-current Drive metadata archive.
+and their raw hashes remain valid and unchanged. `metadata v2` is the bound
+shared package, created from metadata commit `364dd2b6dc0589f1ca1de614a16583a32331a51d`;
+package commit `5e4d085ebe82b69a8388d4b0de91532ce3e9c877` contains v2 and its
+detached CRC/member-SHA QA. The metadata ZIP's own hash is recorded here and in
+that QA sidecar; its embedded summary snapshot necessarily predates the
+self-hash row. See `analysis/PACKAGE_SUPERSESSION.json` for the v1/v2 binding
+record. The v1 ZIP remains in Git and the local mirror, unchanged and not used
+as the canonical Drive archive.
 
-The metadata ZIP carries this run-package table; its own identity is appended below after creation.
-Each ZIP's detached PACKAGE_QA.json is the member/CRC/SHA authority.
+Canonical archive set: six run ZIPs + metadata v2, **117,241,304 bytes** total.
+Each ZIP's detached `PACKAGE_QA.json` is the member/CRC/SHA authority.
 
-Package creation pending.
+The Drive `BVM_Backages` folder link below is the archive entry point. The
+current summary file is also uploaded separately so it includes the final
+package table; the metadata ZIP retains its immutable source-commit snapshot.
 
 Drive target: [BVM_Backages](https://drive.google.com/drive/folders/1--nlY7Nq5ArVPydJNrnQf-EGmwN-undh).
 

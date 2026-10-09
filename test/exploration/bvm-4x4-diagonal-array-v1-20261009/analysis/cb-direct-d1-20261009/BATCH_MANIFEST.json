@@ -1,7 +1,7 @@
 {
   "schema": "bvm-4x4-cb-direct-d1-batch-v1",
   "batch_id": "BVM4X4_CB_DIRECT_D1_20261009",
-  "status": "REGISTERED_NOT_RUN",
+  "status": "STOPPED_BEFORE_PHYSICAL_SOLVE",
   "preflight_path": "analysis/cb-direct-d1-20261009/PREFLIGHT.md",
   "preflight_sha256": "b03d22fe9818fce16c613e0243b5e15c03f70769cbe95bc4c62cdd9e2523cf22",
   "static_qa_path": "analysis/cb-direct-d1-20261009/STATIC_QA.json",
@@ -15,5 +15,20 @@
   "physical_solve_count_completed": 0,
   "runs": [],
   "scientific_interpretation_performed": false,
-  "automatic_follow_up": false
+  "automatic_follow_up": false,
+  "gate_attempt_head": "c47fd1bcab904ffbf7d8060973b3f8267a2a210e",
+  "transient_solver_invoked": false,
+  "gate_incident_path": "analysis/cb-direct-d1-20261009/GATE_INCIDENT_001.json",
+  "gate_error": "frozen deck/stimulus/probe mismatch before A023_CB_DIRECT_D1_ALL_CLOCK",
+  "failed_check": "runner compared the candidate direct-CB deck SHA to the A021 MERGE baseline deck SHA instead of the candidate deck SHA locked in STATIC_QA.json",
+  "candidate_deck_sha256_from_preflight": "46263c34dbc04627dff5b9b584f3e06eac1cf25c602d39874bca6392e46c93b4",
+  "baseline_deck_sha256": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
+  "run_directories_created": false,
+  "raw_files_created": false,
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "parent_head": "c47fd1bcab904ffbf7d8060973b3f8267a2a210e"
+  }
 }

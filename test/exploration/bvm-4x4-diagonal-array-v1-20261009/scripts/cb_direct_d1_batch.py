@@ -15,7 +15,11 @@ from typing import Any
 
 SERIES = Path(__file__).resolve().parents[1]
 REPO = SERIES.parents[2]
-ANALYSIS = SERIES / "analysis" / "cb-direct-d1-20261009"
+TASK_ROOT = SERIES / "analysis" / "cb-direct-d1-20261009"
+ANALYSIS = TASK_ROOT / "attempts" / "002"
+EXPERIMENT_YAML = TASK_ROOT / "experiment.yaml"
+METRIC_SPEC = TASK_ROOT / "METRIC_SPEC.json"
+HUMAN_GATE = TASK_ROOT / "human-gate.yaml"
 PREFLIGHT = ANALYSIS / "PREFLIGHT.md"
 STATIC_QA = ANALYSIS / "STATIC_QA.json"
 PROBES = ANALYSIS / "PROBE_MANIFEST.json"
@@ -58,6 +62,23 @@ def json_new(path: Path, value: Any) -> None:
 def git(*args: str) -> str:
     return subprocess.run(["git", *args], cwd=REPO, capture_output=True, text=True,
                           check=True).stdout.strip()
+
+
+def _render_lock_mismatches(rendered: dict[str, Any], locked: dict[str, Any],
+                            registered_probe: dict[str, Any]) -> list[str]:
+    actual_deck = hashlib.sha256(rendered["deck"].encode()).hexdigest()
+    actual_stimulus = hashlib.sha256(rendered["stimulus_text"].encode()).hexdigest()
+    actual_probe = hashlib.sha256((json.dumps(rendered["probes"], ensure_ascii=False, indent=2)+"\n").encode()).hexdigest()
+    mismatches = []
+    for label, actual, expected in (
+            ("candidate deck", actual_deck, locked.get("deck_sha256")),
+            ("stimulus", actual_stimulus, locked.get("stimulus_sha256")),
+            ("probe manifest", actual_probe, locked.get("probe_sha256"))):
+        if actual != expected:
+            mismatches.append(f"{label}: expected {expected}, got {actual}")
+    if rendered["probes"] != registered_probe:
+        mismatches.append("rendered probe manifest differs structurally from the registered per-run probe set")
+    return mismatches
 
 
 def _cb_default_check() -> dict[str, Any]:
@@ -141,6 +162,7 @@ def _write_static_gate() -> dict[str, Any]:
         raise RuntimeError("A023/A024 run path already exists; refusing overwrite")
     if any(path.exists() for path in (PREFLIGHT, STATIC_QA, PROBES, WORK_UNIT, BATCH)):
         raise RuntimeError("CB_DIRECT D1 registration artifacts already exist; refusing overwrite")
+    ANALYSIS.mkdir(parents=True, exist_ok=False)
 
     cb_identity = _cb_default_check()
     baselines = {}
@@ -236,9 +258,9 @@ def _write_static_gate() -> dict[str, Any]:
           "solver": solver, "platform_sha256": sha(Path(platform.__file__).resolve()),
           "batch_runner_sha256": sha(Path(__file__).resolve()),
           "registration_sha256": {
-              "experiment_yaml": sha(ANALYSIS / "experiment.yaml"),
-              "metric_spec": sha(ANALYSIS / "METRIC_SPEC.json"),
-              "human_gate": sha(ANALYSIS / "human-gate.yaml"),
+              "experiment_yaml": sha(EXPERIMENT_YAML),
+              "metric_spec": sha(METRIC_SPEC),
+              "human_gate": sha(HUMAN_GATE),
               "analysis_runner": sha(SERIES / "scripts" / "analyze_cb_direct_d1.py")},
           "config_sha256": {path.relative_to(SERIES).as_posix(): sha(path) for path in config_paths},
           "canonical_source_sha256": {role: item["sha256"] for role, item in source_records.items()},
@@ -271,16 +293,31 @@ def _write_static_gate() -> dict[str, Any]:
 
     manifest = json_read(EXPERIMENT_MANIFEST)
     batches = manifest.setdefault("authorization_batches", [])
-    if any(item.get("batch_id") == platform.CB_DIRECT_D1_BATCH_ID for item in batches):
-        raise RuntimeError("CB_DIRECT D1 authorization batch already exists")
-    batches.append({"batch_id": platform.CB_DIRECT_D1_BATCH_ID, "risk_level": "NORMAL",
-                    "authorized_cases": [item["preset"] for item in rendered_cases],
-                    "run_ids": list(RUNS), "authorized_physical_solve_count": 2,
-                    "physical_solve_count_completed": 0,
-                    "parent_head_at_preflight": qa["parent_head"],
-                    "preflight_sha256": preflight_sha,
-                    "static_qa_sha256": sha(STATIC_QA), "probe_manifest_sha256": sha(PROBES),
-                    "scientific_interpretation_performed": False, "automatic_follow_up": False})
+    matches = [item for item in batches if item.get("batch_id") == platform.CB_DIRECT_D1_BATCH_ID]
+    if len(matches) != 1:
+        raise RuntimeError("expected the original single CB_DIRECT D1 authorization record")
+    authorization = matches[0]
+    if (authorization.get("run_ids") != list(RUNS) or
+            authorization.get("authorized_physical_solve_count") != 2 or
+            authorization.get("physical_solve_count_completed") != 0):
+        raise RuntimeError("existing CB_DIRECT D1 authorization no longer matches the exact two-run task")
+    if authorization.get("active_preflight_attempt") is not None:
+        raise RuntimeError("a later CB_DIRECT D1 preflight attempt is already registered")
+    authorization["preflight_attempts"] = [{
+        "attempt": 1, "status": "STOPPED_BEFORE_PHYSICAL_SOLVE",
+        "preflight_path": "analysis/cb-direct-d1-20261009/PREFLIGHT.md",
+        "preflight_sha256": "b03d22fe9818fce16c613e0243b5e15c03f70769cbe95bc4c62cdd9e2523cf22",
+        "static_qa_sha256": "389992c9e6e53e7bbdc204d6049caa6dda8fc471dedaff6477d2c7e09f2a3be3",
+        "gate_incident_path": "analysis/cb-direct-d1-20261009/GATE_INCIDENT_001.json",
+        "physical_solve_count": 0,
+    }, {"attempt": 2, "status": "PASS", "preflight_path": PREFLIGHT.relative_to(SERIES).as_posix(),
+        "preflight_sha256": preflight_sha, "static_qa_path": STATIC_QA.relative_to(SERIES).as_posix(),
+        "static_qa_sha256": sha(STATIC_QA), "probe_manifest_path": PROBES.relative_to(SERIES).as_posix(),
+        "probe_manifest_sha256": sha(PROBES), "parent_head_at_preflight": qa["parent_head"],
+        "physical_solve_count": 0}]
+    authorization["active_preflight_attempt"] = 2
+    authorization["active_preflight_sha256"] = preflight_sha
+    authorization["active_static_qa_sha256"] = sha(STATIC_QA)
     with EXPERIMENT_MANIFEST.open("w", encoding="utf-8", newline="\n") as stream:
         json.dump(manifest, stream, ensure_ascii=False, indent=2)
         stream.write("\n")
@@ -290,8 +327,8 @@ def _write_static_gate() -> dict[str, Any]:
             "source_parent_head": qa["parent_head"], "preflight_sha256": preflight_sha,
             "static_qa_sha256": sha(STATIC_QA), "probe_manifest_sha256": sha(PROBES),
             "experiment_manifest_sha256": sha(EXPERIMENT_MANIFEST),
-            "experiment_yaml_sha256": sha(ANALYSIS / "experiment.yaml"),
-            "metric_spec_sha256": sha(ANALYSIS / "METRIC_SPEC.json"),
+            "experiment_yaml_sha256": sha(EXPERIMENT_YAML),
+            "metric_spec_sha256": sha(METRIC_SPEC),
             "analysis_runner_sha256": sha(SERIES / "scripts" / "analyze_cb_direct_d1.py"),
             "authorized_run_ids": list(RUNS), "physical_solve_count_authorized": 2,
             "physical_solve_count_completed_at_registration": 0,
@@ -382,9 +419,9 @@ def run_batch() -> int:
             sha(PROBES) != work.get("probe_manifest_sha256") or sha(EXPERIMENT_MANIFEST) != work.get("experiment_manifest_sha256")):
         raise RuntimeError("preflight, static QA, probes, or experiment authorization hash changed")
     registration = static.get("registration_sha256", {})
-    if (sha(ANALYSIS / "experiment.yaml") != registration.get("experiment_yaml") or
-            sha(ANALYSIS / "METRIC_SPEC.json") != registration.get("metric_spec") or
-            sha(ANALYSIS / "human-gate.yaml") != registration.get("human_gate") or
+    if (sha(EXPERIMENT_YAML) != registration.get("experiment_yaml") or
+            sha(METRIC_SPEC) != registration.get("metric_spec") or
+            sha(HUMAN_GATE) != registration.get("human_gate") or
             sha(SERIES / "scripts" / "analyze_cb_direct_d1.py") != registration.get("analysis_runner") or
             sha(SERIES / "scripts" / "cb_direct_d1_batch.py") != static.get("batch_runner_sha256") or
             sha(SERIES / "scripts" / "diagonal_platform.py") != static.get("platform_sha256")):
@@ -407,26 +444,28 @@ def run_batch() -> int:
     batch.update({"status": "RUNNING", "execution_head": solver["parent_head"],
                   "solver": solver, "runs": [], "physical_solve_count_completed": 0})
     json_write(BATCH, batch)
-    _mark_execution_head(solver["parent_head"])
+    _mark_execution_head(solver["parent_head"], work.get("preflight_sha256"),
+                         work.get("static_qa_sha256"))
     registry = json_read(PROBES)["manifests_by_run_id"]
     cases = []
     for index, item in enumerate(BASELINE_RUNS):
-        _baseline_run, preset, rows, cols, _raw, expected_deck, expected_stim = item
+        _baseline_run, preset, rows, cols, _raw, _baseline_deck, expected_stim = item
         case, stimulus, params = platform.load_config(preset)
         run_id = RUNS[index]
         prospective = SERIES / "runs" / run_id
         rendered = platform.render(case, stimulus, params, prospective)
-        probe_digest = hashlib.sha256((json.dumps(rendered["probes"], ensure_ascii=False, indent=2)+"\n").encode()).hexdigest()
         locked = next(record for record in static["runs"] if record["run_id"] == run_id)
-        if (hashlib.sha256(rendered["deck"].encode()).hexdigest() != expected_deck or
-                hashlib.sha256(rendered["stimulus_text"].encode()).hexdigest() != expected_stim or
-                probe_digest != locked["probe_sha256"] or rendered["probes"] != registry[run_id]):
-            raise RuntimeError(f"frozen deck/stimulus/probe mismatch before {run_id}")
+        mismatches = _render_lock_mismatches(rendered, locked, registry[run_id])
+        if expected_stim != locked["stimulus_sha256"]:
+            mismatches.append(f"baseline stimulus SHA {expected_stim} differs from registered candidate stimulus "
+                              f"{locked['stimulus_sha256']}")
+        if mismatches:
+            raise RuntimeError(f"frozen candidate input mismatch before {run_id}: {'; '.join(mismatches)}")
         if prospective.exists():
             raise RuntimeError(f"refusing to overwrite run directory: {prospective}")
         cases.append({"run_id": run_id, "preset": preset, "case": case,
                       "stimulus": stimulus, "params": params, "rendered": rendered,
-                      "deck_sha256": expected_deck})
+                      "deck_sha256": locked["deck_sha256"]})
 
     for item in cases:
         print(f"START {item['run_id']} {item['preset']}; physical_solve_count before this run="
@@ -435,7 +474,7 @@ def run_batch() -> int:
             item["case"], item["stimulus"], item["params"], solver,
             batch_id=platform.CB_DIRECT_D1_BATCH_ID, run_id_override=item["run_id"],
             preflight_path=PREFLIGHT,
-            metric_spec_path_override=ANALYSIS / "METRIC_SPEC.json",
+            metric_spec_path_override=METRIC_SPEC,
             expected_deck_sha256=item["deck_sha256"])
         record = {"run_id": item["run_id"], "preset": item["preset"],
                   "status": result.get("status"), "artifact_status": result.get("artifact_status"),
@@ -481,13 +520,16 @@ def run_batch() -> int:
     return 0
 
 
-def _mark_execution_head(execution_head: str) -> None:
+def _mark_execution_head(execution_head: str, preflight_sha: str, static_qa_sha: str) -> None:
     data = json_read(EXPERIMENT_MANIFEST)
     matches = [item for item in data.get("authorization_batches", [])
                if item.get("batch_id") == platform.CB_DIRECT_D1_BATCH_ID]
     if len(matches) != 1 or matches[0].get("physical_solve_count_completed") != 0:
         raise RuntimeError("CB_DIRECT D1 authorization record is missing, duplicated, or already consumed")
     matches[0]["execution_parent_head"] = execution_head
+    matches[0]["execution_preflight_attempt"] = 2
+    matches[0]["execution_preflight_sha256"] = preflight_sha
+    matches[0]["execution_static_qa_sha256"] = static_qa_sha
     with EXPERIMENT_MANIFEST.open("w", encoding="utf-8", newline="\n") as stream:
         json.dump(data, stream, ensure_ascii=False, indent=2)
         stream.write("\n")

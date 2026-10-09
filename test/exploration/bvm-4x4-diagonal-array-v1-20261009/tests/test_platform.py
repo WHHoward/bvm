@@ -9,6 +9,7 @@ from pathlib import Path
 SERIES = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SERIES / "scripts"))
 import diagonal_platform as platform  # noqa: E402
+import cb_direct_d1_batch as cb_batch  # noqa: E402
 
 
 def rendered(preset: str, overrides: list[str] | None = None):
@@ -392,6 +393,21 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertIn("XCBU_D1 CBU_JOIN_D1 CBU_OUT_D1 CB", output["deck"].splitlines())
         with self.assertRaisesRegex(platform.ConfigError, "CBU_OVERRIDE_D1"):
             platform.load_config("CHAIN_ALL_GLOBAL_CLOCK", ["CBU_OVERRIDE_D1=INVALID"])
+
+    def test_cb_direct_batch_locks_candidate_deck_not_merge_baseline_deck(self):
+        _case, _stimulus, _params, output = rendered("CB_DIRECT_D1_ALL_CLOCK")
+        rendered_deck_sha = hashlib.sha256(output["deck"].encode("utf-8")).hexdigest()
+        rendered_stim_sha = hashlib.sha256(output["stimulus_text"].encode("utf-8")).hexdigest()
+        probe_sha = hashlib.sha256((platform.json.dumps(output["probes"], ensure_ascii=False, indent=2)+"\n").encode()).hexdigest()
+        locked_candidate = {"deck_sha256": rendered_deck_sha, "stimulus_sha256": rendered_stim_sha,
+                           "probe_sha256": probe_sha}
+        self.assertNotEqual(rendered_deck_sha,
+                            "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364")
+        self.assertEqual(cb_batch._render_lock_mismatches(output, locked_candidate, output["probes"]), [])
+        wrong_baseline_lock = {**locked_candidate,
+                               "deck_sha256": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364"}
+        self.assertIn("candidate deck", "; ".join(
+            cb_batch._render_lock_mismatches(output, wrong_baseline_lock, output["probes"])))
 
     def test_global_chain_clock_is_one_shot_on_eight_independent_branches(self):
         case, stimulus, params, rendered_output = rendered("CHAIN_ALL_GLOBAL_CLOCK")

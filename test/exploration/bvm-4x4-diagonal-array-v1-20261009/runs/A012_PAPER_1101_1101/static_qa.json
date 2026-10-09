@@ -1,0 +1,121 @@
+{
+  "schema": "bvm-4x4-diagonal-static-qa-v2",
+  "status": "PASS",
+  "physical_solve_count": 0,
+  "bvm_count": 16,
+  "qb_count": 16,
+  "sjtl_count": 18,
+  "sjtl_count_by_diagonal": {
+    "D0": [
+      1
+    ],
+    "D1": [
+      1,
+      1
+    ],
+    "D2": [
+      1,
+      1,
+      1
+    ],
+    "D3": [
+      1,
+      2,
+      2,
+      1
+    ],
+    "D4": [
+      1,
+      1,
+      1
+    ],
+    "D5": [
+      1,
+      1
+    ],
+    "D6": [
+      1
+    ]
+  },
+  "cb_count": 16,
+  "terminal_count": 7,
+  "input_driver_count": 24,
+  "driver_count_by_branch": {
+    "WL": 4,
+    "BL": 4,
+    "SE": 16
+  },
+  "diagonal_mapping_exact": true,
+  "unique_outputs": true,
+  "active_final_crosspoints": [
+    "R1C1",
+    "R1C2",
+    "R1C4",
+    "R2C1",
+    "R2C2",
+    "R2C4",
+    "R4C1",
+    "R4C2",
+    "R4C4"
+  ],
+  "canonical_source_hashes_match": {
+    "JJMIT": true,
+    "BVM": true,
+    "QB": true,
+    "SJTL": true,
+    "CB": true,
+    "T1_REFERENCE": true
+  },
+  "component_pin_orders": {
+    "BVM": [
+      "WL",
+      "BL",
+      "SE",
+      "SL"
+    ],
+    "QB": [
+      "IN",
+      "OUT"
+    ],
+    "SJTL": [
+      "IN",
+      "OUT"
+    ],
+    "CB": [
+      "IN",
+      "OUT"
+    ]
+  },
+  "t1_mode_off_no_t1_cbu_dff": true,
+  "stimulus_source_count": 24,
+  "stimulus_source_lines": [
+    "I_WL_R1 0 WL_R1 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 400u 120p 400u 121p 0 250p 0)",
+    "I_WL_R2 0 WL_R2 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 400u 120p 400u 121p 0 250p 0)",
+    "I_WL_R3 0 WL_R3 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_WL_R4 0 WL_R4 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 400u 80p 400u 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 400u 120p 400u 121p 0 250p 0)",
+    "I_BL_C1 0 BL_C1 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_BL_C2 0 BL_C2 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_BL_C3 0 BL_C3 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_BL_C4 0 BL_C4 PWL(0 0 50p 0 51p -400u 60p -400u 61p 0 70p 0 71p 0 80p 0 81p 0 90p 0 91p 400u 100p 400u 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R1C1 0 SE_R1C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R1C2 0 SE_R1C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R1C3 0 SE_R1C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R1C4 0 SE_R1C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R2C1 0 SE_R2C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R2C2 0 SE_R2C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R2C3 0 SE_R2C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R2C4 0 SE_R2C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R3C1 0 SE_R3C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R3C2 0 SE_R3C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R3C3 0 SE_R3C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R3C4 0 SE_R3C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R4C1 0 SE_R4C1 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R4C2 0 SE_R4C2 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)",
+    "I_SE_R4C3 0 SE_R4C3 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 0 120p 0 121p 0 250p 0)",
+    "I_SE_R4C4 0 SE_R4C4 PWL(0 0 50p 0 51p 0 60p 0 61p 0 70p 0 71p 100u 80p 100u 81p 0 90p 0 91p 0 100p 0 101p 0 110p 0 111p 100u 120p 100u 121p 0 250p 0)"
+  ],
+  "probe_count": 130,
+  "raw_estimate_bytes": 50213467,
+  "storage_guard": "PASS",
+  "scientific_interpretation_performed": false
+}

@@ -21,10 +21,13 @@ ROOT_SUBMIT_PATH = REPO / "scripts" / "submit.py"
 BUS400_PARENT_HEAD = "3de08ba0fd5997b253269849dbc1a535786c8fd6"
 BUS400_RUN_IDS = ("A007_BUS400_D3_N0", "A008_BUS400_D3_N1")
 A009_RUN_IDS = ("A009_paper_like",)
-DELTA_RUN_IDS = A009_RUN_IDS
+DELTA_RUN_IDS = ("A010_PAPER_1101_1101", "A011_PAPER_1101_1101", "A012_PAPER_1101_1101")
 BUS400_DELTA_NAME = f"{SERIES.name}_delta_BVM4X4_BUS400_20261009.zip"
 BUS400_DELTA_SHA256 = "2c7747d5fcff639985880af4c8c6cc4e9f54bd0ecfbac95daa4787dbc58e1bf1"
 BUS400_DELTA_HEAD = "9e1070f85b3e7fcfdc1357f3e9e7bf64f834a29d"
+A009_DELTA_NAME = f"{SERIES.name}_delta_A009_RESPONSIVE_20261009.zip"
+A009_DELTA_SHA256 = "a852fa8453ca5d7315767958a96c35dce3465956e1b8a964035af4bc071a2a91"
+A009_DELTA_HEAD = "617311779e996494194ef1aa9bb172295158ea81"
 LEGACY_RUN_IDS = tuple(f"A{i:03d}_{case}" for i, case in enumerate(
     ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4", "PAPER_1101_1101"), start=1))
 BASE_METADATA_NAME = f"{SERIES.name}_metadata_v2_BVM4X4_20261009.zip"
@@ -128,9 +131,7 @@ def is_allowed_delta_run_path(rel_path: str) -> bool:
     run_id = parts[4]
     if run_id in DELTA_RUN_IDS:
         return True
-    return (run_id in BUS400_RUN_IDS and parts[5] in {
-        "plot_manifest_responsive_v2.json", "plot_qa_responsive_v2.json",
-        "visualization_repair_responsive_v2.json"})
+    return False
 
 
 def verify_prior_bus400_delta(root: Any, legacy_refs: list[dict[str, Any]]) -> tuple[
@@ -170,8 +171,76 @@ def verify_prior_bus400_delta(root: Any, legacy_refs: list[dict[str, Any]]) -> t
     return qa, prior_manifest, legacy_refs + added_refs
 
 
+def verify_prior_a009_delta(root: Any, prior_refs: list[dict[str, Any]]) -> tuple[
+        dict[str, Any], dict[str, Any], list[dict[str, Any]]]:
+    expected_prior_refs = list(prior_refs)
+    package = HANDOFF / A009_DELTA_NAME
+    qa_path = HANDOFF / f"{Path(A009_DELTA_NAME).stem}_PACKAGE_QA.json"
+    qa = root.verify_existing_bundle(package, qa_path)
+    if (qa.get("status") != "PASS" or qa.get("package_sha256") != A009_DELTA_SHA256 or
+            qa.get("source_commit") != A009_DELTA_HEAD or
+            qa.get("base_package_name") != BUS400_DELTA_NAME or
+            qa.get("base_package_sha256") != BUS400_DELTA_SHA256):
+        raise RuntimeError("registered A009 delta package identity or QA mismatch")
+    with zipfile.ZipFile(package, "r") as archive:
+        prior_manifest = json.loads(archive.read("DELTA_MANIFEST.json"))
+    if (prior_manifest.get("head_commit") != A009_DELTA_HEAD or
+            prior_manifest.get("base_package_name") != BUS400_DELTA_NAME or
+            prior_manifest.get("base_package_sha256") != BUS400_DELTA_SHA256):
+        raise RuntimeError("registered A009 delta manifest lineage mismatch")
+    recorded_prior_refs = prior_manifest.get("referenced_existing_raw_sha256", [])
+    prior_identities = {(item.get("run_id"), item.get("raw_sha256"), item.get("source_package_name"),
+                         item.get("source_package_sha256")) for item in recorded_prior_refs}
+    expected_identities = {(item["run_id"], item["raw_sha256"], item["source_package_name"],
+                            item["source_package_sha256"]) for item in expected_prior_refs}
+    if len(prior_identities) != len(recorded_prior_refs) or prior_identities != expected_identities:
+        raise RuntimeError("registered A009 delta existing-raw references are malformed")
+    raw_map = prior_manifest.get("raw_sha256_by_run", {})
+    if set(raw_map) != set(A009_RUN_IDS):
+        raise RuntimeError("registered A009 delta raw closure is incomplete")
+    manifest_rows = {item.get("run_id"): item for item in
+                     json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8")).get("runs", [])}
+    added_refs = []
+    for run_id in A009_RUN_IDS:
+        result = json.loads((RUNS / run_id / "result.json").read_text(encoding="utf-8"))
+        raw = RUNS / run_id / "raw.csv"
+        if (raw_map.get(run_id) != result.get("raw_sha256") or
+                not manifest_rows.get(run_id) or
+                manifest_rows[run_id].get("raw_sha256") != result.get("raw_sha256") or
+                root.sha256(raw) != result.get("raw_sha256")):
+            raise RuntimeError(f"A009 raw identity no longer matches its delta base: {run_id}")
+        added_refs.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                           "raw_sha256": result["raw_sha256"],
+                           "source_package_name": A009_DELTA_NAME,
+                           "source_package_sha256": A009_DELTA_SHA256})
+    return qa, prior_manifest, recorded_prior_refs + added_refs
+
+
+def partition_delta_sources(sources: list[tuple[Path, str]]) -> tuple[
+        dict[str, list[tuple[Path, str]]], list[tuple[Path, str]]]:
+    by_run = {run_id: [] for run_id in DELTA_RUN_IDS}
+    shared = []
+    for item in sources:
+        parts = Path(item[1]).parts
+        if len(parts) >= 5 and parts[:4] == ("test", "exploration", SERIES.name, "runs") and parts[4] in by_run:
+            by_run[parts[4]].append(item)
+        else:
+            shared.append(item)
+    members = [member for _source, member in shared]
+    members.extend(member for group in by_run.values() for _source, member in group)
+    if len(members) != len(sources) or len(members) != len(set(members)):
+        raise RuntimeError("delta source partition is incomplete or contains duplicate members")
+    missing = [run_id for run_id, group in by_run.items()
+               if not any(Path(member).name == "raw.csv" for _source, member in group)]
+    if missing:
+        raise RuntimeError(f"delta partition is missing run raw files: {missing}")
+    if not shared:
+        raise RuntimeError("delta has no shared source/config/manifest files")
+    return by_run, shared
+
+
 def _delta_sources(root: Any) -> tuple[list[tuple[Path, str]], list[str], list[str]]:
-    changes = dict(root.committed_changes(BUS400_DELTA_HEAD, git("rev-parse", "HEAD")))
+    changes = dict(root.committed_changes(A009_DELTA_HEAD, git("rev-parse", "HEAD")))
     changes.update(root.working_changes())
     for path in root.untracked_files():
         changes.setdefault(path, "??")
@@ -203,40 +272,6 @@ def _delta_sources(root: Any) -> tuple[list[tuple[Path, str]], list[str], list[s
         if not run_dir.is_dir():
             raise RuntimeError(f"new authorized run directory is missing: {run_id}")
         for path in included_files(run_dir):
-            rel_path = path.relative_to(REPO).as_posix()
-            sources[rel_path] = path
-            changed_paths.add(rel_path)
-
-    # Repository-wide ignore rules exclude generated JSON by default. These
-    # task-authoritative records are explicitly retained in the delta closure.
-    required_batch_artifacts = (
-        "test/exploration/bvm-4x4-diagonal-array-v1-20261009/analysis/BUS400_html_repair_summary.json",
-        "test/exploration/bvm-4x4-diagonal-array-v1-20261009/analysis/BUS400_comparison_qa_responsive_v2.json",
-    )
-    for rel_path in required_batch_artifacts:
-        path = REPO / rel_path
-        if not path.is_file() or path.is_symlink():
-            raise RuntimeError(f"required BUS400 delta artifact is missing: {rel_path}")
-        sources[rel_path] = path
-        changed_paths.add(rel_path)
-
-    # A007/A008 raw evidence is already in the immutable BUS400 delta base;
-    # include only the newly generated visualization QA sidecars.
-    for run_id in BUS400_RUN_IDS:
-        run_dir = RUNS / run_id
-        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
-        qa = json.loads((run_dir / "plot_qa_responsive_v2.json").read_text(encoding="utf-8"))
-        repair = json.loads((run_dir / "visualization_repair_responsive_v2.json").read_text(encoding="utf-8"))
-        if (qa.get("status") != "PASS" or qa.get("raw_sha256_before") != result.get("raw_sha256") or
-                qa.get("raw_sha256_after") != result.get("raw_sha256") or
-                repair.get("raw_sha256_before") != result.get("raw_sha256") or
-                repair.get("raw_sha256_after") != result.get("raw_sha256")):
-            raise RuntimeError(f"responsive visualization QA does not bind to immutable raw: {run_id}")
-        for name in ("plot_manifest_responsive_v2.json", "plot_qa_responsive_v2.json",
-                     "visualization_repair_responsive_v2.json"):
-            path = run_dir / name
-            if not path.is_file() or path.is_symlink():
-                raise RuntimeError(f"required responsive visualization evidence is missing: {path}")
             rel_path = path.relative_to(REPO).as_posix()
             sources[rel_path] = path
             changed_paths.add(rel_path)
@@ -273,11 +308,12 @@ def _delta_sources(root: Any) -> tuple[list[tuple[Path, str]], list[str], list[s
     return ordered, sorted(changed_paths), sorted(excluded_html)
 
 
-def delta_spec(tag: str, root: Any) -> tuple[dict[str, Any], dict[str, Any]]:
+def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     if not root.TAG_RE.fullmatch(tag):
         raise RuntimeError(f"invalid delta tag: {tag!r}")
     metadata, legacy_raw_refs = base_records(root)
-    prior_delta_qa, prior_delta_manifest, existing_raw_refs = verify_prior_bus400_delta(root, legacy_raw_refs)
+    bus400_qa, _bus400_manifest, bus400_refs = verify_prior_bus400_delta(root, legacy_raw_refs)
+    prior_delta_qa, prior_delta_manifest, existing_raw_refs = verify_prior_a009_delta(root, bus400_refs)
     sources, changed_paths, excluded_html = _delta_sources(root)
     prior_hashes = prior_delta_manifest.get("included_file_sha256", {})
     current_sources = []
@@ -286,17 +322,8 @@ def delta_spec(tag: str, root: Any) -> tuple[dict[str, Any], dict[str, Any]]:
         if prior_hashes.get(member) != digest:
             current_sources.append((source, member))
     if not current_sources:
-        raise RuntimeError("delta has no source or evidence changes since the A007/A008 checkpoint")
-    source_records = root.file_records(current_sources)
-    source_bytes = sum(record["bytes"] for record in source_records)
-    included_hashes = {record["archive_path"]: record["sha256"] for record in source_records}
-    new_files, modified_files = [], []
-    for record in source_records:
-        path, digest = record["archive_path"], record["sha256"]
-        if path not in prior_hashes:
-            new_files.append(path)
-        elif prior_hashes[path] != digest:
-            modified_files.append(path)
+        raise RuntimeError("delta has no source or evidence changes since the A009 checkpoint")
+    per_run_sources, shared_sources = partition_delta_sources(current_sources)
     current_head = git("rev-parse", "HEAD")
     run_raw_sha = {}
     for run_id in DELTA_RUN_IDS:
@@ -311,74 +338,102 @@ def delta_spec(tag: str, root: Any) -> tuple[dict[str, Any], dict[str, Any]]:
                    int(experiment_manifest.get("maximum_physical_solve_count", 0)) else "WITHIN_DECLARED_MAXIMUM"),
         "manifest_modified_by_packaging": False,
     }
-    package_name = f"{SERIES.name}_delta_{tag}.zip"
-    target = HANDOFF / package_name
-    qa_target = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
-    if target.exists() or qa_target.exists():
-        raise FileExistsError(f"refusing to overwrite immutable delta package: {package_name}")
-    manifest = {
-        "schema": "bvm-4x4-incremental-evidence-delta-v2",
-        "package_type": "directory_snapshot_delta",
-        "base_commit": BUS400_DELTA_HEAD,
-        "head_commit": "PENDING_EVIDENCE_COMMIT",
-        "base_package_name": BUS400_DELTA_NAME,
-        "base_package_sha256": BUS400_DELTA_SHA256,
-        "base_package_source_commit": prior_delta_qa["source_commit"],
-        "base_metadata_package_name": BASE_METADATA_NAME,
-        "base_metadata_package_sha256": metadata["package_sha256"],
-        "base_metadata_source_commit": metadata["source_commit"],
-        "base_run_packages": existing_raw_refs,
-        "included_files": source_records,
-        "included_file_sha256": included_hashes,
-        "new_files": new_files,
-        "modified_files": modified_files,
-        "deleted_files": [],
-        "referenced_existing_cases": existing_raw_refs,
-        "referenced_existing_raw_sha256": existing_raw_refs,
-        "new_physical_solve_count": 1,
-        "reused_point_count": 0,
-        "raw_sha256_by_run": run_raw_sha,
-        "preexisting_experiment_manifest_limit_audit": manifest_limit_audit,
-        "excluded_html": excluded_html,
-        "generated_from_head": current_head,
-    }
-    extra = {"DELTA_MANIFEST.json": (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")}
-    if source_bytes + sum(len(value) for value in extra.values()) >= root.MAX_GIT_FILE_BYTES:
-        raise RuntimeError(f"A009 delta exceeds the 100MB uncompressed archive guard: {source_bytes}")
-    spec = {"name": package_name, "kind": "bvm_4x4_evidence_delta_v1", "scope": SERIES,
-            "target": target, "qa_path": qa_target, "sources": current_sources,
-            "extra_members": extra,
-            "delta_manifest": manifest,
-            "readme": (f"Incremental evidence delta for {SERIES.name}; tag={tag}.\n"
-                       f"Base delta: {BUS400_DELTA_NAME} ({BUS400_DELTA_SHA256})\n"
-                       f"Base source HEAD: {BUS400_DELTA_HEAD}\n"
-                       "Contains A009 raw plus the responsive-visualization source/QA changes.\n"
-                       "A007/A008 raw and A001-A006 raw are referenced by exact package/raw SHA; none are copied again.\n"
-                       "Generated HTML is excluded. No scientific interpretation.\n").encode(),
-            "excluded_files": excluded_html, "base_name": BUS400_DELTA_NAME,
-            "base_sha": BUS400_DELTA_SHA256, "raw_by_run": run_raw_sha}
-    plan = {"base_commit": BUS400_DELTA_HEAD,
+    groups = [("source", shared_sources, None)] + [
+        (run_id, per_run_sources[run_id], run_id) for run_id in DELTA_RUN_IDS]
+    specs, plans = [], []
+    for label, group_sources, run_id in groups:
+        if not group_sources:
+            raise RuntimeError(f"delta package group is empty: {label}")
+        source_records = root.file_records(group_sources)
+        source_bytes = sum(record["bytes"] for record in source_records)
+        included_hashes = {record["archive_path"]: record["sha256"] for record in source_records}
+        new_files, modified_files = [], []
+        for record in source_records:
+            member, digest = record["archive_path"], record["sha256"]
+            if member not in prior_hashes:
+                new_files.append(member)
+            elif prior_hashes[member] != digest:
+                modified_files.append(member)
+        package_name = f"{SERIES.name}_delta_{tag}_{label}.zip"
+        target = HANDOFF / package_name
+        qa_target = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        if target.exists() or qa_target.exists():
+            raise FileExistsError(f"refusing to overwrite immutable delta package: {package_name}")
+        package_raw_sha = {run_id: run_raw_sha[run_id]} if run_id else {}
+        solve_count = 1 if run_id else 0
+        manifest = {
+            "schema": "bvm-4x4-incremental-evidence-delta-v3",
+            "package_type": "directory_snapshot_delta",
+            "package_group": label,
+            "base_commit": A009_DELTA_HEAD,
+            "head_commit": "PENDING_EVIDENCE_COMMIT",
+            "base_package_name": A009_DELTA_NAME,
+            "base_package_sha256": A009_DELTA_SHA256,
+            "base_package_source_commit": prior_delta_qa["source_commit"],
+            "base_metadata_package_name": BASE_METADATA_NAME,
+            "base_metadata_package_sha256": metadata["package_sha256"],
+            "base_metadata_source_commit": metadata["source_commit"],
+            "base_run_packages": existing_raw_refs,
+            "included_files": source_records,
+            "included_file_sha256": included_hashes,
+            "new_files": new_files,
+            "modified_files": modified_files,
+            "deleted_files": [],
+            "referenced_existing_cases": existing_raw_refs,
+            "referenced_existing_raw_sha256": existing_raw_refs,
+            "new_physical_solve_count": solve_count,
+            "reused_point_count": 0,
+            "raw_sha256_by_run": package_raw_sha,
+            "preexisting_experiment_manifest_limit_audit": manifest_limit_audit,
+            "excluded_html": excluded_html,
             "generated_from_head": current_head,
-            "base_package_name": BUS400_DELTA_NAME,
-            "base_package_sha256": BUS400_DELTA_SHA256,
+        }
+        extra = {"DELTA_MANIFEST.json": (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")}
+        if source_bytes + sum(len(value) for value in extra.values()) >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"{label} delta exceeds the 100MB uncompressed archive guard: {source_bytes}")
+        spec = {"name": package_name, "kind": "bvm_4x4_evidence_delta_v1", "scope": SERIES,
+                "target": target, "qa_path": qa_target, "sources": group_sources,
+                "extra_members": extra, "delta_manifest": manifest,
+                "readme": (f"Incremental evidence delta for {SERIES.name}; tag={tag}; group={label}.\n"
+                           f"Base delta: {A009_DELTA_NAME} ({A009_DELTA_SHA256})\n"
+                           f"Base source HEAD: {A009_DELTA_HEAD}\n"
+                           f"Batch additions: {', '.join(DELTA_RUN_IDS)}.\n"
+                           "A001-A009 raw is referenced by exact package/raw SHA; no previous raw is copied again.\n"
+                           "Generated HTML is excluded. No scientific interpretation.\n").encode(),
+                "excluded_files": excluded_html, "base_name": A009_DELTA_NAME,
+                "base_sha": A009_DELTA_SHA256, "raw_by_run": package_raw_sha}
+        specs.append(spec)
+        plans.append({"package": package_name, "group": label,
+                      "new_raw_files": [f"runs/{run_id}/raw.csv"] if run_id else [],
+                      "raw_sha256_by_run": package_raw_sha,
+                      "raw_bytes_by_run": {run_id: (RUNS / run_id / "raw.csv").stat().st_size} if run_id else {},
+                      "new_physical_solve_count": solve_count,
+                      "source_file_count": len(group_sources),
+                      "uncompressed_source_bytes": source_bytes,
+                      "new_files": new_files, "modified_files": modified_files,
+                      "qa": qa_target.relative_to(REPO).as_posix()})
+    plan = {"base_commit": A009_DELTA_HEAD,
+            "generated_from_head": current_head,
+            "base_package_name": A009_DELTA_NAME,
+            "base_package_sha256": A009_DELTA_SHA256,
             "base_metadata_package": BASE_METADATA_NAME,
             "base_metadata_sha256": metadata["package_sha256"],
-            "new_files": new_files, "modified_files": modified_files,
+            "packages": plans,
             "referenced_existing_cases": existing_raw_refs,
-            "new_raw_files": [f"runs/{run_id}/raw.csv" for run_id in DELTA_RUN_IDS],
-            "raw_sha256_by_run": run_raw_sha,
+            "new_physical_solve_count": len(DELTA_RUN_IDS),
+            "reused_point_count": 0,
             "experiment_manifest_limit_audit": manifest_limit_audit,
-            "new_physical_solve_count": 1, "reused_point_count": 0,
             "excluded_html_count": len(excluded_html), "html_included": False,
-            "source_file_count": len(current_sources), "uncompressed_source_bytes": source_bytes,
-            "package": package_name, "qa": qa_target.relative_to(REPO).as_posix()}
-    return spec, {"manifest": manifest, "plan": plan,
-                  "source_paths": [rel for _, rel in sources]}
+            "total_uncompressed_source_bytes": sum(item["uncompressed_source_bytes"] for item in plans),
+            "package_count": len(specs)}
+    return specs, {"plan": plan, "source_paths": [rel for _, rel in sources],
+                   "total_new_physical_solve_count": len(DELTA_RUN_IDS),
+                   "referenced_existing_cases": existing_raw_refs}
 
 
 def validate_scope(*, delta: bool = False) -> None:
     root = load_root_submit()
-    changes = dict(root.committed_changes(BUS400_PARENT_HEAD, git("rev-parse", "HEAD"))) if delta else {}
+    changes = dict(root.committed_changes(A009_DELTA_HEAD, git("rev-parse", "HEAD"))) if delta else {}
     changes.update(root.working_changes())
     for path in root.untracked_files():
         changes.setdefault(path, "??")
@@ -389,7 +444,7 @@ def validate_scope(*, delta: bool = False) -> None:
     if not RUNS.is_dir():
         raise RuntimeError("runs/ is missing; no completed physical batch found")
     run_dirs = sorted(path for path in RUNS.iterdir() if path.is_dir() and path.name.startswith("A"))
-    expected = list(LEGACY_RUN_IDS + BUS400_RUN_IDS + DELTA_RUN_IDS) if delta else list(LEGACY_RUN_IDS)
+    expected = list(LEGACY_RUN_IDS + BUS400_RUN_IDS + A009_RUN_IDS + DELTA_RUN_IDS) if delta else list(LEGACY_RUN_IDS)
     if [path.name for path in run_dirs] != expected:
         raise RuntimeError(f"run closure mismatch; expected {expected}, found {[p.name for p in run_dirs]}")
     check_dirs = [RUNS / run_id for run_id in DELTA_RUN_IDS] if delta else run_dirs
@@ -555,13 +610,14 @@ def submit_metadata_v2(args: argparse.Namespace, root: Any) -> int:
 
 def submit_delta(args: argparse.Namespace, root: Any) -> int:
     validate_scope(delta=True)
-    spec, context = delta_spec(args.tag, root)
+    specs, context = delta_specs(args.tag, root)
     mirror_dir = Path(args.mirror_dir).expanduser().resolve()
     if not mirror_dir.is_dir():
         raise RuntimeError(f"mirror directory is not accessible: {mirror_dir}")
-    mirror_target = mirror_dir / spec["name"]
-    if mirror_target.exists():
-        raise FileExistsError(f"same-name mirror target already exists: {mirror_target}")
+    collisions = [str(mirror_dir / spec["name"]) for spec in specs
+                  if (mirror_dir / spec["name"]).exists()]
+    if collisions:
+        raise FileExistsError("same-name mirror target already exists: " + ", ".join(collisions))
     if args.dry_run:
         print(json.dumps({"status": "DRY_RUN_PASS", "scope": SERIES.relative_to(REPO).as_posix(),
                           "package_mode": "DELTA",
@@ -585,44 +641,53 @@ def submit_delta(args: argparse.Namespace, root: Any) -> int:
     manifest["generated_from_head"] = source_commit
     spec["extra_members"]["DELTA_MANIFEST.json"] = (
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
-    package_result = root.archive_bundle(spec, source_commit)
-    qa_path = REPO / package_result["qa_path"]
-    qa = json.loads(qa_path.read_text(encoding="utf-8"))
-    qa.update({"package_mode": "DELTA", "base_commit": manifest["base_commit"],
-               "head_commit": source_commit, "base_package_name": manifest["base_package_name"],
-               "base_package_sha256": manifest["base_package_sha256"],
-               "base_package_source_commit": manifest["base_package_source_commit"],
-               "delta_included_files": manifest["included_files"],
-               "delta_included_file_sha256": manifest["included_file_sha256"],
-               "new_files": manifest["new_files"], "modified_files": manifest["modified_files"],
-               "referenced_existing_cases": manifest["referenced_existing_cases"],
-               "referenced_existing_raw_sha256": manifest["referenced_existing_raw_sha256"],
-               "new_physical_solve_count": manifest["new_physical_solve_count"],
-               "reused_point_count": manifest["reused_point_count"],
-               "html_included": False,
-               "preexisting_experiment_manifest_limit_audit": manifest["preexisting_experiment_manifest_limit_audit"],
-               "raw_sha256_by_run": manifest["raw_sha256_by_run"]})
-    if (qa.get("status") != "PASS" or qa.get("package_sha256") != root.sha256(spec["target"]) or
-            qa.get("package_bytes") != spec["target"].stat().st_size):
-        raise RuntimeError("delta PACKAGE_QA identity failed after archive/member verification")
-    qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    package_results = []
+    for spec in specs:
+        manifest = spec["delta_manifest"]
+        manifest["head_commit"] = source_commit
+        manifest["generated_from_head"] = source_commit
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        package_result = root.archive_bundle(spec, source_commit)
+        qa_path = REPO / package_result["qa_path"]
+        qa = json.loads(qa_path.read_text(encoding="utf-8"))
+        qa.update({"package_mode": "DELTA_SPLIT_BY_RUN", "base_commit": manifest["base_commit"],
+                   "head_commit": source_commit, "base_package_name": manifest["base_package_name"],
+                   "base_package_sha256": manifest["base_package_sha256"],
+                   "base_package_source_commit": manifest["base_package_source_commit"],
+                   "delta_included_files": manifest["included_files"],
+                   "delta_included_file_sha256": manifest["included_file_sha256"],
+                   "new_files": manifest["new_files"], "modified_files": manifest["modified_files"],
+                   "referenced_existing_cases": manifest["referenced_existing_cases"],
+                   "referenced_existing_raw_sha256": manifest["referenced_existing_raw_sha256"],
+                   "new_physical_solve_count": manifest["new_physical_solve_count"],
+                   "reused_point_count": manifest["reused_point_count"],
+                   "html_included": False,
+                   "package_group": manifest["package_group"],
+                   "preexisting_experiment_manifest_limit_audit": manifest["preexisting_experiment_manifest_limit_audit"],
+                   "raw_sha256_by_run": manifest["raw_sha256_by_run"]})
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != root.sha256(spec["target"]) or
+                qa.get("package_bytes") != spec["target"].stat().st_size):
+            raise RuntimeError(f"delta PACKAGE_QA identity failed: {spec['name']}")
+        qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        package_results.append(package_result)
 
-    subprocess.run(["git", "add", "-f", "--", package_result["path"], package_result["qa_path"]],
-                   cwd=REPO, check=True)
-    subprocess.run(["git", "commit", "-m", f"package: archive BVM4x4 A009 delta {args.tag}"],
+    package_paths = [path for result in package_results for path in (result["path"], result["qa_path"])]
+    subprocess.run(["git", "add", "-f", "--", *package_paths], cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", f"package: archive BVM4x4 A010-A012 delta {args.tag}"],
                    cwd=REPO, check=True)
     push_status = "SKIPPED"
     if not args.no_push:
         subprocess.run(["git", "push"], cwd=REPO, check=True)
         push_status = "PASS"
-    mirror = root.copy_mirror([spec["target"]], mirror_dir)
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
     print(json.dumps({"status": "DELTA_SUBMIT_COMPLETE", "source_commit": source_commit,
                       "final_commit": git("rev-parse", "HEAD"), "push": push_status,
-                      "package": package_result,
-                      "base_commit": manifest["base_commit"],
-                      "base_package": manifest["base_package_name"],
-                      "referenced_existing_raw_count": len(manifest["referenced_existing_raw_sha256"]),
-                      "new_physical_solve_count": manifest["new_physical_solve_count"],
+                      "packages": package_results,
+                      "base_commit": specs[0]["delta_manifest"]["base_commit"],
+                      "base_package": specs[0]["delta_manifest"]["base_package_name"],
+                      "referenced_existing_raw_count": len(context["referenced_existing_cases"]),
+                      "new_physical_solve_count": context["total_new_physical_solve_count"],
                       "mirror": mirror},
                      ensure_ascii=False, indent=2))
     return 0
@@ -634,7 +699,7 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--no-push", action="store_true")
     parser.add_argument("--delta", action="store_true",
-                        help="append A009 and responsive-visualization evidence to the verified BUS400 delta")
+                        help="append A010-A012 to the verified A009 delta, split per run")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")

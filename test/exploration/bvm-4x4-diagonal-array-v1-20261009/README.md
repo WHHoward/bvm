@@ -104,6 +104,10 @@ The delta package contains only changes since the verified BUS400 checkpoint,
 exact prior package/raw references, and a detached PACKAGE_QA. Generated HTML
 and Plotly JS are excluded from the ZIP.
 
+The A010–A012 append-only delta uses the A009 delta package as its base and
+splits the changed source/manifest from one package per new raw. A001–A009 raw
+is referenced by package/raw SHA and is not copied again.
+
 The six presets are `D3_N0` through `D3_N4` and `PAPER_1101_1101`. The latter
 uses ROW/COL `1101/1101` with all SE mask bits on. The preregistered diagonal
 target vector is `[1,1,1,3,1,1,1]`; it is not an event classifier or a result.

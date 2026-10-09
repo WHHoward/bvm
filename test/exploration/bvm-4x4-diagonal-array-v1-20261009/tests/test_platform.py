@@ -10,8 +10,8 @@ sys.path.insert(0, str(SERIES / "scripts"))
 import diagonal_platform as platform  # noqa: E402
 
 
-def rendered(preset: str):
-    case, stimulus, t1 = platform.load_config(preset)
+def rendered(preset: str, overrides: list[str] | None = None):
+    case, stimulus, t1 = platform.load_config(preset, overrides)
     return case, stimulus, t1, platform.render(case, stimulus, t1, platform.RUNS / "_TEST_PREVIEW")
 
 
@@ -53,7 +53,7 @@ class DiagonalPlatformTests(unittest.TestCase):
                          ["R1C1", "R1C2", "R1C4", "R2C1", "R2C2", "R2C4", "R4C1", "R4C2", "R4C4"])
 
     def test_render_has_shared_rows_columns_independent_cell_se_and_serial_chains(self):
-        case, _stim, _t1, output = rendered("D3_N4")
+        case, _stim, _t1, output = rendered("D3_N4", ["SJTL_COUNT_D3=1,1,1,1"])
         deck = output["deck"].splitlines()
         self.assertEqual(len([line for line in deck if line.startswith("XBVM_")]), 16)
         self.assertEqual(len([line for line in deck if line.startswith("XBQ_")]), 16)
@@ -70,7 +70,8 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertTrue(output["static_qa"]["unique_outputs"])
 
     def test_registered_d3_cases_only_change_final_read_se_mask(self):
-        outputs = {name: rendered(name)[3] for name in ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4")}
+        outputs = {name: rendered(name, ["SJTL_COUNT_D3=1,1,1,1"])[3]
+                   for name in ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4")}
         stimuli = {name: {line.split()[0]: line for line in outputs[name]["stimulus_text"].splitlines()
                           if line.startswith("I_")} for name in outputs}
         base_non_se = {source: line for source, line in stimuli["D3_N0"].items()
@@ -115,7 +116,7 @@ class DiagonalPlatformTests(unittest.TestCase):
             platform.validate_config({**case, "OUTPUT_MODE": "DIAGONAL_T1_CHAIN"}, stimulus, t1)
 
     def test_focus_profile_stays_compact_and_keeps_required_state_diagnostics(self):
-        case, _stim, _t1, output = rendered("D3_N4")
+        case, _stim, _t1, output = rendered("D3_N4", ["SJTL_COUNT_D3=1,1,1,1"])
         labels = {item["label"] for item in output["probes"]["signals"]}
         self.assertEqual(output["probes"]["profile"], "focus")
         self.assertEqual(output["probes"]["signal_count"], 124)

@@ -1,0 +1,198 @@
+{
+  "schema": "bvm-4x4-diagonal-case-v2",
+  "run_id": "A010_PAPER_1101_1101",
+  "case": {
+    "EXPERIMENT_ID": "bvm-4x4-diagonal-array-v1-20261009",
+    "CASE": "PAPER_1101_1101",
+    "DRIVE_MODE": "SHARED",
+    "SE_TOPOLOGY": "CELL",
+    "SE_GATE_MODE": "CROSSPOINT",
+    "ROW_BITS": "1111",
+    "COL_BITS": "1111",
+    "SE_ENABLE_MASK": "ALL",
+    "OUTPUT_MODE": "DIAGONAL_TERMINAL",
+    "T1_MODE": "OFF",
+    "CBU_MODE": "OFF",
+    "CARRY_MODE": "NONE",
+    "ROW_WL_WRITE_AMPLITUDE": "400u",
+    "COL_BL_WRITE_AMPLITUDE": "400u",
+    "ROW_WL_READ_AMPLITUDE": "400u",
+    "COL_SE_READ_AMPLITUDE": "100u",
+    "DT": "0.01p",
+    "STOP": "250p",
+    "PROBE_PROFILE": "focus",
+    "FOCUS_DIAGONAL": "D3",
+    "SJTL_COUNT_D0": "1",
+    "SJTL_COUNT_D1": "1,1",
+    "SJTL_COUNT_D2": "1,1,1",
+    "SJTL_COUNT_D3": "1,1,1,1",
+    "SJTL_COUNT_D4": "1,1,1",
+    "SJTL_COUNT_D5": "1,1",
+    "SJTL_COUNT_D6": "1"
+  },
+  "stimulus": {
+    "WRITE0_START": "50p",
+    "WRITE0_RISE": "1p",
+    "WRITE0_HOLD": "9p",
+    "WRITE0_FALL": "1p",
+    "READ0_START": "70p",
+    "READ0_RISE": "1p",
+    "READ0_HOLD": "9p",
+    "READ0_FALL": "1p",
+    "WRITE1_START": "90p",
+    "WRITE1_RISE": "1p",
+    "WRITE1_HOLD": "9p",
+    "WRITE1_FALL": "1p",
+    "FINAL_READ_START": "110p",
+    "FINAL_READ_RISE": "1p",
+    "FINAL_READ_HOLD": "9p",
+    "FINAL_READ_FALL": "1p"
+  },
+  "t1_params": {
+    "T1_BIAS1": "1.8m",
+    "T1_BIAS2": "1.8m",
+    "T1_BIAS3": "1.8m",
+    "T1_BIAS3_SOURCE": "VOLTAGE",
+    "T1_CLK_MODE": "QUIET",
+    "T1_CLK_START": "170p",
+    "T1_CLK_PERIOD": "50p",
+    "T1_CLK_AMPLITUDE": "1.2m",
+    "T1_CLK_RISE": "1p",
+    "T1_CLK_WIDTH": "2p",
+    "T1_CLK_FALL": "1p",
+    "T1_CLK_SERIES_R": "2",
+    "T1_R_S": "12",
+    "T1_R_C": "12",
+    "T1_J1_AREA": "3.5",
+    "T1_J2_AREA": "3.5",
+    "T1_J3_AREA": "1.8",
+    "T1_J4_AREA": "0.803",
+    "T1_J5_AREA": "0.779",
+    "T1_J6_AREA": "1.051",
+    "T1_J7_AREA": "1.0",
+    "T1_J8_AREA": "1.0",
+    "T1_J9_AREA": "1.0",
+    "T1_J10_AREA": "0.869",
+    "T1_J11_AREA": "1.5",
+    "T1_RB1": "6.8",
+    "T1_RB2": "6.8",
+    "T1_RB3": "16.0",
+    "T1_RJ3": "8",
+    "T1_RJ4": "4",
+    "T1_RJ5": "13",
+    "T1_RJ6": "4",
+    "T1_RJ7": "10",
+    "T1_RJ8": "4",
+    "T1_RJ9": "10",
+    "T1_RJ10": "12",
+    "T1_RJ11": "7",
+    "T1_L1": "0.213p",
+    "T1_L2": "1.6p",
+    "T1_L3": "2.028p",
+    "T1_L4": "0.153p",
+    "T1_L5": "0.6p",
+    "T1_L6": "2.337p",
+    "T1_L7": "1.219p",
+    "T1_L8": "1.383p",
+    "T1_L9": "5.366p",
+    "T1_L10": "0.905p",
+    "T1_L11": "0.957p",
+    "T1_L12": "1.219p",
+    "T1_L13": "1.009p",
+    "T1_L14": "4.6p",
+    "T1_L15": "1.297p",
+    "T1_L16": "4.644p",
+    "T1_L17": "2.0p"
+  },
+  "effective_topology": {
+    "sjtl_count_by_diagonal": {
+      "D0": [
+        1
+      ],
+      "D1": [
+        1,
+        1
+      ],
+      "D2": [
+        1,
+        1,
+        1
+      ],
+      "D3": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "D4": [
+        1,
+        1,
+        1
+      ],
+      "D5": [
+        1,
+        1
+      ],
+      "D6": [
+        1
+      ]
+    },
+    "sjtl_total": 16,
+    "cb_total": 16,
+    "terminal_total": 7,
+    "merge_semantics": "serial; unchanged"
+  },
+  "active_final_crosspoints": [
+    "R1C1",
+    "R1C2",
+    "R1C3",
+    "R1C4",
+    "R2C1",
+    "R2C2",
+    "R2C3",
+    "R2C4",
+    "R3C1",
+    "R3C2",
+    "R3C3",
+    "R3C4",
+    "R4C1",
+    "R4C2",
+    "R4C3",
+    "R4C4"
+  ],
+  "diagonal_expected_active_cells": {
+    "D0": [
+      "R1C4"
+    ],
+    "D1": [
+      "R1C3",
+      "R2C4"
+    ],
+    "D2": [
+      "R1C2",
+      "R2C3",
+      "R3C4"
+    ],
+    "D3": [
+      "R1C1",
+      "R2C2",
+      "R3C3",
+      "R4C4"
+    ],
+    "D4": [
+      "R2C1",
+      "R3C2",
+      "R4C3"
+    ],
+    "D5": [
+      "R3C1",
+      "R4C2"
+    ],
+    "D6": [
+      "R4C1"
+    ]
+  },
+  "physical_solve_count": 1,
+  "automatic_follow_up": false,
+  "scientific_interpretation_performed": false
+}

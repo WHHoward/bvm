@@ -1,5 +1,6 @@
-# Compact JoSIM Research Workflow V2
+# Historical Compatibility: Compact JoSIM Research Workflow V2
 
+> HISTORICAL / COMPATIBILITY ONLY — not the active default entrypoint.
 > 当前未来实验的规范已冻结在
 > [EXPERIMENT_WORKFLOW_V1.md](EXPERIMENT_WORKFLOW_V1.md)。本文仅保留既有
 > Compact Quick 目录和命令的历史兼容说明，不覆盖 V1 的执行顺序、冻结

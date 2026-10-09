@@ -1,0 +1,107 @@
+schema: bvm-4x4-bus400-diagnostic-v1
+experiment_id: bvm-4x4-diagonal-array-v1-20261009
+batch_id: BVM4X4_BUS400_20261009
+experiment_risk_level: NORMAL
+parent_head: 3de08ba0fd5997b253269849dbc1a535786c8fd6
+authority:
+  contract: docs/EXPERIMENT_CONTRACT.md
+  workflow: docs/research/EXPERIMENT_WORKFLOW_V1.md
+  interpretation: mechanical and registered arithmetic only
+  scientific_review_authorized: false
+  automatic_follow_up: false
+question: "Under the frozen 4x4 topology and timing, record per-cell input branch currents and D3 state/output arithmetic at the 400u shared-source candidate."
+changed:
+  shared_bus_source_totals:
+    row_wl_write: 400u
+    column_bl_write: 400u
+    row_wl_read: 400u
+  final_read_se_mask:
+    BUS400_D3_N0: 0000/0000/0000/0000
+    BUS400_D3_N1: 1000/0000/0000/0000
+frozen:
+  row_bits: "1111"
+  column_bits: "1111"
+  se_topology: CELL
+  se_gate_mode: CROSSPOINT
+  cell_se_read_amplitude: 100u
+  stimulus_windows_ps:
+    WRITE0: [50, 61]
+    READ0: [70, 81]
+    WRITE1: [90, 101]
+    FINAL_READ: [110, 121]
+  dt: 0.01p
+  stop: 250p
+  topology:
+    bvm_count: 16
+    qb_count: 16
+    shared_wl: 4
+    shared_bl: 4
+    independent_se: 16
+    sjtl_count_by_diagonal:
+      D0: [1]
+      D1: [1, 1]
+      D2: [1, 1, 1]
+      D3: [1, 1, 1, 1]
+      D4: [1, 1, 1]
+      D5: [1, 1]
+      D6: [1]
+    cb_count: 16
+    merge: serial ascending-row; unchanged
+    terminal_count: 7
+    terminal_ohm: 2
+  output_mode: DIAGONAL_TERMINAL
+  t1_mode: "OFF"
+  cbu_mode: "OFF"
+  carry_mode: "NONE"
+  canonical_source_sha256:
+    JJMIT: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+    BVM: ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7
+    QB: 82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a
+    sJTL: 3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688
+    CB: 70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370
+    T1_reference_only: 828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237
+run_set:
+  - run_id: A007_BUS400_D3_N0
+    case: BUS400_D3_N0
+    active_final_crosspoints: []
+  - run_id: A008_BUS400_D3_N1
+    case: BUS400_D3_N1
+    active_final_crosspoints: ["R1C1"]
+expected_physical_solve_count: 2
+probe_profile: focus
+probe_count: 124
+probes:
+  all_cells: [I(R_WL|XBVM_*), I(R_BL|XBVM_*), I(R_SE|XBVM_*)]
+  focus_diagonal: D3
+  state: [P(B_JM1|XBVM_D3_cells), V(B_JM1|XBVM_D3_cells), P(B_JM2|XBVM_D3_cells), V(B_JM2|XBVM_D3_cells)]
+  boundaries: [V(SL_D3_cells), V(MERGE_D3_levels), P/V(QB_R1C1_JJ), P/V(D3_sJTL_JJ), P/V(D3_CB_JJ), V(DOUT_D0..D6), I(R_TERM_D0..D6)]
+windows:
+  boundary_rule: "[start,end), actual stored samples only"
+  stages: [WRITE0, READ0, WRITE1, FINAL_READ]
+  post_read: POST_FINAL_READ
+  response: FINAL_READ_RESPONSE
+metrics:
+  input_currents: per-cell branch min/max/mean_sample/peak_to_peak/charge for every window
+  junctions: same-JJ phase delta in radians and voltage-time integral on the same stored rows
+  outputs: signed voltage-time area and extrema for every DOUT/window
+  event_classifier: null
+visualization:
+  renderer: scripts/josim-plot2.py
+  style: "sep_comb/dark/-j 2pi"
+  per_run_pages: 2
+  paired_comparison: "DOUT_D3 and I(R_SE|XBVM_R1C1), separate native-grid panels"
+  interpolation_or_resampling: false
+  package_html: excluded
+known_unknowns:
+  - per-BVM logical storage correctness
+  - SFQ event count or successful transmission
+  - physical mechanism
+  - timestep convergence
+package:
+  mode: DELTA
+  output_count: 1
+  base_commit: 3de08ba0fd5997b253269849dbc1a535786c8fd6
+  base_metadata_package: bvm-4x4-diagonal-array-v1-20261009_metadata_v2_BVM4X4_20261009.zip
+  old_run_raw_policy: reference by the six immutable A001-A006 run-package and raw SHA identities; do not copy
+  package_qa_count: 1
+  include_html: false

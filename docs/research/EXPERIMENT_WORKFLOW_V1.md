@@ -20,6 +20,20 @@
 旧实验不因本规范发布而批量迁移。若旧实验需要补图或补分析，应在原实验
 语义和原始证据不变的前提下，建立明确的 task-local 修订记录。
 
+本文件是当前 active workflow；强制证据项和风险分级由
+`docs/EXPERIMENT_CONTRACT.md` 定义。`docs/research/COMPACT_WORKFLOW_V2.md` 是
+历史兼容说明，不是新的默认入口。实验风险字段为
+`experiment_risk_level: QUICK | NORMAL | FORMAL`；它与
+`Exploration/Candidate/Authority` research tier 和 `NORMAL/CRITICAL` 协作任务
+风险彼此独立。通用 `scripts/bvm-exp.py` 当前仅支持 QUICK；不得声称它已支持
+NORMAL/FORMAL，也不得把 QUICK 产物事后升级标记。
+
+QUICK 用于小参数/激励方向检查；NORMAL 用于新拓扑、4×4 阵列或多级链路；
+FORMAL 用于 Authority、Gate、metric freeze、route decision 或论文级量化主张。
+各级继续遵守本合同的 raw/provenance/authorization/no-follow-up 约束；NORMAL
+可按合同使用注册 focus probes、每 run 一组 classic figures、去重的 canonical
+QA 和每个最终 ZIP version 一份 PACKAGE_QA。
+
 ## 2. 默认生命周期
 
 所有未来的新实验默认按下列顺序推进：
@@ -40,8 +54,8 @@
 顺序有三条硬约束：
 
 1. 只有冻结并已登记的 executed deck 才能进入物理运行；
-2. 每个 condition 先有独立的 standalone visualization 和 QA，之后才做
-   comparison visualization；
+2. 按合同风险级别生成 standalone figure group；只有 preregistered comparison
+   才要求追加 focused comparison；
 3. 完成 evidence package 和 Git commit 后必须停止。代理不得因为结果“看起来
    符合预期”自动分析、扩展参数、改变路线或启动下一项实验。
 
@@ -54,6 +68,7 @@
 每个新实验必须在运行前写入 experiment.yaml，至少包含：
 
 - experiment_id：稳定、唯一的实验标识；
+- experiment_risk_level：QUICK、NORMAL 或 FORMAL；
 - question：一个可判定的主要科学问题；
 - source_class：canonical、historical、exploratory 或其它明确来源类别；
 - authority_boundary：哪些文件/结果可以作为证据，哪些不能外推；
@@ -70,6 +85,7 @@
 推荐的最小写法如下，具体物理语义必须按实验填写，不能照抄占位值：
 
     experiment_id: <stable-id>
+    experiment_risk_level: QUICK | NORMAL | FORMAL
     question: <one primary question>
     source_class: historical | canonical | exploratory
     authority_boundary:
@@ -137,7 +153,9 @@
         ├── <experiment_id>_raw_handoff.zip
         └── PACKAGE_QA.json
 
-目录名和 condition 名必须能从 experiment.yaml 反查。优先把哈希、命令、
+目录名和 condition 名必须能从 experiment.yaml 反查。NORMAL 可采用紧凑目录；
+重复 mechanical QA 可合并为一个 canonical result set，但不得删减合同检查项。
+优先把哈希、命令、
 solver、时间步长、artifact 状态和来源写进 metadata.json 与
 provenance.json，不再为每个普通 Quick 机械地堆叠
 command.txt、hashes.sha256、raw-sha256sums 和大量重复 QA 碎片。
@@ -260,13 +278,14 @@ analysis/ 与报告中，但默认结果不得替 review 做科学判断。
 
 ## 9. 可视化规范
 
-新实验采用 standalone-first：
-
-1. 为每个 condition 生成独立的关键数据图；
-2. 完成独立 visual QA；
-3. 只有在 standalone 图可读且信号定义一致后，再生成 comparison 图；
-4. comparison 图的 A/B 顺序、信号顺序、单位、命名和时间网格必须在
-   manifest 中记录。
+每个 physical run 都需要可人工审阅、可反查 raw SHA 的 standalone 描述性
+可视化。QUICK/NORMAL 默认每 run 一组 `CLASSIC_LOCKED` focus figures；一组可
+包含 whole-run overview 和已注册的 focused-window panels，使用
+`scripts/josim-plot2.py` 与仓库既定的 `sep_comb/dark/-j 2pi`。图组只使用已
+冻结的 probes 和 signal schema。只有 comparison 属于 preregistered 问题、
+metric 或 acceptance evidence 时，才必须另外生成 focused comparison，并在
+manifest 记录 case 顺序、信号、单位、grid 和插值状态。FORMAL 保留
+standalone-first、claim-relevant full internal view 及需要的 comparisons。
 
 若项目已有 visual authority，新的图必须继承其 renderer、layout、theme、
 signal order、phase unit 和 naming。BVM 默认 visual authority 为：
@@ -280,12 +299,13 @@ signal order、phase unit 和 naming。BVM 默认 visual authority 为：
 后的轴或标签才能写 turns；turns 不是 SFQ 数量。图只展示支持当前问题的
 关键数据，不以全信号堆叠替代证据选择。
 
-BVM→QB→JTL 的标准 system-chain visualization 使用 V2.1 的五层 schema：
+BVM→QB→JTL 的 FORMAL system-chain visualization 使用 V2.1 的五层 schema：
 `01_SIGNAL_TIMING`、`02_BVM_STATE`、`03_JSL_CHAIN`、`04_QB_STATE`、
 `05_JTL_CHAIN`。每层都必须声明 `INPUT BOUNDARY`、`INTERNAL STATE` 和
 `OUTPUT BOUNDARY`，并有 whole-run overview 与 registered focused windows。
 Standalone 与 comparison 共享同一 signal ordering；缺失 probe 记录为
 `UNKNOWN`，不伪造 top-level node，也不默认生成 mechanism/dashboard 图。
+QUICK/NORMAL 的精简图组不得替代 raw 或缺失的 probe evidence。
 
 ## 10. 历史 incident 规则
 
@@ -318,14 +338,16 @@ Formal/Authority，或执行任何由结果诱发的 follow-up。
 
 ## 12. Evidence package 与提交
 
-每个标准完成的正式实验 MUST 生成
-`handoff/<experiment_id>_raw_handoff.zip` 和 detached `handoff/PACKAGE_QA.json`。
-ZIP 至少包含 experiment.yaml、PREFLIGHT.md、所有 authorized run 的
+每个标准完成的 QUICK/NORMAL/FORMAL physical-solve work unit MUST 生成
+immutable evidence ZIP 和 detached PACKAGE_QA。ZIP 至少包含 experiment.yaml、
+PREFLIGHT.md、experiment_risk_level、probe manifest、所有 authorized run 的
 `deck.cir`/`raw.csv`/`metadata.json`/`run.log`、experiment-local source closure
-或 `SOURCE_MANIFEST.json`、mechanical QA/provenance、standard visualization
-manifest/QA、per-run navigation、`EVIDENCE_MANIFEST.md` 和
-`RAW_ANALYSIS_HANDOFF_MANIFEST.json`。PACKAGE_QA 必须重新打开 ZIP 并复算
-raw/deck SHA-256；失败时不得 commit，必须标 `ARTIFACT_INVALID` 并 STOP。
+或 `SOURCE_MANIFEST.json`、canonical mechanical QA/provenance、standard
+visualization manifest/QA、per-run navigation、`EVIDENCE_MANIFEST.md` 和
+`RAW_ANALYSIS_HANDOFF_MANIFEST.json`。HTML 默认可留在本地并按合同/用户约定
+排除。PACKAGE_QA 必须重新打开 ZIP 并复算 raw/deck SHA-256；每个最终 ZIP
+version 对应一份 PACKAGE_QA；member/scope/bytes 改变后要生成新版本和新 QA。
+失败时不得 commit，必须标 `ARTIFACT_INVALID` 并 STOP。
 
 ZIP 默认直接提交 Git，并记录 package bytes、repository-relative path 和
 SHA-256。ZIP 提交后 immutable；后续 scientific review 只引用相同 package SHA。

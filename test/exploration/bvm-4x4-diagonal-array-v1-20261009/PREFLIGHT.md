@@ -59,3 +59,28 @@ This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
   `122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770`.
 - Static solve count at gate: **0**. Exactly six physical solves remain
   authorized; any solver/raw/mechanical-QA failure stops the batch.
+
+## BUS400 diagnostic amendment — 2026-10-09
+
+- Starting parent HEAD: `3de08ba0fd5997b253269849dbc1a535786c8fd6`.
+- This amendment authorizes exactly `BUS400_D3_N0` then `BUS400_D3_N1`
+  (expected A007/A008), one solve each; first-run solver/raw/mechanical/standalone
+  plot failure stops before the second. No A001–A006 run or raw is changed.
+- Both cases use shared WL/BL source totals 400u, independent SE 100u, the
+  unchanged four-stage stimulus, DT 0.01p, STOP 250p, one sJTL per level, one
+  CB per cell, seven 2 Ω terminals, focus profile, and T1/CBU/DFF OFF.
+- They differ only in `SE_ENABLE_MASK`: all zero versus R1C1 only. Static QA
+  compares the exact rendered deck and all 24 PWL sources before solving.
+- Probe set has 124 registered signals: 48 per-cell WL/BL/SE branch currents,
+  D3 storage JM1/JM2 P/V, four D3 SL/output and QB boundaries, focused QB JJ
+  P/V, every D3 sJTL/CB JJ P/V, all seven DOUTs, and all seven terminal currents.
+- Arithmetic windows are generated from the snapshotted stimulus for WRITE0,
+  READ0, WRITE1, FINAL_READ, POST_FINAL_READ, and FINAL_READ_RESPONSE; all are
+  half-open and use exact stored samples. No classifier or event count is used.
+- Full frozen cases, source hashes, output paths and interpretation ceiling are
+  in `analysis/BUS400_PREREGISTRATION.yaml`. See run provenance for the exact
+  committed execution HEAD, solver hash and raw/deck hashes.
+- Risk level: NORMAL; this is not FORMAL/Authority and does not authorize
+  physical interpretation, further solves, sweeps, or changes to T1/CBU/DFF.
+- Only the new/changed files and two new raws enter one DELTA package; all old
+  raw is referenced by prior package/raw SHA. HTML and Plotly JS remain local.

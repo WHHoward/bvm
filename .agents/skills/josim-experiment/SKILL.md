@@ -1,74 +1,88 @@
 ---
 name: josim-experiment
-description: Design or run a reproducible JoSIM/BVM Quick or explicitly requested Formal experiment. Use for circuit changes, new raw data, or candidate evaluation; do not use it to interpret physical SFQ claims without josim-evidence-audit.
+description: Design or run bounded JoSIM/BVM QUICK or NORMAL experiments, or explicitly authorized FORMAL experiments. Use for circuit changes or new raw data; scientific interpretation remains separate.
 ---
 
-# JoSIM/BVM 实验
+# JoSIM/BVM Experiment Executor
 
-## 普通 BVM executor bootstrap
+Use this skill for authorized circuit edits, render/static checks, physical
+solves, and repair of analysis against existing raw. It does not authorize
+scientific interpretation or follow-up work.
 
-开始普通 BVM experiment execution 前先读取：
+## Minimal bootstrap
 
-1. `memory/LUNA_EXECUTOR_MEMORY.md`
+For ordinary BVM execution, read:
+
+1. `memory/EXECUTOR_NOW.md`
 2. `memory/BVM_CURRENT_CONTEXT.md`
-3. active experiment 的 README 与 env/config
+3. the active platform README and env/config
 
-先复用已有 platform，优先用现有 `USER_CASE.env` / env / config 驱动参数；
-不要只为一个 case 重建 runner。默认只执行用户明确要求的 physical solve。
-已有 valid raw 时，parser、analysis、report 或 plot 修复针对同一 raw 完成，
-不得因此自动重跑。物理执行与 scientific interpretation 分开；普通 executor
-不解释机制、不选择下一拓扑，完成后停在 user review。
+`memory/LUNA_EXECUTOR_MEMORY.md` is an optional historical execution/package
+reference, not routine startup context. Binding evidence rules are in
+`docs/EXPERIMENT_CONTRACT.md`; the current standard lifecycle is in
+`docs/research/EXPERIMENT_WORKFLOW_V1.md`. `docs/research/COMPACT_WORKFLOW_V2.md`
+is historical compatibility material.
 
-普通执行默认不加载 `josim-evidence-audit`、`reviewer-adversarial`、
-`reviewer-numerical` 或 `josim-handoff`；只有请求实际需要相应的科学解释、
-独立复核或 Codex–Claude contract 时才加载。用户请求提交/打包时使用
-`josim-submit`；active experiment contract 明确要求提交/打包时也按其要求
-路由。本技能不复制提交流程。
+Reuse the active platform and `USER_CASE.env`/presets. Run exactly the authorized
+case set. If a valid raw already exists, fix its parser/analysis/report/plot
+without another solver run. Preserve decks, failures and raw. Separate solver
+execution, artifact validity, arithmetic, physical evidence, and scientific
+interpretation.
 
-## 默认：Compact Quick
+Do not load scientific-audit, reviewer, or handoff skills for routine execution.
+Use `josim-evidence-audit` only for requested physical/SFQ interpretation,
+`josim-viz` when focused visualization is required, `josim-submit` when
+submission/package is requested or required, and `josim-handoff` for an actual
+Codex–Claude contract.
 
-普通研究默认是 QUICK，先回答一个问题、改变一个中心变量，并只运行足够
-区分方向的最小 case。新实验目录优先使用 experiment.yaml、run.sh、
-RESULT_BRIEF.md、runs/A001/{deck.cir,raw.csv,run.log,result.yaml} 和
-plots/RESULT_OVERVIEW.html。
+## Experiment risk level
 
-用 ./run.sh 或 scripts/bvm-exp.py run <experiment-dir> 创建下一个不可覆盖的
-Axxx。analyze 只读已有 raw，plot 只重建 classic 图，inspect 只输出问题、
-改变项、attempt、HEAD、结果和状态。结果完成后停在 AWAITING_USER_REVIEW；
-代理不得自动运行下一项物理实验。
+Register `experiment_risk_level: QUICK | NORMAL | FORMAL` in each new work unit's
+preflight. This is distinct from the research tier
+`Exploration/Candidate/Authority` and collaboration risk `NORMAL/CRITICAL`; it
+grants neither additional solves nor scientific interpretation.
 
-配置必须明确 question、changed、frozen、网表、求解器和最少关键指标。
-每个 attempt 保存 Git HEAD、solver identity/version、命令、deck/raw SHA-256、
-artifact validity、相关 metrics、outcome 和 status。raw、deck、log 和 result
-不得覆盖；重复运行生成新的 attempt。
+- `QUICK`: small parameter or stimulus changes for a bounded directional check.
+- `NORMAL`: new topology, 4×4 arrays, or multi-stage links; freeze a
+  claim-relevant focus probe set and risk-proportionate checks before solving.
+- `FORMAL`: Authority, Gate, metric freeze, route decision, or paper-level
+  quantitative claim; read `references/run-protocol.md` and preserve full
+  claim-relevant coverage, required controls/convergence, and independent audit.
 
-## 按风险增加验证
+The generic `scripts/bvm-exp.py` runner currently supports QUICK only. Do not
+label its QUICK output as NORMAL or FORMAL. A custom platform may register
+NORMAL in its own preflight and manifest. All risk levels still require exact
+run authorization, immutable raw/provenance, required QA and package integrity.
 
-| 风险 | 在 Quick 中追加 |
+QUICK/NORMAL may use pre-registered focus probes, one compact classic figure set
+per run, consolidated canonical QA records without duplicate calculations, and
+one detached PACKAGE_QA per final ZIP version. These efficiencies may not remove
+raw data, required provenance, claim-relevant same-JJ evidence, registered
+controls, or any contract QA category. FORMAL requirements remain unchanged.
+
+## Validation by question
+
+| Change or claim | Registered validation emphasis |
 |---|---|
-| 参数或输入小改动 | raw QA + 目标 waveform/metric |
-| 新拓扑或节点重连 | KCL/拓扑连线检查 |
-| 电路迁移 | 一次等价性比较 |
-| 共享科学工具改动 | focused tests + frozen anchors |
-| QB→JTL 主张 | 同 JJ local phase/area + 逐级 transport evidence |
-| Formal、论文或系统 Gate | matched controls、收敛、完整 provenance、独立复核 |
+| Small parameter/stimulus change | Raw QA and target waveform/arithmetic |
+| New topology or node reconnection | Static topology/connectivity and focused tests |
+| Circuit migration | One equivalence comparison |
+| Shared scientific tool change | Focused tests and frozen anchors |
+| QB→JTL propagation evidence | Same-JJ phase/area and stage-by-stage boundary evidence |
+| FORMAL/Gate/paper claim | Frozen controls, convergence, provenance, independent audit |
 
-不要为了流程仪式自动要求时间步梯、完整控制矩阵、全量哈希或长报告；
-缺少与当前问题相关的证据时，再把结果降为 INCONCLUSIVE。
+Do not add unrelated sweeps, timestep ladders, controls, dashboards, or repeated
+QA for ceremony. Missing required evidence limits the result to UNKNOWN or
+INCONCLUSIVE; never fill a gap by inference.
 
-## 共用边界
+## Measurement boundaries
 
-- 优先复用 scripts/bvmtools/、scripts/bvmtools/presets.yaml 和
-  scripts/josim-plot2.py；不要在实验目录复制 raw parser、phase 或事件算法。
-- JoSIM P(...) 保留 raw radians；相位圈数显式除以 2π，不等于 SFQ 或
-  fluxoid count。需要相位、事件数、JTL 或 Gate 解释时加载
-  josim-evidence-audit。
-- raw QA 失败是 artifact INVALID，不是电路功能 FAIL；观察、推断和未知
-  分开写入 RESULT_BRIEF.md。
-- Compact Quick 不自动扫参、升级 Formal、创建控制矩阵或修改项目路线。
-
-## Formal
-
-只有用户明确要求时才进入 FORMAL。此时阅读 references/run-protocol.md，
-按问题冻结输入闭包、控制、窗口、指标、收敛和独立复核。josim-handoff 只在
-存在明确 Codex↔Claude 合同、ACK/receipt、正式委派审计或等价多代理交接时加载。
+- JoSIM `P(...)` is radians. `phase_delta/(2*pi)` is navigation arithmetic,
+  never an SFQ or fluxoid count.
+- Do not infer JJ switching from `I > Ic`, or transmitted events from one local
+  phase/voltage observation. Use evidence-audit only when scientific
+  interpretation is explicitly requested.
+- Artifact QA failure is `ARTIFACT_INVALID`, not physical `FAIL`. Keep `PASS`,
+  `FAIL`, and `INCONCLUSIVE` distinct.
+- Do not overwrite raw, sweep, upgrade risk tier, change route, or start a
+  follow-up from a result. Stop at the requested delivery / user review.

@@ -12,9 +12,15 @@ These rules apply to the whole repository.
 
 For ordinary BVM/JoSIM execution, read first:
 
-1. `memory/LUNA_EXECUTOR_MEMORY.md`
+1. `memory/EXECUTOR_NOW.md`
 2. `memory/BVM_CURRENT_CONTEXT.md`
 3. the active experiment's README and env/config
+
+`memory/LUNA_EXECUTOR_MEMORY.md` is a historical execution/package reference,
+not mandatory full startup context. The active experiment-risk and evidence
+rules are in `docs/EXPERIMENT_CONTRACT.md`; the current standard lifecycle is
+`docs/research/EXPERIMENT_WORKFLOW_V1.md`. `docs/research/COMPACT_WORKFLOW_V2.md`
+is historical compatibility material, not the active workflow entry.
 
 Read `docs/HANDOVER.md` only when the task needs historical scientific context,
 route/status reconciliation, or physical claims. Do not load scientific,

@@ -4,7 +4,7 @@ description: JoSIM × BVM 仓库级 skills 的发现位置、触发边界与使�
 metadata:
   node_type: memory
   type: project
-  last_updated: 2026-09-24
+  last_updated: 2026-10-09
 ---
 
 # 项目 skill 使用规范
@@ -13,6 +13,7 @@ metadata:
 
 - Codex/Agent Skills：`.agents/skills/<name>/SKILL.md`
 - Claude Code 兼容：`.claude/skills/<name>` 目录链接到同一 canonical skill
+- Copilot adapters：`.github/skills/` may route to canonical skills, but must stay thin wrappers and not copy a second scientific rule set
 - 仓库通用不变量：`AGENTS.md`
 
 不得再维护 `.claude/skills/*.md` 平铺副本，也不得把仓库内 `.codex/skills` 当成项目级目录。技能由 description 按任务触发；只有跨多个工作流或不知道如何选择时才使用 router，不在每次工具调用前强制加载全部技能。
@@ -23,7 +24,7 @@ metadata:
 
 | Skill | 用途 |
 |---|---|
-| `josim-experiment` | 普通 Compact Quick / 用户明确要求的 Formal execution |
+| `josim-experiment` | 有界 QUICK/NORMAL execution / 用户明确授权的 FORMAL experiment |
 | `josim-viz` | 仅在请求或工作要求可视化时，用指定图集处理现有 raw |
 | `josim-submit` | 仅在用户请求或 active contract 要求 submit/package 时处理已完成 evidence |
 
@@ -47,19 +48,27 @@ metadata:
 
 ## 使用原则
 
+Active workflow: `docs/research/EXPERIMENT_WORKFLOW_V1.md`, constrained by
+`docs/EXPERIMENT_CONTRACT.md`. `docs/research/COMPACT_WORKFLOW_V2.md` remains
+historical compatibility documentation only.
+
 普通路径是一个有界的用户任务：执行请求内容、保留证据、按请求可视化/提交，
 再停在 user review。不得把“user review”自动扩展成 NEXT experiment。
 
 1. 先按用户授权区分只读审查、诊断、实现和实验，不因 skill 触发扩大写入范围。
 2. 只加载完成任务所需的最小 skill 和 reference，避免把整个项目知识库塞入上下文。
-3. 普通 BVM executor 先读取 `memory/LUNA_EXECUTOR_MEMORY.md`、
-   `memory/BVM_CURRENT_CONTEXT.md` 和 active experiment config；仅当任务需要
+3. 普通 BVM executor 先读取 `memory/EXECUTOR_NOW.md`、
+   `memory/BVM_CURRENT_CONTEXT.md` 和 active experiment README/env；
+   `memory/LUNA_EXECUTOR_MEMORY.md` 是历史流程/打包参考，不作完整启动上下文；仅当任务需要
    historical scientific context、route/status reconciliation 或 physical claims 时读 `docs/HANDOVER.md`。
-4. 显式 scientific interpretation 使用 `josim-evidence-audit`；`.cir` 运行使用 `josim-experiment`。
-5. `scripts/sfq_metrics.py` 和 `scripts/run_exp.sh` 在 Phase −1 M4–M11 完成前不得作为物理结论流水线。
-6. 使用 skill 后仍必须验证实际产物；skill 规范不能替代测试和原始证据。
-7. 委派任务以签名 request 为授权边界；receipt 的“已完成”不等于 artifact 有效或物理 Gate 通过，只有接受的 audit 才能上推项目状态。
-8. Codex 不可用时的 stand-in 动作（2026-08-09）：必须经用户明确授权，写入 `research/tasks/<id>/standin/<Sxx>/record.yaml`（PROVISIONAL），Codex review 确认前不生效；stand-in 不得审计自身执行。
+4. 风险等级使用 `experiment_risk_level: QUICK | NORMAL | FORMAL`，与
+   `Exploration/Candidate/Authority` research tier 和协作 `NORMAL/CRITICAL`
+   独立；证据强度遵循 `docs/EXPERIMENT_CONTRACT.md`。
+5. 显式 scientific interpretation 使用 `josim-evidence-audit`；`.cir` 运行使用 `josim-experiment`。
+6. `scripts/sfq_metrics.py` 和 `scripts/run_exp.sh` 在 Phase −1 M4–M11 完成前不得作为物理结论流水线。
+7. 使用 skill 后仍必须验证实际产物；skill 规范不能替代测试和原始证据。
+8. 委派任务以签名 request 为授权边界；receipt 的“已完成”不等于 artifact 有效或物理 Gate 通过，只有接受的 audit 才能上推项目状态。
+9. Codex 不可用时的 stand-in 动作（2026-08-09）：必须经用户明确授权，写入 `research/tasks/<id>/standin/<Sxx>/record.yaml`（PROVISIONAL），Codex review 确认前不生效；stand-in 不得审计自身执行。
 
 ## 显式调用示例
 

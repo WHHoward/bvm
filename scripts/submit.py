@@ -1028,6 +1028,8 @@ def main() -> int:
     parser.add_argument("--tag", required=True)
     parser.add_argument("--scope", action="append", help="repository-relative experiment directory; repeatable; default auto-detects")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--delta", action="store_true",
+                        help="for a local submit.py scope, request its explicit delta mode")
     parser.add_argument("--no-push", action="store_true", help="commit and package locally, skip push and Drive mirror")
     parser.add_argument("--message", help="source commit message")
     parser.add_argument("--retire-overlimit-generated", action="store_true",
@@ -1050,6 +1052,8 @@ def main() -> int:
             raise RuntimeError("a scope with its own submit.py must be submitted separately")
         local = local_submit_scopes[0] / "scripts" / "submit.py"
         command = [sys.executable, str(local), args.tag]
+        if args.delta:
+            command.append("--delta")
         if args.dry_run:
             command.append("--dry-run")
         if args.no_push:
@@ -1057,6 +1061,8 @@ def main() -> int:
         if args.message:
             command.extend(["--message", args.message])
         return subprocess.run(command, cwd=REPO).returncode
+    if args.delta:
+        raise RuntimeError("--delta is supported only by the explicitly scoped local submit workflow")
 
     changes = scoped_delta(remote_commit, head(), scopes)
     work_paths = source_stage_paths(scopes)

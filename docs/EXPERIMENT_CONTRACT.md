@@ -1,6 +1,6 @@
 # Experimental Contract
 
-状态：`ACTIVE / V1`（2026-09-09 evidence-first amendment）
+状态：`ACTIVE / V1`（2026-09-09 evidence-first amendment；2026-10-09 前瞻性风险分级修订）
 
 本合同适用于本仓库中的所有 simulation experiments、replay experiments、
 parameter studies、read-only raw analyses 和 evidence-packaging tasks。它
@@ -74,6 +74,36 @@ Read-only existing-raw analysis MUST also have a machine-readable analysis scope
 and MUST explicitly declare that no solver, raw mutation, circuit change,
 parameter change or timing change is authorized.
 
+## II-A. EXPERIMENT RISK LEVEL
+
+每个未来 work unit MUST 在执行前登记 `experiment_risk_level`：
+`QUICK | NORMAL | FORMAL`。这不是 research tier
+(`Exploration/Candidate/Authority`)，也不是协作任务风险
+(`NORMAL/CRITICAL`)；MUST NOT 使用裸字段 `risk` 混写这些维度。
+
+- `QUICK`：低风险、方向性或小参数/激励改动；只回答预注册问题和最小
+  run matrix。QUICK 不可作为 Candidate、Authority、Gate、metric freeze
+  或 paper-level claim 的充分依据。
+- `NORMAL`：有界的常规研究，包括新拓扑、4×4 阵列或多级链路。执行前冻结
+  当前问题需要的 focus probes、窗口、QA 和 interpretation ceiling；默认不
+  要求 Formal 独立审计。
+- `FORMAL`：Authority、系统 Gate、metric freeze、scientific baseline、route
+  selection 或 paper-level quantitative claim。必须有冻结输入闭包、claim-
+  relevant full probe coverage、问题需要的 controls/convergence 和独立
+  evidence audit。
+
+Authority MUST 使用 FORMAL。Candidate 的 clean rerun 与独立机械复算要求继续
+有效。执行风险级别不授予科学解释或额外 solve；结果升级必须经新预注册和授权，
+不得追溯重标旧 run。风险级别也不能覆盖冻结的 task/source/metric/handoff
+合同；更严格要求优先。当前通用 `scripts/bvm-exp.py` schema/runner 仍仅支持
+QUICK；不得将其 QUICK 产物事后标成 NORMAL 或 FORMAL。自定义平台可在 task-local
+PREFLIGHT/manifest 中登记其风险级别与验证范围。
+
+本修订仅适用于生效后的新 work unit。历史实验、raw、ZIP、QA、review、状态与
+科学结论保持原样，不因新分级重分类、补票或升级。所有级别继续受 exact
+authorized runs、raw immutability、provenance、units/directions、evidence labels、
+measurement/SFQ 边界、package integrity 和 no-silent-follow-up 约束。
+
 ## III. EXACTLY AUTHORIZED RUNS
 
 执行者 MUST 只运行用户明确授权的 solve matrix。执行者 MUST NOT：
@@ -111,37 +141,45 @@ MUST 以 machine-readable registry 保存，且原始 raw MUST 保留不动。
 
 ## V. PROBE POLICY
 
-实验设计阶段 MUST 优先 full probe。如果某个内部 node、branch 或 JJ 未来可能
-用于机制判断，执行者 MUST 在 solve 前 probe；MUST NOT 等 solve 后才发现没有
-数据。
+所有级别 MUST 在 solve 前冻结 probe manifest，记录 signal、节点/器件端点、
+方向、单位、用途和缺失时的 claim consequence。MUST NOT 在看过结果后补造 probe
+语义或扩大 interpretation ceiling。
 
-QB 类实验默认 MUST probe：input boundary、LIN、BJS、L1、BJ1、RJ1、L2、IB、
-BJ2、RJ2、L3 和 QBOUT。JJ MUST 保存可用的 P/V/I；inductor 和 resistor
-MUST 保存可用的 I/V（若具体工具不提供某列，必须在 preflight 和 QA 标为
-`UNKNOWN`，不能伪造或省略该缺失）。
+QUICK 和 NORMAL MAY 使用预注册的 `focus_probe_set`。其覆盖 MUST 与主要问题
+相称，至少包括需要判断的 input boundary、目标内部状态/改变器件、output
+boundary、注册 controls/quiet branches，以及已注册同 JJ arithmetic 所需的
+P/V 证据。未被 probe 支持的结论 MUST 标为 `UNKNOWN` 或 `INCONCLUSIVE`；不得
+把少量 endpoint 伪装成 full internal evidence。NORMAL 的 focus 选择及理由
+必须在 solve 前冻结。
 
-JTL 实验 MUST probe 全部级别，不能只 probe JTL1/JTL6。JTL1/JTL6 MAY 作为
-summary visualization，但 raw MUST NOT 只保留 endpoint。
+FORMAL MUST 使用 claim-relevant full probe coverage。QB 的完整覆盖继续包括 input
+boundary、LIN、BJS、L1、BJ1、RJ1、L2、IB、BJ2、RJ2、L3 与 QBOUT；JTL 声明
+必须保留所有被声明级别的相关 P/V/I，而不能只保留 JTL1/JTL6；BVM 需覆盖
+claim 所需 storage core、R-loop、output path、shared boundary、controls 和
+quiet branches。JJ 保存可用 P/V/I；inductor/resistor 按 claim 需要保存可用
+I/V，缺失列标 `UNKNOWN`，不得伪造。
 
-BVM 实验至少 MUST 覆盖 storage core、R-loop、output path、shared boundary、
-target controls 和当前问题需要的 quiet branches。
+Read-only existing-raw analysis 只能使用现有 raw columns；缺失 probe 不授权
+新 solve，也不得以推断补齐。
 
 ## VI. VISUALIZATION IS REQUIRED EVIDENCE
 
 实验交付 MUST NOT 只有 `raw.csv + metrics.json + RESULT_BRIEF.md`。每个
-physical run MUST 有 human-readable standalone visualization；paired runs
-MUST 有 comparison visualization；注册的 critical windows MUST 有 zoomed
-visualization；有意义时 MUST 同时提供 raw tracks 和 comparison/delta；机制
-敏感 block MUST 有 complete internal view。
+physical run MUST 有可人工审阅、能反查 raw SHA-256 的 standalone descriptive
+visualization。
 
-standalone visualization MUST 先于 comparison visualization 完成并独立 QA。
-每一张图 MUST 标明 signal name、case、raw 或 derived、units、time axis 和
-phase display convention；MUST NOT 用漂亮的 summary 隐藏 full internal raw。
-默认使用仓库接受的 `scripts/josim-plot2.py`、`sep_comb`、`dark` 和 `-j 2pi`
-语言。图是 descriptive evidence，MUST NOT 单独认证 SFQ、Gate 或机制。
+QUICK 和 NORMAL 默认每 run 生成一组 `CLASSIC_LOCKED` focus figures，使用
+`scripts/josim-plot2.py`、`sep_comb`、`dark` 和 `-j 2pi`。一组可以包含 whole-run
+overview 与预注册 focus/window panels；只画预注册 probes 和 signal schema，
+不要求未注册 full dashboard。图必须标 signal、case、raw/derived、units、time
+axis 和 phase display convention。只有当 paired comparison 本身属于预注册问题、
+metric 或 acceptance evidence 时，才额外强制生成一组 focused comparison；该
+comparison 与 standalone 使用同一 signal schema，并注明是否使用相同网格或
+独立 stored grids。不得用 summary 图替代 immutable raw 或缺失证据。
 
-未来 BVM→QB→JTL 实验的 standard visualization MUST 使用 V2.1 semantic
-structure：
+FORMAL 继续使用 standalone-first、claim-relevant complete internal views、
+注册 critical windows 的 visualization 和适用的 comparisons。未来 BVM→QB→JTL
+FORMAL system visualization 使用 V2.1 semantic structure：
 
 ```text
 01_SIGNAL_TIMING
@@ -156,7 +194,8 @@ BOUNDARY`，并同时提供 whole-run `OVERVIEW` 与注册的 focused windows。
 与 comparison MUST 使用同一 semantic signal schema；comparison 只能增加 case
 dimension，不能另挑一套“interesting signals”。额外 mechanism/dashboard/phase-plane
 图默认不生成。若具体 fixture 不含一个假定的 top-level node，MUST 在 manifest
-中登记真实 semantic boundary，不得伪造 probe。
+中登记真实 semantic boundary，不得伪造 probe。图均为 descriptive evidence，不能
+单独认证 SFQ、Gate 或机制。
 
 ## VII. PHASE HANDLING
 
@@ -259,6 +298,15 @@ QA 失败的 artifact MUST 标为 `ARTIFACT_INVALID`，不能改写成 physical 
 分析工具失败而 raw 有效时，MUST 保留原 raw/deck/log/metadata，修复工具后只
 能对同一个 immutable raw 重新 QA，MUST NOT 因 analyzer 退出 1 而重跑 physics。
 
+QUICK 和 NORMAL MAY 将无重复的静态、raw、provenance、注册算术和可视化检查
+汇总为一个 canonical QA result set，并通过 per-run 字段或 hash-bound compatibility
+views 供工具读取。合并只减少重复文件/重复计算，不得删除 §XIII 中的检查项；
+每项必须记录输入 SHA/spec/checker identity、status，或给出 `NOT_APPLICABLE`
+及理由。PACKAGE_QA 是独立 archive-level QA，不能由 run QA 替代；每个最终
+package version 只需且必须有一份 package-bound PACKAGE_QA。FORMAL 还须有绑定
+最终 package SHA、由独立 reviewer 执行的 evidence audit；该 audit 不授予科学
+解释权限。
+
 ## XIV. CONVERGENCE / SENSITIVITY
 
 如果实际没有做 timestep convergence、parameter sensitivity 或 solver sensitivity，
@@ -278,13 +326,14 @@ analysis/
 plots/
 ```
 
-`analysis/` 至少 MUST 包含 mechanical QA、provenance/hash QA、visualization QA
-和 transformation registry。machine-readable scientific interpretations 只在
-`SCIENTIFIC_REVIEW_AUTHORIZED` 后作为独立、版本化 artifact 出现。
-`plots/` MUST 包含可人工审阅的 standalone 和 comparison evidence；每个 run 的
-standalone 页面与其 raw 的直接 provenance MUST 可反查。
+`analysis/` 至少 MUST 包含 canonical mechanical/raw QA、provenance/hash QA、
+visualization QA 和适用的 transformation registry；QUICK/NORMAL 可以按 §XIII
+合并不重复的 QA 记录。machine-readable scientific interpretations 只在
+`SCIENTIFIC_REVIEW_AUTHORIZED` 后作为独立、版本化 artifact 出现。`plots/` MUST
+包含每个 run 的一组可人工审阅 standalone focus visualization 和其 raw 的直接
+provenance；若 comparison 是 preregistered evidence，也须包含 focused comparison。
 
-每个未来完成的正式实验还 MUST 生成并提交：
+每个未来完成的 QUICK/NORMAL/FORMAL physical-solve work unit MUST 生成并提交：
 
 ```text
 handoff/<experiment_id>_raw_handoff.zip
@@ -298,10 +347,14 @@ manifest/QA、per-run navigation、`EVIDENCE_MANIFEST.md` 和
 `RAW_ANALYSIS_HANDOFF_MANIFEST.json`。`raw.csv` 是 immutable solver output，
 不得用 selected/resampled/cropped/processed 文件替代。
 
-`PACKAGE_QA.json` MUST 在重新打开 ZIP 后验证 authorized runs、raw/deck hashes、
-required definitions、mechanical QA 和 visualization artifacts。它记录最终
-package SHA-256；为避免自哈希循环，QA 文件保持在 ZIP 外。PACKAGE_QA FAIL 时
-MUST NOT commit package，状态为 `ARTIFACT_INVALID` 并 STOP。
+`PACKAGE_QA.json` MUST 在 ZIP 完成后重新打开一次，验证 authorized runs、required
+members、raw/deck hashes、canonical QA references、visualization evidence、package
+bytes、repository-relative path 和 package SHA-256。每个最终 package version 只
+生成一份 detached PACKAGE_QA；为避免自哈希循环，QA 文件保持在 ZIP 外。
+PACKAGE_QA FAIL 时 MUST NOT commit package，状态为 `ARTIFACT_INVALID` 并 STOP。
+任何 member、scope 或 ZIP bytes 改变都会使原 QA 失效，必须生成新版本和新 QA。
+FORMAL 的独立 evidence audit 在 ZIP 外绑定同一 package SHA，不修改 ZIP，也不
+自动产生 scientific verdict。
 
 ZIP 一旦提交即 immutable。后续 scientific review 只能引用相同 package SHA；若
 packaging 确实有错误，必须生成 versioned `_v2.zip` 并保留旧 ZIP，不能静默覆盖。

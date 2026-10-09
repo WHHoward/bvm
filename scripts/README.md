@@ -15,16 +15,21 @@
 | `JoSIM_n++_UDL.xml` | 编辑器语法高亮 | 📚 参考 |
 | `MC_conclu.py` | 蒙特卡洛结论分析（2026-08-06 自 circuits/ 归位） | 🟡 参考 |
 | `bvmtools/` | 未来实验共享 raw/provenance/phase/strict-event/waveform/compare 核心 | 🟢 新实验优先复用；不直接给物理 Gate |
-| `bvm-exp.py` | Compact evidence-first runner；run/analyze/plot/package/inspect，默认机械 QA、V2.1-compatible visualization、evidence ZIP 和 Git commit；scientific review 需显式授权 | 🟢 新实验默认；保留 quick 兼容旧 V1 fixture |
+| `bvm-exp.py` | QUICK-only evidence-first runner；run/analyze/plot/package/inspect，记录机械 QA、可视化、evidence ZIP 和 Git commit；scientific review 需显式授权 | 🟢 小改动/方向性 QUICK；不代表 NORMAL/FORMAL 已由此 runner 支持 |
 | `build_experiment_package.py` | 生成并重新打开校验 `<experiment_id>_raw_handoff.zip` 与 detached `PACKAGE_QA.json`；不覆盖 raw/ZIP | 🟢 新实验默认 |
 
 **整理原则 (2026-08-09)**: 旧脚本保留用于追溯并明确标为 superseded。正式结论应依赖不可覆盖的 raw run、版本化 v2 指标、匹配控制和收敛 Gate；在 M4–M11 完成前不存在冻结的自动物理结论流水线。
 
-**Compact workflow V2 (2026-09-02)**: 新实验使用 `scripts/bvm-exp.py` 的
-`run|analyze|plot|inspect` 接口和 `scripts/templates/compact-quick/` 模板。
+**Active workflow**: 新实验执行受 `docs/EXPERIMENT_CONTRACT.md` 约束，标准流程见
+`docs/research/EXPERIMENT_WORKFLOW_V1.md`。Experiment risk 为 QUICK/NORMAL/FORMAL，
+与 research tier 相互独立。通用 `scripts/bvm-exp.py` 当前仅支持 QUICK。
+
+**Historical Compact Workflow V2 (2026-09-02)**: 既有 Quick 工具入口为
+`scripts/bvm-exp.py` 的 `run|analyze|plot|inspect` 接口和
+`scripts/templates/compact-quick/` 模板。
 `run` 自动创建不可覆盖的 `runs/Axxx/{deck.cir,raw.csv,run.log,result.yaml}`；
 `analyze` 只消费既有 raw，`plot` 使用 `josim-plot2.py`，完成后停在
 `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW`。`analyze` 默认只做 raw-only
 机械 QA；只有 `--scientific-review-authorized` 才进入独立 scientific review。
-旧 experiment-local 脚本、run_exp.sh、历史 raw 和旧协议不批量迁移。完整说明见
-`docs/research/COMPACT_WORKFLOW_V2.md`。
+旧 experiment-local 脚本、run_exp.sh、历史 raw 和旧协议不批量迁移。旧兼容说明见
+`docs/research/COMPACT_WORKFLOW_V2.md`，不作为新的工作流权威入口。

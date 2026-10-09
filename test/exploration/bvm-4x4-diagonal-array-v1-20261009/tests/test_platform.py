@@ -14,6 +14,11 @@ def rendered(preset: str):
     return case, stimulus, t1, platform.render(case, stimulus, t1, platform.RUNS / "_TEST_PREVIEW")
 
 
+def rendered_with_set(preset: str, assignment: str):
+    case, stimulus, t1 = platform.load_config(preset, [assignment])
+    return case, stimulus, t1, platform.render(case, stimulus, t1, platform.RUNS / "_TEST_PREVIEW")
+
+
 class DiagonalPlatformTests(unittest.TestCase):
     def test_diagonal_map_is_exact_partition(self):
         flat = [cell for group in platform.DIAGONALS.values() for cell in group]
@@ -90,7 +95,7 @@ class DiagonalPlatformTests(unittest.TestCase):
                 final_value=dict(points).get("111p")
                 self.assertEqual(final_value, "100u" if cell in targets[name] else "0")
             self.assertEqual(outputs[name]["static_qa"]["status"], "PASS")
-        self.assertEqual(outputs["D3_N0"]["probes"]["signal_count"], 242)
+        self.assertEqual(outputs["D3_N0"]["probes"]["signal_count"], 124)
 
     def test_canonical_sources_and_t1_off_isolation(self):
         source = platform.verify_sources()
@@ -108,23 +113,94 @@ class DiagonalPlatformTests(unittest.TestCase):
         with self.assertRaisesRegex(platform.ConfigError, "only DIAGONAL_TERMINAL"):
             platform.validate_config({**case, "OUTPUT_MODE": "DIAGONAL_T1_CHAIN"}, stimulus, t1)
 
-    def test_probe_profile_stays_under_raw_limit_and_keeps_required_boundaries(self):
+    def test_focus_profile_stays_compact_and_keeps_required_state_diagnostics(self):
         case, _stim, _t1, output = rendered("D3_N4")
         labels = {item["label"] for item in output["probes"]["signals"]}
-        self.assertEqual(output["probes"]["profile"], "diagonal_focus")
-        self.assertEqual(output["probes"]["signal_count"], 242)
+        self.assertEqual(output["probes"]["profile"], "focus")
+        self.assertEqual(output["probes"]["signal_count"], 124)
         self.assertLess(platform.estimate_raw_bytes(output["probes"]["signal_count"]), 100_000_000)
         for cell in platform.CELLS:
             for branch, element in (("WL", "R_WL"), ("BL", "R_BL"), ("SE", "R_SE")):
                 self.assertIn(f"I({element}|XBVM_{cell})", labels)
+        for cell in platform.DIAGONALS["D3"]:
             self.assertIn(f"V(SL_{cell})", labels)
+            for jj in ("B_JM1", "B_JM2"):
+                self.assertIn(f"P({jj}|XBVM_{cell})", labels)
+                self.assertIn(f"V({jj}|XBVM_{cell})", labels)
         for diagonal in platform.DIAGONALS:
             self.assertIn(f"V(DOUT_{diagonal})", labels)
+        for jj in ("BJ1", "BJ2", "BJ3"):
+            self.assertIn(f"P({jj}|XBQ_R1C1)", labels)
+            self.assertIn(f"V({jj}|XBQ_R1C1)", labels)
         for level in range(1, 5):
             self.assertIn(f"V(MERGE_D3_L{level})", labels)
             self.assertIn(f"V(SJTL_OUT_D3_L{level})", labels)
             self.assertIn(f"P(BJ1|XSJTL_D3_L{level})", labels)
             self.assertIn(f"P(BJ1|XCB_D3_L{level})", labels)
+
+    def test_profiles_are_ordered_and_compact_records_shared_source_currents(self):
+        compact_case, compact_stim, compact_t1 = platform.load_config(
+            "BUS400_D3_N1", ["PROBE_PROFILE=compact"])
+        compact = platform.render(compact_case, compact_stim, compact_t1,
+                                  platform.RUNS / "_TEST_PREVIEW")
+        focus_case, focus_stim, focus_t1 = platform.load_config("BUS400_D3_N1")
+        focus = platform.render(focus_case, focus_stim, focus_t1, platform.RUNS / "_TEST_PREVIEW")
+        debug_case, debug_stim, debug_t1 = platform.load_config(
+            "BUS400_D3_N1", ["PROBE_PROFILE=debug"])
+        debug = platform.render(debug_case, debug_stim, debug_t1, platform.RUNS / "_TEST_PREVIEW")
+        self.assertLess(compact["probes"]["signal_count"], focus["probes"]["signal_count"])
+        self.assertLess(focus["probes"]["signal_count"], debug["probes"]["signal_count"])
+        compact_labels = {item["label"] for item in compact["probes"]["signals"]}
+        self.assertIn("I(I_WL_R1)", compact_labels)
+        self.assertIn("I(I_BL_C1)", compact_labels)
+        self.assertIn("I(I_SE_R1C1)", compact_labels)
+        self.assertEqual(len(platform.plot_signals(focus["probes"])), 2)
+
+    def test_sjtl_defaults_preserve_legacy_names_and_parameterize_multistage_or_zero(self):
+        _case, _stim, _t1, default = rendered("BUS400_D3_N1")
+        expected_legacy = {
+            f"XSJTL_{diagonal}_L{level} MERGE_{diagonal}_L{level} SJTL_OUT_{diagonal}_L{level} sJTL"
+            for diagonal, cells in platform.DIAGONALS.items()
+            for level in range(1, len(cells) + 1)
+        }
+        self.assertTrue(expected_legacy.issubset(set(default["deck"].splitlines())))
+
+        _case, _stim, _t1, multi = rendered_with_set("BUS400_D3_N1", "SJTL_COUNT_D3=1,2,1,1")
+        self.assertEqual(multi["static_qa"]["sjtl_count"], 17)
+        self.assertEqual(multi["static_qa"]["cb_count"], 16)
+        self.assertIn("XSJTL_D3_L2_S1 MERGE_D3_L2 SJTL_MID_D3_L2_S1 sJTL", multi["deck"].splitlines())
+        self.assertIn("XSJTL_D3_L2_S2 SJTL_MID_D3_L2_S1 SJTL_OUT_D3_L2 sJTL", multi["deck"].splitlines())
+        self.assertIn("XCB_D3_L2 SJTL_OUT_D3_L2 MERGE_D3_L3 CB", multi["deck"].splitlines())
+
+        _case, _stim, _t1, zero = rendered_with_set("BUS400_D3_N1", "SJTL_COUNT_D3=0,1,1,1")
+        self.assertEqual(zero["static_qa"]["sjtl_count"], 15)
+        self.assertIn("XCB_D3_L1 MERGE_D3_L1 MERGE_D3_L2 CB", zero["deck"].splitlines())
+
+    def test_sjtl_count_validation_rejects_wrong_lengths_and_negative_values(self):
+        with self.assertRaisesRegex(platform.ConfigError, "comma-separated nonnegative"):
+            platform.load_config("BUS400_D3_N1", ["SJTL_COUNT_D3=1,2"])
+        with self.assertRaisesRegex(platform.ConfigError, "comma-separated nonnegative"):
+            platform.load_config("BUS400_D3_N1", ["SJTL_COUNT_D3=1,-1,1,1"])
+
+    def test_bus400_pair_is_exact_and_legacy_presets_keep_200u(self):
+        cases = platform.validate_bus400_matrix()
+        self.assertEqual([item["case"]["CASE"] for item in cases], list(platform.BUS400_CASES))
+        self.assertEqual([item["next_run_id"] for item in cases],
+                         ["A007_BUS400_D3_N0", "A008_BUS400_D3_N1"])
+        self.assertEqual(cases[0]["rendered"]["deck"], cases[1]["rendered"]["deck"])
+        for preset in platform.REGISTERED_CASES:
+            case, _stimulus, _t1 = platform.load_config(preset)
+            self.assertEqual(case["ROW_WL_WRITE_AMPLITUDE"], "200u")
+            self.assertEqual(case["COL_BL_WRITE_AMPLITUDE"], "200u")
+            self.assertEqual(case["ROW_WL_READ_AMPLITUDE"], "200u")
+
+    def test_stage_windows_use_full_pwl_interval_and_final_response_stop(self):
+        windows = platform._windows_for_run(platform.RUNS / "_NONEXISTENT_TEST_ONLY")
+        self.assertEqual(windows["WRITE0"], (50.0, 61.0))
+        self.assertEqual(windows["READ0"], (70.0, 81.0))
+        self.assertEqual(windows["WRITE1"], (90.0, 101.0))
+        self.assertEqual(windows["FINAL_READ"], (110.0, 121.0))
+        self.assertEqual(windows["FINAL_READ_RESPONSE"], (110.0, 250.0))
 
 
 if __name__ == "__main__":

@@ -1,5 +1,9 @@
 # Luna Experiment Executor Memory
 
+Status: historical execution and packaging reference. Routine BVM startup now
+uses the shorter `memory/EXECUTOR_NOW.md`; open this file only when a task needs
+its detailed submit/package behavior or historical incident examples.
+
 This is a compact executor convention, grounded in the mature series
 `test/exploration/bvm-rloop-one-shot-tuning-v1-20260918/` and its historical
 runner, submit/package scripts, checkpoints, and commits. It is not a source of

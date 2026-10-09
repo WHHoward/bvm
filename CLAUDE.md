@@ -87,12 +87,14 @@ Phase analysis is the standard mode (voltage was deprecated as of v2.5). Only tr
 Project skills use the standard SKILL.md layout. The canonical source is
 .agents/skills/; .claude/skills/ contains directory links for Claude Code
 compatibility. The normal user→Codex path is intentionally small; load a
-specialist only when the request needs it. The compact workflow is documented in
-docs/research/COMPACT_WORKFLOW_V2.md.
+specialist only when the request needs it. The active experiment lifecycle is
+`docs/research/EXPERIMENT_WORKFLOW_V1.md`, with binding evidence rules in
+`docs/EXPERIMENT_CONTRACT.md`. `docs/research/COMPACT_WORKFLOW_V2.md` is historical
+compatibility material, not the active default.
 
 | Skill | Use for |
 |---|---|
-| josim-experiment | Default Compact Quick, or an explicitly requested Formal experiment |
+| josim-experiment | Bounded QUICK/NORMAL execution, or explicitly authorized FORMAL experiment |
 | josim-submit | Submit/package completed evidence using the active series-local workflow, then stop |
 | josim-evidence-audit | Interpret phase, voltage area, SFQ claims, JTL reception and Gate evidence |
 | josim-viz | Focused waveform/topology visualization and classic result indexes |
@@ -101,10 +103,13 @@ docs/research/COMPACT_WORKFLOW_V2.md.
 | reviewer-numerical | Explicit numerical review when units, integration, thresholds or convergence need an independent check |
 
 Do not force a router, check-in ritual, task manager, or summary skill before
-ordinary Quick work. Historical handoff v1 documents may still mention retired
+ordinary QUICK/NORMAL work. Historical handoff v1 documents may still mention retired
 skill names; those references do not activate them.
 
-The repository-wide invariants are in `AGENTS.md`; the full delegation protocol is in `research/WORKFLOW.md`. Do not require external plugin skills unless they are actually available in the current runtime.
+The repository-wide invariants and executor bootstrap are in `AGENTS.md`; the
+current workflow is `docs/research/EXPERIMENT_WORKFLOW_V1.md`; the full
+delegation protocol is in `research/WORKFLOW.md`. Do not require external plugin
+skills unless they are actually available in the current runtime.
 
 ## Claude ↔ Codex mailbox
 

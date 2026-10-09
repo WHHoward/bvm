@@ -16,7 +16,7 @@
     "CARRY_CB_D1_PAPER_CLOCK"
   ],
   "maximum_physical_solve_count": 26,
-  "physical_solve_count": 24,
+  "physical_solve_count": 26,
   "runs": [
     {
       "run_id": "A001_D3_N0",
@@ -533,6 +533,73 @@
       "raw_bytes": 94583444,
       "probe_count": 235,
       "deck_sha256": "46263c34dbc04627dff5b9b584f3e06eac1cf25c602d39874bca6392e46c93b4"
+    },
+    {
+      "run_id": "A025_CARRY_CB_D1_ALL_CLOCK",
+      "case": "CARRY_CB_D1_ALL_CLOCK",
+      "batch_id": "BVM4X4_CB_CARRY_BUFFER_D1_20261009",
+      "row_bits": "1111",
+      "column_bits": "1111",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_override_d1": "CB_CARRY_BUFFER",
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C3",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C3",
+        "R2C4",
+        "R3C1",
+        "R3C2",
+        "R3C3",
+        "R3C4",
+        "R4C1",
+        "R4C2",
+        "R4C3",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "c9b3f6b2c3f707c599794658950de7bbbd3bfd6b51455d637ac3e0eee14369c9",
+      "raw_bytes": 76296565,
+      "probe_count": 189,
+      "deck_sha256": "25e52057272dcbb7e2a7134be2ba396583427427c16db0c60185a9ae5bdee981"
+    },
+    {
+      "run_id": "A026_CARRY_CB_D1_PAPER_CLOCK",
+      "case": "CARRY_CB_D1_PAPER_CLOCK",
+      "batch_id": "BVM4X4_CB_CARRY_BUFFER_D1_20261009",
+      "row_bits": "1101",
+      "column_bits": "1101",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_override_d1": "CB_CARRY_BUFFER",
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C4",
+        "R4C1",
+        "R4C2",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "f9b198ecad7a7eef7181d6f99c1d8febc28db5b47e11956f91ca3beb6b29f7aa",
+      "raw_bytes": 76382166,
+      "probe_count": 189,
+      "deck_sha256": "25e52057272dcbb7e2a7134be2ba396583427427c16db0c60185a9ae5bdee981"
     }
   ],
   "automatic_follow_up": false,
@@ -648,13 +715,14 @@
         "A026_CARRY_CB_D1_PAPER_CLOCK"
       ],
       "authorized_physical_solve_count": 2,
-      "physical_solve_count_completed": 0,
+      "physical_solve_count_completed": 2,
       "preflight_parent_head": "e0155de0c19e95d8c909550c67097db65695c842",
       "preflight_path": "analysis/cb-carry-buffer-d1-20261009/PREFLIGHT.md",
       "preflight_sha256": "b5d804fe93afa7a13f2ed0ef2185edea6224d5fb13b80955d34ec6eadcf78f67",
       "static_qa_sha256": "618c581eb27c9bb4ca3d36efb8c70b2aabfbc3fbbc9ca1342fcab54be2f9d5cc",
       "scientific_interpretation_performed": false,
-      "automatic_follow_up": false
+      "automatic_follow_up": false,
+      "parent_head_at_execution": "af1f9ce0bab91ddeabfbb472f2ad8ff5eb3f657a"
     }
   ]
 }

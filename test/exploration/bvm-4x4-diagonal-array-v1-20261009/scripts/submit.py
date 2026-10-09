@@ -2189,7 +2189,7 @@ def _cb_carry_buffer_sources(root: Any) -> tuple[list[tuple[Path, str]], dict[st
         run_dir = RUNS / run_id
         if not run_dir.is_dir():
             raise RuntimeError(f"new authorized run directory is missing: {run_id}")
-        files = [(path, path.relative_to(REPO).as_posix()) for path in root.included_files(run_dir)]
+        files = [(path, path.relative_to(REPO).as_posix()) for path in included_files(run_dir)]
         names = {Path(member).name for _source, member in files}
         if required - names:
             raise RuntimeError(f"{run_id} delta evidence missing: {sorted(required - names)}")

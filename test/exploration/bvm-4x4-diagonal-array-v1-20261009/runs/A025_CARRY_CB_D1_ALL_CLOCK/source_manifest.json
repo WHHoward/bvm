@@ -1,0 +1,73 @@
+{
+  "schema": "bvm-4x4-diagonal-source-manifest-v1",
+  "canonical_sources_modified": false,
+  "sources": {
+    "JJMIT": {
+      "path": "circuits/models/jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "mode": "DIRECT_CANONICAL_INCLUDE"
+    },
+    "BVM": {
+      "path": "circuits/bvm/bvm_cell_0923.cir",
+      "sha256": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+      "mode": "DIRECT_CANONICAL_INCLUDE"
+    },
+    "QB": {
+      "path": "circuits/qb/BQ_0928.cir",
+      "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+      "mode": "DIRECT_CANONICAL_INCLUDE"
+    },
+    "SJTL": {
+      "path": "circuits/sJTL_0923.cir",
+      "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+      "mode": "DIRECT_CANONICAL_INCLUDE"
+    },
+    "CB": {
+      "path": "circuits/CB/CB_0928.cir",
+      "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+      "mode": "DIRECT_CANONICAL_INCLUDE"
+    },
+    "T1_REFERENCE": {
+      "path": "circuits/t1/t1_cell.cir",
+      "sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237",
+      "mode": "CANONICAL_BASE_FOR_TUNABLE_RENDER"
+    },
+    "CBU_D1_CARRY_BUFFER": {
+      "path": "circuits/CB/CB_0928.cir",
+      "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+      "mode": "CANONICAL_CB_0928_ON_D0_CARRY_BRANCH",
+      "subcircuit": "CB",
+      "ports": [
+        "IN",
+        "OUT"
+      ]
+    },
+    "T1_RENDERED": {
+      "path": "sources/t1_cell_tunable.cir",
+      "sha256": "dee8da3d0e02f580ffb171d330f771e0b226c2fe383226c32f6123080f1a4fec",
+      "mode": "RUN_LOCAL_TUNABLE_COPY"
+    },
+    "CBU_RENDERED": {
+      "path": "sources/cbu_tunable.cir",
+      "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+      "canonical_path": "circuits/standard/MERGE.cir",
+      "canonical_sha256": "2fdc5c24798c619eee97dee07d1dcb02b2e49e3b96bfa868f86ec978dca6f96e",
+      "mode": "RUN_LOCAL_TUNABLE_CANDIDATE"
+    },
+    "DFF_RENDERED": {
+      "path": "sources/dff_tunable.cir",
+      "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+      "canonical_path": "circuits/standard/DFF.cir",
+      "canonical_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+      "mode": "RUN_LOCAL_TUNABLE_CANDIDATE"
+    },
+    "D0_JTL_RENDERED": {
+      "path": "sources/d0_jtl_tunable.cir",
+      "sha256": "7a82307d52d2339d00965a0f6453f79f6c0689242d35e383b825902a85a16db5",
+      "canonical_path": "circuits/sJTL_0923.cir",
+      "canonical_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+      "mode": "RUN_LOCAL_TUNABLE_CANDIDATE"
+    }
+  },
+  "scientific_interpretation_performed": false
+}

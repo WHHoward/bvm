@@ -1,7 +1,7 @@
 {
   "schema": "bvm-4x4-cb-carry-buffer-d1-batch-v1",
   "batch_id": "BVM4X4_CB_CARRY_BUFFER_D1_20261009",
-  "status": "PREFLIGHT_PASS_READY",
+  "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
   "preflight_parent_head": "e0155de0c19e95d8c909550c67097db65695c842",
   "preflight_path": "analysis/cb-carry-buffer-d1-20261009/PREFLIGHT.md",
   "preflight_sha256": "b5d804fe93afa7a13f2ed0ef2185edea6224d5fb13b80955d34ec6eadcf78f67",
@@ -13,9 +13,35 @@
     "A025_CARRY_CB_D1_ALL_CLOCK",
     "A026_CARRY_CB_D1_PAPER_CLOCK"
   ],
-  "runs": [],
+  "runs": [
+    {
+      "run_id": "A025_CARRY_CB_D1_ALL_CLOCK",
+      "preset": "CARRY_CB_D1_ALL_CLOCK",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "c9b3f6b2c3f707c599794658950de7bbbd3bfd6b51455d637ac3e0eee14369c9",
+      "raw_bytes": 76296565,
+      "deck_sha256": "25e52057272dcbb7e2a7134be2ba396583427427c16db0c60185a9ae5bdee981"
+    },
+    {
+      "run_id": "A026_CARRY_CB_D1_PAPER_CLOCK",
+      "preset": "CARRY_CB_D1_PAPER_CLOCK",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "f9b198ecad7a7eef7181d6f99c1d8febc28db5b47e11956f91ca3beb6b29f7aa",
+      "raw_bytes": 76382166,
+      "deck_sha256": "25e52057272dcbb7e2a7134be2ba396583427427c16db0c60185a9ae5bdee981"
+    }
+  ],
   "physical_solve_count_authorized": 2,
-  "physical_solve_count_completed": 0,
+  "physical_solve_count_completed": 2,
   "scientific_interpretation_performed": false,
-  "automatic_follow_up": false
+  "automatic_follow_up": false,
+  "execution_head": "af1f9ce0bab91ddeabfbb472f2ad8ff5eb3f657a",
+  "analysis_path": "analysis/cb-carry-buffer-d1-20261009/BATCH_ANALYSIS.json",
+  "analysis_sha256": "3d4e597b22d728169d57b9ccc7c8eabe611dd049886f3df04aab86c84b8627c6"
 }

@@ -2,9 +2,10 @@
 
 This render-first platform maps 16 independent `BVM → QB` cells onto seven
 ascending-row serial diagonal chains. It uses the canonical BVM, QB, sJTL, CB,
-and shared jjmit model without modifying their sources. Each diagonal output is
-independent and terminated by its own 2 Ω resistor. T1/CBU/DFF are not
-instantiated.
+and shared jjmit model without modifying their sources. In the default
+`DIAGONAL_TERMINAL` mode, each diagonal output has its own 2 Ω resistor and T1,
+CBU and DFF are not instantiated. `DIAGONAL_T1_INDEPENDENT` replaces those
+terminal loads with seven isolated T1 channels.
 
 ## Cell and diagonal mapping
 
@@ -35,11 +36,10 @@ one-CB-per-cell structure are unchanged.
 
 ## Run controls
 
-Edit `USER_CASE.env`, `STIMULUS.env`, and (for future reference only)
-`config/T1_PARAMS.env`. Only `OUTPUT_MODE=DIAGONAL_TERMINAL` is executable.
-`DIAGONAL_T1_INDEPENDENT` and `DIAGONAL_T1_CHAIN` are reserved and explicitly
-rejected until their circuit implementations are validated. `T1_MODE=OFF`
-leaves T1 parameters out of the netlist.
+Edit `USER_CASE.env`, `STIMULUS.env`, and `config/T1_PARAMS.env`. The executable
+output modes are `DIAGONAL_TERMINAL` and `DIAGONAL_T1_INDEPENDENT` with
+`T1_MODE=ALL_INDEPENDENT`. `DIAGONAL_T1_CHAIN`, CBU and DFF remain reserved and
+fail closed. `T1_MODE=OFF` leaves T1 parameters out of terminal-mode decks.
 
 The default `USER_CASE.env` uses the new 400 µA shared-source candidate. WL/BL
 values are `BUS_SOURCE_TOTAL` setpoints, not per-BVM amplitudes. Real branch
@@ -108,6 +108,24 @@ The A010–A012 append-only delta uses the A009 delta package as its base and
 splits the changed source/manifest from one package per new raw. A001–A009 raw
 is referenced by package/raw SHA and is not copied again.
 
+The registered T1 integration batch connects all seven DOUTs to independent T1
+channels, removes the seven DOUT 2 Ω terminations, and preserves the serial
+BVM/QB/sJTL/CB topology. Each T1 has its own `V_T1_LINK`, Bias1/2/3, CLK, S and
+C nodes, and 12 Ω S/C loads. QUIET uses an independent 5 Ω clock clamp per
+channel; PULSE uses seven identical, independent source/2 Ω branches. Run the
+four-case batch once with:
+
+```bash
+./try.sh --t1-array-batch
+```
+
+Its preflight, metric specification and result table are under
+`analysis/t1-array-20261009/`. Three responsive classic pages are generated per
+run and remain local. T1 internal values are rendered from
+`config/T1_PARAMS.env` into each run's `sources/t1_cell_tunable.cir`; the
+canonical `circuits/t1/t1_cell.cir` remains unchanged and default-body
+equivalence is checked.
+
 The six presets are `D3_N0` through `D3_N4` and `PAPER_1101_1101`. The latter
 uses ROW/COL `1101/1101` with all SE mask bits on. The preregistered diagonal
 target vector is `[1,1,1,3,1,1,1]`; it is not an event classifier or a result.
@@ -123,5 +141,5 @@ native samples without interpolation or resampling. Generated HTML and Plotly
 JS are not included in ZIPs. `P(...)` raw values are radians; `rad/(2π)` is
 navigation arithmetic, never an SFQ count.
 
-Future T1 parameters are recorded in `config/T1_PARAMS.env`, but this task has
-no T1, CBU, carry-chain, or DFF implementation. Those modes fail closed.
+T1 parameters are managed by `config/T1_PARAMS.env`. Independent T1 channels do
+not connect to one another; no carry-chain, CBU, or DFF is implemented.

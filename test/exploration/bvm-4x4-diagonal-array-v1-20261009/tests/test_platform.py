@@ -112,7 +112,7 @@ class DiagonalPlatformTests(unittest.TestCase):
         changed_t1["T1_L1"] = "99p"
         self.assertEqual(output["deck"], platform.render(case, stimulus, changed_t1,
                                                            platform.RUNS / "_TEST_PREVIEW")["deck"])
-        with self.assertRaisesRegex(platform.ConfigError, "only DIAGONAL_TERMINAL"):
+        with self.assertRaisesRegex(platform.ConfigError, "DIAGONAL_TERMINAL/T1_MODE=OFF"):
             platform.validate_config({**case, "OUTPUT_MODE": "DIAGONAL_T1_CHAIN"}, stimulus, t1)
 
     def test_focus_profile_stays_compact_and_keeps_required_state_diagnostics(self):
@@ -232,9 +232,64 @@ class DiagonalPlatformTests(unittest.TestCase):
         four_groups = platform.plot_layout_metrics(["V(A)", "P(B)", "I(C)", "X(D)"])
         self.assertEqual(two_groups["height_px"], 780)
         self.assertEqual(three_groups["height_px"], 1080)
-        self.assertEqual(four_groups["height_px"], 1100)
+        self.assertEqual(four_groups["height_px"], 1380)
         self.assertTrue(all(item["width_mode"] == "responsive_full_width"
                             for item in (two_groups, three_groups, four_groups)))
+
+    def _render_t1_array_case(self, clock_mode: str) -> dict:
+        case, stimulus, t1 = platform.load_config()
+        case.update({"CASE": f"T1_STATIC_{clock_mode}", "ROW_BITS": "1111", "COL_BITS": "1111",
+                     "SE_ENABLE_MASK": "ALL", "OUTPUT_MODE": "DIAGONAL_T1_INDEPENDENT",
+                     "T1_MODE": "ALL_INDEPENDENT", "CBU_MODE": "OFF", "CARRY_MODE": "NONE",
+                     "PROBE_PROFILE": "t1_array_focus", "FOCUS_DIAGONAL": "D3",
+                     "ROW_WL_WRITE_AMPLITUDE": "400u", "COL_BL_WRITE_AMPLITUDE": "400u",
+                     "ROW_WL_READ_AMPLITUDE": "400u", "COL_SE_READ_AMPLITUDE": "100u",
+                     "DT": "0.01p", "STOP": "250p",
+                     "SJTL_COUNT_D0": "1", "SJTL_COUNT_D1": "1,1", "SJTL_COUNT_D2": "1,1,1",
+                     "SJTL_COUNT_D3": "1,2,2,1", "SJTL_COUNT_D4": "1,1,1",
+                     "SJTL_COUNT_D5": "1,1", "SJTL_COUNT_D6": "1"})
+        t1["T1_CLK_MODE"] = clock_mode
+        platform.validate_config(case, stimulus, t1)
+        return platform.render(case, stimulus, t1, platform.RUNS / "_T1_TEST_PREVIEW")
+
+    def test_t1_tunable_source_default_is_canonical_body_equivalent(self):
+        _case, _stimulus, t1 = platform.load_config()
+        rendered, info = platform.render_t1_source(t1)
+        self.assertTrue(info["topology_equivalent"])
+        self.assertTrue(info["default_body_equivalent_to_canonical"])
+        self.assertEqual(set(info["parameters_consumed"]), set(platform.T1_INTERNAL_PARAM_KEYS))
+        self.assertIn(".subckt T1 I CLK S C N_BIAS1 N_BIAS2 N_BIAS3", rendered)
+        changed = dict(t1)
+        changed["T1_J1_AREA"] = "3.6"
+        changed_rendered, changed_info = platform.render_t1_source(changed)
+        self.assertTrue(changed_info["topology_equivalent"])
+        self.assertFalse(changed_info["default_body_equivalent_to_canonical"])
+        self.assertIn("B_J1 N2 0 jjmit area=3.6", changed_rendered)
+
+    def test_t1_array_static_topology_quiet_and_pulse_are_seven_independent_channels(self):
+        quiet = self._render_t1_array_case("QUIET")
+        pulse = self._render_t1_array_case("PULSE")
+        for output, mode in ((quiet, "QUIET"), (pulse, "PULSE")):
+            deck = output["deck"].splitlines()
+            self.assertEqual(output["static_qa"]["status"], "PASS")
+            self.assertEqual(output["static_qa"]["t1_count"], 7)
+            self.assertEqual(output["static_qa"]["terminal_count"], 0)
+            self.assertEqual(len([line for line in deck if line.startswith("XT1_D")]), 7)
+            self.assertEqual(len([line for line in deck if line.startswith("V_T1_LINK_D")]), 7)
+            self.assertEqual(len([line for line in deck if line.startswith("XSJTL_")]), 18)
+            self.assertEqual(len([line for line in deck if line.startswith("R_S_D")]), 7)
+            self.assertEqual(len([line for line in deck if line.startswith("R_C_D")]), 7)
+            self.assertFalse(any(line.startswith("R_TERM_D") for line in deck))
+            self.assertFalse(any("XCBU" in line or "XDFF" in line for line in deck))
+            self.assertEqual(output["probes"]["profile"], "t1_array_focus")
+            self.assertIn("V(S_D3)", {signal["label"] for signal in output["probes"]["signals"]})
+            if mode == "QUIET":
+                self.assertEqual(len([line for line in deck if line.startswith("R_CLK_QUIET_D")]), 7)
+                self.assertFalse(any(line.startswith("V_TRIG_CLK_D") for line in deck))
+            else:
+                self.assertEqual(len([line for line in deck if line.startswith("V_TRIG_CLK_D")]), 7)
+                self.assertEqual(len([line for line in deck if line.startswith("R_TRIG_CLK_D")]), 7)
+                self.assertFalse(any(line.startswith("R_CLK_QUIET_D") for line in deck))
 
     def test_raw_reader_allows_focus_subset_but_can_enforce_exact_registered_header(self):
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -246,6 +301,20 @@ class DiagonalPlatformTests(unittest.TestCase):
             self.assertEqual(len(header), 3)
             with self.assertRaisesRegex(platform.ConfigError, "undeclared probes"):
                 platform.read_raw(raw, {"V(DOUT_D3)"}, exact_header=True)
+
+    def test_t1_summary_identity_uses_raw_sha_after_analysis_field(self):
+        digest = "a" * 64
+        result = {"artifact_status": "VALID", "raw_sha256": digest,
+                  "physical_solve_count": 1}
+        qa = {"status": "PASS"}
+        t1_qa = {"status": "PASS", "raw_sha256_after_analysis": digest}
+        metrics = {"t1_array": {"raw_sha256": digest}}
+        platform._validate_t1_run_identity("A013_T1_ALL_QUIET", result, qa,
+                                           t1_qa, metrics, digest)
+        with self.assertRaisesRegex(platform.ConfigError, "QA/raw identity"):
+            platform._validate_t1_run_identity("A013_T1_ALL_QUIET", result, qa,
+                                               {"status": "PASS", "raw_sha256_after": digest},
+                                               metrics, digest)
 
 
 if __name__ == "__main__":

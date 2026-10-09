@@ -79,6 +79,41 @@ WINDOWS_PS = {
     "FINAL_READ_RESPONSE": (110.0, 250.0),
 }
 PROBE_PROFILE_ALIASES = {"diagonal_core": "compact", "diagonal_focus": "focus"}
+T1_ARRAY_BATCH_ID = "BVM4X4_T1_ALL_20261009"
+T1_ARRAY_ANALYSIS = SERIES / "analysis" / "t1-array-20261009"
+T1_ARRAY_PREFLIGHT = T1_ARRAY_ANALYSIS / "PREFLIGHT.md"
+T1_ARRAY_METRIC_SPEC = T1_ARRAY_ANALYSIS / "METRIC_SPEC.json"
+T1_ARRAY_SCOPE = T1_ARRAY_ANALYSIS / "WORK_UNIT.json"
+T1_ARRAY_STATIC_QA = T1_ARRAY_ANALYSIS / "STATIC_QA.json"
+T1_ARRAY_BATCH_MANIFEST = T1_ARRAY_ANALYSIS / "BATCH_MANIFEST.json"
+T1_ARRAY_RESULTS = T1_ARRAY_ANALYSIS / "T1_ARRAY_RESULTS.json"
+T1_ARRAY_TABLE = T1_ARRAY_ANALYSIS / "T1_ARRAY_TABLE.csv"
+T1_ARRAY_RUN_MATRIX = (
+    ("A013_T1_ALL_QUIET", "T1_ALL_QUIET", "1111", "1111", "QUIET", [1, 2, 3, 4, 3, 2, 1]),
+    ("A014_T1_ALL_CLOCK", "T1_ALL_CLOCK", "1111", "1111", "PULSE", [1, 2, 3, 4, 3, 2, 1]),
+    ("A015_T1_PAPER_QUIET", "T1_PAPER_QUIET", "1101", "1101", "QUIET", [1, 1, 1, 3, 1, 1, 1]),
+    ("A016_T1_PAPER_CLOCK", "T1_PAPER_CLOCK", "1101", "1101", "PULSE", [1, 1, 1, 3, 1, 1, 1]),
+)
+T1_INTERNAL_PARAM_KEYS = (
+    tuple(f"T1_J{index}_AREA" for index in range(1, 12)) +
+    tuple(f"T1_RB{index}" for index in range(1, 4)) +
+    tuple(f"T1_RJ{index}" for index in range(3, 12)) +
+    tuple(f"T1_L{index}" for index in range(1, 18))
+)
+T1_JJ_COMPONENTS = tuple(f"B_J{index}" for index in range(1, 12))
+T1_CRITICAL_JJS = ("B_J1", "B_J2", "B_J9", "B_J10", "B_J11")
+T1_WINDOWS_PS = {
+    "PRE_CLOCK": (110.0, 170.0),
+    "CLOCK_1": (170.0, 220.0),
+    "CLOCK_2": (220.0, 250.0),
+    "TOTAL": (110.0, 250.0),
+}
+T1_CANDIDATE_MORPHOLOGY_SPEC = {
+    "method": "local_voltage_extrema_relative_threshold",
+    "relative_threshold": 0.25,
+    "minimum_peak_separation_ps": 1.0,
+    "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts",
+}
 
 
 class ConfigError(ValueError):
@@ -91,6 +126,12 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1 << 20), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def _git_output(*args: str) -> str:
+    completed = subprocess.run(["git", *args], cwd=REPO, capture_output=True,
+                               text=True, check=True)
+    return completed.stdout.strip()
 
 
 def _json(path: Path, value: Any) -> None:
@@ -164,6 +205,58 @@ def _profile(case: dict[str, str]) -> str:
     return PROBE_PROFILE_ALIASES.get(value, value)
 
 
+def _spice_quantity(value: str) -> Decimal:
+    match = re.fullmatch(r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*([A-Za-z]*)\s*", value)
+    if not match:
+        raise ConfigError(f"invalid SPICE numeric value: {value!r}")
+    suffix = match.group(2).lower()
+    scales = {"": Decimal(1), "t": Decimal("1e12"), "g": Decimal("1e9"),
+              "meg": Decimal("1e6"), "k": Decimal("1e3"), "m": Decimal("1e-3"),
+              "u": Decimal("1e-6"), "n": Decimal("1e-9"), "p": Decimal("1e-12"),
+              "f": Decimal("1e-15")}
+    if suffix not in scales:
+        raise ConfigError(f"unsupported SPICE suffix in {value!r}")
+    result = Decimal(match.group(1)) * scales[suffix]
+    if not result.is_finite():
+        raise ConfigError(f"non-finite SPICE value: {value!r}")
+    return result
+
+
+def validate_t1_params(t1_params: dict[str, str]) -> None:
+    required = set(T1_INTERNAL_PARAM_KEYS) | {
+        "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_BIAS3_SOURCE",
+        "T1_CLK_MODE", "T1_CLK_START", "T1_CLK_PERIOD", "T1_CLK_AMPLITUDE",
+        "T1_CLK_RISE", "T1_CLK_WIDTH", "T1_CLK_FALL", "T1_CLK_SERIES_R",
+        "T1_CLK_QUIET_R", "T1_R_S", "T1_R_C",
+    }
+    missing = sorted(required - set(t1_params))
+    if missing:
+        raise ConfigError(f"T1_PARAMS.env missing keys: {missing}")
+    if t1_params["T1_CLK_MODE"] not in {"QUIET", "PULSE"}:
+        raise ConfigError("T1_CLK_MODE must be QUIET or PULSE")
+    if t1_params["T1_BIAS3_SOURCE"] not in {"VOLTAGE", "CURRENT"}:
+        raise ConfigError("T1_BIAS3_SOURCE must be VOLTAGE or CURRENT")
+    positive_keys = set(T1_INTERNAL_PARAM_KEYS) | {
+        "T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_CLK_AMPLITUDE",
+        "T1_CLK_PERIOD", "T1_CLK_RISE", "T1_CLK_WIDTH", "T1_CLK_FALL",
+        "T1_CLK_SERIES_R", "T1_CLK_QUIET_R", "T1_R_S", "T1_R_C",
+    }
+    for key in sorted(positive_keys):
+        try:
+            value = _spice_quantity(t1_params[key])
+        except ConfigError as exc:
+            raise ConfigError(f"{key}: {exc}") from exc
+        if value <= 0:
+            raise ConfigError(f"{key} must be positive")
+    start = _time_ps(t1_params["T1_CLK_START"])
+    period = _time_ps(t1_params["T1_CLK_PERIOD"])
+    rise = _time_ps(t1_params["T1_CLK_RISE"])
+    width = _time_ps(t1_params["T1_CLK_WIDTH"])
+    fall = _time_ps(t1_params["T1_CLK_FALL"])
+    if start < 0 or rise + width + fall >= period:
+        raise ConfigError("T1 pulse start must be nonnegative and rise+width+fall must be shorter than period")
+
+
 def _sjtl_counts(case: dict[str, str], diagonal: str) -> tuple[int, ...]:
     key = f"SJTL_COUNT_{diagonal}"
     text = case.get(key, "")
@@ -232,14 +325,19 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str],
         raise ConfigError("this registered platform requires SE_GATE_MODE=CROSSPOINT")
     if case.get("OUTPUT_MODE") not in {"DIAGONAL_TERMINAL", "DIAGONAL_T1_INDEPENDENT", "DIAGONAL_T1_CHAIN"}:
         raise ConfigError("unknown OUTPUT_MODE")
-    if case.get("OUTPUT_MODE") != "DIAGONAL_TERMINAL" or case.get("T1_MODE") != "OFF":
-        raise ConfigError("only DIAGONAL_TERMINAL with T1_MODE=OFF is implemented; future T1 modes fail closed")
+    output_mode, t1_mode = case.get("OUTPUT_MODE"), case.get("T1_MODE")
+    if not ((output_mode == "DIAGONAL_TERMINAL" and t1_mode == "OFF") or
+            (output_mode == "DIAGONAL_T1_INDEPENDENT" and t1_mode == "ALL_INDEPENDENT")):
+        raise ConfigError("use DIAGONAL_TERMINAL/T1_MODE=OFF or DIAGONAL_T1_INDEPENDENT/T1_MODE=ALL_INDEPENDENT")
     if case.get("CBU_MODE") != "OFF":
         raise ConfigError("CBU/JTL/DFF carry modes are reserved and not implemented in this experiment")
     if case.get("CARRY_MODE", "NONE") != "NONE":
         raise ConfigError("future carry-mode interfaces are reserved and fail closed")
-    if _profile(case) not in {"compact", "focus", "debug"}:
-        raise ConfigError("PROBE_PROFILE must be compact, focus, or debug")
+    allowed_profiles = {"compact", "focus", "debug"}
+    if output_mode == "DIAGONAL_T1_INDEPENDENT":
+        allowed_profiles.add("t1_array_focus")
+    if _profile(case) not in allowed_profiles:
+        raise ConfigError(f"PROBE_PROFILE must be one of {sorted(allowed_profiles)}")
     if case.get("FOCUS_DIAGONAL") not in DIAGONALS:
         raise ConfigError("FOCUS_DIAGONAL must be D0..D6")
     for key in ("ROW_BITS", "COL_BITS"):
@@ -284,8 +382,7 @@ def validate_config(case: dict[str, str], stimulus: dict[str, str],
     for (_, _, prev_end), (stage, start, _) in zip(schedule, schedule[1:]):
         if start < prev_end:
             raise ConfigError(f"stimulus overlap before {stage}")
-    if not {"T1_BIAS1", "T1_CLK_MODE", "T1_J1_AREA", "T1_L1", "T1_RB1"} <= set(t1_params):
-        raise ConfigError("T1_PARAMS.env is incomplete")
+    validate_t1_params(t1_params)
 
 
 def verify_sources() -> dict[str, dict[str, str]]:
@@ -300,13 +397,86 @@ def verify_sources() -> dict[str, dict[str, str]]:
     return records
 
 
+def render_t1_source(t1_params: dict[str, str]) -> tuple[str, dict[str, Any]]:
+    """Build a run-local T1 source from the canonical body and effective T1_PARAMS."""
+    canonical_path = REPO / SOURCE_PATHS["T1_REFERENCE"]
+    canonical_text = canonical_path.read_text(encoding="utf-8")
+    rendered_lines = []
+    used: set[str] = set()
+    for raw_line in canonical_text.splitlines():
+        stripped = raw_line.strip()
+        parts = stripped.split()
+        if not parts or stripped.startswith("*"):
+            rendered_lines.append(raw_line)
+            continue
+        element = parts[0].upper()
+        key = None
+        if re.fullmatch(r"L\d+", element):
+            key = f"T1_{element}"
+            if key in t1_params:
+                parts[-1] = t1_params[key]
+        elif re.fullmatch(r"B_J\d+", element):
+            key = f"T1_{element[2:]}_AREA"
+            if key in t1_params:
+                parts[-1] = f"area={t1_params[key]}"
+        elif re.fullmatch(r"RB\d+", element):
+            key = f"T1_{element}"
+            if key in t1_params:
+                parts[-1] = t1_params[key]
+        elif re.fullmatch(r"R_J\d+", element):
+            key = f"T1_RJ{element[3:]}"
+            if key in t1_params:
+                parts[-1] = t1_params[key]
+        if key and key in t1_params:
+            used.add(key)
+            rendered_lines.append(" ".join(parts))
+        else:
+            rendered_lines.append(raw_line)
+    if used != set(T1_INTERNAL_PARAM_KEYS):
+        raise ConfigError("T1 tunable renderer did not consume the complete internal parameter set: "
+                          f"missing={sorted(set(T1_INTERNAL_PARAM_KEYS) - used)}")
+    rendered_text = "\n".join(rendered_lines) + "\n"
+
+    def subckt_body(text: str, *, topology_only: bool = False) -> list[str]:
+        body = []
+        inside = False
+        for line in text.splitlines():
+            stripped = line.strip()
+            if not stripped or stripped.startswith("*"):
+                continue
+            parts = stripped.split()
+            if parts[0].lower() == ".subckt" and len(parts) > 1 and parts[1].upper() == "T1":
+                inside = True
+            if inside:
+                if topology_only and parts[0].upper() not in {".SUBCKT", ".ENDS"} and re.match(r"^[A-Z_]+\d+$", parts[0].upper()):
+                    parts[-1] = "<VALUE>"
+                body.append(" ".join(parts).upper())
+            if inside and parts[0].lower() == ".ends":
+                break
+        return body
+
+    if subckt_body(canonical_text, topology_only=True) != subckt_body(rendered_text, topology_only=True):
+        raise ConfigError("rendered T1 changed canonical nodes, device names, or pin order")
+    rendered_sha = hashlib.sha256(rendered_text.encode("utf-8")).hexdigest()
+    return rendered_text, {
+        "path": "sources/t1_cell_tunable.cir",
+        "canonical_path": SOURCE_PATHS["T1_REFERENCE"],
+        "canonical_sha256": sha256(canonical_path),
+        "rendered_sha256": rendered_sha,
+        "topology_equivalent": True,
+        "default_body_equivalent_to_canonical": subckt_body(canonical_text) == subckt_body(rendered_text),
+        "parameters_consumed": sorted(used),
+    }
+
+
 def _source_manifest(sources: dict[str, dict[str, str]]) -> dict[str, Any]:
     return {"schema": "bvm-4x4-diagonal-source-manifest-v1",
             "canonical_sources_modified": False, "sources": sources,
             "scientific_interpretation_performed": False}
 
 
-def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str]) -> dict[str, Any]:
+def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
+                      t1_params: dict[str, str] | None = None) -> dict[str, Any]:
     cells = []
     for cell in CELLS:
         row, col = int(cell[1]), int(cell[3])
@@ -327,26 +497,45 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str]) 
             "post_cb_count": len(cells_in_diagonal),
             "sjtl_instances": _sjtl_plan(case, name),
             "cb_instances": [f"XCB_{name}_L{level}" for level in range(1, len(cells_in_diagonal) + 1)],
-            "output_node": f"DOUT_{name}", "termination_ohm": 2,
+            "output_node": f"DOUT_{name}",
+            "termination_ohm": None if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT" else 2,
         }
-    return {"schema": "bvm-4x4-diagonal-topology-v2", "rows": 4, "columns": 4,
-            "drive_mode": "SHARED", "se_topology": "CELL", "se_gate_mode": "CROSSPOINT",
-            "cells": cells,
-            "diagonals": diagonal_records,
-            "source_sha256": {role: item["sha256"] for role, item in sources.items()},
-            "output_mode": "DIAGONAL_TERMINAL", "t1_mode": "OFF", "cbu_mode": "OFF",
-            "merge_semantics": "serial shared electrical nodes; no MERGE subcircuit",
-            "sJTL_parameter_semantics": "SJTL_COUNT_Dn lists serial sJTL instances after each MERGE level and before its single CB; zero connects MERGE directly to CB",
-            "effective_sjtl_counts": {name: list(_sjtl_counts(case, name)) for name in DIAGONALS},
-            "effective_bus_source_setpoints": {
-                "ROW_WL_WRITE_AMPLITUDE": case["ROW_WL_WRITE_AMPLITUDE"],
-                "COL_BL_WRITE_AMPLITUDE": case["COL_BL_WRITE_AMPLITUDE"],
-                "ROW_WL_READ_AMPLITUDE": case["ROW_WL_READ_AMPLITUDE"],
-                "COL_SE_READ_AMPLITUDE": case["COL_SE_READ_AMPLITUDE"],
-                "semantics": "shared bus source total setpoints; per-cell branch currents are measured from raw",
-            },
-            "probe_profile": _profile(case),
-            "scientific_interpretation_performed": False}
+    result = {"schema": "bvm-4x4-diagonal-topology-v2", "rows": 4, "columns": 4,
+              "drive_mode": "SHARED", "se_topology": "CELL", "se_gate_mode": "CROSSPOINT",
+              "cells": cells,
+              "diagonals": diagonal_records,
+              "source_sha256": {role: item["sha256"] for role, item in sources.items()},
+              "output_mode": case["OUTPUT_MODE"], "t1_mode": case["T1_MODE"], "cbu_mode": "OFF",
+              "merge_semantics": "serial shared electrical nodes; no MERGE subcircuit",
+              "sJTL_parameter_semantics": "SJTL_COUNT_Dn lists serial sJTL instances after each MERGE level and before its single CB; zero connects MERGE directly to CB",
+              "effective_sjtl_counts": {name: list(_sjtl_counts(case, name)) for name in DIAGONALS},
+              "effective_bus_source_setpoints": {
+                  "ROW_WL_WRITE_AMPLITUDE": case["ROW_WL_WRITE_AMPLITUDE"],
+                  "COL_BL_WRITE_AMPLITUDE": case["COL_BL_WRITE_AMPLITUDE"],
+                  "ROW_WL_READ_AMPLITUDE": case["ROW_WL_READ_AMPLITUDE"],
+                  "COL_SE_READ_AMPLITUDE": case["COL_SE_READ_AMPLITUDE"],
+                  "semantics": "shared bus source total setpoints; per-cell branch currents are measured from raw",
+              },
+              "probe_profile": _profile(case),
+              "scientific_interpretation_performed": False}
+    if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT":
+        result["t1_channels"] = {name: {
+            "instance": f"XT1_{name}", "input_node": f"T1_I_{name}",
+            "link_element": f"V_T1_LINK_{name}", "clock_node": f"CLK_{name}",
+            "sum_node": f"S_{name}", "carry_node": f"C_{name}",
+            "independent_bias_nodes": [f"N_BIAS{index}_{name}" for index in range(1, 4)],
+            "parallel_terminal_ohm": None,
+        } for name in DIAGONALS}
+        result["t1_channel_count"] = 7
+        result["t1_clock_mode"] = (t1_params or {}).get("T1_CLK_MODE", "UNKNOWN")
+        result["t1_biases"] = {key: (t1_params or {}).get(key) for key in
+                               ("T1_BIAS1", "T1_BIAS2", "T1_BIAS3", "T1_BIAS3_SOURCE")}
+        result["t1_output_loads_ohm"] = {
+            "S": (t1_params or {}).get("T1_R_S"), "C": (t1_params or {}).get("T1_R_C")}
+        result["t1_clock_parameters"] = {key: (t1_params or {}).get(key) for key in (
+            "T1_CLK_START", "T1_CLK_PERIOD", "T1_CLK_AMPLITUDE", "T1_CLK_RISE",
+            "T1_CLK_WIDTH", "T1_CLK_FALL", "T1_CLK_SERIES_R", "T1_CLK_QUIET_R")}
+    return result
 
 
 def _spice_include(run_dir: Path, relpath: str) -> str:
@@ -446,6 +635,60 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
     profile = _profile(case)
     focus_diagonal = case["FOCUS_DIAGONAL"]
     focus_cells = DIAGONALS[focus_diagonal]
+
+    if profile == "t1_array_focus":
+        clock_mode = topology.get("t1_clock_mode")
+        for diagonal in DIAGONALS:
+            t1 = f"XT1_{diagonal}"
+            add(f"V(DOUT_{diagonal})", f"t1_input:{diagonal}:upstream", "V",
+                node=f"DOUT_{diagonal}", diagonal=diagonal)
+            add(f"V(T1_I_{diagonal})", f"t1_input:{diagonal}:loaded_input", "V",
+                node=f"T1_I_{diagonal}", diagonal=diagonal)
+            add(f"I(V_T1_LINK_{diagonal})", f"t1_input:{diagonal}:link_current", "A",
+                element=f"V_T1_LINK_{diagonal}", diagonal=diagonal,
+                direction=f"DOUT_{diagonal} to T1_I_{diagonal}")
+            add(f"V(S_{diagonal})", f"t1_output:{diagonal}:sum", "V",
+                node=f"S_{diagonal}", diagonal=diagonal)
+            add(f"I(R_S_{diagonal})", f"t1_load:{diagonal}:sum", "A",
+                element=f"R_S_{diagonal}", diagonal=diagonal, direction="S node to ground")
+            add(f"V(C_{diagonal})", f"t1_output:{diagonal}:carry", "V",
+                node=f"C_{diagonal}", diagonal=diagonal)
+            add(f"I(R_C_{diagonal})", f"t1_load:{diagonal}:carry", "A",
+                element=f"R_C_{diagonal}", diagonal=diagonal, direction="C node to ground")
+            add(f"V(CLK_{diagonal})", f"t1_clock:{diagonal}:loaded", "V",
+                node=f"CLK_{diagonal}", diagonal=diagonal)
+            if clock_mode == "PULSE":
+                add(f"V(CLK_RAW_{diagonal})", f"t1_clock:{diagonal}:source", "V",
+                    node=f"CLK_RAW_{diagonal}", diagonal=diagonal)
+                add(f"I(R_TRIG_CLK_{diagonal})", f"t1_clock:{diagonal}:branch_current", "A",
+                    element=f"R_TRIG_CLK_{diagonal}", diagonal=diagonal)
+            elif clock_mode == "QUIET":
+                add(f"I(R_CLK_QUIET_{diagonal})", f"t1_clock:{diagonal}:quiet_branch", "A",
+                    element=f"R_CLK_QUIET_{diagonal}", diagonal=diagonal)
+            else:
+                raise ConfigError(f"unknown T1 clock mode in topology manifest: {clock_mode!r}")
+            for index in range(1, 4):
+                source = ("I_BIAS3" if index == 3 and
+                          topology.get("t1_biases", {}).get("T1_BIAS3_SOURCE") == "CURRENT"
+                          else f"V_BIAS{index}")
+                add(f"I({source}_{diagonal})", f"t1_bias:{diagonal}", "A",
+                    element=f"{source}_{diagonal}", diagonal=diagonal)
+            cb = f"XCB_{diagonal}_L{len(DIAGONALS[diagonal])}"
+            for jj in ("BJ1", "BJ2"):
+                add(f"P({jj}|{cb})", f"t1_upstream_cb:{diagonal}", "rad",
+                    instance=cb, element=jj, diagonal=diagonal)
+                add(f"V({jj}|{cb})", f"t1_upstream_cb:{diagonal}", "V",
+                    instance=cb, element=jj, diagonal=diagonal)
+            for jj in T1_CRITICAL_JJS:
+                add(f"P({jj}|{t1})", f"t1_internal:{diagonal}", "rad",
+                    instance=t1, element=jj, diagonal=diagonal)
+                add(f"V({jj}|{t1})", f"t1_internal:{diagonal}", "V",
+                    instance=t1, element=jj, diagonal=diagonal)
+        return {"schema": "bvm-4x4-t1-array-probe-manifest-v1",
+                "profile": profile, "focus_diagonal": focus_diagonal,
+                "signal_count": len(signals), "raw_phase_unit": "P(...) radians",
+                "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
+                "signals": signals, "scientific_interpretation_performed": False}
 
     if profile == "compact":
         # Shared source-current totals plus cell-local SE source currents.
@@ -582,11 +825,22 @@ def make_probe_manifest(case: dict[str, str], topology: dict[str, Any]) -> dict[
 def render(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str, str],
            run_dir: Path) -> dict[str, Any]:
     sources = verify_sources()
-    topo = topology_manifest(sources, case)
+    t1_source_text = None
+    t1_source_info = None
+    if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT":
+        t1_source_text, t1_source_info = render_t1_source(t1_params)
+        sources["T1_REFERENCE"]["mode"] = "CANONICAL_BASE_FOR_TUNABLE_RENDER"
+        sources["T1_RENDERED"] = {"path": t1_source_info["path"],
+                                  "sha256": t1_source_info["rendered_sha256"],
+                                  "mode": "RUN_LOCAL_TUNABLE_COPY"}
+    topo = topology_manifest(sources, case, t1_params)
     stimulus_text, drivers = render_stimulus(case, stimulus)
     probes = make_probe_manifest(case, topo)
+    t1_active = case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT"
     lines = [
-        "* BVM 4x4 diagonal collection; canonical BVM/QB/sJTL/CB; T1_MODE=OFF.",
+        ("* BVM 4x4 diagonal collection; canonical BVM/QB/sJTL/CB; T1_MODE=OFF."
+         if not t1_active else
+         "* BVM 4x4 diagonal collection; seven independent canonical-topology T1 channels."),
         "* Cell WL/BL are physically shared buses; SE is cell-local.",
         ".include " + _spice_include(run_dir, SOURCE_PATHS["JJMIT"]),
         ".include " + _spice_include(run_dir, SOURCE_PATHS["BVM"]),
@@ -595,6 +849,9 @@ def render(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str, 
         ".include " + _spice_include(run_dir, SOURCE_PATHS["CB"]),
         ".include stimulus.inc", "",
     ]
+    if t1_active:
+        lines.append(".include sources/t1_cell_tunable.cir")
+        lines.append("")
     for cell in CELLS:
         row, col = int(cell[1]), int(cell[3])
         diag = next(name for name, members in DIAGONALS.items() if cell in members)
@@ -608,21 +865,46 @@ def render(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str, 
             next_node = (f"MERGE_{name}_L{level + 1}" if level < len(cells)
                          else f"DOUT_{name}")
             lines.append(f"XCB_{name}_L{level} {_cb_input_node(case, name, level)} {next_node} CB")
-        lines.append(f"R_TERM_{name} DOUT_{name} 0 2")
+        if not t1_active:
+            lines.append(f"R_TERM_{name} DOUT_{name} 0 2")
+    if t1_active:
+        lines.extend(("", "* Seven isolated bias/clock/output networks; DOUT loads only its paired T1."))
+        for diagonal in DIAGONALS:
+            for index in (1, 2):
+                lines.append(f"V_BIAS{index}_{diagonal} N_BIAS{index}_{diagonal} 0 DC {t1_params[f'T1_BIAS{index}']}")
+            bias3_source = t1_params["T1_BIAS3_SOURCE"]
+            if bias3_source == "VOLTAGE":
+                lines.append(f"V_BIAS3_{diagonal} N_BIAS3_{diagonal} 0 DC {t1_params['T1_BIAS3']}")
+            else:
+                lines.append(f"I_BIAS3_{diagonal} 0 N_BIAS3_{diagonal} DC {t1_params['T1_BIAS3']}")
+            lines.append(f"R_S_{diagonal} S_{diagonal} 0 {t1_params['T1_R_S']}")
+            lines.append(f"R_C_{diagonal} C_{diagonal} 0 {t1_params['T1_R_C']}")
+            if t1_params["T1_CLK_MODE"] == "QUIET":
+                lines.append(f"R_CLK_QUIET_{diagonal} CLK_{diagonal} 0 {t1_params['T1_CLK_QUIET_R']}")
+            else:
+                lines.append(f"V_TRIG_CLK_{diagonal} CLK_RAW_{diagonal} 0 PULSE(0 {t1_params['T1_CLK_AMPLITUDE']} {t1_params['T1_CLK_START']} {t1_params['T1_CLK_RISE']} {t1_params['T1_CLK_FALL']} {t1_params['T1_CLK_WIDTH']} {t1_params['T1_CLK_PERIOD']})")
+                lines.append(f"R_TRIG_CLK_{diagonal} CLK_RAW_{diagonal} CLK_{diagonal} {t1_params['T1_CLK_SERIES_R']}")
+            lines.append(f"V_T1_LINK_{diagonal} DOUT_{diagonal} T1_I_{diagonal} 0")
+            lines.append(f"XT1_{diagonal} T1_I_{diagonal} CLK_{diagonal} S_{diagonal} C_{diagonal} N_BIAS1_{diagonal} N_BIAS2_{diagonal} N_BIAS3_{diagonal} T1")
     lines.extend(("", "* Registered probes; P is raw radians."))
     lines.extend(f".print {entry['label']}" for entry in probes["signals"])
     lines.extend((f".tran {case['DT']} {case['STOP']}", ".end"))
     deck = "\n".join(lines) + "\n"
-    qa = static_validate(case, stimulus, t1_params, deck, stimulus_text, drivers, topo, probes)
+    qa = static_validate(case, stimulus, t1_params, deck, stimulus_text, drivers, topo, probes,
+                         t1_source_text=t1_source_text, t1_source_info=t1_source_info)
     return {"deck": deck, "stimulus_text": stimulus_text, "drivers": drivers,
-            "topology": topo, "probes": probes, "sources": sources, "static_qa": qa}
+            "topology": topo, "probes": probes, "sources": sources, "static_qa": qa,
+            "t1_source_text": t1_source_text, "t1_source_info": t1_source_info}
 
 
 def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str, str],
                     deck: str, stimulus_text: str, drivers: list[dict[str, Any]],
-                    topo: dict[str, Any], probes: dict[str, Any]) -> dict[str, Any]:
+                    topo: dict[str, Any], probes: dict[str, Any], *,
+                    t1_source_text: str | None = None,
+                    t1_source_info: dict[str, Any] | None = None) -> dict[str, Any]:
     lines = deck.splitlines()
     stimulus_lines = [line for line in stimulus_text.splitlines() if line.startswith("I_")]
+    t1_active = case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT"
     expected_pin_orders = {
         "BVM": ("WL", "BL", "SE", "SL"),
         "QB": ("IN", "OUT"),
@@ -649,14 +931,17 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
     cb = [line for line in lines if line.startswith("XCB_")]
     terms = [line for line in lines if line.startswith("R_TERM_")]
     expected_sjtl_count = sum(sum(_sjtl_counts(case, name)) for name in DIAGONALS)
-    if (len(bvm), len(qb), len(sjtl), len(cb), len(terms)) != (16, 16, expected_sjtl_count, 16, 7):
-        raise ConfigError(f"expected 16 BVM, 16 QB, {expected_sjtl_count} configured sJTL, 16 CB and 7 terminal loads")
+    expected_terminal_count = 0 if t1_active else 7
+    if (len(bvm), len(qb), len(sjtl), len(cb), len(terms)) != (
+            16, 16, expected_sjtl_count, 16, expected_terminal_count):
+        raise ConfigError(f"expected 16 BVM, 16 QB, {expected_sjtl_count} configured sJTL, 16 CB and {expected_terminal_count} terminals")
     if len(set(DIAGONALS)) != 7 or sorted(cell for group in DIAGONALS.values() for cell in group) != sorted(CELLS):
         raise ConfigError("diagonal mapping has duplicate or missing cells")
-    if any(any(token in line for token in ("XT1 ", "XCBU", "XDFF", "V_BIAS", "R_CLK")) for line in lines):
-        raise ConfigError("T1/CBU/DFF/clock hardware must not appear in terminal mode")
-    if any("t1_cell.cir" in line for line in lines):
-        raise ConfigError("T1_MODE=OFF forbids the canonical T1 include")
+    if not t1_active:
+        if any(any(token in line for token in ("XT1 ", "XCBU", "XDFF", "V_BIAS", "R_CLK")) for line in lines):
+            raise ConfigError("T1/CBU/DFF/clock hardware must not appear in terminal mode")
+        if any("t1_cell" in line.lower() for line in lines):
+            raise ConfigError("T1_MODE=OFF forbids a T1 include")
     model_include = next((i for i, line in enumerate(lines)
                           if line.lower().endswith("circuits/models/jjmit.cir")), None)
     component_includes = [i for i, line in enumerate(lines)
@@ -664,6 +949,12 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
                                  for key in ("BVM", "QB", "SJTL", "CB"))]
     if model_include is None or len(component_includes) != 4 or model_include > min(component_includes):
         raise ConfigError("shared jjmit model must precede all four direct canonical includes")
+    if t1_active:
+        t1_include_indices = [i for i, line in enumerate(lines)
+                              if line.strip().lower() == ".include sources/t1_cell_tunable.cir"]
+        if (len(t1_include_indices) != 1 or t1_include_indices[0] <= model_include or
+                t1_source_text is None or not t1_source_info or not t1_source_info.get("topology_equivalent")):
+            raise ConfigError("seven-T1 mode needs one model-ordered tunable-source snapshot include")
     expected_bvm = {f"XBVM_{cell} WL_R{cell[1]} BL_C{cell[3]} SE_{cell} SL_{cell} BVM" for cell in CELLS}
     if set(bvm) != expected_bvm:
         raise ConfigError("BVM port map or shared WL/BL/cell-SE node is wrong")
@@ -678,11 +969,69 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
             for stage in (item for item in _sjtl_plan(case, name) if item["level"] == level):
                 expected_sjtl.add(f"{stage['instance']} {stage['input_node']} {stage['output_node']} sJTL")
             expected_cb.add(f"XCB_{name}_L{level} {_cb_input_node(case, name, level)} {next_node} CB")
-        expected_terms.add(f"R_TERM_{name} DOUT_{name} 0 2")
     if set(qb) != expected_qb or set(sjtl) != expected_sjtl or set(cb) != expected_cb:
         raise ConfigError("QB/serial-MERGE/sJTL/CB wiring differs from the registered diagonal map")
-    if set(terms) != expected_terms or len({line.split()[1] for line in terms}) != 7:
-        raise ConfigError("each DOUT must have its own 2-ohm terminal")
+    if not t1_active:
+        expected_terms = {f"R_TERM_{name} DOUT_{name} 0 2" for name in DIAGONALS}
+        if set(terms) != expected_terms or len({line.split()[1] for line in terms}) != 7:
+            raise ConfigError("each DOUT must have its own 2-ohm terminal")
+    else:
+        if terms:
+            raise ConfigError("T1 load mode forbids parallel 2-ohm DOUT terminal loads")
+        if any(any(token in line for token in ("XCBU", "XDFF", "XJTL_")) for line in lines):
+            raise ConfigError("T1 independent mode does not allow CBU, DFF, or additional JTL instances")
+        t1_lines = [line for line in lines if line.startswith("XT1_D")]
+        expected_t1_lines = {
+            f"XT1_{name} T1_I_{name} CLK_{name} S_{name} C_{name} "
+            f"N_BIAS1_{name} N_BIAS2_{name} N_BIAS3_{name} T1" for name in DIAGONALS}
+        if len(t1_lines) != 7 or set(t1_lines) != expected_t1_lines:
+            raise ConfigError("expected exactly seven independently pinned T1 instances")
+        expected_links = {f"V_T1_LINK_{name} DOUT_{name} T1_I_{name} 0" for name in DIAGONALS}
+        links = {line for line in lines if line.startswith("V_T1_LINK_")}
+        if links != expected_links:
+            raise ConfigError("each DOUT must feed only its matching T1_I through a zero-volt link")
+        expected_s_loads = {f"R_S_{name} S_{name} 0 {t1_params['T1_R_S']}" for name in DIAGONALS}
+        expected_c_loads = {f"R_C_{name} C_{name} 0 {t1_params['T1_R_C']}" for name in DIAGONALS}
+        if {line for line in lines if line.startswith("R_S_D")} != expected_s_loads:
+            raise ConfigError("each T1 Sum must have exactly one configured independent S load")
+        if {line for line in lines if line.startswith("R_C_D")} != expected_c_loads:
+            raise ConfigError("each T1 Carry must have exactly one configured independent C load")
+        for index in (1, 2, 3):
+            prefix = "V_BIAS" if index != 3 or t1_params["T1_BIAS3_SOURCE"] == "VOLTAGE" else "I_BIAS"
+            expected_bias = set()
+            for name in DIAGONALS:
+                node = f"N_BIAS{index}_{name}"
+                value = t1_params[f"T1_BIAS{index}"]
+                if prefix.startswith("V"):
+                    expected_bias.add(f"V_BIAS{index}_{name} {node} 0 DC {value}")
+                else:
+                    expected_bias.add(f"I_BIAS{index}_{name} 0 {node} DC {value}")
+            actual_bias = {line for line in lines
+                           if line.startswith((f"V_BIAS{index}_D", f"I_BIAS{index}_D"))}
+            if actual_bias != expected_bias:
+                raise ConfigError(f"bias source set {index} is not seven independent configured sources")
+        clock_mode = t1_params["T1_CLK_MODE"]
+        if clock_mode == "QUIET":
+            expected_clock = {f"R_CLK_QUIET_{name} CLK_{name} 0 {t1_params['T1_CLK_QUIET_R']}" for name in DIAGONALS}
+            actual_clock = {line for line in lines if line.startswith("R_CLK_QUIET_")}
+            if actual_clock != expected_clock or any("TRIG_CLK" in line for line in lines):
+                raise ConfigError("QUIET mode needs seven independent 5-ohm clock clamps and no pulse sources")
+        else:
+            expected_sources = {f"V_TRIG_CLK_{name} CLK_RAW_{name} 0 PULSE(0 {t1_params['T1_CLK_AMPLITUDE']} {t1_params['T1_CLK_START']} {t1_params['T1_CLK_RISE']} {t1_params['T1_CLK_FALL']} {t1_params['T1_CLK_WIDTH']} {t1_params['T1_CLK_PERIOD']})" for name in DIAGONALS}
+            expected_series = {f"R_TRIG_CLK_{name} CLK_RAW_{name} CLK_{name} {t1_params['T1_CLK_SERIES_R']}" for name in DIAGONALS}
+            if ({line for line in lines if line.startswith("V_TRIG_CLK_")} != expected_sources or
+                    {line for line in lines if line.startswith("R_TRIG_CLK_")} != expected_series or
+                    any("R_CLK_QUIET" in line for line in lines)):
+                raise ConfigError("PULSE mode needs seven independent identical trigger/series branches and no quiet shunts")
+        node_sets = {
+            "T1_I": {f"T1_I_{name}" for name in DIAGONALS},
+            "CLK": {f"CLK_{name}" for name in DIAGONALS},
+            "S": {f"S_{name}" for name in DIAGONALS},
+            "C": {f"C_{name}" for name in DIAGONALS},
+            "BIAS": {f"N_BIAS{index}_{name}" for index in (1, 2, 3) for name in DIAGONALS},
+        }
+        if any(len(nodes) != (21 if key == "BIAS" else 7) for key, nodes in node_sets.items()):
+            raise ConfigError("external T1 inputs, clocks, outputs, and bias nodes must be independent")
     if {line.split()[0] for line in stimulus_lines if line.startswith("I_WL_R")} != {f"I_WL_R{r}" for r in range(1,5)}:
         raise ConfigError("shared WL source count must be four")
     if {line.split()[0] for line in stimulus_lines if line.startswith("I_BL_C")} != {f"I_BL_C{c}" for c in range(1,5)}:
@@ -710,7 +1059,7 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
     if probes["profile"] == "focus" and probes["focus_diagonal"] not in DIAGONALS:
         raise ConfigError("focus diagonal must be D0..D6")
     source_shas = verify_sources()
-    return {"schema": "bvm-4x4-diagonal-static-qa-v2", "status": "PASS",
+    result = {"schema": "bvm-4x4-diagonal-static-qa-v2", "status": "PASS",
             "physical_solve_count": 0, "bvm_count": 16, "qb_count": 16,
             "sjtl_count": expected_sjtl_count,
             "sjtl_count_by_diagonal": {name: list(_sjtl_counts(case, name)) for name in DIAGONALS},
@@ -721,13 +1070,22 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
             "canonical_source_hashes_match": {role: item["sha256"] == SOURCE_SHA256[role]
                                                 for role, item in source_shas.items()},
             "component_pin_orders": {key: list(value) for key, value in actual_pin_orders.items()},
-            "t1_mode_off_no_t1_cbu_dff": True,
             "stimulus_source_count": len(stimulus_lines),
             "stimulus_source_lines": stimulus_lines,
             "probe_count": probes["signal_count"],
             "raw_estimate_bytes": raw_estimate,
             "storage_guard": "REVIEW_REQUIRED" if raw_estimate >= MAX_RAW_BYTES else "PASS",
             "scientific_interpretation_performed": False}
+    if t1_active:
+        result.update({"t1_count": 7, "independent_t1_links": 7,
+                       "independent_sum_loads": 7, "independent_carry_loads": 7,
+                       "independent_bias_sets": 7, "independent_clock_branches": 7,
+                       "terminal_count": 0, "t1_clock_mode": t1_params["T1_CLK_MODE"],
+                       "t1_tunable_source": t1_source_info,
+                       "t1_source_default_body_equivalent": t1_source_info["default_body_equivalent_to_canonical"]})
+    else:
+        result["t1_mode_off_no_t1_cbu_dff"] = True
+    return result
 
 
 def estimate_raw_bytes(probe_count: int) -> int:
@@ -1282,6 +1640,345 @@ def analyze_raw(run_dir: Path, probe_manifest: dict[str, Any]) -> tuple[dict[str
     return metrics, raw_qa
 
 
+def _voltage_lobe_candidates(times: list[float], values: array.array,
+                             indices: list[int]) -> dict[str, Any]:
+    """Describe prominent signed waveform extrema; this is not an event classifier."""
+    max_positive = max((values[index] for index in indices), default=0.0)
+    min_negative = min((values[index] for index in indices), default=0.0)
+    separated_ps = T1_CANDIDATE_MORPHOLOGY_SPEC["minimum_peak_separation_ps"]
+    candidates = []
+    for polarity, threshold in (("positive", max_positive * 0.25),
+                                ("negative", abs(min_negative) * 0.25)):
+        if (polarity == "positive" and max_positive <= 0) or (polarity == "negative" and min_negative >= 0):
+            continue
+        points = []
+        for position in range(1, len(indices) - 1):
+            index = indices[position]
+            before, after = values[indices[position - 1]], values[indices[position + 1]]
+            value = values[index]
+            is_peak = value >= before and value > after if polarity == "positive" else value <= before and value < after
+            meets = (value >= threshold and value > 0) if polarity == "positive" else (abs(value) >= threshold and value < 0)
+            if is_peak and meets and value != 0.0:
+                points.append({"polarity": polarity, "time_s": times[index], "voltage_v": value})
+        selected = []
+        for point in sorted(points, key=lambda item: abs(item["voltage_v"]), reverse=True):
+            if all(abs(point["time_s"] - other["time_s"]) >= separated_ps * 1e-12 for other in selected):
+                selected.append(point)
+        candidates.extend(sorted(selected, key=lambda item: item["time_s"]))
+    return {"candidate_count": len(candidates),
+            "positive_candidate_count": sum(item["polarity"] == "positive" for item in candidates),
+            "negative_candidate_count": sum(item["polarity"] == "negative" for item in candidates),
+            "candidates": [{**item, "time_ps": item["time_s"] * 1e12} for item in candidates],
+            "method": dict(T1_CANDIDATE_MORPHOLOGY_SPEC),
+            "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"}
+
+
+def analyze_t1_array_raw(run_dir: Path, probe_manifest: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    raw = run_dir / "raw.csv"
+    raw_before = sha256(raw)
+    required = {item["label"] for item in probe_manifest["signals"]}
+    times, columns, header = read_raw(raw, required, exact_header=True)
+    raw_after = sha256(raw)
+    if raw_before != raw_after:
+        raise ConfigError("raw SHA changed during T1-array analysis")
+    dt = [right - left for left, right in zip(times, times[1:])]
+    windows = {}
+    window_indices = {}
+    for name, (start_ps, end_ps) in T1_WINDOWS_PS.items():
+        indices = _window_indices(times, name, T1_WINDOWS_PS)
+        if len(indices) < 2:
+            raise ConfigError(f"T1 window {name} has fewer than two stored samples")
+        window_indices[name] = indices
+        windows[name] = {"start_ps": start_ps, "end_ps": end_ps,
+                         "boundary_rule": "[start,end)", "sample_count": len(indices),
+                         "first_stored_s": times[indices[0]], "last_stored_s": times[indices[-1]],
+                         "integration": "actual stored timestamp trapezoid; no interpolation"}
+
+    waveforms = []
+    junctions = []
+    currents = []
+    for item in probe_manifest["signals"]:
+        label = item["label"]
+        if label.startswith("V("):
+            values = columns[label]
+            for window, indices in window_indices.items():
+                positive = max(indices, key=lambda index: values[index])
+                negative = min(indices, key=lambda index: values[index])
+                record = {"signal": label, "group": item["group"], "window": window,
+                          "unit": "V", "min_v": values[negative], "max_v": values[positive],
+                          "peak_to_peak_v": values[positive] - values[negative],
+                          "time_of_max_s": times[positive], "time_of_min_s": times[negative],
+                          "signed_area_v_s": _trapz(times, values, indices),
+                          "interpolation_or_resampling": False}
+                if item["group"].startswith("t1_output:"):
+                    record["waveform_lobe_candidates"] = _voltage_lobe_candidates(times, values, indices)
+                waveforms.append(record)
+        elif label.startswith("I("):
+            values = columns[label]
+            for window, indices in window_indices.items():
+                selected = [values[index] for index in indices]
+                currents.append({"signal": label, "group": item["group"], "window": window,
+                                 "unit": "A", "min_a": min(selected), "max_a": max(selected),
+                                 "peak_to_peak_a": max(selected) - min(selected),
+                                 "charge_c": _trapz(times, values, indices),
+                                 "direction": item.get("direction", "JoSIM element-reference direction")})
+        elif label.startswith("P("):
+            voltage_label = "V(" + label[2:]
+            if voltage_label not in columns:
+                raise ConfigError(f"same-JJ voltage cross-check probe missing: {voltage_label}")
+            phase = _unwrap(columns[label])
+            voltage = columns[voltage_label]
+            for window, indices in window_indices.items():
+                first, last = indices[0], indices[-1]
+                delta = phase[last] - phase[first]
+                area = _trapz(times, voltage, indices)
+                junctions.append({"phase_signal": label, "voltage_signal": voltage_label,
+                                  "window": window, "sample_count": len(indices),
+                                  "phase_delta_rad": delta,
+                                  "phase_delta_rad_over_2pi_navigation": delta / (2 * math.pi),
+                                  "voltage_area_v_s_same_jj_same_rows": area,
+                                  "voltage_area_phi0_arithmetic": area / PHI0,
+                                  "phase_minus_area_turn_arithmetic": delta / (2 * math.pi) - area / PHI0,
+                                  "interpolation_or_resampling": False})
+    qa = {"schema": "bvm-4x4-t1-array-raw-qa-v1", "status": "PASS",
+          "raw_sha256_before": raw_before, "raw_sha256_after_analysis": raw_after,
+          "raw_immutable": True, "sample_count": len(times), "header_count": len(header),
+          "probe_count": len(required), "time_start_s": times[0], "time_end_s": times[-1],
+          "dt_min_s": min(dt), "dt_max_s": max(dt),
+          "uniform_time_grid": max(dt) - min(dt) <= max(dt) * 1e-6,
+          "finite_values": True, "time_monotonic": True,
+          "windows": windows, "interpolation_or_resampling": False}
+    metrics = {"schema": "bvm-4x4-t1-array-mechanical-metrics-v1",
+               "status": "DERIVED_ARITHMETIC_ONLY", "raw_sha256": raw_before,
+               "windows": windows, "waveforms": waveforms, "currents": currents,
+               "same_jj_phase_voltage": junctions,
+               "phase_raw_units": "radians",
+               "phase_turns_definition": "unwrapped independently; delta/(2*pi), navigation only",
+               "integration": "trapezoid on actual stored timestamp rows; half-open windows",
+               "candidate_morphology": dict(T1_CANDIDATE_MORPHOLOGY_SPEC),
+               "event_classifier": None, "scientific_interpretation_performed": False}
+    return metrics, qa
+
+
+def _metric_record(index: dict[tuple[str, str], dict[str, Any]], signal: str,
+                   window: str) -> dict[str, Any]:
+    try:
+        return index[(signal, window)]
+    except KeyError as exc:
+        raise ConfigError(f"T1 summary metric missing: {signal} / {window}") from exc
+
+
+def _validate_t1_run_identity(run_id: str, result: dict[str, Any], qa: dict[str, Any],
+                              t1_qa: dict[str, Any], metrics: dict[str, Any],
+                              raw_hash: str) -> None:
+    if (result.get("artifact_status") != "VALID" or qa.get("status") != "PASS" or
+            t1_qa.get("status") != "PASS" or raw_hash != result.get("raw_sha256") or
+            t1_qa.get("raw_sha256_after_analysis") != raw_hash):
+        raise ConfigError(f"run QA/raw identity is not valid for T1-array summary: {run_id}")
+    if (result.get("physical_solve_count") != 1 or
+            metrics.get("t1_array", {}).get("raw_sha256") != raw_hash):
+        raise ConfigError(f"run/metric solve or raw identity mismatch: {run_id}")
+
+
+def build_t1_array_summary(run_ids: list[str]) -> dict[str, Any]:
+    if run_ids != [item[0] for item in T1_ARRAY_RUN_MATRIX]:
+        raise ConfigError(f"T1 summary run order/closure mismatch: {run_ids}")
+    if T1_ARRAY_RESULTS.exists() or T1_ARRAY_TABLE.exists():
+        raise FileExistsError("refusing to overwrite prior T1-array summary artifacts")
+    runs: dict[str, dict[str, Any]] = {}
+    run_metrics: dict[str, dict[str, Any]] = {}
+    run_cases: dict[str, dict[str, Any]] = {}
+    for run_id in run_ids:
+        run_dir = RUNS / run_id
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        t1_qa = json.loads((run_dir / "t1_array_qa.json").read_text(encoding="utf-8"))
+        case_manifest = json.loads((run_dir / "case_manifest.json").read_text(encoding="utf-8"))
+        metrics = json.loads((run_dir / "metrics.json").read_text(encoding="utf-8"))
+        raw = run_dir / "raw.csv"
+        raw_hash = sha256(raw)
+        _validate_t1_run_identity(run_id, result, qa, t1_qa, metrics, raw_hash)
+        case = case_manifest["case"]
+        run_cases[run_id] = {"case": case, "t1_params": case_manifest["t1_params"],
+                             "stimulus": case_manifest["stimulus"]}
+        runs[run_id] = {"run_id": run_id, "case": case["CASE"],
+                        "population": "ALL" if case["ROW_BITS"] == "1111" else "PAPER",
+                        "row_bits": case["ROW_BITS"], "column_bits": case["COL_BITS"],
+                        "t1_clk_mode": result["t1_clk_mode"],
+                        "configured_input_cells_by_diagonal": {
+                            name: [cell for cell in cells if cell in result["active_final_crosspoints"]]
+                            for name, cells in DIAGONALS.items()},
+                        "physical_solve_count": 1, "artifact_status": result["artifact_status"],
+                        "qa_status": qa["status"], "t1_array_qa_status": t1_qa["status"],
+                        "raw_path": (raw.relative_to(SERIES).as_posix()), "raw_sha256": raw_hash,
+                        "raw_bytes": raw.stat().st_size, "sample_count": t1_qa["sample_count"],
+                        "time_range_s": [t1_qa["time_start_s"], t1_qa["time_end_s"]],
+                        "dt_min_s": t1_qa["dt_min_s"], "dt_max_s": t1_qa["dt_max_s"],
+                        "probe_count": t1_qa["probe_count"],
+                        "deck_sha256": result.get("deck_sha256")}
+        wave_index = {(item["signal"], item["window"]): item
+                      for item in metrics["t1_array"]["waveforms"]}
+        run_metrics[run_id] = {"wave": wave_index,
+                               "junctions": metrics["t1_array"]["same_jj_phase_voltage"],
+                               "currents": metrics["t1_array"]["currents"],
+                               "metric_sha256": sha256(run_dir / "metrics.json")}
+
+    pairs = {}
+    for population in ("ALL", "PAPER"):
+        selected = [record for record in runs.values() if record["population"] == population]
+        by_mode = {record["t1_clk_mode"]: record for record in selected}
+        if set(by_mode) != {"QUIET", "PULSE"}:
+            raise ConfigError(f"matched QUIET/PULSE pair incomplete for {population}")
+        quiet_id, pulse_id = by_mode["QUIET"]["run_id"], by_mode["PULSE"]["run_id"]
+        quiet_case = run_cases[quiet_id]
+        pulse_case = run_cases[pulse_id]
+        if (quiet_case["stimulus"] != pulse_case["stimulus"] or
+                {key: value for key, value in quiet_case["case"].items() if key != "CASE"} !=
+                {key: value for key, value in pulse_case["case"].items() if key != "CASE"} or
+                {key: value for key, value in quiet_case["t1_params"].items() if key != "T1_CLK_MODE"} !=
+                {key: value for key, value in pulse_case["t1_params"].items() if key != "T1_CLK_MODE"}):
+            raise ConfigError(f"saved QUIET/PULSE run snapshots differ beyond T1_CLK_MODE for {population}")
+        pairs[population] = {"quiet_run_id": quiet_id, "pulse_run_id": pulse_id,
+                             "same_row_col_bits": by_mode["QUIET"]["row_bits"] == by_mode["PULSE"]["row_bits"] and
+                                                 by_mode["QUIET"]["column_bits"] == by_mode["PULSE"]["column_bits"],
+                             "only_registered_circuit_condition_difference": "T1_CLK_MODE"}
+
+    rows = []
+    for population, pair in pairs.items():
+        quiet, pulse = pair["quiet_run_id"], pair["pulse_run_id"]
+        for diagonal in DIAGONALS:
+            configured = runs[quiet]["configured_input_cells_by_diagonal"][diagonal]
+            for kind, signal_template in (("INPUT", "V(T1_I_{d})"),
+                                          ("SUM", "V(S_{d})"),
+                                          ("CARRY", "V(C_{d})")):
+                signal = signal_template.format(d=diagonal)
+                q_index, p_index = run_metrics[quiet]["wave"], run_metrics[pulse]["wave"]
+                total_q = _metric_record(q_index, signal, "TOTAL")
+                total_p = _metric_record(p_index, signal, "TOTAL")
+                row = {"population": population, "diagonal": diagonal,
+                       "configured_input_cell_count": len(configured),
+                       "configured_input_cells": ",".join(configured),
+                       "kind": kind, "signal": signal,
+                       "quiet_run_id": quiet, "quiet_raw_sha256": runs[quiet]["raw_sha256"],
+                       "pulse_run_id": pulse, "pulse_raw_sha256": runs[pulse]["raw_sha256"],
+                       "quiet_total_signed_area_v_s": total_q["signed_area_v_s"],
+                       "pulse_total_signed_area_v_s": total_p["signed_area_v_s"],
+                       "quiet_total_min_v": total_q["min_v"], "quiet_total_max_v": total_q["max_v"],
+                       "pulse_total_min_v": total_p["min_v"], "pulse_total_max_v": total_p["max_v"],
+                       "quiet_total_max_time_ps": total_q["time_of_max_s"] * 1e12,
+                       "pulse_total_max_time_ps": total_p["time_of_max_s"] * 1e12,
+                       "quiet_total_waveform_lobes": total_q.get("waveform_lobe_candidates"),
+                       "pulse_total_waveform_lobes": total_p.get("waveform_lobe_candidates")}
+                for window in ("PRE_CLOCK", "CLOCK_1", "CLOCK_2"):
+                    q_item = _metric_record(q_index, signal, window)
+                    p_item = _metric_record(p_index, signal, window)
+                    row[f"quiet_{window.lower()}_signed_area_v_s"] = q_item["signed_area_v_s"]
+                    row[f"pulse_{window.lower()}_signed_area_v_s"] = p_item["signed_area_v_s"]
+                    if kind in {"SUM", "CARRY"}:
+                        row[f"quiet_{window.lower()}_waveform_lobes"] = q_item.get("waveform_lobe_candidates")
+                        row[f"pulse_{window.lower()}_waveform_lobes"] = p_item.get("waveform_lobe_candidates")
+                rows.append(row)
+
+    fieldnames = list(dict.fromkeys(key for row in rows for key in row))
+    with T1_ARRAY_TABLE.open("x", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows({key: json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+                          if isinstance(value, (dict, list)) else value
+                          for key, value in row.items()} for row in rows)
+
+    jj_rows = []
+    for run_id in run_ids:
+        for item in run_metrics[run_id]["junctions"]:
+            jj_rows.append({"run_id": run_id, **item})
+    jj_table = T1_ARRAY_ANALYSIS / "T1_ARRAY_JJ_PHASE_AREA.csv"
+    if jj_table.exists():
+        raise FileExistsError(f"refusing to overwrite T1 JJ table: {jj_table}")
+    jj_fields = list(jj_rows[0]) if jj_rows else []
+    with jj_table.open("x", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=jj_fields)
+        writer.writeheader()
+        writer.writerows(jj_rows)
+
+    summary = {"schema": "bvm-4x4-t1-array-results-v1", "batch_id": T1_ARRAY_BATCH_ID,
+               "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+               "physical_solve_count": 4, "runs": list(runs.values()), "matched_pairs": pairs,
+               "input_population_counts_reference_only": {
+                   "ALL": [1, 2, 3, 4, 3, 2, 1], "PAPER": [1, 1, 1, 3, 1, 1, 1]},
+               "registered_windows_ps": {key: list(value) for key, value in T1_WINDOWS_PS.items()},
+               "table_path": T1_ARRAY_TABLE.relative_to(SERIES).as_posix(),
+               "jj_phase_area_path": jj_table.relative_to(SERIES).as_posix(),
+               "table_rows": rows,
+               "waveform_lobe_candidate_spec": dict(T1_CANDIDATE_MORPHOLOGY_SPEC),
+               "waveform_lobe_candidates_are_not_event_counts": True,
+               "interpolation_or_resampling": False,
+               "timestep_convergence": "UNKNOWN_NOT_AUTHORIZED",
+               "scientific_interpretation_performed": False,
+               "automatic_follow_up": False}
+    if T1_ARRAY_RESULTS.exists():
+        raise FileExistsError(f"refusing to overwrite T1 result summary: {T1_ARRAY_RESULTS}")
+    _json(T1_ARRAY_RESULTS, summary)
+    brief_path = T1_ARRAY_ANALYSIS / "RESULT_BRIEF.md"
+    if brief_path.exists():
+        raise FileExistsError(f"refusing to overwrite T1 result brief: {brief_path}")
+    lines = ["# 4×4 BVM → seven independent T1 arrays", "",
+             f"- Batch: `{T1_ARRAY_BATCH_ID}`; mechanical QA: `PASS`; physical solves: 4.",
+             "- Interpretation: `NOT_PERFORMED`; all areas and phase deltas are registered arithmetic, not SFQ counts.",
+             "- The configured input-cell population is a topology reference, not a measured pulse/event count.",
+             "- QUIET/PULSE are paired at fixed BVM topology and parameters; no pass/fail threshold is defined for Sum/Carry behavior.",
+             "- Waveform lobe candidates use the preregistered relative-extrema rule and are descriptive only.",
+             "- Timestep convergence: `UNKNOWN`; no additional solve authorized.", "",
+             "| Population | D | Configured cells | Signal | Q total area (V·s) | P total area (V·s) | Q pre / clk1 / clk2 (V·s) | P pre / clk1 / clk2 (V·s) | Q/P lobe candidates |",
+             "|---|---|---|---|---:|---:|---|---|---|"]
+    for row in rows:
+        qlobes = row.get("quiet_total_waveform_lobes")
+        plobes = row.get("pulse_total_waveform_lobes")
+        qcount = "—" if qlobes is None else str(qlobes["candidate_count"])
+        pcount = "—" if plobes is None else str(plobes["candidate_count"])
+        qareas = " / ".join(f"{row[f'quiet_{window}_signed_area_v_s']:.4g}" for window in
+                             ("pre_clock", "clock_1", "clock_2"))
+        pareas = " / ".join(f"{row[f'pulse_{window}_signed_area_v_s']:.4g}" for window in
+                             ("pre_clock", "clock_1", "clock_2"))
+        lines.append(f"| {row['population']} | {row['diagonal']} | {row['configured_input_cell_count']} | {row['kind']} | "
+                     f"{row['quiet_total_signed_area_v_s']:.4g} | {row['pulse_total_signed_area_v_s']:.4g} | "
+                     f"{qareas} | {pareas} | {qcount} / {pcount} |")
+    lines.extend(["", f"- Full arithmetic table: `{T1_ARRAY_TABLE.relative_to(SERIES).as_posix()}`.",
+                  f"- Same-JJ phase/voltage-area records: `{jj_table.relative_to(SERIES).as_posix()}`.",
+                  "- Per-run raw, deck, probes, source snapshot and QA are in `runs/A013`–`runs/A016`."])
+    brief_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return summary
+
+
+def finalize_t1_array_batch() -> int:
+    if not T1_ARRAY_BATCH_MANIFEST.is_file():
+        raise ConfigError("T1-array batch manifest is missing; there is no completed batch to finalize")
+    batch = json.loads(T1_ARRAY_BATCH_MANIFEST.read_text(encoding="utf-8"))
+    expected_ids = [item[0] for item in T1_ARRAY_RUN_MATRIX]
+    records = batch.get("runs", [])
+    if (batch.get("batch_id") != T1_ARRAY_BATCH_ID or
+            [item.get("run_id") for item in records] != expected_ids or
+            batch.get("physical_solve_count_completed") != 4 or
+            any(item.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+                item.get("artifact_status") != "VALID" or
+                item.get("physical_solve_count") != 1 or not item.get("raw_sha256")
+                for item in records)):
+        raise ConfigError("T1-array batch does not contain four valid, QA-passed authorized runs")
+    summary = build_t1_array_summary(expected_ids)
+    batch["status"] = "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW"
+    batch["summary_path"] = T1_ARRAY_RESULTS.relative_to(SERIES).as_posix()
+    batch["summary_sha256"] = sha256(T1_ARRAY_RESULTS)
+    batch["table_path"] = T1_ARRAY_TABLE.relative_to(SERIES).as_posix()
+    batch["jj_phase_area_path"] = (T1_ARRAY_ANALYSIS / "T1_ARRAY_JJ_PHASE_AREA.csv").relative_to(SERIES).as_posix()
+    _json(T1_ARRAY_BATCH_MANIFEST, batch)
+    print(json.dumps({"status": batch["status"], "batch_id": T1_ARRAY_BATCH_ID,
+                      "run_ids": expected_ids, "physical_solve_count": 4,
+                      "summary": summary["schema"],
+                      "raw_sha256_by_run": {item["run_id"]: item["raw_sha256"] for item in batch["runs"]},
+                      "scientific_interpretation_performed": False,
+                      "automatic_follow_up": False}, ensure_ascii=False, indent=2), flush=True)
+    return 0
+
+
 def _plotter_module() -> Any:
     spec = importlib.util.spec_from_file_location("josim_plot2_bvm4x4", PLOTTER)
     if spec is None or spec.loader is None:
@@ -1294,6 +1991,32 @@ def _plotter_module() -> Any:
 def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
     labels = {item["label"]: item for item in probes["signals"]}
     profile = probes["profile"]
+    if profile == "t1_array_focus":
+        input_output = [f"V(T1_I_{name})" for name in DIAGONALS]
+        input_output.extend(label for name in DIAGONALS for label in (f"V(S_{name})", f"V(C_{name})"))
+        clocks = [f"V(CLK_{name})" for name in DIAGONALS]
+        if any(f"V(CLK_RAW_{name})" in labels for name in DIAGONALS):
+            clocks.extend(f"V(CLK_RAW_{name})" for name in DIAGONALS)
+        clocks.extend(label for name in DIAGONALS for label in (f"V(S_{name})", f"V(C_{name})"))
+        focus_diagonal = probes.get("focus_diagonal", "D3")
+        focus_t1 = f"XT1_{focus_diagonal}"
+        focus = [f"P({jj}|{focus_t1})" for jj in T1_CRITICAL_JJS]
+        focus.extend(f"V({jj}|{focus_t1})" for jj in T1_CRITICAL_JJS)
+        focus.extend((f"V(T1_I_{focus_diagonal})", f"V(CLK_{focus_diagonal})",
+                      f"V(S_{focus_diagonal})", f"V(C_{focus_diagonal})"))
+        result = [
+            {"file": "01_t1_overview.html", "title": "Seven T1 inputs and fourteen S/C outputs",
+             "signals": input_output},
+            {"file": "02_t1_clock_compare.html", "title": "Seven independent clocks and S/C outputs",
+             "signals": clocks},
+            {"file": "03_t1_focus.html", "title": f"{focus_diagonal} T1 internal JJ focus",
+             "signals": focus},
+        ]
+        for page in result:
+            missing = [signal for signal in page["signals"] if signal not in labels]
+            if missing:
+                raise ConfigError(f"T1 plot page {page['file']} requests missing probes: {missing}")
+        return result
     focus_diagonal = probes.get("focus_diagonal") or "D3"
     focus_cells = DIAGONALS[focus_diagonal]
     target = focus_cells[0]
@@ -1336,7 +2059,7 @@ def plot_layout_metrics(signals: list[str]) -> dict[str, Any]:
               for kind in ("V", "P", "I")}
     counts["U"] = sum(not label.startswith(("V(", "P(", "I(")) for label in signals)
     group_count = sum(value > 0 for value in counts.values())
-    height_px = min(1100, max(750, 180 + 300 * group_count))
+    height_px = min(2600, max(750, 180 + 300 * group_count, 320 + 44 * len(signals)))
     return {"group_counts": counts, "group_count": group_count,
             "height_px": height_px, "width_mode": "responsive_full_width"}
 
@@ -1499,10 +2222,16 @@ def _write_experiment_manifest(run_record: dict[str, Any] | None = None) -> None
 
 
 def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str, str],
-            solver_info: dict[str, Any], *, batch_id: str | None = None) -> tuple[int, dict[str, Any]]:
-    run_id = allocate_run_id(case["CASE"])
+            solver_info: dict[str, Any], *, batch_id: str | None = None,
+            run_id_override: str | None = None,
+            rendered_override: dict[str, Any] | None = None,
+            preflight_path: Path | None = None,
+            metric_spec_path_override: Path | None = None) -> tuple[int, dict[str, Any]]:
+    run_id = run_id_override or allocate_run_id(case["CASE"])
     run_dir = RUNS / run_id
-    rendered = render(case, stimulus, t1_params, run_dir)
+    if run_dir.exists():
+        raise ConfigError(f"run directory already exists; refusing overwrite: {run_dir}")
+    rendered = rendered_override or render(case, stimulus, t1_params, run_dir)
     if rendered["static_qa"]["raw_estimate_bytes"] >= MAX_RAW_BYTES:
         raise ConfigError("pre-solve storage guard: estimated raw exceeds ordinary single-file limit; no solver invoked")
     run_dir.mkdir(parents=True, exist_ok=False)
@@ -1514,6 +2243,12 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
     _write_env(t1_snapshot, t1_params)
     (run_dir / "deck.cir").write_text(rendered["deck"], encoding="utf-8")
     (run_dir / "stimulus.inc").write_text(rendered["stimulus_text"], encoding="utf-8")
+    if rendered.get("t1_source_text") is not None:
+        source_snapshot = run_dir / "sources" / "t1_cell_tunable.cir"
+        source_snapshot.parent.mkdir(parents=True, exist_ok=True)
+        source_snapshot.write_text(rendered["t1_source_text"], encoding="utf-8")
+        if sha256(source_snapshot) != rendered["t1_source_info"]["rendered_sha256"]:
+            raise ConfigError("run-local tunable T1 source hash does not match its render manifest")
     _json(run_dir / "topology_manifest.json", rendered["topology"])
     _json(run_dir / "probe_manifest.json", rendered["probes"])
     _json(run_dir / "static_qa.json", rendered["static_qa"])
@@ -1539,7 +2274,9 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                                                  "sjtl_count_by_diagonal": {
                                                      name: list(_sjtl_counts(case, name)) for name in DIAGONALS},
                                                  "sjtl_total": sum(sum(_sjtl_counts(case, name)) for name in DIAGONALS),
-                                                 "cb_total": 16, "terminal_total": 7,
+                                                 "cb_total": 16,
+                                                 "terminal_total": 0 if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT" else 7,
+                                                 "t1_total": 7 if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT" else 0,
                                                  "merge_semantics": "serial; unchanged"},
                                              "active_final_crosspoints": _active_cells(case),
                                              "diagonal_expected_active_cells": {
@@ -1596,14 +2333,21 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
 
     try:
         metrics, raw_qa = analyze_raw(run_dir, rendered["probes"])
+        t1_array_qa = None
+        if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT":
+            t1_array_metrics, t1_array_qa = analyze_t1_array_raw(run_dir, rendered["probes"])
+            metrics["t1_array"] = t1_array_metrics
+            _json(run_dir / "t1_array_qa.json", t1_array_qa)
         _json(run_dir / "metrics.json", metrics)
         _json(run_dir / "raw_qa.json", raw_qa)
         plot_qa = render_plots(run_dir, rendered["probes"])
         raw_hash_after = sha256(raw)
         if raw_hash_after != raw_hash:
             raise ConfigError("raw changed after post-processing")
-        metric_spec_path = (SERIES / "analysis" / "BUS400_metric_spec.json"
+        metric_spec_path = (metric_spec_path_override if metric_spec_path_override else
+                            SERIES / "analysis" / "BUS400_metric_spec.json"
                             if batch_id == BUS400_BATCH_ID else SERIES / "analysis" / "metric_spec.json")
+        preflight_path = preflight_path or (SERIES / "PREFLIGHT.md")
         provenance = {"schema": "bvm-4x4-diagonal-provenance-v2", "run_id": run_id,
                       "parent_head": solver_info["parent_head"], "solver": solver_info,
                       "deck_sha256": deck_hash, "stimulus_sha256": stimulus_hash,
@@ -1611,10 +2355,13 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                       "user_case_sha256": sha256(case_snapshot),
                       "stimulus_config_sha256": sha256(stimulus_snapshot),
                       "stimulus_manifest_sha256": sha256(run_dir / "stimulus_manifest.json"),
-                      "t1_params_sha256_reference_only": sha256(t1_snapshot),
+                      "t1_params_sha256": sha256(t1_snapshot),
+                      "t1_params_affect_deck": case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT",
+                      "t1_rendered_source": rendered.get("t1_source_info"),
                       "probe_manifest_sha256": sha256(run_dir / "probe_manifest.json"),
                       "topology_manifest_sha256": sha256(run_dir / "topology_manifest.json"),
-                      "preflight_sha256": sha256(SERIES / "PREFLIGHT.md"),
+                      "preflight_path": preflight_path.relative_to(REPO).as_posix(),
+                      "preflight_sha256": sha256(preflight_path),
                       "metric_spec_path": metric_spec_path.relative_to(REPO).as_posix(),
                       "metric_spec_sha256": sha256(metric_spec_path),
                       "runner_sha256": sha256(Path(__file__).resolve()),
@@ -1622,8 +2369,9 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                       "experiment_workflow_sha256": sha256(REPO / "docs/research/EXPERIMENT_WORKFLOW_V1.md"),
                       "risk_level": "NORMAL",
                       "metrics_sha256": sha256(run_dir / "metrics.json"),
+                      "t1_array_qa_sha256": sha256(run_dir / "t1_array_qa.json") if t1_array_qa else None,
                       "plots": plot_qa["pages"],
-                      "t1_mode": "OFF", "t1_params_affect_deck": False,
+                      "t1_mode": case["T1_MODE"], "t1_params_affect_deck": case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT",
                       "scientific_interpretation_performed": False}
         _json(run_dir / "provenance.json", provenance)
         qa = {"schema": "bvm-4x4-diagonal-run-qa-v1", "status": "PASS",
@@ -1637,10 +2385,13 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
               "dt_min_s": raw_qa["dt_min_s"], "dt_max_s": raw_qa["dt_max_s"],
               "probe_count": rendered["probes"]["signal_count"],
               "all_required_probes_present": True,
+              "t1_array_qa_status": t1_array_qa["status"] if t1_array_qa else "NOT_APPLICABLE",
               "scientific_interpretation_performed": False}
         _json(run_dir / "qa.json", qa)
         result = {"schema": "bvm-4x4-diagonal-result-v1", "run_id": run_id,
-                  "case": case["CASE"], "row_bits": case["ROW_BITS"],
+                  "case": case["CASE"], "output_mode": case["OUTPUT_MODE"],
+                  "t1_mode": case["T1_MODE"], "t1_clk_mode": t1_params["T1_CLK_MODE"],
+                  "row_bits": case["ROW_BITS"],
                   "column_bits": case["COL_BITS"], "se_enable_mask": case["SE_ENABLE_MASK"],
                   "batch_id": batch_id,
                   "sjtl_count_by_diagonal": {name: list(_sjtl_counts(case, name)) for name in DIAGONALS},
@@ -1648,6 +2399,7 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                   "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
                   "artifact_status": "VALID", "physical_solve_count": 1,
                   "solver_exit_code": completed.returncode, "raw_sha256": raw_hash,
+                  "deck_sha256": deck_hash, "stimulus_sha256": stimulus_hash,
                   "raw_bytes": raw.stat().st_size, "sample_count": raw_qa["sample_count"],
                   "probe_count": rendered["probes"]["signal_count"],
                   "qa_status": qa["status"], "plot_status": plot_qa["status"],
@@ -1658,20 +2410,24 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
         _json(run_dir / "metadata.json", {
             "schema": "bvm-4x4-diagonal-run-metadata-v1", "run_id": run_id,
             "effective_case": case, "effective_stimulus": stimulus,
-            "batch_id": batch_id,
-            "t1_mode": "OFF", "t1_parameters_are_reference_only": True,
+            "batch_id": batch_id or (BUS400_BATCH_ID if case["CASE"] in BUS400_CASES else "BVM4X4_INITIAL_20261009"),
+            "t1_mode": case["T1_MODE"],
+            "t1_parameters_are_reference_only": case["OUTPUT_MODE"] != "DIAGONAL_T1_INDEPENDENT",
             "solver": solver_info, "physical_solve_count": 1,
             "deck_sha256": deck_hash, "stimulus_sha256": stimulus_hash,
             "raw_sha256": raw_hash, "source_sha256": source_hashes,
             "probe_count": rendered["probes"]["signal_count"],
-            "batch_id": "BVM4X4_BUS400_20261009" if case["CASE"] in BUS400_CASES else "BVM4X4_INITIAL_20261009",
-            "risk_level": "NORMAL" if case["CASE"] in BUS400_CASES else "historical registration unchanged",
+            "risk_level": "NORMAL" if batch_id in {BUS400_BATCH_ID, T1_ARRAY_BATCH_ID}
+            else ("NORMAL" if case["CASE"] in BUS400_CASES else "historical registration unchanged"),
             "artifact_status": "VALID", "qa_status": "PASS",
             "scientific_interpretation_performed": False,
             "automatic_follow_up": False})
         _write_experiment_manifest({"run_id": run_id, "case": case["CASE"],
                                     "batch_id": batch_id,
                                     "row_bits": case["ROW_BITS"], "column_bits": case["COL_BITS"],
+                                    "output_mode": case["OUTPUT_MODE"], "t1_mode": case["T1_MODE"],
+                                    "t1_clk_mode": t1_params["T1_CLK_MODE"],
+                                    "active_final_crosspoints": _active_cells(case),
                                     "status": result["status"], "physical_solve_count": 1,
                                     "raw_sha256": raw_hash, "raw_bytes": raw.stat().st_size,
                                     "probe_count": rendered["probes"]["signal_count"],
@@ -1817,6 +2573,187 @@ def run_registered_batch() -> int:
     return 0
 
 
+def _t1_array_case_matrix() -> list[dict[str, Any]]:
+    base_case, stimulus, base_t1 = load_config()
+    fixed_case = {
+        "ROW_WL_WRITE_AMPLITUDE": "400u", "COL_BL_WRITE_AMPLITUDE": "400u",
+        "ROW_WL_READ_AMPLITUDE": "400u", "COL_SE_READ_AMPLITUDE": "100u",
+        "SE_ENABLE_MASK": "ALL", "DT": "0.01p", "STOP": "250p",
+        "SJTL_COUNT_D0": "1", "SJTL_COUNT_D1": "1,1",
+        "SJTL_COUNT_D2": "1,1,1", "SJTL_COUNT_D3": "1,2,2,1",
+        "SJTL_COUNT_D4": "1,1,1", "SJTL_COUNT_D5": "1,1", "SJTL_COUNT_D6": "1",
+    }
+    for key, expected in fixed_case.items():
+        if base_case.get(key) != expected:
+            raise ConfigError(f"T1-array batch requires fixed BVM baseline {key}={expected}, got {base_case.get(key)!r}")
+    expected_stimulus = {
+        "WRITE0_START": "50p", "WRITE0_RISE": "1p", "WRITE0_HOLD": "9p", "WRITE0_FALL": "1p",
+        "READ0_START": "70p", "READ0_RISE": "1p", "READ0_HOLD": "9p", "READ0_FALL": "1p",
+        "WRITE1_START": "90p", "WRITE1_RISE": "1p", "WRITE1_HOLD": "9p", "WRITE1_FALL": "1p",
+        "FINAL_READ_START": "110p", "FINAL_READ_RISE": "1p", "FINAL_READ_HOLD": "9p", "FINAL_READ_FALL": "1p",
+    }
+    for key, expected in expected_stimulus.items():
+        if stimulus.get(key) != expected:
+            raise ConfigError(f"T1-array batch must retain registered stimulus {key}={expected}")
+    expected_t1 = {"T1_BIAS1": "1.8m", "T1_BIAS2": "1.8m", "T1_BIAS3": "1.8m",
+                   "T1_BIAS3_SOURCE": "VOLTAGE", "T1_R_S": "12", "T1_R_C": "12",
+                   "T1_CLK_START": "170p", "T1_CLK_PERIOD": "50p", "T1_CLK_AMPLITUDE": "1.2m",
+                   "T1_CLK_RISE": "1p", "T1_CLK_WIDTH": "2p", "T1_CLK_FALL": "1p",
+                   "T1_CLK_SERIES_R": "2", "T1_CLK_QUIET_R": "5"}
+    for key, expected in expected_t1.items():
+        if base_t1.get(key) != expected:
+            raise ConfigError(f"T1-array batch requires {key}={expected}, got {base_t1.get(key)!r}")
+    baseline_t1_text, baseline_t1_info = render_t1_source(base_t1)
+    if not baseline_t1_info["default_body_equivalent_to_canonical"]:
+        raise ConfigError("default T1_PARAMS render is not netlist-body equivalent to canonical T1")
+    scope = json.loads(T1_ARRAY_SCOPE.read_text(encoding="utf-8"))
+    current_head = _git_output("rev-parse", "HEAD")
+    if (scope.get("batch_id") != T1_ARRAY_BATCH_ID or scope.get("parent_head") != current_head or
+            scope.get("physical_solve_count_authorized") != 4 or
+            scope.get("authorized_run_ids") != [item[0] for item in T1_ARRAY_RUN_MATRIX]):
+        raise ConfigError("T1_ARRAY WORK_UNIT.json does not authorize this exact four-run matrix at current HEAD")
+    if not T1_ARRAY_PREFLIGHT.is_file() or "This experiment is governed by docs/EXPERIMENT_CONTRACT.md." not in T1_ARRAY_PREFLIGHT.read_text(encoding="utf-8"):
+        raise ConfigError("T1-array PREFLIGHT is missing its mandatory experiment-contract statement")
+    if not T1_ARRAY_METRIC_SPEC.is_file():
+        raise ConfigError("T1-array metric specification is missing")
+    spec = json.loads(T1_ARRAY_METRIC_SPEC.read_text(encoding="utf-8"))
+    if spec.get("windows_ps") != {key: list(value) for key, value in T1_WINDOWS_PS.items()}:
+        raise ConfigError("T1-array metric windows differ from the frozen T1_ARRAY_METRIC_SPEC")
+
+    cases = []
+    for run_id, label, row_bits, col_bits, clock_mode, expected_counts in T1_ARRAY_RUN_MATRIX:
+        if (RUNS / run_id).exists():
+            raise ConfigError(f"authorized run ID already exists; refusing overwrite: {run_id}")
+        case = dict(base_case)
+        case.update({"CASE": label, "ROW_BITS": row_bits, "COL_BITS": col_bits,
+                     "SE_ENABLE_MASK": "ALL", "OUTPUT_MODE": "DIAGONAL_T1_INDEPENDENT",
+                     "T1_MODE": "ALL_INDEPENDENT", "CBU_MODE": "OFF", "CARRY_MODE": "NONE",
+                     "PROBE_PROFILE": "t1_array_focus", "FOCUS_DIAGONAL": "D3",
+                     **fixed_case})
+        t1 = dict(base_t1)
+        t1["T1_CLK_MODE"] = clock_mode
+        validate_config(case, stimulus, t1)
+        active = _active_cells(case)
+        counts = [sum(cell in active for cell in DIAGONALS[name]) for name in DIAGONALS]
+        if counts != expected_counts:
+            raise ConfigError(f"{label} active-cell population mismatch: expected={expected_counts}, got={counts}")
+        rendered = render(case, stimulus, t1, RUNS / run_id)
+        if (rendered["static_qa"].get("status") != "PASS" or
+                rendered["static_qa"].get("t1_count") != 7 or
+                rendered["static_qa"].get("terminal_count") != 0 or
+                rendered["static_qa"].get("raw_estimate_bytes", MAX_RAW_BYTES) >= MAX_RAW_BYTES):
+            raise ConfigError(f"T1-array static/raw-size gate failed for {run_id}")
+        if not rendered["t1_source_info"].get("default_body_equivalent_to_canonical"):
+            raise ConfigError(f"default T1 source equivalence failed for {run_id}")
+        cases.append({"run_id": run_id, "label": label, "case": case,
+                      "stimulus": dict(stimulus), "t1_params": t1,
+                      "expected_input_counts": expected_counts, "rendered": rendered})
+
+    for quiet_index, pulse_index in ((0, 1), (2, 3)):
+        quiet, pulse = cases[quiet_index], cases[pulse_index]
+        if (quiet["stimulus"] != pulse["stimulus"] or
+                {k: v for k, v in quiet["case"].items() if k != "CASE"} !=
+                {k: v for k, v in pulse["case"].items() if k != "CASE"} or
+                {k: v for k, v in quiet["t1_params"].items() if k != "T1_CLK_MODE"} !=
+                {k: v for k, v in pulse["t1_params"].items() if k != "T1_CLK_MODE"}):
+            raise ConfigError(f"matched QUIET/PULSE pair differs beyond T1_CLK_MODE: {quiet['label']}/{pulse['label']}")
+
+    baseline_case, baseline_stimulus, baseline_params = load_config()
+    if baseline_case["OUTPUT_MODE"] != "DIAGONAL_TERMINAL" or baseline_case["T1_MODE"] != "OFF":
+        raise ConfigError("default baseline is no longer DIAGONAL_TERMINAL/T1_MODE=OFF")
+    baseline_render = render(baseline_case, baseline_stimulus, baseline_params,
+                             RUNS / "_T1_TERMINAL_COMPAT_RENDER")
+    a012 = RUNS / "A012_PAPER_1101_1101"
+    a012_manifest = next(item for item in json.loads(EXPERIMENT_MANIFEST.read_text(encoding="utf-8"))["runs"]
+                         if item["run_id"] == a012.name)
+    baseline_hash = hashlib.sha256(baseline_render["deck"].encode("utf-8")).hexdigest()
+    expected_a012_deck = a012_manifest.get("deck_sha256")
+    if (not expected_a012_deck or baseline_hash != expected_a012_deck or
+            sha256(a012 / "deck.cir") != expected_a012_deck):
+        raise ConfigError("DIAGONAL_TERMINAL render-only compatibility check differs from immutable A012 deck")
+    if T1_ARRAY_STATIC_QA.exists() or T1_ARRAY_BATCH_MANIFEST.exists() or T1_ARRAY_RESULTS.exists():
+        raise ConfigError("T1-array batch outputs already exist; refusing to overwrite")
+    return cases, baseline_hash, baseline_render["static_qa"], baseline_t1_info
+
+
+def run_t1_array_batch() -> int:
+    cases, baseline_hash, baseline_static_qa, default_t1_info = _t1_array_case_matrix()
+    solver_info = _solver_info()
+    scope = json.loads(T1_ARRAY_SCOPE.read_text(encoding="utf-8"))
+    static_qa = {"schema": "bvm-4x4-t1-array-static-qa-v1", "status": "PASS",
+                 "batch_id": T1_ARRAY_BATCH_ID, "parent_head": _git_output("rev-parse", "HEAD"),
+                 "physical_solve_count": 0, "baseline_terminal_compatibility": {
+                     "status": "PASS", "run_id": "A012_PAPER_1101_1101",
+                     "deck_sha256": baseline_hash, "static_qa_status": baseline_static_qa["status"]},
+                 "default_t1_body_equivalent_to_canonical": default_t1_info["default_body_equivalent_to_canonical"],
+                 "solver": solver_info,
+                 "runs": [{"run_id": item["run_id"], "case": item["case"]["CASE"],
+                           "row_bits": item["case"]["ROW_BITS"], "column_bits": item["case"]["COL_BITS"],
+                           "clock_mode": item["t1_params"]["T1_CLK_MODE"],
+                           "configured_input_counts": item["expected_input_counts"],
+                           "t1_count": item["rendered"]["static_qa"]["t1_count"],
+                           "terminal_count": item["rendered"]["static_qa"]["terminal_count"],
+                           "probe_count": item["rendered"]["probes"]["signal_count"],
+                           "raw_estimate_bytes": item["rendered"]["static_qa"]["raw_estimate_bytes"],
+                           "t1_source_info": item["rendered"]["t1_source_info"],
+                           "deck_sha256": hashlib.sha256(item["rendered"]["deck"].encode()).hexdigest()}
+                          for item in cases],
+                 "scientific_interpretation_performed": False}
+    _json(T1_ARRAY_STATIC_QA, static_qa)
+    batch = {"schema": "bvm-4x4-t1-array-batch-v1", "batch_id": T1_ARRAY_BATCH_ID,
+             "parent_head": _git_output("rev-parse", "HEAD"), "risk_level": "NORMAL",
+             "authorized_run_ids": [item["run_id"] for item in cases],
+             "physical_solve_count_authorized": 4, "physical_solve_count_completed": 0,
+             "status": "PREFLIGHT_PASS_READY", "static_qa_path": T1_ARRAY_STATIC_QA.relative_to(SERIES).as_posix(),
+             "preflight_path": T1_ARRAY_PREFLIGHT.relative_to(SERIES).as_posix(),
+             "preflight_sha256": sha256(T1_ARRAY_PREFLIGHT),
+             "metric_spec_path": T1_ARRAY_METRIC_SPEC.relative_to(SERIES).as_posix(),
+             "metric_spec_sha256": sha256(T1_ARRAY_METRIC_SPEC), "runs": [],
+             "scientific_interpretation_performed": False, "automatic_follow_up": False}
+    _json(T1_ARRAY_BATCH_MANIFEST, batch)
+    print(f"T1_ARRAY_STATIC_GATE_PASS: {T1_ARRAY_BATCH_ID}; parent={batch['parent_head']}", flush=True)
+    print(f"Baseline DIAGONAL_TERMINAL compatibility PASS: deck_sha256={baseline_hash}", flush=True)
+    print(f"Authorized physical solves=4; probes/run={static_qa['runs'][0]['probe_count']}; "
+          f"raw estimate/run={static_qa['runs'][0]['raw_estimate_bytes']} bytes; no 2-ohm terminals.", flush=True)
+    for item in cases:
+        print(f"START {item['run_id']} {item['label']} ROW/COL={item['case']['ROW_BITS']}/"
+              f"{item['case']['COL_BITS']} clock={item['t1_params']['T1_CLK_MODE']}", flush=True)
+        code, result = run_one(item["case"], item["stimulus"], item["t1_params"], solver_info,
+                               batch_id=T1_ARRAY_BATCH_ID, run_id_override=item["run_id"],
+                               rendered_override=item["rendered"], preflight_path=T1_ARRAY_PREFLIGHT,
+                               metric_spec_path_override=T1_ARRAY_METRIC_SPEC)
+        batch["runs"].append({"run_id": item["run_id"], "status": result.get("status"),
+                              "artifact_status": result.get("artifact_status"),
+                              "physical_solve_count": result.get("physical_solve_count", 1),
+                              "raw_sha256": result.get("raw_sha256")})
+        batch["physical_solve_count_completed"] += int(result.get("physical_solve_count", 1))
+        batch["status"] = "RUNNING" if code == 0 else "STOPPED_AFTER_FAILURE"
+        _json(T1_ARRAY_BATCH_MANIFEST, batch)
+        print(json.dumps(result, ensure_ascii=False), flush=True)
+        if code != 0:
+            print("STOP: T1-array batch halted at first solver/artifact failure; no retry or follow-up.",
+                  file=sys.stderr, flush=True)
+            return code
+    return finalize_t1_array_batch()
+
+
+def preview_t1_array_batch() -> int:
+    cases, baseline_hash, baseline_static_qa, _default_t1_info = _t1_array_case_matrix()
+    print(json.dumps({"status": "STATIC_PREFLIGHT_PASS", "batch_id": T1_ARRAY_BATCH_ID,
+                      "parent_head": _git_output("rev-parse", "HEAD"),
+                      "baseline_terminal_deck_sha256": baseline_hash,
+                      "baseline_terminal_static_qa": baseline_static_qa["status"],
+                      "physical_solve_count": 0,
+                      "runs": [{"run_id": item["run_id"], "case": item["label"],
+                                "clock_mode": item["t1_params"]["T1_CLK_MODE"],
+                                "input_counts": item["expected_input_counts"],
+                                "probe_count": item["rendered"]["probes"]["signal_count"],
+                                "raw_estimate_bytes": item["rendered"]["static_qa"]["raw_estimate_bytes"],
+                                "static_qa": item["rendered"]["static_qa"]["status"]}
+                               for item in cases]}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def repair_existing(run_id: str) -> int:
     run_dir = RUNS / run_id
     if not run_dir.is_dir() or not (run_dir / "raw.csv").is_file():
@@ -1842,6 +2779,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--registered-batch", action="store_true")
     parser.add_argument("--bus400-batch", action="store_true",
                         help="run only BUS400_D3_N0 then BUS400_D3_N1, or add --dry-run for its static gate")
+    parser.add_argument("--t1-array-batch", action="store_true",
+                        help="execute exactly the preregistered four-run seven-T1 QUIET/PULSE batch")
+    parser.add_argument("--finalize-t1-array-batch", action="store_true",
+                        help="rebuild the T1-array arithmetic summary from already QA-passed raw; never invokes JoSIM")
     parser.add_argument("--postprocess", metavar="RUN_ID")
     parser.add_argument("--repair-bus400-html", action="store_true",
                         help="rebuild responsive classic plots from A007/A008 raw only; never invokes JoSIM")
@@ -1852,6 +2793,12 @@ def main(argv: list[str] | None = None) -> int:
             return repair_existing(args.postprocess)
         if args.repair_bus400_html:
             return repair_bus400_html_batch()
+        if args.finalize_t1_array_batch:
+            return finalize_t1_array_batch()
+        if args.t1_array_batch:
+            if args.preset or args.set:
+                raise ConfigError("--t1-array-batch owns its frozen four-run matrix; do not combine --preset/--set")
+            return preview_t1_array_batch() if args.dry_run else run_t1_array_batch()
         if args.registered_batch:
             return run_registered_batch()
         if args.bus400_batch:

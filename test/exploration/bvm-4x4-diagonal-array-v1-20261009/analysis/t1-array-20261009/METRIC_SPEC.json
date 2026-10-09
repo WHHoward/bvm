@@ -1,0 +1,57 @@
+{
+  "schema": "bvm-4x4-t1-array-metric-spec-v1",
+  "batch_id": "BVM4X4_T1_ALL_20261009",
+  "units": {
+    "time_raw": "s",
+    "display_time": "ps",
+    "P_raw": "rad",
+    "P_navigation": "rad/(2*pi), not event count",
+    "voltage": "V",
+    "current": "A",
+    "voltage_area": "V*s",
+    "voltage_area_phi0_arithmetic": "integral(V dt)/Phi0"
+  },
+  "windows_ps": {
+    "PRE_CLOCK": [110, 170],
+    "CLOCK_1": [170, 220],
+    "CLOCK_2": [220, 250],
+    "TOTAL": [110, 250]
+  },
+  "window_boundary_rule": "half-open [start,end), select actual stored timestamp rows",
+  "integration": "trapezoid over actual raw time values; no interpolation, resampling, smoothing, or scaling",
+  "waveform_metrics": ["signed voltage area", "positive/negative extrema", "peak-to-peak", "stored timestamp of positive/negative extrema"],
+  "input_metrics": ["V(DOUT_Dk)", "V(T1_I_Dk)", "I(V_T1_LINK_Dk)"],
+  "output_metrics": ["V(S_Dk)", "I(R_S_Dk)", "V(C_Dk)", "I(R_C_Dk)"],
+  "clock_metrics": ["V(CLK_Dk)", "V(CLK_RAW_Dk) in PULSE", "I(R_TRIG_CLK_Dk) in PULSE", "I(R_CLK_QUIET_Dk) in QUIET"],
+  "junction_metrics": {
+    "upstream_last_cb": ["BJ1", "BJ2"],
+    "t1_internal": ["B_J1", "B_J2", "B_J9", "B_J10", "B_J11"],
+    "calculation": "unwrap each JJ phase trace independently; endpoint delta rad and same-JJ/same-row V integral; report residual",
+    "tolerance_for_independent_arithmetic_reproduction": {
+      "phase_abs_rad": 1e-8,
+      "voltage_abs_v": 1e-15,
+      "voltage_area_abs_v_s": 1e-27,
+      "peak_time": "exact stored timestamp"
+    }
+  },
+  "waveform_lobe_candidates": {
+    "method": "local signed extrema on raw samples",
+    "relative_amplitude_threshold": 0.25,
+    "threshold_reference": "positive max for positive lobes and absolute negative min for negative lobes within each half-open channel/window",
+    "minimum_same_polarity_peak_separation_ps": 1.0,
+    "no_smoothing_or_resampling": true,
+    "meaning": "descriptive waveform lobes only; not SFQ/event count and not a success threshold"
+  },
+  "paired_condition_comparison": {
+    "pairs": [
+      ["A013_T1_ALL_QUIET", "A014_T1_ALL_CLOCK"],
+      ["A015_T1_PAPER_QUIET", "A016_T1_PAPER_CLOCK"]
+    ],
+    "only_registered_electrical_change": "T1_CLK_MODE",
+    "classification_threshold": null,
+    "interpretation": "report arithmetic deltas and direct waveforms; final scientific interpretation is reserved for user and ChatGPT"
+  },
+  "event_or_sfq_classifier": null,
+  "timestep_convergence": "UNKNOWN_NOT_AUTHORIZED",
+  "scientific_interpretation_performed": false
+}

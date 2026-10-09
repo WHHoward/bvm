@@ -635,12 +635,7 @@ def submit_delta(args: argparse.Namespace, root: Any) -> int:
                        cwd=REPO, check=True)
     source_commit = git("rev-parse", "HEAD")
 
-    # Bind the precomputed, hash-listed source set to the evidence commit.
-    manifest = spec["delta_manifest"]
-    manifest["head_commit"] = source_commit
-    manifest["generated_from_head"] = source_commit
-    spec["extra_members"]["DELTA_MANIFEST.json"] = (
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    # Bind each precomputed, hash-listed source group to the evidence commit.
     package_results = []
     for spec in specs:
         manifest = spec["delta_manifest"]

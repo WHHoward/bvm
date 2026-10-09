@@ -1,0 +1,47 @@
+{
+  "schema": "bvm-4x4-t1-chain-metric-spec-v1",
+  "experiment_id": "bvm-4x4-t1-chain-global-20261009",
+  "risk_level": "NORMAL",
+  "source_of_truth": "immutable run raw.csv and run-local probe_manifest.json",
+  "time_axis": {"raw_unit": "s", "display_unit": "ps", "integration": "actual stored timestamps", "interpolation": false, "resampling": false},
+  "windows_ps_half_open": {
+    "ARRAY_FINAL_READ": [110, 121],
+    "PRE_CLOCK": [121, 200],
+    "BEFORE_CLOCK": [0, 200],
+    "CLOCK_EDGE": [200, 205],
+    "POST_CLOCK": [205, 300],
+    "TOTAL": [0, 300]
+  },
+  "voltage": {
+    "signed_area": "trapezoid(V,time) on actual stored rows in [start,end)",
+    "phi0_navigation_arithmetic": "signed_area_Vs / 2.067833848e-15",
+    "peaks": "stored-sample positive/negative extrema and their stored times",
+    "lobe_candidates": {
+      "method": "scripts/diagonal_platform.py:_voltage_lobe_candidates",
+      "relative_extremum_threshold": 0.25,
+      "minimum_peak_separation_ps": 1.0,
+      "meaning": "descriptive local-extremum candidates only; not an event/SFQ classifier"
+    }
+  },
+  "phase": {
+    "raw_unit": "radians",
+    "unwrap": "each P(...) column independently over its native stored order",
+    "navigation_turns": "delta_phase_rad/(2*pi)",
+    "cross_check": "same JJ, same run, same endpoint direction, same stored rows and window: phase delta/(2*pi) versus V integral/2.067833848e-15",
+    "event_count_claim": false
+  },
+  "stage_boundary_metrics": [
+    "DOUT_Dk signed area, extrema, stored peak times",
+    "previous C_(k-1) signed area and extrema where k>0",
+    "CBU A/B/OUT and T1_I signed area, extrema, stored peak times",
+    "S_k and C_k signed area, extrema, stored peak times",
+    "T1 B_J1/B_J2/B_J9/B_J10/B_J11 same-JJ phase/voltage arithmetic",
+    "CBU B1/B4/B7 same-JJ phase/voltage arithmetic",
+    "D0 sJTL BJ1 and DFF B1/B2/B7 same-JJ phase/voltage arithmetic",
+    "source/load/link current extrema and charge on actual grid",
+    "last relative-threshold lobe-candidate time and time-to-configured-clock as navigation only"
+  ],
+  "decoder": null,
+  "event_classifier": null,
+  "scientific_interpretation_performed": false
+}

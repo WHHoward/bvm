@@ -5,9 +5,11 @@ ascending-row serial diagonal chains. It uses the canonical BVM, QB, sJTL, CB,
 and shared jjmit model without modifying their sources. In
 `DIAGONAL_TERMINAL` mode, each diagonal output has its own 2 Ω resistor and T1,
 CBU and DFF are not instantiated. `DIAGONAL_T1_INDEPENDENT` replaces those
-terminal loads with seven isolated T1 channels. The current manual
-`USER_CASE.env` selects `T1_ALL_QUIET`; D3/PAPER presets explicitly pin
-`DIAGONAL_TERMINAL` so they remain independent of that manual selection.
+terminal loads with seven isolated T1 channels. `DIAGONAL_T1_CHAIN` connects
+seven T1s through six physical two-input CBU candidates, adds a physical D0
+entrance sJTL and a DFF on C6. The current manual `USER_CASE.env` selects the
+registered chain configuration; historical D3/PAPER presets explicitly pin
+`DIAGONAL_TERMINAL` and remain independent of that manual selection.
 
 ## Cell and diagonal mapping
 
@@ -38,10 +40,12 @@ one-CB-per-cell structure are unchanged.
 
 ## Run controls
 
-Edit `USER_CASE.env`, `STIMULUS.env`, and `config/T1_PARAMS.env`. The executable
-output modes are `DIAGONAL_TERMINAL` and `DIAGONAL_T1_INDEPENDENT` with
-`T1_MODE=ALL_INDEPENDENT`. `DIAGONAL_T1_CHAIN`, CBU and DFF remain reserved and
-fail closed. `T1_MODE=OFF` leaves T1 parameters out of terminal-mode decks.
+Edit `USER_CASE.env`, `STIMULUS.env`, `config/T1_PARAMS.env`, and (for chain
+mode) `config/CBU_PARAMS.env`, `config/DFF_PARAMS.env`, and
+`config/D0_JTL_PARAMS.env`. The output modes are `DIAGONAL_TERMINAL`,
+`DIAGONAL_T1_INDEPENDENT`, and `DIAGONAL_T1_CHAIN`; their required `T1_MODE`
+values are `OFF`, `ALL_INDEPENDENT`, and `CHAIN`, respectively. `T1_MODE=OFF`
+leaves T1 parameters out of terminal-mode decks.
 
 The default `USER_CASE.env` uses the new 400 µA shared-source candidate. WL/BL
 values are `BUS_SOURCE_TOTAL` setpoints, not per-BVM amplitudes. Real branch
@@ -144,6 +148,72 @@ remain in `config/T1_PARAMS.env`.
 T1 pages use the historical `josim-plot2.py` canvas defaults (no per-trace
 height override), with a shared relative Plotly JS asset and responsive width.
 
+### Seven-stage ripple carry + global synchronous clock (A020-A022)
+
+The chain uses D0→one experiment-local sJTL→T1_D0. For D1-D6, each DOUT and
+the previous T1 Carry enter different pins of one physical `THmitll_MERGE`
+instance; its output feeds that stage's T1. S0-S6 remain separate product
+outputs. C0-C5 directly drive the next CBU; C6 drives `THmitll_DFF`, whose O is
+bit7. The array's one-input `CB_0928.cir` remains unchanged and is not used as a
+two-input CBU.
+
+The CBU/DFF sources are run-local parameterized copies of the ColdFlux
+`circuits/standard/MERGE.cir` and `DFF.cir`; only the MERGE smart-quote syntax
+is corrected in the local rendered copy. Defaults are compared with the
+candidate bodies, and canonical source files are never changed. The D0 JTL
+copy uses the exact default active values from canonical `sJTL_0923.cir`; its
+count and parameters are separately configurable. The initial DFF.O 12 Ω
+load is an explicit measurement-load candidate, not a validated optimum.
+Compatibility details and source hashes are in
+`analysis/t1-chain-20261009/CBU_COMPATIBILITY.md` and the run manifests.
+
+One-shot global clock configuration is in `USER_CASE.env` and
+`config/T1_PARAMS.env`. `GLOBAL_ONESHOT` produces eight independent branches
+(seven T1 and one DFF), each with a single PWL at 200 ps, 1.2 mV, 1/2/1 ps
+rise/hold/fall and 2 Ω series resistance. `QUIET` clamps all eight clock pins
+independently; no clock pin is left floating. There is no periodic repetition
+or staggered clock in this mode.
+
+The three editable presets reproduce the registered cases:
+
+```bash
+./try.sh --preset CHAIN_ALL_QUIET --dry-run
+./try.sh --preset CHAIN_ALL_GLOBAL_CLOCK --dry-run
+./try.sh --preset CHAIN_PAPER_GLOBAL_CLOCK --dry-run
+```
+
+Run the unified static/preflight check without solving:
+
+```bash
+./try.sh --t1-chain-batch --dry-run
+```
+
+After the preflight is locked, the bounded batch command is:
+
+```bash
+./try.sh --t1-chain-batch
+```
+
+It is limited to A020-A022 in order and halts on the first solver or artifact
+failure. It does not decode output bits, tune parameters, or launch a follow-up.
+The chain work unit, registered windows, and result tables live under
+`analysis/t1-chain-20261009/`; each run preserves its actual deck, all effective
+configuration snapshots, rendered CBU/DFF/JTL/T1 source snapshots, solver logs,
+immutable raw, QA, and three classic `josim-plot2.py` pages. HTML stays local.
+
+After results are complete, the existing local submit workflow creates a DELTA
+against the A017-A019 checkpoint; it does not repackage A001-A019 raw:
+
+```bash
+./submit.sh 20261009 --delta --dry-run
+./submit.sh 20261009 --delta
+```
+
+Because each new raw is near the ordinary single-file storage limit, this
+chain DELTA groups the changed source once, the three runs' non-raw evidence in
+one metadata ZIP, and each immutable raw in its own ZIP. It is five new ZIPs in
+total; A001-A019 raw is referenced by SHA and not copied.
+
 The six presets are `D3_N0` through `D3_N4` and `PAPER_1101_1101`. The latter
 uses ROW/COL `1101/1101` with all SE mask bits on. The preregistered diagonal
 target vector is `[1,1,1,3,1,1,1]`; it is not an event classifier or a result.
@@ -160,4 +230,6 @@ JS are not included in ZIPs. `P(...)` raw values are radians; `rad/(2π)` is
 navigation arithmetic, never an SFQ count.
 
 T1 parameters are managed by `config/T1_PARAMS.env`. Independent T1 channels do
-not connect to one another; no carry-chain, CBU, or DFF is implemented.
+not connect to one another. The chain mode is an exploratory physical candidate
+and does not establish multiplier function, bit decoding, or a 20 GHz system
+claim.

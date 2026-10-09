@@ -1,0 +1,91 @@
+{
+  "schema": "bvm-4x4-t1-chain-work-unit-v1",
+  "experiment_id": "bvm-4x4-t1-chain-global-20261009",
+  "experiment_risk_level": "NORMAL",
+  "registered_parent_head": "3a4636bdb1fd843a1bd217f3406bd7d259a47bea",
+  "historical_base_head": "64b4e18e2d944fd982f5b200490f7b7575339b46",
+  "preflight_path": "analysis/t1-chain-20261009/PREFLIGHT.md",
+  "gate_incident_path": "analysis/t1-chain-20261009/GATE_INCIDENT.json",
+  "preflight_sha256": "b896f08bfa79410c1ee410dd878206ce976cf760a759f7a713b54d12e864f490",
+  "static_qa_path": "analysis/t1-chain-20261009/STATIC_QA.json",
+  "static_qa_sha256": "157a7b838920f1db64d7b387ab0b2649e256e7c1ef0628bef62bf959bb89c91e",
+  "static_qa_execution_sha256": "8046f0b672db77aec8a20655d56801f531a3c456de8534984a879c2a2e50c819",
+  "static_qa_execution_bytes": 348892046,
+  "static_qa_full_archive_path": "analysis/t1-chain-20261009/STATIC_QA.json.gz",
+  "static_qa_full_archive_sha256": "82c2110f87e6b7477c948ca473b722caf61cff6b77ebcf133e8a47d9e8e00a83",
+  "static_qa_compaction_manifest_path": "analysis/t1-chain-20261009/STATIC_QA_COMPACTION.json",
+  "static_qa_compaction_manifest_sha256": "b87657c6350a7449b2626ce90e7698a27a78ff5913a03017d1bdc6c98e3809cd",
+  "probe_manifest_path": "analysis/t1-chain-20261009/PROBE_MANIFEST.json",
+  "probe_manifest_sha256": "2b2fa654c1ba25cfa1830ad5ae0c1ca37f3acc6967243b23643dad482325c459",
+  "metric_spec_path": "analysis/t1-chain-20261009/METRIC_SPEC.json",
+  "human_gate_path": "analysis/t1-chain-20261009/human-gate.yaml",
+  "authorized_run_ids": [
+    "A020_CHAIN_ALL_QUIET",
+    "A021_CHAIN_ALL_GLOBAL_CLOCK",
+    "A022_CHAIN_PAPER_GLOBAL_CLOCK"
+  ],
+  "physical_solve_count_authorized": 3,
+  "physical_solve_count_completed": 3,
+  "execution_head": "f6a89a3d64c3b8be2b7593bae4be01d1c9cbe192",
+  "analysis_revision": 2,
+  "analysis_repair_path": "analysis/t1-chain-20261009/CHAIN_METRICS_REPAIR.json",
+  "analysis_repair_sha256": "3ebb8be0b7768f6de0aa05b68c9109949a08543c1ceb91315f3fdf334cc60a07",
+  "summary_path": "analysis/t1-chain-20261009/T1_CHAIN_RESULTS_v2.json",
+  "summary_sha256": "1f3d1c5c32371e014ce6bfb77c8bd9c012f024aac3fe873a00d5a53a96806576",
+  "evidence_manifest_path": "analysis/t1-chain-20261009/EVIDENCE_MANIFEST.md",
+  "raw_handoff_manifest_path": "analysis/t1-chain-20261009/RAW_ANALYSIS_HANDOFF_MANIFEST.json",
+  "planned_delta_package_groups": ["source", "runs_metadata", "A020_raw", "A021_raw", "A022_raw"],
+  "html_included_in_delta": false,
+  "run_outcomes": [
+    {
+      "run_id": "A020_CHAIN_ALL_QUIET",
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "raw_bytes": 95602892,
+      "raw_sha256": "ab13d65c671065fbfcd628ff7e4ffc0a9dc0506105bcd2a5bdefd91488aa763d"
+    },
+    {
+      "run_id": "A021_CHAIN_ALL_GLOBAL_CLOCK",
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "raw_bytes": 95684744,
+      "raw_sha256": "85ffd3a00a6815115307d917c9b35d3b06dd7ac240c61ca8bfd47b957e975e9e"
+    },
+    {
+      "run_id": "A022_CHAIN_PAPER_GLOBAL_CLOCK",
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "raw_bytes": 95786305,
+      "raw_sha256": "2095fc87f129e844abfe21a0ccafb21e9ef2c72b67e7b6c34c8ca8f50935d9cb"
+    }
+  ],
+  "expected_raw_paths": [
+    "runs/A020_CHAIN_ALL_QUIET/raw.csv",
+    "runs/A021_CHAIN_ALL_GLOBAL_CLOCK/raw.csv",
+    "runs/A022_CHAIN_PAPER_GLOBAL_CLOCK/raw.csv"
+  ],
+  "expected_deck_paths": [
+    "runs/A020_CHAIN_ALL_QUIET/deck.cir",
+    "runs/A021_CHAIN_ALL_GLOBAL_CLOCK/deck.cir",
+    "runs/A022_CHAIN_PAPER_GLOBAL_CLOCK/deck.cir"
+  ],
+  "raw_storage_estimate_bytes_per_run": 91929270,
+  "max_raw_bytes": 100000000,
+  "run_decks": {
+    "A020_CHAIN_ALL_QUIET": {
+      "sha256": "6a51a8fd7d1d5f44d2c75486d5e786bfe46ea0e3546b08a7dca3d826f8901a08",
+      "stimulus_sha256": "d149f6f4e83360d8a1b1671e655ed1c9ea241722ebbbc1de48ae4e9fc792f4e2"
+    },
+    "A021_CHAIN_ALL_GLOBAL_CLOCK": {
+      "sha256": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
+      "stimulus_sha256": "d149f6f4e83360d8a1b1671e655ed1c9ea241722ebbbc1de48ae4e9fc792f4e2"
+    },
+    "A022_CHAIN_PAPER_GLOBAL_CLOCK": {
+      "sha256": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
+      "stimulus_sha256": "d129cc80bceae1382a3d8011c3265dfc451993a2ae7211ed4f1a341ae9ca7926"
+    }
+  },
+  "physical_interpretation": "NOT_AUTHORIZED",
+  "automatic_follow_up": false,
+  "next_action": "STOP_AFTER_PACKAGE_COMMIT_PUSH"
+}

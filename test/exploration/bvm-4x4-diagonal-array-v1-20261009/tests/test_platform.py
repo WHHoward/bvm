@@ -116,7 +116,7 @@ class DiagonalPlatformTests(unittest.TestCase):
         changed_t1["T1_L1"] = "99p"
         self.assertEqual(output["deck"], platform.render(case, stimulus, changed_t1,
                                                            platform.RUNS / "_TEST_PREVIEW")["deck"])
-        with self.assertRaisesRegex(platform.ConfigError, "DIAGONAL_TERMINAL/T1_MODE=OFF"):
+        with self.assertRaisesRegex(platform.ConfigError, "pair DIAGONAL_TERMINAL/OFF"):
             platform.validate_config({**case, "OUTPUT_MODE": "DIAGONAL_T1_CHAIN"}, stimulus, t1)
 
     def test_focus_profile_stays_compact_and_keeps_required_state_diagnostics(self):
@@ -218,7 +218,7 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(windows["READ0"], (70.0, 81.0))
         self.assertEqual(windows["WRITE1"], (90.0, 101.0))
         self.assertEqual(windows["FINAL_READ"], (110.0, 121.0))
-        self.assertEqual(windows["FINAL_READ_RESPONSE"], (110.0, 250.0))
+        self.assertEqual(windows["FINAL_READ_RESPONSE"], (110.0, 300.0))
 
     def test_paper_preset_keeps_terminal_mode_independent_of_manual_user_case(self):
         case, _stimulus, _t1 = platform.load_config("PAPER_1101_1101")
@@ -311,9 +311,85 @@ class DiagonalPlatformTests(unittest.TestCase):
     def test_t1_mode_fails_closed_without_t1_probe_profile(self):
         case, stimulus, t1 = platform.load_config()
         case.update({"OUTPUT_MODE": "DIAGONAL_T1_INDEPENDENT", "T1_MODE": "ALL_INDEPENDENT",
-                     "PROBE_PROFILE": "focus"})
+                     "CBU_MODE": "OFF", "CARRY_MODE": "NONE", "PROBE_PROFILE": "focus"})
         with self.assertRaisesRegex(platform.ConfigError, "requires PROBE_PROFILE=t1_array_focus"):
             platform.validate_config(case, stimulus, t1)
+
+    def test_chain_default_render_is_seven_t1_six_physical_cbu_jtl_and_dff(self):
+        case, stimulus, params = platform.load_config("CHAIN_ALL_GLOBAL_CLOCK")
+        rendered = platform.render(case, stimulus, params, platform.RUNS / "_TEST_CHAIN")
+        deck = rendered["deck"].splitlines()
+        self.assertEqual(len([line for line in deck if line.startswith("XT1_D")]), 7)
+        self.assertEqual(len([line for line in deck if line.startswith("XCBU_D")]), 6)
+        self.assertEqual(len([line for line in deck if line.startswith("XJTL_D0_")]), 1)
+        self.assertEqual(len([line for line in deck if line.startswith("XDFF ")]), 1)
+        self.assertFalse(any(line.startswith("R_TERM_D") for line in deck))
+        self.assertFalse(any(line.startswith("R_C_D") for line in deck))
+        self.assertEqual(len([line for line in deck if line.startswith("R_S_D")]), 7)
+        for index in range(1, 7):
+            self.assertIn(f"V_CBU_A_D{index} DOUT_D{index} CBU_A_D{index} 0", deck)
+            self.assertIn(f"V_CBU_B_D{index} C_D{index-1} CBU_B_D{index} 0", deck)
+            self.assertIn(f"XCBU_D{index} CBU_A_D{index} CBU_B_D{index} CBU_OUT_D{index} THmitll_MERGE", deck)
+            self.assertIn(f"V_T1_LINK_D{index} CBU_OUT_D{index} T1_I_D{index} 0", deck)
+        self.assertIn("V_DFF_DATA C_D6 DFF_IN 0", deck)
+        self.assertIn("XDFF DFF_IN CLK_DFF DFF_O THmitll_DFF", deck)
+        self.assertEqual(rendered["static_qa"]["status"], "PASS")
+        self.assertEqual((rendered["static_qa"]["t1_count"], rendered["static_qa"]["cbu_count"],
+                          rendered["static_qa"]["d0_jtl_count"], rendered["static_qa"]["dff_count"]),
+                         (7, 6, 1, 1))
+        self.assertEqual(rendered["static_qa"]["terminal_count"], 0)
+        self.assertLess(rendered["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
+
+    def test_global_chain_clock_is_one_shot_on_eight_independent_branches(self):
+        case, stimulus, params, rendered_output = rendered("CHAIN_ALL_GLOBAL_CLOCK")
+        deck = rendered_output["deck"].splitlines()
+        clock_sources = [line for line in deck if line.startswith("V_TRIG_CLK_")]
+        series = [line for line in deck if line.startswith("R_TRIG_CLK_")]
+        self.assertEqual(len(clock_sources), 8)
+        self.assertEqual(len(series), 8)
+        self.assertEqual(len({line.split("PWL(", 1)[1] for line in clock_sources}), 1)
+        self.assertTrue(all("PWL(0p 0 200p 0 201p 1.2m 203p 1.2m 204p 0)" in line
+                            for line in clock_sources))
+        self.assertFalse(any("PULSE(" in line for line in clock_sources))
+        self.assertFalse(any(line.startswith("R_CLK_QUIET_") for line in deck))
+        self.assertEqual(rendered_output["static_qa"]["clock_driver_count"], 8)
+        self.assertEqual(rendered_output["static_qa"]["pulse_clock_count"], 8)
+
+    def test_quiet_chain_clamps_all_eight_clock_inputs_and_has_no_pulse_source(self):
+        case, stimulus, params, output = rendered("CHAIN_ALL_QUIET")
+        deck = output["deck"].splitlines()
+        clamps = [line for line in deck if line.startswith("R_CLK_QUIET_")]
+        self.assertEqual(len(clamps), 8)
+        self.assertTrue(all(line.endswith(" 5") for line in clamps))
+        self.assertFalse(any(line.startswith(("V_TRIG_CLK_", "R_TRIG_CLK_")) for line in deck))
+        self.assertEqual(output["static_qa"]["quiet_clock_count"], 8)
+
+    def test_chain_probe_manifests_are_clock_mode_specific_and_complete(self):
+        quiet = rendered("CHAIN_ALL_QUIET")[3]["probes"]
+        global_clock = rendered("CHAIN_ALL_GLOBAL_CLOCK")[3]["probes"]
+        quiet_labels = {item["label"] for item in quiet["signals"]}
+        global_labels = {item["label"] for item in global_clock["signals"]}
+        self.assertEqual(quiet["signal_count"], global_clock["signal_count"])
+        self.assertIn("I(R_CLK_QUIET_D0)", quiet_labels)
+        self.assertNotIn("I(R_TRIG_CLK_D0)", quiet_labels)
+        self.assertIn("I(R_TRIG_CLK_D0)", global_labels)
+        self.assertNotIn("I(R_CLK_QUIET_D0)", global_labels)
+        for run_probes in (quiet, global_clock):
+            self.assertIn("P(B_J11|XT1_D6)", {item["label"] for item in run_probes["signals"]})
+            self.assertIn("I(V_CBU_B_D6)", {item["label"] for item in run_probes["signals"]})
+            self.assertIn("I(R_DFF_OUT)", {item["label"] for item in run_probes["signals"]})
+
+    def test_chain_local_candidate_sources_preserve_default_physical_bodies(self):
+        case, stimulus, params, output = rendered("CHAIN_ALL_GLOBAL_CLOCK")
+        info = output["chain_source_info"]
+        self.assertTrue(info["CBU_RENDERED"]["default_body_equivalent_after_registered_syntax_fix"])
+        self.assertEqual(info["CBU_RENDERED"]["syntax_replacements"], [
+            {"before": "BiasCoef=0.7’", "after": "BiasCoef=0.7", "scope": "experiment-local source only"}])
+        self.assertTrue(info["DFF_RENDERED"]["default_body_equivalent_after_registered_syntax_fix"])
+        self.assertTrue(info["D0_JTL_RENDERED"]["canonical_sJTL_defaults_match"])
+        self.assertNotIn(".model jjmit", output["chain_source_texts"]["sources/d0_jtl_tunable.cir"].lower())
+        changed = rendered("CHAIN_ALL_GLOBAL_CLOCK", ["CBU_B1=2.6"])[3]
+        self.assertIn(".param B1=2.6", changed["chain_source_texts"]["sources/cbu_tunable.cir"])
 
     def test_t1_dry_run_reports_actual_rendered_instance_count(self):
         case, stimulus, t1 = platform.load_config()

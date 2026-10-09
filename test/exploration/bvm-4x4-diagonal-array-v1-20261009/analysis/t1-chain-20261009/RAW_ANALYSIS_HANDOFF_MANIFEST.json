@@ -1,0 +1,106 @@
+{
+  "schema": "josim-raw-analysis-handoff-v1",
+  "experiment_id": "bvm-4x4-t1-chain-global-20261009",
+  "batch_id": "BVM4X4_T1_CHAIN_GLOBAL_20261009",
+  "execution_head": "f6a89a3d64c3b8be2b7593bae4be01d1c9cbe192",
+  "physical_solve_count": 3,
+  "raw_is_immutable_solver_output": true,
+  "raw_modified_by_analysis": false,
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "version": "JoSIM v2.7.2837d13",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "preflight": {
+    "path": "analysis/t1-chain-20261009/PREFLIGHT.md",
+    "sha256": "b896f08bfa79410c1ee410dd878206ce976cf760a759f7a713b54d12e864f490",
+    "static_qa_path": "analysis/t1-chain-20261009/STATIC_QA.json",
+    "static_qa_execution_sha256": "8046f0b672db77aec8a20655d56801f531a3c456de8534984a879c2a2e50c819",
+    "static_qa_compact_sha256": "157a7b838920f1db64d7b387ab0b2649e256e7c1ef0628bef62bf959bb89c91e",
+    "static_qa_full_archive_path": "analysis/t1-chain-20261009/STATIC_QA.json.gz",
+    "static_qa_full_archive_sha256": "82c2110f87e6b7477c948ca473b722caf61cff6b77ebcf133e8a47d9e8e00a83",
+    "static_qa_compaction_manifest_path": "analysis/t1-chain-20261009/STATIC_QA_COMPACTION.json",
+    "static_qa_compaction_manifest_sha256": "b87657c6350a7449b2626ce90e7698a27a78ff5913a03017d1bdc6c98e3809cd",
+    "probe_registry_path": "analysis/t1-chain-20261009/PROBE_MANIFEST.json",
+    "probe_count_per_run": 238
+  },
+  "registered_windows_ps_half_open": {
+    "ARRAY_FINAL_READ": [110, 121],
+    "PRE_CLOCK": [121, 200],
+    "BEFORE_CLOCK": [0, 200],
+    "CLOCK_EDGE": [200, 205],
+    "POST_CLOCK": [205, 300],
+    "TOTAL": [0, 300]
+  },
+  "time_integrals": "actual stored time samples; trapezoidal integration; no interpolation or resampling",
+  "phase": {
+    "raw_unit": "radians",
+    "navigation_turns": "independently unwrapped delta/(2*pi)",
+    "same_jj_voltage_area_cross_check": true,
+    "phase_turns_are_event_counts": false
+  },
+  "analysis_repair": {
+    "path": "analysis/t1-chain-20261009/CHAIN_METRICS_REPAIR.json",
+    "sha256": "3ebb8be0b7768f6de0aa05b68c9109949a08543c1ceb91315f3fdf334cc60a07",
+    "physical_solve_count": 0,
+    "raw_sha256_unchanged": true
+  },
+  "runs": [
+    {
+      "run_id": "A020_CHAIN_ALL_QUIET",
+      "raw_path": "runs/A020_CHAIN_ALL_QUIET/raw.csv",
+      "raw_sha256": "ab13d65c671065fbfcd628ff7e4ffc0a9dc0506105bcd2a5bdefd91488aa763d",
+      "raw_bytes": 95602892,
+      "sample_count": 29999,
+      "time_range_s": [0.0, 2.9999e-10],
+      "dt_s_min_max": [9.999999999982388e-15, 1.999999999999999e-14],
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "metrics_path": "runs/A020_CHAIN_ALL_QUIET/metrics.json",
+      "metrics_sha256": "5b210fd3802d3d15d09fd89d38647547ba6b70cf31cd13d0dd00ac77c8f24c8e",
+      "evidence_package_group": "runs_metadata",
+      "raw_package_group": "A020_CHAIN_ALL_QUIET_raw",
+      "html_included_in_package": false
+    },
+    {
+      "run_id": "A021_CHAIN_ALL_GLOBAL_CLOCK",
+      "raw_path": "runs/A021_CHAIN_ALL_GLOBAL_CLOCK/raw.csv",
+      "raw_sha256": "85ffd3a00a6815115307d917c9b35d3b06dd7ac240c61ca8bfd47b957e975e9e",
+      "raw_bytes": 95684744,
+      "sample_count": 29999,
+      "time_range_s": [0.0, 2.9999e-10],
+      "dt_s_min_max": [9.999999999982388e-15, 1.999999999999999e-14],
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "metrics_path": "runs/A021_CHAIN_ALL_GLOBAL_CLOCK/metrics.json",
+      "metrics_sha256": "2fe27caded4cc004f4467fb5eaa3a3c2c10d8c06a01cfea4b82924ee0aaf5cc1",
+      "evidence_package_group": "runs_metadata",
+      "raw_package_group": "A021_CHAIN_ALL_GLOBAL_CLOCK_raw",
+      "html_included_in_package": false
+    },
+    {
+      "run_id": "A022_CHAIN_PAPER_GLOBAL_CLOCK",
+      "raw_path": "runs/A022_CHAIN_PAPER_GLOBAL_CLOCK/raw.csv",
+      "raw_sha256": "2095fc87f129e844abfe21a0ccafb21e9ef2c72b67e7b6c34c8ca8f50935d9cb",
+      "raw_bytes": 95786305,
+      "sample_count": 29999,
+      "time_range_s": [0.0, 2.9999e-10],
+      "dt_s_min_max": [9.999999999982388e-15, 1.999999999999999e-14],
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "metrics_path": "runs/A022_CHAIN_PAPER_GLOBAL_CLOCK/metrics.json",
+      "metrics_sha256": "bbedfca11ec02725bf2e973987c81ac56dd1578df041b0cdaf936bf4c6e1d46f",
+      "evidence_package_group": "runs_metadata",
+      "raw_package_group": "A022_CHAIN_PAPER_GLOBAL_CLOCK_raw",
+      "html_included_in_package": false
+    }
+  ],
+  "plots": {
+    "renderer": "scripts/josim-plot2.py",
+    "style": "sep_comb / dark / phase rad/(2*pi)",
+    "html_included_in_package": false
+  },
+  "scientific_interpretation_performed": false,
+  "actual_product_bit_decode": "NOT_PERFORMED; no decoder threshold preregistered",
+  "automatic_follow_up": false
+}

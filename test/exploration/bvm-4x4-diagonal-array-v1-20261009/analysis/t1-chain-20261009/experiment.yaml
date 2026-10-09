@@ -1,0 +1,111 @@
+experiment_id: bvm-4x4-t1-chain-global-20261009
+experiment_risk_level: NORMAL
+question: >-
+  Under the fixed A019 4x4 upstream configuration, do physical CBU/T1 stages
+  preserve observable asynchronous carry propagation before one shared logical
+  clock, and what raw-backed Sum/C6-to-DFF responses are present for the two
+  preregistered operands?
+source_class: exploratory
+source_identity_sha256:
+  jjmit: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336
+  bvm: ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7
+  qb: 82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a
+  sjtl: 3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688
+  array_cb: 70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370
+  t1: 828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237
+  cbu_candidate: 2fdc5c24798c619eee97dee07d1dcb02b2e49e3b96bfa868f86ec978dca6f96e
+  dff_candidate: e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0
+authority_boundary:
+  evidence: [frozen decks, immutable raw CSV, per-run QA, arithmetic-only metrics, classic plots]
+  not_proven: [SFQ event count, multiplier truth table, 20GHz system operation, hardware behavior]
+run_set:
+  - run_id: A020_CHAIN_ALL_QUIET
+    condition: CHAIN_ALL_QUIET
+    row_bits: "1111"
+    column_bits: "1111"
+    clock_mode: QUIET
+    theoretical_diagonal_input_multiplicity: [1, 2, 3, 4, 3, 2, 1]
+    theoretical_t1_total_input_multiplicity: [1, 2, 4, 6, 6, 5, 3]
+    theoretical_t1_carry_multiplicity: [0, 1, 2, 3, 3, 2, 1]
+    theoretical_product_reference_only: 225
+  - run_id: A021_CHAIN_ALL_GLOBAL_CLOCK
+    condition: CHAIN_ALL_GLOBAL_CLOCK
+    row_bits: "1111"
+    column_bits: "1111"
+    clock_mode: GLOBAL_ONESHOT
+    clock_start: 200p
+    theoretical_diagonal_input_multiplicity: [1, 2, 3, 4, 3, 2, 1]
+    theoretical_t1_total_input_multiplicity: [1, 2, 4, 6, 6, 5, 3]
+    theoretical_t1_carry_multiplicity: [0, 1, 2, 3, 3, 2, 1]
+    theoretical_product_reference_only: 225
+    theoretical_lsb_to_msb_bits_reference_only: [1, 0, 0, 0, 0, 1, 1, 1]
+  - run_id: A022_CHAIN_PAPER_GLOBAL_CLOCK
+    condition: CHAIN_PAPER_GLOBAL_CLOCK
+    row_bits: "1101"
+    column_bits: "1101"
+    clock_mode: GLOBAL_ONESHOT
+    clock_start: 200p
+    theoretical_diagonal_input_multiplicity: [1, 1, 1, 3, 1, 1, 1]
+    theoretical_t1_total_input_multiplicity: [1, 1, 1, 3, 2, 2, 2]
+    theoretical_t1_carry_multiplicity: [0, 0, 0, 1, 1, 1, 1]
+    theoretical_product_reference_only: 143
+    theoretical_lsb_to_msb_bits_reference_only: [1, 1, 1, 1, 0, 0, 0, 1]
+changed:
+  - output topology adds one physical D0 sJTL, six physical two-input CBU candidates, seven T1 stages, one DFF
+  - T1 and DFF clock mode is QUIET or one identical GLOBAL_ONESHOT edge at 200ps
+frozen:
+  - canonical BVM/QB/sJTL/array-CB/T1/jjmit sources
+  - 400u shared WL/BL source settings and 100u cell-local SE sources
+  - A019 per-diagonal sJTL counts
+  - WRITE0/READ0/WRITE1/FINAL_READ timing
+  - CBU/DFF/JTL/T1 candidate parameters and output loads
+  - DT=0.01p, STOP=300p
+  - no staggered clock, no periodic clock, no sweep, no parameter changes
+topology:
+  array_output: DOUT_D0..DOUT_D6
+  bit0: DOUT_D0 -> physical D0 sJTL -> T1_D0
+  bit1_to_bit6: DOUT_Dk + C_D(k-1) -> physical CBU_Dk -> T1_Dk, k=1..6
+  bit0_to_bit6: T1_D0..T1_D6 Sum S0..S6
+  bit7: T1_D6 Carry C6 -> physical DFF -> DFF_O
+  cbu_candidate: THmitll_MERGE, ports a b q
+  array_cb: CB_0928, single input/output, not used as CBU
+parameters:
+  t1_bias_mV: [1.8, 1.8, 1.8]
+  t1_sum_load_ohm: 12
+  dff_output_load_ohm: 12
+  global_clock: {start: 200p, amplitude: 1.2m, rise: 1p, width: 2p, fall: 1p, series_ohm: 2}
+windows:
+  - {name: ARRAY_FINAL_READ, interval_ps: "[110,121)"}
+  - {name: PRE_CLOCK, interval_ps: "[121,200)"}
+  - {name: BEFORE_CLOCK, interval_ps: "[0,200)"}
+  - {name: CLOCK_EDGE, interval_ps: "[200,205)"}
+  - {name: POST_CLOCK, interval_ps: "[205,300)"}
+  - {name: TOTAL, interval_ps: "[0,300)"}
+probe_profile: t1_chain_focus
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase: rad/(2*pi), navigation only
+  pages: [full_chain_overview, carry_propagation, stage_focus]
+interpretation_ceiling: >-
+  Artifact validity and exact-grid mechanical arithmetic only. No scientific
+  verdict, bit decoding, mechanism claim, or hardware/system-rate claim.
+prohibited_followups:
+  - parameter sweeps or tuning
+  - clock shift, amplitude change, or periodic clock
+  - BVM/QB/CB/sJTL canonical edits
+  - extra physical solve or automatic retry
+  - CBU/T1/DFF replacement based on results
+scientific_review_authorization: NOT_GRANTED
+package:
+  mode: delta
+  html_included: false
+  base: A017-A019 checkpoint
+  commit_by_default: true
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

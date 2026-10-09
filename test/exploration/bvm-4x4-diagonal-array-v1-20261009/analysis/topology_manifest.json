@@ -1,5 +1,5 @@
 {
-  "schema": "bvm-4x4-diagonal-topology-v1",
+  "schema": "bvm-4x4-diagonal-topology-v2",
   "rows": 4,
   "columns": 4,
   "drive_mode": "SHARED",
@@ -237,8 +237,25 @@
         "R1C4"
       ],
       "levels": 1,
+      "sjtl_count_by_level": [
+        1
+      ],
       "sjtl_count": 1,
       "post_cb_count": 1,
+      "sjtl_instances": [
+        {
+          "instance": "XSJTL_D0_L1",
+          "diagonal": "D0",
+          "level": 1,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D0_L1",
+          "output_node": "SJTL_OUT_D0_L1"
+        }
+      ],
+      "cb_instances": [
+        "XCB_D0_L1"
+      ],
       "output_node": "DOUT_D0",
       "termination_ohm": 2
     },
@@ -248,8 +265,36 @@
         "R2C4"
       ],
       "levels": 2,
+      "sjtl_count_by_level": [
+        1,
+        1
+      ],
       "sjtl_count": 2,
       "post_cb_count": 2,
+      "sjtl_instances": [
+        {
+          "instance": "XSJTL_D1_L1",
+          "diagonal": "D1",
+          "level": 1,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D1_L1",
+          "output_node": "SJTL_OUT_D1_L1"
+        },
+        {
+          "instance": "XSJTL_D1_L2",
+          "diagonal": "D1",
+          "level": 2,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D1_L2",
+          "output_node": "SJTL_OUT_D1_L2"
+        }
+      ],
+      "cb_instances": [
+        "XCB_D1_L1",
+        "XCB_D1_L2"
+      ],
       "output_node": "DOUT_D1",
       "termination_ohm": 2
     },
@@ -260,8 +305,47 @@
         "R3C4"
       ],
       "levels": 3,
+      "sjtl_count_by_level": [
+        1,
+        1,
+        1
+      ],
       "sjtl_count": 3,
       "post_cb_count": 3,
+      "sjtl_instances": [
+        {
+          "instance": "XSJTL_D2_L1",
+          "diagonal": "D2",
+          "level": 1,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D2_L1",
+          "output_node": "SJTL_OUT_D2_L1"
+        },
+        {
+          "instance": "XSJTL_D2_L2",
+          "diagonal": "D2",
+          "level": 2,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D2_L2",
+          "output_node": "SJTL_OUT_D2_L2"
+        },
+        {
+          "instance": "XSJTL_D2_L3",
+          "diagonal": "D2",
+          "level": 3,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D2_L3",
+          "output_node": "SJTL_OUT_D2_L3"
+        }
+      ],
+      "cb_instances": [
+        "XCB_D2_L1",
+        "XCB_D2_L2",
+        "XCB_D2_L3"
+      ],
       "output_node": "DOUT_D2",
       "termination_ohm": 2
     },
@@ -273,8 +357,58 @@
         "R4C4"
       ],
       "levels": 4,
+      "sjtl_count_by_level": [
+        1,
+        1,
+        1,
+        1
+      ],
       "sjtl_count": 4,
       "post_cb_count": 4,
+      "sjtl_instances": [
+        {
+          "instance": "XSJTL_D3_L1",
+          "diagonal": "D3",
+          "level": 1,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D3_L1",
+          "output_node": "SJTL_OUT_D3_L1"
+        },
+        {
+          "instance": "XSJTL_D3_L2",
+          "diagonal": "D3",
+          "level": 2,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D3_L2",
+          "output_node": "SJTL_OUT_D3_L2"
+        },
+        {
+          "instance": "XSJTL_D3_L3",
+          "diagonal": "D3",
+          "level": 3,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D3_L3",
+          "output_node": "SJTL_OUT_D3_L3"
+        },
+        {
+          "instance": "XSJTL_D3_L4",
+          "diagonal": "D3",
+          "level": 4,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D3_L4",
+          "output_node": "SJTL_OUT_D3_L4"
+        }
+      ],
+      "cb_instances": [
+        "XCB_D3_L1",
+        "XCB_D3_L2",
+        "XCB_D3_L3",
+        "XCB_D3_L4"
+      ],
       "output_node": "DOUT_D3",
       "termination_ohm": 2
     },
@@ -285,8 +419,47 @@
         "R4C3"
       ],
       "levels": 3,
+      "sjtl_count_by_level": [
+        1,
+        1,
+        1
+      ],
       "sjtl_count": 3,
       "post_cb_count": 3,
+      "sjtl_instances": [
+        {
+          "instance": "XSJTL_D4_L1",
+          "diagonal": "D4",
+          "level": 1,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D4_L1",
+          "output_node": "SJTL_OUT_D4_L1"
+        },
+        {
+          "instance": "XSJTL_D4_L2",
+          "diagonal": "D4",
+          "level": 2,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D4_L2",
+          "output_node": "SJTL_OUT_D4_L2"
+        },
+        {
+          "instance": "XSJTL_D4_L3",
+          "diagonal": "D4",
+          "level": 3,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D4_L3",
+          "output_node": "SJTL_OUT_D4_L3"
+        }
+      ],
+      "cb_instances": [
+        "XCB_D4_L1",
+        "XCB_D4_L2",
+        "XCB_D4_L3"
+      ],
       "output_node": "DOUT_D4",
       "termination_ohm": 2
     },
@@ -296,8 +469,36 @@
         "R4C2"
       ],
       "levels": 2,
+      "sjtl_count_by_level": [
+        1,
+        1
+      ],
       "sjtl_count": 2,
       "post_cb_count": 2,
+      "sjtl_instances": [
+        {
+          "instance": "XSJTL_D5_L1",
+          "diagonal": "D5",
+          "level": 1,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D5_L1",
+          "output_node": "SJTL_OUT_D5_L1"
+        },
+        {
+          "instance": "XSJTL_D5_L2",
+          "diagonal": "D5",
+          "level": 2,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D5_L2",
+          "output_node": "SJTL_OUT_D5_L2"
+        }
+      ],
+      "cb_instances": [
+        "XCB_D5_L1",
+        "XCB_D5_L2"
+      ],
       "output_node": "DOUT_D5",
       "termination_ohm": 2
     },
@@ -306,8 +507,25 @@
         "R4C1"
       ],
       "levels": 1,
+      "sjtl_count_by_level": [
+        1
+      ],
       "sjtl_count": 1,
       "post_cb_count": 1,
+      "sjtl_instances": [
+        {
+          "instance": "XSJTL_D6_L1",
+          "diagonal": "D6",
+          "level": 1,
+          "stage_index": 1,
+          "stage_count": 1,
+          "input_node": "MERGE_D6_L1",
+          "output_node": "SJTL_OUT_D6_L1"
+        }
+      ],
+      "cb_instances": [
+        "XCB_D6_L1"
+      ],
       "output_node": "DOUT_D6",
       "termination_ohm": 2
     }
@@ -324,5 +542,46 @@
   "t1_mode": "OFF",
   "cbu_mode": "OFF",
   "merge_semantics": "serial shared electrical nodes; no MERGE subcircuit",
+  "sJTL_parameter_semantics": "SJTL_COUNT_Dn lists serial sJTL instances after each MERGE level and before its single CB; zero connects MERGE directly to CB",
+  "effective_sjtl_counts": {
+    "D0": [
+      1
+    ],
+    "D1": [
+      1,
+      1
+    ],
+    "D2": [
+      1,
+      1,
+      1
+    ],
+    "D3": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "D4": [
+      1,
+      1,
+      1
+    ],
+    "D5": [
+      1,
+      1
+    ],
+    "D6": [
+      1
+    ]
+  },
+  "effective_bus_source_setpoints": {
+    "ROW_WL_WRITE_AMPLITUDE": "400u",
+    "COL_BL_WRITE_AMPLITUDE": "400u",
+    "ROW_WL_READ_AMPLITUDE": "400u",
+    "COL_SE_READ_AMPLITUDE": "100u",
+    "semantics": "shared bus source total setpoints; per-cell branch currents are measured from raw"
+  },
+  "probe_profile": "focus",
   "scientific_interpretation_performed": false
 }

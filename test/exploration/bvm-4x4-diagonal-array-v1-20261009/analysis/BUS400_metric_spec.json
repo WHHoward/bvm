@@ -1,0 +1,23 @@
+{
+  "schema": "bvm-4x4-bus400-mechanical-metric-spec-v1",
+  "batch_id": "BVM4X4_BUS400_20261009",
+  "experiment_risk_level": "NORMAL",
+  "physical_solve_count": 2,
+  "raw_units": {"time": "seconds", "P(...)": "radians", "V(...)": "volts", "I(...)": "amperes"},
+  "windows": {
+    "WRITE0": {"start": "50p", "end": "61p", "boundary": "[start,end)"},
+    "READ0": {"start": "70p", "end": "81p", "boundary": "[start,end)"},
+    "WRITE1": {"start": "90p", "end": "101p", "boundary": "[start,end)"},
+    "FINAL_READ": {"start": "110p", "end": "121p", "boundary": "[start,end)"},
+    "POST_FINAL_READ": {"start": "121p", "end": "250p", "boundary": "[start,end)"},
+    "FINAL_READ_RESPONSE": {"start": "110p", "end": "250p", "boundary": "[start,end)"}
+  },
+  "input_branch_currents": "For every probed BVM cell and WL/BL/SE branch, report minimum, maximum, sample mean, peak-to-peak and signed charge using actual stored timestamps in each window.",
+  "junction_arithmetic": "Independently unwrap raw phase radians; compare endpoint phase delta against same-JJ signed voltage-time integral over identical actual stored rows and window.",
+  "diagonal_outputs": "For DOUT_D0..DOUT_D6 report extrema, peak sample times and signed voltage-time area over every window using actual stored timestamps.",
+  "event_count_threshold": null,
+  "interpolation_or_resampling": false,
+  "phase_turns_usage": "delta_rad/(2*pi) is navigation arithmetic only; not an event count",
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

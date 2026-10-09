@@ -48,9 +48,20 @@ stops. No interpretation, sweep, or follow-up solve is inferred from results.
   `CBU_MODE=OFF`, `CARRY_MODE=NONE`; T1, bias, and clock are not electrically
   instantiated. `config/T1_PARAMS.env` is reference-only. Reserved future modes
   stay fail-closed.
-- The authorized BUS400 diagnostic set is limited to N0 then N1, with only the
-  R1C1 FINAL_READ SE mask differing. Check the current PREFLIGHT and manifest
-  before running; stop on first solver/raw/mechanical/standalone-plot failure.
+- BUS400 diagnostic batch `BVM4X4_BUS400_20261009` completed exactly two solves:
+  `A007_BUS400_D3_N0` and `A008_BUS400_D3_N1`; their only config difference is
+  R1C1 FINAL_READ SE. Both artifacts and mechanical/standalone/paired-plot QA
+  are PASS, and scientific interpretation remains NOT_PERFORMED. Raw SHA-256:
+  A007 `eb6807ea87f2e19c92605e86a0b1ff53058d47ef1316e17366be1d88a78b9dc0`;
+  A008 `6ff7e9676da5a87c334826aeed1e9b4eb81421a2fa77f7a523e1fa06c1b6bd7a`.
+- Registered-interval current arithmetic reports about −90.991 µA per-cell WL
+  and BL time mean during WRITE0, +90.991 µA during WRITE1, and about +90.991 µA
+  WL plus each-cell SE during READ0. FINAL_READ N0 SE branch means are zero;
+  N1 has about +90.991 µA at R1C1 SE and zero on the other 15 SE branches.
+  These are branch-current arithmetic over stored samples, not a functional
+  verdict. The new 400u source total is not declared optimal; no follow-up is
+  authorized. Full cell/window ranges are in both `metrics.json` files and
+  [BATCH_SUMMARY.md](../test/exploration/bvm-4x4-diagonal-array-v1-20261009/BATCH_SUMMARY.md).
 
 ## Measurement and workflow invariants
 

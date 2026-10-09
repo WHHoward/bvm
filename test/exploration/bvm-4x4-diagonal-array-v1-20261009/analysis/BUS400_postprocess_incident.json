@@ -1,0 +1,37 @@
+{
+  "schema": "bvm-4x4-postprocess-incident-v1",
+  "batch_id": "BVM4X4_BUS400_20261009",
+  "stage": "paired_visualization_after_both_runs",
+  "initial_status": "POSTPROCESSING_FAILURE_RAW_PRESERVED",
+  "failure": {
+    "component": "read_raw subset selection",
+    "summary": "The exact-header check treated registered probes outside the two-signal comparison subset as undeclared.",
+    "solver_or_raw_failure": false
+  },
+  "repair": {
+    "change": "Subset readers may select registered columns from a wider raw header; full raw QA and per-run plot QA still enforce exact headers.",
+    "reprocessed_runs": ["A007_BUS400_D3_N0", "A008_BUS400_D3_N1"],
+    "operation": "Rebuilt only the paired comparison and handoff manifests from the same immutable raw files.",
+    "new_physical_solve_count": 0
+  },
+  "raw_identity": [
+    {
+      "run_id": "A007_BUS400_D3_N0",
+      "sha256_before": "eb6807ea87f2e19c92605e86a0b1ff53058d47ef1316e17366be1d88a78b9dc0",
+      "sha256_after": "eb6807ea87f2e19c92605e86a0b1ff53058d47ef1316e17366be1d88a78b9dc0"
+    },
+    {
+      "run_id": "A008_BUS400_D3_N1",
+      "sha256_before": "6ff7e9676da5a87c334826aeed1e9b4eb81421a2fa77f7a523e1fa06c1b6bd7a",
+      "sha256_after": "6ff7e9676da5a87c334826aeed1e9b4eb81421a2fa77f7a523e1fa06c1b6bd7a"
+    }
+  ],
+  "final_comparison_qa": {
+    "status": "PASS",
+    "path": "plots/comparison/BUS400_D3_matched.html",
+    "sha256": "a3f639ed6db970eba1ab7a0b62277a3fa7e30c08d9cfdc466d15669614251e2f",
+    "interpolation_or_resampling": false
+  },
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

@@ -17,8 +17,10 @@ Current routine JoSIM/BVM entry point. Read this short note, then
   `jjmit.cir`; verify their manifest hashes before use.
 - A001–A006 are the 200u shared-bus low-drive baseline: artifact/mechanical QA
   remains valid, but normal 4×4 function was not established. Their raw and ZIPs
-  are immutable. The 400u settings are a candidate bus-source total, never a
-  per-cell current claim; measure actual per-cell branches from raw.
+-  are immutable. The 400u BUS400 batch A007/A008 is complete with artifact and
+  mechanical/plot QA PASS; interpretation is pending user review. The 400u is a
+  tested bus-source total, not an optimal setting or per-cell current claim;
+  measured per-cell branch arithmetic lives in the run metrics.
 - In 4×4, T1/CBU/DFF are not connected; `T1_PARAMS.env` is reference-only.
 - Never overwrite raw, add an unrequested run/sweep, infer physical function from
   arithmetic/plots, or continue past the authorized batch. Record provenance and

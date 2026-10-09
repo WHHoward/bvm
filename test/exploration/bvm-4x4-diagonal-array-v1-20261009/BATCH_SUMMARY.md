@@ -114,3 +114,106 @@ Drive target: [BVM_Backages](https://drive.google.com/drive/folders/1--nlY7Nq5Ar
 
 No SFQ count, mechanism, logic-function, throughput, or convergence conclusion
 is made. Timestep convergence remains `UNKNOWN`; automatic follow-up is false.
+
+## BUS400 diagnostic batch — BVM4X4_BUS400_20261009
+
+This is a separate, additive registration from A001–A006. The user-supplied raw
+review classifies A001–A006 as `LOW_DRIVE_BASELINE / FUNCTION_NOT_ESTABLISHED`:
+their artifact/mechanical QA remains valid, but they are not normal 4×4 function
+evidence. Their raw, run manifests, and old ZIPs were not changed or reread.
+
+- Starting parent HEAD: `3de08ba0fd5997b253269849dbc1a535786c8fd6`.
+- Execution source HEAD: `3c1b5a197742526059dd368da1a865c1aed95162`.
+- JoSIM: `v2.7.2837d13`, binary SHA-256
+  `48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2`.
+- Exact solves: 2, serial; A007 then A008. Shared WL/BL source totals are 400 µA,
+  cell-local SE is 100 µA, and all other topology/timing values remain frozen.
+  The only case difference is the FINAL_READ SE mask: none vs R1C1.
+- Both runs have 124 probes, 24,999 samples, stored time 0–249.99 ps,
+  `dt_min=0.01 ps`, `dt_max=0.02 ps`; per-run static/raw/mechanical/standalone
+  plot QA is `PASS`, artifact `VALID`. Solver stdout/stderr scan found no warning,
+  non-convergence, or missing-model marker. The same raw SHA was observed before
+  and after per-run analysis/plotting and again during paired comparison.
+
+| Run | Mask | Raw bytes | Raw SHA-256 | Probe/QA |
+|---|---|---:|---|---|
+| A007_BUS400_D3_N0 | none | 41,641,922 | `eb6807ea87f2e19c92605e86a0b1ff53058d47ef1316e17366be1d88a78b9dc0` | 124 / VALID-PASS |
+| A008_BUS400_D3_N1 | R1C1 | 41,610,504 | `6ff7e9676da5a87c334826aeed1e9b4eb81421a2fa77f7a523e1fa06c1b6bd7a` | 124 / VALID-PASS |
+
+New raw total: **83,252,426 bytes**. This focus set is 124 signals versus 242
+in A001–A006; each new raw is about 48.7% smaller than the prior 81 MB raw
+reference. HTML remains local. Each run has two classic `josim-plot2.py` pages;
+the matched comparison is
+`plots/comparison/BUS400_D3_matched.html` (QA PASS, SHA-256
+`a3f639ed6db970eba1ab7a0b62277a3fa7e30c08d9cfdc466d15669614251e2f`).
+
+### Per-cell input branch arithmetic
+
+The table gives the range across 16 BVM cells of each branch's signed time-mean
+current, computed as registered `charge_c / (last_stored_s - first_stored_s)`
+on actual stored samples. It is not a source-setpoint conversion or an equal-share
+assumption; every cell's min/max/mean/charge is in its run's `metrics.json`.
+
+| Window | WL per-cell time mean | BL per-cell time mean | SE per-cell time mean |
+|---|---:|---:|---:|
+| WRITE0 (both) | −90.992…−90.991 µA | −90.992…−90.991 µA | 0 |
+| READ0 (both) | +90.991 µA (about ±0.001 µA across cells) | approximately 0 | +90.991 µA each cell |
+| WRITE1 (both) | +90.991 µA (about ±0.001 µA across cells) | +90.991 µA (about ±0.001 µA across cells) | 0 |
+| FINAL_READ N0 | +90.991 µA | approximately 0 | 0 all cells |
+| FINAL_READ N1 | +90.055…+91.304 µA | −0.937…+0.312 µA | R1C1 +90.991 µA; other 15 cells 0 |
+
+For A008, instantaneous FINAL_READ BL branch samples span −12.294 mA to
++10.529 mA across cells; this is retained as a measured transient, not assigned a
+physical mechanism. All branch directions and exact per-cell/window arithmetic
+remain in the run metrics.
+
+### Output and same-JJ arithmetic
+
+`FINAL_READ_RESPONSE=[110,250) ps` DOUT signed areas are in `10⁻¹⁵ V·s`; peaks
+are positive maxima in µV at the shown stored-sample time. These are arithmetic,
+not event counts.
+
+| Run | D | Signed area (10⁻¹⁵ V·s) | Positive max (µV @ ps) |
+|---|---|---:|---:|
+| A007 | D0 | −0.000012378 | 0.1261 @ 124.19 |
+| A007 | D1 | −0.000022014 | 0.1124 @ 112.79 |
+| A007 | D2 | −0.000022714 | 0.1122 @ 112.80 |
+| A007 | D3 | −0.000022739 | 0.1123 @ 112.80 |
+| A007 | D4 | −0.000022714 | 0.1122 @ 112.80 |
+| A007 | D5 | −0.000022014 | 0.1124 @ 112.79 |
+| A007 | D6 | −0.000012378 | 0.1261 @ 124.19 |
+| A008 | D0 | −0.000012378 | 0.1338 @ 124.18 |
+| A008 | D1 | −0.000022014 | 0.1126 @ 112.79 |
+| A008 | D2 | −0.000022714 | 0.1124 @ 112.79 |
+| A008 | D3 | +2.067811 | 465.636 @ 139.53 |
+| A008 | D4 | −0.000022714 | 0.1124 @ 112.79 |
+| A008 | D5 | −0.000022014 | 0.1126 @ 112.79 |
+| A008 | D6 | −0.000012378 | 0.1338 @ 124.18 |
+
+Each run contains 138 same-JJ/window P/V arithmetic rows for the registered
+focus set, including D3 BVM JM1/JM2, QB_R1C1, and every D3 sJTL/CB stage. The
+maximum absolute phase-minus-voltage-area residual was `5.73e-6` navigation turns
+in A007 and `9.91e-6` in A008. Raw phases remain radians; no JJ/event outcome is
+classified here.
+
+### Post-processing incident and archive plan
+
+After both successful solves, the paired plot initially failed because a shared
+raw reader applied its exact-header rule to a two-signal subset request. The
+reader now allows subset reads for focused visualization while raw QA still
+enforces the exact registered header. The comparison and handoff manifests were
+rebuilt from the same two immutable raws; both SHA-256 values above were
+unchanged. No solver was rerun.
+
+The single delta is planned as
+`handoff/bvm-4x4-diagonal-array-v1-20261009_delta_BVM4X4_BUS400_20261009.zip`.
+Base is Git commit `3de08ba…`, metadata-v2 package
+`bvm-4x4-diagonal-array-v1-20261009_metadata_v2_BVM4X4_20261009.zip` (SHA-256
+`19af77800333d2c596b25606c26ac84fbd0ae4101b5b14f83fefc121c5975be1`), plus the
+six immutable A001–A006 raw-package identities recorded in `DELTA_MANIFEST.json`.
+It contains only new/modified files and A007/A008 raw; old raw is referenced, not
+copied. The detached `PACKAGE_QA.json` is the final ZIP SHA/member/CRC authority.
+
+Status remains `EXPERIMENT_COMPLETE / AWAITING_SCIENTIFIC_REVIEW` after package
+and commit; scientific interpretation is `NOT_PERFORMED`, and there is no
+authorized follow-up.

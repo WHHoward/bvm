@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -183,11 +184,23 @@ class DiagonalPlatformTests(unittest.TestCase):
             platform.load_config("BUS400_D3_N1", ["SJTL_COUNT_D3=1,-1,1,1"])
 
     def test_bus400_pair_is_exact_and_legacy_presets_keep_200u(self):
-        cases = platform.validate_bus400_matrix()
-        self.assertEqual([item["case"]["CASE"] for item in cases], list(platform.BUS400_CASES))
-        self.assertEqual([item["next_run_id"] for item in cases],
-                         ["A007_BUS400_D3_N0", "A008_BUS400_D3_N1"])
-        self.assertEqual(cases[0]["rendered"]["deck"], cases[1]["rendered"]["deck"])
+        already_executed = any((platform.RUNS / run_id).exists()
+                               for run_id in ("A007_BUS400_D3_N0", "A008_BUS400_D3_N1"))
+        if already_executed:
+            with self.assertRaises(platform.ConfigError):
+                platform.validate_bus400_matrix()
+            outputs = []
+            for preset in platform.BUS400_CASES:
+                case, stimulus, t1 = platform.load_config(preset)
+                outputs.append(platform.render(case, stimulus, t1, platform.RUNS / "_TEST_PREVIEW"))
+            self.assertEqual(outputs[0]["deck"], outputs[1]["deck"])
+            self.assertTrue(all(item["static_qa"]["status"] == "PASS" for item in outputs))
+        else:
+            cases = platform.validate_bus400_matrix()
+            self.assertEqual([item["case"]["CASE"] for item in cases], list(platform.BUS400_CASES))
+            self.assertEqual([item["next_run_id"] for item in cases],
+                             ["A007_BUS400_D3_N0", "A008_BUS400_D3_N1"])
+            self.assertEqual(cases[0]["rendered"]["deck"], cases[1]["rendered"]["deck"])
         for preset in platform.REGISTERED_CASES:
             case, _stimulus, _t1 = platform.load_config(preset)
             self.assertEqual(case["ROW_WL_WRITE_AMPLITUDE"], "200u")
@@ -201,6 +214,17 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(windows["WRITE1"], (90.0, 101.0))
         self.assertEqual(windows["FINAL_READ"], (110.0, 121.0))
         self.assertEqual(windows["FINAL_READ_RESPONSE"], (110.0, 250.0))
+
+    def test_raw_reader_allows_focus_subset_but_can_enforce_exact_registered_header(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            raw = Path(temp_dir) / "subset.csv"
+            raw.write_text("time,V(DOUT_D3),I(R_SE|XBVM_R1C1)\n0,1,2\n1,3,4\n", encoding="utf-8")
+            times, columns, header = platform.read_raw(raw, {"V(DOUT_D3)"})
+            self.assertEqual(len(times), 2)
+            self.assertEqual(set(columns), {"V(DOUT_D3)"})
+            self.assertEqual(len(header), 3)
+            with self.assertRaisesRegex(platform.ConfigError, "undeclared probes"):
+                platform.read_raw(raw, {"V(DOUT_D3)"}, exact_header=True)
 
 
 if __name__ == "__main__":

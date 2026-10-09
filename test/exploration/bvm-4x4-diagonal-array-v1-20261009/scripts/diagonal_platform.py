@@ -957,13 +957,15 @@ def build_bus400_comparison(run_ids: list[str]) -> dict[str, Any]:
           "runs": run_records, "signals": signals,
           "raws_immutable": all(item["raw_sha256_before"] == item["raw_sha256_after"] for item in run_records),
           "interpolation_or_resampling": False, "plotter_sha256": sha256(PLOTTER),
+          "comparison_generator_path": Path(__file__).resolve().relative_to(REPO).as_posix(),
+          "comparison_generator_sha256": sha256(Path(__file__).resolve()),
           "plotly_asset_sha256": sha256(PLOTLY_ASSET),
           "scientific_interpretation_performed": False}
     _json(SERIES / "analysis" / "BUS400_comparison_qa.json", qa)
     return qa
 
 
-def write_bus400_handoff_manifests(run_ids: list[str]) -> None:
+def write_bus400_handoff_manifests(run_ids: list[str], comparison_qa: dict[str, Any]) -> None:
     run_records = []
     for run_id in run_ids:
         run_dir = RUNS / run_id
@@ -987,6 +989,7 @@ def write_bus400_handoff_manifests(run_ids: list[str]) -> None:
                 f"- Parent HEAD: `{BUS400_PARENT_HEAD}`; authorized/actual solves: `2/2`.",
                 "- Scientific interpretation: `NOT_PERFORMED`; automatic follow-up: `false`.",
                 "- Raw CSVs are complete immutable solver outputs. HTML remains local and is excluded from the delta package.",
+                f"- Paired visualization QA: `{comparison_qa['status']}` at `{comparison_qa['path']}`; SHA-256 `{comparison_qa['sha256']}`.",
                 "", "| Run | Case | Raw bytes | Raw SHA-256 | Probes | QA |", "|---|---|---:|---|---:|---|"]
     for item in run_records:
         evidence.append(f"| {item['run_id']} | {item['case']} | {item['raw_bytes']} | "
@@ -999,6 +1002,7 @@ def write_bus400_handoff_manifests(run_ids: list[str]) -> None:
         "risk_level": "NORMAL", "runs": run_records,
         "registered_windows": ["WRITE0", "READ0", "WRITE1", "FINAL_READ",
                                "POST_FINAL_READ", "FINAL_READ_RESPONSE"],
+        "paired_visualization": comparison_qa,
         "permitted_default_operations": ["raw integrity and actual-grid QA",
                                          "per-BVM input branch current arithmetic",
                                          "same-JJ phase/voltage arithmetic",
@@ -1067,7 +1071,7 @@ def run_bus400_batch() -> int:
             return code
     built = build_bus400_comparison(run_ids)
     print(f"Paired comparison QA: {built['status']} ({built['path']})")
-    write_bus400_handoff_manifests(run_ids)
+    write_bus400_handoff_manifests(run_ids, built)
     return 0
 
 
@@ -1081,7 +1085,8 @@ def _write_env(path: Path, values: dict[str, str]) -> None:
     path.write_text("".join(f"{key}={value}\n" for key, value in values.items()), encoding="utf-8")
 
 
-def read_raw(raw_path: Path, required: set[str] | None = None) -> tuple[list[float], dict[str, array.array], list[str]]:
+def read_raw(raw_path: Path, required: set[str] | None = None, *,
+             exact_header: bool = False) -> tuple[list[float], dict[str, array.array], list[str]]:
     required = required or set()
     times: list[float] = []
     columns: dict[str, array.array] = {}
@@ -1094,7 +1099,7 @@ def read_raw(raw_path: Path, required: set[str] | None = None) -> tuple[list[flo
         if missing:
             raise ConfigError(f"raw is missing required probes: {missing[:10]}")
         unexpected = sorted(set(header) - (required | {"time"}))
-        if unexpected:
+        if exact_header and unexpected:
             raise ConfigError(f"raw contains undeclared probes: {unexpected[:10]}")
         indexes = {label: header.index(label) for label in required}
         columns = {label: array.array("d") for label in required}
@@ -1169,7 +1174,7 @@ def analyze_raw(run_dir: Path, probe_manifest: dict[str, Any]) -> tuple[dict[str
     raw = run_dir / "raw.csv"
     raw_before = sha256(raw)
     required = {item["label"] for item in probe_manifest["signals"]}
-    times, columns, header = read_raw(raw, required)
+    times, columns, header = read_raw(raw, required, exact_header=True)
     raw_after = sha256(raw)
     if raw_before != raw_after:
         raise ConfigError("raw SHA changed during analysis")
@@ -1317,7 +1322,7 @@ def render_plots(run_dir: Path, probes: dict[str, Any]) -> dict[str, Any]:
     raw = run_dir / "raw.csv"
     before = sha256(raw)
     required = {item["label"] for item in probes["signals"]}
-    times, columns, _ = read_raw(raw, required)
+    times, columns, _ = read_raw(raw, required, exact_header=True)
     frame = pd.DataFrame({"time": times, **{key: list(value) for key, value in columns.items()}})
     plotter = _plotter_module()
     plot_root = PLOTS / "runs" / run_dir.name

@@ -152,6 +152,26 @@ def _delta_sources(root: Any) -> tuple[list[tuple[Path, str]], list[str], list[s
             sources[rel_path] = path
             changed_paths.add(rel_path)
 
+    # Repository-wide ignore rules exclude generated JSON by default. These
+    # task-authoritative records are explicitly retained in the delta closure.
+    required_batch_artifacts = (
+        "test/exploration/bvm-4x4-diagonal-array-v1-20261009/analysis/BUS400_metric_spec.json",
+        "test/exploration/bvm-4x4-diagonal-array-v1-20261009/analysis/BUS400_comparison_qa.json",
+        "test/exploration/bvm-4x4-diagonal-array-v1-20261009/analysis/BUS400_transformation_registry.json",
+        "test/exploration/bvm-4x4-diagonal-array-v1-20261009/analysis/BUS400_postprocess_incident.json",
+        "test/exploration/bvm-4x4-diagonal-array-v1-20261009/RAW_ANALYSIS_HANDOFF_MANIFEST.json",
+    )
+    for rel_path in required_batch_artifacts:
+        path = REPO / rel_path
+        if not path.is_file() or path.is_symlink():
+            raise RuntimeError(f"required BUS400 delta artifact is missing: {rel_path}")
+        sources[rel_path] = path
+        changed_paths.add(rel_path)
+
+    for path in SERIES.rglob("*.html"):
+        if path.is_file():
+            excluded_html.add(path.relative_to(REPO).as_posix())
+
     required_run_files = {"deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt",
                           "USER_CASE.snapshot.env", "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env",
                           "stimulus.inc", "case_manifest.json", "metadata.json", "provenance.json",
@@ -250,7 +270,7 @@ def delta_spec(tag: str, root: Any) -> tuple[dict[str, Any], dict[str, Any]]:
             "referenced_existing_cases": existing_raw_refs,
             "new_raw_files": [f"runs/{run_id}/raw.csv" for run_id in BUS400_RUN_IDS],
             "new_physical_solve_count": 2, "reused_point_count": 0,
-            "excluded_html_count": len(excluded_html),
+            "excluded_html_count": len(excluded_html), "html_included": False,
             "source_file_count": len(sources), "uncompressed_source_bytes": source_bytes,
             "package": package_name, "qa": qa_target.relative_to(REPO).as_posix()}
     return spec, {"manifest": manifest, "plan": plan, "source_paths": [rel for _, rel in sources]}

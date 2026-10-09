@@ -1,0 +1,58 @@
+{
+  "schema": "bvm-postprocess-incident-v1",
+  "incident_id": "ANALYSIS_INCIDENT_001",
+  "status": "ANALYSIS_TOOL_DEFECT_RECORDED_RAW_PRESERVED",
+  "batch_id": "BVM4X4_CB_CARRY_BUFFER_ALL_20261009",
+  "attempted_command": "python3 scripts/analyze_cb_carry_buffer_all.py --write",
+  "error": "KeyError: 'bits'",
+  "failure_stage": "post-solve summary assembly; theoretical-vector key mismatch",
+  "solver_invoked_by_attempt": false,
+  "physical_solve_count_completed_before_and_after": 3,
+  "raw_mutated": false,
+  "raw_sha256_by_run": {
+    "A027_FULL_CB_CHAIN_ALL_CLOCK": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+    "A029_FULL_CB_CHAIN_3X3_CLOCK": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f"
+  },
+  "preflight_analysis_runner_sha256": "9710feb3e9ee1bf3b814ec2c71c7cf3e649cc0295f3d4dbe0cd984bddfc048d5",
+  "repaired_analysis_runner_sha256": "797992b1528d36e87c2cfdf8e582fb42d2407057bcc8768d810be350af48e69b",
+  "repair_attempts": [
+    {
+      "attempt": 1,
+      "error": "KeyError: 'bits'",
+      "solver_invoked": false,
+      "raw_mutated": false,
+      "partial_outputs_created": false
+    },
+    {
+      "attempt": 2,
+      "error": "KeyError: 'A025_CARRY_CB_D1_ALL_CLOCK'",
+      "solver_invoked": false,
+      "raw_mutated": false,
+      "partial_outputs_created": false
+    },
+    {
+      "attempt": 3,
+      "error": "NameError: name 'BATCH_ID' is not defined",
+      "solver_invoked": false,
+      "raw_mutated": false,
+      "partial_outputs_created": true,
+      "partial_csv_files": [
+        "FULL_CB_CHAIN_STAGE_METRICS.csv",
+        "FULL_CB_CHAIN_JJ_PHASE_AREA.csv",
+        "FULL_CB_CHAIN_TIMING.csv",
+        "FULL_CB_CHAIN_SIGNAL_METRICS.csv",
+        "FULL_CB_CHAIN_OUTPUT_METRICS.csv",
+        "FULL_CB_CHAIN_COMPARISON.csv"
+      ],
+      "partial_html_files": [
+        "plots/comparison/A025_A027_D1_COMMON.html",
+        "plots/comparison/A026_A028_D1_COMMON.html"
+      ],
+      "result_brief_or_summary_created": false
+    }
+  ],
+  "repair_scope": "analysis code and post-processing against the same immutable A027-A029 raw only",
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

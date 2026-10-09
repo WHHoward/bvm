@@ -23,6 +23,7 @@ REPO = platform.REPO
 RUNS = SERIES / "runs"
 TASK = SERIES / "analysis" / "cb-carry-buffer-all-20261009"
 PLOTS = SERIES / "plots"
+BATCH_ID = "BVM4X4_CB_CARRY_BUFFER_ALL_20261009"
 RUNS_EXPECTED = tuple(item[0] for item in platform.CB_CARRY_BUFFER_ALL_RUN_MATRIX)
 BASELINES = {
     "A027_FULL_CB_CHAIN_ALL_CLOCK": "A025_CARRY_CB_D1_ALL_CLOCK",
@@ -163,22 +164,34 @@ def _common_pair_plot(name: str, run_a: dict[str, Any], run_b: dict[str, Any],
             "interpolation_or_resampling": False}
 
 
-def _build_analysis() -> dict[str, Any]:
-    if any((TASK / name).exists() for name in (
-            "FULL_CB_CHAIN_SUMMARY.json", "FULL_CB_CHAIN_STAGE_METRICS.csv",
-            "FULL_CB_CHAIN_JJ_PHASE_AREA.csv", "FULL_CB_CHAIN_TIMING.csv",
-            "FULL_CB_CHAIN_COMPARISON.csv", "RESULT_BRIEF.md", "EVIDENCE_MANIFEST.md",
-            "RAW_ANALYSIS_HANDOFF_MANIFEST.json")):
+def _build_analysis(revision: int = 1) -> dict[str, Any]:
+    if revision < 1:
+        raise ValueError("analysis revision must be >= 1")
+    suffix = "" if revision == 1 else f"_v{revision}"
+    files = {
+        "summary": TASK / f"FULL_CB_CHAIN_SUMMARY{suffix}.json",
+        "stage": TASK / f"FULL_CB_CHAIN_STAGE_METRICS{suffix}.csv",
+        "jj": TASK / f"FULL_CB_CHAIN_JJ_PHASE_AREA{suffix}.csv",
+        "timing": TASK / f"FULL_CB_CHAIN_TIMING{suffix}.csv",
+        "signal": TASK / f"FULL_CB_CHAIN_SIGNAL_METRICS{suffix}.csv",
+        "output": TASK / f"FULL_CB_CHAIN_OUTPUT_METRICS{suffix}.csv",
+        "comparison": TASK / f"FULL_CB_CHAIN_COMPARISON{suffix}.csv",
+        "brief": TASK / f"RESULT_BRIEF{suffix}.md",
+        "evidence": TASK / f"EVIDENCE_MANIFEST{suffix}.md",
+        "handoff": TASK / f"RAW_ANALYSIS_HANDOFF_MANIFEST{suffix}.json",
+    }
+    if any(path.exists() for path in files.values()):
         raise RuntimeError("full-chain analysis outputs already exist; refusing overwrite")
     run_records = list(platform.CB_CARRY_BUFFER_ALL_RUN_MATRIX)
     run_ids = [item[0] for item in run_records]
-    runs = {run_id: _run_identity(run_id) for run_id in run_ids}
+    baseline_ids = tuple(BASELINES.values())
+    runs = {run_id: _run_identity(run_id) for run_id in (*run_ids, *baseline_ids)}
     for run_id, *_ in run_records:
         current_hash = sha(runs[run_id]["raw"])
         if current_hash != runs[run_id]["raw_sha256"]:
             raise RuntimeError(f"raw changed before table generation: {run_id}")
 
-    metric_indexes = {run_id: _indexes(runs[run_id]["metrics"]) for run_id in run_ids}
+    metric_indexes = {run_id: _indexes(run["metrics"]) for run_id, run in runs.items()}
     stage_rows, jj_rows, timing_rows, output_rows, signal_rows = [], [], [], [], []
     for run_id, preset, rows, cols, pop in run_records:
         run = runs[run_id]
@@ -235,7 +248,7 @@ def _build_analysis() -> dict[str, Any]:
                 if record:
                     output_rows.append({"run_id": run_id, "case": preset, "raw_sha256": run["raw_sha256"],
                                         "theoretical_product_reference": theory["product"],
-                                        "theoretical_bits_lsb_to_msb_reference": theory["bits"],
+                                        "theoretical_bits_lsb_to_msb_reference": theory["bits_lsb_to_msb"],
                                         "signal": bit, "window": window,
                                         "signed_area_phi0_arithmetic": record["signed_area_phi0_arithmetic"],
                                         "min_v": record["min_v"], "max_v": record["max_v"],
@@ -243,8 +256,9 @@ def _build_analysis() -> dict[str, Any]:
                                         "bit_decode": "NOT_PERFORMED"})
 
     compare_plots, compare_rows, grid_checks = [], [], {}
-    pairs = (("A025_CARRY_CB_D1_ALL_CLOCK", "A027_FULL_CB_CHAIN_ALL_CLOCK", "A025_A027_D1_COMMON.html"),
-             ("A026_CARRY_CB_D1_PAPER_CLOCK", "A028_FULL_CB_CHAIN_PAPER_CLOCK", "A026_A028_D1_COMMON.html"))
+    compare_suffix = "" if revision == 1 else f"_v{revision}"
+    pairs = (("A025_CARRY_CB_D1_ALL_CLOCK", "A027_FULL_CB_CHAIN_ALL_CLOCK", f"A025_A027_D1_COMMON{compare_suffix}.html"),
+             ("A026_CARRY_CB_D1_PAPER_CLOCK", "A028_FULL_CB_CHAIN_PAPER_CLOCK", f"A026_A028_D1_COMMON{compare_suffix}.html"))
     for baseline_id, full_id, page_name in pairs:
         base_times, _, _ = platform.read_raw(runs[baseline_id]["raw"], set(COMMON_D1_SIGNALS))
         full_times, _, _ = platform.read_raw(runs[full_id]["raw"], set(COMMON_D1_SIGNALS))
@@ -271,12 +285,12 @@ def _build_analysis() -> dict[str, Any]:
         if sha(runs[run_id]["raw"]) != runs[run_id]["raw_sha256"]:
             raise RuntimeError(f"raw changed during analysis: {run_id}")
 
-    _write_csv(TASK / "FULL_CB_CHAIN_STAGE_METRICS.csv", stage_rows)
-    _write_csv(TASK / "FULL_CB_CHAIN_JJ_PHASE_AREA.csv", jj_rows)
-    _write_csv(TASK / "FULL_CB_CHAIN_TIMING.csv", timing_rows)
-    _write_csv(TASK / "FULL_CB_CHAIN_SIGNAL_METRICS.csv", signal_rows)
-    _write_csv(TASK / "FULL_CB_CHAIN_OUTPUT_METRICS.csv", output_rows)
-    _write_csv(TASK / "FULL_CB_CHAIN_COMPARISON.csv", compare_rows)
+    _write_csv(files["stage"], stage_rows)
+    _write_csv(files["jj"], jj_rows)
+    _write_csv(files["timing"], timing_rows)
+    _write_csv(files["signal"], signal_rows)
+    _write_csv(files["output"], output_rows)
+    _write_csv(files["comparison"], compare_rows)
     raw_records = {run_id: {"path": runs[run_id]["raw"].relative_to(SERIES).as_posix(),
                             "sha256": runs[run_id]["raw_sha256"], "bytes": runs[run_id]["raw_bytes"],
                             "sample_count": runs[run_id]["raw_qa"]["sample_count"],
@@ -286,26 +300,27 @@ def _build_analysis() -> dict[str, Any]:
                             "dt_max_s": runs[run_id]["raw_qa"]["dt_max_s"],
                             "artifact_status": "VALID", "mechanical_qa": "PASS"}
                    for run_id in run_ids}
-    summary = {"schema": "bvm-4x4-cb-carry-buffer-all-results-v1", "status": "PASS",
+    summary = {"schema": f"bvm-4x4-cb-carry-buffer-all-results-v{revision}", "status": "PASS",
                "batch_id": BATCH_ID, "physical_solve_count": 3,
+               "analysis_revision": revision,
                "run_ids": run_ids, "raw_by_run": raw_records,
                "theoretical_vectors_reference_only": THEORY,
                "registered_windows_ps": {key:list(value) for key,value in platform.CHAIN_WINDOWS_PS.items()},
                "triplet_grid_checks": grid_checks,
                "comparison_plots": compare_plots,
-               "stage_metrics_path": (TASK/"FULL_CB_CHAIN_STAGE_METRICS.csv").relative_to(SERIES).as_posix(),
-               "jj_phase_area_path": (TASK/"FULL_CB_CHAIN_JJ_PHASE_AREA.csv").relative_to(SERIES).as_posix(),
-               "timing_path": (TASK/"FULL_CB_CHAIN_TIMING.csv").relative_to(SERIES).as_posix(),
-               "signal_metrics_path": (TASK/"FULL_CB_CHAIN_SIGNAL_METRICS.csv").relative_to(SERIES).as_posix(),
-               "output_metrics_path": (TASK/"FULL_CB_CHAIN_OUTPUT_METRICS.csv").relative_to(SERIES).as_posix(),
-               "comparison_table_path": (TASK/"FULL_CB_CHAIN_COMPARISON.csv").relative_to(SERIES).as_posix(),
+               "stage_metrics_path": files["stage"].relative_to(SERIES).as_posix(),
+               "jj_phase_area_path": files["jj"].relative_to(SERIES).as_posix(),
+               "timing_path": files["timing"].relative_to(SERIES).as_posix(),
+               "signal_metrics_path": files["signal"].relative_to(SERIES).as_posix(),
+               "output_metrics_path": files["output"].relative_to(SERIES).as_posix(),
+               "comparison_table_path": files["comparison"].relative_to(SERIES).as_posix(),
                "phase_units": "raw radians; delta/(2*pi) navigation only",
                "integration": "actual stored timestamp rows; half-open windows; trapezoid; no interpolation",
                "bit_decode": "NOT_PERFORMED", "event_classifier": None,
                "sfq_count_inference": "NOT_PERFORMED", "scientific_interpretation_performed": False,
                "timestep_convergence": "UNKNOWN_NOT_RUN", "automatic_follow_up": False,
                "next_action": "STOP_AWAITING_USER_REVIEW"}
-    jnew(TASK / "FULL_CB_CHAIN_SUMMARY.json", summary)
+    jnew(files["summary"], summary)
     brief = ["# A027-A029 full CB-only carry chain — mechanical evidence", "",
              f"- Batch: `{BATCH_ID}`; status: `PASS`; solves: 3; scientific interpretation: `NOT PERFORMED`.",
              "- Each D1-D6 input uses two measured branches, with only the previous T1 Carry passing through the added canonical CB_0928; JOIN connects directly to the current T1 input.",
@@ -319,10 +334,10 @@ def _build_analysis() -> dict[str, Any]:
     for run_id, *_ in run_records:
         rr=raw_records[run_id]
         brief.append(f"| {run_id} | {THEORY[run_id]['product']} | {rr['bytes']} | `{rr['sha256']}` | {rr['sample_count']} | PASS |")
-    brief.extend(["", "Tables: `FULL_CB_CHAIN_STAGE_METRICS.csv`, `FULL_CB_CHAIN_JJ_PHASE_AREA.csv`, `FULL_CB_CHAIN_TIMING.csv`, `FULL_CB_CHAIN_SIGNAL_METRICS.csv`, `FULL_CB_CHAIN_OUTPUT_METRICS.csv`, `FULL_CB_CHAIN_COMPARISON.csv`.",
+    brief.extend(["", f"Tables: `{files['stage'].name}`, `{files['jj'].name}`, `{files['timing'].name}`, `{files['signal'].name}`, `{files['output'].name}`, `{files['comparison'].name}`.",
                   "Plots: eight classic pages per run (full overview, carry propagation, D1-D6 focus) plus A025/A027 and A026/A028 D1 comparisons. HTML is local and excluded from ZIPs.",
                   "No CB isolation, SFQ count, bit-decode, or multiplier-success conclusion is made."])
-    (TASK / "RESULT_BRIEF.md").write_text("\n".join(brief)+"\n",encoding="utf-8")
+    files["brief"].write_text("\n".join(brief)+"\n",encoding="utf-8")
     evidence = ["# Evidence manifest", "", "This batch is governed by `docs/EXPERIMENT_CONTRACT.md`.",
                 "", "| Run | Raw path | SHA-256 | Bytes | QA |", "|---|---|---|---:|---|"]
     for run_id in run_ids:
@@ -330,7 +345,7 @@ def _build_analysis() -> dict[str, Any]:
         evidence.append(f"| {run_id} | `{rr['path']}` | `{rr['sha256']}` | {rr['bytes']} | PASS |")
     evidence.extend(["", "Prior A001-A026 raw is referenced by exact hashes in the DELTA; not duplicated.",
                      "HTML remains local. Scientific interpretation is NOT PERFORMED; follow-up is NONE."])
-    (TASK / "EVIDENCE_MANIFEST.md").write_text("\n".join(evidence)+"\n",encoding="utf-8")
+    files["evidence"].write_text("\n".join(evidence)+"\n",encoding="utf-8")
     handoff = {"schema":"bvm-raw-analysis-handoff-v1", "analysis_id":"bvm-4x4-cb-carry-buffer-all-20261009",
                "analysis_scope":{"source_runs":run_ids,"read_only_raw":True,"solver_authorized":False,
                                  "raw_mutation":False,"circuit_parameter_or_timing_change":False,
@@ -340,20 +355,22 @@ def _build_analysis() -> dict[str, Any]:
                                 "html_local_only":True,"files":[page for run_id in run_ids
                                     for page in runs[run_id]["plot_qa"].get("pages",[])] + compare_plots},
                "scientific_interpretation_performed":False}
-    jnew(TASK / "RAW_ANALYSIS_HANDOFF_MANIFEST.json", handoff)
+    jnew(files["handoff"], handoff)
     if any(sha(runs[run_id]["raw"]) != runs[run_id]["raw_sha256"] for run_id in run_ids):
         raise RuntimeError("raw changed after analysis or plotting")
-    return {"status":"PASS","run_ids":run_ids,"physical_solve_count":3,
+    return {"status":"PASS","analysis_revision":revision,"summary_path":files["summary"].relative_to(SERIES).as_posix(),
+            "summary_sha256":sha(files["summary"]),"run_ids":run_ids,"physical_solve_count":3,
             "raw_sha256_by_run":{run_id:runs[run_id]["raw_sha256"] for run_id in run_ids},
             "triplet_grid_checks":grid_checks,"scientific_interpretation_performed":False}
 
 
 def main() -> int:
-    if sys.argv[1:] != ["--write"]:
-        print("usage: analyze_cb_carry_buffer_all.py --write", file=sys.stderr)
+    if len(sys.argv) not in {2, 4} or sys.argv[1] != "--write" or (len(sys.argv) == 4 and sys.argv[2] != "--revision"):
+        print("usage: analyze_cb_carry_buffer_all.py --write [--revision N]", file=sys.stderr)
         return 2
     try:
-        result = _build_analysis()
+        revision = int(sys.argv[3]) if len(sys.argv) == 4 else 1
+        result = _build_analysis(revision=revision)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except Exception as exc:

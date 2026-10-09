@@ -1,0 +1,463 @@
+{
+  "schema": "bvm-4x4-cb-carry-buffer-all-results-v2",
+  "status": "PASS",
+  "batch_id": "BVM4X4_CB_CARRY_BUFFER_ALL_20261009",
+  "physical_solve_count": 3,
+  "analysis_revision": 2,
+  "run_ids": [
+    "A027_FULL_CB_CHAIN_ALL_CLOCK",
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+    "A029_FULL_CB_CHAIN_3X3_CLOCK"
+  ],
+  "raw_by_run": {
+    "A027_FULL_CB_CHAIN_ALL_CLOCK": {
+      "path": "runs/A027_FULL_CB_CHAIN_ALL_CLOCK/raw.csv",
+      "sha256": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+      "bytes": 93401769,
+      "sample_count": 29999,
+      "time_range_s": [
+        0.0,
+        2.9999e-10
+      ],
+      "dt_min_s": 9.999999999982388e-15,
+      "dt_max_s": 1.999999999999999e-14,
+      "artifact_status": "VALID",
+      "mechanical_qa": "PASS"
+    },
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK": {
+      "path": "runs/A028_FULL_CB_CHAIN_PAPER_CLOCK/raw.csv",
+      "sha256": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+      "bytes": 93431488,
+      "sample_count": 29999,
+      "time_range_s": [
+        0.0,
+        2.9999e-10
+      ],
+      "dt_min_s": 9.999999999982388e-15,
+      "dt_max_s": 1.999999999999999e-14,
+      "artifact_status": "VALID",
+      "mechanical_qa": "PASS"
+    },
+    "A029_FULL_CB_CHAIN_3X3_CLOCK": {
+      "path": "runs/A029_FULL_CB_CHAIN_3X3_CLOCK/raw.csv",
+      "sha256": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f",
+      "bytes": 93510947,
+      "sample_count": 29999,
+      "time_range_s": [
+        0.0,
+        2.9999e-10
+      ],
+      "dt_min_s": 9.999999999982388e-15,
+      "dt_max_s": 1.999999999999999e-14,
+      "artifact_status": "VALID",
+      "mechanical_qa": "PASS"
+    }
+  },
+  "theoretical_vectors_reference_only": {
+    "A027_FULL_CB_CHAIN_ALL_CLOCK": {
+      "diagonal_population": [
+        1,
+        2,
+        3,
+        4,
+        3,
+        2,
+        1
+      ],
+      "stage_inputs": [
+        1,
+        2,
+        4,
+        6,
+        6,
+        5,
+        3
+      ],
+      "carry": [
+        0,
+        1,
+        2,
+        3,
+        3,
+        2,
+        1
+      ],
+      "product": 225,
+      "bits_lsb_to_msb": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK": {
+      "diagonal_population": [
+        1,
+        1,
+        1,
+        3,
+        1,
+        1,
+        1
+      ],
+      "stage_inputs": [
+        1,
+        1,
+        1,
+        3,
+        2,
+        2,
+        2
+      ],
+      "carry": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "product": 143,
+      "bits_lsb_to_msb": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "A029_FULL_CB_CHAIN_3X3_CLOCK": {
+      "diagonal_population": [
+        1,
+        2,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stage_inputs": [
+        1,
+        2,
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "carry": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "product": 9,
+      "bits_lsb_to_msb": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "registered_windows_ps": {
+    "ARRAY_FINAL_READ": [
+      110.0,
+      121.0
+    ],
+    "PRE_CLOCK": [
+      121.0,
+      200.0
+    ],
+    "BEFORE_CLOCK": [
+      0.0,
+      200.0
+    ],
+    "CLOCK_EDGE": [
+      200.0,
+      205.0
+    ],
+    "POST_CLOCK": [
+      205.0,
+      300.0
+    ],
+    "TOTAL": [
+      0.0,
+      300.0
+    ]
+  },
+  "triplet_grid_checks": {
+    "A025_A027_D1_COMMON_v2.html": {
+      "baseline": "A025_CARRY_CB_D1_ALL_CLOCK",
+      "full_chain": "A027_FULL_CB_CHAIN_ALL_CLOCK",
+      "exact_stored_grid_equal": true,
+      "sample_count": [
+        29999,
+        29999
+      ]
+    },
+    "A026_A028_D1_COMMON_v2.html": {
+      "baseline": "A026_CARRY_CB_D1_PAPER_CLOCK",
+      "full_chain": "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+      "exact_stored_grid_equal": true,
+      "sample_count": [
+        29999,
+        29999
+      ]
+    }
+  },
+  "comparison_plots": [
+    {
+      "path": "plots/comparison/A025_A027_D1_COMMON_v2.html",
+      "sha256": "b713ec92127eba45315140a460935e89e577e0a039b084299009c05577c4c2ed",
+      "status": "PASS",
+      "renderer": "scripts/josim-plot2.py",
+      "layout": "sep_comb/dark/-j 2pi",
+      "shared_plotly_asset": "../../../bvm-qb-cb-array-topology-v1-20260924/plots/assets/plotly.min.js",
+      "shared_plotly_asset_sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "signals": [
+        "V(DOUT_D0)",
+        "V(T1_I_D0)",
+        "V(C_D0)",
+        "V(S_D0)",
+        "P(B_J11|XT1_D0)",
+        "V(B_J11|XT1_D0)",
+        "V(DOUT_D1)",
+        "P(BJ1|XCB_D1_L2)",
+        "V(BJ1|XCB_D1_L2)",
+        "V(CARRY_CB_IN_D1)",
+        "I(V_CARRY_IN_D1)",
+        "P(BJ1|XCB_CARRY_D1)",
+        "V(BJ1|XCB_CARRY_D1)",
+        "P(BJ2|XCB_CARRY_D1)",
+        "V(BJ2|XCB_CARRY_D1)",
+        "V(CARRY_CB_OUT_D1)",
+        "I(V_CBU_B_D1)",
+        "V(CBU_JOIN_D1)",
+        "I(V_CBU_A_D1)",
+        "V(T1_I_D1)",
+        "I(V_T1_LINK_D1)",
+        "P(B_J11|XT1_D1)",
+        "V(B_J11|XT1_D1)",
+        "V(S_D1)",
+        "V(C_D1)",
+        "V(CLK_D1)"
+      ],
+      "runs": [
+        {
+          "run_id": "A025_CARRY_CB_D1_ALL_CLOCK",
+          "raw_sha256_before": "c9b3f6b2c3f707c599794658950de7bbbd3bfd6b51455d637ac3e0eee14369c9",
+          "raw_sha256_after": "c9b3f6b2c3f707c599794658950de7bbbd3bfd6b51455d637ac3e0eee14369c9",
+          "sample_count": 29999,
+          "signals": [
+            "V(DOUT_D0)",
+            "V(T1_I_D0)",
+            "V(C_D0)",
+            "V(S_D0)",
+            "P(B_J11|XT1_D0)",
+            "V(B_J11|XT1_D0)",
+            "V(DOUT_D1)",
+            "P(BJ1|XCB_D1_L2)",
+            "V(BJ1|XCB_D1_L2)",
+            "V(CARRY_CB_IN_D1)",
+            "I(V_CARRY_IN_D1)",
+            "P(BJ1|XCB_CARRY_D1)",
+            "V(BJ1|XCB_CARRY_D1)",
+            "P(BJ2|XCB_CARRY_D1)",
+            "V(BJ2|XCB_CARRY_D1)",
+            "V(CARRY_CB_OUT_D1)",
+            "I(V_CBU_B_D1)",
+            "V(CBU_JOIN_D1)",
+            "I(V_CBU_A_D1)",
+            "V(T1_I_D1)",
+            "I(V_T1_LINK_D1)",
+            "P(B_J11|XT1_D1)",
+            "V(B_J11|XT1_D1)",
+            "V(S_D1)",
+            "V(C_D1)",
+            "V(CLK_D1)"
+          ],
+          "native_stored_grid": true
+        },
+        {
+          "run_id": "A027_FULL_CB_CHAIN_ALL_CLOCK",
+          "raw_sha256_before": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+          "raw_sha256_after": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+          "sample_count": 29999,
+          "signals": [
+            "V(DOUT_D0)",
+            "V(T1_I_D0)",
+            "V(C_D0)",
+            "V(S_D0)",
+            "P(B_J11|XT1_D0)",
+            "V(B_J11|XT1_D0)",
+            "V(DOUT_D1)",
+            "P(BJ1|XCB_D1_L2)",
+            "V(BJ1|XCB_D1_L2)",
+            "V(CARRY_CB_IN_D1)",
+            "I(V_CARRY_IN_D1)",
+            "P(BJ1|XCB_CARRY_D1)",
+            "V(BJ1|XCB_CARRY_D1)",
+            "P(BJ2|XCB_CARRY_D1)",
+            "V(BJ2|XCB_CARRY_D1)",
+            "V(CARRY_CB_OUT_D1)",
+            "I(V_CBU_B_D1)",
+            "V(CBU_JOIN_D1)",
+            "I(V_CBU_A_D1)",
+            "V(T1_I_D1)",
+            "I(V_T1_LINK_D1)",
+            "P(B_J11|XT1_D1)",
+            "V(B_J11|XT1_D1)",
+            "V(S_D1)",
+            "V(C_D1)",
+            "V(CLK_D1)"
+          ],
+          "native_stored_grid": true
+        }
+      ],
+      "exact_stored_grid_equal": true,
+      "interpolation_or_resampling": false
+    },
+    {
+      "path": "plots/comparison/A026_A028_D1_COMMON_v2.html",
+      "sha256": "b7ea241d710b7b5ba1b8599695079ffda9f5a712bde6c204228007c04ba6fa31",
+      "status": "PASS",
+      "renderer": "scripts/josim-plot2.py",
+      "layout": "sep_comb/dark/-j 2pi",
+      "shared_plotly_asset": "../../../bvm-qb-cb-array-topology-v1-20260924/plots/assets/plotly.min.js",
+      "shared_plotly_asset_sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "signals": [
+        "V(DOUT_D0)",
+        "V(T1_I_D0)",
+        "V(C_D0)",
+        "V(S_D0)",
+        "P(B_J11|XT1_D0)",
+        "V(B_J11|XT1_D0)",
+        "V(DOUT_D1)",
+        "P(BJ1|XCB_D1_L2)",
+        "V(BJ1|XCB_D1_L2)",
+        "V(CARRY_CB_IN_D1)",
+        "I(V_CARRY_IN_D1)",
+        "P(BJ1|XCB_CARRY_D1)",
+        "V(BJ1|XCB_CARRY_D1)",
+        "P(BJ2|XCB_CARRY_D1)",
+        "V(BJ2|XCB_CARRY_D1)",
+        "V(CARRY_CB_OUT_D1)",
+        "I(V_CBU_B_D1)",
+        "V(CBU_JOIN_D1)",
+        "I(V_CBU_A_D1)",
+        "V(T1_I_D1)",
+        "I(V_T1_LINK_D1)",
+        "P(B_J11|XT1_D1)",
+        "V(B_J11|XT1_D1)",
+        "V(S_D1)",
+        "V(C_D1)",
+        "V(CLK_D1)"
+      ],
+      "runs": [
+        {
+          "run_id": "A026_CARRY_CB_D1_PAPER_CLOCK",
+          "raw_sha256_before": "f9b198ecad7a7eef7181d6f99c1d8febc28db5b47e11956f91ca3beb6b29f7aa",
+          "raw_sha256_after": "f9b198ecad7a7eef7181d6f99c1d8febc28db5b47e11956f91ca3beb6b29f7aa",
+          "sample_count": 29999,
+          "signals": [
+            "V(DOUT_D0)",
+            "V(T1_I_D0)",
+            "V(C_D0)",
+            "V(S_D0)",
+            "P(B_J11|XT1_D0)",
+            "V(B_J11|XT1_D0)",
+            "V(DOUT_D1)",
+            "P(BJ1|XCB_D1_L2)",
+            "V(BJ1|XCB_D1_L2)",
+            "V(CARRY_CB_IN_D1)",
+            "I(V_CARRY_IN_D1)",
+            "P(BJ1|XCB_CARRY_D1)",
+            "V(BJ1|XCB_CARRY_D1)",
+            "P(BJ2|XCB_CARRY_D1)",
+            "V(BJ2|XCB_CARRY_D1)",
+            "V(CARRY_CB_OUT_D1)",
+            "I(V_CBU_B_D1)",
+            "V(CBU_JOIN_D1)",
+            "I(V_CBU_A_D1)",
+            "V(T1_I_D1)",
+            "I(V_T1_LINK_D1)",
+            "P(B_J11|XT1_D1)",
+            "V(B_J11|XT1_D1)",
+            "V(S_D1)",
+            "V(C_D1)",
+            "V(CLK_D1)"
+          ],
+          "native_stored_grid": true
+        },
+        {
+          "run_id": "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+          "raw_sha256_before": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+          "raw_sha256_after": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+          "sample_count": 29999,
+          "signals": [
+            "V(DOUT_D0)",
+            "V(T1_I_D0)",
+            "V(C_D0)",
+            "V(S_D0)",
+            "P(B_J11|XT1_D0)",
+            "V(B_J11|XT1_D0)",
+            "V(DOUT_D1)",
+            "P(BJ1|XCB_D1_L2)",
+            "V(BJ1|XCB_D1_L2)",
+            "V(CARRY_CB_IN_D1)",
+            "I(V_CARRY_IN_D1)",
+            "P(BJ1|XCB_CARRY_D1)",
+            "V(BJ1|XCB_CARRY_D1)",
+            "P(BJ2|XCB_CARRY_D1)",
+            "V(BJ2|XCB_CARRY_D1)",
+            "V(CARRY_CB_OUT_D1)",
+            "I(V_CBU_B_D1)",
+            "V(CBU_JOIN_D1)",
+            "I(V_CBU_A_D1)",
+            "V(T1_I_D1)",
+            "I(V_T1_LINK_D1)",
+            "P(B_J11|XT1_D1)",
+            "V(B_J11|XT1_D1)",
+            "V(S_D1)",
+            "V(C_D1)",
+            "V(CLK_D1)"
+          ],
+          "native_stored_grid": true
+        }
+      ],
+      "exact_stored_grid_equal": true,
+      "interpolation_or_resampling": false
+    }
+  ],
+  "stage_metrics_path": "analysis/cb-carry-buffer-all-20261009/FULL_CB_CHAIN_STAGE_METRICS_v2.csv",
+  "jj_phase_area_path": "analysis/cb-carry-buffer-all-20261009/FULL_CB_CHAIN_JJ_PHASE_AREA_v2.csv",
+  "timing_path": "analysis/cb-carry-buffer-all-20261009/FULL_CB_CHAIN_TIMING_v2.csv",
+  "signal_metrics_path": "analysis/cb-carry-buffer-all-20261009/FULL_CB_CHAIN_SIGNAL_METRICS_v2.csv",
+  "output_metrics_path": "analysis/cb-carry-buffer-all-20261009/FULL_CB_CHAIN_OUTPUT_METRICS_v2.csv",
+  "comparison_table_path": "analysis/cb-carry-buffer-all-20261009/FULL_CB_CHAIN_COMPARISON_v2.csv",
+  "phase_units": "raw radians; delta/(2*pi) navigation only",
+  "integration": "actual stored timestamp rows; half-open windows; trapezoid; no interpolation",
+  "bit_decode": "NOT_PERFORMED",
+  "event_classifier": null,
+  "sfq_count_inference": "NOT_PERFORMED",
+  "scientific_interpretation_performed": false,
+  "timestep_convergence": "UNKNOWN_NOT_RUN",
+  "automatic_follow_up": false,
+  "next_action": "STOP_AWAITING_USER_REVIEW"
+}

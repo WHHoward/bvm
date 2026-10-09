@@ -2637,9 +2637,12 @@ def _cb_carry_buffer_all_sources(root: Any) -> tuple[list[tuple[Path, str]], dic
             authorization[0].get("run_ids") != list(CB_CARRY_BUFFER_ALL_RUN_IDS)):
         raise RuntimeError("experiment manifest authorization is not closed for exactly A027-A029")
     batch_path = CB_CARRY_BUFFER_ALL_TASK / "BATCH_MANIFEST.json"
-    summary_path = CB_CARRY_BUFFER_ALL_TASK / "FULL_CB_CHAIN_SUMMARY.json"
-    if (not batch_path.is_file() or not summary_path.is_file() or
-            json.loads(batch_path.read_text(encoding="utf-8")).get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+    if not batch_path.is_file():
+        raise RuntimeError("full-chain batch manifest is missing")
+    batch_manifest = json.loads(batch_path.read_text(encoding="utf-8"))
+    summary_path = SERIES / batch_manifest.get("analysis_path", "")
+    if (batch_manifest.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+            not summary_path.is_file() or root.sha256(summary_path) != batch_manifest.get("analysis_sha256") or
             json.loads(summary_path.read_text(encoding="utf-8")).get("status") != "PASS"):
         raise RuntimeError("full-chain batch/analysis is not mechanically complete")
     members = [(sources[key], key) for key in sorted(sources)]

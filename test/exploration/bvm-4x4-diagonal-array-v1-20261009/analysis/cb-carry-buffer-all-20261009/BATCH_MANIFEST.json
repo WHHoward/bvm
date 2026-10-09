@@ -1,7 +1,7 @@
 {
   "schema": "bvm-4x4-cb-carry-buffer-all-batch-v1",
   "batch_id": "BVM4X4_CB_CARRY_BUFFER_ALL_20261009",
-  "status": "PREFLIGHT_PASS_READY",
+  "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
   "preflight_parent_head": "fb5139b8b0f6a084b75fcf6343faaddbfcbee104",
   "preflight_path": "analysis/cb-carry-buffer-all-20261009/PREFLIGHT.md",
   "preflight_sha256": "88afea29089432e68c9f46d7ef60444c0e288d011f8c3dc54075a954914fc8a7",
@@ -14,9 +14,51 @@
     "A028_FULL_CB_CHAIN_PAPER_CLOCK",
     "A029_FULL_CB_CHAIN_3X3_CLOCK"
   ],
-  "runs": [],
+  "runs": [
+    {
+      "run_id": "A027_FULL_CB_CHAIN_ALL_CLOCK",
+      "preset": "FULL_CB_CHAIN_ALL_CLOCK",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+      "raw_bytes": 93401769,
+      "deck_sha256": "c5f323794f0e91dc057e67ef6485979de34cfc11be3b69fb10ba631283e4ca72"
+    },
+    {
+      "run_id": "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+      "preset": "FULL_CB_CHAIN_PAPER_CLOCK",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+      "raw_bytes": 93431488,
+      "deck_sha256": "c5f323794f0e91dc057e67ef6485979de34cfc11be3b69fb10ba631283e4ca72"
+    },
+    {
+      "run_id": "A029_FULL_CB_CHAIN_3X3_CLOCK",
+      "preset": "FULL_CB_CHAIN_3X3_CLOCK",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f",
+      "raw_bytes": 93510947,
+      "deck_sha256": "c5f323794f0e91dc057e67ef6485979de34cfc11be3b69fb10ba631283e4ca72"
+    }
+  ],
   "physical_solve_count_authorized": 3,
-  "physical_solve_count_completed": 0,
+  "physical_solve_count_completed": 3,
   "scientific_interpretation_performed": false,
-  "automatic_follow_up": false
+  "automatic_follow_up": false,
+  "execution_head": "7abefa25c1dc729592a5ad979578916715ef3eda",
+  "analysis_path": "analysis/cb-carry-buffer-all-20261009/FULL_CB_CHAIN_SUMMARY_v2.json",
+  "analysis_sha256": "cd2e78e8ddc923fc56721695baea702636d3cbaa26b2bcf58601563af9ff6411",
+  "analysis_revision": 2,
+  "analysis_incident_path": "analysis/cb-carry-buffer-all-20261009/ANALYSIS_INCIDENT_001.json",
+  "analysis_incident_sha256": "99dcb599d24feba3487b4d14d34e037b6bc32933fc767440d578572a2b9b0838",
+  "analysis_repair_runner_sha256": "797992b1528d36e87c2cfdf8e582fb42d2407057bcc8768d810be350af48e69b",
+  "repair_solver_invoked": false
 }

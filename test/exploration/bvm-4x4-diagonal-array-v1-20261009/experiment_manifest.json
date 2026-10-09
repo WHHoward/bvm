@@ -19,7 +19,7 @@
     "FULL_CB_CHAIN_3X3_CLOCK"
   ],
   "maximum_physical_solve_count": 29,
-  "physical_solve_count": 26,
+  "physical_solve_count": 29,
   "runs": [
     {
       "run_id": "A001_D3_N0",
@@ -603,6 +603,101 @@
       "raw_bytes": 76382166,
       "probe_count": 189,
       "deck_sha256": "25e52057272dcbb7e2a7134be2ba396583427427c16db0c60185a9ae5bdee981"
+    },
+    {
+      "run_id": "A027_FULL_CB_CHAIN_ALL_CLOCK",
+      "case": "FULL_CB_CHAIN_ALL_CLOCK",
+      "batch_id": "BVM4X4_CB_CARRY_BUFFER_ALL_20261009",
+      "row_bits": "1111",
+      "column_bits": "1111",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_chain_topology": "CB_CARRY_BUFFER_ALL",
+      "cbu_override_d1": "NONE",
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C3",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C3",
+        "R2C4",
+        "R3C1",
+        "R3C2",
+        "R3C3",
+        "R3C4",
+        "R4C1",
+        "R4C2",
+        "R4C3",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+      "raw_bytes": 93401769,
+      "probe_count": 232,
+      "deck_sha256": "c5f323794f0e91dc057e67ef6485979de34cfc11be3b69fb10ba631283e4ca72"
+    },
+    {
+      "run_id": "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+      "case": "FULL_CB_CHAIN_PAPER_CLOCK",
+      "batch_id": "BVM4X4_CB_CARRY_BUFFER_ALL_20261009",
+      "row_bits": "1101",
+      "column_bits": "1101",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_chain_topology": "CB_CARRY_BUFFER_ALL",
+      "cbu_override_d1": "NONE",
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C4",
+        "R4C1",
+        "R4C2",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+      "raw_bytes": 93431488,
+      "probe_count": 232,
+      "deck_sha256": "c5f323794f0e91dc057e67ef6485979de34cfc11be3b69fb10ba631283e4ca72"
+    },
+    {
+      "run_id": "A029_FULL_CB_CHAIN_3X3_CLOCK",
+      "case": "FULL_CB_CHAIN_3X3_CLOCK",
+      "batch_id": "BVM4X4_CB_CARRY_BUFFER_ALL_20261009",
+      "row_bits": "1100",
+      "column_bits": "0011",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_chain_topology": "CB_CARRY_BUFFER_ALL",
+      "cbu_override_d1": "NONE",
+      "active_final_crosspoints": [
+        "R1C3",
+        "R1C4",
+        "R2C3",
+        "R2C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f",
+      "raw_bytes": 93510947,
+      "probe_count": 232,
+      "deck_sha256": "c5f323794f0e91dc057e67ef6485979de34cfc11be3b69fb10ba631283e4ca72"
     }
   ],
   "automatic_follow_up": false,
@@ -741,13 +836,17 @@
         "A029_FULL_CB_CHAIN_3X3_CLOCK"
       ],
       "authorized_physical_solve_count": 3,
-      "physical_solve_count_completed": 0,
+      "physical_solve_count_completed": 3,
       "preflight_parent_head": "fb5139b8b0f6a084b75fcf6343faaddbfcbee104",
       "preflight_path": "analysis/cb-carry-buffer-all-20261009/PREFLIGHT.md",
       "preflight_sha256": "88afea29089432e68c9f46d7ef60444c0e288d011f8c3dc54075a954914fc8a7",
       "static_qa_sha256": "94285bc8243d4a0412f0d73000dcb003bb8b832775508e7e639b7984c7941669",
       "scientific_interpretation_performed": false,
-      "automatic_follow_up": false
+      "automatic_follow_up": false,
+      "parent_head_at_execution": "7abefa25c1dc729592a5ad979578916715ef3eda",
+      "analysis_incident_path": "analysis/cb-carry-buffer-all-20261009/ANALYSIS_INCIDENT_001.json",
+      "analysis_incident_sha256": "99dcb599d24feba3487b4d14d34e037b6bc32933fc767440d578572a2b9b0838",
+      "analysis_repair_runner_sha256": "797992b1528d36e87c2cfdf8e582fb42d2407057bcc8768d810be350af48e69b"
     }
   ]
 }

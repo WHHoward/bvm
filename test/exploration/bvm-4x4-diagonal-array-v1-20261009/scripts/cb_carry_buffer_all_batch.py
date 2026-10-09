@@ -735,6 +735,67 @@ def run_batch() -> int:
     return 0
 
 
+def repair_analysis() -> int:
+    """Repair the recorded postprocessor failure against the same three immutable raws."""
+    batch = jread(BATCH_MANIFEST)
+    if (batch.get("batch_id") != BATCH_ID or
+            batch.get("status") != "POSTPROCESS_FAILURE_RAW_PRESERVED" or
+            batch.get("physical_solve_count_completed") != 3 or
+            [item.get("run_id") for item in batch.get("runs", [])] !=
+            [item[0] for item in platform.CB_CARRY_BUFFER_ALL_RUN_MATRIX]):
+        raise RuntimeError("analysis repair requires the completed A027-A029 postprocess-failure batch")
+    incident = jread(TASK / "ANALYSIS_INCIDENT_001.json")
+    if (incident.get("physical_solve_count_completed_before_and_after") != 3 or
+            incident.get("raw_mutated") is not False or incident.get("solver_invoked_by_attempt") is not False):
+        raise RuntimeError("analysis incident does not certify raw-preserving zero-solve repair scope")
+    for record in batch["runs"]:
+        run_id = record["run_id"]
+        run_dir = RUNS / run_id
+        result, qa, raw_qa = (jread(run_dir / filename) for filename in
+                              ("result.json", "qa.json", "chain_qa.json"))
+        raw = run_dir / "raw.csv"
+        digest = sha(raw)
+        if (digest != record.get("raw_sha256") or result.get("raw_sha256") != digest or
+                result.get("artifact_status") != "VALID" or qa.get("status") != "PASS" or
+                raw_qa.get("status") != "PASS" or raw_qa.get("raw_sha256_after_analysis") != digest):
+            raise RuntimeError(f"raw/QA identity changed; analysis repair stopped: {run_id}")
+    analyzer = SERIES / "scripts" / "analyze_cb_carry_buffer_all.py"
+    print("ANALYSIS_REPAIR_ONLY: same A027-A029 immutable raw; solver_invoked=false", flush=True)
+    proc = subprocess.run([sys.executable, str(analyzer), "--write", "--revision", "2"], cwd=REPO,
+                          check=False, timeout=600)
+    if proc.returncode != 0:
+        return proc.returncode
+    summary_path = TASK / "FULL_CB_CHAIN_SUMMARY_v2.json"
+    summary = jread(summary_path)
+    if summary.get("status") != "PASS" or summary.get("physical_solve_count") != 3:
+        raise RuntimeError("repaired full-chain summary status/solve count invalid")
+    batch.update({"status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+                  "analysis_path": summary_path.relative_to(SERIES).as_posix(),
+                  "analysis_sha256": sha(summary_path),
+                  "analysis_revision": 2,
+                  "analysis_incident_path": (TASK / "ANALYSIS_INCIDENT_001.json").relative_to(SERIES).as_posix(),
+                  "analysis_incident_sha256": sha(TASK / "ANALYSIS_INCIDENT_001.json"),
+                  "analysis_repair_runner_sha256": sha(analyzer),
+                  "repair_solver_invoked": False,
+                  "scientific_interpretation_performed": False, "automatic_follow_up": False})
+    jreplace(BATCH_MANIFEST, batch)
+    manifest = jread(EXPERIMENT_MANIFEST)
+    auth = [item for item in manifest.get("authorization_batches", []) if item.get("batch_id") == BATCH_ID]
+    if len(auth) != 1:
+        raise RuntimeError("full-chain authorization record missing during postprocess repair")
+    auth[0]["analysis_incident_path"] = batch["analysis_incident_path"]
+    auth[0]["analysis_incident_sha256"] = batch["analysis_incident_sha256"]
+    auth[0]["analysis_repair_runner_sha256"] = batch["analysis_repair_runner_sha256"]
+    auth[0]["physical_solve_count_completed"] = 3
+    jreplace(EXPERIMENT_MANIFEST, manifest)
+    print(json.dumps({"status": batch["status"], "batch_id": BATCH_ID,
+                      "physical_solve_count": 3, "solver_invoked": False,
+                      "raw_sha256_by_run": {item["run_id"]: item["raw_sha256"] for item in batch["runs"]},
+                      "analysis_sha256": batch["analysis_sha256"],
+                      "scientific_interpretation_performed": False}, ensure_ascii=False, indent=2), flush=True)
+    return 0
+
+
 def main() -> int:
     if sys.argv[1:] == ["--prepare-preflight"]:
         try:
@@ -748,7 +809,13 @@ def main() -> int:
         except Exception as exc:
             print(f"BATCH_STOP: {type(exc).__name__}: {exc}", file=sys.stderr)
             return 2
-    print("usage: cb_carry_buffer_all_batch.py --prepare-preflight | --run-batch", file=sys.stderr)
+    if sys.argv[1:] == ["--repair-analysis"]:
+        try:
+            return repair_analysis()
+        except Exception as exc:
+            print(f"ANALYSIS_REPAIR_STOP: {type(exc).__name__}: {exc}", file=sys.stderr)
+            return 2
+    print("usage: cb_carry_buffer_all_batch.py --prepare-preflight | --run-batch | --repair-analysis", file=sys.stderr)
     return 2
 
 

@@ -1,0 +1,17 @@
+{
+  "schema": "bvm-4x4-diagonal-metric-spec-v1",
+  "authorized_batch": "bvm-4x4-diagonal-array-v1-20261009",
+  "physical_solve_count": 6,
+  "phase_raw_unit": "radians",
+  "time_unit": "seconds",
+  "windows": {
+    "FINAL_READ": {"start": "110p", "end": "121p", "boundary": "[start,end)"},
+    "POST_FINAL_READ": {"start": "121p", "end": "250p", "boundary": "[start,end)"},
+    "FINAL_READ_RESPONSE": {"start": "110p", "end": "250p", "boundary": "[start,end)"}
+  },
+  "outputs": "per DOUT_D0..DOUT_D6: min/max/p2p, positive and negative peak times, signed voltage-time area on the actual stored grid",
+  "same_junction_crosscheck": "for registered P/V JJ pairs, independently unwrap radians then compare delta phase against same-JJ signed voltage integral/Phi0 over identical stored rows and window",
+  "event_count_threshold": null,
+  "interpolation_or_resampling": false,
+  "scientific_interpretation_performed": false
+}

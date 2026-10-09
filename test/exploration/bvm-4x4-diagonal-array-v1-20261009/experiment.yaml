@@ -1,0 +1,55 @@
+schema: bvm-4x4-diagonal-array-v1
+experiment_id: bvm-4x4-diagonal-array-v1-20261009
+parent_head: df0249419c7a91ceb72b1fb0ed1d04981a5f6c1b
+purpose: BVM 4x4 shared row/column inputs with seven serial diagonal collection chains
+physical_solves_authorized: 6
+execution_order: [D3_N0, D3_N1, D3_N2, D3_N3, D3_N4, PAPER_1101_1101]
+physical_solve_limit: 6
+solver: build/josim-cli
+time_step: 0.01p
+stop_time: 250p
+stimulus_windows:
+  WRITE0: [50p, 61p]
+  READ0: [70p, 81p]
+  WRITE1: [90p, 101p]
+  FINAL_READ: [110p, 121p]
+  FINAL_READ_RESPONSE: [110p, 250p]
+topology:
+  array_size: 4
+  drive_mode: SHARED
+  se_topology: CELL
+  se_gate_mode: CROSSPOINT
+  bvm_count: 16
+  qb_count: 16
+  row_wl_nodes: [WL_R1, WL_R2, WL_R3, WL_R4]
+  column_bl_nodes: [BL_C1, BL_C2, BL_C3, BL_C4]
+  independent_cell_se: 16
+  diagonal_map:
+    D0: [R1C4]
+    D1: [R1C3, R2C4]
+    D2: [R1C2, R2C3, R3C4]
+    D3: [R1C1, R2C2, R3C3, R4C4]
+    D4: [R2C1, R3C2, R4C3]
+    D5: [R3C1, R4C2]
+    D6: [R4C1]
+  merge_policy: ascending row within diagonal; serial carry through one sJTL and one CB per input stage
+  output_mode: DIAGONAL_TERMINAL
+  terminations_ohm: 2
+  t1_mode: OFF
+  cbu_mode: OFF
+frozen_sources:
+  BVM: {path: circuits/bvm/bvm_cell_0923.cir, sha256: ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7}
+  QB: {path: circuits/qb/BQ_0928.cir, sha256: 82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a}
+  sJTL: {path: circuits/sJTL_0923.cir, sha256: 3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688}
+  CB: {path: circuits/CB/CB_0928.cir, sha256: 70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370}
+  JMIT: {path: circuits/models/jjmit.cir, sha256: 19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336}
+  T1_reference_only: {path: circuits/t1/t1_cell.cir, sha256: 828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237}
+readout_targets:
+  D3_N0: {row_bits: "1111", col_bits: "1111", se_mask: "0000/0000/0000/0000", target_count: 0}
+  D3_N1: {row_bits: "1111", col_bits: "1111", se_mask: "1000/0000/0000/0000", target_count: 1}
+  D3_N2: {row_bits: "1111", col_bits: "1111", se_mask: "1000/0100/0000/0000", target_count: 2}
+  D3_N3: {row_bits: "1111", col_bits: "1111", se_mask: "1000/0100/0010/0000", target_count: 3}
+  D3_N4: {row_bits: "1111", col_bits: "1111", se_mask: "1000/0100/0010/0001", target_count: 4}
+  PAPER_1101_1101: {row_bits: "1101", col_bits: "1101", se_mask: ALL, target_diagonal_counts: [1, 1, 1, 3, 1, 1, 1]}
+interpretation: arithmetic and artifact QA only; scientific interpretation NOT PERFORMED
+automatic_follow_up: false

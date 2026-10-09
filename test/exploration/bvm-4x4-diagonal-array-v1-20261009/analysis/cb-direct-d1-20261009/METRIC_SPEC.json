@@ -1,0 +1,65 @@
+{
+  "schema": "bvm-4x4-cb-direct-d1-metric-spec-v1",
+  "experiment_id": "bvm-4x4-cb-direct-d1-20261009",
+  "status": "FROZEN_BEFORE_SOLVE",
+  "windows_ps_half_open": {
+    "ARRAY_FINAL_READ": [110, 121],
+    "PRE_CLOCK": [121, 200],
+    "CLOCK_EDGE": [200, 205],
+    "POST_CLOCK": [205, 300],
+    "TOTAL": [0, 300]
+  },
+  "sampling": {
+    "time_column_unit": "s",
+    "phase_raw_unit": "radians",
+    "phase_navigation": "independent unwrap within each run, then delta/(2*pi)",
+    "integration": "trapezoid using actual stored timestamp values and actual rows in each half-open window",
+    "interpolation_or_resampling": false
+  },
+  "registered_observables": {
+    "upstream": [
+      "V(DOUT_D1)",
+      "P(BJ1|XCB_D1_L2)",
+      "V(BJ1|XCB_D1_L2)",
+      "V(C_D0)",
+      "P(B_J11|XT1_D0)",
+      "V(B_J11|XT1_D0)"
+    ],
+    "shared_input_node_and_branches": [
+      "V(CBU_JOIN_D1)",
+      "I(V_CBU_A_D1)",
+      "I(V_CBU_B_D1)"
+    ],
+    "CB_0928": [
+      "P(BJ1|XCBU_D1)",
+      "V(BJ1|XCBU_D1)",
+      "P(BJ2|XCBU_D1)",
+      "V(BJ2|XCBU_D1)",
+      "V(CBU_OUT_D1)",
+      "I(V_T1_LINK_D1)"
+    ],
+    "T1_D1": [
+      "V(T1_I_D1)",
+      "P(B_J1|XT1_D1)",
+      "V(B_J1|XT1_D1)",
+      "P(B_J9|XT1_D1)",
+      "V(B_J9|XT1_D1)",
+      "P(B_J10|XT1_D1)",
+      "V(B_J10|XT1_D1)",
+      "P(B_J11|XT1_D1)",
+      "V(B_J11|XT1_D1)",
+      "V(S_D1)",
+      "V(C_D1)",
+      "V(CLK_D1)"
+    ],
+    "downstream_chain": "Preserve existing CBU/T1/S/C/clock boundaries for D2-D6; compare only labels common to each matched A021/A023 and A022/A024 raw pair."
+  },
+  "per_signal_arithmetic": {
+    "voltage": ["min_v", "max_v", "peak_to_peak_v", "time_of_extrema", "signed_area_v_s", "signed_area_phi0_arithmetic"],
+    "current": ["min_a", "max_a", "peak_to_peak_a", "charge_c", "source_reference_direction"],
+    "phase": ["phase_delta_rad", "phase_delta_rad_over_2pi_navigation", "same_jj_same_rows_voltage_area_v_s", "voltage_area_phi0_arithmetic", "phase_minus_area_turn_arithmetic"]
+  },
+  "comparison_rule": "No cross-run pointwise interpolation. Record whether complete stored time arrays are exactly identical. If not, report each run's actual-grid metrics side-by-side and do not compute pointwise differences.",
+  "event_classification": null,
+  "scientific_interpretation_performed": false
+}

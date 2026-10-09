@@ -14,7 +14,7 @@
     "CHAIN_PAPER_GLOBAL_CLOCK"
   ],
   "maximum_physical_solve_count": 8,
-  "physical_solve_count": 22,
+  "physical_solve_count": 24,
   "runs": [
     {
       "run_id": "A001_D3_N0",
@@ -464,6 +464,73 @@
       "raw_bytes": 95786305,
       "probe_count": 238,
       "deck_sha256": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364"
+    },
+    {
+      "run_id": "A023_CB_DIRECT_D1_ALL_CLOCK",
+      "case": "CB_DIRECT_D1_ALL_CLOCK",
+      "batch_id": "BVM4X4_CB_DIRECT_D1_20261009",
+      "row_bits": "1111",
+      "column_bits": "1111",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_override_d1": "CB_DIRECT",
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C3",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C3",
+        "R2C4",
+        "R3C1",
+        "R3C2",
+        "R3C3",
+        "R3C4",
+        "R4C1",
+        "R4C2",
+        "R4C3",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "c56ed579b684cdb1fe122488ce1de85e544e9797710ff7443e8dd1c6097b280a",
+      "raw_bytes": 94468129,
+      "probe_count": 235,
+      "deck_sha256": "46263c34dbc04627dff5b9b584f3e06eac1cf25c602d39874bca6392e46c93b4"
+    },
+    {
+      "run_id": "A024_CB_DIRECT_D1_PAPER_CLOCK",
+      "case": "CB_DIRECT_D1_PAPER_CLOCK",
+      "batch_id": "BVM4X4_CB_DIRECT_D1_20261009",
+      "row_bits": "1101",
+      "column_bits": "1101",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_override_d1": "CB_DIRECT",
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C4",
+        "R4C1",
+        "R4C2",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "20cb27683ab2455df6e424dcc74ab09446902389c62fb310b3cc2f4146ee86ed",
+      "raw_bytes": 94583444,
+      "probe_count": 235,
+      "deck_sha256": "46263c34dbc04627dff5b9b584f3e06eac1cf25c602d39874bca6392e46c93b4"
     }
   ],
   "automatic_follow_up": false,
@@ -520,7 +587,7 @@
         "A024_CB_DIRECT_D1_PAPER_CLOCK"
       ],
       "authorized_physical_solve_count": 2,
-      "physical_solve_count_completed": 0,
+      "physical_solve_count_completed": 2,
       "parent_head_at_preflight": "a0b24261645599fb854cbedbd1ddacf056dbccd1",
       "preflight_sha256": "b03d22fe9818fce16c613e0243b5e15c03f70769cbe95bc4c62cdd9e2523cf22",
       "static_qa_sha256": "389992c9e6e53e7bbdc204d6049caa6dda8fc471dedaff6477d2c7e09f2a3be3",
@@ -561,7 +628,11 @@
       ],
       "active_preflight_attempt": 2,
       "active_preflight_sha256": "44005f59cb63700e0fbefc7f99e184c8851a9b189aa4905f89eb8bd6251d8a04",
-      "active_static_qa_sha256": "caaf3360f0ab74c2d579ff2a2e4ff5d747a2abb5476c4e1abb51ca2b00ba4746"
+      "active_static_qa_sha256": "caaf3360f0ab74c2d579ff2a2e4ff5d747a2abb5476c4e1abb51ca2b00ba4746",
+      "execution_parent_head": "2b52acfe7f8dd1cf25f95ae5a8db8b347fe412cf",
+      "execution_preflight_attempt": 2,
+      "execution_preflight_sha256": "44005f59cb63700e0fbefc7f99e184c8851a9b189aa4905f89eb8bd6251d8a04",
+      "execution_static_qa_sha256": "caaf3360f0ab74c2d579ff2a2e4ff5d747a2abb5476c4e1abb51ca2b00ba4746"
     }
   ]
 }

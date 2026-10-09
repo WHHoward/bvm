@@ -1,7 +1,7 @@
 {
   "schema": "bvm-4x4-cb-direct-d1-batch-v1",
   "batch_id": "BVM4X4_CB_DIRECT_D1_20261009",
-  "status": "REGISTERED_NOT_RUN",
+  "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
   "preflight_path": "analysis/cb-direct-d1-20261009/attempts/002/PREFLIGHT.md",
   "preflight_sha256": "44005f59cb63700e0fbefc7f99e184c8851a9b189aa4905f89eb8bd6251d8a04",
   "static_qa_path": "analysis/cb-direct-d1-20261009/attempts/002/STATIC_QA.json",
@@ -12,8 +12,52 @@
     "A023_CB_DIRECT_D1_ALL_CLOCK",
     "A024_CB_DIRECT_D1_PAPER_CLOCK"
   ],
-  "physical_solve_count_completed": 0,
-  "runs": [],
+  "physical_solve_count_completed": 2,
+  "runs": [
+    {
+      "run_id": "A023_CB_DIRECT_D1_ALL_CLOCK",
+      "preset": "CB_DIRECT_D1_ALL_CLOCK",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "physical_solve_count": 1,
+      "raw_sha256": "c56ed579b684cdb1fe122488ce1de85e544e9797710ff7443e8dd1c6097b280a",
+      "raw_bytes": 94468129,
+      "deck_sha256": "46263c34dbc04627dff5b9b584f3e06eac1cf25c602d39874bca6392e46c93b4",
+      "stimulus_sha256": "d149f6f4e83360d8a1b1671e655ed1c9ea241722ebbbc1de48ae4e9fc792f4e2"
+    },
+    {
+      "run_id": "A024_CB_DIRECT_D1_PAPER_CLOCK",
+      "preset": "CB_DIRECT_D1_PAPER_CLOCK",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "physical_solve_count": 1,
+      "raw_sha256": "20cb27683ab2455df6e424dcc74ab09446902389c62fb310b3cc2f4146ee86ed",
+      "raw_bytes": 94583444,
+      "deck_sha256": "46263c34dbc04627dff5b9b584f3e06eac1cf25c602d39874bca6392e46c93b4",
+      "stimulus_sha256": "d129cc80bceae1382a3d8011c3265dfc451993a2ae7211ed4f1a341ae9ca7926"
+    }
+  ],
   "scientific_interpretation_performed": false,
-  "automatic_follow_up": false
+  "automatic_follow_up": false,
+  "execution_head": "2b52acfe7f8dd1cf25f95ae5a8db8b347fe412cf",
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "parent_head": "2b52acfe7f8dd1cf25f95ae5a8db8b347fe412cf"
+  },
+  "comparison_path": "analysis/cb-direct-d1-20261009/CB_DIRECT_D1_COMPARISON.json",
+  "comparison_sha256": "b1dac2d53e4a91d72f576a61a5b8b8c51137ce976eee94392bf17b488aa60037",
+  "comparison_qa_path": "analysis/cb-direct-d1-20261009/COMPARISON_PLOT_QA.json",
+  "comparison_qa_sha256": "02928adeab59fbea85afc20974ba549e4b3190819baade489e82d25a1b61f2ae",
+  "result_brief_path": "analysis/cb-direct-d1-20261009/RESULT_BRIEF.md",
+  "evidence_manifest_path": "analysis/cb-direct-d1-20261009/EVIDENCE_MANIFEST.md",
+  "numerical_recheck_path": "analysis/cb-direct-d1-20261009/NUMERICAL_RECHECK.json",
+  "numerical_recheck_sha256": "2819b948fddd07cf764542fa99db7f4cdd210dd3739d3710ebf1f9e83212948a",
+  "raw_sha256_by_run": {
+    "A023_CB_DIRECT_D1_ALL_CLOCK": "c56ed579b684cdb1fe122488ce1de85e544e9797710ff7443e8dd1c6097b280a",
+    "A024_CB_DIRECT_D1_PAPER_CLOCK": "20cb27683ab2455df6e424dcc74ab09446902389c62fb310b3cc2f4146ee86ed"
+  }
 }

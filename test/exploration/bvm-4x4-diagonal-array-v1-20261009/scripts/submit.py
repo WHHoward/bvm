@@ -79,6 +79,33 @@ T1_CHAIN_BASE_RUN_PACKAGES = {
 T1_CHAIN_BASE_RUN_IDS = tuple(T1_CHAIN_BASE_RUN_PACKAGES)
 T1_CHAIN_DELTA_RUN_IDS = ("A020_CHAIN_ALL_QUIET", "A021_CHAIN_ALL_GLOBAL_CLOCK",
                           "A022_CHAIN_PAPER_GLOBAL_CLOCK")
+CB_DIRECT_D1_BASE_COMMIT = "6364256321eb7c7437ef20ec14a3ba604e7b4d15"
+CB_DIRECT_D1_BASE_SOURCE_NAME = f"{SERIES.name}_delta_T1_CHAIN_A020_A022_20261009_source.zip"
+CB_DIRECT_D1_BASE_SOURCE_SHA256 = "52425d327a7d0b58a9e664f19eb95658b16aaca385321b651bb6153c751aef5c"
+CB_DIRECT_D1_BASE_RUN_PACKAGES = {
+    "A020_CHAIN_ALL_QUIET": ("bf978aa2e9061dc7cbe5eabfe8643a494dd09dc37d4416b519408d4dd01d22e6",
+                              "ab13d65c671065fbfcd628ff7e4ffc0a9dc0506105bcd2a5bdefd91488aa763d"),
+    "A021_CHAIN_ALL_GLOBAL_CLOCK": ("21477be494024eb224c2fd4aec919638ab85fc03bf4cc80396d92aa127533f12",
+                                    "85ffd3a00a6815115307d917c9b35d3b06dd7ac240c61ca8bfd47b957e975e9e"),
+    "A022_CHAIN_PAPER_GLOBAL_CLOCK": ("8e18c88bf37d327b3d8e7064fc9b62a2d4a2f783dbc46c9234b45e08fec0cfb8",
+                                      "2095fc87f129e844abfe21a0ccafb21e9ef2c72b67e7b6c34c8ca8f50935d9cb"),
+}
+CB_DIRECT_D1_BASE_METADATA_NAME = f"{SERIES.name}_delta_T1_CHAIN_A020_A022_20261009_runs_metadata.zip"
+CB_DIRECT_D1_BASE_METADATA_SHA256 = "5f4132cb8ff7a702a52caa77704866551b6ee7cedbf5d77d9f0a472951e8bdc6"
+CB_DIRECT_D1_RUN_IDS = ("A023_CB_DIRECT_D1_ALL_CLOCK", "A024_CB_DIRECT_D1_PAPER_CLOCK")
+CB_DIRECT_D1_BASE_PACKAGE_GROUPS = (
+    ("source", CB_DIRECT_D1_BASE_SOURCE_NAME, CB_DIRECT_D1_BASE_SOURCE_SHA256),
+    ("runs_metadata", CB_DIRECT_D1_BASE_METADATA_NAME, CB_DIRECT_D1_BASE_METADATA_SHA256),
+    ("A020_CHAIN_ALL_QUIET_raw",
+     f"{SERIES.name}_delta_T1_CHAIN_A020_A022_20261009_A020_CHAIN_ALL_QUIET_raw.zip",
+     CB_DIRECT_D1_BASE_RUN_PACKAGES["A020_CHAIN_ALL_QUIET"][0]),
+    ("A021_CHAIN_ALL_GLOBAL_CLOCK_raw",
+     f"{SERIES.name}_delta_T1_CHAIN_A020_A022_20261009_A021_CHAIN_ALL_GLOBAL_CLOCK_raw.zip",
+     CB_DIRECT_D1_BASE_RUN_PACKAGES["A021_CHAIN_ALL_GLOBAL_CLOCK"][0]),
+    ("A022_CHAIN_PAPER_GLOBAL_CLOCK_raw",
+     f"{SERIES.name}_delta_T1_CHAIN_A020_A022_20261009_A022_CHAIN_PAPER_GLOBAL_CLOCK_raw.zip",
+     CB_DIRECT_D1_BASE_RUN_PACKAGES["A022_CHAIN_PAPER_GLOBAL_CLOCK"][0]),
+)
 LEGACY_RUN_IDS = tuple(f"A{i:03d}_{case}" for i, case in enumerate(
     ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4", "PAPER_1101_1101"), start=1))
 BASE_METADATA_NAME = f"{SERIES.name}_metadata_v2_BVM4X4_20261009.zip"
@@ -682,6 +709,421 @@ def _t1_chain_delta_sources(root: Any) -> tuple[list[tuple[Path, str]], dict[str
     return [(sources[key], key) for key in sorted(sources)], changes, sorted(excluded_html)
 
 
+def verify_cb_direct_d1_base_checkpoint(root: Any) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, str]]:
+    """Verify the committed A020-A022 five-package checkpoint and close A001-A022 raw references."""
+    prior_packages, prior_refs, member_hashes = verify_t1_a017_a019_checkpoint(root)
+    expected_prior_ids = {item["run_id"] for item in prior_refs}
+    if len(prior_refs) != 19 or expected_prior_ids != {
+            *LEGACY_RUN_IDS, *BUS400_RUN_IDS, *A009_RUN_IDS, *A010_A012_RUN_IDS,
+            *T1_A013_A016_RUN_IDS, *T1_CHAIN_BASE_RUN_IDS}:
+        raise RuntimeError("A017-A019 checkpoint did not close exactly A001-A019")
+
+    experiment = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    manifest_rows = {row.get("run_id"): row for row in experiment.get("runs", [])}
+    base_run_refs = list(prior_refs)
+    package_records = list(prior_packages)
+    a020_refs = []
+    raw_by_run = {run_id: raw_sha for run_id, (_package_sha, raw_sha) in
+                  CB_DIRECT_D1_BASE_RUN_PACKAGES.items()}
+    for group, package_name, expected_package_sha in CB_DIRECT_D1_BASE_PACKAGE_GROUPS:
+        package_path = HANDOFF / package_name
+        qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(package_path, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != expected_package_sha or
+                qa.get("source_commit") != CB_DIRECT_D1_BASE_COMMIT or
+                qa.get("package_bytes") != package_path.stat().st_size):
+            raise RuntimeError(f"A020-A022 checkpoint package identity/QA mismatch: {package_name}")
+        with zipfile.ZipFile(package_path) as archive:
+            bad = archive.testzip()
+            if bad:
+                raise RuntimeError(f"A020-A022 checkpoint ZIP CRC failure: {package_name}/{bad}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            members = set(archive.namelist())
+            included = delta.get("included_files", [])
+            hashes = delta.get("included_file_sha256", {})
+            if {item.get("archive_path"): item.get("sha256") for item in included} != hashes:
+                raise RuntimeError(f"A020-A022 checkpoint file/hash manifest mismatch: {package_name}")
+            for member, digest in hashes.items():
+                if member not in members or hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"A020-A022 checkpoint member hash mismatch: {package_name}/{member}")
+        if (delta.get("head_commit") != CB_DIRECT_D1_BASE_COMMIT or
+                delta.get("base_commit") != T1_CHAIN_BASE_COMMIT or
+                delta.get("base_package_name") != T1_CHAIN_BASE_SOURCE_NAME or
+                delta.get("base_package_sha256") != T1_CHAIN_BASE_SOURCE_SHA256 or
+                delta.get("package_group") != group):
+            raise RuntimeError(f"A020-A022 checkpoint lineage mismatch: {package_name}")
+        refs = delta.get("referenced_existing_raw_sha256", [])
+        if {(item.get("run_id"), item.get("raw_sha256"), item.get("source_package_name"),
+             item.get("source_package_sha256")) for item in refs} != {
+                (item["run_id"], item["raw_sha256"], item["source_package_name"], item["source_package_sha256"])
+                for item in prior_refs} or len(refs) != len(prior_refs):
+            raise RuntimeError(f"A020-A022 checkpoint A001-A019 raw closure mismatch: {package_name}")
+
+        for member, digest in hashes.items():
+            member_hashes[member] = digest
+
+        expected_runs = set(T1_CHAIN_DELTA_RUN_IDS)
+        if group == "source":
+            if delta.get("raw_sha256_by_run") != {}:
+                raise RuntimeError("A020-A022 source checkpoint unexpectedly contains a raw")
+        elif group == "runs_metadata":
+            if (delta.get("raw_sha256_by_run") != {} or
+                    delta.get("associated_raw_sha256_by_run") != raw_by_run or
+                    set(delta.get("associated_raw_sha256_by_run", {})) != expected_runs):
+                raise RuntimeError("A020-A022 metadata checkpoint raw association is incomplete")
+        else:
+            run_id = group.removesuffix("_raw")
+            expected_raw_sha = raw_by_run[run_id]
+            member = f"test/exploration/{SERIES.name}/runs/{run_id}/raw.csv"
+            result = json.loads((RUNS / run_id / "result.json").read_text(encoding="utf-8"))
+            raw = RUNS / run_id / "raw.csv"
+            qa_raw = qa.get("raw_sha256_by_run", {}).get(run_id)
+            if (delta.get("raw_sha256_by_run") != {run_id: expected_raw_sha} or
+                    hashes.get(member) != expected_raw_sha or qa_raw != expected_raw_sha or
+                    root.sha256(raw) != expected_raw_sha or result.get("raw_sha256") != expected_raw_sha):
+                raise RuntimeError(f"A020-A022 raw/package identity mismatch: {run_id}")
+            row = manifest_rows.get(run_id)
+            if not row or row.get("raw_sha256") != expected_raw_sha:
+                raise RuntimeError(f"A020-A022 experiment manifest raw SHA mismatch: {run_id}")
+            a020_refs.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                              "raw_sha256": expected_raw_sha, "source_package_name": package_name,
+                              "source_package_sha256": expected_package_sha})
+        package_records.append({"package_name": package_name, "package_sha256": expected_package_sha,
+                                "source_commit": CB_DIRECT_D1_BASE_COMMIT, "package_group": group})
+    if {item["run_id"] for item in a020_refs} != expected_runs:
+        raise RuntimeError("A020-A022 checkpoint raw package closure is incomplete")
+    existing_refs = base_run_refs + a020_refs
+    expected_all = expected_prior_ids | set(T1_CHAIN_DELTA_RUN_IDS)
+    if len(existing_refs) != 22 or {item["run_id"] for item in existing_refs} != expected_all:
+        raise RuntimeError("verified base raw reference closure is not exactly A001-A022")
+    return package_records, existing_refs, member_hashes
+
+
+def _cb_direct_d1_delta_sources(root: Any) -> tuple[list[tuple[Path, str]], dict[str, str], list[str]]:
+    head = git("rev-parse", "HEAD")
+    changes = dict(root.committed_changes(CB_DIRECT_D1_BASE_COMMIT, head))
+    changes.update(root.working_changes())
+    for path in root.untracked_files():
+        changes.setdefault(path, "??")
+    sources: dict[str, Path] = {}
+    excluded_html: set[str] = set()
+    for rel_path, status in changes.items():
+        path = Path(rel_path)
+        if not root.in_scope(rel_path, [SERIES]):
+            raise RuntimeError(f"CB_DIRECT D1 DELTA found an out-of-scope change: {rel_path}")
+        if status == "D":
+            raise RuntimeError(f"CB_DIRECT D1 DELTA refuses deletions: {rel_path}")
+        if path.parts[:4] == ("test", "exploration", SERIES.name, "runs"):
+            if len(path.parts) < 5 or path.parts[4] not in CB_DIRECT_D1_RUN_IDS:
+                raise RuntimeError(f"CB_DIRECT D1 DELTA detected historical run edit: {rel_path}")
+            continue
+        if _excluded_delta_path(path):
+            if path.suffix.lower() == ".html":
+                excluded_html.add(rel_path)
+            continue
+        source = REPO / path
+        if source.is_file() and not source.is_symlink():
+            sources[rel_path] = source
+
+    for run_id in CB_DIRECT_D1_RUN_IDS:
+        run_dir = RUNS / run_id
+        if not run_dir.is_dir():
+            raise RuntimeError(f"new authorized run directory is missing: {run_id}")
+        for path in included_files(run_dir):
+            sources[path.relative_to(REPO).as_posix()] = path
+
+    task_analysis = SERIES / "analysis" / "cb-direct-d1-20261009"
+    for path in sorted(task_analysis.rglob("*")):
+        if not path.is_file() or _excluded_delta_path(path.relative_to(REPO)):
+            continue
+        sources[path.relative_to(REPO).as_posix()] = path
+
+    for path in SERIES.rglob("*.html"):
+        if path.is_file():
+            excluded_html.add(path.relative_to(REPO).as_posix())
+
+    for rel_path, status in changes.items():
+        path = Path(rel_path)
+        if status == "D" or _excluded_delta_path(path):
+            continue
+        if path.parts[:4] == ("test", "exploration", SERIES.name, "runs"):
+            continue
+        if root.in_scope(rel_path, [SERIES]) and (REPO / path).is_file() and rel_path not in sources:
+            raise RuntimeError(f"changed source/evidence omitted from CB_DIRECT D1 DELTA: {rel_path}")
+    return [(sources[key], key) for key in sorted(sources)], changes, sorted(excluded_html)
+
+
+def validate_cb_direct_d1_scope(root: Any) -> dict[str, Any]:
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("CB_DIRECT D1 DELTA expects the existing master branch")
+    if subprocess.run(["git", "merge-base", "--is-ancestor", CB_DIRECT_D1_BASE_COMMIT,
+                       git("rev-parse", "HEAD")], cwd=REPO, check=False).returncode != 0:
+        raise RuntimeError("CB_DIRECT D1 HEAD is not descended from the A020-A022 source checkpoint")
+    expected_run_dirs = list(LEGACY_RUN_IDS + BUS400_RUN_IDS + A009_RUN_IDS + A010_A012_RUN_IDS +
+                             T1_A013_A016_RUN_IDS + T1_CHAIN_BASE_RUN_IDS + T1_CHAIN_DELTA_RUN_IDS +
+                             CB_DIRECT_D1_RUN_IDS)
+    actual_run_dirs = sorted(path.name for path in RUNS.iterdir()
+                             if path.is_dir() and re.fullmatch(r"A\d{3}_.+", path.name))
+    if actual_run_dirs != expected_run_dirs:
+        raise RuntimeError(f"CB_DIRECT D1 run closure mismatch: expected {expected_run_dirs}, found {actual_run_dirs}")
+
+    base_packages, existing_raw_refs, base_member_hashes = verify_cb_direct_d1_base_checkpoint(root)
+    manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    manifest_rows = {item.get("run_id"): item for item in manifest.get("runs", [])}
+    if int(manifest.get("physical_solve_count", -1)) != 24:
+        raise RuntimeError(f"experiment_manifest physical_solve_count should be 24, got {manifest.get('physical_solve_count')}")
+    auth = [item for item in manifest.get("authorization_batches", [])
+            if item.get("batch_id") == "BVM4X4_CB_DIRECT_D1_20261009"]
+    if (len(auth) != 1 or auth[0].get("authorized_physical_solve_count") != 2 or
+            auth[0].get("physical_solve_count_completed") != 2 or
+            auth[0].get("run_ids") != list(CB_DIRECT_D1_RUN_IDS) or
+            auth[0].get("execution_preflight_attempt") != 2):
+        raise RuntimeError("CB_DIRECT D1 authorization completion is not exactly A023/A024")
+
+    task_root = SERIES / "analysis" / "cb-direct-d1-20261009"
+    attempt = task_root / "attempts" / "002"
+    batch = json.loads((attempt / "BATCH_MANIFEST.json").read_text(encoding="utf-8"))
+    comparison = json.loads((task_root / "CB_DIRECT_D1_COMPARISON.json").read_text(encoding="utf-8"))
+    comparison_qa = json.loads((task_root / "COMPARISON_PLOT_QA.json").read_text(encoding="utf-8"))
+    if (batch.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+            batch.get("authorized_run_ids") != list(CB_DIRECT_D1_RUN_IDS) or
+            [item.get("run_id") for item in batch.get("runs", [])] != list(CB_DIRECT_D1_RUN_IDS) or
+            batch.get("physical_solve_count_completed") != 2 or
+            comparison.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+            comparison.get("physical_solve_count") != 2 or comparison_qa.get("status") != "PASS"):
+        raise RuntimeError("CB_DIRECT D1 batch, comparison, or plot QA is not mechanically closed")
+
+    handoff = json.loads((task_root / "RAW_ANALYSIS_HANDOFF_MANIFEST.json").read_text(encoding="utf-8"))
+    handoff_refs = handoff.get("existing_raw_references", [])
+    expected_refs = {(item["run_id"], item["raw_sha256"], item["source_package_name"], item["source_package_sha256"])
+                     for item in existing_raw_refs}
+    actual_refs = {(item.get("run_id"), item.get("raw_sha256"), item.get("source_package_name"),
+                    item.get("source_package_sha256")) for item in handoff_refs}
+    if len(existing_raw_refs) != 22 or len(actual_refs) != len(handoff_refs) or actual_refs != expected_refs:
+        raise RuntimeError("CB_DIRECT D1 raw handoff manifest does not bind exactly A001-A022")
+
+    incident = json.loads((task_root / "GATE_INCIDENT_001.json").read_text(encoding="utf-8"))
+    first_attempt = json.loads((task_root / "BATCH_MANIFEST.json").read_text(encoding="utf-8"))
+    if (incident.get("physical_solve_count") != 0 or incident.get("transient_solver_invoked") is not False or
+            first_attempt.get("status") != "STOPPED_BEFORE_PHYSICAL_SOLVE" or
+            first_attempt.get("physical_solve_count_completed") != 0):
+        raise RuntimeError("attempt-1 gate stop/zero-solve incident is not preserved")
+
+    raw_sha_by_run, run_status = {}, {}
+    for run_id in CB_DIRECT_D1_RUN_IDS:
+        run_dir = RUNS / run_id
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        raw_qa = json.loads((run_dir / "chain_qa.json").read_text(encoding="utf-8"))
+        metrics = json.loads((run_dir / "metrics.json").read_text(encoding="utf-8"))
+        provenance = json.loads((run_dir / "provenance.json").read_text(encoding="utf-8"))
+        source = json.loads((run_dir / "source_manifest.json").read_text(encoding="utf-8"))
+        topology = json.loads((run_dir / "topology_manifest.json").read_text(encoding="utf-8"))
+        case = json.loads((run_dir / "case_manifest.json").read_text(encoding="utf-8")).get("case", {})
+        plot = json.loads((run_dir / "plot_qa.json").read_text(encoding="utf-8"))
+        raw = run_dir / "raw.csv"
+        digest = root.sha256(raw)
+        row = manifest_rows.get(run_id)
+        expected_bits = ("1111", "1111") if run_id == CB_DIRECT_D1_RUN_IDS[0] else ("1101", "1101")
+        if (result.get("run_id") != run_id or result.get("artifact_status") != "VALID" or
+                result.get("physical_solve_count") != 1 or result.get("raw_sha256") != digest or
+                qa.get("status") != "PASS" or qa.get("raw_sha256_before_analysis") != digest or
+                qa.get("raw_sha256_after_analysis") != digest or raw_qa.get("status") != "PASS" or
+                raw_qa.get("raw_sha256_after_analysis") != digest or metrics.get("raw_sha256") != digest or
+                provenance.get("raw_sha256") != digest or plot.get("status") != "PASS" or
+                plot.get("raw_sha256_after") != digest or not row or row.get("raw_sha256") != digest or
+                raw.stat().st_size >= root.MAX_GIT_FILE_BYTES or
+                (result.get("row_bits"), result.get("column_bits")) != expected_bits):
+            raise RuntimeError(f"A023/A024 run raw/provenance/mechanical identity failed: {run_id}")
+        if (source.get("sources", {}).get("CBU_D1_DIRECT", {}).get("sha256") !=
+                "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370" or
+                topology.get("cbu_type_by_stage", {}).get("D1") != "CB" or
+                topology.get("cbu_type_by_stage", {}).get("D2") != "THmitll_MERGE" or
+                case.get("CBU_OVERRIDE_D1") != "CB_DIRECT"):
+            raise RuntimeError(f"D1 direct CB source/topology provenance mismatch: {run_id}")
+        for page in plot.get("pages", []):
+            page_path = SERIES / page["path"]
+            if not page_path.is_file() or root.sha256(page_path) != page.get("sha256"):
+                raise RuntimeError(f"A023/A024 standalone plot identity mismatch: {run_id}/{page.get('path')}")
+        raw_sha_by_run[run_id] = digest
+        run_status[run_id] = {"status": result.get("status"), "artifact_status": result.get("artifact_status"),
+                              "physical_solve_count": result.get("physical_solve_count"),
+                              "qa_status": qa.get("status"), "raw_bytes": raw.stat().st_size}
+    for page in comparison_qa.get("pages", []):
+        page_path = SERIES / page["path"]
+        if not page_path.is_file() or root.sha256(page_path) != page.get("sha256"):
+            raise RuntimeError(f"paired comparison plot hash mismatch: {page.get('path')}")
+
+    sources, changes, excluded_html = _cb_direct_d1_delta_sources(root)
+    run_prefix = {run_id: ("test", "exploration", SERIES.name, "runs", run_id)
+                  for run_id in CB_DIRECT_D1_RUN_IDS}
+    run_files = {run_id: [(source, member) for source, member in sources
+                          if Path(member).parts[:5] == run_prefix[run_id]]
+                 for run_id in CB_DIRECT_D1_RUN_IDS}
+    for run_id, files in run_files.items():
+        if not files or not any(Path(member).name == "raw.csv" for _source, member in files):
+            raise RuntimeError(f"CB_DIRECT D1 DELTA inventory is incomplete for {run_id}")
+    shared = [(source, member) for source, member in sources
+              if Path(member).parts[:4] != ("test", "exploration", SERIES.name, "runs")]
+    if not shared:
+        raise RuntimeError("CB_DIRECT D1 DELTA has no source or analysis evidence")
+    return {"base_packages": base_packages, "existing_raw_refs": existing_raw_refs,
+            "base_member_hashes": base_member_hashes, "raw_sha256_by_run": raw_sha_by_run,
+            "run_artifact_status_by_run": run_status, "sources": sources,
+            "run_files": run_files, "shared_sources": shared,
+            "changes": changes, "excluded_html": excluded_html,
+            "batch": batch, "comparison": comparison}
+
+
+def validate_cb_direct_d1_scope(root: Any) -> dict[str, Any]:
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("CB_DIRECT D1 DELTA expects the existing master branch")
+    if subprocess.run(["git", "merge-base", "--is-ancestor", CB_DIRECT_D1_BASE_COMMIT,
+                       git("rev-parse", "HEAD")], cwd=REPO, check=False).returncode != 0:
+        raise RuntimeError("CB_DIRECT D1 HEAD is not descended from the A020-A022 package source commit")
+    expected_run_dirs = list(LEGACY_RUN_IDS + BUS400_RUN_IDS + A009_RUN_IDS + A010_A012_RUN_IDS +
+                             T1_A013_A016_RUN_IDS + T1_CHAIN_BASE_RUN_IDS + T1_CHAIN_DELTA_RUN_IDS +
+                             CB_DIRECT_D1_RUN_IDS)
+    actual_run_dirs = sorted(path.name for path in RUNS.iterdir()
+                             if path.is_dir() and re.fullmatch(r"A\d{3}_.+", path.name))
+    if actual_run_dirs != expected_run_dirs:
+        raise RuntimeError(f"CB_DIRECT D1 run closure mismatch: expected {expected_run_dirs}, found {actual_run_dirs}")
+
+    base_packages, existing_raw_refs, base_member_hashes = verify_cb_direct_d1_base_checkpoint(root)
+    manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    run_rows = {item.get("run_id"): item for item in manifest.get("runs", [])}
+    if int(manifest.get("physical_solve_count", -1)) != 24:
+        raise RuntimeError(f"experiment manifest physical_solve_count should be 24, got {manifest.get('physical_solve_count')}")
+    auth = [item for item in manifest.get("authorization_batches", [])
+            if item.get("batch_id") == "BVM4X4_CB_DIRECT_D1_20261009"]
+    if (len(auth) != 1 or auth[0].get("authorized_physical_solve_count") != 2 or
+            auth[0].get("physical_solve_count_completed") != 2 or
+            auth[0].get("run_ids") != list(CB_DIRECT_D1_RUN_IDS) or
+            auth[0].get("execution_preflight_attempt") != 2):
+        raise RuntimeError("CB_DIRECT D1 authorization completion record is not exactly A023/A024")
+
+    attempt = SERIES / "analysis" / "cb-direct-d1-20261009" / "attempts" / "002"
+    preflight_path = attempt / "PREFLIGHT.md"
+    static_qa_path = attempt / "STATIC_QA.json"
+    probes_path = attempt / "PROBE_MANIFEST.json"
+    work_unit = json.loads((attempt / "WORK_UNIT.json").read_text(encoding="utf-8"))
+    static_qa = json.loads(static_qa_path.read_text(encoding="utf-8"))
+    batch = json.loads((attempt / "BATCH_MANIFEST.json").read_text(encoding="utf-8"))
+    comparison = json.loads((SERIES / "analysis/cb-direct-d1-20261009/CB_DIRECT_D1_COMPARISON.json").read_text(encoding="utf-8"))
+    plot_qa = json.loads((SERIES / "analysis/cb-direct-d1-20261009/COMPARISON_PLOT_QA.json").read_text(encoding="utf-8"))
+    numerical_recheck_path = SERIES / "analysis/cb-direct-d1-20261009/NUMERICAL_RECHECK.json"
+    numerical_recheck = json.loads(numerical_recheck_path.read_text(encoding="utf-8"))
+    if (batch.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+            batch.get("authorized_run_ids") != list(CB_DIRECT_D1_RUN_IDS) or
+            [row.get("run_id") for row in batch.get("runs", [])] != list(CB_DIRECT_D1_RUN_IDS) or
+            batch.get("physical_solve_count_completed") != 2 or
+            static_qa.get("status") != "PASS" or static_qa.get("physical_solve_count") != 0 or
+            work_unit.get("authorized_run_ids") != list(CB_DIRECT_D1_RUN_IDS) or
+            work_unit.get("preflight_sha256") != root.sha256(preflight_path) or
+            work_unit.get("static_qa_sha256") != root.sha256(static_qa_path) or
+            work_unit.get("probe_manifest_sha256") != root.sha256(probes_path) or
+            batch.get("preflight_sha256") != root.sha256(preflight_path) or
+            batch.get("static_qa_sha256") != root.sha256(static_qa_path) or
+            batch.get("probe_manifest_sha256") != root.sha256(probes_path) or
+            comparison.get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+            comparison.get("physical_solve_count") != 2 or plot_qa.get("status") != "PASS" or
+            numerical_recheck.get("status") != "PASS_RAW_RECOMPUTATION_MATCHES_METRICS" or
+            numerical_recheck.get("physical_solve_count") != 0 or
+            numerical_recheck.get("same_jj_window_checks") != 80 or
+            batch.get("numerical_recheck_sha256") != root.sha256(numerical_recheck_path)):
+        raise RuntimeError("CB_DIRECT D1 batch/comparison/plot QA is not mechanically closed")
+    raw_handoff = json.loads((SERIES / "analysis/cb-direct-d1-20261009/RAW_ANALYSIS_HANDOFF_MANIFEST.json").read_text(encoding="utf-8"))
+    handoff_refs = raw_handoff.get("existing_raw_references", [])
+    expected_ref_ids = {item["run_id"] for item in existing_raw_refs}
+    handoff_identities = {(item.get("run_id"), item.get("raw_sha256"), item.get("source_package_name"),
+                           item.get("source_package_sha256")) for item in handoff_refs}
+    expected_identities = {(item["run_id"], item["raw_sha256"], item["source_package_name"],
+                            item["source_package_sha256"]) for item in existing_raw_refs}
+    if (len(existing_raw_refs) != 22 or {item.get("run_id") for item in handoff_refs} != expected_ref_ids or
+            len(handoff_identities) != len(handoff_refs) or handoff_identities != expected_identities):
+        raise RuntimeError("raw handoff manifest does not reference exactly A001-A022")
+    for incident_file in (SERIES / "analysis/cb-direct-d1-20261009/GATE_INCIDENT_001.json",
+                          SERIES / "analysis/cb-direct-d1-20261009/BATCH_MANIFEST.json"):
+        if not incident_file.is_file():
+            raise RuntimeError("pre-solver gate incident history is not preserved")
+    failed_gate = json.loads((SERIES / "analysis/cb-direct-d1-20261009/GATE_INCIDENT_001.json").read_text(encoding="utf-8"))
+    first_batch = json.loads((SERIES / "analysis/cb-direct-d1-20261009/BATCH_MANIFEST.json").read_text(encoding="utf-8"))
+    if (failed_gate.get("physical_solve_count") != 0 or failed_gate.get("transient_solver_invoked") is not False or
+            first_batch.get("status") != "STOPPED_BEFORE_PHYSICAL_SOLVE" or
+            first_batch.get("physical_solve_count_completed") != 0):
+        raise RuntimeError("attempt-1 gate incident does not clearly record zero transient solves")
+
+    raw_sha_by_run, run_status = {}, {}
+    for run_id in CB_DIRECT_D1_RUN_IDS:
+        run_dir = RUNS / run_id
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        chain_qa = json.loads((run_dir / "chain_qa.json").read_text(encoding="utf-8"))
+        metrics = json.loads((run_dir / "metrics.json").read_text(encoding="utf-8"))
+        provenance = json.loads((run_dir / "provenance.json").read_text(encoding="utf-8"))
+        source = json.loads((run_dir / "source_manifest.json").read_text(encoding="utf-8"))
+        topology = json.loads((run_dir / "topology_manifest.json").read_text(encoding="utf-8"))
+        case_manifest = json.loads((run_dir / "case_manifest.json").read_text(encoding="utf-8"))
+        case = case_manifest.get("case", {})
+        probe = json.loads((run_dir / "probe_manifest.json").read_text(encoding="utf-8"))
+        plot = json.loads((run_dir / "plot_qa.json").read_text(encoding="utf-8"))
+        raw = run_dir / "raw.csv"
+        digest = root.sha256(raw)
+        row = run_rows.get(run_id)
+        expected_bits = ("1111", "1111") if run_id == CB_DIRECT_D1_RUN_IDS[0] else ("1101", "1101")
+        if (result.get("run_id") != run_id or result.get("artifact_status") != "VALID" or
+                result.get("physical_solve_count") != 1 or result.get("raw_sha256") != digest or
+                qa.get("status") != "PASS" or qa.get("raw_sha256_before_analysis") != digest or
+                qa.get("raw_sha256_after_analysis") != digest or chain_qa.get("status") != "PASS" or
+                chain_qa.get("raw_sha256_after_analysis") != digest or metrics.get("raw_sha256") != digest or
+                provenance.get("raw_sha256") != digest or
+                provenance.get("preflight_sha256") != root.sha256(preflight_path) or
+                provenance.get("metric_spec_sha256") != root.sha256(SERIES / "analysis/cb-direct-d1-20261009/METRIC_SPEC.json") or
+                plot.get("status") != "PASS" or
+                plot.get("raw_sha256_after") != digest or not row or row.get("raw_sha256") != digest or
+                raw.stat().st_size >= root.MAX_GIT_FILE_BYTES or
+                (result.get("row_bits"), result.get("column_bits")) != expected_bits):
+            raise RuntimeError(f"A023/A024 run raw/provenance/mechanical identity failed: {run_id}")
+        if (source.get("sources", {}).get("CBU_D1_DIRECT", {}).get("sha256") !=
+                "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370" or
+                topology.get("cbu_type_by_stage", {}).get("D1") != "CB" or
+                topology.get("cbu_type_by_stage", {}).get("D2") != "THmitll_MERGE" or
+                case.get("CBU_OVERRIDE_D1") != "CB_DIRECT"):
+            raise RuntimeError(f"D1 direct CB source/topology provenance mismatch: {run_id}")
+        for page in plot.get("pages", []):
+            plot_path = SERIES / page["path"]
+            if not plot_path.is_file() or root.sha256(plot_path) != page.get("sha256"):
+                raise RuntimeError(f"A023/A024 standalone plot identity mismatch: {run_id}/{page.get('path')}")
+        raw_sha_by_run[run_id] = digest
+        run_status[run_id] = {"status": result.get("status"), "artifact_status": result.get("artifact_status"),
+                              "physical_solve_count": result.get("physical_solve_count"),
+                              "qa_status": qa.get("status"), "raw_bytes": raw.stat().st_size}
+    for page in plot_qa.get("pages", []):
+        page_path = SERIES / page["path"]
+        if not page_path.is_file() or root.sha256(page_path) != page.get("sha256"):
+            raise RuntimeError(f"paired comparison plot hash mismatch: {page.get('path')}")
+
+    sources, changes, excluded_html = _cb_direct_d1_delta_sources(root)
+    run_dir_prefixes = {run_id: ("test", "exploration", SERIES.name, "runs", run_id)
+                        for run_id in CB_DIRECT_D1_RUN_IDS}
+    run_files = {run_id: [(source, member) for source, member in sources
+                          if Path(member).parts[:5] == run_dir_prefixes[run_id]]
+                 for run_id in CB_DIRECT_D1_RUN_IDS}
+    for run_id, files in run_files.items():
+        if not files or not any(Path(member).name == "raw.csv" for _source, member in files):
+            raise RuntimeError(f"DELTA inventory lacks raw/evidence for {run_id}")
+    shared = [(source, member) for source, member in sources
+              if Path(member).parts[:4] != ("test", "exploration", SERIES.name, "runs")]
+    if not shared:
+        raise RuntimeError("CB_DIRECT D1 DELTA has no source/analysis evidence")
+    return {"base_packages": base_packages, "existing_raw_refs": existing_raw_refs,
+            "base_member_hashes": base_member_hashes, "raw_sha256_by_run": raw_sha_by_run,
+            "run_artifact_status_by_run": run_status, "sources": sources,
+            "run_files": run_files, "shared_sources": shared,
+            "changes": changes, "excluded_html": excluded_html,
+            "batch": batch, "comparison": comparison}
+
+
 def validate_t1_chain_scope(root: Any) -> dict[str, Any]:
     if git("branch", "--show-current") != "master":
         raise RuntimeError("chain DELTA expects the existing master branch")
@@ -873,6 +1315,123 @@ def t1_chain_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dic
     return specs, {"plan": plan, "source_paths": [member for _source, member in sources],
                    "total_new_physical_solve_count": 3,
                    "referenced_existing_cases": context["existing_raw_refs"]}
+
+
+def cb_direct_d1_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if not root.TAG_RE.fullmatch(tag):
+        raise RuntimeError(f"invalid CB_DIRECT D1 DELTA tag: {tag!r}")
+    context = validate_cb_direct_d1_scope(root)
+    sources = context["sources"]
+    changes = context["changes"]
+    shared = context["shared_sources"]
+    run_files = context["run_files"]
+    if not shared or any(not group for group in run_files.values()):
+        raise RuntimeError("CB_DIRECT D1 DELTA requires source metadata and both run evidence groups")
+
+    groups: list[tuple[str, str, list[tuple[Path, str]], str | None, int]] = [
+        ("source", "source", shared, None, 0)]
+    run_metadata = []
+    for run_id in CB_DIRECT_D1_RUN_IDS:
+        evidence = [(source, member) for source, member in run_files[run_id]
+                    if Path(member).name != "raw.csv"]
+        raw = [(source, member) for source, member in run_files[run_id]
+               if Path(member).name == "raw.csv"]
+        if len(raw) != 1 or not evidence:
+            raise RuntimeError(f"run delta must contain one immutable raw and non-empty metadata: {run_id}")
+        run_metadata.extend(evidence)
+    groups.append(("runs_metadata", "evidence", run_metadata, None, 2))
+    for run_id in CB_DIRECT_D1_RUN_IDS:
+        groups.append((f"{run_id}_raw", "raw", [item for item in run_files[run_id]
+                                                     if Path(item[1]).name == "raw.csv"], run_id, 0))
+
+    specs: list[dict[str, Any]] = []
+    plans: list[dict[str, Any]] = []
+    for group_name, group_kind, group_sources, run_id, solve_count in groups:
+        records = root.file_records(group_sources)
+        source_bytes = sum(item["bytes"] for item in records)
+        included_hashes = {item["archive_path"]: item["sha256"] for item in records}
+        new_files, modified_files = [], []
+        for record in records:
+            member, digest = record["archive_path"], record["sha256"]
+            if member not in context["base_member_hashes"]:
+                new_files.append(member)
+            elif context["base_member_hashes"][member] != digest:
+                modified_files.append(member)
+        package_name = f"{SERIES.name}_delta_CB_DIRECT_D1_{tag}_{group_name}.zip"
+        target = HANDOFF / package_name
+        qa_target = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        if target.exists() or qa_target.exists():
+            raise FileExistsError(f"refusing to overwrite immutable CB_DIRECT D1 DELTA package: {package_name}")
+        raw_map = ({run_id: context["raw_sha256_by_run"][run_id]}
+                   if group_kind == "raw" and run_id else {})
+        associated_raw = ({item: context["raw_sha256_by_run"][item]
+                           for item in CB_DIRECT_D1_RUN_IDS} if group_kind == "evidence" else {})
+        manifest = {
+            "schema": "bvm-4x4-cb-direct-d1-evidence-delta-v1",
+            "package_type": "directory_snapshot_delta",
+            "package_group": group_name,
+            "base_commit": CB_DIRECT_D1_BASE_COMMIT,
+            "head_commit": "PENDING_EVIDENCE_COMMIT",
+            "base_package_name": CB_DIRECT_D1_BASE_SOURCE_NAME,
+            "base_package_sha256": CB_DIRECT_D1_BASE_SOURCE_SHA256,
+            "base_package_source_commit": CB_DIRECT_D1_BASE_COMMIT,
+            "base_delta_packages": context["base_packages"],
+            "base_run_packages": context["existing_raw_refs"],
+            "referenced_existing_cases": context["existing_raw_refs"],
+            "referenced_existing_raw_sha256": context["existing_raw_refs"],
+            "included_files": records,
+            "included_file_sha256": included_hashes,
+            "new_files": sorted(new_files),
+            "modified_files": sorted(modified_files),
+            "deleted_files": [],
+            "new_physical_solve_count": solve_count,
+            "reused_point_count": 0,
+            "raw_sha256_by_run": raw_map,
+            "associated_raw_sha256_by_run": associated_raw,
+            "paired_evidence_package_name": (f"{SERIES.name}_delta_CB_DIRECT_D1_{tag}_runs_metadata.zip"
+                                             if group_kind == "raw" else None),
+            "run_artifact_status_by_run": ({run_id: context["run_artifact_status_by_run"][run_id]}
+                                            if run_id else context["run_artifact_status_by_run"]),
+            "excluded_html": context["excluded_html"],
+            "generated_from_head": git("rev-parse", "HEAD"),
+            "scientific_interpretation_performed": False,
+        }
+        extra = {"DELTA_MANIFEST.json": (json.dumps(manifest, ensure_ascii=False, indent=2)+"\n").encode("utf-8")}
+        if source_bytes + sum(len(value) for value in extra.values()) >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"{group_name} CB_DIRECT D1 package exceeds the 100MB uncompressed guard: {source_bytes}")
+        spec = {"name": package_name, "kind": "bvm_4x4_cb_direct_d1_delta_v1", "scope": SERIES,
+                "target": target, "qa_path": qa_target, "sources": group_sources,
+                "extra_members": extra, "delta_manifest": manifest,
+                "readme": (f"Incremental CB_DIRECT D1 evidence for {SERIES.name}; tag={tag}; group={group_name}.\n"
+                           f"Base checkpoint source: {CB_DIRECT_D1_BASE_SOURCE_NAME} ({CB_DIRECT_D1_BASE_SOURCE_SHA256})\n"
+                           "A001-A022 raw is referenced by exact package/raw SHA and is not recopied.\n"
+                           "Only A023/A024 are new physical solves. Generated HTML is excluded.\n"
+                           "Mechanical evidence only; no event classification or scientific interpretation.\n").encode(),
+                "base_name": CB_DIRECT_D1_BASE_SOURCE_NAME,
+                "base_sha": CB_DIRECT_D1_BASE_SOURCE_SHA256,
+                "raw_by_run": raw_map, "group_kind": group_kind, "run_id": run_id}
+        specs.append(spec)
+        plans.append({"package": package_name, "group": group_name, "group_kind": group_kind,
+                      "source_file_count": len(group_sources), "uncompressed_source_bytes": source_bytes,
+                      "raw_bytes": sum(item["bytes"] for item in records if Path(item["archive_path"]).name == "raw.csv"),
+                      "raw_sha256_by_run": raw_map, "new_physical_solve_count": solve_count,
+                      "new_files": sorted(new_files), "modified_files": sorted(modified_files),
+                      "qa": qa_target.relative_to(REPO).as_posix()})
+    plan = {"base_commit": CB_DIRECT_D1_BASE_COMMIT,
+            "generated_from_head": git("rev-parse", "HEAD"),
+            "base_package_name": CB_DIRECT_D1_BASE_SOURCE_NAME,
+            "base_package_sha256": CB_DIRECT_D1_BASE_SOURCE_SHA256,
+            "base_delta_packages": context["base_packages"],
+            "referenced_existing_raw_count": len(context["existing_raw_refs"]),
+            "referenced_existing_raw_sha256": context["existing_raw_refs"],
+            "new_physical_solve_count": 2, "reused_point_count": 0,
+            "html_included": False, "excluded_html_count": len(context["excluded_html"]),
+            "total_uncompressed_source_bytes": sum(item["uncompressed_source_bytes"] for item in plans),
+            "package_count": len(specs), "packages": plans,
+            "run_artifact_status_by_run": context["run_artifact_status_by_run"]}
+    return specs, {"plan": plan, "source_paths": [member for _source, member in sources],
+                   "new_physical_solve_count": 2,
+                   "referenced_existing_raw": context["existing_raw_refs"]}
 
 
 def delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
@@ -1402,6 +1961,113 @@ def submit_t1_chain_delta(args: argparse.Namespace, root: Any) -> int:
     return 0
 
 
+def submit_cb_direct_d1_delta(args: argparse.Namespace, root: Any) -> int:
+    specs, context = cb_direct_d1_delta_specs(args.tag, root)
+    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
+    if not mirror_dir.is_dir():
+        raise RuntimeError(f"mirror directory is not accessible: {mirror_dir}")
+    local_collisions = [str(spec["target"]) for spec in specs
+                        if spec["target"].exists() or spec["qa_path"].exists()]
+    mirror_collisions = [str(mirror_dir / spec["name"]) for spec in specs
+                         if (mirror_dir / spec["name"]).exists()]
+    if local_collisions or mirror_collisions:
+        raise FileExistsError("refusing to overwrite package/mirror targets: " +
+                              ", ".join(local_collisions + mirror_collisions))
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", "scope": SERIES.relative_to(REPO).as_posix(),
+                          "package_mode": "CB_DIRECT_D1_DELTA", **context["plan"],
+                          "push": git("rev-parse", "--abbrev-ref", "@{upstream}"),
+                          "mirror_dir": str(mirror_dir), "no_files_modified": True},
+                         ensure_ascii=False, indent=2))
+        return 0
+
+    source_paths = context["source_paths"]
+    if not source_paths:
+        raise RuntimeError("CB_DIRECT D1 DELTA source inventory is empty")
+    subprocess.run(["git", "add", "-A", "-f", "--", *source_paths], cwd=REPO, check=True)
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO,
+                      check=False).returncode != 0:
+        subprocess.run(["git", "commit", "-m", args.message or
+                        "experiment: record CB_DIRECT D1 A023-A024 evidence"], cwd=REPO, check=True)
+    source_commit = git("rev-parse", "HEAD")
+
+    package_results = []
+    for spec in specs:
+        manifest = spec["delta_manifest"]
+        if spec.get("group_kind") == "raw":
+            evidence_name = manifest.get("paired_evidence_package_name")
+            evidence_result = next((item for item in package_results
+                                    if Path(item["path"]).name == evidence_name), None)
+            if evidence_result is None:
+                raise RuntimeError(f"paired run-metadata package must be created before raw: {evidence_name}")
+            manifest["paired_evidence_package_sha256"] = evidence_result["sha256"]
+        manifest["head_commit"] = source_commit
+        manifest["generated_from_head"] = source_commit
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(manifest, ensure_ascii=False, indent=2)+"\n").encode("utf-8")
+        result = root.archive_bundle(spec, source_commit)
+        package_path, qa_path = REPO / result["path"], REPO / result["qa_path"]
+        qa = json.loads(qa_path.read_text(encoding="utf-8"))
+        qa.update({"package_mode": "CB_DIRECT_D1_DELTA_SPLIT_BY_RUN",
+                   "base_commit": manifest["base_commit"], "head_commit": source_commit,
+                   "base_package_name": manifest["base_package_name"],
+                   "base_package_sha256": manifest["base_package_sha256"],
+                   "base_delta_packages": manifest["base_delta_packages"],
+                   "delta_included_files": manifest["included_files"],
+                   "delta_included_file_sha256": manifest["included_file_sha256"],
+                   "new_files": manifest["new_files"], "modified_files": manifest["modified_files"],
+                   "referenced_existing_cases": manifest["referenced_existing_cases"],
+                   "referenced_existing_raw_sha256": manifest["referenced_existing_raw_sha256"],
+                   "new_physical_solve_count": manifest["new_physical_solve_count"],
+                   "reused_point_count": 0, "html_included": False,
+                   "package_group": manifest["package_group"],
+                   "raw_sha256_by_run": manifest["raw_sha256_by_run"],
+                   "associated_raw_sha256_by_run": manifest["associated_raw_sha256_by_run"],
+                   "run_artifact_status_by_run": manifest["run_artifact_status_by_run"],
+                   "paired_evidence_package_name": manifest.get("paired_evidence_package_name"),
+                   "paired_evidence_package_sha256": manifest.get("paired_evidence_package_sha256")})
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != root.sha256(package_path) or
+                qa.get("package_bytes") != package_path.stat().st_size):
+            raise RuntimeError(f"CB_DIRECT D1 PACKAGE_QA identity failed: {spec['name']}")
+        with zipfile.ZipFile(package_path) as archive:
+            bad = archive.testzip()
+            if bad:
+                raise RuntimeError(f"CB_DIRECT D1 ZIP CRC failure: {spec['name']}/{bad}")
+            archived_manifest = json.loads(archive.read("DELTA_MANIFEST.json"))
+            names = set(archive.namelist())
+            if archived_manifest.get("head_commit") != source_commit:
+                raise RuntimeError(f"CB_DIRECT D1 archived HEAD mismatch: {spec['name']}")
+            for member, expected_sha in archived_manifest.get("included_file_sha256", {}).items():
+                if member not in names:
+                    raise RuntimeError(f"CB_DIRECT D1 package member missing: {member}")
+                if hashlib.sha256(archive.read(member)).hexdigest() != expected_sha:
+                    raise RuntimeError(f"CB_DIRECT D1 package member SHA mismatch: {member}")
+        qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+        result.update({"sha256": qa["package_sha256"], "bytes": qa["package_bytes"],
+                       "status": qa["status"]})
+        package_results.append(result)
+
+    package_paths = [path for result in package_results for path in (result["path"], result["qa_path"])]
+    subprocess.run(["git", "add", "-f", "--", *package_paths], cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", f"package: archive CB_DIRECT D1 A023-A024 delta {args.tag}"],
+                   cwd=REPO, check=True)
+    if not args.no_push:
+        subprocess.run(["git", "push"], cwd=REPO, check=True)
+        push_status = "PASS"
+    else:
+        push_status = "SKIPPED"
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    print(json.dumps({"status": "CB_DIRECT_D1_DELTA_SUBMIT_COMPLETE",
+                      "source_commit": source_commit, "final_commit": git("rev-parse", "HEAD"),
+                      "push": push_status, "packages": package_results,
+                      "base_commit": CB_DIRECT_D1_BASE_COMMIT,
+                      "base_package": CB_DIRECT_D1_BASE_SOURCE_NAME,
+                      "referenced_existing_raw_count": len(context["referenced_existing_raw"]),
+                      "new_physical_solve_count": 2, "package_count": len(package_results),
+                      "html_included": False, "mirror": mirror}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -1419,6 +2085,9 @@ def main() -> int:
         if args.delta:
             if args.metadata_v2:
                 raise RuntimeError("--delta and --metadata-v2 are mutually exclusive")
+            cb_direct_batch = (SERIES / "analysis/cb-direct-d1-20261009/attempts/002/BATCH_MANIFEST.json")
+            if cb_direct_batch.is_file():
+                return submit_cb_direct_d1_delta(args, root)
             chain_manifest = SERIES / "analysis" / "t1-chain-20261009" / "BATCH_MANIFEST.json"
             if chain_manifest.is_file():
                 return submit_t1_chain_delta(args, root)

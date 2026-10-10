@@ -284,6 +284,30 @@ CARRY4_SUPPLEMENT_RAW_SHA256 = {
     "A046_MANUAL_CARRY4_11x13_210": "6e20b7aeafcb278302c0c25c1c928ffaaf0903bbf68bf457b2d3361998cdacfe",
     "A047_MANUAL_CARRY4_3x3_210": "3226c4610e92ad317d3b395e937e9e21ad106d2243acab9b904dcad30ebe80bc",
 }
+C4R28_TAG = "CARRY4_FUNCTIONAL_28_20261010"
+C4R28_ANALYSIS_DIR = SERIES / "analysis" / "carry4-functional-28-20261010"
+C4R28_PLOT_DIR = SERIES / "plots" / "carry4-functional-28-20261010"
+C4R28_PARENT_HEAD = "e246b41421e4341bf43f5a6c92797dd990cc6889"
+C4R28_BASE_SOURCE_HEAD = "db73e1f24ca733294a01b5659c22c7b53fc529de"
+C4R28_PAIRS = (
+    (15, 14), (14, 15), (14, 14), (15, 13), (13, 15), (15, 11), (11, 15),
+    (15, 7), (7, 15), (7, 7), (7, 14), (14, 7), (9, 13), (13, 9),
+    (5, 10), (10, 5), (1, 1), (1, 15), (15, 1), (2, 15), (15, 2),
+    (4, 15), (15, 4), (8, 15), (15, 8), (0, 0), (0, 15), (15, 0),
+)
+C4R28_BASE_PACKAGES = (
+    ("source_analysis", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A045_A047_20261010_source.zip",
+     "1bc3b8a504c3a5450ca8bf9127647715440031a0f4f0a10dd044f0b6cbdd8706"),
+    ("runs_metadata", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A045_A047_20261010_runs_metadata.zip",
+     "2439af490a86caf627b1183d41e3ed50ccc3766d42fd35af2390a5fdbf24ea26"),
+    ("A045_raw", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A045_A047_20261010_A045_MANUAL_CARRY4_15x15_210_raw.zip",
+     "e0117102b4368f08e40535c98d05d68d93334224da401a416c09c41cd5232ae7"),
+    ("A046_raw", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A045_A047_20261010_A046_MANUAL_CARRY4_11x13_210_raw.zip",
+     "e87edf926755bd4afef2ffa2a0bcd36ffb0b5d0d0577c265396f7459ec4b41fa"),
+    ("A047_raw", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A045_A047_20261010_A047_MANUAL_CARRY4_3x3_210_raw.zip",
+     "e1a03660733e11ae823b949f8ddfd56f675c649098159d08364bfa77b4ce91c2"),
+)
+C4R28_MAX_METADATA_GROUP_BYTES = 75_000_000
 CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
 CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
 CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
@@ -4840,6 +4864,378 @@ def submit_carry4_manual_supplement(args: argparse.Namespace, root: Any) -> int:
     return 0
 
 
+def c4r28_functional_delta_specs(root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("C4R28 DELTA requires the master branch")
+    head = git("rev-parse", "HEAD")
+    if head != C4R28_PARENT_HEAD or git("rev-parse", "bvm/master") != head:
+        raise RuntimeError("C4R28 DELTA base is stale; sync master before packaging")
+
+    analysis_manifest_path = C4R28_ANALYSIS_DIR / "EVIDENCE_MANIFEST.json"
+    summary_qa_path = C4R28_ANALYSIS_DIR / "SUMMARY_QA.json"
+    scope_path = C4R28_ANALYSIS_DIR / "ANALYSIS_SCOPE.json"
+    evidence = json.loads(analysis_manifest_path.read_text(encoding="utf-8"))
+    summary_qa = json.loads(summary_qa_path.read_text(encoding="utf-8"))
+    scope = json.loads(scope_path.read_text(encoding="utf-8"))
+    if (evidence.get("analysis_id") != C4R28_TAG or evidence.get("parent_head") != C4R28_PARENT_HEAD or
+            evidence.get("physical_solver_invocations") != 0 or
+            summary_qa.get("case_count") != 28 or summary_qa.get("distinct_input_pair_count") != 28 or
+            summary_qa.get("distinct_run_id_count") != 28 or summary_qa.get("physical_solver_invocations") != 0 or
+            summary_qa.get("candidate_match_count") != 0 or summary_qa.get("candidate_mismatch_count") != 0 or
+            summary_qa.get("candidate_indeterminate_count") != 28 or
+            summary_qa.get("all_candidate_decodes_indeterminate") is not True or
+            summary_qa.get("status") != "PASS_WITH_INDETERMINATE_CANDIDATE_DECODING" or
+            scope.get("authorized_solver_invocations") != 0 or scope.get("parent_head") != C4R28_PARENT_HEAD):
+        raise RuntimeError("C4R28 analysis/evidence manifest scope or QA mismatch")
+    case_records = evidence.get("run_records", [])
+    run_ids = [item.get("run_id") for item in case_records]
+    expected_cases = {f"C4R28_210_{a}x{b}" for a, b in C4R28_PAIRS}
+    if (len(case_records) != 28 or len(set(run_ids)) != 28 or
+            {item.get("case") for item in case_records} != expected_cases):
+        raise RuntimeError("C4R28 evidence manifest does not enumerate exactly the 28 unique requested cases")
+    analysis_script = C4R28_ANALYSIS_DIR / "analyze_functional_28.py"
+    if root.sha256(analysis_script) != evidence.get("analysis_script_sha256"):
+        raise RuntimeError("C4R28 analysis script SHA does not match EVIDENCE_MANIFEST")
+    if evidence.get("analysis_scope_sha256") != root.sha256(C4R28_ANALYSIS_DIR / "ANALYSIS_SCOPE.json") or \
+            evidence.get("preflight_sha256") != root.sha256(C4R28_ANALYSIS_DIR / "PREFLIGHT.md"):
+        raise RuntimeError("C4R28 scope/PREFLIGHT SHA mismatch")
+    for name, expected_sha in summary_qa.get("analysis_file_sha256", {}).items():
+        path = C4R28_ANALYSIS_DIR / name
+        if not path.is_file() or root.sha256(path) != expected_sha:
+            raise RuntimeError(f"C4R28 analysis output SHA mismatch: {name}")
+    for rel, expected_sha in summary_qa.get("figure_sha256", {}).items():
+        path = SERIES / rel
+        if not path.is_file() or root.sha256(path) != expected_sha:
+            raise RuntimeError(f"C4R28 visualization SHA mismatch: {rel}")
+
+    exp_path = SERIES / "experiment_manifest.json"
+    experiment = json.loads(exp_path.read_text(encoding="utf-8"))
+    if (experiment.get("maximum_physical_solve_count") != 41 or
+            experiment.get("physical_solve_count") != 75):
+        raise RuntimeError("C4R28 packaging must preserve the observed 41/75 experiment-manifest discrepancy")
+    manifest_runs = {item.get("run_id"): item for item in experiment.get("runs", [])}
+    authorized_cases = set(experiment.get("authorized_physical_solves", []))
+    if any(item["run_id"] not in manifest_runs or manifest_runs[item["run_id"]].get("raw_sha256") != item.get("raw_sha256")
+           for item in case_records):
+        raise RuntimeError("C4R28 analysis and experiment manifests disagree on a run/raw hash")
+    if any(item.get("case") in authorized_cases for item in case_records):
+        raise RuntimeError("manual C4R28 cases must remain outside the registered authorized-case list")
+    if any(set(batch.get("run_ids", [])) & set(run_ids) for batch in experiment.get("authorization_batches", [])):
+        raise RuntimeError("manual C4R28 cases must not be added to a registered authorization batch")
+
+    # Verify the A045-A047 checkpoint as the base, and inherit its A001-A044 references.
+    base_package_records, base_deltas = [], {}
+    for group, name, expected_sha in C4R28_BASE_PACKAGES:
+        package = HANDOFF / name
+        qa_path = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(package, qa_path)
+        if (qa.get("package_sha256") != expected_sha or qa.get("source_commit") != C4R28_BASE_SOURCE_HEAD or
+                qa.get("package_bytes") != package.stat().st_size):
+            raise RuntimeError(f"A045-A047 base package identity/QA mismatch: {name}")
+        with zipfile.ZipFile(package, "r") as archive:
+            if archive.testzip() is not None or any(member.lower().endswith(".html") for member in archive.namelist()):
+                raise RuntimeError(f"A045-A047 base package CRC/HTML policy failure: {name}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if (delta.get("head_commit") != C4R28_BASE_SOURCE_HEAD or
+                    delta.get("authorization_status") != "NOT_ASSERTED_BY_PACKAGING"):
+                raise RuntimeError(f"A045-A047 base package manifest mismatch: {name}")
+            base_deltas[group] = delta
+        base_package_records.append({"package_group": group, "package_name": name,
+                                     "package_sha256": expected_sha,
+                                     "head_commit": C4R28_BASE_SOURCE_HEAD})
+
+    references = list(base_deltas["runs_metadata"].get("referenced_existing_cases", []))
+    if len(references) != 44:
+        raise RuntimeError("A045-A047 metadata package must reference exactly A001-A044")
+    for group in ("A045_raw", "A046_raw", "A047_raw"):
+        delta = base_deltas[group]
+        raw_map = delta.get("raw_sha256_by_run", {})
+        if len(raw_map) != 1:
+            raise RuntimeError(f"A045-A047 raw package must identify exactly one run: {group}")
+        run_id, raw_sha = next(iter(raw_map.items()))
+        package_info = next(item for item in C4R28_BASE_PACKAGES if item[0] == group)
+        references.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                           "raw_sha256": raw_sha, "source_package_name": package_info[1],
+                           "source_package_sha256": package_info[2]})
+    references.sort(key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
+    if len(references) != 47 or len({item["run_id"] for item in references}) != 47:
+        raise RuntimeError("C4R28 base raw closure is not exactly A001-A047")
+    if [int(item["run_id"].split("_", 1)[0][1:]) for item in references] != list(range(1, 48)):
+        raise RuntimeError("C4R28 base raw references are not contiguous A001-A047")
+    manifest_raw = {item.get("run_id"): item.get("raw_sha256") for item in experiment.get("runs", [])}
+    if any(manifest_raw.get(item["run_id"]) != item["raw_sha256"] for item in references):
+        raise RuntimeError("A001-A047 experiment-manifest hashes disagree with the verified package base")
+
+    # Validate the historical preflight seal and run artifacts without calling the solver.
+    manual_dir = SERIES / "manual_batches" / "C4R28_210"
+    run_script = SERIES / "run_carry4_functional_28.sh"
+    seal = (manual_dir / "preflight.ok").read_text(encoding="utf-8").strip().split("\t")
+    if len(seal) != 2 or seal != [root.sha256(run_script), C4R28_PARENT_HEAD]:
+        raise RuntimeError("C4R28 preflight.ok does not match the original script SHA and parent HEAD")
+    preflight_logs = sorted(manual_dir.glob("preflight_C4R28_210_*.log"))
+    if len(preflight_logs) != 28 or any("DRY RUN PASS" not in path.read_text(errors="replace") for path in preflight_logs):
+        raise RuntimeError("C4R28 preflight logs are not exactly 28 dry-run PASS files")
+    anchor_dir = RUNS / "A045_MANUAL_CARRY4_15x15_210"
+    anchor_result = json.loads((anchor_dir / "result.json").read_text(encoding="utf-8"))
+    anchor_deck_sha = root.sha256(anchor_dir / "deck.cir")
+    if anchor_deck_sha != anchor_result.get("deck_sha256"):
+        raise RuntimeError("A045 baseline deck identity mismatch")
+    for case_record in case_records:
+        run_dir = RUNS / case_record["run_id"]
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        raw_qa = json.loads((run_dir / "raw_qa.json").read_text(encoding="utf-8"))
+        if (result.get("raw_sha256") != case_record.get("raw_sha256") or
+                result.get("deck_sha256") != case_record.get("deck_sha256") or
+                result.get("artifact_status") != "VALID" or result.get("physical_solve_count") != 1 or
+                result.get("solver_exit_code") != 0 or qa.get("status") != "PASS" or
+                qa.get("raw_sha256_before_analysis") != case_record.get("raw_sha256") or
+                qa.get("raw_sha256_after_analysis") != case_record.get("raw_sha256") or
+                raw_qa.get("status") != "PASS" or
+                raw_qa.get("raw_sha256_before") != case_record.get("raw_sha256") or
+                raw_qa.get("raw_sha256_after_analysis") != case_record.get("raw_sha256")):
+            raise RuntimeError(f"C4R28 stored result/QA hashes mismatch: {case_record['run_id']}")
+        if root.sha256(run_dir / "deck.cir") != anchor_deck_sha:
+            raise RuntimeError(f"C4R28 stored deck differs from A045: {case_record['run_id']}")
+
+    analysis_files = [path for base in (C4R28_ANALYSIS_DIR, C4R28_PLOT_DIR)
+                      for path in sorted(base.rglob("*")) if path.is_file() and not path.is_symlink()
+                      and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"}
+                      and "__pycache__" not in path.parts and "handoff" not in path.parts]
+    analysis_sources = [(path, path.relative_to(REPO).as_posix()) for path in analysis_files]
+    analysis_sources.extend((path, path.relative_to(REPO).as_posix()) for path in (
+        SERIES / "run_carry4_functional_28.sh", SERIES / "scripts" / "submit.py"))
+    stage_paths = {path for path, _ in analysis_sources}
+    stage_paths.add(exp_path)
+    manual_files = sorted(path for path in manual_dir.rglob("*") if path.is_file() and not path.is_symlink()
+                          and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"})
+    stage_paths.update(manual_files)
+
+    raw_paths: dict[str, Path] = {}
+    run_metadata_by_id: dict[str, list[Path]] = {}
+    for record in case_records:
+        run_id = record["run_id"]
+        run_dir = RUNS / run_id
+        required = {
+            "deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt", "USER_CASE.snapshot.env",
+            "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env", "CBU_PARAMS.snapshot.env",
+            "DFF_PARAMS.snapshot.env", "D0_JTL_PARAMS.snapshot.env", "stimulus.inc", "case_manifest.json",
+            "metadata.json", "provenance.json", "source_manifest.json", "topology_manifest.json",
+            "probe_manifest.json", "static_qa.json", "stimulus_manifest.json", "metrics.json", "raw_qa.json",
+            "chain_qa.json", "qa.json", "plot_manifest.json", "plot_qa.json", "result.json", "RESULT_BRIEF.md",
+        }
+        files = sorted(path for path in run_dir.rglob("*") if path.is_file() and not path.is_symlink()
+                       and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"}
+                       and "__pycache__" not in path.parts and "handoff" not in path.parts)
+        if not run_dir.is_dir() or required - {path.name for path in files}:
+            raise RuntimeError(f"C4R28 run evidence closure incomplete: {run_id}")
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        raw_qa = json.loads((run_dir / "raw_qa.json").read_text(encoding="utf-8"))
+        if (result.get("artifact_status") != "VALID" or result.get("physical_solve_count") != 1 or
+                result.get("qa_status") != "PASS" or qa.get("status") != "PASS" or
+                raw_qa.get("status") != "PASS" or result.get("raw_sha256") != record.get("raw_sha256") or
+                raw_qa.get("raw_sha256_before") != record.get("raw_sha256") or
+                raw_qa.get("raw_sha256_after_analysis") != record.get("raw_sha256") or
+                result.get("deck_sha256") != record.get("deck_sha256")):
+            raise RuntimeError(f"C4R28 run/result/analysis SHA or QA mismatch: {run_id}")
+        if root.sha256(run_dir / "deck.cir") != anchor_deck_sha:
+            raise RuntimeError(f"C4R28 deck no longer matches A045 baseline: {run_id}")
+        if root.sha256(run_dir / "raw.csv") != record.get("raw_sha256"):
+            raise RuntimeError(f"C4R28 raw SHA no longer matches analysis: {run_id}")
+        raw_paths[run_id] = run_dir / "raw.csv"
+        run_metadata_by_id[run_id] = [path for path in files if path.name != "raw.csv"]
+        stage_paths.update(files)
+
+    # Split run metadata only when the uncompressed source closure would approach the Git 100 MB cap.
+    metadata_base = [(exp_path, exp_path.relative_to(REPO).as_posix()),
+                     *((path, path.relative_to(REPO).as_posix()) for path in manual_files)]
+    base_size = sum(path.stat().st_size for path, _ in metadata_base)
+    metadata_groups: list[tuple[str, list[tuple[Path, str]], list[str]]] = []
+    group_paths: list[tuple[Path, str]] = []
+    group_runs: list[str] = []
+    group_size = base_size
+    for record in case_records:
+        run_id = record["run_id"]
+        next_paths = [(path, path.relative_to(REPO).as_posix()) for path in run_metadata_by_id[run_id]]
+        next_size = sum(path.stat().st_size for path, _ in next_paths)
+        if group_runs and group_size + next_size > C4R28_MAX_METADATA_GROUP_BYTES:
+            metadata_groups.append((f"runs_metadata_{len(metadata_groups)+1:03d}",
+                                    metadata_base + group_paths, list(group_runs)))
+            group_paths, group_runs, group_size = [], [], 0
+        group_paths.extend(next_paths)
+        group_runs.append(run_id)
+        group_size += next_size
+    if group_runs:
+        metadata_groups.append((f"runs_metadata_{len(metadata_groups)+1:03d}",
+                                (metadata_base if not metadata_groups else []) + group_paths,
+                                list(group_runs)))
+
+    groups: list[tuple[str, list[tuple[Path, str]], list[str], str | None]] = [
+        ("source_analysis", analysis_sources, [], None),
+        *((name, sources, included_runs, None) for name, sources, included_runs in metadata_groups),
+        *((f"{run_id}_raw", [(raw_paths[run_id], raw_paths[run_id].relative_to(REPO).as_posix())],
+           [run_id], run_id) for run_id in run_ids),
+    ]
+    specs, plans = [], []
+    for group_name, sources, included_runs, raw_run_id in groups:
+        records = root.file_records(sources)
+        included = {item["archive_path"]: item["sha256"] for item in records}
+        new_files, modified_files = [], []
+        for member, digest in included.items():
+            base_digest = _d3_timing_blob_sha(C4R28_PARENT_HEAD, member)
+            if base_digest is None:
+                new_files.append(member)
+            elif base_digest != digest:
+                modified_files.append(member)
+        raw_map = {}
+        solve_count = 0
+        if raw_run_id:
+            record = next(item for item in case_records if item["run_id"] == raw_run_id)
+            if included.get(f"{SERIES.relative_to(REPO).as_posix()}/runs/{raw_run_id}/raw.csv") != record["raw_sha256"]:
+                raise RuntimeError(f"C4R28 raw package input SHA mismatch: {raw_run_id}")
+            raw_map[raw_run_id] = record["raw_sha256"]
+            solve_count = 1
+        package_name = f"{SERIES.name}_delta_{C4R28_TAG}_{group_name}.zip"
+        target = HANDOFF / package_name
+        qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        delta = {
+            "schema": "bvm4x4-carry4-functional-28-delta-v1",
+            "package_type": "directory_snapshot_delta",
+            "package_group": group_name,
+            "base_commit": C4R28_BASE_SOURCE_HEAD,
+            "base_checkpoint_commit": C4R28_PARENT_HEAD,
+            "base_package_name": C4R28_BASE_PACKAGES[0][1],
+            "base_package_sha256": C4R28_BASE_PACKAGES[0][2],
+            "base_package_set": [{"package_group": label, "package_name": name, "package_sha256": sha,
+                                  "head_commit": C4R28_BASE_SOURCE_HEAD}
+                                 for label, name, sha in C4R28_BASE_PACKAGES],
+            "head_commit": "PENDING_SOURCE_COMMIT",
+            "included_files": records, "included_file_sha256": included,
+            "new_files": sorted(new_files), "modified_files": sorted(modified_files), "deleted_files": [],
+            "referenced_existing_cases": references, "referenced_existing_raw_sha256": references,
+            "new_physical_solve_count": solve_count, "batch_physical_solve_count": 28,
+            "solver_invocations_this_analysis_and_archive_task": 0, "reused_point_count": 0,
+            "raw_sha256_by_run": raw_map, "included_run_ids": included_runs,
+            "registered_experiment_maximum_physical_solve_count": 41,
+            "observed_experiment_manifest_physical_solve_count": 75,
+            "authorization_status": "MANUAL_EVIDENCE_PACKAGED; NO_RETROACTIVE_AUTHORIZATION_CLAIM",
+            "candidate_decode_status": "INDETERMINATE; NO_PREREGISTERED_THRESHOLD",
+            "candidate_match_count": 0, "candidate_mismatch_count": 0,
+            "candidate_indeterminate_count": 28,
+            "scientific_interpretation_performed": False, "automatic_follow_up": False,
+            "html_included": False,
+        }
+        extra = {
+            "DELTA_MANIFEST.json": (json.dumps(delta, ensure_ascii=False, indent=2) + "\n").encode(),
+            "README.txt": (
+                f"C4R28 functional-28 manual evidence DELTA, group={group_name}.\n"
+                "The 28 physical runs were already completed manually; this task executed no solver.\n"
+                "A001-A047 raw is referenced by exact package/raw SHA and is not recopied.\n"
+                "Product-bit candidate classification is INDETERMINATE because no decode threshold was preregistered.\n"
+                "No scientific interpretation is included. HTML remains local.\n"
+            ).encode(),
+        }
+        source_bytes = sum(item["bytes"] for item in records) + sum(map(len, extra.values()))
+        if source_bytes >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"C4R28 {group_name} exceeds Git uncompressed-size guard; reduce/split the group")
+        specs.append({"name": package_name, "kind": "bvm4x4_carry4_functional_28_delta_v1", "scope": SERIES,
+                      "target": target, "qa_path": qa_path, "sources": sources, "extra_members": extra,
+                      "delta_manifest": delta, "base_name": C4R28_BASE_PACKAGES[0][1],
+                      "base_sha": C4R28_BASE_PACKAGES[0][2], "raw_by_run": raw_map,
+                      "package_group": group_name, "run_id": raw_run_id})
+        plans.append({"package": package_name, "file_count": len(records) + len(extra) + 2,
+                      "uncompressed_source_bytes": sum(item["bytes"] for item in records),
+                      "raw_bytes": sum(item["bytes"] for item in records if Path(item["archive_path"]).name == "raw.csv"),
+                      "included_run_count": len(included_runs), "raw_sha256_by_run": raw_map,
+                      "new_physical_solve_count": solve_count, "new_files": sorted(new_files),
+                      "modified_files": sorted(modified_files), "qa_path": qa_path.relative_to(REPO).as_posix()})
+
+    allowed_paths = {path.relative_to(REPO).as_posix() for path in stage_paths}
+    return specs, {"plan": {"analysis_id": C4R28_TAG, "base_commit": C4R28_PARENT_HEAD,
+                            "base_source_commit": C4R28_BASE_SOURCE_HEAD,
+                            "pre_commit_head": head, "head_commit": "PENDING_SOURCE_COMMIT",
+                            "base_packages": [{"package_group": group, "package_name": name,
+                                               "package_sha256": sha, "head_commit": C4R28_BASE_SOURCE_HEAD}
+                                              for group, name, sha in C4R28_BASE_PACKAGES],
+                            "referenced_existing_raw_count": len(references),
+                            "new_physical_solve_count": 28, "solver_invocations_this_task": 0,
+                            "candidate_counts": {"match": 0, "mismatch": 0, "indeterminate": 28},
+                            "html_included": False, "package_count": len(specs), "packages": plans},
+            "stage_paths": sorted(allowed_paths), "references": references,
+            "run_ids": run_ids}
+
+
+def submit_c4r28_functional_delta(args: argparse.Namespace, root: Any) -> int:
+    if args.tag != C4R28_TAG:
+        raise RuntimeError(f"C4R28 DELTA tag must be {C4R28_TAG}")
+    specs, context = c4r28_functional_delta_specs(root)
+    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
+    if not mirror_dir.is_dir():
+        raise RuntimeError(f"BVM package mirror is not accessible: {mirror_dir}")
+    collisions = [str(path) for spec in specs for path in (spec["target"], spec["qa_path"]) if path.exists()]
+    collisions.extend(str(mirror_dir / spec["name"]) for spec in specs if (mirror_dir / spec["name"]).exists())
+    if collisions:
+        raise FileExistsError("refusing immutable C4R28 package overwrite: " + ", ".join(collisions))
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", "package_mode": "C4R28_FUNCTIONAL_DELTA",
+                          **context["plan"], "mirror_dir": str(mirror_dir),
+                          "source_path_count": len(context["stage_paths"]), "no_files_modified": True},
+                         ensure_ascii=False, indent=2))
+        return 0
+    subprocess.run(["git", "add", "-f", "--", *context["stage_paths"]], cwd=REPO, check=True)
+    staged = git("diff", "--cached", "--name-only").splitlines()
+    if any(path not in set(context["stage_paths"]) for path in staged):
+        raise RuntimeError("C4R28 staging contains a path outside the registered analysis/archive scope")
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO, check=False).returncode == 0:
+        raise RuntimeError("C4R28 has no staged evidence changes")
+    subprocess.run(["git", "commit", "-m", "evidence: add C4R28 manual functional analysis"],
+                   cwd=REPO, check=True)
+    source_head = git("rev-parse", "HEAD")
+    results = []
+    for spec in specs:
+        spec["delta_manifest"]["head_commit"] = source_head
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(spec["delta_manifest"], ensure_ascii=False, indent=2) + "\n").encode()
+        result = root.archive_bundle(spec, source_head)
+        archive_path, qa_path = REPO / result["path"], REPO / result["qa_path"]
+        qa = root.verify_existing_bundle(archive_path, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("source_commit") != source_head or
+                qa.get("package_sha256") != root.sha256(archive_path) or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"C4R28 PACKAGE_QA/member integrity failure: {spec['name']}")
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            if any(name.lower().endswith(".html") for name in archive.namelist()):
+                raise RuntimeError(f"HTML must remain local: {spec['name']}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if (delta.get("head_commit") != source_head or delta.get("authorization_status") !=
+                    "MANUAL_EVIDENCE_PACKAGED; NO_RETROACTIVE_AUTHORIZATION_CLAIM"):
+                raise RuntimeError(f"C4R28 DELTA scope/head failure: {spec['name']}")
+            for member, digest in delta["included_file_sha256"].items():
+                if hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"C4R28 ZIP member SHA mismatch: {spec['name']}/{member}")
+        result.update({"sha256": qa["package_sha256"], "bytes": qa["package_bytes"], "status": qa["status"]})
+        results.append(result)
+    package_paths = [REPO / path for item in results for path in (item["path"], item["qa_path"])]
+    subprocess.run(["git", "add", "-f", "--", *[path.relative_to(REPO).as_posix() for path in package_paths]],
+                   cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", f"package: archive C4R28 functional DELTA {args.tag}"],
+                   cwd=REPO, check=True)
+    subprocess.run(["git", "push"], cwd=REPO, check=True)
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    print(json.dumps({"status": "C4R28_FUNCTIONAL_DELTA_SUBMIT_COMPLETE",
+                      "source_commit": source_head, "final_commit": git("rev-parse", "HEAD"),
+                      "push": "PASS", "packages": results,
+                      "base_commit": C4R28_PARENT_HEAD, "base_source_commit": C4R28_BASE_SOURCE_HEAD,
+                      "referenced_existing_raw_count": len(context["references"]),
+                      "included_run_ids": context["run_ids"], "existing_physical_solve_count": 28,
+                      "solver_invocations_this_task": 0,
+                      "candidate_counts": {"match": 0, "mismatch": 0, "indeterminate": 28},
+                      "authorization_status": "MANUAL_EVIDENCE_PACKAGED; NO_RETROACTIVE_AUTHORIZATION_CLAIM",
+                      "html_included": False, "mirror": mirror}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -4853,6 +5249,8 @@ def main() -> int:
                         help="package user-confirmed manual A042-A044 as a separate non-retroactive supplement")
     parser.add_argument("--carry4-manual-supplement", action="store_true",
                         help="package manual A045-A047 as a separate non-retroactive CARRY4 supplement")
+    parser.add_argument("--carry4-functional-28", action="store_true",
+                        help="package the read-only C4R28_210 analysis and 28 manual raw files as a dedicated DELTA")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")
@@ -4860,6 +5258,10 @@ def main() -> int:
     args = parser.parse_args()
     try:
         root = load_root_submit()
+        if args.carry4_functional_28:
+            if args.delta or args.d3_carry_timing or args.d3_manual_supplement or args.carry4_manual_supplement or args.metadata_v2:
+                raise RuntimeError("--carry4-functional-28 cannot be combined with other package modes")
+            return submit_c4r28_functional_delta(args, root)
         if args.carry4_manual_supplement:
             if args.delta or args.d3_carry_timing or args.d3_manual_supplement or args.metadata_v2:
                 raise RuntimeError("--carry4-manual-supplement cannot be combined with other package modes")

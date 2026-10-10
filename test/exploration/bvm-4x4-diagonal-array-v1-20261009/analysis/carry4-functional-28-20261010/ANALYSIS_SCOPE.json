@@ -1,0 +1,59 @@
+{
+  "schema": "josim-read-only-analysis-scope-v1",
+  "analysis_id": "CARRY4_FUNCTIONAL_28_20261010",
+  "parent_head": "e246b41421e4341bf43f5a6c92797dd990cc6889",
+  "series": "bvm-4x4-diagonal-array-v1-20261009",
+  "mode": "READ_ONLY_RAW_REANALYSIS_AND_EVIDENCE_PACKAGING",
+  "authorized_solver_invocations": 0,
+  "raw_mutation_authorized": false,
+  "deck_or_parameter_changes_authorized": false,
+  "follow_up_experiments_authorized": false,
+  "scientific_interpretation_authorized": false,
+  "case_ids": [
+    "A048_C4R28_210_15x14", "A049_C4R28_210_14x15", "A050_C4R28_210_14x14",
+    "A051_C4R28_210_15x13", "A052_C4R28_210_13x15", "A053_C4R28_210_15x11",
+    "A054_C4R28_210_11x15", "A055_C4R28_210_15x7", "A056_C4R28_210_7x15",
+    "A057_C4R28_210_7x7", "A058_C4R28_210_7x14", "A059_C4R28_210_14x7",
+    "A060_C4R28_210_9x13", "A061_C4R28_210_13x9", "A062_C4R28_210_5x10",
+    "A063_C4R28_210_10x5", "A064_C4R28_210_1x1", "A065_C4R28_210_1x15",
+    "A066_C4R28_210_15x1", "A067_C4R28_210_2x15", "A068_C4R28_210_15x2",
+    "A069_C4R28_210_4x15", "A070_C4R28_210_15x4", "A071_C4R28_210_8x15",
+    "A072_C4R28_210_15x8", "A073_C4R28_210_0x0", "A074_C4R28_210_0x15",
+    "A075_C4R28_210_15x0"
+  ],
+  "reference_anchor_run_ids": [
+    "A045_MANUAL_CARRY4_15x15_210",
+    "A046_MANUAL_CARRY4_11x13_210",
+    "A047_MANUAL_CARRY4_3x3_210"
+  ],
+  "input_pairs_decimal": [
+    [15, 14], [14, 15], [14, 14], [15, 13], [13, 15], [15, 11], [11, 15],
+    [15, 7], [7, 15], [7, 7], [7, 14], [14, 7], [9, 13], [13, 9],
+    [5, 10], [10, 5], [1, 1], [1, 15], [15, 1], [2, 15], [15, 2],
+    [4, 15], [15, 4], [8, 15], [15, 8], [0, 0], [0, 15], [15, 0]
+  ],
+  "input_encoding": {
+    "row_bits": "R1 is bit 0 / least-significant bit; string order R1,R2,R3,R4",
+    "column_bits": "C1 is highest-valued bit; string order C1,C2,C3,C4",
+    "source": "run_carry4_functional_28.sh and per-run USER_CASE.snapshot.env"
+  },
+  "windows_ps_half_open": {
+    "ARRAY_FINAL_READ": [110, 121],
+    "PRE_CLOCK": [121, 210],
+    "BEFORE_CLOCK": [0, 210],
+    "CLOCK_EDGE": [210, 215],
+    "POST_CLOCK": [215, 300],
+    "TOTAL": [0, 300]
+  },
+  "metric_boundary": {
+    "existing_actual_product_bit_decoding": "NOT_PERFORMED; no decode threshold preregistered",
+    "candidate_output_status": "INDETERMINATE unless a frozen decode rule is found in bound evidence",
+    "no_posthoc_threshold": true,
+    "phase_raw_unit": "rad",
+    "phase_divided_by_2pi_semantics": "navigation arithmetic only",
+    "voltage_area_semantics": "signed voltage-area / Phi0 arithmetic, not an event or bit count",
+    "missing_probe_semantics": "UNKNOWN"
+  },
+  "base_raw_references": "A001-A047 via verified A045-A047 checkpoint packages; no base raw recopied",
+  "html_policy": "LOCAL_ONLY_NOT_IN_DELTA"
+}

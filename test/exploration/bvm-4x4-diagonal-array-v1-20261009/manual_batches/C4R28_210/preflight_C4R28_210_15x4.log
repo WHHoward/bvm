@@ -1,0 +1,11 @@
+DRY RUN PASS — solver_invoked=false; physical_solve_count=0
+Case: C4R28_210_15x4 | ROW/COL=1111/0100 | SE mask=ALL
+Topology: 16 BVM→QB; 7 diagonal CB chains; D0→1 sJTL→T1_D0; D1..D6 + prior Carry→6 physical CBU→T1; C6→DFF.O
+CBU chain: selected Carry branches use Ck-1→canonical sJTL_0923→CB_0928→JOIN_Dk; DOUT_Dk joins directly; no ColdFlux MERGE instance
+Independent stages: T1=7 | CBU=6 | D0 JTL=1 | DFF=1; DOUT terminals=0; C0-C6 loads=0; Sum loads=12Ω; DFF.O load=12Ω
+Carry sJTL: position=PRE_CB | mask=111111 | stages=D1,D2,D3,D4,D5,D6 | stage_counts=1,1,4,1,1,1 (D1..D6) | total_instances=9
+Clock: GLOBAL_ONESHOT | start=210p | amp=1.2m | rise/width/fall=1p/2p/1p | series R=2Ω; independent T1+DFF branches=8
+Active FINAL_READ crosspoints: R1C2, R2C2, R3C2, R4C2
+sJTL=29 | probes=232 | estimated raw=89.6 MB/run | storage guard=PASS
+Solver: /home/howard/JoSIM/build/josim-cli (not invoked); DT=0.01p; STOP=300p; static QA=PASS
+No run directory created.

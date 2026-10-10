@@ -25,7 +25,7 @@
     "D3_PRE_CB_SJTL_2_ALL_200"
   ],
   "maximum_physical_solve_count": 41,
-  "physical_solve_count": 107,
+  "physical_solve_count": 108,
   "runs": [
     {
       "run_id": "A001_D3_N0",
@@ -4700,6 +4700,55 @@
       "physical_solve_count": 1,
       "raw_sha256": "e68954a3745a2193140769eeddbfd740775d26615112aaad9165c11a2cb113ac",
       "raw_bytes": 95618276,
+      "probe_count": 237,
+      "deck_sha256": "469247887bd0be999cc39acaad4277191e9aa426273b719615b9b5ddf0cd3a42"
+    },
+    {
+      "run_id": "A108_MANUAL_CARRY5_3x3_210",
+      "case": "MANUAL_CARRY5_3x3_210",
+      "batch_id": null,
+      "row_bits": "1100",
+      "column_bits": "0011",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "210p",
+      "cbu_chain_topology": "CB_CARRY_BUFFER_ALL",
+      "cbu_override_d1": "NONE",
+      "carry_post_cb_sjtl_count_per_stage": 0,
+      "carry_post_cb_sjtl_total": 0,
+      "carry_sjtl_position": "PRE_CB",
+      "carry_sjtl_stage_mask": "111111",
+      "carry_sjtl_configured_stage_mask": "111111",
+      "carry_sjtl_stages": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5",
+        "D6"
+      ],
+      "carry_sjtl_count": 6,
+      "carry_sjtl_count_by_stage": {
+        "D1": 1,
+        "D2": 1,
+        "D3": 5,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1
+      },
+      "carry_sjtl_total_instances": 10,
+      "active_final_crosspoints": [
+        "R1C3",
+        "R1C4",
+        "R2C3",
+        "R2C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "b67b567c37496716c6bf1c0355b87eb96a3ea06b5071185c296660e2843fdf16",
+      "raw_bytes": 95643131,
       "probe_count": 237,
       "deck_sha256": "469247887bd0be999cc39acaad4277191e9aa426273b719615b9b5ddf0cd3a42"
     }

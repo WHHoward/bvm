@@ -239,6 +239,46 @@ The two exact presets are:
 ./try.sh --dry-run --preset CHAIN_ALL_GLOBAL_CLOCK --set CBU_OVERRIDE_D1=CB_DIRECT
 ```
 
+### Per-level Carry sJTL count (D3 timing A040/A041)
+
+`CARRY_SJTL_COUNT_BY_STAGE` optionally accepts six nonnegative integers in
+`D1,D2,D3,D4,D5,D6` order. When set, `CARRY_SJTL_STAGE_MASK` must match which
+counts are nonzero; a mismatch or simultaneous legacy
+`CARRY_POST_CB_SJTL_COUNT=1` is rejected. Leave the list empty to retain the
+historical stage-mask and legacy POST-CB behavior. A single sJTL retains the
+old instance/node names; additional serial devices use `_S2`, `_S3`, … names
+and explicit zero-volt interstage current sensors.
+
+Render the two registered D3 candidates without solving:
+
+```bash
+./try.sh --dry-run --preset D3_PRE_CB_SJTL_0_ALL_200
+./try.sh --dry-run --preset D3_PRE_CB_SJTL_2_ALL_200
+./try.sh --dry-run --preset D3_PRE_CB_SJTL_0_ALL_200 \
+  --set CARRY_SJTL_COUNT_BY_STAGE=1,1,2,1,1,1 \
+  --set CARRY_SJTL_STAGE_MASK=111111
+```
+
+The A040/A041 batch preflight and execution are task-local under
+`analysis/d3-carry-timing-20261010/`; it is strictly limited to those two run
+IDs and requires the locked preflight commit before solver execution.
+
+The bounded batch executor is:
+
+```bash
+python3 scripts/d3_carry_timing_batch.py --check
+python3 scripts/d3_carry_timing_batch.py --prepare-preflight
+# Commit the preflight/source changes, then:
+python3 scripts/d3_carry_timing_batch.py --execute
+./submit.sh A040_A041_20261010 --d3-carry-timing --dry-run
+./submit.sh A040_A041_20261010 --d3-carry-timing
+```
+
+In this focus profile, the T1/DFF bias and clock settings are retained in the
+configuration, deck, source and provenance, while representative bias-current,
+clock-series-current, DFF-internal-JJ and DFF load-current traces are omitted;
+the registered boundary voltages and DFF data-link current remain recorded.
+
 The registered two-run workflow is bounded to A023/A024 and first performs
 static deck, source, probe and JoSIM `-s` checks without a transient solve:
 

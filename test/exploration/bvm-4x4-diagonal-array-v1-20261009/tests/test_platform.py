@@ -668,6 +668,63 @@ class DiagonalPlatformTests(unittest.TestCase):
             platform.load_config("CARRY_SJTL_PRE_ALL_200", ["CARRY_POST_CB_SJTL_COUNT=1",
                                                                "CARRY_SJTL_STAGE_MASK=000000"])
 
+    def test_per_stage_carry_sjtl_counts_render_d3_zero_and_two_with_interstage_probe(self):
+        case0, _stim0, _params0, rendered0 = rendered("D3_PRE_CB_SJTL_0_ALL_200")
+        deck0 = rendered0["deck"].splitlines()
+        self.assertEqual(case0["CARRY_SJTL_COUNT_BY_STAGE"], "1,1,0,1,1,1")
+        self.assertEqual(case0["CARRY_SJTL_STAGE_MASK"], "110111")
+        self.assertIn("V_CARRY_IN_D3 C_D2 CARRY_CB_IN_D3 0", deck0)
+        self.assertIn("XCB_CARRY_D3 CARRY_CB_IN_D3 CARRY_CB_OUT_D3 CB", deck0)
+        self.assertIn("V_CBU_B_D3 CARRY_CB_OUT_D3 CBU_JOIN_D3 0", deck0)
+        self.assertFalse(any(line.startswith("XSJTL_CARRY_D3") for line in deck0))
+        self.assertEqual(rendered0["static_qa"]["carry_sjtl_count_by_stage"]["D3"], 0)
+        self.assertEqual(rendered0["static_qa"]["status"], "PASS")
+
+        case2, _stim2, _params2, rendered2 = rendered("D3_PRE_CB_SJTL_2_ALL_200")
+        deck2 = rendered2["deck"].splitlines()
+        self.assertEqual(case2["CARRY_SJTL_COUNT_BY_STAGE"], "1,1,2,1,1,1")
+        self.assertEqual(case2["CARRY_SJTL_STAGE_MASK"], "111111")
+        expected = {
+            "V_CARRY_IN_D3 C_D2 CARRY_SJTL_IN_D3 0",
+            "XSJTL_CARRY_D3 CARRY_SJTL_IN_D3 CARRY_SJTL_MID_D3_S1 sJTL",
+            "V_CARRY_SJTL_LINK_D3_S1 CARRY_SJTL_MID_D3_S1 CARRY_SJTL_IN_D3_S2 0",
+            "XSJTL_CARRY_D3_S2 CARRY_SJTL_IN_D3_S2 CARRY_SJTL_OUT_D3 sJTL",
+            "V_CARRY_SJTL_OUT_D3 CARRY_SJTL_OUT_D3 CARRY_CB_IN_D3 0",
+            "XCB_CARRY_D3 CARRY_CB_IN_D3 CARRY_CB_OUT_D3 CB",
+            "V_CBU_B_D3 CARRY_CB_OUT_D3 CBU_JOIN_D3 0",
+        }
+        self.assertTrue(expected.issubset(set(deck2)))
+        self.assertEqual(sum(line.startswith("XSJTL_CARRY_D3") for line in deck2), 2)
+        self.assertEqual(sum(line.startswith("XCB_CARRY_D3") for line in deck2), 1)
+        self.assertEqual(rendered2["static_qa"]["carry_sjtl_count_by_stage"]["D3"], 2)
+        self.assertEqual(rendered2["static_qa"]["carry_sjtl_total"], 7)
+        labels = {item["label"] for item in rendered2["probes"]["signals"]}
+        for label in ("P(BJ1|XSJTL_CARRY_D3)", "V(BJ1|XSJTL_CARRY_D3)",
+                      "P(BJ1|XSJTL_CARRY_D3_S2)", "V(BJ1|XSJTL_CARRY_D3_S2)",
+                      "V(CARRY_SJTL_MID_D3_S1)", "V(CARRY_SJTL_IN_D3_S2)",
+                      "I(V_CARRY_SJTL_LINK_D3_S1)"):
+            self.assertIn(label, labels)
+        for jj in ("B_J1", "B_J2", "B_J9", "B_J10", "B_J11"):
+            self.assertIn(f"P({jj}|XT1_D3)", labels)
+            self.assertIn(f"V({jj}|XT1_D3)", labels)
+        page_map = {page["file"]: page["signals"] for page in platform.plot_signals(rendered2["probes"])}
+        self.assertIn("I(V_CARRY_SJTL_LINK_D3_S1)", page_map["02_carry.html"])
+        self.assertIn("P(BJ1|XSJTL_CARRY_D3_S2)", page_map["05_stage_D3_focus.html"])
+
+    def test_per_stage_carry_sjtl_count_rejects_ambiguous_or_mismatched_controls(self):
+        with self.assertRaisesRegex(platform.ConfigError, "CARRY_SJTL_STAGE_MASK conflicts"):
+            platform.load_config("D3_PRE_CB_SJTL_0_ALL_200",
+                                 ["CARRY_SJTL_STAGE_MASK=111111"])
+        with self.assertRaisesRegex(platform.ConfigError, "per-stage counts conflict with legacy"):
+            platform.load_config("D3_PRE_CB_SJTL_2_ALL_200",
+                                 ["CARRY_POST_CB_SJTL_COUNT=1"])
+        with self.assertRaisesRegex(platform.ConfigError, "six comma-separated"):
+            platform.load_config("D3_PRE_CB_SJTL_2_ALL_200",
+                                 ["CARRY_SJTL_COUNT_BY_STAGE=1,1,2"])
+        with self.assertRaisesRegex(platform.ConfigError, "six comma-separated"):
+            platform.load_config("D3_PRE_CB_SJTL_2_ALL_200",
+                                 ["CARRY_SJTL_COUNT_BY_STAGE=1,1,-2,1,1,1"])
+
     def test_post_cb_sjtl_count_is_fail_closed_and_clock_presets_are_exact(self):
         for preset, row_bits, col_bits, start in (
                 ("CARRY_POST_CB_SJTL_ALL_200", "1111", "1111", "200p"),

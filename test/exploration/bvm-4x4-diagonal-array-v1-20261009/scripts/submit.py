@@ -211,6 +211,29 @@ CARRY_SJTL_POSITION_RUN_IDS = (
     "A036_PRE_CB_SJTL_ALL_200", "A037_PRE_CB_SJTL_ALL_210",
     "A038_PRE_CB_SJTL_PAPER_210", "A039_PRE_CB_SJTL_3X3_210")
 CARRY_SJTL_POSITION_TASK = SERIES / "analysis" / "carry-sjtl-position-20261010"
+CARRY_D3_TIMING_TAG = "A040_A041_20261010"
+CARRY_D3_TIMING_TASK = SERIES / "analysis" / "d3-carry-timing-20261010"
+CARRY_D3_TIMING_PACKAGE_DIFF_START = "d7089ace75f1450b0f48c76762373c8d105d4549"
+CARRY_D3_TIMING_BASE_SOURCE_HEAD = "cf0dfb0f8aee68a56e454d146401885d8f0b483b"
+CARRY_D3_TIMING_BASE_PACKAGES = (
+    ("source", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_source.zip",
+     "4aae6f15b29c41e5f436adf7c74282b6b73ab655e667f0ceab7b9c1682bb6cfe"),
+    ("runs_metadata", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_runs_metadata.zip",
+     "9ab0304367c57710a0aacb5671bfbfc6765f2a22b258a973ca7b4211f686c1e0"),
+    ("A034_raw", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_A034_D2_ONLY_POST_CB_SJTL_ALL_200_raw.zip",
+     "980759212b7026feb65be2cb4dbb3740f85857b4be279186fa481a054fef154d"),
+    ("A035_raw", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_A035_D2_ONLY_POST_CB_SJTL_PAPER_200_raw.zip",
+     "fa7c7bf07a2d78e5af256a4ee9542f74009f8b8d335991699aae4c1bb0413b0f"),
+    ("A036_raw", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_A036_PRE_CB_SJTL_ALL_200_raw.zip",
+     "9c2ed658418f1615d9360512992c4f5d50482a527fe26c0d6ee6f96bdae03886"),
+    ("A037_raw", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_A037_PRE_CB_SJTL_ALL_210_raw.zip",
+     "e27d0298517074c22597105c00194b8f829b20b95a21dd0b2cb4fc82a5b7062f"),
+    ("A038_raw", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_A038_PRE_CB_SJTL_PAPER_210_raw.zip",
+     "3e6bf075c7dafce0038d701a1c9f88edbf2a696b9602ed2905b9ae797cd6b23a"),
+    ("A039_raw", f"{SERIES.name}_delta_CARRY_SJTL_POSITION_A034_A039_20261010_A039_PRE_CB_SJTL_3X3_210_raw.zip",
+     "f496d3fcd1fe79e3c6fd9fcc3fa3bcce821e1095b74a609b8d83b11723d72f2f"),
+)
+CARRY_D3_TIMING_RUN_IDS = ("A040_D3_PRE_CB_SJTL_0_ALL_200", "A041_D3_PRE_CB_SJTL_2_ALL_200")
 CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
 CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
 CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
@@ -3731,6 +3754,370 @@ def submit_carry_sjtl_position_delta(args: argparse.Namespace, root: Any) -> int
     return 0
 
 
+def _verify_d3_timing_checkpoint(root: Any) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, str]]:
+    packages = []
+    refs: list[dict[str, Any]] = []
+    member_hashes: dict[str, str] = {}
+    old_manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    recorded_raw = {item.get("run_id"): item.get("raw_sha256") for item in old_manifest.get("runs", [])}
+    metadata_delta = None
+    package_records = []
+    for label, name, expected_sha in CARRY_D3_TIMING_BASE_PACKAGES:
+        archive_path = HANDOFF / name
+        qa_path = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(archive_path, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != expected_sha or
+                qa.get("source_commit") != CARRY_D3_TIMING_BASE_SOURCE_HEAD or
+                qa.get("package_bytes") != archive_path.stat().st_size):
+            raise RuntimeError(f"A034-A039 checkpoint identity/QA mismatch: {name}")
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            if archive.testzip() is not None:
+                raise RuntimeError(f"A034-A039 base package CRC failure: {name}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if (delta.get("head_commit") != CARRY_D3_TIMING_BASE_SOURCE_HEAD or
+                    delta.get("package_group") != label and not (label.endswith("_raw") and delta.get("package_group", "").endswith("_raw"))):
+                raise RuntimeError(f"A034-A039 checkpoint package lineage mismatch: {name}")
+            included = delta.get("included_file_sha256", {})
+            records = {item.get("archive_path"): item.get("sha256") for item in delta.get("included_files", [])}
+            if included != records or any(member.lower().endswith(".html") for member in archive.namelist()):
+                raise RuntimeError(f"A034-A039 package member index/HTML policy failure: {name}")
+            for member, digest in included.items():
+                if hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"A034-A039 checkpoint member hash mismatch: {name}/{member}")
+                prior = member_hashes.setdefault(member, digest)
+                if prior != digest:
+                    raise RuntimeError(f"A034-A039 checkpoint packages disagree on member hash: {member}")
+            if label == "runs_metadata":
+                metadata_delta = delta
+            if label.endswith("_raw"):
+                raw_map = delta.get("raw_sha256_by_run", {})
+                if len(raw_map) != 1:
+                    raise RuntimeError(f"A034-A039 raw package must identify exactly one run: {name}")
+                run_id, raw_digest = next(iter(raw_map.items()))
+                if recorded_raw.get(run_id) != raw_digest:
+                    raise RuntimeError(f"A034-A039 checkpoint raw reference differs from experiment_manifest: {run_id}")
+                refs.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                             "raw_sha256": raw_digest, "source_package_name": name,
+                             "source_package_sha256": expected_sha})
+        packages.append({"package_name": name, "package_sha256": expected_sha,
+                         "package_group": label, "source_commit": CARRY_D3_TIMING_BASE_SOURCE_HEAD})
+        package_records.append((label, name, expected_sha))
+    if metadata_delta is None:
+        raise RuntimeError("A034-A039 metadata package is missing its DELTA_MANIFEST")
+    prior_refs = metadata_delta.get("referenced_existing_cases", [])
+    if len(prior_refs) != 33:
+        raise RuntimeError("A034-A039 checkpoint must reference exactly A001-A033")
+    refs.extend(prior_refs)
+    associated = metadata_delta.get("associated_raw_sha256_by_run", {})
+    for label, name, expected_sha in CARRY_D3_TIMING_BASE_PACKAGES:
+        if not label.endswith("_raw"):
+            continue
+        archive_path = HANDOFF / name
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+        run_id, raw_digest = next(iter(delta["raw_sha256_by_run"].items()))
+        if associated.get(run_id) != raw_digest:
+            raise RuntimeError(f"A034-A039 metadata/raw package reference mismatch: {run_id}")
+    refs.sort(key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
+    if len(refs) != 39 or len({item["run_id"] for item in refs}) != 39:
+        raise RuntimeError("A034-A039 checkpoint raw reference closure is not exactly A001-A039")
+    for item in refs:
+        run_id = item["run_id"]
+        local = RUNS / run_id / "raw.csv"
+        if (recorded_raw.get(run_id) != item["raw_sha256"] or not local.is_file() or
+                root.sha256(local) != item["raw_sha256"]):
+            raise RuntimeError(f"A001-A039 immutable raw reference identity mismatch: {run_id}")
+    return packages, refs, member_hashes
+
+
+def _d3_timing_file_sets(root: Any) -> tuple[list[tuple[Path, str]], dict[str, Any]]:
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("A040/A041 DELTA requires the master branch")
+    head = git("rev-parse", "HEAD")
+    if subprocess.run(["git", "merge-base", "--is-ancestor", CARRY_D3_TIMING_PACKAGE_DIFF_START, head],
+                      cwd=REPO, check=False).returncode != 0:
+        raise RuntimeError("HEAD is not descended from the A034-A039 package checkpoint worktree base")
+    if git("status", "--porcelain"):
+        raise RuntimeError("A040/A041 packaging requires a committed, clean worktree")
+    changes: dict[str, str] = {}
+    output = subprocess.run(["git", "diff", "--name-status", f"{CARRY_D3_TIMING_PACKAGE_DIFF_START}..{head}"],
+                            cwd=REPO, text=True, capture_output=True, check=True).stdout
+    for line in output.splitlines():
+        status, path = line.split("\t", 1)
+        if status.startswith("D"):
+            raise RuntimeError(f"A040/A041 DELTA refuses file deletion: {path}")
+        changes[path] = status
+    series_prefix = SERIES.relative_to(REPO).as_posix() + "/"
+    task_prefix = CARRY_D3_TIMING_TASK.relative_to(REPO).as_posix() + "/"
+    source_paths: dict[str, Path] = {}
+    metadata_paths: dict[str, Path] = {}
+    raw_paths: dict[str, Path] = {}
+    excluded_html = set()
+    for rel, status in changes.items():
+        path = Path(rel)
+        if not rel.startswith(series_prefix):
+            raise RuntimeError(f"A040/A041 DELTA found out-of-scope path: {rel}")
+        if path.suffix.lower() == ".html":
+            excluded_html.add(rel)
+            continue
+        if path.suffix.lower() in {".pyc", ".tmp"} or "__pycache__" in path.parts or "handoff" in path.parts:
+            continue
+        full = REPO / path
+        if not full.is_file() or full.is_symlink():
+            raise RuntimeError(f"A040/A041 DELTA member is missing or symlinked: {rel}")
+        if path.parts[:5] == ("test", "exploration", SERIES.name, "runs", CARRY_D3_TIMING_RUN_IDS[0]) or \
+                path.parts[:5] == ("test", "exploration", SERIES.name, "runs", CARRY_D3_TIMING_RUN_IDS[1]):
+            run_id = path.parts[4]
+            if path.name == "raw.csv":
+                raw_paths[run_id] = full
+            else:
+                metadata_paths[rel] = full
+        elif rel.startswith(task_prefix) or path.name == "experiment_manifest.json":
+            metadata_paths[rel] = full
+        else:
+            source_paths[rel] = full
+    for run_id in CARRY_D3_TIMING_RUN_IDS:
+        run_dir = RUNS / run_id
+        required = {"deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt", "USER_CASE.snapshot.env",
+                    "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env", "CBU_PARAMS.snapshot.env",
+                    "DFF_PARAMS.snapshot.env", "D0_JTL_PARAMS.snapshot.env", "stimulus.inc",
+                    "case_manifest.json", "metadata.json", "provenance.json", "source_manifest.json",
+                    "topology_manifest.json", "probe_manifest.json", "static_qa.json", "stimulus_manifest.json",
+                    "metrics.json", "raw_qa.json", "chain_qa.json", "qa.json", "plot_manifest.json",
+                    "plot_qa.json", "result.json", "RESULT_BRIEF.md"}
+        files = [path for path in run_dir.rglob("*") if path.is_file() and path.suffix.lower() != ".html"
+                 and path.suffix.lower() != ".pyc" and "__pycache__" not in path.parts]
+        if not run_dir.is_dir() or required - {path.name for path in files}:
+            raise RuntimeError(f"A040/A041 required evidence closure incomplete: {run_id}")
+        result, qa, chain_qa, plot_qa, metadata = (
+            json.loads((run_dir / name).read_text(encoding="utf-8")) for name in
+            ("result.json", "qa.json", "chain_qa.json", "plot_qa.json", "metadata.json"))
+        raw = run_dir / "raw.csv"
+        digest = root.sha256(raw)
+        if (result.get("artifact_status") != "VALID" or result.get("physical_solve_count") != 1 or
+                result.get("raw_sha256") != digest or metadata.get("raw_sha256") != digest or
+                qa.get("status") != "PASS" or qa.get("raw_sha256_before_analysis") != digest or
+                qa.get("raw_sha256_after_analysis") != digest or chain_qa.get("status") != "PASS" or
+                chain_qa.get("raw_sha256_after_analysis") != digest or plot_qa.get("status") != "PASS" or
+                raw.stat().st_size >= root.MAX_GIT_FILE_BYTES):
+            raise RuntimeError(f"A040/A041 raw or QA identity failure: {run_id}")
+        if any((SERIES / page["path"]).is_file() is False or
+               root.sha256(SERIES / page["path"]) != page.get("sha256")
+               for page in plot_qa.get("pages", [])):
+            raise RuntimeError(f"A040/A041 standalone HTML QA/source identity mismatch: {run_id}")
+        if run_id not in raw_paths:
+            raw_paths[run_id] = raw
+        for path in files:
+            rel = path.relative_to(REPO).as_posix()
+            if path.name == "raw.csv":
+                continue
+            metadata_paths[rel] = path
+    for path in SERIES.rglob("*.html"):
+        if path.is_file():
+            excluded_html.add(path.relative_to(REPO).as_posix())
+    # Every changed in-scope tracked file must be in exactly one archive group or be explicitly excluded.
+    assigned = set(source_paths) | set(metadata_paths) | {path.relative_to(REPO).as_posix() for path in raw_paths.values()}
+    for rel in changes:
+        if rel in excluded_html or rel.lower().endswith((".pyc", ".tmp")) or "__pycache__" in Path(rel).parts or "handoff" in Path(rel).parts:
+            continue
+        if rel not in assigned:
+            raise RuntimeError(f"changed evidence omitted from DELTA groups: {rel}")
+    manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    if int(manifest.get("physical_solve_count", -1)) != 41:
+        raise RuntimeError(f"experiment manifest should contain 41 physical solves, found {manifest.get('physical_solve_count')}")
+    auth = [item for item in manifest.get("authorization_batches", [])
+            if item.get("batch_id") == "BVM4X4_D3_CARRY_TIMING_20261010"]
+    batch_path = CARRY_D3_TIMING_TASK / "BATCH_MANIFEST.json"
+    summary_path = CARRY_D3_TIMING_TASK / "D3_CARRY_TIMING_SUMMARY.json"
+    if (len(auth) != 1 or auth[0].get("authorized_physical_solve_count") != 2 or
+            auth[0].get("physical_solve_count_completed") != 2 or
+            auth[0].get("run_ids") != list(CARRY_D3_TIMING_RUN_IDS) or
+            not batch_path.is_file() or not summary_path.is_file() or
+            json.loads(batch_path.read_text(encoding="utf-8")).get("status") != "BATCH_COMPLETE_AWAITING_USER_CHATGPT_REVIEW" or
+            json.loads(summary_path.read_text(encoding="utf-8")).get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW"):
+        raise RuntimeError("A040/A041 batch/analysis is not mechanically closed")
+    all_sources = [(source_paths[key], key) for key in sorted(source_paths)] + \
+                  [(metadata_paths[key], key) for key in sorted(metadata_paths)]
+    all_sources.extend((raw_paths[run_id], raw_paths[run_id].relative_to(REPO).as_posix())
+                       for run_id in CARRY_D3_TIMING_RUN_IDS)
+    return all_sources, {"changes": changes, "source_paths": source_paths, "metadata_paths": metadata_paths,
+                         "raw_paths": raw_paths, "excluded_html": sorted(excluded_html),
+                         "run_ids": list(CARRY_D3_TIMING_RUN_IDS), "generated_from_head": head}
+
+
+def _d3_timing_blob_sha(commit: str, path: str) -> str | None:
+    exists = subprocess.run(["git", "cat-file", "-e", f"{commit}:{path}"], cwd=REPO,
+                            check=False, capture_output=True)
+    if exists.returncode:
+        return None
+    data = subprocess.run(["git", "show", f"{commit}:{path}"], cwd=REPO,
+                          check=True, capture_output=True).stdout
+    return hashlib.sha256(data).hexdigest()
+
+
+def d3_carry_timing_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if tag != CARRY_D3_TIMING_TAG:
+        raise RuntimeError(f"A040/A041 DELTA tag must be {CARRY_D3_TIMING_TAG}")
+    base_packages, refs, _base_member_hashes = _verify_d3_timing_checkpoint(root)
+    all_sources, context = _d3_timing_file_sets(root)
+    source_group = [(path, member) for path, member in all_sources
+                    if member in context["source_paths"]]
+    metadata_group = [(path, member) for path, member in all_sources
+                      if member in context["metadata_paths"]]
+    raw_groups = {run_id: [(path, member) for path, member in all_sources
+                           if Path(member).name == "raw.csv" and run_id in Path(member).parts]
+                  for run_id in CARRY_D3_TIMING_RUN_IDS}
+    if not source_group or not metadata_group or any(len(items) != 1 for items in raw_groups.values()):
+        raise RuntimeError("A040/A041 DELTA requires source, metadata, and one immutable raw group per case")
+    group_specs = [("source", source_group, None, 0),
+                   ("runs_metadata", metadata_group, None, 2),
+                   *((f"{run_id}_raw", raw_groups[run_id], run_id, 0) for run_id in CARRY_D3_TIMING_RUN_IDS)]
+    specs, plans = [], []
+    for group_name, sources, run_id, solve_count in group_specs:
+        records = root.file_records(sources)
+        included = {item["archive_path"]: item["sha256"] for item in records}
+        new_files, modified_files = [], []
+        for member, digest in included.items():
+            base_digest = _d3_timing_blob_sha(CARRY_D3_TIMING_BASE_SOURCE_HEAD, member)
+            if base_digest is None:
+                new_files.append(member)
+            elif base_digest != digest:
+                modified_files.append(member)
+        package_name = f"{SERIES.name}_delta_D3_CARRY_TIMING_{tag}_{group_name}.zip"
+        target = HANDOFF / package_name
+        qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        if target.exists() or qa_path.exists():
+            raise FileExistsError(f"refusing immutable A040/A041 package overwrite: {package_name}")
+        run_raw = {}
+        if run_id:
+            run_raw[run_id] = json.loads((RUNS / run_id / "result.json").read_text(encoding="utf-8"))["raw_sha256"]
+        delta = {"schema": "bvm4x4-d3-carry-timing-delta-v1",
+                 "package_type": "directory_snapshot_delta", "package_group": group_name,
+                 "base_commit": CARRY_D3_TIMING_BASE_SOURCE_HEAD,
+                 "base_worktree_checkpoint_commit": CARRY_D3_TIMING_PACKAGE_DIFF_START,
+                 "head_commit": "PENDING_SOURCE_COMMIT",
+                 "base_package_name": CARRY_D3_TIMING_BASE_PACKAGES[0][1],
+                 "base_package_sha256": CARRY_D3_TIMING_BASE_PACKAGES[0][2],
+                 "base_package_source_commit": CARRY_D3_TIMING_BASE_SOURCE_HEAD,
+                 "base_delta_packages": base_packages,
+                 "referenced_existing_cases": refs,
+                 "referenced_existing_raw_sha256": refs,
+                 "included_files": records, "included_file_sha256": included,
+                 "new_files": sorted(new_files), "modified_files": sorted(modified_files),
+                 "deleted_files": [], "new_physical_solve_count": solve_count,
+                 "reused_point_count": 0, "raw_sha256_by_run": run_raw,
+                 "associated_raw_sha256_by_run": ({item["run_id"]: item["raw_sha256"] for item in refs}
+                                                   if group_name == "runs_metadata" else {}),
+                 "excluded_html": context["excluded_html"],
+                 "generated_from_head": context["generated_from_head"],
+                 "scientific_interpretation_performed": False,
+                 "automatic_follow_up": False}
+        extra = {"DELTA_MANIFEST.json": (json.dumps(delta, ensure_ascii=False, indent=2) + "\n").encode(),
+                 "README.txt": (f"Incremental BVM 4x4 D3 Carry timing evidence; group={group_name}.\n"
+                                "Base checkpoint is A034-A039; A001-A039 raw is referenced by exact SHA and not recopied.\n"
+                                "Only A040 and A041 are new physical solves. HTML is excluded.\n"
+                                "Mechanical arithmetic only; no event/SFQ classification or scientific interpretation.\n").encode()}
+        source_bytes = sum(item["bytes"] for item in records)
+        if source_bytes + sum(map(len, extra.values())) >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"{group_name} package exceeds Git file-size guard")
+        spec = {"name": package_name, "kind": "bvm_4x4_d3_carry_timing_delta_v1", "scope": SERIES,
+                "target": target, "qa_path": qa_path, "sources": sources,
+                "extra_members": extra, "delta_manifest": delta,
+                "base_name": CARRY_D3_TIMING_BASE_PACKAGES[0][1],
+                "base_sha": CARRY_D3_TIMING_BASE_PACKAGES[0][2], "raw_by_run": run_raw,
+                "package_group": group_name, "run_id": run_id}
+        specs.append(spec)
+        plans.append({"package": package_name, "file_count": len(records) + len(extra),
+                      "uncompressed_source_bytes": source_bytes,
+                      "raw_bytes": sum(item["bytes"] for item in records if Path(item["archive_path"]).name == "raw.csv"),
+                      "raw_sha256_by_run": run_raw, "new_physical_solve_count": solve_count,
+                      "new_files": sorted(new_files), "modified_files": sorted(modified_files),
+                      "qa_path": qa_path.relative_to(REPO).as_posix()})
+    plan = {"base_commit": CARRY_D3_TIMING_BASE_SOURCE_HEAD,
+            "working_tree_diff_start": CARRY_D3_TIMING_PACKAGE_DIFF_START,
+            "generated_from_head": context["generated_from_head"],
+            "base_packages": base_packages, "referenced_existing_raw_count": len(refs),
+            "referenced_existing_raw_sha256": refs, "new_physical_solve_count": 2,
+            "reused_point_count": 0, "html_included": False,
+            "excluded_html_count": len(context["excluded_html"]),
+            "package_count": len(specs), "packages": plans}
+    return specs, {"plan": plan, "context": context, "referenced_existing_cases": refs}
+
+
+def submit_d3_carry_timing_delta(args: argparse.Namespace, root: Any) -> int:
+    specs, context = d3_carry_timing_delta_specs(args.tag, root)
+    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
+    if not mirror_dir.is_dir():
+        raise RuntimeError(f"BVM package mirror is not accessible: {mirror_dir}")
+    collisions = [str(path) for spec in specs for path in (spec["target"], spec["qa_path"])
+                  if path.exists()]
+    collisions.extend(str(mirror_dir / spec["name"]) for spec in specs if (mirror_dir / spec["name"]).exists())
+    if collisions:
+        raise FileExistsError("refusing immutable package overwrite: " + ", ".join(collisions))
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", "package_mode": "D3_CARRY_TIMING_DELTA",
+                          **context["plan"], "mirror_dir": str(mirror_dir), "no_files_modified": True},
+                         ensure_ascii=False, indent=2))
+        return 0
+    source_head = git("rev-parse", "HEAD")
+    package_results = []
+    for spec in specs:
+        spec["delta_manifest"]["head_commit"] = source_head
+        spec["delta_manifest"]["generated_from_head"] = source_head
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(spec["delta_manifest"], ensure_ascii=False, indent=2) + "\n").encode()
+        result = root.archive_bundle(spec, source_head)
+        archive_path = REPO / result["path"]
+        qa_path = REPO / result["qa_path"]
+        qa = json.loads(qa_path.read_text(encoding="utf-8"))
+        qa.update({"package_mode": "D3_CARRY_TIMING_DELTA", "base_commit": CARRY_D3_TIMING_BASE_SOURCE_HEAD,
+                   "head_commit": source_head, "base_package_name": CARRY_D3_TIMING_BASE_PACKAGES[0][1],
+                   "base_package_sha256": CARRY_D3_TIMING_BASE_PACKAGES[0][2],
+                   "base_delta_packages": CARRY_D3_TIMING_BASE_PACKAGES,
+                   "referenced_existing_cases": context["referenced_existing_cases"],
+                   "referenced_existing_raw_sha256": context["referenced_existing_cases"],
+                   "new_physical_solve_count": spec["delta_manifest"]["new_physical_solve_count"],
+                   "reused_point_count": 0, "html_included": False,
+                   "package_group": spec["package_group"], "raw_sha256_by_run": spec["raw_by_run"]})
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != root.sha256(archive_path) or
+                qa.get("package_bytes") != archive_path.stat().st_size or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"A040/A041 PACKAGE_QA/member integrity failed: {spec['name']}")
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            if archive.testzip() is not None:
+                raise RuntimeError(f"A040/A041 ZIP CRC failure: {spec['name']}")
+            names = archive.namelist()
+            if any(name.lower().endswith(".html") for name in names):
+                raise RuntimeError(f"HTML must remain local, found in ZIP: {spec['name']}")
+            manifest = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if manifest.get("head_commit") != source_head:
+                raise RuntimeError(f"A040/A041 package head mismatch: {spec['name']}")
+            for member, digest in manifest["included_file_sha256"].items():
+                if hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"A040/A041 archive member hash mismatch: {spec['name']}/{member}")
+        qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        result.update({"sha256": qa["package_sha256"], "bytes": qa["package_bytes"], "status": qa["status"]})
+        package_results.append(result)
+    package_paths = [path for item in package_results for path in (item["path"], item["qa_path"])]
+    subprocess.run(["git", "add", "-f", "--", *package_paths], cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", f"package: archive D3 Carry timing A040-A041 DELTA {args.tag}"],
+                   cwd=REPO, check=True)
+    push_status = "SKIPPED"
+    if not args.no_push:
+        subprocess.run(["git", "push"], cwd=REPO, check=True)
+        push_status = "PASS"
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    print(json.dumps({"status": "D3_CARRY_TIMING_DELTA_SUBMIT_COMPLETE",
+                      "source_commit": source_head, "final_commit": git("rev-parse", "HEAD"),
+                      "push": push_status, "packages": package_results,
+                      "base_commit": CARRY_D3_TIMING_BASE_SOURCE_HEAD,
+                      "base_package_name": CARRY_D3_TIMING_BASE_PACKAGES[0][1],
+                      "referenced_existing_raw_count": len(context["referenced_existing_cases"]),
+                      "new_physical_solve_count": 2, "html_included": False, "mirror": mirror},
+                     ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -3738,6 +4125,8 @@ def main() -> int:
     parser.add_argument("--no-push", action="store_true")
     parser.add_argument("--delta", action="store_true",
                         help="append the completed batch to its verified checkpoint using the local DELTA workflow")
+    parser.add_argument("--d3-carry-timing", action="store_true",
+                        help="package/push only the completed A040/A041 D3 carry-timing delta")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")
@@ -3745,6 +4134,10 @@ def main() -> int:
     args = parser.parse_args()
     try:
         root = load_root_submit()
+        if args.d3_carry_timing:
+            if args.delta or args.metadata_v2:
+                raise RuntimeError("--d3-carry-timing cannot be combined with --delta or --metadata-v2")
+            return submit_d3_carry_timing_delta(args, root)
         if args.delta:
             if args.metadata_v2:
                 raise RuntimeError("--delta and --metadata-v2 are mutually exclusive")

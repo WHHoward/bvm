@@ -41,6 +41,7 @@ FILES = {
     "metric_spec": TASK / "METRIC_SPEC.json",
     "probes": TASK / "PROBE_MANIFEST.json",
     "batch": TASK / "BATCH_MANIFEST.json",
+    "review": TASK / "REVIEW.md",
 }
 
 
@@ -370,6 +371,20 @@ scientific_review_authorization: NOT_GRANTED
                             f"- Shared Plotly asset SHA-256: `{plotly_sha}`.",
                             "- Historical render-only regression covers A027-A039; solver static syntax checks are run only for the two new rendered decks.", ""])
     preflight_text = "\n".join(preflight_lines) + "\n"
+    review_text = """# Adversarial implementation review — A040/A041 preflight
+
+Scope: platform topology/config/probe/preflight/package implementation only. No raw physical interpretation.
+
+| Hidden-error hypothesis | Probe | Result |
+|---|---|---|
+| PRE-CB count 0/2 could route around the Carry CB, bypass JOIN, or put the second sJTL on the wrong side of the CB. | Explicit D3 deck line-set check in `d3_carry_timing_batch.py`; unit test asserts the exact two-device/interstage topology; JoSIM `-s` syntax check. | PASS: 0 preserves one CB and direct carry input; 2 is sJTL→sensor→sJTL→CB→JOIN. |
+| New list/mask/legacy controls could silently override one another or accept a mismatched stage. | `test_per_stage_carry_sjtl_count_rejects_ambiguous_or_mismatched_controls`; explicit A040/A041 effective count/mask assertions. | PASS: mismatches and legacy/new conflicts are rejected. |
+| Two serial devices could render but the second JJ or interstage current/node might be absent from raw. | Probe-manifest assertions for both BJ1 P/V pairs, midpoint nodes and link current; deck/probe target validation. | PASS: all registered targets exist in the rendered circuit and exact `.print` set. |
+| Adding the optional count key or changing focus selection could perturb historical A027–A039 renderings. | Render-only exact deck, stimulus and ordered probe-label comparison against all 13 immutable run snapshots. | PASS; no historical solve or artifact write. |
+| A stale ID, raw, or package checkpoint could cause overwrite or re-copy historical evidence. | Preflight checks A040/A041 paths and manifest IDs; records SHA-256 for A027–A039; DELTA dry-run verifies A001–A039 reference closure and excludes HTML. | IDs free and historical hashes captured. Package QA remains PENDING until the two new raw artifacts exist. |
+
+Residual uncertainty: physical behavior, adaptive stored-grid size for A040/A041, and whether any waveform descriptor corresponds to a switching/event interpretation remain UNKNOWN until raw review. No scientific interpretation, event/SFQ classification, or follow-up is authorized.
+"""
     static_qa = {"schema": "bvm4x4-d3-carry-timing-static-qa-v1", "status": "PASS",
                  "parent_head": git("rev-parse", "HEAD"), "registered_start_head": START_HEAD,
                  "solver": solver, "canonical_sources": platform.verify_sources(),
@@ -377,6 +392,7 @@ scientific_review_authorization: NOT_GRANTED
                  "new_runs": run_records, "raw_projection": projections,
                  "config_and_tool_sha256": locked, "plotter_sha256": sha(platform.PLOTTER),
                  "plotly_asset_sha256": plotly_sha, "physical_solve_count": 0,
+                 "adversarial_review_sha256": hashlib.sha256(review_text.encode()).hexdigest(),
                  "scientific_interpretation_performed": False}
     metric_spec = {"schema": "bvm4x4-d3-carry-timing-metric-spec-v1", "windows": windows,
                    "required_arithmetic": ["P/V same-JJ phase-area arithmetic on identical raw rows",
@@ -407,6 +423,7 @@ scientific_review_authorization: NOT_GRANTED
     work_unit["static_qa_sha256"] = hashlib.sha256((json.dumps(static_qa, ensure_ascii=False, indent=2)+"\n").encode()).hexdigest()
     work_unit["metric_spec_sha256"] = hashlib.sha256((json.dumps(metric_spec, ensure_ascii=False, indent=2)+"\n").encode()).hexdigest()
     work_unit["probe_manifest_sha256"] = hashlib.sha256((json.dumps(probes, ensure_ascii=False, indent=2)+"\n").encode()).hexdigest()
+    work_unit["review_sha256"] = hashlib.sha256(review_text.encode()).hexdigest()
     batch = {"schema": "bvm4x4-d3-carry-timing-batch-manifest-v1",
              "batch_id": platform.CARRY_D3_TIMING_BATCH_ID, "status": "PREFLIGHT_PASS_READY",
              "preflight_parent_head": git("rev-parse", "HEAD"),
@@ -415,7 +432,8 @@ scientific_review_authorization: NOT_GRANTED
              "runs": [], "static_qa_status": "PASS",
              "scientific_interpretation_performed": False, "automatic_follow_up": False}
     output = {"experiment": experiment, "preflight": preflight_text, "static": static_qa,
-              "work_unit": work_unit, "metric_spec": metric_spec, "probes": probes, "batch": batch}
+              "work_unit": work_unit, "metric_spec": metric_spec, "probes": probes, "batch": batch,
+              "review": review_text}
     if write:
         for key, path in FILES.items():
             _write_new(path, output[key])
@@ -456,7 +474,8 @@ def execute() -> int:
             work.get("preflight_sha256") != sha(FILES["preflight"]) or
             work.get("static_qa_sha256") != sha(FILES["static"]) or
             work.get("metric_spec_sha256") != sha(FILES["metric_spec"]) or
-            work.get("probe_manifest_sha256") != sha(FILES["probes"])):
+            work.get("probe_manifest_sha256") != sha(FILES["probes"]) or
+            work.get("review_sha256") != sha(FILES["review"])):
         raise RuntimeError("locked preflight hashes or exact two-run authorization do not match")
     if git("rev-parse", "HEAD^") != work["preflight_parent_head"]:
         raise RuntimeError("execution HEAD is not the single preflight commit over the locked source HEAD")

@@ -318,7 +318,9 @@ def prepare_preflight(*, write: bool) -> dict[str, Any]:
         raise RuntimeError("D3 timing authorization batch is duplicated")
     if matching_auth and (matching_auth[0].get("run_ids") != [item[0] for item in RUN_MATRIX] or
                           matching_auth[0].get("authorized_physical_solve_count") != 2 or
-                          matching_auth[0].get("physical_solve_count_completed") != 0):
+                          matching_auth[0].get("physical_solve_count_completed") != 0 or
+                          matching_auth[0].get("preflight_sha256") != previous_attempt["preflight_sha256"] or
+                          matching_auth[0].get("static_qa_sha256") != previous_attempt["static_qa_sha256"]):
         raise RuntimeError("prior D3 timing authorization is inconsistent or already consumed")
     if set(platform.verify_sources()) != set(platform.SOURCE_SHA256):
         raise RuntimeError("canonical source closure is incomplete")
@@ -403,7 +405,7 @@ scientific_review_authorization: NOT_GRANTED
     preflight_lines.extend([f"- Solver: `{solver['path']}`; SHA-256 `{solver['sha256']}`; version recorded in STATIC_QA.",
                             f"- Shared Plotly asset SHA-256: `{plotly_sha}`.",
                             "- Historical render-only regression covers A027-A039; solver static syntax checks are run only for the two new rendered decks.", ""])
-    preflight_text = "\n".join(preflight_lines) + "\n"
+    preflight_text = "\n".join(preflight_lines).rstrip() + "\n"
     review_text = """# Adversarial implementation review — A040/A041 preflight
 
 Scope: platform topology/config/probe/preflight/package implementation only. No raw physical interpretation.

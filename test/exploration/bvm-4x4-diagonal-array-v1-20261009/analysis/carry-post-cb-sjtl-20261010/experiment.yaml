@@ -1,0 +1,55 @@
+experiment_id: bvm-4x4-carry-post-cb-sjtl-global-clock-20261010
+experiment_risk_level: NORMAL
+question: >-
+  With one canonical sJTL_0923 after each D1-D6 canonical CB_0928, compare
+  A030/A031 against A027 and A032/A033 against their registered baselines,
+  using only the specified 200 ps and 210 ps global one-shot clock starts.
+source_class: canonical
+authority_boundary:
+  evidence: [actual_deck, source_hashes, raw, mechanical_qa, actual_grid_arithmetic, classic_plots]
+  not_proven: [sfq_event_count, bit_decode, multiplier_success, mechanism, optimal_clock, 20GHz_operation]
+run_set:
+  - {run_id: A030_CARRY_POST_CB_SJTL_ALL_200, preset: CARRY_POST_CB_SJTL_ALL_200, row_bits: "1111", col_bits: "1111", clock_start: 200p}
+  - {run_id: A031_CARRY_POST_CB_SJTL_ALL_210, preset: CARRY_POST_CB_SJTL_ALL_210, row_bits: "1111", col_bits: "1111", clock_start: 210p}
+  - {run_id: A032_CARRY_POST_CB_SJTL_PAPER_210, preset: CARRY_POST_CB_SJTL_PAPER_210, row_bits: "1101", col_bits: "1101", clock_start: 210p}
+  - {run_id: A033_CARRY_POST_CB_SJTL_3X3_210, preset: CARRY_POST_CB_SJTL_3X3_210, row_bits: "1100", col_bits: "0011", clock_start: 210p}
+changed: [CARRY_POST_CB_SJTL_COUNT=1, T1_CHAIN_CLK_START as listed per case]
+frozen:
+  - canonical BVM/QB/CB/sJTL/T1/DFF sources and parameters
+  - array topology, array sJTL counts, bus stimulus, T1 bias/loads, D0 entrance JTL
+  - global synchronous one-shot clock pulse shape, DT=0.01p, STOP=300p
+  - D1-D6 topology except one canonical post-CB sJTL per stage
+windows_ps:
+  ARRAY_FINAL_READ: [110, 121]
+  PRE_CLOCK: [121, configured_clock_start)
+  BEFORE_CLOCK: [0, configured_clock_start)
+  CLOCK_EDGE: [configured_clock_start, configured_clock_start+5)
+  POST_CLOCK: [configured_clock_start+5, 300)
+  TOTAL: [0, 300)
+probes:
+  source_boundary: [array final-CB BJ1/BJ2 P/V, I(V_CBU_A_Dk)]
+  carry_chain: [previous T1.C and B_J11 P/V, Carry-CB BJ1/BJ2 P/V, carry-sJTL BJ1 P/V, before/after nodes and branch currents]
+  join_and_t1: [JOIN input branch currents, T1 input B_J1 P/V, S/C, all T1 clocks]
+  dff: [DFF data, clock, output]
+expected_qa: [exact six-CB/sJTL/JOIN wiring, exact eight independent clock branches, immutable raw SHA, actual-grid QA, same-JJ phase/area checks, four classic subsystem pages per run]
+interpretation_ceiling: >-
+  Mechanical evidence only. Voltage areas, phase/2pi navigation, and descriptive extrema
+  do not classify SFQ events or decode output bits.
+prohibited_followups: [extra sJTL count, second JTL, later clock than 210p, parameter sweep, periodic clock, physical interpretation]
+scientific_review_authorization: NOT_GRANTED
+package:
+  mode: DELTA
+  raw_strategy: one immutable raw ZIP per new run; A001-A029 referenced by verified package/raw identity
+  html_included: false
+  commit_by_default: true
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase: 2pi
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

@@ -553,6 +553,82 @@ class DiagonalPlatformTests(unittest.TestCase):
         with self.assertRaisesRegex(platform.ConfigError, "CBU_OVERRIDE_D1=NONE"):
             platform.load_config("FULL_CB_CHAIN_ALL_CLOCK", ["CBU_OVERRIDE_D1=CB_DIRECT"])
 
+    def test_post_cb_sjtl_mode_adds_exactly_one_canonical_sjtl_on_each_carry_only(self):
+        legacy_case, _, _, legacy = rendered("FULL_CB_CHAIN_ALL_CLOCK")
+        legacy_deck = (platform.RUNS / "A027_FULL_CB_CHAIN_ALL_CLOCK" / "deck.cir").read_text()
+        self.assertEqual(legacy["deck"], legacy_deck)
+        self.assertEqual(legacy_case["CARRY_POST_CB_SJTL_COUNT"], "0")
+        self.assertFalse(any(line.startswith("XSJTL_CARRY_D") for line in legacy["deck"].splitlines()))
+
+        case, stimulus, params, output = rendered("CARRY_POST_CB_SJTL_ALL_200")
+        deck = output["deck"].splitlines()
+        self.assertEqual(case["CARRY_POST_CB_SJTL_COUNT"], "1")
+        self.assertEqual(output["static_qa"]["carry_post_cb_sjtl_count"], 6)
+        self.assertEqual(output["static_qa"]["array_sjtl_count"], 20)
+        self.assertEqual(output["static_qa"]["sjtl_count"], 26)
+        for index in range(1, 7):
+            self.assertIn(f"V_CARRY_SJTL_IN_D{index} CARRY_CB_OUT_D{index} CARRY_SJTL_IN_D{index} 0", deck)
+            self.assertIn(f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL", deck)
+            self.assertIn(f"V_CBU_B_D{index} CARRY_SJTL_OUT_D{index} CBU_JOIN_D{index} 0", deck)
+            self.assertEqual(sum(line.startswith(f"XSJTL_CARRY_D{index} ") for line in deck), 1)
+        self.assertEqual(sum(line.startswith("XSJTL_CARRY_D") for line in deck), 6)
+        self.assertEqual(sum(line.startswith("XCB_CARRY_D") for line in deck), 6)
+        self.assertEqual(sum(line.startswith("XCB_D") for line in deck), 16)
+        self.assertEqual(sum(line.startswith("XBVM_") for line in deck), 16)
+        self.assertEqual(sum(line.startswith("XBQ_") for line in deck), 16)
+        self.assertEqual(sum(line.startswith("XT1_D") for line in deck), 7)
+        self.assertEqual(sum(line.startswith("XDFF ") for line in deck), 1)
+        self.assertFalse(any(line.startswith("XCBU_D") for line in deck))
+        self.assertFalse(any(line.startswith(("R_TERM_D", "R_C_D", "XJTL_CBU", "XSJTL_CBU")) for line in deck))
+        self.assertEqual(output["static_qa"]["status"], "PASS")
+        self.assertLess(output["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
+        self.assertEqual(case["T1_CHAIN_CLK_START"], "200p")
+        self.assertEqual(stimulus, platform.parse_env(platform.STIMULUS))
+        self.assertEqual(params, platform.load_config("FULL_CB_CHAIN_ALL_CLOCK")[2])
+
+        labels = {item["label"] for item in output["probes"]["signals"]}
+        for diagonal, cells in platform.DIAGONALS.items():
+            cb = f"XCB_{diagonal}_L{len(cells)}"
+            for jj in ("BJ1", "BJ2"):
+                self.assertIn(f"P({jj}|{cb})", labels)
+                self.assertIn(f"V({jj}|{cb})", labels)
+        for index in range(1, 7):
+            for label in (f"I(V_CBU_A_D{index})", f"I(V_CARRY_SJTL_IN_D{index})",
+                          f"I(V_CBU_B_D{index})", f"V(CARRY_SJTL_OUT_D{index})",
+                          f"P(BJ1|XSJTL_CARRY_D{index})", f"V(BJ1|XSJTL_CARRY_D{index})",
+                          f"P(B_J1|XT1_D{index})", f"V(B_J1|XT1_D{index})",
+                          f"V(CLK_D{index})"):
+                self.assertIn(label, labels)
+        pages = platform.plot_signals(output["probes"])
+        self.assertEqual([page["file"] for page in pages], [
+            "01_array.html", "02_carry.html", "03_join.html", "04_t1.html"])
+        self.assertNotIn("V(DOUT_D2)", pages[0]["signals"])
+        self.assertIn("I(V_CBU_A_D2)", pages[0]["signals"])
+
+    def test_post_cb_sjtl_count_is_fail_closed_and_clock_presets_are_exact(self):
+        for preset, row_bits, col_bits, start in (
+                ("CARRY_POST_CB_SJTL_ALL_200", "1111", "1111", "200p"),
+                ("CARRY_POST_CB_SJTL_ALL_210", "1111", "1111", "210p"),
+                ("CARRY_POST_CB_SJTL_PAPER_210", "1101", "1101", "210p"),
+                ("CARRY_POST_CB_SJTL_3X3_210", "1100", "0011", "210p")):
+            case, stimulus, params, output = rendered(preset)
+            self.assertEqual((case["ROW_BITS"], case["COL_BITS"]), (row_bits, col_bits))
+            self.assertEqual(case["CARRY_POST_CB_SJTL_COUNT"], "1")
+            self.assertEqual(case["CBU_CHAIN_TOPOLOGY"], "CB_CARRY_BUFFER_ALL")
+            self.assertEqual(case["T1_CHAIN_CLK_START"], start)
+            self.assertEqual((case["DT"], case["STOP"]), ("0.01p", "300p"))
+            self.assertEqual(output["static_qa"]["status"], "PASS")
+            self.assertEqual(len([line for line in output["deck"].splitlines()
+                                  if line.startswith("V_TRIG_CLK_")]), 8)
+            self.assertEqual(len([line for line in output["deck"].splitlines()
+                                  if line.startswith("R_TRIG_CLK_")]), 8)
+            self.assertEqual(stimulus, platform.parse_env(platform.STIMULUS))
+            self.assertEqual(params, platform.load_config("FULL_CB_CHAIN_ALL_CLOCK")[2])
+        with self.assertRaisesRegex(platform.ConfigError, "must be 0 or 1"):
+            platform.load_config("CARRY_POST_CB_SJTL_ALL_200", ["CARRY_POST_CB_SJTL_COUNT=2"])
+        with self.assertRaisesRegex(platform.ConfigError, "requires CBU_CHAIN_TOPOLOGY"):
+            platform.load_config("CHAIN_ALL_GLOBAL_CLOCK", ["CARRY_POST_CB_SJTL_COUNT=1"])
+
     def test_cbu_override_d1_is_selectable_by_set_and_rejects_unknown_values(self):
         case, _stimulus, _params, output = rendered_with_set(
             "CHAIN_ALL_GLOBAL_CLOCK", "CBU_OVERRIDE_D1=CB_DIRECT")

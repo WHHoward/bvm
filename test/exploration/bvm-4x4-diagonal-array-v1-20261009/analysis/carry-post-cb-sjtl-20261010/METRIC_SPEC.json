@@ -1,0 +1,36 @@
+{
+  "schema": "bvm4x4-carry-post-cb-sjtl-metric-spec-v1",
+  "batch_id": "BVM4X4_CARRY_POST_CB_SJTL_20261010",
+  "physical_solve_count": 4,
+  "time_source": "actual raw time column in seconds; no interpolation, resampling, smoothing, or time shift",
+  "phase": "P(...) raw radians; independently unwrap each JJ; phase delta/(2*pi) is navigation arithmetic only",
+  "integration": "trapezoid over actual stored timestamps and exact half-open window rows; same JJ and same rows for phase/voltage cross-check",
+  "windows_ps_formula": {
+    "ARRAY_FINAL_READ": [110, 121],
+    "PRE_CLOCK": [121, "clock_start"],
+    "BEFORE_CLOCK": [0, "clock_start"],
+    "CLOCK_EDGE": ["clock_start", "clock_start+5"],
+    "POST_CLOCK": ["clock_start+5", 300],
+    "TOTAL": [0, 300]
+  },
+  "raw_voltage_fields": [
+    "min_v", "max_v", "peak_to_peak_v", "time_of_min_s", "time_of_max_s", "signed_area_v_s", "signed_area_phi0_arithmetic"
+  ],
+  "raw_current_fields": [
+    "min_a", "max_a", "peak_to_peak_a", "time_of_min_s", "time_of_max_s", "charge_c"
+  ],
+  "same_jj_fields": [
+    "phase_delta_rad", "phase_delta_rad_over_2pi_navigation", "voltage_area_v_s_same_jj_same_rows", "voltage_area_phi0_arithmetic", "phase_minus_area_turn_arithmetic"
+  ],
+  "dout_semantics": "DOUT_Dk and CBU_JOIN_Dk are joined through zero-volt current sensors; shared node voltage/area is not attributed to the array alone and is not an event count",
+  "descriptive_lobe_candidate_spec": {
+    "method": "existing registered local_voltage_extrema_relative_threshold",
+    "relative_threshold": 0.25,
+    "minimum_peak_separation_ps": 1,
+    "meaning": "descriptive voltage extrema only; not event or SFQ count"
+  },
+  "event_classifier": null,
+  "bit_decode": "NOT_PERFORMED",
+  "scientific_interpretation_performed": false,
+  "timestep_convergence": "UNKNOWN_NOT_RUN"
+}

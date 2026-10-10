@@ -318,6 +318,47 @@ run: full-chain overview, carry propagation, and a focused page for each
 D1-D6 stage. All HTML stays local; the DELTA references A001-A026 raw SHA and
 contains only A027-A029 raw/evidence.
 
+### Carry CB followed by one canonical sJTL (A030-A033)
+
+`CARRY_POST_CB_SJTL_COUNT=0|1` is an optional extension of
+`CBU_CHAIN_TOPOLOGY=CB_CARRY_BUFFER_ALL`: `0` keeps the A027-A029 topology;
+`1` places exactly one canonical `sJTL_0923` after each D1-D6 Carry `CB_0928`
+and before that stage's JOIN. The field is fail-closed to 0/1. It does not
+change array-internal sJTL counts, BVM/QB/CB/T1/DFF parameters, or the D0 JTL.
+
+The fixed four-run matrix is:
+
+| Run | ROW/COL | Carry post-CB sJTL | Global one-shot start |
+|---|---|---:|---:|
+| A030 `CARRY_POST_CB_SJTL_ALL_200` | 1111/1111 | one at D1-D6 | 200 ps |
+| A031 `CARRY_POST_CB_SJTL_ALL_210` | 1111/1111 | one at D1-D6 | 210 ps |
+| A032 `CARRY_POST_CB_SJTL_PAPER_210` | 1101/1101 | one at D1-D6 | 210 ps |
+| A033 `CARRY_POST_CB_SJTL_3X3_210` | 1100/0011 | one at D1-D6 | 210 ps |
+
+All clocks remain synchronous across seven T1s and the DFF; only their absolute
+start time changes as registered. 210 ps is not a validated frequency or
+hardware delay claim. The four local classic pages per run separate ARRAY,
+CARRY, JOIN and T1. The DOUT/JOIN voltage is a shared boundary voltage; use the
+array-final-CB JJ P/V and `I(V_CBU_A_Dk)` for source-attributed array evidence,
+not DOUT voltage-area as an array event count.
+
+```bash
+./try.sh --dry-run --preset CARRY_POST_CB_SJTL_ALL_200
+./try.sh --dry-run --preset CARRY_POST_CB_SJTL_ALL_210
+./try.sh --dry-run --preset CARRY_POST_CB_SJTL_PAPER_210
+./try.sh --dry-run --preset CARRY_POST_CB_SJTL_3X3_210
+python3 scripts/carry_post_cb_sjtl_batch.py --prepare-preflight
+# Commit the locked source/preflight state before executing the four authorized runs.
+python3 scripts/carry_post_cb_sjtl_batch.py --run-batch
+./submit.sh CARRY_POST_CB_SJTL_A030_A033_20261010 --delta --dry-run
+./submit.sh CARRY_POST_CB_SJTL_A030_A033_20261010 --delta
+```
+
+The batch runner executes A030/A031 first and stops on a solver or artifact
+failure; valid physical outcomes, whether expected or not, do not change the
+remaining registered run set. The DELTA references A001-A029 and packages only
+A030-A033 raw/evidence. HTML remains local and is excluded from packages.
+
 ## Evidence and plots
 
 Each run records actual deck, exact PWL stimulus, effective topology/config

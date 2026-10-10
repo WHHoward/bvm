@@ -54,6 +54,17 @@ class DeltaPackageTests(unittest.TestCase):
         for run_id, group in by_run.items():
             self.assertEqual({Path(member).name for _, member in group}, {"raw.csv", "result.json"})
 
+    def test_post_cb_sjtl_delta_is_bound_to_a027_a029_and_exact_a030_a033_set(self):
+        self.assertEqual(submit.CARRY_POST_CB_SJTL_BASE_COMMIT,
+                         "a5168f187e97b23685863d3d0964e898bbf19863")
+        self.assertEqual(submit.CARRY_POST_CB_SJTL_RUN_IDS, (
+            "A030_CARRY_POST_CB_SJTL_ALL_200", "A031_CARRY_POST_CB_SJTL_ALL_210",
+            "A032_CARRY_POST_CB_SJTL_PAPER_210", "A033_CARRY_POST_CB_SJTL_3X3_210"))
+        self.assertEqual(len(submit.CARRY_POST_CB_SJTL_BASE_PACKAGES), 5)
+        self.assertEqual(set(submit.CARRY_POST_CB_SJTL_BASE_RAW_PACKAGES), {
+            "A027_FULL_CB_CHAIN_ALL_CLOCK", "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+            "A029_FULL_CB_CHAIN_3X3_CLOCK"})
+
 
 if __name__ == "__main__":
     unittest.main()

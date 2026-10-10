@@ -1,0 +1,64 @@
+{
+  "schema": "bvm4x4-carry-post-cb-sjtl-work-unit-v1",
+  "batch_id": "BVM4X4_CARRY_POST_CB_SJTL_20261010",
+  "experiment_risk_level": "NORMAL",
+  "parent_head_at_preflight": "a5168f187e97b23685863d3d0964e898bbf19863",
+  "authorized_run_ids": [
+    "A030_CARRY_POST_CB_SJTL_ALL_200",
+    "A031_CARRY_POST_CB_SJTL_ALL_210",
+    "A032_CARRY_POST_CB_SJTL_PAPER_210",
+    "A033_CARRY_POST_CB_SJTL_3X3_210"
+  ],
+  "authorized_presets": [
+    "CARRY_POST_CB_SJTL_ALL_200",
+    "CARRY_POST_CB_SJTL_ALL_210",
+    "CARRY_POST_CB_SJTL_PAPER_210",
+    "CARRY_POST_CB_SJTL_3X3_210"
+  ],
+  "physical_solve_count_authorized": 4,
+  "physical_solve_count_completed_at_preflight": 0,
+  "preflight_path": "analysis/carry-post-cb-sjtl-20261010/PREFLIGHT.md",
+  "preflight_sha256": "4922081184713c1a6627607cc55730b98726a34dd33ab84cadcb963e2dff8a3c",
+  "static_qa_path": "analysis/carry-post-cb-sjtl-20261010/STATIC_QA.json",
+  "static_qa_sha256": "9e9078a6ec3690148ecffdffa860d56a01ebe3c93594a01d4def85a21ac52c83",
+  "probe_manifest_path": "analysis/carry-post-cb-sjtl-20261010/PROBE_MANIFEST.json",
+  "probe_manifest_sha256": "3a5702cd1293d44fb1a1d6909554ae00defbc11d55ef222f0f7e192c038b3fe6",
+  "experiment_yaml_sha256": "a26f4e404655bb2d7fc655f64db391bf561093438ef8bffe3012c7058568e7da",
+  "metric_spec_sha256": "782670e4a9551f8ace987f80841f64387a359ebd4b960b8118030f5d9041eabc",
+  "human_gate_sha256": "44293486f98f02a09ea273b62ec5b51c478d4fe6f0471419c7f2f86882c7d867",
+  "experiment_manifest_sha256": "c7fc3da79abbb2ef47d9c1b7d2c5a25dceca1f87bf33725d51b9c0b56aa18ee6",
+  "platform_runner_sha256": "4243231790bbe770387e7b58980da6e9a1297261600bdb514bcbec36ed13c580",
+  "batch_runner_sha256": "2e2b8fc2ca2e002d42649dd671f9ffd5cb1a86a2e440e7b85838c8fb90207524",
+  "analysis_runner_sha256": "12f98192f9e892cd032168c58fbaff5b607c16bfe82db6d6ddcb9aff93bb8f8a",
+  "local_submit_script_sha256": "b6523508798d2b59064f1c9314370c0b368efa2bd91fd9dee079a0970337f56c",
+  "local_submit_wrapper_sha256": "c9af4fe21f280f0b31902fa9224655b77ba9eba16d7761dcb9ab0f49ac855876",
+  "platform_test_sha256": "bdeadb83b3a688673f925f83f75ab45ec7b8d13d593ce1226927d84eb96daeb5",
+  "submit_test_sha256": "1d76156a6f97559023ff390ebe274536ce672ebfe0c3e6b8d0489b28b4493bb2",
+  "parameter_file_sha256": {
+    "USER_CASE.env": "f2de584b3b4cfbb19423cda14a42a68f5c87a8bc7bb6a42ef98f33ed006914eb",
+    "STIMULUS.env": "32868deffeead3e875ea029aeedcda2e077282b46e9851e67515f72ea5b1a1db",
+    "T1_PARAMS.env": "b8d97894b4f4285f2433b363ae6aac061ab683b13a7425e1551c59d29d5b095a",
+    "CBU_PARAMS.env": "173ff1a2b7dc0f352b6fb036722f24f9ec0a3ec12471e0c5fffbb6b46419b5a4",
+    "DFF_PARAMS.env": "8e697a5bc227afbac19f9895b8c60df7f697c2a3ea3bb19e2f1b69d6e6402015",
+    "D0_JTL_PARAMS.env": "d22c5595127e5095fcabedfd160dfda1aec6f5618e70bb1ef013959604043913",
+    "presets/CARRY_POST_CB_SJTL_ALL_200.env": "eb42066c27dfd91ad7f112a0fbc1a64bc990f6a8b012dc348178120e20d4f2b5",
+    "presets/CARRY_POST_CB_SJTL_ALL_210.env": "91898496d6408cf9d43e07ae88731c544b6ac0b0ebfb5833e044f7ec1ac6fef4",
+    "presets/CARRY_POST_CB_SJTL_PAPER_210.env": "33c0778f261109f9cbb5b8cbf507564879605bb059e24b0905d908ff34f6744f",
+    "presets/CARRY_POST_CB_SJTL_3X3_210.env": "83fd63f5ba954f724a5c347758df26af03515db53a385561c184ab2b49adc50f"
+  },
+  "baseline_raw_sha256": {
+    "A027_FULL_CB_CHAIN_ALL_CLOCK": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+    "A029_FULL_CB_CHAIN_3X3_CLOCK": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f"
+  },
+  "execution_order": [
+    "A030",
+    "A031",
+    "A032",
+    "A033"
+  ],
+  "failure_gate": "stop on solver or artifact/mechanical hard failure; do not classify functional outcome here",
+  "automatic_follow_up": false,
+  "scientific_interpretation_performed": false,
+  "next_action": "COMMIT_LOCKED_PREFLIGHT_THEN_RUN_EXACTLY_A030_A033_AND_STOP"
+}

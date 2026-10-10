@@ -151,6 +151,72 @@ CB_CARRY_BUFFER_ALL_BASE_RAW_PACKAGES = {
         "c64e041625aa5d7130d12601132281b73aaf9519f8cb67814a2cfe21c6c3d753",
         "f9b198ecad7a7eef7181d6f99c1d8febc28db5b47e11956f91ca3beb6b29f7aa"),
 }
+CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
+CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
+CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
+CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256 = "ef0da398613b065b4c3cb896040a1e6b8089f469d56f111dfdbf2950e546b955"
+CARRY_POST_CB_SJTL_BASE_PACKAGES = (
+    ("source", CARRY_POST_CB_SJTL_BASE_SOURCE_NAME, CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256),
+    ("runs_metadata", f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_runs_metadata.zip",
+     "8a6a05168ef34928032735dd073ccfd3ff6ac8a72ec28bb1f04bf80995efface"),
+    ("A027_FULL_CB_CHAIN_ALL_CLOCK_raw",
+     f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_A027_FULL_CB_CHAIN_ALL_CLOCK_raw.zip",
+     "a25a320aaaf189c408660e4c626afd4069ca7a5510e2727a939fea2b7d66ede6"),
+    ("A028_FULL_CB_CHAIN_PAPER_CLOCK_raw",
+     f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_A028_FULL_CB_CHAIN_PAPER_CLOCK_raw.zip",
+     "c142a628039b8e7e9980c32081721c0081bd4d73e0b920fbea26ad491935e013"),
+    ("A029_FULL_CB_CHAIN_3X3_CLOCK_raw",
+     f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_A029_FULL_CB_CHAIN_3X3_CLOCK_raw.zip",
+     "7c03c9af6f9007bc1cf9ae101e80d0599fb22f3f674758da2282666f06c80745"),
+)
+CARRY_POST_CB_SJTL_BASE_RAW_PACKAGES = {
+    "A027_FULL_CB_CHAIN_ALL_CLOCK": (
+        CARRY_POST_CB_SJTL_BASE_PACKAGES[2][1], CARRY_POST_CB_SJTL_BASE_PACKAGES[2][2],
+        "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46"),
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK": (
+        CARRY_POST_CB_SJTL_BASE_PACKAGES[3][1], CARRY_POST_CB_SJTL_BASE_PACKAGES[3][2],
+        "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701"),
+    "A029_FULL_CB_CHAIN_3X3_CLOCK": (
+        CARRY_POST_CB_SJTL_BASE_PACKAGES[4][1], CARRY_POST_CB_SJTL_BASE_PACKAGES[4][2],
+        "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f"),
+}
+CARRY_POST_CB_SJTL_RUN_IDS = (
+    "A030_CARRY_POST_CB_SJTL_ALL_200", "A031_CARRY_POST_CB_SJTL_ALL_210",
+    "A032_CARRY_POST_CB_SJTL_PAPER_210", "A033_CARRY_POST_CB_SJTL_3X3_210")
+CARRY_POST_CB_SJTL_TASK = SERIES / "analysis" / "carry-post-cb-sjtl-20261010"
+CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
+CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
+CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
+CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256 = "ef0da398613b065b4c3cb896040a1e6b8089f469d56f111dfdbf2950e546b955"
+CARRY_POST_CB_SJTL_BASE_PACKAGES = (
+    ("source", CARRY_POST_CB_SJTL_BASE_SOURCE_NAME, CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256),
+    ("runs_metadata", f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_runs_metadata.zip",
+     "8a6a05168ef34928032735dd073ccfd3ff6ac8a72ec28bb1f04bf80995efface"),
+    ("A027_FULL_CB_CHAIN_ALL_CLOCK_raw",
+     f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_A027_FULL_CB_CHAIN_ALL_CLOCK_raw.zip",
+     "a25a320aaaf189c408660e4c626afd4069ca7a5510e2727a939fea2b7d66ede6"),
+    ("A028_FULL_CB_CHAIN_PAPER_CLOCK_raw",
+     f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_A028_FULL_CB_CHAIN_PAPER_CLOCK_raw.zip",
+     "c142a628039b8e7e9980c32081721c0081bd4d73e0b920fbea26ad491935e013"),
+    ("A029_FULL_CB_CHAIN_3X3_CLOCK_raw",
+     f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_A029_FULL_CB_CHAIN_3X3_CLOCK_raw.zip",
+     "7c03c9af6f9007bc1cf9ae101e80d0599fb22f3f674758da2282666f06c80745"),
+)
+CARRY_POST_CB_SJTL_BASE_RAW_PACKAGES = {
+    "A027_FULL_CB_CHAIN_ALL_CLOCK": (
+        CARRY_POST_CB_SJTL_BASE_PACKAGES[2][1], CARRY_POST_CB_SJTL_BASE_PACKAGES[2][2],
+        "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46"),
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK": (
+        CARRY_POST_CB_SJTL_BASE_PACKAGES[3][1], CARRY_POST_CB_SJTL_BASE_PACKAGES[3][2],
+        "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701"),
+    "A029_FULL_CB_CHAIN_3X3_CLOCK": (
+        CARRY_POST_CB_SJTL_BASE_PACKAGES[4][1], CARRY_POST_CB_SJTL_BASE_PACKAGES[4][2],
+        "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f"),
+}
+CARRY_POST_CB_SJTL_RUN_IDS = (
+    "A030_CARRY_POST_CB_SJTL_ALL_200", "A031_CARRY_POST_CB_SJTL_ALL_210",
+    "A032_CARRY_POST_CB_SJTL_PAPER_210", "A033_CARRY_POST_CB_SJTL_3X3_210")
+CARRY_POST_CB_SJTL_TASK = SERIES / "analysis" / "carry-post-cb-sjtl-20261010"
 LEGACY_RUN_IDS = tuple(f"A{i:03d}_{case}" for i, case in enumerate(
     ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4", "PAPER_1101_1101"), start=1))
 BASE_METADATA_NAME = f"{SERIES.name}_metadata_v2_BVM4X4_20261009.zip"
@@ -2863,6 +2929,397 @@ def submit_cb_carry_buffer_all_delta(args: argparse.Namespace, root: Any) -> int
     return 0
 
 
+def _verify_carry_post_cb_sjtl_base(root: Any) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, str]]:
+    packages, raw_refs, member_hashes = [], [], {}
+    manifests = {}
+    for group, name, expected_zip_sha in CARRY_POST_CB_SJTL_BASE_PACKAGES:
+        package = HANDOFF / name
+        qa_path = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        if not package.is_file() or root.sha256(package) != expected_zip_sha:
+            raise RuntimeError(f"A027-A029 base package identity mismatch: {name}")
+        qa = json.loads(qa_path.read_text(encoding="utf-8"))
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != expected_zip_sha or
+                qa.get("package_bytes") != package.stat().st_size or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"A027-A029 base PACKAGE_QA mismatch: {name}")
+        with zipfile.ZipFile(package, "r") as archive:
+            if archive.testzip() is not None:
+                raise RuntimeError(f"A027-A029 base ZIP CRC failure: {name}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if delta.get("head_commit") != CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD:
+                raise RuntimeError(f"A027-A029 base package source HEAD mismatch: {name}")
+            for member, digest in delta.get("included_file_sha256", {}).items():
+                if member not in archive.namelist() or hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"A027-A029 base member SHA mismatch: {name}/{member}")
+                if member in member_hashes and member_hashes[member] != digest:
+                    raise RuntimeError(f"A027-A029 base member identity conflict: {member}")
+                member_hashes[member] = digest
+            if any(member.lower().endswith(".html") for member in archive.namelist()):
+                raise RuntimeError(f"base ZIP unexpectedly includes HTML: {name}")
+        manifests[name] = delta
+        packages.append({"package_name": name, "package_sha256": expected_zip_sha,
+                         "package_group": group, "source_commit": delta.get("head_commit")})
+
+    source_manifest = manifests[CARRY_POST_CB_SJTL_BASE_SOURCE_NAME]
+    referenced = source_manifest.get("referenced_existing_raw_sha256", [])
+    expected_older_runs = {f"A{i:03d}_{case}" for i, case in enumerate(
+        ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4", "PAPER_1101_1101"), start=1)}
+    expected_older_runs.update(BUS400_RUN_IDS + A009_RUN_IDS + A010_A012_RUN_IDS +
+                               T1_A013_A016_RUN_IDS + T1_CHAIN_BASE_RUN_IDS +
+                               T1_CHAIN_DELTA_RUN_IDS + CB_DIRECT_D1_RUN_IDS + CB_CARRY_BUFFER_D1_RUN_IDS)
+    if (source_manifest.get("head_commit") != CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD or
+            len(referenced) != 26 or {item.get("run_id") for item in referenced} != expected_older_runs):
+        raise RuntimeError("A027-A029 source package does not close exactly A001-A026 raw")
+    raw_refs.extend(referenced)
+    for run_id, (name, package_sha, raw_sha) in CARRY_POST_CB_SJTL_BASE_RAW_PACKAGES.items():
+        manifest = manifests[name]
+        raw_path = f"test/exploration/{SERIES.name}/runs/{run_id}/raw.csv"
+        local_raw = RUNS / run_id / "raw.csv"
+        if (manifest.get("package_group") != f"{run_id}_raw" or
+                manifest.get("raw_sha256_by_run") != {run_id: raw_sha} or
+                manifest.get("included_file_sha256", {}).get(raw_path) != raw_sha or
+                root.sha256(local_raw) != raw_sha):
+            raise RuntimeError(f"A027-A029 raw package closure mismatch: {run_id}")
+        raw_refs.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                         "raw_sha256": raw_sha, "source_package_name": name,
+                         "source_package_sha256": package_sha})
+    expected_all = {f"A{i:03d}_{case}" for i, case in enumerate(
+        ("D3_N0", "D3_N1", "D3_N2", "D3_N3", "D3_N4", "PAPER_1101_1101"), start=1)}
+    expected_all.update(BUS400_RUN_IDS + A009_RUN_IDS + A010_A012_RUN_IDS + T1_A013_A016_RUN_IDS +
+                        T1_CHAIN_BASE_RUN_IDS + T1_CHAIN_DELTA_RUN_IDS + CB_DIRECT_D1_RUN_IDS +
+                        CB_CARRY_BUFFER_D1_RUN_IDS + CB_CARRY_BUFFER_ALL_RUN_IDS)
+    if len(raw_refs) != 29 or {item.get("run_id") for item in raw_refs} != expected_all:
+        raise RuntimeError("A027-A029 package closure must reference exactly A001-A029 raw")
+    manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    recorded = {item.get("run_id"): item.get("raw_sha256") for item in manifest.get("runs", [])}
+    for item in raw_refs:
+        if recorded.get(item["run_id"]) != item["raw_sha256"]:
+            raise RuntimeError(f"registered base raw ref differs from experiment_manifest: {item['run_id']}")
+    return packages, raw_refs, member_hashes
+
+
+def _carry_post_cb_sjtl_sources(root: Any) -> tuple[
+        list[tuple[Path, str]], dict[str, Any]]:
+    head = git("rev-parse", "HEAD")
+    changes = dict(root.committed_changes(CARRY_POST_CB_SJTL_BASE_COMMIT, head))
+    changes.update(root.working_changes())
+    for rel_path in root.untracked_files():
+        changes.setdefault(rel_path, "??")
+    sources: dict[str, Path] = {}
+    excluded_html: set[str] = set()
+    for rel_path, status in changes.items():
+        path = Path(rel_path)
+        if not root.in_scope(rel_path, [SERIES]):
+            raise RuntimeError(f"post-CB-sJTL DELTA found out-of-scope change: {rel_path}")
+        if status == "D":
+            raise RuntimeError(f"post-CB-sJTL DELTA refuses deletions: {rel_path}")
+        if path.parts[:4] == ("test", "exploration", SERIES.name, "runs"):
+            if len(path.parts) < 5 or path.parts[4] not in CARRY_POST_CB_SJTL_RUN_IDS:
+                raise RuntimeError(f"post-CB-sJTL DELTA detected historical run change: {rel_path}")
+            continue
+        if _excluded_delta_path(path):
+            if path.suffix.lower() == ".html":
+                excluded_html.add(rel_path)
+            continue
+        if path.parts[:4] == ("test", "exploration", SERIES.name, "analysis") and \
+                len(path.parts) >= 5 and path.parts[4] == CARRY_POST_CB_SJTL_TASK.name:
+            continue
+        source = REPO / path
+        if source.is_file() and not source.is_symlink():
+            sources[rel_path] = source
+
+    run_files: dict[str, list[tuple[Path, str]]] = {}
+    raw_sha_by_run: dict[str, str] = {}
+    run_status: dict[str, Any] = {}
+    required = {"deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt",
+                "USER_CASE.snapshot.env", "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env",
+                "CBU_PARAMS.snapshot.env", "DFF_PARAMS.snapshot.env", "D0_JTL_PARAMS.snapshot.env",
+                "stimulus.inc", "case_manifest.json", "metadata.json", "provenance.json",
+                "source_manifest.json", "topology_manifest.json", "probe_manifest.json", "static_qa.json",
+                "stimulus_manifest.json", "metrics.json", "raw_qa.json", "chain_qa.json", "qa.json",
+                "plot_manifest.json", "plot_qa.json", "result.json", "RESULT_BRIEF.md"}
+    for run_id in CARRY_POST_CB_SJTL_RUN_IDS:
+        run_dir = RUNS / run_id
+        if not run_dir.is_dir():
+            raise RuntimeError(f"authorized post-CB-sJTL run is missing: {run_id}")
+        files = [(path, path.relative_to(REPO).as_posix()) for path in included_files(run_dir)]
+        if required - {Path(member).name for _path, member in files}:
+            raise RuntimeError(f"post-CB-sJTL evidence files missing in {run_id}")
+        raw = run_dir / "raw.csv"
+        result, qa, raw_qa, plot_qa = (json.loads((run_dir / name).read_text(encoding="utf-8")) for name in
+                                       ("result.json", "qa.json", "chain_qa.json", "plot_qa.json"))
+        case = json.loads((run_dir / "case_manifest.json").read_text(encoding="utf-8"))["case"]
+        digest = root.sha256(raw)
+        if (case.get("CBU_CHAIN_TOPOLOGY") != "CB_CARRY_BUFFER_ALL" or
+                case.get("CARRY_POST_CB_SJTL_COUNT") != "1" or
+                result.get("artifact_status") != "VALID" or result.get("physical_solve_count") != 1 or
+                result.get("raw_sha256") != digest or qa.get("status") != "PASS" or
+                qa.get("raw_sha256_before_analysis") != digest or qa.get("raw_sha256_after_analysis") != digest or
+                raw_qa.get("status") != "PASS" or raw_qa.get("raw_sha256_after_analysis") != digest or
+                plot_qa.get("status") != "PASS" or plot_qa.get("raw_sha256_after") != digest or
+                raw.stat().st_size >= root.MAX_GIT_FILE_BYTES):
+            raise RuntimeError(f"post-CB-sJTL raw/provenance/mechanical identity failed: {run_id}")
+        for page in plot_qa.get("pages", []):
+            page_path = SERIES / page["path"]
+            if not page_path.is_file() or root.sha256(page_path) != page.get("sha256"):
+                raise RuntimeError(f"standalone HTML identity mismatch: {run_id}/{page.get('path')}")
+        run_files[run_id] = files
+        raw_sha_by_run[run_id] = digest
+        run_status[run_id] = {"artifact_status": "VALID", "qa_status": "PASS",
+                              "physical_solve_count": 1}
+        for source, member in files:
+            sources[member] = source
+
+    if not CARRY_POST_CB_SJTL_TASK.is_dir():
+        raise RuntimeError("post-CB-sJTL task analysis directory is missing")
+    task_files = []
+    for path in sorted(CARRY_POST_CB_SJTL_TASK.rglob("*")):
+        if not path.is_file():
+            continue
+        rel_path = path.relative_to(REPO).as_posix()
+        if _excluded_delta_path(Path(rel_path)):
+            if path.suffix.lower() == ".html":
+                excluded_html.add(rel_path)
+            continue
+        task_files.append((path, rel_path))
+    task_metadata_files = task_files
+    for path, member in task_metadata_files:
+        sources[member] = path
+    for path in SERIES.rglob("*.html"):
+        if path.is_file():
+            excluded_html.add(path.relative_to(REPO).as_posix())
+
+    for rel_path, status in changes.items():
+        path = Path(rel_path)
+        if status == "D" or _excluded_delta_path(path):
+            continue
+        if path.parts[:4] == ("test", "exploration", SERIES.name, "runs"):
+            continue
+        if (path.parts[:4] == ("test", "exploration", SERIES.name, "analysis") and
+                len(path.parts) >= 5 and path.parts[4] == CARRY_POST_CB_SJTL_TASK.name):
+            continue
+        if root.in_scope(rel_path, [SERIES]) and (REPO / path).is_file() and rel_path not in sources:
+            raise RuntimeError(f"changed source/evidence omitted from DELTA: {rel_path}")
+
+    manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    if int(manifest.get("physical_solve_count", -1)) != 33:
+        raise RuntimeError(f"experiment_manifest should contain 33 solves, found {manifest.get('physical_solve_count')}")
+    authorization = [item for item in manifest.get("authorization_batches", [])
+                     if item.get("batch_id") == "BVM4X4_CARRY_POST_CB_SJTL_20261010"]
+    batch_path = CARRY_POST_CB_SJTL_TASK / "BATCH_MANIFEST.json"
+    summary_path = CARRY_POST_CB_SJTL_TASK / "CARRY_POST_CB_SJTL_SUMMARY.json"
+    if (len(authorization) != 1 or authorization[0].get("authorized_physical_solve_count") != 4 or
+            authorization[0].get("physical_solve_count_completed") != 4 or
+            authorization[0].get("run_ids") != list(CARRY_POST_CB_SJTL_RUN_IDS) or
+            not batch_path.is_file() or not summary_path.is_file() or
+            json.loads(batch_path.read_text(encoding="utf-8")).get("status") != "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW" or
+            json.loads(summary_path.read_text(encoding="utf-8")).get("status") != "PASS"):
+        raise RuntimeError("post-CB-sJTL batch/analysis is not closed with mechanical QA PASS")
+
+    all_sources = [(sources[key], key) for key in sorted(sources)]
+    return all_sources, {"changes": changes, "excluded_html": sorted(excluded_html),
+                         "run_files": run_files, "task_metadata_files": task_metadata_files,
+                         "raw_sha256_by_run": raw_sha_by_run, "run_status_by_run": run_status,
+                         "all_sources": all_sources, "base_packages": []}
+
+
+def carry_post_cb_sjtl_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if not root.TAG_RE.fullmatch(tag):
+        raise RuntimeError(f"invalid post-CB-sJTL DELTA tag: {tag!r}")
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("post-CB-sJTL DELTA expects the existing master branch")
+    if subprocess.run(["git", "merge-base", "--is-ancestor", CARRY_POST_CB_SJTL_BASE_COMMIT,
+                       git("rev-parse", "HEAD")], cwd=REPO, check=False).returncode != 0:
+        raise RuntimeError("current HEAD is not descended from the A027-A029 package checkpoint")
+    base_packages, existing_refs, base_hashes = _verify_carry_post_cb_sjtl_base(root)
+    all_sources, context = _carry_post_cb_sjtl_sources(root)
+    context["base_packages"] = base_packages
+    source_group, metadata_group = [], []
+    run_files = context["run_files"]
+    run_raw_groups = {}
+    for path, member in all_sources:
+        parts = Path(member).parts
+        if parts[:4] == ("test", "exploration", SERIES.name, "runs") and len(parts) >= 6 and parts[4] in CARRY_POST_CB_SJTL_RUN_IDS:
+            if Path(member).name == "raw.csv":
+                continue
+            metadata_group.append((path, member))
+        elif parts[:5] == ("test", "exploration", SERIES.name, "analysis", CARRY_POST_CB_SJTL_TASK.name):
+            metadata_group.append((path, member))
+        else:
+            source_group.append((path, member))
+    raw_groups = {run_id: [(path, member) for path, member in run_files[run_id]
+                           if Path(member).name == "raw.csv"] for run_id in CARRY_POST_CB_SJTL_RUN_IDS}
+    if not source_group or not metadata_group or any(len(group) != 1 for group in raw_groups.values()):
+        raise RuntimeError("post-CB-sJTL DELTA requires source, metadata and exactly one raw package per run")
+
+    groups = [("source", "source", source_group, None, 0),
+              ("runs_metadata", "evidence", metadata_group, None, 4)]
+    groups.extend((f"{run_id}_raw", "raw", raw_groups[run_id], run_id, 0)
+                  for run_id in CARRY_POST_CB_SJTL_RUN_IDS)
+    specs, plans = [], []
+    for group_name, group_kind, group_sources, run_id, solve_count in groups:
+        records = root.file_records(group_sources)
+        source_bytes = sum(item["bytes"] for item in records)
+        included = {item["archive_path"]: item["sha256"] for item in records}
+        new_files = sorted(member for member in included if member not in base_hashes)
+        modified_files = sorted(member for member, digest in included.items()
+                                if member in base_hashes and base_hashes[member] != digest)
+        name = f"{SERIES.name}_delta_CARRY_POST_CB_SJTL_{tag}_{group_name}.zip"
+        target = HANDOFF / name
+        qa_target = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        if target.exists() or qa_target.exists():
+            raise FileExistsError(f"refusing immutable post-CB-sJTL package overwrite: {name}")
+        raw_map = {run_id: context["raw_sha256_by_run"][run_id]} if group_kind == "raw" and run_id else {}
+        associated = ({key: context["raw_sha256_by_run"][key] for key in CARRY_POST_CB_SJTL_RUN_IDS}
+                      if group_kind == "evidence" else {})
+        delta = {"schema": "bvm4x4-carry-post-cb-sjtl-delta-v1",
+                 "package_type": "directory_snapshot_delta", "package_group": group_name,
+                 "base_commit": CARRY_POST_CB_SJTL_BASE_COMMIT, "head_commit": "PENDING_SOURCE_COMMIT",
+                 "base_package_name": CARRY_POST_CB_SJTL_BASE_SOURCE_NAME,
+                 "base_package_sha256": CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256,
+                 "base_package_source_commit": CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD,
+                 "base_delta_packages": base_packages,
+                 "referenced_existing_cases": existing_refs,
+                 "referenced_existing_raw_sha256": existing_refs,
+                 "included_files": records, "included_file_sha256": included,
+                 "new_files": new_files, "modified_files": modified_files, "deleted_files": [],
+                 "new_physical_solve_count": solve_count, "reused_point_count": 0,
+                 "raw_sha256_by_run": raw_map, "associated_raw_sha256_by_run": associated,
+                 "paired_evidence_package_name": (f"{SERIES.name}_delta_CARRY_POST_CB_SJTL_{tag}_runs_metadata.zip"
+                                                  if group_kind == "raw" else None),
+                 "run_artifact_status_by_run": ({run_id: context["run_status_by_run"][run_id]}
+                                                 if run_id else context["run_status_by_run"]),
+                 "excluded_html": context["excluded_html"], "generated_from_head": git("rev-parse", "HEAD"),
+                 "scientific_interpretation_performed": False}
+        extras = {"DELTA_MANIFEST.json": (json.dumps(delta, ensure_ascii=False, indent=2)+"\n").encode("utf-8")}
+        if source_bytes + sum(len(value) for value in extras.values()) >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"{group_name} package exceeds the Git single-file limit")
+        spec = {"name": name, "kind": "bvm_4x4_carry_post_cb_sjtl_delta_v1", "scope": SERIES,
+                "target": target, "qa_path": qa_target, "sources": group_sources,
+                "extra_members": extras, "delta_manifest": delta,
+                "base_name": CARRY_POST_CB_SJTL_BASE_SOURCE_NAME,
+                "base_sha": CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256,
+                "raw_by_run": raw_map, "group_kind": group_kind, "run_id": run_id,
+                "readme": (f"Incremental post-CB sJTL evidence for {SERIES.name}; tag={tag}; group={group_name}.\n"
+                           f"Base checkpoint: {CARRY_POST_CB_SJTL_BASE_SOURCE_NAME} ({CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256}).\n"
+                           "A001-A029 raw is referenced by package/raw SHA and is not recopied.\n"
+                           "A030-A033 are the only new physical solves. Generated HTML is excluded.\n"
+                           "Mechanical evidence only; no event classifier, bit decode, or scientific interpretation.\n").encode()}
+        specs.append(spec)
+        plans.append({"package": name, "package_group": group_name, "file_count": len(records),
+                      "uncompressed_source_bytes": source_bytes,
+                      "raw_bytes": sum(item["bytes"] for item in records if Path(item["archive_path"]).name == "raw.csv"),
+                      "raw_sha256_by_run": raw_map, "new_physical_solve_count": solve_count,
+                      "new_files": new_files, "modified_files": modified_files,
+                      "qa_path": qa_target.relative_to(REPO).as_posix()})
+    plan = {"base_commit": CARRY_POST_CB_SJTL_BASE_COMMIT,
+            "generated_from_head": git("rev-parse", "HEAD"),
+            "base_package_name": CARRY_POST_CB_SJTL_BASE_SOURCE_NAME,
+            "base_package_sha256": CARRY_POST_CB_SJTL_BASE_SOURCE_SHA256,
+            "base_delta_packages": base_packages, "referenced_existing_raw_count": len(existing_refs),
+            "referenced_existing_raw_sha256": existing_refs, "new_physical_solve_count": 4,
+            "reused_point_count": 0, "html_included": False,
+            "excluded_html_count": len(context["excluded_html"]), "package_count": len(specs),
+            "packages": plans}
+    return specs, {"plan": plan, "source_paths": [member for _source, member in all_sources],
+                   "base_packages": base_packages, "referenced_existing_raw": existing_refs}
+
+
+def submit_carry_post_cb_sjtl_delta(args: argparse.Namespace, root: Any) -> int:
+    specs, context = carry_post_cb_sjtl_delta_specs(args.tag, root)
+    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
+    if not mirror_dir.is_dir():
+        raise RuntimeError(f"mirror directory is not accessible: {mirror_dir}")
+    collisions = [str(spec["target"]) for spec in specs if spec["target"].exists() or spec["qa_path"].exists()]
+    collisions.extend(str(mirror_dir/spec["name"]) for spec in specs if (mirror_dir/spec["name"]).exists())
+    if collisions:
+        raise FileExistsError("refusing to overwrite immutable package/mirror targets: " + ", ".join(collisions))
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", "scope": SERIES.relative_to(REPO).as_posix(),
+                          "package_mode": "CARRY_POST_CB_SJTL_DELTA", **context["plan"],
+                          "push_target": git("rev-parse", "--abbrev-ref", "@{upstream}"),
+                          "mirror_dir": str(mirror_dir), "no_files_modified": True},
+                         ensure_ascii=False, indent=2))
+        return 0
+
+    if not context["source_paths"]:
+        raise RuntimeError("post-CB-sJTL DELTA source inventory is empty")
+    subprocess.run(["git", "add", "-A", "-f", "--", *context["source_paths"]], cwd=REPO, check=True)
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO, check=False).returncode != 0:
+        subprocess.run(["git", "commit", "-m", args.message or
+                        "experiment: record post-CB sJTL chain A030-A033"], cwd=REPO, check=True)
+    source_commit = git("rev-parse", "HEAD")
+    package_results = []
+    for spec in specs:
+        manifest = spec["delta_manifest"]
+        if spec["group_kind"] == "raw":
+            paired_name = manifest.get("paired_evidence_package_name")
+            paired = next((item for item in package_results if Path(item["path"]).name == paired_name), None)
+            if paired is None:
+                raise RuntimeError(f"runs_metadata package must precede raw package: {paired_name}")
+            manifest["paired_evidence_package_sha256"] = paired["sha256"]
+        manifest["head_commit"] = source_commit
+        manifest["generated_from_head"] = source_commit
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(manifest, ensure_ascii=False, indent=2)+"\n").encode("utf-8")
+        result = root.archive_bundle(spec, source_commit)
+        package_path, qa_path = REPO / result["path"], REPO / result["qa_path"]
+        qa = json.loads(qa_path.read_text(encoding="utf-8"))
+        qa.update({"package_mode": "CARRY_POST_CB_SJTL_DELTA_SPLIT_BY_RUN",
+                   "base_commit": manifest["base_commit"], "head_commit": source_commit,
+                   "base_package_name": manifest["base_package_name"],
+                   "base_package_sha256": manifest["base_package_sha256"],
+                   "base_package_source_commit": manifest["base_package_source_commit"],
+                   "base_delta_packages": manifest["base_delta_packages"],
+                   "delta_included_files": manifest["included_files"],
+                   "delta_included_file_sha256": manifest["included_file_sha256"],
+                   "new_files": manifest["new_files"], "modified_files": manifest["modified_files"],
+                   "referenced_existing_cases": manifest["referenced_existing_cases"],
+                   "referenced_existing_raw_sha256": manifest["referenced_existing_raw_sha256"],
+                   "new_physical_solve_count": manifest["new_physical_solve_count"],
+                   "reused_point_count": 0, "html_included": False,
+                   "package_group": manifest["package_group"],
+                   "raw_sha256_by_run": manifest["raw_sha256_by_run"],
+                   "associated_raw_sha256_by_run": manifest["associated_raw_sha256_by_run"],
+                   "paired_evidence_package_name": manifest.get("paired_evidence_package_name"),
+                   "paired_evidence_package_sha256": manifest.get("paired_evidence_package_sha256")})
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != root.sha256(package_path) or
+                qa.get("package_bytes") != package_path.stat().st_size or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"post-CB-sJTL PACKAGE_QA/member integrity failed: {spec['name']}")
+        with zipfile.ZipFile(package_path, "r") as archive:
+            if archive.testzip() is not None:
+                raise RuntimeError(f"post-CB-sJTL ZIP CRC failure: {spec['name']}")
+            packed = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if packed.get("head_commit") != source_commit or any(name.lower().endswith(".html") for name in archive.namelist()):
+                raise RuntimeError(f"post-CB-sJTL ZIP manifest/head/HTML QA failure: {spec['name']}")
+            for member, digest in packed.get("included_file_sha256", {}).items():
+                if hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"post-CB-sJTL archive member SHA mismatch: {spec['name']}/{member}")
+        qa_path.write_text(json.dumps(qa, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+        result.update({"sha256": qa["package_sha256"], "bytes": qa["package_bytes"], "status": qa["status"]})
+        package_results.append(result)
+
+    package_paths = [path for result in package_results for path in (result["path"], result["qa_path"])]
+    subprocess.run(["git", "add", "-f", "--", *package_paths], cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", f"package: archive post-CB sJTL chain A030-A033 DELTA {args.tag}"],
+                   cwd=REPO, check=True)
+    push_status = "SKIPPED"
+    if not args.no_push:
+        subprocess.run(["git", "push"], cwd=REPO, check=True)
+        push_status = "PASS"
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    print(json.dumps({"status": "CARRY_POST_CB_SJTL_DELTA_SUBMIT_COMPLETE",
+                      "source_commit": source_commit, "final_commit": git("rev-parse", "HEAD"),
+                      "push": push_status, "packages": package_results,
+                      "base_commit": CARRY_POST_CB_SJTL_BASE_COMMIT,
+                      "base_package": CARRY_POST_CB_SJTL_BASE_SOURCE_NAME,
+                      "referenced_existing_raw_count": len(context["referenced_existing_raw"]),
+                      "new_physical_solve_count": 4, "package_count": len(package_results),
+                      "html_included": False, "mirror": mirror}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -2880,6 +3337,9 @@ def main() -> int:
         if args.delta:
             if args.metadata_v2:
                 raise RuntimeError("--delta and --metadata-v2 are mutually exclusive")
+            carry_post_cb_sjtl_batch = CARRY_POST_CB_SJTL_TASK / "BATCH_MANIFEST.json"
+            if carry_post_cb_sjtl_batch.is_file():
+                return submit_carry_post_cb_sjtl_delta(args, root)
             carry_buffer_all_batch = CB_CARRY_BUFFER_ALL_TASK / "BATCH_MANIFEST.json"
             if carry_buffer_all_batch.is_file():
                 return submit_cb_carry_buffer_all_delta(args, root)

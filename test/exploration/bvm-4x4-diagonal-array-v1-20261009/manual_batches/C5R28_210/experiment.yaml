@@ -1,0 +1,108 @@
+schema: bvm4x4-manual-functional-regression-v1
+experiment_id: C5R28_210
+experiment_risk_level: NORMAL
+source_class: exploratory_manual_batch
+question: >-
+  Execute the exact registered 28-input CARRY5 regression matrix under the
+  existing 4x4 BVM-to-T1-chain platform. This work unit reports artifact and
+  mechanical QA only; product decoding and scientific interpretation are not
+  performed.
+interpretation_ceiling: mechanical_artifact_readiness_only
+scientific_review_authorization: NOT_GRANTED
+solver_invocations_authorized: 28
+solver_invocations_by_packaging: 0
+source_baseline:
+  run_id: A077_MANUAL_CARRY5_15x15_210
+  deck_sha256: 469247887bd0be999cc39acaad4277191e9aa426273b719615b9b5ddf0cd3a42
+  raw_sha256: e4477449666543784e978cc86e258aa48eee2fce4edcbd540ceb266a11a4c016
+  canonical_sources: use the exact source closure recorded in A077 source_manifest.json
+topology:
+  output_mode: DIAGONAL_T1_CHAIN
+  t1_mode: CHAIN
+  cbu_chain_topology: CB_CARRY_BUFFER_ALL
+  cbu_override_d1: NONE
+  carry_mode: RIPPLE
+  carry_sjtl_position: PRE_CB
+  carry_sjtl_stage_mask: "111111"
+  carry_sjtl_count_by_stage: "1,1,5,1,1,1"
+  array_sjtl_count_d3: "1,2,2,1"
+parameters:
+  row_wl_write_amplitude: 400u
+  column_bl_write_amplitude: 400u
+  row_wl_read_amplitude: 400u
+  column_se_read_amplitude: 100u
+  se_enable_mask: ALL
+  clock_mode: GLOBAL_ONESHOT
+  clock_start: 210p
+  dt: 0.01p
+  stop: 300p
+  probe_profile: t1_chain_focus
+  focus_stage: D3
+  all_other_parameters: unchanged_from_A077
+input_encoding:
+  row_bits: R1_is_LSB
+  column_bits: C1_is_MSB
+  row_bit_string_order: R1_to_R4
+  column_bit_string_order: C1_to_C4
+run_set:
+  - [15, 14]
+  - [14, 15]
+  - [14, 14]
+  - [15, 13]
+  - [13, 15]
+  - [15, 11]
+  - [11, 15]
+  - [15, 7]
+  - [7, 15]
+  - [7, 7]
+  - [7, 14]
+  - [14, 7]
+  - [9, 13]
+  - [13, 9]
+  - [5, 10]
+  - [10, 5]
+  - [1, 1]
+  - [1, 15]
+  - [15, 1]
+  - [2, 15]
+  - [15, 2]
+  - [4, 15]
+  - [15, 4]
+  - [8, 15]
+  - [15, 8]
+  - [0, 0]
+  - [0, 15]
+  - [15, 0]
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  color: dark
+  phase_display: -j 2pi
+  standalone: existing_platform_focus_pages
+  generated_html_in_package: false
+qa:
+  required_per_run: [artifact_valid, solver_exit_0, raw_immutable_sha256, raw_qa, static_qa, chain_qa, plot_qa, provenance]
+  required_preflight_count: 28
+  required_netlist_sha256: 469247887bd0be999cc39acaad4277191e9aa426273b719615b9b5ddf0cd3a42
+  output_decoding: NOT_PERFORMED
+prohibited_followups:
+  - additional_solver_run
+  - retry_after_physical_or_model_failure
+  - product_bit_decoding
+  - mechanism_or_parameter_analysis
+  - topology_or_parameter_change
+  - additional_sweep
+  - next_experiment
+package:
+  tag: CARRY5_FUNCTIONAL_28_20261010
+  mode: DELTA
+  existing_raw_runs_repacked: false
+  new_raw_zip_per_run: true
+  html_included: false
+  drive_folder: BVM_Backages
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

@@ -5632,6 +5632,10 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
     allowed_worktree = {path.relative_to(REPO).as_posix() for path in evidence_paths}
     allowed_worktree.update(raw.relative_to(REPO).as_posix() for raw in raw_paths.values())
     allowed_worktree.update(relpath for _path, relpath in workflow_paths)
+    checkpoint_raw_sha = {
+        f"{SERIES.relative_to(REPO).as_posix()}/{item['raw_path']}": item["raw_sha256"]
+        for item in base_raw_refs
+    }
     status = subprocess.run(["git", "status", "--porcelain=v1", "--untracked-files=all"],
                             cwd=REPO, text=True, capture_output=True, check=True).stdout
     unexpected = []
@@ -5640,6 +5644,11 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
         if relpath.startswith("\"") and relpath.endswith("\""):
             relpath = json.loads(relpath)
         if relpath not in allowed_worktree:
+            expected_raw_sha = checkpoint_raw_sha.get(relpath)
+            if expected_raw_sha:
+                raw_path = REPO / relpath
+                if raw_path.is_file() and not raw_path.is_symlink() and root.sha256(raw_path) == expected_raw_sha:
+                    continue
             unexpected.append(relpath)
     if unexpected:
         raise RuntimeError("manual-run DELTA refuses unrelated worktree changes: " + ", ".join(sorted(unexpected)))

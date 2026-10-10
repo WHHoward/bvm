@@ -1,0 +1,67 @@
+{
+  "schema": "bvm4x4-d3-carry-timing-metric-spec-v1",
+  "windows": {
+    "ARRAY_FINAL_READ": {
+      "interval_ps": [
+        110,
+        121
+      ],
+      "boundary": "[start,end)"
+    },
+    "PRE_CLOCK": {
+      "interval_ps": [
+        121,
+        200
+      ],
+      "boundary": "[start,end)"
+    },
+    "BEFORE_CLOCK": {
+      "interval_ps": [
+        0,
+        200
+      ],
+      "boundary": "[start,end)"
+    },
+    "CLOCK_EDGE": {
+      "interval_ps": [
+        200,
+        205
+      ],
+      "boundary": "[start,end)"
+    },
+    "POST_CLOCK": {
+      "interval_ps": [
+        205,
+        300
+      ],
+      "boundary": "[start,end)"
+    },
+    "TOTAL": {
+      "interval_ps": [
+        0,
+        300
+      ],
+      "boundary": "[start,end)"
+    }
+  },
+  "required_arithmetic": [
+    "P/V same-JJ phase-area arithmetic on identical raw rows",
+    "positive/negative unwrapped phase variation in radians",
+    "stored-grid signal extrema and signed areas",
+    "branch current extrema and charge on actual timestamps"
+  ],
+  "phase_unit": "P(...) radians; rad/(2*pi) navigation only",
+  "integration": "trapezoid over actual stored timestamps; no interpolation or resampling",
+  "preexisting_voltage_lobe_candidates": {
+    "method": "local_voltage_extrema_relative_threshold",
+    "relative_threshold": 0.25,
+    "minimum_peak_separation_ps": 1.0,
+    "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+  },
+  "candidate_semantics": "descriptive local waveform extrema only; not switching, event, or SFQ counts",
+  "threshold_or_event_classifier": null,
+  "SFQ_count": "NOT_PERFORMED",
+  "product_bit_decode": "NOT_PERFORMED",
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

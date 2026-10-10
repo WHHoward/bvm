@@ -308,6 +308,17 @@ C4R28_BASE_PACKAGES = (
      "e1a03660733e11ae823b949f8ddfd56f675c649098159d08364bfa77b4ce91c2"),
 )
 C4R28_MAX_METADATA_GROUP_BYTES = 75_000_000
+C4R28_PACKAGE_FINAL_HEAD = "312a711f2a7b227be739a7bfa7bc2c11b93b6977"
+MANUAL_RUN_CHECKPOINTS_PATH = SERIES / "analysis" / "MANUAL_RUN_DELTA_CHECKPOINTS.json"
+MANUAL_RUN_REQUIRED_FILES = {
+    "deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt", "USER_CASE.snapshot.env",
+    "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env", "CBU_PARAMS.snapshot.env",
+    "DFF_PARAMS.snapshot.env", "D0_JTL_PARAMS.snapshot.env", "stimulus.inc", "case_manifest.json",
+    "metadata.json", "provenance.json", "source_manifest.json", "topology_manifest.json",
+    "probe_manifest.json", "static_qa.json", "stimulus_manifest.json", "metrics.json",
+    "raw_qa.json", "chain_qa.json", "qa.json", "plot_manifest.json", "plot_qa.json",
+    "result.json", "RESULT_BRIEF.md",
+}
 CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
 CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
 CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
@@ -5236,6 +5247,557 @@ def submit_c4r28_functional_delta(args: argparse.Namespace, root: Any) -> int:
     return 0
 
 
+def _manual_run_blob_sha(commit: str, path: str) -> str | None:
+    exists = subprocess.run(["git", "cat-file", "-e", f"{commit}:{path}"], cwd=REPO,
+                            check=False, capture_output=True)
+    if exists.returncode:
+        return None
+    data = subprocess.run(["git", "show", f"{commit}:{path}"], cwd=REPO,
+                          check=True, capture_output=True).stdout
+    return hashlib.sha256(data).hexdigest()
+
+
+def _verify_manual_checkpoint_blobs(package_set: list[dict[str, Any]], checkpoint_commit: str) -> None:
+    for item in package_set:
+        for name in (item["package_name"], f"{Path(item['package_name']).stem}_PACKAGE_QA.json"):
+            rel = (HANDOFF / name).relative_to(REPO).as_posix()
+            committed = subprocess.run(["git", "rev-parse", f"{checkpoint_commit}:{rel}"],
+                                       cwd=REPO, text=True, capture_output=True, check=False)
+            current = subprocess.run(["git", "hash-object", rel], cwd=REPO, text=True,
+                                      capture_output=True, check=True).stdout.strip()
+            if committed.returncode != 0 or committed.stdout.strip() != current:
+                raise RuntimeError(f"checkpoint file differs from its committed identity: {rel}")
+
+
+def _verify_manual_checkpoint_packages(root: Any, package_set: list[dict[str, Any]],
+                                       checkpoint_commit: str | None = None) -> None:
+    if not package_set:
+        raise RuntimeError("manual-run checkpoint has an empty package set")
+    for item in package_set:
+        name = item.get("package_name")
+        expected_sha = item.get("package_sha256")
+        if not isinstance(name, str) or not isinstance(expected_sha, str):
+            raise RuntimeError("manual-run checkpoint package identity is malformed")
+        package = HANDOFF / name
+        qa_path = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(package, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("package_sha256") != expected_sha or
+                qa.get("package_bytes") != package.stat().st_size):
+            raise RuntimeError(f"manual-run checkpoint package identity/QA mismatch: {name}")
+    if checkpoint_commit:
+        _verify_manual_checkpoint_blobs(package_set, checkpoint_commit)
+
+
+def _manual_c4r28_bootstrap_checkpoint(root: Any, head: str) -> dict[str, Any]:
+    """Build the first generic manual-run base from the already verified C4R28 checkpoint."""
+    if head != C4R28_PACKAGE_FINAL_HEAD:
+        raise RuntimeError("manual-run checkpoint registry is absent and HEAD is not the registered C4R28 package HEAD")
+    evidence_path = C4R28_ANALYSIS_DIR / "EVIDENCE_MANIFEST.json"
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    run_records = evidence.get("run_records", [])
+    c4r28_ids = [item.get("run_id") for item in run_records]
+    expected_ids = [f"A{i:03d}_C4R28_210_{a}x{b}" for i, (a, b) in
+                    enumerate(C4R28_PAIRS, start=48)]
+    if len(c4r28_ids) != 28 or c4r28_ids != expected_ids:
+        raise RuntimeError("C4R28 base evidence does not enumerate the registered A048-A075 run set")
+
+    package_names = [
+        f"{SERIES.name}_delta_{C4R28_TAG}_source_analysis.zip",
+        f"{SERIES.name}_delta_{C4R28_TAG}_runs_metadata_001.zip",
+        f"{SERIES.name}_delta_{C4R28_TAG}_runs_metadata_002.zip",
+        *(f"{SERIES.name}_delta_{C4R28_TAG}_{run_id}_raw.zip" for run_id in c4r28_ids),
+    ]
+    package_set = []
+    package_qas = {}
+    for index, name in enumerate(package_names):
+        package = HANDOFF / name
+        qa_path = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(package, qa_path)
+        if (qa.get("status") != "PASS" or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True or
+                qa.get("package_sha256") != root.sha256(package) or
+                qa.get("package_bytes") != package.stat().st_size):
+            raise RuntimeError(f"C4R28 bootstrap package identity/member QA mismatch: {name}")
+        if package_set and qa.get("source_commit") != package_set[0]["source_commit"]:
+            raise RuntimeError(f"C4R28 package set is split across source commits: {name}")
+        group = ("source_analysis" if index == 0 else
+                 f"runs_metadata_{index:03d}" if index <= 2 else c4r28_ids[index - 3])
+        package_set.append({"package_group": group, "package_name": name,
+                            "package_sha256": qa["package_sha256"],
+                            "package_bytes": qa["package_bytes"],
+                            "source_commit": qa["source_commit"]})
+        package_qas[name] = qa
+
+    metadata_refs = []
+    c4r28_source_commit = package_set[0]["source_commit"]
+    for name in package_names[1:3]:
+        with zipfile.ZipFile(HANDOFF / name, "r") as archive:
+            if archive.testzip() is not None:
+                raise RuntimeError(f"C4R28 metadata base ZIP CRC failure: {name}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+        if (delta.get("head_commit") != c4r28_source_commit or
+                delta.get("authorization_status") !=
+                "MANUAL_EVIDENCE_PACKAGED; NO_RETROACTIVE_AUTHORIZATION_CLAIM"):
+            raise RuntimeError(f"C4R28 metadata base lineage/scope mismatch: {name}")
+        refs = delta.get("referenced_existing_raw_sha256", [])
+        if len(refs) != 47:
+            raise RuntimeError(f"C4R28 metadata base should reference 47 existing raws: {name}")
+        if metadata_refs and refs != metadata_refs:
+            raise RuntimeError("C4R28 metadata package groups disagree on their inherited raw references")
+        metadata_refs = refs
+    older_numbers = sorted(int(item.get("run_id", "A000").split("_", 1)[0][1:])
+                           for item in metadata_refs)
+    if older_numbers != list(range(1, 48)) or len({item.get("run_id") for item in metadata_refs}) != 47:
+        raise RuntimeError("C4R28 base does not provide a unique A001-A047 raw-reference closure")
+
+    references = list(metadata_refs)
+    for run_id in c4r28_ids:
+        name = f"{SERIES.name}_delta_{C4R28_TAG}_{run_id}_raw.zip"
+        qa = package_qas[name]
+        raw_map = qa.get("raw_sha256_by_run", {})
+        raw_sha = raw_map.get(run_id)
+        raw_member_hashes = [digest for member, digest in qa.get("included_file_sha256", {}).items()
+                             if member.endswith(f"/runs/{run_id}/raw.csv")]
+        if (set(raw_map) != {run_id} or len(raw_member_hashes) != 1 or
+                raw_member_hashes[0] != raw_sha):
+            raise RuntimeError(f"C4R28 base raw-package identity/member hash mismatch: {run_id}")
+        references.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                           "raw_sha256": raw_sha, "source_package_name": name,
+                           "source_package_sha256": qa["package_sha256"]})
+
+    manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    manifest_raw = {item.get("run_id"): item.get("raw_sha256") for item in manifest.get("runs", [])}
+    reference_ids = {item.get("run_id") for item in references}
+    reference_numbers = sorted(int(run_id.split("_", 1)[0][1:]) for run_id in reference_ids)
+    if len(references) != 75 or len(reference_ids) != 75 or reference_numbers != list(range(1, 76)):
+        raise RuntimeError("C4R28 checkpoint raw closure is not exactly A001-A075")
+    if any(manifest_raw.get(item["run_id"]) != item["raw_sha256"] for item in references):
+        raise RuntimeError("C4R28 checkpoint raw references disagree with experiment_manifest.json")
+    _verify_manual_checkpoint_blobs(package_set, C4R28_PACKAGE_FINAL_HEAD)
+
+    return {"tag": C4R28_TAG, "base_commit": C4R28_PACKAGE_FINAL_HEAD,
+            "source_commit": c4r28_source_commit, "checkpoint_commit": C4R28_PACKAGE_FINAL_HEAD,
+            "package_set": package_set, "run_ids": sorted(reference_ids),
+            "all_raw_references": sorted(references, key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))}
+
+
+def _manual_run_base_checkpoint(root: Any, head: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    registry_path = MANUAL_RUN_CHECKPOINTS_PATH
+    if not registry_path.is_file():
+        checkpoint = _manual_c4r28_bootstrap_checkpoint(root, head)
+        return checkpoint, [checkpoint]
+
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    if registry.get("schema") != "bvm4x4-manual-run-delta-checkpoints-v1":
+        raise RuntimeError("manual-run checkpoint registry schema mismatch")
+    checkpoints = registry.get("checkpoints", [])
+    if not checkpoints:
+        raise RuntimeError("manual-run checkpoint registry is empty")
+    checkpoint = checkpoints[-1]
+    if (not checkpoint.get("package_set") or not checkpoint.get("all_raw_references") or
+            not checkpoint.get("run_ids")):
+        raise RuntimeError("latest manual-run checkpoint is incomplete")
+    checkpoint_commit = subprocess.run(
+        ["git", "log", "-1", "--format=%H", "--",
+         registry_path.relative_to(REPO).as_posix()], cwd=REPO, text=True,
+        capture_output=True, check=True).stdout.strip()
+    if not checkpoint_commit or subprocess.run(
+            ["git", "merge-base", "--is-ancestor", checkpoint_commit, head],
+            cwd=REPO, check=False).returncode != 0:
+        raise RuntimeError("latest manual-run checkpoint commit is not an ancestor of current HEAD")
+    _verify_manual_checkpoint_packages(root, checkpoint["package_set"], checkpoint_commit)
+
+    references = checkpoint["all_raw_references"]
+    run_ids = checkpoint["run_ids"]
+    if (len(references) != len(run_ids) or len({item.get("run_id") for item in references}) != len(references) or
+            set(run_ids) != {item.get("run_id") for item in references}):
+        raise RuntimeError("latest manual-run checkpoint raw-reference closure is ambiguous")
+    current_manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    manifest_raw = {item.get("run_id"): item.get("raw_sha256") for item in current_manifest.get("runs", [])}
+    if any(manifest_raw.get(item["run_id"]) != item.get("raw_sha256") for item in references):
+        raise RuntimeError("manual-run checkpoint raw identities disagree with experiment_manifest.json")
+    return checkpoint, checkpoints
+
+
+def _manual_run_pending_ids(checkpoint: dict[str, Any]) -> tuple[list[str], list[str]]:
+    manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    known = set(checkpoint["run_ids"])
+    pending_rows = [item for item in manifest.get("runs", []) if item.get("run_id") not in known]
+    manual = sorted((item.get("run_id") for item in pending_rows if item.get("batch_id") is None),
+                    key=lambda rid: int(rid.split("_", 1)[0][1:]) if isinstance(rid, str) else 0)
+    registered = sorted(item.get("run_id") for item in pending_rows if item.get("batch_id") is not None)
+    if any(not isinstance(run_id, str) or not re.fullmatch(r"A\d{3}_[A-Za-z0-9_.-]+", run_id)
+           for run_id in manual):
+        raise RuntimeError("new manual run ID is malformed")
+    return manual, registered
+
+
+def _manual_run_pending_for_auto_route() -> bool:
+    """Avoid sending an unregistered manual run into an unrelated fixed --delta branch."""
+    manifest_path = SERIES / "experiment_manifest.json"
+    if not manifest_path.is_file():
+        return False
+    registry_path = MANUAL_RUN_CHECKPOINTS_PATH
+    if registry_path.is_file():
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        checkpoints = registry.get("checkpoints", [])
+        if not checkpoints:
+            raise RuntimeError("manual-run checkpoint registry is empty")
+        known = set(checkpoints[-1].get("run_ids", []))
+    else:
+        if git("rev-parse", "HEAD") != C4R28_PACKAGE_FINAL_HEAD:
+            return False
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        known = {item.get("run_id") for item in manifest.get("runs", [])
+                 if isinstance(item.get("run_id"), str) and
+                 item["run_id"].startswith("A") and
+                 item["run_id"].split("_", 1)[0][1:].isdigit() and
+                 int(item["run_id"].split("_", 1)[0][1:]) <= 75}
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    return any(item.get("run_id") not in known and item.get("batch_id") is None
+               for item in manifest.get("runs", []))
+
+
+def _manual_run_file_set(run_id: str) -> tuple[list[Path], Path]:
+    run_dir = RUNS / run_id
+    if not run_dir.is_dir():
+        raise RuntimeError(f"manual run directory is missing: {run_id}")
+    files = sorted(path for path in run_dir.rglob("*") if path.is_file() and not path.is_symlink()
+                   and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"}
+                   and "__pycache__" not in path.parts and "handoff" not in path.parts)
+    missing = MANUAL_RUN_REQUIRED_FILES - {path.name for path in files}
+    raw = run_dir / "raw.csv"
+    if missing or not raw.is_file() or raw.is_symlink():
+        raise RuntimeError(f"manual run evidence closure incomplete for {run_id}; missing={sorted(missing)}")
+    return files, raw
+
+
+def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]] | None:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,79}", tag):
+        raise RuntimeError("manual-run DELTA tag must be 1-80 safe filename characters")
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("manual-run DELTA requires the master branch")
+    head = git("rev-parse", "HEAD")
+    if git("rev-parse", "bvm/master") != head:
+        raise RuntimeError("manual-run DELTA requires local master to match bvm/master")
+    if git("diff", "--cached", "--name-only"):
+        raise RuntimeError("manual-run DELTA refuses pre-staged changes")
+
+    checkpoint, checkpoint_history = _manual_run_base_checkpoint(root, head)
+    manual_ids, registered_ids = _manual_run_pending_ids(checkpoint)
+    if not manual_ids:
+        return None
+    if registered_ids:
+        raise RuntimeError("pending registered-batch runs are mixed with manual runs; package the registered batch first: " +
+                           ", ".join(registered_ids))
+
+    manifest_path = SERIES / "experiment_manifest.json"
+    manifest_rel = manifest_path.relative_to(REPO).as_posix()
+    script_path = Path(__file__).resolve()
+    script_rel = script_path.relative_to(REPO).as_posix()
+    readme_path = SERIES / "README.md"
+    readme_rel = readme_path.relative_to(REPO).as_posix()
+    current_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    base_manifest_bytes = subprocess.run(["git", "show", f"{head}:{manifest_rel}"], cwd=REPO,
+                                         capture_output=True, check=True).stdout
+    base_manifest = json.loads(base_manifest_bytes)
+    expected_count = int(base_manifest.get("physical_solve_count", -1)) + len(manual_ids)
+    if int(current_manifest.get("physical_solve_count", -2)) != expected_count:
+        raise RuntimeError("experiment_manifest physical_solve_count does not increase by exactly the pending manual run count")
+
+    base_raw_refs = checkpoint["all_raw_references"]
+    base_raw_by_id = {item["run_id"]: item["raw_sha256"] for item in base_raw_refs}
+    current_rows = {item.get("run_id"): item for item in current_manifest.get("runs", [])}
+    base_rows = {item.get("run_id"): item for item in base_manifest.get("runs", [])}
+    if any(base_raw_by_id.get(run_id) != row.get("raw_sha256") for run_id, row in base_rows.items()
+           if run_id in base_raw_by_id):
+        raise RuntimeError("a previously checkpointed raw identity changed in the current experiment manifest")
+
+    all_run_files: dict[str, list[Path]] = {}
+    raw_paths: dict[str, Path] = {}
+    new_raw_by_run: dict[str, str] = {}
+    evidence_paths: set[Path] = {manifest_path}
+    for run_id in manual_ids:
+        files, raw = _manual_run_file_set(run_id)
+        result = json.loads((RUNS / run_id / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((RUNS / run_id / "qa.json").read_text(encoding="utf-8"))
+        raw_qa = json.loads((RUNS / run_id / "raw_qa.json").read_text(encoding="utf-8"))
+        static_qa = json.loads((RUNS / run_id / "static_qa.json").read_text(encoding="utf-8"))
+        chain_qa = json.loads((RUNS / run_id / "chain_qa.json").read_text(encoding="utf-8"))
+        plot_qa = json.loads((RUNS / run_id / "plot_qa.json").read_text(encoding="utf-8"))
+        metadata = json.loads((RUNS / run_id / "metadata.json").read_text(encoding="utf-8"))
+        row = current_rows.get(run_id)
+        digest = root.sha256(raw)
+        if (not row or result.get("run_id") != run_id or row.get("run_id") != run_id or
+                result.get("physical_solve_count") != 1 or result.get("solver_exit_code") != 0 or
+                result.get("artifact_status") != "VALID" or result.get("qa_status") != "PASS" or
+                result.get("raw_sha256") != digest or result.get("raw_bytes") != raw.stat().st_size or
+                row.get("raw_sha256") != digest or row.get("deck_sha256") != result.get("deck_sha256") or
+                row.get("physical_solve_count") != 1 or qa.get("status") != "PASS" or
+                qa.get("raw_sha256_before_analysis") != digest or qa.get("raw_sha256_after_analysis") != digest or
+                raw_qa.get("status") != "PASS" or raw_qa.get("raw_sha256_before") != digest or
+                raw_qa.get("raw_sha256_after_analysis") != digest or static_qa.get("status") != "PASS" or
+                chain_qa.get("status") != "PASS" or plot_qa.get("status") != "PASS" or
+                metadata.get("solver", {}).get("parent_head") != head or
+                raw.stat().st_size >= root.MAX_GIT_FILE_BYTES):
+            raise RuntimeError(f"manual run result/raw/QA/provenance identity failure: {run_id}")
+        all_run_files[run_id], raw_paths[run_id] = files, raw
+        new_raw_by_run[run_id] = digest
+        evidence_paths.update(path for path in files if path != raw)
+
+    base_registry_ids = set(checkpoint["run_ids"])
+    untracked_run_dirs = {path.name for path in RUNS.iterdir() if path.is_dir() and path.name.startswith("A")
+                          and path.name not in base_registry_ids and path.name not in manual_ids}
+    if untracked_run_dirs:
+        raise RuntimeError("new run directories are not registered for this manual DELTA: " +
+                           ", ".join(sorted(untracked_run_dirs)))
+
+    workflow_paths = []
+    for path, relpath in ((script_path, script_rel), (readme_path, readme_rel)):
+        if _manual_run_blob_sha(head, relpath) != root.sha256(path):
+            workflow_paths.append((path, relpath))
+    workflow_sha256 = {relpath: root.sha256(path) for path, relpath in workflow_paths}
+    metadata_sources = [(path, path.relative_to(REPO).as_posix())
+                        for path in sorted(evidence_paths)]
+    metadata_sources.extend(workflow_paths)
+    raw_sources = {run_id: [(path, path.relative_to(REPO).as_posix())]
+                   for run_id, path in raw_paths.items()}
+
+    prior_packages = checkpoint["package_set"]
+    base_package = prior_packages[0]
+    references = sorted(base_raw_refs, key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
+    groups: list[tuple[str, list[tuple[Path, str]], str | None]] = [
+        ("runs_metadata", metadata_sources, None),
+        *((f"{run_id}_raw", raw_sources[run_id], run_id) for run_id in manual_ids),
+    ]
+    specs, plans = [], []
+    for group_name, sources, run_id in groups:
+        records = root.file_records(sources)
+        included = {item["archive_path"]: item["sha256"] for item in records}
+        new_files, modified_files = [], []
+        for member, digest in included.items():
+            old_digest = _manual_run_blob_sha(head, member)
+            if old_digest is None:
+                new_files.append(member)
+            elif old_digest != digest:
+                modified_files.append(member)
+        raw_map = {run_id: new_raw_by_run[run_id]} if run_id else {}
+        solve_count = 1 if run_id else 0
+        package_name = f"{SERIES.name}_delta_{tag}_{group_name}.zip"
+        target = HANDOFF / package_name
+        qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        delta = {
+            "schema": "bvm4x4-manual-run-delta-v1", "package_type": "manual_run_delta",
+            "tag": tag, "package_group": group_name, "base_commit": head,
+            "base_checkpoint_tag": checkpoint["tag"],
+            "base_package_name": base_package["package_name"],
+            "base_package_sha256": base_package["package_sha256"],
+            "base_package_set": prior_packages, "base_run_packages": base_raw_refs,
+            "head_commit": "PENDING_SOURCE_COMMIT", "workflow_file_sha256": workflow_sha256,
+            "included_files": records, "included_file_sha256": included,
+            "new_files": sorted(new_files), "modified_files": sorted(modified_files), "deleted_files": [],
+            "referenced_existing_cases": references,
+            "referenced_existing_raw_sha256": references,
+            "raw_sha256_by_run": raw_map, "new_run_ids": manual_ids,
+            "new_raw_sha256_by_run": new_raw_by_run,
+            "new_physical_solve_count": solve_count,
+            "batch_physical_solve_count": len(manual_ids), "solver_invocations_this_task": 0,
+            "reused_point_count": 0, "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
+            "scientific_interpretation_performed": False, "automatic_follow_up": False,
+            "html_included": False,
+        }
+        extra = {
+            "DELTA_MANIFEST.json": (json.dumps(delta, ensure_ascii=False, indent=2) + "\n").encode(),
+            "README.txt": (f"Manual-run DELTA package for {', '.join(manual_ids)}.\n"
+                           "Previously checkpointed raw files are referenced by exact package and raw SHA-256; "
+                           "they are not recopied.\nGenerated HTML remains local. No solver or scientific "
+                           "interpretation was performed by this packaging task.\n").encode(),
+        }
+        if sum(item["bytes"] for item in records) + sum(map(len, extra.values())) >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"manual-run package exceeds the ordinary Git size guard: {package_name}")
+        specs.append({"name": package_name, "kind": "bvm4x4_manual_run_delta_v1", "scope": SERIES,
+                      "target": target, "qa_path": qa_path, "sources": sources, "extra_members": extra,
+                      "delta_manifest": delta, "base_name": base_package["package_name"],
+                      "base_sha": base_package["package_sha256"], "raw_by_run": raw_map,
+                      "package_group": group_name, "run_id": run_id})
+        plans.append({"package": package_name, "package_group": group_name,
+                      "file_count": len(records) + len(extra) + 2,
+                      "uncompressed_source_bytes": sum(item["bytes"] for item in records),
+                      "raw_bytes": sum(item["bytes"] for item in records
+                                       if Path(item["archive_path"]).name == "raw.csv"),
+                      "raw_sha256_by_run": raw_map, "new_physical_solve_count": solve_count,
+                      "new_files": sorted(new_files), "modified_files": sorted(modified_files),
+                      "qa_path": qa_path.relative_to(REPO).as_posix()})
+
+    allowed_worktree = {path.relative_to(REPO).as_posix() for path in evidence_paths}
+    allowed_worktree.update(raw.relative_to(REPO).as_posix() for raw in raw_paths.values())
+    allowed_worktree.update(relpath for _path, relpath in workflow_paths)
+    status = subprocess.run(["git", "status", "--porcelain=v1", "--untracked-files=all"],
+                            cwd=REPO, text=True, capture_output=True, check=True).stdout
+    unexpected = []
+    for line in status.splitlines():
+        relpath = line[3:]
+        if relpath.startswith("\"") and relpath.endswith("\""):
+            relpath = json.loads(relpath)
+        if relpath not in allowed_worktree:
+            unexpected.append(relpath)
+    if unexpected:
+        raise RuntimeError("manual-run DELTA refuses unrelated worktree changes: " + ", ".join(sorted(unexpected)))
+
+    stage_paths = {manifest_rel}
+    stage_paths.update(path.relative_to(REPO).as_posix() for path in evidence_paths if path != script_path)
+    stage_paths.update(relpath for _path, relpath in workflow_paths)
+    return specs, {"checkpoint": checkpoint, "checkpoint_history": checkpoint_history,
+                   "references": references, "run_ids": manual_ids, "new_raw_by_run": new_raw_by_run,
+                   "pre_commit_head": head, "workflow_paths": [rel for _path, rel in workflow_paths],
+                   "workflow_path_pairs": [(str(path), rel) for path, rel in workflow_paths],
+                   "evidence_paths": sorted(stage_paths - {rel for _path, rel in workflow_paths}),
+                   "stage_paths": sorted(stage_paths),
+                   "plan": {"package_mode": "MANUAL_RUN_DELTA", "tag": tag,
+                            "base_commit": head, "base_checkpoint_tag": checkpoint["tag"],
+                            "base_package_set": prior_packages,
+                            "referenced_existing_raw_count": len(references),
+                            "new_run_ids": manual_ids, "new_physical_solve_count": len(manual_ids),
+                            "solver_invocations_this_task": 0,
+                            "manifest_count": current_manifest.get("physical_solve_count"),
+                            "manifest_registered_maximum": current_manifest.get("maximum_physical_solve_count"),
+                            "html_included": False, "package_count": len(specs), "packages": plans}}
+
+
+def submit_manual_run_delta(args: argparse.Namespace, root: Any,
+                            prepared: tuple[list[dict[str, Any]], dict[str, Any]] | None = None) -> int:
+    specs, context = prepared if prepared is not None else manual_run_delta_specs(args.tag, root)
+    if specs is None:
+        raise RuntimeError("no new uncheckpointed manual runs are available")
+    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
+    if not mirror_dir.is_dir():
+        raise RuntimeError(f"BVM package mirror is not accessible: {mirror_dir}")
+    collisions = [str(path) for spec in specs for path in (spec["target"], spec["qa_path"]) if path.exists()]
+    collisions.extend(str(mirror_dir / spec["name"]) for spec in specs if (mirror_dir / spec["name"]).exists())
+    if collisions:
+        raise FileExistsError("refusing immutable manual-run package overwrite: " + ", ".join(collisions))
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", **context["plan"],
+                          "source_paths_to_commit": context["stage_paths"],
+                          "mirror_dir": str(mirror_dir), "push_target": "bvm/master",
+                          "no_files_modified": True}, ensure_ascii=False, indent=2))
+        return 0
+
+    workflow_dirty = []
+    for absolute, relpath in context["workflow_path_pairs"]:
+        if subprocess.run(["git", "diff", "--quiet", "--", relpath], cwd=REPO,
+                          check=False).returncode != 0:
+            workflow_dirty.append(relpath)
+    if workflow_dirty:
+        subprocess.run(["git", "add", "-f", "--", *workflow_dirty], cwd=REPO, check=True)
+        staged = git("diff", "--cached", "--name-only").splitlines()
+        if staged != sorted(workflow_dirty):
+            raise RuntimeError("workflow maintenance commit would stage paths outside the submit script/README")
+        subprocess.run(["git", "commit", "-m", "tools: generalize manual-run DELTA submission"],
+                       cwd=REPO, check=True)
+
+    evidence_paths = context["evidence_paths"]
+    if evidence_paths:
+        subprocess.run(["git", "add", "-f", "--", *evidence_paths], cwd=REPO, check=True)
+    staged = git("diff", "--cached", "--name-only").splitlines()
+    if any(path not in set(evidence_paths) for path in staged):
+        raise RuntimeError("manual-run evidence commit would stage paths outside the run/manifest scope")
+    if staged:
+        run_label = ",".join(context["run_ids"])
+        subprocess.run(["git", "commit", "-m", f"evidence: record manual runs {run_label}"],
+                       cwd=REPO, check=True)
+    source_head = git("rev-parse", "HEAD")
+
+    results = []
+    for spec in specs:
+        spec["delta_manifest"]["head_commit"] = source_head
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(spec["delta_manifest"], ensure_ascii=False, indent=2) + "\n").encode()
+        result = root.archive_bundle(spec, source_head)
+        archive_path, qa_path = REPO / result["path"], REPO / result["qa_path"]
+        qa = root.verify_existing_bundle(archive_path, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("source_commit") != source_head or
+                qa.get("package_sha256") != root.sha256(archive_path) or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"manual-run PACKAGE_QA/member integrity failure: {spec['name']}")
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            if any(name.lower().endswith(".html") for name in archive.namelist()):
+                raise RuntimeError(f"HTML must remain local: {spec['name']}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if (delta.get("head_commit") != source_head or
+                    delta.get("authorization_status") != "NOT_ASSERTED_BY_PACKAGING"):
+                raise RuntimeError(f"manual-run DELTA scope/head failure: {spec['name']}")
+            for member, digest in delta["included_file_sha256"].items():
+                if hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"manual-run ZIP member SHA mismatch: {spec['name']}/{member}")
+        for run_id, expected in context["new_raw_by_run"].items():
+            raw = RUNS / run_id / "raw.csv"
+            if root.sha256(raw) != expected:
+                raise RuntimeError(f"manual-run immutable raw SHA changed during packaging: {run_id}")
+        result.update({"sha256": qa["package_sha256"], "bytes": qa["package_bytes"],
+                       "status": qa["status"], "package_group": spec["package_group"]})
+        results.append(result)
+
+    new_refs = list(context["references"])
+    for result in results:
+        run_id = result.get("package_group", "")
+        if not run_id.endswith("_raw"):
+            continue
+        actual_run_id = run_id[:-4]
+        new_refs.append({"run_id": actual_run_id, "raw_path": f"runs/{actual_run_id}/raw.csv",
+                         "raw_sha256": context["new_raw_by_run"][actual_run_id],
+                         "source_package_name": Path(result["path"]).name,
+                         "source_package_sha256": result["sha256"]})
+    new_refs.sort(key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
+    current_registry = {"schema": "bvm4x4-manual-run-delta-checkpoints-v1",
+                        "checkpoints": context["checkpoint_history"]}
+    checkpoint_entry = {
+        "tag": args.tag, "base_commit": context["pre_commit_head"], "source_commit": source_head,
+        "package_set": [{"package_group": item["package_group"],
+                         "package_name": Path(item["path"]).name,
+                         "package_sha256": item["sha256"], "package_bytes": item["bytes"],
+                         "source_commit": source_head} for item in results],
+        "new_run_ids": context["run_ids"],
+        "run_ids": sorted({item["run_id"] for item in new_refs},
+                           key=lambda rid: int(rid.split("_", 1)[0][1:])),
+        "new_raw_sha256_by_run": context["new_raw_by_run"],
+        "all_raw_references": new_refs,
+        "new_physical_solve_count": len(context["run_ids"]),
+        "solver_invocations_this_task": 0, "html_included": False,
+        "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
+        "scientific_interpretation_performed": False,
+    }
+    if any(item.get("tag") == args.tag for item in current_registry["checkpoints"]):
+        raise RuntimeError(f"manual-run DELTA tag already exists in checkpoint registry: {args.tag}")
+    current_registry["checkpoints"].append(checkpoint_entry)
+    MANUAL_RUN_CHECKPOINTS_PATH.write_text(
+        json.dumps(current_registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    package_paths = [REPO / path for item in results for path in (item["path"], item["qa_path"])]
+    checkpoint_rel = MANUAL_RUN_CHECKPOINTS_PATH.relative_to(REPO).as_posix()
+    subprocess.run(["git", "add", "-f", "--", *[path.relative_to(REPO).as_posix() for path in package_paths],
+                    checkpoint_rel], cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", f"package: archive manual-run DELTA {args.tag}"],
+                   cwd=REPO, check=True)
+    push_status = "SKIPPED"
+    if not args.no_push:
+        subprocess.run(["git", "push"], cwd=REPO, check=True)
+        push_status = "PASS"
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    print(json.dumps({"status": "MANUAL_RUN_DELTA_SUBMIT_COMPLETE",
+                      "source_commit": source_head, "final_commit": git("rev-parse", "HEAD"),
+                      "push": push_status, "packages": results,
+                      "base_commit": context["pre_commit_head"],
+                      "base_checkpoint_tag": context["checkpoint"]["tag"],
+                      "referenced_existing_raw_count": len(context["references"]),
+                      "included_run_ids": context["run_ids"],
+                      "new_physical_solve_count": len(context["run_ids"]),
+                      "solver_invocations_this_task": 0,
+                      "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
+                      "html_included": False, "mirror": mirror}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -5251,6 +5813,8 @@ def main() -> int:
                         help="package manual A045-A047 as a separate non-retroactive CARRY4 supplement")
     parser.add_argument("--carry4-functional-28", action="store_true",
                         help="package the read-only C4R28_210 analysis and 28 manual raw files as a dedicated DELTA")
+    parser.add_argument("--manual-runs", action="store_true",
+                        help="package all newly discovered uncheckpointed manual run directories as an immutable DELTA")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")
@@ -5258,6 +5822,11 @@ def main() -> int:
     args = parser.parse_args()
     try:
         root = load_root_submit()
+        if args.manual_runs:
+            if (args.d3_carry_timing or args.d3_manual_supplement or args.carry4_manual_supplement or
+                    args.carry4_functional_28 or args.metadata_v2):
+                raise RuntimeError("--manual-runs cannot be combined with another fixed package mode")
+            return submit_manual_run_delta(args, root)
         if args.carry4_functional_28:
             if args.delta or args.d3_carry_timing or args.d3_manual_supplement or args.carry4_manual_supplement or args.metadata_v2:
                 raise RuntimeError("--carry4-functional-28 cannot be combined with other package modes")
@@ -5277,6 +5846,8 @@ def main() -> int:
         if args.delta:
             if args.metadata_v2:
                 raise RuntimeError("--delta and --metadata-v2 are mutually exclusive")
+            if _manual_run_pending_for_auto_route():
+                return submit_manual_run_delta(args, root)
             carry_sjtl_position_batch = CARRY_SJTL_POSITION_TASK / "attempts" / "003" / "BATCH_MANIFEST.json"
             if carry_sjtl_position_batch.is_file():
                 return submit_carry_sjtl_position_delta(args, root)

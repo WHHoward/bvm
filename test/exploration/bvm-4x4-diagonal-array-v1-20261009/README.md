@@ -472,3 +472,23 @@ T1 parameters are managed by `config/T1_PARAMS.env`. Independent T1 channels do
 not connect to one another. The chain mode is an exploratory physical candidate
 and does not establish multiplier function, bit decoding, or a 20 GHz system
 claim.
+
+### Manual-run DELTA submission
+
+New unregistered manual runs (`batch_id=null`) are automatically routed by
+`--delta` when they are present in `experiment_manifest.json` but not in the
+latest package checkpoint. Preview, then submit with:
+
+```bash
+./submit.sh <unique-tag> --delta --dry-run
+./submit.sh <same-tag> --delta
+```
+
+Use `--manual-runs` instead of `--delta` to explicitly select this route. The
+workflow validates every newly discovered run and raw SHA, commits only the
+run metadata/manifest (raw CSVs are not committed directly), makes one raw ZIP
+per run plus one metadata ZIP, excludes HTML, records the checkpoint for the
+next call, pushes, and verifies the D-drive mirror (`/mnt/d/BVM_Backages`) SHA-256. It
+references prior raw/package identities rather than repackaging them and makes
+no retroactive authorization or scientific claim. Do not combine manual runs
+with an unfinished registered batch; the workflow stops on that ambiguity.

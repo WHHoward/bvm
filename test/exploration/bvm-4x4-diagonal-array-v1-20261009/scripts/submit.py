@@ -5854,22 +5854,40 @@ def checkpointed_raw_git_plan(root: Any) -> dict[str, Any]:
     if registry.get("schema") != "bvm4x4-manual-run-delta-checkpoints-v1" or not registry.get("checkpoints"):
         raise RuntimeError("manual-run checkpoint registry is missing or invalid")
     checkpoint = registry["checkpoints"][-1]
-    run_ids = checkpoint.get("new_run_ids", [])
-    expected_raw = checkpoint.get("new_raw_sha256_by_run", {})
-    package_by_group = {item.get("package_group"): item for item in checkpoint.get("package_set", [])}
-    if not run_ids or set(run_ids) != set(expected_raw):
-        raise RuntimeError("latest checkpoint does not identify its complete new raw set")
+    run_ids = checkpoint.get("run_ids", [])
+    references = checkpoint.get("all_raw_references", [])
+    reference_by_run = {item.get("run_id"): item for item in references}
+    if (not run_ids or not references or len(reference_by_run) != len(references) or
+            set(run_ids) != set(reference_by_run)):
+        raise RuntimeError("latest checkpoint does not identify a unique complete raw-reference closure")
 
     experiment = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
     manifest_rows = {item.get("run_id"): item for item in experiment.get("runs", [])}
     files = []
+    already_tracked_count = 0
     for run_id in run_ids:
-        raw = RUNS / run_id / "raw.csv"
+        reference = reference_by_run[run_id]
+        raw_rel = reference.get("raw_path")
+        expected = reference.get("raw_sha256")
+        if (not isinstance(raw_rel, str) or Path(raw_rel).is_absolute() or ".." in Path(raw_rel).parts or
+                raw_rel != f"runs/{run_id}/raw.csv" or not isinstance(expected, str) or
+                not re.fullmatch(r"[0-9a-f]{64}", expected)):
+            raise RuntimeError(f"checkpoint raw reference is malformed: {run_id}")
+        raw = SERIES / raw_rel
+        rel = raw.relative_to(REPO).as_posix()
+        tracked = subprocess.run(["git", "ls-files", "--error-unmatch", rel], cwd=REPO,
+                                 check=False, capture_output=True).returncode == 0
+        if tracked:
+            if (not raw.is_file() or raw.is_symlink() or subprocess.run(
+                    ["git", "diff", "--quiet", "--", rel], cwd=REPO, check=False).returncode != 0):
+                raise RuntimeError(f"already tracked checkpointed raw is missing or modified: {run_id}")
+            already_tracked_count += 1
+            continue
+
         result = json.loads((RUNS / run_id / "result.json").read_text(encoding="utf-8"))
         qa = json.loads((RUNS / run_id / "qa.json").read_text(encoding="utf-8"))
         raw_qa = json.loads((RUNS / run_id / "raw_qa.json").read_text(encoding="utf-8"))
         row = manifest_rows.get(run_id)
-        expected = expected_raw[run_id]
         if (not raw.is_file() or raw.is_symlink() or root.sha256(raw) != expected or
                 result.get("raw_sha256") != expected or result.get("raw_bytes") != raw.stat().st_size or
                 qa.get("status") != "PASS" or qa.get("raw_sha256_after_analysis") != expected or
@@ -5877,32 +5895,29 @@ def checkpointed_raw_git_plan(root: Any) -> dict[str, Any]:
                 not row or row.get("raw_sha256") != expected or raw.stat().st_size >= root.MAX_GIT_FILE_BYTES):
             raise RuntimeError(f"checkpointed raw/result/QA identity mismatch: {run_id}")
 
-        package_item = package_by_group.get(f"{run_id}_raw")
-        if not package_item:
-            raise RuntimeError(f"checkpoint has no per-run raw ZIP identity: {run_id}")
-        package = HANDOFF / package_item["package_name"]
-        package_qa_path = HANDOFF / f"{Path(package_item['package_name']).stem}_PACKAGE_QA.json"
+        package_name = reference.get("source_package_name")
+        package_sha = reference.get("source_package_sha256")
+        if (not isinstance(package_name, str) or Path(package_name).name != package_name or
+                not isinstance(package_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", package_sha)):
+            raise RuntimeError(f"checkpoint raw package reference is malformed: {run_id}")
+        package = HANDOFF / package_name
+        package_qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
         package_qa = root.verify_existing_bundle(package, package_qa_path)
-        raw_member = f"{SERIES.relative_to(REPO).as_posix()}/runs/{run_id}/raw.csv"
-        if (package_qa.get("package_sha256") != package_item.get("package_sha256") or
+        raw_member = f"{SERIES.relative_to(REPO).as_posix()}/{raw_rel}"
+        if (package_qa.get("package_sha256") != package_sha or
                 package_qa.get("raw_sha256_by_run", {}).get(run_id) != expected or
                 package_qa.get("included_file_sha256", {}).get(raw_member) != expected or
                 package_qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
             raise RuntimeError(f"checkpointed raw ZIP does not attest the exact raw bytes: {run_id}")
 
-        rel = raw.relative_to(REPO).as_posix()
-        tracked = subprocess.run(["git", "ls-files", "--error-unmatch", rel], cwd=REPO,
-                                 check=False, capture_output=True).returncode == 0
-        if tracked and root.sha256(raw) != expected:
-            raise RuntimeError(f"already tracked raw differs from its immutable checkpoint: {run_id}")
         attribute = subprocess.run(["git", "check-attr", "filter", "--", rel], cwd=REPO,
                                    text=True, capture_output=True, check=True).stdout.strip()
         filter_value = attribute.rsplit(": filter: ", 1)[-1]
         if filter_value not in {"unspecified", "unset"}:
             raise RuntimeError(f"refusing implicit Git filter/LFS conversion for {rel}: {filter_value}")
         files.append({"run_id": run_id, "path": rel, "bytes": raw.stat().st_size,
-                      "sha256": expected, "package_name": package_item["package_name"],
-                      "package_sha256": package_item["package_sha256"], "already_tracked": tracked})
+                      "sha256": expected, "package_name": package_name,
+                      "package_sha256": package_sha, "already_tracked": False})
 
     to_add = {item["path"] for item in files if not item["already_tracked"]}
     allowed = set(to_add)
@@ -5922,9 +5937,11 @@ def checkpointed_raw_git_plan(root: Any) -> dict[str, Any]:
     if unexpected:
         raise RuntimeError("checkpointed raw tracking refuses unrelated worktree changes: " +
                            ", ".join(sorted(unexpected)))
-    return {"head": head, "checkpoint_tag": checkpoint.get("tag"), "run_ids": run_ids,
+    untracked_run_ids = [item["run_id"] for item in files]
+    return {"head": head, "checkpoint_tag": checkpoint.get("tag"), "run_ids": untracked_run_ids,
             "files": files, "to_add": sorted(to_add), "workflow_paths": sorted(allowed - to_add),
-            "physical_solve_count": 0}
+            "already_tracked_raw_count": already_tracked_count,
+            "checkpoint_raw_reference_count": len(references), "physical_solve_count": 0}
 
 
 def submit_checkpointed_raws(args: argparse.Namespace, root: Any) -> int:

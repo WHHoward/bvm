@@ -1,7 +1,7 @@
 {
   "schema": "bvm4x4-d3-carry-timing-batch-manifest-v1",
   "batch_id": "BVM4X4_D3_CARRY_TIMING_20261010",
-  "status": "PREFLIGHT_PASS_READY",
+  "status": "BATCH_COMPLETE_AWAITING_USER_CHATGPT_REVIEW",
   "preflight_attempt": 3,
   "superseded_preflight_attempts": [
     {
@@ -29,9 +29,33 @@
     "A041_D3_PRE_CB_SJTL_2_ALL_200"
   ],
   "physical_solve_count_authorized": 2,
-  "physical_solve_count_completed": 0,
-  "runs": [],
+  "physical_solve_count_completed": 2,
+  "runs": [
+    {
+      "run_id": "A040_D3_PRE_CB_SJTL_0_ALL_200",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "3c3ec6904b900e6a3a2c8bbac82431eca05150b3aad58c52feec10b29bf7ae61",
+      "raw_bytes": 85514801,
+      "deck_sha256": "e7eb50473f5a9650bc9f0709084a17a63b2beaebed2ce984cb37574131742cd1"
+    },
+    {
+      "run_id": "A041_D3_PRE_CB_SJTL_2_ALL_200",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "e1037690671ff9457b9e032a65332cedf6d0c4f93af55ae44dfc3124521d7792",
+      "raw_bytes": 89494895,
+      "deck_sha256": "a693d075efa013c38090723b173d95fcb8c48d1e23d8bd69d89cc92e83269cf9"
+    }
+  ],
   "static_qa_status": "PASS",
   "scientific_interpretation_performed": false,
-  "automatic_follow_up": false
+  "automatic_follow_up": false,
+  "execution_head": "aa3d55e03c6fc080f9bdc33b84609c7429dfcf97",
+  "summary_path": "analysis/d3-carry-timing-20261010/D3_CARRY_TIMING_SUMMARY.json",
+  "summary_sha256": "ebdfcb672fd52a13cd70bbab09300a2bee4e9294f3a1512ffb3b20eb5be788ff"
 }

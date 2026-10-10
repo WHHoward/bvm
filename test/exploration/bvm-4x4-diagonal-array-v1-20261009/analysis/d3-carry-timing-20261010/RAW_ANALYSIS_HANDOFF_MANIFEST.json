@@ -1,0 +1,81 @@
+{
+  "schema": "bvm4x4-d3-carry-timing-raw-analysis-handoff-v1",
+  "batch_id": "BVM4X4_D3_CARRY_TIMING_20261010",
+  "analysis_scope": {
+    "new_raw_runs": [
+      "A040_D3_PRE_CB_SJTL_0_ALL_200",
+      "A041_D3_PRE_CB_SJTL_2_ALL_200"
+    ],
+    "read_only_reference": "A036_PRE_CB_SJTL_ALL_200",
+    "solver_invoked_for_reference": false,
+    "raw_mutation_authorized": false,
+    "circuit_or_parameter_change_after_solve_authorized": false
+  },
+  "raw_files": {
+    "A040_D3_PRE_CB_SJTL_0_ALL_200": {
+      "path": "runs/A040_D3_PRE_CB_SJTL_0_ALL_200/raw.csv",
+      "sha256_before_analysis": "3c3ec6904b900e6a3a2c8bbac82431eca05150b3aad58c52feec10b29bf7ae61",
+      "sha256_after_analysis": "3c3ec6904b900e6a3a2c8bbac82431eca05150b3aad58c52feec10b29bf7ae61",
+      "bytes": 85514801,
+      "sample_count": 29999,
+      "time_start_ps": 0,
+      "time_end_ps": 299.99,
+      "dt_min_ps": 0.009999999999982388,
+      "dt_max_ps": 0.01999999999999999,
+      "probe_count": 212,
+      "artifact_status": "VALID",
+      "raw_qa_status": "PASS",
+      "chain_qa_status": "PASS",
+      "plot_qa_status": "PASS"
+    },
+    "A041_D3_PRE_CB_SJTL_2_ALL_200": {
+      "path": "runs/A041_D3_PRE_CB_SJTL_2_ALL_200/raw.csv",
+      "sha256_before_analysis": "e1037690671ff9457b9e032a65332cedf6d0c4f93af55ae44dfc3124521d7792",
+      "sha256_after_analysis": "e1037690671ff9457b9e032a65332cedf6d0c4f93af55ae44dfc3124521d7792",
+      "bytes": 89494895,
+      "sample_count": 29999,
+      "time_start_ps": 0,
+      "time_end_ps": 299.99,
+      "dt_min_ps": 0.009999999999982388,
+      "dt_max_ps": 0.01999999999999999,
+      "probe_count": 222,
+      "artifact_status": "VALID",
+      "raw_qa_status": "PASS",
+      "chain_qa_status": "PASS",
+      "plot_qa_status": "PASS"
+    },
+    "A036_PRE_CB_SJTL_ALL_200": {
+      "path": "runs/A036_PRE_CB_SJTL_ALL_200/raw.csv",
+      "sha256": "586ba6eafa62d25bf6cd7a7ea8b533903826616b4b5575a9023f7393b74faf75",
+      "role": "read-only comparison reference"
+    }
+  },
+  "windows": {
+    "ARRAY_FINAL_READ": {"start_ps": 110, "end_ps": 121, "boundary": "[start,end)"},
+    "PRE_CLOCK": {"start_ps": 121, "end_ps": 200, "boundary": "[start,end)"},
+    "BEFORE_CLOCK": {"start_ps": 0, "end_ps": 200, "boundary": "[start,end)"},
+    "CLOCK_EDGE": {"start_ps": 200, "end_ps": 205, "boundary": "[start,end)"},
+    "POST_CLOCK": {"start_ps": 205, "end_ps": 300, "boundary": "[start,end)"},
+    "TOTAL": {"start_ps": 0, "end_ps": 300, "boundary": "[start,end)"}
+  },
+  "arithmetic": {
+    "integration": "trapezoid over actual stored timestamps",
+    "phase_unit": "raw radians",
+    "phase_turns_navigation": "phase_delta_rad/(2*pi); not an event count",
+    "same_jj_crosscheck": "same junction, direction, raw rows, and window",
+    "interpolation_or_resampling": false,
+    "smoothing_scaling_sign_correction": false,
+    "event_classifier": null,
+    "sfq_count": "NOT_PERFORMED",
+    "product_bit_decode": "NOT_PERFORMED"
+  },
+  "outputs": {
+    "signal_metrics": "D3_CARRY_TIMING_SIGNAL_METRICS.csv",
+    "same_jj_phase_area": "D3_CARRY_TIMING_SAME_JJ_PHASE_AREA.csv",
+    "stage_metrics": "D3_CARRY_TIMING_STAGE_METRICS.csv",
+    "summary": "D3_CARRY_TIMING_SUMMARY.json",
+    "visualization_qa": "D3_CARRY_TIMING_VISUALIZATION_QA.json"
+  },
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

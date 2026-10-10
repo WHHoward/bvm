@@ -1,0 +1,23 @@
+{
+  "schema": "bvm4x4-d3-carry-timing-visualization-manifest-v1",
+  "renderer": "scripts/josim-plot2.py",
+  "layout": "sep_comb",
+  "theme": "dark",
+  "phase_display": "rad/(2*pi), navigation only; raw P(...) remains radians",
+  "responsive": true,
+  "raw_grid_policy": "native stored timestamps per run; no interpolation/resampling",
+  "html_package_policy": "local only; exclude from evidence ZIP",
+  "run_raw_sha256": {
+    "A040_D3_PRE_CB_SJTL_0_ALL_200": "3c3ec6904b900e6a3a2c8bbac82431eca05150b3aad58c52feec10b29bf7ae61",
+    "A041_D3_PRE_CB_SJTL_2_ALL_200": "e1037690671ff9457b9e032a65332cedf6d0c4f93af55ae44dfc3124521d7792"
+  },
+  "comparison_pages": [
+    "plots/comparison/A036_A040_A041_D3_FOCUS.html",
+    "plots/comparison/A040_A041_D3_EXTENDED_JJ.html",
+    "plots/comparison/A036_A040_A041_D3_CARRY_PATH.html",
+    "plots/comparison/A036_A040_A041_FULL_CHAIN.html",
+    "plots/comparison/A036_A040_A041_OUTPUTS_DFF.html"
+  ],
+  "comparison_schema_note": "The A036 three-way D3 focus uses probes common to all runs. A036 lacks D3 B_J2/B_J9/B_J10 P/V, so those are only compared between A040 and A041 in the extended-JJ page.",
+  "scientific_interpretation_performed": false
+}

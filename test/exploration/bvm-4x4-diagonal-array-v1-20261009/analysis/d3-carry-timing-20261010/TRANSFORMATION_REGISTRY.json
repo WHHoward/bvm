@@ -1,0 +1,25 @@
+{
+  "schema": "bvm4x4-d3-carry-timing-transformation-registry-v1",
+  "raw_files_modified": false,
+  "interpolation": false,
+  "resampling": false,
+  "smoothing": false,
+  "scaling": false,
+  "sign_correction": false,
+  "unit_correction": false,
+  "phase_transformations": [
+    {
+      "operation": "independent phase unwrap per raw JJ signal, then endpoint difference",
+      "source_unit": "radians",
+      "display_navigation": "phase_delta_rad/(2*pi)",
+      "display_is_event_count": false
+    }
+  ],
+  "voltage_integration": "trapezoid on each run's actual stored timestamps and registered half-open windows",
+  "source_raw_sha256": {
+    "A036_PRE_CB_SJTL_ALL_200": "586ba6eafa62d25bf6cd7a7ea8b533903826616b4b5575a9023f7393b74faf75",
+    "A040_D3_PRE_CB_SJTL_0_ALL_200": "3c3ec6904b900e6a3a2c8bbac82431eca05150b3aad58c52feec10b29bf7ae61",
+    "A041_D3_PRE_CB_SJTL_2_ALL_200": "e1037690671ff9457b9e032a65332cedf6d0c4f93af55ae44dfc3124521d7792"
+  },
+  "scientific_interpretation_performed": false
+}

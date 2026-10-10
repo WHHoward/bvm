@@ -25,7 +25,7 @@
     "D3_PRE_CB_SJTL_2_ALL_200"
   ],
   "maximum_physical_solve_count": 41,
-  "physical_solve_count": 39,
+  "physical_solve_count": 41,
   "runs": [
     {
       "run_id": "A001_D3_N0",
@@ -1121,6 +1121,127 @@
       "raw_bytes": 94649166,
       "probe_count": 234,
       "deck_sha256": "379558280c914f3eb763366d950a07693148dfc7249789767978acfdeec799a8"
+    },
+    {
+      "run_id": "A040_D3_PRE_CB_SJTL_0_ALL_200",
+      "case": "D3_PRE_CB_SJTL_0_ALL_200",
+      "batch_id": "BVM4X4_D3_CARRY_TIMING_20261010",
+      "row_bits": "1111",
+      "column_bits": "1111",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_chain_topology": "CB_CARRY_BUFFER_ALL",
+      "cbu_override_d1": "NONE",
+      "carry_post_cb_sjtl_count_per_stage": 0,
+      "carry_post_cb_sjtl_total": 0,
+      "carry_sjtl_position": "PRE_CB",
+      "carry_sjtl_stage_mask": "110111",
+      "carry_sjtl_configured_stage_mask": "110111",
+      "carry_sjtl_stages": [
+        "D1",
+        "D2",
+        "D4",
+        "D5",
+        "D6"
+      ],
+      "carry_sjtl_count": 5,
+      "carry_sjtl_count_by_stage": {
+        "D1": 1,
+        "D2": 1,
+        "D3": 0,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1
+      },
+      "carry_sjtl_total_instances": 5,
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C3",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C3",
+        "R2C4",
+        "R3C1",
+        "R3C2",
+        "R3C3",
+        "R3C4",
+        "R4C1",
+        "R4C2",
+        "R4C3",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "3c3ec6904b900e6a3a2c8bbac82431eca05150b3aad58c52feec10b29bf7ae61",
+      "raw_bytes": 85514801,
+      "probe_count": 212,
+      "deck_sha256": "e7eb50473f5a9650bc9f0709084a17a63b2beaebed2ce984cb37574131742cd1"
+    },
+    {
+      "run_id": "A041_D3_PRE_CB_SJTL_2_ALL_200",
+      "case": "D3_PRE_CB_SJTL_2_ALL_200",
+      "batch_id": "BVM4X4_D3_CARRY_TIMING_20261010",
+      "row_bits": "1111",
+      "column_bits": "1111",
+      "output_mode": "DIAGONAL_T1_CHAIN",
+      "t1_mode": "CHAIN",
+      "t1_clk_mode": "PULSE",
+      "t1_chain_clock_mode": "GLOBAL_ONESHOT",
+      "t1_chain_clock_start": "200p",
+      "cbu_chain_topology": "CB_CARRY_BUFFER_ALL",
+      "cbu_override_d1": "NONE",
+      "carry_post_cb_sjtl_count_per_stage": 0,
+      "carry_post_cb_sjtl_total": 0,
+      "carry_sjtl_position": "PRE_CB",
+      "carry_sjtl_stage_mask": "111111",
+      "carry_sjtl_configured_stage_mask": "111111",
+      "carry_sjtl_stages": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5",
+        "D6"
+      ],
+      "carry_sjtl_count": 6,
+      "carry_sjtl_count_by_stage": {
+        "D1": 1,
+        "D2": 1,
+        "D3": 2,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1
+      },
+      "carry_sjtl_total_instances": 7,
+      "active_final_crosspoints": [
+        "R1C1",
+        "R1C2",
+        "R1C3",
+        "R1C4",
+        "R2C1",
+        "R2C2",
+        "R2C3",
+        "R2C4",
+        "R3C1",
+        "R3C2",
+        "R3C3",
+        "R3C4",
+        "R4C1",
+        "R4C2",
+        "R4C3",
+        "R4C4"
+      ],
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "physical_solve_count": 1,
+      "raw_sha256": "e1037690671ff9457b9e032a65332cedf6d0c4f93af55ae44dfc3124521d7792",
+      "raw_bytes": 89494895,
+      "probe_count": 222,
+      "deck_sha256": "a693d075efa013c38090723b173d95fcb8c48d1e23d8bd69d89cc92e83269cf9"
     }
   ],
   "automatic_follow_up": false,
@@ -1371,11 +1492,11 @@
         "A041_D3_PRE_CB_SJTL_2_ALL_200"
       ],
       "authorized_physical_solve_count": 2,
-      "physical_solve_count_completed": 0,
+      "physical_solve_count_completed": 2,
       "preflight_parent_head": "bce51295d2d5543bb53ffd82529b66e9d8449388",
       "preflight_sha256": "fdded572924437fc2d0353c4533985cc4a22640af0ced8b2fc55ab7abb26ba21",
       "static_qa_sha256": "840268005a6818864f0f7b5a610279f98b872fc9862f51f85854ab95ff24b3aa",
-      "execution_status": "PREFLIGHT_PASS_READY",
+      "execution_status": "BATCH_COMPLETE_AWAITING_USER_CHATGPT_REVIEW",
       "scientific_interpretation_performed": false,
       "automatic_follow_up": false,
       "preflight_attempt": 3,
@@ -1397,7 +1518,9 @@
           "work_unit_sha256": "53cb095bf504ad33848fddae61f3fe6275aa0bf90ed7030013290685c9e5f9c9",
           "physical_solve_count_completed": 0
         }
-      ]
+      ],
+      "parent_head_at_execution": "aa3d55e03c6fc080f9bdc33b84609c7429dfcf97",
+      "mechanical_analysis_status": "MECHANICAL_QA_PASS"
     }
   ]
 }

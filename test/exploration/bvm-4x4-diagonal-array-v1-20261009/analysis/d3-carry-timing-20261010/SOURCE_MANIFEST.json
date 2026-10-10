@@ -1,0 +1,44 @@
+{
+  "schema": "bvm4x4-d3-carry-timing-source-manifest-v1",
+  "canonical_sources_modified": false,
+  "canonical_sources": {
+    "JJMIT": {"path": "circuits/models/jjmit.cir", "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"},
+    "BVM": {"path": "circuits/bvm/bvm_cell_0923.cir", "sha256": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7"},
+    "QB": {"path": "circuits/qb/BQ_0928.cir", "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"},
+    "sJTL": {"path": "circuits/sJTL_0923.cir", "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"},
+    "CB": {"path": "circuits/CB/CB_0928.cir", "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"},
+    "T1_reference": {"path": "circuits/t1/t1_cell.cir", "sha256": "828b873132b32af4fd3cebcbfa42a90fd50f15e75fdb976f1d13e07c3f1fe237"},
+    "CBU_candidate": {"path": "circuits/standard/MERGE.cir", "sha256": "2fdc5c24798c619eee97dee07d1dcb02b2e49e3b96bfa868f86ec978dca6f96e"},
+    "DFF_candidate": {"path": "circuits/standard/DFF.cir", "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"}
+  },
+  "run_local_rendered_sources": {
+    "T1": {"path": "sources/t1_cell_tunable.cir", "sha256": "dee8da3d0e02f580ffb171d330f771e0b226c2fe383226c32f6123080f1a4fec"},
+    "CBU": {"path": "sources/cbu_tunable.cir", "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0"},
+    "DFF": {"path": "sources/dff_tunable.cir", "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"},
+    "D0_JTL": {"path": "sources/d0_jtl_tunable.cir", "sha256": "7a82307d52d2339d00965a0f6453f79f6c0689242d35e383b825902a85a16db5"}
+  },
+  "runs": {
+    "A040_D3_PRE_CB_SJTL_0_ALL_200": {
+      "source_manifest_sha256": "0584ed2dbc1cb6ebd8baae5c8eefa4272d1661653fd599851de9bb68ddd46227",
+      "provenance_sha256": "58b7295da41635641e775cecb517b6f7389f0863c7b29581284cc167128e7bf8",
+      "deck_sha256": "e7eb50473f5a9650bc9f0709084a17a63b2beaebed2ce984cb37574131742cd1",
+      "stimulus_sha256": "d149f6f4e83360d8a1b1671e655ed1c9ea241722ebbbc1de48ae4e9fc792f4e2",
+      "raw_sha256": "3c3ec6904b900e6a3a2c8bbac82431eca05150b3aad58c52feec10b29bf7ae61"
+    },
+    "A041_D3_PRE_CB_SJTL_2_ALL_200": {
+      "source_manifest_sha256": "0584ed2dbc1cb6ebd8baae5c8eefa4272d1661653fd599851de9bb68ddd46227",
+      "provenance_sha256": "ad71e7331211acebce00965a7d4bb4ba084da88f18984eba6fe1b87757b3577c",
+      "deck_sha256": "a693d075efa013c38090723b173d95fcb8c48d1e23d8bd69d89cc92e83269cf9",
+      "stimulus_sha256": "d149f6f4e83360d8a1b1671e655ed1c9ea241722ebbbc1de48ae4e9fc792f4e2",
+      "raw_sha256": "e1037690671ff9457b9e032a65332cedf6d0c4f93af55ae44dfc3124521d7792"
+    }
+  },
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator v2.7.2837d13 compiled 2026-05-30",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "preflight_attempt": 3,
+  "preflight_path": "attempts/003/PREFLIGHT.md",
+  "scientific_interpretation_performed": false
+}

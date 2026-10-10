@@ -492,3 +492,16 @@ next call, pushes, and verifies the D-drive mirror (`/mnt/d/BVM_Backages`) SHA-2
 references prior raw/package identities rather than repackaging them and makes
 no retroactive authorization or scientific claim. Do not combine manual runs
 with an unfinished registered batch; the workflow stops on that ambiguity.
+
+If the raw CSVs should also be tracked directly in Git after they are already
+present in the ZIP checkpoint, use this separate command. It verifies each raw
+against its run QA, checkpoint reference, and raw-package member SHA; it does
+not rebuild or replace the existing ZIPs:
+
+```bash
+./submit.sh RAW_A076_A078 --track-packaged-raws --dry-run
+./submit.sh RAW_A076_A078 --track-packaged-raws
+```
+
+Raw files over the repository's 100 MB single-file limit, or files with an
+implicit Git LFS/filter rule, are rejected before staging.

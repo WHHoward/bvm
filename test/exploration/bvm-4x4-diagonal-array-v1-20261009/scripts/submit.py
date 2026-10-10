@@ -5807,6 +5807,132 @@ def submit_manual_run_delta(args: argparse.Namespace, root: Any,
     return 0
 
 
+def checkpointed_raw_git_plan(root: Any) -> dict[str, Any]:
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("checkpointed raw tracking requires the master branch")
+    head = git("rev-parse", "HEAD")
+    if git("rev-parse", "bvm/master") != head:
+        raise RuntimeError("checkpointed raw tracking requires local master to match bvm/master")
+    if git("diff", "--cached", "--name-only"):
+        raise RuntimeError("checkpointed raw tracking refuses pre-staged changes")
+    if git("diff", "--cached", "--name-only"):
+        raise RuntimeError("checkpointed raw tracking refuses pre-staged changes")
+
+    registry = json.loads(MANUAL_RUN_CHECKPOINTS_PATH.read_text(encoding="utf-8"))
+    if registry.get("schema") != "bvm4x4-manual-run-delta-checkpoints-v1" or not registry.get("checkpoints"):
+        raise RuntimeError("manual-run checkpoint registry is missing or invalid")
+    checkpoint = registry["checkpoints"][-1]
+    run_ids = checkpoint.get("new_run_ids", [])
+    expected_raw = checkpoint.get("new_raw_sha256_by_run", {})
+    package_by_group = {item.get("package_group"): item for item in checkpoint.get("package_set", [])}
+    if not run_ids or set(run_ids) != set(expected_raw):
+        raise RuntimeError("latest checkpoint does not identify its complete new raw set")
+
+    experiment = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+    manifest_rows = {item.get("run_id"): item for item in experiment.get("runs", [])}
+    files = []
+    for run_id in run_ids:
+        raw = RUNS / run_id / "raw.csv"
+        result = json.loads((RUNS / run_id / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((RUNS / run_id / "qa.json").read_text(encoding="utf-8"))
+        raw_qa = json.loads((RUNS / run_id / "raw_qa.json").read_text(encoding="utf-8"))
+        row = manifest_rows.get(run_id)
+        expected = expected_raw[run_id]
+        if (not raw.is_file() or raw.is_symlink() or root.sha256(raw) != expected or
+                result.get("raw_sha256") != expected or result.get("raw_bytes") != raw.stat().st_size or
+                qa.get("status") != "PASS" or qa.get("raw_sha256_after_analysis") != expected or
+                raw_qa.get("status") != "PASS" or raw_qa.get("raw_sha256_after_analysis") != expected or
+                not row or row.get("raw_sha256") != expected or raw.stat().st_size >= root.MAX_GIT_FILE_BYTES):
+            raise RuntimeError(f"checkpointed raw/result/QA identity mismatch: {run_id}")
+
+        package_item = package_by_group.get(f"{run_id}_raw")
+        if not package_item:
+            raise RuntimeError(f"checkpoint has no per-run raw ZIP identity: {run_id}")
+        package = HANDOFF / package_item["package_name"]
+        package_qa_path = HANDOFF / f"{Path(package_item['package_name']).stem}_PACKAGE_QA.json"
+        package_qa = root.verify_existing_bundle(package, package_qa_path)
+        raw_member = f"{SERIES.relative_to(REPO).as_posix()}/runs/{run_id}/raw.csv"
+        if (package_qa.get("package_sha256") != package_item.get("package_sha256") or
+                package_qa.get("raw_sha256_by_run", {}).get(run_id) != expected or
+                package_qa.get("included_file_sha256", {}).get(raw_member) != expected or
+                package_qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"checkpointed raw ZIP does not attest the exact raw bytes: {run_id}")
+
+        rel = raw.relative_to(REPO).as_posix()
+        tracked = subprocess.run(["git", "ls-files", "--error-unmatch", rel], cwd=REPO,
+                                 check=False, capture_output=True).returncode == 0
+        if tracked and root.sha256(raw) != expected:
+            raise RuntimeError(f"already tracked raw differs from its immutable checkpoint: {run_id}")
+        attribute = subprocess.run(["git", "check-attr", "filter", "--", rel], cwd=REPO,
+                                   text=True, capture_output=True, check=True).stdout.strip()
+        filter_value = attribute.rsplit(": filter: ", 1)[-1]
+        if filter_value not in {"unspecified", "unset"}:
+            raise RuntimeError(f"refusing implicit Git filter/LFS conversion for {rel}: {filter_value}")
+        files.append({"run_id": run_id, "path": rel, "bytes": raw.stat().st_size,
+                      "sha256": expected, "package_name": package_item["package_name"],
+                      "package_sha256": package_item["package_sha256"], "already_tracked": tracked})
+
+    to_add = {item["path"] for item in files if not item["already_tracked"]}
+    allowed = set(to_add)
+    script_rel = Path(__file__).resolve().relative_to(REPO).as_posix()
+    readme_rel = (SERIES / "README.md").relative_to(REPO).as_posix()
+    for path in (script_rel, readme_rel):
+        if subprocess.run(["git", "diff", "--quiet", "--", path], cwd=REPO,
+                          check=False).returncode != 0:
+            allowed.add(path)
+    status = subprocess.run(["git", "status", "--porcelain=v1", "--untracked-files=all"],
+                            cwd=REPO, text=True, capture_output=True, check=True).stdout
+    unexpected = []
+    for line in status.splitlines():
+        rel = line[3:]
+        if rel not in allowed:
+            unexpected.append(rel)
+    if unexpected:
+        raise RuntimeError("checkpointed raw tracking refuses unrelated worktree changes: " +
+                           ", ".join(sorted(unexpected)))
+    return {"head": head, "checkpoint_tag": checkpoint.get("tag"), "run_ids": run_ids,
+            "files": files, "to_add": sorted(to_add), "workflow_paths": sorted(allowed - to_add),
+            "physical_solve_count": 0}
+
+
+def submit_checkpointed_raws(args: argparse.Namespace, root: Any) -> int:
+    plan = checkpointed_raw_git_plan(root)
+    if not plan["to_add"]:
+        print(json.dumps({"status": "RAW_ALREADY_TRACKED", **plan,
+                          "commit_created": False, "solver_invocations": 0}, ensure_ascii=False, indent=2))
+        return 0
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", **plan,
+                          "push_target": "bvm/master", "zip_recreated": False,
+                          "no_files_modified": True}, ensure_ascii=False, indent=2))
+        return 0
+
+    if plan["workflow_paths"]:
+        subprocess.run(["git", "add", "-f", "--", *plan["workflow_paths"]], cwd=REPO, check=True)
+        staged = git("diff", "--cached", "--name-only").splitlines()
+        if staged != plan["workflow_paths"]:
+            raise RuntimeError("raw tracking maintenance commit staged unexpected paths")
+        subprocess.run(["git", "commit", "-m", "tools: add checkpointed raw tracking command"],
+                       cwd=REPO, check=True)
+    subprocess.run(["git", "add", "-f", "--", *plan["to_add"]], cwd=REPO, check=True)
+    staged = git("diff", "--cached", "--name-only").splitlines()
+    if staged != plan["to_add"]:
+        raise RuntimeError("raw data commit staged paths outside the checkpointed raw set")
+    run_label = ",".join(plan["run_ids"])
+    subprocess.run(["git", "commit", "-m", f"data: track checkpointed raw files {run_label}"],
+                   cwd=REPO, check=True)
+    push_status = "SKIPPED"
+    if not args.no_push:
+        subprocess.run(["git", "push"], cwd=REPO, check=True)
+        push_status = "PASS"
+    print(json.dumps({"status": "CHECKPOINTED_RAWS_TRACKED",
+                      "commit": git("rev-parse", "HEAD"), "push": push_status,
+                      "checkpoint_tag": plan["checkpoint_tag"], "run_ids": plan["run_ids"],
+                      "files": plan["files"], "zip_recreated": False,
+                      "solver_invocations": 0}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -5824,6 +5950,8 @@ def main() -> int:
                         help="package the read-only C4R28_210 analysis and 28 manual raw files as a dedicated DELTA")
     parser.add_argument("--manual-runs", action="store_true",
                         help="package all newly discovered uncheckpointed manual run directories as an immutable DELTA")
+    parser.add_argument("--track-packaged-raws", action="store_true",
+                        help="commit raw CSVs already present in the latest verified package checkpoint; do not rebuild ZIPs")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")
@@ -5831,6 +5959,12 @@ def main() -> int:
     args = parser.parse_args()
     try:
         root = load_root_submit()
+        if args.track_packaged_raws:
+            if (args.delta or args.d3_carry_timing or args.d3_manual_supplement or
+                    args.carry4_manual_supplement or args.carry4_functional_28 or
+                    args.manual_runs or args.metadata_v2):
+                raise RuntimeError("--track-packaged-raws cannot be combined with another package mode")
+            return submit_checkpointed_raws(args, root)
         if args.manual_runs:
             if (args.d3_carry_timing or args.d3_manual_supplement or args.carry4_manual_supplement or
                     args.carry4_functional_28 or args.metadata_v2):

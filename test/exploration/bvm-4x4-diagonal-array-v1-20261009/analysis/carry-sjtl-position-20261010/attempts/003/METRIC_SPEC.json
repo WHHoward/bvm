@@ -1,0 +1,30 @@
+{
+  "schema": "bvm4x4-carry-sjtl-position-metric-spec-v1",
+  "windows": {
+    "ARRAY_FINAL_READ": [
+      110,
+      121
+    ],
+    "PRE_CLOCK": "[FINAL_READ end, configured clock start)",
+    "BEFORE_CLOCK": "[0, configured clock start)",
+    "CLOCK_EDGE": "[configured clock start, clock end + 1 ps)",
+    "POST_CLOCK": "[clock end + 1 ps, STOP)",
+    "TOTAL": [
+      0,
+      300
+    ]
+  },
+  "required_arithmetic": [
+    "node V min/max/time/area",
+    "branch I min/max/charge",
+    "same-JJ phase delta and voltage integral",
+    "positive/negative unwrapped phase variation"
+  ],
+  "phase_unit": "raw radians; /2pi display is navigation only",
+  "shared_dout_voltage": "mixed DOUT/JOIN boundary; not array-only event count",
+  "event_classifier": null,
+  "SFQ_count": "NOT_PERFORMED",
+  "product_bit_decode": "NOT_PERFORMED",
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

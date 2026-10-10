@@ -88,6 +88,15 @@ CARRY_POST_CB_SJTL_PRESETS = (
     "CARRY_POST_CB_SJTL_3X3_210",
 )
 PRESET_CASES = PRESET_CASES + CARRY_POST_CB_SJTL_PRESETS
+CARRY_SJTL_POSITION_PRESETS = (
+    "CARRY_SJTL_D2_ONLY_ALL_200",
+    "CARRY_SJTL_D2_ONLY_PAPER_200",
+    "CARRY_SJTL_PRE_ALL_200",
+    "CARRY_SJTL_PRE_ALL_210",
+    "CARRY_SJTL_PRE_PAPER_210",
+    "CARRY_SJTL_PRE_3X3_210",
+)
+PRESET_CASES = PRESET_CASES + CARRY_SJTL_POSITION_PRESETS
 BUS400_BATCH_ID = "BVM4X4_BUS400_20261009"
 BUS400_PARENT_HEAD = "3de08ba0fd5997b253269849dbc1a535786c8fd6"
 STIMULUS_STAGES = ("WRITE0", "READ0", "WRITE1", "FINAL_READ")
@@ -130,6 +139,16 @@ CARRY_POST_CB_SJTL_RUN_MATRIX = (
     ("A031_CARRY_POST_CB_SJTL_ALL_210", "CARRY_POST_CB_SJTL_ALL_210", "1111", "1111", "210p", "A027_FULL_CB_CHAIN_ALL_CLOCK"),
     ("A032_CARRY_POST_CB_SJTL_PAPER_210", "CARRY_POST_CB_SJTL_PAPER_210", "1101", "1101", "210p", "A028_FULL_CB_CHAIN_PAPER_CLOCK"),
     ("A033_CARRY_POST_CB_SJTL_3X3_210", "CARRY_POST_CB_SJTL_3X3_210", "1100", "0011", "210p", "A029_FULL_CB_CHAIN_3X3_CLOCK"),
+)
+CARRY_SJTL_POSITION_BATCH_ID = "BVM4X4_CARRY_SJTL_POSITION_20261010"
+CARRY_SJTL_POSITION_ANALYSIS = SERIES / "analysis" / "carry-sjtl-position-20261010"
+CARRY_SJTL_POSITION_RUN_MATRIX = (
+    ("A034_D2_ONLY_POST_CB_SJTL_ALL_200", "CARRY_SJTL_D2_ONLY_ALL_200", "1111", "1111", "200p", "POST_CB", "010000", "A027_FULL_CB_CHAIN_ALL_CLOCK"),
+    ("A035_D2_ONLY_POST_CB_SJTL_PAPER_200", "CARRY_SJTL_D2_ONLY_PAPER_200", "1101", "1101", "200p", "POST_CB", "010000", "A028_FULL_CB_CHAIN_PAPER_CLOCK"),
+    ("A036_PRE_CB_SJTL_ALL_200", "CARRY_SJTL_PRE_ALL_200", "1111", "1111", "200p", "PRE_CB", "111111", "A027_FULL_CB_CHAIN_ALL_CLOCK"),
+    ("A037_PRE_CB_SJTL_ALL_210", "CARRY_SJTL_PRE_ALL_210", "1111", "1111", "210p", "PRE_CB", "111111", "A027_FULL_CB_CHAIN_ALL_CLOCK"),
+    ("A038_PRE_CB_SJTL_PAPER_210", "CARRY_SJTL_PRE_PAPER_210", "1101", "1101", "210p", "PRE_CB", "111111", "A028_FULL_CB_CHAIN_PAPER_CLOCK"),
+    ("A039_PRE_CB_SJTL_3X3_210", "CARRY_SJTL_PRE_3X3_210", "1100", "0011", "210p", "PRE_CB", "111111", "A029_FULL_CB_CHAIN_3X3_CLOCK"),
 )
 T1_CHAIN_ANALYSIS = SERIES / "analysis" / "t1-chain-20261009"
 T1_CHAIN_PREFLIGHT = T1_CHAIN_ANALYSIS / "PREFLIGHT.md"
@@ -314,14 +333,62 @@ def _carry_buffer_stages(case: dict[str, str]) -> set[int]:
     return set()
 
 
-def _carry_post_cb_sjtl_count(case: dict[str, str]) -> int:
-    raw = case.get("CARRY_POST_CB_SJTL_COUNT", "0")
-    if raw not in {"0", "1"}:
+def _carry_sjtl_spec(case: dict[str, str]) -> dict[str, Any]:
+    legacy_raw = case.get("CARRY_POST_CB_SJTL_COUNT", "0")
+    if legacy_raw not in {"0", "1"}:
         raise ConfigError("CARRY_POST_CB_SJTL_COUNT must be 0 or 1")
-    count = int(raw)
-    if count and case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") != "CB_CARRY_BUFFER_ALL":
-        raise ConfigError("CARRY_POST_CB_SJTL_COUNT=1 requires CBU_CHAIN_TOPOLOGY=CB_CARRY_BUFFER_ALL")
-    return count
+    position = case.get("CARRY_SJTL_POSITION", "POST_CB").upper()
+    mask = case.get("CARRY_SJTL_STAGE_MASK", "000000")
+    if position not in {"PRE_CB", "POST_CB"}:
+        raise ConfigError("CARRY_SJTL_POSITION must be PRE_CB or POST_CB")
+    if not re.fullmatch(r"[01]{6}", mask):
+        raise ConfigError("CARRY_SJTL_STAGE_MASK must be six binary digits mapping D1 through D6")
+    legacy_count = int(legacy_raw)
+    if legacy_count and mask != "000000":
+        raise ConfigError("ambiguous Carry sJTL configuration: legacy CARRY_POST_CB_SJTL_COUNT and stage mask both request insertion")
+    if legacy_count and position != "POST_CB":
+        raise ConfigError("legacy CARRY_POST_CB_SJTL_COUNT=1 retains POST_CB semantics; use count=0 for PRE_CB")
+    if legacy_count:
+        stages = set(range(1, 7))
+        effective_position = "POST_CB"
+    else:
+        stages = {index for index, enabled in enumerate(mask, start=1) if enabled == "1"}
+        effective_position = position
+    if stages and case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") != "CB_CARRY_BUFFER_ALL":
+        raise ConfigError("Carry sJTL insertion requires CBU_CHAIN_TOPOLOGY=CB_CARRY_BUFFER_ALL")
+    effective_mask = "".join("1" if index in stages else "0" for index in range(1, 7))
+    return {"legacy_count": legacy_count, "position": effective_position,
+            "configured_position": position, "stage_mask": effective_mask,
+            "configured_stage_mask": mask,
+            "stages": stages, "count": len(stages),
+            "legacy_mode": bool(legacy_count)}
+
+
+def _carry_post_cb_sjtl_count(case: dict[str, str]) -> int:
+    """Return the legacy knob value; use _carry_sjtl_spec for effective topology."""
+    return int(_carry_sjtl_spec(case)["legacy_count"])
+
+
+def _carry_sjtl_stages(case: dict[str, str]) -> set[int]:
+    return set(_carry_sjtl_spec(case)["stages"])
+
+
+def _carry_sjtl_position(case: dict[str, str]) -> str:
+    return str(_carry_sjtl_spec(case)["position"])
+
+
+def _carry_sjtl_at(case: dict[str, str], stage: int, position: str | None = None) -> bool:
+    spec = _carry_sjtl_spec(case)
+    return stage in spec["stages"] and (position is None or spec["position"] == position)
+
+
+def _carry_sjtl_branch(case: dict[str, str], stage: int) -> str:
+    if not _carry_sjtl_at(case, stage):
+        return (f"C_D{stage-1} -> CB_0928 -> JOIN_D{stage}"
+                if stage in _carry_buffer_stages(case) else f"C_D{stage-1} -> CBU_D{stage}")
+    if _carry_sjtl_position(case) == "PRE_CB":
+        return f"C_D{stage-1} -> sJTL_0923 -> CB_0928 -> JOIN_D{stage}"
+    return f"C_D{stage-1} -> CB_0928 -> sJTL_0923 -> JOIN_D{stage}"
 
 
 def _spice_quantity(value: str) -> Decimal:
@@ -895,6 +962,11 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
               "cbu_mode": case.get("CBU_MODE", "OFF"),
               "cbu_chain_topology": case.get("CBU_CHAIN_TOPOLOGY", "LEGACY"),
               "carry_post_cb_sjtl_count": _carry_post_cb_sjtl_count(case),
+              "carry_sjtl_position": _carry_sjtl_position(case),
+              "carry_sjtl_stage_mask": _carry_sjtl_spec(case)["stage_mask"],
+              "carry_sjtl_configured_stage_mask": _carry_sjtl_spec(case)["configured_stage_mask"],
+              "carry_sjtl_stages": [f"D{index}" for index in sorted(_carry_sjtl_stages(case))],
+              "carry_sjtl_count": len(_carry_sjtl_stages(case)),
               "merge_semantics": "serial shared electrical nodes; no MERGE subcircuit",
               "sJTL_parameter_semantics": "SJTL_COUNT_Dn lists serial sJTL instances after each MERGE level and before its single CB; zero connects MERGE directly to CB",
               "effective_sjtl_counts": {name: list(_sjtl_counts(case, name)) for name in DIAGONALS},
@@ -915,13 +987,10 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
             "independent_bias_nodes": [f"N_BIAS{index}_{name}" for index in range(1, 4)],
             "parallel_terminal_ohm": None,
             "input_path": ("DOUT_D0 -> physical D0 JTL -> T1_D0" if chain_active and name == "D0"
-                           else (f"C_D{int(name[1])-1} -> CB_0928 -> canonical sJTL_0923 -> JOIN with DOUT_{name} -> T1_{name}"
+                           else (f"{_carry_sjtl_branch(case, int(name[1]))} -> T1_{name}"
                                  if chain_active and int(name[1]) in _carry_buffer_stages(case)
-                                 and _carry_post_cb_sjtl_count(case) else
-                                 f"DOUT_{name} + C_D{int(name[1])-1} -> CB_CARRY_BUFFER join -> T1_{name}")
-                           if chain_active and int(name[1]) in _carry_buffer_stages(case)
-                           else f"DOUT_{name} + C_D{int(name[1])-1} -> physical CBU_{name} -> T1_{name}"
-                           if chain_active else f"DOUT_{name} -> T1_{name}"),
+                                 else f"DOUT_{name} + C_D{int(name[1])-1} -> physical CBU_{name} -> T1_{name}"
+                                 if chain_active else f"DOUT_{name} -> T1_{name}")),
         } for name in DIAGONALS}
         result["t1_channel_count"] = 7
         result["t1_clock_mode"] = (case.get("T1_CHAIN_CLOCK_MODE") if chain_active else
@@ -943,26 +1012,37 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
     if chain_active:
         carry_stages = _carry_buffer_stages(case)
         override = case.get("CBU_OVERRIDE_D1", "NONE")
+        sjtl_stages = _carry_sjtl_stages(case)
+        sjtl_position = _carry_sjtl_position(case)
         def _carry_stage_record(index: int) -> dict[str, Any]:
-            post_cb_sjtl_count = _carry_post_cb_sjtl_count(case)
+            has_sjtl = index in sjtl_stages
+            if has_sjtl and sjtl_position == "PRE_CB":
+                carry_branch = (f"C_D{index-1} -> V_CARRY_IN_D{index} -> XSJTL_CARRY_D{index} -> "
+                                f"V_CARRY_SJTL_OUT_D{index} -> XCB_CARRY_D{index} -> "
+                                f"V_CBU_B_D{index} -> CBU_JOIN_D{index}")
+                cb_input = f"CARRY_SJTL_OUT_D{index}"
+            elif has_sjtl:
+                carry_branch = (f"C_D{index-1} -> V_CARRY_IN_D{index} -> XCB_CARRY_D{index} -> "
+                                f"V_CARRY_SJTL_IN_D{index} -> XSJTL_CARRY_D{index} -> "
+                                f"V_CBU_B_D{index} -> CBU_JOIN_D{index}")
+                cb_input = f"CARRY_CB_IN_D{index}"
+            else:
+                carry_branch = (f"C_D{index-1} -> V_CARRY_IN_D{index} -> XCB_CARRY_D{index} -> "
+                                f"V_CBU_B_D{index} -> CBU_JOIN_D{index}")
+                cb_input = f"CARRY_CB_IN_D{index}"
             return {"instance": f"XCB_CARRY_D{index}", "source_path": SOURCE_PATHS["CB"],
                     "source_sha256": sources["CBU_CARRY_BUFFER_ALL"]["sha256"]
                     if case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") == "CB_CARRY_BUFFER_ALL"
                     else sources["CBU_D1_CARRY_BUFFER"]["sha256"],
-                    "ports": ["IN", "OUT"], "input_node": f"CARRY_CB_IN_D{index}",
+                    "ports": ["IN", "OUT"], "input_node": cb_input,
                     "output_node": f"CARRY_CB_OUT_D{index}", "join_node": f"CBU_JOIN_D{index}",
                     "dout_branch": f"DOUT_D{index} -> V_CBU_A_D{index} -> CBU_JOIN_D{index}",
-                    "carry_branch": (f"C_D{index-1} -> V_CARRY_IN_D{index} -> XCB_CARRY_D{index} -> "
-                                     f"V_CARRY_SJTL_IN_D{index} -> XSJTL_CARRY_D{index} -> "
-                                     f"V_CBU_B_D{index} -> CBU_JOIN_D{index}"
-                                     if post_cb_sjtl_count else
-                                     f"C_D{index-1} -> V_CARRY_IN_D{index} -> XCB_CARRY_D{index} -> "
-                                     f"V_CBU_B_D{index} -> CBU_JOIN_D{index}"),
-                    "post_cb_sjtl_count": post_cb_sjtl_count,
-                    "post_cb_sjtl_instance": f"XSJTL_CARRY_D{index}" if post_cb_sjtl_count else None,
-                    "post_cb_sjtl_source_path": SOURCE_PATHS["SJTL"] if post_cb_sjtl_count else None,
-                    "post_cb_sjtl_source_sha256": sources["SJTL"]["sha256"] if post_cb_sjtl_count else None,
-                    "intermediate_jtl_or_sjtl": bool(post_cb_sjtl_count)}
+                    "carry_branch": carry_branch,
+                    "carry_sjtl_position": sjtl_position if has_sjtl else None,
+                    "carry_sjtl_instance": f"XSJTL_CARRY_D{index}" if has_sjtl else None,
+                    "carry_sjtl_source_path": SOURCE_PATHS["SJTL"] if has_sjtl else None,
+                    "carry_sjtl_source_sha256": sources["SJTL"]["sha256"] if has_sjtl else None,
+                    "intermediate_jtl_or_sjtl": has_sjtl}
         cbu_input_nodes = {}
         for index in range(1, 7):
             if index in carry_stages:
@@ -971,13 +1051,16 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
                     "A_SENSOR": f"V_CBU_A_D{index}", "B_SENSOR": f"V_CARRY_IN_D{index}",
                     "B_CB_INPUT": f"CARRY_CB_IN_D{index}",
                     "B_CB_OUTPUT": f"CARRY_CB_OUT_D{index}",
-                    "B_POST_CB_SJTL_INPUT": f"CARRY_SJTL_IN_D{index}" if _carry_post_cb_sjtl_count(case) else None,
-                    "B_POST_CB_SJTL_OUTPUT": f"CARRY_SJTL_OUT_D{index}" if _carry_post_cb_sjtl_count(case) else None,
+                    "B_CARRY_SJTL_INPUT": f"CARRY_SJTL_IN_D{index}" if index in sjtl_stages else None,
+                    "B_CARRY_SJTL_OUTPUT": f"CARRY_SJTL_OUT_D{index}" if index in sjtl_stages else None,
                     "B_OUTPUT_SENSOR": f"V_CBU_B_D{index}",
                     "JOIN": f"CBU_JOIN_D{index}", "T1_INPUT": f"T1_I_D{index}",
-                    "input_semantics": ("previous Carry passes through canonical CB_0928 and one canonical sJTL_0923; "
+                    "input_semantics": ("previous Carry passes through canonical sJTL_0923 then canonical CB_0928; "
+                                         "the CB output and array DOUT share the JOIN/T1 input node"
+                                         if index in sjtl_stages and sjtl_position == "PRE_CB" else
+                                         "previous Carry passes through canonical CB_0928 then canonical sJTL_0923; "
                                          "the sJTL output and array DOUT share the JOIN/T1 input node"
-                                         if _carry_post_cb_sjtl_count(case) else
+                                         if index in sjtl_stages else
                                          "previous Carry passes through one canonical CB; array DOUT and Carry-CB output directly share this T1 input node")}
             elif index == 1 and override == "CB_DIRECT":
                 cbu_input_nodes["D1"] = {
@@ -1009,11 +1092,16 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
             "cbu_carry_buffers_by_stage": {f"D{index}": _carry_stage_record(index)
                                            for index in sorted(carry_stages)},
             "carry_post_cb_sjtl_count_per_stage": _carry_post_cb_sjtl_count(case),
-            "carry_post_cb_sjtl_total": len(carry_stages) * _carry_post_cb_sjtl_count(case),
-            "carry_post_cb_sjtl_instances": ([f"XSJTL_CARRY_D{index}" for index in sorted(carry_stages)]
-                                               if _carry_post_cb_sjtl_count(case) else []),
-            "carry_post_cb_sjtl_source_path": SOURCE_PATHS["SJTL"] if _carry_post_cb_sjtl_count(case) else None,
-            "carry_post_cb_sjtl_source_sha256": sources["SJTL"]["sha256"] if _carry_post_cb_sjtl_count(case) else None,
+            "carry_post_cb_sjtl_total": sum(index in carry_stages for index in sjtl_stages
+                                            if sjtl_position == "POST_CB"),
+            "carry_sjtl_position": sjtl_position,
+            "carry_sjtl_stage_mask": _carry_sjtl_spec(case)["stage_mask"],
+            "carry_sjtl_configured_stage_mask": _carry_sjtl_spec(case)["configured_stage_mask"],
+            "carry_sjtl_stages": [f"D{index}" for index in sorted(sjtl_stages)],
+            "carry_sjtl_count": len(sjtl_stages),
+            "carry_sjtl_instances": [f"XSJTL_CARRY_D{index}" for index in sorted(sjtl_stages)],
+            "carry_sjtl_source_path": SOURCE_PATHS["SJTL"] if sjtl_stages else None,
+            "carry_sjtl_source_sha256": sources["SJTL"]["sha256"] if sjtl_stages else None,
             "d0_jtl_type": case["D0_JTL_TYPE"],
             "d0_jtl_count": int(case["D0_JTL_COUNT"]),
             "d0_jtl_instances": [f"XJTL_D0_{index}" for index in range(1, int(case["D0_JTL_COUNT"])+1)],
@@ -1025,9 +1113,12 @@ def topology_manifest(sources: dict[str, dict[str, str]], case: dict[str, str],
             "carry_bit_map": {f"S_D{index}": f"product_bit_{index}" for index in range(7)} |
                              {"DFF_O": "product_bit_7"},
             "carry_links": {f"C_D{index}": (
+                f"V_CARRY_IN_D{index+1} -> XSJTL_CARRY_D{index+1} -> V_CARRY_SJTL_OUT_D{index+1} -> "
+                f"XCB_CARRY_D{index+1} -> V_CBU_B_D{index+1} -> CBU_JOIN_D{index+1}"
+                if index+1 in carry_stages and index+1 in sjtl_stages and sjtl_position == "PRE_CB" else
                 f"V_CARRY_IN_D{index+1} -> XCB_CARRY_D{index+1} -> V_CARRY_SJTL_IN_D{index+1} -> "
                 f"XSJTL_CARRY_D{index+1} -> V_CBU_B_D{index+1} -> CBU_JOIN_D{index+1}"
-                if index+1 in carry_stages and _carry_post_cb_sjtl_count(case) else
+                if index+1 in carry_stages and index+1 in sjtl_stages else
                 f"V_CARRY_IN_D{index+1} -> XCB_CARRY_D{index+1} -> V_CBU_B_D{index+1} -> CBU_JOIN_D{index+1}"
                 if index+1 in carry_stages else
                 "V_CBU_B_D1 -> CBU_JOIN_D1" if index == 0 and override == "CB_DIRECT" else
@@ -1084,9 +1175,16 @@ def _render_chain_network(case: dict[str, str], params: dict[str, str]) -> list[
         lines.append(f"XJTL_D0_{stage} {input_node} {output_node} D0_JTL")
         lines.append(f"{output_link} {output_node} {downstream} 0")
 
-    post_cb_sjtl_count = _carry_post_cb_sjtl_count(case)
-    if case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") == "CB_CARRY_BUFFER_ALL" and post_cb_sjtl_count:
+    sjtl_stages = _carry_sjtl_stages(case)
+    sjtl_position = _carry_sjtl_position(case)
+    legacy_post_cb_sjtl_count = _carry_post_cb_sjtl_count(case)
+    if (case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") == "CB_CARRY_BUFFER_ALL" and
+            legacy_post_cb_sjtl_count):
         lines.extend(("", "* D1-D6: canonical Carry CB -> one canonical sJTL -> JOIN; array DOUT joins directly."))
+    elif sjtl_stages and sjtl_position == "PRE_CB":
+        lines.extend(("", "* Selected Carry branches: canonical sJTL -> CB_0928 -> JOIN; array DOUT joins directly."))
+    elif sjtl_stages:
+        lines.extend(("", "* Selected Carry branches: CB_0928 -> canonical sJTL -> JOIN; array DOUT joins directly."))
     elif case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") == "CB_CARRY_BUFFER_ALL":
         lines.extend(("", "* D1-D6: canonical carry CB outputs join each existing array DOUT directly."))
     elif case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT":
@@ -1098,19 +1196,29 @@ def _render_chain_network(case: dict[str, str], params: dict[str, str]) -> list[
     carry_stages = _carry_buffer_stages(case)
     for index in range(1, 7):
         if index in carry_stages:
-            lines.extend((
-                f"V_CBU_A_D{index} DOUT_D{index} CBU_JOIN_D{index} 0",
-                f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
-                f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
-            ))
-            if post_cb_sjtl_count:
+            lines.append(f"V_CBU_A_D{index} DOUT_D{index} CBU_JOIN_D{index} 0")
+            if index in sjtl_stages and sjtl_position == "PRE_CB":
                 lines.extend((
+                    f"V_CARRY_IN_D{index} C_D{index-1} CARRY_SJTL_IN_D{index} 0",
+                    f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL",
+                    f"V_CARRY_SJTL_OUT_D{index} CARRY_SJTL_OUT_D{index} CARRY_CB_IN_D{index} 0",
+                    f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
+                    f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0",
+                ))
+            elif index in sjtl_stages:
+                lines.extend((
+                    f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
+                    f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
                     f"V_CARRY_SJTL_IN_D{index} CARRY_CB_OUT_D{index} CARRY_SJTL_IN_D{index} 0",
                     f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL",
                     f"V_CBU_B_D{index} CARRY_SJTL_OUT_D{index} CBU_JOIN_D{index} 0",
                 ))
             else:
-                lines.append(f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0")
+                lines.extend((
+                    f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
+                    f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
+                    f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0",
+                ))
             lines.append(f"V_T1_LINK_D{index} CBU_JOIN_D{index} T1_I_D{index} 0")
             continue
         if index == 1 and case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT":
@@ -1224,7 +1332,11 @@ def render_stimulus(case: dict[str, str], stimulus: dict[str, str]) -> tuple[str
 def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
     signals: list[dict[str, Any]] = []
     seen: set[str] = set()
-    post_cb_sjtl_count = _carry_post_cb_sjtl_count(case)
+    sjtl_spec = _carry_sjtl_spec(case)
+    sjtl_stages = set(sjtl_spec["stages"])
+    sjtl_position = str(sjtl_spec["position"])
+    post_cb_sjtl_count = int(sjtl_spec["legacy_count"])
+    detailed_carry = bool(sjtl_stages)
 
     def add(label: str, group: str, unit: str, **meta: Any) -> None:
         if label not in seen:
@@ -1234,19 +1346,19 @@ def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
     for diagonal, cells in DIAGONALS.items():
         last_cb = f"XCB_{diagonal}_L{len(cells)}"
         dout_meta = {"node": f"DOUT_{diagonal}"}
-        if post_cb_sjtl_count:
+        if detailed_carry:
             dout_meta["measurement_semantics"] = (
                 "shared DOUT/JOIN node voltage; not an array-only pulse measure"
                 if int(diagonal[1]) in _carry_buffer_stages(case)
                 else "D0 entrance boundary voltage")
         add(f"V(DOUT_{diagonal})", f"chain_input:{diagonal}:upstream", "V", **dout_meta)
-        if post_cb_sjtl_count and diagonal != "D0":
+        if detailed_carry and diagonal != "D0":
             add(f"I(V_CBU_A_D{diagonal[1]})", f"chain_array:{diagonal}:dout_to_join_current", "A",
                 element=f"V_CBU_A_D{diagonal[1]}", direction=f"DOUT_{diagonal} -> CBU_JOIN_{diagonal}")
         for jj in ("BJ1",):
             add(f"P({jj}|{last_cb})", f"chain_input:{diagonal}:last_cb", "rad", instance=last_cb, element=jj)
             add(f"V({jj}|{last_cb})", f"chain_input:{diagonal}:last_cb", "V", instance=last_cb, element=jj)
-        if post_cb_sjtl_count:
+        if detailed_carry:
             add("P(BJ2|" + last_cb + ")", f"chain_array_cb:{diagonal}:last_cb", "rad",
                 instance=last_cb, element="BJ2")
             add("V(BJ2|" + last_cb + ")", f"chain_array_cb:{diagonal}:last_cb", "V",
@@ -1275,7 +1387,7 @@ def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
         # The carry-buffer comparison is registered around D0/D1 and the D2+
         # chain boundaries; keep later T1 internal JJ columns out of these
         # already-large raws while retaining all D0/D1 same-JJ P/V evidence.
-        if post_cb_sjtl_count:
+        if detailed_carry:
             critical_jjs = T1_CRITICAL_JJS if diagonal == "D2" else ("B_J1", "B_J11")
         else:
             critical_jjs = (T1_CRITICAL_JJS if case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") == "CB_CARRY_BUFFER_ALL"
@@ -1293,33 +1405,41 @@ def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
             instance = f"XCB_CARRY_D{index}"
         nodes = ({"JOIN": f"CBU_JOIN_D{index}", "CARRY_CB_IN": f"CARRY_CB_IN_D{index}",
                   "CARRY_CB_OUT": f"CARRY_CB_OUT_D{index}",
-                  **({"POST_CB_SJTL_IN": f"CARRY_SJTL_IN_D{index}",
-                      "POST_CB_SJTL_OUT": f"CARRY_SJTL_OUT_D{index}"} if post_cb_sjtl_count else {})}
+                  **({f"{sjtl_position}_SJTL_IN": f"CARRY_SJTL_IN_D{index}",
+                      f"{sjtl_position}_SJTL_OUT": f"CARRY_SJTL_OUT_D{index}"}
+                     if index in sjtl_stages else {})}
                  if carry_buffer else
                  {"JOIN": "CBU_JOIN_D1", "OUT": "CBU_OUT_D1"} if direct_cb_d1 else
                  {"A": f"CBU_A_D{index}", "B": f"CBU_B_D{index}", "OUT": f"CBU_OUT_D{index}"})
         for port, node in nodes.items():
             node_meta = {"instance": instance, "port": port, "node": node}
-            if post_cb_sjtl_count and port == "JOIN":
+            if detailed_carry and port == "JOIN":
                 node_meta["measurement_semantics"] = (
-                    "shared DOUT and post-CB-sJTL boundary voltage; not source-attributed")
+                    "shared DOUT and Carry-path boundary voltage; not source-attributed")
             add(f"V({node})", f"chain_cbu:D{index}:{port.lower()}", "V", **node_meta)
         if carry_buffer:
             for element, port, direction in (
                     (f"V_CBU_A_D{index}", "A", f"DOUT_D{index} -> CBU_JOIN_D{index}"),
                     (f"V_CARRY_IN_D{index}", "CARRY_INPUT", f"C_D{index-1} -> CARRY_CB_IN_D{index}"),
                     (f"V_CBU_B_D{index}", "B_POST_BUFFER_OUTPUT",
-                     f"{'CARRY_SJTL_OUT_D' + str(index) if post_cb_sjtl_count else 'CARRY_CB_OUT_D' + str(index)} -> CBU_JOIN_D{index}")):
+                     f"{'CARRY_SJTL_OUT_D' + str(index) if index in sjtl_stages and sjtl_position == 'POST_CB' else 'CARRY_CB_OUT_D' + str(index)} -> CBU_JOIN_D{index}")):
                 add(f"I({element})", f"chain_cbu:D{index}:{port.lower()}_current", "A",
                     instance=instance, port=port, element=element, direction=direction)
-            if post_cb_sjtl_count:
-                add(f"I(V_CARRY_SJTL_IN_D{index})", f"chain_post_cb_sjtl:D{index}:input_current", "A",
-                    instance=f"XSJTL_CARRY_D{index}", element=f"V_CARRY_SJTL_IN_D{index}",
-                    direction=f"CARRY_CB_OUT_D{index} -> XSJTL_CARRY_D{index}")
+            if index in sjtl_stages:
+                sjtl_current = (f"I(V_CARRY_SJTL_IN_D{index})" if sjtl_position == "POST_CB"
+                                else f"I(V_CARRY_SJTL_OUT_D{index})")
+                sjtl_current_element = (f"V_CARRY_SJTL_IN_D{index}" if sjtl_position == "POST_CB"
+                                        else f"V_CARRY_SJTL_OUT_D{index}")
+                sjtl_direction = (f"CARRY_CB_OUT_D{index} -> XSJTL_CARRY_D{index}"
+                                  if sjtl_position == "POST_CB" else
+                                  f"XSJTL_CARRY_D{index} -> CARRY_CB_IN_D{index}")
+                add(sjtl_current, f"chain_{sjtl_position.lower()}_sjtl:D{index}:branch_current", "A",
+                    instance=f"XSJTL_CARRY_D{index}", element=sjtl_current_element,
+                    direction=sjtl_direction)
                 sjtl = f"XSJTL_CARRY_D{index}"
-                add(f"P(BJ1|{sjtl})", f"chain_post_cb_sjtl:D{index}:jj", "rad",
+                add(f"P(BJ1|{sjtl})", f"chain_{sjtl_position.lower()}_sjtl:D{index}:jj", "rad",
                     instance=sjtl, element="BJ1")
-                add(f"V(BJ1|{sjtl})", f"chain_post_cb_sjtl:D{index}:jj", "V",
+                add(f"V(BJ1|{sjtl})", f"chain_{sjtl_position.lower()}_sjtl:D{index}:jj", "V",
                     instance=sjtl, element="BJ1")
         else:
             for port in ("A", "B"):
@@ -1337,7 +1457,7 @@ def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
                      "chain_cbu_cb_direct:D1" if direct_cb_d1 else f"chain_cbu_jj:D{index}")
             add(f"P({jj}|{instance})", group, "rad", instance=instance, element=jj)
             add(f"V({jj}|{instance})", group, "V", instance=instance, element=jj)
-        if not post_cb_sjtl_count:
+        if not detailed_carry:
             add(f"I(IB1|{instance})", f"chain_bias:cbu:D{index}", "A", instance=instance,
                 element="IB1", note=("canonical CB_0928 internal bias branch" if direct_cb_d1 or carry_buffer else
                                       "representative internal MERGE bias-source branch; values pinned in CBU_PARAMS"))
@@ -1373,17 +1493,24 @@ def make_chain_probe_manifest(case: dict[str, str]) -> dict[str, Any]:
     else:
         add("I(R_CLK_QUIET_DFF)", "chain_clock:DFF:quiet_current", "A", element="R_CLK_QUIET_DFF")
 
-    manifest = {"schema": "bvm-4x4-t1-chain-probe-manifest-v2" if post_cb_sjtl_count else
+    manifest = {"schema": "bvm-4x4-t1-chain-probe-manifest-v2" if detailed_carry else
                 "bvm-4x4-t1-chain-probe-manifest-v1", "profile": "t1_chain_focus",
             "focus_stage": case["FOCUS_STAGE"], "d0_jtl_count": int(case["D0_JTL_COUNT"]),
             "cbu_override_d1": case.get("CBU_OVERRIDE_D1", "NONE"),
             "cbu_chain_topology": case.get("CBU_CHAIN_TOPOLOGY", "LEGACY"),
+            "carry_sjtl_legacy_mode": bool(post_cb_sjtl_count),
             "signal_count": len(signals),
             "raw_phase_unit": "P(...) radians",
             "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
             "signals": signals, "scientific_interpretation_performed": False}
-    if post_cb_sjtl_count:
-        manifest.update({"carry_post_cb_sjtl_count": post_cb_sjtl_count,
+    if detailed_carry:
+        manifest.update({"carry_post_cb_sjtl_count": sum(index in sjtl_stages for index in sjtl_stages
+                                                           if sjtl_position == "POST_CB"),
+                         "carry_sjtl_position": sjtl_position,
+                         "carry_sjtl_stage_mask": sjtl_spec["stage_mask"],
+                         "carry_sjtl_configured_stage_mask": sjtl_spec["configured_stage_mask"],
+                         "carry_sjtl_stages": [f"D{index}" for index in sorted(sjtl_stages)],
+                         "carry_sjtl_count": len(sjtl_stages),
                          "shared_dout_join_voltage_semantics":
                              "V(DOUT_Dk) and V(CBU_JOIN_Dk) are shared boundary voltages; "
                              "do not treat their area as an array-only pulse count"})
@@ -1749,7 +1876,9 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
                     case.get("CBU_OVERRIDE_D1", "NONE") == "CB_DIRECT")
     carry_buffer_stages = _carry_buffer_stages(case)
     carry_buffer_all = case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") == "CB_CARRY_BUFFER_ALL"
-    post_cb_sjtl_count = _carry_post_cb_sjtl_count(case)
+    sjtl_spec = _carry_sjtl_spec(case)
+    sjtl_stages = set(sjtl_spec["stages"])
+    sjtl_position = str(sjtl_spec["position"])
     cbu_text = chain_source_texts["sources/cbu_tunable.cir"]
     dff_text = chain_source_texts["sources/dff_tunable.cir"]
     jtl_text = chain_source_texts["sources/d0_jtl_tunable.cir"]
@@ -1787,20 +1916,20 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
             raise ConfigError("canonical CB_0928 candidate requires ports IN,OUT in that order")
         if sha256(REPO / SOURCE_PATHS["CB"]) != SOURCE_SHA256["CB"]:
             raise ConfigError("canonical CB_0928 SHA differs from the pinned source")
-    expected_carry_sjtl = ({
+    expected_carry_sjtl = {
         f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL"
-        for index in range(1, 7)} if post_cb_sjtl_count else set())
+        for index in sjtl_stages}
     actual_carry_sjtl = {line for line in lines if line.startswith("XSJTL_CARRY_D")}
     if actual_carry_sjtl != expected_carry_sjtl:
-        raise ConfigError("D1-D6 post-CB canonical sJTL instance count or endpoints differ from CARRY_POST_CB_SJTL_COUNT")
+        raise ConfigError("Carry canonical sJTL instance set or endpoints differ from the selected stage mask")
     expected_top_jtl = {f"XJTL_D0_{stage} D0_JTL_IN_{stage} D0_JTL_OUT_{stage} D0_JTL"
                         for stage in range(1, int(case["D0_JTL_COUNT"]) + 1)}
     if {line for line in lines if line.startswith("XJTL_")} != expected_top_jtl:
         raise ConfigError("chain may contain only its registered D0 entrance JTL; no array-output or extra JTL is allowed")
-    if post_cb_sjtl_count:
+    if sjtl_stages:
         if (tuple(pin.casefold() for pin in subckt_pins(REPO / SOURCE_PATHS["SJTL"], "sJTL")) != ("in", "out") or
                 sha256(REPO / SOURCE_PATHS["SJTL"]) != SOURCE_SHA256["SJTL"]):
-            raise ConfigError("post-CB stage must use the pinned canonical sJTL_0923 IN/OUT source")
+            raise ConfigError("selected Carry sJTL stage must use the pinned canonical sJTL_0923 IN/OUT source")
     if direct_cb_d1:
         direct_lines = {
             "V_CBU_A_D1 DOUT_D1 CBU_JOIN_D1 0",
@@ -1819,20 +1948,32 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
     for index in sorted(carry_buffer_stages):
         carry_lines = {
             f"V_CBU_A_D{index} DOUT_D{index} CBU_JOIN_D{index} 0",
-            f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
-            f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
             f"V_T1_LINK_D{index} CBU_JOIN_D{index} T1_I_D{index} 0",
         }
-        if post_cb_sjtl_count:
+        if index in sjtl_stages and sjtl_position == "PRE_CB":
             carry_lines.update({
+                f"V_CARRY_IN_D{index} C_D{index-1} CARRY_SJTL_IN_D{index} 0",
+                f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL",
+                f"V_CARRY_SJTL_OUT_D{index} CARRY_SJTL_OUT_D{index} CARRY_CB_IN_D{index} 0",
+                f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
+                f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0",
+            })
+        elif index in sjtl_stages:
+            carry_lines.update({
+                f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
+                f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
                 f"V_CARRY_SJTL_IN_D{index} CARRY_CB_OUT_D{index} CARRY_SJTL_IN_D{index} 0",
                 f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL",
                 f"V_CBU_B_D{index} CARRY_SJTL_OUT_D{index} CBU_JOIN_D{index} 0",
             })
         else:
-            carry_lines.add(f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0")
+            carry_lines.update({
+                f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
+                f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
+                f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0",
+            })
         prefixes = (f"V_CBU_A_D{index} ", f"V_CARRY_IN_D{index} ", f"XCB_CARRY_D{index} ",
-                    f"V_CBU_B_D{index} ", f"V_CARRY_SJTL_IN_D{index} ",
+                    f"V_CBU_B_D{index} ", f"V_CARRY_SJTL_IN_D{index} ", f"V_CARRY_SJTL_OUT_D{index} ",
                     f"XSJTL_CARRY_D{index} ", f"V_T1_LINK_D{index} ", f"XCBU_D{index} ")
         actual_carry_lines = {line for line in lines if line.startswith(prefixes)}
         if actual_carry_lines != carry_lines:
@@ -1869,22 +2010,35 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
         if index in carry_buffer_stages:
             expected = {
                 f"V_CBU_A_D{index} DOUT_D{index} CBU_JOIN_D{index} 0",
-                f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
-                f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
                 f"V_T1_LINK_D{index} CBU_JOIN_D{index} T1_I_D{index} 0",
             }
-            if post_cb_sjtl_count:
+            if index in sjtl_stages and sjtl_position == "PRE_CB":
                 expected.update({
+                    f"V_CARRY_IN_D{index} C_D{index-1} CARRY_SJTL_IN_D{index} 0",
+                    f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL",
+                    f"V_CARRY_SJTL_OUT_D{index} CARRY_SJTL_OUT_D{index} CARRY_CB_IN_D{index} 0",
+                    f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
+                    f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0",
+                })
+            elif index in sjtl_stages:
+                expected.update({
+                    f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
+                    f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
                     f"V_CARRY_SJTL_IN_D{index} CARRY_CB_OUT_D{index} CARRY_SJTL_IN_D{index} 0",
                     f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL",
                     f"V_CBU_B_D{index} CARRY_SJTL_OUT_D{index} CBU_JOIN_D{index} 0",
                 })
             else:
-                expected.add(f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0")
+                expected.update({
+                    f"V_CARRY_IN_D{index} C_D{index-1} CARRY_CB_IN_D{index} 0",
+                    f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB",
+                    f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0",
+                })
             actual = {line for line in lines if line.startswith((f"V_CBU_A_D{index} ",
                                                                   f"V_CARRY_IN_D{index} ",
                                                                   f"XCB_CARRY_D{index} ",
                                                                   f"V_CARRY_SJTL_IN_D{index} ",
+                                                                  f"V_CARRY_SJTL_OUT_D{index} ",
                                                                   f"XSJTL_CARRY_D{index} ",
                                                                   f"V_CBU_B_D{index} ",
                                                                   f"V_T1_LINK_D{index} "))}
@@ -2000,13 +2154,18 @@ def _validate_chain_topology(case: dict[str, str], params: dict[str, str], lines
             "cbu_direct_d1": direct_cb_d1, "cbu_carry_buffer_d1": 1 in carry_buffer_stages,
             "cbu_carry_buffer_count": len(carry_buffer_stages),
             "cbu_carry_buffer_all": carry_buffer_all,
-            "carry_post_cb_sjtl_count_per_stage": post_cb_sjtl_count,
-            "carry_post_cb_sjtl_count": len(carry_buffer_stages) * post_cb_sjtl_count,
-            "carry_post_cb_sjtl_instances": [f"XSJTL_CARRY_D{index}" for index in sorted(carry_buffer_stages)]
-                                              if post_cb_sjtl_count else [],
+            "carry_post_cb_sjtl_count_per_stage": _carry_post_cb_sjtl_count(case),
+            "carry_post_cb_sjtl_count": sum(index in sjtl_stages for index in carry_buffer_stages
+                                             if sjtl_position == "POST_CB"),
+            "carry_sjtl_position": sjtl_position,
+            "carry_sjtl_stage_mask": sjtl_spec["stage_mask"],
+            "carry_sjtl_configured_stage_mask": sjtl_spec["configured_stage_mask"],
+            "carry_sjtl_stages": [f"D{index}" for index in sorted(sjtl_stages)],
+            "carry_sjtl_count": len(sjtl_stages),
+            "carry_sjtl_instances": [f"XSJTL_CARRY_D{index}" for index in sorted(sjtl_stages)],
             "array_sjtl_count": sum(sum(_sjtl_counts(case, name)) for name in DIAGONALS),
             "total_sjtl_count": sum(sum(_sjtl_counts(case, name)) for name in DIAGONALS) +
-                                len(carry_buffer_stages) * post_cb_sjtl_count,
+                                len(sjtl_stages),
             "d0_jtl_count": count, "dff_count": 1,
             "clock_mode": case["T1_CHAIN_CLOCK_MODE"], "clock_driver_count": 8,
             "pulse_clock_count": pulse_count, "quiet_clock_count": quiet_count,
@@ -2025,6 +2184,9 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
     stimulus_lines = [line for line in stimulus_text.splitlines() if line.startswith("I_")]
     chain_active = case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN"
     t1_active = case["OUTPUT_MODE"] in {"DIAGONAL_T1_INDEPENDENT", "DIAGONAL_T1_CHAIN"}
+    sjtl_spec = _carry_sjtl_spec(case)
+    sjtl_stages = set(sjtl_spec["stages"])
+    sjtl_position = str(sjtl_spec["position"])
     if case["OUTPUT_MODE"] == "DIAGONAL_T1_INDEPENDENT" and _profile(case) != "t1_array_focus":
         raise ConfigError("T1 topology requires its dedicated t1_array_focus probe set")
     if chain_active and _profile(case) != "t1_chain_focus":
@@ -2056,7 +2218,7 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
     terms = [line for line in lines if line.startswith("R_TERM_")]
     array_sjtl_count = sum(sum(_sjtl_counts(case, name)) for name in DIAGONALS)
     carry_post_sjtl_count = _carry_post_cb_sjtl_count(case)
-    expected_sjtl_count = array_sjtl_count + 6 * carry_post_sjtl_count
+    expected_sjtl_count = array_sjtl_count + len(sjtl_stages)
     expected_terminal_count = 0 if t1_active else 7
     if (len(bvm), len(qb), len(sjtl), len(cb), len(terms)) != (
             16, 16, expected_sjtl_count, 16, expected_terminal_count):
@@ -2099,10 +2261,9 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
             for stage in (item for item in _sjtl_plan(case, name) if item["level"] == level):
                 expected_sjtl.add(f"{stage['instance']} {stage['input_node']} {stage['output_node']} sJTL")
             expected_cb.add(f"XCB_{name}_L{level} {_cb_input_node(case, name, level)} {next_node} CB")
-    if carry_post_sjtl_count:
-        expected_sjtl.update(
-            f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL"
-            for index in range(1, 7))
+    expected_sjtl.update(
+        f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL"
+        for index in sjtl_stages)
     if set(qb) != expected_qb or set(sjtl) != expected_sjtl or set(cb) != expected_cb:
         raise ConfigError("QB/serial-MERGE/sJTL/CB wiring differs from the registered diagonal map")
     if not t1_active:
@@ -2207,7 +2368,14 @@ def static_validate(case: dict[str, str], stimulus: dict[str, str], t1_params: d
             "sjtl_count": expected_sjtl_count,
             "array_sjtl_count": array_sjtl_count,
             "carry_post_cb_sjtl_count_per_stage": carry_post_sjtl_count,
-            "carry_post_cb_sjtl_total": 6 * carry_post_sjtl_count,
+            "carry_post_cb_sjtl_total": sum(index in _carry_buffer_stages(case) for index in sjtl_stages
+                                             if sjtl_position == "POST_CB"),
+            "carry_sjtl_position": sjtl_position,
+            "carry_sjtl_stage_mask": sjtl_spec["stage_mask"],
+            "carry_sjtl_configured_stage_mask": sjtl_spec["configured_stage_mask"],
+            "carry_sjtl_stages": [f"D{index}" for index in sorted(sjtl_stages)],
+            "carry_sjtl_count": len(sjtl_stages),
+            "carry_sjtl_total": len(sjtl_stages),
             "sjtl_count_by_diagonal": {name: list(_sjtl_counts(case, name)) for name in DIAGONALS},
             "cb_count": 16, "terminal_count": expected_terminal_count,
             "input_driver_count": 24, "driver_count_by_branch": {"WL": 4, "BL": 4, "SE": 16},
@@ -2275,8 +2443,11 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
         print(f"Topology: 16 BVM→QB; 7 diagonal CB chains; D0→{case['D0_JTL_COUNT']} sJTL→T1_D0; "
               "D1..D6 + prior Carry→6 physical CBU→T1; C6→DFF.O")
         if case.get("CBU_CHAIN_TOPOLOGY", "LEGACY") == "CB_CARRY_BUFFER_ALL":
-            if _carry_post_cb_sjtl_count(case):
-                print("CBU chain: D1-D6 each use Ck-1→canonical CB_0928→one canonical sJTL_0923→JOIN_Dk; "
+            if _carry_sjtl_stages(case) and _carry_sjtl_position(case) == "PRE_CB":
+                print("CBU chain: selected Carry branches use Ck-1→canonical sJTL_0923→CB_0928→JOIN_Dk; "
+                      "DOUT_Dk joins directly; no ColdFlux MERGE instance")
+            elif _carry_sjtl_stages(case) and _carry_sjtl_position(case) == "POST_CB":
+                print("CBU chain: selected Carry branches use Ck-1→CB_0928→canonical sJTL_0923→JOIN_Dk; "
                       "DOUT_Dk joins directly; no ColdFlux MERGE instance")
             else:
                 print("CBU chain: CB_CARRY_BUFFER_ALL — D1-D6 each use Ck-1→canonical CB_0928→JOIN_Dk; "
@@ -2292,7 +2463,9 @@ def dry_run(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
         print(f"Independent stages: T1=7 | CBU=6 | D0 JTL={case['D0_JTL_COUNT']} | DFF=1; "
               f"DOUT terminals=0; C0-C6 loads=0; Sum loads={t1_params['T1_R_S']}Ω; "
               f"DFF.O load={t1_params['DFF_R_OUT']}Ω")
-        print(f"Post-Carry-CB canonical sJTL count per D1-D6 stage: {_carry_post_cb_sjtl_count(case)}")
+        print(f"Carry sJTL: position={_carry_sjtl_position(case)} | mask={_carry_sjtl_spec(case)['stage_mask']} | "
+              f"stages={','.join(f'D{i}' for i in sorted(_carry_sjtl_stages(case))) or 'none'} | "
+              f"count={len(_carry_sjtl_stages(case))}")
         print(f"Clock: {case['T1_CHAIN_CLOCK_MODE']} | start={case['T1_CHAIN_CLK_START']} | "
               f"amp={t1_params['T1_CLK_AMPLITUDE']} | rise/width/fall="
               f"{t1_params['T1_CLK_RISE']}/{t1_params['T1_CLK_WIDTH']}/{t1_params['T1_CLK_FALL']} | "
@@ -3016,9 +3189,8 @@ def analyze_t1_chain_raw(run_dir: Path, probe_manifest: dict[str, Any],
                           "signed_area_v_s": _trapz(times, values, indices),
                           "signed_area_phi0_arithmetic": _trapz(times, values, indices)/PHI0,
                           "interpolation_or_resampling": False}
-                shared_dout_voltage = (label.startswith("V(DOUT_") and
-                                       _carry_post_cb_sjtl_count(case) == 1 and
-                                       label != "V(DOUT_D0)")
+                shared_dout_voltage = (label.startswith("V(DOUT_") and label != "V(DOUT_D0)" and
+                                       int(label[8]) in _carry_buffer_stages(case))
                 if ((label in {f"V(DOUT_{name})" for name in DIAGONALS} and not shared_dout_voltage) or
                         item["group"].startswith("chain_array_cb:") or
                         "chain_cbu" in item["group"] or item["group"].startswith("chain_t1:") or
@@ -3045,11 +3217,18 @@ def analyze_t1_chain_raw(run_dir: Path, probe_manifest: dict[str, Any],
             for window, indices in window_indices.items():
                 first, last = indices[0], indices[-1]
                 delta = phase[last]-phase[first]
+                phase_steps = [phase[right] - phase[left] for left, right in zip(indices, indices[1:])]
+                positive_variation = sum(step for step in phase_steps if step > 0)
+                negative_variation = sum(step for step in phase_steps if step < 0)
                 area = _trapz(times, voltage, indices)
                 junctions.append({"phase_signal": label, "voltage_signal": voltage_label,
                                   "window": window, "sample_count": len(indices),
                                   "phase_delta_rad": delta,
                                   "phase_delta_rad_over_2pi_navigation": delta/(2*math.pi),
+                                  "positive_phase_variation_rad_navigation": positive_variation,
+                                  "negative_phase_variation_rad_navigation": negative_variation,
+                                  "positive_phase_variation_turns_navigation": positive_variation/(2*math.pi),
+                                  "negative_phase_variation_turns_navigation": negative_variation/(2*math.pi),
                                   "voltage_area_v_s_same_jj_same_rows": area,
                                   "voltage_area_phi0_arithmetic": area/PHI0,
                                   "phase_minus_area_turn_arithmetic": delta/(2*math.pi)-area/PHI0,
@@ -3069,7 +3248,7 @@ def analyze_t1_chain_raw(run_dir: Path, probe_manifest: dict[str, Any],
         return max(item["time_ps"] for item in candidates)
 
     for index, diagonal in enumerate(DIAGONALS):
-        if _carry_post_cb_sjtl_count(case) and index > 0:
+        if index > 0 and index in _carry_buffer_stages(case):
             stage_inputs = [("ARRAY_CB_JJ1", f"V(BJ1|XCB_{diagonal}_L{len(DIAGONALS[diagonal])})"),
                             ("ARRAY_TO_JOIN_SHARED_VOLTAGE", f"V(DOUT_{diagonal})"),
                             ("DOUT_BRANCH_CURRENT", f"I(V_CBU_A_D{index})")]
@@ -3081,8 +3260,13 @@ def analyze_t1_chain_raw(run_dir: Path, probe_manifest: dict[str, Any],
                 array_cb = f"XCB_{diagonal}_L{len(DIAGONALS[diagonal])}"
                 stage_inputs.append(("ARRAY_LAST_CB_BJ1_VOLTAGE", f"V(BJ1|{array_cb})"))
                 stage_inputs.append(("BUFFERED_CARRY", f"V(CARRY_CB_OUT_D{index})"))
-                if _carry_post_cb_sjtl_count(case):
-                    stage_inputs.append(("POST_CB_SJTL_OUTPUT", f"V(CARRY_SJTL_OUT_D{index})"))
+                if index in _carry_sjtl_stages(case):
+                    stage_inputs.append((f"{_carry_sjtl_position(case)}_SJTL_INPUT",
+                                         f"V(CARRY_SJTL_IN_D{index})"))
+                    stage_inputs.append((f"{_carry_sjtl_position(case)}_SJTL_OUTPUT",
+                                         f"V(CARRY_SJTL_OUT_D{index})"))
+                    if _carry_sjtl_position(case) == "PRE_CB":
+                        stage_inputs.append(("CARRY_CB_INPUT", f"V(CARRY_CB_IN_D{index})"))
                 stage_inputs.append(("JOIN", f"V(CBU_JOIN_D{index})"))
             else:
                 stage_inputs.append(("CBU_OUTPUT", f"V(CBU_OUT_{diagonal})"))
@@ -3143,7 +3327,7 @@ def analyze_t1_chain_raw(run_dir: Path, probe_manifest: dict[str, Any],
                "lobe_candidates_are_event_counts": False,
                "event_classifier": None, "actual_product_bit_decoding": "NOT_PERFORMED; no decode threshold preregistered",
                "interpolation_or_resampling": False, "scientific_interpretation_performed": False}
-    if _carry_post_cb_sjtl_count(case):
+    if _carry_buffer_stages(case):
         metrics["shared_dout_join_voltage_note"] = (
             "V(DOUT_Dk) shares the sensed zero-volt path with JOIN and is not an array-only event count")
     return metrics, raw_qa
@@ -3383,7 +3567,9 @@ def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
     labels = {item["label"]: item for item in probes["signals"]}
     profile = probes["profile"]
     if profile == "t1_chain_focus":
-        if probes.get("carry_post_cb_sjtl_count", 0) == 1:
+        if probes.get("carry_sjtl_count", 0) > 0:
+            sjtl_stages = {int(item[1:]) for item in probes.get("carry_sjtl_stages", [])}
+            sjtl_position = probes.get("carry_sjtl_position", "POST_CB")
             array_signals = []
             for diagonal, cells in DIAGONALS.items():
                 array_cb = f"XCB_{diagonal}_L{len(cells)}"
@@ -3400,10 +3586,17 @@ def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
                 carry_cb = f"XCB_CARRY_D{index}"
                 carry_signals.extend((f"P(BJ1|{carry_cb})", f"V(BJ1|{carry_cb})",
                                       f"P(BJ2|{carry_cb})", f"V(BJ2|{carry_cb})"))
-                sjtl = f"XSJTL_CARRY_D{index}"
-                carry_signals.extend((f"P(BJ1|{sjtl})", f"V(BJ1|{sjtl})",
-                                      f"V(CARRY_SJTL_OUT_D{index})",
-                                      f"I(V_CARRY_SJTL_IN_D{index})", f"I(V_CBU_B_D{index})"))
+                carry_signals.append(f"I(V_CARRY_IN_D{index})")
+                if index in sjtl_stages:
+                    sjtl = f"XSJTL_CARRY_D{index}"
+                    sjtl_branch_sensor = (f"I(V_CARRY_SJTL_IN_D{index})" if sjtl_position == "POST_CB"
+                                          else f"I(V_CARRY_SJTL_OUT_D{index})")
+                    carry_signals.extend((f"P(BJ1|{sjtl})", f"V(BJ1|{sjtl})",
+                                          f"V(CARRY_SJTL_IN_D{index})", f"V(CARRY_SJTL_OUT_D{index})",
+                                          sjtl_branch_sensor))
+                    if sjtl_position == "PRE_CB":
+                        carry_signals.append(f"V(CARRY_CB_IN_D{index})")
+                carry_signals.extend((f"I(V_CBU_B_D{index})", f"I(V_T1_LINK_D{index})"))
                 join_signals.extend((f"I(V_CBU_A_D{index})", f"I(V_CBU_B_D{index})",
                                      f"V(CBU_JOIN_D{index})", f"V(T1_I_D{index})",
                                      f"I(V_T1_LINK_D{index})"))
@@ -3418,12 +3611,15 @@ def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
                         t1_signals.extend((f"P({jj}|{t1})", f"V({jj}|{t1})"))
             t1_signals.extend(("V(CLK_DFF)", "V(DFF_IN)", "I(V_DFF_DATA)",
                                "V(DFF_O)", "I(R_DFF_OUT)"))
+            for jj in ("B1", "B2", "B7"):
+                if f"P({jj}|XDFF)" in labels and f"V({jj}|XDFF)" in labels:
+                    t1_signals.extend((f"P({jj}|XDFF)", f"V({jj}|XDFF)"))
             pages = [
-                {"file": "01_array.html", "title": "ARRAY — final CB JJ P/V and measured DOUT-to-JOIN branch current; DOUT voltage is not an array-only event count",
+                {"file": "01_array.html", "title": "ARRAY — final CB JJ P/V and DOUT branch current; shared-node voltage is not source-attributed",
                  "signals": array_signals},
-                {"file": "02_carry.html", "title": "CARRY — previous T1.C, canonical CB_0928, canonical sJTL_0923 and stage-boundary evidence",
+                {"file": "02_carry.html", "title": f"CARRY — per-stage {sjtl_position} sJTL_0923 and canonical CB_0928 boundary evidence",
                  "signals": carry_signals},
-                {"file": "03_join.html", "title": "JOIN — independent DOUT/Carry-sJTL branch currents and loaded T1 input",
+                {"file": "03_join.html", "title": "JOIN — separate DOUT/Carry branch currents and loaded T1 input",
                  "signals": join_signals},
                 {"file": "04_t1.html", "title": "T1 — all clocks, input/output boundaries, focused D2 JJ state and DFF",
                  "signals": t1_signals},
@@ -3431,8 +3627,49 @@ def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
             for page in pages:
                 missing = [signal for signal in page["signals"] if signal not in labels]
                 if missing:
-                    raise ConfigError(f"post-CB-sJTL plot page {page['file']} requests missing probes: {missing}")
-            return pages
+                    raise ConfigError(f"Carry-sJTL plot page {page['file']} requests missing probes: {missing}")
+            if probes.get("carry_sjtl_legacy_mode"):
+                return pages
+            overview_signals = ([*(f"V(DOUT_D{i})" for i in range(7)),
+                                 *(f"V(S_D{i})" for i in range(7)),
+                                 *(f"V(C_D{i})" for i in range(7)), "V(DFF_O)",
+                                 *(f"V(CLK_D{i})" for i in range(7)), "V(CLK_DFF)"])
+            detailed_pages = [{"file": "00_full_chain_overview.html",
+                               "title": "Full chain — seven D inputs, seven Sum/Carry outputs, final DFF and clocks; DOUT is a shared boundary",
+                               "signals": overview_signals}]
+            for index in range(1, 7):
+                stage = f"D{index}"
+                array_cb = f"XCB_{stage}_L{len(DIAGONALS[stage])}"
+                carry_cb = f"XCB_CARRY_{stage}"
+                focus = [f"V(DOUT_{stage})", f"P(BJ1|{array_cb})", f"V(BJ1|{array_cb})",
+                         f"P(BJ2|{array_cb})", f"V(BJ2|{array_cb})", f"I(V_CBU_A_D{index})",
+                         f"V(C_D{index-1})", f"V(CARRY_CB_IN_D{index})",
+                         f"P(BJ1|{carry_cb})", f"V(BJ1|{carry_cb})",
+                         f"P(BJ2|{carry_cb})", f"V(BJ2|{carry_cb})",
+                         f"V(CARRY_CB_OUT_D{index})", f"I(V_CBU_B_D{index})",
+                         f"I(V_CBU_A_D{index})", f"V(CBU_JOIN_D{index})",
+                         f"I(V_T1_LINK_D{index})", f"V(T1_I_D{index})",
+                         f"V(CLK_D{index})", f"P(B_J1|XT1_D{index})", f"V(B_J1|XT1_D{index})",
+                         f"P(B_J11|XT1_D{index})", f"V(B_J11|XT1_D{index})",
+                         f"V(S_D{index})", f"I(R_S_D{index})", f"V(C_D{index})"]
+                if index in sjtl_stages:
+                    sjtl = f"XSJTL_CARRY_D{index}"
+                    sjtl_current = (f"I(V_CARRY_SJTL_IN_D{index})" if sjtl_position == "POST_CB"
+                                    else f"I(V_CARRY_SJTL_OUT_D{index})")
+                    focus.extend((f"V(CARRY_SJTL_IN_D{index})", f"P(BJ1|{sjtl})",
+                                  f"V(BJ1|{sjtl})", f"V(CARRY_SJTL_OUT_D{index})", sjtl_current))
+                    if sjtl_position == "PRE_CB":
+                        focus.append(f"V(CARRY_CB_IN_D{index})")
+                if index == 6:
+                    focus.extend(("V(DFF_IN)", "I(V_DFF_DATA)", "V(DFF_O)", "I(R_DFF_OUT)"))
+                detailed_pages.append({"file": f"05_stage_{stage}_focus.html",
+                                       "title": f"{stage} stage — array final CB, Carry path, JOIN, T1 and downstream boundary",
+                                       "signals": focus})
+            for page in detailed_pages:
+                missing = [signal for signal in page["signals"] if signal not in labels]
+                if missing:
+                    raise ConfigError(f"Carry stage plot page {page['file']} requests missing probes: {missing}")
+            return detailed_pages + pages
         carry_all = probes.get("cbu_chain_topology", "LEGACY") == "CB_CARRY_BUFFER_ALL"
         carry_stages = set(range(1, 7)) if carry_all else (
             {1} if probes.get("cbu_override_d1") == "CB_CARRY_BUFFER" else set())
@@ -3877,8 +4114,16 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                                                  "t1_total": 7 if case["OUTPUT_MODE"] in {"DIAGONAL_T1_INDEPENDENT", "DIAGONAL_T1_CHAIN"} else 0,
                                                  "cbu_total": 6 if case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN" else 0,
                                                  "carry_post_cb_sjtl_count_per_stage": _carry_post_cb_sjtl_count(case),
-                                                 "carry_post_cb_sjtl_total": (6 * _carry_post_cb_sjtl_count(case)
-                                                                               if case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN" else 0),
+                                                 "carry_post_cb_sjtl_total": sum(
+                                                     index in _carry_buffer_stages(case)
+                                                     for index in _carry_sjtl_stages(case)
+                                                     if _carry_sjtl_position(case) == "POST_CB"),
+                                                 "carry_sjtl_position": _carry_sjtl_position(case),
+                                                 "carry_sjtl_stage_mask": _carry_sjtl_spec(case)["stage_mask"],
+                                                 "carry_sjtl_configured_stage_mask": _carry_sjtl_spec(case)["configured_stage_mask"],
+                                                 "carry_sjtl_stages": [f"D{index}" for index in
+                                                                        sorted(_carry_sjtl_stages(case))],
+                                                 "carry_sjtl_count": len(_carry_sjtl_stages(case)),
                                                  "d0_jtl_total": int(case["D0_JTL_COUNT"]) if case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN" else 0,
                                                  "dff_total": 1 if case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN" else 0,
                                                  "merge_semantics": "serial; unchanged"},
@@ -4014,8 +4259,14 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                   "cbu_chain_topology": case.get("CBU_CHAIN_TOPOLOGY", "LEGACY"),
                   "cbu_override_d1": case.get("CBU_OVERRIDE_D1", "NONE"),
                   "carry_post_cb_sjtl_count_per_stage": _carry_post_cb_sjtl_count(case),
-                  "carry_post_cb_sjtl_total": (6 * _carry_post_cb_sjtl_count(case)
-                                                if case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN" else 0),
+                  "carry_post_cb_sjtl_total": sum(index in _carry_buffer_stages(case)
+                                                  for index in _carry_sjtl_stages(case)
+                                                  if _carry_sjtl_position(case) == "POST_CB"),
+                  "carry_sjtl_position": _carry_sjtl_position(case),
+                  "carry_sjtl_stage_mask": _carry_sjtl_spec(case)["stage_mask"],
+                  "carry_sjtl_configured_stage_mask": _carry_sjtl_spec(case)["configured_stage_mask"],
+                  "carry_sjtl_stages": [f"D{index}" for index in sorted(_carry_sjtl_stages(case))],
+                  "carry_sjtl_count": len(_carry_sjtl_stages(case)),
                   "row_bits": case["ROW_BITS"],
                   "column_bits": case["COL_BITS"], "se_enable_mask": case["SE_ENABLE_MASK"],
                   "batch_id": batch_id,
@@ -4044,7 +4295,7 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
             "probe_count": rendered["probes"]["signal_count"],
             "risk_level": "NORMAL" if batch_id in {BUS400_BATCH_ID, T1_ARRAY_BATCH_ID, T1_CHAIN_BATCH_ID,
                                                        CB_DIRECT_D1_BATCH_ID, CB_CARRY_BUFFER_ALL_BATCH_ID,
-                                                       CARRY_POST_CB_SJTL_BATCH_ID}
+                                                       CARRY_POST_CB_SJTL_BATCH_ID, CARRY_SJTL_POSITION_BATCH_ID}
             else ("NORMAL" if case["CASE"] in BUS400_CASES else "historical registration unchanged"),
             "artifact_status": "VALID", "qa_status": "PASS",
             "scientific_interpretation_performed": False,
@@ -4059,8 +4310,14 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
                                     "cbu_chain_topology": case.get("CBU_CHAIN_TOPOLOGY", "LEGACY"),
                                     "cbu_override_d1": case.get("CBU_OVERRIDE_D1", "NONE"),
                                     "carry_post_cb_sjtl_count_per_stage": _carry_post_cb_sjtl_count(case),
-                                    "carry_post_cb_sjtl_total": (6 * _carry_post_cb_sjtl_count(case)
-                                                                  if case["OUTPUT_MODE"] == "DIAGONAL_T1_CHAIN" else 0),
+                                    "carry_post_cb_sjtl_total": sum(index in _carry_buffer_stages(case)
+                                                                    for index in _carry_sjtl_stages(case)
+                                                                    if _carry_sjtl_position(case) == "POST_CB"),
+                                    "carry_sjtl_position": _carry_sjtl_position(case),
+                                    "carry_sjtl_stage_mask": _carry_sjtl_spec(case)["stage_mask"],
+                                    "carry_sjtl_configured_stage_mask": _carry_sjtl_spec(case)["configured_stage_mask"],
+                                    "carry_sjtl_stages": [f"D{index}" for index in sorted(_carry_sjtl_stages(case))],
+                                    "carry_sjtl_count": len(_carry_sjtl_stages(case)),
                                     "active_final_crosspoints": _active_cells(case),
                                     "status": result["status"], "physical_solve_count": 1,
                                     "raw_sha256": raw_hash, "raw_bytes": raw.stat().st_size,
@@ -4088,14 +4345,18 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
 def _write_result_brief(run_dir: Path, result: dict[str, Any], metrics: dict[str, Any]) -> None:
     if result.get("output_mode") == "DIAGONAL_T1_CHAIN":
         by_signal = {(item["signal"], item["window"]): item for item in metrics["waveforms"]}
+        carry_sjtl_count = int(result.get("carry_sjtl_count", 6 * result.get("carry_post_cb_sjtl_count_per_stage", 0)))
+        carry_sjtl_position = result.get("carry_sjtl_position", "POST_CB")
+        carry_sjtl_stages = result.get("carry_sjtl_stages", [f"D{i}" for i in range(1, 7)]
+                                        if result.get("carry_post_cb_sjtl_count_per_stage") else [])
         def area(signal: str) -> str:
             record = by_signal.get((signal, "TOTAL"))
             return f"{record['signed_area_phi0_arithmetic']:.6g}" if record else "UNKNOWN"
         lines = [f"# {result['run_id']}", "",
                  f"- CASE: `{result['case']}`; ROW/COL=`{result['row_bits']}/{result['column_bits']}`; clock=`{result['t1_chain_clock_mode']}`.",
                  f"- Topology: 7 physical T1 + 6 carry stages (`{result.get('cbu_chain_topology', 'LEGACY')}`) + "
-                 f"6 post-CB sJTL + D0 sJTL + DFF; no DOUT/carry termination loads."
-                 if result.get("carry_post_cb_sjtl_count_per_stage") else
+                 f"{carry_sjtl_count} {carry_sjtl_position} sJTL at {','.join(carry_sjtl_stages)} + D0 sJTL + DFF; no DOUT/carry termination loads."
+                 if carry_sjtl_count else
                  f"- Topology: 7 physical T1 + 6 carry stages (`{result.get('cbu_chain_topology', 'LEGACY')}`) + D0 sJTL + DFF; no DOUT/carry termination loads.",
                  "- Artifact/QA: mechanical only; raw/provenance hashes in the run artifacts.",
                  "- Units: signed V·s/Φ0 arithmetic uses actual stored timestamps; P(...) remains radians; turns are navigation only.",
@@ -4103,11 +4364,11 @@ def _write_result_brief(run_dir: Path, result: dict[str, Any], metrics: dict[str
                  "- Scientific interpretation: `NOT_PERFORMED`; authorized follow-up: none.", "",
                  "| Stage | D input | Previous C | CBU/JTL→T1 input | Sum | Carry |",
                  "|---|---:|---:|---:|---:|---:|"]
-        if result.get("carry_post_cb_sjtl_count_per_stage"):
+        if carry_sjtl_count:
             lines = [f"# {result['run_id']}", "",
                      f"- CASE: `{result['case']}`; ROW/COL=`{result['row_bits']}/{result['column_bits']}`; "
                      f"global clock start=`{result['t1_chain_clock_start']}`.",
-                     "- Topology: D1-D6 previous Carry → canonical CB_0928 → one canonical sJTL_0923 → JOIN with array DOUT → T1 input.",
+                     f"- Topology: previous Carry → {carry_sjtl_position} canonical sJTL_0923/CB_0928 path at {','.join(carry_sjtl_stages)} → JOIN with array DOUT → T1 input.",
                      "- `V(DOUT_Dk)` and `V(CBU_JOIN_Dk)` are shared sensed boundary voltages; their voltage-area arithmetic is not an array-only pulse/count metric.",
                      "- Read `metrics.json` for actual-grid waveform, current, same-JJ phase/area and descriptive timing records; no event classifier or bit decode is applied.",
                      "- Artifact/QA is mechanical only; raw/provenance hashes are in the run artifacts.",

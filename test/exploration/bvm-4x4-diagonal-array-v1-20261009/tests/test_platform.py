@@ -560,6 +560,15 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(legacy_case["CARRY_POST_CB_SJTL_COUNT"], "0")
         self.assertFalse(any(line.startswith("XSJTL_CARRY_D") for line in legacy["deck"].splitlines()))
 
+        for preset, run_id in (
+                ("CARRY_POST_CB_SJTL_ALL_200", "A030_CARRY_POST_CB_SJTL_ALL_200"),
+                ("CARRY_POST_CB_SJTL_ALL_210", "A031_CARRY_POST_CB_SJTL_ALL_210"),
+                ("CARRY_POST_CB_SJTL_PAPER_210", "A032_CARRY_POST_CB_SJTL_PAPER_210"),
+                ("CARRY_POST_CB_SJTL_3X3_210", "A033_CARRY_POST_CB_SJTL_3X3_210")):
+            old_render = rendered(preset)[3]
+            old_deck = (platform.RUNS / run_id / "deck.cir").read_text()
+            self.assertEqual(old_render["deck"], old_deck, f"legacy topology drifted: {run_id}")
+
         case, stimulus, params, output = rendered("CARRY_POST_CB_SJTL_ALL_200")
         deck = output["deck"].splitlines()
         self.assertEqual(case["CARRY_POST_CB_SJTL_COUNT"], "1")
@@ -604,6 +613,60 @@ class DiagonalPlatformTests(unittest.TestCase):
             "01_array.html", "02_carry.html", "03_join.html", "04_t1.html"])
         self.assertNotIn("V(DOUT_D2)", pages[0]["signals"])
         self.assertIn("I(V_CBU_A_D2)", pages[0]["signals"])
+
+    def test_carry_sjtl_stage_mask_and_position_render_exact_registered_topologies(self):
+        case, _stim, _params, output = rendered("CARRY_SJTL_D2_ONLY_ALL_200")
+        deck = output["deck"].splitlines()
+        self.assertEqual((case["CARRY_SJTL_POSITION"], case["CARRY_SJTL_STAGE_MASK"]), ("POST_CB", "010000"))
+        self.assertEqual(output["static_qa"]["carry_sjtl_stages"], ["D2"])
+        self.assertEqual(output["static_qa"]["carry_sjtl_count"], 1)
+        self.assertIn("V_CARRY_IN_D2 C_D1 CARRY_CB_IN_D2 0", deck)
+        self.assertIn("XCB_CARRY_D2 CARRY_CB_IN_D2 CARRY_CB_OUT_D2 CB", deck)
+        self.assertIn("V_CARRY_SJTL_IN_D2 CARRY_CB_OUT_D2 CARRY_SJTL_IN_D2 0", deck)
+        self.assertIn("XSJTL_CARRY_D2 CARRY_SJTL_IN_D2 CARRY_SJTL_OUT_D2 sJTL", deck)
+        self.assertIn("V_CBU_B_D2 CARRY_SJTL_OUT_D2 CBU_JOIN_D2 0", deck)
+        self.assertEqual(sum(line.startswith("XSJTL_CARRY_D") for line in deck), 1)
+        self.assertFalse(any(line.startswith(("V_CARRY_SJTL_IN_D1 ", "V_CARRY_SJTL_IN_D3 ",
+                                              "V_CARRY_SJTL_IN_D4 ", "V_CARRY_SJTL_IN_D5 ",
+                                              "V_CARRY_SJTL_IN_D6 ")) for line in deck))
+        self.assertEqual(output["static_qa"]["status"], "PASS")
+        self.assertLess(output["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
+
+        for preset, start, rows, cols in (
+                ("CARRY_SJTL_PRE_ALL_200", "200p", "1111", "1111"),
+                ("CARRY_SJTL_PRE_ALL_210", "210p", "1111", "1111"),
+                ("CARRY_SJTL_PRE_PAPER_210", "210p", "1101", "1101"),
+                ("CARRY_SJTL_PRE_3X3_210", "210p", "1100", "0011")):
+            case, _stim, _params, output = rendered(preset)
+            deck = output["deck"].splitlines()
+            self.assertEqual((case["ROW_BITS"], case["COL_BITS"], case["T1_CHAIN_CLK_START"]),
+                             (rows, cols, start))
+            self.assertEqual(output["static_qa"]["carry_sjtl_position"], "PRE_CB")
+            self.assertEqual(output["static_qa"]["carry_sjtl_stages"], [f"D{i}" for i in range(1, 7)])
+            for index in range(1, 7):
+                self.assertIn(f"V_CARRY_IN_D{index} C_D{index-1} CARRY_SJTL_IN_D{index} 0", deck)
+                self.assertIn(f"XSJTL_CARRY_D{index} CARRY_SJTL_IN_D{index} CARRY_SJTL_OUT_D{index} sJTL", deck)
+                self.assertIn(f"V_CARRY_SJTL_OUT_D{index} CARRY_SJTL_OUT_D{index} CARRY_CB_IN_D{index} 0", deck)
+                self.assertIn(f"XCB_CARRY_D{index} CARRY_CB_IN_D{index} CARRY_CB_OUT_D{index} CB", deck)
+                self.assertIn(f"V_CBU_B_D{index} CARRY_CB_OUT_D{index} CBU_JOIN_D{index} 0", deck)
+            self.assertEqual(sum(line.startswith("XSJTL_CARRY_D") for line in deck), 6)
+            self.assertEqual(output["static_qa"]["status"], "PASS")
+            self.assertLess(output["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
+            labels = {item["label"] for item in output["probes"]["signals"]}
+            for label in ("I(V_CARRY_IN_D1)", "I(V_CARRY_SJTL_OUT_D1)",
+                          "P(BJ1|XSJTL_CARRY_D1)", "V(BJ1|XCB_CARRY_D1)",
+                          "P(B1|XDFF)", "V(B1|XDFF)"):
+                self.assertIn(label, labels)
+            pages = platform.plot_signals(output["probes"])
+            self.assertEqual([page["file"] for page in pages], [
+                "00_full_chain_overview.html", *[f"05_stage_D{i}_focus.html" for i in range(1, 7)],
+                "01_array.html", "02_carry.html", "03_join.html", "04_t1.html"])
+
+        with self.assertRaisesRegex(platform.ConfigError, "ambiguous Carry sJTL configuration"):
+            platform.load_config("CARRY_SJTL_D2_ONLY_ALL_200", ["CARRY_POST_CB_SJTL_COUNT=1"])
+        with self.assertRaisesRegex(platform.ConfigError, "retains POST_CB semantics"):
+            platform.load_config("CARRY_SJTL_PRE_ALL_200", ["CARRY_POST_CB_SJTL_COUNT=1",
+                                                               "CARRY_SJTL_STAGE_MASK=000000"])
 
     def test_post_cb_sjtl_count_is_fail_closed_and_clock_presets_are_exact(self):
         for preset, row_bits, col_bits, start in (

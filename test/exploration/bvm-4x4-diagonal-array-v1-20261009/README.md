@@ -359,6 +359,64 @@ failure; valid physical outcomes, whether expected or not, do not change the
 remaining registered run set. The DELTA references A001-A029 and packages only
 A030-A033 raw/evidence. HTML remains local and is excluded from packages.
 
+### Carry sJTL placement and stage-mask comparison (A034-A039)
+
+The historical `CARRY_POST_CB_SJTL_COUNT=0|1` control remains compatible:
+`1` means one canonical post-CB sJTL at every stage D1-D6. New runs should set
+that legacy field to `0` and use:
+
+```ini
+CARRY_SJTL_POSITION=PRE_CB|POST_CB
+CARRY_SJTL_STAGE_MASK=010000
+```
+
+The six mask bits map left-to-right to D1-D6 (`010000` selects D2,
+`111111` selects all, `000000` selects none). PRE_CB renders
+`T1.C -> sJTL_0923 -> CB_0928 -> JOIN`; POST_CB renders
+`T1.C -> CB_0928 -> sJTL_0923 -> JOIN`. The array DOUT branch, D0 JTL, CB,
+all upstream device parameters, and global clock conditions are unchanged.
+If the legacy nonzero count and a nonzero new mask are both requested, config
+validation stops with an ambiguity error rather than stacking devices.
+
+The six exact cases are:
+
+| Run | ROW/COL | Carry sJTL | Clock |
+|---|---|---|---:|
+| A034 `CARRY_SJTL_D2_ONLY_ALL_200` | 1111/1111 | POST_CB at D2 only | 200 ps |
+| A035 `CARRY_SJTL_D2_ONLY_PAPER_200` | 1101/1101 | POST_CB at D2 only | 200 ps |
+| A036 `CARRY_SJTL_PRE_ALL_200` | 1111/1111 | PRE_CB at D1-D6 | 200 ps |
+| A037 `CARRY_SJTL_PRE_ALL_210` | 1111/1111 | PRE_CB at D1-D6 | 210 ps |
+| A038 `CARRY_SJTL_PRE_PAPER_210` | 1101/1101 | PRE_CB at D1-D6 | 210 ps |
+| A039 `CARRY_SJTL_PRE_3X3_210` | 1100/0011 | PRE_CB at D1-D6 | 210 ps |
+
+Every new run has full-chain, ARRAY, CARRY, JOIN, T1/DFF and six stage-focused
+classic `josim-plot2.py` pages. Paired comparisons use each raw's native stored
+grid independently; no interpolation or resampling is performed. Shared
+`V(DOUT_Dk)`/JOIN voltages are source-mixed boundaries, not array-only event
+counts. `P(...)` remains radians; signed and positive/negative phase variation
+are descriptive arithmetic, not SFQ/event counts.
+
+```bash
+./try.sh --dry-run --preset CARRY_SJTL_D2_ONLY_ALL_200
+./try.sh --dry-run --preset CARRY_SJTL_D2_ONLY_PAPER_200
+./try.sh --dry-run --preset CARRY_SJTL_PRE_ALL_200
+./try.sh --dry-run --preset CARRY_SJTL_PRE_ALL_210
+./try.sh --dry-run --preset CARRY_SJTL_PRE_PAPER_210
+./try.sh --dry-run --preset CARRY_SJTL_PRE_3X3_210
+python3 scripts/carry_sjtl_position_batch.py --prepare-preflight
+# Commit the locked source and preflight snapshot before running the authorized matrix.
+python3 scripts/carry_sjtl_position_batch.py --run-batch
+python3 scripts/analyze_carry_sjtl_position.py
+./submit.sh BVM4X4_CARRY_SJTL_POSITION_20261010 --delta --dry-run
+./submit.sh BVM4X4_CARRY_SJTL_POSITION_20261010 --delta
+```
+
+The batch runner checks and executes only A034-A039 serially, stopping on a
+solver/artifact-integrity failure. A valid but unexpected physical output is
+preserved as evidence and does not alter the remaining registered run set.
+The DELTA references A001-A033 by their existing package/raw identities and
+adds only A034-A039 evidence; all generated HTML remains local.
+
 ## Evidence and plots
 
 Each run records actual deck, exact PWL stimulus, effective topology/config

@@ -87,8 +87,9 @@ def _measure_run(run_id: str) -> dict[str, Any]:
             result.get("artifact_status") != "VALID" or run_qa.get("status") != "PASS" or
             chain_qa.get("status") != "PASS" or chain_qa.get("raw_sha256_after_analysis") != before):
         raise RuntimeError(f"run identity/QA/raw SHA mismatch: {run_id}")
-    if (case_manifest.get("case", {}).get("CARRY_POST_CB_SJTL_COUNT") != "1" or
-            probe.get("carry_post_cb_sjtl_count") != 1):
+    case_post_count = int(case_manifest.get("case", {}).get("CARRY_POST_CB_SJTL_COUNT", "0"))
+    probe_post_count = int(probe.get("carry_post_cb_sjtl_count", 0))
+    if case_post_count not in {0, 1} or probe_post_count != case_post_count:
         raise RuntimeError(f"post-CB-sJTL configuration/probe identity mismatch: {run_id}")
 
     labels = {item["label"] for item in probe["signals"]}
@@ -384,11 +385,15 @@ def analyze_batch() -> dict[str, Any]:
                  *comparison_paths):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite analysis output: {path}")
+    baseline_ids = ("A027_FULL_CB_CHAIN_ALL_CLOCK", "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+                    "A029_FULL_CB_CHAIN_3X3_CLOCK")
+    baselines = {run_id: _measure_run(run_id) for run_id in baseline_ids}
     runs = {run_id: _measure_run(run_id) for run_id in RUNS_EXPECTED}
+    comparison_data = {**baselines, **runs}
     signal_rows = [row for run_id in RUNS_EXPECTED for row in runs[run_id]["waveforms"] + runs[run_id]["currents"]]
     phase_rows = [row for run_id in RUNS_EXPECTED for row in runs[run_id]["phase_area"]]
     stage_rows = [row for run_id in RUNS_EXPECTED for row in _stage_rows(runs[run_id])]
-    comparison_rows = _comparison_rows(runs)
+    comparison_rows = _comparison_rows(comparison_data)
 
     all_run_ids = ("A027_FULL_CB_CHAIN_ALL_CLOCK", "A030_CARRY_POST_CB_SJTL_ALL_200",
                    "A031_CARRY_POST_CB_SJTL_ALL_210")
@@ -406,15 +411,15 @@ def analyze_batch() -> dict[str, Any]:
     pages = [
         _comparison_page("A027_A030_A031_D2_CARRY_CLOCK_COMPARISON.html",
                          "A027 / A030 / A031 — D2 Carry CB + sJTL + T1 + global clock",
-                         all_run_ids, d2_focus_signals, runs),
+                         all_run_ids, d2_focus_signals, comparison_data),
         _comparison_page("A028_A032_PAPER_REGRESSION.html",
                          "A028 / A032 — 11×13 registered paper case vs post-CB sJTL at 210 ps",
                          ("A028_FULL_CB_CHAIN_PAPER_CLOCK", "A032_CARRY_POST_CB_SJTL_PAPER_210"),
-                         product_signals, runs),
+                         product_signals, comparison_data),
         _comparison_page("A029_A033_3X3_REGRESSION.html",
                          "A029 / A033 — 3×3 registered low-load case vs post-CB sJTL at 210 ps",
                          ("A029_FULL_CB_CHAIN_3X3_CLOCK", "A033_CARRY_POST_CB_SJTL_3X3_210"),
-                         product_signals, runs),
+                         product_signals, comparison_data),
     ]
     _csv_new(SIGNALS_CSV, signal_rows)
     _csv_new(PHASE_CSV, phase_rows)
@@ -442,6 +447,11 @@ def analyze_batch() -> dict[str, Any]:
                "batch_id": platform.CARRY_POST_CB_SJTL_BATCH_ID,
                "analysis_type": "mechanical raw-derived evidence; no physics verdict",
                "physical_solve_count": 4, "runs": run_records,
+               "baseline_references": {run_id: {"raw_path": (RUNS/run_id/"raw.csv").relative_to(SERIES).as_posix(),
+                                                   "raw_sha256": baselines[run_id]["raw_sha256"],
+                                                   "raw_bytes": baselines[run_id]["raw_bytes"],
+                                                   "physical_solve_count": 0}
+                                        for run_id in baseline_ids},
                "registered_windows_ps_by_run": {
                    run_id: {name: list(_windows(float(runs[run_id]["case"]["T1_CHAIN_CLK_START"].removesuffix("p")))[name])
                             for name in WINDOWS} for run_id in RUNS_EXPECTED},

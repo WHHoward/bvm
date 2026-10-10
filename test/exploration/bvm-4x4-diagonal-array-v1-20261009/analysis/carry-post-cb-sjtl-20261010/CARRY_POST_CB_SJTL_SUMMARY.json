@@ -1,0 +1,2495 @@
+{
+  "schema": "bvm4x4-carry-post-cb-sjtl-summary-v1",
+  "status": "PASS",
+  "batch_id": "BVM4X4_CARRY_POST_CB_SJTL_20261010",
+  "analysis_type": "mechanical raw-derived evidence; no physics verdict",
+  "physical_solve_count": 4,
+  "runs": [
+    {
+      "run_id": "A030_CARRY_POST_CB_SJTL_ALL_200",
+      "case": {
+        "EXPERIMENT_ID": "bvm-4x4-diagonal-array-v1-20261009",
+        "CASE": "CARRY_POST_CB_SJTL_ALL_200",
+        "DRIVE_MODE": "SHARED",
+        "SE_TOPOLOGY": "CELL",
+        "SE_GATE_MODE": "CROSSPOINT",
+        "ROW_BITS": "1111",
+        "COL_BITS": "1111",
+        "SE_ENABLE_MASK": "ALL",
+        "OUTPUT_MODE": "DIAGONAL_T1_CHAIN",
+        "T1_MODE": "CHAIN",
+        "T1_CLK_MODE": "PULSE",
+        "CBU_MODE": "PHYSICAL_TWO_INPUT",
+        "CARRY_MODE": "RIPPLE",
+        "D0_JTL_TYPE": "D0_SJTL",
+        "D0_JTL_COUNT": "1",
+        "CBU_TYPE": "THmitll_MERGE",
+        "CBU_CHAIN_TOPOLOGY": "CB_CARRY_BUFFER_ALL",
+        "CARRY_POST_CB_SJTL_COUNT": "1",
+        "CBU_OVERRIDE_D1": "NONE",
+        "DFF_TYPE": "THmitll_DFF",
+        "T1_CHAIN_CLOCK_MODE": "GLOBAL_ONESHOT",
+        "T1_CHAIN_CLK_START": "200p",
+        "ROW_WL_WRITE_AMPLITUDE": "400u",
+        "COL_BL_WRITE_AMPLITUDE": "400u",
+        "ROW_WL_READ_AMPLITUDE": "400u",
+        "COL_SE_READ_AMPLITUDE": "100u",
+        "DT": "0.01p",
+        "STOP": "300p",
+        "PROBE_PROFILE": "t1_chain_focus",
+        "FOCUS_DIAGONAL": "D3",
+        "FOCUS_STAGE": "D3",
+        "SJTL_COUNT_D0": "1",
+        "SJTL_COUNT_D1": "1,1",
+        "SJTL_COUNT_D2": "1,2,1",
+        "SJTL_COUNT_D3": "1,2,2,1",
+        "SJTL_COUNT_D4": "1,2,1",
+        "SJTL_COUNT_D5": "1,1",
+        "SJTL_COUNT_D6": "1"
+      },
+      "reference_run": "A027_FULL_CB_CHAIN_ALL_CLOCK",
+      "raw_path": "runs/A030_CARRY_POST_CB_SJTL_ALL_200/raw.csv",
+      "raw_sha256": "027bb32757c1b426b2876ad2d694b6560cea58e6d54a733fd821408538ae166b",
+      "raw_bytes": 91827970,
+      "sample_count": 29999,
+      "time_range_s": [
+        0.0,
+        2.9999e-10
+      ],
+      "dt_min_s": 9.999999999982388e-15,
+      "dt_max_s": 1.999999999999999e-14,
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "chain_qa_status": "PASS",
+      "same_jj_count": 300,
+      "stage_timing_descriptors": [
+        {
+          "stage": "D0",
+          "boundaries": [
+            {
+              "boundary": "D_INPUT",
+              "signal": "V(DOUT_D0)",
+              "last_descriptive_lobe_candidate_ps": 134.26000000000002
+            },
+            {
+              "boundary": "D0_JTL_OUTPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10000000000002
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10000000000002
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 134.26000000000002,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 200.0,
+          "candidate_time_to_clock_margin_ps": 65.73999999999998,
+          "actual_clock_peak_time_ps": 202.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D1",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D0)",
+              "last_descriptive_lobe_candidate_ps": 134.73999999999998
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 137.4
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 136.25
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D1)",
+              "last_descriptive_lobe_candidate_ps": 136.25
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D1)",
+              "last_descriptive_lobe_candidate_ps": 136.25
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 137.4,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 200.0,
+          "candidate_time_to_clock_margin_ps": 62.599999999999994,
+          "actual_clock_peak_time_ps": 203.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D2",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D1)",
+              "last_descriptive_lobe_candidate_ps": 140.54
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 148.12
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 147.02
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D2)",
+              "last_descriptive_lobe_candidate_ps": 147.02
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D2)",
+              "last_descriptive_lobe_candidate_ps": 147.02
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 148.12,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 200.0,
+          "candidate_time_to_clock_margin_ps": 51.879999999999995,
+          "actual_clock_peak_time_ps": 203.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D3",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D2)",
+              "last_descriptive_lobe_candidate_ps": 177.2
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 182.44
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 181.3
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D3)",
+              "last_descriptive_lobe_candidate_ps": 181.3
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D3)",
+              "last_descriptive_lobe_candidate_ps": 181.3
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 182.44,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 200.0,
+          "candidate_time_to_clock_margin_ps": 17.560000000000002,
+          "actual_clock_peak_time_ps": 202.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D4",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D3)",
+              "last_descriptive_lobe_candidate_ps": 180.16
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 168.23
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 171.48000000000002
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D4)",
+              "last_descriptive_lobe_candidate_ps": 171.48000000000002
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D4)",
+              "last_descriptive_lobe_candidate_ps": 171.48000000000002
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 180.16,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 200.0,
+          "candidate_time_to_clock_margin_ps": 19.840000000000003,
+          "actual_clock_peak_time_ps": 202.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D5",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D4)",
+              "last_descriptive_lobe_candidate_ps": 170.35999999999999
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 164.51000000000002
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 165.82
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D5)",
+              "last_descriptive_lobe_candidate_ps": 165.82
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D5)",
+              "last_descriptive_lobe_candidate_ps": 165.82
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 170.35999999999999,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 200.0,
+          "candidate_time_to_clock_margin_ps": 29.640000000000015,
+          "actual_clock_peak_time_ps": 203.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D6",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D5)",
+              "last_descriptive_lobe_candidate_ps": 185.88
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 189.29
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 190.62
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D6)",
+              "last_descriptive_lobe_candidate_ps": 190.62
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D6)",
+              "last_descriptive_lobe_candidate_ps": 190.62
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 190.62,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 200.0,
+          "candidate_time_to_clock_margin_ps": 9.379999999999995,
+          "actual_clock_peak_time_ps": 203.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        }
+      ],
+      "dff_timing_descriptor": {
+        "boundaries": [
+          {
+            "boundary": "FINAL_CARRY",
+            "signal": "V(C_D6)",
+            "last_descriptive_lobe_candidate_ps": 152.38
+          },
+          {
+            "boundary": "DFF_DATA",
+            "signal": "V(DFF_IN)",
+            "last_descriptive_lobe_candidate_ps": 152.38
+          }
+        ],
+        "last_descriptive_input_candidate_ps": 152.38,
+        "configured_clock_mode": "GLOBAL_ONESHOT",
+        "configured_clock_start_ps": 200.0,
+        "candidate_time_to_clock_margin_ps": 47.620000000000005,
+        "actual_clock_peak_time_ps": 201.0,
+        "output_lobe_candidates": {
+          "candidate_count": 4,
+          "positive_candidate_count": 2,
+          "negative_candidate_count": 2,
+          "candidates": [
+            {
+              "polarity": "positive",
+              "time_s": 2.0649e-10,
+              "voltage_v": 0.001175766,
+              "time_ps": 206.49
+            },
+            {
+              "polarity": "positive",
+              "time_s": 2.0892e-10,
+              "voltage_v": 0.0004105576,
+              "time_ps": 208.92
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.0779e-10,
+              "voltage_v": -0.0003982443,
+              "time_ps": 207.79
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.102e-10,
+              "voltage_v": -0.0001520851,
+              "time_ps": 210.20000000000002
+            }
+          ],
+          "method": {
+            "method": "local_voltage_extrema_relative_threshold",
+            "relative_threshold": 0.25,
+            "minimum_peak_separation_ps": 1.0,
+            "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+          },
+          "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+        },
+        "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+      },
+      "scientific_interpretation_performed": false
+    },
+    {
+      "run_id": "A031_CARRY_POST_CB_SJTL_ALL_210",
+      "case": {
+        "EXPERIMENT_ID": "bvm-4x4-diagonal-array-v1-20261009",
+        "CASE": "CARRY_POST_CB_SJTL_ALL_210",
+        "DRIVE_MODE": "SHARED",
+        "SE_TOPOLOGY": "CELL",
+        "SE_GATE_MODE": "CROSSPOINT",
+        "ROW_BITS": "1111",
+        "COL_BITS": "1111",
+        "SE_ENABLE_MASK": "ALL",
+        "OUTPUT_MODE": "DIAGONAL_T1_CHAIN",
+        "T1_MODE": "CHAIN",
+        "T1_CLK_MODE": "PULSE",
+        "CBU_MODE": "PHYSICAL_TWO_INPUT",
+        "CARRY_MODE": "RIPPLE",
+        "D0_JTL_TYPE": "D0_SJTL",
+        "D0_JTL_COUNT": "1",
+        "CBU_TYPE": "THmitll_MERGE",
+        "CBU_CHAIN_TOPOLOGY": "CB_CARRY_BUFFER_ALL",
+        "CARRY_POST_CB_SJTL_COUNT": "1",
+        "CBU_OVERRIDE_D1": "NONE",
+        "DFF_TYPE": "THmitll_DFF",
+        "T1_CHAIN_CLOCK_MODE": "GLOBAL_ONESHOT",
+        "T1_CHAIN_CLK_START": "210p",
+        "ROW_WL_WRITE_AMPLITUDE": "400u",
+        "COL_BL_WRITE_AMPLITUDE": "400u",
+        "ROW_WL_READ_AMPLITUDE": "400u",
+        "COL_SE_READ_AMPLITUDE": "100u",
+        "DT": "0.01p",
+        "STOP": "300p",
+        "PROBE_PROFILE": "t1_chain_focus",
+        "FOCUS_DIAGONAL": "D3",
+        "FOCUS_STAGE": "D3",
+        "SJTL_COUNT_D0": "1",
+        "SJTL_COUNT_D1": "1,1",
+        "SJTL_COUNT_D2": "1,2,1",
+        "SJTL_COUNT_D3": "1,2,2,1",
+        "SJTL_COUNT_D4": "1,2,1",
+        "SJTL_COUNT_D5": "1,1",
+        "SJTL_COUNT_D6": "1"
+      },
+      "reference_run": "A027_FULL_CB_CHAIN_ALL_CLOCK",
+      "raw_path": "runs/A031_CARRY_POST_CB_SJTL_ALL_210/raw.csv",
+      "raw_sha256": "c796e9b13024720fc1f5e3268e4174b4064343ab83a57bed3967ac4ed2c3dddf",
+      "raw_bytes": 91858915,
+      "sample_count": 29999,
+      "time_range_s": [
+        0.0,
+        2.9999e-10
+      ],
+      "dt_min_s": 9.999999999982388e-15,
+      "dt_max_s": 1.999999999999999e-14,
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "chain_qa_status": "PASS",
+      "same_jj_count": 300,
+      "stage_timing_descriptors": [
+        {
+          "stage": "D0",
+          "boundaries": [
+            {
+              "boundary": "D_INPUT",
+              "signal": "V(DOUT_D0)",
+              "last_descriptive_lobe_candidate_ps": 134.26000000000002
+            },
+            {
+              "boundary": "D0_JTL_OUTPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10000000000002
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10000000000002
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 134.26000000000002,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 75.73999999999998,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D1",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D0)",
+              "last_descriptive_lobe_candidate_ps": 134.73999999999998
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 137.4
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 136.25
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D1)",
+              "last_descriptive_lobe_candidate_ps": 136.25
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D1)",
+              "last_descriptive_lobe_candidate_ps": 136.25
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 137.4,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 72.6,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D2",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D1)",
+              "last_descriptive_lobe_candidate_ps": 140.54
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 148.12
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 147.02
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D2)",
+              "last_descriptive_lobe_candidate_ps": 147.02
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D2)",
+              "last_descriptive_lobe_candidate_ps": 147.02
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 148.12,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 61.879999999999995,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D3",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D2)",
+              "last_descriptive_lobe_candidate_ps": 177.2
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 182.44
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 181.3
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D3)",
+              "last_descriptive_lobe_candidate_ps": 181.3
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D3)",
+              "last_descriptive_lobe_candidate_ps": 181.3
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 182.44,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 27.560000000000002,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D4",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D3)",
+              "last_descriptive_lobe_candidate_ps": 180.16
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 168.23
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 171.48000000000002
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D4)",
+              "last_descriptive_lobe_candidate_ps": 171.48000000000002
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D4)",
+              "last_descriptive_lobe_candidate_ps": 171.48000000000002
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 180.16,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 29.840000000000003,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D5",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D4)",
+              "last_descriptive_lobe_candidate_ps": 170.35999999999999
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 164.51000000000002
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 165.82
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D5)",
+              "last_descriptive_lobe_candidate_ps": 165.82
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D5)",
+              "last_descriptive_lobe_candidate_ps": 165.82
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 170.35999999999999,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 39.640000000000015,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D6",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D5)",
+              "last_descriptive_lobe_candidate_ps": 185.88
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 189.29
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 190.62
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D6)",
+              "last_descriptive_lobe_candidate_ps": 190.62
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D6)",
+              "last_descriptive_lobe_candidate_ps": 190.62
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 190.62,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 19.379999999999995,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        }
+      ],
+      "dff_timing_descriptor": {
+        "boundaries": [
+          {
+            "boundary": "FINAL_CARRY",
+            "signal": "V(C_D6)",
+            "last_descriptive_lobe_candidate_ps": 209.5
+          },
+          {
+            "boundary": "DFF_DATA",
+            "signal": "V(DFF_IN)",
+            "last_descriptive_lobe_candidate_ps": 209.5
+          }
+        ],
+        "last_descriptive_input_candidate_ps": 209.5,
+        "configured_clock_mode": "GLOBAL_ONESHOT",
+        "configured_clock_start_ps": 210.0,
+        "candidate_time_to_clock_margin_ps": 0.5,
+        "actual_clock_peak_time_ps": 211.0,
+        "output_lobe_candidates": {
+          "candidate_count": 4,
+          "positive_candidate_count": 2,
+          "negative_candidate_count": 2,
+          "candidates": [
+            {
+              "polarity": "positive",
+              "time_s": 2.1651e-10,
+              "voltage_v": 0.001167189,
+              "time_ps": 216.51000000000002
+            },
+            {
+              "polarity": "positive",
+              "time_s": 2.1892e-10,
+              "voltage_v": 0.0003851793,
+              "time_ps": 218.92000000000002
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.1781e-10,
+              "voltage_v": -0.0004083025,
+              "time_ps": 217.81
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.2015e-10,
+              "voltage_v": -0.0001797232,
+              "time_ps": 220.15
+            }
+          ],
+          "method": {
+            "method": "local_voltage_extrema_relative_threshold",
+            "relative_threshold": 0.25,
+            "minimum_peak_separation_ps": 1.0,
+            "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+          },
+          "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+        },
+        "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+      },
+      "scientific_interpretation_performed": false
+    },
+    {
+      "run_id": "A032_CARRY_POST_CB_SJTL_PAPER_210",
+      "case": {
+        "EXPERIMENT_ID": "bvm-4x4-diagonal-array-v1-20261009",
+        "CASE": "CARRY_POST_CB_SJTL_PAPER_210",
+        "DRIVE_MODE": "SHARED",
+        "SE_TOPOLOGY": "CELL",
+        "SE_GATE_MODE": "CROSSPOINT",
+        "ROW_BITS": "1101",
+        "COL_BITS": "1101",
+        "SE_ENABLE_MASK": "ALL",
+        "OUTPUT_MODE": "DIAGONAL_T1_CHAIN",
+        "T1_MODE": "CHAIN",
+        "T1_CLK_MODE": "PULSE",
+        "CBU_MODE": "PHYSICAL_TWO_INPUT",
+        "CARRY_MODE": "RIPPLE",
+        "D0_JTL_TYPE": "D0_SJTL",
+        "D0_JTL_COUNT": "1",
+        "CBU_TYPE": "THmitll_MERGE",
+        "CBU_CHAIN_TOPOLOGY": "CB_CARRY_BUFFER_ALL",
+        "CARRY_POST_CB_SJTL_COUNT": "1",
+        "CBU_OVERRIDE_D1": "NONE",
+        "DFF_TYPE": "THmitll_DFF",
+        "T1_CHAIN_CLOCK_MODE": "GLOBAL_ONESHOT",
+        "T1_CHAIN_CLK_START": "210p",
+        "ROW_WL_WRITE_AMPLITUDE": "400u",
+        "COL_BL_WRITE_AMPLITUDE": "400u",
+        "ROW_WL_READ_AMPLITUDE": "400u",
+        "COL_SE_READ_AMPLITUDE": "100u",
+        "DT": "0.01p",
+        "STOP": "300p",
+        "PROBE_PROFILE": "t1_chain_focus",
+        "FOCUS_DIAGONAL": "D3",
+        "FOCUS_STAGE": "D3",
+        "SJTL_COUNT_D0": "1",
+        "SJTL_COUNT_D1": "1,1",
+        "SJTL_COUNT_D2": "1,2,1",
+        "SJTL_COUNT_D3": "1,2,2,1",
+        "SJTL_COUNT_D4": "1,2,1",
+        "SJTL_COUNT_D5": "1,1",
+        "SJTL_COUNT_D6": "1"
+      },
+      "reference_run": "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+      "raw_path": "runs/A032_CARRY_POST_CB_SJTL_PAPER_210/raw.csv",
+      "raw_sha256": "439e9444964adf59043d11b39808c33fcd4f29d63d45835af4fa8cb5333546b5",
+      "raw_bytes": 91897687,
+      "sample_count": 29999,
+      "time_range_s": [
+        0.0,
+        2.9999e-10
+      ],
+      "dt_min_s": 9.999999999982388e-15,
+      "dt_max_s": 1.999999999999999e-14,
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "chain_qa_status": "PASS",
+      "same_jj_count": 300,
+      "stage_timing_descriptors": [
+        {
+          "stage": "D0",
+          "boundaries": [
+            {
+              "boundary": "D_INPUT",
+              "signal": "V(DOUT_D0)",
+              "last_descriptive_lobe_candidate_ps": 134.23999999999998
+            },
+            {
+              "boundary": "D0_JTL_OUTPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10000000000002
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10000000000002
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 134.23999999999998,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 75.76000000000002,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D1",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D0)",
+              "last_descriptive_lobe_candidate_ps": 137.25
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 141.62
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 140.54999999999998
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D1)",
+              "last_descriptive_lobe_candidate_ps": 140.54999999999998
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D1)",
+              "last_descriptive_lobe_candidate_ps": 140.54999999999998
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 141.62,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 68.38,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D2",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D1)",
+              "last_descriptive_lobe_candidate_ps": 144.36
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 150.33
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 151.86
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D2)",
+              "last_descriptive_lobe_candidate_ps": 151.86
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D2)",
+              "last_descriptive_lobe_candidate_ps": 151.86
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 151.86,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 58.139999999999986,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D3",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D2)",
+              "last_descriptive_lobe_candidate_ps": 154.57
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 159.1
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 158.0
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D3)",
+              "last_descriptive_lobe_candidate_ps": 158.0
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D3)",
+              "last_descriptive_lobe_candidate_ps": 158.0
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 159.1,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 50.900000000000006,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D4",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D3)",
+              "last_descriptive_lobe_candidate_ps": 182.88
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 188.1
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 189.61
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D4)",
+              "last_descriptive_lobe_candidate_ps": 189.61
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D4)",
+              "last_descriptive_lobe_candidate_ps": 189.61
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 189.61,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 20.389999999999986,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D5",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D4)",
+              "last_descriptive_lobe_candidate_ps": 185.82000000000002
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 177.01
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 175.87
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D5)",
+              "last_descriptive_lobe_candidate_ps": 175.87
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D5)",
+              "last_descriptive_lobe_candidate_ps": 175.87
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 185.82000000000002,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 24.17999999999998,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D6",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D5)",
+              "last_descriptive_lobe_candidate_ps": 174.74
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 166.41
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 165.26999999999998
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D6)",
+              "last_descriptive_lobe_candidate_ps": 165.26999999999998
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D6)",
+              "last_descriptive_lobe_candidate_ps": 165.26999999999998
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 174.74,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 35.25999999999999,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        }
+      ],
+      "dff_timing_descriptor": {
+        "boundaries": [
+          {
+            "boundary": "FINAL_CARRY",
+            "signal": "V(C_D6)",
+            "last_descriptive_lobe_candidate_ps": 164.12
+          },
+          {
+            "boundary": "DFF_DATA",
+            "signal": "V(DFF_IN)",
+            "last_descriptive_lobe_candidate_ps": 164.12
+          }
+        ],
+        "last_descriptive_input_candidate_ps": 164.12,
+        "configured_clock_mode": "GLOBAL_ONESHOT",
+        "configured_clock_start_ps": 210.0,
+        "candidate_time_to_clock_margin_ps": 45.879999999999995,
+        "actual_clock_peak_time_ps": 211.0,
+        "output_lobe_candidates": {
+          "candidate_count": 4,
+          "positive_candidate_count": 2,
+          "negative_candidate_count": 2,
+          "candidates": [
+            {
+              "polarity": "positive",
+              "time_s": 2.1658e-10,
+              "voltage_v": 0.001166415,
+              "time_ps": 216.57999999999998
+            },
+            {
+              "polarity": "positive",
+              "time_s": 2.1898e-10,
+              "voltage_v": 0.000382218,
+              "time_ps": 218.98
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.1787e-10,
+              "voltage_v": -0.0004064132,
+              "time_ps": 217.87
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.2021e-10,
+              "voltage_v": -0.000175672,
+              "time_ps": 220.21
+            }
+          ],
+          "method": {
+            "method": "local_voltage_extrema_relative_threshold",
+            "relative_threshold": 0.25,
+            "minimum_peak_separation_ps": 1.0,
+            "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+          },
+          "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+        },
+        "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+      },
+      "scientific_interpretation_performed": false
+    },
+    {
+      "run_id": "A033_CARRY_POST_CB_SJTL_3X3_210",
+      "case": {
+        "EXPERIMENT_ID": "bvm-4x4-diagonal-array-v1-20261009",
+        "CASE": "CARRY_POST_CB_SJTL_3X3_210",
+        "DRIVE_MODE": "SHARED",
+        "SE_TOPOLOGY": "CELL",
+        "SE_GATE_MODE": "CROSSPOINT",
+        "ROW_BITS": "1100",
+        "COL_BITS": "0011",
+        "SE_ENABLE_MASK": "ALL",
+        "OUTPUT_MODE": "DIAGONAL_T1_CHAIN",
+        "T1_MODE": "CHAIN",
+        "T1_CLK_MODE": "PULSE",
+        "CBU_MODE": "PHYSICAL_TWO_INPUT",
+        "CARRY_MODE": "RIPPLE",
+        "D0_JTL_TYPE": "D0_SJTL",
+        "D0_JTL_COUNT": "1",
+        "CBU_TYPE": "THmitll_MERGE",
+        "CBU_CHAIN_TOPOLOGY": "CB_CARRY_BUFFER_ALL",
+        "CARRY_POST_CB_SJTL_COUNT": "1",
+        "CBU_OVERRIDE_D1": "NONE",
+        "DFF_TYPE": "THmitll_DFF",
+        "T1_CHAIN_CLOCK_MODE": "GLOBAL_ONESHOT",
+        "T1_CHAIN_CLK_START": "210p",
+        "ROW_WL_WRITE_AMPLITUDE": "400u",
+        "COL_BL_WRITE_AMPLITUDE": "400u",
+        "ROW_WL_READ_AMPLITUDE": "400u",
+        "COL_SE_READ_AMPLITUDE": "100u",
+        "DT": "0.01p",
+        "STOP": "300p",
+        "PROBE_PROFILE": "t1_chain_focus",
+        "FOCUS_DIAGONAL": "D3",
+        "FOCUS_STAGE": "D3",
+        "SJTL_COUNT_D0": "1",
+        "SJTL_COUNT_D1": "1,1",
+        "SJTL_COUNT_D2": "1,2,1",
+        "SJTL_COUNT_D3": "1,2,2,1",
+        "SJTL_COUNT_D4": "1,2,1",
+        "SJTL_COUNT_D5": "1,1",
+        "SJTL_COUNT_D6": "1"
+      },
+      "reference_run": "A029_FULL_CB_CHAIN_3X3_CLOCK",
+      "raw_path": "runs/A033_CARRY_POST_CB_SJTL_3X3_210/raw.csv",
+      "raw_sha256": "d4ed238cf7f7b113bb2e32c94b904d027ad5cf2c443502ae5183f3c4d3b1383c",
+      "raw_bytes": 92022445,
+      "sample_count": 29999,
+      "time_range_s": [
+        0.0,
+        2.9999e-10
+      ],
+      "dt_min_s": 9.999999999982388e-15,
+      "dt_max_s": 1.999999999999999e-14,
+      "artifact_status": "VALID",
+      "qa_status": "PASS",
+      "chain_qa_status": "PASS",
+      "same_jj_count": 300,
+      "stage_timing_descriptors": [
+        {
+          "stage": "D0",
+          "boundaries": [
+            {
+              "boundary": "D_INPUT",
+              "signal": "V(DOUT_D0)",
+              "last_descriptive_lobe_candidate_ps": 134.26999999999998
+            },
+            {
+              "boundary": "D0_JTL_OUTPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10999999999999
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D0)",
+              "last_descriptive_lobe_candidate_ps": 133.10999999999999
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 134.26999999999998,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 75.73000000000002,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D1",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D0)",
+              "last_descriptive_lobe_candidate_ps": 134.82
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D1_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 139.59
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D1)",
+              "last_descriptive_lobe_candidate_ps": 138.7
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D1)",
+              "last_descriptive_lobe_candidate_ps": 138.7
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D1)",
+              "last_descriptive_lobe_candidate_ps": 138.7
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 139.59,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 70.41,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D2",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D1)",
+              "last_descriptive_lobe_candidate_ps": 141.5
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D2_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 146.01
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D2)",
+              "last_descriptive_lobe_candidate_ps": 144.91
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D2)",
+              "last_descriptive_lobe_candidate_ps": 144.91
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D2)",
+              "last_descriptive_lobe_candidate_ps": 144.91
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 146.01,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 63.99000000000001,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D3",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D2)",
+              "last_descriptive_lobe_candidate_ps": 159.01
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D3_L4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 164.22
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D3)",
+              "last_descriptive_lobe_candidate_ps": 165.73000000000002
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D3)",
+              "last_descriptive_lobe_candidate_ps": 165.73000000000002
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D3)",
+              "last_descriptive_lobe_candidate_ps": 165.73000000000002
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 165.73000000000002,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 44.26999999999998,
+          "actual_clock_peak_time_ps": 212.84,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D4",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D4)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D3)",
+              "last_descriptive_lobe_candidate_ps": 161.94
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D4_L3)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 164.62
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D4)",
+              "last_descriptive_lobe_candidate_ps": 163.5
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D4)",
+              "last_descriptive_lobe_candidate_ps": 163.5
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D4)",
+              "last_descriptive_lobe_candidate_ps": 163.5
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 164.62,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 45.379999999999995,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D5",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D5)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D4)",
+              "last_descriptive_lobe_candidate_ps": 8.74
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D5_L2)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 8.56
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D5)",
+              "last_descriptive_lobe_candidate_ps": 10.05
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D5)",
+              "last_descriptive_lobe_candidate_ps": 10.05
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D5)",
+              "last_descriptive_lobe_candidate_ps": 10.05
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 10.05,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 199.95,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        },
+        {
+          "stage": "D6",
+          "boundaries": [
+            {
+              "boundary": "ARRAY_CB_JJ1",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "ARRAY_TO_JOIN_SHARED_VOLTAGE",
+              "signal": "V(DOUT_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "DOUT_BRANCH_CURRENT",
+              "signal": "I(V_CBU_A_D6)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "PREVIOUS_CARRY",
+              "signal": "V(C_D5)",
+              "last_descriptive_lobe_candidate_ps": 8.73
+            },
+            {
+              "boundary": "ARRAY_LAST_CB_BJ1_VOLTAGE",
+              "signal": "V(BJ1|XCB_D6_L1)",
+              "last_descriptive_lobe_candidate_ps": null
+            },
+            {
+              "boundary": "BUFFERED_CARRY",
+              "signal": "V(CARRY_CB_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 8.540000000000001
+            },
+            {
+              "boundary": "POST_CB_SJTL_OUTPUT",
+              "signal": "V(CARRY_SJTL_OUT_D6)",
+              "last_descriptive_lobe_candidate_ps": 10.03
+            },
+            {
+              "boundary": "JOIN",
+              "signal": "V(CBU_JOIN_D6)",
+              "last_descriptive_lobe_candidate_ps": 10.03
+            },
+            {
+              "boundary": "T1_INPUT",
+              "signal": "V(T1_I_D6)",
+              "last_descriptive_lobe_candidate_ps": 10.03
+            }
+          ],
+          "last_descriptive_input_candidate_ps": 10.03,
+          "configured_clock_mode": "GLOBAL_ONESHOT",
+          "configured_clock_start_ps": 210.0,
+          "candidate_time_to_clock_margin_ps": 199.97,
+          "actual_clock_peak_time_ps": 213.0,
+          "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+        }
+      ],
+      "dff_timing_descriptor": {
+        "boundaries": [
+          {
+            "boundary": "FINAL_CARRY",
+            "signal": "V(C_D6)",
+            "last_descriptive_lobe_candidate_ps": 11.44
+          },
+          {
+            "boundary": "DFF_DATA",
+            "signal": "V(DFF_IN)",
+            "last_descriptive_lobe_candidate_ps": 11.44
+          }
+        ],
+        "last_descriptive_input_candidate_ps": 11.44,
+        "configured_clock_mode": "GLOBAL_ONESHOT",
+        "configured_clock_start_ps": 210.0,
+        "candidate_time_to_clock_margin_ps": 198.56,
+        "actual_clock_peak_time_ps": 211.0,
+        "output_lobe_candidates": {
+          "candidate_count": 9,
+          "positive_candidate_count": 7,
+          "negative_candidate_count": 2,
+          "candidates": [
+            {
+              "polarity": "positive",
+              "time_s": 1.57e-12,
+              "voltage_v": 5.327686e-05,
+              "time_ps": 1.57
+            },
+            {
+              "polarity": "positive",
+              "time_s": 3.98e-12,
+              "voltage_v": 5.556575e-05,
+              "time_ps": 3.9799999999999995
+            },
+            {
+              "polarity": "positive",
+              "time_s": 5e-12,
+              "voltage_v": 5.266089e-05,
+              "time_ps": 5.0
+            },
+            {
+              "polarity": "positive",
+              "time_s": 2.1409e-10,
+              "voltage_v": 5.681937e-05,
+              "time_ps": 214.09
+            },
+            {
+              "polarity": "positive",
+              "time_s": 2.1711e-10,
+              "voltage_v": 6.370504e-05,
+              "time_ps": 217.10999999999999
+            },
+            {
+              "polarity": "positive",
+              "time_s": 2.1943e-10,
+              "voltage_v": 3.971966e-05,
+              "time_ps": 219.43
+            },
+            {
+              "polarity": "positive",
+              "time_s": 2.2165e-10,
+              "voltage_v": 1.62594e-05,
+              "time_ps": 221.65
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.158e-10,
+              "voltage_v": -0.0001187222,
+              "time_ps": 215.79999999999998
+            },
+            {
+              "polarity": "negative",
+              "time_s": 2.1828e-10,
+              "voltage_v": -6.538142e-05,
+              "time_ps": 218.28
+            }
+          ],
+          "method": {
+            "method": "local_voltage_extrema_relative_threshold",
+            "relative_threshold": 0.25,
+            "minimum_peak_separation_ps": 1.0,
+            "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+          },
+          "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+        },
+        "timing_label": "descriptive lobe-candidate navigation only; not event timing/count"
+      },
+      "scientific_interpretation_performed": false
+    }
+  ],
+  "baseline_references": {
+    "A027_FULL_CB_CHAIN_ALL_CLOCK": {
+      "raw_path": "runs/A027_FULL_CB_CHAIN_ALL_CLOCK/raw.csv",
+      "raw_sha256": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+      "raw_bytes": 93401769,
+      "physical_solve_count": 0
+    },
+    "A028_FULL_CB_CHAIN_PAPER_CLOCK": {
+      "raw_path": "runs/A028_FULL_CB_CHAIN_PAPER_CLOCK/raw.csv",
+      "raw_sha256": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+      "raw_bytes": 93431488,
+      "physical_solve_count": 0
+    },
+    "A029_FULL_CB_CHAIN_3X3_CLOCK": {
+      "raw_path": "runs/A029_FULL_CB_CHAIN_3X3_CLOCK/raw.csv",
+      "raw_sha256": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f",
+      "raw_bytes": 93510947,
+      "physical_solve_count": 0
+    }
+  },
+  "registered_windows_ps_by_run": {
+    "A030_CARRY_POST_CB_SJTL_ALL_200": {
+      "ARRAY_FINAL_READ": [
+        110.0,
+        121.0
+      ],
+      "PRE_CLOCK": [
+        121.0,
+        200.0
+      ],
+      "BEFORE_CLOCK": [
+        0.0,
+        200.0
+      ],
+      "CLOCK_EDGE": [
+        200.0,
+        205.0
+      ],
+      "POST_CLOCK": [
+        205.0,
+        300.0
+      ],
+      "TOTAL": [
+        0.0,
+        300.0
+      ]
+    },
+    "A031_CARRY_POST_CB_SJTL_ALL_210": {
+      "ARRAY_FINAL_READ": [
+        110.0,
+        121.0
+      ],
+      "PRE_CLOCK": [
+        121.0,
+        210.0
+      ],
+      "BEFORE_CLOCK": [
+        0.0,
+        210.0
+      ],
+      "CLOCK_EDGE": [
+        210.0,
+        215.0
+      ],
+      "POST_CLOCK": [
+        215.0,
+        300.0
+      ],
+      "TOTAL": [
+        0.0,
+        300.0
+      ]
+    },
+    "A032_CARRY_POST_CB_SJTL_PAPER_210": {
+      "ARRAY_FINAL_READ": [
+        110.0,
+        121.0
+      ],
+      "PRE_CLOCK": [
+        121.0,
+        210.0
+      ],
+      "BEFORE_CLOCK": [
+        0.0,
+        210.0
+      ],
+      "CLOCK_EDGE": [
+        210.0,
+        215.0
+      ],
+      "POST_CLOCK": [
+        215.0,
+        300.0
+      ],
+      "TOTAL": [
+        0.0,
+        300.0
+      ]
+    },
+    "A033_CARRY_POST_CB_SJTL_3X3_210": {
+      "ARRAY_FINAL_READ": [
+        110.0,
+        121.0
+      ],
+      "PRE_CLOCK": [
+        121.0,
+        210.0
+      ],
+      "BEFORE_CLOCK": [
+        0.0,
+        210.0
+      ],
+      "CLOCK_EDGE": [
+        210.0,
+        215.0
+      ],
+      "POST_CLOCK": [
+        215.0,
+        300.0
+      ],
+      "TOTAL": [
+        0.0,
+        300.0
+      ]
+    }
+  },
+  "clock_start_ps_by_run": {
+    "A030_CARRY_POST_CB_SJTL_ALL_200": 200.0,
+    "A031_CARRY_POST_CB_SJTL_ALL_210": 210.0,
+    "A032_CARRY_POST_CB_SJTL_PAPER_210": 210.0,
+    "A033_CARRY_POST_CB_SJTL_3X3_210": 210.0
+  },
+  "theoretical_vectors_reference_only": {
+    "A030_CARRY_POST_CB_SJTL_ALL_200": {
+      "product": 225,
+      "bits_lsb_to_msb": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "A031_CARRY_POST_CB_SJTL_ALL_210": {
+      "product": 225,
+      "bits_lsb_to_msb": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "A032_CARRY_POST_CB_SJTL_PAPER_210": {
+      "product": 143,
+      "bits_lsb_to_msb": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "A033_CARRY_POST_CB_SJTL_3X3_210": {
+      "product": 9,
+      "bits_lsb_to_msb": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "tables": {
+    "signals": "analysis/carry-post-cb-sjtl-20261010/CARRY_POST_CB_SJTL_SIGNAL_METRICS.csv",
+    "same_jj_phase_area": "analysis/carry-post-cb-sjtl-20261010/CARRY_POST_CB_SJTL_SAME_JJ_PHASE_AREA.csv",
+    "stage_metrics": "analysis/carry-post-cb-sjtl-20261010/CARRY_POST_CB_SJTL_STAGE_METRICS.csv",
+    "comparison": "analysis/carry-post-cb-sjtl-20261010/CARRY_POST_CB_SJTL_COMPARISON.csv"
+  },
+  "comparison_pages": [
+    {
+      "path": "plots/comparison/A027_A030_A031_D2_CARRY_CLOCK_COMPARISON.html",
+      "sha256": "d89bdee66f185c744ba4fa39c3885082aba4fe4293acfbd24f569426ab920747",
+      "status": "PASS",
+      "renderer": "scripts/josim-plot2.py",
+      "layout": "sep_comb/dark/-j 2pi",
+      "signals": [
+        "V(CARRY_CB_OUT_D2)",
+        "V(CARRY_SJTL_OUT_D2)",
+        "I(V_CARRY_SJTL_IN_D2)",
+        "I(V_CBU_A_D2)",
+        "I(V_CBU_B_D2)",
+        "V(CBU_JOIN_D2)",
+        "P(BJ1|XCB_CARRY_D2)",
+        "V(BJ1|XCB_CARRY_D2)",
+        "P(BJ2|XCB_CARRY_D2)",
+        "V(BJ2|XCB_CARRY_D2)",
+        "P(BJ1|XSJTL_CARRY_D2)",
+        "V(BJ1|XSJTL_CARRY_D2)",
+        "V(T1_I_D2)",
+        "P(B_J1|XT1_D2)",
+        "V(B_J1|XT1_D2)",
+        "P(B_J11|XT1_D2)",
+        "V(B_J11|XT1_D2)",
+        "V(S_D2)",
+        "V(C_D2)",
+        "V(CLK_D2)",
+        "V(DFF_IN)",
+        "V(CLK_DFF)",
+        "V(DFF_O)"
+      ],
+      "runs": [
+        {
+          "run_id": "A027_FULL_CB_CHAIN_ALL_CLOCK",
+          "raw_path": "runs/A027_FULL_CB_CHAIN_ALL_CLOCK/raw.csv",
+          "raw_sha256_before": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+          "raw_sha256_after": "939e6024928be84df809532ecd8b716b815a9b96ea498324fc5c30b712100e46",
+          "sample_count": 29999,
+          "signals": [
+            "V(CARRY_CB_OUT_D2)",
+            "I(V_CBU_A_D2)",
+            "I(V_CBU_B_D2)",
+            "V(CBU_JOIN_D2)",
+            "P(BJ1|XCB_CARRY_D2)",
+            "V(BJ1|XCB_CARRY_D2)",
+            "P(BJ2|XCB_CARRY_D2)",
+            "V(BJ2|XCB_CARRY_D2)",
+            "V(T1_I_D2)",
+            "P(B_J1|XT1_D2)",
+            "V(B_J1|XT1_D2)",
+            "P(B_J11|XT1_D2)",
+            "V(B_J11|XT1_D2)",
+            "V(S_D2)",
+            "V(C_D2)",
+            "V(CLK_D2)",
+            "V(DFF_IN)",
+            "V(CLK_DFF)",
+            "V(DFF_O)"
+          ],
+          "requested_signals_absent_in_run": [
+            "I(V_CARRY_SJTL_IN_D2)",
+            "P(BJ1|XSJTL_CARRY_D2)",
+            "V(BJ1|XSJTL_CARRY_D2)",
+            "V(CARRY_SJTL_OUT_D2)"
+          ],
+          "native_stored_grid": true,
+          "interpolation_or_resampling": false
+        },
+        {
+          "run_id": "A030_CARRY_POST_CB_SJTL_ALL_200",
+          "raw_path": "runs/A030_CARRY_POST_CB_SJTL_ALL_200/raw.csv",
+          "raw_sha256_before": "027bb32757c1b426b2876ad2d694b6560cea58e6d54a733fd821408538ae166b",
+          "raw_sha256_after": "027bb32757c1b426b2876ad2d694b6560cea58e6d54a733fd821408538ae166b",
+          "sample_count": 29999,
+          "signals": [
+            "V(CARRY_CB_OUT_D2)",
+            "V(CARRY_SJTL_OUT_D2)",
+            "I(V_CARRY_SJTL_IN_D2)",
+            "I(V_CBU_A_D2)",
+            "I(V_CBU_B_D2)",
+            "V(CBU_JOIN_D2)",
+            "P(BJ1|XCB_CARRY_D2)",
+            "V(BJ1|XCB_CARRY_D2)",
+            "P(BJ2|XCB_CARRY_D2)",
+            "V(BJ2|XCB_CARRY_D2)",
+            "P(BJ1|XSJTL_CARRY_D2)",
+            "V(BJ1|XSJTL_CARRY_D2)",
+            "V(T1_I_D2)",
+            "P(B_J1|XT1_D2)",
+            "V(B_J1|XT1_D2)",
+            "P(B_J11|XT1_D2)",
+            "V(B_J11|XT1_D2)",
+            "V(S_D2)",
+            "V(C_D2)",
+            "V(CLK_D2)",
+            "V(DFF_IN)",
+            "V(CLK_DFF)",
+            "V(DFF_O)"
+          ],
+          "requested_signals_absent_in_run": [],
+          "native_stored_grid": true,
+          "interpolation_or_resampling": false
+        },
+        {
+          "run_id": "A031_CARRY_POST_CB_SJTL_ALL_210",
+          "raw_path": "runs/A031_CARRY_POST_CB_SJTL_ALL_210/raw.csv",
+          "raw_sha256_before": "c796e9b13024720fc1f5e3268e4174b4064343ab83a57bed3967ac4ed2c3dddf",
+          "raw_sha256_after": "c796e9b13024720fc1f5e3268e4174b4064343ab83a57bed3967ac4ed2c3dddf",
+          "sample_count": 29999,
+          "signals": [
+            "V(CARRY_CB_OUT_D2)",
+            "V(CARRY_SJTL_OUT_D2)",
+            "I(V_CARRY_SJTL_IN_D2)",
+            "I(V_CBU_A_D2)",
+            "I(V_CBU_B_D2)",
+            "V(CBU_JOIN_D2)",
+            "P(BJ1|XCB_CARRY_D2)",
+            "V(BJ1|XCB_CARRY_D2)",
+            "P(BJ2|XCB_CARRY_D2)",
+            "V(BJ2|XCB_CARRY_D2)",
+            "P(BJ1|XSJTL_CARRY_D2)",
+            "V(BJ1|XSJTL_CARRY_D2)",
+            "V(T1_I_D2)",
+            "P(B_J1|XT1_D2)",
+            "V(B_J1|XT1_D2)",
+            "P(B_J11|XT1_D2)",
+            "V(B_J11|XT1_D2)",
+            "V(S_D2)",
+            "V(C_D2)",
+            "V(CLK_D2)",
+            "V(DFF_IN)",
+            "V(CLK_DFF)",
+            "V(DFF_O)"
+          ],
+          "requested_signals_absent_in_run": [],
+          "native_stored_grid": true,
+          "interpolation_or_resampling": false
+        }
+      ],
+      "shared_plotly_asset": "../../../bvm-qb-cb-array-topology-v1-20260924/plots/assets/plotly.min.js",
+      "shared_plotly_asset_sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "plotly_js_embedded_once": false,
+      "responsive": true,
+      "interpolation_or_resampling": false
+    },
+    {
+      "path": "plots/comparison/A028_A032_PAPER_REGRESSION.html",
+      "sha256": "9e192e067a8b71270df318f2cf93b57046539ee706161c1d5baaa16f064a3975",
+      "status": "PASS",
+      "renderer": "scripts/josim-plot2.py",
+      "layout": "sep_comb/dark/-j 2pi",
+      "signals": [
+        "V(S_D0)",
+        "V(S_D1)",
+        "V(S_D2)",
+        "V(S_D3)",
+        "V(S_D4)",
+        "V(S_D5)",
+        "V(S_D6)",
+        "V(C_D0)",
+        "V(C_D1)",
+        "V(C_D2)",
+        "V(C_D3)",
+        "V(C_D4)",
+        "V(C_D5)",
+        "V(C_D6)",
+        "V(DFF_IN)",
+        "V(CLK_DFF)",
+        "V(DFF_O)"
+      ],
+      "runs": [
+        {
+          "run_id": "A028_FULL_CB_CHAIN_PAPER_CLOCK",
+          "raw_path": "runs/A028_FULL_CB_CHAIN_PAPER_CLOCK/raw.csv",
+          "raw_sha256_before": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+          "raw_sha256_after": "59ba22b2c31bd04993989c16a7c37d1e5bb904c078ef9db979657de81e604701",
+          "sample_count": 29999,
+          "signals": [
+            "V(S_D0)",
+            "V(S_D1)",
+            "V(S_D2)",
+            "V(S_D3)",
+            "V(S_D4)",
+            "V(S_D5)",
+            "V(S_D6)",
+            "V(C_D0)",
+            "V(C_D1)",
+            "V(C_D2)",
+            "V(C_D3)",
+            "V(C_D4)",
+            "V(C_D5)",
+            "V(C_D6)",
+            "V(DFF_IN)",
+            "V(CLK_DFF)",
+            "V(DFF_O)"
+          ],
+          "requested_signals_absent_in_run": [],
+          "native_stored_grid": true,
+          "interpolation_or_resampling": false
+        },
+        {
+          "run_id": "A032_CARRY_POST_CB_SJTL_PAPER_210",
+          "raw_path": "runs/A032_CARRY_POST_CB_SJTL_PAPER_210/raw.csv",
+          "raw_sha256_before": "439e9444964adf59043d11b39808c33fcd4f29d63d45835af4fa8cb5333546b5",
+          "raw_sha256_after": "439e9444964adf59043d11b39808c33fcd4f29d63d45835af4fa8cb5333546b5",
+          "sample_count": 29999,
+          "signals": [
+            "V(S_D0)",
+            "V(S_D1)",
+            "V(S_D2)",
+            "V(S_D3)",
+            "V(S_D4)",
+            "V(S_D5)",
+            "V(S_D6)",
+            "V(C_D0)",
+            "V(C_D1)",
+            "V(C_D2)",
+            "V(C_D3)",
+            "V(C_D4)",
+            "V(C_D5)",
+            "V(C_D6)",
+            "V(DFF_IN)",
+            "V(CLK_DFF)",
+            "V(DFF_O)"
+          ],
+          "requested_signals_absent_in_run": [],
+          "native_stored_grid": true,
+          "interpolation_or_resampling": false
+        }
+      ],
+      "shared_plotly_asset": "../../../bvm-qb-cb-array-topology-v1-20260924/plots/assets/plotly.min.js",
+      "shared_plotly_asset_sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "plotly_js_embedded_once": false,
+      "responsive": true,
+      "interpolation_or_resampling": false
+    },
+    {
+      "path": "plots/comparison/A029_A033_3X3_REGRESSION.html",
+      "sha256": "b54f68e8a5e2b75f6ac41265dfe5588330a36a3f790f5057c593b8857ec5337d",
+      "status": "PASS",
+      "renderer": "scripts/josim-plot2.py",
+      "layout": "sep_comb/dark/-j 2pi",
+      "signals": [
+        "V(S_D0)",
+        "V(S_D1)",
+        "V(S_D2)",
+        "V(S_D3)",
+        "V(S_D4)",
+        "V(S_D5)",
+        "V(S_D6)",
+        "V(C_D0)",
+        "V(C_D1)",
+        "V(C_D2)",
+        "V(C_D3)",
+        "V(C_D4)",
+        "V(C_D5)",
+        "V(C_D6)",
+        "V(DFF_IN)",
+        "V(CLK_DFF)",
+        "V(DFF_O)"
+      ],
+      "runs": [
+        {
+          "run_id": "A029_FULL_CB_CHAIN_3X3_CLOCK",
+          "raw_path": "runs/A029_FULL_CB_CHAIN_3X3_CLOCK/raw.csv",
+          "raw_sha256_before": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f",
+          "raw_sha256_after": "d943765ab3e47c1607ab3c29ff08a1088f2444dfd8a3266e9670a1d75d24ac0f",
+          "sample_count": 29999,
+          "signals": [
+            "V(S_D0)",
+            "V(S_D1)",
+            "V(S_D2)",
+            "V(S_D3)",
+            "V(S_D4)",
+            "V(S_D5)",
+            "V(S_D6)",
+            "V(C_D0)",
+            "V(C_D1)",
+            "V(C_D2)",
+            "V(C_D3)",
+            "V(C_D4)",
+            "V(C_D5)",
+            "V(C_D6)",
+            "V(DFF_IN)",
+            "V(CLK_DFF)",
+            "V(DFF_O)"
+          ],
+          "requested_signals_absent_in_run": [],
+          "native_stored_grid": true,
+          "interpolation_or_resampling": false
+        },
+        {
+          "run_id": "A033_CARRY_POST_CB_SJTL_3X3_210",
+          "raw_path": "runs/A033_CARRY_POST_CB_SJTL_3X3_210/raw.csv",
+          "raw_sha256_before": "d4ed238cf7f7b113bb2e32c94b904d027ad5cf2c443502ae5183f3c4d3b1383c",
+          "raw_sha256_after": "d4ed238cf7f7b113bb2e32c94b904d027ad5cf2c443502ae5183f3c4d3b1383c",
+          "sample_count": 29999,
+          "signals": [
+            "V(S_D0)",
+            "V(S_D1)",
+            "V(S_D2)",
+            "V(S_D3)",
+            "V(S_D4)",
+            "V(S_D5)",
+            "V(S_D6)",
+            "V(C_D0)",
+            "V(C_D1)",
+            "V(C_D2)",
+            "V(C_D3)",
+            "V(C_D4)",
+            "V(C_D5)",
+            "V(C_D6)",
+            "V(DFF_IN)",
+            "V(CLK_DFF)",
+            "V(DFF_O)"
+          ],
+          "requested_signals_absent_in_run": [],
+          "native_stored_grid": true,
+          "interpolation_or_resampling": false
+        }
+      ],
+      "shared_plotly_asset": "../../../bvm-qb-cb-array-topology-v1-20260924/plots/assets/plotly.min.js",
+      "shared_plotly_asset_sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+      "plotly_js_embedded_once": false,
+      "responsive": true,
+      "interpolation_or_resampling": false
+    }
+  ],
+  "shared_dout_join_voltage_semantics": "V(DOUT_Dk) and V(CBU_JOIN_Dk) are shared boundary voltages; do not treat their area as an array-only pulse count",
+  "phase_units": "raw radians; phase delta/(2*pi) navigation arithmetic only",
+  "integration": "actual stored timestamps; trapezoid; exact half-open windows; no interpolation/resampling",
+  "dout_voltage_area_as_array_event_count": "NOT_USED",
+  "event_classifier": null,
+  "sfq_count_inference": "NOT_PERFORMED",
+  "bit_decode": "NOT_PERFORMED",
+  "timestep_convergence": "UNKNOWN_NOT_RUN",
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false,
+  "next_action": "STOP_AWAITING_USER_AND_CHATGPT_REVIEW"
+}

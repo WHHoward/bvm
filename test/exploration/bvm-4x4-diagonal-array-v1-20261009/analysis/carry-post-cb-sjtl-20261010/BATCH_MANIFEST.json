@@ -1,7 +1,7 @@
 {
   "schema": "bvm4x4-carry-post-cb-sjtl-batch-v1",
   "batch_id": "BVM4X4_CARRY_POST_CB_SJTL_20261010",
-  "status": "PREFLIGHT_PASS_READY",
+  "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
   "preflight_revision": 4,
   "superseded_preflight_attempt": 3,
   "superseded_attempt_manifest_path": "analysis/carry-post-cb-sjtl-20261010/attempts/003/ATTEMPT_MANIFEST.json",
@@ -19,9 +19,59 @@
     "A032_CARRY_POST_CB_SJTL_PAPER_210",
     "A033_CARRY_POST_CB_SJTL_3X3_210"
   ],
-  "runs": [],
+  "runs": [
+    {
+      "run_id": "A030_CARRY_POST_CB_SJTL_ALL_200",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "raw_sha256": "027bb32757c1b426b2876ad2d694b6560cea58e6d54a733fd821408538ae166b",
+      "raw_bytes": 91827970,
+      "deck_sha256": "6fc5b132b4b53b391bfe3790d28818c1b8f4c6df66c5e44620360b675edd91f9",
+      "solver_exit_code": 0
+    },
+    {
+      "run_id": "A031_CARRY_POST_CB_SJTL_ALL_210",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "raw_sha256": "c796e9b13024720fc1f5e3268e4174b4064343ab83a57bed3967ac4ed2c3dddf",
+      "raw_bytes": 91858915,
+      "deck_sha256": "f49302c41c7c91c832bd921091462cc97113e4c7ded41aa3a0d60696fcbbf546",
+      "solver_exit_code": 0
+    },
+    {
+      "run_id": "A032_CARRY_POST_CB_SJTL_PAPER_210",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "raw_sha256": "439e9444964adf59043d11b39808c33fcd4f29d63d45835af4fa8cb5333546b5",
+      "raw_bytes": 91897687,
+      "deck_sha256": "f49302c41c7c91c832bd921091462cc97113e4c7ded41aa3a0d60696fcbbf546",
+      "solver_exit_code": 0
+    },
+    {
+      "run_id": "A033_CARRY_POST_CB_SJTL_3X3_210",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "raw_sha256": "d4ed238cf7f7b113bb2e32c94b904d027ad5cf2c443502ae5183f3c4d3b1383c",
+      "raw_bytes": 92022445,
+      "deck_sha256": "f49302c41c7c91c832bd921091462cc97113e4c7ded41aa3a0d60696fcbbf546",
+      "solver_exit_code": 0
+    }
+  ],
   "physical_solve_count_authorized": 4,
-  "physical_solve_count_completed": 0,
+  "physical_solve_count_completed": 4,
   "scientific_interpretation_performed": false,
-  "automatic_follow_up": false
+  "automatic_follow_up": false,
+  "execution_source_head": "49de6ae8779439c9c1e4aac708f76b297eab6964",
+  "analysis_path": "analysis/carry-post-cb-sjtl-20261010/CARRY_POST_CB_SJTL_SUMMARY.json",
+  "analysis_sha256": "09e69f9c99d7d6020c07b2d56dbc1ddba66ec949faa16c3a0d18737c19a4a04a",
+  "analysis_status": "PASS",
+  "analysis_incident_path": "analysis/carry-post-cb-sjtl-20261010/ANALYSIS_INCIDENT_001.json",
+  "analysis_incident_sha256": "3ce27fdde6e503b3e8460b4748d894201eb028e09b6175413ea23631b0dc502e",
+  "analysis_repair_runner_sha256": "226f0ef5f4c0ee48fb5db888d2b3e6488872d661de2bbc55c2a07e18ae21e7c6",
+  "repair_solver_invoked": false,
+  "next_action": "STOP_AWAITING_USER_AND_CHATGPT_REVIEW"
 }

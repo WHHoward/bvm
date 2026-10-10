@@ -25,6 +25,7 @@ STATIC_QA = TASK / "STATIC_QA.json"
 WORK_UNIT = TASK / "WORK_UNIT.json"
 PROBE_REGISTRY = TASK / "PROBE_MANIFEST.json"
 BATCH_MANIFEST = TASK / "BATCH_MANIFEST.json"
+ANALYSIS_INCIDENT = TASK / "ANALYSIS_INCIDENT_001.json"
 EXPERIMENT_MANIFEST = SERIES / "experiment_manifest.json"
 ANALYZER = SERIES / "scripts" / "analyze_carry_post_cb_sjtl.py"
 TEST_FILE = SERIES / "tests" / "test_platform.py"
@@ -676,6 +677,82 @@ def run_batch() -> int:
     return 0
 
 
+def finalize_existing_analysis() -> int:
+    """Repair the batch summary against four already-valid immutable raws; never invokes JoSIM."""
+    batch = jread(BATCH_MANIFEST)
+    if (batch.get("physical_solve_count_completed") != 4 or
+            [item.get("run_id") for item in batch.get("runs", [])] != list(platform.CARRY_POST_CB_SJTL_RUN_MATRIX[i][0]
+                                                                            for i in range(4))):
+        raise RuntimeError("analysis repair requires exactly four already-completed authorized runs")
+    manifest = jread(EXPERIMENT_MANIFEST)
+    if int(manifest.get("physical_solve_count", -1)) != 33:
+        raise RuntimeError("analysis repair requires the four new runs already present in experiment_manifest")
+    run_records = []
+    for run_id, *_ in platform.CARRY_POST_CB_SJTL_RUN_MATRIX:
+        run_dir = RUNS / run_id
+        raw = run_dir / "raw.csv"
+        result, qa, chain_qa = (jread(run_dir / name) for name in ("result.json", "qa.json", "chain_qa.json"))
+        digest = sha(raw)
+        if (result.get("artifact_status") != "VALID" or result.get("raw_sha256") != digest or
+                qa.get("status") != "PASS" or qa.get("raw_sha256_after_analysis") != digest or
+                chain_qa.get("status") != "PASS" or chain_qa.get("raw_sha256_after_analysis") != digest):
+            raise RuntimeError(f"analysis repair refuses invalid/mutated raw: {run_id}")
+        run_records.append({"run_id": run_id, "raw_sha256": digest, "raw_bytes": raw.stat().st_size,
+                            "physical_solve_count": 1, "artifact_status": "VALID", "qa_status": "PASS"})
+    output_paths = (TASK / "CARRY_POST_CB_SJTL_SUMMARY.json", TASK / "CARRY_POST_CB_SJTL_SIGNAL_METRICS.csv",
+                    TASK / "CARRY_POST_CB_SJTL_SAME_JJ_PHASE_AREA.csv", TASK / "CARRY_POST_CB_SJTL_STAGE_METRICS.csv",
+                    TASK / "CARRY_POST_CB_SJTL_COMPARISON.csv", TASK / "CARRY_POST_CB_SJTL_VISUALIZATION_QA.json",
+                    TASK / "CARRY_POST_CB_SJTL_SUMMARY.md")
+    if any(path.exists() for path in output_paths):
+        raise FileExistsError("analysis repair refuses to overwrite any previous summary artifact")
+    if ANALYSIS_INCIDENT.exists():
+        raise FileExistsError(f"refusing to overwrite analysis incident record: {ANALYSIS_INCIDENT}")
+    incident = {"schema": "bvm4x4-carry-post-cb-sjtl-analysis-incident-v1",
+                "incident_id": "ANALYSIS_INCIDENT_001", "status": "REPAIR_IN_PROGRESS",
+                "phase": "postprocess_after_all_four_physical_solves",
+                "original_error": "KeyError: 'A027_FULL_CB_CHAIN_ALL_CLOCK'",
+                "cause": "pairwise comparison builder received only A030-A033 and did not load registered A027-A029 comparison baselines",
+                "physical_solve_count": 0, "solver_invoked_during_repair": False,
+                "raw_by_run": run_records, "raw_unchanged": True,
+                "scientific_interpretation_performed": False,
+                "automatic_follow_up": False}
+    jnew(ANALYSIS_INCIDENT, incident)
+    from analyze_carry_post_cb_sjtl import analyze_batch
+    analysis = analyze_batch()
+    incident.update({"status": "REPAIRED_FROM_IMMUTABLE_RAW", "repair_runner_sha256": sha(ANALYZER),
+                     "summary_path": (TASK / "CARRY_POST_CB_SJTL_SUMMARY.json").relative_to(SERIES).as_posix(),
+                     "summary_sha256": sha(TASK / "CARRY_POST_CB_SJTL_SUMMARY.json"),
+                     "physical_solve_count": 0, "solver_invoked_during_repair": False,
+                     "repair_status": analysis["status"]})
+    jreplace(ANALYSIS_INCIDENT, incident)
+    batch.update({"status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+                  "analysis_path": (TASK / "CARRY_POST_CB_SJTL_SUMMARY.json").relative_to(SERIES).as_posix(),
+                  "analysis_sha256": sha(TASK / "CARRY_POST_CB_SJTL_SUMMARY.json"),
+                  "analysis_status": analysis["status"], "analysis_incident_path": ANALYSIS_INCIDENT.relative_to(SERIES).as_posix(),
+                  "analysis_incident_sha256": sha(ANALYSIS_INCIDENT),
+                  "analysis_repair_runner_sha256": sha(ANALYZER),
+                  "repair_solver_invoked": False,
+                  "scientific_interpretation_performed": False, "automatic_follow_up": False,
+                  "next_action": "STOP_AWAITING_USER_AND_CHATGPT_REVIEW"})
+    jreplace(BATCH_MANIFEST, batch)
+    authorization = [item for item in manifest.get("authorization_batches", [])
+                     if item.get("batch_id") == BATCH_ID]
+    if len(authorization) != 1:
+        raise RuntimeError("experiment manifest authorization missing/duplicated for repair")
+    authorization[0]["physical_solve_count_completed"] = 4
+    authorization[0]["analysis_incident_path"] = ANALYSIS_INCIDENT.relative_to(SERIES).as_posix()
+    authorization[0]["analysis_incident_sha256"] = sha(ANALYSIS_INCIDENT)
+    authorization[0]["analysis_path"] = (TASK / "CARRY_POST_CB_SJTL_SUMMARY.json").relative_to(SERIES).as_posix()
+    authorization[0]["analysis_sha256"] = sha(TASK / "CARRY_POST_CB_SJTL_SUMMARY.json")
+    authorization[0]["analysis_repair_runner_sha256"] = sha(ANALYZER)
+    jreplace(EXPERIMENT_MANIFEST, manifest)
+    print(json.dumps({"status": batch["status"], "physical_solve_count": 4,
+                      "repair_solver_invoked": False, "incident": incident["incident_id"],
+                      "summary_sha256": batch["analysis_sha256"], "scientific_interpretation_performed": False},
+                     ensure_ascii=False, indent=2))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
@@ -684,12 +761,16 @@ def main(argv: list[str] | None = None) -> int:
     group.add_argument("--refresh-preflight", action="store_true",
                        help="supersede a pre-solve preflight attempt only when no A030-A033 solve has started")
     group.add_argument("--run-batch", action="store_true")
+    group.add_argument("--repair-analysis", action="store_true",
+                       help="repair batch analysis from already-valid A030-A033 raw only; never invokes JoSIM")
     args = parser.parse_args(argv)
     try:
         if args.prepare_preflight:
             return prepare_preflight()
         if args.refresh_preflight:
             return refresh_preflight()
+        if args.repair_analysis:
+            return finalize_existing_analysis()
         return run_batch()
     except (OSError, RuntimeError, ValueError, KeyError, json.JSONDecodeError) as exc:
         print(f"ERROR: {type(exc).__name__}: {exc}", file=sys.stderr)

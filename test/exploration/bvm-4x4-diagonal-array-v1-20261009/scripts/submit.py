@@ -3927,7 +3927,7 @@ def _d3_timing_file_sets(root: Any) -> tuple[list[tuple[Path, str]], dict[str, A
         raise RuntimeError(f"experiment manifest should contain 41 physical solves, found {manifest.get('physical_solve_count')}")
     auth = [item for item in manifest.get("authorization_batches", [])
             if item.get("batch_id") == "BVM4X4_D3_CARRY_TIMING_20261010"]
-    batch_path = CARRY_D3_TIMING_TASK / "attempts" / "002" / "BATCH_MANIFEST.json"
+    batch_path = CARRY_D3_TIMING_TASK / "attempts" / "003" / "BATCH_MANIFEST.json"
     summary_path = CARRY_D3_TIMING_TASK / "D3_CARRY_TIMING_SUMMARY.json"
     if (len(auth) != 1 or auth[0].get("authorized_physical_solve_count") != 2 or
             auth[0].get("physical_solve_count_completed") != 2 or

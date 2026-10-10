@@ -19,7 +19,8 @@ SERIES = platform.SERIES
 REPO = platform.REPO
 RUNS = platform.RUNS
 TASK = platform.CARRY_D3_TIMING_ANALYSIS
-ATTEMPT_DIR = TASK / "attempts" / "002"
+ATTEMPT_DIR = TASK / "attempts" / "003"
+PREVIOUS_ATTEMPT_DIR = TASK / "attempts" / "002"
 MANIFEST = platform.EXPERIMENT_MANIFEST
 BASELINE = "A036_PRE_CB_SJTL_ALL_200"
 BASELINE_RAW_SHA256 = "586ba6eafa62d25bf6cd7a7ea8b533903826616b4b5575a9023f7393b74faf75"
@@ -43,7 +44,7 @@ FILES = {
     "probes": ATTEMPT_DIR / "PROBE_MANIFEST.json",
     "batch": ATTEMPT_DIR / "BATCH_MANIFEST.json",
     "review": ATTEMPT_DIR / "REVIEW.md",
-    "revision_note": TASK / "REVISION_NOTE.md",
+    "revision_note": ATTEMPT_DIR / "REVISION_NOTE.md",
 }
 
 
@@ -292,19 +293,30 @@ def prepare_preflight(*, write: bool) -> dict[str, Any]:
         raise RuntimeError(f"preflight HEAD is not descended from the registered start: {START_HEAD}")
     if git("status", "--porcelain"):
         raise RuntimeError("preflight generation requires a clean worktree after the platform/source commit")
-    prior_paths = {name: TASK / f"{name}" for name in
+    prior_paths = {name: TASK / name for name in
                    ("PREFLIGHT.md", "STATIC_QA.json", "WORK_UNIT.json", "METRIC_SPEC.json",
                     "PROBE_MANIFEST.json", "BATCH_MANIFEST.json", "REVIEW.md")}
-    if not all(path.is_file() for path in prior_paths.values()):
-        raise RuntimeError("attempt 001 preflight is incomplete; refusing implicit repair")
+    prior_attempt2_paths = {name: PREVIOUS_ATTEMPT_DIR / name for name in
+                            ("PREFLIGHT.md", "STATIC_QA.json", "WORK_UNIT.json", "METRIC_SPEC.json",
+                             "PROBE_MANIFEST.json", "BATCH_MANIFEST.json", "REVIEW.md")}
+    if not all(path.is_file() for path in (*prior_paths.values(), *prior_attempt2_paths.values())):
+        raise RuntimeError("attempt 001 or attempt 002 preflight is incomplete; refusing implicit repair")
     if ATTEMPT_DIR.exists() or FILES["revision_note"].exists():
-        raise RuntimeError("attempt 002 or revision note already exists; refusing overwrite")
-    previous_attempt = {"attempt": 1, "status": "PREFLIGHT_SUPERSEDED_BEFORE_ANY_SOLVE",
-                        "reason": "Attempt 001 raw projection used a net probe-count delta; attempt 002 separately bounds added and removed field widths.",
-                        "preflight_sha256": sha(prior_paths["PREFLIGHT.md"]),
-                        "static_qa_sha256": sha(prior_paths["STATIC_QA.json"]),
-                        "work_unit_sha256": sha(prior_paths["WORK_UNIT.json"]),
-                        "physical_solve_count_completed": 0}
+        raise RuntimeError("attempt 003 or revision note already exists; refusing overwrite")
+    previous_attempts = [
+        {"attempt": 1, "status": "PREFLIGHT_SUPERSEDED_BEFORE_ANY_SOLVE",
+         "reason": "raw projection used a net probe-count delta",
+         "preflight_sha256": sha(prior_paths["PREFLIGHT.md"]),
+         "static_qa_sha256": sha(prior_paths["STATIC_QA.json"]),
+         "work_unit_sha256": sha(prior_paths["WORK_UNIT.json"]),
+         "physical_solve_count_completed": 0},
+        {"attempt": 2, "status": "PREFLIGHT_SUPERSEDED_BEFORE_ANY_SOLVE",
+         "reason": "ignored machine-readable JSON artifacts required a second commit, violating the direct-parent execution lock",
+         "preflight_sha256": sha(prior_attempt2_paths["PREFLIGHT.md"]),
+         "static_qa_sha256": sha(prior_attempt2_paths["STATIC_QA.json"]),
+         "work_unit_sha256": sha(prior_attempt2_paths["WORK_UNIT.json"]),
+         "physical_solve_count_completed": 0},
+    ]
     manifest = read_json(MANIFEST)
     if int(manifest.get("physical_solve_count", -1)) != 39:
         raise RuntimeError("expected exactly 39 completed historical solves before A040/A041")
@@ -319,8 +331,9 @@ def prepare_preflight(*, write: bool) -> dict[str, Any]:
     if matching_auth and (matching_auth[0].get("run_ids") != [item[0] for item in RUN_MATRIX] or
                           matching_auth[0].get("authorized_physical_solve_count") != 2 or
                           matching_auth[0].get("physical_solve_count_completed") != 0 or
-                          matching_auth[0].get("preflight_sha256") != previous_attempt["preflight_sha256"] or
-                          matching_auth[0].get("static_qa_sha256") != previous_attempt["static_qa_sha256"]):
+                          matching_auth[0].get("preflight_attempt") != 2 or
+                          matching_auth[0].get("preflight_sha256") != previous_attempts[1]["preflight_sha256"] or
+                          matching_auth[0].get("static_qa_sha256") != previous_attempts[1]["static_qa_sha256"]):
         raise RuntimeError("prior D3 timing authorization is inconsistent or already consumed")
     if set(platform.verify_sources()) != set(platform.SOURCE_SHA256):
         raise RuntimeError("canonical source closure is incomplete")
@@ -378,7 +391,7 @@ scientific_review_authorization: NOT_GRANTED
     preflight_lines = [
         "# BVM 4x4 D3 Carry timing A040/A041 preflight", "",
         "> This experiment is governed by docs/EXPERIMENT_CONTRACT.md.", "",
-        f"- Preflight attempt: 002. Root attempt 001 (`{previous_attempt['preflight_sha256']}`) is preserved and superseded before any solver run; reason: its raw projection used net signal-count delta instead of separate added/removed field widths.",
+        f"- Preflight attempt: 003. Attempts 001 (`{previous_attempts[0]['preflight_sha256']}`) and 002 (`{previous_attempts[1]['preflight_sha256']}`) are preserved and superseded before any solver run; attempt 003 is a single direct-child preflight commit.",
         f"- Registered start HEAD: `{START_HEAD}`; source/preflight parent HEAD: `{git('rev-parse','HEAD')}`.",
         "- Risk: NORMAL. Exactly two new physical solves are authorized: A040 then A041.",
         "- A036 is a read-only comparison baseline; no A027-A039 raw/deck is modified or recomputed.",
@@ -418,13 +431,13 @@ Scope: platform topology/config/probe/preflight/package implementation only. No 
 | Adding the optional count key or changing focus selection could perturb historical A027–A039 renderings. | Render-only exact deck, stimulus and ordered probe-label comparison against all 13 immutable run snapshots. | PASS; no historical solve or artifact write. |
 | A stale ID, raw, or package checkpoint could cause overwrite or re-copy historical evidence. | Preflight checks A040/A041 paths and manifest IDs; records SHA-256 for A027–A039; DELTA dry-run verifies A001–A039 reference closure and excludes HTML. | IDs free and historical hashes captured. Package QA remains PENDING until the two new raw artifacts exist. |
 
-Attempt 001's raw-size projection was reviewed and superseded before any physical solve because it applied a net probe-count delta. Attempt 002 uses separate added/removed label sets, a maximum observed field width with spare characters, a delimiter allowance and a header allowance.
+Attempts 001 and 002 were superseded before any physical solve. Attempt 001 used a net probe-count delta for raw sizing. Attempt 002 corrected sizing but required two preflight commits because ignored JSON artifacts needed explicit staging, which did not satisfy the direct-parent execution lock. Attempt 003 retains the corrected estimate and places the complete machine-readable preflight in one commit.
 
 Residual uncertainty: physical behavior, adaptive stored-grid size for A040/A041, and whether any waveform descriptor corresponds to a switching/event interpretation remain UNKNOWN until raw review. No scientific interpretation, event/SFQ classification, or follow-up is authorized.
 """
     static_qa = {"schema": "bvm4x4-d3-carry-timing-static-qa-v1", "status": "PASS",
                  "parent_head": git("rev-parse", "HEAD"), "registered_start_head": START_HEAD,
-                 "preflight_attempt": 2, "superseded_preflight_attempts": [previous_attempt],
+                 "preflight_attempt": 3, "superseded_preflight_attempts": previous_attempts,
                  "solver": solver, "canonical_sources": platform.verify_sources(),
                  "historical_raw_identity": history, "historical_render_only_regression": legacy_render,
                  "new_runs": run_records, "raw_projection": projections,
@@ -450,7 +463,7 @@ Residual uncertainty: physical behavior, adaptive stored-grid size for A040/A041
               "scientific_interpretation_performed": False}
     work_unit = {"schema": "bvm4x4-d3-carry-timing-work-unit-v1",
                  "batch_id": platform.CARRY_D3_TIMING_BATCH_ID,
-                 "preflight_attempt": 2, "superseded_preflight_attempts": [previous_attempt],
+                 "preflight_attempt": 3, "superseded_preflight_attempts": previous_attempts,
                  "experiment_risk_level": "NORMAL", "registered_start_head": START_HEAD,
                  "preflight_parent_head": git("rev-parse", "HEAD"),
                  "authorized_run_ids": [item[0] for item in RUN_MATRIX],
@@ -465,20 +478,21 @@ Residual uncertainty: physical behavior, adaptive stored-grid size for A040/A041
     work_unit["review_sha256"] = hashlib.sha256(review_text.encode()).hexdigest()
     batch = {"schema": "bvm4x4-d3-carry-timing-batch-manifest-v1",
              "batch_id": platform.CARRY_D3_TIMING_BATCH_ID, "status": "PREFLIGHT_PASS_READY",
-             "preflight_attempt": 2, "superseded_preflight_attempts": [previous_attempt],
+             "preflight_attempt": 3, "superseded_preflight_attempts": previous_attempts,
              "preflight_parent_head": git("rev-parse", "HEAD"),
              "authorized_run_ids": [item[0] for item in RUN_MATRIX],
              "physical_solve_count_authorized": 2, "physical_solve_count_completed": 0,
              "runs": [], "static_qa_status": "PASS",
              "scientific_interpretation_performed": False, "automatic_follow_up": False}
-    revision_note = ("# D3 Carry timing preflight revision 2\n\n"
-                     "Attempt 001 passed topology/syntax/render checks but its raw-size projection used only a net probe-count delta. "
-                     "It is preserved at the task root and superseded before any physical solve. Attempt 002 projects each added and removed signal separately, "
-                     "uses the maximum observed A036 numeric field width plus four spare characters, counts delimiters, and adds a 4 KiB header allowance.\n\n"
-                     f"- Attempt 001 PREFLIGHT SHA-256: `{previous_attempt['preflight_sha256']}`\n"
-                     f"- Attempt 001 STATIC_QA SHA-256: `{previous_attempt['static_qa_sha256']}`\n"
-                     f"- Attempt 001 WORK_UNIT SHA-256: `{previous_attempt['work_unit_sha256']}`\n"
-                     "- Physical solves completed in attempt 001: 0\n"
+    revision_note = ("# D3 Carry timing preflight revision 3\n\n"
+                     "Attempts 001 and 002 are preserved and superseded before any physical solve. Attempt 001's raw-size projection used a net probe-count delta. "
+                     "Attempt 002 corrected the estimate but required two commits to force-stage ignored machine-readable JSON, which violated the direct-parent execution lock. "
+                     "Attempt 003 uses the corrected per-signal width estimate and all lock files will be committed atomically in one preflight commit.\n\n"
+                     f"- Attempt 001 PREFLIGHT SHA-256: `{previous_attempts[0]['preflight_sha256']}`\n"
+                     f"- Attempt 001 STATIC_QA SHA-256: `{previous_attempts[0]['static_qa_sha256']}`\n"
+                     f"- Attempt 002 PREFLIGHT SHA-256: `{previous_attempts[1]['preflight_sha256']}`\n"
+                     f"- Attempt 002 STATIC_QA SHA-256: `{previous_attempts[1]['static_qa_sha256']}`\n"
+                     "- Physical solves completed in attempts 001/002: 0\n"
                      "- Historical raw/deck/config files were not modified.\n")
     work_unit["revision_note_sha256"] = hashlib.sha256(revision_note.encode()).hexdigest()
     output = {"experiment": experiment, "preflight": preflight_text, "static": static_qa,
@@ -498,11 +512,8 @@ Residual uncertainty: physical behavior, adaptive stored-grid size for A040/A041
             "authorized_physical_solve_count": 2, "physical_solve_count_completed": 0,
             "scientific_interpretation_performed": False, "automatic_follow_up": False})
         revisions = list(auth.get("preflight_revisions", []))
-        revisions.append({"attempt": 1, "status": "PREFLIGHT_SUPERSEDED_BEFORE_ANY_SOLVE",
-                          "preflight_sha256": previous_attempt["preflight_sha256"],
-                          "static_qa_sha256": previous_attempt["static_qa_sha256"],
-                          "reason": previous_attempt["reason"], "physical_solve_count_completed": 0})
-        auth.update({"preflight_attempt": 2, "preflight_revisions": revisions,
+        revisions.append(previous_attempts[1])
+        auth.update({"preflight_attempt": 3, "preflight_revisions": revisions,
                      "preflight_parent_head": git("rev-parse", "HEAD"),
                      "preflight_sha256": work_unit["preflight_sha256"],
                      "static_qa_sha256": work_unit["static_qa_sha256"],

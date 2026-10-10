@@ -1,7 +1,7 @@
 {
   "schema": "bvm4x4-carry-sjtl-position-batch-manifest-v1",
   "batch_id": "BVM4X4_CARRY_SJTL_POSITION_20261010",
-  "status": "PREFLIGHT_PASS_READY",
+  "status": "BATCH_COMPLETE_AWAITING_USER_CHATGPT_REVIEW",
   "parent_head": "9db7929608bf25fd8c2f86fb99e84b9a4387ba81",
   "authorized_run_ids": [
     "A034_D2_ONLY_POST_CB_SJTL_ALL_200",
@@ -12,9 +12,93 @@
     "A039_PRE_CB_SJTL_3X3_210"
   ],
   "physical_solve_count_authorized": 6,
-  "physical_solve_count_completed": 0,
+  "physical_solve_count_completed": 6,
   "static_qa_status": "PASS",
-  "runs": [],
+  "runs": [
+    {
+      "run_id": "A034_D2_ONLY_POST_CB_SJTL_ALL_200",
+      "case": "CARRY_SJTL_D2_ONLY_ALL_200",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "9181e1eaed213cfd950f6f1e85c07906db09732da346bf3a5b5d5c96bd379a57",
+      "raw_bytes": 84559918,
+      "deck_sha256": "a87651b1bbd99526dd02210df30fd32b921bed2306203ebca5a317aad2e2855f",
+      "probe_count": 209
+    },
+    {
+      "run_id": "A035_D2_ONLY_POST_CB_SJTL_PAPER_200",
+      "case": "CARRY_SJTL_D2_ONLY_PAPER_200",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "ded810953244189ae906482b72364992ff1653a34bc5e79f8af6157d6b9dad10",
+      "raw_bytes": 84593695,
+      "deck_sha256": "a87651b1bbd99526dd02210df30fd32b921bed2306203ebca5a317aad2e2855f",
+      "probe_count": 209
+    },
+    {
+      "run_id": "A036_PRE_CB_SJTL_ALL_200",
+      "case": "CARRY_SJTL_PRE_ALL_200",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "586ba6eafa62d25bf6cd7a7ea8b533903826616b4b5575a9023f7393b74faf75",
+      "raw_bytes": 94506907,
+      "deck_sha256": "d68952978342590e076f76eb91b2b49932ae8caa6af0bd9010360d4c8170585c",
+      "probe_count": 234
+    },
+    {
+      "run_id": "A037_PRE_CB_SJTL_ALL_210",
+      "case": "CARRY_SJTL_PRE_ALL_210",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "fcb9c40bf27fcc9e10a0b385e7ee110f429f33d2d2ac7480260a636447a9ff01",
+      "raw_bytes": 94534795,
+      "deck_sha256": "379558280c914f3eb763366d950a07693148dfc7249789767978acfdeec799a8",
+      "probe_count": 234
+    },
+    {
+      "run_id": "A038_PRE_CB_SJTL_PAPER_210",
+      "case": "CARRY_SJTL_PRE_PAPER_210",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "e178b40dcda2fbef11005ec9ed3605687b88db89dc24746f213eef6797ccf5b7",
+      "raw_bytes": 94594453,
+      "deck_sha256": "379558280c914f3eb763366d950a07693148dfc7249789767978acfdeec799a8",
+      "probe_count": 234
+    },
+    {
+      "run_id": "A039_PRE_CB_SJTL_3X3_210",
+      "case": "CARRY_SJTL_PRE_3X3_210",
+      "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+      "artifact_status": "VALID",
+      "physical_solve_count": 1,
+      "qa_status": "PASS",
+      "raw_sha256": "af7a4e7b71549ff0c65bce49f0888eecd8015df41cb95a2d2da718f7441ca06d",
+      "raw_bytes": 94649166,
+      "deck_sha256": "379558280c914f3eb763366d950a07693148dfc7249789767978acfdeec799a8",
+      "probe_count": 234
+    }
+  ],
   "scientific_interpretation_performed": false,
-  "automatic_follow_up": false
+  "automatic_follow_up": false,
+  "execution_head": "94950f365a968470afd9a671fe97b0d49e05a428",
+  "preflight_sha256": "89badd31cab5436764dc265f87ac1c459b80b0a0760f8329a5d6991710d18f82",
+  "static_qa_sha256": "f0067f95ebb218dd88e5d072869c0cc280db939394335614ea014fdc7e6d3320",
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "parent_head": "94950f365a968470afd9a671fe97b0d49e05a428"
+  },
+  "analysis_status": "MECHANICAL_QA_PASS",
+  "summary_path": "analysis/carry-sjtl-position-20261010/CARRY_SJTL_POSITION_STAGE_METRICS.csv"
 }

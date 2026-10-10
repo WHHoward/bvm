@@ -1,0 +1,1518 @@
+{
+  "schema": "bvm-4x4-t1-chain-probe-manifest-v2",
+  "profile": "t1_chain_focus",
+  "focus_stage": "D2",
+  "d0_jtl_count": 1,
+  "cbu_override_d1": "NONE",
+  "cbu_chain_topology": "CB_CARRY_BUFFER_ALL",
+  "carry_sjtl_legacy_mode": false,
+  "signal_count": 209,
+  "raw_phase_unit": "P(...) radians",
+  "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
+  "signals": [
+    {
+      "label": "V(DOUT_D0)",
+      "group": "chain_input:D0:upstream",
+      "unit": "V",
+      "node": "DOUT_D0",
+      "measurement_semantics": "D0 entrance boundary voltage"
+    },
+    {
+      "label": "P(BJ1|XCB_D0_L1)",
+      "group": "chain_input:D0:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D0_L1",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_D0_L1)",
+      "group": "chain_input:D0:last_cb",
+      "unit": "V",
+      "instance": "XCB_D0_L1",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_D0_L1)",
+      "group": "chain_array_cb:D0:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D0_L1",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_D0_L1)",
+      "group": "chain_array_cb:D0:last_cb",
+      "unit": "V",
+      "instance": "XCB_D0_L1",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(T1_I_D0)",
+      "group": "chain_t1:D0:input",
+      "unit": "V",
+      "node": "T1_I_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(CLK_D0)",
+      "group": "chain_t1:D0:clock",
+      "unit": "V",
+      "node": "CLK_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(S_D0)",
+      "group": "chain_t1:D0:sum",
+      "unit": "V",
+      "node": "S_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "V(C_D0)",
+      "group": "chain_t1:D0:carry",
+      "unit": "V",
+      "node": "C_D0",
+      "diagonal": "D0"
+    },
+    {
+      "label": "I(V_T1_LINK_D0)",
+      "group": "chain_t1:D0:input_link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D0",
+      "direction": "upstream output toward T1 input"
+    },
+    {
+      "label": "I(R_S_D0)",
+      "group": "chain_t1:D0:sum_load_current",
+      "unit": "A",
+      "element": "R_S_D0",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "I(V_BIAS1_D0)",
+      "group": "chain_bias:t1:D0",
+      "unit": "A",
+      "element": "V_BIAS1_D0"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D0)",
+      "group": "chain_clock:D0:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D0"
+    },
+    {
+      "label": "P(B_J1|XT1_D0)",
+      "group": "chain_t1_jj:D0",
+      "unit": "rad",
+      "instance": "XT1_D0",
+      "element": "B_J1"
+    },
+    {
+      "label": "V(B_J1|XT1_D0)",
+      "group": "chain_t1_jj:D0",
+      "unit": "V",
+      "instance": "XT1_D0",
+      "element": "B_J1"
+    },
+    {
+      "label": "P(B_J11|XT1_D0)",
+      "group": "chain_t1_jj:D0",
+      "unit": "rad",
+      "instance": "XT1_D0",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(B_J11|XT1_D0)",
+      "group": "chain_t1_jj:D0",
+      "unit": "V",
+      "instance": "XT1_D0",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(DOUT_D1)",
+      "group": "chain_input:D1:upstream",
+      "unit": "V",
+      "node": "DOUT_D1",
+      "measurement_semantics": "shared DOUT/JOIN node voltage; not an array-only pulse measure"
+    },
+    {
+      "label": "I(V_CBU_A_D1)",
+      "group": "chain_array:D1:dout_to_join_current",
+      "unit": "A",
+      "element": "V_CBU_A_D1",
+      "direction": "DOUT_D1 -> CBU_JOIN_D1"
+    },
+    {
+      "label": "P(BJ1|XCB_D1_L2)",
+      "group": "chain_input:D1:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D1_L2",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_D1_L2)",
+      "group": "chain_input:D1:last_cb",
+      "unit": "V",
+      "instance": "XCB_D1_L2",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_D1_L2)",
+      "group": "chain_array_cb:D1:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D1_L2",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_D1_L2)",
+      "group": "chain_array_cb:D1:last_cb",
+      "unit": "V",
+      "instance": "XCB_D1_L2",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(T1_I_D1)",
+      "group": "chain_t1:D1:input",
+      "unit": "V",
+      "node": "T1_I_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(CLK_D1)",
+      "group": "chain_t1:D1:clock",
+      "unit": "V",
+      "node": "CLK_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(S_D1)",
+      "group": "chain_t1:D1:sum",
+      "unit": "V",
+      "node": "S_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "V(C_D1)",
+      "group": "chain_t1:D1:carry",
+      "unit": "V",
+      "node": "C_D1",
+      "diagonal": "D1"
+    },
+    {
+      "label": "I(V_T1_LINK_D1)",
+      "group": "chain_t1:D1:input_link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D1",
+      "direction": "upstream output toward T1 input"
+    },
+    {
+      "label": "I(R_S_D1)",
+      "group": "chain_t1:D1:sum_load_current",
+      "unit": "A",
+      "element": "R_S_D1",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "I(V_BIAS1_D1)",
+      "group": "chain_bias:t1:D1",
+      "unit": "A",
+      "element": "V_BIAS1_D1"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D1)",
+      "group": "chain_clock:D1:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D1"
+    },
+    {
+      "label": "P(B_J1|XT1_D1)",
+      "group": "chain_t1_jj:D1",
+      "unit": "rad",
+      "instance": "XT1_D1",
+      "element": "B_J1"
+    },
+    {
+      "label": "V(B_J1|XT1_D1)",
+      "group": "chain_t1_jj:D1",
+      "unit": "V",
+      "instance": "XT1_D1",
+      "element": "B_J1"
+    },
+    {
+      "label": "P(B_J11|XT1_D1)",
+      "group": "chain_t1_jj:D1",
+      "unit": "rad",
+      "instance": "XT1_D1",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(B_J11|XT1_D1)",
+      "group": "chain_t1_jj:D1",
+      "unit": "V",
+      "instance": "XT1_D1",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(DOUT_D2)",
+      "group": "chain_input:D2:upstream",
+      "unit": "V",
+      "node": "DOUT_D2",
+      "measurement_semantics": "shared DOUT/JOIN node voltage; not an array-only pulse measure"
+    },
+    {
+      "label": "I(V_CBU_A_D2)",
+      "group": "chain_array:D2:dout_to_join_current",
+      "unit": "A",
+      "element": "V_CBU_A_D2",
+      "direction": "DOUT_D2 -> CBU_JOIN_D2"
+    },
+    {
+      "label": "P(BJ1|XCB_D2_L3)",
+      "group": "chain_input:D2:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D2_L3",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_D2_L3)",
+      "group": "chain_input:D2:last_cb",
+      "unit": "V",
+      "instance": "XCB_D2_L3",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_D2_L3)",
+      "group": "chain_array_cb:D2:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D2_L3",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_D2_L3)",
+      "group": "chain_array_cb:D2:last_cb",
+      "unit": "V",
+      "instance": "XCB_D2_L3",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(T1_I_D2)",
+      "group": "chain_t1:D2:input",
+      "unit": "V",
+      "node": "T1_I_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(CLK_D2)",
+      "group": "chain_t1:D2:clock",
+      "unit": "V",
+      "node": "CLK_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(S_D2)",
+      "group": "chain_t1:D2:sum",
+      "unit": "V",
+      "node": "S_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "V(C_D2)",
+      "group": "chain_t1:D2:carry",
+      "unit": "V",
+      "node": "C_D2",
+      "diagonal": "D2"
+    },
+    {
+      "label": "I(V_T1_LINK_D2)",
+      "group": "chain_t1:D2:input_link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D2",
+      "direction": "upstream output toward T1 input"
+    },
+    {
+      "label": "I(R_S_D2)",
+      "group": "chain_t1:D2:sum_load_current",
+      "unit": "A",
+      "element": "R_S_D2",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "I(V_BIAS1_D2)",
+      "group": "chain_bias:t1:D2",
+      "unit": "A",
+      "element": "V_BIAS1_D2"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D2)",
+      "group": "chain_clock:D2:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D2"
+    },
+    {
+      "label": "P(B_J1|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J1"
+    },
+    {
+      "label": "V(B_J1|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J1"
+    },
+    {
+      "label": "P(B_J2|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J2"
+    },
+    {
+      "label": "V(B_J2|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J2"
+    },
+    {
+      "label": "P(B_J9|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J9"
+    },
+    {
+      "label": "V(B_J9|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J9"
+    },
+    {
+      "label": "P(B_J10|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J10"
+    },
+    {
+      "label": "V(B_J10|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J10"
+    },
+    {
+      "label": "P(B_J11|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "rad",
+      "instance": "XT1_D2",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(B_J11|XT1_D2)",
+      "group": "chain_t1_jj:D2",
+      "unit": "V",
+      "instance": "XT1_D2",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(DOUT_D3)",
+      "group": "chain_input:D3:upstream",
+      "unit": "V",
+      "node": "DOUT_D3",
+      "measurement_semantics": "shared DOUT/JOIN node voltage; not an array-only pulse measure"
+    },
+    {
+      "label": "I(V_CBU_A_D3)",
+      "group": "chain_array:D3:dout_to_join_current",
+      "unit": "A",
+      "element": "V_CBU_A_D3",
+      "direction": "DOUT_D3 -> CBU_JOIN_D3"
+    },
+    {
+      "label": "P(BJ1|XCB_D3_L4)",
+      "group": "chain_input:D3:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D3_L4",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_D3_L4)",
+      "group": "chain_input:D3:last_cb",
+      "unit": "V",
+      "instance": "XCB_D3_L4",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_D3_L4)",
+      "group": "chain_array_cb:D3:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D3_L4",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_D3_L4)",
+      "group": "chain_array_cb:D3:last_cb",
+      "unit": "V",
+      "instance": "XCB_D3_L4",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(T1_I_D3)",
+      "group": "chain_t1:D3:input",
+      "unit": "V",
+      "node": "T1_I_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(CLK_D3)",
+      "group": "chain_t1:D3:clock",
+      "unit": "V",
+      "node": "CLK_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(S_D3)",
+      "group": "chain_t1:D3:sum",
+      "unit": "V",
+      "node": "S_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "V(C_D3)",
+      "group": "chain_t1:D3:carry",
+      "unit": "V",
+      "node": "C_D3",
+      "diagonal": "D3"
+    },
+    {
+      "label": "I(V_T1_LINK_D3)",
+      "group": "chain_t1:D3:input_link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D3",
+      "direction": "upstream output toward T1 input"
+    },
+    {
+      "label": "I(R_S_D3)",
+      "group": "chain_t1:D3:sum_load_current",
+      "unit": "A",
+      "element": "R_S_D3",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "I(V_BIAS1_D3)",
+      "group": "chain_bias:t1:D3",
+      "unit": "A",
+      "element": "V_BIAS1_D3"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D3)",
+      "group": "chain_clock:D3:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D3"
+    },
+    {
+      "label": "P(B_J1|XT1_D3)",
+      "group": "chain_t1_jj:D3",
+      "unit": "rad",
+      "instance": "XT1_D3",
+      "element": "B_J1"
+    },
+    {
+      "label": "V(B_J1|XT1_D3)",
+      "group": "chain_t1_jj:D3",
+      "unit": "V",
+      "instance": "XT1_D3",
+      "element": "B_J1"
+    },
+    {
+      "label": "P(B_J11|XT1_D3)",
+      "group": "chain_t1_jj:D3",
+      "unit": "rad",
+      "instance": "XT1_D3",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(B_J11|XT1_D3)",
+      "group": "chain_t1_jj:D3",
+      "unit": "V",
+      "instance": "XT1_D3",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(DOUT_D4)",
+      "group": "chain_input:D4:upstream",
+      "unit": "V",
+      "node": "DOUT_D4",
+      "measurement_semantics": "shared DOUT/JOIN node voltage; not an array-only pulse measure"
+    },
+    {
+      "label": "I(V_CBU_A_D4)",
+      "group": "chain_array:D4:dout_to_join_current",
+      "unit": "A",
+      "element": "V_CBU_A_D4",
+      "direction": "DOUT_D4 -> CBU_JOIN_D4"
+    },
+    {
+      "label": "P(BJ1|XCB_D4_L3)",
+      "group": "chain_input:D4:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D4_L3",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_D4_L3)",
+      "group": "chain_input:D4:last_cb",
+      "unit": "V",
+      "instance": "XCB_D4_L3",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_D4_L3)",
+      "group": "chain_array_cb:D4:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D4_L3",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_D4_L3)",
+      "group": "chain_array_cb:D4:last_cb",
+      "unit": "V",
+      "instance": "XCB_D4_L3",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(T1_I_D4)",
+      "group": "chain_t1:D4:input",
+      "unit": "V",
+      "node": "T1_I_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(CLK_D4)",
+      "group": "chain_t1:D4:clock",
+      "unit": "V",
+      "node": "CLK_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(S_D4)",
+      "group": "chain_t1:D4:sum",
+      "unit": "V",
+      "node": "S_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "V(C_D4)",
+      "group": "chain_t1:D4:carry",
+      "unit": "V",
+      "node": "C_D4",
+      "diagonal": "D4"
+    },
+    {
+      "label": "I(V_T1_LINK_D4)",
+      "group": "chain_t1:D4:input_link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D4",
+      "direction": "upstream output toward T1 input"
+    },
+    {
+      "label": "I(R_S_D4)",
+      "group": "chain_t1:D4:sum_load_current",
+      "unit": "A",
+      "element": "R_S_D4",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "I(V_BIAS1_D4)",
+      "group": "chain_bias:t1:D4",
+      "unit": "A",
+      "element": "V_BIAS1_D4"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D4)",
+      "group": "chain_clock:D4:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D4"
+    },
+    {
+      "label": "P(B_J1|XT1_D4)",
+      "group": "chain_t1_jj:D4",
+      "unit": "rad",
+      "instance": "XT1_D4",
+      "element": "B_J1"
+    },
+    {
+      "label": "V(B_J1|XT1_D4)",
+      "group": "chain_t1_jj:D4",
+      "unit": "V",
+      "instance": "XT1_D4",
+      "element": "B_J1"
+    },
+    {
+      "label": "P(B_J11|XT1_D4)",
+      "group": "chain_t1_jj:D4",
+      "unit": "rad",
+      "instance": "XT1_D4",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(B_J11|XT1_D4)",
+      "group": "chain_t1_jj:D4",
+      "unit": "V",
+      "instance": "XT1_D4",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(DOUT_D5)",
+      "group": "chain_input:D5:upstream",
+      "unit": "V",
+      "node": "DOUT_D5",
+      "measurement_semantics": "shared DOUT/JOIN node voltage; not an array-only pulse measure"
+    },
+    {
+      "label": "I(V_CBU_A_D5)",
+      "group": "chain_array:D5:dout_to_join_current",
+      "unit": "A",
+      "element": "V_CBU_A_D5",
+      "direction": "DOUT_D5 -> CBU_JOIN_D5"
+    },
+    {
+      "label": "P(BJ1|XCB_D5_L2)",
+      "group": "chain_input:D5:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D5_L2",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_D5_L2)",
+      "group": "chain_input:D5:last_cb",
+      "unit": "V",
+      "instance": "XCB_D5_L2",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_D5_L2)",
+      "group": "chain_array_cb:D5:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D5_L2",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_D5_L2)",
+      "group": "chain_array_cb:D5:last_cb",
+      "unit": "V",
+      "instance": "XCB_D5_L2",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(T1_I_D5)",
+      "group": "chain_t1:D5:input",
+      "unit": "V",
+      "node": "T1_I_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(CLK_D5)",
+      "group": "chain_t1:D5:clock",
+      "unit": "V",
+      "node": "CLK_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(S_D5)",
+      "group": "chain_t1:D5:sum",
+      "unit": "V",
+      "node": "S_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "V(C_D5)",
+      "group": "chain_t1:D5:carry",
+      "unit": "V",
+      "node": "C_D5",
+      "diagonal": "D5"
+    },
+    {
+      "label": "I(V_T1_LINK_D5)",
+      "group": "chain_t1:D5:input_link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D5",
+      "direction": "upstream output toward T1 input"
+    },
+    {
+      "label": "I(R_S_D5)",
+      "group": "chain_t1:D5:sum_load_current",
+      "unit": "A",
+      "element": "R_S_D5",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "I(V_BIAS1_D5)",
+      "group": "chain_bias:t1:D5",
+      "unit": "A",
+      "element": "V_BIAS1_D5"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D5)",
+      "group": "chain_clock:D5:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D5"
+    },
+    {
+      "label": "P(B_J1|XT1_D5)",
+      "group": "chain_t1_jj:D5",
+      "unit": "rad",
+      "instance": "XT1_D5",
+      "element": "B_J1"
+    },
+    {
+      "label": "V(B_J1|XT1_D5)",
+      "group": "chain_t1_jj:D5",
+      "unit": "V",
+      "instance": "XT1_D5",
+      "element": "B_J1"
+    },
+    {
+      "label": "P(B_J11|XT1_D5)",
+      "group": "chain_t1_jj:D5",
+      "unit": "rad",
+      "instance": "XT1_D5",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(B_J11|XT1_D5)",
+      "group": "chain_t1_jj:D5",
+      "unit": "V",
+      "instance": "XT1_D5",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(DOUT_D6)",
+      "group": "chain_input:D6:upstream",
+      "unit": "V",
+      "node": "DOUT_D6",
+      "measurement_semantics": "shared DOUT/JOIN node voltage; not an array-only pulse measure"
+    },
+    {
+      "label": "I(V_CBU_A_D6)",
+      "group": "chain_array:D6:dout_to_join_current",
+      "unit": "A",
+      "element": "V_CBU_A_D6",
+      "direction": "DOUT_D6 -> CBU_JOIN_D6"
+    },
+    {
+      "label": "P(BJ1|XCB_D6_L1)",
+      "group": "chain_input:D6:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D6_L1",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_D6_L1)",
+      "group": "chain_input:D6:last_cb",
+      "unit": "V",
+      "instance": "XCB_D6_L1",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_D6_L1)",
+      "group": "chain_array_cb:D6:last_cb",
+      "unit": "rad",
+      "instance": "XCB_D6_L1",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_D6_L1)",
+      "group": "chain_array_cb:D6:last_cb",
+      "unit": "V",
+      "instance": "XCB_D6_L1",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(T1_I_D6)",
+      "group": "chain_t1:D6:input",
+      "unit": "V",
+      "node": "T1_I_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(CLK_D6)",
+      "group": "chain_t1:D6:clock",
+      "unit": "V",
+      "node": "CLK_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(S_D6)",
+      "group": "chain_t1:D6:sum",
+      "unit": "V",
+      "node": "S_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "V(C_D6)",
+      "group": "chain_t1:D6:carry",
+      "unit": "V",
+      "node": "C_D6",
+      "diagonal": "D6"
+    },
+    {
+      "label": "I(V_T1_LINK_D6)",
+      "group": "chain_t1:D6:input_link_current",
+      "unit": "A",
+      "element": "V_T1_LINK_D6",
+      "direction": "upstream output toward T1 input"
+    },
+    {
+      "label": "I(R_S_D6)",
+      "group": "chain_t1:D6:sum_load_current",
+      "unit": "A",
+      "element": "R_S_D6",
+      "direction": "S node to ground"
+    },
+    {
+      "label": "I(V_BIAS1_D6)",
+      "group": "chain_bias:t1:D6",
+      "unit": "A",
+      "element": "V_BIAS1_D6"
+    },
+    {
+      "label": "I(R_TRIG_CLK_D6)",
+      "group": "chain_clock:D6:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_D6"
+    },
+    {
+      "label": "P(B_J1|XT1_D6)",
+      "group": "chain_t1_jj:D6",
+      "unit": "rad",
+      "instance": "XT1_D6",
+      "element": "B_J1"
+    },
+    {
+      "label": "V(B_J1|XT1_D6)",
+      "group": "chain_t1_jj:D6",
+      "unit": "V",
+      "instance": "XT1_D6",
+      "element": "B_J1"
+    },
+    {
+      "label": "P(B_J11|XT1_D6)",
+      "group": "chain_t1_jj:D6",
+      "unit": "rad",
+      "instance": "XT1_D6",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(B_J11|XT1_D6)",
+      "group": "chain_t1_jj:D6",
+      "unit": "V",
+      "instance": "XT1_D6",
+      "element": "B_J11"
+    },
+    {
+      "label": "V(CBU_JOIN_D1)",
+      "group": "chain_cbu:D1:join",
+      "unit": "V",
+      "instance": "XCB_CARRY_D1",
+      "port": "JOIN",
+      "node": "CBU_JOIN_D1",
+      "measurement_semantics": "shared DOUT and Carry-path boundary voltage; not source-attributed"
+    },
+    {
+      "label": "V(CARRY_CB_IN_D1)",
+      "group": "chain_cbu:D1:carry_cb_in",
+      "unit": "V",
+      "instance": "XCB_CARRY_D1",
+      "port": "CARRY_CB_IN",
+      "node": "CARRY_CB_IN_D1"
+    },
+    {
+      "label": "V(CARRY_CB_OUT_D1)",
+      "group": "chain_cbu:D1:carry_cb_out",
+      "unit": "V",
+      "instance": "XCB_CARRY_D1",
+      "port": "CARRY_CB_OUT",
+      "node": "CARRY_CB_OUT_D1"
+    },
+    {
+      "label": "I(V_CARRY_IN_D1)",
+      "group": "chain_cbu:D1:carry_input_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D1",
+      "port": "CARRY_INPUT",
+      "element": "V_CARRY_IN_D1",
+      "direction": "C_D0 -> CARRY_CB_IN_D1"
+    },
+    {
+      "label": "I(V_CBU_B_D1)",
+      "group": "chain_cbu:D1:b_post_buffer_output_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D1",
+      "port": "B_POST_BUFFER_OUTPUT",
+      "element": "V_CBU_B_D1",
+      "direction": "CARRY_CB_OUT_D1 -> CBU_JOIN_D1"
+    },
+    {
+      "label": "P(BJ1|XCB_CARRY_D1)",
+      "group": "chain_cbu_cb_carry_buffer:D1",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D1",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_CARRY_D1)",
+      "group": "chain_cbu_cb_carry_buffer:D1",
+      "unit": "V",
+      "instance": "XCB_CARRY_D1",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_CARRY_D1)",
+      "group": "chain_cbu_cb_carry_buffer:D1",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D1",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_CARRY_D1)",
+      "group": "chain_cbu_cb_carry_buffer:D1",
+      "unit": "V",
+      "instance": "XCB_CARRY_D1",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(CBU_JOIN_D2)",
+      "group": "chain_cbu:D2:join",
+      "unit": "V",
+      "instance": "XCB_CARRY_D2",
+      "port": "JOIN",
+      "node": "CBU_JOIN_D2",
+      "measurement_semantics": "shared DOUT and Carry-path boundary voltage; not source-attributed"
+    },
+    {
+      "label": "V(CARRY_CB_IN_D2)",
+      "group": "chain_cbu:D2:carry_cb_in",
+      "unit": "V",
+      "instance": "XCB_CARRY_D2",
+      "port": "CARRY_CB_IN",
+      "node": "CARRY_CB_IN_D2"
+    },
+    {
+      "label": "V(CARRY_CB_OUT_D2)",
+      "group": "chain_cbu:D2:carry_cb_out",
+      "unit": "V",
+      "instance": "XCB_CARRY_D2",
+      "port": "CARRY_CB_OUT",
+      "node": "CARRY_CB_OUT_D2"
+    },
+    {
+      "label": "V(CARRY_SJTL_IN_D2)",
+      "group": "chain_cbu:D2:post_cb_sjtl_in",
+      "unit": "V",
+      "instance": "XCB_CARRY_D2",
+      "port": "POST_CB_SJTL_IN",
+      "node": "CARRY_SJTL_IN_D2"
+    },
+    {
+      "label": "V(CARRY_SJTL_OUT_D2)",
+      "group": "chain_cbu:D2:post_cb_sjtl_out",
+      "unit": "V",
+      "instance": "XCB_CARRY_D2",
+      "port": "POST_CB_SJTL_OUT",
+      "node": "CARRY_SJTL_OUT_D2"
+    },
+    {
+      "label": "I(V_CARRY_IN_D2)",
+      "group": "chain_cbu:D2:carry_input_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D2",
+      "port": "CARRY_INPUT",
+      "element": "V_CARRY_IN_D2",
+      "direction": "C_D1 -> CARRY_CB_IN_D2"
+    },
+    {
+      "label": "I(V_CBU_B_D2)",
+      "group": "chain_cbu:D2:b_post_buffer_output_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D2",
+      "port": "B_POST_BUFFER_OUTPUT",
+      "element": "V_CBU_B_D2",
+      "direction": "CARRY_SJTL_OUT_D2 -> CBU_JOIN_D2"
+    },
+    {
+      "label": "I(V_CARRY_SJTL_IN_D2)",
+      "group": "chain_post_cb_sjtl:D2:branch_current",
+      "unit": "A",
+      "instance": "XSJTL_CARRY_D2",
+      "element": "V_CARRY_SJTL_IN_D2",
+      "direction": "CARRY_CB_OUT_D2 -> XSJTL_CARRY_D2"
+    },
+    {
+      "label": "P(BJ1|XSJTL_CARRY_D2)",
+      "group": "chain_post_cb_sjtl:D2:jj",
+      "unit": "rad",
+      "instance": "XSJTL_CARRY_D2",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XSJTL_CARRY_D2)",
+      "group": "chain_post_cb_sjtl:D2:jj",
+      "unit": "V",
+      "instance": "XSJTL_CARRY_D2",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ1|XCB_CARRY_D2)",
+      "group": "chain_cbu_cb_carry_buffer:D2",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D2",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_CARRY_D2)",
+      "group": "chain_cbu_cb_carry_buffer:D2",
+      "unit": "V",
+      "instance": "XCB_CARRY_D2",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_CARRY_D2)",
+      "group": "chain_cbu_cb_carry_buffer:D2",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D2",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_CARRY_D2)",
+      "group": "chain_cbu_cb_carry_buffer:D2",
+      "unit": "V",
+      "instance": "XCB_CARRY_D2",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(CBU_JOIN_D3)",
+      "group": "chain_cbu:D3:join",
+      "unit": "V",
+      "instance": "XCB_CARRY_D3",
+      "port": "JOIN",
+      "node": "CBU_JOIN_D3",
+      "measurement_semantics": "shared DOUT and Carry-path boundary voltage; not source-attributed"
+    },
+    {
+      "label": "V(CARRY_CB_IN_D3)",
+      "group": "chain_cbu:D3:carry_cb_in",
+      "unit": "V",
+      "instance": "XCB_CARRY_D3",
+      "port": "CARRY_CB_IN",
+      "node": "CARRY_CB_IN_D3"
+    },
+    {
+      "label": "V(CARRY_CB_OUT_D3)",
+      "group": "chain_cbu:D3:carry_cb_out",
+      "unit": "V",
+      "instance": "XCB_CARRY_D3",
+      "port": "CARRY_CB_OUT",
+      "node": "CARRY_CB_OUT_D3"
+    },
+    {
+      "label": "I(V_CARRY_IN_D3)",
+      "group": "chain_cbu:D3:carry_input_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D3",
+      "port": "CARRY_INPUT",
+      "element": "V_CARRY_IN_D3",
+      "direction": "C_D2 -> CARRY_CB_IN_D3"
+    },
+    {
+      "label": "I(V_CBU_B_D3)",
+      "group": "chain_cbu:D3:b_post_buffer_output_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D3",
+      "port": "B_POST_BUFFER_OUTPUT",
+      "element": "V_CBU_B_D3",
+      "direction": "CARRY_CB_OUT_D3 -> CBU_JOIN_D3"
+    },
+    {
+      "label": "P(BJ1|XCB_CARRY_D3)",
+      "group": "chain_cbu_cb_carry_buffer:D3",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D3",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_CARRY_D3)",
+      "group": "chain_cbu_cb_carry_buffer:D3",
+      "unit": "V",
+      "instance": "XCB_CARRY_D3",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_CARRY_D3)",
+      "group": "chain_cbu_cb_carry_buffer:D3",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D3",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_CARRY_D3)",
+      "group": "chain_cbu_cb_carry_buffer:D3",
+      "unit": "V",
+      "instance": "XCB_CARRY_D3",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(CBU_JOIN_D4)",
+      "group": "chain_cbu:D4:join",
+      "unit": "V",
+      "instance": "XCB_CARRY_D4",
+      "port": "JOIN",
+      "node": "CBU_JOIN_D4",
+      "measurement_semantics": "shared DOUT and Carry-path boundary voltage; not source-attributed"
+    },
+    {
+      "label": "V(CARRY_CB_IN_D4)",
+      "group": "chain_cbu:D4:carry_cb_in",
+      "unit": "V",
+      "instance": "XCB_CARRY_D4",
+      "port": "CARRY_CB_IN",
+      "node": "CARRY_CB_IN_D4"
+    },
+    {
+      "label": "V(CARRY_CB_OUT_D4)",
+      "group": "chain_cbu:D4:carry_cb_out",
+      "unit": "V",
+      "instance": "XCB_CARRY_D4",
+      "port": "CARRY_CB_OUT",
+      "node": "CARRY_CB_OUT_D4"
+    },
+    {
+      "label": "I(V_CARRY_IN_D4)",
+      "group": "chain_cbu:D4:carry_input_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D4",
+      "port": "CARRY_INPUT",
+      "element": "V_CARRY_IN_D4",
+      "direction": "C_D3 -> CARRY_CB_IN_D4"
+    },
+    {
+      "label": "I(V_CBU_B_D4)",
+      "group": "chain_cbu:D4:b_post_buffer_output_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D4",
+      "port": "B_POST_BUFFER_OUTPUT",
+      "element": "V_CBU_B_D4",
+      "direction": "CARRY_CB_OUT_D4 -> CBU_JOIN_D4"
+    },
+    {
+      "label": "P(BJ1|XCB_CARRY_D4)",
+      "group": "chain_cbu_cb_carry_buffer:D4",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D4",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_CARRY_D4)",
+      "group": "chain_cbu_cb_carry_buffer:D4",
+      "unit": "V",
+      "instance": "XCB_CARRY_D4",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_CARRY_D4)",
+      "group": "chain_cbu_cb_carry_buffer:D4",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D4",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_CARRY_D4)",
+      "group": "chain_cbu_cb_carry_buffer:D4",
+      "unit": "V",
+      "instance": "XCB_CARRY_D4",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(CBU_JOIN_D5)",
+      "group": "chain_cbu:D5:join",
+      "unit": "V",
+      "instance": "XCB_CARRY_D5",
+      "port": "JOIN",
+      "node": "CBU_JOIN_D5",
+      "measurement_semantics": "shared DOUT and Carry-path boundary voltage; not source-attributed"
+    },
+    {
+      "label": "V(CARRY_CB_IN_D5)",
+      "group": "chain_cbu:D5:carry_cb_in",
+      "unit": "V",
+      "instance": "XCB_CARRY_D5",
+      "port": "CARRY_CB_IN",
+      "node": "CARRY_CB_IN_D5"
+    },
+    {
+      "label": "V(CARRY_CB_OUT_D5)",
+      "group": "chain_cbu:D5:carry_cb_out",
+      "unit": "V",
+      "instance": "XCB_CARRY_D5",
+      "port": "CARRY_CB_OUT",
+      "node": "CARRY_CB_OUT_D5"
+    },
+    {
+      "label": "I(V_CARRY_IN_D5)",
+      "group": "chain_cbu:D5:carry_input_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D5",
+      "port": "CARRY_INPUT",
+      "element": "V_CARRY_IN_D5",
+      "direction": "C_D4 -> CARRY_CB_IN_D5"
+    },
+    {
+      "label": "I(V_CBU_B_D5)",
+      "group": "chain_cbu:D5:b_post_buffer_output_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D5",
+      "port": "B_POST_BUFFER_OUTPUT",
+      "element": "V_CBU_B_D5",
+      "direction": "CARRY_CB_OUT_D5 -> CBU_JOIN_D5"
+    },
+    {
+      "label": "P(BJ1|XCB_CARRY_D5)",
+      "group": "chain_cbu_cb_carry_buffer:D5",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D5",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_CARRY_D5)",
+      "group": "chain_cbu_cb_carry_buffer:D5",
+      "unit": "V",
+      "instance": "XCB_CARRY_D5",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_CARRY_D5)",
+      "group": "chain_cbu_cb_carry_buffer:D5",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D5",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_CARRY_D5)",
+      "group": "chain_cbu_cb_carry_buffer:D5",
+      "unit": "V",
+      "instance": "XCB_CARRY_D5",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(CBU_JOIN_D6)",
+      "group": "chain_cbu:D6:join",
+      "unit": "V",
+      "instance": "XCB_CARRY_D6",
+      "port": "JOIN",
+      "node": "CBU_JOIN_D6",
+      "measurement_semantics": "shared DOUT and Carry-path boundary voltage; not source-attributed"
+    },
+    {
+      "label": "V(CARRY_CB_IN_D6)",
+      "group": "chain_cbu:D6:carry_cb_in",
+      "unit": "V",
+      "instance": "XCB_CARRY_D6",
+      "port": "CARRY_CB_IN",
+      "node": "CARRY_CB_IN_D6"
+    },
+    {
+      "label": "V(CARRY_CB_OUT_D6)",
+      "group": "chain_cbu:D6:carry_cb_out",
+      "unit": "V",
+      "instance": "XCB_CARRY_D6",
+      "port": "CARRY_CB_OUT",
+      "node": "CARRY_CB_OUT_D6"
+    },
+    {
+      "label": "I(V_CARRY_IN_D6)",
+      "group": "chain_cbu:D6:carry_input_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D6",
+      "port": "CARRY_INPUT",
+      "element": "V_CARRY_IN_D6",
+      "direction": "C_D5 -> CARRY_CB_IN_D6"
+    },
+    {
+      "label": "I(V_CBU_B_D6)",
+      "group": "chain_cbu:D6:b_post_buffer_output_current",
+      "unit": "A",
+      "instance": "XCB_CARRY_D6",
+      "port": "B_POST_BUFFER_OUTPUT",
+      "element": "V_CBU_B_D6",
+      "direction": "CARRY_CB_OUT_D6 -> CBU_JOIN_D6"
+    },
+    {
+      "label": "P(BJ1|XCB_CARRY_D6)",
+      "group": "chain_cbu_cb_carry_buffer:D6",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D6",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XCB_CARRY_D6)",
+      "group": "chain_cbu_cb_carry_buffer:D6",
+      "unit": "V",
+      "instance": "XCB_CARRY_D6",
+      "element": "BJ1"
+    },
+    {
+      "label": "P(BJ2|XCB_CARRY_D6)",
+      "group": "chain_cbu_cb_carry_buffer:D6",
+      "unit": "rad",
+      "instance": "XCB_CARRY_D6",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(BJ2|XCB_CARRY_D6)",
+      "group": "chain_cbu_cb_carry_buffer:D6",
+      "unit": "V",
+      "instance": "XCB_CARRY_D6",
+      "element": "BJ2"
+    },
+    {
+      "label": "V(D0_JTL_IN_1)",
+      "group": "chain_d0_jtl:1:input",
+      "unit": "V",
+      "instance": "XJTL_D0_1",
+      "node": "D0_JTL_IN_1"
+    },
+    {
+      "label": "V(D0_JTL_OUT_1)",
+      "group": "chain_d0_jtl:1:output",
+      "unit": "V",
+      "instance": "XJTL_D0_1",
+      "node": "D0_JTL_OUT_1"
+    },
+    {
+      "label": "I(IB1|XJTL_D0_1)",
+      "group": "chain_bias:d0_jtl:1",
+      "unit": "A",
+      "instance": "XJTL_D0_1",
+      "element": "IB1"
+    },
+    {
+      "label": "P(BJ1|XJTL_D0_1)",
+      "group": "chain_d0_jtl_jj:1",
+      "unit": "rad",
+      "instance": "XJTL_D0_1",
+      "element": "BJ1"
+    },
+    {
+      "label": "V(BJ1|XJTL_D0_1)",
+      "group": "chain_d0_jtl_jj:1",
+      "unit": "V",
+      "instance": "XJTL_D0_1",
+      "element": "BJ1"
+    },
+    {
+      "label": "I(V_D0_JTL_IN_1)",
+      "group": "chain_d0_jtl:1:input_current",
+      "unit": "A",
+      "element": "V_D0_JTL_IN_1"
+    },
+    {
+      "label": "V(DFF_IN)",
+      "group": "chain_dff:data",
+      "unit": "V",
+      "node": "DFF_IN"
+    },
+    {
+      "label": "V(CLK_DFF)",
+      "group": "chain_dff:clock",
+      "unit": "V",
+      "node": "CLK_DFF"
+    },
+    {
+      "label": "V(DFF_O)",
+      "group": "chain_dff:output",
+      "unit": "V",
+      "node": "DFF_O"
+    },
+    {
+      "label": "I(V_DFF_DATA)",
+      "group": "chain_dff:data_link_current",
+      "unit": "A",
+      "element": "V_DFF_DATA"
+    },
+    {
+      "label": "I(R_DFF_OUT)",
+      "group": "chain_dff:output_load_current",
+      "unit": "A",
+      "element": "R_DFF_OUT"
+    },
+    {
+      "label": "P(B1|XDFF)",
+      "group": "chain_dff_jj",
+      "unit": "rad",
+      "instance": "XDFF",
+      "element": "B1"
+    },
+    {
+      "label": "V(B1|XDFF)",
+      "group": "chain_dff_jj",
+      "unit": "V",
+      "instance": "XDFF",
+      "element": "B1"
+    },
+    {
+      "label": "P(B2|XDFF)",
+      "group": "chain_dff_jj",
+      "unit": "rad",
+      "instance": "XDFF",
+      "element": "B2"
+    },
+    {
+      "label": "V(B2|XDFF)",
+      "group": "chain_dff_jj",
+      "unit": "V",
+      "instance": "XDFF",
+      "element": "B2"
+    },
+    {
+      "label": "P(B7|XDFF)",
+      "group": "chain_dff_jj",
+      "unit": "rad",
+      "instance": "XDFF",
+      "element": "B7"
+    },
+    {
+      "label": "V(B7|XDFF)",
+      "group": "chain_dff_jj",
+      "unit": "V",
+      "instance": "XDFF",
+      "element": "B7"
+    },
+    {
+      "label": "I(IB1|XDFF)",
+      "group": "chain_bias:dff",
+      "unit": "A",
+      "instance": "XDFF",
+      "element": "IB1",
+      "note": "representative internal DFF bias-source branch; all bias values pinned in DFF_PARAMS"
+    },
+    {
+      "label": "I(R_TRIG_CLK_DFF)",
+      "group": "chain_clock:DFF:branch_current",
+      "unit": "A",
+      "element": "R_TRIG_CLK_DFF"
+    }
+  ],
+  "scientific_interpretation_performed": false,
+  "carry_post_cb_sjtl_count": 1,
+  "carry_sjtl_position": "POST_CB",
+  "carry_sjtl_stage_mask": "010000",
+  "carry_sjtl_configured_stage_mask": "010000",
+  "carry_sjtl_stages": [
+    "D2"
+  ],
+  "carry_sjtl_count": 1,
+  "shared_dout_join_voltage_semantics": "V(DOUT_Dk) and V(CBU_JOIN_Dk) are shared boundary voltages; do not treat their area as an array-only pulse count"
+}

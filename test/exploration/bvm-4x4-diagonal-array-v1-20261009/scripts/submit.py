@@ -319,6 +319,7 @@ MANUAL_RUN_REQUIRED_FILES = {
     "raw_qa.json", "chain_qa.json", "qa.json", "plot_manifest.json", "plot_qa.json",
     "result.json", "RESULT_BRIEF.md",
 }
+MANUAL_RUN_METADATA_GROUP_BYTES = 75_000_000
 CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
 CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
 CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
@@ -5557,21 +5558,50 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
         if _manual_run_blob_sha(head, relpath) != root.sha256(path):
             workflow_paths.append((path, relpath))
     workflow_sha256 = {relpath: root.sha256(path) for path, relpath in workflow_paths}
-    metadata_sources = [(path, path.relative_to(REPO).as_posix())
-                        for path in sorted(evidence_paths)]
-    metadata_sources.extend(workflow_paths)
+    base_metadata_sources = [(manifest_path, manifest_rel), *workflow_paths]
+    base_metadata_bytes = sum(path.stat().st_size for path, _member in base_metadata_sources)
+    if base_metadata_bytes >= MANUAL_RUN_METADATA_GROUP_BYTES:
+        raise RuntimeError("manual-run manifest/workflow metadata exceeds the package group size limit")
+    run_metadata_sources = {
+        run_id: [(path, path.relative_to(REPO).as_posix()) for path in all_run_files[run_id]
+                 if path != raw_paths[run_id]]
+        for run_id in manual_ids
+    }
+    metadata_groups: list[tuple[str, list[tuple[Path, str]], list[str]]] = []
+    pending_metadata: list[tuple[Path, str]] = []
+    pending_run_ids: list[str] = []
+    pending_bytes = base_metadata_bytes
+    for run_id in manual_ids:
+        next_sources = run_metadata_sources[run_id]
+        next_bytes = sum(path.stat().st_size for path, _member in next_sources)
+        if next_bytes >= MANUAL_RUN_METADATA_GROUP_BYTES:
+            raise RuntimeError(f"single manual run metadata exceeds the package group limit: {run_id}")
+        if pending_run_ids and pending_bytes + next_bytes >= MANUAL_RUN_METADATA_GROUP_BYTES:
+            group_no = len(metadata_groups) + 1
+            metadata_groups.append((f"runs_metadata_{group_no:03d}",
+                                   (base_metadata_sources if group_no == 1 else []) + pending_metadata,
+                                   list(pending_run_ids)))
+            pending_metadata, pending_run_ids, pending_bytes = [], [], 0
+        pending_metadata.extend(next_sources)
+        pending_run_ids.append(run_id)
+        pending_bytes += next_bytes
+    if pending_run_ids:
+        group_no = len(metadata_groups) + 1
+        metadata_groups.append((f"runs_metadata_{group_no:03d}",
+                               (base_metadata_sources if group_no == 1 else []) + pending_metadata,
+                               list(pending_run_ids)))
     raw_sources = {run_id: [(path, path.relative_to(REPO).as_posix())]
                    for run_id, path in raw_paths.items()}
 
     prior_packages = checkpoint["package_set"]
     base_package = prior_packages[0]
     references = sorted(base_raw_refs, key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
-    groups: list[tuple[str, list[tuple[Path, str]], str | None]] = [
-        ("runs_metadata", metadata_sources, None),
-        *((f"{run_id}_raw", raw_sources[run_id], run_id) for run_id in manual_ids),
+    groups: list[tuple[str, list[tuple[Path, str]], str | None, list[str]]] = [
+        *((name, sources, None, included_runs) for name, sources, included_runs in metadata_groups),
+        *((f"{run_id}_raw", raw_sources[run_id], run_id, [run_id]) for run_id in manual_ids),
     ]
     specs, plans = [], []
-    for group_name, sources, run_id in groups:
+    for group_name, sources, run_id, included_run_ids in groups:
         records = root.file_records(sources)
         included = {item["archive_path"]: item["sha256"] for item in records}
         new_files, modified_files = [], []
@@ -5599,6 +5629,7 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
             "referenced_existing_cases": references,
             "referenced_existing_raw_sha256": references,
             "raw_sha256_by_run": raw_map, "new_run_ids": manual_ids,
+            "included_run_ids": included_run_ids,
             "new_raw_sha256_by_run": new_raw_by_run,
             "new_physical_solve_count": solve_count,
             "batch_physical_solve_count": len(manual_ids), "solver_invocations_this_task": 0,
@@ -5621,6 +5652,7 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
                       "base_sha": base_package["package_sha256"], "raw_by_run": raw_map,
                       "package_group": group_name, "run_id": run_id})
         plans.append({"package": package_name, "package_group": group_name,
+                      "included_run_ids": included_run_ids,
                       "file_count": len(records) + len(extra) + 2,
                       "uncompressed_source_bytes": sum(item["bytes"] for item in records),
                       "raw_bytes": sum(item["bytes"] for item in records

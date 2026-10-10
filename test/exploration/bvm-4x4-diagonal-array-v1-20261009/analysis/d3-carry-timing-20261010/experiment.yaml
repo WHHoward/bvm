@@ -1,0 +1,16 @@
+experiment_id: bvm4x4-d3-carry-timing-a040-a041-20261010
+experiment_risk_level: NORMAL
+question: Under the frozen A036 15x15 chain and 200 ps global one-shot clock, what raw trajectory differences are observed when only the D3 PRE-CB Carry sJTL count changes from one to zero or two?
+source_class: canonical-derived platform with historical A036 comparison
+run_set:
+  - run_id: A040_D3_PRE_CB_SJTL_0_ALL_200
+    preset: D3_PRE_CB_SJTL_0_ALL_200
+  - run_id: A041_D3_PRE_CB_SJTL_2_ALL_200
+    preset: D3_PRE_CB_SJTL_2_ALL_200
+changed: [D3 PRE-CB carry sJTL count only]
+frozen: [A036 BVM/QB/array CB/sJTL/T1/DFF parameters, all other Carry stages, shared 400u WL/BL, independent 100u SE, 200p global clock, DT=0.01p, STOP=300p, stimulus]
+windows: [ARRAY_FINAL_READ, PRE_CLOCK, BEFORE_CLOCK, CLOCK_EDGE, POST_CLOCK, TOTAL]
+visual_authority: scripts/josim-plot2.py; sep_comb; dark; phase rad/(2*pi) navigation only
+interpretation_ceiling: mechanical raw arithmetic and descriptive waveform timing only; no event/SFQ classification, mechanism attribution, or product-bit verdict
+prohibited_followups: [rerun A036, A038, or A039, parameter changes, sJTL sweep beyond A040/A041, clock changes, automatic next experiment]
+scientific_review_authorization: NOT_GRANTED

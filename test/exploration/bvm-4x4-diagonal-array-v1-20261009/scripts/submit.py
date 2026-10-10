@@ -234,6 +234,30 @@ CARRY_D3_TIMING_BASE_PACKAGES = (
      "f496d3fcd1fe79e3c6fd9fcc3fa3bcce821e1095b74a609b8d83b11723d72f2f"),
 )
 CARRY_D3_TIMING_RUN_IDS = ("A040_D3_PRE_CB_SJTL_0_ALL_200", "A041_D3_PRE_CB_SJTL_2_ALL_200")
+D3_MANUAL_SUPPLEMENT_TAG = "MANUAL_SUPPLEMENT_A042_A044_20261010"
+D3_MANUAL_SUPPLEMENT_TASK = SERIES / "analysis" / "d3-carry-timing-supplement-20261010"
+D3_MANUAL_SUPPLEMENT_RUN_IDS = (
+    "A042_MANUAL_D3_CARRY_SJTL3_200",
+    "A043_MANUAL_D3_CARRY_SJTL3_200",
+    "A044_MANUAL_D3_CARRY_SJTL3_200",
+)
+D3_MANUAL_SUPPLEMENT_BASE_COMMIT = "0721b23e27b57b988123b0807c196db85a1a4f68"
+D3_MANUAL_SUPPLEMENT_SOURCE_HEAD = "7db1148cfce76851f5361eeb6ff5ad7cb37bc0db"
+D3_MANUAL_SUPPLEMENT_BASE_PACKAGES = (
+    ("source", f"{SERIES.name}_delta_D3_CARRY_TIMING_A040_A041_20261010_source.zip",
+     "c031a031710f0bb2393c1ee769fe6a9290c9fb3fe1c58b49abcc72082ddf5036"),
+    ("runs_metadata", f"{SERIES.name}_delta_D3_CARRY_TIMING_A040_A041_20261010_runs_metadata.zip",
+     "fc5e71ab6ed424dd655d677c69cd964402b9b916211b495a5e305ba67544bfd6"),
+    ("A040_raw", f"{SERIES.name}_delta_D3_CARRY_TIMING_A040_A041_20261010_A040_D3_PRE_CB_SJTL_0_ALL_200_raw.zip",
+     "7afb832e8d76336b9c795192c68903ac1ce8d77b187db1dd4fedcc5ca9e65600"),
+    ("A041_raw", f"{SERIES.name}_delta_D3_CARRY_TIMING_A040_A041_20261010_A041_D3_PRE_CB_SJTL_2_ALL_200_raw.zip",
+     "7bb96e3815868016338df78367816833156ac203107b8fe4f78e9b1a59b13c11"),
+)
+D3_MANUAL_SUPPLEMENT_RAW_SHA256 = {
+    "A042_MANUAL_D3_CARRY_SJTL3_200": "3c605c64d67367616496d035896f0d3fe73c351ce1b99e017186d1449008bf03",
+    "A043_MANUAL_D3_CARRY_SJTL3_200": "10c2ec0e4adaf8231f3c1bef6f746f2960ee0b38b5c6114e6bfa3799a12f845d",
+    "A044_MANUAL_D3_CARRY_SJTL3_200": "d9cf83c4ca864ab9c92529c58c846586e2033880779e5aa30c50c8e59029feee",
+}
 CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
 CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
 CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
@@ -4118,6 +4142,363 @@ def submit_d3_carry_timing_delta(args: argparse.Namespace, root: Any) -> int:
     return 0
 
 
+def d3_manual_supplement_specs(root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("manual D3 supplement requires the master branch")
+    head = git("rev-parse", "HEAD")
+    remote_head = git("rev-parse", "bvm/master")
+    if head != D3_MANUAL_SUPPLEMENT_BASE_COMMIT or remote_head != head:
+        raise RuntimeError("manual D3 supplement base is stale; sync master before packaging")
+
+    series_prefix = SERIES.relative_to(REPO).as_posix() + "/"
+    run_prefixes = {f"{series_prefix}runs/{run_id}/" for run_id in D3_MANUAL_SUPPLEMENT_RUN_IDS}
+    supplement_rel = (D3_MANUAL_SUPPLEMENT_TASK / "SUPPLEMENT_MANIFEST.json").relative_to(REPO).as_posix()
+    manifest_rel = (SERIES / "experiment_manifest.json").relative_to(REPO).as_posix()
+    submit_rel = Path(__file__).resolve().relative_to(REPO).as_posix()
+    allowed_status_paths = {manifest_rel, submit_rel, supplement_rel}
+    status_output = subprocess.run(["git", "status", "--porcelain=v1", "--untracked-files=all"],
+                                   cwd=REPO, text=True, capture_output=True, check=True).stdout
+    status_lines = status_output.splitlines()
+    for line in status_lines:
+        rel = line[3:]
+        if rel.lower().endswith(".html"):
+            continue
+        if rel not in allowed_status_paths and not any(rel.startswith(prefix) for prefix in run_prefixes):
+            raise RuntimeError(f"manual D3 supplement refuses unrelated worktree change: {rel}")
+        if not rel.startswith(series_prefix):
+            raise RuntimeError(f"manual D3 supplement found out-of-scope change: {rel}")
+
+    staged_before = git("diff", "--cached", "--name-only").splitlines()
+    if any(path not in allowed_status_paths and not any(path.startswith(prefix) for prefix in run_prefixes)
+           for path in staged_before):
+        raise RuntimeError("manual D3 supplement refuses pre-staged out-of-scope changes")
+
+    experiment_manifest_path = SERIES / "experiment_manifest.json"
+    experiment_manifest = json.loads(experiment_manifest_path.read_text(encoding="utf-8"))
+    if (experiment_manifest.get("maximum_physical_solve_count") != 41 or
+            experiment_manifest.get("physical_solve_count") != 44):
+        raise RuntimeError("manual supplement metadata must preserve the observed 41/44 manifest discrepancy")
+    run_records = {item.get("run_id"): item for item in experiment_manifest.get("runs", [])}
+    if not all(run_id in run_records for run_id in D3_MANUAL_SUPPLEMENT_RUN_IDS):
+        raise RuntimeError("experiment_manifest is missing one or more A042-A044 records")
+    if any(item.get("run_ids") and set(item["run_ids"]) & set(D3_MANUAL_SUPPLEMENT_RUN_IDS)
+           for item in experiment_manifest.get("authorization_batches", [])):
+        raise RuntimeError("A042-A044 must remain outside the registered authorization batches")
+    registered_cases = set(experiment_manifest.get("authorized_physical_solves", []))
+    if any(run_records[run_id].get("case") in registered_cases for run_id in D3_MANUAL_SUPPLEMENT_RUN_IDS):
+        raise RuntimeError("A042-A044 cases must remain outside the registered authorized case list")
+    authorized_d3 = [item for item in experiment_manifest.get("authorization_batches", [])
+                     if item.get("batch_id") == "BVM4X4_D3_CARRY_TIMING_20261010"]
+    if (len(authorized_d3) != 1 or authorized_d3[0].get("run_ids") != list(CARRY_D3_TIMING_RUN_IDS) or
+            authorized_d3[0].get("authorized_physical_solve_count") != 2):
+        raise RuntimeError("registered A040/A041 authorization record changed")
+
+    supplement_manifest_path = D3_MANUAL_SUPPLEMENT_TASK / "SUPPLEMENT_MANIFEST.json"
+    supplement_manifest = json.loads(supplement_manifest_path.read_text(encoding="utf-8"))
+    if (supplement_manifest.get("authorization_status") != "NOT_ASSERTED_BY_PACKAGING" or
+            supplement_manifest.get("registered_batch", {}).get("supplement_run_ids_are_members") is not False or
+            [item.get("run_id") for item in supplement_manifest.get("runs", [])] !=
+            list(D3_MANUAL_SUPPLEMENT_RUN_IDS)):
+        raise RuntimeError("supplement manifest does not preserve the non-retroactive authorization boundary")
+    supplement_records = {item["run_id"]: item for item in supplement_manifest["runs"]}
+
+    # Verify the immutable A040/A041 package set, then use its metadata package as
+    # the lineage source for references A001-A039 and its raw packages for A040/A041.
+    base_packages: list[dict[str, Any]] = []
+    base_deltas: dict[str, dict[str, Any]] = {}
+    for group, name, expected_sha in D3_MANUAL_SUPPLEMENT_BASE_PACKAGES:
+        package = HANDOFF / name
+        qa_path = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(package, qa_path)
+        if (qa.get("package_sha256") != expected_sha or
+                qa.get("source_commit") != D3_MANUAL_SUPPLEMENT_SOURCE_HEAD or
+                qa.get("package_bytes") != package.stat().st_size):
+            raise RuntimeError(f"A040/A041 base package identity/QA mismatch: {name}")
+        with zipfile.ZipFile(package, "r") as archive:
+            if archive.testzip() is not None or any(x.lower().endswith(".html") for x in archive.namelist()):
+                raise RuntimeError(f"A040/A041 base package CRC or HTML policy failure: {name}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if delta.get("head_commit") != D3_MANUAL_SUPPLEMENT_SOURCE_HEAD:
+                raise RuntimeError(f"A040/A041 base package head mismatch: {name}")
+            base_deltas[group] = delta
+        base_packages.append({"package_name": name, "package_sha256": expected_sha,
+                              "package_group": group, "source_commit": D3_MANUAL_SUPPLEMENT_SOURCE_HEAD,
+                              "head_commit": D3_MANUAL_SUPPLEMENT_SOURCE_HEAD})
+
+    old_refs = base_deltas["runs_metadata"].get("referenced_existing_cases", [])
+    if len(old_refs) != 39 or len({item.get("run_id") for item in old_refs}) != 39:
+        raise RuntimeError("A040/A041 metadata base does not reference exactly A001-A039")
+    references = list(old_refs)
+    for group in ("A040_raw", "A041_raw"):
+        delta = base_deltas[group]
+        raw_map = delta.get("raw_sha256_by_run", {})
+        if len(raw_map) != 1:
+            raise RuntimeError(f"A040/A041 base raw package must identify one run: {group}")
+        run_id, raw_sha = next(iter(raw_map.items()))
+        references.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                           "raw_sha256": raw_sha,
+                           "source_package_name": next(item[1] for item in D3_MANUAL_SUPPLEMENT_BASE_PACKAGES
+                                                        if item[0] == group),
+                           "source_package_sha256": next(item[2] for item in D3_MANUAL_SUPPLEMENT_BASE_PACKAGES
+                                                         if item[0] == group)})
+    references.sort(key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
+    if len(references) != 41 or len({item["run_id"] for item in references}) != 41:
+        raise RuntimeError("manual supplement base raw reference closure is not exactly A001-A041")
+    recorded_raw = {item.get("run_id"): item.get("raw_sha256") for item in experiment_manifest["runs"]}
+    if any(recorded_raw.get(item["run_id"]) != item["raw_sha256"] for item in references):
+        raise RuntimeError("A001-A041 manifest raw identities disagree with the verified package base")
+
+    run_file_sets: dict[str, list[Path]] = {}
+    raw_paths: dict[str, Path] = {}
+    metadata_sources: list[tuple[Path, str]] = [
+        (experiment_manifest_path, manifest_rel),
+        (supplement_manifest_path, supplement_rel),
+    ]
+    stage_paths = {experiment_manifest_path, supplement_manifest_path, Path(__file__).resolve()}
+    for run_id in D3_MANUAL_SUPPLEMENT_RUN_IDS:
+        run_dir = RUNS / run_id
+        required = {
+            "deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt", "USER_CASE.snapshot.env",
+            "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env", "CBU_PARAMS.snapshot.env",
+            "DFF_PARAMS.snapshot.env", "D0_JTL_PARAMS.snapshot.env", "stimulus.inc", "case_manifest.json",
+            "metadata.json", "provenance.json", "source_manifest.json", "topology_manifest.json",
+            "probe_manifest.json", "static_qa.json", "stimulus_manifest.json", "metrics.json", "raw_qa.json",
+            "chain_qa.json", "qa.json", "plot_manifest.json", "plot_qa.json", "result.json", "RESULT_BRIEF.md",
+        }
+        files = sorted(path for path in run_dir.rglob("*") if path.is_file() and not path.is_symlink()
+                       and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"}
+                       and "__pycache__" not in path.parts and "handoff" not in path.parts)
+        if not run_dir.is_dir() or required - {path.name for path in files}:
+            raise RuntimeError(f"manual supplement evidence closure incomplete: {run_id}")
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        raw_qa = json.loads((run_dir / "raw_qa.json").read_text(encoding="utf-8"))
+        chain_qa = json.loads((run_dir / "chain_qa.json").read_text(encoding="utf-8"))
+        plot_qa = json.loads((run_dir / "plot_qa.json").read_text(encoding="utf-8"))
+        raw = run_dir / "raw.csv"
+        digest = root.sha256(raw)
+        expected_digest = D3_MANUAL_SUPPLEMENT_RAW_SHA256[run_id]
+        if (result.get("run_id") != run_id or result.get("artifact_status") != "VALID" or
+                result.get("physical_solve_count") != 1 or result.get("solver_exit_code") != 0 or
+                result.get("raw_sha256") != expected_digest or digest != expected_digest or
+                result.get("raw_bytes") != raw.stat().st_size or qa.get("status") != "PASS" or
+                qa.get("raw_sha256_before_analysis") != digest or qa.get("raw_sha256_after_analysis") != digest or
+                raw_qa.get("status") != "PASS" or raw_qa.get("raw_sha256_before") != digest or
+                raw_qa.get("raw_sha256_after_analysis") != digest or
+                chain_qa.get("status") != "PASS" or plot_qa.get("status") != "PASS" or
+                raw.stat().st_size >= root.MAX_GIT_FILE_BYTES):
+            raise RuntimeError(f"manual supplement raw identity or QA failure: {run_id}")
+        record = run_records[run_id]
+        supplement_record = supplement_records[run_id]
+        config = json.loads((run_dir / "metadata.json").read_text(encoding="utf-8")).get("effective_case", {})
+        stage_counts = record.get("carry_sjtl_count_by_stage", {})
+        stage_counts_text = ",".join(str(stage_counts.get(f"D{index}")) for index in range(1, 7))
+        if (record.get("raw_sha256") != digest or record.get("deck_sha256") != result.get("deck_sha256") or
+                record.get("physical_solve_count") != 1 or
+                supplement_record.get("raw_sha256") != digest or
+                supplement_record.get("raw_bytes") != raw.stat().st_size or
+                supplement_record.get("deck_sha256") != result.get("deck_sha256") or
+                supplement_record.get("stimulus_sha256") != result.get("stimulus_sha256") or
+                supplement_record.get("artifact_status") != result.get("artifact_status") or
+                supplement_record.get("solver_exit_code") != result.get("solver_exit_code") or
+                supplement_record.get("physical_solve_count") != result.get("physical_solve_count") or
+                supplement_record.get("row_bits") != result.get("row_bits") or
+                supplement_record.get("column_bits") != result.get("column_bits") or
+                supplement_record.get("carry_sjtl_count_by_stage") != result.get("carry_sjtl_count_by_stage") or
+                supplement_record.get("carry_sjtl_count_by_stage") != stage_counts or
+                config.get("CARRY_SJTL_COUNT_BY_STAGE") != stage_counts_text):
+            raise RuntimeError(f"manual supplement run does not match experiment_manifest: {run_id}")
+        if (config.get("ROW_BITS") != supplement_record["row_bits"] or
+                config.get("COL_BITS") != supplement_record["column_bits"] or
+                config.get("T1_CHAIN_CLK_START") != supplement_record["clock_start"] or
+                supplement_record.get("mechanical_qa_status") != qa.get("status") or
+                supplement_record.get("plot_qa_status") != plot_qa.get("status")):
+            raise RuntimeError(f"manual supplement manifest/config mismatch: {run_id}")
+        for page in plot_qa.get("pages", []):
+            page_path = SERIES / page["path"]
+            if not page_path.is_file() or root.sha256(page_path) != page.get("sha256"):
+                raise RuntimeError(f"manual supplement standalone HTML QA mismatch: {run_id}/{page.get('path')}")
+        run_file_sets[run_id] = files
+        raw_paths[run_id] = raw
+        stage_paths.update(files)
+        for path in files:
+            if path != raw:
+                metadata_sources.append((path, path.relative_to(REPO).as_posix()))
+
+    source_path = Path(__file__).resolve()
+    source_group = [(source_path, source_path.relative_to(REPO).as_posix())]
+    metadata_sources.sort(key=lambda item: item[1])
+    groups: list[tuple[str, list[tuple[Path, str]], str | None]] = [
+        ("source", source_group, None),
+        ("runs_metadata", metadata_sources, None),
+        *((f"{run_id}_raw", [(raw_paths[run_id], raw_paths[run_id].relative_to(REPO).as_posix())], run_id)
+          for run_id in D3_MANUAL_SUPPLEMENT_RUN_IDS),
+    ]
+    specs: list[dict[str, Any]] = []
+    package_plans = []
+    for group_name, sources, run_id in groups:
+        records = root.file_records(sources)
+        included = {item["archive_path"]: item["sha256"] for item in records}
+        new_files, modified_files = [], []
+        for member, digest in included.items():
+            base_digest = _d3_timing_blob_sha(D3_MANUAL_SUPPLEMENT_BASE_COMMIT, member)
+            if base_digest is None:
+                new_files.append(member)
+            elif base_digest != digest:
+                modified_files.append(member)
+        raw_by_run = {}
+        solve_count = 0
+        if run_id:
+            raw_by_run[run_id] = D3_MANUAL_SUPPLEMENT_RAW_SHA256[run_id]
+            solve_count = 1
+        package_name = f"{SERIES.name}_delta_{D3_MANUAL_SUPPLEMENT_TAG}_{group_name}.zip"
+        target = HANDOFF / package_name
+        qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        delta = {
+            "schema": "bvm4x4-manual-supplement-delta-v1",
+            "package_type": "manual_supplement_delta",
+            "package_group": group_name,
+            "base_commit": D3_MANUAL_SUPPLEMENT_SOURCE_HEAD,
+            "base_package_name": D3_MANUAL_SUPPLEMENT_BASE_PACKAGES[0][1],
+            "base_package_sha256": D3_MANUAL_SUPPLEMENT_BASE_PACKAGES[0][2],
+            "base_package_set": [{"package_group": label, "package_name": name, "package_sha256": sha,
+                                  "head_commit": D3_MANUAL_SUPPLEMENT_SOURCE_HEAD}
+                                 for label, name, sha in D3_MANUAL_SUPPLEMENT_BASE_PACKAGES],
+            "head_commit": "PENDING_SOURCE_COMMIT",
+            "included_files": records,
+            "included_file_sha256": included,
+            "new_files": sorted(new_files),
+            "modified_files": sorted(modified_files),
+            "deleted_files": [],
+            "referenced_existing_cases": references,
+            "referenced_existing_raw_sha256": references,
+            "new_physical_solve_count": solve_count,
+            "supplement_physical_solve_count": 3,
+            "solver_invocations_this_packaging_task": 0,
+            "reused_point_count": 0,
+            "raw_sha256_by_run": raw_by_run,
+            "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
+            "registered_batch_run_ids": list(CARRY_D3_TIMING_RUN_IDS),
+            "supplement_run_ids": list(D3_MANUAL_SUPPLEMENT_RUN_IDS),
+            "scientific_interpretation_performed": False,
+            "automatic_follow_up": False,
+            "html_included": False,
+        }
+        extra = {
+            "DELTA_MANIFEST.json": (json.dumps(delta, ensure_ascii=False, indent=2) + "\n").encode(),
+            "README.txt": (
+                "Manual supplemental evidence package for A042-A044.\n"
+                "These runs are separate from the registered A040/A041 authorization; this package does not "
+                "retroactively authorize physical solves.\n"
+                "A001-A041 raw is referenced by package identity and SHA-256, never recopied.\n"
+                "Generated HTML remains local. This packaging operation ran no solver and performed no "
+                "scientific interpretation.\n"
+            ).encode(),
+        }
+        if sum(item["bytes"] for item in records) + sum(map(len, extra.values())) >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"manual supplement {group_name} exceeds the ordinary Git size guard")
+        specs.append({"name": package_name, "kind": "bvm_4x4_manual_supplement_delta_v1", "scope": SERIES,
+                      "target": target, "qa_path": qa_path, "sources": sources,
+                      "extra_members": extra, "delta_manifest": delta,
+                      "base_name": D3_MANUAL_SUPPLEMENT_BASE_PACKAGES[0][1],
+                      "base_sha": D3_MANUAL_SUPPLEMENT_BASE_PACKAGES[0][2],
+                      "raw_by_run": raw_by_run, "package_group": group_name, "run_id": run_id})
+        package_plans.append({"package": package_name, "file_count": len(records) + len(extra) + 2,
+                              "uncompressed_source_bytes": sum(item["bytes"] for item in records),
+                              "raw_bytes": sum(item["bytes"] for item in records
+                                               if Path(item["archive_path"]).name == "raw.csv"),
+                              "raw_sha256_by_run": raw_by_run, "new_physical_solve_count": solve_count,
+                              "new_files": sorted(new_files), "modified_files": sorted(modified_files),
+                              "qa_path": qa_path.relative_to(REPO).as_posix()})
+
+    allowed_paths = {path.relative_to(REPO).as_posix() for path in stage_paths}
+    allowed_paths.update({manifest_rel, submit_rel, supplement_rel})
+    return specs, {"plan": {"base_commit": D3_MANUAL_SUPPLEMENT_BASE_COMMIT,
+                            "base_source_commit": D3_MANUAL_SUPPLEMENT_SOURCE_HEAD,
+                            "pre_commit_head": head, "head_commit": "PENDING_SOURCE_COMMIT",
+                            "base_packages": [dict(package_group=label, package_name=name,
+                                                    package_sha256=sha, head_commit=D3_MANUAL_SUPPLEMENT_SOURCE_HEAD)
+                                              for label, name, sha in D3_MANUAL_SUPPLEMENT_BASE_PACKAGES],
+                            "referenced_existing_raw_count": len(references),
+                            "new_physical_solve_count": 3, "solver_invocations_this_task": 0,
+                            "html_included": False, "package_count": len(specs),
+                            "packages": package_plans},
+            "stage_paths": sorted(allowed_paths), "references": references,
+            "run_file_sets": run_file_sets}
+
+
+def submit_d3_manual_supplement(args: argparse.Namespace, root: Any) -> int:
+    if args.tag != D3_MANUAL_SUPPLEMENT_TAG:
+        raise RuntimeError(f"manual D3 supplement tag must be {D3_MANUAL_SUPPLEMENT_TAG}")
+    specs, context = d3_manual_supplement_specs(root)
+    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
+    if not mirror_dir.is_dir():
+        raise RuntimeError(f"BVM package mirror is not accessible: {mirror_dir}")
+    collisions = [str(path) for spec in specs for path in (spec["target"], spec["qa_path"])
+                  if path.exists()]
+    collisions.extend(str(mirror_dir / spec["name"]) for spec in specs if (mirror_dir / spec["name"]).exists())
+    if collisions:
+        raise FileExistsError("refusing immutable manual supplement package overwrite: " + ", ".join(collisions))
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", "package_mode": "MANUAL_SUPPLEMENT_DELTA",
+                          **context["plan"], "mirror_dir": str(mirror_dir),
+                          "source_paths_to_commit": context["stage_paths"], "no_files_modified": True},
+                         ensure_ascii=False, indent=2))
+        return 0
+
+    subprocess.run(["git", "add", "-f", "--", *context["stage_paths"]], cwd=REPO, check=True)
+    staged = git("diff", "--cached", "--name-only").splitlines()
+    if any(path not in set(context["stage_paths"]) for path in staged):
+        raise RuntimeError("staging contains a path outside the manual supplement scope")
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO, check=False).returncode == 0:
+        raise RuntimeError("manual supplement has no staged evidence changes")
+    subprocess.run(["git", "commit", "-m", "evidence: register manual D3 supplement A042-A044"],
+                   cwd=REPO, check=True)
+    source_head = git("rev-parse", "HEAD")
+    package_results = []
+    for spec in specs:
+        spec["delta_manifest"]["head_commit"] = source_head
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(spec["delta_manifest"], ensure_ascii=False, indent=2) + "\n").encode()
+        result = root.archive_bundle(spec, source_head)
+        archive_path, qa_path = REPO / result["path"], REPO / result["qa_path"]
+        qa = root.verify_existing_bundle(archive_path, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("source_commit") != source_head or
+                qa.get("package_sha256") != root.sha256(archive_path) or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"manual supplement PACKAGE_QA/member integrity failed: {spec['name']}")
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            if any(name.lower().endswith(".html") for name in archive.namelist()):
+                raise RuntimeError(f"HTML must remain local: {spec['name']}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if delta.get("head_commit") != source_head or delta.get("authorization_status") != "NOT_ASSERTED_BY_PACKAGING":
+                raise RuntimeError(f"manual supplement delta identity/scope failure: {spec['name']}")
+            for member, digest in delta["included_file_sha256"].items():
+                if hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"manual supplement member SHA mismatch: {spec['name']}/{member}")
+        result.update({"sha256": qa["package_sha256"], "bytes": qa["package_bytes"], "status": qa["status"]})
+        package_results.append(result)
+
+    package_paths = [REPO / path for item in package_results for path in (item["path"], item["qa_path"])]
+    subprocess.run(["git", "add", "-f", "--", *[path.relative_to(REPO).as_posix() for path in package_paths]],
+                   cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", "package: archive manual D3 supplement A042-A044 DELTA"],
+                   cwd=REPO, check=True)
+    subprocess.run(["git", "push"], cwd=REPO, check=True)
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    print(json.dumps({"status": "MANUAL_SUPPLEMENT_DELTA_SUBMIT_COMPLETE",
+                      "source_commit": source_head, "final_commit": git("rev-parse", "HEAD"),
+                      "push": "PASS", "packages": package_results,
+                      "base_commit": D3_MANUAL_SUPPLEMENT_BASE_COMMIT,
+                      "base_packages": context["plan"]["base_packages"],
+                      "referenced_existing_raw_count": len(context["references"]),
+                      "supplement_run_ids": list(D3_MANUAL_SUPPLEMENT_RUN_IDS),
+                      "supplement_physical_solve_count": 3, "solver_invocations_this_task": 0,
+                      "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
+                      "html_included": False, "mirror": mirror}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -4127,6 +4508,8 @@ def main() -> int:
                         help="append the completed batch to its verified checkpoint using the local DELTA workflow")
     parser.add_argument("--d3-carry-timing", action="store_true",
                         help="package/push only the completed A040/A041 D3 carry-timing delta")
+    parser.add_argument("--d3-manual-supplement", action="store_true",
+                        help="package user-confirmed manual A042-A044 as a separate non-retroactive supplement")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")
@@ -4134,6 +4517,10 @@ def main() -> int:
     args = parser.parse_args()
     try:
         root = load_root_submit()
+        if args.d3_manual_supplement:
+            if args.delta or args.d3_carry_timing or args.metadata_v2:
+                raise RuntimeError("--d3-manual-supplement cannot be combined with other package modes")
+            return submit_d3_manual_supplement(args, root)
         if args.d3_carry_timing:
             if args.delta or args.metadata_v2:
                 raise RuntimeError("--d3-carry-timing cannot be combined with --delta or --metadata-v2")

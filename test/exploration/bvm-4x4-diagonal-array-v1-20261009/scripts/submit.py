@@ -258,6 +258,32 @@ D3_MANUAL_SUPPLEMENT_RAW_SHA256 = {
     "A043_MANUAL_D3_CARRY_SJTL3_200": "10c2ec0e4adaf8231f3c1bef6f746f2960ee0b38b5c6114e6bfa3799a12f845d",
     "A044_MANUAL_D3_CARRY_SJTL3_200": "d9cf83c4ca864ab9c92529c58c846586e2033880779e5aa30c50c8e59029feee",
 }
+CARRY4_SUPPLEMENT_TAG = "MANUAL_SUPPLEMENT_A045_A047_20261010"
+CARRY4_SUPPLEMENT_TASK = SERIES / "analysis" / "carry4-manual-supplement-20261010"
+CARRY4_SUPPLEMENT_RUN_IDS = (
+    "A045_MANUAL_CARRY4_15x15_210",
+    "A046_MANUAL_CARRY4_11x13_210",
+    "A047_MANUAL_CARRY4_3x3_210",
+)
+CARRY4_SUPPLEMENT_BASE_COMMIT = "833f8ce2c0100457785ce359262240e2d5c5e733"
+CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD = "99e32cc951a1fe7efff1db615a81c0d9121f4582"
+CARRY4_SUPPLEMENT_BASE_PACKAGES = (
+    ("source", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A042_A044_20261010_source.zip",
+     "0e4df2074e5bac99a7f7a2b9389bec33303adda15d93285b44bff72370b49230"),
+    ("runs_metadata", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A042_A044_20261010_runs_metadata.zip",
+     "0b15a37801a004dc4d046fc1c343cef1bd574beb5ce7a9e7854fcaea51bba2ac"),
+    ("A042_raw", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A042_A044_20261010_A042_MANUAL_D3_CARRY_SJTL3_200_raw.zip",
+     "06c37e4464e5cdb765271aa0ac711b7cf0aaf995b2d78d691fb4c5241f5f2a60"),
+    ("A043_raw", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A042_A044_20261010_A043_MANUAL_D3_CARRY_SJTL3_200_raw.zip",
+     "691d923ad6f4d6a1fbb9168775316759cb0a52bbd311104169167c48294b33c9"),
+    ("A044_raw", f"{SERIES.name}_delta_MANUAL_SUPPLEMENT_A042_A044_20261010_A044_MANUAL_D3_CARRY_SJTL3_200_raw.zip",
+     "23b6828cb1b65f043ef0f5a307fee9617a6d42e18c4b333e1408b8c4981237d5"),
+)
+CARRY4_SUPPLEMENT_RAW_SHA256 = {
+    "A045_MANUAL_CARRY4_15x15_210": "a81a47b4dbbf8f967aa879440c8fc36e1b11b1647da61500a56127c665b55134",
+    "A046_MANUAL_CARRY4_11x13_210": "6e20b7aeafcb278302c0c25c1c928ffaaf0903bbf68bf457b2d3361998cdacfe",
+    "A047_MANUAL_CARRY4_3x3_210": "3226c4610e92ad317d3b395e937e9e21ad106d2243acab9b904dcad30ebe80bc",
+}
 CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
 CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
 CARRY_POST_CB_SJTL_BASE_SOURCE_NAME = f"{SERIES.name}_delta_CB_CARRY_BUFFER_ALL_A027_A029_20261009_source.zip"
@@ -4499,6 +4525,321 @@ def submit_d3_manual_supplement(args: argparse.Namespace, root: Any) -> int:
     return 0
 
 
+def carry4_manual_supplement_specs(root: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if git("branch", "--show-current") != "master":
+        raise RuntimeError("CARRY4 manual supplement requires the master branch")
+    head = git("rev-parse", "HEAD")
+    if head != CARRY4_SUPPLEMENT_BASE_COMMIT or git("rev-parse", "bvm/master") != head:
+        raise RuntimeError("CARRY4 manual supplement base is stale; sync master before packaging")
+
+    series_prefix = SERIES.relative_to(REPO).as_posix() + "/"
+    run_prefixes = {f"{series_prefix}runs/{run_id}/" for run_id in CARRY4_SUPPLEMENT_RUN_IDS}
+    supplement_rel = (CARRY4_SUPPLEMENT_TASK / "SUPPLEMENT_MANIFEST.json").relative_to(REPO).as_posix()
+    manifest_rel = (SERIES / "experiment_manifest.json").relative_to(REPO).as_posix()
+    submit_rel = Path(__file__).resolve().relative_to(REPO).as_posix()
+    allowed_status_paths = {manifest_rel, submit_rel, supplement_rel}
+    status_output = subprocess.run(["git", "status", "--porcelain=v1", "--untracked-files=all"],
+                                   cwd=REPO, text=True, capture_output=True, check=True).stdout
+    for line in status_output.splitlines():
+        rel = line[3:]
+        if rel.lower().endswith(".html"):
+            continue
+        if (rel not in allowed_status_paths and
+                not any(rel.startswith(prefix) for prefix in run_prefixes)):
+            raise RuntimeError(f"CARRY4 manual supplement refuses unrelated change: {rel}")
+        if not rel.startswith(series_prefix):
+            raise RuntimeError(f"CARRY4 manual supplement found out-of-scope change: {rel}")
+    staged = git("diff", "--cached", "--name-only").splitlines()
+    if any(path not in allowed_status_paths and
+           not any(path.startswith(prefix) for prefix in run_prefixes) for path in staged):
+        raise RuntimeError("CARRY4 manual supplement refuses pre-staged out-of-scope changes")
+
+    experiment_path = SERIES / "experiment_manifest.json"
+    experiment = json.loads(experiment_path.read_text(encoding="utf-8"))
+    if (experiment.get("maximum_physical_solve_count") != 41 or
+            experiment.get("physical_solve_count") != 47):
+        raise RuntimeError("CARRY4 supplement requires the observed 41/47 manifest state")
+    run_records = {item.get("run_id"): item for item in experiment.get("runs", [])}
+    if not all(run_id in run_records for run_id in CARRY4_SUPPLEMENT_RUN_IDS):
+        raise RuntimeError("experiment_manifest is missing one or more A045-A047 records")
+    case_names = {run_records[run_id].get("case") for run_id in CARRY4_SUPPLEMENT_RUN_IDS}
+    if case_names & set(experiment.get("authorized_physical_solves", [])):
+        raise RuntimeError("A045-A047 must remain outside the registered authorized-case list")
+    if any(set(item.get("run_ids", [])) & set(CARRY4_SUPPLEMENT_RUN_IDS)
+           for item in experiment.get("authorization_batches", [])):
+        raise RuntimeError("A045-A047 must remain outside registered authorization batches")
+
+    supplement_path = CARRY4_SUPPLEMENT_TASK / "SUPPLEMENT_MANIFEST.json"
+    supplement = json.loads(supplement_path.read_text(encoding="utf-8"))
+    if (supplement.get("authorization_status") != "NOT_ASSERTED_BY_PACKAGING" or
+            [item.get("run_id") for item in supplement.get("runs", [])] !=
+            list(CARRY4_SUPPLEMENT_RUN_IDS)):
+        raise RuntimeError("CARRY4 supplement manifest authorization boundary or run list mismatch")
+    supplement_records = {item["run_id"]: item for item in supplement["runs"]}
+
+    # Verify the prior A042-A044 manual supplement package set and inherit its raw references.
+    base_packages, base_deltas = [], {}
+    for group, name, expected_sha in CARRY4_SUPPLEMENT_BASE_PACKAGES:
+        package = HANDOFF / name
+        qa_path = HANDOFF / f"{Path(name).stem}_PACKAGE_QA.json"
+        qa = root.verify_existing_bundle(package, qa_path)
+        if (qa.get("package_sha256") != expected_sha or
+                qa.get("source_commit") != CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD or
+                qa.get("package_bytes") != package.stat().st_size):
+            raise RuntimeError(f"A042-A044 supplement base identity/QA mismatch: {name}")
+        with zipfile.ZipFile(package, "r") as archive:
+            if archive.testzip() is not None or any(path.lower().endswith(".html") for path in archive.namelist()):
+                raise RuntimeError(f"A042-A044 supplement base CRC/HTML policy failure: {name}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if (delta.get("head_commit") != CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD or
+                    delta.get("authorization_status") != "NOT_ASSERTED_BY_PACKAGING"):
+                raise RuntimeError(f"A042-A044 supplement base manifest mismatch: {name}")
+            base_deltas[group] = delta
+        base_packages.append({"package_group": group, "package_name": name,
+                              "package_sha256": expected_sha,
+                              "head_commit": CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD})
+
+    references = list(base_deltas["runs_metadata"].get("referenced_existing_cases", []))
+    if len(references) != 41:
+        raise RuntimeError("A042-A044 base must reference exactly A001-A041")
+    for group in ("A042_raw", "A043_raw", "A044_raw"):
+        delta = base_deltas[group]
+        raw_map = delta.get("raw_sha256_by_run", {})
+        if len(raw_map) != 1:
+            raise RuntimeError(f"A042-A044 raw package must identify exactly one run: {group}")
+        run_id, raw_sha = next(iter(raw_map.items()))
+        package_info = next(item for item in CARRY4_SUPPLEMENT_BASE_PACKAGES if item[0] == group)
+        references.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                           "raw_sha256": raw_sha, "source_package_name": package_info[1],
+                           "source_package_sha256": package_info[2]})
+    references.sort(key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
+    if len(references) != 44 or len({item["run_id"] for item in references}) != 44:
+        raise RuntimeError("CARRY4 supplement base raw closure is not exactly A001-A044")
+    if [int(item["run_id"].split("_", 1)[0][1:]) for item in references] != list(range(1, 45)):
+        raise RuntimeError("CARRY4 supplement base raw references are not contiguous A001-A044")
+    recorded_raw = {item.get("run_id"): item.get("raw_sha256") for item in experiment.get("runs", [])}
+    if any(recorded_raw.get(item["run_id"]) != item["raw_sha256"] for item in references):
+        raise RuntimeError("A001-A044 experiment manifest and package raw identities disagree")
+
+    run_files, raw_paths = {}, {}
+    stage_paths = {experiment_path, supplement_path, Path(__file__).resolve()}
+    metadata_sources: list[tuple[Path, str]] = [
+        (experiment_path, manifest_rel), (supplement_path, supplement_rel),
+    ]
+    for run_id in CARRY4_SUPPLEMENT_RUN_IDS:
+        run_dir = RUNS / run_id
+        required = {
+            "deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt", "USER_CASE.snapshot.env",
+            "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env", "CBU_PARAMS.snapshot.env",
+            "DFF_PARAMS.snapshot.env", "D0_JTL_PARAMS.snapshot.env", "stimulus.inc", "case_manifest.json",
+            "metadata.json", "provenance.json", "source_manifest.json", "topology_manifest.json",
+            "probe_manifest.json", "static_qa.json", "stimulus_manifest.json", "metrics.json", "raw_qa.json",
+            "chain_qa.json", "qa.json", "plot_manifest.json", "plot_qa.json", "result.json", "RESULT_BRIEF.md",
+        }
+        files = sorted(path for path in run_dir.rglob("*") if path.is_file() and not path.is_symlink()
+                       and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"}
+                       and "__pycache__" not in path.parts and "handoff" not in path.parts)
+        if not run_dir.is_dir() or required - {path.name for path in files}:
+            raise RuntimeError(f"CARRY4 run evidence closure incomplete: {run_id}")
+        result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        qa = json.loads((run_dir / "qa.json").read_text(encoding="utf-8"))
+        raw_qa = json.loads((run_dir / "raw_qa.json").read_text(encoding="utf-8"))
+        static_qa = json.loads((run_dir / "static_qa.json").read_text(encoding="utf-8"))
+        chain_qa = json.loads((run_dir / "chain_qa.json").read_text(encoding="utf-8"))
+        plot_qa = json.loads((run_dir / "plot_qa.json").read_text(encoding="utf-8"))
+        raw = run_dir / "raw.csv"
+        digest = root.sha256(raw)
+        expected_sha = CARRY4_SUPPLEMENT_RAW_SHA256[run_id]
+        if (result.get("run_id") != run_id or result.get("artifact_status") != "VALID" or
+                result.get("physical_solve_count") != 1 or result.get("solver_exit_code") != 0 or
+                result.get("raw_sha256") != expected_sha or digest != expected_sha or
+                result.get("raw_bytes") != raw.stat().st_size or raw.stat().st_size >= root.MAX_GIT_FILE_BYTES or
+                qa.get("status") != "PASS" or qa.get("raw_sha256_before_analysis") != digest or
+                qa.get("raw_sha256_after_analysis") != digest or raw_qa.get("status") != "PASS" or
+                raw_qa.get("raw_sha256_before") != digest or raw_qa.get("raw_sha256_after_analysis") != digest or
+                static_qa.get("status") != "PASS" or chain_qa.get("status") != "PASS" or
+                plot_qa.get("status") != "PASS"):
+            raise RuntimeError(f"CARRY4 raw identity or QA failure: {run_id}")
+        record, supplement_record = run_records[run_id], supplement_records[run_id]
+        metadata = json.loads((run_dir / "metadata.json").read_text(encoding="utf-8"))
+        config = metadata.get("effective_case", {})
+        solver_parent = metadata.get("solver", {}).get("parent_head")
+        stage_counts = record.get("carry_sjtl_count_by_stage", {})
+        stage_text = ",".join(str(stage_counts.get(f"D{index}")) for index in range(1, 7))
+        if (record.get("raw_sha256") != digest or record.get("physical_solve_count") != 1 or
+                record.get("deck_sha256") != result.get("deck_sha256") or
+                supplement_record.get("raw_sha256") != digest or supplement_record.get("raw_bytes") != raw.stat().st_size or
+                supplement_record.get("deck_sha256") != result.get("deck_sha256") or
+                supplement_record.get("stimulus_sha256") != result.get("stimulus_sha256") or
+                supplement_record.get("carry_sjtl_count_by_stage") != stage_counts or
+                supplement_record.get("artifact_status") != result.get("artifact_status") or
+                supplement_record.get("mechanical_qa_status") != qa.get("status") or
+                supplement_record.get("plot_qa_status") != plot_qa.get("status") or
+                supplement_record.get("row_bits") != result.get("row_bits") or
+                supplement_record.get("column_bits") != result.get("column_bits") or
+                config.get("CARRY_SJTL_COUNT_BY_STAGE") != stage_text or
+                config.get("ROW_BITS") != supplement_record.get("row_bits") or
+                config.get("COL_BITS") != supplement_record.get("column_bits") or
+                config.get("T1_CHAIN_CLK_START") != supplement_record.get("clock_start") or
+                solver_parent != CARRY4_SUPPLEMENT_BASE_COMMIT):
+            raise RuntimeError(f"CARRY4 supplement run/config mismatch: {run_id}")
+        for page in plot_qa.get("pages", []):
+            page_path = SERIES / page["path"]
+            if not page_path.is_file() or root.sha256(page_path) != page.get("sha256"):
+                raise RuntimeError(f"CARRY4 standalone HTML QA mismatch: {run_id}/{page.get('path')}")
+        run_files[run_id], raw_paths[run_id] = files, raw
+        stage_paths.update(files)
+        metadata_sources.extend((path, path.relative_to(REPO).as_posix()) for path in files if path != raw)
+
+    groups: list[tuple[str, list[tuple[Path, str]], str | None]] = [
+        ("source", [(Path(__file__).resolve(), submit_rel)], None),
+        ("runs_metadata", sorted(metadata_sources, key=lambda item: item[1]), None),
+        *((f"{run_id}_raw", [(raw_paths[run_id], raw_paths[run_id].relative_to(REPO).as_posix())], run_id)
+          for run_id in CARRY4_SUPPLEMENT_RUN_IDS),
+    ]
+    specs, plans = [], []
+    for group_name, sources, run_id in groups:
+        records = root.file_records(sources)
+        included = {item["archive_path"]: item["sha256"] for item in records}
+        new_files, modified_files = [], []
+        for member, digest in included.items():
+            base_digest = _d3_timing_blob_sha(CARRY4_SUPPLEMENT_BASE_COMMIT, member)
+            if base_digest is None:
+                new_files.append(member)
+            elif base_digest != digest:
+                modified_files.append(member)
+        raw_map, solve_count = {}, 0
+        if run_id:
+            raw_map[run_id], solve_count = CARRY4_SUPPLEMENT_RAW_SHA256[run_id], 1
+        package_name = f"{SERIES.name}_delta_{CARRY4_SUPPLEMENT_TAG}_{group_name}.zip"
+        target = HANDOFF / package_name
+        qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+        delta = {
+            "schema": "bvm4x4-manual-supplement-delta-v1",
+            "package_type": "manual_supplement_delta",
+            "package_group": group_name,
+            "base_commit": CARRY4_SUPPLEMENT_BASE_COMMIT,
+            "base_source_commit": CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD,
+            "base_package_name": CARRY4_SUPPLEMENT_BASE_PACKAGES[0][1],
+            "base_package_sha256": CARRY4_SUPPLEMENT_BASE_PACKAGES[0][2],
+            "base_package_set": [{"package_group": label, "package_name": name, "package_sha256": sha,
+                                  "head_commit": CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD}
+                                 for label, name, sha in CARRY4_SUPPLEMENT_BASE_PACKAGES],
+            "head_commit": "PENDING_SOURCE_COMMIT",
+            "included_files": records,
+            "included_file_sha256": included,
+            "new_files": sorted(new_files), "modified_files": sorted(modified_files), "deleted_files": [],
+            "referenced_existing_cases": references, "referenced_existing_raw_sha256": references,
+            "new_physical_solve_count": solve_count, "supplement_physical_solve_count": 3,
+            "solver_invocations_this_packaging_task": 0, "reused_point_count": 0,
+            "raw_sha256_by_run": raw_map, "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
+            "supplement_run_ids": list(CARRY4_SUPPLEMENT_RUN_IDS),
+            "scientific_interpretation_performed": False, "automatic_follow_up": False,
+            "html_included": False,
+        }
+        extra = {
+            "DELTA_MANIFEST.json": (json.dumps(delta, ensure_ascii=False, indent=2) + "\n").encode(),
+            "README.txt": (
+                "Manual supplemental evidence package for A045-A047.\n"
+                "These runs are outside the registered authorization batches; packaging makes no retroactive "
+                "authorization claim.\n"
+                "A001-A044 raw is referenced by package identity and SHA-256, never recopied. HTML remains local.\n"
+                "This packaging operation ran no solver and performed no scientific interpretation.\n"
+            ).encode(),
+        }
+        if sum(item["bytes"] for item in records) + sum(map(len, extra.values())) >= root.MAX_GIT_FILE_BYTES:
+            raise RuntimeError(f"CARRY4 {group_name} package exceeds ordinary Git size guard")
+        specs.append({"name": package_name, "kind": "bvm_4x4_manual_supplement_delta_v1", "scope": SERIES,
+                      "target": target, "qa_path": qa_path, "sources": sources, "extra_members": extra,
+                      "delta_manifest": delta, "base_name": CARRY4_SUPPLEMENT_BASE_PACKAGES[0][1],
+                      "base_sha": CARRY4_SUPPLEMENT_BASE_PACKAGES[0][2], "raw_by_run": raw_map,
+                      "package_group": group_name, "run_id": run_id})
+        plans.append({"package": package_name, "file_count": len(records) + len(extra) + 2,
+                      "uncompressed_source_bytes": sum(item["bytes"] for item in records),
+                      "raw_bytes": sum(item["bytes"] for item in records if Path(item["archive_path"]).name == "raw.csv"),
+                      "raw_sha256_by_run": raw_map, "new_physical_solve_count": solve_count,
+                      "new_files": sorted(new_files), "modified_files": sorted(modified_files),
+                      "qa_path": qa_path.relative_to(REPO).as_posix()})
+    allowed = {path.relative_to(REPO).as_posix() for path in stage_paths}
+    return specs, {"plan": {"base_commit": CARRY4_SUPPLEMENT_BASE_COMMIT,
+                            "base_source_commit": CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD,
+                            "pre_commit_head": head, "head_commit": "PENDING_SOURCE_COMMIT",
+                            "referenced_existing_raw_count": len(references),
+                            "new_physical_solve_count": 3, "solver_invocations_this_task": 0,
+                            "html_included": False, "package_count": len(specs), "packages": plans},
+            "stage_paths": sorted(allowed), "references": references}
+
+
+def submit_carry4_manual_supplement(args: argparse.Namespace, root: Any) -> int:
+    if args.tag != CARRY4_SUPPLEMENT_TAG:
+        raise RuntimeError(f"CARRY4 manual supplement tag must be {CARRY4_SUPPLEMENT_TAG}")
+    specs, context = carry4_manual_supplement_specs(root)
+    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
+    if not mirror_dir.is_dir():
+        raise RuntimeError(f"BVM package mirror is not accessible: {mirror_dir}")
+    collisions = [str(path) for spec in specs for path in (spec["target"], spec["qa_path"]) if path.exists()]
+    collisions.extend(str(mirror_dir / spec["name"]) for spec in specs if (mirror_dir / spec["name"]).exists())
+    if collisions:
+        raise FileExistsError("refusing immutable CARRY4 package overwrite: " + ", ".join(collisions))
+    if args.dry_run:
+        print(json.dumps({"status": "DRY_RUN_PASS", "package_mode": "CARRY4_MANUAL_SUPPLEMENT_DELTA",
+                          **context["plan"], "mirror_dir": str(mirror_dir),
+                          "source_path_count": len(context["stage_paths"]), "no_files_modified": True},
+                         ensure_ascii=False, indent=2))
+        return 0
+    subprocess.run(["git", "add", "-f", "--", *context["stage_paths"]], cwd=REPO, check=True)
+    staged = git("diff", "--cached", "--name-only").splitlines()
+    if any(path not in set(context["stage_paths"]) for path in staged):
+        raise RuntimeError("CARRY4 staging contains a path outside the supplement scope")
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO, check=False).returncode == 0:
+        raise RuntimeError("CARRY4 supplement has no staged evidence changes")
+    subprocess.run(["git", "commit", "-m", "evidence: register manual CARRY4 supplement A045-A047"],
+                   cwd=REPO, check=True)
+    source_head = git("rev-parse", "HEAD")
+    results = []
+    for spec in specs:
+        spec["delta_manifest"]["head_commit"] = source_head
+        spec["extra_members"]["DELTA_MANIFEST.json"] = (
+            json.dumps(spec["delta_manifest"], ensure_ascii=False, indent=2) + "\n").encode()
+        result = root.archive_bundle(spec, source_head)
+        archive_path, qa_path = REPO / result["path"], REPO / result["qa_path"]
+        qa = root.verify_existing_bundle(archive_path, qa_path)
+        if (qa.get("status") != "PASS" or qa.get("source_commit") != source_head or
+                qa.get("package_sha256") != root.sha256(archive_path) or
+                qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+            raise RuntimeError(f"CARRY4 PACKAGE_QA/member integrity failure: {spec['name']}")
+        with zipfile.ZipFile(archive_path, "r") as archive:
+            if any(name.lower().endswith(".html") for name in archive.namelist()):
+                raise RuntimeError(f"HTML must remain local: {spec['name']}")
+            delta = json.loads(archive.read("DELTA_MANIFEST.json"))
+            if (delta.get("head_commit") != source_head or
+                    delta.get("authorization_status") != "NOT_ASSERTED_BY_PACKAGING"):
+                raise RuntimeError(f"CARRY4 delta identity/scope failure: {spec['name']}")
+            for member, digest in delta["included_file_sha256"].items():
+                if hashlib.sha256(archive.read(member)).hexdigest() != digest:
+                    raise RuntimeError(f"CARRY4 ZIP member SHA mismatch: {spec['name']}/{member}")
+        result.update({"sha256": qa["package_sha256"], "bytes": qa["package_bytes"], "status": qa["status"]})
+        results.append(result)
+    package_paths = [REPO / path for item in results for path in (item["path"], item["qa_path"])]
+    subprocess.run(["git", "add", "-f", "--", *[path.relative_to(REPO).as_posix() for path in package_paths]],
+                   cwd=REPO, check=True)
+    subprocess.run(["git", "commit", "-m", "package: archive manual CARRY4 supplement A045-A047 DELTA"],
+                   cwd=REPO, check=True)
+    subprocess.run(["git", "push"], cwd=REPO, check=True)
+    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    print(json.dumps({"status": "CARRY4_MANUAL_SUPPLEMENT_SUBMIT_COMPLETE",
+                      "source_commit": source_head, "final_commit": git("rev-parse", "HEAD"),
+                      "push": "PASS", "packages": results,
+                      "base_commit": CARRY4_SUPPLEMENT_BASE_COMMIT,
+                      "base_source_commit": CARRY4_SUPPLEMENT_BASE_SOURCE_HEAD,
+                      "referenced_existing_raw_count": len(context["references"]),
+                      "supplement_run_ids": list(CARRY4_SUPPLEMENT_RUN_IDS),
+                      "supplement_physical_solve_count": 3, "solver_invocations_this_task": 0,
+                      "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
+                      "html_included": False, "mirror": mirror}, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -4510,6 +4851,8 @@ def main() -> int:
                         help="package/push only the completed A040/A041 D3 carry-timing delta")
     parser.add_argument("--d3-manual-supplement", action="store_true",
                         help="package user-confirmed manual A042-A044 as a separate non-retroactive supplement")
+    parser.add_argument("--carry4-manual-supplement", action="store_true",
+                        help="package manual A045-A047 as a separate non-retroactive CARRY4 supplement")
     parser.add_argument("--metadata-v2", action="store_true",
                         help="create a corrected metadata-only v2; never runs JoSIM")
     parser.add_argument("--message")
@@ -4517,6 +4860,10 @@ def main() -> int:
     args = parser.parse_args()
     try:
         root = load_root_submit()
+        if args.carry4_manual_supplement:
+            if args.delta or args.d3_carry_timing or args.d3_manual_supplement or args.metadata_v2:
+                raise RuntimeError("--carry4-manual-supplement cannot be combined with other package modes")
+            return submit_carry4_manual_supplement(args, root)
         if args.d3_manual_supplement:
             if args.delta or args.d3_carry_timing or args.metadata_v2:
                 raise RuntimeError("--d3-manual-supplement cannot be combined with other package modes")

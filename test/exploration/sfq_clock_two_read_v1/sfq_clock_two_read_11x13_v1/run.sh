@@ -18,7 +18,10 @@ josim-cli -o $FILE_PATH deck.cir
 
 if [ $? -eq 0 ]; then
   echo "complete and deal data..."
-  python3 josim-plot.py "$FILE_PATH" -t stacked -x res.html
+  python3 josim-plot.py "$FILE_PATH" -t stacked -x res.html \
+  -s \
+  "V(S_D0)" "V(S_D1)" "V(S_D2)" "V(S_D3)" \
+  "V(S_D4)" "V(S_D5)" "V(S_D6)" "V(DFF_O)"
 else
   echo "find errors..."
   exit

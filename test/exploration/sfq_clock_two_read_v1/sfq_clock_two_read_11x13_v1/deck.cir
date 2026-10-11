@@ -253,5 +253,34 @@ XJTL_IN_DFF CLK_DFF_IN2 CLK_DFF jtl2
 *.print V(DFF_IN)
 *.print V(CLK_DFF)
 .print V(DFF_O)
+
+* 实际SFQ时钟到达
+.print V(CLK_D0)
+.print V(CLK_D1)
+.print V(CLK_D2)
+.print V(CLK_D3)
+.print V(CLK_D4)
+.print V(CLK_D5)
+.print V(CLK_D6)
+.print V(CLK_DFF)
+
+* D3时钟链的内部JJ
+.print P(B03|XDCSFQ_D3)
+.print V(B03|XDCSFQ_D3)
+.print P(B02|XJTL_IN_D3)
+.print V(B02|XJTL_IN_D3)
+
+* D3 T1输入、Carry与时钟JJ
+.print V(T1_I_D3)
+.print V(C_D3)
+.print P(B_J2|XT1_D3)
+.print V(B_J2|XT1_D3)
+
+* DFF数据输入
+.print V(DFF_IN)
+
+* BVM代表交叉点的状态观测
+.print P(B_JS1|XBVM_R1C1)
+.print V(B_JS1|XBVM_R1C1)
 .tran 0.01p 550p
 .end

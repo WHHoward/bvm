@@ -1,0 +1,46 @@
+
+* **********************************************************************
+* Author      : LPGG
+* Date        : 09/10/2020
+* Description : SFQ Pulse generator
+* Notes       :
+*  - Taken from Superconducting-Temporal-Logic 
+*    https://github.com/UCSBarchlab/Superconducting-Temporal-Logic.git
+*  - Use this file to generate SFQ pulses from slow DC pulses
+*  - The jjr element is defined at a higher level
+* **********************************************************************
+
+* RSFQ Pulse Generation
+* RS = JJ damping shunts, using Stewart-McCumber parameter with B_c = 1
+
+.subckt dcsfq IN OUT VBIAS
+
+B0 9 5 jjr area=2.16
+RS0 9 5 4
+B1 10 11 jjr area=2.16
+RS1 10 11 2.7
+B2 12 13 jjr area=2.16
+RS2 12 13 4.6
+B3 7 14 jjr area=2.16
+RS3 7 14 4
+
+L0 12 0 3.58pH
+
+LP0 8 6 0.08pH
+LP1 4 9 1.29pH
+LP2 5 6 1.13pH
+LP3 6 10 1.74pH
+LP4 5 7 0.21pH
+LP5 4 12 1.27pH
+LP6 11 0 0.13pH
+LP7 13 7 0.69pH
+LP8 14 0 0.18pH
+
+LT0 10 OUT 2.11pH
+LT1 IN 4 3.38pH
+
+R0 VBIAS 8 27
+
+.ends
+
+

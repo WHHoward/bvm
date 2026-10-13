@@ -22,6 +22,9 @@ if [ $? -eq 0 ]; then
   -s \
   "V(S_D0_OUT)" "V(S_D1_OUT)" "V(S_D2_OUT)" "V(S_D3_OUT)" \
   "V(S_D4_OUT)" "V(S_D5_OUT)" "V(S_D6_OUT)" "V(DFF_O)"
+  python3 josim-plot.py "$FILE_PATH" -t stacked -x qb.html \
+  -s \
+  "P(BJ1|XBQ_R1C4)" "P(BJ2|XBQ_R1C4)" "P(BJ3|XBQ_R1C4)"
 else
   echo "find errors..."
   exit

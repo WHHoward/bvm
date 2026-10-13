@@ -1,0 +1,78 @@
+
+.include ./library_josim/jtl2.cir
+.include ./library_josim/dcsfq2.cir
+.include ./t1_cell.cir
+.include ../../circuits/CB/CB_0928.cir
+.include ../../circuits/standard/MERGE.cir
+.param t_per=200p
+
+
+* x1_jtl_in IN00 IN jtl
+x2_jtl_S S So jtl
+x3_jtl_C C Co jtl
+
+x1_t1 IN_OUT CLK S C vdd vdd vdd T1
+
+
+* produce pluse
+V1 clks 0 pulse(0 24m 200p 2p 2p 2p t_per)
+R1_sfq clks N66 20
+X1_sfq N66 CLK dcsfq2
+
+* V2 ins 0 pulse(0 24m 270p 2p 2p 2p t_per/3)
+.param td1=300p
+.param td2=360p
+.param td3=700p
+.param td4=720p
+.param td5=900p
+.param td6=920p
+.param td7=940p
+.param td8=1100p
+.param td9=1120p
+.param td10=1140p
+.param td11=1160p
+.param td12=5p
+V2 ins 0 pwl (0 0
++ {td1+td12} 0 {td1+1p+td12} 24m {td1+3p+td12} 24m {td1+4p+td12} 0
++ {td2+td12} 0 {td2+1p+td12} 24m {td2+3p+td12} 24m {td2+4p+td12} 0
++ {td3+td12} 0 {td3+1p+td12} 24m {td3+3p+td12} 24m {td3+4p+td12} 0
++)
+
+* V3 ins1 0 pwl (0 0
+* + {td1} 0 {td1+1p} 24m {td1+3p} 24m {td1+4p} 0
+* + {td2} 0 {td2+1p} 24m {td2+3p} 24m {td2+4p} 0
+* + {td3} 0 {td3+1p} 24m {td3+3p} 24m {td3+4p} 0
+* +)
+
+
+* XTHmitll_MERGE IN_OUT IN_OUT1 T1_IN THmitll_MERGE
+
+R2_sfq ins N666 20
+X2_sfq N666 IN dcsfq2
+XJTL1 IN IN_OUT jtl
+
+* R2_sfq_1 ins1 N667 20
+* X2_sfq_1 N667 IN1 dcsfq2
+* XJTL2 IN1 IN_OUT1 jtl
+VDD vdd 0 pwl(0 0 10p 2.3m)
+
+
+
+.model jjmit jj(rtype=1, vg =2.8mV, cap =0.07pF, r0 =160, rn =16, icrit =0.1mA)
+
+.tran 0.1p 1n 
+.print v(clks) v(ins) v(ins1)
+.print v(CLK) v(IN_OUT)
+* .print v(IN_OUT) v(IN_OUT1)
+* .print p(B_J4|x1_t1) p(B_J10|x1_t1) p(B_J6|x1_t1) p(B_J5|x1_t1)
+* .print p(B_J2|x1_t1) p(B_J3|x1_t1) p(B_J7|x1_t1) p(B_J8|x1_t1) p(B_J9|x1_t1)
+* .print p(B_J8|x1_t1) p(B_J10|x1_t1) p(B_J11|x1_t1)
+* .print i(L9|x1_t1)
+* .print i(B5) i(B6) i(B7) i(B8) i(B9) i(B10)
+* .print i(LT8) i(LT9) i(LT10)
+.print v(C) v(S)
+.print v(Co) v(So)
+
+
+
+

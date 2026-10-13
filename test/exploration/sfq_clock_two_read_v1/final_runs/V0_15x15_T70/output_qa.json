@@ -1,0 +1,355 @@
+{
+  "schema": "bvm-terminal-output-mechanical-qa-v1",
+  "artifact_status": "VALID",
+  "raw_sha256": "b507bb6c82a5a6be33a71a4babd6e352122bdf43184cdaf50c8cff381de945cb",
+  "raw_bytes": 9077198,
+  "sample_count": 39999,
+  "time_range_ps": [
+    0.0,
+    399.98999999999995
+  ],
+  "actual_grid_ps": {
+    "min_step": 0.009999999999934062,
+    "max_step": 0.01999999999999999,
+    "mean_step": 0.010000250012500624,
+    "irregular_step_count": 1
+  },
+  "required_probes_present": [
+    "V(S_D0_OUT)",
+    "V(S_D1_OUT)",
+    "V(S_D2_OUT)",
+    "V(S_D3_OUT)",
+    "V(S_D4_OUT)",
+    "V(S_D5_OUT)",
+    "V(S_D6_OUT)",
+    "V(DFF_O)",
+    "V(CLK_D0)",
+    "V(CLK_D1)",
+    "V(CLK_D2)",
+    "V(CLK_D3)",
+    "V(CLK_D4)",
+    "V(CLK_D5)",
+    "V(CLK_D6)",
+    "V(CLK_DFF)"
+  ],
+  "window_rule": "adjacent-sample trapezoids use actual timestamps; each interval is assigned by midpoint to a half-open window; no interpolation",
+  "phi0_wb": 2.067833848e-15,
+  "preclock_window_ps_half_open": [
+    61.0,
+    180.0
+  ],
+  "preclock_area_over_phi0": {
+    "V(S_D0_OUT)": 0.0003551715296755933,
+    "V(S_D1_OUT)": 4.564080211937553e-08,
+    "V(S_D2_OUT)": 5.227945664833555e-08,
+    "V(S_D3_OUT)": 1.1075609587355611e-05,
+    "V(S_D4_OUT)": 0.0004018269409216511,
+    "V(S_D5_OUT)": 2.330976033736189e-06,
+    "V(S_D6_OUT)": 6.319616855578532e-06,
+    "V(DFF_O)": 0.041084245920361515
+  },
+  "preclock_absolute_area_over_phi0": {
+    "V(S_D0_OUT)": 0.0027568981060616085,
+    "V(S_D1_OUT)": 0.007013208367214356,
+    "V(S_D2_OUT)": 0.013602308990180459,
+    "V(S_D3_OUT)": 0.020457921775042652,
+    "V(S_D4_OUT)": 0.016920104502822973,
+    "V(S_D5_OUT)": 0.014074317181646657,
+    "V(S_D6_OUT)": 0.0088652914642777,
+    "V(DFF_O)": 0.13824998789497464
+  },
+  "preclock_area_screen_status": "PASS",
+  "area_tolerance_phi0": 0.3,
+  "absolute_area_ceiling_phi0": {
+    "expected_zero": 0.5,
+    "expected_one": 1.6
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "window_ps_half_open": [
+        180.0,
+        250.0
+      ],
+      "bits": [
+        {
+          "bit_lsb0": 0,
+          "signal": "V(S_D0_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": -0.0003551859011278928,
+          "absolute_area_over_phi0": 0.016857762111829478,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 1,
+          "signal": "V(S_D1_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": 1.000352257040089,
+          "absolute_area_over_phi0": 1.1664906187376314,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 2,
+          "signal": "V(S_D2_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": 1.000352232900848,
+          "absolute_area_over_phi0": 1.1644892303582632,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 3,
+          "signal": "V(S_D3_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": 1.0003410957753953,
+          "absolute_area_over_phi0": 1.1696035664170066,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 4,
+          "signal": "V(S_D4_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": 0.9995995989719556,
+          "absolute_area_over_phi0": 1.1731443027187949,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 5,
+          "signal": "V(S_D5_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 1.00052856063742,
+          "absolute_area_over_phi0": 1.172545721104883,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 6,
+          "signal": "V(S_D6_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": -4.0323396803259345e-05,
+          "absolute_area_over_phi0": 0.02555863077160937,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 7,
+          "signal": "V(DFF_O)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 1.0033371881458162,
+          "absolute_area_over_phi0": 1.4467859848212121,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        }
+      ],
+      "area_screen_status": "FAIL"
+    },
+    {
+      "round": 2,
+      "window_ps_half_open": [
+        250.0,
+        320.0
+      ],
+      "bits": [
+        {
+          "bit_lsb0": 0,
+          "signal": "V(S_D0_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 1.0000000022461255,
+          "absolute_area_over_phi0": 1.1637390288561529,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 1,
+          "signal": "V(S_D1_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": -0.0003522301822711926,
+          "absolute_area_over_phi0": 0.02992728389149643,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 2,
+          "signal": "V(S_D2_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": -0.00034988426896523676,
+          "absolute_area_over_phi0": 0.0434525869733298,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 3,
+          "signal": "V(S_D3_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": -0.0002443262382821075,
+          "absolute_area_over_phi0": 0.03686565726508372,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 4,
+          "signal": "V(S_D4_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": 0.9999993166561676,
+          "absolute_area_over_phi0": 1.1699547675092052,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 5,
+          "signal": "V(S_D5_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 4.521719576810069e-05,
+          "absolute_area_over_phi0": 0.0323180096242605,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 6,
+          "signal": "V(S_D6_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 1.0000297678306436,
+          "absolute_area_over_phi0": 1.1704439897692978,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 7,
+          "signal": "V(DFF_O)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 0.993745260615446,
+          "absolute_area_over_phi0": 1.4949604654643216,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        }
+      ],
+      "area_screen_status": "FAIL"
+    },
+    {
+      "round": 3,
+      "window_ps_half_open": [
+        320.0,
+        400.0
+      ],
+      "bits": [
+        {
+          "bit_lsb0": 0,
+          "signal": "V(S_D0_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 5.356655360502128e-09,
+          "absolute_area_over_phi0": 0.021717458116145522,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 1,
+          "signal": "V(S_D1_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": -5.4664153721047925e-08,
+          "absolute_area_over_phi0": 0.021960103686027424,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 2,
+          "signal": "V(S_D2_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": -2.377831796570648e-06,
+          "absolute_area_over_phi0": 0.021971269265081285,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 3,
+          "signal": "V(S_D3_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": 0.9998921344183991,
+          "absolute_area_over_phi0": 1.1658134230070647,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 4,
+          "signal": "V(S_D4_OUT)",
+          "expected_bit": 0,
+          "signed_area_over_phi0": -7.357778617416781e-07,
+          "absolute_area_over_phi0": 0.021979345449669983,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 5,
+          "signal": "V(S_D5_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 0.9994238527967717,
+          "absolute_area_over_phi0": 1.163949538243123,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 6,
+          "signal": "V(S_D6_OUT)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 4.245591820272136e-06,
+          "absolute_area_over_phi0": 0.021962521740646137,
+          "area_screen_status": "FAIL",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        },
+        {
+          "bit_lsb0": 7,
+          "signal": "V(DFF_O)",
+          "expected_bit": 1,
+          "signed_area_over_phi0": 0.9618333005932024,
+          "absolute_area_over_phi0": 1.3909569029896423,
+          "area_screen_status": "PASS",
+          "sfq_event_count": null,
+          "sfq_event_count_status": "INCONCLUSIVE"
+        }
+      ],
+      "area_screen_status": "FAIL"
+    }
+  ],
+  "all_rounds_area_screen_status": "FAIL",
+  "functional_verdict": "INCONCLUSIVE",
+  "sfq_event_count_status": "INCONCLUSIVE",
+  "sfq_event_count_reason": "Only terminal output voltage and CLK probes are registered; terminal voltage-area screen is not an event counter.",
+  "extra_sfq_status": "INCONCLUSIVE",
+  "late_output_observation_window_ps_half_open": [
+    320.0,
+    400.0
+  ],
+  "scientific_interpretation_performed": false,
+  "solver_invocations_this_analysis": 0,
+  "limitations": [
+    "area screen is not a pulse/event count",
+    "no JJ phase/voltage event evidence at output stages",
+    "single dt; no convergence/sensitivity run"
+  ]
+}

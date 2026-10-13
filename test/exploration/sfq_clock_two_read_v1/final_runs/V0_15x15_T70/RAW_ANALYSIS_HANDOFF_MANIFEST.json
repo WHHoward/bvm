@@ -1,0 +1,43 @@
+{
+  "schema": "josim-raw-analysis-handoff-v1",
+  "experiment_id": "sfq-clock-two-read-v1-V0-15x15-T70",
+  "run_id": "V0_15x15_T70",
+  "raw_path": "raw.csv",
+  "raw_sha256": "b507bb6c82a5a6be33a71a4babd6e352122bdf43184cdaf50c8cff381de945cb",
+  "raw_bytes": 9077198,
+  "raw_mutated": false,
+  "deck_path": "deck.cir",
+  "deck_sha256": "71becb54893d02068a1c6068e078a259040d604ae22ce6bb7957ecc603d0b17a",
+  "stimulus_path": "stimulus.inc",
+  "stimulus_sha256": "b1337be290d66f812700403611bb8f242dbc66101dded662eea23acb2eb5f6db",
+  "source_manifest_path": "SOURCE_MANIFEST.json",
+  "case_config_path": "CASE_CONFIG.json",
+  "run_manifest_path": "RUN_MANIFEST.json",
+  "probe_profile": "outputs-clocks",
+  "output_signals": [
+    "V(S_D0_OUT)", "V(S_D1_OUT)", "V(S_D2_OUT)", "V(S_D3_OUT)",
+    "V(S_D4_OUT)", "V(S_D5_OUT)", "V(S_D6_OUT)", "V(DFF_O)"
+  ],
+  "clock_signals": [
+    "V(CLK_D0)", "V(CLK_D1)", "V(CLK_D2)", "V(CLK_D3)",
+    "V(CLK_D4)", "V(CLK_D5)", "V(CLK_D6)", "V(CLK_DFF)"
+  ],
+  "integration": {
+    "time_basis": "actual stored CSV timestamps",
+    "method": "trapezoid; interval assigned by midpoint to a half-open window",
+    "interpolation": false,
+    "phi0_wb": 2.067833848e-15,
+    "windows_ps": [[61, 180], [180, 250], [250, 320], [320, 400]],
+    "window_labels": ["preclock", "read_1_output", "read_2_output", "read_3_output"],
+    "area_screen_tolerance_phi0": 0.30,
+    "absolute_area_limits_phi0": {"expected_zero": 0.5, "expected_one": 1.6},
+    "area_is_event_count": false
+  },
+  "artifact_status": "VALID",
+  "output_area_screen_status": "FAIL",
+  "sfq_event_count_status": "INCONCLUSIVE",
+  "extra_sfq_status": "INCONCLUSIVE",
+  "scientific_interpretation_performed": false,
+  "physical_solve_count": 1,
+  "automatic_follow_up": false
+}

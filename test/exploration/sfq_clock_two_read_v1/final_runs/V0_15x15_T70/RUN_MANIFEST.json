@@ -26,7 +26,51 @@
   "expected": 225,
   "expected_bits": "11100001",
   "probe_profile": "outputs-clocks",
-  "physical_solve_count": 0,
-  "solver_invocations": 0,
-  "run_clock_actual_arrival_requires_raw_check": true
+  "physical_solve_count": 1,
+  "solver_invocations": 1,
+  "run_clock_actual_arrival_requires_raw_check": true,
+  "run_id": "V0_15x15_T70",
+  "execution_head": "4c24c22ba7404a2f345a219e1e5ba7fd7b07597b",
+  "runner_sha256_used_for_solve": "e83eb00c9f731906c68cfe9ed0ee9b6f576344426fa39e433d24a5cb6dc36799",
+  "runner_sha256_used_for_postprocess": "911275a40fe475606d5328d9f82dc4006e71c3133a642ecb34fbc12c8cd70aea",
+  "runner_sha256_current": "5679fd9226edd6ec39fbfe217923816b23a8e4666920e2b8fc8dc711e2ba8d4a",
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "version": "\nJoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57"
+  },
+  "command": {
+    "argv": [
+      "/home/howard/JoSIM/build/josim-cli",
+      "-o",
+      "raw.csv",
+      "deck.cir"
+    ],
+    "exit_code": 0
+  },
+  "started_at": "2026-10-13T21:29:03+08:00",
+  "ended_at": "2026-10-13T21:29:07+08:00",
+  "elapsed_seconds": 4,
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false,
+  "run_log_sha256": "bb61d6c1149b5520bd1f143045d1122a50bbf4c753ca091b712129435f576c47",
+  "run_log_bytes": 3614550,
+  "raw_sha256": "b507bb6c82a5a6be33a71a4babd6e352122bdf43184cdaf50c8cff381de945cb",
+  "raw_bytes": 9077198,
+  "postprocess_qa_attempts": [
+    {
+      "attempt": 1,
+      "status": "ANALYZER_QA_FAIL_RAW_PRESERVED",
+      "solver_invocations": 0,
+      "issue": "Initial parser required final stored timestamp to equal 400 ps within 1e-6 ps; JoSIM stored through 399.99 ps at dt=0.01 ps.",
+      "raw_sha256": "b507bb6c82a5a6be33a71a4babd6e352122bdf43184cdaf50c8cff381de945cb"
+    },
+    {
+      "attempt": 2,
+      "status": "RAW_AND_VISUAL_QA_PASS",
+      "solver_invocations": 0,
+      "repair": "Use a registered endpoint allowance of 1.5*dt; no interpolation and no raw mutation.",
+      "raw_sha256": "b507bb6c82a5a6be33a71a4babd6e352122bdf43184cdaf50c8cff381de945cb"
+    }
+  ]
 }

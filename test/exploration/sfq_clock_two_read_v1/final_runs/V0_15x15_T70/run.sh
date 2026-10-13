@@ -170,7 +170,8 @@ with raw.open(newline='',encoding='utf-8-sig') as f:
 if len(times)<2: raise SystemExit('RAW_QA_FAIL: fewer than 2 samples')
 dt=[b-a for a,b in zip(times,times[1:])]
 stop=float(cfg['stop_ps'])
-if times[0]>1e-6 or times[-1] < stop-1e-6: raise SystemExit(f'RAW_QA_FAIL: time range [{times[0]},{times[-1]}] does not cover [0,{stop}] ps')
+stop_tolerance=max(1e-6,float(cfg['dt_ps'])*1.5)
+if times[0]>1e-6 or times[-1] < stop-stop_tolerance: raise SystemExit(f'RAW_QA_FAIL: time range [{times[0]},{times[-1]}] does not reach STOP={stop} ps within one stored-step tolerance {stop_tolerance} ps')
 PHI0=2.067833848e-15
 clock_starts=list(map(float,cfg['clock_times_ps']))
 windows=[(clock_starts[i],clock_starts[i+1]) for i in range(len(clock_starts)-1)]+[(clock_starts[-1],stop)]
@@ -295,7 +296,12 @@ fi
 
 if [[ "$MODE" == "--html-only" ]]; then
   [[ -s "$RAW" ]] || fail "raw.csv missing; no solver will be run by --html-only"
-  audit_raw check
+  if [[ -f "$RUN_DIR/output_qa.json" && -f "$RUN_DIR/THREE_ROUND_BIT_TABLE.md" ]]; then
+    audit_raw check
+  else
+    echo "Existing immutable raw found; writing missing derived QA only. No solver invocation."
+    audit_raw write
+  fi
   make_plot
   exit 0
 fi
@@ -303,6 +309,21 @@ fi
 if [[ "$MODE" == "--check" ]]; then
   [[ -s "$RAW" && -s "$LOG" ]] || fail "existing raw.csv/run.log required; no solver will be run by --check"
   [[ "$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["command"]["exit_code"])' "$RUN_MANIFEST")" == "0" ]] || fail "recorded solver exit code is not zero"
+  python3 - "$RUN_DIR" "$REPO_ROOT" <<'PY'
+import hashlib,json,subprocess,sys
+from pathlib import Path
+r=Path(sys.argv[1]);repo=Path(sys.argv[2]);m=json.loads((r/'RUN_MANIFEST.json').read_text())
+sha=lambda b:hashlib.sha256(b).hexdigest()
+assert sha((r/'raw.csv').read_bytes())==m['raw_sha256'],'raw hash mismatch'
+assert sha((r/'run.log').read_bytes())==m['run_log_sha256'],'run.log hash mismatch'
+assert sha((r/'run.sh').read_bytes())==m['runner_sha256_current'],'current runner hash mismatch'
+rev=m['execution_head']; rel=(r/'run.sh').relative_to(repo).as_posix()
+committed=subprocess.check_output(['git','-C',str(repo),'show',f'{rev}:{rel}'])
+assert sha(committed)==m['runner_sha256_used_for_solve'],'runner used for solve does not match execution HEAD'
+solver=Path(m['solver']['path'])
+assert sha(solver.read_bytes())==m['solver']['sha256'],'solver binary SHA mismatch'
+print('PROVENANCE_QA_PASS: raw/log/runner/solver hashes and execution HEAD consistent')
+PY
   audit_raw check
   if [[ -e "$RUN_DIR/res.html" ]]; then
     [[ -s "$RUN_DIR/visualization_manifest.json" && -s "$RUN_DIR/visualization_qa.json" ]] || fail "HTML exists without visualization manifests"

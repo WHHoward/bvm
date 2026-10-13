@@ -1,0 +1,99 @@
+schema: josim-work-unit-v1
+experiment_id: sfq-clock-two-read-v1-V0-15x15-T70
+experiment_risk_level: NORMAL
+question: >-
+  Under the frozen 4x4 multiplier topology and one all-cell WRITE1, what output
+  voltage-area screen and observable output sequence result from three reads
+  spaced by 70 ps with three corresponding clock PWLs?
+source_class: exploratory
+authority_boundary:
+  evidence: [frozen_deck, stimulus, raw_csv, output_voltage_area, clock_outputs]
+  not_proven:
+    - individual SFQ event identity/count from terminal voltage alone
+    - universal or maximum system throughput
+    - timing or solver convergence
+    - hardware behavior or a physical mechanism
+run_set:
+  - run_id: V0_15x15_T70
+    a: 15
+    b: 15
+    expected_product: 225
+    expected_bits_lsb_to_msb: [1, 0, 0, 0, 0, 1, 1, 1]
+    physical_solve_count: 1
+changed:
+  - one WRITE1 of all 16 cells
+  - three read starts at 110, 180, and 250 ps
+  - three clock-source PWL starts at 180, 250, and 320 ps
+frozen:
+  - 16 BVMs and 16 independent BQ instances
+  - seven T1 stages, DFF, DCSFQ2, JTL2, and all CB/sJTL topology and parameters
+  - D6 array CB plus carry CB both connected to T1_I_D6; D6 MERGE inactive
+  - BVM/QB/CB/sJTL/T1/DCSFQ2/JTL/DFF source snapshots in SOURCE_MANIFEST.json
+  - read and clock pulse amplitudes and widths in stimulus.inc
+  - JoSIM timestep 0.01 ps
+timing:
+  write1_start_ps: 50
+  read_starts_ps: [110, 180, 250]
+  clock_pwl_starts_ps: [180, 250, 320]
+  read_interval_ps: 70
+  clock_period_ps: 70
+  se_to_clock_pwl_delay_ps: 70
+  stop_ps: 400
+  windows_ps_half_open:
+    preclock: [61, 180]
+    read_1_output: [180, 250]
+    read_2_output: [250, 320]
+    read_3_output: [320, 400]
+probes:
+  outputs:
+    - V(S_D0_OUT)
+    - V(S_D1_OUT)
+    - V(S_D2_OUT)
+    - V(S_D3_OUT)
+    - V(S_D4_OUT)
+    - V(S_D5_OUT)
+    - V(S_D6_OUT)
+    - V(DFF_O)
+  clocks:
+    - V(CLK_D0)
+    - V(CLK_D1)
+    - V(CLK_D2)
+    - V(CLK_D3)
+    - V(CLK_D4)
+    - V(CLK_D5)
+    - V(CLK_D6)
+    - V(CLK_DFF)
+metrics:
+  output_area_screen:
+    method: actual-stored-grid trapezoid; each interval assigned by its midpoint to one half-open window
+    normalization: signed and absolute integral(V dt) / Phi0
+    reference_rule: scripts/final_mul_case.py at source HEAD 22d1157eb4a3811c0e6dd7f677321d19ca9cd36b
+    reference_sha256: 339f4997ec9da0bb4fb8177d7e569b288c14f0c3edacb54e86d436a08025e48d
+    area_tolerance_phi0: 0.30
+    maximum_absolute_area_phi0:
+      expected_zero: 0.5
+      expected_one: 1.6
+    semantics: derived area screen only; not an SFQ event counter or functional verdict
+  sfq_event_count:
+    status_without_additional_independent_event_evidence: INCONCLUSIVE
+visualization:
+  renderer: scripts/josim-plot2.py
+  layout: sep_comb
+  theme: dark
+  signals: output probes only
+  html: res.html
+  package_html: excluded
+interpretation_ceiling: >-
+  Report artifact validity, actual stored-grid output areas, the registered
+  area screen, and actual clock-output waveforms only. Keep event count and
+  functional verdict INCONCLUSIVE unless independently supported by evidence.
+prohibited_followups:
+  - other multipliers or clock periods
+  - parameter optimization or topology changes
+  - repeating or extending this physical solve
+  - interpreting local phase or terminal area as an SFQ count
+scientific_review_authorized: false
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  next_step_authorized: false
+  automatic_next_experiment: false

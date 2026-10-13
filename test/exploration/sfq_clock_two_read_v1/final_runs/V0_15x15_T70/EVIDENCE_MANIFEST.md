@@ -22,7 +22,7 @@ HEAD, raw/log hashes, and the postprocessing-only QA repair.
 | Three-round bit table | `THREE_ROUND_BIT_TABLE.md` | `abd9f4919418a784334f7b97688aefc9fce7428bdcb049f4435be4e4223c8982` | include |
 | Visualization manifest | `visualization_manifest.json` | `fedf746a61c70bcf1ab47d9507566c28ab337645146f02eb0448f96a35fcf053` | include |
 | Visualization QA | `visualization_qa.json` | `3a8819512e91b435090bc0d5e6cbf29b905a30e9250fa8721b35563abb634734` | include |
-| Final-output HTML | `res.html` | `8a8c42ade3cdcda1d0660529b2049615acabd4f5c308baf12603d8913bdde4e5` | local/Git only; explicitly excluded from ZIP |
+| Final-output HTML | `res.html` | `8a8c42ade3cdcda1d0660529b2049615acabd4f5c308baf12603d8913bdde4e5` | local only; Git-ignored and explicitly excluded from ZIP |
 | Result brief | `RESULT_BRIEF.md` | `4111803622c44615d272cfba2fb055ace79395e988d408bd831d92ead5183201` | include |
 | Raw analysis handoff | `RAW_ANALYSIS_HANDOFF_MANIFEST.json` | `02a99352f978d9b248cb209a35d32cadd78ae8d7427035a7ec7e307f980453ed` | include |
 

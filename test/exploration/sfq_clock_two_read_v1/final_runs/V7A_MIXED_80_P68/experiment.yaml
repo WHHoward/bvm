@@ -1,0 +1,57 @@
+schema: josim-work-unit-v1
+experiment_id: sfq-clock-two-read-v1-V7A-MIXED-80-P68
+experiment_risk_level: NORMAL
+question: >-
+  For the frozen 4x4 multiplier and one all-cell WRITE1, record which
+  round-window terminal output waveforms follow the registered mixed input
+  sequence 15:7, 0:0, 0:0 at 80 ps spacing.
+source_class: exploratory
+authority_boundary:
+  evidence: [frozen_deck, stimulus, raw_csv, output_voltage, actual_clock_probes]
+  not_proven: [SFQ_event_count, circuit_mechanism, throughput_limit, hardware_behavior]
+run_set:
+  - condition: V7A_MIXED_80_P68
+    rounds:
+      - {round: 1, operands: [15, 7], expected_product: 105}
+      - {round: 2, operands: [0, 0], expected_product: 0}
+      - {round: 3, operands: [0, 0], expected_product: 0}
+changed: [per-round operands through ROUND_CASES]
+frozen:
+  - BVM/BQ/CB/sJTL/T1/DFF/JJ models, topology and parameters
+  - single WRITE1 initialization, read/clock timing, dt, probe profile
+  - JoSIM v2.7.02a34ee
+timing:
+  write_start_ps: 50
+  read_starts_ps: [110, 190, 270]
+  clock_pwl_starts_ps: [178, 258, 338]
+  read_interval_ps: 80
+  clock_period_ps: 80
+  se_clock_delay_ps: 68
+  dt_ps: 0.01
+  stop_ps: 420
+  output_windows_half_open_ps: [[0, 178], [178, 258], [258, 338], [338, 420]]
+probes:
+  outputs: [V(S_D0_OUT), V(S_D1_OUT), V(S_D2_OUT), V(S_D3_OUT), V(S_D4_OUT), V(S_D5_OUT), V(S_D6_OUT), V(DFF_O)]
+  clocks: [V(CLK_D0), V(CLK_D1), V(CLK_D2), V(CLK_D3), V(CLK_D4), V(CLK_D5), V(CLK_D6), V(CLK_DFF)]
+expected_qa: [raw_hash, stored_grid_monotonicity, complete_registered_probes, source_and_deck_hashes, classic_standalone_html]
+metrics:
+  - actual CLK peak landmark per channel and fixed round window
+  - output positive and negative voltage-time integrals normalized by Phi0
+  - positive and negative output extrema timestamps per fixed round window
+  - pulse-count classification remains INCONCLUSIVE without registered event identity evidence
+interpretation_ceiling: Mechanical waveform and signed-area report only; no scientific conclusion.
+prohibited_followups: [additional periods, parameter changes, topology changes, extra runs]
+scientific_review_authorization: NOT_GRANTED
+package:
+  commit_by_default: true
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: stacked
+  color: dark
+  phase: not_applicable
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  user_reviewed: false
+  next_step_authorized: false
+  automatic_next_experiment: false
+  next_action: STOP

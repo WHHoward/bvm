@@ -20,6 +20,7 @@ usage() {
 Usage: ./configure.sh [--dry-run]
   In final_runs/: create a fresh named experiment directory from USER_CASE.env.
   In a generated experiment directory: regenerate stimulus and .tran before any run.
+  Optional ROUND_CASES=A:B,... supplies one operand pair per ROUNDS entry.
   Never runs JoSIM. Never overwrites an existing raw/log.
 HELP
 }
@@ -46,9 +47,11 @@ args=(--a "$A" --b "$B" --read-interval-ps "$READ_INTERVAL_PS"
       --rounds "$ROUNDS" --write-start-ps "$WRITE_START_PS"
       --first-read-ps "$FIRST_READ_PS" --dt-ps "$DT_PS"
       --tail-ps "$TAIL_PS")
+[[ -z "${ROUND_CASES:-}" ]] || args+=(--round-cases "$ROUND_CASES")
 [[ -z "${CLOCK_PERIOD_PS:-}" ]] || args+=(--clock-period-ps "$CLOCK_PERIOD_PS")
 [[ -z "${SE_CLOCK_DELAY_PS:-}" ]] || args+=(--se-clock-delay-ps "$SE_CLOCK_DELAY_PS")
 [[ -z "${STOP_PS:-}" ]] || args+=(--stop-ps "$STOP_PS")
+[[ -z "${ROUND_CASES:-}" ]] || echo "ROUND_CASES: $ROUND_CASES"
 
 if [[ "$HERE" == "$BASE" ]]; then
   [[ -f "$ORIGINAL_DECK" ]] || fail "source deck missing: $ORIGINAL_DECK"

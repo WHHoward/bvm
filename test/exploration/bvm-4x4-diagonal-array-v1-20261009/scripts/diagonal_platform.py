@@ -34,8 +34,7 @@ DFF_PARAMS = SERIES / "config" / "DFF_PARAMS.env"
 D0_JTL_PARAMS = SERIES / "config" / "D0_JTL_PARAMS.env"
 SOLVER = REPO / "build" / "josim-cli"
 PLOTTER = REPO / "scripts" / "josim-plot2.py"
-PLOTLY_ASSET = (REPO / "test/exploration/bvm-qb-cb-array-topology-v1-20260924"
-                / "plots/assets/plotly.min.js")
+PLOTLY_ASSET = REPO / "assets/vendor/plotly.min.js"
 EXPERIMENT_MANIFEST = SERIES / "experiment_manifest.json"
 PHI0 = 2.067833848e-15
 MAX_RAW_BYTES = 100_000_000

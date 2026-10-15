@@ -342,15 +342,19 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(rendered["static_qa"]["terminal_count"], 0)
         self.assertLess(rendered["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
 
-    def test_default_cbu_override_preserves_a021_a022_deck_bytes(self):
-        expected = {
-            "CHAIN_ALL_GLOBAL_CLOCK": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
-            "CHAIN_PAPER_GLOBAL_CLOCK": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
+    def test_default_cbu_override_uses_selected_v9_bvm_source_for_new_renders(self):
+        old_source_name = "bvm_cell_0923.cir"
+        selected_source_name = "bvm_cell_0923_v9_bse.cir"
+        historical_runs = {
+            "CHAIN_ALL_GLOBAL_CLOCK": "A021_CHAIN_ALL_GLOBAL_CLOCK",
+            "CHAIN_PAPER_GLOBAL_CLOCK": "A022_CHAIN_PAPER_GLOBAL_CLOCK",
         }
-        for preset, digest in expected.items():
+        for preset, run_id in historical_runs.items():
             case, stimulus, params, output = rendered(preset)
             self.assertEqual(case["CBU_OVERRIDE_D1"], "NONE")
-            self.assertEqual(hashlib.sha256(output["deck"].encode("utf-8")).hexdigest(), digest)
+            self.assertIn(selected_source_name, output["deck"])
+            historical = (platform.RUNS / run_id / "deck.cir").read_text()
+            self.assertEqual(output["deck"].replace(selected_source_name, old_source_name), historical)
             self.assertEqual(output["static_qa"]["status"], "PASS")
 
     def test_cb_direct_d1_uses_exact_shared_node_sensor_and_canonical_cb_ports(self):
@@ -556,7 +560,7 @@ class DiagonalPlatformTests(unittest.TestCase):
     def test_post_cb_sjtl_mode_adds_exactly_one_canonical_sjtl_on_each_carry_only(self):
         legacy_case, _, _, legacy = rendered("FULL_CB_CHAIN_ALL_CLOCK")
         legacy_deck = (platform.RUNS / "A027_FULL_CB_CHAIN_ALL_CLOCK" / "deck.cir").read_text()
-        self.assertEqual(legacy["deck"], legacy_deck)
+        self.assertEqual(legacy["deck"].replace("bvm_cell_0923_v9_bse.cir", "bvm_cell_0923.cir"), legacy_deck)
         self.assertEqual(legacy_case["CARRY_POST_CB_SJTL_COUNT"], "0")
         self.assertFalse(any(line.startswith("XSJTL_CARRY_D") for line in legacy["deck"].splitlines()))
 
@@ -567,7 +571,8 @@ class DiagonalPlatformTests(unittest.TestCase):
                 ("CARRY_POST_CB_SJTL_3X3_210", "A033_CARRY_POST_CB_SJTL_3X3_210")):
             old_render = rendered(preset)[3]
             old_deck = (platform.RUNS / run_id / "deck.cir").read_text()
-            self.assertEqual(old_render["deck"], old_deck, f"legacy topology drifted: {run_id}")
+            self.assertEqual(old_render["deck"].replace("bvm_cell_0923_v9_bse.cir", "bvm_cell_0923.cir"),
+                             old_deck, f"legacy topology drifted beyond the selected BVM source: {run_id}")
 
         case, stimulus, params, output = rendered("CARRY_POST_CB_SJTL_ALL_200")
         deck = output["deck"].splitlines()
@@ -763,11 +768,11 @@ class DiagonalPlatformTests(unittest.TestCase):
         probe_sha = hashlib.sha256((platform.json.dumps(output["probes"], ensure_ascii=False, indent=2)+"\n").encode()).hexdigest()
         locked_candidate = {"deck_sha256": rendered_deck_sha, "stimulus_sha256": rendered_stim_sha,
                            "probe_sha256": probe_sha}
-        self.assertNotEqual(rendered_deck_sha,
-                            "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364")
+        baseline_deck = rendered("CHAIN_ALL_GLOBAL_CLOCK")[3]["deck"]
+        baseline_sha = hashlib.sha256(baseline_deck.encode("utf-8")).hexdigest()
+        self.assertNotEqual(rendered_deck_sha, baseline_sha)
         self.assertEqual(cb_batch._render_lock_mismatches(output, locked_candidate, output["probes"]), [])
-        wrong_baseline_lock = {**locked_candidate,
-                               "deck_sha256": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364"}
+        wrong_baseline_lock = {**locked_candidate, "deck_sha256": baseline_sha}
         self.assertIn("candidate deck", "; ".join(
             cb_batch._render_lock_mismatches(output, wrong_baseline_lock, output["probes"])))
 

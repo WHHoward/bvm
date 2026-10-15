@@ -41,7 +41,7 @@ MAX_RAW_BYTES = 100_000_000
 
 SOURCE_PATHS = {
     "JJMIT": "circuits/models/jjmit.cir",
-    "BVM": "circuits/bvm/bvm_cell_0923.cir",
+    "BVM": "circuits/bvm/bvm_cell_0923_v9_bse.cir",
     "QB": "circuits/qb/BQ_0928.cir",
     "SJTL": "circuits/sJTL_0923.cir",
     "CB": "circuits/CB/CB_0928.cir",
@@ -49,7 +49,7 @@ SOURCE_PATHS = {
 }
 SOURCE_SHA256 = {
     "JJMIT": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
-    "BVM": "ddf90076d40c0856f73dfcdcd22adeae6eddb7dd650798957a0d6c73953456b7",
+    "BVM": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
     "QB": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
     "SJTL": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
     "CB": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",

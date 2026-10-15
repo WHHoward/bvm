@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 SERIES = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SERIES / "scripts"))
@@ -23,6 +25,66 @@ def rendered_with_set(preset: str, assignment: str):
 
 
 class DiagonalPlatformTests(unittest.TestCase):
+    def test_post_prune_run_id_allocation_uses_manifest_history(self):
+        manifest = json.loads(platform.EXPERIMENT_MANIFEST.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory(prefix="bvm4x4-prune-runs-") as temp:
+            root = Path(temp)
+            runs = root / "runs"
+            runs.mkdir()
+            for run_id in (
+                    "A018_T1_ALL_QUIET", "A019_T1_ALL_PLUSE", "A027_FULL_CB_CHAIN_ALL_CLOCK",
+                    "A030_CARRY_POST_CB_SJTL_ALL_200", "A031_CARRY_POST_CB_SJTL_ALL_210",
+                    "A032_CARRY_POST_CB_SJTL_PAPER_210", "A033_CARRY_POST_CB_SJTL_3X3_210",
+                    "A107_MANUAL_CARRY5_11x13_210"):
+                (runs / run_id).mkdir()
+            manifest_path = root / "experiment_manifest.json"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            with mock.patch.object(platform, "RUNS", runs), \
+                    mock.patch.object(platform, "EXPERIMENT_MANIFEST", manifest_path):
+                self.assertEqual(platform.allocate_run_id("POST_PRUNE"), "A109_POST_PRUNE")
+                self.assertTrue(platform.run_id_is_reserved("A021_CHAIN_ALL_GLOBAL_CLOCK"))
+                self.assertFalse(platform.run_id_is_reserved("A109_POST_PRUNE"))
+                with self.assertRaisesRegex(platform.ConfigError, "already exists"):
+                    platform.run_one({}, {}, {}, {}, run_id_override="A021_CHAIN_ALL_GLOBAL_CLOCK")
+                manifest["authorization_batches"].append({"batch_id": "FUTURE_BATCH",
+                                                          "run_ids": ["A109_FUTURE_CASE"]})
+                manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+                self.assertEqual(platform.allocate_run_id("POST_BATCH_RESERVATION"),
+                                 "A110_POST_BATCH_RESERVATION")
+                self.assertTrue(platform.run_id_is_reserved("A109_FUTURE_CASE"))
+                self.assertFalse(platform._batch_authorizes_run(None, "A109_FUTURE_CASE"))
+                self.assertTrue(platform._batch_authorizes_run("FUTURE_BATCH", "A109_FUTURE_CASE"))
+            empty_runs = root / "empty-runs"
+            empty_runs.mkdir()
+            with mock.patch.object(platform, "RUNS", empty_runs), \
+                    mock.patch.object(platform, "EXPERIMENT_MANIFEST", manifest_path):
+                with self.assertRaisesRegex(platform.ConfigError, "already exist in experiment_manifest"):
+                    platform.run_registered_batch()
+            with tempfile.TemporaryDirectory(prefix="bvm4x4-retired-batch-") as temp:
+                runs = Path(temp) / "runs"
+                runs.mkdir()
+                solver = Path(temp) / "josim-cli-presence-only"
+                solver.write_text("not executed by this test")
+                with mock.patch.object(platform, "RUNS", runs), mock.patch.object(platform, "SOLVER", solver):
+                    with self.assertRaisesRegex(platform.ConfigError, "found A109"):
+                        platform.validate_t1_chain_matrix(write_static_qa=False, run_josim_sanity=False)
+
+    def test_try_dry_run_static_render_needs_no_retired_runs_or_handoff_zips(self):
+        with tempfile.TemporaryDirectory(prefix="bvm4x4-prune-dry-run-") as temp:
+            runs = Path(temp) / "runs"
+            runs.mkdir()
+            for run_id in (
+                    "A018_T1_ALL_QUIET", "A019_T1_ALL_PLUSE", "A027_FULL_CB_CHAIN_ALL_CLOCK",
+                    "A030_CARRY_POST_CB_SJTL_ALL_200", "A031_CARRY_POST_CB_SJTL_ALL_210",
+                    "A032_CARRY_POST_CB_SJTL_PAPER_210", "A033_CARRY_POST_CB_SJTL_3X3_210",
+                    "A107_MANUAL_CARRY5_11x13_210", "A108_MANUAL_CARRY5_3x3_210"):
+                (runs / run_id).mkdir()
+            case, stimulus, t1 = platform.load_config()
+            with mock.patch.object(platform, "RUNS", runs):
+                self.assertEqual(platform.dry_run(case, stimulus, t1), 0)
+            self.assertEqual(len(list(runs.iterdir())), 9)
+            self.assertFalse((runs / "_PREVIEW_ONLY").exists())
+
     def test_diagonal_map_is_exact_partition(self):
         flat = [cell for group in platform.DIAGONALS.values() for cell in group]
         self.assertEqual(len(flat), 16)
@@ -190,24 +252,14 @@ class DiagonalPlatformTests(unittest.TestCase):
         with self.assertRaisesRegex(platform.ConfigError, "comma-separated nonnegative"):
             platform.load_config("BUS400_D3_N1", ["SJTL_COUNT_D3=1,-1,1,1"])
 
-    def test_bus400_pair_is_exact_and_legacy_presets_keep_200u(self):
-        already_executed = any((platform.RUNS / run_id).exists()
-                               for run_id in ("A007_BUS400_D3_N0", "A008_BUS400_D3_N1"))
-        if already_executed:
-            with self.assertRaises(platform.ConfigError):
-                platform.validate_bus400_matrix()
-            outputs = []
-            for preset in platform.BUS400_CASES:
-                case, stimulus, t1 = platform.load_config(preset)
-                outputs.append(platform.render(case, stimulus, t1, platform.RUNS / "_TEST_PREVIEW"))
-            self.assertEqual(outputs[0]["deck"], outputs[1]["deck"])
-            self.assertTrue(all(item["static_qa"]["status"] == "PASS" for item in outputs))
-        else:
-            cases = platform.validate_bus400_matrix()
-            self.assertEqual([item["case"]["CASE"] for item in cases], list(platform.BUS400_CASES))
-            self.assertEqual([item["next_run_id"] for item in cases],
-                             ["A007_BUS400_D3_N0", "A008_BUS400_D3_N1"])
-            self.assertEqual(cases[0]["rendered"]["deck"], cases[1]["rendered"]["deck"])
+    def test_bus400_pair_is_static_and_legacy_ids_are_never_reused(self):
+        outputs = [rendered(preset)[3] for preset in platform.BUS400_CASES]
+        self.assertEqual(outputs[0]["deck"], outputs[1]["deck"])
+        self.assertTrue(all(item["static_qa"]["status"] == "PASS" for item in outputs))
+        self.assertTrue(platform.run_id_is_reserved("A007_BUS400_D3_N0"))
+        self.assertTrue(platform.run_id_is_reserved("A008_BUS400_D3_N1"))
+        with self.assertRaisesRegex(platform.ConfigError, "A007/A008 pair"):
+            platform.validate_bus400_matrix()
         for preset in platform.REGISTERED_CASES:
             case, _stimulus, _t1 = platform.load_config(preset)
             self.assertEqual(case["ROW_WL_WRITE_AMPLITUDE"], "200u")
@@ -342,19 +394,18 @@ class DiagonalPlatformTests(unittest.TestCase):
         self.assertEqual(rendered["static_qa"]["terminal_count"], 0)
         self.assertLess(rendered["static_qa"]["raw_estimate_bytes"], platform.MAX_RAW_BYTES)
 
-    def test_default_cbu_override_uses_selected_v9_bvm_source_for_new_renders(self):
-        old_source_name = "bvm_cell_0923.cir"
-        selected_source_name = "bvm_cell_0923_v9_bse.cir"
-        historical_runs = {
-            "CHAIN_ALL_GLOBAL_CLOCK": "A021_CHAIN_ALL_GLOBAL_CLOCK",
-            "CHAIN_PAPER_GLOBAL_CLOCK": "A022_CHAIN_PAPER_GLOBAL_CLOCK",
+    def test_default_cbu_override_uses_selected_v9_bvm_source_with_frozen_deck_fixture(self):
+        expected_legacy_deck_sha256 = {
+            "CHAIN_ALL_GLOBAL_CLOCK": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
+            "CHAIN_PAPER_GLOBAL_CLOCK": "678b08e181ecaba8b96b81f2798dc949309c76e3f14ead7ea2b7773bb0369364",
         }
-        for preset, run_id in historical_runs.items():
+        for preset, digest in expected_legacy_deck_sha256.items():
             case, stimulus, params, output = rendered(preset)
             self.assertEqual(case["CBU_OVERRIDE_D1"], "NONE")
-            self.assertIn(selected_source_name, output["deck"])
-            historical = (platform.RUNS / run_id / "deck.cir").read_text()
-            self.assertEqual(output["deck"].replace(selected_source_name, old_source_name), historical)
+            self.assertIn("bvm_cell_0923_v9_bse.cir", output["deck"])
+            legacy_path_deck = output["deck"].replace(
+                "bvm_cell_0923_v9_bse.cir", "bvm_cell_0923.cir")
+            self.assertEqual(hashlib.sha256(legacy_path_deck.encode("utf-8")).hexdigest(), digest)
             self.assertEqual(output["static_qa"]["status"], "PASS")
 
     def test_cb_direct_d1_uses_exact_shared_node_sensor_and_canonical_cb_ports(self):
@@ -559,20 +610,24 @@ class DiagonalPlatformTests(unittest.TestCase):
 
     def test_post_cb_sjtl_mode_adds_exactly_one_canonical_sjtl_on_each_carry_only(self):
         legacy_case, _, _, legacy = rendered("FULL_CB_CHAIN_ALL_CLOCK")
-        legacy_deck = (platform.RUNS / "A027_FULL_CB_CHAIN_ALL_CLOCK" / "deck.cir").read_text()
-        self.assertEqual(legacy["deck"].replace("bvm_cell_0923_v9_bse.cir", "bvm_cell_0923.cir"), legacy_deck)
+        old_path_deck = legacy["deck"].replace("bvm_cell_0923_v9_bse.cir", "bvm_cell_0923.cir")
+        self.assertEqual(hashlib.sha256(old_path_deck.encode("utf-8")).hexdigest(),
+                         "c5f323794f0e91dc057e67ef6485979de34cfc11be3b69fb10ba631283e4ca72")
         self.assertEqual(legacy_case["CARRY_POST_CB_SJTL_COUNT"], "0")
         self.assertFalse(any(line.startswith("XSJTL_CARRY_D") for line in legacy["deck"].splitlines()))
 
-        for preset, run_id in (
-                ("CARRY_POST_CB_SJTL_ALL_200", "A030_CARRY_POST_CB_SJTL_ALL_200"),
-                ("CARRY_POST_CB_SJTL_ALL_210", "A031_CARRY_POST_CB_SJTL_ALL_210"),
-                ("CARRY_POST_CB_SJTL_PAPER_210", "A032_CARRY_POST_CB_SJTL_PAPER_210"),
-                ("CARRY_POST_CB_SJTL_3X3_210", "A033_CARRY_POST_CB_SJTL_3X3_210")):
+        expected_decks = {
+            "CARRY_POST_CB_SJTL_ALL_200": "6fc5b132b4b53b391bfe3790d28818c1b8f4c6df66c5e44620360b675edd91f9",
+            "CARRY_POST_CB_SJTL_ALL_210": "f49302c41c7c91c832bd921091462cc97113e4c7ded41aa3a0d60696fcbbf546",
+            "CARRY_POST_CB_SJTL_PAPER_210": "f49302c41c7c91c832bd921091462cc97113e4c7ded41aa3a0d60696fcbbf546",
+            "CARRY_POST_CB_SJTL_3X3_210": "f49302c41c7c91c832bd921091462cc97113e4c7ded41aa3a0d60696fcbbf546",
+        }
+        for preset, digest in expected_decks.items():
             old_render = rendered(preset)[3]
-            old_deck = (platform.RUNS / run_id / "deck.cir").read_text()
-            self.assertEqual(old_render["deck"].replace("bvm_cell_0923_v9_bse.cir", "bvm_cell_0923.cir"),
-                             old_deck, f"legacy topology drifted beyond the selected BVM source: {run_id}")
+            old_path_deck = old_render["deck"].replace(
+                "bvm_cell_0923_v9_bse.cir", "bvm_cell_0923.cir")
+            self.assertEqual(hashlib.sha256(old_path_deck.encode("utf-8")).hexdigest(), digest,
+                             f"legacy deck fixture changed beyond the selected BVM source: {preset}")
 
         case, stimulus, params, output = rendered("CARRY_POST_CB_SJTL_ALL_200")
         deck = output["deck"].splitlines()

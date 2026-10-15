@@ -2641,9 +2641,7 @@ def validate_bus400_matrix() -> list[dict[str, Any]]:
         rendered_cases.append({"case": case, "stimulus": stimulus, "t1_params": t1_params,
                                "rendered": rendered, "next_run_id": allocate_run_id(name)})
 
-    existing_ids = [int(match.group(1)) for path in RUNS.glob("A[0-9][0-9][0-9]_*")
-                    if (match := re.match(r"A(\d{3})_", path.name))]
-    next_number = max(existing_ids, default=0) + 1
+    next_number = next_run_number()
     for offset, item in enumerate(rendered_cases):
         item["next_run_id"] = f"A{next_number + offset:03d}_{item['case']['CASE']}"
 
@@ -2896,9 +2894,65 @@ def run_bus400_batch() -> int:
 
 
 def allocate_run_id(case_name: str) -> str:
-    existing = [int(match.group(1)) for path in RUNS.glob("A[0-9][0-9][0-9]_*")
-                if (match := re.match(r"A(\d{3})_", path.name))]
-    return f"A{max(existing, default=0) + 1:03d}_{case_name}"
+    return f"A{next_run_number():03d}_{case_name}"
+
+
+def _manifest_completed_run_ids() -> set[str]:
+    if not EXPERIMENT_MANIFEST.is_file():
+        return set()
+    data = json.loads(EXPERIMENT_MANIFEST.read_text(encoding="utf-8"))
+    return {item.get("run_id") for item in data.get("runs", [])
+            if isinstance(item, dict) and isinstance(item.get("run_id"), str)}
+
+
+def _manifest_batch_run_ids() -> set[str]:
+    if not EXPERIMENT_MANIFEST.is_file():
+        return set()
+    data = json.loads(EXPERIMENT_MANIFEST.read_text(encoding="utf-8"))
+    ids: set[str] = set()
+    for batch in data.get("authorization_batches", []):
+        if isinstance(batch, dict):
+            ids.update(run_id for run_id in batch.get("run_ids", [])
+                       if isinstance(run_id, str))
+    return ids
+
+
+def _manifest_run_ids() -> set[str]:
+    """Completed and authorized IDs remain reserved after their run folders are pruned."""
+    return _manifest_completed_run_ids() | _manifest_batch_run_ids()
+
+
+def _allocated_run_ids() -> set[str]:
+    ids = _manifest_run_ids()
+    if RUNS.is_dir():
+        ids.update(path.name for path in RUNS.glob("A[0-9][0-9][0-9]_*"))
+    return ids
+
+
+def _run_id_number(run_id: str) -> int | None:
+    match = re.match(r"A(\d{3})_[A-Za-z0-9_.-]+$", run_id)
+    return int(match.group(1)) if match else None
+
+
+def next_run_number() -> int:
+    numbers = [number for run_id in _allocated_run_ids()
+               if (number := _run_id_number(run_id)) is not None]
+    next_number = max(numbers, default=0) + 1
+    if next_number > 999:
+        raise ConfigError("three-digit run ID space is exhausted; refusing to wrap or reuse an ID")
+    return next_number
+
+
+def run_id_is_reserved(run_id: str) -> bool:
+    return run_id in _allocated_run_ids() or (RUNS / run_id).exists()
+
+
+def _batch_authorizes_run(batch_id: str | None, run_id: str) -> bool:
+    if not batch_id or not EXPERIMENT_MANIFEST.is_file():
+        return False
+    data = json.loads(EXPERIMENT_MANIFEST.read_text(encoding="utf-8"))
+    return any(item.get("batch_id") == batch_id and run_id in item.get("run_ids", [])
+               for item in data.get("authorization_batches", []) if isinstance(item, dict))
 
 
 def _write_env(path: Path, values: dict[str, str]) -> None:
@@ -4162,8 +4216,10 @@ def run_one(case: dict[str, str], stimulus: dict[str, str], t1_params: dict[str,
             expected_deck_sha256: str | None = None) -> tuple[int, dict[str, Any]]:
     run_id = run_id_override or allocate_run_id(case["CASE"])
     run_dir = RUNS / run_id
-    if run_dir.exists():
-        raise ConfigError(f"run directory already exists; refusing overwrite: {run_dir}")
+    if run_dir.exists() or run_id in _manifest_completed_run_ids():
+        raise ConfigError(f"run ID already exists in the directory or completed experiment manifest; refusing reuse: {run_id}")
+    if run_id in _manifest_batch_run_ids() and not _batch_authorizes_run(batch_id, run_id):
+        raise ConfigError(f"run ID is reserved for another authorized batch; refusing reuse: {run_id}")
     rendered = rendered_override or render(case, stimulus, t1_params, run_dir)
     if rendered["static_qa"]["raw_estimate_bytes"] >= MAX_RAW_BYTES:
         raise ConfigError("pre-solve storage guard: estimated raw exceeds ordinary single-file limit; no solver invoked")
@@ -4617,6 +4673,11 @@ def preview_bus400_batch() -> int:
 def run_registered_batch() -> int:
     if RUNS.exists() and any(p.is_dir() for p in RUNS.iterdir()):
         raise ConfigError("registered batch is one-shot and requires an empty runs/ directory")
+    reused = [f"A{index:03d}_{name}" for index, name in enumerate(REGISTERED_CASES, start=1)
+              if f"A{index:03d}_{name}" in _manifest_completed_run_ids()]
+    if reused:
+        raise ConfigError("registered batch run IDs already exist in experiment_manifest.json; refusing reuse: "
+                          + ", ".join(reused))
     matrix = validate_registered_matrix()
     if len(matrix) != 6 or [item["case"] for item in matrix] != list(REGISTERED_CASES):
         raise ConfigError("registered matrix differs from the authorized six cases")
@@ -4844,9 +4905,7 @@ def validate_t1_chain_matrix(*, write_static_qa: bool = True,
         raise ConfigError("solver, classic plotter, or shared Plotly asset is missing")
     if not T1_CHAIN_PREFLIGHT.is_file() and not write_static_qa:
         raise ConfigError("chain batch has no locked PREFLIGHT.md")
-    existing = [int(match.group(1)) for path in RUNS.glob("A[0-9][0-9][0-9]_*")
-                if (match := re.match(r"A(\d{3})_", path.name))]
-    first = max(existing, default=0) + 1
+    first = next_run_number()
     if first != 20:
         raise ConfigError(f"registered chain batch expects next immutable run A020; found A{first:03d}")
     if any((RUNS / run_id).exists() for run_id, *_ in T1_CHAIN_RUN_MATRIX):

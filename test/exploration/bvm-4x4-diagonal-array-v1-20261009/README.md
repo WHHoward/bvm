@@ -473,25 +473,33 @@ not connect to one another. The chain mode is an exploratory physical candidate
 and does not establish multiplier function, bit decoding, or a 20 GHz system
 claim.
 
-### Manual-run DELTA submission
+### New-run DELTA submission after history pruning
 
-New unregistered manual runs (`batch_id=null`) are automatically routed by
-`--delta` when they are present in `experiment_manifest.json` but not in the
-latest package checkpoint. Preview, then submit with:
+New manifest runs that are not in the latest checkpoint are automatically
+routed by the default `submit.sh` path or `--delta`. This includes single
+manual runs and complete newly registered batches. After the approved prune,
+the submitter can create a Git-tree checkpoint from the current
+`experiment_manifest.json` and the retained, tracked raw files; it does not
+require the retired A001–A108 handoff ZIPs. The append-only manifest keeps all
+historical run IDs reserved, so removing old run directories cannot recycle
+their A-number. Preview, then submit with:
 
 ```bash
 ./submit.sh <unique-tag> --delta --dry-run
 ./submit.sh <same-tag> --delta
 ```
 
-Use `--manual-runs` instead of `--delta` to explicitly select this route. The
-workflow validates every newly discovered run and raw SHA, commits only the
-run metadata/manifest (raw CSVs are not committed directly), makes one raw ZIP
-per run plus one metadata ZIP, excludes HTML, records the checkpoint for the
-next call, pushes, and verifies the D-drive mirror (`/mnt/d/BVM_Backages`) SHA-256. It
-references prior raw/package identities rather than repackaging them and makes
-no retroactive authorization or scientific claim. Do not combine manual runs
-with an unfinished registered batch; the workflow stops on that ambiguity.
+Use `--manual-runs` to explicitly select this route. The workflow validates
+each new run's raw and QA identity, groups metadata below the size limit, makes
+one raw ZIP per new run plus metadata ZIP(s), excludes HTML, records a new
+checkpoint, pushes, and verifies the D-drive mirror
+(`/mnt/d/BVM_Backages`) SHA-256. Existing retained raw is referenced either by
+the selected Git-tree checkpoint or by the most recent post-prune package
+checkpoint; it is not repackaged. A newly registered batch is packaged only
+when all uncheckpointed run IDs declared by that batch are present. Packaging
+does not grant experiment authorization or make a scientific claim. If no new
+run is pending, `submit.sh` returns `NO_PENDING_RUNS` without consulting
+retired batch manifests or ZIPs.
 
 If the raw CSVs should also be tracked directly in Git after they are already
 present in the ZIP checkpoint, use this separate command. It verifies each raw

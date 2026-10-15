@@ -1060,6 +1060,7 @@ def main() -> int:
             command.append("--no-push")
         if args.message:
             command.extend(["--message", args.message])
+        command.extend(["--mirror-dir", args.mirror_dir])
         return subprocess.run(command, cwd=REPO).returncode
     if args.delta:
         raise RuntimeError("--delta is supported only by the explicitly scoped local submit workflow")

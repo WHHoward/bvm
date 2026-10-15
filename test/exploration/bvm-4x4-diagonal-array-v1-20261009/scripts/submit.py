@@ -310,6 +310,7 @@ C4R28_BASE_PACKAGES = (
 C4R28_MAX_METADATA_GROUP_BYTES = 75_000_000
 C4R28_PACKAGE_FINAL_HEAD = "312a711f2a7b227be739a7bfa7bc2c11b93b6977"
 MANUAL_RUN_CHECKPOINTS_PATH = SERIES / "analysis" / "MANUAL_RUN_DELTA_CHECKPOINTS.json"
+PRUNE_LEGACY_RUN_ID_WATERMARK = 108
 MANUAL_RUN_REQUIRED_FILES = {
     "deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt", "USER_CASE.snapshot.env",
     "STIMULUS.snapshot.env", "T1_PARAMS.snapshot.env", "CBU_PARAMS.snapshot.env",
@@ -5382,10 +5383,100 @@ def _manual_c4r28_bootstrap_checkpoint(root: Any, head: str) -> dict[str, Any]:
             "all_raw_references": sorted(references, key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))}
 
 
+def _git_tree_manual_checkpoint(root: Any, head: str,
+                                prior_checkpoints: list[dict[str, Any]]) -> dict[str, Any]:
+    """Create a read-only checkpoint from retained tracked raws, without a legacy ZIP base."""
+    manifest_rel = (SERIES / "experiment_manifest.json").relative_to(REPO).as_posix()
+    committed = subprocess.run(["git", "show", f"{head}:{manifest_rel}"], cwd=REPO,
+                               capture_output=True, check=False)
+    if committed.returncode != 0:
+        raise RuntimeError("cannot bootstrap a Git-tree checkpoint: experiment_manifest is absent from HEAD")
+    committed_manifest_bytes = committed.stdout
+    committed_manifest = json.loads(committed_manifest_bytes)
+    manifest_sha = hashlib.sha256(committed_manifest_bytes).hexdigest()
+
+    known_run_ids = set()
+    for item in committed_manifest.get("runs", []):
+        run_id = item.get("run_id") if isinstance(item, dict) else None
+        match = re.fullmatch(r"A(\d{3})_[A-Za-z0-9_.-]+", run_id or "")
+        if match and int(match.group(1)) <= PRUNE_LEGACY_RUN_ID_WATERMARK:
+            known_run_ids.add(run_id)
+    for batch in committed_manifest.get("authorization_batches", []):
+        if not isinstance(batch, dict):
+            continue
+        for run_id in batch.get("run_ids", []):
+            match = re.fullmatch(r"A(\d{3})_[A-Za-z0-9_.-]+", run_id or "")
+            if match and int(match.group(1)) <= PRUNE_LEGACY_RUN_ID_WATERMARK:
+                known_run_ids.add(run_id)
+    for checkpoint in prior_checkpoints:
+        known_run_ids.update(run_id for run_id in checkpoint.get("run_ids", [])
+                             if isinstance(run_id, str) and
+                             re.fullmatch(r"A\d{3}_[A-Za-z0-9_.-]+", run_id))
+
+    rows = {item.get("run_id"): item for item in committed_manifest.get("runs", [])
+            if isinstance(item, dict) and item.get("run_id") in known_run_ids}
+    references = []
+    retired_run_ids = []
+    for run_id in sorted(known_run_ids, key=lambda value: int(value[1:4])):
+        row = rows.get(run_id)
+        if row is None:
+            retired_run_ids.append(run_id)
+            continue
+        expected = row.get("raw_sha256")
+        if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
+            raise RuntimeError(f"manifest raw identity is malformed while bootstrapping: {run_id}")
+        raw_rel = f"{SERIES.relative_to(REPO).as_posix()}/runs/{run_id}/raw.csv"
+        raw = REPO / raw_rel
+        if not raw.is_file():
+            retired_run_ids.append(run_id)
+            continue
+        committed_raw_sha = _manual_run_blob_sha(head, raw_rel)
+        if committed_raw_sha is None:
+            raise RuntimeError(f"retained baseline raw is not in the current Git tree: {run_id}")
+        actual = root.sha256(raw)
+        if actual != expected or committed_raw_sha != expected:
+            raise RuntimeError(f"retained baseline raw SHA disagrees with manifest/Git tree: {run_id}")
+        dirty = subprocess.run(["git", "diff", "HEAD", "--", raw_rel], cwd=REPO,
+                                capture_output=True, check=False)
+        if dirty.returncode != 0 or dirty.stdout:
+            raise RuntimeError(f"retained baseline raw is modified in the worktree: {run_id}")
+        references.append({"run_id": run_id, "raw_path": f"runs/{run_id}/raw.csv",
+                           "raw_sha256": expected, "source_package_name": f"git-tree@{head}",
+                           "source_package_sha256": manifest_sha, "source_type": "git_tree",
+                           "source_commit": head})
+
+    virtual_package = {"package_name": f"experiment_manifest.json@{head}",
+                       "package_sha256": manifest_sha, "package_group": "git_tree_baseline",
+                       "source_commit": head, "checkpoint_type": "git_tree"}
+    return {"tag": f"GIT_TREE_PRUNE_BASELINE_{head[:12]}",
+            "checkpoint_type": "git_tree", "source_commit": head,
+            "package_set": [virtual_package], "run_ids": sorted(known_run_ids,
+                key=lambda value: int(value[1:4])), "all_raw_references": references,
+            "retired_raw_run_ids": sorted(retired_run_ids,
+                key=lambda value: int(value[1:4]))}
+
+
+def _verify_git_tree_manual_checkpoint(root: Any, checkpoint: dict[str, Any], head: str) -> None:
+    source_commit = checkpoint.get("source_commit")
+    if not source_commit or subprocess.run(["git", "merge-base", "--is-ancestor", source_commit, head],
+                                            cwd=REPO, check=False).returncode != 0:
+        raise RuntimeError("Git-tree checkpoint source is not an ancestor of current HEAD")
+    manifest_rel = (SERIES / "experiment_manifest.json").relative_to(REPO).as_posix()
+    manifest_bytes = subprocess.run(["git", "show", f"{source_commit}:{manifest_rel}"], cwd=REPO,
+                                    capture_output=True, check=False)
+    if manifest_bytes.returncode != 0 or hashlib.sha256(manifest_bytes.stdout).hexdigest() != \
+            checkpoint["package_set"][0].get("package_sha256"):
+        raise RuntimeError("Git-tree checkpoint manifest identity mismatch")
+    for reference in checkpoint.get("all_raw_references", []):
+        path = f"{SERIES.relative_to(REPO).as_posix()}/{reference['raw_path']}"
+        if _manual_run_blob_sha(source_commit, path) != reference.get("raw_sha256"):
+            raise RuntimeError(f"Git-tree checkpoint raw identity mismatch: {reference.get('run_id')}")
+
+
 def _manual_run_base_checkpoint(root: Any, head: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     registry_path = MANUAL_RUN_CHECKPOINTS_PATH
     if not registry_path.is_file():
-        checkpoint = _manual_c4r28_bootstrap_checkpoint(root, head)
+        checkpoint = _git_tree_manual_checkpoint(root, head, [])
         return checkpoint, [checkpoint]
 
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
@@ -5398,21 +5489,36 @@ def _manual_run_base_checkpoint(root: Any, head: str) -> tuple[dict[str, Any], l
     if (not checkpoint.get("package_set") or not checkpoint.get("all_raw_references") or
             not checkpoint.get("run_ids")):
         raise RuntimeError("latest manual-run checkpoint is incomplete")
-    checkpoint_commit = subprocess.run(
-        ["git", "log", "-1", "--format=%H", "--",
-         registry_path.relative_to(REPO).as_posix()], cwd=REPO, text=True,
-        capture_output=True, check=True).stdout.strip()
-    if not checkpoint_commit or subprocess.run(
-            ["git", "merge-base", "--is-ancestor", checkpoint_commit, head],
-            cwd=REPO, check=False).returncode != 0:
-        raise RuntimeError("latest manual-run checkpoint commit is not an ancestor of current HEAD")
-    _verify_manual_checkpoint_packages(root, checkpoint["package_set"], checkpoint_commit)
+
+    if checkpoint.get("checkpoint_type") == "git_tree":
+        _verify_git_tree_manual_checkpoint(root, checkpoint, head)
+    else:
+        checkpoint_commit = subprocess.run(
+            ["git", "log", "-1", "--format=%H", "--",
+             registry_path.relative_to(REPO).as_posix()], cwd=REPO, text=True,
+            capture_output=True, check=True).stdout.strip()
+        if not checkpoint_commit or subprocess.run(
+                ["git", "merge-base", "--is-ancestor", checkpoint_commit, head],
+                cwd=REPO, check=False).returncode != 0:
+            raise RuntimeError("latest manual-run checkpoint commit is not an ancestor of current HEAD")
+        package_pairs = [(HANDOFF / item["package_name"],
+                          HANDOFF / f"{Path(item['package_name']).stem}_PACKAGE_QA.json")
+                         for item in checkpoint["package_set"]]
+        missing_packages = [(package, qa) for package, qa in package_pairs
+                            if not package.is_file()]
+        if missing_packages:
+            if len(missing_packages) != len(package_pairs):
+                raise RuntimeError("manual-run checkpoint is only partially pruned; refusing a mixed ZIP/Git baseline")
+            checkpoint = _git_tree_manual_checkpoint(root, head, checkpoints)
+            checkpoints = [*checkpoints, checkpoint]
+        else:
+            _verify_manual_checkpoint_packages(root, checkpoint["package_set"], checkpoint_commit)
 
     references = checkpoint["all_raw_references"]
     run_ids = checkpoint["run_ids"]
-    if (len(references) != len(run_ids) or len({item.get("run_id") for item in references}) != len(references) or
-            set(run_ids) != {item.get("run_id") for item in references}):
-        raise RuntimeError("latest manual-run checkpoint raw-reference closure is ambiguous")
+    reference_ids = {item.get("run_id") for item in references}
+    if (len(reference_ids) != len(references) or not reference_ids.issubset(set(run_ids))):
+        raise RuntimeError("manual-run checkpoint raw-reference closure is ambiguous")
     current_manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
     manifest_raw = {item.get("run_id"): item.get("raw_sha256") for item in current_manifest.get("runs", [])}
     if any(manifest_raw.get(item["run_id"]) != item.get("raw_sha256") for item in references):
@@ -5420,24 +5526,30 @@ def _manual_run_base_checkpoint(root: Any, head: str) -> tuple[dict[str, Any], l
     return checkpoint, checkpoints
 
 
+def _run_id_number(run_id: str) -> int | None:
+    match = re.fullmatch(r"A(\d{3})_[A-Za-z0-9_.-]+", run_id)
+    return int(match.group(1)) if match else None
+
+
 def _manual_run_pending_ids(checkpoint: dict[str, Any]) -> tuple[list[str], list[str]]:
     manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
     known = set(checkpoint["run_ids"])
     pending_rows = [item for item in manifest.get("runs", []) if item.get("run_id") not in known]
-    manual = sorted((item.get("run_id") for item in pending_rows if item.get("batch_id") is None),
-                    key=lambda rid: int(rid.split("_", 1)[0][1:]) if isinstance(rid, str) else 0)
-    registered = sorted(item.get("run_id") for item in pending_rows if item.get("batch_id") is not None)
+    order = lambda rid: int(rid.split("_", 1)[0][1:]) if isinstance(rid, str) else 0
+    manual = sorted((item.get("run_id") for item in pending_rows if item.get("batch_id") is None), key=order)
+    registered = sorted((item.get("run_id") for item in pending_rows if item.get("batch_id") is not None), key=order)
     if any(not isinstance(run_id, str) or not re.fullmatch(r"A\d{3}_[A-Za-z0-9_.-]+", run_id)
-           for run_id in manual):
-        raise RuntimeError("new manual run ID is malformed")
+           for run_id in manual + registered):
+        raise RuntimeError("new run ID is malformed")
     return manual, registered
 
 
 def _manual_run_pending_for_auto_route() -> bool:
-    """Avoid sending an unregistered manual run into an unrelated fixed --delta branch."""
+    """Route newly appended manifest runs to the archive-independent run submitter."""
     manifest_path = SERIES / "experiment_manifest.json"
     if not manifest_path.is_file():
         return False
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     registry_path = MANUAL_RUN_CHECKPOINTS_PATH
     if registry_path.is_file():
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
@@ -5446,17 +5558,39 @@ def _manual_run_pending_for_auto_route() -> bool:
             raise RuntimeError("manual-run checkpoint registry is empty")
         known = set(checkpoints[-1].get("run_ids", []))
     else:
-        if git("rev-parse", "HEAD") != C4R28_PACKAGE_FINAL_HEAD:
-            return False
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         known = {item.get("run_id") for item in manifest.get("runs", [])
                  if isinstance(item.get("run_id"), str) and
-                 item["run_id"].startswith("A") and
-                 item["run_id"].split("_", 1)[0][1:].isdigit() and
-                 int(item["run_id"].split("_", 1)[0][1:]) <= 75}
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    return any(item.get("run_id") not in known and item.get("batch_id") is None
-               for item in manifest.get("runs", []))
+                 _run_id_number(item["run_id"]) is not None and
+                 _run_id_number(item["run_id"]) <= PRUNE_LEGACY_RUN_ID_WATERMARK}
+        for batch in manifest.get("authorization_batches", []):
+            if isinstance(batch, dict):
+                known.update(run_id for run_id in batch.get("run_ids", [])
+                             if isinstance(run_id, str) and
+                             _run_id_number(run_id) is not None and
+                             _run_id_number(run_id) <= PRUNE_LEGACY_RUN_ID_WATERMARK)
+    return any(item.get("run_id") not in known for item in manifest.get("runs", []))
+
+
+def _validate_registered_pending_runs(manifest: dict[str, Any], registered_ids: list[str],
+                                      known_ids: set[str]) -> None:
+    if not registered_ids:
+        return
+    rows = {item.get("run_id"): item for item in manifest.get("runs", [])}
+    by_batch: dict[str, set[str]] = {}
+    for run_id in registered_ids:
+        batch_id = rows.get(run_id, {}).get("batch_id")
+        if not isinstance(batch_id, str) or not batch_id:
+            raise RuntimeError(f"registered run has no batch_id: {run_id}")
+        by_batch.setdefault(batch_id, set()).add(run_id)
+    batches = {item.get("batch_id"): item for item in manifest.get("authorization_batches", [])
+               if isinstance(item, dict) and isinstance(item.get("batch_id"), str)}
+    for batch_id, pending_ids in by_batch.items():
+        batch = batches.get(batch_id)
+        expected = set(batch.get("run_ids", [])) if batch else set()
+        pending_expected = expected - known_ids
+        if not expected or pending_ids != pending_expected:
+            raise RuntimeError(f"registered batch {batch_id} is incomplete or mismatched; "
+                               "finish/register the complete authorized run set before submit")
 
 
 def _manual_run_file_set(run_id: str) -> tuple[list[Path], Path]:
@@ -5486,11 +5620,12 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
 
     checkpoint, checkpoint_history = _manual_run_base_checkpoint(root, head)
     manual_ids, registered_ids = _manual_run_pending_ids(checkpoint)
+    if manual_ids and registered_ids:
+        raise RuntimeError("manual and registered-batch runs are mixed; submit each complete run set separately")
+    manual_ids = sorted(manual_ids + registered_ids,
+                        key=lambda run_id: int(run_id.split("_", 1)[0][1:]))
     if not manual_ids:
         return None
-    if registered_ids:
-        raise RuntimeError("pending registered-batch runs are mixed with manual runs; package the registered batch first: " +
-                           ", ".join(registered_ids))
 
     manifest_path = SERIES / "experiment_manifest.json"
     manifest_rel = manifest_path.relative_to(REPO).as_posix()
@@ -5502,9 +5637,12 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
     base_manifest_bytes = subprocess.run(["git", "show", f"{head}:{manifest_rel}"], cwd=REPO,
                                          capture_output=True, check=True).stdout
     base_manifest = json.loads(base_manifest_bytes)
-    expected_count = int(base_manifest.get("physical_solve_count", -1)) + len(manual_ids)
+    _validate_registered_pending_runs(current_manifest, registered_ids, set(checkpoint["run_ids"]))
+    base_manifest_run_ids = {item.get("run_id") for item in base_manifest.get("runs", [])}
+    not_yet_committed = set(manual_ids) - base_manifest_run_ids
+    expected_count = int(base_manifest.get("physical_solve_count", -1)) + len(not_yet_committed)
     if int(current_manifest.get("physical_solve_count", -2)) != expected_count:
-        raise RuntimeError("experiment_manifest physical_solve_count does not increase by exactly the pending manual run count")
+        raise RuntimeError("experiment_manifest physical_solve_count does not match the pending run set")
 
     base_raw_refs = checkpoint["all_raw_references"]
     base_raw_by_id = {item["run_id"]: item["raw_sha256"] for item in base_raw_refs}
@@ -5620,6 +5758,7 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
             "schema": "bvm4x4-manual-run-delta-v1", "package_type": "manual_run_delta",
             "tag": tag, "package_group": group_name, "base_commit": head,
             "base_checkpoint_tag": checkpoint["tag"],
+            "base_checkpoint_type": checkpoint.get("checkpoint_type", "package_delta"),
             "base_package_name": base_package["package_name"],
             "base_package_sha256": base_package["package_sha256"],
             "base_package_set": prior_packages, "base_run_packages": base_raw_refs,
@@ -5629,6 +5768,8 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
             "referenced_existing_cases": references,
             "referenced_existing_raw_sha256": references,
             "raw_sha256_by_run": raw_map, "new_run_ids": manual_ids,
+            "registered_batch_ids": sorted({current_rows[run_id].get("batch_id") for run_id in manual_ids
+                                             if current_rows[run_id].get("batch_id")}),
             "included_run_ids": included_run_ids,
             "new_raw_sha256_by_run": new_raw_by_run,
             "new_physical_solve_count": solve_count,
@@ -5639,8 +5780,8 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
         }
         extra = {
             "DELTA_MANIFEST.json": (json.dumps(delta, ensure_ascii=False, indent=2) + "\n").encode(),
-            "README.txt": (f"Manual-run DELTA package for {', '.join(manual_ids)}.\n"
-                           "Previously checkpointed raw files are referenced by exact package and raw SHA-256; "
+            "README.txt": (f"New-run DELTA package for {', '.join(manual_ids)}.\n"
+                           "Previously retained raw files are referenced by Git-tree or package identity and raw SHA-256; "
                            "they are not recopied.\nGenerated HTML remains local. No solver or scientific "
                            "interpretation was performed by this packaging task.\n").encode(),
         }
@@ -5690,14 +5831,22 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
     stage_paths.update(relpath for _path, relpath in workflow_paths)
     return specs, {"checkpoint": checkpoint, "checkpoint_history": checkpoint_history,
                    "references": references, "run_ids": manual_ids, "new_raw_by_run": new_raw_by_run,
+                   "known_run_ids": sorted(set(checkpoint["run_ids"]) |
+                                            {item.get("run_id") for item in current_manifest.get("runs", [])
+                                             if isinstance(item.get("run_id"), str)},
+                                            key=lambda value: int(value[1:4])),
                    "pre_commit_head": head, "workflow_paths": [rel for _path, rel in workflow_paths],
                    "workflow_path_pairs": [(str(path), rel) for path, rel in workflow_paths],
                    "evidence_paths": sorted(stage_paths - {rel for _path, rel in workflow_paths}),
                    "stage_paths": sorted(stage_paths),
                    "plan": {"package_mode": "MANUAL_RUN_DELTA", "tag": tag,
                             "base_commit": head, "base_checkpoint_tag": checkpoint["tag"],
+                            "base_checkpoint_type": checkpoint.get("checkpoint_type", "package_delta"),
                             "base_package_set": prior_packages,
                             "referenced_existing_raw_count": len(references),
+                            "registered_batch_ids": sorted({current_rows[run_id].get("batch_id")
+                                                             for run_id in manual_ids
+                                                             if current_rows[run_id].get("batch_id")}),
                             "new_run_ids": manual_ids, "new_physical_solve_count": len(manual_ids),
                             "solver_invocations_this_task": 0,
                             "manifest_count": current_manifest.get("physical_solve_count"),
@@ -5788,7 +5937,8 @@ def submit_manual_run_delta(args: argparse.Namespace, root: Any,
         new_refs.append({"run_id": actual_run_id, "raw_path": f"runs/{actual_run_id}/raw.csv",
                          "raw_sha256": context["new_raw_by_run"][actual_run_id],
                          "source_package_name": Path(result["path"]).name,
-                         "source_package_sha256": result["sha256"]})
+                         "source_package_sha256": result["sha256"], "source_type": "package",
+                         "source_commit": source_head})
     new_refs.sort(key=lambda item: int(item["run_id"].split("_", 1)[0][1:]))
     current_registry = {"schema": "bvm4x4-manual-run-delta-checkpoints-v1",
                         "checkpoints": context["checkpoint_history"]}
@@ -5799,10 +5949,11 @@ def submit_manual_run_delta(args: argparse.Namespace, root: Any,
                          "package_sha256": item["sha256"], "package_bytes": item["bytes"],
                          "source_commit": source_head} for item in results],
         "new_run_ids": context["run_ids"],
-        "run_ids": sorted({item["run_id"] for item in new_refs},
-                           key=lambda rid: int(rid.split("_", 1)[0][1:])),
+        "run_ids": context["known_run_ids"],
         "new_raw_sha256_by_run": context["new_raw_by_run"],
         "all_raw_references": new_refs,
+        "checkpoint_type": "package_delta",
+        "base_checkpoint_type": context["checkpoint"].get("checkpoint_type", "package_delta"),
         "new_physical_solve_count": len(context["run_ids"]),
         "solver_invocations_this_task": 0, "html_included": False,
         "authorization_status": "NOT_ASSERTED_BY_PACKAGING",
@@ -5850,22 +6001,19 @@ def checkpointed_raw_git_plan(root: Any) -> dict[str, Any]:
     if git("diff", "--cached", "--name-only"):
         raise RuntimeError("checkpointed raw tracking refuses pre-staged changes")
 
-    registry = json.loads(MANUAL_RUN_CHECKPOINTS_PATH.read_text(encoding="utf-8"))
-    if registry.get("schema") != "bvm4x4-manual-run-delta-checkpoints-v1" or not registry.get("checkpoints"):
-        raise RuntimeError("manual-run checkpoint registry is missing or invalid")
-    checkpoint = registry["checkpoints"][-1]
+    checkpoint, _history = _manual_run_base_checkpoint(root, head)
     run_ids = checkpoint.get("run_ids", [])
     references = checkpoint.get("all_raw_references", [])
     reference_by_run = {item.get("run_id"): item for item in references}
     if (not run_ids or not references or len(reference_by_run) != len(references) or
-            set(run_ids) != set(reference_by_run)):
+            not set(reference_by_run).issubset(set(run_ids))):
         raise RuntimeError("latest checkpoint does not identify a unique complete raw-reference closure")
 
     experiment = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
     manifest_rows = {item.get("run_id"): item for item in experiment.get("runs", [])}
     files = []
     already_tracked_count = 0
-    for run_id in run_ids:
+    for run_id in sorted(reference_by_run, key=lambda value: int(value[1:4])):
         reference = reference_by_run[run_id]
         raw_rel = reference.get("raw_path")
         expected = reference.get("raw_sha256")
@@ -5900,15 +6048,20 @@ def checkpointed_raw_git_plan(root: Any) -> dict[str, Any]:
         if (not isinstance(package_name, str) or Path(package_name).name != package_name or
                 not isinstance(package_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", package_sha)):
             raise RuntimeError(f"checkpoint raw package reference is malformed: {run_id}")
-        package = HANDOFF / package_name
-        package_qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
-        package_qa = root.verify_existing_bundle(package, package_qa_path)
-        raw_member = f"{SERIES.relative_to(REPO).as_posix()}/{raw_rel}"
-        if (package_qa.get("package_sha256") != package_sha or
-                package_qa.get("raw_sha256_by_run", {}).get(run_id) != expected or
-                package_qa.get("included_file_sha256", {}).get(raw_member) != expected or
-                package_qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
-            raise RuntimeError(f"checkpointed raw ZIP does not attest the exact raw bytes: {run_id}")
+        if reference.get("source_type") == "git_tree" or package_name.startswith("git-tree@"):
+            source_commit = reference.get("source_commit")
+            if not source_commit or _manual_run_blob_sha(source_commit, rel) != expected:
+                raise RuntimeError(f"Git-tree checkpoint does not attest the exact raw bytes: {run_id}")
+        else:
+            package = HANDOFF / package_name
+            package_qa_path = HANDOFF / f"{Path(package_name).stem}_PACKAGE_QA.json"
+            package_qa = root.verify_existing_bundle(package, package_qa_path)
+            raw_member = f"{SERIES.relative_to(REPO).as_posix()}/{raw_rel}"
+            if (package_qa.get("package_sha256") != package_sha or
+                    package_qa.get("raw_sha256_by_run", {}).get(run_id) != expected or
+                    package_qa.get("included_file_sha256", {}).get(raw_member) != expected or
+                    package_qa.get("reopened_zip_crc_and_member_hashes_pass") is not True):
+                raise RuntimeError(f"checkpointed raw ZIP does not attest the exact raw bytes: {run_id}")
 
         attribute = subprocess.run(["git", "check-attr", "filter", "--", rel], cwd=REPO,
                                    text=True, capture_output=True, check=True).stdout.strip()
@@ -5982,6 +6135,36 @@ def submit_checkpointed_raws(args: argparse.Namespace, root: Any) -> int:
     return 0
 
 
+def _print_no_pending_runs(tag: str) -> int:
+    print(json.dumps({"status": "NO_PENDING_RUNS", "tag": tag,
+                      "physical_solve_count": 0, "package_created": False,
+                      "solver_invocations": 0}, ensure_ascii=False, indent=2))
+    return 0
+
+
+def _legacy_package_names(value: Any) -> set[str]:
+    if isinstance(value, (tuple, list)):
+        return set().union(*(_legacy_package_names(item) for item in value)) if value else set()
+    if isinstance(value, str) and value.lower().endswith(".zip"):
+        return {value}
+    return set()
+
+
+def _require_legacy_submit_inputs(mode: str, run_ids: tuple[str, ...], package_specs: Any = ()) -> None:
+    missing_runs = [run_id for run_id in run_ids if not (RUNS / run_id).is_dir()]
+    package_names = _legacy_package_names(package_specs)
+    missing_packages = [name for name in sorted(package_names) if not (HANDOFF / name).is_file()]
+    if missing_runs or missing_packages:
+        details = []
+        if missing_runs:
+            details.append(f"missing run dirs ({len(missing_runs)}): {', '.join(missing_runs[:6])}")
+        if missing_packages:
+            details.append(f"missing ZIPs ({len(missing_packages)}): {', '.join(missing_packages[:4])}")
+        raise RuntimeError(f"legacy submit mode {mode} is unavailable for retired inputs; "
+                           + "; ".join(details)
+                           + ". Use the default new-run submit path for new experiments.")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Submit/package only this 4x4 experiment scope")
     parser.add_argument("tag")
@@ -6018,47 +6201,45 @@ def main() -> int:
             if (args.d3_carry_timing or args.d3_manual_supplement or args.carry4_manual_supplement or
                     args.carry4_functional_28 or args.metadata_v2):
                 raise RuntimeError("--manual-runs cannot be combined with another fixed package mode")
+            if not _manual_run_pending_for_auto_route():
+                return _print_no_pending_runs(args.tag)
             return submit_manual_run_delta(args, root)
         if args.carry4_functional_28:
             if args.delta or args.d3_carry_timing or args.d3_manual_supplement or args.carry4_manual_supplement or args.metadata_v2:
                 raise RuntimeError("--carry4-functional-28 cannot be combined with other package modes")
+            c4r28_ids = tuple(f"A{i:03d}_C4R28_210_{a}x{b}"
+                              for i, (a, b) in enumerate(C4R28_PAIRS, start=48))
+            _require_legacy_submit_inputs("--carry4-functional-28", c4r28_ids, C4R28_BASE_PACKAGES)
             return submit_c4r28_functional_delta(args, root)
         if args.carry4_manual_supplement:
             if args.delta or args.d3_carry_timing or args.d3_manual_supplement or args.metadata_v2:
                 raise RuntimeError("--carry4-manual-supplement cannot be combined with other package modes")
+            _require_legacy_submit_inputs("--carry4-manual-supplement",
+                                          CARRY4_SUPPLEMENT_RUN_IDS, CARRY4_SUPPLEMENT_BASE_PACKAGES)
             return submit_carry4_manual_supplement(args, root)
         if args.d3_manual_supplement:
             if args.delta or args.d3_carry_timing or args.metadata_v2:
                 raise RuntimeError("--d3-manual-supplement cannot be combined with other package modes")
+            _require_legacy_submit_inputs("--d3-manual-supplement",
+                                          D3_MANUAL_SUPPLEMENT_RUN_IDS, D3_MANUAL_SUPPLEMENT_BASE_PACKAGES)
             return submit_d3_manual_supplement(args, root)
         if args.d3_carry_timing:
             if args.delta or args.metadata_v2:
                 raise RuntimeError("--d3-carry-timing cannot be combined with --delta or --metadata-v2")
+            _require_legacy_submit_inputs("--d3-carry-timing",
+                                          CARRY_D3_TIMING_RUN_IDS, CARRY_D3_TIMING_BASE_PACKAGES)
             return submit_d3_carry_timing_delta(args, root)
         if args.delta:
             if args.metadata_v2:
                 raise RuntimeError("--delta and --metadata-v2 are mutually exclusive")
             if _manual_run_pending_for_auto_route():
                 return submit_manual_run_delta(args, root)
-            carry_sjtl_position_batch = CARRY_SJTL_POSITION_TASK / "attempts" / "003" / "BATCH_MANIFEST.json"
-            if carry_sjtl_position_batch.is_file():
-                return submit_carry_sjtl_position_delta(args, root)
-            carry_post_cb_sjtl_batch = CARRY_POST_CB_SJTL_TASK / "BATCH_MANIFEST.json"
-            if carry_post_cb_sjtl_batch.is_file():
-                return submit_carry_post_cb_sjtl_delta(args, root)
-            carry_buffer_all_batch = CB_CARRY_BUFFER_ALL_TASK / "BATCH_MANIFEST.json"
-            if carry_buffer_all_batch.is_file():
-                return submit_cb_carry_buffer_all_delta(args, root)
-            carry_buffer_batch = (CB_CARRY_BUFFER_D1_TASK / "BATCH_MANIFEST.json")
-            if carry_buffer_batch.is_file():
-                return submit_cb_carry_buffer_d1_delta(args, root)
-            cb_direct_batch = (SERIES / "analysis/cb-direct-d1-20261009/attempts/002/BATCH_MANIFEST.json")
-            if cb_direct_batch.is_file():
-                return submit_cb_direct_d1_delta(args, root)
-            chain_manifest = SERIES / "analysis" / "t1-chain-20261009" / "BATCH_MANIFEST.json"
-            if chain_manifest.is_file():
-                return submit_t1_chain_delta(args, root)
-            return submit_delta(args, root)
+            return _print_no_pending_runs(args.tag)
+        if not args.metadata_v2 and _manual_run_pending_for_auto_route():
+            return submit_manual_run_delta(args, root)
+        if not args.metadata_v2:
+            return _print_no_pending_runs(args.tag)
+        _require_legacy_submit_inputs("--metadata-v2", tuple(LEGACY_RUN_IDS))
         validate_scope()
         if args.metadata_v2:
             return submit_metadata_v2(args, root)

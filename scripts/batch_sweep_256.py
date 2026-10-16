@@ -515,6 +515,8 @@ def _check_scope() -> None:
         "test/exploration/sfq_clock_two_read_v1/USER_CASE.env",
         f"{runs_prefix}run_index.json",
         f"{runs_prefix}FULL256_SE375_INDEX.csv",
+        "test/exploration/sfq_clock_two_read_v1/experiment.yaml",
+        "test/exploration/sfq_clock_two_read_v1/FULL256_PREFLIGHT.md",
     }
     outside = []
     for path in _status_paths():

@@ -607,6 +607,28 @@ def validate_rendered(config: dict[str, str], scenarios: list[dict[str, Any]],
         "THmitll_DFF": _subckt_elements(source_texts["09_DFF.cir"], "THmitll_DFF"),
         "D0_JTL": _subckt_elements(source_texts["10_d0_jtl_tunable.cir"], "D0_JTL"),
     }
+    subckt_pins: dict[str, tuple[str, ...]] = {}
+    for text in source_texts.values():
+        for line in text.splitlines():
+            fields = line.strip().split()
+            if len(fields) >= 2 and fields[0].lower() == ".subckt":
+                subckt_pins[fields[1]] = tuple(fields[2:])
+    top_nodes: set[str] = set()
+    top_elements: set[str] = set()
+    for line in base_lines:
+        fields = line.strip().split()
+        if not fields or fields[0].startswith(("*", ".")):
+            continue
+        name = fields[0]
+        top_elements.add(name.upper())
+        if name.upper().startswith("X"):
+            pins = subckt_pins.get(fields[-1])
+            if pins is None:
+                raise V9ConfigError(f"top-level instance references unknown source model: {line}")
+            top_nodes.update(fields[1:1 + len(pins)])
+        elif len(fields) >= 3:
+            top_nodes.update(fields[1:3])
+    stimulus_elements = set(_active_sources(rendered[0]["stimulus_text"]))
     for item in rendered[0]["probes"]["signals"]:
         match = re.fullmatch(r"[PVI]\(([^|)]+)\|([^|)]+)\)", item["label"])
         if match:
@@ -615,8 +637,11 @@ def validate_rendered(config: dict[str, str], scenarios: list[dict[str, Any]],
             if model is None or element.upper() not in internal_elements.get(model, set()):
                 raise V9ConfigError(f"unresolved hierarchical probe: {item['label']}")
         else:
+            voltage_match = re.fullmatch(r"V\(([^()]+)\)", item["label"])
+            if voltage_match and voltage_match.group(1) not in top_nodes:
+                raise V9ConfigError(f"unresolved top-level node probe: {item['label']}")
             source_match = re.fullmatch(r"I\(([^()]+)\)", item["label"])
-            if source_match and source_match.group(1) not in _active_sources(rendered[0]["stimulus_text"]):
+            if source_match and source_match.group(1) not in top_elements | stimulus_elements:
                 raise V9ConfigError(f"unresolved stimulus current probe: {item['label']}")
 
     if len(scenarios) == 4 and [item["expected_product"] for item in scenarios] != [0, 1, 143, 225]:

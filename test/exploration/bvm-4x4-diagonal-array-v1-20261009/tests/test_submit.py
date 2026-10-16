@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 SERIES = Path(__file__).resolve().parents[1]
@@ -18,6 +19,19 @@ SPEC.loader.exec_module(submit)
 
 
 class DeltaPackageTests(unittest.TestCase):
+    def test_v9_run_evidence_closure_is_distinct_from_legacy_manual_runs(self):
+        run_id = "A109_V9_A0_B0_80P68"
+        with tempfile.TemporaryDirectory(prefix="bvm4x4-v9-submit-closure-") as temp:
+            runs = Path(temp) / "runs"
+            run_dir = runs / run_id
+            run_dir.mkdir(parents=True)
+            for name in submit.V9_MANUAL_RUN_REQUIRED_FILES:
+                (run_dir / name).write_text("fixture-only\n", encoding="utf-8")
+            with mock.patch.object(submit, "RUNS", runs):
+                files, raw = submit._manual_run_file_set(run_id)
+            self.assertEqual(raw, run_dir / "raw.csv")
+            self.assertEqual({path.name for path in files}, submit.V9_MANUAL_RUN_REQUIRED_FILES)
+
     def test_delta_closure_adds_a017_to_a019_after_a013_to_a016_checkpoint(self):
         self.assertEqual(submit.DELTA_RUN_IDS, (
             "A017_PAPER_1101_1101", "A018_T1_ALL_QUIET", "A019_T1_ALL_PLUSE"))

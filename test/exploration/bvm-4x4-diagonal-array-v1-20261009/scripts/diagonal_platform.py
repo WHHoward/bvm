@@ -3702,6 +3702,41 @@ def _plotter_module() -> Any:
 def plot_signals(probes: dict[str, Any]) -> list[dict[str, Any]]:
     labels = {item["label"]: item for item in probes["signals"]}
     profile = probes["profile"]
+    if profile == "v9_focus":
+        outputs = [*(f"I(I_WL_R{i})" for i in range(1, 5)),
+                   *(f"I(I_BL_C{i})" for i in range(1, 5)),
+                   *(f"I(I_SE_R{i})" for i in range(1, 5)),
+                   *(f"V(S_D{i}_OUT)" for i in range(7)), "V(DFF_O)"]
+        clocks = [*(f"V(CLK_D{i})" for i in range(7)), "V(CLK_DFF)"]
+        data = [*(f"V(T1_I_D{i})" for i in range(7)), "V(DFF_IN)"]
+        sum_carry = [*(f"V(S_D{i})" for i in range(7)), *(f"V(C_D{i})" for i in range(6))]
+        timing = [*clocks, *data, *sum_carry]
+        focus = [*(f"V(SL_{cell})" for cell in ("R1C1", "R2C2", "R3C3", "R4C4")),
+                 *(f"V(MERGE_D3_L{level})" for level in range(1, 5)),
+                 "P(BJ1|XCB_D3_L4)", "V(BJ1|XCB_D3_L4)",
+                 "V(CARRY_CB_IN_D3)", "P(BJ1|XCB_CARRY_D3)", "V(BJ1|XCB_CARRY_D3)",
+                 *(f"P(BJ1|XSJTL_CARRY_D3{f'_S{serial}' if serial > 1 else ''})"
+                   for serial in range(1, 6)),
+                 *(f"V(BJ1|XSJTL_CARRY_D3{f'_S{serial}' if serial > 1 else ''})"
+                   for serial in range(1, 6)),
+                 *(f"V(CARRY_SJTL_MID_D3_S{serial})" for serial in range(1, 5)),
+                 "V(T1_I_D3)", "V(CLK_D3)", "V(S_D3)", "V(C_D3)",
+                 "P(B_J9|XT1_D3)", "V(B_J9|XT1_D3)",
+                 "P(B_J11|XT1_D3)", "V(B_J11|XT1_D3)",
+                 "V(DFF_IN)", "V(CLK_DFF)", "V(DFF_O)"]
+        pages = [
+            {"file": "01_excitation_and_outputs.html", "title": "V9 shared WL/BL/SE excitation and the eight product outputs",
+             "signals": outputs},
+            {"file": "02_clock_data_timing.html", "title": "V9 timing — internal CLK, T1/DFF data inputs, Sum and Carry boundaries",
+             "signals": timing},
+            {"file": "03_v9_chain_focus.html", "title": "V9 focus D3 — BVM/QB boundaries, array CB, five Carry sJTLs, carry CB, T1 and DFF",
+             "signals": focus},
+        ]
+        for page in pages:
+            missing = [signal for signal in page["signals"] if signal not in labels]
+            if missing:
+                raise ConfigError(f"V9 plot page {page['file']} requests missing probes: {missing}")
+        return pages
     if profile == "t1_chain_focus":
         if probes.get("carry_sjtl_count", 0) > 0:
             sjtl_stages = {int(item[1:]) for item in probes.get("carry_sjtl_stages", [])}

@@ -1,5 +1,33 @@
 # BVM 4×4 diagonal-array platform
 
+## V9 shared-row-SE / shared-column-BL path (2026-10-16)
+
+The explicit V9 runner reuses this platform directory and the current
+`USER_CASE.env`; it does not rewrite the legacy runner/presets or historical
+runs. Edit the namespaced `V9_*` settings to preview one A/B mapping:
+
+```bash
+./try.sh --v9-case --dry-run
+```
+
+The registered first batch is fixed to `(0,0)`, `(1,1)`, `(11,13)`, `(15,15)`;
+all cases use three reads at 110/190/270 ps and CLK PWL starts at
+178/258/338 ps. Inspect its complete preflight before running:
+
+```bash
+./try.sh --v9-multiply-batch --dry-run
+./try.sh --v9-multiply-batch
+```
+
+This mode uses four shared WL rows, four shared BL columns, four shared SE rows,
+the hash-pinned current V9 deck/source closure, and classic `josim-plot2.py`
+figures. The first page places the shared WL/BL/SE excitation traces and the
+eight product outputs in the same classic stacked plot. A dry-run creates no run
+directory and never invokes JoSIM. There is no automatic 256-case physical sweep.
+The current evidence contract has no frozen
+event classifier/Gate, so raw event counts and observed arithmetic bits remain
+UNKNOWN/INCONCLUSIVE until separate scientific review.
+
 This render-first platform maps 16 independent `BVM → QB` cells onto seven
 ascending-row serial diagonal chains. It uses the canonical BVM, QB, sJTL, CB,
 and shared jjmit model without modifying their sources. In

@@ -320,6 +320,14 @@ MANUAL_RUN_REQUIRED_FILES = {
     "raw_qa.json", "chain_qa.json", "qa.json", "plot_manifest.json", "plot_qa.json",
     "result.json", "RESULT_BRIEF.md",
 }
+V9_MANUAL_RUN_REQUIRED_FILES = {
+    "deck.cir", "raw.csv", "run.log", "stdout.txt", "stderr.txt", "USER_CASE.snapshot.env",
+    "V9_CONFIG.snapshot.env", "stimulus.inc", "CASE_CONFIG.json", "RUN_MANIFEST.json",
+    "metadata.json", "provenance.json", "source_manifest.json", "topology_manifest.json",
+    "probe_manifest.json", "stimulus_manifest.json", "static_qa.json", "metrics.json",
+    "raw_qa.json", "chain_qa.json", "qa.json", "plot_manifest.json", "plot_qa.json",
+    "result.json", "RESULT_BRIEF.md", "functional_results.csv", "clock_timing.csv",
+}
 MANUAL_RUN_METADATA_GROUP_BYTES = 75_000_000
 CARRY_POST_CB_SJTL_BASE_COMMIT = "a5168f187e97b23685863d3d0964e898bbf19863"
 CARRY_POST_CB_SJTL_BASE_SOURCE_HEAD = "71a38854f1b08e878aeb7c93e07340a17334371b"
@@ -5600,7 +5608,8 @@ def _manual_run_file_set(run_id: str) -> tuple[list[Path], Path]:
     files = sorted(path for path in run_dir.rglob("*") if path.is_file() and not path.is_symlink()
                    and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"}
                    and "__pycache__" not in path.parts and "handoff" not in path.parts)
-    missing = MANUAL_RUN_REQUIRED_FILES - {path.name for path in files}
+    required = V9_MANUAL_RUN_REQUIRED_FILES if re.fullmatch(r"A\d{3}_V9_[A-Za-z0-9_.-]+", run_id) else MANUAL_RUN_REQUIRED_FILES
+    missing = required - {path.name for path in files}
     raw = run_dir / "raw.csv"
     if missing or not raw.is_file() or raw.is_symlink():
         raise RuntimeError(f"manual run evidence closure incomplete for {run_id}; missing={sorted(missing)}")
@@ -5697,6 +5706,22 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
             workflow_paths.append((path, relpath))
     workflow_sha256 = {relpath: root.sha256(path) for path, relpath in workflow_paths}
     base_metadata_sources = [(manifest_path, manifest_rel), *workflow_paths]
+    v9_batch_ids = {current_rows[run_id].get("batch_id") for run_id in registered_ids
+                    if current_rows.get(run_id, {}).get("batch_id", "").startswith("BVM4X4_V9_MULTIPLY_")}
+    if v9_batch_ids:
+        if len(v9_batch_ids) != 1:
+            raise RuntimeError("V9 manual-run DELTA must contain exactly one complete registered batch")
+        task_analysis = SERIES / "analysis" / "bvm4x4-v9-multiply-20261016"
+        if not task_analysis.is_dir():
+            raise RuntimeError("V9 task-level analysis/provenance directory is missing")
+        task_files = sorted(path for path in task_analysis.rglob("*")
+                            if path.is_file() and not path.is_symlink()
+                            and path.suffix.lower() not in {".html", ".pyc", ".tmp", ".zip"}
+                            and "__pycache__" not in path.parts and "handoff" not in path.parts)
+        if not task_files:
+            raise RuntimeError("V9 task-level analysis directory contains no packageable evidence")
+        base_metadata_sources.extend((path, path.relative_to(REPO).as_posix()) for path in task_files)
+        evidence_paths.update(task_files)
     base_metadata_bytes = sum(path.stat().st_size for path, _member in base_metadata_sources)
     if base_metadata_bytes >= MANUAL_RUN_METADATA_GROUP_BYTES:
         raise RuntimeError("manual-run manifest/workflow metadata exceeds the package group size limit")
@@ -5859,17 +5884,20 @@ def submit_manual_run_delta(args: argparse.Namespace, root: Any,
     specs, context = prepared if prepared is not None else manual_run_delta_specs(args.tag, root)
     if specs is None:
         raise RuntimeError("no new uncheckpointed manual runs are available")
-    mirror_dir = Path(args.mirror_dir).expanduser().resolve()
-    if not mirror_dir.is_dir():
-        raise RuntimeError(f"BVM package mirror is not accessible: {mirror_dir}")
     collisions = [str(path) for spec in specs for path in (spec["target"], spec["qa_path"]) if path.exists()]
-    collisions.extend(str(mirror_dir / spec["name"]) for spec in specs if (mirror_dir / spec["name"]).exists())
+    mirror_dir = None if args.no_mirror else Path(args.mirror_dir).expanduser().resolve()
+    if mirror_dir is not None:
+        if not mirror_dir.is_dir():
+            raise RuntimeError(f"BVM package mirror is not accessible: {mirror_dir}")
+        collisions.extend(str(mirror_dir / spec["name"]) for spec in specs if (mirror_dir / spec["name"]).exists())
     if collisions:
         raise FileExistsError("refusing immutable manual-run package overwrite: " + ", ".join(collisions))
     if args.dry_run:
         print(json.dumps({"status": "DRY_RUN_PASS", **context["plan"],
                           "source_paths_to_commit": context["stage_paths"],
-                          "mirror_dir": str(mirror_dir), "push_target": "bvm/master",
+                          "mirror_dir": str(mirror_dir) if mirror_dir else None,
+                          "mirror_status": "SKIPPED_BY_USER_SCOPE" if args.no_mirror else "PENDING",
+                          "push_target": "bvm/master",
                           "no_files_modified": True}, ensure_ascii=False, indent=2))
         return 0
 
@@ -5975,7 +6003,8 @@ def submit_manual_run_delta(args: argparse.Namespace, root: Any,
     if not args.no_push:
         subprocess.run(["git", "push"], cwd=REPO, check=True)
         push_status = "PASS"
-    mirror = root.copy_mirror([spec["target"] for spec in specs], mirror_dir)
+    mirror = ({"status": "SKIPPED_BY_USER_SCOPE", "reason": "current task excludes D:/Drive mirrors"}
+              if args.no_mirror else root.copy_mirror([spec["target"] for spec in specs], mirror_dir))
     print(json.dumps({"status": "MANUAL_RUN_DELTA_SUBMIT_COMPLETE",
                       "source_commit": source_head, "final_commit": git("rev-parse", "HEAD"),
                       "push": push_status, "packages": results,
@@ -6170,6 +6199,8 @@ def main() -> int:
     parser.add_argument("tag")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--no-push", action="store_true")
+    parser.add_argument("--no-mirror", action="store_true",
+                        help="do not copy packages to D:/Drive mirror; supported for the manual-run DELTA path")
     parser.add_argument("--delta", action="store_true",
                         help="append the completed batch to its verified checkpoint using the local DELTA workflow")
     parser.add_argument("--d3-carry-timing", action="store_true",
@@ -6190,6 +6221,8 @@ def main() -> int:
     parser.add_argument("--mirror-dir", default=str(MIRROR_DEFAULT))
     args = parser.parse_args()
     try:
+        if args.no_mirror and not args.manual_runs:
+            raise RuntimeError("--no-mirror is currently supported only with --manual-runs")
         root = load_root_submit()
         if args.track_packaged_raws:
             if (args.delta or args.d3_carry_timing or args.d3_manual_supplement or

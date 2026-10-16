@@ -1,0 +1,536 @@
+{
+  "schema": "bvm4x4-v9-work-unit-source-manifest-v1",
+  "reference_deck_sha256": "474a254f4511fb46bea6afd36500aa28111323f23f1be66b720170ee297ccb70",
+  "source_sha256_by_filename": {
+    "00_jjmit.cir": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+    "01_bvm_cell_0923.cir": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+    "02_BQ_0928.cir": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+    "03_sJTL_0923.cir": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+    "04_CB_0928.cir": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+    "05_MERGE.cir": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+    "06_dcsfq2.cir": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+    "07_jtl2.cir": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+    "08_t1_cell_tunable.cir": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+    "09_DFF.cir": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+    "10_d0_jtl_tunable.cir": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039"
+  },
+  "runs": [
+    {
+      "run_id": "A109_V9_A0_B0_80P68",
+      "raw_path": "runs/A109_V9_A0_B0_80P68/raw.csv",
+      "raw_sha256": "d46f0c8ccce28cff2aaf590089f07a878135bbcd5235489c99334856a6d1bbe6",
+      "deck_path": "runs/A109_V9_A0_B0_80P68/deck.cir",
+      "deck_sha256": "2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265",
+      "stimulus_path": "runs/A109_V9_A0_B0_80P68/stimulus.inc",
+      "stimulus_sha256": "9190f772df0e930179ffbf52184154050794f6a4a3a5d25ed4a171d35642d34f",
+      "source_manifest_sha256": "465ec89bc86a13988c2f125766b6dcc7381643f153f05f4547c13cbc9d0e583d",
+      "run_manifest_sha256": "73caab33c8e88222dae4efd913329751834eeb2009d338bb404c5d2b9b631f1c",
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "parent_head": "54aecc583c1366878caa41ba5a8d617eb0aeb93f"
+      },
+      "sources": [
+        {
+          "filename": "00_jjmit.cir",
+          "role": "JJMIT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/00_jjmit.cir",
+          "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "expected_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/00_jjmit.cir",
+          "snapshot_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+        },
+        {
+          "filename": "01_bvm_cell_0923.cir",
+          "role": "BVM",
+          "origin": "circuits/bvm/bvm_cell_0923_v9_bse.cir",
+          "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "expected_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "source_class": "canonical BVM",
+          "snapshot": "sources_frozen/01_bvm_cell_0923.cir",
+          "snapshot_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489"
+        },
+        {
+          "filename": "02_BQ_0928.cir",
+          "role": "QB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/02_BQ_0928.cir",
+          "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "expected_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/02_BQ_0928.cir",
+          "snapshot_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"
+        },
+        {
+          "filename": "03_sJTL_0923.cir",
+          "role": "SJTL",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/03_sJTL_0923.cir",
+          "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "expected_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/03_sJTL_0923.cir",
+          "snapshot_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+        },
+        {
+          "filename": "04_CB_0928.cir",
+          "role": "ARRAY_CB_AND_CARRY_CB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/04_CB_0928.cir",
+          "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "expected_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/04_CB_0928.cir",
+          "snapshot_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"
+        },
+        {
+          "filename": "05_MERGE.cir",
+          "role": "UNUSED_LEGACY_MERGE_INCLUDE",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/05_MERGE.cir",
+          "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "expected_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/05_MERGE.cir",
+          "snapshot_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0"
+        },
+        {
+          "filename": "06_dcsfq2.cir",
+          "role": "DCSFQ2_CLOCK_SHAPER",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/06_dcsfq2.cir",
+          "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "expected_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/06_dcsfq2.cir",
+          "snapshot_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280"
+        },
+        {
+          "filename": "07_jtl2.cir",
+          "role": "JTL2_CLOCK_AND_SUM_CHAIN",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/07_jtl2.cir",
+          "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "expected_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/07_jtl2.cir",
+          "snapshot_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa"
+        },
+        {
+          "filename": "08_t1_cell_tunable.cir",
+          "role": "V9_T1_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/08_t1_cell_tunable.cir",
+          "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "expected_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/08_t1_cell_tunable.cir",
+          "snapshot_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb"
+        },
+        {
+          "filename": "09_DFF.cir",
+          "role": "V9_DFF_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/09_DFF.cir",
+          "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "expected_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/09_DFF.cir",
+          "snapshot_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"
+        },
+        {
+          "filename": "10_d0_jtl_tunable.cir",
+          "role": "V9_D0_JTL_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/10_d0_jtl_tunable.cir",
+          "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "expected_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/10_d0_jtl_tunable.cir",
+          "snapshot_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039"
+        }
+      ]
+    },
+    {
+      "run_id": "A110_V9_A1_B1_80P68",
+      "raw_path": "runs/A110_V9_A1_B1_80P68/raw.csv",
+      "raw_sha256": "dc0c625145b83bf05d6670530716cc00977987d983a818bda7b31879b5719489",
+      "deck_path": "runs/A110_V9_A1_B1_80P68/deck.cir",
+      "deck_sha256": "2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265",
+      "stimulus_path": "runs/A110_V9_A1_B1_80P68/stimulus.inc",
+      "stimulus_sha256": "e5e4fe75a2eba001550a159eb064d4fa5b31f9d7fef1bd0cc4b8445157939f23",
+      "source_manifest_sha256": "465ec89bc86a13988c2f125766b6dcc7381643f153f05f4547c13cbc9d0e583d",
+      "run_manifest_sha256": "850e59033f24fb762ee22cb841a70c38d3717e5fb0274e27acdc0e4525278f4f",
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "parent_head": "54aecc583c1366878caa41ba5a8d617eb0aeb93f"
+      },
+      "sources": [
+        {
+          "filename": "00_jjmit.cir",
+          "role": "JJMIT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/00_jjmit.cir",
+          "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "expected_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/00_jjmit.cir",
+          "snapshot_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+        },
+        {
+          "filename": "01_bvm_cell_0923.cir",
+          "role": "BVM",
+          "origin": "circuits/bvm/bvm_cell_0923_v9_bse.cir",
+          "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "expected_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "source_class": "canonical BVM",
+          "snapshot": "sources_frozen/01_bvm_cell_0923.cir",
+          "snapshot_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489"
+        },
+        {
+          "filename": "02_BQ_0928.cir",
+          "role": "QB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/02_BQ_0928.cir",
+          "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "expected_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/02_BQ_0928.cir",
+          "snapshot_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"
+        },
+        {
+          "filename": "03_sJTL_0923.cir",
+          "role": "SJTL",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/03_sJTL_0923.cir",
+          "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "expected_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/03_sJTL_0923.cir",
+          "snapshot_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+        },
+        {
+          "filename": "04_CB_0928.cir",
+          "role": "ARRAY_CB_AND_CARRY_CB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/04_CB_0928.cir",
+          "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "expected_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/04_CB_0928.cir",
+          "snapshot_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"
+        },
+        {
+          "filename": "05_MERGE.cir",
+          "role": "UNUSED_LEGACY_MERGE_INCLUDE",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/05_MERGE.cir",
+          "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "expected_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/05_MERGE.cir",
+          "snapshot_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0"
+        },
+        {
+          "filename": "06_dcsfq2.cir",
+          "role": "DCSFQ2_CLOCK_SHAPER",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/06_dcsfq2.cir",
+          "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "expected_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/06_dcsfq2.cir",
+          "snapshot_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280"
+        },
+        {
+          "filename": "07_jtl2.cir",
+          "role": "JTL2_CLOCK_AND_SUM_CHAIN",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/07_jtl2.cir",
+          "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "expected_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/07_jtl2.cir",
+          "snapshot_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa"
+        },
+        {
+          "filename": "08_t1_cell_tunable.cir",
+          "role": "V9_T1_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/08_t1_cell_tunable.cir",
+          "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "expected_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/08_t1_cell_tunable.cir",
+          "snapshot_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb"
+        },
+        {
+          "filename": "09_DFF.cir",
+          "role": "V9_DFF_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/09_DFF.cir",
+          "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "expected_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/09_DFF.cir",
+          "snapshot_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"
+        },
+        {
+          "filename": "10_d0_jtl_tunable.cir",
+          "role": "V9_D0_JTL_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/10_d0_jtl_tunable.cir",
+          "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "expected_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/10_d0_jtl_tunable.cir",
+          "snapshot_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039"
+        }
+      ]
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "raw_path": "runs/A111_V9_A11_B13_80P68/raw.csv",
+      "raw_sha256": "a264434b65361a184f5817efce42b25001b90203b309042ce84ad9f5c1cd2add",
+      "deck_path": "runs/A111_V9_A11_B13_80P68/deck.cir",
+      "deck_sha256": "2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265",
+      "stimulus_path": "runs/A111_V9_A11_B13_80P68/stimulus.inc",
+      "stimulus_sha256": "33212d85dd27ecc58f8e95bc2a2eb44073106f62c0d75feec8f871c525cd068b",
+      "source_manifest_sha256": "465ec89bc86a13988c2f125766b6dcc7381643f153f05f4547c13cbc9d0e583d",
+      "run_manifest_sha256": "7e700d9cc0a36b8b3a33000fb1c3b7c680bbc1a2dc78eca73a21401c19c7a542",
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "parent_head": "54aecc583c1366878caa41ba5a8d617eb0aeb93f"
+      },
+      "sources": [
+        {
+          "filename": "00_jjmit.cir",
+          "role": "JJMIT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/00_jjmit.cir",
+          "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "expected_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/00_jjmit.cir",
+          "snapshot_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+        },
+        {
+          "filename": "01_bvm_cell_0923.cir",
+          "role": "BVM",
+          "origin": "circuits/bvm/bvm_cell_0923_v9_bse.cir",
+          "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "expected_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "source_class": "canonical BVM",
+          "snapshot": "sources_frozen/01_bvm_cell_0923.cir",
+          "snapshot_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489"
+        },
+        {
+          "filename": "02_BQ_0928.cir",
+          "role": "QB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/02_BQ_0928.cir",
+          "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "expected_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/02_BQ_0928.cir",
+          "snapshot_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"
+        },
+        {
+          "filename": "03_sJTL_0923.cir",
+          "role": "SJTL",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/03_sJTL_0923.cir",
+          "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "expected_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/03_sJTL_0923.cir",
+          "snapshot_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+        },
+        {
+          "filename": "04_CB_0928.cir",
+          "role": "ARRAY_CB_AND_CARRY_CB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/04_CB_0928.cir",
+          "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "expected_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/04_CB_0928.cir",
+          "snapshot_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"
+        },
+        {
+          "filename": "05_MERGE.cir",
+          "role": "UNUSED_LEGACY_MERGE_INCLUDE",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/05_MERGE.cir",
+          "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "expected_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/05_MERGE.cir",
+          "snapshot_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0"
+        },
+        {
+          "filename": "06_dcsfq2.cir",
+          "role": "DCSFQ2_CLOCK_SHAPER",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/06_dcsfq2.cir",
+          "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "expected_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/06_dcsfq2.cir",
+          "snapshot_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280"
+        },
+        {
+          "filename": "07_jtl2.cir",
+          "role": "JTL2_CLOCK_AND_SUM_CHAIN",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/07_jtl2.cir",
+          "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "expected_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/07_jtl2.cir",
+          "snapshot_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa"
+        },
+        {
+          "filename": "08_t1_cell_tunable.cir",
+          "role": "V9_T1_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/08_t1_cell_tunable.cir",
+          "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "expected_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/08_t1_cell_tunable.cir",
+          "snapshot_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb"
+        },
+        {
+          "filename": "09_DFF.cir",
+          "role": "V9_DFF_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/09_DFF.cir",
+          "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "expected_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/09_DFF.cir",
+          "snapshot_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"
+        },
+        {
+          "filename": "10_d0_jtl_tunable.cir",
+          "role": "V9_D0_JTL_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/10_d0_jtl_tunable.cir",
+          "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "expected_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/10_d0_jtl_tunable.cir",
+          "snapshot_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039"
+        }
+      ]
+    },
+    {
+      "run_id": "A112_V9_A15_B15_80P68",
+      "raw_path": "runs/A112_V9_A15_B15_80P68/raw.csv",
+      "raw_sha256": "3919db90c4b75d5388bcf7d0915370e655a770a13ee7ff22c94b9964ec835f68",
+      "deck_path": "runs/A112_V9_A15_B15_80P68/deck.cir",
+      "deck_sha256": "2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265",
+      "stimulus_path": "runs/A112_V9_A15_B15_80P68/stimulus.inc",
+      "stimulus_sha256": "3f3a2ea72a558568bcb0b7fb07762aeeee4b41a8324431a4d1d41b12e53d9ee1",
+      "source_manifest_sha256": "465ec89bc86a13988c2f125766b6dcc7381643f153f05f4547c13cbc9d0e583d",
+      "run_manifest_sha256": "eeb727fac84d649d79a9139c47dae9356e5c14a44a8ed36ea23b8976aac64e0f",
+      "solver": {
+        "path": "/home/howard/JoSIM/build/josim-cli",
+        "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+        "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+        "parent_head": "54aecc583c1366878caa41ba5a8d617eb0aeb93f"
+      },
+      "sources": [
+        {
+          "filename": "00_jjmit.cir",
+          "role": "JJMIT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/00_jjmit.cir",
+          "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "expected_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/00_jjmit.cir",
+          "snapshot_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+        },
+        {
+          "filename": "01_bvm_cell_0923.cir",
+          "role": "BVM",
+          "origin": "circuits/bvm/bvm_cell_0923_v9_bse.cir",
+          "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "expected_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+          "source_class": "canonical BVM",
+          "snapshot": "sources_frozen/01_bvm_cell_0923.cir",
+          "snapshot_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489"
+        },
+        {
+          "filename": "02_BQ_0928.cir",
+          "role": "QB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/02_BQ_0928.cir",
+          "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "expected_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/02_BQ_0928.cir",
+          "snapshot_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"
+        },
+        {
+          "filename": "03_sJTL_0923.cir",
+          "role": "SJTL",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/03_sJTL_0923.cir",
+          "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "expected_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/03_sJTL_0923.cir",
+          "snapshot_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+        },
+        {
+          "filename": "04_CB_0928.cir",
+          "role": "ARRAY_CB_AND_CARRY_CB",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/04_CB_0928.cir",
+          "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "expected_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/04_CB_0928.cir",
+          "snapshot_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"
+        },
+        {
+          "filename": "05_MERGE.cir",
+          "role": "UNUSED_LEGACY_MERGE_INCLUDE",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/05_MERGE.cir",
+          "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "expected_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/05_MERGE.cir",
+          "snapshot_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0"
+        },
+        {
+          "filename": "06_dcsfq2.cir",
+          "role": "DCSFQ2_CLOCK_SHAPER",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/06_dcsfq2.cir",
+          "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "expected_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/06_dcsfq2.cir",
+          "snapshot_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280"
+        },
+        {
+          "filename": "07_jtl2.cir",
+          "role": "JTL2_CLOCK_AND_SUM_CHAIN",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/07_jtl2.cir",
+          "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "expected_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/07_jtl2.cir",
+          "snapshot_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa"
+        },
+        {
+          "filename": "08_t1_cell_tunable.cir",
+          "role": "V9_T1_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/08_t1_cell_tunable.cir",
+          "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "expected_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/08_t1_cell_tunable.cir",
+          "snapshot_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb"
+        },
+        {
+          "filename": "09_DFF.cir",
+          "role": "V9_DFF_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/09_DFF.cir",
+          "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "expected_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/09_DFF.cir",
+          "snapshot_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"
+        },
+        {
+          "filename": "10_d0_jtl_tunable.cir",
+          "role": "V9_D0_JTL_SOURCE_SNAPSHOT",
+          "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/10_d0_jtl_tunable.cir",
+          "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "expected_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+          "source_class": "hash-pinned V9 reference snapshot",
+          "snapshot": "sources_frozen/10_d0_jtl_tunable.cir",
+          "snapshot_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039"
+        }
+      ]
+    }
+  ],
+  "scientific_interpretation_performed": false
+}

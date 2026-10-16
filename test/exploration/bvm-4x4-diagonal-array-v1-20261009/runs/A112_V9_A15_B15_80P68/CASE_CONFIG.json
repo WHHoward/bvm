@@ -1,0 +1,93 @@
+{
+  "case_id": "V9_A15_B15_80P68",
+  "a": 15,
+  "b": 15,
+  "expected_product": 225,
+  "expected_bits_msb_first": "11100001",
+  "expected_bits_lsb_to_msb": [
+    "1",
+    "0",
+    "0",
+    "0",
+    "0",
+    "1",
+    "1",
+    "1"
+  ],
+  "bit_order": {
+    "bits_lsb_to_msb": [
+      "S_D0_OUT",
+      "S_D1_OUT",
+      "S_D2_OUT",
+      "S_D3_OUT",
+      "S_D4_OUT",
+      "S_D5_OUT",
+      "S_D6_OUT",
+      "DFF_O"
+    ],
+    "binary_msb_first": [
+      "DFF_O",
+      "S_D6_OUT",
+      "S_D5_OUT",
+      "S_D4_OUT",
+      "S_D3_OUT",
+      "S_D2_OUT",
+      "S_D1_OUT",
+      "S_D0_OUT"
+    ]
+  },
+  "row_bits_R1_lsb": "1111",
+  "column_bits_C1_msb": "1111",
+  "selected_se_rows": [
+    "SE_R1",
+    "SE_R2",
+    "SE_R3",
+    "SE_R4"
+  ],
+  "selected_bl_columns": [
+    "BL_C1",
+    "BL_C2",
+    "BL_C3",
+    "BL_C4"
+  ],
+  "read_times_ps": [
+    110.0,
+    190.0,
+    270.0
+  ],
+  "clock_pwl_starts_ps": [
+    178.0,
+    258.0,
+    338.0
+  ],
+  "write_start_ps": 50.0,
+  "read_interval_ps": 80.0,
+  "clock_period_ps": 80.0,
+  "se_clock_delay_ps": 68.0,
+  "dt_ps": 0.01,
+  "stop_ps": 400.0,
+  "probe_profile": "v9_focus",
+  "source_amplitudes": {
+    "V9_WL_WRITE_AMPLITUDE": "400u",
+    "V9_BL_WRITE_AMPLITUDE": "400u",
+    "V9_BL_READ_AMPLITUDE": "400u",
+    "V9_SE_READ_AMPLITUDE": "360u",
+    "V9_CLOCK_AMPLITUDE": "1.2m"
+  },
+  "pulse_edges_ps": {
+    "io": [
+      "1",
+      "9",
+      "1"
+    ],
+    "clock": [
+      "1",
+      "2",
+      "1"
+    ]
+  },
+  "run_id": "A112_V9_A15_B15_80P68",
+  "batch_id": "BVM4X4_V9_MULTIPLY_80P68_20261016",
+  "protocol": "V9_SHARED_ROW_SE_BL",
+  "scientific_interpretation_performed": false
+}

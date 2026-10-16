@@ -1,0 +1,224 @@
+# PREFLIGHT — bvm4x4-v9-multiply-80p68-20261016
+
+This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
+
+Preflight state: `LOCKED_BEFORE_PHYSICAL_SOLVE`.
+
+- Preflight revision note: A109 raw is unchanged and is reprocessed after correcting only the analyzer's request for absent DFF B7 P/V; no circuit, stimulus, probe, parameter, window, or additional-solve change. Continue only A110-A112..
+
+- `experiment_risk_level`: NORMAL; `study_phase`: EXPLORATORY.
+- Parent HEAD: `54aecc583c1366878caa41ba5a8d617eb0aeb93f` (branch `master`; local/remote alignment was verified before implementation).
+- Static gate: `PASS`; physical solves completed before execution: 0; authorized matrix size: 4.
+- V9 topology reference deck SHA-256: `474a254f4511fb46bea6afd36500aa28111323f23f1be66b720170ee297ccb70`. Current V9 historical manifests/package metadata are stale and are not used as run provenance.
+- V9 historical stimulus SHA-256: `a0152b6ea7dbae508cc4f31855d937f5fed70b087af15baac4f28eed802b8331`; current historical raw SHA-256 recorded only to protect/reference its identity: `6dddd8cb074b40c1dca694867a03db9bd307ebd23f1263ca6c10a6de662fdf4c`. The existing V9 raw is not an output oracle and is never modified.
+- BVM source SHA-256: `76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489`.
+- Solver: `/home/howard/JoSIM/build/josim-cli`; version `JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator; Copyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za); v2.7.2837d13 compiled on May 30 2026 at 20:37:57`; binary SHA-256 `48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2`.
+- USER_CASE.env SHA-256: `ca7a3baade03caf98f352cbebddf594f9e9c1401a5f8409d0157f6b0e7eb3c13`; V9 runner SHA-256: `acf8765666e7930d5c576326fabddc7d4f6a8df3b952ec37fc5f2045442fc37c`; shared stimulus builder SHA-256: `7a9587d041baa6203930cdd49f9640fee09b8185611f38d48d4c9f9639b6fc7a`.
+- Classic plotter/Plotly asset SHA-256: `0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6` / `122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770`.
+- DT/STOP: `0.01 / 400 ps`. Shared bus source setpoints are not per-cell branch-current claims.
+- Source-stimulus semantics: one WRITE1 initializes all cells at 50 ps, WL/BL active and SE quiet; each of three reads has all WL quiet, selected BL columns and selected SE rows active; 8 independent clock PWLs use the matching 68 ps configured offset.
+- Bit order: LSB→MSB `[S_D0_OUT,…,S_D6_OUT,DFF_O]`; displayed binary is MSB-first `[DFF_O,S_D6_OUT,…,S_D0_OUT]`.
+- Exact candidate attribution windows: `[[110.0, 190.0], [190.0, 270.0], [270.0, 400.0]] ps`, half-open; read drive windows are `[read_start, read_start+11 ps)`; clock waveform search windows are `[[178.0, 258.0], [258.0, 338.0], [338.0, 400.0]] ps`, half-open.
+- Timing arithmetic is stored-grid peak-time navigation only: positive/negative extrema and peak-time differences are descriptive, not threshold-defined event edges or setup margins.
+- Event classifier: NONE. `event_count_per_bit=UNKNOWN`, `observed_bits=UNKNOWN`, and arithmetic/timing status default to INCONCLUSIVE; terminal area/Φ0 is navigation arithmetic, not an event count.
+- Interpolation, resampling, smoothing, scaling, time shifting, and raw mutation are prohibited. Integrals use actual stored timestamps and registered half-open windows.
+- Raw storage estimate: 94712327 bytes including 5% headroom; limit `100000000` bytes; estimate PASS is required before launch.
+- Output paths: `runs/A109_V9_A0_B0_80P68…runs/A112_V9_A15_B15_80P68/`; every run gets its own deck, stimulus, copied source closure, logs, raw, QA, provenance, and standalone classic plots.
+
+## Hash-pinned V9 source closure
+
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/00_jjmit.cir` SHA-256 `19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336` (JJMIT)
+- `circuits/bvm/bvm_cell_0923_v9_bse.cir` SHA-256 `76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489` (BVM)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/02_BQ_0928.cir` SHA-256 `82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a` (QB)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/03_sJTL_0923.cir` SHA-256 `3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688` (SJTL)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/04_CB_0928.cir` SHA-256 `70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370` (ARRAY_CB_AND_CARRY_CB)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/05_MERGE.cir` SHA-256 `79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0` (UNUSED_LEGACY_MERGE_INCLUDE)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/06_dcsfq2.cir` SHA-256 `76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280` (DCSFQ2_CLOCK_SHAPER)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/07_jtl2.cir` SHA-256 `9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa` (JTL2_CLOCK_AND_SUM_CHAIN)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/08_t1_cell_tunable.cir` SHA-256 `da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb` (V9_T1_SOURCE_SNAPSHOT)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/09_DFF.cir` SHA-256 `e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0` (V9_DFF_SOURCE_SNAPSHOT)
+- `test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/10_d0_jtl_tunable.cir` SHA-256 `b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039` (V9_D0_JTL_SOURCE_SNAPSHOT)
+
+## Exact authorized run matrix
+
+- `A109_V9_A0_B0_80P68`: A=0, B=0, expected=0 (00000000); reads=[110.0, 190.0, 270.0] ps; clock PWL=[178.0, 258.0, 338.0] ps; deck SHA `2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265`, stimulus SHA `9190f772df0e930179ffbf52184154050794f6a4a3a5d25ed4a171d35642d34f`
+- `A110_V9_A1_B1_80P68`: A=1, B=1, expected=1 (00000001); reads=[110.0, 190.0, 270.0] ps; clock PWL=[178.0, 258.0, 338.0] ps; deck SHA `2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265`, stimulus SHA `e5e4fe75a2eba001550a159eb064d4fa5b31f9d7fef1bd0cc4b8445157939f23`
+- `A111_V9_A11_B13_80P68`: A=11, B=13, expected=143 (10001111); reads=[110.0, 190.0, 270.0] ps; clock PWL=[178.0, 258.0, 338.0] ps; deck SHA `2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265`, stimulus SHA `33212d85dd27ecc58f8e95bc2a2eb44073106f62c0d75feec8f871c525cd068b`
+- `A112_V9_A15_B15_80P68`: A=15, B=15, expected=225 (11100001); reads=[110.0, 190.0, 270.0] ps; clock PWL=[178.0, 258.0, 338.0] ps; deck SHA `2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265`, stimulus SHA `3f3a2ea72a558568bcb0b7fb07762aeeee4b41a8324431a4d1d41b12e53d9ee1`
+
+## Frozen probes
+
+- `V(S_D0_OUT)` — V — product_output
+- `V(S_D1_OUT)` — V — product_output
+- `V(S_D2_OUT)` — V — product_output
+- `V(S_D3_OUT)` — V — product_output
+- `V(S_D4_OUT)` — V — product_output
+- `V(S_D5_OUT)` — V — product_output
+- `V(S_D6_OUT)` — V — product_output
+- `V(DFF_O)` — V — product_output
+- `I(I_WL_R1)` — A — write_excitation
+- `I(I_WL_R2)` — A — write_excitation
+- `I(I_WL_R3)` — A — write_excitation
+- `I(I_WL_R4)` — A — write_excitation
+- `I(I_BL_C1)` — A — write_read_excitation
+- `I(I_BL_C2)` — A — write_read_excitation
+- `I(I_BL_C3)` — A — write_read_excitation
+- `I(I_BL_C4)` — A — write_read_excitation
+- `I(I_SE_R1)` — A — read_excitation
+- `I(I_SE_R2)` — A — read_excitation
+- `I(I_SE_R3)` — A — read_excitation
+- `I(I_SE_R4)` — A — read_excitation
+- `V(CLK_D0)` — V — actual_clock_input
+- `V(CLK_D1)` — V — actual_clock_input
+- `V(CLK_D2)` — V — actual_clock_input
+- `V(CLK_D3)` — V — actual_clock_input
+- `V(CLK_D4)` — V — actual_clock_input
+- `V(CLK_D5)` — V — actual_clock_input
+- `V(CLK_D6)` — V — actual_clock_input
+- `V(CLK_DFF)` — V — actual_clock_input
+- `V(T1_I_D0)` — V — t1_data_input
+- `V(S_D0)` — V — t1_sum_boundary
+- `V(T1_I_D1)` — V — t1_data_input
+- `V(S_D1)` — V — t1_sum_boundary
+- `V(T1_I_D2)` — V — t1_data_input
+- `V(S_D2)` — V — t1_sum_boundary
+- `V(T1_I_D3)` — V — t1_data_input
+- `V(S_D3)` — V — t1_sum_boundary
+- `V(T1_I_D4)` — V — t1_data_input
+- `V(S_D4)` — V — t1_sum_boundary
+- `V(T1_I_D5)` — V — t1_data_input
+- `V(S_D5)` — V — t1_sum_boundary
+- `V(T1_I_D6)` — V — t1_data_input
+- `V(S_D6)` — V — t1_sum_boundary
+- `V(C_D0)` — V — t1_carry_boundary
+- `V(C_D1)` — V — t1_carry_boundary
+- `V(C_D2)` — V — t1_carry_boundary
+- `V(C_D3)` — V — t1_carry_boundary
+- `V(C_D4)` — V — t1_carry_boundary
+- `V(C_D5)` — V — t1_carry_boundary
+- `V(DFF_IN)` — V — dff_data_input
+- `V(SL_R1C1)` — V — bvm_to_qb_boundary
+- `V(MERGE_D3_L1)` — V — qb_to_array_boundary
+- `V(SL_R1C2)` — V — bvm_to_qb_boundary
+- `V(MERGE_D2_L1)` — V — qb_to_array_boundary
+- `V(SL_R1C3)` — V — bvm_to_qb_boundary
+- `V(MERGE_D1_L1)` — V — qb_to_array_boundary
+- `V(SL_R1C4)` — V — bvm_to_qb_boundary
+- `V(MERGE_D0_L1)` — V — qb_to_array_boundary
+- `V(SL_R2C1)` — V — bvm_to_qb_boundary
+- `V(MERGE_D4_L1)` — V — qb_to_array_boundary
+- `V(SL_R2C2)` — V — bvm_to_qb_boundary
+- `V(MERGE_D3_L2)` — V — qb_to_array_boundary
+- `V(SL_R2C3)` — V — bvm_to_qb_boundary
+- `V(MERGE_D2_L2)` — V — qb_to_array_boundary
+- `V(SL_R2C4)` — V — bvm_to_qb_boundary
+- `V(MERGE_D1_L2)` — V — qb_to_array_boundary
+- `V(SL_R3C1)` — V — bvm_to_qb_boundary
+- `V(MERGE_D5_L1)` — V — qb_to_array_boundary
+- `V(SL_R3C2)` — V — bvm_to_qb_boundary
+- `V(MERGE_D4_L2)` — V — qb_to_array_boundary
+- `V(SL_R3C3)` — V — bvm_to_qb_boundary
+- `V(MERGE_D3_L3)` — V — qb_to_array_boundary
+- `V(SL_R3C4)` — V — bvm_to_qb_boundary
+- `V(MERGE_D2_L3)` — V — qb_to_array_boundary
+- `V(SL_R4C1)` — V — bvm_to_qb_boundary
+- `V(MERGE_D6_L1)` — V — qb_to_array_boundary
+- `V(SL_R4C2)` — V — bvm_to_qb_boundary
+- `V(MERGE_D5_L2)` — V — qb_to_array_boundary
+- `V(SL_R4C3)` — V — bvm_to_qb_boundary
+- `V(MERGE_D4_L3)` — V — qb_to_array_boundary
+- `V(SL_R4C4)` — V — bvm_to_qb_boundary
+- `V(MERGE_D3_L4)` — V — qb_to_array_boundary
+- `P(B_J9|XT1_D0)` — rad — t1_sum_jj
+- `V(B_J9|XT1_D0)` — V — t1_sum_jj
+- `P(B_J11|XT1_D0)` — rad — t1_carry_jj
+- `V(B_J11|XT1_D0)` — V — t1_carry_jj
+- `P(B_J9|XT1_D1)` — rad — t1_sum_jj
+- `V(B_J9|XT1_D1)` — V — t1_sum_jj
+- `P(B_J11|XT1_D1)` — rad — t1_carry_jj
+- `V(B_J11|XT1_D1)` — V — t1_carry_jj
+- `P(B_J9|XT1_D2)` — rad — t1_sum_jj
+- `V(B_J9|XT1_D2)` — V — t1_sum_jj
+- `P(B_J11|XT1_D2)` — rad — t1_carry_jj
+- `V(B_J11|XT1_D2)` — V — t1_carry_jj
+- `P(B_J9|XT1_D3)` — rad — t1_sum_jj
+- `V(B_J9|XT1_D3)` — V — t1_sum_jj
+- `P(B_J11|XT1_D3)` — rad — t1_carry_jj
+- `V(B_J11|XT1_D3)` — V — t1_carry_jj
+- `P(B_J9|XT1_D4)` — rad — t1_sum_jj
+- `V(B_J9|XT1_D4)` — V — t1_sum_jj
+- `P(B_J11|XT1_D4)` — rad — t1_carry_jj
+- `V(B_J11|XT1_D4)` — V — t1_carry_jj
+- `P(B_J9|XT1_D5)` — rad — t1_sum_jj
+- `V(B_J9|XT1_D5)` — V — t1_sum_jj
+- `P(B_J11|XT1_D5)` — rad — t1_carry_jj
+- `V(B_J11|XT1_D5)` — V — t1_carry_jj
+- `P(B_J9|XT1_D6)` — rad — t1_sum_jj
+- `V(B_J9|XT1_D6)` — V — t1_sum_jj
+- `P(B_J11|XT1_D6)` — rad — t1_carry_jj
+- `V(B_J11|XT1_D6)` — V — t1_carry_jj
+- `P(BJ1|XCB_D0_L1)` — rad — array_last_cb_jj
+- `V(BJ1|XCB_D0_L1)` — V — array_last_cb_jj
+- `P(BJ1|XCB_D1_L2)` — rad — array_last_cb_jj
+- `V(BJ1|XCB_D1_L2)` — V — array_last_cb_jj
+- `P(BJ1|XCB_D2_L3)` — rad — array_last_cb_jj
+- `V(BJ1|XCB_D2_L3)` — V — array_last_cb_jj
+- `P(BJ1|XCB_D3_L4)` — rad — array_last_cb_jj
+- `V(BJ1|XCB_D3_L4)` — V — array_last_cb_jj
+- `P(BJ1|XCB_D4_L3)` — rad — array_last_cb_jj
+- `V(BJ1|XCB_D4_L3)` — V — array_last_cb_jj
+- `P(BJ1|XCB_D5_L2)` — rad — array_last_cb_jj
+- `V(BJ1|XCB_D5_L2)` — V — array_last_cb_jj
+- `P(BJ1|XCB_D6_L1)` — rad — array_last_cb_jj
+- `V(BJ1|XCB_D6_L1)` — V — array_last_cb_jj
+- `V(CARRY_CB_IN_D1)` — V — carry_cb_input
+- `P(BJ1|XCB_CARRY_D1)` — rad — carry_cb_jj
+- `V(BJ1|XCB_CARRY_D1)` — V — carry_cb_jj
+- `P(BJ1|XSJTL_CARRY_D1)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D1)` — V — carry_sjtl_jj
+- `V(CARRY_CB_IN_D2)` — V — carry_cb_input
+- `P(BJ1|XCB_CARRY_D2)` — rad — carry_cb_jj
+- `V(BJ1|XCB_CARRY_D2)` — V — carry_cb_jj
+- `P(BJ1|XSJTL_CARRY_D2)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D2)` — V — carry_sjtl_jj
+- `V(CARRY_CB_IN_D3)` — V — carry_cb_input
+- `P(BJ1|XCB_CARRY_D3)` — rad — carry_cb_jj
+- `V(BJ1|XCB_CARRY_D3)` — V — carry_cb_jj
+- `P(BJ1|XSJTL_CARRY_D3)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D3)` — V — carry_sjtl_jj
+- `V(CARRY_SJTL_MID_D3_S1)` — V — carry_sjtl_boundary
+- `P(BJ1|XSJTL_CARRY_D3_S2)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D3_S2)` — V — carry_sjtl_jj
+- `V(CARRY_SJTL_MID_D3_S2)` — V — carry_sjtl_boundary
+- `P(BJ1|XSJTL_CARRY_D3_S3)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D3_S3)` — V — carry_sjtl_jj
+- `V(CARRY_SJTL_MID_D3_S3)` — V — carry_sjtl_boundary
+- `P(BJ1|XSJTL_CARRY_D3_S4)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D3_S4)` — V — carry_sjtl_jj
+- `V(CARRY_SJTL_MID_D3_S4)` — V — carry_sjtl_boundary
+- `P(BJ1|XSJTL_CARRY_D3_S5)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D3_S5)` — V — carry_sjtl_jj
+- `V(CARRY_CB_IN_D4)` — V — carry_cb_input
+- `P(BJ1|XCB_CARRY_D4)` — rad — carry_cb_jj
+- `V(BJ1|XCB_CARRY_D4)` — V — carry_cb_jj
+- `P(BJ1|XSJTL_CARRY_D4)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D4)` — V — carry_sjtl_jj
+- `V(CARRY_SJTL_MID_D4_S1)` — V — carry_sjtl_boundary
+- `P(BJ1|XSJTL_CARRY_D4_S2)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D4_S2)` — V — carry_sjtl_jj
+- `V(CARRY_CB_IN_D5)` — V — carry_cb_input
+- `P(BJ1|XCB_CARRY_D5)` — rad — carry_cb_jj
+- `V(BJ1|XCB_CARRY_D5)` — V — carry_cb_jj
+- `P(BJ1|XSJTL_CARRY_D5)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D5)` — V — carry_sjtl_jj
+- `V(CARRY_CB_IN_D6)` — V — carry_cb_input
+- `P(BJ1|XCB_CARRY_D6)` — rad — carry_cb_jj
+- `V(BJ1|XCB_CARRY_D6)` — V — carry_cb_jj
+- `P(BJ1|XSJTL_CARRY_D6)` — rad — carry_sjtl_jj
+- `V(BJ1|XSJTL_CARRY_D6)` — V — carry_sjtl_jj
+
+## Limits
+
+- Exactly four JoSIM solves; stop at the first solver or artifact hard failure.
+- No 256-case physical sweep, no parameter/timing changes, no retries after physical/model failure, and no follow-up.
+- Scientific interpretation is NOT PERFORMED; awaiting user + ChatGPT raw review.

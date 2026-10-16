@@ -1,0 +1,141 @@
+{
+  "schema": "bvm4x4-v9-metadata-v1",
+  "run_id": "A110_V9_A1_B1_80P68",
+  "batch_id": "BVM4X4_V9_MULTIPLY_80P68_20261016",
+  "effective_scenario": {
+    "case_id": "V9_A1_B1_80P68",
+    "a": 1,
+    "b": 1,
+    "expected_product": 1,
+    "expected_bits_msb_first": "00000001",
+    "expected_bits_lsb_to_msb": [
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    "bit_order": {
+      "bits_lsb_to_msb": [
+        "S_D0_OUT",
+        "S_D1_OUT",
+        "S_D2_OUT",
+        "S_D3_OUT",
+        "S_D4_OUT",
+        "S_D5_OUT",
+        "S_D6_OUT",
+        "DFF_O"
+      ],
+      "binary_msb_first": [
+        "DFF_O",
+        "S_D6_OUT",
+        "S_D5_OUT",
+        "S_D4_OUT",
+        "S_D3_OUT",
+        "S_D2_OUT",
+        "S_D1_OUT",
+        "S_D0_OUT"
+      ]
+    },
+    "row_bits_R1_lsb": "1000",
+    "column_bits_C1_msb": "0001",
+    "selected_se_rows": [
+      "SE_R1"
+    ],
+    "selected_bl_columns": [
+      "BL_C4"
+    ],
+    "read_times_ps": [
+      110.0,
+      190.0,
+      270.0
+    ],
+    "clock_pwl_starts_ps": [
+      178.0,
+      258.0,
+      338.0
+    ],
+    "write_start_ps": 50.0,
+    "read_interval_ps": 80.0,
+    "clock_period_ps": 80.0,
+    "se_clock_delay_ps": 68.0,
+    "dt_ps": 0.01,
+    "stop_ps": 400.0,
+    "probe_profile": "v9_focus",
+    "source_amplitudes": {
+      "V9_WL_WRITE_AMPLITUDE": "400u",
+      "V9_BL_WRITE_AMPLITUDE": "400u",
+      "V9_BL_READ_AMPLITUDE": "400u",
+      "V9_SE_READ_AMPLITUDE": "360u",
+      "V9_CLOCK_AMPLITUDE": "1.2m"
+    },
+    "pulse_edges_ps": {
+      "io": [
+        "1",
+        "9",
+        "1"
+      ],
+      "clock": [
+        "1",
+        "2",
+        "1"
+      ]
+    }
+  },
+  "effective_v9_config": {
+    "V9_PROTOCOL": "V9_SHARED_ROW_SE_BL",
+    "V9_A": "11",
+    "V9_B": "13",
+    "V9_READ_COUNT": "3",
+    "V9_WRITE_START_PS": "50",
+    "V9_FIRST_READ_PS": "110",
+    "V9_READ_INTERVAL_PS": "80",
+    "V9_CLOCK_PERIOD_PS": "80",
+    "V9_SE_CLOCK_DELAY_PS": "68",
+    "V9_WL_WRITE_AMPLITUDE": "400u",
+    "V9_BL_WRITE_AMPLITUDE": "400u",
+    "V9_BL_READ_AMPLITUDE": "400u",
+    "V9_SE_READ_AMPLITUDE": "360u",
+    "V9_IO_RISE_PS": "1",
+    "V9_IO_HOLD_PS": "9",
+    "V9_IO_FALL_PS": "1",
+    "V9_CLOCK_AMPLITUDE": "1.2m",
+    "V9_CLOCK_RISE_PS": "1",
+    "V9_CLOCK_HOLD_PS": "2",
+    "V9_CLOCK_FALL_PS": "1",
+    "V9_DT_PS": "0.01",
+    "V9_STOP_PS": "400",
+    "V9_PROBE_PROFILE": "v9_focus"
+  },
+  "solver": {
+    "path": "/home/howard/JoSIM/build/josim-cli",
+    "version": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+    "parent_head": "54aecc583c1366878caa41ba5a8d617eb0aeb93f"
+  },
+  "command": [
+    "/home/howard/JoSIM/build/josim-cli",
+    "-a",
+    "1",
+    "-o",
+    "raw.csv",
+    "deck.cir"
+  ],
+  "exit_code": 0,
+  "deck_sha256": "2c0090b141cb5736cdde6031ce08f0d04a8e341f7db7088e755e71e91ef0a265",
+  "stimulus_sha256": "e5e4fe75a2eba001550a159eb064d4fa5b31f9d7fef1bd0cc4b8445157939f23",
+  "raw_sha256": "dc0c625145b83bf05d6670530716cc00977987d983a818bda7b31879b5719489",
+  "raw_bytes": 89890110,
+  "source_manifest_sha256": "465ec89bc86a13988c2f125766b6dcc7381643f153f05f4547c13cbc9d0e583d",
+  "probe_manifest_sha256": "24451bdac33afab6d2ee33bafbd1bc4f69bbb7ffb50780f7b4d5fed056e576ab",
+  "topology_manifest_sha256": "961e508705114b62c866b116975a94214ad7fa3273e3524abec63feee25013df",
+  "risk_level": "NORMAL",
+  "study_phase": "EXPLORATORY",
+  "artifact_status": "VALID",
+  "qa_status": "PASS",
+  "scientific_interpretation_performed": false,
+  "automatic_follow_up": false
+}

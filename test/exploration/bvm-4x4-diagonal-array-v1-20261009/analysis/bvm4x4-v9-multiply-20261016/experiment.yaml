@@ -1,0 +1,335 @@
+{
+  "experiment_id": "bvm4x4-v9-multiply-80p68-20261016",
+  "experiment_risk_level": "NORMAL",
+  "study_phase": "EXPLORATORY",
+  "question": "Under the fixed V9 shared-row-SE/shared-column-BL topology, preserve raw evidence for four registered products and three 80 ps reads; describe loaded output and internal clock waveforms without asserting an unfrozen SFQ decoder or multiplication Gate.",
+  "source_class": "V9 reference topology with hash-pinned local source closure",
+  "authority_boundary": {
+    "evidence": [
+      "immutable raw",
+      "same-JJ P/V arithmetic",
+      "actual-grid terminal voltage integrals",
+      "stage-boundary waveforms"
+    ],
+    "not_proven": [
+      "SFQ event count where no frozen classifier applies",
+      "system multiplication PASS/Gate",
+      "convergence",
+      "hardware behavior",
+      "mechanism"
+    ]
+  },
+  "run_set": [
+    {
+      "run_id": "A109_V9_A0_B0_80P68",
+      "condition": "V9_A0_B0_80P68",
+      "A": 0,
+      "B": 0,
+      "expected_product": 0,
+      "expected_bits_msb_first": "00000000",
+      "reads": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts": [
+        178.0,
+        258.0,
+        338.0
+      ]
+    },
+    {
+      "run_id": "A110_V9_A1_B1_80P68",
+      "condition": "V9_A1_B1_80P68",
+      "A": 1,
+      "B": 1,
+      "expected_product": 1,
+      "expected_bits_msb_first": "00000001",
+      "reads": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts": [
+        178.0,
+        258.0,
+        338.0
+      ]
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "condition": "V9_A11_B13_80P68",
+      "A": 11,
+      "B": 13,
+      "expected_product": 143,
+      "expected_bits_msb_first": "10001111",
+      "reads": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts": [
+        178.0,
+        258.0,
+        338.0
+      ]
+    },
+    {
+      "run_id": "A112_V9_A15_B15_80P68",
+      "condition": "V9_A15_B15_80P68",
+      "A": 15,
+      "B": 15,
+      "expected_product": 225,
+      "expected_bits_msb_first": "11100001",
+      "reads": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts": [
+        178.0,
+        258.0,
+        338.0
+      ]
+    }
+  ],
+  "changed": [
+    "V9 shared row-SE/column-BL stimuli are generated from USER_CASE.env",
+    "V9 DCSFQ2/JTL2 clock path and reference carry topology are used"
+  ],
+  "frozen": [
+    "BVM/QB/sJTL/CB/T1/DFF/JJ source SHA",
+    "V9 circuit topology",
+    "device parameters",
+    "A/B batch matrix",
+    "three-read timing",
+    "solver timestep"
+  ],
+  "topology": "16 BVM + 16 QB, four shared WL rows, four shared BL columns, four shared SE rows; seven diagonal chains; V9 direct carry CB branches; seven T1; final DFF",
+  "stimulus": {
+    "V9_READ_COUNT": "3",
+    "V9_WRITE_START_PS": "50",
+    "V9_FIRST_READ_PS": "110",
+    "V9_READ_INTERVAL_PS": "80",
+    "V9_CLOCK_PERIOD_PS": "80",
+    "V9_SE_CLOCK_DELAY_PS": "68",
+    "V9_WL_WRITE_AMPLITUDE": "400u",
+    "V9_BL_WRITE_AMPLITUDE": "400u",
+    "V9_BL_READ_AMPLITUDE": "400u",
+    "V9_SE_READ_AMPLITUDE": "360u",
+    "V9_IO_RISE_PS": "1",
+    "V9_IO_HOLD_PS": "9",
+    "V9_IO_FALL_PS": "1",
+    "V9_CLOCK_AMPLITUDE": "1.2m",
+    "V9_CLOCK_RISE_PS": "1",
+    "V9_CLOCK_HOLD_PS": "2",
+    "V9_CLOCK_FALL_PS": "1",
+    "V9_DT_PS": "0.01",
+    "V9_STOP_PS": "400"
+  },
+  "time_windows": {
+    "V9_A0_B0_80P68": {
+      "read_count": 3,
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "round_windows_ps_half_open": [
+        [
+          110.0,
+          190.0
+        ],
+        [
+          190.0,
+          270.0
+        ],
+        [
+          270.0,
+          400.0
+        ]
+      ],
+      "clock_search_windows_ps_half_open": [
+        [
+          178.0,
+          258.0
+        ],
+        [
+          258.0,
+          338.0
+        ],
+        [
+          338.0,
+          400.0
+        ]
+      ],
+      "boundary_rule": "[start,end); stored raw timestamps only; no interpolation"
+    },
+    "V9_A1_B1_80P68": {
+      "read_count": 3,
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "round_windows_ps_half_open": [
+        [
+          110.0,
+          190.0
+        ],
+        [
+          190.0,
+          270.0
+        ],
+        [
+          270.0,
+          400.0
+        ]
+      ],
+      "clock_search_windows_ps_half_open": [
+        [
+          178.0,
+          258.0
+        ],
+        [
+          258.0,
+          338.0
+        ],
+        [
+          338.0,
+          400.0
+        ]
+      ],
+      "boundary_rule": "[start,end); stored raw timestamps only; no interpolation"
+    },
+    "V9_A11_B13_80P68": {
+      "read_count": 3,
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "round_windows_ps_half_open": [
+        [
+          110.0,
+          190.0
+        ],
+        [
+          190.0,
+          270.0
+        ],
+        [
+          270.0,
+          400.0
+        ]
+      ],
+      "clock_search_windows_ps_half_open": [
+        [
+          178.0,
+          258.0
+        ],
+        [
+          258.0,
+          338.0
+        ],
+        [
+          338.0,
+          400.0
+        ]
+      ],
+      "boundary_rule": "[start,end); stored raw timestamps only; no interpolation"
+    },
+    "V9_A15_B15_80P68": {
+      "read_count": 3,
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "round_windows_ps_half_open": [
+        [
+          110.0,
+          190.0
+        ],
+        [
+          190.0,
+          270.0
+        ],
+        [
+          270.0,
+          400.0
+        ]
+      ],
+      "clock_search_windows_ps_half_open": [
+        [
+          178.0,
+          258.0
+        ],
+        [
+          258.0,
+          338.0
+        ],
+        [
+          338.0,
+          400.0
+        ]
+      ],
+      "boundary_rule": "[start,end); stored raw timestamps only; no interpolation"
+    }
+  },
+  "probe_manifest_sha256_by_case": {
+    "V9_A0_B0_80P68": "f9ed4b4034091cc37b3fea93e4cabe5d155efee20e8d6bf0e39b00ad4737d53b",
+    "V9_A1_B1_80P68": "f9ed4b4034091cc37b3fea93e4cabe5d155efee20e8d6bf0e39b00ad4737d53b",
+    "V9_A11_B13_80P68": "f9ed4b4034091cc37b3fea93e4cabe5d155efee20e8d6bf0e39b00ad4737d53b",
+    "V9_A15_B15_80P68": "f9ed4b4034091cc37b3fea93e4cabe5d155efee20e8d6bf0e39b00ad4737d53b"
+  },
+  "expected_qa": [
+    "static exact-topology check",
+    "20 source names and 256 mapping checks",
+    "raw SHA/time/probe integrity",
+    "actual-grid output integral and same-JJ P/V arithmetic",
+    "classic responsive plot QA",
+    "package member/SHA QA"
+  ],
+  "interpretation_ceiling": "Mechanical observations only. event_count and observed_bits are UNKNOWN unless an independently authorized classifier later supports them; arithmetic_status and timing_status default INCONCLUSIVE.",
+  "prohibited_followups": [
+    "256-case sweep",
+    "parameter/timing search",
+    "timestep convergence",
+    "topology changes",
+    "extra physical solves"
+  ],
+  "scientific_review_authorization": "NOT_GRANTED",
+  "package": {
+    "zip": "handoff/bvm-4x4-diagonal-array-v1-20261009_delta_V9_MUL_80P68_20261016.zip",
+    "commit_by_default": true,
+    "html_included": false
+  },
+  "human_gate": {
+    "state": "AWAITING_SCIENTIFIC_REVIEW",
+    "automatic_next_experiment": false
+  },
+  "static_qa_sha256": "4e4ace545f4a33a984abc38af87abc0880b2ceedcd9863d02ffaee393ea0619c",
+  "physical_solve_count_authorized": 4,
+  "scientific_interpretation_performed": false
+}

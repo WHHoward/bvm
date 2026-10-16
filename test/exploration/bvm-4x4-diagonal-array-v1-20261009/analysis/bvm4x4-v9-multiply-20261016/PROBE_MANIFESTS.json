@@ -1,0 +1,4906 @@
+{
+  "schema": "bvm4x4-v9-probe-registry-v1",
+  "probe_manifests_by_case": {
+    "V9_A0_B0_80P68": {
+      "schema": "bvm4x4-v9-probe-manifest-v1",
+      "profile": "v9_focus",
+      "signal_count": 168,
+      "raw_phase_unit": "P(...) radians",
+      "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
+      "signals": [
+        {
+          "label": "V(S_D0_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 0
+        },
+        {
+          "label": "V(S_D1_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 1
+        },
+        {
+          "label": "V(S_D2_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 2
+        },
+        {
+          "label": "V(S_D3_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 3
+        },
+        {
+          "label": "V(S_D4_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 4
+        },
+        {
+          "label": "V(S_D5_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 5
+        },
+        {
+          "label": "V(S_D6_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 6
+        },
+        {
+          "label": "V(DFF_O)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "I(I_WL_R1)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R1"
+        },
+        {
+          "label": "I(I_WL_R2)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R2"
+        },
+        {
+          "label": "I(I_WL_R3)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R3"
+        },
+        {
+          "label": "I(I_WL_R4)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R4"
+        },
+        {
+          "label": "I(I_BL_C1)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C1"
+        },
+        {
+          "label": "I(I_BL_C2)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C2"
+        },
+        {
+          "label": "I(I_BL_C3)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C3"
+        },
+        {
+          "label": "I(I_BL_C4)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C4"
+        },
+        {
+          "label": "I(I_SE_R1)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R1"
+        },
+        {
+          "label": "I(I_SE_R2)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R2"
+        },
+        {
+          "label": "I(I_SE_R3)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R3"
+        },
+        {
+          "label": "I(I_SE_R4)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R4"
+        },
+        {
+          "label": "V(CLK_D0)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D0",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D1)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D1",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D2)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D2",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D3)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D3",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D4)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D4",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D5)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D5",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D6)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D6",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_DFF)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "DFF",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(T1_I_D0)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(S_D0)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(T1_I_D1)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(S_D1)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(T1_I_D2)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(S_D2)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(T1_I_D3)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(S_D3)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(T1_I_D4)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(S_D4)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(T1_I_D5)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(S_D5)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(T1_I_D6)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(S_D6)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(C_D0)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(C_D1)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(C_D2)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(C_D3)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(C_D4)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(C_D5)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(DFF_IN)",
+          "group": "dff_data_input",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "V(SL_R1C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C1"
+        },
+        {
+          "label": "V(MERGE_D3_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C1",
+          "diagonal": "D3",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C2"
+        },
+        {
+          "label": "V(MERGE_D2_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C2",
+          "diagonal": "D2",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C3"
+        },
+        {
+          "label": "V(MERGE_D1_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C3",
+          "diagonal": "D1",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C4"
+        },
+        {
+          "label": "V(MERGE_D0_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C4",
+          "diagonal": "D0",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C1"
+        },
+        {
+          "label": "V(MERGE_D4_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C1",
+          "diagonal": "D4",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C2"
+        },
+        {
+          "label": "V(MERGE_D3_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C2",
+          "diagonal": "D3",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C3"
+        },
+        {
+          "label": "V(MERGE_D2_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C3",
+          "diagonal": "D2",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C4"
+        },
+        {
+          "label": "V(MERGE_D1_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C4",
+          "diagonal": "D1",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C1"
+        },
+        {
+          "label": "V(MERGE_D5_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C1",
+          "diagonal": "D5",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R3C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C2"
+        },
+        {
+          "label": "V(MERGE_D4_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C2",
+          "diagonal": "D4",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C3"
+        },
+        {
+          "label": "V(MERGE_D3_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C3",
+          "diagonal": "D3",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R3C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C4"
+        },
+        {
+          "label": "V(MERGE_D2_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C4",
+          "diagonal": "D2",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C1"
+        },
+        {
+          "label": "V(MERGE_D6_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C1",
+          "diagonal": "D6",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R4C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C2"
+        },
+        {
+          "label": "V(MERGE_D5_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C2",
+          "diagonal": "D5",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R4C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C3"
+        },
+        {
+          "label": "V(MERGE_D4_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C3",
+          "diagonal": "D4",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C4"
+        },
+        {
+          "label": "V(MERGE_D3_L4)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C4",
+          "diagonal": "D3",
+          "level": 4
+        },
+        {
+          "label": "P(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "P(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(CARRY_CB_IN_D1)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D2)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D3)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S2)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S3)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S4)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(CARRY_CB_IN_D4)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D4_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_CB_IN_D5)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D6)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        }
+      ],
+      "scientific_interpretation_performed": false,
+      "event_classifier": null,
+      "event_count_semantics": "UNKNOWN unless independently reviewable criteria are later authorized"
+    },
+    "V9_A1_B1_80P68": {
+      "schema": "bvm4x4-v9-probe-manifest-v1",
+      "profile": "v9_focus",
+      "signal_count": 168,
+      "raw_phase_unit": "P(...) radians",
+      "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
+      "signals": [
+        {
+          "label": "V(S_D0_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 0
+        },
+        {
+          "label": "V(S_D1_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 1
+        },
+        {
+          "label": "V(S_D2_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 2
+        },
+        {
+          "label": "V(S_D3_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 3
+        },
+        {
+          "label": "V(S_D4_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 4
+        },
+        {
+          "label": "V(S_D5_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 5
+        },
+        {
+          "label": "V(S_D6_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 6
+        },
+        {
+          "label": "V(DFF_O)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "I(I_WL_R1)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R1"
+        },
+        {
+          "label": "I(I_WL_R2)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R2"
+        },
+        {
+          "label": "I(I_WL_R3)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R3"
+        },
+        {
+          "label": "I(I_WL_R4)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R4"
+        },
+        {
+          "label": "I(I_BL_C1)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C1"
+        },
+        {
+          "label": "I(I_BL_C2)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C2"
+        },
+        {
+          "label": "I(I_BL_C3)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C3"
+        },
+        {
+          "label": "I(I_BL_C4)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C4"
+        },
+        {
+          "label": "I(I_SE_R1)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R1"
+        },
+        {
+          "label": "I(I_SE_R2)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R2"
+        },
+        {
+          "label": "I(I_SE_R3)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R3"
+        },
+        {
+          "label": "I(I_SE_R4)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R4"
+        },
+        {
+          "label": "V(CLK_D0)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D0",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D1)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D1",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D2)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D2",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D3)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D3",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D4)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D4",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D5)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D5",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D6)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D6",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_DFF)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "DFF",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(T1_I_D0)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(S_D0)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(T1_I_D1)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(S_D1)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(T1_I_D2)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(S_D2)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(T1_I_D3)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(S_D3)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(T1_I_D4)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(S_D4)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(T1_I_D5)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(S_D5)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(T1_I_D6)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(S_D6)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(C_D0)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(C_D1)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(C_D2)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(C_D3)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(C_D4)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(C_D5)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(DFF_IN)",
+          "group": "dff_data_input",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "V(SL_R1C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C1"
+        },
+        {
+          "label": "V(MERGE_D3_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C1",
+          "diagonal": "D3",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C2"
+        },
+        {
+          "label": "V(MERGE_D2_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C2",
+          "diagonal": "D2",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C3"
+        },
+        {
+          "label": "V(MERGE_D1_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C3",
+          "diagonal": "D1",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C4"
+        },
+        {
+          "label": "V(MERGE_D0_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C4",
+          "diagonal": "D0",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C1"
+        },
+        {
+          "label": "V(MERGE_D4_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C1",
+          "diagonal": "D4",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C2"
+        },
+        {
+          "label": "V(MERGE_D3_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C2",
+          "diagonal": "D3",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C3"
+        },
+        {
+          "label": "V(MERGE_D2_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C3",
+          "diagonal": "D2",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C4"
+        },
+        {
+          "label": "V(MERGE_D1_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C4",
+          "diagonal": "D1",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C1"
+        },
+        {
+          "label": "V(MERGE_D5_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C1",
+          "diagonal": "D5",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R3C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C2"
+        },
+        {
+          "label": "V(MERGE_D4_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C2",
+          "diagonal": "D4",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C3"
+        },
+        {
+          "label": "V(MERGE_D3_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C3",
+          "diagonal": "D3",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R3C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C4"
+        },
+        {
+          "label": "V(MERGE_D2_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C4",
+          "diagonal": "D2",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C1"
+        },
+        {
+          "label": "V(MERGE_D6_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C1",
+          "diagonal": "D6",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R4C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C2"
+        },
+        {
+          "label": "V(MERGE_D5_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C2",
+          "diagonal": "D5",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R4C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C3"
+        },
+        {
+          "label": "V(MERGE_D4_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C3",
+          "diagonal": "D4",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C4"
+        },
+        {
+          "label": "V(MERGE_D3_L4)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C4",
+          "diagonal": "D3",
+          "level": 4
+        },
+        {
+          "label": "P(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "P(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(CARRY_CB_IN_D1)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D2)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D3)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S2)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S3)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S4)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(CARRY_CB_IN_D4)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D4_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_CB_IN_D5)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D6)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        }
+      ],
+      "scientific_interpretation_performed": false,
+      "event_classifier": null,
+      "event_count_semantics": "UNKNOWN unless independently reviewable criteria are later authorized"
+    },
+    "V9_A11_B13_80P68": {
+      "schema": "bvm4x4-v9-probe-manifest-v1",
+      "profile": "v9_focus",
+      "signal_count": 168,
+      "raw_phase_unit": "P(...) radians",
+      "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
+      "signals": [
+        {
+          "label": "V(S_D0_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 0
+        },
+        {
+          "label": "V(S_D1_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 1
+        },
+        {
+          "label": "V(S_D2_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 2
+        },
+        {
+          "label": "V(S_D3_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 3
+        },
+        {
+          "label": "V(S_D4_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 4
+        },
+        {
+          "label": "V(S_D5_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 5
+        },
+        {
+          "label": "V(S_D6_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 6
+        },
+        {
+          "label": "V(DFF_O)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "I(I_WL_R1)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R1"
+        },
+        {
+          "label": "I(I_WL_R2)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R2"
+        },
+        {
+          "label": "I(I_WL_R3)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R3"
+        },
+        {
+          "label": "I(I_WL_R4)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R4"
+        },
+        {
+          "label": "I(I_BL_C1)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C1"
+        },
+        {
+          "label": "I(I_BL_C2)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C2"
+        },
+        {
+          "label": "I(I_BL_C3)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C3"
+        },
+        {
+          "label": "I(I_BL_C4)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C4"
+        },
+        {
+          "label": "I(I_SE_R1)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R1"
+        },
+        {
+          "label": "I(I_SE_R2)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R2"
+        },
+        {
+          "label": "I(I_SE_R3)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R3"
+        },
+        {
+          "label": "I(I_SE_R4)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R4"
+        },
+        {
+          "label": "V(CLK_D0)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D0",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D1)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D1",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D2)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D2",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D3)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D3",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D4)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D4",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D5)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D5",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D6)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D6",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_DFF)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "DFF",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(T1_I_D0)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(S_D0)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(T1_I_D1)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(S_D1)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(T1_I_D2)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(S_D2)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(T1_I_D3)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(S_D3)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(T1_I_D4)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(S_D4)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(T1_I_D5)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(S_D5)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(T1_I_D6)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(S_D6)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(C_D0)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(C_D1)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(C_D2)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(C_D3)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(C_D4)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(C_D5)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(DFF_IN)",
+          "group": "dff_data_input",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "V(SL_R1C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C1"
+        },
+        {
+          "label": "V(MERGE_D3_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C1",
+          "diagonal": "D3",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C2"
+        },
+        {
+          "label": "V(MERGE_D2_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C2",
+          "diagonal": "D2",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C3"
+        },
+        {
+          "label": "V(MERGE_D1_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C3",
+          "diagonal": "D1",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C4"
+        },
+        {
+          "label": "V(MERGE_D0_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C4",
+          "diagonal": "D0",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C1"
+        },
+        {
+          "label": "V(MERGE_D4_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C1",
+          "diagonal": "D4",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C2"
+        },
+        {
+          "label": "V(MERGE_D3_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C2",
+          "diagonal": "D3",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C3"
+        },
+        {
+          "label": "V(MERGE_D2_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C3",
+          "diagonal": "D2",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C4"
+        },
+        {
+          "label": "V(MERGE_D1_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C4",
+          "diagonal": "D1",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C1"
+        },
+        {
+          "label": "V(MERGE_D5_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C1",
+          "diagonal": "D5",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R3C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C2"
+        },
+        {
+          "label": "V(MERGE_D4_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C2",
+          "diagonal": "D4",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C3"
+        },
+        {
+          "label": "V(MERGE_D3_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C3",
+          "diagonal": "D3",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R3C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C4"
+        },
+        {
+          "label": "V(MERGE_D2_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C4",
+          "diagonal": "D2",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C1"
+        },
+        {
+          "label": "V(MERGE_D6_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C1",
+          "diagonal": "D6",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R4C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C2"
+        },
+        {
+          "label": "V(MERGE_D5_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C2",
+          "diagonal": "D5",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R4C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C3"
+        },
+        {
+          "label": "V(MERGE_D4_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C3",
+          "diagonal": "D4",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C4"
+        },
+        {
+          "label": "V(MERGE_D3_L4)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C4",
+          "diagonal": "D3",
+          "level": 4
+        },
+        {
+          "label": "P(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "P(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(CARRY_CB_IN_D1)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D2)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D3)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S2)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S3)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S4)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(CARRY_CB_IN_D4)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D4_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_CB_IN_D5)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D6)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        }
+      ],
+      "scientific_interpretation_performed": false,
+      "event_classifier": null,
+      "event_count_semantics": "UNKNOWN unless independently reviewable criteria are later authorized"
+    },
+    "V9_A15_B15_80P68": {
+      "schema": "bvm4x4-v9-probe-manifest-v1",
+      "profile": "v9_focus",
+      "signal_count": 168,
+      "raw_phase_unit": "P(...) radians",
+      "display_phase_unit": "turns=rad/(2*pi), navigation only; not event count",
+      "signals": [
+        {
+          "label": "V(S_D0_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 0
+        },
+        {
+          "label": "V(S_D1_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 1
+        },
+        {
+          "label": "V(S_D2_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 2
+        },
+        {
+          "label": "V(S_D3_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 3
+        },
+        {
+          "label": "V(S_D4_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 4
+        },
+        {
+          "label": "V(S_D5_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 5
+        },
+        {
+          "label": "V(S_D6_OUT)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 6
+        },
+        {
+          "label": "V(DFF_O)",
+          "group": "product_output",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "I(I_WL_R1)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R1"
+        },
+        {
+          "label": "I(I_WL_R2)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R2"
+        },
+        {
+          "label": "I(I_WL_R3)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R3"
+        },
+        {
+          "label": "I(I_WL_R4)",
+          "group": "write_excitation",
+          "unit": "A",
+          "source": "I_WL_R4"
+        },
+        {
+          "label": "I(I_BL_C1)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C1"
+        },
+        {
+          "label": "I(I_BL_C2)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C2"
+        },
+        {
+          "label": "I(I_BL_C3)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C3"
+        },
+        {
+          "label": "I(I_BL_C4)",
+          "group": "write_read_excitation",
+          "unit": "A",
+          "source": "I_BL_C4"
+        },
+        {
+          "label": "I(I_SE_R1)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R1"
+        },
+        {
+          "label": "I(I_SE_R2)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R2"
+        },
+        {
+          "label": "I(I_SE_R3)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R3"
+        },
+        {
+          "label": "I(I_SE_R4)",
+          "group": "read_excitation",
+          "unit": "A",
+          "source": "I_SE_R4"
+        },
+        {
+          "label": "V(CLK_D0)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D0",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D1)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D1",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D2)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D2",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D3)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D3",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D4)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D4",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D5)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D5",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_D6)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "D6",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(CLK_DFF)",
+          "group": "actual_clock_input",
+          "unit": "V",
+          "channel": "DFF",
+          "semantics": "loaded internal CLK node waveform; peak time is a descriptive proxy, not a threshold-defined edge"
+        },
+        {
+          "label": "V(T1_I_D0)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(S_D0)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(T1_I_D1)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(S_D1)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(T1_I_D2)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(S_D2)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(T1_I_D3)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(S_D3)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(T1_I_D4)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(S_D4)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(T1_I_D5)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(S_D5)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(T1_I_D6)",
+          "group": "t1_data_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(S_D6)",
+          "group": "t1_sum_boundary",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "V(C_D0)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D0"
+        },
+        {
+          "label": "V(C_D1)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "V(C_D2)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "V(C_D3)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "V(C_D4)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "V(C_D5)",
+          "group": "t1_carry_boundary",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "V(DFF_IN)",
+          "group": "dff_data_input",
+          "unit": "V",
+          "bit": 7
+        },
+        {
+          "label": "V(SL_R1C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C1"
+        },
+        {
+          "label": "V(MERGE_D3_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C1",
+          "diagonal": "D3",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C2"
+        },
+        {
+          "label": "V(MERGE_D2_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C2",
+          "diagonal": "D2",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C3"
+        },
+        {
+          "label": "V(MERGE_D1_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C3",
+          "diagonal": "D1",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R1C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R1C4"
+        },
+        {
+          "label": "V(MERGE_D0_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R1C4",
+          "diagonal": "D0",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C1"
+        },
+        {
+          "label": "V(MERGE_D4_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C1",
+          "diagonal": "D4",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R2C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C2"
+        },
+        {
+          "label": "V(MERGE_D3_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C2",
+          "diagonal": "D3",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C3"
+        },
+        {
+          "label": "V(MERGE_D2_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C3",
+          "diagonal": "D2",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R2C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R2C4"
+        },
+        {
+          "label": "V(MERGE_D1_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R2C4",
+          "diagonal": "D1",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C1"
+        },
+        {
+          "label": "V(MERGE_D5_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C1",
+          "diagonal": "D5",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R3C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C2"
+        },
+        {
+          "label": "V(MERGE_D4_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C2",
+          "diagonal": "D4",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R3C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C3"
+        },
+        {
+          "label": "V(MERGE_D3_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C3",
+          "diagonal": "D3",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R3C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R3C4"
+        },
+        {
+          "label": "V(MERGE_D2_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R3C4",
+          "diagonal": "D2",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C1)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C1"
+        },
+        {
+          "label": "V(MERGE_D6_L1)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C1",
+          "diagonal": "D6",
+          "level": 1
+        },
+        {
+          "label": "V(SL_R4C2)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C2"
+        },
+        {
+          "label": "V(MERGE_D5_L2)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C2",
+          "diagonal": "D5",
+          "level": 2
+        },
+        {
+          "label": "V(SL_R4C3)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C3"
+        },
+        {
+          "label": "V(MERGE_D4_L3)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C3",
+          "diagonal": "D4",
+          "level": 3
+        },
+        {
+          "label": "V(SL_R4C4)",
+          "group": "bvm_to_qb_boundary",
+          "unit": "V",
+          "cell": "R4C4"
+        },
+        {
+          "label": "V(MERGE_D3_L4)",
+          "group": "qb_to_array_boundary",
+          "unit": "V",
+          "cell": "R4C4",
+          "diagonal": "D3",
+          "level": 4
+        },
+        {
+          "label": "P(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J9|XT1_D0)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J9",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "V(B_J11|XT1_D0)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D0",
+          "element": "B_J11",
+          "stage": "D0"
+        },
+        {
+          "label": "P(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J9|XT1_D1)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J9",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "V(B_J11|XT1_D1)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D1",
+          "element": "B_J11",
+          "stage": "D1"
+        },
+        {
+          "label": "P(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J9|XT1_D2)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J9",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "V(B_J11|XT1_D2)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D2",
+          "element": "B_J11",
+          "stage": "D2"
+        },
+        {
+          "label": "P(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J9|XT1_D3)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J9",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "V(B_J11|XT1_D3)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D3",
+          "element": "B_J11",
+          "stage": "D3"
+        },
+        {
+          "label": "P(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J9|XT1_D4)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J9",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "V(B_J11|XT1_D4)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D4",
+          "element": "B_J11",
+          "stage": "D4"
+        },
+        {
+          "label": "P(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J9|XT1_D5)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J9",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "V(B_J11|XT1_D5)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D5",
+          "element": "B_J11",
+          "stage": "D5"
+        },
+        {
+          "label": "P(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J9|XT1_D6)",
+          "group": "t1_sum_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J9",
+          "stage": "D6"
+        },
+        {
+          "label": "P(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "rad",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "V(B_J11|XT1_D6)",
+          "group": "t1_carry_jj",
+          "unit": "V",
+          "instance": "XT1_D6",
+          "element": "B_J11",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D0_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D0_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D1_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D1_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D2_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D2_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D3_L4)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D3_L4",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D4_L3)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D4_L3",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D5_L2)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D5_L2",
+          "element": "BJ1"
+        },
+        {
+          "label": "P(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(BJ1|XCB_D6_L1)",
+          "group": "array_last_cb_jj",
+          "unit": "V",
+          "instance": "XCB_D6_L1",
+          "element": "BJ1"
+        },
+        {
+          "label": "V(CARRY_CB_IN_D1)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D1)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D1)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D1",
+          "element": "BJ1",
+          "stage": "D1",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D2)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D2)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D2",
+          "element": "BJ1",
+          "stage": "D2",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D3)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D3)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S2",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S2)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 2
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S3)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S3",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S3)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 3
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S4",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D3_S4)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D3",
+          "serial": 4
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D3_S5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D3_S5",
+          "element": "BJ1",
+          "stage": "D3",
+          "serial": 5
+        },
+        {
+          "label": "V(CARRY_CB_IN_D4)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D4)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_SJTL_MID_D4_S1)",
+          "group": "carry_sjtl_boundary",
+          "unit": "V",
+          "stage": "D4",
+          "serial": 1
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D4_S2)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D4_S2",
+          "element": "BJ1",
+          "stage": "D4",
+          "serial": 2
+        },
+        {
+          "label": "V(CARRY_CB_IN_D5)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D5)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D5)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D5",
+          "element": "BJ1",
+          "stage": "D5",
+          "serial": 1
+        },
+        {
+          "label": "V(CARRY_CB_IN_D6)",
+          "group": "carry_cb_input",
+          "unit": "V",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "rad",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "V(BJ1|XCB_CARRY_D6)",
+          "group": "carry_cb_jj",
+          "unit": "V",
+          "instance": "XCB_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6"
+        },
+        {
+          "label": "P(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "rad",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        },
+        {
+          "label": "V(BJ1|XSJTL_CARRY_D6)",
+          "group": "carry_sjtl_jj",
+          "unit": "V",
+          "instance": "XSJTL_CARRY_D6",
+          "element": "BJ1",
+          "stage": "D6",
+          "serial": 1
+        }
+      ],
+      "scientific_interpretation_performed": false,
+      "event_classifier": null,
+      "event_count_semantics": "UNKNOWN unless independently reviewable criteria are later authorized"
+    }
+  },
+  "scientific_interpretation_performed": false
+}

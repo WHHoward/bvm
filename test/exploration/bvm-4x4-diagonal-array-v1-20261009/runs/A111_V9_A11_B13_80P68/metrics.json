@@ -1,0 +1,4659 @@
+{
+  "schema": "bvm4x4-v9-mechanical-metrics-v1",
+  "status": "DERIVED_ARITHMETIC_ONLY",
+  "raw_sha256": "a264434b65361a184f5817efce42b25001b90203b309042ce84ad9f5c1cd2add",
+  "windows": {
+    "ROUND_1": {
+      "start_ps": 110.0,
+      "end_ps": 190.0,
+      "boundary_rule": "[start,end)",
+      "sample_count": 8000,
+      "first_stored_ps": 110.0,
+      "last_stored_ps": 189.99,
+      "integration": "trapezoid on actual stored timestamps; no interpolation"
+    },
+    "ROUND_2": {
+      "start_ps": 190.0,
+      "end_ps": 270.0,
+      "boundary_rule": "[start,end)",
+      "sample_count": 8000,
+      "first_stored_ps": 190.0,
+      "last_stored_ps": 269.99,
+      "integration": "trapezoid on actual stored timestamps; no interpolation"
+    },
+    "ROUND_3": {
+      "start_ps": 270.0,
+      "end_ps": 400.0,
+      "boundary_rule": "[start,end)",
+      "sample_count": 13000,
+      "first_stored_ps": 270.0,
+      "last_stored_ps": 399.98999999999995,
+      "integration": "trapezoid on actual stored timestamps; no interpolation"
+    },
+    "CLOCK_1": {
+      "start_ps": 178.0,
+      "end_ps": 258.0,
+      "boundary_rule": "[start,end)",
+      "sample_count": 8000,
+      "first_stored_ps": 178.0,
+      "last_stored_ps": 257.99,
+      "integration": "trapezoid on actual stored timestamps; no interpolation"
+    },
+    "CLOCK_2": {
+      "start_ps": 258.0,
+      "end_ps": 338.0,
+      "boundary_rule": "[start,end)",
+      "sample_count": 8000,
+      "first_stored_ps": 258.0,
+      "last_stored_ps": 337.99,
+      "integration": "trapezoid on actual stored timestamps; no interpolation"
+    },
+    "CLOCK_3": {
+      "start_ps": 338.0,
+      "end_ps": 400.0,
+      "boundary_rule": "[start,end)",
+      "sample_count": 6200,
+      "first_stored_ps": 338.0,
+      "last_stored_ps": 399.98999999999995,
+      "integration": "trapezoid on actual stored timestamps; no interpolation"
+    }
+  },
+  "outputs": [
+    {
+      "signal": "V(S_D0_OUT)",
+      "window": "ROUND_1",
+      "signed_area_v_s": 7.557221699157051e-19,
+      "signed_area_phi0_navigation": 0.0003654656154538897,
+      "positive_area_phi0_navigation": 0.0015489102762571204,
+      "negative_area_phi0_navigation": -0.0011834446608032306,
+      "positive_peak_v": 1.324753e-06,
+      "positive_peak_time_ps": 137.79,
+      "negative_peak_v": -1.313396e-06,
+      "negative_peak_time_ps": 136.22,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.3435e-10,
+            "voltage_v": 7.052656e-07,
+            "time_ps": 134.35
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3779e-10,
+            "voltage_v": 1.324753e-06,
+            "time_ps": 137.79
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3622e-10,
+            "voltage_v": -1.313396e-06,
+            "time_ps": 136.22
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3929e-10,
+            "voltage_v": -8.009534e-07,
+            "time_ps": 139.29
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D0_OUT)",
+      "window": "ROUND_2",
+      "signed_area_v_s": 2.0678338237349724e-15,
+      "signed_area_phi0_navigation": 0.9999999882654848,
+      "positive_area_phi0_navigation": 1.082778468411157,
+      "negative_area_phi0_navigation": -0.08277848014567206,
+      "positive_peak_v": 0.001310251,
+      "positive_peak_time_ps": 208.85999999999999,
+      "negative_peak_v": -0.000144032,
+      "negative_peak_time_ps": 210.55,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 2,
+        "positive_candidate_count": 1,
+        "negative_candidate_count": 1,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0886e-10,
+            "voltage_v": 0.001310251,
+            "time_ps": 208.85999999999999
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.1055e-10,
+            "voltage_v": -0.000144032,
+            "time_ps": 210.55
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D0_OUT)",
+      "window": "ROUND_3",
+      "signed_area_v_s": 4.1349119589105796e-15,
+      "signed_area_phi0_navigation": 1.9996345271695055,
+      "positive_area_phi0_navigation": 2.16430046260716,
+      "negative_area_phi0_navigation": -0.16466593543765423,
+      "positive_peak_v": 0.001310253,
+      "positive_peak_time_ps": 368.86,
+      "negative_peak_v": -0.0001440476,
+      "negative_peak_time_ps": 370.54999999999995,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8886e-10,
+            "voltage_v": 0.001310251,
+            "time_ps": 288.86
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6886e-10,
+            "voltage_v": 0.001310253,
+            "time_ps": 368.86
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.9055e-10,
+            "voltage_v": -0.000144032,
+            "time_ps": 290.55
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.7055e-10,
+            "voltage_v": -0.0001440476,
+            "time_ps": 370.54999999999995
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D1_OUT)",
+      "window": "ROUND_1",
+      "signed_area_v_s": 7.499895571002356e-19,
+      "signed_area_phi0_navigation": 0.00036269333622990175,
+      "positive_area_phi0_navigation": 0.0015723616433359626,
+      "negative_area_phi0_navigation": -0.0012096683071060607,
+      "positive_peak_v": 1.35414e-06,
+      "positive_peak_time_ps": 134.54000000000002,
+      "negative_peak_v": -1.324679e-06,
+      "negative_peak_time_ps": 132.94,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 5,
+        "positive_candidate_count": 3,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.3111e-10,
+            "voltage_v": 7.294278e-07,
+            "time_ps": 131.11
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3454e-10,
+            "voltage_v": 1.35414e-06,
+            "time_ps": 134.54000000000002
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3759e-10,
+            "voltage_v": 3.874241e-07,
+            "time_ps": 137.59
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3294e-10,
+            "voltage_v": -1.324679e-06,
+            "time_ps": 132.94
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3608e-10,
+            "voltage_v": -8.742796e-07,
+            "time_ps": 136.08
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D1_OUT)",
+      "window": "ROUND_2",
+      "signed_area_v_s": 2.067833840540689e-15,
+      "signed_area_phi0_navigation": 0.9999999963926931,
+      "positive_area_phi0_navigation": 1.0813919850880218,
+      "negative_area_phi0_navigation": -0.08139198869532863,
+      "positive_peak_v": 0.001310477,
+      "positive_peak_time_ps": 208.81,
+      "negative_peak_v": -0.0001433288,
+      "negative_peak_time_ps": 210.5,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 2,
+        "positive_candidate_count": 1,
+        "negative_candidate_count": 1,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0881e-10,
+            "voltage_v": 0.001310477,
+            "time_ps": 208.81
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.105e-10,
+            "voltage_v": -0.0001433288,
+            "time_ps": 210.5
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D1_OUT)",
+      "window": "ROUND_3",
+      "signed_area_v_s": 4.134917691382276e-15,
+      "signed_area_phi0_navigation": 1.9996372993804847,
+      "positive_area_phi0_navigation": 2.1629189009682595,
+      "negative_area_phi0_navigation": -0.16328160158777458,
+      "positive_peak_v": 0.001310477,
+      "positive_peak_time_ps": 288.81,
+      "negative_peak_v": -0.0001440155,
+      "negative_peak_time_ps": 370.51,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8881e-10,
+            "voltage_v": 0.001310477,
+            "time_ps": 288.81
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6882e-10,
+            "voltage_v": 0.001310222,
+            "time_ps": 368.82000000000005
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.905e-10,
+            "voltage_v": -0.0001433288,
+            "time_ps": 290.5
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.7051e-10,
+            "voltage_v": -0.0001440155,
+            "time_ps": 370.51
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D2_OUT)",
+      "window": "ROUND_1",
+      "signed_area_v_s": 7.499219061587803e-19,
+      "signed_area_phi0_navigation": 0.0003626606203801633,
+      "positive_area_phi0_navigation": 0.0015477669982264014,
+      "negative_area_phi0_navigation": -0.001185106377846238,
+      "positive_peak_v": 1.339194e-06,
+      "positive_peak_time_ps": 148.72,
+      "negative_peak_v": -1.317364e-06,
+      "negative_peak_time_ps": 147.12,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 5,
+        "positive_candidate_count": 3,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.453e-10,
+            "voltage_v": 7.274669e-07,
+            "time_ps": 145.3
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4872e-10,
+            "voltage_v": 1.339194e-06,
+            "time_ps": 148.72
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.5177e-10,
+            "voltage_v": 3.766528e-07,
+            "time_ps": 151.77
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.4712e-10,
+            "voltage_v": -1.317364e-06,
+            "time_ps": 147.12
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.5026e-10,
+            "voltage_v": -8.591692e-07,
+            "time_ps": 150.26000000000002
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D2_OUT)",
+      "window": "ROUND_2",
+      "signed_area_v_s": 2.067833827746741e-15,
+      "signed_area_phi0_navigation": 0.9999999902055675,
+      "positive_area_phi0_navigation": 1.0830658181468986,
+      "negative_area_phi0_navigation": -0.08306582794133098,
+      "positive_peak_v": 0.00131022,
+      "positive_peak_time_ps": 208.82000000000002,
+      "negative_peak_v": -0.0001440143,
+      "negative_peak_time_ps": 210.51,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 2,
+        "positive_candidate_count": 1,
+        "negative_candidate_count": 1,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0882e-10,
+            "voltage_v": 0.00131022,
+            "time_ps": 208.82000000000002
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.1051e-10,
+            "voltage_v": -0.0001440143,
+            "time_ps": 210.51
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D2_OUT)",
+      "window": "ROUND_3",
+      "signed_area_v_s": 4.134917693709317e-15,
+      "signed_area_phi0_navigation": 1.9996373005058368,
+      "positive_area_phi0_navigation": 2.1645928737696156,
+      "negative_area_phi0_navigation": -0.164955573263779,
+      "positive_peak_v": 0.00131022,
+      "positive_peak_time_ps": 288.82,
+      "negative_peak_v": -0.0001440145,
+      "negative_peak_time_ps": 370.51,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8882e-10,
+            "voltage_v": 0.00131022,
+            "time_ps": 288.82
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6882e-10,
+            "voltage_v": 0.001310219,
+            "time_ps": 368.82000000000005
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.9051e-10,
+            "voltage_v": -0.0001440143,
+            "time_ps": 290.51
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.7051e-10,
+            "voltage_v": -0.0001440145,
+            "time_ps": 370.51
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D3_OUT)",
+      "window": "ROUND_1",
+      "signed_area_v_s": 7.4976009472091755e-19,
+      "signed_area_phi0_navigation": 0.0003625823687169461,
+      "positive_area_phi0_navigation": 0.005429530052217363,
+      "negative_area_phi0_navigation": -0.0050669476835004165,
+      "positive_peak_v": 2.54174e-06,
+      "positive_peak_time_ps": 146.92,
+      "negative_peak_v": -2.316299e-06,
+      "negative_peak_time_ps": 145.28,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 12,
+        "positive_candidate_count": 6,
+        "negative_candidate_count": 6,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.3111e-10,
+            "voltage_v": 7.205657e-07,
+            "time_ps": 131.11
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3453e-10,
+            "voltage_v": 1.306441e-06,
+            "time_ps": 134.53
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4692e-10,
+            "voltage_v": 2.54174e-06,
+            "time_ps": 146.92
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4992e-10,
+            "voltage_v": 1.208426e-06,
+            "time_ps": 149.92000000000002
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.5303e-10,
+            "voltage_v": 1.067515e-06,
+            "time_ps": 153.03
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.5652e-10,
+            "voltage_v": 1.744608e-06,
+            "time_ps": 156.51999999999998
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3293e-10,
+            "voltage_v": -1.295969e-06,
+            "time_ps": 132.93
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3608e-10,
+            "voltage_v": -8.248824e-07,
+            "time_ps": 136.08
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.4528e-10,
+            "voltage_v": -2.316299e-06,
+            "time_ps": 145.28
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.4843e-10,
+            "voltage_v": -1.821783e-06,
+            "time_ps": 148.43
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.5492e-10,
+            "voltage_v": -1.619423e-06,
+            "time_ps": 154.92
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.5806e-10,
+            "voltage_v": -1.226209e-06,
+            "time_ps": 158.06
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D3_OUT)",
+      "window": "ROUND_2",
+      "signed_area_v_s": 2.067833826870095e-15,
+      "signed_area_phi0_navigation": 0.9999999897816233,
+      "positive_area_phi0_navigation": 1.0852512709841933,
+      "negative_area_phi0_navigation": -0.08525128120257003,
+      "positive_peak_v": 0.001310483,
+      "positive_peak_time_ps": 208.81,
+      "negative_peak_v": -0.0001433332,
+      "negative_peak_time_ps": 210.5,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 2,
+        "positive_candidate_count": 1,
+        "negative_candidate_count": 1,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0881e-10,
+            "voltage_v": 0.001310483,
+            "time_ps": 208.81
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.105e-10,
+            "voltage_v": -0.0001433332,
+            "time_ps": 210.5
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D3_OUT)",
+      "window": "ROUND_3",
+      "signed_area_v_s": 4.1349178381623455e-15,
+      "signed_area_phi0_navigation": 1.9996373703630106,
+      "positive_area_phi0_navigation": 2.166779156644309,
+      "negative_area_phi0_navigation": -0.1671417862812986,
+      "positive_peak_v": 0.001310483,
+      "positive_peak_time_ps": 288.81,
+      "negative_peak_v": -0.0001440122,
+      "negative_peak_time_ps": 370.51,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8881e-10,
+            "voltage_v": 0.001310483,
+            "time_ps": 288.81
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6882e-10,
+            "voltage_v": 0.001310204,
+            "time_ps": 368.82000000000005
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.905e-10,
+            "voltage_v": -0.0001433331,
+            "time_ps": 290.5
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.7051e-10,
+            "voltage_v": -0.0001440122,
+            "time_ps": 370.51
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D4_OUT)",
+      "window": "ROUND_1",
+      "signed_area_v_s": 1.4096668720264807e-20,
+      "signed_area_phi0_navigation": 6.8171186644899165e-06,
+      "positive_area_phi0_navigation": 0.0036196768469623497,
+      "negative_area_phi0_navigation": -0.0036128597282978595,
+      "positive_peak_v": 2.445265e-06,
+      "positive_peak_time_ps": 162.31,
+      "negative_peak_v": -2.292823e-06,
+      "negative_peak_time_ps": 160.68,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 8,
+        "positive_candidate_count": 4,
+        "negative_candidate_count": 4,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.4505e-10,
+            "voltage_v": 7.195005e-07,
+            "time_ps": 145.05
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4847e-10,
+            "voltage_v": 1.30597e-06,
+            "time_ps": 148.47
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.6231e-10,
+            "voltage_v": 2.445265e-06,
+            "time_ps": 162.31
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.6528e-10,
+            "voltage_v": 1.135368e-06,
+            "time_ps": 165.28
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.4686e-10,
+            "voltage_v": -1.295059e-06,
+            "time_ps": 146.85999999999999
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.5001e-10,
+            "voltage_v": -8.274804e-07,
+            "time_ps": 150.01000000000002
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.6068e-10,
+            "voltage_v": -2.292823e-06,
+            "time_ps": 160.68
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.6381e-10,
+            "voltage_v": -1.798231e-06,
+            "time_ps": 163.81
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D4_OUT)",
+      "window": "ROUND_2",
+      "signed_area_v_s": -9.725944526415895e-24,
+      "signed_area_phi0_navigation": -4.703445847848358e-09,
+      "positive_area_phi0_navigation": 0.01458066001004968,
+      "negative_area_phi0_navigation": -0.014580664713495527,
+      "positive_peak_v": 1.080981e-05,
+      "positive_peak_time_ps": 206.94,
+      "negative_peak_v": -1.370375e-05,
+      "negative_peak_time_ps": 205.37,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0352e-10,
+            "voltage_v": 5.245929e-06,
+            "time_ps": 203.52
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.0694e-10,
+            "voltage_v": 1.080981e-05,
+            "time_ps": 206.94
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0537e-10,
+            "voltage_v": -1.370375e-05,
+            "time_ps": 205.37
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0845e-10,
+            "voltage_v": -5.990322e-06,
+            "time_ps": 208.45
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D4_OUT)",
+      "window": "ROUND_3",
+      "signed_area_v_s": -1.4090171317053774e-20,
+      "signed_area_phi0_navigation": -6.813976534276062e-06,
+      "positive_area_phi0_navigation": 0.025557737340161937,
+      "negative_area_phi0_navigation": -0.025564551316696216,
+      "positive_peak_v": 1.080981e-05,
+      "positive_peak_time_ps": 286.94,
+      "negative_peak_v": -1.3704e-05,
+      "negative_peak_time_ps": 365.37,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 8,
+        "positive_candidate_count": 4,
+        "negative_candidate_count": 4,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8352e-10,
+            "voltage_v": 5.245927e-06,
+            "time_ps": 283.52000000000004
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.8694e-10,
+            "voltage_v": 1.080981e-05,
+            "time_ps": 286.94
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6352e-10,
+            "voltage_v": 5.245937e-06,
+            "time_ps": 363.52
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6694e-10,
+            "voltage_v": 1.080977e-05,
+            "time_ps": 366.94
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.8537e-10,
+            "voltage_v": -1.370375e-05,
+            "time_ps": 285.37
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.8845e-10,
+            "voltage_v": -5.990322e-06,
+            "time_ps": 288.45000000000005
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.6537e-10,
+            "voltage_v": -1.3704e-05,
+            "time_ps": 365.37
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.6845e-10,
+            "voltage_v": -5.99165e-06,
+            "time_ps": 368.45
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D5_OUT)",
+      "window": "ROUND_1",
+      "signed_area_v_s": 2.0555718850303918e-20,
+      "signed_area_phi0_navigation": 9.94070141089204e-06,
+      "positive_area_phi0_navigation": 0.003686257962828445,
+      "negative_area_phi0_navigation": -0.0036763172614175527,
+      "positive_peak_v": 2.452937e-06,
+      "positive_peak_time_ps": 176.87,
+      "negative_peak_v": -2.297697e-06,
+      "negative_peak_time_ps": 175.24,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 8,
+        "positive_candidate_count": 4,
+        "negative_candidate_count": 4,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.3112e-10,
+            "voltage_v": 7.320823e-07,
+            "time_ps": 131.12
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3455e-10,
+            "voltage_v": 1.353154e-06,
+            "time_ps": 134.54999999999998
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.7687e-10,
+            "voltage_v": 2.452937e-06,
+            "time_ps": 176.87
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.7984e-10,
+            "voltage_v": 1.134915e-06,
+            "time_ps": 179.84
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3294e-10,
+            "voltage_v": -1.331017e-06,
+            "time_ps": 132.94
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.361e-10,
+            "voltage_v": -8.672167e-07,
+            "time_ps": 136.1
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.7524e-10,
+            "voltage_v": -2.297697e-06,
+            "time_ps": 175.24
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.7837e-10,
+            "voltage_v": -1.802781e-06,
+            "time_ps": 178.37
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D5_OUT)",
+      "window": "ROUND_2",
+      "signed_area_v_s": 1.7902401158345132e-22,
+      "signed_area_phi0_navigation": 8.657562683607417e-08,
+      "positive_area_phi0_navigation": 0.014144555279427378,
+      "negative_area_phi0_navigation": -0.014144468703800544,
+      "positive_peak_v": 1.084737e-05,
+      "positive_peak_time_ps": 206.94,
+      "negative_peak_v": -1.370666e-05,
+      "negative_peak_time_ps": 205.37,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 5,
+        "positive_candidate_count": 3,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0352e-10,
+            "voltage_v": 5.251823e-06,
+            "time_ps": 203.52
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.0694e-10,
+            "voltage_v": 1.084737e-05,
+            "time_ps": 206.94
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.1e-10,
+            "voltage_v": 2.90055e-06,
+            "time_ps": 210.0
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0537e-10,
+            "voltage_v": -1.370666e-05,
+            "time_ps": 205.37
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0845e-10,
+            "voltage_v": -5.855872e-06,
+            "time_ps": 208.45
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D5_OUT)",
+      "window": "ROUND_3",
+      "signed_area_v_s": -2.0561624160117256e-20,
+      "signed_area_phi0_navigation": -9.943557206012644e-06,
+      "positive_area_phi0_navigation": 0.02512311821010735,
+      "negative_area_phi0_navigation": -0.025133061767313364,
+      "positive_peak_v": 1.084738e-05,
+      "positive_peak_time_ps": 286.94,
+      "negative_peak_v": -1.370667e-05,
+      "negative_peak_time_ps": 285.37,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 9,
+        "positive_candidate_count": 5,
+        "negative_candidate_count": 4,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8352e-10,
+            "voltage_v": 5.251811e-06,
+            "time_ps": 283.52000000000004
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.8694e-10,
+            "voltage_v": 1.084738e-05,
+            "time_ps": 286.94
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.9e-10,
+            "voltage_v": 2.900638e-06,
+            "time_ps": 290.0
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6352e-10,
+            "voltage_v": 5.244038e-06,
+            "time_ps": 363.52
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6694e-10,
+            "voltage_v": 1.080806e-05,
+            "time_ps": 366.94
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.8537e-10,
+            "voltage_v": -1.370667e-05,
+            "time_ps": 285.37
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.8845e-10,
+            "voltage_v": -5.855859e-06,
+            "time_ps": 288.45000000000005
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.6537e-10,
+            "voltage_v": -1.370082e-05,
+            "time_ps": 365.37
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.6845e-10,
+            "voltage_v": -5.990819e-06,
+            "time_ps": 368.45
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D6_OUT)",
+      "window": "ROUND_1",
+      "signed_area_v_s": -6.707015167940889e-19,
+      "signed_area_phi0_navigation": -0.0003243498105240846,
+      "positive_area_phi0_navigation": 0.001843801370462135,
+      "negative_area_phi0_navigation": -0.0021681511809862196,
+      "positive_peak_v": 1.356915e-06,
+      "positive_peak_time_ps": 137.28,
+      "negative_peak_v": -2.330058e-06,
+      "negative_peak_time_ps": 189.83999999999997,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 7,
+        "positive_candidate_count": 4,
+        "negative_candidate_count": 3,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.3385e-10,
+            "voltage_v": 7.337552e-07,
+            "time_ps": 133.85
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3728e-10,
+            "voltage_v": 1.356915e-06,
+            "time_ps": 137.28
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4036e-10,
+            "voltage_v": 3.523386e-07,
+            "time_ps": 140.35999999999999
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.8796e-10,
+            "voltage_v": 4.197947e-07,
+            "time_ps": 187.95999999999998
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3567e-10,
+            "voltage_v": -1.340353e-06,
+            "time_ps": 135.67000000000002
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3884e-10,
+            "voltage_v": -8.50983e-07,
+            "time_ps": 138.84
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.8984e-10,
+            "voltage_v": -2.330058e-06,
+            "time_ps": 189.83999999999997
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D6_OUT)",
+      "window": "ROUND_2",
+      "signed_area_v_s": 4.8472293314763597e-20,
+      "signed_area_phi0_navigation": 2.3441096760093073e-05,
+      "positive_area_phi0_navigation": 0.01450889473405377,
+      "negative_area_phi0_navigation": -0.014485453637293677,
+      "positive_peak_v": 1.079944e-05,
+      "positive_peak_time_ps": 206.88,
+      "negative_peak_v": -1.366569e-05,
+      "negative_peak_time_ps": 205.31,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0345e-10,
+            "voltage_v": 5.227261e-06,
+            "time_ps": 203.45000000000002
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.0688e-10,
+            "voltage_v": 1.079944e-05,
+            "time_ps": 206.88
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0531e-10,
+            "voltage_v": -1.366569e-05,
+            "time_ps": 205.31
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0839e-10,
+            "voltage_v": -5.985406e-06,
+            "time_ps": 208.39
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(S_D6_OUT)",
+      "window": "ROUND_3",
+      "signed_area_v_s": 6.671380547835065e-19,
+      "signed_area_phi0_navigation": 0.00032262652796246635,
+      "positive_area_phi0_navigation": 0.027322597600750752,
+      "negative_area_phi0_navigation": -0.026999971072788283,
+      "positive_peak_v": 1.079933e-05,
+      "positive_peak_time_ps": 286.88,
+      "negative_peak_v": -1.36658e-05,
+      "negative_peak_time_ps": 285.31,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 8,
+        "positive_candidate_count": 4,
+        "negative_candidate_count": 4,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8345e-10,
+            "voltage_v": 5.228754e-06,
+            "time_ps": 283.45
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.8688e-10,
+            "voltage_v": 1.079933e-05,
+            "time_ps": 286.88
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6345e-10,
+            "voltage_v": 5.225531e-06,
+            "time_ps": 363.45000000000005
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6688e-10,
+            "voltage_v": 1.079661e-05,
+            "time_ps": 366.88
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.8531e-10,
+            "voltage_v": -1.36658e-05,
+            "time_ps": 285.31
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.8839e-10,
+            "voltage_v": -5.985388e-06,
+            "time_ps": 288.39000000000004
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.6531e-10,
+            "voltage_v": -1.366077e-05,
+            "time_ps": 365.31
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.6839e-10,
+            "voltage_v": -5.993735e-06,
+            "time_ps": 368.39
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(DFF_O)",
+      "window": "ROUND_1",
+      "signed_area_v_s": 2.256584341796973e-18,
+      "signed_area_phi0_navigation": 0.00109127933270825,
+      "positive_area_phi0_navigation": 0.0034767816438979545,
+      "negative_area_phi0_navigation": -0.0023855023111897045,
+      "positive_peak_v": 1.268466e-06,
+      "positive_peak_time_ps": 139.62,
+      "negative_peak_v": -1.309722e-06,
+      "negative_peak_time_ps": 140.9,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 13,
+        "positive_candidate_count": 7,
+        "negative_candidate_count": 6,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 1.337e-10,
+            "voltage_v": 3.778255e-07,
+            "time_ps": 133.7
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3696e-10,
+            "voltage_v": 8.916556e-07,
+            "time_ps": 136.96
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.3962e-10,
+            "voltage_v": 1.268466e-06,
+            "time_ps": 139.62
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4216e-10,
+            "voltage_v": 1.219809e-06,
+            "time_ps": 142.16
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4467e-10,
+            "voltage_v": 8.865657e-07,
+            "time_ps": 144.67000000000002
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.4719e-10,
+            "voltage_v": 5.328296e-07,
+            "time_ps": 147.19
+          },
+          {
+            "polarity": "positive",
+            "time_s": 1.8875e-10,
+            "voltage_v": 6.930994e-07,
+            "time_ps": 188.75
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3548e-10,
+            "voltage_v": -7.748129e-07,
+            "time_ps": 135.48000000000002
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.3831e-10,
+            "voltage_v": -1.17717e-06,
+            "time_ps": 138.31
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.409e-10,
+            "voltage_v": -1.309722e-06,
+            "time_ps": 140.9
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.4342e-10,
+            "voltage_v": -1.074091e-06,
+            "time_ps": 143.42000000000002
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.4593e-10,
+            "voltage_v": -7.010606e-07,
+            "time_ps": 145.93
+          },
+          {
+            "polarity": "negative",
+            "time_s": 1.4845e-10,
+            "voltage_v": -3.927197e-07,
+            "time_ps": 148.45
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(DFF_O)",
+      "window": "ROUND_2",
+      "signed_area_v_s": 2.067824833461258e-15,
+      "signed_area_phi0_navigation": 0.9999956405884588,
+      "positive_area_phi0_navigation": 1.2124738815055978,
+      "negative_area_phi0_navigation": -0.21247824091713902,
+      "positive_peak_v": 0.001164669,
+      "positive_peak_time_ps": 204.91,
+      "negative_peak_v": -0.0003939711,
+      "negative_peak_time_ps": 206.19,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 4,
+        "positive_candidate_count": 2,
+        "negative_candidate_count": 2,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.0491e-10,
+            "voltage_v": 0.001164669,
+            "time_ps": 204.91
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.073e-10,
+            "voltage_v": 0.0003656023,
+            "time_ps": 207.3
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0619e-10,
+            "voltage_v": -0.0003939711,
+            "time_ps": 206.19
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.0852e-10,
+            "voltage_v": -0.0001586572,
+            "time_ps": 208.51999999999998
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    },
+    {
+      "signal": "V(DFF_O)",
+      "window": "ROUND_3",
+      "signed_area_v_s": 4.133391350878819e-15,
+      "signed_area_phi0_navigation": 1.9988991643968963,
+      "positive_area_phi0_navigation": 2.4231752687676984,
+      "negative_area_phi0_navigation": -0.42427610437080215,
+      "positive_peak_v": 0.001164682,
+      "positive_peak_time_ps": 284.91,
+      "negative_peak_v": -0.0003939307,
+      "negative_peak_time_ps": 366.2,
+      "descriptive_lobe_candidates": {
+        "candidate_count": 8,
+        "positive_candidate_count": 4,
+        "negative_candidate_count": 4,
+        "candidates": [
+          {
+            "polarity": "positive",
+            "time_s": 2.8491e-10,
+            "voltage_v": 0.001164682,
+            "time_ps": 284.91
+          },
+          {
+            "polarity": "positive",
+            "time_s": 2.873e-10,
+            "voltage_v": 0.0003655426,
+            "time_ps": 287.29999999999995
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.6491e-10,
+            "voltage_v": 0.001164681,
+            "time_ps": 364.90999999999997
+          },
+          {
+            "polarity": "positive",
+            "time_s": 3.673e-10,
+            "voltage_v": 0.0003655428,
+            "time_ps": 367.3
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.862e-10,
+            "voltage_v": -0.0003939303,
+            "time_ps": 286.2
+          },
+          {
+            "polarity": "negative",
+            "time_s": 2.8852e-10,
+            "voltage_v": -0.0001585723,
+            "time_ps": 288.52
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.662e-10,
+            "voltage_v": -0.0003939307,
+            "time_ps": 366.2
+          },
+          {
+            "polarity": "negative",
+            "time_s": 3.6852e-10,
+            "voltage_v": -0.0001585799,
+            "time_ps": 368.52
+          }
+        ],
+        "method": {
+          "method": "local_voltage_extrema_relative_threshold",
+          "relative_threshold": 0.25,
+          "minimum_peak_separation_ps": 1.0,
+          "meaning": "descriptive waveform-lobe candidates only; not event or SFQ counts"
+        },
+        "classification_boundary": "descriptive waveform lobes only; not SFQ/event count"
+      }
+    }
+  ],
+  "same_jj_phase_voltage": [
+    {
+      "phase_signal": "P(B_J9|XT1_D0)",
+      "voltage_signal": "V(B_J9|XT1_D0)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.42591260000000003,
+      "phase_delta_rad_over_2pi_navigation": 0.0677860956151212,
+      "voltage_area_v_s_same_jj_same_rows": 1.401703807744087e-16,
+      "voltage_area_phi0_navigation": 0.06778609456943598,
+      "phase_minus_area_navigation": 1.0456852189699717e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D0)",
+      "voltage_signal": "V(B_J9|XT1_D0)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831677,
+      "phase_delta_rad_over_2pi_navigation": 0.9999971977303349,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678279054492266e-15,
+      "voltage_area_phi0_navigation": 0.9999971261952312,
+      "phase_minus_area_navigation": 7.153510372948091e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D0)",
+      "voltage_signal": "V(B_J9|XT1_D0)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 12.140434999999998,
+      "phase_delta_rad_over_2pi_navigation": 1.9322102415358542,
+      "voltage_area_v_s_same_jj_same_rows": 3.995491322690172e-15,
+      "voltage_area_phi0_navigation": 1.932211007453328,
+      "phase_minus_area_navigation": -7.659174738883223e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D0)",
+      "voltage_signal": "V(B_J9|XT1_D0)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831849,
+      "phase_delta_rad_over_2pi_navigation": 0.9999999351953561,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678338639362112e-15,
+      "voltage_area_phi0_navigation": 1.0000000077067175,
+      "phase_minus_area_navigation": -7.251136135977276e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D0)",
+      "voltage_signal": "V(B_J9|XT1_D0)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283183999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.9999997919559073,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833851208656e-15,
+      "voltage_area_phi0_navigation": 1.000000001551699,
+      "phase_minus_area_navigation": -2.0959579172252774e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D0)",
+      "voltage_signal": "V(B_J9|XT1_D0)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 5.870659999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.9343445582118661,
+      "voltage_area_v_s_same_jj_same_rows": 1.9320701893093146e-15,
+      "voltage_area_phi0_navigation": 0.9343449867493002,
+      "phase_minus_area_navigation": -4.285374340939896e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D0)",
+      "voltage_signal": "V(B_J11|XT1_D0)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.07600689999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.012096873844091378,
+      "voltage_area_v_s_same_jj_same_rows": 2.5014323435156562e-17,
+      "voltage_area_phi0_navigation": 0.01209687299555054,
+      "phase_minus_area_navigation": 8.485408382885584e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D0)",
+      "voltage_signal": "V(B_J11|XT1_D0)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -8.000000000230045e-07,
+      "phase_delta_rad_over_2pi_navigation": -1.2732395447717755e-07,
+      "voltage_area_v_s_same_jj_same_rows": -2.5032898298867216e-22,
+      "voltage_area_phi0_navigation": -1.2105855759677657e-07,
+      "phase_minus_area_navigation": -6.26539688040098e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D0)",
+      "voltage_signal": "V(B_J11|XT1_D0)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.07600800000000002,
+      "phase_delta_rad_over_2pi_navigation": -0.012097048914528785,
+      "voltage_area_v_s_same_jj_same_rows": -2.5014680588325123e-17,
+      "voltage_area_phi0_navigation": -0.01209704571405445,
+      "phase_minus_area_navigation": -3.2004743352048726e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D0)",
+      "voltage_signal": "V(B_J11|XT1_D0)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 8.994855755656478e-24,
+      "voltage_area_phi0_navigation": 4.349892891228308e-09,
+      "phase_minus_area_navigation": -4.349892891228308e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D0)",
+      "voltage_signal": "V(B_J11|XT1_D0)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 2.390716799930277e-24,
+      "voltage_area_phi0_navigation": 1.1561455008788873e-09,
+      "phase_minus_area_navigation": -1.1561455008788873e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D0)",
+      "voltage_signal": "V(B_J11|XT1_D0)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.07573420000000003,
+      "phase_delta_rad_over_2pi_navigation": -0.012053472291110225,
+      "voltage_area_v_s_same_jj_same_rows": -2.4924577322710317e-17,
+      "voltage_area_phi0_navigation": -0.012053471968658053,
+      "phase_minus_area_navigation": -3.2245217260196135e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D1)",
+      "voltage_signal": "V(B_J9|XT1_D1)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.4223247,
+      "phase_delta_rad_over_2pi_navigation": 0.06721506359480177,
+      "voltage_area_v_s_same_jj_same_rows": 1.3898959457239278e-16,
+      "voltage_area_phi0_navigation": 0.06721506890257305,
+      "phase_minus_area_navigation": -5.307771278051376e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D1)",
+      "voltage_signal": "V(B_J9|XT1_D1)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831666,
+      "phase_delta_rad_over_2pi_navigation": 0.9999970226598976,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678278311264972e-15,
+      "voltage_area_phi0_navigation": 0.9999970902529192,
+      "phase_minus_area_navigation": -6.759302151326807e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D1)",
+      "voltage_signal": "V(B_J9|XT1_D1)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 12.14403,
+      "phase_delta_rad_over_2pi_navigation": 1.93278240355627,
+      "voltage_area_v_s_same_jj_same_rows": 3.996672081413718e-15,
+      "voltage_area_phi0_navigation": 1.932782019831662,
+      "phase_minus_area_navigation": 3.8372460786639806e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D1)",
+      "voltage_signal": "V(B_J9|XT1_D1)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831856,
+      "phase_delta_rad_over_2pi_navigation": 1.0000000466038164,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833831355537e-15,
+      "voltage_area_phi0_navigation": 0.9999999919507735,
+      "phase_minus_area_navigation": 5.465304286911277e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D1)",
+      "voltage_signal": "V(B_J9|XT1_D1)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831850000000005,
+      "phase_delta_rad_over_2pi_navigation": 0.9999999511108505,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678338304529793e-15,
+      "voltage_area_phi0_navigation": 0.9999999915142985,
+      "phase_minus_area_navigation": -4.040344803168949e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D1)",
+      "voltage_signal": "V(B_J9|XT1_D1)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 5.874359999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.9349334315013063,
+      "voltage_area_v_s_same_jj_same_rows": 1.933286109294978e-15,
+      "voltage_area_phi0_navigation": 0.9349330030383455,
+      "phase_minus_area_navigation": 4.2846296077758694e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D1)",
+      "voltage_signal": "V(B_J11|XT1_D1)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0772561,
+      "phase_delta_rad_over_2pi_navigation": 0.012295690199001775,
+      "voltage_area_v_s_same_jj_same_rows": 2.54254204238214e-17,
+      "voltage_area_phi0_navigation": 0.012295678614803967,
+      "phase_minus_area_navigation": 1.1584197807598673e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D1)",
+      "voltage_signal": "V(B_J11|XT1_D1)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -7.999999999674934e-07,
+      "phase_delta_rad_over_2pi_navigation": -1.2732395446834268e-07,
+      "voltage_area_v_s_same_jj_same_rows": -2.5487431111906957e-22,
+      "voltage_area_phi0_navigation": -1.2325666850147698e-07,
+      "phase_minus_area_navigation": -4.067285966865697e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D1)",
+      "voltage_signal": "V(B_J11|XT1_D1)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.07725719999999997,
+      "phase_delta_rad_over_2pi_navigation": -0.012295865269439172,
+      "voltage_area_v_s_same_jj_same_rows": -2.5425809464610335e-17,
+      "voltage_area_phi0_navigation": -0.012295866754092485,
+      "phase_minus_area_navigation": 1.4846533134826867e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D1)",
+      "voltage_signal": "V(B_J11|XT1_D1)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 8.478606169228493e-24,
+      "voltage_area_phi0_navigation": 4.100235701929806e-09,
+      "phase_minus_area_navigation": -4.100235701929806e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D1)",
+      "voltage_signal": "V(B_J11|XT1_D1)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -1.0000000000287557e-07,
+      "phase_delta_rad_over_2pi_navigation": -1.5915494309647193e-08,
+      "voltage_area_v_s_same_jj_same_rows": -5.7057332145719845e-24,
+      "voltage_area_phi0_navigation": -2.759280306824721e-09,
+      "phase_minus_area_navigation": -1.3156214002822472e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D1)",
+      "voltage_signal": "V(B_J11|XT1_D1)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.07698650000000001,
+      "phase_delta_rad_over_2pi_navigation": -0.012252782026344203,
+      "voltage_area_v_s_same_jj_same_rows": -2.5336711049254393e-17,
+      "voltage_area_phi0_navigation": -0.012252778952119363,
+      "phase_minus_area_navigation": -3.074224839971773e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D2)",
+      "voltage_signal": "V(B_J9|XT1_D2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.42228240000000006,
+      "phase_delta_rad_over_2pi_navigation": 0.067208331340709,
+      "voltage_area_v_s_same_jj_same_rows": 1.389756626678324e-16,
+      "voltage_area_phi0_navigation": 0.0672083314635018,
+      "phase_minus_area_navigation": -1.2279280370286472e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D2)",
+      "voltage_signal": "V(B_J9|XT1_D2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831676000000005,
+      "phase_delta_rad_over_2pi_navigation": 0.9999971818148408,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678278123031444e-15,
+      "voltage_area_phi0_navigation": 0.9999970811499862,
+      "phase_minus_area_navigation": 1.0066485456317054e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D2)",
+      "voltage_signal": "V(B_J9|XT1_D2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 12.144068,
+      "phase_delta_rad_over_2pi_navigation": 1.9327884514441074,
+      "voltage_area_v_s_same_jj_same_rows": 3.996686037660198e-15,
+      "voltage_area_phi0_navigation": 1.9327887690424332,
+      "phase_minus_area_navigation": -3.175983258607573e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D2)",
+      "voltage_signal": "V(B_J9|XT1_D2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831851,
+      "phase_delta_rad_over_2pi_navigation": 0.9999999670263447,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833813464703e-15,
+      "voltage_area_phi0_navigation": 0.9999999832988047,
+      "phase_minus_area_navigation": -1.627245993507387e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D2)",
+      "voltage_signal": "V(B_J9|XT1_D2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831850000000005,
+      "phase_delta_rad_over_2pi_navigation": 0.9999999511108505,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678338065661512e-15,
+      "voltage_area_phi0_navigation": 0.9999999799626798,
+      "phase_minus_area_navigation": -2.8851829259046724e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D2)",
+      "voltage_signal": "V(B_J9|XT1_D2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 5.8744,
+      "phase_delta_rad_over_2pi_navigation": 0.9349397976990299,
+      "voltage_area_v_s_same_jj_same_rows": 1.9333006084940345e-15,
+      "voltage_area_phi0_navigation": 0.9349400148198147,
+      "phase_minus_area_navigation": -2.1712078479563246e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D2)",
+      "voltage_signal": "V(B_J11|XT1_D2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.07798229999999995,
+      "phase_delta_rad_over_2pi_navigation": 0.012411268518675102,
+      "voltage_area_v_s_same_jj_same_rows": 2.5664441459692004e-17,
+      "voltage_area_phi0_navigation": 0.012411268673503211,
+      "phase_minus_area_navigation": -1.548281086671821e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D2)",
+      "voltage_signal": "V(B_J11|XT1_D2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -8.000000000230045e-07,
+      "phase_delta_rad_over_2pi_navigation": -1.2732395447717755e-07,
+      "voltage_area_v_s_same_jj_same_rows": -2.571985593179472e-22,
+      "voltage_area_phi0_navigation": -1.2438066992989235e-07,
+      "phase_minus_area_navigation": -2.9432845472851924e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D2)",
+      "voltage_signal": "V(B_J11|XT1_D2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.07798329999999998,
+      "phase_delta_rad_over_2pi_navigation": -0.012411427673618199,
+      "voltage_area_v_s_same_jj_same_rows": -2.5664755755712395e-17,
+      "voltage_area_phi0_navigation": -0.012411420666382473,
+      "phase_minus_area_navigation": -7.007235725692285e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D2)",
+      "voltage_signal": "V(B_J11|XT1_D2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 1.0000000000287557e-07,
+      "phase_delta_rad_over_2pi_navigation": 1.5915494309647193e-08,
+      "voltage_area_v_s_same_jj_same_rows": 1.1953372959353119e-23,
+      "voltage_area_phi0_navigation": 5.780625445760242e-09,
+      "phase_minus_area_navigation": 1.0134868863886951e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D2)",
+      "voltage_signal": "V(B_J11|XT1_D2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 1.0411527644529845e-23,
+      "voltage_area_phi0_navigation": 5.034992368753335e-09,
+      "phase_minus_area_navigation": -5.034992368753335e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D2)",
+      "voltage_signal": "V(B_J11|XT1_D2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.07771319999999998,
+      "phase_delta_rad_over_2pi_navigation": -0.012368439923489079,
+      "voltage_area_v_s_same_jj_same_rows": -2.5575866278228182e-17,
+      "voltage_area_phi0_navigation": -0.012368433906314594,
+      "phase_minus_area_navigation": -6.017174484368448e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D3)",
+      "voltage_signal": "V(B_J9|XT1_D3)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.42219019999999996,
+      "phase_delta_rad_over_2pi_navigation": 0.06719365725495591,
+      "voltage_area_v_s_same_jj_same_rows": 1.389453140781914e-16,
+      "voltage_area_phi0_navigation": 0.06719365495084564,
+      "phase_minus_area_navigation": 2.3041102636955912e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D3)",
+      "voltage_signal": "V(B_J9|XT1_D3)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831669,
+      "phase_delta_rad_over_2pi_navigation": 0.9999970704063805,
+      "voltage_area_v_s_same_jj_same_rows": 2.067827781075994e-15,
+      "voltage_area_phi0_navigation": 0.9999970660486034,
+      "phase_minus_area_navigation": 4.357777139141206e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D3)",
+      "voltage_signal": "V(B_J9|XT1_D3)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 12.144164,
+      "phase_delta_rad_over_2pi_navigation": 1.932803730318644,
+      "voltage_area_v_s_same_jj_same_rows": 3.996716328324603e-15,
+      "voltage_area_phi0_navigation": 1.9328034175425697,
+      "phase_minus_area_navigation": 3.12776074373744e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D3)",
+      "voltage_signal": "V(B_J9|XT1_D3)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831853,
+      "phase_delta_rad_over_2pi_navigation": 0.9999999988573335,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678337270202906e-15,
+      "voltage_area_phi0_navigation": 0.9999999414944727,
+      "phase_minus_area_navigation": 5.736286079471853e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D3)",
+      "voltage_signal": "V(B_J9|XT1_D3)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283181,
+      "phase_delta_rad_over_2pi_navigation": 0.999999314491078,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678337574226278e-15,
+      "voltage_area_phi0_navigation": 0.9999999561969776,
+      "phase_minus_area_navigation": -6.417058995289437e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D3)",
+      "voltage_signal": "V(B_J9|XT1_D3)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 5.874510000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9349573047427703,
+      "voltage_area_v_s_same_jj_same_rows": 1.9333345266741594e-15,
+      "voltage_area_phi0_navigation": 0.9349564175787489,
+      "phase_minus_area_navigation": 8.871640213570231e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D3)",
+      "voltage_signal": "V(B_J11|XT1_D3)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.3611244000000005,
+      "phase_delta_rad_over_2pi_navigation": 1.012404391882467,
+      "voltage_area_v_s_same_jj_same_rows": 2.0934841741663415e-15,
+      "voltage_area_phi0_navigation": 1.0124044425480077,
+      "phase_minus_area_navigation": -5.0665540651806396e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D3)",
+      "voltage_signal": "V(B_J11|XT1_D3)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283184000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9999997919559075,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678333971799793e-15,
+      "voltage_area_phi0_navigation": 0.9999997819844079,
+      "phase_minus_area_navigation": 9.971499626004743e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D3)",
+      "voltage_signal": "V(B_J11|XT1_D3)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.2052499999999995,
+      "phase_delta_rad_over_2pi_navigation": 0.9875962106209835,
+      "voltage_area_v_s_same_jj_same_rows": 2.0421831574294374e-15,
+      "voltage_area_phi0_navigation": 0.9875953812268949,
+      "phase_minus_area_navigation": 8.293940885195639e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D3)",
+      "voltage_signal": "V(B_J11|XT1_D3)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283187,
+      "phase_delta_rad_over_2pi_navigation": 1.0000002694207366,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833021014442e-15,
+      "voltage_area_phi0_navigation": 0.9999996000715634,
+      "phase_minus_area_navigation": 6.69349173199052e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D3)",
+      "voltage_signal": "V(B_J11|XT1_D3)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.28318,
+      "phase_delta_rad_over_2pi_navigation": 0.9999991553361349,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678334697937437e-15,
+      "voltage_area_phi0_navigation": 0.9999998171002681,
+      "phase_minus_area_navigation": -6.617641331585489e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D3)",
+      "voltage_signal": "V(B_J11|XT1_D3)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.07771999999999935,
+      "phase_delta_rad_over_2pi_navigation": -0.012369522177102002,
+      "voltage_area_v_s_same_jj_same_rows": -2.5580001857552462e-17,
+      "voltage_area_phi0_navigation": -0.012370433863578221,
+      "phase_minus_area_navigation": 9.116864762188925e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D4)",
+      "voltage_signal": "V(B_J9|XT1_D4)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.009607000000000032,
+      "phase_delta_rad_over_2pi_navigation": 0.0015290015382838436,
+      "voltage_area_v_s_same_jj_same_rows": 3.161710457063923e-18,
+      "voltage_area_phi0_navigation": 0.0015289963746951505,
+      "phase_minus_area_navigation": 5.163588693126234e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D4)",
+      "voltage_signal": "V(B_J9|XT1_D4)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -1.2300000000020628e-05,
+      "phase_delta_rad_over_2pi_navigation": -1.957605800033596e-06,
+      "voltage_area_v_s_same_jj_same_rows": -4.0163299897962876e-21,
+      "voltage_area_phi0_navigation": -1.9422885420319744e-06,
+      "phase_minus_area_navigation": -1.5317258001621446e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D4)",
+      "voltage_signal": "V(B_J9|XT1_D4)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.009618200000000021,
+      "phase_delta_rad_over_2pi_navigation": -0.0015307840736464712,
+      "voltage_area_v_s_same_jj_same_rows": -3.165397114215246e-18,
+      "voltage_area_phi0_navigation": -0.0015307792341617795,
+      "phase_minus_area_navigation": -4.839484691676957e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D4)",
+      "voltage_signal": "V(B_J9|XT1_D4)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -1.6999999999933735e-06,
+      "phase_delta_rad_over_2pi_navigation": -2.705634032551674e-07,
+      "voltage_area_v_s_same_jj_same_rows": -5.398988298069757e-22,
+      "voltage_area_phi0_navigation": -2.6109391251582593e-07,
+      "phase_minus_area_navigation": -9.46949073934149e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D4)",
+      "voltage_signal": "V(B_J9|XT1_D4)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -4.0000000001150227e-07,
+      "phase_delta_rad_over_2pi_navigation": -6.366197723858877e-08,
+      "voltage_area_v_s_same_jj_same_rows": -9.974405006625901e-23,
+      "voltage_area_phi0_navigation": -4.823600801521409e-08,
+      "phase_minus_area_navigation": -1.542596922337468e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D4)",
+      "voltage_signal": "V(B_J9|XT1_D4)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.0014928999999999637,
+      "phase_delta_rad_over_2pi_navigation": 0.00023760241454188477,
+      "voltage_area_v_s_same_jj_same_rows": 4.914078778398198e-19,
+      "voltage_area_phi0_navigation": 0.00023764379247157952,
+      "phase_minus_area_navigation": -4.137792969475e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D4)",
+      "voltage_signal": "V(B_J11|XT1_D4)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2838156000000005,
+      "phase_delta_rad_over_2pi_navigation": 1.0001003142179643,
+      "voltage_area_v_s_same_jj_same_rows": 2.0680411454008184e-15,
+      "voltage_area_phi0_navigation": 1.0001002485770405,
+      "phase_minus_area_navigation": 6.564092380756392e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D4)",
+      "voltage_signal": "V(B_J11|XT1_D4)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283217999999999,
+      "phase_delta_rad_over_2pi_navigation": 1.0000052032239723,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678428405835563e-15,
+      "voltage_area_phi0_navigation": 1.0000043487940604,
+      "phase_minus_area_navigation": 8.544299119339627e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D4)",
+      "voltage_signal": "V(B_J11|XT1_D4)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.28256,
+      "phase_delta_rad_over_2pi_navigation": 0.999900479271418,
+      "voltage_area_v_s_same_jj_same_rows": 2.067625484276017e-15,
+      "voltage_area_phi0_navigation": 0.9998992357513711,
+      "phase_minus_area_navigation": 1.2435200469340657e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D4)",
+      "voltage_signal": "V(B_J11|XT1_D4)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.282372,
+      "phase_delta_rad_over_2pi_navigation": 0.9998705581421167,
+      "voltage_area_v_s_same_jj_same_rows": 2.067565046110327e-15,
+      "voltage_area_phi0_navigation": 0.9998700079844747,
+      "phase_minus_area_navigation": 5.501576419986165e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D4)",
+      "voltage_signal": "V(B_J11|XT1_D4)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.282830000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9999434511060529,
+      "voltage_area_v_s_same_jj_same_rows": 2.067714949697846e-15,
+      "voltage_area_phi0_navigation": 0.9999425010368849,
+      "phase_minus_area_navigation": 9.500691680042195e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D4)",
+      "voltage_signal": "V(B_J11|XT1_D4)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.008160000000000167,
+      "phase_delta_rad_over_2pi_navigation": 0.0012987043356298925,
+      "voltage_area_v_s_same_jj_same_rows": 2.685315437200729e-18,
+      "voltage_area_phi0_navigation": 0.0012986127680412786,
+      "phase_minus_area_navigation": 9.15675886139361e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D5)",
+      "voltage_signal": "V(B_J9|XT1_D5)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.007153200000000026,
+      "phase_delta_rad_over_2pi_navigation": 0.0011384671389249499,
+      "voltage_area_v_s_same_jj_same_rows": 2.354037805854424e-18,
+      "voltage_area_phi0_navigation": 0.001138407618257743,
+      "phase_minus_area_navigation": 5.952066720678502e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D5)",
+      "voltage_signal": "V(B_J9|XT1_D5)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.6299999999979118e-05,
+      "phase_delta_rad_over_2pi_navigation": -4.185775003313524e-06,
+      "voltage_area_v_s_same_jj_same_rows": -8.667446607807854e-21,
+      "voltage_area_phi0_navigation": -4.191558531741306e-06,
+      "phase_minus_area_navigation": 5.783528427781684e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D5)",
+      "voltage_signal": "V(B_J9|XT1_D5)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.007163499999999989,
+      "phase_delta_rad_over_2pi_navigation": -0.0011401064348387905,
+      "voltage_area_v_s_same_jj_same_rows": -2.3574491162673926e-18,
+      "voltage_area_phi0_navigation": -0.0011400573206341055,
+      "phase_minus_area_navigation": -4.9114204685000995e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D5)",
+      "voltage_signal": "V(B_J9|XT1_D5)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.00018699999999999273,
+      "phase_delta_rad_over_2pi_navigation": 2.976197435818327e-05,
+      "voltage_area_v_s_same_jj_same_rows": 6.163010279217282e-20,
+      "voltage_area_phi0_navigation": 2.9804185114670206e-05,
+      "phase_minus_area_navigation": -4.221075648693621e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D5)",
+      "voltage_signal": "V(B_J9|XT1_D5)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 7.789999999996411e-05,
+      "phase_delta_rad_over_2pi_navigation": 1.2398170066852935e-05,
+      "voltage_area_v_s_same_jj_same_rows": 2.5668579759911735e-20,
+      "voltage_area_phi0_navigation": 1.2413269946586024e-05,
+      "phase_minus_area_navigation": -1.5099879733089394e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D5)",
+      "voltage_signal": "V(B_J9|XT1_D5)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.05301079999999997,
+      "phase_delta_rad_over_2pi_navigation": 0.008436930857255841,
+      "voltage_area_v_s_same_jj_same_rows": 1.7445365965262768e-17,
+      "voltage_area_phi0_navigation": 0.00843654144753257,
+      "phase_minus_area_navigation": 3.8940972327088097e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D5)",
+      "voltage_signal": "V(B_J11|XT1_D5)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2755588,
+      "phase_delta_rad_over_2pi_navigation": 0.998786203683843,
+      "voltage_area_v_s_same_jj_same_rows": 2.06532378394039e-15,
+      "voltage_area_phi0_navigation": 0.9987861384211126,
+      "phase_minus_area_navigation": 6.526273033102825e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D5)",
+      "voltage_signal": "V(B_J11|XT1_D5)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.281616,
+      "phase_delta_rad_over_2pi_navigation": 0.9997502370051392,
+      "voltage_area_v_s_same_jj_same_rows": 2.067318288054936e-15,
+      "voltage_area_phi0_navigation": 0.9997506763197814,
+      "phase_minus_area_navigation": -4.3931464221991234e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D5)",
+      "voltage_signal": "V(B_J11|XT1_D5)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.290920000000002,
+      "phase_delta_rad_over_2pi_navigation": 1.0012310145956664,
+      "voltage_area_v_s_same_jj_same_rows": 2.0703807961545525e-15,
+      "voltage_area_phi0_navigation": 1.0012316986478462,
+      "phase_minus_area_navigation": -6.840521797890631e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D5)",
+      "voltage_signal": "V(B_J11|XT1_D5)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.253188000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.995225780282923,
+      "voltage_area_v_s_same_jj_same_rows": 2.057962236596836e-15,
+      "voltage_area_phi0_navigation": 0.9952261099639548,
+      "phase_minus_area_navigation": -3.296810318076382e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D5)",
+      "voltage_signal": "V(B_J11|XT1_D5)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.26989,
+      "phase_delta_rad_over_2pi_navigation": 0.9978839861424437,
+      "voltage_area_v_s_same_jj_same_rows": 2.063458854238455e-15,
+      "voltage_area_phi0_navigation": 0.9978842624296064,
+      "phase_minus_area_navigation": -2.7628716270378106e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D5)",
+      "voltage_signal": "V(B_J11|XT1_D5)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 2.1760100000000016,
+      "phase_delta_rad_over_2pi_navigation": 0.3463227477173954,
+      "voltage_area_v_s_same_jj_same_rows": 7.161393333185873e-16,
+      "voltage_area_phi0_navigation": 0.3463234408370064,
+      "phase_minus_area_navigation": -6.931196109838389e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D6)",
+      "voltage_signal": "V(B_J9|XT1_D6)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0024977999999999945,
+      "phase_delta_rad_over_2pi_navigation": 0.0003975372168549353,
+      "voltage_area_v_s_same_jj_same_rows": 8.238956415070645e-19,
+      "voltage_area_phi0_navigation": 0.00039843415964195225,
+      "phase_minus_area_navigation": -8.969427870169256e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D6)",
+      "voltage_signal": "V(B_J9|XT1_D6)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0019407999999999648,
+      "phase_delta_rad_over_2pi_navigation": 0.0003088879135527449,
+      "voltage_area_v_s_same_jj_same_rows": 6.388092359422126e-19,
+      "voltage_area_phi0_navigation": 0.00030892677211956176,
+      "phase_minus_area_navigation": -3.885856681687307e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D6)",
+      "voltage_signal": "V(B_J9|XT1_D6)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.0026479999999999837,
+      "phase_delta_rad_over_2pi_navigation": -0.0004214422893073363,
+      "voltage_area_v_s_same_jj_same_rows": -8.733691556805847e-19,
+      "voltage_area_phi0_navigation": -0.00042235944465523844,
+      "phase_minus_area_navigation": 9.171553479021496e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D6)",
+      "voltage_signal": "V(B_J9|XT1_D6)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -9.499999999995623e-06,
+      "phase_delta_rad_over_2pi_navigation": -1.5119719593723092e-06,
+      "voltage_area_v_s_same_jj_same_rows": -3.138076722525656e-21,
+      "voltage_area_phi0_navigation": -1.5175671515198333e-06,
+      "phase_minus_area_navigation": 5.595192147524049e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D6)",
+      "voltage_signal": "V(B_J9|XT1_D6)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -4.199999999898729e-06,
+      "phase_delta_rad_over_2pi_navigation": -6.684507609698427e-07,
+      "voltage_area_v_s_same_jj_same_rows": -1.421279905105782e-21,
+      "voltage_area_phi0_navigation": -6.873279042609916e-07,
+      "phase_minus_area_navigation": 1.8877143291148868e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J9|XT1_D6)",
+      "voltage_signal": "V(B_J9|XT1_D6)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.4092017,
+      "phase_delta_rad_over_2pi_navigation": -0.06512647327660682,
+      "voltage_area_v_s_same_jj_same_rows": -1.34670749949649e-16,
+      "voltage_area_phi0_navigation": -0.06512648493490034,
+      "phase_minus_area_navigation": 1.1658293511129791e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D6)",
+      "voltage_signal": "V(B_J11|XT1_D6)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 2.3792729,
+      "phase_delta_rad_over_2pi_navigation": 0.3786730429995888,
+      "voltage_area_v_s_same_jj_same_rows": 7.830336700443513e-16,
+      "voltage_area_phi0_navigation": 0.37867339815609363,
+      "phase_minus_area_navigation": -3.5515650481654504e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D6)",
+      "voltage_signal": "V(B_J11|XT1_D6)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2721,
+      "phase_delta_rad_over_2pi_navigation": 0.9982357185666768,
+      "voltage_area_v_s_same_jj_same_rows": 2.0641856507033193e-15,
+      "voltage_area_phi0_navigation": 0.9982357396363304,
+      "phase_minus_area_navigation": -2.1069653577399095e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D6)",
+      "voltage_signal": "V(B_J11|XT1_D6)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 10.187928,
+      "phase_delta_rad_over_2pi_navigation": 1.6214591010643271,
+      "voltage_area_v_s_same_jj_same_rows": 3.3529067640616133e-15,
+      "voltage_area_phi0_navigation": 1.6214584974051616,
+      "phase_minus_area_navigation": 6.036591655433909e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D6)",
+      "voltage_signal": "V(B_J11|XT1_D6)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283165800000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9999968953359432,
+      "voltage_area_v_s_same_jj_same_rows": 2.067827464341115e-15,
+      "voltage_area_phi0_navigation": 0.9999969128762974,
+      "phase_minus_area_navigation": -1.7540354280143333e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D6)",
+      "voltage_signal": "V(B_J11|XT1_D6)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831719999999995,
+      "phase_delta_rad_over_2pi_navigation": 0.9999978820965901,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678310110512673e-15,
+      "voltage_area_phi0_navigation": 0.9999986280576965,
+      "phase_minus_area_navigation": -7.45961106329851e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(B_J11|XT1_D6)",
+      "voltage_signal": "V(B_J11|XT1_D6)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 6.203989999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.9873956753926877,
+      "voltage_area_v_s_same_jj_same_rows": 2.0417683672347455e-15,
+      "voltage_area_phi0_navigation": 0.9873947895811527,
+      "phase_minus_area_navigation": 8.858115350118823e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D0_L1)",
+      "voltage_signal": "V(BJ1|XCB_D0_L1)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2780365,
+      "phase_delta_rad_over_2pi_navigation": 0.9991805418863418,
+      "voltage_area_v_s_same_jj_same_rows": 2.066139501714386e-15,
+      "voltage_area_phi0_navigation": 0.9991806177816206,
+      "phase_minus_area_navigation": -7.5895278839333e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D0_L1)",
+      "voltage_signal": "V(BJ1|XCB_D0_L1)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283186000000001,
+      "phase_delta_rad_over_2pi_navigation": 1.0000001102657936,
+      "voltage_area_v_s_same_jj_same_rows": 2.06783370454176e-15,
+      "voltage_area_phi0_navigation": 0.9999999306239036,
+      "phase_minus_area_navigation": 1.7964189003016884e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D0_L1)",
+      "voltage_signal": "V(BJ1|XCB_D0_L1)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.28834,
+      "phase_delta_rad_over_2pi_navigation": 1.0008203948424892,
+      "voltage_area_v_s_same_jj_same_rows": 2.069529351621028e-15,
+      "voltage_area_phi0_navigation": 1.0008199419032955,
+      "phase_minus_area_navigation": 4.529391937069249e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D0_L1)",
+      "voltage_signal": "V(BJ1|XCB_D0_L1)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283186000000001,
+      "phase_delta_rad_over_2pi_navigation": 1.0000001102657936,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833668453632e-15,
+      "voltage_area_phi0_navigation": 0.9999999131717626,
+      "phase_minus_area_navigation": 1.9709403098477907e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D0_L1)",
+      "voltage_signal": "V(BJ1|XCB_D0_L1)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.28318,
+      "phase_delta_rad_over_2pi_navigation": 0.9999991553361349,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833821657853e-15,
+      "voltage_area_phi0_navigation": 0.9999999872609944,
+      "phase_minus_area_navigation": -8.319248594457207e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D0_L1)",
+      "voltage_signal": "V(BJ1|XCB_D0_L1)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.005169999999999675,
+      "phase_delta_rad_over_2pi_navigation": 0.0008228310557850472,
+      "voltage_area_v_s_same_jj_same_rows": 1.698651649608479e-18,
+      "voltage_area_phi0_navigation": 0.0008214642831441256,
+      "phase_minus_area_navigation": 1.3667726409215524e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D1_L2)",
+      "voltage_signal": "V(BJ1|XCB_D1_L2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2758317,
+      "phase_delta_rad_over_2pi_navigation": 0.9988296370678128,
+      "voltage_area_v_s_same_jj_same_rows": 2.065413782676623e-15,
+      "voltage_area_phi0_navigation": 0.9988296616163248,
+      "phase_minus_area_navigation": -2.454851200095476e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D1_L2)",
+      "voltage_signal": "V(BJ1|XCB_D1_L2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283184,
+      "phase_delta_rad_over_2pi_navigation": 0.9999997919559074,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833806208814e-15,
+      "voltage_area_phi0_navigation": 0.9999999797898723,
+      "phase_minus_area_navigation": -1.8783396493748938e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D1_L2)",
+      "voltage_signal": "V(BJ1|XCB_D1_L2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.29055,
+      "phase_delta_rad_over_2pi_navigation": 1.0011721272667222,
+      "voltage_area_v_s_same_jj_same_rows": 2.070255658172617e-15,
+      "voltage_area_phi0_navigation": 1.0011711821890135,
+      "phase_minus_area_navigation": 9.450777087582907e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D1_L2)",
+      "voltage_signal": "V(BJ1|XCB_D1_L2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283184,
+      "phase_delta_rad_over_2pi_navigation": 0.9999997919559074,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833940337039e-15,
+      "voltage_area_phi0_navigation": 1.0000000446539932,
+      "phase_minus_area_navigation": -2.5269808578975983e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D1_L2)",
+      "voltage_signal": "V(BJ1|XCB_D1_L2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283189999999999,
+      "phase_delta_rad_over_2pi_navigation": 1.0000007468855658,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833844582647e-15,
+      "voltage_area_phi0_navigation": 0.9999999983473753,
+      "phase_minus_area_navigation": 7.48538190542547e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D1_L2)",
+      "voltage_signal": "V(BJ1|XCB_D1_L2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.007400000000000517,
+      "phase_delta_rad_over_2pi_navigation": 0.0011777465788801078,
+      "voltage_area_v_s_same_jj_same_rows": 2.4351552145432983e-18,
+      "voltage_area_phi0_navigation": 0.001177635822577607,
+      "phase_minus_area_navigation": 1.1075630250087509e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D2_L3)",
+      "voltage_signal": "V(BJ1|XCB_D2_L3)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2758474,
+      "phase_delta_rad_over_2pi_navigation": 0.9988321358004193,
+      "voltage_area_v_s_same_jj_same_rows": 2.065418687901402e-15,
+      "voltage_area_phi0_navigation": 0.9988320337724745,
+      "phase_minus_area_navigation": 1.0202794475944188e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D2_L3)",
+      "voltage_signal": "V(BJ1|XCB_D2_L3)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831850000000005,
+      "phase_delta_rad_over_2pi_navigation": 0.9999999511108505,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678336084170773e-15,
+      "voltage_area_phi0_navigation": 0.999999884138214,
+      "phase_minus_area_navigation": 6.69726365476464e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D2_L3)",
+      "voltage_signal": "V(BJ1|XCB_D2_L3)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.29053,
+      "phase_delta_rad_over_2pi_navigation": 1.0011689441678604,
+      "voltage_area_v_s_same_jj_same_rows": 2.07025069496955e-15,
+      "voltage_area_phi0_navigation": 1.0011687819946884,
+      "phase_minus_area_navigation": 1.6217317200251102e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D2_L3)",
+      "voltage_signal": "V(BJ1|XCB_D2_L3)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283183,
+      "phase_delta_rad_over_2pi_navigation": 0.9999996328009643,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833584935235e-15,
+      "voltage_area_phi0_navigation": 0.9999998727824455,
+      "phase_minus_area_navigation": -2.3998148124260155e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D2_L3)",
+      "voltage_signal": "V(BJ1|XCB_D2_L3)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283189999999999,
+      "phase_delta_rad_over_2pi_navigation": 1.0000007468855658,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678338580033343e-15,
+      "voltage_area_phi0_navigation": 1.0000000048375908,
+      "phase_minus_area_navigation": 7.420479750663844e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D2_L3)",
+      "voltage_signal": "V(BJ1|XCB_D2_L3)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.007380000000001274,
+      "phase_delta_rad_over_2pi_navigation": 0.0011745634800183905,
+      "voltage_area_v_s_same_jj_same_rows": 2.4293385298651367e-18,
+      "voltage_area_phi0_navigation": 0.0011748228863816994,
+      "phase_minus_area_navigation": -2.594063633089543e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D3_L4)",
+      "voltage_signal": "V(BJ1|XCB_D3_L4)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 18.842002200000003,
+      "phase_delta_rad_over_2pi_navigation": 2.998797787878367,
+      "voltage_area_v_s_same_jj_same_rows": 6.2010139177904466e-15,
+      "voltage_area_phi0_navigation": 2.998796989317125,
+      "phase_minus_area_navigation": 7.985612420213783e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D3_L4)",
+      "voltage_signal": "V(BJ1|XCB_D3_L4)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 18.84955,
+      "phase_delta_rad_over_2pi_navigation": 2.999999057557836,
+      "voltage_area_v_s_same_jj_same_rows": 6.203501531901727e-15,
+      "voltage_area_phi0_navigation": 2.999999994149301,
+      "phase_minus_area_navigation": -9.365914648284956e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D3_L4)",
+      "voltage_signal": "V(BJ1|XCB_D3_L4)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 18.857119999999995,
+      "phase_delta_rad_over_2pi_navigation": 3.0012038604770406,
+      "voltage_area_v_s_same_jj_same_rows": 6.20599085397332e-15,
+      "voltage_area_phi0_navigation": 3.0012038249474093,
+      "phase_minus_area_navigation": 3.552963123709674e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D3_L4)",
+      "voltage_signal": "V(BJ1|XCB_D3_L4)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 18.84955,
+      "phase_delta_rad_over_2pi_navigation": 2.999999057557836,
+      "voltage_area_v_s_same_jj_same_rows": 6.203501889937007e-15,
+      "voltage_area_phi0_navigation": 3.000000167294392,
+      "phase_minus_area_navigation": -1.1097365559820105e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D3_L4)",
+      "voltage_signal": "V(BJ1|XCB_D3_L4)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 18.849559999999997,
+      "phase_delta_rad_over_2pi_navigation": 3.000000649107266,
+      "voltage_area_v_s_same_jj_same_rows": 6.20350168534424e-15,
+      "voltage_area_phi0_navigation": 3.00000006835377,
+      "phase_minus_area_navigation": 5.807534959600957e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D3_L4)",
+      "voltage_signal": "V(BJ1|XCB_D3_L4)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.00759000000000043,
+      "phase_delta_rad_over_2pi_navigation": 0.001207986018067554,
+      "voltage_area_v_s_same_jj_same_rows": 2.4986112844494928e-18,
+      "voltage_area_phi0_navigation": 0.0012083230414600954,
+      "phase_minus_area_navigation": -3.3702339254136973e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D4_L3)",
+      "voltage_signal": "V(BJ1|XCB_D4_L3)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2832473,
+      "phase_delta_rad_over_2pi_navigation": 1.000009866463805,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678541604898857e-15,
+      "voltage_area_phi0_navigation": 1.0000098230764067,
+      "phase_minus_area_navigation": 4.338739834075511e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D4_L3)",
+      "voltage_signal": "V(BJ1|XCB_D4_L3)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283184,
+      "phase_delta_rad_over_2pi_navigation": 0.9999997919559074,
+      "voltage_area_v_s_same_jj_same_rows": 2.067834124792811e-15,
+      "voltage_area_phi0_navigation": 1.000000133856408,
+      "phase_minus_area_navigation": -3.419005005778075e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D4_L3)",
+      "voltage_signal": "V(BJ1|XCB_D4_L3)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.28313,
+      "phase_delta_rad_over_2pi_navigation": 0.9999911975889804,
+      "voltage_area_v_s_same_jj_same_rows": 2.067815210777216e-15,
+      "voltage_area_phi0_navigation": 0.9999909870791591,
+      "phase_minus_area_navigation": 2.1050982124126705e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D4_L3)",
+      "voltage_signal": "V(BJ1|XCB_D4_L3)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831779999999995,
+      "phase_delta_rad_over_2pi_navigation": 0.9999988370262487,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678302582273237e-15,
+      "voltage_area_phi0_navigation": 0.999998263993657,
+      "phase_minus_area_navigation": 5.730325917108203e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D4_L3)",
+      "voltage_signal": "V(BJ1|XCB_D4_L3)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831800000000015,
+      "phase_delta_rad_over_2pi_navigation": 0.9999991553361353,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678322720030428e-15,
+      "voltage_area_phi0_navigation": 0.9999992378512621,
+      "phase_minus_area_navigation": -8.251512684243067e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D4_L3)",
+      "voltage_signal": "V(BJ1|XCB_D4_L3)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.000560000000000116,
+      "phase_delta_rad_over_2pi_navigation": -8.912676813147985e-05,
+      "voltage_area_v_s_same_jj_same_rows": -1.832811155658586e-19,
+      "voltage_area_phi0_navigation": -8.863435316291359e-05,
+      "phase_minus_area_navigation": -4.924149685662583e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D5_L2)",
+      "voltage_signal": "V(BJ1|XCB_D5_L2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2825665,
+      "phase_delta_rad_over_2pi_navigation": 0.9999015137785481,
+      "voltage_area_v_s_same_jj_same_rows": 2.067630206818508e-15,
+      "voltage_area_phi0_navigation": 0.9999015195627594,
+      "phase_minus_area_navigation": -5.784211332127143e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D5_L2)",
+      "voltage_signal": "V(BJ1|XCB_D5_L2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283137,
+      "phase_delta_rad_over_2pi_navigation": 0.999992311673582,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678192302354555e-15,
+      "voltage_area_phi0_navigation": 0.999992930880516,
+      "phase_minus_area_navigation": -6.192069339494566e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D5_L2)",
+      "voltage_signal": "V(BJ1|XCB_D5_L2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.28382,
+      "phase_delta_rad_over_2pi_navigation": 1.0001010144997138,
+      "voltage_area_v_s_same_jj_same_rows": 2.068040324321044e-15,
+      "voltage_area_phi0_navigation": 1.0000998515046282,
+      "phase_minus_area_navigation": 1.1629950855684967e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D5_L2)",
+      "voltage_signal": "V(BJ1|XCB_D5_L2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283504,
+      "phase_delta_rad_over_2pi_navigation": 1.0000507215376968,
+      "voltage_area_v_s_same_jj_same_rows": 2.0679402005963455e-15,
+      "voltage_area_phi0_navigation": 1.0000514318867777,
+      "phase_minus_area_navigation": -7.103490808901824e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D5_L2)",
+      "voltage_signal": "V(BJ1|XCB_D5_L2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283320000000002,
+      "phase_delta_rad_over_2pi_navigation": 1.0000214370281681,
+      "voltage_area_v_s_same_jj_same_rows": 2.067878383953508e-15,
+      "voltage_area_phi0_navigation": 1.0000215374912984,
+      "phase_minus_area_navigation": -1.0046313025924292e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D5_L2)",
+      "voltage_signal": "V(BJ1|XCB_D5_L2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.00929000000000002,
+      "phase_delta_rad_over_2pi_navigation": -0.001478549421323711,
+      "voltage_area_v_s_same_jj_same_rows": -3.0602335530941237e-18,
+      "voltage_area_phi0_navigation": -0.001479922362260376,
+      "phase_minus_area_navigation": 1.3729409366650906e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D6_L1)",
+      "voltage_signal": "V(BJ1|XCB_D6_L1)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.4003064,
+      "phase_delta_rad_over_2pi_navigation": 1.0186404008626935,
+      "voltage_area_v_s_same_jj_same_rows": 2.1063834851107232e-15,
+      "voltage_area_phi0_navigation": 1.0186425215681656,
+      "phase_minus_area_navigation": -2.1207054721195107e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D6_L1)",
+      "voltage_signal": "V(BJ1|XCB_D6_L1)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2855039999999995,
+      "phase_delta_rad_over_2pi_navigation": 1.0003690314238805,
+      "voltage_area_v_s_same_jj_same_rows": 2.068597205485305e-15,
+      "voltage_area_phi0_navigation": 1.000369158037549,
+      "phase_minus_area_navigation": -1.266136684385799e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D6_L1)",
+      "voltage_signal": "V(BJ1|XCB_D6_L1)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.165890000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9813318720608867,
+      "voltage_area_v_s_same_jj_same_rows": 2.029229711177361e-15,
+      "voltage_area_phi0_navigation": 0.9813311224884065,
+      "phase_minus_area_navigation": 7.495724801964698e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D6_L1)",
+      "voltage_signal": "V(BJ1|XCB_D6_L1)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283118999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.9999894468846062,
+      "voltage_area_v_s_same_jj_same_rows": 2.067812302996806e-15,
+      "voltage_area_phi0_navigation": 0.9999895808828089,
+      "phase_minus_area_navigation": -1.339982026449249e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D6_L1)",
+      "voltage_signal": "V(BJ1|XCB_D6_L1)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283159999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.999995972237273,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678242906074242e-15,
+      "voltage_area_phi0_navigation": 0.9999953780655128,
+      "phase_minus_area_navigation": 5.941717602375718e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_D6_L1)",
+      "voltage_signal": "V(BJ1|XCB_D6_L1)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.004310000000000258,
+      "phase_delta_rad_over_2pi_navigation": -0.00068595780472611,
+      "voltage_area_v_s_same_jj_same_rows": -1.4162818525628435e-18,
+      "voltage_area_phi0_navigation": -0.0006849108568044115,
+      "phase_minus_area_navigation": -1.0469479216984818e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D1)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -0.0015102999999999644,
+      "phase_delta_rad_over_2pi_navigation": -0.0002403717105516839,
+      "voltage_area_v_s_same_jj_same_rows": -4.9706308723637165e-19,
+      "voltage_area_phi0_navigation": -0.00024037863956871046,
+      "phase_minus_area_navigation": 6.92901702656931e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D1)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.0000000000575113e-07,
+      "phase_delta_rad_over_2pi_navigation": -3.183098861929439e-08,
+      "voltage_area_v_s_same_jj_same_rows": -7.712896808074785e-23,
+      "voltage_area_phi0_navigation": -3.729940302280411e-08,
+      "phase_minus_area_navigation": 5.46841440350972e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D1)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 0.0015106000000000286,
+      "phase_delta_rad_over_2pi_navigation": 0.00024041945703462165,
+      "voltage_area_v_s_same_jj_same_rows": 4.971470008339896e-19,
+      "voltage_area_phi0_navigation": 0.0002404192200039805,
+      "phase_minus_area_navigation": 2.370306411542643e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D1)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 1.3894976349039244e-23,
+      "voltage_area_phi0_navigation": 6.719580667701326e-09,
+      "phase_minus_area_navigation": -6.719580667701326e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D1)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 1.5199684412836062e-24,
+      "voltage_area_phi0_navigation": 7.350534680306703e-10,
+      "phase_minus_area_navigation": -7.350534680306703e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D1)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.0015570000000000306,
+      "phase_delta_rad_over_2pi_navigation": 0.0002478042463940859,
+      "voltage_area_v_s_same_jj_same_rows": 5.124016368250483e-19,
+      "voltage_area_phi0_navigation": 0.0002477963291492887,
+      "phase_minus_area_navigation": 7.917244797207759e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D1)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.015760100000000055,
+      "phase_delta_rad_over_2pi_navigation": 0.0025082978186225886,
+      "voltage_area_v_s_same_jj_same_rows": 5.186721987058304e-18,
+      "voltage_area_phi0_navigation": 0.002508287593838779,
+      "phase_minus_area_navigation": 1.0224783809562044e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D1)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.9999999995311555e-07,
+      "phase_delta_rad_over_2pi_navigation": -4.774648292010671e-08,
+      "voltage_area_v_s_same_jj_same_rows": -1.0544933715472485e-22,
+      "voltage_area_phi0_navigation": -5.0995072576413713e-08,
+      "phase_minus_area_navigation": 3.2485896563070046e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D1)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.015760600000000013,
+      "phase_delta_rad_over_2pi_navigation": -0.002508377396094128,
+      "voltage_area_v_s_same_jj_same_rows": -5.1868897874776235e-18,
+      "voltage_area_phi0_navigation": -0.0025083687417605436,
+      "phase_minus_area_navigation": -8.654333584403456e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D1)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 1.5882823349972307e-24,
+      "voltage_area_phi0_navigation": 7.680899200549456e-10,
+      "phase_minus_area_navigation": -7.680899200549456e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D1)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 6.125982153240983e-25,
+      "voltage_area_phi0_navigation": 2.962511789409969e-10,
+      "phase_minus_area_navigation": -2.962511789409969e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D1)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D1)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.01570349999999998,
+      "phase_delta_rad_over_2pi_navigation": -0.0024992896488435757,
+      "voltage_area_v_s_same_jj_same_rows": -5.168104061333779e-18,
+      "voltage_area_phi0_navigation": -0.0024992840050144,
+      "phase_minus_area_navigation": -5.6438291757068826e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -0.0014170000000000016,
+      "phase_delta_rad_over_2pi_navigation": -0.00022552255436121595,
+      "voltage_area_v_s_same_jj_same_rows": -4.66321100988776e-19,
+      "voltage_area_phi0_navigation": -0.00022551188115998763,
+      "phase_minus_area_navigation": -1.0673201228318836e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.9999999995311555e-07,
+      "phase_delta_rad_over_2pi_navigation": -4.774648292010671e-08,
+      "voltage_area_v_s_same_jj_same_rows": -9.057317242923158e-23,
+      "voltage_area_phi0_navigation": -4.380099132086147e-08,
+      "phase_minus_area_navigation": -3.9454915992452385e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 0.0014172000000000073,
+      "phase_delta_rad_over_2pi_navigation": 0.00022555438534983525,
+      "voltage_area_v_s_same_jj_same_rows": 4.664080089760578e-19,
+      "voltage_area_phi0_navigation": 0.00022555390967565677,
+      "phase_minus_area_navigation": 4.756741784858222e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": -5.9614707974516096e-24,
+      "voltage_area_phi0_navigation": -2.8829544516922953e-09,
+      "phase_minus_area_navigation": 2.8829544516922953e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 4.75146407972296e-25,
+      "voltage_area_phi0_navigation": 2.297797806297907e-10,
+      "phase_minus_area_navigation": -2.297797806297907e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.001463800000000015,
+      "phase_delta_rad_over_2pi_navigation": 0.0002329710056979188,
+      "voltage_area_v_s_same_jj_same_rows": 4.817317060416118e-19,
+      "voltage_area_phi0_navigation": 0.00023296441660800775,
+      "phase_minus_area_navigation": 6.589089911060789e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.01606200000000002,
+      "phase_delta_rad_over_2pi_navigation": 0.0025563466959420264,
+      "voltage_area_v_s_same_jj_same_rows": 5.2861048820430685e-18,
+      "voltage_area_phi0_navigation": 0.0025563489480335986,
+      "phase_minus_area_navigation": -2.2520915722579193e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.9999999995311555e-07,
+      "phase_delta_rad_over_2pi_navigation": -4.774648292010671e-08,
+      "voltage_area_v_s_same_jj_same_rows": -1.0373914197676449e-22,
+      "voltage_area_phi0_navigation": -5.016802586779423e-08,
+      "phase_minus_area_navigation": 2.42154294768752e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.016062600000000038,
+      "phase_delta_rad_over_2pi_navigation": -0.002556442188907884,
+      "voltage_area_v_s_same_jj_same_rows": -5.2863073077399476e-18,
+      "voltage_area_phi0_navigation": -0.0025564468406650952,
+      "phase_minus_area_navigation": 4.651757211197871e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 8.131108107953867e-24,
+      "voltage_area_phi0_navigation": 3.9321863871307835e-09,
+      "phase_minus_area_navigation": -3.9321863871307835e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": -2.1748346925936976e-24,
+      "voltage_area_phi0_navigation": -1.0517453782358714e-09,
+      "phase_minus_area_navigation": 1.0517453782358714e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.01600630000000003,
+      "phase_delta_rad_over_2pi_navigation": -0.002547481765611809,
+      "voltage_area_v_s_same_jj_same_rows": -5.2677536067865155e-18,
+      "voltage_area_phi0_navigation": -0.0025474743108018392,
+      "phase_minus_area_navigation": -7.454809969852094e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D3)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -0.00704400000000005,
+      "phase_delta_rad_over_2pi_navigation": -0.0011210874191393187,
+      "voltage_area_v_s_same_jj_same_rows": -2.3182529383087523e-18,
+      "voltage_area_phi0_navigation": -0.0011211021333029036,
+      "phase_minus_area_navigation": 1.4714163584826981e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D3)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.0000000000575113e-07,
+      "phase_delta_rad_over_2pi_navigation": -3.183098861929439e-08,
+      "voltage_area_v_s_same_jj_same_rows": -4.9124672645954705e-23,
+      "voltage_area_phi0_navigation": -2.375658600107928e-08,
+      "phase_minus_area_navigation": -8.074402618215105e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D3)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 0.007044399999999951,
+      "phase_delta_rad_over_2pi_navigation": 0.0011211510811165396,
+      "voltage_area_v_s_same_jj_same_rows": 2.3183527835856335e-18,
+      "voltage_area_phi0_navigation": 0.0011211504182639888,
+      "phase_minus_area_navigation": 6.628525508426547e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D3)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.000000000172534e-07,
+      "phase_delta_rad_over_2pi_navigation": 9.549296585788317e-08,
+      "voltage_area_v_s_same_jj_same_rows": 2.0491479693017038e-22,
+      "voltage_area_phi0_navigation": 9.909635492637045e-08,
+      "phase_minus_area_navigation": -3.6033890684872766e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D3)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 2.0000000000575113e-07,
+      "phase_delta_rad_over_2pi_navigation": 3.183098861929439e-08,
+      "voltage_area_v_s_same_jj_same_rows": 8.795960569123712e-23,
+      "voltage_area_phi0_navigation": 4.253707606939081e-08,
+      "phase_minus_area_navigation": -1.0706087450096422e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D3)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.007070799999999933,
+      "phase_delta_rad_over_2pi_navigation": 0.0011253527716141628,
+      "voltage_area_v_s_same_jj_same_rows": 2.3270189188423895e-18,
+      "voltage_area_phi0_navigation": 0.0011253413426291828,
+      "phase_minus_area_navigation": 1.1428984979982085e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.018351900000000088,
+      "phase_delta_rad_over_2pi_navigation": 0.002920795600128168,
+      "voltage_area_v_s_same_jj_same_rows": 6.0397474266402424e-18,
+      "voltage_area_phi0_navigation": 0.0029208088611577085,
+      "phase_minus_area_navigation": -1.3261029540526797e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.9999999995311555e-07,
+      "phase_delta_rad_over_2pi_navigation": -4.774648292010671e-08,
+      "voltage_area_v_s_same_jj_same_rows": -1.0054580137067119e-22,
+      "voltage_area_phi0_navigation": -4.862373322107995e-08,
+      "phase_minus_area_navigation": 8.772503009732414e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.018352400000000046,
+      "phase_delta_rad_over_2pi_navigation": -0.0029208751775997074,
+      "voltage_area_v_s_same_jj_same_rows": -6.039895328805837e-18,
+      "voltage_area_phi0_navigation": -0.002920880386326782,
+      "phase_minus_area_navigation": 5.208727074657027e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 2.779300124964525e-25,
+      "voltage_area_phi0_navigation": 1.3440635608381456e-10,
+      "phase_minus_area_navigation": -1.3440635608381456e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 1.4719964670906813e-25,
+      "voltage_area_phi0_navigation": 7.118543245214745e-11,
+      "phase_minus_area_navigation": -7.118543245214745e-11,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.018301400000000023,
+      "phase_delta_rad_over_2pi_navigation": -0.002912758275502017,
+      "voltage_area_v_s_same_jj_same_rows": -6.0231086745643554e-18,
+      "voltage_area_phi0_navigation": -0.0029127623964516685,
+      "phase_minus_area_navigation": 4.120949651399003e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0042167999999999095,
+      "phase_delta_rad_over_2pi_navigation": 0.0006711245640298899,
+      "voltage_area_v_s_same_jj_same_rows": 1.38776037472219e-18,
+      "voltage_area_phi0_navigation": 0.0006711179314839177,
+      "phase_minus_area_navigation": 6.6325459721844685e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": -7.994977918956172e-24,
+      "voltage_area_phi0_navigation": -3.8663541206121945e-09,
+      "phase_minus_area_navigation": 3.8663541206121945e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.0042167999999999095,
+      "phase_delta_rad_over_2pi_navigation": -0.0006711245640298899,
+      "voltage_area_v_s_same_jj_same_rows": -1.3877653428870035e-18,
+      "voltage_area_phi0_navigation": -0.0006711203340777326,
+      "phase_minus_area_navigation": -4.2299521573136226e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": -6.240218069738806e-25,
+      "voltage_area_phi0_navigation": -3.0177560328525995e-10,
+      "phase_minus_area_navigation": 3.0177560328525995e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 4.2584839302748415e-25,
+      "voltage_area_phi0_navigation": 2.0593936666592573e-10,
+      "phase_minus_area_navigation": -2.0593936666592573e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.004208699999999954,
+      "phase_delta_rad_over_2pi_navigation": -0.0006698354089908526,
+      "voltage_area_v_s_same_jj_same_rows": -1.3850881904989036e-18,
+      "voltage_area_phi0_navigation": -0.0006698256689426739,
+      "phase_minus_area_navigation": -9.740048178695677e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S3)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0008884999999999588,
+      "phase_delta_rad_over_2pi_navigation": 0.00014140916693714244,
+      "voltage_area_v_s_same_jj_same_rows": 2.924177777094811e-19,
+      "voltage_area_phi0_navigation": 0.00014141260817077074,
+      "phase_minus_area_navigation": -3.441233628294956e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S3)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 3.976171416091983e-24,
+      "voltage_area_phi0_navigation": 1.9228679421887397e-09,
+      "phase_minus_area_navigation": -1.9228679421887397e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S3)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": -0.0008884999999999588,
+      "phase_delta_rad_over_2pi_navigation": -0.00014140916693714244,
+      "voltage_area_v_s_same_jj_same_rows": -2.9240702011873507e-19,
+      "voltage_area_phi0_navigation": -0.00014140740582303064,
+      "phase_minus_area_navigation": -1.7611141118014685e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S3)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 1.7371003349103044e-23,
+      "voltage_area_phi0_navigation": 8.400579846347038e-09,
+      "phase_minus_area_navigation": -8.400579846347038e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S3)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 7.633743272292064e-24,
+      "voltage_area_phi0_navigation": 3.6916618226727387e-09,
+      "phase_minus_area_navigation": -3.6916618226727387e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S3)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S3)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.000885899999999995,
+      "phase_delta_rad_over_2pi_navigation": -0.0001409953640851093,
+      "voltage_area_v_s_same_jj_same_rows": -2.9155868504055534e-19,
+      "voltage_area_phi0_navigation": -0.00014099715280439462,
+      "phase_minus_area_navigation": 1.788719285319637e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S4)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -0.00022500000000003073,
+      "phase_delta_rad_over_2pi_navigation": -3.580986219568134e-05,
+      "voltage_area_v_s_same_jj_same_rows": -7.402095385188801e-20,
+      "voltage_area_phi0_navigation": -3.579637402854236e-05,
+      "phase_minus_area_navigation": -1.348816713898362e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S4)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": 2.3260221737599847e-24,
+      "voltage_area_phi0_navigation": 1.1248593188518039e-09,
+      "phase_minus_area_navigation": -1.1248593188518039e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S4)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 0.00022490000000008337,
+      "phase_delta_rad_over_2pi_navigation": 3.579394670138053e-05,
+      "voltage_area_v_s_same_jj_same_rows": 7.399154032622672e-20,
+      "voltage_area_phi0_navigation": 3.578214971081502e-05,
+      "phase_minus_area_navigation": 1.1796990565513844e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S4)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -1.0000000005838672e-07,
+      "phase_delta_rad_over_2pi_navigation": -1.5915494318482068e-08,
+      "voltage_area_v_s_same_jj_same_rows": -2.4687372196234813e-23,
+      "voltage_area_phi0_navigation": -1.1938760079835395e-08,
+      "phase_minus_area_navigation": -3.9767342386466734e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S4)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -1.0000000005838672e-07,
+      "phase_delta_rad_over_2pi_navigation": -1.5915494318482068e-08,
+      "voltage_area_v_s_same_jj_same_rows": -1.0629582801880643e-23,
+      "voltage_area_phi0_navigation": -5.140443373707964e-09,
+      "phase_minus_area_navigation": -1.0775050944774104e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S4)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.0002294999999999936,
+      "phase_delta_rad_over_2pi_navigation": 3.652605943958896e-05,
+      "voltage_area_v_s_same_jj_same_rows": 7.553285859855857e-20,
+      "voltage_area_phi0_navigation": 3.6527527911206995e-05,
+      "phase_minus_area_navigation": -1.4684716180337633e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S5)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -0.0018961000000000672,
+      "phase_delta_rad_over_2pi_navigation": -0.00030177368759655345,
+      "voltage_area_v_s_same_jj_same_rows": -6.2401579999933415e-19,
+      "voltage_area_phi0_navigation": -0.00030177269832529316,
+      "phase_minus_area_navigation": -9.892712602875206e-10,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S5)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 0.0,
+      "phase_delta_rad_over_2pi_navigation": 0.0,
+      "voltage_area_v_s_same_jj_same_rows": -1.402929310755058e-23,
+      "voltage_area_phi0_navigation": -6.784535963138261e-09,
+      "phase_minus_area_navigation": 6.784535963138261e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S5)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 0.0018959000000000614,
+      "phase_delta_rad_over_2pi_navigation": 0.00030174185660793417,
+      "voltage_area_v_s_same_jj_same_rows": 6.239556162691152e-19,
+      "voltage_area_phi0_navigation": 0.00030174359360284303,
+      "phase_minus_area_navigation": -1.736994908855833e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S5)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": -2.9999999995311555e-07,
+      "phase_delta_rad_over_2pi_navigation": -4.774648292010671e-08,
+      "voltage_area_v_s_same_jj_same_rows": -9.506765984757721e-23,
+      "voltage_area_phi0_navigation": -4.597451576659616e-08,
+      "phase_minus_area_navigation": -1.7719671535105508e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S5)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": -9.999999994736442e-08,
+      "phase_delta_rad_over_2pi_navigation": -1.5915494300812322e-08,
+      "voltage_area_v_s_same_jj_same_rows": -4.150300701546341e-23,
+      "voltage_area_phi0_navigation": -2.007076489999665e-08,
+      "phase_minus_area_navigation": 4.155270599184327e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D3_S5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D3_S5)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 0.0018993000000000482,
+      "phase_delta_rad_over_2pi_navigation": 0.0003022829834144445,
+      "voltage_area_v_s_same_jj_same_rows": 6.250670967268005e-19,
+      "voltage_area_phi0_navigation": 0.00030228110316085725,
+      "phase_minus_area_navigation": 1.880253587267615e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D4)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.284443700000001,
+      "phase_delta_rad_over_2pi_navigation": 1.0002002794377203,
+      "voltage_area_v_s_same_jj_same_rows": 2.068247804368966e-15,
+      "voltage_area_phi0_navigation": 1.0002001884094152,
+      "phase_minus_area_navigation": 9.102830511587001e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D4)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831850000000005,
+      "phase_delta_rad_over_2pi_navigation": 0.9999999511108505,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678341361131908e-15,
+      "voltage_area_phi0_navigation": 1.000000139330919,
+      "phase_minus_area_navigation": -1.882200685310309e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D4)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.281930000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9998002116572703,
+      "voltage_area_v_s_same_jj_same_rows": 2.0674199083220317e-15,
+      "voltage_area_phi0_navigation": 0.9997998196623153,
+      "phase_minus_area_navigation": 3.919949549402446e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D4)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831719999999995,
+      "phase_delta_rad_over_2pi_navigation": 0.9999978820965901,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678308066108127e-15,
+      "voltage_area_phi0_navigation": 0.9999985291907324,
+      "phase_minus_area_navigation": -6.470941422698218e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D4)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283179999999998,
+      "phase_delta_rad_over_2pi_navigation": 0.9999991553361347,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678324183660978e-15,
+      "voltage_area_phi0_navigation": 0.9999993086321206,
+      "phase_minus_area_navigation": -1.5329598590518856e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D4)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.0017599999999973193,
+      "phase_delta_rad_over_2pi_navigation": -0.00028011269984130915,
+      "voltage_area_v_s_same_jj_same_rows": -5.808568032041038e-19,
+      "voltage_area_phi0_navigation": -0.0002809011003306218,
+      "phase_minus_area_navigation": 7.884004893126588e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.3014846,
+      "phase_delta_rad_over_2pi_navigation": 1.0029124229074549,
+      "voltage_area_v_s_same_jj_same_rows": 2.0738561948023296e-15,
+      "voltage_area_phi0_navigation": 1.002912393956678,
+      "phase_minus_area_navigation": 2.895077688691572e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283182,
+      "phase_delta_rad_over_2pi_navigation": 0.9999994736460212,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678335855923754e-15,
+      "voltage_area_phi0_navigation": 0.9999998731002372,
+      "phase_minus_area_navigation": -3.994542160379311e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.264890000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9970882114269844,
+      "voltage_area_v_s_same_jj_same_rows": 2.0618113120784675e-15,
+      "voltage_area_phi0_navigation": 0.9970875145856821,
+      "phase_minus_area_navigation": 6.96841302327833e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283187,
+      "phase_delta_rad_over_2pi_navigation": 1.0000002694207366,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678337063585313e-15,
+      "voltage_area_phi0_navigation": 0.9999999315024904,
+      "phase_minus_area_navigation": 3.3791824616269395e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2831800000000015,
+      "phase_delta_rad_over_2pi_navigation": 0.9999991553361353,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678337803619144e-15,
+      "voltage_area_phi0_navigation": 0.9999999672903672,
+      "phase_minus_area_navigation": -8.119542319606765e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.018299999999999983,
+      "phase_delta_rad_over_2pi_navigation": -0.002912535458581682,
+      "voltage_area_v_s_same_jj_same_rows": -6.0239215757898056e-18,
+      "voltage_area_phi0_navigation": -0.0029131555137353595,
+      "phase_minus_area_navigation": 6.200551536774193e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4_S2)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2873075,
+      "phase_delta_rad_over_2pi_navigation": 1.0006560673637468,
+      "voltage_area_v_s_same_jj_same_rows": 2.0691903084014278e-15,
+      "voltage_area_phi0_navigation": 1.0006559813317397,
+      "phase_minus_area_navigation": 8.603200707391068e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4_S2)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283182000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9999994736460213,
+      "voltage_area_v_s_same_jj_same_rows": 2.067834323223749e-15,
+      "voltage_area_phi0_navigation": 1.0000002298171826,
+      "phase_minus_area_navigation": -7.561711613535138e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4_S2)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.279070000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9993450285200274,
+      "voltage_area_v_s_same_jj_same_rows": 2.0664772602188696e-15,
+      "voltage_area_phi0_navigation": 0.99934395706771,
+      "phase_minus_area_navigation": 1.0714523174248924e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4_S2)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283188000000001,
+      "phase_delta_rad_over_2pi_navigation": 1.0000004285756798,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678337672373626e-15,
+      "voltage_area_phi0_navigation": 0.9999999609433622,
+      "phase_minus_area_navigation": 4.6763231764668234e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4_S2)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.28318,
+      "phase_delta_rad_over_2pi_navigation": 0.9999991553361349,
+      "voltage_area_v_s_same_jj_same_rows": 2.067833838190505e-15,
+      "voltage_area_phi0_navigation": 0.9999999952561492,
+      "phase_minus_area_navigation": -8.399200143172081e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D4_S2)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D4_S2)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.004059999999999064,
+      "phase_delta_rad_over_2pi_navigation": -0.0006461690689529461,
+      "voltage_area_v_s_same_jj_same_rows": -1.3379245646516504e-18,
+      "voltage_area_phi0_navigation": -0.0006470174409543035,
+      "phase_minus_area_navigation": 8.483720013573604e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D5)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.282614499999999,
+      "phase_delta_rad_over_2pi_navigation": 0.9999091532158164,
+      "voltage_area_v_s_same_jj_same_rows": 2.0676458957516586e-15,
+      "voltage_area_phi0_navigation": 0.9999091066970766,
+      "phase_minus_area_navigation": 4.651873986016852e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D5)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283135000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9999919933636959,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678179729586545e-15,
+      "voltage_area_phi0_navigation": 0.99999232286416,
+      "phase_minus_area_navigation": -3.2950046402469013e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D5)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.283760000000001,
+      "phase_delta_rad_over_2pi_navigation": 1.0000914652031285,
+      "voltage_area_v_s_same_jj_same_rows": 2.0680229773436772e-15,
+      "voltage_area_phi0_navigation": 1.0000914625436952,
+      "phase_minus_area_navigation": 2.6594333402130133e-09,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D5)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2842270000000005,
+      "phase_delta_rad_over_2pi_navigation": 1.0001657905615522,
+      "voltage_area_v_s_same_jj_same_rows": 2.068178185560058e-15,
+      "voltage_area_phi0_navigation": 1.0001665209032105,
+      "phase_minus_area_navigation": -7.303416582615796e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D5)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.28364,
+      "phase_delta_rad_over_2pi_navigation": 1.0000723666099574,
+      "voltage_area_v_s_same_jj_same_rows": 2.067984235591982e-15,
+      "voltage_area_phi0_navigation": 1.0000727271159273,
+      "phase_minus_area_navigation": -3.605059699651747e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D5)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.020649999999999835,
+      "phase_delta_rad_over_2pi_navigation": -0.0032865495748476124,
+      "voltage_area_v_s_same_jj_same_rows": -6.795997869734078e-18,
+      "voltage_area_phi0_navigation": -0.0032865299483839754,
+      "phase_minus_area_navigation": -1.962646363701595e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D5)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.283045,
+      "phase_delta_rad_over_2pi_navigation": 0.9999776694188176,
+      "voltage_area_v_s_same_jj_same_rows": 2.067787620049457e-15,
+      "voltage_area_phi0_navigation": 0.9999776442625755,
+      "phase_minus_area_navigation": 2.5156242089430236e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D5)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.2832110000000005,
+      "phase_delta_rad_over_2pi_navigation": 1.0000040891393709,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678421396117145e-15,
+      "voltage_area_phi0_navigation": 1.0000040098055858,
+      "phase_minus_area_navigation": 7.933378509683564e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D5)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.283320000000002,
+      "phase_delta_rad_over_2pi_navigation": 1.0000214370281681,
+      "voltage_area_v_s_same_jj_same_rows": 2.0678792527143944e-15,
+      "voltage_area_phi0_navigation": 1.000021957622194,
+      "phase_minus_area_navigation": -5.205940258878883e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D5)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.282247999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.9998508229291732,
+      "voltage_area_v_s_same_jj_same_rows": 2.0675252967503896e-15,
+      "voltage_area_phi0_navigation": 0.9998507852795286,
+      "phase_minus_area_navigation": 3.7649644513138014e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D5)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.28276,
+      "phase_delta_rad_over_2pi_navigation": 0.9999323102600364,
+      "voltage_area_v_s_same_jj_same_rows": 2.0676958518243545e-15,
+      "voltage_area_phi0_navigation": 0.9999332653463531,
+      "phase_minus_area_navigation": -9.55086316700715e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D5)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D5)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": -0.0032800000000001717,
+      "phase_delta_rad_over_2pi_navigation": -0.000522028213341444,
+      "voltage_area_v_s_same_jj_same_rows": -1.0803262745756024e-18,
+      "voltage_area_phi0_navigation": -0.0005224434620898044,
+      "phase_minus_area_navigation": 4.1524874836037194e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D6)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.346993400000001,
+      "phase_delta_rad_over_2pi_navigation": 1.0101553733816355,
+      "voltage_area_v_s_same_jj_same_rows": 2.088836299055607e-15,
+      "voltage_area_phi0_navigation": 1.0101567401442433,
+      "phase_minus_area_navigation": -1.3667626077573658e-06,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D6)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.286974999999999,
+      "phase_delta_rad_over_2pi_navigation": 1.0006031483451685,
+      "voltage_area_v_s_same_jj_same_rows": 2.069080426259095e-15,
+      "voltage_area_phi0_navigation": 1.0006028425641162,
+      "phase_minus_area_navigation": 3.057810522566484e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D6)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.219100000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9898005065828065,
+      "voltage_area_v_s_same_jj_same_rows": 2.046741058657638e-15,
+      "voltage_area_phi0_navigation": 0.9897995724546423,
+      "phase_minus_area_navigation": 9.341281641539467e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D6)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.280925,
+      "phase_delta_rad_over_2pi_navigation": 0.9996402609394627,
+      "voltage_area_v_s_same_jj_same_rows": 2.067090009062096e-15,
+      "voltage_area_phi0_navigation": 0.9996402810899804,
+      "phase_minus_area_navigation": -2.015051769888032e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D6)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.282189,
+      "phase_delta_rad_over_2pi_navigation": 0.9998414327875309,
+      "voltage_area_v_s_same_jj_same_rows": 2.0675059264718053e-15,
+      "voltage_area_phi0_navigation": 0.9998414178544799,
+      "phase_minus_area_navigation": 1.4933051017962384e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XCB_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XCB_CARRY_D6)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 5.9679199999999994,
+      "phase_delta_rad_over_2pi_navigation": 0.949823967976984,
+      "voltage_area_v_s_same_jj_same_rows": 1.964079345184833e-15,
+      "voltage_area_phi0_navigation": 0.9498245456638028,
+      "phase_minus_area_navigation": -5.776868188256401e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D6)",
+      "window": "ROUND_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.309374099999999,
+      "phase_delta_rad_over_2pi_navigation": 1.0041680758309783,
+      "voltage_area_v_s_same_jj_same_rows": 2.076454416397789e-15,
+      "voltage_area_phi0_navigation": 1.0041688883302333,
+      "phase_minus_area_navigation": -8.124992549873866e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D6)",
+      "window": "ROUND_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.281467,
+      "phase_delta_rad_over_2pi_navigation": 0.9997265229186186,
+      "voltage_area_v_s_same_jj_same_rows": 2.0672691107907162e-15,
+      "voltage_area_phi0_navigation": 0.9997268943006082,
+      "phase_minus_area_navigation": -3.7138198960562363e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D6)",
+      "window": "ROUND_3",
+      "sample_count": 13000,
+      "phase_delta_rad": 6.257119999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.99585157751916,
+      "voltage_area_v_s_same_jj_same_rows": 2.0592538915081985e-15,
+      "voltage_area_phi0_navigation": 0.9958507515001265,
+      "phase_minus_area_navigation": 8.2601903350632e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D6)",
+      "window": "CLOCK_1",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.272670000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9983264368842393,
+      "voltage_area_v_s_same_jj_same_rows": 2.0643733639447158e-15,
+      "voltage_area_phi0_navigation": 0.9983265173560093,
+      "phase_minus_area_navigation": -8.047177002534767e-08,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D6)",
+      "window": "CLOCK_2",
+      "sample_count": 8000,
+      "phase_delta_rad": 6.278548000000001,
+      "phase_delta_rad_over_2pi_navigation": 0.9992619496397335,
+      "voltage_area_v_s_same_jj_same_rows": 2.0663080805740795e-15,
+      "voltage_area_phi0_navigation": 0.9992621421554753,
+      "phase_minus_area_navigation": -1.9251574179257602e-07,
+      "interpolation_or_resampling": false
+    },
+    {
+      "phase_signal": "P(BJ1|XSJTL_CARRY_D6)",
+      "voltage_signal": "V(BJ1|XSJTL_CARRY_D6)",
+      "window": "CLOCK_3",
+      "sample_count": 6200,
+      "phase_delta_rad": 5.147449999999999,
+      "phase_delta_rad_over_2pi_navigation": 0.8192421118183766,
+      "voltage_area_v_s_same_jj_same_rows": 1.6940604151471155e-15,
+      "voltage_area_phi0_navigation": 0.8192439720365363,
+      "phase_minus_area_navigation": -1.8602181597326961e-06,
+      "interpolation_or_resampling": false
+    }
+  ],
+  "timing_peak_descriptors": [
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "D0",
+      "data_signal": "V(T1_I_D0)",
+      "clock_signal": "V(CLK_D0)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 131.83,
+      "data_peak_value_v": 0.0009403167,
+      "clock_peak_time_ps_navigation_only": 200.29999999999998,
+      "clock_peak_value_v": 0.001319088,
+      "clock_minus_data_peak_time_ps_navigation_only": 68.46999999999997,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "D1",
+      "data_signal": "V(T1_I_D1)",
+      "clock_signal": "V(CLK_D1)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 128.52,
+      "data_peak_value_v": 0.001062581,
+      "clock_peak_time_ps_navigation_only": 200.29999999999998,
+      "clock_peak_value_v": 0.001320081,
+      "clock_minus_data_peak_time_ps_navigation_only": 71.77999999999997,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "D2",
+      "data_signal": "V(T1_I_D2)",
+      "clock_signal": "V(CLK_D2)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 142.70999999999998,
+      "data_peak_value_v": 0.001053528,
+      "clock_peak_time_ps_navigation_only": 200.29999999999998,
+      "clock_peak_value_v": 0.001320047,
+      "clock_minus_data_peak_time_ps_navigation_only": 57.59,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "D3",
+      "data_signal": "V(T1_I_D3)",
+      "clock_signal": "V(CLK_D3)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 141.25,
+      "data_peak_value_v": 0.001085212,
+      "clock_peak_time_ps_navigation_only": 200.29999999999998,
+      "clock_peak_value_v": 0.001320104,
+      "clock_minus_data_peak_time_ps_navigation_only": 59.04999999999998,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "D4",
+      "data_signal": "V(T1_I_D4)",
+      "clock_signal": "V(CLK_D4)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 156.68,
+      "data_peak_value_v": 0.001062425,
+      "clock_peak_time_ps_navigation_only": 200.85000000000002,
+      "clock_peak_value_v": 0.001244322,
+      "clock_minus_data_peak_time_ps_navigation_only": 44.170000000000016,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "D5",
+      "data_signal": "V(T1_I_D5)",
+      "clock_signal": "V(CLK_D5)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 171.23000000000002,
+      "data_peak_value_v": 0.001064513,
+      "clock_peak_time_ps_navigation_only": 200.85000000000002,
+      "clock_peak_value_v": 0.001244382,
+      "clock_minus_data_peak_time_ps_navigation_only": 29.620000000000005,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "D6",
+      "data_signal": "V(T1_I_D6)",
+      "clock_signal": "V(CLK_D6)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 185.79999999999998,
+      "data_peak_value_v": 0.001071696,
+      "clock_peak_time_ps_navigation_only": 200.79000000000002,
+      "clock_peak_value_v": 0.001243536,
+      "clock_minus_data_peak_time_ps_navigation_only": 14.990000000000038,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 1,
+      "stage": "DFF",
+      "data_signal": "V(DFF_IN)",
+      "clock_signal": "V(CLK_DFF)",
+      "read_window_start_ps": 110.0,
+      "read_window_end_ps": 190.0,
+      "clock_pwl_start_ps": 178.0,
+      "data_peak_time_ps_navigation_only": 133.91,
+      "data_peak_value_v": -0.0001585258,
+      "clock_peak_time_ps_navigation_only": 199.62,
+      "clock_peak_value_v": 0.0006271034,
+      "clock_minus_data_peak_time_ps_navigation_only": 65.71000000000001,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "D0",
+      "data_signal": "V(T1_I_D0)",
+      "clock_signal": "V(CLK_D0)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 211.91,
+      "data_peak_value_v": 0.0009397903,
+      "clock_peak_time_ps_navigation_only": 280.3,
+      "clock_peak_value_v": 0.001319088,
+      "clock_minus_data_peak_time_ps_navigation_only": 68.39000000000001,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "D1",
+      "data_signal": "V(T1_I_D1)",
+      "clock_signal": "V(CLK_D1)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 208.62,
+      "data_peak_value_v": 0.001074624,
+      "clock_peak_time_ps_navigation_only": 280.3,
+      "clock_peak_value_v": 0.001320081,
+      "clock_minus_data_peak_time_ps_navigation_only": 71.68,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "D2",
+      "data_signal": "V(T1_I_D2)",
+      "clock_signal": "V(CLK_D2)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 222.78,
+      "data_peak_value_v": 0.001053539,
+      "clock_peak_time_ps_navigation_only": 280.3,
+      "clock_peak_value_v": 0.001320047,
+      "clock_minus_data_peak_time_ps_navigation_only": 57.52000000000001,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "D3",
+      "data_signal": "V(T1_I_D3)",
+      "clock_signal": "V(CLK_D3)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 221.25,
+      "data_peak_value_v": 0.001084598,
+      "clock_peak_time_ps_navigation_only": 280.3,
+      "clock_peak_value_v": 0.001320104,
+      "clock_minus_data_peak_time_ps_navigation_only": 59.05000000000001,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "D4",
+      "data_signal": "V(T1_I_D4)",
+      "clock_signal": "V(CLK_D4)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 236.69,
+      "data_peak_value_v": 0.001062432,
+      "clock_peak_time_ps_navigation_only": 280.85,
+      "clock_peak_value_v": 0.001244322,
+      "clock_minus_data_peak_time_ps_navigation_only": 44.160000000000025,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "D5",
+      "data_signal": "V(T1_I_D5)",
+      "clock_signal": "V(CLK_D5)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 251.24999999999997,
+      "data_peak_value_v": 0.0010645,
+      "clock_peak_time_ps_navigation_only": 280.85,
+      "clock_peak_value_v": 0.001244382,
+      "clock_minus_data_peak_time_ps_navigation_only": 29.60000000000005,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "D6",
+      "data_signal": "V(T1_I_D6)",
+      "clock_signal": "V(CLK_D6)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 265.81,
+      "data_peak_value_v": 0.001071696,
+      "clock_peak_time_ps_navigation_only": 280.79,
+      "clock_peak_value_v": 0.001243584,
+      "clock_minus_data_peak_time_ps_navigation_only": 14.980000000000018,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 2,
+      "stage": "DFF",
+      "data_signal": "V(DFF_IN)",
+      "clock_signal": "V(CLK_DFF)",
+      "read_window_start_ps": 190.0,
+      "read_window_end_ps": 270.0,
+      "clock_pwl_start_ps": 258.0,
+      "data_peak_time_ps_navigation_only": 194.20000000000002,
+      "data_peak_value_v": 0.0006615993,
+      "clock_peak_time_ps_navigation_only": 279.62,
+      "clock_peak_value_v": 0.0006271746,
+      "clock_minus_data_peak_time_ps_navigation_only": 85.41999999999999,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "D0",
+      "data_signal": "V(T1_I_D0)",
+      "clock_signal": "V(CLK_D0)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 291.9,
+      "data_peak_value_v": 0.00093978,
+      "clock_peak_time_ps_navigation_only": 360.3,
+      "clock_peak_value_v": 0.001319085,
+      "clock_minus_data_peak_time_ps_navigation_only": 68.40000000000003,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "D1",
+      "data_signal": "V(T1_I_D1)",
+      "clock_signal": "V(CLK_D1)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 288.62,
+      "data_peak_value_v": 0.001074624,
+      "clock_peak_time_ps_navigation_only": 360.3,
+      "clock_peak_value_v": 0.001320038,
+      "clock_minus_data_peak_time_ps_navigation_only": 71.68,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "D2",
+      "data_signal": "V(T1_I_D2)",
+      "clock_signal": "V(CLK_D2)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 302.78000000000003,
+      "data_peak_value_v": 0.001053568,
+      "clock_peak_time_ps_navigation_only": 360.3,
+      "clock_peak_value_v": 0.001320047,
+      "clock_minus_data_peak_time_ps_navigation_only": 57.51999999999998,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "D3",
+      "data_signal": "V(T1_I_D3)",
+      "clock_signal": "V(CLK_D3)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 301.25,
+      "data_peak_value_v": 0.001084609,
+      "clock_peak_time_ps_navigation_only": 360.3,
+      "clock_peak_value_v": 0.001320061,
+      "clock_minus_data_peak_time_ps_navigation_only": 59.05000000000001,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "D4",
+      "data_signal": "V(T1_I_D4)",
+      "clock_signal": "V(CLK_D4)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 316.69,
+      "data_peak_value_v": 0.001062432,
+      "clock_peak_time_ps_navigation_only": 360.85,
+      "clock_peak_value_v": 0.001244323,
+      "clock_minus_data_peak_time_ps_navigation_only": 44.160000000000025,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "D5",
+      "data_signal": "V(T1_I_D5)",
+      "clock_signal": "V(CLK_D5)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 331.24,
+      "data_peak_value_v": 0.001064491,
+      "clock_peak_time_ps_navigation_only": 360.85,
+      "clock_peak_value_v": 0.001244296,
+      "clock_minus_data_peak_time_ps_navigation_only": 29.610000000000014,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "D6",
+      "data_signal": "V(T1_I_D6)",
+      "clock_signal": "V(CLK_D6)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 345.81,
+      "data_peak_value_v": 0.001071697,
+      "clock_peak_time_ps_navigation_only": 360.79,
+      "clock_peak_value_v": 0.001243526,
+      "clock_minus_data_peak_time_ps_navigation_only": 14.980000000000018,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    },
+    {
+      "run_id": "A111_V9_A11_B13_80P68",
+      "read_index": 3,
+      "stage": "DFF",
+      "data_signal": "V(DFF_IN)",
+      "clock_signal": "V(CLK_DFF)",
+      "read_window_start_ps": 270.0,
+      "read_window_end_ps": 400.0,
+      "clock_pwl_start_ps": 338.0,
+      "data_peak_time_ps_navigation_only": 274.22,
+      "data_peak_value_v": 0.0006616179,
+      "clock_peak_time_ps_navigation_only": 359.62,
+      "clock_peak_value_v": 0.0006271721,
+      "clock_minus_data_peak_time_ps_navigation_only": 85.39999999999998,
+      "timing_status": "INCONCLUSIVE",
+      "timing_note": "stored-sample absolute peak-time difference only; not an event edge, setup/hold margin, or SFQ timing classification"
+    }
+  ],
+  "event_classifier": null,
+  "observed_bits": "UNKNOWN",
+  "arithmetic_status": "INCONCLUSIVE",
+  "timing_status": "INCONCLUSIVE",
+  "phase_raw_unit": "radians",
+  "phase_navigation": "independent unwrap then delta/(2*pi)",
+  "area_navigation": "trapezoid on actual stored timestamps / Phi0",
+  "scientific_interpretation_performed": false
+}

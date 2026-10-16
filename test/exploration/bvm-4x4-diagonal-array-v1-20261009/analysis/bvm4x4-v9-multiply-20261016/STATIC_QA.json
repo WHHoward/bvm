@@ -1,0 +1,510 @@
+{
+  "schema": "bvm4x4-v9-static-qa-v1",
+  "status": "PASS",
+  "parent_head": "54aecc583c1366878caa41ba5a8d617eb0aeb93f",
+  "solver_path": "build/josim-cli",
+  "solver_binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2",
+  "solver_version_query_performed": false,
+  "classic_plotter_sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+  "plotly_asset_sha256": "122e3be346d66616944d0b83eaaf7242581508c3c1cfa0995a17af0d83eff770",
+  "reference_deck_sha256": "474a254f4511fb46bea6afd36500aa28111323f23f1be66b720170ee297ccb70",
+  "reference_stimulus_sha256": "a0152b6ea7dbae508cc4f31855d937f5fed70b087af15baac4f28eed802b8331",
+  "reference_raw_sha256_recorded_not_used_as_oracle": "6dddd8cb074b40c1dca694867a03db9bd307ebd23f1263ca6c10a6de662fdf4c",
+  "reference_historical_manifests_used_as_authority": false,
+  "reference_source_manifest_note": "Current V9_analysis RUN/SOURCE/PACKAGE manifests are stale relative to current deck/stimulus/source bytes; this work unit hashes current files directly.",
+  "source_closure": [
+    {
+      "filename": "00_jjmit.cir",
+      "role": "JJMIT",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/00_jjmit.cir",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "expected_sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "01_bvm_cell_0923.cir",
+      "role": "BVM",
+      "origin": "circuits/bvm/bvm_cell_0923_v9_bse.cir",
+      "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+      "expected_sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+      "source_class": "canonical BVM"
+    },
+    {
+      "filename": "02_BQ_0928.cir",
+      "role": "QB",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/02_BQ_0928.cir",
+      "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+      "expected_sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "03_sJTL_0923.cir",
+      "role": "SJTL",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/03_sJTL_0923.cir",
+      "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+      "expected_sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "04_CB_0928.cir",
+      "role": "ARRAY_CB_AND_CARRY_CB",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/04_CB_0928.cir",
+      "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+      "expected_sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "05_MERGE.cir",
+      "role": "UNUSED_LEGACY_MERGE_INCLUDE",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/05_MERGE.cir",
+      "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+      "expected_sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "06_dcsfq2.cir",
+      "role": "DCSFQ2_CLOCK_SHAPER",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/06_dcsfq2.cir",
+      "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+      "expected_sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "07_jtl2.cir",
+      "role": "JTL2_CLOCK_AND_SUM_CHAIN",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/07_jtl2.cir",
+      "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+      "expected_sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "08_t1_cell_tunable.cir",
+      "role": "V9_T1_SOURCE_SNAPSHOT",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/08_t1_cell_tunable.cir",
+      "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+      "expected_sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "09_DFF.cir",
+      "role": "V9_DFF_SOURCE_SNAPSHOT",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/09_DFF.cir",
+      "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+      "expected_sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+      "source_class": "hash-pinned V9 reference snapshot"
+    },
+    {
+      "filename": "10_d0_jtl_tunable.cir",
+      "role": "V9_D0_JTL_SOURCE_SNAPSHOT",
+      "origin": "test/exploration/sfq_clock_two_read_v1/final_runs/V9_analysis/sources_frozen/10_d0_jtl_tunable.cir",
+      "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+      "expected_sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+      "source_class": "hash-pinned V9 reference snapshot"
+    }
+  ],
+  "bvm_count": 16,
+  "qb_count": 16,
+  "wl_source_count": 4,
+  "bl_source_count": 4,
+  "shared_row_se_source_count": 4,
+  "clock_source_count": 8,
+  "total_signal_source_count": 20,
+  "array_cb_count": 16,
+  "carry_cb_count": 6,
+  "carry_sjtl_count_by_stage": {
+    "D1": 1,
+    "D2": 1,
+    "D3": 5,
+    "D4": 2,
+    "D5": 1,
+    "D6": 1
+  },
+  "t1_count": 7,
+  "sum_jtl2_count": 14,
+  "clock_dcsfq2_count": 8,
+  "clock_jtl2_count": 8,
+  "dff_count": 1,
+  "v9_template_topology_equal_except_registered_print_and_tran": true,
+  "all_256_operand_mappings_validated": true,
+  "registered_run_matrix": [
+    {
+      "case_id": "V9_A0_B0_80P68",
+      "a": 0,
+      "b": 0,
+      "expected_product": 0,
+      "expected_bits_msb_first": "00000000",
+      "expected_bits_lsb_to_msb": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "bit_order": {
+        "bits_lsb_to_msb": [
+          "S_D0_OUT",
+          "S_D1_OUT",
+          "S_D2_OUT",
+          "S_D3_OUT",
+          "S_D4_OUT",
+          "S_D5_OUT",
+          "S_D6_OUT",
+          "DFF_O"
+        ],
+        "binary_msb_first": [
+          "DFF_O",
+          "S_D6_OUT",
+          "S_D5_OUT",
+          "S_D4_OUT",
+          "S_D3_OUT",
+          "S_D2_OUT",
+          "S_D1_OUT",
+          "S_D0_OUT"
+        ]
+      },
+      "row_bits_R1_lsb": "0000",
+      "column_bits_C1_msb": "0000",
+      "selected_se_rows": [],
+      "selected_bl_columns": [],
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "write_start_ps": 50.0,
+      "read_interval_ps": 80.0,
+      "clock_period_ps": 80.0,
+      "se_clock_delay_ps": 68.0,
+      "dt_ps": 0.01,
+      "stop_ps": 400.0,
+      "probe_profile": "v9_focus",
+      "source_amplitudes": {
+        "V9_WL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_READ_AMPLITUDE": "400u",
+        "V9_SE_READ_AMPLITUDE": "360u",
+        "V9_CLOCK_AMPLITUDE": "1.2m"
+      },
+      "pulse_edges_ps": {
+        "io": [
+          "1",
+          "9",
+          "1"
+        ],
+        "clock": [
+          "1",
+          "2",
+          "1"
+        ]
+      }
+    },
+    {
+      "case_id": "V9_A1_B1_80P68",
+      "a": 1,
+      "b": 1,
+      "expected_product": 1,
+      "expected_bits_msb_first": "00000001",
+      "expected_bits_lsb_to_msb": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "bit_order": {
+        "bits_lsb_to_msb": [
+          "S_D0_OUT",
+          "S_D1_OUT",
+          "S_D2_OUT",
+          "S_D3_OUT",
+          "S_D4_OUT",
+          "S_D5_OUT",
+          "S_D6_OUT",
+          "DFF_O"
+        ],
+        "binary_msb_first": [
+          "DFF_O",
+          "S_D6_OUT",
+          "S_D5_OUT",
+          "S_D4_OUT",
+          "S_D3_OUT",
+          "S_D2_OUT",
+          "S_D1_OUT",
+          "S_D0_OUT"
+        ]
+      },
+      "row_bits_R1_lsb": "1000",
+      "column_bits_C1_msb": "0001",
+      "selected_se_rows": [
+        "SE_R1"
+      ],
+      "selected_bl_columns": [
+        "BL_C4"
+      ],
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "write_start_ps": 50.0,
+      "read_interval_ps": 80.0,
+      "clock_period_ps": 80.0,
+      "se_clock_delay_ps": 68.0,
+      "dt_ps": 0.01,
+      "stop_ps": 400.0,
+      "probe_profile": "v9_focus",
+      "source_amplitudes": {
+        "V9_WL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_READ_AMPLITUDE": "400u",
+        "V9_SE_READ_AMPLITUDE": "360u",
+        "V9_CLOCK_AMPLITUDE": "1.2m"
+      },
+      "pulse_edges_ps": {
+        "io": [
+          "1",
+          "9",
+          "1"
+        ],
+        "clock": [
+          "1",
+          "2",
+          "1"
+        ]
+      }
+    },
+    {
+      "case_id": "V9_A11_B13_80P68",
+      "a": 11,
+      "b": 13,
+      "expected_product": 143,
+      "expected_bits_msb_first": "10001111",
+      "expected_bits_lsb_to_msb": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "0",
+        "0",
+        "0",
+        "1"
+      ],
+      "bit_order": {
+        "bits_lsb_to_msb": [
+          "S_D0_OUT",
+          "S_D1_OUT",
+          "S_D2_OUT",
+          "S_D3_OUT",
+          "S_D4_OUT",
+          "S_D5_OUT",
+          "S_D6_OUT",
+          "DFF_O"
+        ],
+        "binary_msb_first": [
+          "DFF_O",
+          "S_D6_OUT",
+          "S_D5_OUT",
+          "S_D4_OUT",
+          "S_D3_OUT",
+          "S_D2_OUT",
+          "S_D1_OUT",
+          "S_D0_OUT"
+        ]
+      },
+      "row_bits_R1_lsb": "1101",
+      "column_bits_C1_msb": "1101",
+      "selected_se_rows": [
+        "SE_R1",
+        "SE_R2",
+        "SE_R4"
+      ],
+      "selected_bl_columns": [
+        "BL_C1",
+        "BL_C2",
+        "BL_C4"
+      ],
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "write_start_ps": 50.0,
+      "read_interval_ps": 80.0,
+      "clock_period_ps": 80.0,
+      "se_clock_delay_ps": 68.0,
+      "dt_ps": 0.01,
+      "stop_ps": 400.0,
+      "probe_profile": "v9_focus",
+      "source_amplitudes": {
+        "V9_WL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_READ_AMPLITUDE": "400u",
+        "V9_SE_READ_AMPLITUDE": "360u",
+        "V9_CLOCK_AMPLITUDE": "1.2m"
+      },
+      "pulse_edges_ps": {
+        "io": [
+          "1",
+          "9",
+          "1"
+        ],
+        "clock": [
+          "1",
+          "2",
+          "1"
+        ]
+      }
+    },
+    {
+      "case_id": "V9_A15_B15_80P68",
+      "a": 15,
+      "b": 15,
+      "expected_product": 225,
+      "expected_bits_msb_first": "11100001",
+      "expected_bits_lsb_to_msb": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "1",
+        "1",
+        "1"
+      ],
+      "bit_order": {
+        "bits_lsb_to_msb": [
+          "S_D0_OUT",
+          "S_D1_OUT",
+          "S_D2_OUT",
+          "S_D3_OUT",
+          "S_D4_OUT",
+          "S_D5_OUT",
+          "S_D6_OUT",
+          "DFF_O"
+        ],
+        "binary_msb_first": [
+          "DFF_O",
+          "S_D6_OUT",
+          "S_D5_OUT",
+          "S_D4_OUT",
+          "S_D3_OUT",
+          "S_D2_OUT",
+          "S_D1_OUT",
+          "S_D0_OUT"
+        ]
+      },
+      "row_bits_R1_lsb": "1111",
+      "column_bits_C1_msb": "1111",
+      "selected_se_rows": [
+        "SE_R1",
+        "SE_R2",
+        "SE_R3",
+        "SE_R4"
+      ],
+      "selected_bl_columns": [
+        "BL_C1",
+        "BL_C2",
+        "BL_C3",
+        "BL_C4"
+      ],
+      "read_times_ps": [
+        110.0,
+        190.0,
+        270.0
+      ],
+      "clock_pwl_starts_ps": [
+        178.0,
+        258.0,
+        338.0
+      ],
+      "write_start_ps": 50.0,
+      "read_interval_ps": 80.0,
+      "clock_period_ps": 80.0,
+      "se_clock_delay_ps": 68.0,
+      "dt_ps": 0.01,
+      "stop_ps": 400.0,
+      "probe_profile": "v9_focus",
+      "source_amplitudes": {
+        "V9_WL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_WRITE_AMPLITUDE": "400u",
+        "V9_BL_READ_AMPLITUDE": "400u",
+        "V9_SE_READ_AMPLITUDE": "360u",
+        "V9_CLOCK_AMPLITUDE": "1.2m"
+      },
+      "pulse_edges_ps": {
+        "io": [
+          "1",
+          "9",
+          "1"
+        ],
+        "clock": [
+          "1",
+          "2",
+          "1"
+        ]
+      }
+    }
+  ],
+  "probe_count": 168,
+  "raw_estimate_bytes": 94712327,
+  "raw_estimate_guard_status": "PASS",
+  "legacy_platform_mode_untouched": true,
+  "solver_invoked": false,
+  "physical_solve_count": 0,
+  "scientific_interpretation_performed": false,
+  "mapping_audit": {
+    "status": "PASS",
+    "case_count": 256,
+    "example_11x13": {
+      "A": 11,
+      "B": 13,
+      "product": 143,
+      "row_bits_R1_lsb": "1101",
+      "column_bits_C1_msb": "1101",
+      "selected_se_rows": [
+        "SE_R1",
+        "SE_R2",
+        "SE_R4"
+      ],
+      "selected_bl_columns": [
+        "BL_C1",
+        "BL_C2",
+        "BL_C4"
+      ]
+    },
+    "physical_solve_count": 0
+  },
+  "raw_estimate": {
+    "reference_bytes": 42697139,
+    "reference_header_columns_including_time": 80,
+    "reference_sample_count": 39999,
+    "projected_sample_count": 40001,
+    "projected_signal_count": 168,
+    "safety_factor": 1.05,
+    "estimated_raw_bytes": 94712327,
+    "guard_bytes": 100000000,
+    "guard_status": "PASS",
+    "reference_raw_scientific_use": "none; storage-size calibration only"
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "schema": "bvm4x4-v9-stimulus-manifest-v1",
+  "scenario": {
+    "case_id": "V9_A0_B0_80P68",
+    "a": 0,
+    "b": 0,
+    "expected_product": 0,
+    "expected_bits_msb_first": "00000000",
+    "expected_bits_lsb_to_msb": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    "bit_order": {
+      "bits_lsb_to_msb": [
+        "S_D0_OUT",
+        "S_D1_OUT",
+        "S_D2_OUT",
+        "S_D3_OUT",
+        "S_D4_OUT",
+        "S_D5_OUT",
+        "S_D6_OUT",
+        "DFF_O"
+      ],
+      "binary_msb_first": [
+        "DFF_O",
+        "S_D6_OUT",
+        "S_D5_OUT",
+        "S_D4_OUT",
+        "S_D3_OUT",
+        "S_D2_OUT",
+        "S_D1_OUT",
+        "S_D0_OUT"
+      ]
+    },
+    "row_bits_R1_lsb": "0000",
+    "column_bits_C1_msb": "0000",
+    "selected_se_rows": [],
+    "selected_bl_columns": [],
+    "read_times_ps": [
+      110.0,
+      190.0,
+      270.0
+    ],
+    "clock_pwl_starts_ps": [
+      178.0,
+      258.0,
+      338.0
+    ],
+    "write_start_ps": 50.0,
+    "read_interval_ps": 80.0,
+    "clock_period_ps": 80.0,
+    "se_clock_delay_ps": 68.0,
+    "dt_ps": 0.01,
+    "stop_ps": 400.0,
+    "probe_profile": "v9_focus",
+    "source_amplitudes": {
+      "V9_WL_WRITE_AMPLITUDE": "400u",
+      "V9_BL_WRITE_AMPLITUDE": "400u",
+      "V9_BL_READ_AMPLITUDE": "400u",
+      "V9_SE_READ_AMPLITUDE": "360u",
+      "V9_CLOCK_AMPLITUDE": "1.2m"
+    },
+    "pulse_edges_ps": {
+      "io": [
+        "1",
+        "9",
+        "1"
+      ],
+      "clock": [
+        "1",
+        "2",
+        "1"
+      ]
+    }
+  },
+  "sources": [
+    {
+      "source": "I_WL_R1",
+      "node": "WL_R1",
+      "branch": "WL",
+      "cells": [
+        "R1C1",
+        "R1C2",
+        "R1C3",
+        "R1C4"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_WL_R2",
+      "node": "WL_R2",
+      "branch": "WL",
+      "cells": [
+        "R2C1",
+        "R2C2",
+        "R2C3",
+        "R2C4"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_WL_R3",
+      "node": "WL_R3",
+      "branch": "WL",
+      "cells": [
+        "R3C1",
+        "R3C2",
+        "R3C3",
+        "R3C4"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_WL_R4",
+      "node": "WL_R4",
+      "branch": "WL",
+      "cells": [
+        "R4C1",
+        "R4C2",
+        "R4C3",
+        "R4C4"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_BL_C1",
+      "node": "BL_C1",
+      "branch": "BL",
+      "cells": [
+        "R1C1",
+        "R2C1",
+        "R3C1",
+        "R4C1"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_BL_C2",
+      "node": "BL_C2",
+      "branch": "BL",
+      "cells": [
+        "R1C2",
+        "R2C2",
+        "R3C2",
+        "R4C2"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_BL_C3",
+      "node": "BL_C3",
+      "branch": "BL",
+      "cells": [
+        "R1C3",
+        "R2C3",
+        "R3C3",
+        "R4C3"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_BL_C4",
+      "node": "BL_C4",
+      "branch": "BL",
+      "cells": [
+        "R1C4",
+        "R2C4",
+        "R3C4",
+        "R4C4"
+      ],
+      "pwl_pulse_count": 1
+    },
+    {
+      "source": "I_SE_R1",
+      "node": "SE_R1",
+      "branch": "SE",
+      "cells": [
+        "R1C1",
+        "R1C2",
+        "R1C3",
+        "R1C4"
+      ],
+      "pwl_pulse_count": 3
+    },
+    {
+      "source": "I_SE_R2",
+      "node": "SE_R2",
+      "branch": "SE",
+      "cells": [
+        "R2C1",
+        "R2C2",
+        "R2C3",
+        "R2C4"
+      ],
+      "pwl_pulse_count": 3
+    },
+    {
+      "source": "I_SE_R3",
+      "node": "SE_R3",
+      "branch": "SE",
+      "cells": [
+        "R3C1",
+        "R3C2",
+        "R3C3",
+        "R3C4"
+      ],
+      "pwl_pulse_count": 3
+    },
+    {
+      "source": "I_SE_R4",
+      "node": "SE_R4",
+      "branch": "SE",
+      "cells": [
+        "R4C1",
+        "R4C2",
+        "R4C3",
+        "R4C4"
+      ],
+      "pwl_pulse_count": 3
+    },
+    {
+      "source": "V_TRIG_CLK_D0",
+      "node": "CLK_RAW_D0",
+      "branch": "CLK",
+      "cells": [
+        "D0"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_D0 to clock shaper/receiver"
+    },
+    {
+      "source": "V_TRIG_CLK_D1",
+      "node": "CLK_RAW_D1",
+      "branch": "CLK",
+      "cells": [
+        "D1"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_D1 to clock shaper/receiver"
+    },
+    {
+      "source": "V_TRIG_CLK_D2",
+      "node": "CLK_RAW_D2",
+      "branch": "CLK",
+      "cells": [
+        "D2"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_D2 to clock shaper/receiver"
+    },
+    {
+      "source": "V_TRIG_CLK_D3",
+      "node": "CLK_RAW_D3",
+      "branch": "CLK",
+      "cells": [
+        "D3"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_D3 to clock shaper/receiver"
+    },
+    {
+      "source": "V_TRIG_CLK_D4",
+      "node": "CLK_RAW_D4",
+      "branch": "CLK",
+      "cells": [
+        "D4"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_D4 to clock shaper/receiver"
+    },
+    {
+      "source": "V_TRIG_CLK_D5",
+      "node": "CLK_RAW_D5",
+      "branch": "CLK",
+      "cells": [
+        "D5"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_D5 to clock shaper/receiver"
+    },
+    {
+      "source": "V_TRIG_CLK_D6",
+      "node": "CLK_RAW_D6",
+      "branch": "CLK",
+      "cells": [
+        "D6"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_D6 to clock shaper/receiver"
+    },
+    {
+      "source": "V_TRIG_CLK_DFF",
+      "node": "CLK_RAW_DFF",
+      "branch": "CLK",
+      "cells": [
+        "DFF"
+      ],
+      "pwl_pulse_count": 3,
+      "direction": "CLK_RAW_DFF to clock shaper/receiver"
+    }
+  ],
+  "source_count": 20,
+  "source_classes": {
+    "WL": 4,
+    "BL": 4,
+    "shared_row_SE": 4,
+    "CLK": 8
+  },
+  "read_semantics": "all WL quiet; selected BL columns and selected SE rows active",
+  "clock_path": "PWL -> 2 ohm -> DCSFQ2 -> JTL2 -> T1/DFF",
+  "scientific_interpretation_performed": false
+}

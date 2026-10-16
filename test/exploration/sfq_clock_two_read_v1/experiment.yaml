@@ -1,0 +1,82 @@
+schema: bvm-experiment-v1
+id: V9_SE375_FULL256_20261016
+experiment_risk_level: NORMAL
+question: >-
+  Execute the complete 4-bit A/B input matrix under the fixed V9 shared-row-SE,
+  shared-column-BL platform and preserve artifacts for later user/ChatGPT review.
+source_class: exploratory
+authority_boundary:
+  evidence: [raw.csv, manifest.json, deck.cir, stimulus.inc, per-run QA]
+  not_proven:
+    - SFQ event count or delivery
+    - multiplication correctness
+    - shared-SE physical mechanism or universal applicability
+run_set:
+  matrix: cartesian_product
+  A_values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  B_values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  matrix_index: runs/FULL256_SE375_INDEX.csv
+  expected_product: A*B (theoretical input metadata only; never an artifact-QA criterion)
+  expected_product_is_simulation_verdict: false
+  previously_valid_input_count: 25
+  authorized_new_solve_count: 231
+  execution_order: A ascending, then B ascending; valid existing inputs are skipped
+changed: [A, B, CASE_NAME]
+frozen:
+  - PROTOCOL=V9_SHARED_ROW_SE_BL
+  - ROUNDS=3
+  - READ_INTERVAL_PS=80
+  - CLOCK_PERIOD_PS=80
+  - SE_CLOCK_DELAY_PS=68
+  - WRITE_START_PS=50
+  - FIRST_READ_PS=110
+  - DT_PS=0.01
+  - STOP_PS=400
+  - WL_WRITE_AMPLITUDE=400u
+  - BL_WRITE_AMPLITUDE=400u
+  - BL_READ_AMPLITUDE=400u
+  - SE_READ_AMPLITUDE=375u
+  - PROBE_PROFILE=OUTPUTS
+  - V9 topology, frozen source closure, all circuit parameters, and clock chain
+stimulus:
+  write: one all-cell WRITE1 only
+  read_starts_ps: [110, 190, 270]
+  clock_pwl_starts_ps: [178, 258, 338]
+  read_and_clock_period_ps: 80
+probes:
+  - V(S_D0_OUT)
+  - V(S_D1_OUT)
+  - V(S_D2_OUT)
+  - V(S_D3_OUT)
+  - V(S_D4_OUT)
+  - V(S_D5_OUT)
+  - V(S_D6_OUT)
+  - V(DFF_O)
+expected_mechanical_qa:
+  - exact A/B/config identity between USER_CASE snapshot, dry-run, deck, stimulus, and manifest
+  - V9 topology and frozen source closure match
+  - solver exit code zero
+  - raw CSV has exactly time plus the eight registered probes, finite values, and strictly increasing timestamps
+  - raw SHA-256 matches manifest and remains unchanged after plotting/archiving
+  - res.html exists and uses only the eight registered output probes
+interpretation_ceiling: Artifact and mechanical QA only; all scientific statuses remain NOT_ANALYZED.
+prohibited_followups:
+  - no extra inputs or 256-case extensions beyond this matrix
+  - no parameter, topology, timestep, stop-time, or stimulus changes
+  - no automatic solver retry, SFQ classification, multiplication verdict, or physical interpretation
+visual_authority:
+  renderer: scripts/josim-plot2.py
+  layout: stacked
+  color: dark
+  phase: 2pi
+  outputs_only: true
+archive:
+  one_self_contained_zip_per_run: true
+  preferred_target: D:/BVM_Backages (user-confirmed local path)
+  remote_file_id: record only after Drive API metadata readback
+  cloud_sync_without_readback: UNCONFIRMED
+scientific_review_authorization: NOT_GRANTED
+human_gate:
+  state: AWAITING_SCIENTIFIC_REVIEW
+  automatic_next_experiment: false
+  next_action: STOP

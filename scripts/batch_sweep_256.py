@@ -505,7 +505,15 @@ def _print_plan(a: int, rows: dict[tuple[int, int], dict[str, str]], limit: int 
 
 
 def _status_paths() -> list[str]:
-    raw = _git("status", "--porcelain=v1", "--untracked-files=all")
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "status", "--porcelain=v1", "--untracked-files=all"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode:
+        raise BatchError(result.stderr.decode("utf-8", errors="replace").strip() or "git status failed")
+    raw = result.stdout.decode("utf-8", errors="strict")
     return [line[3:] for line in raw.splitlines() if len(line) >= 4]
 
 

@@ -46,7 +46,10 @@ make_html() {
 
   python3 "$PLOTTER" raw.csv -t stacked -c dark -j 2pi -x bvm_current.html \
   -s \
-  "I(R_WL|XBVM_R1C4)" "I(R_BL|XBVM_R1C4)" "I(R_SE|XBVM_R1C4)"     
+  "I(R_SE|XBVM_R1C1)"\
+  "I(R_SE|XBVM_R1C2)"\
+  "I(R_SE|XBVM_R1C3)"\
+  "I(R_SE|XBVM_R1C4)"     
 }
 
 if [[ "$ACTION" == "--html-only" ]]; then

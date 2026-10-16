@@ -66,7 +66,7 @@ class V9MigrationTests(unittest.TestCase):
             self.assertEqual(case["expected_bits_msb_first"], format(case["a"] * case["b"], "08b"))
             self.assertEqual(case["row_bits_R1_lsb"], "".join(str((case["a"] >> i) & 1) for i in range(4)))
             self.assertEqual(case["column_bits_C1_msb"], "".join(str((case["b"] >> (3-i)) & 1) for i in range(4)))
-        self.assertEqual(legacy.next_run_number(), 109)
+        self.assertEqual(legacy.next_run_number(), 113)
 
     def test_registered_decks_match_reference_topology_and_raw_guard(self):
         v9.registered_values_ok(self.config)
@@ -114,6 +114,25 @@ class V9MigrationTests(unittest.TestCase):
             self.assertTrue(all((root / "pages" / Path(item["path"]).name).is_file()
                                 for item in qa["pages"]))
 
+    def test_bit7_without_dff_internal_probe_remains_unknown(self):
+        scenario = v9.scenario_config(self.config, 0, 0)
+        probes = v9.make_probe_manifest(scenario)
+        labels = [item["label"] for item in probes["signals"]]
+        self.assertNotIn("P(B7|XDFF)", labels)
+        with tempfile.TemporaryDirectory(prefix="v9-raw-arithmetic-fixture-", dir=SERIES / "plots") as temp:
+            run_dir = Path(temp) / "fixture"
+            run_dir.mkdir()
+            with (run_dir / "raw.csv").open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.writer(stream)
+                writer.writerow(["time", *labels])
+                for sample in range(41):
+                    writer.writerow([sample * 10e-12, *([0.0] * len(labels))])
+            _metrics, _qa, output_rows, _timing = v9.analyze_v9_raw(run_dir, scenario, probes)
+        bit7 = [row for row in output_rows if row["bit_index_lsb0"] == 7]
+        self.assertEqual(len(bit7), 3)
+        self.assertTrue(all(row["same_jj_status"] == "UNKNOWN_REQUIRED_DFF_PV_NOT_PROBED"
+                            and row["event_count_per_bit"] == "UNKNOWN"
+                            and row["arithmetic_status"] == "INCONCLUSIVE" for row in bit7))
 
 if __name__ == "__main__":
     unittest.main()

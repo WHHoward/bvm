@@ -108,6 +108,15 @@ class DeltaPackageTests(unittest.TestCase):
             shutil.copy2(checkpoint_source, analysis / checkpoint_source.name)
 
             manifest = json.loads((SERIES / "experiment_manifest.json").read_text(encoding="utf-8"))
+            # This fixture intentionally tests the post-prune A001-A108 checkpoint,
+            # not the later V9 A109-A112 batch in the live repository manifest.
+            manifest["runs"] = [row for row in manifest["runs"]
+                                if int(row["run_id"][1:4]) <= submit.PRUNE_LEGACY_RUN_ID_WATERMARK]
+            manifest["authorization_batches"] = [batch for batch in manifest.get("authorization_batches", [])
+                                                  if all(int(run_id[1:4]) <= submit.PRUNE_LEGACY_RUN_ID_WATERMARK
+                                                         for run_id in batch.get("run_ids", []))]
+            manifest["physical_solve_count"] = sum(int(row.get("physical_solve_count", 0))
+                                                   for row in manifest["runs"])
             for row in manifest["runs"]:
                 run_number = int(row["run_id"][1:4])
                 if run_number not in selected:

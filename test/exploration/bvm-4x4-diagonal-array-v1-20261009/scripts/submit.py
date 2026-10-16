@@ -5700,14 +5700,21 @@ def manual_run_delta_specs(tag: str, root: Any) -> tuple[list[dict[str, Any]], d
         raise RuntimeError("new run directories are not registered for this manual DELTA: " +
                            ", ".join(sorted(untracked_run_dirs)))
 
+    v9_batch_ids = {current_rows[run_id].get("batch_id") for run_id in registered_ids
+                    if current_rows.get(run_id, {}).get("batch_id", "").startswith("BVM4X4_V9_MULTIPLY_")}
     workflow_paths = []
-    for path, relpath in ((script_path, script_rel), (readme_path, readme_rel)):
+    workflow_candidates = [(script_path, script_rel), (readme_path, readme_rel)]
+    if v9_batch_ids:
+        for path in (SERIES / "try.sh", SERIES / "scripts" / "v9_multiply_batch.py",
+                     SERIES / "tests" / "test_platform.py", SERIES / "tests" / "test_submit.py",
+                     SERIES / "tests" / "test_v9_migration.py"):
+            if path.is_file():
+                workflow_candidates.append((path, path.relative_to(REPO).as_posix()))
+    for path, relpath in workflow_candidates:
         if _manual_run_blob_sha(head, relpath) != root.sha256(path):
             workflow_paths.append((path, relpath))
     workflow_sha256 = {relpath: root.sha256(path) for path, relpath in workflow_paths}
     base_metadata_sources = [(manifest_path, manifest_rel), *workflow_paths]
-    v9_batch_ids = {current_rows[run_id].get("batch_id") for run_id in registered_ids
-                    if current_rows.get(run_id, {}).get("batch_id", "").startswith("BVM4X4_V9_MULTIPLY_")}
     if v9_batch_ids:
         if len(v9_batch_ids) != 1:
             raise RuntimeError("V9 manual-run DELTA must contain exactly one complete registered batch")
@@ -5911,7 +5918,10 @@ def submit_manual_run_delta(args: argparse.Namespace, root: Any,
         staged = git("diff", "--cached", "--name-only").splitlines()
         if staged != sorted(workflow_dirty):
             raise RuntimeError("workflow maintenance commit would stage paths outside the submit script/README")
-        subprocess.run(["git", "commit", "-m", "tools: generalize manual-run DELTA submission"],
+        workflow_message = ("fix: repair V9 analyzer/probe mismatch" if any(
+            "v9_multiply_batch.py" in path for path in workflow_dirty) else
+            "tools: generalize manual-run DELTA submission")
+        subprocess.run(["git", "commit", "-m", workflow_message],
                        cwd=REPO, check=True)
 
     evidence_paths = context["evidence_paths"]

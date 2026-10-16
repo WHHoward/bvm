@@ -870,7 +870,8 @@ def _write_task_definition(config: dict[str, str], scenarios: list[dict[str, Any
 def _preflight_text(config: dict[str, str], scenarios: list[dict[str, Any]], run_ids: list[str],
                     source_recs: list[dict[str, str]], static_qa: dict[str, Any],
                     payloads: list[dict[str, Any]],
-                    solver_info: dict[str, Any] | None = None) -> str:
+                    solver_info: dict[str, Any] | None = None,
+                    revision_note: str | None = None) -> str:
     head = platform._git_output("rev-parse", "HEAD")
     source_lines = "\n".join(f"- `{item['origin']}` SHA-256 `{item['sha256']}` ({item['role']})"
                               for item in source_recs)
@@ -884,11 +885,13 @@ def _preflight_text(config: dict[str, str], scenarios: list[dict[str, Any]], run
                    if solver_info else
                    f"`{SOLVER}`; executable SHA-256 `{sha256(SOLVER)}`; version not queried during dry-run")
     preflight_state = "LOCKED_BEFORE_PHYSICAL_SOLVE" if solver_info else "DRAFT_NOT_EXECUTABLE"
+    revision_line = f"\n- Preflight revision note: {revision_note}." if revision_note else ""
     return f"""# PREFLIGHT — {EXPERIMENT_ID}
 
 This experiment is governed by docs/EXPERIMENT_CONTRACT.md.
 
 Preflight state: `{preflight_state}`.
+{revision_line}
 
 - `experiment_risk_level`: NORMAL; `study_phase`: EXPLORATORY.
 - Parent HEAD: `{head}` (branch `master`; local/remote alignment was verified before implementation).
@@ -1187,12 +1190,22 @@ def analyze_v9_raw(run_dir: Path, scenario: dict[str, Any], probes: dict[str, An
             signed_area = _array_area(values, times, ids)
             pos_area, neg_area = _positive_negative_area(values, times, ids)
             morphology = platform._voltage_lobe_candidates(times, values, ids)
-            t1_jj = (f"P(B_J9|XT1_D{bit})" if bit < 7 else "P(B7|XDFF)")
-            t1_v = (f"V(B_J9|XT1_D{bit})" if bit < 7 else "V(B7|XDFF)")
-            phase = platform._unwrap(columns[t1_jj])
             first, last = ids[0], ids[-1]
-            delta_rad = phase[last] - phase[first]
-            jj_area = _array_area(columns[t1_v], times, ids)
+            if bit < 7:
+                t1_jj = f"P(B_J9|XT1_D{bit})"
+                t1_v = f"V(B_J9|XT1_D{bit})"
+                phase = platform._unwrap(columns[t1_jj])
+                delta_rad = phase[last] - phase[first]
+                jj_area = _array_area(columns[t1_v], times, ids)
+                same_jj_status = "DERIVED_SAME_JJ_PV"
+            else:
+                # The preregistered focus set has the DFF input/output and clock,
+                # but intentionally no DFF-internal P/V. Do not infer bit7 phase.
+                t1_jj = None
+                t1_v = None
+                delta_rad = None
+                jj_area = None
+                same_jj_status = "UNKNOWN_REQUIRED_DFF_PV_NOT_PROBED"
             row = {
                 "run_id": run_dir.name, "source_sha": BVM_SHA256,
                 "topology_version": "V9_SHARED_ROW_SE_BL", "A": scenario["a"], "B": scenario["b"],
@@ -1211,13 +1224,15 @@ def analyze_v9_raw(run_dir: Path, scenario: dict[str, Any], probes: dict[str, An
                 "output_negative_peak_v": float(values[neg_idx]),
                 "output_negative_peak_time_ps": time_ps[neg_idx],
                 "descriptive_lobe_candidate_count_not_event_count": len(morphology.get("candidates", [])),
-                "same_jj_phase_signal": t1_jj,
-                "same_jj_voltage_signal": t1_v,
+                "same_jj_status": same_jj_status,
+                "same_jj_phase_signal": t1_jj or "UNKNOWN",
+                "same_jj_voltage_signal": t1_v or "UNKNOWN",
                 "same_jj_phase_delta_rad": delta_rad,
-                "same_jj_phase_delta_rad_over_2pi_navigation": delta_rad / (2 * math.pi),
+                "same_jj_phase_delta_rad_over_2pi_navigation": delta_rad / (2 * math.pi) if delta_rad is not None else None,
                 "same_jj_voltage_area_v_s": jj_area,
-                "same_jj_voltage_area_phi0_navigation": jj_area / PHI0,
-                "same_jj_phase_minus_area_navigation": delta_rad / (2 * math.pi) - jj_area / PHI0,
+                "same_jj_voltage_area_phi0_navigation": jj_area / PHI0 if jj_area is not None else None,
+                "same_jj_phase_minus_area_navigation": delta_rad / (2 * math.pi) - jj_area / PHI0
+                if delta_rad is not None and jj_area is not None else None,
                 "data_arrival_time": "UNKNOWN",
                 "actual_clock_arrival_time": "UNKNOWN",
                 "measured_timing_difference": "UNKNOWN",
@@ -1225,7 +1240,9 @@ def analyze_v9_raw(run_dir: Path, scenario: dict[str, Any], probes: dict[str, An
                 "timing_status": "INCONCLUSIVE",
                 "raw_path": (run_dir / "raw.csv").relative_to(REPO).as_posix(),
                 "raw_sha256": before,
-                "qa_notes": "No frozen output event classifier/Gate; output area and lobe candidates are descriptive navigation only.",
+                "qa_notes": ("No frozen output event classifier/Gate; output area and lobe candidates are descriptive navigation only."
+                             if bit < 7 else
+                             "No frozen output event classifier/Gate; DFF internal P/V is absent from the preregistered probe set, so bit7 same-JJ cross-check is UNKNOWN."),
             }
             output_rows.append(row)
             waveform_metrics.append({"signal": signal, "window": window_name,
@@ -1419,6 +1436,149 @@ def _append_run_to_manifest(run_record: dict[str, Any], run_id: str, batch_id: s
     atomic_json(MANIFEST, data)
 
 
+def repair_existing_postprocess(run_id: str) -> dict[str, Any]:
+    """Re-QA a valid solver raw after a registered analysis-tool failure; never calls JoSIM."""
+    if run_id != "A109_V9_A0_B0_80P68":
+        raise V9ConfigError("this recovery is scoped only to the A109 postprocess failure")
+    run_dir = RUNS / run_id
+    result_path = run_dir / "result.json"
+    raw_path = run_dir / "raw.csv"
+    if not run_dir.is_dir() or not result_path.is_file() or not raw_path.is_file():
+        raise V9ConfigError("A109 run/raw/result artifact is incomplete")
+    old_result = json.loads(result_path.read_text(encoding="utf-8"))
+    if (old_result.get("status") != "POSTPROCESS_FAILURE_RAW_PRESERVED" or
+            old_result.get("artifact_status") != "ARTIFACT_INVALID" or
+            old_result.get("solver_exit_code") != 0):
+        raise V9ConfigError("A109 is not the expected solver-valid/postprocess-invalid attempt")
+    raw_sha_before = sha256(raw_path)
+    if raw_sha_before != old_result.get("raw_sha256"):
+        raise V9ConfigError("A109 raw SHA differs from the preserved initial result")
+    old_run_manifest_path = run_dir / "RUN_MANIFEST.json"
+    if not old_run_manifest_path.is_file():
+        raise V9ConfigError("A109 failed attempt lacks RUN_MANIFEST.json")
+    old_run_manifest = json.loads(old_run_manifest_path.read_text(encoding="utf-8"))
+    if old_run_manifest.get("hashes", {}).get("raw_sha256") != raw_sha_before:
+        raise V9ConfigError("A109 raw SHA differs from the failed-attempt RUN_MANIFEST")
+    attempt_dir = run_dir / "postprocess_attempts" / "001"
+    if attempt_dir.exists():
+        raise V9ConfigError("A109 postprocess repair attempt 001 already exists; refusing overwrite")
+    attempt_dir.mkdir(parents=True, exist_ok=False)
+    shutil.copyfile(result_path, attempt_dir / "initial_result.json")
+    shutil.copyfile(old_run_manifest_path, attempt_dir / "initial_RUN_MANIFEST.json")
+    atomic_text(attempt_dir / "RECOVERY_NOTE.md", f"""# A109 postprocess recovery attempt 001
+
+- Initial solver exit code: 0; initial raw SHA-256: `{raw_sha_before}`.
+- Initial artifact status: `ARTIFACT_INVALID` because the analyzer requested absent probe `P(B7|XDFF)`.
+- Repair: bit7 same-JJ P/V fields are `UNKNOWN` when the DFF internal probe is not registered; the raw/deck/stimulus/probe set is unchanged.
+- JoSIM invocation in this recovery: 0. Raw mutation: prohibited and checked.
+""")
+
+    scenario = json.loads((run_dir / "CASE_CONFIG.json").read_text(encoding="utf-8"))
+    probes = json.loads((run_dir / "probe_manifest.json").read_text(encoding="utf-8"))
+    source_manifest = json.loads((run_dir / "source_manifest.json").read_text(encoding="utf-8"))
+    original_preflight = (ANALYSIS / "PREFLIGHT.md").read_text(encoding="utf-8")
+    runner_match = re.search(r"V9 runner SHA-256: `([0-9a-f]{64})`", original_preflight)
+    if not runner_match:
+        raise V9ConfigError("original locked preflight lacks the solver-execution runner SHA")
+    execution_runner_sha = runner_match.group(1)
+    payload = {"scenario": scenario, "probes": probes,
+               "source_records": source_manifest["sources"]}
+    solver_info = old_run_manifest["solver"]
+    hashes = old_run_manifest["hashes"]
+    metrics, raw_qa, output_rows, timing_rows = analyze_v9_raw(run_dir, scenario, probes)
+    if raw_qa["raw_sha256_before"] != raw_sha_before or sha256(raw_path) != raw_sha_before:
+        raise V9ConfigError("A109 raw changed while repairing postprocess artifacts")
+    atomic_json(run_dir / "metrics.json", metrics)
+    atomic_json(run_dir / "raw_qa.json", raw_qa)
+    _csv_write(run_dir / "functional_results.csv", output_rows)
+    _csv_write(run_dir / "clock_timing.csv", timing_rows)
+    chain_qa = {"schema": "bvm4x4-v9-stage-qa-v1", "status": "PASS",
+                "raw_sha256": raw_sha_before, "source_count": 20,
+                "stage_timing_rows": len(timing_rows), "output_measurement_rows": len(output_rows),
+                "event_classifier": None, "scientific_interpretation_performed": False}
+    atomic_json(run_dir / "chain_qa.json", chain_qa)
+    plot_root = PLOTS / "v9-multiply-20261016" / run_id
+    plot_qa = platform.render_plots(run_dir, probes, plot_root_override=plot_root)
+    if sha256(raw_path) != raw_sha_before:
+        raise V9ConfigError("A109 raw SHA changed during classic visualization regeneration")
+    qa = {"schema": "bvm4x4-v9-run-qa-v1", "status": "PASS", "artifact_status": "VALID",
+          "physical_solve_count": 1, "solver_exit_code": 0, "static_qa_status": "PASS",
+          "raw_qa_status": raw_qa["status"], "chain_qa_status": chain_qa["status"],
+          "plot_qa_status": plot_qa["status"], "raw_sha256_before_analysis": raw_sha_before,
+          "raw_sha256_after_analysis": raw_sha_before, "raw_bytes": raw_path.stat().st_size,
+          "sample_count": raw_qa["sample_count"], "time_range_ps": raw_qa["time_range_ps"],
+          "probe_count": probes["signal_count"], "all_required_probes_present": True,
+          "arithmetic_status": "INCONCLUSIVE", "timing_status": "INCONCLUSIVE",
+          "postprocess_revision": 2, "scientific_interpretation_performed": False}
+    provenance = _provenance(run_dir, scenario, solver_info, hashes, raw_sha_before, plot_qa, qa)
+    provenance["postprocess_revision"] = 2
+    provenance["solver_execution_runner_sha256"] = execution_runner_sha
+    provenance["postprocess_runner_sha256"] = sha256(Path(__file__).resolve())
+    provenance["prior_postprocess_failure_sha256"] = sha256(attempt_dir / "initial_result.json")
+    atomic_json(run_dir / "provenance.json", provenance)
+    config = platform.parse_env(run_dir / "V9_CONFIG.snapshot.env")
+    result = {
+        "schema": "bvm4x4-v9-result-v1", "run_id": run_id, "batch_id": BATCH_ID,
+        "case": scenario["case_id"], "A": scenario["a"], "B": scenario["b"],
+        "expected_product": scenario["expected_product"],
+        "expected_bits_msb_first": scenario["expected_bits_msb_first"],
+        "bit_order": scenario["bit_order"], "status": "MECHANICAL_QA_PASS_AWAITING_USER_REVIEW",
+        "artifact_status": "VALID", "physical_solve_count": 1, "solver_exit_code": 0,
+        "raw_sha256": raw_sha_before, "raw_bytes": raw_path.stat().st_size,
+        "deck_sha256": hashes["deck_sha256"], "stimulus_sha256": hashes["stimulus_sha256"],
+        "source_sha256": {item["filename"]: item["sha256"] for item in source_manifest["sources"]},
+        "probe_count": probes["signal_count"], "qa_status": "PASS",
+        "arithmetic_status": "INCONCLUSIVE", "timing_status": "INCONCLUSIVE",
+        "event_count_per_bit": "UNKNOWN", "observed_bits": "UNKNOWN",
+        "postprocess_revision": 2,
+        "solver_execution_runner_sha256": execution_runner_sha,
+        "postprocess_runner_sha256": sha256(Path(__file__).resolve()),
+        "prior_postprocess_failure": "KeyError: P(B7|XDFF); raw preserved, no re-solve",
+        "scientific_interpretation_performed": False, "automatic_follow_up": False,
+    }
+    atomic_json(run_dir / "qa.json", qa)
+    atomic_json(run_dir / "result.json", result)
+    atomic_json(run_dir / "metadata.json", {
+        "schema": "bvm4x4-v9-metadata-v1", "run_id": run_id, "batch_id": BATCH_ID,
+        "effective_scenario": scenario, "effective_v9_config": {key: config[key] for key in V9_KEYS},
+        "solver": solver_info, "command": [str(SOLVER), "-a", "1", "-o", "raw.csv", "deck.cir"],
+        "exit_code": 0, "deck_sha256": hashes["deck_sha256"],
+        "stimulus_sha256": hashes["stimulus_sha256"], "raw_sha256": raw_sha_before,
+        "raw_bytes": raw_path.stat().st_size,
+        "source_manifest_sha256": sha256(run_dir / "source_manifest.json"),
+        "probe_manifest_sha256": sha256(run_dir / "probe_manifest.json"),
+        "topology_manifest_sha256": sha256(run_dir / "topology_manifest.json"),
+        "risk_level": "NORMAL", "study_phase": "EXPLORATORY",
+        "artifact_status": "VALID", "qa_status": "PASS", "postprocess_revision": 2,
+        "solver_execution_runner_sha256": execution_runner_sha,
+        "postprocess_runner_sha256": sha256(Path(__file__).resolve()),
+        "scientific_interpretation_performed": False, "automatic_follow_up": False,
+    })
+    _write_result_brief(run_dir, scenario, result, metrics)
+    run_manifest = {**old_run_manifest, "artifact_status": "VALID", "mechanical_qa_status": "PASS",
+                    "postprocess_revision": 2, "raw_sha256_verified_after_reanalysis": raw_sha_before,
+                    "solver_execution_runner_sha256": execution_runner_sha,
+                    "postprocess_runner_sha256": sha256(Path(__file__).resolve()),
+                    "result_sha256": sha256(run_dir / "result.json"),
+                    "provenance_sha256": sha256(run_dir / "provenance.json"),
+                    "qa_sha256": sha256(run_dir / "qa.json")}
+    atomic_json(run_dir / "RUN_MANIFEST.json", run_manifest)
+    atomic_json(run_dir / "postprocess_attempts/001/RECOVERY_QA.json", {
+        "status": "PASS", "raw_sha256_before": raw_sha_before,
+        "raw_sha256_after": sha256(raw_path), "solver_invoked": False,
+        "artifact_status": "VALID_AFTER_ANALYSIS_REPAIR", "postprocess_revision": 2})
+    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    rows = {item.get("run_id"): item for item in data.get("runs", [])}
+    row = rows.get(run_id)
+    if row is None or row.get("raw_sha256") != raw_sha_before:
+        raise V9ConfigError("A109 experiment_manifest raw identity is missing or inconsistent")
+    row.update({"status": result["status"], "artifact_status": "VALID", "qa_status": "PASS",
+                "raw_bytes": raw_path.stat().st_size, "postprocess_revision": 2,
+                "prior_postprocess_failure": "KeyError: P(B7|XDFF); same immutable raw reanalyzed"})
+    atomic_json(MANIFEST, data)
+    return result
+
+
 def _reserve_batch(batch_id: str, scenarios: list[dict[str, Any]], run_ids: list[str],
                    static_qa: dict[str, Any], preflight_sha: str) -> None:
     data = json.loads(MANIFEST.read_text(encoding="utf-8"))
@@ -1446,6 +1606,70 @@ def _reserve_batch(batch_id: str, scenarios: list[dict[str, Any]], run_ids: list
             data["authorized_physical_solves"].append(item["case_id"])
     data["maximum_physical_solve_count"] = int(data.get("maximum_physical_solve_count", 0)) + len(run_ids)
     atomic_json(MANIFEST, data)
+
+
+def _registered_batch_run_ids(scenarios: list[dict[str, Any]]) -> tuple[list[str], dict[str, Any]]:
+    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    matches = [item for item in data.get("authorization_batches", [])
+               if item.get("batch_id") == BATCH_ID]
+    if len(matches) != 1:
+        raise V9ConfigError(f"expected one existing authorization record for {BATCH_ID}; found {len(matches)}")
+    batch = matches[0]
+    run_ids = batch.get("run_ids", [])
+    if len(run_ids) != 4 or [rid.split("_", 1)[1] for rid in run_ids] != [item["case_id"] for item in scenarios]:
+        raise V9ConfigError("existing V9 authorization IDs/cases differ from the exact registered four-case matrix")
+    return run_ids, batch
+
+
+def _revise_preflight_for_resume(config: dict[str, str], scenarios: list[dict[str, Any]],
+                                 run_ids: list[str], payloads: list[dict[str, Any]],
+                                 static_qa: dict[str, Any], sources: list[dict[str, str]],
+                                 solver_info: dict[str, Any]) -> str:
+    preflight_path = ANALYSIS / "PREFLIGHT.md"
+    if not preflight_path.is_file():
+        raise V9ConfigError("resume requires the previous locked PREFLIGHT.md")
+    old_text = preflight_path.read_text(encoding="utf-8")
+    if "Preflight state: `LOCKED_BEFORE_PHYSICAL_SOLVE`." not in old_text:
+        raise V9ConfigError("resume requires a locked preflight from the original solve attempt")
+    old_sha = sha256(preflight_path)
+    revision_dir = ANALYSIS / "preflight_revisions"
+    revision_dir.mkdir(parents=True, exist_ok=True)
+    archived = revision_dir / "001_PREFLIGHT.md"
+    if archived.exists():
+        if sha256(archived) != old_sha:
+            raise V9ConfigError("preflight revision archive already exists with a different SHA")
+    else:
+        shutil.copyfile(preflight_path, archived)
+    note = ("A109 raw is unchanged and is reprocessed after correcting only the analyzer's request for absent DFF B7 P/V; "
+            "no circuit, stimulus, probe, parameter, window, or additional-solve change. Continue only A110-A112.")
+    revised = _preflight_text(config, scenarios, run_ids, sources, static_qa,
+                               payloads, solver_info=solver_info, revision_note=note)
+    new_sha = sha256_from_text(revised)
+    atomic_text(preflight_path, revised)
+    revision_path = ANALYSIS / "PREFLIGHT_REVISIONS.json"
+    revisions = json.loads(revision_path.read_text(encoding="utf-8")) if revision_path.is_file() else {
+        "schema": "bvm4x4-v9-preflight-revisions-v1", "revisions": []}
+    revisions["revisions"].append({"status": "PREPROCESSOR_REPAIR_AND_REMAINING_RUNS_LOCKED",
+                                    "superseded_preflight_sha256": old_sha,
+                                    "preflight_archive_path": archived.relative_to(ANALYSIS).as_posix(),
+                                    "new_preflight_sha256": new_sha,
+                                    "reason": note,
+                                    "solver_version": solver_info["version"],
+                                    "solver_sha256": solver_info["sha256"],
+                                    "physical_solve_count_in_revision": 0,
+                                    "existing_raw_reanalysis_run_ids": ["A109_V9_A0_B0_80P68"],
+                                    "remaining_authorized_run_ids": run_ids[1:]})
+    atomic_json(revision_path, revisions)
+    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    batch = next(item for item in data["authorization_batches"] if item.get("batch_id") == BATCH_ID)
+    batch.setdefault("preflight_revisions", []).append({"superseded_sha256": old_sha,
+                                                          "current_sha256": new_sha,
+                                                          "physical_solve_count": 0,
+                                                          "reason": note})
+    batch["preflight_sha256"] = new_sha
+    batch["preflight_revision"] = len(batch["preflight_revisions"]) + 1
+    atomic_json(MANIFEST, data)
+    return new_sha
 
 
 def _provenance(run_dir: Path, scenario: dict[str, Any], solver_info: dict[str, Any],
@@ -1755,7 +1979,7 @@ def _check_reference_postcheck(before: dict[str, str]) -> None:
 
 def _reserve_and_execute(config: dict[str, str], scenarios: list[dict[str, Any]], run_ids: list[str],
                          payloads: list[dict[str, Any]], static_qa: dict[str, Any],
-                         sources: list[dict[str, str]]) -> int:
+                         sources: list[dict[str, str]], *, resume: bool = False) -> int:
     preflight_path = ANALYSIS / "PREFLIGHT.md"
     static_path = ANALYSIS / "STATIC_QA.json"
     if not preflight_path.is_file() or not static_path.is_file():
@@ -1765,28 +1989,50 @@ def _reserve_and_execute(config: dict[str, str], scenarios: list[dict[str, Any]]
     solver_info = platform._solver_info()
     if not SOLVER.is_file():
         raise V9ConfigError(f"recorded solver missing: {SOLVER}")
-    final_preflight = _preflight_text(config, scenarios, run_ids, sources, static_qa,
-                                      payloads, solver_info=solver_info)
-    old_preflight = preflight_path.read_text(encoding="utf-8")
-    if "Preflight state: `DRAFT_NOT_EXECUTABLE`." not in old_preflight:
-        raise V9ConfigError("physical launch requires a draft preflight to finalize before the first solve")
-    revision_path = ANALYSIS / "PREFLIGHT_REVISIONS.json"
-    revisions = json.loads(revision_path.read_text(encoding="utf-8")) if revision_path.is_file() else {
-        "schema": "bvm4x4-v9-preflight-revisions-v1", "revisions": []}
-    revisions["revisions"].append({"status": "FINAL_SOLVER_IDENTITY_LOCKED_BEFORE_SOLVE",
-                                     "draft_sha256": sha256(preflight_path),
-                                     "final_sha256": sha256_from_text(final_preflight),
-                                     "solver_version": solver_info["version"],
-                                     "solver_sha256": solver_info["sha256"],
-                                     "physical_solve_count_completed": 0})
-    atomic_json(revision_path, revisions)
-    atomic_text(preflight_path, final_preflight)
+    if resume:
+        _revise_preflight_for_resume(config, scenarios, run_ids, payloads,
+                                     static_qa, sources, solver_info)
+        manifest_before = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        batch_before = next(item for item in manifest_before["authorization_batches"]
+                            if item.get("batch_id") == BATCH_ID)
+        if batch_before.get("run_ids") != run_ids:
+            raise V9ConfigError("resume run IDs differ from the existing authorized matrix")
+        completed_ids = set(batch_before.get("completed_run_ids", []))
+        rows_before = {item.get("run_id"): item for item in manifest_before.get("runs", [])}
+        for completed_id in completed_ids:
+            result_path = RUNS / completed_id / "result.json"
+            qa_path = RUNS / completed_id / "qa.json"
+            if (not result_path.is_file() or not qa_path.is_file() or
+                    json.loads(result_path.read_text(encoding="utf-8")).get("artifact_status") != "VALID" or
+                    json.loads(qa_path.read_text(encoding="utf-8")).get("status") != "PASS" or
+                    rows_before.get(completed_id, {}).get("raw_sha256") != sha256(RUNS / completed_id / "raw.csv")):
+                raise V9ConfigError(f"completed run is not artifact-valid and hash-bound; refusing resume: {completed_id}")
+        pending_pairs = [(run_id, payload) for run_id, payload in zip(run_ids, payloads, strict=True)
+                         if run_id not in completed_ids]
+    else:
+        final_preflight = _preflight_text(config, scenarios, run_ids, sources, static_qa,
+                                          payloads, solver_info=solver_info)
+        old_preflight = preflight_path.read_text(encoding="utf-8")
+        if "Preflight state: `DRAFT_NOT_EXECUTABLE`." not in old_preflight:
+            raise V9ConfigError("physical launch requires a draft preflight to finalize before the first solve")
+        revision_path = ANALYSIS / "PREFLIGHT_REVISIONS.json"
+        revisions = json.loads(revision_path.read_text(encoding="utf-8")) if revision_path.is_file() else {
+            "schema": "bvm4x4-v9-preflight-revisions-v1", "revisions": []}
+        revisions["revisions"].append({"status": "FINAL_SOLVER_IDENTITY_LOCKED_BEFORE_SOLVE",
+                                         "draft_sha256": sha256(preflight_path),
+                                         "final_sha256": sha256_from_text(final_preflight),
+                                         "solver_version": solver_info["version"],
+                                         "solver_sha256": solver_info["sha256"],
+                                         "physical_solve_count_completed": 0})
+        atomic_json(revision_path, revisions)
+        atomic_text(preflight_path, final_preflight)
+        _reserve_batch(BATCH_ID, scenarios, run_ids, static_qa, sha256(preflight_path))
+        pending_pairs = list(zip(run_ids, payloads, strict=True))
     reference_before = _save_reference_hashes_for_postcheck()
-    _reserve_batch(BATCH_ID, scenarios, run_ids, static_qa, sha256(preflight_path))
-    completed = 0
-    for run_id, payload in zip(run_ids, payloads, strict=True):
+    completed_this_invocation = 0
+    for run_id, payload in pending_pairs:
         code, result = run_one(config, payload["scenario"], run_id, payload, solver_info)
-        completed += int(result.get("physical_solve_count", 0))
+        completed_this_invocation += int(result.get("physical_solve_count", 0))
         print(json.dumps(result, ensure_ascii=False, indent=2), flush=True)
         if code != 0:
             _check_reference_postcheck(reference_before)
@@ -1798,14 +2044,17 @@ def _reserve_and_execute(config: dict[str, str], scenarios: list[dict[str, Any]]
         if batch.get("batch_id") == BATCH_ID:
             batch["execution_status"] = "BATCH_COMPLETE_AWAITING_USER_CHATGPT_REVIEW"
             batch["mechanical_analysis_status"] = "MECHANICAL_QA_PASS"
-            batch["physical_solve_count_completed"] = completed
+            batch["physical_solve_count_completed"] = len(batch.get("completed_run_ids", []))
             batch["scientific_interpretation_performed"] = False
             batch["automatic_follow_up"] = False
     atomic_json(MANIFEST, manifest)
+    completed_total = len(next(item for item in manifest["authorization_batches"]
+                               if item.get("batch_id") == BATCH_ID).get("completed_run_ids", []))
     print(json.dumps({"status": "BATCH_COMPLETE_AWAITING_USER_CHATGPT_REVIEW",
                       "batch_id": BATCH_ID, "run_ids": run_ids,
-                      "physical_solve_count": completed,
-                      "artifact_status": "VALID" if completed == 4 else "INCOMPLETE",
+                      "physical_solve_count": completed_total,
+                      "physical_solve_count_this_invocation": completed_this_invocation,
+                      "artifact_status": "VALID" if completed_total == 4 else "INCOMPLETE",
                       "arithmetic_status": "INCONCLUSIVE", "timing_status": "INCONCLUSIVE",
                       "scientific_interpretation_performed": False,
                       "automatic_follow_up": False}, ensure_ascii=False, indent=2), flush=True)
@@ -1817,6 +2066,8 @@ def main(argv: list[str] | None = None) -> int:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--v9-multiply-batch", action="store_true",
                       help="dry-run or execute exactly four registered product cases")
+    mode.add_argument("--resume-v9-multiply-batch", action="store_true",
+                      help="repair A109 postprocess from the same raw, then execute only remaining registered cases")
     mode.add_argument("--v9-case", action="store_true",
                       help="preview/execute the one A/B case in USER_CASE.env; not part of the registered four-run batch")
     parser.add_argument("--dry-run", action="store_true")
@@ -1826,13 +2077,21 @@ def main(argv: list[str] | None = None) -> int:
         if not SOLVER.is_file() or not PLOTTER.is_file() or not PLOTLY.is_file():
             raise V9ConfigError("recorded solver, classic plotter, or shared Plotly asset is missing")
         config = load_config(args.set)
-        batch = bool(args.v9_multiply_batch)
+        resume = bool(args.resume_v9_multiply_batch)
+        batch = bool(args.v9_multiply_batch or resume)
         if batch:
             registered_values_ok(config)
         _, _, sources = _check_reference_files()
         reference_text = REFERENCE_DECK.read_text(encoding="utf-8")
         scenarios = _build_cases(config, batch)
-        run_ids = _run_ids(scenarios)
+        if resume:
+            run_ids, _existing_batch = _registered_batch_run_ids(scenarios)
+        else:
+            if batch:
+                manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+                if any(item.get("batch_id") == BATCH_ID for item in manifest.get("authorization_batches", [])):
+                    raise V9ConfigError("the registered V9 batch already exists; use --resume-v9-multiply-batch")
+            run_ids = _run_ids(scenarios)
         payloads = _case_payloads(config, scenarios, reference_text, sources)
         mapping_qa = _static_256_mapping_audit(
             config, reference_text, sources, payloads[0]["raw_estimate"])
@@ -1850,6 +2109,31 @@ def main(argv: list[str] | None = None) -> int:
             print(f"A={scenarios[0]['a']} B={scenarios[0]['b']} -> {scenarios[0]['expected_product']} ({scenarios[0]['expected_bits_msb_first']})")
             print(f"SE={scenarios[0]['selected_se_rows']} BL={scenarios[0]['selected_bl_columns']} reads={scenarios[0]['read_times_ps']} CLK PWL={scenarios[0]['clock_pwl_starts_ps']}")
             return 0
+        if resume:
+            if args.dry_run:
+                batch_record = _registered_batch_run_ids(scenarios)[1]
+                completed = list(batch_record.get("completed_run_ids", []))
+                pending = [run_id for run_id in run_ids if run_id not in completed]
+                print(json.dumps({"status": "RESUME_DRY_RUN_PASS", "solver_invoked": False,
+                                  "existing_batch": BATCH_ID, "registered_run_ids": run_ids,
+                                  "completed_run_ids": completed, "pending_run_ids": pending,
+                                  "physical_solve_count_new": 0,
+                                  "raw_sha256_A109": sha256(RUNS / run_ids[0] / "raw.csv")},
+                                 ensure_ascii=False, indent=2))
+                return 0
+            batch_record = _registered_batch_run_ids(scenarios)[1]
+            for completed_id in batch_record.get("completed_run_ids", []):
+                current = json.loads((RUNS / completed_id / "result.json").read_text(encoding="utf-8"))
+                if current.get("artifact_status") == "VALID" and current.get("qa_status") == "PASS":
+                    continue
+                if (completed_id == "A109_V9_A0_B0_80P68" and
+                        current.get("status") == "POSTPROCESS_FAILURE_RAW_PRESERVED" and
+                        current.get("solver_exit_code") == 0):
+                    repaired = repair_existing_postprocess(completed_id)
+                    print(json.dumps({"postprocess_repair": repaired}, ensure_ascii=False, indent=2), flush=True)
+                    continue
+                raise V9ConfigError(f"completed batch run is not repairable without new physical authority: {completed_id}")
+            return _reserve_and_execute(config, scenarios, run_ids, payloads, static_qa, sources, resume=True)
         _write_preflight_artifacts(config, scenarios, run_ids, payloads, static_qa, sources)
         if args.dry_run:
             return _print_dry_run(config, scenarios, run_ids, static_qa)

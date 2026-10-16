@@ -41,19 +41,23 @@ class DiagonalPlatformTests(unittest.TestCase):
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
             with mock.patch.object(platform, "RUNS", runs), \
                     mock.patch.object(platform, "EXPERIMENT_MANIFEST", manifest_path):
-                self.assertEqual(platform.allocate_run_id("POST_PRUNE"), "A109_POST_PRUNE")
+                next_number = platform.next_run_number()
+                next_id = f"A{next_number:03d}_POST_PRUNE"
+                future_id = f"A{next_number:03d}_FUTURE_CASE"
+                self.assertEqual(platform.allocate_run_id("POST_PRUNE"), next_id)
                 self.assertTrue(platform.run_id_is_reserved("A021_CHAIN_ALL_GLOBAL_CLOCK"))
-                self.assertFalse(platform.run_id_is_reserved("A109_POST_PRUNE"))
+                self.assertTrue(platform.run_id_is_reserved("A109_V9_A0_B0_80P68"))
+                self.assertFalse(platform.run_id_is_reserved(next_id))
                 with self.assertRaisesRegex(platform.ConfigError, "already exists"):
                     platform.run_one({}, {}, {}, {}, run_id_override="A021_CHAIN_ALL_GLOBAL_CLOCK")
                 manifest["authorization_batches"].append({"batch_id": "FUTURE_BATCH",
-                                                          "run_ids": ["A109_FUTURE_CASE"]})
+                                                          "run_ids": [future_id]})
                 manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
                 self.assertEqual(platform.allocate_run_id("POST_BATCH_RESERVATION"),
-                                 "A110_POST_BATCH_RESERVATION")
-                self.assertTrue(platform.run_id_is_reserved("A109_FUTURE_CASE"))
-                self.assertFalse(platform._batch_authorizes_run(None, "A109_FUTURE_CASE"))
-                self.assertTrue(platform._batch_authorizes_run("FUTURE_BATCH", "A109_FUTURE_CASE"))
+                                 f"A{next_number + 1:03d}_POST_BATCH_RESERVATION")
+                self.assertTrue(platform.run_id_is_reserved(future_id))
+                self.assertFalse(platform._batch_authorizes_run(None, future_id))
+                self.assertTrue(platform._batch_authorizes_run("FUTURE_BATCH", future_id))
             empty_runs = root / "empty-runs"
             empty_runs.mkdir()
             with mock.patch.object(platform, "RUNS", empty_runs), \
@@ -65,8 +69,9 @@ class DiagonalPlatformTests(unittest.TestCase):
                 runs.mkdir()
                 solver = Path(temp) / "josim-cli-presence-only"
                 solver.write_text("not executed by this test")
+                registered_next = platform.next_run_number()
                 with mock.patch.object(platform, "RUNS", runs), mock.patch.object(platform, "SOLVER", solver):
-                    with self.assertRaisesRegex(platform.ConfigError, "found A109"):
+                    with self.assertRaisesRegex(platform.ConfigError, f"found A{registered_next:03d}"):
                         platform.validate_t1_chain_matrix(write_static_qa=False, run_josim_sanity=False)
 
     def test_try_dry_run_static_render_needs_no_retired_runs_or_handoff_zips(self):

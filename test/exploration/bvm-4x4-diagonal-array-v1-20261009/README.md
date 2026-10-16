@@ -28,6 +28,18 @@ The current evidence contract has no frozen
 event classifier/Gate, so raw event counts and observed arithmetic bits remain
 UNKNOWN/INCONCLUSIVE until separate scientific review.
 
+After the registered batch passes artifact QA, preview and submit its raw DELTA
+without copying packages to the D:/Drive mirror (the V9 task explicitly excludes
+Drive/D: operations):
+
+```bash
+./submit.sh V9_MUL_80P68_20261016 --manual-runs --dry-run --no-mirror
+./submit.sh V9_MUL_80P68_20261016 --manual-runs --no-mirror
+```
+
+The DELTA contains one metadata package and one immutable raw package per run;
+HTML remains local.
+
 This render-first platform maps 16 independent `BVM → QB` cells onto seven
 ascending-row serial diagonal chains. It uses the canonical BVM, QB, sJTL, CB,
 and shared jjmit model without modifying their sources. In

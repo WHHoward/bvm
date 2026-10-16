@@ -306,10 +306,27 @@ def _verify_run(run_dir: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     actual_sources = {item["file"]: item["sha256"] for item in manifest.get("frozen_sources", [])}
     if actual_sources != expected_sources:
         raise BatchError(f"frozen source closure differs from V9 authority: {run_dir.name}")
+    frozen_dir = run_dir / "sources_frozen"
+    if {p.name for p in frozen_dir.iterdir() if p.is_file()} != set(expected_sources):
+        raise BatchError(f"unexpected/missing frozen source file: {run_dir.name}")
     for name, digest in expected_sources.items():
         path = run_dir / "sources_frozen" / name
         if not path.is_file() or sha256(path) != digest:
             raise BatchError(f"frozen source SHA mismatch: {run_dir.name}/{name}")
+    solver = PLATFORM._solver_path()
+    if solver is None or PLATFORM.sha256_file(solver) != manifest.get("execution_environment", {}).get("josim_binary_sha256"):
+        raise BatchError(f"solver binary identity differs from recorded run: {run_dir.name}")
+    expected_paths = {record["path"] for record in manifest.get("evidence_files", [])}
+    expected_paths.add("manifest.json")
+    if (run_dir / "archive_receipt.json").is_file():
+        expected_paths.add("archive_receipt.json")
+    actual_paths = {
+        path.relative_to(run_dir).as_posix()
+        for path in run_dir.rglob("*")
+        if path.is_file() and not path.is_symlink() and not path.name.endswith(".tmp")
+    }
+    if actual_paths != expected_paths:
+        raise BatchError(f"run has unmanifested/missing files: {run_dir.name}")
     if manifest.get("visualization", {}).get("res_probe_labels") != list(PLATFORM.DEFAULT_PROBES):
         raise BatchError(f"res.html probe set differs from OUTPUTS: {run_dir.name}")
     return manifest, qa

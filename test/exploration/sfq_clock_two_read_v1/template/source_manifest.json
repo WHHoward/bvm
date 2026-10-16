@@ -1,0 +1,37 @@
+{
+  "schema": "sfq-clock-two-read-v9-template-source-manifest-v1",
+  "topology_version": "V9_SHARED_ROW_SE_BL",
+  "template_file": "deck_v9_shared_row_se_bl.cir",
+  "template_sha256": "2ea1cee249ad8939003b1108fda41a65dda81e12afd43d53fefaecb4c529392b",
+  "topology_reference": {
+    "file": "final_runs/V9_analysis/deck.cir",
+    "sha256": "474a254f4511fb46bea6afd36500aa28111323f23f1be66b720170ee297ccb70",
+    "origin_head": "8baf65df95186125a069a26522dfff92b0a8d1c1",
+    "allowed_template_differences": [
+      "all historical .print lines replaced by the eight OUTPUTS probes",
+      ".tran values replaced with DT_PS and STOP_PS placeholders"
+    ]
+  },
+  "source_closure": [
+    {"file": "00_jjmit.cir", "role": "JJ model", "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"},
+    {"file": "01_bvm_cell_0923.cir", "role": "BVM with active B_SE and R_BSE", "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489"},
+    {"file": "02_BQ_0928.cir", "role": "QB", "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"},
+    {"file": "03_sJTL_0923.cir", "role": "array and carry sJTL", "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"},
+    {"file": "04_CB_0928.cir", "role": "array and carry CB", "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"},
+    {"file": "05_MERGE.cir", "role": "historically included library source; no active V9 merge instance", "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0"},
+    {"file": "06_dcsfq2.cir", "role": "clock DCSFQ2", "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280"},
+    {"file": "07_jtl2.cir", "role": "clock and Sum JTL2", "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa"},
+    {"file": "08_t1_cell_tunable.cir", "role": "V9 T1 source snapshot", "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb"},
+    {"file": "09_DFF.cir", "role": "V9 DFF source snapshot", "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"},
+    {"file": "10_d0_jtl_tunable.cir", "role": "V9 D0 JTL source snapshot", "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039"}
+  ],
+  "cross_version_check": {
+    "all_eleven_source_snapshots_match_v9_and_v10": true,
+    "v10_template_used_as_topology_authority": false,
+    "v10_template_differences": [
+      "BVM SE pins are per-cell rather than shared by row",
+      "D4 carry path has one sJTL rather than the two-stage V9 path"
+    ],
+    "selection_reason": "The requested active protocol explicitly requires the validated V9 shared-row-SE topology; the V10 template is not electrically equivalent."
+  }
+}

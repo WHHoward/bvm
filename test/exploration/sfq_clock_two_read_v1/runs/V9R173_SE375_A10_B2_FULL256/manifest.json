@@ -1,0 +1,511 @@
+{
+  "schema": "sfq-clock-two-read-run-manifest-v1",
+  "run_id": "V9R173_SE375_A10_B2_FULL256",
+  "case_name": "SE375_A10_B2_FULL256",
+  "created_utc": "2026-10-16T09:08:15.698315+00:00",
+  "status": "ARTIFACT_QA_PASS",
+  "run_mode": "LOCAL_ONLY",
+  "protocol": "V9_SHARED_ROW_SE_BL",
+  "operands": {
+    "A": 10,
+    "B": 2
+  },
+  "rounds": 3,
+  "mapping": {
+    "row_bits_R1_lsb_first": "0101",
+    "column_bits_C1_msb_first": "0010"
+  },
+  "effective_config": {
+    "PROTOCOL": "V9_SHARED_ROW_SE_BL",
+    "CASE_NAME": "SE375_A10_B2_FULL256",
+    "A": "10",
+    "B": "2",
+    "ROUNDS": "3",
+    "READ_INTERVAL_PS": "80",
+    "CLOCK_PERIOD_PS": "80",
+    "SE_CLOCK_DELAY_PS": "68",
+    "WRITE_START_PS": "50",
+    "FIRST_READ_PS": "110",
+    "DT_PS": "0.01",
+    "STOP_PS": "400",
+    "WL_WRITE_AMPLITUDE": "400u",
+    "BL_WRITE_AMPLITUDE": "400u",
+    "BL_READ_AMPLITUDE": "400u",
+    "SE_READ_AMPLITUDE": "375u",
+    "PROBE_PROFILE": "OUTPUTS",
+    "CUSTOM_PROBES_FILE": ""
+  },
+  "timing_and_amplitudes": {
+    "case_name": "SE375_A10_B2_FULL256",
+    "a": 10,
+    "b": 2,
+    "rounds": 3,
+    "row_bits_R1_lsb_first": "0101",
+    "column_bits_C1_msb_first": "0010",
+    "read_starts_ps": [
+      "110",
+      "190",
+      "270"
+    ],
+    "clock_pwl_starts_ps": [
+      "178",
+      "258",
+      "338"
+    ],
+    "write_start_ps": "50",
+    "dt_ps": "0.01",
+    "stop_ps": "400",
+    "timing": {
+      "READ_INTERVAL_PS": "80",
+      "CLOCK_PERIOD_PS": "80",
+      "SE_CLOCK_DELAY_PS": "68",
+      "WRITE_START_PS": "50",
+      "FIRST_READ_PS": "110",
+      "DT_PS": "0.01",
+      "STOP_PS": "400"
+    },
+    "amplitudes": {
+      "WL_WRITE_AMPLITUDE": "400u",
+      "BL_WRITE_AMPLITUDE": "400u",
+      "BL_READ_AMPLITUDE": "400u",
+      "SE_READ_AMPLITUDE": "375u"
+    },
+    "pulse_shape_ps": {
+      "io": {
+        "rise": "1",
+        "hold": "9",
+        "fall": "1"
+      },
+      "clock": {
+        "rise": "1",
+        "hold": "2",
+        "fall": "1"
+      },
+      "clock_amplitude": "1.2m"
+    },
+    "probe_profile": "OUTPUTS",
+    "custom_probes_file": ""
+  },
+  "stimulus_qa": {
+    "source_count": 20,
+    "source_counts": {
+      "WL": 4,
+      "BL": 4,
+      "SE": 4,
+      "CLK": 8
+    },
+    "write1_source_event_count": 1,
+    "read_starts_ps": [
+      "110",
+      "190",
+      "270"
+    ],
+    "clock_pwl_starts_ps": [
+      "178",
+      "258",
+      "338"
+    ],
+    "configuration_matches_generated_pwl": true
+  },
+  "probe_manifest": {
+    "schema": "sfq-clock-two-read-probe-manifest-v1",
+    "profile": "OUTPUTS",
+    "default_output_probe_count": 8,
+    "signals": [
+      {
+        "label": "V(S_D0_OUT)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "S_D0_OUT"
+          ]
+        },
+        "direction": "S_D0_OUT relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      },
+      {
+        "label": "V(S_D1_OUT)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "S_D1_OUT"
+          ]
+        },
+        "direction": "S_D1_OUT relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      },
+      {
+        "label": "V(S_D2_OUT)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "S_D2_OUT"
+          ]
+        },
+        "direction": "S_D2_OUT relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      },
+      {
+        "label": "V(S_D3_OUT)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "S_D3_OUT"
+          ]
+        },
+        "direction": "S_D3_OUT relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      },
+      {
+        "label": "V(S_D4_OUT)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "S_D4_OUT"
+          ]
+        },
+        "direction": "S_D4_OUT relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      },
+      {
+        "label": "V(S_D5_OUT)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "S_D5_OUT"
+          ]
+        },
+        "direction": "S_D5_OUT relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      },
+      {
+        "label": "V(S_D6_OUT)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "S_D6_OUT"
+          ]
+        },
+        "direction": "S_D6_OUT relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      },
+      {
+        "label": "V(DFF_O)",
+        "kind": "V",
+        "unit": "V",
+        "endpoint": {
+          "nodes": [
+            "DFF_O"
+          ]
+        },
+        "direction": "DFF_O relative to ground",
+        "role": "product_output",
+        "missing_probe_consequence": "pre-solve validation fails; no substitute probe is inferred"
+      }
+    ],
+    "phase_raw_unit": "radians",
+    "plot_policy": "Use all stored raw rows; no resampling or downsampling.",
+    "custom_probe_file_sha256": null
+  },
+  "topology_qa": {
+    "status": "PASS",
+    "topology_version": "V9_SHARED_ROW_SE_BL",
+    "bvm_count": 16,
+    "qb_count": 16,
+    "wl_source_count": 4,
+    "bl_source_count": 4,
+    "shared_row_se_source_count": 4,
+    "array_cb_count": 16,
+    "carry_cb_count": 6,
+    "carry_sjtl_count_by_stage": {
+      "D1": 1,
+      "D2": 1,
+      "D3": 5,
+      "D4": 2,
+      "D5": 1,
+      "D6": 1
+    },
+    "t1_count": 7,
+    "dff_count": 1,
+    "probe_count": 8,
+    "stimulus": {
+      "source_count": 20,
+      "source_counts": {
+        "WL": 4,
+        "BL": 4,
+        "SE": 4,
+        "CLK": 8
+      },
+      "write1_source_event_count": 1,
+      "read_starts_ps": [
+        "110",
+        "190",
+        "270"
+      ],
+      "clock_pwl_starts_ps": [
+        "178",
+        "258",
+        "338"
+      ],
+      "configuration_matches_generated_pwl": true
+    },
+    "solver_invoked": false,
+    "physical_solve_count": 0
+  },
+  "source_hashes": {
+    "USER_CASE.snapshot.env": "f99e7371c1b6fa5778dfebd5d3ecb54706ef4fec3bb705d6bc398471f86c142f",
+    "deck.cir": "3bca7a96fd92f9d50a6d5fbe4fa68047df64b9a3d7ccfa4a8a2345ec958a3b80",
+    "stimulus.inc": "3482fd9b67a1a778ad01555a31a979f87d46a5295976dab8b6d5c2b41c4c61c0",
+    "deck_template": "2ea1cee249ad8939003b1108fda41a65dda81e12afd43d53fefaecb4c529392b",
+    "platform_script": "eb597d0e8d63913c0059445ca8e13107e44a82b8deed2ab983d900c8cb724233",
+    "bvm_stimulus.py": "7a9587d041baa6203930cdd49f9640fee09b8185611f38d48d4c9f9639b6fc7a",
+    "josim-plot2.py": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+    "template_source_manifest": "3e1d6ba694aad927c4797e9282163c8a4d65e5f0527f3c01d99a77eb2b0346d4",
+    "PREFLIGHT.md": "ade1175ddf11cc48eea800e5e43985858fcc95815877dd7e4836578a62bb437f",
+    "probe_manifest.json": "46b18b5b2ebd77040f14e48a034859ce53e5845f819d3fe6ee0b9a304e29c7c0"
+  },
+  "frozen_sources": [
+    {
+      "file": "00_jjmit.cir",
+      "role": "JJ model",
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336",
+      "bytes": 504
+    },
+    {
+      "file": "01_bvm_cell_0923.cir",
+      "role": "BVM with active B_SE and R_BSE",
+      "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489",
+      "bytes": 2401
+    },
+    {
+      "file": "02_BQ_0928.cir",
+      "role": "QB",
+      "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a",
+      "bytes": 420
+    },
+    {
+      "file": "03_sJTL_0923.cir",
+      "role": "array and carry sJTL",
+      "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688",
+      "bytes": 227
+    },
+    {
+      "file": "04_CB_0928.cir",
+      "role": "array and carry CB",
+      "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370",
+      "bytes": 291
+    },
+    {
+      "file": "05_MERGE.cir",
+      "role": "historically included library source; no active V9 merge instance",
+      "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0",
+      "bytes": 2383
+    },
+    {
+      "file": "06_dcsfq2.cir",
+      "role": "clock DCSFQ2",
+      "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280",
+      "bytes": 1225
+    },
+    {
+      "file": "07_jtl2.cir",
+      "role": "clock and Sum JTL2",
+      "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa",
+      "bytes": 866
+    },
+    {
+      "file": "08_t1_cell_tunable.cir",
+      "role": "V9 T1 source snapshot",
+      "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb",
+      "bytes": 2019
+    },
+    {
+      "file": "09_DFF.cir",
+      "role": "V9 DFF source snapshot",
+      "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0",
+      "bytes": 2348
+    },
+    {
+      "file": "10_d0_jtl_tunable.cir",
+      "role": "V9 D0 JTL source snapshot",
+      "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039",
+      "bytes": 151
+    }
+  ],
+  "execution_environment": {
+    "parent_head": "a7c3bc40f4ef4dfc9e735ea1bd8e2188a11b90f2",
+    "worktree_dirty_before_run": true,
+    "platform": "linux",
+    "python": "3.13.9 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 19:16:10) [GCC 11.2.0]",
+    "josim_path": "/home/howard/JoSIM/build/josim-cli",
+    "josim_version_query": "JoSIM: Josephson Junction Superconductive SPICE Circuit Simulator\nCopyright (C) 2020 by Johannes Delport (jdelport@sun.ac.za)\nv2.7.2837d13 compiled on May 30 2026 at 20:37:57",
+    "josim_binary_sha256": "48655cb31d6297ba571a300c3c7e0b5665d11c8cc1f02b5b4f6e9b0db50440b2"
+  },
+  "physical_solve_count": 1,
+  "solver_exit_code": 0,
+  "raw_integrity": {
+    "status": "PASS",
+    "sample_count": 39999,
+    "time_column": "time",
+    "stored_time_start": "0.000000",
+    "stored_time_end": "3.999900E-10",
+    "time_strictly_increasing": true,
+    "stored_grid_nonuniform": true,
+    "stored_dt_min": "1.000000E-14",
+    "stored_dt_max": "2.00000E-14",
+    "probe_count": 8,
+    "header": [
+      "time",
+      "V(S_D0_OUT)",
+      "V(S_D1_OUT)",
+      "V(S_D2_OUT)",
+      "V(S_D3_OUT)",
+      "V(S_D4_OUT)",
+      "V(S_D5_OUT)",
+      "V(S_D6_OUT)",
+      "V(DFF_O)"
+    ],
+    "raw_bytes": 4807462,
+    "raw_sha256": "27b18f24490a35e3d727160def3d90a2cc944cc719fd90c596f8865623573555",
+    "sha256_unchanged_during_plot": true
+  },
+  "visualization": {
+    "status": "PASS",
+    "res.html": {
+      "status": "PASS",
+      "renderer": "scripts/josim-plot2.py",
+      "renderer_sha256": "0aaf0b4bfd148e073d318c9a0762ec13995045abd88cad28336fb8128c33a1d6",
+      "layout": "stacked",
+      "theme": "dark",
+      "phase_display": "rad/(2*pi)",
+      "offline_standalone": true,
+      "file": "res.html",
+      "signal_count": 8,
+      "html_bytes": 12095932,
+      "html_sha256": "899371787c6244f23615f9fc02a9e09c9e52306c145b1a168d15bd093c4acbe9"
+    },
+    "custom.html": null,
+    "res_probe_labels": [
+      "V(S_D0_OUT)",
+      "V(S_D1_OUT)",
+      "V(S_D2_OUT)",
+      "V(S_D3_OUT)",
+      "V(S_D4_OUT)",
+      "V(S_D5_OUT)",
+      "V(S_D6_OUT)",
+      "V(DFF_O)"
+    ],
+    "custom_probe_labels": []
+  },
+  "evidence_files": [
+    {
+      "path": "PREFLIGHT.md",
+      "bytes": 3798,
+      "sha256": "ade1175ddf11cc48eea800e5e43985858fcc95815877dd7e4836578a62bb437f"
+    },
+    {
+      "path": "USER_CASE.snapshot.env",
+      "bytes": 943,
+      "sha256": "f99e7371c1b6fa5778dfebd5d3ecb54706ef4fec3bb705d6bc398471f86c142f"
+    },
+    {
+      "path": "deck.cir",
+      "bytes": 9246,
+      "sha256": "3bca7a96fd92f9d50a6d5fbe4fa68047df64b9a3d7ccfa4a8a2345ec958a3b80"
+    },
+    {
+      "path": "probe_manifest.json",
+      "bytes": 2979,
+      "sha256": "46b18b5b2ebd77040f14e48a034859ce53e5845f819d3fe6ee0b9a304e29c7c0"
+    },
+    {
+      "path": "raw.csv",
+      "bytes": 4807462,
+      "sha256": "27b18f24490a35e3d727160def3d90a2cc944cc719fd90c596f8865623573555"
+    },
+    {
+      "path": "res.html",
+      "bytes": 12095932,
+      "sha256": "899371787c6244f23615f9fc02a9e09c9e52306c145b1a168d15bd093c4acbe9"
+    },
+    {
+      "path": "run.log",
+      "bytes": 4014741,
+      "sha256": "143a5d0b82273f9e8d4e1e2b19a26afbd748c4f7dd2038e6a09ea72698d864a9"
+    },
+    {
+      "path": "sources_frozen/00_jjmit.cir",
+      "bytes": 504,
+      "sha256": "19862d1fd1f1f44dfa1523848d7d3b5e2594a6c5da8fdd80144b449e5312a336"
+    },
+    {
+      "path": "sources_frozen/01_bvm_cell_0923.cir",
+      "bytes": 2401,
+      "sha256": "76b7b90b4e58cc45d55adc24d1bc6e626957461a2abe21ca4a33319d58ac6489"
+    },
+    {
+      "path": "sources_frozen/02_BQ_0928.cir",
+      "bytes": 420,
+      "sha256": "82e6f6c7a95856c6d7bcdd28a56c009a815fc77e237a76af08fbebe45eed988a"
+    },
+    {
+      "path": "sources_frozen/03_sJTL_0923.cir",
+      "bytes": 227,
+      "sha256": "3cbc6889f9b4cd6b7764efa4a591f9d4dcdb0b2b86ded1f265dadabda1040688"
+    },
+    {
+      "path": "sources_frozen/04_CB_0928.cir",
+      "bytes": 291,
+      "sha256": "70a6af05acccb7c354799d5b1b7542c86c677970681473f559bbf0f7e4d6d370"
+    },
+    {
+      "path": "sources_frozen/05_MERGE.cir",
+      "bytes": 2383,
+      "sha256": "79b0d219db60ca41a03d732eaac82b436114b02436cf4dc8719e9b25d58940e0"
+    },
+    {
+      "path": "sources_frozen/06_dcsfq2.cir",
+      "bytes": 1225,
+      "sha256": "76e9866ef32a73ac8bda2a4698ba1d39dc8e1c83312da168ba0aab8eee5fc280"
+    },
+    {
+      "path": "sources_frozen/07_jtl2.cir",
+      "bytes": 866,
+      "sha256": "9ec481453c5aa519dec18c07efc2c377b11f3ca0345c6e7971bd6806036455aa"
+    },
+    {
+      "path": "sources_frozen/08_t1_cell_tunable.cir",
+      "bytes": 2019,
+      "sha256": "da7f1c5065081caccbd6cbd698630a9cf94019840e39e3beb0839b99e5e7bcdb"
+    },
+    {
+      "path": "sources_frozen/09_DFF.cir",
+      "bytes": 2348,
+      "sha256": "e63473b890b67bd968ee9891518e7b4f9b52560cb49e20fa18fa50f03b6bc6f0"
+    },
+    {
+      "path": "sources_frozen/10_d0_jtl_tunable.cir",
+      "bytes": 151,
+      "sha256": "b242741e4630a54411db48de649361e8daedfd6a083358d675d2fdf657314039"
+    },
+    {
+      "path": "stimulus.inc",
+      "bytes": 2637,
+      "sha256": "3482fd9b67a1a778ad01555a31a979f87d46a5295976dab8b6d5c2b41c4c61c0"
+    }
+  ]
+}

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import importlib.util
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -89,6 +91,28 @@ class V9MigrationTests(unittest.TestCase):
         self.assertEqual(len(pages[0]["signals"]), 20)
         self.assertTrue(all(signal in {item["label"] for item in manifest["signals"]}
                             for page in pages for signal in page["signals"]))
+
+    def test_v9_classic_html_rebuilds_from_temporary_probe_fixture(self):
+        scenario = v9.scenario_config(self.config, 11, 13)
+        manifest = v9.make_probe_manifest(scenario)
+        labels = [item["label"] for item in manifest["signals"]]
+        with tempfile.TemporaryDirectory(prefix="v9-plot-fixture-", dir=SERIES / "plots") as temp:
+            root = Path(temp)
+            run_dir = root / "fixture"
+            run_dir.mkdir()
+            raw = run_dir / "raw.csv"
+            with raw.open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.writer(stream)
+                writer.writerow(["time", *labels])
+                for t in (0.0, 1e-14, 2e-14, 3e-14):
+                    writer.writerow([t, *([0.0] * len(labels))])
+            qa = legacy.render_plots(run_dir, manifest, plot_root_override=root / "pages")
+            self.assertEqual(qa["status"], "PASS")
+            self.assertEqual(qa["page_count"], 3)
+            self.assertTrue(all(item["responsive"] and item["zoom_hover_legend_interactive"]
+                                for item in qa["pages"]))
+            self.assertTrue(all((root / "pages" / Path(item["path"]).name).is_file()
+                                for item in qa["pages"]))
 
 
 if __name__ == "__main__":
